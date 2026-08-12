@@ -39,6 +39,7 @@ import { QB } from '../src/questions.js';
 import { rootCss } from '../src/design/tokens.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
+import { FUN_FACTS } from './seo/funFacts.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
@@ -372,11 +373,64 @@ function storeBadges() {
 // working unchanged; the Clubs Directory passes 'clubs'.
 // The skip link is WCAG 2.4.1 (Level A): four nav links plus a breadcrumb trail
 // sit before the content on every one of these ~180 pages. Visible on focus only.
+// ⚠️ MOBILE HAD NO NAVIGATION AT ALL until 2026-08-12. The rule
+// `@media(max-width:560px){ .nav-link{display:none} }` hid every section link
+// on 66% of our traffic, with no hamburger replacing them: a phone visitor
+// landing on a club page could reach nothing but /play and the App Store.
+// Three intent groups now replace the flat link row — Games (do something
+// now), Quizzes (a quiz about my thing), Discover (browse and read) — and
+// they open as a full panel on mobile, hover/click dropdowns on desktop.
+const NAV_GROUPS = [
+  { key: 'games', label: 'Games', items: [
+    ['Daily 7', '/play'],
+    ['Footle — football Wordle', '/football-wordle/'],
+    ['Transfer Trail', '/transfer-trail/'],
+    ['Mystery Player', '/mystery-player/'],
+    ['Lineup Builder', '/lineup/'],
+  ] },
+  { key: 'quizzes', label: 'Quizzes', items: [
+    ['All quizzes', '/quiz/'],
+    ['Club quizzes', '/quiz/clubs/'],
+    ['Premier League', '/quiz/premier-league/'],
+    ['Champions League', '/quiz/champions-league/'],
+    ['World Cup', '/quiz/world-cup/'],
+    ['Legends', '/quiz/legends/'],
+  ] },
+  { key: 'discover', label: 'Discover', items: [
+    ['Records & lists', '/lists/'],
+    ['Football fun facts', '/fun-facts/'],
+    ['The trivia data study', '/study/football-trivia-memory/'],
+    ['About Ball IQ', '/about/'],
+  ] },
+];
+
+const navGroupHtml = (g, active) => `<div class="nav-grp">
+<button type="button" class="nav-top${active === g.key ? ' active' : ''}" aria-expanded="false" aria-controls="nd-${g.key}">${g.label}<svg class="nav-caret" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
+<div class="nav-drop" id="nd-${g.key}">${g.items.map(([label, href]) => `<a href="${SITE.base}${href}">${label}</a>`).join('')}</div>
+</div>`;
+
+// Toggle + outside-click + Escape. Deliberately tiny and inline: these are
+// static pages with no bundle, and navigation must work on the first paint.
+const NAV_JS = `(function(){var h=document.querySelector('.nav');if(!h)return;
+var b=h.querySelector('.nav-burger');
+b&&b.addEventListener('click',function(){var o=h.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');});
+h.querySelectorAll('.nav-top').forEach(function(t){t.addEventListener('click',function(e){
+  e.preventDefault();var g=t.parentNode,o=g.classList.contains('open');
+  h.querySelectorAll('.nav-grp.open').forEach(function(x){x.classList.remove('open');x.querySelector('.nav-top').setAttribute('aria-expanded','false');});
+  if(!o){g.classList.add('open');t.setAttribute('aria-expanded','true');}});});
+document.addEventListener('click',function(e){if(!h.contains(e.target)){h.classList.remove('open');
+  h.querySelectorAll('.nav-grp.open').forEach(function(x){x.classList.remove('open');x.querySelector('.nav-top').setAttribute('aria-expanded','false');});
+  b&&b.setAttribute('aria-expanded','false');}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){h.classList.remove('open');
+  h.querySelectorAll('.nav-grp.open').forEach(function(x){x.classList.remove('open');x.querySelector('.nav-top').setAttribute('aria-expanded','false');});}});
+})();`;
+
 const navHtml = (active = '') => `<a class="skip" href="#main">Skip to content</a>
 <header class="nav"><div class="nav-in">
 <a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="28" height="28" />Ball&nbsp;<b>IQ</b></a>
-<div class="nav-right"><a class="nav-link${active === 'quizzes' ? ' active' : ''}" href="${SITE.base}/quiz/">All quizzes</a><a class="nav-link${active === 'clubs' ? ' active' : ''}" href="${SITE.base}/quiz/clubs/">Clubs</a><a class="nav-link${active === 'records' ? ' active' : ''}" href="${SITE.base}/lists/">Records</a><a class="nav-play" href="${SITE.base}/play">Play free</a><a class="nav-cta" href="${SITE.getApp}" rel="noopener">Get the app</a></div>
-</div></header>`;
+<div class="nav-right">${NAV_GROUPS.map((g) => navGroupHtml(g, active)).join('')}<a class="nav-play" href="${SITE.base}/play">Play free</a><a class="nav-cta" href="${SITE.getApp}" rel="noopener">Get the app</a></div>
+<button type="button" class="nav-burger" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
+</div></header><script>${NAV_JS}</script>`;
 const NAV = navHtml();
 
 function crumbs(items) {
@@ -1283,10 +1337,30 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .brand:hover{text-decoration:none}
   .brand img{width:32px;height:32px;border-radius:8px}
   .brand b{color:var(--amber);font-weight:900}
-  .nav-right{display:flex;align-items:center;gap:16px}
+  .nav-right{display:flex;align-items:center;gap:6px}
   .nav-link{color:var(--tx3);font-size:14px;font-weight:600}
   .nav-link:hover{color:#fff;text-decoration:none}
   .nav-link.active{color:#fff;border-bottom:2px solid var(--grn);padding-bottom:2px}
+  /* ── intent groups (Games / Quizzes / Discover) ── */
+  .nav-grp{position:relative}
+  .nav-top{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:8px 11px;background:none;border:0;
+    color:var(--tx3);font:inherit;font-size:14px;font-weight:600;cursor:pointer;border-radius:10px}
+  .nav-top:hover,.nav-grp.open .nav-top{color:#fff;background:rgba(255,255,255,.06)}
+  .nav-top.active{color:#fff}
+  .nav-caret{transition:transform .16s;opacity:.7}
+  .nav-grp.open .nav-caret{transform:rotate(180deg)}
+  .nav-drop{position:absolute;top:calc(100% + 8px);left:0;min-width:236px;padding:7px;
+    background:#12141B;border:1px solid #242836;border-radius:14px;
+    box-shadow:0 18px 44px rgba(0,0,0,.55);display:none;flex-direction:column;gap:1px;z-index:120}
+  .nav-grp.open .nav-drop,.nav-grp:hover .nav-drop{display:flex}
+  .nav-drop a{display:block;padding:10px 12px;border-radius:9px;color:var(--tx2);font-size:14px;font-weight:600;white-space:nowrap}
+  .nav-drop a:hover{background:rgba(88,204,2,.10);color:#fff;text-decoration:none}
+  .nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;
+    background:none;border:0;cursor:pointer;padding:0 10px}
+  .nav-burger span{display:block;height:2px;background:#fff;border-radius:2px;transition:transform .18s,opacity .18s}
+  .nav.open .nav-burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav.open .nav-burger span:nth-child(2){opacity:0}
+  .nav.open .nav-burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
   /* Flat per the 2026-07-21 Clubs Directory handoff — Alex: no 3D look. */
   /* The 126 quiz pages carried Get-the-app but NOT Play-free -- so the
      browser-play CTA was missing from exactly the pages where a visitor has
@@ -1486,10 +1560,28 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
      nowrap on both is the actual guard against the two-line wrap. */
   .nav-cta{white-space:nowrap}
   .brand{white-space:nowrap;flex:0 0 auto}
-  @media(max-width:560px){
+  /* ⚠️ MOBILE: the panel, not display:none. Groups stack fully expanded — a
+     phone visitor gets every section in one tap, which is exactly what the
+     old rule denied them. */
+  @media(max-width:860px){
+    .nav-burger{display:flex}
+    /* ⚠️ ABSOLUTE, NOT FIXED. .nav carries backdrop-filter, and a filtered
+       element becomes the containing block for fixed descendants — a
+       position:fixed panel anchors to the 60px header instead of the
+       viewport and renders as a transparent sliver. Caught on the first
+       screenshot; absolute inside the sticky header is the correct anchor. */
+    .nav-right{position:absolute;top:100%;left:0;right:0;max-height:calc(100vh - 58px);overflow-y:auto;
+      flex-direction:column;align-items:stretch;gap:2px;padding:14px 16px calc(28px + env(safe-area-inset-bottom,0px));
+      background:#0A0A0A;border-bottom:1px solid #16181F;box-shadow:0 24px 48px rgba(0,0,0,.6);display:none;z-index:110}
+    .nav.open .nav-right{display:flex}
+    .nav-grp{position:static}
+    .nav-top{width:100%;justify-content:space-between;font-size:15px;padding:12px 6px;color:#fff}
+    .nav-drop{position:static;display:flex;min-width:0;border:0;background:none;box-shadow:none;padding:0 0 10px 6px}
+    .nav-grp:hover .nav-drop{display:flex}
+    .nav-drop a{padding:11px 10px;white-space:normal}
+    .nav-play,.nav-cta{margin-top:10px;justify-content:center;font-size:15px}
     .nav-link{display:none}
     .nav-in{padding:11px 14px}
-    .nav-right{gap:10px}
     .nav-cta{padding:9px 15px;font-size:13.5px}
     .brand{font-size:17px}
     .brand img{width:25px;height:25px}
@@ -3285,6 +3377,101 @@ ${footer()}`;
 // and they were falsified within the hour when a club wave landed; for a page
 // whose whole purpose is to be fact-checked, that is the one unacceptable
 // failure. See the header of scripts/seo/study.mjs.
+// ── /fun-facts/ ──────────────────────────────────────────────────────────────
+// A browse-and-share page for the "Discover" intent, and the natural landing
+// spot for "football fun facts" search — a head term we had no page for.
+//
+// ⚠️ EVERY FACT IS A VERIFIED BANK EXPLANATION (scripts/build-fun-facts.mjs).
+// Nothing here is written fresh: a fun-facts page is precisely the format that
+// tempts invention, so the corpus is mined from hints that already survived
+// the forge's examiner + skeptic. The page states that provenance out loud,
+// because "we checked these" is the only claim that separates us from the
+// hundred scraped listicles ranking above us today.
+// Local: anchor ids from theme names ("European nights" -> "european-nights").
+const ffSlug = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+function buildFunFactsPage() {
+  const canonical = `${SITE.base}/fun-facts/`;
+  const total = FUN_FACTS.reduce((n, t) => n + t.facts.length, 0);
+  const title = `${total} Football Fun Facts (Checked, Not Scraped) | Ball IQ`;
+  // <=160 chars: the SERP audit fails the build above that, and a truncated
+  // description is a wasted snippet on the one page built to be browsed.
+  const description = `${total} surprising football facts — records, World Cup nights, European finals, club history. Checked before they shipped, each with a quiz behind it.`;
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+        { '@type': 'ListItem', position: 2, name: 'Football fun facts', item: canonical },
+      ] },
+      { '@type': 'Article', headline: `${total} football fun facts`, description,
+        author: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
+        publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
+        mainEntityOfPage: canonical, isAccessibleForFree: true },
+    ],
+  });
+
+  const toc = FUN_FACTS.map((t) => `<a href="#${ffSlug(t.theme)}">${esc(t.theme)}</a>`).join('');
+  let n = 0;
+  const sections = FUN_FACTS.map((t) => `<section class="sec narrow" id="${ffSlug(t.theme)}">
+<h2>${esc(t.theme)}</h2>
+<ol class="ff-list" start="${n + 1}">
+${t.facts.map((f) => { n += 1; return `<li class="ff"><span class="ff-n">${n}</span><p>${esc(f.text)}</p></li>`; }).join('\n')}
+</ol>
+</section>`).join('\n');
+
+  const style = `<style>
+  .ff-toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+  .ff-toc a{padding:8px 13px;border:1px solid var(--bd2);border-radius:999px;color:var(--tx2);font-size:13.5px;font-weight:700}
+  .ff-toc a:hover{border-color:var(--grn);color:#fff;text-decoration:none}
+  .ff-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .ff{display:flex;gap:14px;align-items:flex-start;padding:15px 17px;background:var(--card);
+    border:1px solid var(--bd);border-radius:14px}
+  .ff-n{flex:0 0 auto;min-width:26px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:13px;font-weight:700;color:var(--grn);padding-top:2px}
+  .ff p{margin:0;color:var(--tx1);font-size:15.5px;line-height:1.55}
+  @media(max-width:560px){ .ff{padding:13px 14px;gap:11px} .ff p{font-size:15px} }
+  </style>`;
+
+  const html = `${head({ title, description, canonical, ld, ads: true })}
+<body>
+${NAV}
+<main id="main">
+${style}
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football fun facts</span></nav>
+<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 8px">${total} football fun facts</h1>
+<p class="sub" style="color:var(--tx3);margin:0 0 18px">Checked before they shipped · free · no sign-up</p>
+<p style="margin:0 0 14px;color:var(--tx2)">Most football fact lists are scraped from each other, which is how the same wrong claim ends up on forty sites. These are different: every line below started life as the written explanation behind a Ball IQ quiz answer, so each one was fact-checked before it ever reached a player — and each one has a quiz behind it if you want to test whether you actually knew it.</p>
+<div class="ff-toc">${toc}</div>
+</section>
+${sections}
+${adSlot('afterQA')}
+${appCtaBand('football')}
+<section class="sec narrow">
+<h2>Where these come from</h2>
+<p style="margin:0 0 14px;color:var(--tx2)">Ball IQ is a football quiz built on a hand-written question bank. Most answers carry a short explanation — the season it happened, who else was involved, what made it matter — and those explanations are where these facts come from. They go through a generation pass, an examiner pass and an adversarial fact-check before they ship, and anything contested gets dropped rather than guessed.</p>
+<p style="margin:0;color:var(--tx2)">Think you knew them? <a href="${SITE.base}/quiz/">Pick a quiz</a> and find out — or try the <a href="${SITE.base}/football-wordle/">daily football word game</a>, <a href="${SITE.base}/transfer-trail/">Transfer Trail</a> and the <a href="${SITE.base}/lineup/">lineup builder</a>.</p>
+</section>
+<section class="sec narrow">
+<h2>Football fun facts — FAQ</h2>
+${renderFaq([
+  { q: 'Are these football facts actually true?', a: 'Every fact on this page is an explanation written for a Ball IQ quiz answer, and the bank goes through a generation pass, an examiner pass and an adversarial fact-check before anything ships. Where a claim is contested or cannot be verified, we drop it instead of guessing — which is why this list is shorter than it could be.' },
+  { q: 'Can I use these facts in a pub quiz?', a: 'Yes, they are free to use. If you want a ready-made round with the answers kept separate, the club quiz pages have printable question-and-answer sets for dozens of clubs.' },
+  { q: 'How often is the list updated?', a: 'It is regenerated from the question bank on every deploy, so as the bank grows and gets corrected, this page follows automatically rather than going stale on its own.' },
+  { q: 'Where can I test myself on these?', a: 'Every fact has a quiz behind it. Start with the free quiz hub, or play the Daily 7 for seven fresh questions everyone in the world gets on the same day.' },
+])}
+</section>
+${adSlot('afterFaq')}
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'fun-facts');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html);
+  console.log(`  \u2713 /fun-facts/  (${total} verified facts, ${FUN_FACTS.length} themes)`);
+}
+
 function buildStudyPage(cfg) {
   const s = studyStats(QB);
   const num = (v) => (typeof v === 'number' ? v.toLocaleString('en-GB') : v);
@@ -4276,6 +4463,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/quiz/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/quiz/clubs/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
+    { loc: `${SITE.base}/fun-facts/`, freq: 'weekly', pri: '0.7' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${TRAIL_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
@@ -4454,6 +4642,7 @@ async function main() {
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
+  buildFunFactsPage();
   const dailyGamePages = [MYSTERY_PAGE, TRAIL_PAGE].map(buildDailyGamePage);
   buildStudyPage(STUDY);
   buildSimplePage(ABOUT);
