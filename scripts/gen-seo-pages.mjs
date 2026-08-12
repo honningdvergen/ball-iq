@@ -1653,6 +1653,16 @@ ${/* /study/ measured ZERO inbound internal links on 2026-07-30 — a TRUE orpha
 <a href="${SITE.base}/football-wordle/">Footle — football Wordle</a>
 <a href="${SITE.base}/mystery-player/">Mystery Player — guess the footballer</a>
 <a href="${SITE.base}/transfer-trail/">Transfer Trail — guess by career path</a>
+${/* THREE PAGES SHIPPED THIS WEEK AND NONE WERE IN THE MESH. The footer is the
+      only SITE-WIDE internal link set we control — every entry here earns ~180
+      inbound internal links — and /fun-facts/, /xi/ and the Daily 7 landing
+      page were reachable only from the nav and the sitemap. That is the same
+      orphan condition that left /study/ with ZERO inbound links (see above),
+      caught then and re-created immediately by shipping new pages without
+      adding them here. Anything new and permanent belongs in this list. */ ''}
+<a href="${SITE.base}/daily-football-quiz/">Daily football quiz</a>
+<a href="${SITE.base}/xi/">Guess the XI — name the lineup</a>
+<a href="${SITE.base}/fun-facts/">Football facts that sound made up</a>
 <a href="${SITE.base}/about/">About</a>
 <a href="${SITE.base}/contact/">Contact</a>
 <a href="${SITE.base}/terms/">Terms</a>
@@ -3441,6 +3451,30 @@ ${footer()}
   console.log('  \u2713 /xi/  (Guess the XI, shared nav + footer)');
 }
 
+
+// ⚠️ A FACTS PAGE WITH NOWHERE TO GO IS A BOUNCE. The measured lesson from
+// Clarity: reference pages WITHOUT something to do got ~2.3s of attention,
+// while playable ones held people. Every fact that names a club or player we
+// have a quiz for now carries a link to it, which does three things at once —
+// gives the reader a next step, turns 42 dead-end paragraphs into a hub that
+// passes authority to the money pages, and makes the page genuinely useful.
+//
+// Longest name first, so "Manchester United" is never matched as "Manchester
+// City" would be by a shorter, earlier entry. Word-boundary anchored, and ONE
+// link per fact — a paragraph wearing four links reads as spam and dilutes
+// every one of them.
+function factQuizLink(text) {
+  const cands = [
+    ...PLAYERS.map((x) => ({ name: x.name, href: `${SITE.base}/quiz/${x.slug}/`, kind: 'player' })),
+    ...CLUBS.map((x) => ({ name: x.name, href: `${SITE.base}/quiz/${x.slug}/`, kind: 'club' })),
+  ].sort((a, b) => b.name.length - a.name.length);
+  for (const c of cands) {
+    const re = new RegExp(`\\b${c.name.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'i');
+    if (re.test(text)) return `<a class="ff-quiz" href="${c.href}">${esc(c.name)} quiz</a>`;
+  }
+  return '';
+}
+
 function buildFunFactsPage() {
   const canonical = `${SITE.base}/fun-facts/`;
   const total = FUN_FACTS.reduce((n, t) => n + t.facts.length, 0);
@@ -3449,6 +3483,15 @@ function buildFunFactsPage() {
   // description is a wasted snippet on the one page built to be browsed.
   const description = `A 149-0 protest, a space-travel contract clause, a fake international. ${total} football facts that sound invented — every one checked, with the source.`;
 
+  // ⚠️ ItemList, NOT just Article. This page is a numbered list of N facts and
+  // Google treats ItemList as a distinct, richer entity for exactly this shape.
+  // Emitting only Article described the wrapper and left the actual content —
+  // the thing people search for — structurally invisible.
+  let ldPos = 0;
+  const ldItems = FUN_FACTS.flatMap((t) => t.facts.map((f) => {
+    ldPos += 1;
+    return { '@type': 'ListItem', position: ldPos, name: f.t.slice(0, 110), description: f.t };
+  }));
   const ld = jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
@@ -3456,6 +3499,9 @@ function buildFunFactsPage() {
         { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
         { '@type': 'ListItem', position: 2, name: 'Football fun facts', item: canonical },
       ] },
+      { '@type': 'ItemList', name: `${total} football facts that sound made up`,
+        url: canonical, numberOfItems: ldItems.length, itemListOrder: 'Unordered',
+        itemListElement: ldItems },
       { '@type': 'Article', headline: `${total} football fun facts`, description,
         author: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
         publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
@@ -3468,12 +3514,15 @@ function buildFunFactsPage() {
   const sections = FUN_FACTS.map((t) => `<section class="sec narrow" id="${ffSlug(t.theme)}">
 <h2>${esc(t.theme)}</h2>
 <ol class="ff-list" start="${n + 1}">
-${t.facts.map((f) => { n += 1; return `<li class="ff"><span class="ff-n">${n}</span><p>${esc(f.t)}${f.src ? ` <a class="ff-src" href="${esc(f.src)}" rel="nofollow noopener" target="_blank">source</a>` : ''}</p></li>`; }).join('\n')}
+${t.facts.map((f) => { n += 1; const q = factQuizLink(f.t); return `<li class="ff"><span class="ff-n">${n}</span><p>${esc(f.t)}${f.src ? ` <a class="ff-src" href="${esc(f.src)}" rel="nofollow noopener" target="_blank">source</a>` : ''}${q ? ` ${q}` : ''}</p></li>`; }).join('\n')}
 </ol>
 </section>`).join('\n');
 
   const style = `<style>
   .ff-src{font-size:12px;font-weight:600;color:var(--tx3);white-space:nowrap}
+  .ff-quiz{display:inline-block;margin-left:6px;font-size:12px;font-weight:700;color:var(--grn-soft);
+    border:1px solid rgba(88,204,2,.28);border-radius:999px;padding:2px 9px;white-space:nowrap}
+  .ff-quiz:hover{background:rgba(88,204,2,.10);color:#fff;text-decoration:none}
   .ff-src:hover{color:var(--grn)}
   .ff-toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
   .ff-toc a{padding:8px 13px;border:1px solid var(--bd2);border-radius:999px;color:var(--tx2);font-size:13.5px;font-weight:700}
