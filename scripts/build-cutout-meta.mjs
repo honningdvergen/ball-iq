@@ -5,6 +5,20 @@
 import { readFileSync, writeFileSync, readdirSync } from 'fs';
 import { execFileSync } from 'child_process';
 
+// ⚠️ FAIL FAST IF THE TOOL IS MISSING. /tmp/facebox is a build artifact and
+// /tmp gets cleared — on 2026-08-12 it was gone, every lookup threw, every
+// entry was written as null, and 974 GOOD FACE BOXES WERE DESTROYED in one
+// run. The page then falls back to cover-fit, which is exactly the
+// "head-size lottery" this file exists to prevent, and nothing failed loudly.
+// Rebuild with: swiftc -O scripts/facebox/main.swift -o /tmp/facebox
+import { existsSync } from 'fs';
+if (!existsSync('/tmp/facebox')) {
+  console.error('✗ /tmp/facebox is missing. Rebuild it before running:');
+  console.error('    swiftc -O scripts/facebox/main.swift -o /tmp/facebox');
+  console.error('  Refusing to run — a pass without it silently nulls every face box.');
+  process.exit(1);
+}
+
 const DIR = 'public/lineup/cutouts';
 const ids = JSON.parse(readFileSync(`${DIR}/manifest.json`, 'utf8'));
 const meta = {};

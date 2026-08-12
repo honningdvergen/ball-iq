@@ -23,7 +23,20 @@ const OUTDIR = 'public/lineup/cutouts';
 const CACHE = '/tmp/cutout-orig';
 const LOG = '/tmp/cutouts-batch.log';
 const MANIFEST = OUTDIR + '/manifest.json';
-const MIN_CROP_PX = 320;          // Santos passed eyes at 376; below ~320 is mush
+// ⚠️ 320 WAS TOO STRICT AND BINNED GOOD WORK. 1,558 of 1,683 rejects failed on
+// this number alone — cuts that succeeded (one face, one instance, clean mask)
+// and were thrown away for being under an eyeballed floor. Robert Lewandowski
+// was rejected at 262px; the output is sharp, well framed and renders at 512px.
+//
+// Re-checked by eye at three sizes before moving it:
+//   262px (Lewandowski) — excellent, indistinguishable from the keepers
+//   163px (Lloris)      — technically clean, but the SOURCE is a much younger
+//                         Lloris in a fleece rather than kit
+// That second one is the real lesson: this floor was doubling as a proxy for
+// photo AGE, because small crops come from old low-resolution photos. Lowering
+// it recovers the good middle band and lets a few stale photos through, which
+// is why the eyeball pass below is not optional.
+const MIN_CROP_PX = 240;
 mkdirSync(OUTDIR, { recursive: true });
 mkdirSync(CACHE, { recursive: true });
 
