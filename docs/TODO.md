@@ -1,4 +1,28 @@
-# Ball IQ — the list
+# Ball IQ — the board
+
+## ▶ WHERE WE ARE (2026-08-12)
+
+**Live today:** intent navigation (Games / Quizzes / Discover) — mobile had NO
+nav at all before this; `/fun-facts/` (100 facts mined from verified bank
+hints); playable /lists; floating glass tab bar; iOS 1.5.1 (56) in Xcode for
+Alex to device-test. Photo pool: 156 curated nulls, 974 cutouts in the bucket,
+167 summer-2026 portraits applied.
+
+**ALEX-OWNED, highest leverage first**
+1. Send the partnership pitch — kit + live /partners/ page ready; season window
+2. Device-test 1.5.1 (56): floating tab bar, monochrome active, glass
+3. Lineup builder go-live call (it is live but unlinked)
+4. VAPID secrets → unlocks the whole web push / streak-saver system
+5. AdSense resubmit — ONCE, ~3 weeks after 2026-08-11 recrawl started
+
+**MINE, next up**
+- Guess the XI: build the /xi/ page on the 20 verified XIs (data is ready)
+- Fame-tail eyeball pass (sheets 3-6) + mechanical photo quality gate
+- CI: e2e console-noise residue, then flip strict
+- Web/app seam: the "why download if web IS the app" strategy question
+
+---
+
 
 **Last updated: 2026-08-06.** Single source of truth for what's in flight.
 `[ ]` = open · **ALEX** = needs you · **CLAUDE** = I do it.
@@ -1890,15 +1914,11 @@ two-letter initials card, never a bad photo.
 - [x] `src/data/photoOverrides.json` — hand-curated last word; null = initials card
       (Lammens→Mar 2026 portrait, Cunha→Jun 2026; Mount/Heaven/Yoro→cards)
 - [x] Two-letter monograms (MM/AH/LY) on page + export
-- [ ] Commons FULL-TEXT SEARCH harvest — uncategorized 2025/26 match series
-      (Bryan Berlin-class uploaders: per-player crops, 2800px+, CC BY-SA).
-      Search by MATCH, not player: one series covers dozens of players.
+- [x] Commons FULL-TEXT SEARCH harvest — DONE 2026-08-11/12: per-player search (130 monograms) + by-match series harvest; 167 summer-2026 portraits applied, 166 cut + uploaded to the bucket
 - [ ] Mechanical quality gate in build-lineup-data: face px in source < threshold
       OR photo > ~1 yr old OR face unframeable at 42% → initials card
-- [ ] Contact-sheet eyeball pass per club before Alex retests (judge at 64px)
-- [ ] Mbeumo: occluded P18 (foreground blur) — cutout stage removes it; verify
-
-## Scan execution log (2026-08-10, late evening — going item by item with Alex)
+- [x] Contact-sheet eyeball pass — DONE: 894 cutouts + 353 squad crops + 312 top-fame active crops all eyeballed; 156 curated nulls total. Remaining: the fame TAIL (sheets 3-6) never reviewed
+- [x] Mbeumo — RESOLVED as monogram: the occluded video frame is his ONLY recent Commons file; a bust-crop rescue clipped his head. Harvest re-checks weekly
 - [x] P0-1 split-brain homepage — VERIFIED SMALLER than scanned: prerender h1/structure
       already matched; topped up the missing Scouting-Report promise (4b40a31)
 - [x] P0-2 loop instrumentation — loop-hit logs in api/c|q|join|p + Clarity loopEvent()
@@ -1926,15 +1946,11 @@ editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
 ## Guess the XI — pipeline state (2026-08-11 evening)
 - [x] build-xi-pool.mjs: 10 verified XIs (5 UCL finals × both teams) — PLAYERS
       verified correct (Dida/Cafu Milan, Dudek/Carragher Liverpool, etc.)
-- [ ] ⚠️ club labels polluted by citation `| title =` matches — derive from the
-      match infobox team1/team2 instead (table order = team order)
-- [ ] WC finals + Euro use different lineup markup ("found 0 XI tables",
-      dropped loudly) — needs a second parser variant
+- [x] XI club labels — FIXED 2026-08-12: derived from match infobox team1/team2; all 10 matches verified
+- [x] WC/Euro parser — FIXED 2026-08-12: they write 'Substitutions:' not 'Substitutes:'. Pool now 20 XIs (5 UCL finals + 4 WC finals + Euro 2016)
 - [ ] surname field breaks on Dutch names ("van der Sar" → "Sar") — match via
       the Footle normalizer against full display instead
-- [ ] my spot-check SILENTLY SKIPPED when club labels broke (if(ist) guard) —
-      make it fail loud when the expected XI is absent
-
+- [x] XI spot-checks — FIXED: both Istanbul and Lusail now exit(1) when absent instead of skipping
 - [ ] CI: flip e2e continue-on-error -> strict after two green runs on main
       (the 131-failure era ended 2026-08-11: env var + 12 stale specs + the
       zombie Test tile — see 832ee3c). Also: Alex may set VITE_SUPABASE_KEY
