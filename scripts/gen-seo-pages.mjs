@@ -31,6 +31,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { NAV_GROUPS } from '../src/lib/nav.js';
 import { XI_MARKUP, XI_CSS, XI_JS } from './seo/xiGame.mjs';
 import { trailBoardHtml, TRAIL_BOARD_CSS, TRAIL_BOARD_JS } from './seo/trailBoard.mjs';
+import { QUOTES } from './seo/quotes.mjs';
 import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -1686,6 +1687,7 @@ ${/* THREE PAGES SHIPPED THIS WEEK AND NONE WERE IN THE MESH. The footer is the
 <a href="${SITE.base}/daily-football-quiz/">Daily football quiz</a>
 <a href="${SITE.base}/xi/">Guess the XI — name the lineup</a>
 <a href="${SITE.base}/fun-facts/">Football facts that sound made up</a>
+<a href="${SITE.base}/football-quotes/">Football quotes</a>
 <a href="${SITE.base}/about/">About</a>
 <a href="${SITE.base}/contact/">Contact</a>
 <a href="${SITE.base}/terms/">Terms</a>
@@ -3509,6 +3511,103 @@ function factQuizLink(text) {
   return '';
 }
 
+
+// ── /football-quotes/ ────────────────────────────────────────────────────────
+// ⚠️ NOT ANOTHER LISTICLE. The differentiator is in the data file: every entry
+// carries who said it, when, and what the popular version gets WRONG. Two of
+// the most repeated lines in football are misquotes, and no other page says so.
+// The rejected list is published too — showing the working is the point.
+function buildQuotesPage() {
+  const canonical = `${SITE.base}/football-quotes/`;
+  const total = QUOTES.reduce((n, t) => n + t.items.length, 0);
+  const title = `${total} Football Quotes, With The Record Straight | Ball IQ`;
+  // The SERP gate caught this at 172. The Shankly hook earns its place — it is
+  // the whole reason to click — so the trim came out of the tail.
+  const description = `Shankly never said football was more important than life and death. ${total} quotes checked against a source, with what the famous version gets wrong.`;
+
+  let pos = 0;
+  const ldItems = QUOTES.flatMap((t) => t.items.map((i) => {
+    pos += 1;
+    return { '@type': 'ListItem', position: pos, name: `${i.who}: ${i.q.slice(0, 90)}` };
+  }));
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+        { '@type': 'ListItem', position: 2, name: 'Football quotes', item: canonical },
+      ] },
+      { '@type': 'ItemList', name: `${total} football quotes, checked`, url: canonical,
+        numberOfItems: ldItems.length, itemListOrder: 'Unordered', itemListElement: ldItems },
+      { '@type': 'Article', headline: title, description, inLanguage: 'en',
+        publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` } },
+    ],
+  });
+
+  const toc = QUOTES.map((t) => `<a href="#${ffSlug(t.theme)}">${esc(t.theme)}</a>`).join('');
+  const sections = QUOTES.map((t) => `<section class="sec narrow" id="${ffSlug(t.theme)}">
+<h2>${esc(t.theme)}</h2>
+<div class="qt-list">
+${t.items.map((i) => `<figure class="qt">
+<blockquote>${esc(i.q)}</blockquote>
+<figcaption><b>${esc(i.who)}</b>${i.when ? ` <span class="qt-when">· ${esc(i.when)}</span>` : ''}</figcaption>
+<p class="qt-note">${esc(i.note)} <a class="qt-src" href="${esc(i.src)}" rel="nofollow noopener" target="_blank">source</a></p>
+</figure>`).join('\n')}
+</div>
+</section>`).join('\n');
+
+  const style = `<style>
+  .qt-toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+  .qt-toc a{padding:8px 13px;border:1px solid var(--bd2);border-radius:999px;color:var(--tx2);font-size:13.5px;font-weight:700}
+  .qt-toc a:hover{border-color:var(--grn);color:#fff;text-decoration:none}
+  .qt-list{display:flex;flex-direction:column;gap:14px}
+  .qt{margin:0;padding:18px 20px;background:var(--card);border:1px solid var(--bd);border-radius:14px}
+  .qt blockquote{margin:0 0 10px;font-size:19px;line-height:1.45;color:#fff;font-weight:600;letter-spacing:-.01em}
+  .qt blockquote::before{content:"\u201C";color:var(--grn);margin-right:2px}
+  .qt blockquote::after{content:"\u201D";color:var(--grn)}
+  .qt figcaption{font-size:14px;color:var(--tx2);margin-bottom:9px}
+  .qt figcaption b{color:var(--grn-soft)}
+  .qt-when{color:var(--tx3)}
+  .qt-note{margin:0;font-size:14.5px;line-height:1.6;color:var(--tx2)}
+  .qt-src{font-size:12px;font-weight:600;color:var(--tx3);white-space:nowrap}
+  .qt-src:hover{color:var(--grn)}
+  .qt-rej{margin-top:10px;padding:14px 16px;border:1px dashed var(--bd2);border-radius:12px;color:var(--tx2);font-size:14.5px}
+  .qt-rej li{margin:6px 0 0 18px;list-style:disc}
+  </style>`;
+
+  const html = `${head({ title, description, canonical, ld, ads: true })}
+<body>
+${NAV}
+<main id="main">
+${style}
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football quotes</span></nav>
+<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 8px">${total} football quotes, with the record straight</h1>
+<p class="sub" style="color:var(--tx3);margin:0 0 18px">Checked against a source · free · no sign-up</p>
+<p style="margin:0 0 14px;color:var(--tx2)">Most football quote pages copy each other, which is how one wrong wording ends up on forty sites. The most famous line in the sport is a case in point: Bill Shankly never said football was “much more important than life and death.” Every quote below carries who said it, when, and — where it matters — what the version you know gets wrong.</p>
+<div class="qt-toc">${toc}</div>
+</section>
+${sections}
+${appCtaBand('football')}
+<section class="sec narrow">
+<h2>What we left out</h2>
+<p style="margin:0 0 10px;color:var(--tx2)">A quotes page is only worth reading if it refuses things. These circulate constantly and none of them survived a check, so they are not above:</p>
+<div class="qt-rej">
+<ul>
+<li>“I once cried because I had no shoes to play football, until I met a man who had no feet.” Attributed to Zidane everywhere — an older proverb with no connection to him.</li>
+<li>“Then I went left again, and he went to buy a hot dog.” Attributed to Ibrahimović, and to half a dozen others, with no primary source for any version.</li>
+<li>“Winning isn’t everything, it’s the only thing.” American football, and Red Sanders said it before Vince Lombardi got the credit.</li>
+</ul>
+</div>
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'football-quotes');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html);
+  console.log(`  \u2713 /football-quotes/  (${total} checked quotes, ${QUOTES.length} themes)`);
+}
+
 function buildFunFactsPage() {
   const canonical = `${SITE.base}/fun-facts/`;
   const total = FUN_FACTS.reduce((n, t) => n + t.facts.length, 0);
@@ -4684,6 +4783,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/quiz/clubs/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/fun-facts/`, freq: 'weekly', pri: '0.7' },
+    { loc: `${SITE.base}/football-quotes/`, freq: 'weekly', pri: '0.7' },
     { loc: `${SITE.base}/xi/`, freq: 'daily', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
@@ -4867,6 +4967,7 @@ async function main() {
   buildFootlePage(FOOTLE_PAGE);
   buildFunFactsPage();
   buildXiPage();
+  buildQuotesPage();
   const dailyGamePages = [MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE].map(buildDailyGamePage);
   buildStudyPage(STUDY);
   buildSimplePage(ABOUT);

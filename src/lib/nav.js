@@ -42,6 +42,7 @@ export const NAV_GROUPS = [
   { key: 'discover', label: 'Discover', items: [
     ['Records & lists', '/lists/'],
     ['Football fun facts', '/fun-facts/'],
+    ['Football quotes', '/football-quotes/'],
     ['The trivia data study', '/study/football-trivia-memory/'],
     ['About Ball IQ', '/about/'],
   ] },
