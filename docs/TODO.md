@@ -2,11 +2,17 @@
 
 ## ▶ WHERE WE ARE (2026-08-12, evening)
 
-**Shipped today:** intent nav (Games/Quizzes/Discover — mobile had NO nav at
-all); `/fun-facts/` (100 facts mined from verified bank hints); playable
-/lists; floating glass tab bar w/ scroll-away + Threads-level material;
-iOS **1.5.1 build 57** synced and ready in Xcode. Photos: 167 summer-2026
-portraits applied, 974 cutouts in the bucket, 156 curated monograms.
+**Shipped today:** **Guess the XI LIVE** at `/xi/`; **ghost-name capture**
+(challenge links are signed now, not anonymous); intent nav
+(Games/Quizzes/Discover — mobile had NO nav at all); `/fun-facts/` (100 facts
+mined from verified bank hints); playable /lists; floating glass tab bar w/
+scroll-away + Threads-level material; iOS **1.5.1 build 57** synced and ready
+in Xcode. Photos: 167 summer-2026 portraits applied, 974 cutouts in the
+bucket, 156 curated monograms.
+
+**Pulled:** the Lineup Builder came OUT of the nav — today's nav rebuild had
+linked it from ~180 generated pages by reflex, and you want more testing
+first. Still live and reachable at `/lineup/`; one line restores it.
 
 ### 🔴 ALEX-OWNED (highest leverage first)
 1. **Send the partnership pitch** — kit + live /partners/ page ready. PL
@@ -19,13 +25,27 @@ portraits applied, 974 cutouts in the bucket, 156 curated monograms.
    name/subtitle/keywords).
 7. **PL-kickoff social assets** + your posting plan.
 
+### ✅ CLOSED THIS EVENING
+- **Guess the XI** — LIVE at `/xi/`. Pitch shape derives from each teamsheet's
+  own position codes, so formations fall out of the data. Accent- and
+  particle-aware matching ("kaka" → Kaká, "van der Sar"); a name you already
+  found never costs a life. Anchored schedule — appending XIs can only add
+  future days.
+- **Growth-loop plumbing** — sender identity turned out to be ALREADY wired on
+  both link builders; the leak was that nothing ever ASKED. Now it asks once
+  and every later share and invite is signed. Skipping still shares.
+  Also fixed a third collision with the +2s guest auth nudge (its own comment
+  already documented two).
+- **Season 2026/27 refresh** — NOTHING TO DO, checked rather than assumed. All
+  50 /lists tables already carry 2025-26; prose and bank clean. A first pass
+  read 48 tables as stale purely because a year regex pulls "2025" out of
+  "2025-26". `scripts/audit-season-rot.mjs` records the baseline for next May.
+
 ### 🟠 MINE — committed, not started
-- **Guess the XI page** (`/xi/`) — 20 verified XIs ready, page is the last mile
-- **Season 2026/27 refresh** — bank facts + /lists tables go stale AT kickoff
-- **Growth-loop plumbing** — invite carries sender identity; ghost-name capture
-  at the challenge send-back (the two biggest leaks the scan found)
 - **Emoji mode** ("guess the club by emojis") — Alex approved, unbuilt
 - **Web/app seam** — the "why download if web IS the app" strategy question
+- **Daily 7 landing page** — the only game without one
+- **XI parser** — 1999 UCL + 2014 WC still dropped on different markup (20 → 22)
 
 ### 🟡 CAUGHT WHILE WORKING TODAY (all real, none blocking)
 - ⚠️ **UIScene lifecycle**: iOS warns "will result in an assert in the future".
