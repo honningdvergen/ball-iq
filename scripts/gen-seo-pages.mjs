@@ -3775,6 +3775,15 @@ function fwExampleHtml() {
 }
 
 const FW_CSS = `
+  /* ⚠️ THE BOARD SHOULD BE THE NEXT THING YOU SEE. hero padding-bottom 40px +
+     .sec padding-top 30px + the wrap's own margin stacked into a dead band
+     between "free · no sign-up · new footballer every day" and the puzzle —
+     reported from the live page. On a page whose entire job is "play a Footle
+     right here", pushing the board below the fold is the one layout mistake
+     that costs the most. Negative top margin cancels the doubled padding
+     without touching .sec, which every other page relies on. */
+  .fw-wrap.sec{padding-top:0;margin-top:-26px}
+  @media (max-width:700px){ .fw-wrap.sec{margin-top:-18px} }
   .fw-eg{margin:0 0 20px;padding:15px 17px;background:#101219;border:1px solid #222634;border-radius:14px}
   .fw-eg-lab{font-size:14px;color:#9BA0B8;margin-bottom:10px}
   .fw-eg-lab b{color:#fff}
