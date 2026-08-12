@@ -32,6 +32,7 @@ import { NAV_GROUPS } from '../src/lib/nav.js';
 import { XI_MARKUP, XI_CSS, XI_JS } from './seo/xiGame.mjs';
 import { trailBoardHtml, TRAIL_BOARD_CSS, TRAIL_BOARD_JS } from './seo/trailBoard.mjs';
 import { QUOTES } from './seo/quotes.mjs';
+import { mysteryBoardHtml, MYSTERY_BOARD_CSS, MYSTERY_BOARD_JS } from './seo/mysteryBoard.mjs';
 import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -4549,6 +4550,10 @@ function buildDailyGamePage(cfg) {
     heroProps.playHref = '#practice';
     heroProps.playLabel = 'Play a trail now →';
   }
+  if (cfg.gameParam === 'mystery') {
+    heroProps.playHref = '#practice';
+    heroProps.playLabel = 'Play a puzzle now →';
+  }
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: hasDailyTaster })}
 <body>
@@ -4557,6 +4562,7 @@ ${NAV}
 ${board ? heroTwoCol(heroProps, board) : heroSection(heroProps)}
 ${hasDailyTaster ? renderTaster(dailyTaster, 'the Daily 7', playHref) : ''}
 ${cfg.gameParam === 'trail' ? `<style>${TRAIL_BOARD_CSS}</style>${trailBoardHtml()}<script>${TRAIL_BOARD_JS}</script>` : ''}
+${cfg.gameParam === 'mystery' ? `<style>${MYSTERY_BOARD_CSS}</style>${mysteryBoardHtml()}<script>${MYSTERY_BOARD_JS}</script>` : ''}
 <section class="sec"><h2>How to play</h2>
 <div class="prose">
 ${howHtml}
