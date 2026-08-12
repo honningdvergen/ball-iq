@@ -40,7 +40,7 @@ import { QB } from '../src/questions.js';
 import { rootCss } from '../src/design/tokens.js';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
-import { FUN_FACTS } from './seo/funFacts.js';
+import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
@@ -3374,22 +3374,24 @@ ${footer()}`;
 // A browse-and-share page for the "Discover" intent, and the natural landing
 // spot for "football fun facts" search — a head term we had no page for.
 //
-// ⚠️ EVERY FACT IS A VERIFIED BANK EXPLANATION (scripts/build-fun-facts.mjs).
-// Nothing here is written fresh: a fun-facts page is precisely the format that
-// tempts invention, so the corpus is mined from hints that already survived
-// the forge's examiner + skeptic. The page states that provenance out loud,
-// because "we checked these" is the only claim that separates us from the
-// hundred scraped listicles ranking above us today.
+// ⚠️ SELECTION IS THE HARD PART, NOT ACCURACY. v1 mined the corpus from bank
+// `hint` fields — every fact true, every fact dull, because a hint exists to
+// EXPLAIN an answer, not to surprise anyone. Alex, on the live page: "those
+// fun facts are not fun at all, they are just facts." v2 (funFactsCurated.js)
+// selects for surprise FIRST and verifies second, which is the only order that
+// produces a page worth reading. Published lists were leads only; every entry
+// was re-confirmed and rewritten, and each carries its confirming source.
+// Several popular "facts" died in that check — see the file header.
 // Local: anchor ids from theme names ("European nights" -> "european-nights").
 const ffSlug = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function buildFunFactsPage() {
   const canonical = `${SITE.base}/fun-facts/`;
   const total = FUN_FACTS.reduce((n, t) => n + t.facts.length, 0);
-  const title = `${total} Football Fun Facts (Checked, Not Scraped) | Ball IQ`;
+  const title = `${total} Football Facts That Sound Made Up (But Aren't) | Ball IQ`;
   // <=160 chars: the SERP audit fails the build above that, and a truncated
   // description is a wasted snippet on the one page built to be browsed.
-  const description = `${total} surprising football facts — records, World Cup nights, European finals, club history. Checked before they shipped, each with a quiz behind it.`;
+  const description = `A 149-0 protest, a space-travel contract clause, a fake international. ${total} football facts that sound invented — every one checked, with the source.`;
 
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -3410,11 +3412,13 @@ function buildFunFactsPage() {
   const sections = FUN_FACTS.map((t) => `<section class="sec narrow" id="${ffSlug(t.theme)}">
 <h2>${esc(t.theme)}</h2>
 <ol class="ff-list" start="${n + 1}">
-${t.facts.map((f) => { n += 1; return `<li class="ff"><span class="ff-n">${n}</span><p>${esc(f.text)}</p></li>`; }).join('\n')}
+${t.facts.map((f) => { n += 1; return `<li class="ff"><span class="ff-n">${n}</span><p>${esc(f.t)}${f.src ? ` <a class="ff-src" href="${esc(f.src)}" rel="nofollow noopener" target="_blank">source</a>` : ''}</p></li>`; }).join('\n')}
 </ol>
 </section>`).join('\n');
 
   const style = `<style>
+  .ff-src{font-size:12px;font-weight:600;color:var(--tx3);white-space:nowrap}
+  .ff-src:hover{color:var(--grn)}
   .ff-toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
   .ff-toc a{padding:8px 13px;border:1px solid var(--bd2);border-radius:999px;color:var(--tx2);font-size:13.5px;font-weight:700}
   .ff-toc a:hover{border-color:var(--grn);color:#fff;text-decoration:none}

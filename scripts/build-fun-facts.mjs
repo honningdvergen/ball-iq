@@ -1,3 +1,10 @@
+// ⚠️ SUPERSEDED 2026-08-12 — /fun-facts/ now renders scripts/seo/funFactsCurated.js.
+// This miner produced 100 facts that were all TRUE and all BORING, because it
+// selected from `hint` fields and a hint exists to explain an answer, not to
+// surprise a reader. Verdict from the live page: "not fun at all, they are
+// just facts." Kept because the self-containment gate below is still the right
+// filter if the bank is ever mined again for something else — but nothing
+// imports its output now.
 // build-fun-facts.mjs — the /fun-facts/ corpus, mined from the VERIFIED bank.
 //
 //   node scripts/build-fun-facts.mjs        # writes scripts/seo/funFacts.js
