@@ -15,7 +15,7 @@ import pool from '../../src/data/mysteryPool.json';
 
 const byName = (n) => pool.find((p) => p.name === n);
 
-describe.skip('mystery player pool', () => {
+describe('mystery player pool', () => {
   it('every player carries the five attributes the game compares on', () => {
     const broken = pool.filter((p) => !p.name || !p.club || !p.slot || !p.nat || !p.dob);
     expect(broken.map((p) => p.name)).toEqual([]);
@@ -71,7 +71,7 @@ describe.skip('mystery player pool', () => {
   });
 });
 
-describe.skip('similarity', () => {
+describe('similarity', () => {
   it('scores a player closest to themselves', () => {
     const saka = byName('Bukayo Saka');
     const other = byName('Erling Haaland');
@@ -96,7 +96,7 @@ describe.skip('similarity', () => {
   });
 });
 
-describe.skip('rankPool', () => {
+describe('rankPool', () => {
   const answer = byName('Bukayo Saka');
   const ranks = rankPool(pool, answer);
 

@@ -145,6 +145,21 @@ export const MYSTERY_ANCHOR_DAY = 20668; // days since epoch — day #1
 // squad dump) and flip it after. Nothing else has been deleted: the screen,
 // the ranking, the schedule and the tests all remain, dormant. Landing it
 // inert rather than half-wired is the standing rule.
+// RE-ENABLED 2026-08-12. The pool defect this flag was hiding is fixed: the
+// ANSWER pool is now 606 players who are each either named in our verified
+// question bank or played for a club we thought worth its own quiz page.
+// Removed on the way: Julio Iglesias (a singer with a Real Madrid youth spell)
+// and 53 career J-League players who cleared the old fame bar purely because
+// Japanese Wikipedia coverage inflates a sitelink-based score.
+// To pull it again, set this to false — nothing else needs touching.
+// STILL FALSE. The pool defect is fixed (see the curation below), but
+// un-skipping the suspended suites surfaced a SECOND one: similarity()'s
+// continuous age term is keyed on `p.dob` and NOT ONE of the 8,491 pool
+// entries has that field, so it has never executed. Everything falls to the
+// year-only fallback, which yields ~13 levels — team-mates score identically
+// and just 1.6% of scores across the pool are distinct. A Contexto-style game
+// is nothing but the rank, so this ships only once that is fixed and the
+// suites pass. scripts/fetch-mystery-dob.mjs backfills the field.
 export const MYSTERY_ENABLED = false;
 
 export function mysteryDayIndex(now = new Date()) {
