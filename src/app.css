@@ -851,8 +851,9 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
      not 0.85), the backdrop is SATURATED as well as blurred so colour bleeds
      through instead of turning grey, and a 1px specular highlight sits on the
      top edge where light would catch. The outer shadow lifts it off content. */
-  background:rgba(18,20,27,0.66);
-  backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);
+  background:rgba(18,20,27,0.55);
+  backdrop-filter:blur(34px) saturate(190%);-webkit-backdrop-filter:blur(34px) saturate(190%);
+  transition:transform .28s cubic-bezier(0.22,1,0.36,1),opacity .22s ease;
   border:0.5px solid rgba(255,255,255,0.14);
   border-radius:30px;
   box-shadow:0 10px 34px rgba(0,0,0,0.48), 0 2px 8px rgba(0,0,0,0.28),
@@ -865,6 +866,18 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
      to 0 (Android, iPad portrait, desktop browsers). Without this parity the
      icons get squeezed and clip at the top of the bar. */
   height:60px;
+}
+/* Tucked state, toggled by the scroll effect in App.jsx. translateY beyond
+   the bar's own height so the shadow clears the edge too; pointer-events off
+   so a hidden bar can never eat a tap meant for content underneath. */
+.tab-bar--tucked{transform:translateX(-50%) translateY(140%);opacity:0;pointer-events:none;}
+/* ⚠️ ANDROID / OLD WEBVIEW FALLBACK. backdrop-filter has shipped in Chrome
+   since 76 and Android WebView updates through Play, but a device without it
+   would render a 55%-transparent bar with unreadable labels over content.
+   No filter -> opaque fill. Cheap insurance for the exact devices we cannot
+   enumerate. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .tab-bar{background:rgba(16,18,24,0.97);}
 }
 .tab-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
@@ -2637,6 +2650,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     border-radius: 30px !important;
     box-shadow: 0 10px 34px rgba(0,0,0,0.48), 0 2px 8px rgba(0,0,0,0.28),
                 inset 0 1px 0 rgba(255,255,255,0.10) !important;
+    transition: transform .28s cubic-bezier(0.22,1,0.36,1), opacity .22s ease !important;
+  }
+  /* ⚠️ THE TUCK MUST BE MIRRORED TOO. The rule above pins
+     transform: translateX(-50%) !important, which outranks the base
+     .tab-bar--tucked transform — without this the scroll-away works in every
+     browser and silently does NOTHING in the installed app and native shell,
+     i.e. exactly where Alex would be looking for it. */
+  .tab-bar--tucked {
+    transform: translateX(-50%) translateY(140%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
   .tab-item.active::before {
     top: 6px !important;

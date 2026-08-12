@@ -10081,6 +10081,37 @@ function AppInner() {
     }
   }, []);
   const openNotifs = useCallback(() => { setNotifOpen(true); loadNotifs(); }, [loadNotifs]);
+  // ── SCROLL-AWARE TAB BAR (Alex, 2026-08-12: "you know how it kind of
+  // transforms when scrolling in threads and instagram?"). Scrolling DOWN
+  // tucks the pill away so content owns the screen; any upward flick brings
+  // it straight back, and it is always present at the very top and bottom.
+  // Deliberately outside React state: this fires on every scroll frame, and
+  // re-rendering the shell that often would cost far more than it buys.
+  // rAF-throttled + passive listener so it never blocks the scroll thread.
+  const tabBarRef = useRef(null);
+  useEffect(() => {
+    const el = tabBarRef.current;
+    if (!el) return;
+    let last = window.scrollY, ticking = false, hidden = false;
+    const apply = () => {
+      ticking = false;
+      const y = window.scrollY;
+      const dy = y - last;
+      // 6px deadzone: without it, the rubber-band at the extremes and any
+      // one-pixel jitter flickers the bar on every frame.
+      if (Math.abs(dy) < 6) return;
+      const atBottom = y + window.innerHeight >= document.documentElement.scrollHeight - 24;
+      const next = dy > 0 && y > 90 && !atBottom;
+      if (next !== hidden) {
+        hidden = next;
+        el.classList.toggle('tab-bar--tucked', hidden);
+      }
+      last = y;
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(apply); } };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [screen, inGame]);
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const openHelp = useCallback(() => setShowHelp(true), []);
@@ -11190,7 +11221,7 @@ function AppInner() {
 
         {/* ── TAB BAR ── */}
         {!inGame && screen === "home" && (
-          <nav className="tab-bar">
+          <nav className="tab-bar" ref={tabBarRef}>
             {[
               { id:"home",     Icon: Home,         label:"Home"    },
               { id:"online",   Icon: Globe,        label:"Online"  },
