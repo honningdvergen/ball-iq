@@ -845,11 +845,18 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
   position:fixed;left:50%;transform:translateX(-50%);
   bottom:max(calc(env(safe-area-inset-bottom, 0px) + 10px), 22px);
   width:calc(100% - 26px);max-width:400px;
-  background:rgba(14,16,22,0.82);
-  backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);
-  border:0.5px solid rgba(255,255,255,0.10);
+  /* APPLE-STYLE MATERIAL (Alex, 2026-08-12: "slightly glass like and
+     translucent like on apple"). Three things make iOS glass read as glass
+     rather than as a dark panel: the fill is genuinely translucent (~0.66,
+     not 0.85), the backdrop is SATURATED as well as blurred so colour bleeds
+     through instead of turning grey, and a 1px specular highlight sits on the
+     top edge where light would catch. The outer shadow lifts it off content. */
+  background:rgba(18,20,27,0.66);
+  backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);
+  border:0.5px solid rgba(255,255,255,0.14);
   border-radius:30px;
-  box-shadow:0 10px 34px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30);
+  box-shadow:0 10px 34px rgba(0,0,0,0.48), 0 2px 8px rgba(0,0,0,0.28),
+             inset 0 1px 0 rgba(255,255,255,0.10);
   display:flex;align-items:stretch;z-index:100;
   padding-top:6px;
   padding-bottom:6px;
@@ -877,9 +884,15 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .tab-icon{font-size:22px;line-height:1;}
 .tab-svg{width:22px;height:22px;color:var(--t3);transition:color 0.18s,transform 0.18s;}
 .tab-svg svg{width:100%;height:100%;}
-.tab-item.active .tab-svg{color:var(--accent);transform:translateY(1px);}
+/* MONOCHROME ACTIVE STATE (Alex, 2026-08-12: "maybe we should drop the green
+   inside the floating tab ... the tab should look clean on its own"). Threads,
+   Instagram and X all run monochrome bars for the same reason: green is our
+   ACTION colour — every Play button wears it — so spending it on navigation
+   state dilutes the signal and turns a glass pill into a coloured blob. White
+   for active, grey for inactive; the brand stays in the content. */
+.tab-item.active .tab-svg{color:#FFFFFF;transform:translateY(1px);}
 .tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
-.tab-item.active .tab-label{color:var(--accent);}
+.tab-item.active .tab-label{color:#FFFFFF;}
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
 .tab-content{padding-bottom:calc(78px + max(env(safe-area-inset-bottom,0px),16px));background:var(--bg);}
 /* Light mode: add thin border back to borderless cards since shadows are subtle on white */
@@ -2620,9 +2633,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     margin: 0 !important;
     padding-top: 6px !important;
     padding-bottom: 6px !important;
-    border: 0.5px solid rgba(255,255,255,0.10) !important;
+    border: 0.5px solid rgba(255,255,255,0.14) !important;
     border-radius: 30px !important;
-    box-shadow: 0 10px 34px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.30) !important;
+    box-shadow: 0 10px 34px rgba(0,0,0,0.48), 0 2px 8px rgba(0,0,0,0.28),
+                inset 0 1px 0 rgba(255,255,255,0.10) !important;
   }
   .tab-item.active::before {
     top: 6px !important;
