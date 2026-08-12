@@ -29,6 +29,8 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { NAV_GROUPS } from '../src/lib/nav.js';
+import { XI_MARKUP, XI_CSS, XI_JS } from './seo/xiGame.mjs';
+import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
@@ -462,12 +464,22 @@ function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, chips, p
   // Fix: when the target is an in-page anchor, scroll it into view AND focus
   // its first option, so there is always a visible response. Plain-anchor
   // behaviour is preserved if JS is off, and real hrefs are untouched.
+  // ⚠️ THE STORE BADGES USED TO RIDE INSIDE THIS CONDITION AND VANISH WITH IT.
+  // ctaRow only renders when playHref is a REAL href — on every club and quiz
+  // page it is the in-page anchor '#taster', so the entire row was skipped and
+  // the App Store / Play links survived only in the orange band at the very
+  // bottom of a ~14-screen page. Alex: "i would love to see the links to our
+  // app store and play store at the top of the pages somewhere instead of all
+  // the way at the bottom in the orange square."
+  // The badges now render above the fold on EVERY page type; the green button
+  // keeps its original condition.
+  const badgeRow = mini ? storeBadgesMini() : storeBadges();
   const ctaRow = (playHref && !playHref.startsWith('#'))
     ? `<div class="cta-row">
 <a class="btn-green" href="${playHref}"${playHref.startsWith('#') ? ' data-scrollto="1"' : ''}>${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
-${mini ? storeBadgesMini() : storeBadges()}
+${badgeRow}
 </div>`
-    : '';
+    : `<div class="cta-row cta-row--stores">${badgeRow}</div>`;
   // Chips beat a sentence: a searcher scans them, and every value is computed
   // from the bank at build time so none of it can drift or overstate. This is
   // the honest version of the "75 verified questions" badge competitors assert.
@@ -1550,6 +1562,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
      footer of every page and remain in the DOM, so internal linking and
      crawlability are unaffected — leaving a clean brand + one green CTA.
      nowrap on both is the actual guard against the two-line wrap. */
+  .cta-row--stores{margin-top:14px}
   .nav-cta{white-space:nowrap}
   .brand{white-space:nowrap;flex:0 0 auto}
   /* ⚠️ MOBILE: the panel, not display:none. Groups stack fully expanded — a
@@ -3385,6 +3398,49 @@ ${footer()}`;
 // Local: anchor ids from theme names ("European nights" -> "european-nights").
 const ffSlug = (t) => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+
+// ── /xi/ ─────────────────────────────────────────────────────────────────────
+// ⚠️ WAS A STANDALONE FILE IN public/xi/, which meant it skipped this generator
+// entirely: no site header, no breadcrumbs, no footer. Arriving from any other
+// page it read as a different website — "this looks like a completely different
+// page, where are the tabs on the top". The game itself now lives in
+// scripts/seo/xiGame.mjs as MARKUP/CSS/JS so it can be wrapped in the same
+// head(), NAV and footer as everything else, and the nav keeps one definition.
+function buildXiPage() {
+  const canonical = `${SITE.base}/xi/`;
+  const title = 'Guess the XI — Name the Starting Eleven | Ball IQ';
+  const description = 'One famous starting XI a day. Positions and shirt numbers are on the pitch — you name the players. Six misses, free, no sign-up.';
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+        { '@type': 'ListItem', position: 2, name: 'Guess the XI', item: canonical },
+      ] },
+      { '@type': 'Game', name: 'Guess the XI', url: canonical,
+        description, genre: 'Sports trivia', inLanguage: 'en',
+        publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` } },
+    ],
+  });
+  const html = `${head({ title, description, canonical, ld, ads: true })}
+<body>
+${NAV}
+<main id="main">
+<style>${XI_CSS}</style>
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Guess the XI</span></nav>
+${XI_MARKUP}
+</section>
+${appCtaBand('football')}
+</main>
+${footer()}
+<script>${XI_JS}</script>`;
+  const dir = resolve(DIST, 'xi');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html);
+  console.log('  \u2713 /xi/  (Guess the XI, shared nav + footer)');
+}
+
 function buildFunFactsPage() {
   const canonical = `${SITE.base}/fun-facts/`;
   const total = FUN_FACTS.reduce((n, t) => n + t.facts.length, 0);
@@ -3440,7 +3496,7 @@ ${style}
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football fun facts</span></nav>
 <h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 8px">${total} football fun facts</h1>
 <p class="sub" style="color:var(--tx3);margin:0 0 18px">Checked before they shipped · free · no sign-up</p>
-<p style="margin:0 0 14px;color:var(--tx2)">Most football fact lists are scraped from each other, which is how the same wrong claim ends up on forty sites. These are different: every line below started life as the written explanation behind a Ball IQ quiz answer, so each one was fact-checked before it ever reached a player — and each one has a quiz behind it if you want to test whether you actually knew it.</p>
+<p style="margin:0 0 14px;color:var(--tx2)">Most football fact lists are scraped from each other, which is how the same wrong claim ends up on forty sites — and how “San Marino have only ever won once” is still being republished two years after they won again. Every line below was checked against a reliable source before it shipped, and carries a link to that source so you can check us. Several famous “facts” did not survive and are simply not here.</p>
 <div class="ff-toc">${toc}</div>
 </section>
 ${sections}
@@ -3635,7 +3691,55 @@ function fwBoardHtml(n) {
   return `<div class="fw-board" role="grid" aria-label="Footle practice board, six guesses of ${n} letters">\n${rows.join('\n')}\n</div>`;
 }
 
-const FW_CSS = `  .fw-wrap{margin-top:8px;scroll-margin-top:72px}
+
+// ⚠️ THE RULES WERE NEVER EXPLAINED HERE. This page dropped a visitor at an
+// empty grid: no worked example, no colour legend. The homepage's FootleBand
+// shows both, which is why Alex read the homepage treatment as the better one
+// ("the design of footle looks better on the homepage than this. the grid and
+// explanation etc"). Ported rather than reinvented, so the two surfaces teach
+// the game the same way. Static markup — no JS, no layout shift, and it is
+// crawlable text explaining what a "football Wordle" actually is, which the
+// page previously only asserted.
+// ⚠️ COMPUTED, NEVER HAND-WRITTEN. The first version hardcoded the marks and
+// got them WRONG in a panel whose entire job is teaching the rules: LAPORTE vs
+// HAALAND has the L in the word but misplaced (yellow) and the second A exact
+// (green) — the hardcoded array had those inverted and also painted the T
+// yellow when HAALAND contains no T. The homepage never had this bug because
+// FootleBand calls gradeGuess(). So does this now: the same function that
+// grades a real guess grades the example, and the illustration cannot disagree
+// with the game.
+const FW_EG_WORD = 'LAPORTE';
+const FW_EG_ANSWER = 'HAALAND';
+function fwExampleHtml() {
+  const marks = gradeGuess(FW_EG_WORD, FW_EG_ANSWER);
+  const tiles = FW_EG_WORD.split('')
+    .map((ch, i) => `<span class="fw-eg-t" data-m="${marks[i]}">${ch}</span>`).join('');
+  return `<div class="fw-eg">
+<div class="fw-eg-lab">If you guessed <b>Laporte</b> and the answer was <b>Haaland</b>:</div>
+<div class="fw-eg-grid" aria-hidden="true">${tiles}</div>
+<ul class="fw-legend">
+<li><span class="fw-sw" data-k="green"></span>Right letter, right place</li>
+<li><span class="fw-sw" data-k="yellow"></span>In the surname, wrong place</li>
+<li><span class="fw-sw" data-k="grey"></span>Not in it</li>
+</ul>
+</div>`;
+}
+
+const FW_CSS = `
+  .fw-eg{margin:0 0 20px;padding:15px 17px;background:#101219;border:1px solid #222634;border-radius:14px}
+  .fw-eg-lab{font-size:14px;color:#9BA0B8;margin-bottom:10px}
+  .fw-eg-lab b{color:#fff}
+  .fw-eg-grid{display:grid;grid-template-columns:repeat(7,min(40px,8.5vw));gap:5px;margin-bottom:12px}
+  .fw-eg-t{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:7px;
+    font-weight:800;font-size:15px;color:#fff;background:#2A2D3A}
+  .fw-eg-t[data-m="green"]{background:#58CC02;color:#06230C}
+  .fw-eg-t[data-m="yellow"]{background:#FFC53D;color:#2A1F00}
+  .fw-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:#9BA0B8}
+  .fw-legend li{display:flex;align-items:center;gap:7px}
+  .fw-sw{width:13px;height:13px;border-radius:4px;background:#2A2D3A;flex:0 0 auto}
+  .fw-sw[data-k="green"]{background:#58CC02}
+  .fw-sw[data-k="yellow"]{background:#FFC53D}
+  .fw-wrap{margin-top:8px;scroll-margin-top:72px}
   .fw-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#9BA0B8;margin-bottom:8px}
   .fw-lede{font-size:15.5px;line-height:1.6;color:#9BA0B8;max-width:62ch;margin:0 0 18px}
   .fw-card{background:var(--card);border:1px solid #6A6E80;border-radius:20px;padding:20px 16px 22px;max-width:560px}
@@ -3810,6 +3914,7 @@ function footlePracticeSection() {
 <div class="fw-eyebrow">Practice puzzle · Footle #${P.number} · originally ${esc(when)}</div>
 <h2 id="fw-h">Play a Footle right here</h2>
 <p class="fw-lede">A real Footle from ${esc(when)}, replayable as often as you like — guess the ${P.answer.length}-letter surname in six. It is a finished puzzle, so nothing here spoils <a href="${SITE.base}/footle">today&#39;s Footle</a>, which everyone gets at midnight.</p>
+${fwExampleHtml()}
 <div class="fw-card">
 <div id="fw-game" style="--fw-n:${P.answer.length}" data-p="${fwCloak(P.answer)}" data-f="${fwCloak(full)}">
 ${fwBoardHtml(P.answer.length)}
@@ -4643,6 +4748,7 @@ async function main() {
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
   buildFunFactsPage();
+  buildXiPage();
   const dailyGamePages = [MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE].map(buildDailyGamePage);
   buildStudyPage(STUDY);
   buildSimplePage(ABOUT);

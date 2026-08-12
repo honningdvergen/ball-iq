@@ -239,6 +239,11 @@ this is not a numbers game, it is a single recurring relationship.
 
 ## Show, don't tell — live examples for the email (Alex's addition, 2026-08-11)
 
+**LEAD WITH THE PARTNERS PAGE: https://balliq.app/partners/** — it IS the
+pitch, playable: the weekly-quiz offer, what-you-get/what-we-ask, and a live
+sample in the publisher's own format. The email's job shrinks to one line +
+this link. The three game links below become the P.S.
+
 Publishers say yes to things they can PLAY in 30 seconds. Every pitch email
 links three live pieces, no sign-up required on any of them:
 

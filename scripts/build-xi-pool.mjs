@@ -7,7 +7,7 @@
 // a Q-id via pageprops (never by name). A team's XI is DROPPED, loudly, if it
 // does not have exactly 11 starters or any starter fails Q-id resolution —
 // omission beats a guessed lineup.
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 
 // Particles that belong TO the surname, not before it.
 const PARTICLES = new Set(['van','von','der','den','de','del','della','di','da','dos','das','do','la','le','ten','ter','el','al',"van't",'bin','ibn','mac','mc','st']);
@@ -123,6 +123,10 @@ for (const match of MATCHES) {
   await new Promise((s) => setTimeout(s, 400));
 }
 writeFileSync('src/data/xiPool.json', JSON.stringify(pool, null, 1));
+// The playable copy the /xi/ page fetches. Kept separate from the source of
+// truth so the page never ships partial data mid-regeneration.
+mkdirSync('public/data', { recursive: true });
+writeFileSync('public/data/xi.json', JSON.stringify({ anchorDay: 20677, xis: pool }));
 console.log(`xiPool.json: ${pool.length} verified XIs from ${MATCHES.length} matches`);
 if (failures.length) { console.log('DROPPED (loud, per the rules):'); failures.forEach((f) => console.log('  ✗ ' + f)); }
 // spot-check: Istanbul Liverpool XI must contain Gerrard and Dudek
