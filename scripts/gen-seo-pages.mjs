@@ -1311,6 +1311,21 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:${PAGE_FG};line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   img{max-width:100%;display:block}
   a{color:var(--grn-soft);text-decoration:none}
+  /* ⚠️ WCAG 1.4.1 — LINKS IN RUNNING TEXT MUST NOT RELY ON COLOUR ALONE.
+     Flagged by Lighthouse (link-in-text-block, score 0) on the live club page:
+     a green link inside a grey paragraph is indistinguishable to anyone who
+     cannot separate those hues, and green-on-grey is one of the commonest
+     forms of that. Navigation, buttons, cards and tiles are exempt — they are
+     their own blocks with their own affordances; this targets links sitting
+     INSIDE a sentence, which is exactly what the audit measures. */
+  .prose a, .ff p a, .sub a, .foot-copy a, p.lede a, .fw-lede a, .taster-note a,
+  .sec > p a, .crumbs a[href]:not(:last-child) {
+    text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;
+    text-decoration-color:rgba(136,224,64,.55);
+  }
+  .prose a:hover, .ff p a:hover, .sub a:hover, .sec > p a:hover {
+    text-decoration-color:currentColor;
+  }
   a:hover{text-decoration:underline}
   main{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,44px)}
   /* readable inner width for long-form/list sections (handoff keeps prose + FAQ narrow inside the wide frame) */
@@ -4394,11 +4409,32 @@ function buildDailyGamePage(cfg) {
     playLabel: `Play today's ${esc(cfg.game)} →`,
   };
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+  // ⚠️ A GAME PAGE THAT CANNOT BE PLAYED IS A BROCHURE. Read on the live site:
+  // "there is no actual game to play here either" — the green button scrolled
+  // down to more prose. Footle's page holds a real board and /xi/ is the game
+  // itself; the Daily 7 had nothing, which is the wrong way round given it is
+  // the mode the whole app is built on. Clarity measured the cost of this
+  // exact shape: reference pages with nothing to DO held ~2.3 seconds.
+  //
+  // The Daily 7 IS a quiz, so it gets the same playable taster the club pages
+  // use — real bank questions, tap to answer, explanation on a miss. Trail and
+  // Mystery Player are not quizzes and a quiz taster there would be a
+  // non-sequitur; they need their own small widgets, which is the next brick.
+  const dailyTaster = cfg.gameParam === 'daily'
+    ? tasterPick(QB.filter((r) => r.hint && r.type === 'mcq' && Array.isArray(r.o)), 5)
+    : [];
+  const hasDailyTaster = dailyTaster.length === 5;
+  if (cfg.gameParam === 'daily') {
+    heroProps.playHref = hasDailyTaster ? '#taster' : playHref;
+    heroProps.playLabel = hasDailyTaster ? 'Play seven questions now →' : heroProps.playLabel;
+  }
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: hasDailyTaster })}
 <body>
 ${NAV}
 <main id="main">
 ${board ? heroTwoCol(heroProps, board) : heroSection(heroProps)}
+${hasDailyTaster ? renderTaster(dailyTaster, 'the Daily 7', playHref) : ''}
 <section class="sec"><h2>How to play</h2>
 <div class="prose">
 ${howHtml}
