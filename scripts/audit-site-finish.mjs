@@ -20,10 +20,23 @@ const pages = [];
   }
 })(DIST);
 
-const grab = (s, re) => { const m = s.match(re); return m ? m[1].trim() : ''; };
+// ⚠️ DECODE ENTITIES BEFORE MEASURING. A first run reported 12 over-length
+// titles and they were all FALSE POSITIVES: the raw HTML holds "&amp;" and
+// "&#39;", so "… Trivia & Answers | Ball IQ" measures 64 escaped and 59 as a
+// human or Google sees it. Measuring the escaped string punishes any title
+// containing an ampersand or an apostrophe — exactly the ones written well.
+const decode = (s) => String(s)
+  .replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')
+  .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ')
+  .replace(/&mdash;/g, '—').replace(/&middot;/g, '·');
+const grab = (s, re) => { const m = s.match(re); return m ? decode(m[1].trim()) : ''; };
 const findings = { noTitle: [], longTitle: [], noDesc: [], longDesc: [], noCanonical: [], noH1: [], multiH1: [], thin: [], placeholder: [], noNav: [], noFooter: [] };
 const internal = new Map();   // href -> pages linking to it
-const PLACEHOLDER = /lorem ipsum|TODO|FIXME|coming soon|placeholder|TBD\b|\bXXX\b/i;
+// ⚠️ NOT a bare /TODO/i. That matched the Spanish word "todo" ("all") in
+// "casi todo el" on 14 /es/ pages — every one a false positive. Placeholders
+// in our copy appear as standalone markers, so anchor on word boundaries and
+// keep TODO/FIXME case-sensitive: the shout is the signal.
+const PLACEHOLDER = /lorem ipsum|\bTODO\b|\bFIXME\b|coming soon|\bplaceholder\b|\bTBD\b|\bXXX\b/;
 
 for (const f of pages) {
   const html = readFileSync(f, 'utf8');
@@ -40,7 +53,11 @@ for (const f of pages) {
   if (h1s.length === 0) findings.noH1.push(url); else if (h1s.length > 1) findings.multiH1.push(`${url} (${h1s.length})`);
   if (text.length < 1200) findings.thin.push(`${url} (${text.length} chars)`);
   if (PLACEHOLDER.test(text)) findings.placeholder.push(`${url} — ${(text.match(PLACEHOLDER) || [])[0]}`);
-  if (!/class="nav"/.test(html) && !/sr-mast/.test(html)) findings.noNav.push(url);
+  // ⚠️ CLIENT-RENDERED PAGES ARE NOT NAV-LESS. "/" and "/lineup/" ship an app
+  // shell and build their header in JS, so reading static HTML reported them
+  // as missing a nav they very much have. Embeds are headless on purpose.
+  const clientRendered = /id="root"/.test(html) || url === '/lineup/' || url.startsWith('/embed/');
+  if (!clientRendered && !/class="nav"/.test(html) && !/sr-mast/.test(html)) findings.noNav.push(url);
   if (!/class="foot"/.test(html) && !/<footer/.test(html)) findings.noFooter.push(url);
 
   for (const m of html.matchAll(/href="https:\/\/balliq\.app([^"#?]*)"/g)) {
@@ -52,7 +69,14 @@ for (const f of pages) {
 
 // A link that points at a path we never built is a 404 for a real visitor.
 const built = new Set(pages.map((f) => `/${relative(DIST, f).replace(/index\.html$/, '')}`));
+// ⚠️ SPA ROUTES ARE NOT DEAD LINKS. /play, /get and /footle have no file in
+// dist — they are served by rewrites in vercel.json. Reported as 404s on the
+// first run; read the rewrite table instead of guessing.
+let REWRITES = '';
+try { REWRITES = readFileSync('vercel.json', 'utf8'); } catch {}
+const rewritten = (t) => REWRITES.includes(`"${t}"`) || REWRITES.includes(`"${t}/"`) || REWRITES.includes(`"${t.replace(/\/$/, '')}"`);
 const dead = [...internal.keys()].filter((t) => {
+  if (rewritten(t)) return false;
   if (!t.endsWith('/')) return !existsSync(join(DIST, t)) && !existsSync(join(DIST, `${t}.html`));
   return !built.has(t);
 });
