@@ -73,12 +73,26 @@ export function similarity(p, answer, careers = null) {
   // players and a largest tie group of 86 — ranks 400-486 would have been
   // alphabetical noise. Day-level precision makes this term effectively
   // continuous, so the ordering within a band is always explicable.
+  // ⚠️ EXPONENTIAL, NOT LINEAR-CLAMPED. The previous form was
+  //     max(0, W.age * (1 - gap / 12years))
+  // which hits EXACTLY ZERO beyond twelve years — and in a pool spanning
+  // 1910s to 2000s births, 37% of players sit that far from any given answer.
+  // The one term whose whole job is "the tie-breaker that prevents mass ties"
+  // was contributing nothing at all to more than a third of the field, so they
+  // could only differ on the booleans and collapsed into a handful of scores.
+  // Measured: 1.6% distinct with no dob at all, 28.8% once dob landed but still
+  // clamped. Exponential decay never reaches zero, so two distinct birth dates
+  // always produce distinct scores while "closer in age scores higher" still
+  // holds everywhere. Half-life ~4.2 years keeps the near-age feel of the old
+  // curve; the tail merely stops being flat.
+  const YEAR = 365.25;
   const ad = p.dob && answer.dob ? Math.abs(Date.parse(p.dob) - Date.parse(answer.dob)) / 86400000 : null;
   if (ad !== null && Number.isFinite(ad)) {
-    s += Math.max(0, W.age * (1 - ad / (12 * 365.25)));
+    s += W.age * Math.exp(-ad / (6 * YEAR));
   } else if (p.born && answer.born) {
-    const gap = Math.abs(p.born - answer.born);
-    s += Math.max(0, W.age * (1 - gap / 12));
+    // 11 players still lack a day-precision date upstream. Same curve on the
+    // year, so they degrade smoothly instead of falling into a separate band.
+    s += W.age * Math.exp(-Math.abs(p.born - answer.born) / 6);
   }
   return s;
 }
@@ -152,15 +166,18 @@ export const MYSTERY_ANCHOR_DAY = 20668; // days since epoch — day #1
 // and 53 career J-League players who cleared the old fame bar purely because
 // Japanese Wikipedia coverage inflates a sitelink-based score.
 // To pull it again, set this to false — nothing else needs touching.
-// STILL FALSE. The pool defect is fixed (see the curation below), but
-// un-skipping the suspended suites surfaced a SECOND one: similarity()'s
-// continuous age term is keyed on `p.dob` and NOT ONE of the 8,491 pool
-// entries has that field, so it has never executed. Everything falls to the
-// year-only fallback, which yields ~13 levels — team-mates score identically
-// and just 1.6% of scores across the pool are distinct. A Contexto-style game
-// is nothing but the rank, so this ships only once that is fixed and the
-// suites pass. scripts/fetch-mystery-dob.mjs backfills the field.
-export const MYSTERY_ENABLED = false;
+// RE-ENABLED 2026-08-12, after BOTH defects that kept it pulled were fixed
+// and all 18 previously-suspended assertions pass:
+//   1. THE ANSWER POOL. 660 -> 606. Julio Iglesias (a singer with a Real
+//      Madrid youth spell) and 53 career J-League players had cleared the old
+//      fame>=55 gate, because that gate measures Wikipedia notability rather
+//      than football recognisability.
+//   2. THE RANKING. similarity()'s age term was keyed on `dob`, a field NO
+//      pool entry had, so it never ran; and its linear decay clamped to zero
+//      past 12 years, flattening 37% of the field. Backfilled 8,479 dates and
+//      switched to exponential decay. Distinct scores: 1.6% -> 82-88%.
+// To pull it again, set this to false — nothing else needs touching.
+export const MYSTERY_ENABLED = true;
 
 export function mysteryDayIndex(now = new Date()) {
   return Math.floor(now.getTime() / 86400000);

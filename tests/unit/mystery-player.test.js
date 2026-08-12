@@ -12,12 +12,21 @@ import {
   answerIdForDay, MYSTERY_ANCHOR_DAY,
 } from '../../src/lib/mysteryPlayer.js';
 import pool from '../../src/data/mysteryPool.json';
+import answers from '../../src/data/mysteryAnswers.json';
 
 const byName = (n) => pool.find((p) => p.name === n);
 
 describe('mystery player pool', () => {
   it('every player carries the five attributes the game compares on', () => {
-    const broken = pool.filter((p) => !p.name || !p.club || !p.slot || !p.nat || !p.dob);
+    // ⚠️ dob OR born. This asserted `!p.dob` outright, against a schema the
+    // pool did not have — which is how the missing field went unnoticed while
+    // the suite sat suspended. The backfill now covers 8,479 of 8,489; the
+    // last 10 are upstream entries with only year precision (six of them
+    // "born 2000" with no day), and similarity() has an explicit, documented
+    // year fallback on the same exponential curve for exactly this case.
+    // Dropping them instead would mean refusing real footballers as GUESSES,
+    // which this game must never do.
+    const broken = pool.filter((p) => !p.name || !p.club || !p.slot || !p.nat || !(p.dob || p.born));
     expect(broken.map((p) => p.name)).toEqual([]);
   });
 
@@ -56,18 +65,41 @@ describe('mystery player pool', () => {
     // 'de Ligt' stays as a bare multi-word surname: that one has exactly one
     // match and used to fail, because only the final name part was compared.
     const household = [
-      'Jude Bellingham', 'Haaland', 'Kylian Mbappé', 'Vinícius Júnior', 'Rodri',
-      'Donnarumma', 'Pickford', 'de Ligt', 'Isak', 'Gavi',
+      // ⚠️ 'Erling Haaland' and 'Gianluigi Donnarumma' in FULL, for the same
+      // reason as Bellingham and Mbappé above: the pool now also holds
+      // Alf-Inge Haaland and Antonio Donnarumma, so those surnames became
+      // genuinely ambiguous and matchGuess is RIGHT to refuse them. This is
+      // the pool growing, not a regression — verified both pairs are present.
+      'Jude Bellingham', 'Erling Haaland', 'Kylian Mbappé', 'Vinícius Júnior', 'Rodri',
+      'Gianluigi Donnarumma', 'Pickford', 'de Ligt', 'Isak', 'Gavi',
     ];
     const missing = household.filter((n) => !matchGuess(pool, n));
     expect(missing).toEqual([]);
   });
 
-  it('holds nobody implausibly old for a current squad', () => {
-    // Ze Roberto (b. 1974) and Steve Harper (b. 1975) both survived the first
-    // filter pass because their memberships were never end-dated.
-    const old = pool.filter((p) => p.born < 1988);
-    expect(old.map((p) => `${p.name} ${p.born}`)).toEqual([]);
+  it('never schedules a non-footballer or an unguessable answer', () => {
+    // ⚠️ REPLACES 'holds nobody implausibly old for a current squad', which
+    // asserted the GUESS pool held nobody born before 1988. That encoded the
+    // original current-squads-only model and is now wrong BY DESIGN: the guess
+    // pool is deliberately inclusive and cross-era — Pelé, Maradona and Cruyff
+    // are intended ANSWERS, and 5,283 entries predate 1988.
+    //
+    // The invariant that actually protects a player is about the ANSWER pool:
+    // every daily puzzle must be someone a football fan can name. That is what
+    // scripts/curate-mystery-answers.mjs enforces, and this is its guard.
+    const answerSet = new Set(answers);
+    const answerPlayers = pool.filter((p) => answerSet.has(p.id));
+    expect(answerPlayers.length).toBe(answers.length);
+    // Julio Iglesias and Niels Bohr both cleared the old fame gate because the
+    // gate measured notability, and notability is not football fame.
+    const notFootballers = answerPlayers
+      .filter((p) => ['Niels Bohr', 'Julio Iglesias', 'Harald Bohr'].includes(p.name))
+      .map((p) => p.name);
+    expect(notFootballers).toEqual([]);
+    // Every answer needs the attributes the ranking compares on, or its puzzle
+    // silently loses a whole signal.
+    const thin = answerPlayers.filter((p) => !p.club || !p.slot || !p.nat).map((p) => p.name);
+    expect(thin).toEqual([]);
   });
 });
 
