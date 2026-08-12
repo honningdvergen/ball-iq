@@ -3563,8 +3563,11 @@ ${t.items.map((i) => `<figure class="qt">
   .qt-list{display:flex;flex-direction:column;gap:14px}
   .qt{margin:0;padding:18px 20px;background:var(--card);border:1px solid var(--bd);border-radius:14px}
   .qt blockquote{margin:0 0 10px;font-size:19px;line-height:1.45;color:#fff;font-weight:600;letter-spacing:-.01em}
-  .qt blockquote::before{content:"\u201C";color:var(--grn);margin-right:2px}
-  .qt blockquote::after{content:"\u201D";color:var(--grn)}
+  /* \u26A0\uFE0F NO DECORATIVE QUOTE MARKS. Several entries carry their OWN quotation
+     marks \u2014 Shankly's is a reported reply and ends on one \u2014 so wrapping the
+     blockquote in another pair rendered a doubled ." at the end of the card.
+     The card is unmistakably a quotation from its shape; it does not need the
+     ornament, and the ornament actively breaks the entries that matter most. */
   .qt figcaption{font-size:14px;color:var(--tx2);margin-bottom:9px}
   .qt figcaption b{color:var(--grn-soft)}
   .qt-when{color:var(--tx3)}
