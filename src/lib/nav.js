@@ -19,7 +19,7 @@
 // as-is.
 export const NAV_GROUPS = [
   { key: 'games', label: 'Games', items: [
-    ['Daily 7', '/play'],
+    ['Daily 7', '/daily-football-quiz/'],
     ['Footle — football Wordle', '/football-wordle/'],
     ['Transfer Trail', '/transfer-trail/'],
     ['Mystery Player', '/mystery-player/'],

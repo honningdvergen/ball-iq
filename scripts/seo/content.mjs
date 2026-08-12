@@ -412,6 +412,46 @@ export const MYSTERY_PAGE = {
   ],
 };
 
+// ⚠️ SLUG IS THE SEARCH TERM, NOT THE BRAND NAME. Footle's page lives at
+// /football-wordle/ rather than /footle/ for exactly this reason — nobody
+// searches a name they have not heard yet. "daily football quiz" is a real
+// head term; "Daily 7" is ours alone.
+//
+// This was the ONLY game without a landing page: Footle, Transfer Trail and
+// Mystery Player all had one, and the daily quiz — the mode the whole app is
+// built around — had no search surface at all.
+export const DAILY7_PAGE = {
+  slug: 'daily-football-quiz',
+  game: 'Daily 7',
+  alternateName: ['Daily football quiz', 'Football quiz of the day', 'Daily 7 football quiz'],
+  gameParam: 'daily',
+  emoji: '📅',
+  h1: 'Daily football quiz — seven questions, once a day',
+  title: 'Daily Football Quiz — 7 New Questions Every Day | Ball IQ',
+  description:
+    'Seven fresh football questions every day, the same seven for everyone. Compare scores with friends and keep a streak going. Free, no sign-up needed.',
+  lede: 'Seven questions. Everyone gets the same seven. Come back tomorrow for seven more.',
+  statLine: 'Free · no sign-up · new questions every day',
+  how: [
+    ['Seven questions, once a day', 'A fixed set that resets at midnight. No endless scroll, no grinding — you play it and you are done.'],
+    ['Everyone gets the same seven', 'The set is generated from the date, so your score means something next to a friend\'s.'],
+    ['Every answer is explained', 'Get one wrong and you find out why, with the context that makes it stick.'],
+    ['Keep the streak alive', 'Play daily to build a streak. Miss a day and it resets — that is rather the point.'],
+  ],
+  body: [
+    `The Daily 7 is a football quiz you finish. Seven questions drawn from across the game — Premier League, Champions League nights, World Cups, transfers, the players your dad still talks about — and then it is over until tomorrow. It is designed to be a two-minute habit rather than something that eats an evening.`,
+    `Because the questions come from the date rather than from you, everybody who plays on a given day faces the same seven. That is what makes a score worth sending to someone. A friend who says they got six out of seven got six out of the same seven you did, and the challenge link carries your score so they know exactly what they are chasing.`,
+    `Wrong answers come with an explanation, so a bad round still teaches you something. Free, no account, straight in the browser — and in the free Ball IQ app it keeps your streak alongside Footle, Transfer Trail and Mystery Player.`,
+  ],
+  faq: [
+    { q: 'What is the Daily 7?', a: 'A daily football quiz of seven questions. Everyone playing on the same day gets the same seven, so scores are directly comparable.' },
+    { q: 'When does it reset?', a: 'At midnight, local time. A new set of seven questions each day, and the previous day\'s set is gone.' },
+    { q: 'Do I need an account?', a: 'No. Play as a guest straight in the browser. An account keeps your streak and stats across devices.' },
+    { q: 'Can I challenge a friend?', a: 'Yes — sharing your result creates a link carrying your score, and whoever opens it plays the same seven questions and gets a head-to-head comparison at the end.' },
+    { q: 'Are the answers explained?', a: 'Wrong answers come with an explanation, so you learn the fact rather than just losing the point.' },
+  ],
+};
+
 export const TRAIL_PAGE = {
   slug: 'transfer-trail',
   game: 'Transfer Trail',

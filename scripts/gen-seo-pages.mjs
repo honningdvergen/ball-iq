@@ -38,7 +38,7 @@ import { QB } from '../src/questions.js';
 // homepage was still painting #1A1D27, a colour app.css:57 records the product
 // moving off. rootCss() emits the same bytes this file used to hardcode.
 import { rootCss } from '../src/design/tokens.js';
-import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
@@ -4465,6 +4465,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${TRAIL_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
+    { loc: `${SITE.base}/${DAILY7_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
@@ -4642,7 +4643,7 @@ async function main() {
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
   buildFunFactsPage();
-  const dailyGamePages = [MYSTERY_PAGE, TRAIL_PAGE].map(buildDailyGamePage);
+  const dailyGamePages = [MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE].map(buildDailyGamePage);
   buildStudyPage(STUDY);
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
