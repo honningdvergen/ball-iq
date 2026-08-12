@@ -63,7 +63,7 @@ first. Still live and reachable at `/lineup/`; one line restores it.
 - **Photo fame-tail never eyeballed** (sheets 3-6) + the mechanical quality
   gate (face px / age / framability) is still unbuilt.
 - **CI**: e2e console-noise residue (35 on the runner), then flip strict.
-- **XI parser**: Dutch surnames ("van der Sar" → "Sar"); 1999 UCL + 2014 WC
+- **XI parser**: Dutch surnames FIXED (particle-aware). 1999 UCL + 2014 WC
   still dropped (different markup).
 - **Trail variety**: 45 careers over a 397-day schedule = fortnightly repeats.
 - **This board is ~1,950 lines** and needs a prune of pre-August sections.
