@@ -591,6 +591,13 @@ const AD_SLOTS = {
 // never will — pulled Google's ad library on every visit. All cost, no revenue,
 // on the fastest pages we own. With AD_SLOTS empty, NO page loads it.
 const ADS_ENABLED = Object.keys(AD_SLOTS).length > 0;
+// ⚠️ THE SWITCH LIVES IN TWO PLACES BECAUSE THE ADS DO. index.html gates the
+// SPA shell; this gates the ~288 generated pages, which inject the CMP from
+// their own block. Turning it off in index.html alone left every club page
+// still loading Funding Choices — caught by re-running Lighthouse after the
+// "fix" and seeing Best Practices still at 77 while the homepage hit 100.
+// Keep the two in step: both must be true for ads to run.
+const ADS_ACTIVE = false;
 
 function adSlot(key, label) {
   const id = AD_SLOTS[key];
@@ -1243,9 +1250,9 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   document.head.appendChild(s);
 }catch(e){}})();
 </script>` : ''}
-<script>
-/* GOOGLE CMP (Funding Choices) — UNCONDITIONAL, and deliberately NOT inside
-   the ads && ADS_ENABLED block above.
+${ADS_ACTIVE ? `<script>
+/* GOOGLE CMP (Funding Choices) — deliberately NOT inside the ads &&
+   ADS_ENABLED block above.
 
    That distinction is the whole point. AD_SLOTS is currently empty, so
    ADS_ENABLED is false and NO generated page loads the ad library today.
@@ -1280,7 +1287,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
     document.body.appendChild(i);
   })();
 }catch(e){}})();
-</script>
+</script>` : ''}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}" />
 <link rel="canonical" href="${canonical}" />${alternates.map((a) => `
