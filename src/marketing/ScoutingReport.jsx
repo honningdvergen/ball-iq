@@ -24,8 +24,9 @@
 //   · The JSON-LD block stringifies a STATIC const — no user input reaches it.
 
 import '../design/fonts.css';
+import { NAV_GROUPS } from '../lib/nav.js';
 import '../design/report.css';
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { APP_STORE_URL as APP_STORE, PLAY_STORE_URL } from '../lib/links.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
 // Generated (gen-club-index.mjs): 72 rows of {name, slug, competition}, 3.8KB.
@@ -137,11 +138,40 @@ const CSS = `
          font:700 21px/1 'Archivo Narrow',sans-serif;letter-spacing:.02em;
          color:var(--tx);text-transform:uppercase}
 .sr-mark em{font-style:normal;color:var(--grn)}
-.sr-nav{display:flex;gap:2px;flex-wrap:wrap}
+.sr-nav{display:flex;gap:2px;flex-wrap:wrap;flex:1;justify-content:center}
 .sr-nav a{display:inline-flex;align-items:center;min-height:44px;padding:10px 12px;
           font:var(--ty-sec);color:var(--on-desk-mut);transition:color .12s var(--ease)}
 @media (hover:hover){.sr-nav a:hover{color:var(--tx)}}
 @media (max-width:699px){.sr-nav{order:3;width:100%;margin-top:2px}}
+.sr-grp{position:relative}
+.sr-top{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:10px 12px;
+        background:none;border:0;cursor:pointer;font:var(--ty-sec);color:var(--on-desk-mut);
+        font-family:inherit;transition:color .12s var(--ease)}
+@media (hover:hover){.sr-top:hover{color:var(--tx)}}
+.sr-top[aria-expanded="true"]{color:var(--tx)}
+.sr-caret{transition:transform .18s var(--ease)}
+.sr-top[aria-expanded="true"] .sr-caret{transform:rotate(180deg)}
+/* ⚠️ ABSOLUTE, NOT FIXED. .sr-mast carries a backdrop-filter on some routes,
+   and a filtered element becomes the containing block for fixed descendants —
+   the generated pages hit exactly this and the panel detached from the bar. */
+/* ⚠️ OPAQUE, LITERAL COLOURS. var(--desk)/var(--rule) resolved to something
+   see-through here and the h1 read straight through the open panel. The
+   dropdown floats over arbitrary page content, so its background cannot be a
+   role token that might be transparent in this scope — these match the
+   generated pages' .nav-drop exactly, which is the point: one nav, one look. */
+.sr-drop{position:absolute;top:100%;left:0;min-width:212px;z-index:120;
+         display:flex;flex-direction:column;padding:7px;
+         background:#12141B;border:1px solid #242836;border-radius:14px;
+         box-shadow:0 18px 44px rgba(0,0,0,.55)}
+.sr-drop[hidden]{display:none}
+.sr-drop a{display:block;min-height:40px;padding:10px 12px;border-radius:9px;
+           font:var(--ty-sec);color:#A6ADBB;white-space:nowrap}
+@media (hover:hover){.sr-drop a:hover{color:#fff;background:rgba(88,204,2,.10)}}
+@media (max-width:699px){
+  .sr-nav{gap:0}
+  .sr-grp{flex:1 1 auto}
+  .sr-drop{left:0;right:0;min-width:0}
+}
 .sr a.sr-play{display:inline-flex;align-items:center;min-height:44px;padding:10px var(--sp3);
          background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700;
          border:1px solid var(--grn);border-radius:var(--rc);transition:opacity .15s var(--ease)}
@@ -368,6 +398,21 @@ function Stub({ results, caption }) {
 }
 
 export default function ScoutingReport() {
+  // Nav dropdowns. One open at a time; outside-click and Escape close it —
+  // without those a phone tap outside the panel leaves it stuck over content.
+  const [openNav, setOpenNav] = useState(null);
+  useEffect(() => {
+    if (!openNav) return undefined;
+    const onDown = (e) => { if (!e.target.closest?.('.sr-grp')) setOpenNav(null); };
+    const onKey = (e) => { if (e.key === 'Escape') setOpenNav(null); };
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [openNav]);
+
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState(null);
   const [results, setResults] = useState(() => QS.map(() => null));
@@ -414,10 +459,25 @@ export default function ScoutingReport() {
       <header className="sr-mast">
         <a className="sr-mark" href="/" aria-label="Ball IQ home">Ball <em>IQ</em></a>
         <nav className="sr-nav" aria-label="Main">
-          <a href="/quiz/">Clubs</a>
-          <a href="/lists/">Records</a>
-          <a href="/football-wordle/">Daily</a>
-          <a href="/about/">About</a>
+          {NAV_GROUPS.map(g => (
+            <div className="sr-grp" key={g.key}>
+              <button
+                type="button"
+                className="sr-top"
+                aria-expanded={openNav === g.key}
+                aria-controls={`srnd-${g.key}`}
+                onClick={() => setOpenNav(o => (o === g.key ? null : g.key))}
+              >
+                {g.label}
+                <svg className="sr-caret" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true">
+                  <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+                </svg>
+              </button>
+              <div className="sr-drop" id={`srnd-${g.key}`} hidden={openNav !== g.key}>
+                {g.items.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
+              </div>
+            </div>
+          ))}
         </nav>
         <a className="sr-play" href={PLAY}>Play free</a>
       </header>

@@ -28,6 +28,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { NAV_GROUPS } from '../src/lib/nav.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
@@ -377,38 +378,6 @@ function storeBadges() {
 // `@media(max-width:560px){ .nav-link{display:none} }` hid every section link
 // on 66% of our traffic, with no hamburger replacing them: a phone visitor
 // landing on a club page could reach nothing but /play and the App Store.
-// Three intent groups now replace the flat link row — Games (do something
-// now), Quizzes (a quiz about my thing), Discover (browse and read) — and
-// they open as a full panel on mobile, hover/click dropdowns on desktop.
-const NAV_GROUPS = [
-  { key: 'games', label: 'Games', items: [
-    ['Daily 7', '/play'],
-    ['Footle — football Wordle', '/football-wordle/'],
-    ['Transfer Trail', '/transfer-trail/'],
-    ['Mystery Player', '/mystery-player/'],
-    ['Guess the XI', '/xi/'],
-    // ⚠️ NO 'Lineup Builder' ENTRY. /lineup/ is live but deliberately UNLINKED
-    // until Alex signs off — "i still need to test the lineup builder more
-    // before it goes live". The nav rebuild put it here on ~180 pages by
-    // reflex; a game with 156 curated monograms and an uneyeballed fame tail
-    // is not something to hand a first-time visitor. Restore on his word.
-  ] },
-  { key: 'quizzes', label: 'Quizzes', items: [
-    ['All quizzes', '/quiz/'],
-    ['Club quizzes', '/quiz/clubs/'],
-    ['Premier League', '/quiz/premier-league/'],
-    ['Champions League', '/quiz/champions-league/'],
-    ['World Cup', '/quiz/world-cup/'],
-    ['Legends', '/quiz/legends/'],
-  ] },
-  { key: 'discover', label: 'Discover', items: [
-    ['Records & lists', '/lists/'],
-    ['Football fun facts', '/fun-facts/'],
-    ['The trivia data study', '/study/football-trivia-memory/'],
-    ['About Ball IQ', '/about/'],
-  ] },
-];
-
 const navGroupHtml = (g, active) => `<div class="nav-grp">
 <button type="button" class="nav-top${active === g.key ? ' active' : ''}" aria-expanded="false" aria-controls="nd-${g.key}">${g.label}<svg class="nav-caret" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
 <div class="nav-drop" id="nd-${g.key}">${g.items.map(([label, href]) => `<a href="${SITE.base}${href}">${label}</a>`).join('')}</div>
@@ -1342,7 +1311,13 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .brand:hover{text-decoration:none}
   .brand img{width:32px;height:32px;border-radius:8px}
   .brand b{color:var(--amber);font-weight:900}
-  .nav-right{display:flex;align-items:center;gap:6px}
+  /* Groups CENTERED in the bar, CTAs hard right. Two auto margins — one before
+     the first group, one before the play button — split the free space evenly,
+     which centres the group cluster without taking it out of flow or needing a
+     wrapper element (the mobile panel still targets .nav-right). */
+  .nav-right{display:flex;align-items:center;gap:6px;flex:1}
+  .nav-grp:first-of-type{margin-left:auto}
+  .nav-play{margin-left:auto}
   .nav-link{color:var(--tx3);font-size:14px;font-weight:600}
   .nav-link:hover{color:#fff;text-decoration:none}
   .nav-link.active{color:#fff;border-bottom:2px solid var(--grn);padding-bottom:2px}
@@ -1357,7 +1332,19 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
   .nav-drop{position:absolute;top:calc(100% + 8px);left:0;min-width:236px;padding:7px;
     background:#12141B;border:1px solid #242836;border-radius:14px;
     box-shadow:0 18px 44px rgba(0,0,0,.55);display:none;flex-direction:column;gap:1px;z-index:120}
-  .nav-grp.open .nav-drop,.nav-grp:hover .nav-drop{display:flex}
+  /* ⚠️ THE 8px GAP WAS EATING THE MENU. .nav-drop sits at top:calc(100% + 8px),
+     so a pointer travelling from the button down to the panel crossed 8px that
+     belonged to NEITHER element — :hover dropped and display:none snapped the
+     menu shut mid-reach. Reported from real use: "very sensitive to disappear
+     ... when i try to tap one of the modes the navigation menu just
+     dissappears". The ::after bridges that strip, and exists ONLY while the
+     group is hovered or open, so it never sits invisibly over content. */
+  .nav-grp:hover::after,.nav-grp.open::after{content:"";position:absolute;top:100%;left:0;right:0;height:10px}
+  .nav-grp.open .nav-drop{display:flex}
+  /* Hover-to-open for FINE POINTERS ONLY. On touch, :hover latches after a tap
+     and leaves a panel stuck open that nothing dismisses. Touch gets the click
+     toggle, which is what the aria-expanded button always promised. */
+  @media (hover:hover) and (pointer:fine){.nav-grp:hover .nav-drop{display:flex}}
   .nav-drop a{display:block;padding:10px 12px;border-radius:9px;color:var(--tx2);font-size:14px;font-weight:600;white-space:nowrap}
   .nav-drop a:hover{background:rgba(88,204,2,.10);color:#fff;text-decoration:none}
   .nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;
@@ -1580,6 +1567,7 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
       background:#0A0A0A;border-bottom:1px solid #16181F;box-shadow:0 24px 48px rgba(0,0,0,.6);display:none;z-index:110}
     .nav.open .nav-right{display:flex}
     .nav-grp{position:static}
+    .nav-grp:first-of-type,.nav-play{margin-left:0}
     .nav-top{width:100%;justify-content:space-between;font-size:15px;padding:12px 6px;color:#fff}
     .nav-drop{position:static;display:flex;min-width:0;border:0;background:none;box-shadow:none;padding:0 0 10px 6px}
     .nav-grp:hover .nav-drop{display:flex}
