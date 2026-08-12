@@ -801,12 +801,26 @@ function loadImg(p, width){
   return new Promise(function(res){
     var img = new Image();
     if (p.f && CUTOUTS.has(p.i)){
-      img.crossOrigin = 'anonymous';
-      img.onload = function(){ img._cut = true; res(img); };
-      img.onerror = function(){ res(null); };
-      img.src = CUTOUT_BASE + p.i + '.png';
+      var cut = new Image();
+      cut.crossOrigin = 'anonymous';
+      cut.onload = function(){ cut._cut = true; res(cut); };
+      // ⚠️ A BUCKET MISS MUST FALL THROUGH TO THE PHOTO, NOT TO AN INITIAL.
+      // This used to res(null), which meant the EXPORT drew a letter for a
+      // player whose photo the pitch was displaying happily — the on-page
+      // renderer has always had this fallback and the canvas did not, so the
+      // downloaded card was quietly worse than the screen it came from. The
+      // manifest lists what has been CUT, and the bucket holds what has been
+      // UPLOADED; those two numbers are not the same and there is no reason to
+      // pretend they are (975 of 4,340 uploaded as of 2026-08-12). Falling
+      // through means the gap costs a little sharpness, never a face.
+      cut.onerror = function(){ CUTOUTS.delete(p.i); photoPath(); };
+      cut.src = CUTOUT_BASE + p.i + '.png';
       return;
     }
+    photoPath();
+
+    function photoPath(){
+    if (!p.f){ res(null); return; }
     // ⚠️ Without crossOrigin the canvas is tainted and toBlob throws at the
     // moment of download. Wikimedia's CDN sends access-control-allow-origin:*,
     // but only on the direct upload.wikimedia.org URL — which is why the CDN
@@ -826,6 +840,7 @@ function loadImg(p, width){
     // only CORS-safe path. Capped deliberately rather than asking for 900 and
     // silently degrading to an initial.
     img.src = commons(p, Math.min(500, width));
+    }
   });
 }
 
