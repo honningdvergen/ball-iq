@@ -8062,6 +8062,11 @@ function AppInner() {
   // setTimeout's id gets pushed; cleanup clears all so AppInner unmounting
   // mid-celebration doesn't fire setState/showToast on the unmounted tree.
   const celebrationTimeoutsRef = useRef([]);
+  // Read by the +2000ms 'save' auth nudge below. Declared up here because the
+  // nudge is SCHEDULED at result time but FIRES later — and whether the name
+  // sheet is open by then is only knowable at fire time. A ref, not state:
+  // the scheduled closure would otherwise capture a stale `false`.
+  const askShareNameRef = useRef(false);
   // Single cleanup on unmount: clear any in-flight toast/overlay timers so
   // tabbing away mid-toast doesn't leave dangling setState callbacks.
   useEffect(() => () => {
@@ -9444,7 +9449,20 @@ function AppInner() {
       const challengeWillSettle = mode === "daily" && !!pendingChallenge && challengeDayOffset(pendingChallenge.date) <= 1;
       if (isGuest && !nudged && peak && !shouldShowRate && !notifWillClaim && !willLevelUp && !challengeWillSettle) {
         localStorage.setItem('biq_save_nudge_shown', '1');
-        celebrationTimeoutsRef.current.push(setTimeout(() => { try { openAuthPrompt?.('save'); } catch {} }, 2000));
+        // Share-sheet guard, same shape as challengeWillSettle above but checked
+        // at FIRE time: a guest who taps Share within 2s of the results lands
+        // the name sheet first, and the auth prompt would cover it and eat the
+        // share. Clear the once-flag so the nudge simply takes the next peak —
+        // exactly what the level-up and challenge guards do.
+        celebrationTimeoutsRef.current.push(setTimeout(() => {
+          try {
+            if (askShareNameRef.current) {
+              localStorage.removeItem('biq_save_nudge_shown');
+              return;
+            }
+            openAuthPrompt?.('save');
+          } catch {}
+        }, 2000));
       }
     } catch { /* nudge is never load-bearing */ }
 
@@ -10124,8 +10142,29 @@ function AppInner() {
   // tickLoginStreak for guests / the tick_login_streak RPC for signed-in users),
   // so the old manual "Use Shield" action is gone — spending one by hand would
   // just waste it. The Daily-tab banner is now informational (shieldCount).
-  const shareDaily = useCallback(async () => {
-    loopEvent("share-daily");
+  // ⚠️ THE NAME IS MOST OF WHY A CHALLENGE GETS OPENED. Both link builders
+  // (buildInviteUrl and the /c/ token) have carried an optional name for a
+  // while — but nothing ever ASKED for one, so every guest shared a link that
+  // reads "Think you can beat me?" signed by nobody. The plumbing was built
+  // and never fed.
+  //
+  // resolveChallengerName returns "" for exactly that case, and shareDaily now
+  // treats "" as ASK ONCE rather than ship-it-anonymous. Answering once writes
+  // the name into the local profile, so every later share and invite carries
+  // it too — this is the capture point for the whole loop, not just this
+  // button. Skipping still shares: a nameless link beats a share the user
+  // abandoned because we demanded a form.
+  const [askShareName, setAskShareName] = useState(false);
+  const [shareNameDraft, setShareNameDraft] = useState("");
+  const shareNameRef = useRef(null);
+  const resolveChallengerName = useCallback(() => {
+    const u = authProfile?.username;
+    if (u && u !== "Player" && !/^player_/i.test(u)) return u;
+    const p = profile?.name;
+    return (p && p !== "Player") ? p : "";
+  }, [authProfile, profile]);
+
+  const performDailyShare = useCallback(async (challengerName) => {
     // Daily share is intentionally TEXT-ONLY. Combined files+text shares strip
     // one or the other on iOS Safari → WhatsApp / Twitter / Instagram, and the
     // canvas→Blob path can silently fail. Plain text works universally.
@@ -10141,9 +10180,6 @@ function AppInner() {
     // Daily 7 and gets a head-to-head compare after they finish. Format:
     // balliq.app/?c=SCORE.YYYYMMDD[.Name]
     const ymd = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; })();
-    const challengerName = (authProfile?.username && authProfile.username !== "Player" && !/^player_/i.test(authProfile.username))
-      ? authProfile.username
-      : ((profile?.name && profile.name !== "Player") ? profile.name : "");
     const challengeUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}`;
     const text = [
       `⚽ ${APP_NAME} Daily 7`,
@@ -10171,7 +10207,24 @@ function AppInner() {
     } catch {
       showToast("Couldn't share — try again");
     }
-  }, [dailyScore, loginStreak, showToast, authProfile, profile]);
+  }, [dailyScore, loginStreak, showToast]);
+
+  const shareDaily = useCallback(() => {
+    loopEvent("share-daily");
+    const who = resolveChallengerName();
+    if (!who) { setShareNameDraft(""); askShareNameRef.current = true; setAskShareName(true); return undefined; }
+    return performDailyShare(who);
+  }, [resolveChallengerName, performDailyShare]);
+
+  const submitShareName = useCallback((who) => {
+    const clean = String(who || "").trim().slice(0, 22);
+    askShareNameRef.current = false;
+    setAskShareName(false);
+    // Persist even on the share sheet's own cancel — they told us who they
+    // are, and re-asking on the next share would waste the one answer we got.
+    if (clean) setProfile(p => ({ ...p, name: clean }));
+    performDailyShare(clean);
+  }, [setProfile, performDailyShare]);
   const shieldCount = useMemo(() => Math.min(3, Math.max(0, Math.floor(xp/200) - (stats.shieldsUsed||0))), [xp, stats.shieldsUsed]);
 
   const [showDiffPicker, setShowDiffPicker] = useState(false);
@@ -10192,6 +10245,10 @@ function AppInner() {
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
   useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest)), onClose: clearPendingJoin, ref: joinGateRef });
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
+  // Dismissing the name sheet (ESC / backdrop / back) must still SHARE — the
+  // user asked to share, not to fill in a form. Closing without sharing would
+  // turn a growth prompt into a growth blocker.
+  useModalA11y({ isOpen: askShareName, onClose: () => submitShareName(""), ref: shareNameRef });
   // Stable identity, deliberately: useModalA11y's effect deps are
   // [isOpen, onClose, ref], so an inline arrow re-runs the whole effect on
   // EVERY AppInner render while the sheet is open — each re-run does a
@@ -10458,6 +10515,32 @@ function AppInner() {
           </div>
         )}
         {/* Rate prompt */}
+        {askShareName && (
+          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => submitShareName("")}>
+            <div ref={shareNameRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Add your name to the challenge" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(40px + env(safe-area-inset-bottom, 34px))",textAlign:"center",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
+              <div style={{fontSize:44,marginBottom:10}}>⚽</div>
+              <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Who should we say it&apos;s from?</div>
+              <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.6,marginBottom:20}}>
+                Your friends see <b style={{color:"var(--t1)"}}>&ldquo;beat my {dailyScore || 0}/7&rdquo;</b> with your name on it.
+              </div>
+              <form onSubmit={e => { e.preventDefault(); submitShareName(shareNameDraft); }}>
+                <input
+                  autoFocus
+                  value={shareNameDraft}
+                  onChange={e => setShareNameDraft(e.target.value)}
+                  maxLength={22}
+                  placeholder="First name"
+                  aria-label="Your name"
+                  enterKeyHint="send"
+                  autoComplete="given-name"
+                  style={{width:"100%",padding:"14px 16px",fontSize:16,borderRadius:12,border:"1px solid var(--line)",background:"var(--c2)",color:"var(--t1)",fontFamily:"inherit",marginBottom:14,textAlign:"center"}}
+                />
+                <button className="btn btn-p" type="submit" style={{marginBottom:10}}>Share challenge</button>
+              </form>
+              <button className="btn btn-s" type="button" onClick={() => submitShareName("")}>Share without a name</button>
+            </div>
+          </div>
+        )}
         {showRatePrompt && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
             <div ref={ratePromptRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Rate Ball IQ" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
