@@ -911,6 +911,18 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    ACTION colour — every Play button wears it — so spending it on navigation
    state dilutes the signal and turns a glass pill into a coloured blob. White
    for active, grey for inactive; the brand stays in the content. */
+/* ACTIVE PILL (Alex, device-testing 2026-08-12, referencing Instagram's bar).
+   A soft neutral capsule behind the selected tab — the same job the green used
+   to do, without spending the action colour on navigation. Kept achromatic so
+   the glass still reads as glass.
+   ⚠️ ::after, NOT ::before — ::before is already claimed by the legacy
+   indicator and is re-positioned in BOTH mirror blocks below. The icon and
+   label are lifted to z-index 1 so the capsule paints behind them. */
+.tab-item.active::after{
+  content:"";position:absolute;inset:2px 7px;border-radius:17px;
+  background:rgba(255,255,255,0.11);pointer-events:none;
+}
+.tab-svg,.tab-label{position:relative;z-index:1;}
 .tab-item.active .tab-svg{color:#FFFFFF;transform:translateY(1px);}
 .tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
 .tab-item.active .tab-label{color:#FFFFFF;}
@@ -2674,6 +2686,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     top: 6px !important;
     bottom: auto !important;
   }
+  /* Mirror of the active pill — without this the installed PWA and the native
+     app keep the old flat active state while the browser shows the capsule. */
+  .tab-item.active::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 2px 7px !important;
+    border-radius: 17px !important;
+    background: rgba(255,255,255,0.11) !important;
+    pointer-events: none !important;
+  }
+  .tab-svg, .tab-label { position: relative !important; z-index: 1 !important; }
   .home-stat-chip-desktop-only { display: none !important; }
   .diff-option-local { display: flex !important; }
   /* desktop-web-refresh: installed PWA never renders the desktop rail, and

@@ -10115,11 +10115,24 @@ function AppInner() {
       ticking = false;
       const y = window.scrollY;
       const dy = y - last;
-      // 6px deadzone: without it, the rubber-band at the extremes and any
-      // one-pixel jitter flickers the bar on every frame.
-      if (Math.abs(dy) < 6) return;
+      // ⚠️ SHORT PAGES MUST NOT PLAY THIS AT ALL. Home scrolls barely more
+      // than a screen, so every small flick crossed the threshold and the bar
+      // strobed in and out — from the device test: "there is minimal scroll on
+      // the homepage so it dissappears and appears really quick which looks
+      // quirky". Threads and Instagram feel right because the gesture only
+      // exists where a long feed needs the room. Below ~0.6 of a screen of
+      // scrollable content there is nothing to reclaim, so the bar stays put —
+      // and any bar left tucked from a previous screen is restored here.
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollable < window.innerHeight * 0.6) {
+        if (hidden) { hidden = false; el.classList.remove('tab-bar--tucked'); }
+        return;
+      }
+      // Deadzone widened 6 -> 14 and the arm threshold 90 -> 140: both were
+      // tuned on long lists, where the bar has time to commit to a direction.
+      if (Math.abs(dy) < 14) return;
       const atBottom = y + window.innerHeight >= document.documentElement.scrollHeight - 24;
-      const next = dy > 0 && y > 90 && !atBottom;
+      const next = dy > 0 && y > 140 && !atBottom;
       if (next !== hidden) {
         hidden = next;
         el.classList.toggle('tab-bar--tucked', hidden);
