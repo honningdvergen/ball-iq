@@ -37,6 +37,13 @@ the binary rather than silently emitting nulls.
 Trail #14 four days out, Lewandowski→Chicago Fire, and a corrupted club string
 that would have rendered as "PSV Eindhoven |caps1 = 159" on #29.
 
+**⚠️ NEXT SESSION, FIRST THING — upload 3,365 cutouts.** The bucket holds 975
+of 4,340; the upload run only ever completed 975 and nobody had measured it.
+The PNGs are cut and on disk. `scripts/upload-cutouts.mjs` runs ONLY while a
+temporary INSERT policy is open on `player-cutouts` — that is a production
+storage change and it needs Alex in the room. Until then the page falls back to
+the Commons photo per player, so nothing is broken, just softer.
+
 **In flight, unattended:** the Mystery Player birth-date backfill.
 
 ### 🔴 ALEX-OWNED (highest leverage first)
