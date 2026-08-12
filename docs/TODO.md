@@ -22,9 +22,22 @@ footer. All three now at **283**.
 finished website that will not be good". The pitch is ready and stays ready.
 That makes "make the site read as finished" the actual partnership work.
 
-**In flight, unattended:** lineup cutouts (~1,500 of 4,517 cut, ~35% reject
-rate → ~1,600 will need better sources) and the Mystery Player birth-date
-backfill.
+**Cutouts: 4,340 of 6,431 (67.5%), 4,339 with a face box.** The ~1,600 rejects
+were triaged 2026-08-12: **1,558 of 1,683 had failed on ONE number**, a 320px
+minimum crop, not on quality. Lewandowski was being binned at 262px. Floor
+lowered to 240px on eyeball evidence, **531 recovered**, contact sheet sent for
+Alex's pass. Residual: ~1,000 genuinely need better photo sources.
+⚠️ Also repaired a same-day regression — `build-cutout-meta.mjs` had nulled 974
+good face boxes because `/tmp/facebox` was gone; it now refuses to run without
+the binary rather than silently emitting nulls.
+
+**Trail careers: verified 2026-08-12, and now verifiable on demand.**
+`node scripts/verify-trail-careers.mjs` — run it at **every transfer window**
+(Alex's standing instruction). First run caught Griezmann→Orlando City with
+Trail #14 four days out, Lewandowski→Chicago Fire, and a corrupted club string
+that would have rendered as "PSV Eindhoven |caps1 = 159" on #29.
+
+**In flight, unattended:** the Mystery Player birth-date backfill.
 
 ### 🔴 ALEX-OWNED (highest leverage first)
 1. **Send the partnership pitch** — kit + live /partners/ page ready. PL
