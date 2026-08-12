@@ -1,18 +1,30 @@
 # Ball IQ — the board
 
-## ▶ WHERE WE ARE (2026-08-12, evening)
+## ▶ WHERE WE ARE (2026-08-12, late)
 
-**Shipped today:** **Guess the XI LIVE** at `/xi/`; **ghost-name capture**
-(challenge links are signed now, not anonymous); intent nav
-(Games/Quizzes/Discover — mobile had NO nav at all); `/fun-facts/` (100 facts
-mined from verified bank hints); playable /lists; floating glass tab bar w/
-scroll-away + Threads-level material; iOS **1.5.1 build 57** synced and ready
-in Xcode. Photos: 167 summer-2026 portraits applied, 974 cutouts in the
-bucket, 156 curated monograms.
+**Shipped today:** **Guess the XI** LIVE at `/xi/` (now a generated page with
+the shared nav — it was a standalone file pretending to be a website);
+**Daily 7 landing page** at `/daily-football-quiz/` (the last game with no
+search surface); **/fun-facts/ rebuilt** for surprise — 42 checked, sourced
+facts replacing 100 dull mined ones, plus ItemList schema and per-fact quiz
+links; **ghost-name capture** so challenge links are signed; **one nav
+everywhere**, centred, with the 8px hover gap that ate the menu now bridged;
+**store badges above the fold** on every page (they were bottom-only);
+**active-tab pill** + scroll-away gated to long pages; intent nav; playable
+/lists; iOS **1.5.1 build 57**.
 
-**Pulled:** the Lineup Builder came OUT of the nav — today's nav rebuild had
-linked it from ~180 generated pages by reflex, and you want more testing
-first. Still live and reachable at `/lineup/`; one line restores it.
+**Link-mesh fix:** `/fun-facts/`, `/xi/` and `/daily-football-quiz/` had ~2
+inbound internal links each — the same orphan condition that left `/study/`
+at zero in July, recreated by shipping new pages without adding them to the
+footer. All three now at **283**.
+
+**Partnerships: PARKED at Alex's call** — "if they go to investigate our half
+finished website that will not be good". The pitch is ready and stays ready.
+That makes "make the site read as finished" the actual partnership work.
+
+**In flight, unattended:** lineup cutouts (~1,500 of 4,517 cut, ~35% reject
+rate → ~1,600 will need better sources) and the Mystery Player birth-date
+backfill.
 
 ### 🔴 ALEX-OWNED (highest leverage first)
 1. **Send the partnership pitch** — kit + live /partners/ page ready. PL
