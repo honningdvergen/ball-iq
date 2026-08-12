@@ -489,7 +489,7 @@ ${badgeRow}
   // one rule the row is built on (and made a fourth cell wrap to its own line).
   const stat = Array.isArray(chips) && chips.length
     ? `<div class="hero-facts">${chips.map((c) => `<div class="hf"><b>${esc(String(c.n))}</b><span>${esc(c.label)}</span></div>`).join('')}</div>
-<p class="hero-free">Free to play &middot; no sign-up &middot; nothing to install</p>`
+<p class="hero-free">Free to play &middot; no sign-up &middot; plays in your browser</p>`
     : statLine ? `<p class="hero-stat">${esc(statLine)}</p>` : '';
   // Split into head (what page am I on) and body (the pitch). The wrappers are
   // inert on desktop and in the single-column hero — no padding or border, so
@@ -1800,9 +1800,11 @@ ${heroTwoCol({
     h1: catCfg.h1,
     lead: catCfg.description,
     chips: [
-      { n: all.length, label: 'questions' },
+      // ⚠️ NO COUNTS. See the note on the stat strip in audit-no-question-count.mjs
+      // — this row printed "556 questions / 151 hard ones" live.
+      { n: 'Free', label: 'always' },
       ...(pct100(all) ? [{ n: '100%', label: 'explained' }] : []),
-      { n: hard, label: 'hard ones' },
+      { n: 'Daily', label: 'new questions' },
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
@@ -2133,9 +2135,11 @@ ${heroTwoCol({
     h1: cfg.h1,
     lead: cfg.description,
     chips: [
-      { n: all.length, label: 'questions' },
+      // ⚠️ NO COUNTS. See the note on the stat strip in audit-no-question-count.mjs
+      // — this row printed "556 questions / 151 hard ones" live.
+      { n: 'Free', label: 'always' },
       ...(pct100(all) ? [{ n: '100%', label: 'explained' }] : []),
-      { n: hard, label: 'hard ones' },
+      { n: 'Daily', label: 'new questions' },
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, play: `${SITE.base}/play?club=${cfg.slug}` }))}
@@ -2271,7 +2275,7 @@ ${heroTwoCol({
       // pct100(hints) would be a tautology — `hints` IS the explained rows.
       // Measure the unfiltered pool or the claim means nothing.
       ...(pct100(poolAll) ? [{ n: '100%', label: 'explained' }] : []),
-      { n: hints.filter((r) => r.diff === 'hard').length, label: 'hard ones' },
+      { n: 'Daily', label: 'new questions' },
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
@@ -3137,7 +3141,7 @@ ${heroTwoCol({
       // pct100(hints) would be a tautology — `hints` IS the explained rows.
       // Measure the unfiltered pool or the claim means nothing.
       ...(pct100(poolAll) ? [{ n: '100%', label: 'explained' }] : []),
-      { n: hints.filter((r) => r.diff === 'hard').length, label: 'hard ones' },
+      { n: 'Daily', label: 'new questions' },
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}

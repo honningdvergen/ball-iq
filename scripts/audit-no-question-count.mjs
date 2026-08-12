@@ -58,6 +58,26 @@ const PATTERNS = [
   /\b\d{1,4}\s+(?:preguntas|perguntas|pertanyaan|soal|fragen|domande|vragen|spørsmål|frågor|questões)\b/gi,
   // Turkish agglutinates the case onto the noun: soru / sorunun / soruluk.
   /\b\d{1,4}\s+soru\w*\b/gi,
+
+  // ⚠️ THE SIXTH WAY IT SHIPPED (2026-08-12): THE HERO STAT STRIP.
+  // It rendered "556 questions" and "151 hard ones" as a scoreboard row on
+  // every club, league, category and nation page. TWO separate holes let it
+  // through:
+  //   · the main pattern requires \d{1,3},\d{3} — a COMMA — so any count under
+  //     1,000 was invisible. A per-page pack count is exactly that size.
+  //   · the number and the noun are separate DOM nodes (<b>556</b><span>
+  //     questions</span>), so they only become adjacent text after tags are
+  //     stripped, which the older patterns were not written to expect.
+  // "151 hard ones" is the same rule wearing yet another disguise — it is a
+  // count of questions without using the word.
+  // ⚠️ 3+ DIGITS, AND NOT PRECEDED BY A LETTER. A first cut used \d{1,4} and
+  // fired 23 times — every one a FALSE POSITIVE from a club whose name ends in
+  // digits: "Schalke 04 questions and answers", "Ligue 1 questions". A pack
+  // count worth hiding is three figures or more; one- and two-digit matches are
+  // overwhelmingly names, so this trades a theoretical miss for a gate people
+  // will actually keep.
+  /(?<![A-Za-z])\b\d{3,4}\s+questions\b/gi,
+  /\b\d{1,4}\s+hard ones\b/gi,
 ];
 
 // ⚠️ ONE EXEMPTION, AND IT IS PENDING A DECISION — NOT A PRECEDENT.
