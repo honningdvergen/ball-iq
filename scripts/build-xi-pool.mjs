@@ -9,6 +9,23 @@
 // omission beats a guessed lineup.
 import { readFileSync, writeFileSync } from 'fs';
 
+// Particles that belong TO the surname, not before it.
+const PARTICLES = new Set(['van','von','der','den','de','del','della','di','da','dos','das','do','la','le','ten','ter','el','al',"van't",'bin','ibn','mac','mc','st']);
+const norm = (x) => String(x).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+
+function acceptedNames(display) {
+  const parts = display.trim().split(/\s+/);
+  const out = new Set([norm(display)]);
+  const lastTok = parts[parts.length - 1];
+  out.add(norm(lastTok));
+  // walk backwards while the preceding token is a particle
+  let i = parts.length - 1;
+  while (i > 0 && PARTICLES.has(parts[i - 1].toLowerCase())) i -= 1;
+  if (i < parts.length - 1) out.add(norm(parts.slice(i).join(' ')));
+  return [...out].filter(Boolean);
+}
+
 const MATCHES = [
   { article: '2005 UEFA Champions League final', label: 'Champions League final, Istanbul 2005' },
   { article: '1999 UEFA Champions League final', label: 'Champions League final, Camp Nou 1999' },
@@ -93,7 +110,13 @@ for (const match of MATCHES) {
       id: `${match.article.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-${t}`,
       match: match.label, club, date: (dm ? dm[1].trim() : ''),
       players: teams[t].players.map((p) => ({ qid: p.qid, name: p.display,
-        surname: p.display.split(' ').pop(), no: p.no, pos: p.pos })),
+        // ⚠️ NOT display.split(' ').pop(). That yields "Sar" for Edwin van der
+        // Sar, "Dijk" for van Dijk, "Jong" for de Jong — 12 defects across the
+        // pool. Nobiliary particles are part of the surname, so the accepted
+        // answers are built as: the full name, the particle-aware surname, and
+        // the bare final token (a fan typing "Dijk" is not wrong). Same
+        // trailing-run idea the Mystery engine uses for "de Ligt".
+        accept: acceptedNames(p.display), no: p.no, pos: p.pos })),
     });
     await new Promise((s) => setTimeout(s, 400));
   }
