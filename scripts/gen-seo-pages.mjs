@@ -386,7 +386,12 @@ const NAV_GROUPS = [
     ['Footle — football Wordle', '/football-wordle/'],
     ['Transfer Trail', '/transfer-trail/'],
     ['Mystery Player', '/mystery-player/'],
-    ['Lineup Builder', '/lineup/'],
+    ['Guess the XI', '/xi/'],
+    // ⚠️ NO 'Lineup Builder' ENTRY. /lineup/ is live but deliberately UNLINKED
+    // until Alex signs off — "i still need to test the lineup builder more
+    // before it goes live". The nav rebuild put it here on ~180 pages by
+    // reflex; a game with 156 curated monograms and an uneyeballed fame tail
+    // is not something to hand a first-time visitor. Restore on his word.
   ] },
   { key: 'quizzes', label: 'Quizzes', items: [
     ['All quizzes', '/quiz/'],
@@ -4464,6 +4469,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/quiz/clubs/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/fun-facts/`, freq: 'weekly', pri: '0.7' },
+    { loc: `${SITE.base}/xi/`, freq: 'daily', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${TRAIL_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
@@ -4535,6 +4541,7 @@ function buildLlmsTxt(livePages, clubPages, playerPages = [], listPages = []) {
   const cats = livePages.filter((p) => p.slug !== HUB.slug);
   const quizLinks = [
     `- [Football quizzes hub](${SITE.base}/quiz/): Every free football trivia category, each answer explained.`,
+    `- [Guess the XI](${SITE.base}/xi/): daily game — name all eleven players from a famous starting lineup; positions and shirt numbers given.`,
     `- [Transfer Trail](${SITE.base}/transfer-trail/): daily game — name the player from their transfer history, one club revealed per miss.`,
     `- [Mystery Player](${SITE.base}/mystery-player/): daily guessing game — find the footballer, every guess tells you warmer or colder.`,
     ...cats.map((p) => `- [${p.name}](${SITE.base}/quiz/${p.slug}/): ${p.name} questions and answers, each with a fact-checked explanation.`),
