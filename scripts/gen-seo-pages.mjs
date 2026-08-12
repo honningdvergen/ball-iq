@@ -30,6 +30,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { NAV_GROUPS } from '../src/lib/nav.js';
 import { XI_MARKUP, XI_CSS, XI_JS } from './seo/xiGame.mjs';
+import { trailBoardHtml, TRAIL_BOARD_CSS, TRAIL_BOARD_JS } from './seo/trailBoard.mjs';
 import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -4428,6 +4429,10 @@ function buildDailyGamePage(cfg) {
     heroProps.playHref = hasDailyTaster ? '#taster' : playHref;
     heroProps.playLabel = hasDailyTaster ? 'Play seven questions now →' : heroProps.playLabel;
   }
+  if (cfg.gameParam === 'trail') {
+    heroProps.playHref = '#practice';
+    heroProps.playLabel = 'Play a trail now →';
+  }
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: hasDailyTaster })}
 <body>
@@ -4435,6 +4440,7 @@ ${NAV}
 <main id="main">
 ${board ? heroTwoCol(heroProps, board) : heroSection(heroProps)}
 ${hasDailyTaster ? renderTaster(dailyTaster, 'the Daily 7', playHref) : ''}
+${cfg.gameParam === 'trail' ? `<style>${TRAIL_BOARD_CSS}</style>${trailBoardHtml()}<script>${TRAIL_BOARD_JS}</script>` : ''}
 <section class="sec"><h2>How to play</h2>
 <div class="prose">
 ${howHtml}
