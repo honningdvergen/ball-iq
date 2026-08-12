@@ -214,7 +214,15 @@ export const TRAIL_PLAYERS = [
     clubs: ["Jong Ajax","Ajax","Barcelona"],
     loans: [false,false,false] },
   { key: "AFELLAY", display: ["Ibrahim","Afellay"], nat: "Kingdom of the Netherlands",
-    clubs: ["PSV Eindhoven |caps1 = 159 |goals1 = 35","Barcelona |caps2 = 21 |goals2 = 2","Schalke 04 |caps3 = 10 |goals3 = 2","Olympiacos |caps4 = 19 |goals4 = 4","Stoke City |caps5 = 49 |goals5 = 2","PSV Eindhoven |caps6 = 3 |goals6 = 0"],
+    // ⚠️ WAS CORRUPT UNTIL 2026-08-12, and would have rendered as a rung reading
+    // "PSV Eindhoven |caps1 = 159 |goals1 = 35" on Trail #29. His infobox puts
+    // clubs, caps and goals on ONE line — the only article in 102 that does —
+    // so the generator's end-of-line capture swallowed two extra fields into
+    // every club name. Nothing in the build could see it: the tests check
+    // schedule shape, not that a club name is a club name. Found by
+    // scripts/verify-trail-careers.mjs on its first real run, 19 days before
+    // the puzzle was due. The parser now cuts trailing infobox fields.
+    clubs: ["PSV","Barcelona","Schalke 04","Olympiacos","Stoke City","PSV"],
     loans: [false,false,true,true,false,false] },
   { key: "STONES", display: ["John","Stones"], nat: "United Kingdom",
     clubs: ["Barnsley","Everton","Man City","Inter Milan"],
@@ -401,8 +409,13 @@ export const TRAIL_PLAYERS = [
     clubs: ["Genk","Atletico Madrid","Chelsea","Real Madrid"],
     loans: [false, true, false, false] },
   { key: "GRIEZMANN", display: ["Antoine","Griezmann"], nat: "France",
-    clubs: ["Real Sociedad","Atletico Madrid","Barcelona","Atletico Madrid"],
-    loans: [false, false, false, false] },
+    // ⚠️ Orlando City added 2026-08-12 by scripts/verify-trail-careers.mjs, which
+    // caught the move FOUR DAYS before Trail #14 would have shipped the old
+    // four-club path as today's puzzle. Confirmed against Wikidata P54 (start
+    // 2026) as well as the infobox — one source is not enough for a claim about
+    // a living player, and Wikipedia vandalism has reached our binaries before.
+    clubs: ["Real Sociedad","Atletico Madrid","Barcelona","Atletico Madrid","Orlando City"],
+    loans: [false, false, false, false, false] },
   { key: "DE_BRUYNE", display: ["Kevin","De Bruyne"], nat: "Belgium",
     clubs: ["Genk","Chelsea","Werder Bremen","Wolfsburg","Man City","Napoli"],
     loans: [false, false, true, false, false, false] },
@@ -415,8 +428,13 @@ export const TRAIL_PLAYERS = [
   { key: "LEWANDOWSKI", display: ["Robert","Lewandowski"], nat: "Poland",
     // Znicz Pruszkow opens the real career but is third-tier Polish football —
     // dropped for the same editorial reason Modric's loan openers were.
-    clubs: ["Lech Poznan","Dortmund","Bayern Munich","Barcelona"],
-    loans: [false, false, false, false] },
+    // ⚠️ Chicago Fire added 2026-08-12 by scripts/verify-trail-careers.mjs,
+    // confirmed against Wikidata P54 (start 2026) as well as the infobox. With
+    // the two trimmed Polish clubs the full career is seven rungs, over the
+    // six-rung cap — this stays at five because the trim is a deliberate
+    // editorial subset made in wave M, not a truncation of the recent end.
+    clubs: ["Lech Poznan","Dortmund","Bayern Munich","Barcelona","Chicago Fire"],
+    loans: [false, false, false, false, false] },
 ];
 
 // Frozen answer log: TRAIL_ANSWER_LOG[n] is the player `key` for day index
