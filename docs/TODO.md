@@ -1,25 +1,52 @@
 # Ball IQ — the board
 
-## ▶ WHERE WE ARE (2026-08-12)
+## ▶ WHERE WE ARE (2026-08-12, evening)
 
-**Live today:** intent navigation (Games / Quizzes / Discover) — mobile had NO
-nav at all before this; `/fun-facts/` (100 facts mined from verified bank
-hints); playable /lists; floating glass tab bar; iOS 1.5.1 (56) in Xcode for
-Alex to device-test. Photo pool: 156 curated nulls, 974 cutouts in the bucket,
-167 summer-2026 portraits applied.
+**Shipped today:** intent nav (Games/Quizzes/Discover — mobile had NO nav at
+all); `/fun-facts/` (100 facts mined from verified bank hints); playable
+/lists; floating glass tab bar w/ scroll-away + Threads-level material;
+iOS **1.5.1 build 57** synced and ready in Xcode. Photos: 167 summer-2026
+portraits applied, 974 cutouts in the bucket, 156 curated monograms.
 
-**ALEX-OWNED, highest leverage first**
-1. Send the partnership pitch — kit + live /partners/ page ready; season window
-2. Device-test 1.5.1 (56): floating tab bar, monochrome active, glass
-3. Lineup builder go-live call (it is live but unlinked)
-4. VAPID secrets → unlocks the whole web push / streak-saver system
-5. AdSense resubmit — ONCE, ~3 weeks after 2026-08-11 recrawl started
+### 🔴 ALEX-OWNED (highest leverage first)
+1. **Send the partnership pitch** — kit + live /partners/ page ready. PL
+   kickoff is ~9 days out; this is the only lever that MULTIPLIES signups.
+2. **Device-test build 57** — floating bar, scroll-away, glass, monochrome.
+3. **Lineup builder go-live call** — live at /lineup/ but unlinked.
+4. **VAPID secrets** — unlocks the entire web push / streak-saver system.
+5. **AdSense resubmit — ONCE**, ~3 weeks after the 2026-08-11 recrawl.
+6. **Store rename trivia → quiz** (both consoles; no word repeats across
+   name/subtitle/keywords).
+7. **PL-kickoff social assets** + your posting plan.
 
-**MINE, next up**
-- Guess the XI: build the /xi/ page on the 20 verified XIs (data is ready)
-- Fame-tail eyeball pass (sheets 3-6) + mechanical photo quality gate
-- CI: e2e console-noise residue, then flip strict
-- Web/app seam: the "why download if web IS the app" strategy question
+### 🟠 MINE — committed, not started
+- **Guess the XI page** (`/xi/`) — 20 verified XIs ready, page is the last mile
+- **Season 2026/27 refresh** — bank facts + /lists tables go stale AT kickoff
+- **Growth-loop plumbing** — invite carries sender identity; ghost-name capture
+  at the challenge send-back (the two biggest leaks the scan found)
+- **Emoji mode** ("guess the club by emojis") — Alex approved, unbuilt
+- **Web/app seam** — the "why download if web IS the app" strategy question
+
+### 🟡 CAUGHT WHILE WORKING TODAY (all real, none blocking)
+- ⚠️ **UIScene lifecycle**: iOS warns "will result in an assert in the future".
+  Our Capacitor 6 shell does not adopt it → concrete reason to finish the
+  **Capacitor 8 branch** (already in flight, #74).
+- ⚠️ **Android glass UNVERIFIED**: reasoned from spec + `@supports` fallback
+  added, but never run on the emulator. Do before the Play build.
+- **Xcode asset warning**: "image set 'Splash' has 3 unassigned children".
+- **Build hygiene**: '[CP] Embed Pods Frameworks' has no outputs → runs every
+  build.
+- **Cold-start perf**: WebContent 6.3s / Networking 7.5s on a DEBUG launch.
+  Measure in Release before drawing any conclusion.
+- **Daily 7 has no landing page** — the only game without one (found while
+  building the nav; every other game got a menu entry with a real URL).
+- **Photo fame-tail never eyeballed** (sheets 3-6) + the mechanical quality
+  gate (face px / age / framability) is still unbuilt.
+- **CI**: e2e console-noise residue (35 on the runner), then flip strict.
+- **XI parser**: Dutch surnames ("van der Sar" → "Sar"); 1999 UCL + 2014 WC
+  still dropped (different markup).
+- **Trail variety**: 45 careers over a 397-day schedule = fortnightly repeats.
+- **This board is ~1,950 lines** and needs a prune of pre-August sections.
 
 ---
 
