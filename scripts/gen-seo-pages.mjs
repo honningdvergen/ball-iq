@@ -2768,7 +2768,14 @@ ${as}
     .qa-round{page-break-inside:avoid}
   }
 </style>
-<main>
+${/* ⚠️ THESE PAGES HAD NO SITE NAV — the only page type on the domain without
+      one. They are out of the sitemap and canonicalised to their /quiz/ twin,
+      but they are still LIVE and still linked from that twin ("Want them as a
+      printable list instead?"), so a real person does land here — and then had
+      nowhere to go but back. The print stylesheet above already hides nav,
+      header and footer, so adding it costs the printed sheet nothing. */ ''}
+${NAV}
+<main id="main">
 <section class="sec">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <a href="${SITE.base}/quiz/${cfg.slug}/">${esc(cfg.name)} quiz</a> › <span>Questions and answers</span></nav>
 <h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 10px">${esc(cfg.name)} Quiz Questions and Answers</h1>
