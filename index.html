@@ -178,6 +178,25 @@
             (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) ||
             document.documentElement.classList.contains('native-app');
           if (!isNative) {
+            /* ⚠️ ADS + CMP ARE SWITCHED OFF (2026-08-12, Alex: "let us forget
+               the adsense for now, we will not resubmit for a while").
+
+               They were BOTH still loading on every page view while dormant,
+               and Lighthouse put a number on the cost: the Funding Choices CMP
+               sets _GRECAPTCHA and NID third-party cookies and held Best
+               Practices at 77 on the live club page. Two third-party scripts,
+               a cookie banner obligation and a scoring penalty — for an ad
+               account we are not currently pursuing. All cost, no revenue.
+
+               TO TURN ADS BACK ON: set ADS_ACTIVE to true here, publish the
+               GDPR message in the AdSense console, and re-populate AD_SLOTS in
+               scripts/gen-seo-pages.mjs. Nothing else was deleted.
+
+               Microsoft Clarity below is DELIBERATELY OUTSIDE this switch —
+               it is our own analytics, first-party, and the thing that told us
+               reference pages without a taster held ~2.3 seconds. */
+            var ADS_ACTIVE = false;
+            if (ADS_ACTIVE) {
             /* GOOGLE CMP (Funding Choices) — loaded BEFORE the ad library.
                There was no consent management anywhere on this site. Google
                requires a certified CMP for EEA/UK traffic, and Ball IQ is
@@ -213,6 +232,7 @@
             s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7467890219483381';
             s.crossOrigin = 'anonymous';
             document.head.appendChild(s);
+            }
             /* Microsoft Clarity (session replays / heatmaps) — WEB ONLY, same
                native guard as AdSense above: the native app's privacy policy
                and store listings declare no analytics, so the Capacitor app
