@@ -83,6 +83,33 @@ function calledNames(src) {
   return calls;
 }
 
+// ⚠️ THE SAME BLIND SPOT EXISTS ON EVERY GENERATED GAME PAGE. Guess the XI, the
+// Trail board and the Mystery board each ship an inline script that eslint and
+// vite never see — the identical hole that let the lineup page break twice.
+// They are checked here at SOURCE (the *_JS exports) rather than by parsing
+// built HTML, so a failure names the module a human edits.
+function strip(src) {
+  return src
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/(^|[^:])\/\/[^\n]*/g, '$1 ')
+    .replace(/'(?:\\.|[^'\\])*'/g, "''")
+    .replace(/"(?:\\.|[^"\\])*"/g, '""')
+    .replace(/`(?:\\.|[^`\\])*`/g, '``');
+}
+
+function undefinedCalls(src) {
+  const code = strip(src);
+  const declared = declaredNames(code);
+  return [...calledNames(code)].filter((n) => !declared.has(n) && !GLOBALS.has(n));
+}
+
+function syntaxOk(src) {
+  const dir = mkdtempSync(join(tmpdir(), 'inline-syntax-'));
+  const file = join(dir, 'inline.js');
+  writeFileSync(file, src);
+  execFileSync(process.execPath, ['--check', file], { encoding: 'utf8' });
+}
+
 describe('lineup builder page', () => {
   it('has an inline script', () => {
     expect(SCRIPT.length).toBeGreaterThan(1000);
@@ -128,4 +155,26 @@ describe('lineup builder page', () => {
     const fn = SCRIPT.match(/function withBodyPull\([\s\S]*?\n\}/)[0];
     expect(fn).toMatch(/if\s*\(cm\.l == null \|\| cm\.r == null\)\s*return faceLeft;/);
   });
+});
+
+describe('generated game pages', () => {
+  // Each entry is a module a human edits and an inline script nobody lints.
+  const CASES = [
+    ['scripts/seo/xiGame.mjs', 'XI_JS'],
+    ['scripts/seo/trailBoard.mjs', 'TRAIL_BOARD_JS'],
+    ['scripts/seo/mysteryBoard.mjs', 'MYSTERY_BOARD_JS'],
+  ];
+
+  for (const [mod, exportName] of CASES) {
+    it(`${exportName} is valid JavaScript`, async () => {
+      const m = await import(resolve(process.cwd(), mod));
+      expect(() => syntaxOk(m[exportName])).not.toThrow();
+    });
+
+    it(`${exportName} calls no function it does not define`, async () => {
+      const m = await import(resolve(process.cwd(), mod));
+      const missing = undefinedCalls(m[exportName]);
+      expect(missing, `${exportName}: undefined function(s) called: ${missing.join(', ')}`).toEqual([]);
+    });
+  }
 });
