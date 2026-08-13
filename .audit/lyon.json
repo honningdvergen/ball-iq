@@ -1,0 +1,5 @@
+[
+  { "q": "Olympique Lyonnais were founded in which year?", "o": ["1950", "1899", "1920", "1968"], "a": 0, "diff": "hard", "hint": "The club emerged from the football section of an older multi-sport association and moved into the Stade de Gerland the same year.", "cat": "History", "club": "Olympique Lyonnais", "type": "mcq" },
+  { "q": "How many Coupe de France titles have Lyon won?", "o": ["Five", "One", "Ten", "None"], "a": 0, "diff": "hard", "hint": "The first came in 1964 and the most recent in 2012, so they are outnumbered by the club's seven league titles.", "cat": "History", "club": "Olympique Lyonnais", "type": "mcq" },
+  { "q": "Which club won the last Ligue 1 title before Lyon's run of seven began?", "o": ["Nantes", "Marseille", "Monaco", "Paris Saint-Germain"], "a": 0, "diff": "hard", "hint": "They took the 2000-01 championship, and Lyon then won every title from 2001-02 onwards.", "cat": "History", "club": "Olympique Lyonnais", "type": "mcq" }
+]

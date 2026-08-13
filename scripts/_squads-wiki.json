@@ -403,6 +403,14 @@
    "qid": "Q67198835"
   },
   {
+   "article": "Ronald Araújo",
+   "display": "Ronald Araújo",
+   "no": 33,
+   "pos": "DF",
+   "nat": "URU",
+   "qid": "Q56332606"
+  },
+  {
    "article": "Ryan Gravenberch",
    "display": "Ryan Gravenberch",
    "no": 38,
@@ -476,6 +484,14 @@
   }
  ],
  "Manchester United": [
+  {
+   "article": "Senne Lammens",
+   "display": "Senne Lammens",
+   "no": 1,
+   "pos": "GK",
+   "nat": "BEL",
+   "qid": "Q98100512"
+  },
   {
    "article": "Diogo Dalot",
    "display": "Diogo Dalot",
@@ -565,14 +581,6 @@
    "qid": "Q121903982"
   },
   {
-   "article": "Marcus Rashford",
-   "display": "Marcus Rashford",
-   "no": 14,
-   "pos": "FW",
-   "nat": "ENG",
-   "qid": "Q22951255"
-  },
-  {
    "article": "Leny Yoro",
    "display": "Leny Yoro",
    "no": 15,
@@ -653,14 +661,6 @@
    "qid": "Q65950315"
   },
   {
-   "article": "Senne Lammens",
-   "display": "Senne Lammens",
-   "no": 31,
-   "pos": "GK",
-   "nat": "BEL",
-   "qid": "Q98100512"
-  },
-  {
    "article": "Kobbie Mainoo",
    "display": "Kobbie Mainoo",
    "no": 37,
@@ -715,9 +715,25 @@
    "pos": "FW",
    "nat": "ENG",
    "qid": "Q117207006"
+  },
+  {
+   "article": "Marcus Rashford",
+   "display": "Marcus Rashford",
+   "no": null,
+   "pos": "FW",
+   "nat": "ENG",
+   "qid": "Q22951255"
   }
  ],
  "Manchester City": [
+  {
+   "article": "Gianluigi Donnarumma",
+   "display": "Gianluigi Donnarumma",
+   "no": 1,
+   "pos": "GK",
+   "nat": "ITA",
+   "qid": "Q20830808"
+  },
   {
    "article": "Rúben Dias",
    "display": "Rúben Dias",
@@ -733,6 +749,22 @@
    "pos": "MF",
    "nat": "NED",
    "qid": "Q39500352"
+  },
+  {
+   "article": "Elliot Anderson",
+   "display": "Elliot Anderson",
+   "no": 5,
+   "pos": "MF",
+   "nat": "ENG",
+   "qid": "Q104762954"
+  },
+  {
+   "article": "Marc Guéhi",
+   "display": "Marc Guéhi",
+   "no": 6,
+   "pos": "DF",
+   "nat": "ENG",
+   "qid": "Q44737396"
   },
   {
    "article": "Omar Marmoush",
@@ -791,14 +823,6 @@
    "qid": null
   },
   {
-   "article": "Marc Guéhi",
-   "display": "Marc Guéhi",
-   "no": 15,
-   "pos": "DF",
-   "nat": "ENG",
-   "qid": "Q44737396"
-  },
-  {
    "article": null,
    "display": "[[Rodri (footballer, born 1996)",
    "no": 16,
@@ -831,14 +855,6 @@
    "qid": "Q73400656"
   },
   {
-   "article": "Gianluigi Donnarumma",
-   "display": "Gianluigi Donnarumma",
-   "no": 25,
-   "pos": "GK",
-   "nat": "ITA",
-   "qid": "Q20830808"
-  },
-  {
    "article": "Savinho",
    "display": "Savinho",
    "no": 26,
@@ -853,6 +869,14 @@
    "pos": "MF",
    "nat": "POR",
    "qid": "Q96211488"
+  },
+  {
+   "article": "Gerónimo Rulli",
+   "display": "Gerónimo Rulli",
+   "no": 28,
+   "pos": "GK",
+   "nat": "ARG",
+   "qid": "Q5879014"
   },
   {
    "article": "Claudio Echeverri",
@@ -871,20 +895,20 @@
    "qid": "Q118645253"
   },
   {
+   "article": "Jeremy Monga",
+   "display": "Jeremy Monga",
+   "no": 40,
+   "pos": "FW",
+   "nat": "ENG",
+   "qid": "Q133832511"
+  },
+  {
    "article": "Antoine Semenyo",
    "display": "Antoine Semenyo",
    "no": 42,
    "pos": "MF",
    "nat": "GHA",
    "qid": "Q52990659"
-  },
-  {
-   "article": "Kalvin Phillips",
-   "display": "Kalvin Phillips",
-   "no": 44,
-   "pos": "MF",
-   "nat": "ENG",
-   "qid": "Q20641319"
   },
   {
    "article": "Abdukodir Khusanov",
@@ -927,28 +951,12 @@
    "qid": "Q105477902"
   },
   {
-   "article": "Elliot Anderson",
-   "display": "Elliot Anderson",
-   "no": null,
-   "pos": "MF",
-   "nat": "ENG",
-   "qid": "Q104762954"
-  },
-  {
    "article": "Jack Grealish",
    "display": "Jack Grealish",
    "no": null,
    "pos": "MF",
    "nat": "ENG",
    "qid": "Q16056053"
-  },
-  {
-   "article": "Jeremy Monga",
-   "display": "Jeremy Monga",
-   "no": null,
-   "pos": "FW",
-   "nat": "ENG",
-   "qid": "Q133832511"
   }
  ],
  "Tottenham Hotspur": [
@@ -1129,14 +1137,6 @@
    "qid": "Q111113892"
   },
   {
-   "article": "Manor Solomon",
-   "display": "Manor Solomon",
-   "no": 27,
-   "pos": "FW",
-   "nat": "ISR",
-   "qid": "Q28968069"
-  },
-  {
    "article": "Wilson Odobert",
    "display": "Wilson Odobert",
    "no": 28,
@@ -1223,14 +1223,6 @@
    "pos": "FW",
    "nat": "ENG",
    "qid": "Q102362241"
-  },
-  {
-   "article": "Yang Min-hyeok",
-   "display": "Yang Min-hyeok",
-   "no": 59,
-   "pos": "FW",
-   "nat": "KOR",
-   "qid": "Q126684328"
   }
  ],
  "Newcastle United": [
@@ -1393,14 +1385,6 @@
    "pos": "DF",
    "nat": "ENG",
    "qid": "Q5213217"
-  },
-  {
-   "article": null,
-   "display": "[[Alex Murphy (footballer)",
-   "no": 37,
-   "pos": "DF",
-   "nat": "IRL",
-   "qid": null
   },
   {
    "article": "Jacob Ramsey",
@@ -1719,10 +1703,18 @@
    "qid": "Q97404267"
   },
   {
+   "article": "Ademola Lookman",
+   "display": "Ademola Lookman",
+   "no": 11,
+   "pos": "FW",
+   "nat": "NGA",
+   "qid": "Q21484766"
+  },
+  {
    "article": null,
    "display": "[[Carlos Martín (footballer)",
    "no": 12,
-   "pos": "FW",
+   "pos": "MF",
    "nat": "ESP",
    "qid": null
   },
@@ -1749,14 +1741,6 @@
    "pos": "MF",
    "nat": "FRA",
    "qid": "Q15081905"
-  },
-  {
-   "article": "Nahuel Molina",
-   "display": "Nahuel Molina",
-   "no": 16,
-   "pos": "DF",
-   "nat": "ARG",
-   "qid": "Q22082590"
   },
   {
    "article": "Dávid Hancko",
@@ -1786,7 +1770,7 @@
    "article": "Giuliano Simeone",
    "display": "Giuliano Simeone",
    "no": 20,
-   "pos": "FW",
+   "pos": "MF",
    "nat": "ARG",
    "qid": "Q111672750"
   },
@@ -1799,12 +1783,12 @@
    "qid": "Q106778770"
   },
   {
-   "article": "Ademola Lookman",
-   "display": "Ademola Lookman",
+   "article": "Alejandro Grimaldo",
+   "display": "Alejandro Grimaldo",
    "no": 22,
-   "pos": "MF",
-   "nat": "NGA",
-   "qid": "Q21484766"
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": "Q921324"
   },
   {
    "article": "Morten Hjulmand",
@@ -1821,14 +1805,6 @@
    "pos": "DF",
    "nat": "ESP",
    "qid": "Q27469970"
-  },
-  {
-   "article": "Alejandro Grimaldo",
-   "display": "Alejandro Grimaldo",
-   "no": null,
-   "pos": "DF",
-   "nat": "ESP",
-   "qid": "Q921324"
   }
  ],
  "Bayern Munich": [
@@ -1969,20 +1945,20 @@
    "qid": "Q18670270"
   },
   {
-   "article": "Felipe Chávez",
-   "display": "Felipe Chávez",
-   "no": 30,
-   "pos": "MF",
-   "nat": "PER",
-   "qid": "Q121841651"
-  },
-  {
    "article": "Ismael Saibari",
    "display": "Ismael Saibari",
    "no": 34,
    "pos": "MF",
    "nat": "MAR",
    "qid": "Q98784065"
+  },
+  {
+   "article": "Bara Sapoko Ndiaye",
+   "display": "Bara Sapoko Ndiaye",
+   "no": 39,
+   "pos": "MF",
+   "nat": "SEN",
+   "qid": "Q137733792"
   },
   {
    "article": "Jonas Urbig",
@@ -2017,20 +1993,20 @@
    "qid": null
   },
   {
-   "article": "Bara Sapoko Ndiaye",
-   "display": "Bara Sapoko Ndiaye",
-   "no": null,
-   "pos": "MF",
-   "nat": "SEN",
-   "qid": "Q137733792"
-  },
-  {
    "article": "David Santos Daiber",
    "display": "David Santos Daiber",
-   "no": null,
+   "no": 47,
    "pos": "MF",
    "nat": "POR",
    "qid": "Q134713602"
+  },
+  {
+   "article": "Felipe Chávez",
+   "display": "Felipe Chávez",
+   "no": null,
+   "pos": "MF",
+   "nat": "PER",
+   "qid": "Q121841651"
   },
   {
    "article": "João Palhinha",
@@ -3091,6 +3067,14 @@
    "qid": "Q114436146"
   },
   {
+   "article": "Diant Ramaj",
+   "display": "Diant Ramaj",
+   "no": 32,
+   "pos": "GK",
+   "nat": "GER",
+   "qid": "Q104177308"
+  },
+  {
    "article": null,
    "display": "[[Alexander Meyer (footballer, born 1991)",
    "no": 33,
@@ -3139,28 +3123,20 @@
    "qid": "Q118465236"
   },
   {
+   "article": "Mussa Kaba",
+   "display": "Mussa Kaba",
+   "no": 48,
+   "pos": "MF",
+   "nat": "GER",
+   "qid": "Q137395975"
+  },
+  {
    "article": "Luca Reggiani",
    "display": "Luca Reggiani",
    "no": 49,
    "pos": "DF",
    "nat": "ITA",
    "qid": "Q134546606"
-  },
-  {
-   "article": "Diant Ramaj",
-   "display": "Diant Ramaj",
-   "no": null,
-   "pos": "GK",
-   "nat": "GER",
-   "qid": "Q104177308"
-  },
-  {
-   "article": "Mussa Kaba",
-   "display": "Mussa Kaba",
-   "no": null,
-   "pos": "MF",
-   "nat": "GER",
-   "qid": "Q137395975"
   }
  ],
  "Ajax": [
@@ -3485,14 +3461,6 @@
    "pos": "MF",
    "nat": "SCO",
    "qid": "Q29624459"
-  },
-  {
-   "article": "Romelu Lukaku",
-   "display": "Romelu Lukaku",
-   "no": 9,
-   "pos": "FW",
-   "nat": "BEL",
-   "qid": "Q313316"
   },
   {
    "article": "Kevin De Bruyne",
@@ -3979,14 +3947,6 @@
    "qid": "Q20090180"
   },
   {
-   "article": "Franjo Ivanović",
-   "display": "Franjo Ivanović",
-   "no": 9,
-   "pos": "FW",
-   "nat": "CRO",
-   "qid": "Q121535913"
-  },
-  {
    "article": "Heorhiy Sudakov",
    "display": "Heorhiy Sudakov",
    "no": 10,
@@ -4131,12 +4091,20 @@
    "qid": null
   },
   {
-   "article": "Nuno Félix",
-   "display": "Nuno Félix",
-   "no": 60,
-   "pos": "MF",
+   "article": "Daniel Banjaqui",
+   "display": "Daniel Banjaqui",
+   "no": 58,
+   "pos": "DF",
    "nat": "POR",
-   "qid": "Q111733872"
+   "qid": "Q134610038"
+  },
+  {
+   "article": null,
+   "display": "[[José Neto (footballer, born 2008)",
+   "no": 62,
+   "pos": "DF",
+   "nat": "POR",
+   "qid": null
   },
   {
    "article": "Joshua Wynder",
@@ -4145,6 +4113,14 @@
    "pos": "DF",
    "nat": "USA",
    "qid": "Q108610355"
+  },
+  {
+   "article": "Anísio Cabral",
+   "display": "Anísio Cabral",
+   "no": 72,
+   "pos": "FW",
+   "nat": "POR",
+   "qid": "Q134609381"
   },
   {
    "article": "João Rego",
@@ -4475,6 +4451,14 @@
    "pos": "FW",
    "nat": "SEN",
    "qid": "Q118436045"
+  },
+  {
+   "article": "Romelu Lukaku",
+   "display": "Romelu Lukaku",
+   "no": null,
+   "pos": "FW",
+   "nat": "BEL",
+   "qid": "Q313316"
   }
  ],
  "Porto": [
@@ -4817,6 +4801,14 @@
    "qid": "Q194149"
   },
   {
+   "article": "Haissem Hassan",
+   "display": "Haissem Hassan",
+   "no": 23,
+   "pos": "FW",
+   "nat": "EGY",
+   "qid": "Q58303188"
+  },
+  {
    "article": "Johnny Kenny",
    "display": "Johnny Kenny",
    "no": 24,
@@ -4844,7 +4836,7 @@
    "article": "Adam Montgomery",
    "display": "Adam Montgomery",
    "no": 37,
-   "pos": "DF",
+   "pos": "MF",
    "nat": "SCO",
    "qid": "Q106822395"
   },
@@ -4903,6 +4895,14 @@
    "pos": "DF",
    "nat": "SCO",
    "qid": "Q19888012"
+  },
+  {
+   "article": "Mika Baur",
+   "display": "Mika Baur",
+   "no": null,
+   "pos": "MF",
+   "nat": "GER",
+   "qid": "Q110590119"
   }
  ],
  "Rangers": [
@@ -4969,14 +4969,6 @@
    "pos": "FW",
    "nat": "POR",
    "qid": "Q116213349"
-  },
-  {
-   "article": "Mohamed Diomande",
-   "display": "Mohamed Diomande",
-   "no": 10,
-   "pos": "MF",
-   "nat": "CIV",
-   "qid": "Q88069926"
   },
   {
    "article": "Thelo Aasgaard",
@@ -5141,14 +5133,6 @@
  ],
  "Marseille": [
   {
-   "article": "Gerónimo Rulli",
-   "display": "Gerónimo Rulli",
-   "no": 1,
-   "pos": "GK",
-   "nat": "ARG",
-   "qid": "Q5879014"
-  },
-  {
    "article": "CJ Egan-Riley",
    "display": "CJ Egan-Riley",
    "no": 4,
@@ -5291,14 +5275,6 @@
    "pos": "FW",
    "nat": "CMR",
    "qid": "Q55820199"
-  },
-  {
-   "article": "Facundo Medina",
-   "display": "Facundo Medina",
-   "no": 32,
-   "pos": "DF",
-   "nat": "ARG",
-   "qid": "Q28056787"
   },
   {
    "article": "Emerson Palmieri",
@@ -6144,7 +6120,7 @@
    "article": "Leandro Trossard",
    "display": "Leandro Trossard",
    "no": 19,
-   "pos": "FW",
+   "pos": "MF",
    "nat": "BEL",
    "qid": "Q6509762"
   },
@@ -6251,6 +6227,14 @@
    "pos": "GK",
    "nat": "TUR",
    "qid": "Q124386688"
+  },
+  {
+   "article": "Dušan Vlahović",
+   "display": "Dušan Vlahović",
+   "no": null,
+   "pos": "FW",
+   "nat": "SER",
+   "qid": "Q23762815"
   }
  ],
  "Trabzonspor": [
@@ -6341,14 +6325,6 @@
    "pos": "MF",
    "nat": "UKR",
    "qid": "Q7381020"
-  },
-  {
-   "article": "Salih Malkoçoğlu",
-   "display": "Salih Malkoçoğlu",
-   "no": 18,
-   "pos": "MF",
-   "nat": "TUR",
-   "qid": "Q123182291"
   },
   {
    "article": "René Mitongo",
@@ -6447,12 +6423,12 @@
    "qid": "Q95984209"
   },
   {
-   "article": null,
-   "display": "Thierry Karadeniz",
-   "no": 77,
-   "pos": "MF",
-   "nat": "TUR",
-   "qid": null
+   "article": "Noah Saviolo",
+   "display": "Noah Saviolo",
+   "no": 70,
+   "pos": "FW",
+   "nat": "POR",
+   "qid": "Q136305702"
   },
   {
    "article": null,
@@ -6501,14 +6477,6 @@
    "pos": "MF",
    "nat": "TUR",
    "qid": "Q113636910"
-  },
-  {
-   "article": "Noah Saviolo",
-   "display": "Noah Saviolo",
-   "no": null,
-   "pos": "FW",
-   "nat": "POR",
-   "qid": "Q136305702"
   },
   {
    "article": "Cihan Çanak",
@@ -6583,14 +6551,6 @@
    "pos": "MF",
    "nat": "NOR",
    "qid": "Q29347712"
-  },
-  {
-   "article": "Bjorn Meijer",
-   "display": "Bjorn Meijer",
-   "no": 14,
-   "pos": "DF",
-   "nat": "NED",
-   "qid": "Q108413744"
   },
   {
    "article": "Cheveyo Tsawa",
@@ -6788,8 +6748,8 @@
    "qid": "Q16901322"
   },
   {
-   "article": "Dion Beljo",
-   "display": "Dion Beljo",
+   "article": "Dion Drena Beljo",
+   "display": "Dion Drena Beljo",
    "no": 9,
    "pos": "FW",
    "nat": "CRO",
@@ -7265,12 +7225,12 @@
    "qid": "Q6144020"
   },
   {
-   "article": "Dwight McNeil",
-   "display": "Dwight McNeil",
-   "no": 7,
-   "pos": "FW",
+   "article": "Kiernan Dewsbury-Hall",
+   "display": "Kiernan Dewsbury-Hall",
+   "no": 8,
+   "pos": "MF",
    "nat": "ENG",
-   "qid": "Q53652291"
+   "qid": "Q83632882"
   },
   {
    "article": null,
@@ -7337,12 +7297,12 @@
    "qid": "Q115973966"
   },
   {
-   "article": "Kiernan Dewsbury-Hall",
-   "display": "Kiernan Dewsbury-Hall",
+   "article": "Brennan Johnson",
+   "display": "Brennan Johnson",
    "no": 22,
-   "pos": "MF",
-   "nat": "ENG",
-   "qid": "Q83632882"
+   "pos": "FW",
+   "nat": "WAL",
+   "qid": "Q66108160"
   },
   {
    "article": "Christian Nørgaard",
@@ -7427,12 +7387,12 @@
  ],
  "Leeds United": [
   {
-   "article": "Lucas Perri",
-   "display": "Lucas Perri",
+   "article": "James Trafford",
+   "display": "James Trafford",
    "no": 1,
    "pos": "GK",
-   "nat": "BRA",
-   "qid": "Q23893097"
+   "nat": "ENG",
+   "qid": "Q107985608"
   },
   {
    "article": "Jayden Bogle",
@@ -7579,14 +7539,6 @@
    "qid": "Q26251403"
   },
   {
-   "article": "Sam Byram",
-   "display": "Sam Byram",
-   "no": 25,
-   "pos": "DF",
-   "nat": "ENG",
-   "qid": "Q5591335"
-  },
-  {
    "article": "Wilfried Gnonto",
    "display": "Wilfried Gnonto",
    "no": 29,
@@ -7619,12 +7571,12 @@
    "qid": null
   },
   {
-   "article": "James Trafford",
-   "display": "James Trafford",
+   "article": "Lucas Perri",
+   "display": "Lucas Perri",
    "no": null,
    "pos": "GK",
-   "nat": "ENG",
-   "qid": "Q107985608"
+   "nat": "BRA",
+   "qid": "Q23893097"
   },
   {
    "article": "Mateo Joseph",
@@ -7683,6 +7635,14 @@
    "pos": "MF",
    "nat": "ENG",
    "qid": "Q2643777"
+  },
+  {
+   "article": "Manor Solomon",
+   "display": "Manor Solomon",
+   "no": 10,
+   "pos": "FW",
+   "nat": "ISR",
+   "qid": "Q28968069"
   },
   {
    "article": "Taty Castellanos",
@@ -8125,14 +8085,6 @@
    "pos": "FW",
    "nat": "GNB",
    "qid": "Q113688253"
-  },
-  {
-   "article": "Julen Agirrezabala",
-   "display": "Julen Agirrezabala",
-   "no": null,
-   "pos": "GK",
-   "nat": "ESP",
-   "qid": "Q106637226"
   }
  ],
  "Real Betis": [],
@@ -8372,20 +8324,20 @@
  ],
  "Fiorentina": [
   {
-   "article": "Luca Lezzerini",
-   "display": "Luca Lezzerini",
-   "no": 1,
-   "pos": "GK",
-   "nat": "ITA",
-   "qid": "Q18812080"
-  },
-  {
    "article": null,
    "display": "[[Dodô (footballer, born 1998)",
    "no": 2,
    "pos": "DF",
    "nat": "BRA",
    "qid": null
+  },
+  {
+   "article": "Radu Drăgușin",
+   "display": "Radu Drăgușin",
+   "no": 3,
+   "pos": "DF",
+   "nat": "ROU",
+   "qid": "Q86835512"
   },
   {
    "article": "Marco Brescianini",
@@ -8420,28 +8372,60 @@
    "qid": "Q18402294"
   },
   {
-   "article": null,
-   "display": "[[Albert Guðmundsson (footballer, born 1997)",
-   "no": 10,
-   "pos": "FW",
-   "nat": "ISL",
-   "qid": null
-  },
-  {
    "article": "Moise Kean",
    "display": "Moise Kean",
-   "no": 20,
+   "no": 9,
    "pos": "FW",
    "nat": "ITA",
    "qid": "Q27889974"
   },
   {
-   "article": "Eman Košpo",
-   "display": "Eman Košpo",
-   "no": 23,
+   "article": null,
+   "display": "[[Albert Guðmundsson (footballer, born 1997)",
+   "no": 11,
+   "pos": "FW",
+   "nat": "ISL",
+   "qid": null
+  },
+  {
+   "article": "Arthur Atta",
+   "display": "Arthur Atta",
+   "no": 14,
+   "pos": "MF",
+   "nat": "FRA",
+   "qid": "Q117208045"
+  },
+  {
+   "article": null,
+   "display": "[[João Mário (footballer, born 2000)",
+   "no": 17,
    "pos": "DF",
-   "nat": "BIH",
-   "qid": "Q124711934"
+   "nat": "POR",
+   "qid": null
+  },
+  {
+   "article": "Luca Lezzerini",
+   "display": "Luca Lezzerini",
+   "no": 19,
+   "pos": "GK",
+   "nat": "ITA",
+   "qid": "Q18812080"
+  },
+  {
+   "article": null,
+   "display": "[[Álex Jiménez (footballer, born 2005)",
+   "no": 20,
+   "pos": "DF",
+   "nat": "SPA",
+   "qid": null
+  },
+  {
+   "article": "Víctor Valdepeñas",
+   "display": "Víctor Valdepeñas",
+   "no": 21,
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": "Q133818258"
   },
   {
    "article": "Cher Ndour",
@@ -8458,6 +8442,30 @@
    "pos": "DF",
    "nat": "ITA",
    "qid": "Q135402289"
+  },
+  {
+   "article": "Franco Mastantuono",
+   "display": "Franco Mastantuono",
+   "no": 30,
+   "pos": "FW",
+   "nat": "ARG",
+   "qid": "Q123289726"
+  },
+  {
+   "article": "Viery",
+   "display": "Viery",
+   "no": 33,
+   "pos": "DF",
+   "nat": "BRA",
+   "qid": "Q133801098"
+  },
+  {
+   "article": "Christ Inao Oulaï",
+   "display": "Christ Inao Oulaï",
+   "no": 42,
+   "pos": "MF",
+   "nat": "CIV",
+   "qid": "Q136038808"
   },
   {
    "article": "David de Gea",
@@ -8484,14 +8492,6 @@
    "qid": "Q51128205"
   },
   {
-   "article": "Riccardo Braschi",
-   "display": "Riccardo Braschi",
-   "no": 61,
-   "pos": "FW",
-   "nat": "ITA",
-   "qid": "Q136295574"
-  },
-  {
    "article": "Fabiano Parisi",
    "display": "Fabiano Parisi",
    "no": 65,
@@ -8514,78 +8514,6 @@
    "pos": "FW",
    "nat": "ITA",
    "qid": "Q63244084"
-  },
-  {
-   "article": "Radu Drăgușin",
-   "display": "Radu Drăgușin",
-   "no": null,
-   "pos": "DF",
-   "nat": "ROU",
-   "qid": "Q86835512"
-  },
-  {
-   "article": null,
-   "display": "[[Álex Jiménez (footballer, born 2005)",
-   "no": null,
-   "pos": "DF",
-   "nat": "SPA",
-   "qid": null
-  },
-  {
-   "article": null,
-   "display": "[[João Mário (footballer, born 2000)",
-   "no": null,
-   "pos": "DF",
-   "nat": "POR",
-   "qid": null
-  },
-  {
-   "article": "Víctor Valdepeñas",
-   "display": "Víctor Valdepeñas",
-   "no": null,
-   "pos": "DF",
-   "nat": "ESP",
-   "qid": "Q133818258"
-  },
-  {
-   "article": "Viery",
-   "display": "Viery",
-   "no": null,
-   "pos": "DF",
-   "nat": "BRA",
-   "qid": "Q133801098"
-  },
-  {
-   "article": "Arthur Atta",
-   "display": "Arthur Atta",
-   "no": null,
-   "pos": "MF",
-   "nat": "FRA",
-   "qid": "Q117208045"
-  },
-  {
-   "article": "Christ Inao Oulaï",
-   "display": "Christ Inao Oulaï",
-   "no": null,
-   "pos": "MF",
-   "nat": "CIV",
-   "qid": "Q136038808"
-  },
-  {
-   "article": "Federico Croci",
-   "display": "Federico Croci",
-   "no": null,
-   "pos": "FW",
-   "nat": "ITA",
-   "qid": "Q140065551"
-  },
-  {
-   "article": "Franco Mastantuono",
-   "display": "Franco Mastantuono",
-   "no": null,
-   "pos": "FW",
-   "nat": "ARG",
-   "qid": "Q123289726"
   }
  ],
  "Lazio": [
@@ -9526,14 +9454,6 @@
  ],
  "Sunderland": [
   {
-   "article": "Anthony Patterson",
-   "display": "Anthony Patterson",
-   "no": 1,
-   "pos": "GK",
-   "nat": "ENG",
-   "qid": "Q107987091"
-  },
-  {
    "article": "Daniel Ballard",
    "display": "Daniel Ballard",
    "no": 5,
@@ -9548,6 +9468,14 @@
    "pos": "MF",
    "nat": "MAR",
    "qid": "Q113510254"
+  },
+  {
+   "article": null,
+   "display": "[[Alan Browne (footballer)",
+   "no": 8,
+   "pos": "MF",
+   "nat": "IRL",
+   "qid": null
   },
   {
    "article": "Brian Brobbey",
@@ -9654,20 +9582,20 @@
    "qid": "Q122789696"
   },
   {
+   "article": "Jenson Seelt",
+   "display": "Jenson Seelt",
+   "no": 23,
+   "pos": "DF",
+   "nat": "NED",
+   "qid": "Q104543610"
+  },
+  {
    "article": "Simon Adingra",
    "display": "Simon Adingra",
    "no": 24,
    "pos": "MF",
    "nat": "CIV",
    "qid": "Q107742783"
-  },
-  {
-   "article": "Arthur Masuaku",
-   "display": "Arthur Masuaku",
-   "no": 26,
-   "pos": "DF",
-   "nat": "COD",
-   "qid": "Q16010783"
   },
   {
    "article": "Noah Sadiki",
@@ -9686,14 +9614,6 @@
    "qid": "Q64009974"
   },
   {
-   "article": null,
-   "display": "[[Ahmed Abdullahi (footballer)",
-   "no": 29,
-   "pos": "FW",
-   "nat": "NGA",
-   "qid": null
-  },
-  {
    "article": "Melker Ellborg",
    "display": "Melker Ellborg",
    "no": 31,
@@ -9708,14 +9628,6 @@
    "pos": "DF",
    "nat": "NIR",
    "qid": "Q110425651"
-  },
-  {
-   "article": "Leo Hjelde",
-   "display": "Leo Hjelde",
-   "no": 33,
-   "pos": "DF",
-   "nat": "NOR",
-   "qid": "Q105046386"
   },
   {
    "article": "Granit Xhaka",
@@ -9748,22 +9660,6 @@
    "pos": "MF",
    "nat": "FRA",
    "qid": "Q106860208"
-  },
-  {
-   "article": "Jenson Seelt",
-   "display": "Jenson Seelt",
-   "no": null,
-   "pos": "DF",
-   "nat": "NED",
-   "qid": "Q104543610"
-  },
-  {
-   "article": null,
-   "display": "[[Alan Browne (footballer)",
-   "no": null,
-   "pos": "MF",
-   "nat": "IRL",
-   "qid": null
   },
   {
    "article": "Luís Semedo",
@@ -10146,14 +10042,6 @@
    "qid": "Q28933132"
   },
   {
-   "article": "Brennan Johnson",
-   "display": "Brennan Johnson",
-   "no": 23,
-   "pos": "FW",
-   "nat": "WAL",
-   "qid": "Q66108160"
-  },
-  {
    "article": "Borna Sosa",
    "display": "Borna Sosa",
    "no": 24,
@@ -10258,12 +10146,20 @@
    "qid": "Q122089959"
   },
   {
-   "article": "Rio Cardines",
-   "display": "Rio Cardines",
-   "no": 59,
-   "pos": "DF",
-   "nat": "TRI",
-   "qid": "Q134607428"
+   "article": "Evann Guessand",
+   "display": "Evann Guessand",
+   "no": null,
+   "pos": "FW",
+   "nat": "CIV",
+   "qid": "Q98593672"
+  },
+  {
+   "article": "Dwight McNeil",
+   "display": "Dwight McNeil",
+   "no": null,
+   "pos": "FW",
+   "nat": "ENG",
+   "qid": "Q53652291"
   }
  ],
  "Fulham": [
@@ -10386,6 +10282,14 @@
    "pos": "FW",
    "nat": "SWE",
    "qid": "Q122227001"
+  },
+  {
+   "article": "Shea Charles",
+   "display": "Shea Charles",
+   "no": 19,
+   "pos": "MF",
+   "nat": "NIR",
+   "qid": "Q112214607"
   },
   {
    "article": "Timothy Castagne",
@@ -11170,14 +11074,6 @@
    "qid": "Q133188139"
   },
   {
-   "article": null,
-   "display": "[[Benjamin Arthur (footballer)",
-   "no": 43,
-   "pos": "FW",
-   "nat": "ENG",
-   "qid": null
-  },
-  {
    "article": "Jannik Schuster",
    "display": "Jannik Schuster",
    "no": 44,
@@ -11902,6 +11798,14 @@
    "pos": "DF",
    "nat": "ESP",
    "qid": "Q117112129"
+  },
+  {
+   "article": "Gustavo Hamer",
+   "display": "Gustavo Hamer",
+   "no": 38,
+   "pos": "MF",
+   "nat": "NED",
+   "qid": "Q27995477"
   }
  ],
  "Hull City": [
@@ -12074,6 +11978,14 @@
    "qid": "Q105473101"
   },
   {
+   "article": "Nobel Mendy",
+   "display": "Nobel Mendy",
+   "no": 32,
+   "pos": "DF",
+   "nat": "SEN",
+   "qid": "Q116053269"
+  },
+  {
    "article": "Abdülkadir Ömür",
    "display": "Abdülkadir Ömür",
    "no": 33,
@@ -12088,6 +12000,14 @@
    "pos": "DF",
    "nat": "NIR",
    "qid": "Q18142105"
+  },
+  {
+   "article": "Lucas Herrington",
+   "display": "Lucas Herrington",
+   "no": null,
+   "pos": "DF",
+   "nat": "AUS",
+   "qid": "Q133105064"
   },
   {
    "article": "Elliot Stroud",
@@ -12130,6 +12050,14 @@
    "pos": "GK",
    "nat": "NED",
    "qid": "Q5811691"
+  },
+  {
+   "article": "Facundo Medina",
+   "display": "Facundo Medina",
+   "no": 2,
+   "pos": "DF",
+   "nat": "ARG",
+   "qid": "Q28056787"
   },
   {
    "article": null,
@@ -12271,7 +12199,7 @@
    "article": "Lucas Vázquez",
    "display": "Lucas Vázquez",
    "no": 21,
-   "pos": "FW",
+   "pos": "DF",
    "nat": "ESP",
    "qid": "Q5981954"
   },
@@ -12332,14 +12260,6 @@
    "qid": "Q118118504"
   },
   {
-   "article": "Noah Mbamba",
-   "display": "Noah Mbamba",
-   "no": 31,
-   "pos": "MF",
-   "nat": "BEL",
-   "qid": "Q105047331"
-  },
-  {
    "article": "Christian Kofane",
    "display": "Christian Kofane",
    "no": 35,
@@ -12378,22 +12298,6 @@
    "pos": "MF",
    "nat": "GER",
    "qid": null
-  },
-  {
-   "article": "Ndjicoura Bomba",
-   "display": "Ndjicoura Bomba",
-   "no": null,
-   "pos": "FW",
-   "nat": "MLI",
-   "qid": "Q136513151"
-  },
-  {
-   "article": "Aleksa Damjanović",
-   "display": "Aleksa Damjanović",
-   "no": null,
-   "pos": "FW",
-   "nat": "SRB",
-   "qid": "Q135369927"
   }
  ],
  "Parma": [
@@ -12588,6 +12492,14 @@
    "pos": "FW",
    "nat": "MLI",
    "qid": "Q84522640"
+  },
+  {
+   "article": null,
+   "display": "Aymen Zouin",
+   "no": null,
+   "pos": "FW",
+   "nat": "MAR",
+   "qid": null
   }
  ],
  "AS Monaco": [
@@ -14013,14 +13925,6 @@
    "qid": "Q111627959"
   },
   {
-   "article": "Filip Jörgensen",
-   "display": "Filip Jörgensen",
-   "no": 12,
-   "pos": "GK",
-   "nat": "DEN",
-   "qid": "Q108776426"
-  },
-  {
    "article": "Mike Penders",
    "display": "Mike Penders",
    "no": 13,
@@ -14261,6 +14165,14 @@
    "qid": "Q136678018"
   },
   {
+   "article": "Pep Chavarría",
+   "display": "Pep Chavarría",
+   "no": null,
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": "Q96040600"
+  },
+  {
    "article": "Maxence Lacroix",
    "display": "Maxence Lacroix",
    "no": null,
@@ -14301,6 +14213,14 @@
    "pos": "DF",
    "nat": "NED",
    "qid": "Q63966349"
+  },
+  {
+   "article": "Konstantinos Koulierakis",
+   "display": "Konstantinos Koulierakis",
+   "no": 3,
+   "pos": "DF",
+   "nat": "GRE",
+   "qid": "Q109605287"
   },
   {
    "article": "Bryan Cristante",
@@ -14367,6 +14287,14 @@
    "qid": "Q107075915"
   },
   {
+   "article": "Nahuel Molina",
+   "display": "Nahuel Molina",
+   "no": 20,
+   "pos": "DF",
+   "nat": "ARG",
+   "qid": "Q22082590"
+  },
+  {
    "article": "Paulo Dybala",
    "display": "Paulo Dybala",
    "no": 21,
@@ -14397,14 +14325,6 @@
    "pos": "DF",
    "nat": "POL",
    "qid": "Q122114003"
-  },
-  {
-   "article": "Konstantinos Koulierakis",
-   "display": "Konstantinos Koulierakis",
-   "no": 33,
-   "pos": "DF",
-   "nat": "GRE",
-   "qid": "Q109605287"
   },
   {
    "article": null,
@@ -14723,20 +14643,20 @@
    "qid": "Q91531"
   },
   {
-   "article": "José Ángel Carmona",
-   "display": "José Ángel Carmona",
+   "article": "Juan Iglesias",
+   "display": "Juan Iglesias",
    "no": 2,
    "pos": "DF",
    "nat": "ESP",
-   "qid": "Q111220958"
+   "qid": "Q104602884"
   },
   {
-   "article": "Adrià Pedrosa",
-   "display": "Adrià Pedrosa",
+   "article": null,
+   "display": "[[Julio Díaz (footballer, born 2005)",
    "no": 3,
    "pos": "DF",
    "nat": "ESP",
-   "qid": "Q58174944"
+   "qid": null
   },
   {
    "article": "Kike Salas",
@@ -14747,6 +14667,14 @@
    "qid": "Q113894431"
   },
   {
+   "article": "Andrés Castrín",
+   "display": "Andrés Castrín",
+   "no": 5,
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": "Q110156344"
+  },
+  {
    "article": "Lucien Agoumé",
    "display": "Lucien Agoumé",
    "no": 6,
@@ -14755,12 +14683,20 @@
    "qid": "Q58494963"
   },
   {
-   "article": "Isaac Romero",
-   "display": "Isaac Romero",
+   "article": null,
+   "display": "[[Alfon (footballer)",
    "no": 7,
    "pos": "FW",
    "nat": "ESP",
-   "qid": "Q124256126"
+   "qid": null
+  },
+  {
+   "article": "Robbie Ure",
+   "display": "Robbie Ure",
+   "no": 9,
+   "pos": "FW",
+   "nat": "SCO",
+   "qid": "Q115181709"
   },
   {
    "article": "Peque Fernández",
@@ -14795,12 +14731,12 @@
    "qid": null
   },
   {
-   "article": "Juan Iglesias",
-   "display": "Juan Iglesias",
-   "no": 14,
-   "pos": "DF",
+   "article": "Isaac Romero",
+   "display": "Isaac Romero",
+   "no": 16,
+   "pos": "FW",
    "nat": "ESP",
-   "qid": "Q104602884"
+   "qid": "Q124256126"
   },
   {
    "article": "Gabriel Suazo",
@@ -14820,9 +14756,9 @@
   },
   {
    "article": null,
-   "display": "[[Alfon (footballer)",
+   "display": "[[Oso (footballer)",
    "no": 19,
-   "pos": "FW",
+   "pos": "DF",
    "nat": "ESP",
    "qid": null
   },
@@ -14835,6 +14771,14 @@
    "qid": "Q37850911"
   },
   {
+   "article": "José Ángel Carmona",
+   "display": "José Ángel Carmona",
+   "no": 22,
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": "Q111220958"
+  },
+  {
    "article": null,
    "display": "[[Marcão (footballer, born 1996)",
    "no": 23,
@@ -14844,11 +14788,19 @@
   },
   {
    "article": null,
-   "display": "[[Julio Díaz (footballer, born 2005)",
-   "no": 24,
-   "pos": "DF",
+   "display": "Manuel Ángel Castillo",
+   "no": 26,
+   "pos": "FW",
    "nat": "ESP",
    "qid": null
+  },
+  {
+   "article": "Nico Guillén",
+   "display": "Nico Guillén",
+   "no": 27,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": "Q136513524"
   },
   {
    "article": "Manu Bueno",
@@ -14859,18 +14811,10 @@
    "qid": "Q118744483"
   },
   {
-   "article": "Andrés Castrín",
-   "display": "Andrés Castrín",
-   "no": 32,
-   "pos": "DF",
-   "nat": "ESP",
-   "qid": "Q110156344"
-  },
-  {
    "article": null,
-   "display": "[[Oso (footballer)",
-   "no": 36,
-   "pos": "DF",
+   "display": "[[Miguel Ángel Sierra (footballer)",
+   "no": 30,
+   "pos": "FW",
    "nat": "ESP",
    "qid": null
   }
@@ -15271,14 +15215,6 @@
    "qid": "Q137972427"
   },
   {
-   "article": "Enzo Molebe",
-   "display": "Enzo Molebe",
-   "no": 29,
-   "pos": "FW",
-   "nat": "FRA",
-   "qid": "Q113505136"
-  },
-  {
    "article": "Alejandro Gomes Rodríguez",
    "display": "Alejandro Gomes Rodríguez",
    "no": 32,
@@ -15359,14 +15295,6 @@
    "pos": "DF",
    "nat": "ESP",
    "qid": "Q105681392"
-  },
-  {
-   "article": "Ronald Araújo",
-   "display": "Ronald Araújo",
-   "no": 4,
-   "pos": "DF",
-   "nat": "URU",
-   "qid": "Q56332606"
   },
   {
    "article": "Pau Cubarsí",
@@ -16289,14 +16217,6 @@
    "qid": "Q109925006"
   },
   {
-   "article": "Romano Schmid",
-   "display": "Romano Schmid",
-   "no": 10,
-   "pos": "MF",
-   "nat": "AUT",
-   "qid": "Q30080273"
-  },
-  {
    "article": "Justin Njinmah",
    "display": "Justin Njinmah",
    "no": 11,
@@ -16925,6 +16845,14 @@
    "qid": "Q124249434"
   },
   {
+   "article": "Noel Futkeu",
+   "display": "Noel Futkeu",
+   "no": 41,
+   "pos": "FW",
+   "nat": "GER",
+   "qid": "Q124757622"
+  },
+  {
    "article": "Can Uzun",
    "display": "Can Uzun",
    "no": 42,
@@ -16933,20 +16861,20 @@
    "qid": "Q118799181"
   },
   {
+   "article": "Jessic Ngankam",
+   "display": "Jessic Ngankam",
+   "no": 44,
+   "pos": "FW",
+   "nat": "GER",
+   "qid": "Q94579243"
+  },
+  {
    "article": "Marvin Dills",
    "display": "Marvin Dills",
    "no": 45,
    "pos": "MF",
    "nat": "USA",
    "qid": "Q137049200"
-  },
-  {
-   "article": "Noel Futkeu",
-   "display": "Noel Futkeu",
-   "no": 46,
-   "pos": "FW",
-   "nat": "GER",
-   "qid": "Q124757622"
   },
   {
    "article": "Niels Nkounkou",
@@ -16965,14 +16893,6 @@
    "qid": "Q112570858"
   },
   {
-   "article": "Jessic Ngankam",
-   "display": "Jessic Ngankam",
-   "no": null,
-   "pos": "FW",
-   "nat": "GER",
-   "qid": "Q94579243"
-  },
-  {
    "article": "Elye Wahi",
    "display": "Elye Wahi",
    "no": null,
@@ -16983,12 +16903,12 @@
  ],
  "SC Freiburg": [
   {
-   "article": "Noah Atubolu",
-   "display": "Noah Atubolu",
+   "article": "Mio Backhaus",
+   "display": "Mio Backhaus",
    "no": 1,
    "pos": "GK",
    "nat": "GER",
-   "qid": "Q107723576"
+   "qid": "Q120763210"
   },
   {
    "article": "Philipp Lienhart",
@@ -17175,14 +17095,6 @@
    "qid": "Q107723702"
   },
   {
-   "article": "Mio Backhaus",
-   "display": "Mio Backhaus",
-   "no": 34,
-   "pos": "GK",
-   "nat": "GER",
-   "qid": "Q120763210"
-  },
-  {
    "article": null,
    "display": "Karl Steinmann",
    "no": 36,
@@ -17221,6 +17133,14 @@
    "pos": "DF",
    "nat": "SUI",
    "qid": "Q123505973"
+  },
+  {
+   "article": "Noah Atubolu",
+   "display": "Noah Atubolu",
+   "no": null,
+   "pos": "GK",
+   "nat": "GER",
+   "qid": "Q107723576"
   }
  ],
  "TSG 1899 Hoffenheim": [
@@ -17587,6 +17507,14 @@
    "qid": "Q155049"
   },
   {
+   "article": null,
+   "display": "[[Martin James (French footballer)",
+   "no": 21,
+   "pos": "GK",
+   "nat": "FRA",
+   "qid": null
+  },
+  {
    "article": "Jahmai Simpson-Pusey",
    "display": "Jahmai Simpson-Pusey",
    "no": 22,
@@ -17611,6 +17539,14 @@
    "qid": "Q31355135"
   },
   {
+   "article": "Elias Bakatukanda",
+   "display": "Elias Bakatukanda",
+   "no": 26,
+   "pos": "DF",
+   "nat": "COD",
+   "qid": "Q131703449"
+  },
+  {
    "article": "Sebastian Sebulonsen",
    "display": "Sebastian Sebulonsen",
    "no": 28,
@@ -17633,6 +17569,14 @@
    "pos": "FW",
    "nat": "GER",
    "qid": "Q55979357"
+  },
+  {
+   "article": null,
+   "display": "Gil Neves",
+   "no": 31,
+   "pos": "MF",
+   "nat": "POR",
+   "qid": null
   },
   {
    "article": "Rav van den Berg",
@@ -17691,36 +17635,12 @@
    "qid": null
   },
   {
-   "article": null,
-   "display": "[[Martin James (French footballer)",
-   "no": null,
-   "pos": "GK",
-   "nat": "FRA",
-   "qid": null
-  },
-  {
-   "article": "Elias Bakatukanda",
-   "display": "Elias Bakatukanda",
-   "no": null,
-   "pos": "DF",
-   "nat": "COD",
-   "qid": "Q131703449"
-  },
-  {
    "article": "Imad Rondić",
    "display": "Imad Rondić",
    "no": null,
    "pos": "FW",
    "nat": "BIH",
    "qid": "Q100287932"
-  },
-  {
-   "article": null,
-   "display": "Gil Neves",
-   "no": null,
-   "pos": "MF",
-   "nat": "POR",
-   "qid": null
   }
  ],
  "RB Leipzig": [
@@ -17999,6 +17919,14 @@
  ],
  "1. FSV Mainz 05": [
   {
+   "article": "Alexander Schwolow",
+   "display": "Alexander Schwolow",
+   "no": 1,
+   "pos": "GK",
+   "nat": "GER",
+   "qid": "Q16830322"
+  },
+  {
    "article": "Phillipp Mwene",
    "display": "Phillipp Mwene",
    "no": 2,
@@ -18013,6 +17941,14 @@
    "pos": "DF",
    "nat": "PER",
    "qid": "Q123537307"
+  },
+  {
+   "article": "Stefan Posch",
+   "display": "Stefan Posch",
+   "no": 4,
+   "pos": "DF",
+   "nat": "AUT",
+   "qid": "Q41447930"
   },
   {
    "article": "Eric Martel",
@@ -18261,14 +18197,6 @@
    "pos": "GK",
    "nat": "GER",
    "qid": null
-  },
-  {
-   "article": "Alexander Schwolow",
-   "display": "Alexander Schwolow",
-   "no": null,
-   "pos": "GK",
-   "nat": "GER",
-   "qid": "Q16830322"
   }
  ],
  "Borussia Mönchengladbach": [],
@@ -18516,7 +18444,7 @@
   {
    "article": null,
    "display": "Tristan Zobel",
-   "no": null,
+   "no": 46,
    "pos": "DF",
    "nat": "GER",
    "qid": null
@@ -18990,6 +18918,14 @@
    "qid": "Q3180002"
   },
   {
+   "article": "Mikel Rodríguez",
+   "display": "Mikel Rodríguez",
+   "no": 18,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": "Q131295855"
+  },
+  {
    "article": null,
    "display": "[[Pablo Ibáñez (footballer, born 1998)",
    "no": 19,
@@ -19014,12 +18950,52 @@
    "qid": "Q112805598"
   },
   {
+   "article": null,
+   "display": "[[Moussa Diarra (footballer, born 2000)",
+   "no": 22,
+   "pos": "DF",
+   "nat": "MLI",
+   "qid": null
+  },
+  {
    "article": "Carlos Protesoni",
    "display": "Carlos Protesoni",
    "no": 23,
    "pos": "MF",
    "nat": "URU",
    "qid": "Q24258613"
+  },
+  {
+   "article": null,
+   "display": "[[Álvaro García Blanes",
+   "no": 26,
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": null
+  },
+  {
+   "article": null,
+   "display": "[[Xanet Oláiz Ibarzábal",
+   "no": 27,
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": null
+  },
+  {
+   "article": null,
+   "display": "[[Izei Hernández Cañas",
+   "no": 29,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": null
+  },
+  {
+   "article": "Grégoire Świderski",
+   "display": "Grégoire Świderski",
+   "no": 31,
+   "pos": "GK",
+   "nat": "CAN",
+   "qid": "Q127868977"
   },
   {
    "article": null,
@@ -19047,27 +19023,11 @@
   },
   {
    "article": null,
-   "display": "[[Moussa Diarra (footballer, born 2000)",
-   "no": null,
-   "pos": "DF",
-   "nat": "MLI",
-   "qid": null
-  },
-  {
-   "article": null,
    "display": "[[Miguel Rodríguez (footballer, born April 2003)",
    "no": null,
    "pos": "MF",
    "nat": "ESP",
    "qid": null
-  },
-  {
-   "article": "Mikel Rodríguez",
-   "display": "Mikel Rodríguez",
-   "no": null,
-   "pos": "MF",
-   "nat": "ESP",
-   "qid": "Q131295855"
   },
   {
    "article": "Selu Diallo",
@@ -19236,14 +19196,6 @@
    "display": "[[Hugo Álvarez (footballer, born 2003)",
    "no": 23,
    "pos": "FW",
-   "nat": "ESP",
-   "qid": null
-  },
-  {
-   "article": null,
-   "display": "[[Carlos Domínguez (Spanish footballer)",
-   "no": 24,
-   "pos": "DF",
    "nat": "ESP",
    "qid": null
   },
@@ -19644,6 +19596,14 @@
    "qid": "Q117052841"
   },
   {
+   "article": "Fer Niño",
+   "display": "Fer Niño",
+   "no": 14,
+   "pos": "FW",
+   "nat": "ESP",
+   "qid": "Q85760768"
+  },
+  {
    "article": "Tete Morente",
    "display": "Tete Morente",
    "no": 15,
@@ -19748,6 +19708,14 @@
    "qid": null
   },
   {
+   "article": "Javi Morcillo",
+   "display": "Javi Morcillo",
+   "no": null,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": "Q139073564"
+  },
+  {
    "article": "Abiel Osorio",
    "display": "Abiel Osorio",
    "no": null,
@@ -19762,22 +19730,6 @@
    "pos": "FW",
    "nat": "DOM",
    "qid": null
-  },
-  {
-   "article": "Fer Niño",
-   "display": "Fer Niño",
-   "no": null,
-   "pos": "FW",
-   "nat": "ESP",
-   "qid": "Q85760768"
-  },
-  {
-   "article": "Javi Morcillo",
-   "display": "Javi Morcillo",
-   "no": null,
-   "pos": "MF",
-   "nat": "ESP",
-   "qid": "Q139073564"
   }
  ],
  "RCD Espanyol": [
@@ -20178,6 +20130,14 @@
    "qid": "Q59915026"
   },
   {
+   "article": "Hugo Sotelo",
+   "display": "Hugo Sotelo",
+   "no": 5,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": "Q106867353"
+  },
+  {
    "article": "Roger Brugué",
    "display": "Roger Brugué",
    "no": 7,
@@ -20200,6 +20160,22 @@
    "pos": "FW",
    "nat": "ESP",
    "qid": null
+  },
+  {
+   "article": null,
+   "display": "[[Carlos Álvarez (footballer, born 2003)",
+   "no": 10,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": null
+  },
+  {
+   "article": "Yanis Musuayi",
+   "display": "Yanis Musuayi",
+   "no": 11,
+   "pos": "FW",
+   "nat": "BEL",
+   "qid": "Q131301989"
   },
   {
    "article": "Mathew Ryan",
@@ -20274,12 +20250,12 @@
    "qid": null
   },
   {
-   "article": null,
-   "display": "[[Carlos Álvarez (footballer, born 2003)",
+   "article": "Dani Requena",
+   "display": "Dani Requena",
    "no": 24,
    "pos": "MF",
    "nat": "ESP",
-   "qid": null
+   "qid": "Q118903035"
   },
   {
    "article": "Kareem Tunde",
@@ -20346,28 +20322,12 @@
    "qid": "Q122935030"
   },
   {
-   "article": "Dani Requena",
-   "display": "Dani Requena",
+   "article": "Thiago Fernández",
+   "display": "Thiago Fernández",
    "no": null,
    "pos": "MF",
-   "nat": "ESP",
-   "qid": "Q118903035"
-  },
-  {
-   "article": "Hugo Sotelo",
-   "display": "Hugo Sotelo",
-   "no": null,
-   "pos": "MF",
-   "nat": "ESP",
-   "qid": "Q106867353"
-  },
-  {
-   "article": "Yanis Musuayi",
-   "display": "Yanis Musuayi",
-   "no": null,
-   "pos": "FW",
-   "nat": "BEL",
-   "qid": "Q131301989"
+   "nat": "ARG",
+   "qid": "Q125271014"
   }
  ],
  "Málaga": [
@@ -20378,6 +20338,14 @@
    "pos": "GK",
    "nat": "ESP",
    "qid": "Q38827144"
+  },
+  {
+   "article": null,
+   "display": "[[Pablo Arriaza Jurado",
+   "no": 2,
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": null
   },
   {
    "article": "Carlos Puga",
@@ -20756,9 +20724,33 @@
    "pos": "MF",
    "nat": "ESP",
    "qid": "Q122417337"
+  },
+  {
+   "article": "Diego Rico",
+   "display": "Diego Rico",
+   "no": null,
+   "pos": "DF",
+   "nat": "ESP",
+   "qid": "Q15696580"
+  },
+  {
+   "article": "Rockson Yeboah",
+   "display": "Rockson Yeboah",
+   "no": null,
+   "pos": "DF",
+   "nat": "GHA",
+   "qid": "Q130617648"
   }
  ],
  "Racing de Santander": [
+  {
+   "article": null,
+   "display": "[[Simon Eriksson (footballer)",
+   "no": 1,
+   "pos": "GK",
+   "nat": "SWE",
+   "qid": null
+  },
   {
    "article": "Álvaro Mantilla",
    "display": "Álvaro Mantilla",
@@ -20800,12 +20792,12 @@
    "qid": "Q110192429"
   },
   {
-   "article": "Sergio Canales",
-   "display": "Sergio Canales",
+   "article": "Gustavo Puerta",
+   "display": "Gustavo Puerta",
    "no": 8,
    "pos": "MF",
-   "nat": "ESP",
-   "qid": "Q19422"
+   "nat": "COL",
+   "qid": "Q116447721"
   },
   {
    "article": "Juan Carlos Arana",
@@ -20840,12 +20832,12 @@
    "qid": "Q20492762"
   },
   {
-   "article": null,
-   "display": "[[Simon Eriksson (footballer)",
+   "article": "Julen Agirrezabala",
+   "display": "Julen Agirrezabala",
    "no": 13,
    "pos": "GK",
-   "nat": "SWE",
-   "qid": null
+   "nat": "ESP",
+   "qid": "Q106637226"
   },
   {
    "article": "Maguette Gueye",
@@ -20864,12 +20856,12 @@
    "qid": "Q114060630"
   },
   {
-   "article": "Gustavo Puerta",
-   "display": "Gustavo Puerta",
-   "no": 19,
+   "article": "Sergio Canales",
+   "display": "Sergio Canales",
+   "no": 20,
    "pos": "MF",
-   "nat": "COL",
-   "qid": "Q116447721"
+   "nat": "ESP",
+   "qid": "Q19422"
   },
   {
    "article": "Yassir Zabiri",
@@ -20920,14 +20912,6 @@
    "pos": "DF",
    "nat": "ROU",
    "qid": "Q63226171"
-  },
-  {
-   "article": "Pep Chavarría",
-   "display": "Pep Chavarría",
-   "no": 3,
-   "pos": "DF",
-   "nat": "ESP",
-   "qid": "Q96040600"
   },
   {
    "article": null,
@@ -21080,14 +21064,6 @@
    "pos": "GK",
    "nat": "ESP",
    "qid": null
-  },
-  {
-   "article": "Nobel Mendy",
-   "display": "Nobel Mendy",
-   "no": 32,
-   "pos": "DF",
-   "nat": "SEN",
-   "qid": "Q116053269"
   },
   {
    "article": "Jozhua Vertrouwd",
@@ -21282,6 +21258,14 @@
    "pos": "DF",
    "nat": "ESP",
    "qid": "Q124623840"
+  },
+  {
+   "article": "Job Ochieng",
+   "display": "Job Ochieng",
+   "no": 47,
+   "pos": "FW",
+   "nat": "KEN",
+   "qid": "Q131309598"
   }
  ],
  "Villarreal": [
@@ -21468,14 +21452,6 @@
    "pos": "DF",
    "nat": "ESP",
    "qid": null
-  },
-  {
-   "article": "Thiago Fernández",
-   "display": "Thiago Fernández",
-   "no": null,
-   "pos": "MF",
-   "nat": "ARG",
-   "qid": "Q125271014"
   },
   {
    "article": "Ilias Akhomach",
@@ -21686,14 +21662,6 @@
    "pos": "FW",
    "nat": "MNE",
    "qid": "Q28099191"
-  },
-  {
-   "article": "Daniel Maldini",
-   "display": "Daniel Maldini",
-   "no": null,
-   "pos": "FW",
-   "nat": "ITA",
-   "qid": "Q84247209"
   },
   {
    "article": "Giacomo Raspadori",
@@ -21988,6 +21956,14 @@
    "qid": null
   },
   {
+   "article": "Giuseppe Aurelio",
+   "display": "Giuseppe Aurelio",
+   "no": null,
+   "pos": "DF",
+   "nat": "ITA",
+   "qid": "Q110832821"
+  },
+  {
    "article": "Yerry Mina",
    "display": "Yerry Mina",
    "no": null,
@@ -22148,6 +22124,22 @@
    "qid": "Q62076054"
   },
   {
+   "article": "Kevin Carlos",
+   "display": "Kevin Carlos",
+   "no": null,
+   "pos": "FW",
+   "nat": "ESP",
+   "qid": "Q110114075"
+  },
+  {
+   "article": "Daniel Maldini",
+   "display": "Daniel Maldini",
+   "no": null,
+   "pos": "FW",
+   "nat": "ITA",
+   "qid": "Q84247209"
+  },
+  {
    "article": "Paul Mendy",
    "display": "Paul Mendy",
    "no": null,
@@ -22278,6 +22270,14 @@
    "qid": "Q130603446"
   },
   {
+   "article": "Yan Couto",
+   "display": "Yan Couto",
+   "no": 16,
+   "pos": "DF",
+   "nat": "BRA",
+   "qid": "Q75057147"
+  },
+  {
    "article": null,
    "display": "[[Jesús Rodríguez (footballer, born 2005)",
    "no": 17,
@@ -22332,6 +22332,14 @@
    "pos": "MF",
    "nat": "GAM",
    "qid": "Q91964356"
+  },
+  {
+   "article": "Trevoh Chalobah",
+   "display": "Trevoh Chalobah",
+   "no": 26,
+   "pos": "DF",
+   "nat": "ENG",
+   "qid": "Q36696865"
   },
   {
    "article": "Ivan Smolčić",
@@ -22404,22 +22412,6 @@
    "pos": "FW",
    "nat": "ESP",
    "qid": "Q101420267"
-  },
-  {
-   "article": "Trevoh Chalobah",
-   "display": "Trevoh Chalobah",
-   "no": null,
-   "pos": "DF",
-   "nat": "ENG",
-   "qid": "Q36696865"
-  },
-  {
-   "article": "Yan Couto",
-   "display": "Yan Couto",
-   "no": null,
-   "pos": "DF",
-   "nat": "BRA",
-   "qid": "Q75057147"
   }
  ],
  "Frosinone": [
@@ -22600,6 +22592,14 @@
    "qid": "Q102327599"
   },
   {
+   "article": "Romano Schmid",
+   "display": "Romano Schmid",
+   "no": null,
+   "pos": "MF",
+   "nat": "AUT",
+   "qid": "Q30080273"
+  },
+  {
    "article": null,
    "display": "[[Alejandro Cichero (footballer, born 2006)",
    "no": null,
@@ -22662,6 +22662,14 @@
    "pos": "FW",
    "nat": "ITA",
    "qid": "Q60734883"
+  },
+  {
+   "article": "Patrizio Masini",
+   "display": "Patrizio Masini",
+   "no": null,
+   "pos": "MF",
+   "nat": "ITA",
+   "qid": "Q108691113"
   }
  ],
  "Genoa CFC": [
@@ -22807,7 +22815,7 @@
    "no": null,
    "pos": "MF",
    "nat": "BFA",
-   "qid": null
+   "qid": "Q140855682"
   },
   {
    "article": "Mikael Egill Ellertsson",
@@ -22824,14 +22832,6 @@
    "pos": "MF",
    "nat": "DEN",
    "qid": "Q52158000"
-  },
-  {
-   "article": "Patrizio Masini",
-   "display": "Patrizio Masini",
-   "no": null,
-   "pos": "MF",
-   "nat": "ITA",
-   "qid": "Q108691113"
   },
   {
    "article": "Franz-Ethan Meichtry",
@@ -23134,177 +23134,57 @@
  ],
  "AC Monza": [
   {
-   "article": "Semuel Pizzignacco",
-   "display": "Semuel Pizzignacco",
-   "no": null,
-   "pos": "GK",
-   "nat": "ITA",
-   "qid": "Q109760587"
-  },
-  {
-   "article": "Aljaž Strajnar",
-   "display": "Aljaž Strajnar",
-   "no": null,
-   "pos": "GK",
-   "nat": "SVN",
-   "qid": null
-  },
-  {
-   "article": null,
-   "display": "[[Demba Thiam (footballer, born 1998)",
-   "no": null,
-   "pos": "GK",
-   "nat": "SEN",
-   "qid": null
-  },
-  {
-   "article": "Valentin Antov",
-   "display": "Valentin Antov",
-   "no": null,
-   "pos": "DF",
-   "nat": "BUL",
-   "qid": "Q52088347"
-  },
-  {
-   "article": "Adam Bakoune",
-   "display": "Adam Bakoune",
-   "no": null,
-   "pos": "DF",
-   "nat": "ITA",
-   "qid": "Q130545732"
-  },
-  {
-   "article": "Samuele Birindelli",
-   "display": "Samuele Birindelli",
-   "no": null,
-   "pos": "DF",
-   "nat": "ITA",
-   "qid": "Q28976858"
-  },
-  {
    "article": "Arvid Brorsson",
    "display": "Arvid Brorsson",
-   "no": null,
+   "no": 2,
    "pos": "DF",
    "nat": "SWE",
    "qid": "Q30071780"
   },
   {
-   "article": "Andrea Carboni",
-   "display": "Andrea Carboni",
-   "no": null,
-   "pos": "DF",
-   "nat": "ITA",
-   "qid": "Q96617433"
-  },
-  {
-   "article": "Filippo Delli Carri",
-   "display": "Filippo Delli Carri",
-   "no": null,
-   "pos": "DF",
-   "nat": "ITA",
-   "qid": "Q58008343"
-  },
-  {
-   "article": "Eddy Kouadio",
-   "display": "Eddy Kouadio",
-   "no": null,
-   "pos": "DF",
-   "nat": "ITA",
-   "qid": "Q130545741"
-  },
-  {
    "article": "Lorenzo Lucchesi",
    "display": "Lorenzo Lucchesi",
-   "no": null,
+   "no": 3,
    "pos": "DF",
    "nat": "ITA",
    "qid": "Q133289044"
   },
   {
+   "article": "Valentin Antov",
+   "display": "Valentin Antov",
+   "no": 6,
+   "pos": "DF",
+   "nat": "BUL",
+   "qid": "Q52088347"
+  },
+  {
    "article": "Ricardo Mangas",
    "display": "Ricardo Mangas",
-   "no": null,
+   "no": 7,
    "pos": "DF",
    "nat": "POR",
    "qid": "Q81003636"
   },
   {
-   "article": "Leonardo Colombo",
-   "display": "Leonardo Colombo",
-   "no": null,
-   "pos": "MF",
-   "nat": "ITA",
-   "qid": "Q139923266"
-  },
-  {
-   "article": "Andrea Colpani",
-   "display": "Andrea Colpani",
-   "no": null,
-   "pos": "MF",
-   "nat": "ITA",
-   "qid": "Q64031831"
-  },
-  {
-   "article": "Manga Foe-Ondoa",
-   "display": "Manga Foe-Ondoa",
-   "no": null,
+   "article": "Manga Foe Ondoa",
+   "display": "Manga Foe Ondoa",
+   "no": 8,
    "pos": "MF",
    "nat": "FRA",
    "qid": "Q135440599"
   },
   {
-   "article": "Nicolas Galazzi",
-   "display": "Nicolas Galazzi",
-   "no": null,
-   "pos": "MF",
-   "nat": "ITA",
-   "qid": "Q109606318"
-  },
-  {
-   "article": "Pedro Obiang",
-   "display": "Pedro Obiang",
-   "no": null,
-   "pos": "MF",
-   "nat": "EQG",
-   "qid": "Q2066714"
-  },
-  {
-   "article": "Matteo Pessina",
-   "display": "Matteo Pessina",
-   "no": null,
-   "pos": "MF",
-   "nat": "ITA",
-   "qid": "Q21622362"
-  },
-  {
-   "article": "Ebenezer Akinsanmiro",
-   "display": "Ebenezer Akinsanmiro",
-   "no": null,
-   "pos": "MF",
-   "nat": "NGA",
-   "qid": "Q116788482"
-  },
-  {
-   "article": "Keita Baldé",
-   "display": "Keita Baldé",
-   "no": null,
+   "article": null,
+   "display": "[[Gustavo Varela (footballer, born 2005)",
+   "no": 9,
    "pos": "FW",
-   "nat": "SEN",
-   "qid": "Q14945895"
-  },
-  {
-   "article": "Patrick Ciurria",
-   "display": "Patrick Ciurria",
-   "no": null,
-   "pos": "FW",
-   "nat": "ITA",
-   "qid": "Q42888251"
+   "nat": "POR",
+   "qid": null
   },
   {
    "article": "Patrick Cutrone",
    "display": "Patrick Cutrone",
-   "no": null,
+   "no": 10,
    "pos": "FW",
    "nat": "ITA",
    "qid": "Q28377792"
@@ -23312,49 +23192,185 @@
   {
    "article": "Omari Forson",
    "display": "Omari Forson",
-   "no": null,
+   "no": 11,
    "pos": "FW",
    "nat": "ENG",
    "qid": "Q121032001"
   },
   {
-   "article": "Solomon Loubao",
-   "display": "Solomon Loubao",
-   "no": null,
+   "article": "Semuel Pizzignacco",
+   "display": "Semuel Pizzignacco",
+   "no": 13,
+   "pos": "GK",
+   "nat": "ITA",
+   "qid": "Q109760587"
+  },
+  {
+   "article": "Ebenezer Akinsanmiro",
+   "display": "Ebenezer Akinsanmiro",
+   "no": 14,
+   "pos": "MF",
+   "nat": "NGA",
+   "qid": "Q116788482"
+  },
+  {
+   "article": "Filippo Delli Carri",
+   "display": "Filippo Delli Carri",
+   "no": 15,
+   "pos": "DF",
+   "nat": "ITA",
+   "qid": "Q58008343"
+  },
+  {
+   "article": "Keita Baldé",
+   "display": "Keita Baldé",
+   "no": 17,
    "pos": "FW",
-   "nat": "FRA",
+   "nat": "SEN",
+   "qid": "Q14945895"
+  },
+  {
+   "article": "Samuele Birindelli",
+   "display": "Samuele Birindelli",
+   "no": 19,
+   "pos": "DF",
+   "nat": "ITA",
+   "qid": "Q28976858"
+  },
+  {
+   "article": null,
+   "display": "[[Demba Thiam (footballer, born 1998)",
+   "no": 20,
+   "pos": "GK",
+   "nat": "SEN",
    "qid": null
   },
   {
-   "article": "Kevin Martins",
-   "display": "Kevin Martins",
-   "no": null,
-   "pos": "FW",
+   "article": "Leonardo Colombo",
+   "display": "Leonardo Colombo",
+   "no": 21,
+   "pos": "MF",
    "nat": "ITA",
-   "qid": "Q130371386"
+   "qid": "Q139923266"
   },
   {
-   "article": "Dany Mota",
-   "display": "Dany Mota",
-   "no": null,
+   "article": "Solomon Loubao",
+   "display": "Solomon Loubao",
+   "no": 22,
    "pos": "FW",
-   "nat": "POR",
-   "qid": "Q24451806"
+   "nat": "FRA",
+   "qid": "Q140855711"
+  },
+  {
+   "article": "Nicolas Galazzi",
+   "display": "Nicolas Galazzi",
+   "no": 23,
+   "pos": "MF",
+   "nat": "ITA",
+   "qid": "Q109606318"
+  },
+  {
+   "article": "Adam Bakoune",
+   "display": "Adam Bakoune",
+   "no": 24,
+   "pos": "DF",
+   "nat": "ITA",
+   "qid": "Q130545732"
+  },
+  {
+   "article": "Patrick Ciurria",
+   "display": "Patrick Ciurria",
+   "no": 26,
+   "pos": "FW",
+   "nat": "ITA",
+   "qid": "Q42888251"
+  },
+  {
+   "article": "Andrea Colpani",
+   "display": "Andrea Colpani",
+   "no": 28,
+   "pos": "MF",
+   "nat": "ITA",
+   "qid": "Q64031831"
+  },
+  {
+   "article": "Alessandro Berretta",
+   "display": "Alessandro Berretta",
+   "no": 30,
+   "pos": "MF",
+   "nat": "ITA",
+   "qid": null
+  },
+  {
+   "article": "Matteo Pessina",
+   "display": "Matteo Pessina",
+   "no": 32,
+   "pos": "MF",
+   "nat": "ITA",
+   "qid": "Q21622362"
   },
   {
    "article": "Andrea Petagna",
    "display": "Andrea Petagna",
-   "no": null,
+   "no": 37,
    "pos": "FW",
    "nat": "ITA",
    "qid": "Q422012"
   },
   {
+   "article": "Aljaž Strajnar",
+   "display": "Aljaž Strajnar",
+   "no": 43,
+   "pos": "GK",
+   "nat": "SVN",
+   "qid": null
+  },
+  {
+   "article": "Andrea Carboni",
+   "display": "Andrea Carboni",
+   "no": 44,
+   "pos": "DF",
+   "nat": "ITA",
+   "qid": "Q96617433"
+  },
+  {
    "article": null,
-   "display": "[[Gustavo Varela (footballer, born 2005)",
-   "no": null,
+   "display": "[[Jay Robinson (footballer)",
+   "no": 46,
+   "pos": "MF",
+   "nat": "ENG",
+   "qid": null
+  },
+  {
+   "article": "Dany Mota",
+   "display": "Dany Mota",
+   "no": 47,
    "pos": "FW",
    "nat": "POR",
+   "qid": "Q24451806"
+  },
+  {
+   "article": "Eddy Kouadio",
+   "display": "Eddy Kouadio",
+   "no": 60,
+   "pos": "DF",
+   "nat": "ITA",
+   "qid": "Q130545741"
+  },
+  {
+   "article": "Kevin Martins",
+   "display": "Kevin Martins",
+   "no": 70,
+   "pos": "FW",
+   "nat": "ITA",
+   "qid": "Q130371386"
+  },
+  {
+   "article": "Mathis Mout",
+   "display": "Mathis Mout",
+   "no": 80,
+   "pos": "MF",
+   "nat": "ITA",
    "qid": null
   }
  ],
@@ -23618,105 +23634,161 @@
  ],
  "Udinese": [
   {
-   "article": "Maduka Okoye",
-   "display": "Maduka Okoye",
-   "no": null,
-   "pos": "GK",
-   "nat": "NGA",
-   "qid": "Q66700393"
-  },
-  {
-   "article": "Daniele Padelli",
-   "display": "Daniele Padelli",
-   "no": null,
-   "pos": "GK",
-   "nat": "ITA",
-   "qid": "Q941852"
-  },
-  {
-   "article": "Juan Arizala",
-   "display": "Juan Arizala",
-   "no": null,
+   "article": "Saba Goglichidze",
+   "display": "Saba Goglichidze",
+   "no": 2,
    "pos": "DF",
-   "nat": "COL",
-   "qid": "Q122037096"
+   "nat": "GEO",
+   "qid": "Q113414679"
   },
   {
-   "article": "Nicolò Bertola",
-   "display": "Nicolò Bertola",
-   "no": null,
-   "pos": "DF",
-   "nat": "ITA",
-   "qid": "Q110984652"
+   "article": "Sandi Lovrić",
+   "display": "Sandi Lovrić",
+   "no": 4,
+   "pos": "MF",
+   "nat": "SVN",
+   "qid": "Q19862001"
   },
   {
-   "article": "Christian Kabasele",
-   "display": "Christian Kabasele",
-   "no": null,
-   "pos": "DF",
-   "nat": "BEL",
-   "qid": "Q2057994"
+   "article": "Oier Zarraga",
+   "display": "Oier Zarraga",
+   "no": 6,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": "Q99231391"
   },
   {
    "article": null,
-   "display": "[[Thomas Thiesson Kristensen",
-   "no": null,
-   "pos": "DF",
-   "nat": "DEN",
+   "display": "[[Idrissa Gueye (footballer, born 2006)",
+   "no": 7,
+   "pos": "FW",
+   "nat": "SEN",
    "qid": null
   },
   {
-   "article": "Branimir Mlačić",
-   "display": "Branimir Mlačić",
-   "no": null,
-   "pos": "DF",
-   "nat": "CRO",
-   "qid": "Q135919564"
+   "article": "Jesper Karlström",
+   "display": "Jesper Karlström",
+   "no": 8,
+   "pos": "MF",
+   "nat": "SWE",
+   "qid": "Q16633144"
   },
   {
-   "article": "Matteo Palma",
-   "display": "Matteo Palma",
-   "no": null,
-   "pos": "DF",
-   "nat": "GER",
-   "qid": "Q130385243"
+   "article": "Keinan Davis",
+   "display": "Keinan Davis",
+   "no": 9,
+   "pos": "FW",
+   "nat": "ENG",
+   "qid": "Q28465214"
   },
   {
-   "article": "Oumar Solet",
-   "display": "Oumar Solet",
-   "no": null,
-   "pos": "DF",
-   "nat": "FRA",
-   "qid": "Q42907495"
+   "article": "Nicolò Zaniolo",
+   "display": "Nicolò Zaniolo",
+   "no": 10,
+   "pos": "MF",
+   "nat": "ITA",
+   "qid": "Q28974273"
   },
   {
    "article": "Hassane Kamara",
    "display": "Hassane Kamara",
-   "no": null,
+   "no": 11,
    "pos": "DF",
    "nat": "CIV",
    "qid": "Q18044346"
   },
   {
+   "article": "Nicolò Bertola",
+   "display": "Nicolò Bertola",
+   "no": 13,
+   "pos": "DF",
+   "nat": "ITA",
+   "qid": "Q110984652"
+  },
+  {
+   "article": "James Abankwah",
+   "display": "James Abankwah",
+   "no": 14,
+   "pos": "DF",
+   "nat": "IRL",
+   "qid": "Q110714297"
+  },
+  {
+   "article": "Vakoun Bayo",
+   "display": "Vakoun Bayo",
+   "no": 15,
+   "pos": "FW",
+   "nat": "CIV",
+   "qid": "Q51339710"
+  },
+  {
+   "article": "Matteo Palma",
+   "display": "Matteo Palma",
+   "no": 16,
+   "pos": "DF",
+   "nat": "GER",
+   "qid": "Q130385243"
+  },
+  {
+   "article": "Adam Buksa",
+   "display": "Adam Buksa",
+   "no": 18,
+   "pos": "FW",
+   "nat": "POL",
+   "qid": "Q18619158"
+  },
+  {
+   "article": "Juan Arizala",
+   "display": "Juan Arizala",
+   "no": 20,
+   "pos": "DF",
+   "nat": "COL",
+   "qid": "Q122037096"
+  },
+  {
+   "article": "Branimir Mlačić",
+   "display": "Branimir Mlačić",
+   "no": 22,
+   "pos": "DF",
+   "nat": "CRO",
+   "qid": "Q135919564"
+  },
+  {
    "article": "Mërgim Vojvoda",
    "display": "Mërgim Vojvoda",
-   "no": null,
+   "no": 23,
    "pos": "DF",
    "nat": "KVX",
    "qid": "Q18589243"
   },
   {
-   "article": "Alessandro Zanoli",
-   "display": "Alessandro Zanoli",
-   "no": null,
+   "article": "Jakub Piotrowski",
+   "display": "Jakub Piotrowski",
+   "no": 24,
+   "pos": "MF",
+   "nat": "POL",
+   "qid": "Q28059306"
+  },
+  {
+   "article": "Christian Kabasele",
+   "display": "Christian Kabasele",
+   "no": 27,
    "pos": "DF",
-   "nat": "ITA",
-   "qid": "Q108616460"
+   "nat": "BEL",
+   "qid": "Q2057994"
+  },
+  {
+   "article": "Oumar Solet",
+   "display": "Oumar Solet",
+   "no": 28,
+   "pos": "DF",
+   "nat": "FRA",
+   "qid": "Q42907495"
   },
   {
    "article": null,
    "display": "[[Abdoulaye Camara (footballer, born 2008)",
-   "no": null,
+   "no": 29,
    "pos": "MF",
    "nat": "FRA",
    "qid": null
@@ -23724,265 +23796,289 @@
   {
    "article": "Giorgi Chakvetadze",
    "display": "Giorgi Chakvetadze",
-   "no": null,
+   "no": 30,
    "pos": "MF",
    "nat": "GEO",
    "qid": "Q36641637"
   },
   {
+   "article": null,
+   "display": "[[Thomas Thiesson Kristensen",
+   "no": 31,
+   "pos": "DF",
+   "nat": "DEN",
+   "qid": null
+  },
+  {
    "article": "Jurgen Ekkelenkamp",
    "display": "Jurgen Ekkelenkamp",
-   "no": null,
+   "no": 32,
    "pos": "MF",
    "nat": "NED",
    "qid": "Q51796228"
   },
   {
-   "article": "Unai Gómez",
-   "display": "Unai Gómez",
-   "no": null,
-   "pos": "MF",
-   "nat": "SPA",
-   "qid": "Q115186979"
-  },
-  {
-   "article": "Jesper Karlström",
-   "display": "Jesper Karlström",
-   "no": null,
-   "pos": "MF",
-   "nat": "SWE",
-   "qid": "Q16633144"
-  },
-  {
    "article": "Lennon Miller",
    "display": "Lennon Miller",
-   "no": null,
+   "no": 38,
    "pos": "MF",
    "nat": "SCO",
    "qid": "Q118414966"
   },
   {
-   "article": "Jakub Piotrowski",
-   "display": "Jakub Piotrowski",
-   "no": null,
-   "pos": "MF",
-   "nat": "POL",
-   "qid": "Q28059306"
+   "article": "Maduka Okoye",
+   "display": "Maduka Okoye",
+   "no": 40,
+   "pos": "GK",
+   "nat": "NGA",
+   "qid": "Q66700393"
   },
   {
-   "article": "Nicolò Zaniolo",
-   "display": "Nicolò Zaniolo",
-   "no": null,
+   "article": "Unai Gómez",
+   "display": "Unai Gómez",
+   "no": 46,
    "pos": "MF",
+   "nat": "SPA",
+   "qid": "Q115186979"
+  },
+  {
+   "article": "Alessandro Zanoli",
+   "display": "Alessandro Zanoli",
+   "no": 59,
+   "pos": "DF",
    "nat": "ITA",
-   "qid": "Q28974273"
+   "qid": "Q108616460"
   },
   {
-   "article": "Oier Zarraga",
-   "display": "Oier Zarraga",
-   "no": null,
+   "article": "Enzo Ebosse",
+   "display": "Enzo Ebosse",
+   "no": 77,
+   "pos": "DF",
+   "nat": "CMR",
+   "qid": "Q30103130"
+  },
+  {
+   "article": "David Pejičić",
+   "display": "David Pejičić",
+   "no": 79,
    "pos": "MF",
-   "nat": "ESP",
-   "qid": "Q99231391"
+   "nat": "SVN",
+   "qid": "Q123287230"
   },
   {
-   "article": "Vakoun Bayo",
-   "display": "Vakoun Bayo",
-   "no": null,
-   "pos": "FW",
-   "nat": "CIV",
-   "qid": "Q51339710"
+   "article": "Daniele Padelli",
+   "display": "Daniele Padelli",
+   "no": 93,
+   "pos": "GK",
+   "nat": "ITA",
+   "qid": "Q941852"
   },
   {
-   "article": "Adam Buksa",
-   "display": "Adam Buksa",
-   "no": null,
-   "pos": "FW",
-   "nat": "POL",
-   "qid": "Q18619158"
-  },
-  {
-   "article": "Keinan Davis",
-   "display": "Keinan Davis",
-   "no": null,
-   "pos": "FW",
-   "nat": "ENG",
-   "qid": "Q28465214"
-  },
-  {
-   "article": null,
-   "display": "[[Idrissa Gueye (footballer, born 2006)",
-   "no": null,
-   "pos": "FW",
-   "nat": "SEN",
+   "article": "Edoardo Piana",
+   "display": "Edoardo Piana",
+   "no": 99,
+   "pos": "GK",
+   "nat": "ITA",
    "qid": null
   }
  ],
  "Venezia": [
   {
-   "article": "Matteo Grandi",
-   "display": "Matteo Grandi",
-   "no": null,
-   "pos": "GK",
-   "nat": "ITA",
-   "qid": "Q29001672"
-  },
-  {
-   "article": "Alessio Pozzi",
-   "display": "Alessio Pozzi",
-   "no": null,
-   "pos": "GK",
-   "nat": "ITA",
-   "qid": null
-  },
-  {
    "article": null,
    "display": "[[Filip Stanković (footballer, born 2002)",
-   "no": null,
+   "no": 1,
    "pos": "GK",
    "nat": "SRB",
    "qid": null
   },
   {
-   "article": "Ale Gomes",
-   "display": "Ale Gomes",
-   "no": null,
-   "pos": "DF",
-   "nat": "SPA",
-   "qid": "Q136756913"
-  },
-  {
-   "article": "Armel Bella-Kotchap",
-   "display": "Armel Bella-Kotchap",
-   "no": null,
-   "pos": "DF",
-   "nat": "GER",
-   "qid": "Q63364037"
-  },
-  {
-   "article": "Thierry Correia",
-   "display": "Thierry Correia",
-   "no": null,
-   "pos": "DF",
-   "nat": "POR",
-   "qid": "Q59306442"
-  },
-  {
-   "article": "Bartol Franjić",
-   "display": "Bartol Franjić",
-   "no": null,
-   "pos": "DF",
-   "nat": "CRO",
-   "qid": "Q60791975"
-  },
-  {
-   "article": "Antoine Hainaut",
-   "display": "Antoine Hainaut",
-   "no": null,
-   "pos": "DF",
-   "nat": "FRA",
-   "qid": "Q125885075"
-  },
-  {
-   "article": "Redouane Halhal",
-   "display": "Redouane Halhal",
-   "no": null,
-   "pos": "DF",
-   "nat": "MAR",
-   "qid": "Q120389429"
-  },
-  {
-   "article": "Ridgeciano Haps",
-   "display": "Ridgeciano Haps",
-   "no": null,
-   "pos": "DF",
-   "nat": "SUR",
-   "qid": "Q14964792"
-  },
-  {
-   "article": "Calixte Ligue",
-   "display": "Calixte Ligue",
-   "no": null,
-   "pos": "DF",
-   "nat": "SUI",
-   "qid": "Q117243070"
-  },
-  {
    "article": null,
    "display": "[[Matías Moreno (footballer)",
-   "no": null,
+   "no": 2,
    "pos": "DF",
    "nat": "ARG",
    "qid": null
   },
   {
-   "article": "Richie Sagrado",
-   "display": "Richie Sagrado",
-   "no": null,
-   "pos": "DF",
-   "nat": "BEL",
-   "qid": "Q105955048"
-  },
-  {
    "article": "Joël Schingtienne",
    "display": "Joël Schingtienne",
-   "no": null,
+   "no": 3,
    "pos": "DF",
    "nat": "BEL",
    "qid": "Q117730926"
   },
   {
-   "article": null,
-   "display": "[[Ahmed Sidibé (footballer, born 2002)",
-   "no": null,
-   "pos": "DF",
-   "nat": "FRA",
-   "qid": null
-  },
-  {
-   "article": "Marin Šverko",
-   "display": "Marin Šverko",
-   "no": null,
+   "article": "Bartol Franjić",
+   "display": "Bartol Franjić",
+   "no": 4,
    "pos": "DF",
    "nat": "CRO",
-   "qid": "Q27921588"
+   "qid": "Q60791975"
   },
   {
-   "article": "Michael Venturi",
-   "display": "Michael Venturi",
-   "no": null,
+   "article": "Ridgeciano Haps",
+   "display": "Ridgeciano Haps",
+   "no": 5,
    "pos": "DF",
-   "nat": "ITA",
-   "qid": "Q109750100"
-  },
-  {
-   "article": "Toma Bašić",
-   "display": "Toma Bašić",
-   "no": null,
-   "pos": "MF",
-   "nat": "CRO",
-   "qid": "Q21063639"
-  },
-  {
-   "article": "Lorenzo Berardi",
-   "display": "Lorenzo Berardi",
-   "no": null,
-   "pos": "MF",
-   "nat": "ITA",
-   "qid": null
+   "nat": "SUR",
+   "qid": "Q14964792"
   },
   {
    "article": "Gianluca Busio",
    "display": "Gianluca Busio",
-   "no": null,
+   "no": 6,
    "pos": "MF",
    "nat": "USA",
    "qid": "Q51455020"
   },
   {
+   "article": "Albion Rrahmani",
+   "display": "Albion Rrahmani",
+   "no": 7,
+   "pos": "FW",
+   "nat": "KVX",
+   "qid": "Q121271905"
+  },
+  {
+   "article": "Lamine Fanne",
+   "display": "Lamine Fanne",
+   "no": 8,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": "Q124666675"
+  },
+  {
+   "article": "Andrea Adorante",
+   "display": "Andrea Adorante",
+   "no": 9,
+   "pos": "FW",
+   "nat": "ITA",
+   "qid": "Q66382854"
+  },
+  {
+   "article": "John Yeboah",
+   "display": "John Yeboah",
+   "no": 10,
+   "pos": "FW",
+   "nat": "ECU",
+   "qid": "Q58215731"
+  },
+  {
+   "article": "Marko Farji",
+   "display": "Marko Farji",
+   "no": 11,
+   "pos": "MF",
+   "nat": "IRQ",
+   "qid": "Q126373302"
+  },
+  {
+   "article": "Thierry Correia",
+   "display": "Thierry Correia",
+   "no": 14,
+   "pos": "DF",
+   "nat": "POR",
+   "qid": "Q59306442"
+  },
+  {
+   "article": "Armel Bella-Kotchap",
+   "display": "Armel Bella-Kotchap",
+   "no": 17,
+   "pos": "DF",
+   "nat": "GER",
+   "qid": "Q63364037"
+  },
+  {
+   "article": "Antoine Hainaut",
+   "display": "Antoine Hainaut",
+   "no": 18,
+   "pos": "DF",
+   "nat": "FRA",
+   "qid": "Q125885075"
+  },
+  {
+   "article": "Simon Sohm",
+   "display": "Simon Sohm",
+   "no": 19,
+   "pos": "MF",
+   "nat": "SUI",
+   "qid": "Q58215762"
+  },
+  {
+   "article": "Richie Sagrado",
+   "display": "Richie Sagrado",
+   "no": 20,
+   "pos": "DF",
+   "nat": "BEL",
+   "qid": "Q105955048"
+  },
+  {
+   "article": "Þórir Jóhann Helgason",
+   "display": "Þórir Jóhann Helgason",
+   "no": 21,
+   "pos": "MF",
+   "nat": "ISL",
+   "qid": "Q70755514"
+  },
+  {
+   "article": "Matteo Grandi",
+   "display": "Matteo Grandi",
+   "no": 23,
+   "pos": "GK",
+   "nat": "ITA",
+   "qid": "Q29001672"
+  },
+  {
+   "article": "Nunzio Lella",
+   "display": "Nunzio Lella",
+   "no": 24,
+   "pos": "MF",
+   "nat": "ITA",
+   "qid": "Q69584450"
+  },
+  {
+   "article": "Redouane Halhal",
+   "display": "Redouane Halhal",
+   "no": 25,
+   "pos": "DF",
+   "nat": "MAR",
+   "qid": "Q120389429"
+  },
+  {
+   "article": "Toma Bašić",
+   "display": "Toma Bašić",
+   "no": 26,
+   "pos": "MF",
+   "nat": "CRO",
+   "qid": "Q21063639"
+  },
+  {
+   "article": "Saad El Haddad",
+   "display": "Saad El Haddad",
+   "no": 27,
+   "pos": "FW",
+   "nat": "MAR",
+   "qid": "Q128839945"
+  },
+  {
+   "article": "Alessio Pozzi",
+   "display": "Alessio Pozzi",
+   "no": 28,
+   "pos": "GK",
+   "nat": "ITA",
+   "qid": null
+  },
+  {
+   "article": "Lion Lauberbach",
+   "display": "Lion Lauberbach",
+   "no": 29,
+   "pos": "FW",
+   "nat": "GER",
+   "qid": "Q37305729"
+  },
+  {
    "article": "Matteo Dagasso",
    "display": "Matteo Dagasso",
-   "no": null,
+   "no": 30,
    "pos": "MF",
    "nat": "ITA",
    "qid": "Q136129942"
@@ -23990,138 +24086,90 @@
   {
    "article": "Alfred Duncan",
    "display": "Alfred Duncan",
-   "no": null,
+   "no": 32,
    "pos": "MF",
    "nat": "GHA",
    "qid": "Q151518"
   },
   {
-   "article": "Lamine Fanne",
-   "display": "Lamine Fanne",
-   "no": null,
-   "pos": "MF",
-   "nat": "ESP",
-   "qid": "Q124666675"
+   "article": "Marin Šverko",
+   "display": "Marin Šverko",
+   "no": 33,
+   "pos": "DF",
+   "nat": "CRO",
+   "qid": "Q27921588"
   },
   {
-   "article": "Marko Farji",
-   "display": "Marko Farji",
-   "no": null,
-   "pos": "MF",
-   "nat": "IRQ",
-   "qid": "Q126373302"
-  },
-  {
-   "article": "Þórir Jóhann Helgason",
-   "display": "Þórir Jóhann Helgason",
-   "no": null,
-   "pos": "MF",
-   "nat": "ISL",
-   "qid": "Q70755514"
-  },
-  {
-   "article": "Nunzio Lella",
-   "display": "Nunzio Lella",
-   "no": null,
+   "article": "Lorenzo Berardi",
+   "display": "Lorenzo Berardi",
+   "no": 36,
    "pos": "MF",
    "nat": "ITA",
-   "qid": "Q69584450"
+   "qid": null
   },
   {
-   "article": "Kornel Lisman",
-   "display": "Kornel Lisman",
-   "no": null,
-   "pos": "MF",
-   "nat": "POL",
-   "qid": "Q133801107"
-  },
-  {
-   "article": "Simone Panada",
-   "display": "Simone Panada",
-   "no": null,
-   "pos": "MF",
-   "nat": "ITA",
-   "qid": "Q67402231"
-  },
-  {
-   "article": "Simon Sohm",
-   "display": "Simon Sohm",
-   "no": null,
-   "pos": "MF",
+   "article": "Calixte Ligue",
+   "display": "Calixte Ligue",
+   "no": 42,
+   "pos": "DF",
    "nat": "SUI",
-   "qid": "Q58215762"
-  },
-  {
-   "article": "Kike Pérez",
-   "display": "Kike Pérez",
-   "no": null,
-   "pos": "MF",
-   "nat": "ESP",
-   "qid": "Q42909631"
+   "qid": "Q117243070"
   },
   {
    "article": "Akor Adams",
    "display": "Akor Adams",
-   "no": null,
+   "no": 45,
    "pos": "FW",
    "nat": "NGA",
    "qid": "Q62059870"
   },
   {
-   "article": "Andrea Adorante",
-   "display": "Andrea Adorante",
-   "no": null,
-   "pos": "FW",
+   "article": "Simone Panada",
+   "display": "Simone Panada",
+   "no": 55,
+   "pos": "MF",
    "nat": "ITA",
-   "qid": "Q66382854"
+   "qid": "Q67402231"
+  },
+  {
+   "article": "Kornel Lisman",
+   "display": "Kornel Lisman",
+   "no": 56,
+   "pos": "MF",
+   "nat": "POL",
+   "qid": "Q133801107"
+  },
+  {
+   "article": "Kike Pérez",
+   "display": "Kike Pérez",
+   "no": 71,
+   "pos": "MF",
+   "nat": "ESP",
+   "qid": "Q42909631"
   },
   {
    "article": null,
    "display": "[[Antonio Casas (footballer)",
-   "no": null,
+   "no": 80,
    "pos": "FW",
    "nat": "ESP",
    "qid": null
   },
   {
-   "article": "Saad El Haddad",
-   "display": "Saad El Haddad",
-   "no": null,
-   "pos": "FW",
-   "nat": "MAR",
-   "qid": "Q128839945"
-  },
-  {
-   "article": "Lion Lauberbach",
-   "display": "Lion Lauberbach",
-   "no": null,
-   "pos": "FW",
-   "nat": "GER",
-   "qid": "Q37305729"
-  },
-  {
    "article": "Alvin Okoro",
    "display": "Alvin Okoro",
-   "no": null,
+   "no": 90,
    "pos": "FW",
    "nat": "ITA",
    "qid": "Q111740063"
   },
   {
-   "article": "Albion Rrahmani",
-   "display": "Albion Rrahmani",
-   "no": null,
-   "pos": "FW",
-   "nat": "KVX",
-   "qid": "Q121271905"
-  },
-  {
-   "article": "John Yeboah",
-   "display": "John Yeboah",
-   "no": null,
-   "pos": "FW",
-   "nat": "ECU",
-   "qid": "Q58215731"
+   "article": "Ale Gomes",
+   "display": "Ale Gomes",
+   "no": 95,
+   "pos": "DF",
+   "nat": "SPA",
+   "qid": "Q136756913"
   }
  ],
  "Angers SCO": [
@@ -24712,6 +24760,14 @@
    "pos": "FW",
    "nat": "FRA",
    "qid": "Q114565945"
+  },
+  {
+   "article": "Gautier Lloris",
+   "display": "Gautier Lloris",
+   "no": null,
+   "pos": "DF",
+   "nat": "FRA",
+   "qid": "Q22162727"
   }
  ],
  "Le Havre": [
@@ -25334,6 +25390,14 @@
    "pos": "MF",
    "nat": "FRA",
    "qid": "Q40352866"
+  },
+  {
+   "article": "Franjo Ivanović",
+   "display": "Franjo Ivanović",
+   "no": 29,
+   "pos": "FW",
+   "nat": "CRO",
+   "qid": "Q121535913"
   },
   {
    "article": null,
@@ -26676,14 +26740,6 @@
    "qid": null
   },
   {
-   "article": "Rabby Nzingoula",
-   "display": "Rabby Nzingoula",
-   "no": 41,
-   "pos": "MF",
-   "nat": "FRA",
-   "qid": "Q124902174"
-  },
-  {
    "article": "Abdoul Ouattara",
    "display": "Abdoul Ouattara",
    "no": 42,
@@ -26714,6 +26770,14 @@
    "pos": "FW",
    "nat": "MAR",
    "qid": "Q126436400"
+  },
+  {
+   "article": "Filip Jörgensen",
+   "display": "Filip Jörgensen",
+   "no": null,
+   "pos": "GK",
+   "nat": "DEN",
+   "qid": "Q108776426"
   },
   {
    "article": "Genesis Antwi",

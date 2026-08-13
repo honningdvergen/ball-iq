@@ -94,6 +94,7 @@ async function candidatesFor(name, loose = false) {
     const ii = p.imageinfo?.[0]; if (!ii) return null;
     const md = ii.extmetadata || {};
     const lic = clean(md.LicenseShortName?.value);
+    const blurb = fold(`${clean(md.ImageDescription?.value)} ${clean(md.Categories?.value)} ${clean(md.ObjectName?.value)}`);
     const date = clean(md.DateTimeOriginal?.value || md.DateTime?.value).slice(0, 10);
     const year = +(date.match(/(\d{4})/)?.[1] || 0);
     return {
@@ -102,7 +103,18 @@ async function candidatesFor(name, loose = false) {
       // different human entirely — a politician, a statue, a country singer.
       // Requiring the SURNAME in the filename is a cheap, strong filter; the
       // single-face check downstream catches the rest.
+      // ⚠️ TWO TIERS OF IDENTITY CONFIDENCE, because one tier loses either the
+      // player or the truth. Requiring the surname in the FILENAME is safe and
+      // silently blanked Šeško, Zirkzee, Dorgu, Heaven, Yoro and Santos —
+      // their photos exist at 4,000px but are named for the fixture
+      // ("FC Liefering gegen SV Grödig ... 22.jpg"). Dropping the requirement
+      // recovers them and invites the Reece-Johnson error, where the cutter
+      // keeps the wrong man out of a crowd and every automated check agrees.
+      // So: filename match = CONFIDENT, description/category match only =
+      // REVIEW. Confident can publish; review is staged for a human to look at
+      // before it ever reaches the pitch.
       named: fold(p.title).includes(surname),
+      viaBlurb: !fold(p.title).includes(surname) && blurb.includes(surname),
     };
   }).filter(Boolean)
     // ⚠️ A TITLE THAT NAMES TWO PEOPLE IS DISQUALIFYING, and a face count cannot
@@ -114,8 +126,17 @@ async function candidatesFor(name, loose = false) {
     // only the filename knows there was a choice to get wrong.
     // Anything joining names ("and", "&", "with", "vs", a comma) is refused.
     // It costs good files; shipping a stranger under a player's name costs more.
-    .filter((c) => !/\b(and|with|vs?\.?|feat)\b|&|,/i.test(c.title.replace(/^File:/, '')))
-    .filter((c) => c.named && c.w >= MIN_SRC_W && USABLE.test(c.lic) && !REJECT.test(c.lic))
+    // ⚠️ "v" JOINS A PLAYER TO AN OPPONENT, NOT TO ANOTHER PERSON. The first
+    // version of this guard also matched v/vs and instantly destroyed the best
+    // files in the set — "Senne Lammens USMNT v Belgium Mar 28 2026-25.jpg" at
+    // 3,333px is one man at a fixture, and it was thrown away as if it were a
+    // two-man photo. Only the conjunctions that actually join PEOPLE are
+    // disqualifying; fixtures are exactly where the good modern photography is.
+    .filter((c) => !/\b(and|with|feat)\b|&|,/i.test(c.title.replace(/^File:/, '')))
+    .filter((c) => (c.named || c.viaBlurb) && c.w >= MIN_SRC_W && USABLE.test(c.lic) && !REJECT.test(c.lic))
+    // Filename matches first — a confident candidate that passes should always
+    // win over a review-grade one, whatever their dates.
+    .sort((a, b) => (b.named ? 1 : 0) - (a.named ? 1 : 0))
     // Portrait-ish and recent first: a tall frame crops to a head far better
     // than a wide action shot, and newer kit reads as "current squad".
     .sort((a, b) => (b.year - a.year) || (b.h / b.w - a.h / a.w) || (b.w - a.w))
@@ -215,7 +236,7 @@ for (const row of squad) {
             : !c.year ? 'undated'
               : null;
     tried.push(`${c.title.replace(/^File:/, '')} [${c.year || '?'} ${c.w}px] -> ${why || 'PASS'}`);
-    if (!why) { winner = { ...c, crop, top, out, src }; break; }
+    if (!why) { winner = { ...c, crop, top, out, src, confidence: c.named ? 'confident' : 'review' }; break; }
   }
 
   results.push({ qid: row.qid, name, pos: row.pos, winner, tried, hadPhoto: !!pooled?.f });
@@ -225,7 +246,10 @@ for (const row of squad) {
 }
 
 const pass = results.filter((r) => r.winner);
-console.log(`\n${pass.length}/${results.length} players reached the standard`);
+const confident = pass.filter((r) => r.winner.confidence === 'confident');
+const review = pass.filter((r) => r.winner.confidence === 'review');
+console.log(`\n${pass.length}/${results.length} reached the standard — ${confident.length} confident, ${review.length} NEED AN EYEBALL (identity from description, not filename)`);
+if (review.length) console.log('  review: ' + review.map((r) => r.name).join(', '));
 writeFileSync(`${WORK}/wave.json`, JSON.stringify(results, null, 1));
 console.log(`detail: ${WORK}/wave.json  ·  cutouts: ${WORK}/cut_<qid>.png`);
 console.log('\n⚠️ NOTHING IS PUBLISHED YET. Cutouts stage in /tmp/squad-wave for an');
