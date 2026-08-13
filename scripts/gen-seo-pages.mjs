@@ -1009,7 +1009,20 @@ list.addEventListener('click',function(ev){
 var o=ev.target.closest?ev.target.closest('.bq-o'):null;
 if(o&&!o.disabled){var q=o.closest('.bq-q');answer(q,run[at],+o.getAttribute('data-i'));return}
 var nx=ev.target.closest?ev.target.closest('.bq-next'):null;
-if(nx){at++;show();var c=root.querySelector('.bq-card');if(c&&c.getBoundingClientRect().top<0)c.scrollIntoView({block:'start'})}});
+if(nx){at++;show();
+/* ⚠️ ALWAYS BRING THE NEW QUESTION INTO VIEW. This used to scroll only when the
+   card had already left the top of the viewport (top<0), which is precisely
+   backwards. "Next question →" sits at the BOTTOM of the answered question, so
+   the reader is looking at the foot of the card when they click; the next
+   question then renders ABOVE that point and, with the card still nominally in
+   view, nothing moved. The click appeared to do nothing.
+   Clarity scored it exactly that way: "Next question →" is the single most
+   dead-clicked element on the club pages by a wide margin, ahead of everything
+   else combined. Not a broken handler — a handler that worked invisibly.
+   Scrolling unconditionally costs a little motion when the card is already
+   framed, and removes an interaction that reads as a dead button. */
+var c=root.querySelector('.bq-card');
+if(c&&c.scrollIntoView){try{c.scrollIntoView({block:'start',behavior:'smooth'})}catch(e){c.scrollIntoView(true)}}}});
 var lens=root.querySelectorAll('.bq-len button');
 for(var i=0;i<lens.length;i++)lens[i].addEventListener('click',function(e){
 var v=+e.currentTarget.getAttribute('data-n');
