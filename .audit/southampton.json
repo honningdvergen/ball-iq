@@ -1,0 +1,302 @@
+[
+ {
+  "q": "Southampton were founded in 1885 by members of which organisation?",
+  "o": [
+   "St Mary's Church of England Young Men's Association",
+   "Southampton Docks Workers' Union",
+   "The Hampshire Cricket Club",
+   "Woolston Working Men's Institute"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "The church origin is why they are the Saints, and why the ground they moved to in 2001 is called St Mary's.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Southampton won the FA Cup in 1976 by beating which club in the final?",
+  "o": [
+   "Manchester United",
+   "Liverpool",
+   "Leeds United",
+   "Derby County"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Southampton were a Second Division side at the time, which made it one of the great final upsets.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Who scored the goal that won Southampton the 1976 FA Cup final?",
+  "o": [
+   "Bobby Stokes",
+   "Mick Channon",
+   "Peter Osgood",
+   "Jim McCalliog"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Stokes struck the only goal late on at Wembley; all four men played in that final.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Which manager led Southampton to that 1976 FA Cup triumph?",
+  "o": [
+   "Lawrie McMenemy",
+   "Ted Bates",
+   "Chris Nicholl",
+   "Alan Ball"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "McMenemy managed the club for 12 years and all four listed men held the job at some point.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Which ground did Southampton leave in 2001 after 103 years?",
+  "o": [
+   "The Dell",
+   "Fratton Park",
+   "The Goldstone Ground",
+   "Dean Court"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "The Dell was one of the smallest grounds in the Premier League before the move to St Mary's.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Matt Le Tissier spent his entire professional career at Southampton. What was he most renowned for?",
+  "o": [
+   "An almost flawless penalty record",
+   "Never being booked",
+   "Playing in every outfield position",
+   "Scoring only with headers"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "He converted 47 of the 48 penalties he took for the club — the one he missed was saved by Nottingham Forest's Mark Crossley.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Which future England captain scored a hat-trick on his full Southampton debut in 1988, aged 17?",
+  "o": [
+   "Alan Shearer",
+   "Michael Owen",
+   "Wayne Rooney",
+   "Teddy Sheringham"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Shearer's treble came against Arsenal and made him the youngest player to score a top-flight hat-trick at that time.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Southampton lost the 2003 FA Cup final to which club?",
+  "o": [
+   "Arsenal",
+   "Manchester United",
+   "Chelsea",
+   "Everton"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Robert Pires scored the only goal of the final in Cardiff.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Which manager left Southampton for Tottenham Hotspur in 2014?",
+  "o": [
+   "Mauricio Pochettino",
+   "Ronald Koeman",
+   "Nigel Adkins",
+   "Claude Puel"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Pochettino spent a season and a half at St Mary's; Koeman succeeded him and later left for Everton.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Virgil van Dijk joined Southampton in 2015 from which club?",
+  "o": [
+   "Celtic",
+   "Groningen",
+   "Ajax",
+   "Feyenoord"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "He moved from Celtic to St Mary's, then to Liverpool in January 2018 for what was then a world-record fee for a defender.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Sadio Mané joined Southampton in 2014 from which club?",
+  "o": [
+   "Red Bull Salzburg",
+   "Metz",
+   "Genk",
+   "Lille"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "He arrived from Salzburg and spent two seasons at St Mary's before joining Liverpool in 2016.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Southampton entered administration in 2009, suffering what immediate sporting punishment?",
+  "o": [
+   "A 10-point deduction",
+   "A transfer embargo only",
+   "Expulsion from the FA Cup",
+   "Relegation of two divisions"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The deduction was applied as they dropped into the third tier, deepening a fall that began with relegation from the Premier League in 2005.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Which of these England internationals came through Southampton's academy?",
+  "o": [
+   "Theo Walcott",
+   "Joe Cole",
+   "Jack Wilshere",
+   "Ross Barkley"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Walcott left for Arsenal in 2006 aged 16; the academy also produced Gareth Bale, Adam Lallana and Luke Shaw.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Gareth Bale began his professional career at Southampton in which position?",
+  "o": [
+   "Left-back",
+   "Centre-forward",
+   "Goalkeeper",
+   "Centre-back"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "He broke through as a left-back and only became an attacking player after moving to Tottenham.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Southampton's fiercest rivalry, known as the South Coast derby, is with which club?",
+  "o": [
+   "Portsmouth",
+   "Bournemouth",
+   "Brighton & Hove Albion",
+   "Reading"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The two cities are under 20 miles apart, and the fixture has often been played across different divisions.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Which England forward, later a racehorse trainer, is Southampton's record league goalscorer?",
+  "o": [
+   "Mick Channon",
+   "Kevin Keegan",
+   "Peter Osgood",
+   "Ron Davies"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Channon scored 185 league goals across two spells and became a successful trainer after retiring.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Which European Footballer of the Year joined Southampton in 1980, a signing that stunned English football?",
+  "o": [
+   "Kevin Keegan",
+   "Bobby Charlton",
+   "Trevor Francis",
+   "Alan Ball"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Keegan arrived from Hamburg as reigning Ballon d'Or holder and stayed two seasons.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "What was Southampton's highest ever finish in the English top flight?",
+  "o": [
+   "Second",
+   "Champions",
+   "Third",
+   "Fourth"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "They finished runners-up in 1983-84 under Lawrie McMenemy, three points behind Liverpool.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "Which stadium has been Southampton's home since 2001?",
+  "o": [
+   "St Mary's Stadium",
+   "The Dell",
+   "Southampton Common Ground",
+   "Priory Park"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The name returns the club to its founding church, St Mary's, whose YMA formed the side in 1885.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ },
+ {
+  "q": "James Ward-Prowse, Southampton's long-serving captain, became renowned for which skill?",
+  "o": [
+   "Free-kicks",
+   "Penalty saves",
+   "Long throws",
+   "Overhead kicks"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "He studied David Beckham's technique and became one of the Premier League's most prolific free-kick scorers.",
+  "cat": "History",
+  "club": "Southampton",
+  "type": "mcq"
+ }
+]

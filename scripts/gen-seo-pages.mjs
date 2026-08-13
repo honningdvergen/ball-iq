@@ -223,6 +223,7 @@ const PAGE_FG = '#F0F1F5';
 // Mirrors the homepage mesh (MarketingHome QUIZ_CLUBS / QUIZ_LEAGUES) so the
 // landing pages read as one system with balliq.app/.
 const CLUB_BADGE = {
+  southampton: 'SOU',
   'rb-leipzig': 'RBL', 'atalanta': 'ATA',
   'hajduk-split': 'HAJ',
   'boca-juniors': 'BOC', 'river-plate': 'RIV', 'flamengo': 'FLA', 'palmeiras': 'PAL', 'corinthians': 'COR',
@@ -279,6 +280,7 @@ const clubOgImage = ({ name, badge, color, kind }) => {
 // yellow) get dark text via badgeColors(); a hairline border keeps very dark
 // badges (Juventus, Newcastle) legible on the near-black cards.
 const CLUB_COLOR = {
+  southampton: '#D71920',
   'rb-leipzig': '#DD0741', 'atalanta': '#1D71B8',
   'hajduk-split': '#0E4C92',
   'boca-juniors': '#0A2B72', 'river-plate': '#E1122E', 'flamengo': '#C52613', 'palmeiras': '#006437', 'corinthians': '#111111',

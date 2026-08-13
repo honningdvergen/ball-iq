@@ -2442,5 +2442,25 @@ export const CLUBS = [
         "a": "In Bergamo, in northern Italy, at the ground in the Borgo Santa Caterina district that opened in 1928 and was long known as the Stadio Atleti Azzurri d'Italia. A naming-rights deal with Gewiss, an electrical components firm from the Bergamo area, took effect on 1 July 2019, and the Gewiss Stadium name ran until 2025. During their debut Champions League campaign in 2019-20 the ground was mid-redevelopment, so Atalanta played their home European ties at San Siro in Milan, returning to Bergamo for European nights from 2020-21."
       }
     ]
+  },
+  {
+    "club": "Southampton",
+    "slug": "southampton",
+    "name": "Southampton",
+    "h1": "Southampton Quiz",
+    "title": "Southampton Quiz with Answers \u2014 The Saints | Ball IQ",
+    "description": "Free Southampton quiz with explained answers \u2014 the 1976 FA Cup shock, Le Tissier's penalties, and the academy that produced Bale, Shearer and Walcott.",
+    "intro": [
+      "Southampton are the Saints, and the name is literal: the club was founded in 1885 by members of the St Mary's Church of England Young Men's Association, and the ground they moved to in 2001 carries the same name. Few English clubs wear their origin quite so plainly.",
+      "The defining day came on 1 May 1976, when a Second Division Southampton beat Manchester United 1-0 in the FA Cup final through Bobby Stokes. Lawrie McMenemy's side had no business winning it, which is exactly why it is still the first thing anyone mentions. Eight years later the same manager took them to second in the old First Division, the highest the club has ever finished.",
+      "Then there is the academy, which has done more for English football than most clubs' first teams. Alan Shearer scored a hat-trick on his full debut at 17. Theo Walcott left for Arsenal at 16. Gareth Bale began as a left-back at The Dell. Adam Lallana, Luke Shaw, Alex Oxlade-Chamberlain and James Ward-Prowse all came through the same doors.",
+      "And Matt Le Tissier stayed, which is the other half of the story \u2014 one club, one career, and 47 penalties scored from 48 taken. Southampton have been relegated, gone into administration and dropped to the third tier since, but the identity has never really changed."
+    ],
+    "faq": [
+      { "q": "Why are Southampton called the Saints?", "a": "The club was founded in 1885 by members of the St Mary's Church of England Young Men's Association, a church side. The nickname has stuck ever since, and the stadium they moved to in 2001 is named St Mary's after the same church." },
+      { "q": "When did Southampton win the FA Cup?", "a": "In 1976, beating Manchester United 1-0 at Wembley through a Bobby Stokes goal. Southampton were a Second Division side at the time, making it one of the great final upsets. It remains the club's only major trophy." },
+      { "q": "Which famous players came through Southampton's academy?", "a": "Alan Shearer, Theo Walcott, Gareth Bale, Adam Lallana, Luke Shaw, Alex Oxlade-Chamberlain and James Ward-Prowse among others. Bale began as a left-back and only became an attacking player after leaving for Tottenham." },
+      { "q": "Who is Southampton's greatest player?", "a": "Most supporters say Matt Le Tissier, who spent his entire professional career at the club and scored 47 of the 48 penalties he took. Mick Channon is the record league goalscorer with 185, and later became a successful racehorse trainer." }
+    ]
   }
 ];
