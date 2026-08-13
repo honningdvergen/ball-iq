@@ -36,6 +36,8 @@ export const CLUB_COMPETITION = {
   'Norwich City': 'Championship',
   'Cardiff City': 'Championship',
   'Stoke City': 'Championship',
+  'Derby County': 'Championship',
+  'Swansea City': 'Championship',
   // Short-form in leagues.mjs, long-form in clubs.mjs. Verified one by one.
   'Manchester United': 'Premier League', // leagues.mjs: "Man United"
   'Manchester City': 'Premier League', // "Man City"

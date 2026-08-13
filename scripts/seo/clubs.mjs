@@ -2602,5 +2602,45 @@ export const CLUBS = [
       { "q": "What has Stoke City won?", "a": "One major trophy: the League Cup in 1972, beating Chelsea 2-1 at Wembley with Gordon Banks in goal. They also reached the FA Cup final in 2011, losing to Manchester City, which took them into the Europa League." },
       { "q": "What was Stoke City famous for in the Premier League?", "a": "Rory Delap's long throw-ins, which were fast and flat enough to be defended like corners, and a physical, set-piece-based style under Tony Pulis that kept them in the top flight for ten consecutive seasons from 2008." }
     ]
+  },
+  {
+    "club": "Derby County",
+    "slug": "derby-county",
+    "name": "Derby County",
+    "h1": "Derby County Quiz",
+    "title": "Derby County Quiz with Answers \u2014 The Rams | Ball IQ",
+    "description": "Free Derby County quiz with explained answers \u2014 two league titles, Brian Clough, the Baseball Ground and the record-low Premier League season.",
+    "intro": [
+      "Derby County are the Rams, founded in 1884 by Derbyshire County Cricket Club as a way of making money through the winter. The Baseball Ground was home for 102 years, named for the American sport briefly played on the site in Victorian times.",
+      "The great era belongs to Brian Clough and Peter Taylor, who took Derby to the First Division title in 1972 \u2014 confirmed while the players were abroad on holiday, results elsewhere handing them the championship. A European Cup semi-final followed. Clough left in 1973 and, in time, won the league and two European Cups with Nottingham Forest, which is why the East Midlands derby carries the edge it does.",
+      "Dave Mackay, once a Derby player, won a second title in 1975 with much of the same side. An FA Cup had come earlier, in 1946, in the first final after the war.",
+      "The modern history is harder: the 2007-08 Premier League season ended with 11 points and one win, a low nobody has matched, and administration followed in 2021 under Wayne Rooney. Steve Bloomer's 332 goals from the early 1900s still stand as the club record."
+    ],
+    "faq": [
+      { "q": "Why are Derby County called the Rams?", "a": "The ram was the emblem of the First Regiment of Derby Militia and became the club's symbol, appearing on the badge. Derby were founded in 1884 as an offshoot of Derbyshire County Cricket Club." },
+      { "q": "How many league titles have Derby County won?", "a": "Two: in 1972 under Brian Clough and in 1975 under Dave Mackay. They also won the FA Cup in 1946, the first final staged after the Second World War." },
+      { "q": "What is Derby County's connection to Brian Clough?", "a": "Clough, with assistant Peter Taylor, built the side that won the 1972 league title and reached a European Cup semi-final. He left in 1973 and later won the title and two European Cups at Nottingham Forest, Derby's fiercest rivals." },
+      { "q": "What record do Derby County hold in the Premier League?", "a": "The fewest points in a season: 11, with one win, in 2007-08. No club has since matched it." }
+    ]
+  },
+  {
+    "club": "Swansea City",
+    "slug": "swansea-city",
+    "name": "Swansea City",
+    "h1": "Swansea City Quiz",
+    "title": "Swansea City Quiz with Answers \u2014 The Swans | Ball IQ",
+    "description": "Free Swansea City quiz with explained answers \u2014 the first Welsh club in the Premier League, the 2013 League Cup, Michu and the Vetch Field.",
+    "intro": [
+      "Swansea City are the Swans, formed in 1912 as Swansea Town and renamed in 1969 when Swansea was granted city status. The Vetch Field \u2014 named for the crop once grown on the land \u2014 was home for 93 years until the move in 2005.",
+      "In 2011 they became the first Welsh club to reach the Premier League, going up through the play-off final under Brendan Rodgers. Two years later Michael Laudrup's side beat Bradford City 5-0 to win the League Cup, the biggest winning margin in the final's history and the first major English trophy won by a Welsh club.",
+      "That period produced one of the great bargains too: Michu, signed from Rayo Vallecano for around \u00a32 million, scoring 22 goals in his first season.",
+      "The foundations were laid earlier by John Toshack, who as player-manager took Swansea from the Fourth Division to the First in four seasons from 1978, and by the supporters' trust, which took a stake when the club was close to liquidation in 2002 and held it through the top-flight years."
+    ],
+    "faq": [
+      { "q": "Were Swansea City the first Welsh club in the Premier League?", "a": "Yes. They won the Championship play-off final in 2011 to become the first Welsh club to reach the Premier League, and stayed in the top flight for seven seasons." },
+      { "q": "Has Swansea City won a major trophy?", "a": "Yes, the League Cup in 2013, beating Bradford City 5-0 under Michael Laudrup. It was the biggest winning margin in the final's history and the first major English trophy won by a Welsh club." },
+      { "q": "Why do Swansea City play in the English league?", "a": "For the same historical reason as Cardiff City and Wrexham: Welsh clubs joined the English pyramid long before a national Welsh league existed, and stayed there." },
+      { "q": "Who was Michu?", "a": "A Spanish forward signed from Rayo Vallecano in 2012 for around \u00a32 million, who scored 22 goals in his first season and became one of the outstanding bargains of the Premier League era." }
+    ]
   }
 ];

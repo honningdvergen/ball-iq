@@ -1,0 +1,242 @@
+[
+ {
+  "q": "By what nickname are Swansea City known?",
+  "o": [
+   "The Swans",
+   "The Bluebirds",
+   "The Dragons",
+   "The Jacks"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The swan appears on the club badge, and supporters are also known as the Jack Army.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "In 2011 Swansea City became the first Welsh club to do what?",
+  "o": [
+   "Reach the Premier League",
+   "Win the FA Cup",
+   "Play in the Champions League",
+   "Sign a British record fee"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "They won the Championship play-off final at Wembley to go up, and stayed in the top flight for seven seasons.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Swansea City won the League Cup in 2013, beating which club in the final?",
+  "o": [
+   "Bradford City",
+   "Chelsea",
+   "Aston Villa",
+   "Sunderland"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "They won 5-0 against a League Two side, the biggest winning margin in the final's history.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Swansea City's rivalry, the South Wales derby, is with which club?",
+  "o": [
+   "Cardiff City",
+   "Newport County",
+   "Wrexham",
+   "Bristol Rovers"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The two clubs are around 40 miles apart, and the fixture carries heavy policing and long-standing hostility.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which ground did Swansea City leave in 2005 after 93 years?",
+  "o": [
+   "The Vetch Field",
+   "Ninian Park",
+   "The Racecourse Ground",
+   "Somerton Park"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The name came from the vegetable crop grown on the land before the club moved in.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which manager led Swansea City into the Premier League in 2011?",
+  "o": [
+   "Brendan Rodgers",
+   "Roberto Martínez",
+   "Michael Laudrup",
+   "Garry Monk"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Rodgers left for Liverpool the following summer, and Laudrup replaced him and won the League Cup.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which Danish former Barcelona and Real Madrid player managed Swansea City to the 2013 League Cup?",
+  "o": [
+   "Michael Laudrup",
+   "Brian Laudrup",
+   "Morten Olsen",
+   "Peter Schmeichel"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Laudrup's side beat Bradford City 5-0, delivering Swansea's first major English trophy.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which Spanish striker, signed for a small fee in 2012, scored 22 goals in his first Swansea City season?",
+  "o": [
+   "Michu",
+   "Fernando Llorente",
+   "Álvaro Negredo",
+   "Roque Santa Cruz"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Michu arrived from Rayo Vallecano for around £2 million and became one of the buys of the decade.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which Welsh former Liverpool striker managed Swansea City to four promotions from 1978?",
+  "o": [
+   "John Toshack",
+   "Ian Rush",
+   "Mark Hughes",
+   "Dean Saunders"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Toshack took them from the Fourth Division to the First in four seasons as player-manager.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "What colours do Swansea City wear at home?",
+  "o": [
+   "All white",
+   "Blue and white",
+   "Red and black",
+   "Yellow and green"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The all-white kit is the reason for the nickname's association with the swan.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Like Cardiff and Wrexham, Swansea City are a Welsh club competing in which league system?",
+  "o": [
+   "The English league system",
+   "The Welsh Premier League",
+   "A cross-border Celtic league",
+   "The Scottish league system"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Welsh clubs joined the English pyramid long before a national Welsh league existed.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "What is the name of Swansea City's home ground, opened in 2005?",
+  "o": [
+   "The Swansea.com Stadium",
+   "The Vetch Field",
+   "The Principality Stadium",
+   "Jack Army Park"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "It was known as the Liberty Stadium for most of its existence before a naming-rights change.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Swansea City's supporters' trust is notable for what?",
+  "o": [
+   "Holding a stake in the club through its rise",
+   "Owning the stadium outright",
+   "Selecting the manager",
+   "Running the academy"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The trust took a shareholding when the club was near liquidation in 2002 and retained it through the Premier League years.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which Ivorian striker did Swansea City sell to Manchester City in 2015 after a prolific spell?",
+  "o": [
+   "Wilfried Bony",
+   "Yaya Touré",
+   "Gervinho",
+   "Salomon Kalou"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Bony had been the Premier League's leading scorer across the previous calendar year.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which Spaniard managed Swansea City from 2007, later winning the FA Cup with Wigan?",
+  "o": [
+   "Roberto Martínez",
+   "Rafael Benítez",
+   "Pepe Mel",
+   "Aitor Karanka"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Martínez had played for Swansea before managing them, and established the passing style Rodgers inherited.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ },
+ {
+  "q": "Swansea City were founded in which year?",
+  "o": [
+   "1912",
+   "1889",
+   "1935",
+   "1946"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "They were formed as Swansea Town and adopted the City name in 1969, when Swansea was granted city status.",
+  "cat": "History",
+  "club": "Swansea City",
+  "type": "mcq"
+ }
+]
