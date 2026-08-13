@@ -3691,23 +3691,61 @@ function buildFootballQuizPage() {
     }))),
   });
 
+  // ⚠️ THE CLUB IS THE VISUAL, NOT THE TEXT. The first version rendered 76
+  // identical grey pills — structurally correct and impossible to scan, because
+  // a fan looks for a COLOUR before he reads a word. CLUB_BADGE and CLUB_COLOR
+  // already exist for the club pages, so the index gets the same identity
+  // rather than inventing a second visual language for the same clubs.
   const style = `<style>
-  .fq-lg{margin:0 0 26px}
-  .fq-lg h2{font-size:16px;margin:0 0 11px;color:#fff;letter-spacing:-.01em}
-  .fq-grid{display:flex;flex-wrap:wrap;gap:8px}
-  .fq-grid a{display:inline-block;padding:9px 13px;border:1px solid var(--bd2);border-radius:999px;
-    background:var(--card);color:var(--tx2);font-size:13.5px;font-weight:700;min-height:38px;line-height:20px}
-  .fq-grid a:hover{border-color:var(--grn);color:#fff;text-decoration:none}
-  .fq-modes{display:grid;gap:10px;grid-template-columns:1fr}
-  @media(min-width:640px){.fq-modes{grid-template-columns:1fr 1fr}}
-  .fq-mode{display:block;padding:15px 17px;border:1px solid var(--bd2);border-radius:14px;background:var(--card)}
-  .fq-mode:hover{border-color:var(--grn);text-decoration:none}
-  .fq-mode b{display:block;color:#fff;font-size:15.5px;margin-bottom:3px}
-  .fq-mode span{color:var(--tx3);font-size:13.5px}
+  .fq-hero{position:relative;padding-bottom:6px}
+  .fq-hero::after{content:"";display:block;width:64px;height:3px;border-radius:2px;margin-top:16px;
+    background:linear-gradient(90deg,var(--grn),transparent)}
+  .fq-trust{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 0;padding:0;list-style:none}
+  .fq-trust li{font:700 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.06em;
+    color:var(--tx3);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:7px 11px}
+  .fq-lg{margin:0 0 30px}
+  .fq-lg h3{font-size:13px;margin:0 0 12px;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;display:flex;align-items:center;gap:9px}
+  .fq-lg h3::after{content:"";flex:1;height:1px;background:var(--bd)}
+  /* Auto-fill so the index uses the full width of a desktop instead of
+     stranding it in a 760px column with half the screen empty. */
+  .fq-grid{display:grid;gap:9px;grid-template-columns:repeat(auto-fill,minmax(168px,1fr))}
+  .fq-club{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--bd);
+    border-radius:12px;background:var(--card);min-height:46px;transition:border-color .15s,background .15s,transform .15s}
+  .fq-club:hover{border-color:var(--club,var(--grn));background:var(--card2);text-decoration:none;transform:translateY(-1px)}
+  .fq-badge{flex:0 0 auto;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font:800 10.5px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.02em;
+    background:var(--club,#2A2F3A);color:var(--club-ink,#fff);box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}
+  .fq-club span{color:var(--tx2);font-size:13.5px;font-weight:700;line-height:1.2}
+  .fq-club:hover span{color:#fff}
+  .fq-modes{display:grid;gap:11px;grid-template-columns:1fr}
+  @media(min-width:700px){.fq-modes{grid-template-columns:1fr 1fr}}
+  .fq-mode{display:block;padding:17px 18px;border:1px solid var(--bd2);border-radius:15px;
+    background:linear-gradient(var(--card2),var(--card));position:relative;overflow:hidden;transition:border-color .15s,transform .15s}
+  .fq-mode::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:var(--accent,var(--grn));opacity:.85}
+  .fq-mode:hover{border-color:var(--accent,var(--grn));text-decoration:none;transform:translateY(-2px)}
+  .fq-mode em{font-style:normal;font:700 10px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent,var(--grn));display:block;margin-bottom:7px}
+  .fq-mode b{display:block;color:#fff;font-size:16.5px;margin-bottom:4px;letter-spacing:-.01em}
+  .fq-mode span{color:var(--tx3);font-size:13.5px;line-height:1.5}
   </style>`;
 
-  const groupHtml = groups.map((g) => `<div class="fq-lg"><h2>${g.flag ? g.flag + ' ' : ''}${esc(g.league)}</h2><div class="fq-grid">${
-    g.rows.map((r) => `<a href="${SITE.base}/quiz/${r.slug}/">${esc(r.club)}</a>`).join('')
+  // Club colours run from #FFFFFF (Real Madrid) to #000000 (Juventus), so the
+  // badge text colour is computed rather than assumed — a white-on-white or
+  // black-on-black badge is invisible, and both exist in the map.
+  const inkFor = (hex) => {
+    const h = String(hex || '').replace('#', '');
+    if (h.length !== 6) return '#fff';
+    const [r, g2, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+    return (0.2126 * r + 0.7152 * g2 + 0.0722 * b) > 150 ? '#0B0C0F' : '#fff';
+  };
+  const groupHtml = groups.map((g) => `<div class="fq-lg"><h3>${g.flag ? g.flag + ' ' : ''}${esc(g.league)}</h3><div class="fq-grid">${
+    g.rows.map((r) => {
+      const col = CLUB_COLOR[r.slug] || '';
+      const badge = CLUB_BADGE[r.slug] || r.club.slice(0, 3).toUpperCase();
+      const vars = col ? ` style="--club:${col};--club-ink:${inkFor(col)}"` : '';
+      return `<a class="fq-club" href="${SITE.base}/quiz/${r.slug}/"${vars}><i class="fq-badge">${esc(badge)}</i><span>${esc(r.club)}</span></a>`;
+    }).join('')
   }</div></div>`).join('');
 
   const html = `${head({ title, description, canonical, ld })}
@@ -3715,24 +3753,24 @@ function buildFootballQuizPage() {
 ${NAV}
 <main id="main">
 ${style}
-<section class="sec narrow">
+<section class="sec narrow fq-hero">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football quiz</span></nav>
-<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 8px">Football quiz</h1>
-<p class="sub" style="color:var(--tx3);margin:0 0 18px">Free · no sign-up · every answer explained</p>
-<p style="margin:0 0 14px;color:var(--tx2)">Pick a club and play, or take one of the daily games. Every question is written and fact-checked by hand rather than scraped, and every answer comes with the reason it is the answer — which is the part most football quizzes leave out.</p>
+<h1 style="font-size:clamp(30px,5.2vw,46px);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1.05;margin:10px 0 10px">Football quiz</h1>
+<p style="margin:0;color:var(--tx2);font-size:16.5px;max-width:62ch">Pick a club and play, or take one of the daily games. Every question is written and fact-checked by hand rather than scraped, and every answer comes with the reason it is the answer — the part most football quizzes leave out.</p>
+<ul class="fq-trust"><li>FREE</li><li>NO SIGN-UP</li><li>ANSWERS EXPLAINED</li><li>${clubCount} CLUBS</li></ul>
 </section>
 
 <section class="sec narrow">
 <h2 style="font-size:19px;margin:0 0 12px">Daily games</h2>
 <div class="fq-modes">
-<a class="fq-mode" href="${SITE.base}/football-wordle/"><b>Footle</b><span>The football Wordle — guess the player's surname in six.</span></a>
-<a class="fq-mode" href="${SITE.base}/mystery-player/"><b>Mystery Player</b><span>Guess the footballer; every guess is ranked by how close it is.</span></a>
-<a class="fq-mode" href="${SITE.base}/transfer-trail/"><b>Transfer Trail</b><span>Name the player from his club-by-club career path.</span></a>
-<a class="fq-mode" href="${SITE.base}/daily-football-quiz/"><b>Daily 7</b><span>Seven fresh questions every day, same seven for everyone.</span></a>
+<a class="fq-mode" href="${SITE.base}/football-wordle/" style="--accent:#58CC02"><em>DAILY</em><b>Footle</b><span>The football Wordle — guess the player's surname in six.</span></a>
+<a class="fq-mode" href="${SITE.base}/mystery-player/" style="--accent:#FFC53D"><em>DAILY</em><b>Mystery Player</b><span>Guess the footballer; every guess is ranked by how close it is.</span></a>
+<a class="fq-mode" href="${SITE.base}/transfer-trail/" style="--accent:#4EA8FF"><em>DAILY</em><b>Transfer Trail</b><span>Name the player from his club-by-club career path.</span></a>
+<a class="fq-mode" href="${SITE.base}/daily-football-quiz/" style="--accent:#FF6B9D"><em>EVERY DAY</em><b>Daily 7</b><span>Seven fresh questions every day, same seven for everyone.</span></a>
 </div>
 </section>
 
-<section class="sec narrow">
+<section class="sec">
 <h2 style="font-size:19px;margin:0 0 4px">Club quizzes</h2>
 <p style="margin:0 0 16px;color:var(--tx3);font-size:14px">Every club we cover, by league. Each one is a full quiz with answers and explanations.</p>
 ${groupHtml}
