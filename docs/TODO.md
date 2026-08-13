@@ -1,6 +1,79 @@
 # Ball IQ — the board
 
-## ▶ WHERE WE ARE (2026-08-12, late)
+## ▶ WHERE WE ARE (2026-08-13)
+
+**THE FINDING THAT REPRIORITISES EVERYTHING.** Microsoft Clarity has been
+connected for weeks and unused. Five queries answered the funnel question:
+
+| measure | reading |
+|---|---|
+| organic search | **60%** of sessions (318 of 531) — SEO *is* the business |
+| landing pages | club pages are **7 of the top 10** |
+| **pages per session** | **488 of 516 sessions view exactly ONE page (94.6%)** |
+| club page entry vs exit | identical: Liverpool 25/25, Arsenal 23/23, Chelsea 17/17 |
+| referral traffic | **11 sessions in seven days** — the authority gap, quantified |
+
+⚠️ **The club page IS the product for 95% of visitors.** They never see /play,
+never see the app, never see a second page. Optimising for onward navigation is
+optimising for 5% of people. **The club-page rebuild is now the highest-value
+design work, ahead of the homepage.**
+
+Acted on already: the result screen led with "Play the full quiz" (navigates
+away) and capped "Keep going" at two rounds. Inverted — staying is now primary
+and uncapped.
+
+⚠️ **Treat 94.6% as a BEFORE reading.** "Next question →" was the most
+dead-clicked element on those same pages until 2026-08-13; a progression control
+that feels broken two questions in produces exactly this data. Re-read in a week.
+
+**THE HEAD TERM FINALLY HAS A PAGE.** "football quiz" sits at position 39 with
+~87 impressions, unchanged for weeks — and the thing competing for it was the
+*homepage*: brand H1, phrase absent from the heading, 16 internal links. Every
+site outranking us (PlanetFootball, FourFourTwo, BBC, JetPunk, Sporcle — read
+off a live SERP) answers that query with an INDEX. `/football-quiz/` now exists:
+phrase in URL/title/H1/body, 161 club links, **286 pages linking in**. Intent
+mismatch, not an authority ceiling. Same move that took /lists/ to 51% of
+impressions.
+
+**TEN CLUB PAGES SHIPPED** — Southampton, Portsmouth, Birmingham City, Sheffield
+Wednesday, Wrexham, Norwich City, Cardiff City, Stoke City, Derby County,
+Swansea City. Picked by measured search demand (Google suggest harvest, 2,582
+completions), written single-threaded so every fact was checked as it was set
+down. **86 club pages, bank 6,687, 302 pages SERP-clean, all indexed + linked.**
+
+**Also shipped:** `/club-nicknames/` (first Discover expansion — text-only, no
+licensing exposure, no staleness); per-question **pips in the app**; the lineup
+**dead-click fix**; three lineup geometry fixes (crop edge, crown clip 34%→0%,
+body off-centre 24%→2%); "save as PDF" on 75 printable pages.
+
+**GUARDS ADDED, each after a near-miss:**
+- `build-mystery-pool.mjs` refused to write if a scheduled answer would vanish —
+  ⚠️ **running it today, unchanged, would have deleted 253 of 310 scheduled
+  Mystery puzzles.** It survived only by not being in `npm run build`.
+- `scripts/verify-trail-careers.mjs` — run at **every transfer window**.
+- `tests/unit/lineup-page.test.js` — the inline game scripts had no gate and had
+  shipped two runtime faults through green builds.
+- `scripts/seo/club-alias.mjs` — hand-checked short→long names. Fuzzy joining
+  gave Angers→Rangers and Paris FC→PSG; a careless alias invented a Premier
+  League gap that did not exist.
+
+**LINEUP BUILDER — the honest state.** Geometry fixed and measured. 8 faces
+approved by Alex and live. But identity cannot be automated: Alex rejected 13 of
+21, and **every available signal lies** — filename (Rashford's file held
+Bellingham), description (Bruno's held Ronaldo), single-face check (confirms the
+cut, not the man), and Wikidata's own curated portrait (Rashford's P18 IS
+Lisandro Martinez). ⚠️ Alex later clarified some rejections were CROPPING, not
+identity — only 3 are confirmed wrong-person, so the split is unresolved.
+**Next: classify those 10.** Recommended scope change — a small excellent set
+(~300 hand-approved faces) rather than a comprehensive mediocre one.
+
+**Ahrefs: DROPPED.** Alex has no paid subscription and it connects to his
+account. GSC covers our own queries free; a GSC export is the cheap way to rank
+the demand map.
+
+---
+
+## ▶ PREVIOUS (2026-08-12, late)
 
 **Shipped today:** **Guess the XI** LIVE at `/xi/` (now a generated page with
 the shared nav — it was a standalone file pretending to be a website);
