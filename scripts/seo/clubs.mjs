@@ -2562,5 +2562,45 @@ export const CLUBS = [
       { "q": "Has Norwich City won a major trophy?", "a": "Yes, the League Cup twice: in 1962 and again in 1985, when Ken Brown's side beat Sunderland at Wembley. Norwich were relegated from the top flight in that same 1985 season." },
       { "q": "Who is Delia Smith at Norwich City?", "a": "The television cook, who with her husband became the club's majority shareholder. Her half-time appeal to the Carrow Road crowd in 2005 \u2014 \"Let's be 'avin' you!\" \u2014 is one of the most replayed moments in English football." }
     ]
+  },
+  {
+    "club": "Cardiff City",
+    "slug": "cardiff-city",
+    "name": "Cardiff City",
+    "h1": "Cardiff City Quiz",
+    "title": "Cardiff City Quiz with Answers \u2014 The Bluebirds | Ball IQ",
+    "description": "Free Cardiff City quiz with explained answers \u2014 the 1927 FA Cup that left England, Ninian Park, the red-shirt years and the South Wales derby.",
+    "intro": [
+      "Cardiff City are the Bluebirds, and 1927 is the year that defines them. Beating Arsenal 1-0 at Wembley made them the only club ever to take the FA Cup out of England \u2014 a Welsh club winning the English cup, decided by a Welsh goalkeeper letting a routine shot squirm under his body.",
+      "Ninian Park was home for 99 years until the move to the Cardiff City Stadium in 2009. Like Wrexham and Swansea, Cardiff play in the English pyramid, a historical accident that has left Welsh clubs competing for English trophies for over a century.",
+      "The modern era has been turbulent. Promotion to the Premier League arrived in 2013 under Malky Mackay, and again in 2018 under Neil Warnock, whose eighth career promotion it was. Between them came the most disliked rebrand in British football, when owner Vincent Tan changed the home shirt from blue to red in 2012. Blue was restored in 2015.",
+      "And the rivalry with Swansea City is genuinely fierce \u2014 40 miles apart, and one of the most heavily policed fixtures in Britain."
+    ],
+    "faq": [
+      { "q": "Why are Cardiff City called the Bluebirds?", "a": "From the blue home shirt and the bluebird that has appeared on the club badge for over a century. That history is why the 2012 change to red shirts under owner Vincent Tan caused such anger; blue was restored in 2015." },
+      { "q": "Did Cardiff City really win the FA Cup?", "a": "Yes, in 1927, beating Arsenal 1-0 at Wembley. It is the only time the FA Cup has been won by a club from outside England, and the winning goal came when Arsenal's Welsh goalkeeper Dan Lewis let the ball squirm under him." },
+      { "q": "Why do Cardiff City play in the English league?", "a": "For historical reasons, like Swansea City and Wrexham. Welsh clubs joined the English pyramid long before a national Welsh league existed, and they remained there." },
+      { "q": "Who are Cardiff City's rivals?", "a": "Swansea City. The South Wales derby is contested by clubs around 40 miles apart and is among the most heavily policed fixtures in British football." }
+    ]
+  },
+  {
+    "club": "Stoke City",
+    "slug": "stoke-city",
+    "name": "Stoke City",
+    "h1": "Stoke City Quiz",
+    "title": "Stoke City Quiz with Answers \u2014 The Potters | Ball IQ",
+    "description": "Free Stoke City quiz with explained answers \u2014 founded 1863, Stanley Matthews, Gordon Banks, the 1972 League Cup and the Rory Delap era.",
+    "intro": [
+      "Stoke City were founded in 1863, which puts them among the oldest professional football clubs anywhere in the world. They are the Potters, after the ceramics industry that built Stoke-on-Trent, and they wear red and white stripes.",
+      "The greatest player in their history is also one of the greatest in anyone's: Stanley Matthews, the first winner of the Ballon d'Or, who had two spells at the club and returned aged 46 to play top-flight football past his 50th birthday.",
+      "The only major trophy came in 1972, a 2-1 League Cup final win over Chelsea by a side that included Gordon Banks in goal \u2014 the man who had made the save from Pel\u00e9 two years earlier.",
+      "The modern chapter is Tony Pulis: promotion in 2008, then ten unbroken Premier League seasons, an FA Cup final in 2011 and a Europa League campaign that followed it. That team was built on set pieces and physicality, and on Rory Delap's long throw, which opponents treated as a corner because that is effectively what it was."
+    ],
+    "faq": [
+      { "q": "Why are Stoke City called the Potters?", "a": "Stoke-on-Trent is the heart of the Potteries, the English ceramics industry, and the club took its identity from the trade that defined the city." },
+      { "q": "How old is Stoke City?", "a": "Founded in 1863, making them one of the oldest professional football clubs in the world. Only a small handful of clubs anywhere can claim a longer continuous history." },
+      { "q": "What has Stoke City won?", "a": "One major trophy: the League Cup in 1972, beating Chelsea 2-1 at Wembley with Gordon Banks in goal. They also reached the FA Cup final in 2011, losing to Manchester City, which took them into the Europa League." },
+      { "q": "What was Stoke City famous for in the Premier League?", "a": "Rory Delap's long throw-ins, which were fast and flat enough to be defended like corners, and a physical, set-piece-based style under Tony Pulis that kept them in the top flight for ten consecutive seasons from 2008." }
+    ]
   }
 ];

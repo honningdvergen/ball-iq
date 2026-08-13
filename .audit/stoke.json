@@ -1,0 +1,242 @@
+[
+ {
+  "q": "By what nickname are Stoke City known?",
+  "o": [
+   "The Potters",
+   "The Miners",
+   "The Bricklayers",
+   "The Railwaymen"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Stoke-on-Trent sits at the heart of the Potteries, the ceramics industry that defined the region.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Stoke City, founded in 1863, are among the oldest what?",
+  "o": [
+   "Professional football clubs in the world",
+   "Rugby clubs in England",
+   "Cricket clubs in the Midlands",
+   "Athletics clubs in Britain"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Only a small handful of clubs anywhere can claim a longer continuous history.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Stoke City won their only major trophy in 1972. Which was it?",
+  "o": [
+   "The League Cup",
+   "The FA Cup",
+   "The league title",
+   "The Cup Winners' Cup"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "They beat Chelsea 2-1 at Wembley; it remains the club's sole major honour.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which legendary winger, the first Ballon d'Or winner, played for Stoke City in two spells?",
+  "o": [
+   "Stanley Matthews",
+   "Tom Finney",
+   "Bobby Charlton",
+   "Nat Lofthouse"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Matthews won the inaugural Ballon d'Or in 1956 and returned to Stoke aged 46, playing top-flight football past 50.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which World Cup-winning goalkeeper was in Stoke City's 1972 League Cup-winning side?",
+  "o": [
+   "Gordon Banks",
+   "Peter Shilton",
+   "Ray Clemence",
+   "Pat Jennings"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Banks, England's 1966 keeper, made the famous save from Pelé two years before joining the Stoke side that won at Wembley.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Stoke City's rivalry, the Potteries derby, is with which club?",
+  "o": [
+   "Port Vale",
+   "Crewe Alexandra",
+   "Shrewsbury Town",
+   "Walsall"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "The two clubs are the only senior sides in Stoke-on-Trent, roughly three miles apart.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which ground did Stoke City leave in 1997 after 119 years?",
+  "o": [
+   "The Victoria Ground",
+   "Vale Park",
+   "The Baseball Ground",
+   "Gay Meadow"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "It was one of the oldest grounds in the Football League when they moved to the new stadium at Trentham Lakes.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Stoke City became famous in the Premier League for which distinctive weapon?",
+  "o": [
+   "Rory Delap's long throw-ins",
+   "An all-academy starting XI",
+   "Playing without a striker",
+   "The highest possession in the league"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Delap's flat, fast throws were treated as set pieces and became one of the most distinctive weapons of that era.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Stoke City reached the FA Cup final in 2011, losing to which club?",
+  "o": [
+   "Manchester City",
+   "Manchester United",
+   "Chelsea",
+   "Arsenal"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Yaya Touré scored the only goal; it was Stoke's first FA Cup final and took them into the Europa League.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "How long did Stoke City's uninterrupted Premier League spell last from 2008?",
+  "o": [
+   "Ten seasons",
+   "Three seasons",
+   "Fifteen seasons",
+   "One season"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "They went up in 2008 and were relegated in 2018, an unusually long stay for a club of their resources.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "What colours do Stoke City traditionally wear at home?",
+  "o": [
+   "Red and white stripes",
+   "Blue and white stripes",
+   "All red",
+   "Black and amber"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The red-and-white stripe has been the club's identity for well over a century.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which Spain international, a Champions League winner, joined Stoke City in 2016?",
+  "o": [
+   "Bojan Krkić",
+   "David Silva",
+   "Juan Mata",
+   "Santi Cazorla"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Bojan came from Barcelona's academy and became a cult figure at the club, though injuries limited his impact.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Stoke City's 1972 League Cup final win came against which club?",
+  "o": [
+   "Chelsea",
+   "Arsenal",
+   "West Ham United",
+   "Everton"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Stoke won 2-1 at Wembley through goals from Terry Conroy and George Eastham.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "What is the name of Stoke City's home ground?",
+  "o": [
+   "The bet365 Stadium",
+   "The Victoria Ground",
+   "Vale Park",
+   "The Britannia Arena"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "It was called the Britannia Stadium from 1997 until a naming-rights change in 2016.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Stoke City qualified for the Europa League in 2011 by what route?",
+  "o": [
+   "Reaching the FA Cup final",
+   "Finishing fifth in the league",
+   "Winning the League Cup",
+   "The fair play ranking"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Manchester City had already qualified for the Champions League, so the losing finalists took the European place.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which manager took Stoke City into the Premier League in 2008 and to the 2011 FA Cup final?",
+  "o": [
+   "Tony Pulis",
+   "Mark Hughes",
+   "Lou Macari",
+   "Peter Coates"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Pulis had two spells at the club and built the side around set pieces and physical strength.",
+  "cat": "History",
+  "club": "Stoke City",
+  "type": "mcq"
+ }
+]
