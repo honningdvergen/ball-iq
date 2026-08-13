@@ -2760,7 +2760,18 @@ ${as}
 
   const html = `${head({
     title: `${cfg.name} Quiz Questions and Answers (Free, Printable)`.slice(0, 60),
-    description: `${rows.length} ${cfg.name} quiz questions with answers, grouped in rounds and free to print or read aloud. Written and checked by Ball IQ.`.slice(0, 155),
+    // ⚠️ "PDF" IS EARNED HERE, NOT CLAIMED. Harvested demand (2,582 real Google
+    // completions, 2026-08-13) shows people search "football quiz with answers
+    // pdf" and we had the word on ZERO titles despite 68 pages that do the job.
+    // But a searcher typing "pdf" wants a FILE, and we generate none — so the
+    // wording is "save as PDF", which is exactly what the browser's print
+    // dialog does with this page. The page carries a real @media print rule
+    // that drops the nav, footer and TOC, forces black-on-white and keeps a
+    // round from splitting across pages, so the output is a clean document
+    // rather than a screenshot of a website.
+    // Saying "Printable PDF" would have been the same false promise as the
+    // "nothing to install" line Alex caught under the app-store buttons.
+    description: `${rows.length} ${cfg.name} quiz questions with answers, grouped in rounds. Free to read aloud, print, or save as a PDF. Written and checked by Ball IQ.`.slice(0, 155),
     canonical, ld: faqLd,
   })}
 <style>
