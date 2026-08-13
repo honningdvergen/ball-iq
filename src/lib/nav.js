@@ -43,6 +43,7 @@ export const NAV_GROUPS = [
     ['Records & lists', '/lists/'],
     ['Football fun facts', '/fun-facts/'],
     ['Football quotes', '/football-quotes/'],
+    ['Club nicknames', '/club-nicknames/'],
     ['The trivia data study', '/study/football-trivia-memory/'],
     ['About Ball IQ', '/about/'],
   ] },

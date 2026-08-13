@@ -32,6 +32,7 @@ import { NAV_GROUPS } from '../src/lib/nav.js';
 import { XI_MARKUP, XI_CSS, XI_JS } from './seo/xiGame.mjs';
 import { trailBoardHtml, TRAIL_BOARD_CSS, TRAIL_BOARD_JS } from './seo/trailBoard.mjs';
 import { QUOTES } from './seo/quotes.mjs';
+import { NICKNAMES, NICK_REGIONS } from './seo/nicknames.mjs';
 import { mysteryBoardHtml, MYSTERY_BOARD_CSS, MYSTERY_BOARD_JS } from './seo/mysteryBoard.mjs';
 import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
@@ -1689,6 +1690,7 @@ ${/* THREE PAGES SHIPPED THIS WEEK AND NONE WERE IN THE MESH. The footer is the
 <a href="${SITE.base}/xi/">Guess the XI — name the lineup</a>
 <a href="${SITE.base}/fun-facts/">Football facts that sound made up</a>
 <a href="${SITE.base}/football-quotes/">Football quotes</a>
+<a href="${SITE.base}/club-nicknames/">Club nicknames</a>
 <a href="${SITE.base}/about/">About</a>
 <a href="${SITE.base}/contact/">Contact</a>
 <a href="${SITE.base}/terms/">Terms</a>
@@ -3612,6 +3614,80 @@ ${footer()}`;
   console.log(`  \u2713 /football-quotes/  (${total} checked quotes, ${QUOTES.length} themes)`);
 }
 
+// ── /club-nicknames/ ─────────────────────────────────────────────────────────
+// ⚠️ THE ORIGIN IS THE PRODUCT, NOT THE NICKNAME. "Arsenal are the Gunners" is
+// on the badge; it earns no link and answers nothing. The searched question is
+// WHY, and almost every page that ranks for it either repeats folklore or
+// stops at one sentence. Any club whose origin could not be stated with
+// confidence was left out of the data file rather than padded.
+// Chosen as the first Discover expansion for two reasons: it is text, so it
+// carries none of the licensing exposure that rules out kit history, and
+// nicknames do not rot — unlike squads, records and transfer trails, this page
+// needs no maintenance schedule.
+function buildNicknamesPage() {
+  const canonical = `${SITE.base}/club-nicknames/`;
+  const bySlug = new Map(NICKNAMES.map((n) => [n.slug, n]));
+  const clubSlugs = new Set(CLUBS.map((c) => c.slug));
+  const title = 'Football Club Nicknames And Where They Come From | Ball IQ';
+  const description = 'Why Arsenal are the Gunners, Everton the Toffees and Barcelona the Culés. The real origin behind each nickname, not the folklore.';
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: NICKNAMES.map((n) => ({
+      '@type': 'Question',
+      name: `Why are ${n.club} called ${n.nick.split(' / ')[0]}?`,
+      acceptedAnswer: { '@type': 'Answer', text: n.origin },
+    })),
+  });
+
+  const style = `<style>
+  .nk-list{display:flex;flex-direction:column;gap:12px}
+  .nk-row{padding:16px 18px;background:var(--card);border:1px solid var(--bd);border-radius:14px}
+  .nk-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:7px}
+  .nk-head b{font-size:17px;color:#fff;font-weight:800;letter-spacing:-.01em}
+  .nk-head b a{color:#fff}
+  .nk-head span{font:700 12px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.06em;
+    color:var(--grn-soft);background:rgba(88,204,2,.12);padding:5px 8px;border-radius:6px}
+  .nk-row p{margin:0;color:var(--tx2);font-size:14.5px;line-height:1.6}
+  </style>`;
+
+  const rows = NICK_REGIONS.map(([region, slugs]) => {
+    const items = slugs.map((sl) => bySlug.get(sl)).filter(Boolean).map((n) => {
+      // Only link when the club actually has a quiz page — a dead link on a
+      // reference page is worse than no link.
+      const name = clubSlugs.has(n.slug)
+        ? `<a href="${SITE.base}/quiz/${n.slug}/">${esc(n.club)}</a>`
+        : esc(n.club);
+      return `<div class="nk-row"><div class="nk-head"><b>${name}</b><span>${esc(n.nick)}</span></div><p>${esc(n.origin)}</p></div>`;
+    }).join('');
+    return items ? `<section class="sec narrow"><h2>${esc(region)}</h2><div class="nk-list">${items}</div></section>` : '';
+  }).join('');
+
+  const html = `${head({ title, description, canonical, ld })}
+<body>
+${NAV}
+<main id="main">
+${style}
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Club nicknames</span></nav>
+<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 8px">Football club nicknames, and where they actually come from</h1>
+<p class="sub" style="color:var(--tx3);margin:0 0 18px">Sourced origins · free · no sign-up</p>
+<p style="margin:0 0 14px;color:var(--tx2)">The Gunners were an armaments factory. The Toffees were a sweet shop. The Culés were a row of backsides on a wall. Most nickname pages stop at the name; the interesting part is the why, so that is what each entry gives — with a quiz on every club we cover.</p>
+</section>
+${rows}
+<section class="sec narrow">
+<h2>Why some clubs are missing</h2>
+<p style="margin:0;color:var(--tx2)">A nickname is easy to list and hard to source. Where the origin is genuinely disputed — or where the only explanation available is a story with no foundation — the club is left off this page rather than given a confident-sounding guess. Bournemouth are here with both of their competing explanations precisely because neither is settled.</p>
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'club-nicknames');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html);
+  console.log(`  \u2713 /club-nicknames/  (${NICKNAMES.length} clubs, ${NICK_REGIONS.length} regions)`);
+}
+
 function buildFunFactsPage() {
   const canonical = `${SITE.base}/fun-facts/`;
   const total = FUN_FACTS.reduce((n, t) => n + t.facts.length, 0);
@@ -4793,6 +4869,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/fun-facts/`, freq: 'weekly', pri: '0.7' },
     { loc: `${SITE.base}/football-quotes/`, freq: 'weekly', pri: '0.7' },
+    { loc: `${SITE.base}/club-nicknames/`, freq: 'monthly', pri: '0.7' },
     { loc: `${SITE.base}/xi/`, freq: 'daily', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
@@ -4977,6 +5054,7 @@ async function main() {
   buildFunFactsPage();
   buildXiPage();
   buildQuotesPage();
+  buildNicknamesPage();
   const dailyGamePages = [MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE].map(buildDailyGamePage);
   buildStudyPage(STUDY);
   buildSimplePage(ABOUT);
