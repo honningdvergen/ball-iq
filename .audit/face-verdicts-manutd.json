@@ -1,86 +1,107 @@
 {
  "Q98100512": {
   "name": "Senne Lammens",
-  "ok": true
+  "ok": true,
+  "reason": "approved"
  },
  "Q26255506": {
   "name": "Diogo Dalot",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q26266244": {
   "name": "Noussair Mazraoui",
-  "ok": true
+  "ok": true,
+  "reason": "approved"
  },
  "Q165772": {
   "name": "Harry Maguire",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q30881092": {
   "name": "Lisandro Martínez",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q38000669": {
   "name": "Mason Mount",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q4979316": {
   "name": "Bruno Fernandes",
-  "ok": false
+  "ok": false,
+  "reason": "wrong-person (confirmed by Alex)"
  },
  "Q35831063": {
   "name": "Matheus Cunha",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q65675442": {
   "name": "Joshua Zirkzee",
-  "ok": true
+  "ok": true,
+  "reason": "approved"
  },
  "Q1730695": {
   "name": "Karl Darlow",
-  "ok": true
+  "ok": true,
+  "reason": "approved"
  },
  "Q112039295": {
   "name": "Leny Yoro",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q72603655": {
   "name": "Amad Diallo",
-  "ok": true
+  "ok": true,
+  "reason": "approved"
  },
  "Q14327453": {
   "name": "Youri Tielemans",
-  "ok": true
+  "ok": true,
+  "reason": "approved"
  },
  "Q49561427": {
   "name": "Bryan Mbeumo",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q357912": {
   "name": "Tom Heaton",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q65950315": {
   "name": "Benjamin Šeško",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q114703020": {
   "name": "Kobbie Mainoo",
-  "ok": true
+  "ok": true,
+  "reason": "approved"
  },
  "Q137384640": {
   "name": "Tyler Fletcher",
-  "ok": true
+  "ok": true,
+  "reason": "approved"
  },
  "Q119971486": {
   "name": "Harry Amass",
-  "ok": false
+  "ok": false,
+  "reason": "wrong-person (confirmed by Alex)"
  },
  "Q121437419": {
   "name": "Toby Collyer",
-  "ok": false
+  "ok": false,
+  "reason": "unclassified — identity or framing"
  },
  "Q22951255": {
   "name": "Marcus Rashford",
-  "ok": false
+  "ok": false,
+  "reason": "wrong-person (confirmed by Alex)"
  }
 }
