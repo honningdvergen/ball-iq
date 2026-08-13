@@ -26,6 +26,41 @@ and uncapped.
 dead-clicked element on those same pages until 2026-08-13; a progression control
 that feels broken two questions in produces exactly this data. Re-read in a week.
 
+**CLUB-PAGE REBUILD — STARTED. Lever 1 is LIVE.** The rebuild was chosen over
+the 87th club page because more pages feed a funnel that ends on arrival.
+
+⚠️ **First, the club quiz emitted NOTHING.** Clarity had been loaded on all 302
+pages since the wave began and the quiz fired zero events — so "does anyone
+finish a quiz" had no answer, and this morning's result-screen inversion
+shipped with no way to tell if it worked. **Eleven signals now ship**
+(`clubq-start/play/finish/rounds/score/more/again/share/out-play/out-store/len`),
+verified by driving a real Chromium through a full round. `clubq-out-*` is the
+guardrail: optimising for staying cannot quietly kill the app funnel unnoticed.
+
+**Lever 1 (ca24f50): the order is re-derived per day.** 86 static URLs became 86
+recurring ones. Server-rendered arc untouched (crawlable text, JS-off readers);
+only the human's order changes, reshuffled per (club, day) with the arc
+re-applied so it still opens easy. xorshift32, integer-only — same reason as
+the Daily 7. Ribbon gated at 24+ questions, because below that a ten-question
+round repeats most of itself and the claim would be false.
+
+⚠️ **Defect found on the way:** "Keep going — 30 more" called `start(20)` and
+`start` always filled from `qs[0]` — a reader who had just answered ten
+questions **got those same ten again**. Fixed with an offset. Zero repeats now.
+
+**Levers 2-4, in order:** make the result worth showing someone (the only lever
+touching AUTHORITY, our actual ranking ceiling — 11 referral sessions/week);
+delete the length picker that precedes the reward; calibrate difficulty once
+`clubq-score` has a fortnight of data.
+
+⚠️ **We cannot A/B test this.** At ~516 sessions/week any lift worth caring
+about is inside the noise. Small numbers show gross failure only. The powered
+measurement is GSC impressions + position across 302 pages, read monthly.
+
+Design memo + playable prototype: claude.ai/code/artifact/c938b70a-d613-4ca2-89c1-1014145d38a1
+
+---
+
 **THE HEAD TERM FINALLY HAS A PAGE.** "football quiz" sits at position 39 with
 ~87 impressions, unchanged for weeks — and the thing competing for it was the
 *homepage*: brand H1, phrase absent from the heading, 16 internal links. Every
