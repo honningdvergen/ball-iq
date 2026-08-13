@@ -105,3 +105,31 @@ for (const dir of TARGET_DIRS) {
   grandTotal += dirTotal
 }
 console.log(`[prune-native] total reclaimed: ${mb(grandTotal)} MB`)
+
+// ── SIZE CEILING ─────────────────────────────────────────────────────────────
+// 2026-08-13: an Android build ran without this script and produced a 1.7 GB
+// APK. public/lineup/cutouts holds 4,341 licence-verified PNGs; Vite copies
+// public/ verbatim into dist/, and Capacitor copies dist/ into both native
+// bundles. Play would have rejected it outright — the machine ran out of disk
+// first. The cutouts are gitignored and serve from Supabase, so the web is
+// unaffected; this is purely a native-bundle trap.
+//
+// It was already documented as "run the prune after every cap sync". A manual
+// step with a 1.7 GB blast radius is not a safeguard, so: the ceiling is
+// enforced here, and `npm run sync:ios` / `sync:android` now wrap the two
+// commands so they cannot be half-performed.
+const CEILING_MB = 60
+// (sizeOf is already defined above — reuse it rather than shadowing.)
+let over = false
+for (const dir of TARGET_DIRS) {
+  if (!existsSync(dir)) continue
+  const asMb = sizeOf(dir) / 1048576
+  console.log(`[prune-native] ${dir.replace(repoRoot + '/', '')} is ${asMb.toFixed(1)} MB`)
+  if (asMb > CEILING_MB) {
+    console.error(`\n\u2717 over the ${CEILING_MB} MB ceiling — something large is riding in from public/.`)
+    console.error(`  du -sh ${dir}/* | sort -rh | head`)
+    over = true
+  }
+}
+if (over) process.exit(1)
+console.log(`[prune-native] both bundles under ${CEILING_MB} MB \u2713`)
