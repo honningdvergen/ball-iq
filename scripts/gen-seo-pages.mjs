@@ -963,10 +963,19 @@ var play=root.getAttribute('data-play')||'/play';
 var BANDS=[0,25,45,65,85,100];
 function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
 if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
-var run=[],at=0,sc=0,streak=0,best=0,rounds=0,len=Math.min(10,total);
+var run=[],at=0,sc=0,streak=0,best=0,rounds=0,started=0,len=Math.min(10,total);
 var head=root.querySelector('.bq-head'),meter=root.querySelector('.bq-meter'),sbadge=root.querySelector('.bq-streak');
 var res=root.querySelector('.bq-res');
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+/* Until 2026-08-13 this engine emitted NOTHING. Clarity was loaded on all 302
+   pages and the club quiz — the thing 60% of our traffic actually arrives for —
+   fired zero events, so "does anyone finish a quiz" was unanswerable. That is
+   how the result screen shipped for two months built around a guess.
+   ev() is deliberately total: if clarity is absent (blocked, or the native
+   bundle where the loader is guarded off) every call is a no-op, so this adds
+   no requests and no native exposure. */
+function bqev(n){try{if(window.clarity)window.clarity('event',n)}catch(e){}}
+function tag(k,v){try{if(window.clarity)window.clarity('set',k,String(v))}catch(e){}}
 function paintMeter(){if(!meter)return;var h='';for(var i=0;i<run.length;i++){var st=run[i].got;h+='<i class="'+(st===1?'ok':st===0?'no':'')+'"></i>'}meter.innerHTML=h}
 function show(){
 for(var i=0;i<qs.length;i++)qs[i].hidden=true;
@@ -980,12 +989,17 @@ var a=+q.getAttribute('data-a'),os=q.querySelectorAll('.bq-o');
 for(var b=0;b<os.length;b++){os[b].disabled=true;
 if(b===a)os[b].className='bq-o ok';else if(b===k)os[b].className='bq-o no';else os[b].className='bq-o dim'}
 var w=q.querySelector('.bq-why');if(w)w.hidden=false;
+/* Fired once per round, on the first answer. The gap between clubq-start and
+   clubq-play is the honest engagement number: started the quiz vs actually
+   answered something. */
+if(at===0&&rec.got===-1)bqev('clubq-play');
 if(k===a){sc++;streak++;if(streak>best)best=streak;rec.got=1}else{streak=0;rec.got=0}
 if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' streak';
 paintMeter();
 var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?'See your result →':'Next question →'}}
 function finish(){
 rounds++;var G=grade(sc,run.length),left=total-run.length+more;
+bqev('clubq-finish');tag('clubq-rounds',rounds);tag('clubq-score',G.pct>=85?'85+':G.pct>=65?'65-84':G.pct>=45?'45-64':'under-45');
 /* ⚠️ THE PRIMARY ACTION MUST KEEP THEM ON THIS PAGE. Measured in Clarity on
    2026-08-13: 488 of 516 sessions viewed exactly ONE page — 94.6%. Entry and
    exit URLs for the club pages are identical down to the session count
@@ -1013,14 +1027,25 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
 +'<div class="bq-row">'+cont+'<button class="ghost" data-share="1">Share</button><button class="ghost" data-again="1">Play again</button></div>'
 +(!hasMore?'<p class="bq-note">That is every '+esc(name)+' question we have here. There is a new daily game in the app, plus your streak.</p>':'');
 res.hidden=false;if(head)head.hidden=true;
-var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();start(Math.min(20,total))});
-var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){start(len)});
-var sh=res.querySelector('[data-share]');if(sh)sh.addEventListener('click',function(){
+var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();bqev('clubq-more');start(Math.min(20,total))});
+var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){bqev('clubq-again');start(len)});
+/* The two ways OFF the page. Tracked so that choosing to optimise for staying
+   cannot quietly kill the app funnel without us noticing — the guardrail on
+   the whole rebuild. */
+var outs=res.querySelectorAll('a[href]');
+for(var oi=0;oi<outs.length;oi++)(function(el){el.addEventListener('click',function(){
+if(el.hasAttribute('data-more'))return;bqev(el.getAttribute('href')===play?'clubq-out-play':'clubq-out-store')})})(outs[oi]);
+var sh=res.querySelector('[data-share]');if(sh)sh.addEventListener('click',function(){bqev('clubq-share');
 var txt='I scored '+sc+'/'+run.length+' on the '+name+' quiz — '+G.tier+'. Beat that.',u=location.href.split('#')[0];
 if(navigator.share){navigator.share({title:name+' quiz',text:txt,url:u})['catch'](function(){})}
 else if(navigator.clipboard){navigator.clipboard.writeText(txt+' '+u).then(function(){sh.textContent='Copied ✓'})}
 else{window.prompt('Copy your score',txt+' '+u)}})}
 function start(n){
+/* Only the FIRST start counts as a start. "Play again" and "Keep going" have
+   their own events, so clubq-start stays a clean session-level denominator:
+   clubq-play/clubq-start = did they engage, clubq-finish/clubq-start = did
+   they get to the end. */
+if(!rounds&&!started){started=1;bqev('clubq-start');tag('clubq-len',n)}
 len=n;res.hidden=true;if(head)head.hidden=false;
 run=[];sc=0;at=0;streak=0;best=0;
 for(var i=0;i<qs.length&&run.length<n;i++){
