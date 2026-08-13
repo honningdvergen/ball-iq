@@ -33,6 +33,7 @@ import { XI_MARKUP, XI_CSS, XI_JS } from './seo/xiGame.mjs';
 import { trailBoardHtml, TRAIL_BOARD_CSS, TRAIL_BOARD_JS } from './seo/trailBoard.mjs';
 import { QUOTES } from './seo/quotes.mjs';
 import { NICKNAMES, NICK_REGIONS } from './seo/nicknames.mjs';
+import { pageNameFor } from './seo/club-alias.mjs';
 import { mysteryBoardHtml, MYSTERY_BOARD_CSS, MYSTERY_BOARD_JS } from './seo/mysteryBoard.mjs';
 import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
@@ -1689,6 +1690,7 @@ ${/* THREE PAGES SHIPPED THIS WEEK AND NONE WERE IN THE MESH. The footer is the
 <a href="${SITE.base}/daily-football-quiz/">Daily football quiz</a>
 <a href="${SITE.base}/xi/">Guess the XI — name the lineup</a>
 <a href="${SITE.base}/fun-facts/">Football facts that sound made up</a>
+<a href="${SITE.base}/football-quiz/">Football quiz</a>
 <a href="${SITE.base}/football-quotes/">Football quotes</a>
 <a href="${SITE.base}/club-nicknames/">Club nicknames</a>
 <a href="${SITE.base}/about/">About</a>
@@ -3635,6 +3637,126 @@ ${footer()}`;
 // carries none of the licensing exposure that rules out kit history, and
 // nicknames do not rot — unlike squads, records and transfer trails, this page
 // needs no maintenance schedule.
+// ── /football-quiz/ ──────────────────────────────────────────────────────────
+// ⚠️ THE HEAD TERM HAD NO PAGE. "football quiz" is the north-star query and the
+// thing competing for it was the HOMEPAGE — brand H1 ("How good is your
+// football knowledge, really?"), 16 internal links, and the phrase absent from
+// its heading entirely. Meanwhile every site outranking us (PlanetFootball,
+// FourFourTwo, JetPunk, Sporcle) answers that query with an INDEX: here are the
+// quizzes, pick one. We were entering a product homepage into an index
+// competition.
+//
+// That is an intent mismatch, not an authority ceiling — which matters, because
+// authority takes years and this does not. The same move on /lists/ took it to
+// 51% of site impressions.
+//
+// This page exists to do the three things the homepage structurally cannot:
+// carry the phrase in URL, H1 and body; index every quiz we have so the intent
+// is actually served; and concentrate the internal-link signal currently
+// diffused across a homepage that is also trying to sell an app.
+function buildFootballQuizPage() {
+  const canonical = `${SITE.base}/football-quiz/`;
+  const paged = new Set(CLUBS.map((c) => c.club));
+  const bySlug = new Map(CLUBS.map((c) => [c.club, c.slug]));
+
+  // Group our club pages under the league they actually play in, using the
+  // hand-checked alias table — a fuzzy join here produced Angers -> Rangers.
+  const groups = [];
+  for (const lg of LEAGUES) {
+    const rows = lg.clubs
+      .map((c) => pageNameFor(c.name, paged))
+      .filter(Boolean)
+      .map((club) => ({ club, slug: bySlug.get(club) }))
+      .filter((r) => r.slug);
+    if (rows.length) groups.push({ league: lg.league, flag: lg.flag || '', rows });
+  }
+  // Clubs whose league we could not resolve still deserve a link — losing a
+  // page from its own index is worse than an untidy heading.
+  const listed = new Set(groups.flatMap((g) => g.rows.map((r) => r.club)));
+  const rest = CLUBS.filter((c) => !listed.has(c.club)).map((c) => ({ club: c.club, slug: c.slug }));
+  if (rest.length) groups.push({ league: 'More clubs', flag: '', rows: rest });
+
+  const clubCount = CLUBS.length;
+  const title = `Football Quiz — Free Club Quizzes With Answers | Ball IQ`;
+  const description = `Play a free football quiz on any of ${clubCount} clubs, plus daily games. Every question has an answer and an explanation. No sign-up.`;
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Football Quiz',
+    description,
+    url: canonical,
+    hasPart: groups.flatMap((g) => g.rows.slice(0, 40).map((r) => ({
+      '@type': 'Quiz', name: `${r.club} Quiz`, url: `${SITE.base}/quiz/${r.slug}/`,
+    }))),
+  });
+
+  const style = `<style>
+  .fq-lg{margin:0 0 26px}
+  .fq-lg h2{font-size:16px;margin:0 0 11px;color:#fff;letter-spacing:-.01em}
+  .fq-grid{display:flex;flex-wrap:wrap;gap:8px}
+  .fq-grid a{display:inline-block;padding:9px 13px;border:1px solid var(--bd2);border-radius:999px;
+    background:var(--card);color:var(--tx2);font-size:13.5px;font-weight:700;min-height:38px;line-height:20px}
+  .fq-grid a:hover{border-color:var(--grn);color:#fff;text-decoration:none}
+  .fq-modes{display:grid;gap:10px;grid-template-columns:1fr}
+  @media(min-width:640px){.fq-modes{grid-template-columns:1fr 1fr}}
+  .fq-mode{display:block;padding:15px 17px;border:1px solid var(--bd2);border-radius:14px;background:var(--card)}
+  .fq-mode:hover{border-color:var(--grn);text-decoration:none}
+  .fq-mode b{display:block;color:#fff;font-size:15.5px;margin-bottom:3px}
+  .fq-mode span{color:var(--tx3);font-size:13.5px}
+  </style>`;
+
+  const groupHtml = groups.map((g) => `<div class="fq-lg"><h2>${g.flag ? g.flag + ' ' : ''}${esc(g.league)}</h2><div class="fq-grid">${
+    g.rows.map((r) => `<a href="${SITE.base}/quiz/${r.slug}/">${esc(r.club)}</a>`).join('')
+  }</div></div>`).join('');
+
+  const html = `${head({ title, description, canonical, ld })}
+<body>
+${NAV}
+<main id="main">
+${style}
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football quiz</span></nav>
+<h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 8px">Football quiz</h1>
+<p class="sub" style="color:var(--tx3);margin:0 0 18px">Free · no sign-up · every answer explained</p>
+<p style="margin:0 0 14px;color:var(--tx2)">Pick a club and play, or take one of the daily games. Every question is written and fact-checked by hand rather than scraped, and every answer comes with the reason it is the answer — which is the part most football quizzes leave out.</p>
+</section>
+
+<section class="sec narrow">
+<h2 style="font-size:19px;margin:0 0 12px">Daily games</h2>
+<div class="fq-modes">
+<a class="fq-mode" href="${SITE.base}/football-wordle/"><b>Footle</b><span>The football Wordle — guess the player's surname in six.</span></a>
+<a class="fq-mode" href="${SITE.base}/mystery-player/"><b>Mystery Player</b><span>Guess the footballer; every guess is ranked by how close it is.</span></a>
+<a class="fq-mode" href="${SITE.base}/transfer-trail/"><b>Transfer Trail</b><span>Name the player from his club-by-club career path.</span></a>
+<a class="fq-mode" href="${SITE.base}/daily-football-quiz/"><b>Daily 7</b><span>Seven fresh questions every day, same seven for everyone.</span></a>
+</div>
+</section>
+
+<section class="sec narrow">
+<h2 style="font-size:19px;margin:0 0 4px">Club quizzes</h2>
+<p style="margin:0 0 16px;color:var(--tx3);font-size:14px">Every club we cover, by league. Each one is a full quiz with answers and explanations.</p>
+${groupHtml}
+</section>
+
+${appCtaBand('football')}
+
+<section class="sec narrow">
+<h2>Also worth a look</h2>
+<div class="fq-modes">
+<a class="fq-mode" href="${SITE.base}/lists/"><b>Records &amp; lists</b><span>Winners, top scorers and record books, settled and sourced.</span></a>
+<a class="fq-mode" href="${SITE.base}/club-nicknames/"><b>Club nicknames</b><span>Why the Gunners, the Toffees and the Culés are called that.</span></a>
+<a class="fq-mode" href="${SITE.base}/fun-facts/"><b>Football fun facts</b><span>The genuinely surprising ones, each checked against a source.</span></a>
+<a class="fq-mode" href="${SITE.base}/football-quotes/"><b>Football quotes</b><span>With the record straight on the ones everybody misquotes.</span></a>
+</div>
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, 'football-quiz');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html);
+  console.log(`  ✓ /football-quiz/  (${clubCount} clubs across ${groups.length} groups)`);
+}
+
 function buildNicknamesPage() {
   const canonical = `${SITE.base}/club-nicknames/`;
   const bySlug = new Map(NICKNAMES.map((n) => [n.slug, n]));
@@ -4880,6 +5002,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/fun-facts/`, freq: 'weekly', pri: '0.7' },
     { loc: `${SITE.base}/football-quotes/`, freq: 'weekly', pri: '0.7' },
+    { loc: `${SITE.base}/football-quiz/`, freq: 'weekly', pri: '0.9' },
     { loc: `${SITE.base}/club-nicknames/`, freq: 'monthly', pri: '0.7' },
     { loc: `${SITE.base}/xi/`, freq: 'daily', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
@@ -5065,6 +5188,7 @@ async function main() {
   buildFunFactsPage();
   buildXiPage();
   buildQuotesPage();
+  buildFootballQuizPage();
   buildNicknamesPage();
   const dailyGamePages = [MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE].map(buildDailyGamePage);
   buildStudyPage(STUDY);
