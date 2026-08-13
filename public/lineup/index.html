@@ -916,9 +916,16 @@ function drawPitch(ctx, x, y, w, h){
 // circle with no shoulders, and a 5% pad leaves the crown pressed against the
 // rim even when it is technically inside. FotMob's discs read as head AND
 // shoulders with air above; these are the numbers that produce that.
-// Head size still derives from face width, so heads stay uniform — this changes
-// how far back the camera stands, not how big one head is beside another.
-var FACE_SHARE = 0.32;
+// ⚠️ REVERTED TO 0.40. 0.32 was shipped on my own judgement while an A/B I had
+// just built for Alex sat unanswered, and on the real pitch it made the faces
+// small with dead space around them — his verdict was "this is terrible", and
+// he was right. 0.40 is the size that has always shipped. The crown pad stays
+// at 0.12 because that fix is independent and unambiguous: it stops the disc
+// shaving the top of the head.
+// DO NOT change FACE_SHARE again without Alex picking the value from a
+// side-by-side on real players. The number is a taste call, not a measurement,
+// and measuring it harder is what produced two bad guesses.
+var FACE_SHARE = 0.40;
 var CROWN_PAD = 0.12;
 
 var FADED = new WeakMap();
