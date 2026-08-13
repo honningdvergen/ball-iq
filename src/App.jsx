@@ -9028,6 +9028,11 @@ function AppInner() {
     try { return localStorage.getItem('biq_notif_enabled') === '1'; } catch { return false; }
   });
   const [notifPromptOpen, setNotifPromptOpen] = useState(false);
+  // Holds the deferred notification sheet so it can be cancelled if the player
+  // leaves the result before it fires — a sheet that appears after they have
+  // navigated away is worse than one that never appears.
+  const notifTimerRef = useRef(null);
+  useEffect(() => () => { if (notifTimerRef.current) clearTimeout(notifTimerRef.current); }, []);
   const [notifBlocked, setNotifBlocked] = useState(false);
 
   // Tapping a reminder deep-links to the Daily tab — the notification's whole
@@ -9128,7 +9133,24 @@ function AppInner() {
       const perm = await getNotifPermission();
       if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return false;
       localStorage.setItem('biq_notif_asks', String(asks + 1));
-      setNotifPromptOpen(true);
+      // ⏱ HOLD THE SHEET UNTIL THE PAYOFF HAS LANDED.
+      // The moment is right — solving is the app's happiest second, and that
+      // call stands. The problem was that the sheet opened on the SAME frame
+      // as the reveal, so it covered the thing the player had just earned:
+      // Footle's "The answer was Sergio Busquets" and the Trail's whole career
+      // plus "It was Christian Eriksen". Both times it also buried Share,
+      // which is the one action we most want at that moment.
+      // Caught while taking store screenshots — the sheet had to be dismissed
+      // to photograph either result.
+      // The decision stays synchronous (the rating path reads the return value
+      // to avoid stacking two modals); only the OPENING is deferred.
+      if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
+      // 7s, not 3s. Measured on a clean install: the reveal animation alone runs
+      // ~1.5s, so a 3s delay showed the answer and then covered Share before
+      // anyone could reach it — a glance, not a window. Sharing is the action
+      // we most want here, so it gets the beat. The ask still lands on the
+      // result screen, which is the moment Alex called correctly.
+      notifTimerRef.current = setTimeout(() => setNotifPromptOpen(true), 7000);
       return true;
     } catch { return false; }
   }, []);
