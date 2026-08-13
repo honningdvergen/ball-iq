@@ -986,15 +986,32 @@ paintMeter();
 var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?'See your result →':'Next question →'}}
 function finish(){
 rounds++;var G=grade(sc,run.length),left=total-run.length+more;
-var cont='<a class="bq-go" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
-+((rounds<2&&total>run.length)
-?'<a href="#quiz" data-more="1">Keep going — '+(total-run.length)+' more →</a>'
-:'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>');
+/* ⚠️ THE PRIMARY ACTION MUST KEEP THEM ON THIS PAGE. Measured in Clarity on
+   2026-08-13: 488 of 516 sessions viewed exactly ONE page — 94.6%. Entry and
+   exit URLs for the club pages are identical down to the session count
+   (Liverpool 25 in, 25 out; Arsenal 23/23; Chelsea 17/17). Nobody navigates
+   onward, ever.
+   So the club page IS the product for almost every visitor, and the old result
+   screen was built for the other 5%: the green primary button was "Play the
+   full quiz", which NAVIGATES AWAY, while "Keep going" — the one action that
+   works where the reader already is — was secondary and capped at two rounds
+   before being swapped for an app-store link.
+   Inverted. While questions remain, keeping going is the primary action and the
+   cap is gone; a reader who wants a third round should get one. The full-quiz
+   link stays, demoted. The app link only appears once we have actually run out
+   of questions, which is the first moment it is a genuine next step rather than
+   an interruption. */
+var hasMore=total>run.length;
+var cont=(hasMore
+?'<a class="bq-go" href="#quiz" data-more="1">Keep going — '+(total-run.length)+' more →</a>'
++'<a href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
+:'<a class="bq-go" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
++'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>');
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
 +'<div class="bq-row">'+cont+'<button class="ghost" data-share="1">Share</button><button class="ghost" data-again="1">Play again</button></div>'
-+(rounds>=2?'<p class="bq-note">More '+esc(name)+' questions in the app, plus a new daily game and your streak.</p>':'');
++(!hasMore?'<p class="bq-note">That is every '+esc(name)+' question we have here. There is a new daily game in the app, plus your streak.</p>':'');
 res.hidden=false;if(head)head.hidden=true;
 var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();start(Math.min(20,total))});
 var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){start(len)});
