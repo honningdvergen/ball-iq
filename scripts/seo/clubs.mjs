@@ -2522,5 +2522,45 @@ export const CLUBS = [
       { "q": "What has Sheffield Wednesday won?", "a": "Four English league titles (1903, 1904, 1929, 1930), three FA Cups (1896, 1907, 1935) and the League Cup in 1991, when a Second Division side beat Manchester United 1-0 at Wembley through John Sheridan." },
       { "q": "Who are Sheffield Wednesday's rivals?", "a": "Sheffield United. The Steel City derby has been contested since the 1890s and takes its name from the industry that built the city." }
     ]
+  },
+  {
+    "club": "Wrexham",
+    "slug": "wrexham",
+    "name": "Wrexham",
+    "h1": "Wrexham Quiz",
+    "title": "Wrexham Quiz with Answers \u2014 The Red Dragons | Ball IQ",
+    "description": "Free Wrexham quiz with explained answers \u2014 the 1864 founding, the 1992 win over Arsenal, the Hollywood takeover and the climb back through the divisions.",
+    "intro": [
+      "Wrexham were founded in 1864, which makes them the oldest club in Wales and one of the oldest anywhere in the world. The Racecourse Ground has been home since the beginning and is recognised as the world's oldest international stadium still hosting international football.",
+      "For most of that history they were a lower-league club with one extraordinary day: 4 January 1992, when a Wrexham side that had finished bottom of the entire Football League the previous season beat the reigning champions Arsenal 2-1 in the FA Cup third round, Mickey Thomas curling in a free-kick at 37.",
+      "Then in 2021 Ryan Reynolds and Rob McElhenney bought the club from its own supporters' trust, and the story changed entirely. Welcome to Wrexham turned a National League side into a globally known one, and the football followed: promotion as champions in 2023 ended a 15-year exile from the Football League, with more to come.",
+      "The deeper history is Welsh, though the league is English. Wrexham have won the Welsh Cup a record 23 times, and that competition once carried them into Europe \u2014 as far as a Cup Winners' Cup quarter-final in 1976."
+    ],
+    "faq": [
+      { "q": "Who owns Wrexham?", "a": "The actors Ryan Reynolds and Rob McElhenney, who bought the club in 2021 from the Wrexham Supporters Trust, which had run it since 2011. The takeover became the subject of the documentary series Welcome to Wrexham." },
+      { "q": "How old is Wrexham AFC?", "a": "Founded in 1864, making them the oldest football club in Wales and among the oldest in the world. Their home, the Racecourse Ground, is recognised as the oldest international football stadium still hosting internationals." },
+      { "q": "Why do Wrexham play in the English league?", "a": "For historical reasons, like Cardiff City and Swansea City. Welsh clubs joined the English pyramid long before a national Welsh league existed, and Wrexham have remained in it, while still competing in the Welsh Cup for much of their history." },
+      { "q": "What is Wrexham's most famous result?", "a": "Beating reigning league champions Arsenal 2-1 in the FA Cup third round on 4 January 1992, having finished bottom of the Football League the season before. Mickey Thomas scored a free-kick and Steve Watkin the winner." }
+    ]
+  },
+  {
+    "club": "Norwich City",
+    "slug": "norwich-city",
+    "name": "Norwich City",
+    "h1": "Norwich City Quiz",
+    "title": "Norwich City Quiz with Answers \u2014 The Canaries | Ball IQ",
+    "description": "Free Norwich City quiz with explained answers \u2014 third in the first Premier League, beating Bayern in Munich, two League Cups and Delia Smith.",
+    "intro": [
+      "Norwich City are the Canaries, and the name is older than the kit: the city was a centre of canary breeding brought over by Flemish weavers, and the club changed to yellow and green in 1907 to match. Carrow Road has been home since 1935.",
+      "The peak was 1992-93. Norwich led the inaugural Premier League for much of the season and finished third, their highest ever placing, which took them into the UEFA Cup. There they beat Bayern Munich at the Olympiastadion \u2014 the first English club ever to win on that ground.",
+      "Two League Cups sit in the cabinet, from 1962 and 1985, and the second came in a season that ended in relegation, which is very Norwich. So is Delia Smith, majority shareholder and the author of the most replayed half-time appeal in English football.",
+      "Since then the club has become the definitive yo-yo side, going up and coming down with a regularity that borders on the ceremonial \u2014 and producing, in Teemu Pukki and Grant Holt, two of the most loved strikers outside the top six."
+    ],
+    "faq": [
+      { "q": "Why are Norwich City called the Canaries?", "a": "Norwich was a centre of canary breeding, introduced by Flemish weavers who settled in the city. The club adopted yellow and green in 1907 to match, and both the nickname and the kit have stayed ever since." },
+      { "q": "What is Norwich City's greatest achievement?", "a": "Finishing third in the inaugural Premier League season of 1992-93, their highest ever league placing, and then beating Bayern Munich at the Olympiastadion in the UEFA Cup \u2014 the first English club to win there." },
+      { "q": "Has Norwich City won a major trophy?", "a": "Yes, the League Cup twice: in 1962 and again in 1985, when Ken Brown's side beat Sunderland at Wembley. Norwich were relegated from the top flight in that same 1985 season." },
+      { "q": "Who is Delia Smith at Norwich City?", "a": "The television cook, who with her husband became the club's majority shareholder. Her half-time appeal to the Carrow Road crowd in 2005 \u2014 \"Let's be 'avin' you!\" \u2014 is one of the most replayed moments in English football." }
+    ]
   }
 ];

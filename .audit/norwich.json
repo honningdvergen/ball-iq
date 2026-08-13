@@ -1,0 +1,242 @@
+[
+ {
+  "q": "By what nickname are Norwich City known?",
+  "o": [
+   "The Canaries",
+   "The Tractor Boys",
+   "The Hornets",
+   "The Robins"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Norwich was a centre of canary breeding, brought to the city by Flemish weavers, and the club switched to yellow and green in 1907 to match.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which ground has been Norwich City's home since 1935?",
+  "o": [
+   "Carrow Road",
+   "Portman Road",
+   "The Den",
+   "Gresty Road"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "It was built in under a year and is sometimes called the eighth wonder of the world locally, with some irony.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Norwich City's rivalry, the East Anglian derby, is with which club?",
+  "o": [
+   "Ipswich Town",
+   "Colchester United",
+   "Peterborough United",
+   "Cambridge United"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The two clubs are around 40 miles apart and the fixture is also known as the Old Farm derby.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Norwich City have won which major trophy, and twice?",
+  "o": [
+   "The League Cup",
+   "The FA Cup",
+   "The league title",
+   "The Cup Winners' Cup"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "They won it in 1962 and 1985; the 1985 win came in a season that ended in relegation.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "In 1993 Norwich City became the first English club to win at which famous stadium?",
+  "o": [
+   "Bayern Munich's Olympiastadion",
+   "Real Madrid's Bernabéu",
+   "Milan's San Siro",
+   "Ajax's De Meer"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "It came in a UEFA Cup tie during the club's only European campaign, after finishing third in the first Premier League season.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Where did Norwich City finish in the inaugural Premier League season of 1992-93?",
+  "o": [
+   "Third",
+   "Champions",
+   "Ninth",
+   "Relegated"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "They led the table for much of that season and the finish remains the club's highest ever.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which celebrity chef became Norwich City's majority shareholder?",
+  "o": [
+   "Delia Smith",
+   "Nigella Lawson",
+   "Gordon Ramsay",
+   "Jamie Oliver"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Her half-time appeal to the Carrow Road crowd in 2005 — \"Let's be 'avin' you!\" — became one of football's most replayed moments.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Justin Fashanu, who began at Norwich City, is remembered for a famous 1980 goal against which club?",
+  "o": [
+   "Liverpool",
+   "Manchester United",
+   "Arsenal",
+   "Everton"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The turn-and-volley at Carrow Road won the BBC's Goal of the Season and preceded his move to Nottingham Forest.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "What colours do Norwich City wear at home?",
+  "o": [
+   "Yellow and green",
+   "Blue and white",
+   "Red and black",
+   "All white"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The change to canary yellow in 1907 gave the club both its kit and its nickname.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which Finnish striker was Norwich City's leading scorer during their Championship title win of 2018-19?",
+  "o": [
+   "Teemu Pukki",
+   "Jonas Svensson",
+   "Joonas Kolkka",
+   "Mikael Forssell"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Pukki arrived on a free transfer and scored 29 league goals that season.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Norwich City were founded in which year?",
+  "o": [
+   "1902",
+   "1878",
+   "1919",
+   "1934"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The club turned professional in 1905 and joined the Football League in 1920.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which manager led Norwich City to their 1985 League Cup win?",
+  "o": [
+   "Ken Brown",
+   "Mike Walker",
+   "Dave Stringer",
+   "John Bond"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Brown's side beat Sunderland at Wembley and were relegated from the top flight the same season.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which manager took Norwich City to third place and a UEFA Cup run in the early 1990s?",
+  "o": [
+   "Mike Walker",
+   "Ken Brown",
+   "Nigel Worthington",
+   "Paul Lambert"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Walker left for Everton midway through the following season, and the club has never matched that spell.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Norwich City are known in recent decades for which pattern?",
+  "o": [
+   "Repeatedly winning promotion and being relegated again",
+   "Never leaving the top flight",
+   "Refusing to sell academy players",
+   "Playing every season in Europe"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "The club has become the definitive modern yo-yo side, bouncing between the Premier League and the Championship.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which striker captained Norwich City through their rise from League One to the Premier League around 2010?",
+  "o": [
+   "Grant Holt",
+   "Chris Martin",
+   "Simeon Jackson",
+   "Wes Hoolahan"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Holt scored in three successive promotion-winning or top-flight seasons and became a cult figure at Carrow Road.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ },
+ {
+  "q": "Norwich City's academy is best known in recent years for producing which England international?",
+  "o": [
+   "Todd Cantwell",
+   "Jadon Sancho",
+   "Bukayo Saka",
+   "Marcus Rashford"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Cantwell came through the ranks and became a fixture in the promotion-winning side of 2018-19.",
+  "cat": "History",
+  "club": "Norwich City",
+  "type": "mcq"
+ }
+]

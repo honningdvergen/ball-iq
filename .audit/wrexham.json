@@ -1,0 +1,242 @@
+[
+ {
+  "q": "Wrexham were founded in 1864, making them the oldest football club in which country?",
+  "o": [
+   "Wales",
+   "Scotland",
+   "Ireland",
+   "England"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "They are also among the oldest professional clubs anywhere in the world, though they compete in the English league system.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Which two Hollywood actors bought Wrexham in 2021?",
+  "o": [
+   "Ryan Reynolds and Rob McElhenney",
+   "Will Ferrell and Adam McKay",
+   "Michael B. Jordan and Idris Elba",
+   "Tom Hanks and Rob Lowe"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Their takeover became the subject of the documentary series Welcome to Wrexham.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "What is the name of Wrexham's home ground?",
+  "o": [
+   "The Racecourse Ground",
+   "The Racedrome",
+   "Dragon Park",
+   "Bangor Road"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "It is recognised as the world's oldest international football stadium still hosting international matches.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Wrexham ended a 15-year absence from the English Football League by winning which division in 2023?",
+  "o": [
+   "The National League",
+   "League Two",
+   "League One",
+   "The Championship"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "They went up as champions after several near-misses in the play-offs.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "In one of the FA Cup's great upsets in 1992, Wrexham beat which reigning league champions?",
+  "o": [
+   "Arsenal",
+   "Liverpool",
+   "Leeds United",
+   "Everton"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Wrexham had finished bottom of the entire Football League the previous season, and won 2-1.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Which veteran Wrexham player scored the famous free-kick in that 1992 cup upset?",
+  "o": [
+   "Mickey Thomas",
+   "Gary Bennett",
+   "Steve Watkin",
+   "Joey Jones"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Thomas, then 37, curled it in past a wall before Steve Watkin added the winner.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "By what nickname are Wrexham known?",
+  "o": [
+   "The Red Dragons",
+   "The Miners",
+   "The Owls",
+   "The Robins"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The dragon is the emblem of Wales and appears on the national flag.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Wrexham hold the record for winning which competition the most times?",
+  "o": [
+   "The Welsh Cup",
+   "The Football League Trophy",
+   "The FA Trophy",
+   "The Anglo-Italian Cup"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "They have lifted it 23 times, more than any other club in its history.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Which striker became the face of Wrexham's rise, scoring prolifically in the promotion seasons?",
+  "o": [
+   "Paul Mullin",
+   "Ollie Palmer",
+   "Elliot Lee",
+   "Jordan Davies"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Mullin joined from Cambridge United in 2021 and his goals drove the National League title win.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "What is the name of the documentary series following Wrexham's Hollywood era?",
+  "o": [
+   "Welcome to Wrexham",
+   "Dragons Rising",
+   "The Racecourse",
+   "Red in Wales"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "It won multiple Emmy awards and brought the club a global audience far beyond its division.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Despite being a Welsh club, Wrexham compete in which league system?",
+  "o": [
+   "The English league system",
+   "The Welsh Premier League",
+   "The Scottish league system",
+   "A cross-border Celtic league"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Several Welsh clubs, including Cardiff City and Swansea City, do the same for historical reasons.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "In 1976 Wrexham reached the quarter-finals of which European competition?",
+  "o": [
+   "The Cup Winners' Cup",
+   "The European Cup",
+   "The UEFA Cup",
+   "The Intertoto Cup"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "They qualified through the Welsh Cup, the route that took several Welsh clubs into Europe in that era.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "What colour shirts do Wrexham traditionally wear at home?",
+  "o": [
+   "Red",
+   "Blue",
+   "Green and white",
+   "Black and amber"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The red shirt matches both the nickname and the dragon of the Welsh flag.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Wrexham's famous 1992 FA Cup win over the reigning champions came in which round?",
+  "o": [
+   "The third round",
+   "The fourth round",
+   "The fifth round",
+   "The quarter-final"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The tie was played on 4 January 1992, the traditional third-round weekend when the big clubs enter.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Before the 2021 takeover, Wrexham had been owned since 2011 by whom?",
+  "o": [
+   "Its own supporters",
+   "A US private equity fund",
+   "The local council",
+   "A Welsh media group"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The Wrexham Supporters Trust ran the club for a decade and voted to approve the Reynolds and McElhenney takeover.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ },
+ {
+  "q": "Wrexham's ground has hosted home matches for which national team?",
+  "o": [
+   "Wales",
+   "England",
+   "Republic of Ireland",
+   "Scotland"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "The Racecourse Ground staged Welsh internationals for well over a century, which is the basis of its record.",
+  "cat": "History",
+  "club": "Wrexham",
+  "type": "mcq"
+ }
+]
