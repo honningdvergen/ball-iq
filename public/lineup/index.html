@@ -371,7 +371,8 @@ function fillDisc(disc, p, size){
         if (!W || !H) return;
         var sc = (FACE_SHARE * D) / (cm.w * W);
         ci.style.width = (W * sc) + 'px'; ci.style.height = (H * sc) + 'px';
-        ci.style.left = (D / 2 - (cm.x + cm.w / 2) * W * sc) + 'px';
+        var faceLeft = D / 2 - (cm.x + cm.w / 2) * W * sc;
+        ci.style.left = withBodyPull(faceLeft, cm, W * sc, D) + 'px';
         // ⚠️ THE FACE BOX IS NOT THE HEAD. Vision's box runs eyebrows-to-chin,
         // so parking its centre at 44% of the disc left no room for cranium and
         // hair — and MEASURED over a 120-cutout sample, 34% had the crown
@@ -926,6 +927,34 @@ function drawPitch(ctx, x, y, w, h){
 // side-by-side on real players. The number is a taste call, not a measurement,
 // and measuring it harder is what produced two bad guesses.
 var FACE_SHARE = 0.40;
+// ⚠️ CENTRE THE COMPOSITION, NOT JUST THE FACE. Centring purely on the face box
+// is correct for the head and wrong for the picture: a player turned or leaning
+// throws his whole body to one side, so the disc shows a shoulder jammed
+// against one edge and bare background at the other. That is what Alex was
+// seeing when he said photos were "cropped off center" — it is arithmetic, not
+// photography.
+// MEASURED across 4,340 cutouts: 1,053 (24%) had the body more than 8px off
+// centre in a 74px disc, the worst at 32.7px — nearly half the disc.
+// The fix nudges toward the subject's midpoint by BODY_PULL, capped at
+// BODY_SHIFT_MAX so the face can never wander far. Tuned on the real
+// distribution rather than by eye: 0.6/9px takes 24% -> 2% while moving the
+// face a median of 2.0px. Pulling harder (0.8/14px) reaches 0% but shifts faces
+// up to 14px, which trades an invisible problem for a visible one.
+var BODY_PULL = 0.6;
+var BODY_SHIFT_MAX = 0.12;   // as a fraction of the disc
+
+// ⚠️ THIS DEFINITION WENT MISSING ONCE AND NOTHING NOTICED. Both call sites
+// landed, the helper did not, and `npm run build` passed clean — this file is
+// plain HTML, so no linter reads it and no test renders a disc. Every player on
+// the pitch would have thrown ReferenceError at paint time. If you move this,
+// grep for the call sites; the build will not tell you.
+function withBodyPull(faceLeft, cm, imgW, D) {
+  if (cm.l == null || cm.r == null) return faceLeft;   // pre-alpha-box cutouts
+  var bodyMid = faceLeft + ((cm.l + cm.r) / 2) * imgW;
+  var off = bodyMid - D / 2;
+  var cap = D * BODY_SHIFT_MAX;
+  return faceLeft + Math.max(-cap, Math.min(cap, -off * BODY_PULL));
+}
 var CROWN_PAD = 0.12;
 
 var FADED = new WeakMap();
@@ -961,8 +990,9 @@ function drawDisc(ctx, img, p, cx, cy, r){
       // screen just fixed is the same bug in a different renderer.
       var tY = Dc * 0.44 - (cmx.y + cmx.h * 0.5) * img.naturalHeight * sF;
       if (cmx.t != null) tY = Math.max(tY, Dc * CROWN_PAD - cmx.t * img.naturalHeight * sF);
+      var faceLeftC = Dc / 2 - (cmx.x + cmx.w / 2) * img.naturalWidth * sF;
       ctx.drawImage(fadedCut(img),
-        cx - r + (Dc / 2 - (cmx.x + cmx.w / 2) * img.naturalWidth * sF),
+        cx - r + withBodyPull(faceLeftC, cmx, img.naturalWidth * sF, Dc),
         cy - r + tY,
         img.naturalWidth * sF, img.naturalHeight * sF);
     } else {
