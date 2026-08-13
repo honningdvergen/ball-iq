@@ -369,7 +369,7 @@ function fillDisc(disc, p, size){
       ci.addEventListener('load', function(){
         var W = ci.naturalWidth, H = ci.naturalHeight, D = disc.clientWidth || size;
         if (!W || !H) return;
-        var sc = (0.40 * D) / (cm.w * W);
+        var sc = (FACE_SHARE * D) / (cm.w * W);
         ci.style.width = (W * sc) + 'px'; ci.style.height = (H * sc) + 'px';
         ci.style.left = (D / 2 - (cm.x + cm.w / 2) * W * sc) + 'px';
         // ⚠️ THE FACE BOX IS NOT THE HEAD. Vision's box runs eyebrows-to-chin,
@@ -910,8 +910,16 @@ function drawPitch(ctx, x, y, w, h){
 // the hard line the screen had just lost, so the downloaded card would differ
 // from the card the user composed. Same curve, same stops, expressed as a
 // destination-out erase — mask alpha 0.45 is an erase alpha of 0.55.
-// Crown of the head sits at least this fraction of the disc below its top.
-var CROWN_PAD = 0.05;
+// ⚠️ FRAMING, IN ONE PLACE, USED BY BOTH RENDERERS.
+// Was face 0.40 / pad 0.05. Alex, on the result: "there is absolutely no way
+// these look fixed to you?" — and he was right. At 0.40 the face fills the
+// circle with no shoulders, and a 5% pad leaves the crown pressed against the
+// rim even when it is technically inside. FotMob's discs read as head AND
+// shoulders with air above; these are the numbers that produce that.
+// Head size still derives from face width, so heads stay uniform — this changes
+// how far back the camera stands, not how big one head is beside another.
+var FACE_SHARE = 0.32;
+var CROWN_PAD = 0.12;
 
 var FADED = new WeakMap();
 function fadedCut(img){
@@ -941,7 +949,7 @@ function drawDisc(ctx, img, p, cx, cy, r){
     ctx.fillStyle = g2; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
     var Dc = r * 2, cmx = (typeof CUTMETA !== 'undefined' && CUTMETA[p.i]) || null;
     if (cmx){
-      var sF = (0.40 * Dc) / (cmx.w * img.naturalWidth);
+      var sF = (FACE_SHARE * Dc) / (cmx.w * img.naturalWidth);
       // Same crown clamp as the page — an export that re-crops the heads the
       // screen just fixed is the same bug in a different renderer.
       var tY = Dc * 0.44 - (cmx.y + cmx.h * 0.5) * img.naturalHeight * sF;

@@ -48,11 +48,20 @@ const byId = new Map(POOL.map((p) => [p.i, p]));
 const MIN_SRC_W = 700;
 const MIN_CROP = 320;
 const MIN_ALPHA_TOP = 0.02;
+// ⚠️ RECENCY IS A GATE HERE, NOT A TIEBREAK. It was a tiebreak, and Luke Shaw's
+// "winner" came back as a 2013 photo of a 22-year-old at Southampton. It passed
+// every technical check and is the wrong picture of the wrong player — nobody
+// building today's United recognises him. For a CURRENT squad an old photo is
+// not excellent, so it is not eligible; the monogram is the better answer until
+// a modern file exists. Historical pool players are a different job with a
+// different rule.
+const MIN_YEAR = 2019;
 const USABLE = /^(CC0|CC BY|Public domain|PD|No restrictions|Attribution)/i;
 const REJECT = /\bNC\b|\bND\b|non-commercial|noderiv|fair use|non-free|GFDL/i;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const clean = (s) => String(s || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+const fold = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
 async function api(url) {
   for (let a = 1; a <= 3; a += 1) {
@@ -74,7 +83,12 @@ async function candidatesFor(name, loose = false) {
   const q = encodeURIComponent(loose ? name : `${name} football`);
   const j = await api(`https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrsearch=${q}&gsrnamespace=6&gsrlimit=40&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=320`);
   const pages = Object.values(j?.query?.pages || {});
-  const surname = name.split(' ').pop().toLowerCase();
+  // ⚠️ FOLD THE ACCENTS OR HALF THE SQUAD IS INVISIBLE. Commons files are named
+  // "Benjamin Sesko", the squad list says "Benjamin Šeško", and a plain
+  // lowercase compare matches neither way — so Šeško came back "no candidates"
+  // while a perfectly good 2025 portrait sat in the results. Football is full
+  // of accented names; this silently blanked every one of them.
+  const surname = fold(name.split(' ').pop());
   if (!pages.length) return [];
   return pages.map((p) => {
     const ii = p.imageinfo?.[0]; if (!ii) return null;
@@ -88,9 +102,19 @@ async function candidatesFor(name, loose = false) {
       // different human entirely — a politician, a statue, a country singer.
       // Requiring the SURNAME in the filename is a cheap, strong filter; the
       // single-face check downstream catches the rest.
-      named: p.title.toLowerCase().includes(surname),
+      named: fold(p.title).includes(surname),
     };
   }).filter(Boolean)
+    // ⚠️ A TITLE THAT NAMES TWO PEOPLE IS DISQUALIFYING, and a face count cannot
+    // replace this rule. "Reece Johnson and Bruno Fernandes 18102025.jpg"
+    // shipped a photo of Reece Johnson under Bruno's name: the second man is
+    // turned away, so Vision sees ONE face in the source and one in the cutout,
+    // every automated check agrees the cut is clean, and the wrong player goes
+    // on the pitch. Nothing downstream can tell which of the two was kept —
+    // only the filename knows there was a choice to get wrong.
+    // Anything joining names ("and", "&", "with", "vs", a comma) is refused.
+    // It costs good files; shipping a stranger under a player's name costs more.
+    .filter((c) => !/\b(and|with|vs?\.?|feat)\b|&|,/i.test(c.title.replace(/^File:/, '')))
     .filter((c) => c.named && c.w >= MIN_SRC_W && USABLE.test(c.lic) && !REJECT.test(c.lic))
     // Portrait-ish and recent first: a tall frame crops to a head far better
     // than a wide action shot, and newer kit reads as "current squad".
@@ -161,6 +185,22 @@ for (const row of squad) {
   for (const c of cands) {
     const src = `${WORK}/src_${row.qid}_${createHash('md5').update(c.title).digest('hex').slice(0, 8)}`;
     if (!(await download(c.url, src))) { tried.push(`${c.title}: download failed`); continue; }
+    // ⚠️ COUNT FACES IN THE *SOURCE*, NOT ONLY THE CUTOUT. This shipped a photo
+    // of Reece Johnson labelled Bruno Fernandes. The file is
+    // "Reece Johnson and Bruno Fernandes 18102025.jpg" — two men — and the
+    // cutter isolates ONE person, so the finished cutout truthfully contained
+    // exactly one face and sailed through the check. The check was answering
+    // "is the cut clean?" when the question is "is this the right man?", and on
+    // a two-person source nothing downstream can tell which one was kept.
+    // A multi-face source is therefore refused outright. It costs real
+    // candidates — most match photography has more than one player in frame —
+    // and that is the correct trade: a monogram is a blank, a stranger wearing
+    // a team-mate's name is a lie on the pitch.
+    let srcFaces = 99;
+    try { const fb = JSON.parse(execFileSync('/tmp/facebox', [src], { encoding: 'utf8', timeout: 30000 })); srcFaces = Array.isArray(fb) ? fb.length : (fb && fb.w ? 1 : 0); }
+    catch { srcFaces = 99; }
+    if (srcFaces !== 1) { tried.push(`${c.title.replace(/^File:/, '')} -> ${srcFaces === 99 ? 'unreadable' : srcFaces + ' people in the photo'}`); continue; }
+
     const out = `${WORK}/cut_${row.qid}.png`;
     let log;
     try { log = execFileSync('/tmp/facecut', [src, out, '640'], { encoding: 'utf8', timeout: 120000 }).trim(); }
@@ -168,7 +208,12 @@ for (const row of squad) {
     const faces = +(log.match(/faces in cutout: (\d+)/)?.[1] ?? 99);
     const crop = +(log.match(/ok (\d+)px crop/)?.[1] ?? 0);
     const top = alphaTopOf(out);
-    const why = faces !== 1 ? `${faces} faces` : crop < MIN_CROP ? `crop ${crop}px` : top <= MIN_ALPHA_TOP ? `head on the edge (${top.toFixed(3)})` : null;
+    const why = faces !== 1 ? `${faces} faces`
+      : crop < MIN_CROP ? `crop ${crop}px`
+        : top <= MIN_ALPHA_TOP ? `head on the edge (${top.toFixed(3)})`
+          : (c.year && c.year < MIN_YEAR) ? `too old (${c.year})`
+            : !c.year ? 'undated'
+              : null;
     tried.push(`${c.title.replace(/^File:/, '')} [${c.year || '?'} ${c.w}px] -> ${why || 'PASS'}`);
     if (!why) { winner = { ...c, crop, top, out, src }; break; }
   }
