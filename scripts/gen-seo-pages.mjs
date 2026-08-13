@@ -223,6 +223,7 @@ const PAGE_FG = '#F0F1F5';
 // Mirrors the homepage mesh (MarketingHome QUIZ_CLUBS / QUIZ_LEAGUES) so the
 // landing pages read as one system with balliq.app/.
 const CLUB_BADGE = {
+  'birmingham-city': 'BIR', 'sheffield-wednesday': 'SHW',
   portsmouth: 'POR',
   southampton: 'SOU',
   'rb-leipzig': 'RBL', 'atalanta': 'ATA',
@@ -281,6 +282,7 @@ const clubOgImage = ({ name, badge, color, kind }) => {
 // yellow) get dark text via badgeColors(); a hairline border keeps very dark
 // badges (Juventus, Newcastle) legible on the near-black cards.
 const CLUB_COLOR = {
+  'birmingham-city': '#1B4AA0', 'sheffield-wednesday': '#0066B3',
   portsmouth: '#001489',
   southampton: '#D71920',
   'rb-leipzig': '#DD0741', 'atalanta': '#1D71B8',
@@ -4533,6 +4535,14 @@ const MORE_META = {
   'basel': { code: 'BSL', color: '#d0021b', name: 'Basel' },
   'schalke-04': { code: 'S04', color: '#2e7dd1', name: 'Schalke 04' },
   'saint-etienne': { code: 'STE', color: '#18a05a', name: 'Saint-Étienne' },
+  // ⚠️ Sheffield Wednesday are NOT in leagues.mjs at all. The 2026-27 roster
+  // lists "Sheffield Utd" in the Championship and no Wednesday anywhere, so the
+  // directory could not reach the page and the build correctly refused to ship
+  // an orphan. They belong here rather than in DIR_ALIAS: an alias maps a
+  // league's short name onto our page name, and there is no league entry to map
+  // FROM. Aliasing them to "Sheffield Utd" would have satisfied the build by
+  // pointing one Sheffield club's row at the other's quiz.
+  'sheffield-wednesday': { code: 'SHW', color: '#0066B3', name: 'Sheffield Wednesday' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {

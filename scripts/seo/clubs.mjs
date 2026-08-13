@@ -2482,5 +2482,45 @@ export const CLUBS = [
       { "q": "What happened to Portsmouth after the 2008 FA Cup win?", "a": "The club collapsed financially. In 2010 Portsmouth became the first Premier League club to enter administration, took a nine-point deduction and were relegated, then fell to the fourth tier by 2013 before supporters bought the club." },
       { "q": "Who holds Portsmouth's appearance record?", "a": "Jimmy Dickinson, with 764 appearances. He spent his entire playing career at Fratton Park and later managed the club. Goalkeeper Alan Knight made over 680 appearances, a record for a goalkeeper at a single English club." }
     ]
+  },
+  {
+    "club": "Birmingham City",
+    "slug": "birmingham-city",
+    "name": "Birmingham City",
+    "h1": "Birmingham City Quiz",
+    "title": "Birmingham City Quiz with Answers \u2014 Blues | Ball IQ",
+    "description": "Free Birmingham City quiz with explained answers \u2014 the 2011 League Cup, the Second City derby, Trevor Francis and Jude Bellingham's retired shirt.",
+    "intro": [
+      "Birmingham City are Blues, founded in 1875 as Small Heath Alliance by cricketers looking for something to do in winter. St Andrew's has been home since 1906.",
+      "The defining modern day is 27 February 2011, when Alex McLeish's side beat Arsenal 2-1 at Wembley to win the League Cup, Obafemi Martins bundling in the winner after a mix-up between Wojciech Szczesny and Laurent Koscielny. Three months later Birmingham were relegated from the Premier League \u2014 a trophy and the drop in a single season.",
+      "The club has an unusual habit of producing players who become famous elsewhere. Trevor Francis came through the academy and left to become English football's first \u00a31 million player. Four decades later Jude Bellingham did something similar at greater speed, going to Borussia Dortmund at 17 and leaving behind a retired number 22 shirt.",
+      "And the rivalry defines everything else. Aston Villa are barely three miles away, the Second City derby is among the most hostile in England, and the 1963 League Cup \u2014 Birmingham's first major trophy \u2014 was won against them."
+    ],
+    "faq": [
+      { "q": "Why are Birmingham City called Blues?", "a": "Simply for the royal blue shirt, worn for well over a century. The club was founded in 1875 as Small Heath Alliance, became Birmingham in 1905 and Birmingham City in 1943." },
+      { "q": "When did Birmingham City win the League Cup?", "a": "Twice \u2014 in 1963, beating Aston Villa 3-1 on aggregate for their first major trophy, and in 2011, beating Arsenal 2-1 at Wembley through an Obafemi Martins goal. They were relegated from the Premier League in the same 2011 season." },
+      { "q": "Which famous players came through Birmingham City?", "a": "Trevor Francis, who left and became English football's first \u00a31 million player when Nottingham Forest signed him in 1979, and Jude Bellingham, who joined Borussia Dortmund in 2020 aged 17. Birmingham retired the number 22 shirt in Bellingham's honour." },
+      { "q": "Who are Birmingham City's biggest rivals?", "a": "Aston Villa. The Second City derby is contested by two clubs roughly three miles apart and is one of the most intense fixtures in English football." }
+    ]
+  },
+  {
+    "club": "Sheffield Wednesday",
+    "slug": "sheffield-wednesday",
+    "name": "Sheffield Wednesday",
+    "h1": "Sheffield Wednesday Quiz",
+    "title": "Sheffield Wednesday Quiz with Answers \u2014 The Owls | Ball IQ",
+    "description": "Free Sheffield Wednesday quiz with explained answers \u2014 four league titles, the 1991 League Cup, the Steel City derby and why they are called Wednesday.",
+    "intro": [
+      "Sheffield Wednesday have the best name in English football and the most literal explanation for it: the club began in 1867 as the football section of The Wednesday Cricket Club, whose members played on their weekly half-day off. That makes them one of the oldest professional clubs anywhere.",
+      "The nickname came later and from geography \u2014 they moved to Owlerton in 1899, became the Owls, and an owl has sat on the badge ever since. Hillsborough has been home for over a century.",
+      "The honours are older than most supporters: four league titles in 1903, 1904, 1929 and 1930, and three FA Cups in 1896, 1907 and 1935. The most recent major trophy came in 1991, when a Second Division Wednesday beat Manchester United 1-0 in the League Cup final through John Sheridan.",
+      "Then 1993, a season of extraordinary cruelty \u2014 both domestic cup finals reached, both lost to Arsenal, the FA Cup only after a replay. Chris Waddle was Footballer of the Year that season, which tells you how good the side was and how little it got for it."
+    ],
+    "faq": [
+      { "q": "Why are they called Sheffield Wednesday?", "a": "The club was founded in 1867 as the football arm of The Wednesday Cricket Club, whose members played their matches on Wednesdays, their half-day off work. The football club kept the name." },
+      { "q": "Why are Sheffield Wednesday called the Owls?", "a": "From Owlerton, the district of Sheffield they moved to in 1899. The nickname stuck so firmly that an owl was added to the club badge, and the ground is now known as Hillsborough." },
+      { "q": "What has Sheffield Wednesday won?", "a": "Four English league titles (1903, 1904, 1929, 1930), three FA Cups (1896, 1907, 1935) and the League Cup in 1991, when a Second Division side beat Manchester United 1-0 at Wembley through John Sheridan." },
+      { "q": "Who are Sheffield Wednesday's rivals?", "a": "Sheffield United. The Steel City derby has been contested since the 1890s and takes its name from the industry that built the city." }
+    ]
   }
 ];

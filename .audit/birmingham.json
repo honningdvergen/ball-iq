@@ -1,0 +1,242 @@
+[
+ {
+  "q": "Birmingham City were founded in 1875 under what name?",
+  "o": [
+   "Small Heath Alliance",
+   "Birmingham Rovers",
+   "Bordesley Green FC",
+   "St Andrew's United"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Formed by cricketers from the Small Heath district, the club became Birmingham in 1905 and Birmingham City in 1943.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "By what nickname are Birmingham City known?",
+  "o": [
+   "Blues",
+   "The Bantams",
+   "The Baggies",
+   "The Blades"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The royal blue shirt has been the club's identity for well over a century.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which ground has been Birmingham City's home since 1906?",
+  "o": [
+   "St Andrew's",
+   "Villa Park",
+   "The Hawthorns",
+   "Molineux"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "All four grounds are in the West Midlands, but only St Andrew's belongs to Birmingham City.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Birmingham City's fierce rivalry, the Second City derby, is with which club?",
+  "o": [
+   "Aston Villa",
+   "West Bromwich Albion",
+   "Wolverhampton Wanderers",
+   "Coventry City"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The two clubs are barely three miles apart in the same city, and the fixture is among the most heated in England.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Birmingham City won the League Cup in 2011 by beating which club in the final?",
+  "o": [
+   "Arsenal",
+   "Manchester United",
+   "Liverpool",
+   "Chelsea"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Birmingham won 2-1 at Wembley after a late defensive mix-up gifted them the winner.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Who scored Birmingham City's winning goal in the 2011 League Cup final?",
+  "o": [
+   "Obafemi Martins",
+   "Nikola Zigic",
+   "Craig Gardner",
+   "Cameron Jerome"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Martins pounced on a mix-up between Wojciech Szczesny and Laurent Koscielny in the closing minutes.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "What happened to Birmingham City in the same season they won the 2011 League Cup?",
+  "o": [
+   "They were relegated from the Premier League",
+   "They reached the FA Cup final",
+   "They qualified for the Champions League",
+   "They changed ownership mid-season"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Winning a major trophy and going down in the same campaign is a rare and unhappy combination.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which manager led Birmingham City to the 2011 League Cup?",
+  "o": [
+   "Alex McLeish",
+   "Steve Bruce",
+   "Barry Fry",
+   "Trevor Francis"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "McLeish left for Aston Villa shortly afterwards, a move that outraged Birmingham supporters; the other three also managed the club.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Birmingham City also won the League Cup in 1963, beating which club over two legs?",
+  "o": [
+   "Aston Villa",
+   "Manchester City",
+   "Nottingham Forest",
+   "Leicester City"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Beating their city rivals 3-1 on aggregate made it the club's first major trophy.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which England midfielder came through Birmingham City's academy before joining Borussia Dortmund in 2020?",
+  "o": [
+   "Jude Bellingham",
+   "Declan Rice",
+   "Phil Foden",
+   "Mason Mount"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Birmingham retired the number 22 shirt in his honour, an unusual tribute to a 17-year-old.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Trevor Francis, a Birmingham City academy product, became famous in 1979 as English football's first what?",
+  "o": [
+   "£1 million player",
+   "Player to win the Ballon d'Or",
+   "Overseas signing",
+   "Substitute to score in a cup final"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Nottingham Forest paid the fee, and Francis repaid it by scoring the winner in that season's European Cup final.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Karren Brady became Birmingham City's managing director in 1993 at what notable age?",
+  "o": [
+   "23",
+   "31",
+   "38",
+   "45"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "She was the youngest managing director of a UK plc at the time and later took a senior role at West Ham.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which goalkeeper holds Birmingham City's record for appearances?",
+  "o": [
+   "Gil Merrick",
+   "Joe Bradford",
+   "Trevor Francis",
+   "Kenny Burns"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Merrick made over 550 appearances and also played in goal for England at two World Cups.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Birmingham City reached two consecutive European finals in the late 1950s and early 1960s in which competition?",
+  "o": [
+   "The Inter-Cities Fairs Cup",
+   "The European Cup",
+   "The Cup Winners' Cup",
+   "The UEFA Cup"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "They lost the 1960 and 1961 finals, having become the first English club side to reach a European final.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Who is Birmingham City's record goalscorer?",
+  "o": [
+   "Joe Bradford",
+   "Trevor Francis",
+   "Gil Merrick",
+   "Bob Latchford"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Bradford scored 267 goals between the wars, a tally no Birmingham player has come near since.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ },
+ {
+  "q": "Which colourful manager, known for his rapid-fire press conferences, took charge of Birmingham City in 1993?",
+  "o": [
+   "Barry Fry",
+   "Ron Atkinson",
+   "Harry Redknapp",
+   "Big Sam Allardyce"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Fry won the club promotion and the Football League Trophy before being replaced by Trevor Francis.",
+  "cat": "History",
+  "club": "Birmingham City",
+  "type": "mcq"
+ }
+]

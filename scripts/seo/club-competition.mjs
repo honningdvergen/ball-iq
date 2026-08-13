@@ -25,6 +25,13 @@
 
 /** CLUBS[].club (the pack key) -> the exact `league` string in leagues.mjs. */
 export const CLUB_COMPETITION = {
+  // ⚠️ Added 2026-08-13 with the South Coast / second-tier wave. All four play
+  // in the Championship in the 2026-27 leagues.mjs roster — Southampton and
+  // Sheffield Wednesday are the ones people assume are top-flight, and are not.
+  'Southampton': 'Championship',
+  'Portsmouth': 'Championship',
+  'Birmingham City': 'Championship',
+  'Sheffield Wednesday': 'Championship',
   // Short-form in leagues.mjs, long-form in clubs.mjs. Verified one by one.
   'Manchester United': 'Premier League', // leagues.mjs: "Man United"
   'Manchester City': 'Premier League', // "Man City"

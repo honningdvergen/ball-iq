@@ -1,0 +1,227 @@
+[
+ {
+  "q": "Sheffield Wednesday took their unusual name from what?",
+  "o": [
+   "The day of the week their cricket club played",
+   "The date of their first match",
+   "A local church service",
+   "The founder's birthday"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "The club began in 1867 as the football section of The Wednesday Cricket Club, whose members played on their half-day off.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "By what nickname are Sheffield Wednesday known?",
+  "o": [
+   "The Owls",
+   "The Blades",
+   "The Magpies",
+   "The Terriers"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "It comes from Owlerton, the district they moved to in 1899, and an owl has been on the badge ever since.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Which stadium has been Sheffield Wednesday's home since 1899?",
+  "o": [
+   "Hillsborough",
+   "Bramall Lane",
+   "Elland Road",
+   "Valley Parade"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The ground took its name from the surrounding district of Hillsborough in north Sheffield.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Sheffield Wednesday's fierce rivalry, the Steel City derby, is with which club?",
+  "o": [
+   "Sheffield United",
+   "Leeds United",
+   "Barnsley",
+   "Rotherham United"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The two Sheffield clubs have contested the fixture since the 1890s, and it takes its name from the city's steel industry.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "How many English league titles have Sheffield Wednesday won?",
+  "o": [
+   "Four",
+   "One",
+   "Two",
+   "Six"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "They came in 1903, 1904, 1929 and 1930 — two pairs of back-to-back championships, three decades apart.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Sheffield Wednesday won the League Cup in 1991 by beating which club in the final?",
+  "o": [
+   "Manchester United",
+   "Liverpool",
+   "Arsenal",
+   "Nottingham Forest"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Wednesday were a Second Division side at the time, making it a considerable upset at Wembley.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Who scored Sheffield Wednesday's winning goal in the 1991 League Cup final?",
+  "o": [
+   "John Sheridan",
+   "David Hirst",
+   "Paul Williams",
+   "Nigel Worthington"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Sheridan struck the only goal of the game; it remains the club's most recent major trophy.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Which manager led Sheffield Wednesday to the 1991 League Cup?",
+  "o": [
+   "Ron Atkinson",
+   "Trevor Francis",
+   "Howard Wilkinson",
+   "David Pleat"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Atkinson had managed the beaten finalists earlier in his career, which added an edge to the day.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "In 1993 Sheffield Wednesday lost both domestic cup finals to which club?",
+  "o": [
+   "Arsenal",
+   "Manchester United",
+   "Liverpool",
+   "Chelsea"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Arsenal beat them in the League Cup final and then again in an FA Cup final replay, a uniquely cruel season.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Which winger, famous for his time at Marseille and for England, joined Sheffield Wednesday in 1992?",
+  "o": [
+   "Chris Waddle",
+   "John Barnes",
+   "Peter Beardsley",
+   "Steve McManaman"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Waddle was voted the Football Writers' Footballer of the Year in his first season at Hillsborough.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "How many FA Cups have Sheffield Wednesday won?",
+  "o": [
+   "Three",
+   "One",
+   "Five",
+   "None"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The wins came in 1896, 1907 and 1935 — the last of them nearly a century ago.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Sheffield Wednesday were founded in 1867, making them one of the oldest what?",
+  "o": [
+   "Professional football clubs in the world",
+   "Cricket clubs in Yorkshire",
+   "Rugby clubs in England",
+   "Sporting institutions in Scotland"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Only a handful of clubs anywhere can claim an older continuous football history.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Which England striker spent most of his career at Sheffield Wednesday in the 1990s?",
+  "o": [
+   "David Hirst",
+   "Alan Shearer",
+   "Ian Wright",
+   "Les Ferdinand"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Hirst is remembered at Hillsborough for his power and for once striking the fastest recorded shot in English football.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "Which England defender, known for playing without shin pads, joined Sheffield Wednesday in 1993?",
+  "o": [
+   "Des Walker",
+   "Tony Adams",
+   "Gary Pallister",
+   "Stuart Pearce"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Walker arrived from Sampdoria after a celebrated spell at Nottingham Forest and stayed for a decade.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ },
+ {
+  "q": "What colours do Sheffield Wednesday traditionally wear at home?",
+  "o": [
+   "Blue and white stripes",
+   "Red and white stripes",
+   "All white",
+   "Claret and blue"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The blue and white stripes have been worn since the 1870s and distinguish them from their red-and-white city rivals.",
+  "cat": "History",
+  "club": "Sheffield Wednesday",
+  "type": "mcq"
+ }
+]
