@@ -949,6 +949,11 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row .ghost{background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
+  .bq-daily{display:flex;align-items:center;gap:9px;margin:0 0 13px;padding:9px 12px;border-radius:11px;
+    background:linear-gradient(90deg,rgba(240,169,59,.10),transparent);border:1px solid rgba(240,169,59,.28)}
+  .bq-dot{width:7px;height:7px;border-radius:50%;background:#F0A93B;flex:none;box-shadow:0 0 8px rgba(240,169,59,.7)}
+  .bq-dtx{font-size:13px;color:var(--tx3);line-height:1.35}
+  .bq-dtx b{color:#F0A93B;font-weight:700}
   @media (prefers-reduced-motion:reduce){.bq-meter i,.bq-o{transition:none}}`;
 
 // Progressive enhancement only. Everything it touches is already in the DOM.
@@ -963,7 +968,39 @@ var play=root.getAttribute('data-play')||'/play';
 var BANDS=[0,25,45,65,85,100];
 function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
 if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
-var run=[],at=0,sc=0,streak=0,best=0,rounds=0,started=0,len=Math.min(10,total);
+/* ── TODAY'S SET ──────────────────────────────────────────────────────────
+   The page ships every question server-rendered in a fixed difficulty arc, and
+   that must not change: it is the crawlable text, and it is what a reader with
+   JS off gets. What changes is the ORDER a human plays them in.
+   WHY: 94.6% of sessions view exactly one page, so 95% of our visitors will
+   never see the app, the hub, or another club. A reason to come back has to
+   live on THIS page or it does not exist — and a page that is byte-identical
+   on every visit offers none. Re-deriving the order per day turns 86 static
+   URLs into 86 recurring ones at the cost of a few hundred bytes.
+   HOW: xorshift32 seeded on (club name, day number), then the build's
+   difficulty arc re-applied so the set still opens easy — momentum matters
+   more than novelty on question one.
+   ⚠️ Integer bitwise only. This is the same algorithm as seededShuffle in
+   src/lib/quiz.js, for the same reason: a Math.sin-seeded sort differs between
+   JavaScriptCore and V8 on 137 of 3000 values, which once handed iOS and
+   Android players different questions on the same date. */
+function bqhash(s){var h=2166136261,i;for(i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*16777619)>>>0}return h>>>0}
+function bqday(){var d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)}
+function bqshuf(arr,seed){var s=seed>>>0,a=arr.slice(),i,j,t;
+function r(){s^=s<<13;s^=s>>17;s^=s<<5;return (s>>>0)/4294967296}
+for(i=a.length-1;i>0;i--){j=Math.floor(r()*(i+1));t=a[i];a[i]=a[j];a[j]=t}return a}
+function bqarc(a){
+var by={easy:[],medium:[],hard:[]},out=[],i,k;
+for(i=0;i<a.length;i++){var d=a[i].getAttribute('data-diff');(by[d]||by.medium).push(a[i])}
+var want=function(n){return n<2?'easy':['medium','medium','hard'][(n-2)%3]};
+var ord={easy:['easy','medium','hard'],medium:['medium','easy','hard'],hard:['hard','medium','easy']};
+for(i=0;i<a.length;i++){var o=ord[want(i)],r=null;
+for(k=0;k<3;k++){if(by[o[k]].length){r=by[o[k]].shift();break}}
+if(!r)break;out.push(r)}
+return out}
+qs=bqarc(bqshuf(qs,(bqhash(name)^(bqday()*2654435761))>>>0));
+for(var dz=0;dz<qs.length;dz++)list.appendChild(qs[dz]);
+var run=[],at=0,off=0,sc=0,streak=0,best=0,rounds=0,started=0,len=Math.min(10,total);
 var head=root.querySelector('.bq-head'),meter=root.querySelector('.bq-meter'),sbadge=root.querySelector('.bq-streak');
 var res=root.querySelector('.bq-res');
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -1015,9 +1052,9 @@ bqev('clubq-finish');tag('clubq-rounds',rounds);tag('clubq-score',G.pct>=85?'85+
    link stays, demoted. The app link only appears once we have actually run out
    of questions, which is the first moment it is a genuine next step rather than
    an interruption. */
-var hasMore=total>run.length;
+var served=off+run.length;var hasMore=total>served;
 var cont=(hasMore
-?'<a class="bq-go" href="#quiz" data-more="1">Keep going — '+(total-run.length)+' more →</a>'
+?'<a class="bq-go" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
 +'<a href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
 :'<a class="bq-go" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
 +'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>');
@@ -1027,8 +1064,8 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
 +'<div class="bq-row">'+cont+'<button class="ghost" data-share="1">Share</button><button class="ghost" data-again="1">Play again</button></div>'
 +(!hasMore?'<p class="bq-note">That is every '+esc(name)+' question we have here. There is a new daily game in the app, plus your streak.</p>':'');
 res.hidden=false;if(head)head.hidden=true;
-var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();bqev('clubq-more');start(Math.min(20,total))});
-var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){bqev('clubq-again');start(len)});
+var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();bqev('clubq-more');start(len,served)});
+var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){bqev('clubq-again');start(len,off)});
 /* The two ways OFF the page. Tracked so that choosing to optimise for staying
    cannot quietly kill the app funnel without us noticing — the guardrail on
    the whole rebuild. */
@@ -1040,15 +1077,28 @@ var txt='I scored '+sc+'/'+run.length+' on the '+name+' quiz — '+G.tier+'. Bea
 if(navigator.share){navigator.share({title:name+' quiz',text:txt,url:u})['catch'](function(){})}
 else if(navigator.clipboard){navigator.clipboard.writeText(txt+' '+u).then(function(){sh.textContent='Copied ✓'})}
 else{window.prompt('Copy your score',txt+' '+u)}})}
-function start(n){
+function start(n,from){
 /* Only the FIRST start counts as a start. "Play again" and "Keep going" have
    their own events, so clubq-start stays a clean session-level denominator:
    clubq-play/clubq-start = did they engage, clubq-finish/clubq-start = did
    they get to the end. */
 if(!rounds&&!started){started=1;bqev('clubq-start');tag('clubq-len',n)}
+/* ⚠️ NO BACKTICKS OR DOLLAR-BRACES ANYWHERE IN THIS BLOCK — it lives inside a
+   template literal, so either one ends the string and the build dies with a
+   syntax error pointing at the comment rather than the code.
+   The offset parameter is why start() takes two arguments. "Keep going — 30
+   more" used to
+   call start(20), and start always filled from qs[0] — so a reader who had just
+   answered ten questions was handed those same ten again, followed by ten new
+   ones. The button promised new material and delivered a replay, which is
+   corrosive in exactly the place we are asking someone to stay.
+   Now: "Keep going" advances past what has been served, "Play again" replays
+   the round just finished (same offset), and a fresh length pick restarts. */
+if(from==null)from=0;
+off=from;
 len=n;res.hidden=true;if(head)head.hidden=false;
 run=[];sc=0;at=0;streak=0;best=0;
-for(var i=0;i<qs.length&&run.length<n;i++){
+for(var i=from;i<qs.length&&run.length<n;i++){
 var q=qs[i];run.push({el:q,got:-1});
 var os=q.querySelectorAll('.bq-o');
 for(var b=0;b<os.length;b++){os[b].disabled=false;os[b].className='bq-o'}
@@ -1078,6 +1128,12 @@ for(var i=0;i<lens.length;i++)lens[i].addEventListener('click',function(e){
 var v=+e.currentTarget.getAttribute('data-n');
 for(var j=0;j<lens.length;j++)lens[j].setAttribute('aria-pressed',lens[j]===e.currentTarget?'true':'false');
 rounds=0;start(v)});
+var dl=root.querySelector('.bq-daily');
+if(dl&&total>=24){var dtx=dl.querySelector('.bq-dtx');
+if(dtx){var dd=new Date();
+dtx.appendChild(document.createElement('b')).textContent='Today\\u2019s '+name+' set';
+dtx.appendChild(document.createTextNode(' \\u00b7 '+dd.toLocaleDateString(undefined,{day:'numeric',month:'long'})+' \\u2014 a fresh order every day'));
+dl.hidden=false}}
 root.classList.add('bq-live');start(Math.min(10,total));
 })();`;
 
@@ -1134,7 +1190,7 @@ function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', play = 
         .join('')}</div>`
     : '';
   return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}">
-<div class="bq-head">${picker}
+<div class="bq-head"><p class="bq-daily" hidden><span class="bq-dot" aria-hidden="true"></span><span class="bq-dtx"></span></p>${picker}
 <div class="bq-card">
 <div class="bq-top"><div class="bq-meter" aria-hidden="true"></div><span class="bq-streak" hidden></span></div>
 <ol class="bq-list">
