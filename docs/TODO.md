@@ -48,10 +48,29 @@ round repeats most of itself and the claim would be false.
 `start` always filled from `qs[0]` — a reader who had just answered ten
 questions **got those same ten again**. Fixed with an offset. Zero repeats now.
 
-**Levers 2-4, in order:** make the result worth showing someone (the only lever
-touching AUTHORITY, our actual ranking ceiling — 11 referral sessions/week);
-delete the length picker that precedes the reward; calibrate difficulty once
-`clubq-score` has a fortnight of data.
+**Lever 2 — THE AUTHORITY LEVER (336bfbb): a score now shares as a score.**
+The share control was a grey ghost button between two greens, and it shared
+`location.href` — which unfurled the club's generic card, identical whether you
+scored 2 or 10. Nothing in the preview was worth sending.
+`/iq/<slug>.<iq>.<score>.<total>` is an edge-rendered card in the club's colour
+carrying the number and the club's own word for it ("Kop Regular", not
+"Level 3"). ⚠️ Humans who tap it land on the **club page, not /play** — every
+other share loop opens the app, this one deliberately does not, because the club
+page is the product for 94.6% of visitors and it can produce another share.
+Verified live: valid token, malformed token degrading to the hub, and a crafted
+colour param rejected at both hops.
+
+**Lever 3 (336bfbb): the length picker no longer precedes the quiz.** It moved
+to the result as "Change the length", and continues with NEW questions rather
+than restarting.
+
+**Lever 4 — DATA-GATED, and its content prerequisite is already met.** Measured
+2026-08-13: the club-page mix is 24.2% easy / 48.4% medium / 27.3% hard against
+an arc that wants ~20/53/27, and **zero clubs are skewed soft**. So no content
+work is needed. What remains is purely behavioural — are the questions labelled
+"hard" actually hard — and that needs `clubq-score`, which returned empty an
+hour after shipping. ⚠️ **Re-query Clarity for clubq-* in ~2 weeks.** If most
+finishes land in the top band, the fix is ordering, not new questions.
 
 ⚠️ **We cannot A/B test this.** At ~516 sessions/week any lift worth caring
 about is inside the noise. Small numbers show gross failure only. The powered
