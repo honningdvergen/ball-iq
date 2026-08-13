@@ -1994,7 +1994,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'new questions' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
+  }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), slug: catCfg.slug, play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
 ${renderCovers(catCfg.name, true, false, deepPlay)}
 ${appCtaBand(catCfg.name)}
 ${adSlot('afterQA')}
@@ -2465,7 +2465,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'new questions' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), slug: cfg.slug }))}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
@@ -3349,7 +3349,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'new questions' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length) }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), badge: deriveBadge(cfg.name), slug: cfg.slug }))}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
