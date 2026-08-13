@@ -949,6 +949,9 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row .ghost{background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
+  .bq-days{display:inline-block;margin-top:9px;padding:4px 11px;border-radius:999px;
+    background:rgba(240,169,59,.14);border:1px solid rgba(240,169,59,.4);
+    color:#F0A93B;font-size:12.5px;font-weight:700}
   .bq-share{display:block;width:100%;margin-top:13px;padding:13px;border-radius:11px;
     border:1px solid var(--club,var(--grn));background:transparent;color:var(--club-tx,var(--grn));
     font:inherit;font-weight:800;font-size:14.5px;cursor:pointer;min-height:44px}
@@ -993,6 +996,26 @@ if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tie
    Android players different questions on the same date. */
 function bqhash(s){var h=2166136261,i;for(i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*16777619)>>>0}return h>>>0}
 function bqday(){var d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)}
+/* ── RETURN STREAK ────────────────────────────────────────────────────────
+   Lever 1 gives a returning reader a fresh set. Nothing told them it was
+   fresh, or gave them a reason to care that it was. A streak does: it is the
+   whole engine behind Footle, which is our most-played mode, and it works for
+   the 95% who will never create an account because it is one localStorage key
+   and nothing else.
+   GLOBAL, not per club. A reader who plays Liverpool today and Arsenal
+   tomorrow has kept a habit; a per-club streak would call that a miss and
+   reset them to zero for doing exactly what we want.
+   Advances once per day, on a genuine finish only — landing on the page is
+   not a play. Every storage call is wrapped: Safari private mode throws on
+   setItem, and a thrown streak must never take the quiz down with it. */
+var BQ_SKEY='biq.quiz.streak';
+function readStreak(){try{var v=JSON.parse(localStorage.getItem(BQ_SKEY)||'null');
+return (v&&typeof v.n==='number'&&typeof v.d==='number')?v:null}catch(e){return null}}
+function bumpStreak(){var t=bqday(),c=readStreak();
+if(c&&c.d===t)return c.n;
+var n=(c&&c.d===t-1)?c.n+1:1;
+try{localStorage.setItem(BQ_SKEY,JSON.stringify({n:n,d:t}))}catch(e){}
+return n}
 function bqshuf(arr,seed){var s=seed>>>0,a=arr.slice(),i,j,t;
 function r(){s^=s<<13;s^=s>>17;s^=s<<5;return (s>>>0)/4294967296}
 for(i=a.length-1;i>0;i--){j=Math.floor(r()*(i+1));t=a[i];a[i]=a[j];a[j]=t}return a}
@@ -1044,7 +1067,8 @@ paintMeter();
 var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?'See your result →':'Next question →'}}
 function finish(){
 rounds++;var G=grade(sc,run.length),left=total-run.length+more;
-bqev('clubq-finish');tag('clubq-rounds',rounds);tag('clubq-score',G.pct>=85?'85+':G.pct>=65?'65-84':G.pct>=45?'45-64':'under-45');
+bqev('clubq-finish');tag('clubq-rounds',rounds);
+var sday=bumpStreak();tag('clubq-streak',sday);if(sday>=2)bqev('clubq-returned');tag('clubq-score',G.pct>=85?'85+':G.pct>=65?'65-84':G.pct>=45?'45-64':'under-45');
 /* ⚠️ THE PRIMARY ACTION MUST KEEP THEM ON THIS PAGE. Measured in Clarity on
    2026-08-13: 488 of 516 sessions viewed exactly ONE page — 94.6%. Entry and
    exit URLs for the club pages are identical down to the session count
@@ -1069,6 +1093,7 @@ var cont=(hasMore
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
++(sday>=2?'<div class="bq-days">'+sday+' days in a row</div>':'')
 +'<div class="bq-row">'+cont+'<button class="ghost" data-again="1">Play again</button></div>'
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
    is still the primary action (that decision came from the 94.6% single-page
@@ -1167,6 +1192,17 @@ if(dtx){var dd=new Date();
 dtx.appendChild(document.createElement('b')).textContent='Today\\u2019s '+name+' set';
 dtx.appendChild(document.createTextNode(' \\u00b7 '+dd.toLocaleDateString(undefined,{day:'numeric',month:'long'})+' \\u2014 a fresh order every day'));
 dl.hidden=false}}
+/* The ribbon carries its own base text only on 24+ question clubs. On a thin
+   one it is empty, so appending " \u00b7 day 4" produced a dangling fragment
+   reading "\u00b7 day 4 \u2713". When there is nothing to append to, the
+   streak becomes the ribbon's own label instead. */
+var sv=readStreak(),td=bqday();
+if(dl&&sv&&sv.n>=2&&(sv.d===td||sv.d===td-1)){var dx=dl.querySelector('.bq-dtx');
+if(dx){var msg=sv.d===td?'day '+sv.n+' \u2713':'day '+sv.n+' \u2014 keep it going';
+if(dx.textContent){dx.appendChild(document.createTextNode(' \u00b7 '+msg))}
+else{dx.appendChild(document.createElement('b')).textContent='Your streak';
+dx.appendChild(document.createTextNode(' '+msg))}}
+dl.hidden=false}
 root.classList.add('bq-live');start(Math.min(10,total));
 })();`;
 
