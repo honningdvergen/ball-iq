@@ -539,6 +539,28 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .q-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .prog-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
 .prog-bar{height:100%;background:var(--accent);border-radius:1px;transition:width 0.45s cubic-bezier(0.22,1,0.36,1);}
+/* ── Per-question pips ────────────────────────────────────────────────────────
+   One chip per question, the club-page treatment brought into the app: green
+   for right, red for wrong, dim for not-yet, and the current question given a
+   faint pulse so the eye knows where it is.
+   ⚠️ THE RED IS DELIBERATELY LOUDER THAN THE WEB'S. On the club pages a miss is
+   #FF4747 on a light-ish card; in the app the same value sinks into the dark
+   chrome and reads brick-brown at 4px tall — Alex's word for it was that it
+   needed to be "a more obvious red". #FF3B3B plus a matching glow keeps a miss
+   legible at a glance on a phone, which is the entire job of the row.
+   ⚠️ Chips SHRINK as the count grows so a 20-question run still fits one line
+   without wrapping into the streak badge. */
+.prog-pips{flex:1;display:flex;gap:4px;align-items:center;min-width:0;}
+.prog-pips i{flex:1 1 0;min-width:5px;max-width:18px;height:4px;border-radius:2px;
+  background:var(--border);transition:background .22s ease, box-shadow .22s ease;}
+.prog-pips i.ok{background:var(--accent);}
+.prog-pips i.no{background:#FF3B3B;box-shadow:0 0 6px rgba(255,59,59,.55);}
+.prog-pips i.now{background:var(--t3);animation:pipNow 1.6s ease-in-out infinite;}
+@keyframes pipNow{0%,100%{opacity:.45}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){
+  .prog-pips i{transition:none}
+  .prog-pips i.now{animation:none;opacity:.8}
+}
 .q-top-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .q-ctr{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);white-space:nowrap;font-weight:500;letter-spacing:0.04em;}
 .q-score-live{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}

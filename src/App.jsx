@@ -2211,7 +2211,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // game in order: question, options, what they picked, what was
   // correct. Same ref pattern as wrongAnswers.
   const allAnswersRef = useRef([]);
-  useEffect(() => { wrongAnswersRef.current = []; allAnswersRef.current = []; }, [questions]);
+  // ⚠️ STATE, NOT A REF, AND DELIBERATELY SEPARATE FROM allAnswersRef. That ref
+  // is terminal data — read once by the results screen, so a ref is right there
+  // and avoids the stale-closure that loses the last answer. The pips are the
+  // opposite case: they must repaint the instant an answer lands, and a ref
+  // mutation does not re-render. Two stores, two jobs; cheap (one boolean per
+  // question) and it keeps the ref's terminal-read contract intact.
+  const [marks, setMarks] = useState([]);
+  useEffect(() => { wrongAnswersRef.current = []; allAnswersRef.current = []; setMarks([]); }, [questions]);
   useEffect(() => {
     Sentry.addBreadcrumb({ category: 'game', message: 'quiz started', level: 'info', data: { mode, diff: diff || null, total: questions?.length || 0 } });
     // Sprint #61 DD3: tag the mode for the duration of the quiz. On unmount
@@ -2351,6 +2358,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         timedOut: false,
       }];
     }
+    // A timeout is recorded by the timer effect's own capture path, not here.
+    if (correct !== "timeout") setMarks(m => [...m, correct === true]);
     if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeftRef.current * 10); }
     advance(ns, nb, correct);
   }, [score, streak, bestStreak, advance]);
@@ -2414,6 +2423,9 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           timedOut: true,
         }];
       }
+      // Running out of time is a miss and must colour its pip red — otherwise
+      // the row silently stops advancing and reads as a rendering bug.
+      setMarks(m => [...m, false]);
       setScore(s => {
         setStreak(0);
         setBestStreak(b => {
@@ -2493,7 +2505,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         {mode === "survival" ? (
           <div style={{flex:1}} />
         ) : (
-          <div className="prog-wrap"><div className="prog-bar" style={{ width: `${((idx + (answered ? 1 : 0)) / total) * 100}%` }} /></div>
+          <div className="prog-pips" aria-hidden="true">
+            {Array.from({ length: total }, (_, i) => (
+              <i key={i} className={i < marks.length ? (marks[i] ? "ok" : "no") : (i === marks.length ? "now" : "")} />
+            ))}
+          </div>
         )}
         <div className="q-top-right">
           {/* Rendered even at 0, just invisible. Mounting it on the first

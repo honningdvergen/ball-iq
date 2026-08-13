@@ -83,14 +83,32 @@ let faceW = fb.width * W
 let side = min(max(faceW / 0.38, faceW * 1.6), min(W, H))
 let cx = fb.midX * W
 let cy = fb.midY * H + side * 0.04             // face slightly LOW in frame = hair headroom
-var rect = CGRect(x: cx - side / 2, y: cy - side / 2, width: side, height: side)
-rect.origin.x = max(0, min(W - side, rect.origin.x))
-rect.origin.y = max(0, min(H - side, rect.origin.y))
+let rect = CGRect(x: cx - side / 2, y: cy - side / 2, width: side, height: side)
 
+// ⚠️ DO NOT SLIDE THE CROP BACK INSIDE THE PHOTO. This used to clamp the rect
+// into the source extent, which sounds harmless and is the single biggest
+// quality defect in the whole pipeline. When a face sits near the top of its
+// photo — which is most match-day portraits — the wanted crop pokes above the
+// frame, the clamp slid it DOWN until flush, and every pixel of the intended
+// headroom vanished. The subject then touches row 0 of the cutout and renders
+// as a flat-topped head jammed against the disc.
+// MEASURED 2026-08-13 across 4,339 cutouts: 964 (22.2%) had the subject on the
+// top row and another 319 within 2% of it — 29.6% of the pool, Carrick and
+// Evra among them. No render-side clamp can undo it, because the pixels were
+// never in the file.
+// Letting the rect run past the edge and compositing over a transparent square
+// keeps the framing the face asked for and pads the overflow with nothing,
+// which is exactly right for a cutout: empty space above a head, instead of a
+// head with its crown shaved off. The explicit frame also keeps the output
+// square — cropped(to:) alone returns only the intersection, which would emit
+// a non-square PNG and silently break every normalised box in meta.json.
 let scale = CGFloat(outSize) / side
+let frame = CGRect(x: 0, y: 0, width: CGFloat(outSize), height: CGFloat(outSize))
 let out = cut.cropped(to: rect)
   .transformed(by: CGAffineTransform(translationX: -rect.minX, y: -rect.minY))
   .transformed(by: CGAffineTransform(scaleX: scale, y: scale))
+  .composited(over: CIImage(color: .clear).cropped(to: frame))
+  .cropped(to: frame)
 
 let ctx = CIContext()
 do {
