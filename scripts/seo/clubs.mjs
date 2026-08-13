@@ -2462,5 +2462,25 @@ export const CLUBS = [
       { "q": "Which famous players came through Southampton's academy?", "a": "Alan Shearer, Theo Walcott, Gareth Bale, Adam Lallana, Luke Shaw, Alex Oxlade-Chamberlain and James Ward-Prowse among others. Bale began as a left-back and only became an attacking player after leaving for Tottenham." },
       { "q": "Who is Southampton's greatest player?", "a": "Most supporters say Matt Le Tissier, who spent his entire professional career at the club and scored 47 of the 48 penalties he took. Mick Channon is the record league goalscorer with 185, and later became a successful racehorse trainer." }
     ]
+  },
+  {
+    "club": "Portsmouth",
+    "slug": "portsmouth",
+    "name": "Portsmouth",
+    "h1": "Portsmouth Quiz",
+    "title": "Portsmouth Quiz with Answers \u2014 Pompey | Ball IQ",
+    "description": "Free Portsmouth quiz with explained answers \u2014 the 2008 FA Cup, back-to-back titles in 1949 and 1950, administration, and the fan buyout that saved Pompey.",
+    "intro": [
+      "Portsmouth are Pompey, a name the city wore before the club did, and Fratton Park has been home since 1899 \u2014 one of the oldest grounds still in continuous use in English football.",
+      "The peak came either side of the club's 50th anniversary: back-to-back First Division titles in 1949 and 1950, still the only league championships in Portsmouth's history. Nearly six decades later came the other great day, Harry Redknapp's side beating Cardiff City 1-0 at Wembley in 2008 through a Nwankwo Kanu goal.",
+      "What followed is the part that makes Pompey a genuinely unusual football story. In 2010 they became the first Premier League club to enter administration, took a nine-point deduction, reached the FA Cup final anyway and were relegated. Successive falls took them to the fourth tier by 2013.",
+      "That is when the supporters bought the club. The Pompey Supporters' Trust takeover made Portsmouth the largest fan-owned club in England at the time, and the recovery since has been built from there. Few clubs have travelled quite so far in both directions inside a single decade."
+    ],
+    "faq": [
+      { "q": "Why are Portsmouth called Pompey?", "a": "Pompey is long-standing naval slang for the city of Portsmouth itself, home of the Royal Navy's principal base. The club took the name from the city, and it carries through to the ground, the fans and the famous Pompey Chimes chant." },
+      { "q": "When did Portsmouth win the FA Cup?", "a": "In 2008, beating Cardiff City 1-0 at Wembley with a Nwankwo Kanu goal, under Harry Redknapp. It was the club's first major trophy since the league titles of 1949 and 1950." },
+      { "q": "What happened to Portsmouth after the 2008 FA Cup win?", "a": "The club collapsed financially. In 2010 Portsmouth became the first Premier League club to enter administration, took a nine-point deduction and were relegated, then fell to the fourth tier by 2013 before supporters bought the club." },
+      { "q": "Who holds Portsmouth's appearance record?", "a": "Jimmy Dickinson, with 764 appearances. He spent his entire playing career at Fratton Park and later managed the club. Goalkeeper Alan Knight made over 680 appearances, a record for a goalkeeper at a single English club." }
+    ]
   }
 ];
