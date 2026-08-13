@@ -949,6 +949,12 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row .ghost{background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
+  .bq-share{display:block;width:100%;margin-top:13px;padding:13px;border-radius:11px;
+    border:1px solid var(--club,var(--grn));background:transparent;color:var(--club-tx,var(--grn));
+    font:inherit;font-weight:800;font-size:14.5px;cursor:pointer;min-height:44px}
+  .bq-share:hover{background:rgba(255,255,255,.04)}
+  .bq-share:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
+  .bq-lenwrap{margin-top:14px}
   .bq-daily{display:flex;align-items:center;gap:9px;margin:0 0 13px;padding:9px 12px;border-radius:11px;
     background:linear-gradient(90deg,rgba(240,169,59,.10),transparent);border:1px solid rgba(240,169,59,.28)}
   .bq-dot{width:7px;height:7px;border-radius:50%;background:#F0A93B;flex:none;box-shadow:0 0 8px rgba(240,169,59,.7)}
@@ -965,6 +971,7 @@ var total=qs.length,name=root.getAttribute('data-name')||'this club';
 var tiers=(root.getAttribute('data-tiers')||'').split('|');
 var store=root.getAttribute('data-store')||'#',more=+(root.getAttribute('data-more')||0),badge=root.getAttribute('data-badge')||'';
 var play=root.getAttribute('data-play')||'/play';
+var cslug=root.getAttribute('data-slug')||'',ccol=root.getAttribute('data-color')||'';
 var BANDS=[0,25,45,65,85,100];
 function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
 if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
@@ -1000,9 +1007,10 @@ if(!r)break;out.push(r)}
 return out}
 qs=bqarc(bqshuf(qs,(bqhash(name)^(bqday()*2654435761))>>>0));
 for(var dz=0;dz<qs.length;dz++)list.appendChild(qs[dz]);
-var run=[],at=0,off=0,sc=0,streak=0,best=0,rounds=0,started=0,len=Math.min(10,total);
+var run=[],at=0,off=0,served=0,sc=0,streak=0,best=0,rounds=0,started=0,len=Math.min(10,total);
 var head=root.querySelector('.bq-head'),meter=root.querySelector('.bq-meter'),sbadge=root.querySelector('.bq-streak');
 var res=root.querySelector('.bq-res');
+var lenwrap=root.querySelector('.bq-lenwrap');
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 /* Until 2026-08-13 this engine emitted NOTHING. Clarity was loaded on all 302
    pages and the club quiz — the thing 60% of our traffic actually arrives for —
@@ -1052,7 +1060,7 @@ bqev('clubq-finish');tag('clubq-rounds',rounds);tag('clubq-score',G.pct>=85?'85+
    link stays, demoted. The app link only appears once we have actually run out
    of questions, which is the first moment it is a genuine next step rather than
    an interruption. */
-var served=off+run.length;var hasMore=total>served;
+served=off+run.length;var hasMore=total>served;
 var cont=(hasMore
 ?'<a class="bq-go" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
 +'<a href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
@@ -1061,7 +1069,12 @@ var cont=(hasMore
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
-+'<div class="bq-row">'+cont+'<button class="ghost" data-share="1">Share</button><button class="ghost" data-again="1">Play again</button></div>'
++'<div class="bq-row">'+cont+'<button class="ghost" data-again="1">Play again</button></div>'
+/* Share sits BELOW the green row, not above it. Keeping the reader on the page
+   is still the primary action (that decision came from the 94.6% single-page
+   measurement); share is the authority lever and gets full width and the club's
+   colour, but it does not outrank staying. */
++'<button class="bq-share" data-share="1">Share your '+esc(name)+' IQ</button>'
 +(!hasMore?'<p class="bq-note">That is every '+esc(name)+' question we have here. There is a new daily game in the app, plus your streak.</p>':'');
 res.hidden=false;if(head)head.hidden=true;
 var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();bqev('clubq-more');start(len,served)});
@@ -1073,10 +1086,30 @@ var outs=res.querySelectorAll('a[href]');
 for(var oi=0;oi<outs.length;oi++)(function(el){el.addEventListener('click',function(){
 if(el.hasAttribute('data-more'))return;bqev(el.getAttribute('href')===play?'clubq-out-play':'clubq-out-store')})})(outs[oi]);
 var sh=res.querySelector('[data-share]');if(sh)sh.addEventListener('click',function(){bqev('clubq-share');
-var txt='I scored '+sc+'/'+run.length+' on the '+name+' quiz — '+G.tier+'. Beat that.',u=location.href.split('#')[0];
+/* THE AUTHORITY LEVER. Our ranking ceiling is links, not pages — 11 referral
+   sessions in the week to 2026-08-13 — and a score is the one thing a football
+   fan will voluntarily paste into a group chat. Sharing location.href unfurled
+   the club's generic card, identical whether you scored 2 or 10, so there was
+   nothing in the preview worth pasting.
+   /iq/<slug>.<iq>.<score>.<total> is an edge-rendered card carrying the club's
+   colour, the number and the club's own word for it. Humans who tap it land on
+   the CLUB PAGE, not the app — so the loop can produce another share. */
+var u=location.href.split('#')[0].split('?')[0];
+if(cslug){var t=cslug+'.'+G.iq+'.'+sc+'.'+run.length;
+var qp='?n='+encodeURIComponent(name)+'&r='+encodeURIComponent(G.tier);
+if(badge)qp+='&b='+encodeURIComponent(badge);
+if(ccol)qp+='&c='+encodeURIComponent(ccol.replace('#',''));
+u=location.origin+'/iq/'+t+qp}
+var txt='My '+name+' IQ is '+G.iq+' — '+G.tier+' ('+sc+'/'+run.length+'). Beat that.';
 if(navigator.share){navigator.share({title:name+' quiz',text:txt,url:u})['catch'](function(){})}
 else if(navigator.clipboard){navigator.clipboard.writeText(txt+' '+u).then(function(){sh.textContent='Copied ✓'})}
-else{window.prompt('Copy your score',txt+' '+u)}})}
+else{window.prompt('Copy your score',txt+' '+u)}})
+/* Lever 3: the length picker moves OUT of the pre-quiz position and appears
+   here instead. Meeting "How many questions?" before a single question is
+   spending the highest-attention moment of the session on admin — they typed
+   "liverpool quiz" into Google and had already decided. After a round it stops
+   being a toll and becomes an offer to someone who now knows if they like it. */
+if(lenwrap)lenwrap.hidden=false}
 function start(n,from){
 /* Only the FIRST start counts as a start. "Play again" and "Keep going" have
    their own events, so clubq-start stays a clean session-level denominator:
@@ -1096,7 +1129,7 @@ if(!rounds&&!started){started=1;bqev('clubq-start');tag('clubq-len',n)}
    the round just finished (same offset), and a fresh length pick restarts. */
 if(from==null)from=0;
 off=from;
-len=n;res.hidden=true;if(head)head.hidden=false;
+len=n;res.hidden=true;if(head)head.hidden=false;if(lenwrap)lenwrap.hidden=true;
 run=[];sc=0;at=0;streak=0;best=0;
 for(var i=from;i<qs.length&&run.length<n;i++){
 var q=qs[i];run.push({el:q,got:-1});
@@ -1127,7 +1160,7 @@ var lens=root.querySelectorAll('.bq-len button');
 for(var i=0;i<lens.length;i++)lens[i].addEventListener('click',function(e){
 var v=+e.currentTarget.getAttribute('data-n');
 for(var j=0;j<lens.length;j++)lens[j].setAttribute('aria-pressed',lens[j]===e.currentTarget?'true':'false');
-rounds=0;start(v)});
+start(v,served>=total?0:served)});
 var dl=root.querySelector('.bq-daily');
 if(dl&&total>=24){var dtx=dl.querySelector('.bq-dtx');
 if(dtx){var dd=new Date();
@@ -1155,7 +1188,7 @@ root.classList.add('bq-live');start(Math.min(10,total));
 // :9166 calls launchClubQuiz/launchLeagueQuiz. The searchParams.delete() at
 // :9142 only tidies the DISPLAYED url via replaceState AFTER the value is
 // consumed — it does not discard it. UTM params are deliberately preserved.
-function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', play = `${SITE.base}/play` }) {
+function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', slug = '', color = '', play = `${SITE.base}/play` }) {
   const items = rows
     .map(shuffleOptions)
     .map((r) => {
@@ -1173,7 +1206,7 @@ function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', play = 
     .join('\n');
   const lens = [10, 20, rows.length].filter((n, i, a) => n <= rows.length && a.indexOf(n) === i);
   const picker = lens.length > 1
-    ? `<div class="bq-lenl">How many questions?</div><div class="bq-len">${lens
+    ? `<div class="bq-lenl">Change the length</div><div class="bq-len">${lens
         // ⚠️ "Full set" CARRIES NO NUMBER — it used to read "42 Full set".
         // That is the pack size, i.e. exactly the "N questions in this pack"
         // badge the no-counts rule names as the disguise it keeps coming back
@@ -1189,8 +1222,8 @@ function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', play = 
         .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${n === rows.length ? 'Full set' : n === 10 ? '10 Quick' : `${n} Standard`}</button>`)
         .join('')}</div>`
     : '';
-  return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}">
-<div class="bq-head"><p class="bq-daily" hidden><span class="bq-dot" aria-hidden="true"></span><span class="bq-dtx"></span></p>${picker}
+  return `<section class="bq" id="quiz" data-total="${rows.length}" data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}" data-slug="${esc(slug)}" data-color="${esc(color)}">
+<div class="bq-head"><p class="bq-daily" hidden><span class="bq-dot" aria-hidden="true"></span><span class="bq-dtx"></span></p>
 <div class="bq-card">
 <div class="bq-top"><div class="bq-meter" aria-hidden="true"></div><span class="bq-streak" hidden></span></div>
 <ol class="bq-list">
@@ -1198,6 +1231,7 @@ ${items}
 </ol>
 </div></div>
 <div class="bq-res bq-card" hidden></div>
+<div class="bq-lenwrap" hidden>${picker}</div>
 <script>${BQ_JS}</script>
 </section>`;
 }
@@ -2295,7 +2329,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'new questions' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, play: `${SITE.base}/play?club=${cfg.slug}` }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, slug: cfg.slug, color: CLUB_COLOR[cfg.slug] || '', play: `${SITE.base}/play?club=${cfg.slug}` }))}
 ${adSlot('afterQA')}
 ${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts every
      club page at 13-29% scroll depth while /play reaches 95% and the /lists

@@ -208,8 +208,66 @@ function clubCard(sp) {
   return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
 }
 
+// Club-quiz SCORE card (?t=iq) — paired with api/iq.js.
+//
+// This is the authority lever. Our own ranking diagnosis says the fundamentals
+// are clean and the ceiling on "football quiz" is links, not pages; we took 11
+// referral sessions in the week to 2026-08-13. A score is the one thing a
+// football fan will voluntarily paste into a group chat, so it needs to unfurl
+// as something worth pasting — the club's own colour, a number, and the club's
+// own vocabulary for what that number means.
+function scoreCard(sp) {
+  const name = (sp.get('n') || 'Football').slice(0, 28);
+  const badge = (sp.get('b') || '').slice(0, 4).toUpperCase();
+  const tier = (sp.get('r') || '').slice(0, 28);
+  const iq = String(Math.min(999, Math.max(0, parseInt((sp.get('iq') || '0').slice(0, 4), 10) || 0)));
+  const line = (sp.get('sc') || '').slice(0, 12).replace(/[^0-9/]/g, '');
+  // Same hex sanitiser and luminance test as clubCard — the colour goes
+  // straight into a style value and the param rides in from a crafted link.
+  const rawC = sp.get('c') || '';
+  const brand = /^#?[0-9a-fA-F]{6}$/.test(rawC) ? (rawC[0] === '#' ? rawC : '#' + rawC) : '#58CC02';
+  const r = parseInt(brand.slice(1, 3), 16), g = parseInt(brand.slice(3, 5), 16), b = parseInt(brand.slice(5, 7), 16);
+  const onBrand = (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#0A0A0A' : '#FFFFFF';
+
+  const tree = h('div', {
+    style: {
+      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+      background: 'linear-gradient(135deg,#101710 0%,#0A0A0A 60%)',
+      borderTop: `9px solid ${brand}`, fontFamily: 'sans-serif', position: 'relative',
+      padding: '0 72px',
+    },
+  },
+    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
+    ),
+    h('div', { style: { flex: 1, display: 'flex', alignItems: 'center', gap: 48 } },
+      h('div', {
+        style: {
+          width: 250, height: 250, borderRadius: 40, display: 'flex', flexShrink: 0,
+          flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          background: brand, color: onBrand, border: '2px solid rgba(255,255,255,0.12)',
+        },
+      },
+        h('div', { style: { fontSize: 22, fontWeight: 800, letterSpacing: 3, opacity: 0.75, display: 'flex' } }, badge || 'IQ'),
+        h('div', { style: { fontSize: 118, fontWeight: 900, lineHeight: 1, display: 'flex' } }, iq),
+      ),
+      h('div', { style: { display: 'flex', flexDirection: 'column', gap: 14 } },
+        h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: '#9BA0B8', display: 'flex' } }, `${name.toUpperCase()} IQ`),
+        ...(tier ? [h('div', { style: { fontSize: 72, fontWeight: 900, lineHeight: 1.04, color: '#FFFFFF', display: 'flex' } }, tier)] : []),
+        h('div', { style: { display: 'flex', alignItems: 'center', gap: 16, marginTop: 8 } },
+          ...(line ? [h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, `${line} correct`)] : []),
+          h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Beat it — free, no sign-up'),
+        ),
+      ),
+    ),
+  );
+  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+}
+
 export default function handler(req) {
   const sp = new URL(req.url).searchParams;
+  if (sp.get('t') === 'iq') return scoreCard(sp);
   if (sp.get('t') === 'stump') return stumpCard(sp);
   if (sp.get('t') === 'challenge') return challengeCard(sp);
   if (sp.get('t') === 'invite') return inviteCard(sp);

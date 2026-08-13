@@ -65,6 +65,10 @@
       "destination": "/api/q"
     },
     {
+      "source": "/iq/:token",
+      "destination": "/api/iq?t=:token"
+    },
+    {
       "source": "/c/:token",
       "destination": "/api/c?t=:token"
     },
