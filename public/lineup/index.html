@@ -114,6 +114,22 @@ select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid 
 .disc img{position:absolute;left:0;top:0;max-width:none;display:block}
 .disc img.cutimg{position:absolute;inset:0;width:100%;height:100%;max-width:100%;object-fit:cover}
 .disc.cut{background:radial-gradient(circle at 50% 28%,#22452a 0%,#122616 62%,#0c1a0f 100%)}
+/* ⚠️ DISSOLVE THE CROP BOUNDARY. Every cutout is a square crop and the subject
+   runs straight off its bottom edge — measured across the pool, the alpha
+   touches the last row on 100% of them. So the PNG ends in a hard horizontal
+   line through the chest, and because the disc is bigger than that boundary is
+   low, the line lands INSIDE the circle on every single player: Cunha with 9px
+   of bare disc beneath him, Mainoo with 1px. That 1px is the whole reason
+   Mainoo reads as a normal round photo and Cunha reads as sliced in half —
+   one bug, not two.
+   Fading the last sixth of the IMAGE (not of the disc) is what makes it
+   uniform: the zone scales with each player's own crop, so it always sits
+   exactly on the boundary wherever that lands, and a subject whose edge falls
+   below the disc simply has the fade clipped away with it. */
+.disc.cut img{
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 84%,rgba(0,0,0,.45) 93%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 84%,rgba(0,0,0,.45) 93%,transparent 100%);
+}
 .disc .ph{font-size:24px;color:rgba(255,255,255,.45);font-weight:200;line-height:1;
   position:relative;top:-8%}
 /* Empty-slot label sits INSIDE the ring, where the face will go. */
@@ -876,6 +892,28 @@ function drawPitch(ctx, x, y, w, h){
   });
 }
 
+// ⚠️ THE CANVAS CANNOT SEE A CSS MASK. The page dissolves the cutout's crop
+// boundary with mask-image; the export draws with ctx.drawImage and would keep
+// the hard line the screen had just lost, so the downloaded card would differ
+// from the card the user composed. Same curve, same stops, expressed as a
+// destination-out erase — mask alpha 0.45 is an erase alpha of 0.55.
+var FADED = new WeakMap();
+function fadedCut(img){
+  if (FADED.has(img)) return FADED.get(img);
+  var W = img.naturalWidth, H = img.naturalHeight;
+  var oc = document.createElement('canvas'); oc.width = W; oc.height = H;
+  var o = oc.getContext('2d');
+  o.drawImage(img, 0, 0);
+  var g = o.createLinearGradient(0, H * 0.84, 0, H);
+  g.addColorStop(0, 'rgba(0,0,0,0)');
+  g.addColorStop(0.56, 'rgba(0,0,0,.55)');
+  g.addColorStop(1, 'rgba(0,0,0,1)');
+  o.globalCompositeOperation = 'destination-out';
+  o.fillStyle = g; o.fillRect(0, H * 0.84, W, H * 0.16);
+  FADED.set(img, oc);
+  return oc;
+}
+
 function drawDisc(ctx, img, p, cx, cy, r){
   ctx.save();
   ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.closePath();
@@ -888,13 +926,13 @@ function drawDisc(ctx, img, p, cx, cy, r){
     var Dc = r * 2, cmx = (typeof CUTMETA !== 'undefined' && CUTMETA[p.i]) || null;
     if (cmx){
       var sF = (0.40 * Dc) / (cmx.w * img.naturalWidth);
-      ctx.drawImage(img,
+      ctx.drawImage(fadedCut(img),
         cx - r + (Dc / 2 - (cmx.x + cmx.w / 2) * img.naturalWidth * sF),
         cy - r + (Dc * 0.44 - (cmx.y + cmx.h * 0.5) * img.naturalHeight * sF),
         img.naturalWidth * sF, img.naturalHeight * sF);
     } else {
       var sC = Math.max(Dc / img.naturalWidth, Dc / img.naturalHeight);
-      ctx.drawImage(img, cx - img.naturalWidth * sC / 2, cy - r, img.naturalWidth * sC, img.naturalHeight * sC);
+      ctx.drawImage(fadedCut(img), cx - img.naturalWidth * sC / 2, cy - r, img.naturalWidth * sC, img.naturalHeight * sC);
     }
   } else if (img){
     var W = img.naturalWidth, H = img.naturalHeight, D = r * 2, box = p.x;
