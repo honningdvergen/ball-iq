@@ -14,8 +14,34 @@ import { createHash } from 'crypto';
 const OVR = JSON.parse(readFileSync('src/data/photoOverrides.json', 'utf8'));
 const L = JSON.parse(readFileSync('public/data/lineup.json', 'utf8'));
 const byId = new Map(L.players.map((p) => [p.i, p]));
-const targets = Object.entries(OVR).filter(([k, v]) => k !== '_README' && v === null)
-  .map(([k]) => ({ qid: k, name: byId.get(k)?.n })).filter((t) => t.name);
+// ⚠️ THE NULL-OVERRIDES ARE THE SMALL HALF. This targeted only players we had
+// LOOKED AT and rejected — 155 of them. Measured 2026-08-13, the pool holds 939
+// players with no photo, so 784 were never searched at all: no override entry,
+// no candidate, no monogram decision, just absent. They are invisible to a
+// filter keyed on the overrides file, which is why the blanks never went down
+// no matter how often this was run. 87 of them are at big clubs; Man Utd alone
+// was missing Shaw, Mbeumo and Mount from the builder.
+//
+// Both groups now harvest, and `--only` picks one:
+//   (default)   both — every player the pool cannot draw a face for
+//   --only rejected   the 155 we looked at and turned down
+//   --only unseen     the 784 nobody ever searched
+const ONLY = (() => { const i = process.argv.indexOf('--only'); return i > -1 ? process.argv[i + 1] : 'both'; })();
+const HLIMIT = (() => { const i = process.argv.indexOf('--limit'); return i > -1 ? +process.argv[i + 1] : Infinity; })();
+
+const rejected = Object.entries(OVR).filter(([k, v]) => k !== '_README' && v === null)
+  .map(([k]) => ({ qid: k, name: byId.get(k)?.n, group: 'rejected' }));
+const unseen = L.players.filter((p) => !p.f && !(p.i in OVR))
+  .map((p) => ({ qid: p.i, name: p.n, group: 'unseen' }));
+
+// Fame order: lineup.json is emitted most-famous-first, so harvesting in pool
+// order puts Shaw and Mbeumo ahead of a reserve nobody will ever pick.
+const rank = new Map(L.players.map((p, i) => [p.i, i]));
+const targets = (ONLY === 'rejected' ? rejected : ONLY === 'unseen' ? unseen : [...rejected, ...unseen])
+  .filter((t) => t.name)
+  .sort((a, b) => (rank.get(a.qid) ?? 1e9) - (rank.get(b.qid) ?? 1e9))
+  .slice(0, HLIMIT);
+console.log(`harvest targets: ${targets.length} (${ONLY}) — rejected ${rejected.length}, never-searched ${unseen.length}`);
 const OUT = '/tmp/harvest';
 mkdirSync(`${OUT}/thumbs`, { recursive: true });
 const UA = { 'User-Agent': 'BallIQ/1.0 (https://balliq.app; photo harvest)' };
