@@ -121,8 +121,13 @@ have never had a recurrence. Extend the pattern:
       back-to-back. `scripts/audit-mystery-schedule.mjs`, in the build chain.
 - [ ] Every mode awards XP and writes a scores row (Mystery shipped without both).
 - [ ] Cross-screen counter agreement (Home said 0/2 while Daily said 0/4).
-- [ ] Standalone CSS mirror parity (a mirror `!important` meant an installed PWA
-      never turned the all-done state green).
+- [x] **Standalone CSS mirror parity — SOLVED STRUCTURALLY 2026-08-15 (dcdc781).**
+      Not a parity checker: the mirror is now width-gated to `(min-width:1024px)`,
+      which is the only width it was ever for. Below 1024 a phone PWA inherits
+      mobile web, so the two cannot drift. Found via A5: `.t7s-icon` had been
+      frozen at the pre-2026-07-07 32px for five weeks on every installed PWA.
+      Phone-needed rules (.tab-bar, Android floor, tuck, .tab-pill, .tab-content
+      safe-area) deliberately stay outside the gate.
 
 ### C — taps back on, AFTER A holds
 - [ ] **C1. Execute the authority kit** — written, untouched. "football quiz" at

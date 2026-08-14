@@ -43,7 +43,11 @@ Consequences that have actually bitten:
 
 ## The standalone CSS mirror
 
-`app.css` carries a `@media (display-mode: standalone)` mirror block (~155 `!important` rules) that re-hides/re-styles what the ≥1024px desktop reflow changes. **Any token or class you touch in the reflow must be checked against the mirror, and against `index.html`'s `html.native-app` killswitch.** Miss it and installed PWAs / the native app keep the old styling — a documented past incident. A single UI element commonly has hooks in four places: the component, the base rule, the reflow, and the mirror.
+`app.css` carries a `@media (display-mode: standalone)` mirror block that re-hides/re-styles what the ≥1024px desktop reflow changes. **Any token or class you touch in the reflow must be checked against the mirror, and against `index.html`'s `html.native-app` killswitch.** A single UI element commonly has hooks in four places: the component, the base rule, the reflow, and the mirror.
+
+**Since dcdc781 (2026-08-15) the mirror's desktop-undo half is width-gated to `(min-width: 1024px)`, so PHONE-sized PWAs can no longer drift** — below 1024 the mirror doesn't apply and a phone PWA inherits mobile web automatically. That gate exists because hand-syncing failed twice: `.t7s-icon` sat frozen at its 2026-07-05 value for five weeks after the base rule was enlarged on 07-07, so every installed PWA rendered the old 32px card. **When adding to the mirror, put it inside the `min-width:1024px` gate unless a phone genuinely needs it** (safe-area insets, `.tab-bar` geometry, the Android floor, the tuck, `.tab-pill`, `.tab-content`) — those few deliberately sit outside and still need lockstep edits.
+
+To detect drift, read `cssRules` in the browser and compare each mirror declaration against `getComputedStyle` **at 375px** — at desktop width you are comparing against the reflow the mirror exists to undo, and every rule looks like a false positive.
 
 ## Deep links
 
