@@ -85,7 +85,24 @@ ARTEFACTS; none rendered the app.
       full, mid-game, offline, error, PWA-standalone mirror. Three of today's four
       bugs were state bugs. ~2 days.
 
-### ⚠️ SUSPECTED LIVE DEFECT — iOS push may be dead too
+### ✅ RESOLVED — iOS push WAS dead. Four stacked faults, all fixed 2026-08-14
+`send-push` went **500 → 200**; Apple went **403 InvalidProviderToken → 200**.
+1. `service_role` had no SELECT on `device_tokens` — every lookup failed.
+2. The `notifications` type CHECK rejected `daily_reminder` — this would ALSO
+   have killed the new web-reminder cron, silently, every hour.
+3. `APNS_KEY_P8` held **28 characters** instead of a 257-char private key.
+4. All five APNs secrets carried trailing `\n` → Apple rejected the JWT `kid`/`iss`.
+Fix any three and you still get nothing, which is why it survived months of
+"push is dead, must be Android".
+⚠️ Alex's remaining token (registered 20 Jul) is from an older install: Apple
+returns 200 but no banner. Self-resolves on the next fresh install — no code
+change. `send-push` correctly auto-pruned his other dead token.
+⚠️ `diag-service-role` is a 410 tombstone — DELETE it from the dashboard.
+LESSON: `send-push` already documented the trailing-newline hazard and guarded
+ONE variable against it. Write a hazard down, then apply it to every instance of
+the class, not the one that bit you.
+
+### (superseded) SUSPECTED LIVE DEFECT — iOS push may be dead too
 `has_table_privilege('service_role','public.device_tokens','SELECT')` returns
 **false**, and send-push reads that table as service_role. 31 device tokens are
 registered and the trigger is enabled. If it reads the way it looks, every APNs
