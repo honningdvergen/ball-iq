@@ -97,6 +97,15 @@ function ModeGlyph({ mode, size = 22 }) {
 // ~139pt of the 375pt phone for the date, which "Yesterday" needs.
 const COL_W = 44;
 
+const MODE_LABEL = { footle: "Footle", daily7: "Daily 7", trail: "Transfer Trail", mystery: "Mystery Player" };
+
+// Local yesterday, at NOON — the same guard the availability checks use, so a
+// UTC-offset device cannot land on the wrong side of a date boundary.
+function yesterday() {
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1, 12, 0, 0, 0);
+}
+
 // One Recent-days cell. Five states, not two — a mode that did not EXIST that
 // day must not render the same "—" as a day the user skipped, and Mystery has
 // no lose state so an abandoned board is "open", never a red ✗.
@@ -112,6 +121,26 @@ function ScoreCell({ state, text, theme, w = COL_W }) {
         : state === "open"
         ? <span style={{ fontSize: 13, fontWeight: 700, color: "var(--t3)" }}>·</span>
         : <span style={{ fontSize: 13, fontWeight: 700, color: "#3A3D4A" }}>—</span>}
+    </span>
+  );
+}
+
+// Yesterday's un-played cell becomes a replay control. Only ever YESTERDAY and
+// only ever a cell that was live and left unplayed — an archive you can browse
+// is a different product, and the day people actually want back is the one they
+// just missed.
+//
+// ⚠️ A replay does NOT tick the streak or pay XP (guarded in each mode's own
+// screen). It fills the board because that IS a true record; letting it move
+// the streak would make the streak farmable and undo the point of it.
+function ReplayCell({ w, theme, label, onTap }) {
+  return (
+    <span style={{ width: w, flexShrink: 0, display: "inline-flex", justifyContent: "center" }}>
+      <button onClick={onTap} aria-label={label} title={label}
+        style={{ display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: 26, height: 26, borderRadius: 999, background: theme.chipBg,
+          border: theme.resBd, fontSize: 13, fontWeight: 800, color: theme.fg,
+          cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
     </span>
   );
 }
@@ -185,11 +214,16 @@ function rowCells(m) {
       aria: !m.myLive ? "" : m.myWon ? `Mystery Player solved in ${m.myUsed}` : m.myAttempt ? "Mystery Player still open" : "Mystery Player not played" },
   ];
 }
+// Which screen a given column replays into. Daily 7 keeps its own launcher
+// (it replays a QUESTION SET, not a single puzzle, so it has always taken a
+// different path); the other three go through playArchive.
+const REPLAY_SCREEN = { footle: "wordle", trail: "trail", mystery: "mystery" };
+
 function rowAria(m) {
   return `${m.dateLabel} ${m.dateSub} — ${rowCells(m).map(c => c.aria).filter(Boolean).join(", ")}`;
 }
 
-function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak }) {
+function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
@@ -677,6 +711,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                       aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
                       style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
                   </span>
+                ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
+                  <ReplayCell key={c.key} w={COL_W} theme={c.theme}
+                    label={`Play yesterday's ${MODE_LABEL[c.key]}`}
+                    onTap={() => playArchive(REPLAY_SCREEN[c.key], yesterday())} />
                 ) : <ScoreCell key={c.key} state={c.state} text={c.text} theme={c.theme} />
               ))}
             </div>
@@ -818,6 +856,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                                       aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
                                       style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
                                   </span>
+                                ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
+                                  <ReplayCell key={c.key} w={DCOL_W} theme={c.theme}
+                                    label={`Play yesterday's ${MODE_LABEL[c.key]}`}
+                                    onTap={() => playArchive(REPLAY_SCREEN[c.key], yesterday())} />
                                 ) : <ScoreCell key={c.key} w={DCOL_W} state={c.state} text={c.text} theme={c.theme} />
                               ))}
                             </div>

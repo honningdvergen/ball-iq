@@ -9,8 +9,10 @@ function dateToDateKey(d) {
   return `${y}-${m}-${day}`;
 }
 
-export function getWordleDateKey() {
-  return dateToDateKey(new Date());
+// Takes a date so the archive can key on a past day. Defaults to now, so every
+// existing caller is unchanged.
+export function getWordleDateKey(date = new Date()) {
+  return dateToDateKey(date);
 }
 
 // Footle solves on this device from days BEFORE today.

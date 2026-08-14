@@ -7205,12 +7205,17 @@ function FootleReportButton({ answer, status, onReport }) {
   );
 }
 
-const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onPlayDaily, onReport }) {
+const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onPlayDaily, onReport, date = new Date() }) {
   // One puzzle per day — answer + storage key derive from today's date and
   // automatically resync on the day-rollover reload below.
-  const dateKey = getWordleDateKey();
+  // `date` drives the storage key AND the answer together — they must never be
+  // derived from different days, which is precisely the bug the timezone
+  // comment in lib/wordle.js describes (key from local date, answer from UTC,
+  // so a player got tomorrow's word stored under today's key).
+  const dateKey = getWordleDateKey(date);
+  const isArchive = dateKey !== getWordleDateKey();
   const storageKey = `biq_wordle_${dateKey}`;
-  const answer = useMemo(getWordleAnswer, [dateKey]);
+  const answer = useMemo(() => getWordleAnswer(date), [dateKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Audit Phase 5 (C2): track shake (450ms) + reveal (~2-3s) setTimeouts
   // so we can clear them on unmount. Without this, setShake(false) and
@@ -7340,7 +7345,12 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
       // game/won/guesses ride along so the app shell can award Footle XP
       // exactly once (this transition fires once per day by construction —
       // finished puzzles never re-enter submitGuess).
-      try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won", game: 'footle', won: newStatus === "won", guesses: newGuesses.length } })); } catch {}
+      // ⚠️ Archive plays record the solve but do not tick the streak or pay XP
+      // — see the guards in TransferTrail/MysteryPlayer for why a farmable
+      // streak is worse than no archive.
+      if (!isArchive) {
+        try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won", game: 'footle', won: newStatus === "won", guesses: newGuesses.length } })); } catch {}
+      }
       // The ⭐ 5-star ask used to fire from right here, and it stacked the iOS
       // rating card on top of our own notification sheet on a fresh install.
       // It now rides the event above, handled in the app shell, which is the
@@ -8144,41 +8154,6 @@ function AppInner() {
     return () => clearTimeout(t);
   }, [milestoneConfetti]);
 
-  // ── Web Push opt-in (web only; native uses local notifications) ──────────
-  // Mirrors the native toggle's shape so Settings can render either behind one
-  // identical row.
-  const [webPushOn, setWebPushOn] = useState(() => {
-    try { return webPushSupported() && Notification.permission === 'granted'; } catch { return false; }
-  });
-
-  // Re-assert an existing subscription once per session. Browsers rotate push
-  // endpoints on their own schedule and Safari does not fire
-  // `pushsubscriptionchange` reliably — without this a rotated endpoint leaves
-  // a stale row and the user goes silent with no error anywhere. Never prompts:
-  // it returns immediately unless permission is ALREADY granted.
-  useEffect(() => {
-    if (!user?.id) return;
-    refreshWebPushSubscription();
-  }, [user?.id]);
-
-  const handleToggleWebPush = useCallback(async (on) => {
-    if (on) {
-      // Requesting from inside this handler is load-bearing, not incidental:
-      // Safari rejects requestPermission() outside a user gesture entirely.
-      const ok = await enableWebPush();
-      setWebPushOn(ok);
-      showToast(ok
-        ? 'Daily reminders on 🔔'
-        : (webPushPermission() === 'denied'
-            ? 'Blocked in your browser — allow notifications for balliq.app'
-            : "Couldn't turn reminders on"));
-    } else {
-      await disableWebPush();
-      setWebPushOn(false);
-      showToast('Daily reminders off');
-    }
-  }, [showToast]);
-
   const tickLoginStreak = useCallback(async () => {
     // Calendar day in the USER'S timezone (days since epoch of the local
     // date). The previous UTC day (Date.now()/DAY_MS client-side,
@@ -8439,6 +8414,48 @@ function AppInner() {
       toastTimerRef.current = null;
     }, duration);
   }, []);
+
+  // ⚠️ THIS BLOCK MUST STAY BELOW showToast. It first sat ~280 lines higher and
+  // took production down: handleToggleWebPush lists showToast in its dependency
+  // array, that array is evaluated on every render, and a `const` referenced
+  // above its own declaration is a temporal dead zone error — so AppInner threw
+  // on EVERY render and the whole app rendered the error boundary. The build was
+  // green and every unit test passed, because nothing renders AppInner.
+  // ── Web Push opt-in (web only; native uses local notifications) ──────────
+  // Mirrors the native toggle's shape so Settings can render either behind one
+  // identical row.
+  const [webPushOn, setWebPushOn] = useState(() => {
+    try { return webPushSupported() && Notification.permission === 'granted'; } catch { return false; }
+  });
+
+  // Re-assert an existing subscription once per session. Browsers rotate push
+  // endpoints on their own schedule and Safari does not fire
+  // `pushsubscriptionchange` reliably — without this a rotated endpoint leaves
+  // a stale row and the user goes silent with no error anywhere. Never prompts:
+  // it returns immediately unless permission is ALREADY granted.
+  useEffect(() => {
+    if (!user?.id) return;
+    refreshWebPushSubscription();
+  }, [user?.id]);
+
+  const handleToggleWebPush = useCallback(async (on) => {
+    if (on) {
+      // Requesting from inside this handler is load-bearing, not incidental:
+      // Safari rejects requestPermission() outside a user gesture entirely.
+      const ok = await enableWebPush();
+      setWebPushOn(ok);
+      showToast(ok
+        ? 'Daily reminders on 🔔'
+        : (webPushPermission() === 'denied'
+            ? 'Blocked in your browser — allow notifications for balliq.app'
+            : "Couldn't turn reminders on"));
+    } else {
+      await disableWebPush();
+      setWebPushOn(false);
+      showToast('Daily reminders off');
+    }
+  }, [showToast]);
+
 
   // Challenge validity: a token is honored on its own calendar day and — since
   // the Daily 7 is deterministic per day, a day-old score came from a different
@@ -10041,7 +10058,28 @@ function AppInner() {
   }, [user, isGuest, authProfile?.username, profile?.name, openAuthPrompt]);
 
   // Stable callbacks for memoized children
+  // ── The one-day archive ────────────────────────────────────────────────────
+  // Missing a day is where people quit daily games, and until now missing one
+  // meant the puzzle was simply gone. Daily 7 already had catch-up and was the
+  // only mode that did; all three generators are deterministic for any date, so
+  // the rest was reachability rather than new mechanics.
+  //
+  // Deliberately ONE day back, not an open archive: a full archive is a content
+  // product with its own design (browse, calendar, completion), and shipping a
+  // half version of that is worse than shipping the bit that fixes the churn
+  // moment. Yesterday is the day people actually want back.
+  //
+  // Null means "today" everywhere downstream, so nothing changes for a normal
+  // play. It MUST reset on exit or the next tap on Footle would silently open
+  // yesterday's board.
+  const [archiveDate, setArchiveDate] = useState(null);
+  const playArchive = useCallback((mode, date) => {
+    setArchiveDate(date);
+    setScreen(mode);
+  }, []);
+
   const goHome = useCallback(() => {
+    setArchiveDate(null);
     setScreen("home");
     setTab("home");
     // Drop in-game state so we don't keep stale 300/999-question arrays in
@@ -10987,6 +11025,7 @@ function AppInner() {
             <DailyTabScreen
               loginStreak={loginStreak}
               bestLoginStreak={bestLoginStreak}
+              playArchive={playArchive}
               profile={profile}
               xp={xp}
               shieldCount={shieldCount}
@@ -11277,17 +11316,22 @@ function AppInner() {
         )}
 
         {/* ── FOOTBALL WORDLE ── */}
-        {screen === "wordle" && <FootballWordle onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onPlayDaily={dailyDone ? undefined : playDaily} onReport={reportQuestion} />}
+        {screen === "wordle" && <FootballWordle date={archiveDate || undefined} onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onPlayDaily={dailyDone ? undefined : playDaily} onReport={reportQuestion} />}
         {screen === "trail" && (() => {
-          const p = getTrailAnswer();
+          // ⚠️ The player MUST be resolved for the SAME day the screen is told
+          // it is showing. Passing an archive date alongside today's player
+          // would store today's answer under yesterday's key — the board would
+          // look right and the saved result would be a lie.
+          const day = archiveDate || new Date();
+          const p = getTrailAnswer(day);
           // No dataset yet -> no puzzle. Send them home rather than render an
           // empty board; a deep link that lands on a blank screen is worse
           // than one that lands somewhere real.
           if (!p) { setTimeout(goHome, 0); return null; }
-          return <React.Suspense fallback={null}><TransferTrail player={p} onBack={goHome} onReport={reportQuestion} /></React.Suspense>;
+          return <React.Suspense fallback={null}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} /></React.Suspense>;
         })()}
         {screen === "mystery" && (
-          <React.Suspense fallback={null}><MysteryPlayer onExit={goHome} /></React.Suspense>
+          <React.Suspense fallback={null}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} /></React.Suspense>
         )}
         {screen === "stump" && stumpRow && (
           <StumpScreen
