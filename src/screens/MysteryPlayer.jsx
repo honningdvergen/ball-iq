@@ -88,7 +88,21 @@ export default function MysteryPlayer({ onExit }) {
     // Persist EVERY guess, not just the win — a player who closes the tab
     // three guesses in should come back to those three guesses.
     saveMysteryResult(new Date(), { won: isWin, guesses: next });
-    if (isWin) setStreak(computeMysteryStreak());
+    if (isWin) {
+      setStreak(computeMysteryStreak());
+      // ⚠️ Mystery shipped WITHOUT this and recorded nothing for its whole
+      // life: no XP, no scores row, so a solved Mystery paid the player
+      // nothing and the mode read as unplayed in every query. Exactly the
+      // mistake TransferTrail.jsx's dispatch comment warns about.
+      //
+      // `attempts` is guesses-to-solve, matching how Footle and the Trail
+      // report theirs, so the three daily modes stay comparable.
+      try {
+        window.dispatchEvent(new CustomEvent('biq:daily-completed', {
+          detail: { positive: true, game: 'mystery', won: true, attempts: next.length },
+        }));
+      } catch { /* best effort; never block the reveal */ }
+    }
   };
 
   const onSubmitText = (e) => {

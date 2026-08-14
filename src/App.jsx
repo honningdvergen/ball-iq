@@ -9295,6 +9295,28 @@ function AppInner() {
           });
         }
       }
+      // Mystery Player. It has no lose state — unlimited guesses — so only a
+      // win fires, and the reward scales with how few guesses it took rather
+      // than being flat: solving in 3 is a different achievement from solving
+      // in 40, and a flat award would say otherwise.
+      if (e?.detail?.game === 'mystery') {
+        const tries = Math.max(1, e.detail.attempts || 1);
+        awardXp(tries <= 5 ? 50 : tries <= 15 ? 35 : 20);
+        if (user?.id) {
+          supabase.from('scores').insert({
+            user_id: user.id,
+            game_mode: 'mystery',
+            score: tries,
+            correct_answers: 1,
+            total_questions: 1,
+          }).then(({ error }) => {
+            if (error) {
+              console.warn('[mystery score]', error.message);
+              Sentry.captureException(error, { tags: { area: 'mystery-score' } });
+            }
+          });
+        }
+      }
     };
     window.addEventListener('biq:daily-completed', onDailyDone);
     return () => window.removeEventListener('biq:daily-completed', onDailyDone);
