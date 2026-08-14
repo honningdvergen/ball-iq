@@ -4247,7 +4247,7 @@ ${appCtaBand('football')}
 <section class="sec narrow">
 <h2>Where these come from</h2>
 <p style="margin:0 0 14px;color:var(--tx2)">Ball IQ is a football quiz built on a hand-written question bank. Most answers carry a short explanation — the season it happened, who else was involved, what made it matter — and those explanations are where these facts come from. They go through a generation pass, an examiner pass and an adversarial fact-check before they ship, and anything contested gets dropped rather than guessed.</p>
-<p style="margin:0;color:var(--tx2)">Think you knew them? <a href="${SITE.base}/quiz/">Pick a quiz</a> and find out — or try the <a href="${SITE.base}/football-wordle/">daily football word game</a>, <a href="${SITE.base}/transfer-trail/">Transfer Trail</a> and the <a href="${SITE.base}/lineup/">lineup builder</a>.</p>
+<p style="margin:0;color:var(--tx2)">Think you knew them? <a href="${SITE.base}/quiz/">Pick a quiz</a> and find out — or try the <a href="${SITE.base}/football-wordle/">daily football word game</a>, <a href="${SITE.base}/transfer-trail/">Transfer Trail</a> and <a href="${SITE.base}/mystery-player/">Mystery Player</a>.</p>
 </section>
 <section class="sec narrow">
 <h2>Football fun facts — FAQ</h2>
