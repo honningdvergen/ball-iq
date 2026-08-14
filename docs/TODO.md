@@ -69,9 +69,18 @@ ARTEFACTS; none rendered the app.
       many ticks the tooling printed.
 - [ ] **A3. Somewhere to go after a finished day.** Four solved cards end on a
       wall. Recent-days table is the natural home. ~1 day.
-- [ ] **A4. Guest dead-ends on Online + Daily.** ~Half of signups never record a
-      play and the first session decides it. Needs ALEX's product call on what a
-      guest with no history sees.
+- [x] **A4. Guest dead-ends — ALREADY FIXED, premise was stale (2026-08-14).**
+      Walked it as a wiped first-time visitor rather than reading the board.
+      Online shows a "You vs ?" empty-state hero, "No matches yet — win one and
+      your record starts here", a signup CTA, join-by-code AND local pass-and-play.
+      Daily shows all four Play buttons. Profile shows the sign-in CTA + sample
+      card. No dead end anywhere; the activation wave had already closed it.
+      Residual (cosmetic only, NOT a dead end): ~200px of empty space below
+      "Local pass & play" on Online at 375pt.
+      ⚠️ ALSO STALE: `/play?club=` was listed as unbuilt in
+      project_elevation_roadmap. It WORKS — /play?club=arsenal lands directly on
+      Arsenal Q1 of 10, no picker. Club pages already emit that link 6x per page.
+      So the "club picker placement" experiment I proposed is ALSO already done.
 - [ ] **A5. Second audit pass on STATES, not screens** — guest/signed-in, empty/
       full, mid-game, offline, error, PWA-standalone mirror. Three of today's four
       bugs were state bugs. ~2 days.
