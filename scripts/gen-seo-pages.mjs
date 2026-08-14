@@ -1044,6 +1044,58 @@ function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;
    no requests and no native exposure. */
 function bqev(n){try{if(window.clarity)window.clarity('event',n)}catch(e){}}
 function tag(k,v){try{if(window.clarity)window.clarity('set',k,String(v))}catch(e){}}
+/* ── OWNING THE MEASUREMENT ──────────────────────────────────────────────────
+   Clarity RECORDS these rounds but will not report them by name: custom API
+   events aggregate into an unnamed "Other" bucket, so the score distribution
+   that gates lever 4 is unreadable. Verified 2026-08-14 that this is not our
+   bug — the loader is present, the emit code is correct, 12 clubq- occurrences
+   are in the shipped HTML, and 9 distinct events sits well under Clarity's cap
+   of 20. It is their reporting model, not our instrumentation.
+
+   So we record it ourselves. One row per FINISHED round, correct/total split by
+   DIFFICULTY BAND — which is precisely the lever-4 question: if questions
+   labelled "hard" are answered right at roughly the "medium" rate, the label is
+   wrong. Band-level rather than per-question because these pages render
+   data-diff but carry no stable question id, and the band split already
+   answers it.
+
+   NO PERSONAL DATA. No user id, no session id, no free text. A row says
+   "someone finished a Liverpool round, 7 of 10, hard 1 of 3" and is not
+   joinable to a person. The table grants anon NOTHING — prod's standing
+   invariant is zero anon table grants and this keeps it. The only way in is
+   log_club_quiz(), SECURITY DEFINER with silent throttles, the same pattern the
+   anonymous question-reporter has used since launch.
+
+   The key below is the PUBLISHABLE key, already public in the app bundle. It
+   carries no privilege beyond calling that one function.
+
+   ⚠️ The slug is whatever /quiz/<slug>/ holds, so this also captures player and
+   category quizzes, not only clubs. That is deliberate — more of the same
+   question — but it means the "club" column is really "page slug".
+
+   NOTE FOR EDITORS: this whole block lives inside a template literal. A
+   backtick, or a dollar sign immediately followed by a brace, terminates or
+   interpolates the string — and every backslash is consumed before it reaches
+   the page. Both bit me writing this: a backticked word killed the build, and
+   an escaped-slash regex would have emitted as a line comment, silently
+   disabling the beacon. The slug is parsed with split() to avoid backslashes
+   entirely. Prefer plain words over punctuation in here.
+
+   keepalive:true so a result screen that gets closed still reports. Totally
+   failure-tolerant: any throw and the quiz carries on unaffected. */
+var BQ_SB='https://blcisypmngimqkwxrrdm.supabase.co';
+var BQ_PK='sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR';
+function logRound(score,rows,rnds){try{
+var seg=location.pathname.split('/').filter(Boolean);
+if(seg[0]!=='quiz'||!seg[1])return;
+var b={easy:[0,0],medium:[0,0],hard:[0,0]},i,d;
+for(i=0;i<rows.length;i++){d=String(rows[i].el.getAttribute('data-diff')||'medium').toLowerCase();if(!b[d])d='medium';b[d][1]++;if(rows[i].got===1)b[d][0]++}
+fetch(BQ_SB+'/rest/v1/rpc/log_club_quiz',{method:'POST',keepalive:true,
+headers:{'content-type':'application/json','apikey':BQ_PK,'authorization':'Bearer '+BQ_PK},
+body:JSON.stringify({p_club:seg[1],p_total:rows.length,p_correct:score,p_rounds:rnds,
+p_easy_c:b.easy[0],p_easy_t:b.easy[1],p_med_c:b.medium[0],p_med_t:b.medium[1],
+p_hard_c:b.hard[0],p_hard_t:b.hard[1]})}).catch(function(){})
+}catch(e){}}
 function paintMeter(){if(!meter)return;var h='';for(var i=0;i<run.length;i++){var st=run[i].got;h+='<i class="'+(st===1?'ok':st===0?'no':'')+'"></i>'}meter.innerHTML=h}
 function show(){
 for(var i=0;i<qs.length;i++)qs[i].hidden=true;
@@ -1069,11 +1121,24 @@ function finish(){
 rounds++;var G=grade(sc,run.length),left=total-run.length+more;
 bqev('clubq-finish');tag('clubq-rounds',rounds);
 var sday=bumpStreak();tag('clubq-streak',sday);if(sday>=2)bqev('clubq-returned');tag('clubq-score',G.pct>=85?'85+':G.pct>=65?'65-84':G.pct>=45?'45-64':'under-45');
-/* ⚠️ THE PRIMARY ACTION MUST KEEP THEM ON THIS PAGE. Measured in Clarity on
-   2026-08-13: 488 of 516 sessions viewed exactly ONE page — 94.6%. Entry and
-   exit URLs for the club pages are identical down to the session count
-   (Liverpool 25 in, 25 out; Arsenal 23/23; Chelsea 17/17). Nobody navigates
-   onward, ever.
+logRound(sc,run,rounds);
+/* ⚠️ THE PRIMARY ACTION MUST KEEP THEM ON THIS PAGE — but NOT for the reason
+   originally written here, which was wrong.
+
+   The original claim: "488 of 516 sessions viewed exactly ONE page — 94.6% …
+   nobody navigates onward, ever." Re-measured 2026-08-14 and that figure is
+   substantially an instrumentation artifact. Clarity starts a NEW session on
+   the club-page → /play navigation: 60 of 202 single-page sessions (30%) carry
+   an INTERNAL balliq.app referrer, and sampled recordings show /play sessions
+   whose referrerUrl is /quiz/cruyff/ and /quiz/atletico-madrid/, each logged as
+   pagesCount:1. Someone who reads a club page and then opens the app is counted
+   as TWO one-page sessions. Per journey, onward navigation is roughly 40%.
+
+   The DECISION still stands, on better evidence. Session recordings show
+   6m40s/94 clicks and 13m18s/57 clicks on /quiz/cruyff/, both playing multiple
+   rounds and using the length picker. People stay because staying is good, not
+   because leaving is impossible — so keep the staying action primary, and stop
+   treating the app crossing as a rounding error.
    So the club page IS the product for almost every visitor, and the old result
    screen was built for the other 5%: the green primary button was "Play the
    full quiz", which NAVIGATES AWAY, while "Keep going" — the one action that
