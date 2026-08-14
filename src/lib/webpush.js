@@ -12,7 +12,7 @@
 // Desktop and Android work in an ordinary tab.
 
 import { Capacitor } from '@capacitor/core';
-import { supabase } from '../supabaseClient.js';
+import { supabase } from '../supabase.js';
 
 const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY || '';
 
@@ -57,13 +57,19 @@ async function persist(sub) {
   const json = sub.toJSON();
   const { data: { user } = {} } = await supabase.auth.getUser();
   if (!user?.id) return false;
+  // Minutes EAST of UTC. getTimezoneOffset() returns the OPPOSITE sign to
+  // everyone's intuition (Oslo in summer gives -120), so invert here, at the
+  // one boundary where it is obvious, rather than letting that trap live in
+  // the cron's hour arithmetic. Re-sent on every persist so someone who moves
+  // or crosses a DST boundary is corrected on their next visit.
+  const tzOffsetMinutes = -new Date().getTimezoneOffset();
   // Conflict on endpoint, not on (user_id): the same browser re-subscribing
   // must UPDATE its row. Inserting instead would accumulate duplicates and the
   // user would get the same notification three times.
   const { error } = await supabase
     .from('web_push_subscriptions')
     .upsert(
-      { user_id: user.id, subscription: json, endpoint: json.endpoint, last_seen_at: new Date().toISOString() },
+      { user_id: user.id, subscription: json, endpoint: json.endpoint, tz_offset_minutes: tzOffsetMinutes, last_seen_at: new Date().toISOString() },
       { onConflict: 'endpoint' },
     );
   // ⚠️ supabase.rpc/from RESOLVE on error rather than throwing — an unchecked

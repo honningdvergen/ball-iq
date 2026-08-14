@@ -29,6 +29,7 @@ import { APP_NAME, LEVELS, getLevelInfo, computeBadges } from './lib/scoring.js'
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
+import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
 import { registerPush, onPushTap } from './lib/push.js';
 import { maybeRequestReview } from './lib/review.js';
 import { computeCard } from './lib/ballIqCard.js';
@@ -5873,7 +5874,7 @@ function InstallCard() {
   );
 }
 
-function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked, notifEnabled, onToggleNotif, notifSupported, notifBlocked }) {
+function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked, notifEnabled, onToggleNotif, notifSupported, notifBlocked, webPushOn, onToggleWebPush, webPushAvailable, webPushBlocked }) {
   const { user, profile, isGuest, signOut, exitGuestMode, openAuthPrompt } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -6085,10 +6086,23 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
         </div>
       </div>
 
-      {/* 1.1: notifications. Native-only (the daily reminder is meaningless on
-          web, which can't fire while closed). Toggling on requests the OS
-          permission; toggling off cancels all scheduled reminders. */}
-      {notifSupported && (
+      {/* Notifications. Two different engines behind one identical-looking row:
+          NATIVE uses on-device local notifications (src/lib/notifications.js);
+          WEB uses Web Push through the service worker (src/lib/webpush.js).
+          Exactly one of them applies on any given device, so the user sees one
+          toggle and never learns that distinction.
+
+          The old comment here said a web reminder was "meaningless because web
+          can't fire while closed". That was true of LOCAL notifications and is
+          why the native engine no-ops on web — but Web Push is delivered by the
+          browser's push service and fires with the tab shut, which is precisely
+          the gap it exists to close.
+
+          ⚠️ Both paths request permission from inside this tap. Safari rejects
+          Notification.requestPermission() outside a user gesture, and Chrome
+          penalises prompts that fire on load — so this must stay a toggle the
+          user reaches for, never something triggered on mount. */}
+      {(notifSupported || webPushAvailable) && (
         <div className="settings-section">
           <div className="ds-eyebrow settings-section-title">Notifications</div>
           <div className="settings-card">
@@ -6096,13 +6110,19 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="sr-left">
                 <div className="sr-label">Daily reminders</div>
                 <div className="sr-desc">
-                  {notifBlocked
-                    ? "Blocked — open iOS Settings › Ball IQ › Notifications and allow them, then come back"
-                    : "An evening nudge if you haven't played yet — keeps your streak alive"}
+                  {notifSupported
+                    ? (notifBlocked
+                        ? "Blocked — open iOS Settings › Ball IQ › Notifications and allow them, then come back"
+                        : "An evening nudge if you haven't played yet — keeps your streak alive")
+                    : (webPushBlocked
+                        ? "Blocked — allow notifications for balliq.app in your browser's site settings, then come back"
+                        : "An evening nudge if you haven't played yet — keeps your streak alive")}
                 </div>
               </div>
               <div className="sr-right">
-                <SettingsToggle label="Daily reminders" val={notifEnabled} onChange={onToggleNotif} disabled={notifBlocked} />
+                {notifSupported
+                  ? <SettingsToggle label="Daily reminders" val={notifEnabled} onChange={onToggleNotif} disabled={notifBlocked} />
+                  : <SettingsToggle label="Daily reminders" val={webPushOn} onChange={onToggleWebPush} disabled={webPushBlocked} />}
               </div>
             </div>
           </div>
@@ -8123,6 +8143,41 @@ function AppInner() {
     const t = setTimeout(() => setMilestoneConfetti(false), 5000);
     return () => clearTimeout(t);
   }, [milestoneConfetti]);
+
+  // ── Web Push opt-in (web only; native uses local notifications) ──────────
+  // Mirrors the native toggle's shape so Settings can render either behind one
+  // identical row.
+  const [webPushOn, setWebPushOn] = useState(() => {
+    try { return webPushSupported() && Notification.permission === 'granted'; } catch { return false; }
+  });
+
+  // Re-assert an existing subscription once per session. Browsers rotate push
+  // endpoints on their own schedule and Safari does not fire
+  // `pushsubscriptionchange` reliably — without this a rotated endpoint leaves
+  // a stale row and the user goes silent with no error anywhere. Never prompts:
+  // it returns immediately unless permission is ALREADY granted.
+  useEffect(() => {
+    if (!user?.id) return;
+    refreshWebPushSubscription();
+  }, [user?.id]);
+
+  const handleToggleWebPush = useCallback(async (on) => {
+    if (on) {
+      // Requesting from inside this handler is load-bearing, not incidental:
+      // Safari rejects requestPermission() outside a user gesture entirely.
+      const ok = await enableWebPush();
+      setWebPushOn(ok);
+      showToast(ok
+        ? 'Daily reminders on 🔔'
+        : (webPushPermission() === 'denied'
+            ? 'Blocked in your browser — allow notifications for balliq.app'
+            : "Couldn't turn reminders on"));
+    } else {
+      await disableWebPush();
+      setWebPushOn(false);
+      showToast('Daily reminders off');
+    }
+  }, [showToast]);
 
   const tickLoginStreak = useCallback(async () => {
     // Calendar day in the USER'S timezone (days since epoch of the local
@@ -10981,7 +11036,7 @@ function AppInner() {
         )}
 
         {/* ── SETTINGS SCREEN ── */}
-        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} notifEnabled={notifEnabled} onToggleNotif={handleToggleNotif} notifSupported={notificationsSupported()} notifBlocked={notifBlocked} />}
+        {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} notifEnabled={notifEnabled} onToggleNotif={handleToggleNotif} notifSupported={notificationsSupported()} notifBlocked={notifBlocked} webPushOn={webPushOn} onToggleWebPush={handleToggleWebPush} webPushAvailable={webPushSupported()} webPushBlocked={webPushPermission() === "denied"} />}
         {!inGame && screen === "blocked-users" && (
           <React.Suspense fallback={<div className="tab-pane" />}>
             <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />

@@ -49,6 +49,34 @@ async function server(): Promise<webpush.ApplicationServer> {
   return _server;
 }
 
+// ⚠️ MIRRORS send-push's buildAlert(). The notifications row has NO title/body
+// column — copy is derived from `type`, with payload.body as the generic
+// fallback. Reading row.title would silently yield the default text for every
+// notification, so a friend request would say one thing on iOS and something
+// else entirely on web. If the APNs copy changes, change it here too; the two
+// senders describing the same event differently is worse than either wording.
+function buildAlert(rec: Record<string, unknown>) {
+  const p = (rec?.payload ?? {}) as Record<string, unknown>;
+  const actor = (rec?.actor_name as string) || "Someone";
+  const base = { title: "Ball IQ", tag: `balliq-${(rec?.type as string) ?? "generic"}` };
+  switch (rec?.type) {
+    case "play_invite":
+      return { ...base, body: `${actor} invited you to a game`, url: p.code ? `/join/${p.code}` : "/play" };
+    case "friend_request":
+      return { ...base, body: `${actor} sent you a friend request`, url: "/play?tab=profile" };
+    case "friend_accept":
+      return { ...base, body: `${actor} accepted your friend request`, url: "/play?tab=profile" };
+    case "daily_reminder":
+      // Collapses onto one tag so a second night's reminder REPLACES an unread
+      // first rather than stacking two nags in the tray.
+      return { title: "Ball IQ", tag: "balliq-daily",
+               body: (p.body as string) || "Today's puzzles are still open — keep your streak going 🔥",
+               url: "/play?tab=daily" };
+    default:
+      return { ...base, body: (p.body as string) || "You have a new notification", url: "/play" };
+  }
+}
+
 Deno.serve(async (req) => {
   // Fails safe: the check only enforces once the secret is set, so the webhook
   // header can be added before or after this deploys without a dead window.
@@ -78,12 +106,7 @@ Deno.serve(async (req) => {
   }
   if (!subs?.length) return new Response(JSON.stringify({ sent: 0 }), { status: 200 });
 
-  const payload = JSON.stringify({
-    title: (row?.title as string) ?? "Ball IQ",
-    body: (row?.body as string) ?? "Today's puzzles are still open.",
-    url: (row?.url as string) ?? "/play",
-    tag: (row?.tag as string) ?? "balliq-daily",
-  });
+  const payload = JSON.stringify(buildAlert(row));
 
   const app = await server();
   const dead: string[] = [];
