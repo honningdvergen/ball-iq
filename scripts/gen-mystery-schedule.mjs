@@ -41,7 +41,15 @@ const MIN_GAP = 60; // no answer repeats inside this many days
 // sides — the shape that let Benítez, Nagelsmann and Emery through.
 const EXCLUSIONS = JSON.parse(readFileSync(new URL('../src/data/mysteryExclusions.json', import.meta.url), 'utf8'));
 const BANNED = new Set([...(EXCLUSIONS.managers || []), ...(EXCLUSIONS.notFootballers || [])]);
+const RATIONED = new Set(EXCLUSIONS.rationed || []);
 const NON_SENIOR = /(castilla| b$|II$| ii$|reserves?|under-?\d|youth|amateur|atl[eè]tic |acad|juvenil|primavera|ind[uú]stria|antiguoko)/i;
+
+// Alex: "95% players and the rest managers — sprinkle in these managers that have
+// played, but rarely." A hard ban would lose Koeman and Deschamps; no cap at all
+// gave a schedule where a fifth of the year was people best known for coaching.
+// So they are rationed rather than removed.
+const MANAGER_QUOTA = Math.floor(DAYS * 0.05);
+let managerPicks = 0;
 
 const eligible = pool
   .filter((p) => ANSWERS.has(p.id))
@@ -58,7 +66,12 @@ const lastUsed = new Map();
 for (let day = 0; day < DAYS; day++) {
   // Candidates not used inside MIN_GAP, preferring the longest-unused.
   const ok = eligible.filter((p) => !lastUsed.has(p.id) || day - lastUsed.get(p.id) >= MIN_GAP);
-  const from = ok.length ? ok : eligible;
+  // Spend the manager ration early-to-evenly rather than letting the fame
+  // weighting cluster them: once MANAGER_QUOTA days are used, they drop out of
+  // the draw entirely for the rest of the year.
+  const withinQuota = managerPicks < MANAGER_QUOTA;
+  const pooled = withinQuota ? ok : ok.filter((p) => !RATIONED.has(p.name));
+  const from = pooled.length ? pooled : (ok.length ? ok : eligible);
   // WEIGHTED BY FAME, not uniform. A uniform draw over 243 eligible players
   // gave a first week of Malo Gusto, Locatelli and Gueye — all real answers,
   // none a name a casual fan lights up at. Weighting by fame^1.6 means most
@@ -75,6 +88,7 @@ for (let day = 0; day < DAYS; day++) {
     pick = from[from.length - 1];
     for (const x of from) { r -= weight(x); if (r <= 0) { pick = x; break; } }
   }
+  if (RATIONED.has(pick.name)) managerPicks++;
   log.push(pick.id);
   lastUsed.set(pick.id, day);
 }
