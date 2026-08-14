@@ -33,9 +33,18 @@ design pass.
       apply it the same day this ships. Grants 1 shield to the 31 users on a
       streak of 3+ (longest 50) so the first open-but-don't-play day is absorbed.
       Alex chose this over recomputing, which would have cut streaks overnight.
-- [ ] **A1. The reminder, both platforms.** Android push dead end-to-end; web push
-      waiting on ALEX's VAPID secrets; iOS has plumbing but no scheduled daily
-      nudge. Highest leverage item on the board. ⚠️ ALEX-BLOCKED.
+- [x] **A1. The reminder — DONE for web** (b6a79a7, 145298d, e922764).
+      ⚠️ CORRECTION to the premise: the NATIVE reminder already existed and is
+      good (7pm local, only if unplayed, cancelled on play, rolling 7-day
+      window, weekday-rotating copy, win-back tail at +8/11/15/22/30). The gap
+      was WEB only. Now closed: subscriptions table + RLS, send-web-push edge
+      function, SW push/notificationclick/pushsubscriptionchange handlers
+      (CACHE_VERSION v10), Settings opt-in, and an hourly cron that fires at
+      7pm in each subscriber's OWN timezone. Verified on prod.
+      ⚠️ NOT LIVE UNTIL `main` IS PUSHED — Vercel picks up VITE_VAPID_PUBLIC_KEY
+      on the next deploy only.
+      REMAINING (separate): Android REMOTE push (friend requests / MP invites)
+      is still dead — that is social, not the daily loop.
 - [ ] **A2. One-day archive** for Footle / Trail / Mystery. Daily 7 already has
       catch-up and is the only one; all three generators already take a date. ~1 day.
 - [ ] **A3. Somewhere to go after a finished day.** Four solved cards end on a
@@ -46,6 +55,16 @@ design pass.
 - [ ] **A5. Second audit pass on STATES, not screens** — guest/signed-in, empty/
       full, mid-game, offline, error, PWA-standalone mirror. Three of today's four
       bugs were state bugs. ~2 days.
+
+### ⚠️ SUSPECTED LIVE DEFECT — iOS push may be dead too
+`has_table_privilege('service_role','public.device_tokens','SELECT')` returns
+**false**, and send-push reads that table as service_role. 31 device tokens are
+registered and the trigger is enabled. If it reads the way it looks, every APNs
+push has been failing at the lookup step — not just Android. Only 6 notifications
+exist in 30 days, so there was almost nothing to notice.
+NOT yet changed: confirm against a real send first, in case the model of how
+PostgREST resolves the service key is wrong. Same class as the bug found in our
+OWN new table, which is what surfaced it.
 
 ### B — gates, not fixes (the flawless-feel work)
 Today's four defects were one shape: two places holding one truth, nothing
