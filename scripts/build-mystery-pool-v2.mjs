@@ -57,6 +57,36 @@ const SLOT = (poss) => {
   // dragged Zidane ("attacking midfielder") into FW. Strict word boundary,
   // forward first, is the only ordering that gets all five right.
   if (/\bforward\b|striker|winger/.test(s)) return 'FW';
+  /* ⚠️ "wing half" IS NOT MATCHED BY /winger/ — and it cost us Neymar.
+     Measured 2026-08-15: 702 of 9,384 core entries resolved to a null slot and
+     were dropped by the `p.slot` filter below. 526 of them were this one term,
+     and the casualty list is essentially every famous winger in the game:
+     Neymar (fame 155), Gareth Bale, Ribéry, George Best, Di María, Figo,
+     Mahrez, Robinho, Götze, David Silva, Nani, Alexis Sánchez.
+
+     FW, because in practice these are WINGERS. The term is a Wikidata relic —
+     the real wing-half was a half-back — but of the 525 players carrying it
+     alone, 385 were born 1980 or later and only 49 predate 1950. The famous
+     ones are Neymar, Bale, Ribéry, Di María, Figo, Mahrez: wingers to a man.
+
+     Consistency decides it as much as the era split. SLOT already sends
+     "winger" to FW on the line above, so filing these as MF would put half the
+     game's wingers in one slot and half in another, and they would stop
+     matching EACH OTHER on the slot term — the same unfairness that made
+     citizenship unusable for nationality (see derive-pool-nationality.mjs,
+     where an England and a Scotland player matched as "United Kingdom").
+
+     The 145 who also carry an explicit "forward" already resolve above, so
+     this catches the 525 with no other position at all.
+
+     "stopper" and "centerhalf" are centre-backs; "playmaker" is a midfielder.
+     Everything still unmatched (linebacker, quarterback, defensive tackle,
+     stage race, Home Office) SHOULD stay null — that is the anti-Camus filter
+     doing its job, and it is why Albert Camus, Elie Wiesel, Jason Statham and
+     Javier Milei are correctly absent from a football pool. */
+  if (/wing half/.test(s)) return 'FW';
+  if (/stopper|centerhalf/.test(s)) return 'DF';
+  if (/playmaker/.test(s)) return 'MF';
   if (/midfield/.test(s)) return 'MF';
   if (/attack/.test(s)) return 'FW';
   return null;
