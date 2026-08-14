@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { ClipboardList } from "lucide-react";
+import { ClipboardList, Route, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { dateToYMD } from "../lib/date.js";
 import { getWordleAnswer } from "../lib/wordle.js";
+import { getTrailAnswer } from "../lib/trail.js";
+import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
+import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 
 // Shared monospace stack for tabular numerals (countdown, scores). Mirrors the
 // inline font used by the mobile markup so the >=1024 desktop layout renders
@@ -56,6 +59,136 @@ function tacticsPbDistance(unbeaten, bestUnbeaten) {
   return `${bestUnbeaten - unbeaten} to your best`;
 }
 
+// Was there a Trail / Mystery puzzle on this day at all? Both modes launched
+// AFTER Footle and the Daily 7, so a naive column would print "—" (which reads
+// as "you missed it") for days when the mode did not exist yet. Both answer
+// look-ups already return null outside their schedule, so they are the honest
+// gate — a blank cell, not a dash. Module scope so the memos below don't
+// re-run on every render.
+//
+// ⚠️ Called with LOCAL NOON, never local midnight: mysteryDayIndex floors a
+// UTC millisecond count, so midnight in a UTC+ timezone lands on the previous
+// UTC day and the very first Mystery would render as "not available".
+function trailLiveOn(d) {
+  try { return !!getTrailAnswer(d); } catch { return false; }
+}
+function mysteryLiveOn(d) {
+  if (!MYSTERY_ENABLED) return false;
+  try { return !!answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex(d)); } catch { return false; }
+}
+function noon(t) {
+  const d = new Date(t);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0, 0);
+}
+
+// Footle's mark is a lettermark, the other three are lucide glyphs painted with
+// currentColor — so the caller sets colour on the wrapper, not here.
+function ModeGlyph({ mode, size = 22 }) {
+  if (mode === "footle") {
+    return <span style={{ width: 26, height: 26, borderRadius: 7, background: "#58CC02", color: "#06230C", fontWeight: 800, fontSize: 15, display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>F</span>;
+  }
+  if (mode === "daily7") return <ClipboardList size={size} strokeWidth={2} />;
+  if (mode === "trail") return <Route size={size} strokeWidth={2} />;
+  return <Search size={size} strokeWidth={2} />;
+}
+
+// Recent-days column width. Four modes have to share the row that two used to
+// have, so 74pt/70pt drops to 44 — enough for "5/7" in a pill, and it leaves
+// ~139pt of the 375pt phone for the date, which "Yesterday" needs.
+const COL_W = 44;
+
+// One Recent-days cell. Five states, not two — a mode that did not EXIST that
+// day must not render the same "—" as a day the user skipped, and Mystery has
+// no lose state so an abandoned board is "open", never a red ✗.
+function ScoreCell({ state, text, theme, w = COL_W }) {
+  const base = { width: w, display: "inline-flex", justifyContent: "center", flexShrink: 0 };
+  if (state === "off") return <span style={base} aria-hidden="true" />;
+  return (
+    <span style={base} aria-hidden="true">
+      {state === "win"
+        ? <span style={{ display: "inline-flex", padding: "3px 8px", borderRadius: 999, background: theme.chipBg, fontFamily: MONO, fontSize: 11.5, fontWeight: 800, color: theme.fg, fontVariantNumeric: "tabular-nums" }}>{text}</span>
+        : state === "miss"
+        ? <span style={{ fontSize: 13, fontWeight: 700, color: "#FF6B6B" }}>✗</span>
+        : state === "open"
+        ? <span style={{ fontSize: 13, fontWeight: 700, color: "var(--t3)" }}>·</span>
+        : <span style={{ fontSize: 13, fontWeight: 700, color: "#3A3D4A" }}>—</span>}
+    </span>
+  );
+}
+
+// One tint per mode, shared by the mobile cards, the desktop cards and the
+// Recent-days column heads so the same puzzle is never two different colours.
+// THREE hues, not four: the palette pass deliberately unloaded colour, and a
+// fourth would read as a rainbow. Mystery takes a neutral treatment instead —
+// which suits it (the unknown has no colour) and matches the user's own ranking
+// of it as the quietest of the four.
+const MODE_THEME = {
+  footle: {
+    fg: "#8AE042", head: "#8AE042",
+    card: "linear-gradient(120deg,rgba(88,204,2,0.13),rgba(88,204,2,0.02) 55%,var(--s1))",
+    bd: "1px solid rgba(88,204,2,0.22)",
+    iconBg: "rgba(88,204,2,0.14)", iconBd: "1px solid rgba(88,204,2,0.3)",
+    btnBg: "rgba(88,204,2,0.15)", btnBd: "1px solid rgba(88,204,2,0.42)",
+    chipBg: "rgba(88,204,2,0.1)", resBd: "1.5px solid rgba(88,204,2,0.5)",
+  },
+  daily7: {
+    fg: "#FFC107", head: "#FFC107",
+    card: "linear-gradient(120deg,rgba(255,170,0,0.12),rgba(255,193,7,0.03) 55%,var(--s1))",
+    bd: "1px solid rgba(255,193,7,0.22)",
+    iconBg: "rgba(255,170,0,0.14)", iconBd: "1px solid rgba(255,193,7,0.3)",
+    btnBg: "rgba(255,193,7,0.14)", btnBd: "1px solid rgba(255,193,7,0.42)",
+    chipBg: "rgba(255,193,7,0.1)", resBd: "1.5px solid rgba(255,193,7,0.4)",
+  },
+  trail: {
+    fg: "#7CC3F0", head: "#7CC3F0",
+    card: "linear-gradient(120deg,rgba(78,168,222,0.12),rgba(78,168,222,0.03) 55%,var(--s1))",
+    bd: "1px solid rgba(78,168,222,0.22)",
+    iconBg: "rgba(78,168,222,0.14)", iconBd: "1px solid rgba(78,168,222,0.3)",
+    btnBg: "rgba(78,168,222,0.14)", btnBd: "1px solid rgba(78,168,222,0.42)",
+    chipBg: "rgba(78,168,222,0.1)", resBd: "1.5px solid rgba(78,168,222,0.5)",
+  },
+  mystery: {
+    fg: "var(--t1)", head: "var(--t2)",
+    card: "linear-gradient(120deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01) 55%,var(--s1))",
+    bd: "1px solid var(--border2)",
+    iconBg: "rgba(255,255,255,0.05)", iconBd: "1px solid var(--border2)",
+    btnBg: "rgba(255,255,255,0.06)", btnBd: "1px solid rgba(255,255,255,0.18)",
+    chipBg: "rgba(255,255,255,0.06)", resBd: "1.5px solid rgba(255,255,255,0.22)",
+  },
+};
+
+// Recent-days columns, left to right. Same order as the Today cards.
+const MODE_COLS = [
+  { key: "footle", label: "FOOTLE", theme: MODE_THEME.footle },
+  { key: "daily7", label: "DAILY 7", theme: MODE_THEME.daily7 },
+  { key: "trail", label: "TRAIL", theme: MODE_THEME.trail },
+  { key: "mystery", label: "MYSTERY", theme: MODE_THEME.mystery },
+];
+
+// A matchday row → its four cells, plus the sentence a screen reader gets.
+// Derived in one place so the mobile table and the desktop table can never
+// disagree about what a given day means.
+function rowCells(m) {
+  return [
+    { key: "footle", theme: MODE_THEME.footle, text: String(m.fUsed),
+      state: m.fWon ? "win" : m.fAttempt ? "miss" : "none",
+      aria: m.fWon ? `Footle solved in ${m.fUsed}` : m.fAttempt ? "Footle not solved" : "Footle not played" },
+    { key: "daily7", theme: MODE_THEME.daily7, text: `${m.t7Score}/7`,
+      state: m.t7Done ? "win" : "none",
+      aria: m.t7Done ? `Daily 7 ${m.t7Score} of 7` : "Daily 7 not played" },
+    { key: "trail", theme: MODE_THEME.trail, text: String(m.trUsed),
+      state: !m.trLive ? "off" : m.trWon ? "win" : m.trAttempt ? "miss" : "none",
+      aria: !m.trLive ? "" : m.trWon ? `Transfer Trail solved in ${m.trUsed}` : m.trAttempt ? "Transfer Trail not solved" : "Transfer Trail not played" },
+    // Mystery cannot be lost, so an unfinished board is "open", never a miss.
+    { key: "mystery", theme: MODE_THEME.mystery, text: String(m.myUsed),
+      state: !m.myLive ? "off" : m.myWon ? "win" : m.myAttempt ? "open" : "none",
+      aria: !m.myLive ? "" : m.myWon ? `Mystery Player solved in ${m.myUsed}` : m.myAttempt ? "Mystery Player still open" : "Mystery Player not played" },
+  ];
+}
+function rowAria(m) {
+  return `${m.dateLabel} ${m.dateSub} — ${rowCells(m).map(c => c.aria).filter(Boolean).join(", ")}`;
+}
+
 function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
@@ -104,6 +237,43 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     return map;
   }, [todayYMD]);
 
+  // Trail + Mystery history, same shape as footleHistory ({ status, used }) so
+  // the row renderer treats all four modes identically. One pass over
+  // localStorage for both — walking it twice for two prefixes is pure waste.
+  //
+  // Storage shapes differ by mode and are NOT ours to change here:
+  //   biq_trail_<ymd>   → { status: won|lost|playing, attempts: [...] }
+  //   biq_mystery_<ymd> → { won: bool, guesses: [...] }        (no lose state —
+  //                        Mystery is unlimited guesses, so "lost" cannot occur)
+  const { trailHistory, mysteryHistory } = useMemo(() => {
+    const trail = new Map();
+    const mystery = new Map();
+    const TP = "biq_trail_";
+    const MP = "biq_mystery_";
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k) continue;
+        if (k.startsWith(TP)) {
+          try {
+            const p = JSON.parse(localStorage.getItem(k));
+            const used = Array.isArray(p?.attempts) ? p.attempts.length : 0;
+            if (p?.status === "won" || p?.status === "lost") trail.set(k.slice(TP.length), { status: p.status, used });
+            else if (used > 0) trail.set(k.slice(TP.length), { status: "in-progress", used });
+          } catch {}
+        } else if (k.startsWith(MP)) {
+          try {
+            const p = JSON.parse(localStorage.getItem(k));
+            const used = Array.isArray(p?.guesses) ? p.guesses.length : 0;
+            if (p?.won) mystery.set(k.slice(MP.length), { status: "won", used });
+            else if (used > 0) mystery.set(k.slice(MP.length), { status: "in-progress", used });
+          } catch {}
+        }
+      }
+    } catch {}
+    return { trailHistory: trail, mysteryHistory: mystery };
+  }, [todayYMD]);
+
   // Sprint #16 Stage 1: run + form derivations. Trimmed in Sprint #24
   // (v4 tactics card no longer uses per-mode streak chips, so footleRun
   // and t7Run dropped).
@@ -115,10 +285,18 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   const runStats = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
     const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+    // An "attempt" is a DECIDED day. Footle and the Trail both terminate
+    // (won|lost), so an in-progress board doesn't count — the day isn't over.
+    // Mystery has no lose state (unlimited guesses), so requiring a win there
+    // would mean an honest failed attempt never counted at all; any guess
+    // counts instead.
     const playedOn = (ymd) => {
       const f = footleHistory.get(ymd);
       const footleAttempt = f?.status === "won" || f?.status === "lost";
-      return t7Set.has(ymd) || footleAttempt;
+      const tr = trailHistory.get(ymd);
+      const trailAttempt = tr?.status === "won" || tr?.status === "lost";
+      const mysteryAttempt = !!mysteryHistory.get(ymd);
+      return t7Set.has(ymd) || footleAttempt || trailAttempt || mysteryAttempt;
     };
 
     let unbeaten = 0;
@@ -134,6 +312,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       for (const [ymd, info] of footleHistory) {
         if (info?.status === "won" || info?.status === "lost") dates.add(ymd);
       }
+      for (const [ymd, info] of trailHistory) {
+        if (info?.status === "won" || info?.status === "lost") dates.add(ymd);
+      }
+      for (const ymd of mysteryHistory.keys()) dates.add(ymd);
       const sorted = Array.from(dates).sort();
       if (sorted.length > 0) {
         const first = sorted[0].split("-").map(Number);
@@ -150,7 +332,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     }
     bestUnbeaten = Math.max(bestUnbeaten, unbeaten);
     return { unbeaten, bestUnbeaten };
-  }, [today, dailyHistory, footleHistory]);
+  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
 
   // Sprint #16 Stage 4: per-matchday rows for the history list. Walks
   // backward from today to either 30 days or first-played, whichever
@@ -165,12 +347,21 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       const t = new Date(y, m - 1, d).getTime();
       if (t < firstTime) firstTime = t;
     }
-    for (const [ymd, status] of footleHistory) {
-      if (status === "in-progress") continue;
-      const [y, m, d] = ymd.split("-").map(Number);
-      const t = new Date(y, m - 1, d).getTime();
-      if (t < firstTime) firstTime = t;
-    }
+    // ⚠️ `info` is the { status, used } record, not a bare string. The original
+    // destructured it as `status` and compared it to "in-progress", which was
+    // never true — an abandoned Footle board silently pushed the first matchday
+    // further back. Same shape for all three maps, so one helper covers them.
+    const widenFirstTime = (map, decidedOnly) => {
+      for (const [ymd, info] of map) {
+        if (decidedOnly && info?.status === "in-progress") continue;
+        const [y, m, d] = ymd.split("-").map(Number);
+        const t = new Date(y, m - 1, d).getTime();
+        if (t < firstTime) firstTime = t;
+      }
+    };
+    widenFirstTime(footleHistory, true);
+    widenFirstTime(trailHistory, true);
+    widenFirstTime(mysteryHistory, false);
     const totalMatchdays = Math.floor((todayMid - firstTime) / 86400000) + 1;
     const showCount = Math.min(30, totalMatchdays);
     const rows = [];
@@ -186,6 +377,20 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       const fWon = fStatus === "won";
       const fAttempt = fWon || fStatus === "lost";
       const fUsed = fInfo?.used || 0;
+      const trInfo = trailHistory.get(ymd);
+      const trWon = trInfo?.status === "won";
+      const trAttempt = trWon || trInfo?.status === "lost";
+      const trUsed = trInfo?.used || 0;
+      const myInfo = mysteryHistory.get(ymd);
+      const myWon = myInfo?.status === "won";
+      const myAttempt = !!myInfo;
+      const myUsed = myInfo?.used || 0;
+      // Availability is per-day, not global: both modes launched after Footle,
+      // so cells before their first puzzle stay blank rather than printing a
+      // dash the user could read as a missed day.
+      const dNoon = noon(t);
+      const trLive = trailLiveOn(dNoon);
+      const myLive = mysteryLiveOn(dNoon);
       const isToday = i === 0;
       let dateLabel;
       if (isToday) dateLabel = "Today";
@@ -198,10 +403,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         // the user just missed (getDailyQsForDate is deterministic for any
         // date, so no extra plumbing is needed).
         ymd, md, dateLabel, dateSub, isToday, isYesterday: i === 1, t7Score, t7Done, fAttempt, fWon, fUsed,
+        trAttempt, trWon, trUsed, trLive, myAttempt, myWon, myUsed, myLive,
       });
     }
     return rows;
-  }, [today, dailyHistory, footleHistory]);
+  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
 
   const form14 = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
@@ -217,12 +423,17 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       const t = new Date(y, m - 1, d).getTime();
       if (t < firstTime) firstTime = t;
     }
-    for (const [ymd, status] of footleHistory) {
-      if (status === "in-progress") continue;
-      const [y, m, d] = ymd.split("-").map(Number);
-      const t = new Date(y, m - 1, d).getTime();
-      if (t < firstTime) firstTime = t;
-    }
+    const widenFirstTime = (map, decidedOnly) => {
+      for (const [ymd, info] of map) {
+        if (decidedOnly && info?.status === "in-progress") continue;
+        const [y, m, d] = ymd.split("-").map(Number);
+        const t = new Date(y, m - 1, d).getTime();
+        if (t < firstTime) firstTime = t;
+      }
+    };
+    widenFirstTime(footleHistory, true);
+    widenFirstTime(trailHistory, true);
+    widenFirstTime(mysteryHistory, false);
     const out = [];
     for (let i = 13; i >= 0; i--) {
       const d = new Date(todayMid - i * 86400000);
@@ -231,15 +442,100 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       const t7 = t7Set.has(ymd);
       const fInfo = footleHistory.get(ymd);
       const fAttempt = fInfo?.status === "won" || fInfo?.status === "lost";
+      const trInfo = trailHistory.get(ymd);
+      const trAttempt = trInfo?.status === "won" || trInfo?.status === "lost";
+      const myAttempt = !!mysteryHistory.get(ymd);
+      // Four modes now, so W/D can't mean "both" any more: W = a properly
+      // full day (2+ modes), D = exactly one. The squares themselves only
+      // render played-vs-not, so this distinction is carried by the label.
+      const done = [
+        t7 && "Daily 7", fAttempt && "Footle", trAttempt && "Trail", myAttempt && "Mystery",
+      ].filter(Boolean);
       let cls, label;
-      if (t7 && fAttempt) { cls = "W"; label = "Win"; }
-      else if (t7 || fAttempt) { cls = "D"; label = t7 ? "Daily 7 only" : "Footle only"; }
+      if (done.length >= 2) { cls = "W"; label = done.join(" + "); }
+      else if (done.length === 1) { cls = "D"; label = `${done[0]} only`; }
       else if (!isToday && d.getTime() < firstTime) { cls = "pre"; label = "Before your first puzzle"; }
       else { cls = "L"; label = isToday ? "Pending" : "Missed"; }
       out.push({ ymd, cls, isToday, aria: `${ymd}: ${label}` });
     }
     return out;
-  }, [today, dailyHistory, footleHistory]);
+  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
+
+  // Today's playable set. Built once and rendered by BOTH breakpoints — the
+  // two-card version had already drifted (mobile said "Guess the player",
+  // desktop "N letters · surname of a footballer"), and four modes across two
+  // layouts is where that becomes a real maintenance trap.
+  //
+  // Trail and Mystery are CONDITIONAL: neither has an answer for every date, so
+  // a hard-coded card would offer a puzzle that cannot be played. Same gate
+  // HomeScreen uses for its tiles.
+  const todayModes = useMemo(() => {
+    const nowNoon = noon(today.getTime());
+    const f = footleHistory.get(todayYMD);
+    const tr = trailHistory.get(todayYMD);
+    const my = mysteryHistory.get(todayYMD);
+    const footleLen = (() => { try { return getWordleAnswer().length; } catch { return 0; } })();
+
+    const list = [
+      {
+        key: "footle", name: "Footle", theme: MODE_THEME.footle,
+        sub: "Guess the player",
+        subLong: `${footleLen > 0 ? `${footleLen} letters · ` : ""}surname of a footballer`,
+        done: f?.status === "won" || f?.status === "lost",
+        won: f?.status === "won",
+        result: f?.status === "won" ? `✓ Solved in ${f.used}` : "✗ Not solved",
+        cta: f?.status === "in-progress" ? "Continue" : "Play",
+        // Result stays tappable — reopening a solved Footle shows the board
+        // and the share button, which is the whole return loop.
+        replay: true,
+        onTap: () => setScreen?.("wordle"),
+      },
+      {
+        key: "daily7", name: "Daily 7", theme: MODE_THEME.daily7,
+        sub: "7 questions · ~3 min",
+        subLong: "7 questions · ~3 min · shared by everyone today",
+        done: !!dailyDone, won: true,
+        result: `${dailyScore}/7`,
+        cta: "Play",
+        replay: false,
+        onTap: () => startMode?.("daily"),
+      },
+    ];
+    if (trailLiveOn(nowNoon)) {
+      list.push({
+        key: "trail", name: "Transfer Trail", theme: MODE_THEME.trail,
+        sub: "Name him from his clubs",
+        subLong: "Clubs revealed one by one · 5 guesses",
+        done: tr?.status === "won" || tr?.status === "lost",
+        won: tr?.status === "won",
+        result: tr?.status === "won" ? `✓ In ${tr.used}` : "✗ Not solved",
+        cta: tr?.status === "in-progress" ? "Continue" : "Play",
+        replay: true,
+        onTap: () => setScreen?.("trail"),
+      });
+    }
+    if (mysteryLiveOn(nowNoon)) {
+      list.push({
+        key: "mystery", name: "Mystery Player", theme: MODE_THEME.mystery,
+        // Short enough to stay on ONE line beside a 46pt icon and a Play
+        // button at 375pt — the longer copy wrapped and made this card taller
+        // than the three above it.
+        sub: "Warmer or colder",
+        subLong: "Every guess is ranked · unlimited tries",
+        // No lose state: Mystery is unlimited guesses, so the day is only
+        // "done" once it is solved.
+        done: my?.status === "won",
+        won: my?.status === "won",
+        result: `✓ In ${my?.used || 0}`,
+        cta: my ? "Continue" : "Play",
+        replay: true,
+        onTap: () => setScreen?.("mystery"),
+      });
+    }
+    return list;
+  }, [today, todayYMD, footleHistory, trailHistory, mysteryHistory, dailyDone, dailyScore, setScreen, startMode]);
+
+  const playedCount = todayModes.filter(m => m.done).length;
 
   return (
     <div className="tab-content daily-screen">
@@ -254,9 +550,6 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         const authLoading = !!user && !authProfile;
         const name = authProfile?.username || profile?.name || null;
         const ko = formatKO(msToNextLocalMidnight(now));
-        const f = footleHistory.get(todayYMD);
-        const fPlayed = f?.status === "won" || f?.status === "lost";
-        const playedCount = (fPlayed ? 1 : 0) + (dailyDone ? 1 : 0);
         const todayLabel = today.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
         return (
           <>
@@ -273,39 +566,34 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               </span>
             </div>
 
-            {/* Today's two puzzles — each a tinted row-card (green Footle,
-                amber Daily 7), matching the web Daily tab. */}
+            {/* Today's puzzles — one tinted row-card per live mode. Trail and
+                Mystery only appear on days they actually have an answer, so the
+                count is derived, never "of 2". */}
             <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", padding: "0 2px", marginBottom: 2 }}>
                 <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)" }}>Today · {todayLabel}</span>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} of 2 played</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} of {todayModes.length} played</span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(120deg,rgba(88,204,2,0.13),rgba(88,204,2,0.02) 55%,var(--s1))", border: "1px solid rgba(88,204,2,0.22)", borderRadius: 16, padding: "14px 16px" }}>
-                <span style={{ width: 46, height: 46, borderRadius: 13, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.3)", display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true"><span style={{ width: 26, height: 26, borderRadius: 7, background: "#58CC02", color: "#06230C", fontWeight: 800, fontSize: 15, display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>F</span></span>
-                <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-                  <span style={{ fontSize: 15.5, fontWeight: 800, color: "var(--t1)" }}>Footle</span>
-                  <span style={{ fontSize: 12, color: "var(--t3)" }}>Guess the player</span>
+              {todayModes.map(m => (
+                <div key={m.key} style={{ display: "flex", alignItems: "center", gap: 13, background: m.theme.card, border: m.theme.bd, borderRadius: 16, padding: "14px 16px" }}>
+                  <span style={{ width: 46, height: 46, flexShrink: 0, borderRadius: 13, background: m.theme.iconBg, border: m.theme.iconBd, color: m.theme.fg, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true"><ModeGlyph mode={m.key} size={22} /></span>
+                  <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
+                    <span style={{ fontSize: 15.5, fontWeight: 800, color: "var(--t1)" }}>{m.name}</span>
+                    <span style={{ fontSize: 12, color: "var(--t3)" }}>{m.sub}</span>
+                  </div>
+                  {m.done && !m.replay ? (
+                    // Daily 7 is the one mode with nothing to come back to once
+                    // scored, so its result is a label rather than a control.
+                    <span style={{ borderRadius: 12, background: m.theme.chipBg, border: m.theme.resBd, padding: "10px 18px", fontSize: 13.5, fontWeight: 800, color: m.theme.fg, flexShrink: 0 }}>{m.result}</span>
+                  ) : (
+                    <button onClick={m.onTap}
+                      aria-label={m.done ? `${m.name} — ${m.result}` : `${m.cta} ${m.name}`}
+                      style={{ borderRadius: 12, background: m.done ? m.theme.chipBg : m.theme.btnBg, border: m.done ? m.theme.resBd : m.theme.btnBd, padding: m.done ? "10px 18px" : "11px 24px", fontSize: m.done ? 13.5 : 14, fontWeight: 800, color: m.theme.fg, cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>
+                      {m.done ? m.result : m.cta}
+                    </button>
+                  )}
                 </div>
-                {fPlayed ? (
-                  <button onClick={() => setScreen?.("wordle")} style={{ borderRadius: 12, background: "rgba(88,204,2,0.1)", border: "1.5px solid rgba(88,204,2,0.5)", padding: "10px 18px", fontSize: 13.5, fontWeight: 800, color: "#8AE042", cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>
-                    {f?.status === "won" ? `✓ Solved in ${f.used}` : "✗ Not solved"}
-                  </button>
-                ) : (
-                  <button onClick={() => setScreen?.("wordle")} style={{ borderRadius: 12, background: "rgba(88,204,2,0.15)", border: "1px solid rgba(88,204,2,0.42)", padding: "11px 24px", fontSize: 14, fontWeight: 800, color: "#8AE042", cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>{f?.status === "in-progress" ? "Continue" : "Play"}</button>
-                )}
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(120deg,rgba(255,170,0,0.12),rgba(255,193,7,0.03) 55%,var(--s1))", border: "1px solid rgba(255,193,7,0.22)", borderRadius: 16, padding: "14px 16px" }}>
-                <span style={{ width: 46, height: 46, borderRadius: 13, background: "rgba(255,170,0,0.14)", border: "1px solid rgba(255,193,7,0.3)", color: "#FFC107", display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true"><ClipboardList size={22} strokeWidth={2} /></span>
-                <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-                  <span style={{ fontSize: 15.5, fontWeight: 800, color: "var(--t1)" }}>Daily 7</span>
-                  <span style={{ fontSize: 12, color: "var(--t3)" }}>7 questions · ~3 min</span>
-                </div>
-                {dailyDone ? (
-                  <span style={{ borderRadius: 12, background: "rgba(255,193,7,0.1)", border: "1.5px solid rgba(255,193,7,0.4)", padding: "10px 18px", fontSize: 13.5, fontWeight: 800, color: "#FFC107", flexShrink: 0 }}>{dailyScore}/7</span>
-                ) : (
-                  <button onClick={() => startMode?.("daily")} style={{ borderRadius: 12, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", padding: "11px 24px", fontSize: 14, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>Play</button>
-                )}
-              </div>
+              ))}
             </div>
           </>
         );
@@ -338,49 +626,41 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         </div>
       </div>
 
-      {/* Recent days table (redesign): green FOOTLE / amber DAILY 7 chip
-          columns (purple was off-palette), today row highlighted. */}
-      <div style={{ display: "flex", alignItems: "baseline", marginTop: 18 }}>
+      {/* Recent days table — one column per mode. The header carries 14px of
+          side padding so its labels sit over the cells inside the row cards,
+          which have the same padding (the two-column version was 14px out). */}
+      <div style={{ display: "flex", alignItems: "baseline", marginTop: 18, padding: "0 14px" }}>
         <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)", flex: 1 }}>Recent days</span>
-        <span style={{ width: 70, textAlign: "center", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "#8AE042" }}>FOOTLE</span>
-        <span style={{ width: 70, textAlign: "center", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "#FFC107" }}>DAILY 7</span>
+        {MODE_COLS.map(c => (
+          <span key={c.key} style={{ width: COL_W, flexShrink: 0, textAlign: "center", fontSize: 8.5, fontWeight: 800, letterSpacing: "0.02em", color: c.theme.head }}>{c.label}</span>
+        ))}
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 9, marginBottom: 14 }}>
         {matchdays.map(m => {
-          const footleAria = m.fWon ? `Footle solved in ${m.fUsed}` : m.fAttempt ? "Footle not solved" : "Footle not played";
-          const daily7Aria = m.t7Done ? `Daily 7 ${m.t7Score} of 7` : "Daily 7 not played";
+          const cells = rowCells(m);
+          const catchUp = m.isYesterday && !m.t7Done && playDailyForDate;
           return (
-            <div key={m.ymd} aria-label={`${m.dateLabel} ${m.dateSub} — ${footleAria}, ${daily7Aria}`}
+            <div key={m.ymd} aria-label={rowAria(m)}
               style={{ borderRadius: 13, padding: "10px 14px", display: "flex", alignItems: "center",
                 background: m.isToday ? "rgba(88,204,2,0.05)" : "var(--s1)",
                 border: m.isToday ? "1px solid rgba(88,204,2,0.4)" : "1px solid var(--border)" }}>
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 1 }}>
+              <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 1 }}>
                 <span style={{ fontSize: 13.5, fontWeight: 700, color: "var(--t1)" }}>{m.dateLabel}</span>
                 <span style={{ fontSize: 10.5, color: "var(--t3)" }}>{m.dateSub}</span>
               </div>
-              <span style={{ width: 70, display: "inline-flex", justifyContent: "center" }} aria-hidden="true">
-                {m.fWon
-                  ? <span style={{ display: "inline-flex", padding: "3px 10px", borderRadius: 999, background: "rgba(88,204,2,0.1)", fontSize: 12, fontWeight: 800, color: "#8AE042" }}>✓ in {m.fUsed}</span>
-                  : m.fAttempt
-                  ? <span style={{ fontSize: 13, fontWeight: 700, color: "#FF6B6B" }}>✗</span>
-                  : <span style={{ fontSize: 13, fontWeight: 700, color: "#3A3D4A" }}>—</span>}
-              </span>
-              {m.isYesterday && !m.t7Done && playDailyForDate ? (
-                // Comeback hook (opportunity-scan #8): yesterday's missed
-                // Daily 7 stays playable for one day. This cell drops
-                // aria-hidden — it holds a real control, not a decorative chip.
-                <span style={{ width: 70, display: "inline-flex", justifyContent: "center" }}>
-                  <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
-                    aria-label="Catch up — play yesterday's Daily 7"
-                    style={{ display: "inline-flex", padding: "4px 10px", borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 11.5, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit" }}>Catch up</button>
-                </span>
-              ) : (
-              <span style={{ width: 70, display: "inline-flex", justifyContent: "center" }} aria-hidden="true">
-                {m.t7Done
-                  ? <span style={{ display: "inline-flex", padding: "3px 10px", borderRadius: 999, background: "rgba(255,193,7,0.1)", fontSize: 12, fontWeight: 800, color: "#FFC107" }}>{m.t7Score}/7</span>
-                  : <span style={{ fontSize: 13, fontWeight: 700, color: "#3A3D4A" }}>—</span>}
-              </span>
-              )}
+              {cells.map(c => (
+                c.key === "daily7" && catchUp ? (
+                  // Comeback hook (opportunity-scan #8): yesterday's missed
+                  // Daily 7 stays playable for one day. A 44pt column can't hold
+                  // the words "Catch up", so it becomes a replay glyph — still a
+                  // real control, and it keeps its label for screen readers.
+                  <span key={c.key} style={{ width: COL_W, flexShrink: 0, display: "inline-flex", justifyContent: "center" }}>
+                    <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
+                      aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
+                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
+                  </span>
+                ) : <ScoreCell key={c.key} state={c.state} text={c.text} theme={c.theme} />
+              ))}
             </div>
           );
         })}
@@ -406,27 +686,23 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       <div className="daily-desktop">
         {(() => {
           const ko = formatKO(msToNextLocalMidnight(now));
-          const f = footleHistory.get(todayYMD);
-          const fWon = f?.status === "won";
-          const fPlayed = fWon || f?.status === "lost";
-          const playedCount = (fPlayed ? 1 : 0) + (dailyDone ? 1 : 0);
-          // Real Footle answer length (only the LENGTH is surfaced, never the
-          // word) — mirrors Home's DesktopFootleHero so the sub-label is honest
-          // rather than the mock's fixed "7 letters".
-          const footleLen = (() => { try { return getWordleAnswer().length; } catch { return 0; } })();
 
           // 14-day form cells reuse the Home rail streak card's shape (done +
           // today), derived from the SAME form14 the mobile strip renders so
           // both breakpoints light identical days.
           const streakCells = form14.map(d => ({ done: d.cls === "W" || d.cls === "D", isToday: d.isToday }));
 
-          // "This week" — last 7 local days. Puzzles solved = Footle wins +
-          // Daily 7 completions; Avg Daily 7 = mean score over completed Daily 7s.
+          // "This week" — last 7 local days. Puzzles solved now counts all four
+          // modes, not just Footle + Daily 7; leaving Trail and Mystery out
+          // would under-report the week the moment they appear in the table
+          // right above this card.
           const weekMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
           let solved = 0, d7sum = 0, d7count = 0;
           for (let i = 0; i < 7; i++) {
             const ymd = dateToYMD(new Date(weekMid - i * 86400000));
             if (footleHistory.get(ymd)?.status === "won") solved++;
+            if (trailHistory.get(ymd)?.status === "won") solved++;
+            if (mysteryHistory.get(ymd)?.status === "won") solved++;
             const sc = dailyHistory?.[ymd];
             if (typeof sc === "number") { solved++; d7sum += sc; d7count++; }
           }
@@ -438,9 +714,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
 
           const rowCard = { display: "flex", alignItems: "center", gap: 16, borderRadius: 16, padding: "18px 20px" };
           const iconBox = { width: 46, height: 46, flex: "0 0 auto", borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center" };
-          const colHead = { width: 74, textAlign: "center", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em" };
-          const chip = { padding: "3px 10px", borderRadius: 999, fontFamily: MONO, fontSize: 12, fontWeight: 800 };
-          const dash = { fontSize: 13, fontWeight: 700, color: "var(--t3)" };
+          // Desktop has the room mobile doesn't, so its columns stay wider than
+          // COL_W — but they're still driven by the same MODE_COLS/rowCells.
+          const DCOL_W = 62;
+          const colHead = { width: DCOL_W, flexShrink: 0, textAlign: "center", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.06em" };
           return (
             <>
               {/* Header: title + amber countdown pill */}
@@ -457,48 +734,43 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                 <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t3)" }}>Today</span>
-                    <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} / 2 played</span>
+                    <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} / {todayModes.length} played</span>
                   </div>
 
-                  {/* Footle row-card (green) */}
-                  <div style={{ ...rowCard, border: "1px solid #234029", background: "linear-gradient(120deg,#10331B,var(--s1) 62%)" }}>
-                    <span style={{ ...iconBox, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.3)" }} aria-hidden="true"><span style={{ width: 26, height: 26, borderRadius: 7, background: "#58CC02", color: "#06230C", fontWeight: 800, fontSize: 15, display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>F</span></span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)" }}>Footle</div>
-                      <div style={{ fontSize: 12.5, color: "var(--t2)" }}>{footleLen > 0 ? `${footleLen} letters · ` : ""}surname of a footballer</div>
+                  {/* One row-card per live mode — same todayModes the mobile
+                      layout renders, so the two can't drift apart again. */}
+                  {todayModes.map(m => (
+                    <div key={m.key} style={{ ...rowCard, border: m.theme.bd, background: m.theme.card }}>
+                      <span style={{ ...iconBox, background: m.theme.iconBg, border: m.theme.iconBd, color: m.theme.fg }} aria-hidden="true"><ModeGlyph mode={m.key} size={21} /></span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)" }}>{m.name}</div>
+                        <div style={{ fontSize: 12.5, color: "var(--t2)" }}>{m.subLong}</div>
+                      </div>
+                      {m.done && !m.replay ? (
+                        <span style={{ flex: "0 0 auto", padding: "9px 16px", borderRadius: 11, background: m.theme.chipBg, border: m.theme.resBd, color: m.theme.fg, fontWeight: 800, fontSize: 13.5 }}>{m.result}</span>
+                      ) : (
+                        <button onClick={m.onTap}
+                          aria-label={m.done ? `${m.name} — ${m.result}` : `${m.cta} ${m.name}`}
+                          style={{ flex: "0 0 auto", cursor: "pointer", fontFamily: "inherit", fontWeight: 800,
+                            ...(m.done
+                              ? { padding: "9px 16px", borderRadius: 11, fontSize: 13.5, ...(m.won
+                                  ? { background: m.theme.chipBg, border: m.theme.resBd, color: m.theme.fg }
+                                  : { background: "rgba(255,107,107,0.10)", border: "1.5px solid rgba(255,107,107,0.35)", color: "#FF6B6B" }) }
+                              : { padding: "10px 22px", borderRadius: 12, fontSize: 14, background: m.theme.btnBg, border: m.theme.btnBd, color: m.theme.fg }) }}>
+                          {m.done ? m.result : m.cta}
+                        </button>
+                      )}
                     </div>
-                    {fPlayed ? (
-                      <button onClick={() => setScreen?.("wordle")} style={{ flex: "0 0 auto", padding: "9px 16px", borderRadius: 11, cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: 13.5, ...(fWon ? { background: "rgba(88,204,2,0.1)", border: "1.5px solid rgba(88,204,2,0.5)", color: "#8AE042" } : { background: "rgba(255,107,107,0.10)", border: "1.5px solid rgba(255,107,107,0.35)", color: "#FF6B6B" }) }}>
-                        {fWon ? `✓ Solved in ${f.used}` : "✗ Not solved"}
-                      </button>
-                    ) : (
-                      <button onClick={() => setScreen?.("wordle")} style={{ flex: "0 0 auto", padding: "10px 22px", borderRadius: 12, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.4)", color: "#8AE042", fontWeight: 800, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>
-                        {f?.status === "in-progress" ? "Continue" : "Play"}
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Daily 7 row-card (amber) */}
-                  <div style={{ ...rowCard, border: "1px solid #33280E", background: "linear-gradient(120deg,rgba(255,140,0,0.10),var(--s1) 62%)" }}>
-                    <span style={{ ...iconBox, background: "rgba(255,170,0,0.14)", border: "1px solid rgba(255,193,7,0.3)", color: "#FFC107" }} aria-hidden="true"><ClipboardList size={21} strokeWidth={2} /></span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)" }}>Daily 7</div>
-                      <div style={{ fontSize: 12.5, color: "var(--t2)" }}>7 questions · ~3 min · shared by everyone today</div>
-                    </div>
-                    {dailyDone ? (
-                      <span style={{ flex: "0 0 auto", padding: "9px 16px", borderRadius: 11, background: "rgba(255,193,7,0.1)", border: "1.5px solid rgba(255,193,7,0.4)", color: "#FFC107", fontWeight: 800, fontSize: 13.5 }}>{dailyScore}/7</span>
-                    ) : (
-                      <button onClick={() => startMode?.("daily")} style={{ flex: "0 0 auto", padding: "10px 22px", borderRadius: 12, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.4)", color: "#FFC107", fontWeight: 800, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>Play</button>
-                    )}
-                  </div>
+                  ))}
 
                   {/* Recent days */}
                   <div style={{ marginTop: 6 }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                       <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--t3)" }}>Recent days</span>
-                      <span style={{ display: "flex", gap: 26 }}>
-                        <span style={{ ...colHead, color: "#8AE042" }}>FOOTLE</span>
-                        <span style={{ ...colHead, color: "#FFC107" }}>DAILY 7</span>
+                      <span style={{ display: "flex", paddingRight: 16 }}>
+                        {MODE_COLS.map(c => (
+                          <span key={c.key} style={{ ...colHead, color: c.theme.head }}>{c.label}</span>
+                        ))}
                       </span>
                     </div>
                     {recentDays.length === 0 ? (
@@ -508,38 +780,28 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                     ) : (
                       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                         {recentDays.map(m => {
-                          const footleAria = m.fWon ? `Footle solved in ${m.fUsed}` : m.fAttempt ? "Footle not solved" : "Footle not played";
-                          const daily7Aria = m.t7Done ? `Daily 7 ${m.t7Score} of 7` : "Daily 7 not played";
+                          const cells = rowCells(m);
+                          const catchUp = m.isYesterday && !m.t7Done && playDailyForDate;
                           return (
-                            <div key={m.ymd} aria-label={`${m.dateLabel} ${m.dateSub} — ${footleAria}, ${daily7Aria}`}
+                            <div key={m.ymd} aria-label={rowAria(m)}
                               style={{ display: "flex", alignItems: "center", borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "11px 16px" }}>
                               <div style={{ flex: 1, minWidth: 0 }}>
                                 <span style={{ fontSize: 13.5, fontWeight: 700, color: "var(--t1)" }}>{m.dateLabel}</span>{" "}
                                 <span style={{ fontSize: 11, color: "var(--t3)" }}>{m.dateSub}</span>
                               </div>
-                              <span style={{ width: 74, textAlign: "center" }} aria-hidden="true">
-                                {m.fWon
-                                  ? <span style={{ ...chip, background: "rgba(88,204,2,0.1)", color: "#8AE042" }}>{m.fUsed}</span>
-                                  : m.fAttempt
-                                  ? <span style={{ fontSize: 13, fontWeight: 700, color: "#FF6B6B" }}>✗</span>
-                                  : <span style={dash}>—</span>}
-                              </span>
-                              {m.isYesterday && !m.t7Done && playDailyForDate ? (
-                                // Same catch-up affordance as the mobile row —
-                                // desktop and mobile must agree on which days
-                                // are actionable.
-                                <span style={{ width: 74, textAlign: "center" }}>
-                                  <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
-                                    aria-label="Catch up — play yesterday's Daily 7"
-                                    style={{ display: "inline-flex", padding: "4px 10px", borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 11.5, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit" }}>Catch up</button>
-                                </span>
-                              ) : (
-                              <span style={{ width: 74, textAlign: "center" }} aria-hidden="true">
-                                {m.t7Done
-                                  ? <span style={{ ...chip, background: "rgba(255,193,7,0.1)", color: "#FFC107" }}>{m.t7Score}/7</span>
-                                  : <span style={dash}>—</span>}
-                              </span>
-                              )}
+                              {cells.map(c => (
+                                c.key === "daily7" && catchUp ? (
+                                  // Same catch-up affordance, and the same glyph
+                                  // as mobile: at 62pt the words "Catch up" wrap
+                                  // to two lines and push the row taller than
+                                  // its neighbours.
+                                  <span key={c.key} style={{ width: DCOL_W, flexShrink: 0, display: "inline-flex", justifyContent: "center" }}>
+                                    <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
+                                      aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
+                                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
+                                  </span>
+                                ) : <ScoreCell key={c.key} w={DCOL_W} state={c.state} text={c.text} theme={c.theme} />
+                              ))}
                             </div>
                           );
                         })}
