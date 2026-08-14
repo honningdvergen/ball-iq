@@ -947,6 +947,19 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row a,.bq-row button{flex:1 1 140px;text-align:center;padding:12px;border-radius:11px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:14px;border:none;cursor:pointer}
   .bq-row a:hover{text-decoration:none;filter:brightness(1.05)}
   .bq-row .ghost{background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
+  /* THE APP CROSSING IS NOT A SECOND PRIMARY. Measured on the live page
+     2026-08-14: "Keep going" and "Play the full quiz" both computed to
+     rgb(88,204,2) — two identical green primaries side by side. Not a decision;
+     .bq-row a paints EVERY link green and .ghost was the only opt-out, so the
+     unclassed crossing link inherited the primary treatment and quietly undid
+     the thing the comment below it says it is for.
+     Giving it club colour rather than a third grey also settles what the green
+     MEANS. Green now earns exactly one job on this screen — continue where you
+     already are — and club colour carries identity: solid to cross into this
+     club in the app, outlined to share this club score. The crossing stays
+     loud, because roughly 40% of journeys actually take it (see cad736e); it
+     just stops competing with staying. */
+  .bq-row .bq-cross{background:var(--club,var(--grn));color:var(--club-ink,var(--grn-ink))}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-days{display:inline-block;margin-top:9px;padding:4px 11px;border-radius:999px;
@@ -1152,7 +1165,7 @@ logRound(sc,run,rounds);
 served=off+run.length;var hasMore=total>served;
 var cont=(hasMore
 ?'<a class="bq-go" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
-+'<a href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
++'<a class="bq-cross" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
 :'<a class="bq-go" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
 +'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>');
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
@@ -1438,6 +1451,44 @@ function rgbTriplet(hex) {
   return [1, 3, 5].map((i) => parseInt(hex.substr(i, 2), 16)).join(', ');
 }
 
+// Guarantee the (--club background, --club-ink text) pair clears WCAG AA 4.5:1.
+//
+// inkOn picks the BETTER of white and near-black, which is right until both
+// lose. Measured across all 86 club pages 2026-08-14: Arsenal #EF0107 gives
+// white 4.49 and dark 4.41, Sunderland #EB172B gives 4.48 / 4.42 — mid-tone
+// reds where neither ink reaches the bar, so the "better" one still fails.
+// Hairline misses, but the pair paints the tier pill and now the app-crossing
+// button, and 14px/800 is not large text, so 4.5 is the real threshold.
+//
+// Rather than abandon the club colour, darken it in 2% steps until the best
+// ink clears. Arsenal red stays unmistakably Arsenal red; it just goes a shade
+// deeper. Anything that cannot be rescued in 12 steps keeps its original colour
+// and the build shouts, because silently shipping a colour nobody chose is
+// worse than a visible complaint.
+function accentPair(hex) {
+  const clamp = (n) => Math.max(0, Math.min(255, Math.round(n)));
+  const parts = (h) => [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16));
+  const toHex = (rgb) => '#' + rgb.map((v) => clamp(v).toString(16).padStart(2, '0')).join('');
+  let bg = hex;
+  for (let i = 0; i < 12; i++) {
+    const ink = inkOn(bg);
+    if (contrastRatio(ink, bg) >= 4.5) return { bg, ink };
+    bg = toHex(parts(bg).map((v) => v * 0.98));
+  }
+  console.warn(`[gen-seo] ⚠️ accent ${hex} cannot reach 4.5:1 with either ink — shipping as-is`);
+  return { bg: hex, ink: inkOn(hex) };
+}
+
+function contrastRatio(a, b) {
+  const lin = (v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+  const lum = (h) => {
+    const c = [1, 3, 5].map((i) => lin(parseInt(h.substr(i, 2), 16) / 255));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
 function inkOn(hex) {
   const lin = (v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
   const lum = (h) => {
@@ -1574,7 +1625,7 @@ ${ADS_ACTIVE ? `<script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" /></noscript>
 <style>
-  ${accent ? `:root{--club:${accent};--club-soft:${softenAccent(accent)};--club-ink:${inkOn(accent)};--club-glow:${rgbTriplet(softenAccent(accent))}}` : ''}
+  ${accent ? (() => { const p = accentPair(accent); return `:root{--club:${p.bg};--club-soft:${softenAccent(accent)};--club-ink:${p.ink};--club-glow:${rgbTriplet(softenAccent(accent))}}`; })() : ''}
   ${rootCss()}
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
