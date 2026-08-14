@@ -20,9 +20,19 @@ Survival carry a third of all play, cost nothing to feed, and have never had a
 design pass.
 
 ### A — plug the bucket (this release)
-- [ ] **A0. One streak, and it counts PLAYING.** Two systems disagree in the same
-      session (`tick_login_streak` counts opens; `runStats.unbeaten` counts
-      plays). Pick plays, one derivation, every surface reads it. ~half a day.
+- [x] **A0. One streak, and it counts PLAYING.** DONE (66c9a9e). The machinery
+      was already good; only the trigger was wrong. `tickLoginStreak` now fires
+      from `biq:daily-completed` (all four modes dispatch it) instead of on
+      AppInner mount + day rollover. Daily renders the same server-side
+      loginStreak Home does. Ticks on ANY completion, win or loss — Wordle
+      breaks on a loss and NYT lost 5.6M streaks to one hard word; we can't
+      administer that fairly across an uneven bank. Removed the pendingTick
+      deferred-credit machinery and its 3 global listeners with it.
+      Verified on device: both flames read 1.
+      ⚠️ **`supabase/migrations/v1_5_streak_grace_shield.sql` NOT YET APPLIED** —
+      apply it the same day this ships. Grants 1 shield to the 31 users on a
+      streak of 3+ (longest 50) so the first open-but-don't-play day is absorbed.
+      Alex chose this over recomputing, which would have cut streaks overnight.
 - [ ] **A1. The reminder, both platforms.** Android push dead end-to-end; web push
       waiting on ALEX's VAPID secrets; iOS has plumbing but no scheduled daily
       nudge. Highest leverage item on the board. ⚠️ ALEX-BLOCKED.
