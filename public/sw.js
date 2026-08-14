@@ -10,7 +10,7 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v9'; // v9: bounded caches (docs split out + LRU-ish trims)
+const CACHE_VERSION = 'balliq-v10'; // v10: push + notificationclick handlers (SW logic changed)
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 const DOC_CACHE = `${CACHE_VERSION}-docs`;
@@ -200,4 +200,87 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Anything else: default browser behaviour (network).
+});
+
+// ── Web Push ────────────────────────────────────────────────────────────────
+// The native builds use LOCAL notifications (src/lib/notifications.js) and do
+// not go through here. This is purely for web players, who are otherwise
+// unreachable the moment they close the tab.
+//
+// ⚠️ CACHE_VERSION was bumped with these handlers on purpose. A service worker
+// only reinstalls when its BYTES change, and installed PWAs keep running the
+// old one until then — so adding push handling without a bump would leave
+// every existing install permanently unable to receive a push.
+
+self.addEventListener('push', (event) => {
+  // ALWAYS show something. Chrome grants push on the `userVisibleOnly: true`
+  // promise, and a push that resolves without a visible notification is
+  // grounds for silently revoking the permission — so every failure path below
+  // still ends in showNotification().
+  let payload = {};
+  try { payload = event.data ? event.data.json() : {}; } catch { payload = {}; }
+
+  const title = payload.title || 'Ball IQ';
+  const options = {
+    body: payload.body || "Today's puzzles are still open.",
+    icon: payload.icon || '/icons/icon-192.png',
+    badge: payload.badge || '/icons/icon-192.png',
+    // Collapse repeats: a second reminder should REPLACE the first sitting
+    // unread, not stack under it.
+    tag: payload.tag || 'balliq-daily',
+    renotify: false,
+    data: { url: payload.url || '/play' },
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const target = event.notification.data?.url || '/play';
+  event.waitUntil((async () => {
+    const all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    // Focus an existing tab rather than opening a duplicate — someone with the
+    // app already open should be taken TO it, not given a second copy.
+    for (const client of all) {
+      if (new URL(client.url).origin === self.location.origin) {
+        await client.focus();
+        if ('navigate' in client) { try { await client.navigate(target); } catch { /* focus is enough */ } }
+        return;
+      }
+    }
+    await self.clients.openWindow(target);
+  })());
+});
+
+// Browsers rotate push endpoints on their own schedule. When that happens the
+// old subscription stops working and, without this, the user goes silent with
+// no error anywhere. The SW cannot read import.meta.env, so the VAPID public
+// key is embedded as a literal — it is public by design (it ships in the
+// client bundle regardless).
+const VAPID_PUBLIC_KEY = 'BLL3MY-5aGz_7iCfnUy6GWk8F0vsfrVYFHnADYFSm_bU2ofnKHqcN9NdxiIDUg9x8n2x1S1jnnRabnAo8TIJpJA';
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(base64);
+  const out = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+  return out;
+}
+
+self.addEventListener('pushsubscriptionchange', (event) => {
+  event.waitUntil((async () => {
+    try {
+      const sub = await self.registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+      // The SW has no Supabase session, so it cannot upsert directly. It tells
+      // any open client to re-persist; if none is open, the client's own
+      // refreshWebPushSubscription() catches it on next launch. Belt and braces
+      // precisely because Safari does not fire this event reliably.
+      const all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      for (const client of all) client.postMessage({ type: 'biq:push-resubscribed', endpoint: sub.endpoint });
+    } catch { /* the client-side refresh on next launch is the fallback */ }
+  })());
 });

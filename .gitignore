@@ -48,3 +48,6 @@ android/.idea/runConfigurations.xml
 # 895 files / ~380MB that would bake into history and churn on every re-cut.
 # The manifest + provenance ledger stay tracked — they are data, not assets.
 public/lineup/cutouts/*.png
+
+# VAPID private key — generated locally, never committed (scripts/gen-vapid-keys.mjs)
+.vapid-keys.local.json
