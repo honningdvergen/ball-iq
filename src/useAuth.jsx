@@ -119,8 +119,8 @@ export function AuthProvider({ children }) {
     if (localStorage.getItem('ballIQ_guestMode') === 'true') setIsGuest(true)
 
     perfMark('useAuth: getSession() called');
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      perfMark(`useAuth: getSession() resolved (user=${!!session?.user})`);
+
+    const applySession = (session) => {
       activeUserIdRef.current = session?.user?.id ?? null
       setUser(session?.user ?? null)
       // Sprint #61 DD3: tag initial-session user. onAuthStateChange handles
@@ -136,7 +136,44 @@ export function AuthProvider({ children }) {
         setIsGuest(true)
       }
       setLoading(false)
-    })
+    }
+
+    // ⚠️ getSession() CAN HANG FOREVER OFFLINE — it does not reject, it just
+    // never settles. Measured 2026-08-14 with an expired token and fetch
+    // failing: still PENDING at 8.8s, neither resolved nor caught. A bare
+    // .then() therefore never runs, `loading` never clears, and since AppGate
+    // watchdogs only the PROFILE wait, the user sits on the branded splash
+    // indefinitely — no error, no offline play, just the animated bar.
+    //
+    // That is the ordinary commute case (expired token + tunnel), and it
+    // wasted the whole service-worker cache, which holds the app shell, all
+    // 110 chunks AND the question bank — everything needed to play offline.
+    //
+    // So cap the wait and enter as a guest. Local play works immediately; the
+    // onAuthStateChange listener below promotes us the moment a real session
+    // materialises (TOKEN_REFRESHED fires when the network returns), so a
+    // signed-in user loses nothing but the splash.
+    let authSettled = false
+    const authWatchdog = setTimeout(() => {
+      if (authSettled) return
+      perfMark('useAuth: getSession() TIMED OUT — entering as guest (offline?)')
+      applySession(null)
+    }, 5000)
+
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        perfMark(`useAuth: getSession() resolved (user=${!!session?.user})`);
+        authSettled = true
+        clearTimeout(authWatchdog)
+        applySession(session)
+      })
+      .catch((e) => {
+        // A rejection is the same failure as the hang, minus the waiting.
+        authSettled = true
+        clearTimeout(authWatchdog)
+        console.warn('[useAuth] getSession failed — entering as guest', e)
+        applySession(null)
+      })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -257,7 +294,7 @@ export function AuthProvider({ children }) {
       }
     )
 
-    return () => subscription.unsubscribe()
+    return () => { clearTimeout(authWatchdog); subscription.unsubscribe() }
   }, [])
 
   async function loadProfile(userId, userObj) {
