@@ -189,7 +189,7 @@ function rowAria(m) {
   return `${m.dateLabel} ${m.dateSub} — ${rowCells(m).map(c => c.aria).filter(Boolean).join(", ")}`;
 }
 
-function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate }) {
+function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
@@ -282,7 +282,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   //   'in-progress' does not — the day isn't decided yet)
   // - bestUnbeaten: max historical run of the same shape, walking forward
   //   from the earliest played day
-  const runStats = useMemo(() => {
+  const localRun = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
     const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
     // An "attempt" is a DECIDED day. Footle and the Trail both terminate
@@ -333,6 +333,24 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     bestUnbeaten = Math.max(bestUnbeaten, unbeaten);
     return { unbeaten, bestUnbeaten };
   }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
+
+  // ⭐ ONE STREAK, shown identically here and on Home.
+  //
+  // These two surfaces used to disagree — Home rendered loginStreak (opens),
+  // this screen rendered `localRun` (plays) — and both called it "day streak"
+  // under the same flame. tickLoginStreak now fires on puzzle completion, so
+  // loginStreak IS the play streak and it is the one to render: it is
+  // server-authoritative, survives a reinstall, and merges across devices,
+  // none of which a localStorage walk can do.
+  //
+  // The local derivation stays as the fallback for guests, who have no server
+  // row, and as the source for the 14-day form strip below (which needs
+  // per-day detail the streak scalar doesn't carry).
+  const streak = useMemo(() => (
+    typeof loginStreak === "number"
+      ? { unbeaten: loginStreak, bestUnbeaten: Math.max(bestLoginStreak || 0, loginStreak) }
+      : localRun
+  ), [loginStreak, bestLoginStreak, localRun]);
 
   // Sprint #16 Stage 4: per-matchday rows for the history list. Walks
   // backward from today to either 30 days or first-played, whichever
@@ -602,12 +620,12 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       {/* Streak strip (redesign): 🔥 line + last-14 form squares. Played days
           #2E7D1F, today-played bright green with glow, missed raised bg,
           today-pending = amber outline until a puzzle is completed. */}
-      <div role="status" aria-label={`${runStats.unbeaten}-day daily streak, best ${runStats.bestUnbeaten}`}
+      <div role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}
         style={{ marginTop: 12, borderRadius: 18, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
           <span style={{ fontSize: 16 }}>🔥</span>
-          <span style={{ fontSize: 14, fontWeight: 800, color: "var(--t1)" }}>{runStats.unbeaten} day streak</span>
-          <span style={{ fontSize: 12, color: "var(--t2)" }}>{runStats.unbeaten > 0 ? "— come back tomorrow to keep it" : "— play one puzzle to light it"}</span>
+          <span style={{ fontSize: 14, fontWeight: 800, color: "var(--t1)" }}>{streak.unbeaten} day streak</span>
+          <span style={{ fontSize: 12, color: "var(--t2)" }}>{streak.unbeaten > 0 ? "— come back tomorrow to keep it" : "— play one puzzle to light it"}</span>
         </div>
         <div style={{ display: "flex", gap: 4, marginTop: 12 }} role="group" aria-label="Form — last 14 days">
           {form14.map((d) => {
@@ -815,12 +833,12 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   {/* Streak card — reuses the Home rail .hr-card.hr-streak markup +
                       tokens, fed with Daily's own streak (runStats) + form14 so
                       the mobile strip and this card never disagree. */}
-                  <div className="hr-card hr-streak" role="status" aria-label={`${runStats.unbeaten}-day daily streak, best ${runStats.bestUnbeaten}`}>
+                  <div className="hr-card hr-streak" role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}>
                     <div className="hr-streak-head">
-                      <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true">🔥</span>{runStats.unbeaten}</div>
+                      <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true">🔥</span>{streak.unbeaten}</div>
                       <div className="hr-streak-meta">
                         <div className="hr-streak-label">Day streak</div>
-                        <div className="hr-streak-best">Best · {runStats.bestUnbeaten}</div>
+                        <div className="hr-streak-best">Best · {streak.bestUnbeaten}</div>
                       </div>
                     </div>
                     <div className="hr-form" aria-hidden="true">

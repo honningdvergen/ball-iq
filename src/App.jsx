@@ -8270,13 +8270,24 @@ function AppInner() {
     }
   }, [user?.id]);
 
-  // Phase G: fires once per AppInner mount (or when user.id transitions
-  // for in-flight loading sessions). No race with hydrate because hydrate
-  // no longer reads or writes login_streak — the server-side RPC is the
-  // single source of truth for signed-in users.
-  useEffect(() => {
-    tickLoginStreak();
-  }, [tickLoginStreak]);
+  // ⚠️ THE STREAK NO LONGER TICKS ON OPEN. It used to fire here, once per
+  // AppInner mount, which made it a count of days you LAUNCHED the app.
+  //
+  // That produced two flames showing different numbers on the same evening
+  // (Home 🔥1 while Daily said 0), and — worse — made the single most
+  // load-bearing number in a daily game reward the one behaviour we don't
+  // care about. Measured 2026-08-14: modes with a daily reset retain 62-70%
+  // of the people who try them, modes without retain 21-26%. The appointment
+  // is the mechanic, so the streak has to be the appointment's counter.
+  //
+  // It now ticks from the `biq:daily-completed` handler instead, which all
+  // four daily modes dispatch (Footle, Daily 7, Trail, Mystery). One trigger,
+  // one number, every surface.
+  //
+  // The server RPC is unchanged and still authoritative — only the caller
+  // moved. Existing streaks keep their value; a one-off grace shield
+  // (v1_5_streak_grace_shield.sql) absorbs the first missed play-day for
+  // anyone who was mid-streak when this shipped.
 
   // Detect day rollover while the app stays open. dailyDone / dailyScore were
   // hydrated from yesterday's localStorage key on mount; without this effect a
@@ -8314,26 +8325,14 @@ function AppInner() {
     // used on the new day: a hidden→visible transition (a real open) or a real
     // pointer/key event. If neither happens, the mount tick on the next real
     // open earns the day instead, so nothing is lost.
+    // The deferred-credit machinery that used to live here (pendingTick +
+    // pointer/key/visibility listeners) existed ONLY to earn a streak day for
+    // someone who kept the app open across midnight. The streak is earned by
+    // playing now, not by being open, so there is nothing to defer and the
+    // three global listeners are gone with it. What remains is the part that
+    // was always about state: reset dailyDone, rebuild history, announce the
+    // rollover.
     let lastKey = dayKey();
-    let pendingTick = false;
-    const earnRolloverTick = () => {
-      if (document.visibilityState !== "visible") return;
-      // Re-check the date here rather than trusting the poller to have set
-      // pendingTick: timers do NOT run while the app is backgrounded (iOS
-      // suspends the webview, browsers freeze the tab), so on the suspend-
-      // across-midnight path — the single most common way this fires — the
-      // poller never observed the flip and resume order is
-      // visibilitychange → earnRolloverTick → pendingTick still false.
-      const cur = dayKey();
-      if (cur !== lastKey) { lastKey = cur; pendingTick = true; }
-      if (!pendingTick) return;
-      pendingTick = false;
-      tickLoginStreak();
-    };
-    const onVisibility = () => { if (document.visibilityState === "visible") earnRolloverTick(); };
-    document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("pointerdown", earnRolloverTick, { passive: true });
-    window.addEventListener("keydown", earnRolloverTick);
     const id = setInterval(() => {
       const cur = dayKey();
       if (cur === lastKey) return;
@@ -8353,23 +8352,13 @@ function AppInner() {
         setDailyScore(null);
       }
       rebuildHistory();
-      // Phase G: re-tick login streak on day rollover so users who keep the
-      // app open across midnight get the streak credit + toast for the new
-      // day, same as if they'd reopened the app — but only once they actually
-      // use it (see earnRolloverTick above).
-      pendingTick = true;
       // 1.1: re-anchor the reminder window to the new "today" (offset 0) so a
       // post-midnight completion cancels the correct reminder id (listened for
       // in the notifications section).
       try { window.dispatchEvent(new CustomEvent('biq:day-rollover')); } catch {}
     }, 60_000);
-    return () => {
-      clearInterval(id);
-      document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("pointerdown", earnRolloverTick);
-      window.removeEventListener("keydown", earnRolloverTick);
-    };
-  }, [tickLoginStreak]);
+    return () => { clearInterval(id); };
+  }, []);
 
 
   const setProfile = useCallback((updater) => {
@@ -9222,6 +9211,19 @@ function AppInner() {
   useEffect(() => {
     const onDailyDone = (e) => {
       cancelTodayReminder();
+      // ⭐ THE STREAK TICKS HERE, and only here. Every daily mode dispatches
+      // this event — Footle, Daily 7, Trail, Mystery — so one call covers all
+      // four and adding a fifth mode inherits it for free.
+      //
+      // Deliberately fires on ANY completion, win or loss. Wordle's rule is
+      // that a loss breaks the streak, and NYT lost 5.6 million streaks in a
+      // single day to one hard word; for a football bank of uneven difficulty
+      // that is a punishment we cannot administer fairly. Turning up and
+      // finishing is the habit we want to reward.
+      //
+      // The RPC is idempotent per local day (lastDay === today → ticked:false),
+      // so solving all four modes ticks once and shows one toast.
+      tickLoginStreak();
       // ⭐ The 5-star ask, re-homed here from inside the Footle screen.
       //
       // Alex, 2026-07-29: solving Footle IS the right moment to ask — it is the
@@ -9320,7 +9322,7 @@ function AppInner() {
     };
     window.addEventListener('biq:daily-completed', onDailyDone);
     return () => window.removeEventListener('biq:daily-completed', onDailyDone);
-  }, [maybePromptNotif, awardXp, user?.id]);
+  }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak]);
 
   // Online multiplayer joins the XP economy (it was the only mode outside it).
   // The emitter in OnlineMultiplayer is the once-per-room gate, so no dedup is
@@ -10922,15 +10924,14 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "daily" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="daily">
-            {/* Home's 🔥 and Daily's 🔥 show DIFFERENT numbers on purpose, and
-                that's the open question — not a wiring bug. Home renders
-                loginStreak (days you OPENED the app, owned by tickLoginStreak);
-                Daily renders its own `unbeaten` run (days you PLAYED a puzzle).
-                Both are labelled "day streak" under the same flame, which is
-                what actually confuses people. Passing loginStreak down here
-                would make them agree by downgrading Daily to count opens —
-                a product decision, so it's Alex's call, not a silent prop. */}
+            {/* RESOLVED 2026-08-14 (Alex's call, as the note here asked for).
+                The two flames disagreed because loginStreak counted OPENS while
+                Daily counted PLAYS. Rather than downgrade Daily, the trigger
+                moved: tickLoginStreak now fires from `biq:daily-completed`, so
+                loginStreak IS the play streak and one number feeds both. */}
             <DailyTabScreen
+              loginStreak={loginStreak}
+              bestLoginStreak={bestLoginStreak}
               profile={profile}
               xp={xp}
               shieldCount={shieldCount}
