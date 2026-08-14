@@ -8,7 +8,7 @@
 //
 // Deterministic: an integer LCG with a fixed seed, no Date.now(), no
 // Math.random(). Re-running produces byte-identical output.
-import { writeFileSync } from 'fs';
+import { writeFileSync, readFileSync } from 'fs';
 const { default: pool } = await import('../src/data/mysteryPool.json', { with: { type: 'json' } });
 const { default: answerIds } = await import('../src/data/mysteryAnswers.json', { with: { type: 'json' } });
 
@@ -23,7 +23,31 @@ const ANSWERS = new Set(answerIds);
 const DAYS = 400;
 const MIN_GAP = 60; // no answer repeats inside this many days
 
-const eligible = pool.filter((p) => ANSWERS.has(p.id)).sort((a, b) => a.id.localeCompare(b.id));
+// ⚠️ KNOWN FIRST AS A FOOTBALLER — the curated answer set is not enough on its own.
+// Alex, 2026-08-14, playing a real puzzle: the answer was Rafa Benítez, revealed as
+// "Real Madrid Castilla · midfielder · born 1960". A manager, via a reserve team.
+// His rule: "some players go into management yes, but it is misleading if some had a
+// way bigger career as a manager than as a player. Xavi, Xabi Alonso are good — known
+// as great footballers. Alex Ferguson also played at a high level but everyone knows
+// him as a manager."
+//
+// Three things had to be true to catch this, and none of them is fame:
+//   - Ferguson scores 113, ABOVE Platini. A fame threshold keeps every manager.
+//   - The pool carries no occupation field, so it cannot be derived.
+//   - O. J. Simpson (American football) and Julio Iglesias (the singer) were BOTH in
+//     the curated answer set. Famous-for-something-else is a separate failure mode
+//     again, and neither fame nor club detects it.
+// Hence a hand-curated exclusion list, and a club check for reserve/youth/amateur
+// sides — the shape that let Benítez, Nagelsmann and Emery through.
+const EXCLUSIONS = JSON.parse(readFileSync(new URL('../src/data/mysteryExclusions.json', import.meta.url), 'utf8'));
+const BANNED = new Set([...(EXCLUSIONS.managers || []), ...(EXCLUSIONS.notFootballers || [])]);
+const NON_SENIOR = /(castilla| b$|II$| ii$|reserves?|under-?\d|youth|amateur|atl[eè]tic |acad|juvenil|primavera|ind[uú]stria|antiguoko)/i;
+
+const eligible = pool
+  .filter((p) => ANSWERS.has(p.id))
+  .filter((p) => !BANNED.has(p.name))
+  .filter((p) => !NON_SENIOR.test(p.club || ''))
+  .sort((a, b) => a.id.localeCompare(b.id));
 if (eligible.length < 60) throw new Error(`only ${eligible.length} eligible answers`);
 
 let seed = 20260803;

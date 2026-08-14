@@ -1417,6 +1417,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       {(() => {
         const _acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
         const _card = computeCard(stats?.catStats || {}, _acc);
+        // The single source of truth for "is there anything real to show here".
+        // Same expression the empty state and the share/weekly buttons use, so the
+        // whole screen agrees with itself — see the rating block below.
+        const hasPlayed = (stats?.gamesPlayed || 0) > 0;
         const t = CARD_TIERS[_card.tier] || CARD_TIERS.prospect;
         return (
           <div style={{ background: t.bg, border: `1.5px solid ${t.accent}55`, borderRadius: 20, padding: "20px 20px 18px", boxShadow: "0 8px 28px rgba(0,0,0,0.4)", position: "relative", overflow: "hidden", marginBottom: 14 }}>
@@ -1431,10 +1435,36 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 vertically CENTERED against the whole stack on the right — no
                 dead space under a top-corner avatar. */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, position: "relative" }}>
+              {/* ⚠️ NO RATING BEFORE THE FIRST GAME. A signed-out visitor with zero
+                  games was shown "64 · OVERALL · PROSPECT" as the largest number on
+                  the screen, directly above the "No stats yet — play your first game"
+                  card below. The two contradicted each other in the same viewport.
+
+                  And 64 was not their score, it was everyone's: compRating smooths
+                  toward a prior, so with no data it resolves to a constant —
+                  (0 + 0.4*2) / (0 + 2) = 0.4 → 40 + 0.4*59 = 63.6 → 64. Every new
+                  profile showed the identical number. A placeholder dressed as a
+                  measurement, attached to the app's central claim.
+
+                  Gated on `stats.gamesPlayed`, the SAME condition the empty state and
+                  the share/weekly buttons already use, so nothing on this screen can
+                  disagree with anything else on it. The six competition rows below
+                  already render "—" when unplayed; the overall simply never got the
+                  same treatment. It does now. */}
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 50, fontWeight: 900, color: t.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{_card.overall}</div>
-                <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
-                <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.accent, marginTop: 7 }}>{t.label}</div>
+                {hasPlayed ? (
+                  <>
+                    <div style={{ fontSize: 50, fontWeight: 900, color: t.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{_card.overall}</div>
+                    <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
+                    <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.accent, marginTop: 7 }}>{t.label}</div>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ fontSize: 50, fontWeight: 900, color: t.text, opacity: 0.28, lineHeight: 1, fontVariantNumeric: "tabular-nums" }} aria-label="No rating yet">—</div>
+                    <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
+                    <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.text, opacity: 0.45, marginTop: 7 }}>UNRATED</div>
+                  </>
+                )}
                 {/* Editable name */}
                 <div style={{ marginTop: 12 }}>
                   {(authLoading && !currentName) ? (
