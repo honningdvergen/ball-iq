@@ -85,6 +85,23 @@ export function similarity(p, answer, careers = null) {
   // always produce distinct scores while "closer in age scores higher" still
   // holds everywhere. Half-life ~4.2 years keeps the near-age feel of the old
   // curve; the tail merely stops being flat.
+  // ⚠️ BEFORE RE-ENABLING MYSTERY: Math.exp is implementation-defined precision
+  // in ECMAScript, exactly like the Math.sin that once gave iOS and Android
+  // different Daily 7 questions for months. Measured 2026-08-14 across the real
+  // input range: 636 of 8000 values differ between JavaScriptCore (iOS) and V8
+  // (Android/Chrome).
+  //
+  // It is harmless *here* and deliberately left alone: the deltas are 1 ULP
+  // (max relative 2.2e-16), they feed a similarity score that is rounded before
+  // display, and the ANSWER itself is scheduled server-side by
+  // build-mystery-pool.mjs — so no player can be shown a different puzzle. The
+  // Math.sin bug was severe because it fed a sort COMPARATOR and changed
+  // ordering; this only perturbs a magnitude.
+  //
+  // What would make it matter: ranking guesses against each other, or exposing
+  // an exact score that two players on different platforms could compare. If
+  // this scoring ever becomes ordering, port it to integer maths the way
+  // seededShuffle in lib/quiz.js was.
   const YEAR = 365.25;
   const ad = p.dob && answer.dob ? Math.abs(Date.parse(p.dob) - Date.parse(answer.dob)) / 86400000 : null;
   if (ad !== null && Number.isFinite(ad)) {
