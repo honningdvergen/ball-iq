@@ -1,5 +1,83 @@
 # Ball IQ — the board
 
+## ▶ THE UPGRADE (agreed 2026-08-14) — judged on ONE number
+
+Full write-up: https://claude.ai/code/artifact/c3d0ebd5-12e2-4016-9510-39cd976029eb
+
+**Measured tonight, prod Postgres.** 169 users, 111 of them new in the last 30
+days. Daily players: 13-17, flat for three weeks. Each new cohort is replacing
+the one that churned. 45-day cohort n=142: 51% ever played, 31% played 2+ days,
+22% played in the last 7. So the release is judged on **D7 return**, not on
+contents — and more pages/packs pour faster into a bucket leaking at the same
+rate.
+
+**Play by mode, 30d** (scores.game_mode): footle 228/49 · daily 222/45 ·
+**classic 182/39** · **survival 137/29** · trail 31/12 · chaos 25 · wc2026 23 ·
+legends 21 · hotstreak 20 · league:PL 12 · **all 72 club quizzes 46 across 13
+clubs** · mystery 0 (nothing was listening — fixed).
+Alex's ranking put Trail 3rd; the data puts it 5th, 7x below Daily 7. Classic and
+Survival carry a third of all play, cost nothing to feed, and have never had a
+design pass.
+
+### A — plug the bucket (this release)
+- [ ] **A0. One streak, and it counts PLAYING.** Two systems disagree in the same
+      session (`tick_login_streak` counts opens; `runStats.unbeaten` counts
+      plays). Pick plays, one derivation, every surface reads it. ~half a day.
+- [ ] **A1. The reminder, both platforms.** Android push dead end-to-end; web push
+      waiting on ALEX's VAPID secrets; iOS has plumbing but no scheduled daily
+      nudge. Highest leverage item on the board. ⚠️ ALEX-BLOCKED.
+- [ ] **A2. One-day archive** for Footle / Trail / Mystery. Daily 7 already has
+      catch-up and is the only one; all three generators already take a date. ~1 day.
+- [ ] **A3. Somewhere to go after a finished day.** Four solved cards end on a
+      wall. Recent-days table is the natural home. ~1 day.
+- [ ] **A4. Guest dead-ends on Online + Daily.** ~Half of signups never record a
+      play and the first session decides it. Needs ALEX's product call on what a
+      guest with no history sees.
+- [ ] **A5. Second audit pass on STATES, not screens** — guest/signed-in, empty/
+      full, mid-game, offline, error, PWA-standalone mirror. Three of today's four
+      bugs were state bugs. ~2 days.
+
+### B — gates, not fixes (the flawless-feel work)
+Today's four defects were one shape: two places holding one truth, nothing
+checking. The gates that exist (distractor, open-claims, SERP, bundle ceiling)
+have never had a recurrence. Extend the pattern:
+- [x] Mystery schedule gate — banned names, 5% manager ration, id resolution,
+      back-to-back. `scripts/audit-mystery-schedule.mjs`, in the build chain.
+- [ ] Every mode awards XP and writes a scores row (Mystery shipped without both).
+- [ ] Cross-screen counter agreement (Home said 0/2 while Daily said 0/4).
+- [ ] Standalone CSS mirror parity (a mirror `!important` meant an installed PWA
+      never turned the all-done state green).
+
+### C — taps back on, AFTER A holds
+- [ ] **C1. Execute the authority kit** — written, untouched. "football quiz" at
+      position 41; ceiling is authority, fundamentals diagnosed clean 3x. STOP
+      re-auditing. ⚠️ ALEX-ONLY.
+- [ ] **C2. Diagnose /lists conversion** (51% of impressions, 5% of clicks) before
+      another lists wave.
+- [ ] **C3. Ship Android 1.5.0** — only unblocked release path, not yet cut with
+      today's work. Then re-cut the iOS archive (it predates several commits) and
+      submit. ⚠️ ALEX uploads.
+
+### CUT — declined on purpose
+- **Club pack waves.** Frozen until a club quiz outplays Survival. Largest single
+  reclaim of time on the board.
+- **Lineup Builder.** Needs drag-drop, real XI pre-fill, photo ranking, bench/kit
+  before it earns a link — that is a product, not a task. Commit a fortnight or
+  drop the entry point until after the release.
+- **More SEO pages of any kind.** 302 indexed; another 100 does not change 41.
+- **Desktop refresh remainder.** Friends has no CSS or JSX at all — ship a hidden
+  state, not a half-built screen. Users are on phones.
+- **Re-auditing SEO fundamentals.** Clean three times.
+
+### Shipped 2026-08-14
+- Daily tab carries all four daily puzzles + 4-column recent days (3772211)
+- Home/Daily counters reconciled; counter routes to the Daily tab (9b701a2)
+- `/lineup/` prose leak closed — it was linked from fun-facts despite the bar (c07d519)
+- Mystery: banned-manager answer replaced + build gate; XP and scores wired (de1a475)
+- iOS build 60 on the simulator, verified end-to-end
+
+---
+
 ## ▶ WHERE WE ARE (2026-08-14)
 
 ⚠️ **THE 94.6% IS SUBSTANTIALLY AN INSTRUMENTATION ARTIFACT.** Re-measured today
