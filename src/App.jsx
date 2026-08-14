@@ -5588,7 +5588,14 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           the wall's own heading, so the account step is expected rather than
           a bait-and-switch. The gate itself is correct and stays — a room
           needs a real user id to host or join. */}
-      <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
+      {/* ⚠️ color HERE, not only on the label span. The button set no color at all,
+          so the two children resolved differently: the label overrode it inline,
+          while the lucide icon — which paints with currentColor — inherited iOS
+          WebKit's DEFAULT BUTTON COLOR and rendered blue. The app has no blue
+          anywhere, so the most important CTA on the Online tab carried the one
+          off-palette hue in the product, and only on iOS. Setting it on the button
+          makes both children inherit the same ink. */}
+      <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",color:"#06230C",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
         <span style={{display:"flex",alignItems:"center"}} aria-hidden="true">{needsAccount ? <Zap size={17} strokeWidth={2.4} /> : <Gamepad2 size={17} strokeWidth={2.2} />}</span><span style={{fontSize:17,fontWeight:800,color:"#06230C"}}>{needsAccount ? "Sign up to play online" : "Create Room"}</span>
       </button>
       {needsAccount && (
