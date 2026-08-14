@@ -11356,6 +11356,25 @@ function AppInner() {
         {/* ── TAB BAR ── */}
         {!inGame && screen === "home" && (
           <nav className="tab-bar" ref={tabBarRef}>
+            {/* ONE capsule shared by all four tabs, so it can travel. It used to
+                be .tab-item.active::after — a pseudo-element on whichever tab
+                was active, destroyed on one button and recreated on another,
+                which is why no CSS could ever have smoothed it.
+
+                The percentage is set HERE rather than via a CSS variable: a
+                transform resolved from var() inside calc() is a discrete change
+                and never transitions (measured — it positioned perfectly and
+                fired zero transitionstart events). A real inline value is an
+                ordinary animatable change.
+
+                Four flex:1 items and no horizontal padding on the bar mean one
+                tab is exactly 25%, so index * 100% needs no measuring and cannot
+                drift on rotation. Math.max(0,…) parks an unknown tab on Home
+                instead of sliding it off-screen left.
+
+                Decorative: the active tab is already announced by aria-current. */}
+            <span className="tab-pill" aria-hidden="true"
+                  style={{ transform: `translateX(${Math.max(0, ["home","online","daily","profile"].indexOf(tab)) * 100}%)` }}><i /></span>
             {[
               { id:"home",     Icon: Home,         label:"Home"    },
               { id:"online",   Icon: Globe,        label:"Online"  },

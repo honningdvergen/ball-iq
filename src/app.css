@@ -940,9 +940,56 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    ⚠️ ::after, NOT ::before — ::before is already claimed by the legacy
    indicator and is re-positioned in BOTH mirror blocks below. The icon and
    label are lifted to z-index 1 so the capsule paints behind them. */
-.tab-item.active::after{
-  content:"";position:absolute;inset:2px 7px;border-radius:17px;
-  background:rgba(255,255,255,0.11);pointer-events:none;
+/* ── THE PILL TRAVELS ────────────────────────────────────────────────────────
+   Alex, 2026-08-14: "the light shadow behind the selected tab moves like a
+   powerpoint presentation with no fluid transition, but instant instead".
+
+   Exactly right, and it could not have been otherwise. The capsule used to be
+   .tab-item.active::after — a pseudo-element on WHICHEVER tab was active. On a
+   tab change the browser destroys it on the old button and creates it on the
+   new one. There are two different boxes and no shared element, so there is
+   nothing for CSS to interpolate between: no transition property could ever
+   have smoothed it. It had to become ONE element that moves.
+
+   So the capsule now lives on the bar, not on the item, and slides. Each tab is
+   exactly 25% (four flex:1 items, and .tab-bar has no horizontal padding), so
+   one step is translateX(100%) of the pill's own width — no measuring, no
+   ResizeObserver, nothing to drift on rotation or a font-size change.
+
+   Animating transform (not left/inset) keeps it on the compositor, so it stays
+   smooth on the cheap Androids where the backdrop-filter above is already
+   expensive. The easing is the same cubic-bezier(.22,1,.36,1) the bar itself
+   uses to tuck away — it should feel like one object, not two systems.
+
+   top/bottom:6px matches .tab-bar's own vertical padding so the inner capsule
+   lands on exactly the geometry the ::after had (inset 2px 7px inside the
+   48px content box). Verified against the old rule rather than re-tuned by eye.
+
+   ⚠️ THE TRANSFORM IS SET INLINE FROM REACT, NOT FROM A CSS VARIABLE HERE.
+   The first version drove it as transform:translateX(calc(var(--tab-i) * 100%))
+   with --tab-i on the bar. It positioned perfectly and never animated once.
+   Measured 2026-08-14: the element is stable across re-renders (verified by
+   marking the node and finding the mark intact), the computed transform DID
+   change to matrix(1,0,0,1,261,0) — and zero transitionstart events fired, with
+   the final value already in place 150ms in. A transform resolved from a custom
+   property inside calc() is treated as a discrete change, so there is nothing to
+   interpolate. Setting a real transform value on the element makes it an
+   ordinary animatable change, which is what transitions are built for.
+   Keep it inline. Moving it back into a var() here silently returns the jump. */
+.tab-pill{
+  position:absolute;left:0;top:6px;bottom:6px;width:25%;
+  transition:transform .34s cubic-bezier(0.22,1,0.36,1);
+  pointer-events:none;
+}
+.tab-pill i{
+  position:absolute;inset:2px 7px;border-radius:17px;
+  background:rgba(255,255,255,0.11);display:block;
+}
+/* A sliding indicator is vestibular motion. Honour the OS setting: the capsule
+   still moves, it just arrives instantly, which is the old behaviour Alex is
+   asking to replace — correct for anyone who has asked for less movement. */
+@media (prefers-reduced-motion: reduce){
+  .tab-pill{transition:none;}
 }
 .tab-svg,.tab-label{position:relative;z-index:1;}
 .tab-item.active .tab-svg{color:#FFFFFF;transform:translateY(1px);}
@@ -2709,14 +2756,31 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     bottom: auto !important;
   }
   /* Mirror of the active pill — without this the installed PWA and the native
-     app keep the old flat active state while the browser shows the capsule. */
-  .tab-item.active::after {
-    content: "" !important;
+     app keep the old flat active state while the browser shows the capsule.
+     ⚠️ Updated in lockstep with the base rule 2026-08-14 when the capsule moved
+     from .tab-item.active::after to a single sliding .tab-pill. Miss this half
+     and the browser slides while the installed app still jumps — which is
+     precisely where Alex would be looking, since he reports from the device. */
+  /* ⚠️ NO transform here, deliberately. React sets the transform inline, and an
+     !important declaration in this mirror would OUTRANK the inline style and
+     freeze the capsule on Home in the installed app while the browser slid
+     correctly — the exact browser-vs-installed split this mirror exists to
+     prevent, inverted. Geometry and transition only. */
+  .tab-pill {
+    position: absolute !important;
+    left: 0 !important;
+    top: 6px !important;
+    bottom: 6px !important;
+    width: 25% !important;
+    transition: transform .34s cubic-bezier(0.22,1,0.36,1) !important;
+    pointer-events: none !important;
+  }
+  .tab-pill i {
     position: absolute !important;
     inset: 2px 7px !important;
     border-radius: 17px !important;
     background: rgba(255,255,255,0.11) !important;
-    pointer-events: none !important;
+    display: block !important;
   }
   .tab-svg, .tab-label { position: relative !important; z-index: 1 !important; }
   .home-stat-chip-desktop-only { display: none !important; }
