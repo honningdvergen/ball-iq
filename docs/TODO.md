@@ -45,8 +45,28 @@ design pass.
       on the next deploy only.
       REMAINING (separate): Android REMOTE push (friend requests / MP invites)
       is still dead — that is social, not the daily loop.
-- [ ] **A2. One-day archive** for Footle / Trail / Mystery. Daily 7 already has
-      catch-up and is the only one; all three generators already take a date. ~1 day.
+- [x] **A2. One-day archive** — DONE (66f5634, 9a7f4dc). Yesterday's unplayed
+      cells in Recent Days are replay controls. VERIFIED end-to-end: tapping
+      Trail opened #11 (Ajax→Tottenham = Eriksen, yesterday) not #12 (Valverde,
+      today); solving it fired NO completion event, left the streak at 1, and
+      saved under yesterday's key.
+      ⚠️ ARCHIVE PLAYS MUST NEVER TICK THE STREAK. The Trail already took a date
+      but announced completion whichever day it was — replaying would have
+      ticked today's streak and made it farmable, undoing A0. Guarded in all
+      three modes.
+
+### ⚠️ POST-DEPLOY: "VERIFIED" MEANS THE PAGE RENDERED
+2026-08-14: balliq.app/play served the error boundary to every visitor for ~40
+minutes (commit e922764). A `const` referenced above its declaration in a
+useCallback dep array = TDZ, so AppInner threw on every render.
+Build green. ESLint green. 131 tests green. Deploy "verified" — right sha, right
+sw version, env var in the bundle, data fix confirmed. ALL of those inspected
+ARTEFACTS; none rendered the app.
+- [x] `scripts/smoke-prod.mjs` — checks sha/chunk/sw AND prints, in caps, that it
+      does not prove the app renders.
+- [ ] **Standing step: after every push to main, OPEN https://balliq.app/play and
+      read the text.** A question = fine. "Something went wrong" = broken, however
+      many ticks the tooling printed.
 - [ ] **A3. Somewhere to go after a finished day.** Four solved cards end on a
       wall. Recent-days table is the natural home. ~1 day.
 - [ ] **A4. Guest dead-ends on Online + Daily.** ~Half of signups never record a
