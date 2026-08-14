@@ -544,7 +544,13 @@ function HomeScreenImpl({
           ...(mysteryLive ? [{ key:"mystery", Icon: Search, name: "Mystery Player", desc: "Guess who", isNew: true, onTap: () => setScreen("mystery") }] : []),
           { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
-          { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong", iconColor:"#8AE042" },
+          // ⚠️ iconColor deliberately REMOVED. Survival was the only tile using the
+          // opt-out, so after the grid went neutral it was the single remaining
+          // green icon — which is worse than all-green was, because one odd tile
+          // reads as a mistake rather than a system. Spotted by Alex immediately.
+          // The prop still exists for a tile that genuinely earns its own colour;
+          // nothing does today.
+          { key:"survival",  Icon: Flame,      name:"Survival",      desc:"Die on wrong" },
           { key:"hotstreak", Icon: Zap,        name:"Hot Streak",    desc:"60-second sprint" },
           { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
           // Ball IQ Test was killed 2026-08-10 (App.jsx side removed then).
