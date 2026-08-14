@@ -9,6 +9,29 @@ import POOL from '../data/mysteryPool.json';
 import CAREERS from '../data/mysteryCareers.json';
 import SCHEDULE from '../data/mysterySchedule.json';
 
+/* ⚠️ `nat` IS NOT RELIABLY NATIONALITY — do not surface it without checking.
+   Measured 2026-08-15 against the live pool:
+
+     Lionel Messi     nat "Spain"   (Argentine)
+     Vinícius Júnior  nat "Spain"   (Brazilian)
+     James Rodríguez  nat "Spain"   (Colombian)
+
+   It collapses toward the CLUB's country for a large share of records —
+   `nat === country` holds for 5,277 of 8,489 entries (62%). Some of that is
+   honest (1,321 Japanese players at Japanese clubs) but the marquee cases
+   above are simply wrong. Separately, 687 players read "United Kingdom" and
+   ZERO read England / Scotland / Wales / Northern Ireland, because Wikidata
+   P27 is citizenship, not the footballing nation (P1532).
+
+   The guess subtitle therefore shows birth year + club only, which still
+   tells the two Ronaldos apart (1976 vs 1985) without asserting anything
+   false. The answer reveal below still prints `nat` — that predates this and
+   is left alone deliberately, but it is WRONG for those players and wants a
+   data re-pull, not a display patch.
+
+   ⚠️ Gameplay impact, not just cosmetic: similarity() scores nationality as a
+   signal, so wherever `nat` is wrong the RANKS are wrong too. */
+
 // Mystery Player — guess the secret footballer. Every guess returns a RANK
 // against the whole pool; the answer is 1.
 //
@@ -52,13 +75,58 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
 
   // Autocomplete over the pool. Capped — a 1,539-item list is unusable, and
   // showing everything on an empty box invites scrolling instead of typing.
+  /* People type a SURNAME and mean one specific player. Plain substring
+     matching does not know that, and the pool is 8k+ players deep, so the
+     good answer drowns:
+
+       "saka"   → 32 matches, almost all Sakai / Sakamoto / Sakaguchi /
+                  Hosaka / Esaka. Bukayo Saka only came first because the
+                  pool file happens to be ordered by fame — nothing in the
+                  code put him there, and any re-export would have moved him.
+       "shaw"   → Shawcross and Earnshaw sat directly under Luke Shaw.
+
+     So score the match instead of taking file order. A surname that IS the
+     query beats a surname that merely starts with it, which beats a first
+     name, which beats the query buried mid-word. Fame breaks ties, and a
+     small recency nudge settles same-surname pile-ups (35 players match
+     "santos"; the 1950s Brazilians outrank the current ones on fame alone). */
   const suggestions = useMemo(() => {
     const q = normaliseName(text);
     if (q.length < 2) return [];
     const guessed = new Set(guesses.map((g) => g.id));
+    const score = (p) => {
+      const full = normaliseName(p.name);
+      const parts = full.split(' ').filter(Boolean);
+      /* FAME LEADS, position breaks ties. An earlier pass made surname matches
+         worth +1000 against +250 for a first name — a gap fame (max 211) can
+         never close, which is wrong for the many players known by their FIRST
+         name. "james" is the case that proves it: the order people expect is
+         James Rodríguez (90), James Milner (63), Reece James (55), David James
+         (48) — which is simply fame order, first names and surnames interleaved.
+         So these bonuses are deliberately in the same range as a fame gap, not
+         above it. */
+      let s = 0;
+      /* 60, not 250: a mononym's full name IS a partial query. At 250, typing
+         "ronaldo" put R9 (fame 124) above Cristiano (fame 211), which is not
+         who anyone means. 60 restores Cristiano and changes no other query. */
+      if (full === q) s = 60;                                     // typed the whole name
+      else if (parts.some((w) => w === q)) s = 45;                 // Saka, Reece James, James Milner
+      else if (parts.some((w) => w.startsWith(q))) s = 25;         // Sakai, Shawcross
+      // else: buried mid-word (Hosaka, Earnshaw) — fame alone
+      s += p.fame || 0;
+      /* Recency nudge, smaller still — settles same-surname pile-ups (35 players
+         match "santos", and the 1950s Brazilians outrank the current ones on
+         fame alone) without reordering real prominence. Tuned live: at +30 it
+         flipped André Silva above Thiago Silva, whose fame is 23 higher. */
+      if (p.born >= 1995) s += 12; else if (p.born >= 1985) s += 6;
+      return s;
+    };
     return POOL
       .filter((p) => !guessed.has(p.id) && normaliseName(p.name).includes(q))
-      .slice(0, 6);
+      .map((p) => ({ p, s: score(p) }))
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 8)
+      .map((x) => x.p);
   }, [text, guesses]);
 
   if (!answer || !ranks) {
@@ -220,7 +288,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
                   style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2, width: '100%', padding: '9px 14px', background: 'none', border: 'none', borderBottom: '1px solid var(--border)', color: 'var(--t1)', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}>
                   <span style={{ fontSize: 14.5, fontWeight: 700 }}>{p.name}</span>
                   <span style={{ fontSize: 11.5, color: 'var(--t3)', fontWeight: 600, maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {[p.nat, p.born, p.club].filter(Boolean).join(' · ')}
+                    {[p.born, p.club].filter(Boolean).join(' · ')}
                   </span>
                 </button>
               ))}
