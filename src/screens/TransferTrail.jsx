@@ -68,15 +68,23 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   // is how Footle went months looking unplayed. Ref-guarded because the screen
   // re-mounts whenever you navigate back into a finished puzzle.
   const announced = useRef(false);
+  // ⚠️ ARCHIVE PLAYS DO NOT COUNT. The Trail already accepted a `date`, but it
+  // announced completion whichever day it was — so replaying an old puzzle
+  // would have ticked today's streak and paid XP. That turns the archive into
+  // a way to farm the streak, and a farmable streak stops meaning "I showed up
+  // every day", which is the only reason it exists. The board still records
+  // the solve; only the habit metrics are protected.
+  const isArchive = ymd !== dateToYMD(new Date());
   useEffect(() => {
     if (!done || announced.current) return;
     announced.current = true;
+    if (isArchive) return;
     try {
       window.dispatchEvent(new CustomEvent("biq:daily-completed", {
         detail: { positive: won, game: "trail", won, attempts: Math.max(1, misses) },
       }));
     } catch { /* best effort; never block the reveal */ }
-  }, [done, won, misses]);
+  }, [done, won, misses, isArchive]);
 
   const submit = useCallback((skipped) => {
     if (done) return;

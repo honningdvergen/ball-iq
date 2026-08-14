@@ -534,9 +534,13 @@ export const WORDLE_FULL_NAMES = {
 // sees one puzzle per local day, and worldwide users on their respective
 // "May 22" all get WORDLE_PLAYERS[same idx]. Anchor constants below are
 // preserved (June 4, 2026 maps to the same Date.UTC value as before).
-export function getWordleDayIndex() {
-  const now = new Date();
-  return Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / DAY_MS);
+// Takes a date so the ARCHIVE can ask for a past day. Defaults to now, so every
+// existing caller is unchanged — and note it must stay LOCAL-date-derived: the
+// Date.UTC(localY, localM, localD) shape above is what makes one puzzle per
+// local day work worldwide, and passing a raw timestamp would reintroduce the
+// timezone bug the comment above describes.
+export function getWordleDayIndex(date = new Date()) {
+  return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / DAY_MS);
 }
 
 // getFootleNumber + WORDLE_ANCHOR_DAY moved to footleNumber.js (re-exported
@@ -665,8 +669,8 @@ export function getWordleAnswerForDayIndex(dayIndex) {
   return WORDLE_ANSWER_POOL[idx];
 }
 
-export function getWordleAnswer() {
-  return getWordleAnswerForDayIndex(getWordleDayIndex());
+export function getWordleAnswer(date = new Date()) {
+  return getWordleAnswerForDayIndex(getWordleDayIndex(date));
 }
 
 // Standard Wordle two-pass colouring: greens first (locking those answer

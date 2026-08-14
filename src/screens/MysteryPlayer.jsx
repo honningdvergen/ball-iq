@@ -23,8 +23,12 @@ const BAND_STYLE = {
   cold: { bg: 'var(--s1)',            bd: 'var(--border)', fg: 'var(--t2)' },
 };
 
-export default function MysteryPlayer({ onExit }) {
-  const dayIndex = mysteryDayIndex();
+export default function MysteryPlayer({ onExit, date = new Date() }) {
+  // `date` drives EVERYTHING dated in here — the answer, the saved result, the
+  // puzzle number — so an archive replay of yesterday reads and writes
+  // yesterday's slot and cannot overwrite today's board.
+  const dayIndex = mysteryDayIndex(date);
+  const isArchive = dayIndex !== mysteryDayIndex();
   const answerId = answerIdForDay(SCHEDULE, dayIndex);
   const answer = useMemo(() => POOL.find((p) => p.id === answerId) || null, [answerId]);
 
@@ -37,7 +41,7 @@ export default function MysteryPlayer({ onExit }) {
   // Restore today's game. Without this a refresh — or backgrounding the PWA
   // long enough for iOS to evict it — silently wipes a solved puzzle, and the
   // player cannot re-solve it because they already know the answer.
-  const saved = useMemo(() => loadMysteryResult(new Date()), []);
+  const saved = useMemo(() => loadMysteryResult(date), [date]);
   const [text, setText] = useState('');
   const [guesses, setGuesses] = useState(() => saved?.guesses || []); // [{ id, name, club, rank, band }]
   const [error, setError] = useState('');
@@ -87,7 +91,7 @@ export default function MysteryPlayer({ onExit }) {
     if (isWin) setWon(true);
     // Persist EVERY guess, not just the win — a player who closes the tab
     // three guesses in should come back to those three guesses.
-    saveMysteryResult(new Date(), { won: isWin, guesses: next });
+    saveMysteryResult(date, { won: isWin, guesses: next });
     if (isWin) {
       setStreak(computeMysteryStreak());
       // ⚠️ Mystery shipped WITHOUT this and recorded nothing for its whole
@@ -97,11 +101,19 @@ export default function MysteryPlayer({ onExit }) {
       //
       // `attempts` is guesses-to-solve, matching how Footle and the Trail
       // report theirs, so the three daily modes stay comparable.
-      try {
-        window.dispatchEvent(new CustomEvent('biq:daily-completed', {
-          detail: { positive: true, game: 'mystery', won: true, attempts: next.length },
-        }));
-      } catch { /* best effort; never block the reveal */ }
+      // ⚠️ ARCHIVE PLAYS DO NOT COUNT. Solving an old puzzle must not tick the
+      // streak or award XP — otherwise the archive becomes a way to farm a
+      // streak and the number stops meaning "I showed up every day", which is
+      // the entire point of it. NYT draws the same line for the same reason.
+      // The board still fills in, because that IS a true record of the puzzle
+      // being solved; only the habit metrics are protected.
+      if (!isArchive) {
+        try {
+          window.dispatchEvent(new CustomEvent('biq:daily-completed', {
+            detail: { positive: true, game: 'mystery', won: true, attempts: next.length },
+          }));
+        } catch { /* best effort; never block the reveal */ }
+      }
     }
   };
 
@@ -122,7 +134,7 @@ export default function MysteryPlayer({ onExit }) {
         </button>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em' }}>Mystery Player</div>
-          <div style={{ fontSize: 12, color: 'var(--t3)' }}>No. {mysteryNumber()} · unlimited guesses</div>
+          <div style={{ fontSize: 12, color: 'var(--t3)' }}>No. {mysteryNumber(date)} · unlimited guesses{isArchive ? ' · archive' : ''}</div>
         </div>
         {best !== null && !won && (
           <div style={{ textAlign: 'right' }}>
