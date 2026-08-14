@@ -559,8 +559,15 @@ function HomeScreenImpl({
               className="play-card"
               onClick={() => { markModeSeen(key); (onTap || (() => startMode(key)))(); }}
             >
+              {/* ⚠️ NEUTRAL BY DEFAULT, NOT GREEN. Nine tiles each drew a green
+                  icon inside a green-bordered box, so the mode grid was nine
+                  competing accents and the eye had no way to rank them. Green in
+                  this app now means go and correct — spending it on every mode
+                  label made it mean "a mode", which is to say nothing.
+                  A tile can still opt in via iconColor when it has earned a
+                  colour of its own; the default is quiet. */}
               <span className="play-card-icon">
-                <Icon size={20} strokeWidth={2.25} color={iconColor || "var(--accent)"} aria-hidden="true" />
+                <Icon size={20} strokeWidth={2.25} color={iconColor || "var(--t2)"} aria-hidden="true" />
               </span>
               <span className="play-card-body">
                 <span className="play-card-name">{name}</span>
