@@ -115,6 +115,31 @@
           (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform())) {
         document.documentElement.classList.add('native-app');
 
+        /* ── ANDROID NEEDS ITS OWN BOTTOM FLOOR ─────────────────────────────
+           Alex, 2026-08-14: "we have to think how the tab will look on an
+           android phone so it does not crash with the buttons they have on the
+           bottom there". Correct, and it is already a live problem rather than
+           a future one.
+
+           Android's WebView reports env(safe-area-inset-bottom) as 0 — the
+           .quiz-wrap comment in app.css records the same discovery — so on
+           Android the tab bar's max() FLOOR is the only thing holding it up.
+           That floor was 22px, well inside the 48dp three-button navigation
+           bar, which is why the bar and the back/home/recents buttons sit on
+           top of each other in an Android screenshot.
+
+           iOS and Android therefore need DIFFERENT values, and no single
+           expression gives both: raise the floor for Android and iOS gets
+           pushed back up away from the Threads placement. Hence a platform
+           class rather than more max() arithmetic.
+
+           UA sniffing, deliberately: this runs before Capacitor is guaranteed
+           to be ready, and getting the class on documentElement early matters
+           because the bar paints on first frame. */
+        if (/android/i.test(navigator.userAgent)) {
+          document.documentElement.classList.add('is-android');
+        }
+
         /* ── iOS focus-zoom lock (NATIVE ONLY) ──────────────────────────────
            iOS zooms the page when a focused input computes under 16px, and
            WKWebView NEVER restores the scale afterwards. Reported twice on

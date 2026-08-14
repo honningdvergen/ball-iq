@@ -865,8 +865,21 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    PWAs plus the native app keep the docked bar while only browsers float. */
 .tab-bar{
   position:fixed;left:50%;transform:translateX(-50%);
-  bottom:max(calc(env(safe-area-inset-bottom, 0px) + 10px), 22px);
-  width:calc(100% - 26px);max-width:400px;
+  /* THREADS PLACEMENT (Alex, 2026-08-14, with their app side by side: "look at
+     the tab placement on threads, let us do the same placement").
+     Two things were making ours read as a floating island rather than a bar
+     that belongs to the screen: it was capped at 400px so it never reached the
+     edges, and it sat 44px up on a device (safe-area 34 + 10). Threads runs
+     near full-width with a small side margin, shorter, and low enough that the
+     home indicator sits over it rather than below it.
+     The subtraction keeps it honest on hardware without a home indicator:
+     env() resolves to 0 there, so the max() floor takes over instead of
+     producing a negative offset. */
+  bottom:max(calc(env(safe-area-inset-bottom, 0px) - 18px), 10px);
+  width:calc(100% - 20px);max-width:none;
+  /* ⚠️ ANDROID OVERRIDES THIS BELOW — see html.is-android .tab-bar. Android's
+     WebView reports env(safe-area-inset-bottom) as 0, so on that platform the
+     floor above is the ONLY thing holding the bar off the system navigation. */
   /* APPLE-STYLE MATERIAL (Alex, 2026-08-12: "slightly glass like and
      translucent like on apple"). Three things make iOS glass read as glass
      rather than as a dark panel: the fill is genuinely translucent (~0.66,
@@ -909,6 +922,17 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .tab-bar{background:rgba(22,24,31,0.97);}
 }
+/* ANDROID: hold the bar above the system navigation.
+   env(safe-area-inset-bottom) is 0 in Android's WebView, so the base rule's
+   max() floor is all that stands between this bar and the back/home/recents
+   buttons — and at the old 22px it was already inside them. 56px clears the
+   48dp three-button bar with room to breathe.
+   Gesture-navigation devices need far less than this and will sit a little
+   higher than strictly necessary. That is the deliberate trade: CSS cannot
+   tell the two navigation modes apart, and a bar that overlaps the system
+   buttons is a functional bug where a slightly larger gap is only cosmetic. */
+html.is-android .tab-bar{ bottom:56px; }
+
 .tab-item{
   flex:1;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:4px;cursor:pointer;border:none;
@@ -978,7 +1002,12 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    Keep it inline. Moving it back into a var() here silently returns the jump. */
 .tab-pill{
   position:absolute;left:0;top:6px;bottom:6px;width:25%;
-  transition:transform .34s cubic-bezier(0.22,1,0.36,1);
+  /* Alex, after seeing it move: "it is moving a bit too fast and not
+     dynamic". .34s with an ease-out settles politely; it does not travel.
+     Slower, and on a curve that overshoots slightly before resting — the
+     same spring family already used on .tab-item's press transform, so the
+     bar keeps one motion vocabulary rather than two. */
+  transition:transform .52s cubic-bezier(0.34,1.32,0.52,1);
   pointer-events:none;
 }
 .tab-pill i{
@@ -2726,21 +2755,30 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     display: flex !important;
     position: fixed !important;
     top: auto !important;
-    bottom: max(calc(env(safe-area-inset-bottom, 0px) + 10px), 22px) !important;
+    /* ⚠️ MOVED IN LOCKSTEP 2026-08-14 with the base rule (Threads placement).
+       This block is a SECOND display-mode:standalone mirror — there are two in
+       this file — and it pins the geometry with !important, so leaving it
+       behind would have frozen the installed app and the native shell on the
+       old floating-island position while the browser showed the new one. */
+    bottom: max(calc(env(safe-area-inset-bottom, 0px) - 18px), 10px) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100% - 26px) !important;
-    max-width: 400px !important;
-    height: 60px !important;
+    width: calc(100% - 20px) !important;
+    max-width: none !important;
+    height: 56px !important;
     margin: 0 !important;
     padding-top: 6px !important;
     padding-bottom: 6px !important;
     border: 0.5px solid rgba(255,255,255,0.14) !important;
-    border-radius: 30px !important;
+    border-radius: 28px !important;
     box-shadow: 0 10px 34px rgba(0,0,0,0.48), 0 2px 8px rgba(0,0,0,0.28),
                 inset 0 1px 0 rgba(255,255,255,0.10) !important;
     transition: transform .28s cubic-bezier(0.22,1,0.36,1), opacity .22s ease !important;
   }
+  /* Android's floor has to be mirrored here too, and with !important, or the
+     rule above wins and drops the bar back into the system navigation on every
+     installed Android client. */
+  html.is-android .tab-bar { bottom: 56px !important; }
   /* ⚠️ THE TUCK MUST BE MIRRORED TOO. The rule above pins
      transform: translateX(-50%) !important, which outranks the base
      .tab-bar--tucked transform — without this the scroll-away works in every
@@ -2772,7 +2810,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     top: 6px !important;
     bottom: 6px !important;
     width: 25% !important;
-    transition: transform .34s cubic-bezier(0.22,1,0.36,1) !important;
+    transition: transform .52s cubic-bezier(0.34,1.32,0.52,1) !important;
     pointer-events: none !important;
   }
   .tab-pill i {
