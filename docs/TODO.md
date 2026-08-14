@@ -1,6 +1,61 @@
 # Ball IQ — the board
 
-## ▶ WHERE WE ARE (2026-08-13)
+## ▶ WHERE WE ARE (2026-08-14)
+
+⚠️ **THE 94.6% IS SUBSTANTIALLY AN INSTRUMENTATION ARTIFACT.** Re-measured today
+against the same Clarity project, and the number that reprioritised everything
+does not mean what the board says it means.
+
+| measure (3 days, 2026-08-12→14) | reading |
+|---|---|
+| single-page sessions | 195 of 203 — 96.1%, i.e. *unchanged* |
+| ...with an EXTERNAL referrer | **142** — genuine one-and-done arrivals |
+| ...with an INTERNAL balliq.app referrer | **60 (30%)** — NOT arrivals. Continuations. |
+
+**Clarity starts a NEW session on the club-page → /play navigation.** Two of five
+sampled recordings are `/play` with `referrerUrl` of `/quiz/cruyff/` and
+`/quiz/atletico-madrid/`, each recorded as `pagesCount: 1`. So a visitor who
+reads a club page and then opens the app is counted as **two one-page sessions**,
+and shows up twice in the "94.6% never go anywhere" figure.
+
+Re-framed per *journey* rather than per Clarity session: ~142 externally-started
+journeys produced ~60 internal continuations + 8 multi-page sessions. Onward
+navigation is therefore roughly **40%, not 5.4%**.
+
+⚠️ Caveat, stated rather than buried: some internal referrals will be returning
+visitors on a later day, so 40% is an upper estimate as 5.4% was a lower one. The
+honest claim is only that **the true rate sits far above 5.4%** and the premise
+"they never see a second page" is not supported.
+
+**What this does NOT overturn.** The club-page levers were still right, for a
+reason the recordings show directly rather than infer:
+
+- `/quiz/cruyff/` from Google — **6m40s, 94 clicks**: full round, "See your
+  result →", then "Full set", then a SECOND round.
+- `/quiz/cruyff/` from Google — **13m18s, 57 clicks**: read the explanations,
+  used the length picker, kept going.
+
+People are not bouncing off club pages. They are staying for six to thirteen
+minutes and playing multiple rounds — which is what levers 1-3 were built to
+reward. The rebuild is validated; the *justification* on the board was not.
+
+**Consequence for prioritisation:** "optimising for onward navigation is
+optimising for 5% of people" is retired. Both loops are real — staying on the
+page AND crossing to the app — and `clubq-out-play` is now the number to watch
+rather than a guardrail against a thing we assumed nobody did.
+
+⚠️ **clubq-* still returns EMPTY via the Clarity API, one day on.** Verified live
+that this is NOT our bug: the loader is present on club pages (tag
+`xqwevk9brq`), the emit code is correct (`window.clarity('event',n)`), 12
+`clubq-` occurrences are in the shipped HTML, and 9 distinct custom events is
+well under Clarity's 20 cap. Custom API events appear to aggregate into the
+"Other" bucket (75 over 7 days) rather than surfacing by name. **Lever 4 stays
+gated, but on a reporting limitation, not on missing data.** Next step is to own
+the measurement rather than fight Clarity's model.
+
+---
+
+## ▶ PREVIOUS (2026-08-13)
 
 **THE FINDING THAT REPRIORITISES EVERYTHING.** Microsoft Clarity has been
 connected for weeks and unused. Five queries answered the funnel question:
