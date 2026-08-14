@@ -58,9 +58,33 @@ have never had a recurrence. Extend the pattern:
       today's work. Then re-cut the iOS archive (it predates several commits) and
       submit. ⚠️ ALEX uploads.
 
+### ⏰ EXPIRES MON 18 AUG — two free store levers, no binary needed
+- [ ] **Play promotional content — Transfer Deadline Day (1 Sep).** Play needs
+      14 days lead when "request featuring" is ticked. Console → Grow users →
+      Store presence → Promotional content. Games qualify with no threshold.
+- [ ] **Apple featuring nomination + In-App Event — UCL MD1 (8-10 Sep).** Apple's
+      stated minimum lead is 3 weeks. ASC → app → Featuring → Nominations.
+      IAE limits: 10 published at once, badges Competition / Challenge / New Season.
+- ⚠️ **NAME THEM GENERICALLY.** We were already rejected under 5.2.1 for World Cup
+      IP and event metadata goes through the same review. "Deadline Day Special",
+      "Europe's Big Night" — NEVER "Champions League Week".
+
+### ⚠️ FootyIQ ships a mode called "Footle" — ALEX'S CALL
+App Store id6770499911, v1.4.0 (28 Jul 2026), dev Sina Zand, verbatim: *"Footle —
+A word game for footballer surnames. Six guesses, colour clues after each one."*
+Modes overlap almost completely; brand is confusable with Ball IQ. **We were first
+and it is documented: commit 30590ba, 9 May 2026 — 80 days earlier.** Not yet
+ranked, too few ratings to display. Decision needed on the mark and on how loudly
+we claim the word in ASO. Verified directly from the listing, not from notes.
+
 ### CUT — declined on purpose
-- **Club pack waves.** Frozen until a club quiz outplays Survival. Largest single
-  reclaim of time on the board.
+- ~~**Club pack waves.**~~ **STRUCK 2026-08-14 — Alex overruled with evidence.**
+  Average GSC position has moved from the 20s to **10.6** and club pages are the
+  signup funnel. Packs are ACQUISITION and were being judged by in-app plays,
+  which is the wrong end of them. **Packs continue.** What the 46 plays/30d
+  actually indicts is the in-app club PICKER — a placement problem: someone who
+  installs off the Arsenal page should land on the Arsenal quiz, not a picker.
+  Worth one experiment (~1 day).
 - **Lineup Builder.** Needs drag-drop, real XI pre-fill, photo ranking, bench/kit
   before it earns a link — that is a product, not a task. Commit a fortnight or
   drop the entry point until after the release.
