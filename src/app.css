@@ -875,7 +875,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
      The subtraction keeps it honest on hardware without a home indicator:
      env() resolves to 0 there, so the max() floor takes over instead of
      producing a negative offset. */
-  bottom:max(calc(env(safe-area-inset-bottom, 0px) - 18px), 10px);
+  bottom:max(calc(env(safe-area-inset-bottom, 0px) - 12px), 16px);
   width:calc(100% - 20px);max-width:none;
   /* ⚠️ ANDROID OVERRIDES THIS BELOW — see html.is-android .tab-bar. Android's
      WebView reports env(safe-area-inset-bottom) as 0, so on that platform the
@@ -2760,7 +2760,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
        this file — and it pins the geometry with !important, so leaving it
        behind would have frozen the installed app and the native shell on the
        old floating-island position while the browser showed the new one. */
-    bottom: max(calc(env(safe-area-inset-bottom, 0px) - 18px), 10px) !important;
+    bottom: max(calc(env(safe-area-inset-bottom, 0px) - 12px), 16px) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 20px) !important;
