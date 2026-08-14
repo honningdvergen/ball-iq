@@ -1118,6 +1118,30 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // the freshly-picked emoji immediately; we also clear avatar_url server-side
   // so it stays consistent after the next authProfile refetch. Reset to false
   // when a new photo upload succeeds.
+  // ── "HERE IS WHAT YOU ARE PLAYING FOR" ─────────────────────────────────────
+  // Alex's idea, and a better answer to the empty profile than anything I
+  // proposed: a first-timer sees an EXAMPLE elite card before they see their own
+  // blank one, and can X it away.
+  //
+  // ⚠️ The one rule this must not break. The bug fixed earlier today was a
+  // fabricated 64 presented as the visitor's OWN rating. A sample card that looks
+  // like a real card recreates that in a worse form, so this one is unmistakably
+  // an example: it carries an EXAMPLE ribbon, a name that is obviously not yours,
+  // and a line saying whose it is. Aspiration, never a claim about you.
+  //
+  // The dismiss flag is a UX flag, not user data, so per
+  // feedback_phase_b_clear_list_principle it stays OUT of
+  // USER_SCOPED_STATIC_KEYS — same treatment as biq_modes_seen and
+  // biq_install_dismissed. Signing out should not re-pitch it on your own phone.
+  const SAMPLE_KEY = 'biq_sample_card_dismissed';
+  const [sampleDismissed, setSampleDismissed] = useState(() => {
+    try { return localStorage.getItem(SAMPLE_KEY) === '1'; } catch { return true; }
+  });
+  const dismissSample = () => {
+    setSampleDismissed(true);
+    try { localStorage.setItem(SAMPLE_KEY, '1'); } catch { /* Safari private mode */ }
+  };
+
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   // Optimistic name override — the card normally shows the SERVER username
@@ -1414,6 +1438,67 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       {/* Merged Ball IQ card — the player-rating card IS the profile header:
           editable avatar (tap → change photo) + editable name (tap → rename) +
           level, fused with the overall, tier and six competition ratings. */}
+      {/* ── THE EXAMPLE CARD, AS A POPUP ────────────────────────────────────────
+          Alex: "maybe guests or first timers should see what a 85 rated card
+          looks like the first time they enter the profile tab, and then they can
+          x it out" — then, on seeing it inline: "I was thinking more like a popup
+          graphic that they x out."
+
+          A modal is the better call, and not only because he asked for it. The
+          bug fixed earlier today was a fabricated 64 presented as the visitor's
+          OWN rating; an inline example card sits in the same slot the real one
+          does, so it inherits that ambiguity no matter how it is labelled. An
+          overlay cannot be mistaken for your profile — it is obviously a thing
+          shown TO you. It also gets a real moment instead of competing with the
+          card underneath it.
+
+          Uses the app's own .modal-overlay so it dims, animates and respects the
+          safe area exactly like every other sheet. */}
+      {(stats?.gamesPlayed || 0) === 0 && !sampleDismissed && (() => {
+        const t = CARD_TIERS.elite;
+        const rows = [
+          { icon: "\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}", abbr: "EPL", v: 88 }, { icon: "\u2B50", abbr: "UCL", v: 91 },
+          { icon: "\u{1F30D}", abbr: "INT", v: 84 }, { icon: "\u{1F1EA}\u{1F1F8}", abbr: "LAL", v: 83 },
+          { icon: "\u{1F1E9}\u{1F1EA}", abbr: "BUN", v: 80 }, { icon: "\u{1F1EE}\u{1F1F9}", abbr: "SEA", v: 84 },
+        ];
+        return (
+          <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="What an elite card looks like"
+               onClick={dismissSample}>
+            <div onClick={(e) => e.stopPropagation()}
+                 style={{ position: "relative", background: t.bg, border: `1.5px solid ${t.accent}66`, borderRadius: 22, padding: "20px 22px 18px", width: "100%", maxWidth: 340, boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2, color: t.accent, border: `1px solid ${t.accent}66`, borderRadius: 999, padding: "3px 9px" }}>EXAMPLE</span>
+                <button type="button" onClick={dismissSample} aria-label="Close"
+                        style={{ width: 32, height: 32, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.10)", color: t.text, fontSize: 16, fontWeight: 800, cursor: "pointer", lineHeight: 1, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>&#10005;</button>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 54, fontWeight: 900, color: t.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>85</div>
+                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
+                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.accent, marginTop: 7 }}>{t.label}</div>
+                </div>
+                <div style={{ fontSize: 50, opacity: 0.9 }} aria-hidden="true">&#127942;</div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "7px 16px", marginTop: 16, paddingTop: 13, borderTop: `1px solid ${t.accent}22` }}>
+                {rows.map((r) => (
+                  <div key={r.abbr} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 14 }}>{r.icon}</span>
+                    <span style={{ fontSize: 12.5, fontWeight: 800, color: t.accent, fontVariantNumeric: "tabular-nums" }}>{r.v}</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: t.text, opacity: 0.6 }}>{r.abbr}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 13, color: t.text, opacity: 0.8, marginTop: 16, lineHeight: 1.45 }}>
+                This is an elite card. Yours starts blank &mdash; every answer you get right moves a rating.
+              </div>
+              <button type="button" onClick={dismissSample}
+                      style={{ width: "100%", marginTop: 16, padding: 13, borderRadius: 13, border: "none", background: t.accent, color: "#241B00", fontSize: 15, fontWeight: 800, fontFamily: "inherit", cursor: "pointer" }}>
+                Start building mine
+              </button>
+            </div>
+          </div>
+        );
+      })()}
       {(() => {
         const _acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
         const _card = computeCard(stats?.catStats || {}, _acc);
@@ -1460,7 +1545,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   </>
                 ) : (
                   <>
-                    <div style={{ fontSize: 50, fontWeight: 900, color: t.text, opacity: 0.28, lineHeight: 1, fontVariantNumeric: "tabular-nums" }} aria-label="No rating yet">—</div>
+                    {/* An em-dash set at the 50px number size renders as a long
+                        horizontal bar and reads as a LOADING SKELETON, not as
+                        "no value" — caught on the simulator, not in the markup.
+                        Two-thirds the size, and it reads as a dash again while
+                        the block keeps the same optical height. */}
+                    <div style={{ fontSize: 34, fontWeight: 900, color: t.text, opacity: 0.3, lineHeight: 50 / 34, fontVariantNumeric: "tabular-nums" }} aria-label="No rating yet">—</div>
                     <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
                     <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.text, opacity: 0.45, marginTop: 7 }}>UNRATED</div>
                   </>
