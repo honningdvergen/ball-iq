@@ -2837,13 +2837,34 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     display: block !important;
   }
   .tab-svg, .tab-label { position: relative !important; z-index: 1 !important; }
+  /* .tab-content keeps its safe-area clearance at EVERY width — an installed
+     phone PWA has a home indicator whether or not the desktop reflow ran. */
+  .tab-content { padding-bottom: calc(78px + max(env(safe-area-inset-bottom,0px),16px)) !important; }
+
+  /* ⚠️ WIDTH-GATED 2026-08-15. Everything below undoes the >=1024 desktop
+     reflow, and ONLY a PWA installed on a >=1024 screen ever matches that
+     reflow. Ungated, these !important rules also fired on phone-sized
+     installed PWAs, overriding correct mobile styling with whatever values
+     were current when each mirror line was last hand-synced.
+
+     That is not hypothetical. `.t7s-icon` was last touched here on 2026-07-05;
+     the base rule was enlarged on 2026-07-07 (5bec790, "bigger streak pill").
+     For five weeks every installed PWA rendered the OLD 32px card, and the
+     `.t7s-sub` colour was pinned to --t3 where mobile web uses --t2.
+
+     Gating removes the drift surface instead of re-syncing by hand: below
+     1024px the mirror no longer applies, so a phone PWA inherits mobile web
+     automatically — which is exactly what this block's own header says it
+     is for ("so PWA stays byte-identical"). Rules a PHONE genuinely needs
+     (.tab-bar geometry, the Android floor, the tuck, .tab-pill, and
+     .tab-content above) stay OUTSIDE this gate. */
+  @media (min-width: 1024px) {
   .home-stat-chip-desktop-only { display: none !important; }
   .diff-option-local { display: flex !important; }
   /* desktop-web-refresh: installed PWA never renders the desktop rail, and
      the mobile tab-bar is re-shown above — so restore .tab-content's bottom
      clearance that the >=1024 reflow zeroed (else content hides behind it). */
   .biq-nav { display: none !important; }
-  .tab-content { padding-bottom: calc(78px + max(env(safe-area-inset-bottom,0px),16px)) !important; }
   .hdr { display: flex !important; }
   .hdr .logo { display: block !important; }
   .ds-eyebrow {
@@ -2956,6 +2977,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      theme keeps the original iOS-styled light values (mirror lockstep).
      Order matters: grouped border restore precedes :hover (same specificity,
      both !important — hover must win in the cascade). */
+  }
 }
 
 /* ── MP GAME-OVER payoff (frontend-design pass) ──

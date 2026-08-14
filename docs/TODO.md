@@ -64,9 +64,10 @@ sw version, env var in the bundle, data fix confirmed. ALL of those inspected
 ARTEFACTS; none rendered the app.
 - [x] `scripts/smoke-prod.mjs` — checks sha/chunk/sw AND prints, in caps, that it
       does not prove the app renders.
-- [ ] **Standing step: after every push to main, OPEN https://balliq.app/play and
-      read the text.** A question = fine. "Something went wrong" = broken, however
-      many ticks the tooling printed.
+- [x] **Standing step (now habitual): after every push to main, OPEN
+      https://balliq.app/play and read the text.** A question = fine. "Something
+      went wrong" = broken, however many ticks the tooling printed. Done for
+      1c13048 — rendered Home + Daily row before calling it verified.
 - [ ] **A3. Somewhere to go after a finished day.** Four solved cards end on a
       wall. Recent-days table is the natural home. ~1 day.
 - [x] **A4. Guest dead-ends — ALREADY FIXED, premise was stale (2026-08-14).**
@@ -129,9 +130,10 @@ have never had a recurrence. Extend the pattern:
       re-auditing. ⚠️ ALEX-ONLY.
 - [ ] **C2. Diagnose /lists conversion** (51% of impressions, 5% of clicks) before
       another lists wave.
-- [ ] **C3. Ship Android 1.5.0** — only unblocked release path, not yet cut with
-      today's work. Then re-cut the iOS archive (it predates several commits) and
-      submit. ⚠️ ALEX uploads.
+- [x] **C3. DONE 2026-08-14: 1.6.0 cut on both platforms.** iOS 1.6.0 (62)
+      uploaded to TestFlight by Alex. Android 1.6.0 / vc17 AAB built, NOT
+      uploaded — Alex's call. ⚠️ Build 61 was archived 2 min BEFORE the offline
+      auth fix landed and is poisoned; do not promote it.
 
 ### ⏰ EXPIRES MON 18 AUG — two free store levers, no binary needed
 - [ ] **Play promotional content — Transfer Deadline Day (1 Sep).** Play needs
