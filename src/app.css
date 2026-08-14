@@ -354,7 +354,10 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .daily-zone{border:1px solid var(--border);background:linear-gradient(180deg,rgba(88,204,2,0.05) 0%,rgba(255,193,7,0.03) 100%);border-radius:18px;padding:10px 10px 10px;margin-bottom:10px;contain:layout paint style;}
 .daily-zone-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:0 4px;}
 .daily-zone-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t2);font-family:'Inter',sans-serif;}
-.daily-zone-status{font-size:10.5px;font-weight:700;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.02em;}
+/* Now a <button> (it opens the Daily tab), so it has to un-inherit the UA
+   button chrome — iOS WebKit in particular paints its own blue text colour on
+   <button>, which is how the Online CTA lost its ink. */
+.daily-zone-status{font-size:10.5px;font-weight:700;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.02em;background:none;border:0;padding:4px 2px;margin:-4px -2px;cursor:pointer;-webkit-appearance:none;appearance:none;}
 .daily-zone-status.is-done{color:var(--accent);}
 /* Nested cards inherit their own bottom margin from the shipped components,
    which now serves as the gap between Footle hero and T7 inside the zone.
@@ -2927,6 +2930,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .daily-zone-head { margin-bottom: 6px !important; padding: 0 4px !important; }
   .daily-zone-eyebrow { font-family: 'Inter',sans-serif !important; font-size: 10px !important; letter-spacing: 0.14em !important; color: var(--t2) !important; }
   .daily-zone-status { font-family: 'Inter',sans-serif !important; font-size: 10.5px !important; color: var(--t3) !important; }
+  /* The mirror's !important beat the .is-done rule, so in an installed PWA the
+     "all done" state never turned green. Restate it at the same weight. */
+  .daily-zone-status.is-done { color: var(--accent) !important; }
   .daily-zone .todays-seven-secondary {
     background: linear-gradient(120deg, rgba(255,140,0,0.10), rgba(255,193,7,0.03) 60%, var(--s1)) !important;
     border: 1px solid rgba(255,193,7,0.18) !important; border-radius: 14px !important;

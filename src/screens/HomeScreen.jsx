@@ -5,8 +5,8 @@ import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { getWordleAnswer } from "../lib/wordle.js";
-import { getTrailAnswer } from "../lib/trail.js";
-import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
+import { getTrailAnswer, loadTrailDay } from "../lib/trail.js";
+import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD } from "../lib/date.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
@@ -342,19 +342,32 @@ function HomeScreenImpl({
       {(() => {
         const ws = readWordleTodayStatus();
         const footleDone = ws.kind === "won" || ws.kind === "lost";
-        // Trail is NOT counted here. Alex, on seeing it previewed in this zone:
-        // "it does not belong as a hero, it needs marinating." It lives in the
-        // More-modes grid instead, so the Daily ritual stays Footle + Daily 7.
-        const total = 2;
-        const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0);
+        // Trail and Mystery are NOT heroes here. Alex, on seeing the Trail
+        // previewed in this zone: "it does not belong as a hero, it needs
+        // marinating." So the two CARDS stay Footle + Daily 7.
+        //
+        // The COUNT is a different question. It says "today", and since the
+        // Daily tab now lists all four it has to mean all four — a Home reading
+        // "0/2 today" beside a Daily tab reading "0 of 4 played" is the app
+        // contradicting itself. So the fraction counts every live daily puzzle
+        // and the whole status becomes the way through to the other two: it
+        // promotes them without adding a card.
+        const trailDone = ["won", "lost"].includes(loadTrailDay()?.status);
+        const mysteryDone = !!loadMysteryResult(new Date())?.won;
+        const total = 2 + (trailLive ? 1 : 0) + (mysteryLive ? 1 : 0);
+        const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0)
+          + (trailLive && trailDone ? 1 : 0) + (mysteryLive && mysteryDone ? 1 : 0);
         const allDone = doneCount === total;
         return (
           <div className="daily-zone" role="group" aria-label="Daily">
             <div className="daily-zone-head">
               <span className="daily-zone-eyebrow">Daily</span>
-              <span className={`daily-zone-status${allDone ? " is-done" : ""}`}>
+              <button type="button" className={`daily-zone-status${allDone ? " is-done" : ""}`}
+                onClick={() => setTab("daily")}
+                aria-label={allDone ? `All ${total} of today's puzzles done — open the Daily tab` : `${doneCount} of ${total} puzzles played today — open the Daily tab`}>
                 {allDone ? `${total}/${total} done` : `${doneCount}/${total} today`}
-              </span>
+                <span aria-hidden="true" style={{ marginLeft: 5, opacity: 0.7 }}>›</span>
+              </button>
             </div>
             <div className="home-footle-mobile">
               <FootleHero

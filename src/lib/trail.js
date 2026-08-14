@@ -1051,6 +1051,24 @@ export function hintFor(player, misses) {
   return [player.nat, pos].filter(Boolean).join(" · ") || null;
 }
 
+/**
+ * A day's stored Trail state, normalised to { status, used } — the same shape
+ * Footle's history uses, so screens can treat all the daily modes alike.
+ * Returns null when the day was never opened.
+ *
+ * Exported because THREE screens now need it (the Trail itself, the Daily tab,
+ * the Home daily zone) and each hand-rolled read of `biq_trail_<ymd>` is a
+ * chance for them to disagree about what "played" means.
+ */
+export function loadTrailDay(date = new Date()) {
+  try {
+    const raw = localStorage.getItem(`biq_trail_${dateToYMD(date)}`);
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    return { status: p?.status || null, used: Array.isArray(p?.attempts) ? p.attempts.length : 0 };
+  } catch { return null; }
+}
+
 // ── Streak ────────────────────────────────────────────────────────────────────
 // Clone of computeFootleStreak: walk backwards over biq_trail_<ymd> localStorage
 // entries while they exist and are wins. Storage writes live in the screen.
