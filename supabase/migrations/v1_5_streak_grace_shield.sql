@@ -21,18 +21,28 @@
 -- result and least(3, ...) still caps it. No RPC change needed.
 --
 -- Scoped to streak >= 3 on purpose: someone on day 1 or 2 has nothing much to
--- lose and does not need spending down. Idempotent via the shieldsUsed > -1
--- guard, so re-running cannot stack grants.
+-- lose and does not need spending down.
+--
+-- ⚠️ IDEMPOTENCY IS THE MARKER, NOT THE SHIELD COUNT. The first version of this
+-- guarded on `shieldsUsed > -1`, which only tests "not yet granted" for someone
+-- who had never SPENT a shield. On the live run, 18 of the 31 recipients had
+-- shieldsUsed >= 1, so after the decrement they were still > -1 and a second
+-- run would have granted them a second shield. The grant was right; the
+-- idempotency claim was wrong. An explicit stamp says what it means and stays
+-- true however the shield count moves afterwards.
 
 update public.user_game_state
 set login_streak = jsonb_set(
-      login_streak,
-      '{shieldsUsed}',
-      to_jsonb(coalesce((login_streak->>'shieldsUsed')::int, 0) - 1)
+      jsonb_set(
+        login_streak,
+        '{shieldsUsed}',
+        to_jsonb(coalesce((login_streak->>'shieldsUsed')::int, 0) - 1)
+      ),
+      '{graceGrantedAt}', to_jsonb(now()::date::text)
     )
 where login_streak is not null
   and coalesce((login_streak->>'streak')::int, 0) >= 3
-  and coalesce((login_streak->>'shieldsUsed')::int, 0) > -1;
+  and not (login_streak ? 'graceGrantedAt');
 
 -- No grants, policies or functions touched — this is a one-off data migration
 -- against a table that already has RLS on and zero anon grants.
