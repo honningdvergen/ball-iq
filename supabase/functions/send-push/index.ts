@@ -18,11 +18,20 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const KEY_P8 = Deno.env.get("APNS_KEY_P8") ?? "";
-const KEY_ID = Deno.env.get("APNS_KEY_ID") ?? "";
-const TEAM_ID = Deno.env.get("APNS_TEAM_ID") ?? "";
-const BUNDLE_ID = Deno.env.get("APNS_BUNDLE_ID") ?? "app.balliq";
-const APNS_HOST = Deno.env.get("APNS_HOST") ?? "api.push.apple.com";
+// ⚠️ .trim() ON EVERY ONE. This file already documented the hazard for
+// PUSH_WEBHOOK_SECRET ("dashboard-pasted secrets routinely carry a trailing
+// newline") and then applied it to that ONE variable. On 2026-08-14 a probe
+// found ALL FIVE carrying "\n": bundle_id was "app.balliq\n", apns_host was
+// "api.push.apple.com\n", and KEY_ID/TEAM_ID were 11 chars where the real
+// values are 10. A newline in the JWT `kid`/`iss` or in the apns-topic header
+// is rejected by Apple, so this would have kept push dead even once the key
+// itself was correct. Knowing the trap and guarding one variable against it is
+// how you get a bug that looks impossible.
+const KEY_P8 = (Deno.env.get("APNS_KEY_P8") ?? "").trim();
+const KEY_ID = (Deno.env.get("APNS_KEY_ID") ?? "").trim();
+const TEAM_ID = (Deno.env.get("APNS_TEAM_ID") ?? "").trim();
+const BUNDLE_ID = (Deno.env.get("APNS_BUNDLE_ID") ?? "app.balliq").trim();
+const APNS_HOST = (Deno.env.get("APNS_HOST") ?? "api.push.apple.com").trim();
 // Shared secret proving a POST really came from our DB webhook, not an
 // internet caller crafting {user_id, actor_name, payload} to push arbitrary
 // text to any user (medical security-backend finding). ROLLOUT ORDER: first add
