@@ -206,10 +206,22 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           {suggestions.length > 0 && (
             <div style={{ position: 'absolute', left: 16, right: 16, zIndex: 20, marginTop: 6, background: 'var(--s2)', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
               {suggestions.map((p) => (
+                /* The subtitle used to be p.club alone, which failed at the one
+                   job it has. Searching "Ronaldo" offered "Cristiano Ronaldo —
+                   Real Madrid" above "Ronaldo — Real Madrid": same label, two
+                   different players, no way to tell which you were picking.
+                   Wikidata gives every pool entry its truthy-rank club, so any
+                   two team-mates past or present collide the same way.
+                   Nationality and birth year separate them, and they lead here
+                   ON PURPOSE — the row ellipsizes on a narrow phone, so the
+                   club (least distinguishing, and by far the longest string:
+                   "Real Madrid Club de Fútbol") is what gets eaten first. */
                 <button key={p.id} type="button" onClick={() => submit(p)}
-                  style={{ display: 'flex', width: '100%', alignItems: 'baseline', gap: 8, padding: '11px 14px', background: 'none', border: 'none', borderBottom: '1px solid var(--border)', color: 'var(--t1)', fontSize: 14.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}>
-                  <span style={{ flex: 1 }}>{p.name}</span>
-                  <span style={{ fontSize: 12, color: 'var(--t3)', fontWeight: 600 }}>{p.club}</span>
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2, width: '100%', padding: '9px 14px', background: 'none', border: 'none', borderBottom: '1px solid var(--border)', color: 'var(--t1)', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}>
+                  <span style={{ fontSize: 14.5, fontWeight: 700 }}>{p.name}</span>
+                  <span style={{ fontSize: 11.5, color: 'var(--t3)', fontWeight: 600, maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {[p.nat, p.born, p.club].filter(Boolean).join(' · ')}
+                  </span>
                 </button>
               ))}
             </div>
