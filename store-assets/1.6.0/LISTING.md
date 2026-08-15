@@ -1,110 +1,146 @@
-# Ball IQ 1.6.0 — store listing (paste-ready)
+# Ball IQ 1.6.0 — store listing
 
-Built 2026-08-15. iOS build **63**, Android **versionCode 18**, both `1.6.0`.
-Screenshots: `screenshots-6.9/` — 8 framed PNGs at 1284×2778 (6.9" / 6.5" slot).
+iOS build **63**, Android **versionCode 18**, both `1.6.0`.
+Screenshots: `screenshots-6.9/` — 8 framed PNGs at 1284×2778.
 
-⚠️ THREE RULES THIS COPY OBEYS, all learned the hard way:
-1. **No question counts, no mode counts.** Binding rule, gated by
-   `scripts/audit-no-question-count.mjs`. The live listing still says "4,000+
-   questions across 10 game modes" — both numbers are now wrong, and a number in
-   a screenshot or description cannot be edited without a new upload, so it rots
-   in public. Sell breadth instead ("Real Madrid to Hajduk Split").
-2. **No FIFA, no World Cup.** 1.3.3 was rejected under Guideline 5.2.1 for
-   exactly this. Web SEO keeps the phrase; the app listing must not.
-3. **Never claim every answer is explained.** Measured coverage is ~78%, not
-   100%. "Most answers explained" is the honest form and is what ships.
+⚠️ **This is an EDIT of the live listing, not a replacement.** The first draft
+of this file was written blind from a screenshot and would have thrown away the
+full club list, the league list and the solo-dev-from-Norway close — all of
+which are good and stay. Read the live text before rewriting store copy; it is
+2,910 characters, not the ~1,090 visible in a screenshot.
 
 ---
 
-## App name  (30 char limit)
+## 1. App name  (30 char limit)
 
 ```
 Ball IQ - Football Quiz
 ```
 23 chars. Was "Ball IQ - Football Trivia".
 
-⚠️ **This forces a subtitle change.** Apple indexes name + subtitle + keywords
-and a word repeated across fields is wasted — it does not rank you twice. The
-current subtitle is "The Ultimate Football Quiz", which would now repeat BOTH
-"Football" and "Quiz". Every word in the subtitle below is new to the pair.
-
-## Subtitle  (30 char limit)
+## 2. Subtitle  (30 char limit) — MUST CHANGE
 
 ```
 Daily puzzles & club trivia
 ```
-27 chars. Adds four fresh terms: daily · puzzles · club · trivia.
+27 chars.
 
-## Promotional text  (170 char limit — editable without review)
+⚠️ Not optional. Apple indexes name + subtitle + keywords, and a word repeated
+across those fields is wasted — it does not rank twice. The current subtitle is
+"The Ultimate Football Quiz", which after the rename repeats BOTH words in the
+name. Every word above is new to the pair: daily · puzzles · club · trivia.
+
+## 3. Promotional text  (170 chars, editable without review)
 
 ```
 New: Mystery Player and Transfer Trail. Four daily puzzles, one football brain. Guess the secret player, name him from his career, and keep the streak alive.
 ```
 156 chars.
 
-## Description
+---
+
+## 4. Description — THREE SURGICAL EDITS
+
+Keep the live description as it stands, and make these three changes.
+
+### EDIT A — first line
+
+Replace:
+> `Ball IQ — The Ultimate Football Quiz`
+
+with:
+> `Ball IQ — Football Quiz`
+
+### EDIT B — the Footle paragraph is FACTUALLY WRONG ⚠️
+
+Live text says:
+> "FOOTLE — THE DAILY FOOTBALL PUZZLE
+> Guess the mystery player in six goes, with **hints on nationality, position,
+> age, club and shirt number**."
+
+**Footle does none of that.** It is a Wordle-style surname puzzle — you type a
+surname and get per-letter colour feedback. Grepped the Footle screen, the hero
+and lib/wordle.js: no nationality, position, age, club or shirt-number hint
+exists anywhere. That paragraph describes a different game. Replace with:
 
 ```
-Ball IQ — Football Quiz
-
-Every football question here is written and checked by football fans, never auto-generated. From the Premier League to the Eredivisie, from the Lisbon Lions to last night — Ball IQ has the depth real fans demand.
-
-FOUR DAILY PUZZLES
-• Footle — the daily football word game. One surname, six guesses, everyone gets the same player.
-• Daily 7 — seven fresh questions, marked instantly. Green right, red wrong.
-• Transfer Trail — name the player from his career, one club at a time. Fewer clubs, more credit.
-• Mystery Player — every guess is ranked against the secret player. Rank 1 is the answer, nothing else is.
-
-PLAY YOUR CLUB
-Pick your team and face questions written about them, from Real Madrid to Hajduk Split. Or take a whole league — Premier League, La Liga, Serie A, Bundesliga, Ligue 1.
-
-PLAY YOUR MATES
-• Live rooms for up to eight players
-• Pass-and-play on a single phone
-• Share any result as a spoiler-free grid
-
-BUILT FOR PEOPLE WHO ACTUALLY WATCH
-• Most answers come with the story behind them, not just a tick
-• A streak worth defending, and a rating that moves with your form
-• Free to play, no sign-up needed to start
+FOOTLE — THE DAILY FOOTBALL WORD PUZZLE
+One footballer's surname, six guesses, letter-by-letter colour feedback — green
+for right letter right place, amber for right letter wrong place. Everyone in
+the world gets the same player each day. There's a big archive to work through
+and a streak to protect. It's the first thing most players open.
 ```
 
-## What's New in This Version
+### EDIT C — add Mystery Player, after the Transfer Trail block
+
+The newest mode is absent from the listing entirely. Insert:
+
+```
+MYSTERY PLAYER — EVERY GUESS GETS YOU CLOSER
+Name any footballer and he comes back ranked against the secret player —
+shared clubs, era, position, nationality and age all count. Rank 1 is the
+answer and nothing else is. Unlimited guesses, a new player every day.
+```
+
+### EDIT D — one claim is false ⚠️
+
+Live "BUILT DIFFERENTLY" says:
+> "**Every answer** comes with a short explanation, so the quiz teaches as it tests"
+
+Measured today: **5,475 of 6,694 questions carry an explanation — 81.8%**, not
+all. (This was flagged once before and the fix never reached the store, so it
+is still live and still wrong.) Replace with:
+
+```
+- Most answers come with a short explanation, so the quiz teaches as it tests
+```
+
+Everything else in the description stays exactly as it is.
+
+---
+
+## 5. What's New in This Version
 
 ```
 Mystery Player and Transfer Trail are now part of your daily four.
 
-• Mystery Player: type two letters and pick from a ranked list — no more spelling a name perfectly to make a guess.
-• Transfer Trail: the same instant name search, so a guess is never lost to a typo.
-• A much sharper ranking. Guess a keeper from the same era as the answer and it now reads warm, as it should.
-• Thousands of players had an old club against their name. Fixed — Bayern is Bayern again.
+• Type two letters in Mystery Player or Transfer Trail and pick from a ranked list — no more spelling a name perfectly to make a guess.
+• A much sharper Mystery ranking. Guess a keeper from the same era as the answer and it now reads warm, as it should.
+• Thousands of players were listed with an old club. Fixed — Bayern is Bayern again.
 • Fixed a bug where the app could hang on the loading screen with no connection.
 ```
 
 ---
 
-## Reused vs new screenshots
+## 6. Screenshots
 
 | file | status |
 |---|---|
-| 01-home | re-shot (current Home) |
+| 01-home | re-shot |
 | 02-footle | **reused** — Alex: "looks alright as is" |
 | 03-club-picker | re-shot |
-| 04-transfer-trail | **NEW** — played to a win on the last of five attempts |
+| 04-transfer-trail | **NEW** — won on the last of five attempts |
 | 05-quiz-explanation | re-shot |
 | 06-profile | re-shot |
-| 07-mystery-player | **NEW** — solved on the sixth guess, rank ladder visible |
-| 08-daily-chips | **NEW** — Alex's ask: the green/red chip run, 5 ✓ 7/7 |
+| 07-mystery-player | **NEW** — solved on the sixth guess |
+| 08-daily-chips | **NEW** — the green/red chip run, 5 ✓ 7/7 |
 
-⚠️ 08 stops ON the last question rather than the results page. Finishing the
-daily as a guest raises the "Save your progress" auth sheet, and it appears
-AFTER the screen assertion runs — the check went green while the captured frame
-was the sign-up sheet. The question frame is also the better advert: it carries
-the chip run, a live question and "✓ Correct!" in one view.
+⚠️ 08 stops ON the last question, not the results page. Finishing the daily as a
+guest raises the "Save your progress" auth sheet, and it appears AFTER the
+screen assertion runs — the check went green while the captured frame was the
+sign-up sheet. Caught by opening the PNG, not by the test.
 
-## Still to do (Alex)
+---
 
-- Upload build 63 from Xcode Organizer.
-- Paste the name/subtitle/promo/description above into App Store Connect.
-- Replace the six current screenshots with the eight here.
-- Android: `versionCode 18` AAB is not yet built — say the word.
+## 7. Alex's checklist
+
+- [ ] Distribute build 63 from Xcode Organizer
+- [ ] App name → `Ball IQ - Football Quiz`
+- [ ] Subtitle → `Daily puzzles & club trivia` (**required by the rename**)
+- [ ] Promo text (§3)
+- [ ] Description edits A–D (§4)
+- [ ] What's New (§5)
+- [ ] Replace the 6 live screenshots with the 8 in `screenshots-6.9/`
+- [ ] Android AAB at versionCode 18 — not built yet, say the word
+
+App Review notes need no change; they are accurate and stay as they are.
