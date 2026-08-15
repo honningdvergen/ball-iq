@@ -133,8 +133,30 @@ have never had a recurrence. Extend the pattern:
 - [ ] **C1. Execute the authority kit** — written, untouched. "football quiz" at
       position 41; ceiling is authority, fundamentals diagnosed clean 3x. STOP
       re-auditing. ⚠️ ALEX-ONLY.
-- [ ] **C2. Diagnose /lists conversion** (51% of impressions, 5% of clicks) before
-      another lists wave.
+- [x] **C2. DONE 2026-08-15: /lists diagnosed — and the 08-03 read CORRECTED.**
+      28-day GSC: 47.1% of impressions, 4.0% of clicks, CTR 0.15%, avg pos 25.8.
+      ⚠️ **Position is NOT the explanation.** At matched rank bands /lists still
+      loses 18× — p2 (11-20) converts at **0.12%** across 17 pages and 7,297
+      impressions, vs 2.16% for /quiz/ in the same band. So the 08-03 prediction
+      ("if position moves 27→15 this becomes the biggest traffic source
+      overnight") is falsified by our own data: the pages already AT 11-20
+      convert at 0.12%. **/lists is not a traffic asset waiting on authority.**
+      The 6 pages that DO reach page 1 are all second-tier — Süper Lig top
+      scorers, Copa Libertadores, EFL Cup, Eredivisie, Primeira Liga — exactly
+      the "Brentford not Man Utd" thesis. The head-term pages the strategy said
+      to avoid got shipped anyway: `premier-league-champions` (pos 50.8, 1,671
+      impr, **0 clicks**), `serie-a-top-scorers` (35.9), `ballon-dor-winners`
+      (21.1) — **4,682 impressions → 4 clicks.**
+      Ruled out on the way: the taster is NOT the cause. /lists pages do carry a
+      playable taster (5 questions vs 42-67 on club pages), but taster depth
+      moves dwell AFTER the click, never CTR from the SERP. ⚠️ The first three
+      grep markers I tried (`seo-q`, `taster`, `biq-taster`) returned 0 on a
+      known-playable club page too — the real marker is `data-a=`.
+      **Unconfirmed hypothesis** for the residual same-rank gap: head reference
+      queries get answered inline by Google's knowledge panel. Confirm by
+      filtering GSC to one such page and reading query-level CTR — one search
+      does it. Don't act before checking.
+      **Decision this forces:** no more head-term lists. Niche-only, or stop.
 - [x] **C3. DONE 2026-08-14: 1.6.0 cut on both platforms.** iOS 1.6.0 (62)
       uploaded to TestFlight by Alex. Android 1.6.0 / vc17 AAB built, NOT
       uploaded — Alex's call. ⚠️ Build 61 was archived 2 min BEFORE the offline
