@@ -24,7 +24,7 @@ import { webkit } from '@playwright/test';
 // that path only exists in dev, so against a BUILT bundle it threw, the answer
 // came back null, the typing loop was skipped, and the shot shipped an empty
 // board. The screen assertion still passed, because the screen was Footle.
-import { getWordleAnswer } from '../src/lib/wordle.js';
+import { getWordleAnswer, gradeWordleGuess } from '../src/lib/wordle.js';
 import { pickDailyQuestions } from '../src/lib/quiz.js';
 import { dayIndexForDate } from '../src/lib/date.js';
 import { QB } from '../src/questions.js';
@@ -79,6 +79,73 @@ const SEED_STATS = {
 // problem and nothing above it matters.
 // Subjects that are fine in a quiz and wrong on a storefront.
 const SENSITIVE = /disaster|died|death|deaths|killed|tragedy|crash|fire|riot|stadium collapse|munich air|hillsborough|heysel|bradford|ibrox|superga/i;
+
+/**
+ * Four losing Footle guesses that look like somebody actually played.
+ *
+ * ⚠️ THIS REPLACES A GENERATOR THAT PRODUCED AN OBVIOUSLY FAKE BOARD, and the
+ * failure is worth keeping written down because it passed every check we had.
+ * The old rows were built as:
+ *     g += (i <= r) ? A[i] : pool[(i * 3 + r * 5) % pool.length]
+ * i.e. row r keeps the answer's FIRST r+1 letters IN PLACE and pads the rest
+ * from a fixed alphabet. Against ALONSO that shipped, in order:
+ *     AOSNAO · ALBIRL · ALOTME · ALONOS · ALONSO
+ * Three greens on guess one, "ALO" spelled out by guess three, and not one of
+ * the four is a real word, let alone a footballer. Alex's read: "really dumb
+ * and easy, you almost wrote the right name in the first couple then got
+ * dumber". The board verified fine (≥15 filled tiles) and the screen assertion
+ * passed — nothing mechanical can catch "this looks staged", so the shape has
+ * to be correct by construction.
+ *
+ * What makes a board look real:
+ *   1. Every guess is a REAL footballer's surname. submitGuess() checks LENGTH
+ *      ONLY (App.jsx), so any same-length string is legal — we are free to use
+ *      the 9k mystery pool rather than Footle's own 406-name answer list, which
+ *      is far too small to furnish a ladder at most word lengths.
+ *   2. NO GREENS in the first two rows. A green on guess one is the single
+ *      biggest tell; it reads as someone who already knew the answer.
+ *   3. Information increases monotonically — letters found, then positions.
+ *   4. Recognisable names. Fame-sorted, so a fan reads Neymar/Rooney, not a
+ *      third-tier defender who happens to fit.
+ *
+ * Derived from the answer every run, never pinned: the answer rotates at
+ * midnight and a hard-coded ladder would silently start producing a LOSING
+ * board — the exact trap already documented for the Mystery and Trail shots.
+ */
+function footleLadder(answer) {
+  const n = answer.length;
+  const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+  const best = new Map();
+  for (const p of MYSTERY_POOL) {
+    if (!p?.name || (p.fame || 0) < 40) continue;
+    const parts = norm(p.name).split(/[\s'-]+/).filter(Boolean);
+    const sur = parts[parts.length - 1];
+    if (sur.length !== n || !/^[A-Z]+$/.test(sur) || sur === answer) continue;
+    if ((best.get(sur)?.fame ?? -1) < (p.fame || 0)) best.set(sur, { sur, fame: p.fame || 0 });
+  }
+  const cands = [...best.values()].sort((a, b) => b.fame - a.fame);
+  const score = (g) => {
+    const r = gradeWordleGuess(g, answer);
+    return { G: r.filter((x) => x === 'green').length, K: r.filter((x) => x !== 'grey').length };
+  };
+  // Each rung: [minGreens, maxGreens, minKnown, maxKnown]. Widening fallbacks
+  // matter — at n=4 or n=9 the pool thins out and a rung can come up empty.
+  const rungs = [[0, 0, 1, 2], [0, 0, 3, 4], [1, 2, 3, n - 1], [3, 4, 3, n - 1]];
+  const used = new Set();
+  const out = [];
+  for (const [gMin, gMax, kMin, kMax] of rungs) {
+    const pick = cands.find((c) => {
+      if (used.has(c.sur)) return false;
+      const { G, K } = score(c.sur);
+      return G >= gMin && G <= gMax && K >= kMin && K <= kMax;
+    })
+      // Fallback: nothing in band — take the closest thing that still is not a
+      // giveaway, rather than dropping a row and shipping a 3-row board.
+      || cands.find((c) => !used.has(c.sur) && score(c.sur).G <= gMax);
+    if (pick) { used.add(pick.sur); out.push(pick.sur); }
+  }
+  return out;
+}
 
 const SHOTS = [
   { name: '01-home',           expect: 'More modes',   go: async (p) => {} },
@@ -180,21 +247,8 @@ const SHOTS = [
       await p.getByText('Play', { exact: true }).first().click();
       await p.waitForTimeout(1800);
       if (answer) {
-        // ⚠️ FILL ~5 ROWS. Two guesses proves nothing: the whole point of the
-        // screenshot is to TEACH the mechanic at a glance — greens locking in,
-        // ambers moving, the answer arriving on the last row. A near-empty
-        // board just looks like an unfinished game.
-        const A = answer.toUpperCase(), n = A.length;
-        const pool = 'AEIOURSTLNMB';
-        const decoys = [];
-        for (let r = 0; r < 4; r++) {
-          // Each row reveals a little more: keep r+1 real letters in place and
-          // fill the rest, so the colours visibly converge on the answer.
-          let g = '';
-          for (let i = 0; i < n; i++) g += (i <= r) ? A[i] : pool[(i * 3 + r * 5) % pool.length];
-          decoys.push(g);
-        }
-        for (const g of [...decoys, A]) {
+        const A = answer.toUpperCase();
+        for (const g of [...footleLadder(A), A]) {
           await p.keyboard.type(g);
           await p.getByText('ENTER', { exact: true }).first().click();
           await p.waitForTimeout(1150);
@@ -344,8 +398,14 @@ await ctx.addInitScript((stats) => {
   localStorage.setItem('biq_xp', '1840');
 }, SEED_STATS);
 
+// ONLY=02-footle,05-quiz-explanation → re-shoot just those. Every shot here is
+// non-deterministic (daily answers rotate, quiz options shuffle), so a full run
+// to fix ONE image silently re-rolls the other seven — including ones already
+// approved. Comma-separated, matched on the shot name.
+const ONLY = (process.env.ONLY || '').split(',').map((s) => s.trim()).filter(Boolean);
 let bad = 0;
 for (const s of SHOTS) {
+  if (ONLY.length && !ONLY.includes(s.name)) continue;
   const p = await ctx.newPage();
   await p.goto(BASE + '/play', { waitUntil: 'networkidle' });
   await p.waitForTimeout(3800);

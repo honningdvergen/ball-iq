@@ -122,13 +122,30 @@ costing the bullet its meaning. Say what was wrong and what is now right.
 | file | status |
 |---|---|
 | 01-home | re-shot |
-| 02-footle | **reused** — Alex: "looks alright as is" |
+| 02-footle | **RE-SHOT 2026-08-15** — see the note below |
 | 03-club-picker | re-shot |
 | 04-transfer-trail | **NEW** — won on the last of five attempts |
 | 05-quiz-explanation | re-shot |
 | 06-profile | re-shot |
 | 07-mystery-player | **NEW** — solved on the sixth guess |
 | 08-daily-chips | **NEW** — the green/red chip run, 5 ✓ 7/7 |
+
+⚠️ **02 was a staged-looking board and shipped that way once.** The generator
+built each row as "keep the answer's first r+1 letters in place, pad with junk",
+so against ALONSO it produced `AOSNAO · ALBIRL · ALOTME · ALONOS · ALONSO` —
+three greens on guess one, "ALO" spelled out by guess three, and not one row a
+real word. Alex: *"really dumb and easy… you almost wrote the right name in the
+first couple then got dumber."* It passed both the screen check and the
+≥15-filled-tiles board check; nothing mechanical detects "this looks fake".
+
+Now built by `footleLadder()` from the 9k mystery pool, fame-sorted, with **no
+greens allowed in the first two rows**. Today: `NEYMAR · YASHIN · ROONEY ·
+GROSSO · ALONSO`, solved on the fifth. Verified across 12 future daily answers —
+all four rows real surnames, first two rows green-free, every day.
+
+Both scripts now take `ONLY=02-footle` so one bad shot can be redone without
+re-rolling the other seven (every shot is non-deterministic — daily answers
+rotate and quiz options shuffle).
 
 ⚠️ 08 stops ON the last question, not the results page. Finishing the daily as a
 guest raises the "Save your progress" auth sheet, and it appears AFTER the

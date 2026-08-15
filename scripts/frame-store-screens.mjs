@@ -218,7 +218,10 @@ const b = await chromium.launch();
 const ctx = await b.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
 const p = await ctx.newPage();
 let n = 0;
+// ONLY=02-footle → frame just that one, to match the same flag on the shooter.
+const ONLY = (process.env.ONLY || '').split(',').map((s) => s.trim()).filter(Boolean);
 for (const [name, copy] of Object.entries(COPY)) {
+  if (ONLY.length && !ONLY.includes(name)) continue;
   const src = resolve(RAW, `${name}.png`);
   if (!existsSync(src)) { console.log(`  – skip ${name} (no raw frame)`); continue; }
   const uri = 'data:image/png;base64,' + readFileSync(src).toString('base64');
