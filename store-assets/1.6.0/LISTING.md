@@ -132,15 +132,48 @@ sign-up sheet. Caught by opening the PNG, not by the test.
 
 ---
 
-## 7. Alex's checklist
+## 7. Status in App Store Connect
 
-- [ ] Distribute build 63 from Xcode Organizer
-- [ ] App name → `Ball IQ - Football Quiz`
-- [ ] Subtitle → `Daily puzzles & club trivia` (**required by the rename**)
-- [ ] Promo text (§3)
-- [ ] Description edits A–D (§4)
-- [ ] What's New (§5)
-- [ ] Replace the 6 live screenshots with the 8 in `screenshots-6.9/`
-- [ ] Android AAB at versionCode 18 — not built yet, say the word
+Applied and **saved** on the 1.6.0 version page on 2026-08-15:
+
+- [x] Promo text (§3)
+- [x] Description — edits A–D, plus a second "make it more flattering" pass (§8)
+- [x] What's New (§5)
+
+Still open — these are **not on the version page**:
+
+- [ ] Distribute build 63 from Xcode Organizer *(Alex)*
+- [ ] App name → `Ball IQ - Football Quiz` — **App Information page**
+- [ ] Subtitle → `Daily puzzles & club trivia` — **App Information page**, required by the rename
+- [ ] Replace the 6 live screenshots with the 8 in `screenshots-6.9/` — drag-and-drop,
+      the file input is not reliably scriptable
+- [ ] Android AAB at versionCode 18 — bumped in `build.gradle`, not built yet
+
+⚠️ App name and subtitle live on **App Information**, a different page from the
+version editor. Editing the version page does not touch them, and the rename is
+worthless without the subtitle change — after renaming, the live subtitle "The
+Ultimate Football Quiz" repeats *both* words in the new name, so Apple indexes
+neither twice and two of thirty subtitle characters do real work.
 
 App Review notes need no change; they are accurate and stay as they are.
+
+---
+
+## 8. The flattering pass — what changed and what it cost
+
+Description went 2,910 → 3,733 chars. Two rules constrained it:
+
+**No counts.** The first draft of the new opening ended "Four daily puzzles.
+Seventy-odd club quizzes." That is a count, and the no-counts rule has already
+come back disguised twice (per-club progress bar, screenshot copy). Rewritten to
+"Four daily puzzles, a quiz for your own club". The digits that remain — 10
+questions, 60 seconds, 60 to 160 — are game *rules*, not inventory, and don't rot.
+
+**Nothing flattering that isn't true.** Every claim was checked before it went in:
+- "never scraped, never auto-generated" — true, the bank is hand-written
+- "Most answers come with a short explanation" — measured 5,475/6,694 = 81.8%
+- "rewriting it every time a record falls" — the seasonal `/lists` refresh
+- No FIFA, no World Cup wording (Guideline 5.2.1 rejected 1.3.3 for exactly that)
+
+New close: *"No investors, no content farm, no filler — just a football fan
+writing the quiz he wanted to play, and rewriting it every time a record falls."*
