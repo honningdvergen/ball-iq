@@ -6,6 +6,7 @@ import {
   saveMysteryResult, loadMysteryResult, computeMysteryStreak,
 } from '../lib/mysteryPlayer.js';
 import POOL from '../data/mysteryPool.json';
+import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
 import CAREERS from '../data/mysteryCareers.json';
 import SCHEDULE from '../data/mysterySchedule.json';
 
@@ -75,59 +76,13 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
 
   // Autocomplete over the pool. Capped — a 1,539-item list is unusable, and
   // showing everything on an empty box invites scrolling instead of typing.
-  /* People type a SURNAME and mean one specific player. Plain substring
-     matching does not know that, and the pool is 8k+ players deep, so the
-     good answer drowns:
-
-       "saka"   → 32 matches, almost all Sakai / Sakamoto / Sakaguchi /
-                  Hosaka / Esaka. Bukayo Saka only came first because the
-                  pool file happens to be ordered by fame — nothing in the
-                  code put him there, and any re-export would have moved him.
-       "shaw"   → Shawcross and Earnshaw sat directly under Luke Shaw.
-
-     So score the match instead of taking file order. A surname that IS the
-     query beats a surname that merely starts with it, which beats a first
-     name, which beats the query buried mid-word. Fame breaks ties, and a
-     small recency nudge settles same-surname pile-ups (35 players match
-     "santos"; the 1950s Brazilians outrank the current ones on fame alone). */
-  const suggestions = useMemo(() => {
-    const q = normaliseName(text);
-    if (q.length < 2) return [];
-    const guessed = new Set(guesses.map((g) => g.id));
-    const score = (p) => {
-      const full = normaliseName(p.name);
-      const parts = full.split(' ').filter(Boolean);
-      /* FAME LEADS, position breaks ties. An earlier pass made surname matches
-         worth +1000 against +250 for a first name — a gap fame (max 211) can
-         never close, which is wrong for the many players known by their FIRST
-         name. "james" is the case that proves it: the order people expect is
-         James Rodríguez (90), James Milner (63), Reece James (55), David James
-         (48) — which is simply fame order, first names and surnames interleaved.
-         So these bonuses are deliberately in the same range as a fame gap, not
-         above it. */
-      let s = 0;
-      /* 60, not 250: a mononym's full name IS a partial query. At 250, typing
-         "ronaldo" put R9 (fame 124) above Cristiano (fame 211), which is not
-         who anyone means. 60 restores Cristiano and changes no other query. */
-      if (full === q) s = 60;                                     // typed the whole name
-      else if (parts.some((w) => w === q)) s = 45;                 // Saka, Reece James, James Milner
-      else if (parts.some((w) => w.startsWith(q))) s = 25;         // Sakai, Shawcross
-      // else: buried mid-word (Hosaka, Earnshaw) — fame alone
-      s += p.fame || 0;
-      /* Recency nudge, smaller still — settles same-surname pile-ups (35 players
-         match "santos", and the 1950s Brazilians outrank the current ones on
-         fame alone) without reordering real prominence. Tuned live: at +30 it
-         flipped André Silva above Thiago Silva, whose fame is 23 higher. */
-      if (p.born >= 1995) s += 12; else if (p.born >= 1985) s += 6;
-      return s;
-    };
-    return POOL
-      .filter((p) => !guessed.has(p.id) && normaliseName(p.name).includes(q))
-      .map((p) => ({ p, s: score(p) }))
-      .sort((a, b) => b.s - a.s)
-      .slice(0, 8)
-      .map((x) => x.p);
-  }, [text, guesses]);
+  /* Ranked autocomplete. The scorer lives in lib/playerSearch.js because
+     Transfer Trail uses the SAME one — two copies would drift the first time
+     either was touched, which is this codebase's most repeated failure. */
+  const suggestions = useMemo(
+    () => rankPlayerSuggestions(POOL, text, { exclude: new Set(guesses.map((g) => g.id)) }),
+    [text, guesses],
+  );
 
   if (!answer || !ranks) {
     // No puzzle scheduled for today. The home card is gated on the same
@@ -288,7 +243,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
                   style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2, width: '100%', padding: '9px 14px', background: 'none', border: 'none', borderBottom: '1px solid var(--border)', color: 'var(--t1)', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}>
                   <span style={{ fontSize: 14.5, fontWeight: 700 }}>{p.name}</span>
                   <span style={{ fontSize: 11.5, color: 'var(--t3)', fontWeight: 600, maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {[p.born, p.club].filter(Boolean).join(' · ')}
+                    {suggestionSubtitle(p)}
                   </span>
                 </button>
               ))}

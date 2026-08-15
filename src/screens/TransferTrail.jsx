@@ -23,6 +23,8 @@ import {
 } from "../lib/trail.js";
 import { Confetti, haptic, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
 import { clubColour, clubAbbr } from "../lib/clubColour.js";
+import POOL from "../data/mysteryPool.json";
+import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
 
 function loadDay(ymd) {
   try {
@@ -86,9 +88,13 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
     } catch { /* best effort; never block the reveal */ }
   }, [done, won, misses, isArchive]);
 
-  const submit = useCallback((skipped) => {
+  const submit = useCallback((skipped, explicit) => {
     if (done) return;
-    const text = skipped ? "" : entry.trim();
+    // ⚠️ `explicit` exists because tapping a suggestion cannot go through
+    // setEntry() first: this callback closes over `entry`, so it would read the
+    // PREVIOUS keystroke's value and guess the wrong player. The tapped name is
+    // passed straight in instead.
+    const text = skipped ? "" : String(explicit ?? entry).trim();
     if (!skipped && !text) return;
     const hit = !skipped && guessMatchesPlayer(text, player);
     // ⚠️ iOS WKWebView: unmounting a FOCUSED input strands the keyboard on
@@ -104,6 +110,23 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
     if (hit) haptic("hardCorrect");
     else { haptic("wrong"); setShake(true); setTimeout(() => setShake(false), 420); }
   }, [done, entry, player, misses]);
+
+  /* Name autocomplete, same ranker as Mystery Player (lib/playerSearch.js).
+     Alex, after playing: "players type the first letter or two like mystery
+     player and a list of suggestions comes up". It also removes the spelling
+     tax — a Trail guess is limited, so losing an attempt to a mistyped
+     "Szczesny" punishes typing rather than football knowledge.
+     Already-guessed players are filtered out for the same reason Mystery does
+     it: re-offering a name you have spent is a wasted tap on a limited board. */
+  const guessedNames = useMemo(
+    () => new Set(attempts.filter((a) => !a.skipped).map((a) => a.text.toLowerCase().trim())),
+    [attempts],
+  );
+  const suggestions = useMemo(
+    () => rankPlayerSuggestions(POOL, entry, { limit: 6 })
+      .filter((p) => !guessedNames.has(p.name.toLowerCase())),
+    [entry, guessedNames],
+  );
 
   const streak = useMemo(() => (won ? computeTrailStreak(date) : 0), [won, date]);
   const [reportSent, setReportSent] = useState(false);
@@ -230,7 +253,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
 
       {!done && (
         <>
-          <div style={{ marginTop: 14, display: "flex", gap: 8,
+          <div style={{ position: "relative", marginTop: 14, display: "flex", gap: 8,
                         transform: shake ? "translateX(-4px)" : "none", transition: "transform .12s" }}>
             <input
               value={entry}
@@ -249,6 +272,25 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                        background: entry.trim() ? "var(--accent)" : "var(--s2)",
                        color: entry.trim() ? "#06230C" : "var(--t3)", fontWeight: 800, fontSize: 14,
                        fontFamily: "inherit", cursor: entry.trim() ? "pointer" : "default" }}>Guess</button>
+            {suggestions.length > 0 && (
+              <div style={{ position: "absolute", left: 0, right: 0, top: "100%", zIndex: 20, marginTop: 6,
+                            background: "var(--s2)", border: "1px solid var(--border)", borderRadius: 14,
+                            overflow: "hidden", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>
+                {suggestions.map((p) => (
+                  <button key={p.id} type="button" onClick={() => submit(false, p.name)}
+                    style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 2,
+                             width: "100%", padding: "9px 14px", background: "none", border: "none",
+                             borderBottom: "1px solid var(--border)", color: "var(--t1)", cursor: "pointer",
+                             fontFamily: "inherit", textAlign: "left" }}>
+                    <span style={{ fontSize: 14.5, fontWeight: 700 }}>{p.name}</span>
+                    <span style={{ fontSize: 11.5, color: "var(--t3)", fontWeight: 600, maxWidth: "100%",
+                                   whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {suggestionSubtitle(p)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <button onClick={() => submit(true)}
             style={{ marginTop: 8, width: "100%", background: "transparent", border: "1px solid var(--border)",

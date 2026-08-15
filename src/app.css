@@ -340,10 +340,10 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .mp-card-invite:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28);}
 .mp-card-invite:active{transform:scale(0.96);}
 .mp-card-ctas{display:flex;gap:10px;margin-top:15px;align-items:stretch;}
-.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:13px;border-radius:13px;font-size:15px;font-weight:800;background:#58CC02;color:#06230C;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#06230C;touch-action:manipulation;transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
+.mp-card-cta{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:13px;min-height:46px;border-radius:999px;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);font-size:15px;font-weight:800;background:#58CC02;color:#06230C;border:none;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;-webkit-text-fill-color:#06230C;touch-action:manipulation;transition:transform 0.1s,filter 0.15s;letter-spacing:0.01em;}
 .mp-card-cta:active{transform:scale(0.97);}
 .mp-card-cta:hover{filter:brightness(1.06);}
-.mp-card-cta.ghost{background:rgba(255,255,255,0.03);color:#C7D2C9;border:1px solid #2E4A35;box-shadow:none;-webkit-text-fill-color:#C7D2C9;}
+.mp-card-cta.ghost{background:rgba(255,255,255,0.055);color:#DCE7DE;border:1px solid #3A5C43;box-shadow:inset 0 1px 0 rgba(255,255,255,0.06);-webkit-text-fill-color:#DCE7DE;}
 .mp-card-cta.ghost:hover{background:var(--s2);border-color:var(--t3);filter:none;}
 
 /* ── DAILY ZONE (Sprint #12) ──
@@ -2241,6 +2241,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      so the card collapses to a single Online button on desktop. */
   .diff-option-local,
   .mp-card-cta.local { display: none; }
+  /* ⚠️ THE GLOW IS DELIBERATELY OFF AT DESKTOP. The base rule now carries it
+     again (Alex, 2026-08-15: the buttons "look really square and dull compared
+     to the play button on daily 7 and footle"), but at >=1024 the inline Footle
+     hero .fh-cta sits directly ABOVE this card, and a glowing secondary CTA
+     under a glowing hero is the exact inversion an earlier sprint fixed — "the
+     card below outshouted the hero above it". Shape stays pill everywhere;
+     only the glow is surrendered here. */
+  .mp-card-cta { box-shadow: none; }
   .mp-card-cta:only-of-type { flex: 1; }
   /* MP subtitle desktop/mobile swap dropped in Sprint #11 G2 along with
      the .hero-online-sub element itself. */
