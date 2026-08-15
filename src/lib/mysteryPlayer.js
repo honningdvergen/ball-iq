@@ -20,15 +20,41 @@
 // WEIGHTS — chosen so each tier is worth strictly more than everything below
 // it combined, which makes the ordering readable: "same club" always outranks
 // "same country + same position + same nationality".
+/* ── WEIGHTS ADOPTED FROM THE GENRE LEADER, 2026-08-15 ────────────────────────
+   Football Contexto publishes its own model: shared clubs 35%, era overlap 15%,
+   position 15%, nationality 15%, age 10%, career stats 10%. Alex: "can we copy
+   theirs please, they know how to do it". Measured against our old weights on
+   the Oblak puzzle, theirs is plainly better feedback:
+
+     Alisson    1112 cold -> 107 warm     ter Stegen 1131 cold -> 138 warm
+     Neuer      1374 cold -> 473 warm     Courtois     79 hot  ->  11 hot
+     Casillas    261 warm -> 769 cold     Messi       720 warm -> 3405 cold
+
+   Guessing a CONTEMPORARY KEEPER now reads warm, which is exactly the guess a
+   knowledgeable player makes. The drops are correct too: Casillas and Yashin
+   are right-position/wrong-era, and Messi was only warm because he shared a
+   LEAGUE COUNTRY with Oblak — the model was rewarding "plays in Spain" over
+   "is a goalkeeper". That term is gone.
+
+   TWO DELIBERATE DEVIATIONS, both forced:
+   · career stats 10% — we hold no goals/appearances data at all. Its share
+     goes to a reduced CURRENT-CLUB term, which they can omit entirely because
+     their pool is 766 players and almost nobody shares a club. Ours is 9,032,
+     so dropping it would mute the strongest real-world tell.
+   · league country — dropped, as above. They do not have it and it was
+     actively misleading.
+
+   Percentages of the ~1000 max: shared clubs 35 · era 15 · nationality 15 ·
+   position 15 (slot 10 + specific 5) · age 10 · current club 10. */
 const W = {
-  club: 1000, // same CURRENT club — the strongest possible signal
-  sharedClub: 420, // per club they have BOTH played for (career overlap)
+  club: 100, // same CURRENT club — kept, but no longer dominant
+  sharedClub: 117, // per club they have BOTH played for; x3 cap = 35%
   sharedClubMax: 3, // cap, so a 19-club journeyman cannot dominate
-  country: 300, // same league country
-  slot: 150, // same broad position (GK/DF/MF/FW)
-  position: 90, // same specific position (centre-back vs full-back)
-  nat: 220, // same nationality
-  age: 60, // continuous, 0..60 — the tie-breaker that prevents mass ties
+  era: 150, // were they CONTEMPORARIES — the term we were missing entirely
+  slot: 100, // same broad position (GK/DF/MF/FW)
+  position: 50, // same specific position (centre-back vs full-back)
+  nat: 150, // same nationality
+  age: 100, // continuous — fine-grained closeness, and the tie-breaker
 };
 
 /**
@@ -61,10 +87,20 @@ export function similarity(p, answer, careers = null) {
   let s = 0;
   if (p.club === answer.club) s += W.club;
   s += sharedClubs(p, answer, careers) * W.sharedClub;
-  if (p.country && p.country === answer.country) s += W.country;
   if (p.slot && p.slot === answer.slot) s += W.slot;
   if (p.position && p.position === answer.position) s += W.position;
   if (p.nat && p.nat === answer.nat) s += W.nat;
+  /* ERA is a PLATEAU, not a curve, and that is what separates it from `age`
+     below. Anyone born within ten years of the answer was a contemporary and
+     gets full credit; past that it decays. Age then does the fine-grained
+     work. Modelled on birth year because the shipped careers file carries club
+     NAMES only — the real start/end years exist build-side and were stripped.
+     ⚠️ So this is a PROXY: someone who retired at 28 or played until 41 sits
+     slightly wrong. Shipping career years would fix it properly. */
+  {
+    const gap = Math.abs((p.born || 0) - (answer.born || 0));
+    if (p.born && answer.born) s += W.era * (gap <= 10 ? 1 : Math.exp(-(gap - 10) / 6));
+  }
   // Age closeness decays over ~12 years, so a 22-year-old is meaningfully
   // closer to a 24-year-old than to a 34-year-old.
   //

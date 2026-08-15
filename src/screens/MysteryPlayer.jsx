@@ -176,7 +176,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
               landed on the first person to play it: a famous Brazilian keeper
               ranking past 1000 read as the game being broken rather than as him
               simply being unlike the answer. Say what the number means. */}
-          Guess any player in a top-club squad. Each guess is ranked by how similar they are to the secret player — club, country, position, nationality, age and clubs they have played for. <strong style={{ color: 'var(--t1)' }}>Lower is closer: the secret player is rank 1.</strong>
+          Guess any player in a top-club squad. Each guess is ranked by how similar they are to the secret player — the clubs they have played for, their era, position, nationality, age and current club. <strong style={{ color: 'var(--t1)' }}>Lower is closer: the secret player is rank 1.</strong>
         </p>
       )}
 
