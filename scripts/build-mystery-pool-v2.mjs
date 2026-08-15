@@ -110,7 +110,25 @@ const YEAR_NOW = 2026;
 const okYear = (y) => Number.isFinite(y) && y >= 1850 && y <= YEAR_NOW + 1;
 const tenure = (c) => {
   if (okYear(c.start) && okYear(c.end) && c.end >= c.start && c.end - c.start <= 30) return c.end - c.start;
-  if (okYear(c.start) && !c.end) return 3;   // open-ended: meaningful, not dominant
+  /* ⚠️ AN OPEN-ENDED SPELL IS THE CURRENT CLUB, AND IT IS USUALLY THE ONE A FAN
+     NAMES. This returned a flat 3 — "meaningful, not dominant" — which meant a
+     current club lost to almost any completed spell, so EVERY current player
+     was labelled with an old one. Found by Alex, 2026-08-15, reading a store
+     screenshot: "oblak plays for atletico madrid, neuer plays or played for
+     bayern munich, courtouis plays for real madrid, what is going on here".
+
+         Neuer     Bayern 2011-now  3  vs Schalke 2006-2011 5  -> Schalke
+         Courtois  Real M 2018-now  3  vs Chelsea 2011-2018 7  -> Chelsea
+         Oblak     Atleti 2014-now  3  vs Benfica 2010-2014 4  -> Benfica
+
+     Scoring it by elapsed years is what "longest tenure" meant all along. The
+     same 30-year sanity cap applies, so a spell with a nonsense start date
+     still cannot dominate. This is not cosmetic: `club` is the 1000-point term
+     in similarity(), so the ranks were wrong wherever the label was. */
+  if (okYear(c.start) && !c.end) {
+    const yrs = YEAR_NOW - c.start;
+    return (yrs >= 0 && yrs <= 30) ? yrs : 0;
+  }
   return 0;                                   // unusable dates score nothing
 };
 const startOf = (c) => (okYear(c.start) ? c.start : 0);
@@ -221,14 +239,54 @@ if (missing.length) {
   console.log('');
 }
 
+/* ── CURRENT CLUB BEATS LONGEST TENURE, FOR ACTIVE PLAYERS ─────────────────
+   Longest-tenure exists to stop a retired legend being labelled by an obscure
+   last move (Roberto Carlos -> Odisha FC). For an ACTIVE player it is simply
+   wrong, and measurably so: of 795 pool players who also appear in a current
+   squad, 439 carried a PREVIOUS club.
+
+       Declan Rice   West Ham 2017-2023 (6y)  beat  Arsenal 2023-now (3y)
+       Kai Havertz   Leverkusen               beat  Arsenal
+       Odegaard      Real Madrid              beat  Arsenal
+
+   Every fan says Arsenal. Alex, 2026-08-15: "should the algo not be based on
+   their current club?" — yes, when there IS a current club. squads.json is the
+   maintained current-squad source (65 clubs, 1,545 players), so it wins for
+   anyone in it and tenure still handles everyone retired.
+
+   ⚠️ LABELS MUST BE CANONICAL, NOT MERELY CORRECT. similarity() compares club
+   STRINGS exactly (`p.club === answer.club`, the 1000-point term), so leaving
+   squads' "Arsenal" beside Wikidata's "Arsenal F.C." would stop two Arsenal
+   players matching each other — a silent scoring bug worse than the wrong
+   label it fixed. Every club therefore resolves to ONE display name, and the
+   squad short-form wins because it is what a fan writes. */
+const SQUADS = JSON.parse(readFileSync('src/data/squads.json', 'utf8'));
+const clubKey = (n) => String(n || '').toLowerCase()
+  .replace(/\b(f\.?c\.?|c\.?f\.?|s\.?l\.?|a\.?c\.?|s\.?c\.?|afc|club de futbol|club de fútbol|calcio)\b/g, '')
+  .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9]/g, '');
+
+const currentClubById = new Map();   // playerId -> squad club name
+const canonByKey = new Map();        // clubKey  -> preferred display name
+for (const [club, arr] of Object.entries(SQUADS)) {
+  if (!Array.isArray(arr)) continue;
+  canonByKey.set(clubKey(club), club);
+  for (const pl of arr) if (pl?.id) currentClubById.set(pl.id, club);
+}
+const canonClub = (name) => canonByKey.get(clubKey(name)) || name;
+
 const build = (p) => {
   const career = CAREERS[p.id];
   const lc = latestClub(career);
+  // Active player -> the squad they are actually in; otherwise longest tenure.
+  // Either way the label is canonicalised so club matching stays exact.
+  const squadClub = currentClubById.get(p.id);
+  const clubName = canonClub(squadClub || lc.name);
   return {
     id: p.id, name: p.name, fame: p.fame, born: p.born,
     nat: p.nats[0] || null,
     slot: SLOT(p.poss), position: p.poss[0] || null,
-    club: lc.name, clubId: lc.id, country: country[lc.id] || null,
+    club: clubName, clubId: lc.id, country: country[lc.id] || null,
     clubCount: career.length,
   };
 };

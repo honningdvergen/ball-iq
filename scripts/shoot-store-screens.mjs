@@ -25,6 +25,15 @@ import { webkit } from '@playwright/test';
 // came back null, the typing loop was skipped, and the shot shipped an empty
 // board. The screen assertion still passed, because the screen was Footle.
 import { getWordleAnswer } from '../src/lib/wordle.js';
+// Same rule as the Footle answer above: derive in NODE. The Mystery and Trail
+// answers ROTATE daily, so a pinned name would silently start producing a
+// LOSING board — the shot would still pass its screen assertion and ship a
+// failure as marketing.
+import { getTrailAnswer } from '../src/lib/trail.js';
+import { answerIdForDay, mysteryDayIndex, matchGuess } from '../src/lib/mysteryPlayer.js';
+import MYSTERY_SCHEDULE from '../src/data/mysterySchedule.json' with { type: 'json' };
+import MYSTERY_POOL from '../src/data/mysteryPool.json' with { type: 'json' };
+import MYSTERY_ANSWERS from '../src/data/mysteryAnswers.json' with { type: 'json' };
 import { mkdirSync } from 'fs';
 import { resolve } from 'path';
 
@@ -92,8 +101,68 @@ const SHOTS = [
         if (title?.parentElement) title.parentElement.style.display = 'none';
       });
       await p.waitForTimeout(400); } },
-  { name: '04-transfer-trail', expect: 'Transfer Trail', go: async (p) => {
-      await p.getByText('Transfer Trail', { exact: true }).first().click(); } },
+  // ⚠️ WIN ON THE LAST ATTEMPT, NOT THE FIRST. Alex, 2026-08-15: solve it "on
+  // the fifth or sixth so people understand how they work". An instant win
+  // teaches nothing — the ladder of revealed clubs IS the mechanic, and only a
+  // late win shows it. TRAIL_MAX_ATTEMPTS is 5, so five is the ceiling here:
+  // four misses (each revealing another club) then the name.
+  { name: '04-transfer-trail', expect: 'Transfer Trail',
+    // Assert the WIN actually happened. The screen check alone would happily
+    // ship a lost board, which is the same class of miss as the empty Footle
+    // grid that shipped before the board assertion existed.
+    verify: async (p) => (await p.evaluate(() => /Got it|Solved|Nice/i.test(document.body.innerText))),
+    go: async (p) => {
+      await p.getByText('Transfer Trail', { exact: true }).first().click();
+      await p.waitForTimeout(1400);
+      const t = getTrailAnswer(new Date());
+      const answer = t ? t.display.join(' ') : null;
+      if (!answer) return;
+      const decoys = ['Toni Kroos', 'İlkay Gündoğan', 'Leon Goretzka', 'Thomas Müller']
+        .filter((n) => n.toLowerCase() !== answer.toLowerCase());
+      for (const g of [...decoys.slice(0, 4), answer]) {
+        await p.getByPlaceholder('Type a surname…').fill(g);
+        await p.waitForTimeout(250);
+        await p.getByText('Guess', { exact: true }).first().click();
+        await p.waitForTimeout(900);
+      }
+      await p.waitForTimeout(1200); } },
+
+  // Mystery is unlimited-guess, so this one lands on the SIXTH. The decoys are
+  // all keepers when the answer is a keeper: guessing the same position returns
+  // low ranks, and the ladder of near-misses narrowing toward 1 is exactly the
+  // thing a still image has to explain about a Contexto-style game.
+  { name: '07-mystery-player', expect: 'Mystery Player',
+    verify: async (p) => (await p.evaluate(() => /Got it|Solved|rank 1|#1\b/i.test(document.body.innerText))),
+    go: async (p) => {
+      await p.getByText('Mystery Player', { exact: true }).first().click();
+      await p.waitForTimeout(1400);
+      const id = answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex());
+      const ans = MYSTERY_POOL.find((x) => x.id === id);
+      if (!ans) return;
+      /* ⚠️ DECOYS COME FROM THE CURATED ANSWER POOL, NOT THE GUESS POOL.
+         First run drew "same slot, fame >= 55" straight from the guess pool and
+         put NIELS BOHR in an App Store screenshot — he really did keep goal for
+         Akademisk Boldklub, so he is a legitimate GUESS, but a physicist in the
+         shot makes the app look broken. mysteryAnswers.json is the hand-curated
+         set of players a median fan can name, which is exactly the bar a
+         marketing image has to clear. */
+      const answerIds = new Set(Array.isArray(MYSTERY_ANSWERS)
+        ? MYSTERY_ANSWERS
+        : (MYSTERY_ANSWERS.answers || Object.values(MYSTERY_ANSWERS).find(Array.isArray) || []));
+      const sameSlot = MYSTERY_POOL
+        .filter((x) => answerIds.has(x.id) && x.slot === ans.slot && x.id !== ans.id)
+        .sort((a, b) => b.fame - a.fame).slice(0, 5).map((x) => x.name);
+      for (const g of [...sameSlot, ans.name]) {
+        if (!matchGuess(MYSTERY_POOL, g)) continue;
+        await p.getByPlaceholder('Search a player').fill(g);
+        await p.waitForTimeout(400);
+        // Tap the ranked suggestion rather than pressing Enter — it is the real
+        // path a player takes now that the autocomplete exists.
+        const opt = p.getByText(g, { exact: true }).last();
+        if (await opt.count()) { await opt.click(); } else { await p.keyboard.press('Enter'); }
+        await p.waitForTimeout(800);
+      }
+      await p.waitForTimeout(1200); } },
 
   // ⚠️ A SOLVED BOARD, NOT AN EMPTY ONE. An empty grid shows the format; a
   // solved one shows the payoff. The daily answer is read FROM THE APP rather

@@ -81,6 +81,11 @@ const COPY = {
     head: ['Name him from', '{his career}'],
     sub: 'One club at a time. Fewer clubs, more points.',
   },
+  '07-mystery-player': {
+    eyebrow: 'DAILY · MYSTERY PLAYER', accent: AMBER,
+    head: ['Every guess gets you', '{closer}'],
+    sub: 'Rank 1 is the player. Nothing else is.',
+  },
   '05-quiz-explanation': {
     eyebrow: 'EVERY ANSWER EXPLAINED', accent: AMBER,
     head: ['Learn something,', 'not just {score}'],

@@ -23,6 +23,13 @@ import {
 } from "../lib/trail.js";
 import { Confetti, haptic, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
 import { clubColour, clubAbbr } from "../lib/clubColour.js";
+/* Shares mysteryPool.json with Mystery Player ON PURPOSE. Vite hoists it into
+   one chunk both modes use, so a player who does the dailies downloads it ONCE
+   (661 KB gzip) instead of twice. A slim 4-field index was built and measured
+   first: it cut a Trail-only visit 359 -> 206 KB, but pushed anyone playing
+   BOTH dailies to 867 KB, and duplicated 784 KB into the native binary, which
+   ships all of dist/. Neither chunk is preloaded — only react is — so this
+   costs nothing at boot. */
 import POOL from "../data/mysteryPool.json";
 import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
 
