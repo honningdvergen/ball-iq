@@ -91,6 +91,11 @@ const COPY = {
     head: ['Learn something,', 'not just {score}'],
     sub: 'The story behind the answer, every time.',
   },
+  '08-daily-chips': {
+    eyebrow: 'DAILY 7', accent: GREEN,
+    head: ['Seven questions,', '{every single day}'],
+    sub: 'Instant marking. Green right, red wrong.',
+  },
   '06-profile': {
     eyebrow: 'YOUR PROFILE', accent: AMBER,
     head: ["What's your {Ball IQ}?"],

@@ -25,6 +25,9 @@ import { webkit } from '@playwright/test';
 // came back null, the typing loop was skipped, and the shot shipped an empty
 // board. The screen assertion still passed, because the screen was Footle.
 import { getWordleAnswer } from '../src/lib/wordle.js';
+import { pickDailyQuestions } from '../src/lib/quiz.js';
+import { dayIndexForDate } from '../src/lib/date.js';
+import { QB } from '../src/questions.js';
 // Same rule as the Footle answer above: derive in NODE. The Mystery and Trail
 // answers ROTATE daily, so a pinned name would silently start producing a
 // LOSING board — the shot would still pass its screen assertion and ship a
@@ -228,6 +231,57 @@ const SHOTS = [
         const next = p.getByText(/^Next/).first();
         if (await next.count()) { await next.click(); await p.waitForTimeout(1500); }
       } } },
+
+  /* ⚠️ STOPS ON THE LAST QUESTION, DELIBERATELY. Alex, 2026-08-15: "would be
+     nice to show off those new green and red chips on daily 7."
+
+     Two constraints fought here and this frame settles both. Answering blindly
+     gave "1 correct out of 7 — Everyone starts somewhere", a dreadful advert;
+     a flawless 7/7 is one colour and teaches nothing. So five right, two wrong
+     — and the PROGRESS BAR then reads green·green·red·green·green·red·green,
+     which is the chip run itself, above a live question showing "✓ Correct!"
+     and the running 5 ✓ 7/7.
+
+     Going one tap further to the results page was tried and abandoned:
+     finishing the daily as a GUEST raises the "Save your progress" auth sheet,
+     and it appears AFTER the screen assertion runs — the check went green
+     while the captured frame was the sign-up sheet. Rather than fight a modal
+     for a denser, less legible screen, this stops on the question.
+
+     ⚠️ ANSWERS ARE DERIVED IN NODE BUT MATCHED BY TEXT, because option ORDER is
+     shuffled per player (App.jsx shuffles indices before render), so knowing
+     `q.a` is useless — only the answer STRING transfers. */
+  { name: '08-daily-chips', expect: 'Correct!',
+    verify: async (p) => (await p.evaluate(() => {
+      const t = document.body.innerText;
+      return /Correct!/i.test(t) && /7\s*\/\s*7/.test(t)
+        && !/Save your progress|Continue with Apple/i.test(t);
+    })),
+    go: async (p) => {
+      const wanted = pickDailyQuestions(QB, dayIndexForDate(new Date()));
+      const WRONG_ON = new Set([3, 6]);          // 5 of 7 correct
+      await p.goto(BASE + '/play', { waitUntil: 'networkidle' });
+      await p.waitForTimeout(3200);
+      await p.getByText('Daily 7', { exact: true }).first().click();
+      await p.waitForTimeout(2000);
+      for (let i = 0; i < 7; i++) {
+        const opts = p.locator('.opt');
+        if (!(await opts.count())) break;
+        const correct = wanted[i] ? wanted[i].o[wanted[i].a] : null;
+        const texts = await opts.allInnerTexts();
+        let idx = texts.findIndex((t) => correct && t.includes(correct));
+        if (idx < 0) idx = 0;
+        if (WRONG_ON.has(i + 1)) idx = texts.findIndex((_, n) => n !== idx);
+        await opts.nth(Math.max(0, idx)).click();
+        await p.waitForTimeout(950);
+        // Advance on every question EXCEPT the last — that final tap opens the
+        // results page and, as a guest, the auth sheet behind it.
+        if (i < 6) {
+          const next = p.getByText(/^(Next|Results|Finish)/i).first();
+          if (await next.count()) { await next.click(); await p.waitForTimeout(1300); }
+        }
+      }
+      await p.waitForTimeout(900); } },
 ];
 
 
