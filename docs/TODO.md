@@ -152,11 +152,16 @@ have never had a recurrence. Extend the pattern:
       moves dwell AFTER the click, never CTR from the SERP. ⚠️ The first three
       grep markers I tried (`seo-q`, `taster`, `biq-taster`) returned 0 on a
       known-playable club page too — the real marker is `data-a=`.
-      **Unconfirmed hypothesis** for the residual same-rank gap: head reference
-      queries get answered inline by Google's knowledge panel. Confirm by
-      filtering GSC to one such page and reading query-level CTR — one search
-      does it. Don't act before checking.
+      ✅ **CONFIRMED same day by reading the actual SERP** (google.com/search,
+      gl=gb, "premier league champions"): featured snippet **+** carousel **+**
+      People Also Ask, and the first organic result begins **492px down a 992px
+      viewport** — half the screen is Google's own answer. The #1 organic is
+      Wikipedia, already summarised in the snippet ("Current champions Arsenal").
+      So the residual same-rank gap is real and structural: on head reference
+      terms the click is gone before rank matters. Ranking 5th would not fix it.
       **Decision this forces:** no more head-term lists. Niche-only, or stop.
+      The niche winners work precisely because Google has no answer box for
+      "Primeira Liga top scorers" — check the SERP before commissioning a list.
 - [x] **C3. DONE 2026-08-14: 1.6.0 cut on both platforms.** iOS 1.6.0 (62)
       uploaded to TestFlight by Alex. Android 1.6.0 / vc17 AAB built, NOT
       uploaded — Alex's call. ⚠️ Build 61 was archived 2 min BEFORE the offline

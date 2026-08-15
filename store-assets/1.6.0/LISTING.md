@@ -104,11 +104,16 @@ Everything else in the description stays exactly as it is.
 ```
 Mystery Player and Transfer Trail are now part of your daily four.
 
-• Type two letters in Mystery Player or Transfer Trail and pick from a ranked list — no more spelling a name perfectly to make a guess.
-• A much sharper Mystery ranking. Guess a keeper from the same era as the answer and it now reads warm, as it should.
-• Thousands of players were listed with an old club. Fixed — Bayern is Bayern again.
-• Fixed a bug where the app could hang on the loading screen with no connection.
+• Start typing a name in either game and pick it from a ranked list. No more spelling a player perfectly just to make a guess.
+• A sharper Mystery Player ranking. Era now counts, so a keeper from the answer's own generation reads as close as he should be.
+• Thousands of players were listed with a club they had already left. Their current clubs are now correct.
+• Fixed a bug that could leave the app stuck on the loading screen with no connection.
 ```
+
+517 chars. Rewritten 2026-08-15 on Alex's note — the earlier draft ended the
+club-data bullet with "Fixed — Bayern is Bayern again", which he called cringe.
+Release notes get read by someone deciding whether to update; the joke was
+costing the bullet its meaning. Say what was wrong and what is now right.
 
 ---
 
