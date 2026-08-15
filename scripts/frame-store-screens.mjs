@@ -44,8 +44,19 @@ mkdirSync(OUT, { recursive: true });
 // five live screenshots are all named *-1284x2778.png. Uploading 6.9" assets
 // would have been rejected at the picker. Read the size off the listing before
 // rendering — do not assume the current largest size Apple documents.
-const W = 1284, H = 2778;
-const S = W / 1320;              // everything below was authored at 1320 wide
+// ⚠️ 1284x2778, NOT 1320x2868 — VERIFIED AGAINST THE LIVE LISTING (see above).
+//
+// ⚠️ PLAY CANNOT REUSE THE APPLE CANVAS. 1284x2778 is a 0.462 ratio; Google Play
+// wants phone screenshots at 16:9 or 9:16, and 9:16 is 0.5625. 1080x1920 is exactly
+// 9:16 and sits inside Play's 320–3840px bounds, so the Android set is rendered on
+// its own canvas rather than scaled from Apple's.
+const W = IS_ANDROID ? 1080 : 1284;
+const H = IS_ANDROID ? 1920 : 2778;
+// Type was authored against the 1284-wide Apple canvas; F rescales it for Android.
+const F = W / 1284;
+const f = (n) => Math.round(n * F);
+const S = 1284 / 1320;           // everything below was authored at 1320 wide
+
 // ⚠️ GEOMETRY IS EXACT, NOT APPROXIMATE — the tab bar was getting sliced.
 // The phone used to be taller than the canvas and object-fit:cover ate the
 // bottom of the app, which meant the nav bar (the thing that shows the app has
@@ -54,13 +65,28 @@ const S = W / 1320;              // everything below was authored at 1320 wide
 // image area's exact aspect and nothing is cropped at either edge.
 //   phone 899x1845 · pad 12 · status band 106 · image area 875x1739
 //   -> capture at 440 x 874 (see CAPTURE_H in shoot-store-screens.mjs)
-const PHONE_W = Math.round(924 * S), PAD = 12, BAND = Math.round(109 * S);
-const TOP_BLOCK = Math.round(900 * S), BOTTOM = Math.round(60 * S);
-const PHONE_H = H - TOP_BLOCK - BOTTOM;
-// The capture viewport must match the image area's aspect exactly or the framer
-// crops, and it crops the bottom — where the tab bar lives.
-const IMG_W = PHONE_W - PAD * 2, IMG_H = PHONE_H - BAND;
-console.log(`  frame ${W}x${H} · phone ${PHONE_W}x${PHONE_H} · image ${IMG_W}x${IMG_H}`
+//
+// ⚠️ THE ANDROID NUMBERS ARE DERIVED FROM THE SAME RAW CAPTURES, NOT GUESSED.
+// The raws are shot once at the Apple image-area aspect (440x874). The Android
+// phone is therefore sized so ITS image area lands on that identical aspect —
+// otherwise object-fit:cover eats the bottom of the app and slices the tab bar,
+// which is the exact bug this block already exists to prevent. Solve for width:
+//   IMG_H = IMG_W * 874/440, then PHONE_H = IMG_H + BAND.
+const RAW_ASPECT = 874 / 440;
+const PAD = IS_ANDROID ? 10 : 12;
+// 640, not 560: at 560 the phone only filled 52% of the width and the leftover
+// copy-block height showed up as ~200px of dead air between the subline and the
+// device. 9:16 is a wider canvas than Apple's, so the phone has to grow to keep
+// the composition tight rather than floating in the middle of the frame.
+const PHONE_W = IS_ANDROID ? 640 : Math.round(924 * S);
+const BAND = IS_ANDROID ? 56 : Math.round(109 * S);
+const BOTTOM = IS_ANDROID ? 44 : Math.round(60 * S);
+const IMG_W = PHONE_W - PAD * 2;
+const IMG_H = IS_ANDROID ? Math.round(IMG_W * RAW_ASPECT) : (H - Math.round(900 * S) - BOTTOM) - BAND;
+const PHONE_H = IS_ANDROID ? IMG_H + BAND : H - Math.round(900 * S) - BOTTOM;
+const TOP_BLOCK = H - PHONE_H - BOTTOM;
+console.log(`  ${IS_ANDROID ? 'PLAY  ' : 'APPLE '}frame ${W}x${H} · phone ${PHONE_W}x${PHONE_H}`
+  + ` · image ${IMG_W}x${IMG_H} · copy block ${TOP_BLOCK}`
   + `  ->  capture 440 x ${Math.round(440 * IMG_H / IMG_W)}`);
 const GREEN = '#58CC02', AMBER = '#FFC107', ORANGE = '#FF8A3D';
 
@@ -126,21 +152,21 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
   .top{
     flex:0 0 ${TOP_BLOCK}px;height:${TOP_BLOCK}px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding-bottom:40px;
+    padding-bottom:${f(40)}px;
   }
-  .mark{display:flex;align-items:center;gap:18px}
-  .mark img{width:64px;height:64px;border-radius:16px}
-  .mark span{font-size:52px;font-weight:800;color:#fff;letter-spacing:-.5px}
+  .mark{display:flex;align-items:center;gap:${f(18)}px}
+  .mark img{width:${f(64)}px;height:${f(64)}px;border-radius:${f(16)}px}
+  .mark span{font-size:${f(52)}px;font-weight:800;color:#fff;letter-spacing:-.5px}
   .mark b{color:${AMBER};font-weight:800}
   .eyebrow{
-    margin-top:78px;font-size:31px;font-weight:800;letter-spacing:.16em;
+    margin-top:${f(78)}px;font-size:${f(31)}px;font-weight:800;letter-spacing:.16em;
     color:${c.accent};text-transform:uppercase;text-align:center;
   }
   h1{
-    margin-top:26px;font-size:86px;line-height:1.06;font-weight:800;
-    color:#fff;letter-spacing:-2px;text-align:center;text-wrap:balance;
+    margin-top:${f(26)}px;font-size:${f(86)}px;line-height:1.06;font-weight:800;
+    color:#fff;letter-spacing:${(-2 * F).toFixed(1)}px;text-align:center;text-wrap:balance;
   }
-  .sub{margin-top:30px;font-size:38px;color:#9AA0A6;text-align:center;max-width:${W-180}px}
+  .sub{margin-top:${f(30)}px;font-size:${f(38)}px;color:#9AA0A6;text-align:center;max-width:${W-f(180)}px}
   /* The phone bleeds off the bottom: it is a window into the app, not an object
      sitting on a shelf. Matches the live set. */
   .phone{
@@ -162,37 +188,48 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
   .statusbar{
     position:relative;flex:0 0 auto;height:${BAND}px;background:#0A0A0A;
     display:flex;align-items:center;justify-content:space-between;
-    padding:14px 46px 0;
-    color:#fff;font-size:40px;font-weight:600;letter-spacing:-.3px;
+    padding:${f(14)}px ${f(46)}px 0;
+    color:#fff;font-size:${f(40)}px;font-weight:600;letter-spacing:-.3px;
   }
-  .statusbar .t{font-variant-numeric:tabular-nums;padding-left:10px}
-  .statusbar .ic{display:flex;align-items:center;gap:14px;padding-right:6px}
-  .bars{display:flex;align-items:flex-end;gap:4px;height:26px}
-  .bars i{width:7px;background:#fff;border-radius:2px}
-  .bars i:nth-child(1){height:9px}.bars i:nth-child(2){height:14px}
-  .bars i:nth-child(3){height:20px}.bars i:nth-child(4){height:26px}
-  .batt{width:48px;height:25px;border:3px solid rgba(255,255,255,.55);border-radius:8px;padding:2.5px;position:relative}
-  .batt i{display:block;height:100%;width:82%;background:#fff;border-radius:4px}
-  .batt:after{content:'';position:absolute;right:-7px;top:8px;width:4px;height:9px;background:rgba(255,255,255,.55);border-radius:0 2px 2px 0}
+  .statusbar .t{font-variant-numeric:tabular-nums;padding-left:${f(10)}px}
+  .statusbar .ic{display:flex;align-items:center;gap:${f(14)}px;padding-right:${f(6)}px}
+  .bars{display:flex;align-items:flex-end;gap:${f(4)}px;height:${f(26)}px}
+  .bars i{width:${f(7)}px;background:#fff;border-radius:2px}
+  .bars i:nth-child(1){height:${f(9)}px}.bars i:nth-child(2){height:${f(14)}px}
+  .bars i:nth-child(3){height:${f(20)}px}.bars i:nth-child(4){height:${f(26)}px}
+  .batt{width:${f(48)}px;height:${f(25)}px;border:${Math.max(2,f(3))}px solid rgba(255,255,255,.55);border-radius:${f(8)}px;padding:2.5px;position:relative}
+  .batt i{display:block;height:100%;width:82%;background:#fff;border-radius:${f(4)}px}
+  .batt:after{content:'';position:absolute;right:${-f(7)}px;top:${f(8)}px;width:${f(4)}px;height:${f(9)}px;background:rgba(255,255,255,.55);border-radius:0 2px 2px 0}
   /* ⚠️ THE ISLAND NEEDS AN EDGE TO EXIST AT ALL.
      It was drawn as pure #000 on a #0A0A0A status bar — a 4/255 difference, so
      it rendered as "no island". A real device reads because the cutout catches
      a rim of light and the front camera sits just inside it. Both are drawn
      here; without them a dark app makes the island invisible. */
+  /* ⚠️ THE CUTOUT IS THE THING THAT SAYS WHICH PHONE THIS IS. An iPhone Dynamic
+     Island on a Play listing reads as a screenshot of the wrong platform — the
+     one detail a reviewer and a shopper both clock instantly. Android gets a
+     centred punch-hole (Pixel/Samsung convention) instead. Same lighting logic
+     as the island: without the rim and the lens gradient it renders as a flat
+     dark blob on a dark bar and effectively disappears. */
   .island{
-    position:absolute;top:${Math.round(PHONE_W*0.020)}px;left:50%;transform:translateX(-50%);
-    width:${Math.round(PHONE_W*0.31)}px;height:${Math.round(PHONE_W*0.084)}px;
-    background:#000;border-radius:999px;
+    position:absolute;top:${IS_ANDROID ? Math.round(PHONE_W*0.030) : Math.round(PHONE_W*0.020)}px;
+    left:50%;transform:translateX(-50%);
+    width:${IS_ANDROID ? Math.round(PHONE_W*0.055) : Math.round(PHONE_W*0.31)}px;
+    height:${IS_ANDROID ? Math.round(PHONE_W*0.055) : Math.round(PHONE_W*0.084)}px;
+    background:${IS_ANDROID
+      ? 'radial-gradient(circle at 35% 30%, #23262b 0%, #0d0f12 60%, #050506 100%)'
+      : '#000'};
+    border-radius:999px;
     box-shadow:0 0 0 1.5px rgba(255,255,255,.10), inset 0 3px 8px rgba(0,0,0,.9);
   }
-  .island:after{
+  ${IS_ANDROID ? '' : `.island:after{
     content:'';position:absolute;top:50%;right:${Math.round(PHONE_W*0.020)}px;
     transform:translateY(-50%);
     width:${Math.round(PHONE_W*0.036)}px;height:${Math.round(PHONE_W*0.036)}px;
     border-radius:50%;
     background:radial-gradient(circle at 35% 30%, #23262b 0%, #0d0f12 60%, #050506 100%);
     box-shadow:0 0 0 1px rgba(255,255,255,.06);
-  }
+  }`}
   .screen img{display:block;width:100%;flex:1 1 auto;min-height:0;object-fit:cover;object-position:top center}
 </style></head><body>
   <div class="top">

@@ -72,3 +72,45 @@ solo-dev close → CTA.
 - [ ] Localised listings — Play supports per-language listings exactly like Apple,
       and `localisations.json` already holds copy for 15 locales. Nothing done here yet.
 - [ ] Release notes for vc18 — Play caps them at 500 chars and needs `<en-US>` tags.
+
+---
+
+## Screenshots — DONE 2026-08-15
+
+8 framed PNGs at **1080×1920**, in `screenshots/android/` and copied to
+`~/Downloads/BallIQ-1.6.0-store-assets/screenshots-android/`.
+
+```
+PLATFORM=android node scripts/frame-store-screens.mjs
+```
+
+Three things that made this a real port rather than a resize:
+
+1. **Play cannot reuse the Apple canvas.** 1284×2778 is a 0.462 ratio; Play wants
+   16:9 or 9:16, and 9:16 is 0.5625. 1080×1920 is exactly 9:16 and inside Play's
+   320–3840px bounds, so Android renders on its own canvas.
+2. **The RAW captures are shared — and must stay uncropped.** The raws are shot
+   once at the Apple image-area aspect (440×874). The Android phone is therefore
+   SIZED so its own image area lands on that identical aspect; otherwise
+   `object-fit:cover` eats the bottom of the app and slices the tab bar, the exact
+   bug the geometry comments already exist to prevent. No re-shoot needed.
+3. **The cutout is what says which platform this is.** An iPhone Dynamic Island on
+   a Play listing reads as the wrong platform's screenshot — the one detail both a
+   reviewer and a shopper clock instantly. Android gets a centred punch-hole, with
+   the same rim-and-lens lighting, or it renders as a flat blob on a dark bar.
+
+Phone width was tuned 560 → 640 after looking at the output: at 560 the device
+filled only 52% of the width and the leftover copy-block height showed up as ~200px
+of dead air between the subline and the phone. 9:16 is a wider canvas than Apple's,
+so the phone has to grow to keep the composition tight.
+
+⚠️ Apple output is untouched — verified in the same run: `phone 899x1845 ·
+image 875x1739 · capture 440 x 874`, identical to before.
+
+## Still open on Play
+
+- [ ] **Feature graphic 1024×500** — required by Play, and we have none. Not a
+      screenshot; it is the banner at the top of the listing.
+- [ ] Upload the 8 screenshots to the Play listing.
+- [ ] Release notes for vc18 — 500-char cap, needs `<en-US>` tags.
+- [ ] The 15 localised Play listings (copy already exists in `localisations.json`).
