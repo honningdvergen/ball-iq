@@ -245,3 +245,31 @@ questions, 60 seconds, 60 to 160 — are game *rules*, not inventory, and don't 
 
 New close: *"No investors, no content farm, no filler — just a football fan
 writing the quiz he wanted to play, and rewriting it every time a record falls."*
+
+---
+
+## 9. ⚠️ THE SUBMISSION BLOCKER THE LOCALISATIONS CREATED
+
+Adding the 14 locales produced *"Unable to Add for Review — You must enter a
+Privacy Policy URL in App Privacy."* **Every localisation carries its own Privacy
+Policy URL**, and a new locale arrives with that field EMPTY. English (U.K.)
+already had `https://balliq.app/privacy.html`; the other fourteen did not.
+
+Fixed 2026-08-15 — all 15 set and each verified. **Add for Review is now enabled.**
+
+Set them under **App Privacy → Privacy Policy → Edit**, using the locale switcher
+inside that section. Two traps:
+
+1. **The field pre-fills from the primary**, so typing the same URL leaves Save
+   greyed — React sees no change. **Clear it first** (⌘A, Delete), then type.
+2. **Programmatic value-setting does not enable Save**, even though the character
+   counter updates. Real keystrokes into a JS-focused field are required.
+
+⚠️ And a tooling trap worth remembering: this page runs at 2400×1240 CSS pixels
+while screenshots come back 1543×797 (devicePixelRatio 1.6). Clicking at screenshot
+coordinates missed the input by ~380px and failed *silently* — the value simply
+never changed. Locate elements with `getBoundingClientRect()` and focus via JS.
+
+**The general rule:** anything that is per-localisation is now 15× the work, and
+Apple will only tell you about the missing ones at submit time. Next time a locale
+is added, set its privacy URL in the same pass.

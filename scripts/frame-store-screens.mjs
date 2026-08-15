@@ -28,8 +28,14 @@ import { readFileSync, mkdirSync, writeFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
 import { chromium } from '@playwright/test';
 
+// PLATFORM=android → Google Play assets instead of App Store ones.
+//   PLATFORM=android node scripts/frame-store-screens.mjs
+// The RAW captures are shared: it is the same app on the same screens, only the
+// frame and canvas differ, so no re-shoot is needed for the second store.
+const IS_ANDROID = (process.env.PLATFORM || 'ios').toLowerCase() === 'android';
+
 const RAW = resolve('screenshots/raw');
-const OUT = resolve('screenshots/framed');
+const OUT = resolve(IS_ANDROID ? 'screenshots/android' : 'screenshots/framed');
 mkdirSync(OUT, { recursive: true });
 
 // ⚠️ 1284x2778, NOT 1320x2868 — VERIFIED AGAINST THE LIVE LISTING.
