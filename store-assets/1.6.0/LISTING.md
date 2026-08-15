@@ -11,24 +11,44 @@ which are good and stay. Read the live text before rewriting store copy; it is
 
 ---
 
-## 1. App name  (30 char limit)
+## 1–2. Name + subtitle — ✅ DONE 2026-08-15 (App Information page)
 
 ```
-Ball IQ - Football Quiz
+Ball IQ - Football Quiz        23/30   was: Ball IQ - Football Trivia
+Daily Puzzles & Club Trivia    27/30   was: Daily Quiz & Puzzle Game
 ```
-23 chars. Was "Ball IQ - Football Trivia".
 
-## 2. Subtitle  (30 char limit) — MUST CHANGE
+⚠️ My earlier note here said the live subtitle was "The Ultimate Football Quiz".
+**It was not** — that was stale; the live value was "Daily Quiz & Puzzle Game".
+Read the console before writing about it.
+
+The subtitle still had to change, for the documented reason: Apple indexes only
+name + subtitle + keywords, and a word repeated across them is counted once and
+wasted. Renaming to *Football **Quiz*** would have collided with the old
+subtitle's *Quiz*. The new pair shares no word — and it **rehomes `trivia`**, so
+the rename does not silently lose that term, and pulls in `club`, our strongest
+intent on the web.
+
+## 2b. Keywords — ✅ FIXED, and they were quietly broken
 
 ```
-Daily puzzles & club trivia
+before  soccer,player,guess,club,team,legends,league,premier,euro,liga,footle,fan,champions,match,quiz,daily   100/100
+after   soccer,player,guess,team,legends,league,premier,euro,liga,footle,champions,career,transfer,mystery      98/100
 ```
-27 chars.
 
-⚠️ Not optional. Apple indexes name + subtitle + keywords, and a word repeated
-across those fields is wasted — it does not rank twice. The current subtitle is
-"The Ultimate Football Quiz", which after the rename repeats BOTH words in the
-name. Every word above is new to the pair: daily · puzzles · club · trivia.
+The 5.2.1 FIFA rejection stripped `world,cup` and the freed space was backfilled
+with **`quiz,daily` — both already in the subtitle**. Two of sixteen slots have
+been dead since roughly July. Nothing flagged it because the field still read
+100/100: **a full keyword field is not a working one.**
+
+Out: `quiz,daily` (duplicates), `club` (duplicate once the new subtitle landed),
+`fan,match` (weakest by intent). In: `career,transfer,mystery` — all three are
+real modes, so Guideline 2.3.7 holds.
+
+Dropping a duplicate costs nothing, because Apple builds phrases ACROSS fields:
+`soccer`(kw) + `quiz`(name) still makes *soccer quiz*; `club`(subtitle) +
+`quiz`(name) still makes *club quiz*. That is exactly why duplication is waste
+rather than reinforcement.
 
 ## 3. Promotional text  (170 chars, editable without review)
 
@@ -191,8 +211,8 @@ Applied and **saved** on the 1.6.0 version page on 2026-08-15:
 Still open — these are **not on the version page**:
 
 - [ ] Distribute build 63 from Xcode Organizer *(Alex)*
-- [ ] App name → `Ball IQ - Football Quiz` — **App Information page**
-- [ ] Subtitle → `Daily puzzles & club trivia` — **App Information page**, required by the rename
+- [x] App name → `Ball IQ - Football Quiz` — DONE (App Information)
+- [x] Subtitle → `Daily Puzzles & Club Trivia` — DONE (App Information)
 - [x] Screenshots — all 8 uploaded by Alex 2026-08-15, **order fixed and verified**
       (they land in upload order, which was scrambled: 01·05·02·08·07·06·03·04)
 - [ ] Android AAB at versionCode 18 — bumped in `build.gradle`, not built yet
