@@ -75,10 +75,10 @@
       "_status": "🟡 NAME + SUBTITLE LIVE, VERSION FIELDS PENDING — still needs keywords, description, promotional text and release notes on the version page. An incomplete localisation can block Add for Review."
     },
     "en-AU": {
-      "_note": "Soccer, not football — in Australia 'football' collides with AFL and rugby league, which is the wrong intent entirely.",
+      "_note": "Name carries FOOTBALL, subtitle carries SOCCER — both high-intent terms land in the two highest-weighted fields. Keyword field therefore must not repeat either.",
       "name": "Ball IQ - Football Puzzles",
       "subtitle": "Daily soccer quizzes & trivia",
-      "keywords": "football,futbol,player,guess,legends,league,premier,liga,footle,champions,career,transfer,mystery",
+      "keywords": "futbol,player,guess,legends,league,premier,liga,footle,champions,career,transfer,mystery,team",
       "promo": "New: Mystery Player and Transfer Trail. Four daily puzzles, one soccer brain. Guess the secret player, name him from his career, and keep the streak alive.",
       "description": "@en-US",
       "whatsNew": "@en-US",
