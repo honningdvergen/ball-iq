@@ -147,6 +147,32 @@ Both scripts now take `ONLY=02-footle` so one bad shot can be redone without
 re-rolling the other seven (every shot is non-deterministic — daily answers
 rotate and quiz options shuffle).
 
+### Order — and why it needs fixing every upload
+
+App Store Connect keeps screenshots in **upload order**, not filename order.
+The 8 landed as `01·05·02·08·07·06·03·04` and had to be dragged back.
+
+Reordering is scriptable: the tiles are `react-beautiful-dnd` handles with a
+**keyboard** path — focus the tile, `Space` to lift, `←`/`→` to move, `Space` to
+drop. ⚠️ **One arrow per second.** Sending the arrows back-to-back — or with the
+`repeat` parameter — registers exactly ONE move, because each step animates and
+the library drops keys during the transition. That failure is silent: the keys
+all report "pressed" and the order is simply wrong.
+
+Order is saved **on drop**, by the media API — the version **Save** button stays
+disabled the whole time and is NOT the confirmation. Verified by reloading the
+page and re-reading the order, which is the only check that means anything.
+
+📌 **Apple only uses the first 3** on the app installation sheet (stated on the
+page itself). Ours are Home · Footle · Club picker — the hook, the daily habit,
+and the differentiator. Trail and Mystery sit at 4 and 7; they carry the 1.6.0
+story through What's New rather than the install sheet.
+
+📌 The folder name `screenshots-6.9` is a misnomer — 1284×2778 is filed by Apple
+under **6.5" Display**, which is what the console shows. It is accepted and
+scaled to the other sizes; no action needed, just don't go hunting for a 6.9"
+slot that isn't there.
+
 ⚠️ 08 stops ON the last question, not the results page. Finishing the daily as a
 guest raises the "Save your progress" auth sheet, and it appears AFTER the
 screen assertion runs — the check went green while the captured frame was the
@@ -167,8 +193,8 @@ Still open — these are **not on the version page**:
 - [ ] Distribute build 63 from Xcode Organizer *(Alex)*
 - [ ] App name → `Ball IQ - Football Quiz` — **App Information page**
 - [ ] Subtitle → `Daily puzzles & club trivia` — **App Information page**, required by the rename
-- [ ] Replace the 6 live screenshots with the 8 in `screenshots-6.9/` — drag-and-drop,
-      the file input is not reliably scriptable
+- [x] Screenshots — all 8 uploaded by Alex 2026-08-15, **order fixed and verified**
+      (they land in upload order, which was scrambled: 01·05·02·08·07·06·03·04)
 - [ ] Android AAB at versionCode 18 — bumped in `build.gradle`, not built yet
 
 ⚠️ App name and subtitle live on **App Information**, a different page from the
