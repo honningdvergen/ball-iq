@@ -146,7 +146,7 @@ export const CATEGORIES = [
     slug: 'world-cup',
     name: 'World Cup',
     h1: 'World Cup Quiz',
-    title: 'World Cup Quiz — FIFA World Cup Trivia | Ball IQ',
+    title: 'World Cup Quiz with Answers — Free to Play | Ball IQ',
     description:
       'Test your FIFA World Cup knowledge with free trivia questions and explained answers — from 1930 to Qatar 2022. Every answer comes with the story behind it.',
     about: 'FIFA World Cup',
@@ -182,7 +182,7 @@ export const CATEGORIES = [
     slug: 'premier-league',
     name: 'Premier League',
     h1: 'Premier League Quiz',
-    title: 'Premier League Quiz — Football Trivia | Ball IQ',
+    title: 'Premier League Quiz with Answers — Free to Play | Ball IQ',
     description:
       'Free Premier League quiz, most answers explained — the 1992 breakaway, the Invincibles and City’s 100-point season. Test your knowledge.',
     about: 'Premier League',
@@ -218,7 +218,7 @@ export const CATEGORIES = [
     slug: 'champions-league',
     name: 'Champions League',
     h1: 'Champions League Quiz',
-    title: 'Champions League Quiz — UEFA Trivia | Ball IQ',
+    title: 'Champions League Quiz with Answers — Free to Play | Ball IQ',
     description:
       'Free UEFA Champions League quiz with explained answers — from Real Madrid’s European Cup dynasty to Istanbul 2005 and Liverpool’s comeback against Barcelona.',
     about: 'UEFA Champions League',
