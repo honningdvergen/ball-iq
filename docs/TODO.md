@@ -213,9 +213,16 @@ taster questions, each referencing the English question id it came from, and
       when there are enough locales for a switcher to be worth the footer space.
 
 ### L1 · NEW LANGUAGES — packs already exist, demand already proven
-- [ ] **Italian `/it/`** — 8 clubs ready: juventus, inter-milan, ac-milan, napoli,
-      roma, lazio, fiorentina, atalanta. *(`quiz calcio serie a` already at 22.8
-      with no page at all.)*
+- [x] **Italian `/it/` — WAVE 1 SHIPPED 2026-08-16 (ba09dfe)**: `/it/quiz/` hub +
+      **juventus, inter-milan, ac-milan** (66 hand-translated questions). Juve/
+      Inter/Milan chosen together because they carry both defining derbies, so
+      the cluster is coherent from day one.
+- [ ] **Italian wave 2** — napoli, roma, lazio, fiorentina, atalanta. Packs
+      ready (42/37/47/47/33 questions). Held deliberately so wave 1 shipped
+      complete rather than eight thin pages.
+      ⚠️ When translating: PRESERVE OPTION ORDER (the build checks the answer
+      INDEX, not the text) and give any translated proper noun in the answer slot
+      an `en` field. The gate caught six of those in wave 1.
 - [ ] **German `/de/`** — 4 ready: bayern-munich, borussia-dortmund,
       bayer-leverkusen, rb-leipzig. *(`fußball quiz bundesliga` at 49.)*
 - [ ] **French `/fr/`** — 4 ready: psg, marseille, lyon, monaco.
