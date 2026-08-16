@@ -167,6 +167,91 @@ have never had a recurrence. Extend the pattern:
       uploaded — Alex's call. ⚠️ Build 61 was archived 2 min BEFORE the offline
       auth fix landed and is poisoned; do not promote it.
 
+## 🌍 LOCALISATION LAYER — the tracked list (opened 2026-08-15)
+
+Alex: *"I really want to squeeze out ALL the untapped potential on this
+localisation thing... let us not do it half-assed."* This is that list. Tick as
+they land.
+
+### What is TRUE today — measured, not assumed
+- **16 localised pages exist**, all club pages: **es 10 · pt 3 · id 2 · tr 1**.
+- **hreflang IS already wired** (`en` / `es` / `x-default`). The hard part is done.
+- **There is NO localised hub in any language.** Nothing targets the head term
+  "quiz de fútbol", "futbol quiz", "quiz di calcio", "fußball quiz".
+- **86 English club packs** exist to translate from.
+
+### The demand, from GSC (28 days)
+- **"soccer": 17 impressions, 0 clicks** across 1,000 queries — and every one is a
+  `/lists/` reference query. **We are invisible on "soccer quiz".**
+- Where we HAVE built: `quiz de river plate` **pos 8.6**, `quiz del barcelona` **6.6**.
+- Demand in languages with **NO pages at all**: `quiz calcio serie a` **22.8**,
+  `fußball quiz bundesliga` **49** — English pages limping into foreign SERPs.
+
+### ⚠️ THE RULE THAT SIZES EVERYTHING
+A localised club page is **NOT a template fill**. It carries ~10 HAND-TRANSLATED
+taster questions, each referencing the English question id it came from, and
+`gen-seo-pages.mjs` throws if an id stops resolving. So:
+
+- **Translating an existing pack** = cheap, do lots.
+- **A market with no English pack** = forge the pack FIRST (see the SEO-wave
+  skill), then translate. Roughly 5× the work.
+
+---
+
+### L0 · FOUNDATION — do first, it unblocks the head terms
+- [ ] **Localised hub per language** (`/es/`, `/tr/`, `/pt/`, `/it/`, `/de/`, `/fr/`, `/id/`).
+      This is the "football quiz" head term in each language and we have NOTHING
+      pointing at it. Mirrors what the App Store localisation just did.
+- [ ] Extend `hreflang` to every new locale + keep `x-default` on English.
+- [ ] New locales into `buildSitemap` + auto-IndexNow.
+- [ ] Footer/lang switcher so the locales are crawlable from each other.
+
+### L1 · NEW LANGUAGES — packs already exist, demand already proven
+- [ ] **Italian `/it/`** — 8 clubs ready: juventus, inter-milan, ac-milan, napoli,
+      roma, lazio, fiorentina, atalanta. *(`quiz calcio serie a` already at 22.8
+      with no page at all.)*
+- [ ] **German `/de/`** — 4 ready: bayern-munich, borussia-dortmund,
+      bayer-leverkusen, rb-leipzig. *(`fußball quiz bundesliga` at 49.)*
+- [ ] **French `/fr/`** — 4 ready: psg, marseille, lyon, monaco.
+
+### L2 · DEEPEN THE LANGUAGES WE ALREADY HAVE
+- [ ] **Turkish +3** — fenerbahce, besiktas, trabzonspor. Galatasaray alone is
+      absurd; Süper Lig top-scorers is one of only six `/lists/` pages on page 1.
+- [ ] **Portuguese +4** — benfica, porto, sporting-cp (Portugal, currently zero)
+      and santos (Brazil).
+- [ ] **Spanish** — 10 live; audit which are missing vs the La Liga packs.
+
+### L3 · MARKETS THAT NEED A PACK FORGED FIRST (~5× the work)
+- [ ] **Liga MX** — Alex asked for this explicitly. **Zero packs exist**:
+      club-america, chivas, cruz-azul, pumas, monterrey, tigres. Forge → verify →
+      translate. Biggest Spanish-speaking football market we do not serve.
+- [ ] **More Brasileirão** — sao-paulo, gremio, internacional, cruzeiro,
+      atletico-mineiro, vasco-da-gama, botafogo, fluminense. All packless.
+- [ ] **Arabic `/ar/`** — al-hilal, al-nassr, al-ahly, zamalek. All packless.
+      Huge market; also the App Store locale flagged lowest-confidence, so get a
+      native read on the copy either way.
+
+### L4 · BEYOND CLUB PAGES
+- [ ] Localised Footle / Transfer Trail / Mystery Player landing pages —
+      currently English-only, and they are the modes that hold attention.
+- [ ] Decide `/es/` vs `/es-mx/` split. One `/es/` serving Spain AND Mexico is the
+      cheap start; hreflang supports region targeting if the data justifies it.
+
+### L5 · MEASURE — do not skip, this is how we avoid a second /lists
+- [ ] Per-locale GSC read 3–4 weeks after each wave: impressions, clicks, **and
+      position**, split by locale.
+- [ ] ⚠️ Apply the `/lists` lesson: **check the SERP before committing to a term.**
+      If Google answers it above the fold, the page cannot pay at any rank.
+
+### ⚠️ Two traps carried over
+- **Localisation is NOT automatic per market.** Our US read killed the soccer
+  layer thesis once already (`project_us_egypt_gsc_2026_07_29`) — "ball IQ" is
+  basketball jargon there. Egypt was 100% brand. Build where DEMAND is measured,
+  not where a language is spoken.
+- **`clubs.mjs` long names vs `leagues.mjs` short names** — join via
+  `club-alias.mjs`. That has fired five times, once writing an entire pack for
+  clubs already published.
+
 ### ⏰ EXPIRES MON 18 AUG — two free store levers, no binary needed
 - [ ] **Play promotional content — Transfer Deadline Day (1 Sep).** Play needs
       14 days lead when "request featuring" is ticked. Console → Grow users →
