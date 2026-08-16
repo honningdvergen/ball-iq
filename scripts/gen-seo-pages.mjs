@@ -4192,8 +4192,40 @@ ${footer()}`;
 // carry the phrase in URL, H1 and body; index every quiz we have so the intent
 // is actually served; and concentrate the internal-link signal currently
 // diffused across a homepage that is also trying to sell an app.
+// ⚠️ UPDATE 2026-08-16 — THE THESIS ABOVE WAS RIGHT AND THE PAGE STILL LOST.
+// Measured, exact query "football quiz", 90 days, broken down BY PAGE:
+//     /quiz/           2 clicks · 87 impressions · position 39.0
+//     /football-quiz/  0 clicks ·  2 impressions · position  9.0
+// Across all queries this page drew 5 impressions and 0 clicks in 90 days, and
+// all three of its queries were "football quiz" variants /quiz/ also targets.
+// Both pages led their <title> with "Football Quiz" and both were
+// self-canonical: textbook cannibalisation on the north-star term.
+//
+// The premise that slipped is in the comment above — "the thing competing for it
+// was the HOMEPAGE". By the time this page shipped that was already false:
+// /quiz/ had been retitled to "Football Quiz — Free Soccer Trivia" on
+// 2026-07-30 and was itself an index. So this page was built to solve a problem
+// another page had already been fixed to solve, and the two then split the
+// signal.
+//
+// AND /quiz/ WON ON THE MERITS, not just on authority: it links 127 club pages
+// to this page's 91, and carries player quizzes and the localised hubs on top.
+// The founding goal here — "index every quiz we have" — is better met by /quiz/
+// today, because /quiz/ kept growing and this page did not.
+//
+// So: canonical to /quiz/, and OUT of the sitemap (a sitemap entry is a canonical
+// hint, so leaving it in would contradict the tag). The page stays reachable —
+// it is linked in the nav and serves direct visitors fine.
+//
+// ⚠️ REVERSIBLE, and worth revisiting only WITH DATA. If the exact-match URL is
+// ever to be the vehicle, the correct move is to merge /quiz/'s superset of
+// links into this page first and flip the canonical the other way — not to
+// un-canonical it and go back to two pages competing.
+// ⚠️ /daily-football-quiz/ was checked at the same time and is NOT the same
+// problem: it targets "daily football quiz", a distinct query with its own
+// intent and its own feature behind it. Left alone.
 function buildFootballQuizPage() {
-  const canonical = `${SITE.base}/football-quiz/`;
+  const canonical = `${SITE.base}/quiz/`;
   const paged = new Set(CLUBS.map((c) => c.club));
   const bySlug = new Map(CLUBS.map((c) => [c.club, c.slug]));
 
@@ -5586,7 +5618,13 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/football-wordle/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/fun-facts/`, freq: 'weekly', pri: '0.7' },
     { loc: `${SITE.base}/football-quotes/`, freq: 'weekly', pri: '0.7' },
-    { loc: `${SITE.base}/football-quiz/`, freq: 'weekly', pri: '0.9' },
+    // ⚠️ /football-quiz/ IS DELIBERATELY NOT LISTED (2026-08-16). It canonicals
+    // to /quiz/ after measured cannibalisation on the north-star term — see the
+    // long note above buildFootballQuizPage(). A sitemap entry is itself a
+    // canonical hint, so listing a canonicalised-away URL sends Google two
+    // contradictory signals. The page is still built, still linked in the nav,
+    // and still serves visitors; it is simply no longer submitted as its own
+    // indexable entity. Re-add ONLY if the canonical is ever flipped back.
     { loc: `${SITE.base}/club-nicknames/`, freq: 'monthly', pri: '0.7' },
     { loc: `${SITE.base}/xi/`, freq: 'daily', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
