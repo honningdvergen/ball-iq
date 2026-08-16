@@ -26,6 +26,7 @@
 export const LANG_LABEL = {
   es: 'Español',
   pt: 'Português',
+  de: 'Deutsch',
   tr: 'Türkçe',
   id: 'Bahasa Indonesia',
 };
@@ -116,6 +117,30 @@ export const HUBS_INTL = [
     alsoH: 'La stessa pagina in inglese',
   },
   {
+    lang: 'de',
+    title: 'Fußball Quiz — Teste dein Wissen | Ball IQ',
+    // ⚠️ 163 chars on the first attempt, over the 160 limit — German compounds
+    // run long and the gate measures by code point. Shortened at source, never
+    // truncated, per the audit's own instruction.
+    description: 'Fußball-Quiz, geschrieben und geprüft von Fans. Wähle deinen Verein und finde heraus, wie viel du wirklich weißt. Kostenlos, ohne Anmeldung.',
+    h1: 'Fußball Quiz',
+    kind: 'Fußball-Quiz',
+    intro: [
+      'Ein Fußball-Quiz für alle, die wirklich Fußball schauen. Jede Frage wird von Fans geschrieben und geprüft: nie abgeschrieben, nie automatisch erzeugt.',
+      'Wähle den Verein, dem du die Daumen drückst, und beantworte zehn Fragen. Zu den meisten gibt es eine kurze Erklärung — du hörst also mit etwas auf, das du vorher nicht wusstest.',
+    ],
+    tasterEyebrow: 'Kostenlos testen · Ohne Anmeldung',
+    tasterH: 'Wie gut kennst du dich im Fußball aus?',
+    tasterPh: 'Ein paar schnelle Fragen, um deinen Ball IQ zu messen.',
+    tasterNote: 'Beispielfragen — zu jedem Verein gibt es viel mehr.',
+    playLabel: 'Spielen',
+    clubsH: 'Wähle deinen Verein',
+    clubsSub: 'Für jeden ein eigenes, geprüftes Quiz.',
+    bandH: 'Du denkst, du kennst dich im Fußball aus? Beweise es.',
+    bandP: 'Siegesserien, 1-gegen-1 in Echtzeit und eine Wertung von 99. Die App ist auf Englisch.',
+    alsoH: 'Dieselbe Seite auf Englisch',
+  },
+  {
     lang: 'id',
     title: 'Kuis Sepak Bola — Uji pengetahuanmu | Ball IQ',
     description: 'Kuis sepak bola yang ditulis dan diperiksa oleh penggemar. Pilih klubmu, jawab pertanyaannya, dan lihat seberapa banyak yang kamu tahu. Gratis, tanpa daftar.',
@@ -152,6 +177,7 @@ export const HUBS_INTL = [
 // legitimately have no entry and fall back to the plural.
 export const TASTER_I18N = {
   es: { question: 'Pregunta', correct: 'correctas', correct1: 'correcta', next: 'Siguiente →', seeScore: 'Ver tu resultado →', yourIq: 'Tu Ball IQ', scored: 'Acertaste', playFull: 'Jugar el quiz completo', getApp: 'Descargar la app', again: 'Jugar otra vez' },
+  de: { question: 'Frage', correct: 'richtig', next: 'Weiter →', seeScore: 'Ergebnis ansehen →', yourIq: 'Dein Ball IQ', scored: 'Du hattest', playFull: 'Das komplette Quiz spielen', getApp: 'App herunterladen', again: 'Nochmal spielen' },
   it: { question: 'Domanda', correct: 'giuste', correct1: 'giusta', next: 'Avanti →', seeScore: 'Vedi il tuo risultato →', yourIq: 'Il tuo Ball IQ', scored: 'Hai indovinato', playFull: 'Gioca il quiz completo', getApp: 'Scarica l’app', again: 'Gioca ancora' },
   pt: { question: 'Pergunta', correct: 'certas', correct1: 'certa', next: 'Próxima →', seeScore: 'Ver seu resultado →', yourIq: 'Seu Ball IQ', scored: 'Você acertou', playFull: 'Jogar o quiz completo', getApp: 'Baixar o app', again: 'Jogar de novo' },
   tr: { question: 'Soru', correct: 'doğru', next: 'Sonraki →', seeScore: 'Sonucunu gör →', yourIq: 'Ball IQ’n', scored: 'Doğru sayın', playFull: 'Quizin tamamını oyna', getApp: 'Uygulamayı indir', again: 'Tekrar oyna' },
