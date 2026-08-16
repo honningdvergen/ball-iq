@@ -233,7 +233,11 @@ taster questions, each referencing the English question id it came from, and
       ⚠️ German needed **11** `en` tripwires to Italian's 8 — it translates proper
       nouns English leaves alone (Bayern München, Juventus Turin, Atalanta
       Bergamo, Berbatow). And German compounds blow the 160-char meta limit.
-- [ ] **French `/fr/`** — 4 ready: psg, marseille, lyon, monaco.
+- [x] **French `/fr/` SHIPPED 2026-08-16 (9505d0f)** — hub + psg, marseille,
+      lyon, monaco. 88 questions, all four clubs.
+      ⚠️ The bank keys these as **"Olympique Lyonnais"** and **"AS Monaco"**,
+      while the page slugs are `lyon` and `monaco`. A short-name inventory query
+      returns ZERO for both. Sixth firing of the long-name trap.
 
 ### L2 · DEEPEN THE LANGUAGES WE ALREADY HAVE
 - [ ] **Turkish +3** — fenerbahce, besiktas, trabzonspor. Galatasaray alone is
