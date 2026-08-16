@@ -226,8 +226,13 @@ taster questions, each referencing the English question id it came from, and
       · Any translated proper noun in the ANSWER slot needs an `en` field
         (Barcellona→Barcelona, Coppa UEFA→UEFA Cup, Quattro→Four). Wave 1 hit
         six of these; wave 2 hit zero because they were applied up front.
-- [ ] **German `/de/`** — 4 ready: bayern-munich, borussia-dortmund,
-      bayer-leverkusen, rb-leipzig. *(`fußball quiz bundesliga` at 49.)*
+- [x] **German `/de/` SHIPPED 2026-08-16 (b086888)** — hub + bayern-munich,
+      borussia-dortmund, bayer-leverkusen. 66 questions.
+      ⚠️ **RB LEIPZIG HELD** — only 20 verified questions vs the 22 a full page
+      needs. Forge a top-up first; do not pad or ship thin.
+      ⚠️ German needed **11** `en` tripwires to Italian's 8 — it translates proper
+      nouns English leaves alone (Bayern München, Juventus Turin, Atalanta
+      Bergamo, Berbatow). And German compounds blow the 160-char meta limit.
 - [ ] **French `/fr/`** — 4 ready: psg, marseille, lyon, monaco.
 
 ### L2 · DEEPEN THE LANGUAGES WE ALREADY HAVE
