@@ -53,7 +53,7 @@ import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
 import { CLUBS_ID } from './seo/clubs-id.mjs';
-import { HUBS_INTL, TASTER_I18N } from './seo/hubs-intl.mjs';
+import { HUBS_INTL, TASTER_I18N, LANG_LABEL } from './seo/hubs-intl.mjs';
 // One list, so another language is a file plus a spread rather than a rewrite.
 // Two shapes live in here side by side and both are intentional:
 //   - a DOMESTIC club in its own country's language (Boca/es, Flamengo/pt,
@@ -2651,6 +2651,17 @@ ${/* Link to this club's TEXT Q&A page. Without this the /questions layer
      found on /lists and had to go back and fix. Placed inside the mesh
      section because that sits at ~19% scroll, above the measured cliff. */''}
 ${clubHintRows(cfg.club).length >= 20 ? `<p style="margin:14px 2px 0;color:var(--tx2);font-size:14.5px">Want them as a printable list instead? <a href="${SITE.base}/questions/${cfg.slug}-quiz-questions-and-answers/" style="color:var(--grn);font-weight:700">${esc(cfg.name)} quiz questions and answers →</a></p>` : ''}
+${/* ⚠️ THE LOCALISED LAYER WAS ORPHANED — the SAME defect as the note directly
+     above, found again on 2026-08-16. All 20 localised pages had ZERO inbound
+     internal links from any English page; they were sitemap-only, so they were
+     discoverable but received no internal authority at all. hreflang is NOT a
+     substitute: it tells Google which page serves which language, it does not
+     pass weight, and Google's own guidance is that alternates should also be
+     reachable by ordinary links.
+     This is the cheapest link in the whole mesh — it comes off an ESTABLISHED
+     English page onto a topically identical target. Galatasaray's English page
+     alone drew 776 impressions in 90 days while /tr/ drew 11. */''}
+${twins.length ? `<p style="margin:10px 2px 0;color:var(--tx2);font-size:14.5px">Prefer another language? ${twins.map((t) => `<a href="${SITE.base}/${t.lang}/quiz/${cfg.slug}/" hreflang="${t.lang}" style="color:var(--grn);font-weight:700">${esc(t.h1)} — ${esc(LANG_LABEL[t.lang] || t.lang)}</a>`).join(' · ')}</p>` : ''}
 ${renderListLinks(cfg.name)}
 </section>
 ${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
@@ -3824,6 +3835,18 @@ ${renderTiles(clubPages)}
 <p class="sub">One-player deep dives — careers, records and the moments that made them.</p>
 ${renderTiles(playerPages)}
 </section>
+${/* The four localised hubs had ZERO inbound internal links — not one, from any
+     page on the site. hreflang alone made them sitemap-only. This row is the
+     English hub's half of the pair and the only crawlable path into the
+     localised layer from the English site. */''}
+${(() => {
+    const langs = HUBS_INTL.filter((h) => CLUBS_INTL.some((c) => c.lang === h.lang));
+    return langs.length ? `<section class="sec narrow">
+<h2>In your language</h2>
+<p class="sub">The same quizzes, written by fans in each language — not machine-translated.</p>
+<p>${langs.map((h) => `<a href="${SITE.base}/${h.lang}/quiz/" hreflang="${h.lang}" style="color:var(--grn);font-weight:700">${esc(h.h1)} — ${esc(LANG_LABEL[h.lang] || h.lang)}</a>`).join(' · ')}</p>
+</section>` : '';
+  })()}
 <section class="sec">
 <h2>About Ball IQ quizzes</h2>
 <div class="prose">

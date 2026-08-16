@@ -20,6 +20,16 @@
 // already ("Uygulama İngilizce"). Keep it. Sending a Turkish reader to an
 // English app without warning is how you earn a one-star review.
 
+// Language names IN THEIR OWN LANGUAGE — a Spanish speaker scanning an English
+// page recognises "Español", not "Spanish". Used for the English→localised links
+// that keep the localised layer from being orphaned.
+export const LANG_LABEL = {
+  es: 'Español',
+  pt: 'Português',
+  tr: 'Türkçe',
+  id: 'Bahasa Indonesia',
+};
+
 export const HUBS_INTL = [
   {
     lang: 'es',
