@@ -243,7 +243,31 @@ taster questions, each referencing the English question id it came from, and
 - [ ] Decide `/es/` vs `/es-mx/` split. One `/es/` serving Spain AND Mexico is the
       cheap start; hreflang supports region targeting if the data justifies it.
 
+### ⭐ ALEX'S TARGET: page 1 for the mega-clubs (Real Madrid, Barcelona)
+*"I would really love to rank on the first page for clubs like real madrid and
+barcelona with enormous fanbases."* (2026-08-16)
+
+⚠️ **The shortest path is SPANISH, not English, and it is already most of the
+way there.** As of the 2026-08-08 read (8 days old — re-measure): `quiz del
+barcelona` sat at **position 6.6**, i.e. already page 1, while the English
+`/quiz/barcelona/` page competes with Sporcle, Quizlet and the club's own site
+for `barcelona quiz`. Same club, same content, wildly different competition.
+
+- [ ] **Re-measure first** — the GSC connector lost entitlement 2026-08-16
+      (`sc_query_performance`, `sc_top_pages`, `sc_inspect_url` all refuse). Read
+      it in the browser, or restore the connector. Do not plan off the 08-08 read.
+- [ ] `/es/` pages for the big three ALREADY EXIST (real-madrid, barcelona,
+      atletico-madrid) and got their first English inbound link on 2026-08-16.
+      The next lever for them is **LaLiga depth** — more Spanish club pages make
+      the `/es/` cluster heavier, which is what lifts the big three.
+- [ ] ⚠️ **Do not read this as "English is hopeless".** It is a competition
+      argument, not a language one. Check the actual SERP per term before
+      committing — the `/lists` lesson.
+
 ### L5 · MEASURE — do not skip, this is how we avoid a second /lists
+- [x] **Orphan check is now a BUILD GATE** (`scripts/audit-orphan-pages.mjs`,
+      48a567c) — every sitemap page must have an inbound internal link. Caught
+      that all 20 localised pages had none. Third time this defect shipped.
 - [ ] Per-locale GSC read 3–4 weeks after each wave: impressions, clicks, **and
       position**, split by locale.
 - [ ] ⚠️ Apply the `/lists` lesson: **check the SERP before committing to a term.**
