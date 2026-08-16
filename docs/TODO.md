@@ -219,8 +219,8 @@ taster questions, each referencing the English question id it came from, and
       the cluster is coherent from day one.
 - [x] **Italian wave 2 SHIPPED 2026-08-16 (27396cd)** — napoli + roma. `/it/` is
       now 5 clubs + hub, 110 translated questions.
-- [ ] **Italian wave 3** — lazio (47), fiorentina (47), atalanta (33). Completes
-      the language.
+- [x] **Italian wave 3 SHIPPED 2026-08-16 (f4c4568)** — lazio, fiorentina,
+      atalanta. **ITALIAN IS COMPLETE**: 8 clubs, 176 questions, + hub.
       ⚠️ TRANSLATION TRAPS, both now pre-flighted by the scan:
       · PRESERVE OPTION ORDER — the build checks the answer INDEX, not the text.
       · Any translated proper noun in the ANSWER slot needs an `en` field
@@ -339,6 +339,18 @@ top-5 goal is ALREADY 6.5 on the modifier term** — the gap is the bare term.
       Spanish. Strongest evidence for the localisation thesis on this page.
 - [ ] `football quiz` **38.4** — the north star ([[project_football_quiz_head_term]]),
       still page 4. Unchanged conclusion: authority, not pages.
+      ⚠️ **KEYWORD CANNIBALISATION FOUND 2026-08-16 — ALEX'S CALL.** Two
+      self-canonical pages both lead their <title> with "Football Quiz":
+      · `/quiz/` (the hub) — 87 impressions @ **39.0**, 2 clicks
+      · `/football-quiz/` — **5 impressions @ 13.4 across 90 days, 0 clicks**,
+        and all 3 of its queries are "football quiz" variants `/quiz/` targets.
+      Google has already voted: it serves the hub 94% of the time.
+      `/football-quiz/` earns nothing independently and splits the signal on our
+      single most important term.
+      RECOMMENDED: point `/football-quiz/` canonical at `/quiz/` (consolidates,
+      deletes nothing, reversible). NOT done unilaterally — it is the north-star
+      term and there may be non-SEO reasons the landing page exists.
+      ⚠️ Also check `/daily-football-quiz/` for the same overlap before acting.
 
 ⚠️ **I told Alex earlier that the English mega-terms were "the hardest thing on
 this list". That was wrong and the data corrected it** — we are top-10 on
