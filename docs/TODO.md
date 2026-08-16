@@ -304,6 +304,23 @@ top-5 goal is ALREADY 6.5 on the modifier term** — the gap is the bare term.
 - [ ] **`arsenal quiz` — 1,081 impressions at 7.9.** Ten times the impression
       pool of anything else on the list. Moving 7.9 → top 3 is the single
       biggest click win available anywhere on the site.
+      **INVESTIGATED 2026-08-16 — the page is NOT the problem.** SERP check
+      (via Bing; Google CAPTCHA-gates automated queries): competitors are
+      Sporcle, arsenal.com ×2, FourFourTwo, PlanetFootball, JetPunk,
+      footballtrivia.co.uk, ultimatequizquestions.com. **No answer box** — so
+      unlike the `/lists` head terms, position gains here DO pay.
+      Our page already has: "with Answers" + the Gunners alias in the title, a
+      2025-26 freshness signal in the meta, 100%-explained, a playable taster
+      above the fold, daily question rotation. CTR 2.6% at position 7.9 is
+      normal for that slot, so there is no CTR anomaly to fix either.
+      ⚠️ **Do not invent a page-level fix for a page that is already good.** The
+      remaining gap against Sporcle and the club's own site is domain authority
+      — which points at task #51, the AUTHORITY KIT, still untouched and
+      Alex-executable. That is the honest answer, and it is the same conclusion
+      as [[project_ranking_diagnosis_2026_07_28]].
+      Shipped anyway from this investigation: 8.8 KB of CSS comments removed
+      from `<head>` on every page (7f3fbfa) — a real page-speed win, not a
+      claimed ranking fix.
 - [ ] **`real madrid quiz` — 192 impr at 10.5.** Literally one position off page
       one. Same for `man city quiz` (147 @ 9.9) and `chelsea quiz` (143 @ 9.5).
       Three pages sitting at the page-1 boundary.
