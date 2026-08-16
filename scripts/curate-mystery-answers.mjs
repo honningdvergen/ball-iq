@@ -47,7 +47,21 @@ import { CLUBS } from './seo/clubs.mjs';
 const write = process.argv.includes('--write');
 const pool = JSON.parse(readFileSync('src/data/mysteryPool.json', 'utf8'));
 const answers = JSON.parse(readFileSync('src/data/mysteryAnswers.json', 'utf8'));
-const careers = JSON.parse(readFileSync('src/data/mysteryCareers.json', 'utf8'));
+/* ⚠️ SHAPE CHANGED 2026-08-15: mysteryCareers.json is now
+   { c: [clubName, ...], p: { id: [[clubIndex, start, end], ...] } } — club names
+   are interned and the spells carry YEARS, which is what lets similarity() score
+   teammate overlap. This file only needs the NAMES, so it rehydrates them once.
+   The old note below (id -> array of strings) described the previous shape and
+   is kept because the failure it describes is the one to watch for: read the
+   wrong field and the club signal silently matches NOTHING, and the giveaway is
+   a drop count that does not move. */
+const careersRaw = JSON.parse(readFileSync('src/data/mysteryCareers.json', 'utf8'));
+const careers = Object.fromEntries(
+  Object.entries(careersRaw.p).map(([id, spells]) => [id, spells.map(([ci]) => careersRaw.c[ci])]),
+);
+if (!careersRaw.c || !careersRaw.p) {
+  throw new Error('mysteryCareers.json is in the OLD names-only shape — rerun build-mystery-pool-v2.mjs');
+}
 const bank = readFileSync('src/questions.js', 'utf8');
 
 const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();

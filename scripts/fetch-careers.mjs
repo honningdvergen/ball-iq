@@ -208,7 +208,30 @@ for (const [pid, set] of Object.entries(raw)) {
   if (clubs.length) out[pid] = clubs;
 }
 
-writeFileSync('src/data/mysteryCareers.json', JSON.stringify(out));
+/* ⚠️ THIS SCRIPT MUST NOT WRITE THE SHIPPED CAREERS FILE ANY MORE.
+   Since 2026-08-15 src/data/mysteryCareers.json carries CAREER YEARS —
+   { c: [clubName…], p: { id: [[clubIndex, start, end]…] } } — and similarity()
+   uses them to score how long two players were actually TEAMMATES. This script
+   only ever collected team IDs; it has no year data, so writing from here would
+   silently strip the years and quietly restore the exact bug a player reported
+   (Fernando Torres outranking an eleven-year teammate of the answer).
+
+   That is the "second pass gets clobbered" failure this project has hit
+   repeatedly, so it is a hard stop rather than a comment. build-mystery-pool-v2
+   is the single authoritative writer. */
+{
+  const existing = existsSync('src/data/mysteryCareers.json')
+    ? JSON.parse(readFileSync('src/data/mysteryCareers.json', 'utf8')) : null;
+  if (existing && existing.c && existing.p) {
+    console.error('\n✗ REFUSING TO WRITE src/data/mysteryCareers.json');
+    console.error('  The shipped file carries career YEARS and this script has none.');
+    console.error('  Overwriting would strip them and break teammate-overlap scoring.');
+    console.error('  Run: node scripts/build-mystery-pool-v2.mjs  (the authoritative writer)');
+    console.error(`  Collected ${Object.keys(out).length} players; nothing written.\n`);
+  } else {
+    writeFileSync('src/data/mysteryCareers.json', JSON.stringify(out));
+  }
+}
 
 // ── The audit. Read this, do not skip it. ───────────────────────────────────
 console.log(`\n── EXCLUDED classes (${excludedClasses.size}) ──`);

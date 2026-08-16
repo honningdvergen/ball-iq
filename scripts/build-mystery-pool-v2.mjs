@@ -303,8 +303,44 @@ const answer = guess.filter((p) => p.fame >= 55 && p.clubCount >= 2).sort((a, b)
 
 writeFileSync('src/data/mysteryPool.json', JSON.stringify(guess));
 writeFileSync('src/data/mysteryAnswers.json', JSON.stringify(answer.map((p) => p.id)));
-writeFileSync('src/data/mysteryCareers.json', JSON.stringify(
-  Object.fromEntries(guess.map((p) => [p.id, CAREERS[p.id].map((c) => c.name)]))));
+/* ⚠️ CAREER YEARS SHIP NOW — they used to be dropped here, and that single
+   `.map(c => c.name)` was the cause of a real player complaint.
+   Alex's friend, 2026-08-15, on a Jan Oblak puzzle: Fernando Torres ranked 137
+   and Saúl Ñíguez 386, and that made no sense to him. It made no sense because:
+
+     Saúl   Atlético 2012-2025  ->  11 years as Oblak's teammate
+     Torres Atlético 1995-2001  ->  never overlapped him at all
+
+   Without years, similarity() could only count DISTINCT CLUB NAMES, so both
+   scored one shared club and exactly the same points. Torres then won the tie
+   on `club` (+100) because latestClub() picks the LONGEST spell, not the most
+   recent, and labelled a man who retired in 2019 an Atlético player.
+
+   ⚠️ DICTIONARY-ENCODED, and this is why it is affordable. Club names repeat
+   across 49,656 spells; interning them into `c` and storing indices costs less
+   than the names did, so the file went 1032 KB -> 988 KB while GAINING both
+   years. Adding years naively would have been ~1.6 MB, and this file ships
+   inside the native binary.
+
+   Shape: { c: [clubName, ...], p: { playerId: [[clubIndex, start, end], ...] } }
+   `start`/`end` are years or null. end === null means an OPEN-ENDED spell, which
+   is what marks a player as still active — see isActive() in mysteryPlayer.js. */
+{
+  const clubIndex = new Map();
+  const clubNames = [];
+  const idOf = (n) => {
+    if (!clubIndex.has(n)) { clubIndex.set(n, clubNames.length); clubNames.push(n); }
+    return clubIndex.get(n);
+  };
+  const yr = (v) => (okYear(v) ? v : null);
+  const players = Object.fromEntries(guess.map((p) => [
+    p.id,
+    CAREERS[p.id].map((c) => [idOf(c.name), yr(c.start), yr(c.end)]),
+  ]));
+  writeFileSync('src/data/mysteryCareers.json', JSON.stringify({ c: clubNames, p: players }));
+  const spells = Object.values(players).reduce((n, l) => n + l.length, 0);
+  console.log(`careers: ${clubNames.length} clubs interned · ${spells} spells · years shipped`);
+}
 
 console.log(`\nGUESS  pool: ${guess.length}`);
 console.log(`ANSWER pool: ${answer.length}  (fame >= 55, >= 2 clubs)`);

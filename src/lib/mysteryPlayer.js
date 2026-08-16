@@ -48,7 +48,16 @@
    position 15 (slot 10 + specific 5) · age 10 · current club 10. */
 const W = {
   club: 100, // same CURRENT club — kept, but no longer dominant
-  sharedClub: 117, // per club they have BOTH played for; x3 cap = 35%
+  /* A shared club splits into two parts, and that split is the whole point.
+     Alex, 2026-08-15, relaying a player: "torres did play for atletico once,
+     that should still count for some likeness but less so than players who
+     have been teammates for a long time." Exactly right — so `sharedClub` is
+     paid for having been there AT ALL, and `overlap` is paid on top for the
+     years they were actually there TOGETHER.
+     45 + 72 = 117, unchanged, so the 35% budget below still holds. */
+  sharedClub: 45, //  per club BOTH played for, whenever
+  overlap: 72, //  added per shared club, scaled by years as teammates
+  overlapFull: 8, //  years of overlap that earn the full bonus
   sharedClubMax: 3, // cap, so a 19-club journeyman cannot dominate
   era: 150, // were they CONTEMPORARIES — the term we were missing entirely
   slot: 100, // same broad position (GK/DF/MF/FW)
@@ -71,22 +80,69 @@ const W = {
  * Capped at sharedClubMax: without it a journeyman with 19 clubs would rank
  * absurdly high against half the pool purely for having been everywhere.
  */
-function sharedClubs(a, b, careers) {
-  if (!careers) return 0;
-  const ca = careers[a.id];
-  const cb = careers[b.id];
+const NOW_YEAR = 2026;
+
+/** Years two spells at the same club actually overlapped. Unknown dates -> 0. */
+function overlapYears([, s1, e1], [, s2, e2]) {
+  if (s1 == null || s2 == null) return 0;
+  return Math.max(0, Math.min(e1 ?? NOW_YEAR, e2 ?? NOW_YEAR) - Math.max(s1, s2));
+}
+
+/**
+ * ⚠️ A PLAYER WITH NO OPEN-ENDED SPELL HAS NO CURRENT CLUB.
+ *
+ * latestClub() in the pool builder picks the LONGEST spell, not the most
+ * recent — deliberately, because picking by recency labelled every active
+ * player with an old club (Neuer as Schalke, Courtois as Chelsea). That is
+ * right for someone still playing and wrong for someone who has retired: it
+ * hands them their most-tenured club and `similarity` then reads it as CURRENT
+ * and pays the full W.club.
+ *
+ * Fernando Torres, whose Atlético spell in our data ended in 2001, was
+ * therefore scored as an Atlético player against Jan Oblak — who did not
+ * arrive until 2014 — and outranked Saúl Ñíguez, Oblak's teammate of eleven
+ * years, by 249 places. That is the bug a player reported.
+ */
+function isActive(p, careers) {
+  const spells = careers?.p?.[p.id];
+  if (!spells || !spells.length) return true; // unknown -> behave as before
+  return spells.some(([, , end]) => end == null);
+}
+
+/**
+ * Score for clubs both players have been at, weighted by time TOGETHER.
+ * Returns points, not a count. Best `sharedClubMax` clubs only, so a
+ * journeyman cannot dominate by having been everywhere.
+ */
+function sharedClubScore(a, b, careers) {
+  const ca = careers?.p?.[a.id];
+  const cb = careers?.p?.[b.id];
   if (!ca || !cb) return 0;
-  const setB = new Set(cb);
-  let n = 0;
-  for (const c of ca) if (setB.has(c)) n++;
-  return Math.min(n, W.sharedClubMax);
+  const mine = new Map();
+  for (const sp of cb) {
+    // Keep the LONGEST spell per club: a player can have two stints at one club
+    // and we want the one that best represents their time there.
+    const prev = mine.get(sp[0]);
+    if (!prev || ((sp[2] ?? NOW_YEAR) - sp[1]) > ((prev[2] ?? NOW_YEAR) - prev[1])) mine.set(sp[0], sp);
+  }
+  const scores = [];
+  for (const sp of ca) {
+    const theirs = mine.get(sp[0]);
+    if (!theirs) continue;
+    const yrs = overlapYears(sp, theirs);
+    scores.push(W.sharedClub + W.overlap * Math.min(yrs, W.overlapFull) / W.overlapFull);
+  }
+  scores.sort((x, y) => y - x);
+  return scores.slice(0, W.sharedClubMax).reduce((s, v) => s + v, 0);
 }
 
 /** Similarity of `p` to the secret `answer`. Higher is closer. */
 export function similarity(p, answer, careers = null) {
   let s = 0;
-  if (p.club === answer.club) s += W.club;
-  s += sharedClubs(p, answer, careers) * W.sharedClub;
+  // Only players who are STILL AT a club can share a current one. For a retired
+  // player `club` is really "last club" and must not be paid as if it were now.
+  if (p.club === answer.club && isActive(p, careers) && isActive(answer, careers)) s += W.club;
+  s += sharedClubScore(p, answer, careers);
   if (p.slot && p.slot === answer.slot) s += W.slot;
   if (p.position && p.position === answer.position) s += W.position;
   if (p.nat && p.nat === answer.nat) s += W.nat;
