@@ -217,12 +217,15 @@ taster questions, each referencing the English question id it came from, and
       **juventus, inter-milan, ac-milan** (66 hand-translated questions). Juve/
       Inter/Milan chosen together because they carry both defining derbies, so
       the cluster is coherent from day one.
-- [ ] **Italian wave 2** — napoli, roma, lazio, fiorentina, atalanta. Packs
-      ready (42/37/47/47/33 questions). Held deliberately so wave 1 shipped
-      complete rather than eight thin pages.
-      ⚠️ When translating: PRESERVE OPTION ORDER (the build checks the answer
-      INDEX, not the text) and give any translated proper noun in the answer slot
-      an `en` field. The gate caught six of those in wave 1.
+- [x] **Italian wave 2 SHIPPED 2026-08-16 (27396cd)** — napoli + roma. `/it/` is
+      now 5 clubs + hub, 110 translated questions.
+- [ ] **Italian wave 3** — lazio (47), fiorentina (47), atalanta (33). Completes
+      the language.
+      ⚠️ TRANSLATION TRAPS, both now pre-flighted by the scan:
+      · PRESERVE OPTION ORDER — the build checks the answer INDEX, not the text.
+      · Any translated proper noun in the ANSWER slot needs an `en` field
+        (Barcellona→Barcelona, Coppa UEFA→UEFA Cup, Quattro→Four). Wave 1 hit
+        six of these; wave 2 hit zero because they were applied up front.
 - [ ] **German `/de/`** — 4 ready: bayern-munich, borussia-dortmund,
       bayer-leverkusen, rb-leipzig. *(`fußball quiz bundesliga` at 49.)*
 - [ ] **French `/fr/`** — 4 ready: psg, marseille, lyon, monaco.
