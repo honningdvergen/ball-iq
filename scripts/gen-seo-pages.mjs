@@ -89,6 +89,7 @@ import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
 import { CLUBS_ID } from './seo/clubs-id.mjs';
+import { CLUBS_IT } from './seo/clubs-it.mjs';
 import { HUBS_INTL, TASTER_I18N, LANG_LABEL } from './seo/hubs-intl.mjs';
 // One list, so another language is a file plus a spread rather than a rewrite.
 // Two shapes live in here side by side and both are intentional:
@@ -98,7 +99,7 @@ import { HUBS_INTL, TASTER_I18N, LANG_LABEL } from './seo/hubs-intl.mjs';
 //     United/id, and more to come) — the multi-language cluster, which holds
 //     the club constant so differences between pages are attributable to the
 //     MARKET rather than the badge.
-const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT, ...CLUBS_TR, ...CLUBS_ID];
+const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT, ...CLUBS_TR, ...CLUBS_ID, ...CLUBS_IT];
 import { PLAYERS } from './seo/players.mjs';
 import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
@@ -2347,11 +2348,23 @@ function buildClubPageIntl(cfg, siblings = []) {
 ${NAV}
 <main id="main">
 ${heroTwoCol({
-    crumbItems: [
-      { name: 'Ball IQ', url: `${SITE.base}/` },
-      { name: 'Quizzes', url: `${SITE.base}/quiz/` },
-      { name: cfg.h1, url: canonical },
-    ],
+    // ⚠️ BREADCRUMB TO THE LOCALISED HUB, NOT THE ENGLISH ONE.
+    // Until the hubs existed this had no choice and pointed at /quiz/ — so an
+    // Italian reader who clicked the second crumb landed on an English page
+    // mid-journey, and the localised cluster handed its breadcrumb authority to
+    // the English hub instead of consolidating on its own. Falls back to the
+    // English hub for any language that has clubs but no hub yet, which is the
+    // only correct behaviour there.
+    crumbItems: (() => {
+      const hub = HUBS_INTL.find((h) => h.lang === cfg.lang);
+      return [
+        { name: 'Ball IQ', url: `${SITE.base}/` },
+        hub
+          ? { name: hub.h1, url: `${SITE.base}/${cfg.lang}/quiz/` }
+          : { name: 'Quizzes', url: `${SITE.base}/quiz/` },
+        { name: cfg.h1, url: canonical },
+      ];
+    })(),
     badge: { text: clubBadge, emoji: false, color: CLUB_COLOR[cfg.slug] },
     kind: cfg.kind,
     name: cfg.name,
