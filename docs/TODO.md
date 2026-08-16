@@ -271,12 +271,52 @@ The three levers that actually apply, in order of how much is already built:
 3. **Internal link weight** — orphan gate landed 2026-08-16; big-club pages
    should be the ones the mesh points AT, not just from.
 
-⚠️ Liverpool and Man Utd are ENGLISH-language mega-terms — the most contested
-club queries that exist, against Sporcle, Quizlet, the official clubs and the
-tabloids. Top-5 there is the hardest thing on this list, not the first thing to
-try. Bank the localised wins and the authority kit first; re-measure; then judge
-whether the English mega-terms are reachable at all. Say so plainly rather than
-burning waves on it.
+#### ⚠️ MEASURED 2026-08-16 (GSC, 90 days, web) — WE ARE MUCH CLOSER THAN ASSUMED
+Read in the browser because the connector lost entitlement. Site totals: **809
+clicks, 42k impressions, avg position 17.4**.
+
+**Already page 1 on club terms** — this is the surprise:
+
+| query | pos | impr |
+|---|---|---|
+| tottenham quiz with answers | **5.0** | 38 |
+| rangers quiz with answers | **5.1** | 20 |
+| chelsea quiz with answers | **5.3** | 58 |
+| rangers quiz | **5.7** | 103 |
+| newcastle united quiz with answers | **5.9** | 20 |
+| man city quiz with answers | **6.3** | 35 |
+| **liverpool quiz with answers** | **6.5** | 90 |
+| liverpool fc quiz with answers | **6.5** | 39 |
+| quiz del barcelona | **6.6** | 7 |
+| everton quiz | **6.7** | 157 |
+| bayern munich quiz | **7.7** | 50 |
+| **arsenal quiz** | **7.9** | **1,081** |
+
+**⚠️ THE PATTERN: we win on "with answers", we lose on the bare head term.**
+- `liverpool quiz with answers` **6.5** vs `liverpool quiz` **27.7**
+- `manchester united quiz with answers` **10.4** vs `manchester united quiz` **24.4**
+
+That is the same modifier finding as [[project_gsc_7day_2026_08_09]] ("with
+answers" beats "trivia" 6.6×), now confirmed at club level. **Alex's Liverpool
+top-5 goal is ALREADY 6.5 on the modifier term** — the gap is the bare term.
+
+**The highest-value moves, by impressions actually available:**
+- [ ] **`arsenal quiz` — 1,081 impressions at 7.9.** Ten times the impression
+      pool of anything else on the list. Moving 7.9 → top 3 is the single
+      biggest click win available anywhere on the site.
+- [ ] **`real madrid quiz` — 192 impr at 10.5.** Literally one position off page
+      one. Same for `man city quiz` (147 @ 9.9) and `chelsea quiz` (143 @ 9.5).
+      Three pages sitting at the page-1 boundary.
+- [ ] `barcelona quiz` 14.9 (87 impr) and `barca quiz` 15.3 — Barça is the
+      weakest of the mega-clubs in English, while `quiz del barcelona` is 6.6 in
+      Spanish. Strongest evidence for the localisation thesis on this page.
+- [ ] `football quiz` **38.4** — the north star ([[project_football_quiz_head_term]]),
+      still page 4. Unchanged conclusion: authority, not pages.
+
+⚠️ **I told Alex earlier that the English mega-terms were "the hardest thing on
+this list". That was wrong and the data corrected it** — we are top-10 on
+several already. The honest version: the *bare* head terms are hard; the
+qualified ones are nearly won. Target the boundary pages, not the impossible ones.
 
 ⚠️ **The shortest path is SPANISH, not English, and it is already most of the
 way there.** As of the 2026-08-08 read (8 days old — re-measure): `quiz del
