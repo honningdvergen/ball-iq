@@ -27,7 +27,43 @@
 // Output is a BUILD ARTIFACT (not committed). The prose in content.mjs IS source.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync as fsWriteFileSync, mkdirSync, existsSync } from 'node:fs';
+
+// ── strip CSS comments from the OUTPUT, keep every one of them in the SOURCE ──
+//
+// The inline <style> block is a raw template literal, so unlike the app's CSS
+// (which vite minifies) it shipped verbatim — comments included. Measured on the
+// live /quiz/arsenal/: 37 comment blocks, 8,812 bytes, **5.1% of the page**, and
+// ~2.57 MB across 306 pages. It sits in <head>, so it is on the critical
+// rendering path of every SEO page.
+//
+// ⚠️ STRIP AT WRITE TIME, NEVER IN THE SOURCE. Those comments are the "why"
+// this repo runs on — "Flat per the 2026-07-21 Clubs Directory handoff — Alex:
+// no 3D look", "a container-width probe is NOT valid here", the measured pixel
+// heights behind the compact tiles. Deleting them from the source to save bytes
+// would trade the expensive knowledge for the cheap win. The reader of the
+// source keeps all of it; the browser is sent none of it.
+//
+// Only touches <style> blocks — <script> comments are left alone, since JS
+// comments can carry meaning inside string literals and are not worth the risk
+// for the bytes involved.
+//
+// Verified safe: no `content:"…/*…"` and no `url(…/*…)` anywhere in this file,
+// which are the two ways a `/*` can appear in CSS WITHOUT opening a comment.
+// Re-check that if either is ever added.
+function stripCssComments(html) {
+  return html.replace(
+    /<style([^>]*)>([\s\S]*?)<\/style>/g,
+    (_, attrs, css) => `<style${attrs}>${css.replace(/\/\*[\s\S]*?\*\//g, '')}</style>`,
+  );
+}
+
+// Wraps every write in this generator — 23 page builders and counting — so a new
+// page type cannot reintroduce the bloat by forgetting to opt in.
+function writeFileSync(path, data, enc) {
+  if (typeof data === 'string' && data.includes('<style')) data = stripCssComments(data);
+  return fsWriteFileSync(path, data, enc);
+}
 import { NAV_GROUPS } from '../src/lib/nav.js';
 import { XI_MARKUP, XI_CSS, XI_JS } from './seo/xiGame.mjs';
 import { trailBoardHtml, TRAIL_BOARD_CSS, TRAIL_BOARD_JS } from './seo/trailBoard.mjs';
