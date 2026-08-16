@@ -199,12 +199,18 @@ taster questions, each referencing the English question id it came from, and
 ---
 
 ### L0 · FOUNDATION — do first, it unblocks the head terms
-- [ ] **Localised hub per language** (`/es/`, `/tr/`, `/pt/`, `/it/`, `/de/`, `/fr/`, `/id/`).
-      This is the "football quiz" head term in each language and we have NOTHING
-      pointing at it. Mirrors what the App Store localisation just did.
-- [ ] Extend `hreflang` to every new locale + keep `x-default` on English.
-- [ ] New locales into `buildSitemap` + auto-IndexNow.
+- [x] **Localised hub per language** — SHIPPED 5379f9f: `/es/quiz/`, `/pt/quiz/`,
+      `/tr/quiz/`, `/id/quiz/`. Playable taster, fully localised chrome.
+      ⚠️ `/it/`, `/de/`, `/fr/` are NOT missed — a hub ships WITH its club wave in
+      L1. A head-term page with nothing beneath it is the `/lists` mistake.
+- [x] Extend `hreflang` to every new locale + keep `x-default` on English —
+      reciprocal in BOTH directions (Google discards non-reciprocal clusters).
+- [x] New locales into `buildSitemap` (priority 0.8) + auto-IndexNow —
+      `pingIndexNow(sitemapUrls)` covers them on the next Vercel prod build.
 - [ ] Footer/lang switcher so the locales are crawlable from each other.
+      ⚠️ NOT DONE. Today the only visible cross-language link is localised→English
+      ("La misma página en inglés"); English→localised is hreflang only. Do this
+      when there are enough locales for a switcher to be worth the footer space.
 
 ### L1 · NEW LANGUAGES — packs already exist, demand already proven
 - [ ] **Italian `/it/`** — 8 clubs ready: juventus, inter-milan, ac-milan, napoli,
