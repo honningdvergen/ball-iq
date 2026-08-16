@@ -26,6 +26,7 @@
 export const LANG_LABEL = {
   es: 'Español',
   pt: 'Português',
+  fr: 'Français',
   de: 'Deutsch',
   tr: 'Türkçe',
   id: 'Bahasa Indonesia',
@@ -141,6 +142,27 @@ export const HUBS_INTL = [
     alsoH: 'Dieselbe Seite auf Englisch',
   },
   {
+    lang: 'fr',
+    title: 'Quiz Football — Teste ce que tu sais | Ball IQ',
+    description: 'Quiz football écrit et vérifié par des passionnés. Choisis ton club, réponds et découvre ce que tu sais vraiment. Gratuit, sans inscription.',
+    h1: 'Quiz Football',
+    kind: 'Quiz football',
+    intro: [
+      'Un quiz football pour ceux qui regardent vraiment le football. Chaque question est écrite et vérifiée par des passionnés : jamais copiée, jamais générée automatiquement.',
+      'Choisis le club que tu soutiens et réponds à dix questions. La plupart sont accompagnées d’une courte explication : tu termines en sachant quelque chose que tu ignorais.',
+    ],
+    tasterEyebrow: 'Essai gratuit · Sans inscription',
+    tasterH: 'Tu t’y connais en football ?',
+    tasterPh: 'Quelques questions rapides pour mesurer ton Ball IQ.',
+    tasterNote: 'Questions d’exemple — chaque club en a bien plus.',
+    playLabel: 'Jouer',
+    clubsH: 'Choisis ton club',
+    clubsSub: 'Un quiz dédié et vérifié pour chacun.',
+    bandH: 'Tu penses t’y connaître en football ? Prouve-le.',
+    bandP: 'Séries de victoires, 1 contre 1 en direct et une note sur 99. L’application est en anglais.',
+    alsoH: 'La même page en anglais',
+  },
+  {
     lang: 'id',
     title: 'Kuis Sepak Bola — Uji pengetahuanmu | Ball IQ',
     description: 'Kuis sepak bola yang ditulis dan diperiksa oleh penggemar. Pilih klubmu, jawab pertanyaannya, dan lihat seberapa banyak yang kamu tahu. Gratis, tanpa daftar.',
@@ -178,6 +200,7 @@ export const HUBS_INTL = [
 export const TASTER_I18N = {
   es: { question: 'Pregunta', correct: 'correctas', correct1: 'correcta', next: 'Siguiente →', seeScore: 'Ver tu resultado →', yourIq: 'Tu Ball IQ', scored: 'Acertaste', playFull: 'Jugar el quiz completo', getApp: 'Descargar la app', again: 'Jugar otra vez' },
   de: { question: 'Frage', correct: 'richtig', next: 'Weiter →', seeScore: 'Ergebnis ansehen →', yourIq: 'Dein Ball IQ', scored: 'Du hattest', playFull: 'Das komplette Quiz spielen', getApp: 'App herunterladen', again: 'Nochmal spielen' },
+  fr: { question: 'Question', correct: 'bonnes', correct1: 'bonne', next: 'Suivant →', seeScore: 'Voir ton résultat →', yourIq: 'Ton Ball IQ', scored: 'Tu as trouvé', playFull: 'Jouer au quiz complet', getApp: 'Télécharger l’application', again: 'Rejouer' },
   it: { question: 'Domanda', correct: 'giuste', correct1: 'giusta', next: 'Avanti →', seeScore: 'Vedi il tuo risultato →', yourIq: 'Il tuo Ball IQ', scored: 'Hai indovinato', playFull: 'Gioca il quiz completo', getApp: 'Scarica l’app', again: 'Gioca ancora' },
   pt: { question: 'Pergunta', correct: 'certas', correct1: 'certa', next: 'Próxima →', seeScore: 'Ver seu resultado →', yourIq: 'Seu Ball IQ', scored: 'Você acertou', playFull: 'Jogar o quiz completo', getApp: 'Baixar o app', again: 'Jogar de novo' },
   tr: { question: 'Soru', correct: 'doğru', next: 'Sonraki →', seeScore: 'Sonucunu gör →', yourIq: 'Ball IQ’n', scored: 'Doğru sayın', playFull: 'Quizin tamamını oyna', getApp: 'Uygulamayı indir', again: 'Tekrar oyna' },
