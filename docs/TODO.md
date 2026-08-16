@@ -243,9 +243,40 @@ taster questions, each referencing the English question id it came from, and
 - [ ] Decide `/es/` vs `/es-mx/` split. One `/es/` serving Spain AND Mexico is the
       cheap start; hreflang supports region targeting if the data justifies it.
 
-### ⭐ ALEX'S TARGET: page 1 for the mega-clubs (Real Madrid, Barcelona)
+### ⭐ ALEX'S TARGET: page 1 for every big club in the world, biggest first
 *"I would really love to rank on the first page for clubs like real madrid and
-barcelona with enormous fanbases."* (2026-08-16)
+barcelona with enormous fanbases."* … *"it would be amazing if we started
+ranking top 5 for liverpool and manchester united for example, that would be a
+gamechanger."* … *"we should probably start from the top, the clubs with the
+biggest fanbases."* (2026-08-16)
+
+⚠️ **THIS IS NOT A COVERAGE PROBLEM — DO NOT ANSWER IT BY BUILDING PAGES.**
+Checked 2026-08-16: **all 27 mega-clubs already have an English page** (Real
+Madrid, Barcelona, Man Utd, Liverpool, Bayern, PSG, Man City, Chelsea, Arsenal,
+Juventus, both Milans, Dortmund, Atlético, Spurs, Flamengo, Corinthians, Boca,
+River, Galatasaray, Fenerbahçe, Beşiktaş, Benfica, Porto, Ajax, Celtic,
+Rangers). 86 club pages exist. Every one of these targets is a page we ALREADY
+HAVE that does not rank well enough.
+
+So the lever is **authority and competition**, which is exactly what
+[[project_football_quiz_head_term]] and the 2026-07-28 ranking diagnosis both
+concluded: *fundamentals are clean, stop re-auditing them, the ceiling is
+authority.* Writing another club page does nothing for this goal.
+
+The three levers that actually apply, in order of how much is already built:
+1. **Localisation** — a different, far less contested SERP for the same club.
+   Proven: `quiz del barcelona` 6.6 vs English fighting Sporcle/Quizlet.
+2. **The authority kit** (task #51, Alex-executable) — directory submissions and
+   outreach. Untouched, and it is the named lever for page-2 pages.
+3. **Internal link weight** — orphan gate landed 2026-08-16; big-club pages
+   should be the ones the mesh points AT, not just from.
+
+⚠️ Liverpool and Man Utd are ENGLISH-language mega-terms — the most contested
+club queries that exist, against Sporcle, Quizlet, the official clubs and the
+tabloids. Top-5 there is the hardest thing on this list, not the first thing to
+try. Bank the localised wins and the authority kit first; re-measure; then judge
+whether the English mega-terms are reachable at all. Say so plainly rather than
+burning waves on it.
 
 ⚠️ **The shortest path is SPANISH, not English, and it is already most of the
 way there.** As of the 2026-08-08 read (8 days old — re-measure): `quiz del
