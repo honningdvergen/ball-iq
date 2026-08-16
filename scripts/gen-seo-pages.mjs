@@ -53,6 +53,7 @@ import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
 import { CLUBS_ID } from './seo/clubs-id.mjs';
+import { HUBS_INTL, TASTER_I18N } from './seo/hubs-intl.mjs';
 // One list, so another language is a file plus a spread rather than a rewrite.
 // Two shapes live in here side by side and both are intentional:
 //   - a DOMESTIC club in its own country's language (Boca/es, Flamengo/pt,
@@ -774,6 +775,15 @@ if(!box||!d)return;
 var QS;try{QS=JSON.parse(d.textContent)}catch(e){return}
 if(!QS||!QS.length)return;
 var nm=box.getAttribute('data-name')||'this team',play=box.getAttribute('data-play')||'/',store=box.getAttribute('data-store')||'#';
+/* ⚠️ THE TASTER CHROME USED TO BE ENGLISH ON EVERY LOCALISED PAGE.
+   Sixteen translated club pages rendered hand-written Spanish, Portuguese and
+   Turkish questions wrapped in "Question 1 / 6", "correct", "Your Ball IQ" and
+   "Play again". The QUESTIONS were localised and the GAME around them was not,
+   which is the tell that a translation was bolted on rather than finished.
+   Labels now come off the card as JSON; English pages pass nothing and get the
+   defaults, so this is additive. */
+var L={};try{L=JSON.parse(box.getAttribute('data-i18n')||'{}')}catch(e){L={}}
+function T(k,f){return L[k]||f}
 /* ⚠️ SCORE-INDEXED LADDERS BREAK WHEN THE TASTER LENGTH CHANGES.
    This was IQ=[46,54,63,74,88,99] indexed by raw score — six entries, written
    when the taster was 5 questions. The taster went to 10 and the ladder did
@@ -797,8 +807,8 @@ var cl='to',mk='';
 if(p!==null){if(k===q.a){cl+=' correct';mk='<span class="tm">✓</span>'}else if(k===p){cl+=' wrong';mk='<span class="tm">✗</span>'}else{cl+=' dim'}}
 os+='<button class="'+cl+'" data-i="'+k+'"'+(p!==null?' disabled':'')+'><span class="tl">'+('ABCD'[k]||'')+'</span><span class="tt">'+e(q.o[k])+'</span>'+mk+'</button>'}
 var why=(p!==null&&q.why)?'<p class="tw">'+e(q.why)+'</p>':'';
-var nx=(p!==null)?'<button class="tn" data-next="1">'+(i+1>=n?'See your score →':'Next →')+'</button>':'';
-box.innerHTML='<div class="th"><span class="tq">Question '+(i+1)+' / '+n+'</span><span class="ts">'+sc+' correct</span></div><div class="tbar"><div class="tbf" style="width:'+pct+'%"></div></div><div class="tqx">'+e(q.q)+'</div><div class="tos">'+os+'</div>'+why+nx;
+var nx=(p!==null)?'<button class="tn" data-next="1">'+(i+1>=n?T('seeScore','See your score →'):T('next','Next →'))+'</button>':'';
+box.innerHTML='<div class="th"><span class="tq">'+T('question','Question')+' '+(i+1)+' / '+n+'</span><span class="ts">'+sc+' '+(sc===1?T('correct1',T('correct','correct')):T('correct','correct'))+'</span></div><div class="tbar"><div class="tbf" style="width:'+pct+'%"></div></div><div class="tqx">'+e(q.q)+'</div><div class="tos">'+os+'</div>'+why+nx;
 var bs=box.querySelectorAll('.to');for(var b=0;b<bs.length;b++){bs[b].addEventListener('click',pick)}
 var nb=box.querySelector('.tn');if(nb){nb.addEventListener('click',next)}
 }
@@ -806,7 +816,7 @@ function pick(ev){if(p!==null)return;var k=+ev.currentTarget.getAttribute('data-
 function next(){i++;p=null;draw()}
 function done(){
 var G=grade(sc,QS.length),iq=G.iq,ti=G.tier;
-box.innerHTML='<div class="tdone"><div class="tdl">Your Ball IQ</div><div class="tiq">'+iq+'</div><div class="ttier">'+e(ti)+'</div><div class="tscore">You scored '+sc+' / '+QS.length+' on the '+e(nm)+' taster</div><div class="tcta"><a class="btn" href="'+play+'">Play the full '+e(nm)+' quiz →</a><a class="btn store" href="'+store+'" rel="noopener">Get the app</a></div><button class="tn again">Play again</button></div>';
+box.innerHTML='<div class="tdone"><div class="tdl">'+T('yourIq','Your Ball IQ')+'</div><div class="tiq">'+iq+'</div><div class="ttier">'+e(ti)+'</div><div class="tscore">'+T('scored','You scored')+' '+sc+' / '+QS.length+'</div><div class="tcta"><a class="btn" href="'+play+'">'+T('playFull','Play the full quiz')+' →</a><a class="btn store" href="'+store+'" rel="noopener">'+T('getApp','Get the app')+'</a></div><button class="tn again">'+T('again','Play again')+'</button></div>';
 var ag=box.querySelector('.again');if(ag){ag.addEventListener('click',function(){i=0;sc=0;p=null;draw()})}
 }
 draw();
@@ -2288,7 +2298,7 @@ function buildClubPageIntl(cfg, siblings = []) {
   const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(c.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(c.tasterH)}</h2>
-<div class="tcard" id="biq-taster" data-name="${esc(cfg.name)}" data-play="${SITE.base}/play?club=${cfg.slug}" data-store="${SITE.getApp}">
+<div class="tcard" id="biq-taster" data-name="${esc(cfg.name)}" data-play="${SITE.base}/play?club=${cfg.slug}" data-store="${SITE.getApp}" data-i18n="${esc(JSON.stringify(TASTER_I18N[cfg.lang] || {}))}">
 <p class="tph">${esc(c.tasterPh)} <a href="${SITE.base}/play?club=${cfg.slug}">${esc(c.playLabel)} →</a></p>
 </div>
 <p class="taster-note">${esc(c.tasterNote)}</p>
@@ -2352,6 +2362,137 @@ ${footer()}`;
   mkdirSync(dir, { recursive: true });
   writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
   return { slug: cfg.slug, lang: cfg.lang, canonical, count: rows.length };
+}
+
+// ── /<lang>/quiz/ — the localised HUB ───────────────────────────────────────
+// The head term in each language, and the thing sixteen localised club pages
+// were pointing at nothing. Measured: `quiz de river plate` sits at 8.6 and
+// `quiz del barcelona` at 6.6, while "quiz de fútbol" — which those same people
+// also type — had no page whatsoever.
+//
+// ⚠️ ONLY BUILT FOR A LANGUAGE THAT HAS CLUBS UNDER IT. A head-term page with an
+// empty grid beneath it is a thin page chasing a hard term, which is exactly how
+// /lists ended up at 47% of impressions and 4% of clicks. Italian, German and
+// French hubs ship WITH their club waves.
+//
+// The taster reuses questions already translated in clubs-<lang>.mjs — they are
+// resolved against the bank by buildClubPageIntl, so a bank edit that orphans
+// one still breaks the build rather than leaving the hub quoting a ghost.
+function buildLangHub(cfg, clubsInLang, hubLangs) {
+  if (!clubsInLang.length) {
+    throw new Error(`[gen-seo] /${cfg.lang}/quiz/: refusing to build a hub with no clubs beneath it.`);
+  }
+  const canonical = `${SITE.base}/${cfg.lang}/quiz/`;
+  const enHref = `${SITE.base}/quiz/`;
+  // Self-referencing hreflang included, same as the club pages — Google wants
+  // every URL in a cluster to name the whole cluster including itself.
+  const alternates = [
+    { hreflang: 'en', href: enHref },
+    ...hubLangs.map((l) => ({ hreflang: l, href: `${SITE.base}/${l}/quiz/` })),
+    { hreflang: 'x-default', href: enHref },
+  ];
+
+  // Two per club, best-effort, capped — enough to feel like a game, short
+  // enough that the club grid stays above the fold on a phone.
+  const taster = [];
+  for (const club of clubsInLang) {
+    for (const r of club.taster.slice(0, 2)) {
+      if (taster.length < 6) taster.push({ q: r.q, o: r.o, a: r.a, why: r.hint });
+    }
+  }
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Ball IQ', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: cfg.h1, item: canonical },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        name: cfg.h1,
+        description: cfg.description,
+        url: canonical,
+        inLanguage: cfg.lang,
+      },
+    ],
+  });
+
+  const clubCards = clubsInLang.map((c) =>
+    `<li><a href="${SITE.base}/${cfg.lang}/quiz/${c.slug}/">${esc(c.name)}</a></li>`).join('\n');
+
+  /* ⚠️ THE TASTER GOES IN THE HERO'S RIGHT COLUMN, as the second argument to
+     heroTwoCol — NOT as a section below it. Getting this wrong is how the first
+     render of this page shipped the literal word "undefined" twice: once where
+     `lead` should have been (I passed `intro`, which heroInner does not accept)
+     and once in the right column I never filled. The build was green and the
+     SERP audit passed; only opening the page showed it. */
+  const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
+<div class="eyebrow">${esc(cfg.tasterEyebrow)}</div>
+<h2 id="taster-h">${esc(cfg.tasterH)}</h2>
+<div class="tcard" id="biq-taster" data-name="${esc(cfg.h1)}" data-play="${SITE.base}/play" data-store="${SITE.getApp}" data-i18n="${esc(JSON.stringify(TASTER_I18N[cfg.lang] || {}))}">
+<p class="tph">${esc(cfg.tasterPh)} <a href="${SITE.base}/play">${esc(cfg.playLabel)} →</a></p>
+</div>
+<p class="taster-note">${esc(cfg.tasterNote)}</p>
+<script type="application/json" id="biq-taster-data">${JSON.stringify(taster).replace(/</g, '\\u003c')}</script>
+<script>${TASTER_JS}</script>
+</section>`;
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, lang: cfg.lang, alternates, taster: true })}
+<body>
+${NAV}
+<main id="main">
+${heroTwoCol({
+    crumbItems: [
+      { name: 'Ball IQ', url: `${SITE.base}/` },
+      { name: cfg.h1, url: canonical },
+    ],
+    // ⚠️ NO CHIP HERE. On a club page the chip is the club abbreviation ("GAL")
+    // and the eyebrow is the type ("Kulüp quizi") — two different facts. A hub
+    // has no abbreviation, so passing cfg.kind to both printed "Quiz de fútbol"
+    // as chip AND eyebrow directly above an identical H1: the same three words
+    // three times. heroInner renders no chip for a null badge.
+    badge: null,
+    kind: cfg.kind,
+    name: cfg.h1,
+    h1: cfg.h1,
+    lead: cfg.intro[0],
+    playHref: '#clubs',
+    playLabel: cfg.playLabel,
+  }, tasterHtml)}
+<section class="sec narrow" id="clubs">
+<h2>${esc(cfg.clubsH)}</h2>
+<p class="sub">${esc(cfg.clubsSub)}</p>
+<ul class="linklist">
+${clubCards}
+</ul>
+</section>
+${adSlot('afterTaster')}
+<section class="sec narrow">
+${cfg.intro.slice(1).map((para) => `<p class="sub">${esc(para)}</p>`).join('\n')}
+</section>
+<section class="sec"><div class="appband">
+<div class="appband-flame" aria-hidden="true">🔥</div>
+<div class="appband-in">
+<h2>${esc(cfg.bandH)}</h2>
+<p>${esc(cfg.bandP)}</p>
+${storeBadges()}
+</div>
+</div></section>
+<section class="sec narrow">
+<h2>${esc(cfg.alsoH)}</h2>
+<p class="sub"><a href="${enHref}" hreflang="en">${esc(cfg.h1)} — English</a></p>
+</section>
+</main>
+${footer()}`;
+
+  const dir = resolve(DIST, cfg.lang, 'quiz');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  return { lang: cfg.lang, canonical, clubs: clubsInLang.length };
 }
 
 function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages = []) {
@@ -3635,7 +3776,23 @@ function buildHubPage(livePages, clubPages, playerPages = []) {
   const { lead, rest } = splitLead(HUB.intro);
   const restHtml = rest.map((p) => `<p>${esc(p)}</p>`).join('\n');
 
-  const html = `${head({ title: HUB.title, description: HUB.description, canonical, ld })}
+  /* ⚠️ THE OTHER HALF OF THE CLUSTER. Google discards an hreflang set whose
+     links are not reciprocal, so the English hub has to point back at every
+     localised hub — exactly as the English club pages already point back at
+     their translated twins. Without this the /<lang>/quiz/ pages would declare
+     a relationship English never confirms, and the whole cluster is ignored. */
+  const hubAlternates = (() => {
+    const langs = HUBS_INTL.map((h) => h.lang).filter((l) => CLUBS_INTL.some((c) => c.lang === l));
+    return langs.length
+      ? [
+        { hreflang: 'en', href: canonical },
+        ...langs.map((l) => ({ hreflang: l, href: `${SITE.base}/${l}/quiz/` })),
+        { hreflang: 'x-default', href: canonical },
+      ]
+      : [];
+  })();
+
+  const html = `${head({ title: HUB.title, description: HUB.description, canonical, ld, alternates: hubAlternates })}
 <body>
 ${NAV}
 <main id="main">
@@ -5345,7 +5502,7 @@ ${footer()}`;
   return { total, leagues: LEAGUES.length };
 }
 
-function buildSitemap(livePages, listPages = [], esPages = [], questionPages = []) {
+function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [], hubPages = []) {
   // Build date as <lastmod> — Google honors lastmod but ignores changefreq/
   // priority, so without it the sitemap gives the crawler no freshness signal.
   // Pages are regenerated every deploy, so the build date is an honest hint.
@@ -5364,6 +5521,11 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${TRAIL_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${DAILY7_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
+    /* Localised hubs. They carry the head term in each language and are the
+       entry point the localised club pages hang off, so they get a higher
+       priority than the club pages themselves — omitting them would leave the
+       whole cluster reachable only via hreflang. */
+    ...hubPages.map((h) => ({ loc: h.canonical, freq: 'weekly', pri: '0.8' })),
     ...livePages
       .filter((p) => p.slug !== HUB.slug)
       .map((p) => ({ loc: `${SITE.base}/quiz/${p.slug}/`, freq: 'weekly', pri: '0.7' })),
@@ -5530,6 +5692,12 @@ async function main() {
   // links the whole cluster rather than just itself and English.
   const builtEs = CLUBS_INTL.map((c) =>
     buildClubPageIntl(c, CLUBS_INTL.filter((s) => s.slug === c.slug)));
+  // The localised HUBS. Only languages that actually have clubs beneath them —
+  // a head-term page over an empty grid is the /lists mistake in a new language.
+  const hubLangs = HUBS_INTL.map((h) => h.lang).filter((l) => CLUBS_INTL.some((c) => c.lang === l));
+  const builtHubs = HUBS_INTL
+    .filter((h) => hubLangs.includes(h.lang))
+    .map((h) => buildLangHub(h, CLUBS_INTL.filter((c) => c.lang === h.lang), hubLangs));
   const builtPlayers = PLAYERS.map((p) => buildPlayerPage(p, clubPages, livePages));
   const builtNations = NATIONS.map((n) => buildNationPage(n, livePages, nationPages));
   const listTasterIds = new Set();
@@ -5552,7 +5720,7 @@ async function main() {
   buildSimplePage(TERMS);
   // /questions/ pages are canonicalized to their /quiz/ twins and OUT of the
   // sitemap while the AdSense doorway remediation stands (scan 2026-08-11).
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, []);
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   await pingIndexNow(sitemapUrls);
 

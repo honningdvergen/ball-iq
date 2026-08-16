@@ -56,7 +56,7 @@ export const CLUBS_TR = [
     description:
       'Ücretsiz Galatasaray quiz, açıklamalı cevaplarla: 2000 UEFA Kupası, Fatih Terim, Hagi, Metin Oktay ve rekor sezonlar.',
     kind: 'Kulüp quizi',
-    statLine: 'Ücretsiz · 45 Galatasaray sorusu · kayıt yok',
+    statLine: 'Ücretsiz · Açıklamalı Galatasaray soruları · kayıt yok',
     playLabel: 'Quize başla',
     intro: [
       'Türkiye’nin en çok şampiyonluk kazanan kulübü, aynı zamanda Avrupa’da ilk büyük kupayı kazanan Türk takımı. Bu ücretsiz quiz Cimbom’un bütün dönemlerini kapsıyor: Kopenhag’da Arsenal’i penaltılarla geçtiği 2000 UEFA Kupası, Fatih Terim’in o kadrosu, Gheorghe Hagi ve Gheorghe Popescu, Taçsız Kral Metin Oktay, ve 102 puanla tamamlanan 2023-24 sezonu.',

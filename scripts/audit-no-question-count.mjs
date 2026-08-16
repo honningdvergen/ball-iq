@@ -55,9 +55,20 @@ const PATTERNS = [
   // form the gate is not currently watching — a progress bar, a length picker,
   // and now a translation. Add the noun for every language we publish in, the
   // moment we publish in it.
-  /\b\d{1,4}\s+(?:preguntas|perguntas|pertanyaan|soal|fragen|domande|vragen|spørsmål|frågor|questões)\b/gi,
+  // ⚠️ THE SEVENTH WAY IT SHIPPED (2026-08-16): THE CLUB NAME IN BETWEEN.
+  // The Turkish noun WAS in this list, added the moment we published in Turkish
+  // — and "Ücretsiz · 45 Galatasaray sorusu · kayıt yok" still went live on
+  // prod, because the count and the noun are not adjacent. Every pattern here
+  // required \d then whitespace then the noun; a club name between them is
+  // invisible. Languages that put the qualifier before the noun ("45 Boca
+  // preguntas", "45 Galatasaray sorusu") break adjacency by grammar, not by
+  // accident, so this is the normal shape and not an edge case.
+  //
+  // Hence: allow up to three intervening words. Bounded, because unbounded
+  // would match a number in one clause and a question-noun in the next.
+  /\b\d{1,4}\s+(?:[\p{L}'’-]+\s+){0,3}(?:preguntas|perguntas|pertanyaan|soal|fragen|domande|vragen|spørsmål|frågor|questões)\b/giu,
   // Turkish agglutinates the case onto the noun: soru / sorunun / soruluk.
-  /\b\d{1,4}\s+soru\w*\b/gi,
+  /\b\d{1,4}\s+(?:[\p{L}'’-]+\s+){0,3}soru\w*\b/giu,
 
   // ⚠️ THE SIXTH WAY IT SHIPPED (2026-08-12): THE HERO STAT STRIP.
   // It rendered "556 questions" and "151 hard ones" as a scoreboard row on
