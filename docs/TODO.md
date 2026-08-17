@@ -145,11 +145,27 @@ cold-start question**, and every trace taken in a browser you have already been
 using is warm unless you force otherwise.
 
 - [x] Cold-start perf measurement — DONE 2026-08-17, and it inverted the answer.
-- [ ] 🔴 **Extract AppInner + React.lazy()** ([[post_launch_appinner_extraction]]).
-      Now evidence-backed rather than speculative: 3,879 ms of render delay in
-      front of the onboarding screen. Re-measure COLD, in an isolated context,
-      before and after — a warm number will show ~840 ms either way and prove
-      nothing.
+- [x] ~~Extract AppInner + React.lazy()~~ — **INVESTIGATED AND REJECTED
+      2026-08-17. Do not do this.** The split it proposed already shipped, done
+      another way: `main.jsx` lazy-loads GameRoot and eagerly warms it, and
+      App.jsx already lazy-loads seven screens. And it would make the measured
+      problem WORSE — onboarding renders INSIDE AppInner (App.jsx:10601), so
+      moving AppInner to its own chunk adds a round trip in front of the very
+      element being measured. Sizes settle it (gzip): GameRoot, the WHOLE game
+      tree, is **144k**; questions is 664k, playerSearch 361k, MysteryPlayer
+      255k — all already separate on-demand chunks. There is no monolith left to
+      peel. Memory superseded so it cannot mislead again.
+- [ ] 🔴 **The 3,879 ms is parse/execute of ~250k gz on the cold path** (entry 8k
+      + react 44k + GameRoot 144k + supabase 55k). Options, cheapest first:
+      1. **Render first-run onboarding without the app.** It is static text plus
+         one sample question, and index.html already has a prerender block. This
+         hits the measured LCP element directly and is the only option that
+         removes work rather than moving it.
+      2. Defer supabase (55k) past first paint if auth is not needed to paint
+         onboarding.
+      3. Finer splits inside GameRoot — last, and only with cold before/after.
+      ⚠️ Measure COLD in an isolated context every time. Warm reads ~840 ms
+      whatever you do, which is how this got misjudged twice in one day.
 
 **Verified in passing:** the only third parties on /play are Clarity (1.7 kB,
 17 ms) and Sentry (20 B). **No AdSense** — task #73's parking is real, which
