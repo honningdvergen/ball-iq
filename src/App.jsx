@@ -4673,19 +4673,64 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, surviva
           both so installed desktop shells keep the mobile results. ── */}
       <div className="rd-desktop">
         <div className="rd-card">
-          <div className="rd-eyebrow">Round complete</div>
+          {/* ⚠️ SURVIVAL IS NOT A ROUND. This card was added in the desktop
+              refresh and inherited none of the survival handling the mobile
+              results above had already worked out, so a sudden-death run ended
+              on "Round complete · 0/1 · 0% accuracy · Tough round." — a
+              denominator for a mode whose whole point is that there isn't one,
+              and a first-timer's very first Survival death reading 0/1/0%/+0/0.
+              The Daily tab now routes finished days straight into Survival, so
+              this is a first impression, not an edge case.
+              Every branch below mirrors a decision the mobile hero already
+              made: no denominator, the run caption instead of a percentage
+              tier, and the personal-best callout. */}
+          <div className="rd-eyebrow">{isSurvival ? "Run over" : "Round complete"}</div>
           <div className="rd-sub">{rdSubtitle}</div>
           <div className="rd-badge">
-            <div className="rd-badge-score">{result.score}<span className="rd-badge-total">/{result.total}</span></div>
-            <div className="rd-badge-tier">{rdTier}</div>
+            <div className="rd-badge-score">
+              {result.score}
+              {!isSurvival && <span className="rd-badge-total">/{result.total}</span>}
+            </div>
+            {/* Mobile deliberately skips the percentage tagline for survival —
+                the caption and the PB carry the moment, and a percentage of a
+                run you died in is noise. Kept SHORT here rather than reusing
+                mobile's full scoreCaption: this sits inside a circular badge,
+                and the long form wrapped to two lines and pushed against the
+                curve. The number already says how many; this says of what. */}
+            <div className="rd-badge-tier">{isSurvival ? "in a row" : rdTier}</div>
           </div>
-          <div className="rd-dots" aria-hidden="true">
-            {rdDots.map((ok, i) => (
-              <span key={i} className={`rd-dot ${ok ? "ok" : "no"}`}>{ok ? "✓" : "✗"}</span>
-            ))}
-          </div>
+          {/* Dots are a per-question map of a fixed-length round. A survival run
+              has no fixed length — a long one would spray dozens of them across
+              the card — and the streak number is already the whole story. */}
+          {!isSurvival && (
+            <div className="rd-dots" aria-hidden="true">
+              {rdDots.map((ok, i) => (
+                <span key={i} className={`rd-dot ${ok ? "ok" : "no"}`}>{ok ? "✓" : "✗"}</span>
+              ))}
+            </div>
+          )}
+          {isNewPersonalBest && (
+            <div className="rd-pb">
+              <span aria-hidden="true">⭐</span>
+              <span>
+                Personal best
+                {isNewBest && classicBest ? ` — was ${classicBest}`
+                  : survivalNewBest && survivalBest ? ` — was ${survivalBest}` : ""}
+              </span>
+            </div>
+          )}
           <div className="rd-tiles">
-            <div className="rd-tile"><div className="rd-tile-v">{pct}%</div><div className="rd-tile-k">Accuracy</div></div>
+            {/* Accuracy on a sudden-death run is always "everything until the one
+                that ended it", so it carries no information. What a survival
+                player actually wants is the number to beat. */}
+            {isSurvival ? (
+              // "—" not "0" with no PB yet. A first run already shows +0 XP and
+              // best streak 0; a third hard zero reads like the app failed to
+              // record something rather than like a record waiting to be set.
+              <div className="rd-tile"><div className="rd-tile-v">{survivalBest > 0 ? survivalBest : "—"}</div><div className="rd-tile-k">Best ever</div></div>
+            ) : (
+              <div className="rd-tile"><div className="rd-tile-v">{pct}%</div><div className="rd-tile-k">Accuracy</div></div>
+            )}
             <div className="rd-tile"><div className="rd-tile-v rd-amber">+{xpEarned}</div><div className="rd-tile-k">XP earned</div></div>
             <div className="rd-tile"><div className="rd-tile-v rd-green">{rdBestStreak}</div><div className="rd-tile-k">Best streak</div></div>
           </div>

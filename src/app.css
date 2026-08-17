@@ -2151,6 +2151,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .rd-dot { width: 24px; height: 24px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; }
   .rd-dot.ok { background: rgba(88,204,2,0.16); color: #8AE042; }
   .rd-dot.no { background: rgba(255,71,71,0.14); color: #FF8A82; }
+  /* Personal-best callout. Mobile has carried this since the results redesign;
+     the desktop card shipped without it, so a survival PB — the single most
+     motivating thing that can happen in the mode — went unannounced at >=1024. */
+  .rd-pb { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; padding: 7px 14px;
+    border-radius: 999px; background: rgba(255,200,0,0.08); border: 1px solid rgba(255,200,0,0.25);
+    font-size: 13px; font-weight: 700; color: var(--gold); }
   .rd-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 26px; }
   .rd-tile { padding: 16px 12px; border-radius: 14px; background: #0F1117; border: 1px solid #242836; }
   .rd-tile-v { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 22px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
