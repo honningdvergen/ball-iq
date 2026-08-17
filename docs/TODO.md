@@ -121,17 +121,35 @@ being indexed as duplicates of the app shell. Leave it. Do not "fix" this.
 
 **Performance trace, /play (Lighthouse excludes perf):**
 
-    unthrottled     LCP 401 ms · TTFB 135 ms · render delay 266 ms · CLS 0.00
-    4x CPU/Slow 4G  LCP 840 ms · TTFB  56 ms · render delay 784 ms · CLS 0.00
+    unthrottled, warm   LCP   401 ms · TTFB 135 ms · render delay   266 ms · CLS 0.00
+    4x/Slow4G,   warm   LCP   840 ms · TTFB  56 ms · render delay   784 ms · CLS 0.00
+    4x/Slow4G,   COLD   LCP 4,014 ms · TTFB 135 ms · render delay 3,879 ms · CLS 0.00
 
-⚠️ **Render delay is 93% of throttled LCP (784 of 840 ms) — it is JS execution,
-not network.** That is precisely what [[post_launch_appinner_extraction]]
-targets. But LCP 840 ms is already well inside "good" (<2500), so the case for
-that refactor is weaker than the memory implies — UNLESS measured cold.
-⚠️ **BOTH traces are WARM** — the SW and HTTP cache were primed by earlier
-visits in the same browser. Neither is the cold-start number a first-time
-visitor sees, and cold start is the one that matters for activation. A real
-measurement needs cache disabled.
+🔴 **COLD START IS 4.8× THE WARM NUMBER AND SITS ON GOOGLE'S "POOR" BOUNDARY
+(4,000 ms).** Measured in an isolated browser context — no service worker, no
+HTTP cache, no storage — i.e. an actual first-time visitor on a mid-range phone.
+
+⚠️ **The LCP element is `DIV.onboard-body` — the ONBOARDING screen.** The first
+thing a new user ever sees is the slowest thing in the app, and it is plain text
+that fetches nothing. **96.6% of the 4 seconds is render delay**: JS parse and
+execute before onboarding can paint. TTFB is 135 ms, so the server is blameless.
+
+This lands squarely on ACTIVATION — the 51%-ever-played number — and therefore
+on the one metric this release is judged by.
+
+⚠️ **I GOT THIS WRONG FIRST.** From the warm trace I wrote that the case for
+[[post_launch_appinner_extraction]] was "weaker than the memory implies". The
+opposite is true: the memory's ~1100 ms estimate was for cold Login starts, and
+cold is exactly the case I had not measured. **A warm trace cannot answer a
+cold-start question**, and every trace taken in a browser you have already been
+using is warm unless you force otherwise.
+
+- [x] Cold-start perf measurement — DONE 2026-08-17, and it inverted the answer.
+- [ ] 🔴 **Extract AppInner + React.lazy()** ([[post_launch_appinner_extraction]]).
+      Now evidence-backed rather than speculative: 3,879 ms of render delay in
+      front of the onboarding screen. Re-measure COLD, in an isolated context,
+      before and after — a warm number will show ~840 ms either way and prove
+      nothing.
 
 **Verified in passing:** the only third parties on /play are Clarity (1.7 kB,
 17 ms) and Sentry (20 B). **No AdSense** — task #73's parking is real, which
