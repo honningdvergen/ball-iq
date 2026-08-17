@@ -69,6 +69,34 @@ n=10-19 per day is too noisy to trend. The weekly aggregate is the honest view.
     the 22 a page needs), L2 waves (Turkish +3, Portuguese +4), and L5 per-locale
     measurement of the eight languages just shipped.
 
+### 🔴 FOUND 2026-08-17 WHILE TESTING THE MYSTERY GIVE-UP — LIVE FACTUAL ERROR
+The reveal panel printed **"Edwin van der Sar · Barcelona"**. He never played in
+Spain — and he is **TODAY'S ANSWER**, so every player who finishes today's
+Mystery sees it. It was already on the WIN panel; the give-up just shows it to
+more people.
+
+Root cause is a Wikidata entity mix-up, and four different QIDs all render the
+same label "Barcelona":
+
+    Q7156    "Barcelona"  120 players   FC Barcelona            ✅
+    Q1492    "Barcelona"    2 players   the CITY of Barcelona   ❌ van der Sar, Zahavi
+    Q172803  "Barcelona"   23 players   Dani Olmo, Kramarić,
+                                        Eduardo da Silva —
+                                        these are Dinamo Zagreb ❌
+    Q248782  "Barcelona"    2 players   a different Barcelona   ❌
+
+So ~27 pool entries carry a club that is not the club they played for, and the
+"Barcelona" case is only the one that happened to surface. This is exactly
+[[reference_wikidata_traps]]: filter on the P31 class, never on the label.
+
+⚠️ **The reveal line is `club · position · nat · born` and TWO of those four are
+known-unreliable** — `nat` is already documented as wrong for Messi, Vinícius
+and James Rodríguez, and now `club` is too. **ALEX'S CALL:** re-pull the club
+field with a proper class filter (real fix, slower), and/or drop the unreliable
+fields from the reveal until it is trustworthy (immediate, thinner). I did not
+strip them unilaterally — it is a content decision on a screen you approved.
+⚠️ Do NOT hot-swap today's answer to dodge it: people are mid-puzzle.
+
 ### ⚠️ Where the untapped potential actually is
 - **Classic and Survival.** Third of all play, zero design investment. Item 2.
 - **The bank is our biggest asset and our least-used one.** 6,694 verified
