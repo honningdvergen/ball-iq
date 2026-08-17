@@ -1,5 +1,77 @@
 # Ball IQ — the board
 
+## ☀️ TODAY'S AGENDA (2026-08-17) — re-measured this morning, not assumed
+
+**Verified before writing this:** on `main`, clean, everything pushed. iOS 1.6.0
+build 63 and Android 1.6.0 vc18 are CUT (live status is Alex's/the consoles' to
+confirm). 324 pages, 8 languages, all gates green.
+
+**The number that sets the agenda.** Weekly distinct players: 28 → 35 → 38 → 35
+over four weeks. **FLAT.** New signups 35/22/34/21. Plays per player ~7/week,
+steady. The 2026-08-14 diagnosis stands unchanged: leaky bucket, **retention is
+the binding constraint**, and more pages pour faster into it.
+⚠️ I first read the DAILY series (Sun 20→15→10) as a 33% decline and was wrong —
+n=10-19 per day is too noisy to trend. The weekly aggregate is the honest view.
+
+**30-day play by mode — where the product actually is:**
+
+    footle    52 players · 4.9 plays each      classic   37 · 4.9
+    daily     48 players · 5.0 plays each      survival  29 · 4.8
+    trail     15 · 2.5    legends 12 · 1.8     chaos 11 · 2.3
+    ALL 72 CLUB QUIZZES: ~50 plays across 13 clubs
+    mystery:  1 play, ever (2026-08-15)
+
+### The ten, in priority order
+
+1. **A3 — somewhere to go after a finished day.** The last open item in the
+   plug-the-bucket set. Four solved cards currently end on a wall. Recent-days
+   table is the natural home. ~1 day. *Directly moves D7.*
+2. **Classic + Survival design pass.** 66 players between them — a third of all
+   play — and they have NEVER had one. Highest players-per-unit-of-attention on
+   the whole board, and they cost nothing to feed.
+3. **B gate: every mode awards XP and writes a scores row.** Mystery shipped
+   without both. Gates here have a perfect record — none has ever recurred.
+4. **Diagnose Mystery: 1 play, ever.** Instrumentation WORKS (one row landed
+   08-15), so this is not the old "nothing was listening" bug — it is
+   discoverability or genuine disinterest. Cheap to find out, and it decides
+   invest-vs-cut on a finished mode.
+5. **A5 — audit STATES, not screens.** Guest/signed-in, empty/full, mid-game,
+   offline, PWA-standalone. Three of the last four bugs were state bugs. ~2 days.
+6. **B gate: cross-screen counter agreement.** Home said 0/2 while Daily said 0/4.
+7. **Confirm store status + finish the Play listing.** Feature graphic 1024×500,
+   the 8 Android screenshots, vc18 release notes (500-char cap, `<en-US>` tags),
+   15 localised Play listings. ⚠️ ALEX confirms what is actually live.
+8. **Capacitor 8 branch — iOS side + AGP 9 retest, then merge** (#74). Clears two
+   of Play's four warnings.
+9. **Splash PNG → WebP.** 3.40 MB of a 7.3 MB AAB, for no user-visible change.
+10. **Then, and only then, the taps:** RB Leipzig forge top-up (20 questions vs
+    the 22 a page needs), L2 waves (Turkish +3, Portuguese +4), and L5 per-locale
+    measurement of the eight languages just shipped.
+
+### ⚠️ Where the untapped potential actually is
+- **Classic and Survival.** Third of all play, zero design investment. Item 2.
+- **The bank is our biggest asset and our least-used one.** 6,694 verified
+  questions; all 72 club quizzes drew ~50 plays in 30 days. The club *pages* work
+  as an SEO asset — the in-app club picker is not where players go. Don't confuse
+  the two, and don't answer this by writing more questions.
+- **Eight languages of pages shipped in two days are unmeasured.** They are a
+  tap, not a bucket fix. L5 tells us if they pay.
+
+### ⚠️ Honest note on the last two days
+I spent them on the localisation layer — which is the SIGNUP tap — while the
+agreed plan says retention is the constraint. The work is good and the pages are
+live, but it was not what the one number called for. Today's list corrects that.
+
+### ✅ Corrections made this morning
+- `v1_5_streak_grace_shield.sql` is marked "NOT YET APPLIED" further down. **It IS
+  applied** — 19 users carry `graceGrantedAt`. ⚠️ 13 users are now streak-3+ and
+  ungranted, and that is CORRECT: they earned those streaks under the new
+  completion-based rule and need no soft landing. **Re-running it today would be
+  actively wrong.**
+- My first probe for that migration looked for a `shield` COLUMN and returned
+  false. Shields live in `user_game_state.login_streak` JSONB. Wrong probe, right
+  answer only after checking a second way.
+
 ## ▶ THE UPGRADE (agreed 2026-08-14) — judged on ONE number
 
 Full write-up: https://claude.ai/code/artifact/c3d0ebd5-12e2-4016-9510-39cd976029eb
@@ -29,7 +101,8 @@ design pass.
       administer that fairly across an uneven bank. Removed the pendingTick
       deferred-credit machinery and its 3 global listeners with it.
       Verified on device: both flames read 1.
-      ⚠️ **`supabase/migrations/v1_5_streak_grace_shield.sql` NOT YET APPLIED** —
+      ✅ **`supabase/migrations/v1_5_streak_grace_shield.sql` IS APPLIED** (verified 2026-08-17: 19 users carry `graceGrantedAt`; do NOT re-run — see today's agenda). Original note kept below for context:
+      ⚠️ was: NOT YET APPLIED —
       apply it the same day this ships. Grants 1 shield to the 31 users on a
       streak of 3+ (longest 50) so the first open-but-don't-play day is absorbed.
       Alex chose this over recomputing, which would have cut streaks overnight.
