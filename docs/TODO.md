@@ -1,5 +1,104 @@
 # Ball IQ — the board
 
+## 🎯 THE PERFECTION PUSH (2026-08-17 → authority kit) — MEASURED, not guessed
+
+Alex: "making everything we have 10/10 … what areas are 6/10." Everything below
+was measured this afternoon by running something. **Four things scored badly.
+Five things I expected to score badly came back clean and are recorded here so
+nobody re-audits them.**
+
+### ⭐ P1 — HALF THE CLUB PACKS ARE ONE PLAY DEEP  (the biggest gap on the board)
+
+Club quizzes serve **10 medium+hard** (easy is dropped for invested fans), with a
+14-day seen filter. So fresh plays = `floor(noEasy / 10)`.
+
+    CRITICAL  <20 med+hard (ONE fresh play, ever)   14 clubs
+    THIN     20-29         (two)                    29 clubs
+    OK       30-49         (three-four)             42 clubs
+    GOOD      50+          (five+)                   1 club
+
+**43 of 86 packs give a fan two fresh quizzes or fewer.** Thinnest: Sheffield
+Wednesday 11, Norwich 11, Birmingham 12, Wrexham 12, Cardiff 12, Swansea 12,
+RB Leipzig 13, Derby 13, Hajduk 14, Portsmouth 14, Stoke 14.
+
+Why it is the top item: club pages are the SEO engine AND the measured finding is
+"PLAYABLE beats readable" — the club page is where a search visitor actually
+plays. Half of them are exhausted after one round.
+
+⚠️ The CODE is not at fault and must not be "fixed": `applySeenFilter` already
+tops up with the LEAST-RECENTLY-SEEN rather than at random, so unavoidable
+repeats are spaced as far apart as the pool allows. That is correct. With an
+11-question pool and a 10-question quiz, no algorithm can save the second play.
+**This is a data gap, not a logic gap** — the classic between-code-and-data bug.
+
+    COST:  229 Qs lifts the 14 CRITICAL clubs to 30 (three fresh plays)
+           355 Qs lifts EVERY pack to 30
+         1,040 Qs lifts EVERY pack to 40 (four fresh plays)
+
+Recommend the 355 — every pack to three fresh plays — via the forge pipeline
+(generate → examiner → skeptic), in club waves as usual.
+
+### P2 — 1,219 QUESTIONS HAVE NO EXPLANATION (81.8% coverage)
+
+    History     97.2%   PL       99.6%   Transfers 100%   ChampionsLeague 100%
+    Legends     84.1%   Records  81.9%   Managers  79.6%   LaLiga  76.0%
+    UCL         74.9% <   SerieA  68.4% <  Bundesliga 63.7% <
+    Euros       56.3% <   WorldCup 53.2% <  ...  TOTAL 81.8%
+
+WorldCup is the 4th-largest category (635) and barely half of it explains itself.
+This is the exact claim the store copy already had to be walked back on, and it
+is the difference between a learning product and a guessing game. Worst five
+categories carry ~900 of the 1,219.
+
+### P3 — WEB LOCALISATION IS 38 PAGES AGAINST 140 ENGLISH
+
+    /es/ 11   /it/ 9   /fr/ 5   /de/ 4   /pt/ 4   /id/ 3   /tr/ 2
+
+Measured previously: localised pages convert **2.6×**, and /es/ River Plate drew
+134 impressions against 8 for the English equivalent. The pipeline, the gates,
+the hreflang mesh and the orphan check all already exist — this is pure content
+throughput on rails we have already built. Cheapest measured growth lever we own.
+
+### P4 — ARABIC IS THE WEAKEST OF 15 STORE LOCALES
+
+    ar   subtitle 18/30   keywords 69/100   promo 112/170   desc 1751
+
+Every other locale is 88-99 on keywords. Arabic is one of football's biggest
+markets and we are leaving a third of the indexable fields empty. Cheap: it is
+copy, not code, and `check-localisations.mjs` gates it.
+
+### ✅ MEASURED CLEAN — do NOT spend the next few days here
+
+- **Web technical quality is already 10/10.** Lighthouse mobile, live prod:
+  `/quiz/liverpool/` **100 / 100 / 100 / 100**, 52 passed 0 failed; and the
+  newest, fastest-shipped page `/tr/quiz/galatasaray/` scores **identically**.
+  The localisation wave did not cost us any technical quality.
+- **Answer-position bias is a NON-ISSUE.** The stored bank is skewed A 37.3% /
+  B 26.8% / C 21.2% / D 14.7% — a 12.3pp deviation that looks alarming. Every
+  draw path shuffles options at draw time: `getQs`, `getDailyQsForDate`, club,
+  league, couch, MP, and even the SEO tasters (deterministically by sha1 so pages
+  stay stable). **No player is affected.** ⚠️ I nearly filed this as a critical
+  fairness bug because I grepped for the variable name `idx` and the two main
+  paths use `shuffled`/`sh`. Grep the BEHAVIOUR, not a variable name.
+- **Era targeting is fine.** 247 rows mention a pre-1950 year, but they are
+  overwhelmingly founding dates, first-title and origin facts; of the 141 that
+  are not, nearly all are canon (1930 World Cup, Maracanazo, Superga, Austria's
+  1938 withdrawal) and 72 are correctly graded hard. `getQs` already gates
+  `cat:"Legends"` out of casual modes. Nothing to do.
+- **Bank hygiene is spotless:** 0 exact duplicate stems, 0 duplicate options
+  within a question, 0 blank options, 6,687 of 6,694 with exactly four options
+  (the other 7 are legitimately `type:"tf"`).
+- **Difficulty mix is sane:** easy 25.1 / medium 48.2 / hard 26.7.
+
+### ⚠️ BLOCKED — cannot measure today
+
+**The GSC connector lost its entitlement** (`sc_top_pages`, `sc_top_queries` both
+return `entitlement_required` for the AdvisorPPC account). All ranking numbers in
+this doc are the dated readings from 08-09 and 08-15, NOT fresh. Re-auth the
+connector, or read GSC in Alex's paired Chrome, before any ranking decision.
+
+---
+
 ## ☀️ TODAY'S AGENDA (2026-08-17) — re-measured this morning, not assumed
 
 **Verified before writing this:** on `main`, clean, everything pushed. iOS 1.6.0
