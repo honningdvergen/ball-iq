@@ -155,17 +155,27 @@ using is warm unless you force otherwise.
       tree, is **144k**; questions is 664k, playerSearch 361k, MysteryPlayer
       255k — all already separate on-demand chunks. There is no monolith left to
       peel. Memory superseded so it cannot mislead again.
-- [ ] 🔴 **The 3,879 ms is parse/execute of ~250k gz on the cold path** (entry 8k
-      + react 44k + GameRoot 144k + supabase 55k). Options, cheapest first:
-      1. **Render first-run onboarding without the app.** It is static text plus
-         one sample question, and index.html already has a prerender block. This
-         hits the measured LCP element directly and is the only option that
-         removes work rather than moving it.
-      2. Defer supabase (55k) past first paint if auth is not needed to paint
-         onboarding.
-      3. Finer splits inside GameRoot — last, and only with cold before/after.
-      ⚠️ Measure COLD in an isolated context every time. Warm reads ~840 ms
-      whatever you do, which is how this got misjudged twice in one day.
+- [x] **The cold-start thread — INVESTIGATED AND CLOSED 2026-08-17. It is not
+      the activation win it looked like.** Three things, each checked:
+      1. ⚠️ **The user does NOT see a blank screen for 4 seconds.** `.biq-splash`
+         markup AND its CSS are inline in the served HTML (verified on prod), so
+         it paints at HTML-parse time — roughly TTFB + parse. The 4,014 ms LCP
+         measures when the largest TEXT block (onboarding) arrives, not when the
+         screen stops being blank. Real, but far less severe than "4s of white".
+      2. ⚠️ **Rendering onboarding statically has a UX trap.** It would paint in
+         ~300 ms — but its buttons would be dead until React boots. Interactive-
+         looking UI that ignores taps is worse than a splash that plainly says
+         loading. Do not do this without solving the dead-tap window.
+      3. ⚠️ **Deferring supabase (55k, genuinely on the cold path via
+         `useAuth.jsx` → GameRoot) COLLIDES WITH AN EXISTING FIX.** AppGate holds
+         the splash until `authProfile` loads on purpose — Sprint #62 fix 3 —
+         because otherwise signing in flashes OnboardingScreen at an existing
+         user. Some of the splash duration is deliberate. Making auth RESOLVE
+         faster is fair game; deferring it reintroduces a fixed bug.
+      **Verdict: the remaining levers are small and each has a guard-rail reason
+      behind it. Activation effort is better spent on A3 and on Classic +
+      Survival than on shaving this.** Revisit only if cold LCP crosses 4,000 ms
+      or CrUX field data (currently none for this page) says real users suffer.
 
 **Verified in passing:** the only third parties on /play are Clarity (1.7 kB,
 17 ms) and Sentry (20 B). **No AdSense** — task #73's parking is real, which
