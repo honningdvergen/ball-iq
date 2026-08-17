@@ -26,9 +26,16 @@ import SCHEDULE from '../data/mysterySchedule.json';
 
    The guess subtitle therefore shows birth year + club only, which still
    tells the two Ronaldos apart (1976 vs 1985) without asserting anything
-   false. The answer reveal below still prints `nat` — that predates this and
-   is left alone deliberately, but it is WRONG for those players and wants a
-   data re-pull, not a display patch.
+   false.
+
+   ⚠️ UPDATED 2026-08-17: the answer reveal used to print `nat` too, described
+   here as "left alone deliberately". It no longer does — and neither does it
+   print `club`, which turned out to be broken the same way (see the note above
+   the reveal panels). A field being wrong "only sometimes" is still wrong on
+   the one screen whose entire job is to tell the player the truth.
+   ⚠️ The guess subtitle DOES still show `club`, and it carries the same defect.
+   It is a lesser harm — a hint next to a name you chose, not the app stating a
+   fact — but it is the same data and wants the same re-pull.
 
    ⚠️ Gameplay impact, not just cosmetic: similarity() scores nationality as a
    signal, so wherever `nat` is wrong the RANKS are wrong too. */
@@ -216,11 +223,27 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         </p>
       )}
 
+      {/* ⚠️ THE REVEAL NO LONGER PRINTS `club` OR `nat` (2026-08-17). Both are
+          wrong often enough that stating them as fact was misinforming players
+          on the one screen that exists to tell them the truth.
+          · `nat` was already documented at the top of this file — Messi,
+            Vinícius and James Rodríguez all read "Spain".
+          · `club` broke the same way: four distinct QIDs render as the label
+            "Barcelona". Q1492 is the CITY (Edwin van der Sar, who never played
+            in Spain, and he was the answer the day this was found); Q172803 is
+            a CROATIAN club carrying 23 players. `country` is what exposes it.
+          ⚠️ The CAREER data is NOT a safe substitute — it shares the dictionary
+          and the same defect: van der Sar's career literally reads
+          "Barcelona 1990-1999" where Ajax belongs.
+          What is left is what survives checking: position, number of clubs (a
+          COUNT, unaffected by the label bug) and birth year. Thin and true beats
+          rich and wrong. Restore the fields when the pull is re-run with a P31
+          class filter — see reference_wikidata_traps. */}
       {won && (
         <div style={{ margin: '4px 16px 14px', padding: '14px 16px', borderRadius: 14, background: 'rgba(88,204,2,0.12)', border: '1px solid rgba(88,204,2,0.4)' }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: '#8AE042' }}>Got it — {answer.name}</div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
-            {answer.club} · {answer.position || answer.slot} · {answer.nat} · born {answer.born}
+            {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
           </div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
             Solved in <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}.
@@ -256,7 +279,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         <div style={{ margin: '4px 16px 14px', padding: '14px 16px', borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)' }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--t1)' }}>It was {answer.name}</div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
-            {answer.club} · {answer.position || answer.slot} · {answer.nat} · born {answer.born}
+            {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
           </div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
             Gave up after <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}. Back tomorrow.

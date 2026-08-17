@@ -69,33 +69,41 @@ n=10-19 per day is too noisy to trend. The weekly aggregate is the honest view.
     the 22 a page needs), L2 waves (Turkish +3, Portuguese +4), and L5 per-locale
     measurement of the eight languages just shipped.
 
-### 🔴 FOUND 2026-08-17 WHILE TESTING THE MYSTERY GIVE-UP — LIVE FACTUAL ERROR
-The reveal panel printed **"Edwin van der Sar · Barcelona"**. He never played in
-Spain — and he is **TODAY'S ANSWER**, so every player who finishes today's
-Mystery sees it. It was already on the WIN panel; the give-up just shows it to
-more people.
+### 🟡 MYSTERY REVEAL — FALSEHOOD REMOVED 2026-08-17, DATA STILL WANTS A RE-PULL
+Testing the give-up surfaced the reveal printing **"Edwin van der Sar ·
+Barcelona"** — he never played in Spain, and he was that day's answer.
 
-Root cause is a Wikidata entity mix-up, and four different QIDs all render the
-same label "Barcelona":
+**Shipped:** the reveal no longer prints `club` or `nat`. It now reads
+`position · N clubs · born YYYY` — every field survives checking (the club COUNT
+is unaffected by the label bug). Thin and true beats rich and wrong.
 
-    Q7156    "Barcelona"  120 players   FC Barcelona            ✅
-    Q1492    "Barcelona"    2 players   the CITY of Barcelona   ❌ van der Sar, Zahavi
-    Q172803  "Barcelona"   23 players   Dani Olmo, Kramarić,
-                                        Eduardo da Silva —
-                                        these are Dinamo Zagreb ❌
-    Q248782  "Barcelona"    2 players   a different Barcelona   ❌
+**What the data actually shows** (⚠️ my first write-up of this over-claimed two
+of three rows; corrected here):
 
-So ~27 pool entries carry a club that is not the club they played for, and the
-"Barcelona" case is only the one that happened to surface. This is exactly
-[[reference_wikidata_traps]]: filter on the P31 class, never on the label.
+    Q7156   "Barcelona"  120  FC Barcelona                       ✅ correct
+    Q1492   "Barcelona"    2  the CITY — van der Sar, Zahavi     ❌ wrong entity
+    Q172803 "Barcelona"   23  country=CROATIA — Dinamo Zagreb    ❌ wrong label
+    Q248782 "Barcelona"    2  Barcelona S.C. (Ecuador)           ⚠️ real club,
+                                                                   ambiguous label
 
-⚠️ **The reveal line is `club · position · nat · born` and TWO of those four are
-known-unreliable** — `nat` is already documented as wrong for Messi, Vinícius
-and James Rodríguez, and now `club` is too. **ALEX'S CALL:** re-pull the club
-field with a proper class filter (real fix, slower), and/or drop the unreliable
-fields from the reveal until it is trustworthy (immediate, thinner). I did not
-strip them unilaterally — it is a content decision on a screen you approved.
-⚠️ Do NOT hot-swap today's answer to dodge it: people are mid-puzzle.
+⚠️ I first said Q172803's 23 were "Dinamo Zagreb players shown as Barcelona"
+reasoning from three names — but Dani Olmo genuinely IS at Barcelona now, so that
+reasoning was luck. `country=Croatia` is what actually proves it. And I called
+Q248782 wrong; it is a real club with a legitimately short name.
+
+⚠️ **THE CAREER DATA IS NOT AN ESCAPE HATCH.** It shares the same dictionary and
+the same defect — van der Sar's career literally reads "Barcelona 1990-1999"
+where Ajax belongs. Anything rendered from it inherits the bug.
+
+⚠️ **`latestClub` STACKS WITH THIS.** It picks the LONGEST spell, not the most
+recent (deliberate — it fixed Neuer reading as Schalke). So Dani Olmo's clubId is
+his 5-year Dinamo spell, not his current Barcelona one, and THEN that id renders
+under a wrong label. Two independent faults on one field.
+
+- [ ] **Re-pull the club field with a P31 class filter** ([[reference_wikidata_traps]]),
+      then restore `club` to the reveal. The guess subtitle still shows `club`
+      and still carries the defect — a lesser harm (a hint beside a name you
+      chose, not the app asserting a fact) but the same data.
 
 ### ⚠️ Where the untapped potential actually is
 - **Classic and Survival.** Third of all play, zero design investment. Item 2.
