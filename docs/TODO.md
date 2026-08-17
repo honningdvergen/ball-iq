@@ -507,6 +507,37 @@ The three levers that actually apply, in order of how much is already built:
 3. **Internal link weight** — orphan gate landed 2026-08-16; big-club pages
    should be the ones the mesh points AT, not just from.
 
+#### 🔬 PAGE-LEVEL DIAGNOSIS 2026-08-17 — Alex asked whether the PAGES are the problem
+They are not. Our own club pages, question depth vs measured position:
+
+    rangers            48 Qs → 5.7        real madrid  42 → 10.5
+    everton            45    → 6.7        juventus     42 → 10.7
+    celtic             49    → 6.7        newcastle    39 → 14.5
+    bayern munich      43    → 7.7        barcelona    42 → 14.9
+    arsenal            67    → 7.9        man utd      42 → 24.4
+    chelsea            42    → 9.5        liverpool    42 → 27.7
+
+**Depth is FLAT (39-49) while position spans 5.7 to 27.7.** Rangers and Liverpool
+carry the same content and sit 22 places apart. Arsenal has the MOST questions of
+any club (67) and still ranks below Rangers. Position tracks club FAME, inversely
+and almost perfectly. So writing more questions for Real Madrid will not move
+Real Madrid, and neither will another page rewrite — the Arsenal page already
+carries the modifier, the alias, a freshness signal, 100%-explained and a
+playable taster, and its CTR is normal for its slot.
+
+⚠️ **But this is NOT "nothing to do", and it is not only the authority kit.**
+The bare head terms are lost; the QUALIFIED ones are already won or nearly:
+
+    liverpool quiz               27.7   ·  liverpool quiz with answers      6.5
+    manchester united quiz       24.4   ·  man utd quiz with answers       10.4
+
+- [ ] **Target the qualified terms deliberately for the mega-clubs.** That is a
+      page-level lever that does NOT need authority, and it is where the big
+      clubs are actually winnable. Titles already say "with Answers"; the work is
+      making the qualified variants (hard/easy/questions-and-answers/2026) first-
+      class rather than incidental. Measure per-term before and after.
+⚠️ Do not read this as licence to write more questions. Depth is not the variable.
+
 #### ⚠️ MEASURED 2026-08-16 (GSC, 90 days, web) — WE ARE MUCH CLOSER THAN ASSUMED
 Read in the browser because the connector lost entitlement. Site totals: **809
 clicks, 42k impressions, avg position 17.4**.
