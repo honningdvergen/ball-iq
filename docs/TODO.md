@@ -105,6 +105,49 @@ under a wrong label. Two independent faults on one field.
       and still carries the defect — a lesser harm (a hint beside a name you
       chose, not the app asserting a fact) but the same data.
 
+### 🔍 PLUGIN AUDIT SWEEP 2026-08-17 (Alex asked; chrome-devtools MCP)
+Ran the tools rather than hand-rolling — [[feedback_check_tools_first]].
+
+**Lighthouse, mobile, PRODUCTION:**
+
+    /quiz/arsenal/   A11y 100 · BestPractices 100 · SEO 100 · Agentic 100   52 passed, 0 failed
+    /play            A11y 100 · BestPractices 100 · SEO  92 · Agentic 100   38 passed, 1 failed
+
+⚠️ **The single failure is a DELIBERATE choice, not a defect.** `canonical` scores
+0 because `/play` canonicals to `https://balliq.app/` and Lighthouse's heuristic
+is "points to the domain root instead of an equivalent page". That canonical is
+what stops **86 distinct `/play?club=<slug>` URLs** — club pages emit 7 each —
+being indexed as duplicates of the app shell. Leave it. Do not "fix" this.
+
+**Performance trace, /play (Lighthouse excludes perf):**
+
+    unthrottled     LCP 401 ms · TTFB 135 ms · render delay 266 ms · CLS 0.00
+    4x CPU/Slow 4G  LCP 840 ms · TTFB  56 ms · render delay 784 ms · CLS 0.00
+
+⚠️ **Render delay is 93% of throttled LCP (784 of 840 ms) — it is JS execution,
+not network.** That is precisely what [[post_launch_appinner_extraction]]
+targets. But LCP 840 ms is already well inside "good" (<2500), so the case for
+that refactor is weaker than the memory implies — UNLESS measured cold.
+⚠️ **BOTH traces are WARM** — the SW and HTTP cache were primed by earlier
+visits in the same browser. Neither is the cold-start number a first-time
+visitor sees, and cold start is the one that matters for activation. A real
+measurement needs cache disabled.
+
+**Verified in passing:** the only third parties on /play are Clarity (1.7 kB,
+17 ms) and Sentry (20 B). **No AdSense** — task #73's parking is real, which
+matters because the native privacy declaration asserts no ads.
+
+**Could NOT run today:**
+- **Semgrep** — needs an interactive login this session cannot perform, AND the
+  MCP only FETCHES findings from previous platform scans; Ball IQ has never been
+  scanned, so there is nothing to fetch. Set up a scan first.
+- Most other plugin MCPs need OAuth (github, datadog, ahrefs, nimble, amplitude,
+  linear, notion, slack, figma, intercom…). The GSC connector also lost
+  entitlement — see [[reference_gsc_property]].
+
+- [ ] **Cold-start perf measurement** with cache disabled — the only performance
+      number that bears on activation, and the only one not yet taken.
+
 ### ⚠️ Where the untapped potential actually is
 - **Classic and Survival.** Third of all play, zero design investment. Item 2.
 - **The bank is our biggest asset and our least-used one.** 6,694 verified
