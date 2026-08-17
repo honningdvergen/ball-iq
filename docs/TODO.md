@@ -1,5 +1,35 @@
 # Ball IQ — the board
 
+## 📦 1.6.1 CUT 2026-08-17 — BUILT, NOT UPLOADED (Alex's call)
+
+**iOS build 64 · Android versionCode 19 · marketing 1.6.1.** Signed AAB built
+(7.2 MB, `BUILD SUCCESSFUL`); iOS synced. **Nothing uploaded — that is Alex's.**
+
+Why it exists: five `src/` commits landed AFTER build 63 was cut, so every one
+of them was live on web only while native users had none of it —
+
+    22e7ed5  A3 DayComplete — the retention fix
+    ce2d7af  Survival results — was "Round complete / 0-of-1" on sudden death
+    24f4b48  Mystery give-up — the mode had NO way to end a losing board
+    86c3bf8  Mystery reveal no longer asserts a club/nationality we can't trust
+             ← a FACTUAL ERROR live for native users until this ships
+    47c8948  Mystery ranks on teammate overlap — the player-reported bug
+
+⚠️ **BEFORE UPLOADING: check whether 1.6.0/63 is still in App Store review.**
+Standing rule is one version through review at a time. Play has no such
+constraint — vc19 over vc18 is fine whenever.
+
+⚠️ **Device test still owed.** A green build proves compilation, not behaviour.
+
+Verified on this cut (not "the sync said OK"): `rm -rf dist` first, then the
+strings "Run over", "Today's done", "in a row" and "Best ever" all resolve
+INSIDE both native bundles — the check that catches the stale-dist trap.
+`marketing/ball.png` survived the prune (deleting `marketing/` 404s the native
+nav logo). No unguarded third-party `<script src>` in the native HTML, so the
+no-ads/no-analytics privacy declaration still holds. Both bundles 6.5 MB.
+
+---
+
 ## 🎯 THE PERFECTION PUSH (2026-08-17 → authority kit) — MEASURED, not guessed
 
 Alex: "making everything we have 10/10 … what areas are 6/10." Everything below
