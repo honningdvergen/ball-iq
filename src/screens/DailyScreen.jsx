@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { ClipboardList, Route, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { dateToYMD } from "../lib/date.js";
@@ -221,6 +221,76 @@ const REPLAY_SCREEN = { footle: "wordle", trail: "trail", mystery: "mystery" };
 
 function rowAria(m) {
   return `${m.dateLabel} ${m.dateSub} — ${rowCells(m).map(c => c.aria).filter(Boolean).join(", ")}`;
+}
+
+// What is still open from yesterday, derived from the SAME predicates the
+// Recent-days table uses to turn a cell into a replay control — including the
+// `playArchive`/`playDailyForDate` presence checks, so the panel cannot offer a
+// launch the table would have rendered as an inert score cell. Deriving this
+// independently would let the panel and the row directly below it disagree,
+// which is the exact drift this file has already had to fix once.
+//
+// Deliberately yesterday-only. playArchive() takes an arbitrary date and the
+// three puzzle screens all honour it, so a 30-day back-catalogue is one gate
+// away — but form14 and the local streak walk read history with no live-vs-
+// archive distinction, so back-filling an older day would silently repaint the
+// form strip and extend a guest's streak. That needs its own fix first.
+function yesterdayOpen(matchdays, today, playArchive, playDailyForDate) {
+  const y = matchdays.find(m => m.isYesterday);
+  if (!y) return [];
+  const out = [];
+  for (const c of rowCells(y)) {
+    const item = { key: c.key, theme: c.theme, label: MODE_LABEL[c.key] };
+    if (c.key === "daily7") {
+      // Daily 7 replays a question SET, so it keeps its own launcher. Date
+      // expression is byte-identical to the table's catch-up glyph so both
+      // controls open the same puzzle.
+      if (!y.t7Done && playDailyForDate) {
+        out.push({ ...item, onTap: () => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)) });
+      }
+    } else if (c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) {
+      out.push({ ...item, onTap: () => playArchive(REPLAY_SCREEN[c.key], yesterday()) });
+    }
+  }
+  return out;
+}
+
+// The day-complete destination. A finished day used to end on a wall: every
+// card had turned into a result chip and the only thing still moving was the
+// countdown. This offers the one thing that is both playable right now and
+// already plumbed — yesterday's unplayed puzzles — and falls back to Survival,
+// which needs no difficulty picker, no account, and never runs out.
+function DayComplete({ open, onSurvival, wide }) {
+  const hasOpen = open.length > 0;
+  return (
+    <div style={{ borderRadius: 16, padding: wide ? "18px 20px" : "14px 16px", background: "rgba(88,204,2,0.06)", border: "1px solid rgba(88,204,2,0.28)", display: "flex", flexDirection: "column", gap: hasOpen ? 12 : 0 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <span style={{ width: 34, height: 34, flexShrink: 0, borderRadius: 10, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.30)", color: "#58CC02", fontSize: 16, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true">✓</span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: wide ? 16 : 15, fontWeight: 800, color: "var(--t1)" }}>Today&apos;s done</div>
+          <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
+            {hasOpen ? "Yesterday is still open" : "Survival never runs out"}
+          </div>
+        </div>
+        {!hasOpen && (
+          <button onClick={onSurvival}
+            style={{ flexShrink: 0, padding: wide ? "10px 22px" : "11px 20px", borderRadius: 12, background: "rgba(88,204,2,0.14)", border: "1.5px solid rgba(88,204,2,0.42)", color: "#58CC02", fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
+            Survival
+          </button>
+        )}
+      </div>
+      {hasOpen && (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {open.map(o => (
+            <button key={o.key} onClick={o.onTap} aria-label={`Play yesterday's ${o.label}`}
+              style={{ padding: "9px 14px", borderRadius: 11, background: o.theme.btnBg, border: o.theme.btnBd, color: o.theme.fg, fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
+              ↺ {o.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive }) {
@@ -589,6 +659,16 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
 
   const playedCount = todayModes.filter(m => m.done).length;
 
+  // A3. `todayModes.length > 0` is not paranoia — Trail and Mystery are
+  // conditional, so a day with neither live and both fixed modes played is the
+  // shortest possible complete day, and an empty list must never read as one.
+  const allDone = todayModes.length > 0 && playedCount === todayModes.length;
+  const dayOpen = useMemo(
+    () => (allDone ? yesterdayOpen(matchdays, today, playArchive, playDailyForDate) : []),
+    [allDone, matchdays, today, playArchive, playDailyForDate],
+  );
+  const playSurvival = useCallback(() => startMode?.("survival"), [startMode]);
+
   return (
     <div className="tab-content daily-screen">
       {/* ═══ MOBILE (<1024) — byte-identical existing markup. Wrapped in a
@@ -646,6 +726,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   )}
                 </div>
               ))}
+              {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} />}
             </div>
           </>
         );
@@ -818,6 +899,8 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                       )}
                     </div>
                   ))}
+
+                  {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide />}
 
                   {/* Recent days */}
                   <div style={{ marginTop: 6 }}>

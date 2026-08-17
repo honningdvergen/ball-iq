@@ -23,9 +23,9 @@ n=10-19 per day is too noisy to trend. The weekly aggregate is the honest view.
 
 ### The ten, in priority order
 
-1. **A3 — somewhere to go after a finished day.** The last open item in the
-   plug-the-bucket set. Four solved cards currently end on a wall. Recent-days
-   table is the natural home. ~1 day. *Directly moves D7.*
+1. ~~**A3 — somewhere to go after a finished day.**~~ **DONE 2026-08-17** — the
+   plug-the-bucket set is now closed. `DayComplete` panel; details and the
+   deferred deep-archive warning are in the A-series section below.
 2. **Classic + Survival design pass.** 66 players between them — a third of all
    play — and they have NEVER had one. Highest players-per-unit-of-attention on
    the whole board, and they cost nothing to feed.
@@ -285,8 +285,36 @@ ARTEFACTS; none rendered the app.
       https://balliq.app/play and read the text.** A question = fine. "Something
       went wrong" = broken, however many ticks the tooling printed. Done for
       1c13048 — rendered Home + Daily row before calling it verified.
-- [ ] **A3. Somewhere to go after a finished day.** Four solved cards end on a
-      wall. Recent-days table is the natural home. ~1 day.
+- [x] **A3. Somewhere to go after a finished day — DONE 2026-08-17.** A
+      `DayComplete` panel renders on the Daily tab the moment every live mode is
+      played, at both breakpoints, from one component. Two states, both of which
+      launch real playable content rather than describing it:
+      - **Yesterday still open** → one tinted replay button per unplayed mode.
+        Derived by `yesterdayOpen()` from the SAME predicates the Recent-days
+        table uses to turn a cell into a control, *including* the
+        `playArchive`/`playDailyForDate` presence checks — so the panel can never
+        offer a launch the row right below it renders as an inert score cell.
+      - **Yesterday also done** → Survival. Picked because it needs no difficulty
+        picker (Classic's lives inside HomeScreen), no account, and never runs
+        out.
+      Verified by exercising, not by reading the diff: seeded a complete day in
+      localStorage, confirmed the panel's four buttons match the Yesterday row's
+      four ↺ cells exactly, then clicked through — Survival opened a live quiz,
+      and "yesterday's Trail" opened Trail #14 unsolved with 5 left while today's
+      seeded Trail was won in 2, which proves it opened the ARCHIVE board and not
+      today's. Desktop confirmed as exactly one visible instance at 1280.
+      ⚠️ **Found while building, NOT fixed — the deep archive is one gate away
+      but must not be opened yet.** `playArchive(mode, date)` already accepts an
+      arbitrary date and all three puzzle screens honour it, so a 30-day
+      back-catalogue is a one-line change to the `m.isYesterday` condition. Do
+      not make it: `form14` and the local streak walk both derive "played" from
+      history with no live-vs-archive distinction, so back-filling an older day
+      would silently repaint the form strip green and extend a guest's streak.
+      Signed-in users would see it worse, not better — `tickLoginStreak` is
+      already gated to non-archive plays, so the server flame would stay put
+      while the strip beneath it filled in, and the two would visibly disagree.
+      Fix is to record the distinction at write time (an `archive: true` flag on
+      the saved record) before any date older than yesterday becomes reachable.
 - [x] **A4. Guest dead-ends — ALREADY FIXED, premise was stale (2026-08-14).**
       Walked it as a wiped first-time visitor rather than reading the board.
       Online shows a "You vs ?" empty-state hero, "No matches yet — win one and
