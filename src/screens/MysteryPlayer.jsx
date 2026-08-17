@@ -70,9 +70,20 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   const [guesses, setGuesses] = useState(() => saved?.guesses || []); // [{ id, name, club, rank, band }]
   const [error, setError] = useState('');
   const [won, setWon] = useState(() => !!saved?.won);
+  // ⚠️ THE TERMINAL STATE THIS MODE NEVER HAD (added 2026-08-17).
+  // Mystery has no lose condition — guesses are unlimited — so until now the
+  // ONLY way it ended was a solve. Consequences, both measured:
+  //   · a scores row meant SOLVED, so "1 play ever" was really "1 SOLVE ever"
+  //     and we had no measurement of how many people opened it and stopped;
+  //   · it was the one daily mode where failing to solve cost you the streak,
+  //     while A0 deliberately ticks Footle and Trail on ANY completion, win or
+  //     loss. The hardest of the four modes had the harshest rule.
+  // `gaveUp` gives it the `done` that Trail and Footle already have.
+  const [gaveUp, setGaveUp] = useState(() => !!saved?.gaveUp);
   const [copied, setCopied] = useState(false);
   const [streak, setStreak] = useState(() => computeMysteryStreak());
   const inputRef = useRef(null);
+  const done = won || gaveUp;
 
   // Autocomplete over the pool. Capped — a 1,539-item list is unusable, and
   // showing everything on an empty box invites scrolling instead of typing.
@@ -98,8 +109,33 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
     );
   }
 
+  // ⚠️ GIVE UP IS GATED ON REAL ENGAGEMENT, not available from guess zero.
+  // The streak now ticks on a give-up, so an ungated button would be a one-tap
+  // way to farm it — strictly worse than the win-only rule it replaces. Footle
+  // sets the precedent for where the line sits: its streak ticks after six
+  // guesses however poor they were, so the bar is "a genuine attempt", not
+  // "a good one". Five is the same order of magnitude for a mode with
+  // unlimited guesses.
+  const GIVE_UP_AFTER = 5;
+  const canGiveUp = !done && guesses.length >= GIVE_UP_AFTER;
+
+  const giveUp = () => {
+    if (done) return;
+    setGaveUp(true);
+    saveMysteryResult(date, { won: false, gaveUp: true, guesses });
+    // Same archive guard as the win path and for the same reason: replaying an
+    // old puzzle must never touch today's habit metrics.
+    if (!isArchive) {
+      try {
+        window.dispatchEvent(new CustomEvent('biq:daily-completed', {
+          detail: { positive: false, game: 'mystery', won: false, attempts: guesses.length },
+        }));
+      } catch { /* best effort; never block the reveal */ }
+    }
+  };
+
   const submit = (player) => {
-    if (won || !player) return;
+    if (done || !player) return;
     if (guesses.some((g) => g.id === player.id)) { setError(`You already guessed ${player.name}.`); return; }
     const rank = ranks.get(player.id);
     const band = bandFor(rank, POOL.length);
@@ -159,7 +195,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           <div style={{ fontSize: 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em' }}>Mystery Player</div>
           <div style={{ fontSize: 12, color: 'var(--t3)' }}>No. {mysteryNumber(date)} · unlimited guesses{isArchive ? ' · archive' : ''}</div>
         </div>
-        {best !== null && !won && (
+        {best !== null && !done && (
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: 11, color: 'var(--t3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Closest</div>
             <div style={{ fontSize: 17, fontWeight: 900, color: BAND_STYLE[guesses[0].band].fg }}>{best}</div>
@@ -167,7 +203,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         )}
       </div>
 
-      {!won && (
+      {!done && (
         <p style={{ margin: '2px 16px 12px', color: 'var(--t2)', fontSize: 13.5, lineHeight: 1.5 }}>
           {/* ⚠️ THIS LINE READ "The secret player is 1." — a sentence that stops
               before it explains anything. It is trying to teach the rank scale:
@@ -193,7 +229,10 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           <button
             type="button"
             onClick={async () => {
-              const text = buildMysteryShareText({ number: mysteryNumber(), guesses, won: true, streak });
+              // ⚠️ `date`, not today. Without it an ARCHIVE win shared
+              // yesterday's board under today's puzzle number — the one number
+              // in the message a reader would use to compare with their own.
+              const text = buildMysteryShareText({ number: mysteryNumber(date), guesses, won: true, streak });
               try {
                 // Native share sheet where there is one; clipboard otherwise.
                 // Both paths are wrapped because a user dismissing the sheet
@@ -210,7 +249,35 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         </div>
       )}
 
-      {!won && (
+      {gaveUp && (
+        /* Deliberately NOT the green win panel. The player did not solve it, and
+           dressing a give-up as a success is the kind of dishonest flourish that
+           makes the win itself worth less. Neutral surface, same information. */
+        <div style={{ margin: '4px 16px 14px', padding: '14px 16px', borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)' }}>
+          <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--t1)' }}>It was {answer.name}</div>
+          <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
+            {answer.club} · {answer.position || answer.slot} · {answer.nat} · born {answer.born}
+          </div>
+          <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
+            Gave up after <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}. Back tomorrow.
+          </div>
+          <button
+            type="button"
+            onClick={async () => {
+              const shareText = buildMysteryShareText({ number: mysteryNumber(date), guesses, won: false, streak: 0 });
+              try {
+                if (navigator.share) await navigator.share({ text: shareText });
+                else { await navigator.clipboard.writeText(shareText); setCopied(true); setTimeout(() => setCopied(false), 2000); }
+              } catch { /* dismissed or blocked — nothing to recover */ }
+            }}
+            style={{ marginTop: 12, width: '100%', border: '1px solid var(--border)', borderRadius: 12, background: 'var(--s2)', color: 'var(--t1)', padding: '12px 16px', fontSize: 14.5, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}
+          >
+            {copied ? 'Copied!' : 'Share result'}
+          </button>
+        </div>
+      )}
+
+      {!done && (
         <form onSubmit={onSubmitText} style={{ padding: '0 16px 8px', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--s1)', border: '1px solid var(--border)', borderRadius: 14, padding: '0 14px' }}>
             <Search size={17} style={{ color: 'var(--t3)', flexShrink: 0 }} />
@@ -254,7 +321,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
       )}
 
       <div style={{ flex: 1, padding: '10px 16px 24px', display: 'flex', flexDirection: 'column', gap: 7 }}>
-        {guesses.length === 0 && !won && (
+        {guesses.length === 0 && !done && (
           <p style={{ color: 'var(--t3)', fontSize: 13, textAlign: 'center', marginTop: 26 }}>
             Your guesses appear here, closest first.
           </p>
@@ -271,6 +338,19 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
             </div>
           );
         })}
+
+        {/* Sits BELOW the guess list, not beside the input. A give-up offered at
+            eye level next to the search box competes with playing; down here it
+            is found by someone who has scrolled their guesses and decided. */}
+        {canGiveUp && (
+          <button
+            type="button"
+            onClick={giveUp}
+            style={{ marginTop: 10, alignSelf: 'center', background: 'none', border: 'none', color: 'var(--t3)', fontSize: 13, fontWeight: 700, textDecoration: 'underline', cursor: 'pointer', fontFamily: 'inherit', padding: 8 }}
+          >
+            Give up and reveal
+          </button>
+        )}
       </div>
     </div>
   );

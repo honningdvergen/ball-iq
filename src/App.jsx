@@ -9369,19 +9369,28 @@ function AppInner() {
           });
         }
       }
-      // Mystery Player. It has no lose state — unlimited guesses — so only a
-      // win fires, and the reward scales with how few guesses it took rather
+      // Mystery Player. The reward scales with how few guesses it took rather
       // than being flat: solving in 3 is a different achievement from solving
       // in 40, and a flat award would say otherwise.
+      //
+      // ⚠️ 2026-08-17: this used to note "no lose state, so only a win fires".
+      // That was true and it cost us two things — every mystery scores row
+      // meant SOLVED, so we had no measure of how many people played and
+      // stopped; and it made Mystery the only daily mode where not solving
+      // broke the streak, against A0's rule that any completion counts. The
+      // mode now has a give-up, so BOTH outcomes arrive here.
+      // A give-up earns no XP — it is a completion, not an achievement — but it
+      // does write its row and does tick the streak, exactly like a lost Footle.
       if (e?.detail?.game === 'mystery') {
         const tries = Math.max(1, e.detail.attempts || 1);
-        awardXp(tries <= 5 ? 50 : tries <= 15 ? 35 : 20);
+        const mysteryWon = e.detail.won === true;
+        if (mysteryWon) awardXp(tries <= 5 ? 50 : tries <= 15 ? 35 : 20);
         if (user?.id) {
           supabase.from('scores').insert({
             user_id: user.id,
             game_mode: 'mystery',
-            score: tries,
-            correct_answers: 1,
+            score: mysteryWon ? tries : 0,
+            correct_answers: mysteryWon ? 1 : 0,
             total_questions: 1,
           }).then(({ error }) => {
             if (error) {
