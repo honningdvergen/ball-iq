@@ -31,10 +31,31 @@ n=10-19 per day is too noisy to trend. The weekly aggregate is the honest view.
    the whole board, and they cost nothing to feed.
 3. **B gate: every mode awards XP and writes a scores row.** Mystery shipped
    without both. Gates here have a perfect record — none has ever recurred.
-4. **Diagnose Mystery: 1 play, ever.** Instrumentation WORKS (one row landed
-   08-15), so this is not the old "nothing was listening" bug — it is
-   discoverability or genuine disinterest. Cheap to find out, and it decides
-   invest-vs-cut on a finished mode.
+4. **Mystery — DIAGNOSED 2026-08-17. It is neither broken nor unloved; we are
+   BLIND to it, and it is the only daily mode that punishes not-solving.**
+   Ruled out by execution, in order: `MYSTERY_ENABLED` is true; today's puzzle
+   resolves (`dayIndex 20682 → Q482955`, and the next three days resolve too);
+   it renders as a Home tile and a Daily card. So it is reachable and visible.
+   **The actual finding:** `MysteryPlayer.jsx` dispatches `biq:daily-completed`
+   only inside `if (isWin)`. Footle fires on won OR lost; Trail fires on `done`
+   either way. So a Mystery scores row means SOLVED — **"1 play ever" is "1
+   SOLVE ever"**, and we have no measurement at all of how many people open it,
+   guess, and stop. App.jsx documents the reason ("no lose state — unlimited
+   guesses"), so this is deliberate, not an oversight.
+   ⚠️ **But it silently breaks the A0 rule we adopted for retention.** A0 says
+   the streak "ticks on ANY completion, win or loss", chosen precisely because
+   we cannot administer win-only fairly across an uneven bank. Mystery is the
+   ONE mode where failing to solve costs the streak — and it is the hardest of
+   the four (Contexto-style ranking over ~9,000 players). That is backwards.
+   **NEEDS ALEX'S CALL, because it changes streak semantics:**
+   (a) give Mystery a terminal state — a give-up/reveal — then fire on `done`
+       like Trail. Cleanest, matches the other modes, ~half a day.
+   (b) tick on genuine engagement (N guesses) without a reveal. Cheaper, but
+       "played" becomes fuzzier than in the other three modes.
+   (c) leave it win-only and accept both the blindness and the asymmetry.
+   Either (a) or (b) also ends the blindness. I did not change it unilaterally:
+   the streak is the retention mechanic we just rebuilt and A0 has explicit
+   reasoning behind it.
 5. **A5 — audit STATES, not screens.** Guest/signed-in, empty/full, mid-game,
    offline, PWA-standalone. Three of the last four bugs were state bugs. ~2 days.
 6. **B gate: cross-screen counter agreement.** Home said 0/2 while Daily said 0/4.
