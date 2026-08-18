@@ -1,0 +1,7 @@
+<en-US>
+Finish your daily puzzles and there is now somewhere to go next.
+• A finished day shows what is still open from yesterday, or a way straight into Survival.
+• Mystery Player: stuck? You can now give up and see who it was. The board finally has an ending.
+• Mystery Player ranks by teammates you actually played alongside.
+• Survival's end screen reads as a run, not a round — your streak, and the number to beat.
+</en-US>
