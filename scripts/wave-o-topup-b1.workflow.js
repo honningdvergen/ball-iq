@@ -171,6 +171,11 @@ const CLUBS = [
   }
 ];
 
+// ⚠️ THREE CLUBS PER RUN — wf_a39f8d84-625 died running six (~370 verification
+// agents): 529s ate two clubs' generators whole and the session limit landed on
+// the skeptics. The file keeps all six club definitions; each run takes three.
+const CLUBS_THIS_RUN = CLUBS.slice(0, 3);   // SheffWed, Norwich, Birmingham
+
 const LENSES = [
   { key: 'heritage', brief: 'the club before its modern peak — grounds, promotions and relegations, cup runs, cult players, the managers who built the identity, derbies and rivalries' },
   { key: 'modern',   brief: 'roughly 1990 onward, weighted to 2000-2024 — league campaigns, play-off finals, cup shocks, transfers in and out, the squads fans alive today actually watched' },
@@ -247,7 +252,7 @@ BALL IQ ZERO ERROR BAR — these are not style preferences, they are ship gates.
 
 phase('Generate');
 const raw = await parallel(
-  CLUBS.flatMap((c) => LENSES.map((l) => () =>
+  CLUBS_THIS_RUN.flatMap((c) => LENSES.map((l) => () =>
     agent(
       `Write ${c.gen} multiple-choice football trivia questions about ${c.name}.\n\n`
       + `LENS: ${l.brief}\n\n`
@@ -277,9 +282,9 @@ const overlap = (a, b) => {
   return n / Math.min(A.size, B.size);
 };
 
-const byClub = new Map(CLUBS.map((c) => [c.key, []]));
+const byClub = new Map(CLUBS_THIS_RUN.map((c) => [c.key, []]));
 for (const r of raw.filter(Boolean)) {
-  const c = CLUBS.find((x) => x.key === r.club);
+  const c = CLUBS_THIS_RUN.find((x) => x.key === r.club);
   const kept = byClub.get(r.club);
   for (const q of r.questions) {
     if (!q?.q || !Array.isArray(q.o) || q.o.length !== 4) continue;
@@ -289,7 +294,7 @@ for (const r of raw.filter(Boolean)) {
     kept.push(q);
   }
 }
-for (const [k, v] of byClub) log(k + ': ' + v.length + ' generated after dedupe (need ' + CLUBS.find((c) => c.key === k).need + ')');
+for (const [k, v] of byClub) log(k + ': ' + v.length + ' generated after dedupe (need ' + CLUBS_THIS_RUN.find((c) => c.key === k).need + ')');
 
 phase('Examine');
 const flat = [...byClub].flatMap(([club, qs]) => qs.map((q, i) => ({ club, i, q })));
@@ -323,7 +328,7 @@ const judged = await pipeline(
   flat,
   (item) => judge(
     `You are the EXAMINER. Fact-check this Ball IQ question about `
-    + CLUBS.find((c) => c.key === item.club).name + '.\n\n'
+    + CLUBS_THIS_RUN.find((c) => c.key === item.club).name + '.\n\n'
     + JSON.stringify(item.q, null, 2)
     + '\n\nThe keyed answer resolves to: ' + JSON.stringify(item.q.o[item.q.a]) + '\n\n'
     + BAR
@@ -342,7 +347,7 @@ const judged = await pipeline(
   }),
   (item) => judge(
     `You are the SKEPTIC. Your job is to REFUTE this Ball IQ question about `
-    + CLUBS.find((c) => c.key === item.club).name
+    + CLUBS_THIS_RUN.find((c) => c.key === item.club).name
     + ', which has already passed one fact-check. Assume the examiner missed something.\n\n'
     + JSON.stringify(item.q, null, 2)
     + '\n\nThe keyed answer resolves to: ' + JSON.stringify(item.q.o[item.q.a]) + '\n'
@@ -361,15 +366,15 @@ const judged = await pipeline(
   }),
 );
 
-const survivors = new Map(CLUBS.map((c) => [c.key, []]));
+const survivors = new Map(CLUBS_THIS_RUN.map((c) => [c.key, []]));
 for (const s of judged.filter(Boolean)) survivors.get(s.club).push(s.q);
 for (const [k, v] of survivors) {
-  const c = CLUBS.find((x) => x.key === k);
+  const c = CLUBS_THIS_RUN.find((x) => x.key === k);
   const gen = byClub.get(k).length;
   log(k + ': ' + v.length + '/' + gen + ' survived (need ' + c.need + ') ' + (v.length >= c.need ? 'TARGET MET' : 'SHORT by ' + (c.need - v.length)));
 }
 
-return CLUBS.map((c) => ({
+return CLUBS_THIS_RUN.map((c) => ({
   club: c.key, name: c.name, need: c.need,
   full: byClub.get(c.key).length,
   count: survivors.get(c.key).length,
