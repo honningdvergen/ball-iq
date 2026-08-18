@@ -252,4 +252,92 @@ export const CLUBS_PT = [
       statsLine: 'As perguntas do Palmeiras no Ball IQ vêm em três níveis — fáceis, médias e difíceis — todas com a resposta explicada.',
     },
   },
+  // ── BENFICA ────────────────────────────────────────────────────────────────
+  // ⚠️ EUROPEAN Portuguese, not Brazilian. Flamengo, Corinthians and Palmeiras
+  // above are written in Brazilian register on purpose ("goleiro", "técnico",
+  // "torcida"). Benfica's readers are in Portugal and say "guarda-redes",
+  // "treinador", "adeptos", "golo", "equipa". Writing this page in the same
+  // Brazilian voice as the ones above would read as foreign to exactly the
+  // audience it is built for — the same per-market argument that made
+  // Portuguese a separate file from Spanish in the first place.
+  //
+  // Chosen because Benfica carries the deepest verified English pack of any
+  // club in a Portuguese-speaking market, and no /pt/ page existed for the
+  // three Portuguese giants at all — the market was served only in Brazil.
+  {
+    club: 'Benfica',
+    slug: 'benfica',
+    lang: 'pt',
+    name: 'Benfica',
+    h1: 'Quiz do Benfica',
+    title: 'Quiz do Benfica — Perguntas das Águias | Ball IQ',
+    description:
+      'Quiz gratuito do Benfica com respostas explicadas: as Taças dos Campeões de 1961 e 1962, Eusébio, a maldição de Guttmann e a Luz.',
+    kind: 'Quiz de clube',
+    statLine: 'Grátis · Perguntas do Benfica com respostas explicadas · sem registo',
+    playLabel: 'Jogar o quiz',
+    intro: [
+      'O clube com mais sócios do mundo merece um quiz à altura. Este é gratuito, feito para quem acompanha o Benfica a sério, e atravessa todo o arco da história encarnada — da equipa de Béla Guttmann que ganhou a Taça dos Campeões Europeus em 1961 e 1962 aos 38 campeonatos que nenhum rival alcançou.',
+      'As perguntas são mesmo difíceis. Onde a história do Benfica é disputada, preferimos deixar a pergunta de fora a escolher um lado. O que é publicado é o que se consegue verificar.',
+      'Cada resposta do conjunto do Benfica traz uma explicação escrita, por isso errar também ensina alguma coisa sobre como o clube ganhou o que ganhou — e sobre as finais europeias que lhe escaparam.',
+    ],
+    faq: [
+      {
+        q: 'O quiz do Benfica é gratuito?',
+        a: 'É. Joga-se aqui mesmo no navegador, sem registo e sem instalar nada. Todas as perguntas desta página são gratuitas.',
+      },
+      {
+        q: 'As perguntas são difíceis?',
+        a: 'Há de tudo. As da amostra servem para aquecer; o conjunto completo vai até perguntas que só um adepto de longa data acerta — treinadores, finais europeias e recordes do clube.',
+      },
+      {
+        q: 'As respostas vêm explicadas?',
+        a: 'Vêm. Cada pergunta do Benfica traz uma explicação curta com a história por trás da resposta, para que errar valha alguma coisa.',
+      },
+      {
+        q: 'O que é a maldição de Guttmann?',
+        a: 'Béla Guttmann, o treinador húngaro que ganhou as duas Taças dos Campeões, saiu em 1962 após uma disputa salarial e terá dito que o Benfica não voltaria a ser campeão europeu durante cem anos. O clube perdeu todas as finais europeias desde então.',
+      },
+    ],
+    taster: [
+      { id: 'q_0a1c9f', en: 'Lisbon', q: 'Em que cidade joga o Benfica os seus jogos em casa?', o: ['Porto', 'Lisboa', 'Braga', 'Coimbra'], a: 1, hint: 'O Benfica tem sede em Lisboa, a capital de Portugal.' },
+      { id: 'q_957cca', q: 'Como se chama o estádio do Benfica, reconstruído em 2003?', o: ['Estádio da Luz', 'Estádio do Dragão', 'Estádio José Alvalade', 'Estádio do Bessa'], a: 0, hint: 'O Benfica joga no Estádio da Luz, em Lisboa, reconstruído em 2003 a tempo do Euro 2004.' },
+      { id: 'q_8e929d', en: 'Eagle', q: 'Que ave figura no emblema do Benfica e aparece como mascote nos dias de jogo?', o: ['Falcão', 'Águia', 'Gavião', 'Corvo'], a: 1, hint: 'Uma águia encima o emblema do Benfica, e uma águia verdadeira chamada Vitória voa antes dos jogos em casa.' },
+      { id: 'q_0ee1f4', q: 'O Benfica disputa o dérbi de Lisboa, "O Dérbi", contra que clube?', o: ['Sporting CP', 'Porto', 'Boavista', 'Braga'], a: 0, hint: 'O Sporting CP é o rival de cidade do Benfica, e os encontros entre ambos são conhecidos simplesmente como o dérbi de Lisboa.' },
+      { id: 'q_6d9217', q: 'Quem é o melhor marcador de sempre do Benfica?', o: ['Eusébio', 'Nené', 'José Águas', 'Nuno Gomes'], a: 0, hint: 'Eusébio marcou mais de 470 golos pelo Benfica entre 1961 e 1975, o recorde do clube.' },
+      { id: 'q_d9500e', q: 'Na época 2024-25, que clube tinha conquistado mais campeonatos na história do futebol português?', o: ['Sporting CP', 'Porto', 'Benfica', 'Braga'], a: 2, hint: 'O Benfica lidera com um recorde de 38 títulos do principal escalão português, à frente do Porto e do Sporting.' },
+      { id: 'q_c0ecc9', q: 'Que clube inglês contratou o avançado Darwin Núñez ao Benfica em 2022?', o: ['Arsenal', 'Manchester United', 'Liverpool', 'Newcastle'], a: 2, hint: 'O Liverpool contratou Darwin Núñez ao Benfica em junho de 2022, num negócio que podia ultrapassar os 80 milhões de libras.' },
+      { id: 'q_480827', q: 'O defesa Rúben Dias saiu do Benfica em 2020 para que clube?', o: ['Chelsea', 'Manchester City', 'Paris Saint-Germain', 'Bayern Munique'], a: 1, hint: 'O Manchester City contratou Rúben Dias ao Benfica em 2020 e ele foi eleito o melhor jogador da época do clube.' },
+      { id: 'q_eb91c9', q: 'João Félix saiu do Benfica em 2019 num negócio de 126 milhões de euros — que clube o contratou?', o: ['Manchester City', 'Atlético Madrid', 'Barcelona', 'Juventus'], a: 1, hint: 'O Atlético Madrid pagou ao Benfica um recorde do clube de 126 milhões de euros pelo jovem avançado, em 2019.' },
+      { id: 'q_0a17c3', q: 'Enzo Fernández saiu do Benfica em janeiro de 2023 por um valor recorde em Inglaterra — que clube o contratou?', o: ['Chelsea', 'Liverpool', 'Manchester United', 'Arsenal'], a: 0, hint: 'O Chelsea pagou cerca de 106,8 milhões de libras, na altura um recorde no futebol inglês, para contratar Enzo Fernández ao Benfica.' },
+    ],
+    sample: [
+      { id: 'q_194fcc', q: 'Que treinador húngaro levou o Benfica a duas Taças dos Campeões Europeus consecutivas, em 1961 e 1962?', o: ['Béla Guttmann', 'Gusztáv Sebes', 'Nándor Hidegkuti', 'Ferenc Puskás'], a: 0, hint: 'Béla Guttmann foi o arquiteto das vitórias do Benfica sobre o Barcelona e o Real Madrid, em 1961 e 1962.' },
+      { id: 'q_d48b19', en: '100 years', q: 'A famosa "maldição de Guttmann" condenaria o Benfica a ficar sem troféus europeus durante quanto tempo?', o: ['50 anos', '100 anos', '25 anos', '200 anos'], a: 1, hint: 'Béla Guttmann terá declarado que o Benfica não voltaria a ser campeão europeu durante cem anos, após uma disputa salarial em 1962.' },
+      { id: 'q_8939fc', q: 'Em que ano foi fundado o Benfica?', o: ['1904', '1893', '1920', '1911'], a: 0, hint: 'O Sport Lisboa e Benfica foi fundado a 28 de fevereiro de 1904, em Lisboa.' },
+      { id: 'q_f09cc9', q: 'A fundação do Benfica em 1904 foi liderada por que homem, cujo nome o museu do clube hoje ostenta?', o: ['José Águas', 'Cosme Damião', 'Otto Glória', 'Vítor Baptista'], a: 1, hint: 'Cosme Damião, então com 18 anos, juntou o grupo de jovens entusiastas do desporto que fundou o clube em Belém, Lisboa, em fevereiro de 1904.' },
+      { id: 'q_f7bc3f', en: 'The Sacred Monster', q: 'Mário Coluna, capitão do Benfica campeão europeu nos anos 60, era conhecido por que alcunha?', o: ['O Monstro Sagrado', 'A Pantera Negra', 'A Águia', 'O General'], a: 0, hint: 'Coluna era conhecido como "O Monstro Sagrado" e foi capitão das equipas que venceram a Taça dos Campeões em 1961 e 1962.' },
+      { id: 'q_1a1a9e', q: 'O Benfica atravessou toda a época 1972-73 do campeonato sem perder, sob que treinador inglês?', o: ['Bobby Robson', 'Ronnie Allen', 'Jimmy Hagan', 'Malcolm Allison'], a: 2, hint: 'A equipa de Hagan venceu 28 e empatou 2 dos seus 30 jogos e marcou 101 golos — o primeiro título português conquistado sem derrotas.' },
+      { id: 'q_f75533', q: 'Quem detém o recorde de jogos oficiais pelo Benfica, ao longo de 18 épocas entre 1968 e 1986?', o: ['Nené', 'Mário Coluna', 'Eusébio', 'Rui Costa'], a: 0, hint: 'Nené passou 18 anos no Benfica e detém o recorde de presenças de sempre do clube.' },
+      { id: 'q_50e424', q: 'Sven-Göran Eriksson levou o Benfica à final da Taça dos Campeões de 1990, perdida por 1-0 frente a que clube?', o: ['AC Milan', 'Ajax', 'Real Madrid', 'Steaua Bucareste'], a: 0, hint: 'Um golo de Frank Rijkaard deu ao AC Milan a vitória por 1-0 sobre o Benfica de Eriksson, na final de 1990.' },
+      { id: 'q_8d5ec9', q: 'O Benfica perdeu a final da Taça dos Campeões de 1988 nos penáltis, após um empate sem golos em Estugarda. Quem os venceu?', o: ['Steaua Bucareste', 'Estrela Vermelha', 'PSV Eindhoven', 'Ajax'], a: 2, hint: 'O PSV venceu o desempate por 6-5, completando uma tripla com a Eredivisie, a Taça da Holanda e a Taça dos Campeões.' },
+      { id: 'q_c3c439', q: 'Que treinador italiano pôs fim a 11 anos sem campeonato ao conquistar o título de 2004-05?', o: ['Giovanni Trapattoni', 'Fabio Capello', 'Carlo Ancelotti', 'Marcello Lippi'], a: 0, hint: 'Giovanni Trapattoni deu ao Benfica o primeiro campeonato em 11 anos, em 2004-05.' },
+      { id: 'q_a60235', q: 'O Benfica conquistou o seu 38.º campeonato em 2022-23 sob que treinador alemão?', o: ['Roger Schmidt', 'Julian Nagelsmann', 'Ralf Rangnick', 'Thomas Tuchel'], a: 0, hint: 'Roger Schmidt guiou o Benfica ao título da Primeira Liga de 2022-23 na sua primeira época no comando.' },
+      { id: 'q_a90163', en: 'Sevilla', q: 'O Benfica perdeu a final da Liga Europa de 2014 nos penáltis frente a que clube espanhol?', o: ['Sevilha', 'Valência', 'Villarreal', 'Atlético Madrid'], a: 0, hint: 'O Sevilha venceu o Benfica por 4-2 nos penáltis, após uma final da Liga Europa de 2014 sem golos, em Turim.' },
+    ],
+    copy: {
+      tasterEyebrow: 'Amostra grátis · Sem registo',
+      tasterH: 'Quanto sabes sobre o Benfica?',
+      tasterPh: 'Dez perguntas rápidas para medir o teu Ball IQ encarnado.',
+      tasterNote: 'Perguntas de amostra — o quiz completo tem muitas mais.',
+      playSection: 'Joga o quiz do Benfica',
+      playSub: 'Toca numa resposta para confirmar — certo ou errado na hora, e a história por trás.',
+      faqH: 'Quiz do Benfica — Perguntas frequentes',
+      aboutQ: 'Sobre o quiz do Benfica',
+      bandH: 'Achas que sabes tudo do Benfica? Prova-o na aplicação.',
+      bandP: 'Sequências, 1v1 ao vivo, um rating até 99 — e todos os quizzes numa só aplicação. A aplicação está em inglês.',
+      alsoH: 'A mesma página noutro idioma',
+      statsLine: 'As perguntas do Benfica no Ball IQ vêm em três níveis — fáceis, médias e difíceis — todas com a resposta explicada.',
+    },
+  },
 ];
