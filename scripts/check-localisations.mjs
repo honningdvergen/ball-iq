@@ -17,7 +17,7 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-const FILE = resolve('store-assets/1.6.0/localisations.json');
+const FILE = resolve('store-assets/1.6.1/localisations.json');
 const doc = JSON.parse(readFileSync(FILE, 'utf8'));
 
 const LIMITS = { name: 30, subtitle: 30, keywords: 100, promo: 170, description: 4000, whatsNew: 4000 };
