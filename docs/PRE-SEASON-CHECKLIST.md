@@ -11,10 +11,15 @@ from behavioural data — never from a code audit:
 
 | how it was found | defects |
 |---|---|
-| Playing it | timeout said "✓ Correct!"; timed-out questions missing from review |
+| Playing it | timeout said "✓ Correct!"; timed-out questions missing from review; **"5,000+ quiz questions" in the app** |
 | Clarity behavioural data | **double-tap on Next skipped a question** (633 dead clicks) |
 | A player | Van Persie twice in a week; Kane free point |
 | Code audit | *(nothing)* |
+
+⚠️ **Two gates were themselves blind this week.** The no-counts gate never
+scanned the app, and its English pattern let one unlisted word through. Both
+now fire, both proven by re-introducing the defect. **When a check passes,
+ask what it would have missed.**
 
 Lighthouse and the performance trace both came back **clean** while a
 question-skipping bug was live. Synthetic checks confirm; they do not discover.
@@ -28,7 +33,7 @@ question-skipping bug was live. Synthetic checks confirm; they do not discover.
 | Classic | ✅ 19 Aug | 2 defects found + fixed (`a4f78df`, `f0b278b`) |
 | Daily 7 | ✅ 19 Aug | full run, score + XP + review reconcile |
 | Survival | ✅ 17 Aug | death screen rebuilt (`ce2d7af`) |
-| Footle | ⬜ | typed a guess only — never played to a WIN or a LOSS |
+| Footle | ✅ 19 Aug | played to a WIN. Grading correct (green/amber/grey + keyboard state). Found disguise #8 of the question count on the win screen (`4ef1a64`). ⬜ still owed: a LOSS (6 wrong guesses) |
 | Transfer Trail | ⬜ | opened only; never solved, never failed all 5 |
 | Mystery Player | ⬜ | guessed 3; never solved, never used give-up |
 | Club Quiz | ⬜ | the #1 SEO landing surface — never played in-app |
