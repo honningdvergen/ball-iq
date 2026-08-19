@@ -34,13 +34,13 @@ question-skipping bug was live. Synthetic checks confirm; they do not discover.
 | Daily 7 | ✅ 19 Aug | full run, score + XP + review reconcile |
 | Survival | ✅ 17 Aug | death screen rebuilt (`ce2d7af`) |
 | Footle | ✅ 19 Aug | played to a WIN. Grading correct (green/amber/grey + keyboard state). Found disguise #8 of the question count on the win screen (`4ef1a64`). ⬜ still owed: a LOSS (6 wrong guesses) |
-| Transfer Trail | ⬜ | opened only; never solved, never failed all 5 |
-| Mystery Player | ⬜ | guessed 3; never solved, never used give-up |
+| Transfer Trail | ✅ 19 Aug | SOLVED (2 guesses), FAILED (5 guesses, via archive), archive replay works. Found + fixed archive-inappropriate copy (`37fc2a4`) |
+| Mystery Player | ✅ 19 Aug | GIVE-UP played end-to-end: unlocks at exactly 5 guesses, clean reveal, no unverifiable claims. Ranking sane. ⬜ still owed: a SOLVE (use an archive day) |
 | Club Quiz | ⬜ | the #1 SEO landing surface — never played in-app |
 | League Quiz | ⬜ | |
 | True/False | ⬜ | separate render path (`TrueFalseScreen`) |
 | Speed / Legends / Chaos | ⬜ | share QuizEngine; the double-tap guard covers them |
-| Online MP | ⬜ | ⚠️ needs 2 devices — **Alex only** |
+| Online MP | ✅ | confirmed working by Alex, 19 Aug |
 | Local pass & play | ⬜ | single device, testable here |
 
 ## B. THE STATES INSIDE EACH MODE — not the screens
@@ -90,6 +90,12 @@ question-skipping bug was live. Synthetic checks confirm; they do not discover.
 - ⬜ **the 27 question issues awaiting Alex's editorial call**
 - ⬜ trail careers re-verified against transfer windows (`verify-trail-careers`)
 - ⬜ Mystery photo quality spot-check
+- ✅ **Mystery pool `club` data is CURRENT** — spot-checked Salah→Trabzonspor
+  against the news (he signed 6 Aug 2026). ⚠️ I nearly filed this as a data bug
+  from stale knowledge; the web-search plugin corrected me. **297 players have a
+  stale `country` field, but `league country` was deliberately dropped from the
+  ranking as "actively misleading" — so it is dead data with zero gameplay
+  impact.** Do not re-open it.
 
 ## G. BACKEND
 
