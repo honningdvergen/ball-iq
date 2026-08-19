@@ -31,7 +31,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { QB } from '../src/questions.js';
-import { pickDailyQuestions } from '../src/lib/quiz.js';
+import { pickDailyFresh } from '../src/lib/quiz.js';
 import { dayIndexForDate } from '../src/lib/date.js';
 
 const DAYS = Number(process.argv[2] || 400);
@@ -64,12 +64,27 @@ if (existing?.anchor != null && Array.isArray(existing.days)) {
   days.push(...existing.days);
 }
 
-const startOffset = existing?.anchor != null ? existing.anchor - anchor : 0;
 const logAnchor = existing?.anchor ?? anchor;
+
+// --regen-future rebuilds every day that CANNOT yet have been served, keeping
+// the served prefix byte-for-byte. Use it when the selection RULE changes
+// (e.g. dropping easy questions); plain runs only append.
+//
+// ⚠️ "Served" includes TOMORROW. Day index is UTC of the local date, so a
+// player at UTC+14 is already on tomorrow's puzzle while it is still today
+// here. Swapping a puzzle out from under someone mid-day is the exact bug this
+// whole log exists to prevent, so the guard is deliberately generous.
+if (process.argv.includes('--regen-future') && days.length) {
+  const keep = (anchor - logAnchor) + 2;      // ...today and tomorrow
+  if (keep < days.length) {
+    console.log(`[daily-log] --regen-future: keeping ${keep} served day(s), rebuilding ${days.length - keep}`);
+    days.length = keep;
+  }
+}
 
 for (let i = days.length; i < (anchor - logAnchor) + DAYS; i++) {
   const dayIndex = logAnchor + i;
-  const picked = pickDailyQuestions(QB, dayIndex);
+  const picked = pickDailyFresh(QB, dayIndex);
   if (picked.length !== 7) {
     console.error(`[daily-log] day ${dayIndex} produced ${picked.length} questions — aborting rather than logging a short day`);
     process.exit(1);

@@ -123,7 +123,9 @@ export function pickDailyFromLog(QB, dayIndex, log = DAILY_LOG) {
   if (picked.length === 7) return picked;
   // Top up deterministically, skipping anything already picked.
   const taken = new Set(picked.map((q) => q.id));
-  const pool = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && isModernEra(q) && !taken.has(q.id));
+  // Same filter as the main draw — otherwise a deleted slot could refill with
+  // exactly the free point the draw is built to exclude.
+  const pool = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && q.diff !== "easy" && isModernEra(q) && !taken.has(q.id));
   for (const q of seededShuffle(pool, dayIndex * DAILY_SEED_MULTIPLIER)) {
     if (picked.length >= 7) break;
     picked.push(q);
@@ -131,17 +133,36 @@ export function pickDailyFromLog(QB, dayIndex, log = DAILY_LOG) {
   return picked.length === 7 ? picked : null;
 }
 
-export function pickDailyQuestions(QB, dayIndex) {
-  const logged = pickDailyFromLog(QB, dayIndex);
-  if (logged) return logged;
+// The live date-seeded draw, with NO log consulted. Exported so the log
+// GENERATOR can compute fresh days — it must never call pickDailyQuestions,
+// which reads the log first and would therefore rebuild the log from itself.
+// (That exact mistake produced a no-op "regeneration" on 2026-08-19.)
+export function pickDailyFresh(QB, dayIndex) {
   // Era filter, not just Legends. Alex's standing rule is that nobody cares about
   // pre-1950 football; we stopped GENERATING it but it kept SURFACING, and the
   // Daily 7 is the worst place for it — it is the most-shared, most-compared
   // screen in the app and the one a new player is most likely to meet first.
   // These questions stay playable in Classic and Legends; they just stop
   // representing us on the daily.
-  const mcqOnly = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && isModernEra(q));
+  // ⚠️ NO EASY QUESTIONS IN THE DAILY (Alex, 2026-08-19: "a free point does not
+  // belong in the daily"). Prompted by a player calling out "Harry Kane joined
+  // Bayern from which Premier League club?" — correct, correctly labelled easy,
+  // and a free point for anyone who follows football, which is the whole
+  // audience. Measured: the daily was carrying ~1.8 easy questions EVERY day,
+  // a quarter of the set.
+  //
+  // This is the rule club and league quizzes have always used ("for invested
+  // fans — never serve easy"); the Daily 7 is the most invested-fan surface we
+  // have, since it is shared, compared and carries the streak. 4,270 medium+
+  // hard questions remain eligible = 610 days of unique sets, so the pool is
+  // not the constraint.
+  const mcqOnly = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && q.diff !== "easy" && isModernEra(q));
   return seededShuffle(mcqOnly, dayIndex * DAILY_SEED_MULTIPLIER).slice(0, 7);
+}
+
+export function pickDailyQuestions(QB, dayIndex) {
+  const logged = pickDailyFromLog(QB, dayIndex);
+  return logged || pickDailyFresh(QB, dayIndex);
 }
 
 // ── Answer-leak avoidance ────────────────────────────────────────────────────

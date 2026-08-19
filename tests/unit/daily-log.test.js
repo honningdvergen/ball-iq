@@ -45,6 +45,33 @@ describe("Daily 7 is frozen against bank changes", () => {
     expect(dupes).toEqual([]);
   });
 
+  // Alex, 2026-08-19: "a free point does not belong in the daily." Prompted by a
+  // player calling out a Kane question that was correct, correctly labelled
+  // easy, and free to anyone who follows football. The daily was carrying ~1.8
+  // easy questions EVERY day — a quarter of the set. Same rule club and league
+  // quizzes have always used; the daily is the most invested-fan surface there
+  // is, since it is shared, compared and carries the streak.
+  //
+  // The first two logged days are exempt: they were already served when the
+  // rule changed, and moving a served day is the bug this whole file prevents.
+  it("no easy question is scheduled on any unserved day", () => {
+    const byId = new Map(QB.map((q) => [q.id, q]));
+    const offenders = [];
+    DAILY_LOG.days.slice(2).forEach((day, i) => {
+      for (const id of day) {
+        if (byId.get(id)?.diff === "easy") offenders.push({ day: i + 2, id });
+      }
+    });
+    expect(offenders.slice(0, 5)).toEqual([]);
+  });
+
+  it("a fresh draw never contains an easy question", () => {
+    for (const offset of [500, 750, 1000]) {   // beyond the log: the live path
+      const fresh = pickDailyQuestions(QB, DAILY_LOG.anchor + offset);
+      expect(fresh.map((q) => q.diff), `day +${offset}`).not.toContain("easy");
+    }
+  });
+
   it("still serves 7 beyond the log horizon", () => {
     expect(pickDailyQuestions(QB, DAILY_LOG.anchor + DAILY_LOG.days.length + 10)).toHaveLength(7);
   });
