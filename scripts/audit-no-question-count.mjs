@@ -40,6 +40,18 @@ const PATTERNS = [
   // never back-ported to the English one. Generalised now: any up-to-three
   // words may sit between the number and the noun.
   /\b\d{1,3},\d{3}\+?\s+(?:[\p{L}'’-]+\s+){0,3}questions\b/giu,
+  // ⚠️ THE NINTH WAY IT SHIPPED (2026-08-19): "556 questions" per league in the
+  // in-app League Quiz picker. Every English pattern above requires COMMA
+  // THOUSANDS, so an inventory count under 1,000 sailed through — and sub-1,000
+  // counts are exactly the ones that advertise thinness ("Ligue 1 · 129
+  // questions"). Three digits is the floor because game-FORMAT counts are
+  // small and legitimate ("7 questions · ~3 min", "10 questions, 20 seconds
+  // each") — the rule bans inventory, not rules of the game.
+  // Years are not counts: "Quiz Questions 2026"-style SEO copy puts a 4-digit
+  // year in exactly this position on 110 pages. A 19xx/20xx number is excluded;
+  // a genuine inventory of 1,900-2,099 questions would still be caught by the
+  // comma-thousands pattern above the moment it is formatted for display.
+  /\b(?!(?:19|20)\d{2}\b)\d{3,4}\+?\s+(?:[\p{L}'’-]+\s+){0,3}questions\b/giu,
   /\bbank of\s+\d{1,3},?\d{3}\b/gi,
   /\b\d{1,3},\d{3}\s+questions\s+in\s+the\s+bank\b/gi,
   /\bquestions?\s*:\s*\d{1,3},\d{3}\b/gi,

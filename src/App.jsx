@@ -5498,21 +5498,13 @@ function ClubQuizScreen({ onStart, onBack }) {
 
 
 // League-quiz picker — mirrors ClubQuizScreen's colour-coded rows, grouped
-// Leagues / Tournaments. Counts show the live QB pool per competition.
+// Leagues / Tournaments. Each row carries the rating hook, never a pool count.
 function LeagueQuizScreen({ onStart, onBack }) {
-  const [counts, setCounts] = React.useState(null);
   React.useEffect(() => {
-    let alive = true;
-    // Index for the counts, full bank warmed in the background — see the club
-    // picker above for why.
+    // Bank warmed in the background — see the club picker above for why. The
+    // per-league count this used to compute was rendered in the rows (disguise
+    // #9 of the no-counts rule) and is deliberately gone.
     prefetchQuestions();
-    loadQuestionIndex().then((IDX) => {
-      if (!alive) return;
-      const c = {};
-      for (const s of LEAGUE_QUIZ_SECTIONS) for (const it of s.items) c[it.cat] = IDX.filter(q => q && q.cat === it.cat && q.type === "mcq" && q.n > 0).length;
-      setCounts(c);
-    }).catch(() => {});
-    return () => { alive = false; };
   }, []);
   return (
     <div className="screen">
@@ -5538,7 +5530,14 @@ function LeagueQuizScreen({ onStart, onBack }) {
                   </div>
                   <div className="mi-body">
                     <div className="mi-name">{it.name}</div>
-                    <div className="mi-desc">{counts ? `${counts[it.cat]} questions` : "Loading…"}</div>
+                    {/* ⚠️ NO COUNT — disguise #9 (2026-08-19). This printed
+                        "556 questions" per league: an inventory count in
+                        user-facing copy (binding rule), and the thin leagues
+                        advertised exactly how thin they were — the same reason
+                        the club-page "42 Full set" control was banned. The
+                        rating hook is the picker's actual promise, and it
+                        cannot rot. */}
+                    <div className="mi-desc">{`Builds your ${it.abbr} rating`}</div>
                   </div>
                   <div className="mi-arrow">→</div>
                 </button>

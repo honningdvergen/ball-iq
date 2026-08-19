@@ -898,7 +898,7 @@ function trustSection(name, rows) {
   return `<section class="sec narrow" id="how">
 <h2>How the ${esc(name)} quiz is checked</h2>
 <p class="sub">Every question above was written by hand and verified before it went live.</p>
-<p class="trust-note">All ${rows.length} ${esc(name)} questions were checked twice before publication — once against the claim the question makes, and once against the wrong answers offered beside it. A question whose wrong options can be dismissed without knowing any football is not really a question, so those get rewritten or dropped rather than padded out. Anything that could not be confirmed was removed rather than guessed, which is why some sets are smaller than others. ${pct100(rows)} Spot something wrong and <a href="${SITE.base}/contact/">tell us</a> — corrections from players are how the bank stays accurate.</p>
+<p class="trust-note">Every ${esc(name)} question here was checked twice before publication — once against the claim the question makes, and once against the wrong answers offered beside it. A question whose wrong options can be dismissed without knowing any football is not really a question, so those get rewritten or dropped rather than padded out. Anything that could not be confirmed was removed rather than guessed, which is why some sets are smaller than others. ${pct100(rows)} Spot something wrong and <a href="${SITE.base}/contact/">tell us</a> — corrections from players are how the bank stays accurate.</p>
 </section>`;
 }
 
@@ -2207,7 +2207,7 @@ ${renderListLinks(catCfg.name)}
 <section class="sec narrow">
 ${trustSection(catCfg.name, all)}
 <h2 id="faq">${esc(catCfg.name)} quiz — FAQ</h2>
-${renderFaq(catCfg.faq, { q: `About the ${catCfg.name} quiz`, html: `${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(catCfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
+${renderFaq(catCfg.faq, { q: `About the ${catCfg.name} quiz`, html: `${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">The ${esc(catCfg.name)} set runs the full range — easy starters, a medium core, and hard questions a devoted fan has to think about.</p>` })}
 </section>
 ${adSlot('afterFaq')}
 </main>
@@ -2719,7 +2719,7 @@ ${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
 <section class="sec narrow">
 ${trustSection(cfg.name, all)}
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
-${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">Ball IQ has ${all.length} ${esc(cfg.name)} questions — ${easy} easy, ${medium} medium and ${hard} hard.</p>` })}
+${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">The ${esc(cfg.name)} set runs the full range — easy starters, a medium core, and hard questions a devoted fan has to think about.</p>` })}
 </section>
 ${adSlot('afterFaq')}
 </main>
