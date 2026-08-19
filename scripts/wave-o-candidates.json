@@ -1,0 +1,1248 @@
+{
+ "_warning": "UNVERIFIED. candidates passed zero checks; examiner approvals passed one of two. ZERO ERROR = survive BOTH passes. Do not ship from this file.",
+ "runDir": "/Users/alexanderbrynolsen/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/subagents/workflows/wf_64f2b649-509",
+ "rescuedAt": null,
+ "counts": {
+  "candidates": 94,
+  "byClub": {
+   "Norwich City": 32,
+   "Sheffield Wednesday": 32,
+   "Birmingham City": 30
+  },
+  "verdicts": {
+   "examiner:keep": 43,
+   "examiner:fix": 1
+  }
+ },
+ "candidates": {
+  "Norwich City": [
+   {
+    "club": "Norwich City",
+    "q": "Norwich returned to the Premier League by winning the 2015 Championship play-off final 2-0 at Wembley against which club?",
+    "o": [
+     "Derby County",
+     "Middlesbrough",
+     "Sheffield Wednesday",
+     "Hull City"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Cameron Jerome and Nathan Redmond both scored inside the opening 15 minutes on 25 May 2015. Alex Neil, just 33 at the time, took Norwich straight back up at the first attempt."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich lost the 2002 First Division play-off final at Cardiff's Millennium Stadium on penalties to which club?",
+    "o": [
+     "Wolverhampton Wanderers",
+     "Millwall",
+     "Birmingham City",
+     "Sheffield United"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Iwan Roberts headed Norwich ahead in extra time before Geoff Horsfield equalised; Birmingham won the shootout 4-2, with young Darren Carter converting the decisive kick past Robert Green."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Darren Huckerby joined Norwich in 2003, first on loan and then permanently, from which club?",
+    "o": [
+     "Newcastle United",
+     "Leeds United",
+     "Coventry City",
+     "Manchester City"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "The winger arrived on a three-month loan in September 2003 and signed permanently that December for £750,000. His electric form helped fire Norwich to the First Division title that season."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich signed Grant Holt for around £400,000 in the summer of 2009 from which club?",
+    "o": [
+     "Shrewsbury Town",
+     "Rochdale",
+     "Nottingham Forest",
+     "Blackpool"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Holt had scored 28 goals for Shrewsbury the season before. Paul Lambert made him captain on arrival, and he scored in League One, the Championship and the Premier League for the club."
+   },
+   {
+    "club": "Norwich City",
+    "q": "On the opening day of the 2009-10 League One season, Norwich were thrashed 7-1 at Carrow Road by which club — whose manager they then hired?",
+    "o": [
+     "Southend United",
+     "Colchester United",
+     "MK Dons",
+     "Leyton Orient"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Paul Lambert resigned at Colchester ten days after that humiliation to take the Norwich job — and turned it into back-to-back promotions from League One to the Premier League."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich sold playmaker James Maddison in 2018, for a fee reported at over £20m, to which club?",
+    "o": [
+     "Southampton",
+     "Everton",
+     "Leicester City",
+     "West Ham United"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Maddison had been the Championship's standout creator in 2017-18. Leicester's fee was reported as a record sale for Norwich at the time, and he went on to win England caps."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Emiliano Buendía left Norwich in 2021 in a then-club-record £33m sale to which club?",
+    "o": [
+     "Arsenal",
+     "Aston Villa",
+     "Leeds United",
+     "Everton"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Villa beat off strong interest from Arsenal to sign the Argentine, who was fresh from being named Championship Player of the Season in Norwich's 2020-21 title run."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich signed Teemu Pukki on a free transfer in the summer of 2018 from which club?",
+    "o": [
+     "Celtic",
+     "Schalke 04",
+     "HJK Helsinki",
+     "Brøndby"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "All four are former Pukki clubs, but he arrived quietly from Denmark after four seasons at Brøndby — then scored 29 league goals in his first year and was named Championship Player of the Season."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Which club paid a then-British record £5m to sign Chris Sutton from Norwich in 1994?",
+    "o": [
+     "Blackburn Rovers",
+     "Manchester United",
+     "Liverpool",
+     "Newcastle United"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Sutton joined Alan Shearer to form the 'SAS' strike partnership, firing Blackburn to the 1994-95 Premier League title in his first season."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich stunned champions Manchester City 3-2 at Carrow Road in September 2019 — who opened the scoring for Norwich?",
+    "o": [
+     "Todd Cantwell",
+     "Teemu Pukki",
+     "Kenny McLean",
+     "Emiliano Buendía"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "McLean headed in from a corner on 18 minutes; Cantwell and Pukki added the others as Daniel Farke's injury-ravaged side inflicted City's first league defeat in eight months."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Before taking over at Norwich in 2017, Daniel Farke managed the reserve side of which German club?",
+    "o": [
+     "Bayern Munich",
+     "Borussia Dortmund",
+     "Borussia Mönchengladbach",
+     "Schalke 04"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Farke spent two years in charge of Borussia Dortmund II before sporting director Stuart Webber brought him to Carrow Road, where he won two Championship titles in four seasons."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Which manager led Norwich to the 2003-04 First Division title and promotion back to the Premier League?",
+    "o": [
+     "Peter Grant",
+     "Glenn Roeder",
+     "Bryan Gunn",
+     "Nigel Worthington"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Worthington's side, with Darren Huckerby in dazzling form, ran away with the division on 94 points — ending a nine-season absence from the top flight."
+   },
+   {
+    "club": "Norwich City",
+    "q": "On the opening weekend of the inaugural Premier League season in August 1992, Norwich came from 2-0 down to win 4-2 away to which club?",
+    "o": [
+     "Liverpool",
+     "Arsenal",
+     "Leeds United",
+     "Manchester United"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Substitute Mark Robins scored twice at Highbury as Mike Walker's side launched the campaign that would end with them third in the table."
+   },
+   {
+    "club": "Norwich City",
+    "q": "In September 1993, which Norwich striker became the first player to score four goals in a single Premier League match?",
+    "o": [
+     "Efan Ekoku",
+     "Mark Robins",
+     "Chris Sutton",
+     "Ruel Fox"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Ekoku struck four times in a 5-1 win at Everton on 25 September 1993 — until that afternoon, no one had bettered a hat-trick in the Premier League era."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich's 2004-05 Premier League relegation was sealed on the final day by a 6-0 defeat away to which club?",
+    "o": [
+     "Charlton Athletic",
+     "Portsmouth",
+     "Fulham",
+     "Blackburn Rovers"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Norwich went to Craven Cottage knowing a win would keep them up; instead Brian McBride scored twice in a 6-0 collapse and they went down alongside Southampton and Crystal Palace."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Delia Smith's famous on-pitch 'Let's be having you!' rallying cry in February 2005 came during a home match against which club?",
+    "o": [
+     "Manchester United",
+     "Manchester City",
+     "Newcastle United",
+     "Middlesbrough"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Norwich had led 2-0 but were pegged back to 2-2 by half-time, when Smith seized the announcer's microphone to demand a '12th man'. Robbie Fowler's late goal won it 3-2 for the visitors."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Carrow Road, Norwich City's home ground, sits on the bank of which river?",
+    "o": [
+     "River Yare",
+     "River Bure",
+     "River Wensum",
+     "River Waveney"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "The Wensum flows right past the stadium, with fans crossing Carrow Bridge on matchdays. It joins the Yare just downstream at Trowse — all four options are real Norfolk rivers."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich famously finished third in the 1992-93 Premier League. What was their goal difference that season?",
+    "o": [
+     "Minus 4",
+     "Plus 4",
+     "Zero",
+     "Plus 11"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Mike Walker's side scored 61 but conceded 65, taking third place with a negative goal difference — and they led the table for long stretches of the season on the way there."
+   },
+   {
+    "club": "Norwich City",
+    "q": "After beating Bayern Munich, which club ended Norwich's 1993-94 UEFA Cup run in the third round?",
+    "o": [
+     "Juventus",
+     "Ajax",
+     "Paris Saint-Germain",
+     "Inter Milan"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Dennis Bergkamp scored in both legs as Inter won 1-0 home and away. The Italians went on to lift the UEFA Cup that season."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Mike Walker walked out on Norwich in January 1994 to manage which club?",
+    "o": [
+     "Everton",
+     "Leeds United",
+     "Tottenham Hotspur",
+     "Manchester City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Weeks after the Bayern triumph, Walker left for Goodison Park. His exit is often seen as the moment the great early-90s Norwich side began to break up."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich sold Chris Sutton in the summer of 1994 for a then-British record £5 million to which club?",
+    "o": [
+     "Manchester United",
+     "Arsenal",
+     "Blackburn Rovers",
+     "Liverpool"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Sutton joined Alan Shearer at Blackburn to form the 'SAS' strike partnership, winning the Premier League title in 1994-95 — the same season Norwich went down."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Which Norwich striker scored four goals in a 5-1 Premier League win at Everton in September 1993?",
+    "o": [
+     "Chris Sutton",
+     "Efan Ekoku",
+     "Mark Robins",
+     "Ruel Fox"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Ekoku equalised before half-time then added three more in the space of 13 second-half minutes at Goodison Park — the Premier League's first four-goal haul by one player."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Cult striker Robert Fleck left Norwich in 1992 in a then-club-record £2.1 million sale. Which club bought him?",
+    "o": [
+     "Tottenham Hotspur",
+     "Rangers",
+     "Southampton",
+     "Chelsea"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "The move flopped — four goals in 48 games for Chelsea — and Fleck was back at Carrow Road by 1995, first on loan and then permanently."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich lost the 2002 First Division play-off final on penalties to which club?",
+    "o": [
+     "Wolverhampton Wanderers",
+     "Millwall",
+     "Sheffield United",
+     "Birmingham City"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "At Cardiff's Millennium Stadium the final finished 1-1 after extra time before Birmingham won the shoot-out 4-2, keeping Nigel Worthington's side in the second tier for another season."
+   },
+   {
+    "club": "Norwich City",
+    "q": "In February 2005, Delia Smith grabbed the microphone at half-time and delivered her famous 'Let's be 'avin' you!' speech during a home match against which club?",
+    "o": [
+     "Liverpool",
+     "Chelsea",
+     "Manchester City",
+     "Middlesbrough"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Her call for a '12th man' couldn't save the night — Robbie Fowler struck a last-minute winner and Manchester City won 3-2 at Carrow Road."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Darren Huckerby ended his playing career in Major League Soccer with which club?",
+    "o": [
+     "LA Galaxy",
+     "San Jose Earthquakes",
+     "Chicago Fire",
+     "Columbus Crew"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Huckerby joined San Jose in 2008 and was named MLS Newcomer of the Year before a hip injury forced his retirement in 2009."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich opened the 2009-10 League One season with a 7-1 home humiliation — then hired the winning manager, Paul Lambert, days later. Who were the visitors that day?",
+    "o": [
+     "Leyton Orient",
+     "Colchester United",
+     "MK Dons",
+     "Exeter City"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Colchester's rout at Carrow Road became one of football's strangest job interviews: Lambert swapped dugouts within a fortnight and went on to win back-to-back promotions with Norwich."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich completed back-to-back promotions in 2010-11 by finishing second in the Championship behind which champions?",
+    "o": [
+     "Cardiff City",
+     "Swansea City",
+     "Reading",
+     "Queens Park Rangers"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "QPR took the title while Paul Lambert's Norwich went up automatically in second place; Swansea joined them via the play-offs."
+   },
+   {
+    "club": "Norwich City",
+    "q": "After taking Norwich back to the Premier League, Paul Lambert resigned in the summer of 2012 to take charge of which club?",
+    "o": [
+     "Aston Villa",
+     "West Bromwich Albion",
+     "Sunderland",
+     "Stoke City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Lambert's switch to Villa ended in a legal wrangle between him and Norwich — a sour finish to the reign that had lifted the club from League One to the top flight."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich returned to the Premier League in 2015 by beating which club 2-0 in the Championship play-off final?",
+    "o": [
+     "Brentford",
+     "Middlesbrough",
+     "Derby County",
+     "Ipswich Town"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "First-half goals from Cameron Jerome and Nathan Redmond saw off Middlesbrough at Wembley — after Norwich had knocked out rivals Ipswich in the semi-finals."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich appointed Alex Neil, the manager who won them the 2015 play-off final, from which Scottish club?",
+    "o": [
+     "St Mirren",
+     "Partick Thistle",
+     "Hamilton Academical",
+     "Falkirk"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Neil was Hamilton's 33-year-old player-manager when Norwich came calling in January 2015. Five months later he had won promotion at Wembley."
+   },
+   {
+    "club": "Norwich City",
+    "q": "Norwich won the 1985 League Cup but never took up the European place that came with it. Why?",
+    "o": [
+     "English clubs were banned from Europe after the Heysel disaster",
+     "They declined entry for financial reasons",
+     "They lost a preliminary qualifying round",
+     "UEFA ruled their squad ineligible after relegation"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The post-Heysel ban on English clubs cost Norwich what would have been their first European campaign — a double blow in a season that also ended in relegation from the First Division."
+   }
+  ],
+  "Sheffield Wednesday": [
+   {
+    "club": "Sheffield Wednesday",
+    "q": "In which division were Sheffield Wednesday playing when they won the 1991 League Cup?",
+    "o": [
+     "First Division",
+     "Second Division",
+     "Third Division",
+     "Fourth Division"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Ron Atkinson's side were still a Second Division club when they beat Manchester United at Wembley in April 1991 — and they clinched promotion back to the top flight just weeks later, a cup-and-promotion double season.",
+    "q_check": "Wednesday were a Second Division side in 1990-91, finishing third and winning promotion."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Who captained Sheffield Wednesday in the 1991 League Cup final?",
+    "o": [
+     "Carlton Palmer",
+     "Peter Shirtliff",
+     "Nigel Pearson",
+     "Nigel Worthington"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Pearson lifted the trophy and was named man of the match, marshalling the defence as Atkinson's Second Division side shut out Alex Ferguson's Manchester United."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Which club did Ron Atkinson leave Sheffield Wednesday to manage in the summer of 1991?",
+    "o": [
+     "Aston Villa",
+     "Coventry City",
+     "Manchester United",
+     "Nottingham Forest"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Weeks after the Wembley triumph and promotion, 'Big Ron' walked out for Villa Park — a departure many Wednesdayites never forgave. Trevor Francis stepped up to replace him."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Who was Sheffield Wednesday's manager for both of their 1993 cup final defeats?",
+    "o": [
+     "Ron Atkinson",
+     "Trevor Francis",
+     "David Pleat",
+     "Danny Wilson"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Francis took over from Ron Atkinson in 1991, led Wednesday to third place in 1991-92, and then to both Wembley finals in 1993 — losing each one to Arsenal."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "As of 2026, the 1993 FA Cup final between Arsenal and Sheffield Wednesday remains the last to be settled by a replay. Who scored Arsenal's winner deep into extra time of that replay?",
+    "o": [
+     "Ian Wright",
+     "Paul Merson",
+     "Steve Morrow",
+     "Andy Linighan"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Centre-back Linighan rose to head home in the final minute of extra time in the Wembley replay, breaking Wednesday hearts in a game that finished 2-1."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Which Sheffield Wednesday player scored their goal in the 1993 League Cup final defeat to Arsenal?",
+    "o": [
+     "John Sheridan",
+     "John Harkes",
+     "Carlton Palmer",
+     "Chris Bart-Williams"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The USA midfielder put Wednesday in front early on, but goals from Paul Merson and Steve Morrow turned the final around for Arsenal, who won 2-1."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday's 1993 FA Cup semi-final win over Sheffield United was played at which venue?",
+    "o": [
+     "Villa Park",
+     "Old Trafford",
+     "Wembley",
+     "Elland Road"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Demand for the all-Sheffield tie was so huge the FA moved it to Wembley. Chris Waddle curled in a famous early free-kick and Mark Bright's extra-time header settled it 2-1."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Which Sheffield Wednesday player was named FWA Footballer of the Year for the 1992-93 season?",
+    "o": [
+     "David Hirst",
+     "Des Walker",
+     "John Sheridan",
+     "Chris Waddle"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Waddle's form was so dazzling that the football writers made him their Footballer of the Year — even as Wednesday ended the season losing both domestic cup finals."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "In September 1998, Sheffield Wednesday's Paolo Di Canio was banned for 11 matches for pushing over referee Paul Alcock during a match against which club?",
+    "o": [
+     "Manchester United",
+     "Arsenal",
+     "Liverpool",
+     "Leeds United"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "After a melee involving Martin Keown at Hillsborough, Di Canio shoved Alcock, who stumbled theatrically to the turf. The Italian never played for Wednesday again and joined West Ham that January."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday signed cult-hero forward Benito Carbone in 1996 from which Italian club?",
+    "o": [
+     "Napoli",
+     "Juventus",
+     "Internazionale",
+     "Roma"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Wednesday paid around £3 million to take the flamboyant forward from Inter in October 1996, and his flair quickly made him a Hillsborough favourite."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Which manager was sacked in March 2000 as Sheffield Wednesday slid towards relegation from the Premier League?",
+    "o": [
+     "Danny Wilson",
+     "David Pleat",
+     "Peter Shreeves",
+     "Ron Atkinson"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Wilson was dismissed with the club deep in trouble; caretaker Peter Shreeves couldn't stop the slide, and relegation ended the top-flight stay that had begun with the 1991 promotion."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday won promotion in 2005 by beating which club in the League One play-off final?",
+    "o": [
+     "Brentford",
+     "Tranmere Rovers",
+     "Hull City",
+     "Hartlepool United"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Over 59,000 fans saw Wednesday win 4-2 after extra time at Cardiff's Millennium Stadium, with Drew Talbot's breakaway goal in the dying seconds sealing the return to the Championship."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday finished runners-up in League One in 2011-12 — which club pipped them to the title?",
+    "o": [
+     "Sheffield United",
+     "Charlton Athletic",
+     "Huddersfield Town",
+     "MK Dons"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Dave Jones's side racked up 93 points and edged Sheffield United into third on the run-in, but Charlton had already sealed the League One title with over 100 points."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday lost the 2016 Championship play-off final at Wembley to which club?",
+    "o": [
+     "Hull City",
+     "Brighton & Hove Albion",
+     "Derby County",
+     "Middlesbrough"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Carlos Carvalhal's side had knocked out Brighton in the semi-finals, but Mohamed Diamé's second-half strike won the final 1-0 for Hull."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Who scored Sheffield Wednesday's extra-time winner against Barnsley in the 2023 League One play-off final?",
+    "o": [
+     "Barry Bannan",
+     "Michael Smith",
+     "Josh Windass",
+     "Lee Gregory"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Windass's diving header in the final minute of extra time won it 1-0 at Wembley — capping a run in which Wednesday had overturned a 4-0 first-leg semi-final deficit against Peterborough."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "The 'Boxing Day Massacre' of 1979, when Sheffield Wednesday beat Sheffield United 4-0 at Hillsborough, was played in which division?",
+    "o": [
+     "First Division",
+     "Second Division",
+     "Third Division",
+     "Fourth Division"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Nearly 50,000 packed Hillsborough for a Third Division Steel City derby on Boxing Day 1979; Wednesday's 4-0 win went straight into derby folklore as the Boxing Day Massacre."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Who scored Sheffield Wednesday's 123rd-minute winner against Barnsley in the 2023 League One play-off final?",
+    "o": [
+     "Lee Gregory",
+     "Josh Windass",
+     "Michael Smith",
+     "Callum Paterson"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Windass' diving header from Lee Gregory's cross came with virtually the last action of extra time, seconds from a penalty shootout. His father Dean had won a Wembley play-off final for Hull City in 2008."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Trailing 4-0 from the first leg, Sheffield Wednesday levelled their 2023 play-off semi-final against Peterborough in the eighth minute of stoppage time. Who scored that goal?",
+    "o": [
+     "Aden Flint",
+     "Michael Smith",
+     "Liam Palmer",
+     "Marvin Johnson"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Palmer turned home in the 98th minute after Aden Flint's header kept the ball alive. Wednesday went on to win 5-3 on penalties after a 5-5 aggregate — the greatest comeback in English play-off history."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Which manager led Sheffield Wednesday to promotion at Wembley in 2023, only to leave the club by mutual consent within weeks?",
+    "o": [
+     "Garry Monk",
+     "Tony Pulis",
+     "Steve Bruce",
+     "Darren Moore"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Moore departed just three weeks after the play-off final win amid disagreements with owner Dejphon Chansiri. Monk, Pulis and Bruce had all sat in the Hillsborough dugout in the years just before him."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Which former Bayern Munich and Germany assistant coach became Sheffield Wednesday manager in October 2023, aged 34?",
+    "o": [
+     "Danny Röhl",
+     "Daniel Farke",
+     "David Wagner",
+     "Jan Siewert"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Röhl arrived as the youngest manager in the EFL at the time, replacing Xisco Muñoz, and steered a side that had started the season dreadfully to survival on the final day of 2023-24."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday lost the 2016 Championship play-off final 1-0 at Wembley to which club?",
+    "o": [
+     "Middlesbrough",
+     "Derby County",
+     "Hull City",
+     "Brighton & Hove Albion"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Mohamed Diamé's 72nd-minute strike settled it. Wednesday had beaten Brighton in the semi-finals, while Burnley and Middlesbrough took that season's automatic promotion places."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Which Portuguese head coach took Sheffield Wednesday to the 2016 play-off final and the 2017 play-off semi-finals?",
+    "o": [
+     "Marco Silva",
+     "Carlos Carvalhal",
+     "Nuno Espírito Santo",
+     "Paulo Fonseca"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Carvalhal delivered back-to-back top-six finishes in his first two seasons; the 2017 run ended in a penalty shootout defeat to Huddersfield at Hillsborough."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday won the 2005 League One play-off final 4-2 after extra time at the Millennium Stadium against which club?",
+    "o": [
+     "Tranmere Rovers",
+     "Brentford",
+     "Hartlepool United",
+     "Bristol City"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Paul Sturrock's side trailed ten-man Hartlepool with ten minutes left before a disputed penalty forced extra time, with nearly 60,000 watching in Cardiff."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Paolo Di Canio's Sheffield Wednesday career effectively ended when he pushed referee Paul Alcock to the ground in a September 1998 match against which opponent?",
+    "o": [
+     "Leeds United",
+     "Manchester United",
+     "Arsenal",
+     "Liverpool"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Sent off in a melee that also saw Martin Keown dismissed, Di Canio shoved Alcock over and was banned for 11 matches. He never played for the Owls again, joining West Ham that January."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "From which club did Sheffield Wednesday sign Paolo Di Canio in the summer of 1997?",
+    "o": [
+     "Celtic",
+     "AC Milan",
+     "Napoli",
+     "Lazio"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "David Pleat wanted a second Italian to help Benito Carbone settle in Yorkshire, and brought Di Canio south after a single dazzling season in Glasgow."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday paid around £3 million in October 1996 to sign Benito Carbone from which Italian club?",
+    "o": [
+     "Juventus",
+     "Inter Milan",
+     "Torino",
+     "Napoli"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Carbone was short of first-team chances under Roy Hodgson at Inter. He became an instant Hillsborough favourite as Wednesday finished seventh in the Premier League that season."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Goalkeeper Kevin Pressman was sent off just 13 seconds into Sheffield Wednesday's August 2000 trip to Wolves. What was his offence?",
+    "o": [
+     "Handling the ball outside his penalty area",
+     "A last-man foul denying a clear goalscoring chance",
+     "Violent conduct in a goalmouth scramble",
+     "Foul and abusive language towards an official"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Racing out to deal with a long ball, Pressman handled outside his box and Mark Halsey sent him off — at the time the fastest red card in English league football. Ten-man Wednesday still drew 1-1."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Which manager, appointed in March 2012, went unbeaten through the run-in as Sheffield Wednesday clinched automatic promotion from League One on the final day against Wycombe?",
+    "o": [
+     "Gary Megson",
+     "Dave Jones",
+     "Alan Irvine",
+     "Brian Laws"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Jones replaced Gary Megson late in the season and never lost a match, with Michail Antonio and Nile Ranger scoring in the decisive 2-0 win in front of 38,000 at Hillsborough."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Sheffield Wednesday began the 2020-21 Championship season with a points deduction over how the sale of Hillsborough was accounted. After appeal, how many points were they ultimately docked?",
+    "o": [
+     "Three",
+     "Six",
+     "Nine",
+     "Twelve"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The original 12-point penalty was halved on appeal in November 2020, but the damage was done — the Owls went down to League One that spring."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "The family of Dejphon Chansiri, who bought Sheffield Wednesday in 2015, built its fortune in which business?",
+    "o": [
+     "Canned tuna and seafood",
+     "Palm oil plantations",
+     "Duty-free retail",
+     "Telecoms"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Chansiri's family is behind Thai Union, the world's largest producer of canned tuna. He bought the club from Milan Mandarić in January 2015."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "Under player-manager Trevor Francis, where did Sheffield Wednesday finish in the 1991-92 First Division, the final season before the Premier League began?",
+    "o": [
+     "Second",
+     "Third",
+     "Fifth",
+     "Seventh"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Newly promoted Wednesday finished behind only Leeds United and Manchester United — above Liverpool and Arsenal — earning a UEFA Cup place."
+   },
+   {
+    "club": "Sheffield Wednesday",
+    "q": "The 1993 FA Cup semi-final between Sheffield Wednesday and Sheffield United was played at Wembley in front of more than 75,000. Who headed Wednesday's extra-time winner in the 2-1 victory?",
+    "o": [
+     "Chris Waddle",
+     "David Hirst",
+     "Mark Bright",
+     "Paul Warhurst"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Chris Waddle opened the scoring with a long-range free-kick before Alan Cork equalised. Bright's header settled the first Steel City derby ever staged at Wembley."
+   }
+  ],
+  "Birmingham City": [
+   {
+    "club": "Birmingham City",
+    "q": "Birmingham City reached the Premier League for the first time by winning the 2002 First Division play-off final on penalties against which club?",
+    "o": [
+     "Wolverhampton Wanderers",
+     "Millwall",
+     "Norwich City",
+     "Preston North End"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Blues drew 1-1 with Norwich at the Millennium Stadium in Cardiff before winning the shootout 4-2, ending a 16-year top-flight exile and taking the club into the Premier League era at last."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Which 18-year-old academy midfielder converted the decisive penalty in Birmingham City's 2002 play-off final shootout win?",
+    "o": [
+     "Darren Carter",
+     "Stern John",
+     "Geoff Horsfield",
+     "Paul Devlin"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Local lad Darren Carter, just 18 and fresh out of the academy, buried the winning spot-kick against Norwich to send Blues into the Premier League for the first time."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Under Trevor Francis, Birmingham City reached the 2001 League Cup final but lost on penalties to which club?",
+    "o": [
+     "Tottenham Hotspur",
+     "Liverpool",
+     "Leicester City",
+     "Middlesbrough"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Darren Purse's stoppage-time penalty forced extra time at the Millennium Stadium, but then-Second Division Birmingham lost the shootout 5-4 to Gerard Houllier's Liverpool, who went on to win a cup treble that season."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "World Cup winner Christophe Dugarry joined Birmingham City in January 2003 from which club?",
+    "o": [
+     "Marseille",
+     "AC Milan",
+     "Barcelona",
+     "Bordeaux"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Dugarry arrived on loan from Bordeaux and produced a dazzling spring — including five goals in four games — that all but single-handedly secured Blues' first Premier League survival."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Alex McLeish resigned as Birmingham City manager in June 2011 and, days later, controversially took charge of which club?",
+    "o": [
+     "Aston Villa",
+     "West Bromwich Albion",
+     "Nottingham Forest",
+     "Wolverhampton Wanderers"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Months after lifting the League Cup, McLeish crossed the city to fierce rivals Aston Villa — a move that enraged both sets of supporters and lasted just one season."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Steve Bruce ended his near six-year reign as Birmingham City manager in November 2007 to take charge of which club?",
+    "o": [
+     "Sunderland",
+     "Hull City",
+     "Wigan Athletic",
+     "Sheffield Wednesday"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Bruce, who had won two promotions with Blues, left for Wigan Athletic — a club he had briefly managed once before in 2001 — after a dispute over the club's takeover situation."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "As of 2026, Birmingham City's best Premier League finish is ninth place. In which season did they achieve it?",
+    "o": [
+     "2003-04",
+     "2009-10",
+     "2004-05",
+     "2010-11"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Alex McLeish's newly promoted side went on a club-record 12-game unbeaten Premier League run in 2009-10 to finish ninth — still the club's high-water mark in the competition."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Birmingham City stormed to the 2024-25 League One title with a Football League record points haul. How many points did they finish on?",
+    "o": [
+     "103",
+     "106",
+     "108",
+     "111"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Chris Davies' side racked up 111 points, surpassing Reading's 106 from 2005-06 as the highest total in Football League history and bouncing straight back to the Championship."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Sitting sixth in the Championship, Birmingham City sacked John Eustace in October 2023 to appoint which former England captain?",
+    "o": [
+     "Wayne Rooney",
+     "Steven Gerrard",
+     "Frank Lampard",
+     "John Terry"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The gamble backfired spectacularly: Rooney won just 2 of his 15 games before being sacked in January, and Blues were relegated to League One at the end of the season."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Which American sports superstar became a minority investor in Birmingham City in 2023?",
+    "o": [
+     "Michael Jordan",
+     "Peyton Manning",
+     "Tom Brady",
+     "LeBron James"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Seven-time Super Bowl winner Tom Brady bought a minority stake alongside new owners Knighthead Capital in August 2023, becoming chairman of the club's advisory board."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Which Aston Villa goalkeeper infamously let a throw-in from his own teammate squirm under his foot during Birmingham City's 3-0 derby win in September 2002?",
+    "o": [
+     "Mark Bosnich",
+     "Peter Enckelman",
+     "Thomas Sorensen",
+     "David James"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Olof Mellberg's routine throw-back slipped under Peter Enckelman's boot at St Andrew's in Birmingham's first Premier League Second City derby — a moment Blues fans have never let Villa forget."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Which striker, on loan from Chelsea, finished as Birmingham City's top scorer with 17 Premier League goals in 2003-04?",
+    "o": [
+     "Clinton Morrison",
+     "Stern John",
+     "Christophe Dugarry",
+     "Mikael Forssell"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Finland's Mikael Forssell enjoyed the season of his life on loan at St Andrew's, and his 17 league goals helped Blues to a top-half finish. A knee injury wrecked his follow-up campaign."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Which club did Troy Deeney leave in 2021 to sign for his hometown club Birmingham City?",
+    "o": [
+     "Watford",
+     "Walsall",
+     "West Bromwich Albion",
+     "Wolverhampton Wanderers"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The boyhood Blues fan ended an 11-year association with Watford, where he had been captain and a Premier League regular, to finally pull on the shirt of the club he grew up supporting."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "After Birmingham City's relegation in 2011, Sebastian Larsson left on a free transfer to join which club?",
+    "o": [
+     "Everton",
+     "West Bromwich Albion",
+     "Sunderland",
+     "Stoke City"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "The Swedish set-piece specialist, a League Cup winner with Blues just months earlier, ran down his contract and moved to Sunderland, where he stayed for six seasons."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "When Jude Bellingham joined Borussia Dortmund in 2020, Birmingham City retired which squad number in his honour?",
+    "o": [
+     "10",
+     "22",
+     "17",
+     "8"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Blues retired the number 22 that the 17-year-old had worn in his single breakthrough season — a gesture that drew plenty of mockery at the time but looks better with every England cap he wins."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Birmingham City won the 1995 Auto Windscreens Shield final against Carlisle United with the first golden goal ever to decide a Wembley final. Who scored it?",
+    "o": [
+     "Steve Claridge",
+     "Paul Tait",
+     "Ricky Otto",
+     "Liam Daish"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Paul Tait rose to head in Ricky Otto's cross in the 103rd minute — the first sudden-death winner in a Wembley final. Weeks later Barry Fry's side completed a lower-league double by winning the Second Division title."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Birmingham City won promotion to the Premier League in 2002 by beating Norwich City on penalties in the play-off final. Who scored the decisive spot-kick?",
+    "o": [
+     "Darren Carter",
+     "Geoff Horsfield",
+     "Stern John",
+     "Bryan Hughes"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Birmingham-born Darren Carter, just 18, buried the clinching penalty in Cardiff after Nico Vaesen had saved from Phil Mulryne. Geoff Horsfield's extra-time equaliser had forced the shoot-out."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Which France World Cup winner joined Birmingham City on loan in January 2003 and scored five goals that April to steer them clear of relegation?",
+    "o": [
+     "Youri Djorkaeff",
+     "Emmanuel Petit",
+     "Christophe Dugarry",
+     "Robert Pirès"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Dugarry arrived from Bordeaux with Birmingham hovering just above the drop zone, then produced a five-goal April against fellow strugglers. Blues fans took to calling him 'Le God'."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "In the first Premier League Second City derby, in September 2002, which Aston Villa goalkeeper let Olof Mellberg's throw-in roll under his foot as Birmingham won 3-0 at St Andrew's?",
+    "o": [
+     "David James",
+     "Peter Enckelman",
+     "Mark Bosnich",
+     "Thomas Sørensen"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Enckelman appeared to get the faintest touch as Mellberg's throw squirmed under his boot — without a touch, a goal direct from a throw-in could not have stood. Birmingham completed a league double over Villa that season."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Birmingham City, then a second-tier club, took Liverpool all the way to a penalty shoot-out in the 2001 League Cup final. Who was their manager?",
+    "o": [
+     "Steve Bruce",
+     "Terry Cooper",
+     "Trevor Francis",
+     "Barry Fry"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Club legend Trevor Francis took Blues to the Millennium Stadium, where Darren Purse's stoppage-time penalty forced extra time before Liverpool edged the shoot-out 5-4. Steve Bruce replaced Francis later that same year."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Which striker, on loan from Chelsea, hit 17 Premier League goals for Birmingham City in 2003-04?",
+    "o": [
+     "Carlton Cole",
+     "Hernán Crespo",
+     "Shefki Kuqi",
+     "Mikael Forssell"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "The Finn scored 19 in all competitions, was named Premier League Player of the Month for March 2004 and won Birmingham's player of the season award — more league goals than any player on Chelsea's own books managed that year."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "As of 2026, Birmingham City's best-ever Premier League finish is ninth place. In which season did they achieve it?",
+    "o": [
+     "2002-03",
+     "2009-10",
+     "2003-04",
+     "2004-05"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Alex McLeish's newly promoted side went 12 league games unbeaten on the way to ninth in 2009-10 — Birmingham's highest league finish in over half a century."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Birmingham City contested a Europa League group stage in 2011-12 — as a Championship club — against Braga, Maribor and Club Brugge. Who was their manager that season?",
+    "o": [
+     "Alex McLeish",
+     "Steve Bruce",
+     "Chris Hughton",
+     "Lee Clark"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Chris Hughton took charge after Alex McLeish's exit and juggled the club's first European campaign in around half a century — earned by the 2011 League Cup win — with a promotion push that ended in the play-offs."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Days after resigning as Birmingham City manager by email in June 2011, Alex McLeish took charge of which club?",
+    "o": [
+     "Wolverhampton Wanderers",
+     "West Bromwich Albion",
+     "Nottingham Forest",
+     "Aston Villa"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "The move across the Second City divide came just five days after his email resignation and prompted protests from Villa supporters before he had taken a single training session. He lasted one season at Villa Park."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Free-kick specialist Sebastian Larsson arrived at Birmingham City in 2006, initially on loan, from which club?",
+    "o": [
+     "Arsenal",
+     "Chelsea",
+     "Liverpool",
+     "Manchester United"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Larsson came through Arsenal's academy but couldn't force his way into the first team. Birmingham made the deal permanent in January 2007 and got five seasons of set-piece thunderbolts before he left for Sunderland."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Steve Bruce ended his near six-year spell as Birmingham City manager in November 2007 to take over at which club?",
+    "o": [
+     "Sunderland",
+     "Wigan Athletic",
+     "Hull City",
+     "Sheffield Wednesday"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Wigan paid a reported £3m in compensation — said to be a world record for a manager at the time — and Bruce won his first game in charge 1-0 against Manchester United. He would go on to manage all three of the other clubs listed."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Which England striker joined Birmingham City from Liverpool in the summer of 2004?",
+    "o": [
+     "Emile Heskey",
+     "Michael Owen",
+     "Robbie Fowler",
+     "Peter Crouch"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Heskey moved to St Andrew's for an initial £3.5m — the same summer his old strike partner Michael Owen left Anfield for Real Madrid."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "In 2005, which winger — then on loan at Birmingham City — became the first player to appear in a Premier League match while wearing an electronic tag?",
+    "o": [
+     "Stan Lazaridis",
+     "Julian Gray",
+     "Jermaine Pennant",
+     "Jesper Grønkjær"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Released early from a jail term for a driving offence, Pennant played against Tottenham with the curfew tag strapped to his ankle. Birmingham later signed him permanently from Arsenal."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Cult-hero striker Nikola Žigić joined Birmingham City in 2010 from which Spanish club?",
+    "o": [
+     "Sevilla",
+     "Racing Santander",
+     "Real Zaragoza",
+     "Valencia"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "The towering Serb cost around £6m from Valencia and repaid a chunk of it within a year, scoring Birmingham's opening goal in the 2011 League Cup final win over Arsenal."
+   },
+   {
+    "club": "Birmingham City",
+    "q": "Birmingham City reached the 2011 League Cup final by overturning a first-leg deficit against which club, winning the semi-final 4-3 on aggregate?",
+    "o": [
+     "West Ham United",
+     "Ipswich Town",
+     "Leeds United",
+     "Cardiff City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Beaten 2-1 at Upton Park, Blues won the return at St Andrew's 3-1 after extra time. Ipswich Town were the other semi-finalists, losing to the Arsenal side Birmingham then beat at Wembley."
+   }
+  ]
+ }
+}
