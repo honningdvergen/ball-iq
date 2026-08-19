@@ -30,7 +30,7 @@ no-ads/no-analytics privacy declaration still holds. Both bundles 6.5 MB.
 
 ---
 
-## 🚨 THE DAILY 7 IS NOT DATE-STABLE — found 2026-08-19, NOT FIXED
+## ✅ THE DAILY 7 IS NOW FROZEN — found AND fixed 2026-08-19 (99e2169)
 
 **Every question added to the bank silently rewrites every past and future
 Daily 7.** Measured, not inferred:
@@ -57,16 +57,24 @@ trap fixed long ago — and `quiz.js` even documents the rule it is breaking:
 *"Its selection must depend on the date and nothing else."* It depends on the
 date AND the current size of the bank.
 
-**Recommended fix (Alex's call — it changes what every player sees tomorrow):**
-freeze the eligible pool the way `WORDLE_ANSWER_LOG` is frozen. Snapshot the
-eligible ids once; select from the snapshot; new questions enter the daily only
-when the snapshot is deliberately extended. Cost: ~52 KB shipped to every
-client, plus the process burden of extending it. One-time consequence: today
-and future dailies shift once, then never again. Past dailies are already
-unrecoverable — they have been rewritten many times.
+**FIXED (`99e2169`).** Logs the ANSWERS per day (`src/data/dailyLog.js`, 400
+days, 31 KB) rather than freezing the pool — freezing a pool is not enough,
+since appending to it still changes the shuffle permutation. A logged day never
+consults the bank to decide WHICH questions, only to resolve them.
 
-Not shipped unilaterally because it is outward-facing and alters the flagship
-mode for everyone.
+Generated FROM the current bank on purpose, so **today was byte-identical to
+what players already had** and the freeze landed with zero disruption. Verified
+live on prod: the Daily 7 opens with `q_2959f4`, the first id in today's logged
+entry.
+
+Deleting a question no longer shortens a day (deterministic top-up, touching
+only days that referenced it); beyond the 400-day horizon it falls back to the
+live shuffle, same as Footle. `gen-daily-log.mjs` is deliberately NOT in the
+build chain and only ever appends. Six regression tests in
+`tests/unit/daily-log.test.js`.
+
+Past days deliberately not reconstructed — unrecoverable, and a fabricated
+history would be worse than an honest start date.
 
 ---
 
@@ -78,10 +86,11 @@ in the DAILY 7 — the most-shared, most-compared screen we have. It is labelled
 `easy` and it is correct; the problem is that it is a free point for anyone who
 follows football at all, which is the whole audience.
 
-⚠️ **The obvious fix is blocked by the bug above.** Deleting or re-tagging it
-rewrites every past and future Daily 7. Difficulty calibration on the daily is
-gated behind freezing the pool first — which is also Lever 4's blocker on the
-club-page board. Same root cause, two symptoms.
+✅ **No longer blocked** — with the log frozen (`99e2169`), editing or removing
+a question touches only days that referenced it, not all of history. The Kane
+question can now be dealt with on its own merits. Still open: it is correct and
+correctly labelled `easy`; the judgement call is whether a free point belongs in
+the daily at all, which is an editorial call for Alex.
 
 ---
 
