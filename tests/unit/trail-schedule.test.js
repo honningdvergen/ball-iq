@@ -53,6 +53,45 @@ describe("Trail schedule is frozen", () => {
     expect(TRAIL_ANSWER_LOG.filter((k) => !keys.has(k))).toEqual([]);
   });
 
+  // ⚠️ THE TEST THAT WAS MISSING, AND WHAT IT COST (player-reported 2026-08-19).
+  //
+  // A player saw Robin van Persie as the answer twice in one week and was right.
+  // Commit 9115c63 ("44 -> 102 careers, and the repeat problem is fixed")
+  // REPLACED TRAIL_ANSWER_LOG wholesale — 66 entries out, 408 in — which
+  // retroactively rewrote every past and future answer. Measured: an older
+  // bundle and the current web serve DIFFERENT puzzles on 13 of 13 days, and
+  // van Persie lands on 08-14 in the old schedule and 08-19 in the new one.
+  //
+  // This is precisely the trap WORDLE_ANSWER_LOG was frozen to prevent, and
+  // wordle-schedule.test.js has guarded it since ("no already-published day
+  // ever moves"). Trail shipped with the same shape and none of the guard, so
+  // there was nothing to fail when the log was swapped.
+  //
+  // It also broke the promise the mode is built on — everyone gets the same
+  // player today — because native clients on an older build keep serving the
+  // schedule they were compiled with. Android production was 1.5.1, cut before
+  // the rewrite, so native and web have disagreed every day since.
+  //
+  // EXTENDING THIS ARRAY IS THE ONLY LEGAL EDIT: append the keys for days that
+  // have now been published. Never reorder, never replace. A day that has been
+  // served to a human is history and history does not move.
+  const PUBLISHED = [
+    "TORRES", "GILBERTO_SILVA", "RONALDO_C", "RAMOS", "MATUIDI", "ROONEY",
+    "CECH", "HENRY", "SNEIJDER", "FLAMINI", "ERIKSEN", "VALVERDE", "CAN",
+    "GRIEZMANN", "FERNANDES", "AGUERO", "VAN_PERSIE",
+  ];
+
+  it("no already-published day ever moves", () => {
+    expect(TRAIL_ANSWER_LOG.slice(0, PUBLISHED.length)).toEqual(PUBLISHED);
+  });
+
+  it("PUBLISHED covers every day served so far — extend it, do not let it lapse", () => {
+    // If this fails, days have been served that nothing is freezing yet. Append
+    // the missing keys from TRAIL_ANSWER_LOG rather than deleting the check.
+    const servedSoFar = Math.floor(Date.now() / 86400000) - TRAIL_ANCHOR_DAY + 1;
+    expect(PUBLISHED.length).toBeGreaterThanOrEqual(Math.min(servedSoFar, TRAIL_ANSWER_LOG.length));
+  });
+
   it("never repeats a career on consecutive days", () => {
     const adjacent = TRAIL_ANSWER_LOG.filter((k, i) => i > 0 && k === TRAIL_ANSWER_LOG[i - 1]);
     expect(adjacent).toEqual([]);
