@@ -16,6 +16,8 @@
  * on the same day. Integer bitwise ops (`^`, `<<`, `>>`, `>>>`) are spec-exact
  * via ToInt32/ToUint32, so this is bit-identical on every engine.
  */
+import DAILY_LOG from '../data/dailyLog.js';
+
 export function seededShuffle(arr, seed) {
   let s = seed >>> 0;
   const prng = () => { s ^= s << 13; s ^= s >> 17; s ^= s << 5; return (s >>> 0) / 4294967296; };
@@ -87,7 +89,51 @@ export function isModernEra(q, minYear = DAILY_MIN_ERA) {
   return years.length === 0 || Math.max(...years) >= minYear;
 }
 
+// ── THE FROZEN DAILY LOG ─────────────────────────────────────────────────────
+//
+// ⚠️ THE BUG THIS EXISTS TO STOP (measured 2026-08-19, from a player report).
+// This function used to shuffle the LIVE bank, so adding or removing ONE
+// question changed all seven questions of today's daily AND of every past one.
+// Verified: +1 question -> today's 7 all change; a daily from 7 days earlier
+// -> also rewritten. Consequences: `/c/` challenge links resolved to a
+// different quiz than was shared, "shared by everyone today" was false across
+// any deploy, and native (frozen bank) disagreed with web continuously.
+//
+// The comment below already stated the rule — "depend on the date and nothing
+// else" — and the implementation depended on the date AND the size of the bank.
+//
+// Same fix as WORDLE_ANSWER_LOG: log the ANSWERS per day. A logged day never
+// consults the bank to decide WHICH questions, only to resolve them, so it is
+// immune to additions, deletions and re-tags alike.
+//
+// Extend with `node scripts/gen-daily-log.mjs` — deliberately, never in the
+// build. The generator only ever appends; previously logged days are copied
+// byte-for-byte.
+//
+// ⚠️ A question deleted from the bank cannot resolve. Rather than shortening
+// the day (a 6-question "Daily 7" is a bug — the same principle
+// pickAvoidingConflicts follows), the gap is topped up from the live shuffle
+// for that day, which touches ONLY days that referenced the deleted question.
+export function pickDailyFromLog(QB, dayIndex, log = DAILY_LOG) {
+  const n = dayIndex - (log?.anchor ?? 0);
+  const ids = log?.days?.[n];
+  if (!ids) return null;                       // beyond the horizon: caller falls back
+  const byId = new Map(QB.map((q) => [q.id, q]));
+  const picked = ids.map((id) => byId.get(id)).filter(Boolean);
+  if (picked.length === 7) return picked;
+  // Top up deterministically, skipping anything already picked.
+  const taken = new Set(picked.map((q) => q.id));
+  const pool = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && isModernEra(q) && !taken.has(q.id));
+  for (const q of seededShuffle(pool, dayIndex * DAILY_SEED_MULTIPLIER)) {
+    if (picked.length >= 7) break;
+    picked.push(q);
+  }
+  return picked.length === 7 ? picked : null;
+}
+
 export function pickDailyQuestions(QB, dayIndex) {
+  const logged = pickDailyFromLog(QB, dayIndex);
+  if (logged) return logged;
   // Era filter, not just Legends. Alex's standing rule is that nobody cares about
   // pre-1950 football; we stopped GENERATING it but it kept SURFACING, and the
   // Daily 7 is the worst place for it — it is the most-shared, most-compared
