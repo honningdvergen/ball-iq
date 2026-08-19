@@ -31,7 +31,15 @@ const ROOT = 'dist';
 // Bare four-figure numbers are everywhere in football copy — years, crowds,
 // transfer fees. Only flag a number that is TIED TO QUESTIONS by its wording.
 const PATTERNS = [
-  /\b\d{1,3},\d{3}\+?\s+(?:hand-curated\s+|hand-checked\s+|verified\s+|checked\s+|fact-checked\s+)?(?:football\s+)?(?:trivia\s+)?questions\b/gi,
+  // ⚠️ THE EIGHTH WAY IT SHIPPED (2026-08-19): "5,000+ quiz questions", in the
+  // APP. This pattern used to name its filler words literally (hand-curated,
+  // verified, football, trivia…), so ONE unlisted word between the digits and
+  // "questions" walked straight through — here it was "quiz". That is the exact
+  // mechanism of disguise #7, which slipped a club name into the same gap; the
+  // generalised filler was applied to the foreign-language patterns then and
+  // never back-ported to the English one. Generalised now: any up-to-three
+  // words may sit between the number and the noun.
+  /\b\d{1,3},\d{3}\+?\s+(?:[\p{L}'’-]+\s+){0,3}questions\b/giu,
   /\bbank of\s+\d{1,3},?\d{3}\b/gi,
   /\b\d{1,3},\d{3}\s+questions\s+in\s+the\s+bank\b/gi,
   /\bquestions?\s*:\s*\d{1,3},\d{3}\b/gi,
@@ -122,6 +130,30 @@ function* walk(dir) {
   }
 }
 
+// ⚠️ THE APP WAS NEVER IN SCOPE (fixed 2026-08-19, disguise #8).
+// This gate walked `dist` for .html/.txt only, so it policed 328 web pages
+// while the APP ITSELF went unchecked — and the app was in violation: the
+// Footle win screen pitched "Streaks, daily reminders & 5,000+ quiz questions".
+// Found by PLAYING Footle to a win and looking at the screen, not by any check.
+//
+// Scanning src/ needs two exclusions or it drowns in false positives:
+//   - the question bank, where "Brazil have won the World Cup 5 times" is
+//     legitimate CONTENT, not a claim about inventory
+//   - comments, including this rule's own explanations, which quote the very
+//     strings being banned (the same trap the HTML pass already documents)
+const SRC_SKIP = /questions\.js|questions-index\.js|questionConflicts\.js|dailyLog\.js|\.test\./;
+function* walkSrc(dir) {
+  for (const entry of readdirSync(dir)) {
+    const p = join(dir, entry);
+    const st = statSync(p);
+    if (st.isDirectory()) yield* walkSrc(p);
+    else if (/\.(jsx?|tsx?)$/i.test(entry) && !SRC_SKIP.test(p)) yield p;
+  }
+}
+const stripComments = (t) => t
+  .replace(/\/\*[\s\S]*?\*\//g, ' ')
+  .replace(/^\s*\/\/.*$/gm, ' ');
+
 const hits = [];
 const exempted = [];
 for (const file of walk(ROOT)) {
@@ -148,6 +180,19 @@ if (exempted.length) {
   for (const p of paths) {
     const e = exempted.find((x) => x.file === p);
     console.log(`    ${p} — ${e.why}`);
+  }
+}
+
+// ── The app's own copy ───────────────────────────────────────────────────────
+for (const file of walkSrc('src')) {
+  let text;
+  try { text = stripComments(readFileSync(file, 'utf8')); } catch { continue; }
+  for (const re of PATTERNS) {
+    re.lastIndex = 0;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      hits.push({ file, text: m[0].trim() });
+    }
   }
 }
 

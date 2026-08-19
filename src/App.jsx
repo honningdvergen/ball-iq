@@ -1897,7 +1897,12 @@ function FootleGetAppCTA({ style }) {
         📲 Get the free app
       </a>
       <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginTop: 2 }}>
-        Streaks, daily reminders &amp; 5,000+ quiz questions
+        {/* ⚠️ NO COUNT HERE. This said "5,000+ quiz questions" until 2026-08-19
+            — disguise #8 of the binding no-counts rule, and the first one INSIDE
+            the app rather than on a web page. It was also already wrong: the
+            bank passed 6,600 long ago, so the number undersold us AND rotted.
+            Sell breadth, which never goes stale. */}
+        Streaks, daily reminders and every quiz in one app
       </div>
     </>
   );
