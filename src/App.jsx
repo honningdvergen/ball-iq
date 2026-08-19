@@ -2431,6 +2431,23 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           isCorrect: false,
           timedOut: true,
         }];
+        // ⚠️ AND into the missed-answers review, which timeouts were excluded
+        // from (`correct !== "timeout"` guards the push in registerAnswer).
+        // The result screen showed a red pip for every timed-out question but
+        // never its explanation — so a player who ran out of time never learned
+        // the answer they never even saw. Explanations are the differentiator;
+        // withholding them from the one case where the player has NO idea what
+        // the answer was is exactly backwards. `user` is deliberately omitted:
+        // the review renders the "✗ picked" line only when it is set, so a
+        // timeout shows the correct answer and the story, with nothing claimed
+        // about what they chose.
+        wrongAnswersRef.current = [...wrongAnswersRef.current, {
+          id: tq.id,
+          q: tq.q,
+          correct: type === 'typed' ? tq.typed_a : (type === 'tf' ? (tq.a ? 'TRUE' : 'FALSE') : tq.o[tq.a]),
+          cat: tq.cat,
+          hint: tq.hint,
+        }];
       }
       // Running out of time is a miss and must colour its pip red — otherwise
       // the row silently stops advancing and reads as a rendering bug.
