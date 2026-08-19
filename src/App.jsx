@@ -2166,6 +2166,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
+  // ⚠️ Running out of time sets `selected` to the CORRECT index so the right
+  // option lights up green in the reveal — but the verdict pill decides what to
+  // say from `selected === q.a`, so a timeout congratulated the player with
+  // "✓ Correct!" for a question they never answered. Everything else already
+  // recorded it correctly (isCorrect:false, timedOut:true, red pip, streak
+  // reset) — only the message lied, which is the worst kind of lie: the score
+  // says one thing and the screen says another.
+  const [timedOut, setTimedOut] = useState(false);
   const [reportedKeys, setReportedKeys] = useState(() => new Set()); // questions flagged "report a problem" this run
   const isSpeed = mode === "speed";
   const timerDuration = isSpeed ? 8 : (timerSecondsOverride || 20);
@@ -2295,7 +2303,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       Sentry.addBreadcrumb({ category: 'game', message: 'quiz ended', level: 'info', data: { mode, score: ns, total } });
       setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current, speedScore: speedScoreRef.current }); return;
     }
-    setIdx(i => i + 1); setSelected(null); setTypedResult(null); setShowNext(false);
+    setIdx(i => i + 1); setSelected(null); setTypedResult(null); setTimedOut(false); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
   }, [idx, total, mode, timed]);
 
@@ -2431,6 +2439,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         setStreak(0);
         setBestStreak(b => {
           setSelected(questions[idx]?.a ?? -1);
+          setTimedOut(true);
           advanceRef.current?.(s, b, "timeout");
           return b;
         });
@@ -2675,16 +2684,22 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
 
           role="status" is polite by implication — NOT assertive, which the quiz
           timer already owns; two assertive regions would clobber each other. */}
-      {answered && (
-        <div role="status" className={`feedback ${(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct")) ? "correct" : "wrong"}`}>
-          <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{(isTF ? ((selected === 1) === (q?.a === true || q?.a === 1)) : (selected === q?.a || typedResult === "correct"))
-            ? "✓ Correct!"
-            : isTyped
-              ? `✗ ${q.typed_a}`
-              : "✗ Incorrect"
-          }</span>
-        </div>
-      )}
+      {answered && (() => {
+        // timedOut wins over the index comparison — see the state declaration.
+        const gotIt = !timedOut && (isTF
+          ? ((selected === 1) === (q?.a === true || q?.a === 1))
+          : (selected === q?.a || typedResult === "correct"));
+        return (
+          <div role="status" className={`feedback ${gotIt ? "correct" : "wrong"}`}>
+            <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{
+              gotIt ? "✓ Correct!"
+                : timedOut ? "⏱ Time's up"
+                : isTyped ? `✗ ${q.typed_a}`
+                : "✗ Incorrect"
+            }</span>
+          </div>
+        );
+      })()}
 
       {/* Shown whether they got it right or wrong. It used to be wrong-only —
           so the hand-written explanations that are the whole differentiator
