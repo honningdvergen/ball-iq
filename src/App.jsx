@@ -2208,6 +2208,18 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   useEffect(() => { speedScoreRef.current = speedScore; }, [speedScore]);
   const [showQuit, setShowQuit] = useState(false);
   const [showNext, setShowNext] = useState(false);
+  // ⚠️ RE-ENTRY GUARD — a double-tap on "Next →" used to SKIP A QUESTION.
+  // Found 2026-08-19 from Clarity: "Next →" was the most dead-clicked element
+  // in the product (633), far ahead of anything else. The clicks were not
+  // inert — they were landing on the button twice before React unmounted it,
+  // and each call ran setIdx(i => i + 1), so the player jumped two questions
+  // (reproduced: Q2 -> Q4). `total` is fixed, so a 7-question daily silently
+  // became six questions scored out of seven: a lost point, on the one mode
+  // that is shared and compared between players.
+  //
+  // Keyed on idx rather than a plain boolean so it self-clears: each question
+  // may be advanced from exactly once, and the next question is free again.
+  const advancedFromRef = useRef(-1);
   const advanceRef = useRef(null);
   // wrongAnswers is purely terminal — only emitted to onComplete, never
   // read for in-flight UI display. Using a ref instead of state avoids a
@@ -2295,6 +2307,8 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   const qdRingColor = qdRatio > 0.5 ? "#58CC02" : qdRatio > 0.25 ? "#FFC107" : "#FF4747";
 
   const doAdvance = useCallback((ns, nb, correct) => {
+    if (advancedFromRef.current === idx) return;   // see advancedFromRef
+    advancedFromRef.current = idx;
     if (mode === "survival" && !correct) {
       Sentry.addBreadcrumb({ category: 'game', message: 'quiz ended (survival fail)', level: 'info', data: { mode, score: ns, answered: idx + 1 } });
       setDone(true); onCompleteRef.current({ score: ns, total: idx + 1, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current }); return;
