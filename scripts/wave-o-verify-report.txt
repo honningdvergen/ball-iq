@@ -1,0 +1,87 @@
+
+━━ c-birmingham-city.json  (30 questions)
+   SEO-eligible: 30/15 ✓   answer spread A/B/C/D: 8/8/8/6
+   pack-leak (12):
+      c-birmingham-city.json #2  gives away #17's answer "Darren Carter"
+         "Which 18-year-old academy midfielder converted the decisive penalty in Birming"
+      c-birmingham-city.json #3  gives away #20's answer "Trevor Francis"
+         "Under Trevor Francis, Birmingham City reached the 2001 League Cup final but lo"
+      c-birmingham-city.json #4  gives away #18's answer "Christophe Dugarry"
+         "World Cup winner Christophe Dugarry joined Birmingham City in January 2003 fro"
+      c-birmingham-city.json #6  gives away #26's answer "Wigan Athletic"
+         "Steve Bruce ended his near six-year reign as Birmingham City manager in Novemb"
+      c-birmingham-city.json #7  gives away #22's answer "2009-10"
+         "As of 2026, Birmingham City's best Premier League finish is ninth place. In wh"
+      c-birmingham-city.json #11  gives away #19's answer "Peter Enckelman"
+         "Which Aston Villa goalkeeper infamously let a throw-in from his own teammate s"
+      c-birmingham-city.json #12  gives away #21's answer "Mikael Forssell"
+         "Which striker, on loan from Chelsea, finished as Birmingham City's top scorer "
+      c-birmingham-city.json #17  gives away #1's answer "Norwich City"
+         "Birmingham City won promotion to the Premier League in 2002 by beating Norwich"
+      c-birmingham-city.json #17  gives away #2's answer "Darren Carter"
+         "Birmingham City won promotion to the Premier League in 2002 by beating Norwich"
+      c-birmingham-city.json #18  gives away #4's answer "Bordeaux"
+         "Which France World Cup winner joined Birmingham City on loan in January 2003 a"
+      c-birmingham-city.json #22  gives away #7's answer "2009-10"
+         "As of 2026, Birmingham City's best-ever Premier League finish is ninth place. "
+      c-birmingham-city.json #25  gives away #14's answer "Sunderland"
+         "Free-kick specialist Sebastian Larsson arrived at Birmingham City in 2006, ini"
+   stale (2):
+      c-birmingham-city.json #7  time-relative phrasing in stem
+         "As of 2026, Birmingham City's best Premier League finish is ninth place. In wh"
+      c-birmingham-city.json #22  time-relative phrasing in stem
+         "As of 2026, Birmingham City's best-ever Premier League finish is ninth place. "
+
+━━ c-norwich-city.json  (32 questions)
+   SEO-eligible: 32/15 ✓   answer spread A/B/C/D: 7/10/8/7
+   pack-leak (10):
+      c-norwich-city.json #7  gives away #13's answer "Arsenal"
+         "Emiliano Buendía left Norwich in 2021 in a then-club-record £33m sale to which"
+      c-norwich-city.json #10  gives away #3's answer "Manchester City"
+         "Norwich stunned champions Manchester City 3-2 at Carrow Road in September 2019"
+      c-norwich-city.json #10  gives away #16's answer "Manchester City"
+         "Norwich stunned champions Manchester City 3-2 at Carrow Road in September 2019"
+      c-norwich-city.json #10  gives away #25's answer "Manchester City"
+         "Norwich stunned champions Manchester City 3-2 at Carrow Road in September 2019"
+      c-norwich-city.json #14  gives away #20's answer "Everton"
+         "In September 1993, which Norwich striker became the first player to score four"
+      c-norwich-city.json #22  gives away #20's answer "Everton"
+         "Which Norwich striker scored four goals in a 5-1 Premier League win at Everton"
+      c-norwich-city.json #24  gives away #12's answer "Nigel Worthington"
+         "Norwich lost the 2002 First Division play-off final on penalties to which club"
+      c-norwich-city.json #25  gives away #3's answer "Manchester City"
+         "In February 2005, Delia Smith grabbed the microphone at half-time and delivere"
+      c-norwich-city.json #25  gives away #16's answer "Manchester City"
+         "In February 2005, Delia Smith grabbed the microphone at half-time and delivere"
+      c-norwich-city.json #30  gives away #1's answer "Middlesbrough"
+         "Norwich returned to the Premier League in 2015 by beating which club 2-0 in th"
+
+━━ c-sheffield-wednesday.json  (32 questions)
+   SEO-eligible: 32/15 ✓   answer spread A/B/C/D: 7/11/10/4
+   pack-leak (10):
+      c-sheffield-wednesday.json #2  gives away #1's answer "Second Division"
+         "Who captained Sheffield Wednesday in the 1991 League Cup final?"
+      c-sheffield-wednesday.json #3  gives away #4's answer "Trevor Francis"
+         "Which club did Ron Atkinson leave Sheffield Wednesday to manage in the summer "
+      c-sheffield-wednesday.json #7  gives away #8's answer "Chris Waddle"
+         "Sheffield Wednesday's 1993 FA Cup semi-final win over Sheffield United was pla"
+      c-sheffield-wednesday.json #7  gives away #32's answer "Mark Bright"
+         "Sheffield Wednesday's 1993 FA Cup semi-final win over Sheffield United was pla"
+      c-sheffield-wednesday.json #13  gives away #28's answer "Dave Jones"
+         "Sheffield Wednesday finished runners-up in League One in 2011-12 — which club "
+      c-sheffield-wednesday.json #14  gives away #22's answer "Carlos Carvalhal"
+         "Sheffield Wednesday lost the 2016 Championship play-off final at Wembley to wh"
+      c-sheffield-wednesday.json #17  gives away #14's answer "Hull City"
+         "Who scored Sheffield Wednesday's 123rd-minute winner against Barnsley in the 2"
+      c-sheffield-wednesday.json #17  gives away #21's answer "Hull City"
+         "Who scored Sheffield Wednesday's 123rd-minute winner against Barnsley in the 2"
+      c-sheffield-wednesday.json #31  gives away #4's answer "Trevor Francis"
+         "Under player-manager Trevor Francis, where did Sheffield Wednesday finish in t"
+      c-sheffield-wednesday.json #32  gives away #8's answer "Chris Waddle"
+         "The 1993 FA Cup semi-final between Sheffield Wednesday and Sheffield United wa"
+   stale (1):
+      c-sheffield-wednesday.json #5  time-relative phrasing in stem
+         "As of 2026, the 1993 FA Cup final between Arsenal and Sheffield Wednesday rema"
+
+============================================================
+94 questions, 35 flags across 3 packs
