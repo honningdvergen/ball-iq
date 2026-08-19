@@ -1,7 +1,6 @@
 {
  "runId": "wf_f514ef5e-58c",
- "journalDir": "/Users/alexanderbrynolsen/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/subagents/workflows/wf_f514ef5e-58c",
- "status": "partial — 2 of 8 reviewers done before session limit; resume in flight",
+ "status": "COMPLETE",
  "reviews": [
   {
    "area": "Store presence & ratings engine",
@@ -116,7 +115,358 @@
     "App.jsx:2609-2624 — the in-run streak/score/timer meta row is desktop-only ('qd-meta', aria-hidden, base display:none); mobile shows streak only in Survival's streak-bar (App.jsx:2571-2580).",
     "MysteryPlayer.jsx:13-41 — in-file measurement: nat==country for 5,277 of 8,489 pool entries, Messi/Vinicius/James all read 'Spain', and 'wherever nat is wrong the RANKS are wrong too'."
    ]
+  },
+  {
+   "area": "Retention & habit mechanics",
+   "grade_10": 5,
+   "letter": "C",
+   "verdict": "The on-device habit loop is genuinely well-built and live (streak, auto-shields, win-back local notifications, day-complete routing), but the reminder channel reaches almost nobody — 0 web-push subscribers on the surface carrying 60% of sessions, 9 remote notifications ever sent, ~34 opted-in native devices — so the loop only retains people already inside it, which is exactly what flat DAU 13-17 through 111 signups/30d looks like.",
+   "strengths": [
+    "Streak design is more forgiving than NYT's and it's deliberate: streak ticks on ANY daily completion, win or loss (src/App.jsx:9382-9394, citing NYT's 5.6M lost streaks), shields auto-consume on a single missed day with no manual step (src/App.jsx:8297-8299, 10421-10424), earned 1 per 200 XP capped at 3 banked (src/App.jsx:8288), server-authoritative via tick_login_streak RPC for signed-in users (src/App.jsx:8262) plus a one-off grace shield migration (v1_5_streak_grace_shield.sql).",
+    "The native reminder engine is complete and shipped since ~1.1 (commit 7e3d139, win-back tail d46f4b0 2026-07-03): 7pm-local nudge only if unplayed, cancelled the moment they play (src/lib/notifications.js:76-120), rotating copy, plus a decaying win-back tail at days 8/11/15/22/30 so lapsed users stay reachable (src/lib/notifications.js:24-30) — the file's own comment calls going silent after 7 days 'the single biggest retention hole' and fixes it.",
+    "Opt-in etiquette is thoughtful: soft in-app pre-prompt capped at 2 lifetime asks, fired after the first daily and again at a 3-day streak, delayed 7s so it never covers the answer reveal or the Share button (src/App.jsx:9282-9320, 9521-9528).",
+    "Tomorrow has a reason: four frozen daily modes, a 14-day W/D form strip in football idiom (src/screens/DailyScreen.jsx:534, 745-746), streak milestones celebrated at 7/30/100 (src/App.jsx:9591-9597), a 'New puzzles in Xh' countdown (DailyScreen.jsx:863), and a DayComplete panel that routes a finished day into yesterday's unplayed puzzles or Survival instead of a dead wall (DailyScreen.jsx:258-294).",
+    "The streak loop demonstrably works for the core: prod shows 32 signed-in users active today/yesterday and 17 holding a live streak >=2 (user_game_state.login_streak query, 2026-08-19) — roughly the whole DAU is streak-carrying.",
+    "A yesterday-only catch-up already exists (replay glyph + DayComplete offers), and the code documents that a 30-day back-catalogue is 'one gate away' behind a known accounting fix (DailyScreen.jsx:233-237)."
+   ],
+   "weaknesses": [
+    "The brief's premise 'no push notifications' is wrong — three layers exist (LocalNotifications, web push, APNs) — but the measured reach makes it functionally true: public.notifications contains 9 rows ALL TIME (5 play_invite, 1 friend_request, 1 friend_accept, 1 generic, 1 daily_reminder test on 2026-08-14), so the remote pipeline has effectively never fired for a real user.",
+    "Web push is fully deployed (sw.js v10 push handlers, src/lib/webpush.js, send-web-push edge fn, hourly pg_cron 'web-daily-reminder' live in prod) yet has ZERO subscribers — because the only opt-in surface is a Settings toggle (src/App.jsx:6220) and the soft pre-prompt no-ops on web (notificationsSupported() is native-only, src/App.jsx:9292). 60% of sessions are web/organic: the biggest audience has no reminder channel at all.",
+    "The reachable audience is ~34 devices (device_tokens count in prod) against 173 users with streak state and 111 signups/30d — the reminder engine, however good, addresses under a third of even the signed-in base.",
+    "Android has no remote push at all: no google-services.json, and src/lib/push.js:20 says 'iOS ONLY for now' — Android users get local reminders only, and Android 1.5.1 users in prod today predate several retention fixes.",
+    "No email channel exists anywhere (no SMTP/resend/sendgrid sender in src/ or supabase/functions; balliq.app email is inbound-only), and no home-screen/lock-screen widget (ios/App contains only the App target) — the two channels that don't require a permission prompt are both absent.",
+    "APNs push was 'SILENTLY DEAD' until the v1_5 fix (supabase/migrations/v1_5_fix_service_role_push_reads.sql:1) — symptomatic of the repo-wide pattern: retention loops get built end-to-end but nobody measures whether they deliver, so they leak at the last step."
+   ],
+   "quick_wins": [
+    {
+     "what": "Surface web-push opt-in at the post-solve happy moment: extend the existing maybePromptNotif soft-prompt pattern (src/App.jsx:9291) to browsers where webPushSupported() is true, calling the already-built enableWebPush(). Every downstream piece — SW handlers, edge fn, hourly cron — is deployed and was end-to-end tested 2026-08-14; this converts 0 subscribers on the 60%-of-sessions surface into a real channel with one UI change.",
+     "effort": "hours"
+    },
+    {
+     "what": "Make the web daily-reminder body streak-aware at send time (the cron runs live, so unlike pre-scheduled local notifications it CAN know the streak): join user_game_state.login_streak in enqueue_web_daily_reminders (v1_5_web_daily_reminder_cron.sql:22-24) so the nudge says 'your 12-day streak ends tonight' — the copy Duolingo has A/B-proven for a decade.",
+     "effort": "hours"
+    },
+    {
+     "what": "Fix the live-vs-archive accounting gate (documented at src/screens/DailyScreen.jsx:233-237) so form14 and the guest streak walk distinguish archive plays, then open the 30-day back-catalogue the code says is 'one gate away' — a lapsed player who returns should find a week of content, not one stale day.",
+     "effort": "a day"
+    },
+    {
+     "what": "Instrument the funnel you can't currently see: log biq_notif_enabled / notif_asks outcomes and web-push permission results to a tiny analytics table, so 'how many of 173 users can we reach' becomes a number instead of the 34-token proxy.",
+     "effort": "hours"
+    }
+   ],
+   "five_star_moves": [
+    "Reach parity with the traffic: web-push opt-in prompted in-flow (not buried in Settings), FCM for Android remote push, and an email capture + weekly digest fallback for the permission-decliners — Duolingo's retention is the channel stack (push + email + widget), not the streak math, and Ball IQ has only built the streak math's equal.",
+    "An iOS home/lock-screen widget showing today's four modes done/undone + streak flame — Wordle and NYT Games' widget is the zero-permission daily trigger that survives notification fatigue; Ball IQ's daily-status data model (matchdays/form14) already computes everything the widget would render.",
+    "Streak repair as a comeback moment (Duolingo-style): when a streak dies un-shielded, offer one restore via playing yesterday's open puzzles within 48h — the DayComplete/yesterdayOpen plumbing (DailyScreen.jsx:238-256) is 80% of this feature.",
+    "Social pull: surface friends' streaks and a weekly friends' form-strip comparison — the notification inbox, friendships table, and APNs trigger already exist, but today nothing in the social graph generates a reason to return (5 play invites in the app's lifetime)."
+   ],
+   "evidence": [
+    "Prod query 2026-08-19 (project blcisypmngimqkwxrrdm): web_push_subscriptions = 0, device_tokens (APNs) = 34, notifications of type daily_reminder ever = 1, cron job 'web-daily-reminder' exists = 1.",
+    "Prod query 2026-08-19: public.notifications ALL TIME = 9 rows — play_invite 5 (last 2026-08-03), friend_request 1, friend_accept 1, generic 1, daily_reminder 1 (2026-08-14, a test).",
+    "Prod query 2026-08-19: user_game_state.login_streak — 173 users with streak state, max streak 53, 15 ever reached >=7; live (lastDay within 1 day): 32 active, 17 holding streak >=2.",
+    "src/lib/notifications.js:1-30 — local daily reminder engine (7pm local, rolling 7-day window, win-back tail at days 8/11/15/22/30), native-only by design; shipped: commit d46f4b0 dated 2026-07-03, before iOS 1.6.0 (live today).",
+    "src/App.jsx:6220 — web 'Daily reminders' toggle exists only in Settings; src/App.jsx:9292 — the soft pre-prompt returns false unless notificationsSupported() (native-only), so web users are never asked.",
+    "supabase/migrations/v1_5_web_daily_reminder_cron.sql:45 — hourly cron enqueues 7pm-local web reminders for subscribers who haven't played; supabase/migrations/v1_5_fix_service_role_push_reads.sql:1 — 'iOS PUSH HAS BEEN SILENTLY DEAD' until v1_5.",
+    "src/lib/push.js:20 — Android remote push explicitly unimplemented ('iOS ONLY for now'); no google-services.json in android/app/; ios/App/ contains no widget extension target; no email sender found in src/ or supabase/functions (grep for resend/sendgrid/smtp/mailgun/postmark).",
+    "src/screens/DailyScreen.jsx:233-237 — 30-day catch-up catalogue explicitly blocked on the live-vs-archive streak-accounting fix; DailyScreen.jsx:258-294 — DayComplete panel routes finished days to yesterday's puzzles or Survival.",
+    "SHARED FACT anchoring the outcome: DAU flat at 13-17 through 111 signups/30d — consistent with a working streak loop (17 live streaks) that has no channel to pull the other ~140 signed-up users back."
+   ]
+  },
+  {
+   "area": "SOCIAL & VIRAL LOOPS",
+   "grade_10": 6,
+   "letter": "C",
+   "verdict": "Five unusually well-crafted share loops with real OG cards and 1-tap play for recipients, but no evidence any of them closes at volume — referral traffic was 11 sessions/week, native-app shares are invisible to the instrumentation, and the highest-intent loop (MP invite) still walls the friend behind account creation.",
+   "strengths": [
+    "Tap economy is excellent: every great moment has share one tap from the results surface (App.jsx:4713-4714 'Share Score' + 'Stump a mate' in the action stack; Footle end screen App.jsx:7654 plus a dedicated one-tap 'Share on WhatsApp' on web at 7666), so sender friction is 2-3 taps total to a friend's chat.",
+    "Recipient-side design is the real standout: 4 of 5 loops are zero-login, 1-tap-to-playing. Stump links open a single guest-playable question with a 'Pass it on' chain CTA (App.jsx:4478, api/q.js:47); /c/ challenge recipients play the same deterministic Daily 7 and get a head-to-head modal with 'Send it back 🔁' (App.jsx:10948); balliq.app/footle boots straight into the game (vercel.json:104-105).",
+    "Every link unfurls as a server-rendered card, not a bare URL: api/q.js redacts the answer so the mystery is the hook, api/c.js renders a taunt card with name + score dots, api/iq.js renders a club-coloured score card — all edge functions with per-hit bot/human logging.",
+    "The /iq/ club-score loop routes humans to the CLUB PAGE, not /play (api/iq.js:6-12, explicitly reasoned: 94.6% of sessions view one page, so the club page is where the loop can regenerate) — the one loop aligned with where the actual traffic is (club pages = 7 of top-10 landing pages).",
+    "Share copy shows real virality thinking: self-deprecating framing beats bragging ('It got me too 🙈 can YOU get it?' App.jsx:4441, chosen deliberately per comment at 4572), deep links land recipients in the exact quiz they were beaten at (App.jsx:9843-9845), and Snapchat/iMessage payload quirks are individually handled (App.jsx:4014-4029).",
+    "Both ends are instrumented: loopEvent Clarity events at every share invocation and token consumption (App.jsx:3995, 7990, 8570, 10494) plus edge-side loop-hit logs distinguishing OG-crawler unfurls from human click-throughs (api/c.js:22-28) — the k-factor question is answerable in principle."
+   ],
+   "weaknesses": [
+    "The MP invite loop — the only one where a friend is literally waiting for you — gates the recipient behind sign-in: 'We'll drop you straight into the room as soon as you're signed in' (App.jsx:11269-11284). Account creation before fun is exactly the last-step leak the opportunity scan named, on the loop with the strongest social pull.",
+    "The sender never learns their challenge was played. /c/ tokens are stateless (score.date.name in the URL, nothing stored server-side, api/c.js:32-47), so there is no 'Marius played your challenge' moment — the loop closes emotionally only for the recipient. Combined with no reward of any kind for sharing, senders have no reason to share twice.",
+    "K-factor is structurally unmeasurable for the users who matter: loopEvent is web-only by construction — 'Clarity never loads in the native shell' (App.jsx:1849-1850) — so every share from the iOS/Android apps is invisible on the send side. Instrumentation also only landed 2026-08-10, nine days ago.",
+    "No loop is proven to close: the one referral number observed in the codebase is '11 referral sessions in the week to 2026-08-13' (gen-seo-pages.mjs:1241-1242) against 60% organic search. My Clarity per-event queries returned 0 even for clubq-start, which must exist (~50 club plays/30d), so per-loop counts could not be verified from here either — the honest answer is nobody knows the k-factor, and it rounds to zero.",
+    "Share is deliberately a passive ghost/secondary button everywhere ('Share is a secondary action everywhere now', App.jsx:4702-4704). Defensible for UX consistency, but with 13-17 DAU the send volume of a never-prompted loop is single digits per week — the loops are shelves, not funnels.",
+    "First-time Daily 7 share interrupts the intent moment with a name-entry sheet (App.jsx:10495) — mitigated (dismissing still shares, 10528), but it is an extra step at the exact peak, on the flagship challenge loop."
+   ],
+   "quick_wins": [
+    {
+     "what": "Make k-factor real before touching anything else: a small script that greps Vercel loop-hit logs (bot vs human per loop: c/q/iq/join) into a weekly number, plus mirror loopEvent on native via a lightweight beacon to an existing edge function so app shares stop being invisible.",
+     "effort": "hours"
+    },
+    {
+     "what": "Add ONE contextual share nudge at genuine peaks only (7/7 Daily, new Survival PB, first Footle solve) — the celebration-guard scaffolding already exists (App.jsx:9691-9705 checks challengeWillSettle/level-up before nudging), so this is wiring, not architecture.",
+     "effort": "hours"
+    },
+    {
+     "what": "Let a /join/CODE recipient enter the lobby as a guest with an auto-generated name, deferring account creation until after the match (the pendingJoinCode + auto-join plumbing at App.jsx:9164-9173 already survives auth, so the gate is policy, not architecture).",
+     "effort": "days"
+    },
+    {
+     "what": "Pre-fill the challenger name from anything available and skip the name sheet on first Daily share (fall back to 'A mate' — api/c.js:49 already renders that gracefully), removing the one interruption on the best loop.",
+     "effort": "hours"
+    }
+   ],
+   "five_star_moves": [
+    "Close the loop back to the sender: store challenge tokens in a tiny Supabase table and surface 'X played your challenge — you won 5-4' in-app (pairs exactly with the deferred notification-inbox backlog). A sender who hears back shares again; a sender who never hears back shares once.",
+    "Reward closed loops, not shares: when a challenge/stump link converts (server-verified via the token table), grant the sender a streak shield or XP. Rewarding the send invites spam; rewarding the conversion manufactures repeat senders.",
+    "Season-timed tribal comparison on the club surfaces: 'Arsenal fans average 6.1 — you got 8' on club quiz results and the /iq/ card. Social-identity comparison is the strongest paste-into-the-group-chat trigger football has, the season starts within days, and the club page is already where 60% of traffic lives.",
+    "Guest-first multiplayer end to end: friend taps invite → lands in the lobby playing within 5 seconds, account offered after the rematch button. MP is the only mode where the product experience itself is the viral artifact — it should have the LOWEST friction of the five loops, not the highest."
+   ],
+   "evidence": [
+    "Sender friction is one tap: Results action stack renders 'Share Score' and '🥜 Stump a mate' directly (App.jsx:4713-4714); Footle end screen has 'Share result' (App.jsx:7654) plus web-only one-tap WhatsApp deep link (App.jsx:7666).",
+    "All five landing endpoints are wired and serve OG HTML: vercel.json rewrites /q, /iq/:token, /c/:token, /join/:code (lines 64-77) and /footle → api/footle-boot (lines 104-105); api/q.js:37-45 redacts the answer on the stump card; api/c.js:55-57 renders '‹name› scored X/7 — beat them before midnight. Free, no sign-up.'",
+    "The challenge loop closes with a re-share prompt: recipient's head-to-head modal carries 'Send it back 🔁' (App.jsx:10948), replacing a 2s toast because 'the re-share is the whole viral loop and a toast never earned one' (App.jsx:9784-9785).",
+    "MP recipient gate: 'Your friend's invite code … is ready. We'll drop you straight into the room as soon as you're signed in.' (App.jsx:11284) — sign-up required before joining, on the loop where a friend is waiting live.",
+    "K-factor blind spots: loopEvent fires only when Clarity is loaded and 'Clarity never loads in the native shell' (App.jsx:1849-1850, 1862-1866); /c/ tokens are stateless with no server record (api/c.js:30-47), so sender-side conversion feedback is impossible today.",
+    "Volume reality check: 'Our ranking ceiling is links, not pages — 11 referral sessions in the week to 2026-08-13' (gen-seo-pages.mjs:1241-1242); Clarity per-event verification failed from here — queries for clubq-share AND the control event clubq-start (must exist at ~50 club plays/30d) both returned 0 sessions, so the 30-day 'Other' custom-event total (897) could not be decomposed per loop."
+   ]
+  },
+  {
+   "area": "Content quality of the question bank (product moat)",
+   "grade_10": 8,
+   "letter": "B",
+   "verdict": "The moat is genuinely deep and remarkably accurate — 18/18 random spot-checks correct, club packs at obsessive-fan depth, staleness institutionally gated — but it enters the new season with a visible seam: 9 future-tense stems about the already-finished 2026 World Cup, zero summer-2026 transfer-window content, and explanation coverage that collapses to 53-68% in the four oldest categories.",
+   "strengths": [
+    "Factual accuracy is elite for a solo operation: 18/18 randomly sampled verifiable questions checked out (Denílson's 1998 record fee, Lefter 'Ordinaryüs', Rangers' 118,567 vs Celtic in 1939, Happel's 1970 Feyenoord) — deep cuts, not just headline facts.",
+    "Club packs would impress an obsessive: Liverpool's 42 questions are 100% explained and include the original 'Welcome to Anfield' sign wording, Shankly's 1964 all-red switch, Callaghan's 857 appearances, and are current through Slot's 2024-25 title and Salah's 47 G+A record.",
+    "Staleness is gated, not hoped for: ~140 open-ended record claims carry 'As of 2026' / season anchors; only 4 unanchored present-tense affiliation stems survive in 6,694 questions, and verify-wave.mjs mechanically flags 'current/youngest/so far' in every new pack.",
+    "Freshness reaches the 2026 World Cup itself (Norway beating Brazil, Uzbekistan and Cape Verde debuts, PSG's back-to-back) plus the full 2025-26 season and summer-2025 window (Wirtz, Sané, De Bruyne, Son to MLS) — 27 stems touch 2025-26 or later.",
+    "Structural hygiene is perfect: 0 duplicate options, 0 bad answer indices, 0 stray whitespace across 6,687 MCQs; options are re-shuffled at render (App.jsx:498) so the source's answer-position skew never reaches players.",
+    "Difficulty labels are honest: sampled 'easy' items are true gimmes (The Foxes, Yellow Wall) and 'hard' items are real deep cuts (Bob Latchford's £10,000 prize, Cemil Usta's 1976 penalty, Fulvio Bernardini) — and club quizzes correctly drop 'easy' entirely."
+   ],
+   "weaknesses": [
+    "Explanation coverage is badly uneven: WorldCup 53%, Euros 56%, Bundesliga 64%, SerieA 68% vs 100% in every forge-era category — and 155 HARD questions have no explanation at all, which is exactly where a losing player most wants the story. All 7 true/false questions have empty hints.",
+    "9 future-tense stems about the 2026 World Cup ('will host', 'will feature how many teams', 'The USA's opening match will be played…') are now describing a tournament that finished weeks ago — the single most fan-visible staleness in the bank at season start.",
+    "Zero summer-2026 transfer-window content: the newest transfer facts are from summer 2025. For the season starting within days, the bank has nothing a fan argued about this month.",
+    "115 same-fact near-duplicate pairs (same answer, ≥75% stem-token overlap: Salah's 32 in 2017-18 appears 3×, Immobile's Golden Shoe 2×, Haaland's 36 2×) and the conflicts map covers 0 of them — QUESTION_CONFLICTS only encodes answer-leaks and is only wired into the club-pack picker (App.jsx:9036), so general modes can serve the same fact twice.",
+    "Name-spelling inconsistency an obsessive notices: Mbappé 41 vs Mbappe 12, Agüero 25 vs Aguero 18, Müller 74 vs Muller 13, Özil 11 vs Ozil 2 — mixed within the same bank, sometimes stem vs hint.",
+    "396 questions carry flag:true with no consumer anywhere in app code — a silent triage backlog riding in the shipped bundle (consistent with the 27 issues noted as awaiting editorial calls)."
+   ],
+   "quick_wins": [
+    {
+     "what": "Rewrite the 9 future-tense 2026 World Cup stems to past tense ('will feature 48 teams' → 'featured'); grep-able via /\\bwill (host|feature|be played|become)\\b/ in src/questions.js — the cheapest credibility fix available before Friday.",
+     "effort": "hours"
+    },
+    {
+     "what": "Normalize diacritics with a canonical-name pass (Mbappé, Agüero, Müller, Özil) across stems, options and hints — pure find/replace with the existing id-stability guarantee protecting review keys.",
+     "effort": "hours"
+    },
+    {
+     "what": "Backfill explanations on the 155 hard no-hint questions first (they're the highest-value gap), then the WorldCup/Euros easy-medium tail — the forge→examiner→skeptic pipeline already exists for exactly this.",
+     "effort": "days"
+    },
+    {
+     "what": "Extend gen-leak-conflicts.mjs with a same-fact pass (same normalized answer + high stem-token overlap catches all 115 pairs found here) and apply conflictsWith in the general-mode picker, not just club packs.",
+     "effort": "a day"
+    }
+   ],
+   "five_star_moves": [
+    "A season-opening freshness wave landed in the first weeks of 2026-27: summer-2026 window transfers, new managers, promoted clubs — the bank's newest window is now 12 months old, and 'they already have this week's transfer in the quiz' is the moment a fan screenshots the app.",
+    "100% explanation coverage as a stated product promise — the explanation is the retention surface for a fan who got it wrong, and right now 1 in 2 World Cup questions ends in silence.",
+    "Make anchor-rot structurally impossible: a build-time check that flags every 'As of 2026' / 'As of the 2025-26 season' stem the moment the calendar passes it, so January 2027 doesn't quietly turn ~140 anchors stale (the repo's own lesson: gate the invariant, don't re-fix the drift).",
+    "Clear the 396-question flag:true editorial queue — a moat this accurate shouldn't ship a silent 6% under-review layer indefinitely."
+   ],
+   "evidence": [
+    "/Users/alexanderbrynolsen/ball-iq/src/questions.js: 6,694 questions (6,687 MCQ + 7 TF), 17 categories, 3,197 club-tagged across 86 clubs; 5,475 (81.8%) with hints, median hint 105 chars, p90 161; 0 duplicate options, 0 invalid answer indices.",
+    "Hint coverage by category (measured): WorldCup 338/635 (53%), Euros 108/192 (56%), Bundesliga 179/281 (64%), SerieA 219/320 (68%) vs Transfers/SuperLig/Primeira/chaos/ChampionsLeague/PL at or near 100%; 155 hard questions and all 7 TF questions have no hint.",
+    "Staleness scan: 144 stems match record/present-tense patterns and nearly all carry 'As of 2026'-style anchors; only 4 unanchored present-tense affiliation stems (e.g. q 'Norway's Erling Haaland plays for which club heading into 2026?'). 9 future-tense stems about the completed 2026 WC remain ('The 2026 World Cup will feature how many teams', tf 'The USA's opening match at the 2026 World Cup will be played at MetLife Stadium').",
+    "Fact accuracy: 18/18 randomly sampled verifiable questions correct (Pirlo from Inter 2001, Higuaín from Real Madrid 2013, Athletic's first La Liga 1929-30, Sevilla 3-2 Inter 2020, Cenk Tosun to Everton Jan 2018, etc.).",
+    "Duplication: 115 same-answer stem pairs at ≥75% token overlap; /Users/alexanderbrynolsen/ball-iq/src/questionConflicts.js (890 leak pairs) covers 0 of them, and pickAvoidingConflicts is called only at src/App.jsx:9036 (club packs) — the general-mode picker (App.jsx:395-444) uses a 14-day seen filter and diversity caps but no conflict check.",
+    "Freshness: 27 stems touch the 2025-26 season or later (Slot's title, Amorim sacking Jan 2026, PSG back-to-back 2026, 2026 WC results); 0 stems reference the summer-2026 transfer window or 2026-27 season. Answer-position skew in source: index 0 correct 2,494× (37.3%) vs index 3 984× (14.7%), neutralized at render by App.jsx:498 option shuffle.",
+    "Defect classes already institutionalized: scripts/audit-no-question-count.mjs documents 8 distinct ways the question-count rule shipped (lines 1-80); scripts/verify-wave.mjs (lines 1-28) gates answer-key integrity, self-answers, pack leaks, bank dupes, staleness and pre-1950 era on every new pack.",
+    "Diacritic split measured across stems+options+hints: Mbappé 41 vs Mbappe 12, Agüero 25 vs Aguero 18, Müller 74 vs Muller 13, Özil 11 vs Ozil 2; 396 entries carry flag:true with no reader in src/App.jsx or lib/."
+   ]
+  },
+  {
+   "area": "Competitive position",
+   "grade_10": 6,
+   "letter": "C",
+   "verdict": "Feature-for-feature Ball IQ already beats every direct football-quiz app found (the field tops out at 4.5 stars with ~500 questions), but it is invisible where competition is decided — no visible App Store rating, English-only UI against 8-18-language rivals, and missing the widget/archive pair that 4.8-star daily-habit apps (NYT Games, Duolingo) demonstrably ride on.",
+   "strengths": [
+    "Weak direct field: the best-rated iOS football quiz found (Football Quiz: Trivia game, 4.5 stars, 2.4K ratings) advertises ~500 questions; Play leader (BOLD CAT, 4.2 stars, 20.2K reviews) advertises 1,000+. Ball IQ ships 6,694 MCQ — 6-13x the content depth.",
+    "Verified explanations are genuinely unique: no competitor store listing found mentions answer explanations at all, and category giant Trivia Crack (4.6 stars, 747K ratings) now leans on AI-generated questions — Ball IQ's 100%-explained club bank and 'hand-curated, not AI-generated noise' positioning directly counters the market leader's weakness.",
+    "The daily-suite portfolio (Footle, Daily7, Trail, Mystery) mirrors the actual 4.8-star pattern: NYT Games (4.8 stars, 293K ratings) wins on multiple daily puzzles in one app, and its top review describes playing four dailies in sequence — exactly Ball IQ's shape.",
+    "Habit table stakes are mostly present already: streaks with auto streak-freeze shields (src/App.jsx:8276), a 7pm local streak-saver plus a day-8-to-30 win-back notification tail (src/lib/notifications.js), friends leaderboard, and XP.",
+    "No ads — the single biggest rating-killer observed: Trivia Crack's recent sentiment is 'Upset' with ad density the top complaint, and Griddy's negative reviews cite play-limits and crashes; Ball IQ structurally avoids the category's main 1-star source.",
+    "86 club packs is depth no competitor found offers per-club, and it aligns with the measured funnel (club pages are 7 of the top-10 landing pages)."
+   ],
+   "weaknesses": [
+    "Zero store social proof: Ball IQ's own US App Store page (id6775975961) shows 'hasn't received enough ratings or reviews to display an overview' while every rival displays 4.1-4.6 with hundreds to millions of ratings — at the point of download Ball IQ loses to worse products.",
+    "No home-screen widget: Duolingo measured that widget users retain far better and half of installers hold a 6+ month streak; even solo-dev micro-competitor GoodToHearTheName ships a today's-puzzle widget. No widget code exists in src/ or the Xcode project (grep found none).",
+    "English-only UI (no src/locales dir) versus 8 languages on Football Quiz: Trivia game and 18 on GridSport — with a 15-language store listing already creating the expectation, this is the suspected cause of disappointing ES/PT/BR downloads.",
+    "Archive is yesterday-only (src/screens/DailyScreen.jsx:128-129) while NYT sells a 10,000-puzzle archive, Missing 11 offers shuffle-archive play, and Kickle ships a calendar history — extra sessions and an obvious Pro anchor left on the table.",
+    "Notifications are local-only and native-only (src/lib/notifications.js): copy is deliberately streak-agnostic because scheduled-ahead locals can't know the live streak, and a lapsed user who reinstalls or plays on web is unreachable — Duolingo's 23.5h personalized reminder + 10pm streak-saver is the proven stronger version.",
+    "The biggest football daily-game competitor is on the web: Missing 11 (playfootball.games) draws ~1.22M unique monthly visitors / 3.66M pageviews with a lineup-recall format Ball IQ doesn't offer — the demand pool is real and mostly being captured elsewhere."
+   ],
+   "quick_wins": [
+    {
+     "what": "Extend the in-app review prompt (src/lib/review.js) to fire on Footle and Daily7 streak milestones — the two biggest modes (52 and 48 players/30d) — so the newly-live iOS 1.6.0 starts accumulating a visible rating; an app with no rating overview loses to a 4.2 by default.",
+     "effort": "hours"
+    },
+    {
+     "what": "Open the daily archive beyond yesterday: the playArchive path and per-day predicates already exist (src/screens/DailyScreen.jsx:219-228) and all four daily schedules are frozen, so a 7-day back-catalog is mostly UI — Missing 11, Kickle and NYT all monetize or retain with exactly this.",
+     "effort": "days"
+    },
+    {
+     "what": "Localize the app-shell strings (menus, buttons, results copy) for ES and PT to match the 15-language store listing — competitors ship 8-18 languages and the ES/PT/BR download gap is already suspected to come from this mismatch.",
+     "effort": "days"
+    }
+   ],
+   "five_star_moves": [
+    "Ship a home-screen/lock-screen widget showing today's daily status + current streak: Duolingo's published data (blog.duolingo.com/widget-feature) shows widget users retain far better and it is 'as effective as push' — it attacks the measured binding constraint (DAU flat 13-17) directly.",
+    "Full puzzle archive with calendar (free = last 7 days, everything = Pro) — copies the exact mechanic NYT Games (4.8 stars, 293K ratings) uses as its subscription anchor and gives the planned 2.0 Pro a proven value proposition.",
+    "Server-side push tied to live streak state (the deferred backlog item): Duolingo's 23.5-hours-after-last-practice reminder plus 10pm streak-saver is their single most effective retention lever; Ball IQ's scheduled-ahead local notifications can't reference the real streak by design.",
+    "Fully localized UI in the top 5 store-listing languages so the 15-language listing stops writing checks the English-only app can't cash — localized club pages already convert 2.6x on web, proving the audience responds to its own language."
+   ],
+   "evidence": [
+    "Ball IQ's US App Store page (https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961) states 'This app hasn't received enough ratings or reviews to display an overview' — no visible rating while every competitor surveyed shows one.",
+    "NYT Games: 4.8 stars, 293K ratings (https://apps.apple.com/us/app/nyt-games-wordle-crossword/id307569751); listing sells friends leaderboards, per-game stats/streaks, badges, and a 10,000+ puzzle archive for subscribers — the reference 4.8-star daily-suite feature set.",
+    "Best direct iOS rival: Football Quiz: Trivia game, 4.5 stars / 2.4K ratings, ~500 questions, 8 languages (https://apps.apple.com/us/app/football-quiz-trivia-game/id1533521575); Play leader Football Quiz - Soccer Trivia (BOLD CAT), 4.2 stars / 20.2K reviews, 1,000+ questions (https://play.google.com/store/apps/details?id=com.boldcat.football); Guess The Soccer Player Quiz 4.2-4.3 stars / ~3K reviews; Whos the Player? 4.1 stars / 549 ratings — the whole direct field sits at 4.1-4.5, not 4.8.",
+    "Missing 11 (playfootball.games) draws ~1,219,884 unique monthly visitors and ~3.66M pageviews (missing11.com traffic profile via prostats), and offers yesterday + shuffle-archive play — the largest football-daily-game property found.",
+    "Duolingo retention machinery with published numbers: widget users retain 'far better' and half of widget installers hold a 6+ month streak (https://blog.duolingo.com/widget-feature/); 9M+ users hold a year-plus streak and leaderboards raised time-spent 20% (TechCrunch 2021-05-03); reminders fire 23.5h after last practice plus a 10pm streak-saver (Sub Club / Lenny's podcast, Jackson Shuttleworth).",
+    "Trivia Crack: 4.6 stars / 747K iOS ratings but recent sentiment 'Upset' with ad density and energy-system paywalls the top complaints (marlvel.ai intel report 2026-05-07; App Store reviews) — confirming ads/paywalls, which Ball IQ lacks, are the category's main rating destroyers.",
+    "Ball IQ already has the mechanics competitors are praised for: auto streak-freeze shields (/Users/alexanderbrynolsen/ball-iq/src/App.jsx:8276, 10420), 7pm streak-saver + day-8/11/15/22/30 win-back local notifications (/Users/alexanderbrynolsen/ball-iq/src/lib/notifications.js:1-35), native in-app review prompt (/Users/alexanderbrynolsen/ball-iq/src/lib/review.js:1-13).",
+    "Verified gaps in the repo: archive replay is restricted to yesterday only (/Users/alexanderbrynolsen/ball-iq/src/screens/DailyScreen.jsx:128-129); no src/locales directory exists (English-only UI); grep for 'widget' across src/ and the iOS project returns no widget implementation.",
+    "Micro-competitors already ship the missing habit surface: GoodToHearTheName ships a home-screen widget of today's puzzle plus streak stats (https://apps.apple.com/us/app/goodtohearthename/id6767861587); Kickle ships daily notifications and a calendar history (https://apps.apple.com/tm/app/kickle/id6763287469); GridSport ships push notifications and 18 languages (https://play.google.com/store/apps/details?id=games.gridsport.app)."
+   ]
+  },
+  {
+   "area": "Onboarding & first-run activation",
+   "grade_10": 7,
+   "letter": "B",
+   "verdict": "The account-before-play failure mode that produced 28/58 dead accounts is structurally gone — a fresh visitor's first screen IS a playable question and auth only appears as a one-time nudge after a results high — but the flow is unmeasured post-change, costs ~4s of cold load before the fun starts, and speaks only English to an acquisition funnel localized in 15 languages.",
+   "strengths": [
+    "Zero-tap time-to-first-fun once loaded: with SW, caches and localStorage cleared, https://balliq.app/play renders the taster question as the literal first screen (verified live at 375x812); no login wall, no welcome copy — useAuth.jsx:131-133 auto-enters guest mode and Login is an on-demand overlay (App.jsx:11724-11738).",
+    "Onboarding is ONE step by deliberate subtraction: the comment log at App.jsx:6933-6950 records two deleted screens (welcome copy, skill self-assessment) with the explicit rationale that this screen sits on the 'opened the app → played anything' leak; both Skip and Start playing persist biq_onboarded so nobody is ever re-prompted (6964-6993), and cross-device sync (8761+) prevents replay for signed-in users.",
+    "The first session teaches immediately: Daily 7 launched instantly to Q1/7 and the first answer showed '✓ Correct!' plus a '💡 Why?' explanation with real detail (verified live) — the learning loop the marketing promises is delivered within ~60 seconds.",
+    "One recommended way in, not ten equal tiles: fresh Home shows a 'Welcome to Ball IQ! Start with today's Footle' banner (App.jsx:10785-10794), a Footle hero that teaches the Wordle mechanic visually with a MOUNT/FODEN sample board, and Daily 7 labeled '7 questions · ~3 min' — effort is priced before the tap.",
+    "Account pressure is minimal and peak-timed: the one 'save your progress' auth nudge fires once ever, only at a results high (Daily 7 done or a personal best), with explicit anti-stacking guards against the rate prompt, level-up overlay and challenge modal (App.jsx:9666-9712); 'Set your name' on Home opens the local name editor, not signup (HomeScreen.jsx:281-293).",
+    "The four dailies are fully legible one tap away: the Daily tab lists all four with one-line descriptions, '0 of 4 played', and a streak module reading '0 day streak — play one puzzle to light it' (verified live) — it teaches the retention ritual in one screen."
+   ],
+   "weaknesses": [
+    "Cold load taxes the first impression ~4 seconds: measured cold LCP is 4,014ms and the LCP element is DIV.onboard-body — the taster itself — so the best-designed first screen in the app arrives after a 4s splash on first visit, likely worse on mid-tier Android.",
+    "First-run is English-only while acquisition is localized in 15 languages (shared fact): the taster, feedback copy and every Home string (App.jsx:7002, 7025-7026; HomeScreen.jsx) greet an ES/PT/BR store-listing convert in English — the suspected cause of disappointing downloads there lands exactly on this screen.",
+    "The taster's momentum is dropped at Home: after 'Nice — you're a natural ⚽' the CTA ('Let's play') exits to a Home screen full of choices rather than chaining into a first real game — an extra decision point at the exact moment the player is warmest.",
+    "Home says '0/4 today' while showing only 2 daily cards (Footle + Daily 7, HomeScreen.jsx:342-398 by design); Trail and Mystery live behind the Daily tab red dot and the More-modes grid, so a first session can end without ever learning there are four dailies — and 'Warmer or colder' / 'Name the player' descriptions are cryptic to a newcomer.",
+    "The recommended first game can be a loss: the welcome tip routes to Footle, where a casual player can burn 6 guesses on an unknown 7-letter surname and end their first game on a fail — Daily 7 (explanations after every answer) is the safer first-fun teacher, though Footle's 52 players/30d is the revealed favourite.",
+    "No post-change activation measurement exists: guest-first + taster landed 2026-06-23/27 (git ba7e918, 4d9b9da), but the only funnel read since (2026-08-14) tracks signups and DAU, not visitor→first-game-played — the ~15% activation claim can't be confirmed fixed, and 60% of sessions land on club pages and never see this flow at all."
+   ],
+   "quick_wins": [
+    {
+     "what": "Instrument activation directly: fire a first_game_started event (any mode) distinct from signup, so visitor→first-game and taster→first-real-game conversion are measured instead of inferred.",
+     "effort": "hours"
+    },
+    {
+     "what": "Chain the taster into the first real game: after a taster answer, make the primary button 'Play today's Daily 7 →' (or Footle) and route straight into it, keeping Home reachable via Skip — removes the warmest-moment decision point.",
+     "effort": "hours"
+    },
+    {
+     "what": "Localize just the first-run surface for the top store locales (taster question + feedback + welcome banner + the ~15 Home/Daily strings) — a static string table, not an i18n framework.",
+     "effort": "days"
+    },
+    {
+     "what": "Make '0/4 today' teach: on a device with zero plays, render the four dailies as compact rows in the Home Daily zone (or label the counter 'See all 4 ›'), so session one learns the full ritual.",
+     "effort": "a day"
+    }
+   ],
+   "five_star_moves": [
+    "Cut cold LCP from 4.0s toward <2.5s so the taster appears before doubt does — the single biggest first-impression lever, and it compounds with every organic-search visitor.",
+    "Full first-session localization matching the 15-language store listings, so an ES/PT/BR install's first minute is in their language — the flow is already good; it's just in the wrong tongue for half the funnel.",
+    "A designed first-session arc ending in a tomorrow-hook: taster → guided first daily → streak visibly lit ('1 day streak') → native notification opt-in framed as 'save your streak' — onboarding's job doesn't end at first fun, it ends at first return, which is the measured binding constraint.",
+    "Ask 'Pick your club' inside the first session and seed Home with that club's quiz tile — club content is the deepest bank (86 packs, 100% explanations) and the page type that already converts search visitors; first-run should personalize toward it."
+   ],
+   "evidence": [
+    "src/App.jsx:6959-7040 — onboarding is a single taster MCQ (ONBOARD_SAMPLE: most international goals), fully skippable, no login; both exits write biq_onboarded (6964-6993) and the comment log (6933-6950) records two screens deleted specifically to fight the opened→played leak.",
+    "Live test this review: at https://balliq.app/play with service worker, 3 caches and localStorage cleared, the taster rendered as the first screen at 375x812; answering showed 'Nice — you're a natural ⚽' and the CTA became 'Let's play' — zero taps to a playable question, zero auth.",
+    "Live test: fresh-guest Home shows 'Welcome to Ball IQ! Start with today's Footle' banner (src/App.jsx:10785-10794), Daily zone '0/4 today' with Footle hero (sample MOUNT/FODEN board) + 'Daily 7 · 7 questions · ~3 min'; the Daily tab lists all four dailies with '0 of 4 played' and '0 day streak — play one puzzle to light it'.",
+    "Live test: Daily 7 launched instantly to Q1/7; answering 'Flamengo' produced '✓ Correct!' plus a '💡 Why?' explanation paragraph — first-session teaching verified end-to-end.",
+    "src/useAuth.jsx:131-133 + src/App.jsx:11724-11738 — guest-first boot: no stored session → auto-guest, Login is an overlay reached only from in-app affordances; landed 2026-06-23 (git ba7e918), taster copy 2026-06-27 (git 4d9b9da) — so accounts can now only be created after playing, structurally eliminating the 28/58 'signed up, never played' cohort.",
+    "src/App.jsx:9666-9712 — the only signup ask for guests is a once-ever, reward-framed 'save' prompt at a results peak, with guards against stacking on the rate prompt, level-up overlay, challenge settlement and share sheet.",
+    "Measured cold LCP 4,014ms with LCP element DIV.onboard-body (project memory, superseded-AppInner note) — the taster is the LCP element, so time-to-first-fun ≈ 4s + one tap on a cold load.",
+    "Onboarding and Home strings are hardcoded English (src/App.jsx:7002 'Quick one — give it a go ⚽'; 7026 feedback copy) against a store listing localized in 15 languages and disappointing ES/PT/BR downloads (shared fact)."
+   ]
+  },
+  {
+   "area": "Accessibility & Inclusivity",
+   "grade_10": 7,
+   "letter": "B",
+   "verdict": "The systemic foundation is unusually strong for a solo project — AA-tuned contrast tokens, a real focus-trap hook, reduced-motion killswitch, SR timer announcements — but the two highest-traffic surfaces fail WCAG 1.4.1 (Use of Color): Footle's green-vs-amber signal is literally indistinguishable to a deuteranope with no colour-blind mode, and the static club-page taster gives colour-only, screen-reader-silent answer feedback.",
+   "strengths": [
+    "Deliberate contrast engineering: --t3 was lifted specifically to clear AA (comment at src/app.css:65); measured ratios all pass — --t2 7.65:1 and --t3 5.15:1 on the #0A0A0A canvas, Footle tiles 9.48:1 (green) and 12.15:1 (amber), .opt.wrong text 7.55:1.",
+    "A dedicated modal a11y primitive (src/useModalA11y.js) gives every dialog ESC-close, Tab focus-trap, focus restore to trigger, and back-gesture close — plus role=dialog/aria-modal on all sheets (App.jsx:5487, 6545, 10799...).",
+    "Timed modes announce to screen readers correctly: sr-only role=timer aria-live=assertive fires at 30s/10s/5s/0 thresholds only, never every second (App.jsx:2000, 2602; OnlineMultiplayer.jsx:2113), and the verdict uses polite role=status to avoid clobbering it (App.jsx:2721-2729).",
+    "Motion is governed globally: a prefers-reduced-motion killswitch neutralises every animation/transition (app.css:7-14), and JS-driven confetti checks matchMedia before firing (App.jsx:4184, 4230).",
+    "Non-colour cues exist in the main quiz engine (letter chip becomes ✓/✗ on reveal, App.jsx:2674) plus global :focus-visible outlines on all interactive classes (app.css:156); touch targets are 44px (icon-btn/back-btn), 48px (Footle keys), 54px (primary CTAs).",
+    "The static SEO page is genuinely accessible scaffolding: skip-to-content link, clean h1→h3 hierarchy, 91 real <button> elements with zero onclick-divs, img alts, aria-label breadcrumb, and its own focus-visible + reduced-motion rules (https://balliq.app/quiz/liverpool/)."
+   ],
+   "weaknesses": [
+    "No colour-blind or high-contrast mode exists anywhere (grep for colorblind/high-contrast across src: zero hits). Under Viénot deuteranopia simulation, Footle green #58CC02 renders as #f87835 and amber #FFC107 as #ff802f — the game's two core states are the same orange. Footle is the #1 mode (52 players/30d) and ~5% of men are deuteranomalous in a male-skewed audience.",
+    "Footle's colour signal has no redundant channel for sighted colour-blind players: tiles carry no shape/pattern/icon, the legend is colour-chips-only and aria-hidden (App.jsx:7616-7620), the keyboard keys differ only by background (app.css:1743-1745), and the share grid is 🟩🟨⬛ emoji (App.jsx:7549) — colour-only end to end.",
+    "The static club-page taster — the product for most of the 60%-organic traffic — fails WCAG 1.4.1 and 4.1.3: correct/wrong is tint-only (.bq-o.ok green vs .bq-o.no red, no ✓/✗ added; textContent writes confirm none) and the page contains zero aria-live/role=status regions, so screen-reader users get no answer feedback at all.",
+    "Two in-app quiz variants regress from the main engine's ✓/✗ pattern to colour-only reveals: Hot Streak keeps A/B/C/D letters on correct/wrong (App.jsx:2019-2027) and Local MP does the same (App.jsx:3423-3430).",
+    "Footle gives screen-reader users no announcement of a submitted guess's result — graded tiles carry aria-labels (App.jsx:7506) but nothing live-announces the row, so a VoiceOver player must manually re-navigate the grid after every guess.",
+    "Inclusivity: the entire UI including every aria-label is English-only while the store listing ships in 15 languages (shared fact — suspected cause of ES/PT/BR disappointment); font sizes are px-based throughout app.css so browser/OS text-size preferences don't scale text (pinch-zoom works — viewport has no maximum-scale)."
+   ],
+   "quick_wins": [
+    {
+     "what": "Colour-blind-safe Footle: add a Settings toggle that swaps green/amber for blue/orange (Wordle's own fix) AND add a permanent shape cue — filled tile for right-spot vs ring/outline for wrong-spot — to tiles, keyboard keys, and legend; swap share emoji to 🟦🟧 when the toggle is on.",
+     "effort": "a day"
+    },
+    {
+     "what": "Static taster feedback: add ✓/✗ into the .k letter chip on grade (mirroring the app's App.jsx:2674 pattern) and one aria-live=polite region announcing Correct/Incorrect + the explanation — a small edit to the shared taster template that fixes every club page at once.",
+     "effort": "hours"
+    },
+    {
+     "what": "Port the main engine's ✓/✗ reveal icons to Hot Streak (App.jsx:2026) and Local MP (App.jsx:3430) — the logic already exists one component over.",
+     "effort": "hours"
+    },
+    {
+     "what": "Add an sr-only aria-live=polite summary after each Footle guess (e.g. \"B A K E R: 2 correct, 1 wrong position, 2 not in the name\") next to the existing grid render (App.jsx:7499).",
+     "effort": "hours"
+    }
+   ],
+   "five_star_moves": [
+    "Ship the colour-blind mode and market it: a settings toggle + shape-differentiated tiles makes Ball IQ strictly more playable than most Wordle clones for ~1-in-12 male fans, and it's a store-listing bullet, not just compliance.",
+    "Run one real assistive-tech pass on the daily loop (iOS VoiceOver + Android TalkBack through Footle → Daily 7 → results → share) on the live native builds and fix what it surfaces — the ARIA plumbing is already good enough that this pass would likely reach genuinely-usable, not just technically-labelled.",
+    "Localise the UI (starting ES/PT) including aria-labels — the single biggest inclusivity gap, and it doubles as the suspected fix for the ES/PT/BR retention leak that is the measured binding constraint.",
+    "Respect user text-size: move the type ramp to rem/Dynamic-Type-aware units so OS font-size preferences scale the app — the older-fan demographic that loves 1990s-era questions overlaps heavily with large-text users."
+   ],
+   "evidence": [
+    "310 aria- attribute occurrences across /Users/alexanderbrynolsen/ball-iq/src; zero grep hits for colorblind/colourblind/high-contrast in the same tree.",
+    "Measured contrast (WCAG relative-luminance): --t2 #9BA0B8 on #0A0A0A = 7.65:1; --t3 #7E828C = 5.15:1 (4.91:1 on --s1 cards); Footle green tile text 9.48:1; amber tile 12.15:1; grey key text 4.91:1; .opt.wrong 7.55:1 — every measured pair passes AA (tokens at src/app.css:56-75).",
+    "Viénot deuteranopia simulation: Footle green #58CC02 → #f87835 vs amber #FFC107 → #ff802f (app.css:1695-1696, 1743-1744) — right-spot and wrong-spot converge to the same orange; legend is aria-hidden colour chips only (App.jsx:7616).",
+    "src/useModalA11y.js:1-47 documents and implements ESC-close, Tab trap, focus restore, and popstate back-gesture close for all 8 dialogs; sr-only timer announcements at App.jsx:2000, 2602 and screens/OnlineMultiplayer.jsx:2113.",
+    "Global reduced-motion killswitch at src/app.css:7-14; JS confetti gated at App.jsx:4184 and 4230; global :focus-visible rule at app.css:156; touch targets .icon-btn 44px (app.css:192), .wd-key 48px (app.css:1740), .btn-3d 54px (app.css:149).",
+    "https://balliq.app/quiz/liverpool/ (138,276 bytes fetched 2026-08-19): skip-to-content link present, 91 <button> elements, 0 onclick attributes, 28 aria- attributes, h1→h3 hierarchy — but 0 aria-live/role=status/role=timer occurrences, and taster grading sets className='bq-o ok'/'bq-o no' (tint-only) with no ✓/✗ textContent write.",
+    "Colour-only reveals in-app: Hot Streak options keep letter chips A-D on correct/wrong (App.jsx:2019-2027) and Local MP likewise (App.jsx:3423-3430), while the main engine swaps in ✓/✗ (App.jsx:2674).",
+    "index.html:2 has lang=\"en\" and index.html:5 viewport carries no maximum-scale/user-scalable=no (zoom preserved); font sizing is px-based throughout app.css (e.g. lines 144, 149, 581)."
+   ]
   }
  ],
- "critic": null
+ "critic": {
+  "blind_spots": [
+   "Stability and crash handling: Sentry is wired in (src/main.jsx:14, src/multiplayerRpc.js:22 with captureException on retry-exhausted RPCs; docs/SENTRY_RULES.md exists) but NO reviewer asked the obvious questions days before a season-start spike — what is the crash-free rate, does Sentry actually receive events from the native shells (Clarity provably does not, per the social reviewer's own App.jsx:1849 citation), and what regression risk does the Android 1.5.1→1.6.1 jump carry for existing users? Two brand-new store builds land this week and nobody graded whether they are stable.",
+   "Data privacy and compliance: public/privacy.html exists (routed at vercel.json:24-30) but no reviewer checked the App Store privacy nutrition label or Play Data Safety form against reality (Clarity session recording, Supabase, Sentry telemetry), GDPR consent for recording EU sessions (Norwegian dev, EU-heavy organic traffic, no consent banner reviewed), or Apple's mandatory in-app account-deletion requirement for apps with account creation — a rejection-class gap with iOS 1.6.0 live today.",
+   "Tablet and desktop: the iOS target is iPhone-only (TARGETED_DEVICE_FAMILY = \"1\", ios/App/App.xcodeproj/project.pbxproj:371) and the desktop-web refresh is documented half-done (Home rebuilt; Daily/Profile/Friends/Settings/Quiz/Results outstanding) — yet 60% of sessions arrive via organic search, much of it desktop, and no reviewer looked at any screen wider than 375px.",
+   "Operational season readiness of the daily schedules: the content reviewer audited the bank, but nobody verified the four FROZEN daily schedules actually extend through the coming months — how many Footle/Trail/Mystery entries are queued past Friday, and whether Trail careers were re-verified against the just-closed summer-2026 window (the repo's own rule: re-verify EVERY transfer window via scripts/verify-trail-careers.mjs; the content reviewer found ZERO summer-2026 content, implying that pass has not run). A daily-habit app whose daily runs dry mid-September is a worse failure than any polish gap graded here.",
+   "Monetisation and pricing readiness: zero coverage. Pro (2.0) is the stated plan, AdSense is stuck in review with AD_SLOTS commented out, and no reviewer assessed whether any revenue path exists, whether the archive/Pro anchor the competitive reviewer proposed has a price, or what the cost ceiling of Supabase Pro plus a season-start spike is for a solo dev with no income from the product.",
+   "App Store featuring and editorial pitch: the competitive reviewer listed widget/localization/iPad as retention gaps but nobody framed them as Apple's literal featuring checklist, and no one evaluated the season-start editorial window (sports-moment featuring) that a solo football app could realistically pitch — the only distribution channel that could move installs 10x that the panel never named.",
+   "Backend capacity and abuse surface at season start: no reviewer touched rate limiting on the anon key, RLS posture, or what 10x traffic does to the Supabase plan — the repo's own memory records anon-full-DML defaults and RPC-grant lessons, and docs/PRODUCTION_RUNBOOK.md exists unreviewed. Solo-dev bus-factor/ops (who notices an outage on matchday?) went ungraded.",
+   "Community and review responding as an ongoing operation: the store reviewer flagged the missing feedback channel, but nobody covered the standing community plan — the Reddit strategy documented in repo memory (14 link karma, blitz deliberately held for Play going clickable, 20-sub self-promo map) is the acquisition plan of record and no reviewer assessed whether it is ready to fire when Android 1.6.1 clears review this week."
+  ],
+  "grade_disputes": [
+   "Onboarding 7/B is too kind by its own evidence: the review concedes the flow is completely unmeasured post-change (the ~15% activation claim 'can't be confirmed fixed'), the first impression carries a 4,014ms cold LCP on the exact LCP element, first-run is English-only against a 15-language funnel, and 60% of sessions land on club pages and never see the flow at all. A funnel graded 7 should have a known conversion number; this one has none. 5-6 fits the cited evidence.",
+   "A11y 7/B is too kind when weighted by traffic: the reviewer's own findings are that the #1 mode (Footle, 52 players/30d) is literally indistinguishable green-vs-amber to deuteranopes with no colour-blind mode, and the club-page taster — the product for most of the 60% organic traffic — fails WCAG 1.4.1 and is screen-reader-silent. Strong tokens and focus traps on low-traffic modals should not outweigh hard failures on the two highest-traffic surfaces; the evidence reads as a 5-6.",
+   "Store 6/C is a notch kind: the measurable output is zero on both stores ('hasn't received enough ratings', aggregateRating: None), the live Play listing is still the old pre-rewrite copy, the 15-locale release notes are written but stamped NOT YET APPLIED, and the one predicted 1-star generator (English app behind 15-language listings) is armed with no deflector. Excellent prompt engineering firing into a void is a 4-5 outcome, not a 6.",
+   "Content's 8 paired with letter 'B' is internally inconsistent with the panel's own scale (7=B, 6=C, 5=C elsewhere): either the letter should be A- or the number 7. On the evidence (18/18 accuracy, institutional gating) the 8 is earned and the letter undersells it — the only grade on the panel that looks too HARSH, in its letter.",
+   "Retention 5/C is the panel's best-calibrated grade — 0 web-push subscribers, 9 remote notifications all-time, ~34 reachable devices against 173 streak-state users — and it should anchor the others: it is not coherent for onboarding and a11y to sit at 7 while the area every shared fact names as the binding constraint sits at 5 partly BECAUSE of those same unmeasured, English-only, low-reach surfaces."
+  ],
+  "single_biggest_lever": "Ship the ratings floor before Friday: a 'Rate Ball IQ' row in Settings deep-linking to the write-review pages (itms-apps action=write-review / Play market URL) plus a 'Send feedback' mailto deflector — then personally ask the playtester orbit to rate on their own devices. Rationale from the panel's own evidence: both stores currently display NO rating (Apple 'hasn't received enough ratings'; Play aggregateRating: None at 50+ installs), every rival shows 4.1-4.6, the first ~15 ratings set the visible average for months, and the one predicted 1-star source ('not in my language', localisations.json known_risk) currently has no outlet EXCEPT the store. This is hours of work (the store reviewer sized both rows at 'hours'), it bypasses Apple's sheet budget that the native-only prompt is burning on silent no-ops (src/lib/review.js:33,38-40), and it converts the season-start download bump — the only guaranteed traffic event on the calendar — into a 4.8-anchored listing instead of a blank one. Everything else the panel proposed (localization, widget, web push) compounds ON TOP of a visible rating; none of it moves ratings if the shelf stays blank while the season's shoppers walk past."
+ }
 }
