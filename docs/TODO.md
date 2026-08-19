@@ -30,6 +30,29 @@ no-ads/no-analytics privacy declaration still holds. Both bundles 6.5 MB.
 
 ---
 
+## ✅ ALL FOUR DAILY MODES ARE SCHEDULE-IMMUNE — audit closed 2026-08-19
+
+| mode | answer source | immune to bank/pool growth |
+|---|---|---|
+| Footle | frozen `WORDLE_ANSWER_LOG` | ✅ guarded by test |
+| Transfer Trail | frozen `TRAIL_ANSWER_LOG` | ✅ `PUBLISHED` prefix frozen (`85a9485`) |
+| Daily 7 | frozen `dailyLog.js` | ✅ `99e2169` |
+| Mystery Player | frozen `mysterySchedule` | ✅ already `log[i]` by day offset, id-stable |
+
+Also measured and CLEAN, so nobody re-checks: **0 of 400 logged Daily 7 days
+contain a leaked pair** (one question giving away another's answer). The
+834-entry conflict map is club-pack derived and the daily draws from 4,270
+eligible questions, so collisions are vanishingly unlikely. ⚠️ My first
+measurement said "0 conflict entries" — a FALSE NEGATIVE from importing
+`CONFLICTS` instead of `QUESTION_CONFLICTS`. A zero on something that should
+exist is the tell, every time.
+
+End-to-end verified on prod after the freeze: full Daily 7 played to
+completion — 3/7, +30 XP, review count reconciles with the score, CTA correctly
+points at Footle.
+
+---
+
 ## ✅ THE DAILY 7 IS NOW FROZEN — found AND fixed 2026-08-19 (99e2169)
 
 **Every question added to the bank silently rewrites every past and future
