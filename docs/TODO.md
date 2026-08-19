@@ -30,6 +30,61 @@ no-ads/no-analytics privacy declaration still holds. Both bundles 6.5 MB.
 
 ---
 
+## 🚨 THE DAILY 7 IS NOT DATE-STABLE — found 2026-08-19, NOT FIXED
+
+**Every question added to the bank silently rewrites every past and future
+Daily 7.** Measured, not inferred:
+
+    pickDailyQuestions = seededShuffle(mcqOnly, dayIndex * MULT).slice(0, 7)
+    mcqOnly is derived from the LIVE bank.
+
+    adding ONE question  -> today's Daily 7: all 7 questions change
+    removing ONE         -> all 7 change
+    a daily from 7 days ago, after adding one -> ALSO rewritten
+
+So a forge wave, a triage deletion, even a re-tag reshuffles the flagship mode's
+entire history. Consequences, in order of damage:
+
+- **`/c/` challenge links rot.** A link shared before any bank change resolves
+  to different questions, so "beat my 5/7" compares two different quizzes.
+- **"Shared by everyone today" is false across a deploy.** Two players either
+  side of a push get different questions on the same date.
+- **The OG card** for a past daily shows questions that player never saw.
+- **Native vs web disagree continuously**, since native ships a frozen bank.
+
+⚠️ This is the SAME class as the Trail bug fixed in `85a9485` and the Footle
+trap fixed long ago — and `quiz.js` even documents the rule it is breaking:
+*"Its selection must depend on the date and nothing else."* It depends on the
+date AND the current size of the bank.
+
+**Recommended fix (Alex's call — it changes what every player sees tomorrow):**
+freeze the eligible pool the way `WORDLE_ANSWER_LOG` is frozen. Snapshot the
+eligible ids once; select from the snapshot; new questions enter the daily only
+when the snapshot is deliberately extended. Cost: ~52 KB shipped to every
+client, plus the process burden of extending it. One-time consequence: today
+and future dailies shift once, then never again. Past dailies are already
+unrecoverable — they have been rewritten many times.
+
+Not shipped unilaterally because it is outward-facing and alters the flagship
+mode for everyone.
+
+---
+
+## 📋 PLAYER REPORT 2026-08-19 — the Kane question is a free point
+
+`q_1f2b59` "Harry Kane joined Bayern Munich in 2023 — from which Premier League
+club?" (answer Tottenham) drew a "way too easy, really obvious" from a player,
+in the DAILY 7 — the most-shared, most-compared screen we have. It is labelled
+`easy` and it is correct; the problem is that it is a free point for anyone who
+follows football at all, which is the whole audience.
+
+⚠️ **The obvious fix is blocked by the bug above.** Deleting or re-tagging it
+rewrites every past and future Daily 7. Difficulty calibration on the daily is
+gated behind freezing the pool first — which is also Lever 4's blocker on the
+club-page board. Same root cause, two symptoms.
+
+---
+
 ## ✅ CLASSIC DESIGN PASS — DONE 2026-08-19
 
 Audited by PLAYING it, states not screens: difficulty picker → in-game →
