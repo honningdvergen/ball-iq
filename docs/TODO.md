@@ -30,6 +30,41 @@ no-ads/no-analytics privacy declaration still holds. Both bundles 6.5 MB.
 
 ---
 
+## ✅ CLASSIC DESIGN PASS — DONE 2026-08-19
+
+Audited by PLAYING it, states not screens: difficulty picker → in-game →
+timeout reveal → results → missed-answers review. The picker and the in-game
+layout came back clean. Two real defects, both the same shape — **the score
+and the screen disagreed**:
+
+1. **`a4f78df` — a timeout said "✓ Correct!"** in green. On expiry the timer
+   sets `selected` to the CORRECT index so the right option lights up in the
+   reveal (good), but the verdict pill decided its text from `selected === q.a`
+   — one variable carrying two meanings. Scoring was already right
+   (isCorrect:false, timedOut:true, red pip, streak reset); only the message
+   lied, which is the worst kind. Now "⏱ Time's up". A `timedOut` flag wins
+   over the index comparison and clears with the other per-question resets.
+2. **`f0b278b` — timed-out questions were missing from the missed-answers
+   review**, excluded by the `correct !== "timeout"` guard on the wrongAnswers
+   push. Red pip, counted against the score, no answer and no explanation
+   shown — for the one case where the player has NO idea what the answer was.
+   Explanations are the differentiator; this screen already learned the lesson
+   once when the review was wrong-answers-only.
+
+⚠️ **Verification caveat worth remembering:** Chrome throttles setTimeout in a
+HIDDEN tab (~1/min), so timing-dependent behaviour cannot be counted in the
+preview pane — only 3 of 8 timeouts fired in 185s. The timeout REVEAL also
+lasts 800ms, too short to screenshot; catching it needed a DOM poller.
+
+⚠️ **Not a bug, checked:** the review looks duplicated in the DOM. Mobile and
+desktop layouts both mount `WrongAnswersReview`, one `display:none`. 3 entries
+render as 6 rows — count entries, not rows.
+
+**Remaining for Classic:** nothing found. Survival's half was done 2026-08-17
+(`ce2d7af`).
+
+---
+
 ## 🎯 THE PERFECTION PUSH (2026-08-17 → authority kit) — MEASURED, not guessed
 
 Alex: "making everything we have 10/10 … what areas are 6/10." Everything below
