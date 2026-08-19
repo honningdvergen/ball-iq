@@ -1,7 +1,122 @@
 {
  "runId": "wf_f514ef5e-58c",
  "journalDir": "/Users/alexanderbrynolsen/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/subagents/workflows/wf_f514ef5e-58c",
- "note": "RECOVERY: if this session died, the full agent transcripts live in journalDir. reviews below are the structured returns harvested so far.",
- "reviews": [],
+ "status": "partial — 2 of 8 reviewers done before session limit; resume in flight",
+ "reviews": [
+  {
+   "area": "Store presence & ratings engine",
+   "grade_10": 6,
+   "letter": "C",
+   "verdict": "A genuinely sophisticated ratings engine and top-decile listing craft idling at 2 total ratings — the bottleneck is native install volume and a stale, half-shipped Play presence, not the quality of the ask.",
+   "strengths": [
+    "Native ask placement is excellent: fires only at emotional peaks (Footle solve gated on >=1 prior-day solve, perfect or >=90% quiz scores, 7/30/100 streak milestones, live MP win with >=2 players and no draw), never stacks on the notification sheet, 45-day cooldown, and the lifetime cap was correctly raised 4->24 after diagnosing that iOS's silent no-ops were burning the allowance on the most engaged users (src/lib/review.js:14-27, src/App.jsx:9403-9416, 9613-9620, src/screens/OnlineMultiplayer.jsx:836-848).",
+    "A real bad-experience deflector exists on the custom web prompt: 'Not really' routes to a mailto feedback draft, 'never the store' (src/App.jsx:8150, 10833-10837) — and the native path deliberately has no pre-gate, which is the policy-compliant choice (Google's in-app review policy forbids gating the native card; happy-moment-only triggering is the legal equivalent of a deflector).",
+    "Too-early asks are prevented on every path: Footle requires a solve on an earlier day ('rating an app on the first puzzle you ever played is how you collect three-star ratings', App.jsx:9405-9413), the quiz path requires >=5 lifetime games (newTotal >= 5, App.jsx:9617), the web card requires 5+ games and a 9+/10 score and fires once ever (App.jsx:9656-9664).",
+    "Listing craft is exceptional for a solo dev: a factually wrong Footle paragraph and a false 'every answer has an explanation' claim were caught and fixed against measured numbers (81.8%), keywords were de-duplicated across fields, the US locale gets 'Soccer Quiz' while GB gets 'Football Quiz', first-3 screenshots curated for the install sheet (store-assets/1.6.1/LISTING.md sections 2b, 4, 6).",
+    "15 full store localisations exist with per-locale names, subtitles, keywords and whatsNew (store-assets/1.6.1/localisations.json: en-GB/US/CA/AU, es-ES/MX, pt-BR/PT, tr, fr, fr-CA, de, it, id, ar), and all 15 privacy-policy URLs were set and verified.",
+    "The iOS average that exists is perfect — 5.0 stars (apps.apple.com/gb/app/id6775975961) — so there is nothing to repair, only volume to build; and the 1.6.1 Play release notes are reader-quality, tagged <en-US>, 439 chars under the 500 cap (store-assets/1.6.1/play-release-notes.txt)."
+   ],
+   "weaknesses": [
+    "Output is near-zero: 2 ratings on the GB App Store storefront (5.0 avg), 'hasn't received enough ratings' on the US storefront, no displayable rating at all on Google Play (no aggregateRating in the live page's JSON-LD), and a '50+' downloads band — at this volume a single 1-star drops the visible average to 3.0, so 4.8+ is a volume problem before it is anything else.",
+    "The live Play listing is STALE: title still 'Ball IQ: Football Trivia' and the old short description ('Soccer & football trivia quizzes, Footle & live multiplayer...') are what shoppers see today — the rewritten copy sits in a staged draft behind the vc19 review; the required 1024x500 feature graphic does not exist anywhere in the repo (find returned nothing; PLAY-LISTING.md lists it as open); the 15 localised Play listings are unapplied despite the copy existing.",
+    "Daily 7 — the #2 mode at 48 players/30d — can never trigger the native ask: mode !== 'daily' at src/App.jsx:9617 blocks it, and 7/30/100 streak milestones are swallowed whenever they land on a daily results screen; the engine's best moments in the second-most-played mode are structurally unreachable.",
+    "15-language store listings promise an experience the English-only app cannot deliver — the ES/PT/BR download-then-disappoint pattern is the single biggest structural threat to holding 4.8+ once rating volume arrives (localised listing copy in localisations.json vs. app UI English-only per shared facts).",
+    "No sentiment suppression on the native path: a user who just reported a broken question or hit an error can still get the review sheet 3.5s into their next win — the deflector is moment-based, not user-based.",
+    "The 1.6.1 whatsNew is written for all 15 locales but flagged NOT YET APPLIED in either console (localisations.json _status: '1.6.1 RELEASE NOTES WRITTEN 2026-08-18 — NOT YET APPLIED'), and the OnlineMultiplayer comment claims 'fires once' / first-win semantics while the code fires on every MP-win screen mount (harmless via cooldown, but the comment lies)."
+   ],
+   "quick_wins": [
+    {
+     "what": "Ship the missing Play assets: create the required 1024x500 feature graphic, upload the 8 framed 1080x1920 screenshots from store-assets/1.6.1/play-screenshots-phone/, and apply the 15 localised Play listings that already exist in localisations.json — Play presence currently lags Apple by a full tier.",
+     "effort": "a day"
+    },
+    {
+     "what": "Unblock Daily 7 from the native ask: after the notification pre-prompt resolves (or for users who already answered it), let a perfect Daily 7 or a streak milestone call maybeRequestReview — remove or condition the mode !== 'daily' exclusion at src/App.jsx:9617. This adds the #2 mode (48 players/30d) to the engine's reach.",
+     "effort": "hours"
+    },
+    {
+     "what": "Apply the already-written 1.6.1 whatsNew across the 15 App Store Connect locales and the Play draft (localisations.json says written 2026-08-18, not applied) — release notes are read by the exact people deciding whether the app is maintained.",
+     "effort": "hours"
+    },
+    {
+     "what": "Add sentiment suppression: set a session flag when a user reports a question or hits an error boundary, and have maybeRequestReview decline for e.g. 7 days after it — a policy-compliant deflector for the native sheet, which cannot legally be pre-gated.",
+     "effort": "hours"
+    }
+   ],
+   "five_star_moves": [
+    "Solve the volume problem, not the average: with 2 iOS ratings and zero on Play, the listing shows 'not enough ratings' in the biggest storefront — the lever is converting the web audience (60% of sessions, club pages as landing pages) into native installs so the already-well-placed engine has someone to ask; ~50-100 ratings at the current 5.0 hit rate makes 4.8+ real.",
+    "Close the 15-language-listing vs English-only-app gap before rating volume arrives — either localise the game shell UI for ES/PT (the two markets already suspected of download-then-disappoint) or honestly mark the localised listings 'quiz in English'; a localized listing feeding an English app is how 1-stars get manufactured at scale.",
+    "Bring Play to parity with Apple: get the staged title/description live with vc19, add the feature graphic, localised listings and screenshots, and reply to every review from the console — Play weighs listing completeness and developer responses, and it is currently the visibly abandoned storefront of the two.",
+    "Instrument the engine: today willAskNativeReview outcomes are invisible (the API returns no signal, and nothing logs the attempt count) — log ask-attempts per surface to analytics so 'the engine fired 40 times for 2 ratings' vs 'the engine fired twice' becomes a measurable fact instead of a guess."
+   ],
+   "evidence": [
+    "src/lib/review.js:12,27,31-45 — 45-day cooldown, lifetime cap 24 (raised from 4 after the silent no-op bug documented at lines 14-26), native-only via Capacitor.isNativePlatform(), counter stamped before the call.",
+    "src/App.jsx:9403-9416 — Footle ask requires won===true, no notification-sheet collision (askedNotif), and countPriorFootleSolves() >= 1; src/App.jsx:9613-9620 — quiz ask requires perfect >=5, or >=90% on 10+, or loginStreak in [7,30,100], plus newTotal >= 5, and excludes mode 'daily'.",
+    "src/App.jsx:8150 and 10827-10857 — the web rate card: 'Enjoying Ball IQ?' -> 'Loving it!' opens the store; 'Not really' opens mailto:hello@balliq.app feedback and never the store; fires once ever (biq_rate_shown, lines 9656-9664) on classic mode with score >= 9.",
+    "src/screens/OnlineMultiplayer.jsx:836-848 — MP ask fires on isWinner && !survivalDraw && players >= 2, 3.5s delayed, once per results mount.",
+    "https://apps.apple.com/gb/app/id6775975961 — 'Ball IQ - Football Quiz', subtitle 'Daily Puzzles & Club Trivia', 5.0 stars from exactly 2 ratings; https://apps.apple.com/app/id6775975961 (US storefront) — name shows 'Ball IQ - Soccer Quiz' and 'This app hasn't received enough ratings or reviews to display an overview'; 1.6.0 released today.",
+    "https://play.google.com/store/apps/details?id=app.balliq&hl=en — live JSON-LD name is still 'Ball IQ: Football Trivia' with the old short description, no aggregateRating present, downloads band '50+', updated Aug 18 2026; the 4.6/4.7 star elements in the page belong to similar-app cards, not Ball IQ.",
+    "store-assets/1.6.1/localisations.json — 15 locales with per-locale name/subtitle/keywords/promo/whatsNew; _status: '1.6.1 RELEASE NOTES WRITTEN 2026-08-18 — NOT YET APPLIED'; store-assets/1.6.1/play-release-notes.txt — 439 bytes with <en-US> tags (under Play's 500 cap).",
+    "store-assets/1.6.1/PLAY-LISTING.md lines 110-116 — feature graphic 1024x500 'required by Play, and we have none', localised Play listings still open; `find /Users/alexanderbrynolsen/ball-iq -iname '*feature*graphic*'` returns nothing; play-screenshots-phone/ holds 8 PNGs measured 1080x1920."
+   ]
+  },
+  {
+   "area": "Core gameplay feel — quiz engine + daily modes",
+   "grade_10": 7,
+   "letter": "B",
+   "verdict": "Fairness and honesty are A-grade and freshly battle-tested by actual play, but the sensory payoff is uneven — Mystery wins in total silence, the entire sound layer ships dark by default, and the one player who never saw the answer (timeout) gets the shortest look at it.",
+   "strengths": [
+    "Honesty culture is elite: timeouts now say 'Time's up' instead of lying (App.jsx:2174-2181), timed-out questions join the review WITH explanations (App.jsx:2453-2469), Mystery's give-up panel deliberately refuses win styling (MysteryPlayer.jsx:275-278), and fake percentile social proof was removed for honest tier copy (App.jsx:4295-4312).",
+    "Losing feels fair, Duolingo-grade: daily streaks tick on ANY completion win-or-loss, streak shields exist, and a dead streak gets an empathetic rebuild toast ('day X of the rebuild. Your best: N' — App.jsx:8355-8368) instead of silent reset.",
+    "Rich haptic vocabulary — six distinct native patterns (correct/wrong/hardCorrect/heavy/select/levelup) mapped to specific moments, with web vibrate fallbacks (App.jsx:1910-1941), plus a dedicated hard-question particle burst and 'HARD - NAILED IT' badge (App.jsx:2500-2522).",
+    "Real celebration infrastructure: confetti at >=80% (App.jsx:4557), CountUp score with haptic-on-land (App.jsx:4637), XP promoted into the hero moment in gold (App.jsx:4664-4672), milestone confetti at 7/30/100-day streaks (App.jsx:8377-8387).",
+    "The worst pace bugs were caught by playing THIS WEEK and fixed: double-tap re-entry guard (633 dead clicks, skipped questions — App.jsx:2216-2227), answered option cards now advance on tap instead of being dead (App.jsx:2676-2687), and a finished day routes onward to yesterday's puzzles or Survival (DailyScreen.jsx:258-294).",
+    "Footle nails the Wordle drama beat-for-beat: 280ms staggered tile flips (TIMINGS.WORDLE_FLIP_MS, App.jsx:7434), graded keyboard state, haptic+sound at the moment of truth, confetti gated to fresh solves only (App.jsx:7631)."
+   ],
+   "weaknesses": [
+    "Mystery Player's win is completely mute: grep for haptic/playSound/Confetti in MysteryPlayer.jsx returns ZERO matches — no buzz on the winning guess, no confetti, no sound, just a green panel. The hardest, longest-effort daily has the flattest payoff, while Trail gets Confetti+hardCorrect haptic (TransferTrail.jsx:117,198) and Footle gets all three. Wrong Mystery guesses also give nothing — no shake, no haptic — where Trail shakes and buzzes.",
+    "The entire audio design is unheard by most players: sound defaults to FALSE (App.jsx:8114 'sound:false, haptics:true'), so the carefully-built chimes, streak arpeggio, and daily_complete chord (App.jsx:1795-1833) play to almost nobody. Duolingo ships sound on.",
+    "Timeouts auto-advance after 800ms (App.jsx:2331) while wrong answers wait for a Next tap — the one case where the player has NO idea what the answer was gets the shortest dwell. The review-screen fix (App.jsx:2453-2469) patches this after the fact, but the in-moment reveal is still rushed.",
+    "No in-run streak feedback on mobile outside Survival: the streak pill is desktop-only and aria-hidden (App.jsx:2609-2610, base display:none), so a 5-in-a-row mid-quiz passes in silence — the combo dopamine Wordle/Duolingo mine relentlessly is left on the table until the results screen.",
+    "Mystery's core steering signal is known-corrupted: similarity() scores nationality, and the file's own header documents that `nat` is wrong for marquee players (Messi/Vinicius/James all read 'Spain'), so 'wherever nat is wrong the RANKS are wrong too' (MysteryPlayer.jsx:13-41). A player steering by rank can be honestly misled by the mechanic itself.",
+    "The daily_complete celebration chord + heavy haptic only fires for Daily 7 (App.jsx:9801-9803, inside handleComplete); Footle/Trail/Mystery completions dispatch biq:daily-completed but never get that shell-level payoff."
+   ],
+   "quick_wins": [
+    {
+     "what": "Port Trail's feedback into Mystery: haptic('hardCorrect') + Confetti on the winning guess, haptic('wrong') on a cold one — the imports are one line (Trail already imports both from ../App.jsx at TransferTrail.jsx:24) and Trail is the exact template.",
+     "effort": "hours"
+    },
+    {
+     "what": "Route timeouts through the same showNext dwell as wrong answers (or extend 800ms to ~2.5s) so the revealed answer and explanation are actually readable in the moment — change is one branch in advance() at App.jsx:2331.",
+     "effort": "hours"
+    },
+    {
+     "what": "Fire haptic('heavy') + the daily_complete chord from the biq:daily-completed handler for Footle/Trail/Mystery, not just Daily 7 — the event already carries game + won.",
+     "effort": "hours"
+    },
+    {
+     "what": "Add a mobile in-run streak beat: a small pulse/toast at 3 and 5 in a row (the state already exists — streak/bestStreak at App.jsx:2186-2187; only Survival renders it on mobile at App.jsx:2571).",
+     "effort": "a day"
+    }
+   ],
+   "five_star_moves": [
+    "A 'clean sweep' celebration when all four dailies are done in one day — the hub already computes exactly this (DayComplete, DailyScreen.jsx:263) but renders a quiet green card; this is the single most-earned moment in the product and it currently whispers.",
+    "Re-pull the Wikidata nat/club data with the P31 class filter (reference_wikidata_traps) so Mystery's ranks stop lying for marquee players and the reveal can restore club/nationality — trust in the distance signal IS the game.",
+    "A sound-design pass plus default-on audio for native installs (or a one-time 'play with sound?' prompt) — the whole audio layer is built, gated, and dark; Duolingo's moment-to-moment feel is half sound.",
+    "Motion identity on the correct answer itself: the right card currently just recolors (App.jsx:2664-2695) — a 150ms scale-pop on the correct option plus a brief screen-settle would put the reveal beat on par with Duolingo's answer bounce."
+   ],
+   "evidence": [
+    "App.jsx:2331 — `if (correct === \"timeout\") { setTimeout(() => doAdvance(ns, nb, false), 800); return; }` — timeouts get an 800ms auto-advance while answered questions wait for a manual Next tap (App.jsx:2761-2768).",
+    "MysteryPlayer.jsx (380 lines) — grep for haptic|playSound|Confetti exits 1 (zero matches); the win panel (lines 242-273) renders with no sensory feedback. Contrast TransferTrail.jsx:117-118 (haptic hardCorrect / haptic wrong + 420ms shake) and App.jsx:7437-7438 (Footle haptic+sound at the moment of truth).",
+    "App.jsx:8114 — `const defaults = { hints:true, timer:true, sound:false, haptics:true }` — sound is opt-in, so the 6-sound WebAudio design (App.jsx:1795-1833) is silent for the default player.",
+    "App.jsx:2184, 2294 — Speed 8s, Classic 20s timer; Daily 7, Survival, Legends, Chaos are untimed by design ('the auto-fail-after-20s signal was creating frustration').",
+    "App.jsx:2216-2227 — the double-tap re-entry guard, added after Clarity showed 'Next' as the most dead-clicked element in the product (633 clicks) and a reproduced Q2->Q4 skip.",
+    "docs/PRE-SEASON-CHECKLIST.md:12-17 — every real defect this week came from playing or behavioural data, zero from code audit; Classic/Daily7/Footle/Trail/Mystery played end-to-end 17-19 Aug; Club Quiz (the #1 SEO landing surface) still never played in-app (line 39).",
+    "App.jsx:4557, 4618 — confetti threshold pct>=80 (or Survival >=10); App.jsx:4548-4550 perfect-run levelup haptic; App.jsx:4678 best-streak pill hidden below 3.",
+    "App.jsx:8367 — streak death copy: 'Streak reset — day N of the rebuild. Your best: X', keyed to fire exactly once per death.",
+    "App.jsx:2609-2624 — the in-run streak/score/timer meta row is desktop-only ('qd-meta', aria-hidden, base display:none); mobile shows streak only in Survival's streak-bar (App.jsx:2571-2580).",
+    "MysteryPlayer.jsx:13-41 — in-file measurement: nat==country for 5,277 of 8,489 pool entries, Messi/Vinicius/James all read 'Spain', and 'wherever nat is wrong the RANKS are wrong too'."
+   ]
+  }
+ ],
  "critic": null
 }
