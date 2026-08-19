@@ -316,8 +316,14 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
           </div>
           <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 6 }}>
             {won
-              ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"}${streak > 1 ? ` · 🔥 ${streak}-day streak` : ""}`
-              : "Out of guesses — back tomorrow"}
+              // ⚠️ Archive plays deliberately do NOT tick the streak (see the
+              // effect above, which returns early when isArchive), so claiming
+              // one here would credit the player for something that did not
+              // happen. Same class as "back tomorrow" on a puzzle from the past.
+              ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"}${!isArchive && streak > 1 ? ` · 🔥 ${streak}-day streak` : ""}`
+              : isArchive
+                ? "Out of guesses — that one's in the books"
+                : "Out of guesses — back tomorrow"}
           </div>
           <button onClick={onShare}
             style={{ marginTop: 16, width: "100%", padding: "14px", borderRadius: 999, border: "none",
