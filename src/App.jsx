@@ -9293,7 +9293,33 @@ function AppInner() {
   // one. Two modals stacked on the first puzzle a person ever finished, with
   // the notification opt-in buried behind the one they'd reflexively dismiss.
   const maybePromptNotif = useCallback(async () => {
-    if (!notificationsSupported()) return false;
+    // WEB PATH (scouting report, retention 5/C): the delivery engine — sw.js
+    // push handlers, the send-web-push edge function, an hourly pg_cron — has
+    // been live in prod with ZERO subscribers, because the only surface that
+    // ever asked was a Settings toggle nobody visits. The same sheet at the
+    // same post-solve moment now asks on the web too; "Yes, remind me" runs
+    // enableWebPush() instead of the native toggle.
+    //   · signed-in only: persist() upserts by user id, so a guest's subscribe
+    //     cannot stick — and the guest already owns this moment via the
+    //     save-your-progress nudge, which is worth more while retention is
+    //     the binding constraint.
+    //   · permission==='default' only: never re-ask a browser that decided.
+    //   · same biq_notif_asks cap — localStorage is per-context, so the two
+    //     platforms cannot burn each other's two asks.
+    if (!notificationsSupported()) {
+      try {
+        if (!webPushSupported()) return false;
+        if (!user?.id) return false;
+        if (webPushOn) return false;
+        if (webPushPermission() !== 'default') return false;
+        const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
+        if (asks >= 2) return false;
+        localStorage.setItem('biq_notif_asks', String(asks + 1));
+        if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
+        notifTimerRef.current = setTimeout(() => setNotifPromptOpen(true), 7000);
+        return true;
+      } catch { return false; }
+    }
     try {
       if (localStorage.getItem('biq_notif_enabled') === '1') return false;
       const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
@@ -9321,7 +9347,7 @@ function AppInner() {
       notifTimerRef.current = setTimeout(() => setNotifPromptOpen(true), 7000);
       return true;
     } catch { return false; }
-  }, []);
+  }, [user?.id, webPushOn]);
 
   // (Re)schedule the rolling window on open + whenever today's play state
   // changes (finishing Daily 7 flips dailyDone → reschedule with skipToday).
@@ -11000,7 +11026,14 @@ function AppInner() {
                 Get one friendly reminder each evening if you haven't played yet — never spammy, and you can turn it off anytime in Settings.
               </div>
               <button
-                onClick={async () => { setNotifPromptOpen(false); await handleToggleNotif(true); }}
+                onClick={async () => {
+                  setNotifPromptOpen(false);
+                  // Same sheet, two engines: native local notifications, or web
+                  // push. Both toggles request permission INSIDE this click —
+                  // Safari rejects requestPermission() outside a user gesture.
+                  if (notificationsSupported()) await handleToggleNotif(true);
+                  else await handleToggleWebPush(true);
+                }}
                 style={{width:"100%",minHeight:48,padding:"14px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:14,fontFamily:"inherit",fontSize:16,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
               >
                 Yes, remind me
