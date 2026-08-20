@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Search } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Search, Landmark} from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -555,6 +555,10 @@ function HomeScreenImpl({
           // schedule actually has a puzzle for today, so nothing advertises a
           // mode that cannot be played. mysteryLive is computed above.
           ...(mysteryLive ? [{ key:"mystery", Icon: Search, name: "Mystery Player", desc: "Guess who", isNew: true, onTap: () => setScreen("mystery") }] : []),
+          // Stadiums (2026-08-20, Alex's design): a completion run, not a
+          // quiz — name every ground in the league. No live-gate needed:
+          // the dataset is season-pinned and always playable.
+          { key:"stadiums", Icon: Landmark, name: "Stadiums", desc: "Name every ground", isNew: true, onTap: () => setScreen("stadiums") },
           { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
           // ⚠️ iconColor deliberately REMOVED. Survival was the only tile using the

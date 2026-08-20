@@ -62,6 +62,7 @@ const BlockedUsersScreen = React.lazy(() => import('./screens/ProfileScreen.jsx'
 // null while TRAIL_ANSWER_LOG is empty, so this renders NOTHING until the
 // spot-checked dataset lands. Wiring inert beats wiring half-done.
 const TransferTrail = React.lazy(() => import('./screens/TransferTrail.jsx'));
+const StadiumGame = React.lazy(() => import('./screens/StadiumGame.jsx'));
 const MysteryPlayer = React.lazy(() => import('./screens/MysteryPlayer.jsx'));
 const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
 const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.MultiplayerLobby })));
@@ -9676,6 +9677,30 @@ function AppInner() {
         }
       }
     };
+    // Stadiums completion: XP scaled by hints (a no-hint clean sweep is a
+    // real feat; a letter-by-letter crawl still finished the job), plus a
+    // scores row so the mode shows up in the what-do-people-play funnel.
+    // Give-ups pay nothing but still write the row — played-and-stopped is
+    // exactly the signal Mystery was missing for months.
+    const onStadiumsDone = (e) => {
+      const d = e?.detail || {};
+      if (!d.gaveUp) {
+        const xp = d.hints === 0 ? 80 : d.hints <= 3 ? 60 : d.hints <= 10 ? 40 : 25;
+        awardXp(xp);
+      }
+      if (user?.id) {
+        supabase.from('scores').insert({
+          user_id: user.id,
+          game_mode: 'stadiums',
+          score: d.solved || 0,
+          correct_answers: d.solved || 0,
+          total_questions: d.total || 20,
+        }).then(({ error }) => {
+          if (error) console.warn('[stadiums score]', error.message);
+        });
+      }
+    };
+    window.addEventListener('biq:stadiums-completed', onStadiumsDone);
     window.addEventListener('biq:daily-completed', onDailyDone);
     return () => window.removeEventListener('biq:daily-completed', onDailyDone);
   }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak]);
@@ -10274,7 +10299,7 @@ function AppInner() {
   // unmount cleanup so navigating away always strips the class. The
   // matching CSS rule lives in the AppInner css string further down.
   useEffect(() => {
-    const playing = inGame || screen === "wordle" || screen === "trail" || screen === "mystery";
+    const playing = inGame || screen === "wordle" || screen === "trail" || screen === "mystery" || screen === "stadiums";
     // first_game_started (scouting panel, onboarding): the activation funnel
     // had install → onboard-done → …nothing until a scores row. This is the
     // missing middle beat, fired at the STATE level rather than in any
@@ -10794,7 +10819,7 @@ function AppInner() {
     hwBackRef.current = () => {
       if (closeTopModal()) return;
       if (screen === "online-stage1-lobby") { handleHomeClick(); return; }
-      if (inGame || screen === "wordle" || screen === "trail" || screen === "mystery") {
+      if (inGame || screen === "wordle" || screen === "trail" || screen === "mystery" || screen === "stadiums") {
         // dispatchEvent returns false when a listener preventDefault()ed —
         // i.e. the mounted engine claimed the press and owns the quit flow.
         let claimed = false;
@@ -11660,6 +11685,9 @@ function AppInner() {
         })()}
         {screen === "mystery" && (
           <React.Suspense fallback={null}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} /></React.Suspense>
+        )}
+        {screen === "stadiums" && (
+          <React.Suspense fallback={null}><StadiumGame onExit={goHome} /></React.Suspense>
         )}
         {screen === "stump" && stumpRow && (
           <StumpScreen
