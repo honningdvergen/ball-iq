@@ -2185,6 +2185,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
+  // Mobile in-run streak beat (scouting panel): the qd-meta streak pill is
+  // desktop-only, so on a phone a 5-in-a-row passed in silence until the
+  // results screen. A transient fixed-position pill at 3 and 5 gives the
+  // combo its moment without touching layout (fixed = zero reflow, unlike
+  // mounting into the header, which visibly shifted the progress track).
+  const [streakBeat, setStreakBeat] = useState(0);
+  const streakBeatTimeoutRef = useRef(null);
+  useEffect(() => () => clearTimeout(streakBeatTimeoutRef.current), []);
   const [timeLeft, setTimeLeft] = useState(timerDuration);
   const [speedScore, setSpeedScore] = useState(0);
   const [done, setDone] = useState(false);
@@ -2328,7 +2336,13 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
 
   const advance = useCallback((ns, nb, correct) => {
     if (mode === "survival" && !correct) { doAdvance(ns, nb, correct); return; }
-    if (correct === "timeout") { setTimeout(() => doAdvance(ns, nb, false), 800); return; }
+    // ⚠️ Timeouts used to auto-advance after 800ms while wrong answers waited
+    // for a Next tap — the one player who never even SAW the answer got the
+    // shortest look at it (scouting panel, gameplay 7/B). The timer effect has
+    // already revealed the correct option and set the timedOut flag, so the
+    // "⏱ Time's up" pill, the explanation and the Next button all render;
+    // give that player the same self-paced dwell everyone else gets.
+    if (correct === "timeout") { setShowNext({ ns, nb, correct: false }); return; }
     setShowNext({ ns, nb, correct });
   }, [mode, doAdvance]);
   useEffect(() => { advanceRef.current = advance; }, [advance]);
@@ -2340,6 +2354,14 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
     const nst = correct ? streak + 1 : 0;
     const nb = Math.max(bestStreak, nst);
     setScore(ns); setStreak(nst); setBestStreak(nb);
+    // Beat at exactly 3 and 5 — not every correct answer (that would be
+    // noise) and not in Survival, whose streak-bar already narrates the run.
+    if (correct && mode !== "survival" && (nst === 3 || nst === 5)) {
+      setStreakBeat(nst);
+      clearTimeout(streakBeatTimeoutRef.current);
+      streakBeatTimeoutRef.current = setTimeout(() => setStreakBeat(0), 1600);
+      haptic("hardCorrect");
+    }
     // Sprint #61 DD3: breadcrumb every answer with question id + outcome
     // (no PII — id is a 6-char hash, no question text). Gives the launch-day
     // debugger a precise reconstruction of the user's session up to a crash.
@@ -2390,7 +2412,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
     if (correct !== "timeout") setMarks(m => [...m, correct === true]);
     if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeftRef.current * 10); }
     advance(ns, nb, correct);
-  }, [score, streak, bestStreak, advance]);
+  }, [score, streak, bestStreak, advance, mode]);
 
   const handleMCQ = useCallback((i) => {
     if (answered || done) return;
@@ -2568,6 +2590,9 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         </div>
       </div>
 
+      {streakBeat > 0 && (
+        <div className="streak-beat" role="status">🔥 {streakBeat} in a row</div>
+      )}
       {mode === "survival" && (
         <div className="streak-bar">
           <div className="streak-n">🔥 {streak}</div>
@@ -9422,6 +9447,18 @@ function AppInner() {
       // The RPC is idempotent per local day (lastDay === today → ticked:false),
       // so solving all four modes ticks once and shows one toast.
       tickLoginStreak();
+      // The daily_complete chord + heavy haptic used to be Daily 7's private
+      // reward (it fires them in handleComplete, whose dispatch above carries
+      // no `game` field — hence the named-game gate, which also keeps this
+      // from double-firing for the Daily 7). A won Footle/Trail/Mystery is the
+      // same "day sealed" moment and deserves the same note. The 600ms delay
+      // lets each mode's own instant feedback land first — Footle's correct
+      // sound, Trail/Mystery's hardCorrect pulse — then the chord arrives as
+      // the closing beat instead of clashing with them.
+      const dailyGame = e?.detail?.game;
+      if ((dailyGame === 'footle' || dailyGame === 'trail' || dailyGame === 'mystery') && e.detail.won === true) {
+        celebrationTimeoutsRef.current.push(setTimeout(() => { haptic('heavy'); playSound('daily_complete'); }, 600));
+      }
       // ⭐ The 5-star ask, re-homed here from inside the Footle screen.
       //
       // Alex, 2026-07-29: solving Footle IS the right moment to ask — it is the

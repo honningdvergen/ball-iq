@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { ClipboardList, Route, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
+import { Confetti, haptic } from "../App.jsx";
 import { dateToYMD } from "../lib/date.js";
 import { getWordleAnswer } from "../lib/wordle.js";
 import { getTrailAnswer } from "../lib/trail.js";
@@ -260,14 +261,31 @@ function yesterdayOpen(matchdays, today, playArchive, playDailyForDate) {
 // countdown. This offers the one thing that is both playable right now and
 // already plumbed — yesterday's unplayed puzzles — and falls back to Survival,
 // which needs no difficulty picker, no account, and never runs out.
-function DayComplete({ open, onSurvival, wide }) {
+function DayComplete({ open, onSurvival, wide, todayYMD }) {
   const hasOpen = open.length > 0;
+  // The clean sweep is the single most-earned moment in the product and this
+  // card used to whisper it (scouting panel, gameplay 7/B). Confetti + a heavy
+  // pulse, ONCE per local day — the panel re-mounts on every hub visit and on
+  // the mobile/wide layout switch, so the localStorage stamp (not state) is
+  // what keeps a finished day from re-celebrating all evening.
+  const [celebrate, setCelebrate] = useState(false);
+  useEffect(() => {
+    try {
+      if (!todayYMD || localStorage.getItem("biq_sweep_seen") === todayYMD) return;
+      localStorage.setItem("biq_sweep_seen", todayYMD);
+      setCelebrate(true);
+      haptic("heavy");
+      const t = setTimeout(() => setCelebrate(false), 4200);
+      return () => clearTimeout(t);
+    } catch { /* storage unavailable: skip the celebration, keep the card */ }
+  }, [todayYMD]);
   return (
     <div style={{ borderRadius: 16, padding: wide ? "18px 20px" : "14px 16px", background: "rgba(88,204,2,0.06)", border: "1px solid rgba(88,204,2,0.28)", display: "flex", flexDirection: "column", gap: hasOpen ? 12 : 0 }}>
+      {celebrate && Confetti ? <Confetti /> : null}
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span style={{ width: 34, height: 34, flexShrink: 0, borderRadius: 10, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.30)", color: "#58CC02", fontSize: 16, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true">✓</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: wide ? 16 : 15, fontWeight: 800, color: "var(--t1)" }}>Today&apos;s done</div>
+          <div style={{ fontSize: wide ? 16 : 15, fontWeight: 800, color: "var(--t1)" }}>Clean sweep — today&apos;s done</div>
           <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
             {hasOpen ? "Yesterday is still open" : "Survival never runs out"}
           </div>
@@ -726,7 +744,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   )}
                 </div>
               ))}
-              {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} />}
+              {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} />}
             </div>
           </>
         );
@@ -900,7 +918,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                     </div>
                   ))}
 
-                  {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide />}
+                  {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide todayYMD={todayYMD} />}
 
                   {/* Recent days */}
                   <div style={{ marginTop: 6 }}>

@@ -1,5 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ArrowLeft, Search } from 'lucide-react';
+// Same kit the Trail imports (TransferTrail.jsx) — the scouting panel measured
+// this file at ZERO haptic/sound/confetti: the hardest, longest-effort daily
+// paid off with a mute green panel while Trail and Footle both celebrate.
+import { Confetti, haptic } from '../App.jsx';
 import {
   rankPool, bandFor, matchGuess, normaliseName,
   answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
@@ -154,6 +158,13 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
     setText('');
     setError('');
     const isWin = rank === 1;
+    // The warmth signal, made physical. Rank IS the game — a guess landing
+    // hot deserves a different pulse than a cold one, and the win gets the
+    // same hardCorrect + confetti the Trail earns. Cold guesses stay silent
+    // on purpose: every guess buzzing would flatten the signal into noise.
+    if (isWin) haptic('hardCorrect');
+    else if (rank <= 25) haptic('correct');   // burning hot — you are close
+    else haptic('select');                    // registered, keep hunting
     if (isWin) setWon(true);
     // Persist EVERY guess, not just the win — a player who closes the tab
     // three guesses in should come back to those three guesses.
@@ -239,6 +250,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           COUNT, unaffected by the label bug) and birth year. Thin and true beats
           rich and wrong. Restore the fields when the pull is re-run with a P31
           class filter — see reference_wikidata_traps. */}
+      {won && Confetti ? <Confetti /> : null}
       {won && (
         <div style={{ margin: '4px 16px 14px', padding: '14px 16px', borderRadius: 14, background: 'rgba(88,204,2,0.12)', border: '1px solid rgba(88,204,2,0.4)' }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: '#8AE042' }}>Got it — {answer.name}</div>
