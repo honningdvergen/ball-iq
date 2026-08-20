@@ -11,7 +11,7 @@ the published Scouting Report artifact. Weakest-first order.
 | Social loops | 6/C | | — k-factor measurement first (a script over loop-hit logs), then challenge-token table |
 | Competitive | 6/C | | — mostly downstream of widget/localisation/archive |
 | Onboarding | 7/B | | — first_game_started event · taster→first-game chain · cold LCP |
-| Gameplay feel | 7/B | | — juice batch: Mystery celebration, timeout dwell, completion chord, clean-sweep moment |
+| Gameplay feel | 7/B | | b3d1f6f — all five juice items shipped + browser-verified: Mystery confetti/haptics, timeout dwell, chord on all four dailies, 3/5 streak beat, clean-sweep celebration |
 | Accessibility | 7/B | | — colour-blind Footle toggle · taster ✓/✗ glyphs · aria-live guess summary |
 | Content moat | 8/B | | — 9 future-tense WC stems · season freshness wave · 155 hard-question hints |
 
