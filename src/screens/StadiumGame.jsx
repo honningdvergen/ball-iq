@@ -43,7 +43,49 @@ function mask(stadium, n) {
 }
 
 export default function StadiumGame({ onExit }) {
-  const league = STADIUM_LEAGUES[0];
+  // League picker first — five leagues now, and a Board keyed by league.id
+  // below so every hook re-initialises cleanly when the league changes.
+  const [leagueId, setLeagueId] = useState(null);
+  const league = STADIUM_LEAGUES.find((l) => l.id === leagueId) || null;
+  if (!league) {
+    return (
+      <div style={{ minHeight: "100dvh", padding: "16px 16px 32px", maxWidth: 560, margin: "0 auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+          <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.4px", color: "var(--text)" }}>Name the Stadium</div>
+            <div style={{ fontSize: 12.5, color: "var(--t2)" }}>Pick a league — name every ground</div>
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {STADIUM_LEAGUES.map((l) => {
+            const saved = loadState(l.id);
+            const solvedN = (saved.solved || []).length;
+            const done = !saved.gaveUp && solvedN === l.clubs.length;
+            return (
+              <button key={l.id} onClick={() => { haptic("select"); setLeagueId(l.id); }}
+                style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px", borderRadius: 13,
+                  background: done ? "rgba(88,204,2,0.08)" : "var(--s2)",
+                  border: `1px solid ${done ? "rgba(88,204,2,0.35)" : "var(--border)"}`,
+                  color: "var(--text)", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 15.5, fontWeight: 800 }}>{l.name}</div>
+                  <div style={{ fontSize: 12, color: "var(--t2)" }}>{l.season}</div>
+                </div>
+                <span className="numeric-mono" style={{ fontSize: 13.5, fontWeight: 700, color: done ? "var(--accent)" : "var(--t2)" }}>
+                  {done ? "✓ " : ""}{saved.gaveUp ? solvedN : solvedN}/{l.clubs.length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+  return <StadiumBoard key={league.id} league={league} onExit={() => setLeagueId(null)} />;
+}
+
+function StadiumBoard({ league, onExit }) {
   const total = league.clubs.length;
   const [state, setState] = useState(() => loadState(league.id));
   const [text, setText] = useState("");
