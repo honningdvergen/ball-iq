@@ -13,7 +13,7 @@ the published Scouting Report artifact. Weakest-first order.
 | Onboarding | 7/B | ◀ ACTIVE | 2ca50e1/6597384/2e90cac — pre-boot LCP shell (LCP node is now static HTML; probe: LCP == FCP), Inter→display=optional (font-metrics LCP theft fixed), 30d650e — onboard-done-answered/skipped + first-game-started events. ca57337 — MEASURED: perf 87→94, LCP 4.1→2.9s lab (probe: LCP==FCP 1.1s), LCP node is static HTML. Remaining: taster→first-game chain analysis once Clarity has a week of events |
 | Gameplay feel | 7/B | | b3d1f6f — all five juice items shipped + browser-verified: Mystery confetti/haptics, timeout dwell, chord on all four dailies, 3/5 streak beat, clean-sweep celebration |
 | Accessibility | 7/B | | f8fa7ac — all three shipped + browser-verified: CB orange/blue palette (share emoji follows), aria-live guess narration, onboarding taster glyphs |
-| Content moat | 8/B | | 72c070f — 16 future-tense WC2026 entries flipped past-tense (answers re-verified: Spain won). Remaining: season freshness wave · 155 hard-question hints |
+| Content moat | 8/B | | 72c070f — 16 future-tense WC2026 entries flipped past-tense (answers re-verified: Spain won). d9f8821 — season-freshness wave swept vs verified 2025-26 rollover: bank held (anchoring discipline worked); Torres+PSG trail rung, Barca hint. Remaining: 155 hard-question hints |
 
 ⚠️ Verification note for the web-push ask: the sandboxed pane has notifications
 HARD-DENIED, so only the negative branch is verifiable here (verified live:
