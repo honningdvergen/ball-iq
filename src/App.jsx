@@ -1875,6 +1875,26 @@ function challengeEventOnce(kind, ch) {
   } catch { return true; }
 }
 
+// Retire index.html's pre-boot onboarding shell (#preboot-onboard) — the
+// static copy of the onboarding first frame that makes LCP land at first
+// paint instead of waiting ~3s for this chunk. Double-rAF so the React tree
+// underneath has demonstrably painted before the overlay lifts; idempotent
+// (remove() on a gone node is a no-op) because StrictMode double-fires the
+// mount effect and the crash path may race the failsafe timer.
+function removePrebootOnboard() {
+  try {
+    const kill = () => { try { document.getElementById('preboot-onboard')?.remove(); } catch {} };
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => requestAnimationFrame(kill));
+    else kill();
+    // rAF is PAUSED in hidden tabs (verified: the shell sat unremoved in a
+    // backgrounded pane until it was fronted). That's the right visual — the
+    // overlay lifts on the first frame anyone actually sees — but a tab that
+    // is never fronted should still shed it eventually; throttled or not,
+    // setTimeout does fire in hidden tabs.
+    setTimeout(kill, 1500);
+  } catch {}
+}
+
 function loopEvent(name) {
   try {
     if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
@@ -7183,6 +7203,10 @@ class TabErrorBoundary extends React.Component {
     console.error(`[boundary:${this.props.name || "tab"}]`, error?.message || "Unknown error");
     // A crash the player SAW is the worst possible prelude to a rating ask.
     try { markBadReviewMoment(); } catch {}
+    // If we crashed before AppInner mounted, the pre-boot onboarding shell
+    // (fixed overlay, z 499) would sit on top of this boundary's fallback
+    // forever — lift it so the error is at least visible.
+    removePrebootOnboard();
     try {
       Sentry.captureException(error, {
         tags: { boundary: "tab", tab: this.props.name || "unknown" },
@@ -7931,7 +7955,7 @@ function challengeDayOffset(dateStr) {
 // ─── APP ──────────────────────────────────────────────────────────────────────
 function AppInner() {
   perfMark('AppInner render (first)');
-  useEffect(() => { perfMark('AppInner mounted'); }, []);
+  useEffect(() => { perfMark('AppInner mounted'); removePrebootOnboard(); }, []);
   const { user, profile: authProfile, isGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
   // QA S-03: screens are full-page swaps, but nothing reset the scroll — so
