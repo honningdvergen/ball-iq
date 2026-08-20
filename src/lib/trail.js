@@ -148,8 +148,12 @@ export const TRAIL_PLAYERS = [
     clubs: ["Leverkusen","Chelsea","Arsenal"],
     loans: [false,false,false] },
   { key: "TORRES_FER", display: ["Ferran","Torres"], nat: "Spain",
-    clubs: ["Valencia","Man City","Barcelona"],
-    loans: [false,false,false] },
+    // + PSG 2026-08-15 (€50m from Barcelona, verified: both clubs' official
+    // announcements + BBC/AFP). All four of his TRAIL_ANSWER_LOG days are
+    // future (first: log index 32), so this is a content fix, not a
+    // schedule change.
+    clubs: ["Valencia","Man City","Barcelona","PSG"],
+    loans: [false,false,false,false] },
   { key: "OSAKO", display: ["Yuya","Osako"], nat: "Japan",
     clubs: ["Kashima Antlers","1860 Munich","1. FC Köln","Werder Bremen","Vissel Kobe"],
     loans: [false,false,false,false,false] },
