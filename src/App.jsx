@@ -7041,6 +7041,11 @@ function OnboardingScreen({ onDone }) {
     try {
       localStorage.setItem("biq_onboarded", "1");
     } catch {}
+    // The other end of the activation chain: onboard-done-answered vs
+    // onboard-done-skipped → first-game-started (fired in the app shell).
+    // Split by taster engagement because "answered the taster" is the
+    // panel's hypothesis for what predicts a first game — now measurable.
+    loopEvent(sampleAnswered !== null ? "onboard-done-answered" : "onboard-done-skipped");
     // Sprint #26 X2: persist to profile so the flag survives across devices.
     // Guest users (no signed-in session) stay local-only; the migration on
     // first sign-in propagates the local flag to their profile.
@@ -10270,6 +10275,21 @@ function AppInner() {
   // matching CSS rule lives in the AppInner css string further down.
   useEffect(() => {
     const playing = inGame || screen === "wordle" || screen === "trail" || screen === "mystery";
+    // first_game_started (scouting panel, onboarding): the activation funnel
+    // had install → onboard-done → …nothing until a scores row. This is the
+    // missing middle beat, fired at the STATE level rather than in any
+    // launcher because launchers multiply (startMode, club/league bypass,
+    // the four daily screens, deep links) and this predicate already unifies
+    // them — it is the same `playing` the focused-play chrome keys off.
+    // Once per device, ever.
+    if (playing) {
+      try {
+        if (!localStorage.getItem("biq_first_game_started")) {
+          localStorage.setItem("biq_first_game_started", "1");
+          loopEvent("first-game-started");
+        }
+      } catch {}
+    }
     try {
       if (playing) document.body.classList.add("in-focused-play");
       else document.body.classList.remove("in-focused-play");
