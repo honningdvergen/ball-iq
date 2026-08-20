@@ -68,7 +68,9 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   const left = Math.max(0, TRAIL_MAX_ATTEMPTS - misses);
 
   useEffect(() => {
-    saveDay(ymd, { status: won ? "won" : lost ? "lost" : "playing", attempts });
+    // arc: archive plays are visible history but never streak fuel — the
+    // walks in lib/trail.js break on it (same stamp as Footle and Mystery).
+    saveDay(ymd, { status: won ? "won" : lost ? "lost" : "playing", attempts, ...(isArchive ? { arc: 1 } : {}) });
   }, [ymd, attempts, won, lost]);
 
   // Fire the shared daily-completed event exactly once. App.jsx listens and

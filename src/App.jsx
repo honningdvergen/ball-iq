@@ -7466,7 +7466,12 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
 
   // Persist on every change to the game state.
   useEffect(() => {
-    safeSetItem(storageKey, JSON.stringify(state));
+    // Archive plays are stamped so history readers can tell a live day from
+    // a back-filled one — the streak walks break on `arc` and the form strip
+    // marks it. Without the stamp, catching up an old day silently extends
+    // the local streak (reproduced 2026-08-20: an archive solve showed as a
+    // 2-day streak). Same stamp in Trail and Mystery.
+    safeSetItem(storageKey, JSON.stringify(isArchive ? { ...state, arc: 1 } : state));
     // Cross-device sync — push to profiles.wordle_state via atomic JSON
     // merge. Skip the empty-grid initial state to avoid a useless write.
     if (userId && state.guesses.length > 0) {

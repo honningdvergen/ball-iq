@@ -126,10 +126,9 @@ function ScoreCell({ state, text, theme, w = COL_W }) {
   );
 }
 
-// Yesterday's un-played cell becomes a replay control. Only ever YESTERDAY and
-// only ever a cell that was live and left unplayed — an archive you can browse
-// is a different product, and the day people actually want back is the one they
-// just missed.
+// An un-played past cell becomes a replay control — the whole visible table
+// (14 days) is the back-catalogue, now that arc-stamped saves keep archive
+// plays out of streaks and honestly marked in the form strip.
 //
 // ⚠️ A replay does NOT tick the streak or pay XP (guarded in each mode's own
 // screen). It fills the board because that IS a true record; letting it move
@@ -231,11 +230,12 @@ function rowAria(m) {
 // independently would let the panel and the row directly below it disagree,
 // which is the exact drift this file has already had to fix once.
 //
-// Deliberately yesterday-only. playArchive() takes an arbitrary date and the
-// three puzzle screens all honour it, so a 30-day back-catalogue is one gate
-// away — but form14 and the local streak walk read history with no live-vs-
-// archive distinction, so back-filling an older day would silently repaint the
-// form strip and extend a guest's streak. That needs its own fix first.
+// The DayComplete panel stays yesterday-only (the day people actually want
+// back is the one they just missed) — but the Recent-days TABLE now replays
+// any unplayed day it shows. The gate that blocked this is fixed: archive
+// saves carry an `arc` stamp, the streak walks break on it, and form14
+// labels/dims arc-only days, so back-filling can no longer repaint the form
+// strip or extend a streak.
 function yesterdayOpen(matchdays, today, playArchive, playDailyForDate) {
   const y = matchdays.find(m => m.isYesterday);
   if (!y) return [];
@@ -350,9 +350,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           // 1.1 Daily v2: store guess count too so the fixtures Footle column
           // can show "solved in N/6", not just played/not.
           const used = Array.isArray(parsed?.guesses) ? parsed.guesses.length : 0;
-          if (parsed?.status === "won") map.set(ymd, { status: "won", used });
-          else if (parsed?.status === "lost") map.set(ymd, { status: "lost", used });
-          else if (used > 0) map.set(ymd, { status: "in-progress", used });
+          const arc = !!parsed?.arc;
+          if (parsed?.status === "won") map.set(ymd, { status: "won", used, arc });
+          else if (parsed?.status === "lost") map.set(ymd, { status: "lost", used, arc });
+          else if (used > 0) map.set(ymd, { status: "in-progress", used, arc });
         } catch {}
       }
     } catch {}
@@ -380,15 +381,15 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           try {
             const p = JSON.parse(localStorage.getItem(k));
             const used = Array.isArray(p?.attempts) ? p.attempts.length : 0;
-            if (p?.status === "won" || p?.status === "lost") trail.set(k.slice(TP.length), { status: p.status, used });
-            else if (used > 0) trail.set(k.slice(TP.length), { status: "in-progress", used });
+            if (p?.status === "won" || p?.status === "lost") trail.set(k.slice(TP.length), { status: p.status, used, arc: !!p.arc });
+            else if (used > 0) trail.set(k.slice(TP.length), { status: "in-progress", used, arc: !!p.arc });
           } catch {}
         } else if (k.startsWith(MP)) {
           try {
             const p = JSON.parse(localStorage.getItem(k));
             const used = Array.isArray(p?.guesses) ? p.guesses.length : 0;
-            if (p?.won) mystery.set(k.slice(MP.length), { status: "won", used });
-            else if (used > 0) mystery.set(k.slice(MP.length), { status: "in-progress", used });
+            if (p?.won) mystery.set(k.slice(MP.length), { status: "won", used, arc: !!p.arc });
+            else if (used > 0) mystery.set(k.slice(MP.length), { status: "in-progress", used, arc: !!p.arc });
           } catch {}
         }
       }
@@ -538,10 +539,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       else dateLabel = d.toLocaleDateString(undefined, { weekday: "short" });
       const dateSub = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
       rows.push({
-        // isYesterday gates the catch-up affordance — deliberately yesterday
-        // only, not arbitrary back-fill: the comeback hook targets the day
-        // the user just missed (getDailyQsForDate is deterministic for any
-        // date, so no extra plumbing is needed).
+        // isYesterday still gates the DAILY 7 catch-up (a question SET replay
+        // stays yesterday-only, close enough to live to count as it). The
+        // other three modes now replay from ANY unplayed row via `md` — their
+        // archive saves carry the arc stamp, so back-fill is streak-inert.
         ymd, md, dateLabel, dateSub, isToday, isYesterday: i === 1, t7Score, t7Done, fAttempt, fWon, fUsed,
         trAttempt, trWon, trUsed, trLive, myAttempt, myWon, myUsed, myLive,
       });
@@ -591,12 +592,26 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       const done = [
         t7 && "Daily 7", fAttempt && "Footle", trAttempt && "Trail", myAttempt && "Mystery",
       ].filter(Boolean);
+      // A day whose every play carries the arc stamp was CAUGHT UP later, not
+      // played on the day — it still fills the strip (a true record of the
+      // puzzle being done) but says so, and renders dimmed. This is the
+      // honesty rule that unblocked the back-catalogue: back-filling may
+      // never silently repaint the form. (Daily 7 has no arc stamp — its
+      // catch-up is yesterday-only, close enough to live to count as it.)
+      const liveDone = [
+        t7 && "Daily 7",
+        fAttempt && !fInfo?.arc && "Footle",
+        trAttempt && !trInfo?.arc && "Trail",
+        myAttempt && !mysteryHistory.get(ymd)?.arc && "Mystery",
+      ].filter(Boolean);
+      const arcOnly = done.length > 0 && liveDone.length === 0;
       let cls, label;
       if (done.length >= 2) { cls = "W"; label = done.join(" + "); }
       else if (done.length === 1) { cls = "D"; label = `${done[0]} only`; }
       else if (!isToday && d.getTime() < firstTime) { cls = "pre"; label = "Before your first puzzle"; }
       else { cls = "L"; label = isToday ? "Pending" : "Missed"; }
-      out.push({ ymd, cls, isToday, aria: `${ymd}: ${label}` });
+      if (arcOnly) label += " · caught up later";
+      out.push({ ymd, cls, isToday, arcOnly, aria: `${ymd}: ${label}` });
     }
     return out;
   }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
@@ -766,7 +781,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             const s = { flex: 1, height: 18, borderRadius: 4 };
             if (d.isToday && played) Object.assign(s, { background: "#58CC02", boxShadow: "0 0 8px rgba(88,204,2,0.5)" });
             else if (d.isToday) Object.assign(s, { background: "transparent", border: "1.5px solid #FFC107" });
-            else if (played) Object.assign(s, { background: "#2E7D1F" });
+            else if (played) Object.assign(s, { background: "#2E7D1F", opacity: d.arcOnly ? 0.55 : 1 });
             else Object.assign(s, { background: "var(--s2)", opacity: d.cls === "pre" ? 0.45 : 1 });
             return <span key={d.ymd} style={s} aria-label={d.aria} title={d.aria} />;
           })}
@@ -810,10 +825,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                       aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
                       style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
                   </span>
-                ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
+                ) : (!m.isToday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
                   <ReplayCell key={c.key} w={COL_W} theme={c.theme}
-                    label={`Play yesterday's ${MODE_LABEL[c.key]}`}
-                    onTap={() => playArchive(REPLAY_SCREEN[c.key], yesterday())} />
+                    label={`Play ${m.dateLabel}'s ${MODE_LABEL[c.key]}`}
+                    onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
                 ) : <ScoreCell key={c.key} state={c.state} text={c.text} theme={c.theme} />
               ))}
             </div>
@@ -957,10 +972,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                                       aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
                                       style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
                                   </span>
-                                ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
+                                ) : (!m.isToday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
                                   <ReplayCell key={c.key} w={DCOL_W} theme={c.theme}
-                                    label={`Play yesterday's ${MODE_LABEL[c.key]}`}
-                                    onTap={() => playArchive(REPLAY_SCREEN[c.key], yesterday())} />
+                                    label={`Play ${m.dateLabel}'s ${MODE_LABEL[c.key]}`}
+                                    onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
                                 ) : <ScoreCell key={c.key} w={DCOL_W} state={c.state} text={c.text} theme={c.theme} />
                               ))}
                             </div>

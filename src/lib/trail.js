@@ -1084,7 +1084,7 @@ export function computeTrailStreak(today) {
       const raw = localStorage.getItem(`biq_trail_${dateToYMD(cursor)}`);
       if (!raw) break;
       const p = JSON.parse(raw);
-      if (p?.status !== "won") break;
+      if (p?.status !== "won" || p?.arc) break; // arc = archive back-fill, not streak fuel
     } catch { break; }
     streak++;
     cursor.setDate(cursor.getDate() - 1);

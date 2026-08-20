@@ -377,7 +377,7 @@ export function computeMysteryStreak(today = new Date()) {
   const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   for (let i = 0; i < 366; i++) {
     const r = loadMysteryResult(cursor);
-    if (!r || !r.won) break;
+    if (!r || !r.won || r.arc) break; // arc = archive back-fill, not streak fuel
     streak++;
     cursor.setDate(cursor.getDate() - 1);
   }

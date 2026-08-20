@@ -133,7 +133,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   const giveUp = () => {
     if (done) return;
     setGaveUp(true);
-    saveMysteryResult(date, { won: false, gaveUp: true, guesses });
+    saveMysteryResult(date, { won: false, gaveUp: true, guesses, ...(isArchive ? { arc: 1 } : {}) });
     // Same archive guard as the win path and for the same reason: replaying an
     // old puzzle must never touch today's habit metrics.
     if (!isArchive) {
@@ -168,7 +168,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
     if (isWin) setWon(true);
     // Persist EVERY guess, not just the win — a player who closes the tab
     // three guesses in should come back to those three guesses.
-    saveMysteryResult(date, { won: isWin, guesses: next });
+    saveMysteryResult(date, { won: isWin, guesses: next, ...(isArchive ? { arc: 1 } : {}) });
     if (isWin) {
       setStreak(computeMysteryStreak());
       // ⚠️ Mystery shipped WITHOUT this and recorded nothing for its whole
