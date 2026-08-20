@@ -760,6 +760,75 @@
     </style>
   </head>
   <body style="background-color:#0A0A0A">
+    <!-- The shell lives FIRST in <body> on purpose: the parser used to walk
+         ~600 lines of hidden static homepage copy inside #root before
+         reaching it, which on a throttled phone cost ~1s of LCP for pure
+         parse order. Painting the first frame before parsing prose nobody
+         on /play can see. -->
+    <!-- ── PRE-BOOT ONBOARDING SHELL (LCP) ─────────────────────────────────
+         WHY: on a first visit the LCP element is the onboarding question
+         (div.onboard-body), which only exists after the lazy GameRoot chunk
+         downloads AND executes — measured FCP 0.9s vs LCP 4.1s with 0ms TBT:
+         the page painted a splash, then sat waiting for JS. This shell paints
+         the EXACT first onboarding frame from static HTML so LCP lands at
+         first paint.
+
+         WHY OUTSIDE #root: createRoot().render() wipes #root's children the
+         moment the index chunk executes — long before GameRoot arrives — so a
+         shell inside #root would flash and revert to the splash. As a fixed
+         overlay sibling it survives that wipe and sits ABOVE the splash until
+         the real OnboardingScreen has painted underneath (z 499 < the real
+         .onboard-wrap's 500), then AppInner's mount effect removes it —
+         identical pixels replacing identical pixels.
+
+         WHO NEVER SEES IT: the unhide script below returns early for native,
+         the marketing path, anyone with biq_onboarded=1, and every deep-link
+         entry that defers onboarding in-app (/join/, /c/, ?join/?c/?club/
+         ?quiz/?stump) — mirroring the deferral list in App.jsx. A 12s
+         failsafe removes it even if the app never boots, so an error screen
+         can never be buried under it.
+
+         KEEP IN SYNC with OnboardingScreen (App.jsx, ONBOARD_SAMPLE) — same
+         title, question, options, buttons — or the swap stops being seamless.
+         Styles are inlined copies of app.css's onboard rules because app.css
+         ships inside the GameRoot chunk and does not exist yet at this paint.
+    -->
+    <div id="preboot-onboard"
+         style="display:none;position:fixed;inset:0;z-index:499;flex-direction:column;padding:24px 0 0;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, #14161E 0%, #0a0a0a 65%);color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;text-align:center;width:100%;">
+        <!-- .onboard-step-top mirror: flex:1 + centered, so the copy floats
+             mid-screen and the actions sit pinned at the bottom, exactly like
+             the real component — otherwise the buttons jump on the swap. -->
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;">
+          <div style="font-size:26px;font-weight:900;letter-spacing:-0.6px;margin-top:16px;margin-bottom:10px;">Quick one — give it a go ⚽</div>
+          <div style="font-size:15px;color:#9BA0B8;line-height:1.6;max-width:320px;margin-bottom:14px;">Who has scored the most goals in men's international football?</div>
+          <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;">
+            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Lionel Messi</button>
+            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Cristiano Ronaldo</button>
+            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Pelé</button>
+            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Neymar</button>
+          </div>
+          <div style="margin:14px 0 2px;font-size:15px;font-weight:700;min-height:22px;"></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;justify-content:center;width:100%;max-width:340px;margin-top:14px;padding-bottom:8px;">
+          <button style="background:none;border:none;color:#9BA0B8;font-size:14px;font-weight:600;font-family:inherit;padding:12px 18px;min-height:48px;min-width:88px;border-radius:12px;">Skip</button>
+          <button style="max-width:180px;flex:1;padding:16px;background:#58CC02;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;letter-spacing:0.01em;">Start playing</button>
+        </div>
+      </div>
+    </div>
+    <script>(function(){try{
+      var native=location.protocol==='capacitor:'||document.documentElement.classList.contains('native-app')||!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
+      if(native)return;
+      var p=location.pathname;
+      if(p==='/'||p.indexOf('/home-preview')===0)return;
+      if(localStorage.getItem('biq_onboarded')==='1')return;
+      if(/^\/(join|c)\//.test(p))return;
+      if(/[?&](join|c|club|quiz|stump)=/.test(location.search))return;
+      var el=document.getElementById('preboot-onboard');
+      if(!el)return;
+      el.style.display='flex';
+      setTimeout(function(){var e=document.getElementById('preboot-onboard');if(e)e.remove();},12000);
+    }catch(e){}})();</script>
     <!-- ════════════════════════════════════════════════════════════════
          LANDING CHROME — TOP HALF
          Hidden on mobile (< 1024px) and ALWAYS hidden in PWA standalone.
@@ -870,70 +939,6 @@
       </div>
     </div>
 
-    <!-- ── PRE-BOOT ONBOARDING SHELL (LCP) ─────────────────────────────────
-         WHY: on a first visit the LCP element is the onboarding question
-         (div.onboard-body), which only exists after the lazy GameRoot chunk
-         downloads AND executes — measured FCP 0.9s vs LCP 4.1s with 0ms TBT:
-         the page painted a splash, then sat waiting for JS. This shell paints
-         the EXACT first onboarding frame from static HTML so LCP lands at
-         first paint.
-
-         WHY OUTSIDE #root: createRoot().render() wipes #root's children the
-         moment the index chunk executes — long before GameRoot arrives — so a
-         shell inside #root would flash and revert to the splash. As a fixed
-         overlay sibling it survives that wipe and sits ABOVE the splash until
-         the real OnboardingScreen has painted underneath (z 499 < the real
-         .onboard-wrap's 500), then AppInner's mount effect removes it —
-         identical pixels replacing identical pixels.
-
-         WHO NEVER SEES IT: the unhide script below returns early for native,
-         the marketing path, anyone with biq_onboarded=1, and every deep-link
-         entry that defers onboarding in-app (/join/, /c/, ?join/?c/?club/
-         ?quiz/?stump) — mirroring the deferral list in App.jsx. A 12s
-         failsafe removes it even if the app never boots, so an error screen
-         can never be buried under it.
-
-         KEEP IN SYNC with OnboardingScreen (App.jsx, ONBOARD_SAMPLE) — same
-         title, question, options, buttons — or the swap stops being seamless.
-         Styles are inlined copies of app.css's onboard rules because app.css
-         ships inside the GameRoot chunk and does not exist yet at this paint.
-    -->
-    <div id="preboot-onboard"
-         style="display:none;position:fixed;inset:0;z-index:499;flex-direction:column;padding:24px 0 0;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, #14161E 0%, #0a0a0a 65%);color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;">
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;text-align:center;width:100%;">
-        <!-- .onboard-step-top mirror: flex:1 + centered, so the copy floats
-             mid-screen and the actions sit pinned at the bottom, exactly like
-             the real component — otherwise the buttons jump on the swap. -->
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;">
-          <div style="font-size:26px;font-weight:900;letter-spacing:-0.6px;margin-top:16px;margin-bottom:10px;">Quick one — give it a go ⚽</div>
-          <div style="font-size:15px;color:#9BA0B8;line-height:1.6;max-width:320px;margin-bottom:14px;">Who has scored the most goals in men's international football?</div>
-          <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;">
-            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Lionel Messi</button>
-            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Cristiano Ronaldo</button>
-            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Pelé</button>
-            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Neymar</button>
-          </div>
-          <div style="margin:14px 0 2px;font-size:15px;font-weight:700;min-height:22px;"></div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center;justify-content:center;width:100%;max-width:340px;margin-top:14px;padding-bottom:8px;">
-          <button style="background:none;border:none;color:#9BA0B8;font-size:14px;font-weight:600;font-family:inherit;padding:12px 18px;min-height:48px;min-width:88px;border-radius:12px;">Skip</button>
-          <button style="max-width:180px;flex:1;padding:16px;background:#58CC02;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;letter-spacing:0.01em;">Start playing</button>
-        </div>
-      </div>
-    </div>
-    <script>(function(){try{
-      var native=location.protocol==='capacitor:'||document.documentElement.classList.contains('native-app')||!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
-      if(native)return;
-      var p=location.pathname;
-      if(p==='/'||p.indexOf('/home-preview')===0)return;
-      if(localStorage.getItem('biq_onboarded')==='1')return;
-      if(/^\/(join|c)\//.test(p))return;
-      if(/[?&](join|c|club|quiz|stump)=/.test(location.search))return;
-      var el=document.getElementById('preboot-onboard');
-      if(!el)return;
-      el.style.display='flex';
-      setTimeout(function(){var e=document.getElementById('preboot-onboard');if(e)e.remove();},12000);
-    }catch(e){}})();</script>
 
     <aside class="ad-slot-sidebar-left" aria-hidden="true"></aside>
     <aside class="ad-slot-sidebar-right" aria-hidden="true"></aside>
