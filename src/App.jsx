@@ -31,7 +31,7 @@ import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from 
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
 import { registerPush, onPushTap } from './lib/push.js';
-import { maybeRequestReview, markBadReviewMoment } from './lib/review.js';
+import { maybeRequestReview, markBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
 import { computeCard } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
 import {
@@ -9676,7 +9676,20 @@ function AppInner() {
         Promise.resolve(askedNotif).then((notifOpened) => {
           if (notifOpened) return;
           if (countPriorFootleSolves() < 1) return;
-          celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
+          if (IS_NATIVE) {
+            celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
+          } else if (webRatePromptEligible() && !ratePromptShown) {
+            // Web parity for Alex's chosen moment (2026-07-29: "solving
+            // Footle IS the right moment to ask"). Web players are most of
+            // the base and previously only ever got asked after a 9/10
+            // Classic — a moment most never reached. Same collision guard
+            // (the notification sheet did not just open), same prior-solve
+            // basis, and the web sheet's unhappy path still deflects to
+            // feedback before any store link.
+            setRatePromptShown(true);
+            markWebRatePromptShown();
+            celebrationTimeoutsRef.current.push(setTimeout(() => { setRateView("ask"); setShowRatePrompt(true); }, 3500));
+          }
         });
       }
       // Footle XP (scan #3). ONLY for game:'footle' — the Daily 7 also fires
@@ -9957,14 +9970,19 @@ function AppInner() {
     // Rate prompt — show once after 5+ games with a good score. On native we
     // defer to the native review sheet above (don't double-ask); on web, where
     // that sheet no-ops, this App Store link is the only ask, so keep it.
+    // Reviews push 2026-08-20: the persistent gate moved from a once-per-
+    // device-EVER boolean into webRatePromptEligible() (3 lifetime, 60 days
+    // apart, sentiment-guarded) — the old bar produced ~zero web reviews.
+    // ratePromptShown stays as the per-session dedupe.
     const shouldShowRate = !ratePromptShown
       && stats.gamesPlayed >= 4
       && res.score >= 9
       && mode === "classic"
-      && !(IS_NATIVE && willAskNativeReview);
+      && !(IS_NATIVE && willAskNativeReview)
+      && webRatePromptEligible();
     if (shouldShowRate) {
       setRatePromptShown(true);
-      safeSetItem("biq_rate_shown", "1");
+      markWebRatePromptShown();
       celebrationTimeoutsRef.current.push(setTimeout(() => { setRateView("ask"); setShowRatePrompt(true); }, 1800));
     }
 

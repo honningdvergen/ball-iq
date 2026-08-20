@@ -9,7 +9,13 @@ import { InAppReview } from '@capacitor-community/in-app-review';
 
 const KEY_LAST = 'biq_review_asked_at';
 const KEY_COUNT = 'biq_review_asked_count';
-const MIN_DAYS_BETWEEN = 45;   // never nag — at most every ~6 weeks
+// 14, not 45 (2026-08-20, reviews push): Apple enforces its own ~3-shows/
+// year budget server-side and silently no-ops the rest — our local cooldown
+// only decides how often we ENTER the lottery, not how often users see it.
+// At 45 days a user gave us ~8 lottery tickets a year; at 14 they give ~26,
+// and Apple still caps what renders. The number that must stay conservative
+// is the WEB prompt's (below), because that one always renders.
+const MIN_DAYS_BETWEEN = 14;
 
 // ⚠️ THIS NUMBER USED TO BE 4, AND THAT WAS COSTING US RATINGS.
 //
@@ -58,4 +64,44 @@ export async function maybeRequestReview() {
   } catch {
     return false;
   }
+}
+
+// ── Web rate prompt policy ────────────────────────────────────────────────
+// The web ask renders every time (no OS lottery), so IT needs the manners
+// the native path outsources to Apple: at most 3 lifetime shows, 60 days
+// apart, never in a session where something just went wrong (same KEY_BAD
+// the native ask honours). Replaces the old biq_rate_shown boolean, which
+// was once-per-device-EVER and gated on a 9/10 Classic run — a bar most web
+// players structurally never crossed (the dailies are where the joy is, and
+// Classic is the #3-4 mode). Legacy "1" migrates as one spent show.
+const KEY_WEB_COUNT = 'biq_rate_web_count';
+const KEY_WEB_LAST = 'biq_rate_web_at';
+const WEB_MAX_LIFETIME = 3;
+const WEB_MIN_DAYS_BETWEEN = 60;
+
+function webShowCount() {
+  try {
+    const c = parseInt(localStorage.getItem(KEY_WEB_COUNT) || '0', 10) || 0;
+    if (c > 0) return c;
+    return localStorage.getItem('biq_rate_shown') !== null ? 1 : 0;
+  } catch { return 0; }
+}
+
+export function webRatePromptEligible() {
+  try {
+    if (Capacitor.isNativePlatform()) return false;
+    const bad = parseInt(localStorage.getItem(KEY_BAD) || '0', 10) || 0;
+    if (bad && (Date.now() - bad) < BAD_MOMENT_COOLDOWN_H * 3600000) return false;
+    if (webShowCount() >= WEB_MAX_LIFETIME) return false;
+    const last = parseInt(localStorage.getItem(KEY_WEB_LAST) || '0', 10) || 0;
+    if (last && (Date.now() - last) < WEB_MIN_DAYS_BETWEEN * 86400000) return false;
+    return true;
+  } catch { return false; }
+}
+
+export function markWebRatePromptShown() {
+  try {
+    localStorage.setItem(KEY_WEB_COUNT, String(webShowCount() + 1));
+    localStorage.setItem(KEY_WEB_LAST, String(Date.now()));
+  } catch {}
 }
