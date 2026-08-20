@@ -217,6 +217,14 @@ export async function mpSetRoomMode({ p_code, p_mode }) {
   return data
 }
 
+// set_player_name — lobby-only self-rename (guest entry v1.6). Single shot,
+// no retry: the input stays filled on failure so the user just re-taps Save.
+export async function mpSetPlayerName({ p_code, p_name }) {
+  const { data, error } = await supabase.rpc('set_player_name', { p_code, p_name })
+  if (error) return { ok: false, error: error.message, code: error.code }
+  return { ok: true, ...data }
+}
+
 // reveal_question — post-close disclosure of the correct answer index
 // (answer-key hardening Phase 1). Best-effort single shot, deliberately
 // outside the retry machinery: the caller falls back to the embedded key

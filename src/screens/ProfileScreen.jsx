@@ -421,14 +421,25 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       try {
         const { data, error } = await supabase
           .from("profiles")
-          .select("id,username,avatar:avatar_id,photo:avatar_url,total_score")
+          // v1.6 guest entry: select("*") instead of a column list — naming
+          // is_anon explicitly would 400 the whole query until the migration
+          // adds the column, and this code deploys (auto, on push) before the
+          // migration is applied. With *, is_anon is simply absent pre-
+          // migration and present after. Aliases the old list provided are
+          // re-mapped below.
+          .select("*")
           .ilike("username", `%${q}%`)
           .limit(10);
         if (cancelled) return;
         if (error) throw error;
         // Filter out self + already-friended/pending users so search
-        // surfaces only addable players.
-        setResults((data || []).filter(p => !excludedIds.has(p.id)));
+        // surfaces only addable players. v1.6 guest entry: also hide
+        // anonymous (invite-link guest) accounts — throwaway identities
+        // that can't meaningfully accept a friendship. undefined passes the
+        // check pre-migration, when no anon accounts can exist anyway.
+        setResults((data || [])
+          .filter(p => !excludedIds.has(p.id) && !p.is_anon)
+          .map(p => ({ id: p.id, username: p.username, avatar: p.avatar_id, photo: p.avatar_url, total_score: p.total_score })));
       } catch (e) {
         console.error("[friends] search", e?.message || "Unknown error", e);
         if (!cancelled) setResults([]);
@@ -1108,7 +1119,7 @@ export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
-  const { user, profile: authProfile, isGuest, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
+  const { user, profile: authProfile, isGuest, isAnonUser, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [pendingCrop, setPendingCrop] = useState(null); // File awaiting crop
@@ -1324,7 +1335,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           for ALL guests (not just those who've played) so there's always a
           path to an account from Profile. Copy leans on the carry-over —
           signing up now keeps everything you've done as a guest. */}
-      {isGuest && (
+      {(isGuest || isAnonUser) && (
         <div style={{
           background:"linear-gradient(135deg, rgba(88,204,2,0.18), rgba(88,204,2,0.06))",
           border:"1px solid var(--accent-b)",
@@ -1338,15 +1349,20 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         }}>
           <div style={{fontSize:16,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>🌟 Save your progress</div>
           <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.4}}>
-            {(stats?.gamesPlayed || 0) > 0
-              ? "Create a free account to keep your stats, streak and IQ — and challenge friends online 1v1."
-              : "Create a free account to play online 1v1, add friends, and save your progress across devices."}
+            {/* v1.6 guest entry: anonymous (invite-link) players already HAVE
+                a server account — the pitch is not "create one to play" but
+                "attach an email so it can't be lost". */}
+            {isAnonUser
+              ? "You're playing as a guest. Add an email and password so your stats, games and XP can't be lost."
+              : (stats?.gamesPlayed || 0) > 0
+                ? "Create a free account to keep your stats, streak and IQ — and challenge friends online 1v1."
+                : "Create a free account to play online 1v1, add friends, and save your progress across devices."}
           </div>
           <button
-            onClick={() => { try { openAuthPrompt?.('save'); } catch {} }}
+            onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }}
             style={{marginTop:8,alignSelf:"stretch",minHeight:44,padding:"12px 18px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
           >
-            Sign in / Create account
+            {isAnonUser ? 'Save my account' : 'Sign in / Create account'}
           </button>
         </div>
       )}

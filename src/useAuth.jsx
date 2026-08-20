@@ -667,6 +667,57 @@ export function AuthProvider({ children }) {
     return result
   }
 
+  // v1.6 guest entry — Supabase anonymous sign-in for invite-link guests.
+  // Deliberately does NOT set the biq_auth_attempt sentinel: the account is
+  // brand-new so there is no existing-account wipe to run, and setting it
+  // would trip the fresh-social-signup branch (biq_needs_username) and put a
+  // username modal between the invite tap and the room. Guest-local stats
+  // survive untouched; hydrate's max-merge absorbs them into the anon
+  // account exactly like a silent restore.
+  async function signInAsGuest() {
+    Sentry.addBreadcrumb({ category: 'auth', message: 'anonymous sign-in attempted', level: 'info' })
+    const { data, error } = await supabase.auth.signInAnonymously()
+    // Most likely error while the dashboard toggle is off:
+    // "Anonymous sign-ins are disabled" — caller falls back to openAuthPrompt.
+    if (error) return { error }
+    return { data }
+  }
+
+  // v1.6 guest entry — upgrade an anonymous account in place. Same uid, so
+  // MP stats / XP / profile rows carry over; GoTrue flips is_anonymous once
+  // the email is verified (the on_auth_user_upgraded trigger then clears
+  // profiles.is_anon). Password applies immediately; the email stays pending
+  // until the confirmation link is clicked, so the caller should show a
+  // "check your inbox" message on success.
+  async function upgradeAnonAccount(email, password, username) {
+    Sentry.addBreadcrumb({ category: 'auth', message: 'anon-upgrade attempted', level: 'info' })
+    const { data, error } = await supabase.auth.updateUser({
+      email,
+      password,
+      data: { username },
+    })
+    if (error) return { error }
+    safeSetItem('biq_last_email', email)
+    // Claim the chosen username on the profile (it's player_xxxxxxxx until
+    // now). Soft-fail: a collision or profanity-trigger rejection must not
+    // sink the account upgrade itself — the user can rename in Profile.
+    let usernameWarning = null
+    const uid = activeUserIdRef.current
+    if (username && uid) {
+      const { error: unameErr } = await supabase
+        .from('profiles')
+        .update({ username: username })
+        .eq('id', uid)
+      if (unameErr) {
+        console.warn('[upgradeAnonAccount] username claim failed', unameErr.message)
+        usernameWarning = unameErr.message
+      } else {
+        setProfile(prev => (prev ? { ...prev, username } : prev))
+      }
+    }
+    return { data, usernameWarning }
+  }
+
   // Password reset: sends the recovery email; its link lands on
   // balliq.app/reset (non-/ paths render the game), where the
   // PASSWORD_RECOVERY event above mounts the new-password overlay.
@@ -1357,6 +1408,11 @@ export function AuthProvider({ children }) {
       profile,
       loading,
       isGuest,
+      // v1.6 guest entry: anonymous Supabase session (real auth.uid(), no
+      // email). Distinct from isGuest, which means NO session at all.
+      isAnonUser: !!user?.is_anonymous,
+      signInAsGuest,
+      upgradeAnonAccount,
       signUp,
       signIn,
       resetPassword,

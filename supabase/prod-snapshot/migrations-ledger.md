@@ -50,3 +50,15 @@ freshness check is load-bearing — `streak` keeps its stale value after a lapse
 so composing without it would claim a dead streak lives. Recipient logic
 byte-identical to the previous version (verified against pg_get_functiondef
 before replace). Grants: execute revoked from public/anon/authenticated.
+
+## 2026-08-20 — v1_6_anon_guest_entry (⚠️ WRITTEN, NOT YET APPLIED)
+File in repo; prod untouched (no connector/CLI auth in the authoring session).
+Adds `profiles.is_anon` (+ handle_new_user stamps it, `on_auth_user_upgraded`
+trigger on auth.users clears it on upgrade), `set_player_name(p_code, p_name)`
+(lobby-only self-rename, profanity-gated, grant authenticated / revoke
+public+anon), and `cleanup_stale_anon_users()` + pg_cron `37 4 * * *`
+(explicit per-table sweep mirroring delete_user_account; "stale" = anonymous,
+30+ days old, no auth.sessions row refreshed in 30 days; execute revoked from
+public/anon/authenticated). Client code deployed ahead of it is inert-safe.
+⚠️ Pairs with a DASHBOARD toggle: Auth → Sign In / Up → Anonymous sign-ins ON.
+Refresh the snapshot after applying.
