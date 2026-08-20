@@ -1907,6 +1907,13 @@ function FootleGetAppCTA({ style }) {
     </>
   );
 }
+// Colour-blind palette state, read where share strings are built so the
+// emoji squares match the tiles the player actually saw (🟧🟦 vs 🟩🟨) —
+// checked at call time, same lazy-read pattern as haptic()'s settings gate.
+function CB_MODE() {
+  try { return document.documentElement.classList.contains("biq-cb"); } catch { return false; }
+}
+
 export function haptic(type) {
   try {
     let enabled = true;
@@ -5079,7 +5086,7 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
     if (!hasData || (!won && !lost)) return "";
     const grid = guesses.map(g => {
       const grades = gradeWordleGuess(g, answer);
-      return grades.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("");
+      return grades.map(c => c === "green" ? (CB_MODE() ? "🟧" : "🟩") : c === "yellow" ? (CB_MODE() ? "🟦" : "🟨") : "⬛").join("");
     }).join("\n");
     const num = getFootleNumber(date);
     const tag = num > 0 ? ` #${num}` : "";
@@ -6203,6 +6210,15 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <SettingsToggle label="Haptics" val={settings.haptics !== false} onChange={v => onUpdate({haptics:v})} />
             </div>
           </div>
+          <div className="settings-row">
+            <div className="sr-left">
+              <div className="sr-label">Colour-blind tiles</div>
+              <div className="sr-desc">Orange and blue Footle tiles instead of green and yellow</div>
+            </div>
+            <div className="sr-right">
+              <SettingsToggle label="Colour-blind tiles" val={settings.colorBlind === true} onChange={v => onUpdate({colorBlind:v})} />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -7040,6 +7056,13 @@ function OnboardingScreen({ onDone }) {
                       onClick={() => { haptic(isCorrect ? "heavy" : "soft"); setSampleAnswered(i); }}
                     >
                       {opt}
+                      {/* Glyphs, not just colour (scouting panel, a11y): the green
+                          and red states are indistinguishable for red-green colour
+                          blindness — the same reason every .opt in the real quiz
+                          carries its ✓. First thing a new player ever answers
+                          should not be the one place feedback is colour-only. */}
+                      {answered && isCorrect && <span aria-hidden="true"> ✓</span>}
+                      {answered && !isCorrect && sampleAnswered === i && <span aria-hidden="true"> ✗</span>}
                     </button>
                   );
                 })}
@@ -7573,7 +7596,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
     const won = state.status === "won";
     const grid = state.guesses.map((g) => {
       const grades = gradeWordleGuess(g, answer);
-      return grades.map((c) => (c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛")).join("");
+      return grades.map((c) => (c === "green" ? (CB_MODE() ? "🟧" : "🟩") : c === "yellow" ? (CB_MODE() ? "🟦" : "🟨") : "⬛")).join("");
     }).join("\n");
     const num = getFootleNumber();
     const tag = num > 0 ? ` #${num}` : "";
@@ -7648,6 +7671,23 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
 
       <div className={`wd-grid${state.status !== "playing" ? " wd-grid--ended" : ""}`} style={{ "--wd-cols": answer.length }}>
         {rows}
+      </div>
+
+      {/* Screen-reader narration of the latest guess (scouting panel, a11y):
+          the tile flips are pure colour, so a VoiceOver/TalkBack player got
+          silence after every submit. Announces letter-by-letter grades for
+          the most recent guess only — announcing the whole board every turn
+          would bury the new information under five rows of old news. */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {state.guesses.length > 0 && (() => {
+          const g = state.guesses[state.guesses.length - 1];
+          const grades = gradeWordleGuess(g, answer);
+          const parts = [...g].map((ch, i) =>
+            `${ch} ${grades[i] === "green" ? "correct spot" : grades[i] === "yellow" ? "wrong spot" : "not in name"}`);
+          const outcome = state.status === "won" ? ` Solved — the answer is ${answer}.`
+            : state.status === "lost" ? ` Out of guesses — the answer was ${answer}.` : "";
+          return `Guess ${state.guesses.length} of 6: ${parts.join(", ")}.${outcome}`;
+        })()}
       </div>
 
       {state.status !== "playing" && revealed && (
@@ -8137,13 +8177,20 @@ function AppInner() {
     return { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
   });
   const [settings, setSettings] = useState(() => {
-    const defaults = { hints:true, timer:true, sound:false, haptics:true };
+    const defaults = { hints:true, timer:true, sound:false, haptics:true, colorBlind:false };
     try {
       const raw = localStorage.getItem("biq_settings");
       if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return { ...defaults, ...p }; }
     } catch {}
     return defaults;
   });
+  // Colour-blind mode is a document-root class, not per-component state:
+  // Footle tiles render in three places (live board, archive board, legend)
+  // plus the keyboard, and a root class lets one CSS block recolour all of
+  // them — the same pattern real Wordle uses for its high-contrast mode.
+  useEffect(() => {
+    try { document.documentElement.classList.toggle("biq-cb", settings.colorBlind === true); } catch {}
+  }, [settings.colorBlind]);
   // Read today's daily completion synchronously so the Daily hero doesn't flash
   // the "Play today's challenge" state before the async check resolves.
   const [dailyDone, setDailyDone] = useState(() => {
