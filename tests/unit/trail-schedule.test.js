@@ -79,6 +79,7 @@ describe("Trail schedule is frozen", () => {
     "TORRES", "GILBERTO_SILVA", "RONALDO_C", "RAMOS", "MATUIDI", "ROONEY",
     "CECH", "HENRY", "SNEIJDER", "FLAMINI", "ERIKSEN", "VALVERDE", "CAN",
     "GRIEZMANN", "FERNANDES", "AGUERO", "VAN_PERSIE",
+    "KOVAI",              // #18 · 2026-08-20 — first extension of the freeze
   ];
 
   it("no already-published day ever moves", () => {

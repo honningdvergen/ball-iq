@@ -26,11 +26,26 @@ const MIN_DAYS_BETWEEN = 45;   // never nag — at most every ~6 weeks
 // Apple's, it is enforced on their side, and it cannot be spammed past.
 const MAX_LIFETIME = 24;
 
+const KEY_BAD = 'biq_review_bad_at';
+const BAD_MOMENT_COOLDOWN_H = 24;
+
+// Sentiment suppression (review panel, 2026-08-19): never spend a rating ask
+// on a session where something just went wrong. A player who reported a bad
+// question or hit an error boundary is the one predicted 1-star source with
+// the prompt as their nearest outlet — route that energy to feedback instead,
+// and simply skip the ask for a day. Callers: the question-report flow and the
+// tab error boundary.
+export function markBadReviewMoment() {
+  try { localStorage.setItem(KEY_BAD, String(Date.now())); } catch {}
+}
+
 // Best-effort request for the native review sheet. Returns true if we asked iOS
 // to show it (iOS still decides whether to actually render). Native-only.
 export async function maybeRequestReview() {
   try {
     if (!Capacitor.isNativePlatform()) return false;
+    const bad = parseInt(localStorage.getItem(KEY_BAD) || '0', 10) || 0;
+    if (bad && (Date.now() - bad) < BAD_MOMENT_COOLDOWN_H * 3600000) return false;
     const count = parseInt(localStorage.getItem(KEY_COUNT) || '0', 10) || 0;
     if (count >= MAX_LIFETIME) return false;
     const last = parseInt(localStorage.getItem(KEY_LAST) || '0', 10) || 0;

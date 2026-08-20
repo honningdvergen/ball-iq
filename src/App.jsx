@@ -31,7 +31,7 @@ import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from 
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
 import { registerPush, onPushTap } from './lib/push.js';
-import { maybeRequestReview } from './lib/review.js';
+import { maybeRequestReview, markBadReviewMoment } from './lib/review.js';
 import { computeCard } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
 import {
@@ -7117,6 +7117,8 @@ class TabErrorBoundary extends React.Component {
   }
   componentDidCatch(error, info) {
     console.error(`[boundary:${this.props.name || "tab"}]`, error?.message || "Unknown error");
+    // A crash the player SAW is the worst possible prelude to a rating ask.
+    try { markBadReviewMoment(); } catch {}
     try {
       Sentry.captureException(error, {
         tags: { boundary: "tab", tab: this.props.name || "unknown" },
@@ -8595,6 +8597,9 @@ function AppInner() {
   // Same failure shape as sendPlayInvite. Read `error`, and only claim success
   // when there was one.
   const reportQuestion = useCallback(async (info) => {
+    // A report IS a bad moment — suppress the native rating ask for 24h so a
+    // player mid-complaint never meets "enjoying Ball IQ?" (review panel lever).
+    markBadReviewMoment();
     try {
       const { error } = await supabase.rpc("report_question", {
         p_question_id: info?.id != null ? String(info.id) : null,
@@ -9613,7 +9618,22 @@ function AppInner() {
       (res.score === res.total && res.total >= 5) ||
       (res.total >= 10 && res.score / res.total >= 0.9) ||
       [7, 30, 100].includes(loginStreak);
-    const willAskNativeReview = hadGreatMoment && newTotal >= 5 && mode !== "daily";
+    // ⚠️ Daily 7 was EXCLUDED from the native ask (`mode !== "daily"`), which
+    // silently killed most streak-milestone asks too — streaks tick on daily
+    // completions, so the 7/30/100 trigger above and the exclusion cancelled
+    // each other out. The #2 mode by players never asked (review panel,
+    // 2026-08-19). Daily now asks, with the SAME yields the auth nudge below
+    // already documents for this moment: the notification pre-prompt owns a
+    // native first-daily, a settling challenge owns its results screen, and
+    // guests keep the save-your-progress nudge instead — signing up beats a
+    // rating while retention is the binding constraint.
+    const notifOwnsDailyMoment = IS_NATIVE && mode === "daily"
+      && localStorage.getItem('biq_notif_enabled') !== '1'
+      && parseInt(localStorage.getItem('biq_notif_asks') || '0', 10) < 2;
+    const challengeOwnsDailyMoment = mode === "daily" && !!pendingChallenge
+      && challengeDayOffset(pendingChallenge.date) <= 1;
+    const willAskNativeReview = hadGreatMoment && newTotal >= 5
+      && (mode !== "daily" || (!isGuest && !notifOwnsDailyMoment && !challengeOwnsDailyMoment));
     if (willAskNativeReview) {
       celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
     }
