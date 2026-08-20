@@ -32,6 +32,7 @@ import { notificationsSupported, getNotifPermission, requestNotifPermission, sch
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
 import { registerPush, onPushTap } from './lib/push.js';
 import { maybeRequestReview, markBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
+import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
 import {
@@ -8385,6 +8386,31 @@ function AppInner() {
   // consumed by repairLoginStreak below.
   const [streakRepair, setStreakRepair] = useState(null);
 
+  // Android widget sync (1.6.2). done-count reads per-mode completion the
+  // same way the Daily hub does, but from storage directly so this works
+  // regardless of which screen is mounted. Fixed total of 4: both frozen
+  // schedules run hundreds of days deep, and a rare gap day showing /4 is
+  // harmless in a launcher glance.
+  const syncDailyWidget = useCallback(() => {
+    try {
+      const ymd = dateToYMD(new Date());
+      const ws = readWordleTodayStatus();
+      const footleDone = ws.kind === "won" || ws.kind === "lost";
+      let trailDone = false, mysteryDone = false;
+      try {
+        const t = JSON.parse(localStorage.getItem(`biq_trail_${ymd}`) || "null");
+        trailDone = t?.status === "won" || t?.status === "lost";
+      } catch {}
+      try {
+        const m = JSON.parse(localStorage.getItem(`biq_mystery_${ymd}`) || "null");
+        mysteryDone = !!(m && (m.won || m.gaveUp));
+      } catch {}
+      const done = (dailyDone ? 1 : 0) + (footleDone ? 1 : 0) + (trailDone ? 1 : 0) + (mysteryDone ? 1 : 0);
+      syncWidget({ date: ymd, done, total: 4, streak: loginStreak || 0 });
+    } catch { /* widget is decoration */ }
+  }, [dailyDone, loginStreak]);
+  useEffect(() => { syncDailyWidget(); }, [syncDailyWidget]);
+
   const tickLoginStreak = useCallback(async () => {
     // Calendar day in the USER'S timezone (days since epoch of the local
     // date). The previous UTC day (Date.now()/DAY_MS client-side,
@@ -9799,8 +9825,16 @@ function AppInner() {
       }
     };
     window.addEventListener('biq:stadiums-completed', onStadiumsDone);
-    window.addEventListener('biq:daily-completed', onDailyDone);
-    return () => window.removeEventListener('biq:daily-completed', onDailyDone);
+    // Widget repaint rides the same event: a SECOND same-day completion
+    // leaves loginStreak untouched (tick no-op), so the state-driven sync
+    // effect would not re-fire — the direct call covers that gap.
+    const onDailyDoneAndSync = (e) => { onDailyDone(e); setTimeout(syncDailyWidget, 400); };
+    window.addEventListener('biq:daily-completed', onDailyDoneAndSync);
+    return () => {
+      // (Also fixes a leak: the stadiums listener was never removed.)
+      window.removeEventListener('biq:stadiums-completed', onStadiumsDone);
+      window.removeEventListener('biq:daily-completed', onDailyDoneAndSync);
+    };
   }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak]);
 
   // Online multiplayer joins the XP economy (it was the only mode outside it).
