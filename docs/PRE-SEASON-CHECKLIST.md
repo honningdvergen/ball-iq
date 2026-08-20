@@ -6,8 +6,8 @@ the published Scouting Report artifact. Weakest-first order.
 
 | area | was | now working | shipped so far |
 |---|---|---|---|
-| Retention reach | 5/C | ◀ ACTIVE | web-push ask at the post-solve moment (`1ad33b4`) — the live engine had ZERO subscribers because only Settings asked. Remaining: streak-aware reminder body · widget (structural) · FCM Android push |
-| Store & ratings | 6/C | | ratings floor (`0cb0702`): Daily 7 unblocked from the ask, 24h bad-moment suppression. Remaining: Play feature graphic · localised Play listings · Alex asks the orbit |
+| Retention reach | 5/C | ◀ ACTIVE | web-push ask at the post-solve moment (`1ad33b4`, Alex = subscriber #1) + streak-aware reminder body (`9d3855a`, verified against Alex's live row). Remaining (structural, ride 1.6.2): home-screen widget · FCM Android push |
+| Store & ratings | 6/C | | ratings floor (`0cb0702`) · Android framed screenshot set uploaded · feature graphic 1024x500 rendered (scripts/make-feature-graphic.mjs, in Alex's Downloads). Remaining: Alex uploads graphic · localised Play listings · Alex asks the orbit |
 | Social loops | 6/C | | 7ae5476 — k MEASURED: 0.23/wk floor, 24% of signups are room-invite converts, friend loop inert (0 in 30d). ⚠️ 7-day data horizon — run scripts/k-factor.sql weekly. 58c14b7 — challenge_events table + RPC live, both loop moments recorded idempotently, k-factor.sql q7 reads it. Guest-join decision running as spawned session |
 | Competitive | 6/C | | — mostly downstream of widget/localisation/archive |
 | Onboarding | 7/B | | — first_game_started event · taster→first-game chain · cold LCP |
