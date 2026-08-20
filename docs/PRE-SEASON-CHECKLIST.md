@@ -1,3 +1,30 @@
+# SCORECARD → A — the methodical pass (started 2026-08-20)
+
+Alex: work each area of the scouting report to A/10-10, no deadline pressure,
+specialized tools at every step. Full report: docs/review-panel-raw.json +
+the published Scouting Report artifact. Weakest-first order.
+
+| area | was | now working | shipped so far |
+|---|---|---|---|
+| Retention reach | 5/C | ◀ ACTIVE | web-push ask at the post-solve moment (`1ad33b4`) — the live engine had ZERO subscribers because only Settings asked. Remaining: streak-aware reminder body · widget (structural) · FCM Android push |
+| Store & ratings | 6/C | | ratings floor (`0cb0702`): Daily 7 unblocked from the ask, 24h bad-moment suppression. Remaining: Play feature graphic · localised Play listings · Alex asks the orbit |
+| Social loops | 6/C | | — k-factor measurement first (a script over loop-hit logs), then challenge-token table |
+| Competitive | 6/C | | — mostly downstream of widget/localisation/archive |
+| Onboarding | 7/B | | — first_game_started event · taster→first-game chain · cold LCP |
+| Gameplay feel | 7/B | | — juice batch: Mystery celebration, timeout dwell, completion chord, clean-sweep moment |
+| Accessibility | 7/B | | — colour-blind Footle toggle · taster ✓/✗ glyphs · aria-live guess summary |
+| Content moat | 8/B | | — 9 future-tense WC stems · season freshness wave · 155 hard-question hints |
+
+⚠️ Verification note for the web-push ask: the sandboxed pane has notifications
+HARD-DENIED, so only the negative branch is verifiable here (verified live:
+signed-in, denied, completed a daily, no sheet — the never-re-ask gate held).
+The positive branch needs a real browser at permission 'default': sign in, play
+a daily to the results screen, the "Keep your streak alive" sheet should rise
+~7s later. Whoever taps "Yes, remind me" becomes web-push subscriber #1 and the
+hourly cron takes it from there.
+
+---
+
 # Pre-season polish checklist — deadline FRIDAY 21 AUG 2026
 
 Season starts in days and the product gets promoted. Everything below must be
