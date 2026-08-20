@@ -1,0 +1,8 @@
+<en-US>
+Your daily habit now lives on your home screen.
+• NEW: Home-screen widget — your streak and today's puzzle progress at a glance, and it tells you when new puzzles are ready.
+• NEW: Stadiums — name every ground in the Premier League, La Liga, Serie A, Bundesliga and Ligue 1.
+• Missed a day? The back-catalogue lets you replay the last two weeks of puzzles, and a broken streak can now be repaired.
+• Every win celebrates properly — confetti, sound and haptics across all four dailies and multiplayer.
+• Colour-blind Footle tiles, screen-reader support, and faster loading.
+</en-US>
