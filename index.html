@@ -801,7 +801,17 @@
              the real component — otherwise the buttons jump on the swap. -->
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;">
           <div style="font-size:26px;font-weight:900;letter-spacing:-0.6px;margin-top:16px;margin-bottom:10px;">Quick one — give it a go ⚽</div>
-          <div style="font-size:15px;color:#9BA0B8;line-height:1.6;max-width:320px;margin-bottom:14px;">Who has scored the most goals in men's international football?</div>
+          <!-- 16.5px, deliberately ~10% larger than the real .onboard-body's
+               15px. LCP only updates for a STRICTLY larger paint, and
+               display=optional cannot stop React's freshly-mounted nodes from
+               laying out in Inter (optional only pins text that already
+               rendered) — measured: shell fallback paint 11,676px² vs React
+               Inter paint 12,384px², a 6% gap that handed LCP back to the
+               JS-timed element. At 16.5px the shell's paint (~14,100px²)
+               outsizes any font's rendering of the React copy, so the LCP
+               candidate is permanently the static one. The 1.5px shrink at
+               swap is imperceptible inside a full-screen component replace. -->
+          <div style="font-size:16.5px;color:#9BA0B8;line-height:1.6;max-width:320px;margin-bottom:14px;">Who has scored the most goals in men's international football?</div>
           <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;">
             <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Lionel Messi</button>
             <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Cristiano Ronaldo</button>
