@@ -50,3 +50,5 @@ freshness check is load-bearing — `streak` keeps its stale value after a lapse
 so composing without it would claim a dead streak lives. Recipient logic
 byte-identical to the previous version (verified against pg_get_functiondef
 before replace). Grants: execute revoked from public/anon/authenticated.
+
+- **v1_6_challenge_events** (2026-08-20, via MCP apply_migration; repo file `supabase/migrations/v1_6_challenge_events.sql`) — challenge_events table + record_challenge_event() RPC for /c/ loop measurement. Verified post-apply: 0 client table grants, 0 policies, RLS on, RPC grants exactly anon+authenticated.

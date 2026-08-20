@@ -1859,6 +1859,22 @@ function resultVerdict(pct) {
   if (pct >= 40) return "Squad rotation material";
   return "Sunday league, first half";
 }
+// Per-token once-only guard for challenge measurement rpcs. StrictMode
+// double-invokes effects in dev (both settle sites live in effect/handler
+// paths that mount-fire), and the same token can be restored from
+// localStorage across boots — a marker per (event, token) makes the
+// measurement idempotent everywhere instead of relying on prod's
+// single-invoke behaviour.
+function challengeEventOnce(kind, ch) {
+  try {
+    const key = `biq_challenge_${kind}_logged`;
+    const tokenKey = `${ch.date}.${ch.score}.${ch.name || ""}`;
+    if (localStorage.getItem(key) === tokenKey) return false;
+    localStorage.setItem(key, tokenKey);
+    return true;
+  } catch { return true; }
+}
+
 function loopEvent(name) {
   try {
     if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
@@ -8640,6 +8656,19 @@ function AppInner() {
   useEffect(() => {
     if (!pendingChallenge) return;
     loopEvent("challenge-arrived");
+    // Server-side counterpart of the Clarity event above: Clarity is web-only
+    // and unqueryable, so the /c/ loop was invisible to k-factor.sql. The
+    // localStorage marker dedupes per TOKEN (this effect re-runs when
+    // dailyDone/dailyScore change, and the same token is restored from
+    // localStorage on every boot until consumed — without the marker one
+    // link would log dozens of opens). rpc() resolves {error} on failure,
+    // it never throws — read the field, never assume (question_reports rule).
+    if (challengeEventOnce("open", pendingChallenge)) {
+      supabase.rpc("record_challenge_event", {
+        p_event: "open", p_date: pendingChallenge.date,
+        p_score: pendingChallenge.score, p_name: pendingChallenge.name || null,
+      }).then(({ error }) => { if (error) console.warn("[challenge open]", error.message); });
+    }
     const age = challengeDayOffset(pendingChallenge.date);
     if (age > 1) {
       showToast(`⏰ ${pendingChallenge.name || "Your friend"}'s challenge has expired — play today's Daily 7 and send one back!`);
@@ -8653,6 +8682,13 @@ function AppInner() {
         name: pendingChallenge.name,
         yesterday: age === 1,
       });
+      if (challengeEventOnce("played", pendingChallenge)) {
+        supabase.rpc("record_challenge_event", {
+          p_event: "played", p_date: pendingChallenge.date,
+          p_score: pendingChallenge.score, p_name: pendingChallenge.name || null,
+          p_my_score: dailyScore,
+        }).then(({ error }) => { if (error) console.warn("[challenge played]", error.message); });
+      }
       clearChallenge();
     }
   }, [pendingChallenge, dailyDone, dailyScore, showToast, clearChallenge]);
@@ -9923,6 +9959,13 @@ function AppInner() {
             name: pendingChallenge.name,
             yesterday: challengeDayOffset(pendingChallenge.date) === 1,
           };
+          if (challengeEventOnce("played", pendingChallenge)) {
+            supabase.rpc("record_challenge_event", {
+              p_event: "played", p_date: pendingChallenge.date,
+              p_score: pendingChallenge.score, p_name: pendingChallenge.name || null,
+              p_my_score: res.score,
+            }).then(({ error }) => { if (error) console.warn("[challenge played]", error.message); });
+          }
           celebrationTimeoutsRef.current.push(setTimeout(() => setChallengeResult(payload), 1800));
           clearChallenge();
         }

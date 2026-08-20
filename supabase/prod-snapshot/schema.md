@@ -29,6 +29,8 @@ point-in-time. Function source lives in `functions.sql`.
 
 **notifications** (1) — id:uuid¹, user_id:uuid→auth.users, type:text CHECK(play_invite|friend_request|friend_accept), actor_id:uuid→auth.users, actor_name/actor_avatar:text, payload:jsonb ={}, read:bool =false, created_at:tstz
 
+**challenge_events** (0, added 2026-08-20) — id:uuid¹, event:text CHECK(open|played), challenge_date:date, sender_score:int CHECK(0..7), sender_name:text CHECK(len≤24), visitor_id:uuid, my_score:int CHECK(0..7), created_at:tstz =now(). RLS ON, ZERO policies, ZERO client table grants — writes only via record_challenge_event() (SECURITY DEFINER, granted anon+authenticated, 500/hr global throttle). Indexes: created_at; (challenge_date,event).
+
 **device_tokens** (8) — id:uuid¹, user_id:uuid→auth.users, token:text UNIQUE, platform:text ='ios', updated_at:tstz
 
 ## Policies (28)

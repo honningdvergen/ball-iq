@@ -12,9 +12,9 @@
 --   k(7d) = invite-driven signups (new account whose first non-host room
 --           join happened within 24h of account creation) / active users
 --           (distinct users with any scores row in the window).
--- Challenge links (/c/) are NOT counted — nothing server-side records them
--- yet (the challenge-token table task closes that gap). So this k is a
--- FLOOR: the true number can only be higher.
+-- Challenge links (/c/): recorded in challenge_events since 2026-08-20
+-- (query 7). Data before that date does not exist — the loop was
+-- client-side only, so historical k remains a floor.
 --
 -- First run 2026-08-20 (window 08-13..08-20): rooms 99, with-guest 64 (65%),
 -- invite signups 9 of 37 total signups (24%), active users 40 → k ≈ 0.23,
@@ -79,3 +79,15 @@ select
        and rp.joined_at between p.created_at - interval '1 hour'
                             and p.created_at + interval '24 hours')) as invite_signups_all_time,
   (select count(*) from profiles)                             as profiles_all_time;
+
+-- 7) Challenge loop (/c/ links) — recorded since 2026-08-20 via
+--    record_challenge_event(). challenge_events is NOT pruned, so this one
+--    genuinely supports any window.
+select
+  (select count(*) from challenge_events where event='open'
+     and created_at > now() - interval '7 days')               as challenge_opens_7d,
+  (select count(*) from challenge_events where event='played'
+     and created_at > now() - interval '7 days')               as challenge_played_7d,
+  (select count(*) from challenge_events where event='open'
+     and visitor_id is null
+     and created_at > now() - interval '7 days')               as challenge_opens_by_signed_out_7d;
