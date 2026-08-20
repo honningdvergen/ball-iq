@@ -47,15 +47,37 @@
 
     <!-- Fonts loaded NON-render-blocking: swap to `all` once parsed so first paint
          isn't gated on the Google Fonts CSS round-trip. Falls back through the
-         system stack (-apple-system, Inter bundled nowhere) until Inter arrives. -->
+         system stack (-apple-system, Inter bundled nowhere).
+
+         display=OPTIONAL, not swap (LCP shell work, 2026-08-20): with swap,
+         Inter arriving mid-visit re-rendered every text block a few percent
+         LARGER — measured on the onboarding question: fallback paint 11,676px²
+         at 780ms, Inter repaint 12,384px² at 2,772ms — so the LATE paint stole
+         LCP from the pre-boot shell and pinned it to JS-execution time.
+         `optional` means: Inter if it's ready at first paint (warm cache =
+         every repeat visit), otherwise the system stack for THIS visit and no
+         mid-session reflow — text metrics stay constant, the shell's first
+         paint stays the largest candidate, and the old font-flash is gone. -->
+    <!-- Split by role: Anton is the marketing display face — a late swap is
+         better than losing the hero's identity on a cold visit, so it keeps
+         display=swap. Inter + JetBrains Mono are the app's TEXT faces, where
+         a mid-visit metric change is exactly the LCP theft described above —
+         they get display=optional. -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=optional"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=optional" />
     </noscript>
 
     <!-- Sprint #79 WW1: sizes attribute matches the actual file. The
@@ -876,8 +898,8 @@
          Styles are inlined copies of app.css's onboard rules because app.css
          ships inside the GameRoot chunk and does not exist yet at this paint.
     -->
-    <div id="preboot-onboard" hidden
-         style="position:fixed;inset:0;z-index:499;display:flex;flex-direction:column;padding:24px 0 0;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, #14161E 0%, #0a0a0a 65%);color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;">
+    <div id="preboot-onboard"
+         style="display:none;position:fixed;inset:0;z-index:499;flex-direction:column;padding:24px 0 0;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, #14161E 0%, #0a0a0a 65%);color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;">
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;text-align:center;width:100%;">
         <!-- .onboard-step-top mirror: flex:1 + centered, so the copy floats
              mid-screen and the actions sit pinned at the bottom, exactly like
@@ -909,7 +931,7 @@
       if(/[?&](join|c|club|quiz|stump)=/.test(location.search))return;
       var el=document.getElementById('preboot-onboard');
       if(!el)return;
-      el.hidden=false;
+      el.style.display='flex';
       setTimeout(function(){var e=document.getElementById('preboot-onboard');if(e)e.remove();},12000);
     }catch(e){}})();</script>
 
