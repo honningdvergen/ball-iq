@@ -89,7 +89,11 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   useEffect(() => {
     if (!done || announced.current) return;
     announced.current = true;
-    if (isArchive) return;
+    if (isArchive) {
+      // Streak repair hook — see the Footle twin for why this exists.
+      try { window.dispatchEvent(new CustomEvent("biq:archive-completed", { detail: { game: "trail", ymd } })); } catch {}
+      return;
+    }
     try {
       window.dispatchEvent(new CustomEvent("biq:daily-completed", {
         detail: { positive: won, game: "trail", won, attempts: Math.max(1, misses) },

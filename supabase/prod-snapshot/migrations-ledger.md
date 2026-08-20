@@ -52,3 +52,5 @@ byte-identical to the previous version (verified against pg_get_functiondef
 before replace). Grants: execute revoked from public/anon/authenticated.
 
 - **v1_6_challenge_events** (2026-08-20, via MCP apply_migration; repo file `supabase/migrations/v1_6_challenge_events.sql`) — challenge_events table + record_challenge_event() RPC for /c/ loop measurement. Verified post-apply: 0 client table grants, 0 policies, RLS on, RPC grants exactly anon+authenticated.
+
+- **v1_6_streak_repair** (2026-08-20, applied via MCP; repo file `supabase/migrations/v1_6_streak_repair.sql`) — tick_login_streak now stashes an un-shielded fallen streak (>=3) as fell/fellDay for same-local-day repair; new repair_login_streak() restores it once (fell+current), authenticated-only with explicit REVOKEs. Verified live on balliqdev2 (state restored): lapse->fell:10, repair->11, second repair refused. Pre-replace drift check: live md5 matched snapshot.

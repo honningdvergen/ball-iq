@@ -11,6 +11,7 @@ import {
 } from '../lib/mysteryPlayer.js';
 import POOL from '../data/mysteryPool.json';
 import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
+import { dateToYMD } from '../lib/date.js';
 import CAREERS from '../data/mysteryCareers.json';
 import SCHEDULE from '../data/mysterySchedule.json';
 
@@ -142,6 +143,8 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           detail: { positive: false, game: 'mystery', won: false, attempts: guesses.length },
         }));
       } catch { /* best effort; never block the reveal */ }
+    } else {
+      try { window.dispatchEvent(new CustomEvent('biq:archive-completed', { detail: { game: 'mystery', ymd: dateToYMD(date) } })); } catch {}
     }
   };
 
@@ -190,6 +193,8 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
             detail: { positive: true, game: 'mystery', won: true, attempts: next.length },
           }));
         } catch { /* best effort; never block the reveal */ }
+      } else {
+        try { window.dispatchEvent(new CustomEvent('biq:archive-completed', { detail: { game: 'mystery', ymd: dateToYMD(date) } })); } catch {}
       }
     }
   };

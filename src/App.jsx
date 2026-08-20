@@ -7546,6 +7546,12 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
       // streak is worse than no archive.
       if (!isArchive) {
         try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won", game: 'footle', won: newStatus === "won", guesses: newGuesses.length } })); } catch {}
+      } else {
+        // Streak repair listens for this: finishing YESTERDAY's puzzle from
+        // the back-catalogue is the one act that can relight a streak that
+        // broke today (repair_login_streak). Never touches habit metrics
+        // directly — the app shell decides if a repair is available.
+        try { window.dispatchEvent(new CustomEvent('biq:archive-completed', { detail: { game: 'footle', ymd: dateKey } })); } catch {}
       }
       // The ⭐ 5-star ask used to fire from right here, and it stacked the iOS
       // rating card on top of our own notification sheet on a fresh install.
@@ -8374,6 +8380,11 @@ function AppInner() {
     return () => clearTimeout(t);
   }, [milestoneConfetti]);
 
+  // Active repair offer ({fell, fellDay}) or null. Set by tickLoginStreak
+  // when the RPC/guest tick reports an un-shielded break stamped today;
+  // consumed by repairLoginStreak below.
+  const [streakRepair, setStreakRepair] = useState(null);
+
   const tickLoginStreak = useCallback(async () => {
     // Calendar day in the USER'S timezone (days since epoch of the local
     // date). The previous UTC day (Date.now()/DAY_MS client-side,
@@ -8422,12 +8433,18 @@ function AppInner() {
           newStreak = prevStreak + 1;
           shieldSaved = true;
         } else newStreak = 1;
+        // Un-shielded break: stash the fallen streak for same-day repair,
+        // mirroring the RPC (see v1_6_streak_repair.sql). >= 3 only — a
+        // 1-2 day flame relights faster than a repair flow explains itself.
+        const fellStash = (newStreak === 1 && prevLastDay !== todayNum && prevStreak >= 3)
+          ? { fell: prevStreak, fellDay: todayNum } : null;
         result = {
           lastDay: todayNum,
           streak:  newStreak,
           best:    Math.max(prevBest, newStreak),
           ticked:  prevLastDay !== todayNum,
           shieldSaved,
+          ...(fellStash || {}),
         };
       }
     }
@@ -8445,10 +8462,15 @@ function AppInner() {
     try {
       localStorage.setItem('biq_login_streak', JSON.stringify({
         lastDay: result.lastDay, streak: result.streak, best: result.best,
+        ...(result.fell > 0 ? { fell: result.fell, fellDay: result.fellDay } : {}),
       }));
     } catch {}
     setLoginStreak(result.streak);
     setBestLoginStreak(result.best);
+    // Repair window: the stash is only actionable on the local day the break
+    // was discovered — the server enforces the same rule, this just gates UI.
+    setStreakRepair(result.fell > 0 && result.fellDay === localDay
+      ? { fell: result.fell, fellDay: result.fellDay } : null);
     // Keep the UI's shield count in sync. Signed-in: the RPC owns shieldsUsed
     // (in login_streak) and returns it — mirror it into local stats so the
     // Daily-tab banner shows the right number. Guests own it locally.
@@ -8519,6 +8541,7 @@ function AppInner() {
       }
     }
   }, [user?.id]);
+
 
   // ⚠️ THE STREAK NO LONGER TICKS ON OPEN. It used to fire here, once per
   // AppInner mount, which made it a count of days you LAUNCHED the app.
@@ -8634,6 +8657,63 @@ function AppInner() {
       toastTimerRef.current = null;
     }, duration);
   }, []);
+
+  // ⚠️ Placed BELOW showToast on purpose: repairLoginStreak lists it as a
+  // dep, and a deps array is evaluated during render — referencing the const
+  // above its declaration is the TDZ crash this file has been bitten by
+  // before (see the settle effect's comment).
+  // The comeback: restore an un-shielded broken streak after the player
+  // completes one of yesterday's puzzles from the back-catalogue. Server is
+  // authoritative for signed-in users (repair_login_streak — single-use,
+  // same-day, verified live); guests mirror the exact rule locally. rpc()
+  // RESOLVES with {error} — read it, never assume (question_reports rule).
+  const repairLoginStreak = useCallback(async () => {
+    const d0 = new Date();
+    const localDay = Math.floor((d0.getTime() - d0.getTimezoneOffset() * 60000) / 86400000);
+    const celebrate = (streakVal) => {
+      showToast(`🔥 Streak repaired — ${streakVal} days and counting`);
+      haptic("heavy");
+      playSound("streak");
+      setMilestoneConfetti(true);
+    };
+    if (user?.id) {
+      const { data, error } = await supabase.rpc('repair_login_streak', { p_local_day: localDay });
+      if (error) { console.warn('[repair_login_streak]', error.message); return; }
+      setStreakRepair(null);
+      if (!data?.repaired) return;
+      setLoginStreak(data.streak);
+      setBestLoginStreak(data.best);
+      try { localStorage.setItem('biq_login_streak', JSON.stringify({ lastDay: data.lastDay, streak: data.streak, best: data.best })); } catch {}
+      celebrate(data.streak);
+    } else {
+      try {
+        const raw = localStorage.getItem('biq_login_streak');
+        if (!raw) return;
+        const p = JSON.parse(raw);
+        setStreakRepair(null);
+        if (!(p?.fell > 0) || p.fellDay !== localDay || p.lastDay !== localDay) return;
+        const streakVal = p.fell + p.streak;
+        const best = Math.max(p.best || 0, streakVal);
+        localStorage.setItem('biq_login_streak', JSON.stringify({ lastDay: p.lastDay, streak: streakVal, best }));
+        setLoginStreak(streakVal);
+        setBestLoginStreak(best);
+        celebrate(streakVal);
+      } catch { /* storage unavailable — nothing to repair against */ }
+    }
+  }, [user?.id, showToast]);
+
+  // Completing YESTERDAY's puzzle in the archive is the repair trigger —
+  // any of the four dailies counts, consistent with the A0 rule that any
+  // completion counts toward the streak.
+  useEffect(() => {
+    const onArchiveDone = (e) => {
+      if (!streakRepair) return;
+      const y = new Date(); y.setDate(y.getDate() - 1);
+      if (e?.detail?.ymd === dateToYMD(y)) repairLoginStreak();
+    };
+    window.addEventListener('biq:archive-completed', onArchiveDone);
+    return () => window.removeEventListener('biq:archive-completed', onArchiveDone);
+  }, [streakRepair, repairLoginStreak]);
 
   // ⚠️ THIS BLOCK MUST STAY BELOW showToast. It first sat ~280 lines higher and
   // took production down: handleToggleWebPush lists showToast in its dependency
@@ -9998,6 +10078,11 @@ function AppInner() {
       }
       setDailyHistory(prev => ({ ...prev, [targetYMD]: res.score }));
       const todayYMD = dateToYMD(new Date());
+      if (targetYMD !== todayYMD) {
+        // Yesterday's Daily 7 via catch-up: counts toward streak repair like
+        // the other three modes' archive completions.
+        try { window.dispatchEvent(new CustomEvent('biq:archive-completed', { detail: { game: 'daily7', ymd: targetYMD } })); } catch {}
+      }
       if (targetYMD === todayYMD) {
         setDailyDone(true);
         setDailyScore(res.score);
@@ -11383,6 +11468,7 @@ function AppInner() {
             <DailyTabScreen
               loginStreak={loginStreak}
               bestLoginStreak={bestLoginStreak}
+              streakRepair={streakRepair}
               playArchive={playArchive}
               profile={profile}
               xp={xp}

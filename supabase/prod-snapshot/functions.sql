@@ -926,6 +926,7 @@ declare
   v_avail     int;
   v_ticked    boolean := false;
   v_shielded  boolean := false;
+  v_fell      int := 0;
 begin
   if v_uid is null then
     raise exception 'authentication required' using errcode = '42501';
@@ -970,6 +971,11 @@ begin
     v_ticked   := true;
     v_shielded := true;
   else
+    -- Un-shielded break. Stash a meaningful fallen streak so
+    -- repair_login_streak can restore it — today only.
+    if v_count >= 3 then
+      v_fell := v_count;
+    end if;
     v_count    := 1;
     v_best     := greatest(v_best, 1);
     v_last_day := v_today;
@@ -982,6 +988,9 @@ begin
     'best',        v_best,
     'shieldsUsed', v_used
   );
+  if v_fell > 0 then
+    v_streak := v_streak || jsonb_build_object('fell', v_fell, 'fellDay', v_today);
+  end if;
 
   if v_ticked then
     update public.user_game_state
@@ -1097,6 +1106,64 @@ begin
         p_state
       )
   where user_id = v_uid;
+end;
+$function$
+;
+
+
+CREATE OR REPLACE FUNCTION public.repair_login_streak(p_local_day integer DEFAULT NULL::integer)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO 'public'
+AS $function$
+declare
+  v_uid      uuid := auth.uid();
+  v_utc_day  int  := (current_date - date '1970-01-01');
+  v_today    int;
+  v_streak   jsonb;
+  v_fell     int;
+  v_fell_day int;
+  v_count    int;
+  v_best     int;
+begin
+  if v_uid is null then
+    raise exception 'authentication required' using errcode = '42501';
+  end if;
+
+  if p_local_day is not null and abs(p_local_day - v_utc_day) <= 2 then
+    v_today := p_local_day;
+  else
+    v_today := v_utc_day;
+  end if;
+
+  select login_streak into v_streak
+  from public.user_game_state
+  where user_id = v_uid;
+
+  v_fell     := coalesce((v_streak->>'fell')::int, 0);
+  v_fell_day := coalesce((v_streak->>'fellDay')::int, 0);
+  v_count    := coalesce((v_streak->>'streak')::int, 0);
+  v_best     := coalesce((v_streak->>'best')::int, 0);
+
+  -- Repairable only on the local day the break was discovered, and only
+  -- while the stash is unconsumed. Anything else returns state untouched
+  -- (repaired:false) — the client treats that as "window closed".
+  if v_fell <= 0 or v_fell_day <> v_today
+     or coalesce((v_streak->>'lastDay')::int, 0) <> v_today then
+    return coalesce(v_streak, '{}'::jsonb) || jsonb_build_object('repaired', false);
+  end if;
+
+  v_count := v_fell + v_count;   -- fallen streak + the day(s) since the break
+  v_best  := greatest(v_best, v_count);
+  v_streak := (v_streak - 'fell' - 'fellDay')
+    || jsonb_build_object('streak', v_count, 'best', v_best);
+
+  update public.user_game_state
+  set login_streak = v_streak
+  where user_id = v_uid;
+
+  return v_streak || jsonb_build_object('repaired', true);
 end;
 $function$
 ;

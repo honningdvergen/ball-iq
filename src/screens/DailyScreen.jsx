@@ -311,7 +311,41 @@ function DayComplete({ open, onSurvival, wide, todayYMD }) {
   );
 }
 
-function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive }) {
+// The comeback banner (scouting panel, Retention): an un-shielded streak
+// broke TODAY and the stash is still live — playing any of yesterday's open
+// puzzles repairs it (the app shell listens for biq:archive-completed and
+// calls repair_login_streak). Same open-list derivation as DayComplete so
+// the buttons can never offer a puzzle the table would call unplayable.
+function StreakRepairBanner({ repair, open, wide }) {
+  if (!repair) return null;
+  return (
+    <div style={{ borderRadius: 16, padding: wide ? "16px 20px" : "14px 16px", background: "rgba(255,107,107,0.07)", border: "1px solid rgba(255,107,107,0.30)", display: "flex", flexDirection: "column", gap: 10 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <span style={{ fontSize: 22 }} aria-hidden="true">💔</span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: wide ? 15.5 : 14.5, fontWeight: 800, color: "var(--t1)" }}>Your {repair.fell}-day streak broke</div>
+          <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
+            {open.length > 0
+              ? "Play one of yesterday's puzzles before midnight to repair it"
+              : "Yesterday's puzzles are all done — the repair will land with your next play"}
+          </div>
+        </div>
+      </div>
+      {open.length > 0 && (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {open.map(o => (
+            <button key={o.key} onClick={o.onTap} aria-label={`Repair the streak — play yesterday's ${o.label}`}
+              style={{ padding: "9px 14px", borderRadius: 11, background: o.theme.btnBg, border: o.theme.btnBd, color: o.theme.fg, fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
+              🔥 {o.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive, streakRepair }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
@@ -697,8 +731,8 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   // shortest possible complete day, and an empty list must never read as one.
   const allDone = todayModes.length > 0 && playedCount === todayModes.length;
   const dayOpen = useMemo(
-    () => (allDone ? yesterdayOpen(matchdays, today, playArchive, playDailyForDate) : []),
-    [allDone, matchdays, today, playArchive, playDailyForDate],
+    () => (allDone || streakRepair ? yesterdayOpen(matchdays, today, playArchive, playDailyForDate) : []),
+    [allDone, streakRepair, matchdays, today, playArchive, playDailyForDate],
   );
   const playSurvival = useCallback(() => startMode?.("survival"), [startMode]);
 
@@ -759,6 +793,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   )}
                 </div>
               ))}
+              <StreakRepairBanner repair={streakRepair} open={dayOpen} />
               {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} />}
             </div>
           </>
@@ -933,6 +968,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                     </div>
                   ))}
 
+                  <StreakRepairBanner repair={streakRepair} open={dayOpen} wide />
                   {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide todayYMD={todayYMD} />}
 
                   {/* Recent days */}
