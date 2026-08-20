@@ -12,8 +12,8 @@ the published Scouting Report artifact. Weakest-first order.
 | Competitive | 6/C | | — mostly downstream of widget/localisation/archive |
 | Onboarding | 7/B | | — first_game_started event · taster→first-game chain · cold LCP |
 | Gameplay feel | 7/B | | b3d1f6f — all five juice items shipped + browser-verified: Mystery confetti/haptics, timeout dwell, chord on all four dailies, 3/5 streak beat, clean-sweep celebration |
-| Accessibility | 7/B | | — colour-blind Footle toggle · taster ✓/✗ glyphs · aria-live guess summary |
-| Content moat | 8/B | | — 9 future-tense WC stems · season freshness wave · 155 hard-question hints |
+| Accessibility | 7/B | | f8fa7ac — all three shipped + browser-verified: CB orange/blue palette (share emoji follows), aria-live guess narration, onboarding taster glyphs |
+| Content moat | 8/B | | 72c070f — 16 future-tense WC2026 entries flipped past-tense (answers re-verified: Spain won). Remaining: season freshness wave · 155 hard-question hints |
 
 ⚠️ Verification note for the web-push ask: the sandboxed pane has notifications
 HARD-DENIED, so only the negative branch is verifiable here (verified live:
