@@ -1757,7 +1757,7 @@ function _getAudioCtx() {
     return _audioCtx;
   } catch { return null; }
 }
-function playSound(type) {
+export function playSound(type) {
   try {
     // Honour user sound preference (read synchronously so we can be called from anywhere)
     let enabled = false;

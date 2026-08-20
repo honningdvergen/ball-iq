@@ -5,7 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -846,6 +846,21 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
       return () => clearTimeout(t);
     }
   }, [isWinner, survivalDraw, players]);
+
+  // The winner's sensory beat: confetti already falls (below), but the screen
+  // was silent to the hand and ear while every SOLO win pulses + chords —
+  // beating a real human deserves at least what beating the question bank
+  // gets. Once per game-over via the same ref pattern as the review ask;
+  // playSound self-gates on the sound setting.
+  const winBeatRef = useRef(false);
+  useEffect(() => {
+    if (winBeatRef.current) return;
+    if (isWinner && !survivalDraw) {
+      winBeatRef.current = true;
+      haptic("hardCorrect");
+      try { playSound("daily_complete"); } catch { /* audio unavailable */ }
+    }
+  }, [isWinner, survivalDraw]);
 
   // Game Over is the emotional peak of the Online loop — it used to dead-end
   // at "Back to Home". Rematch spins up a fresh room (the parent swaps the
