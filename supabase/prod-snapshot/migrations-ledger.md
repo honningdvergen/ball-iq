@@ -42,3 +42,11 @@ the 9 as retroactive repo files is optional polish — the snapshot supersedes.
   but REVOKE would be cleaner and match the house rule).
 - `set_updated_at` + `profiles_check_profanity` have EXECUTE granted to PUBLIC
   (trigger functions; default grant, not directly exploitable — cosmetic REVOKE candidate).
+
+## 2026-08-20 — v1_6_streak_aware_web_reminder (applied via MCP, file in repo)
+`enqueue_web_daily_reminders()` replaced: reminder body is now composed per
+player from `user_game_state.login_streak` at send time. ⚠️ The `lastDay`
+freshness check is load-bearing — `streak` keeps its stale value after a lapse,
+so composing without it would claim a dead streak lives. Recipient logic
+byte-identical to the previous version (verified against pg_get_functiondef
+before replace). Grants: execute revoked from public/anon/authenticated.
