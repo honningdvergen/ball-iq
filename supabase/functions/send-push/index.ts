@@ -18,6 +18,15 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// ── FCM v1 (Android, 1.6.2) ──────────────────────────────────────────────────
+// Tokens are routed by device_tokens.platform: ios -> APNs (unchanged),
+// android -> FCM HTTP v1. Auth is a service-account JWT grant (RS256) traded
+// for an OAuth token, cached ~50 min like the APNs JWT. Secret:
+//   FCM_SERVICE_ACCOUNT — the FULL service-account key JSON from Firebase
+//   console > ball-iq-499016 > Project settings > Service accounts.
+// Fail-safe per platform: a missing secret skips that platform's tokens and
+// never blocks the other's sends.
+
 // ⚠️ .trim() ON EVERY ONE. This file already documented the hazard for
 // PUSH_WEBHOOK_SECRET ("dashboard-pasted secrets routinely carry a trailing
 // newline") and then applied it to that ONE variable. On 2026-08-14 a probe
@@ -26,7 +35,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 // values are 10. A newline in the JWT `kid`/`iss` or in the apns-topic header
 // is rejected by Apple, so this would have kept push dead even once the key
 // itself was correct. Knowing the trap and guarding one variable against it is
-// how you get a bug that looks impossible.
+// how you get a bug that looks impossible. VERIFIED: with these trims, APNs returns 200.
 const KEY_P8 = (Deno.env.get("APNS_KEY_P8") ?? "").trim();
 const KEY_ID = (Deno.env.get("APNS_KEY_ID") ?? "").trim();
 const TEAM_ID = (Deno.env.get("APNS_TEAM_ID") ?? "").trim();
@@ -42,6 +51,10 @@ const APNS_HOST = (Deno.env.get("APNS_HOST") ?? "api.push.apple.com").trim();
 // on first rollout — digest proved the stored value was "<secret>\n"), which
 // would fail the exact-match against the clean header value forever.
 const WEBHOOK_SECRET = (Deno.env.get("PUSH_WEBHOOK_SECRET") ?? "").trim();
+const FCM_SA_RAW = (Deno.env.get("FCM_SERVICE_ACCOUNT") ?? "").trim();
+let FCM_SA: { project_id?: string; client_email?: string; private_key?: string } = {};
+try { FCM_SA = FCM_SA_RAW ? JSON.parse(FCM_SA_RAW) : {}; } catch { FCM_SA = {}; }
+const FCM_READY = !!(FCM_SA.project_id && FCM_SA.client_email && FCM_SA.private_key);
 
 const admin = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -81,6 +94,74 @@ async function apnsJwt(): Promise<string> {
   return _jwt;
 }
 
+// ── FCM OAuth token (RS256 service-account grant, cached ~50 min) ────────────
+let _fcmTok = "";
+let _fcmAt = 0;
+async function importRsaKey(pem: string): Promise<CryptoKey> {
+  const body = pem.replace(/-----BEGIN PRIVATE KEY-----/, "")
+    .replace(/-----END PRIVATE KEY-----/, "").replace(/\\n/g, "").replace(/\s+/g, "");
+  const der = Uint8Array.from(atob(body), (c) => c.charCodeAt(0));
+  return crypto.subtle.importKey(
+    "pkcs8", der, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["sign"],
+  );
+}
+async function fcmAccessToken(): Promise<string> {
+  const now = Math.floor(Date.now() / 1000);
+  if (_fcmTok && now - _fcmAt < 3000) return _fcmTok;
+  // Dashboard-pasted keys carry literal \n sequences inside private_key —
+  // JSON.parse already turns the intended ones into newlines, but keys pasted
+  // through shells sometimes arrive double-escaped; importRsaKey strips both.
+  const header = b64urlStr(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const claims = b64urlStr(JSON.stringify({
+    iss: FCM_SA.client_email,
+    scope: "https://www.googleapis.com/auth/firebase.messaging",
+    aud: "https://oauth2.googleapis.com/token",
+    iat: now, exp: now + 3600,
+  }));
+  const input = `${header}.${claims}`;
+  const key = await importRsaKey(FCM_SA.private_key!);
+  const sig = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, new TextEncoder().encode(input));
+  const assertion = `${input}.${b64url(new Uint8Array(sig))}`;
+  const res = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: `grant_type=${encodeURIComponent("urn:ietf:params:oauth:grant-type:jwt-bearer")}&assertion=${assertion}`,
+  });
+  const j = await res.json();
+  if (!j.access_token) throw new Error(`fcm oauth: ${JSON.stringify(j).slice(0, 200)}`);
+  _fcmTok = j.access_token;
+  _fcmAt = now;
+  return _fcmTok;
+}
+
+async function sendOneFcm(token: string, accessToken: string, alert: ReturnType<typeof buildAlert>): Promise<number> {
+  // FCM v1 data values MUST be strings.
+  const data: Record<string, string> = {};
+  for (const [k, v] of Object.entries(alert.data)) data[k] = String(v ?? "");
+  const res = await fetch(`https://fcm.googleapis.com/v1/projects/${FCM_SA.project_id}/messages:send`, {
+    method: "POST",
+    headers: { "authorization": `Bearer ${accessToken}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      message: {
+        token,
+        notification: { title: alert.title, body: alert.body },
+        data,
+        android: { priority: "HIGH" },
+      },
+    }),
+  });
+  // UNREGISTERED (404) is FCM's dead-token signal — mirror the APNs pruning
+  // discipline: prune ONLY on that, never on generic 400s.
+  if (res.status === 404) {
+    let code = "";
+    try { code = ((await res.clone().json())?.error?.details?.[0]?.errorCode) || ""; } catch { /* no body */ }
+    if (code === "UNREGISTERED" || code === "") {
+      await admin.from("device_tokens").delete().eq("token", token);
+    }
+  }
+  return res.status;
+}
+
 // ── alert copy per notification type ─────────────────────────────────────────
 function buildAlert(rec: any): { title: string; body: string; data: Record<string, unknown> } {
   const actor = rec.actor_name || "Someone";
@@ -92,6 +173,12 @@ function buildAlert(rec: any): { title: string; body: string; data: Record<strin
       return { title: "Ball IQ", body: `${actor} sent you a friend request`, data: { type: "friend_request" } };
     case "friend_accept":
       return { title: "Ball IQ", body: `${actor} accepted your friend request`, data: { type: "friend_accept" } };
+    case "daily_reminder":
+      // Added with the web daily-reminder cron. Kept in step with
+      // send-web-push's buildAlert so the same event never reads differently
+      // on iOS and on web. (This case was live-only drift until 1.6.2 —
+      // the repo copy was missing it; merged back before the FCM deploy.)
+      return { title: "Ball IQ", body: p.body || "Today's puzzles are still open — keep your streak going 🔥", data: { type: "daily_reminder" } };
     default:
       return { title: "Ball IQ", body: p.body || "You have a new notification", data: { type: rec.type || "generic" } };
   }
@@ -137,20 +224,32 @@ Deno.serve(async (req) => {
     if (WEBHOOK_SECRET && req.headers.get("x-webhook-secret") !== WEBHOOK_SECRET) {
       return new Response("unauthorized", { status: 401 });
     }
-    if (!KEY_P8 || !KEY_ID || !TEAM_ID) {
-      return new Response("APNs secrets not configured", { status: 500 });
+    const APNS_READY = !!(KEY_P8 && KEY_ID && TEAM_ID);
+    if (!APNS_READY && !FCM_READY) {
+      return new Response("no push transport configured", { status: 500 });
     }
     const body = await req.json().catch(() => ({}));
     const rec = body?.record ?? body; // Supabase webhook wraps the row in `record`
     if (!rec?.user_id) return new Response("no recipient", { status: 200 });
 
     const { data: tokens } = await admin
-      .from("device_tokens").select("token").eq("user_id", rec.user_id);
+      .from("device_tokens").select("token, platform").eq("user_id", rec.user_id);
     if (!tokens?.length) return new Response("no devices", { status: 200 });
 
-    const jwt = await apnsJwt();
     const alert = buildAlert(rec);
-    const results = await Promise.all(tokens.map((t) => sendOne(t.token, jwt, alert).catch(() => 0)));
+    const iosTokens = tokens.filter((t) => t.platform !== "android");
+    const androidTokens = tokens.filter((t) => t.platform === "android");
+
+    const sends: Promise<number>[] = [];
+    if (iosTokens.length && APNS_READY) {
+      const jwt = await apnsJwt();
+      sends.push(...iosTokens.map((t) => sendOne(t.token, jwt, alert).catch(() => 0)));
+    }
+    if (androidTokens.length && FCM_READY) {
+      const at = await fcmAccessToken().catch(() => "");
+      if (at) sends.push(...androidTokens.map((t) => sendOneFcm(t.token, at, alert).catch(() => 0)));
+    }
+    const results = await Promise.all(sends);
     const ok = results.filter((s) => s === 200).length;
     return new Response(JSON.stringify({ sent: ok, of: results.length }), {
       status: 200, headers: { "content-type": "application/json" },

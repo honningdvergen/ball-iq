@@ -17,15 +17,14 @@ import { PushNotifications } from '@capacitor/push-notifications';
 import { supabase } from '../supabase.js';
 
 export function pushSupported() {
-  // iOS ONLY for now. On Android, PushNotifications.register() requires
-  // Firebase (google-services.json) — without it the native side throws
-  // "Default FirebaseApp is not initialized" OUTSIDE the JS bridge, so our
-  // try/catch can't save us and the app hard-crashes the moment the user
-  // grants notification permission (closed-test ticket #1650, 2026-07-12).
-  // The send-push edge function is APNs-only anyway, so an FCM token would
-  // be dead weight. When Android push ships: add the Firebase project +
-  // google-services.json + an FCM send path, THEN widen this gate.
-  try { return Capacitor.getPlatform() === 'ios'; } catch { return false; }
+  // Both native platforms since 1.6.2. The Android half of the old crash
+  // (ticket #1650: "Default FirebaseApp is not initialized" hard-crashing
+  // outside the JS bridge) is fixed at the root — Firebase project
+  // ball-iq-499016 + google-services.json now ship in the build, and
+  // Capacitor's gradle template auto-applies the google-services plugin
+  // when the file exists. The send-push edge function routes by token
+  // platform: ios -> APNs, android -> FCM v1.
+  try { return Capacitor.isNativePlatform(); } catch { return false; }
 }
 
 let _wired = false;        // listeners attached once for the app lifetime

@@ -51,3 +51,4 @@ public/lineup/cutouts/*.png
 
 # VAPID private key — generated locally, never committed (scripts/gen-vapid-keys.mjs)
 .vapid-keys.local.json
+android/app/google-services.json
