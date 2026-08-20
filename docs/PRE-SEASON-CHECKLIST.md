@@ -8,7 +8,7 @@ the published Scouting Report artifact. Weakest-first order.
 |---|---|---|---|
 | Retention reach | 5/C | ◀ ACTIVE | web-push ask at the post-solve moment (`1ad33b4`) — the live engine had ZERO subscribers because only Settings asked. Remaining: streak-aware reminder body · widget (structural) · FCM Android push |
 | Store & ratings | 6/C | | ratings floor (`0cb0702`): Daily 7 unblocked from the ask, 24h bad-moment suppression. Remaining: Play feature graphic · localised Play listings · Alex asks the orbit |
-| Social loops | 6/C | | — k-factor measurement first (a script over loop-hit logs), then challenge-token table |
+| Social loops | 6/C | | 7ae5476 — k MEASURED: 0.23/wk floor, 24% of signups are room-invite converts, friend loop inert (0 in 30d). ⚠️ 7-day data horizon — run scripts/k-factor.sql weekly. Next: challenge-token table; guest-join decision spawned |
 | Competitive | 6/C | | — mostly downstream of widget/localisation/archive |
 | Onboarding | 7/B | | — first_game_started event · taster→first-game chain · cold LCP |
 | Gameplay feel | 7/B | | b3d1f6f — all five juice items shipped + browser-verified: Mystery confetti/haptics, timeout dwell, chord on all four dailies, 3/5 streak beat, clean-sweep celebration |
