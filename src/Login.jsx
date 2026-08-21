@@ -87,6 +87,8 @@ const PROMPT_COPY = {
   friends:     { title: 'Sign up to add friends', sub: 'Create a free account to add friends, compare scores, and challenge them.', hardGate: true, back: 'online' },
   leaderboard: { title: 'Sign up for leaderboards', sub: 'Create a free account to climb the leaderboard and save your progress across devices.' },
   save:        { title: 'Save your progress', sub: 'Create a free account so your XP, stats, and streak follow you to any device.' },
+  // v1.6 guest entry — anonymous (invite-link) players upgrading in place.
+  upgrade:     { title: 'Save your progress', sub: 'Add an email and password to keep your stats, XP and games — everything you played as a guest comes with you.' },
 }
 
 const C = {
@@ -96,9 +98,13 @@ const C = {
 }
 
 export default function Login({ asOverlay = false, onClose, promptReason = null }) {
-  const { signUp, signIn, resetPassword, signInWithGoogle, signInWithApple, continueAsGuest } = useAuth()
+  const { signUp, signIn, resetPassword, signInWithGoogle, signInWithApple, continueAsGuest, isAnonUser, upgradeAnonAccount } = useAuth()
   // Progressive disclosure: 'choices' (brand + social + guest) → 'email' (form).
-  const [view, setView] = useState('choices')
+  // v1.6 guest entry: anonymous users land straight on the email form —
+  // their upgrade path is email+password (social sign-in would START A NEW
+  // SESSION and orphan the guest account's stats, so those buttons hide
+  // below; identity LINKING for social is a follow-up).
+  const [view, setView] = useState(isAnonUser ? 'email' : 'choices')
   // Internal auth mode stays 'login'/'signup' so handleSubmit is untouched.
   const [mode, setMode] = useState('signup')
   const [email, setEmail] = useState(readLastEmail)
@@ -144,6 +150,21 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
           setError("This username isn't allowed. Please choose another."); setLoading(false); return
         }
         if (password.length < 6) { setError('Password must be at least 6 characters'); setLoading(false); return }
+        if (isAnonUser) {
+          // v1.6 guest entry — upgrade the anonymous account IN PLACE
+          // (same auth.uid(), stats carry over) instead of creating a
+          // second, empty account via signUp.
+          const { error: upErr, usernameWarning } = await upgradeAnonAccount(email, password, username.trim())
+          if (upErr) {
+            setError(authErrorCopy(upErr, "Couldn't save your account — check your details and try again."))
+          } else if (usernameWarning) {
+            setMessage(`Almost done — check your email to confirm. Username "${username.trim()}" was taken, so you can pick another in your Profile.`)
+          } else {
+            setMessage('Almost done — check your email to confirm your account. Your stats stay right where they are.')
+          }
+          setLoading(false)
+          return
+        }
         const { data, error } = await signUp(email, password, username.trim())
         if (error) {
           // handle_new_user trigger fails signup when username collides with the
@@ -300,14 +321,21 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
 
             {/* button stack (bottom-anchored) */}
             <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <button type="button" onClick={socialSignIn(signInWithApple, 'Apple')} disabled={loading} aria-label="Continue with Apple"
-                style={{ ...S.btnBase, padding: 16, border: 'none', background: '#fff', color: '#000', opacity: loading ? 0.6 : 1 }}>
-                {APPLE_GLYPH}<span>Continue with Apple</span>
-              </button>
-              <button type="button" className="biql-google" onClick={socialSignIn(signInWithGoogle, 'Google')} disabled={loading} aria-label="Continue with Google"
-                style={{ ...S.btnBase, padding: 16, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, opacity: loading ? 0.6 : 1 }}>
-                {GOOGLE_GLYPH}<span>Continue with Google</span>
-              </button>
+              {/* v1.6 guest entry: social sign-in REPLACES the session, which
+                  would orphan an anonymous player's stats — so anon users get
+                  the email upgrade path only (identity linking: follow-up). */}
+              {!isAnonUser && (
+                <button type="button" onClick={socialSignIn(signInWithApple, 'Apple')} disabled={loading} aria-label="Continue with Apple"
+                  style={{ ...S.btnBase, padding: 16, border: 'none', background: '#fff', color: '#000', opacity: loading ? 0.6 : 1 }}>
+                  {APPLE_GLYPH}<span>Continue with Apple</span>
+                </button>
+              )}
+              {!isAnonUser && (
+                <button type="button" className="biql-google" onClick={socialSignIn(signInWithGoogle, 'Google')} disabled={loading} aria-label="Continue with Google"
+                  style={{ ...S.btnBase, padding: 16, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, opacity: loading ? 0.6 : 1 }}>
+                  {GOOGLE_GLYPH}<span>Continue with Google</span>
+                </button>
+              )}
               <button type="button" className="biql-email" onClick={openEmail} aria-label="Continue with email"
                 style={{ ...S.btnBase, padding: 16, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1 }}>
                 {MAIL_GLYPH}<span>Continue with email</span>
@@ -338,9 +366,13 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
             </div>
 
             <div style={{ marginTop: 20 }}>
-              <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>{isSignup ? 'Create your account' : 'Welcome back'}</div>
+              <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>{isSignup ? (isAnonUser ? 'Save your progress' : 'Create your account') : 'Welcome back'}</div>
               <p style={{ margin: '8px 0 0', maxWidth: '36ch', fontSize: 14, lineHeight: 1.5, color: C.t2 }}>
-                {isSignup ? 'Your XP, streak and stats will follow you to any device.' : 'Log in to pick up your streak and rating right where you left off.'}
+                {isSignup
+                  ? (isAnonUser
+                    ? 'Add an email and password — everything you played as a guest comes with you.'
+                    : 'Your XP, streak and stats will follow you to any device.')
+                  : 'Log in to pick up your streak and rating right where you left off.'}
               </p>
             </div>
 

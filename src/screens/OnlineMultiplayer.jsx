@@ -4,8 +4,9 @@ import { Capacitor } from '@capacitor/core';
 import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
-import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet } from '../App.jsx';
+import { useAuth } from '../useAuth.jsx';
+import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion, mpSetPlayerName } from '../multiplayerRpc.js';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
@@ -502,6 +503,33 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
   }, [setMode, activeMode, pickMode]);
   // Topic picker sheet (host taps Change on the topic card).
   const [topicOpen, setTopicOpen] = useState(false);
+  // v1.6 guest entry — anonymous players join under a generated name
+  // ("Turbo Poacher 87") and can fix it while the room is still in the
+  // lobby (set_player_name is lobby-only by design; renaming mid-game
+  // would desync the scoreboard). The room_players UPDATE broadcasts via
+  // realtime, so everyone's list refreshes without extra plumbing.
+  const { isAnonUser } = useAuth();
+  const myRow = players.find(p => isMe(p));
+  const [editingName, setEditingName] = useState(false);
+  const [nameDraft, setNameDraft] = useState("");
+  const [savingName, setSavingName] = useState(false);
+  const [nameError, setNameError] = useState("");
+  const saveName = useCallback(async () => {
+    const v = nameDraft.trim();
+    if (savingName) return;
+    if (v.length < 1 || v.length > 20) { setNameError("1–20 characters"); return; }
+    setSavingName(true);
+    setNameError("");
+    const result = await mpSetPlayerName({ p_code: room?.code, p_name: v });
+    setSavingName(false);
+    if (!result.ok) {
+      console.warn('[saveName] setPlayerName', result.code || '', result.error);
+      setNameError(result.code === "23514" ? "That name isn't allowed" : "Couldn't save — try again");
+      return;
+    }
+    setGuestDisplayName(v); // same name next room
+    setEditingName(false);
+  }, [nameDraft, savingName, room?.code]);
   // Host-left detection (mirrors the gameplay banner at the MultiplayerGameplay
   // level): if the host's row has vanished from the realtime player list, the
   // room can never start (start_game rejects non-hosts), so surface an explicit
@@ -621,6 +649,44 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             </div>
           )}
         </div>
+
+        {/* v1.6 guest entry — rename row, anonymous players only (signed-in
+            players already own their username via Profile). */}
+        {isAnonUser && myRow && (
+          <div style={{ marginBottom: 14 }}>
+            {editingName ? (
+              <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                <div style={{ flex: 1 }}>
+                  <input
+                    type="text"
+                    value={nameDraft}
+                    maxLength={20}
+                    autoFocus
+                    onChange={(e) => { setNameDraft(e.target.value); setNameError(""); }}
+                    onKeyDown={(e) => { if (e.key === "Enter") saveName(); }}
+                    aria-label="Your display name"
+                    style={{ width: "100%", padding: "10px 12px", borderRadius: 10, background: "var(--s1)", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "inherit", fontSize: 14, fontWeight: 600 }}
+                  />
+                  {nameError && <div role="alert" style={{ fontSize: 11.5, color: "var(--red)", marginTop: 4 }}>{nameError}</div>}
+                </div>
+                <button
+                  onClick={saveName}
+                  disabled={savingName}
+                  style={{ padding: "10px 14px", borderRadius: 10, background: "var(--accent)", color: "#0a1a00", border: "none", fontFamily: "inherit", fontSize: 13, fontWeight: 800, cursor: "pointer", WebkitTextFillColor: "#0a1a00", opacity: savingName ? 0.6 : 1 }}
+                >
+                  {savingName ? "…" : "Save"}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => { setNameDraft(myRow.name || ""); setNameError(""); setEditingName(true); }}
+                style={{ background: "none", border: "none", padding: "4px 0", fontFamily: "inherit", fontSize: 12.5, fontWeight: 600, color: "var(--t2)", cursor: "pointer" }}
+              >
+                ✏️ Playing as <span style={{ color: "var(--text)" }}>{myRow.name}</span> — tap to change
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Scoring mode — shown to EVERYONE (room.mode broadcasts) so joiners
             know what they're playing before the host hits Start. */}
@@ -804,6 +870,8 @@ function useCountUp(target, { duration = 850, delay = 400 } = {}) {
 }
 
 function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
+  // v1.6 guest entry — upgrade CTA in the actions column below.
+  const { isAnonUser, openAuthPrompt } = useAuth();
   const isSurvival = room?.mode === 'survival';
   // Survival ranks by who lasted longest (alive > later elimination); Race
   // ranks by points. All fall back to joined_at asc so ties stay stable
@@ -1325,6 +1393,17 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
           </div>
         )}
         <div className="mp-go-actions">
+          {/* v1.6 guest entry — the moment a guest most wants their stats to
+              persist is right after seeing them. Upgrading keeps the same
+              auth.uid(), so this game's score/XP carry into the account. */}
+          {isAnonUser && (
+            <button
+              onClick={() => { try { openAuthPrompt?.('upgrade'); } catch {} }}
+              style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid var(--border)', color: 'var(--text)', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
+            >
+              💾 Playing as a guest — save your stats with a free account
+            </button>
+          )}
           {onRematch && (
             <button className="btn-3d" onClick={handleRematch} disabled={rematching} style={{ width: '100%', marginBottom: 10 }}>
               {rematching ? 'Setting up the rematch…' : '🔄 Rematch — same crew, new room'}

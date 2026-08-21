@@ -30,6 +30,33 @@ no-ads/no-analytics privacy declaration still holds. Both bundles 6.5 MB.
 
 ---
 
+## 🎟️ GUEST ENTRY FOR INVITE LINKS — code landed 2026-08-20, needs Alex to activate
+
+Alex approved (2026-08-20): a friend tapping balliq.app/join/CODE can now play
+as a guest via Supabase anonymous sign-in — full option: generated editable
+lobby name, upgrade-to-account path, anon cleanup cron, friend-search filter.
+All code is on the branch and inert-safe until activation (the guest button
+falls back to the sign-in prompt while the provider is off).
+
+**Activation (Alex, ~5 min, do both together):**
+- [ ] Supabase dashboard → Authentication → Sign In / Up → enable **Anonymous
+      sign-ins** (project blcisypmngimqkwxrrdm). Leave the default anon
+      rate limit (~30/hr/IP); consider CAPTCHA only if abuse shows up.
+- [ ] Apply `supabase/migrations/v1_6_anon_guest_entry.sql` via the MCP
+      connector or dashboard SQL editor (is_anon column + set_player_name RPC
+      + stale-anon cleanup cron). Then refresh `supabase/prod-snapshot/`.
+- [ ] 2-device test: device A creates a room and shares the link; device B
+      (fresh browser, signed out) taps it → "Play as guest" → lands in the
+      lobby, renames itself, plays a game, sees the "save your stats" CTA on
+      the game-over screen, upgrades with email+password, stats survive.
+
+Notes: anonymous users hold the `authenticated` role, so no RPC/RLS changes
+were needed. Social (Apple/Google) upgrade is deliberately NOT offered to
+guests — it would replace the session and orphan their stats; email+password
+upgrades in place (same uid). Identity linking for social is a follow-up.
+
+---
+
 ## ✅ ALL FOUR DAILY MODES ARE SCHEDULE-IMMUNE — audit closed 2026-08-19
 
 | mode | answer source | immune to bank/pool growth |

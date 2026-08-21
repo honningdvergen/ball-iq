@@ -2923,6 +2923,30 @@ export const buildInviteUrl = (code, name) => {
   return who ? `${base}?n=${encodeURIComponent(who)}` : base;
 };
 
+// v1.6 guest entry — display name for anonymous (invite-link) players. Their
+// profile username is a server-generated player_xxxxxxxx, which reads like a
+// bug in a lobby, so guests get a football-flavoured name instead. Persisted
+// so the same guest keeps their name across rooms; the lobby's rename flow
+// (set_player_name) writes back here. Capped at 20 chars to match the RPC's
+// server-side limit.
+const GUEST_NAME_KEY = "biq_guest_name";
+const GUEST_ADJECTIVES = ["Turbo", "Golden", "Flying", "Iron", "Rapid", "Mega", "Prime", "Epic", "Wonder", "Rocket"];
+const GUEST_NOUNS = ["Striker", "Keeper", "Winger", "Maestro", "Poacher", "Baller", "Gaffer", "Dribbler", "Sweeper", "Target"];
+export function getGuestDisplayName() {
+  try {
+    const stored = localStorage.getItem(GUEST_NAME_KEY);
+    if (stored) return stored;
+  } catch {}
+  const name = `${GUEST_ADJECTIVES[Math.floor(Math.random() * GUEST_ADJECTIVES.length)]} ${GUEST_NOUNS[Math.floor(Math.random() * GUEST_NOUNS.length)]} ${Math.floor(Math.random() * 90) + 10}`;
+  try { localStorage.setItem(GUEST_NAME_KEY, name); } catch {}
+  return name;
+}
+export function setGuestDisplayName(name) {
+  const v = String(name || "").trim().slice(0, 20);
+  if (!v) return;
+  try { localStorage.setItem(GUEST_NAME_KEY, v); } catch {}
+}
+
 // ─── STAGE 1: ONLINE MULTIPLAYER ─────────────────────────────────────────────
 //
 // pickMultiplayerQuestions(count = 10) — pulls random questions from QB
@@ -7974,7 +7998,7 @@ function challengeDayOffset(dateStr) {
 function AppInner() {
   perfMark('AppInner render (first)');
   useEffect(() => { perfMark('AppInner mounted'); removePrebootOnboard(); }, []);
-  const { user, profile: authProfile, isGuest, exitGuestMode, openAuthPrompt } = useAuth();
+  const { user, profile: authProfile, isGuest, isAnonUser, signInAsGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
   // QA S-03: screens are full-page swaps, but nothing reset the scroll — so
   // quitting a Classic quiz returned you to Home still scrolled wherever you
@@ -8113,6 +8137,28 @@ function AppInner() {
     loopEvent("join-token-consumed");
     try { localStorage.removeItem("biq_pending_join"); } catch {}
   }, []);
+
+  // v1.6 guest entry — "Play as guest" on the invite gate. Anonymous sign-in
+  // gives the guest a real session; the SIGNED_IN listener clears guest mode
+  // and the auto-join effect below routes them straight into the room. While
+  // the Supabase anonymous provider is disabled (dashboard toggle), the call
+  // errors and we fall back to the sign-in prompt — the button is inert-safe.
+  const [guestJoining, setGuestJoining] = useState(false);
+  const [guestJoinError, setGuestJoinError] = useState("");
+  const handleGuestJoin = useCallback(async () => {
+    if (guestJoining) return;
+    setGuestJoining(true);
+    setGuestJoinError("");
+    const { error } = await signInAsGuest();
+    if (error) {
+      console.warn('[handleGuestJoin] signInAsGuest', error.message);
+      setGuestJoining(false);
+      setGuestJoinError("Guest entry isn't available right now — sign up free instead, it takes a minute.");
+      return;
+    }
+    // No setGuestJoining(false) on success — the SIGNED_IN state change
+    // unmounts this modal (user is set, isGuest clears).
+  }, [guestJoining, signInAsGuest]);
 
   // 1.1 async "beat my Daily 7" challenge. A friend's link is balliq.app/?c=
   // SCORE.YYYYMMDD[.Name]. We capture it on launch (web/SPA), persist it, and
@@ -11695,11 +11741,26 @@ function AppInner() {
                   📲 Got the app? Open it there
                 </button>
               )}
+              {/* v1.6 guest entry — the invite loop's biggest leak was this
+                  modal demanding an account. Anonymous sign-in drops the
+                  friend straight into the room; primary everywhere except
+                  iOS web, where "open the app" keeps top billing (the app
+                  user is already signed in there). */}
+              <button
+                onClick={handleGuestJoin}
+                disabled={guestJoining}
+                style={IS_IOS_WEB
+                  ? {width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:14,fontWeight:700,cursor:"pointer",marginBottom:8,opacity:guestJoining?0.6:1}
+                  : {width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8,opacity:guestJoining?0.6:1}}
+              >
+                {guestJoining ? "Joining…" : "⚡ Play as guest"}
+              </button>
+              {guestJoinError && (
+                <div role="alert" style={{fontSize:12,color:"var(--red)",lineHeight:1.4,marginBottom:8}}>{guestJoinError}</div>
+              )}
               <button
                 onClick={() => { try { openAuthPrompt?.('online'); } catch {} }}
-                style={IS_IOS_WEB
-                  ? {width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:14,fontWeight:600,cursor:"pointer",marginBottom:8}
-                  : {width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+                style={{width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:14,fontWeight:600,cursor:"pointer",marginBottom:8}}
               >
                 Sign up or sign in
               </button>
@@ -11772,7 +11833,7 @@ function AppInner() {
                     : "Couldn't notify them — share the invite link instead");
                 }
               }}
-              defaultName={authProfile?.username || profile?.name || ""}
+              defaultName={isAnonUser ? getGuestDisplayName() : (authProfile?.username || profile?.name || "")}
               autoJoinCode={pendingJoinCode}
               onAutoJoinConsumed={clearPendingJoin}
               autoCreate={onlineAutoCreate}
@@ -11789,7 +11850,7 @@ function AppInner() {
               key={stage1RoomCode}
               code={stage1RoomCode}
               onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}
-              defaultName={authProfile?.username || profile?.name || ""}
+              defaultName={isAnonUser ? getGuestDisplayName() : (authProfile?.username || profile?.name || "")}
               // Rematch used to spin up a room and leave the opponent unaware —
               // you sat alone in a lobby they had no way of knowing existed,
               // and the only route back was manually sharing a link at the

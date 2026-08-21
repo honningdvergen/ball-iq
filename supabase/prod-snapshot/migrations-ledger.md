@@ -54,3 +54,15 @@ before replace). Grants: execute revoked from public/anon/authenticated.
 - **v1_6_challenge_events** (2026-08-20, via MCP apply_migration; repo file `supabase/migrations/v1_6_challenge_events.sql`) — challenge_events table + record_challenge_event() RPC for /c/ loop measurement. Verified post-apply: 0 client table grants, 0 policies, RLS on, RPC grants exactly anon+authenticated.
 
 - **v1_6_streak_repair** (2026-08-20, applied via MCP; repo file `supabase/migrations/v1_6_streak_repair.sql`) — tick_login_streak now stashes an un-shielded fallen streak (>=3) as fell/fellDay for same-local-day repair; new repair_login_streak() restores it once (fell+current), authenticated-only with explicit REVOKEs. Verified live on balliqdev2 (state restored): lapse->fell:10, repair->11, second repair refused. Pre-replace drift check: live md5 matched snapshot.
+
+## 2026-08-20 — v1_6_anon_guest_entry (⚠️ WRITTEN, NOT YET APPLIED)
+File in repo; prod untouched (no connector/CLI auth in the authoring session).
+Adds `profiles.is_anon` (+ handle_new_user stamps it, `on_auth_user_upgraded`
+trigger on auth.users clears it on upgrade), `set_player_name(p_code, p_name)`
+(lobby-only self-rename, profanity-gated, grant authenticated / revoke
+public+anon), and `cleanup_stale_anon_users()` + pg_cron `37 4 * * *`
+(explicit per-table sweep mirroring delete_user_account; "stale" = anonymous,
+30+ days old, no auth.sessions row refreshed in 30 days; execute revoked from
+public/anon/authenticated). Client code deployed ahead of it is inert-safe.
+⚠️ Pairs with a DASHBOARD toggle: Auth → Sign In / Up → Anonymous sign-ins ON.
+Refresh the snapshot after applying.
