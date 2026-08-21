@@ -1737,7 +1737,20 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    further tap-accuracy would need taller keys (a design change, vetoed). */
 .wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;margin-inline:-20px;}
 .wd-kb-row{display:flex;justify-content:center;gap:2px;}
-.wd-key{flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
+.wd-key{position:relative;flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
+/* Big-thumbs, round three (2026-08-21, playtester with large hands). Width is
+   ARITHMETIC now — ten keys across a 375-402pt screen at full bleed is 35.7-38.4pt
+   each, under Apple's 44pt minimum, and no CSS recovers that. What was still on
+   the table: the gaps. A 2px channel sits between every key and a 6px band
+   between every row, and a tap landing in either did NOTHING — the press was
+   simply lost. This hands each key its half of that dead space as TOUCH area
+   while the painted key stays pixel-identical: 1px each side horizontally
+   (half of 2), 3px each side vertically (half of 6). The slop tiles exactly,
+   never overlaps, so every pixel of the keyboard now belongs to exactly one
+   key. Effective target 38.4x48 -> 40.4x54, ~12% more area, on every device
+   including the ones with no room to grow. Taller keys were considered and
+   NOT taken: the SE already overflows (see the short-viewport block below). */
+.wd-key::after{content:"";position:absolute;inset:-3px -1px;border-radius:8px;}
 .wd-key:active{transform:scale(0.96);}
 .wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
 .wd-key-green{background:#58CC02;color:#0A0A0A;}
@@ -1746,6 +1759,25 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
+
+/* ⚠️ SHORT VIEWPORTS (iPhone SE/8 at 375x667, and any phone in a browser with
+   its address bar showing). MEASURED 2026-08-21: the board + keyboard came to
+   52px MORE than the viewport, so ENTER sat below the fold and you had to
+   scroll the page to submit a guess — on the one screen where the game is
+   supposed to need no scrolling at all. It never showed up on 812pt+ devices,
+   which is every phone the sim and the design were checked on.
+   Reclaim the 52px from spacing ONLY — the key height stays 48px, because
+   shrinking the keys on the most cramped device is precisely backwards for the
+   big-thumbs problem this pass exists to solve. The tiles give up the most and
+   can afford to: they are display, not touch targets. */
+@media (max-height: 700px) {
+  .wd-screen{gap:6px;padding:4px 0 2px;}
+  .wd-legend{margin:2px 0 0;font-size:11px;}
+  .wd-grid{gap:4px;padding:2px 0;}
+  .wd-row{gap:4px;max-width:calc(var(--wd-cols) * 46px + (var(--wd-cols) - 1) * 4px);}
+  .wd-keyboard{gap:4px;padding:0 0 2px;}
+  .wd-key-enter{height:46px;margin-top:0;}
+}
 
 /* Desktop composition. On mobile the full-height flow is perfect; on a wide
    viewport the same layout top-pinned the game (keyboard's margin-bottom:auto
