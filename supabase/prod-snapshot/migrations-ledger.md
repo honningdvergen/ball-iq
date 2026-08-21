@@ -91,3 +91,18 @@ Refresh the snapshot after applying.
   new token at position 1854 where the old one sat, grants still
   postgres+authenticated. Client guest branch moved to match — the threshold
   is duplicated by necessity (guests have no RPC), so both must move together.
+
+- **v1_6_anon_guest_entry** (2026-08-21, via MCP apply_migration — the entry
+  above marked "WRITTEN, NOT YET APPLIED" is now SUPERSEDED) — profiles.is_anon
+  (+ handle_new_user stamps it), on_auth_user_upgraded trigger clearing it on
+  upgrade, set_player_name(text,text) [grant authenticated, revoke
+  public+anon], cleanup_stale_anon_users() [postgres only] and pg_cron
+  '37 4 * * *'. Paired with the DASHBOARD toggle Auth → Sign In/Providers →
+  Allow anonymous sign-ins, which Alex enabled the same session.
+  Pre-apply safety check: 0 anonymous users, 205 real accounts, and the sweep
+  guards on `is_anonymous is true` so real accounts cannot be caught.
+  Post-apply, VERIFIED END TO END: a live POST /auth/v1/signup returned
+  is_anonymous=true with a session; the trigger created profile
+  player_1437af8f with is_anon=true; cleanup_stale_anon_users() was INVOKED
+  and returned 0 with 205 real accounts present, proving the guard. Test
+  account deleted; back to 205/205 with 0 anonymous.
