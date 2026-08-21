@@ -126,6 +126,18 @@ test('K1 — Profile avatar tap routes guests to the save auth prompt', async ({
   // openAvatarPicker). Assert the overlay's distinctive sub-copy — the
   // guest banner on the profile itself shares the "Save your progress"
   // headline, so the headline alone can't prove the overlay opened.
+  // ProfileScreen auto-opens an example "elite card" to anyone with zero games
+  // played (ProfileScreen.jsx:1457, `gamesPlayed === 0 && !sampleDismissed`),
+  // which is exactly what a freshly-seeded guest is. It is a real modal with
+  // aria-modal, so it intercepts the avatar click and this test failed on every
+  // CI run for weeks — invisibly, because the job was continue-on-error.
+  // Dismiss it the way a player does, by tapping the overlay.
+  const sample = page.locator('.modal-overlay[aria-label="What an elite card looks like"]');
+  if (await sample.isVisible().catch(() => false)) {
+    await sample.click({ position: { x: 5, y: 5 } });
+    await expect(sample).toBeHidden({ timeout: 3000 });
+  }
+
   await page.getByRole('button', { name: 'Edit profile photo' }).first().click();
   await expect(
     page.getByText('so your XP, stats, and streak follow you to any device')

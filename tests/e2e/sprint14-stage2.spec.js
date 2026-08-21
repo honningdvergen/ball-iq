@@ -86,14 +86,18 @@ test('Daily tab — "Today first" redesign renders', async ({ page, context }) =
   const isDesktop = await page.locator('.daily-desktop').isVisible();
   if (isDesktop) {
     await expect(page.getByText('surname of a footballer').filter({ visible: true }).first()).toBeVisible();
-    await expect(page.getByText(/\d+ \/ 2 played/).filter({ visible: true }).first()).toBeVisible();
+    await expect(page.getByText(/\d+ \/ \d+ played/).filter({ visible: true }).first()).toBeVisible();
     // Desktop streak card reuses the Home rail's hr-streak shape: 14 form cells.
     const streak = page.locator('.daily-desktop .hr-streak');
     await expect(streak).toBeVisible();
     await expect(streak.locator('.hr-form-cell')).toHaveCount(14);
   } else {
     await expect(page.getByText('Guess the player').filter({ visible: true }).first()).toBeVisible();
-    await expect(page.getByText(/\d+ of 2 played/).filter({ visible: true }).first()).toBeVisible();
+    // ⚠️ Do NOT hard-code the daily COUNT. This assertion read "of 2 played"
+    // and silently broke the moment Trail and Mystery joined Footle and the
+    // Daily 7 — the product now says 4. The contract worth testing is the
+    // SHAPE of the counter, not a number that changes every time a mode ships.
+    await expect(page.getByText(/\d+ of \d+ played/).filter({ visible: true }).first()).toBeVisible();
     await expect(page.getByText(/\d+ day streak/).filter({ visible: true }).first()).toBeVisible();
     const form = page.getByRole('group', { name: 'Form — last 14 days' }).filter({ visible: true }).first();
     await expect(form).toBeVisible();

@@ -15,7 +15,15 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // 1 -> 2 on 2026-08-21, when the e2e job became a real gate. workers:1 was
+  // chosen while a hung spec could burn 5+ hours; that risk is now covered
+  // three ways (timeout 30s per test, globalTimeout 15m per run,
+  // timeout-minutes 20 on the job), and serialising 117 tests behind one
+  // worker put the run close enough to globalTimeout that a gate would flake
+  // on duration rather than on defects. ubuntu-latest has 4 vCPU, and the
+  // vite webServer wants one of them, so 2 is the honest ceiling — do not
+  // raise it further without measuring.
+  workers: process.env.CI ? 2 : undefined,
   // ⚠️ Belt and braces with the job-level timeout-minutes in ci.yml. A single
   // spec that hangs used to cost 5+ hours of Actions time per push: workers:1
   // serialises everything behind it and retries:2 repeats the hang twice.

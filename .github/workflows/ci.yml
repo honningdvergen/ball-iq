@@ -6,9 +6,14 @@
 # when SENTRY_AUTH_TOKEN is unset.
 #
 # Job 2 (e2e) runs the Playwright suite against a local vite server
-# (playwright.config.js webServer). It is continue-on-error FOR NOW — flip it
-# strict once it has proven green in CI for a while; a red-from-day-one gate
-# just teaches people to ignore CI.
+# (playwright.config.js webServer). It is now a REAL GATE — continue-on-error
+# came off 2026-08-21 after the two stale tests behind 30 consecutive silent
+# failures were fixed and the run was scoped to fit its own timeout.
+# The original worry still stands and is worth restating: a red-from-day-one
+# gate just teaches people to ignore CI. So if this job starts failing for
+# reasons nobody intends to fix, FIX IT OR DELETE IT — do not reach for
+# continue-on-error again. That is what produced a green tick that meant
+# nothing for a month.
 
 name: CI
 
@@ -69,9 +74,13 @@ jobs:
     # slow, so nobody looked. A job that cannot fail loudly must at least be
     # unable to run forever.
     timeout-minutes: 20
-    # Not yet a gate — see header comment. Flip to strict (remove this line)
-    # once the suite has proven reliably green in CI.
-    continue-on-error: true
+    # ⚠️ continue-on-error was REMOVED 2026-08-21. It had been on since the job
+    # was created, and the job failed on 30 CONSECUTIVE runs while GitHub
+    # reported conclusion=success — so the only automated check on the
+    # conversion path was off behind a green tick. Two stale tests were the
+    # cause (a modal added to ProfileScreen that the test never dismissed, and
+    # a hard-coded "of 2 played" that broke when the dailies went from 2 to 4).
+    # Both fixed; full suite verified 429/429 locally before this line went.
     steps:
       - uses: actions/checkout@v5
 
@@ -98,7 +107,19 @@ jobs:
       - name: Playwright e2e
         env:
           VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY || 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR' }}
-        run: npx playwright test
+        # ⚠️ SCOPED, and this is why. The full matrix is 39 specs x 11 device
+        # projects = 429 tests. Measured 2026-08-21: 10.9 min with parallel
+        # workers locally, so SERIALISED at workers:1 it is comfortably past
+        # the 15-minute globalTimeout in playwright.config.js — the suite
+        # could never have gone green here no matter how correct the tests
+        # were. Removing continue-on-error without this change would have
+        # turned every push red on timeout, which is the "red-from-day-one
+        # gate" this file's own header warns against.
+        # Three projects cover what CI needs to catch: WebKit (iphone-14-pro),
+        # Chromium mobile (galaxy-s22) and Chromium desktop (desktop-1280).
+        # The other eight are viewport variants — run them locally with a bare
+        # `npx playwright test` before a release, not on every push.
+        run: npx playwright test --project=iphone-14-pro --project=galaxy-s22 --project=desktop-1280
 
       - name: Upload Playwright report
         if: always()
