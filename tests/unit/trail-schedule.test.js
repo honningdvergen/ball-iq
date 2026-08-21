@@ -80,6 +80,7 @@ describe("Trail schedule is frozen", () => {
     "CECH", "HENRY", "SNEIJDER", "FLAMINI", "ERIKSEN", "VALVERDE", "CAN",
     "GRIEZMANN", "FERNANDES", "AGUERO", "VAN_PERSIE",
     "KOVAI",              // #18 · 2026-08-20 — first extension of the freeze
+    "KLOSE",              // #19 · 2026-08-21 — verified against getTrailAnswerForDayIndex(today)
   ];
 
   it("no already-published day ever moves", () => {

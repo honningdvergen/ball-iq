@@ -141,6 +141,31 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
     [entry, guessedNames],
   );
 
+  // ⚠️ Every miss inserts a club row above the input (and at three misses, the
+  // hint block too), pushing the field down by ~55px a time. iOS scrolls a
+  // focused field into view when it GAINS focus and never again, so once the
+  // fourth and fifth clubs land the input — and the clue just revealed — have
+  // slid under the keyboard, and the keyboard-shrunk viewport makes the page
+  // read as scroll-locked (player report, 2026-08-21: "keyboard stuck on top
+  // of the game ... exiting and re-entering fixed it"). Keeping focus between
+  // guesses is deliberate (see submit), so pull the input back up rather than
+  // dropping the keyboard. Gated on a visibly shrunk visualViewport: that is
+  // the on-screen keyboard, and without the gate this would yank the page on
+  // desktop where nothing is covered. `center` clears the keyboard without
+  // needing to know which ancestor scrolls.
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (done) return;
+    const el = inputRef.current;
+    if (!el || document.activeElement !== el) return;
+    const vv = window.visualViewport;
+    if (!vv || vv.height >= window.innerHeight - 100) return;
+    const id = requestAnimationFrame(() => {
+      try { el.scrollIntoView({ block: "center", behavior: "smooth" }); } catch { /* older WebViews */ }
+    });
+    return () => cancelAnimationFrame(id);
+  }, [shown, hint, done]);
+
   const streak = useMemo(() => (won ? computeTrailStreak(date) : 0), [won, date]);
   const [reportSent, setReportSent] = useState(false);
   const shareText = useMemo(
@@ -269,6 +294,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
           <div style={{ position: "relative", marginTop: 14, display: "flex", gap: 8,
                         transform: shake ? "translateX(-4px)" : "none", transition: "transform .12s" }}>
             <input
+              ref={inputRef}
               value={entry}
               onChange={(e) => setEntry(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") submit(false); }}
