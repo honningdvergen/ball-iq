@@ -4,6 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
+import { supabase } from '../supabase.js';
 import { useAuth } from '../useAuth.jsx';
 import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion, mpSetPlayerName } from '../multiplayerRpc.js';
 import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName } from '../App.jsx';
@@ -869,6 +870,128 @@ function useCountUp(target, { duration = 850, delay = 400 } = {}) {
   return val;
 }
 
+/* ── Add-friend offer on the Game Over screen ──────────────────────────────
+   MEASURED 2026-08-21: 15 distinct opponent PAIRS played each other in the
+   last 7 days and ZERO of them are friends or have a request pending. The
+   friend graph had exactly one on-ramp — searching a username you already
+   know — while the one moment two people demonstrably want to play each
+   other again offered Rematch, Share and Back to Home. Fifteen warm
+   introductions a week, discarded.
+
+   Deliberately quiet: it renders nothing at all unless there is somebody
+   real to offer. Guests are sent to the upgrade prompt instead of a dead
+   button, since an anonymous account cannot hold a friend graph worth
+   having. Existing friends and already-pending requests are filtered out
+   BEFORE paint, so nobody is ever offered a button that will fail. */
+function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
+  const opponents = useMemo(
+    () => (players || []).filter(p => p.user_id && p.user_id !== myUserId),
+    [players, myUserId],
+  );
+  const [offerable, setOfferable] = useState([]);
+  const [sent, setSent] = useState(() => new Set());
+  const [busy, setBusy] = useState(() => new Set());
+
+  useEffect(() => {
+    let alive = true;
+    if (!myUserId || isAnonUser || opponents.length === 0) { setOfferable([]); return () => {}; }
+    (async () => {
+      const ids = opponents.map(o => o.user_id);
+      try {
+        // Any row in either direction disqualifies: accepted, pending, even
+        // declined — re-offering a declined request is worse than silence.
+        const { data, error } = await supabase
+          .from('friendships')
+          .select('requester_id, addressee_id')
+          .or(`and(requester_id.eq.${myUserId},addressee_id.in.(${ids.join(',')})),and(addressee_id.eq.${myUserId},requester_id.in.(${ids.join(',')}))`);
+        if (error) throw error;
+        const known = new Set();
+        for (const r of data || []) { known.add(r.requester_id); known.add(r.addressee_id); }
+        if (alive) setOfferable(opponents.filter(o => !known.has(o.user_id)));
+      } catch (e) {
+        // Never block the results screen on this. A failed lookup means we
+        // simply do not offer, rather than offering a button that may 409.
+        Sentry.addBreadcrumb({ category: 'friends', message: 'mp add-friend precheck failed', level: 'warning' });
+        if (alive) setOfferable([]);
+      }
+    })();
+    return () => { alive = false; };
+  }, [myUserId, isAnonUser, opponents]);
+
+  const send = useCallback(async (p) => {
+    if (busy.has(p.user_id) || sent.has(p.user_id)) return;
+    setBusy(prev => new Set(prev).add(p.user_id));
+    try {
+      const { error } = await supabase
+        .from('friendships')
+        .insert({ requester_id: myUserId, addressee_id: p.user_id });
+      if (error) throw error;
+      haptic('correct');
+      setSent(prev => new Set(prev).add(p.user_id));
+    } catch (e) {
+      Sentry.captureException(e, { tags: { area: 'friends', from: 'mp-gameover' } });
+    } finally {
+      setBusy(prev => { const n = new Set(prev); n.delete(p.user_id); return n; });
+    }
+  }, [busy, sent, myUserId]);
+
+  if (!myUserId || opponents.length === 0) return null;
+
+  if (isAnonUser) {
+    return (
+      <button
+        type="button"
+        onClick={openAuthPrompt}
+        style={{ width: '100%', marginTop: 14, padding: '12px 14px', borderRadius: 12,
+                 background: 'var(--s2)', border: '1px solid var(--border)', color: 'var(--t2)',
+                 fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, cursor: 'pointer' }}
+      >
+        Save your account to add {opponents.length === 1 ? (opponents[0].name || 'them') : 'these players'} as a friend
+      </button>
+    );
+  }
+
+  if (offerable.length === 0) return null;
+
+  return (
+    <div style={{ marginTop: 14 }}>
+      <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase',
+                    color: 'var(--t3)', marginBottom: 8 }}>
+        Good game — keep playing them
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+        {offerable.map(p => {
+          const done = sent.has(p.user_id);
+          return (
+            <div key={p.user_id} style={{ display: 'flex', alignItems: 'center', gap: 10,
+                   padding: '10px 12px', borderRadius: 11, background: 'var(--s2)',
+                   border: '1px solid var(--border)' }}>
+              <span style={{ fontSize: 19 }}>{p.avatar || '⚽'}</span>
+              <span style={{ flex: 1, minWidth: 0, fontSize: 14.5, fontWeight: 700, color: 'var(--text)',
+                             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {p.name || 'Player'}
+              </span>
+              <button
+                type="button"
+                onClick={() => send(p)}
+                disabled={done || busy.has(p.user_id)}
+                aria-label={done ? `Friend request sent to ${p.name || 'player'}` : `Add ${p.name || 'player'} as a friend`}
+                style={{ flexShrink: 0, padding: '8px 14px', borderRadius: 10, border: 'none',
+                         background: done ? 'var(--s3)' : 'var(--accent)',
+                         color: done ? 'var(--t2)' : '#06230C',
+                         fontFamily: 'inherit', fontSize: 13, fontWeight: 800,
+                         cursor: done ? 'default' : 'pointer' }}
+              >
+                {done ? 'Request sent' : busy.has(p.user_id) ? '…' : 'Add friend'}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
   // v1.6 guest entry — upgrade CTA in the actions column below.
   const { isAnonUser, openAuthPrompt } = useAuth();
@@ -1392,6 +1515,15 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
             </div>
           </div>
         )}
+        {/* Sits ABOVE the action stack on purpose: Rematch and Back to Home
+            are both exits, and an offer placed after them is an offer made
+            to someone already leaving. */}
+        <AddFriendRow
+          players={players}
+          myUserId={myUserId}
+          isAnonUser={isAnonUser}
+          openAuthPrompt={openAuthPrompt}
+        />
         <div className="mp-go-actions">
           {/* v1.6 guest entry — the moment a guest most wants their stats to
               persist is right after seeing them. Upgrading keeps the same
