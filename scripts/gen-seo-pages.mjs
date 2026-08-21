@@ -1108,7 +1108,39 @@ function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;
    ev() is deliberately total: if clarity is absent (blocked, or the native
    bundle where the loader is guarded off) every call is a no-op, so this adds
    no requests and no native exposure. */
-function bqev(n){try{if(window.clarity)window.clarity('event',n)}catch(e){}}
+/* bqev now writes to BOTH sinks, and this is not a nicety.
+   Until 2026-08-21 these pages reported ONLY into Clarity. That was already
+   half-blind (Clarity's export API returns only its own auto-detected smart
+   events, so a query for clubq-play comes back empty). Then Clarity became
+   consent-gated in Europe on the same day — so for every European visitor who
+   declines, the surface carrying roughly 39 percent of all play went
+   completely dark. funnel_events is first-party and consent-exempt, so it
+   keeps working regardless of the answer, which is exactly why the honest
+   design gates the third party and owns the number.
+   The visitor id deliberately reuses the app's biq_vid key, so a visitor who
+   plays a club page and then opens the app is ONE journey rather than two
+   strangers. That crossing is a question nobody has been able to answer.
+   Synthetic traffic is refused, matching loopEvent in App.jsx. On 2026-08-21
+   the Playwright suite put 767 fake rows into funnel_events in three hours
+   against a real DAU of 13 to 17, because localhost reads the production
+   Supabase credentials. Robots must not vote. */
+function bqSynthetic(){try{
+if(navigator.webdriver===true)return true;
+var h=location.hostname;
+return h==='localhost'||h==='127.0.0.1';
+}catch(e){return false}}
+function bqVid(){try{
+var v=localStorage.getItem('biq_vid');
+if(!v){v=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():null;
+if(!v)return null;localStorage.setItem('biq_vid',v)}
+return (v&&v.length===36)?v:null;
+}catch(e){return null}}
+function bqev(n){
+if(bqSynthetic())return;
+try{if(window.clarity)window.clarity('event',n)}catch(e){}
+try{fetch(BQ_SB+'/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
+headers:{'content-type':'application/json','apikey':BQ_PK,'authorization':'Bearer '+BQ_PK},
+body:JSON.stringify({p_event:n,p_meta:{surface:'club-page'},p_visitor:bqVid()})}).catch(function(){})}catch(e){}}
 function tag(k,v){try{if(window.clarity)window.clarity('set',k,String(v))}catch(e){}}
 /* ── OWNING THE MEASUREMENT ──────────────────────────────────────────────────
    Clarity RECORDS these rounds but will not report them by name: custom API

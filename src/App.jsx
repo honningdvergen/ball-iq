@@ -1922,7 +1922,43 @@ function visitorId() {
 // Now it fans out to BOTH — Clarity keeps session replay lined up with the
 // numbers, and funnel_events makes the numbers answerable in SQL forever.
 // Fire-and-forget on purpose: measurement must never delay or break a game.
+// ⚠️ SYNTHETIC TRAFFIC MUST NOT REACH THE FUNNEL.
+//
+// Measured 2026-08-21, three hours after funnel_events went live: 905 rows,
+// of which 767 were `first-game-started` at ~250/hour, exactly one per
+// visitor, arriving in precisely the hours the Playwright suite was running —
+// against a real DAU of 13-17. One row was literally named `probe-e2e`.
+//
+// The cause is a seam, not a bug in anything: the e2e suite runs against
+// localhost:4173, localhost reads .env.local, and .env.local points at
+// PRODUCTION Supabase because there is no staging project. So every local run
+// and every CI run wrote test events into the table the product's decisions
+// are supposed to come from. A green suite was quietly corrupting the
+// instrument it shares a repo with.
+//
+// This is worse than having no data, because it looks like data. 767 synthetic
+// rows would have drowned real signal at a ratio of roughly 50:1 and made
+// every funnel number read as a triumph.
+//
+// Two signals, both deliberately conservative — when in doubt, DON'T record:
+//   navigator.webdriver  is set by every automation driver (Playwright,
+//                        Selenium, Puppeteer) and by nothing else.
+//   localhost/127.0.0.1  is Alex's own dev browsing, which is not a user
+//                        journey either and never should have counted.
+// Native builds have neither, so real app traffic is untouched.
+function isSyntheticTraffic() {
+  try {
+    if (IS_NATIVE) return false;
+    if (typeof navigator !== "undefined" && navigator.webdriver === true) return true;
+    const h = typeof location !== "undefined" ? location.hostname : "";
+    return h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h.endsWith(".local");
+  } catch { return false; }
+}
+
 function loopEvent(name, meta) {
+  // Gate BOTH sinks. Clarity session replays of a robot are as useless as
+  // funnel rows from one, and Clarity's own quota is finite.
+  if (isSyntheticTraffic()) return;
   try {
     if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
   } catch {}
