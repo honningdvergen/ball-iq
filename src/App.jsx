@@ -386,7 +386,7 @@ export function recordMpQuestionsSeen(questions) {
 }
 
 
-async function getQs({ cat, tag, diff, n = 10, ramp = false, includeLegends = false, noEasy = false }) {
+async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, includeLegends = false, noEasy = false }) {
   const { QB } = await loadQuestions();
   // Defensive: strip out any undefined entries that might exist from array holes
   let pool = QB.filter(q => q && typeof q === "object");
@@ -410,6 +410,12 @@ async function getQs({ cat, tag, diff, n = 10, ramp = false, includeLegends = fa
   // telegraphed) entirely. Only topic-scoped callers pass noEasy; general modes
   // (Classic, Daily 7, Survival, Hot Streak) keep the full easy→hard range.
   if (noEasy) pool = pool.filter(q => q.diff !== "easy");
+  // onlyDiff is a HARD restriction, unlike `diff` — which is a ceiling, not a
+  // floor (diff:"hard" means "the full range", not "hard questions only").
+  // The topical pack needs the floor: a pack about the last few weeks is, for
+  // an engaged audience, made of things they watched happen, so its headline
+  // questions are not questions at all.
+  if (onlyDiff) pool = pool.filter(q => q.diff === onlyDiff);
   // Honesty over silence: if a category has nothing to offer, return empty
   // so the caller can show a "not enough questions" toast. If we have some
   // but fewer than `n`, return the shuffled pool — better to play 7 real
@@ -9366,7 +9372,20 @@ function AppInner() {
         // cat:"Legends" from every mode that does not opt in, and the
         // summer-2026 pack files its retirements (Milner, Cazorla, Immobile)
         // under Legends — without this the tile would silently drop them.
-        qs = await getQs({ tag: TOPICAL_PACK.tag, n: 10, ramp: true, includeLegends: true });
+        // ⚠️ HARD ONLY, and this is the whole lesson of the mode's first day.
+        // Alex played it and scored 7/10 — the three he missed were ALL hard,
+        // and he cleared every easy and medium. His words: "one question was
+        // who won the world cup just a month ago, come on."
+        //
+        // Difficulty labels are calibrated for the bank as a whole, where
+        // "which country won the 2026 World Cup?" is an honest easy question.
+        // Inside a pack about THIS SUMMER, served to someone who watched the
+        // summer, it is a headline, not a test. The pack was re-cut so the
+        // labels tell the truth for this audience (14 headline questions moved
+        // to easy, 10 detail ones to hard, 5 telegraphed ones deleted), and
+        // the tile now serves only the detail tier: exact fees, appearance
+        // counts, who held the record before, which club took the sell-on.
+        qs = await getQs({ tag: TOPICAL_PACK.tag, onlyDiff: "hard", n: 10, ramp: true, includeLegends: true });
         if (!qs || qs.length < 5) { showToast("Not enough questions available for this mode"); return; }
       }
       else if (m === "chaos") {
