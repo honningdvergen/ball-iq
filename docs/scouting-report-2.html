@@ -1,0 +1,264 @@
+<title>Ball IQ Scouting Report</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#F4F5F2; --card:#FFFFFF; --ink:#15191C; --ink2:#4B555C; --ink3:#7C868E;
+  --rule:#DDE0DA; --rule2:#C8CDC4;
+  --accent:#26548C; --accent-soft:#E7EDF5;
+  --bad:#B23A31; --mid:#B27A22; --good:#2C7048;
+  --band:#EDEFEA;
+}
+:root:not([data-theme="light"]){ @media (prefers-color-scheme: dark){
+  --paper:#0E1114; --card:#161B1F; --ink:#EDEFEC; --ink2:#A3ADB4; --ink3:#77828A;
+  --rule:#252C31; --rule2:#333C42;
+  --accent:#7FA8DC; --accent-soft:#1A242F;
+  --bad:#E2695E; --mid:#D9A445; --good:#5FBF8A;
+  --band:#1A1F23;
+}}
+:root[data-theme="dark"]{
+  --paper:#0E1114; --card:#161B1F; --ink:#EDEFEC; --ink2:#A3ADB4; --ink3:#77828A;
+  --rule:#252C31; --rule2:#333C42;
+  --accent:#7FA8DC; --accent-soft:#1A242F;
+  --bad:#E2695E; --mid:#D9A445; --good:#5FBF8A;
+  --band:#1A1F23;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Source Serif 4',Georgia,serif;font-size:16.5px;line-height:1.62;
+  padding:44px 20px 80px;}
+.wrap{max-width:820px;margin:0 auto;}
+.disp{font-family:'Archivo',system-ui,sans-serif;}
+.eyebrow{font-family:'Archivo',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink3);margin:0 0 10px}
+h1{font-family:'Archivo',sans-serif;font-size:clamp(30px,5vw,42px);font-weight:800;
+  letter-spacing:-.025em;line-height:1.06;margin:0 0 14px;text-wrap:balance}
+h2{font-family:'Archivo',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.01em;
+  margin:52px 0 6px;padding-top:22px;border-top:2px solid var(--rule2);text-wrap:balance}
+h2 .n{color:var(--ink3);font-variant-numeric:tabular-nums;margin-right:10px}
+h3{font-family:'Archivo',sans-serif;font-size:15.5px;font-weight:700;margin:26px 0 4px}
+p{margin:0 0 14px;max-width:66ch}
+.lede{font-size:18.5px;line-height:1.55;color:var(--ink2);max-width:64ch}
+.hero{display:flex;gap:26px;align-items:baseline;flex-wrap:wrap;margin:26px 0 8px}
+.score{font-family:'IBM Plex Mono',monospace;font-size:60px;font-weight:600;
+  line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.score small{font-size:22px;color:var(--ink3)}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:20px 22px;margin:18px 0}
+.scroller{overflow-x:auto;margin:18px 0;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-family:'Archivo',sans-serif;font-size:13.5px}
+th{text-align:left;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);
+  font-weight:700;padding:0 12px 9px 0;border-bottom:1.5px solid var(--rule2);white-space:nowrap}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--rule);vertical-align:middle}
+td.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{display:block;height:7px;border-radius:4px;background:var(--band);min-width:104px;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;border-radius:4px;display:block}
+.b-bad i{background:var(--bad)} .b-mid i{background:var(--mid)} .b-good i{background:var(--good)}
+.tag{font-family:'Archivo',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--band);color:var(--ink2)}
+.tag.new{background:var(--accent-soft);color:var(--accent)}
+.up{color:var(--good);font-weight:700} .down{color:var(--bad);font-weight:700} .flat{color:var(--ink3)}
+.finding{border-left:3px solid var(--bad);padding:2px 0 2px 18px;margin:22px 0}
+.finding h3{margin-top:0;color:var(--bad)}
+ol.plan{list-style:none;counter-reset:p;padding:0;margin:20px 0}
+ol.plan li{counter-increment:p;position:relative;padding:14px 0 14px 52px;border-bottom:1px solid var(--rule)}
+ol.plan li::before{content:counter(p);position:absolute;left:0;top:14px;
+  font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;color:var(--accent);
+  width:34px;text-align:right}
+ol.plan .t{font-family:'Archivo',sans-serif;font-weight:700;font-size:15.5px;display:block;margin-bottom:2px}
+ol.plan .m{font-size:14px;color:var(--ink2);display:block}
+ol.plan .e{font-family:'Archivo',sans-serif;font-size:11px;color:var(--ink3);letter-spacing:.03em;display:block;margin-top:4px}
+ol.plan li.top{background:var(--accent-soft);margin-left:-14px;padding-left:66px;padding-right:14px;border-radius:8px;border-bottom:none;margin-bottom:2px}
+ol.plan li.top::before{left:14px}
+ul.stop{list-style:none;padding:0;margin:16px 0}
+ul.stop li{padding:11px 0 11px 30px;border-bottom:1px solid var(--rule);position:relative;font-size:15.5px}
+ul.stop li::before{content:"✕";position:absolute;left:2px;top:11px;color:var(--bad);font-weight:700;font-family:'Archivo',sans-serif}
+.pull{font-family:'Archivo',sans-serif;font-size:19px;font-weight:600;line-height:1.4;
+  color:var(--ink);border-left:4px solid var(--accent);padding-left:20px;margin:26px 0;max-width:60ch}
+.meta{font-family:'Archivo',sans-serif;font-size:12px;color:var(--ink3);letter-spacing:.02em}
+.foot{margin-top:56px;padding-top:20px;border-top:2px solid var(--rule2);font-size:13.5px;color:var(--ink3)}
+code{font-family:'IBM Plex Mono',monospace;font-size:.88em;background:var(--band);padding:1px 5px;border-radius:3px}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Scouting report № 2 · 21 August 2026</p>
+  <h1>A good product with almost no position</h1>
+  <p class="lede">Fourteen areas graded, six of them never examined before. Sixteen reviewers,
+  2.5 million tokens, 1,150 tool calls, fifty-seven minutes. Every claim below was measured
+  against the live product, the shipped bundle or production SQL.</p>
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow" style="margin-bottom:4px">Overall</div>
+      <div class="score">5.5<small>/10</small></div>
+    </div>
+    <p style="flex:1;min-width:280px;margin:0;color:var(--ink2);font-size:15.5px">
+      Previous panel graded eight areas at a 6.5 average. This panel graded those same eight
+      at 6.2 — and the six that had never been looked at came in at 3.9.
+    </p>
+  </div>
+
+  <h2><span class="n">01</span>The scoreboard</h2>
+  <p>More areas fell than rose. That is the panel working, not the product decaying — every
+  score below 5 belongs to something nobody had ever graded.</p>
+
+  <div class="scroller">
+  <table>
+    <tr><th>Area</th><th>Was</th><th>Now</th><th></th><th style="width:130px">Grade</th></tr>
+    <tr><td>Featuring &amp; editorial</td><td><span class="tag new">new</span></td><td class="num">2.0</td><td class="flat">—</td><td><span class="bar b-bad"><i style="width:20%"></i></span></td></tr>
+    <tr><td>Monetisation</td><td><span class="tag new">new</span></td><td class="num">2.5</td><td class="flat">—</td><td><span class="bar b-bad"><i style="width:25%"></i></span></td></tr>
+    <tr><td>Privacy &amp; compliance</td><td><span class="tag new">new</span></td><td class="num">4.0</td><td class="flat">—</td><td><span class="bar b-bad"><i style="width:40%"></i></span></td></tr>
+    <tr><td>Stability &amp; crash reporting</td><td><span class="tag new">new</span></td><td class="num">4.0</td><td class="flat">—</td><td><span class="bar b-bad"><i style="width:40%"></i></span></td></tr>
+    <tr><td>Competitive position</td><td class="num">6</td><td class="num">5.0</td><td class="down">↓</td><td><span class="bar b-mid"><i style="width:50%"></i></span></td></tr>
+    <tr><td>Social &amp; viral loops</td><td class="num">6</td><td class="num">5.0</td><td class="down">↓</td><td><span class="bar b-mid"><i style="width:50%"></i></span></td></tr>
+    <tr><td>Tablet &amp; desktop</td><td><span class="tag new">new</span></td><td class="num">5.5</td><td class="flat">—</td><td><span class="bar b-mid"><i style="width:55%"></i></span></td></tr>
+    <tr><td>Backend capacity &amp; cost</td><td><span class="tag new">new</span></td><td class="num">5.5</td><td class="flat">—</td><td><span class="bar b-mid"><i style="width:55%"></i></span></td></tr>
+    <tr><td>Retention &amp; habit</td><td class="num">5</td><td class="num">6.0</td><td class="up">↑</td><td><span class="bar b-mid"><i style="width:60%"></i></span></td></tr>
+    <tr><td>Onboarding &amp; activation</td><td class="num">7</td><td class="num">6.5</td><td class="down">↓</td><td><span class="bar b-mid"><i style="width:65%"></i></span></td></tr>
+    <tr><td>Store presence &amp; ratings</td><td class="num">6</td><td class="num">6.5</td><td class="up">↑</td><td><span class="bar b-mid"><i style="width:65%"></i></span></td></tr>
+    <tr><td>Accessibility</td><td class="num">7</td><td class="num">7.0</td><td class="flat">=</td><td><span class="bar b-good"><i style="width:70%"></i></span></td></tr>
+    <tr><td>Gameplay feel</td><td class="num">7</td><td class="num">7.0</td><td class="flat">=</td><td><span class="bar b-good"><i style="width:70%"></i></span></td></tr>
+    <tr><td>Content moat</td><td class="num">8</td><td class="num">7.5</td><td class="down">↓</td><td><span class="bar b-good"><i style="width:75%"></i></span></td></tr>
+  </table>
+  </div>
+
+  <h2><span class="n">02</span>What actually happened since Tuesday</h2>
+  <p><strong>The work was real.</strong> Footle's keyboard now claims every pixel, verified by
+  twelve hand taps including the screen-edge column. Colour-blind Footle works. The Play listing
+  rewrite is live with a proper feature graphic. Hard questions lacking an explanation went from
+  155 to 4. Streak repair, the 30-day back-catalogue and Android FCM all shipped and were
+  verified in production.</p>
+  <p><strong>And not one outcome number moved.</strong> iOS ratings went 2 → 3, with the US
+  storefront at zero. Play still shows no stars at "50+ downloads". k-factor was 0.23 then and
+  is 0.23 now. Friendships formed in thirty days: zero, from fifteen warm opponent pairs.
+  Web push went from zero subscribers to one, and the subscriber is you.</p>
+
+  <div class="pull">Five gameplay gaps, four store gaps and four retention items closed in
+  48 hours. None of it moved a number, because almost none of it reached anyone.</div>
+
+  <h2><span class="n">03</span>Three things no single reviewer saw</h2>
+  <p>These came out of the synthesis reading all fourteen reviews together. Each one is worse
+  than anything in an individual report.</p>
+
+  <div class="finding">
+    <h3>Your CI has been lying for thirty runs</h3>
+    <p><code>continue-on-error:true</code> sits on the e2e job in <code>ci.yml</code>, so GitHub
+    reports success while the job fails. It has failed on <strong>all thirty consecutive runs</strong>
+    — two deterministic failures across all three WebKit projects. The only automated check on
+    your conversion path has been off, behind a green tick.</p>
+  </div>
+
+  <div class="finding">
+    <h3>The club pages are now 39% of everything played</h3>
+    <p><code>club_quiz_results</code> holds 208 plays in the last 7 days against 210 in the last
+    30 — essentially all club-page play happened this week, against 324 total score rows.
+    Clarity shows 420 club-page sessions a week versus 10 on <code>/lists</code>. The moat is
+    already converting, on the one surface with a 0.11–0.20 field CLS, colour-only grading, no
+    aria-live and no instrumentation. It is the busiest game in the product and the least finished.</p>
+  </div>
+
+  <div class="finding">
+    <h3>Question QA is switched off, and a wrong answer is live</h3>
+    <p><code>question_review</code>'s newest row is dated 9 June. Roughly 600 questions have
+    shipped since, at a historical 12.5% rejection rate. One is now provably wrong in the shipped
+    bundle: Atlético's capacity is keyed at 68,000 when the Metropolitano has held 70,460 since
+    2023 — and 72,000 is one of the four options, so the bank marks the closest answer wrong.</p>
+  </div>
+
+  <h2><span class="n">04</span>The plan, ranked by return on your hours</h2>
+  <p>Eighteen items. The first four are the ones I would not skip.</p>
+
+  <ol class="plan">
+    <li class="top"><span class="t">Publish versionCode 20 to Play</span>
+      <span class="m">The Android widget and the entire FCM push rail are built, verified and
+      reaching zero users because Play still serves vc19. <code>device_tokens</code> holds 35 iOS
+      rows and 0 Android.</span>
+      <span class="e">RELEASE · under an hour of your hands</span></li>
+    <li class="top"><span class="t">Put <code>VITE_SENTRY_DSN</code> in .env.local before the next native build</span>
+      <span class="m">Without it the Sentry init is dead-stripped, so shipped iOS and Android
+      carry no crash client at all — in the same week push went live on the code path that once
+      hard-crashed every device in closed test.</span>
+      <span class="e">STABILITY · two minutes</span></li>
+    <li class="top"><span class="t">Fix the three confirmed factual errors in the bank</span>
+      <span class="m">Then extend <code>needsAnchor()</code> to catch the "X is approximately"
+      class, so the audit gates it instead of a human sweep.</span>
+      <span class="e">CONTENT · under an hour</span></li>
+    <li class="top"><span class="t">Ship the summer-2026 window pack</span>
+      <span class="m">The bank has zero questions mentioning 2026-27 and zero about the summer
+      window. "They already have this week's transfer" is worth more this month than any other
+      month of the year.</span>
+      <span class="e">CONTENT · 2–3 days on the existing forge pipeline</span></li>
+    <li><span class="t">Glyph + aria-live in the club-page quiz template</span>
+      <span class="m">One template edit regenerates all 140 club pages. Fixes WCAG on the
+      highest-traffic surface for roughly 1 in 12 male football fans.</span>
+      <span class="e">2–3 hours</span></li>
+    <li><span class="t">Fix Core Web Vitals on the club pages</span>
+      <span class="m">Field CLS 0.198 on /quiz/premier-league/. Every performance claim we had
+      was lab data; the field says worse, about the pages carrying the traffic.</span>
+      <span class="e">half a day</span></li>
+    <li><span class="t">Stop CI reporting success while e2e fails</span>
+      <span class="m">Fix the two tests, then remove the flag.</span><span class="e">1–2 hours</span></li>
+    <li><span class="t">Merge guest entry, flip the anonymous sign-ins toggle</span>
+      <span class="m">Room invites are 28% of signups and the only converting loop you have —
+      and both ends currently hit a signup wall.</span><span class="e">half a day</span></li>
+    <li><span class="t">Fix the tofu on the challenge share card + store-link parity</span>
+      <span class="m">The OG card renders U+2713 with no font registered, so every challenge
+      link that ever unfurled showed five missing-glyph boxes.</span><span class="e">under an hour</span></li>
+    <li><span class="t">"Add friend" on the multiplayer Game Over screen</span>
+      <span class="m">Fifteen warm opponent pairs a week, zero friend requests, and no on-ramp
+      from the one place two people just played together.</span><span class="e">2–3 hours</span></li>
+    <li><span class="t">Scale-pop on the correct answer, and sound on by default</span>
+      <span class="m">The most-repeated moment in the product currently just changes colour.</span>
+      <span class="e">a couple of hours</span></li>
+    <li><span class="t">Decide and write down the money question</span>
+      <span class="m">Zero hits for RevenueCat, Stripe, StoreKit or BillingClient anywhere in
+      the repo, against real monthly costs.</span><span class="e">an hour of thinking</span></li>
+  </ol>
+  <p class="meta">Then: instrument the funnels that emit into a void · Stadiums telemetry and
+  the 17 thin packs · @sentry/capacitor and a real VoiceOver pass · rem type ramp for OS text
+  scaling · the iOS WidgetKit extension · streak-break outbound events.</p>
+
+  <h2><span class="n">05</span>Stop doing</h2>
+  <p>A plan with no stop-list is a wish list. The panel emitted roughly 45 quick wins and 38
+  five-star moves for one person with no income — this is the half that says no.</p>
+  <ul class="stop">
+    <li><strong>Stop shipping new game modes.</strong> Mystery Player has 6 plays from 4 players
+    all-time, against a 5M-visit incumbent that owns the format. Stadiums shipped with zero telemetry.</li>
+    <li><strong>Stop polishing the store listings.</strong> The craft is top-decile and it is not
+    the constraint — the app is absent from the top 25 for "football quiz", "football trivia",
+    and even "footle", the name of its own mode.</li>
+    <li><strong>Stop publishing localised listings while the binary is English-only.</strong>
+    There is no i18n anywhere in <code>src/</code>, and none of the ten drafted descriptions says so.</li>
+    <li><strong>Stop tuning the rating prompt.</strong> Three ratings is a denominator problem.
+    Worse, the widened web ask points at stores where most of those asked structurally cannot rate.</li>
+    <li><strong>Stop re-auditing SEO fundamentals.</strong> Settled and recorded; the ceiling is
+    authority. Three reviewers re-derived the same numbers this round.</li>
+    <li><strong>Stop cutting native builds from memory.</strong> <code>preflight-release.mjs</code>
+    is a good gate that is in no script, no CI, and no checklist.</li>
+  </ul>
+
+  <h2><span class="n">06</span>Where the panel disagreed with itself</h2>
+  <p>The critic named <code>/lists</code> the single biggest lever — "the only surface where Ball
+  IQ has hundreds of humans a week instead of dozens." The synthesis went and measured it:
+  <strong>10 Clarity sessions a week on /lists against 420 on the club pages.</strong> The critic
+  was reasoning from impressions; the synthesis was counting humans.</p>
+  <p>I am flagging this rather than hiding it, because it is the most useful thing the exercise
+  produced. Both were looking at real data. Only one was looking at people.</p>
+
+  <h2><span class="n">07</span>The edge, and how to press it</h2>
+  <p>6,694 questions, 84% carrying a written explanation, across 86 club packs. The direct
+  competitors advertise 500–1,000 questions and <strong>not one of them ships explanations at
+  all.</strong> Difficulty labels validate almost perfectly against real play — easy 89.7%
+  correct, medium 69.2%, hard 50.3%.</p>
+  <p>That is not a feature a funded rival copies in a sprint. It is thousands of hours of
+  hand-written football prose, and it is why /play holds 92–94% scroll depth.</p>
+  <p>Press it in this order: make the club-page taster work properly for everyone, keep it fresh
+  while the season is young, deepen the seventeen thin packs so the surface does not run dry
+  after two visits, then instrument it — so the next panel argues about measurements instead of
+  about which surface matters.</p>
+
+  <div class="foot">
+    <p>Sixteen agents, zero failures. Raw panel output in <code>docs/scout-panel-2-raw.json</code>;
+    recovery card and harvest command in <code>docs/SCOUT-RUN-2.md</code>. Two blind spots from
+    the previous panel were closed by hand before launch and are not graded here: in-app account
+    deletion exists, and the daily schedules have 389 days of runway.</p>
+  </div>
+</div>
