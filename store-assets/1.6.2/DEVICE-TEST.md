@@ -1,7 +1,8 @@
 # 1.6.2 device-test checklist (before upload — house rule)
 
-Artifacts (rebuilt 2026-08-21 — these include the Trail keyboard fix; the
-2026-08-20 pair did not, so use these):
+Artifacts (rebuilt 2026-08-21 14:18 at sha 1998e1b — carries the three Stadiums
+fixes, the Trail keyboard fix and the FCM push client. Any earlier vc20 pair is
+stale; use these):
 - Android sideload test build: `~/Downloads/BallIQ-1.6.2-vc20-test.apk` — signed
   release APK, installs straight onto the phone (the AAB cannot).
 - Android Play upload: `~/Downloads/BallIQ-1.6.2-vc20-play-upload.aab`
@@ -29,12 +30,15 @@ Artifacts (rebuilt 2026-08-21 — these include the Trail keyboard fix; the
       crash (the old #1650 class — Firebase now ships in the build; boot verified on a
       Play-services emulator, zero fatal exceptions). Then check Supabase
       `device_tokens` has a row with platform `android` for your user.
-- [ ] **Push E2E (only after the FCM_SERVICE_ACCOUNT secret is set)**: from a second
-      account, send a friend request → banner arrives on the Android device.
-      Prereq (Alex): Firebase console → ball-iq-499016 → Project settings →
-      Service accounts → *Generate new private key*, then paste the full JSON into
-      Supabase dashboard → Edge Functions → Secrets as `FCM_SERVICE_ACCOUNT`.
-      The key is a true secret — never in the repo, never in chat.
+- [ ] **Push E2E** — the `FCM_SERVICE_ACCOUNT` secret is SET and VERIFIED in prod
+      (2026-08-21, probe token pruned; see docs/fcm-runbook.md). Nothing left to
+      configure: from a second account send a friend request → a banner should
+      arrive on the Android device. Token count was 35 ios / 0 android at go-live,
+      so watch for android turning 1.
+- [ ] **Stadiums on a real phone (the three fixes)**: board opens on "20 grounds
+      to name" rather than a wall of empty rows · no "Ball IQ" stacked above
+      "Name the Stadium" · with the keyboard up, the list scrolls far enough to
+      reach the LAST club and the "Show me the answers" button.
 
 ## iOS (build 65)
 - [ ] Same app-level checks (no widget on iOS yet — next cycle)
