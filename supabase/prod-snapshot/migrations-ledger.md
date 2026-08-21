@@ -79,3 +79,15 @@ Refresh the snapshot after applying.
   0 policies, RPC granted anon+authenticated only, cleanup_funnel_events
   postgres-only, pg_cron '23 4 * * *' prunes past 180 days. End-to-end probe
   row confirmed.
+
+- **v1_6_streak_repair_floor_2** (2026-08-21, via MCP apply_migration) —
+  tick_login_streak repair floor 3 -> 2. Measured first: 179 rows carry a
+  login_streak, 33 at 3+ but 54 at 2+, and ZERO have ever held a fell stash
+  (the feature was one day old). Applied as a targeted `replace()` on the LIVE
+  pg_get_functiondef rather than a retyped body — one token changed, with a
+  raise if the token is absent. First attempt FAILED because the REVOKE line
+  guessed a (integer, integer) signature; the real one is (p_local_day
+  integer). It rolled back atomically and nothing changed. Verified after:
+  new token at position 1854 where the old one sat, grants still
+  postgres+authenticated. Client guest branch moved to match — the threshold
+  is duplicated by necessity (guests have no RPC), so both must move together.

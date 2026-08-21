@@ -141,6 +141,25 @@ function StadiumBoard({ league, onExit }) {
     } catch { /* celebration is best-effort */ }
   };
 
+  // ⚠️ finish() fires ONLY on a full sweep or an explicit give-up, so a player
+  // who names 12 of 20 and closes the app was completely invisible — Stadiums
+  // had zero rows anywhere all-time despite shipping to five leagues. That is
+  // how you end up shipping modes you cannot measure.
+  // Abandonment goes to funnel_events rather than `scores` on purpose: a
+  // partial run is not a score, and writing it as one would quietly skew every
+  // average built on that table.
+  const progressRef = useRef({ solved: 0, hints: 0, done: false });
+  progressRef.current = { solved: solvedSet.size, hints: hintsUsed, done: done || state.gaveUp };
+  useEffect(() => () => {
+    const p = progressRef.current;
+    if (p.done || p.solved === 0) return; // finished runs already report; untouched boards are noise
+    try {
+      window.dispatchEvent(new CustomEvent("biq:stadiums-exit", {
+        detail: { league: league.id, solved: p.solved, total, hints: p.hints },
+      }));
+    } catch { /* telemetry must never block an exit */ }
+  }, [league.id, total]);
+
   const onType = (v) => {
     setText(v);
     const hit = matchStadium(league, v, solvedSet);

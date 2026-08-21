@@ -8549,9 +8549,14 @@ function AppInner() {
           shieldSaved = true;
         } else newStreak = 1;
         // Un-shielded break: stash the fallen streak for same-day repair,
-        // mirroring the RPC (see v1_6_streak_repair.sql). >= 3 only — a
-        // 1-2 day flame relights faster than a repair flow explains itself.
-        const fellStash = (newStreak === 1 && prevLastDay !== todayNum && prevStreak >= 3)
+        // mirroring the RPC (see v1_6_streak_repair.sql + the floor-2 follow-up).
+        // Floor dropped 3 -> 2 on 2026-08-21 to match the server: measured in
+        // prod, 33 of 179 streak-holders were at 3+ but 54 were at 2+, and a
+        // two-day habit is the most fragile one there is. The longest current
+        // streak (55 days) does not need coaxing back; day two does.
+        // ⚠️ This threshold is duplicated client/server on purpose (guests have
+        // no RPC). If one moves, move BOTH or guests and accounts disagree.
+        const fellStash = (newStreak === 1 && prevLastDay !== todayNum && prevStreak >= 2)
           ? { fell: prevStreak, fellDay: todayNum } : null;
         result = {
           lastDay: todayNum,
@@ -9914,6 +9919,14 @@ function AppInner() {
       }
     };
     window.addEventListener('biq:stadiums-completed', onStadiumsDone);
+    // Abandoned runs. Not a score — a partial sweep written into `scores`
+    // would skew every average on that table — so it goes to the funnel where
+    // "how far do people actually get in Stadiums" is finally answerable.
+    const onStadiumsExit = (e) => {
+      const d = e?.detail || {};
+      loopEvent('stadiums-abandon', { league: d.league, solved: d.solved, total: d.total, hints: d.hints });
+    };
+    window.addEventListener('biq:stadiums-exit', onStadiumsExit);
     // Widget repaint rides the same event: a SECOND same-day completion
     // leaves loginStreak untouched (tick no-op), so the state-driven sync
     // effect would not re-fire — the direct call covers that gap.
@@ -9922,6 +9935,7 @@ function AppInner() {
     return () => {
       // (Also fixes a leak: the stadiums listener was never removed.)
       window.removeEventListener('biq:stadiums-completed', onStadiumsDone);
+      window.removeEventListener('biq:stadiums-exit', onStadiumsExit);
       window.removeEventListener('biq:daily-completed', onDailyDoneAndSync);
     };
   }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak]);
