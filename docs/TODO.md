@@ -1,5 +1,54 @@
 # Ball IQ — the board
 
+## ✅ 2026-08-21 — CONSENT GATE + SUMMER-2026 PACK (both live on web)
+
+**Clarity is now consent-gated in Europe.** Yesterday's commit made the privacy
+POLICY honest and said outright that it did not make the PRODUCT compliant.
+This closed that gap. Clarity is not injected at all for European visitors
+until they choose; the gate is inline in BOTH halves (`index.html` and
+`gen-seo-pages.mjs`), because the static club pages carry ~39% of all play and
+are where most European search traffic lands. Banner in `public/consent.js`,
+loaded lazily so decided and non-European visitors never fetch it.
+
+Verified on PROD, not on a green build: banner renders on balliq.app, **zero
+requests to clarity.ms**, choice persists across reload, `/play` renders with
+no console errors. Decline and Allow are deliberately equal in weight — a
+quieter "reject" invalidates the consent it collects.
+
+⚠️ Two things worth knowing:
+  - Region is decided by TIME ZONE and is over-inclusive on purpose (all
+    `Europe/*`, plus `UTC`/empty, because fingerprint-hardened browsers report
+    UTC wherever they are).
+  - `playwright.config.js` now PINS `timezoneId` and pre-answers the prompt for
+    the other 40 specs. Without the pin, CI (UTC) and a Mac (Europe/Oslo) would
+    exercise different app behaviour. 129/129 green across the three CI projects.
+
+**Summer-2026 pack: 6 → 94 questions.** Covers the 2026 World Cup, the whole
+2025-26 season, the manager merry-go-round, the transfer window and the
+retirements. Bank is now 6,788.
+
+⚠️ **Every fact required TWO independent sources before it became a question**,
+because almost all of it postdates the model's knowledge cutoff and therefore
+could not be written from memory without inventing it. The six questions that
+were already in the bank were re-verified rather than assumed — they passed.
+
+Deliberately NOT written, each a question that would have read perfectly and
+been wrong: Martínez's save count (11 vs 12), the Enzo Fernández red-card
+timing, Messi's all-time tally (20 vs 21), the youngest scorer, Ronaldo
+"retiring" (he said last World Cup, which is not the same), Messi retiring (a
+live story), a Wikipedia claim that Southampton were expelled from the play-offs
+for spying (uncorroborated, and exactly the shape of the vandalism already on
+file), and fees on seven deals where reputable outlets disagree.
+
+New gate: `scripts/audit-pack.mjs <tag>` — per-pack validator for
+self-answering stems, answer-naming hints, bad answer indices, duplicate
+options and undated superlatives. Proven by seeding five defects and confirming
+it caught all five. It then caught a real undated superlative in my own writing.
+
+**Still open from this thread:** the pack is web-live but native users get none
+of it until a fresh build is cut — see the 1.6.1 section below, and note it now
+predates even more work.
+
 ## 📦 1.6.1 CUT 2026-08-17 — BUILT, NOT UPLOADED (Alex's call)
 
 **iOS build 64 · Android versionCode 19 · marketing 1.6.1.** Signed AAB built
