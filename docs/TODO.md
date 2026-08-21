@@ -1,5 +1,43 @@
 # Ball IQ — the board
 
+## ⚠️ 2026-08-21 — THE FUNNEL WAS MEASURING ROBOTS (fixed, live)
+
+Went to read the funnel shipped that morning and found the instrument already
+giving false readings. Three hours in: **1,021 rows, 867 of them
+`first-game-started`**, ~250/hour, one per visitor, in exactly the hours the
+Playwright suite ran — against a real DAU of **13-17**. One row was named
+`probe-e2e`.
+
+Cause: e2e runs on localhost, localhost reads `.env.local`, `.env.local` points
+at **production** Supabase (no staging project exists). Every local and CI run
+wrote test events into the table the product's decisions come from, ~50
+synthetic rows per real one. Worse than no data, because it looks like data.
+
+**Fixed in both emitters** — `loopEvent()` (app) and `bqev()` (club pages) now
+refuse `navigator.webdriver` and localhost. Guarded by
+`tests/e2e/funnel-synthetic-gate.spec.js`, which was itself verified by
+disabling the gate and watching it fail. Its FIRST version passed with the gate
+off and proved nothing.
+
+**Second finding, with teeth:** the club pages reported only into Clarity. They
+carry ~39% of all play, and Clarity was consent-gated that same morning — so
+the busiest surface in the product had just gone dark for every European
+visitor who declines. `bqev()` now also writes to `funnel_events`, which is
+first-party and consent-exempt. Shared `biq_vid` means club-page → app is now
+ONE journey, a crossing nobody could measure before.
+
+⚠️ **`docs/FUNNEL.md` is the reference. Every query must filter
+`created_at > '2026-08-21 22:10:00+00'`.** The 1,021 contaminated rows were
+deliberately NOT deleted — irreversible, production data, and a documented
+cutoff does the same job at zero risk.
+
+⚠️ **Do not "verify the funnel" by driving a browser** — automation is now
+correctly invisible to it. Zero rows is the gate working, not a bug.
+
+**Still unanswered, now answerable:** nothing has yet been read from clean
+data. First real question worth asking once traffic accrues — what fraction of
+club-page players ever reach the app.
+
 ## 🧾 PARKED — commerce on the website (Alex, 2026-08-21)
 
 Alex wants to explore selling physical goods on balliq.app — jerseys,
