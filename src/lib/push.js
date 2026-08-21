@@ -82,14 +82,34 @@ export async function registerPush(userId, { requestPermission = true } = {}) {
       _wired = true;
       // Token issued / rotated by APNs → persist it.
       PushNotifications.addListener('registration', (t) => { saveToken(t.value); });
-      PushNotifications.addListener('registrationError', () => { /* non-fatal */ });
+      // ⚠️ This used to swallow the error entirely, on the one code path with a
+      // history of hard-crashing Android (#1650, "Default FirebaseApp is not
+      // initialized"). Combined with native builds shipping no Sentry client at
+      // all, an FCM registration failure on a real device was invisible twice
+      // over: nothing thrown to the user, nothing reported to us, and a device
+      // that simply never appears in device_tokens. Still non-fatal — a failed
+      // registration must never break the app — but no longer silent.
+      PushNotifications.addListener('registrationError', (err) => {
+        try {
+          Sentry.captureException(
+            new Error(`push registration failed: ${err?.error || 'unknown'}`),
+            { tags: { platform: Capacitor.getPlatform(), area: 'push' } },
+          );
+        } catch { /* reporting must never throw */ }
+      });
       // Tap on a delivered push (foreground or from the tray) → route in-app.
       PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
         try { _tapCb?.(action?.notification?.data || {}); } catch { /* noop */ }
       });
     }
     await PushNotifications.register(); // fires 'registration' with the token
-  } catch { /* best-effort */ }
+  } catch (err) {
+    // Best-effort by design — push must never block sign-in — but report it,
+    // for the same reason as registrationError above.
+    try {
+      Sentry.captureException(err, { tags: { platform: Capacitor.getPlatform(), area: 'push' } });
+    } catch { /* reporting must never throw */ }
+  }
 }
 
 // On sign-out, drop this device's token(s) for the user so a shared device
