@@ -22,10 +22,21 @@ headline ones re-labelled easy, 10 detail ones re-labelled hard, and the tile
 now serves **hard only** via a new `onlyDiff` option (`diff` is a ceiling, not
 a floor). Pack 94 → 89; tile pool 48.
 
-⚠️ **THE 1.6.3 ARCHIVE IS NOW STALE.** The iOS archive and AAB cut earlier
-carry the PRE-RE-CUT pack — verified: the deleted "Which country won the 2026
-World Cup?" is still inside the archived .app. **Re-cut both before any
-upload.** Nothing was uploaded, so no harm done, but do not ship that binary.
+✅ **RE-CUT 2026-08-22 00:30.** Both binaries rebuilt at the SAME version
+(1.6.3 / iOS 66 / vc21) because nothing was ever uploaded — no version burned.
+The stale archive was deleted from Xcode's Organizer folder first, so only one
+"Ball IQ 1.6.3 (66)" exists and there is nothing to pick wrong.
+
+Verified INSIDE the artifacts, not in the source tree: hard-only tile present,
+re-cut detail questions present, the five deleted questions gone, consent gate
+present, zero unguarded third-party scripts. The AAB was extracted and grepped
+directly because gradle reported "302 up-to-date" in 3 seconds, which is
+exactly the shape of a stale build.
+
+⚠️ Note "Which country won the 2026 World Cup?" IS still in the bundle, and
+should be — it stays in the bank as an honest `easy` question for casual
+players in a World Cup category quiz. The fix was that the TILE (hard-only)
+can never serve it. Do not "fix" this again by deleting it.
 
 ## ⚠️ 2026-08-21 — THE FUNNEL WAS MEASURING ROBOTS (fixed, live)
 
