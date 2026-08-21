@@ -981,6 +981,10 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-o.no{border-color:var(--wrong);background:rgba(255,71,71,.09);color:#FF8A82}
   .bq-o.no .k{background:var(--wrong);color:#fff}
   .bq-o.dim{opacity:.45}
+  /* Screen-reader-only announcement of the outcome. Not display:none and not
+     hidden — both remove it from the accessibility tree, which is exactly the
+     bug this fixes. */
+  .bq-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
   .bq-why{margin-top:13px;border-left:2px solid var(--club,var(--grn));padding:2px 0 2px 14px;font-size:13.5px;color:var(--tx3);line-height:1.55}
   .bq-why b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--club-soft,var(--grn));margin-bottom:5px;font-weight:700}
   .bq-next{margin-top:14px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
@@ -1169,7 +1173,20 @@ paintMeter()}
 function answer(q,rec,k){
 var a=+q.getAttribute('data-a'),os=q.querySelectorAll('.bq-o');
 for(var b=0;b<os.length;b++){os[b].disabled=true;
-if(b===a)os[b].className='bq-o ok';else if(b===k)os[b].className='bq-o no';else os[b].className='bq-o dim'}
+if(b===a){os[b].className='bq-o ok';os[b].setAttribute('aria-label','Correct answer: '+os[b].querySelector('.tt').textContent);var kc=os[b].querySelector('.k');if(kc)kc.textContent='✓'}
+else if(b===k){os[b].className='bq-o no';os[b].setAttribute('aria-label','Your answer, incorrect: '+os[b].querySelector('.tt').textContent);var kw=os[b].querySelector('.k');if(kw)kw.textContent='✗'}
+else os[b].className='bq-o dim'}
+/* WCAG 1.4.1 + 4.1.3 on the busiest game surface in the product. Right and
+   wrong used to be carried by colour ALONE — the letter chip still read "A"
+   and "D" after answering, and under deuteranopia the two chip backgrounds
+   simulate to #B4B41C vs #9D9D3A, a luminance ratio of 1.30. Effectively the
+   same olive, i.e. no signal at all for roughly 1 in 12 male football fans,
+   which is a costly slice of THIS audience specifically. The chip now becomes
+   a tick or a cross, so the glyph carries the meaning and the colour merely
+   reinforces it. The live region is the screen-reader half: nothing announced
+   the outcome at all, so a blind player pressed a button and heard silence. */
+var lr=q.querySelector('.bq-sr');
+if(lr)lr.textContent=(k===a?'Correct. ':'Incorrect. The answer is ')+os[a].querySelector('.tt').textContent+'.';
 var w=q.querySelector('.bq-why');if(w)w.hidden=false;
 /* Fired once per round, on the first answer. The gap between clubq-start and
    clubq-play is the honest engagement number: started the quiz vs actually
@@ -1286,7 +1303,11 @@ run=[];sc=0;at=0;streak=0;best=0;
 for(var i=from;i<qs.length&&run.length<n;i++){
 var q=qs[i];run.push({el:q,got:-1});
 var os=q.querySelectorAll('.bq-o');
-for(var b=0;b<os.length;b++){os[b].disabled=false;os[b].className='bq-o'}
+/* Restore the LETTER on replay. answer() overwrites the chip with a tick or a
+   cross, so resetting the class alone would leave a board of ticks on the
+   second run through. */
+for(var b=0;b<os.length;b++){os[b].disabled=false;os[b].className='bq-o';os[b].removeAttribute('aria-label');var kr=os[b].querySelector('.k');if(kr)kr.textContent='ABCD'.charAt(b)}
+var sr=q.querySelector('.bq-sr');if(sr)sr.textContent='';
 var w=q.querySelector('.bq-why');if(w)w.hidden=true;
 var nx=q.querySelector('.bq-next');if(nx)nx.hidden=true}
 show()}
@@ -1362,6 +1383,7 @@ function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', slug = 
 <p class="bq-qn">${esc(r.diff || 'Question')}</p>
 <p class="bq-qx">${esc(r.q)}</p>
 <div class="bq-os">${opts}</div>
+<p class="bq-sr" role="status" aria-live="polite"></p>
 <div class="bq-why"><b>Why</b>${esc(r.hint)}</div>
 <button class="bq-next" type="button" hidden>Next question →</button>
 </li>`;
