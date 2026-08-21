@@ -8281,7 +8281,18 @@ function AppInner() {
     return { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
   });
   const [settings, setSettings] = useState(() => {
-    const defaults = { hints:true, timer:true, sound:false, haptics:true, colorBlind:false };
+    // ⚠️ sound defaults ON for NATIVE only. The whole audio layer — every
+    // correct/wrong tone, the Footle chord, the MP winner beat — shipped
+    // switched off, so the largest built-but-dark asset in the product was
+    // reaching nobody who had not gone looking in Settings for it.
+    // Native only, deliberately: a phone has a hardware mute switch and a
+    // game making sound is expected, whereas a browser TAB that starts
+    // making noise is hostile (and autoplay policy would half-block it
+    // anyway). Web keeps the old default.
+    // This changes the DEFAULT, never a choice: stored settings spread over
+    // the defaults below, so anyone who has already turned sound off stays
+    // off.
+    const defaults = { hints:true, timer:true, sound:IS_NATIVE === true, haptics:true, colorBlind:false };
     try {
       const raw = localStorage.getItem("biq_settings");
       if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return { ...defaults, ...p }; }
