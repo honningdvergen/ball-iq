@@ -1693,8 +1693,21 @@ ${ADS_ACTIVE ? `<script>
 <meta name="apple-itunes-app" content="app-id=6775975961" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'" />
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" /></noscript>
+<!-- ⚠️ SPLIT BY ROLE, mirroring index.html:66-77. These pages carried ONE
+     combined link on display=swap, so Inter — the body face — swapped in late
+     and reflowed every block of text on the page. MEASURED on /quiz/liverpool/
+     2026-08-21: a real interactive session logged CLS 0.111 with the largest
+     single shift (0.0738) attributed to .hero-body and .hero-glow, while the
+     Lighthouse LAB run reported 0.004 and saw nothing. The lab misses it
+     because it never plays the quiz and warms the font cache; Clarity's field
+     numbers (0.198 on /quiz/premier-league/) are the honest ones.
+     Anton is the display face — one headline, a late swap is better than
+     losing the hero's identity — so it keeps swap. Inter and JetBrains Mono
+     are TEXT, where a mid-visit metric change is the shift itself. The app
+     made exactly this split months ago; the SEO generator never got it. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" media="print" onload="this.media='all'" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=optional" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=optional" /></noscript>
 <style>
   ${accent ? (() => { const p = accentPair(accent); return `:root{--club:${p.bg};--club-soft:${softenAccent(accent)};--club-ink:${p.ink};--club-glow:${rgbTriplet(softenAccent(accent))}}`; })() : ''}
   ${rootCss()}
