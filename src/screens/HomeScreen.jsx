@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Search, Landmark} from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Search, Landmark, Newspaper} from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -10,6 +10,8 @@ import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED, loadMysteryResult } f
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD } from "../lib/date.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
+import { TOPICAL_PACK } from "../lib/quiz.js";
+import { QB_INDEX } from "../questions-index.js";
 import { FootleHero } from "../components/FootleHero.jsx";
 import { APP_STORE_URL, PLAY_STORE_URL } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
@@ -172,6 +174,16 @@ function HomeScreenImpl({
   const mysteryLive = (() => {
     if (!MYSTERY_ENABLED) return false;
     try { return !!answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex()); } catch { return false; }
+  })();
+
+  // Same discipline as trailLive/mysteryLive: never advertise a mode that
+  // cannot be played. Counted against the INDEX projection (id/cat/diff/tag,
+  // no question text), so the home screen does not pull the 2.3MB bank just to
+  // decide whether to draw a tile. Retiring the pack is one constant away —
+  // set TOPICAL_PACK to null and this goes false.
+  const topicalLive = (() => {
+    if (!TOPICAL_PACK?.tag) return false;
+    try { return QB_INDEX.filter((r) => r.tag === TOPICAL_PACK.tag).length >= 10; } catch { return false; }
   })();
 
   const isPlaceholderName = (n) => !n || n === "Player" || /^player_/i.test(n);
@@ -546,6 +558,10 @@ function HomeScreenImpl({
           // is promoted to a full-width tile because it is the deepest content
           // we have and the one that asks the player about themselves.
           { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   onTap: () => startMode("clubquiz") },
+          // The topical pack sits high on purpose: it is the only tile whose
+          // value DECAYS, so burying it below the evergreen modes wastes it.
+          // Gated on topicalLive, and retirable by nulling TOPICAL_PACK.
+          ...(topicalLive ? [{ key: TOPICAL_PACK.key, Icon: Newspaper, name: TOPICAL_PACK.name, desc: TOPICAL_PACK.desc, isNew: true, onTap: () => startMode(TOPICAL_PACK.key) }] : []),
           // Trail takes the second slot once it is live — League Quiz has ONE
           // lifetime play and Trail is a daily, so it earns the position. The
           // whole entry is gated on the schedule actually having a puzzle, so

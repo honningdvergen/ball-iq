@@ -202,3 +202,28 @@ export function pickAvoidingConflicts(pool, count, conflictsOf) {
   }
   return picked;
 }
+
+// ─── TOPICAL PACK ────────────────────────────────────────────────────────────
+// A time-boxed, in-the-news set surfaced as its own tile on Home.
+//
+// WHY IT EXISTS. The summer-2026 pack is 94 questions inside a 6,788-question
+// bank. Every one of them is reachable through the normal category pickers, so
+// nothing is stranded — but reachable is not the same as findable. Spread that
+// thin, a player who wants "what actually happened this summer" meets roughly
+// one of these per Transfers quiz and never learns the set exists. Topical
+// content is worth most while it is topical, so it gets its own door.
+//
+// ⚠️ THIS IS DESIGNED TO BE RETIRED. Point `tag` at the next pack and rewrite
+// the two strings, or set the whole constant to null to remove the tile with
+// no other code change. A topical card that stops being topical is worse than
+// no card — it advertises the app's staleness on the home screen.
+//
+// No count in `desc`, per the standing rule: an inventory number in
+// user-facing copy is banned, and it would advertise exactly how small a
+// topical pack is.
+export const TOPICAL_PACK = {
+  key: "topical",
+  tag: "summer2026",
+  name: "Summer 2026",
+  desc: "The window and the World Cup",
+};

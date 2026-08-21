@@ -16,7 +16,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
-import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts } from './lib/quiz.js';
+import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts, TOPICAL_PACK } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2 } from 'lucide-react';
@@ -386,7 +386,7 @@ export function recordMpQuestionsSeen(questions) {
 }
 
 
-async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false, noEasy = false }) {
+async function getQs({ cat, tag, diff, n = 10, ramp = false, includeLegends = false, noEasy = false }) {
   const { QB } = await loadQuestions();
   // Defensive: strip out any undefined entries that might exist from array holes
   let pool = QB.filter(q => q && typeof q === "object");
@@ -401,6 +401,11 @@ async function getQs({ cat, diff, n = 10, ramp = false, includeLegends = false, 
     pool = pool.filter(q => q.cat !== "Legends");
   }
   if (cat && cat !== "All") pool = pool.filter(q => q.cat === cat);
+  // Topical packs select by TAG, not category, because a topical pack cuts
+  // across categories by nature — the summer-2026 set spans WorldCup,
+  // Transfers, Managers, PL, UCL and more. Filtering by cat could never
+  // express "everything that happened this summer".
+  if (tag) pool = pool.filter(q => q.tag === tag);
   // Club/league quizzes are for invested fans — drop "easy" (casual-obvious or
   // telegraphed) entirely. Only topic-scoped callers pass noEasy; general modes
   // (Classic, Daily 7, Survival, Hot Streak) keep the full easy→hard range.
@@ -9320,6 +9325,14 @@ function AppInner() {
       else if (m === "speed") { qs = await getQs({ cat: "All", diff: "medium", n: 5 }); }
       else if (m === "hotstreak") { qs = ((await getQs({ cat: "All", diff, n: 999 })) || []).filter(q => q.type !== "tf"); }
       else if (m === "truefalse") { qs = await getTrueFalseQs(); }
+      else if (TOPICAL_PACK && m === TOPICAL_PACK.key) {
+        // includeLegends:true is REQUIRED, not incidental. getQs strips
+        // cat:"Legends" from every mode that does not opt in, and the
+        // summer-2026 pack files its retirements (Milner, Cazorla, Immobile)
+        // under Legends — without this the tile would silently drop them.
+        qs = await getQs({ tag: TOPICAL_PACK.tag, n: 10, ramp: true, includeLegends: true });
+        if (!qs || qs.length < 5) { showToast("Not enough questions available for this mode"); return; }
+      }
       else if (m === "chaos") {
         // Chaos: quotes / moments / madness. Pull any QB row tagged chaos
         // (cat === "chaos" OR tag === "chaos"), ignore difficulty, shuffle 10.

@@ -46,6 +46,11 @@ const rows = QB.map((q) => ({
   cat: q?.cat ?? null,
   club: q?.club ?? null,
   diff: q?.diff ?? null,
+  // Topical packs select by tag, and the Home tile for one must be able to
+  // check "does this pack actually have questions?" WITHOUT pulling the full
+  // bank — the whole point of this projection. A tag is a short slug, never
+  // question text, so it belongs here. Null for the vast majority of rows.
+  tag: q?.tag ?? null,
   // Option COUNT, not the options. Every call site pairs its type check with
   // `Array.isArray(q.o)` to reject malformed rows; `n === 4` is that same
   // predicate without shipping the strings.
