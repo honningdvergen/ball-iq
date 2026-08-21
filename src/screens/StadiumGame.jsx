@@ -99,6 +99,30 @@ function StadiumBoard({ league, onExit }) {
 
   useEffect(() => { saveState(league.id, state); }, [league.id, state]);
 
+  // ⚠️ The board is a LONG list under an always-focused input, so the software
+  // keyboard covers its tail and the page has nothing left to scroll into —
+  // the last grounds are simply unreachable (player-reported 2026-08-21: "you
+  // can not scroll further down, the keyboard is blocking the list"). The page
+  // cannot know the keyboard's height, but visualViewport does: the gap
+  // between it and the layout viewport IS the keyboard. Pad the container by
+  // exactly that so the final row can always be scrolled clear, and drop back
+  // to 0 the moment it closes. Sibling bug to the Transfer Trail one, opposite
+  // mechanism — there the input was pushed down, here the content below it
+  // cannot come up.
+  const [kbInset, setKbInset] = useState(0);
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const sync = () => {
+      const gap = window.innerHeight - vv.height - (vv.offsetTop || 0);
+      setKbInset(gap > 80 ? Math.round(gap) : 0);
+    };
+    sync();
+    vv.addEventListener("resize", sync);
+    vv.addEventListener("scroll", sync);
+    return () => { vv.removeEventListener("resize", sync); vv.removeEventListener("scroll", sync); };
+  }, []);
+
   // Alphabetical board — Alex's spec: the club-list hint shows the table
   // alphabetically. Solved rows float within the same order so the board
   // reads as one stable list, not a shuffle.
@@ -169,7 +193,7 @@ function StadiumBoard({ league, onExit }) {
   };
 
   return (
-    <div style={{ minHeight: "100dvh", padding: "16px 16px 32px", maxWidth: 560, margin: "0 auto" }}>
+    <div style={{ minHeight: "100dvh", padding: "16px 16px 32px", paddingBottom: 32 + kbInset, maxWidth: 560, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
         <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -236,8 +260,30 @@ function StadiumBoard({ league, onExit }) {
         </div>
       )}
 
+      {/* ⚠️ The board used to render all 20 rows as "•••" from the first frame:
+          twenty identical featureless bars, no club, no letters, nothing to
+          read (player-reported 2026-08-21: "this looks terrible"). It also
+          leaked nothing useful, so it was pure noise — and it pushed the real
+          content off-screen under the keyboard. Until the club table is
+          unlocked the board now shows only what you have actually NAMED, so it
+          fills as you play; "Show the clubs" still expands the full scaffold
+          with its per-row letter hints, and giving up reveals everything. The
+          hint ladder is unchanged — this only stops drawing empty rows. */}
+      {!state.clubsRevealed && !done && solvedSet.size === 0 && (
+        <div style={{ marginTop: 18, padding: "22px 18px", borderRadius: 14, textAlign: "center",
+                      background: "var(--s2)", border: "1px dashed var(--border)" }}>
+          <div style={{ fontSize: 14.5, fontWeight: 800, color: "var(--text)" }}>
+            {total} grounds to name
+          </div>
+          <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 6, lineHeight: 1.5 }}>
+            Type any {league.name} ground — they land here as you get them.
+            Stuck? Show the clubs.
+          </div>
+        </div>
+      )}
+
       <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 7 }}>
-        {rows.map((c) => {
+        {(state.clubsRevealed || done ? rows : rows.filter((c) => solvedSet.has(c.club))).map((c) => {
           const isSolved = solvedSet.has(c.club);
           const letters = state.letters?.[c.club] || 0;
           const flash = justSolved === c.club;

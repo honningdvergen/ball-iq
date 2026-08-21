@@ -11138,7 +11138,12 @@ function AppInner() {
                 the ones that render their own header, which caught `trail`,
                 `league-quiz` and `stump`. League Quizzes was the giveaway —
                 a direct sibling of club-quiz, which was already excluded. */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "mystery", "league-quiz", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
+            {/* ⚠️ A NEW MODE MUST BE ADDED HERE. `stadiums` shipped after the
+                2026-07-29 enumeration and stacked "Ball IQ" above its own
+                "Name the Stadium" header on every phone (player-reported
+                2026-08-21). The list is the contract: if your screen draws its
+                own title, it belongs in it. */}
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "mystery", "stadiums", "league-quiz", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
