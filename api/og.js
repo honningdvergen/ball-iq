@@ -61,6 +61,21 @@ function challengeCard(sp) {
   const dateLabel = (sp.get('d') || '').slice(0, 12);
   const who = name || 'A mate';
 
+  // ⚠️ The tick is DRAWN, not typed. This rendered the character '✓' (U+2713)
+  // for months and every single challenge link that ever unfurled in WhatsApp
+  // showed five tofu boxes on green — verified by fetching the live PNG and
+  // looking at it. @vercel/og ships a default font covering Latin (which is
+  // why the headline always looked fine) but nothing covering U+2713, and
+  // `emoji: 'twemoji'` does not claim it because it is a dingbat rather than
+  // an emoji-presentation codepoint. Registering a font would fix it and add
+  // a network fetch to every card render; two rotated rectangles cannot fail.
+  const tick = () => h('div', {
+    style: { position: 'relative', width: 40, height: 40, display: 'flex' },
+  },
+    h('div', { style: { position: 'absolute', left: 5, top: 20, width: 15, height: 6, borderRadius: 3, background: '#06230C', transform: 'rotate(45deg)' } }),
+    h('div', { style: { position: 'absolute', left: 12, top: 15, width: 26, height: 6, borderRadius: 3, background: '#06230C', transform: 'rotate(-45deg)' } }),
+  );
+
   const dots = Array.from({ length: 7 }, (_, i) =>
     h('div', {
       key: i,
@@ -70,7 +85,7 @@ function challengeCard(sp) {
         background: i < score ? '#58CC02' : '#1A1D27',
         border: i < score ? 'none' : '2px solid #2A2E3C',
       },
-    }, i < score ? '✓' : '')
+    }, i < score ? tick() : '')
   );
 
   const tree = h('div', {

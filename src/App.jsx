@@ -43,7 +43,7 @@ import {
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
-import { APP_STORE_ID, APP_STORE_URL, PLAY_STORE_URL } from './lib/links.js';
+import { APP_STORE_ID, APP_STORE_URL, PLAY_STORE_URL, appStoreUrl } from './lib/links.js';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
 import { UsernameSetupModal } from './components/UsernameSetupModal.jsx';
 // Sprint #88 DDD2: ProfileScreen module (~72 kB raw / ~18 kB gzip) is too heavy
@@ -6098,7 +6098,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       return;
     }
     if (!APP_STORE_ID) { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Store rating opens once we’re live 🙌' })); return; }
-    try { window.open(`${APP_STORE_URL}?action=write-review`, '_blank'); } catch {}
+    try { window.open(`${appStoreUrl()}?action=write-review`, '_blank'); } catch {}
   };
   // Sprint #71 MM1: replace native confirm() for Sign Out with an in-app
   // modal matching the existing Reset-stats / Delete-account design. Native
@@ -11279,7 +11279,7 @@ function AppInner() {
                     setShowRatePrompt(false);
                     const ua = navigator.userAgent || "";
                     if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
-                      window.open(APP_STORE_URL, "_blank");
+                      window.open(`${appStoreUrl()}?action=write-review`, "_blank");
                     } else if (/Android/i.test(ua)) {
                       window.open(PLAY_STORE_URL, "_blank");
                     } else {
