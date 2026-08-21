@@ -66,3 +66,16 @@ public+anon), and `cleanup_stale_anon_users()` + pg_cron `37 4 * * *`
 public/anon/authenticated). Client code deployed ahead of it is inert-safe.
 ⚠️ Pairs with a DASHBOARD toggle: Auth → Sign In / Up → Anonymous sign-ins ON.
 Refresh the snapshot after applying.
+
+- **v1_6_funnel_events** (2026-08-21, via MCP apply_migration; repo file
+  `supabase/migrations/v1_6_funnel_events.sql`) — funnel_events table +
+  record_funnel_event(text, jsonb, uuid) RPC, so loopEvent() stops being
+  write-only. Clarity's export API returns only its own auto-detected smart
+  events, so onboard-done-*, first-game-started and clubq-play were
+  unreadable and every scouting-report claim about them was reasoning rather
+  than measurement. loopEvent now fans out to BOTH. Timed to land before the
+  season-start traffic, on the principle that instrumentation added after a
+  spike measures the tail. Verified post-apply: 0 client table grants, RLS on,
+  0 policies, RPC granted anon+authenticated only, cleanup_funnel_events
+  postgres-only, pg_cron '23 4 * * *' prunes past 180 days. End-to-end probe
+  row confirmed.

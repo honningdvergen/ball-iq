@@ -1897,9 +1897,41 @@ function removePrebootOnboard() {
   } catch {}
 }
 
-function loopEvent(name) {
+// A stable per-device id so a funnel can be followed across a visit without
+// anything resembling a fingerprint. Random, client-issued, and it never
+// leaves localStorage — same approach challenge_events already uses.
+function visitorId() {
+  try {
+    let v = localStorage.getItem("biq_vid");
+    if (!v) { v = (crypto?.randomUUID?.() || String(Math.random()).slice(2)); localStorage.setItem("biq_vid", v); }
+    return /^[0-9a-f-]{36}$/i.test(v) ? v : null;
+  } catch { return null; }
+}
+
+// ⚠️ This used to fire into Clarity and NOWHERE ELSE, which made it
+// write-only: Clarity's export API returns only its own auto-detected smart
+// events, so a query for onboard-done-answered / first-game-started /
+// clubq-play comes back empty. Three features shipped in August that could
+// not be read, and every recommendation about them in scouting report #2 was
+// therefore reasoning rather than measurement.
+// Now it fans out to BOTH — Clarity keeps session replay lined up with the
+// numbers, and funnel_events makes the numbers answerable in SQL forever.
+// Fire-and-forget on purpose: measurement must never delay or break a game.
+function loopEvent(name, meta) {
   try {
     if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
+  } catch {}
+  try {
+    supabase.rpc("record_funnel_event", {
+      p_event: name,
+      p_meta: meta ? { ...meta, native: IS_NATIVE === true } : { native: IS_NATIVE === true },
+      p_visitor: visitorId(),
+    }).then(({ error }) => {
+      // ⚠️ supabase.rpc() RESOLVES on error rather than rejecting — a bare
+      // .catch() would silently swallow every failure, which is exactly how
+      // two write paths were lost before. Check the error explicitly.
+      if (error) Sentry.addBreadcrumb({ category: 'funnel', message: `record_funnel_event failed: ${error.message}`, level: 'warning' });
+    });
   } catch {}
 }
 // Belt-and-braces for index.html's head script: re-apply the native-app class
