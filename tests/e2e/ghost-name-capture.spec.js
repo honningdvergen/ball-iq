@@ -48,12 +48,29 @@ async function playDailyToEnd(page) {
     const opt = page.locator('button.opt').filter({ visible: true }).first();
     if (!(await opt.count())) break;
     await opt.click();
-    await page.waitForTimeout(850);
+    // ⚠️ WAIT FOR THE CONDITION, NOT A DURATION. This was waitForTimeout(850),
+    // which is fine on a dev machine and NOT fine on a CI runner: when the
+    // reveal took longer than the sleep, the loop advanced without the answer
+    // registering, broke early, never reached the results screen, and failed
+    // at `expect(share).toBeVisible()` — exactly the misleading symptom the
+    // comment below already warns about. It failed on 2026-08-21 in the first
+    // CI run after the e2e job became a real gate, while passing 6/6 locally.
+    // A gate that flakes teaches people to ignore red, so the sleeps go.
+    await page.locator('button.opt.correct, button.opt.wrong')
+      .first().waitFor({ state: 'visible', timeout: 8000 })
+      .catch(() => {});
     // ⚠️ The advance button is "Next →" mid-game but "Results →" on Q7. An
     // earlier regex matched only the former and the loop stalled on the last
     // question, which reads exactly like "the share button doesn't exist".
     const next = page.locator('button').filter({ hasText: /Next|Continue|Results|Finish/i }).filter({ visible: true }).first();
-    if (await next.count()) { await next.click(); await page.waitForTimeout(600); }
+    await next.waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
+    if (await next.count()) {
+      await next.click();
+      // Settle on whatever comes next — the following question, or the result
+      // screen on Q7 — rather than guessing how long that takes.
+      await page.locator('button.opt, button:has-text("Share"), button:has-text("Challenge")')
+        .first().waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
+    }
   }
   await page.waitForTimeout(900);
 }
