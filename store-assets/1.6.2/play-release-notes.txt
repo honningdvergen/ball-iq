@@ -1,8 +1,88 @@
 <en-US>
 Your daily habit now lives on your home screen.
-• NEW: Home-screen widget — your streak and today's puzzle progress at a glance, and it tells you when new puzzles are ready.
-• NEW: Stadiums — name every ground in the Premier League, La Liga, Serie A, Bundesliga and Ligue 1.
-• Missed a day? The back-catalogue lets you replay the last two weeks of puzzles, and a broken streak can now be repaired.
-• Every win celebrates properly — confetti, sound and haptics across all four dailies and multiplayer.
-• Colour-blind Footle tiles, screen-reader support, and faster loading.
+• NEW: Home-screen widget — your streak and today's progress at a glance.
+• NEW: Stadiums — name every ground in five big leagues.
+• NEW: Notifications, so a daily never slips past you.
+• Missed a day? Replay the last two weeks, and repair a broken streak.
+• Bigger Footle keys, colour-blind tiles and screen-reader support.
 </en-US>
+<ar>
+عادتك اليومية صارت على شاشتك الرئيسية.
+• جديد: أداة الشاشة الرئيسية — سلسلتك وتقدّم اليوم بنظرة واحدة.
+• جديد: الملاعب — سمِّ كل ملعب في خمسة دوريات كبرى.
+• جديد: الإشعارات، حتى لا يفوتك لغز يومي.
+• فاتك يوم؟ أعد لعب آخر أسبوعين، وأصلِح سلسلتك المنقطعة.
+• أزرار أكبر في فوتل، ألوان لعمى الألوان، ودعم قارئ الشاشة.
+</ar>
+<de-DE>
+Deine tägliche Gewohnheit liegt jetzt auf dem Homescreen.
+• NEU: Homescreen-Widget — Serie und Tagesfortschritt auf einen Blick.
+• NEU: Stadien — benenne jedes Stadion in fünf großen Ligen.
+• NEU: Benachrichtigungen, damit dir kein Rätsel entgeht.
+• Tag verpasst? Spiele zwei Wochen nach und repariere deine Serie.
+• Größere Footle-Tasten, farbenblinde Kacheln, Screenreader-Support.
+</de-DE>
+<es-419>
+Tu hábito diario ahora vive en tu pantalla de inicio.
+• NUEVO: Widget — tu racha y el progreso del día de un vistazo.
+• NUEVO: Estadios — nombra cada cancha de cinco grandes ligas.
+• NUEVO: Notificaciones, para que no se te escape ningún reto.
+• ¿Faltaste un día? Repite dos semanas y recupera tu racha.
+• Teclas más grandes en Footle y soporte para daltonismo.
+</es-419>
+<es-ES>
+Tu hábito diario ahora vive en tu pantalla de inicio.
+• NUEVO: Widget — tu racha y el progreso del día de un vistazo.
+• NUEVO: Estadios — nombra cada campo de cinco grandes ligas.
+• NUEVO: Notificaciones, para que no se te escape ningún puzle.
+• ¿Te faltó un día? Repite dos semanas y recupera tu racha.
+• Teclas más grandes en Footle y soporte para daltonismo.
+</es-ES>
+<fr-FR>
+Ton rendez-vous quotidien s'installe sur ton écran d'accueil.
+• NOUVEAU : widget — ta série et ta progression du jour d'un coup d'œil.
+• NOUVEAU : Stades — nomme chaque enceinte de cinq grands championnats.
+• NOUVEAU : notifications, pour ne plus rater un défi.
+• Un jour manqué ? Rejoue deux semaines et répare ta série.
+• Touches Footle plus grandes et support daltonien.
+</fr-FR>
+<id>
+Kebiasaan harianmu kini ada di layar utama.
+• BARU: Widget layar utama — streak dan progres hari ini sekilas.
+• BARU: Stadion — sebutkan setiap markas di lima liga besar.
+• BARU: Notifikasi, supaya teka-teki harian tak terlewat.
+• Ketinggalan sehari? Ulangi dua minggu dan perbaiki streak-mu.
+• Tombol Footle lebih besar dan dukungan buta warna.
+</id>
+<it-IT>
+La tua abitudine quotidiana ora vive sulla schermata Home.
+• NUOVO: widget — la tua serie e i progressi di oggi a colpo d'occhio.
+• NUOVO: Stadi — nomina ogni impianto di cinque grandi campionati.
+• NUOVO: notifiche, così non ti sfugge nessuna sfida.
+• Saltato un giorno? Rigioca due settimane e ripara la serie.
+• Tasti Footle più grandi e supporto daltonici.
+</it-IT>
+<pt-BR>
+Seu hábito diário agora fica na tela inicial.
+• NOVO: widget — sua sequência e o progresso do dia num relance.
+• NOVO: Estádios — nomeie cada campo de cinco grandes ligas.
+• NOVO: notificações, para nenhum desafio passar batido.
+• Perdeu um dia? Rejogue duas semanas e recupere a sequência.
+• Teclas maiores no Footle e suporte para daltonismo.
+</pt-BR>
+<pt-PT>
+O teu hábito diário passa a viver no ecrã principal.
+• NOVO: widget — a tua sequência e o progresso do dia num relance.
+• NOVO: Estádios — nomeia cada recinto de cinco grandes ligas.
+• NOVO: notificações, para não perderes nenhum desafio.
+• Falhaste um dia? Repete duas semanas e repara a sequência.
+• Teclas maiores no Footle e suporte para daltonismo.
+</pt-PT>
+<tr-TR>
+Günlük alışkanlığın artık ana ekranında.
+• YENİ: Ana ekran widget'ı — serin ve günün ilerlemesi tek bakışta.
+• YENİ: Stadyumlar — beş büyük ligdeki her stadı bil.
+• YENİ: Bildirimler, günlük bulmacayı kaçırma.
+• Bir gün kaçırdın mı? İki haftayı tekrar oyna, serini onar.
+• Daha büyük Footle tuşları ve renk körlüğü desteği.
+</tr-TR>
