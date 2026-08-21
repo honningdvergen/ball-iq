@@ -148,12 +148,12 @@ export const CATEGORIES = [
     h1: 'World Cup Quiz',
     title: 'World Cup Quiz with Answers — Free to Play | Ball IQ',
     description:
-      'Test your FIFA World Cup knowledge with free trivia questions and explained answers — from 1930 to Qatar 2022. Every answer comes with the story behind it.',
+      'Test your FIFA World Cup knowledge with free trivia and explained answers — from 1930 to Spain\'s 2026 triumph. Every answer comes with the story behind it.',
     about: 'FIFA World Cup',
     sample: 20,
     intro: [
-      `The FIFA World Cup is the biggest single-sport event on the planet, and almost a century of it gives you a lot to be quizzed on. This free World Cup quiz runs from the very first tournament — Uruguay 1930, won by the hosts — right through to Qatar 2022, where Argentina and Lionel Messi finally lifted the trophy after beating France on penalties in one of the greatest finals ever played.`,
-      `In between sit all the moments that define the competition. Brazil's golden era, with a 17-year-old Pelé announcing himself in 1958. England's only triumph, at Wembley in 1966. Diego Maradona's twin moments against England in 1986 — the Hand of God and then the goal of the century four minutes later. Zinedine Zidane's two headers to beat Brazil in 1998, and his red-card headbutt eight years later. Spain's tiki-taka peak in 2010, Germany's astonishing 7-1 demolition of Brazil on home soil in 2014, and Kylian Mbappé's emergence as a teenager in 2018.`,
+      `The FIFA World Cup is the biggest single-sport event on the planet, and almost a century of it gives you a lot to be quizzed on. This free World Cup quiz runs from the very first tournament — Uruguay 1930, won by the hosts — right through to 2026, when Spain beat Argentina 1-0 after extra time at MetLife Stadium to win their second title — Ferran Torres settling it in the 106th minute of the first 48-team World Cup, staged across the United States, Canada and Mexico.`,
+      `In between sit all the moments that define the competition. Brazil's golden era, with a 17-year-old Pelé announcing himself in 1958. England's only triumph, at Wembley in 1966. Diego Maradona's twin moments against England in 1986 — the Hand of God and then the goal of the century four minutes later. Zinedine Zidane's two headers to beat Brazil in 1998, and his red-card headbutt eight years later. Spain's tiki-taka peak in 2010, Germany's astonishing 7-1 demolition of Brazil on home soil in 2014, Kylian Mbappé's emergence as a teenager in 2018, and Messi finally getting his hands on the trophy in Qatar in 2022 after beating France on penalties. Then 2026: Spain conceding a single goal in the entire tournament, England beating France 6-4 in the highest-scoring third-place match the competition has ever seen, and Mbappé taking the Golden Boot for a second time on his way to becoming the World Cup's all-time leading scorer on 22.`,
       `The questions cover winners and hosts, top scorers and Golden Glove keepers, famous finals and infamous upsets. You'll get asked who scored France's third goal in the 1998 final, which goalkeeper saved Coman's penalty in the 2022 shoot-out, and how Croatia kept grinding their way to the 2018 final through three straight extra-time knockouts. Answers are graded easy to hard, so you can warm up on the obvious champions before the deep cuts about 1930s qualifying and stoppage-time third-place play-offs.`,
       `Every question below comes with a short explanation, so even when you miss one you pick up the detail that makes it stick. Play the sample set here for free, then jump into the full World Cup quiz in the app for hundreds more.`,
     ],
@@ -163,8 +163,16 @@ export const CATEGORIES = [
         a: 'Brazil, with five titles (1958, 1962, 1970, 1994 and 2002) — the only nation to play in every tournament and the most successful side in World Cup history.',
       },
       {
+        q: 'Who won the 2026 World Cup?',
+        a: 'Spain, beating Argentina 1-0 after extra time at MetLife Stadium in New Jersey on 19 July 2026. Ferran Torres scored the only goal in the 106th minute. It was Spain\'s second World Cup, sixteen years after their first, and they conceded just one goal in the whole tournament.',
+      },
+      {
         q: 'Who won the 2022 World Cup?',
         a: 'Argentina, beating France on penalties in Qatar after a 3-3 draw. Lionel Messi finally won the trophy, and Kylian Mbappé scored a hat-trick in the final yet still ended on the losing side.',
+      },
+      {
+        q: 'How many teams played at the 2026 World Cup?',
+        a: '48 — the first expanded World Cup, up from 32. It ran to 104 matches across 16 host cities in the United States, Canada and Mexico, and produced a record 308 goals.',
       },
       {
         q: 'Is the World Cup quiz free to play?',
