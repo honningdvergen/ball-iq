@@ -1,5 +1,49 @@
 # Ball IQ — the board
 
+## 🧾 PARKED — commerce on the website (Alex, 2026-08-21)
+
+Alex wants to explore selling physical goods on balliq.app — jerseys,
+sportswear, supplements. **Explicitly not urgent**; noted for later.
+
+Two things established already so the exploration starts from facts:
+
+1. **Being external to the apps does not avoid the trader obligation — the
+   website is the SOURCE of it.** The app-store trader declaration is a DSA
+   rule aimed at store platforms. Selling physical goods to EU/UK consumers
+   from your own site triggers consumer law (Consumer Rights Directive and the
+   UK equivalent), which requires trader identity and a geographic address to
+   be given BEFORE the customer is bound.
+2. **It does not have to be his home address.** A registered company address,
+   virtual office or accountant's address satisfies it. Alex has plans for a
+   business address and phone number and will sort them when he's ready — also
+   parked, also not urgent.
+
+⚠️ The three product categories he named are NOT equivalent in risk, and that
+distinction is the whole substance of the exploration: club replica jerseys are
+LICENSED goods (selling them without authorisation is counterfeiting), while
+supplements are a regulated category with health-claim and food-safety rules
+that vary by country. Own-brand print-on-demand merch carries neither problem.
+Full write-up owed.
+
+## 🔨 1.6.3 CUT 2026-08-21 — BUILT, NOT UPLOADED (Alex's call)
+
+**iOS build 66 · Android versionCode 21 · marketing 1.6.3.** Archive in
+`~/Library/Developer/Xcode/Archives/2026-08-21/`, AAB at
+`android/app/build/outputs/bundle/release/app-release.aab` (7.3 MB).
+Nothing uploaded — Alex said explicitly not live for people today.
+
+Carries 21 src/ commits that were web-only, including the 94-question
+summer-2026 pack + its Home tile, the Europe consent gate, and three
+player-reported fixes plus a keyed answer that marked the correct choice wrong.
+
+⚠️ **DEVICE TEST OWED before any upload.** New Home tile, new quiz path and a
+consent banner that has never run on a phone. A green archive proves
+compilation, not behaviour.
+
+⚠️ CocoaPods failed the first `cap sync ios` and the sync still printed
+"finished". `export LANG/LC_ALL=en_US.UTF-8` and re-run. Both slots at the
+stores were free as of today.
+
 ## ✅ 2026-08-21 — CONSENT GATE + SUMMER-2026 PACK (both live on web)
 
 **Clarity is now consent-gated in Europe.** Yesterday's commit made the privacy
