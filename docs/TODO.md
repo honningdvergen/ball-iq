@@ -1,5 +1,32 @@
 # Ball IQ — the board
 
+## ⚠️ 2026-08-22 — SUMMER-2026 PACK RE-CUT (playtest-driven)
+
+Alex played the Summer 2026 tile within an hour of it shipping: *"terrible…
+one question was who won the world cup just a month ago, come on. I think we
+have to scrap this entire mode."*
+
+He scored **7/10 and the three he missed were ALL `hard`** — he cleared every
+easy and medium. The three misses were a Championship winner, an exact
+appearance count and an exact goal total. Everything he breezed was a headline
+outcome.
+
+**The lesson, which generalises:** a topical pack is made of things the engaged
+audience WATCHED HAPPEN. The headline is a memory, not a question. Quiz the
+detail. See `feedback_topical_packs_quiz_the_detail` in memory.
+
+Not scrapped, because scrapping the tile would NOT have fixed it — 56 soft
+topical questions were sitting inside Transfers/WorldCup/Managers, softening
+every one of those rounds. Instead: 5 telegraphed questions deleted, 14
+headline ones re-labelled easy, 10 detail ones re-labelled hard, and the tile
+now serves **hard only** via a new `onlyDiff` option (`diff` is a ceiling, not
+a floor). Pack 94 → 89; tile pool 48.
+
+⚠️ **THE 1.6.3 ARCHIVE IS NOW STALE.** The iOS archive and AAB cut earlier
+carry the PRE-RE-CUT pack — verified: the deleted "Which country won the 2026
+World Cup?" is still inside the archived .app. **Re-cut both before any
+upload.** Nothing was uploaded, so no harm done, but do not ship that binary.
+
 ## ⚠️ 2026-08-21 — THE FUNNEL WAS MEASURING ROBOTS (fixed, live)
 
 Went to read the funnel shipped that morning and found the instrument already
