@@ -217,7 +217,10 @@
          the App Store listing declares none). On the web (https) it loads
          normally so AdSense can verify the site and serve ads. Placed right
          after the native-app detection above so the class check is reliable.
-         Static SEO pages carry the raw tag directly (they are web-only). -->
+         The static SEO pages run the SAME native guard and the SAME consent
+         gate, injected by scripts/gen-seo-pages.mjs head(). Keep the two in
+         step — they are the two halves of one rule, and the club pages are
+         the larger half by traffic. -->
     <script>
       (function () {
         try {
@@ -283,14 +286,58 @@
             /* Microsoft Clarity (session replays / heatmaps) — WEB ONLY, same
                native guard as AdSense above: the native app's privacy policy
                and store listings declare no analytics, so the Capacitor app
-               must never load this. Project balliq.app / xqwevk9brq. */
+               must never load this. Project balliq.app / xqwevk9brq.
+
+               ⚠️ CONSENT-GATED IN EUROPE since 2026-08-21. Clarity records
+               session replays, which is exactly the processing the ePrivacy
+               Directive and GDPR require consent for — and ~87% of this
+               site's traffic is EEA/UK. Until 2026-08-21 it loaded for
+               everyone with no prompt at all, while the privacy policy
+               claimed a consent prompt existed. The policy is now honest and
+               this is the product half.
+
+               Region test is the browser TIME ZONE, not language: language
+               says what you read, the zone says roughly where you are. It is
+               deliberately OVER-inclusive (every Europe/* zone, which catches
+               non-EEA countries too) because the failure directions are not
+               symmetric — asking someone who did not need asking costs a tap,
+               not asking someone who did is the actual problem.
+
+               The queue shim is installed REGARDLESS, so the many
+               window.clarity('event', …) call sites across the app and the
+               SEO pages never throw when consent is absent; those events
+               simply queue and are dropped. loopEvent() also writes to
+               funnel_events, which is first-party and needs no consent, so
+               declining costs us replays but not the funnel. */
             window.clarity = window.clarity || function () {
               (window.clarity.q = window.clarity.q || []).push(arguments);
             };
-            var c = document.createElement('script');
-            c.async = true;
-            c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
-            document.head.appendChild(c);
+            var needsConsent = true;
+            try {
+              var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '');
+              /* 'UTC' and '' are treated as in-scope on purpose. A browser
+                 hardened against fingerprinting (Tor, Firefox
+                 resistFingerprinting) reports exactly 'UTC' regardless of
+                 where its user is — so reading that as "not European" would
+                 silently track the most privacy-conscious visitors we have,
+                 which is precisely backwards. Ask them. */
+              needsConsent = tz.indexOf('Europe/') === 0 || tz === 'UTC' || tz === '';
+            } catch (e) { needsConsent = true; }
+            var choice = null;
+            try { choice = localStorage.getItem('biq_consent_analytics'); } catch (e) {}
+            if (!needsConsent || choice === 'granted') {
+              var c = document.createElement('script');
+              c.async = true;
+              c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
+              document.head.appendChild(c);
+            } else if (choice !== 'denied') {
+              /* Undecided, and in scope: ask. The banner is a separate file so
+                 that the ~87% of loads which never show it do not carry it. */
+              var b = document.createElement('script');
+              b.src = '/consent.js';
+              b.defer = true;
+              document.head.appendChild(b);
+            }
           }
         } catch (e) { /* noop */ }
       })();

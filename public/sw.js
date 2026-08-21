@@ -10,7 +10,7 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v10'; // v10: push + notificationclick handlers (SW logic changed)
+const CACHE_VERSION = 'balliq-v11'; // v11: /consent.js exempted from cache-first (SW logic changed)
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 const DOC_CACHE = `${CACHE_VERSION}-docs`;
@@ -184,6 +184,23 @@ self.addEventListener('fetch', (event) => {
   if (isGoogleFonts(url)) {
     event.respondWith(cacheFirst(request, FONTS_CACHE));
     return;
+  }
+
+  // /consent.js is a COMPLIANCE control, so it must never be pinned.
+  //
+  // It matches STATIC_EXT (it is a .js file) and would otherwise be served
+  // cache-first for the life of the cache — meaning a correction to how we ask
+  // for analytics consent, or to what we say while asking, could not reach an
+  // installed PWA until someone remembered to bump CACHE_VERSION. That is a
+  // bad failure mode for the one file whose job is to be legally accurate, and
+  // it is cheap to avoid: the file is ~7KB and is only ever fetched by
+  // undecided European visitors.
+  //
+  // Offline, this simply fails and no banner appears — which is safe, because
+  // the inline gate has already withheld Clarity. No prompt means no tracking,
+  // never the reverse.
+  if (url.origin === self.location.origin && url.pathname === '/consent.js') {
+    return; // fall through to the network
   }
 
   // Same-origin static asset → cache-first.

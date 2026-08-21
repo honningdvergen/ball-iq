@@ -1598,17 +1598,38 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
 <meta name="google-adsense-account" content="${ADSENSE_CLIENT}" />
 <script>
 /* Microsoft Clarity — ALL web pages, WEB ONLY behind the same native guard as
-   the AdSense loader below (these pages ship inside the native bundle too). */
+   the AdSense loader below (these pages ship inside the native bundle too).
+
+   ⚠️ CONSENT-GATED IN EUROPE. This must stay byte-for-byte equivalent to the
+   gate in index.html: these static club pages carry ~39% of all play and are
+   where most European search traffic actually lands, so gating only the SPA
+   would leave the larger half unconsented. See public/consent.js. */
 (function(){try{
   var native = location.protocol === 'capacitor:' ||
     (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) ||
     document.documentElement.classList.contains('native-app');
   if (native) return;
   window.clarity = window.clarity || function(){(window.clarity.q = window.clarity.q || []).push(arguments);};
-  var c = document.createElement('script');
-  c.async = true;
-  c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
-  document.head.appendChild(c);
+  var needsConsent = true;
+  /* 'UTC'/'' count as in-scope — fingerprint-hardened browsers report UTC
+     wherever they are, and reading that as non-European would silently track
+     exactly the visitors most likely to object. See index.html. */
+  try { var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '');
+        needsConsent = tz.indexOf('Europe/') === 0 || tz === 'UTC' || tz === ''; }
+  catch (e) { needsConsent = true; }
+  var choice = null;
+  try { choice = localStorage.getItem('biq_consent_analytics'); } catch (e) {}
+  if (!needsConsent || choice === 'granted') {
+    var c = document.createElement('script');
+    c.async = true;
+    c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
+    document.head.appendChild(c);
+  } else if (choice !== 'denied') {
+    var b = document.createElement('script');
+    b.src = '/consent.js';
+    b.defer = true;
+    document.head.appendChild(b);
+  }
 }catch(e){}})();
 </script>${ads && ADS_ENABLED ? `
 <script>

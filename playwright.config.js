@@ -39,6 +39,23 @@ export default defineConfig({
     baseURL: process.env.BALLIQ_BASE_URL || 'http://localhost:4173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+
+    // ⚠️ Pin the clock's REGION, not just the time. The analytics consent gate
+    // (index.html + gen-seo-pages.mjs, banner in public/consent.js) decides
+    // whether to prompt from the browser time zone, so an unpinned runner
+    // changes app behaviour: CI runs in UTC, which the gate deliberately
+    // treats as in-scope, while a local Mac runs Europe/Oslo. Without this,
+    // "does a banner cover the bottom of the viewport?" would differ between
+    // laptop and CI — the exact class of drift that hid a broken e2e job for
+    // 30 consecutive green runs.
+    timezoneId: 'Europe/Oslo',
+
+    // …and then answer the prompt, so it is not in the way of 39 specs that
+    // know nothing about it. 'denied' rather than 'granted' on purpose: it
+    // keeps the suite off the network (no clarity.ms fetch on every page
+    // load) and keeps session replays free of synthetic robot traffic.
+    // consent-banner.spec.js clears this key to test the banner itself.
+    storageState: 'tests/e2e/consent-state.json',
   },
 
   // Auto-start the app for the default local baseURL. reuseExistingServer
