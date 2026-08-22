@@ -67,3 +67,45 @@ describe('question bank club names', () => {
     expect(singletons, `singleton clubs: ${singletons.join(', ')}`).toEqual([]);
   });
 });
+
+/**
+ * One competition, one category.
+ *
+ * ⚠️ Same failure as the club split above, one field over. The bank carried
+ * BOTH `cat:"UCL"` (610 questions) and `cat:"ChampionsLeague"` (135) for the
+ * same competition — not an era split, since both spanned pre- and post-1992.
+ * Only "UCL" is in the app's CATS array, so those 135 questions could never be
+ * served by the Champions League quiz. They were reachable only via "All".
+ *
+ * What makes it worth a guard: the SEO layer had already noticed and quietly
+ * compensated — gen-seo-pages.mjs maps /champions-league|european-cup/ to
+ * BOTH names. One half of the codebase worked around the drift while the other
+ * half silently lost 135 questions. That is this repo's signature bug.
+ *
+ * Adding a category is a deliberate act: it must be wired into the app's CATS
+ * array or LEAGUE_QUIZ_SECTIONS, or the questions are unreachable. So the list
+ * lives here and adding to it should feel like a decision.
+ */
+describe('question bank categories', () => {
+  // Every category the app can actually route to, plus the two that are
+  // reachable by other means: `chaos` has its own mode, and `History` is a
+  // deliberate general-pool bucket with no dedicated picker entry.
+  const REACHABLE = new Set([
+    'WorldCup', 'Euros', 'UCL', 'PL', 'LaLiga', 'Bundesliga', 'SerieA',
+    'Ligue1', 'Transfers', 'Managers', 'Records', 'Legends',
+    'SuperLig', 'Primeira',
+    'chaos', 'History',
+  ]);
+
+  it('uses no category the app cannot route to', () => {
+    const counts = {};
+    for (const q of QB) counts[q.cat] = (counts[q.cat] || 0) + 1;
+    const orphans = Object.keys(counts)
+      .filter((c) => !REACHABLE.has(c))
+      .map((c) => `${c} (${counts[c]} questions unreachable)`);
+    expect(
+      orphans,
+      `\n  ${orphans.join('\n  ')}\n\nWire it into CATS/LEAGUE_QUIZ_SECTIONS, or fold it into an existing category.`,
+    ).toEqual([]);
+  });
+});
