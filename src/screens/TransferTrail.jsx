@@ -32,6 +32,7 @@ import { clubColour, clubAbbr } from "../lib/clubColour.js";
    costs nothing at boot. */
 import POOL from "../data/mysteryPool.json";
 import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
+import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
 
 function loadDay(ymd) {
   try {
@@ -153,18 +154,15 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   // the on-screen keyboard, and without the gate this would yank the page on
   // desktop where nothing is covered. `center` clears the keyboard without
   // needing to know which ancestor scrolls.
-  const inputRef = useRef(null);
+  // Now the shared hook (lib/useKeyboardAwareInput.js). Behaviour is unchanged
+  // — the hook was extracted FROM this code — but the same shape had to be
+  // fixed a third time in Mystery Player on 2026-08-22, so it lives in one
+  // place now rather than drifting across three screens.
+  const { inputRef, keepInputVisible } = useKeyboardAwareInput();
   useEffect(() => {
-    if (done) return;
-    const el = inputRef.current;
-    if (!el || document.activeElement !== el) return;
-    const vv = window.visualViewport;
-    if (!vv || vv.height >= window.innerHeight - 100) return;
-    const id = requestAnimationFrame(() => {
-      try { el.scrollIntoView({ block: "center", behavior: "smooth" }); } catch { /* older WebViews */ }
-    });
-    return () => cancelAnimationFrame(id);
-  }, [shown, hint, done]);
+    if (done) return undefined;
+    return keepInputVisible();
+  }, [shown, hint, done, keepInputVisible]);
 
   const streak = useMemo(() => (won ? computeTrailStreak(date) : 0), [won, date]);
   const [reportSent, setReportSent] = useState(false);

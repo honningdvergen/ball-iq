@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
 import { STADIUM_LEAGUES, matchStadium } from "../data/stadiums.js";
 import { Confetti, haptic } from "../App.jsx";
 
@@ -91,8 +92,15 @@ function StadiumBoard({ league, onExit }) {
   const [text, setText] = useState("");
   const [shake, setShake] = useState(false);
   const [justSolved, setJustSolved] = useState(null);
-  const inputRef = useRef(null);
+  // Shared keyboard handling (lib/useKeyboardAwareInput.js). This mode already
+  // had the INSET half — content below the field could be scrolled clear of
+  // the keyboard — but was missing the other half: as solved rows accumulate
+  // ABOVE the input, the field itself slides under the keyboard. Both halves
+  // are needed, which is exactly why this is one hook and not three copies.
+  const { inputRef, kbInset, keepInputVisible } = useKeyboardAwareInput();
   const solvedSet = useMemo(() => new Set(state.solved), [state.solved]);
+  // Every solved stadium inserts a row above the input.
+  useEffect(keepInputVisible, [solvedSet.size, keepInputVisible]);
   const done = solvedSet.size === total;
   const hintsUsed = (state.clubsRevealed ? 1 : 0)
     + Object.values(state.letters || {}).reduce((a, b) => a + b, 0);
@@ -109,20 +117,6 @@ function StadiumBoard({ league, onExit }) {
   // to 0 the moment it closes. Sibling bug to the Transfer Trail one, opposite
   // mechanism — there the input was pushed down, here the content below it
   // cannot come up.
-  const [kbInset, setKbInset] = useState(0);
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-    const sync = () => {
-      const gap = window.innerHeight - vv.height - (vv.offsetTop || 0);
-      setKbInset(gap > 80 ? Math.round(gap) : 0);
-    };
-    sync();
-    vv.addEventListener("resize", sync);
-    vv.addEventListener("scroll", sync);
-    return () => { vv.removeEventListener("resize", sync); vv.removeEventListener("scroll", sync); };
-  }, []);
-
   // Alphabetical board — Alex's spec: the club-list hint shows the table
   // alphabetically. Solved rows float within the same order so the board
   // reads as one stable list, not a shuffle.

@@ -12,6 +12,7 @@ import {
 import POOL from '../data/mysteryPool.json';
 import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
 import { dateToYMD } from '../lib/date.js';
+import { useKeyboardAwareInput } from '../lib/useKeyboardAwareInput.js';
 import CAREERS from '../data/mysteryCareers.json';
 import SCHEDULE from '../data/mysterySchedule.json';
 
@@ -94,8 +95,17 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   const [gaveUp, setGaveUp] = useState(() => !!saved?.gaveUp);
   const [copied, setCopied] = useState(false);
   const [streak, setStreak] = useState(() => computeMysteryStreak());
-  const inputRef = useRef(null);
+  // ⚠️ Player-reported 2026-08-22: the keyboard sat on top of the board and the
+  // page would not scroll. Same root as Trail's two reports — every guess adds
+  // a row and pushes the field down, iOS only scrolls a field into view when it
+  // GAINS focus, and the shrunken viewport then reads as scroll-locked. This
+  // mode had NO handling at all. See lib/useKeyboardAwareInput.js.
+  const { inputRef, kbInset, keepInputVisible } = useKeyboardAwareInput();
   const done = won || gaveUp;
+  // Each guess inserts a row above the field. Pull it back into view rather
+  // than dropping the keyboard — staying focused is what lets a player guess
+  // repeatedly without re-tapping, which this mode depends on.
+  useEffect(keepInputVisible, [guesses.length, done, keepInputVisible]);
 
   // Autocomplete over the pool. Capped — a 1,539-item list is unusable, and
   // showing everything on an empty box invites scrolling instead of typing.
@@ -360,7 +370,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         </form>
       )}
 
-      <div style={{ flex: 1, padding: '10px 16px 24px', display: 'flex', flexDirection: 'column', gap: 7 }}>
+      <div style={{ flex: 1, padding: `10px 16px ${24 + kbInset}px`, display: 'flex', flexDirection: 'column', gap: 7 }}>
         {guesses.length === 0 && !done && (
           <p style={{ color: 'var(--t3)', fontSize: 13, textAlign: 'center', marginTop: 26 }}>
             Your guesses appear here, closest first.
