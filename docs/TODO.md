@@ -18,7 +18,13 @@ point of rematch is that neither leaves. Needs a room-level rematch handshake,
 not two independent creates. Alex wants a native banner/notification keeping
 both in the room they were already in.
 
-**P1 · "Open the game" from a game push notification does nothing.** Deep link
+✅ **FIXED 2a947ee — P1 · "Open the game" from a push notification does nothing.**
+Payload was always correct; the TIMING was not. The OS listener lived inside
+registerPush (needs sign-in), so a cold-launch tap fired before it existed and
+Capacitor dropped it. Now attached at module scope + buffered. 5 tests, proven
+by removing the buffer. **Needs a device test — cannot be exercised in a browser.**
+
+~~ORIGINAL~~ · "Open the game" from a game push notification does nothing. Deep link
 from the notification tap is dead. Online is unusable if invites cannot be
 opened from the notification that announces them.
 
@@ -32,16 +38,30 @@ derive from the whole name. 102 players verified, guarded by a test.
 "xabi alonso" marked right — obviously the same player, and the player knew the
 answer. Answer matching must accept the surname alone.
 
-**P2 · The stuck-keyboard bug is in EVERY typing mode, not just Trail.**
+✅ **FIXED f683fd9 — P2 · Stuck keyboard in every typing mode.** Alex was right:
+Mystery had NO handling at all, Stadiums had only half. Now one shared hook
+(lib/useKeyboardAwareInput.js) across all three. **Device test owed — a desktop
+browser has no on-screen keyboard so the path never runs.**
+
+~~ORIGINAL~~ · The stuck-keyboard bug is in EVERY typing mode.
 Fixed in Trail 2026-08-21; Alex reports it in Mystery Player and suspects
 Stadiums. Third instance from the same root — see
 `feedback_trail_keyboard_reveal_scroll`. Fix the SHAPE, once, everywhere.
 
-**P2 · Mystery Player: no way to get unstuck.** Friend guessed Cahill (ranked
+✅ **FIXED f497278 — P2 · Mystery Player: no way to get unstuck.** Three opt-in
+hints (position / era / club count) unlocking after 3 guesses. Deliberately
+avoids nationality and club — both Wikidata-broken.
+
+~~ORIGINAL~~ · Mystery Player: no way to get unstuck. Friend guessed Cahill (ranked
 #5), then could not get any closer and had no further help available. Needs
 progressive hints the player can choose to reveal.
 
-**P2 · No REVEAL on give-up.** Mystery Player (and probably Trail) end a lost
+✅ **ALREADY DONE (not rebuilt) — P2 · No REVEAL on give-up.** Mystery has had
+"Give up and reveal" since 24f4b48 (2026-08-17); Trail prints "It was <name>" on
+any finish. Both landed after build 63 — the friend on 1.6.0 has neither. This
+was a DELIVERY gap, not a development one.
+
+~~ORIGINAL~~ · No REVEAL on give-up. Mystery Player (and probably Trail) end a lost
 run without ever telling the player the answer. A quiz that will not tell you
 what it was is the worst possible ending.
 
