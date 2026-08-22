@@ -1025,8 +1025,39 @@ export function acceptedNamesFor(player) {
   if (last) out.push(last);
   if (first && last) out.push(`${first} ${last}`);
   if (first && !last) out.push(first);
+
+  // ⚠️ `display` splits names INCONSISTENTLY, and that inconsistency was
+  // rejecting answers the player had plainly got right (reported 2026-08-22:
+  // a surname marked wrong while the full name was marked right).
+  //
+  // The particle sometimes rides with the forename and sometimes with the
+  // surname — ["David de","Gea"] but ["Virgil","van Dijk"] — so whichever way
+  // a given player is stored, ONE of the two forms a human would actually type
+  // was refused:
+  //
+  //     Kevin De Bruyne        "Bruyne"      rejected
+  //     Virgil van Dijk        "Dijk"        rejected
+  //     Frenkie de Jong        "de Jong"     rejected
+  //     David de Gea           "de Gea"      rejected
+  //     Marc-André ter Stegen  "ter Stegen"  rejected
+  //
+  // So derive the forms from the WHOLE name rather than trusting the split:
+  // the bare final word, and the last two words (which covers every
+  // particle+surname). Both are additive — nothing previously accepted stops
+  // being accepted.
+  //
+  // Deliberately generous. A Trail guess is limited and the mode is about
+  // football knowledge, not about guessing how we happened to store a name.
+  // Over-accepting costs a player nothing they did not earn; under-accepting
+  // takes an attempt away from someone who KNEW the answer, which is the
+  // worst outcome this mode can produce.
+  const whole = [first, last].filter(Boolean).join(' ').trim();
+  const words = whole ? whole.split(/\s+/) : [];
+  if (words.length >= 2) out.push(words[words.length - 1]);
+  if (words.length >= 3) out.push(words.slice(-2).join(' '));
+
   for (const alias of TRAIL_ALIASES[player.key] || []) out.push(alias);
-  return out;
+  return [...new Set(out)];
 }
 
 export function guessMatchesPlayer(guess, player) {

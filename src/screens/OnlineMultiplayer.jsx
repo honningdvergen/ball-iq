@@ -6,7 +6,7 @@ import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { supabase } from '../supabase.js';
 import { useAuth } from '../useAuth.jsx';
-import { useMpRetryStatus, mpCreateRoom, mpJoinRoom, mpRevealQuestion, mpSetPlayerName } from '../multiplayerRpc.js';
+import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName } from '../multiplayerRpc.js';
 import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
@@ -1063,24 +1063,30 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
     if (rematching) return;
     setRematching(true);
     setRematchError("");
-    const result = await mpCreateRoom({
-      p_capacity: 8,
+    // ⚠️ NOT a create. Player-reported 2026-08-22: both players tapped Rematch
+    // and each landed ALONE in a different room, because this used to call
+    // create_room() unconditionally — A made a room and invited B while B made
+    // a room and invited A. claim_rematch() makes the finished room the
+    // rendezvous, so the second tapper JOINS the first one's room instead of
+    // opening a rival lobby. Serialised server-side; simultaneous taps cannot
+    // both create.
+    const result = await mpClaimRematch({
+      p_code: room?.code,
       p_name: myPlayer?.name || "Player",
       p_avatar: myPlayer?.avatar || "⚽",
     });
     if (result?.error || !result?.code) {
-      console.warn('[handleRematch] createRoom', result?.code || '', result?.error);
+      console.warn('[handleRematch] claimRematch', result?.code || '', result?.error);
       setRematchError("Couldn't set up the rematch — check your connection and try again.");
       setRematching(false);
       return;
     }
-    // Hand the parent everyone else who was in the match so it can fire a
-    // play_invite to each. Without this the rematch room existed but nobody
-    // was told, so the challenger sat alone in a lobby. Guests have no user_id
-    // and simply get skipped — they still have the shareable link.
-    const opponentIds = players
-      .map((p) => p.user_id)
-      .filter((id) => id && id !== myUserId);
+    // Only the player who actually CREATED the room invites the others. The
+    // joiner must not re-invite, or the person who tapped first gets a
+    // notification pulling them toward the room they are already standing in.
+    const opponentIds = result.created
+      ? players.map((p) => p.user_id).filter((id) => id && id !== myUserId)
+      : [];
     onRematch?.(result.code, opponentIds);
   };
   const handleShareResult = async () => {
@@ -1099,15 +1105,22 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
     // share — never block the share on the rematch.
     let url = INVITE_BASE_URL;
     let rematchCode = null;
+    let rematchCreated = false;
     if (onRematch) {
       setRematching(true);
-      const created = await mpCreateRoom({
-        p_capacity: 8,
+      // Same handshake as the Rematch button, and for the same reason: if the
+      // opponent has already tapped Rematch, this must SHARE THEIR ROOM rather
+      // than open a second one. Otherwise the share link advertises a lobby
+      // the opponent is not in — the exact split that was reported, arriving
+      // by a different button.
+      const claimed = await mpClaimRematch({
+        p_code: room?.code,
         p_name: myPlayer?.name || "Player",
         p_avatar: myPlayer?.avatar || "⚽",
       });
-      if (created?.code && !created?.error) {
-        rematchCode = created.code;
+      if (claimed?.code && !claimed?.error) {
+        rematchCode = claimed.code;
+        rematchCreated = !!claimed.created;
         url = buildInviteUrl(rematchCode, myPlayer?.name);
       } else {
         setRematching(false);
@@ -1120,7 +1133,12 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
     // the share sheet is a bonus rather than the only way anyone finds out.
     const enterRematch = () => {
       if (!rematchCode) return;
-      const opponentIds = players.map((p) => p.user_id).filter((id) => id && id !== myUserId);
+      // Only invite if we are the one who opened the room. Joining someone
+      // else's rematch and then "inviting" them pulls them toward a lobby they
+      // are already sitting in.
+      const opponentIds = rematchCreated
+        ? players.map((p) => p.user_id).filter((id) => id && id !== myUserId)
+        : [];
       onRematch?.(rematchCode, opponentIds);
     };
     try {

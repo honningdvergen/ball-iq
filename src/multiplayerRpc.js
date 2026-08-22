@@ -171,6 +171,31 @@ export async function mpCreateRoom({ p_capacity, p_name, p_avatar }) {
   return data
 }
 
+/**
+ * Rematch is a HANDSHAKE, not a create.
+ *
+ * ⚠️ Player-reported 2026-08-22: both players tapped Rematch and each ended up
+ * ALONE in a different room. handleRematch() called create_room()
+ * unconditionally, so A made room X and invited B while B made room Y and
+ * invited A, and the invitations crossed. The failure scaled with how much
+ * both players wanted a rematch — the worst possible property for the feature
+ * whose entire job is to keep two people playing.
+ *
+ * claim_rematch() makes the FINISHED room the rendezvous: the first tap
+ * creates the new room and stamps its code on the old one, every later tap
+ * reads the stamp and joins. Serialised server-side with SELECT ... FOR UPDATE,
+ * so simultaneous taps cannot both win.
+ *
+ * Returns { code, room_id, created } — `created` is true for the player who
+ * made the room and false for anyone who joined it, which is what the caller
+ * needs to decide whether to send invites.
+ */
+export async function mpClaimRematch({ p_code, p_name, p_avatar }) {
+  const { data, error } = await withRetry('claim_rematch', { p_code, p_name, p_avatar })
+  if (error) return { code: null, error: error.message ?? String(error) }
+  return data
+}
+
 export async function mpJoinRoom({ p_code, p_name, p_avatar }) {
   const { data, error } = await withRetry('join_room', { p_code, p_name, p_avatar })
   // Preserve PostgrestError.code so callers can switch on SQLSTATE
