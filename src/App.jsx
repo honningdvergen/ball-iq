@@ -9669,6 +9669,14 @@ function AppInner() {
   const handleToggleNotif = useCallback(async (on) => {
     if (on) {
       const granted = await requestNotifPermission();
+      // ⚠️ "Said yes" and "was granted" are DIFFERENT numbers, and only the
+      // second earns reach. iOS shows its permission sheet exactly once ever,
+      // so a denial here is permanent for that install — which makes the gap
+      // between notif-prompt-yes and notif-permission-granted the single most
+      // expensive drop in the retention funnel. Measured 2026-08-22: 35 of 209
+      // accounts reachable (16.7%), 28 of 93 active players (30%), with no
+      // instrumentation anywhere to say why.
+      loopEvent(granted ? "notif-permission-granted" : "notif-permission-denied");
       if (!granted) {
         setNotifEnabled(false);
         try { localStorage.removeItem('biq_notif_enabled'); } catch {}
@@ -9728,7 +9736,7 @@ function AppInner() {
         if (asks >= 2) return false;
         localStorage.setItem('biq_notif_asks', String(asks + 1));
         if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
-        notifTimerRef.current = setTimeout(() => setNotifPromptOpen(true), 7000);
+        notifTimerRef.current = setTimeout(() => { loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
         return true;
       } catch { return false; }
     }
@@ -9756,7 +9764,7 @@ function AppInner() {
       // anyone could reach it — a glance, not a window. Sharing is the action
       // we most want here, so it gets the beat. The ask still lands on the
       // result screen, which is the moment Alex called correctly.
-      notifTimerRef.current = setTimeout(() => setNotifPromptOpen(true), 7000);
+      notifTimerRef.current = setTimeout(() => { loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
       return true;
     } catch { return false; }
   }, [user?.id, webPushOn]);
@@ -11529,7 +11537,12 @@ function AppInner() {
         {notifPromptOpen && (
           <div
             style={{position:"fixed",inset:0,top:0,right:0,bottom:0,left:0,background:"rgba(0,0,0,0.6)",zIndex:1100,display:"flex",alignItems:"flex-end",justifyContent:"center"}}
-            onClick={() => setNotifPromptOpen(false)}
+            /* Backdrop tap. Counted SEPARATELY from "Not now" on purpose: a
+               lifetime ask is already spent by the time this sheet opens, so a
+               mis-tap costs one of only two chances. If dismissals turn out to
+               rival deliberate declines, the ask accounting is the thing to
+               revisit — but measure before changing it. */
+            onClick={() => { loopEvent("notif-prompt-dismissed"); setNotifPromptOpen(false); }}
           >
             <div
               onClick={e => e.stopPropagation()}
@@ -11543,6 +11556,7 @@ function AppInner() {
               <button
                 onClick={async () => {
                   setNotifPromptOpen(false);
+                  loopEvent("notif-prompt-yes", { engine: notificationsSupported() ? "native" : "web" });
                   // Same sheet, two engines: native local notifications, or web
                   // push. Both toggles request permission INSIDE this click —
                   // Safari rejects requestPermission() outside a user gesture.
@@ -11554,7 +11568,7 @@ function AppInner() {
                 Yes, remind me
               </button>
               <button
-                onClick={() => setNotifPromptOpen(false)}
+                onClick={() => { loopEvent("notif-prompt-no"); setNotifPromptOpen(false); }}
                 style={{width:"100%",minHeight:44,padding:"12px",background:"none",color:"var(--t3)",border:"none",fontFamily:"inherit",fontSize:15,fontWeight:600,cursor:"pointer"}}
               >
                 Not now
