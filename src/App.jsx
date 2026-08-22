@@ -30,7 +30,7 @@ import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
-import { registerPush, onPushTap } from './lib/push.js';
+import { registerPush, onPushTap, initPushTapRouting } from './lib/push.js';
 import { maybeRequestReview, markBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard } from './lib/ballIqCard.js';
@@ -1985,6 +1985,13 @@ function loopEvent(name, meta) {
 // that hides desktop landing chrome (.landing-top / .landing-bottom / etc.).
 // Covers any case where the bridge wasn't injected before the head script ran.
 if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
+// ⚠️ Attach the push-tap listener at MODULE SCOPE, not in an effect. A cold
+// launch from a notification delivers the tap while the app is still booting;
+// anything waiting on React mount or on auth resolving is too late, and
+// Capacitor does not buffer plugin events. push.js holds the tap until the
+// router is set, so the two halves cannot race. (Reported 2026-08-22: tapping
+// a game notification did not open the game.)
+if (IS_NATIVE) { try { initPushTapRouting(); } catch { /* never break boot */ } }
 // Post-Footle App Store nudge (2026-07-16, Alex): the apple-itunes-app smart
 // banner never renders inside Threads/IG/X in-app webviews — exactly where
 // social traffic lands — and InstallBanner needs a PWA install affordance
