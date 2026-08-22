@@ -9089,11 +9089,45 @@ function AppInner() {
     {
       const idleIndex = () => { try { prefetchQuestionIndex(); } catch {} };
       const idleBank = () => { try { prefetchQuestions(); } catch {} };
+      // ⚠️ THE ONLINE TAB CHUNK — the one measured cause of a slow tab switch.
+      //
+      // Measured 2026-08-22 (Alex: "tab switching is a bit less responsive
+      // than I would like"). Three plausible causes were measured and all
+      // three were WRONG: click-to-paint is ~17ms (one frame at 60fps), all
+      // four panes together hold 733 DOM nodes so toggling `display` costs
+      // nothing, and .tab-item already sets touch-action:manipulation so there
+      // is no 300ms tap delay.
+      //
+      // What IS slow is the FIRST tap on Online. OnlineMultiplayer is a ~52kB
+      // React.lazy chunk that NOTHING loads until you tap the tab — verified
+      // by building without this prefetch and watching the chunk never appear
+      // in the resource timeline across a 7s idle load. Until it arrives the
+      // Suspense fallback renders an EMPTY tab-pane, so on a phone over
+      // cellular the first visit is a blank rectangle for as long as the
+      // network takes. It happens exactly once per session, which is why it
+      // reads as "sometimes sluggish" rather than broken.
+      //
+      // ⚠️ ProfileScreen does NOT have this problem, despite being a similar
+      // ~56kB lazy chunk: its pane is always mounted (hidden via HIDDEN_STYLE
+      // rather than unmounted), so React resolves it at ~190ms on every boot
+      // whether or not anyone opens Profile. Warming it here is belt-and-
+      // braces for boot paths where that pane is not rendered, and a no-op
+      // otherwise — import() dedupes. It is NOT the fix; Online is.
+      //
+      // Placed after the question index and before the full bank: the index
+      // renders the pickers, the bank is the heavy one, and a tab tap is far
+      // likelier than a direct mode tap.
+      const idleTabs = () => {
+        try { import('./screens/ProfileScreen.jsx'); } catch { /* prefetch is best-effort */ }
+        try { import('./screens/OnlineMultiplayer.jsx'); } catch { /* prefetch is best-effort */ }
+      };
       if (typeof requestIdleCallback === 'function') {
         requestIdleCallback(idleIndex, { timeout: 3000 });
+        requestIdleCallback(idleTabs, { timeout: 4000 });
         requestIdleCallback(() => setTimeout(() => requestIdleCallback(idleBank, { timeout: 8000 }), 4000), { timeout: 3000 });
       } else {
         setTimeout(idleIndex, 1200);
+        setTimeout(idleTabs, 1800);
         setTimeout(idleBank, 5200);
       }
     }
