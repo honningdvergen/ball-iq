@@ -6,7 +6,13 @@ Player-reported, therefore near-certainly real. Ordered by severity, not by
 ease. Alex: *"especially all the online buttons have to work, we have to really
 fix this."*
 
-**P1 · Online rematch splits the two players into separate rooms.** Both hit
+✅ **FIXED f51b6cc — P1 · Online rematch splits the two players into separate rooms.**
+`claim_rematch()` makes the finished room the rendezvous; first tap creates,
+later taps join, serialised by SELECT..FOR UPDATE. Exercised in prod with two
+real user ids; a non-player is refused. The SHARE button had the same bug and
+would have kept it alive — fixed too. **Needs a 2-device test before it counts.**
+
+~~ORIGINAL REPORT~~ · Online rematch splits the two players into separate rooms. Both hit
 Rematch after an online game and each ended up in a NEW room, alone. The whole
 point of rematch is that neither leaves. Needs a room-level rematch handshake,
 not two independent creates. Alex wants a native banner/notification keeping
@@ -16,7 +22,13 @@ both in the room they were already in.
 from the notification tap is dead. Online is unusable if invites cannot be
 opened from the notification that announces them.
 
-**P2 · Transfer Trail rejects a surname-only answer.** "alonso" marked wrong,
+✅ **FIXED f51b6cc — P2 · Transfer Trail rejects a surname-only answer.**
+The report did not reproduce on today's Alonso, but the SHAPE was real and
+worse: De Bruyne/van Dijk/de Jong/de Gea/ter Stegen all rejected a form a human
+would type, because `display` splits names inconsistently. Accepted forms now
+derive from the whole name. 102 players verified, guarded by a test.
+
+~~ORIGINAL REPORT~~ · Transfer Trail rejects a surname-only answer. "alonso" marked wrong,
 "xabi alonso" marked right — obviously the same player, and the player knew the
 answer. Answer matching must accept the surname alone.
 
