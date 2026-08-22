@@ -93,6 +93,13 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   //     loss. The hardest of the four modes had the harshest rule.
   // `gaveUp` gives it the `done` that Trail and Footle already have.
   const [gaveUp, setGaveUp] = useState(() => !!saved?.gaveUp);
+  // ⚠️ Player-reported 2026-08-22: a friend guessed Cahill, was ranked #5, and
+  // then "could not get any lower". Rank alone is a dead end — it tells you
+  // that you are close without telling you which direction to move, so a
+  // stuck player's only remaining options were guessing blindly or giving up.
+  // Opt-in, one at a time: the player asks for help, help is never forced on
+  // someone still enjoying the hunt.
+  const [hintsUsed, setHintsUsed] = useState(() => saved?.hintsUsed || 0);
   const [copied, setCopied] = useState(false);
   const [streak, setStreak] = useState(() => computeMysteryStreak());
   // ⚠️ Player-reported 2026-08-22: the keyboard sat on top of the board and the
@@ -106,6 +113,42 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   // than dropping the keyboard — staying focused is what lets a player guess
   // repeatedly without re-tapping, which this mode depends on.
   useEffect(keepInputVisible, [guesses.length, done, keepInputVisible]);
+
+  // ⚠️ HINTS DELIBERATELY AVOID `nat` AND `club`. Both come from Wikidata P27
+  // (citizenship, not footballing nation) and are wrong often enough that the
+  // reveal panel stopped printing them — today's own pool has Tim Cahill as
+  // "Samoa". A hint the player cannot trust is worse than no hint, because it
+  // sends them confidently in the wrong direction.
+  //
+  // These three are the fields the reveal panel already stands behind, ordered
+  // least- to most-revealing: what he does, roughly when, then a number that
+  // narrows hard.
+  const HINTS = useMemo(() => {
+    if (!answer) return [];
+    const out = [];
+    const pos = answer.position || answer.slot;
+    if (pos) out.push({ label: 'Position', text: `The answer is a ${String(pos).toLowerCase()}.` });
+    if (answer.born) out.push({ label: 'Era', text: `Born in the ${Math.floor(answer.born / 10) * 10}s.` });
+    if (answer.clubCount > 0) {
+      out.push({ label: 'Clubs', text: `Played for ${answer.clubCount} clubs.` });
+    }
+    return out;
+  }, [answer]);
+  // Unlocks BEFORE the give-up option (5). A player who is stuck should meet
+  // help first and surrender second, not the other way round.
+  const HINTS_AFTER = 3;
+  const hintsAvailable = !done && guesses.length >= HINTS_AFTER && hintsUsed < HINTS.length;
+  const revealHint = () => {
+    const next = Math.min(hintsUsed + 1, HINTS.length);
+    setHintsUsed(next);
+    haptic('select');
+    // Persist immediately — a hint taken and then the tab closed must not come
+    // back unspent, or the count in the result panel lies.
+    saveMysteryResult(date, {
+      won, gaveUp, guesses, hintsUsed: next, ...(isArchive ? { arc: 1 } : {}),
+    });
+  };
+
 
   // Autocomplete over the pool. Capped — a 1,539-item list is unusable, and
   // showing everything on an empty box invites scrolling instead of typing.
@@ -144,7 +187,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   const giveUp = () => {
     if (done) return;
     setGaveUp(true);
-    saveMysteryResult(date, { won: false, gaveUp: true, guesses, ...(isArchive ? { arc: 1 } : {}) });
+    saveMysteryResult(date, { won: false, gaveUp: true, guesses, hintsUsed, ...(isArchive ? { arc: 1 } : {}) });
     // Same archive guard as the win path and for the same reason: replaying an
     // old puzzle must never touch today's habit metrics.
     if (!isArchive) {
@@ -181,7 +224,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
     if (isWin) setWon(true);
     // Persist EVERY guess, not just the win — a player who closes the tab
     // three guesses in should come back to those three guesses.
-    saveMysteryResult(date, { won: isWin, guesses: next, ...(isArchive ? { arc: 1 } : {}) });
+    saveMysteryResult(date, { won: isWin, guesses: next, hintsUsed, ...(isArchive ? { arc: 1 } : {}) });
     if (isWin) {
       setStreak(computeMysteryStreak());
       // ⚠️ Mystery shipped WITHOUT this and recorded nothing for its whole
@@ -273,7 +316,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
             {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
           </div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
-            Solved in <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}.
+            Solved in <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}{hintsUsed > 0 ? ` · ${hintsUsed} ${hintsUsed === 1 ? 'hint' : 'hints'}` : ''}.
             {streak > 1 && <> · 🔥 <strong style={{ color: 'var(--t1)' }}>{streak}-day streak</strong></>}
           </div>
           <button
@@ -309,7 +352,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
             {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
           </div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
-            Gave up after <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}. Back tomorrow.
+            Gave up after <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}{hintsUsed > 0 ? ` · ${hintsUsed} ${hintsUsed === 1 ? 'hint' : 'hints'}` : ''}. Back tomorrow.
           </div>
           <button
             type="button"
@@ -368,6 +411,36 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           )}
           {error && <div style={{ color: '#FF6B6B', fontSize: 12.5, marginTop: 8 }}>{error}</div>}
         </form>
+      )}
+
+      {/* Hints sit between the input and the guess list — where a stuck player
+          is already looking, and where they cannot be mistaken for part of the
+          board. Revealed hints STAY on screen: making someone remember a clue
+          they have already spent is its own small cruelty. */}
+      {!done && (hintsUsed > 0 || hintsAvailable) && (
+        <div style={{ margin: '0 16px 8px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {HINTS.slice(0, hintsUsed).map((h) => (
+            <div
+              key={h.label}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', borderRadius: 11,
+                       background: 'var(--gold-l)', border: '1px solid rgba(255,193,7,0.28)' }}
+            >
+              <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase',
+                             color: 'var(--gold)', flexShrink: 0 }}>{h.label}</span>
+              <span style={{ fontSize: 13.5, color: 'var(--t1)' }}>{h.text}</span>
+            </div>
+          ))}
+          {hintsAvailable && (
+            <button
+              type="button"
+              onClick={revealHint}
+              style={{ alignSelf: 'center', background: 'none', border: 'none', color: 'var(--gold)', fontSize: 13,
+                       fontWeight: 800, textDecoration: 'underline', cursor: 'pointer', fontFamily: 'inherit', padding: 6 }}
+            >
+              {hintsUsed === 0 ? 'Stuck? Reveal a hint' : `Reveal another hint (${HINTS.length - hintsUsed} left)`}
+            </button>
+          )}
+        </div>
       )}
 
       <div style={{ flex: 1, padding: `10px 16px ${24 + kbInset}px`, display: 'flex', flexDirection: 'column', gap: 7 }}>
