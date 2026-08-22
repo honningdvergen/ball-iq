@@ -1,5 +1,41 @@
 # Ball IQ — the board
 
+## 🔴 2026-08-22 — PLAYTEST REPORT (Alex + friend, 2 devices). OPEN.
+
+Player-reported, therefore near-certainly real. Ordered by severity, not by
+ease. Alex: *"especially all the online buttons have to work, we have to really
+fix this."*
+
+**P1 · Online rematch splits the two players into separate rooms.** Both hit
+Rematch after an online game and each ended up in a NEW room, alone. The whole
+point of rematch is that neither leaves. Needs a room-level rematch handshake,
+not two independent creates. Alex wants a native banner/notification keeping
+both in the room they were already in.
+
+**P1 · "Open the game" from a game push notification does nothing.** Deep link
+from the notification tap is dead. Online is unusable if invites cannot be
+opened from the notification that announces them.
+
+**P2 · Transfer Trail rejects a surname-only answer.** "alonso" marked wrong,
+"xabi alonso" marked right — obviously the same player, and the player knew the
+answer. Answer matching must accept the surname alone.
+
+**P2 · The stuck-keyboard bug is in EVERY typing mode, not just Trail.**
+Fixed in Trail 2026-08-21; Alex reports it in Mystery Player and suspects
+Stadiums. Third instance from the same root — see
+`feedback_trail_keyboard_reveal_scroll`. Fix the SHAPE, once, everywhere.
+
+**P2 · Mystery Player: no way to get unstuck.** Friend guessed Cahill (ranked
+#5), then could not get any closer and had no further help available. Needs
+progressive hints the player can choose to reveal.
+
+**P2 · No REVEAL on give-up.** Mystery Player (and probably Trail) end a lost
+run without ever telling the player the answer. A quiz that will not tell you
+what it was is the worst possible ending.
+
+**P3 · Tab switching feels less responsive than it should** on the newest
+build. Unmeasured — needs a real measurement before any fix, not a guess.
+
 ## ⚠️ 2026-08-22 — SUMMER-2026 PACK RE-CUT (playtest-driven)
 
 Alex played the Summer 2026 tile within an hour of it shipping: *"terrible…
