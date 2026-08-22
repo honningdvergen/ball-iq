@@ -1,5 +1,35 @@
 # Ball IQ — the board
 
+## 📱 SIMULATOR TESTING — what it verified, and the one thing it cannot
+
+Alex, 2026-08-23: *"i guess a sim would be more telling than a desktop
+browser."* Correct, and it was. Built Debug for iPhone 17 (iOS 26.5) and drove
+the real WKWebView.
+
+**Verified on real iOS:** app launches and renders correctly; Home, More-modes
+grid, League Quiz, Mystery Player all navigate; tab bar labels are perfectly
+legible (confirming the contrast findings from experience-audit.mjs were MY
+bug, not the app's); text input focuses and accepts typing; the Summer 2026
+tile renders with its NEW badge.
+
+⚠️ **THE ON-SCREEN KEYBOARD COULD NOT BE TESTED, and it is the one thing that
+matters most.** The Simulator defaults to a connected hardware keyboard, so the
+software keyboard never renders and `visualViewport` never shrinks — which
+means the keyboard fixes (Trail, Mystery, Stadiums) still have NOT been
+exercised even here.
+
+Attempts made:
+  · `defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool
+    false` + full Simulator restart — pref reads back `false`, keyboard still
+    does not appear on newer Xcode.
+  · AppleScript ⌘K — refused: "osascript is not allowed to send keystrokes"
+    (needs Accessibility permission, which is Alex's to grant, not mine).
+
+**To unblock:** with the Simulator focused, press **⌘K** (I/O → Keyboard →
+Connect Hardware Keyboard, toggled OFF). Then the software keyboard appears and
+the keyboard fixes can finally be verified. ⚠️ I left the defaults key set to
+`false`; say the word and I will restore it.
+
 ## 🔴 2026-08-22 — PLAYTEST REPORT (Alex + friend, 2 devices). OPEN.
 
 Player-reported, therefore near-certainly real. Ordered by severity, not by
