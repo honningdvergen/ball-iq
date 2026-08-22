@@ -81,6 +81,7 @@ describe("Trail schedule is frozen", () => {
     "GRIEZMANN", "FERNANDES", "AGUERO", "VAN_PERSIE",
     "KOVAI",              // #18 · 2026-08-20 — first extension of the freeze
     "KLOSE",              // #19 · 2026-08-21 — verified against getTrailAnswerForDayIndex(today)
+    "ALONSO",             // #20 · 2026-08-22 — verified against getTrailAnswerForDayIndex(today)
   ];
 
   it("no already-published day ever moves", () => {
@@ -88,8 +89,14 @@ describe("Trail schedule is frozen", () => {
   });
 
   it("PUBLISHED covers every day served so far — extend it, do not let it lapse", () => {
-    // If this fails, days have been served that nothing is freezing yet. Append
-    // the missing keys from TRAIL_ANSWER_LOG rather than deleting the check.
+    // If this fails, days have been served that nothing is freezing yet.
+    // FIX:  npm run trail:freeze
+    // That appends the missing keys, each read back out of
+    // getTrailAnswerForDayIndex() so it freezes what players actually saw, and
+    // it REFUSES to write if any already-frozen day has moved. It is not run
+    // during the build on purpose: freezing history should be a deliberate act
+    // a human sees, not something a build does to a test file behind your back.
+    // Never delete this check, and never edit PUBLISHED to make it pass.
     const servedSoFar = Math.floor(Date.now() / 86400000) - TRAIL_ANCHOR_DAY + 1;
     expect(PUBLISHED.length).toBeGreaterThanOrEqual(Math.min(servedSoFar, TRAIL_ANSWER_LOG.length));
   });

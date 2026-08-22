@@ -1261,11 +1261,25 @@ logRound(sc,run,rounds);
    of questions, which is the first moment it is a genuine next step rather than
    an interruption. */
 served=off+run.length;var hasMore=total>served;
+/* ⚠️ THE APP LINK NOW SHOWS ON EVERY FINISHED ROUND, not only once the club's
+   questions run out. The old gate was a deliberate call — hold the app link
+   back until it is "a genuine next step rather than an interruption" — but
+   measurement on 2026-08-22 showed what it cost: the median club carries 40
+   hint-bearing questions against a 10-question round, 68 of 88 clubs need
+   three or more rounds, and only 2 could be exhausted in one sitting. So the
+   link was not weak, it was unreachable: clubq-out-store recorded ZERO clicks
+   because it had rendered to essentially nobody.
+   The intent survives intact. Finishing a round is itself the proof of
+   interest the gate was waiting for, and "Keep going" remains the primary
+   action, so staying on the page is still what the layout pushes hardest.
+   Ordering is deliberate: stay here, then play on the web, then install. */
+var appLink='<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>';
 var cont=(hasMore
 ?'<a class="bq-go" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
 +'<a class="bq-cross" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
++appLink
 :'<a class="bq-go" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
-+'<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>');
++appLink);
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
