@@ -134,6 +134,15 @@ const COLLECT = () => {
     const cs = getComputedStyle(el);
     if (cs.visibility === 'hidden' || cs.display === 'none' || cs.opacity === '0') continue;
     const inlineInProse = cs.display === 'inline' && el.tagName === 'A';
+    // ⚠️ HIT SLOP IS INVISIBLE TO getBoundingClientRect(). A control can be
+    // 30x30 on screen and still present a 44x44 touch area via a ::after
+    // pseudo-element (see .hit44 in app.css). Without this the audit reports
+    // every FIXED control as still broken — which is worse than missing them,
+    // because it teaches you to ignore the list.
+    const after = getComputedStyle(el, '::after');
+    const slop = after && after.content !== 'none'
+      ? Math.min(parseFloat(after.minWidth) || 0, parseFloat(after.minHeight) || 0)
+      : 0;
     // Collect every background layer up the tree, translucent ones included,
     // stopping at the first opaque one. Compositing happens in node.
     const bgLayers = [];
@@ -156,6 +165,7 @@ const COLLECT = () => {
       bold: (parseInt(cs.fontWeight, 10) || 400) >= 700,
       scoreContrast: directText(el),   // see correction 1
       exemptFromTapFloor: inlineInProse, // see correction 2
+      slop,                              // 44 when .hit44 (or equivalent) applies
     });
   }
   return out;
@@ -203,7 +213,17 @@ async function auditViewport(browser, vp, screens) {
     // ── tap targets + contrast ─────────────────────────────────────────
     const els = await page.evaluate(COLLECT);
     for (const e of els) {
-      if (!e.exemptFromTapFloor && (e.w < MIN_TAP || e.h < MIN_TAP)) {
+      // A link whose ROW is already 44 tall is a full-width tap target; failing
+      // it on width alone is stricter than WCAG asks and produces noise. The
+      // footer's About/Terms are 39x44 and 41x44 by deliberate design — the
+      // row is tappable, neighbours are 20px apart. Flag only when the control
+      // misses the floor on BOTH axes, or is a genuine control (not a link).
+      // A control with sufficient hit slop already meets the floor by touch,
+      // whatever its painted size.
+      if (e.slop >= MIN_TAP) continue;
+      const bothAxesShort = e.w < MIN_TAP && e.h < MIN_TAP;
+      const isLink = e.tag === 'a';
+      if (!e.exemptFromTapFloor && (bothAxesShort || (!isLink && (e.w < MIN_TAP || e.h < MIN_TAP)))) {
         // Sub-44 is only a real problem when it is genuinely tappable; inputs
         // inside a larger tap row are reported once, by the row.
         add('medium', 'tap-target',

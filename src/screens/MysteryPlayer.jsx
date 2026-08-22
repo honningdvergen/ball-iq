@@ -264,7 +264,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   return (
     <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px 6px' }}>
-        <button onClick={onExit} aria-label="Back" style={{ background: 'none', border: 'none', color: 'var(--t2)', cursor: 'pointer', padding: 4, display: 'flex' }}>
+        <button onClick={onExit} aria-label="Back" className="hit44" style={{ background: 'none', border: 'none', color: 'var(--t2)', cursor: 'pointer', padding: 4, display: 'flex' }}>
           <ArrowLeft size={22} />
         </button>
         <div style={{ flex: 1 }}>

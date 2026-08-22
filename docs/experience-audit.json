@@ -4,189 +4,71 @@
     "tab:Home": [
       {
         "control": "tab:Home",
-        "paintMs": 39.7,
-        "emptyMs": 1
-      },
-      {
-        "control": "tab:Home",
-        "paintMs": 28.8,
+        "paintMs": 15.7,
         "emptyMs": 0
       },
       {
         "control": "tab:Home",
-        "paintMs": 23,
+        "paintMs": 27.8,
+        "emptyMs": 0
+      },
+      {
+        "control": "tab:Home",
+        "paintMs": 24.9,
         "emptyMs": 0
       }
     ],
     "tab:Online": [
       {
         "control": "tab:Online",
-        "paintMs": 67.7,
+        "paintMs": 14.8,
         "emptyMs": 0
       },
       {
         "control": "tab:Online",
-        "paintMs": 21.4,
+        "paintMs": 24.7,
         "emptyMs": 0
       },
       {
         "control": "tab:Online",
-        "paintMs": 21.1,
+        "paintMs": 23.8,
         "emptyMs": 0
       }
     ],
     "tab:Daily": [
       {
         "control": "tab:Daily",
-        "paintMs": 34.2,
+        "paintMs": 33.5,
         "emptyMs": 0
       },
       {
         "control": "tab:Daily",
-        "paintMs": 21.2,
+        "paintMs": 23.7,
         "emptyMs": 0
       },
       {
         "control": "tab:Daily",
-        "paintMs": 21,
+        "paintMs": 23.8,
         "emptyMs": 0
       }
     ],
     "tab:Profile": [
       {
         "control": "tab:Profile",
-        "paintMs": 82.9,
+        "paintMs": 52.6,
         "emptyMs": 0
       },
       {
         "control": "tab:Profile",
-        "paintMs": 20.9,
+        "paintMs": 24.3,
         "emptyMs": 0
       },
       {
         "control": "tab:Profile",
-        "paintMs": 21.3,
+        "paintMs": 23.5,
         "emptyMs": 0
       }
     ]
   },
-  "findings": [
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "40x40px — \"Settings\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Home",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    },
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "103x24px — \"Set your name\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Home",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    },
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "60x20px — \"0 of 4 puzzles played today — open the D\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Home",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    },
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "29x27px — \"Home\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Club page (Arsenal)",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    },
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "51x27px — \"Quizzes\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Club page (Arsenal)",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    },
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "39x44px — \"About\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Club page (Arsenal)",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    },
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "41x44px — \"Terms\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Club page (Arsenal)",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    },
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "30x30px — \"Back\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Mystery Player",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    },
-    {
-      "severity": "medium",
-      "area": "tap-target",
-      "detail": "280x38px — \"Skip — show me another club\"",
-      "viewport": "iPhone SE (320)",
-      "screen": "Transfer Trail",
-      "min": 44,
-      "viewports": [
-        "iPhone SE (320)",
-        "Android (360)",
-        "iPhone Pro Max (430)"
-      ]
-    }
-  ]
+  "findings": []
 }

@@ -330,7 +330,10 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
             )}
           </div>
           <button onClick={() => submit(true)}
-            style={{ marginTop: 8, width: "100%", background: "transparent", border: "1px solid var(--border)",
+            /* minHeight, not padding: this is full-width so nothing shifts
+               sideways, and 10px padding around 13px text landed at 38px —
+               six short of the 44px floor (experience audit, 2026-08-23). */
+            style={{ marginTop: 8, width: "100%", minHeight: 44, background: "transparent", border: "1px solid var(--border)",
                      borderRadius: 11, padding: "10px", color: "var(--t2)", fontSize: 13, fontWeight: 700,
                      fontFamily: "inherit", cursor: "pointer" }}>
             Skip — show me another club

@@ -1930,7 +1930,11 @@ ${ADS_ACTIVE ? `<script>
      2.5.8's 24px floor without changing how the trail looks — the box grows,
      the text does not. Breadcrumbs are exempt from the 44px guideline (they
      are a dense inline trail, not a primary control) but not from 24px. */
-  .crumbs a{color:var(--tx3);display:inline-block;padding:4px 0}
+  /* 4px padding on 13px type gave 27px-tall crumbs — under WCAG 2.5.8's 24px
+     floor once you account for the separator, and the first thing a phone user
+     reaches for to go back. Same 44px treatment the footer links already have
+     (experience audit, 2026-08-23). inline-flex so the height actually applies. */
+  .crumbs a{color:var(--tx3);display:inline-flex;align-items:center;min-height:44px;padding:0}
   .crumbs .sep{padding:0 1px}
   .crumbs a:hover{color:#fff;text-decoration:none}
   .crumbs .sep{color:var(--tx4);margin:0 7px}

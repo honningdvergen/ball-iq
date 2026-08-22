@@ -1514,7 +1514,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    (the bell buttons set that inline). */
 /* Header icon tile (bell + gear cluster, all tabs) — 40x40 per the Home Tweaks
    handoff; the unread signal is a 7px dot, not a numeric badge. */
-.hdr-ic{width:40px;height:40px;min-width:40px;min-height:40px;border-radius:12px;background:var(--s2);border:1px solid var(--border);}
+/* ⚠️ This used to override .icon-btn's 44x44 DOWN to 40x40, which is how the
+   Settings gear — one of the most-reached controls on Home — ended up under
+   the tap-target floor while inheriting from a class that already had it
+   right. Restored to 44. Found by scripts/experience-audit.mjs, 2026-08-23;
+   the 4px it saved was never worth a mis-tap. */
+.hdr-ic{width:44px;height:44px;min-width:44px;min-height:44px;border-radius:12px;background:var(--s2);border:1px solid var(--border);}
 .notif-dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#FF4D4D;border:1.5px solid #14161E;pointer-events:none;}
 .bn-badge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#FF3B30;color:#fff;font-size:10px;font-weight:800;line-height:18px;text-align:center;font-family:'Inter',sans-serif;}
 .notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:flex-start;justify-content:center;z-index:210;padding:64px 16px 20px;animation:fadeIn 0.15s ease;}
@@ -1763,6 +1768,33 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    including the ones with no room to grow. Taller keys were considered and
    NOT taken: the SE already overflows (see the short-viewport block below). */
 .wd-key::after{content:"";position:absolute;inset:-3px -1px;border-radius:8px;}
+
+/* ── HIT SLOP ───────────────────────────────────────────────────────────────
+   Grows a control's TOUCH area to the 44x44 floor without changing a pixel of
+   how it looks. Same trick the Footle keys above already use.
+
+   ⚠️ Measured 2026-08-23 by scripts/experience-audit.mjs across 320/360/430:
+   nine interactive controls sat under 44x44, and the worst were controls
+   people reach for constantly — Mystery Player's back arrow at 30x30, the
+   Settings gear at 40x40, Trail's Skip at 280x38.
+
+   Sub-44 targets do not fail loudly. They just produce mis-taps, and a
+   mis-tap is how a working app comes to feel broken — which is exactly the
+   complaint that started this ("every single button has to work as intended").
+
+   Padding would have worked too, but it moves neighbouring layout; several of
+   these sit in tight headers where the icon size is a deliberate choice. This
+   changes reach, not appearance.
+
+   Requires position:relative on the host (added per-use), and the pseudo
+   element must stay behind any content — it is a touch surface, not a visual. */
+.hit44{position:relative;}
+.hit44::after{
+  content:"";position:absolute;
+  /* centre a 44x44 area on the control regardless of its rendered size */
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  min-width:44px;min-height:44px;width:100%;height:100%;
+}
 .wd-key:active{transform:scale(0.96);}
 .wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
 .wd-key-green{background:#58CC02;color:#0A0A0A;}

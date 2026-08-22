@@ -291,6 +291,7 @@ function HomeScreenImpl({
             {homeShowCTA && (
               <button
                 onClick={() => { setTab("profile"); setNameEditNonce(n => n + 1); }}
+                className="hit44"
                 style={{background:"none",border:"none",padding:"4px 0 0",fontSize:12,fontWeight:600,color:"var(--t2)",textDecoration:"underline",textUnderlineOffset:3,cursor:"pointer",fontFamily:"inherit"}}
                 aria-label="Set your name"
               >
@@ -374,7 +375,7 @@ function HomeScreenImpl({
           <div className="daily-zone" role="group" aria-label="Daily">
             <div className="daily-zone-head">
               <span className="daily-zone-eyebrow">Daily</span>
-              <button type="button" className={`daily-zone-status${allDone ? " is-done" : ""}`}
+              <button type="button" className={`daily-zone-status hit44${allDone ? " is-done" : ""}`}
                 onClick={() => setTab("daily")}
                 aria-label={allDone ? `All ${total} of today's puzzles done — open the Daily tab` : `${doneCount} of ${total} puzzles played today — open the Daily tab`}>
                 {allDone ? `${total}/${total} done` : `${doneCount}/${total} today`}
