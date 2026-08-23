@@ -12,7 +12,36 @@ import reactHooks from 'eslint-plugin-react-hooks';
 export default [
   // src/questions-index.js is generated (scripts/gen-questions-index.mjs) and is
   // one giant JSON literal — linting it costs time and can find nothing.
-  { ignores: ['dist/**', 'ios/**', 'android/**', 'node_modules/**', 'public/**', 'scripts/**', '*.config.js', 'src/questions-index.js'] },
+  // ⚠️ scripts/** is ignored EXCEPT the club-quiz engine. That file is the
+  // inline script shipped on ~140 /quiz/ pages, and until 2026-08-23 it lived
+  // inside a template literal where every line was a STRING to every tool we
+  // run. A variable named "off" collided with the module-level pagination
+  // offset there and broke both the clubq-start count and "Keep going", with
+  // nothing to catch it. no-redeclare finds that in a second — but only if the
+  // file is parsed, which is the entire reason it now exists on disk.
+  { ignores: ['dist/**', 'ios/**', 'android/**', 'node_modules/**', 'public/**', 'scripts/!(seo)/**', 'scripts/*.mjs', 'scripts/seo/!(club-quiz-engine).*', '*.config.js', 'src/questions-index.js'] },
+  {
+    files: ['scripts/seo/club-quiz-engine.js'],
+    languageOptions: {
+      ecmaVersion: 2019,        // the engine ships to old WebViews; keep it plain
+      sourceType: 'script',     // an IIFE in a <script> tag, not a module
+      globals: { ...globals.browser },
+    },
+    rules: {
+      // The two that would have caught the 2026-08-23 defect outright.
+      'no-redeclare': 'error',
+      'no-shadow': 'error',
+      'no-undef': 'error',
+      // Cheap correctness for a file nothing else checks.
+      // caughtErrors 'none': the engine is written defensively and wraps almost
+      // everything in try/catch with an unused binding. Twelve of those is noise,
+      // not signal, and this config's whole philosophy is that the gate fails
+      // only on what breaks the app at runtime.
+      'no-unused-vars': ['error', { args: 'none', caughtErrors: 'none' }],
+      'no-func-assign': 'error',
+      'no-cond-assign': 'error',
+    },
+  },
   {
     files: ['src/**/*.{js,jsx}'],
     languageOptions: {
