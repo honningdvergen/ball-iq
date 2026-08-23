@@ -777,12 +777,74 @@ function renderQA(rows) {
 </li>`;
     })
     .join('\n');
-  return `<ol class="qa-list">\n${items}\n</ol>\n<script>${QA_JS}</script>`;
+  return `<ol class="qa-list">\n${items}\n</ol>\n<script>${QA_TRACK_JS}</script>\n<script>${QA_JS}</script>`;
 }
 
 // Wires every .qa card independently: first tap locks the card, marks the picked
 // option right/wrong, reveals the correct one + the explanation. No deps.
-const QA_JS = `(function(){var cs=document.querySelectorAll('.qa[data-a]');for(var c=0;c<cs.length;c++){(function(card){var a=+card.getAttribute('data-a'),bs=card.querySelectorAll('.to'),w=card.querySelector('.qa-why'),done=false;if(w)w.hidden=true;function pick(ev){if(done)return;done=true;var k=+ev.currentTarget.getAttribute('data-i');for(var b=0;b<bs.length;b++){bs[b].disabled=true;if(b===a){bs[b].className='to correct';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2713</span>')}else if(b===k){bs[b].className='to wrong';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2717</span>')}else{bs[b].className='to dim'}}if(w)w.hidden=false}for(var b=0;b<bs.length;b++)bs[b].addEventListener('click',pick)})(cs[c])}})();`;
+// ⚠️ MUST STAY ABOVE QA_TRACK_JS AND TASTER_JS. These are `const`, so a
+// consumer declared earlier in the file throws "Cannot access before
+// initialization" at module load — the temporal dead zone, which ESLint
+// does not catch and which has now bitten this repo three times.
+// Supabase endpoint + PUBLISHABLE key, shared by the two independent inline
+// scripts these pages ship: the club-quiz engine and the taster.
+//
+// ⚠️ Hoisted 2026-08-23. They were literals inside the engine block only, so
+// the taster — which runs on all 42 localised pages and all 51 /lists/ pages —
+// had no way to report anything without a second copy. A second copy is the
+// drift shape this repo keeps losing to (four storefront lists, two privacy
+// policies, QUESTION_DURATION_MS), so there is one definition and both blocks
+// interpolate it.
+//
+// The key is publishable and already public in the app bundle; it carries no
+// privilege beyond calling the two SECURITY DEFINER functions, both of which
+// throttle internally.
+const BQ_SUPABASE_URL = 'https://blcisypmngimqkwxrrdm.supabase.co';
+const BQ_PUBLISHABLE_KEY = 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR';
+
+/* ⚠️ /lists/ IS 47% OF ALL IMPRESSIONS AND REPORTED TO NOTHING.
+   These 51 pages are the biggest single surface we own by impressions, and
+   they were the only interactive thing on the site with no sink at all — not
+   funnel_events, not a named Clarity event. So the page type memory records as
+   "51% of impressions, 5% of clicks" could be argued about but never measured.
+   The reveal below already knows when someone answers; it just never said so.
+   One event on the first answer, gesture-gated so crawlers cannot inflate it. */
+const QA_TRACK_JS = `(function(){
+function qSyn(){try{
+if(navigator.webdriver===true)return true;
+var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
+}catch(e){return false}}
+function qVid(){try{
+var v=localStorage.getItem('biq_vid');
+if(!v){v=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():null;
+if(!v)return null;localStorage.setItem('biq_vid',v)}
+return (v&&v.length===36)?v:null;
+}catch(e){return null}}
+function qev(n){
+if(qSyn())return;
+try{if(window.clarity)window.clarity('event',n)}catch(e){}
+var meta={surface:'list-page'};
+try{
+var seg=location.pathname.split('/').filter(Boolean);
+if(seg[1])meta.slug=seg[1];
+var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
+}catch(e){}
+try{fetch('${BQ_SUPABASE_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
+headers:{'content-type':'application/json','apikey':'${BQ_PUBLISHABLE_KEY}','authorization':'Bearer ${BQ_PUBLISHABLE_KEY}'},
+body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:qVid()})}).catch(function(){})}catch(e){}}
+var qSeen=false;
+window.__biqListAnswered=function(){if(qSeen)return;qSeen=true;qev('list-answered')};
+/* A tap through to the product from a list page — the step the whole surface
+   exists to produce, and the one nobody could count. */
+document.addEventListener('click',function(e){
+var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+if(!a)return;var h=a.getAttribute('href')||'';
+if(h.indexOf('/play')>-1)qev('list-out-play');
+else if(h.indexOf('/get')>-1||h.indexOf('apps.apple.com')>-1||h.indexOf('play.google.com')>-1)qev('list-out-store');
+},true);
+})();`;
+
+const QA_JS = `(function(){var cs=document.querySelectorAll('.qa[data-a]');for(var c=0;c<cs.length;c++){(function(card){var a=+card.getAttribute('data-a'),bs=card.querySelectorAll('.to'),w=card.querySelector('.qa-why'),done=false;if(w)w.hidden=true;function pick(ev){if(done)return;done=true;var k=+ev.currentTarget.getAttribute('data-i');for(var b=0;b<bs.length;b++){bs[b].disabled=true;if(b===a){bs[b].className='to correct';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2713</span>')}else if(b===k){bs[b].className='to wrong';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2717</span>')}else{bs[b].className='to dim'}}if(w)w.hidden=false;try{window.__biqListAnswered&&window.__biqListAnswered()}catch(e){}}for(var b=0;b<bs.length;b++)bs[b].addEventListener('click',pick)})(cs[c])}})();`;
 
 // ── Interactive quiz taster (Claude Design website handoff) ───────────────────
 // A playable 5-question widget injected into every club/league landing page:
@@ -834,6 +896,64 @@ const TASTER_CSS = `  .taster{text-align:left}
 const TASTER_JS = `(function(){
 var box=document.getElementById('biq-taster'),d=document.getElementById('biq-taster-data');
 if(!box||!d)return;
+/* ⚠️ THE TASTER REPORTED TO NOTHING, ON 58% OF THE SEO SURFACE.
+   Measured 2026-08-23 against the built output: of 328 pages, /quiz/ had 136
+   of 140 instrumented and /questions/ 0 of 76, /lists/ 0 of 51 and the
+   localised layer 0 of 42. So the two surfaces we have the strongest evidence
+   about were the two we could not measure: memory records /lists/ at 47% of
+   all impressions, and /es/ River Plate at 134 clicks against 8 for its
+   English twin. Every recommendation about either was reasoning, not
+   measurement — and a dead loop and an unmeasured loop look identical.
+   Same sink and same synthetic gate as the club engine, kept deliberately
+   small: an impression, a first answer, and a tap through to the product. */
+function tSyn(){try{
+if(navigator.webdriver===true)return true;
+var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
+}catch(e){return false}}
+function tVid(){try{
+var v=localStorage.getItem('biq_vid');
+if(!v){v=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():null;
+if(!v)return null;localStorage.setItem('biq_vid',v)}
+return (v&&v.length===36)?v:null;
+}catch(e){return null}}
+/* Surface comes from the path, so one taster serves every page type and the
+   rows stay separable: list pages, the localised layer, and everything else. */
+function tSurface(){try{
+var seg=location.pathname.split('/').filter(Boolean);
+if(seg[0]==='lists')return 'list-page';
+if(seg[0]&&seg[0].length===2&&seg[1])return 'localised';
+if(seg[0]==='questions')return 'questions-page';
+return 'taster';
+}catch(e){return 'taster'}}
+function tev(n){
+if(tSyn())return;
+try{if(window.clarity)window.clarity('event',n)}catch(e){}
+var meta={surface:tSurface()};
+try{
+var seg=location.pathname.split('/').filter(Boolean);
+var sl=seg[seg.length-1];if(sl)meta.slug=sl;
+var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
+}catch(e){}
+try{fetch('${BQ_SUPABASE_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
+headers:{'content-type':'application/json','apikey':'${BQ_PUBLISHABLE_KEY}','authorization':'Bearer ${BQ_PUBLISHABLE_KEY}'},
+body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:tVid()})}).catch(function(){})}catch(e){}}
+/* ⚠️ Impression fires on FIRST HUMAN INPUT, never on load. The club engine
+   calls start() unconditionally at the end of its script, so clubq-start
+   counts every JS-executing render — including Googlebot's renderer and two
+   PageSpeed runs that landed in the table on 2026-08-23. A user-agent
+   blocklist cannot fix that; requiring a gesture makes it robot-proof by
+   construction. */
+var tSeen=false;
+function tFirst(){if(tSeen)return;tSeen=true;tev('taster-start')}
+box.addEventListener('click',tFirst,{once:false});
+/* A tap through to the product is the whole point of these pages. */
+box.addEventListener('click',function(e){
+var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+if(!a)return;
+var h=a.getAttribute('href')||'';
+if(h.indexOf('/play')>-1)tev('taster-out-play');
+else if(h.indexOf('apps.apple.com')>-1||h.indexOf('play.google.com')>-1||h.indexOf('/get')>-1)tev('taster-out-store');
+},true);
 var QS;try{QS=JSON.parse(d.textContent)}catch(e){return}
 if(!QS||!QS.length)return;
 var nm=box.getAttribute('data-name')||'this team',play=box.getAttribute('data-play')||'/',store=box.getAttribute('data-store')||'#';
@@ -1158,12 +1278,30 @@ if(!v){v=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():nu
 if(!v)return null;localStorage.setItem('biq_vid',v)}
 return (v&&v.length===36)?v:null;
 }catch(e){return null}}
+/* ⚠️ EVERY ROW USED TO SAY {"surface":"club-page"} AND NOTHING ELSE.
+   Checked the distinct set on 2026-08-23: ONE value across all 258 rows, with
+   the club slug null on every one — while data-slug sits in the very element
+   this function's own siblings already read (see cslug at :1066). So the only
+   funnel that reaches anybody could not answer which of 140 pages converts,
+   could not compare Liverpool against Wrexham, and could not tell the English
+   pages from the localised ones — the split that matters most, since /es/
+   River Plate is measured at 134 clicks against 8 for its English twin.
+   Every page-level question about this surface was unanswerable by
+   construction, and the answer was one line away the whole time. */
 function bqev(n){
 if(bqSynthetic())return;
 try{if(window.clarity)window.clarity('event',n)}catch(e){}
+var meta={surface:'club-page'};
+try{
+  var r=document.querySelector('[data-slug]');
+  var s=r&&r.getAttribute('data-slug');if(s)meta.slug=s;
+  /* Language identifies the localised layer without needing a second flag:
+     the English pages are lang="en", the 42 localised ones carry their own. */
+  var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
+}catch(e){}
 try{fetch(BQ_SB+'/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
 headers:{'content-type':'application/json','apikey':BQ_PK,'authorization':'Bearer '+BQ_PK},
-body:JSON.stringify({p_event:n,p_meta:{surface:'club-page'},p_visitor:bqVid()})}).catch(function(){})}catch(e){}}
+body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:bqVid()})}).catch(function(){})}catch(e){}}
 function tag(k,v){try{if(window.clarity)window.clarity('set',k,String(v))}catch(e){}}
 /* ── OWNING THE MEASUREMENT ──────────────────────────────────────────────────
    Clarity RECORDS these rounds but will not report them by name: custom API
@@ -1204,8 +1342,8 @@ function tag(k,v){try{if(window.clarity)window.clarity('set',k,String(v))}catch(
 
    keepalive:true so a result screen that gets closed still reports. Totally
    failure-tolerant: any throw and the quiz carries on unaffected. */
-var BQ_SB='https://blcisypmngimqkwxrrdm.supabase.co';
-var BQ_PK='sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR';
+var BQ_SB='${BQ_SUPABASE_URL}';
+var BQ_PK='${BQ_PUBLISHABLE_KEY}';
 function logRound(score,rows,rnds){try{
 var seg=location.pathname.split('/').filter(Boolean);
 if(seg[0]!=='quiz'||!seg[1])return;
