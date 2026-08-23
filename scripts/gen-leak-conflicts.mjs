@@ -79,7 +79,50 @@ const link = (a, b) => {
 // Scanning both and taking the UNION is the safe direction: an extra conflict
 // costs at most a slightly narrower draw, and pickAvoidingConflicts will never
 // shorten a game over it.
+// ⚠️ CATEGORIES TOO, NOT JUST CLUBS — 52% OF THE BANK WAS INVISIBLE HERE.
+//
+// The loop below keys on `q.club`, so every question without one — 3,535 of
+// 6,776 mcq rows, measured 2026-08-23 — was never compared to anything. That
+// is not a niche slice: it is the whole of WorldCup, Euros, Managers, Records,
+// History and the category-only half of every league.
+//
+// It surfaced from a player report. Three questions about the 1999 Champions
+// League semi-final sat in the bank with one of them naming Juventus in its
+// stem — the answer to the other two — and this generator had registered ZERO
+// conflicts between them, because they carry a `cat` and no `club`.
+//
+// ⚠️ AND IT INVALIDATED A MEASUREMENT I REPORTED. On the morning of 08-23 I
+// added pickAvoidingConflicts to the League Quiz draw and measured the leak
+// rate going to 0.0%. That was measured AGAINST THIS MAP — the same instrument
+// carrying the blind spot — so it only proved the guard covered what the guard
+// could see. Re-measured against the leak RULES instead: 8.0% of league
+// sessions still contained a leaked pair, Primeira 27.2%, Ligue1 22.7%.
+// Scanning categories takes that to 0.0% for real.
+//
+// Same no-easy union as the club pass, and for the same reason: the league
+// draw drops "easy" too (see launchLeagueQuiz), and subsetting changes which
+// leaks are strong.
+const byCat = new Map();
+for (const q of QB) {
+  if (!q || !q.cat || q.type !== 'mcq' || !Array.isArray(q.o)) continue;
+  if (!byCat.has(q.cat)) byCat.set(q.cat, []);
+  byCat.get(q.cat).push(q);
+}
+
 let pairCount = 0;
+for (const [, qs] of byCat) {
+  const noEasy = qs.filter((q) => q.diff !== 'easy');
+  const pools = [qs];
+  if (noEasy.length >= 10) pools.push(noEasy);
+  for (const pool of pools) {
+    for (const l of findLeaks(pool)) {
+      if (l.severity !== 'strong') continue;
+      link(pool[l.answerOf]?.id, pool[l.at]?.id);
+      pairCount++;
+    }
+  }
+}
+
 for (const [club, qs] of byClub) {
   const noEasy = qs.filter((q) => q.diff !== 'easy');
   const pools = [qs];

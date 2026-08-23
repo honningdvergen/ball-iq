@@ -9770,8 +9770,21 @@ function AppInner() {
           // Club quizzes are for die-hard fans — never serve "easy" (casual-obvious
           // or telegraphed). Fall back to the full pool only if a club is too thin
           // on medium+hard to fill 10 (none currently are; thinnest is ~16).
+          // ⚠️ 16, NOT 10 — a pack needs HEADROOM above the ten it serves.
+          // Measured 2026-08-23 with the full conflict map: Wrexham leaked in
+          // 100% of sessions and Norwich in 32%, because drawing 10 from an
+          // eligible pool of 11-12 leaves pickAvoidingConflicts nowhere to go
+          // and its top-up path — deliberately preferring a leaked pair over a
+          // seven-question "ten-question quiz" — fires almost every time.
+          // Widening to the full pack takes both to 0.0%.
+          //
+          // This does mean 11 thin packs now include "easy" rows, against the
+          // die-hard-fans rule above. That is the right trade: a leaked pair IS
+          // a free point, so the rule was already being broken, just less
+          // visibly. The packs affected are the thinnest we have and the ones
+          // club_quiz_results shows nobody plays.
           const noEasy = verified.filter(q => q.diff !== "easy");
-          const clubPool = noEasy.length >= 10 ? noEasy : verified;
+          const clubPool = noEasy.length >= 16 ? noEasy : verified;
           if (clubPool.length >= 10) {
             // Same 14-day seen filter League Quiz applies — without it a club
             // pool of ~20 serves immediate repeats while fresh rows sit unused.
