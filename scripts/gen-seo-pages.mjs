@@ -1491,7 +1491,25 @@ function start(n,from){
    their own events, so clubq-start stays a clean session-level denominator:
    clubq-play/clubq-start = did they engage, clubq-finish/clubq-start = did
    they get to the end. */
-if(!rounds&&!started){started=1;bqev('clubq-start');tag('clubq-len',n)}
+if(!rounds&&!started){started=1;tag('clubq-len',n);
+/* ⚠️ THE EVENT WAITS FOR A HUMAN; THE QUIZ DOES NOT.
+   start() runs unconditionally at the end of this script (see the bq-live
+   line), so emitting here counted every JS-executing render as a session —
+   including Googlebot's renderer and, verified in the table on 2026-08-21,
+   two PageSpeed Insights runs. bqSynthetic() cannot help: it refuses
+   navigator.webdriver and localhost, and a crawler's headless Chrome is
+   neither. No user-agent blocklist catches a real browser either.
+   A gesture does. Rendering stays immediate so the reader sees the quiz at
+   once; only the MEASUREMENT waits for evidence that a person is present,
+   which makes the denominator robot-proof by construction rather than by
+   enumeration. Same shape the taster uses. */
+var fire=function(){bqev('clubq-start');off()};
+var off=function(){
+try{root.removeEventListener('pointerdown',fire);root.removeEventListener('keydown',fire);
+root.removeEventListener('touchstart',fire)}catch(e){}};
+try{root.addEventListener('pointerdown',fire,{once:false});
+root.addEventListener('keydown',fire,{once:false});
+root.addEventListener('touchstart',fire,{once:false,passive:true})}catch(e){}}
 /* ⚠️ NO BACKTICKS OR DOLLAR-BRACES ANYWHERE IN THIS BLOCK — it lives inside a
    template literal, so either one ends the string and the build dies with a
    syntax error pointing at the comment rather than the code.
