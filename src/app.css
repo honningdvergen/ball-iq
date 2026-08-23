@@ -49,6 +49,11 @@
    the reduced-motion rule above. */
 .tab-pane{animation:tabPaneFadeIn 120ms ease;}
 @keyframes tabPaneFadeIn{from{opacity:0;}to{opacity:1;}}
+/* Lazy game-screen loading spinner (ScreenLoading in App.jsx). The six game
+   screens used to fall back to `null`, so tapping one showed an EMPTY frame
+   while its chunk downloaded — which reads as a dead button, not as loading.
+   Reduced-motion is already handled by the global killswitch at the top. */
+@keyframes biqSpin{to{transform:rotate(360deg);}}
 
 /* ── DARK THEME (default) ── */
 :root{

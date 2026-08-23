@@ -7445,6 +7445,36 @@ export { ErrorBoundary };
 // the app where the CSS vars exist, unlike the root boundary which must survive
 // a dead theme). Reports to Sentry tagged with the tab name so per-surface
 // crash rates are visible separately from the root boundary.
+// Fallback for the lazy game screens while their chunk downloads.
+//
+// ⚠️ These used to fall back to `null` or a bare empty div, which means a tap
+// on Mystery/Trail/Stadiums showed NOTHING until the chunk landed. Report #2
+// chased this as "the app feels slow" and measured 17ms paint and healthy DOM
+// counts — all true, and the wrong conclusion. The real defect was an empty
+// frame nobody was measuring: the screen was blank while a chunk downloaded,
+// on a phone radio rather than the desktop the timings came from.
+//
+// A visible, branded frame does not make the download faster. It makes the
+// difference between "the button is broken" and "it's coming", which is the
+// part the player actually experiences.
+function ScreenLoading({ label = "Loading" }) {
+  return (
+    <div className="screen" style={{
+      minHeight:"60dvh", display:"flex", flexDirection:"column",
+      alignItems:"center", justifyContent:"center", gap:14,
+    }}>
+      <div style={{
+        width:38, height:38, borderRadius:"50%",
+        border:"3px solid var(--line, #2A2D3A)", borderTopColor:"#58CC02",
+        animation:"biqSpin 0.9s linear infinite",
+      }} />
+      <div style={{fontSize:13.5, fontWeight:700, color:"var(--t2)", letterSpacing:"-0.2px"}}>
+        {label}…
+      </div>
+    </div>
+  );
+}
+
 class TabErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -7478,7 +7508,7 @@ class TabErrorBoundary extends React.Component {
         }}>
           <div style={{fontSize:40, marginBottom:14}}>⚽</div>
           <div style={{fontSize:17, fontWeight:800, color:"var(--t1)", marginBottom:6, letterSpacing:"-0.3px"}}>
-            This tab hit a snag
+            {this.props.onExit ? "This screen hit a snag" : "This tab hit a snag"}
           </div>
           <div style={{fontSize:13.5, color:"var(--t2)", lineHeight:1.7, marginBottom:22, maxWidth:280}}>
             The rest of the app is fine — tap to reload just this screen.
@@ -7493,6 +7523,23 @@ class TabErrorBoundary extends React.Component {
           >
             Try again
           </button>
+          {/* ⚠️ A full-screen game is not a tab: it has no tab bar underneath
+              and nothing else on screen, so "Try again" on a deterministic
+              crash is a dead end with no way out. Tabs keep the bar and don't
+              need this; screens do. */}
+          {this.props.onExit && (
+            <button
+              onClick={() => { this.setState({ hasError:false }); try { this.props.onExit(); } catch {} }}
+              style={{
+                marginTop:12, padding:"11px 24px", background:"transparent",
+                border:"1px solid var(--line, #2A2D3A)", borderRadius:11,
+                fontFamily:"Inter,sans-serif", fontSize:13.5, fontWeight:700,
+                color:"var(--t2)", cursor:"pointer"
+              }}
+            >
+              Back to Home
+            </button>
+          )}
         </div>
       );
     }
@@ -11974,7 +12021,7 @@ function AppInner() {
         {!inGame && screen === "home" && (
           <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="profile">
-            <React.Suspense fallback={<div className="tab-pane" />}>
+            <React.Suspense fallback={<ScreenLoading label="Loading profile" />}>
               <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
             </React.Suspense>
             </TabErrorBoundary>
@@ -11984,16 +12031,20 @@ function AppInner() {
         {/* ── SETTINGS SCREEN ── */}
         {!inGame && screen === "settings" && <SettingsScreen settings={settings} onUpdate={updateSettings} onClearStats={clearStats} onClearSeen={clearSeen} onBack={goHome} onShowPrivacy={openPrivacy} onShowHelp={openHelp} onShowKnownIssues={openKnownIssues} onAccountDeleted={onAccountDeleted} onOpenReview={() => setScreen("review")} onShowBlocked={() => setScreen("blocked-users")} notifEnabled={notifEnabled} onToggleNotif={handleToggleNotif} notifSupported={notificationsSupported()} notifBlocked={notifBlocked} webPushOn={webPushOn} onToggleWebPush={handleToggleWebPush} webPushAvailable={webPushSupported()} webPushBlocked={webPushPermission() === "denied"} />}
         {!inGame && screen === "blocked-users" && (
-          <React.Suspense fallback={<div className="tab-pane" />}>
+          <TabErrorBoundary name="blocked-users" onExit={() => setScreen("settings")}>
+          <React.Suspense fallback={<ScreenLoading label="Loading" />}>
             <BlockedUsersScreen onBack={() => setScreen("settings")} onToast={showToast} />
           </React.Suspense>
+          </TabErrorBoundary>
         )}
 
         {/* ── QUESTION-BANK REVIEW (gated) ── */}
         {!inGame && screen === "review" && (
-          <React.Suspense fallback={<div className="tab-pane" />}>
+          <TabErrorBoundary name="review" onExit={() => setScreen("settings")}>
+          <React.Suspense fallback={<ScreenLoading label="Loading review" />}>
             <ReviewScreen onBack={() => setScreen("settings")} />
           </React.Suspense>
+          </TabErrorBoundary>
         )}
         {!inGame && screen === "daily-review" && dailyReviewState && (
           <DailyReviewScreen
@@ -12015,7 +12066,8 @@ function AppInner() {
           />
         )}
         {!inGame && screen === "friend-profile" && viewingFriendId && (
-          <React.Suspense fallback={<div className="tab-pane" />}>
+          <TabErrorBoundary name="friend-profile" onExit={closeFriendProfile}>
+          <React.Suspense fallback={<ScreenLoading label="Loading profile" />}>
             <FriendProfileScreen
               friendId={viewingFriendId}
               onBack={closeFriendProfile}
@@ -12023,6 +12075,7 @@ function AppInner() {
               onToast={showToast}
             />
           </React.Suspense>
+          </TabErrorBoundary>
         )}
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
@@ -12170,7 +12223,8 @@ function AppInner() {
         {/* ── ONLINE MULTIPLAYER ── */}
         {screen === "online-stage1" && (
           <div className="mp-cap">
-          <React.Suspense fallback={<div className="screen" />}>
+          <TabErrorBoundary name="online-entry" onExit={() => { clearPendingJoin(); setOnlineAutoCreate(false); setPendingInviteFriendId(null); goHome(); setTab("online"); }}>
+          <React.Suspense fallback={<ScreenLoading label="Loading multiplayer" />}>
             <OnlineEntry
               onBack={() => { clearPendingJoin(); setOnlineAutoCreate(false); setPendingInviteFriendId(null); goHome(); setTab("online"); }}
               onLobbyEnter={async (c) => {
@@ -12200,11 +12254,13 @@ function AppInner() {
               onAutoCreateConsumed={() => setOnlineAutoCreate(false)}
             />
           </React.Suspense>
+          </TabErrorBoundary>
           </div>
         )}
         {screen === "online-stage1-lobby" && stage1RoomCode && (
           <div className="mp-cap">
-          <React.Suspense fallback={<div className="screen" />}>
+          <TabErrorBoundary name="mp-lobby" onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}>
+          <React.Suspense fallback={<ScreenLoading label="Loading lobby" />}>
             <MultiplayerLobby
               onReport={reportQuestion}
               key={stage1RoomCode}
@@ -12234,6 +12290,7 @@ function AppInner() {
               }}
             />
           </React.Suspense>
+          </TabErrorBoundary>
           </div>
         )}
 
@@ -12250,13 +12307,13 @@ function AppInner() {
           // empty board; a deep link that lands on a blank screen is worse
           // than one that lands somewhere real.
           if (!p) { setTimeout(goHome, 0); return null; }
-          return <React.Suspense fallback={null}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} /></React.Suspense>;
+          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} /></React.Suspense></TabErrorBoundary>;
         })()}
         {screen === "mystery" && (
-          <React.Suspense fallback={null}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} /></React.Suspense>
+          <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stadiums" && (
-          <React.Suspense fallback={null}><StadiumGame onExit={goHome} /></React.Suspense>
+          <TabErrorBoundary name="stadiums" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stadiums" />}><StadiumGame onExit={goHome} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stump" && stumpRow && (
           <StumpScreen
