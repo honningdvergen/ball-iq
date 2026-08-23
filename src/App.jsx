@@ -9990,12 +9990,29 @@ function AppInner() {
     //     platforms cannot burn each other's two asks.
     if (!notificationsSupported()) {
       try {
-        if (!webPushSupported()) return false;
-        if (!user?.id) return false;
-        if (webPushOn) return false;
-        if (webPushPermission() !== 'default') return false;
+        // ⚠️ WHY THE BAIL REASON IS RECORDED. web_push_subscriptions holds ONE
+        // row and notif-prompt-shown has never fired, and until now that told
+        // us nothing: five different gates return false here and they mean
+        // completely different things. "Nobody is signed in" is a product
+        // problem, "the browser already denied" is not a problem at all, and
+        // "no VAPID key in this build" is a config problem — the same silence
+        // for all three.
+        //
+        // That ambiguity already cost a wrong diagnosis today: .env.local has
+        // no VITE_VAPID_PUBLIC_KEY, which reads as "web push is structurally
+        // impossible" — until you check the LIVE bundle, where Vercel's copy
+        // of the key is present and it works fine. One event name would have
+        // settled it in seconds.
+        //
+        // Cheap and bounded: one row per bail, only at the two moments the
+        // prompt is considered at all, and only on web.
+        const bail = (reason) => { loopEvent("notif-prompt-skipped", { reason, engine: "web" }); return false; };
+        if (!webPushSupported()) return bail("unsupported");
+        if (!user?.id) return bail("guest");
+        if (webPushOn) return bail("already-on");
+        if (webPushPermission() !== 'default') return bail(`perm-${webPushPermission()}`);
         const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
-        if (asks >= 2) return false;
+        if (asks >= 2) return bail("asks-exhausted");
         localStorage.setItem('biq_notif_asks', String(asks + 1));
         if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
         notifTimerRef.current = setTimeout(() => { loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
