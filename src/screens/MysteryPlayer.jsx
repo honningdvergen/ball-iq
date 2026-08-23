@@ -188,7 +188,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   // Space between the input and the top of the keyboard. visualViewport.height
   // already excludes the keyboard, so no guess about its height is needed.
   // Shared with Transfer Trail — see useDropdownMaxHeight.
-  const dropMax = useDropdownMaxHeight(inputRef, { gap: 26 });
+  const dropMax = useDropdownMaxHeight(inputRef, { gap: 26, kbInset });
 
   if (!answer || !ranks) {
     // No puzzle scheduled for today. The home card is gated on the same

@@ -60,6 +60,57 @@ import { useEffect, useRef, useState } from 'react';
 const KEYBOARD_MIN_PX = 100;
 
 /**
+ * ⚠️ THE ROOT CAUSE OF EVERY KEYBOARD BUG IN THIS APP, found 2026-08-23 after
+ * Alex reported the drag-to-dismiss failing on build 74 — the third keyboard
+ * report in a row that my browser tests all said were fixed.
+ *
+ * capacitor.config.json sets `"Keyboard": { "resize": "none" }`. With that, the
+ * native WebView is NEVER resized when the keyboard opens: the keyboard is an
+ * overlay the web content is not told about, so on device
+ * `window.visualViewport.height` DOES NOT SHRINK.
+ *
+ * Every fix in this file read exactly that value. So on native, all three of
+ * these silently did nothing while passing every test:
+ *   · kbInset computed 0     -> no bottom padding -> page not scrollable
+ *   · useDropdownMaxHeight   -> saw a full-height viewport -> list unbounded
+ *   · drag-to-dismiss        -> bailed at its "is a keyboard up?" guard
+ * Desktop browsers DO shrink the visual viewport, and the simulated-keyboard
+ * tests faked the shrink — so the browser said fixed and the phone said broken.
+ * Three symptoms, one config line.
+ *
+ * The fix is to ask the platform instead of inferring. @capacitor/keyboard was
+ * already installed and in the Podfile, and was never imported by anything.
+ * Its keyboardWillShow event carries the real height.
+ *
+ * ⚠️ Deliberately NOT switching resize to "native". That would make
+ * visualViewport work, but it resizes the WebView on every focus — and this
+ * app's fixed chrome (the floating tab bar, safe-area insets, the
+ * display-mode:standalone mirror with ~155 !important rules) is tuned against
+ * a stable viewport. This route changes no layout; it only stops JS lying to
+ * itself about whether a keyboard is present.
+ */
+const IS_NATIVE = (() => {
+  try {
+    if (typeof window === 'undefined') return false;
+    if (window.location?.protocol === 'capacitor:') return true;
+    if (document.documentElement.classList.contains('native-app')) return true;
+    return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  } catch { return false; }
+})();
+
+/**
+ * Bottom of the visible area, in LAYOUT coordinates — the line the keyboard
+ * starts at. Web reads the visual viewport; native reads the plugin-reported
+ * height, because its visual viewport never moves.
+ */
+function visibleBottom(kbInset) {
+  if (typeof window === 'undefined') return 0;
+  if (IS_NATIVE) return window.innerHeight - kbInset;
+  const vv = window.visualViewport;
+  return vv ? vv.offsetTop + vv.height : window.innerHeight;
+}
+
+/**
  * How tall a dropdown anchored under `anchorRef` may be before the keyboard
  * eats it. Returns a pixel number to drop straight into `maxHeight`.
  *
@@ -84,18 +135,18 @@ const KEYBOARD_MIN_PX = 100;
  * cannot drift — the first version was copy-pasted into both, and a bug in a
  * copy-paste is a bug twice.
  */
-export function useDropdownMaxHeight(anchorRef, { gap = 12, min = 132, max = 360 } = {}) {
+export function useDropdownMaxHeight(anchorRef, { gap = 12, min = 132, max = 360, kbInset = 0 } = {}) {
   const [maxHeight, setMaxHeight] = useState(max);
   const measure = useRef(null);
   measure.current = () => {
     const el = anchorRef.current;
     if (!el || typeof window === 'undefined') return;
-    const vv = window.visualViewport;
     const rect = el.getBoundingClientRect();
-    // Convert the anchor's bottom into VISUAL viewport space before comparing.
-    const bottomInVisual = rect.bottom - (vv ? vv.offsetTop : 0);
-    const viewportH = vv ? vv.height : window.innerHeight;
-    const avail = viewportH - bottomInVisual - gap;
+    // visibleBottom() is the keyboard line in LAYOUT coordinates — plugin-fed
+    // on native, visual-viewport-fed on web — so this one subtraction is
+    // correct on both. Reading visualViewport here directly is what made the
+    // list unbounded on device.
+    const avail = visibleBottom(kbInset) - rect.bottom - gap;
     setMaxHeight(Math.max(min, Math.min(max, Math.round(avail))));
   };
   useEffect(() => {
@@ -116,7 +167,8 @@ export function useDropdownMaxHeight(anchorRef, { gap = 12, min = 132, max = 360
     };
   }, []);
   // Re-measure after every render: the anchor moves whenever a guess row is
-  // added above it, and no dependency array can see that.
+  // added above it, and no dependency array can see that. This also covers
+  // kbInset changing, since that re-renders the caller.
   useEffect(() => { measure.current(); });
   return maxHeight;
 }
@@ -124,8 +176,39 @@ export function useDropdownMaxHeight(anchorRef, { gap = 12, min = 132, max = 360
 export function useKeyboardAwareInput() {
   const inputRef = useRef(null);
   const [kbInset, setKbInset] = useState(0);
+  // Listeners below are attached once; state would be stale inside them.
+  const kbInsetRef = useRef(0);
+  kbInsetRef.current = kbInset;
 
+  // NATIVE: ask the platform. See the IS_NATIVE block above for why the
+  // visual-viewport route reports nothing on device.
   useEffect(() => {
+    if (!IS_NATIVE) return undefined;
+    let cancelled = false;
+    const handles = [];
+    import('@capacitor/keyboard')
+      .then(({ Keyboard }) => {
+        if (cancelled || !Keyboard) return;
+        const add = (evt, fn) => {
+          const r = Keyboard.addListener(evt, fn);
+          // Capacitor 6 returns a promise for the handle.
+          Promise.resolve(r).then((h) => { if (h) handles.push(h); }).catch(() => {});
+        };
+        add('keyboardWillShow', (info) => setKbInset(Math.round(info?.keyboardHeight || 0)));
+        add('keyboardDidShow', (info) => setKbInset(Math.round(info?.keyboardHeight || 0)));
+        add('keyboardWillHide', () => setKbInset(0));
+        add('keyboardDidHide', () => setKbInset(0));
+      })
+      .catch(() => { /* plugin absent — degrade to no inset rather than throw */ });
+    return () => {
+      cancelled = true;
+      handles.forEach((h) => { try { h.remove(); } catch { /* already gone */ } });
+    };
+  }, []);
+
+  // WEB (browser + installed PWA): the visual viewport genuinely shrinks here.
+  useEffect(() => {
+    if (IS_NATIVE) return undefined;
     const vv = typeof window !== 'undefined' ? window.visualViewport : null;
     if (!vv) return undefined;
     const measure = () => {
@@ -150,8 +233,10 @@ export function useKeyboardAwareInput() {
   const keepInputVisible = () => {
     const el = inputRef.current;
     if (!el || document.activeElement !== el) return undefined;
-    const vv = typeof window !== 'undefined' ? window.visualViewport : null;
-    if (!vv || vv.height >= window.innerHeight - KEYBOARD_MIN_PX) return undefined;
+    // Gate on the REAL keyboard height. The old check asked whether the visual
+    // viewport had shrunk, which is never true on native (resize: none) — so
+    // this whole scroll-back never ran on a phone.
+    if (kbInsetRef.current <= KEYBOARD_MIN_PX) return undefined;
     // ⚠️ rAF, not a bare call: the DOM row that caused this has usually not
     // been laid out yet at effect time, so scrolling immediately targets the
     // OLD position. (rAF does not fire in a hidden tab — which is why a
@@ -181,11 +266,11 @@ export function useKeyboardAwareInput() {
       if (doneThisGesture || startY == null) return;
       const el = inputRef.current;
       if (!el || document.activeElement !== el) return;
-      // Only when an on-screen keyboard is actually up — read the viewport
-      // directly rather than the kbInset state, which is stale inside a
-      // window-level listener.
-      const vv = window.visualViewport;
-      if (!vv || window.innerHeight - vv.height - vv.offsetTop <= KEYBOARD_MIN_PX) return;
+      // Only when an on-screen keyboard is actually up. Reads the ref, because
+      // this listener is attached once and would otherwise close over a stale
+      // kbInset — and reads kbInset rather than the viewport, because on
+      // native the viewport never moves.
+      if (kbInsetRef.current <= KEYBOARD_MIN_PX) return;
       const t = e.touches && e.touches[0];
       if (!t) return;
       const dy = Math.abs(t.clientY - startY);

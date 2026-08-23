@@ -166,7 +166,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   const inputWrapRef = useRef(null);
   // Shared with Mystery Player — see useDropdownMaxHeight for why the first,
   // locally-copied version went stale and mixed coordinate spaces.
-  const dropMax = useDropdownMaxHeight(inputWrapRef);
+  const dropMax = useDropdownMaxHeight(inputWrapRef, { kbInset });
   useEffect(() => {
     if (done) return undefined;
     return keepInputVisible();
