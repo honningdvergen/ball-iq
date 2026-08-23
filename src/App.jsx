@@ -2406,6 +2406,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
     if (hardRightBurstTimerRef.current) clearTimeout(hardRightBurstTimerRef.current);
   }, []);
 
+
   // Android hardware back mid-quiz — AppInner turns Capacitor's backButton
   // into a cancelable "biq:hw-back" window event while a game is mounted.
   // Claim it (preventDefault) and mirror the ← button exactly: Q1 backs out
@@ -2434,6 +2435,37 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   const isTyped = q?.type === "typed";
   const isTF = q?.type === "tf";
   const answered = selected !== null || typedResult !== null;
+
+  // Bring the explanation to the player instead of hoping they scroll.
+  //
+  // The sticky Next button floats over the "Why?" panel on arrival and clips
+  // it mid-sentence (see the panel's own comment). Scrolling it into view is
+  // the smallest fix that actually changes behaviour — the alternative,
+  // un-sticking the CTA, would trade a reachable button for a readable
+  // paragraph, and both matter.
+  //
+  // ⚠️ `center`, NOT `end`. `end` aligns the panel's bottom edge with the
+  // viewport bottom — which is precisely where the sticky CTA lives, so it put
+  // the explanation straight back underneath the button this effect exists to
+  // get it out from under. It also pushed Next off-screen, which stalled the
+  // e2e daily-play helper and read as an unrelated flake for two days.
+  // `center` parks the paragraph in open space with the CTA below it.
+  // rAF because the panel has a 0.4s fadeIn and is not laid out at effect time.
+  const whyRef = useRef(null);
+  useEffect(() => {
+    const el = whyRef.current;
+    if (!answered || !el) return undefined;
+    const id = requestAnimationFrame(() => {
+      // ⚠️ INSTANT, not smooth. A smooth scroll keeps the page animating for
+      // ~300ms after every single answer, which (a) fights a player who is
+      // already scrolling and (b) made the e2e suite go from 1.0 to 4.0
+      // minutes with seven unrelated timeouts — Playwright waits for elements
+      // to stop moving before it will click them. A moving page is a slow page
+      // for a person too; they just cannot file a bug about it.
+      try { el.scrollIntoView({ block: 'center', behavior: 'auto' }); } catch { /* older WebViews */ }
+    });
+    return () => cancelAnimationFrame(id);
+  }, [answered, idx]);
 
   // ── desktop-web-refresh (Quiz #02): derived values for the >=1024 desktop
   // chrome (top bar + thin progress + circular timer ring). Every element that
@@ -2897,9 +2929,23 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           so the hand-written explanations that are the whole differentiator
           only ever appeared as a consolation prize, and a player on a good run
           never saw one. 75% of the bank carries an explanation; getting it
-          right is exactly when someone wants the story behind it. */}
+          right is exactly when someone wants the story behind it.
+
+          ⚠️ AND IT HAS TO BE SEEN, which is a separate problem from being
+          rendered. `.next-btn-primary` is position:sticky (bottom:16px,
+          z-index:5) so that the CTA is always reachable — correct on its own
+          terms, but it means that on ARRIVAL the green button floats directly
+          over the explanation and clips it mid-sentence. Observed on an iPhone
+          17 simulator, 2026-08-23: "...making the display all" and then the
+          button. The text was reachable by scrolling, but nothing told the
+          player it was there, and the obvious action — the big green Next —
+          skips it.
+          That matters more here than it would elsewhere: the explanations are
+          the differentiator no measured competitor has. Routing players past
+          them by default wastes the one thing that earns a return visit.
+          So the panel scrolls itself into view. */}
       {answered && q?.hint && (
-        <div style={{
+        <div ref={whyRef} style={{
           marginTop:10,
           padding:"10px 14px",
           background:"var(--s1)",
@@ -2947,12 +2993,19 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
             // run, so this is the highest-value thing on the screen after the
             // answer itself. Now t2 on a bordered chip at 13px, and a 44px min
             // height so it clears the touch-target floor.
+            // ⚠️ Demoted 2026-08-23. A bordered chip sitting directly beneath
+            // the primary CTA gave a RARE action the second-most prominent
+            // position on the busiest screen in the app, competing with Next
+            // for the same downward glance. It is a safety valve, not a step
+            // in the flow. Now plain text at --t3: still a 44px tap target,
+            // still perfectly findable by someone who wants it, no longer
+            // shouting at everyone who does not.
             style={{
-              display:"block", margin:"14px auto 0", padding:"10px 14px", minHeight:44,
-              background:"var(--s2)", border:"1px solid var(--border)", borderRadius:10,
+              display:"block", margin:"16px auto 0", padding:"12px 14px", minHeight:44,
+              background:"transparent", border:"none", borderRadius:10,
               cursor: reported ? "default" : "pointer",
-              color: reported ? "var(--accent)" : "var(--t2)",
-              fontSize:13, fontWeight:700, fontFamily:"inherit",
+              color: reported ? "var(--accent)" : "var(--t3)",
+              fontSize:12.5, fontWeight:600, fontFamily:"inherit",
               WebkitAppearance:"none", appearance:"none", WebkitTextFillColor:"currentColor"
             }}
           >

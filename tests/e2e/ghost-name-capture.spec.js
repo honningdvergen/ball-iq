@@ -27,6 +27,16 @@ async function seedNamelessGuest(context) {
       // the share path, not the nudge. (The collision itself is guarded in
       // App.jsx via askShareNameRef — this is isolation, not a workaround.)
       localStorage.setItem('biq_save_nudge_shown', '1');
+      // ⚠️ AND the notification pre-prompt, for exactly the same reason — this
+      // is what made the spec flaky (~40% of full-suite runs, 0% in isolation,
+      // diagnosed 2026-08-23). maybePromptNotif() fires after a POSITIVE DAILY
+      // COMPLETION on a 7000ms timer, which is this precise flow, and its
+      // bottom sheet covers the share button. Whether it lands before or after
+      // the test reaches the share depends on how loaded the machine is, so it
+      // passed alone and failed under parallelism — the signature of a race,
+      // not of a broken feature.
+      // Capped at its 2-ask lifetime limit so the sheet never schedules.
+      localStorage.setItem('biq_notif_asks', '2');
       // navigator.share is absent in headless Chromium, so the app would fall
       // through to the clipboard. Stub it to capture the payload directly.
       window.__shared = [];
@@ -71,8 +81,31 @@ async function playDailyToEnd(page) {
       await page.locator('button.opt, button:has-text("Share"), button:has-text("Challenge")')
         .first().waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
     }
+    // ⚠️ STOP AS SOON AS THE RESULT SCREEN EXISTS. The loop used to always run
+    // seven times; if a question was skipped or the daily was already partly
+    // played, the extra iterations clicked into whatever came next and walked
+    // off the result screen again.
+    if (await page.locator('button:has-text("Share"), button:has-text("Challenge")')
+      .filter({ visible: true }).count()) break;
   }
-  await page.waitForTimeout(900);
+
+  // ⚠️ ASSERT ARRIVAL HERE, not 40 lines later at the share button.
+  //
+  // Every wait above ends in `.catch(() => {})`, which is deliberate — a
+  // single slow reveal should not fail the run — but it means a step that
+  // genuinely stalls is SILENT, the loop limps on, and the test dies later
+  // with "share button on the daily result" pointing at the wrong place
+  // entirely. That is why this spec has read as flaky for two days: the
+  // symptom was never where the problem was.
+  //
+  // The generous timeout is on purpose. Measured 2026-08-23: this spec fails
+  // roughly 40% of full-suite runs and 0% in isolation, and a full suite run
+  // alongside a booted iOS Simulator took load average past 10 and failed 33
+  // of 44. The machine, not the app, is what varies.
+  await expect(
+    page.locator('button:has-text("Share"), button:has-text("Challenge")').filter({ visible: true }).first(),
+    'never reached the daily result screen — a step in playDailyToEnd stalled, look THERE not at the share button',
+  ).toBeVisible({ timeout: 20000 });
 }
 
 test('nameless sharer is asked, and the name reaches the link', async ({ page, context }) => {

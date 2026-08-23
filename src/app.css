@@ -575,7 +575,13 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
 .q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);}
 /* .q-tag rebases onto .pill tokens; per-category colours below override tint. */
-.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:var(--green-ink);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.15);padding:4px 10px;border-radius:999px;white-space:nowrap;}
+/* ⚠️ Tint was 0.15 here while every per-category override at .cat-* uses
+   0.10, so the DEFAULT chip rendered louder than the branded ones — an
+   inconsistency, not a choice. Observed on device 2026-08-23: on an
+   unanswered question the category chip is the brightest thing on screen,
+   so the eye lands on 'RECORDS & ICONS' before it reaches the question.
+   The label is the least important element on the card; it should not win. */
+.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700;color:var(--green-ink);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.10);padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
 .opts{display:flex;flex-direction:column;gap:9px;}
 .opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
@@ -602,7 +608,15 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .opt.correct .opt-l{background:#58CC02;color:#0A0A0A;border-color:#58CC02;}
 .opt.wrong .opt-l{background:#FF3B30;color:#fff;border-color:#FF3B30;}
 .opt.neutral-after .opt-l{background:var(--s2);color:var(--t2);}
-.feedback{border-radius:9px;padding:10px 14px;margin-top:9px;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+/* ⚠️ This was a full bordered card carrying one word the player already
+   knew. After answering, the outcome is stated FOUR times: the option row
+   turns green/red, its chip becomes a tick/cross, the progress dot fills,
+   and the live score ticks. A fifth card-sized restatement pushed the
+   explanation — the thing worth reading — further under the sticky CTA.
+   Kept as a lightweight line because role="status" is the screen-reader
+   announcement and deleting it would silence the outcome for non-sighted
+   players. Lighter, not gone. */
+.feedback{border-radius:0;border:none !important;background:transparent !important;padding:2px 2px;margin-top:10px;font-size:12.5px;font-weight:700;letter-spacing:0.01em;display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;}
 .feedback.correct{background:rgba(88,204,2,0.12);color:var(--green-ink);border:1px solid rgba(88,204,2,0.55);}
 .feedback.wrong{background:rgba(248,113,113,0.08);color:var(--red);border:1px solid rgba(248,113,113,0.18);}
 .typed-outer{position:relative;}
