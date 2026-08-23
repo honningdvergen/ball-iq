@@ -14,6 +14,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let bg = UIColor(red: 10.0/255.0, green: 10.0/255.0, blue: 10.0/255.0, alpha: 1.0)
         self.window?.backgroundColor = bg
         self.window?.rootViewController?.view.backgroundColor = bg
+        // Drag-to-dismiss the keyboard, the way every native iOS list works.
+        // Alex, device-testing 2026-08-23: "when people search for xabi alonso
+        // and want to scroll down... the keyboard is in the way. i was thinking
+        // the keyboard disappears when they try to scroll. this stuff has to be
+        // smooth." .interactive is the smooth version — the keyboard tracks the
+        // finger down instead of snapping shut. WKWebView defaults to .none, so
+        // without this line no amount of web-side work can match native feel.
+        // Safe here: the .view access above forces the view hierarchy (and the
+        // bridge's WKWebView) to load before we reach for its scrollView.
+        // Android + PWA get the web-side fallback in useKeyboardAwareInput.js.
+        if let bridgeVC = self.window?.rootViewController as? CAPBridgeViewController {
+            bridgeVC.webView?.scrollView.keyboardDismissMode = .interactive
+        }
         return true
     }
 

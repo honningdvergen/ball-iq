@@ -36,9 +36,22 @@ import { useEffect, useRef, useState } from 'react';
  *   <div style={{ paddingBottom: 32 + kbInset }}>…
  *   <input ref={inputRef} …/>
  *
- * Deliberately does NOT blur the input: staying focused is what lets a player
- * guess repeatedly without re-tapping the field, which every one of these modes
- * wants. The fix is to move the field, not to take the keyboard away.
+ * Deliberately does NOT blur the input when CONTENT moves: staying focused is
+ * what lets a player guess repeatedly without re-tapping the field, which
+ * every one of these modes wants. When rows grow, the fix is to move the
+ * field, not to take the keyboard away.
+ *
+ * THE THIRD HALF (Alex, device-testing 2026-08-23): "when people search for
+ * xabi alonso and want to scroll down... the keyboard is in the way. i was
+ * thinking the keyboard disappears when they try to scroll. this stuff has to
+ * be smooth." A deliberate DRAG is the opposite intent from typing — the
+ * player is asking to see the page — so that, and only that, dismisses the
+ * keyboard. The two rules don't conflict: content growth moves the field,
+ * a finger drag drops the keyboard. Automatic for every mode using this hook;
+ * no call-site wiring. On the native iOS shell, AppDelegate additionally sets
+ * scrollView.keyboardDismissMode = .interactive, the genuinely smooth version
+ * where the keyboard tracks the finger — this listener is the fallback that
+ * gives PWA and Android the same behaviour.
  */
 
 /** Below this much shrinkage we assume no on-screen keyboard (desktop, or a
@@ -89,6 +102,48 @@ export function useKeyboardAwareInput() {
     });
     return () => cancelAnimationFrame(id);
   };
+
+  // Dismiss-on-drag. Passive listeners; nothing here can jank the scroll.
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    let startY = null;
+    let startX = null;
+    let doneThisGesture = false;
+    const onStart = (e) => {
+      const t = e.touches && e.touches[0];
+      startY = t ? t.clientY : null;
+      startX = t ? t.clientX : null;
+      doneThisGesture = false;
+    };
+    const onMove = (e) => {
+      if (doneThisGesture || startY == null) return;
+      const el = inputRef.current;
+      if (!el || document.activeElement !== el) return;
+      // Only when an on-screen keyboard is actually up — read the viewport
+      // directly rather than the kbInset state, which is stale inside a
+      // window-level listener.
+      const vv = window.visualViewport;
+      if (!vv || window.innerHeight - vv.height - vv.offsetTop <= KEYBOARD_MIN_PX) return;
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      const dy = Math.abs(t.clientY - startY);
+      const dx = Math.abs(t.clientX - (startX ?? t.clientX));
+      // ⚠️ The threshold is what keeps taps alive. A tap on a suggestion row
+      // moves a couple of pixels; blurring on that would collapse the layout
+      // under the finger before the tap lands. 18px of mostly-vertical travel
+      // is unambiguous scrolling intent and nothing else.
+      if (dy > 18 && dy > dx) {
+        doneThisGesture = true;
+        try { el.blur(); } catch { /* nothing to drop */ }
+      }
+    };
+    window.addEventListener('touchstart', onStart, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: true });
+    return () => {
+      window.removeEventListener('touchstart', onStart);
+      window.removeEventListener('touchmove', onMove);
+    };
+  }, []);
 
   return { inputRef, kbInset, keepInputVisible };
 }
