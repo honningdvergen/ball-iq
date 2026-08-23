@@ -3250,3 +3250,53 @@ html.biq-cb .wd-tile--next{border-color:rgba(245,121,58,0.55);box-shadow:inset 0
      row of content sits underneath it. */
   html.native-app .tab-content { padding-bottom: 96px !important; }
 }
+
+/* ─── 421–1023px: THE BAND THAT HAD NO RULES AT ALL ──────────────────────────
+   Census before this block, and it is the whole problem: 8 rules at
+   min-width:1024, 1 at 1280, 1 at max-width:1023, 1 at 360 — and ZERO between
+   421 and 1023. Every iPad in portrait, every Android tablet, every foldable
+   opened flat and every half-screen desktop window fell through the gap and
+   got the phone layout unchanged.
+
+   Measured at 834px (iPad portrait) on 2026-08-23: a 420px content column
+   floating in the middle of the screen with 414px of unused space, sitting
+   under a tab bar 814px wide — a 394px mismatch between the navigation and
+   the content it navigates. It reads as a phone screenshot pasted onto a
+   tablet, which is exactly how App Review will see it.
+
+   ⚠️ !important throughout, and placed after the display-mode:standalone
+   mirror on purpose. That mirror pins `.app { max-width: 420px !important }`
+   for installed PWAs, so a plain rule here would apply in the browser and
+   silently NOT apply once someone installs — the drift this file has already
+   been bitten by. Phones are unaffected: the band starts at 421px.
+
+   Deliberately NOT the desktop two-column reflow. That needs the BiqNav rail,
+   which is hidden in the app shell, and a tablet is still a device you hold. */
+@media (min-width: 421px) and (max-width: 1023px) {
+  /* Wider, but nowhere near full-bleed: past roughly 620px a single column of
+     cards stops reading as a column and starts reading as a stretched phone. */
+  .app { max-width: 620px !important; }
+  .offline-banner { max-width: 620px !important; }
+
+  /* The navigation has to belong to the content. Capped and centred rather
+     than spanning the device, so four tabs are not stranded at the far edges
+     of a screen held in two hands. */
+  .tab-bar { max-width: 460px !important; }
+
+  /* Bottom sheets slide up from the bottom edge and were uncapped, so on a
+     tablet they stretched the full width and stopped reading as sheets. Round
+     only the top corners, the way a sheet anchored to the edge should. */
+  .diff-sheet, .emoji-picker-sheet {
+    max-width: 480px !important;
+    margin-inline: auto !important;
+    border-radius: 20px 20px 0 0 !important;
+  }
+
+  /* Footle's board centres itself only at >=1024, so in this band it sat hard
+     against the left of a wide screen. Same rule, earlier gate. */
+  .wd-screen { margin-left: auto !important; margin-right: auto !important; }
+
+  /* The modal overlay caps its own children on phones; give the same ceiling
+     here so a dialog does not balloon with the column. */
+  .modal-overlay > * { max-width: 480px !important; }
+}
