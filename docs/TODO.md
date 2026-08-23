@@ -44,12 +44,20 @@ Full report: the panel artifact (16 areas, each with its path to 8+).
       did NOT add leak-avoidance there: the 59-row pool has ZERO conflicting
       pairs, so it would have been a no-op that looked like coverage.
 
-### Next up — still web-only, no upload needed
+- [x] **THE RATINGS FIX — every store link pointed at the empty shelf.**
+      Alex: *"it says there are only 2 reviews but I know at least 4 people gave
+      it 5 stars."* There are **6**, on four storefronts — GB 3, NO 2, FR 1,
+      **US 0** — and every default link went to `/us/`. The 08-22 fix reached
+      2 of 8 call sites because the US-pinned `APP_STORE_URL` const was still
+      imported by BiqNav, HomeScreen, the post-Footle CTA and both marketing
+      pages. All 8 now call `appStoreUrl()`. `api/get.js` (the single CTA behind
+      ~180 SEO pages) is region-aware; static pages get a country-less href plus
+      an inline rewrite, so no-JS readers are never worse off. Stale
+      two-names-old slug deleted. Guarded by `storefront-sync.test.js` across
+      all four copies — falsification-run. **Verified live from Norway: /get
+      now lands on the 5.0★ Norwegian shelf.**
 
-- [ ] `api/get.js` region-aware storefront. **This is the ratings fix**: we have
-      6 ratings (GB 3, NO 2, FR 1) and **0 in the US**, and every default link
-      sends everyone to `/us/`. It already reads `x-vercel-ip-country` for a log
-      line. Also replace the 4 US-pinned consumers + the stale two-names-old slug.
+### Next up — still web-only, no upload needed
 - [ ] Re-shoot `01-home.png` (`animations:'disabled'`, shoot-store-screens.mjs:422)
       — the hero shot on both stores has glyphs bleeding through the tab bar and
       the Daily tab reads "🔥aily". Play takes screenshot edits with no release.
