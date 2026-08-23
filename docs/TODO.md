@@ -80,10 +80,30 @@ Full report: the panel artifact (16 areas, each with its path to 8+).
       across 3 (India and South Africa were never checked; SA is our first
       non-5-star). No Apple surface aggregates them, which is the whole reason
       the store looked like it had 2.
-- [ ] Wrap the 6 lazy game screens in `TabErrorBoundary` (it already exists and
-      does the right thing; it just isn't on that branch of the tree).
-- [ ] Reminder reach 1 → 36: UNION `device_tokens` into
-      `enqueue_web_daily_reminders()`. SELECT-only change, no client, no upload.
+- [x] **Lazy game screens had no error boundary** — a chunk failure took down
+      the whole app, not the screen. Boundaries 4 → 12; screens get a "Back to
+      Home" exit that tabs don't need. Every `fallback={null}` replaced with a
+      real spinner (the empty frame was report #2's misdiagnosed "feels slow").
+      Guarded + falsification-run. Verified by loading Mystery and Trail.
+- [x] ~~Reminder reach 1 → 36 via `device_tokens` UNION~~ — **THE PANEL WAS
+      WRONG, do not do this.** (a) `device_tokens` has no timezone column and
+      the function pivots on local 7pm, so it is not a SELECT-only change.
+      (b) Those 36 users are **already covered**: `lib/notifications.js`
+      schedules an on-device 7pm local notification plus a win-back tail. The
+      cron exists for WEB push, which has no on-device scheduler. Shipping it
+      would have **double-notified every native user at 7pm**.
+      Instead: `notif-prompt-skipped` now records WHICH of the five web gates
+      bailed. ⚠️ Also learned — `.env.local` has no `VITE_VAPID_PUBLIC_KEY`,
+      which reads as "web push is impossible", but the **live bundle has
+      Vercel's copy and works**. Local builds cannot test web push; check the
+      deployed bundle, never the local one.
+
+### Waiting on data, not on work
+
+- [ ] Read `notif-prompt-skipped` after ~a day and fix the gate that actually
+      bites. If it is `guest`, the question becomes whether a web guest saying
+      "remind me" should trigger an anonymous sign-in — a product call, since
+      `persist()` upserts by user id and a guest's subscription cannot stick.
 - [ ] Username wall: `derivePrefill` offers a value `handleContinue` rejects.
 - [ ] Localised pages: one anchor to `/play?club=<slug>` (42 pages, measured to
       convert 2.6×, currently dead-ending).
