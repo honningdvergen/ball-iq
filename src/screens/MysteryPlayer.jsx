@@ -108,6 +108,17 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   // GAINS focus, and the shrunken viewport then reads as scroll-locked. This
   // mode had NO handling at all. See lib/useKeyboardAwareInput.js.
   const { inputRef, kbInset, keepInputVisible } = useKeyboardAwareInput();
+  // Space between the input and the top of the keyboard. visualViewport.height
+  // already excludes the keyboard, so no guess about its height is needed.
+  const [dropMax, setDropMax] = useState(320);
+  useEffect(() => {
+    if (!suggestions.length) return;
+    const el = inputRef.current;
+    if (!el) return;
+    const vh = (typeof window !== 'undefined' && window.visualViewport?.height) || window.innerHeight;
+    const avail = vh - el.getBoundingClientRect().bottom - 26;
+    setDropMax(Math.max(132, Math.min(360, Math.round(avail))));
+  }, [suggestions.length, kbInset, inputRef]);
   const done = won || gaveUp;
   // Each guess inserts a row above the field. Pull it back into view rather
   // than dropping the keyboard — staying focused is what lets a player guess
@@ -387,7 +398,17 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
             />
           </div>
           {suggestions.length > 0 && (
-            <div style={{ position: 'absolute', left: 16, right: 16, zIndex: 20, marginTop: 6, background: 'var(--s2)', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+            /* ⚠️ SAME DEFECT AS TRANSFER TRAIL, found by grepping for the second
+               implementation rather than waiting for a second report. This list
+               is position:absolute with overflow:hidden and no height bound, so
+               on a phone the keyboard covers most of it and there is nothing to
+               scroll — the page has no content below it, because the list floats
+               over the keyboard rather than sitting in the layout.
+               Mystery already took both halves of useKeyboardAwareInput; the
+               hook cannot help here, because kbInset pads the PAGE and this is
+               not on the page. Bounded to the space the visual viewport actually
+               reports, and scrollable inside it. */
+            <div style={{ position: 'absolute', left: 16, right: 16, zIndex: 20, marginTop: 6, background: 'var(--s2)', border: '1px solid var(--border)', borderRadius: 14, maxHeight: dropMax, overflowY: 'auto', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
               {suggestions.map((p) => (
                 /* The subtitle used to be p.club alone, which failed at the one
                    job it has. Searching "Ronaldo" offered "Cristiano Ronaldo —

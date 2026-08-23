@@ -701,70 +701,83 @@ const CLUB_PACK_TO_QB = {
   Parma: "Parma", Monaco: "AS Monaco",
 };
 
-// League grouping for the club-quiz picker.
+// Club -> COUNTRY, and the order they appear inside it.
+//
+// ⚠️ ORDER IS DELIBERATE AND LOAD-BEARING. The picker previews only the
+// first CLUB_PREVIEW (2) clubs per section, so whatever leads each country is
+// effectively the whole section until someone taps "Show all". It used to be
+// CLUB_PACKS insertion order, which is why adding ten clubs on 2026-08-23 put
+// Birmingham and Cardiff above Arsenal and Liverpool — the newest rows, not
+// the ones anyone came looking for. Ordered by who a fan opening this screen
+// is most likely to want; adding a club appends rather than displaces.
 const CLUB_LEAGUES = {
-  Arsenal: "pl", Liverpool: "pl", ManUtd: "pl", ManCity: "pl", Chelsea: "pl", Tottenham: "pl", Newcastle: "pl",
-  Barcelona: "laliga", RealMadrid: "laliga", Atletico: "laliga",
-  Juventus: "seriea", AcMilan: "seriea", InterMilan: "seriea", Napoli: "seriea", Atalanta: "seriea",
-  BayernMunich: "bundesliga", Dortmund: "bundesliga", Leipzig: "bundesliga",
-  PSG: "ligue1",
-  Galatasaray: "superlig", Benfica: "primeira", Fenerbahce: "superlig",
-  Porto: "primeira", Roma: "seriea",
-  Celtic: "scottish", Rangers: "scottish", Marseille: "ligue1",
-  // Wave D: PSV + Feyenoord finally give Ajax a real league home — it sat in
-  // "other" only because it was the lone Dutch club.
-  Ajax: "eredivisie", Feyenoord: "eredivisie", PSV: "eredivisie",
-  Anderlecht: "belgian", ClubBrugge: "belgian",
-  Besiktas: "superlig", Trabzonspor: "superlig",
-  // Wave E: lone clubs from Serbia/Croatia/Switzerland — kept in "other" until a
-  // second club from each country justifies its own league section (same rule
-  // that gated Scottish/Eredivisie/Belgian until they had 2+ clubs).
-  RedStar: "other", DinamoZagreb: "croatian", Hajduk: "croatian", Basel: "other",
-  Forest: "pl", Villa: "pl", Everton: "pl", Leeds: "pl", WestHam: "pl",
-  Sunderland: "pl", Ipswich: "pl", Palace: "pl", Fulham: "pl", Brighton: "pl",
-  // Wave J: Burnley/Wolves sit in the Championship for 2026-27, but the in-app
-  // sections have no Championship bucket — grouped under "pl" like West Ham.
-  Bournemouth: "pl", Brentford: "pl", Burnley: "pl", Wolves: "pl",
-  Coventry: "pl", HullCity: "pl",
-  // Wave O: same treatment as Coventry/Hull/Burnley/Wolves above — the section
-  // list has no English second-tier bucket, so English clubs are grouped under
-  // "pl" regardless of current division. Deliberately NOT asserting which
-  // division any of these is in for 2026-27: that is post-cutoff and would be
-  // a guess in a user-visible label.
-  Birmingham: "pl", Cardiff: "pl", Derby: "pl", Norwich: "pl", Portsmouth: "pl",
-  SheffWed: "pl", Southampton: "pl", Stoke: "pl", Swansea: "pl", Wrexham: "pl",
-  Athletic: "laliga", Sevilla: "laliga", Betis: "laliga",
-  // Wave N. Santos joins the existing southamerica section (Flamengo,
-  // Corinthians, Palmeiras, Boca, River); Real Sociedad is a sixth laliga club.
-  Santos: "southamerica", RealSociedad: "laliga",
-  Schalke: "bundesliga", Hamburg: "bundesliga",
-  Fiorentina: "seriea", Lazio: "seriea", Torino: "seriea",
-  Sporting: "primeira", SaintEtienne: "ligue1",
-  // Wave L: first non-European section. Brasileirao + Primera Division were
-  // already mapped in leagues.mjs; these five are the first packs to use them.
-  // Grouped as one section rather than two — the same 2+-clubs-per-section rule
-  // that kept lone Serbian/Croatian/Swiss clubs in "other" argues for one
-  // continental bucket over a 2-club and a 3-club section.
-  Boca: "southamerica", River: "southamerica", Flamengo: "southamerica",
-  Palmeiras: "southamerica", Corinthians: "southamerica",
-  // Wave K: Parma were in Serie A for 2025-26; Valencia/Leverkusen/Lyon/Monaco
-  // all sit in their country's top flight, so each lands in its real section.
-  Valencia: "laliga", Leverkusen: "bundesliga", Lyon: "ligue1",
-  Parma: "seriea", Monaco: "ligue1",
+  Arsenal: "england", ManUtd: "england", Liverpool: "england", ManCity: "england",
+  Chelsea: "england", Tottenham: "england", Newcastle: "england", Everton: "england",
+  Villa: "england", WestHam: "england", Forest: "england", Leeds: "england",
+  Palace: "england", Fulham: "england", Brighton: "england", Bournemouth: "england",
+  Brentford: "england", Sunderland: "england", Ipswich: "england", Wolves: "england",
+  Burnley: "england", Southampton: "england", Norwich: "england", Derby: "england",
+  Stoke: "england", Birmingham: "england", SheffWed: "england", Coventry: "england",
+  HullCity: "england", Portsmouth: "england", Cardiff: "england", Swansea: "england",
+  Wrexham: "england",
+  RealMadrid: "spain", Barcelona: "spain", Atletico: "spain", Sevilla: "spain",
+  Valencia: "spain", Athletic: "spain", Betis: "spain", RealSociedad: "spain",
+  Juventus: "italy", AcMilan: "italy", InterMilan: "italy", Napoli: "italy",
+  Roma: "italy", Lazio: "italy", Atalanta: "italy", Fiorentina: "italy",
+  Torino: "italy", Parma: "italy",
+  BayernMunich: "germany", Dortmund: "germany", Leverkusen: "germany", Leipzig: "germany",
+  Schalke: "germany", Hamburg: "germany",
+  PSG: "france", Marseille: "france", Lyon: "france", Monaco: "france",
+  SaintEtienne: "france",
+  Benfica: "portugal", Porto: "portugal", Sporting: "portugal",
+  Ajax: "netherlands", PSV: "netherlands", Feyenoord: "netherlands",
+  Galatasaray: "turkiye", Fenerbahce: "turkiye", Besiktas: "turkiye", Trabzonspor: "turkiye",
+  Celtic: "scotland", Rangers: "scotland",
+  Anderlecht: "belgium", ClubBrugge: "belgium",
+  DinamoZagreb: "croatia", Hajduk: "croatia",
+  Flamengo: "brazil", Palmeiras: "brazil", Corinthians: "brazil", Santos: "brazil",
+  Boca: "argentina", River: "argentina",
+  RedStar: "other", Basel: "other",
 };
+// Position within a country, from the order above. Unknown keys sort last so a
+// club added to CLUB_PACKS but not here still renders instead of vanishing.
+const CLUB_ORDER = Object.fromEntries(Object.values({"england": ["Arsenal", "ManUtd", "Liverpool", "ManCity", "Chelsea", "Tottenham", "Newcastle", "Everton", "Villa", "WestHam", "Forest", "Leeds", "Palace", "Fulham", "Brighton", "Bournemouth", "Brentford", "Sunderland", "Ipswich", "Wolves", "Burnley", "Southampton", "Norwich", "Derby", "Stoke", "Birmingham", "SheffWed", "Coventry", "HullCity", "Portsmouth", "Cardiff", "Swansea", "Wrexham"], "spain": ["RealMadrid", "Barcelona", "Atletico", "Sevilla", "Valencia", "Athletic", "Betis", "RealSociedad"], "italy": ["Juventus", "AcMilan", "InterMilan", "Napoli", "Roma", "Lazio", "Atalanta", "Fiorentina", "Torino", "Parma"], "germany": ["BayernMunich", "Dortmund", "Leverkusen", "Leipzig", "Schalke", "Hamburg"], "france": ["PSG", "Marseille", "Lyon", "Monaco", "SaintEtienne"], "portugal": ["Benfica", "Porto", "Sporting"], "netherlands": ["Ajax", "PSV", "Feyenoord"], "turkiye": ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"], "scotland": ["Celtic", "Rangers"], "belgium": ["Anderlecht", "ClubBrugge"], "croatia": ["DinamoZagreb", "Hajduk"], "brazil": ["Flamengo", "Palmeiras", "Corinthians", "Santos"], "argentina": ["Boca", "River"], "other": ["RedStar", "Basel"]}).flat().map((k, i) => [k, i]));
 const CLUB_LEAGUE_SECTIONS = [
-  { key: "pl", label: "Premier League" },
-  { key: "laliga", label: "La Liga" },
-  { key: "seriea", label: "Serie A" },
-  { key: "bundesliga", label: "Bundesliga" },
-  { key: "ligue1", label: "Ligue 1" },
-  { key: "superlig", label: "Süper Lig" },
-  { key: "primeira", label: "Primeira Liga" },
-  { key: "scottish", label: "Scottish Premiership" },
-  { key: "eredivisie", label: "Eredivisie" },
-  { key: "belgian", label: "Belgian Pro League" },
-  { key: "croatian", label: "Croatian First League" },
-  { key: "southamerica", label: "South America" },
+  // ── SECTIONS ARE COUNTRIES, NOT LEAGUES ────────────────────────────────────
+  // Alex, 2026-08-23, on seeing Birmingham and Cardiff heading the Premier
+  // League list: "they are not even in the premier league? ... maybe we should
+  // categorize by country instead?"
+  //
+  // Right on both counts. League membership changes every May, so a league
+  // label is a fact with an expiry date — which is exactly how this list ended
+  // up asserting that Birmingham and Cardiff are Premier League clubs, and why
+  // Burnley and Wolves sat under "pl" beneath a comment admitting they are in
+  // the Championship. A club's COUNTRY does not change, so these labels cannot
+  // rot and never need re-verifying against a season we cannot see.
+  //
+  // ⚠️ TWO CLUBS DO NOT PLAY IN THEIR OWN COUNTRY'S LEAGUE, and pretending
+  // otherwise would trade one wrong label for another:
+  //   · Cardiff, Swansea and Wrexham are WELSH clubs in the English pyramid —
+  //     hence "England & Wales" rather than "England". Calling Wrexham English
+  //     is exactly the kind of error this change exists to stop.
+  //   · Monaco is Monégasque, not French. It sits under France because it
+  //     plays in Ligue 1 and every fan discusses it as a Ligue 1 club; the
+  //     alternative is a section of one, which serves nobody.
+  { key: "england", label: "England & Wales" },
+  { key: "spain", label: "Spain" },
+  { key: "italy", label: "Italy" },
+  { key: "germany", label: "Germany" },
+  { key: "france", label: "France" },
+  { key: "portugal", label: "Portugal" },
+  { key: "netherlands", label: "Netherlands" },
+  { key: "turkiye", label: "Türkiye" },
+  { key: "scotland", label: "Scotland" },
+  { key: "belgium", label: "Belgium" },
+  { key: "croatia", label: "Croatia" },
+  { key: "brazil", label: "Brazil" },
+  { key: "argentina", label: "Argentina" },
+  // Same 2+ rule the old list used: a country gets a section once it has two
+  // clubs. Red Star (Serbia) and Basel (Switzerland) are still singletons.
   { key: "other", label: "More clubs" },
 ];
 
@@ -909,20 +922,6 @@ const LEAGUE_QUIZ_SECTIONS = [
 const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
 export const CLUB_PACKS = {
-  // ── Wave O. `questions: []` on purpose, like every pack since Wave D: the
-  // draw prefers the verified, hint-bearing QB rows via CLUB_PACK_TO_QB and
-  // only falls back to this array. Each of these clears the 10 medium+hard
-  // floor the club draw needs (thinnest is Sheffield Wednesday at 11).
-  Birmingham:  { name: "Birmingham City",     icon: "🔵", color: "#253896", questions: [] },
-  Cardiff:     { name: "Cardiff City",        icon: "🐦", color: "#0070B5", questions: [] },
-  Derby:       { name: "Derby County",        icon: "🐏", color: "#1B1B1B", questions: [] },
-  Norwich:     { name: "Norwich City",        icon: "🐤", color: "#00A650", questions: [] },
-  Portsmouth:  { name: "Portsmouth",          icon: "⚓", color: "#001489", questions: [] },
-  SheffWed:    { name: "Sheffield Wednesday", icon: "🦉", color: "#0066B3", questions: [] },
-  Southampton: { name: "Southampton",         icon: "⛵", color: "#D71920", questions: [] },
-  Stoke:       { name: "Stoke City",          icon: "🔴", color: "#E03A3E", questions: [] },
-  Swansea:     { name: "Swansea City",        icon: "🦢", color: "#121212", questions: [] },
-  Wrexham:     { name: "Wrexham",             icon: "🐐", color: "#DA291C", questions: [] },
   Leipzig: {
     name: "RB Leipzig", icon: "🐂", color: "#DD0741",
     questions: [],
@@ -1386,6 +1385,19 @@ export const CLUB_PACKS = {
     name: "AS Monaco", icon: "🔺", color: "#DA291C",
     questions: [],
   },
+  // draw prefers the verified, hint-bearing QB rows via CLUB_PACK_TO_QB and
+  // only falls back to this array. Each of these clears the 10 medium+hard
+  // floor the club draw needs (thinnest is Sheffield Wednesday at 11).
+  Birmingham:  { name: "Birmingham City",     icon: "🔵", color: "#253896", questions: [] },
+  Cardiff:     { name: "Cardiff City",        icon: "🐦", color: "#0070B5", questions: [] },
+  Derby:       { name: "Derby County",        icon: "🐏", color: "#1B1B1B", questions: [] },
+  Norwich:     { name: "Norwich City",        icon: "🐤", color: "#00A650", questions: [] },
+  Portsmouth:  { name: "Portsmouth",          icon: "⚓", color: "#001489", questions: [] },
+  SheffWed:    { name: "Sheffield Wednesday", icon: "🦉", color: "#0066B3", questions: [] },
+  Southampton: { name: "Southampton",         icon: "⛵", color: "#D71920", questions: [] },
+  Stoke:       { name: "Stoke City",          icon: "🔴", color: "#E03A3E", questions: [] },
+  Swansea:     { name: "Swansea City",        icon: "🦢", color: "#121212", questions: [] },
+  Wrexham:     { name: "Wrexham",             icon: "🐐", color: "#DA291C", questions: [] },
 };
 
 
@@ -5777,7 +5789,13 @@ function ClubQuizScreen({ onStart, onBack }) {
       {/* League sections hide entirely while searching — two competing lists on
           one screen is worse than either alone. */}
       {!clubQuery.trim() && CLUB_LEAGUE_SECTIONS.map((section) => {
-        const clubs = Object.entries(CLUB_PACKS).filter(([key]) => (CLUB_LEAGUES[key] || "other") === section.key);
+        // ⚠️ Sorted by CLUB_ORDER, not by CLUB_PACKS insertion order. Only the
+        // first two show before "Show all", so insertion order meant the most
+        // RECENTLY ADDED clubs fronted every section — which is how ten new
+        // English clubs ended up above Arsenal and Liverpool.
+        const clubs = Object.entries(CLUB_PACKS)
+          .filter(([key]) => (CLUB_LEAGUES[key] || "other") === section.key)
+          .sort(([a], [b]) => (CLUB_ORDER[a] ?? 1e6) - (CLUB_ORDER[b] ?? 1e6));
         if (!clubs.length) return null;
         const isOpen = openLeagues.has(section.key);
         const shown = isOpen ? clubs : clubs.slice(0, CLUB_PREVIEW);

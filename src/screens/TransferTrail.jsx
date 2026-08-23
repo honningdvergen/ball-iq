@@ -158,7 +158,21 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   // — the hook was extracted FROM this code — but the same shape had to be
   // fixed a third time in Mystery Player on 2026-08-22, so it lives in one
   // place now rather than drifting across three screens.
-  const { inputRef, keepInputVisible } = useKeyboardAwareInput();
+  const { inputRef, keepInputVisible, kbInset } = useKeyboardAwareInput();
+  // How much room is there between the input and the top of the keyboard?
+  // Recomputed whenever the keyboard moves or the list changes length, because
+  // both change the answer. visualViewport.height already excludes the
+  // keyboard, so this needs no guesswork about its height.
+  const inputWrapRef = useRef(null);
+  const [dropMax, setDropMax] = useState(320);
+  useEffect(() => {
+    if (!suggestions.length) return;
+    const el = inputWrapRef.current;
+    if (!el) return;
+    const vh = (typeof window !== "undefined" && window.visualViewport?.height) || window.innerHeight;
+    const avail = vh - el.getBoundingClientRect().bottom - 12;
+    setDropMax(Math.max(132, Math.min(360, Math.round(avail))));
+  }, [suggestions.length, kbInset]);
   useEffect(() => {
     if (done) return undefined;
     return keepInputVisible();
@@ -223,7 +237,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   };
 
   return (
-    <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20, maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
+    <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20 + kbInset, maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
       {won && Confetti ? <Confetti /> : null}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 4px" }}>
@@ -289,7 +303,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
 
       {!done && (
         <>
-          <div style={{ position: "relative", marginTop: 14, display: "flex", gap: 8,
+          <div ref={inputWrapRef} style={{ position: "relative", marginTop: 14, display: "flex", gap: 8,
                         transform: shake ? "translateX(-4px)" : "none", transition: "transform .12s" }}>
             <input
               ref={inputRef}
@@ -310,9 +324,30 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                        color: entry.trim() ? "#06230C" : "var(--t3)", fontWeight: 800, fontSize: 14,
                        fontFamily: "inherit", cursor: entry.trim() ? "pointer" : "default" }}>Guess</button>
             {suggestions.length > 0 && (
+              // ⚠️ PLAYER-REPORTED ON DEVICE, 2026-08-23: "i still can not scroll
+              // down to see more names, the keyboard seems stuck over it".
+              //
+              // Two separate causes, and fixing only one leaves it broken:
+              //   · This list is position:absolute, so it contributes NOTHING to
+              //     page height. Bottom padding on the root — the usual fix, and
+              //     the one applied above — cannot reach it: there is no page
+              //     below the keyboard to scroll to, because the list is floating
+              //     over it. It needed its own bound.
+              //   · Trail took only HALF the keyboard hook. useKeyboardAwareInput
+              //     says in its own docstring "TWO HALVES, and a mode needs both",
+              //     and Trail — the mode the hook was EXTRACTED FROM — destructured
+              //     keepInputVisible and left kbInset behind, with paddingBottom
+              //     hardcoded to 20. Mystery and Stadiums both take both.
+              //
+              // maxHeight is measured against the visual viewport, which already
+              // excludes the keyboard on iOS, so the list is sized to the space
+              // that actually exists and scrolls inside it. 132px keeps at least
+              // two rows reachable even on a short screen with a tall keyboard.
               <div style={{ position: "absolute", left: 0, right: 0, top: "100%", zIndex: 20, marginTop: 6,
                             background: "var(--s2)", border: "1px solid var(--border)", borderRadius: 14,
-                            overflow: "hidden", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>
+                            maxHeight: dropMax, overflowY: "auto", WebkitOverflowScrolling: "touch",
+                            overscrollBehavior: "contain",
+                            boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>
                 {suggestions.map((p) => (
                   <button key={p.id} type="button" onClick={() => submit(false, p.name)}
                     style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 2,
