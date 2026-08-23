@@ -27,7 +27,8 @@
     "sync:ios": "cap sync ios && node scripts/prune-native-web-assets.mjs",
     "sync:android": "cap sync android && node scripts/prune-native-web-assets.mjs",
     "verify:native": "node scripts/prune-native-web-assets.mjs --verify",
-    "audit:pool": "node scripts/audit-mystery-pool.mjs"
+    "audit:pool": "node scripts/audit-mystery-pool.mjs",
+    "ratings": "node scripts/store-ratings.mjs"
   },
   "dependencies": {
     "@capacitor-community/apple-sign-in": "^6.0.0",
