@@ -31,7 +31,7 @@ export const SITE = {
   name: 'Ball IQ',
   tagline: 'The ultimate football quiz',
   ogImage: 'https://balliq.app/og-image.png',
-  appStore: 'https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961',
+  appStore: 'https://apps.apple.com/app/id6775975961',
   // Google Play listing — LIVE since 2026-07-27. Package is app.balliq
   // (build.gradle applicationId); the reversed com.balliq.app form 404s.
   playStore: 'https://play.google.com/store/apps/details?id=app.balliq',

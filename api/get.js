@@ -27,7 +27,30 @@
 // Desktop and anything unrecognised goes to the web app, which is the correct
 // destination there: the game runs fine in a browser and installs as a PWA.
 
-const APP_STORE = 'https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961';
+// ⚠️ STOREFRONT, NOT JUST PLATFORM. This used to be hardcoded to /us/ — and
+// the US shelf is the one storefront with ZERO ratings. Measured live
+// 2026-08-23: US 0, GB 5.0 from 3, NO 5.0 from 2, FR 5.0 from 1. Apple shows
+// each country its own ratings, so every British and Norwegian visitor tapping
+// a "Get the app" CTA was being handed the emptiest shelf we own, complete
+// with "hasn't received enough ratings or reviews to display a summary" —
+// while their own storefront showed five stars. That is the single worst
+// conversion detail in the funnel and it is fixed here, for every one of the
+// ~180 static SEO pages at once, with no app build and no store review.
+//
+// The old slug went too: `ball-iq-football-trivia` is two names stale and
+// 301s. Apple routes by ID, so the ID-only form is both correct and one hop
+// shorter on a tap that is already asking a lot.
+//
+// Keep in sync with APPLE_STOREFRONTS in src/lib/links.js — an edge function
+// cannot import from src/, same constraint the static HTML has.
+const APPLE_STOREFRONTS = new Set(['us','gb','no','de','es','fr','it','br','tr','id','nl','se','dk','fi','ie','pt','pl','ca','au','mx','ar','in','za','be','at','ch','cz','gr','hu','ro','sa','ae']);
+const APP_STORE_ID = '6775975961';
+const appStoreFor = (country) => {
+  const cc = String(country || '').toLowerCase();
+  // Fall back to /us/ when the region is unreadable or unsupported — that is
+  // exactly the old behaviour, so this can only improve on what was there.
+  return `https://apps.apple.com/${APPLE_STOREFRONTS.has(cc) ? cc : 'us'}/app/id${APP_STORE_ID}`;
+};
 const PLAY_STORE = 'https://play.google.com/store/apps/details?id=app.balliq';
 const WEB_APP = 'https://balliq.app/play';
 
@@ -48,7 +71,8 @@ export default function handler(req) {
   const isIOS = /iPhone|iPad|iPod/i.test(ua);
   const isAndroid = /Android/i.test(ua) && !/Windows Phone/i.test(ua);
 
-  let target = isIOS ? APP_STORE : isAndroid ? PLAY_STORE : WEB_APP;
+  const country = req.headers.get('x-vercel-ip-country') || null;
+  let target = isIOS ? appStoreFor(country) : isAndroid ? PLAY_STORE : WEB_APP;
   if (src && isAndroid) {
     // Play Install Referrer: survives through install and shows up in Play
     // Console's acquisition reports, keyed by utm_source.
@@ -63,7 +87,11 @@ export default function handler(req) {
     t: 'get-click',
     src: src || null,
     platform: isIOS ? 'ios' : isAndroid ? 'android' : 'web',
-    country: req.headers.get('x-vercel-ip-country') || null,
+    country,
+    // Which shelf the visitor was actually sent to, so "are non-US installs
+    // landing on their own storefront?" is answerable from the logs rather
+    // than by re-reading this file.
+    storefront: isIOS ? (target.split('/')[3] || null) : null,
   }));
 
   return new Response(null, {
@@ -74,7 +102,8 @@ export default function handler(req) {
       // to resolve differently per visitor. A cached 302 would pin whichever
       // platform happened to ask first.
       'Cache-Control': 'no-store, must-revalidate',
-      Vary: 'User-Agent',
+      // Country joins User-Agent now that the destination depends on it too.
+      Vary: 'User-Agent, X-Vercel-IP-Country',
     },
   });
 }

@@ -26,7 +26,7 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 // equivalent, per the README). All ambient motion respects prefers-reduced-motion.
 
 // Country-coded canonical URL — single source of truth in lib/links.js.
-import { APP_STORE_URL as APP_STORE, PLAY_STORE_URL } from '../lib/links.js';
+import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
 // Single-button 'Get the app' CTAs must NOT hardcode one store — /get (api/get.js)
 // redirects iOS->App Store, Android->Play, desktop->the web app. The App Store and
 // Play BADGES below stay as direct links, because there the platform is the label.
@@ -232,7 +232,7 @@ const AppleGlyph = ({ size = 22 }) => (
 // platform IS the label, so routing it through /get would be wrong.
 // Only the unlabelled "Get the app" buttons are platform-aware.
 const AppStoreBadge = ({ small }) => (
-  <a href={APP_STORE} target="_blank" rel="noopener" className="mkt-cta-app"
+  <a href={appStoreUrl()} target="_blank" rel="noopener" className="mkt-cta-app"
      style={{ display: 'inline-flex', alignItems: 'center', gap: small ? 10 : 11, padding: small ? '11px 18px' : '14px 22px', background: '#000', border: '1px solid var(--bd2)', borderRadius: small ? 12 : 14 }}>
     <AppleGlyph size={small ? 18 : 22} />
     {small ? (

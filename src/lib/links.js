@@ -26,9 +26,19 @@ export function appStoreUrl() {
   } catch { /* older engines, or no navigator — keep us */ }
   return `https://apps.apple.com/${cc}/app/id${APP_STORE_ID}`;
 }
-// Kept for the handful of module-scope consumers that cannot call a function.
-// Prefer appStoreUrl() anywhere a real visitor is tapping.
-export const APP_STORE_URL = "https://apps.apple.com/us/app/id6775975961";
+// Kept for module-scope consumers that cannot call a function (JSON-LD,
+// structured data, anything evaluated once at import time).
+//
+// ⚠️ NOT /us/ any more, and not the slug either. Every visitor-facing consumer
+// was migrated to appStoreUrl() on 2026-08-23 — this const had quietly become
+// the reason the fix "landed" and changed nothing, because BiqNav, HomeScreen,
+// the post-Footle CTA and both marketing pages all still imported it.
+//
+// The country-less form is the right default here: verified 2026-08-23 that it
+// 301s cleanly rather than erroring (the old comment claiming otherwise was
+// stale), so at worst it behaves exactly like the hardcoded /us/ did, and at
+// best Apple resolves it to the viewer's own storefront. Strictly >= before.
+export const APP_STORE_URL = `https://apps.apple.com/app/id${APP_STORE_ID}`;
 // Play package id is app.balliq (build.gradle applicationId) — NOT com.balliq.app;
 // the reversed form 404s. Listing goes live when the closed test graduates.
 export const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=app.balliq";

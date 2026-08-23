@@ -407,6 +407,29 @@ function badgeFor(slug, name) {
 
 // ── shared chrome ─────────────────────────────────────────────────────────────
 // Reusable black App Store badge — the KNOWN-GOOD inline Apple glyph.
+// Point every App Store link at the visitor's OWN storefront.
+//
+// ⚠️ WHY THIS EXISTS. Apple shows each country its own ratings, and measured
+// 2026-08-23 we hold 5.0 from 3 in GB, 5.0 from 2 in NO, 5.0 from 1 in FR —
+// and ZERO in the US. Every static page shipped a hardcoded /us/ link, so the
+// British and Norwegian readers most likely to install were handed the one
+// shelf that says "hasn't received enough ratings or reviews to display a
+// summary". These ~180 pages have no JS at render time, so the href itself
+// stays the country-less form (verified to 301 cleanly, so no-JS readers are
+// never worse off than before) and this upgrades it in place when JS runs.
+//
+// Mirrors appStoreUrl() in src/lib/links.js — an inline script cannot import,
+// the same constraint api/get.js has. Keep the storefront list in step.
+function storefrontScript() {
+  return `<script>(function(){try{
+var S=['us','gb','no','de','es','fr','it','br','tr','id','nl','se','dk','fi','ie','pt','pl','ca','au','mx','ar','in','za','be','at','ch','cz','gr','hu','ro','sa','ae'];
+var r=((new Intl.Locale(navigator.language).region)||'').toLowerCase();
+if(S.indexOf(r)<0)return;
+var a=document.querySelectorAll('a[href*="apps.apple.com"]');
+for(var i=0;i<a.length;i++){a[i].href=a[i].href.replace(/^https:\\/\\/apps\\.apple\\.com\\/(?:[a-z]{2}\\/)?app\\//,'https://apps.apple.com/'+r+'/app/');}
+}catch(e){}})();</script>`;
+}
+
 function appStoreBadge() {
   return `<a class="store-badge" href="${SITE.appStore}" rel="noopener" target="_blank">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.56-1.702"/></svg>
@@ -2166,6 +2189,7 @@ ${/* THREE PAGES SHIPPED THIS WEEK AND NONE WERE IN THE MESH. The footer is the
 <p class="foot-copy">© 2026 ${esc(SITE.name)} — ${esc(SITE.tagline)}.</p>
 <p class="foot-disc">Ball IQ is an independent football trivia game and is not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club or competition. All team and competition names are used for identification and editorial reference only.</p>
 </div></footer>
+${storefrontScript()}
 </body></html>`;
 }
 
@@ -5845,7 +5869,7 @@ ${playerPages.length ? `\n## Player quizzes\n${playerLinks}\n` : ''}${listPages.
 
 ## Play
 - [Play Ball IQ free in your browser](${SITE.base}/): The daily challenge, streaks, a Ball IQ player rating and multiplayer.
-- [Ball IQ on the App Store](https://apps.apple.com/us/app/ball-iq-football-trivia/id6775975961): Free iPhone app.
+- [Ball IQ on the App Store](https://apps.apple.com/app/id6775975961): Free iPhone app.
 - [Ball IQ on Google Play](https://play.google.com/store/apps/details?id=app.balliq): Free Android app.
 `;
   writeFileSync(resolve(DIST, 'llms.txt'), txt, 'utf8');

@@ -27,7 +27,7 @@ import '../design/fonts.css';
 import { NAV_GROUPS } from '../lib/nav.js';
 import '../design/report.css';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { APP_STORE_URL as APP_STORE, PLAY_STORE_URL } from '../lib/links.js';
+import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
 // Generated (gen-club-index.mjs): 72 rows of {name, slug, competition}, 3.8KB.
 // Never import scripts/seo/clubs.mjs here — it carries every club's SEO prose
@@ -556,7 +556,7 @@ export default function ScoutingReport() {
                   puzzle drops.
                 </p>
                 <div className="sr-links">
-                  <a className="sr-a" href={APP_STORE}><AppleMark />App Store</a>
+                  <a className="sr-a" href={appStoreUrl()}><AppleMark />App Store</a>
                   <a className="sr-a" href={PLAY_STORE_URL}><PlayMark />Google Play</a>
                 </div>
                 <p className="sr-web">
@@ -627,7 +627,7 @@ export default function ScoutingReport() {
       <footer className="sr-foot">
         <p>Ball IQ — an independent football quiz. Most answers tell you why. Made by one person.</p>
         <div className="sr-dist">
-          <a className="sr-badge" href={APP_STORE}><AppleMark />App Store</a>
+          <a className="sr-badge" href={appStoreUrl()}><AppleMark />App Store</a>
           <a className="sr-badge" href={PLAY_STORE_URL}><PlayMark />Google Play</a>
         </div>
         <div className="sr-legal">

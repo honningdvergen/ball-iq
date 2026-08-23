@@ -14,7 +14,7 @@
 // dark-only chrome and must read correctly regardless of the runtime theme.
 // The visible display gating + hover/active states live in app.css (.biq-nav
 // *), so this file is pure structure.
-import { APP_STORE_URL, PLAY_STORE_URL } from './lib/links.js';
+import { PLAY_STORE_URL, appStoreUrl } from './lib/links.js';
 
 // Shared attrs for the 20px 2px-stroke line icons.
 const ICON = {
@@ -118,7 +118,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
         {/* App Store — live listing, real link (no coming-soon toast). */}
         <a
           className="bn-store"
-          href={APP_STORE_URL}
+          href={appStoreUrl()}
           target="_blank"
           rel="noopener"
         >

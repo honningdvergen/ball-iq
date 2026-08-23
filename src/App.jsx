@@ -2066,7 +2066,7 @@ function FootleGetAppCTA({ style }) {
     <>
       <a
         className="wd-share"
-        href={IS_ANDROID_WEB ? PLAY_STORE_URL : APP_STORE_URL}
+        href={IS_ANDROID_WEB ? PLAY_STORE_URL : appStoreUrl()}
         target="_blank"
         rel="noopener noreferrer"
         style={{ background: "var(--accent)", color: "#0a0a0a", fontWeight: 800, textDecoration: "none", ...style }}
