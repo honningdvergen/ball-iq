@@ -104,9 +104,24 @@ Full report: the panel artifact (16 areas, each with its path to 8+).
       bites. If it is `guest`, the question becomes whether a web guest saying
       "remind me" should trigger an anonymous sign-in — a product call, since
       `persist()` upserts by user id and a guest's subscription cannot stick.
-- [ ] Username wall: `derivePrefill` offers a value `handleContinue` rejects.
-- [ ] Localised pages: one anchor to `/play?club=<slug>` (42 pages, measured to
-      convert 2.6×, currently dead-ending).
+- [x] **Username wall** — the mandatory signup step rejected the name it
+      pre-filled, for eight weeks. ⚠️ Which side was wrong was settled by DATA:
+      `deriveUsernameFromIdentity` writes spaces into `profiles.username` and
+      its collision suffix adds another, and **17 of 215 prod profiles already
+      have a space**. The modal was the only component that disagreed. Now
+      instrumented (shown/saved/rejected-with-reason) — it was the only
+      mandatory first-run screen emitting nothing, which is why it hid.
+- [x] **58% of the SEO surface reported to nothing → 220 of 328 instrumented.**
+      localised 0→42/42, lists 0→37/51, and every club row now carries `slug`
+      and `lang` (all 258 previous rows said `{"surface":"club-page"}` and
+      nothing else). Impressions fire on first human input, not on load, so
+      crawlers can't inflate them. ⚠️ The report was **wrong** that localised
+      pages have no deep links — 35 of 42 already had one; the 7 without are
+      hubs, which correctly link onward. The real gap was measurability.
+      **Verified end-to-end on prod**: a live `/lists/` page emitted
+      `{"lang":"en","slug":"most-premier-league-titles","surface":"list-page"}`.
+      ⚠️ Still uninstrumented: `/questions/` 0 of 76, and 14 `/lists/` pages
+      with no `.qa` block.
 - [ ] `useDialog(ref, onClose)` for the 20 `aria-modal` dialogs that never focus.
 - [ ] Real `<h1>` per screen + `document.title` on screen change.
 - [ ] Hot Streak ✓/✗ glyph (deuteranope contrast is currently 1.06).
