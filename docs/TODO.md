@@ -122,9 +122,27 @@ Full report: the panel artifact (16 areas, each with its path to 8+).
       `{"lang":"en","slug":"most-premier-league-titles","surface":"list-page"}`.
       ⚠️ Still uninstrumented: `/questions/` 0 of 76, and 14 `/lists/` pages
       with no `.qa` block.
-- [ ] `useDialog(ref, onClose)` for the 20 `aria-modal` dialogs that never focus.
-- [ ] Real `<h1>` per screen + `document.title` on screen change.
-- [ ] Hot Streak ✓/✗ glyph (deuteranope contrast is currently 1.06).
+- [x] ~~`useDialog` for 20 dialogs that never focus~~ — **THE REPORT WAS WRONG.**
+      `useModalA11y` already does focus/Escape/trap/restore/back-gesture, and
+      **19 of 20 dialogs already called it**. The claimed "three `.focus()`
+      calls, none on a dialog ref" is actually **ten, seven inside the hook**.
+      Real gaps were 2: the marketing drawer (no Tab trap) and one Profile
+      modal. Both wired.
+- [x] **`document.title` + screen announcer + a real `<h1>`.** This part was
+      right: zero title assignments and one `<h1>` app-wide. Deferred 120ms via
+      `setTimeout` — ⚠️ **not rAF**, which doesn't fire in hidden tabs.
+      Verified live: title tracks tabs, announcer updates at ~150ms.
+- [x] **Hot Streak ✓/✗ glyph.** Was colour-only at 1.06 deuteranope contrast.
+      Verified in the built app: wrong pick → ✗, answer → ✓, others keep letters.
+
+### Follow-ups created today
+
+- [ ] Convert the visible screen titles from styled `<div>` to real `<h1>` (the
+      hidden h1 covers the accessibility tree; this is the tidier end state).
+- [ ] `/questions/` pages: 0 of 76 instrumented (no taster, no `.qa` block),
+      plus 14 `/lists/` pages with no `.qa` block.
+- [ ] Trail roster: a 102nd verified player to replace the duplicate Son entry;
+      Joaquín Sánchez missing from `mysteryPool` (days 89/177/249/363).
 
 ### Roster follow-up (needs verified data, not a code change)
 
