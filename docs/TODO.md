@@ -1,5 +1,52 @@
 # Ball IQ — the board
 
+## 🤚 FEEL & NAVIGATION — opened 2026-08-23 on Alex's build-75 report
+
+Alex: *"it is very laggy, and not responsive. it is like it thinks i stop
+dragging it even though i have not let my finger off the screen... we need to do
+some smoothness of navigation and feel around the app. we have to really make a
+huge leap there."* Corroborated independently: scouting report #4 graded **Feel
+6.5, DOWN from 7** (`docs/scout-4-partial-raw.json`).
+
+### Landed — build 76 / vc31 (commit 182d64c)
+
+- [x] **A slow drag selected TEXT instead of scrolling.** Reproduced on a booted
+      simulator, twice, on two screens — the Copy / Look Up / Translate callout
+      came up and the page never moved. Once WebKit's selection gesture claims
+      the touch the scroll never starts, and the finger is still down: exactly
+      the sentence Alex wrote. **Fast flicks always worked**, which is why three
+      previous passes missed it — synthetic swipes and desktop testing both
+      flick. `user-select:none` under `pointer: coarse`; inputs and `.selectable`
+      exempt; desktop web untouched.
+- [x] **`keepInputVisible` was unmemoized and passed into its own dep array**
+      (Trail *and* Mystery), which exhaustive-deps asks for. Fresh identity every
+      render → array inert → effect ran on EVERY render, firing a smooth
+      programmatic `scrollIntoView` each time. With the keyboard up it was
+      animating the page while the player dragged it.
+- [x] **Two dismiss mechanisms on one gesture.** AppDelegate already dismissed
+      natively; the JS blur-on-drag ran on native too. Now web/PWA/Android only.
+- [x] **`.interactive` → `.onDrag`.** `.interactive` springs back on a short
+      drag; each spring-back fired a full hide+show pair at the bridge (nine
+      cycles in Alex's log), each rewriting `kbInset` and re-bounding the list
+      under his thumb.
+- [x] **Guard test falsified before being trusted** — green clean, red on all
+      six defects seeded back one at a time. Its first version failed on
+      *correct* code (anchored to a byte window my own comment pushed past).
+
+### Next on feel — not yet started
+
+- [ ] **Cold start.** Alex's device log: WebContent process 3.77s, GPU 3.76s,
+      Networking 5.02s, then `WebProcessProxy::didBecomeUnresponsive`. Memory
+      already had cold LCP at 4,014ms on `DIV.onboard-body`. Nothing the app
+      does can feel smooth behind a 4-second open. ⚠️ Do NOT extract AppInner —
+      see the superseded note in memory; it adds a round trip.
+- [ ] **Audit the rest of the app for the same gesture-ownership class**: any
+      programmatic scroll, focus, or layout change that can fire while a finger
+      is down. Trail and Mystery are fixed; Footle, Stadiums, quiz screens,
+      Friends and the club picker are unaudited.
+- [ ] **Tap-to-visible-response latency** per mode — the thing that actually
+      reads as "responsive" — measured on device, not in a browser.
+
 ## 🔧 SCOUTING REPORT #3 — the work list
 
 Alex, 2026-08-23: *"we should do the majority of the work on the list before
