@@ -276,6 +276,18 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                 background: col || "var(--s3)", color: col ? onColour(col) : "var(--t3)",
               }}>{clubAbbr(club, CLUB_ABBR)}</span>
               <span style={{ fontSize: 15.5, fontWeight: 700, color: "var(--t1)", flex: 1, minWidth: 0 }}>{club}</span>
+              {/* ⚠️ RETURN SPELLS READ AS ERRORS WITHOUT THIS. The two most
+                  reported careers in question_reports — Alonso (3 reports) and
+                  Flamini (3) — are exactly the two whose puzzles show the same
+                  club twice, and both are Wikipedia-verified correct (the spec
+                  deliberately renders return spells as separate rungs). A
+                  player who does not know about the Eibar loan sees "Real
+                  Sociedad" twice and concludes the career is wrong; the data
+                  was never the problem, the silence was. One word turns
+                  "looks broken" into "learned something". */}
+              {career.slice(0, i).includes(club) && (
+                <span style={{ fontSize: 10.5, color: "var(--t3)", fontWeight: 700, flexShrink: 0 }}>↩ return</span>
+              )}
               {player.loans?.[i] && (
                 <span style={{ fontSize: 10.5, color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>loan</span>
               )}

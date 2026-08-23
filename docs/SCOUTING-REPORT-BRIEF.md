@@ -133,3 +133,39 @@ For every finding: **who can see this now?** If the answer is "nobody until an
 upload, a toggle, or a review", say so in the same breath as "it's fixed".
 1.6.4 is cut and unuploaded; the friend on 1.6.0 is missing fixes from
 2026-08-17 onward.
+
+---
+
+## ⭐ NEW STANDING REQUIREMENT (Alex, 2026-08-23): grade the 5-star deciders
+
+*"i would like for our next audit/scouting report to also grade us on things
+that actually decide if people give you a 5 star or 4 star in app store etc.
+Things we have to do to get to 5 stars, what we should be doing to improve our
+current product, how we should be thinking going forward. some actionable
+insight as to our path forward."*
+
+So the next report MUST carry a **"Would this earn 5 stars?"** lens, graded
+like any other area, built from evidence, not vibes:
+
+1. **Walk the exact moments ratings are born.** The ask fires at streak
+   milestones and after strong sessions (`src/lib/review.js`), and is
+   suppressed for 24h after any bad moment (`markBadReviewMoment` call sites —
+   crashes, reports, rage signals). Audit BOTH lists: is every genuinely bad
+   moment registered as one? Is the ask landing at the player's proudest
+   second, or merely a permitted one?
+2. **Read what 4-star-not-5 actually means in this category.** Quiz-app
+   reviews dock stars for: repeated questions, wrong/self-answering questions,
+   ads/paywalls (we have neither — say so), crashes, and "ran out of content".
+   Score us against that specific list with our own data (repeat rate from the
+   14-day filter, question_reports WITH reasons now, crash-free rate from
+   Sentry, bank depth per mode).
+3. **The reasons channel is the star-predictor.** question_reports carries
+   reasons as of 2026-08-23. A "wrong-answer" report is a 1-star review that
+   chose to talk to us instead. Trend it; the report should treat report-rate
+   per 1,000 sessions as a leading indicator of the rating.
+4. **Per-storefront, always** (`npm run ratings`) — nobody sees an aggregate.
+   GB is the flagship shelf; grade the path to 10+ ratings there specifically.
+5. **End with the path, not the number.** Every area's writeup must answer
+   Alex's three questions verbatim: what gets us to 5 stars, what improves the
+   current product, how we should think going forward. An area writeup without
+   a "do this next" is incomplete by definition.

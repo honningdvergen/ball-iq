@@ -152,3 +152,38 @@ describe('Trail accepts every natural form of an answer', () => {
     expect(guessMatchesPlayer('Diego Alonso', xabi)).toBe(false);
   });
 });
+
+describe('return spells are labelled, not silently repeated', () => {
+  // ⚠️ THE TWO MOST-REPORTED CAREERS IN question_reports — Alonso (3 reports)
+  // and Flamini (3) — are exactly the two whose puzzles show the same club
+  // twice, and BOTH are Wikipedia-verified correct (verify-trail-careers.mjs
+  // lists Alonso's Eibar loan-return as an accepted divergence; Flamini's
+  // second Arsenal spell matches his infobox). Players who don't know the
+  // history see a duplicate club and report the career as wrong. The fix is a
+  // "↩ return" chip on any rung whose club already appeared above it; this
+  // pins the predicate the chip uses, against the real roster data.
+  const returnIndexes = (clubs) =>
+    clubs.map((c, i) => (clubs.slice(0, i).includes(c) ? i : -1)).filter((i) => i >= 0);
+
+  it('fires exactly on the documented return spells', () => {
+    const flamini = TRAIL_PLAYERS.find((p) => p.key === 'FLAMINI');
+    // Marseille, Arsenal, AC Milan, Arsenal(return), Crystal Palace, Getafe
+    expect(returnIndexes(flamini.clubs)).toEqual([3]);
+    const alonso = TRAIL_PLAYERS.find((p) => p.key === 'ALONSO');
+    expect(alonso, 'ALONSO missing from roster').toBeTruthy();
+    expect(returnIndexes(alonso.clubs).length).toBeGreaterThan(0);
+  });
+
+  it('never fires on a career with no repeats', () => {
+    const son = TRAIL_PLAYERS.find((p) => p.key === 'SON');
+    expect(returnIndexes(son.clubs)).toEqual([]);
+  });
+
+  it('only looks BACKWARDS, so an unrevealed future spell cannot leak', () => {
+    // The rows render progressively (one per miss); slice(0, i) must reference
+    // only already-revealed rungs. A forward-looking check would put "return"
+    // on the FIRST Arsenal rung and spoil that a comeback is coming.
+    const flamini = TRAIL_PLAYERS.find((p) => p.key === 'FLAMINI');
+    expect(returnIndexes(flamini.clubs)).not.toContain(1);
+  });
+});
