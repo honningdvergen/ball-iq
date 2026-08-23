@@ -82,6 +82,7 @@ describe("Trail schedule is frozen", () => {
     "KOVAI",              // #18 · 2026-08-20 — first extension of the freeze
     "KLOSE",              // #19 · 2026-08-21 — verified against getTrailAnswerForDayIndex(today)
     "ALONSO",             // #20 · 2026-08-22 — verified against getTrailAnswerForDayIndex(today)
+    "SON",                // #21 · 2026-08-23 — verified against getTrailAnswerForDayIndex
   ];
 
   it("no already-published day ever moves", () => {
