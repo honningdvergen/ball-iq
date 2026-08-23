@@ -2022,10 +2022,38 @@ function loopEvent(name, meta) {
     if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
   } catch {}
   try {
+    // ⚠️ NATIVE IS COUNTED, BUT NEVER IDENTIFIED — and the privacy policy says
+    // so in those words. Decision recorded 2026-08-23 (Alex, from three
+    // options: guard native entirely / anonymous counts / full funnel).
+    //
+    // The guard above covers Clarity but NOT this RPC, so shipping 1.6.5 as it
+    // stood would have made three separate declarations false at once: privacy
+    // §4's "does not measure how you use it… this is enforced in code", the
+    // App Store privacy label, and the Play Data safety form. Nobody could
+    // have caught it after the fact either — funnel_events holds zero native
+    // rows precisely because no shipped build has ever had this code, so the
+    // contradiction only appears once it is too late to stop.
+    //
+    // So native sends the event NAME and nothing else: no biq_vid, no meta.
+    // We learn which modes get used and where people stop; we cannot follow a
+    // person, because there is no key to follow them by. Dropping meta as well
+    // as the id is deliberate — meta carries club slugs and surfaces, and a
+    // rich enough meta rebuilds a fingerprint even without an explicit id.
+    const anon = IS_NATIVE === true;
     supabase.rpc("record_funnel_event", {
       p_event: name,
-      p_meta: meta ? { ...meta, native: IS_NATIVE === true } : { native: IS_NATIVE === true },
-      p_visitor: visitorId(),
+      p_meta: anon
+        ? { native: true, anon: true }
+        : (meta ? { ...meta, native: false } : { native: false }),
+      p_visitor: anon ? null : visitorId(),
+      // ⚠️ Belt AND braces, and the braces are the load-bearing half. Passing
+      // p_visitor: null is not enough on its own — the function also records
+      // auth.uid(), so a signed-in native player would still be named by their
+      // ACCOUNT id, a stronger identifier than the one we just withheld.
+      // p_anon makes the server null both, so the guarantee survives a stale
+      // bundle or a future call site that forgets. See
+      // supabase/migrations/v1_6_funnel_anon_native_and_rate_cap.sql.
+      p_anon: anon,
     }).then(({ error }) => {
       // ⚠️ supabase.rpc() RESOLVES on error rather than rejecting — a bare
       // .catch() would silently swallow every failure, which is exactly how
@@ -6950,7 +6978,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
             `new Date().toLocaleDateString()` which falsely claimed the
             policy was updated every day the user viewed it. Bump this
             string whenever the policy content materially changes. */}
-        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: 5 July 2026</div>
+        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: 23 August 2026</div>
 
         <div style={{
           background: "#14161E", borderRadius: 16,
@@ -6959,7 +6987,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         }}>
           <p style={{fontSize: 15, color: "#9BA0B8", margin: 0}}>
             <span style={{color: "#58CC02", fontWeight: 600}}>The short version:</span>{" "}
-            Play as a guest and nothing is collected — your progress lives on your device only. Sign in and we store the minimum needed to sync your account across devices: email, username, scores, and game history. The app shows no ads and runs no usage tracking. Our website (balliq.app) shows ads via Google, which uses cookies, alongside privacy-friendly cookieless analytics — but the app itself stays ad-free and cookie-free. We never sell your data.
+            Play as a guest and nothing is collected — your progress lives on your device only. Sign in and we store the minimum needed to sync your account across devices: email, username, scores, and game history. The app shows no ads, and counts how often features are used with no identifier of any kind attached. Our website (balliq.app) uses privacy-friendly cookieless analytics, records a few first-party product events, and uses Microsoft Clarity session analytics — which, in Europe, we load only if you say yes. We are not currently showing ads anywhere, and the app itself stays ad-free and cookie-free. We never sell your data.
           </p>
         </div>
 
@@ -6982,10 +7010,12 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <p style={privacyP}>We use Sentry to catch crashes and bugs. When something goes wrong in the app, Sentry receives a stack trace, the browser version, and a short trail of recent actions ("breadcrumbs") — no question text, no personal data. We strip your email and auth tokens from every event before it leaves your device. We use this only to fix bugs, never for tracking.</p>
 
         <h2 style={privacyH2}>4. Analytics &amp; ads</h2>
-        <p style={privacyP}>The {APP_NAME} <strong>app</strong> uses no analytics tools, tracking pixels, or advertising SDKs. It does not measure how you use it, shows no ads, and works with no ad networks. This is enforced in code: the ad and analytics scripts are blocked from ever loading inside the app.</p>
+        <p style={privacyP}>The {APP_NAME} <strong>app</strong> uses no third-party analytics tools, tracking pixels, or advertising SDKs. It shows no ads and works with no ad networks. This is enforced in code: the ad and analytics scripts are blocked from ever loading inside the app.</p>
+        <p style={privacyP}>The app does count, anonymously, <strong>how often its features are used</strong> — for example “a daily puzzle was finished” — so we can tell which parts are worth improving. These counts carry <strong>no identifier of any kind</strong>: no device id, no advertising id, and not your account either. Nothing links one count to another, so they cannot be assembled into a picture of you, and we have no way to look up what any individual person did. This is enforced on our server rather than only in the app, so it holds even for an older version still installed on a device.</p>
         <p style={privacyP}>Our <strong>website (balliq.app)</strong> uses Vercel Web Analytics — a privacy-friendly, cookieless analytics service — to understand aggregate traffic, such as how many people visit a page. It sets no cookies, does not track you across other websites, and does not identify you personally.</p>
+        <p style={privacyP}>Our <strong>website</strong> also records a small number of <strong>first-party product events</strong> of our own — for example “a quiz was started” or “the app link was tapped” — so we can tell which parts of the site are working. Each event stores only its name, the surface it happened on, and a <strong>random identifier we generate on your device</strong> (stored in your browser as <code>biq_vid</code>) so a single visit hangs together. That identifier is a random value, not derived from anything about you or your device: it is not a fingerprint, it is never linked to your account or email, it is not shared with anyone, and clearing this site’s data removes it. No question text and no personal data is recorded. This runs on the website only.</p>
         <p style={privacyP}>Our <strong>website (balliq.app)</strong> also uses <strong>Microsoft Clarity</strong> to understand how visitors use the site. Clarity records anonymised interaction signals — clicks, scrolls, mouse movement — and session replays with typed text masked, which we use to find and fix confusing parts of the site. It may set cookies or similar identifiers. This runs on the website only, never inside the app — and for visitors in Europe it does not run there either unless they allow it, which we ask once on the first visit. See Microsoft's privacy statement at <a href="https://privacy.microsoft.com/privacystatement" style={{color:"var(--accent)",textDecoration:"none"}} target="_blank" rel="noopener noreferrer">privacy.microsoft.com</a>.</p>
-        <p style={privacyP}>We <strong>do not currently display ads</strong> anywhere — not on the website and not in the app. If that changes we will update this page first. The paragraph below describes how <strong>Google AdSense</strong> would work on the <strong>website only</strong> if we enable it. To serve and measure ads, Google and its partners may set and read cookies or similar identifiers in your browser, and — where you agree — use them to show more relevant ads. This applies to the website only; the app remains ad-free and sets no advertising cookies. We are not currently serving ads, so no advertising cookies are set and no consent prompt is shown. Before we enable ads for visitors in the EEA, UK or Switzerland, we will ask for your consent choices first, and you will be able to change them at any time. You can review how Google uses data from sites that use its services at <span style={{color:"#58CC02"}}>policies.google.com/technologies/partner-sites</span>, and manage ad personalisation at <span style={{color:"#58CC02"}}>adssettings.google.com</span>.</p>
+        <p style={privacyP}>We <strong>do not currently display ads</strong> anywhere — not on the website and not in the app. If that changes we will update this page first. The paragraph below describes how <strong>Google AdSense</strong> would work on the <strong>website only</strong> if we enable it. To serve and measure ads, Google and its partners may set and read cookies or similar identifiers in your browser, and — where you agree — use them to show more relevant ads. This applies to the website only; the app remains ad-free and sets no advertising cookies. We are not currently serving ads, so no advertising cookies are set. Visitors in Europe, the UK and Switzerland are asked once, on their first visit to the website, before Microsoft Clarity loads — that prompt covers Clarity only, since no ads run. If we ever enable ads we will extend that prompt to cover them and ask again first. You can review how Google uses data from sites that use its services at <span style={{color:"#58CC02"}}>policies.google.com/technologies/partner-sites</span>, and manage ad personalisation at <span style={{color:"#58CC02"}}>adssettings.google.com</span>.</p>
 
         <h2 style={privacyH2}>5. Third-party services we use</h2>
         <ul style={{paddingLeft: 20, marginBottom: 12}}>
