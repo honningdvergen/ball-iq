@@ -11,7 +11,7 @@ import {
 } from '../lib/mysteryPlayer.js';
 import POOL from '../data/mysteryPool.json';
 import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
-import { dateToYMD } from '../lib/date.js';
+import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
 import { useKeyboardAwareInput } from '../lib/useKeyboardAwareInput.js';
 import CAREERS from '../data/mysteryCareers.json';
 import SCHEDULE from '../data/mysterySchedule.json';
@@ -108,18 +108,21 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   // GAINS focus, and the shrunken viewport then reads as scroll-locked. This
   // mode had NO handling at all. See lib/useKeyboardAwareInput.js.
   const { inputRef, kbInset, keepInputVisible } = useKeyboardAwareInput();
-  // Space between the input and the top of the keyboard. visualViewport.height
-  // already excludes the keyboard, so no guess about its height is needed.
-  const [dropMax, setDropMax] = useState(320);
-  useEffect(() => {
-    if (!suggestions.length) return;
-    const el = inputRef.current;
-    if (!el) return;
-    const vh = (typeof window !== 'undefined' && window.visualViewport?.height) || window.innerHeight;
-    const avail = vh - el.getBoundingClientRect().bottom - 26;
-    setDropMax(Math.max(132, Math.min(360, Math.round(avail))));
-  }, [suggestions.length, kbInset, inputRef]);
   const done = won || gaveUp;
+  // ⚠️ Alex, device-testing 2026-08-23: "we need a result screen here then until
+  // the next mystery player loads you know". The result screen already existed —
+  // he had never SEEN it, because a temporal-dead-zone crash took the whole
+  // screen down before it could render. What was genuinely missing is the
+  // second half: how long until there is a new one.
+  // Ticks per minute, not per second: the wait is measured in hours, and a
+  // second hand would re-render sixty times to say the same thing.
+  const [nextIn, setNextIn] = useState(() => msToNextLocalMidnight());
+  useEffect(() => {
+    if (!done) return undefined;
+    setNextIn(msToNextLocalMidnight());
+    const t = setInterval(() => setNextIn(msToNextLocalMidnight()), 60000);
+    return () => clearInterval(t);
+  }, [done]);
   // Each guess inserts a row above the field. Pull it back into view rather
   // than dropping the keyboard — staying focused is what lets a player guess
   // repeatedly without re-tapping, which this mode depends on.
@@ -170,6 +173,29 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
     () => rankPlayerSuggestions(POOL, text, { exclude: new Set(guesses.map((g) => g.id)) }),
     [text, guesses],
   );
+
+  // ⚠️ MUST STAY BELOW `suggestions`. This block first went in ABOVE it, and
+  // the dependency array `[suggestions.length, …]` is evaluated during render —
+  // so it read a `const` declared 48 lines later and threw "Cannot access
+  // 'suggestions' before initialization" on EVERY render. Mystery Player was
+  // dead in build 72; the error boundary added the same day is the only reason
+  // it showed a recoverable screen instead of taking the app down.
+  //
+  // Fourth temporal-dead-zone bug in this codebase and the second I have
+  // caused. ESLint does not catch it: the identifier IS defined, just later,
+  // so no-undef stays quiet and exhaustive-deps only warns.
+  //
+  // Space between the input and the top of the keyboard. visualViewport.height
+  // already excludes the keyboard, so no guess about its height is needed.
+  const [dropMax, setDropMax] = useState(320);
+  useEffect(() => {
+    if (!suggestions.length) return;
+    const el = inputRef.current;
+    if (!el) return;
+    const vh = (typeof window !== 'undefined' && window.visualViewport?.height) || window.innerHeight;
+    const avail = vh - el.getBoundingClientRect().bottom - 26;
+    setDropMax(Math.max(132, Math.min(360, Math.round(avail))));
+  }, [suggestions.length, kbInset, inputRef]);
 
   if (!answer || !ranks) {
     // No puzzle scheduled for today. The home card is gated on the same
@@ -350,6 +376,9 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           >
             {copied ? 'Copied!' : 'Share result'}
           </button>
+          <div style={{ marginTop: 10, fontSize: 12.5, color: 'var(--t3)', textAlign: 'center' }}>
+            Next Mystery Player in <strong style={{ color: 'var(--t2)' }}>{formatCountdown(nextIn)}</strong>
+          </div>
         </div>
       )}
 

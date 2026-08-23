@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { ClipboardList, Route, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { Confetti, haptic } from "../App.jsx";
-import { dateToYMD } from "../lib/date.js";
+import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
 import { getWordleAnswer } from "../lib/wordle.js";
 import { getTrailAnswer } from "../lib/trail.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
@@ -13,26 +13,9 @@ import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 // identical figures.
 const MONO = "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace";
 
-// Milliseconds until the next LOCAL midnight. The "KO in Xh Ym" chip
-// previewed when the next Daily set unlocks for THIS user. Sprint #70
-// LL6 fix: originally computed against UTC midnight on the assumption
-// that server-side rollover was UTC-anchored. It isn't — dayIndexForDate
-// + dateToYMD both key off the user's LOCAL date, so each user's Daily
-// rolls at their LOCAL midnight. A UTC anchor would mislead UTC-negative
-// users (NYC at 19:00 saw "24h" when actual rollover was 5h) and UTC-
-// positive users (Tokyo at 23:30 saw "9h 30m" when actual was 30m).
-function msToNextLocalMidnight(now = new Date()) {
-  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
-  return next.getTime() - now.getTime();
-}
-function formatKO(ms) {
-  if (ms <= 0) return "soon";
-  const totalMin = Math.floor(ms / 60000);
-  const h = Math.floor(totalMin / 60);
-  const m = totalMin % 60;
-  if (h === 0) return `${m}m`;
-  return `${h}h ${m}m`;
-}
+// msToNextLocalMidnight + formatCountdown moved to lib/date.js on 2026-08-23
+// so the Mystery result screen can show the same countdown. One definition;
+// two surfaces cannot drift about when tomorrow starts.
 // Kept in step with HomeScreen's greeting — 00:00-04:59 is not "morning".
 function timeOfDayGreeting(d = new Date()) {
   const h = d.getHours();
@@ -748,7 +731,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       {(() => {
         const authLoading = !!user && !authProfile;
         const name = authProfile?.username || profile?.name || null;
-        const ko = formatKO(msToNextLocalMidnight(now));
+        const ko = formatCountdown(msToNextLocalMidnight(now));
         const todayLabel = today.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
         return (
           <>
@@ -890,7 +873,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           dailyScore, runStats, matchdays, form14) — nothing hardcoded. ═══ */}
       <div className="daily-desktop">
         {(() => {
-          const ko = formatKO(msToNextLocalMidnight(now));
+          const ko = formatCountdown(msToNextLocalMidnight(now));
 
           // 14-day form cells reuse the Home rail streak card's shape (done +
           // today), derived from the SAME form14 the mobile strip renders so
