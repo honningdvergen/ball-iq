@@ -396,14 +396,78 @@ await ctx.addInitScript((stats) => {
     streak: 9, best: 14, lastDay: Math.floor(Date.now() / 86400000),
   }));
   localStorage.setItem('biq_xp', '1840');
+  // ⚠️ THE CONSENT BANNER WOULD OTHERWISE SHIP IN THE STORE SCREENSHOTS.
+  // public/consent.js mounts for any European/UTC time zone, and the machine
+  // these are shot on is in Norway — so the first re-shoot after the banner
+  // landed (2026-08-23) captured "Decline / Allow" sitting across the bottom
+  // of the frame, hiding the tab bar entirely. It is a legitimate part of the
+  // product and a terrible thing to put on an install sheet.
+  // Seeding a decision means the bar never mounts. 'denied' on purpose: it is
+  // the choice that turns Clarity OFF, so a capture run can never write
+  // session-replay rows against a robot.
+  localStorage.setItem('biq_consent_analytics', 'denied');
 }, SEED_STATS);
 
 // ONLY=02-footle,05-quiz-explanation → re-shoot just those. Every shot here is
 // non-deterministic (daily answers rotate, quiz options shuffle), so a full run
 // to fix ONE image silently re-rolls the other seven — including ones already
 // approved. Comma-separated, matched on the shot name.
+/**
+ * ⚠️ THE BUG THAT SHIPPED TO BOTH STORES, AND WHY NO CHECK CAUGHT IT.
+ *
+ * 01-home.png went live on the App Store and Play with two mode-grid glyphs
+ * bleeding straight through the tab bar — a flame sitting exactly where the D
+ * should be, so the Daily tab read "(flame)aily", plus a slashed circle under
+ * the Home icon. It was the FIRST screenshot, the one Apple puts on the
+ * install sheet, in all 15 localisations. Confirmed 2026-08-23 by downloading
+ * the live asset from Apple's CDN, not by re-reading the repo copy.
+ *
+ * ROOT CAUSE — not an animation, and not a design problem. `.tab-bar` is
+ * `rgba(32,35,44,0.34)`: only 34% opaque, with `backdrop-filter: blur(42px)`
+ * doing all the visual work. Chromium's screenshot path SUPPORTS
+ * backdrop-filter but does not composite it, so the capture keeps the 34%
+ * tint and drops the blur — leaving whatever sits behind the bar clearly
+ * visible. The `@supports not (backdrop-filter: ...)` fallback in app.css
+ * cannot save us here, because it tests SUPPORT, not EFFECT: headless Chrome
+ * reports support, so the opaque fallback never fires.
+ *
+ * The old check asserted which SCREEN was captured, never what it looked like,
+ * so it passed on a visibly broken asset. LISTING.md §6 had already written
+ * the lesson down for a different shot — "caught by opening the PNG, not by
+ * the test" — and it did not generalise into code. This does.
+ *
+ * Returns the list of surfaces it had to fix, so a NEW translucent element is
+ * reported rather than silently papered over.
+ */
+async function forceOpaqueMaterials(p) {
+  return p.evaluate(() => {
+    const offenders = [];
+    for (const el of document.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+      const filter = cs.backdropFilter || cs.webkitBackdropFilter || 'none';
+      if (!filter || filter === 'none') continue;
+      const m = String(cs.backgroundColor || '').match(/rgba?\(([^)]+)\)/);
+      const alpha = m ? parseFloat(m[1].split(',')[3] ?? '1') : 1;
+      if (!(alpha < 0.99)) continue; // already opaque — composites fine
+      const parts = m[1].split(',').slice(0, 3).map((n) => n.trim());
+      // Fully opaque for capture, not the 0.97 the @supports fallback uses:
+      // a store asset should carry zero bleed, and 3% of a bright flame glyph
+      // is still visible at the size Apple renders the install sheet.
+      el.style.setProperty('background-color', `rgb(${parts.join(',')})`, 'important');
+      el.style.setProperty('backdrop-filter', 'none', 'important');
+      el.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+      const id = typeof el.className === 'string' && el.className.trim()
+        ? '.' + el.className.trim().split(/\s+/)[0]
+        : el.tagName.toLowerCase();
+      if (!offenders.includes(id)) offenders.push(id);
+    }
+    return offenders;
+  });
+}
+
 const ONLY = (process.env.ONLY || '').split(',').map((s) => s.trim()).filter(Boolean);
 let bad = 0;
+let translucent = 0;
 for (const s of SHOTS) {
   if (ONLY.length && !ONLY.includes(s.name)) continue;
   const p = await ctx.newPage();
@@ -419,10 +483,19 @@ for (const s of SHOTS) {
   // A shot may also assert on STATE, not just which screen it landed on.
   if (ok && s.verify) ok = await s.verify(p).catch(() => false);
   if (!ok) bad++;
+  const bleed = await forceOpaqueMaterials(p);
+  if (bleed.length) {
+    translucent += bleed.length;
+    console.log(`  ! ${s.name}: ${bleed.length} translucent surface(s) forced opaque for capture — ${bleed.join(', ')}`);
+  }
   await p.screenshot({ path: `${RAW}/${s.name}.png` });
   console.log(`  ${ok ? '✓' : '✗ WRONG SCREEN —'} ${s.name}  (looked for "${s.expect}")`);
   await p.close();
 }
 if (bad) console.log(`\n  ${bad} shot(s) captured the wrong screen — do not ship these.`);
+if (translucent) {
+  console.log(`  ${translucent} translucent surface(s) were forced opaque across the set.`);
+  console.log('  That is the fix working, not a warning — but OPEN THE PNGs anyway.');
+}
 await b.close();
 console.log(`\nraw frames -> ${RAW}`);
