@@ -61,8 +61,25 @@ Full report: the panel artifact (16 areas, each with its path to 8+).
 - [ ] Re-shoot `01-home.png` (`animations:'disabled'`, shoot-store-screens.mjs:422)
       — the hero shot on both stores has glyphs bleeding through the tab bar and
       the Daily tab reads "🔥aily". Play takes screenshot edits with no release.
-- [ ] Privacy §4 vs the native funnel — **hard upload blocker**, decide the
-      guard-or-amend question in one commit.
+- [x] **Privacy §4 vs the native funnel — UPLOAD BLOCKER CLEARED.** Alex chose
+      *anonymous counts*: native sends the event name and nothing else. ⚠️ The
+      client half alone was NOT enough — `record_funnel_event` also inserts
+      `auth.uid()`, so nulling the visitor id would still have named every
+      signed-in native player by their account id while the code read as
+      anonymous. `p_anon` now nulls both keys **in the function**, verified
+      against prod. Same migration adds the hourly rate cap it never had (its
+      three siblings all had one, and it is the one already poisoned). Also
+      fixed: the website funnel + `biq_vid` were disclosed nowhere while live
+      for 124 real visitors; the in-app screen claimed the site "shows ads via
+      Google" 26 lines above "we do not display ads anywhere"; and it claimed
+      "no consent prompt is shown" a week after we shipped one. Guarded by
+      `privacy-policy-sync.test.js` — the comment-based sync rule had failed
+      three times. **Verified live on balliq.app/privacy.html.**
+- [x] **`npm run ratings`** — one command for every storefront's ratings.
+      Immediately corrected the panel: **8 ratings across 5 markets**, not 6
+      across 3 (India and South Africa were never checked; SA is our first
+      non-5-star). No Apple surface aggregates them, which is the whole reason
+      the store looked like it had 2.
 - [ ] Wrap the 6 lazy game screens in `TabErrorBoundary` (it already exists and
       does the right thing; it just isn't on that branch of the tree).
 - [ ] Reminder reach 1 → 36: UNION `device_tokens` into
