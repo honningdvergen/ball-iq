@@ -11,7 +11,7 @@ import {
   Brain, Smartphone, Star, Globe, ClipboardList, Timer, Flame, Zap, Trophy,
   Users, Search, Swords,
 } from 'lucide-react';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Phone } from './Phone.jsx';
 // Tiny data-free module (NOT lib/wordle.js — that would drag the 400+-player
 // answer list into this chunk). Powers the "Footle #N is live today" chip.
@@ -27,6 +27,7 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 
 // Country-coded canonical URL — single source of truth in lib/links.js.
 import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
+import { useModalA11y } from '../useModalA11y.js';
 // Single-button 'Get the app' CTAs must NOT hardcode one store — /get (api/get.js)
 // redirects iOS->App Store, Android->Play, desktop->the web app. The App Store and
 // Play BADGES below stay as direct links, because there the platform is the label.
@@ -971,20 +972,28 @@ export default function MarketingHome() {
   // ── MOBILE NAV ───────────────────────────────────────────────────────────
   const [menuOpen, setMenuOpen] = useState(false);
   const burgerRef = useRef(null);
+  const drawerRef = useRef(null);
+  // ⚠️ Was the app's only role="dialog" running a hand-rolled version of
+  // useModalA11y. It already did Escape, autoFocus and focus-restore — the
+  // hard parts — and was missing the Tab trap, so a keyboard user could tab
+  // straight out of a drawer that had told assistive tech to hide the rest of
+  // the page. Converging on the shared primitive also means the back gesture
+  // closes the drawer instead of leaving the site, which is what a drawer
+  // should do on a phone.
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    try { burgerRef.current?.focus(); } catch { /* nothing to restore to */ }
+  }, []);
+  useModalA11y({ isOpen: menuOpen, onClose: closeMenu, ref: drawerRef });
   useEffect(() => {
-    if (!menuOpen) return;
-    // Escape closes, and focus returns to the button that opened it — without
-    // that return, a keyboard user is dumped back at the top of the document.
-    const onKey = (e) => { if (e.key === 'Escape') { setMenuOpen(false); burgerRef.current?.focus(); } };
-    document.addEventListener('keydown', onKey);
+    if (!menuOpen) return undefined;
     // Lock the page behind the drawer. The homepage is ~10,900px tall, so
     // without this the body scrolls under the panel while the drawer is open.
+    // Kept separate from the hook: scroll-locking is this page's problem, not
+    // every dialog's — the in-app sheets sit on short screens.
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
-    };
+    return () => { document.body.style.overflow = prevOverflow; };
   }, [menuOpen]);
 
   return (
@@ -1041,6 +1050,8 @@ export default function MarketingHome() {
             aria-hidden="true"
           />
           <div
+            ref={drawerRef}
+            tabIndex={-1}
             id="mkt-drawer"
             className="mkt-drawer"
             data-open="1"

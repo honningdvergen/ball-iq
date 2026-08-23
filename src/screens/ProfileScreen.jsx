@@ -1148,10 +1148,19 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const [sampleDismissed, setSampleDismissed] = useState(() => {
     try { return localStorage.getItem(SAMPLE_KEY) === '1'; } catch { return true; }
   });
-  const dismissSample = () => {
+  const dismissSample = useCallback(() => {
     setSampleDismissed(true);
     try { localStorage.setItem(SAMPLE_KEY, '1'); } catch { /* Safari private mode */ }
-  };
+  }, []);
+  // ⚠️ This dialog was the odd one out: 19 of the app's 20 role="dialog" nodes
+  // already run useModalA11y, and this one declared aria-modal="true" without
+  // it — which is the worst of both worlds. aria-modal tells assistive tech to
+  // hide everything else on the page, so a screen-reader user was left inside
+  // a dialog that never received focus, with no Escape and no Tab trap: the
+  // rest of the document hidden and nothing reachable.
+  const sampleRef = useRef(null);
+
+  useModalA11y({ isOpen: !sampleDismissed, onClose: dismissSample, ref: sampleRef });
 
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
@@ -1478,7 +1487,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           { icon: "\u{1F1E9}\u{1F1EA}", abbr: "BUN", v: 80 }, { icon: "\u{1F1EE}\u{1F1F9}", abbr: "SEA", v: 84 },
         ];
         return (
-          <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="What an elite card looks like"
+          <div ref={sampleRef} tabIndex={-1} className="modal-overlay" role="dialog" aria-modal="true" aria-label="What an elite card looks like"
                onClick={dismissSample}>
             <div onClick={(e) => e.stopPropagation()}
                  style={{ position: "relative", background: t.bg, border: `1.5px solid ${t.accent}66`, borderRadius: 22, padding: "20px 22px 18px", width: "100%", maxWidth: 340, boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>

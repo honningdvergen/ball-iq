@@ -2233,9 +2233,23 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
             if (i === picked.choice) cls += picked.correct ? ' correct' : ' wrong';
             else if (!picked.correct && i === q.a) cls += ' correct';
           }
+          // ⚠️ COLOUR WAS THE ONLY SIGNAL HERE. Every other mode swaps the
+          // letter badge for a tick or a cross after answering — QuizEngine
+          // does it in one line, True/False does it, local multiplayer does it.
+          // Hot Streak kept showing A/B/C/D and said right-vs-wrong purely by a
+          // green or red tint, which simulates to a contrast ratio of 1.06
+          // between the two states for a deuteranope: indistinguishable.
+          // Settings has a "Colour-blind tiles" toggle, so an audit asking "is
+          // there a colour-blind mode?" ticks the box — it recolours Footle and
+          // nothing else. Two characters of information fixes this for every
+          // colour-blind player AND every screen-reader user at once, since the
+          // glyph is real text in the accessibility tree where a tint is not.
+          const mark = picked
+            ? (i === q.a ? '✓' : i === picked.choice ? '✗' : ['A','B','C','D'][i])
+            : ['A','B','C','D'][i];
           return (
             <button key={i} className={cls} onClick={() => answer(i)} disabled={!!picked}>
-              <span className="opt-l">{['A','B','C','D'][i]}</span>{opt}
+              <span className="opt-l">{mark}</span>{opt}
             </button>
           );
         })}
@@ -8538,6 +8552,48 @@ function AppInner() {
   const [mode, setMode] = useState(null);
   const [diff, setDiff] = useState("medium");
   const [cat, setCat] = useState("All");
+  // ⚠️ THE APP NEVER TOLD ANYONE WHERE THEY WERE. Measured 2026-08-23: zero
+  // `document.title` assignments in all of src/, and exactly ONE <h1> in the
+  // whole product (the Login screen). 179 aria-labels make every automated
+  // label check pass, which is why this never surfaced — labels describe
+  // CONTROLS, and none of them answers "what screen am I on".
+  //
+  // The app is a single document that swaps its whole contents, so a screen
+  // reader gets no navigation event and no new title: tapping Daily, opening
+  // Settings and starting a quiz are all silent. A sighted user sees the
+  // screen change; a VoiceOver user gets nothing at all.
+  //
+  // Two things fix that and neither changes a pixel: keep the tab title in
+  // step with the screen, and announce the change in a live region. The live
+  // region matters more than the title on iOS, where Safari does not announce
+  // title changes in a SPA.
+  const SCREEN_TITLES = {
+    home: "Home", quiz: "Quiz", results: "Results", settings: "Settings",
+    wordle: "Footle", trail: "Transfer Trail", mystery: "Mystery Player",
+    stadiums: "Stadiums", review: "Question review", "daily-review": "Daily review",
+    "puzzle-review": "Puzzle review", "friend-profile": "Friend profile",
+    "blocked-users": "Blocked users", "club-quiz": "Club quiz",
+    "league-quiz": "League quiz", stump: "Stump a mate",
+    "online-stage1": "Online multiplayer", "online-stage1-lobby": "Lobby",
+    "local-setup": "Pass and play",
+  };
+  const TAB_TITLES = { home: "Home", daily: "Daily", online: "Online", profile: "Profile" };
+  const screenTitle = useMemo(() => {
+    if (screen === "home") return TAB_TITLES[tab] || "Home";
+    return SCREEN_TITLES[screen] || "";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen, tab]);
+  const [srScreenMsg, setSrScreenMsg] = useState("");
+  useEffect(() => {
+    if (!screenTitle) return undefined;
+    try { document.title = `${screenTitle} — ${APP_NAME}`; } catch { /* non-DOM env */ }
+    // Deferred one tick: announcing in the same frame as the DOM swap gets
+    // dropped by VoiceOver, which needs the region to change AFTER the new
+    // content settles. setTimeout rather than rAF — rAF never fires in a
+    // hidden tab, and this has bitten twice already.
+    const t = setTimeout(() => setSrScreenMsg(screenTitle), 120);
+    return () => clearTimeout(t);
+  }, [screenTitle]);
   const [questions, setQuestions] = useState([]);
   const [result, setResult] = useState(null);
   const [wrongAnswers, setWrongAnswers] = useState([]);
@@ -11530,6 +11586,24 @@ function AppInner() {
   return (
     <>
       <main className="app">
+        {/* ⚠️ The app's ONLY <h1> was on the Login screen. Every other screen —
+            Home, Daily, Profile, Settings, every game — opened with a styled
+            <div>, so a screen reader's "jump to heading" found nothing and the
+            document had no title at any level.
+
+            Visually hidden rather than restyling the existing title divs:
+            those carry mode-specific layout (the quiz title bar sits inside a
+            flex row with the back button and the timer), and swapping their
+            tag risks a visual regression on every mode at once for no
+            additional benefit — a hidden h1 is a real heading in the
+            accessibility tree, which is the whole point. Converting the
+            visible titles is a follow-up, not a prerequisite. */}
+        {screenTitle && <h1 className="sr-only">{screenTitle}</h1>}
+        {/* Screen-change announcer. `polite` on purpose: a screen change is
+            context, not an emergency, and `assertive` would cut across the
+            timer region the quiz already owns. aria-atomic so the whole
+            phrase is read rather than the diff. */}
+        <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{srScreenMsg}</div>
         <div className="sbar" />
 
         {/* ── ONBOARDING — shown to first-time users only. Deep-link boots
