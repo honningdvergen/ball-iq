@@ -1503,13 +1503,30 @@ if(!rounds&&!started){started=1;tag('clubq-len',n);
    once; only the MEASUREMENT waits for evidence that a person is present,
    which makes the denominator robot-proof by construction rather than by
    enumeration. Same shape the taster uses. */
-var fire=function(){bqev('clubq-start');off()};
-var off=function(){
-try{root.removeEventListener('pointerdown',fire);root.removeEventListener('keydown',fire);
-root.removeEventListener('touchstart',fire)}catch(e){}};
-try{root.addEventListener('pointerdown',fire,{once:false});
-root.addEventListener('keydown',fire,{once:false});
-root.addEventListener('touchstart',fire,{once:false,passive:true})}catch(e){}}
+/* ⚠️ bqFire/bqOff, NOT fire/off. The first version of this declared a
+   variable named "off" — which is ALREADY module state four hundred lines up,
+   the pagination offset in: var run=[],at=0,off=0,...
+   var is function-scoped, not block-scoped, so it shadowed the offset across
+   the whole of start(), and start() assigns off=from further down. One name,
+   two failures:
+     - off became a number, so the handler threw "off is not a function", the
+       listener never detached, and clubq-start fired on EVERY tap: 30.5
+       events per visitor against 1.1 before the change meant to REDUCE
+       over-counting.
+     - The real offset never reached module scope, so Play again restarted
+       from question 0 instead of serving the next batch. A gameplay
+       regression, caused by a measurement change.
+   Neither showed up in the build: this lives inside a template literal, so
+   ESLint never parses it. Found by reading the numbers the instrument
+   produced, then catching the TypeError in the live page.
+   Prefix anything declared in here. */
+var bqFire=function(){bqev('clubq-start');bqOff()};
+var bqOff=function(){
+try{root.removeEventListener('pointerdown',bqFire);root.removeEventListener('keydown',bqFire);
+root.removeEventListener('touchstart',bqFire)}catch(e){}};
+try{root.addEventListener('pointerdown',bqFire,{once:false});
+root.addEventListener('keydown',bqFire,{once:false});
+root.addEventListener('touchstart',bqFire,{once:false,passive:true})}catch(e){}}
 /* ⚠️ NO BACKTICKS OR DOLLAR-BRACES ANYWHERE IN THIS BLOCK — it lives inside a
    template literal, so either one ends the string and the build dies with a
    syntax error pointing at the comment rather than the code.
