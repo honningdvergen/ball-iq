@@ -657,6 +657,17 @@ const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA"
 // have >=10 for that club — auto-upgrading each club as content is generated —
 // and falls back to the pack's starter questions otherwise.
 const CLUB_PACK_TO_QB = {
+  // ── Wave O (2026-08-23): ten clubs that already had a live /quiz/<slug>/
+  // page and 15-20 verified bank rows, but no entry in ANY of these four maps.
+  // The landing pages therefore shipped a "Play the full <club> quiz →" button
+  // that resolved to nothing and dumped the reader on Home with ?club= already
+  // stripped from the URL — 60 dead links across 10 pages, measured against
+  // the built output. They were never missing content, only missing wiring.
+  // Bank names are the canonical long forms (see club-alias.mjs).
+  Birmingham: "Birmingham City", Cardiff: "Cardiff City", Derby: "Derby County",
+  Norwich: "Norwich City", Portsmouth: "Portsmouth", SheffWed: "Sheffield Wednesday",
+  Southampton: "Southampton", Stoke: "Stoke City", Swansea: "Swansea City",
+  Wrexham: "Wrexham",
   Leipzig: "RB Leipzig",
   Atalanta: "Atalanta",
   Boca: "Boca Juniors",
@@ -715,6 +726,13 @@ const CLUB_LEAGUES = {
   // sections have no Championship bucket — grouped under "pl" like West Ham.
   Bournemouth: "pl", Brentford: "pl", Burnley: "pl", Wolves: "pl",
   Coventry: "pl", HullCity: "pl",
+  // Wave O: same treatment as Coventry/Hull/Burnley/Wolves above — the section
+  // list has no English second-tier bucket, so English clubs are grouped under
+  // "pl" regardless of current division. Deliberately NOT asserting which
+  // division any of these is in for 2026-27: that is post-cutoff and would be
+  // a guess in a user-visible label.
+  Birmingham: "pl", Cardiff: "pl", Derby: "pl", Norwich: "pl", Portsmouth: "pl",
+  SheffWed: "pl", Southampton: "pl", Stoke: "pl", Swansea: "pl", Wrexham: "pl",
   Athletic: "laliga", Sevilla: "laliga", Betis: "laliga",
   // Wave N. Santos joins the existing southamerica section (Flamengo,
   // Corinthians, Palmeiras, Boca, River); Real Sociedad is a sixth laliga club.
@@ -801,6 +819,11 @@ export const CLUB_ABBR = {
 // searcher IN the quiz they Googled (the club/league landing pages' CTAs emit
 // these — see scripts/gen-seo-pages.mjs ctaBlock). Slugs match scripts/seo.
 const CLUB_SLUG_TO_PACK = {
+  // Wave O — the ten slugs whose landing pages linked here and found nothing.
+  "birmingham-city": "Birmingham", "cardiff-city": "Cardiff",
+  "derby-county": "Derby", "norwich-city": "Norwich", "portsmouth": "Portsmouth",
+  "sheffield-wednesday": "SheffWed", "southampton": "Southampton",
+  "stoke-city": "Stoke", "swansea-city": "Swansea", "wrexham": "Wrexham",
   "rb-leipzig": "Leipzig",
   "atalanta": "Atalanta",
   "boca-juniors": "Boca",
@@ -838,6 +861,8 @@ const QUIZ_SLUG_TO_CAT = {
   "bundesliga": "Bundesliga", "ligue-1": "Ligue1",
   "super-lig": "SuperLig", "primeira-liga": "Primeira",
   "champions-league": "UCL", "world-cup": "WorldCup", "euros": "Euros",
+  // The three theme pages whose CTA pointed at a slug this map did not carry.
+  "legends": "Legends", "managers": "Managers", "football-records": "Records",
 };
 // Reverse maps for share deep-links (opportunity-scan #1): a club/league quiz
 // result should link the recipient back into THAT quiz (/play?club=… /
@@ -866,10 +891,38 @@ const LEAGUE_QUIZ_SECTIONS = [
     { cat: "WorldCup", name: "International",     abbr: "INT", color: "#8A6D1B" },
     { cat: "Euros",    name: "Euros",            abbr: "EUR", color: "#1F6FB2" },
   ]},
+  // ── Themes (2026-08-23). Not competitions, but the picker is the only place
+  // a category-sized pool can be chosen, and these three were unreachable from
+  // it: /quiz/legends/, /quiz/managers/ and /quiz/football-records/ are live,
+  // indexed pages whose CTA emits ?quiz=<slug>, and QUIZ_SLUG_TO_CAT had no
+  // entry for any of them — so the button resolved to nothing. Same
+  // reachability class as the 135 orphaned Champions League questions: the
+  // content was never missing, only the route to it. Pools are large (Legends
+  // 575, Records 519, Managers 425 medium+hard), so these are among the
+  // deepest quizzes in the app, not filler.
+  { label: "Themes", items: [
+    { cat: "Legends",  name: "Legends",          abbr: "LEG", color: "#A67C00" },
+    { cat: "Managers", name: "Managers",         abbr: "MGR", color: "#37474F" },
+    { cat: "Records",  name: "Records",          abbr: "REC", color: "#6A1B9A" },
+  ]},
 ];
 const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
 export const CLUB_PACKS = {
+  // ── Wave O. `questions: []` on purpose, like every pack since Wave D: the
+  // draw prefers the verified, hint-bearing QB rows via CLUB_PACK_TO_QB and
+  // only falls back to this array. Each of these clears the 10 medium+hard
+  // floor the club draw needs (thinnest is Sheffield Wednesday at 11).
+  Birmingham:  { name: "Birmingham City",     icon: "🔵", color: "#253896", questions: [] },
+  Cardiff:     { name: "Cardiff City",        icon: "🐦", color: "#0070B5", questions: [] },
+  Derby:       { name: "Derby County",        icon: "🐏", color: "#1B1B1B", questions: [] },
+  Norwich:     { name: "Norwich City",        icon: "🐤", color: "#00A650", questions: [] },
+  Portsmouth:  { name: "Portsmouth",          icon: "⚓", color: "#001489", questions: [] },
+  SheffWed:    { name: "Sheffield Wednesday", icon: "🦉", color: "#0066B3", questions: [] },
+  Southampton: { name: "Southampton",         icon: "⛵", color: "#D71920", questions: [] },
+  Stoke:       { name: "Stoke City",          icon: "🔴", color: "#E03A3E", questions: [] },
+  Swansea:     { name: "Swansea City",        icon: "🦢", color: "#121212", questions: [] },
+  Wrexham:     { name: "Wrexham",             icon: "🐐", color: "#DA291C", questions: [] },
   Leipzig: {
     name: "RB Leipzig", icon: "🐂", color: "#DD0741",
     questions: [],
@@ -9491,7 +9544,22 @@ function AppInner() {
           return;
         }
         const fresh = applySeenFilter(QB_CHAOS, 10, qbHistKey);
-        qs = shuffle([...fresh]).slice(0, 10).map(q => ({ ...q, _histKey: qbHistKey(q) }));
+        // Shuffle the options like every other MCQ draw does. Chaos was the
+        // only mode serving them in bank order, so a repeat player met the
+        // same layout twice.
+        //
+        // ⚠️ Two things deliberately NOT done here, both measured rather than
+        // assumed. (1) No leak guard: the 59-row chaos pool contains ZERO
+        // conflicting pairs, so pickAvoidingConflicts would be a pure no-op —
+        // adding it would look like coverage and buy nothing. (2) This is not
+        // a bias fix: the answer-index spread is {0:12, 1:23, 2:14, 3:10},
+        // chi-square 6.7 against a critical 7.81 at p=0.05, i.e. B runs high
+        // but not significantly. Consistency is the reason; the bias is not.
+        qs = shuffle([...fresh]).slice(0, 10).map(q => {
+          if (!Array.isArray(q.o)) return { ...q, _histKey: qbHistKey(q) };
+          const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+          return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
+        });
       }
       else { qs = await getQs({ cat, diff, n: 10, ramp: true }); }
       // Sanity check: filter out undefined/malformed questions (T/F uses `s`, others use `q`)
@@ -9579,7 +9647,18 @@ function AppInner() {
       const gradedPool = noEasy.length >= 10 ? noEasy : pool;
       if (gradedPool.length < 10) { showToast("No questions yet for this competition"); return; }
       const fresh = applySeenFilter(gradedPool, 10, qbHistKey);
-      const qs = shuffle([...fresh]).slice(0, 10).map(q => {
+      // ⚠️ The answer-leak guard was fitted to the CLUB draw only and left the
+      // league draw on a plain shuffle — the same defect, shipped in the other
+      // half. Measured over 3,000 simulated sessions per competition against
+      // the pools this code actually serves (medium+hard, post-seen-filter):
+      // Primeira leaked in 21.5% of sessions, Ligue1 9.5%, SuperLig 7.7%,
+      // SerieA 2.2%. All four go to 0.0% here. The thin pools are the worst
+      // hit, which is the opposite of intuition — 73 eligible Primeira rows
+      // holding 15 leak pairs means a 10-question draw can hardly avoid one.
+      // Applied AFTER the shuffle so which half of a pair survives varies per
+      // session, and after applySeenFilter so freshness still decides
+      // eligibility — same order as the club draw above.
+      const qs = pickAvoidingConflicts(shuffle([...fresh]), 10, conflictsWith).map(q => {
         const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
         return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
       });
@@ -9656,6 +9735,18 @@ function AppInner() {
       const catKey = QUIZ_SLUG_TO_CAT[quizSlug];
       if (packKey) launchClubQuiz(packKey);
       else if (catKey) launchLeagueQuiz(catKey);
+      // ⚠️ NO SILENT DEAD END. This if/else had no final branch, so a slug
+      // missing from either map fell through to a bare Home screen — and the
+      // boot code has ALREADY stripped ?club= from the URL by this point, so
+      // the reader's intent is gone and there is no back button to recover it.
+      // Ten club pages shipped that way. Wave O maps all ten, but the class is
+      // structural: the maps live here and the pages are generated elsewhere,
+      // so they can drift apart again the next time a page is added. Start a
+      // general quiz rather than nothing, and say why.
+      else if (clubSlug || quizSlug) {
+        showToast("No dedicated pack for that one yet — here's a general quiz");
+        startMode("classic");
+      }
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -11695,7 +11786,12 @@ function AppInner() {
                 {[
                   { id:"easy",   icon:"🌱", name:"Easy",   desc:"Gentle warm-up questions" },
                   { id:"medium", icon:"⚽", name:"Medium", desc:"Balanced challenge — a solid test" },
-                  { id:"hard",   icon:"🧠", name:"Hard",   desc:"Deep knowledge — some typed answers" },
+                  // ⚠️ Do NOT re-add "some typed answers". Commit df54c40
+                  // (2026-05-07) removed every typed-input question from the
+                  // bank to kill spelling-variation friction; this line went on
+                  // promising them to every player on every platform for three
+                  // and a half months. Guarded by tests/unit/difficulty-copy.test.js.
+                  { id:"hard",   icon:"🧠", name:"Hard",   desc:"Deep knowledge — the toughest questions" },
                 ].map(opt => (
                   <button
                     key={opt.id}

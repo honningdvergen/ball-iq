@@ -1,5 +1,83 @@
 # Ball IQ — the board
 
+## 🔧 SCOUTING REPORT #3 — the work list
+
+Alex, 2026-08-23: *"we should do the majority of the work on the list before
+submitting new builds, i am sure we will uncover more that will need to be in
+the new builds along the way anyway."* So the upload moved to LAST, not fourth.
+Full report: the panel artifact (16 areas, each with its path to 8+).
+
+### Landed 2026-08-23 — web-deployable, not yet pushed
+
+- [x] **Transfer Trail rejected its own correct answer.** `SON` was stored
+      `["Heung-min","Son"]` while `mysteryPool` (which feeds the autocomplete)
+      offers `"Son Heung-min"`, so tapping the app's own first suggestion spent
+      an attempt. Fixed the order + aliased both name parts. ⚠️ Did NOT take
+      the panel's headline fix (delete `HEUNGMIN`): the answer log is frozen at
+      exactly 4 days per key, so deleting it would have orphaned 4 dailies.
+- [x] **The guard test for that class was a tautology** — it built its expected
+      strings from `p.display`, the field that was wrong, so it was green over
+      a live bug. Rewritten against `mysteryPool.json` (independent source),
+      plus a name-order test and a duplicate-human test. **Falsification-run:
+      seeded the original bug, watched it go red, restored.**
+- [x] **League Quiz shipped the answer-leak defect** the club draw was fixed
+      for. Measured over 3,000 sessions/competition on the real pools: Primeira
+      21.5%, Ligue1 9.5%, SuperLig 7.7%, SerieA 2.2% → **all 0.0%**.
+- [x] **60 dead links across 10 club pages.** Birmingham, Cardiff, Derby,
+      Norwich, Portsmouth, Sheffield Wednesday, Southampton, Stoke, Swansea,
+      Wrexham had live `/quiz/<slug>/` pages and 15–20 verified questions each
+      but no entry in any of the four routing maps. Wired all ten.
+- [x] **3 more dead links: `/quiz/legends/`, `/quiz/managers/`,
+      `/quiz/football-records/`.** Pools of 575/425/519 medium+hard questions
+      reachable from nowhere in the picker. Added a "Themes" section.
+      **All 675 deep links in the built output now resolve.**
+- [x] **No-silent-dead-end guard** on the deep-link router: the if/else had no
+      final branch, so any future map drift dumps the reader on Home with
+      `?club=` already stripped. Now starts a general quiz and says why.
+- [x] **Header buttons were 36×36 on every tab except Home** — `.hdr .icon-btn`
+      at (0,2,0) beat `.hdr-ic`'s 44px at (0,1,0). The 08-22 pass reported
+      "9 findings to 0" because it only sampled Home.
+- [x] **Hard difficulty promised "some typed answers"** for 3½ months after
+      `df54c40` removed every typed question. Copy fixed + guarded by
+      `tests/unit/difficulty-copy.test.js` (also falsification-run).
+- [x] **Chaos draw now shuffles options** like every other mode. ⚠️ Deliberately
+      did NOT add leak-avoidance there: the 59-row pool has ZERO conflicting
+      pairs, so it would have been a no-op that looked like coverage.
+
+### Next up — still web-only, no upload needed
+
+- [ ] `api/get.js` region-aware storefront. **This is the ratings fix**: we have
+      6 ratings (GB 3, NO 2, FR 1) and **0 in the US**, and every default link
+      sends everyone to `/us/`. It already reads `x-vercel-ip-country` for a log
+      line. Also replace the 4 US-pinned consumers + the stale two-names-old slug.
+- [ ] Re-shoot `01-home.png` (`animations:'disabled'`, shoot-store-screens.mjs:422)
+      — the hero shot on both stores has glyphs bleeding through the tab bar and
+      the Daily tab reads "🔥aily". Play takes screenshot edits with no release.
+- [ ] Privacy §4 vs the native funnel — **hard upload blocker**, decide the
+      guard-or-amend question in one commit.
+- [ ] Wrap the 6 lazy game screens in `TabErrorBoundary` (it already exists and
+      does the right thing; it just isn't on that branch of the tree).
+- [ ] Reminder reach 1 → 36: UNION `device_tokens` into
+      `enqueue_web_daily_reminders()`. SELECT-only change, no client, no upload.
+- [ ] Username wall: `derivePrefill` offers a value `handleContinue` rejects.
+- [ ] Localised pages: one anchor to `/play?club=<slug>` (42 pages, measured to
+      convert 2.6×, currently dead-ending).
+- [ ] `useDialog(ref, onClose)` for the 20 `aria-modal` dialogs that never focus.
+- [ ] Real `<h1>` per screen + `document.title` on screen change.
+- [ ] Hot Streak ✓/✗ glyph (deuteranope contrast is currently 1.06).
+
+### Roster follow-up (needs verified data, not a code change)
+
+- [ ] **Son Heung-min is in `TRAIL_PLAYERS` twice** (`HEUNGMIN` + `SON`). Left
+      deliberately: the log gives all 102 keys exactly 4 days each, so merging
+      hands him 8 of 408 — twice inside a fortnight at days 145/160 and
+      284/303. Correct fix is a **102nd distinct player** in HEUNGMIN's slot
+      with forge-verified career data. Allowlisted in the duplicate test, which
+      must SHRINK to zero.
+- [ ] **Joaquín Sánchez is not in `mysteryPool`**, so on days 89/177/249/363 the
+      autocomplete offers five *wrong* Joaquíns and never the answer. Winnable
+      by typing (the alias accepts it), so a trap rather than a blocker.
+
 ## 📱 SIMULATOR TESTING — what it verified, and the one thing it cannot
 
 Alex, 2026-08-23: *"i guess a sim would be more telling than a desktop

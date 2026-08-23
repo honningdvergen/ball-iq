@@ -423,7 +423,19 @@ export const TRAIL_PLAYERS = [
   { key: "DE_BRUYNE", display: ["Kevin","De Bruyne"], nat: "Belgium",
     clubs: ["Genk","Chelsea","Werder Bremen","Wolfsburg","Man City","Napoli"],
     loans: [false, false, true, false, false, false] },
-  { key: "SON", display: ["Heung-min","Son"], nat: "South Korea",
+  // ⚠️ Same human as HEUNGMIN above, stored twice under two keys — and this
+  // one had the name REVERSED, which broke every SON day outright (reported
+  // live on day 20, 2026-08-23). `mysteryPool.json` — the pool the in-game
+  // autocomplete offers from — stores the canonical "Son Heung-min", so
+  // tapping the app's own first suggestion spent an attempt and revealed a
+  // free club. Both entries now carry the same Korean name order.
+  //
+  // The duplicate itself is deliberately LEFT for now: TRAIL_ANSWER_LOG is
+  // frozen and gives all 102 keys exactly 4 days each, so merging would hand
+  // Son 8 of 408 days (twice inside a fortnight, at 145/160 and 284/303).
+  // The correct end state is a 102nd distinct player in HEUNGMIN's slot, which
+  // needs verified career data — tracked in docs/TODO.md, not faked here.
+  { key: "SON", display: ["Son","Heung-min"], nat: "South Korea",
     clubs: ["Hamburg","Bayer Leverkusen","Tottenham","LAFC"],
     loans: [false, false, false, false] },
   // MARCELO was forged and then REJECTED here: a mononym cannot satisfy the
@@ -894,6 +906,17 @@ export const TRAIL_ALIASES = {
   GILBERTO_SILVA: ["Gilberto", "Gilberto Silva"],
   GOTZE:          ["Goetze"],   // common German transliteration of ö
   OZIL:           ["Oezil"],
+
+  // ⚠️ EAST ASIAN NAME ORDER. acceptedNamesFor() derives the surname as the
+  // LAST word, which holds for Western names and is exactly backwards here:
+  // stored in native order, "Son Heung-min" has the family name FIRST, so the
+  // derived forms are "Heung-min" (the given name) and the full name — and
+  // "Son", the one thing every commentator actually says, was refused on all
+  // eight of his scheduled days. Alias both keys rather than reordering the
+  // display, because the display order is correct and the derivation is what
+  // does not generalise. Western order is aliased too; people type both.
+  HEUNGMIN:       ["Son", "Heung-min Son"],
+  SON:            ["Son", "Heung-min Son"],
 };
 
 // Revealed as a hint after the third miss. Nationality already lives on the

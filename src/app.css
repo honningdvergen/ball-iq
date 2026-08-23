@@ -369,11 +369,17 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 @media (max-width: 1023px) {
   .hdr { padding: 12px 0 4px; }
   .logo { font-size: 16px; letter-spacing: -0.3px; }
+  /* ⚠️ 44px, NOT 36. This rule is (0,2,0) and beat `.hdr-ic`'s own 44px
+     declaration at (0,1,0), so the settings gear and notification bell
+     measured 44x44 on Home — which renders its own header — and 36x36 on
+     Daily, Profile and Online. The 2026-08-22 tap-target pass reported
+     "9 findings to 0" and missed it precisely because it only sampled Home.
+     Below the 44px floor on the most-used control in the app. */
   .hdr .icon-btn {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    min-height: 36px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
     padding: 4px;
     border: none;
     background: transparent;

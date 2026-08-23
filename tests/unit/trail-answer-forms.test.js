@@ -2,9 +2,11 @@ import { describe, it, expect } from 'vitest';
 import {
   TRAIL_ANCHOR_DAY,
   TRAIL_ANSWER_LOG,
+  TRAIL_PLAYERS,
   getTrailAnswerForDayIndex,
   guessMatchesPlayer,
 } from '../../src/lib/trail.js';
+import POOL from '../../src/data/mysteryPool.json';
 
 /**
  * A player who knows the answer must never lose an attempt to our storage format.
@@ -18,13 +20,36 @@ import {
  *     ["Virgil", "van Dijk"]     →  "Dijk"   was rejected
  *     ["Kevin", "De Bruyne"]     →  "Bruyne" was rejected
  *
- * Whichever way a name happened to be stored, one of the two forms a human
- * would actually type was refused. Five players in the schedule were affected.
+ * ⚠️ AND AGAIN, 2026-08-23, on the LIVE daily: "Son Heung-min" was rejected on
+ * his own puzzle. The version of this file written on 08-22 was green over that
+ * bug the whole time, because it built its expected strings from
+ * `p.display.join(' ')` — the very field whose ordering was wrong. It asked
+ * "does the app accept the name in the order we happened to store it?", which
+ * is true by construction. A guard derived from the suspect field cannot fail.
  *
- * Trail attempts are limited, so this is not a cosmetic annoyance: it spends a
- * guess belonging to someone who got it right. Deliberately generous — a mode
- * about football knowledge should never test how we store a name.
+ * So the contract is now stated against an INDEPENDENT source:
+ *
+ *     Anything the in-game autocomplete can offer for this player
+ *     must be accepted as an answer for this player.
+ *
+ * TransferTrail.jsx feeds `rankPlayerSuggestions(POOL, …)` from
+ * mysteryPool.json, so that file — not `display` — is the source of truth for
+ * what a player can physically tap. Tapping the app's own first suggestion and
+ * being marked wrong is the worst failure this mode has.
  */
+
+const norm = (s) => String(s || '')
+  .toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+  .replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim();
+
+/** Names are the same human regardless of the order the parts are stored in. */
+const tokenKey = (s) => norm(s).split(' ').filter(Boolean).sort().join(' ');
+
+const poolByTokens = new Map();
+for (const entry of POOL) {
+  if (entry?.name) poolByTokens.set(tokenKey(entry.name), entry.name);
+}
+
 describe('Trail accepts every natural form of an answer', () => {
   const players = [...new Set(TRAIL_ANSWER_LOG)]
     .map((k) => getTrailAnswerForDayIndex(TRAIL_ANCHOR_DAY + TRAIL_ANSWER_LOG.indexOf(k)))
@@ -32,6 +57,29 @@ describe('Trail accepts every natural form of an answer', () => {
 
   it('has a schedule to check', () => {
     expect(players.length).toBeGreaterThan(50);
+  });
+
+  it('accepts the exact name the autocomplete offers', () => {
+    // The load-bearing test. Independent of `display` in both directions: the
+    // expected string comes from the pool, and the lookup is order-insensitive
+    // so a reversed `display` cannot hide the player from this check.
+    const rejected = [];
+    let checked = 0;
+    for (const p of players) {
+      const offered = poolByTokens.get(tokenKey(p.display.join(' ')));
+      if (!offered) continue; // mononyms — covered by the coverage floor below
+      checked += 1;
+      if (!guessMatchesPlayer(offered, p)) {
+        rejected.push(`${p.key}: autocomplete offers "${offered}", game rejects it`);
+      }
+    }
+    expect(rejected, `\n  ${rejected.join('\n  ')}\n`).toEqual([]);
+    // ⚠️ A zero above is only meaningful if the check could see anything. If a
+    // pool rename or a shape change silently stops matching, `rejected` goes
+    // empty for the wrong reason — the exact failure mode this file exists to
+    // stop. So assert the check kept its eyes.
+    expect(checked, 'pool lookup matched almost nothing — the check went blind')
+      .toBeGreaterThan(players.length * 0.9);
   });
 
   it('accepts the full name, the bare surname, and particle+surname', () => {
@@ -46,6 +94,51 @@ describe('Trail accepts every natural form of an answer', () => {
       }
     }
     expect(rejected, `\n  ${rejected.join('\n  ')}\n`).toEqual([]);
+  });
+
+  it('accepts EITHER name part on its own, whichever order it is stored in', () => {
+    // The generalisation of the Son bug. `acceptedNamesFor` derives the surname
+    // as the LAST word, which is backwards for names stored in East Asian order
+    // — "Son Heung-min" yielded the given name and refused "Son", the only
+    // thing anyone actually says. Any future entry in native order fails here.
+    const rejected = [];
+    for (const p of players) {
+      const parts = norm(p.display.join(' ')).split(' ').filter(Boolean);
+      if (parts.length < 2) continue;
+      const first = parts[0];
+      const last = parts[parts.length - 1];
+      if (!guessMatchesPlayer(first, p) && !guessMatchesPlayer(last, p)) {
+        rejected.push(`${p.key}: neither "${first}" nor "${last}" is accepted`);
+      }
+    }
+    expect(rejected, `\n  ${rejected.join('\n  ')}\n`).toEqual([]);
+  });
+
+  it('has no undocumented duplicate of the same human in the roster', () => {
+    // Two keys for one person means that person can be scheduled twice in a
+    // cycle, and it is how the Son entries drifted into opposite orders in the
+    // first place — nothing was comparing them.
+    //
+    // ⚠️ This allowlist must SHRINK, never grow. HEUNGMIN/SON is a real
+    // duplicate left in place deliberately: TRAIL_ANSWER_LOG is frozen and
+    // gives all 102 keys exactly 4 days each, so merging would hand Son 8 of
+    // 408 days. The fix is a 102nd distinct player with verified career data
+    // in HEUNGMIN's slot — tracked in docs/TODO.md.
+    const KNOWN = [['HEUNGMIN', 'SON']];
+    const allowed = new Set(KNOWN.map((g) => [...g].sort().join('+')));
+
+    const byHuman = new Map();
+    for (const p of TRAIL_PLAYERS) {
+      const k = tokenKey((p.display || []).join(' '));
+      if (!byHuman.has(k)) byHuman.set(k, []);
+      byHuman.get(k).push(p.key);
+    }
+    const dupes = [...byHuman.values()]
+      .filter((keys) => keys.length > 1)
+      .map((keys) => [...keys].sort().join('+'))
+      .filter((sig) => !allowed.has(sig));
+
+    expect(dupes, `\n  undocumented duplicates: ${dupes.join(', ')}\n`).toEqual([]);
   });
 
   it('still rejects a different player with the same surname', () => {
