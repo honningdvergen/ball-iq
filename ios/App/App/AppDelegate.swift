@@ -18,14 +18,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Alex, device-testing 2026-08-23: "when people search for xabi alonso
         // and want to scroll down... the keyboard is in the way. i was thinking
         // the keyboard disappears when they try to scroll. this stuff has to be
-        // smooth." .interactive is the smooth version — the keyboard tracks the
-        // finger down instead of snapping shut. WKWebView defaults to .none, so
-        // without this line no amount of web-side work can match native feel.
-        // Safe here: the .view access above forces the view hierarchy (and the
-        // bridge's WKWebView) to load before we reach for its scrollView.
-        // Android + PWA get the web-side fallback in useKeyboardAwareInput.js.
+        // smooth." WKWebView defaults to .none, so without this line no amount
+        // of web-side work matches native feel. Safe here: the .view access
+        // above forces the view hierarchy (and the bridge's WKWebView) to load
+        // before we reach for its scrollView.
+        //
+        // ⚠️ .onDrag, NOT .interactive — changed after Alex's build 75 report
+        // ("very laggy... like it thinks i stop dragging"). .interactive drags
+        // the keyboard WITH the finger and springs it back if you don't pull far
+        // enough. Each partial drag fires a full willHide/didHide then
+        // willShow/didShow pair at the JS bridge; his log shows NINE such cycles
+        // in one session. Every pair rewrote kbInset, which re-rendered the mode
+        // and re-bounded the suggestion list mid-gesture. .onDrag dismisses once,
+        // decisively, at drag start — one transition, no spring-back, no
+        // oscillation for the web layer to chase.
+        //
+        // Android + PWA get the web-side fallback in useKeyboardAwareInput.js,
+        // which is now disabled on native so the two cannot race.
         if let bridgeVC = self.window?.rootViewController as? CAPBridgeViewController {
-            bridgeVC.webView?.scrollView.keyboardDismissMode = .interactive
+            bridgeVC.webView?.scrollView.keyboardDismissMode = .onDrag
         }
         return true
     }

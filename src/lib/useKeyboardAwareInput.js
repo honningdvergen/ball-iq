@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Keep a focused text input clear of the on-screen keyboard.
@@ -48,10 +48,14 @@ import { useEffect, useRef, useState } from 'react';
  * player is asking to see the page — so that, and only that, dismisses the
  * keyboard. The two rules don't conflict: content growth moves the field,
  * a finger drag drops the keyboard. Automatic for every mode using this hook;
- * no call-site wiring. On the native iOS shell, AppDelegate additionally sets
- * scrollView.keyboardDismissMode = .interactive, the genuinely smooth version
- * where the keyboard tracks the finger — this listener is the fallback that
- * gives PWA and Android the same behaviour.
+ * no call-site wiring.
+ *
+ * ⚠️ THE JS LISTENER IS THE FALLBACK, NOT THE MECHANISM. On the native iOS
+ * shell AppDelegate sets scrollView.keyboardDismissMode = .onDrag and iOS owns
+ * the gesture entirely; the listener below is disabled there. It exists for PWA
+ * and Android, which have no native path. Running both — which build 75 did —
+ * puts two mechanisms on one gesture and produces exactly the symptom Alex
+ * reported: "it is like it thinks i stop dragging it."
  */
 
 /** Below this much shrinkage we assume no on-screen keyboard (desktop, or a
@@ -97,6 +101,30 @@ const IS_NATIVE = (() => {
     return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   } catch { return false; }
 })();
+
+/**
+ * ⚠️ NEVER FIGHT THE FINGER. Alex, build 75: "it is like it thinks i stop
+ * dragging it even though i have not let my finger off the screen."
+ *
+ * While a touch is in progress the user owns the scroll position and the
+ * layout. Anything this module does during that window — a programmatic
+ * scrollIntoView, a dropdown resize — cancels or overrides the drag WebKit is
+ * already running, and the finger is still down, so it reads as the app
+ * randomly letting go. Both consumers below gate on this.
+ *
+ * One module-level tracker with one set of listeners, rather than a pair per
+ * hook instance: three modes mount this hook and Trail mounts it beside
+ * useDropdownMaxHeight.
+ */
+const touch = { active: false };
+if (typeof window !== 'undefined') {
+  const down = () => { touch.active = true; };
+  // touchend fires per finger; only the LAST lift ends the gesture.
+  const up = (e) => { if (!e.touches || e.touches.length === 0) touch.active = false; };
+  window.addEventListener('touchstart', down, { passive: true });
+  window.addEventListener('touchend', up, { passive: true });
+  window.addEventListener('touchcancel', up, { passive: true });
+}
 
 /**
  * Bottom of the visible area, in LAYOUT coordinates — the line the keyboard
@@ -169,7 +197,13 @@ export function useDropdownMaxHeight(anchorRef, { gap = 12, min = 132, max = 360
   // Re-measure after every render: the anchor moves whenever a guess row is
   // added above it, and no dependency array can see that. This also covers
   // kbInset changing, since that re-renders the caller.
-  useEffect(() => { measure.current(); });
+  //
+  // ⚠️ Except while a finger is down. Resizing a list the user is currently
+  // dragging moves the content under their thumb and aborts the scroll — and
+  // on native this fired constantly, because the interactive keyboard dismiss
+  // drove kbInset up and down throughout the drag. The bound is re-applied on
+  // the next render after the lift, so nothing stays stale.
+  useEffect(() => { if (!touch.active) measure.current(); });
   return maxHeight;
 }
 
@@ -230,9 +264,20 @@ export function useKeyboardAwareInput() {
    * Pass straight to useEffect: `useEffect(keepInputVisible, [deps…])`.
    * Returns a cleanup, so it satisfies useEffect's contract as-is.
    */
-  const keepInputVisible = () => {
+  // ⚠️ useCallback IS LOAD-BEARING, not tidiness. Call sites pass this straight
+  // into their own dependency array —
+  //     useEffect(keepInputVisible, [shown, hint, done, keepInputVisible])
+  // — which exhaustive-deps asks for. Unmemoized, its identity changed every
+  // render, so that array never matched and the effect ran on EVERY RENDER,
+  // firing a smooth programmatic scrollIntoView each time. With the keyboard up
+  // on native, kbInset churn re-renders constantly, so the page was animating
+  // itself while the player was trying to drag it. A fresh function in a dep
+  // array is the same as having no dep array at all.
+  const keepInputVisible = useCallback(() => {
     const el = inputRef.current;
     if (!el || document.activeElement !== el) return undefined;
+    // Never scroll the page out from under an active drag. See `touch` above.
+    if (touch.active) return undefined;
     // Gate on the REAL keyboard height. The old check asked whether the visual
     // viewport had shrunk, which is never true on native (resize: none) — so
     // this whole scroll-back never ran on a phone.
@@ -248,11 +293,19 @@ export function useKeyboardAwareInput() {
       try { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch { /* older WebViews */ }
     });
     return () => cancelAnimationFrame(id);
-  };
+  }, []);
 
   // Dismiss-on-drag. Passive listeners; nothing here can jank the scroll.
+  //
+  // ⚠️ WEB ONLY. On the native shell AppDelegate sets the WKWebView's
+  // scrollView.keyboardDismissMode, so iOS already dismisses on drag — natively,
+  // tracking the finger, without touching the DOM. Running both meant every drag
+  // ALSO called blur(), which drops the keyboard instantly, reflows the page and
+  // re-bounds the dropdown mid-gesture. Two mechanisms racing on one gesture is
+  // why build 75 "kind of works but is very laggy": the native one animates the
+  // keyboard down while the JS one has already yanked it. iOS owns this now.
   useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
+    if (typeof window === 'undefined' || IS_NATIVE) return undefined;
     let startY = null;
     let startX = null;
     let doneThisGesture = false;

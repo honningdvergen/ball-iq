@@ -135,6 +135,32 @@
 /* Global: kill the grey/white tap flash Safari draws on every tappable element. */
 *{-webkit-tap-highlight-color:transparent;}
 a{-webkit-tap-highlight-color:transparent;}
+
+/* ⚠️ REPRODUCED ON A SIMULATOR, 2026-08-23, after Alex reported build 75 as
+   "very laggy... it is like it thinks i stop dragging it even though i have not
+   let my finger off the screen."
+
+   A deliberate, human-paced drag on app content did not scroll. It started a
+   TEXT SELECTION, complete with the Copy / Look Up / Translate callout — on the
+   home cards and on the Trail club rows alike. Once WebKit's selection gesture
+   claims the touch, the scroll never begins, and the finger is still down: the
+   exact sensation Alex described. It is also the loudest "this is a web page in
+   a wrapper" tell there is; no native app lets you select body text by dragging.
+
+   Fast flicks always worked, which is why this survived every previous pass —
+   synthetic swipes and desktop testing both flick. Only a slow drag shows it.
+
+   Scoped to `pointer: coarse` deliberately: on a touch screen, selecting UI text
+   is never the intent, but on desktop web (balliq.app/play) selection is normal
+   and useful, so it stays. Inputs keep selection everywhere — the caret and
+   double-tap-to-correct depend on it — and `.selectable` is the opt-in for
+   things people genuinely copy, like room codes. */
+@media (pointer: coarse){
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
+  input,textarea,[contenteditable="true"],.selectable{
+    -webkit-user-select:text;user-select:text;-webkit-touch-callout:default;
+  }
+}
 html,#root{background:var(--bg);min-height:100vh;min-height:100dvh;scroll-behavior:smooth;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;transition:color 0.18s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
 
