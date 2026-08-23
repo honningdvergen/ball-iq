@@ -7708,6 +7708,60 @@ const WORDLE_KB_ROWS = [
   ["Z","X","C","V","B","N","M","DEL"],
 ];
 
+// ⚠️ THE REPORT CHANNEL WAS BLIND: 55 reports, 0 reasons, 25 in the last week
+// alone — p_reason was hardcoded null while the column and the RPC parameter
+// sat there unused. Report #3 measured 54% of reports coming from players who
+// answered CORRECTLY and still pressed the button, and with no reason there
+// was no way to know why. Alex, 2026-08-23: "i really want our question bank
+// to be spotless and not insult the intellect of our users" — his own flags
+// run at ~100% precision against 3-6% for automated audits, and this sheet
+// turns all 92 active players into that same channel.
+//
+// One sink serves every surface: QuizEngine's reveal, the results review,
+// Footle, Trail, Mystery and Stadiums all funnel through reportQuestion, so
+// none of them needed a per-site change. Callers flip their "Reported ✓"
+// state optimistically before the sheet opens; dismissing therefore still
+// sends with reason null — the player DID press report, and losing that
+// signal because they declined a second tap would be worse than a blind row.
+function ReportReasonSheet({ onPick, onSkip }) {
+  const ref = useRef(null);
+  useModalA11y({ isOpen: true, onClose: onSkip, ref });
+  const REASONS = [
+    ["wrong-answer", "❌", "The answer is wrong"],
+    ["unclear", "🤔", "Confusing or unclear"],
+    ["typo", "✏️", "Typo or bad grammar"],
+    ["too-easy", "🥱", "Too easy — gives itself away"],
+    ["too-hard", "🧱", "Too hard or unfair"],
+  ];
+  return (
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="What's wrong with this question?" onClick={onSkip}>
+      <div ref={ref} tabIndex={-1} onClick={(e) => e.stopPropagation()}
+           style={{ background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 18, padding: "18px 16px 12px", width: "100%", maxWidth: 360 }}>
+        <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)", marginBottom: 4, textAlign: "center" }}>
+          What&rsquo;s wrong with it?
+        </div>
+        <div style={{ fontSize: 12.5, color: "var(--t3)", marginBottom: 12, textAlign: "center" }}>
+          Takes one tap — it tells us exactly what to fix.
+        </div>
+        {REASONS.map(([slug, icon, label]) => (
+          <button key={slug} type="button" onClick={() => onPick(slug)}
+            style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", minHeight: 44,
+                     padding: "10px 12px", marginBottom: 6, background: "var(--s2)",
+                     border: "1px solid var(--border)", borderRadius: 12, color: "var(--t1)",
+                     fontSize: 14, fontWeight: 700, fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
+            <span aria-hidden="true">{icon}</span>{label}
+          </button>
+        ))}
+        <button type="button" onClick={onSkip}
+          style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 12px", background: "none",
+                   border: "none", color: "var(--t3)", fontSize: 13, fontWeight: 700, fontFamily: "inherit", cursor: "pointer" }}>
+          Just flag it
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function FootleReportButton({ answer, status, onReport }) {
   const [sent, setSent] = useState(false);
   const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
@@ -9268,10 +9322,23 @@ function AppInner() {
   // while playtesters were finding real question defects and texting Alex instead.
   // Same failure shape as sendPlayInvite. Read `error`, and only claim success
   // when there was one.
+  // Which question is awaiting a reason. Null = sheet closed.
+  const [reportPending, setReportPending] = useState(null);
   const reportQuestion = useCallback(async (info) => {
     // A report IS a bad moment — suppress the native rating ask for 24h so a
     // player mid-complaint never meets "enjoying Ball IQ?" (review panel lever).
     markBadReviewMoment();
+    // Ask WHY before sending. 55 reports had accumulated with reason null —
+    // the column existed, the RPC accepted it, the client never sent one — so
+    // more than half the channel's rows were unreadable (54% came from players
+    // who answered correctly, motive unknown). The sheet resolves the send;
+    // dismissing still reports, with reason null, because the tap on "Report"
+    // is itself the signal and a second tap must never be the price of it.
+    setReportPending(info || {});
+    return true;
+  }, []);
+  const sendQuestionReport = useCallback(async (info, reason) => {
+    setReportPending(null);
     try {
       const { error } = await supabase.rpc("report_question", {
         p_question_id: info?.id != null ? String(info.id) : null,
@@ -9279,7 +9346,7 @@ function AppInner() {
         p_picked: info?.picked ?? null,
         p_correct: info?.correct ?? null,
         p_mode: info?.mode ?? null,
-        p_reason: null,
+        p_reason: reason || null,
       });
       if (error) {
         console.warn("[report_question]", error.message);
@@ -9295,6 +9362,7 @@ function AppInner() {
       return false;
     }
   }, [showToast]);
+
 
   // Audit 2.4: surface localStorage quota exhaustion. safeSetItem fires this
   // event once per session on QuotaExceededError; without this, quota loss
@@ -12216,6 +12284,16 @@ function AppInner() {
             />
           </React.Suspense>
           </TabErrorBoundary>
+        )}
+
+        {/* Report-reason sheet — opened by reportQuestion, resolves the send.
+            Rendered at app level because every mode's report button funnels
+            into the same sink. */}
+        {reportPending && (
+          <ReportReasonSheet
+            onPick={(reason) => sendQuestionReport(reportPending, reason)}
+            onSkip={() => sendQuestionReport(reportPending, null)}
+          />
         )}
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
