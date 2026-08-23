@@ -2697,16 +2697,33 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
     if (!timed || done || isTyped) return;
     setTimeLeft(timerDuration);
     clearInterval(timerRef.current);
+    // ⚠️ ONE CLOCK, NOT TWO. This used to DECREMENT a counter on an interval
+    // while a separate setTimeout owned the actual deadline — two independent
+    // clocks for one question. Browsers coalesce setInterval callbacks that
+    // could not run (a chunk parse, a GC pause, a backgrounded tab), so the
+    // display quietly loses ticks; setTimeout still fires at its absolute
+    // deadline. The two drift apart and the question dies with time visibly
+    // left on the clock.
+    //
+    // Reproduced in the built app on 2026-08-23: a 12-second question, a
+    // 6-second main-thread stall, and the deadline fired at 12.5s while the
+    // countdown still read SIX. The player sees six seconds remaining and is
+    // marked wrong — indistinguishable from the app cheating, on the core loop
+    // of Classic, Club Quiz, League Quiz and the topical pack.
+    //
+    // Deriving the display from the same wall-clock deadline the timeout uses
+    // makes drift impossible rather than unlikely: a stall now just skips the
+    // display forward, which is honest.
+    const deadline = Date.now() + timerDuration * 1000;
+    let warned = false;
     timerRef.current = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) {
-          clearInterval(timerRef.current);
-          return 0;
-        }
-        if (t === 6) { try { haptic("select"); } catch {} }  // Subtle warning at 5 seconds left
-        return t - 1;
-      });
-    }, 1000);
+      const left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      // Fire the 5-second warning on the CROSSING, not on an exact equality —
+      // a stall can jump straight past any single value.
+      if (!warned && left <= 5 && left > 0) { warned = true; try { haptic("select"); } catch {} }
+      if (left <= 0) clearInterval(timerRef.current);
+      setTimeLeft(left);
+    }, 250);
     // Separate effect watches for timeout (avoids stale closure entirely)
     const timeoutMs = (timerDuration * 1000) + 100;
     answerTimeoutRef.current = setTimeout(() => {
