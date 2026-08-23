@@ -54,7 +54,7 @@ function DesktopFootleHero({ onPlay }) {
         <div className="ffh-copy">
           <div className="ffh-eyebrow">Daily · Footle</div>
           <div className="ffh-title">Footle</div>
-          <div className="ffh-sub">{L} letters · 6 guesses · Surname of a footballer</div>
+          <div className="ffh-sub">{L} letters · 6 guesses · The name a footballer goes by</div>
           {done ? (
             <div className="ffh-actions">
               <span className={`ffh-solved${lost ? " is-lost" : ""}`}>

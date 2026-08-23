@@ -652,7 +652,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       {
         key: "footle", name: "Footle", theme: MODE_THEME.footle,
         sub: "Guess the player",
-        subLong: `${footleLen > 0 ? `${footleLen} letters · ` : ""}surname of a footballer`,
+        subLong: `${footleLen > 0 ? `${footleLen} letters · ` : ""}the name a footballer goes by`,
         done: f?.status === "won" || f?.status === "lost",
         won: f?.status === "won",
         result: f?.status === "won" ? `✓ Solved in ${f.used}` : "✗ Not solved",

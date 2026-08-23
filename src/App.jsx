@@ -7112,7 +7112,7 @@ const FAQ_ENTRIES = [
   },
   {
     q: "What is Footle?",
-    a: "Footle is our daily football word game — guess a footballer's surname in 6 attempts. The same player is shown to everyone each day and resets at midnight.",
+    a: "Footle is our daily football word game — guess the name a footballer goes by in 6 attempts. Usually a surname, sometimes a one-name legend like Pelé or Xavi. The same player is shown to everyone each day and resets at midnight.",
   },
   {
     q: "How do I delete my account?",
@@ -7618,7 +7618,7 @@ const HOW_TO_PLAY = {
   // validation (our word list is 400-odd puzzle answers, not a dictionary, so
   // it would reject most real footballers and infuriate people), the claim
   // goes. Any surname you like is a legal probe; only the answer is fixed.
-  wordle: { title:"⚽ Footle", steps:["Guess today's footballer surname","Green = right letter, right spot","Yellow = right letter, wrong spot","Grey = not in the name at all","6 guesses, new player at midnight"] },
+  wordle: { title:"⚽ Footle", steps:["Guess the name today's footballer goes by — usually a surname, sometimes a one-name legend","Green = right letter, right spot","Yellow = right letter, wrong spot","Grey = not in the name at all","6 guesses, new player at midnight"] },
   hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
@@ -8095,7 +8095,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
               (step 4), which auto-opens for first-timers. Measured with the "?"
               present: header 44px @375, 56px @320 — at or under the pre-"?"
               baseline at both. Re-measure both if this string grows. */}
-          <div className="wd-sub">Guess the surname</div>
+          <div className="wd-sub">Guess the name</div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>

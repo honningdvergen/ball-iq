@@ -12,7 +12,7 @@ import {
 import POOL from '../data/mysteryPool.json';
 import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
 import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
-import { useKeyboardAwareInput } from '../lib/useKeyboardAwareInput.js';
+import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
 import CAREERS from '../data/mysteryCareers.json';
 import SCHEDULE from '../data/mysterySchedule.json';
 
@@ -187,15 +187,8 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   //
   // Space between the input and the top of the keyboard. visualViewport.height
   // already excludes the keyboard, so no guess about its height is needed.
-  const [dropMax, setDropMax] = useState(320);
-  useEffect(() => {
-    if (!suggestions.length) return;
-    const el = inputRef.current;
-    if (!el) return;
-    const vh = (typeof window !== 'undefined' && window.visualViewport?.height) || window.innerHeight;
-    const avail = vh - el.getBoundingClientRect().bottom - 26;
-    setDropMax(Math.max(132, Math.min(360, Math.round(avail))));
-  }, [suggestions.length, kbInset, inputRef]);
+  // Shared with Transfer Trail — see useDropdownMaxHeight.
+  const dropMax = useDropdownMaxHeight(inputRef, { gap: 26 });
 
   if (!answer || !ranks) {
     // No puzzle scheduled for today. The home card is gated on the same

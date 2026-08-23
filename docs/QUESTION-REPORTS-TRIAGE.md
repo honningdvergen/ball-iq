@@ -1,4 +1,21 @@
-# Question reports — full triage (2026-08-23)
+# Question reports — full triage (2026-08-23) — ⚑ ALL RESOLVED
+
+> **Status: closed.** Every one of the 55 reports now has an applied verdict.
+> The two post-cutoff facts were WEB-VERIFIED rather than guessed, one question
+> was deleted, one prompt was rewritten, and one UI cause was fixed. Details
+> inline below; resolutions summarised here.
+>
+> | item | verdict |
+> |---|---|
+> | Arsenal 2025/26 title premise (q_d32828) | ✅ **TRUE** — Arsenal won it, 85 pts. Question correct, kept |
+> | 106-goal record (q_1d936f) | ✅ **STILL STANDS** as of Aug 2026. Question correct, kept |
+> | q_70e531 RB Leipzig / Red Bull | 🗑 **DELETED** — the club's name contains the answer |
+> | q_d9f278 McKennie | ✅ kept — honestly graded easy, needs real knowledge |
+> | q_eae9ea Vidić | ✏️ stem + hint rewritten to defuse the PFA/Terry collision |
+> | Footle: WILLIAN and 32 other mononyms | ✏️ **THE PROMPT WAS WRONG, not the pool** — "surname" → "the name a footballer goes by" |
+> | Trail: Alonso, Flamini, + 5 more | ✅ careers verified correct; "↩ return" chip added so repeats stop reading as errors |
+> | Trail: SON | ✅ fixed and deployed 2026-08-23 |
+
 
 Every report ever filed: **55 rows, 44 distinct items, 25 in the last 7 days.**
 We always knew *which* — the id and text were stored from day one; only the

@@ -59,6 +59,68 @@ import { useEffect, useRef, useState } from 'react';
  *  desktop browser where nothing is covered. */
 const KEYBOARD_MIN_PX = 100;
 
+/**
+ * How tall a dropdown anchored under `anchorRef` may be before the keyboard
+ * eats it. Returns a pixel number to drop straight into `maxHeight`.
+ *
+ * ⚠️ PLAYER-REPORTED TWICE. 2026-08-23 first pass bounded the Trail/Mystery
+ * suggestion lists — and Alex still hit it on build 72: "i tried to scroll
+ * here, it did not work, keyboard is stuck over the list of players." Two
+ * defects in that first attempt, both of which this fixes:
+ *
+ *   1. IT WENT STALE. It recomputed on [suggestions.length, kbInset], so
+ *      typing "Xa" -> "Xab" (length unchanged at 6) or adding a guess chip
+ *      (which pushes the input DOWN) never re-measured. The bound stayed at
+ *      whatever the first measurement said.
+ *   2. IT MIXED COORDINATE SPACES. getBoundingClientRect() is in LAYOUT
+ *      viewport coordinates; visualViewport.height is the VISUAL viewport.
+ *      On iOS the page scrolls inside the layout viewport when the keyboard
+ *      opens, so `visualViewport.height - rect.bottom` overestimates the free
+ *      space by exactly visualViewport.offsetTop — the list then renders
+ *      taller than the gap and the tail sits under the keyboard.
+ *
+ * Measuring on every visualViewport resize AND scroll, plus every render that
+ * changes the anchor, makes both impossible. Shared so Trail and Mystery
+ * cannot drift — the first version was copy-pasted into both, and a bug in a
+ * copy-paste is a bug twice.
+ */
+export function useDropdownMaxHeight(anchorRef, { gap = 12, min = 132, max = 360 } = {}) {
+  const [maxHeight, setMaxHeight] = useState(max);
+  const measure = useRef(null);
+  measure.current = () => {
+    const el = anchorRef.current;
+    if (!el || typeof window === 'undefined') return;
+    const vv = window.visualViewport;
+    const rect = el.getBoundingClientRect();
+    // Convert the anchor's bottom into VISUAL viewport space before comparing.
+    const bottomInVisual = rect.bottom - (vv ? vv.offsetTop : 0);
+    const viewportH = vv ? vv.height : window.innerHeight;
+    const avail = viewportH - bottomInVisual - gap;
+    setMaxHeight(Math.max(min, Math.min(max, Math.round(avail))));
+  };
+  useEffect(() => {
+    const run = () => measure.current && measure.current();
+    run();
+    const vv = typeof window !== 'undefined' ? window.visualViewport : null;
+    if (vv) {
+      vv.addEventListener('resize', run);
+      vv.addEventListener('scroll', run);
+    }
+    window.addEventListener('resize', run);
+    return () => {
+      if (vv) {
+        vv.removeEventListener('resize', run);
+        vv.removeEventListener('scroll', run);
+      }
+      window.removeEventListener('resize', run);
+    };
+  }, []);
+  // Re-measure after every render: the anchor moves whenever a guess row is
+  // added above it, and no dependency array can see that.
+  useEffect(() => { measure.current(); });
+  return maxHeight;
+}
+
 export function useKeyboardAwareInput() {
   const inputRef = useRef(null);
   const [kbInset, setKbInset] = useState(0);

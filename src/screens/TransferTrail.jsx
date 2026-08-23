@@ -32,7 +32,7 @@ import { clubColour, clubAbbr } from "../lib/clubColour.js";
    costs nothing at boot. */
 import POOL from "../data/mysteryPool.json";
 import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
-import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
+import { useKeyboardAwareInput, useDropdownMaxHeight } from "../lib/useKeyboardAwareInput.js";
 
 function loadDay(ymd) {
   try {
@@ -164,15 +164,9 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   // both change the answer. visualViewport.height already excludes the
   // keyboard, so this needs no guesswork about its height.
   const inputWrapRef = useRef(null);
-  const [dropMax, setDropMax] = useState(320);
-  useEffect(() => {
-    if (!suggestions.length) return;
-    const el = inputWrapRef.current;
-    if (!el) return;
-    const vh = (typeof window !== "undefined" && window.visualViewport?.height) || window.innerHeight;
-    const avail = vh - el.getBoundingClientRect().bottom - 12;
-    setDropMax(Math.max(132, Math.min(360, Math.round(avail))));
-  }, [suggestions.length, kbInset]);
+  // Shared with Mystery Player — see useDropdownMaxHeight for why the first,
+  // locally-copied version went stale and mixed coordinate spaces.
+  const dropMax = useDropdownMaxHeight(inputWrapRef);
   useEffect(() => {
     if (done) return undefined;
     return keepInputVisible();
