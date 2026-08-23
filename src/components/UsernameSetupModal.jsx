@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "../supabase.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { useModalA11y } from "../useModalA11y.js";
@@ -48,7 +48,7 @@ function derivePrefill(user, authProfile) {
 // keystroke re-render.
 const noDismiss = () => {};
 
-export function UsernameSetupModal({ user, authProfile, onSaved }) {
+export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
   const initial = useMemo(() => derivePrefill(user, authProfile), [user, authProfile]);
   const modalRef = useRef(null);
   useModalA11y({ isOpen: true, onClose: noDismiss, ref: modalRef });
@@ -56,22 +56,63 @@ export function UsernameSetupModal({ user, authProfile, onSaved }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
+  // ⚠️ This was the ONLY mandatory first-run screen with zero instrumentation,
+  // which is precisely why a wall that rejected its own pre-filled value could
+  // sit here for eight weeks — through report #2, through a two-device
+  // playtest, and invisible to the experience audit (which seeds
+  // biq_onboarded and so never reaches any first-run surface).
+  // Fire-and-forget, and never allowed to break the step it is measuring.
+  const onEventRef = useRef(onEvent);
+  onEventRef.current = onEvent;
+  const track = useCallback((name, meta) => {
+    try { onEventRef.current?.(name, meta); } catch { /* never block the wall */ }
+  }, []);
+  // In an effect, not in the render body: a side effect during render fires
+  // twice under StrictMode and would double-count every impression.
+  useEffect(() => {
+    track("username-step-shown", { prefilled: initial.length > 0, hadSpace: /\s/.test(initial) });
+    // Once per mount. `initial` is memoised on user/authProfile and this step
+    // is unmounted on save, so a re-derive mid-step is not a new impression.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleContinue = async () => {
-    const v = draft.trim();
+    // ⚠️ SPACES ARE ALLOWED, and removing this rule is the fix — not a
+    // loosening. This screen is MANDATORY and non-dismissible, it pre-fills
+    // the provider's real name, and derivePrefill deliberately KEEPS the space
+    // (`.replace(/\s+/g, " ")`). It then rejected its own suggestion with
+    // "Usernames can't contain spaces". Tap the button the app pre-filled for
+    // you and it calls you wrong — live for eight weeks on every Apple/Google
+    // sign-up, and the exact shape of the Transfer Trail bug found the same
+    // day: the product offering a value and then refusing it.
+    //
+    // The rest of the system had already settled this question the other way.
+    // useAuth.deriveUsernameFromIdentity writes `fullName.trim().replace(
+    // /\s+/g, " ")` straight into profiles.username, and its collision suffix
+    // is `${cleaned} ${suffix + 1}` — another space. Measured in prod
+    // 2026-08-23: 17 of 215 profiles already carry a username with a space,
+    // live on leaderboards and in friend search. This modal was the ONLY
+    // place that disagreed, so it is the one that was wrong.
+    //
+    // Safe in URLs: the profile share builds with URLSearchParams
+    // (App.jsx:10789), which percent-encodes.
+    //
+    // Collapse internal runs so the stored value matches what the silent
+    // auto-derive would have written for the same person.
+    const v = draft.trim().replace(/\s+/g, " ");
     if (v.length < 3) {
       setError("Username must be at least 3 characters");
-      return;
-    }
-    if (/\s/.test(v)) {
-      setError("Usernames can't contain spaces");
+      track("username-step-rejected", { reason: "too-short" });
       return;
     }
     if (isProfaneUsername(v)) {
       setError("This username isn't allowed. Please choose another.");
+      track("username-step-rejected", { reason: "profanity" });
       return;
     }
     // Defensive: no signed-in row to write to → accept locally and move on.
     if (!user?.id) {
+      track("username-step-saved", { path: "local" });
       onSaved(v);
       return;
     }
@@ -91,9 +132,11 @@ export function UsernameSetupModal({ user, authProfile, onSaved }) {
             ? `"${v}" is already taken — try another.`
             : "Couldn't save — check your connection and try again."
         );
+        track("username-step-rejected", { reason: isDup ? "duplicate" : "write-failed" });
         setSaving(false);
         return;
       }
+      track("username-step-saved", { path: "profile", changed: v !== initial });
       onSaved(v);
     } catch {
       setError("Couldn't save — check your connection and try again.");

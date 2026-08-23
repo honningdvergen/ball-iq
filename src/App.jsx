@@ -11562,6 +11562,7 @@ function AppInner() {
           <UsernameSetupModal
             user={user}
             authProfile={authProfile}
+            onEvent={loopEvent}
             onSaved={(name) => {
               setProfile(p => ({ ...(p || {}), name }));
               try { localStorage.removeItem('biq_needs_username'); } catch {}
