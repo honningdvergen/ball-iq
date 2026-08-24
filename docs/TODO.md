@@ -54,10 +54,17 @@ upload itself remain.
       pages**, 10 translated copies across 7 locales carrying the same defect.
 - [x] **Gated:** `tests/unit/bank-self-answers.test.js`, zero-tolerance, small
       reasoned allowlist. Falsified by seeding both classes back.
-- [ ] ⚠️ Summer 2026 (Home-featured, NEW-badged) ships OUTSIDE every leak guard
-      and leaks in **38.4% of sessions**. `audit-leaks-full.mjs` reported 0
-      unguarded — a self-confirming zero, because it enumerates the same two
-      group keys the generator does, so a pool never grouped is never checked.
+- [x] **Topical pack shipped outside every leak guard** (`2ab0f68`). The
+      generator grouped by `cat` and `club`; topical draws by `tag`, so its pool
+      was never grouped and never guarded — and the audit enumerated the same
+      two keys, making its "0 unguarded" a self-confirming zero. Fixed in BOTH
+      halves (generator + the draw actually consulting the map), audit taught
+      the third key, and gated `--strict` in the build.
+      ⚠️ **Corrected the report's number:** 38.4% assumes a plain random draw.
+      The app's diversity filter (2/cat, 1/club) already suppresses many pairs —
+      the real rate was **14.8%**, now 0.0%, with no shortened sessions.
+      Falsified: strip the tag pass and the audit reports 79 unguarded (32 in
+      summer2026).
 - [ ] "Hard" means 19%–79% correct depending on the pack; 29 near-duplicate
       pairs disagree with themselves about difficulty.
 - [ ] 26 giveaway-distractor rows (distinctive stem token appears only in the
