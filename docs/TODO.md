@@ -164,10 +164,35 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
       deciding whether storefront targeting is worth a declaration change.
 
 ### 6 · Deepen the six club packs people actually pick
-- [ ] Man United: 24 eligible questions against a 10-question round = 2.4 fresh
-      rounds, then it repeats SILENTLY. 81 of 86 packs give under four rounds.
-- [ ] Ship an honest exhaustion message (the web club page already has one).
-- [ ] Don't chase all 86 — six packs, one per session.
+- [x] **Measured, and the report's numbers were exact.** Man United 24 eligible
+      against a 10-question round = 2.4 rounds; 81 of 86 packs under four
+      rounds, 43 under three, 14 under two (thinnest: Sheffield Wednesday and
+      Norwich at 11). Deepest is Arsenal at 55 eligible / 65 total.
+- [x] **Honest exhaustion message shipped** (`countFreshQuestions` +
+      `shouldWarnPackThin`). `applySeenFilter` already degrades WELL — it tops
+      up with the least-recently-seen so repeats are spaced as far apart as the
+      pool allows — it just said nothing, so a fan's third United round met
+      last week's questions in silence and read as "this app is empty". It is
+      thin, but "you've played most of these" and "this app has no questions"
+      are different reactions to the same fact and only one is true.
+      Once per club per DAY, not per session: a thin pack repeats every session
+      from the third onward, and a toast each time would be the annoyance this
+      release is removing. No count in the copy (standing rule).
+      ⚠️ I could NOT find the "web club page already has one" message the report
+      refers to — searched a dozen phrasings across scripts/seo and public/.
+      Either it does not exist or it is worded unrecognisably. Wrote fresh copy.
+- [🅰️] **Deepening the six packs is still open** — this closes the honesty gap,
+      not the depth gap. Six packs, one per session, is still the plan and
+      still needs Alex's pick of which six.
+- [x] ⚠️ **FOUND WHILE MEASURING: three indexed pages made a FALSE promise.**
+      Juventus (×2) and Ajax club pages told readers the app holds "hundreds
+      more questions" for that club. Not one of the 86 packs has 100 — Arsenal
+      is the biggest at 65, median 40 — so it was false for EVERY club, on the
+      pages that carry our biggest traffic, and it is the promise made BEFORE
+      the install. Dropped the magnitude rather than stating the real one (a
+      printed count is separately forbidden, and a number in prose rots).
+      The identical sentence about the World Cup set is TRUE (657) and stays —
+      guarded both ways, so "fixing" it by banning the phrase also fails.
 
 ### 7 · Fix the retention instrument before steering by it
 - [x] `scores` under-records ~20% of daily completions (`969cecc`). Reproduced

@@ -113,6 +113,9 @@ describe('a bruising session suppresses the rating ask', () => {
       REVIEW.indexOf('export function nativeAskBlockedReason'),
       REVIEW.indexOf('export async function maybeRequestReview'),
     );
-    expect(fn, 'the reason check must never write to storage').not.toMatch(/setItem/);
+    // ⚠️ Case-insensitive: `safeSetItem` (the wrapper used elsewhere in this
+    // codebase) does not contain lowercase "setItem", so a strict /setItem/
+    // would miss a real write. That exact hole made a sibling guard useless.
+    expect(fn, 'the reason check must never write to storage').not.toMatch(/setitem/i);
   });
 });

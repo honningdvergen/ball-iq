@@ -362,6 +362,52 @@ function applySeenFilter(pool, needed, toKey) {
   stale.sort((a, b) => (hist[toKey(a)] || 0) - (hist[toKey(b)] || 0));
   return [...fresh, ...stale.slice(0, Math.max(needed * 2, needed + 6))];
 }
+/**
+ * How many of `pool` the player has NOT seen inside the 14-day window.
+ *
+ * ⚠️ applySeenFilter degrades correctly and SILENTLY — when it runs short it
+ * tops up with the least-recently-seen rows, which is the right behaviour and
+ * is also invisible. Measured 2026-08-24: 81 of 86 club packs hold under four
+ * rounds' worth of eligible questions (Manchester United 24 against a
+ * 10-question round; 43 packs under three rounds; 14 under two). So a fan who
+ * plays their club twice starts getting repeats, and the app says nothing —
+ * which reads as "this app has no questions" rather than "you have played most
+ * of them", and those are very different feelings about the same fact.
+ *
+ * Read-only: no history is written, so asking is free.
+ */
+function countFreshQuestions(pool, toKey) {
+  const seen = getSeenKeySet();
+  if (seen.size === 0) return pool.length;
+  let n = 0;
+  for (const q of pool) {
+    const k = toKey(q);
+    if (!k || !seen.has(k)) n += 1;
+  }
+  return n;
+}
+
+/**
+ * Tell the player once a day, per club, that they are into repeats.
+ *
+ * Once per club per DAY, not per session: a thin pack repeats on every session
+ * from the third onward, and a toast on each one stops being information and
+ * becomes nagging — which is the annoyance this release is supposed to remove,
+ * not add.
+ */
+const PACK_THIN_KEY = 'biq_pack_thin_notice';
+function shouldWarnPackThin(clubKey) {
+  try {
+    const raw = JSON.parse(localStorage.getItem(PACK_THIN_KEY) || '{}');
+    const today = new Date().toISOString().slice(0, 10);
+    if (raw[clubKey] === today) return false;
+    // Prune other days so this cannot grow forever.
+    const next = { [clubKey]: today };
+    safeSetItem(PACK_THIN_KEY, JSON.stringify(next));
+    return true;
+  } catch { return false; }
+}
+
 function recordSeenQuestions(questions) {
   if (!questions || !questions.length) return;
   const hist = getSeenHistory();
@@ -10118,6 +10164,18 @@ function AppInner() {
           const noEasy = verified.filter(q => q.diff !== "easy");
           const clubPool = noEasy.length >= 16 ? noEasy : verified;
           if (clubPool.length >= 10) {
+            // ⚠️ SAY IT OUT LOUD WHEN THE PACK IS SPENT. applySeenFilter tops
+            // up from the least-recently-seen and says nothing, so a fan on
+            // their third Manchester United round (24 eligible against a round
+            // of 10) silently meets questions they answered last week and
+            // concludes the app is thin. It is thin — but "you have played
+            // most of these" and "this app has no questions" are very
+            // different reactions to the same fact, and only one of them is
+            // true. Checked BEFORE the draw because applySeenFilter's return
+            // value cannot tell you whether it had to top up.
+            if (countFreshQuestions(clubPool, qbHistKey) < 10 && shouldWarnPackThin(clubKey)) {
+              showToast(`You've played most of the ${pack.name} questions lately — some will come round again`);
+            }
             // Same 14-day seen filter League Quiz applies — without it a club
             // pool of ~20 serves immediate repeats while fresh rows sit unused.
             const freshPool = applySeenFilter(clubPool, 10, qbHistKey);
