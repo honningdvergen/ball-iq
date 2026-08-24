@@ -119,8 +119,18 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
               to the right is hard-coded 5 wide, so on any non-5-letter day the
               card printed "4 letters" beside five tiles and contradicted itself.
               Bring it back only if the grid becomes dynamic too. */}
+          {/* ⚠️ THE SIXTH CALL SITE. d60bdee changed "surname" to "the name a
+              footballer goes by" everywhere it could find — App.jsx, DailyScreen,
+              HomeScreen's DESKTOP hero — and missed this one, which is the mobile
+              hero and therefore the single line most Ball IQ users read first.
+              For a day the app said "the name a footballer goes by" on desktop
+              and "Surname of a footballer" on every phone. Uniformly wrong was
+              bad; inconsistent was worse, because the reports that prompted the
+              fix would have kept arriving from the players who never saw it.
+              The pool holds 33 mononyms (WILLIAN, PELÉ, XAVI…) and "surname" is
+              why losing on one felt unfair. Guarded by footle-prompt-copy.test.js. */}
           <div className="fh-sub">
-            Surname of a footballer<br />
+            The name a footballer goes by<br />
             6 guesses
           </div>
           <div className="fh-cta-row">

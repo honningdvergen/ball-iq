@@ -1205,19 +1205,48 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     setNameDraft(currentName);
     setEditingName(true);
   };
-  const saveName = () => {
-    const v = nameDraft.trim();
+  /**
+   * @param {boolean} fromBlur  true when the user tapped away rather than
+   *   confirming. A rejected value must never be able to trap them in the
+   *   editor — see the note below.
+   *
+   * ⚠️ TWO BUGS HERE, both found by scouting report #4 and both live.
+   *
+   * 1. THIS EDITOR AND THE SIGNUP MODAL DISAGREED ABOUT SPACES.
+   *    UsernameSetupModal accepts them and collapses internal runs
+   *    (`draft.trim().replace(/\s+/g, " ")`), deliberately, so the stored value
+   *    matches what the silent auto-derive would have written. This screen
+   *    rejected them outright. So the modal would hand someone "Alex Brynolsen"
+   *    and their own profile would then refuse it — while the modal's body copy
+   *    promises "You can change it later in your profile." Now normalised the
+   *    same way, in one place, so the two cannot drift again.
+   *
+   * 2. EVERY REJECTION PATH TRAPPED THE USER. The whitespace and profanity
+   *    branches returned WITHOUT `setEditingName(false)`, and both inputs wire
+   *    `onBlur={() => saveName(true)}` — so tapping away re-ran the validation, re-toasted,
+   *    and put focus straight back. Escape is wired, but a phone has no Escape
+   *    key: on mobile this was inescapable short of leaving the screen. A
+   *    rejection now still CLOSES on blur (reverting the draft), and only holds
+   *    the editor open when the user actively pressed Enter and can see why.
+   */
+  const saveName = (fromBlur = false) => {
+    // Collapse internal runs to match UsernameSetupModal exactly.
+    const v = nameDraft.trim().replace(/\s+/g, " ");
     // Empty draft = cancel, never blank-save the name. Protects against a
     // stray tap-away/blur (onBlur fires saveName) wiping an existing username.
     if (!v) { setEditingName(false); return; }
-    if (/\s/.test(v)) { toast("Usernames can't contain spaces"); return; }
+    // A rejected value must not hold the editor hostage on tap-away.
+    const reject = (msg) => {
+      toast(msg);
+      if (fromBlur) { setNameDraft(currentName); setEditingName(false); }
+    };
     // Sprint #84 AAA2: username profanity gate. SQL trigger
     // profiles_profanity_check is the bypass-proof backstop; the client
     // check just gives a fast inline error without a Supabase round-trip
     // (the local profile name update is skipped too so the bad value
     // doesn't appear in the UI for a frame before the toast fires).
     if (v && isProfaneUsername(v)) {
-      toast("⚠️ That username isn't allowed — please choose another");
+      reject("⚠️ That username isn't allowed — please choose another");
       return;
     }
     setPendingName(v);
@@ -1405,7 +1434,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                       <span className="pd-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</span>
                     ) : editingName ? (
                       <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
-                        <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:"#fff"}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
+                        <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:"#fff"}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
                         <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name" style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"none", background:"#58CC02", color:"#06230C", fontSize:15, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
                         <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit" style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:14, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
                       </span>
@@ -1586,7 +1615,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                     <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
                   ) : editingName ? (
                     <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
-                      <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={saveName} placeholder="Your name" autoFocus aria-label="Your display name" />
+                      <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
                       <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
                         style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
                       <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
