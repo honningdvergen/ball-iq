@@ -106,10 +106,29 @@ upload itself remain.
       are both wrong in real cases (Götze in the 2014 final graded medium is too
       hard; Béla Guttmann graded easy is too easy). Needs Alex, or a separate
       pass with a real rule. NOT mass-edited.
-- [🅰️] **"Hard" still means 19%–79% correct depending on the pack.** Untouched —
-      that is a calibration problem against REAL ANSWER DATA, not a bank edit,
-      and we do not currently record per-question correctness in prod. It needs
-      an instrument before it needs a fix.
+- [x] **"Hard means 19%–79%" — MEASURED, and it is mostly NOISE.**
+      ⚠️ I first wrote here that this "needs an instrument before it needs a
+      fix" because we do not record per-question correctness. That was WRONG and
+      I checked it before believing myself: `club_quiz_results` has carried
+      `easy_c/easy_t · med_c/med_t · hard_c/hard_t` all along. It is almost
+      certainly where the report's 19–79% came from.
+      The global curve is HEALTHY and monotonic: **easy 83.2%** (647 attempts) ·
+      **medium 64.2%** (1,957) · **hard 48.1%** (790). The three tiers are
+      correctly ordered and well separated.
+      The per-pack spread is small samples. Average **15.8 hard attempts per
+      club**; 39 of 50 clubs are under 30; the raw range is 0–100%, i.e. WIDER
+      than the 19–79% the report quoted. Of the 11 clubs with n≥30, **9 sit
+      inside the 95% binomial band** around the global rate. Re-grading on this
+      would have been fitting noise.
+- [🅰️] **TWO REAL OUTLIERS, and they need Alex.**
+      **Feyenoord 18.9% on 74 attempts** — below the 25% you get by guessing at
+      random on four options, which is not "hard", it is unknowable. All 14 hard
+      Feyenoord questions are deep Dutch history (1908 founding name, the 1937
+      opening fixture at De Kuip, the 1970 midfield trio, van Hanegem's
+      nickname); 12 of 14 are pre-1990, against the standing 1990–2020 targeting
+      rule. They are correctly LABELLED — the problem is the audience.
+      **Everton 68.8% on 32** — hard questions that are not hard.
+      Not touched: re-grading or replacing these is an editorial call.
 
 ### 3 · The wrong-answer moment + press state — ✅ DONE (`92d420e`)
 Folded into item 1. Verified live in a browser by computed style, not source:
