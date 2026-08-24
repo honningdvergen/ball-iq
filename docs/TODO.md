@@ -78,9 +78,15 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
 
 ### 4 · Stop the app contradicting itself on the front door — MOSTLY DONE
 - [x] Footle "surname" copy — the 6th call site and then the other 8 (28c95e4).
-- [ ] **The mobile Footle hero renders a FAKE SOLVED BOARD** — a hard-coded
-      all-green winning row beside a CTA reading "Continue · 1/6 used". The app's
-      most-viewed card shows someone else's solved puzzle as if it were yours.
+- [x] **The mobile Footle hero rendered a fake solved board** (`d5a1f1d`) — an
+      all-green winning row beside "Continue · 1/6 used". In-progress players now
+      see their OWN last two rows; the sample survives only for someone who has
+      not started.
+      ⚠️ **And it was going to spell out the answer.** The teaser rotation and the
+      answer schedule both key off `getWordleDayIndex()`, so collisions are dated:
+      **2027-01-04 the card would have rendered KANTE all-green — that day's real
+      answer.** (Also 2026-10-03, teaser guess PEDRI.) `pickTeaserPair` now skips
+      colliding pairs; guarded by a 420-day walk through the real schedule.
 - [ ] Streak label mismatch.
 - [ ] ⚠️ Do NOT add a first-session branch to the daily draw — it would desync
       the frozen daily. Park the ramp as a design decision.
