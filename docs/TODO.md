@@ -904,12 +904,22 @@ All code is on the branch and inert-safe until activation (the guest button
 falls back to the sign-in prompt while the provider is off).
 
 **Activation (Alex, ~5 min, do both together):**
-- [ ] Supabase dashboard → Authentication → Sign In / Up → enable **Anonymous
-      sign-ins** (project blcisypmngimqkwxrrdm). Leave the default anon
-      rate limit (~30/hr/IP); consider CAPTCHA only if abuse shows up.
-- [ ] Apply `supabase/migrations/v1_6_anon_guest_entry.sql` via the MCP
-      connector or dashboard SQL editor (is_anon column + set_player_name RPC
-      + stale-anon cleanup cron). Then refresh `supabase/prod-snapshot/`.
+- [x] ~~Supabase dashboard → enable **Anonymous sign-ins**~~ — **ALREADY ON,
+      verified 2026-08-24** by POSTing to /auth/v1/signup with the publishable
+      key: it returned a real access token. Alex must have enabled it.
+- [x] ~~Apply `v1_6_anon_guest_entry.sql`~~ — **ALREADY APPLIED, verified
+      2026-08-24**: `profiles.is_anon` exists, `set_player_name` exists, and
+      the `cleanup-stale-anon-users` cron is scheduled (04:37 daily).
+      ⚠️ **So guest entry is UNBLOCKED server-side and has been for some time —
+      yet there are ZERO anonymous users in prod.** Either no one has hit the
+      invite-link guest path, or the client half is not reachable. That is now
+      the question, not the migration.
+      ⚠️ One anon user (`f2541858…`) exists from my enablement probe. I could
+      not delete it — removing auth.users rows is blocked here — and the
+      cleanup cron only reaps anon users older than **30 days** with no recent
+      session, so it will linger until then. Delete it from the dashboard if
+      you would rather not wait.
+      Still to do: refresh `supabase/prod-snapshot/`.
 - [ ] 2-device test: device A creates a room and shares the link; device B
       (fresh browser, signed out) taps it → "Play as guest" → lands in the
       lobby, renames itself, plays a game, sees the "save your stats" CTA on
@@ -1507,7 +1517,10 @@ checking. The gates that exist (distractor, open-claims, SERP, bundle ceiling)
 have never had a recurrence. Extend the pattern:
 - [x] Mystery schedule gate — banned names, 5% manager ration, id resolution,
       back-to-back. `scripts/audit-mystery-schedule.mjs`, in the build chain.
-- [ ] Every mode awards XP and writes a scores row (Mystery shipped without both).
+- [x] ~~Every mode awards XP and writes a scores row (Mystery shipped without both).~~
+      **STALE — verified 2026-08-24.** Mystery does both: `awardXp(tries <= 5 ?
+      50 : ...)` and a `game_mode: 'mystery'` row via saveScore. Closed by
+      `de1a475` and never ticked.
 - [x] ~~Cross-screen counter agreement (Home said 0/2 while Daily said 0/4).~~
       **STALE — verified fixed 2026-08-24.** Driven live: Home reads "1/4
       today", the Daily screen reads "1 of 4 played". They agree.
@@ -2308,8 +2321,15 @@ in-session generation service is dead: 0.2 credits, 2/image, no trial.
 ---
 ---
 
-- [ ] **🎯 ALEX'S FEATURE: show who picked what at the reveal** (avatars beside
-  each option). **Verified 2026-08-03 that the data does not exist yet** —
+- [x] ~~**🎯 ALEX'S FEATURE: show who picked what at the reveal**~~ — **SHIPPED
+  AND LIVE, verified 2026-08-24.** `reveal_question` in PROD returns `picks`
+  and reads `room_answers` (migration applied), the client sets `revealPicks`
+  from the same gated RPC as the answer key, and `QuestionView` renders the
+  avatars beside each option — capped at 4 with a `+N` overflow and an
+  aria-label listing who picked it. Own pick excluded (already highlighted),
+  and a player who left mid-question is skipped.
+  ⚠️ The note below was true WHEN WRITTEN and is now the stale half:
+  **Verified 2026-08-03 that the data does not exist yet** —
   `room_players` holds room_id, user_id, name, avatar, score,
   answered_question, joined_at, disconnected_at, streak, best_streak,
   eliminated_at_q. `answered_question` is a yes/no; nothing records WHICH
@@ -2862,13 +2882,17 @@ dilute rather than add. Alex's call: noindex, delete, or leave.
 
 ## TODAY — 2026-08-03
 
-- [ ] **ALEX 2026-08-03: native push for REMATCH invites** — a rematch/challenge
-  invite should fire an APNs/FCM banner on the phone, not just in-app realtime
-  (extends #21's fix + the notification-center backlog; web half still gated
-  on VAPID secrets, task #17).
-- [ ] **ALEX 2026-08-03: friends' avatars beside their answers in MP** — show
-  each friend's profile picture next to the option they picked (post-reveal
-  only, or it becomes answer-copying).
+- [x] ~~**ALEX 2026-08-03: native push for REMATCH invites**~~ — **DONE,
+  verified 2026-08-24.** `handleRematch` collects the opponent ids and the
+  parent calls `sendPlayInvite(id, code)` per player, then reports the real
+  count ("Rematch sent — 2 players notified") or tells you honestly to share
+  the link when nobody could be reached. Only the room CREATOR invites, so the
+  first tapper is not pulled toward the room they are standing in.
+- [x] ~~**ALEX 2026-08-03: friends' avatars beside their answers in MP**~~ —
+  **DONE, verified 2026-08-24.** Same feature as the reveal-picks item above;
+  it was on the board twice. Post-reveal only by construction — the picks come
+  from the gated `reveal_question` RPC, so a pick cannot be learned any earlier
+  than the correct answer can.
 - [x] **✅ MP PLAYTEST BUGS (Alex vs Johannes, 2026-08-03) — ALL FOUR CLOSED.** Playtesters scored ~100% again; every one was real, and three of the four had a cause different from the one filed.
   1. **H2H "3–0 vs myself" — FIXED.** The filed hypothesis (the tally attributes all rooms to one player) was WRONG, and prod data said so: the 3 was correct, the **0** was the bug. The ledger counted the current room in its own history and never counted the opponent's wins. Fixed in `OnlineMultiplayer.jsx` — exclude `room.id`, count W/D/L by actual board result, and require 2+ prior meetings before the banner shows at all. The name-in-both-slots half was the same root cause.
   2. **XP inflation — FIXED.** `getMpXP` was `score*10 + 50`, so one match paid 52,790. Now `max(15, round(score/40) + 50 if won)` — a strong win pays ~180, in line with solo. **The two inflated profiles were also deflated in prod** by reconstructing true XP from the `scores` table (Alex 2,006 · Johannes 2,446), cross-checked by an independent subtraction that agreed within 35 XP.
