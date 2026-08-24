@@ -2181,6 +2181,17 @@ export function haptic(type) {
   } catch {}
 }
 
+/**
+ * Settings defaults, in ONE place.
+ *
+ * ⚠️ A function, not a constant: `sound` depends on IS_NATIVE, and freezing it
+ * at module-evaluation time would bake in whatever the platform check said
+ * before the native class was applied to <html>.
+ */
+function SETTINGS_DEFAULTS() {
+  return { hints: true, timer: true, sound: IS_NATIVE === true, haptics: true, colorBlind: false };
+}
+
 // ─── HOT STREAK ENGINE ────────────────────────────────────────────────────────
 function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen }) {
   const [idx, setIdx] = useState(0);
@@ -8788,7 +8799,7 @@ function AppInner() {
     // This changes the DEFAULT, never a choice: stored settings spread over
     // the defaults below, so anyone who has already turned sound off stays
     // off.
-    const defaults = { hints:true, timer:true, sound:IS_NATIVE === true, haptics:true, colorBlind:false };
+    const defaults = SETTINGS_DEFAULTS();
     try {
       const raw = localStorage.getItem("biq_settings");
       if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return { ...defaults, ...p }; }
@@ -9665,13 +9676,36 @@ function AppInner() {
     // authoritative for signed-in users via tick_login_streak RPC, local
     // compute for guests. Removed from this mount-effect to eliminate the
     // hydrate-vs-mount-effect race (audit finding 2.1).
-    // Load persisted settings
+    // Load persisted settings.
+    //
+    // ⚠️ THIS EFFECT USED TO THROW AWAY THE DEFAULTS MERGE. The lazy initialiser
+    // above carefully computes `{ ...defaults, ...stored }`; this then ran
+    // setSettings(raw) and discarded it, so every key the stored blob happened
+    // to lack reverted to undefined.
+    //
+    // That is not cosmetic in 1.7.0. `sound` defaults to true on native FOR THE
+    // FIRST TIME this release, and playSound() reads localStorage DIRECTLY
+    // (`JSON.parse(raw)?.sound === true`) rather than React state — so for every
+    // existing player, whose stored blob predates the key, the new default
+    // evaluated `undefined === true` and the app stayed silent. The default
+    // would have shipped to new installs only.
+    //
+    // So: merge, and PERSIST the merge, because the reader is storage. Spreading
+    // stored OVER defaults keeps every explicit choice — someone who turned
+    // sound off stays off.
     try {
       const raw = localStorage.getItem("biq_settings");
       if (raw !== null) {
-        const s = JSON.parse(raw);
-        setSettings(s);
-        if (s.defaultDiff) setDiff(s.defaultDiff === "med" ? "medium" : s.defaultDiff);
+        const stored = JSON.parse(raw);
+        if (stored && typeof stored === "object") {
+          const merged = { ...SETTINGS_DEFAULTS(), ...stored };
+          setSettings(merged);
+          // Only write when the merge actually added something, so a normal
+          // boot does no storage work.
+          const missing = Object.keys(SETTINGS_DEFAULTS()).some((k) => !(k in stored));
+          if (missing) safeSetItem("biq_settings", JSON.stringify(merged));
+          if (merged.defaultDiff) setDiff(merged.defaultDiff === "med" ? "medium" : merged.defaultDiff);
+        }
       }
     } catch {}
   }, []);
