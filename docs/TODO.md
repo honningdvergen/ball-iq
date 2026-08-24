@@ -273,6 +273,59 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
 - Deleting only the two `!important`s at app.css:656 — under-specified, ships
   something uglier.
 
+## 🧹 HOUSE SWEEP — Supabase advisors + dependency audit (2026-08-24)
+
+Ran the purpose-built tools rather than hand-rolling. **Zero ERROR-level
+security lints.** Most of the 56 are architectural noise — 31 say "your RPCs
+are callable by signed-in users", which is the design.
+
+- [x] **Checked the two that could have been real, and neither was.**
+      `increment_score` / `increment_xp` both take a `user_id` PARAMETER, so a
+      caller could in principle inflate someone else's totals — both guard with
+      `if user_id is distinct from auth.uid() then raise exception`. And the
+      anon-callable analytics RPCs (`log_club_quiz`, `record_challenge_event`,
+      `record_funnel_event`) all validate inputs AND rate-limit, so the
+      club-quiz calibration data used for the Feyenoord/Everton finding is not
+      trivially poisonable.
+- [x] **3 missing foreign-key indexes added** (`v1_7_index_foreign_keys.sql`):
+      scores.user_id, funnel_events.user_id, room_answers.user_id.
+      ⚠️ Preventative, NOT a fix for a felt slowdown — at 1.6-2.2k rows these
+      cost microseconds. Worth it because all three are queried by user_id on
+      paths that grow per user, and the new acct-* funnel joins on exactly
+      `funnel_events.user_id`. Deliberately skipped `notifications.actor_id`
+      (12 rows, queried by user_id not actor_id) — it would land straight on
+      the advisor's *unused_index* list.
+- [x] **`@capacitor/cli` moved to devDependencies.** It was a RUNTIME
+      dependency despite being a build-only tool used by `sync:ios`/
+      `sync:android` and never by `build`. Production audit went 4 vulns
+      (3 high, 1 critical) → 2 high.
+      ⚠️ `npm audit fix --force` would have installed @capacitor/cli@8 against
+      @capacitor/core@6 — a version mismatch that breaks `cap sync`. The
+      suggested fix was the wrong fix.
+      ⚠️ Verified node-tar does NOT ship: 0 matches for TAR_ENTRY_ERROR /
+      minipass / Unpack.prototype / tar-stream in either native bundle. (A
+      naive `grep tar` DID match — "star", "start", "target".)
+
+- [🅰️] ⚠️ **REAL PRODUCTION VULN, NEEDS A DECISION: `@vercel/og` 0.11.1 →
+      sharp <0.35.0 → 4 high libvips CVEs** (GHSA-f88m-g3jw-g9cj).
+      **Reachable**, traced end to end: any signed-in user (now including
+      ANONYMOUS users, who hold `authenticated`) may upload arbitrary bytes as
+      `<uid>.jpg` to the public `avatars` bucket — MIME type is client-declared
+      and these CVEs are about malformed CONTENT. `/api/og` then renders that
+      image through sharp.
+      **But the blast radius is small**: the endpoint already has an SSRF guard
+      (only our own Supabase host is fetched, anything else falls back to
+      emoji), the policy scopes uploads to the caller's own uid, and a crash in
+      an ephemeral Vercel function means *the attacker breaks their own share
+      card*. Not urgent.
+      Fix is `@vercel/og@1.0.1` — verified genuinely newer (published
+      2026-08-08 vs 0.11.1 in March; dist-tags.latest confirms) — but it is a
+      SEMVER MAJOR across **6 card types**, on a feature with a history of
+      silent breakage (robots.txt once blanked every share card). Do it as its
+      own piece with all 6 cards re-verified, not squeezed in pre-submission.
+- [🅰️] **Leaked-password protection is OFF** (HaveIBeenPwned check). One
+      dashboard toggle, real security value, Alex's to flip.
+
 ## ⭐ ACTIVATION IS THE PROBLEM, NOT RETENTION (measured 2026-08-24)
 
 ⚠️ **THIS INVERTS THE STANDING THESIS.** [[project_first_real_numbers]] said
