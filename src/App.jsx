@@ -33,6 +33,7 @@ import { notificationsSupported, getNotifPermission, requestNotifPermission, sch
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
 import { registerPush, onPushTap, initPushTapRouting } from './lib/push.js';
 import { maybeRequestReview, markBadReviewMoment, clearBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
+import { saveScore, flushScoreOutbox } from './lib/scoreOutbox.js';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
@@ -9186,6 +9187,25 @@ function AppInner() {
     }
   }, [user?.id]);
 
+  // ⚠️ DRAIN THE SCORE OUTBOX ONCE AUTH HAS SETTLED.
+  //
+  // `scores` was the only game record with no retry and no back-fill, while
+  // `wordle_state` has had a sign-in back-sync all along — which is exactly why
+  // ~20% of daily completions existed in state and not in scores (137 finished
+  // vs 110 rows over the last week, measured against prod). Anything that could
+  // not be written at the moment it happened is queued locally; this is where it
+  // lands. Idempotent by client-generated id, so running on every auth change
+  // cannot double-count.
+  useEffect(() => {
+    if (!user?.id) return;
+    flushScoreOutbox(user.id)
+      .then(({ sent, dropped }) => {
+        if (sent) loopEvent('score-outbox-flushed', { sent, dropped });
+      })
+      .catch(() => { /* still offline; the queue keeps until next time */ });
+  }, [user?.id]);
+
+
 
   // ⚠️ THE STREAK NO LONGER TICKS ON OPEN. It used to fire here, once per
   // AppInner mount, which made it a count of days you LAUNCHED the app.
@@ -9818,8 +9838,7 @@ function AppInner() {
 
     // Save individual score to Supabase if user is logged in
     if (user?.id && newResult.score !== undefined) {
-      supabase.from('scores').insert({
-        user_id: user.id,
+      saveScore(user?.id, {
         // Club and league quizzes run with mode="classic" (their launchers set
         // activeClub/activeLeague and setMode directly), so every one of them
         // used to land here labelled "classic" — indistinguishable from a real
@@ -9832,12 +9851,6 @@ function AppInner() {
         score: newResult.score,
         correct_answers: newResult.score,
         total_questions: newResult.total || 10,
-      }).then(({ error }) => {
-        if (error) {
-          console.error("[score save]", error?.message || "Unknown error");
-          Sentry.captureException(error, { tags: { area: 'score-save' } });
-          showToast("⚠️ Score didn't save — check your connection");
-        }
       });
     }
 
@@ -10571,17 +10584,11 @@ function AppInner() {
         // shape of every other row (correct out of attempted).
         if (user?.id) {
           const used = Math.min(e.detail.guesses || 6, 6);
-          supabase.from('scores').insert({
-            user_id: user.id,
+          saveScore(user?.id, {
             game_mode: 'footle',
             score: e.detail.won === true ? used : 0,
             correct_answers: e.detail.won === true ? 1 : 0,
             total_questions: 1,
-          }).then(({ error }) => {
-            if (error) {
-              console.warn('[footle score]', error.message);
-              Sentry.captureException(error, { tags: { area: 'footle-score' } });
-            }
           });
         }
       }
@@ -10593,17 +10600,11 @@ function AppInner() {
         awardXp(e.detail.won === true ? 40 : 10);
         if (user?.id) {
           const used = Math.min(e.detail.attempts || 5, 5);
-          supabase.from('scores').insert({
-            user_id: user.id,
+          saveScore(user?.id, {
             game_mode: 'trail',
             score: e.detail.won === true ? used : 0,
             correct_answers: e.detail.won === true ? 1 : 0,
             total_questions: 1,
-          }).then(({ error }) => {
-            if (error) {
-              console.warn('[trail score]', error.message);
-              Sentry.captureException(error, { tags: { area: 'trail-score' } });
-            }
           });
         }
       }
@@ -10624,17 +10625,11 @@ function AppInner() {
         const mysteryWon = e.detail.won === true;
         if (mysteryWon) awardXp(tries <= 5 ? 50 : tries <= 15 ? 35 : 20);
         if (user?.id) {
-          supabase.from('scores').insert({
-            user_id: user.id,
+          saveScore(user?.id, {
             game_mode: 'mystery',
             score: mysteryWon ? tries : 0,
             correct_answers: mysteryWon ? 1 : 0,
             total_questions: 1,
-          }).then(({ error }) => {
-            if (error) {
-              console.warn('[mystery score]', error.message);
-              Sentry.captureException(error, { tags: { area: 'mystery-score' } });
-            }
           });
         }
       }
@@ -10651,14 +10646,11 @@ function AppInner() {
         awardXp(xp);
       }
       if (user?.id) {
-        supabase.from('scores').insert({
-          user_id: user.id,
+        saveScore(user?.id, {
           game_mode: 'stadiums',
           score: d.solved || 0,
           correct_answers: d.solved || 0,
           total_questions: d.total || 20,
-        }).then(({ error }) => {
-          if (error) console.warn('[stadiums score]', error.message);
         });
       }
     };
