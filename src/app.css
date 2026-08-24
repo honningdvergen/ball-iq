@@ -623,6 +623,16 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .opts{display:flex;flex-direction:column;gap:9px;}
 .opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .opt:hover:not(:disabled):not([aria-disabled="true"]){border-color:var(--border2);background:var(--s2);transform:translateX(2px);}
+/* ⚠️ THE MOST-TAPPED CONTROL IN THE APP HAD NO PRESS STATE, while 46 other
+   elements in this stylesheet depress under a thumb. Scouting report #4:
+   "Nobody writes 'missing :active state' in a review. They write 'feels a bit
+   basic' and give four stars." Hover is meaningless on a phone, so on the
+   surface players touch most often there was no acknowledgement of the touch
+   at all between finger-down and the answer resolving.
+   Scale rather than translate: the hover rule nudges sideways, and a press that
+   also moved sideways would fight it on hybrid devices where both can match.
+   Declared AFTER :hover so it wins when a touch device reports both. */
+.opt:active:not(:disabled):not([aria-disabled="true"]){transform:scale(0.978);background:var(--s2);border-color:var(--border2);}
 .opt:disabled,.opt[aria-disabled="true"]{cursor:default;}
 /* Correct / wrong feedback — matches design-system quiz-answers spec */
 /* ⚠️ The single most-repeated moment in the product — a correct MCQ answer,
@@ -653,9 +663,25 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    Kept as a lightweight line because role="status" is the screen-reader
    announcement and deleting it would silence the outcome for non-sighted
    players. Lighter, not gone. */
-.feedback{border-radius:0;border:none !important;background:transparent !important;padding:2px 2px;margin-top:10px;font-size:12.5px;font-weight:700;letter-spacing:0.01em;display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;}
-.feedback.correct{background:rgba(88,204,2,0.12);color:var(--green-ink);border:1px solid rgba(88,204,2,0.55);}
-.feedback.wrong{background:rgba(248,113,113,0.08);color:var(--red);border:1px solid rgba(248,113,113,0.18);}
+/* ⚠️ THE VERDICT OF EVERY QUESTION WAS SWITCHED OFF BY TWO !importants.
+   Scouting report #4: "The emotional peak of the product looks like a form
+   error." Somebody designed a proper tinted tray for the correct and wrong
+   moments below, and this base rule — `border:none !important;
+   background:transparent !important` — beat both of them, because !important
+   outranks the higher specificity of `.feedback.wrong`. So the single moment
+   that decides whether a miss feels like learning or like being told off
+   rendered as a naked 12.5px orphan line. I saw it myself on a simulator:
+   "⏱ Time's up" floating with no tray at all.
+   ⚠️ Do NOT "fix" this by deleting only the two !importants, which was the
+   panel's suggestion — `border-radius:0` and `padding:2px` would survive and
+   you would ship a hard-cornered 2px-padded box. The tray needs shape too.
+   `.feedback` is only ever rendered WITH `.correct` or `.wrong` (App.jsx:3041),
+   so a transparent base costs nothing when no modifier is present. */
+.feedback{border-radius:12px;border:1px solid transparent;background:transparent;padding:11px 13px;margin-top:10px;font-size:13.5px;font-weight:700;letter-spacing:0.01em;display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap;}
+.feedback.correct{background:rgba(88,204,2,0.12);color:var(--green-ink);border-color:rgba(88,204,2,0.55);}
+/* Was 0.08/0.18 — so faint it read as nothing against the dark ground. Still
+   softer than the correct tray on purpose: a miss should be legible, not loud. */
+.feedback.wrong{background:rgba(248,113,113,0.11);color:var(--red);border-color:rgba(248,113,113,0.38);}
 .typed-outer{position:relative;}
 .typed-inp{width:100%;padding:14px 16px;background:var(--s1);border:1px solid var(--border);border-radius:11px;font-family:'Inter',sans-serif;font-size:16px;font-weight:500;color:var(--text);outline:none;transition:border-color 0.15s;}
 .typed-inp:focus{border-color:var(--accent-b);}
@@ -1597,7 +1623,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .notif-empty-s{font-size:13px;color:var(--t3);max-width:240px;line-height:1.5;}
 
 /* ── NEXT BUTTON ── */
-.feedback{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+/* ⚠️ A SECOND `.feedback` RULE USED TO LIVE HERE, 950 lines below the first,
+   left over from when the Next button sat inside the feedback row. It restated
+   display/align/gap and flipped justify-content to space-between, so the real
+   rule's value was silently dead. The row now holds exactly one flex:1 child
+   (App.jsx:3042), which makes justify-content inert either way — but a
+   duplicate selector this far from its twin is how the tray's tinting went
+   unnoticed in the first place. Removed rather than reconciled; there is one
+   `.feedback` rule now and it is the one at the top of this file. */
 .next-btn{padding:9px 18px;background:var(--s1);border:1.5px solid var(--border2);border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
 .next-btn:hover{background:var(--s2);border-color:var(--accent);color:var(--accent);}
 .next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;box-shadow:0 6px 20px rgba(10,10,10,0.4);}
