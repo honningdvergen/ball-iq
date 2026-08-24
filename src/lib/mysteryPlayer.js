@@ -403,6 +403,6 @@ export function buildMysteryShareText({ number, guesses = [], won, streak = 0 } 
   const line = won
     ? `Solved in ${guesses.length} ${guesses.length === 1 ? 'guess' : 'guesses'}`
     : 'Gave up';
-  const streakLine = won && streak > 1 ? `\n🔥 ${streak}-day streak` : '';
+  const streakLine = won && streak > 1 ? `\n🔥 ${streak}-day Mystery streak` : '';
   return `${head}\n${line}\n${grid}${streakLine}\n\nballiq.app/mystery`;
 }

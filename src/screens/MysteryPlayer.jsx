@@ -353,7 +353,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           </div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
             Solved in <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}{hintsUsed > 0 ? ` · ${hintsUsed} ${hintsUsed === 1 ? 'hint' : 'hints'}` : ''}.
-            {streak > 1 && <> · 🔥 <strong style={{ color: 'var(--t1)' }}>{streak}-day streak</strong></>}
+            {streak > 1 && <> · 🔥 <strong style={{ color: 'var(--t1)' }}>{streak}-day Mystery streak</strong></>}
           </div>
           <button
             type="button"

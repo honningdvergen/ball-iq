@@ -103,7 +103,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     // screen + FootballWordle in App.jsx) — the three MUST stay in sync: the
     // #N token is what makes grids comparable between strangers in a feed.
     const head = `⚽ ${APP_NAME} Footle${tag} ${isWon ? guesses.length : "X"}/6`;
-    const streakLine = isWon && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
+    const streakLine = isWon && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     const textFallback = `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
     const dateLabel = today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
     await shareCard("wordle", {
@@ -223,8 +223,19 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
         <div className="fh-score">
           {isWon ? <>in <strong>{guesses.length}</strong> {guesses.length === 1 ? "guess" : "guesses"}</> : <>today</>}
         </div>
+        {/* ⚠️ NAME THE MODE — the label used to read just "N-day streak".
+            Home, Daily and Profile render `loginStreak`: the cross-mode "days
+            you showed up" count, which ticks on ANY daily completion and is
+            server-authoritative. This is `computeFootleStreak`: consecutive
+            days you SOLVED Footle, derived from local history. Different
+            question, different number — and until now both wore the same flame
+            and the same three words, so a player could read 12 on Home and 3
+            here on the same day with no way to tell which was lying. Neither
+            was. Mystery and Trail had the identical collision (four surfaces,
+            not the two the report counted). Both numbers stay; the label now
+            says which one you are looking at. */}
         {isWon && streak > 0 && (
-          <div className="fh-sub">🔥 {streak}-day streak</div>
+          <div className="fh-sub">🔥 {streak}-day Footle streak</div>
         )}
         {isLost && (
           <div className="fh-sub">Better luck tomorrow.</div>

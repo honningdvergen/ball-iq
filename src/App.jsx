@@ -5535,7 +5535,7 @@ function PuzzleReviewScreen({ date, guesses, status, onBack }) {
     // grid right below disambiguates "3/6" (the Sprint #99 concern), so the
     // explicit "guesses" wording lives only on the PNG card headline.
     const head = `⚽ ${APP_NAME} Footle${tag} ${won ? guesses.length : "X"}/6`;
-    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
+    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [guesses, answer, won, lost, hasData, date]);
 
@@ -8226,7 +8226,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
     // Same Wordle-convention format as the review screen's builder — the two
     // MUST stay in sync (one puzzle, one share format).
     const head = `⚽ ${APP_NAME} Footle${tag} ${won ? state.guesses.length : "X"}/6`;
-    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
+    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [state, answer]);
 

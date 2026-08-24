@@ -95,7 +95,22 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
       **2027-01-04 the card would have rendered KANTE all-green — that day's real
       answer.** (Also 2026-10-03, teaser guess PEDRI.) `pickTeaserPair` now skips
       colliding pairs; guarded by a 420-day walk through the real schedule.
-- [ ] Streak label mismatch.
+- [x] Streak label mismatch — **EIGHT sites, not the three the report counted.**
+      There are two kinds of streak and they answer different questions:
+      `loginStreak` (cross-mode "days you showed up", server-authoritative,
+      shown on Home/Daily/Profile) and the per-mode `computeFootleStreak` /
+      `computeMysteryStreak` / `computeTrailStreak` ("days you SOLVED this
+      one", local). Every one of them rendered the identical `🔥 N-day streak`
+      under the identical flame, so a player could read 12 on Home and 3 on the
+      Footle card the same day with no way to tell which was lying. Neither
+      was. Fixed by NAMING, not reconciling — making the cards render
+      loginStreak would delete a real, different fact.
+      ⚠️ And I did the half-fix first: renamed the 3 visible cards and left the
+      5 SHARE builders emitting the bare string (2 Footle builders in App.jsx
+      that "MUST stay in sync", FootleHero's fallback, lib/trail.js,
+      lib/mysteryPlayer.js). The test caught it on its own baseline run, which
+      is the only reason this line says 8. The guard now sweeps every .js/.jsx
+      in src/ rather than the three files I happened to think of.
 - [ ] ⚠️ Do NOT add a first-session branch to the daily draw — it would desync
       the frozen daily. Park the ramp as a design decision.
 
@@ -113,9 +128,40 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
 - [x] **"Too easy" no longer mutes our best players** (16 of 30 reports with a
       pick came from someone who answered CORRECTLY). ⚠️ Done by clearing the
       mark, NOT by the panel's gate-on-reason version the critic killed.
-- [ ] Remaining sentiment gaps: Footle loss (38% of days played), rage-quit,
-      timeout, wrong-answer streak — four bad-moment classes still unregistered.
-- [ ] The ask is storefront-blind while ratings are per-storefront (8 across 5).
+- [x] Remaining sentiment gaps — ALL FOUR CLOSED. Footle loss + rage-quit
+      (`74f9775`); timeout + wrong-answer streak (`c5fb843`).
+      ⚠️ The last two are ONE signal, and taken literally they were a trap: a
+      single timeout is ordinary play, so marking every one would have
+      suppressed the ask broadly enough to undo the funnel it protects.
+      Thresholds measured against prod first — Daily 7 ends ≤2/7 on 20.5% of
+      plays (70/341), 10-Q ends ≤3/10 on 8.3% (25/301), and ~48% of Survival
+      runs end on question one, hence Survival is excluded (dying is the
+      design). Rule: 4 misses in a row, or 3 timeouts, or ≤30%.
+- [x] ⚠️ **THE FUNNEL WAS COUNTING ASKS THAT NEVER HAPPENED** (`c5fb843`) —
+      found while wiring the above. `maybeRequestReview()` returns false in
+      SILENCE on a bad moment / cooldown / lifetime cap, and both native sites
+      logged `rate-prompt-shown` BEFORE calling it. Every suppressed ask was
+      recorded as shown — and the suppression levers added all week are exactly
+      what inflates it, so the number would have looked healthiest precisely
+      where it was most wrong. I built this instrument the same morning.
+      `nativeAskBlockedReason()` now answers "why not" without spending
+      anything; `maybeRequestReview` delegates to it so the policy has ONE
+      implementation instead of two that drift.
+- [🅰️] The ask is storefront-blind while ratings are per-storefront (8 across 5).
+      **NEEDS ALEX'S CALL — deliberately not built.** Checked first whether we
+      can already answer it: `funnel_events` has no region column and its
+      `meta` carries no country on any rate-prompt row (in fact ZERO
+      rate-prompt rows exist — the funnel is in the unpushed set). So
+      attributing asks to storefronts means COLLECTING a country/locale on
+      native, and that is a change to what the native app gathers on a surface
+      where privacy §4 says it does not measure usage and where Alex made an
+      explicit recorded decision (2026-08-23: counted, never identified).
+      A country code is coarse and not identifying, but it is his decision and
+      it touches the App Store privacy label and the Play Data safety form.
+      ⚠️ Also worth saying plainly: with 8 ratings total, the binding
+      constraint is ASK VOLUME, not targeting. Recommend shipping the funnel
+      first, reading a month of real `rate-prompt-shown` data, and only then
+      deciding whether storefront targeting is worth a declaration change.
 
 ### 6 · Deepen the six club packs people actually pick
 - [ ] Man United: 24 eligible questions against a 10-question round = 2.4 fresh

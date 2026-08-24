@@ -400,7 +400,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
               // effect above, which returns early when isArchive), so claiming
               // one here would credit the player for something that did not
               // happen. Same class as "back tomorrow" on a puzzle from the past.
-              ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"}${!isArchive && streak > 1 ? ` · 🔥 ${streak}-day streak` : ""}`
+              ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"}${!isArchive && streak > 1 ? ` · 🔥 ${streak}-day Trail streak` : ""}`
               : isArchive
                 ? "Out of guesses — that one's in the books"
                 : "Out of guesses — back tomorrow"}

@@ -1155,7 +1155,7 @@ export function buildTrailShareText({ number, won, clubsUsed, streak } = {}) {
   const line = won
     ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"} ${"⚽".repeat(Math.min(clubsUsed, 6))}`
     : `Didn't get it — X/${TRAIL_MAX_ATTEMPTS}`;
-  const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day streak` : "";
+  const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Trail streak` : "";
   return `${head}\n${line}${streakLine}\n\nballiq.app/trail`;
 }
 
