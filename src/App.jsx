@@ -393,7 +393,7 @@ export function recordMpQuestionsSeen(questions) {
 }
 
 
-async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, includeLegends = false, noEasy = false }) {
+async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, includeLegends = false, noEasy = false, avoidConflicts = false }) {
   const { QB } = await loadQuestions();
   // Defensive: strip out any undefined entries that might exist from array holes
   let pool = QB.filter(q => q && typeof q === "object");
@@ -440,6 +440,16 @@ async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, includeLe
   pool = applySeenFilter(pool, n, qbHistKey);
   // For hard + default: shuffle first so diversity filter samples evenly across all cats
   pool = shuffle(pool);
+  // ⚠️ TOPICAL PACKS SHIPPED OUTSIDE EVERY LEAK GUARD. The club and league
+  // draws call pickAvoidingConflicts directly (see launchClubQuiz /
+  // launchLeagueQuiz); this path never did, so the Home-featured, NEW-badged
+  // summer-2026 tile handed out a free point in 38.2% of ten-question sessions
+  // — measured on the served pool by simulating SESSIONS, not questions.
+  // Reordering here rather than selecting: passing pool.length returns the
+  // whole pool with the non-conflicting rows first and the clashes appended,
+  // so the ramp and diversity filters below still do their own jobs and a
+  // session can never be shortened by the guard.
+  if (avoidConflicts) pool = pickAvoidingConflicts(pool, pool.length, conflictsWith);
   if (diff === "hard") {
     // Weight toward hard but still shuffle — diversity filter picks from this shuffled pool
     const hard = pool.filter(q => q.diff === "hard");
@@ -9804,7 +9814,7 @@ function AppInner() {
         // to easy, 10 detail ones to hard, 5 telegraphed ones deleted), and
         // the tile now serves only the detail tier: exact fees, appearance
         // counts, who held the record before, which club took the sell-on.
-        qs = await getQs({ tag: TOPICAL_PACK.tag, onlyDiff: "hard", n: 10, ramp: true, includeLegends: true });
+        qs = await getQs({ tag: TOPICAL_PACK.tag, onlyDiff: "hard", n: 10, ramp: true, includeLegends: true, avoidConflicts: true });
         if (!qs || qs.length < 5) { showToast("Not enough questions available for this mode"); return; }
       }
       else if (m === "chaos") {

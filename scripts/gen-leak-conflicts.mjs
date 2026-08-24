@@ -136,6 +136,45 @@ for (const [club, qs] of byClub) {
   }
 }
 
+// ⚠️ THE THIRD GROUP KEY, AND THE REASON THE GUARD READ AS COMPLETE WHILE THE
+// NEWEST PACK WAS THE LEAKIEST THING IN THE APP.
+//
+// This file grouped by `cat` and by `club`. Topical packs select by NEITHER —
+// src/App.jsx passes `{ tag: TOPICAL_PACK.tag, onlyDiff: "hard" }`, because a
+// topical pack cuts across categories by nature (the summer-2026 set spans
+// WorldCup, Transfers, Managers, PL and UCL). A pool this generator never
+// groups is a pool it never guards, and audit-leaks-full.mjs enumerated the
+// same two keys — so its "0 unguarded" was a self-confirming zero that would
+// have printed a green tick over this forever.
+//
+// Measured on the served pool (tag summer2026, hard only, 46 questions) before
+// this pass existed: 18 leaked pairs, 11 of them strong, ONE of them already in
+// the map. Simulating sessions rather than questions — the ~2x difference this
+// project has been caught by before — 39.0% of ten-question sessions handed the
+// player at least one free point. That is the Home-featured, NEW-badged pack.
+const byTag = new Map();
+for (const q of QB) {
+  if (!q || !q.tag || q.type !== 'mcq' || !Array.isArray(q.o)) continue;
+  if (!byTag.has(q.tag)) byTag.set(q.tag, []);
+  byTag.get(q.tag).push(q);
+}
+
+for (const [, qs] of byTag) {
+  // `onlyDiff` is a FLOOR, not a ceiling — the topical tile serves hard and
+  // nothing else — so the hard-only subset is the pool players actually meet.
+  // The full set is scanned too, in case a future tile drops the restriction.
+  const hardOnly = qs.filter((q) => q.diff === 'hard');
+  const pools = [qs];
+  if (hardOnly.length >= 10) pools.push(hardOnly);
+  for (const pool of pools) {
+    for (const l of findLeaks(pool)) {
+      if (l.severity !== 'strong') continue;
+      link(pool[l.answerOf]?.id, pool[l.at]?.id);
+      pairCount++;
+    }
+  }
+}
+
 const sorted = [...conflicts.entries()]
   .map(([id, set]) => [id, [...set].sort()])
   .sort((a, b) => (a[0] < b[0] ? -1 : 1));
@@ -166,5 +205,5 @@ if (check) {
   console.log(`✅ ${OUT} up to date (${sorted.length} questions, ${pairCount} leaks)`);
 } else {
   writeFileSync(OUT, body, 'utf8');
-  console.log(`✅ ${OUT} — ${sorted.length} questions in ${pairCount} strong leaks across ${byClub.size} packs`);
+  console.log(`✅ ${OUT} — ${sorted.length} questions in ${pairCount} strong leaks across ${byCat.size} categories, ${byClub.size} club packs and ${byTag.size} topical pack(s)`);
 }

@@ -43,15 +43,32 @@ const mcq = QB.filter((q) => q && q.type === 'mcq' && Array.isArray(q.o));
 // below 16 eligible (App.jsx launchClubQuiz), leagues below 10
 // (launchLeagueQuiz). Auditing against the generator's own thresholds would
 // only prove the generator agrees with itself.
+// ⚠️ THIS LIST IS THE AUDIT'S BLIND SPOT, AND IT PRINTED A GREEN TICK OVER IT.
+//
+// The audit re-derives leaks from the RULES rather than from the generated map,
+// which is genuinely good design — a map that is wrong cannot certify itself.
+// But it enumerated the SAME group keys the generator does, so any pool the
+// generator never grouped was a pool the audit never checked, and "0 unguarded"
+// was a self-confirming zero rather than a clean bill of health.
+//
+// Topical packs select by `tag` (src/App.jsx passes { tag, onlyDiff:"hard" }),
+// which was in neither list. The Home-featured summer-2026 pack therefore
+// leaked in 14.8% of real sessions while this file reported nothing at all.
+//
+// `subset` is the SECOND pool each group serves, and it is not always "drop
+// easy": the topical tile serves onlyDiff:'hard', a floor rather than a
+// ceiling, so its served pool is the hard rows and nothing else. Auditing the
+// wrong subset is how a guard reports clean on a pool no player ever meets.
 const GROUPS = [
-  { key: 'club', threshold: 16, useClubName: true },
-  { key: 'cat', threshold: 10, useClubName: false },
+  { key: 'club', threshold: 16, useClubName: true, subset: (qs) => qs.filter((q) => q.diff !== 'easy') },
+  { key: 'cat', threshold: 10, useClubName: false, subset: (qs) => qs.filter((q) => q.diff !== 'easy') },
+  { key: 'tag', threshold: 10, useClubName: false, subset: (qs) => qs.filter((q) => q.diff === 'hard') },
 ];
 
 let gaps = 0;
 let checked = 0;
 
-for (const { key, threshold, useClubName } of GROUPS) {
+for (const { key, threshold, useClubName, subset } of GROUPS) {
   const groups = new Map();
   for (const q of mcq) {
     const v = q[key];
@@ -62,8 +79,8 @@ for (const { key, threshold, useClubName } of GROUPS) {
 
   const missingByGroup = new Map();
   for (const [name, qs] of groups) {
-    const noEasy = qs.filter((q) => q.diff !== 'easy');
-    const pools = noEasy.length >= threshold ? [qs, noEasy] : [qs];
+    const served = subset(qs);
+    const pools = served.length >= threshold ? [qs, served] : [qs];
     // clubName downgrades a leak whose answer is the pack's own club —
     // "Tottenham Hotspur" inside a Tottenham question is unavoidable
     // vocabulary, not a giveaway. Omitting it reports phantom gaps; that is
@@ -85,7 +102,7 @@ for (const { key, threshold, useClubName } of GROUPS) {
     }
   }
 
-  const label = key === 'club' ? 'CLUB PACKS' : 'CATEGORIES';
+  const label = { club: 'CLUB PACKS', cat: 'CATEGORIES', tag: 'TOPICAL PACKS' }[key] || key.toUpperCase();
   if (missingByGroup.size === 0) {
     console.log(`  ✅ ${label}: every strong leak is guarded`);
   } else {
