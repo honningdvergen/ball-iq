@@ -131,6 +131,12 @@ const TIMINGS = {
   SEEN_WINDOW_MS: 14 * 24 * 60 * 60 * 1000,
 };
 
+
+/** Screens where a rating ask must never appear: a question is live and its
+ *  clock is running, so a modal blocks every control and costs the player the
+ *  round. See screenRef / ratingAskAllowed in AppInner for why this is a
+ *  deny-list. */
+const RATING_ASK_BLOCKED = new Set(["quiz", "online-stage1", "online-stage1-lobby"]);
 // Boot URL, snapshotted at module eval — i.e. before any component renders and
 // therefore before any of AppInner's deep-link initializers replaceState the
 // path/query away. Deep-link detection MUST read these rather than live
@@ -8797,6 +8803,35 @@ function AppInner() {
   // sheet is open by then is only knowable at fire time. A ref, not state:
   // the scheduled closure would otherwise capture a stale `false`.
   const askShareNameRef = useRef(false);
+  /**
+   * ⚠️ THE RATING ASK IS SCHEDULED AT A CELEBRATION AND FIRES UP TO 3.5s LATER.
+   *
+   * Scouting report #4: the prompt "can land on top of a live game and block
+   * every control while the clock runs — and on iOS its twin spends one of
+   * Apple's ~3-per-year review tickets, possibly mid-question, on a build where
+   * the ratings engine reaches iPhone for the FIRST time."
+   *
+   * Finish a Classic round, tap straight into another game, and the timer that
+   * was queued on the results screen fires over question 1 of the next one.
+   *
+   * A ref, not state, for the same reason askShareNameRef above is one: the
+   * scheduled closure would capture the screen as it was when the timer was
+   * created, which is precisely the screen we are trying to detect leaving.
+   *
+   * ⚠️ Do NOT "fix" this by clearing celebrationTimeoutsRef on a screen-keyed
+   * effect — the panel suggested exactly that and the critic caught it.
+   * `setScreen("results")` is the LAST statement of handleComplete, in the same
+   * synchronous callback that pushes every celebration timer, so a screen-keyed
+   * effect would clear the timers that were just queued and delete the entire
+   * celebration layer. Gate the ASK, never the timers.
+   *
+   * Deny-list rather than allow-list: the Footle ask fires deliberately on the
+   * `wordle` screen and the Daily-7 ask on `results`, so an allow-list would
+   * silently kill real asks. What must never be interrupted is a running clock.
+   */
+  const screenRef = useRef(screen);
+  screenRef.current = screen;
+  const ratingAskAllowed = useCallback(() => !RATING_ASK_BLOCKED.has(screenRef.current), []);
   // Single cleanup on unmount: clear any in-flight toast/overlay timers so
   // tabbing away mid-toast doesn't leave dangling setState callbacks.
   useEffect(() => () => {
@@ -10326,7 +10361,7 @@ function AppInner() {
           if (notifOpened) return;
           if (countPriorFootleSolves() < 1) return;
           if (IS_NATIVE) {
-            celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
+            celebrationTimeoutsRef.current.push(setTimeout(() => { if (!ratingAskAllowed()) return; maybeRequestReview(); }, 3500));
           } else if (webRatePromptEligible() && !ratePromptShown) {
             // Web parity for Alex's chosen moment (2026-07-29: "solving
             // Footle IS the right moment to ask"). Web players are most of
@@ -10337,7 +10372,7 @@ function AppInner() {
             // feedback before any store link.
             setRatePromptShown(true);
             markWebRatePromptShown();
-            celebrationTimeoutsRef.current.push(setTimeout(() => { setRateView("ask"); setShowRatePrompt(true); }, 3500));
+            celebrationTimeoutsRef.current.push(setTimeout(() => { if (!ratingAskAllowed()) return; setRateView("ask"); setShowRatePrompt(true); }, 3500));
           }
         });
       }
@@ -10599,7 +10634,7 @@ function AppInner() {
     const willAskNativeReview = hadGreatMoment && newTotal >= 5
       && (mode !== "daily" || (!isGuest && !notifOwnsDailyMoment && !challengeOwnsDailyMoment));
     if (willAskNativeReview) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { maybeRequestReview(); }, 3500));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { if (!ratingAskAllowed()) return; maybeRequestReview(); }, 3500));
     }
 
     // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily)
@@ -10649,7 +10684,7 @@ function AppInner() {
     if (shouldShowRate) {
       setRatePromptShown(true);
       markWebRatePromptShown();
-      celebrationTimeoutsRef.current.push(setTimeout(() => { setRateView("ask"); setShowRatePrompt(true); }, 1800));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { if (!ratingAskAllowed()) return; setRateView("ask"); setShowRatePrompt(true); }, 1800));
     }
 
     // Guest→account nudge at the results HIGH (opportunity-scan #4): the
