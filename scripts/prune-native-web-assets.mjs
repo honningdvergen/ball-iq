@@ -94,6 +94,36 @@ function prune(path) {
   return bytes
 }
 
+/**
+ * Sweep the whole bundle, always — not just on the retry path.
+ *
+ * Finder recreates `.DS_Store` continuously while a folder is open, so these
+ * reappear inside `ios/App/App/public` and `android/.../assets/public` between
+ * runs and get packaged into the shipped binary. Harmless to a user, but it is
+ * junk in a store artifact and it is the exact file that makes the deletes
+ * above throw. Cheap to remove; do it every time.
+ */
+function sweepBundles(dirs) {
+  let n = 0
+  for (const d of dirs) {
+    if (!existsSync(d)) continue
+    const before = countDsStore(d)
+    sweepDsStore(d)
+    n += before
+  }
+  return n
+}
+
+function countDsStore(path) {
+  if (!existsSync(path)) return 0
+  let st
+  try { st = lstatSync(path) } catch { return 0 }
+  if (!st.isDirectory()) return path.endsWith('.DS_Store') ? 1 : 0
+  let n = 0
+  for (const entry of readdirSync(path)) n += countDsStore(join(path, entry))
+  return n
+}
+
 /** Remove the Finder droppings that cause the ENOTEMPTY above. */
 function sweepDsStore(path) {
   if (!existsSync(path)) return
@@ -139,6 +169,10 @@ for (const dir of TARGET_DIRS) {
   grandTotal += dirTotal
 }
 console.log(`[prune-native] total reclaimed: ${mb(grandTotal)} MB`)
+
+// Always sweep, last, so nothing Finder dropped mid-run ships in the binary.
+const swept = sweepBundles(TARGET_DIRS)
+if (swept) console.log(`[prune-native] swept ${swept} .DS_Store file(s) from the bundles`)
 
 // ── SIZE CEILING ─────────────────────────────────────────────────────────────
 // 2026-08-13: an Android build ran without this script and produced a 1.7 GB
