@@ -7,6 +7,7 @@ import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
 import { useMultiplayerRoom } from './useMultiplayerRoom.js';
 import Login from './Login.jsx';
+import ReportButton from './components/ReportButton.jsx';
 // Lazy: the 523-line review screen is settings-only, never on the cold/first
 // paint — React.lazy keeps it out of the initial bundle (Suspense at render).
 const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
@@ -2417,7 +2418,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // reset) — only the message lied, which is the worst kind of lie: the score
   // says one thing and the screen says another.
   const [timedOut, setTimedOut] = useState(false);
-  const [reportedKeys, setReportedKeys] = useState(() => new Set()); // questions flagged "report a problem" this run
   const isSpeed = mode === "speed";
   const timerDuration = isSpeed ? 8 : (timerSecondsOverride || 20);
   const [score, setScore] = useState(0);
@@ -3094,21 +3094,27 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       )}
       {answered && onReport && (() => {
         const rkey = q?._histKey || (q?.id != null ? String(q.id) : q?.q);
-        const reported = reportedKeys.has(rkey);
         return (
-          <button
-            type="button"
-            disabled={reported}
-            onClick={() => {
-              if (reported) return;
+          <ReportButton
+            // ⚠️ key is load-bearing. This element keeps its position in the
+            // tree while `q` changes, so without it question 2 would inherit
+            // question 1's "reported" state. The old code needed a keyed Set
+            // for exactly this reason; remounting per question is simpler and
+            // cannot go stale.
+            key={rkey}
+            onReport={onReport}
+            idle="⚑ Report a problem"
+            idleColor="var(--t3)"
+            // A thunk, so picked/correct are read at press time rather than
+            // recomputed on every render of the question.
+            info={() => {
               const picked = isTF
                 ? (selected === 1 ? "True" : selected === 0 ? "False" : null)
                 : (typeof selected === "number" && Array.isArray(q?.o) ? q.o[selected] : null);
               const correct = isTF
                 ? ((q?.a === true || q?.a === 1) ? "True" : "False")
                 : (Array.isArray(q?.o) && typeof q?.a === "number" ? q.o[q.a] : (q?.typed_a || null));
-              onReport({ id: q?.id, q: q?.q, picked, correct, mode });
-              setReportedKeys(prev => new Set(prev).add(rkey));
+              return { id: q?.id, q: q?.q, picked, correct, mode };
             }}
             // Was 12px var(--t3) — our DIMMEST token — borderless, on a screen
             // that auto-advances. Zero reports were ever filed. A control the
@@ -3127,14 +3133,9 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
             style={{
               display:"block", margin:"16px auto 0", padding:"12px 14px", minHeight:44,
               background:"transparent", border:"none", borderRadius:10,
-              cursor: reported ? "default" : "pointer",
-              color: reported ? "var(--accent)" : "var(--t3)",
-              fontSize:12.5, fontWeight:600, fontFamily:"inherit",
-              WebkitAppearance:"none", appearance:"none", WebkitTextFillColor:"currentColor"
+              fontSize:12.5, fontWeight:600,
             }}
-          >
-            {reported ? "✓ Reported — thanks" : "⚑ Report a problem"}
-          </button>
+          />
         );
       })()}
       </div>{/* /.qd-play */}
@@ -4851,7 +4852,6 @@ function StumpScreen({ row, onPlayFull, onHome }) {
 // is already re-reading the questions they got wrong, and every MCQ mode — daily,
 // classic, club, league, survival, hot streak — ends up on this one component.
 function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
-  const [reported, setReported] = useState(() => new Set());
   if (!wrongAnswers || wrongAnswers.length === 0) return null;
   return (
     <div style={{marginTop:24}}>
@@ -4869,31 +4869,19 @@ function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
             )}
             <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
             {w.hint && <div className="wr-why">{w.hint}</div>}
-            {onReport && (() => {
-              const rkey = w.id != null ? String(w.id) : w.q;
-              const done = reported.has(rkey);
-              return (
-                <button
-                  type="button"
-                  disabled={done}
-                  onClick={() => {
-                    if (done) return;
-                    onReport({ id: w.id, q: w.q, picked: w.user ?? null, correct: w.correct ?? null, mode });
-                    setReported(prev => new Set(prev).add(rkey));
-                  }}
-                  style={{
-                    marginTop:10, padding:"7px 11px", minHeight:36,
-                    background:"none", border:"1px solid var(--border)", borderRadius:9,
-                    cursor: done ? "default" : "pointer",
-                    color: done ? "var(--accent)" : "var(--t2)",
-                    fontSize:12, fontWeight:700, fontFamily:"inherit",
-                    WebkitAppearance:"none", appearance:"none", WebkitTextFillColor:"currentColor"
-                  }}
-                >
-                  {done ? "✓ Reported — thanks" : "⚑ This looks wrong"}
-                </button>
-              );
-            })()}
+            {onReport && (
+              <ReportButton
+                key={w.id != null ? String(w.id) : w.q}
+                onReport={onReport}
+                idle="⚑ This looks wrong"
+                info={{ id: w.id, q: w.q, picked: w.user ?? null, correct: w.correct ?? null, mode }}
+                style={{
+                  marginTop:10, padding:"7px 11px", minHeight:36,
+                  background:"none", border:"1px solid var(--border)", borderRadius:9,
+                  fontSize:12, fontWeight:700,
+                }}
+              />
+            )}
           </div>
         ))}
       </div>
@@ -7763,34 +7751,24 @@ function ReportReasonSheet({ onPick, onSkip }) {
 }
 
 function FootleReportButton({ answer, status, onReport }) {
-  const [sent, setSent] = useState(false);
   const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
   return (
-    <button
-      type="button"
-      disabled={sent}
-      onClick={() => {
-        if (sent) return;
-        onReport({
-          id: `footle:${answer}`,
-          q: `Footle answer "${answer}" (${(prefix ? prefix + " " : "") + surname})`,
-          picked: null,
-          correct: answer,
-          mode: status === "won" ? "footle" : "footle-lost",
-        });
-        setSent(true);
+    <ReportButton
+      onReport={onReport}
+      idle="⚑ Bad answer? Tell us"
+      info={{
+        id: `footle:${answer}`,
+        q: `Footle answer "${answer}" (${(prefix ? prefix + " " : "") + surname})`,
+        picked: null,
+        correct: answer,
+        mode: status === "won" ? "footle" : "footle-lost",
       }}
       style={{
         margin: "10px auto 0", padding: "9px 13px", minHeight: 40, display: "block",
         background: "none", border: "1px solid var(--border)", borderRadius: 10,
-        cursor: sent ? "default" : "pointer",
-        color: sent ? "var(--accent)" : "var(--t2)",
-        fontSize: 12.5, fontWeight: 700, fontFamily: "inherit",
-        WebkitAppearance: "none", appearance: "none", WebkitTextFillColor: "currentColor",
+        fontSize: 12.5, fontWeight: 700,
       }}
-    >
-      {sent ? "✓ Reported — thanks" : "⚑ Bad answer? Tell us"}
-    </button>
+    />
   );
 }
 
@@ -9324,7 +9302,18 @@ function AppInner() {
   // when there was one.
   // Which question is awaiting a reason. Null = sheet closed.
   const [reportPending, setReportPending] = useState(null);
-  const reportQuestion = useCallback(async (info) => {
+  /**
+   * Resolver for the promise `reportQuestion` handed its caller. Held in a ref,
+   * not state: it must survive the re-render that opening the sheet causes, and
+   * nothing renders from it.
+   *
+   * ⚠️ Every path out of the sheet MUST settle this or a report button is stuck
+   * on "Sending…" forever. Today there are exactly two — onPick and onSkip — and
+   * both go through sendQuestionReport, which always settles it. A third way to
+   * close the sheet has to settle it too.
+   */
+  const reportResolveRef = useRef(null);
+  const reportQuestion = useCallback((info) => {
     // A report IS a bad moment — suppress the native rating ask for 24h so a
     // player mid-complaint never meets "enjoying Ball IQ?" (review panel lever).
     markBadReviewMoment();
@@ -9334,11 +9323,23 @@ function AppInner() {
     // who answered correctly, motive unknown). The sheet resolves the send;
     // dismissing still reports, with reason null, because the tap on "Report"
     // is itself the signal and a second tap must never be the price of it.
-    setReportPending(info || {});
-    return true;
+    // Resolves only when the RPC has actually answered, so the button can stop
+    // claiming success on the strength of a tap. See components/ReportButton.jsx.
+    return new Promise((resolve) => {
+      // A sheet should never already be open, but if one is, settle its caller
+      // rather than stranding that button on "Sending…".
+      if (reportResolveRef.current) { try { reportResolveRef.current(false); } catch { /* gone */ } }
+      reportResolveRef.current = resolve;
+      setReportPending(info || {});
+    });
   }, []);
   const sendQuestionReport = useCallback(async (info, reason) => {
     setReportPending(null);
+    const resolve = reportResolveRef.current;
+    reportResolveRef.current = null;
+    // Settle the waiting button with the REAL outcome, then return it as before
+    // for any caller that awaits sendQuestionReport directly.
+    const settle = (ok) => { if (resolve) { try { resolve(ok); } catch { /* gone */ } } return ok; };
     try {
       const { error } = await supabase.rpc("report_question", {
         p_question_id: info?.id != null ? String(info.id) : null,
@@ -9352,14 +9353,14 @@ function AppInner() {
         console.warn("[report_question]", error.message);
         Sentry.captureException(error, { tags: { area: "question-report" } });
         showToast("Couldn't send that report — we'll look into it");
-        return false;
+        return settle(false);
       }
       showToast("Thanks — we'll double-check this one ⚽");
-      return true;
+      return settle(true);
     } catch (e) {
       console.warn("[report_question]", e?.message || e);
       showToast("Couldn't send that report — we'll look into it");
-      return false;
+      return settle(false);
     }
   }, [showToast]);
 
