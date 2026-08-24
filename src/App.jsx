@@ -2219,6 +2219,32 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
     if (done) onComplete({ score, total: idx, bestStreak: score });
   }, [done]);
 
+  /**
+   * ⚠️ THE SPRINT SPENT ~45% OF ITS CLOCK ON A WALL YOU COULD NOT SKIP.
+   *
+   * Scouting report #4 measured the wrong-answer reveal at 1,825ms and 1,820ms
+   * with the 60s clock running straight through it (39 → 38 → 37), and
+   * confirmed card tap, body click, Enter and Space ALL failed to advance. In
+   * the one mode whose entire identity is speed, a player spent about as long
+   * watching as playing — and Hot Streak has the worst repeat rate of any core
+   * mode (1.75 plays/user against Survival's 6.6).
+   *
+   * The hold itself is right: it exists so a miss teaches you something, and
+   * the explanation is the app's whole differentiator. What was wrong is that
+   * it was COMPULSORY. Now it is a maximum, not a minimum — anyone who has read
+   * it, or does not want to, taps or presses a key and moves on.
+   *
+   * ⚠️ Deliberately NOT shortened, and deliberately NOT pausing the clock.
+   * Shortening takes the explanation away from the player who wanted it;
+   * pausing the clock inflates every score and makes existing personal bests
+   * incomparable. Skipping costs neither.
+   */
+  const advance = useCallback(() => {
+    clearTimeout(advanceTimeoutRef.current);
+    setPicked(null);
+    setIdx(j => j + 1);
+  }, []);
+
   const answer = (i) => {
     if (done || picked) return;
     const correct = i === q.a;
@@ -2226,16 +2252,39 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
     playSound(correct ? "correct" : "wrong");
     if (correct) setScore(s => s + 1);
     setPicked({ choice: i, correct });
-    // Give the player time to read the hint on a wrong answer; otherwise advance quickly
+    // Give the player time to read the hint on a wrong answer; otherwise advance
+    // quickly. Both are now a CEILING — see advance().
     const delay = !correct && q.hint ? 1800 : 400;
-    advanceTimeoutRef.current = setTimeout(() => { setPicked(null); setIdx(j => j + 1); }, delay);
+    advanceTimeoutRef.current = setTimeout(advance, delay);
+  };
+
+  // Keyboard parity with the tap. Enter and Space are what the reviewer tried
+  // first and both did nothing.
+  useEffect(() => {
+    if (!picked || done) return undefined;
+    const onKey = (e) => {
+      if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
+      e.preventDefault();
+      advance();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [picked, done, advance]);
+
+  // Tap anywhere that is not itself a control. The options are disabled during
+  // the hold, but the back and "how to play" buttons are not — advancing on
+  // those would steal the tap that was meant to leave.
+  const onHoldTap = (e) => {
+    if (!picked || done) return;
+    if (e.target.closest && e.target.closest("button")) return;
+    advance();
   };
 
   const pct = (timeLeft / 60) * 100;
   const barColor = timeLeft > 20 ? 'var(--accent)' : timeLeft > 10 ? 'var(--gold)' : 'var(--red)';
 
   return (
-    <div className="quiz-wrap">
+    <div className="quiz-wrap" onClick={onHoldTap}>
       {/* SR countdown at thresholds only — same pattern as QuizEngine.
           Hot Streak runs a 60s clock, so add a 30s waypoint. */}
       <div className="sr-only" role="timer" aria-live="assertive" aria-atomic="true">
@@ -2295,7 +2344,14 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
           color:"var(--t2)",
           animation:"fadeIn 0.3s ease-out"
         }}>
-          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:10,marginBottom:4}}>
+            <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif"}}>💡 Why?</div>
+            {/* ⚠️ A skip nobody can see is not a skip. The hold is capped at
+                1.8s, but a player racing a 60-second clock has no way to know
+                a tap will work unless we say so. Muted on purpose — this is
+                permission, not an instruction. */}
+            <div style={{fontSize:10,fontWeight:600,color:"var(--t3)",fontFamily:"'Inter',sans-serif",whiteSpace:"nowrap",opacity:0.75}}>tap to skip →</div>
+          </div>
           <div>{q.hint}</div>
         </div>
       )}
@@ -2321,6 +2377,35 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
     if (done) onCompleteRef.current({ score, total, bestStreak: score });
   }, [done, score, total]);
 
+  // See the comment on the delay below: the hold is a ceiling, not a minimum.
+  // ⚠️ setDone must NOT live inside the setIdx updater. Updaters have to be
+  // pure — React can run them twice (StrictMode, and again on a re-render
+  // during concurrent work), which would fire the completion side effect
+  // twice. Mirrors the original timeout body exactly instead.
+  const advance = useCallback(() => {
+    clearTimeout(timeoutRef.current);
+    setPicked(null);
+    if (idx + 1 >= total) setDone(true);
+    else setIdx(i => i + 1);
+  }, [idx, total]);
+
+  useEffect(() => {
+    if (!picked || done) return undefined;
+    const onKey = (e) => {
+      if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
+      e.preventDefault();
+      advance();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [picked, done, advance]);
+
+  const onHoldTap = (e) => {
+    if (!picked || done) return;
+    if (e.target.closest && e.target.closest("button")) return;
+    advance();
+  };
+
   const answer = (val) => {
     if (picked) return;
     if (!questions || !questions[idx]) return;
@@ -2334,13 +2419,15 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
     if (correct) setScore(s => s + 1);
     setPicked({ val, correct });
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    // Extra breathing room on a wrong answer that has a hint
+    // Extra breathing room on a wrong answer that has a hint.
+    // ⚠️ A CEILING, NOT A MINIMUM — same fix as HotStreakEngine. Scouting
+    // report #4 only measured Hot Streak, but this mode holds for even LONGER
+    // (2,400ms) and was equally unskippable. It does not run a clock, so it
+    // costs no score; it still means "I have read it, move on" does nothing,
+    // which is the annoyance either way. Fixed here at the same time rather
+    // than left as the second implementation of a defect we just closed.
     const delay = !correct && qCur?.hint ? 2400 : 900;
-    timeoutRef.current = setTimeout(() => {
-      setPicked(null);
-      if (idx + 1 >= total) setDone(true);
-      else setIdx(i => i + 1);
-    }, delay);
+    timeoutRef.current = setTimeout(advance, delay);
   };
 
   // Safety: if questions missing or done, render nothing (onComplete will have fired)
@@ -2372,7 +2459,7 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
   };
 
   return (
-    <div className="quiz-wrap">
+    <div className="quiz-wrap" onClick={onHoldTap}>
       <div className="q-top">
         <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${((idx + (picked?1:0)) / total) * 100}%`}} /></div>
