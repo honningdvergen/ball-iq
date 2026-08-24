@@ -588,9 +588,15 @@ Full report: the panel artifact (16 areas, each with its path to 8+).
       284/303. Correct fix is a **102nd distinct player** in HEUNGMIN's slot
       with forge-verified career data. Allowlisted in the duplicate test, which
       must SHRINK to zero.
-- [ ] **Joaquín Sánchez is not in `mysteryPool`**, so on days 89/177/249/363 the
-      autocomplete offers five *wrong* Joaquíns and never the answer. Winnable
-      by typing (the alias accepts it), so a trap rather than a blocker.
+- [x] ~~**Joaquín Sánchez is not in `mysteryPool`** — days 89/177/249/363~~
+      **STALE — verified fixed 2026-08-24.** Checked all 400 scheduled days
+      against the pool: **0 unresolved**, and no Joaquín is scheduled at ALL.
+      The listed days were wrong too — day 89 is Henrik Larsson (Q179334). The
+      08-15 pool/search rebuild closed this and the board was never ticked.
+      Guarded against regression: `audit-mystery-schedule.mjs` rule 3 ("every
+      scheduled id must resolve to a pool entry") runs in the build gate.
+      ⚠️ Joaquín Sánchez is still absent from the pool, but that is now a
+      COMPLETENESS gap, not a bug — nothing schedules him.
 
 ## 📱 SIMULATOR TESTING — what it verified, and the one thing it cannot
 
@@ -1502,7 +1508,9 @@ have never had a recurrence. Extend the pattern:
 - [x] Mystery schedule gate — banned names, 5% manager ration, id resolution,
       back-to-back. `scripts/audit-mystery-schedule.mjs`, in the build chain.
 - [ ] Every mode awards XP and writes a scores row (Mystery shipped without both).
-- [ ] Cross-screen counter agreement (Home said 0/2 while Daily said 0/4).
+- [x] ~~Cross-screen counter agreement (Home said 0/2 while Daily said 0/4).~~
+      **STALE — verified fixed 2026-08-24.** Driven live: Home reads "1/4
+      today", the Daily screen reads "1 of 4 played". They agree.
 - [x] **Standalone CSS mirror parity — SOLVED STRUCTURALLY 2026-08-15 (dcdc781).**
       Not a parity checker: the mirror is now width-gated to `(min-width:1024px)`,
       which is the only width it was ever for. Below 1024 a phone PWA inherits
