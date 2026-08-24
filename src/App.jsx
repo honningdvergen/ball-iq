@@ -32,7 +32,7 @@ import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from 
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
 import { registerPush, onPushTap, initPushTapRouting } from './lib/push.js';
-import { maybeRequestReview, markBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
+import { maybeRequestReview, markBadReviewMoment, clearBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
@@ -9380,6 +9380,12 @@ function AppInner() {
   }, []);
   const sendQuestionReport = useCallback(async (info, reason) => {
     setReportPending(null);
+    // "Too easy" is a compliment wearing a complaint's clothing — an engaged
+    // player telling us a question was beneath them. reportQuestion() has
+    // already suppressed the rating ask for 24h; give it back for this one
+    // reason. See clearBadReviewMoment for why the check lives here and not
+    // at the marking site.
+    if (reason === 'too-easy') clearBadReviewMoment();
     const resolve = reportResolveRef.current;
     reportResolveRef.current = null;
     // Settle the waiting button with the REAL outcome, then return it as before
@@ -10371,7 +10377,11 @@ function AppInner() {
           if (notifOpened) return;
           if (countPriorFootleSolves() < 1) return;
           if (IS_NATIVE) {
-            celebrationTimeoutsRef.current.push(setTimeout(() => { if (!ratingAskAllowed()) return; maybeRequestReview(); }, 3500));
+            celebrationTimeoutsRef.current.push(setTimeout(() => {
+              if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger: "footle" }); return; }
+              loopEvent("rate-prompt-shown", { engine: "native", trigger: "footle" });
+              maybeRequestReview();
+            }, 3500));
           } else if (webRatePromptEligible() && !ratePromptShown) {
             // Web parity for Alex's chosen moment (2026-07-29: "solving
             // Footle IS the right moment to ask"). Web players are most of
@@ -10380,9 +10390,21 @@ function AppInner() {
             // (the notification sheet did not just open), same prior-solve
             // basis, and the web sheet's unhappy path still deflects to
             // feedback before any store link.
+            // ⚠️ THE BUDGET IS SPENT WHERE THE SHEET RENDERS, NOT WHERE IT IS
+            // SCHEDULED. markWebRatePromptShown() used to run here, 3.5s before
+            // anything appeared — a reviewer reproduced the loss by solving
+            // Footle and reloading at 1s: biq_rate_web_count went to 1 with no
+            // sheet ever shown. The web budget is THREE asks in a LIFETIME, 60
+            // days apart, so each silent burn costs a third of it. My own
+            // ratingAskAllowed() gate made it worse by adding a second path
+            // that returns without rendering.
             setRatePromptShown(true);
-            markWebRatePromptShown();
-            celebrationTimeoutsRef.current.push(setTimeout(() => { if (!ratingAskAllowed()) return; setRateView("ask"); setShowRatePrompt(true); }, 3500));
+            celebrationTimeoutsRef.current.push(setTimeout(() => {
+              if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", trigger: "footle" }); return; }
+              markWebRatePromptShown();
+              loopEvent("rate-prompt-shown", { engine: "web", trigger: "footle" });
+              setRateView("ask"); setShowRatePrompt(true);
+            }, 3500));
           }
         });
       }
@@ -10644,7 +10666,11 @@ function AppInner() {
     const willAskNativeReview = hadGreatMoment && newTotal >= 5
       && (mode !== "daily" || (!isGuest && !notifOwnsDailyMoment && !challengeOwnsDailyMoment));
     if (willAskNativeReview) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { if (!ratingAskAllowed()) return; maybeRequestReview(); }, 3500));
+      celebrationTimeoutsRef.current.push(setTimeout(() => {
+        if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger: "results" }); return; }
+        loopEvent("rate-prompt-shown", { engine: "native", trigger: "results" });
+        maybeRequestReview();
+      }, 3500));
     }
 
     // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily)
@@ -10692,9 +10718,14 @@ function AppInner() {
       && !(IS_NATIVE && willAskNativeReview)
       && webRatePromptEligible();
     if (shouldShowRate) {
+      // Budget spent at render, not at schedule — see the Footle twin above.
       setRatePromptShown(true);
-      markWebRatePromptShown();
-      celebrationTimeoutsRef.current.push(setTimeout(() => { if (!ratingAskAllowed()) return; setRateView("ask"); setShowRatePrompt(true); }, 1800));
+      celebrationTimeoutsRef.current.push(setTimeout(() => {
+        if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", trigger: "classic" }); return; }
+        markWebRatePromptShown();
+        loopEvent("rate-prompt-shown", { engine: "web", trigger: "classic" });
+        setRateView("ask"); setShowRatePrompt(true);
+      }, 1800));
     }
 
     // Guest→account nudge at the results HIGH (opportunity-scan #4): the
@@ -11906,15 +11937,16 @@ function AppInner() {
           </div>
         )}
         {showRatePrompt && (
-          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => setShowRatePrompt(false)}>
+          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => { loopEvent("rate-prompt-dismissed", { view: rateView, how: "backdrop" }); setShowRatePrompt(false); }}>
             <div ref={ratePromptRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Rate Ball IQ" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               {rateView === "ask" ? (
                 <>
                   <div style={{fontSize:48,marginBottom:12}}>⚽</div>
                   <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
                   <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>We'd love to know how it's going for you.</div>
-                  <button className="btn btn-p" style={{marginBottom:10}} onClick={() => setRateView("store")}>Loving it! 😄</button>
+                  <button className="btn btn-p" style={{marginBottom:10}} onClick={() => { loopEvent("rate-prompt-loving"); setRateView("store"); }}>Loving it! 😄</button>
                   <button className="btn btn-s" onClick={() => {
+                    loopEvent("rate-prompt-not-really");
                     setShowRatePrompt(false);
                     try { window.location.href = `mailto:hello@balliq.app?subject=${encodeURIComponent(APP_NAME + " feedback")}&body=${encodeURIComponent("What could be better?\n\n")}`; } catch {}
                     showToast("Thanks — tell us what we can fix 🙏");
@@ -11929,14 +11961,21 @@ function AppInner() {
                     setShowRatePrompt(false);
                     const ua = navigator.userAgent || "";
                     if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
+                      loopEvent("rate-store-tap", { store: "apple" });
                       window.open(`${appStoreUrl()}?action=write-review`, "_blank");
                     } else if (/Android/i.test(ua)) {
+                      loopEvent("rate-store-tap", { store: "play" });
                       window.open(PLAY_STORE_URL, "_blank");
                     } else {
+                      // ⚠️ Counted as a DIFFERENT outcome. A desktop visitor who
+                      // taps through reaches a toast, not a store — grouping it
+                      // with the real taps would inflate the only conversion
+                      // number this funnel has.
+                      loopEvent("rate-store-unreachable", { store: "none" });
                       showToast(`⭐ Search '${APP_NAME}' on the App Store or Google Play`);
                     }
                   }}>Rate {APP_NAME} ⭐</button>
-                  <button className="btn btn-s" onClick={() => setShowRatePrompt(false)}>Maybe later</button>
+                  <button className="btn btn-s" onClick={() => { loopEvent("rate-prompt-dismissed", { view: "store", how: "maybe-later" }); setShowRatePrompt(false); }}>Maybe later</button>
                 </>
               )}
             </div>

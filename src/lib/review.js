@@ -45,6 +45,32 @@ export function markBadReviewMoment() {
   try { localStorage.setItem(KEY_BAD, String(Date.now())); } catch {}
 }
 
+/**
+ * Undo a bad-moment mark that turned out not to be one.
+ *
+ * ⚠️ WHY THIS EXISTS RATHER THAN A CONDITION AT THE CALL SITE. reportQuestion()
+ * marks a bad moment the instant the report button is tapped — BEFORE the
+ * reason sheet opens — because the tap itself is the signal and we must never
+ * make a second tap the price of being heard. That is right for four of the
+ * five reasons.
+ *
+ * It is wrong for "Too easy — gives itself away". That is not a complaint about
+ * quality, it is a confident expert telling us the bank is beneath them, and
+ * scouting report #4 found it is the shape MORE THAN HALF our reporters have:
+ * 16 of 30 reports carrying a pick came from someone who answered CORRECTLY.
+ * Suppressing the ask for them mutes exactly the players most likely to give
+ * five stars.
+ *
+ * ⚠️ Deliberately NOT "move the mark into sendQuestionReport and gate it on
+ * reason" — the panel suggested that and the critic caught it: reason is null
+ * on skip and on backdrop/Escape dismiss, so that version would have switched
+ * sentiment suppression OFF for most reports. Mark first, clear only on the one
+ * reason we can prove is a compliment.
+ */
+export function clearBadReviewMoment() {
+  try { localStorage.removeItem(KEY_BAD); } catch {}
+}
+
 // Best-effort request for the native review sheet. Returns true if we asked iOS
 // to show it (iOS still decides whether to actually render). Native-only.
 export async function maybeRequestReview() {

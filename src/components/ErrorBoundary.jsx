@@ -1,5 +1,6 @@
 import React from "react";
 import * as Sentry from "@sentry/react";
+import { markBadReviewMoment } from "../lib/review.js";
 
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
 // Lives outside App.jsx so main.jsx can ALSO wrap the marketing tree with it —
@@ -19,6 +20,14 @@ export class ErrorBoundary extends React.Component {
   }
   componentDidCatch(error, info) {
     console.error("[boundary]", error?.message || "Unknown error");
+    // ⚠️ A WHITE SCREEN IS THE WORST MOMENT IN THE PRODUCT, and it was the one
+    // moment the rating engine did not know about. TabErrorBoundary marked it;
+    // THIS boundary — the one that white-screens the whole app with "Something
+    // went wrong", and which also wraps the marketing tree and AuthProvider —
+    // did not. So a player could crash the app, restart, finish a game and be
+    // asked "Enjoying Ball IQ?" inside the suppression window that exists
+    // precisely to stop that. Suppresses the ask for 24h.
+    try { markBadReviewMoment(); } catch { /* storage unavailable; never block the fallback */ }
     // Native: launchAutoHide is false, so a crash BEFORE the app hides the
     // splash would leave this fallback rendering UNDER an unhideable splash —
     // "Restart App" unreachable. Hide it here (idempotent; no-op off-native).
