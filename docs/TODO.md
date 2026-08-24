@@ -73,10 +73,43 @@ upload itself remain.
       the real rate was **14.8%**, now 0.0%, with no shortened sessions.
       Falsified: strip the tag pass and the audit reports 79 unguarded (32 in
       summer2026).
-- [ ] "Hard" means 19%–79% correct depending on the pack; 29 near-duplicate
-      pairs disagree with themselves about difficulty.
-- [ ] 26 giveaway-distractor rows (distinctive stem token appears only in the
-      correct option) — separate class, detector not yet written.
+- [x] **Giveaway distractors — reported 26, detector found 20, TWELVE were real**
+      (`scripts/audit-giveaway-distractors.mjs`, in the build gate).
+      The class: a distinctive word sits in the stem AND the correct option and
+      in none of the wrong ones, so a player who has never watched a match can
+      score by matching. "Which club is Feyenoord's local rival in the ROTTERDAM
+      derby?" with "Sparta ROTTERDAM" on the list.
+      Twelve fixed by deleting the TELL, never the question — the "King Arturo"
+      nickname left the Vidal stem, the "Batman and Robben" pun left the Robben
+      question, the Superga crash stopped naming Superga. Answers unchanged in
+      all twelve. Eight are INHERENT and reasoned onto an allowlist: a Cruyff
+      quote that repeats "simple" because he did, the Mazzola father-and-son
+      question, a Steel City derby where both clubs are called Sheffield.
+      ⚠️ Third bank claim in a row where the report's count was a hypothesis
+      (26 stem leaks → 3 · 15 club self-answers → 33 · 26 giveaways → 12).
+- [x] **The difficulty disagreement was a SYMPTOM — they were duplicates**
+      (`scripts/audit-duplicate-questions.mjs`, in the build gate).
+      Reported as "29 near-duplicate pairs disagree about difficulty". Measured:
+      33 disagreeing, and the reason they disagree is that they are the same
+      question entered twice by different hands. Two were verbatim; the 2000
+      UEFA Cup final existed THREE times. Fixing the GRADES would have hidden
+      the duplicates and left a player able to meet both halves in one session.
+      11 redundant copies deleted, bank 6749 → 6738.
+      ⚠️ Survivor selection has two hard rules, both nearly missed:
+      **(1)** keep whichever copy the frozen Daily 7 log references — 7 of the
+      13 ids were in it; **(2)** keep whichever copy carries a TRANSLATION —
+      the SEO build hard-failed on `/tr/quiz/galatasaray` because I deleted the
+      English source of a Turkish question. The build caught it, I had not.
+- [🅰️] **Residual: 21 pairs at 0.6–0.8 similarity still disagree on difficulty.**
+      These are genuinely DIFFERENT questions about the same fact, so aligning
+      them is an editorial call, not a mechanical one — and the two directions
+      are both wrong in real cases (Götze in the 2014 final graded medium is too
+      hard; Béla Guttmann graded easy is too easy). Needs Alex, or a separate
+      pass with a real rule. NOT mass-edited.
+- [🅰️] **"Hard" still means 19%–79% correct depending on the pack.** Untouched —
+      that is a calibration problem against REAL ANSWER DATA, not a bank edit,
+      and we do not currently record per-question correctness in prod. It needs
+      an instrument before it needs a fix.
 
 ### 3 · The wrong-answer moment + press state — ✅ DONE (`92d420e`)
 Folded into item 1. Verified live in a browser by computed style, not source:
