@@ -189,7 +189,7 @@ export default function FootleBand() {
       <div className="fb-in">
         <h2 className="fb-h2" id="fbT">Footle. Football Wordle.</h2>
         <p className="fb-sub">
-          Guess the footballer’s surname in six. It resets at midnight, along with the
+          Guess the name a footballer goes by, in six. It resets at midnight, along with the
           Daily 7 — the same seven questions for everybody in the world, which is the
           only reason a score is worth arguing about.
         </p>
@@ -209,7 +209,7 @@ export default function FootleBand() {
         <p className="fb-note">
           {/* "an 8-letter", "an 11-letter" — the article follows the SOUND of the
               number, so it cannot be hard-coded while LEN varies. */}
-          Try No. {FP_NUMBER} from the archive — {/^(8|11|18)$/.test(String(LEN)) ? 'an' : 'a'} {LEN}-letter surname, and nothing about
+          Try No. {FP_NUMBER} from the archive — {/^(8|11|18)$/.test(String(LEN)) ? 'an' : 'a'} {LEN}-letter name, and nothing about
           tonight’s is given away.
         </p>
 
@@ -262,15 +262,15 @@ export default function FootleBand() {
 
         <div className="fb-legend" aria-hidden="true">
           <div className="fb-li"><span className="fb-sw" data-k="green" />Right letter, right place</div>
-          <div className="fb-li"><span className="fb-sw" data-k="yellow" />In the surname, wrong place</div>
+          <div className="fb-li"><span className="fb-sw" data-k="yellow" />In the name, wrong place</div>
           <div className="fb-li"><span className="fb-sw" data-k="grey" />Not in it</div>
           <div className="fb-six">Six guesses.</div>
           <div className="fb-clock">
             <div className="fb-time" aria-hidden="true">{rolled ? '00:00:00' : hh + ':' + mm + ':' + ss}</div>
             <p className="fb-cnote">
               {rolled
-                ? '0 seconds — the new board is up. Reload for today’s surname and seven new questions.'
-                : 'until a new surname and seven new questions, the same for everybody.'}
+                ? '0 seconds — the new board is up. Reload for today’s name and seven new questions.'
+                : 'until a new name and seven new questions, the same for everybody.'}
             </p>
           </div>
         </div>

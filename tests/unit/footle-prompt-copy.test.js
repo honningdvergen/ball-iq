@@ -78,15 +78,43 @@ describe('Footle never promises a surname', () => {
     expect(FILES.length).toBeGreaterThan(20);
   });
 
-  it('no rendered string calls the answer a surname', () => {
-    // Mutation check: restoring "Surname of a footballer" to FootleHero.jsx:123
-    // fails this. Verified by seeding it back.
+  /**
+   * ⚠️ THE FIRST VERSION OF THIS TEST WAS TOO NARROW AND SAID SO ANYWAY.
+   *
+   * It matched the literal phrase "surname of a footballer", passed green, and
+   * I described it in a commit as guarding "the CLASS, not that one file." The
+   * scouting-report critic then grepped properly and found EIGHT more rendered
+   * promises my regex sailed past, all live on the marketing pages people read
+   * while deciding to install: "Guess the footballer's surname in six",
+   * "a {LEN}-letter surname", "In the surname, wrong place", "today's surname",
+   * "Guess the surname in six", and the same FAQ answer in two files.
+   *
+   * A guard is only as wide as its pattern. So this now matches the WORD, with
+   * an explicit allowlist for the uses that are legitimate — which is the only
+   * honest way to write it, because two of them are correct copy that mentions
+   * surnames on purpose, and four are an ordinary local variable.
+   */
+  const ALLOWED = [
+    // Honest, nuanced copy: it names the exception in the same breath.
+    /usually a surname, sometimes a one-name legend/i,
+    // The `surname` identifier in Footle's answer-reveal (WORDLE_FULL_NAMES
+    // destructures to [prefix, surname]). A variable name promises nobody
+    // anything; only rendered text does.
+    /const \[prefix, surname\] = WORDLE_FULL_NAMES/,
+    /\+ surname\}\)`/,
+    /<strong>\{surname\}<\/strong>/,
+  ];
+
+  it('no rendered string promises the answer is a surname', () => {
+    // Mutation check: restoring ANY of the nine fixed strings fails this —
+    // verified by seeding two of them back, in different files.
     const offenders = [];
     for (const f of FILES) {
+      if (f.path.endsWith('questions.js')) continue; // bank data, not UI copy
       for (const [n, line] of f.code.split('\n').entries()) {
-        if (/urname of a footballer|urname of the footballer/.test(line)) {
-          offenders.push(`${f.path}:${n + 1}  ${line.trim().slice(0, 70)}`);
-        }
+        if (!/surname/i.test(line)) continue;
+        if (ALLOWED.some((re) => re.test(line))) continue;
+        offenders.push(`${f.path}:${n + 1}  ${line.trim().slice(0, 70)}`);
       }
     }
     expect(

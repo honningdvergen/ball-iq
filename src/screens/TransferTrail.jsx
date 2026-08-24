@@ -316,7 +316,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
               value={entry}
               onChange={(e) => setEntry(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") submit(false); }}
-              placeholder="Type a surname…"
+              placeholder="Type a player’s name…"
               aria-label="Your guess"
               autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false}
               enterKeyHint="go"
