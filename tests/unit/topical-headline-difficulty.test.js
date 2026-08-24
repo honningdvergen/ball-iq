@@ -32,11 +32,25 @@ import { QB } from '../../src/questions.js';
  */
 const HEADLINE = /\bwho (replaced|succeeded)\b|\bwhich manager (replaced|succeeded|took over)\b|\bsucceeded .+ (at|as)\b|\breplaced .+ as\b/i;
 
+/**
+ * ⚠️ SCOPED BY ID, NOT BY TAG — changed 2026-08-24 and this is the whole point.
+ *
+ * While the pack was withheld wholesale, `tag === 'summer2026'` was the right
+ * scope. Then Alex ruled on all 89 individually (55 approve · 31 reject · 3
+ * hold), so the approved 55 LOST the tag and went back into Classic, League and
+ * club draws — which is precisely the route by which two of these reached him
+ * in the first place. A tag-scoped test would now inspect three questions,
+ * pass, and guard nothing at the exact moment the other 55 became reachable
+ * again. The id prefix is stable regardless of tag or withhold state.
+ */
 describe('topical headline questions are not graded hard', () => {
-  const topical = QB.filter((q) => q && q.tag === 'summer2026');
+  const topical = QB.filter((q) => q && /^q_s26/.test(q.id || ''));
 
-  it('the pack is present', () => {
-    expect(topical.length).toBeGreaterThan(50);
+  it('the set is present and reachable', () => {
+    // Withheld or not, these are the rows the rule is about.
+    expect(topical.length).toBeGreaterThan(40);
+    const drawable = topical.filter((q) => !q.tag);
+    expect(drawable.length, 'the approved questions should be back in the draws').toBeGreaterThan(40);
   });
 
   it('no appointment headline is labelled hard or medium', () => {
@@ -51,11 +65,19 @@ describe('topical headline questions are not graded hard', () => {
     ).toEqual([]);
   });
 
-  it('the pack still has enough hard questions to fill the tile', () => {
-    // The topical tile serves onlyDiff:'hard' and needs 10. If a future
-    // re-grade empties that tier the tile silently stops working, so this is
-    // the counterweight that stops the rule above being applied too broadly.
+  it('the rule has not been applied so broadly that nothing is hard', () => {
+    // ⚠️ The counterweight, rewritten. It used to say "enough hard questions to
+    // fill the tile" — but the tile is gone (Alex retired the mode), so that
+    // assertion was guarding a thing that no longer exists while reading as if
+    // it still protected something.
+    //
+    // What still needs protecting is the OPPOSITE error: re-grading these to
+    // easy en masse would quietly delete them from every club and league draw,
+    // since all of those drop easy. Measured after Alex's ruling: 35 hard, 15
+    // medium, 8 easy of 58.
     const hard = topical.filter((q) => q.diff === 'hard');
-    expect(hard.length, 'the topical tile draws 10 hard questions').toBeGreaterThanOrEqual(20);
+    expect(hard.length, 'grading these easy removes them from club/league draws').toBeGreaterThanOrEqual(20);
+    const easy = topical.filter((q) => q.diff === 'easy');
+    expect(easy.length / topical.length, 'most of these are not headlines').toBeLessThan(0.4);
   });
 });

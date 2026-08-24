@@ -10164,6 +10164,18 @@ function AppInner() {
           const noEasy = verified.filter(q => q.diff !== "easy");
           const clubPool = noEasy.length >= 16 ? noEasy : verified;
           if (clubPool.length >= 10) {
+            // ⚠️ TONE IS THE POINT, not just the disclosure. The first draft
+            // apologised ("you've played most of these") which frames a thin
+            // pack as our shortfall and the player's bad luck. The same fact
+            // said as something they EARNED reads as a compliment and is
+            // equally true — a fan who has exhausted their club's pack is
+            // exactly the player we most want to keep.
+            //
+            // Deliberately promises nothing. "More coming soon" would be the
+            // ambitious line, and expanding the packs IS the plan, but a
+            // delivery promise in a toast rots the moment the plan slips and
+            // there is no way to un-say it to the people who read it.
+            //
             // ⚠️ SAY IT OUT LOUD WHEN THE PACK IS SPENT. applySeenFilter tops
             // up from the least-recently-seen and says nothing, so a fan on
             // their third Manchester United round (24 eligible against a round
@@ -10174,7 +10186,7 @@ function AppInner() {
             // true. Checked BEFORE the draw because applySeenFilter's return
             // value cannot tell you whether it had to top up.
             if (countFreshQuestions(clubPool, qbHistKey) < 10 && shouldWarnPackThin(clubKey)) {
-              showToast(`You've played most of the ${pack.name} questions lately — some will come round again`);
+              showToast(`You know the ${pack.name} pack inside out — a few of these will come round again`);
             }
             // Same 14-day seen filter League Quiz applies — without it a club
             // pool of ~20 serves immediate repeats while fresh rows sit unused.

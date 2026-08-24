@@ -90,11 +90,14 @@ describe('a spent club pack admits it', () => {
     expect(body, 'the store must not grow without bound').toMatch(/const next = \{ \[clubKey\]: today \}/);
   });
 
-  it('the message states no question count', () => {
+  it('the message states no question count, and promises nothing', () => {
     // Standing rule, seven previous disguises: never print how many questions
-    // there are. "most of these" is the honest form that cannot rot either.
-    const m = APP.match(/showToast\(`You've played most of the \$\{pack\.name\}[^`]*`\)/);
+    // there are. It must also not promise MORE questions — expanding the packs
+    // is the plan, but a delivery promise in a toast rots the moment the plan
+    // slips and cannot be un-said to the people who already read it.
+    const m = APP.match(/showToast\(`You know the \$\{pack\.name\} pack inside out[^`]*`\)/);
     expect(m, 'the thin-pack toast should still exist').toBeTruthy();
     expect(m[0], 'no digits in the copy').not.toMatch(/\d/);
+    expect(m[0], 'no delivery promise').not.toMatch(/soon|coming|more (are|questions)|we('| a)re adding/i);
   });
 });
