@@ -124,9 +124,19 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
 - [ ] Don't chase all 86 — six packs, one per session.
 
 ### 7 · Fix the retention instrument before steering by it
-- [ ] `scores` under-records ~20% of daily completions, so every retention
-      number in every report is wrong by an unknown margin. Add a test that
-      fails when a completed game produces no row.
+- [x] `scores` under-records ~20% of daily completions (`969cecc`). Reproduced
+      against prod, today-only: 137 games finished last week vs 110 rows;
+      08-19 was 18 vs 12. Not a crash — an ASYMMETRY. `wordle_state` is
+      eventually consistent (skipped when signed out, back-synced by `hydrate`
+      at sign-in); `scores` was five separate fire-and-forget inserts behind
+      `if (user?.id)` with no retry. Five call sites is why nobody could see it.
+      Now one door (`saveScore`) + a durable outbox drained once auth settles,
+      idempotent on a client uuid used as the PK so retries hit 23505 instead
+      of inflating the number this exists to make honest. Backfilled rows carry
+      the PLAY time, clamped to now — `created_at` defaults to now(), so a
+      Monday game flushed Thursday would land on Thursday and the per-day
+      counts would still be wrong, just somewhere new.
+      Test falsified with five seeded defects.
 
 ### ⚠️ Do NOT do these (the critic killed them)
 - Clearing `celebrationTimeoutsRef` on a screen-keyed effect — `setScreen("results")`
@@ -159,11 +169,30 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
       already calls haptic("soft"); the reviewer's live check found nothing
       because off-native it falls through to navigator.vibrate, unsupported on
       desktop. On a phone it routes to Capacitor ImpactStyle.Light. No change.
-- [ ] **~1.0s of pure BLACK on native cold launch**, between the launch
-      storyboard and the splash. Reproduced 3× on a simulator against build 75.
-      The first thing a player sees, every launch.
-- [ ] **The web pre-boot shell paints at 0.6s and is dead until 2.9s — and eats
-      the first tap.** Report #3's "empty frame" lesson recurring, worse.
+- [~] **~1.0s of pure BLACK on native cold launch** (`e92978c`) — fix LANDED,
+      awaiting Alex's device test. The Splash image is now inserted as a
+      backdrop at subview index 0, BEHIND the bridge, so it fills the gap
+      between the launch storyboard and the web splash and can never cover UI.
+      ⚠️ Simulator-reproduced only; this is a cold-launch timing bug, so the
+      device test is the one that counts.
+- [x] **The web pre-boot shell ate the first tap** (`280c1c0`) — a 2.3s window
+      (paints 0.6s, dead until 2.9s). VERIFIED AGAINST THE LIVE DOCUMENT, not
+      inferred: balliq.app/play served SIX buttons, the only buttons in the
+      whole document, with zero onclick and zero addEventListener anywhere near
+      them. A brand-new player's first ever interaction with Ball IQ was a tap
+      that did nothing — no press state, no answer, no error. The better the
+      shell got at looking instant, the longer it lied.
+      The shell now grades the question inline and hands the pick to
+      OnboardingScreen, which mounts already-answered so the swap stays
+      invisible; Skip/Start playing are honoured too.
+      ⚠️ Shipped a bug inside this fix and caught it only by driving a real
+      browser: deleting the pick on read ("adopt it once") loses it under
+      StrictMode, because mount #1 eats it and mount #2 is the one the player
+      sees. Every unit assertion passed — both halves were correct and only
+      their ORDER was wrong. Read is non-destructive now; the side-effecting
+      skip/start replay carries the latch.
+      Also gates the "KEEP IN SYNC with ONBOARD_SAMPLE" comment, which had
+      nothing enforcing it and drives an INDEX-based replay.
 
 ## 🤚 FEEL & NAVIGATION — opened 2026-08-23 on Alex's build-75 report
 
