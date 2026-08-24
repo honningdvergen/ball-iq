@@ -3,7 +3,7 @@ import { ArrowLeft, Search } from 'lucide-react';
 // Same kit the Trail imports (TransferTrail.jsx) — the scouting panel measured
 // this file at ZERO haptic/sound/confetti: the hardest, longest-effort daily
 // paid off with a mute green panel while Trail and Footle both celebrate.
-import { Confetti, haptic } from '../App.jsx';
+import { Confetti, haptic, playSound } from '../App.jsx';
 import {
   rankPool, bandFor, matchGuess, normaliseName,
   answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
@@ -248,9 +248,15 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
     // hot deserves a different pulse than a cold one, and the win gets the
     // same hardCorrect + confetti the Trail earns. Cold guesses stay silent
     // on purpose: every guess buzzing would flatten the signal into noise.
-    if (isWin) haptic('hardCorrect');
-    else if (rank <= 25) haptic('correct');   // burning hot — you are close
-    else haptic('select');                    // registered, keep hunting
+    // ⚠️ SOUND DEFAULTS ON FOR NATIVE IN 1.7.0 (App.jsx:8791), which is exactly
+    // when this mode's silence starts being felt. Scouting report #4: App.jsx
+    // carries 19 playSound calls and Trail / Mystery / Stadiums carried ZERO
+    // between them. Paired with the haptics already here so the two channels
+    // always agree — including the three-way split, which is the whole feel of
+    // this mode: a near miss should not sound like a shrug.
+    if (isWin) { haptic('hardCorrect'); playSound('correct'); }
+    else if (rank <= 25) { haptic('correct'); playSound('correct'); }   // burning hot — you are close
+    else { haptic('select'); playSound('soft'); }                       // registered, keep hunting
     if (isWin) setWon(true);
     // Persist EVERY guess, not just the win — a player who closes the tab
     // three guesses in should come back to those three guesses.

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
 import { STADIUM_LEAGUES, matchStadium } from "../data/stadiums.js";
-import { Confetti, haptic } from "../App.jsx";
+import { Confetti, haptic, playSound } from "../App.jsx";
 
 // Stadiums — a Sporcle-style completion run: name every ground in the league.
 // Alex's design (2026-08-20): start cold with just a counter; the FIRST hint
@@ -126,8 +126,14 @@ function StadiumBoard({ league, onExit }) {
   );
 
   const finish = (nextSolved, gaveUp) => {
-    if (gaveUp) haptic("wrong");
-    else haptic("hardCorrect");
+    // ⚠️ SOUND DEFAULTS ON FOR NATIVE IN 1.7.0 (App.jsx:8791), which is exactly
+    // when this mode's silence starts being felt. Scouting report #4: App.jsx
+    // carries 19 playSound calls, and Trail / Mystery / Stadiums carried ZERO
+    // between them — so a native player hears Classic and Footle and then hits
+    // a wall of silence in the newer modes. Paired with the haptics that were
+    // already here, so the two channels always agree.
+    if (gaveUp) { haptic("wrong"); playSound("wrong"); }
+    else { haptic("hardCorrect"); playSound("correct"); }
     try {
       window.dispatchEvent(new CustomEvent("biq:stadiums-completed", {
         detail: { league: league.id, solved: nextSolved.length, total, hints: hintsUsed, gaveUp },
@@ -164,14 +170,14 @@ function StadiumBoard({ league, onExit }) {
     setJustSolved(hit);
     setTimeout(() => setJustSolved(null), 900);
     if (nextSolved.length === total) finish(nextSolved, false);
-    else haptic("correct");
+    else { haptic("correct"); playSound("correct"); }
   };
 
   const onEnter = (e) => {
     if (e.key !== "Enter") return;
     // Enter with no match = the "that's not it" beat; matches land on
     // keystroke so Enter only ever means a miss.
-    if (text.trim()) { haptic("wrong"); setShake(true); setTimeout(() => setShake(false), 420); }
+    if (text.trim()) { haptic("wrong"); playSound("wrong"); setShake(true); setTimeout(() => setShake(false), 420); }
   };
 
   const revealClubs = () => { haptic("select"); setState((s) => ({ ...s, clubsRevealed: true })); };

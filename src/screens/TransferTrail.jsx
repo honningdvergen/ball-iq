@@ -21,7 +21,7 @@ import {
   computeTrailStreak,
   buildTrailShareText,
 } from "../lib/trail.js";
-import { Confetti, haptic, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
+import { Confetti, haptic, playSound, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
 import { clubColour, clubAbbr } from "../lib/clubColour.js";
 /* Shares mysteryPool.json with Mystery Player ON PURPOSE. Vite hoists it into
    one chunk both modes use, so a player who does the dailies downloads it ONCE
@@ -122,8 +122,14 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
     if (willEnd) { try { document.activeElement?.blur?.(); } catch {} }
     setAttempts((a) => [...a, { text, skipped: !!skipped }]);
     setEntry("");
-    if (hit) haptic("hardCorrect");
-    else { haptic("wrong"); setShake(true); setTimeout(() => setShake(false), 420); }
+    // ⚠️ SOUND DEFAULTS ON FOR NATIVE IN 1.7.0 (App.jsx:8791), which is exactly
+    // when this mode's silence starts being felt. Scouting report #4: App.jsx
+    // carries 19 playSound calls, and Trail / Mystery / Stadiums carried ZERO
+    // between them — so a native player hears Classic and Footle and then hits
+    // a wall of silence in the newer modes. Paired with the haptics that were
+    // already here, so the two channels always agree.
+    if (hit) { haptic("hardCorrect"); playSound("correct"); }
+    else { haptic("wrong"); playSound("wrong"); setShake(true); setTimeout(() => setShake(false), 420); }
   }, [done, entry, player, misses]);
 
   /* Name autocomplete, same ranker as Mystery Player (lib/playerSearch.js).
