@@ -71,17 +71,41 @@ export function clearBadReviewMoment() {
   try { localStorage.removeItem(KEY_BAD); } catch {}
 }
 
+/**
+ * Why a native ask would not show — WITHOUT spending anything.
+ *
+ * ⚠️ EXISTS SO THE FUNNEL CANNOT LIE. The call sites logged
+ * `rate-prompt-shown` and THEN called maybeRequestReview(), which returns
+ * false on a suppressed ask without a word. So every ask killed by a bad
+ * moment, the cooldown or the lifetime cap was recorded as shown — and the
+ * suppression levers we have been adding all week (a report, a crash, a lost
+ * Footle, a rage-quit) are exactly the things that would have inflated it.
+ * The instrument would have looked healthiest precisely where it was most
+ * wrong.
+ *
+ * Read-only and side-effect free: safe to call before deciding what to log.
+ * `maybeRequestReview` delegates to it so there is ONE implementation of the
+ * policy — two copies would drift, and the drift would be invisible.
+ */
+export function nativeAskBlockedReason() {
+  try {
+    if (!Capacitor.isNativePlatform()) return 'not-native';
+    const bad = parseInt(localStorage.getItem(KEY_BAD) || '0', 10) || 0;
+    if (bad && (Date.now() - bad) < BAD_MOMENT_COOLDOWN_H * 3600000) return 'bad-moment';
+    const count = parseInt(localStorage.getItem(KEY_COUNT) || '0', 10) || 0;
+    if (count >= MAX_LIFETIME) return 'lifetime-cap';
+    const last = parseInt(localStorage.getItem(KEY_LAST) || '0', 10) || 0;
+    if (last && (Date.now() - last) < MIN_DAYS_BETWEEN * 86400000) return 'cooldown';
+    return null;
+  } catch { return 'storage-error'; }
+}
+
 // Best-effort request for the native review sheet. Returns true if we asked iOS
 // to show it (iOS still decides whether to actually render). Native-only.
 export async function maybeRequestReview() {
   try {
-    if (!Capacitor.isNativePlatform()) return false;
-    const bad = parseInt(localStorage.getItem(KEY_BAD) || '0', 10) || 0;
-    if (bad && (Date.now() - bad) < BAD_MOMENT_COOLDOWN_H * 3600000) return false;
+    if (nativeAskBlockedReason()) return false;
     const count = parseInt(localStorage.getItem(KEY_COUNT) || '0', 10) || 0;
-    if (count >= MAX_LIFETIME) return false;
-    const last = parseInt(localStorage.getItem(KEY_LAST) || '0', 10) || 0;
-    if (last && (Date.now() - last) < MIN_DAYS_BETWEEN * 86400000) return false;
     // Stamp BEFORE the call so a throw/no-op still counts toward the cooldown.
     localStorage.setItem(KEY_LAST, String(Date.now()));
     localStorage.setItem(KEY_COUNT, String(count + 1));

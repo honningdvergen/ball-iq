@@ -27,9 +27,17 @@ import { fileURLToPath } from 'node:url';
 
 const APP = readFileSync(fileURLToPath(new URL('../../src/App.jsx', import.meta.url)), 'utf8');
 
-/** Every `setTimeout(() => { … }, n)` body in App.jsx, as source text. */
+/**
+ * Every `setTimeout(() => { … }, n)` body in App.jsx, as source text.
+ *
+ * ⚠️ The window is deliberately generous. At 400 chars it silently stopped
+ * matching the two native ask callbacks the moment they gained a comment —
+ * the bodies simply fell out of the capture and the ask COUNT dropped, which
+ * is the good failure. Had the count assertion not been there, a shrinking
+ * denominator would have quietly made "no ungated asks" vacuously true.
+ */
 function scheduledBodies(src) {
-  return [...src.matchAll(/setTimeout\(\(\) => \{([\s\S]{0,400}?)\}, \d+\)/g)].map((m) => m[1]);
+  return [...src.matchAll(/setTimeout\(\(\) => \{([\s\S]{0,1400}?)\}, \d+\)/g)].map((m) => m[1]);
 }
 
 describe('the rating ask cannot interrupt a live question', () => {

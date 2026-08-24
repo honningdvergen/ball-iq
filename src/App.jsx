@@ -32,7 +32,7 @@ import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from 
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
 import { registerPush, onPushTap, initPushTapRouting } from './lib/push.js';
-import { maybeRequestReview, markBadReviewMoment, clearBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
+import { maybeRequestReview, nativeAskBlockedReason, markBadReviewMoment, clearBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
 import { saveScore, flushScoreOutbox } from './lib/scoreOutbox.js';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard } from './lib/ballIqCard.js';
@@ -10594,6 +10594,12 @@ function AppInner() {
           if (IS_NATIVE) {
             celebrationTimeoutsRef.current.push(setTimeout(() => {
               if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger: "footle" }); return; }
+              // ⚠️ ASK THE POLICY BEFORE CLAIMING WE SHOWED ANYTHING. maybeRequestReview
+              // returns false in silence on a bad moment / cooldown / lifetime cap, so
+              // logging "shown" first counted every suppressed ask as a real one — and
+              // the suppression levers added all week are exactly what would inflate it.
+              const blocked = nativeAskBlockedReason();
+              if (blocked) { loopEvent("rate-prompt-skipped", { reason: blocked, engine: "native", trigger: "footle" }); return; }
               loopEvent("rate-prompt-shown", { engine: "native", trigger: "footle" });
               maybeRequestReview();
             }, 3500));
@@ -10809,6 +10815,44 @@ function AppInner() {
   const handleComplete = useCallback((res) => {
     saveStats(res);
 
+    // ⚠️ A SESSION THAT HURT MUST NOT BE FOLLOWED BY "ENJOYING BALL IQ?"
+    //
+    // The last two unregistered bad-moment classes on the board were "timeout"
+    // and "wrong-answer streak". Both are really one thing — a stretch where
+    // the player felt stupid — and neither is worth marking on its own: a
+    // single timeout is normal play, and marking every one would suppress the
+    // ask so broadly it would undo the rating funnel.
+    //
+    // Measured against prod before picking the thresholds, not guessed:
+    //   · Daily 7 ends at 2/7 or worse on 20.5% of plays (70 of 341, 60d)
+    //   · 10-question quizzes end at 3/10 or worse on 8.3% (25 of 301)
+    // So the ratio rule marks about one in five Daily 7s — far LESS aggressive
+    // than the Footle-loss mark already shipping, which fires on 38% of days
+    // Footle is played.
+    //
+    // ⚠️ Survival excluded: dying is the mode's design, and ~48% of runs end
+    // on the very first question. Marking those would suppress the ask for
+    // half of Survival's players on a mode working exactly as intended — the
+    // same reason the perfect-score celebration already excludes it.
+    const answers = Array.isArray(res.allAnswers) ? res.allAnswers : [];
+    let missRun = 0, worstMissRun = 0, timeouts = 0;
+    for (const a of answers) {
+      if (a?.isCorrect) { missRun = 0; continue; }
+      missRun += 1;
+      if (missRun > worstMissRun) worstMissRun = missRun;
+      if (a?.timedOut) timeouts += 1;
+    }
+    const ratio = res.total >= 5 ? res.score / res.total : null;
+    const bruising = mode !== "survival" && (
+      worstMissRun >= 4                      // four misses in a row is a spiral, not a hard question
+      || timeouts >= 3                       // ran the clock out repeatedly — stuck, or walked away
+      || (ratio !== null && ratio <= 0.3)    // finished having got most of it wrong
+    );
+    if (bruising) {
+      try { markBadReviewMoment(); } catch {}
+      loopEvent("bad-moment", { source: "session", mode, worstMissRun, timeouts, score: res.score, total: res.total });
+    }
+
     // Milestone celebrations
     const newTotal = (stats.gamesPlayed || 0) + 1;
     if (newTotal === 10) showToast("🎉 10 games played, you're on a roll");
@@ -10862,6 +10906,12 @@ function AppInner() {
     if (willAskNativeReview) {
       celebrationTimeoutsRef.current.push(setTimeout(() => {
         if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger: "results" }); return; }
+        // ⚠️ ASK THE POLICY BEFORE CLAIMING WE SHOWED ANYTHING. maybeRequestReview
+        // returns false in silence on a bad moment / cooldown / lifetime cap, so
+        // logging "shown" first counted every suppressed ask as a real one — and
+        // the suppression levers added all week are exactly what would inflate it.
+        const blocked = nativeAskBlockedReason();
+        if (blocked) { loopEvent("rate-prompt-skipped", { reason: blocked, engine: "native", trigger: "results" }); return; }
         loopEvent("rate-prompt-shown", { engine: "native", trigger: "results" });
         maybeRequestReview();
       }, 3500));
