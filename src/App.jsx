@@ -7446,8 +7446,46 @@ function XPBar({ xp, streak }) {
 // install) — keep it 100% free of competition/tournament branding.
 const ONBOARD_SAMPLE = { q: "Who has scored the most goals in men's international football?", o: ["Lionel Messi", "Cristiano Ronaldo", "Pelé", "Neymar"], a: 1 };
 
+// Whatever the player already did to index.html's pre-boot shell.
+//
+// ⚠️ READ, NEVER CONSUME. This deleted the value on read for one revision, on
+// the reasoning that a second adoption would replay a stale tap. It does the
+// opposite: StrictMode mounts, unmounts and REMOUNTS, and the remount gets a
+// fresh ref — so mount #1 ate the pick and mount #2, the one that stays on
+// screen, found nothing and rendered unanswered. Caught by driving a real
+// browser; every unit assertion still passed, because both halves were
+// individually correct and only their ORDER was wrong.
+//
+// Re-reading is harmless: the value describes a tap made seconds ago in this
+// same page load, so adopting it twice adopts the same truth twice. The one
+// thing that must not repeat is the side-effecting skip/start replay, which
+// carries its own module-level latch below.
+function readPrebootPick() {
+  try {
+    return (typeof window !== 'undefined' ? window.__biqPreboot : null) || null;
+  } catch { return null; }
+}
+
+// The skip/start replay writes localStorage, fires a funnel event and leaves
+// the screen — once per page load, no matter how many times React mounts it.
+let prebootActReplayed = false;
+
 function OnboardingScreen({ onDone }) {
-  const [sampleAnswered, setSampleAnswered] = useState(null);
+  // ⚠️ ADOPT THE TAP THE SHELL ALREADY TOOK.
+  //
+  // The pre-boot shell paints this exact screen from static HTML so LCP lands
+  // at first paint instead of waiting for the lazy chunk — which means for the
+  // seconds before this component exists, the player is looking at a real
+  // onboarding question they can tap. They now CAN tap it (index.html answers
+  // and records it); this is the other half, without which the answer would
+  // vanish the instant React took over and the screen would reset to unanswered
+  // in front of them — a worse bug than the dead tap, because it looks like the
+  // app forgot.
+  const prebootRef = useRef(null);
+  if (prebootRef.current === null) prebootRef.current = readPrebootPick() || {};
+  const [sampleAnswered, setSampleAnswered] = useState(
+    typeof prebootRef.current.opt === 'number' ? prebootRef.current.opt : null,
+  );
 
   const persistAndFinish = () => {
     try {
@@ -7484,6 +7522,22 @@ function OnboardingScreen({ onDone }) {
     persistAndFinish();
   };
   const skip = next;
+
+  // They already pressed Skip or Start playing on the shell. Honour it instead
+  // of showing them the screen they just dismissed and asking again.
+  //
+  // No haptic on this path: the tap happened seconds ago, so a buzz now reads
+  // as the phone doing something on its own. The analytics stay honest because
+  // sampleAnswered was seeded above — a player who answered AND pressed start
+  // still counts as onboard-done-answered.
+  //
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount;
+  // persistAndFinish closes over the seeded sampleAnswered, which is what we want.
+  useEffect(() => {
+    if (!prebootRef.current?.act || prebootActReplayed) return;
+    prebootActReplayed = true;
+    persistAndFinish();
+  }, []);
 
   return (
     <div className="onboard-wrap">

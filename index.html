@@ -860,16 +860,16 @@
                swap is imperceptible inside a full-screen component replace. -->
           <div style="font-size:16.5px;color:#9BA0B8;line-height:1.6;max-width:320px;margin-bottom:14px;">Who has scored the most goals in men's international football?</div>
           <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;">
-            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Lionel Messi</button>
-            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Cristiano Ronaldo</button>
-            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Pelé</button>
-            <button style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;">Neymar</button>
+            <button data-biq-opt="0" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Lionel Messi</button>
+            <button data-biq-opt="1" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Cristiano Ronaldo</button>
+            <button data-biq-opt="2" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Pelé</button>
+            <button data-biq-opt="3" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Neymar</button>
           </div>
-          <div style="margin:14px 0 2px;font-size:15px;font-weight:700;min-height:22px;"></div>
+          <div id="preboot-fb" style="margin:14px 0 2px;font-size:15px;font-weight:700;min-height:22px;"></div>
         </div>
         <div style="display:flex;gap:10px;align-items:center;justify-content:center;width:100%;max-width:340px;margin-top:14px;padding-bottom:8px;">
-          <button style="background:none;border:none;color:#9BA0B8;font-size:14px;font-weight:600;font-family:inherit;padding:12px 18px;min-height:48px;min-width:88px;border-radius:12px;">Skip</button>
-          <button style="max-width:180px;flex:1;padding:16px;background:#58CC02;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;letter-spacing:0.01em;">Start playing</button>
+          <button data-biq-act="skip" style="background:none;border:none;color:#9BA0B8;font-size:14px;font-weight:600;font-family:inherit;padding:12px 18px;min-height:48px;min-width:88px;border-radius:12px;cursor:pointer;">Skip</button>
+          <button data-biq-act="start" id="preboot-start" style="max-width:180px;flex:1;padding:16px;background:#58CC02;border:none;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;letter-spacing:0.01em;cursor:pointer;">Start playing</button>
         </div>
       </div>
     </div>
@@ -885,6 +885,60 @@
       if(!el)return;
       el.style.display='flex';
       setTimeout(function(){var e=document.getElementById('preboot-onboard');if(e)e.remove();},12000);
+
+      /* ── THE SHELL MUST ANSWER THE TAP IT INVITED ──────────────────────
+         This overlay paints a complete, convincing onboarding question and
+         then sits there until the lazy GameRoot chunk downloads AND executes
+         — seconds, on the cold 4G first visit it exists to serve. Until this
+         block existed the six buttons above were the ONLY buttons in the
+         served document and NONE of them had a handler: a first-time
+         visitor's very first interaction with Ball IQ was a tap that did
+         nothing at all. No press state, no answer, no error. The faster the
+         shell made the app look, the longer it lied.
+
+         So capture the tap and replay it. Paint the answer here (identical
+         classes' worth of inline style, mirroring app.css .onboard-sample-opt
+         .correct/.wrong) so the tap is acknowledged INSTANTLY, and stash it
+         on window for OnboardingScreen to adopt on mount. The React screen
+         then renders already-answered and the swap stays invisible.
+
+         ⚠️ Index-based, so it is only correct while these four options match
+         ONBOARD_SAMPLE.o in App.jsx, in order. That was already a "keep in
+         sync" comment with nothing enforcing it; tests/unit/preboot-shell-
+         matches-onboarding.test.js now enforces it. */
+      var ANSWER=1;               /* ONBOARD_SAMPLE.a — Cristiano Ronaldo */
+      var CORRECT="Nice — you're a natural ⚽";
+      var WRONG="It's Cristiano Ronaldo — the all-time record holder. You'll pick these up fast!";
+      el.addEventListener('click',function(ev){
+        var t=ev.target;
+        while(t&&t!==el&&t.tagName!=='BUTTON')t=t.parentNode;
+        if(!t||t.tagName!=='BUTTON')return;
+        var act=t.getAttribute('data-biq-act');
+        if(act){
+          /* Skip / Start playing. Onboarding is over the moment they say so —
+             record it and let AppInner finish the flow when it mounts, rather
+             than making them tap a second time on a screen they dismissed. */
+          window.__biqPreboot=window.__biqPreboot||{};
+          window.__biqPreboot.act=act;
+          t.style.opacity='0.7';
+          return;
+        }
+        var idx=t.getAttribute('data-biq-opt');
+        if(idx===null)return;
+        idx=+idx;
+        if(window.__biqPreboot&&window.__biqPreboot.opt!==undefined)return;  /* first answer wins, as in the real screen */
+        window.__biqPreboot={opt:idx};
+        var opts=el.querySelectorAll('[data-biq-opt]');
+        for(var i=0;i<opts.length;i++){
+          opts[i].disabled=true;
+          if(i===ANSWER){opts[i].style.background='rgba(88,204,2,0.16)';opts[i].style.borderColor='#58CC02';opts[i].style.color='#DFF5C8';opts[i].innerHTML+=' <span aria-hidden="true">✓</span>';}
+          else if(i===idx){opts[i].style.background='rgba(239,68,68,0.14)';opts[i].style.borderColor='#ef4444';opts[i].style.color='#fca5a5';opts[i].innerHTML+=' <span aria-hidden="true">✗</span>';}
+        }
+        var fb=document.getElementById('preboot-fb');
+        if(fb)fb.textContent=(idx===ANSWER?CORRECT:WRONG);
+        var start=document.getElementById('preboot-start');
+        if(start)start.textContent="Let's play";
+      });
     }catch(e){}})();</script>
     <!-- ════════════════════════════════════════════════════════════════
          LANDING CHROME — TOP HALF
