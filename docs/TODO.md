@@ -39,14 +39,29 @@ upload itself remain.
       changes it again.
 - [ ] Upload iOS. **Alex's call, always.**
 
-### 2 · One sitting on the question bank
-- [ ] ~36 giveaway questions where a distinctive stem token reappears only in
-      the correct option; 5 stems containing their own answer verbatim; 15
-      club-pack questions whose answer is the club you picked.
+### 2 · One sitting on the question bank — SELF-ANSWERS DONE (`9ac6dc6`)
+- [x] **Stems that state their own answer.** Reported 26; **actual 3.** My own
+      first detector said 18 and hand-checking killed 15 — all the same failure,
+      the stop-list reducing a club name to one token that matched a *different*
+      club ("Man City"→"man" vs "Man United"). q_74322a DELETED (unfixable, the
+      RB Leipzig ruling), q_e9269e + q_fd0299 rewritten to drop the give-away
+      clause, answers and hints intact.
+- [x] **Answer is the pack you picked.** Reported 15; **actual 33.** Fixed by
+      RE-HOMING (drop `club`), not deleting — the questions are fine anywhere
+      else. Bank 6782 → 6781: one deletion, 33 re-homes.
+      ⚠️ Checked THREE consumers: pack headroom (18 ≥ 16 ✓), SEO MIN_HINTS
+      (28 ≥ 15 ✓), and — caught by the build, not by me — **localised club
+      pages**, 10 translated copies across 7 locales carrying the same defect.
+- [x] **Gated:** `tests/unit/bank-self-answers.test.js`, zero-tolerance, small
+      reasoned allowlist. Falsified by seeding both classes back.
 - [ ] ⚠️ Summer 2026 (Home-featured, NEW-badged) ships OUTSIDE every leak guard
       and leaks in **38.4% of sessions**. `audit-leaks-full.mjs` reported 0
-      unguarded — a self-confirming zero.
-- [ ] Wire the detector into `npm run build`.
+      unguarded — a self-confirming zero, because it enumerates the same two
+      group keys the generator does, so a pool never grouped is never checked.
+- [ ] "Hard" means 19%–79% correct depending on the pack; 29 near-duplicate
+      pairs disagree with themselves about difficulty.
+- [ ] 26 giveaway-distractor rows (distinctive stem token appears only in the
+      correct option) — separate class, detector not yet written.
 
 ### 3 · The wrong-answer moment + press state — ✅ DONE (`92d420e`)
 Folded into item 1. Verified live in a browser by computed style, not source:
