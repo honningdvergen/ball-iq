@@ -6,6 +6,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
+import { Pencil } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 
 export const BADGE_DEFS = [
@@ -1630,12 +1631,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                     </span>
                   ) : showNameCTA ? (
                     <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
-                      Set your name <span style={{fontSize:13,opacity:0.6}} aria-hidden="true">✏️</span>
+                      Set your name <Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.7}} />
                     </button>
                   ) : (
                     <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Edit your name">
                       {currentName || authProfile?.username || profile?.name || "Player"}
-                      <span style={{fontSize:13,opacity:0.55}} aria-hidden="true">✏️</span>
+                      <Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.65}} />
                     </button>
                   )}
                 </div>
@@ -1656,7 +1657,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                     displayEmoji
                   )}
                 </button>
-                <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit"}}>✏️</button>
+                <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit", display:"inline-flex", alignItems:"center", justifyContent:"center"}}><Pencil size={14} strokeWidth={2.5} aria-hidden="true" /></button>
               </div>
             </div>
 

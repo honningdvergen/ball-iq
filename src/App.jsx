@@ -6111,7 +6111,7 @@ export function recordMpResult(entry) {
 // Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
 // Rematch. All game entry goes through startMode so auth-gating stays in one
 // place; Create/Rematch use the one-tap auto-create path into a lobby.
-function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarEmoji, onChallenge, needsAccount }) {
+function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarId, onChallenge, needsAccount }) {
   // Inline join-with-code — the code row lives ON the tab (no intermediate
   // entry screen). onJoinCode handles auth-gating, the RPC and navigation.
   const [joinCode, setJoinCode] = React.useState("");
@@ -6140,7 +6140,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
       for (const o of (h.opponents || [])) {
         if (!o || seen.has(o.id || o.name)) continue;
         seen.add(o.id || o.name);
-        recent.push({ id: o.id, name: o.name, avatar: o.avatar || "⚽", won: (h.myScore ?? 0) >= (o.score ?? 0), line: `${h.myScore ?? 0}–${o.score ?? 0}` });
+        recent.push({ id: o.id, name: o.name, avatar: o.avatar || "", won: (h.myScore ?? 0) >= (o.score ?? 0), line: `${h.myScore ?? 0}–${o.score ?? 0}` });
         if (recent.length >= 3) break;
       }
       if (recent.length >= 3) break;
@@ -6174,13 +6174,13 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
             {avatarUrl
               ? <img src={avatarUrl} crossOrigin="anonymous" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:84,height:84,borderRadius:"50%",objectFit:"cover",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)"}} />
-              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)",display:"inline-flex",alignItems:"center",justifyContent:"center",overflow:"hidden",background:"var(--s2)"}}><img src="/marketing/ball.png" alt="" aria-hidden="true" style={{width:"100%",height:"100%",objectFit:"cover"}} /></span>}
+              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)",display:"inline-flex",alignItems:"center",justifyContent:"center",overflow:"hidden",background:"var(--s2)"}}><ProfilePic value={avatarId} name={displayName} /></span>}
             <span style={{fontSize:14,fontWeight:800,color:"var(--t1)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{displayName}</span>
           </div>
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:19,fontWeight:800,color:"var(--t3)"}}>VS</span>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
             {stats.rival
-              ? <span style={{width:84,height:84,borderRadius:"50%",border:`2.5px solid ${stats.rival.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:40,background:"var(--s2)"}}>{stats.rival.avatar}</span>
+              ? <span style={{width:84,height:84,borderRadius:"50%",border:`2.5px solid ${stats.rival.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",background:"var(--s2)",overflow:"hidden"}}><ProfilePic value={stats.rival.avatar} name={stats.rival.name} /></span>
               : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px dashed #3A3D4A",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:30,color:"var(--t3)"}}>?</span>}
             <span style={{fontSize:13,fontWeight:stats.rival ? 700 : 600,color:stats.rival ? "var(--t1)" : "var(--t3)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.rival ? stats.rival.name : "Your rival here"}</span>
           </div>
@@ -6293,7 +6293,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           <div style={{display:"flex",gap:9,marginTop:12}}>
             {stats.recent.map((o) => (
               <div key={o.name} style={{flex:1,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"14px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:7}}>
-                <span style={{width:46,height:46,borderRadius:"50%",background:"var(--s2)",border:`2px solid ${o.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:19}}>{o.avatar}</span>
+                <span style={{width:46,height:46,borderRadius:"50%",background:"var(--s2)",border:`2px solid ${o.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}><ProfilePic value={o.avatar} name={o.name} /></span>
                 <span style={{fontSize:13,fontWeight:700,color:"var(--t1)",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.name}</span>
                 {/* Scores are variable-width — "Won 3241–2055" wraps to two lines
                     in a third-of-screen card while "Lost 3329–5274" fits on one.
@@ -7120,7 +7120,7 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
             {/* Play invites first — they're time-sensitive (the room is live). */}
             {invites.map(inv => (
               <div key={inv.id} className="notif-item">
-                <span className="notif-ava" aria-hidden="true">{inv.actor_avatar || "🎮"}</span>
+                <span className="notif-ava"><ProfilePic value={inv.actor_avatar} name={inv.actor_name} /></span>
                 <div className="notif-body">
                   <div className="notif-line"><strong>{inv.actor_name || "A friend"}</strong> invited you to play</div>
                   <div className="notif-actions">
@@ -7139,7 +7139,7 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
                     onClick={() => p.id && onOpenFriend?.({ id: p.id, username: p.username, avatar: p.avatar })}
                     aria-label={p.username ? `View ${p.username}'s profile` : "View profile"}
                   >
-                    {p.avatar || "⚽"}
+                    <ProfilePic value={p.avatar} name={p.username} />
                   </button>
                   <div className="notif-body">
                     <div className="notif-line"><strong>{p.username || "Someone"}</strong> wants to be friends</div>
@@ -11413,7 +11413,10 @@ function AppInner() {
       g: String(stats.gamesPlayed || 0),
       s: String(loginStreak || 0),
       a: accuracy,
-      e: profile.avatar || "⚽",
+      // ⚠️ EMOJI ONLY. api/og.js renders ?e= as text at 100px; avatar_id is now
+      // a colourway ('c07'), so passing one through would print "c07" on a
+      // share card. Legacy emoji avatars still work; anything else falls back.
+      e: (/^c\d\d$/.test(String(profile.avatar || "")) ? "⚽" : (profile.avatar || "⚽")),
       iq: String(iq || 0),
       ov: String(card.overall),
       ti: card.tier,
@@ -11643,7 +11646,7 @@ function AppInner() {
     const result = await mpJoinRoom({
       p_code: trimmed,
       p_name: (authProfile?.username || profile?.name || "Player"),
-      p_avatar: "⚽",
+      p_avatar: (authProfile?.avatar_id || profile?.avatar || ""),
     });
     if (result.error) {
       const msg = result.code === "53300" ? "This room is full"
@@ -12742,7 +12745,7 @@ function AppInner() {
                 return "You";
               })()}
               avatarUrl={authProfile?.avatar_url}
-              avatarEmoji={null}   /* emoji set removed 2026-07-29; the VS card falls back to the ball below */
+              avatarId={authProfile?.avatar_id || profile?.avatar || ""}
             />
             </TabErrorBoundary>
           </div>
@@ -12993,6 +12996,7 @@ function AppInner() {
                 }
               }}
               defaultName={isAnonUser ? getGuestDisplayName() : (authProfile?.username || profile?.name || "")}
+              defaultAvatar={authProfile?.avatar_id || profile?.avatar || ""}
               autoJoinCode={pendingJoinCode}
               onAutoJoinConsumed={clearPendingJoin}
               autoCreate={onlineAutoCreate}
@@ -13012,6 +13016,7 @@ function AppInner() {
               code={stage1RoomCode}
               onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}
               defaultName={isAnonUser ? getGuestDisplayName() : (authProfile?.username || profile?.name || "")}
+              defaultAvatar={authProfile?.avatar_id || profile?.avatar || ""}
               // Rematch used to spin up a room and leave the opponent unaware —
               // you sat alone in a lobby they had no way of knowing existed,
               // and the only route back was manually sharing a link at the

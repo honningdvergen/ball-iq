@@ -1,7 +1,5 @@
 import { avatarColour } from '../lib/avatarColour.js';
 
-const BALL_SRC = "/marketing/ball.png";
-
 /**
  * ⚠️ `value` USED TO BE IGNORED. This read `url || BALL_SRC` and dropped the
  * avatar_id on the floor, so 204 of 219 accounts (93.2% — everyone without an
@@ -15,6 +13,29 @@ const BALL_SRC = "/marketing/ball.png";
  * gives every player a distinct ground — persisted in avatar_id, so your
  * friends see the same colour you do rather than a per-surface hash.
  */
+
+/**
+ * The letter to draw.
+ *
+ * ⚠️ FIRST LETTER, NOT FIRST CHARACTER. Alex, 2026-08-24: *"i can only see it
+ * being a problem if the user has a number as the first character"* — and he is
+ * right that it happens, but the real spread is wider than digits. Real
+ * usernames in this table start with `_`, with a digit, and with an emoji, and
+ * every one of those makes a worse avatar than the letter sitting right behind
+ * it. So: skip to the first actual letter, and only fall back to the raw first
+ * character when a name has no letters at all ("99", "1907" — a numeral avatar
+ * is perfectly legible, it is just not the first choice).
+ *
+ * Unicode-aware on purpose: `Ø`, `Ä`, `Ć` and Cyrillic/Greek names are letters
+ * and must be treated as such, so this tests \p{L} rather than A-Z.
+ */
+export function firstLetter(name) {
+  const s = String(name || '').trim();
+  if (!s) return '';
+  const m = s.match(/\p{L}/u);
+  return (m ? m[0] : Array.from(s)[0]).toUpperCase();
+}
+
 export function ProfilePic({ value, url, name, seed, className, style }) {
   if (url) {
     return (
@@ -33,30 +54,62 @@ export function ProfilePic({ value, url, name, seed, className, style }) {
     );
   }
   const c = avatarColour(value, seed);
-  // ⚠️ INITIAL, NOT THE BALL. Both were built and compared side by side at real
-  // avatar size; Alex chose the initial. The ball is on-brand but its panel
-  // detail turns to mush at 28-44px, and every avatar still reading as "a ball"
-  // is most of the problem this change exists to solve. The app already uses
-  // initials as the fallback for missing player photos, so this is the house
-  // pattern rather than a new one.
-  const initial = String(name || '').trim().charAt(0).toUpperCase();
+  const initial = firstLetter(name);
   return (
     <div
       aria-hidden="true"
       className={className}
-      style={{ width: "100%", height: "100%", borderRadius: "50%", display: "flex",
-               alignItems: "center", justifyContent: "center", background: c.bg,
-               color: c.ink, WebkitTextFillColor: c.ink, overflow: "hidden",
-               fontWeight: 800, letterSpacing: "-0.02em",
-               // Scales with the container: these render from 28px to 96px.
-               fontSize: "42%", lineHeight: 1, ...style }}
+      style={{ width: "100%", height: "100%", borderRadius: "50%", background: c.bg,
+               overflow: "hidden", display: "block",
+               /* Any fill can land against any ring — the profile and Online VS
+                  circles are ringed in brand green, and a green colourway inside
+                  a green ring reads as one blob with a rim light rather than a
+                  face in a frame. A hairline of the ground colour separates the
+                  two for EVERY colourway instead of special-casing the greens. */
+               boxShadow: "inset 0 0 0 1.5px rgba(0,0,0,0.30)",
+               ...style }}
     >
-      {initial || (
-        /* No name to take a letter from — 5.9% of accounts, and any row still
-           loading. The ball keeps them from being a blank disc. */
-        <img src={BALL_SRC} alt="" aria-hidden="true"
-             style={{ width: "62%", height: "62%", objectFit: "contain", display: "block" }} />
-      )}
+      {/* ⚠️ SVG, BECAUSE `fontSize: "42%"` DOES NOT MEAN WHAT IT LOOKS LIKE.
+          A percentage font-size resolves against the PARENT'S FONT-SIZE, never
+          against the element's own box — so this drew a letter at 42% of
+          whatever text happened to surround it. Inside `.profile-avatar` that
+          parent is large and it looked correct; in the Online VS hero the
+          parent is body text, so an 84px circle rendered a ~7px letter. Alex,
+          2026-08-24: *"this tiny Y in the online tab looks horrendus"*. It was,
+          and the comment here previously claimed the opposite — that it "scales
+          with the container" — which is exactly the kind of wrong note that
+          keeps a bug alive.
+          An SVG with a viewBox scales its contents to the box by definition, at
+          every one of the sizes this ships at (20px ready-up rows through the
+          96px profile hero), with no container queries and no size prop to
+          thread through eight call sites. */}
+      <svg viewBox="0 0 100 100" width="100%" height="100%" style={{ display: "block" }}
+           aria-hidden="true" focusable="false">
+        {initial ? (
+          <text
+            x="50" y="50" textAnchor="middle" dominantBaseline="central"
+            fill={c.ink} fontSize="46" fontWeight="800" letterSpacing="-1"
+            fontFamily="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          >{initial}</text>
+        ) : (
+          /* No letter to take — a guest who has not set a name, or a row still
+             loading. Lucide's `user` path, inlined so it inherits the viewBox
+             rather than needing its own sizing.
+             ⚠️ THIS WAS `/marketing/ball.png` AND IT LOOKED LIKE GARBAGE. Alex,
+             2026-08-24: *"what the hell is this profile picture now? that is
+             complete garbage"*. One property explains it: that PNG has NO ALPHA
+             CHANNEL — `sips -g hasAlpha` says no and its corners are an opaque
+             #09131C — so an opaque dark SQUARE was being dropped inside a
+             coloured CIRCLE. It is app-icon artwork drawn for a rounded-rect
+             tile; it was never a transparent sprite. */
+          <g transform="translate(50 50) scale(2.3) translate(-12 -12)"
+             fill="none" stroke={c.ink} strokeWidth="2.25"
+             strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </g>
+        )}
+      </svg>
     </div>
   );
 }

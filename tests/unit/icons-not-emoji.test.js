@@ -40,7 +40,13 @@ function allJsx(dir = SRC) {
 }
 const FILES = allJsx();
 const rel = (p) => p.slice(SRC.length - 3);
-const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/u;
+// ⚠️ PICTOGRAPHS ONLY — NOT the Dingbats block. An earlier version included
+// U+2600-27BF and flagged `✕` on a close button, plus it would have flagged the
+// `✓` and `✗` the quiz renders beside answers. Those are monochrome TYPOGRAPHY,
+// deliberately chosen (the tick/cross exist precisely so answer feedback is not
+// colour-only, for red-green colour blindness). Banning them would have
+// undone an accessibility fix in the name of visual consistency.
+const EMOJI = /[\u{1F300}-\u{1FAFF}\u{FE0F}]/u;
 
 describe('icons are icons, not emoji', () => {
   it('the sweep can see the tree', () => {
@@ -49,11 +55,21 @@ describe('icons are icons, not emoji', () => {
   });
 
   it('no icon button renders an emoji as its glyph', () => {
-    // `icon-btn` is the app's class for a control whose entire content is a
-    // glyph. An emoji there is the control's icon by definition.
+    // ⚠️ KEYED ON SHAPE, NOT ON A CLASS NAME. The first version matched only
+    // className="icon-btn" and therefore missed `profile-avatar-edit`, a button
+    // whose entire content was a ✏️ — found by eye on a simulator walk, not by
+    // this test. A button whose visible content is nothing but an emoji IS an
+    // icon button, whatever it is called.
     const offenders = [];
     for (const f of FILES) {
       const src = readFileSync(f, 'utf8');
+      for (const m of src.matchAll(/<button[^>]*>([^<]{1,12})<\/button>/g)) {
+        const content = m[1].trim();
+        // Emoji-only content — an emoji sitting inside a text label is fine.
+        if (content && EMOJI.test(content) && !/[a-zA-Z]{2}/.test(content)) {
+          offenders.push(`${rel(f)}: ${content}`);
+        }
+      }
       for (const m of src.matchAll(/<button[^>]*className="[^"]*icon-btn[^"]*"[^>]*>([^<]{0,12})</g)) {
         if (EMOJI.test(m[1])) offenders.push(`${rel(f)}: ${m[1].trim()}`);
       }

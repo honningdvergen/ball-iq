@@ -9,12 +9,13 @@ import { useAuth } from '../useAuth.jsx';
 import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName, mpSetPlayerReady, mpStartNextRound } from '../multiplayerRpc.js';
 import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
+import { ProfilePic } from '../components/ProfilePic.jsx';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
 // this ~1,700-line subtree stays out of the first-paint bundle. The logic is
 // byte-for-byte unchanged from the inline version; only the module moved.
 
-function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJoinConsumed, autoCreate, onAutoCreateConsumed }) {
+function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoinCode, onAutoJoinConsumed, autoCreate, onAutoCreateConsumed }) {
   const [code, setCode] = useState("");
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -43,7 +44,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
     const result = await mpCreateRoom({
       p_capacity: CAPACITY,
       p_name: defaultName || "Player",
-      p_avatar: "⚽",
+      p_avatar: defaultAvatar || "",
     });
     if (result.error) {
       // Raw RPC text is console-only; the player gets an action they can take.
@@ -74,7 +75,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
     const result = await mpJoinRoom({
       p_code: trimmed,
       p_name: defaultName || "Player",
-      p_avatar: "⚽",
+      p_avatar: defaultAvatar || "",
     });
     if (result.error) {
       // Specific copy for known SQLSTATEs (raised by the SQL functions
@@ -262,7 +263,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, autoJoinCode, onAutoJo
 // joiner (after join_room). Consumes useMultiplayerRoom to subscribe + sync.
 // Renders different sub-views based on room.state:
 //   loading | error | lobby | playing (1B placeholder) | ended
-function MultiplayerLobby({ code, onExit, defaultName, onRematch, onReport }) {
+function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch, onReport }) {
   const { room, players, myPlayer, isHost, loading, error, channelStatus, actions } = useMultiplayerRoom(code);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState("");
@@ -307,7 +308,7 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch, onReport }) {
       const metric = (p) => gameMode === "survival"
         ? (p.eliminated_at_q == null ? Number.MAX_SAFE_INTEGER : p.eliminated_at_q)
         : (p.score || 0);
-      const rows = players.map(p => ({ id: p.user_id, name: p.name, avatar: p.avatar || "⚽", score: p.score || 0, m: metric(p) }));
+      const rows = players.map(p => ({ id: p.user_id, name: p.name, avatar: p.avatar || "", score: p.score || 0, m: metric(p) }));
       const mine = rows.find(r => r.id === myPlayer.user_id);
       const opps = rows.filter(r => r.id !== myPlayer.user_id);
       const iWon = !!mine && opps.length > 0 && mine.m > Math.max(...opps.map(o => o.m));
@@ -437,7 +438,7 @@ function MultiplayerLobby({ code, onExit, defaultName, onRematch, onReport }) {
   // paint timing made the flash visible.
   if (error) return <LobbyError error={error} onExit={onExit} onRetry={actions.retry} />;
   if (loading || !room) return <LobbyLoading />;
-  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} onRematch={onRematch} onReport={onReport} />;
+  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} onRematch={onRematch} onReport={onReport} defaultAvatar={defaultAvatar} />;
   if (room.state === "playing") {
     return (
       <MultiplayerGameplay
@@ -639,7 +640,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                   background: "var(--s1)", border: "1px solid var(--border)",
                   borderRadius: 12, padding: "10px 14px",
                 }}>
-                  <div style={{ fontSize: 24 }}>{p.avatar || "⚽"}</div>
+                  <div style={{ width: 30, height: 30, flexShrink: 0 }}><ProfilePic value={p.avatar} name={p.name} /></div>
                   <div style={{ flex: 1, fontSize: 15, fontWeight: 600, color: "var(--text)" }}>
                     {p.name}
                     {isMe(p) && <span style={{ fontSize: 11, color: "var(--t3)", fontWeight: 500, marginLeft: 6 }}>(you)</span>}
@@ -966,7 +967,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
             <div key={p.user_id} style={{ display: 'flex', alignItems: 'center', gap: 10,
                    padding: '10px 12px', borderRadius: 11, background: 'var(--s2)',
                    border: '1px solid var(--border)' }}>
-              <span style={{ fontSize: 19 }}>{p.avatar || '⚽'}</span>
+              <span style={{ width: 26, height: 26, flexShrink: 0 }}><ProfilePic value={p.avatar} name={p.name} /></span>
               <span style={{ flex: 1, minWidth: 0, fontSize: 14.5, fontWeight: 700, color: 'var(--text)',
                              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {p.name || 'Player'}
@@ -992,7 +993,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
   );
 }
 
-function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
+function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defaultAvatar }) {
   // v1.6 guest entry — upgrade CTA in the actions column below.
   const { isAnonUser, openAuthPrompt } = useAuth();
   const isSurvival = room?.mode === 'survival';
@@ -1155,7 +1156,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
     const result = await mpClaimRematch({
       p_code: room?.code,
       p_name: myPlayer?.name || "Player",
-      p_avatar: myPlayer?.avatar || "⚽",
+      p_avatar: myPlayer?.avatar || defaultAvatar || "",
     });
     if (result?.error || !result?.code) {
       console.warn('[handleRematch] claimRematch', result?.code || '', result?.error);
@@ -1198,7 +1199,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
       const claimed = await mpClaimRematch({
         p_code: room?.code,
         p_name: myPlayer?.name || "Player",
-        p_avatar: myPlayer?.avatar || "⚽",
+        p_avatar: myPlayer?.avatar || defaultAvatar || "",
       });
       if (claimed?.code && !claimed?.error) {
         rematchCode = claimed.code;
@@ -1379,7 +1380,8 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
           background: 'var(--s2)',
           border: `2.5px solid ${won ? 'var(--accent)' : mine ? 'rgba(88,204,2,0.4)' : 'var(--border)'}`,
           boxShadow: won ? '0 0 0 5px rgba(88,204,2,0.12)' : 'none',
-        }}>{p?.avatar || '⚽'}</span>
+          overflow: 'hidden',
+        }}><ProfilePic value={p?.avatar} name={p?.name} /></span>
       </span>
       <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
         {mine ? 'You' : (p?.name || 'Player')}
@@ -1485,7 +1487,8 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
                         width: 40, height: 40, borderRadius: '50%', display: 'inline-flex',
                         alignItems: 'center', justifyContent: 'center', fontSize: 20,
                         background: 'var(--s2)', border: `2px solid ${rank === 0 ? 'rgba(234,179,8,0.55)' : isMe ? 'rgba(88,204,2,0.45)' : 'var(--border)'}`,
-                      }}>{p.avatar || '⚽'}</span>
+                        overflow: 'hidden',
+                      }}><ProfilePic value={p.avatar} name={p.name} /></span>
                       <span style={{
                         fontSize: 12.5, fontWeight: 800, color: 'var(--text)', maxWidth: '100%',
                         overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
@@ -1522,7 +1525,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
                 }}>
                   {rankBadge(idx)}
                 </div>
-                <div style={{ fontSize: 22 }}>{p.avatar || '⚽'}</div>
+                <div style={{ width: 28, height: 28, flexShrink: 0 }}><ProfilePic value={p.avatar} name={p.name} /></div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{
                     fontSize: 15, fontWeight: 700, color: 'var(--text)',
@@ -1650,7 +1653,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 10 }}>
               {(players || []).map(p => (
                 <div key={p.user_id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-                  <span aria-hidden="true" style={{ fontSize: 15, width: 20, textAlign: 'center' }}>{p.avatar || '⚽'}</span>
+                  <span style={{ width: 20, height: 20, flexShrink: 0 }}><ProfilePic value={p.avatar} name={p.name} /></span>
                   <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: p.ready ? 'var(--t1)' : 'var(--t3)', fontWeight: p.ready ? 700 : 600 }}>
                     {p.name}{p.user_id === myPlayer?.user_id ? ' (you)' : ''}
                   </span>
@@ -2720,10 +2723,10 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, 
                         background: "var(--s2)",
                         border: "1px solid var(--border)",
                         display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: 12, lineHeight: 1,
+                        fontSize: 12, lineHeight: 1, overflow: "hidden",
                       }}
                     >
-                      {p.avatar || "⚽"}
+                      <ProfilePic value={p.avatar} name={p.name} />
                     </span>
                   ))}
                   {picksByOption[idx].length > 4 && (
@@ -2783,7 +2786,7 @@ function ScoreBar({ players, myUserId, hostId, mode }) {
               border: isMe ? "1px solid var(--accent)" : "1px solid var(--border)",
             }}
           >
-            <span style={{ fontSize: 18 }}>{p.avatar || "⚽"}</span>
+            <span style={{ width: 24, height: 24, flexShrink: 0 }}><ProfilePic value={p.avatar} name={p.name} /></span>
             <div style={{ display: "flex", flexDirection: "column", gap: 0, minWidth: 0 }}>
               <div style={{
                 fontSize: 11, fontWeight: 600, color: "var(--t2)",

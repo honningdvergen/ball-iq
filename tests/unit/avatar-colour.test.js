@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { AVATAR_COLOURS, avatarColour, defaultAvatarId, avatarHash } from '../../src/lib/avatarColour.js';
+import { firstLetter } from '../../src/components/ProfilePic.jsx';
 
 /**
  * Every player looks like a different person.
@@ -84,17 +85,63 @@ describe('per-player default avatar', () => {
     expect(PROFILE).not.toMatch(/currentTarget\.src = BALL_SRC/);
   });
 
-  it('renders the initial, with the ball only when there is no name', () => {
+  it('renders the initial, with a person glyph only when there is no name', () => {
     // Alex chose the initial over the ball after seeing both at real avatar
     // size: the ball's panel detail turns to mush at 28-44px, and every avatar
     // reading as "a ball" is most of what this change exists to fix.
-    expect(PROFILE).toMatch(/const initial = String\(name \|\| ''\)/);
-    expect(PROFILE, 'the initial must be uppercased').toMatch(/\.charAt\(0\)\.toUpperCase\(\)/);
+    expect(PROFILE).toMatch(/\{initial \?/);
     // 5.9% of accounts have no usable name, and rows mid-load have none either
     // — a blank coloured disc would look broken.
-    expect(PROFILE).toMatch(/\{initial \|\| \(/);
-    // Size must scale with the container: these render from 28px to 96px.
-    expect(PROFILE).toMatch(/fontSize: "42%"/);
+    expect(PROFILE, 'a nameless row needs a glyph, not an empty disc')
+      .toMatch(/<circle cx="12" cy="7" r="4"/);
+  });
+
+  it('the avatar never sizes its letter with a percentage font-size', () => {
+    // ⚠️ THE BUG THIS FILE EXISTS TO KEEP OUT. `fontSize: "42%"` resolves
+    // against the PARENT'S font-size, never against the element's own box. The
+    // old code carried a comment claiming it "scales with the container" — it
+    // does not. Inside `.profile-avatar` (font-size 32-44px) it looked right;
+    // in the Online VS hero the parent is body text, so an 84px circle drew a
+    // ~7px letter. Alex, 2026-08-24: *"this tiny Y in the online tab looks
+    // horrendus"*.
+    // An SVG viewBox scales to its box by definition, which is why the letter
+    // is drawn as <text> inside one.
+    // ⚠️ Strip comments first — the fix's own explanatory note QUOTES the bad
+    // property to explain why it is wrong, and a naive scan flags that as the
+    // bug it is warning about. Second time this exact false positive has bitten
+    // in this file's history; the code, not the prose, is what ships.
+    // Strip BLOCK comments as a block — a line-prefix filter misses `{/* … */}`
+    // (it starts with a brace) and misses the second line of any block that is
+    // not led by a `*`, which is exactly where the quoted property sat.
+    const code = PROFILE
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '');
+    const pct = code.match(/fontSize:\s*["'][\d.]+%["']/g) || [];
+    expect(pct, '\n  A percentage font-size is relative to the PARENT font-size,\n' +
+                '  not to the avatar. Draw the letter in the SVG viewBox instead.\n').toEqual([]);
+    expect(PROFILE, 'the letter must live in a scaling viewBox').toMatch(/viewBox="0 0 100 100"/);
+  });
+
+  it('takes the first LETTER, not the first character', () => {
+    // Alex, 2026-08-24: *"i can only see it being a problem if the user has a
+    // number as the first character"*. Real usernames in this table also open
+    // with `_` and with emoji, and in every case the letter behind it is the
+    // better avatar.
+    expect(firstLetter('Marcus')).toBe('M');
+    expect(firstLetter('  aisha khan ')).toBe('A');
+    expect(firstLetter('99problems')).toBe('P');
+    expect(firstLetter('_ghost')).toBe('G');
+    expect(firstLetter('⚽ striker')).toBe('S');
+    expect(firstLetter('player_4f2a')).toBe('P');
+    // Non-ASCII letters are letters: \p{L}, never A-Z.
+    expect(firstLetter('Ødegaard')).toBe('Ø');
+    expect(firstLetter('Ćalhanoğlu')).toBe('Ć');
+    // No letters at all — a numeral avatar is legible, just not first choice.
+    expect(firstLetter('1907')).toBe('1');
+    // Nothing to draw: the caller falls through to the person glyph.
+    expect(firstLetter('')).toBe('');
+    expect(firstLetter(null)).toBe('');
+    expect(firstLetter('   ')).toBe('');
   });
 
   it('every render site passes a name', () => {

@@ -9,6 +9,7 @@ import { getTrailAnswer, loadTrailDay } from "../lib/trail.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD } from "../lib/date.js";
+import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
 import { QB_INDEX } from "../questions-index.js";
@@ -451,7 +452,7 @@ function HomeScreenImpl({
                 <div className="hr-avatar" style={{ borderColor: "#58CC02" }}>
                   {authProfile?.avatar_url
                     ? <img src={authProfile.avatar_url} crossOrigin="anonymous" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                    : (profile?.avatar || "⚽")}
+                    : <ProfilePic value={authProfile?.avatar_id || profile?.avatar} name={railName} />}
                 </div>
                 <div className="hr-rating-idcol">
                   <div className="hr-rating-name">
