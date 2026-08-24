@@ -221,9 +221,36 @@ export function pickAvoidingConflicts(pool, count, conflictsOf) {
 // No count in `desc`, per the standing rule: an inventory number in
 // user-facing copy is banned, and it would advertise exactly how small a
 // topical pack is.
-export const TOPICAL_PACK = {
-  key: "topical",
-  tag: "summer2026",
-  name: "Summer 2026",
-  desc: "The window and the World Cup",
-};
+// ⚠️ RETIRED 2026-08-24 BY ALEX, after playing it: "i think we scrap the 2026
+// summer mode, the questions are factually correct and all but it is such a bad
+// mode… like 40% of the questions there have really disappointed me."
+//
+// He is right about the shape, and it is worth writing down because the next
+// topical pack will be tempting for the same reasons. A pack about the last few
+// weeks cannot test football knowledge — it tests whether you read the news.
+// "Which club broke its transfer record to sign Yan Diomande?" is not a hard
+// question, it is an unanswerable one for anyone who was not following the
+// window, and it rots the moment the window closes. The mode was re-cut once
+// already (headline questions moved to easy, tile served hard-only) and that
+// only sharpened the problem: the "detail tier" is minutiae.
+//
+// The retirement path this file documented is exactly the one taken — null the
+// constant, no other code change. The pack's 89 questions are ALSO withheld
+// from general draws via RETIRED_TAGS below; they remain in the bank, so this
+// is reversible and nothing is lost while Alex decides which to keep.
+export const TOPICAL_PACK = null;
+
+/**
+ * Tags withheld from every draw.
+ *
+ * ⚠️ Nulling TOPICAL_PACK removes the TILE, not the questions — they each carry
+ * a real `cat` (Transfers 33, WorldCup 22, Managers 11, PL 8…), so without this
+ * they would keep surfacing in Classic and category quizzes, which is precisely
+ * where the 40% Alex objected to would still reach players.
+ *
+ * Withheld rather than deleted: none of them are in the frozen Daily 7 log
+ * (checked), so deletion would be safe — but 89 rows is a large editorial call
+ * and some fraction are fine. This makes them inert today and keeps every one
+ * recoverable by removing a string.
+ */
+export const RETIRED_TAGS = new Set(["summer2026"]);
