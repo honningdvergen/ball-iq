@@ -54,6 +54,14 @@ upload itself remain.
       pages**, 10 translated copies across 7 locales carrying the same defect.
 - [x] **Gated:** `tests/unit/bank-self-answers.test.js`, zero-tolerance, small
       reasoned allowlist. Falsified by seeding both classes back.
+- [x] ⚠️ **SUMMER 2026 RETIRED ENTIRELY** (`45be7bd`) — Alex, after playing it:
+      *"such a bad mode… like 40% of the questions there have really
+      disappointed me."* A pack about the last few weeks tests whether you read
+      the news, not football. Tile nulled AND the 89 questions withheld from all
+      FIVE draw paths (they carry real cats, so the tile alone fixed nothing).
+      Withheld not deleted — none are in the frozen Daily 7 log, so it is
+      reversible by one string. **This supersedes the leak work below**, which
+      is now moot for this pack but still correct for any future one.
 - [x] **Topical pack shipped outside every leak guard** (`2ab0f68`). The
       generator grouped by `cat` and `club`; topical draws by `tag`, so its pool
       was never grouped and never guarded — and the audit enumerated the same
