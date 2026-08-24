@@ -132,6 +132,31 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
 - Deleting only the two `!important`s at app.css:656 — under-specified, ships
   something uglier.
 
+## 🤚 FEEL WORK FOR 1.7.0 — Alex: "no annoyances", device test today
+
+- [x] **Hot Streak's reveal was a wall you could not skip** (`c42010f`) — 1,820ms
+      of a 60-second clock, ~45%, in the mode whose identity is speed. Now a
+      CEILING: tap or Enter/Space skips it, with a visible "tap to skip →".
+      Measured live: tap 26ms · Enter 27ms · untouched 1,823ms.
+      ⚠️ True/False had the same defect with a LONGER hold (2,400ms) and the
+      report never looked at it. Fixed in the same change.
+- [x] **Trail, Mystery and Stadiums were completely silent** (`f36fc37`) — zero
+      playSound between them against App.jsx's 19, and sound defaults ON for
+      native in 1.7.0, so this is the release where the silence gets heard.
+- [x] **The settings defaults merge was thrown away on mount** (`4cd0e34`) —
+      graded LOW, actually the thing that would have made the sound default land
+      for NEW INSTALLS ONLY, because playSound reads storage not state.
+- [x] ~~Tab bar fires no haptic~~ **FALSE POSITIVE, verified.** The finding
+      grepped BiqNav.jsx, which is the DESKTOP RAIL. The real bottom tab bar
+      already calls haptic("soft"); the reviewer's live check found nothing
+      because off-native it falls through to navigator.vibrate, unsupported on
+      desktop. On a phone it routes to Capacitor ImpactStyle.Light. No change.
+- [ ] **~1.0s of pure BLACK on native cold launch**, between the launch
+      storyboard and the splash. Reproduced 3× on a simulator against build 75.
+      The first thing a player sees, every launch.
+- [ ] **The web pre-boot shell paints at 0.6s and is dead until 2.9s — and eats
+      the first tap.** Report #3's "empty frame" lesson recurring, worse.
+
 ## 🤚 FEEL & NAVIGATION — opened 2026-08-23 on Alex's build-75 report
 
 Alex: *"it is very laggy, and not responsive. it is like it thinks i stop
