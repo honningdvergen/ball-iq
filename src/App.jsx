@@ -3265,7 +3265,11 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
             <div className="modal-body">Your progress will be lost.</div>
             <div className="modal-btns">
               <button className="modal-btn modal-cancel" onClick={() => setShowQuit(false)}>Keep playing</button>
-              <button className="modal-btn modal-confirm" onClick={onBack}>Quit</button>
+              {/* ⚠️ A rage-quit is a stated bad moment. The app already knows —
+                  it rendered a confirm dialog and the player said yes — and it
+                  did nothing with that. Abandoning mid-quiz is not the mood to
+                  ask for five stars in. */}
+              <button className="modal-btn modal-confirm" onClick={() => { try { markBadReviewMoment(); } catch {} onBack(); }}>Quit</button>
             </div>
           </div>
         </div>
@@ -8032,7 +8036,16 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
       // Win/loss feedback at the moment of truth (scan #3) — playSound
       // self-gates on the user's sound setting.
       if (newStatus === "won") { try { haptic("correct"); playSound("correct"); } catch {} }
-      else { try { haptic("wrong"); playSound("wrong"); } catch {} }
+      else {
+        try { haptic("wrong"); playSound("wrong"); } catch {}
+        // ⚠️ THE MOST BRUISING TWO MINUTES IN THE PRODUCT, and it marked nothing.
+        // Footle is lost on 38% of the days it is played (180 of 641), and until
+        // now the rating engine had no idea: a player could burn six guesses,
+        // miss, open a mode and be asked "Enjoying Ball IQ?" minutes later. That
+        // is the single worst-timed ask available, and it was reachable.
+        // Suppresses the ask for 24h — the same treatment a crash gets.
+        try { markBadReviewMoment(); } catch {}
+      }
       // 1.1: completing today's Footle cancels tonight's reminder; a solve is
       // also a positive moment to surface the notification pre-prompt.
       // game/won/guesses ride along so the app shell can award Footle XP

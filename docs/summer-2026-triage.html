@@ -1,0 +1,238 @@
+<title>Summer 2026 Triage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#F5F7FA; --panel:#FFFFFF; --panel2:#EDF1F6; --line:#DCE3EB;
+  --t1:#0F141A; --t2:#4C5765; --t3:#78838F;
+  --ok:#1F8B3D; --no:#C3352C; --hold:#9A6B04; --accent:#3C8F02;
+  --shadow:0 1px 2px rgba(15,20,26,.05),0 6px 18px -10px rgba(15,20,26,.18);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0C0F14; --panel:#151A21; --panel2:#1D242D; --line:#242C36;
+  --t1:#E8EDF3; --t2:#98A5B3; --t3:#6B7787;
+  --ok:#46C35F; --no:#F2645A; --hold:#E3B341; --accent:#6FDB1F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{
+  --ground:#0C0F14; --panel:#151A21; --panel2:#1D242D; --line:#242C36;
+  --t1:#E8EDF3; --t2:#98A5B3; --t3:#6B7787;
+  --ok:#46C35F; --no:#F2645A; --hold:#E3B341; --accent:#6FDB1F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--t1);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  padding-bottom:64px}
+h1,h2,.ui{font-family:"Inter Tight","Inter",sans-serif}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace}
+
+.bar{position:sticky;top:0;z-index:20;background:var(--panel);
+  border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.bar-in{max-width:760px;margin:0 auto;padding:14px 18px 12px}
+.ttl{font-family:"Inter Tight",sans-serif;font-size:17px;font-weight:700;letter-spacing:-.01em;margin:0}
+.sub{font-size:12.5px;color:var(--t3);margin:2px 0 10px}
+.track{height:6px;border-radius:99px;background:var(--panel2);overflow:hidden;display:flex}
+.track i{display:block;height:100%}
+.tallies{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:12.5px}
+.tally{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums;color:var(--t2)}
+.tally b{font-weight:600}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.chip{font-family:"Inter Tight",sans-serif;font-size:12.5px;font-weight:600;padding:6px 11px;
+  border-radius:99px;border:1px solid var(--line);background:var(--ground);color:var(--t2);
+  cursor:pointer;-webkit-appearance:none;appearance:none;min-height:32px}
+.chip[aria-pressed="true"]{background:var(--t1);color:var(--ground);border-color:var(--t1)}
+
+main{max-width:760px;margin:0 auto;padding:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:3px solid transparent;
+  border-radius:14px;padding:16px 16px 14px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card[data-v="approve"]{border-left-color:var(--ok)}
+.card[data-v="reject"]{border-left-color:var(--no);opacity:.72}
+.card[data-v="hold"]{border-left-color:var(--hold)}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:9px}
+.tag{font-family:"Inter Tight",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);
+  border-radius:6px;padding:3px 7px}
+.dif{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3)}
+.qid{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--t3)}
+.qtext{font-size:16px;font-weight:600;line-height:1.45;margin:0 0 11px}
+.opts{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:5px}
+.opts li{font-size:14px;color:var(--t2);padding:7px 10px;border-radius:9px;background:var(--panel2)}
+.opts li.right{color:var(--ok);font-weight:600;
+  background:color-mix(in srgb,var(--ok) 13%,transparent);
+  border:1px solid color-mix(in srgb,var(--ok) 40%,transparent)}
+.why{font-size:13px;color:var(--t3);line-height:1.5;margin:0 0 13px;
+  padding-left:10px;border-left:2px solid var(--line)}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.act{font-family:"Inter Tight",sans-serif;font-size:14px;font-weight:700;min-height:46px;
+  border-radius:11px;border:1px solid var(--line);background:var(--ground);color:var(--t2);
+  cursor:pointer;-webkit-appearance:none;appearance:none;
+  transition:transform .08s ease,background .12s ease,color .12s ease,border-color .12s ease}
+.act:active{transform:scale(.97)}
+.act[data-k="approve"][aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#04140A}
+.act[data-k="reject"][aria-pressed="true"]{background:var(--no);border-color:var(--no);color:#1A0503}
+.act[data-k="hold"][aria-pressed="true"]{background:var(--hold);border-color:var(--hold);color:#170F00}
+.empty{text-align:center;color:var(--t3);padding:52px 16px;font-size:14.5px}
+.legend{max-width:760px;margin:0 auto;padding:0 18px 4px;font-size:12.5px;color:var(--t3);line-height:1.7}
+.legend b{color:var(--t2);font-weight:600}
+.saving{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:30;
+  font-family:"JetBrains Mono",monospace;font-size:11.5px;padding:7px 13px;border-radius:99px;
+  background:var(--panel);border:1px solid var(--line);color:var(--t3);box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .2s ease}
+.saving.on{opacity:1}
+@media (max-width:520px){ .acts{grid-template-columns:1fr 1fr 1fr} .act{font-size:13px} }
+</style>
+
+<div class="bar">
+  <div class="bar-in">
+    <h1 class="ttl">Summer 2026 &mdash; keep or cut</h1>
+    <p class="sub">89 questions, currently withheld from every draw. Your call on each.</p>
+    <div class="track" id="track"></div>
+    <div class="tallies" id="tallies"></div>
+    <div class="filters" id="filters"></div>
+  </div>
+</div>
+
+<p class="legend">
+  <b>Approve</b> &rarr; returns to Classic, league and club draws.
+  <b>Reject</b> &rarr; deleted from the bank.
+  <b>Hold</b> &rarr; stays in the bank but withheld.
+  Undecided questions stay withheld, so stopping halfway is safe.
+</p>
+
+<main id="app"></main>
+<div class="saving" id="saving">saved</div>
+
+<script type="application/json" id="questions">[{"id":"q_s26s10","c":"Bundesliga","d":"easy","k":"Bayern Munich","q":"Bayern Munich won the 2025-26 Bundesliga under which manager?","o":["Thomas Tuchel","Vincent Kompany","Julian Nagelsmann","Xabi Alonso"],"a":1,"h":"A former Belgium captain, in his second season at the club."},{"id":"q_s26s16","c":"Bundesliga","d":"hard","k":"Bayern Munich","q":"Harry Kane won a third straight Bundesliga top-scorer award in 2025-26 with how many goals?","o":["28","32","36","41"],"a":2,"h":"Bayern set a Bundesliga record of 122 league goals that season."},{"id":"q_s26s22","c":"Bundesliga","d":"hard","k":null,"q":"Which German club returned to the Bundesliga for 2026-27 as 2. Bundesliga champions?","o":["Hamburger SV","Schalke 04","Hertha Berlin","Fortuna D\u00fcsseldorf"],"a":1,"h":"The Royal Blues, from Gelsenkirchen."},{"id":"q_s26a06","c":"Bundesliga","d":"medium","k":null,"q":"Xabi Alonso won an unbeaten Bundesliga title as manager of which club?","o":["Bayer Leverkusen","Bayern Munich","Borussia Dortmund","RB Leipzig"],"a":0,"h":"They went the entire 2023-24 Bundesliga season without losing under him."},{"id":"q_s26s08","c":"LaLiga","d":"easy","k":null,"q":"Who won the 2025-26 La Liga title?","o":["Real Madrid","Barcelona","Atl\u00e9tico Madrid","Athletic Club"],"a":1,"h":"They sealed it with a 2-0 win in the Cl\u00e1sico, under Hansi Flick."},{"id":"q_s26s13","c":"LaLiga","d":"hard","k":null,"q":"Which Spanish club won the 2026 Copa del Rey, beating Atl\u00e9tico Madrid on penalties?","o":["Real Sociedad","Athletic Club","Valencia","Real Betis"],"a":0,"h":"A Basque side; Ander Barrenetxea scored after 14 seconds."},{"id":"q_s26x19","c":"Legends","d":"hard","k":null,"q":"Santi Cazorla retired in July 2026 while playing for which club?","o":["Villarreal","Real Oviedo","Arsenal","Sporting Gij\u00f3n"],"a":1,"h":"He ended his career at his boyhood club in Asturias."},{"id":"q_s26x20","c":"Legends","d":"hard","k":null,"q":"Which Italy striker announced his retirement in August 2026?","o":["Andrea Belotti","Ciro Immobile","Graziano Pell\u00e8","Mario Balotelli"],"a":1,"h":"A four-time Serie A top scorer, he called time while at Paris FC."},{"id":"q_s26x18","c":"Legends","d":"medium","k":null,"q":"Which 40-year-old announced his retirement in June 2026, after a career taking in Leeds, Newcastle, Aston Villa, Manchester City and Liverpool?","o":["Gareth Barry","James Milner","Jordan Henderson","Ashley Young"],"a":1,"h":"He bowed out at Brighton after 24 Premier League seasons."},{"id":"q_s26a01","c":"Managers","d":"easy","k":null,"q":"Which club appointed Xabi Alonso as manager for the 2026-27 season?","o":["Manchester United","Tottenham","Chelsea","Liverpool"],"a":2,"h":"The Spaniard signed a four-year deal at Stamford Bridge, taking charge from July 2026."},{"id":"q_s26a02","c":"Managers","d":"easy","k":"Manchester City","q":"Who succeeded Pep Guardiola as Manchester City manager in 2026?","o":["Mikel Arteta","Enzo Maresca","Vincent Kompany","Xabi Alonso"],"a":1,"h":"He had been Guardiola's assistant at City in 2022-23 before managing in his own right."},{"id":"q_s26b02","c":"Managers","d":"easy","k":"Real Madrid","q":"Who replaced Xabi Alonso as Real Madrid head coach in January 2026?","o":["Zinedine Zidane","Ra\u00fal Gonz\u00e1lez","\u00c1lvaro Arbeloa","Santiago Solari"],"a":2,"h":"He was promoted from the Castilla dugout, having played alongside Alonso for Liverpool and Spain."},{"id":"q_s26s20","c":"Managers","d":"easy","k":"Liverpool","q":"Which manager succeeded Arne Slot at Liverpool for the 2026-27 season?","o":["Andoni Iraola","Marco Rose","Roberto De Zerbi","Gary O'Neil"],"a":0,"h":"He arrived after three seasons at Bournemouth."},{"id":"q_s26b07","c":"Managers","d":"hard","k":"Manchester City","q":"How many trophies did Pep Guardiola win across his ten years as Manchester City manager?","o":["14","17","20","23"],"a":2,"h":"Six of them were Premier League titles, and five were League Cups."},{"id":"q_s26s06","c":"Managers","d":"hard","k":"Aston Villa","q":"After leading Aston Villa to the 2026 Europa League, how many times had Unai Emery won the competition?","o":["Three","Four","Five","Six"],"a":2,"h":"Three came at Sevilla, one at Villarreal."},{"id":"q_s26b01","c":"Managers","d":"medium","k":null,"q":"Xabi Alonso was sacked by which club in January 2026, months before he took charge at Chelsea?","o":["Bayer Leverkusen","Real Madrid","Bayern Munich","Atl\u00e9tico Madrid"],"a":1,"h":"He was dismissed a day after losing a Spanish Super Cup final to Barcelona."},{"id":"q_s26b09","c":"Managers","d":"medium","k":null,"q":"Enzo Maresca won promotion to the Premier League as manager of which club before eventually succeeding Pep Guardiola?","o":["Leicester City","Southampton","Ipswich Town","Leeds United"],"a":0,"h":"He took the job in 2023 after leaving Guardiola's coaching staff, and won the Championship at the first attempt."},{"id":"q_s26s19","c":"Managers","d":"medium","k":"Real Madrid","q":"Who was appointed Real Madrid head coach in June 2026, returning for a second spell?","o":["Zinedine Zidane","Carlo Ancelotti","Jos\u00e9 Mourinho","Ra\u00fal Gonz\u00e1lez"],"a":2,"h":"He first managed the club from 2010 to 2013, and joined from Benfica."},{"id":"q_s26s21","c":"Managers","d":"medium","k":null,"q":"R\u00faben Amorim was appointed manager of which Italian club in June 2026?","o":["Napoli","Roma","AC Milan","Juventus"],"a":2,"h":"He replaced Massimiliano Allegri, months after leaving Manchester United."},{"id":"q_s26s24","c":"Managers","d":"medium","k":null,"q":"Roberto De Zerbi was appointed head coach of which Premier League club in March 2026?","o":["West Ham","Tottenham","Crystal Palace","Fulham"],"a":1,"h":"He replaced Thomas Frank, who had lasted eight months."},{"id":"q_s26s01","c":"PL","d":"easy","k":null,"q":"Which club won the 2025-26 Premier League title?","o":["Manchester City","Arsenal","Liverpool","Chelsea"],"a":1,"h":"They finished seven points clear of Manchester City."},{"id":"q_s26s12","c":"PL","d":"easy","k":null,"q":"Which club won the 2026 FA Cup?","o":["Chelsea","Manchester City","Arsenal","Manchester United"],"a":1,"h":"They beat Chelsea 1-0 at Wembley for their eighth."},{"id":"q_s26s14","c":"PL","d":"easy","k":"Manchester City","q":"Who won the 2025-26 Premier League Golden Boot?","o":["Erling Haaland","Alexander Isak","Igor Thiago","Bukayo Saka"],"a":0,"h":"His third, after 2022-23 and 2023-24."},{"id":"q_s26b08","c":"PL","d":"hard","k":"Manchester City","q":"Pep Guardiola's last match as Manchester City manager was a 2-1 home defeat on the final day of 2025-26 \u2014 to which club?","o":["Aston Villa","Arsenal","Everton","Brentford"],"a":0,"h":"The same club had sold City their previous record signing five years earlier."},{"id":"q_s26s15","c":"PL","d":"hard","k":"Manchester City","q":"How many league goals did Erling Haaland score to win the 2025-26 Premier League Golden Boot?","o":["24","27","31","36"],"a":1,"h":"Igor Thiago of Brentford was next best on 22."},{"id":"q_s26s17","c":"PL","d":"hard","k":null,"q":"Which three clubs were relegated from the Premier League at the end of 2025-26?","o":["Wolves, Burnley and West Ham","Wolves, Everton and Brentford","Burnley, Leeds and Fulham","West Ham, Everton and Wolves"],"a":0,"h":"One of them went down with 39 points, the highest relegation total since 2010-11."},{"id":"q_s26s18","c":"PL","d":"hard","k":null,"q":"Which club won the 2025-26 EFL Championship to reach the Premier League?","o":["Ipswich Town","Coventry City","Hull City","Middlesbrough"],"a":1,"h":"Their first ever Championship title, with 95 points."},{"id":"q_s26s02","c":"PL","d":"medium","k":"Arsenal","q":"Arsenal's 2025-26 Premier League title was their first since which season?","o":["1997-98","2001-02","2003-04","2015-16"],"a":2,"h":"The season they went unbeaten."},{"id":"q_s26x21","c":"Records","d":"hard","k":null,"q":"James Milner retired in June 2026 holding the Premier League appearance record. How many times did he play in the competition?","o":["602","631","658","691"],"a":2,"h":"He finished five clear of Gareth Barry, passing the record while at Brighton in February 2026."},{"id":"q_s26s09","c":"SerieA","d":"easy","k":"Inter Milan","q":"Which club won the 2025-26 Serie A title?","o":["Napoli","Juventus","Inter","AC Milan"],"a":2,"h":"Their 21st Scudetto, and Cristian Chivu's first season in charge."},{"id":"q_s26a04","c":"Transfers","d":"easy","k":"Chelsea","q":"Morgan Rogers joined Chelsea in the summer of 2026 from which club?","o":["Middlesbrough","Aston Villa","Manchester City","West Ham"],"a":1,"h":"Rogers had moved to Villa Park from Middlesbrough two years earlier."},{"id":"q_s26a05","c":"Transfers","d":"easy","k":"Manchester City","q":"Elliot Anderson joined Manchester City in the summer of 2026 from which club?","o":["Newcastle United","Brighton","Nottingham Forest","Aston Villa"],"a":2,"h":"Anderson came through at Newcastle before two seasons at the City Ground."},{"id":"q_s26x05","c":"Transfers","d":"easy","k":null,"q":"Which club signed Bruno Guimar\u00e3es from Newcastle United in August 2026?","o":["Arsenal","Manchester City","Liverpool","Chelsea"],"a":0,"h":"The \u00a375m fee took Newcastle past \u00a3240m in sales for the summer."},{"id":"q_s26x06","c":"Transfers","d":"easy","k":null,"q":"Anthony Gordon left Newcastle United in 2026 to join which club?","o":["Barcelona","Real Madrid","Bayern Munich","Paris Saint-Germain"],"a":0,"h":"The England winger moved to Catalonia in a deal worth up to \u20ac80m."},{"id":"q_s26x08","c":"Transfers","d":"easy","k":null,"q":"Rodri left Manchester City in August 2026, after seven years, to join which club?","o":["Barcelona","Real Madrid","Atl\u00e9tico Madrid","Bayern Munich"],"a":0,"h":"The 2024 Ballon d'Or winner went back to Spain."},{"id":"q_s26b03","c":"Transfers","d":"hard","k":"Chelsea","q":"How much did Chelsea pay Aston Villa for Morgan Rogers in the summer of 2026?","o":["\u00a385m","\u00a3100m","\u00a3117m","\u00a3135m"],"a":2,"h":"It set a new British transfer record."},{"id":"q_s26b04","c":"Transfers","d":"hard","k":null,"q":"Which club banked a reported \u00a320.3m sell-on fee when Morgan Rogers joined Chelsea in 2026?","o":["West Bromwich Albion","Manchester City","Middlesbrough","Blackpool"],"a":2,"h":"They had kept 20% of any future profit when they sold him to Aston Villa in 2024."},{"id":"q_s26b05","c":"Transfers","d":"hard","k":"Manchester City","q":"Elliot Anderson's \u00a3116m move to Manchester City in 2026 broke a club record previously held by which player?","o":["Jack Grealish","Rodri","Kevin De Bruyne","Jo\u0161ko Gvardiol"],"a":0,"h":"The old record was \u00a3100m, paid to Aston Villa in 2021."},{"id":"q_s26b10","c":"Transfers","d":"hard","k":null,"q":"Morgan Rogers made his professional debut for which club before joining Manchester City in 2019?","o":["West Bromwich Albion","Wolverhampton Wanderers","Birmingham City","Aston Villa"],"a":0,"h":"He joined their academy as an under-9, having grown up in the West Midlands."},{"id":"q_s26t02","c":"Transfers","d":"hard","k":null,"q":"Mason Greenwood left Marseille in July 2026 to join which club?","o":["Galatasaray","Fenerbah\u00e7e","Be\u015fikta\u015f","Al-Ittihad"],"a":1,"h":"A record sale for Marseille, and he turned down a move to Saudi Arabia to do it."},{"id":"q_s26t03","c":"Transfers","d":"hard","k":null,"q":"Randal Kolo Muani joined which Italian club permanently from Paris Saint-Germain in August 2026?","o":["Inter","AC Milan","Juventus","Roma"],"a":2,"h":"He had already spent time in Turin on loan before the deal was made permanent."},{"id":"q_s26t04","c":"Transfers","d":"hard","k":null,"q":"Lee Kang-in left Paris Saint-Germain in July 2026 for which Spanish club?","o":["Sevilla","Villarreal","Atl\u00e9tico Madrid","Real Betis"],"a":2,"h":"The South Korean had won two Champions Leagues in Paris before the move."},{"id":"q_s26t05","c":"Transfers","d":"hard","k":null,"q":"Ansu Fati completed a permanent move away from Barcelona in June 2026 to which club?","o":["Monaco","Marseille","Lyon","Nice"],"a":0,"h":"They triggered a purchase option after a loan season in which he scored 12 goals."},{"id":"q_s26t06","c":"Transfers","d":"hard","k":null,"q":"Lucas Digne rejoined which club in August 2026, a decade after first leaving it?","o":["Lille","Paris Saint-Germain","Marseille","Lyon"],"a":1,"h":"A \u20ac10m release clause took the 33-year-old left-back back to the club he left in 2016."},{"id":"q_s26t07","c":"Transfers","d":"hard","k":null,"q":"Monaco's 2026 signing of Matthis Abline was a record sale for which club?","o":["Rennes","Nantes","Lorient","Angers"],"a":1,"h":"He left after their relegation to Ligue 2."},{"id":"q_s26t08","c":"Transfers","d":"hard","k":"Bayer Leverkusen","q":"Facundo Medina joined Bayer Leverkusen in August 2026 from which club?","o":["Lens","Marseille","Lyon","Monaco"],"a":1,"h":"He had spent just one season there after arriving from Lens."},{"id":"q_s26x01","c":"Transfers","d":"hard","k":"Liverpool","q":"Mohamed Salah left Liverpool on a free transfer in August 2026 to join which club?","o":["Fenerbah\u00e7e","Trabzonspor","Galatasaray","Al-Ittihad"],"a":1,"h":"A move to Turkey ended his nine-year Anfield career."},{"id":"q_s26x02","c":"Transfers","d":"hard","k":null,"q":"Which club broke its transfer record to sign Yan Diomande from RB Leipzig in August 2026?","o":["Real Madrid","Barcelona","Manchester City","Paris Saint-Germain"],"a":0,"h":"At 19 the Ivory Coast winger became the most expensive African player in history."},{"id":"q_s26x03","c":"Transfers","d":"hard","k":"Tottenham Hotspur","q":"Sandro Tonali joined Tottenham in July 2026 from which club?","o":["AC Milan","Newcastle United","Inter","Brescia"],"a":1,"h":"A club-record deal worth up to \u00a3100m took him from the north east."},{"id":"q_s26x04","c":"Transfers","d":"hard","k":"Tottenham Hotspur","q":"Mateus Fernandes became Tottenham's record signing in July 2026. How long did his record stand?","o":["Four days","Four weeks","Four months","A full season"],"a":0,"h":"Sandro Tonali arrived almost immediately afterwards."},{"id":"q_s26x07","c":"Transfers","d":"hard","k":"AC Milan","q":"Gon\u00e7alo Ramos broke AC Milan's transfer record in 2026, surpassing the fee paid for which player?","o":["Christian Pulisic","Rafael Le\u00e3o","Theo Hern\u00e1ndez","Olivier Giroud"],"a":1,"h":"The old record was \u20ac49.5m, for a fellow Portuguese forward."},{"id":"q_s26x10","c":"Transfers","d":"hard","k":null,"q":"Luka Vu\u0161kovi\u0107 joined which club for a club-record fee in July 2026, without ever playing a competitive match for Tottenham?","o":["Brighton","Everton","Fulham","Bournemouth"],"a":0,"h":"The 19-year-old Croatian defender moved to the south coast."},{"id":"q_s26x11","c":"Transfers","d":"hard","k":null,"q":"Rasmus H\u00f8jlund completed a permanent move from Manchester United to which club in June 2026?","o":["Atalanta","Napoli","Roma","Inter"],"a":1,"h":"The obligation to buy was triggered by Champions League qualification."},{"id":"q_s26x12","c":"Transfers","d":"hard","k":null,"q":"Bernardo Silva left Manchester City on a free transfer in June 2026 to join which club?","o":["Benfica","Real Madrid","Barcelona","Al-Hilal"],"a":1,"h":"He signed a two-year deal in the Spanish capital."},{"id":"q_s26x13","c":"Transfers","d":"hard","k":null,"q":"Andy Robertson left Liverpool in 2026 to join which club?","o":["Celtic","Tottenham","Aston Villa","West Ham"],"a":1,"h":"The Scotland captain stayed in the Premier League, moving to north London."},{"id":"q_s26x14","c":"Transfers","d":"hard","k":null,"q":"John Stones left Manchester City on a free transfer in July 2026 to join which club?","o":["Inter","AC Milan","Napoli","Marseille"],"a":0,"h":"The England defender moved to the San Siro, but not to the red-and-black half."},{"id":"q_s26x15","c":"Transfers","d":"hard","k":null,"q":"Elliot Anderson's \u00a3116m move to Manchester City in 2026 made him the most expensive British player to date, passing a record held by which player?","o":["Jude Bellingham","Jack Grealish","Declan Rice","Harry Kane"],"a":0,"h":"The old mark was \u00a3115m, set by a move to Real Madrid in 2023."},{"id":"q_s26x16","c":"Transfers","d":"hard","k":"Chelsea","q":"Morgan Rogers became Chelsea's record signing in 2026, surpassing the \u00a3115m paid for which player?","o":["Enzo Fern\u00e1ndez","Mois\u00e9s Caicedo","Romelu Lukaku","Mykhailo Mudryk"],"a":1,"h":"An Ecuadorian midfielder signed from Brighton in 2023."},{"id":"q_s26x17","c":"Transfers","d":"hard","k":"Arsenal","q":"Christos Tzolis joined Arsenal from Club Brugge in July 2026 for a record fee involving which league?","o":["Eredivisie","Belgian Pro League","Primeira Liga","Scottish Premiership"],"a":1,"h":"It was the biggest fee ever received by a club in that country."},{"id":"q_s26x22","c":"Transfers","d":"hard","k":null,"q":"Robert Lewandowski left Barcelona on a free transfer in June 2026 to join which club?","o":["Inter Miami","Chicago Fire","LA Galaxy","Al-Nassr"],"a":1,"h":"The 37-year-old signed a two-year Designated Player deal in Major League Soccer."},{"id":"q_s26b06","c":"Transfers","d":"medium","k":"Nottingham Forest","q":"Elliot Anderson joined Nottingham Forest in 2024 from which club?","o":["Newcastle United","Sunderland","Middlesbrough","Leeds United"],"a":0,"h":"He came through the academy of the North East club he grew up supporting."},{"id":"q_s26t01","c":"Transfers","d":"medium","k":null,"q":"Which club signed Ferran Torres from Barcelona in August 2026?","o":["Paris Saint-Germain","Atl\u00e9tico Madrid","Juventus","Napoli"],"a":0,"h":"He left Barcelona for a French club in a \u20ac50m deal."},{"id":"q_s26x09","c":"Transfers","d":"medium","k":"Leeds United","q":"James Trafford's 2026 move from Manchester City to Leeds United made him the most expensive British player ever in which position?","o":["Goalkeeper","Full-back","Centre-back","Striker"],"a":0,"h":"The previous mark was the \u00a330m paid for Jordan Pickford."},{"id":"q_s26s03","c":"UCL","d":"easy","k":null,"q":"Which club won the 2026 UEFA Champions League?","o":["Arsenal","Real Madrid","Paris Saint-Germain","Bayern Munich"],"a":2,"h":"They retained the trophy, and it was Luis Enrique's third European Cup as a manager."},{"id":"q_s26s05","c":"UCL","d":"easy","k":null,"q":"Which club won the 2026 UEFA Europa League?","o":["Aston Villa","Roma","Tottenham","SC Freiburg"],"a":0,"h":"Their first trophy of any kind since the 1996 League Cup."},{"id":"q_s26s04","c":"UCL","d":"medium","k":null,"q":"How was the 2026 Champions League final between Paris Saint-Germain and Arsenal decided?","o":["A penalty shootout","A late winner in normal time","An extra-time golden goal","A replay"],"a":0,"h":"It finished 1-1 after extra time in Budapest."},{"id":"q_s26s07","c":"UCL","d":"medium","k":null,"q":"Which club won the 2026 UEFA Conference League, their first European trophy?","o":["Rayo Vallecano","Crystal Palace","Fiorentina","Real Betis"],"a":1,"h":"Jean-Philippe Mateta scored the only goal in Leipzig."},{"id":"q_s26w01","c":"WorldCup","d":"easy","k":null,"q":"Which country won the 2026 World Cup?","o":["Spain","Argentina","France","England"],"a":0,"h":"It was their second title, sixteen years after their first."},{"id":"q_s26w06","c":"WorldCup","d":"easy","k":null,"q":"Who won the Golden Boot at the 2026 World Cup?","o":["Lionel Messi","Kylian Mbapp\u00e9","Ferran Torres","Harry Kane"],"a":1,"h":"He became the only man to have won the award twice."},{"id":"q_s26w11","c":"WorldCup","d":"easy","k":null,"q":"Which country knocked England out of the 2026 World Cup?","o":["Argentina","Spain","France","Brazil"],"a":0,"h":"A 2-1 semi-final defeat, settled in stoppage time."},{"id":"q_s26w24","c":"WorldCup","d":"easy","k":null,"q":"Who was England's manager at the 2026 World Cup?","o":["Gareth Southgate","Thomas Tuchel","Eddie Howe","Lee Carsley"],"a":1,"h":"A German, and a former Chelsea and Bayern Munich boss."},{"id":"q_s26w07","c":"WorldCup","d":"hard","k":null,"q":"How many goals did Kylian Mbapp\u00e9 score to claim the 2026 World Cup Golden Boot?","o":["7","8","10","12"],"a":2,"h":"Lionel Messi finished second on eight."},{"id":"q_s26w10","c":"WorldCup","d":"hard","k":null,"q":"Who was named Best Young Player at the 2026 World Cup?","o":["Lamine Yamal","Pau Cubars\u00ed","Endrick","Warren Za\u00efre-Emery"],"a":1,"h":"A Barcelona defender, not a forward."},{"id":"q_s26w13","c":"WorldCup","d":"hard","k":null,"q":"What was the score when England beat France in the 2026 World Cup third-place play-off?","o":["3-2","4-2","5-3","6-4"],"a":3,"h":"Ten goals \u2014 the highest-scoring third-place match in World Cup history."},{"id":"q_s26w16","c":"WorldCup","d":"hard","k":null,"q":"How many goals were scored in total at the 2026 World Cup, a tournament record?","o":["232","271","308","341"],"a":2,"h":"An expanded 48-team field played 104 matches."},{"id":"q_s26w17","c":"WorldCup","d":"hard","k":null,"q":"With how many goals did Kylian Mbapp\u00e9 become the World Cup's all-time leading scorer in 2026?","o":["18","20","22","24"],"a":2,"h":"He passed the previous record during the third-place play-off."},{"id":"q_s26w18","c":"WorldCup","d":"hard","k":null,"q":"Neymar retired from international football after Brazil were knocked out of the 2026 World Cup by which country?","o":["Croatia","Morocco","Norway","Netherlands"],"a":2,"h":"A 2-1 last-16 defeat to a European side playing at their first World Cup since 1998."},{"id":"q_s26w19","c":"WorldCup","d":"hard","k":null,"q":"When Neymar retired from international football in 2026, how many goals had he scored for Brazil?","o":["77","80","84","95"],"a":1,"h":"He had passed Pel\u00e9's tally of 77 some years earlier."},{"id":"q_s26w20","c":"WorldCup","d":"hard","k":null,"q":"Which of these nations made its World Cup debut at the 2026 tournament?","o":["Ghana","Cape Verde","Senegal","Ivory Coast"],"a":1,"h":"An island nation off the coast of West Africa."},{"id":"q_s26w22","c":"WorldCup","d":"hard","k":null,"q":"Spain won the 2026 World Cup having conceded how many goals across the whole tournament?","o":["One","Three","Four","Six"],"a":0,"h":"No previous World Cup winner had been this miserly."},{"id":"q_s26w02","c":"WorldCup","d":"medium","k":null,"q":"Who scored the only goal of the 2026 World Cup final?","o":["Lamine Yamal","Ferran Torres","Mikel Oyarzabal","\u00c1lvaro Morata"],"a":1,"h":"It arrived in the 106th minute, six minutes into extra time."},{"id":"q_s26w03","c":"WorldCup","d":"medium","k":null,"q":"At which stadium was the 2026 World Cup final played?","o":["Rose Bowl","AT&T Stadium","MetLife Stadium","Estadio Azteca"],"a":2,"h":"It sits in East Rutherford, New Jersey."},{"id":"q_s26w08","c":"WorldCup","d":"medium","k":null,"q":"Who won the Golden Ball as the best player of the 2026 World Cup?","o":["Rodri","Lamine Yamal","Lionel Messi","Kylian Mbapp\u00e9"],"a":0,"h":"A holding midfielder, and a Ballon d'Or winner before the tournament."},{"id":"q_s26w09","c":"WorldCup","d":"medium","k":null,"q":"Which goalkeeper won the Golden Glove at the 2026 World Cup?","o":["Emiliano Mart\u00ednez","Alisson","Unai Sim\u00f3n","Jordan Pickford"],"a":2,"h":"His side conceded just one goal in the whole tournament."},{"id":"q_s26w12","c":"WorldCup","d":"medium","k":null,"q":"England's third place at the 2026 World Cup was their best finish since which year?","o":["1966","1970","1990","2018"],"a":0,"h":"They were fourth in both 1990 and 2018."},{"id":"q_s26w14","c":"WorldCup","d":"medium","k":null,"q":"Which England player scored a hat-trick in the 2026 World Cup third-place play-off?","o":["Jude Bellingham","Bukayo Saka","Harry Kane","Anthony Gordon"],"a":1,"h":"An Arsenal winger; two of his goals came before half-time."},{"id":"q_s26w15","c":"WorldCup","d":"medium","k":null,"q":"Which manager led Spain to the 2026 World Cup title?","o":["Luis Enrique","Vicente del Bosque","Luis de la Fuente","Xabi Alonso"],"a":2,"h":"He had already won the Nations League with them."},{"id":"q_s26w21","c":"WorldCup","d":"medium","k":null,"q":"Spain's 2026 victory made them the first country to hold which two trophies at the same time?","o":["The men's and women's World Cups","The World Cup and the Olympic gold","The World Cup and the Copa Am\u00e9rica","The World Cup and the Club World Cup"],"a":0,"h":"Their women's side had won theirs in 2023."},{"id":"q_s26w23","c":"WorldCup","d":"medium","k":null,"q":"Which country did Spain beat in the semi-finals on their way to winning the 2026 World Cup?","o":["England","France","Portugal","Germany"],"a":1,"h":"They won 2-0 in Texas, through an Oyarzabal penalty and a Pedro Porro strike."}]</script>
+<script type="application/json" id="state">{"decisions":{}}</script>
+<script>
+(() => {
+  const QS = JSON.parse(document.getElementById('questions').textContent);
+  const STATE = JSON.parse(document.getElementById('state').textContent);
+  const decisions = STATE.decisions || {};
+  const app = document.getElementById('app');
+  const savingEl = document.getElementById('saving');
+  let filter = 'todo';
+
+  const VERDICTS = [['approve','Approve'],['reject','Reject'],['hold','Hold']];
+  const counts = () => {
+    const c = { approve:0, reject:0, hold:0, todo:0 };
+    for (const q of QS) { const v = decisions[q.id]; if (v && c[v] !== undefined) c[v]++; else c.todo++; }
+    return c;
+  };
+
+  function renderHeader() {
+    const c = counts();
+    const pct = (n) => (n / QS.length * 100).toFixed(2) + '%';
+    document.getElementById('track').innerHTML =
+      '<i style="width:' + pct(c.approve) + ';background:var(--ok)"></i>' +
+      '<i style="width:' + pct(c.reject) + ';background:var(--no)"></i>' +
+      '<i style="width:' + pct(c.hold)  + ';background:var(--hold)"></i>';
+    document.getElementById('tallies').innerHTML =
+      '<span class="tally"><b style="color:var(--ok)">' + c.approve + '</b> approved</span>' +
+      '<span class="tally"><b style="color:var(--no)">' + c.reject + '</b> rejected</span>' +
+      '<span class="tally"><b style="color:var(--hold)">' + c.hold + '</b> held</span>' +
+      '<span class="tally"><b>' + c.todo + '</b> left</span>';
+    const opts = [['todo','Left to do'],['all','All'],['approve','Approved'],['reject','Rejected'],['hold','Held']];
+    document.getElementById('filters').innerHTML = opts.map(([k,label]) =>
+      '<button class="chip" data-f="' + k + '" aria-pressed="' + (filter===k) + '">' + label + '</button>').join('');
+  }
+
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  function visible() {
+    if (filter === 'all') return QS;
+    if (filter === 'todo') return QS.filter(q => !decisions[q.id]);
+    return QS.filter(q => decisions[q.id] === filter);
+  }
+
+  function renderList() {
+    const rows = visible();
+    if (!rows.length) {
+      app.innerHTML = '<p class="empty">Nothing here.' +
+        (filter === 'todo' ? '<br>All 89 have a verdict &mdash; tell Claude and it will apply them.' : '') + '</p>';
+      return;
+    }
+    app.innerHTML = rows.map(q => {
+      const v = decisions[q.id] || '';
+      return '<article class="card"' + (v ? ' data-v="' + v + '"' : '') + '>' +
+        '<div class="meta"><span class="tag">' + esc(q.c) + '</span>' +
+        '<span class="dif">' + esc(q.d) + '</span>' +
+        (q.k ? '<span class="dif">&middot; ' + esc(q.k) + '</span>' : '') +
+        '<span class="qid">' + esc(q.id) + '</span></div>' +
+        '<p class="qtext">' + esc(q.q) + '</p>' +
+        '<ul class="opts">' + q.o.map((o,i) =>
+          '<li class="' + (i === q.a ? 'right' : '') + '">' + esc(o) + '</li>').join('') + '</ul>' +
+        (q.h ? '<p class="why">' + esc(q.h) + '</p>' : '') +
+        '<div class="acts">' + VERDICTS.map(([k,label]) =>
+          '<button class="act" data-k="' + k + '" data-id="' + q.id + '" aria-pressed="' + (v===k) + '">' +
+          label + '</button>').join('') + '</div>' +
+      '</article>';
+    }).join('');
+  }
+
+  function render() { renderHeader(); renderList(); }
+
+  /* ── persistence ───────────────────────────────────────────────────────
+     The page IS the record: decisions are published back into this document
+     so they survive a reload and Claude can read them straight off the URL.
+     Publishes the SHELL plus state, never the rendered list — #app is emptied
+     in the clone, so nothing runtime-generated is baked into the saved copy. */
+  let artifact = null, timer = null, dirty = false;
+  // ⚠️ `claude` only exists inside the artifact host. Referencing it bare threw
+  // a ReferenceError outside it and killed this whole IIFE before render() ran,
+  // so the page came up blank when served anywhere else. Branch on absence.
+  try {
+    if (typeof claude !== 'undefined' && claude && typeof claude.use === 'function') {
+      claude.use('artifact').then(a => { artifact = a; }).catch(() => {});
+    }
+  } catch (_) { /* no host: the page still works, it just cannot save */ }
+
+  function flash(msg) {
+    savingEl.textContent = msg;
+    savingEl.classList.add('on');
+    clearTimeout(flash._t);
+    flash._t = setTimeout(() => savingEl.classList.remove('on'), 1400);
+  }
+
+  async function publish() {
+    if (!artifact) { flash('not saved \u2014 read-only'); return; }
+    dirty = false;
+    try {
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelector('#app').innerHTML = '';
+      clone.querySelector('#state').textContent = JSON.stringify({ decisions });
+      await artifact.publish('<!doctype html>\n' + clone.outerHTML);
+      flash('saved \u00b7 ' + Object.keys(decisions).length + '/' + QS.length);
+    } catch (e) {
+      // conflict is routine — another view won; no retry, it will reload.
+      if (!(e && e.code === 'conflict')) flash('not saved');
+    }
+  }
+
+  function queuePublish() {
+    dirty = true;
+    clearTimeout(timer);
+    timer = setTimeout(() => { if (dirty) publish(); }, 1100);
+  }
+
+  document.addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (chip) { filter = chip.dataset.f; render(); window.scrollTo({ top: 0 }); return; }
+    const act = e.target.closest('.act');
+    if (!act) return;
+    const id = act.dataset.id, k = act.dataset.k;
+    if (decisions[id] === k) delete decisions[id]; else decisions[id] = k;
+    render();
+    queuePublish();
+  });
+
+  // Don't lose the last taps if the tab closes inside the debounce window.
+  window.addEventListener('pagehide', () => { if (dirty) publish(); });
+
+  render();
+})();
+</script>
