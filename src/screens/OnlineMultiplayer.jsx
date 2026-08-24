@@ -6,7 +6,7 @@ import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { supabase } from '../supabase.js';
 import { useAuth } from '../useAuth.jsx';
-import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName } from '../multiplayerRpc.js';
+import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName, mpSetPlayerReady, mpStartNextRound } from '../multiplayerRpc.js';
 import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName } from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 
@@ -1053,6 +1053,88 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
     }
   }, [isWinner, survivalDraw]);
 
+  // ── STAY IN THE ROOM AND READY UP ─────────────────────────────────────────
+  //
+  // ⚠️ THE LOOP USED TO END HERE. Measured 2026-08-24: 136 rooms in prod, every
+  // one 'ended', rematch_code null on all of them — not one rematch had ever
+  // completed, across 90 rooms that had 2+ real players in ten days. Rematch
+  // minted a NEW room and stood you in it alone while everyone else was left to
+  // follow a push notification. Now nobody moves: the same room resets.
+  //
+  // No local ready state. `players` comes from useMultiplayerRoom, which
+  // already subscribes to postgres_changes on room_players with select('*'),
+  // so `ready` arrives live for free and the board is the same truth for
+  // everyone. Mirroring it into component state would give each device its own
+  // slightly-wrong copy — the class of bug that made two players tap Rematch
+  // and land in rival rooms.
+  const iAmReady = !!myPlayer?.ready;
+  const readyCount = (players || []).filter(p => p.ready).length;
+  const totalHere = (players || []).length;
+  const hostPresent = (players || []).some(p => p.user_id === room?.host_id);
+  const iAmHost = !!myPlayer?.user_id && myPlayer.user_id === room?.host_id;
+  // Matches start_next_round's escape hatch: if the host closed the app, the
+  // room must not be stuck forever, so anyone left can start it.
+  const iCanStart = iAmHost || !hostPresent;
+  const [readyBusy, setReadyBusy] = useState(false);
+  const [nextBusy, setNextBusy] = useState(false);
+  const [nextError, setNextError] = useState("");
+
+  const toggleReady = async () => {
+    if (readyBusy) return;
+    setReadyBusy(true);
+    setNextError("");
+    haptic("soft");
+    const res = await mpSetPlayerReady({ p_code: room?.code, p_ready: !iAmReady });
+    if (res?.error) {
+      console.warn('[toggleReady]', res.error);
+      setNextError("Couldn't update — check your connection.");
+    }
+    setReadyBusy(false);
+  };
+
+  const startNextRound = async () => {
+    if (nextBusy) return;
+    setNextBusy(true);
+    setNextError("");
+    // Same shape the first start uses. The topic pack is NOT stored on the room
+    // (game_rooms has no pack column), so a second round is Mixed — worth
+    // persisting the pack later, but silently replaying a topic we cannot prove
+    // was chosen would be worse than an honest Mixed.
+    const survival = room?.mode === 'survival';
+    let questions;
+    try {
+      const picked = await pickMultiplayerQuestions(survival ? 15 : 10, "mixed", { escalate: survival });
+      questions = picked.questions;
+    } catch (e) {
+      console.warn('[startNextRound] questions', e?.message || e);
+      setNextError("Couldn't load questions — check your connection.");
+      setNextBusy(false);
+      return;
+    }
+    const res = await mpStartNextRound({ p_code: room?.code, p_questions: questions });
+    if (res?.started) {
+      // No navigation here on purpose: the room flips to 'playing' and the
+      // game_rooms subscription moves EVERY device, including this one, down
+      // the same path the first start uses. Pushing this client ahead manually
+      // is how you get one player a question in front of the others.
+      haptic("hardCorrect");
+      setNextBusy(false);
+      return;
+    }
+    // ⚠️ Render the REASON. "Waiting for one more player" and "only the host can
+    // start" are different problems, and a generic failure sends the player
+    // tapping the same dead button.
+    const why = {
+      need_two_ready:   "Need two players ready to go again.",
+      starter_not_ready:"Tap Ready first.",
+      not_host:         "Only the host can start the next round.",
+      not_ended:        "That round is still going.",
+    }[res?.reason];
+    console.warn('[startNextRound]', res?.reason || res?.error || 'unknown');
+    setNextError(why || "Couldn't start the next round — try again.");
+    setNextBusy(false);
+  };
+
   // Game Over is the emotional peak of the Online loop — it used to dead-end
   // at "Back to Home". Rematch spins up a fresh room (the parent swaps the
   // lobby to the new code; share the invite link from there) and Share sends
@@ -1554,9 +1636,81 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
               💾 Playing as a guest — save your stats with a free account
             </button>
           )}
+          {/* ── PLAY AGAIN, WITHOUT ANYONE LEAVING ─────────────────────────
+              The board is the point: you can see who is coming back before you
+              commit. Previously this was a single Rematch button that moved you
+              to a new empty room and left the others behind a notification. */}
+          <div style={{ marginBottom: 12, padding: '12px 12px 10px', borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 8 }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--t1)', letterSpacing: '-0.2px' }}>Play again</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: readyCount >= 2 ? 'var(--accent)' : 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>
+                {readyCount}/{totalHere} ready
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 10 }}>
+              {(players || []).map(p => (
+                <div key={p.user_id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+                  <span aria-hidden="true" style={{ fontSize: 15, width: 20, textAlign: 'center' }}>{p.avatar || '⚽'}</span>
+                  <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: p.ready ? 'var(--t1)' : 'var(--t3)', fontWeight: p.ready ? 700 : 600 }}>
+                    {p.name}{p.user_id === myPlayer?.user_id ? ' (you)' : ''}
+                  </span>
+                  {/* Glyph as well as colour — the same rule the quiz options
+                      follow, so this reads for red-green colour blindness. */}
+                  <span style={{ fontSize: 12, fontWeight: 800, color: p.ready ? 'var(--accent)' : 'var(--t3)' }}>
+                    {p.ready ? '✓ ready' : 'waiting'}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <button
+              className={iAmReady ? undefined : 'btn-3d'}
+              onClick={toggleReady}
+              disabled={readyBusy}
+              aria-pressed={iAmReady}
+              style={iAmReady
+                ? { width: '100%', padding: 13, borderRadius: 14, background: 'transparent', border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: 'pointer' }
+                : { width: '100%', marginBottom: 0 }}
+            >
+              {iAmReady ? "✓ You're ready — tap to cancel" : "I'm ready"}
+            </button>
+            {iCanStart && (
+              <button
+                onClick={startNextRound}
+                disabled={nextBusy || readyCount < 2 || !iAmReady}
+                style={{ width: '100%', marginTop: 8, padding: 13, borderRadius: 14, background: (readyCount >= 2 && iAmReady) ? 'var(--accent)' : 'var(--s2)', border: 'none', color: (readyCount >= 2 && iAmReady) ? '#0A0A0A' : 'var(--t3)', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: (readyCount >= 2 && iAmReady) ? 'pointer' : 'not-allowed' }}
+              >
+                {nextBusy ? 'Starting…'
+                  : readyCount < 2 ? 'Waiting for one more…'
+                  : readyCount < totalHere ? `Start next round (${totalHere - readyCount} not ready)`
+                  : 'Start next round'}
+              </button>
+            )}
+            {!iCanStart && iAmReady && (
+              <div style={{ fontSize: 12, color: 'var(--t3)', textAlign: 'center', marginTop: 8 }}>
+                Waiting for the host to start…
+              </div>
+            )}
+            {/* ⚠️ Says so out loud. start_next_round DROPS players who are not
+                ready, and finding that out by disappearing is not acceptable. */}
+            {iCanStart && readyCount >= 2 && readyCount < totalHere && (
+              <div style={{ fontSize: 11.5, color: 'var(--t3)', textAlign: 'center', marginTop: 6, lineHeight: 1.4 }}>
+                Anyone not ready will sit this one out.
+              </div>
+            )}
+            {nextError && (
+              <div style={{ color: '#FF6B6B', fontSize: 12.5, textAlign: 'center', marginTop: 8 }}>{nextError}</div>
+            )}
+          </div>
+          {/* Fallback for a room somebody has actually left — mints a fresh room
+              and pulls them back by notification. Demoted below the board: it is
+              the answer to "they're gone", not to "let's go again". */}
           {onRematch && (
-            <button className="btn-3d" onClick={handleRematch} disabled={rematching} style={{ width: '100%', marginBottom: 10 }}>
-              {rematching ? 'Setting up the rematch…' : '🔄 Rematch — same crew, new room'}
+            <button
+              onClick={handleRematch}
+              disabled={rematching}
+              style={{ width: '100%', marginBottom: 10, padding: 12, borderRadius: 14, background: 'transparent', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, cursor: 'pointer' }}
+            >
+              {rematching ? 'Setting up…' : 'Someone left — start a new room'}
             </button>
           )}
           {rematchError && (

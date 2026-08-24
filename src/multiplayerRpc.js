@@ -204,6 +204,36 @@ export async function mpJoinRoom({ p_code, p_name, p_avatar }) {
   return data
 }
 
+/**
+ * Post-match ready-up. See supabase/migrations/v1_7_mp_ready_up.sql.
+ *
+ * Returns { ready_count, total, all_ready, can_start }. The tally comes back
+ * from the call itself so a client whose realtime subscription is asleep still
+ * renders a truthful count from its own action — the board must never show
+ * "1/3 ready" to someone who just tapped Ready.
+ */
+export async function mpSetPlayerReady({ p_code, p_ready }) {
+  const { data, error } = await withRetry('set_player_ready', { p_code, p_ready })
+  if (error) return { error: error.message ?? String(error) }
+  return data
+}
+
+/**
+ * Reset the SAME room for another round. Host-only while the host is present
+ * (whoever supplies the questions knows the answers first), otherwise any
+ * remaining player may start.
+ *
+ * Returns { started, reason?, players?, dropped?, already? }. `reason` is one
+ * of not_host · not_ended · need_two_ready · starter_not_ready, and callers
+ * should render it rather than a generic failure — "waiting for one more
+ * player" and "only the host can start" are different problems to the player.
+ */
+export async function mpStartNextRound({ p_code, p_questions }) {
+  const { data, error } = await withRetry('start_next_round', { p_code, p_questions })
+  if (error) return { started: false, error: error.message ?? String(error) }
+  return data
+}
+
 export async function mpStartGame({ p_code, p_questions, p_capacity }) {
   const { data, error } = await withRetry('start_game', { p_code, p_questions, p_capacity })
   if (error) return { started: false, error: error.message }
