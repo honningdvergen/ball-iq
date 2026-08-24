@@ -20,7 +20,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2 } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
@@ -6837,7 +6837,23 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             plain divs and the centered-vertical layout is preserved. */}
         <div className="settings-card about-card-card" style={{padding:"24px 18px 18px",textAlign:"center"}}>
           <div className="about-card-brand">
-            <div className="about-card-ball" style={{fontSize:48,lineHeight:1,marginBottom:8}} aria-hidden="true">⚽</div>
+            {/* ⚠️ WAS A ⚽ EMOJI — on the card where the app introduces ITSELF.
+                Ball IQ ships its own mark (icon-192.png; Login.jsx renders it
+                at 104px, and the native prune allowlist already keeps it in
+                both bundles), so the About block was showing a generic emoji
+                football in the one place a real brand mark belongs. Rounded
+                like an app icon, matching Login's treatment.
+                `alt` deliberately empty: the product name is the very next
+                element, so a screen reader announcing "Ball IQ" twice is worse
+                than announcing it once. */}
+            <img
+              className="about-card-ball"
+              src="/icon-192.png"
+              alt=""
+              width="56"
+              height="56"
+              style={{width:56,height:56,borderRadius:14,marginBottom:8,display:"block",marginLeft:"auto",marginRight:"auto"}}
+            />
             <div className="about-card-meta-wrap">
               <div className="about-card-name" style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>Ball <em style={{color:"var(--accent)",fontStyle:"normal"}}>IQ</em></div>
               <div style={{fontSize:13,color:"var(--t2)",marginTop:4}}>The football quiz for real fans</div>
@@ -10379,6 +10395,18 @@ function AppInner() {
     try { return localStorage.getItem('biq_notif_enabled') === '1'; } catch { return false; }
   });
   const [notifPromptOpen, setNotifPromptOpen] = useState(false);
+  // ⚠️ role="dialog" without useModalA11y is half an accessibility fix, and the
+  // repo's own a11y-structure test enforces the pair — it caught this sheet the
+  // moment the role was added. The hook is what actually traps focus and wires
+  // Escape; the attribute alone just tells a screen reader to expect behaviour
+  // that is not there. Dismissal is counted the same as a backdrop tap: both
+  // are "closed without deciding", and the ask is already spent either way.
+  const notifSheetRef = useRef(null);
+  useModalA11y({
+    isOpen: notifPromptOpen,
+    onClose: () => { loopEvent("notif-prompt-dismissed"); setNotifPromptOpen(false); },
+    ref: notifSheetRef,
+  });
   // Holds the deferred notification sheet so it can be cancelled if the player
   // leaves the result before it fires — a sheet that appears after they have
   // navigated away is worse than one that never appears.
@@ -12197,7 +12225,7 @@ function AppInner() {
             {screen === "home" && (
               <div className="hdr-actions" style={{marginLeft:"auto",display:"flex",gap:8}}>
                 {user && <NotifBell count={notifCount} onClick={openNotifs} className="icon-btn hdr-ic" />}
-                <button className="icon-btn hdr-ic" aria-label="Settings" onClick={() => setScreen("settings")}>⚙️</button>
+                <button className="icon-btn hdr-ic" aria-label="Settings" onClick={() => setScreen("settings")}><Settings size={18} strokeWidth={2.25} aria-hidden="true" /></button>
               </div>
             )}
           </div>
@@ -12415,12 +12443,35 @@ function AppInner() {
           >
             <div
               onClick={e => e.stopPropagation()}
-              style={{width:"100%",maxWidth:440,background:"var(--s1)",borderTopLeftRadius:20,borderTopRightRadius:20,border:"1px solid var(--border)",borderBottom:"none",padding:"24px 22px calc(24px + env(safe-area-inset-bottom))",boxShadow:"0 -8px 40px rgba(0,0,0,0.5)"}}
+              /* ⚠️ role/aria-modal were MISSING here while the join modal a few
+                 hundred lines down has both. A screen reader announced this as
+                 an anonymous div, on the sheet that spends one of only two
+                 lifetime notification asks. */
+              ref={notifSheetRef}
+              tabIndex={-1}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="notif-sheet-title"
+              style={{width:"100%",maxWidth:440,background:"var(--s1)",borderTopLeftRadius:20,borderTopRightRadius:20,border:"1px solid var(--border)",borderBottom:"none",padding:"14px 22px calc(24px + env(safe-area-inset-bottom))",boxShadow:"0 -8px 40px rgba(0,0,0,0.5)"}}
             >
-              <div style={{fontSize:40,textAlign:"center",marginBottom:8}} aria-hidden="true">🔔</div>
-              <div style={{fontSize:19,fontWeight:800,color:"var(--t1)",textAlign:"center",marginBottom:8,letterSpacing:"-0.3px"}}>Keep your streak alive</div>
+              {/* Grabber. Without it this reads as a panel that appeared, not a
+                  sheet you can dismiss — the backdrop tap was the only exit and
+                  nothing on screen suggested it existed. */}
+              <div aria-hidden="true" style={{width:36,height:4,borderRadius:99,background:"var(--border)",margin:"0 auto 14px"}} />
+              {/* ⚠️ WAS A 🔔 EMOJI. The app already draws a proper bell — the
+                  Home header uses the lucide path — so the one sheet that
+                  actually asks for notification permission was the only place
+                  rendering the concept as an emoji. Emoji-as-icon is the
+                  clearest "assembled, not designed" tell, and this is a
+                  permission ask: it has to look like the app means it.
+                  Container mirrors .t7s-icon (tint 14%, border 30%), scaled
+                  up for a hero. */}
+              <div aria-hidden="true" style={{width:56,height:56,borderRadius:16,margin:"0 auto 12px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
+                <Bell size={26} strokeWidth={2.25} color="#58CC02" />
+              </div>
+              <div id="notif-sheet-title" style={{fontSize:19,fontWeight:800,color:"var(--t1)",textAlign:"center",marginBottom:8,letterSpacing:"-0.3px"}}>Keep your streak alive</div>
               <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.5,marginBottom:20}}>
-                Get one friendly reminder each evening if you haven't played yet — never spammy, and you can turn it off anytime in Settings.
+                One reminder each evening, only if you haven't played. Turn it off anytime in Settings.
               </div>
               <button
                 onClick={async () => {
@@ -12750,7 +12801,11 @@ function AppInner() {
               aria-modal="true"
               style={{width:"100%",maxWidth:360,background:"var(--bg)",border:"1px solid var(--border)",borderRadius:18,padding:"26px 22px",textAlign:"center"}}
             >
-              <div style={{fontSize:48,marginBottom:10}} aria-hidden="true">🎮</div>
+              {/* Gamepad2 was ALREADY imported in this file while this modal
+                  rendered the emoji version of the same idea. */}
+              <div aria-hidden="true" style={{width:56,height:56,borderRadius:16,margin:"0 auto 12px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
+                <Gamepad2 size={26} strokeWidth={2.25} color="#58CC02" />
+              </div>
               <div style={{fontSize:18,fontWeight:900,color:"var(--t1)",marginBottom:6}}>Join the game</div>
               <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>Your friend's invite code <strong style={{color:"var(--accent)",fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace"}}>{pendingJoinCode}</strong> is ready. We'll drop you straight into the room as soon as you're signed in.</div>
               {/* Social in-app webviews (Snapchat/IG/Threads) are a separate,

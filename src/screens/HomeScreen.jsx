@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Search, Landmark, Newspaper} from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Search, Landmark, Newspaper, Settings, Pencil } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -281,7 +281,7 @@ function HomeScreenImpl({
               )}
               {/* 1.1: settings gear inline with the greeting (the shared header
                   row is hidden on Home) — one tidy top row, no dead space. */}
-              <button onClick={() => setScreen("settings")} className="icon-btn hdr-ic" aria-label="Settings" style={{flexShrink:0}}>⚙️</button>
+              <button onClick={() => setScreen("settings")} className="icon-btn hdr-ic" aria-label="Settings" style={{flexShrink:0}}><Settings size={18} strokeWidth={2.25} aria-hidden="true" /></button>
             </div>
             {subtext && (
               <div style={{fontSize:12.5, color:"var(--t3)", marginTop:2, fontWeight:500}}>
@@ -303,7 +303,7 @@ function HomeScreenImpl({
                     top 300px, competing with Footle's Play for the eye — and it
                     is a settings nudge, not something you came here to do.
                     Underlined so it still reads as tappable without shouting. */}
-                Set your name ✏️
+                Set your name <Pencil size={12} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-1px",marginLeft:2}} />
               </button>
             )}
           </div>
