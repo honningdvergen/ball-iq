@@ -66,11 +66,45 @@ function sizeOf(path) {
   return total
 }
 
+/**
+ * ⚠️ RETRY, BECAUSE ONE FAILED DELETE USED TO ABORT THE WHOLE PRUNE.
+ *
+ * `rmSync(..., { force: true })` still THROWS on ENOTEMPTY, which macOS
+ * produces when Finder recreates a `.DS_Store` inside a directory between the
+ * readdir and the unlink. That is not hypothetical: on 2026-08-24 it killed
+ * this script twice mid-run and left `ios/App/App/public` at **41 MB instead of
+ * 6.9 MB** — the full web bundle, 47 SEO page directories and all, inside the
+ * native binary. The failure surfaces as a Node stack trace in the middle of a
+ * long build log, so nothing about the resulting app looks wrong; you just ship
+ * six times the assets and a privacy surface nobody meant to include.
+ *
+ * So: sweep the .DS_Store files this specific race creates and retry once,
+ * then let a genuine failure through loudly rather than silently under-pruning.
+ */
 function prune(path) {
   if (!existsSync(path)) return 0
   const bytes = sizeOf(path)
-  rmSync(path, { recursive: true, force: true })
+  try {
+    rmSync(path, { recursive: true, force: true })
+  } catch (err) {
+    if (err?.code !== 'ENOTEMPTY' && err?.code !== 'EBUSY') throw err
+    sweepDsStore(path)
+    rmSync(path, { recursive: true, force: true, maxRetries: 3, retryDelay: 50 })
+  }
   return bytes
+}
+
+/** Remove the Finder droppings that cause the ENOTEMPTY above. */
+function sweepDsStore(path) {
+  if (!existsSync(path)) return
+  let st
+  try { st = lstatSync(path) } catch { return }
+  if (!st.isDirectory()) return
+  for (const entry of readdirSync(path)) {
+    const child = join(path, entry)
+    if (entry === '.DS_Store') { try { rmSync(child, { force: true }) } catch { /* gone already */ } continue }
+    sweepDsStore(child)
+  }
 }
 
 const mb = (bytes) => (bytes / (1024 * 1024)).toFixed(2)

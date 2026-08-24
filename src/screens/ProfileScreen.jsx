@@ -547,20 +547,30 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       {search.trim().length >= 2 && (
         <div className="friends-results">
           {searching && <div className="friends-muted">Searching…</div>}
-          {!searching && results.length === 0 && (() => {
-            const term = search.trim();
-            const hasSpace = /\s/.test(term);
-            const hasSpecial = /[^A-Za-z0-9_-]/.test(term.replace(/\s/g, ""));
-            return (
-              <div className="friends-muted" style={{display:"flex",flexDirection:"column",gap:4}}>
-                <div>No players found — try a different username</div>
-                <div style={{fontSize:12,color:"var(--t3)"}}>Make sure you've typed their username exactly</div>
-                {(hasSpace || hasSpecial) && (
-                  <div style={{fontSize:12,color:"var(--t3)"}}>Tip: usernames don't contain spaces</div>
-                )}
-              </div>
-            );
-          })()}
+          {/* ⚠️ THE "usernames don't contain spaces" TIP WAS A LIE, and it was
+              the five-star sign-up blocker wearing a different hat.
+              UsernameSetupModal used to reject its own pre-filled suggestion
+              for containing a space; that was fixed. This half was not.
+
+              Measured in prod 2026-08-24: profiles has NO check constraint on
+              username, and 27 of 218 named accounts (12.4%) carry something
+              the tip called impossible — 17 with a space, 10 with a special
+              character. deriveUsernameFromIdentity writes them deliberately
+              (`fullName.trim().replace(/\s+/g, " ")`, collision suffix
+              `${cleaned} ${n}` — another space).
+
+              Search itself is fine: `.ilike("username", "%q%")` matches a
+              spaced name correctly. The tip only ever appeared on ZERO
+              results, i.e. exactly when someone was already failing to find a
+              friend — and it sent them off to retype the name WITHOUT the
+              space, which is the one spelling guaranteed not to match. On the
+              loop whose k-factor is already 0.23. */}
+          {!searching && results.length === 0 && (
+            <div className="friends-muted" style={{display:"flex",flexDirection:"column",gap:4}}>
+              <div>No players found — try a different username</div>
+              <div style={{fontSize:12,color:"var(--t3)"}}>Make sure you've typed their username exactly — spaces included</div>
+            </div>
+          )}
           {results.map(r => (
             <div key={r.id} className="friends-row">
               <div className="friends-avatar"><ProfilePic value={r.avatar} url={r.photo} /></div>
