@@ -306,23 +306,36 @@ are callable by signed-in users", which is the design.
       minipass / Unpack.prototype / tar-stream in either native bundle. (A
       naive `grep tar` DID match — "star", "start", "target".)
 
-- [🅰️] ⚠️ **REAL PRODUCTION VULN, NEEDS A DECISION: `@vercel/og` 0.11.1 →
-      sharp <0.35.0 → 4 high libvips CVEs** (GHSA-f88m-g3jw-g9cj).
-      **Reachable**, traced end to end: any signed-in user (now including
-      ANONYMOUS users, who hold `authenticated`) may upload arbitrary bytes as
-      `<uid>.jpg` to the public `avatars` bucket — MIME type is client-declared
-      and these CVEs are about malformed CONTENT. `/api/og` then renders that
-      image through sharp.
-      **But the blast radius is small**: the endpoint already has an SSRF guard
-      (only our own Supabase host is fetched, anything else falls back to
-      emoji), the policy scopes uploads to the caller's own uid, and a crash in
-      an ephemeral Vercel function means *the attacker breaks their own share
-      card*. Not urgent.
-      Fix is `@vercel/og@1.0.1` — verified genuinely newer (published
-      2026-08-08 vs 0.11.1 in March; dist-tags.latest confirms) — but it is a
-      SEMVER MAJOR across **6 card types**, on a feature with a history of
-      silent breakage (robots.txt once blanked every share card). Do it as its
-      own piece with all 6 cards re-verified, not squeezed in pre-submission.
+- [x] ⚠️ **`@vercel/og` 0.11.1 → 1.0.1 — DONE, and proved regression-free.**
+      Clears four high libvips CVEs (GHSA-f88m-g3jw-g9cj) via sharp 0.35.3.
+      **Production audit: 0 vulnerabilities.**
+      Alex: *"all upgrades that are actual upgrades and do not introduce
+      regression are welcome"* — so it was verified, not assumed. Rendered all
+      SIX card types on 0.11.1, upgraded, rendered again: **byte-for-byte
+      identical**, same SHA and byte count on every one. That is the strongest
+      form of no-regression available for a renderer.
+      ⚠️ The reachability was real before the fix: any signed-in user (incl.
+      anonymous, who hold `authenticated`) can upload arbitrary bytes as
+      `<uid>.jpg` to the public avatars bucket, and /api/og renders it through
+      sharp. Blast radius was small (SSRF guard already present, uploads scoped
+      to own uid, crashed ephemeral function = attacker breaks own card).
+      ⚠️ **My first regression check was nearly worthless and the falsification
+      caught it.** I passed `?o=78` to the rating card — a parameter it does
+      not read — so before/after were a mostly-default card compared against
+      itself. It matched perfectly and proved almost nothing. Redone with each
+      card's real params read from the handler.
+      ⚠️ Also: I read `node_modules/sharp` as 0.32.6 post-upgrade and briefly
+      thought the fix had failed. That was a HOISTED dev copy; the one
+      @vercel/og resolves is 0.35.3. Checking the wrong artifact, again.
+- [x] **`api/og.js` now has a test** (`tests/unit/og-cards-render.test.js`) —
+      the file's own comment said "No test covers this file", on the entire
+      share surface, which has already failed silently and totally once
+      (robots.txt blanked every card). Asserts a real PNG at 1200×630 per card,
+      that the six differ FROM EACH OTHER (the assertion that catches a
+      mis-parameterised test), that content changes change the image, and that
+      the SSRF guard refuses a foreign img host. Deliberately does not pin
+      hashes — that would break on any legitimate copy change and be deleted
+      within a month. Falsified three ways.
 - [🅰️] **Leaked-password protection is OFF** (HaveIBeenPwned check). One
       dashboard toggle, real security value, Alex's to flip.
 
