@@ -1,5 +1,88 @@
 # Ball IQ — the board
 
+## ⭐ SCOUTING REPORT #4 — THE PLAN (opened 2026-08-24)
+
+Overall **5.8/10**, up 0.3. 116 findings, 11 critical.
+Report: `docs/scouting-report-4.html` · data: `docs/scout-4-{areas,critic,synthesis}.json`
+Alex, 2026-08-24: *"Can we start going through every single item on the plan?"*
+
+**The five-star blocker:** a sign-up dead end in the STORE build. Apple/Google
+sign-in pre-fills the real name (space and all) into a non-dismissible username
+step that rejects spaces. 84% of accounts are social sign-ins; 47% of accounts
+have never finished a game. Fixed in repo, reaches nobody until 1.7.0 uploads.
+
+### 1 · Make build 76 safe to ship, then upload iOS — IN PROGRESS
+- [x] **Keyboard covers the suggestion list on native.** Player-reported twice.
+      `keyboardDismissMode` only watches the WKWebView's own scrollView; Trail's
+      list is `overflow-y:auto` and WebKit scrolls it internally, so no pan ever
+      reaches the watched view. JS now handles inner scrollers, native keeps the
+      page, gate is exclusive so they cannot both fire.
+- [ ] **Report button lies.** `onReport()` flips to "✓ Reported — thanks" the
+      instant you tap, while the reason sheet is still open and unanswered — no
+      row is written at that moment. ⚠️ NOT a one-liner: `setReportedKeys` is
+      inside QuizEngine, `sendQuestionReport` at AppInner scope, so the pending
+      key must be threaded back. 4 call sites. Budget 2h.
+- [ ] **Rate prompt can land mid-game.** Scheduled on a 3.5s timer cleared only
+      on unmount, so it can render over a live question and block every control
+      while the clock runs. Gate it to the results screen.
+- [ ] **`.opt` has no `:active` press state** — the most-tapped control in the
+      app, while 46 other elements in the same stylesheet depress under a thumb.
+- [ ] **The wrong-answer tray is switched off.** Two `!important`s at
+      app.css:656 suppress the designed tinted tray at 658. ⚠️ Do NOT just
+      delete them — reconcile the duplicate `.feedback` rule at ~1600 too.
+- [ ] Alex's device evening (8 tests, in the report). #1 is the on-screen
+      keyboard in Trail — unrun for three consecutive reports.
+- [ ] Upload iOS. **Alex's call, always.**
+
+### 2 · One sitting on the question bank
+- [ ] ~36 giveaway questions where a distinctive stem token reappears only in
+      the correct option; 5 stems containing their own answer verbatim; 15
+      club-pack questions whose answer is the club you picked.
+- [ ] ⚠️ Summer 2026 (Home-featured, NEW-badged) ships OUTSIDE every leak guard
+      and leaks in **38.4% of sessions**. `audit-leaks-full.mjs` reported 0
+      unguarded — a self-confirming zero.
+- [ ] Wire the detector into `npm run build`.
+
+### 3 · The wrong-answer moment + press state — folded into item 1 above
+
+### 4 · Stop the app contradicting itself on the front door — MOSTLY DONE
+- [x] Footle "surname" copy — the 6th call site and then the other 8 (28c95e4).
+- [ ] **The mobile Footle hero renders a FAKE SOLVED BOARD** — a hard-coded
+      all-green winning row beside a CTA reading "Continue · 1/6 used". The app's
+      most-viewed card shows someone else's solved puzzle as if it were yours.
+- [ ] Streak label mismatch.
+- [ ] ⚠️ Do NOT add a first-session branch to the daily draw — it would desync
+      the frozen daily. Park the ramp as a design decision.
+
+### 5 · Instrument the rating funnel
+- [ ] The rating prompt has **ZERO** loopEvents; the notification prompt has 5.
+      Copy that pattern verbatim. Matters most because 1.7.0 is the first iOS
+      build where the ratings engine exists at all.
+- [ ] Three sentiment gaps.
+
+### 6 · Deepen the six club packs people actually pick
+- [ ] Man United: 24 eligible questions against a 10-question round = 2.4 fresh
+      rounds, then it repeats SILENTLY. 81 of 86 packs give under four rounds.
+- [ ] Ship an honest exhaustion message (the web club page already has one).
+- [ ] Don't chase all 86 — six packs, one per session.
+
+### 7 · Fix the retention instrument before steering by it
+- [ ] `scores` under-records ~20% of daily completions, so every retention
+      number in every report is wrong by an unknown margin. Add a test that
+      fails when a completed game produces no row.
+
+### ⚠️ Do NOT do these (the critic killed them)
+- Clearing `celebrationTimeoutsRef` on a screen-keyed effect — `setScreen("results")`
+  is the LAST line of the same synchronous callback, so it would delete the
+  entire celebration layer.
+- A first-session branch in `pickDailyFresh` — desyncs the frozen daily.
+- Moving `markBadReviewMoment()` into `sendQuestionReport` gated on reason —
+  reason is null on skip/dismiss, so it would disable sentiment suppression.
+- Widening `onboardingUp()` — `loopEvent` has no consent gate, so it would
+  extend tracking-without-consent across the whole first session.
+- Deleting only the two `!important`s at app.css:656 — under-specified, ships
+  something uglier.
+
 ## 🤚 FEEL & NAVIGATION — opened 2026-08-23 on Alex's build-75 report
 
 Alex: *"it is very laggy, and not responsive. it is like it thinks i stop

@@ -131,6 +131,30 @@ if (typeof window !== 'undefined') {
  * starts at. Web reads the visual viewport; native reads the plugin-reported
  * height, because its visual viewport never moves.
  */
+/**
+ * Did this touch begin inside an element that scrolls ITSELF, rather than the
+ * page? That is the exact blind spot in iOS's keyboardDismissMode: it watches
+ * the WKWebView's own scrollView and knows nothing about an `overflow-y: auto`
+ * div that WebKit scrolls internally — which is what Trail's and Mystery's
+ * suggestion lists are.
+ *
+ * Stops at body/documentElement on purpose: the page scroller is native
+ * territory, and claiming it here would put two mechanisms on one gesture
+ * again. Requires real overflow (scrollHeight > clientHeight), so a list short
+ * enough to fit is treated as page, not as a scroller.
+ */
+function startedInsideInnerScroller(target) {
+  let el = target;
+  while (el && el.nodeType === 1 && el !== document.body && el !== document.documentElement) {
+    try {
+      const oy = window.getComputedStyle(el).overflowY;
+      if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 1) return true;
+    } catch { /* detached node mid-gesture */ }
+    el = el.parentNode;
+  }
+  return false;
+}
+
 function visibleBottom(kbInset) {
   if (typeof window === 'undefined') return 0;
   if (IS_NATIVE) return window.innerHeight - kbInset;
@@ -297,26 +321,46 @@ export function useKeyboardAwareInput() {
 
   // Dismiss-on-drag. Passive listeners; nothing here can jank the scroll.
   //
-  // ⚠️ WEB ONLY. On the native shell AppDelegate sets the WKWebView's
-  // scrollView.keyboardDismissMode, so iOS already dismisses on drag — natively,
-  // tracking the finger, without touching the DOM. Running both meant every drag
-  // ALSO called blur(), which drops the keyboard instantly, reflows the page and
-  // re-bounds the dropdown mid-gesture. Two mechanisms racing on one gesture is
-  // why build 75 "kind of works but is very laggy": the native one animates the
-  // keyboard down while the JS one has already yanked it. iOS owns this now.
+  // ⚠️ THE DIVISION OF LABOUR, and it took three player reports to get right.
+  //
+  // AppDelegate sets keyboardDismissMode = .onDrag, which makes iOS dismiss the
+  // keyboard natively when the WKWebView's OWN scrollView pans. Build 76 leaned
+  // on that alone and disabled this listener on native — which fixed the
+  // stuttering but left Alex with: "the keyboard still remains, which is
+  // annoying when the search-bar is further down... I could only see 2 names at
+  // a time because the keyboard was covering it."
+  //
+  // The reason is that keyboardDismissMode only watches ONE scroll view. Trail's
+  // suggestion list is `overflow-y: auto`, which WebKit scrolls internally — iOS
+  // never sees a pan on the scrollView it is watching, so it never dismisses.
+  // The page scroller and the inner scroller are different worlds and only the
+  // first one is wired.
+  //
+  // So: native handles the page, this handles inner scrollers, and they cannot
+  // both fire on one gesture because the gate below is exclusive. On web there
+  // is no native half, so it handles everything.
+  //
+  // Safe to blur mid-drag NOW, where it was not in build 75, because the three
+  // things that made it lurch are gone: the dropdown no longer re-measures while
+  // a finger is down, keepInputVisible no longer fires a smooth scrollIntoView
+  // on every render, and a drag no longer starts a text selection.
   useEffect(() => {
-    if (typeof window === 'undefined' || IS_NATIVE) return undefined;
+    if (typeof window === 'undefined') return undefined;
     let startY = null;
     let startX = null;
     let doneThisGesture = false;
+    let armed = false;
     const onStart = (e) => {
       const t = e.touches && e.touches[0];
       startY = t ? t.clientY : null;
       startX = t ? t.clientX : null;
       doneThisGesture = false;
+      // Decided once per gesture, not per move: getComputedStyle in a touchmove
+      // handler would run this walk at 60Hz for the whole drag.
+      armed = IS_NATIVE ? startedInsideInnerScroller(e.target) : true;
     };
     const onMove = (e) => {
-      if (doneThisGesture || startY == null) return;
+      if (doneThisGesture || startY == null || !armed) return;
       const el = inputRef.current;
       if (!el || document.activeElement !== el) return;
       // Only when an on-screen keyboard is actually up. Reads the ref, because

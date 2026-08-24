@@ -71,23 +71,52 @@ describe('nothing moves the page while a finger is down', () => {
     ).toBe(true);
   });
 
-  it('web drag-to-dismiss does not run on native, where iOS already owns it', () => {
-    // Mutation check: dropping `|| IS_NATIVE` from the guard fails this.
+  it('native dismissal covers inner scrollers, which keyboardDismissMode cannot see', () => {
+    // ⚠️ THIS INVARIANT CHANGED ONCE ALREADY, on a player report. Build 76
+    // disabled this listener on native entirely and leaned on AppDelegate's
+    // keyboardDismissMode. Alex: "the keyboard still remains... I could only see
+    // 2 names at a time because the keyboard was covering it." iOS watches the
+    // WKWebView's OWN scrollView; Trail's suggestion list is overflow-y:auto and
+    // WebKit scrolls it internally, so no pan ever reaches the watched view.
+    //
+    // The correct split — and what this now pins — is EXCLUSIVE, not absent:
+    // native handles the page scroller, JS handles inner scrollers, neither
+    // fires twice on one gesture.
     const i = SRC.indexOf('// Dismiss-on-drag.');
     expect(i, 'the dismiss-on-drag effect should still exist').toBeGreaterThan(-1);
-    // ⚠️ Slice to END OF FILE, not a fixed character window. The first version
-    // of this guard took `slice(i, i + 1400)`; adding the explanatory comment
-    // above the effect pushed `el.blur()` past 1400 chars and the assertion
-    // started failing on correct code. A guard anchored to a byte count is
+    // ⚠️ Slice to END OF FILE, not a fixed character window. An earlier version
+    // took `slice(i, i + 1400)`; a comment I added pushed `el.blur()` past 1400
+    // chars and it failed on correct code. A guard anchored to a byte count is
     // measuring the comments, not the behaviour.
     const effect = SRC.slice(i);
     expect(
-      /if \(typeof window === 'undefined' \|\| IS_NATIVE\) return undefined;/.test(effect),
-      'The JS blur-on-drag must be web-only. AppDelegate sets keyboardDismissMode\n' +
-      'on the native shell; running both makes two mechanisms race on one gesture.',
+      /if \(typeof window === 'undefined'\) return undefined;/.test(effect),
+      'The effect must run on BOTH platforms now — bailing on IS_NATIVE is what\n' +
+      'left the keyboard covering the suggestion list on device.',
     ).toBe(true);
-    // …and it must still be there for web/PWA/Android, which have no native path.
-    expect(/el\.blur\(\)/.test(effect), 'web still needs the blur fallback').toBe(true);
+    expect(
+      /armed = IS_NATIVE \? startedInsideInnerScroller\(e\.target\) : true;/.test(effect),
+      'On native it must arm ONLY for inner scrollers, or it races the native\n' +
+      'keyboardDismissMode on page drags — the build-75 stutter.',
+    ).toBe(true);
+    expect(/if \(doneThisGesture \|\| startY == null \|\| !armed\) return;/.test(effect),
+      'the armed flag has to actually gate the move handler').toBe(true);
+    expect(/el\.blur\(\)/.test(effect), 'the dismissal itself must still happen').toBe(true);
+  });
+
+  it('the inner-scroller walk stops before the page scroller', () => {
+    // If it walked past body it would claim the page too, and we would be back
+    // to two mechanisms on one gesture.
+    const fn = SRC.slice(SRC.indexOf('function startedInsideInnerScroller'));
+    expect(fn.indexOf('function startedInsideInnerScroller'), 'helper must exist').toBe(0);
+    expect(
+      /el !== document\.body && el !== document\.documentElement/.test(fn.slice(0, 900)),
+      'the walk must stop at body/documentElement — the page is native territory.',
+    ).toBe(true);
+    expect(
+      /el\.scrollHeight > el\.clientHeight \+ 1/.test(fn.slice(0, 900)),
+      'a list short enough to fit is not a scroller; require real overflow.',
+    ).toBe(true);
   });
 
   it('the touch tracker only clears on the LAST finger up', () => {
