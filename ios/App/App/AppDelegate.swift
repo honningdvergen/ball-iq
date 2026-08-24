@@ -14,6 +14,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let bg = UIColor(red: 10.0/255.0, green: 10.0/255.0, blue: 10.0/255.0, alpha: 1.0)
         self.window?.backgroundColor = bg
         self.window?.rootViewController?.view.backgroundColor = bg
+
+        // ⚠️ ~1.0 SECOND OF PURE BLACK MID-LAUNCH. Scouting report #4 reproduced
+        // it three times on a simulator against build 75: the launch storyboard
+        // shows the flaming ball at ~0.45s, the screen goes COMPLETELY BLACK
+        // from 0.81s to 1.79s, then the splash comes BACK, then Home at 3.38s.
+        // Alex's own device log shows why — "WebContent process took 3.774158
+        // seconds to launch". iOS tears down the launch storyboard as soon as
+        // the app presents its first frame, but Capacitor's splash view is not
+        // added until the bridge and its WKWebView exist, so in between the
+        // window draws its own background: #0A0A0A, which is black.
+        //
+        // A black screen mid-launch is the most reliable way to make a free app
+        // feel like a cheap one, and this is the platform where all 500+
+        // downloads and all 8 ratings live.
+        //
+        // THE FIX IS A BACKDROP, NOT AN OVERLAY, and that distinction is the
+        // whole safety argument. Inserted at index 0, it sits BEHIND every view
+        // the bridge later adds, so it is visible only while nothing is drawn on
+        // top and is covered the instant the WebView paints. There is no
+        // dismissal to time, nothing to leak, and no path where it can cover
+        // real UI — the failure mode of an overlay with a timer.
+        //
+        // Same asset and same contentMode as LaunchScreen.storyboard, so the
+        // handoff is invisible rather than a second, different splash.
+        if let rootView = self.window?.rootViewController?.view,
+           let splash = UIImage(named: "Splash") {
+            let backdrop = UIImageView(image: splash)
+            backdrop.contentMode = .scaleAspectFill
+            backdrop.clipsToBounds = true
+            backdrop.frame = rootView.bounds
+            backdrop.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            backdrop.isUserInteractionEnabled = false
+            backdrop.backgroundColor = bg
+            rootView.insertSubview(backdrop, at: 0)
+        }
         // Drag-to-dismiss the keyboard, the way every native iOS list works.
         // Alex, device-testing 2026-08-23: "when people search for xabi alonso
         // and want to scroll down... the keyboard is in the way. i was thinking

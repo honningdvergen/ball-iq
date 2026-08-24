@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { QB } from '../../src/questions.js';
-import { findStemLeaks, RULED_NOT_LEAKS } from '../../scripts/audit-stem-leaks.mjs';
+import { findStemLeaks, findYearNarrowing, yearsIn, RULED_NOT_LEAKS } from '../../scripts/audit-stem-leaks.mjs';
 import { findClubSelfAnswers } from '../../scripts/audit-club-self-answers.mjs';
 
 /**
@@ -60,6 +60,38 @@ describe('no question hands the player its own answer', () => {
       '\n  The stem gives this away. Rewrite the clause that states it; delete only\n' +
       '  when the answer is inseparable from the subject (the RB Leipzig case).\n',
     ).toEqual([]);
+  });
+
+  it('no stem date quietly eliminates most of the options', () => {
+    // ⚠️ PLAYER-REPORTED BY ALEX, and a hole in my own detector.
+    //
+    //   "Following the 1993 match-fixing scandal, Marseille were stripped of
+    //    which season's Ligue 1 title?"  -> 1992-93
+    //    options: 1990-91 · 1992-93 · 1988-89 · 1993-94
+    //
+    // Two of four options contain 1993, so the stem hands you a coin flip for
+    // free — on a question graded HARD. His verdict: scrap it.
+    //
+    // findStemLeaks() could never have caught it: it SKIPS numeric answers, on
+    // the reasoning that "how many goals … 106" legitimately repeats figures
+    // from the stem. True for counts, false for dates — a year in a stem is not
+    // vocabulary, it is a filter. The exclusion that made one class precise made
+    // another invisible.
+    const hits = findYearNarrowing(QB);
+    expect(
+      hits.map((h) => `${h.id} [${h.cat}/${h.diff}] ${h.survivors}/${h.of} survive — ${h.q.slice(0, 60)}`),
+      '\n  A date in the stem eliminates half the options or more. Rewrite the\n' +
+      '  stem to drop the date, or replace the distractors so it stops being a\n' +
+      '  filter.\n',
+    ).toEqual([]);
+  });
+
+  it('season notation is parsed, not grepped', () => {
+    // "1993" does not appear in "1992-93", so a string match would have missed
+    // the reported question entirely. The years have to be expanded.
+    expect([...yearsIn('the 1993 scandal')]).toEqual([1993]);
+    expect([...yearsIn('1992-93')].sort()).toEqual([1992, 1993]);
+    expect([...yearsIn('1999-2000')].sort()).toEqual([1999, 2000]);
   });
 
   it('the ruled-not-leak list stays small and reasoned', () => {

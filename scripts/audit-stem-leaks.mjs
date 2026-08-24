@@ -72,6 +72,74 @@ export const RULED_NOT_LEAKS = {
   q_3c99b9: 'UEFA = the governing body here, not the trophy; third cup is unstated',
 };
 
+/**
+ * Years mentioned by a string, with season notation expanded.
+ * "1992-93" is BOTH 1992 and 1993; "the 1993 scandal" is 1993.
+ */
+export function yearsIn(text) {
+  const out = new Set();
+  const t = String(text ?? '');
+  // seasons first: 1992-93 / 1992-1993 / 1992/93
+  for (const m of t.matchAll(/\b(\d{4})\s*[-/–]\s*(\d{2,4})\b/g)) {
+    const start = parseInt(m[1], 10);
+    const endRaw = m[2];
+    const end = endRaw.length === 2
+      ? Math.floor(start / 100) * 100 + parseInt(endRaw, 10) + (parseInt(endRaw, 10) < start % 100 ? 100 : 0)
+      : parseInt(endRaw, 10);
+    out.add(start); out.add(end);
+  }
+  for (const m of t.matchAll(/\b(1[89]\d{2}|20\d{2})\b/g)) out.add(parseInt(m[1], 10));
+  return out;
+}
+
+/**
+ * A DATE in the stem that quietly eliminates most of the options.
+ *
+ * ⚠️ PLAYER-REPORTED BY ALEX, 2026-08-24, on a question graded HARD:
+ *
+ *   "Following the 1993 match-fixing scandal, Marseille were stripped of which
+ *    season's Ligue 1 title?"   -> 1992-93
+ *    options: 1990-91 · 1992-93 · 1988-89 · 1993-94
+ *
+ * Two of the four options contain 1993. Knowing nothing whatsoever, the stem
+ * hands you a coin flip — and the season that ENDS in 1993 is the natural read
+ * of "the 1993 scandal", so it is barely even that. His verdict: scrap it.
+ *
+ * ⚠️ AND MY OWN DETECTOR WAS BLIND TO IT. findStemLeaks() explicitly skips
+ * numeric answers, with the comment "how many goals … 106 legitimately repeats
+ * figures from the stem". That reasoning is right for counts and wrong for
+ * dates: a year in the stem is not vocabulary, it is a filter. The exclusion
+ * that made the detector precise on one class made it silent on another.
+ *
+ * Season notation is why a plain string match would not have caught it either:
+ * "1993" does not appear in "1992-93". The years have to be parsed, not grepped.
+ */
+export function findYearNarrowing(bank = QB) {
+  const rows = [];
+  for (const q of bank) {
+    if (q?.type !== 'mcq' || !Array.isArray(q.o) || typeof q.a !== 'number') continue;
+    if (q.o.length < 3) continue;
+    const stemYears = yearsIn(q.q);
+    if (!stemYears.size) continue;
+    const shares = (opt) => [...yearsIn(opt)].some((y) => stemYears.has(y));
+    // Only interesting when the options are themselves dates — otherwise a year
+    // in the stem is just context.
+    const dated = q.o.filter((o) => yearsIn(o).size > 0);
+    if (dated.length !== q.o.length) continue;
+    if (!shares(q.o[q.a])) continue;
+    const survivors = q.o.filter(shares).length;
+    // A free cut to half the field or better.
+    if (survivors > q.o.length / 2) continue;
+    rows.push({
+      id: q.id, cat: q.cat, diff: q.diff,
+      q: q.q, answer: q.o[q.a], options: q.o,
+      stemYears: [...stemYears].sort(),
+      survivors, of: q.o.length,
+    });
+  }
+  return rows;
+}
+
 export function findStemLeaks(bank = QB) {
   const rows = [];
   for (const q of bank) {
