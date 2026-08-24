@@ -12519,7 +12519,11 @@ function AppInner() {
                   if (notificationsSupported()) await handleToggleNotif(true);
                   else await handleToggleWebPush(true);
                 }}
-                style={{width:"100%",minHeight:48,padding:"14px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:14,fontFamily:"inherit",fontSize:16,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+                /* Uses .btn-3d rather than re-styling a green button inline — that is
+                    how this one drifted flat while the Footle and Invite CTAs
+                    became pills. One class, one primary button. */
+                className="btn-3d"
+                style={{marginBottom:8}}
               >
                 Yes, remind me
               </button>

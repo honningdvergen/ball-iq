@@ -177,9 +177,21 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 /* 3D "Duolingo" primary button — bright green face, darker rim, press translates Y.
    Use only for the signature primary CTA of a screen. Applied via the .btn-3d
    class so existing non-CTA greens stay on the toned-down accent (#58CC02). */
-.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#0A0A0A;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+/* ⚠️ ONE PRIMARY BUTTON, NOT TWO. Alex, 2026-08-24, pointing at the Footle
+   Play button and Invite friends: "i think [they] are a bit more modern".
+   He was identifying a real split — those two are .fh-cta and .mp-card-cta,
+   the app's NEWER surfaces, and they had drifted to a different treatment:
+   a full pill with a coloured glow and a scale press. The other 32 primary
+   buttons were still the older flat 14px rect with an opacity fade.
+   Same failure as the emoji-vs-icon split: two systems running at once, and
+   the modern one in the minority. This brings .btn-3d in line with the two
+   he named, so there is one primary button in the product.
+   ⚠️ :active matters as much as the radius — scale(0.97) reads as pressing a
+   physical button, opacity 0.85 reads as a web link dimming. That is a FEEL
+   change, which is this release's whole brief. */
+.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .btn-3d:hover{filter:brightness(1.06);}
-.btn-3d:active,.btn-3d.is-pressed{opacity:0.85;}
+.btn-3d:active,.btn-3d.is-pressed{transform:scale(0.97);opacity:0.92;}
 .btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;}
 .btn-3d:focus-visible{outline:3px solid rgba(88,204,2,0.4);outline-offset:2px;}
 /* 1.2 web a11y: a visible keyboard-focus ring across all interactive elements —
@@ -187,10 +199,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play-card:focus-visible,.mode-item:focus-visible,.tab-item:focus-visible,.icon-btn:focus-visible,input:focus-visible,.typed-inp:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 /* Visually hidden but readable by screen readers — for live-region announcements. */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
-.btn-3d.amber{background:#FFC800;color:#3D2A00;-webkit-text-fill-color:#3D2A00;}
-.btn-3d.amber:active,.btn-3d.amber.is-pressed{opacity:0.85;}
-.btn-3d.dark{background:#242836;color:var(--t1);-webkit-text-fill-color:var(--t1);}
-.btn-3d.dark:active,.btn-3d.dark.is-pressed{opacity:0.85;}
+.btn-3d.amber{background:#FFC800;color:#3D2A00;-webkit-text-fill-color:#3D2A00;box-shadow:0 8px 22px -8px rgba(255,200,0,0.55);}
+.btn-3d.amber:active,.btn-3d.amber.is-pressed{transform:scale(0.97);opacity:0.92;}
+.btn-3d.dark{background:#242836;color:var(--t1);-webkit-text-fill-color:var(--t1);box-shadow:none;}
+.btn-3d.dark:active,.btn-3d.dark.is-pressed{transform:scale(0.97);opacity:0.92;}
 .btn-3d.ghost{background:transparent;color:var(--text);box-shadow:none;border:1.5px solid var(--border);-webkit-text-fill-color:var(--text);}
 .btn-3d.ghost:hover{filter:none;background:var(--s1);}
 .btn-3d.ghost:active,.btn-3d.ghost.is-pressed{transform:translateY(1px);box-shadow:none;}
@@ -200,7 +212,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    shorter rim and tighter spacing so the action column doesn't dominate. */
 .results-actions{display:flex;flex-direction:column;gap:8px;}
 .results-actions .btn-3d{min-height:0;padding:12px 20px;font-size:15px;margin:0!important;}
-.results-actions .btn-3d:active,.results-actions .btn-3d.is-pressed{opacity:0.85;}
+.results-actions .btn-3d:active,.results-actions .btn-3d.is-pressed{transform:scale(0.97);opacity:0.92;}
 .results-actions .btn-3d.ghost:active,.results-actions .btn-3d.ghost.is-pressed{opacity:0.85;}
 
 /* Pill utility — small uppercase tone-tinted badge. */

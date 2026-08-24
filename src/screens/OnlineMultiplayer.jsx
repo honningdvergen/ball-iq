@@ -1631,7 +1631,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
           {isAnonUser && (
             <button
               onClick={() => { try { openAuthPrompt?.('upgrade'); } catch {} }}
-              style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid var(--border)', color: 'var(--text)', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
+              style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 999, background: 'transparent', border: '1.5px solid var(--border)', color: 'var(--text)', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
             >
               💾 Playing as a guest — save your stats with a free account
             </button>
@@ -1668,7 +1668,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
               disabled={readyBusy}
               aria-pressed={iAmReady}
               style={iAmReady
-                ? { width: '100%', padding: 13, borderRadius: 14, background: 'transparent', border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: 'pointer' }
+                ? { width: '100%', padding: 13, borderRadius: 999, background: 'transparent', border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: 'pointer' }
                 : { width: '100%', marginBottom: 0 }}
             >
               {iAmReady ? "✓ You're ready — tap to cancel" : "I'm ready"}
@@ -1677,7 +1677,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
               <button
                 onClick={startNextRound}
                 disabled={nextBusy || readyCount < 2 || !iAmReady}
-                style={{ width: '100%', marginTop: 8, padding: 13, borderRadius: 14, background: (readyCount >= 2 && iAmReady) ? 'var(--accent)' : 'var(--s2)', border: 'none', color: (readyCount >= 2 && iAmReady) ? '#0A0A0A' : 'var(--t3)', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: (readyCount >= 2 && iAmReady) ? 'pointer' : 'not-allowed' }}
+                style={{ width: '100%', marginTop: 8, padding: 13, borderRadius: 999, background: (readyCount >= 2 && iAmReady) ? 'var(--accent)' : 'var(--s2)', border: 'none', color: (readyCount >= 2 && iAmReady) ? '#06230C' : 'var(--t3)', boxShadow: (readyCount >= 2 && iAmReady) ? '0 8px 22px -8px rgba(88,204,2,0.55)' : 'none', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: (readyCount >= 2 && iAmReady) ? 'pointer' : 'not-allowed' }}
               >
                 {nextBusy ? 'Starting…'
                   : readyCount < 2 ? 'Waiting for one more…'
@@ -1708,7 +1708,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport }) {
             <button
               onClick={handleRematch}
               disabled={rematching}
-              style={{ width: '100%', marginBottom: 10, padding: 12, borderRadius: 14, background: 'transparent', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, cursor: 'pointer' }}
+              style={{ width: '100%', marginBottom: 10, padding: 12, borderRadius: 999, background: 'transparent', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, cursor: 'pointer' }}
             >
               {rematching ? 'Setting up…' : 'Someone left — start a new room'}
             </button>
