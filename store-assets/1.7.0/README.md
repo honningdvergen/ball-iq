@@ -73,3 +73,42 @@ Thank you to everyone who flagged a bad question. Every one of them was read.
   Consider MANUAL given the caution around this release.
 - **Phased release is OFF.** For 500+ installs and a build carrying new native
   keyboard code, phasing over 7 days is a cheap safety net.
+
+---
+
+# Google Play — checked 2026-08-24
+
+App: `Ball IQ: Football Quiz`, dev `5466165386978897518`, app `4976141665883518498`.
+
+## ✅ Fixed and STAGED (not live yet)
+The full description carried the **same** line as the App Store one:
+
+> One footballer's **surname**, six guesses…
+
+That is instance ELEVEN of the promise the mononym sweep removed. Corrected to
+"One footballer's **name**". 2661 → 2658 chars, verified by reload.
+
+⚠️ Play **stages** listing edits rather than publishing them: the page now says
+*"Endringene kan sendes inn for gjennomgang"* (changes can be submitted for
+review). **Alex still has to send it.** Saving is not publishing here — which is
+the opposite of the assumption that would have made this risky.
+
+Short description ("Football quiz and soccer trivia…", 74/80) is clean.
+
+## ⚠️ NOT done — screenshots, and why
+All THREE Play sets are stale in the same way the Apple set was: `03-club-picker`
+shows **PREMIER LEAGUE 23 / LA LIGA 8** and "Search 76 clubs". Sets are
+phone · 7" tablet · 10" tablet, **8/8 each = 24 slots**.
+
+Fresh 1080x1920 frames are built and committed at `screenshots/android/`
+(regenerated from the same build-77 raws the Apple set used).
+
+**They could not be uploaded programmatically.** Unlike App Store Connect, which
+keeps a hidden `input[type=file]` in the DOM permanently, Play Console has NO
+file input anywhere — not in the light DOM and not in any shadow root. It creates
+one only in response to a real click on "Legg til elementer", which opens the
+native OS file picker, and that dialog cannot be driven from the page.
+
+So this one is a drag-and-drop job: open the listing, drop
+`screenshots/android/01…08` onto each of the three sets. Order matters least on
+Play, but keep 01-home first.
