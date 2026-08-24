@@ -273,6 +273,52 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
 - Deleting only the two `!important`s at app.css:656 — under-specified, ships
   something uglier.
 
+## ⭐ ACTIVATION IS THE PROBLEM, NOT RETENTION (measured 2026-08-24)
+
+⚠️ **THIS INVERTS THE STANDING THESIS.** [[project_first_real_numbers]] said
+"leaky bucket, retention first". Measured against the COMPLETE dataset
+(user_game_state, not the 20%-lossy scores table):
+
+| | |
+|---|---|
+| accounts | 218 |
+| **never played a single game** | **79 (36.2%)** |
+| ...and not improving | 33.9% of the last 30 days' signups |
+| of the 131 who DID play, one-and-done | 20 (15.3%) |
+| average plays per player | **9.7** (max 77) |
+
+**Retention is good. 85% of people who play come back.** A third of the water
+never reaches the bucket. Every person converted past their first game is worth
+~9.7 plays at 85% return odds — no other lever measured has that multiplier.
+
+- [x] **Funnel instrumented** (`src/lib/acctFunnel.js` + `scripts/acct-funnel.sql`).
+      Five steps, all fired SIGNED IN: acct-session → acct-username → acct-home
+      → acct-first-play → acct-first-finish.
+      ⚠️ Why signed-in matters: `record_funnel_event` records `auth.uid()`, and
+      **907 of 908 existing `first-game-started` rows have a NULL user_id**
+      because they fire while signed out. The old funnel cannot be joined to an
+      account at all, which is exactly why the 79 are invisible.
+      ⚠️ Scope kept narrow on purpose: counts, provider splits and retention are
+      all derivable from SQL TODAY (this table proves it). Re-instrumenting them
+      would create a second, weaker source of truth. The only thing added is
+      WHICH SCREEN someone was on when they stopped.
+      Query verified by seeding a walk that stops at Home and confirming it
+      reports `lost_here: 1` at first-play; probe rows deleted.
+- [🅰️] ⚠️ **GOOGLE CONVERTS 2.3× WORSE THAN APPLE — UNEXPLAINED.**
+      53.2% of Google accounts never play (42 of 79) vs 23.1% for Apple (24 of
+      104). Email sits between at 37.1%.
+      The obvious theory — the username wall rejecting spaced provider names —
+      **does NOT hold**: only 6 of the 42 have a space, and 8 Apple users WITH
+      spaces played fine. Suggestive but confounded: every account with an iOS
+      device token has played (25/25 Apple, 3/3 email), but holding a token
+      means you granted notifications, which correlates with already being
+      engaged. Needs a real investigation, not a guessed fix.
+- [ ] Read `scripts/acct-funnel.sql` one week after 1.7.0 reaches players.
+      Section 4 (instrument health) FIRST — a funnel that stopped recording
+      looks identical to one where everybody succeeded, and
+      `record_funnel_event` silently drops everything once the table exceeds
+      3000 rows in an hour.
+
 ## ✅ SUMMER 2026 — ALEX'S RULING APPLIED (2026-08-24)
 
 He reviewed all 89 individually: **55 approve · 31 reject · 3 hold.**

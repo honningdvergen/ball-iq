@@ -34,6 +34,7 @@ import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, ref
 import { registerPush, onPushTap, initPushTapRouting } from './lib/push.js';
 import { maybeRequestReview, nativeAskBlockedReason, markBadReviewMoment, clearBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
 import { saveScore, flushScoreOutbox } from './lib/scoreOutbox.js';
+import { markAcctStep } from './lib/acctFunnel.js';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
@@ -9314,6 +9315,12 @@ function AppInner() {
   // cannot double-count.
   useEffect(() => {
     if (!user?.id) return;
+    // ⚠️ THE FIRST STEP THAT CAN BE ATTRIBUTED TO A PERSON. Today 907 of 908
+    // `first-game-started` rows carry a NULL user_id, because they fire while
+    // signed out — which is exactly why the 79 accounts that never played are
+    // invisible. Everything in the acct-* chain fires signed in, so
+    // record_funnel_event's auth.uid() has something to record.
+    markAcctStep(user.id, 'acct-session', loopEvent);
     flushScoreOutbox(user.id)
       .then(({ sent, dropped }) => {
         if (sent) loopEvent('score-outbox-flushed', { sent, dropped });
@@ -10932,6 +10939,10 @@ function AppInner() {
     // on the very first question. Marking those would suppress the ask for
     // half of Survival's players on a mode working exactly as intended — the
     // same reason the perfect-score celebration already excludes it.
+    // Reaching the results screen at all is the end of the funnel: this is the
+    // moment a signup becomes a player. 85% of people who get here come back.
+    markAcctStep(user?.id, 'acct-first-finish', loopEvent, { mode, total: res.total });
+
     const answers = Array.isArray(res.allAnswers) ? res.allAnswers : [];
     let missRun = 0, worstMissRun = 0, timeouts = 0;
     for (const a of answers) {
@@ -11485,6 +11496,19 @@ function AppInner() {
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
 
+  // ⚠️ THE STEP THAT SEPARATES "STUCK" FROM "CHOSE NOT TO PLAY". Reaching Home
+  // signed in means the app is usable — past auth, past the mandatory username
+  // wall, past onboarding. Someone who records acct-session but never
+  // acct-home was BLOCKED by something; someone who records acct-home and never
+  // acct-first-play looked at the app and did not start. Those are opposite
+  // problems with opposite fixes, and right now we cannot tell them apart for
+  // any of the 79 accounts that never played.
+  useEffect(() => {
+    if (!user?.id || screen !== "home") return;
+    markAcctStep(user.id, 'acct-home', loopEvent);
+  }, [user?.id, screen]);
+
+
   // Sprint #64 FF2: toggle body.in-focused-play during quiz / Footle so the
   // desktop-browser landing chrome (top nav + bottom features/signup grid
   // from index.html) hides while the user is mid-game. Empty deps on
@@ -11505,6 +11529,11 @@ function AppInner() {
           localStorage.setItem("biq_first_game_started", "1");
           loopEvent("first-game-started");
         }
+        // Same beat, but attributable: the device-scoped event above cannot be
+        // joined to an account, so it can count first games and never say
+        // whose. Rides the same unified `playing` predicate rather than a
+        // launcher, for the reason given above — launchers multiply.
+        markAcctStep(user?.id, 'acct-first-play', loopEvent, { mode });
       } catch {}
     }
     try {
@@ -12176,6 +12205,13 @@ function AppInner() {
               setProfile(p => ({ ...(p || {}), name }));
               try { localStorage.removeItem('biq_needs_username'); } catch {}
               setNeedsUsername(false);
+              // ⚠️ THE WALL THIS FUNNEL EXISTS TO WATCH. It is mandatory and
+              // non-dismissible, it pre-fills the provider's real name, and it
+              // spent eight weeks rejecting its own suggestion for containing
+              // a space — the five-star sign-up blocker. `username-step-*`
+              // already measures the step itself; this records that the
+              // ACCOUNT got past it, which is the part that joins to the 79.
+              markAcctStep(user?.id, 'acct-username', loopEvent);
             }}
           />
         )}
