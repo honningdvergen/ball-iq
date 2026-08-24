@@ -11,27 +11,32 @@ sign-in pre-fills the real name (space and all) into a non-dismissible username
 step that rejects spaces. 84% of accounts are social sign-ins; 47% of accounts
 have never finished a game. Fixed in repo, reaches nobody until 1.7.0 uploads.
 
-### 1 · Make build 76 safe to ship, then upload iOS — IN PROGRESS
-- [x] **Keyboard covers the suggestion list on native.** Player-reported twice.
+### 1 · Make build 76 safe to ship, then upload iOS — CODE EDITS ALL DONE
+**All four edits landed in build 77 / vc32.** Only Alex's device evening and the
+upload itself remain.
+- [x] **Keyboard covers the suggestion list on native** (`f87a57c`).
       `keyboardDismissMode` only watches the WKWebView's own scrollView; Trail's
       list is `overflow-y:auto` and WebKit scrolls it internally, so no pan ever
       reaches the watched view. JS now handles inner scrollers, native keeps the
-      page, gate is exclusive so they cannot both fire.
-- [ ] **Report button lies.** `onReport()` flips to "✓ Reported — thanks" the
-      instant you tap, while the reason sheet is still open and unanswered — no
-      row is written at that moment. ⚠️ NOT a one-liner: `setReportedKeys` is
-      inside QuizEngine, `sendQuestionReport` at AppInner scope, so the pending
-      key must be threaded back. 4 call sites. Budget 2h.
-- [ ] **Rate prompt can land mid-game.** Scheduled on a 3.5s timer cleared only
-      on unmount, so it can render over a live question and block every control
-      while the clock runs. Gate it to the results screen.
-- [ ] **`.opt` has no `:active` press state** — the most-tapped control in the
-      app, while 46 other elements in the same stylesheet depress under a thumb.
-- [ ] **The wrong-answer tray is switched off.** Two `!important`s at
-      app.css:656 suppress the designed tinted tray at 658. ⚠️ Do NOT just
-      delete them — reconcile the duplicate `.feedback` rule at ~1600 too.
-- [ ] Alex's device evening (8 tests, in the report). #1 is the on-screen
-      keyboard in Trail — unrun for three consecutive reports.
+      page, gate is exclusive so they cannot both fire. Verified against the
+      real DOM: list fits → false, list bounded 315/182 → true, page → false.
+- [x] **Report button lied** (`3e484bd`). Flipped to "✓ Reported — thanks" on
+      the tap, while the reason sheet was still open and unanswered. Four call
+      sites had four copies; fixed by deleting the duplication into
+      `components/ReportButton.jsx` — idle → sending → done, success only from
+      the settled RPC. Verified end-to-end in a browser.
+- [x] **Rate prompt could land mid-game** (`1f4e1e5`). All four scheduled asks
+      now read the screen at FIRE time. ⚠️ NOT via the panel's fix — see the
+      do-not-do list below.
+- [x] **`.opt` press state** (`92d420e`). Scale, not translate, so it cannot
+      fight the hover rule on hybrid devices.
+- [x] **The wrong-answer tray was switched off** (`92d420e`). Two `!important`s
+      beat the higher-specificity `.feedback.wrong`. Fixed WITH shape (radius +
+      padding), not by deleting the two words, and the duplicate `.feedback`
+      rule 950 lines below was removed.
+- [ ] **Alex's device evening** (8 tests, in the report). #1 is the on-screen
+      keyboard in Trail — unrun for three consecutive reports, and build 77
+      changes it again.
 - [ ] Upload iOS. **Alex's call, always.**
 
 ### 2 · One sitting on the question bank
@@ -43,7 +48,11 @@ have never finished a game. Fixed in repo, reaches nobody until 1.7.0 uploads.
       unguarded — a self-confirming zero.
 - [ ] Wire the detector into `npm run build`.
 
-### 3 · The wrong-answer moment + press state — folded into item 1 above
+### 3 · The wrong-answer moment + press state — ✅ DONE (`92d420e`)
+Folded into item 1. Verified live in a browser by computed style, not source:
+correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
+`rgba(248,113,113,.11)` / border `.38`, both 12px radius, 11/13 padding,
+13.5px — previously all transparent / 0px / 0 / 2px.
 
 ### 4 · Stop the app contradicting itself on the front door — MOSTLY DONE
 - [x] Footle "surname" copy — the 6th call site and then the other 8 (28c95e4).
