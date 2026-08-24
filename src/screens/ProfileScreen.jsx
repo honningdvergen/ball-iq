@@ -6,6 +6,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
+import { avatarColour } from '../lib/avatarColour.js';
 
 export const BADGE_DEFS = [
   ["first_blood", "🎯", "First Whistle", "Complete your first game"],
@@ -43,20 +44,16 @@ export const BADGE_DEFS = [
 // ring. Measured in the simulator, not assumed.
 const BALL_SRC = "/marketing/ball.png";
 
-export function ProfilePic({ value, url, className, style }) {
-  const src = url || BALL_SRC;
-  return (
-    <img
-      src={src}
-      alt=""
-      aria-hidden="true"
-      className={className}
-      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%",
-               display: "block", ...style }}
-      onError={(e) => { if (e.currentTarget.src !== BALL_SRC) e.currentTarget.src = BALL_SRC; }}
-    />
-  );
-}
+// ProfilePic moved to ../components/ProfilePic.jsx so App.jsx can render an
+// avatar WITHOUT pulling this 72 kB lazy module into the main bundle.
+// Re-exported here because other modules already import it from this file.
+// ⚠️ IMPORT, then re-export. A bare `export { X } from '…'` does NOT bring the
+// name into local scope, so this file's own eight <ProfilePic /> usages broke
+// the moment the component moved out — invisible to no-undef, and caught only
+// by react/jsx-no-undef, which was enabled minutes earlier for exactly this.
+import { ProfilePic } from '../components/ProfilePic.jsx';
+export { ProfilePic };
+
 
 // ─── IMAGE CROPPER (cropperjs from CDN) ──────────────────────────────────────
 let _cropperPromise = null;
@@ -573,7 +570,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           )}
           {results.map(r => (
             <div key={r.id} className="friends-row">
-              <div className="friends-avatar"><ProfilePic value={r.avatar} url={r.photo} /></div>
+              <div className="friends-avatar"><ProfilePic value={r.avatar} url={r.photo} name={r.username} /></div>
               <div className="friends-meta">
                 <div className="friends-name">{r.username}</div>
                 <div className="friends-sub numeric-mono">Score {(r.total_score || 0).toLocaleString()}</div>
@@ -593,7 +590,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             if (!p) return null;
             return (
               <div key={f.id} className="friends-row">
-                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} /></div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} name={p.username} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
@@ -617,7 +614,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             if (!p) return null;
             return (
               <div key={f.id} className="friends-row">
-                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} /></div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} name={p.username} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub">Pending…</div>
@@ -680,7 +677,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           return (
             <div key={f.id} className="friends-row">
               <button className="friends-row-tap" onClick={() => onOpenFriend && onOpenFriend(p)} aria-label={`View ${p.username}'s profile`}>
-                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} /></div>
+                <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} name={p.username} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
                   <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
@@ -701,7 +698,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
               const inner = (
                 <>
                   <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
-                  <div className="friends-avatar"><ProfilePic value={row.avatar} url={row.photo} /></div>
+                  <div className="friends-avatar"><ProfilePic value={row.avatar} url={row.photo} name={row.username} /></div>
                   <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill" aria-label="You">YOU</span>}</div>
                   <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
                 </>
@@ -827,7 +824,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
   const totalCorrect = data.correct_answers || 0;
   const totalAnswered = friendStats.totalAnswered || 0;
   const gamesPlayed = data.games_played || 0;
-  const avatar = <ProfilePic value={data.avatar_id} url={data.avatar_url} />;
+  const avatar = <ProfilePic value={data.avatar_id} url={data.avatar_url} name={data.username} />;
   const username = data.username || 'Player';
   const hasAnyStats = gamesPlayed > 0 || totalCorrect > 0 || (friendStats.bestScore || 0) > 0;
 
@@ -1111,7 +1108,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
               key={row.id}
               style={{display:"flex",alignItems:"center",gap:12,padding:"14px 0",borderBottom:"1px solid var(--border)"}}
             >
-              <div style={{width:28,height:28,flexShrink:0}}><ProfilePic value={row.avatar} url={row.photo} /></div>
+              <div style={{width:28,height:28,flexShrink:0}}><ProfilePic value={row.avatar} url={row.photo} name={row.username} /></div>
               <div style={{flex:1,fontSize:15,fontWeight:600,color:"var(--t1)"}}>{row.username}</div>
               <button
                 type="button"
@@ -1295,7 +1292,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // chosen emoji could beat an uploaded photo. With the emoji set gone there
   // is nothing left to beat it.
   const showPhoto = !!avatarUrl;
-  const displayEmoji = <ProfilePic value={profile?.avatar || authProfile?.avatar_id} />;
+  const displayEmoji = <ProfilePic value={profile?.avatar || authProfile?.avatar_id} name={profile?.name || authProfile?.username} />;
   // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
   // native window.alert dialog if no onToast prop was provided. In
   // practice every caller passes onToast — this is defensive.

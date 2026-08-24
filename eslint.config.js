@@ -59,6 +59,13 @@ export default [
       // Make JSX-referenced identifiers count as "used" so no-unused-vars is honest:
       'react/jsx-uses-vars': 'error',
       'react/jsx-uses-react': 'error',
+      // ⚠️ no-undef DOES NOT SEE JSX COMPONENT REFERENCES. On 2026-08-24 a
+      // <ProfilePic /> was added to App.jsx without importing it: eslint
+      // passed, `npm run build` passed, 366 tests passed — and it would have
+      // thrown ReferenceError the moment the results screen rendered. Vite
+      // resolves JSX identifiers at runtime, not build time, so nothing else
+      // in the gate could catch it. This rule is what does.
+      'react/jsx-no-undef': 'error',
       // Helpful signal, but never blocks the build:
       'react-hooks/exhaustive-deps': 'warn',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^[A-Z_]' }],

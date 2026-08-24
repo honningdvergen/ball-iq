@@ -35,6 +35,8 @@ import { registerPush, onPushTap, initPushTapRouting } from './lib/push.js';
 import { maybeRequestReview, nativeAskBlockedReason, markBadReviewMoment, clearBadReviewMoment, webRatePromptEligible, markWebRatePromptShown } from './lib/review.js';
 import { saveScore, flushScoreOutbox } from './lib/scoreOutbox.js';
 import { markAcctStep } from './lib/acctFunnel.js';
+// Small enough to sit in the main bundle — the heavy ProfileScreen stays lazy.
+import { ProfilePic } from './components/ProfilePic.jsx';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
@@ -5062,7 +5064,7 @@ function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
   );
 }
 
-function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport }) {
+function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -5220,6 +5222,17 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, surviva
       {/* Two-tier action stack: filled green primary, ghost secondaries.
           Amber Share was dropped for cross-screen consistency — Share is a
           secondary action everywhere now. */}
+      {/* ⚠️ AFTER the game, never before it. Alex asked for a nudge to set a
+          profile picture "the first time they open the app"; the measurement
+          argued it down to here and he agreed. 36.2% of accounts never play a
+          single game, and the five-star sign-up blocker was LITERALLY a
+          mandatory step in that same gap — the username wall rejecting Apple
+          and Google's own pre-filled names. Another step before the first game
+          is the same bet, placed again. Here they have just finished
+          something, there is a score to attach a face to, and it costs zero
+          activation. */}
+      {photoNudge}
+
       <div className="results-actions" style={{marginTop:18}}>
         {!isDaily && <button className="btn-3d" onClick={onRetry}>Play Again</button>}
         {isDaily && footleOpen && <button className="btn-3d" onClick={onPlayFootle}>{footleCta}</button>}
@@ -10402,6 +10415,26 @@ function AppInner() {
     try { return localStorage.getItem('biq_notif_enabled') === '1'; } catch { return false; }
   });
   const [notifPromptOpen, setNotifPromptOpen] = useState(false);
+  // ⚠️ ONE NUDGE, ONCE, AFTER A GAME — never a wall.
+  //
+  // Alex asked for a prompt to set a profile picture "the first time they open
+  // the app". The measurement argued it later and he agreed: 36.2% of accounts
+  // never play a single game, and the five-star blocker was a MANDATORY step in
+  // exactly that gap (the username wall rejecting Apple/Google's own pre-filled
+  // names). This fires on the results screen instead — they have just finished
+  // something, and it costs no activation.
+  //
+  // Dismissed state is per ACCOUNT, not per device-forever: a player who
+  // uploads a photo on another device should not be nagged here, and
+  // avatarUrl already covers that because it comes from the profile.
+  const [photoNudgeDismissed, setPhotoNudgeDismissed] = useState(() => {
+    try { return localStorage.getItem('biq_photo_nudge') === '1'; } catch { return false; }
+  });
+  const dismissPhotoNudge = useCallback(() => {
+    setPhotoNudgeDismissed(true);
+    try { safeSetItem('biq_photo_nudge', '1'); } catch { /* quota */ }
+  }, []);
+
   // ⚠️ role="dialog" without useModalA11y is half an accessibility fix, and the
   // repo's own a11y-structure test enforces the pair — it caught this sheet the
   // moment the role was added. The hook is what actually traps focus and wires
@@ -13160,6 +13193,31 @@ function AppInner() {
             wrongAnswers={wrongAnswers}
             onReport={reportQuestion}
             askedQuestions={questions}
+            photoNudge={(user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
+              <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
+                <div style={{width:44,height:44,flexShrink:0}}>
+                  <ProfilePic value={authProfile?.avatar_id} name={authProfile?.username} />
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:14,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>Put a face to the name</div>
+                  <div style={{fontSize:12.5,color:"var(--t2)",lineHeight:1.4,marginTop:2}}>Your friends see this next to your score.</div>
+                </div>
+                <button
+                  onClick={() => { dismissPhotoNudge(); loopEvent('photo-nudge-tap'); setTab('profile'); setScreen('home'); }}
+                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"#06230C",WebkitTextFillColor:"#06230C",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
+                >
+                  Add
+                </button>
+                {/* A nudge you cannot decline is a wall. */}
+                <button
+                  onClick={() => { dismissPhotoNudge(); loopEvent('photo-nudge-dismiss'); }}
+                  aria-label="Not now"
+                  style={{flexShrink:0,padding:"9px 6px",background:"none",border:"none",color:"var(--t3)",fontFamily:"inherit",fontSize:13,fontWeight:700,cursor:"pointer"}}
+                >
+                  Later
+                </button>
+              </div>
+            ) : null}
             classicBest={stats.bestScore || 0}
             label={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
               : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
