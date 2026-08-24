@@ -8,6 +8,7 @@
 
 // ─── QUESTION BANK ────────────────────────────────────────────────────────────
 export const QB = [
+  { id:"q_d02c0a", q:"Marseille were stripped of a Ligue 1 title after the match-fixing scandal that engulfed French football. Which season's?", o:["1990-91","1992-93","1988-89","1993-94"], a:1, cat:"Ligue1", type:"mcq", diff:"hard", hint:"Marseille won the 1992-93 title on the pitch but were stripped of it; PSG declined it, so no champion is listed.", club:"Marseille", v:1 },
   { id:"q_6a89c9", q:"Which country won the 2010 World Cup?", o:["Spain","Netherlands","Germany","Brazil"], a:0, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"easy", hint:"Spain beat Netherlands 1-0 in Johannesburg with Iniesta's extra-time winner.", v:2 },
   { id:"q_a77e72", q:"Brazil have won the World Cup 5 times — which of these years is NOT one of their victories?", o:["1958","1970","1982","2002"], a:2, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"medium", v:1 },
   { id:"q_1d0d44", q:"Which country won the 2022 World Cup?", o:["France","Brazil","Argentina","Croatia"], a:2, cat:"WorldCup", tag:"wc2026", type:"mcq", diff:"easy", hint:"The final went to penalties in Qatar after a 3-3 draw; Mbappé scored a hat-trick in defeat.", v:3 },
