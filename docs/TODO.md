@@ -91,11 +91,23 @@ correct tray `rgba(88,204,2,.12)` / border `.55`, wrong tray
 - [ ] ⚠️ Do NOT add a first-session branch to the daily draw — it would desync
       the frozen daily. Park the ramp as a design decision.
 
-### 5 · Instrument the rating funnel
-- [ ] The rating prompt has **ZERO** loopEvents; the notification prompt has 5.
-      Copy that pattern verbatim. Matters most because 1.7.0 is the first iOS
-      build where the ratings engine exists at all.
-- [ ] Three sentiment gaps.
+### 5 · Instrument the rating funnel — DONE (`93718fd`)
+- [x] **Seven funnel events**, mirroring notif-prompt-* verbatim: shown
+      (engine+trigger) · skipped (reason) · loving · not-really · store-tap
+      (split by store) · store-unreachable · dismissed (view + how).
+      A desktop tap-through is counted separately — it reaches a toast, not a
+      store, and merging them would inflate the only conversion number we have.
+- [x] ⚠️ **The budget was spent 3.5s before the sheet rendered.** Three asks in
+      a LIFETIME, 60 days apart, and one could burn with nothing shown. My own
+      screen gate had made it worse. Now spent at render.
+- [x] **A white screen now suppresses the ask** — the ROOT ErrorBoundary never
+      marked a bad moment, only the tab one did.
+- [x] **"Too easy" no longer mutes our best players** (16 of 30 reports with a
+      pick came from someone who answered CORRECTLY). ⚠️ Done by clearing the
+      mark, NOT by the panel's gate-on-reason version the critic killed.
+- [ ] Remaining sentiment gaps: Footle loss (38% of days played), rage-quit,
+      timeout, wrong-answer streak — four bad-moment classes still unregistered.
+- [ ] The ask is storefront-blind while ratings are per-storefront (8 across 5).
 
 ### 6 · Deepen the six club packs people actually pick
 - [ ] Man United: 24 eligible questions against a 10-question round = 2.4 fresh
