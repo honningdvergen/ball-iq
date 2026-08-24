@@ -1,0 +1,549 @@
+<title>Scouting Report #4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#F4F6F8; --panel:#FFFFFF; --panel-2:#EDF1F5; --line:#D8DFE7;
+  --t1:#101720; --t2:#4A5766; --t3:#79879A;
+  --bad:#C8322F; --mid:#B0720A; --ok:#3D8A05; --accent:#3D8A05;
+  --crit-bg:#FBE9E8; --crit-fg:#A32A27;
+  --shadow:0 1px 2px rgba(16,23,32,.06),0 8px 24px -12px rgba(16,23,32,.18);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0C1015; --panel:#141A22; --panel-2:#1B222C; --line:#28313D;
+    --t1:#E7EDF4; --t2:#9DAABA; --t3:#6E7D8F;
+    --bad:#FF6B66; --mid:#F5B342; --ok:#6FDB1F; --accent:#6FDB1F;
+    --crit-bg:#2A1615; --crit-fg:#FF8C87;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0C1015; --panel:#141A22; --panel-2:#1B222C; --line:#28313D;
+  --t1:#E7EDF4; --t2:#9DAABA; --t3:#6E7D8F;
+  --bad:#FF6B66; --mid:#F5B342; --ok:#6FDB1F; --accent:#6FDB1F;
+  --crit-bg:#2A1615; --crit-fg:#FF8C87;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--t1);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:0 24px 96px}
+code{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.86em; background:var(--panel-2); padding:.1em .38em; border-radius:4px;
+  border:1px solid var(--line); word-break:break-word}
+strong{font-weight:700; color:var(--t1)}
+h1,h2,h3{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif; text-wrap:balance; margin:0}
+
+/* &#9472;&#9472; masthead &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; */
+.top{border-bottom:1px solid var(--line); background:var(--panel); margin-bottom:44px}
+.top-in{max-width:1080px; margin:0 auto; padding:38px 24px 34px;
+  display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:start}
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--t3); margin:0 0 10px}
+.score{display:flex; flex-direction:column; align-items:center; gap:2px;
+  padding:16px 26px; border:1px solid var(--line); border-radius:14px; background:var(--panel-2)}
+.score b{font-family:"Bricolage Grotesque",sans-serif; font-size:64px; line-height:.94;
+  font-weight:800; font-variant-numeric:tabular-nums; color:var(--mid)}
+.score span{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--t3)}
+.score .delta{color:var(--ok); font-weight:600; letter-spacing:.04em}
+h1{font-size:clamp(28px,4.4vw,42px); font-weight:800; line-height:1.1; letter-spacing:-.02em}
+.dek{color:var(--t2); font-size:17.5px; margin:14px 0 0; max-width:62ch}
+.facts{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px}
+.facts span{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--t2);
+  border:1px solid var(--line); border-radius:999px; padding:5px 11px; background:var(--ground)}
+
+/* &#9472;&#9472; sections &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; */
+section{margin:0 0 52px}
+h2{font-size:13px; font-weight:600; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--t3); padding-bottom:10px; border-bottom:1px solid var(--line); margin-bottom:22px;
+  font-family:"IBM Plex Mono",monospace}
+.prose{max-width:70ch}
+.prose p{margin:0 0 15px}
+.callout{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--mid);
+  border-radius:0 12px 12px 0; padding:20px 24px; box-shadow:var(--shadow)}
+
+/* &#9472;&#9472; league table &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; */
+.tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:14px;
+  background:var(--panel); box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; min-width:720px}
+thead th{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--t3); text-align:left; font-weight:400;
+  padding:13px 16px; border-bottom:1px solid var(--line); white-space:nowrap}
+td{padding:15px 16px; border-bottom:1px solid var(--line); vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+.c-grade{width:78px}
+.pill{display:inline-block; min-width:52px; text-align:center; font-family:"IBM Plex Mono",monospace;
+  font-weight:600; font-size:15px; font-variant-numeric:tabular-nums; padding:5px 8px;
+  border-radius:8px; border:1px solid currentColor}
+.pill.bad{color:var(--bad)} .pill.mid{color:var(--mid)} .pill.ok{color:var(--ok)}
+.c-move{width:70px}
+.mv{font-family:"IBM Plex Mono",monospace; font-size:12px; font-variant-numeric:tabular-nums}
+.mv.up{color:var(--ok)} .mv.down{color:var(--bad)} .mv.flat,.mv.new{color:var(--t3)}
+.area-name{font-weight:600; font-size:15.5px; display:block}
+.crits{margin:9px 0 0; padding:0 0 0 17px; list-style:none}
+.crits li{position:relative; font-size:13.4px; color:var(--t2); line-height:1.5; margin-bottom:6px}
+.crits li::before{content:""; position:absolute; left:-17px; top:8px; width:6px; height:6px;
+  border-radius:50%; background:var(--bad)}
+.c-sev{width:120px}
+.sev{display:block; font-family:"IBM Plex Mono",monospace; font-size:11px; margin-bottom:3px; white-space:nowrap}
+.sev.crit{color:var(--bad); font-weight:600} .sev.high{color:var(--mid)} .sev.tot{color:var(--t3)}
+.c-adj{width:96px; text-align:right}
+.regrade{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--bad); font-weight:600;
+  font-variant-numeric:tabular-nums}
+.held{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--t3)}
+
+/* &#9472;&#9472; plan &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; */
+.plan{display:grid; grid-template-columns:auto 1fr; gap:20px; padding:22px 0;
+  border-bottom:1px solid var(--line)}
+.plan:last-child{border-bottom:none}
+.plan-rank{font-family:"Bricolage Grotesque",sans-serif; font-size:30px; font-weight:800;
+  color:var(--t3); line-height:1; min-width:42px; font-variant-numeric:tabular-nums}
+.plan-body h3{font-size:19px; font-weight:600; line-height:1.28; margin-bottom:9px; letter-spacing:-.01em}
+.plan-body p{margin:0; color:var(--t2); font-size:15px; max-width:74ch}
+.plan-meta{display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:13px}
+.plan-meta span{font-size:12.5px; color:var(--t3)}
+.plan-meta b{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--t3); margin-right:6px}
+
+/* &#9472;&#9472; critic (the counter-report) &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; */
+.critic{background:var(--crit-bg); border:1px solid var(--crit-fg); border-radius:16px; padding:28px}
+.critic h2{color:var(--crit-fg); border-bottom-color:var(--crit-fg)}
+.critic > p{color:var(--t2); max-width:72ch}
+.critic h3{font-size:14px; font-family:"IBM Plex Mono",monospace; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--crit-fg); margin:26px 0 12px}
+.stack{list-style:none; margin:0; padding:0; display:grid; gap:12px}
+.stack li{background:var(--panel); border:1px solid var(--line); border-radius:11px;
+  padding:15px 17px; font-size:14.4px; color:var(--t2); line-height:1.56}
+.stack li strong{color:var(--t1)}
+
+/* &#9472;&#9472; device checklist &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; */
+.checks{list-style:none; margin:0; padding:0; counter-reset:c; display:grid; gap:11px}
+.checks li{counter-increment:c; position:relative; background:var(--panel);
+  border:1px solid var(--line); border-radius:12px; padding:16px 18px 16px 56px;
+  font-size:14.6px; color:var(--t2); line-height:1.55; box-shadow:var(--shadow)}
+.checks li::before{content:counter(c); position:absolute; left:17px; top:15px;
+  width:25px; height:25px; border-radius:7px; border:1px solid var(--line);
+  background:var(--panel-2); color:var(--t3); font-family:"IBM Plex Mono",monospace;
+  font-size:12px; display:flex; align-items:center; justify-content:center}
+.checks li strong{color:var(--t1)}
+
+.done{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--ok);
+  border-radius:0 12px 12px 0; padding:20px 24px}
+.done ul{margin:10px 0 0; padding-left:19px; color:var(--t2); font-size:14.5px}
+.done li{margin-bottom:7px}
+footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line);
+  color:var(--t3); font-size:12.5px; font-family:"IBM Plex Mono",monospace; line-height:1.8}
+
+@media (max-width:620px){
+  .top-in{grid-template-columns:1fr; gap:22px}
+  .score{align-self:start; flex-direction:row; align-items:baseline; gap:14px}
+  .score b{font-size:44px}
+  .plan{grid-template-columns:1fr; gap:8px}
+  .plan-rank{font-size:22px}
+}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="score">
+      <b>5.8</b>
+      <span>out of 10</span>
+      <span class="delta">&#9650; 0.3 vs #3</span>
+    </div>
+    <div>
+      <p class="eyebrow">Ball IQ &#183; Scouting report #4 &#183; 1.7.0 &#183; 24 Aug 2026</p>
+      <h1>The diagnosis got dramatically better this round; the product on the App Store got no better at all.</h1>
+      <p class="dek">47% of everyone who ever made a Ball IQ account has never finished a single game, and the store build still contains the sign-up dead end that helps explain why. You are one careful evening &#8212; four edits and a phone &#8212; from being allowed to ship the fix.</p>
+      <div class="facts">
+        <span>14 areas</span><span>116 findings</span>
+        <span>11 critical</span><span>42 high</span>
+        <span>16 agents &#183; 3.0M tokens</span><span>graded on App Store stars</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2>The five-star verdict</h2>
+    <div class="callout prose"><p>No &#8212; not today, and I can name what stops it in four sentences rather than four hundred.
+
+First, the honest good news, because it is unusual and it is yours: I verified by two independent routes that there are no ads, no paywall, no sign-up wall to play, no permission prompt in the first minute, and zero JS errors across a dozen full first-runs. That is four of the six things that reliably cost quiz apps a star, already clean, and most competitors fail at least two of them. Your ceiling is high. Your floor is what is being set right now.
+
+What stops the fifth star, in order of how loudly a reviewer would say it:
+
+<strong>1. The store build has a dead end.</strong> A new user signing in with Apple or Google on App Store 1.6.0 or Play vc20 meets a full-screen, non-dismissible step that pre-fills their real name from their Apple ID &#8212; space and all &#8212; and then refuses it for containing a space. No skip, no escape, and the flag survives a reload. That is a one-star review that writes itself: "couldn't get past the sign-up screen." The fix exists in the repo and reaches nobody. This is also the single most plausible explanation for 103 accounts that never played a game, though nobody instrumented that screen so I cannot prove causation.
+
+<strong>2. The bank contradicts itself, and players are telling us.</strong> 67.5 reports per 1,000 sessions and rising &#8212; roughly one complaint every fifteen sessions from 92 active players. More damning: over half of the reports that carry a pick come from players who answered CORRECTLY. They are not confused, they are correcting us. Two independent detectors converged on ~36 questions that hand you the answer inside the question ("In which French city is Olympique de Marseille based?"), 5 stems containing their own answer verbatim, and 15 club-pack questions whose answer is the club you just picked. This is your own sentence &#8212; "not insult the intellect of our users" &#8212; and it is currently the most measurable thing wrong with the app.
+
+<strong>3. The emotional peak of the product looks like a form error.</strong> I confirmed this in the stylesheet: somebody designed a proper tinted feedback tray for the wrong-answer moment at app.css:658, and two <code>!important</code> declarations two lines above it switch it off. So the verdict of every single question &#8212; the moment that decides whether a miss feels like learning or like being marked wrong &#8212; renders as a naked 12.5px orphan line. On the same screen, the most-tapped control in the whole app (<code>.opt</code>) has no press state at all, while 46 other elements in the same stylesheet depress under a thumb. Nobody writes "missing :active state" in a review. They write "feels a bit basic" and give four stars.
+
+<strong>4. The hero feature runs dry in two rounds.</strong> Man United's eligible pool is 24 questions against a 10-question round. 81 of 86 club packs give under four fresh rounds, and then the app silently repeats without saying so &#8212; while the web club page, doing the same thing, ends honestly with "That is every Man United question we have here." The surface being rated is the one that pretends.
+
+A football fan who used Ball IQ for a week today would give it four stars and mean it kindly. They would say: genuinely good questions, lovely daily habit, feels a bit rough, and I hit a couple of questions that were wrong or gave themselves away. That is a fair review of what we have. Everything above is fixable in about two weeks of the kind of work you already do well.</p></div>
+  </section>
+
+  <section>
+    <h2>The board &#8212; worst first</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th>Grade</th><th>vs #3</th><th>Area &amp; its critical findings</th>
+          <th>Findings</th><th>Critic</th>
+        </tr></thead>
+        <tbody>
+      <tr>
+        <td class="c-grade"><span class="pill bad">5.5</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">The rating ask: when we ask, and whether we have earned it</span>
+          <ul class="crits"><li>iOS &#8212; 95% of the native base &#8212; is running the pre-panel engine, so a player can report a wrong question and be asked to rate in the same session</li></ul>
+        </td>
+        <td class="c-sev">
+          <span class="sev crit">1 critical</span>
+          <span class="sev high">2 high</span>
+          <span class="sev tot">8 total</span>
+        </td>
+        <td class="c-adj"><span class="held">held</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill bad">5.5</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">What actually costs us stars in this category</span>
+          <ul class="crits"><li>The store builds still contain a non-dismissible dead end on Apple/Google sign-up &#8212; 500+ downloads are walking into it</li></ul>
+        </td>
+        <td class="c-sev">
+          <span class="sev crit">1 critical</span>
+          <span class="sev high">2 high</span>
+          <span class="sev tot">6 total</span>
+        </td>
+        <td class="c-adj"><span class="held">held</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill bad">5.5</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">Visual craft: typography, spacing, colour, polish</span>
+          
+        </td>
+        <td class="c-sev">
+          
+          <span class="sev high">3 high</span>
+          <span class="sev tot">10 total</span>
+        </td>
+        <td class="c-adj"><span class="held">held</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill bad">5.5</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">Delight, personality &amp; reasons to come back tomorrow</span>
+          <ul class="crits"><li>The streak pays nothing until day 7, and 62% of accounts never reach day 2</li></ul>
+        </td>
+        <td class="c-sev">
+          <span class="sev crit">1 critical</span>
+          <span class="sev high">4 high</span>
+          <span class="sev tot">9 total</span>
+        </td>
+        <td class="c-adj"><span class="held">held</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill bad">5.5</span></td>
+        <td class="c-move"><span class="mv up">&#9650; 0.5</span></td>
+        <td class="c-area">
+          <span class="area-name">Retention: the day-1 cliff and the streak</span>
+          <ul class="crits"><li>39% of accounts never finish a single game, and not one of them ever comes back</li><li>The outcome of a player's FIRST Footle swings their retention by 20 points &#8212; and 47% of first Footles end badly</li><li><code>scores</code> under-records ~20% of daily completions every day &#8212; so every retention number we steer by is wrong</li></ul>
+        </td>
+        <td class="c-sev">
+          <span class="sev crit">3 critical</span>
+          <span class="sev high">5 high</span>
+          <span class="sev tot">10 total</span>
+        </td>
+        <td class="c-adj"><span class="regrade">&#8594; 5.0</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill bad">5.5</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">Store listing &amp; the install decision</span>
+          <ul class="crits"><li>Screenshot 6 (Profile) carries the same tab-bar bleed as the hero &#8212; live on BOTH stores, and the fix pack says it doesn't</li><li>balliq.app's own "Download on the App Store" buttons send everyone to the ONE storefront that says we have no ratings</li></ul>
+        </td>
+        <td class="c-sev">
+          <span class="sev crit">2 critical</span>
+          <span class="sev high">4 high</span>
+          <span class="sev tot">11 total</span>
+        </td>
+        <td class="c-adj"><span class="held">held</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill mid">6.0</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">Competitive position &amp; what only we can offer</span>
+          <ul class="crits"><li>"Play Again" on a club or league quiz silently throws the club away and starts a generic quiz</li></ul>
+        </td>
+        <td class="c-sev">
+          <span class="sev crit">1 critical</span>
+          <span class="sev high">3 high</span>
+          <span class="sev tot">9 total</span>
+        </td>
+        <td class="c-adj"><span class="held">held</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill mid">6.5</span></td>
+        <td class="c-move"><span class="mv down">&#9660; 0.5</span></td>
+        <td class="c-area">
+          <span class="area-name">Feel: animation, timing, haptics, sound, responsiveness</span>
+          
+        </td>
+        <td class="c-sev">
+          
+          <span class="sev high">3 high</span>
+          <span class="sev tot">6 total</span>
+        </td>
+        <td class="c-adj"><span class="held">held</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill mid">6.5</span></td>
+        <td class="c-move"><span class="mv down">&#9660; 0.5</span></td>
+        <td class="c-area">
+          <span class="area-name">First run &amp; the 60-second verdict</span>
+          
+        </td>
+        <td class="c-sev">
+          
+          <span class="sev high">3 high</span>
+          <span class="sev tot">6 total</span>
+        </td>
+        <td class="c-adj"><span class="regrade">&#8594; 6.0</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill mid">6.5</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">Speed &amp; responsiveness on a real phone</span>
+          <ul class="crits"><li>The first screen a new web user sees is a perfect fake: painted at 0.6s, dead until 2.9s, and it eats their first tap</li></ul>
+        </td>
+        <td class="c-sev">
+          <span class="sev crit">1 critical</span>
+          <span class="sev high">1 high</span>
+          <span class="sev tot">6 total</span>
+        </td>
+        <td class="c-adj"><span class="held">held</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill mid">6.5</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">Stability &amp; release safety at 500+ installs</span>
+          <ul class="crits"><li><code>npm run verify:native</code> green-ticks a native bundle 3 commits stale &#8212; the one guard named 'verify' cannot see the one thing that matters</li></ul>
+        </td>
+        <td class="c-sev">
+          <span class="sev crit">1 critical</span>
+          <span class="sev high">4 high</span>
+          <span class="sev tot">8 total</span>
+        </td>
+        <td class="c-adj"><span class="regrade">&#8594; 5.5</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill ok">7.0</span></td>
+        <td class="c-move"><span class="mv down">&#9660; 0.5</span></td>
+        <td class="c-area">
+          <span class="area-name">Question bank: is it worthy of a 5-star review?</span>
+          
+        </td>
+        <td class="c-sev">
+          
+          <span class="sev high">4 high</span>
+          <span class="sev tot">11 total</span>
+        </td>
+        <td class="c-adj"><span class="regrade">&#8594; 6.0</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill ok">7.0</span></td>
+        <td class="c-move"><span class="mv new" title="new area this round">new</span></td>
+        <td class="c-area">
+          <span class="area-name">Trust, fairness &amp; the feeling of being treated well</span>
+          
+        </td>
+        <td class="c-sev">
+          
+          <span class="sev high">2 high</span>
+          <span class="sev tot">7 total</span>
+        </td>
+        <td class="c-adj"><span class="regrade">&#8594; 6.0</span></td>
+      </tr>
+      <tr>
+        <td class="c-grade"><span class="pill ok">7.0</span></td>
+        <td class="c-move"><span class="mv up">&#9650; 0.5</span></td>
+        <td class="c-area">
+          <span class="area-name">Accessibility &amp; inclusivity</span>
+          
+        </td>
+        <td class="c-sev">
+          
+          <span class="sev high">2 high</span>
+          <span class="sev tot">9 total</span>
+        </td>
+        <td class="c-adj"><span class="regrade">&#8594; 6.0</span></td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--t3);font-size:13px;margin-top:12px;max-width:70ch">
+      The <em>Critic</em> column is a second, adversarial pass over the panel's own grades.
+      Six of the fourteen were judged inflated and re-graded downward; the other eight were held.
+      Read the re-grade as the more honest number.
+    </p>
+  </section>
+
+  <section>
+    <h2>The plan, in order</h2>
+    
+      <article class="plan">
+        <div class="plan-rank">1</div>
+        <div class="plan-body">
+          <h3>Make build 76 safe to ship &#8212; four edits and one evening on your own phone &#8212; then upload iOS</h3>
+          <p>Yes, "upload" belongs on this list, and it belongs at the top, but NOT as "press the button". Nothing else in this entire report reaches an iOS player, and iOS is ~95% of your native base (device_tokens: 35 iOS to 2 Android). The store build contains the non-dismissible sign-up dead end. Every day it stays up is damage to the exact 500+ people you are trying to impress. BUT the panel recommended shipping and not one of fourteen reviewers ran a native binary, which means nobody has checked what would go out. Three known defects are baked into build 76 right now: (a) the report button flips to "&#10003; Reported &#8212; thanks" the instant you tap it, while the new reason sheet is still open and unanswered &#8212; I confirmed the code at App.jsx:3102-3111 is unchanged and that no row is written at that moment, so we are actively pushing players toward the reason=null path on the day the reason channel launched; (b) the rate prompt is scheduled on a 3.5s timer that is only cleared on unmount, so it can land on top of a live game and block every control while the clock runs &#8212; and on iOS its twin spends one of Apple's ~3-per-year review tickets, possibly mid-question, on a build where the ratings engine reaches iPhone for the FIRST time; (c) a4c572b and 182d64c rewrote the native keyboard handling DURING the review window and no human has typed on a real on-screen keyboard in three consecutive reports. Ship blind and you convert one bad review into a category of them. Fix the three, walk the phone list, then upload.</p>
+          <div class="plan-meta">
+            <span><b>Effort</b> Half a day of edits (the report-flag fix is four call sites: App.jsx:3110, App.jsx:4881, App.jsx:7774/7792, TransferTrail.jsx:416/430 &#8212; note the critic is right that this is not a pure one-liner, because setReportedKeys lives inside QuizEngine and sendQuestionReport lives at AppInner scope, so a pending key has to be threaded back; budget 2 hours, not 20 minutes). Plus one evening with your phone. Plus the archive/upload you have done many times.</span>
+            <span><b>Reaches users</b> The edits reach web the moment they merge. The upload is the ONLY item on this list that reaches the 500+ people who downloaded us from a store &#8212; nothing else here does.</span>
+          </div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-rank">2</div>
+        <div class="plan-body">
+          <h3>One sitting on the question bank: delete the giveaways, kill the club-pack self-answers, gate it in the build</h3>
+          <p>This is your loudest sentence in the brief and it is the most measurable defect we have. Two independently built detectors converged, which is the most trustworthy result on the whole board: ~36 questions where a distinctive stem token reappears only in the correct option, 5 stems containing their answer verbatim plus 21 more containing every content word of it, and 15 club-pack questions whose answer is the club you just chose. Independently corroborated by players: 54% of reports carrying a pick come from people who answered correctly, and at least one flagged question (Villa Park) was reported by a real player who got it right. The report rate is 67.5 per 1,000 sessions and climbing. The finite part matters &#8212; this is roughly 40-60 rows, not a programme. And the newest, Home-featured, NEW-badged Summer 2026 pack ships OUTSIDE every leak guard the team built and leaks in 38.4% of sessions, which means the guard we credit as shipped is blind to the content players are steered toward. Promote the within-question giveaway check to a build gate next to audit-distractor-plausibility.mjs; the existing audit-leaks scripts only catch CROSS-question leaks, so this whole class is currently ungated.</p>
+          <div class="plan-meta">
+            <span><b>Effort</b> One focused sitting for the deletions and rewrites (half a day). Another half day to wire the detector into <code>npm run build</code>. Use the ball-iq-question-bank skill &#8212; it exists and it knows the Footle retroactive-rewrite trap.</span>
+            <span><b>Reaches users</b> Web immediately. Native at the next upload. Note the bank is bundled, so a fixed question does not reach an installed app until a new build ships &#8212; which is another argument for item 1 going first.</span>
+          </div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-rank">3</div>
+        <div class="plan-body">
+          <h3>Fix the wrong-answer moment and give the answer button a press state</h3>
+          <p>This is the cheapest perceived-quality win available anywhere in the product and it touches every mode, every player, every session. I confirmed both in the stylesheet: <code>.feedback</code> at app.css:656 sets <code>border:none !important; background:transparent !important</code>, which suppresses BOTH the designed correct tray at 657 and the wrong tray at 658 &#8212; so somebody built the right thing and then switched it off. And <code>.opt</code> at app.css:624 has no <code>:active</code> rule while explicitly setting <code>-webkit-tap-highlight-color:transparent</code>, meaning the app removes the browser's own press flash and supplies nothing, in the single most-tapped control it owns, while 46 other rules in the same file give their elements a satisfying depress. This is the difference between "good free quiz app" and "someone made this", and it is the whole answer to the half of your brief about the things users care about that are not functional correctness. CAUTION on the exact edit: deleting only the two <code>!important</code>s restores a hard-cornered 1px strip, because <code>.feedback</code> also carries <code>border-radius:0</code> and <code>padding:2px 2px</code>, and there is a SECOND <code>.feedback</code> declaration at app.css:1600 that disagrees on justify-content. Restore the padding and radius and reconcile the duplicate in the same edit, or this lands uglier than what is there now.</p>
+          <div class="plan-meta">
+            <span><b>Effort</b> Two to three hours if you do it properly (one line for :active, an hour for the tray plus reconciling the duplicate rule, and a look at it on the phone).</span>
+            <span><b>Reaches users</b> Web immediately, native at upload. Every player on every platform once shipped.</span>
+          </div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-rank">4</div>
+        <div class="plan-body">
+          <h3>Stop the app contradicting itself on the front door &#8212; and do NOT touch the daily draw to do it</h3>
+          <p>Three separate instances of the same shape, all on the most-viewed surfaces. (a) Footle copy: you fixed the sixth call site this morning and the test guards src/, but the MARKETING surface still says "surname" in seven live places &#8212; FootleBand.jsx:192, 212, 265, 272, 273 and MarketingHome.jsx:930, 942 plus ScoutingReport.jsx:47 &#8212; and I confirmed "surname" is still in the served HTML at balliq.app right now. Per your own GSC read those SEO pages carry roughly half of all impressions, so the wrong half is the half most new people read. Extend footle-prompt-copy.test.js to cover src/marketing/. (b) The mobile Footle hero renders a hard-coded teaser board (TEASER_PAIRS, FootleHero.jsx:101) whose second row is five all-green tiles &#8212; a solved puzzle &#8212; next to a CTA reading "Continue &#183; 1/6 used". It is decorative and deliberate, and the file's own comment admits the knock-on (the grid is hard-coded 5 wide, so the letter count had to be REMOVED from the card while the desktop hero shows it correctly). A card that displays someone else's win as if it were yours, on the most-viewed card in the app, is worth twenty minutes. (c) Home shows &#128293; 1 in the header and &#128293; 3-day streak on the Footle card 250px below, same flame, same word, two different quantities &#8212; and DailyScreen.jsx:475 carries a comment celebrating the fix for exactly this bug between two other surfaces. Third instance, shipped. &#9888;&#65039; DANGER, flagged by the critic and verified by me: the panel's suggested first-session difficulty ramp edits <code>q.diff !== 'easy'</code> inside <code>pickDailyFresh</code> at quiz.js:159. That is the function the frozen-log GENERATOR calls, with a comment three lines above warning about exactly this. Branching it on per-player state desyncs the frozen Daily 7, breaks the shared comparison and breaks challenge scoring, and the identical filter exists at a second site (quiz.js:128) so a literal application produces half-fix drift. If you want a gentler first session, build a separate non-shared first quiz. Do not edit the daily draw.</p>
+          <div class="plan-meta">
+            <span><b>Effort</b> An hour for the copy plus test extension. An hour for the teaser board (either make the grid dynamic and restore the letter count, or drop the fake solved row). An hour for the streak label. The first-session ramp is a design decision, not a patch &#8212; park it.</span>
+            <span><b>Reaches users</b> The marketing copy is web-only and reaches your biggest traffic source the moment it deploys. The hero and streak fixes are all platforms, native at upload.</span>
+          </div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-rank">5</div>
+        <div class="plan-body">
+          <h3>Instrument the rating funnel, then close the sentiment gaps</h3>
+          <p>You asked to follow the data and on this loop there is none. The rating prompt has ZERO loopEvents; the notification prompt &#8212; a strictly less valuable loop &#8212; has five. We cannot say how many asks have fired since the engine landed, how many players tapped "Loving it", or how many reached a store. Every recommendation in this area, mine included, is currently un-falsifiable. Then three gaps worth closing: the root ErrorBoundary (the one that white-screens the whole app) does not call markBadReviewMoment, so the single worst thing a player can see leaves the ask armed; a Footle LOSS marks nothing, and 38% of Footle days end that way; and markWebRatePromptShown() fires 3,500ms BEFORE the sheet renders, so a player who closes the app after solving burns a third of their three lifetime asks on nothing &#8212; a reviewer reproduced that by playing. &#9888;&#65039; DANGER, critic is right: do NOT move markBadReviewMoment behind a reason whitelist as the panel suggested. sendQuestionReport is called with reason=null from the skip and dismiss paths, and item 1 establishes that null is the path players are currently pushed toward &#8212; so that change would DISABLE sentiment suppression for most of the channel. If you want reason-gating, default to suppressing on null.</p>
+          <div class="plan-meta">
+            <span><b>Effort</b> Half a day for five events copying the notif-prompt-* pattern verbatim. An hour for the three sentiment gaps.</span>
+            <span><b>Reaches users</b> Web now, native at upload &#8212; and on iOS 1.7.0 is the first build where the ratings engine exists AT ALL, so getting this right before that upload matters more than usual. You have 8 ratings across five storefronts and nobody ever sees an aggregate; GB has 3 and is the only shelf worth concentrating on.</span>
+          </div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-rank">6</div>
+        <div class="plan-body">
+          <h3>Deepen the six club packs people actually pick</h3>
+          <p>"Ran out of content" is one of the six reliable star-losers and it is a club-pack problem only &#8212; your dailies are frozen 400 days out and the general medium pool is ~169 fresh Classic rounds deep. But Man United's eligible pool is 24 questions against a 10-question round: 2.4 fresh rounds before repeats start, and the app repeats SILENTLY because applySeenFilter tops up from least-recently-seen rows with no message. The web club pages prove players hit the wall &#8212; deepest_session is exactly 5 for eight different clubs while Champions League reaches 14, and that engine has no round cap, so the uniform 5 is the content ending. Taking United, Liverpool, City, Real, Bar&#231;a and Chelsea from ~30 to ~80 turns the hero feature from two rounds into eight. In the meantime, give the app the honesty the web page already has: "That is every Man United question we have here" is a completionist moment; a silent repeat is a cheat.</p>
+          <div class="plan-meta">
+            <span><b>Effort</b> The exhaustion message is an afternoon. The content is a forge wave &#8212; use the ball-iq-seo-wave / question-bank skills, one club per session, three sessions a week. Do not chase all 86 packs.</span>
+            <span><b>Reaches users</b> Content reaches web on deploy and native only at the next upload. The exhaustion message likewise.</span>
+          </div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-rank">7</div>
+        <div class="plan-body">
+          <h3>Fix the retention instrument before steering by it</h3>
+          <p>A reviewer found that <code>scores</code> under-records roughly 20% of daily completions every day, which means every retention number in every report &#8212; including my 47.2% never-played figure &#8212; is wrong by an unknown margin in a known direction. You cannot run a data-led product on an instrument that is 20% off, and you especially cannot tell whether the next release helped. This is last on the list because it changes nothing a player sees, and first in importance the moment you want to know whether any of items 1-6 worked. Pair it with the finding that the app's most important screen for retention &#8212; the sign-up step &#8212; is the ONLY mandatory first-run screen emitting no telemetry at all, which is why nobody can prove the dead end caused the 103 ghost accounts.</p>
+          <div class="plan-meta">
+            <span><b>Effort</b> A day to find the missing write path and add a test that fails if a completed game does not produce a row.</span>
+            <span><b>Reaches users</b> Nobody, directly. It reaches YOU, which is the point.</span>
+          </div>
+        </div>
+      </article>
+  </section>
+
+  <section class="critic">
+    <h2>What the critic threw out</h2>
+    <p><strong>Fourteen areas, 500+ downloads, ~95% of the native base on iOS &#8212; and not one reviewer launched a native build.</strong> The brief's central question is what makes someone tap five stars in the App Store. The panel answered it entirely from a desktop Chromium at a 375x812 viewport. Every area's "who can see this now" ends at "nobody until upload", and every area's top recommendation is some version of "upload iOS", and nobody opened the thing that would be uploaded &#8212; despite an iOS Simulator tool being available in this environment and the repo carrying a <code>ball-iq-native-build</code> skill. The consequences are concrete, not theoretical: Area 3's CRITICAL (the non-dismissible Apple/Google signup dead end) was never observed because nobody signed up; Area 2's entire native ratings analysis is "reasoning from the API contract and the code, not from a device"; Area 4 never felt a haptic or heard a tone; the on-screen keyboard is untested for the third consecutive report even though a4c572b ("the viewport never shrinks on native &#8212; that broke ALL of it") and 182d64c landed DURING the review window and touch exactly that code. The panel therefore cannot distinguish "1.7.0 fixes this" from "1.7.0 ships a new native regression", which is the only question that matters when the recommendation is to push a build to 500+ installed devices. The second half of the hole is the panel's own instrument: the Browser pane runs tabs HIDDEN (I confirmed <code>document.visibilityState === "hidden"</code> and <code>requestAnimationFrame</code> not firing within 500ms on my own session), which faked a 3.3s cold start for one reviewer, faked a suppressed consent banner for another, and faked three localStorage findings &#8212; all caught, to their credit, but only by reviewers who happened to run controls. The Speed area's quick win asking for this to be written into docs/SCOUTING-REPORT-BRIEF.md is the most valuable process item in the whole panel and it is buried at position six of six in one area's list.</p>
+    <h3>Recommendations that would cause damage if applied</h3>
+    <ul class="stack">
+        <li><strong>WOULD SILENTLY DELETE THE APP'S ENTIRE CELEBRATION LAYER &#8212; Feel, quick win #2: 'add a second effect keyed on <code>screen</code> that clears the celebrationTimeoutsRef array.'</strong> I traced this. <code>setScreen("results")</code> is the LAST statement of <code>handleComplete</code> (src/App.jsx:10822), in the same synchronous callback that pushes every celebration timer: 10559/10562/10565 (7/30/100-day streak toasts + confetti), 10571 (perfect round), 10601 (native review ask), 10607/10614 (personal-best toasts), 10620 (comeback), 10625 (category mastery), 10631 (survival record), 10651 (rate prompt), 10690 (guest save-your-progress nudge), 10796 (<code>setChallengeResult</code> &#8212; the friend-challenge result payload). A <code>useEffect(..., [screen])</code> that clears the array fires on the very commit produced by that handler, AFTER the pushes. Every one of those timers dies. Following this quick win removes: all streak milestone celebrations, the perfect-round toast, every personal-best toast, the daily-complete sound (10306), the challenge result screen, and the guest conversion nudge &#8212; while Area 6 (Delight, 5.5) is simultaneously arguing the celebration layer is already too thin. This is the report-#3-critic-grade catch of this round.</li>
+        <li><strong>WOULD DESYNC THE FROZEN DAILY &#8212; First run, quick win #4: 'src/lib/quiz.js:159 &#8212; add a first-session branch that does not apply <code>q.diff !== "easy"</code> when the player has no completed games.'</strong> Line 159 is inside <code>pickDailyFresh</code>, whose own comment three lines above reads: 'Exported so the log GENERATOR can compute fresh days &#8212; it must never call pickDailyQuestions, which reads the log first and would therefore rebuild the log from itself. (That exact mistake produced a no-op regeneration on 2026-08-19.)' Branching that function on per-player state means the generator emits one Daily 7 and the client draws another: the frozen answer log stops matching what players see, the Daily 7 stops being the same set for everybody, and <code>record_challenge_event</code> (App.jsx:10791, which compares <code>p_score</code> against <code>p_my_score</code>) starts comparing scores on different question sets. The project's own memory records DAILY SCHEDULES MUST BE FROZEN as binding, from a bug that hit Footle, Trail AND the Daily 7. The area hedges in prose ('that is a design decision for Alex') and then ships the edit as a numbered quick win anyway. It also misses the SECOND site of the identical filter at quiz.js:128 (<code>pickDailyFromLog</code>'s refill) &#8212; so applied literally it produces the exact half-fix drift the panel spends 14 areas complaining about.</li>
+        <li><strong>WOULD DISABLE SENTIMENT SUPPRESSION FOR MOST REPORTS &#8212; Rating ask, quick win #3: 'move markBadReviewMoment() out of reportQuestion() and into sendQuestionReport(), gated on reason being wrong-answer | unclear | typo.'</strong> <code>sendQuestionReport</code> is called with <code>reason = null</code> from <code>onSkip</code> (App.jsx:12295) and from backdrop/Escape dismiss, and the code comment at 9333 says so explicitly: 'dismissing still reports, with reason null, because the tap on "Report" is itself the signal.' Area 3 independently establishes that the null path is the one players are actively pushed toward, because the button flips to '&#10003; Reported &#8212; thanks' before the sheet is answered. So this change stops suppressing the rating ask for the majority of the report channel &#8212; inverting the protection the same area calls its own critical finding. Two areas' recommendations are in direct conflict and nobody reconciled them. If the reason-gating is wanted, it must default to suppressing on null, not on a whitelist.</li>
+        <li><strong>WOULD EXTEND TRACKING-WITHOUT-CONSENT TO THE WHOLE FIRST SESSION &#8212; First run, quick win #3: 'public/consent.js:175 &#8212; widen onboardingUp() to also suppress while no game has been completed.'</strong> Justified on 'the duty is to ask before tracking, not to ask immediately.' But <code>loopEvent</code> (src/App.jsx:2029) has no consent gate &#8212; only <code>isSyntheticTraffic()</code> &#8212; and writes <code>p_visitor: visitorId()</code> to the prod <code>record_funnel_event</code> RPC. <code>onboard-done-answered</code> fires from it at App.jsx:7346 during onboarding. The area's own proof ('I watched for clarity.ms requests and counted 0') covers Clarity and not the funnel. This is a GDPR-surface change proposed without checking what already fires. Do not apply it without first gating loopEvent on consent &#8212; at which point the retention area's request for six MORE funnel events also needs the same gate.</li>
+        <li><strong>UNDER-SPECIFIED, WILL SHIP SOMETHING UGLIER &#8212; Visual craft: 'delete the two <code>!important</code>s at app.css:630 ... the highest-value two-character deletion in the codebase.'</strong> The rule is at 656 now, and the diagnosis is correct &#8212; I confirmed <code>.feedback{border-radius:0;border:none !important;background:transparent !important;padding:2px 2px}</code> suppresses the tinted <code>.feedback.wrong</code> at 658. But deleting only the two <code>!important</code>s restores a 1px border and a tint onto an element with <code>border-radius:0</code> and <code>padding:2px 2px</code>, i.e. a hard-cornered strip with 2px of breathing room &#8212; not the designed tray. There is also a SECOND <code>.feedback</code> declaration at app.css:1600 setting <code>justify-content:space-between</code> against the base's <code>flex-start</code>, and a third at 2248 for <code>.qd-play</code>. Restore the padding, radius and reconcile the duplicate in the same edit, or this lands worse than the current naked line.</li></ul>
+    <h3>What all fourteen reviewers missed</h3>
+    <ul class="stack">
+        <li><strong>THE MOBILE FOOTLE HERO SHOWS A FAKE SOLVED BOARD. Six areas discussed this card; every one stopped at the subtitle.</strong> I played live prod at 375x812 and read the DOM. The card renders <code>fh-row</code> KROOS (grey/yellow/grey/green/green) then <code>fh-row</code> RAMOS &#8212; five tiles ALL GREEN, a winning row &#8212; beside a CTA reading <code>Continue &#183; 1/6 used</code>. My actual state was <code>biq_wordle_2026-08-24 = {"guesses":["MODRIC"],"status":"playing"}</code>. So the app's most-viewed card displays someone else's solved puzzle as if it were yours. Source confirms it is deliberate decoration: <code>TEASER_PAIRS[getWordleDayIndex() % ...]</code> at FootleHero.jsx:101. Worse, the same file's comment admits the knock-on: 'No letter count here ... the teaser grid to the right is hard-coded 5 wide, so on any non-5-letter day the card printed "4 letters" beside five tiles and contradicted itself.' Today's word is 6 letters. So the mobile card (a) shows a fake win, (b) shows 5 tiles for a 6-letter word, and (c) withholds the letter count &#8212; while the desktop hero in the same DOM reads 'Daily &#183; Footle / 6 letters &#183; 6 guesses / The name a footballer goes by' and is correct on all three. The panel's grade for this card rests entirely on fixing one string on it.</li>
+        <li><strong>Nobody ran a native binary. Not one of fourteen areas.</strong> ~95% of the native base is iOS (device_tokens 35:2 per Area 2), the brief's central question is what store reviewers see, and every single 'who can see this now' answer routes to 'upload iOS'. The not_verified sections are honest about it individually &#8212; 'I never ran the NATIVE ask', 'I did not build, install or run build 74 / vc29', 'Everything here is a desktop Chromium at 375x812' &#8212; but collectively it means the panel graded a store-rating question without ever seeing the artifact the store serves. There is an <code>mcp__Claude_Code_iOS_Simulator</code> tool available in this environment and no area used it.</li>
+        <li><strong>Nobody signed up, so the signup wall &#8212; Area 3's own CRITICAL &#8212; is source-read only.</strong> Area 3 calls the Apple/Google username step 'a non-dismissible dead end ... 500+ downloads are walking into it' and rates it critical, then states 'I never signed up, so I never saw UsernameSetupModal render.' The panel's highest-severity finding of the round was never observed. Nobody would need a device for this &#8212; a web signup would do it.</li>
+        <li><strong>Nobody played Footle to a LOSS.</strong> Area 4 flags it ('the biggest hole in this report'), Area 6 and Retention both build findings on it (38% of Footle days end in a loss; 'the outcome of a player's FIRST Footle swings retention by 20 points'), and the fix list includes marking a loss as a bad review moment. The single most bruising two minutes in the product, named as retention-critical by two areas, was never experienced by anyone.</li>
+        <li><strong>Nobody typed on a real on-screen keyboard.</strong> Three consecutive reports now say this is untested; the repo's own memory names it as the root of two shipped bugs in Trail; commits a4c572b ('the viewport never shrinks on native &#8212; that broke ALL of it') and 182d64c ('three things grabbed at the same drag') landed IN THIS WINDOW and touch exactly that code plus <code>tests/unit/keyboard-gesture-ownership.test.js</code>. Brand-new keyboard code shipped during the review and the panel has no coverage of it at all.</li>
+        <li><strong>The panel has no synthesis and no single answer to Alex's question.</strong> Fourteen areas each nominate their own top item as the highest-leverage act ('the single highest-value act available', 'the highest-value change in the report', 'the highest value-to-effort change'). The brief explicitly forbids 'a list of 83 items ranked by nothing' &#8212; the panel produced 14 lists of ~8 items each, ranked by nothing across areas. The one item five areas independently converge on (upload iOS) is the one nobody verified the state of.</li></ul>
+  </section>
+
+  <section>
+    <h2>Only a phone can answer these</h2>
+    <ol class="checks">
+        <li><strong>Type in Transfer Trail and in the guest-name field with the real on-screen keyboard, in portrait, on a notched iPhone.</strong> This is the third consecutive report where nobody has done it, your memory names it as the root of two shipped Trail bugs, and a4c572b ("the viewport never shrinks on native &#8212; that broke ALL of it") plus 182d64c ("three things grabbed at the same drag") rewrote that exact code three days ago. Watch specifically: does the input stay above the keyboard, does the suggestion dropdown stay inside the visible area, and does drag-to-dismiss fight the scroll.</li>
+        <li><strong>Sign up with Apple, on a fresh install, using the Apple ID whose name has a space in it.</strong> This is the panel's highest-severity finding of the entire round and NOBODY observed it &#8212; it is source-read only. Confirm the username step accepts the pre-filled name, that there is a way past it, and that it does not reappear after a force-quit and relaunch.</li>
+        <li><strong>Solve today's Footle, then immediately tap Share, then Home.</strong> Three and a half seconds later, does anything land on top of what you opened? On iOS this is the moment that may spend one of Apple's ~3-per-year review tickets &#8212; you have 8 ratings total, so watch whether the native sheet appears, and where.</li>
+        <li><strong>Lose a Footle.</strong> Six wrong guesses on the day's puzzle is the most bruising two minutes in the product and no reviewer has ever experienced it. Does it feel like a game you want to come back to tomorrow, or like being told off? Two areas built retention findings on that moment without ever seeing it.</li>
+        <li><strong>Feel the haptics and hear the sounds.</strong> Every claim in this report is verified at the call layer &#8212; the code fires vibrate(40) and oscillators at 523Hz and 784Hz &#8212; but nobody has felt or heard any of it. Does a correct answer feel good? Is the chime pleasant on the iPhone speaker or tinny? Play a Classic round and then a Transfer Trail round back to back and tell me whether Trail's total silence is noticeable now that sound defaults ON.</li>
+        <li><strong>Play Hot Streak once and time it by feel.</strong> The reveal measures 1,820ms with the 60-second clock running through it and no way to skip. Does the mode that promises a sprint feel like a sprint on a real device?</li>
+        <li><strong>Play one club quiz &#8212; pick Manchester United &#8212; three rounds back to back.</strong> The eligible pool is 24 questions against a 10-question round. Watch for the repeat, and judge whether a silent repeat feels like a bug or is invisible.</li>
+        <li><strong>Look at the Home header and the Profile screen and just judge them.</strong> Header gear, streak flame, avatar, the emoji density, the '46' rating painted in the muted grey token. These are the frames that appear in App Store screenshots and in the first sixty seconds. Only you can say whether they look like a product you would pay attention to.</li></ol>
+  </section>
+
+  <section>
+    <h2>Stop doing</h2>
+    <ul class="stack">
+        <li><strong>Stop fixing something in one half and calling it done.</strong> This is now six documented instances and it is the single most expensive habit in the project: the Footle copy (fixed in five places, missed the sixth &#8212; and the marketing surface is STILL wrong in seven more, verified live on balliq.app right now); the username space rule (fixed in the modal, not in Profile, until this morning); the keyboard insets across three modes; the colour-only feedback glyphs; the streak label (fixed between two surfaces, third one shipped); the settings-defaults merge (three separate reviewers found the same App.jsx:9530 line independently and none noticed the other two). The rule that actually works is the one you used this morning: when a fix touches an invariant, write the test against the CLASS, not the instance, and grep the whole tree &#8212; including src/marketing/ &#8212; before declaring the count. A one-line test that cannot rot beats a careful memory every time.</li>
+        <li><strong>Stop counting web deploys as delivery.</strong> Roughly 40 commits landed and the store builds are unchanged, so the honest answer to "what did this week do for our 500 downloads" is nothing. Your own memory file already says this and the panel did it anyway, fourteen times over. From now on, every finding gets one of three labels before it gets a fix: web-now, native-at-upload, or nobody-yet. If a sprint's labels are all "native-at-upload" and no upload is planned, that sprint has not shipped.</li>
+        <li><strong>Stop trusting a detector's first run, and stop trusting a zero.</strong> Ten instances now. In this round alone: the leak audit reported 0 unguarded packs while the Home-featured Summer 2026 pack leaked in 38.4% of sessions; one reviewer's giveaway detector ran at 24% precision on its first pass and its first self-test printed "detector is broken" because the seeded examples were not actually giveaways; another reviewer nearly headlined a consent-banner bug that was purely an artifact of requestAnimationFrame never firing in a hidden browser pane. The reviewers who caught their own errors all did the same thing: ran a control in the same call. Make that non-optional &#8212; every negative result needs a deliberately broken input proving the check can fire.</li>
+        <li><strong>Stop re-auditing what has already been audited.</strong> SEO ranking fundamentals are clean and have been re-confirmed three times; the localisation thesis is settled; the MP capacity question is resolved. Every hour spent re-confirming a known-good area is an hour not spent on the 47% of accounts that never finish a game. The bank, the first session and the native build are where the remaining points are.</li>
+        <li><strong>Stop shipping a new mode without the feel checklist.</strong> The evidence is unambiguous: haptic and sound density is 48/19 inside App.jsx and 2/0, 4/0, 7/0, 1/0, 0/0 in everything built afterwards &#8212; Trail, Mystery, Stadiums, the nav, Login. The polish layer exists and is good; it just stops at the boundary of the file it was written in. Four lines in the definition of done for any new mode &#8212; press state, haptic, sound, reveal timing &#8212; and the pattern stops repeating at mode seven. Same for the icon layer: 674 emoji against 28 SVGs is not a style choice, it is what happens when nobody owns it.</li></ul>
+  </section>
+
+  <section>
+    <h2>The biggest risk</h2>
+    <div class="callout prose"><p><strong>That you upload 1.7.0 to fix the sign-up dead end and ship a fresh native regression on top of it &#8212; because the build going out to 500+ devices has never been run on a phone.</strong>
+
+This is not hypothetical. Fourteen reviewers examined this release and not one launched a native binary; every area's conclusion routes to "upload iOS" and nobody looked at what would be uploaded. Meanwhile the build carries brand-new native keyboard code (a4c572b, 182d64c, three days old, touching the exact subsystem your memory file names as the root of two previously shipped bugs), a report button that lies about success, a rate prompt on a loose timer, and the first appearance of the ratings engine on iOS ever. iOS is ~95% of your native base and the review cycle is days long, so a regression that ships is a regression that lives for a week on the only surface that generates store reviews. With 8 ratings across five storefronts and no aggregate visible to anyone, two bad reviews in the wrong storefront is a visible, durable change to what a cold visitor sees.
+
+The mirror risk, and it is real too, is that you do nothing because the list feels long. It is not long. The sign-up dead end is doing damage right now &#8212; 103 of 218 accounts have never finished a game &#8212; and the fix is already written and merged. Half a day of edits and one evening with your phone is the entire distance between "cannot ship" and "should ship". That is the brick.
+
+Two smaller risks worth naming. First, that someone applies the panel's quick wins literally: two of them are actively destructive &#8212; clearing celebrationTimeoutsRef on a screen change silently deletes your entire celebration layer, and branching quiz.js:159 desyncs the frozen Daily 7 &#8212; and I verified both against the source rather than taking the critic's word. Read the danger flags in the plan before touching either file. Second, that we keep grading ourselves on how much we found rather than on how much reached a player. The most useful number in this report is not any grade. It is 47.2%.</p></div>
+  </section>
+
+  <footer>
+    Run wf_dd62665b-c34 &#183; 16 agents, 16 completed &#183; 3.0M subagent tokens &#183; 1,634 tool calls<br>
+    Full text: docs/scout-4-areas.json &#183; docs/scout-4-critic.json &#183; docs/scout-4-synthesis.json<br>
+    Every sentence on this page is quoted verbatim from those files.
+  </footer>
+</div>
