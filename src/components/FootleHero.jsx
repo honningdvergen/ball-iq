@@ -39,11 +39,30 @@ const TEASER_PAIRS = [
   ["NEVES", "TEVEZ"],
 ];
 
+/**
+ * Pick the day's sample pair, skipping any that would spoil today's puzzle.
+ *
+ * Exported so the no-spoiler property can be TESTED against the real schedule
+ * rather than asserted. Deterministic in the day index, so every player still
+ * sees the same sample on the same day.
+ */
+export function pickTeaserPair(dayIndex, answer) {
+  const start = ((dayIndex % TEASER_PAIRS.length) + TEASER_PAIRS.length) % TEASER_PAIRS.length;
+  for (let i = 0; i < TEASER_PAIRS.length; i += 1) {
+    const pair = TEASER_PAIRS[(start + i) % TEASER_PAIRS.length];
+    if (pair[0] !== answer && pair[1] !== answer) return pair;
+  }
+  // Unreachable with the current pool (no answer equals two pairs at once),
+  // but never return undefined and blank the card.
+  return TEASER_PAIRS[start];
+}
+
 export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview, shareCard }) {
   const ws = readWordleTodayStatus();
   const isWon = ws.kind === "won";
   const isLost = ws.kind === "lost";
   const isDone = isWon || isLost;
+  const inProgress = ws.kind === "in-progress";
 
   const dateKey = getWordleDateKey();
   const today = useMemo(() => new Date(), [dateKey]);
@@ -54,8 +73,13 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
   // it in both states is cheap. Guesses + grades only computed in terminal
   // states since they require the localStorage read + grading pass.
   const answer = useMemo(() => getWordleAnswer(), [dateKey]);
+  // ⚠️ Loaded when IN PROGRESS too, not just when finished. The card used to
+  // render a rotating sample solve in this state — someone else's board, with
+  // an all-green winning row — directly beside a CTA reading
+  // "Continue · 1/6 used". A player mid-puzzle was shown a solved grid that was
+  // not theirs. Their own rows are both honest and more useful.
   const { guesses, grades } = useMemo(() => {
-    if (!isDone) return { guesses: [], grades: [] };
+    if (!isDone && !inProgress) return { guesses: [], grades: [] };
     let gs = [];
     try {
       const raw = localStorage.getItem(`biq_wordle_${dateKey}`);
@@ -66,7 +90,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     } catch {}
     const gr = gs.map(g => gradeWordleGuess(g, answer));
     return { guesses: gs, grades: gr };
-  }, [isDone, dateKey, answer]);
+  }, [isDone, inProgress, dateKey, answer]);
 
   const onShare = useCallback(async () => {
     if (!isDone || !shareCard) return;
@@ -97,8 +121,16 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
   const PREVIEW_ROWS = 2;
   const cols = answer.length || 5;
   if (!isDone) {
-    const inProgress = ws.kind === "in-progress";
-    const [teaserGuess, teaserAnswer] = TEASER_PAIRS[getWordleDayIndex() % TEASER_PAIRS.length];
+    // ⚠️ THE TEASER CAN SPOIL THE PUZZLE, and it is not hypothetical — both the
+    // teaser rotation and the answer schedule key off getWordleDayIndex(), so
+    // collisions are DATED. Walking the next 420 days against the frozen log:
+    //   2027-01-04  teaser answer KANTE === that day's real answer
+    //               -> the Home card renders the answer as an all-green row
+    //   2026-10-03  teaser guess  PEDRI === that day's real answer
+    // Skipping forward to the first non-colliding pair keeps the rotation
+    // deterministic (same pair for everyone, same day) and makes a spoiler
+    // impossible rather than unlikely.
+    const [teaserGuess, teaserAnswer] = pickTeaserPair(getWordleDayIndex(), answer);
     const teaserGrades = gradeWordleGuess(teaserGuess, teaserAnswer);
     return (
       <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
@@ -137,20 +169,43 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>
           </div>
         </div>
-        <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
-          {/* Today's rotating sample solve: imperfect guess graded by the real
-              engine, then the answer solved all-green (see TEASER_PAIRS). */}
-          <div className="fh-row">
-            {teaserGrades.map((c, i) => (
-              <div key={i} className={`fh-tile fh-tile-${c}`}>{teaserGuess[i]}</div>
-            ))}
+        {/* ⚠️ A PLAYER MID-PUZZLE SEES THEIR OWN BOARD, NOT A SAMPLE ONE.
+            This grid used to render the rotating teaser in every unfinished
+            state — including in-progress, where an all-green winning row sat
+            directly beside "Continue · N/6 used". The most-viewed card in the
+            app was showing a stranger's solved puzzle as if it were yours.
+            The teaser is still right for someone who has not started: it
+            demonstrates the colour logic with the real engine. */}
+        {inProgress && grades.length > 0 ? (
+          <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols}}>
+            {grades.slice(-PREVIEW_ROWS).map((row, r) => {
+              const guess = guesses.slice(-PREVIEW_ROWS)[r] || "";
+              return (
+                <div className="fh-row" key={r}>
+                  {row.map((c, i) => (
+                    <div key={i} className={`fh-tile fh-tile-${c}`}>{guess[i]}</div>
+                  ))}
+                </div>
+              );
+            })}
           </div>
-          <div className="fh-row">
-            {teaserAnswer.split("").map((ch, i) => (
-              <div key={i} className="fh-tile fh-tile-green">{ch}</div>
-            ))}
+        ) : (
+          <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
+            {/* Today's rotating sample solve: imperfect guess graded by the real
+                engine, then the answer solved all-green (see TEASER_PAIRS).
+                Only ever shown to a player who has not started today's puzzle. */}
+            <div className="fh-row">
+              {teaserGrades.map((c, i) => (
+                <div key={i} className={`fh-tile fh-tile-${c}`}>{teaserGuess[i]}</div>
+              ))}
+            </div>
+            <div className="fh-row">
+              {teaserAnswer.split("").map((ch, i) => (
+                <div key={i} className="fh-tile fh-tile-green">{ch}</div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </button>
     );
   }
