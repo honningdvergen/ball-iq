@@ -190,7 +190,15 @@ const SHOTS = [
       const decoys = ['Toni Kroos', 'İlkay Gündoğan', 'Leon Goretzka', 'Thomas Müller']
         .filter((n) => n.toLowerCase() !== answer.toLowerCase());
       for (const g of [...decoys.slice(0, 4), answer]) {
-        await p.getByPlaceholder('Type a surname…').fill(g);
+        // ⚠️ BY aria-label, NOT BY PLACEHOLDER. This read
+        // getByPlaceholder('Type a surname…') and broke the moment that copy
+        // changed (2026-08-24: the Footle "surname" sweep renamed it to "Type a
+        // player's name…", because Trail answers include mononyms and
+        // native-order names like Son Heung-min). The shot then captured the
+        // WRONG SCREEN and only the screen assertion caught it. Marketing
+        // capture must not be coupled to user-facing wording — the aria-label
+        // is the stable contract, and it is also what a screen reader uses.
+        await p.getByLabel('Your guess').fill(g);
         await p.waitForTimeout(250);
         await p.getByText('Guess', { exact: true }).first().click();
         await p.waitForTimeout(900);
