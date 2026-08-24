@@ -1068,19 +1068,6 @@ export const CLUBS_ES = [
         "en": "Luka Modric"
       },
       {
-        "id": "q_fb15de",
-        "q": "¿Qué club había ganado más títulos de LaLiga en la historia de la competición a fecha de 2024?",
-        "o": [
-          "Barcelona",
-          "Real Madrid",
-          "Atlético de Madrid",
-          "Athletic de Bilbao"
-        ],
-        "a": 1,
-        "hint": "El Real Madrid encabeza el palmarés histórico de LaLiga con 36 títulos en 2024, muy por delante del Barcelona.",
-        "en": "Real Madrid"
-      },
-      {
         "id": "q_20922e",
         "q": "En 2003, en plena era de los Galácticos, el Real Madrid fichó del Manchester United a ¿qué centrocampista inglés?",
         "o": [

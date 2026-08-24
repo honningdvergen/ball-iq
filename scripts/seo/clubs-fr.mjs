@@ -121,7 +121,6 @@ export const CLUBS_FR = [
       { q: 'L’application Ball IQ est-elle en français ?', a: 'Pas encore : cette page est en français, mais l’application est en anglais. Nous mesurons l’intérêt avant de traduire — être arrivé jusqu’ici nous aide déjà à trancher.' },
     ],
     taster: [
-      { id: 'q_74322a', q: 'Dans quelle ville française l’Olympique de Marseille est-il basé ?', o: ['Lyon', 'Marseille', 'Lille', 'Nantes'], a: 1, hint: 'Le club est basé à Marseille, deuxième ville de France et principal port méditerranéen du pays.' },
       { id: 'q_414dc9', q: 'En quelle année l’Olympique de Marseille a-t-il été fondé ?', o: ['1919', '1899', '1932', '1902'], a: 1, hint: 'L’OM a été fondé le 31 août 1899 par René Dufaure de Montmirail, son nom renvoyant aux Jeux olympiques antiques.' },
       { id: 'q_339a0a', q: 'Dans quel stade l’OM joue-t-il ses matchs à domicile ?', o: ['Le Parc des Princes', 'Le Stade de France', 'Le Stade Vélodrome', 'Le Stade Geoffroy-Guichard'], a: 2, en: 'Stade Vélodrome', hint: 'L’OM s’est installé au Stade Vélodrome en 1937 ; il accueille aujourd’hui environ 67 000 spectateurs.' },
       { id: 'q_3f3b82', en: 'White', q: 'De quelle couleur est le maillot domicile traditionnel de l’OM ?', o: ['Rouge', 'Blanc', 'Noir', 'Vert'], a: 1, hint: 'L’OM joue essentiellement en blanc rehaussé de bleu ciel, les couleurs reprises du drapeau de la ville.' },
@@ -143,8 +142,6 @@ export const CLUBS_FR = [
       { id: 'q_2ef736', q: 'Qui était capitaine de l’OM lors du sacre européen de 1993, avant d’entraîner le club vers le titre de champion en 2010 ?', o: ['Didier Deschamps', 'Marcel Desailly', 'Basile Boli', 'Jean-Pierre Papin'], a: 0, hint: 'Didier Deschamps a soulevé le trophée en 1993 comme capitaine, puis est revenu comme entraîneur pour gagner la Ligue 1 en 2010.' },
       { id: 'q_1b34e5', q: 'Le titre de champion 2010 a mis fin à une disette de combien d’années ?', o: ['5', '10', '18', '25'], a: 2, hint: 'Le titre de 2010 sous Didier Deschamps était le premier de l’OM depuis 1992 — dix-huit ans.' },
       { id: 'q_25f5f2', q: 'Quel ailier anglais l’OM a-t-il recruté à Tottenham en 1989 ?', o: ['Chris Waddle', 'Glenn Hoddle', 'Gary Lineker', 'Paul Gascoigne'], a: 0, hint: 'Chris Waddle a rejoint Marseille depuis Tottenham en 1989 pour environ 4,5 M£ et est devenu une idole du Vélodrome.' },
-      { id: 'q_4c483c', q: 'Quel club Éric Cantona a-t-il rejoint en 1988 pour un transfert alors record en France ?', o: ['Marseille', 'Nîmes', 'Leeds United', 'Nice'], a: 0, hint: 'Cantona a signé à Marseille en 1988, avant une série de prêts et de brouilles qui ont précédé son départ de France.' },
-      { id: 'q_b6cd92', q: 'Chelsea a recruté Didier Drogba en 2004 en provenance de quel club ?', o: ['Lyon', 'Monaco', 'Guingamp', 'Marseille'], a: 3, hint: 'Drogba a passé une saison très prolifique à Marseille avant un transfert de 24 M£ à Chelsea en 2004.' },
     ],
     copy: {
       tasterEyebrow: 'Essai gratuit · Sans inscription',
@@ -212,7 +209,6 @@ export const CLUBS_FR = [
       { id: 'q_e02c45', q: 'Quel club espagnol l’OL a-t-il éliminé en huitièmes de finale de la Ligue des champions 2009-10 ?', o: ['Séville', 'le Real Madrid', 'Valence', 'Barcelone'], a: 1, en: 'Real Madrid', hint: 'L’OL a gagné 1-0 à domicile et fait 1-1 au Bernabéu pour se qualifier 2-1 au cumul.' },
       { id: 'q_9d3e6c', q: 'Quel club a mis fin au parcours de l’OL en demi-finale de la Ligue des champions 2010 ?', o: ['l’Inter Milan', 'Barcelone', 'le Bayern Munich', 'Manchester United'], a: 2, en: 'Bayern Munich', hint: 'Le Bayern Munich a gagné 1-0 à l’aller grâce à Arjen Robben, puis s’est imposé 3-0 au retour.' },
       { id: 'q_6e7283', q: 'En quart de finale de la Ligue des champions 2020 à Lisbonne, l’OL a créé l’exploit en battant 3-1 quel club anglais ?', o: ['Chelsea', 'Manchester United', 'Manchester City', 'Tottenham Hotspur'], a: 2, hint: 'L’OL a sorti Manchester City sur un match sec, Moussa Dembélé marquant deux fois après son entrée en jeu.' },
-      { id: 'q_df1465', q: 'Quel club a remporté le plus de titres en Ligue des champions féminine ?', o: ['le VfL Wolfsburg', 'l’Olympique Lyonnais', 'le FC Barcelone', 'le 1. FFC Francfort'], a: 1, en: 'Olympique Lyonnais', hint: 'L’équipe féminine de l’OL a soulevé le trophée européen huit fois, plus que n’importe quel autre club.' },
     ],
     copy: {
       tasterEyebrow: 'Essai gratuit · Sans inscription',
