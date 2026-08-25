@@ -84,6 +84,13 @@ function authErrorCopy(error, fallback) {
 // there continuing as a guest really does work.
 const PROMPT_COPY = {
   online:      { title: 'Sign up to play online', sub: 'Create a free account to challenge friends in real-time 1v1 — and keep your stats and streak.', hardGate: true, back: 'online' },
+  // ⚠️ THE DESTINATION MUST NAME THE ACTION THAT SENT YOU. Home's multiplayer
+  // card says "Invite friends"; tapping it as a guest opened a screen headed
+  // "Sign up to play online", on which the word INVITE appeared nowhere. The
+  // design review flagged it as a dead end, and it reads as one: the thing you
+  // asked for is not mentioned, so it looks like the app changed the subject.
+  // Same gate, same flow — it just answers the question that was asked.
+  invite:      { title: 'Sign up to invite a friend', sub: 'Create a free account to open a room and send your mate the link — takes seconds.', hardGate: true, back: 'online' },
   friends:     { title: 'Sign up to add friends', sub: 'Create a free account to add friends, compare scores, and challenge them.', hardGate: true, back: 'online' },
   leaderboard: { title: 'Sign up for leaderboards', sub: 'Create a free account to climb the leaderboard and save your progress across devices.' },
   save:        { title: 'Save your progress', sub: 'Create a free account so your XP, stats, and streak follow you to any device.' },

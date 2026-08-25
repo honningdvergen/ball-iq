@@ -129,7 +129,11 @@ describe('the pre-boot shell is the screen it imitates', () => {
     // is a visible flicker on the handover — including the apostrophes.
     const correct = shell.match(/var CORRECT="([^"]+)"/);
     const wrong = shell.match(/var WRONG="([^"]+)"/);
-    expect(correct[1]).toBe('Nice — you\'re a natural ⚽');
+    // ⚠️ The ball went when the component gained a real reward beat (a green
+    // tick + accent ink + a pop). The shell is plain JS in index.html and
+    // cannot mount a lucide icon, so it carries the same WORDS — the handover
+    // to React must not visibly change the sentence.
+    expect(correct[1]).toBe('Nice — you’re a natural');
     expect(wrong[1]).toBe(`It's ${sample.o[sample.a]} — the all-time record holder. You'll pick these up fast!`);
     expect(APP, 'the component copy moved — re-sync the shell').toContain(correct[1]);
   });

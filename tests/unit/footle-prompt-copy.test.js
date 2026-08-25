@@ -105,31 +105,54 @@ describe('Footle never promises a surname', () => {
     /<strong>\{surname\}<\/strong>/,
   ];
 
-  it('every in-app prompt uses the SAME sentence', () => {
+  it('every in-app prompt comes from ONE source', () => {
     // ⚠️ THE POINT OF THIS FILE IS CONSISTENCY, NOT A PARTICULAR WORD.
     //
-    // Alex, 2026-08-25, twice: *"Surname of footballer in 6 guesses it should
-    // say"*. So the agreed wording changed, and the guard moved with it — but
-    // the defect it was written for has not changed at all: d60bdee updated
-    // App.jsx, DailyScreen and the DESKTOP hero and missed the MOBILE hero, so
-    // for a day the app said one thing on desktop and the contradicted thing on
-    // every phone. HomeScreen renders DesktopFootleHero at >=1024px and
-    // <FootleHero/> below it, which is why the two drift apart so easily.
+    // The defect it was written for: d60bdee updated App.jsx, DailyScreen and
+    // the DESKTOP hero and missed the MOBILE hero, so for a day the app said
+    // one thing on desktop and the contradicted thing on every phone —
+    // HomeScreen renders DesktopFootleHero at >=1024px and <FootleHero/> below
+    // it, which is why the two drift apart so easily.
     //
-    // A fix applied by grepping is only as good as the grep, so this asserts
-    // the sentence is present in ALL THREE in-app sites rather than trusting
-    // one to carry it.
-    const WANTED = /surname of a footballer in 6 guesses/i;
+    // This used to assert the literal sentence in all three files, which meant
+    // asserting that the duplication existed. The strings now live in
+    // src/lib/modeCopy.js and the render sites import them, so the invariant
+    // got stronger: there is one string, and a grep cannot miss it.
+    const copy = FILES.find((f) => f.path.endsWith('lib/modeCopy.js'));
+    expect(copy, 'src/lib/modeCopy.js not scanned').toBeTruthy();
+    expect(copy.code).toMatch(/FOOTLE_TAGLINE = 'Surname of a footballer in 6 guesses'/);
+    expect(copy.code).toMatch(/FOOTLE_SHORT = 'Surname of a footballer'/);
+
     const REQUIRED = ['components/FootleHero.jsx', 'screens/HomeScreen.jsx',
                       'screens/DailyScreen.jsx'];
-    const missing = REQUIRED.filter(
-      (want) => !FILES.some((f) => f.path.includes(want) && WANTED.test(f.code)));
+    const missing = REQUIRED.filter((want) => !FILES.some(
+      (f) => f.path.includes(want) && /from ['"]\.\.\/lib\/modeCopy\.js['"]/.test(f.code)));
     expect(
       missing,
-      '\n  These render the Footle prompt and must all use the same sentence.\n' +
+      '\n  These render the Footle prompt and must all take it from one source.\n' +
       '  A split between the mobile hero and the desktop one is the exact bug\n' +
       '  this file exists to catch.\n  missing: ' + missing.join(', ') + '\n',
     ).toEqual([]);
+  });
+
+  it('nobody re-hardcodes the sentence next to a component', () => {
+    // The counterweight: importing from modeCopy is only worth something if
+    // nobody quietly pastes the words back in beside a render site.
+    const offenders = [];
+    for (const f of FILES) {
+      if (f.path.endsWith('lib/modeCopy.js')) continue;
+      if (!/(components|screens)\//.test(f.path)) continue;
+      // ⚠️ NO LEADING QUOTE IN THE PATTERN. The first version required one and
+      // therefore missed the case it exists for: a JSX TEXT NODE is bare, so
+      // pasting the sentence straight back into the hero sailed past the guard
+      // when I falsified it. Comments are already stripped by stripComments,
+      // so the explanatory notes that quote this sentence do not trip it.
+      if (/Surname of a footballer/.test(f.code)) {
+        offenders.push(f.path);
+      }
+    }
+    expect(offenders, '\n  Import FOOTLE_TAGLINE / FOOTLE_SHORT instead.\n  ' +
+      offenders.join('\n  ') + '\n').toEqual([]);
   });
 
   it('no site still carries the superseded wording', () => {

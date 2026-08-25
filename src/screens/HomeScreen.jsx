@@ -14,6 +14,7 @@ import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
 import { QB_INDEX } from "../questions-index.js";
 import { FootleHero } from "../components/FootleHero.jsx";
+import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
 import { PLAY_STORE_URL, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
 
@@ -55,7 +56,7 @@ function DesktopFootleHero({ onPlay }) {
         <div className="ffh-copy">
           <div className="ffh-eyebrow">Daily · Footle</div>
           <div className="ffh-title">Footle</div>
-          <div className="ffh-sub">{L} letters · Surname of a footballer in 6 guesses</div>
+          <div className="ffh-sub">{L} letters · {FOOTLE_TAGLINE}</div>
           {done ? (
             <div className="ffh-actions">
               <span className={`ffh-solved${lost ? " is-lost" : ""}`}>
@@ -420,7 +421,9 @@ function HomeScreenImpl({
           // 1.1: "Invite" now creates a room and drops you in the lobby (where
           // the real /join/CODE link lives) instead of sharing a dead link.
           if (!user || isGuest) {
-            openAuthPrompt("online");
+            // "invite", not "online" — the prompt this opens is the only thing
+            // the player sees next, so it has to name what they just asked for.
+            openAuthPrompt("invite");
             return;
           }
           setOnlineAutoCreate?.(true);

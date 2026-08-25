@@ -20,12 +20,13 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
+import { FOOTLE_SHORT } from './lib/modeCopy.js';
 import { APP_NAME, LEVELS, getLevelInfo, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
@@ -7682,9 +7683,20 @@ function OnboardingScreen({ onDone }) {
                   );
                 })}
               </div>
-              <div className="onboard-sample-fb">
+              {/* ⚠️ THIS IS THE THREE SECONDS THAT DECIDE RETENTION, and it
+                  was one line of grey-weight text. 36% of accounts never play a
+                  single game, and this is the last thing they see before the
+                  app opens — the review graded it as the app's weakest reward
+                  moment and it was right.
+                  A correct answer now lands: a green tick, accent ink, and a
+                  short pop. The WRONG branch deliberately gets none of it — it
+                  is a teaching moment, and dressing a miss up as a celebration
+                  is the kind of false cheer that reads as condescending.
+                  The global prefers-reduced-motion killswitch at the top of
+                  app.css neutralises the animation without needing a rule here. */}
+              <div className={`onboard-sample-fb${sampleAnswered === ONBOARD_SAMPLE.a ? " is-correct" : ""}`}>
                 {sampleAnswered === null ? "" : (sampleAnswered === ONBOARD_SAMPLE.a
-                  ? "Nice — you're a natural ⚽"
+                  ? (<><span className="onboard-fb-tick" aria-hidden="true"><Check size={13} strokeWidth={3.5} /></span>Nice — you’re a natural</>)
                   : `It's ${ONBOARD_SAMPLE.o[ONBOARD_SAMPLE.a]} — the all-time record holder. You'll pick these up fast!`)}
               </div>
             </div>
@@ -8370,7 +8382,7 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
               (step 4), which auto-opens for first-timers. Measured with the "?"
               present: header 44px @375, 56px @320 — at or under the pre-"?"
               baseline at both. Re-measure both if this string grows. */}
-          <div className="wd-sub">Guess the name</div>
+          <div className="wd-sub">{FOOTLE_SHORT}</div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>

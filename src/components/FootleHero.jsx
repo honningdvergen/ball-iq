@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStreak, getFootleNumber } from "../lib/wordle.js";
+import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
 
 // FootleHero — Home tab daily-zone card. Morning state shows an empty
 // grid preview + Play CTA; evening state (won/lost) shows the user's
@@ -176,7 +177,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
               The pool holds 33 mononyms (WILLIAN, PELÉ, XAVI…) and "surname" is
               why losing on one felt unfair. Guarded by footle-prompt-copy.test.js. */}
           <div className="fh-sub">
-            Surname of a footballer in 6 guesses
+            {FOOTLE_TAGLINE}
           </div>
           <div className="fh-cta-row">
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>

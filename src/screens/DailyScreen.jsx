@@ -7,6 +7,7 @@ import { getWordleAnswer } from "../lib/wordle.js";
 import { getTrailAnswer } from "../lib/trail.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
+import { FOOTLE_SHORT } from "../lib/modeCopy.js";
 
 // Shared monospace stack for tabular numerals (countdown, scores). Mirrors the
 // inline font used by the mobile markup so the >=1024 desktop layout renders
@@ -662,7 +663,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     const list = [
       {
         key: "footle", name: "Footle", theme: MODE_THEME.footle,
-        sub: "Guess the player",
+        sub: FOOTLE_SHORT,
         subLong: `${footleLen > 0 ? `${footleLen} letters · ` : ""}surname of a footballer in 6 guesses`,
         done: f?.status === "won" || f?.status === "lost",
         won: f?.status === "won",
