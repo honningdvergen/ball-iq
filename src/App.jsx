@@ -2108,7 +2108,12 @@ function isSyntheticTraffic() {
   } catch { return false; }
 }
 
-function loopEvent(name, meta) {
+// Exported so lazy screens can report into the SAME funnel rather than growing
+// their own. OnlineMultiplayer needs it for the rivalry prompt; scouting report
+// #4's item 5 was "instrument the rating funnel — it has ZERO loopEvents", and
+// the way that happens is a feature shipping in a file that could not reach
+// this function.
+export function loopEvent(name, meta) {
   // Gate BOTH sinks. Clarity session replays of a robot are as useless as
   // funnel rows from one, and Clarity's own quota is finite.
   if (isSyntheticTraffic()) return;

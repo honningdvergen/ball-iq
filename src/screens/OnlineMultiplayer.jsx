@@ -8,7 +8,7 @@ import { supabase } from '../supabase.js';
 import { useProfilePhotos } from '../lib/profilePhotos.js';
 import { useAuth } from '../useAuth.jsx';
 import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName, mpSetPlayerReady, mpStartNextRound } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName } from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName, loopEvent} from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 import { ProfilePic } from '../components/ProfilePic.jsx';
 
@@ -954,8 +954,22 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
     return () => { alive = false; };
   }, [myUserId, isAnonUser, opponents]);
 
+  // ⚠️ ABOVE THE EARLY RETURNS. This component returns null three times
+  // (no user, no opponents, nothing offerable); a hook below any of them
+  // changes hook order between renders and React throws.
+  // ⚠️ MEASURE THE ASK, NOT JUST THE OUTCOME. Four friendships exist and we do
+  // not know whether that is because the prompt is never seen, never tapped, or
+  // tapped and failing. Three separate events, so the next read distinguishes
+  // them instead of guessing again.
+  useEffect(() => {
+    if (!offerable.length) return;
+    const rivals = offerable.filter(o => (h2h[o.user_id] || 0) >= 2).length;
+    loopEvent('rival-prompt-shown', { offerable: offerable.length, rivals });
+  }, [offerable, h2h]);
+
   const send = useCallback(async (p) => {
     if (busy.has(p.user_id) || sent.has(p.user_id)) return;
+    loopEvent('rival-add-tapped', { h2h: h2h[p.user_id] || 0 });
     setBusy(prev => new Set(prev).add(p.user_id));
     try {
       const { error } = await supabase
@@ -963,6 +977,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
         .insert({ requester_id: myUserId, addressee_id: p.user_id });
       if (error) throw error;
       haptic('correct');
+      loopEvent('rival-add-sent', { h2h: h2h[p.user_id] || 0 });
       setSent(prev => new Set(prev).add(p.user_id));
     } catch (e) {
       // ⚠️ THE PLAYER USED TO BE TOLD NOTHING. The error reached Sentry and
@@ -977,6 +992,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
       // 24% of signups arriving through room invites). A request that fails
       // invisibly at this exact moment is the worst place to lose one.
       haptic('wrong');
+      loopEvent('rival-add-failed', { h2h: h2h[p.user_id] || 0 });
       try {
         window.dispatchEvent(new CustomEvent('biq:show-toast', {
           detail: "Couldn't send request — try again",
