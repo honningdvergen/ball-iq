@@ -50,7 +50,7 @@ export default function StadiumGame({ onExit }) {
   const league = STADIUM_LEAGUES.find((l) => l.id === leagueId) || null;
   if (!league) {
     return (
-      <div style={{ minHeight: "100dvh", padding: "16px 16px 32px", maxWidth: 560, margin: "0 auto" }}>
+      <div style={{ minHeight: "100dvh", padding: "16px 0 32px", maxWidth: 560, margin: "0 auto" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
           <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -212,7 +212,7 @@ function StadiumBoard({ league, onExit }) {
   };
 
   return (
-    <div style={{ minHeight: "100dvh", padding: "16px 16px 32px", paddingBottom: 32 + kbInset, maxWidth: 560, margin: "0 auto" }}>
+    <div style={{ minHeight: "100dvh", padding: "16px 0 32px", paddingBottom: 32 + kbInset, maxWidth: 560, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
         <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
         <div style={{ flex: 1, minWidth: 0 }}>

@@ -195,7 +195,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
     // condition, so this is a direct-navigation fallback rather than a state
     // a player reaches by tapping.
     return (
-      <div style={{ padding: 20 }}>
+      <div style={{ padding: "20px 0" }}>
         <button onClick={onExit} style={{ background: 'none', border: 'none', color: 'var(--t2)', cursor: 'pointer' }}>
           <ArrowLeft size={20} /> Back
         </button>
@@ -299,8 +299,12 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
 
   return (
     <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px 6px' }}>
-        <button onClick={onExit} aria-label="Back" className="hit44" style={{ background: 'none', border: 'none', color: 'var(--t2)', cursor: 'pointer', padding: 4, display: 'flex' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 0 6px' }}>
+        {/* ⚠️ .back-btn, not a bare glyph. The touch target was already legal
+            (hit44 supplies 44pt via ::after) — the defect was that this was
+            the only back control in the app WITHOUT the chromed well, so the
+            product shipped two different back buttons. */}
+        <button onClick={onExit} aria-label="Back" className="back-btn">
           <ArrowLeft size={22} />
         </button>
         <div style={{ flex: 1 }}>
@@ -346,7 +350,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           class filter — see reference_wikidata_traps. */}
       {won && Confetti ? <Confetti /> : null}
       {won && (
-        <div style={{ margin: '4px 16px 14px', padding: '14px 16px', borderRadius: 14, background: 'rgba(88,204,2,0.12)', border: '1px solid rgba(88,204,2,0.4)' }}>
+        <div style={{ margin: '4px 0 14px', padding: '14px 16px', borderRadius: 14, background: 'rgba(88,204,2,0.12)', border: '1px solid rgba(88,204,2,0.4)' }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: '#8AE042' }}>Got it — {answer.name}</div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
             {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
@@ -385,7 +389,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         /* Deliberately NOT the green win panel. The player did not solve it, and
            dressing a give-up as a success is the kind of dishonest flourish that
            makes the win itself worth less. Neutral surface, same information. */
-        <div style={{ margin: '4px 16px 14px', padding: '14px 16px', borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)' }}>
+        <div style={{ margin: '4px 0 14px', padding: '14px 16px', borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)' }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--t1)' }}>It was {answer.name}</div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
             {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}

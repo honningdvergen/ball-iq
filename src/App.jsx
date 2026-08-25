@@ -712,7 +712,16 @@ const CAT_LABELS = {
   PL:"Premier League", LaLiga:"La Liga", Bundesliga:"Bundesliga",
   SerieA:"Serie A", Ligue1:"Ligue 1", SuperLig:"Süper Lig", Primeira:"Primeira Liga",
   Managers:"Managers", Records:"Records & Icons",
-  Legends:"Legends & History", Transfers:"Transfers"
+  Legends:"Legends & History", Transfers:"Transfers",
+  // ⚠️ DISPLAY LABEL ONLY — DO NOT RENAME THE `cat` VALUE ITSELF. Club-quiz
+  // questions are tagged cat:"ClubQuiz" (see the club-quiz session builder),
+  // and .q-tag uppercases whatever it is given, so the chip above every
+  // club-quiz question read "CLUBQUIZ" — a raw internal token shipped as UI
+  // copy on the most-played long-tail mode. The same string is also the KEY
+  // that catStats aggregates per-category accuracy under, so changing the
+  // literal would silently orphan every club-quiz stat a player has already
+  // accumulated. Fix the label, never the key.
+  ClubQuiz:"Club Quiz", LeagueQuiz:"League Quiz"
 };
 const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Ligue1","Transfers","Managers","Records","Legends"];
 
@@ -5790,7 +5799,10 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
       <div className="rc">
         <div className="rc-icon">{emoji}</div>
         <div className="rc-title">{title}</div>
-        <div className="score-big"><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:30,color:"var(--t2)"}}>/{total}</span></div>
+        {/* The accent is the app's "this went well" signal, so it is earned
+            rather than automatic — 1/7 in celebration green misreads the
+            moment and devalues green everywhere else. */}
+        <div className={`score-big${total > 0 && score / total >= 0.7 ? " is-strong" : ""}`}><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:30,color:"var(--t2)"}}>/{total}</span></div>
       </div>
 
       {isPerfect && total >= 10 && <div className="new-best">🎯 Perfect round — no lies slipped past!</div>}
@@ -10590,6 +10602,11 @@ function AppInner() {
         if (webPushPermission() !== 'default') return bail(`perm-${webPushPermission()}`);
         const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
         if (asks >= 2) return bail("asks-exhausted");
+        // Same rule as the native path — see the note there. Bails are already
+        // instrumented, so this one is measurable rather than invisible.
+        let webPlays = 0;
+        try { webPlays = JSON.parse(localStorage.getItem('biq_stats') || '{}')?.gamesPlayed || 0; } catch {}
+        if (webPlays < 2) return bail("too-early");
         localStorage.setItem('biq_notif_asks', String(asks + 1));
         if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
         notifTimerRef.current = setTimeout(() => { loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
@@ -10600,6 +10617,21 @@ function AppInner() {
       if (localStorage.getItem('biq_notif_enabled') === '1') return false;
       const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
       if (asks >= 2) return false;
+      // ⚠️ NEVER ON A PLAYER'S FIRST RESULT SCREEN.
+      // The 7s hold below fixed the sheet COVERING the payoff. It did not fix
+      // asking too early: on a clean install the very first thing a new player
+      // finishes is also the first time they are asked to accept daily
+      // notifications — before the app has shown them anything worth being
+      // reminded about. That is the ask most likely to be refused, and iOS
+      // gives you exactly one native permission prompt, so a "no" here is
+      // permanent. `biq_notif_asks` caps us at 2 tries; this makes sure
+      // neither of them is spent on the worst possible moment.
+      // Read from the same persisted stats the rest of the app uses, so the
+      // gate survives a reload and cannot be reset by remounting.
+      let playsSoFar = 0;
+      try { playsSoFar = JSON.parse(localStorage.getItem('biq_stats') || '{}')?.gamesPlayed || 0; } catch {}
+      if (playsSoFar < 2) return false;
+
       const perm = await getNotifPermission();
       if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return false;
       localStorage.setItem('biq_notif_asks', String(asks + 1));

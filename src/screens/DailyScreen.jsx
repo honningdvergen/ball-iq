@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { ClipboardList, Route, Search } from "lucide-react";
+import { ClipboardList, Route, UserRoundSearch } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { Confetti, haptic } from "../App.jsx";
 import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
@@ -73,7 +73,10 @@ function ModeGlyph({ mode, size = 22 }) {
   }
   if (mode === "daily7") return <ClipboardList size={size} strokeWidth={2} />;
   if (mode === "trail") return <Route size={size} strokeWidth={2} />;
-  return <Search size={size} strokeWidth={2} />;
+  // ⚠️ Must match Home's More Modes grid. `Search` was both this glyph AND
+  // the icon inside Mystery's own search field, so the mode was identified
+  // by the same mark as one of its controls.
+  return <UserRoundSearch size={size} strokeWidth={2} />;
 }
 
 // Recent-days column width. Four modes have to share the row that two used to
@@ -159,13 +162,21 @@ const MODE_THEME = {
     btnBg: "rgba(78,168,222,0.14)", btnBd: "1px solid rgba(78,168,222,0.42)",
     chipBg: "rgba(78,168,222,0.1)", resBd: "1.5px solid rgba(78,168,222,0.5)",
   },
+  // ⚠️ MYSTERY WAS THE ONE MODE WITH NO COLOUR — greys and whites, sitting in a
+  // row beside Footle's green, Daily 7's amber and Trail's blue. Next to three
+  // tinted cards with tinted buttons, a neutral card with a neutral ghost
+  // button does not read as "different", it reads as DISABLED — on a mode the
+  // app is actively trying to get discovered, carrying a NEW badge on Home.
+  // Violet because nothing else in the app uses it, so it extends the existing
+  // per-mode language rather than colliding with a mode already spoken for.
+  // #B9A5FF on --s1 measures 8.87:1.
   mystery: {
-    fg: "var(--t1)", head: "var(--t2)",
-    card: "linear-gradient(120deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01) 55%,var(--s1))",
-    bd: "1px solid var(--border2)",
-    iconBg: "rgba(255,255,255,0.05)", iconBd: "1px solid var(--border2)",
-    btnBg: "rgba(255,255,255,0.06)", btnBd: "1px solid rgba(255,255,255,0.18)",
-    chipBg: "rgba(255,255,255,0.06)", resBd: "1.5px solid rgba(255,255,255,0.22)",
+    fg: "#B9A5FF", head: "#B9A5FF",
+    card: "linear-gradient(120deg,rgba(139,108,240,0.13),rgba(139,108,240,0.03) 55%,var(--s1))",
+    bd: "1px solid rgba(139,108,240,0.24)",
+    iconBg: "rgba(139,108,240,0.15)", iconBd: "1px solid rgba(139,108,240,0.32)",
+    btnBg: "rgba(139,108,240,0.16)", btnBd: "1px solid rgba(139,108,240,0.44)",
+    chipBg: "rgba(139,108,240,0.11)", resBd: "1.5px solid rgba(139,108,240,0.5)",
   },
 };
 

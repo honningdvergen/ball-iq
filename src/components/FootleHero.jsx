@@ -152,7 +152,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
               and it read as a fragment of a game board; one tile beside plain
               type is the version that works.) */}
           <div className="fh-title">
-            <span className="fh-tile fh-tile-green fh-title-f" aria-hidden="true">F</span>ootle
+            <span className="fh-tile fh-tile-green fh-title-f" aria-hidden="true">F</span><span className="fh-title-rest">ootle</span>
           </div>
           {/* Kept to TWO lines, deliberately. The tile grid takes the right-hand
               column, so this text has roughly half the card's width — every

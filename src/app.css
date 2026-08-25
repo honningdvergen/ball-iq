@@ -556,7 +556,13 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .cat-scroll-wrap::-webkit-scrollbar{display:none;}
 .cat-scroll-inner{display:flex;gap:6px;padding-bottom:2px;}
 .mode-list{display:flex;flex-direction:column;gap:8px;}
-.mode-item{background:var(--s1);border:none;border-radius:var(--r);padding:15px 16px;cursor:pointer;transition:background 0.18s,transform 0.12s;display:flex;align-items:center;gap:13px;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;color:var(--text);font-family:inherit;}
+/* ⚠️ text-align:left IS LOAD-BEARING. .mode-item is a <button>, and the UA
+   stylesheet centres button text — so every club and league row centred its
+   name between a left-aligned badge and a right-aligned arrow. A column of
+   names that starts at a different x on every row cannot be scanned, which is
+   the entire job of a 33-item picker. Stadiums' own rows already set this
+   inline; this brings the shared component in line. */
+.mode-item{text-align:left;background:var(--s1);border:none;border-radius:var(--r);padding:15px 16px;cursor:pointer;transition:background 0.18s,transform 0.12s;display:flex;align-items:center;gap:13px;box-shadow:0 2px 12px rgba(0,0,0,0.35);touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;color:var(--text);font-family:inherit;}
 @media (hover: hover) { .mode-item:hover{border-color:var(--border2);background:var(--s2);transform:translateX(2px);} }
 /* 1.2 web: desktop hover feedback on the large card CTAs (mobile-first, so they
    only animated on :active before — felt dead under a mouse). */
@@ -755,7 +761,12 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .rc-title{animation:sIn 0.4s cubic-bezier(0.22,1,0.36,1) 0.05s both;}
 .rc-title{font-size:24px;font-weight:800;letter-spacing:-0.4px;margin-bottom:4px;}
 .rc-sub{font-size:13px;color:var(--t2);}
-.score-big{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-variant-numeric:tabular-nums;font-size:60px;font-weight:700;color:var(--accent);line-height:1;margin:12px 0 2px;letter-spacing:-0.02em;}
+/* ⚠️ EVERY SCORE WAS CELEBRATION GREEN, INCLUDING 1/7. The accent is the app's
+   "this went well" signal — spending it on a bad round both misreads the moment
+   and devalues green everywhere else it appears. Neutral by default; the accent
+   is earned back at 70%+ (.is-strong, set at the call site). */
+.score-big{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-variant-numeric:tabular-nums;font-size:60px;font-weight:700;color:var(--text);line-height:1;margin:12px 0 2px;letter-spacing:-0.02em;}
+.score-big.is-strong{color:var(--accent);}
 .score-pct{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);}
 .s-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px;}
 .sbox{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px 10px;text-align:center;animation:sboxIn 0.4s cubic-bezier(0.22,1,0.36,1) both;}
@@ -1330,7 +1341,15 @@ button.friends-lb-row:hover{background:var(--s3);}
 .badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
 .badge-tile{background:var(--s1);border:none;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,0.28);contain:layout paint style;-webkit-appearance:none;appearance:none;color:inherit;-webkit-tap-highlight-color:transparent;transition:transform 0.12s, box-shadow 0.12s;}
 .badge-tile.earned{border-color:var(--accent-b);background:var(--accent-dim);}
-.badge-tile.locked{opacity:0.4;}
+/* ⚠️ LOCKED BADGES WERE DIMMED TWICE. The icon already carries its own
+   grayscale(1) opacity(0.35) inline (ProfileScreen), and this put the whole
+   tile behind a further 0.4 — so the LABEL composited to roughly 14% and
+   measured 1.71:1, a hard WCAG AA failure on twelve tiles whose entire job is
+   telling you what there is to earn. A badge you cannot read motivates nobody.
+   The icon keeps its own treatment; the tile no longer veils the text, and the
+   label drops to --t3 so "locked" still reads as a state (4.91:1 on --s1). */
+.badge-tile.locked{opacity:1;}
+.badge-tile.locked .badge-name{color:var(--t3);}
 /* Phase 6a Item 4: inline detail card below the badges grid. */
 .badge-detail-card{display:flex;align-items:center;gap:14px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:12px;}
 .bd-icon{font-size:36px;line-height:1;flex-shrink:0;}
@@ -1807,7 +1826,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 }
 .wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
 .wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0A0A0A;}
-.wd-tile.wd-grey{background:var(--s2);border-color:var(--s2);color:var(--text);}
+/* ⚠️ 1.08:1 AGAINST THE PAGE. --s2 (#14161E) is all but the page colour, so a
+   letter ruled OUT looked the same as one never guessed — in the mode whose
+   whole feedback language is three tile states. Home's hero has always used a
+   visible slate for this same state; the board now agrees with it.
+   Deliberately not recoloured under html.biq-cb: absent is absent in both
+   palettes, and only green/amber are ambiguous to the players that serves. */
+.wd-tile.wd-grey{background:#2B303B;border-color:#2B303B;color:var(--text);}
 .wd-flip{animation:wdFlip 600ms ease forwards;animation-fill-mode:both;}
 @keyframes wdFlip{
   0%{transform:rotateX(0deg);}
@@ -1969,7 +1994,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    shrank a monogram's letter to 13px inside its box. Hence `.fh-tile.fh-title-f`.
    ⚠️ Colour comes from .fh-tile-green in the markup, never from here, so the F
    flips to orange with the board under html.biq-cb. */
-.fh-title{display:flex;align-items:center;gap:8px;}
+/* ⚠️ THE HERO READ "F ootle". The tile is a 34px square with a ~13px glyph
+   centred in it, so the F carries ~10px of its own side bearing — add an 8px
+   flex gap and the optical space between the F and the "o" was ~18px against
+   the 2-3px between the remaining letters. The word came apart.
+   The gap is closed on the TEXT rather than by shrinking the tile, because the
+   tile has to stay square to match the grid it is quoting. */
+.fh-title{display:flex;align-items:center;gap:0;}
+.fh-title-rest{margin-left:-3px;}
 .fh-tile.fh-title-f{width:34px;height:34px;border-radius:8px;border:none;
   font-size:21px;font-weight:900;letter-spacing:0;flex:0 0 auto;}
 .fh-score{font-size:18px;font-weight:700;line-height:1.1;margin-top:6px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
@@ -1995,7 +2027,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    today's answer length); evening grid columns track today's actual answer
    length (4-8). Tile size matched D1 mockup proportions — 13×13 with 3px
    gaps — so the squares carry the visual weight the smaller tiles lacked. */
-.fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:5px;align-self:center;}
+/* ⚠️ THE STRIP GREW UNTIL THE COPY BROKE. --fh-cols is today's answer length
+   (4-8), and at a fixed 24px an 8-letter day came to 227px of the card's ~330,
+   leaving the subtitle about 90px — where it collapsed into five ragged lines
+   and the hero looked broken, but only on long-answer days, which is why it
+   survived review.
+   The tile now shrinks so the STRIP is capped at ~165px instead. A 5-letter
+   day still resolves to 24px, so the common case is byte-identical. */
+.fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:5px;align-self:center;
+  --fh-tile:min(24px, calc((165px - (var(--fh-cols,5) - 1) * 5px) / var(--fh-cols,5)));}
 /* --fh-tile scales with answer length (set inline by FootleHero): long
    surnames (7-8+ letters) shrink the tiles so the grid never collides with
    the "Solved in N guesses" text column (Alex device catch). */
