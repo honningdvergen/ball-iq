@@ -238,8 +238,18 @@ function HomeScreenImpl({
           // Easter egg: ~1 in 5 evenings, swap in the "Good ebening" football-
           // commentary pun. Seeded on the calendar date so it stays put through
           // the whole evening (no flicker between renders) but varies day to day.
+          // ⚠️ NEVER UNDER AUTOMATION. The store-screenshot run caught this
+          // egg on a 1-in-5 evening and framed "Good ebening, Alex" as the
+          // headline of the App Store home shot — where a football-commentary
+          // pun stops being a joke and reads as a typo, permanently, to
+          // everyone deciding whether to download. Same navigator.webdriver
+          // gate the analytics suppression uses: a robot does not get the
+          // joke, and captures become deterministic instead of 4-in-5.
+          const automated = (() => {
+            try { return !!navigator.webdriver; } catch { return false; }
+          })();
           const daySeed = now.getFullYear() * 372 + (now.getMonth() + 1) * 31 + now.getDate();
-          return (daySeed % 5 === 0) ? "Good ebening" : "Good evening";
+          return (!automated && daySeed % 5 === 0) ? "Good ebening" : "Good evening";
         })();
         const greeting = homeGreetingBase + ((homeAuthLoading || homeDisplayName) ? "," : "");
         const ws = readWordleTodayStatus();
