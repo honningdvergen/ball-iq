@@ -4199,7 +4199,35 @@ editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
       which dailies deliberately do not feed (their `score` is attempts-used,
       lower-is-better — adding it would rank the worst players top). Sorting
       by XP instead would include daily players honestly.
-- [ ] Remaining minors from the same pass: m5 sign-out deletes push tokens for
-      every device on a platform; m6 blind `onboarded_at` writes; m7
-      greeting/countdown drift; m8 dead CSS; m9 "Report a problem" clipped by
-      the sticky Next button. Plus unconfirmed U1-U5.
+- [x] m5 sign-out deleted push tokens for EVERY device on the platform —
+      FIXED 0239565, scoped to this device's token. Safe because sign-in
+      re-homes a token (verified against the deployed register_device_token).
+- [x] m6 blind `onboarded_at` writes — FIXED 0239565. It was TWO sites, both
+      using `.then(() => {})`.
+- [x] MP add-friend failed silently to the player (found by the twin sweep, not
+      on the original list) — FIXED 0239565. Highest-intent add-friend moment in
+      the app and the friend loop is the weak number.
+- [ ] Remaining minors: m7 greeting/countdown drift; m8 dead CSS; m9 "Report a
+      problem" clipped by the sticky Next button. Plus unconfirmed U1-U5.
+
+## Twin sweep (2026-08-25) — second implementations
+Method: enumerate every Supabase call site, group by table+operation, inspect
+the ones living in more than one file. 100 sites, 10 cross-file twins.
+- [x] Guard landed: tests/unit/supabase-errors-checked.test.js — every write
+      must open {data, error}; includes a floor assertion so a broken scanner
+      fails loudly instead of reporting zero.
+- [x] Verified CLEAN (recorded so nobody re-audits them): the four
+      upsert_daily_* RPCs (App.jsx vs useAuth.jsx back-sync) both check error;
+      notifications read-flag writes are deliberately best-effort.
+- [ ] `.biq-nav` active state hardcodes #58CC02 twice instead of var(--accent).
+      Same colour today, so it is drift not a bug — fold into the next CSS pass.
+- [ ] `.home-stat-chip-desktop-only` has NO renderer: three rules across base,
+      desktop reflow and the standalone mirror for an element no JSX produces.
+      Concrete instance of m8.
+- [ ] The two `notifications.update({read:true})` catches cannot fire (a query
+      builder resolves on error). Behaviour is correct either way — the comment
+      claims a mechanism that does not exist. Tidy, do not change behaviour.
+- [ ] NEXT AXIS: the twins that hurt today were component-level, not table-level
+      (App.jsx vs ProfileScreen, component vs pre-boot shell, mobile vs desktop
+      results). Sweep duplicated USER-FACING COPY and duplicated localStorage
+      key writers the same way.
