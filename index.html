@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0A0A0A" />
+    <!-- ⚠️ Without this iOS renders the LIGHT system keyboard over a pure-black
+         app — seen on the Mystery search on device. It also governs form
+         controls, scrollbars and the selection UI. Ball IQ has been dark-only
+         since the light theme was removed (2026-07-15), so there is nothing to
+         negotiate. Declared in the head as well as in CSS so it applies to the
+         pre-boot shell, before app.css has loaded. -->
+    <meta name="color-scheme" content="dark" />
     <meta name="robots" content="max-image-preview:large" />
     <!-- Warm the Supabase TLS connection early — the auth/session fetch fires on boot. -->
     <link rel="preconnect" href="https://blcisypmngimqkwxrrdm.supabase.co" crossorigin />

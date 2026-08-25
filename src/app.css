@@ -56,6 +56,9 @@
 @keyframes biqSpin{to{transform:rotate(360deg);}}
 
 /* ── DARK THEME (default) ── */
+/* Dark-only app: tell the UA so the system keyboard, form controls,
+   scrollbars and selection UI come back dark. See index.html. */
+:root{color-scheme:dark;}
 :root{
   /* APP_NAME Dark — Option A: True neutral dark, Duolingo-proven accent */
   --bg:#0A0A0A;          /* neutral near-black — unified with web (was #09131C bluish); app-wide re-skin 2026-07 */
