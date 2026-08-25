@@ -4177,3 +4177,29 @@ editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
       network-dependent services on the runner), NOT the env-var class. Widen
       the console-error filter for CI or stub network calls; then the strict
       flip. Local full run remains 405/407.
+
+## Senior-debugger pass (2026-08-25) — moderates
+- [x] M1 Mystery rolled over at UTC midnight while its save key used the local
+      date. FIXED a84d4c0. Every zone diverged (not just the Americas as the
+      report said); UTC+12 and up were served YESTERDAY's puzzle all day, 189
+      of 400 days sampled. Midday elsewhere unchanged — the archive does not
+      move, only the rollover moment.
+- [x] M2 Daily-only players were invisible: 8 prod accounts with 20+ solved
+      puzzles read games_played = 0, which hid the friend stat grid, pinned
+      them last on the leaderboard, and made the notification ask unreachable.
+      FIXED a84d4c0 — all four daily modes now count.
+- [x] M3 respondFriendRequest bare-awaited a query builder (resolves on error),
+      so a failed accept showed "✓ Friend added" and dropped the request.
+      FIXED a84d4c0.
+- [ ] M2 residue — ALEX'S CALL: the 8 existing accounts start counting from
+      their next daily; their historical 20+ needs a one-time prod write
+      (games_played / correct_answers backfilled from `scores`). Not done —
+      prod writes are yours to approve.
+- [ ] M2 residue — PRODUCT CALL: the friends leaderboard sorts on total_score,
+      which dailies deliberately do not feed (their `score` is attempts-used,
+      lower-is-better — adding it would rank the worst players top). Sorting
+      by XP instead would include daily players honestly.
+- [ ] Remaining minors from the same pass: m5 sign-out deletes push tokens for
+      every device on a platform; m6 blind `onboarded_at` writes; m7
+      greeting/countdown drift; m8 dead CSS; m9 "Report a problem" clipped by
+      the sticky Next button. Plus unconfirmed U1-U5.
