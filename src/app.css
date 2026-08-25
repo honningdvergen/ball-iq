@@ -1157,12 +1157,23 @@ html.is-android .tab-bar{ bottom:56px; }
      ~86% of the bar height, ours filled 71% (6px + 2px at each end of a
      56px bar left only 40px). Now 48px, i.e. 86%. */
   position:absolute;left:0;top:4px;bottom:4px;width:25%;
-  /* Alex, after seeing it move: "it is moving a bit too fast and not
-     dynamic". .34s with an ease-out settles politely; it does not travel.
-     Slower, and on a curve that overshoots slightly before resting — the
-     same spring family already used on .tab-item's press transform, so the
-     bar keeps one motion vocabulary rather than two. */
-  transition:transform .52s cubic-bezier(0.34,1.32,0.52,1);
+  /* ⚠️ TWO OPPOSITE COMPLAINTS, AND THE SECOND ONE WINS.
+     It was first slowed to .52s because Alex said "it is moving a bit too
+     fast and not dynamic" — true of a single, unhurried tap. Then, on device:
+     "tab changes are not really responsive at all… especially if you tap 2
+     tabs quite close to each other, or you tap several times in a short
+     period."
+     Both are the same number. The CONTENT switches in under a millisecond
+     (measured: handler 0.5-0.9ms) — it is only this indicator that took half
+     a second to arrive, and a tap landing before it settles restarts the
+     transition from wherever the pill currently is. Spam the bar and it is
+     permanently mid-flight, which reads as the whole app lagging.
+     The overshoot made it worse: an interrupted transition is travelling PAST
+     its target when it gets redirected.
+     .26s keeps the motion — it still travels, it still eases past slightly —
+     and arrives before a second tap can land. Responsiveness beats character
+     when they collide; that is the standing rule here. */
+  transition:transform .26s cubic-bezier(0.34,1.22,0.5,1);
   pointer-events:none;
 }
 .tab-pill i{
