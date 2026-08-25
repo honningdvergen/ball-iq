@@ -63,10 +63,16 @@ describe('design review — tier 2', () => {
     // that the grid is neutral by default — nine green icons made it nine
     // competing accents — with an iconColor opt-in "when a tile has earned a
     // colour of its own". Trail and Mystery own theirs from Daily's MODE_THEME.
-    expect(HOME).toMatch(/key:"trail", Icon: Route, iconColor: "#7CC3F0"/);
-    expect(HOME).toMatch(/iconColor: "#B9A5FF"/);
-    const tints = HOME.match(/iconColor: "#/g) || [];
+    // ⚠️ Asserts the TOKEN, not a literal — the accent set moved to
+    // src/lib/accents.js, and a test that still pinned "#7CC3F0" here would be
+    // pinning the copy-paste that module exists to stop.
+    expect(HOME).toMatch(/key:"trail", Icon: Route, iconColor: MODE_ACCENT\.trail/);
+    expect(HOME).toMatch(/iconColor: MODE_ACCENT\.mystery/);
+    const tints = HOME.match(/iconColor: /g) || [];
     expect(tints, 'the long tail must stay quiet').toHaveLength(2);
+    // And nobody re-types a mode colour beside a component.
+    expect(HOME, 'import from lib/accents.js instead of pasting a hex')
+      .not.toMatch(/iconColor: "#/);
   });
 });
 

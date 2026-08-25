@@ -8,6 +8,7 @@ import { getTrailAnswer } from "../lib/trail.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { FOOTLE_SHORT } from "../lib/modeCopy.js";
+import { MODE_ACCENT } from "../lib/accents.js";
 
 // Shared monospace stack for tabular numerals (countdown, scores). Mirrors the
 // inline font used by the mobile markup so the >=1024 desktop layout renders
@@ -140,7 +141,7 @@ function ReplayCell({ w, theme, label, onTap }) {
 // of it as the quietest of the four.
 const MODE_THEME = {
   footle: {
-    fg: "#8AE042", head: "#8AE042",
+    fg: MODE_ACCENT.footle, head: MODE_ACCENT.footle,
     card: "linear-gradient(120deg,rgba(88,204,2,0.13),rgba(88,204,2,0.02) 55%,var(--s1))",
     bd: "1px solid rgba(88,204,2,0.22)",
     iconBg: "rgba(88,204,2,0.14)", iconBd: "1px solid rgba(88,204,2,0.3)",
@@ -148,7 +149,7 @@ const MODE_THEME = {
     chipBg: "rgba(88,204,2,0.1)", resBd: "1.5px solid rgba(88,204,2,0.5)",
   },
   daily7: {
-    fg: "#FFC107", head: "#FFC107",
+    fg: MODE_ACCENT.daily7, head: MODE_ACCENT.daily7,
     card: "linear-gradient(120deg,rgba(255,170,0,0.12),rgba(255,193,7,0.03) 55%,var(--s1))",
     bd: "1px solid rgba(255,193,7,0.22)",
     iconBg: "rgba(255,170,0,0.14)", iconBd: "1px solid rgba(255,193,7,0.3)",
@@ -156,7 +157,7 @@ const MODE_THEME = {
     chipBg: "rgba(255,193,7,0.1)", resBd: "1.5px solid rgba(255,193,7,0.4)",
   },
   trail: {
-    fg: "#7CC3F0", head: "#7CC3F0",
+    fg: MODE_ACCENT.trail, head: MODE_ACCENT.trail,
     card: "linear-gradient(120deg,rgba(78,168,222,0.12),rgba(78,168,222,0.03) 55%,var(--s1))",
     bd: "1px solid rgba(78,168,222,0.22)",
     iconBg: "rgba(78,168,222,0.14)", iconBd: "1px solid rgba(78,168,222,0.3)",
@@ -172,7 +173,7 @@ const MODE_THEME = {
   // per-mode language rather than colliding with a mode already spoken for.
   // #B9A5FF on --s1 measures 8.87:1.
   mystery: {
-    fg: "#B9A5FF", head: "#B9A5FF",
+    fg: MODE_ACCENT.mystery, head: MODE_ACCENT.mystery,
     card: "linear-gradient(120deg,rgba(139,108,240,0.13),rgba(139,108,240,0.03) 55%,var(--s1))",
     bd: "1px solid rgba(139,108,240,0.24)",
     iconBg: "rgba(139,108,240,0.15)", iconBd: "1px solid rgba(139,108,240,0.32)",

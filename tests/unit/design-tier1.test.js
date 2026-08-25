@@ -31,6 +31,7 @@ const HOME = read('../../src/screens/HomeScreen.jsx');
 const DAILY = read('../../src/screens/DailyScreen.jsx');
 const HERO = read('../../src/components/FootleHero.jsx');
 const MYSTERY = read('../../src/screens/MysteryPlayer.jsx');
+const ACCENTS = read('../../src/lib/accents.js');
 const STADIUM = read('../../src/screens/StadiumGame.jsx');
 
 /** sRGB relative luminance → WCAG contrast ratio. */
@@ -104,10 +105,15 @@ describe('design review — tier 1', () => {
   it('Mystery Player has a mode colour, like every other daily', () => {
     // It was the one neutral card in a row of tinted ones — which reads as
     // disabled, not as different.
+    // ⚠️ Asserts the TOKEN, not a literal. This used to pin "#B9A5FF" inline;
+    // the accent set now lives in src/lib/accents.js, so pinning the literal
+    // here would be pinning the duplication that file removed.
     const i = DAILY.indexOf('mystery: {');
     const block = DAILY.slice(i, i + 700);
     expect(block).toMatch(/139,108,240/);
-    expect(block).toMatch(/fg: "#B9A5FF"/);
+    expect(block).toMatch(/fg: MODE_ACCENT\.mystery/);
+    expect(ACCENTS, 'the mode accent set must declare mystery')
+      .toMatch(/mystery: '#B9A5FF'/);
     expect(ratio('#B9A5FF', '#0F1117')).toBeGreaterThanOrEqual(4.5);
   });
 
