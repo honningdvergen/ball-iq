@@ -53,7 +53,7 @@ describe('design review — tier 1', () => {
     // An 8px flex gap on top of that put ~18px between the F and the "o"
     // against 2-3px between the rest — the word visibly came apart.
     expect(CSS).toMatch(/\.fh-title\{display:flex;align-items:center;gap:0;\}/);
-    expect(CSS).toMatch(/\.fh-title-rest\{margin-left:-1px;\}/);
+    expect(CSS).toMatch(/\.fh-title-rest\{margin-left:3px;\}/);
     expect(HERO, 'the trailing text must be an element so it can be pulled left')
       .toMatch(/<span className="fh-title-rest">ootle<\/span>/);
   });

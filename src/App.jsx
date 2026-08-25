@@ -7894,10 +7894,10 @@ const HOW_TO_PLAY = {
   // validation (our word list is 400-odd puzzle answers, not a dictionary, so
   // it would reject most real footballers and infuriate people), the claim
   // goes. Any surname you like is a legal probe; only the answer is fixed.
-  wordle: { title:"⚽ Footle", steps:["Guess the name today's footballer goes by — usually a surname, sometimes a one-name legend","Green = right letter, right spot","Yellow = right letter, wrong spot","Grey = not in the name at all","6 guesses, new player at midnight"] },
-  hotstreak: { title:"⚡🔥 Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
-  truefalse: { title:"✅ True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
-  survival: { title:"🔥 Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
+  wordle: { title:"Footle", steps:["Guess the name today's footballer goes by — usually a surname, sometimes a one-name legend","Green = right letter, right spot","Yellow = right letter, wrong spot","Grey = not in the name at all","6 guesses, new player at midnight"] },
+  hotstreak: { title:"Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
+  truefalse: { title:"True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
+  survival: { title:"Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
 };
 
 // Shared hide style so the home-screen tab wrappers reference the same object

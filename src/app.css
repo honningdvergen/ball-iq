@@ -1913,8 +1913,22 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    edges start eating the Q/P keys and keys start touching. This is the limit;
    further tap-accuracy would need taller keys (a design change, vetoed). */
 .wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;margin-inline:-20px;}
-.wd-kb-row{display:flex;justify-content:center;gap:2px;}
-.wd-key{position:relative;flex:1;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
+/* ⚠️ UNIFORM KEY WIDTH, AND THE STAGGER COMES FREE.
+   The three rows hold 10 / 9 / 8 keys and every key was flex:1, so each row
+   divided the SAME width by a different number: row 1 keys measured ~39pt and
+   rows 2-3 ~43pt. A keyboard whose key width changes per row is one your
+   thumbs cannot learn — the muscle memory every player brings from the system
+   keyboard does not transfer, and the design review measured it.
+   Keys now take a fixed 1/10th of the row instead of a share of it. Rows 2 and
+   3 are therefore naturally narrower and `justify-content:center` indents them,
+   which is exactly the stagger a real QWERTY has, with no per-row padding.
+   ⚠️ 44pt WIDTH IS GEOMETRICALLY IMPOSSIBLE HERE and is not the right target:
+   ten keys at 44pt need 440pt on a 402pt screen. Apple's own keyboard keys are
+   ~32pt wide. The touch target is carried by the 48px HEIGHT, which clears the
+   guidance, and by the gap between keys. */
+.wd-keyboard{--kb-gap:6px;--kb-key:calc((100% - 9 * var(--kb-gap)) / 10);}
+.wd-kb-row{display:flex;justify-content:center;gap:var(--kb-gap);}
+.wd-key{position:relative;flex:0 0 var(--kb-key,auto);min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
 /* Big-thumbs, round three (2026-08-21, playtester with large hands). Width is
    ARITHMETIC now — ten keys across a 375-402pt screen at full bleed is 35.7-38.4pt
    each, under Apple's 44pt minimum, and no CSS recovers that. What was still on
@@ -1927,7 +1941,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    key. Effective target 38.4x48 -> 40.4x54, ~12% more area, on every device
    including the ones with no room to grow. Taller keys were considered and
    NOT taken: the SE already overflows (see the short-viewport block below). */
-.wd-key::after{content:"";position:absolute;inset:-3px -1px;border-radius:8px;}
+/* ⚠️ THE HIT AREA MUST TILE — NO DEAD PIXELS BETWEEN KEYS.
+   Alex, 2026-08-25, looking at the new layout: *"that keyboard does not look
+   optimized to avoid mis-taps now"*. The visual gap had gone from 2px to 6px
+   while this slop stayed at 1px a side, so 4px of every gap was dead: a tap
+   landing there did nothing at all, which is worse than hitting the wrong
+   letter because the player cannot tell whether the app registered them.
+   -3px horizontal is exactly half the 6px gap, so adjacent keys' targets meet
+   with nothing between them. The gap stays VISUAL — keys read as separated,
+   thumbs behave as though they are not. Effective target ≈ 41x54pt against a
+   ~35pt visual key, which is how the system keyboard does it too. */
+.wd-key::after{content:"";position:absolute;inset:-3px -3px;border-radius:8px;}
 
 /* ── HIT SLOP ───────────────────────────────────────────────────────────────
    Grows a control's TOUCH area to the 44x44 floor without changing a pixel of
@@ -1956,7 +1980,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   min-width:44px;min-height:44px;width:100%;height:100%;
 }
 .wd-key:active{transform:scale(0.96);}
-.wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
+.wd-key-action{flex:0 0 calc(var(--kb-key, 34px) * 1.6 + var(--kb-gap, 5px) * 0.6);font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
 .wd-key-green{background:#58CC02;color:#0A0A0A;}
 .wd-key-yellow{background:#FFC107;color:#0A0A0A;}
 /* ⚠️ ELIMINATED KEYS MUST RECEDE, AND THESE ADVANCED. Untried keys sit on
@@ -1970,7 +1994,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    clears 4.5:1 on the letter (~6.2:1) so the key stays readable. Deliberately
    NOT recoloured in html.biq-cb — absent is absent in both palettes. */
 .wd-key-grey{background:#101219;color:rgba(255,255,255,0.55);}
-.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
+/* ⚠️ The last accent-filled button on an 8px radius. It is full-width, green
+   and the primary action of the screen — the same role Play, Invite friends
+   and Next fill — so it takes the same pill. #06230C is the app's on-green ink
+   (this carried #0A0A0A, the page colour, which is a different black). */
+.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:8px;background:#58CC02;color:#06230C;border:none;border-radius:999px;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#06230C;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
 
@@ -2040,7 +2068,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    The gap is closed on the TEXT rather than by shrinking the tile, because the
    tile has to stay square to match the grid it is quoting. */
 .fh-title{display:flex;align-items:center;gap:0;}
-.fh-title-rest{margin-left:-1px;}
+.fh-title-rest{margin-left:3px;}
 .fh-tile.fh-title-f{width:34px;height:34px;border-radius:8px;border:none;
   font-size:21px;font-weight:900;letter-spacing:0;flex:0 0 auto;}
 .fh-score{font-size:18px;font-weight:700;line-height:1.1;margin-top:6px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
