@@ -895,6 +895,18 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
   const [offerable, setOfferable] = useState([]);
   const [sent, setSent] = useState(() => new Set());
   const [busy, setBusy] = useState(() => new Set());
+  // ⚠️ THE RELATIONSHIP ALREADY EXISTS; THE DATABASE DOES NOT KNOW.
+  // Measured in prod 2026-08-26: 36 distinct pairings, 32 of them played each
+  // other AGAIN, 18 are five games deep, one pair has played FORTY times — and
+  // the friendships table holds four rows in total. Not four pending, four
+  // rows: almost nobody has ever sent a request.
+  //
+  // This row was the affordance, and it was a generic "Add friend" under the
+  // heading "Good game — keep playing them" — a stranger's button. It says
+  // nothing about the forty games. Leading with the head-to-head turns an
+  // administrative ask into a statement of something the player already knows
+  // is true, at the one moment they care about it.
+  const [h2h, setH2h] = useState({});
 
   useEffect(() => {
     let alive = true;
@@ -911,7 +923,27 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
         if (error) throw error;
         const known = new Set();
         for (const r of data || []) { known.add(r.requester_id); known.add(r.addressee_id); }
-        if (alive) setOfferable(opponents.filter(o => !known.has(o.user_id)));
+        const remaining = opponents.filter(o => !known.has(o.user_id));
+        if (alive) setOfferable(remaining);
+        // How many times have we actually played each of them? Rooms I was in,
+        // intersected with rooms they were in. Cheap, and it is the whole point.
+        if (remaining.length && myUserId) {
+          try {
+            const { data: mine } = await supabase
+              .from('room_players').select('room_id').eq('user_id', myUserId);
+            const myRooms = (mine || []).map(r => r.room_id);
+            if (myRooms.length) {
+              const { data: theirs } = await supabase
+                .from('room_players')
+                .select('user_id, room_id')
+                .in('user_id', remaining.map(o => o.user_id))
+                .in('room_id', myRooms);
+              const counts = {};
+              for (const r of theirs || []) counts[r.user_id] = (counts[r.user_id] || 0) + 1;
+              if (alive) setH2h(counts);
+            }
+          } catch { /* the prompt still works without a number */ }
+        }
       } catch (e) {
         // Never block the results screen on this. A failed lookup means we
         // simply do not offer, rather than offering a button that may 409.
@@ -976,21 +1008,34 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
 
   return (
     <div style={{ marginTop: 14 }}>
+      {/* Rivals first: the person you have played eleven times is a different
+          proposition from someone you just met once, and the list should not
+          bury them in arrival order. */}
       <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase',
                     color: 'var(--t3)', marginBottom: 8 }}>
-        Good game — keep playing them
+        {offerable.some(o => (h2h[o.user_id] || 0) >= 2) ? 'Your rivals' : 'Good game — keep playing them'}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-        {offerable.map(p => {
+        {[...offerable].sort((a, b) => (h2h[b.user_id] || 0) - (h2h[a.user_id] || 0)).map(p => {
           const done = sent.has(p.user_id);
+          const played = h2h[p.user_id] || 0;
+          const rival = played >= 2;
           return (
             <div key={p.user_id} style={{ display: 'flex', alignItems: 'center', gap: 10,
-                   padding: '10px 12px', borderRadius: 11, background: 'var(--s2)',
-                   border: '1px solid var(--border)' }}>
-              <span style={{ width: 26, height: 26, flexShrink: 0 }}><ProfilePic value={p.avatar} name={p.name} /></span>
-              <span style={{ flex: 1, minWidth: 0, fontSize: 14.5, fontWeight: 700, color: 'var(--text)',
-                             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {p.name || 'Player'}
+                   padding: rival ? '12px 12px' : '10px 12px', borderRadius: 11,
+                   background: rival ? 'rgba(88,204,2,0.07)' : 'var(--s2)',
+                   border: `1px solid ${rival ? 'rgba(88,204,2,0.32)' : 'var(--border)'}` }}>
+              <span style={{ width: rival ? 32 : 26, height: rival ? 32 : 26, flexShrink: 0 }}><ProfilePic value={p.avatar} name={p.name} /></span>
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: 'block', fontSize: 14.5, fontWeight: 700, color: 'var(--text)',
+                               overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {p.name || 'Player'}
+                </span>
+                {rival && (
+                  <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--accent)', marginTop: 1 }}>
+                    You&apos;ve played {played} times
+                  </span>
+                )}
               </span>
               <button
                 type="button"
