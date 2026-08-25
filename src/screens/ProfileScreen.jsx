@@ -899,19 +899,23 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
                   <span style={{ fontSize: 11, color: "var(--t3)", marginLeft: 4 }}>{friendXp.toLocaleString()} XP</span>
                 </div>
               </div>
-              <div style={{ width: 84, height: 84, flexShrink: 0 }}>{avatar}</div>
+              <div style={{ width: 84, height: 84, flexShrink: 0, borderRadius: "50%", border: `2.5px solid ${t.accent}`, overflow: "hidden" }}>{avatar}</div>
             </div>
             {played && (
               <>
                 <div style={{ position: "relative", height: 1, background: `${t.accent}33`, margin: "16px 0 14px" }} />
-                <div className="fpc-grid" style={{ position: "relative", marginTop: 0 }}>
+                {/* ⚠️ THE OWNER'S GRID, VERBATIM. Alex: "you see how my friends
+                    card still is not exactly like the one on my profile?" — it
+                    was 3 columns of small numbers against his 2 columns of big
+                    ones, because I kept my own .fpc-* classes instead of the
+                    markup the owner card uses. Same values, same sizes, same
+                    tier colours. Copied rather than approximated. */}
+                <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", rowGap: 12, columnGap: 18 }}>
                   {card.ratings.map(r => (
-                    <div key={r.abbr} className="fpc-row">
-                      <span className="fpc-flag">{r.icon}</span>
-                      <span className="fpc-val" style={{ color: r.answered > 0 ? (r.abbr === strongest ? t.accent : t.text) : "var(--t3)" }}>
-                        {r.answered > 0 ? r.rating : "—"}
-                      </span>
-                      <span className="fpc-abbr">{r.abbr}</span>
+                    <div key={r.abbr} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                      <div style={{ fontSize: 17, width: 22, textAlign: "center", flexShrink: 0, opacity: r.answered > 0 ? 1 : 0.45 }}>{r.icon}</div>
+                      <div style={{ fontSize: 19, fontWeight: 900, color: r.answered > 0 ? t.accent : t.text, opacity: r.answered > 0 ? 1 : 0.4, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.answered > 0 ? r.rating : "—"}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: t.text, opacity: r.answered > 0 ? 0.8 : 0.45, letterSpacing: 0.5 }}>{r.abbr}</div>
                     </div>
                   ))}
                 </div>
