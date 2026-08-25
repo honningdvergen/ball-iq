@@ -863,53 +863,60 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
           }}
         >⋮</button>
       </div>
-      <div className="profile-card">
-        <div className="profile-avatar-wrap">
-          <div className="profile-avatar" style={{cursor:'default'}}>{avatar}</div>
-        </div>
-        <div className="profile-name" style={{cursor:'default'}}>{username}</div>
-        <div className="profile-level-badge"><level.Icon size={14} strokeWidth={2.3} /> {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{friendXp.toLocaleString()} XP</span></div>
-      </div>
-      {/* ⚠️ THE FRIEND PROFILE HAD NO BALL IQ CARD AT ALL. Alex: "i still can
-          not see my friends score card or ball iq rating card when i tap on
-          their profile" — correct, it rendered a bare stat grid and stopped.
-          The card is the reason to open someone's profile: the overall, the
-          tier, and the six league ratings are what make a friend worth
-          comparing yourself to.
-          No new query was needed — the fetch above already selects `stats`,
-          which carries catStats, and computeCard turns that into the same card
-          the owner sees. Same model, same numbers, no second source of truth. */}
+      {/* ⚠️ ONE CARD, AND THE SAME ONE. Alex: "why does the card look like
+          this with 2 sections? and not like on my profile? just use the same
+          card design". Two mistakes, both mine: I built a bespoke card instead
+          of reusing the owner's, and I hardcoded gold when the owner's is
+          themed by CARD_TIERS[tier] — which is why his read green and this read
+          gold for the same PRO tier. Identity is folded in, so the friend
+          profile shows ONE object like yours does, not an identity card with a
+          rating card bolted under it. */}
       {(() => {
         const fCat = friendStats.catStats || {};
         const played = Object.values(fCat).some((c) => (c?.a || 0) > 0);
-        if (!played) return null;   // a card of six dashes is worse than none
         const acc = (totalAnswered > 0 && totalCorrect <= totalAnswered) ? totalCorrect / totalAnswered : 0.4;
         const card = computeCard(fCat, acc);
-        const tier = CARD_TIERS[card.tier] || CARD_TIERS.prospect;
+        const t = CARD_TIERS[card.tier] || CARD_TIERS.prospect;
         const strongest = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating)[0]?.abbr || null;
         return (
-          <div className="pd-card" style={{ marginBottom: 16 }}>
-            <div className="ds-eyebrow" style={{ marginBottom: 6 }}>Ball IQ rating</div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 2 }}>
-              <div style={{ fontSize: 40, fontWeight: 900, color: "var(--gold)", lineHeight: 1, fontFeatureSettings: '"tnum"' }}>{card.overall}</div>
-              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)" }}>{tier.label}</div>
-            </div>
-            {/* ⚠️ ITS OWN CLASSES, NOT .pd-leagues-grid. That one is declared
-                inside @media (min-width: 1024px), so borrowing it gave the
-                phone no grid at all — six ratings stacked in a single column
-                with the number jammed against the abbreviation. Alex: "why is
-                the scorecard broken on my friends profile". Mobile-first here. */}
-            <div className="fpc-grid">
-              {card.ratings.map(r => (
-                <div key={r.abbr} className="fpc-row">
-                  <span className="fpc-flag">{r.icon}</span>
-                  <span className="fpc-val" style={{ color: r.abbr === strongest ? "var(--accent)" : "var(--t1)" }}>
-                    {r.answered > 0 ? r.rating : "—"}
-                  </span>
-                  <span className="fpc-abbr">{r.abbr}</span>
+          <div style={{ position: "relative", overflow: "hidden", background: t.bg, border: `1.5px solid ${t.accent}55`, borderRadius: 20, padding: "20px 20px 18px", boxShadow: "0 8px 28px rgba(0,0,0,0.35)", marginBottom: 16 }}>
+            <div style={{ position: "absolute", top: -50, left: -50, width: 180, height: 180, borderRadius: "50%", background: `radial-gradient(circle, ${t.accent}22 0%, transparent 70%)`, pointerEvents: "none" }} />
+            <div style={{ position: "relative", fontSize: 10, fontWeight: 800, letterSpacing: 2.5, color: t.text, opacity: 0.5, marginBottom: 10 }}>BALL IQ RATING</div>
+            <div style={{ position: "relative", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14 }}>
+              <div style={{ minWidth: 0 }}>
+                {played ? (
+                  <>
+                    <div style={{ fontSize: 52, fontWeight: 900, lineHeight: 0.95, color: t.accent, fontFeatureSettings: '"tnum"' }}>{card.overall}</div>
+                    <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: t.text, opacity: 0.55, marginTop: 4 }}>OVERALL</div>
+                    <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: 0.4, color: t.accent, marginTop: 2 }}>{t.label}</div>
+                  </>
+                ) : (
+                  <div style={{ fontSize: 14, fontWeight: 600, color: t.text, opacity: 0.7, maxWidth: 190 }}>No rating yet — they haven&apos;t played enough.</div>
+                )}
+                <div style={{ fontSize: 20, fontWeight: 900, color: t.text, marginTop: 12, letterSpacing: "-0.02em", overflow: "hidden", textOverflow: "ellipsis" }}>{username}</div>
+                <div className="profile-level-badge" style={{ marginTop: 8 }}>
+                  <level.Icon size={14} strokeWidth={2.3} /> {level.name}
+                  <span style={{ fontSize: 11, color: "var(--t3)", marginLeft: 4 }}>{friendXp.toLocaleString()} XP</span>
                 </div>
-              ))}
+              </div>
+              <div style={{ width: 84, height: 84, flexShrink: 0 }}>{avatar}</div>
             </div>
+            {played && (
+              <>
+                <div style={{ position: "relative", height: 1, background: `${t.accent}33`, margin: "16px 0 14px" }} />
+                <div className="fpc-grid" style={{ position: "relative", marginTop: 0 }}>
+                  {card.ratings.map(r => (
+                    <div key={r.abbr} className="fpc-row">
+                      <span className="fpc-flag">{r.icon}</span>
+                      <span className="fpc-val" style={{ color: r.answered > 0 ? (r.abbr === strongest ? t.accent : t.text) : "var(--t3)" }}>
+                        {r.answered > 0 ? r.rating : "—"}
+                      </span>
+                      <span className="fpc-abbr">{r.abbr}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         );
       })()}
