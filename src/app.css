@@ -2224,10 +2224,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .biq-nav .bn-item svg { flex: 0 0 auto; }
 .biq-nav .bn-item:hover { background: rgba(255,255,255,0.04); color: #E8EAF0; }
 .biq-nav .bn-item[data-active="true"] {
+  /* Was rgba(88,204,2,…) and #58CC02 written out twice. Identical to the token
+     today, which is exactly how the last set of off-token greens got in. */
   background: rgba(88,204,2,0.12);
   color: #fff;
   font-weight: 700;
-  box-shadow: inset 3px 0 0 #58CC02;
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 .biq-nav .bn-dot {
   display: inline-block;
