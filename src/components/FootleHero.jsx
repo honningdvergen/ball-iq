@@ -139,14 +139,21 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
               2026-07-29): the card lives inside a section already headed DAILY
               and its own title says Footle, so the eyebrow spent a line saying
               both words a second time. */}
-          {/* The F is tinted to the grid's green — Alex, 2026-08-25: *"make the
-              F in the Footle green like on the grid, rest of footle just as
-              is"*. Deliberately TYPE and not a tile: a tile at heading size
-              read as a fragment of a game board rather than a wordmark, and a
-              green tile sat directly on this card's green ground next to the
-              green Play pill. One letter ties the heading to the grid beside
-              it without adding another green mass. */}
-          <div className="fh-title"><span className="fh-title-f">F</span>ootle</div>
+          {/* Alex, 2026-08-25: *"the F should have the grid square behind it in
+              green"*. So the F is a real tile, matching the ones in the grid to
+              its right — same green, same dark ink, same rounded square.
+              ⚠️ IT CARRIES .fh-tile-green, NOT A BESPOKE COLOUR. That is the
+              class html.biq-cb overrides, so the F flips to orange with the
+              grid it is quoting. Hard-coding the green here would leave a
+              colour-blind player with a green F beside an orange board — which
+              is the same defect that was found on this card, where the game
+              recoloured and the hero did not.
+              (Earlier attempts made the WHOLE wordmark tiles at heading size
+              and it read as a fragment of a game board; one tile beside plain
+              type is the version that works.) */}
+          <div className="fh-title">
+            <span className="fh-tile fh-tile-green fh-title-f" aria-hidden="true">F</span>ootle
+          </div>
           {/* Kept to TWO lines, deliberately. The tile grid takes the right-hand
               column, so this text has roughly half the card's width — every
               extra word costs a whole line and orphans one word on it. "· daily"
@@ -169,8 +176,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
               The pool holds 33 mononyms (WILLIAN, PELÉ, XAVI…) and "surname" is
               why losing on one felt unfair. Guarded by footle-prompt-copy.test.js. */}
           <div className="fh-sub">
-            The name a footballer goes by<br />
-            6 guesses
+            Surname of a footballer in 6 guesses
           </div>
           <div className="fh-cta-row">
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>

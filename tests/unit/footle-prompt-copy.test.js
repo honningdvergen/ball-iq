@@ -105,40 +105,64 @@ describe('Footle never promises a surname', () => {
     /<strong>\{surname\}<\/strong>/,
   ];
 
-  it('no rendered string promises the answer is a surname', () => {
-    // Mutation check: restoring ANY of the nine fixed strings fails this —
-    // verified by seeding two of them back, in different files.
-    const offenders = [];
-    for (const f of FILES) {
-      if (f.path.endsWith('questions.js')) continue; // bank data, not UI copy
-      for (const [n, line] of f.code.split('\n').entries()) {
-        if (!/surname/i.test(line)) continue;
-        if (ALLOWED.some((re) => re.test(line))) continue;
-        offenders.push(`${f.path}:${n + 1}  ${line.trim().slice(0, 70)}`);
-      }
-    }
+  it('every in-app prompt uses the SAME sentence', () => {
+    // ⚠️ THE POINT OF THIS FILE IS CONSISTENCY, NOT A PARTICULAR WORD.
+    //
+    // Alex, 2026-08-25, twice: *"Surname of footballer in 6 guesses it should
+    // say"*. So the agreed wording changed, and the guard moved with it — but
+    // the defect it was written for has not changed at all: d60bdee updated
+    // App.jsx, DailyScreen and the DESKTOP hero and missed the MOBILE hero, so
+    // for a day the app said one thing on desktop and the contradicted thing on
+    // every phone. HomeScreen renders DesktopFootleHero at >=1024px and
+    // <FootleHero/> below it, which is why the two drift apart so easily.
+    //
+    // A fix applied by grepping is only as good as the grep, so this asserts
+    // the sentence is present in ALL THREE in-app sites rather than trusting
+    // one to carry it.
+    const WANTED = /surname of a footballer in 6 guesses/i;
+    const REQUIRED = ['components/FootleHero.jsx', 'screens/HomeScreen.jsx',
+                      'screens/DailyScreen.jsx'];
+    const missing = REQUIRED.filter(
+      (want) => !FILES.some((f) => f.path.includes(want) && WANTED.test(f.code)));
     expect(
-      offenders,
-      '\n  Footle\'s answer pool holds 33 mononyms (WILLIAN, PELÉ, XAVI…).\n' +
-      '  Calling the answer a "surname" is why losing on one felt unfair.\n' +
-      '  Use "the name a footballer goes by".\n  ' + offenders.join('\n  ') + '\n',
+      missing,
+      '\n  These render the Footle prompt and must all use the same sentence.\n' +
+      '  A split between the mobile hero and the desktop one is the exact bug\n' +
+      '  this file exists to catch.\n  missing: ' + missing.join(', ') + '\n',
     ).toEqual([]);
   });
 
-  it('the agreed wording is actually rendered, in more than one place', () => {
-    // ⚠️ The counterweight. Without this, deleting every description of Footle
-    // would make the test above pass — a green built out of absence. The bug was
-    // a MISSING fix, so the guard has to assert presence too.
-    const hits = FILES.filter((f) => /name a footballer goes by/i.test(f.code))
-      .map((f) => f.path);
+  it('no site still carries the superseded wording', () => {
+    // The other direction: a leftover "the name a footballer goes by" in an app
+    // surface is the same split, just mirrored.
+    const offenders = [];
+    for (const f of FILES) {
+      if (!/(components|screens)\//.test(f.path)) continue; // app UI only
+      for (const [n, line] of f.code.split('\n').entries()) {
+        if (/name a footballer goes by/i.test(line)) {
+          offenders.push(`${f.path}:${n + 1}  ${line.trim().slice(0, 70)}`);
+        }
+      }
+    }
+    expect(offenders, '\n  Superseded wording still rendered:\n  ' +
+      offenders.join('\n  ') + '\n').toEqual([]);
+  });
+
+  it('the FAQ still names the exception, because the prompt no longer does', () => {
+    // ⚠️ LOAD-BEARING NOW. 33 of the 406 answers are single-name players —
+    // PELE, XAVI, RAUL, NEYMAR, WILLIAN, ISCO, PEDRI, ENDRICK and 26 more,
+    // counted from WORDLE_FULL_NAMES entries with an empty first-name prefix,
+    // not from memory. That is roughly one day in twelve on which "surname" is
+    // literally wrong, and losing on a mononym reading as the game cheating is
+    // what got the word removed the first time.
+    // The prompt is short by choice; this line is where the nuance now lives,
+    // so deleting it would leave the claim unqualified anywhere in the app.
+    const app = FILES.find((f) => f.path.endsWith('App.jsx'));
+    expect(app, 'App.jsx not scanned').toBeTruthy();
     expect(
-      hits.length,
-      `expected the agreed wording in several render sites, found: ${hits.join(', ') || 'none'}`,
-    ).toBeGreaterThanOrEqual(3);
-    // The mobile hero is the one that was missed, and the one most users see.
-    expect(
-      hits.some((p) => p.includes('FootleHero')),
-      'components/FootleHero.jsx is the MOBILE hero — the site d60bdee missed.',
+      /usually a surname, sometimes a one-name legend/i.test(app.code),
+      'The FAQ line explaining mononyms is the only place the app qualifies\n' +
+      '  "surname". Keep it, or the prompt overpromises on ~1 day in 12.',
     ).toBe(true);
   });
 });
