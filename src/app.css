@@ -77,6 +77,18 @@
   --red:#FF4B4B;         /* Duolingo red — energetic */
   --red-l:rgba(255,75,75,0.10);
   --gold:#FFC107;        /* amber — matches web (was #FFC800) */
+  /* ⚠️ THE PRIMARY BUTTON LOOK, AS TWO TOKENS. Alex, 2026-08-25, on the
+     onboarding CTA: *"it has a better shape now the green button, but it does
+     not have that slight shine that makes it more tempting to tap"*. He is
+     describing specular highlight, and he is right that it was missing — the
+     class is literally named .btn-3d and carried no 3D treatment at all, just
+     a glow cast BENEATH it. A flat fill reads as a label; a lit top edge and a
+     shaded bottom edge read as a physical thing you can press.
+     Kept deliberately restrained: 1.5px of light at the top, 2px of shade at
+     the bottom. Enough to catch the eye, short of the glossy candy buttons
+     that dated every app built in 2011. */
+  --btn-shine:inset 0 1.5px 0 rgba(255,255,255,0.30), inset 0 -2px 0 rgba(0,0,0,0.12);
+  --btn-glow:0 8px 22px -8px rgba(88,204,2,0.55);
   --gold-l:rgba(255,193,7,0.10);
   --info:#FFC107;        /* amber locked-in indicator (was #58CC02 blue — no-blue re-skin) */
   --r:14px;
@@ -189,7 +201,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    ⚠️ :active matters as much as the radius — scale(0.97) reads as pressing a
    physical button, opacity 0.85 reads as a web link dimming. That is a FEEL
    change, which is this release's whole brief. */
-.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;box-shadow:var(--btn-shine), var(--btn-glow);transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .btn-3d:hover{filter:brightness(1.06);}
 .btn-3d:active,.btn-3d.is-pressed{transform:scale(0.97);opacity:0.92;}
 .btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;}
@@ -1599,7 +1611,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-icon{font-size:88px;line-height:1;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));margin-bottom:18px;}
 .onboard-title{font-size:26px;font-weight:900;letter-spacing:-0.6px;color:var(--text);margin-bottom:10px;}
 .onboard-body{font-size:15px;color:var(--t2);line-height:1.6;max-width:320px;margin-bottom:24px;}
-.onboard-btn{position:relative;width:100%;max-width:340px;padding:16px;background:#58CC02;border:none;border-radius:999px;font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;cursor:pointer;letter-spacing:0.01em;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
+.onboard-btn{position:relative;width:100%;max-width:340px;padding:16px;background:#58CC02;border:none;border-radius:999px;box-shadow:var(--btn-shine), var(--btn-glow);font-family:inherit;font-size:16px;font-weight:800;color:#0A0A0A;cursor:pointer;letter-spacing:0.01em;transition:opacity 120ms ease,filter 120ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#0A0A0A;}
 .onboard-btn:hover{filter:brightness(1.06);}
 .onboard-btn:active{opacity:0.85;}
 .onboard-btn-inline{max-width:180px;flex:1;}
@@ -1711,7 +1723,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    app. Now matched to .btn-3d on all four; the properties kept below are the
    ones genuinely specific to this button (sticky to the viewport bottom, full
    width, its own vertical rhythm). */
-.next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;box-shadow:var(--btn-shine), var(--btn-glow);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{transform:scale(0.97);opacity:0.92;}
 .next-btn-primary:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;}
@@ -2006,7 +2018,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    and the primary action of the screen — the same role Play, Invite friends
    and Next fill — so it takes the same pill. #06230C is the app's on-green ink
    (this carried #0A0A0A, the page colour, which is a different black). */
-.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:8px;background:#58CC02;color:#06230C;border:none;border-radius:999px;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#06230C;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
+.wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:8px;background:#58CC02;color:#06230C;border:none;border-radius:999px;box-shadow:var(--btn-shine), var(--btn-glow);font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#06230C;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
 
@@ -2089,7 +2101,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    hierarchy was inverted: the card below outshouted the hero above it. Raised
    to match (and the old 36px also missed the 44pt tap-target guideline). The
    glow moves here; .mp-card-cta gives its up. */
-.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:0 22px;height:44px;line-height:1;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#06230C;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;white-space:nowrap;flex:0 0 auto;box-shadow:0 8px 22px -8px rgba(88,204,2,0.55);}
+.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:0 22px;height:44px;line-height:1;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#06230C;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;white-space:nowrap;flex:0 0 auto;box-shadow:var(--btn-shine), var(--btn-glow);}
 /* nowrap + no-shrink: on wide Footle grids (6-letter answers) the flex column
    squeezed these CTAs — "↗︎ Share" wrapped to two lines and the 999px radius
    turned it into a blob (Alex's device catch, build 43 test). FIXED height +

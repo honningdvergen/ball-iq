@@ -51,7 +51,11 @@ describe('design review — tier 2', () => {
     const i = CSS.indexOf('.next-btn-primary{');
     const rule = CSS.slice(i, CSS.indexOf('}', i));
     expect(rule).toMatch(/border-radius:999px/);
-    expect(rule).toMatch(/box-shadow:0 8px 22px -8px rgba\(88,204,2,0\.55\)/);
+    // ⚠️ Asserts the TOKEN. The glow and the specular shine are now
+    // --btn-glow / --btn-shine in :root, so pinning the literal here would pin
+    // the duplication the tokens removed — the same trap the copy and accent
+    // guards fell into earlier today.
+    expect(rule).toMatch(/box-shadow:var\(--btn-shine\), var\(--btn-glow\)/);
     expect(rule).toMatch(/color:#06230C/);
     expect(CSS).toMatch(/\.next-btn-primary:active\{transform:scale\(0\.97\)/);
     expect(CSS, 'the desktop variant carried the same rounded rect')
@@ -101,6 +105,18 @@ describe('one primary button, everywhere', () => {
 
   it('the Online tab CTA uses the pill and the standard glow', () => {
     expect(APP).toMatch(/borderRadius:999,background:"var\(--accent\)",color:"#06230C",boxShadow:"0 8px 22px -8px rgba\(88,204,2,0\.55\)"/);
+  });
+
+  it('the primary button look is one definition, not six', () => {
+    // Alex: "it does not have that slight shine that makes it more tempting to
+    // tap". The fix is a specular highlight — but added per-button it would be
+    // six copies of the same two shadows, which is how this file's other
+    // subjects drifted in the first place.
+    expect(CSS).toMatch(/--btn-shine:inset 0 1\.5px 0 rgba\(255,255,255,0\.30\)/);
+    expect(CSS).toMatch(/--btn-glow:0 8px 22px -8px rgba\(88,204,2,0\.55\)/);
+    const users = CSS.match(/box-shadow:var\(--btn-shine\), var\(--btn-glow\)/g) || [];
+    expect(users.length, 'every primary green button must take both tokens')
+      .toBeGreaterThanOrEqual(5);
   });
 
   it('no primary green button is left on a rounded rectangle', () => {
