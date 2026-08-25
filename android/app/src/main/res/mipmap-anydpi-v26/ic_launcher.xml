@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ⚠️ NO <inset> ON THE BACKGROUND. It used to carry android:inset="16.7%", which
+  shrank the ground to ~72dp inside the 108dp canvas — exactly the visible mask.
+  Launchers parallax the two layers by up to (108-72)/2 = 18dp on scroll, and an
+  inset background exposes bare canvas at the edge when they do. The background
+  layer's whole job is to fill all 108dp.
+
+  The foreground no longer needs an inset either: it used to be the entire square
+  composition WITH its own ground, so the launcher's mask was cutting into a
+  square and the ball itself landed at ~32dp inside a 72dp mask — 45% fill against
+  a 60-70% norm, which is why it read as small and lost on a home screen. The
+  layer is now the ball on full-bleed ground, sized so the ball is 60dp of the
+  108dp canvas: inside the 66dp safe zone, and filling the mask properly.
+-->
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <background>
-        <inset android:drawable="@mipmap/ic_launcher_background" android:inset="16.7%" />
-    </background>
-    <foreground>
-        <inset android:drawable="@mipmap/ic_launcher_foreground" android:inset="16.7%" />
-    </foreground>
+    <background android:drawable="@mipmap/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+    <monochrome android:drawable="@drawable/ic_launcher_monochrome" />
 </adaptive-icon>

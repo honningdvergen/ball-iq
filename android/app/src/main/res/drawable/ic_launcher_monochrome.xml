@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Themed-icon layer (Android 13+). There was none, so the launcher derived one
+  from the foreground — and here that produced a lumpy blob: the artwork is a
+  photoreal ember ball, and thresholding it merges flames and panels into a
+  smudge that reads as nothing at 48dp.
+
+  A monochrome layer is tinted FLAT, so only shape survives. Three attempts,
+  each rendered and looked at rather than reasoned about:
+    1. solid disc, one pentagon knocked out  → read as a coin
+    2. ring + pentagon + five seams          → read as a WHEEL
+    3. ring + question mark                  → reads at 48dp, and says quiz
+
+  Number three also happens to be the more honest mark. lucide has no football
+  (checked), a football is genuinely hard to render in single-colour line form
+  at this size, and the distinguishing feature of the Ball IQ icon was never the
+  ball — every quiz app could use a ball. It is the QUESTION MARK inside it.
+  The full-colour icon carries the football; this layer carries the meaning.
+
+  108dp canvas, ring r=26 → 52dp across, inside the 66dp safe zone.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- ring -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5"
+        android:fillColor="#00000000"
+        android:pathData="M54,28 A26,26 0 1,0 54,80 A26,26 0 1,0 54,28 Z" />
+    <!-- question-mark hook + stem: the long way round a r=7.5 circle at (54,48) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4.4"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M46.5,48 A7.5,7.5 0 1,1 54,55.5 L54,58.5" />
+    <!-- dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,61.1 A2.9,2.9 0 1,0 54,66.9 A2.9,2.9 0 1,0 54,61.1 Z" />
+</vector>
