@@ -845,7 +845,12 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
     <div className="screen">
       <div className="page-hdr" style={{position:"relative"}}>
         <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div className="page-title">{username}</div>
+        {/* The name lives on the card, at 20px, right under the rating. Repeating
+            it in the header put it on screen twice within 200px — Alex: "it is
+            enough to have the username on the card and not above the card".
+            Kept as an accessible heading so the screen is still announced and
+            still has a landmark; only the visual duplicate goes. */}
+        <div className="page-title sr-only">{username}</div>
         {/* Sprint #84 AAA3: 3-dot menu opens an action sheet with
             Report + Block. Absolute-positioned to the header's right
             edge so it doesn't disturb the centered title layout. */}
