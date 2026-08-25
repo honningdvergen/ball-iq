@@ -56,7 +56,16 @@ function DesktopFootleHero({ onPlay }) {
       <div className="ffh-inner">
         <div className="ffh-copy">
           <div className="ffh-eyebrow">Daily · Footle</div>
-          <div className="ffh-title">Footle</div>
+          {/* The green F tile is the wordmark, not decoration — it is the
+              same square the grid uses, so the title reads as an instance of
+              the game. It shipped on the mobile hero (FootleHero.jsx) and this
+              desktop twin was left on a plain white "Footle": the third
+              two-implementation miss of the same design pass. Markup mirrors
+              the mobile one exactly; only the tile size is set larger to match
+              this hero's 38px type. */}
+          <div className="ffh-title">
+            <span className="fh-tile fh-tile-green ffh-title-f" aria-hidden="true">F</span><span className="ffh-title-rest">ootle</span>
+          </div>
           <div className="ffh-sub">{L} letters · {FOOTLE_TAGLINE}</div>
           {done ? (
             <div className="ffh-actions">

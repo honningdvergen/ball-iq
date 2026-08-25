@@ -156,14 +156,54 @@ describe('no accent button on a rounded rectangle, in CSS either', () => {
     // Naming them keeps the rule strict for everything else.
     const NOT_BUTTONS = new Set(['.prog-bar', '.friends-you-pill', '.og-you']);
     const offenders = [];
-    const rules = CSS.matchAll(/(^|\})\s*([^{}@]+)\{([^}]*)\}/gm);
-    for (const m of rules) {
+
+    // ⚠️ FIRST PASS: index every rule's radius by selector, because a button
+    // can declare its FILL and its SHAPE in two different rules. `.rd-btn`
+    // carried border-radius:14px and `.rd-btn-primary` carried the accent
+    // background; neither rule alone looked like an offender, so the desktop
+    // results buttons — Play again, Home, Share — sat on 14px through the
+    // whole pill migration and the guard reported clean. A guard that only
+    // sees single-rule buttons is the same false coverage this file was
+    // written to end.
+    const radiusOf = new Map();
+    const bodyRules = [...CSS.matchAll(/(^|\})\s*([^{}@]+)\{([^}]*)\}/gm)];
+    for (const m of bodyRules) {
+      const sel = m[2].trim().replace(/\s+/g, ' ');
+      const r = /border-radius:\s*([^;]+)/.exec(m[3]);
+      if (r && !radiusOf.has(sel)) radiusOf.set(sel, r[1].trim());
+    }
+    // `.rd-btn-primary` inherits shape from `.rd-btn`: strip trailing -words
+    // until a rule with a radius is found.
+    //
+    // ⚠️ ONLY FOR SELECTORS NAMED LIKE BUTTONS. Resolving inherited radii for
+    // everything accent-filled produced three false positives on its first run
+    // — .wd-key-green (a Footle KEYBOARD KEY, which must stay a small rounded
+    // rect), .fh-tile-green (a grid TILE) and .dr-opt-tag (a correct-answer
+    // badge). None are buttons; they matched only on the fill. Three false to
+    // one true is not a guard, it is noise that gets muted.
+    //
+    // Known limit, stated rather than hidden: a button that splits fill from
+    // shape AND is not named *btn / *cta is still invisible here. The repo
+    // names its buttons consistently, so that is a narrow gap — but it is a
+    // gap, not coverage.
+    const looksLikeButton = (sel) => /btn|cta/i.test(sel);
+    const inheritedRadius = (sel) => {
+      if (!looksLikeButton(sel)) return null;
+      let base = sel;
+      while (base.includes('-')) {
+        base = base.slice(0, base.lastIndexOf('-'));
+        if (radiusOf.has(base)) return radiusOf.get(base);
+      }
+      return null;
+    };
+
+    for (const m of bodyRules) {
       const sel = m[2].trim().replace(/\s+/g, ' ');
       const body = m[3];
       if (sel.startsWith('/*')) continue;
       if (!/background:\s*(#58CC02|var\(--accent\))/.test(body)) continue;
       const r = /border-radius:\s*([^;]+)/.exec(body);
-      const rad = r ? r[1].trim() : null;
+      const rad = r ? r[1].trim() : inheritedRadius(sel);
       if (!rad || rad === '999px' || rad === '50%') continue;
       if ([...NOT_BUTTONS].some((n) => sel.includes(n))) continue;
       offenders.push(`${sel} — border-radius:${rad}`);
