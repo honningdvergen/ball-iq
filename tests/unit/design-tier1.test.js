@@ -147,7 +147,12 @@ describe('design review — tier 1', () => {
     // iOS grants exactly one native permission prompt, so a refusal is
     // permanent — spending it before the app has proven itself is the worst
     // available trade.
-    expect(APP).toMatch(/if \(playsSoFar < 2\) return false;/);
-    expect(APP).toMatch(/if \(webPlays < 2\) return bail\("too-early"\);/);
+    // Pin the THRESHOLD, not the return form. This assertion originally
+    // matched `return false;` verbatim and broke the moment the native bail
+    // was instrumented — pinning a literal pins the duplication, not the
+    // intent. Both engines must refuse under two completed plays; how they
+    // report the refusal is free to change.
+    expect(APP).toMatch(/if \(playsSoFar < 2\) return \w/);
+    expect(APP).toMatch(/if \(webPlays < 2\) return \w/);
   });
 });

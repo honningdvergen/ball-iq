@@ -288,8 +288,50 @@ export const MYSTERY_ANCHOR_DAY = 20668; // days since epoch — day #1
 // To pull it again, set this to false — nothing else needs touching.
 export const MYSTERY_ENABLED = true;
 
+/**
+ * ⚠️ LOCAL MIDNIGHT, NOT UTC — and this was the one daily that got it wrong.
+ *
+ * This used to be `Math.floor(now.getTime() / 86400000)`, a floor of a UTC
+ * millisecond count, while the SAVE KEY for the same puzzle (`ymd()`, below)
+ * has always used the local calendar date. The two disagreed for part of every
+ * day, in every timezone on earth:
+ *
+ *   America/New_York  local 21:00  utcIdx 20691  localIdx 20690   diverge
+ *   Europe/Oslo       local 01:00  utcIdx 20690  localIdx 20691   diverge
+ *   Asia/Tokyo        local 01:00  utcIdx 20690  localIdx 20691   diverge
+ *
+ * ⚠️ The debug pass that found this reported Oslo and Tokyo as matching. They
+ * do — at midday. Every zone agrees in the middle of its day and diverges near
+ * a boundary; UTC-negative zones break in the local EVENING and UTC-positive
+ * zones in the local EARLY MORNING. Verified by running both forms under all
+ * three zones rather than trusting the report.
+ *
+ * What the player saw: solve it at 21:00 in New York and the result is filed
+ * under the 25th, but the answer served was the 26th's — so opening the app
+ * next morning gave a fresh empty board holding a player they had already
+ * guessed. The shared puzzle number disagreed between countries, which is the
+ * one token that makes "Mystery Player #24" comparable between friends. And
+ * the result screen's countdown, which uses msToNextLocalMidnight, promised a
+ * new player in three hours when the answer had changed an hour earlier.
+ *
+ * ⚠️ FOR UTC+12 AND UP IT WAS NOT AN EDGE CASE AT ALL. Auckland's local noon
+ * is 23:00 UTC of the PREVIOUS day under NZDT, so the old form served
+ * yesterday's puzzle for the WHOLE day — 189 of 400 days sampled, not just
+ * near a boundary. New Zealand and the Pacific were a full puzzle behind the
+ * rest of the world, while their save key (local `ymd()`) filed the result
+ * under today. Everywhere else, midday is unchanged across all 400 days and
+ * only the rollover moment moves.
+ *
+ * Consequence of shipping this: players in those zones see their Mystery
+ * number advance by one, once. That is the correction, not a regression — it
+ * puts them back in step with the shared number their friends see.
+ *
+ * This is now the same form Footle, the Trail and date.js's dayIndexForDate
+ * all use — UTC midnight OF THE LOCAL DATE. Four dailies, one definition of
+ * what day it is.
+ */
 export function mysteryDayIndex(now = new Date()) {
-  return Math.floor(now.getTime() / 86400000);
+  return Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
 }
 export function mysteryNumber(now = new Date()) {
   return mysteryDayIndex(now) - MYSTERY_ANCHOR_DAY + 1;

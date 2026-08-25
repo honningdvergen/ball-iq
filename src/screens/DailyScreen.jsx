@@ -52,9 +52,13 @@ function tacticsPbDistance(unbeaten, bestUnbeaten) {
 // gate — a blank cell, not a dash. Module scope so the memos below don't
 // re-run on every render.
 //
-// ⚠️ Called with LOCAL NOON, never local midnight: mysteryDayIndex floors a
-// UTC millisecond count, so midnight in a UTC+ timezone lands on the previous
-// UTC day and the very first Mystery would render as "not available".
+// ⚠️ noon() is now REDUNDANT for Mystery and kept for the Trail. It existed
+// because mysteryDayIndex floored a UTC millisecond count, so local midnight in
+// a UTC+ zone landed on the previous UTC day and the first Mystery rendered as
+// "not available". mysteryDayIndex now reads the LOCAL calendar date, so noon
+// and midnight of the same local day give the same index. Left in place rather
+// than unpicked from the call sites: it is a no-op for Mystery and still the
+// safe input for anything date-shaped.
 function trailLiveOn(d) {
   try { return !!getTrailAnswer(d); } catch { return false; }
 }

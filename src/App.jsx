@@ -10650,10 +10650,11 @@ function AppInner() {
         return true;
       } catch { return false; }
     }
+    const nBail = (reason) => { loopEvent("notif-prompt-skipped", { reason, engine: "native" }); return false; };
     try {
-      if (localStorage.getItem('biq_notif_enabled') === '1') return false;
+      if (localStorage.getItem('biq_notif_enabled') === '1') return nBail("already-enabled");
       const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
-      if (asks >= 2) return false;
+      if (asks >= 2) return nBail("asked-twice");
       // ⚠️ NEVER ON A PLAYER'S FIRST RESULT SCREEN.
       // The 7s hold below fixed the sheet COVERING the payoff. It did not fix
       // asking too early: on a clean install the very first thing a new player
@@ -10667,10 +10668,10 @@ function AppInner() {
       // gate survives a reload and cannot be reset by remounting.
       let playsSoFar = 0;
       try { playsSoFar = JSON.parse(localStorage.getItem('biq_stats') || '{}')?.gamesPlayed || 0; } catch {}
-      if (playsSoFar < 2) return false;
+      if (playsSoFar < 2) return nBail("too-early");
 
       const perm = await getNotifPermission();
-      if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return false;
+      if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return nBail(`perm-${perm}`);
       localStorage.setItem('biq_notif_asks', String(asks + 1));
       // ⏱ HOLD THE SHEET UNTIL THE PAYOFF HAS LANDED.
       // The moment is right — solving is the app's happiest second, and that
@@ -10709,6 +10710,66 @@ function AppInner() {
   // (opportunity-scan #3). MUST be declared ABOVE the daily-completed effect
   // below — its dep array reads this const during render (TDZ crash caught by
   // the e2e verify on first build).
+  /**
+   * A daily puzzle counts as a game played.
+   *
+   * ⚠️ EIGHT REAL ACCOUNTS SHOW "0 GAMES" WHILE HOLDING 20+ SOLVED PUZZLES.
+   * `profiles.games_played` / `correct_answers` were written ONLY by the quiz
+   * completion path; Footle, Trail, Mystery and Stadiums wrote a `scores` row
+   * and XP and nothing else. Three visible harms, all measured in prod:
+   *   · ProfileScreen hides the ENTIRE stat grid when games/correct/best are
+   *     all zero, so a friend viewing a 20-Footle player saw a level badge and
+   *     blank space.
+   *   · The friends mini-leaderboard sorts on total_score, so they sit last
+   *     forever.
+   *   · The notification ask is gated on biq_stats.gamesPlayed — incremented
+   *     in exactly one place, inside the quiz path — so a daily-only player
+   *     could never be offered daily reminders. That gate is mine, added
+   *     today; it inherited a counter that does not count them.
+   *
+   * ⚠️ DELIBERATELY DOES NOT TOUCH total_score. For the dailies `score` means
+   * ATTEMPTS USED — a Footle solved in 2 scores 2, solved in 6 scores 6 — so
+   * it is a lower-is-better number. total_score is higher-is-better and drives
+   * the leaderboard. Adding one to the other would rank the worst players top.
+   * Making dailies contribute to the leaderboard needs a scoring decision
+   * (XP is already the app's cross-mode progression number and dailies do feed
+   * it); it is not something to infer inside a bug fix.
+   *
+   * Also deliberately untouched: bestScore (quiz-specific, capped at 10),
+   * catStats (dailies carry no `cat`, and inventing one orphans history), and
+   * the weekly counters.
+   */
+  const recordDailyPlay = useCallback((wasCorrect) => {
+    // Base the increment on the PERSISTED snapshot, not on `stats`. Two
+    // reasons, both of which have bitten this file before:
+    //   · a setStats updater runs at render time, so anything computed inside
+    //     it is not readable on the next line — the Supabase push below would
+    //     have silently skipped every time;
+    //   · these handlers are registered once per effect run and close over
+    //     whatever `stats` was then, so reading state here goes stale.
+    // localStorage is the authority: every setStats in this file persists the
+    // whole object synchronously alongside it, so the two never diverge.
+    let base = {};
+    try { base = JSON.parse(localStorage.getItem("biq_stats") || "{}") || {}; } catch {}
+    const gamesPlayed = (base.gamesPlayed || 0) + 1;
+    const totalCorrect = (base.totalCorrect || 0) + (wasCorrect ? 1 : 0);
+    safeSetItem("biq_stats", JSON.stringify({ ...base, gamesPlayed, totalCorrect }));
+    setStats((prev) => ({ ...prev, gamesPlayed, totalCorrect }));
+    if (!user?.id) return;
+    (async () => {
+      try {
+        // ⚠️ A query builder RESOLVES on error — destructure, never bare-await.
+        const { error } = await supabase.from('profiles').update({
+          games_played: gamesPlayed,
+          correct_answers: totalCorrect,
+        }).eq('id', user.id);
+        if (error) console.warn("[daily stats]", error.message || "Unknown error");
+      } catch (e) {
+        console.warn("[daily stats]", e?.message || "Unknown error");
+      }
+    })();
+  }, [user?.id]);
+
   const awardXp = useCallback((earned) => {
     if (!earned || earned <= 0) return;
     setXp(prev => {
@@ -10842,6 +10903,7 @@ function AppInner() {
       // day (the won/lost transition), so no dedup guard is needed.
       if (e?.detail?.game === 'footle') {
         awardXp(getFootleXP(e.detail.won === true, e.detail.guesses));
+        recordDailyPlay(e.detail.won === true);
         // Footle wrote NOTHING to `scores` until now — its only trace was the
         // wordle_state jsonb. So the most-played mode, the one that owns every
         // long streak, was invisible in the only table anyone would query, and
@@ -10865,6 +10927,7 @@ function AppInner() {
       // Footle's shape: attempts used out of the max, 1 "question" attempted.
       if (e?.detail?.game === 'trail') {
         awardXp(e.detail.won === true ? 40 : 10);
+        recordDailyPlay(e.detail.won === true);
         if (user?.id) {
           const used = Math.min(e.detail.attempts || 5, 5);
           saveScore(user?.id, {
@@ -10891,6 +10954,7 @@ function AppInner() {
         const tries = Math.max(1, e.detail.attempts || 1);
         const mysteryWon = e.detail.won === true;
         if (mysteryWon) awardXp(tries <= 5 ? 50 : tries <= 15 ? 35 : 20);
+        recordDailyPlay(mysteryWon);
         if (user?.id) {
           saveScore(user?.id, {
             game_mode: 'mystery',
@@ -10912,6 +10976,7 @@ function AppInner() {
         const xp = d.hints === 0 ? 80 : d.hints <= 3 ? 60 : d.hints <= 10 ? 40 : 25;
         awardXp(xp);
       }
+      recordDailyPlay(!d.gaveUp && (d.solved || 0) >= (d.total || 20));
       if (user?.id) {
         saveScore(user?.id, {
           game_mode: 'stadiums',
@@ -10941,7 +11006,7 @@ function AppInner() {
       window.removeEventListener('biq:stadiums-exit', onStadiumsExit);
       window.removeEventListener('biq:daily-completed', onDailyDoneAndSync);
     };
-  }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak]);
+  }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak, recordDailyPlay]);
 
   // Online multiplayer joins the XP economy (it was the only mode outside it).
   // The emitter in OnlineMultiplayer is the once-per-room gate, so no dedup is
@@ -11018,6 +11083,7 @@ function AppInner() {
     window.addEventListener('biq:day-rollover', onRollover);
     return () => window.removeEventListener('biq:day-rollover', onRollover);
   }, [notifEnabled]);
+
 
   const handleComplete = useCallback((res) => {
     saveStats(res);
@@ -11877,11 +11943,25 @@ function AppInner() {
   const respondFriendRequest = useCallback(async (id, accept) => {
     setNotifRequests(prev => prev.filter(r => r.id !== id)); // optimistic
     try {
-      await supabase.from("friendships").update({ status: accept ? "accepted" : "declined" }).eq("id", id);
+      // ⚠️ DESTRUCTURE `error`. A supabase query builder RESOLVES on an RLS or
+      // Postgres failure — it does not reject — so the bare `await` below made
+      // this catch unreachable for the only failure that actually happens. The
+      // row was removed from the list optimistically and the user was told
+      // "✓ Friend added" while the friendship stayed `pending` forever, with
+      // no way back: the request had gone from their bell.
+      // ⚠️ The identical operation in ProfileScreen.setStatus has always done
+      // this correctly. Two implementations, one safe, one not — the recurring
+      // shape in this codebase. Fixed to match its sibling.
+      const { error } = await supabase
+        .from("friendships")
+        .update({ status: accept ? "accepted" : "declined" })
+        .eq("id", id);
+      if (error) throw error;
       showToast(accept ? "✓ Friend added" : "Request declined");
-    } catch {
+    } catch (e) {
+      console.warn("[friends] respondFriendRequest", e?.message || "Unknown error");
       showToast("Couldn't update — try again");
-      loadNotifs();
+      loadNotifs();   // put the request back so it can be retried
     }
   }, [showToast, loadNotifs]);
   // Play-invite actions. Join sets pendingJoinCode — the auto-join effect above
