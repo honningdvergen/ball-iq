@@ -206,6 +206,22 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .btn-3d.ghost{background:transparent;color:var(--text);box-shadow:none;border:1.5px solid var(--border);-webkit-text-fill-color:var(--text);}
 .btn-3d.ghost:hover{filter:none;background:var(--s1);}
 .btn-3d.ghost:active,.btn-3d.ghost.is-pressed{transform:translateY(1px);box-shadow:none;}
+/* ⚠️ THE TWO GROWTH ACTIONS LOOKED LIKE THE EXIT. On the results screen —
+   the app's only share surface — "Share Score", "Stump a mate" and "Back to
+   Home" were all .btn-3d.ghost: same border, same ink, same weight. The two
+   actions that bring another player in were visually indistinguishable from
+   the one that ends the session, so the eye had no reason to prefer them.
+   Accent border and accent ink, still not a filled button: the primary action
+   above (Play Again / today's Footle) has to stay dominant. */
+.btn-3d.share{background:transparent;color:var(--accent);-webkit-text-fill-color:var(--accent);box-shadow:none;border:1.5px solid var(--accent-b);}
+.btn-3d.share:hover{filter:none;background:var(--accent-dim);}
+.btn-3d.share:active,.btn-3d.share.is-pressed{transform:scale(0.97);opacity:0.92;}
+/* Leaving is not an action worth a button. A centred link keeps the exit
+   findable without giving it the same weight as sharing. */
+.results-exit{display:block;margin:4px auto 0;padding:10px 16px;background:none;border:none;
+  color:var(--t3);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px;}
+.results-exit:hover{color:var(--t2);}
 .btn-3d.ghost:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;box-shadow:none;}
 
 /* Results-screen button stack — lighter than the default .btn-3d, with a

@@ -53,6 +53,37 @@ import SCHEDULE from '../data/mysterySchedule.json';
 // players is cheap, but doing it inside the guess handler would redo it on
 // every keystroke of an autocomplete.
 
+/**
+ * ⚠️ THE ONLY FEEDBACK A GUESS GAVE WAS A BARE INTEGER.
+ *
+ * The 1.7.0 design review, playing it cold: Mystery Player answers a guess with
+ * `8612` — no bar, no word, no pool size — on a mode Daily advertises as
+ * "Warmer or colder". The row colour was already banded, but a COLD row is
+ * neutral by design, so the common case really was a number on a grey card.
+ * It is also the number a first-time player is least equipped to read: a famous
+ * keeper ranking past 1000 read as the game being broken rather than as him
+ * simply being unlike the answer.
+ *
+ * Three things fix it, and all three ride on `bandFor`, which already existed:
+ * a word, a magnitude, and a denominator.
+ */
+const BAND_WORD = { win: 'that\u2019s it', hot: 'boiling', warm: 'warm', cold: 'cold' };
+
+/**
+ * How full the proximity bar is, 0..1.
+ *
+ * ⚠️ LOG-SCALED, NOT LINEAR. Ranks run 1..poolSize over a few thousand players
+ * and the interesting range is entirely at the bottom: linear would render
+ * rank 40 and rank 900 as the same sliver of bar, which is precisely the
+ * distinction a player is trying to read. On a log scale rank 1 is full, rank
+ * 40 still shows real progress, and the long cold tail compresses.
+ */
+function closeness(rank, poolSize) {
+  if (!(rank > 0) || !(poolSize > 1)) return 0;
+  if (rank <= 1) return 1;
+  return Math.max(0, 1 - Math.log(rank) / Math.log(poolSize));
+}
+
 const BAND_STYLE = {
   win:  { bg: 'rgba(88,204,2,0.16)',  bd: '#58CC02', fg: '#8AE042' },
   hot:  { bg: 'rgba(88,204,2,0.10)',  bd: 'rgba(88,204,2,0.45)', fg: '#8AE042' },
@@ -81,6 +112,9 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   const saved = useMemo(() => loadMysteryResult(date), [date]);
   const [text, setText] = useState('');
   const [guesses, setGuesses] = useState(() => saved?.guesses || []); // [{ id, name, club, rank, band }]
+  // Rules collapse after the first guess (they occupied ~90pt of a game
+  // screen) but stay one tap away — see the `?` in the header.
+  const [showRules, setShowRules] = useState(false);
   const [error, setError] = useState('');
   const [won, setWon] = useState(() => !!saved?.won);
   // ⚠️ THE TERMINAL STATE THIS MODE NEVER HAD (added 2026-08-17).
@@ -311,6 +345,11 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           <div style={{ fontSize: 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em' }}>Mystery Player</div>
           <div style={{ fontSize: 12, color: 'var(--t3)' }}>No. {mysteryNumber(date)} · unlimited guesses{isArchive ? ' · archive' : ''}</div>
         </div>
+        {!done && guesses.length > 0 && (
+          <button type="button" className="icon-btn" onClick={() => setShowRules((v) => !v)}
+            aria-label="How to play" aria-expanded={showRules} title="How to play"
+            style={{ marginRight: 8 }}>?</button>
+        )}
         {best !== null && !done && (
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: 11, color: 'var(--t3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Closest</div>
@@ -319,8 +358,8 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         )}
       </div>
 
-      {!done && (
-        <p style={{ margin: '2px 16px 12px', color: 'var(--t2)', fontSize: 13.5, lineHeight: 1.5 }}>
+      {!done && (guesses.length === 0 || showRules) && (
+        <p style={{ margin: '2px 0 12px', color: 'var(--t2)', fontSize: 13.5, lineHeight: 1.5 }}>
           {/* ⚠️ THIS LINE READ "The secret player is 1." — a sentence that stops
               before it explains anything. It is trying to teach the rank scale:
               every guess gets a position, and the answer sits at 1. Without that
@@ -509,8 +548,18 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 14.5, fontWeight: 800, color: 'var(--t1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.name}</div>
                 <div style={{ fontSize: 11.5, color: 'var(--t3)' }}>{g.club}</div>
+                {/* The magnitude the number alone could not carry. */}
+                <div style={{ marginTop: 6, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.07)', overflow: 'hidden' }} aria-hidden="true">
+                  <div style={{ width: `${Math.round(closeness(g.rank, POOL.length) * 100)}%`, height: '100%', borderRadius: 2, background: st.fg }} />
+                </div>
               </div>
-              <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{g.rank}</div>
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{g.rank}</div>
+                {/* The denominator, so the number means something on sight, and
+                    the word, so "warmer or colder" is finally true. */}
+                <div style={{ fontSize: 10, color: 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>of {POOL.length.toLocaleString()}</div>
+                <div style={{ fontSize: 10, fontWeight: 800, color: st.fg, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 1 }}>{BAND_WORD[g.band]}</div>
+              </div>
             </div>
           );
         })}

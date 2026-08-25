@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
 import { STADIUM_LEAGUES, matchStadium } from "../data/stadiums.js";
 import { Confetti, haptic, playSound } from "../App.jsx";
+import { Lightbulb } from "lucide-react";
 
 // Stadiums — a Sporcle-style completion run: name every ground in the league.
 // Alex's design (2026-08-20): start cold with just a counter; the FIRST hint
@@ -246,7 +247,7 @@ function StadiumBoard({ league, onExit }) {
             {!state.clubsRevealed && (
               <button onClick={revealClubs}
                 style={{ padding: "9px 14px", borderRadius: 11, background: "var(--s2)", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "inherit", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
-                💡 Show the clubs
+                <Lightbulb size={13} strokeWidth={2.5} aria-hidden="true" /> Show the clubs
               </button>
             )}
             <div style={{ flex: 1 }} />
@@ -331,9 +332,21 @@ function StadiumBoard({ league, onExit }) {
         })}
       </div>
 
-      {!done && (
+      {/* ⚠️ GATED BEHIND ONE ATTEMPT, AND DEMOTED TO A LINK. This was a
+          full-width bordered button above the fold on a board with nothing on
+          it — the first thing offered to someone who had not yet typed a single
+          ground was the way to stop playing. It now appears only once there is
+          something to give up ON, and reads as a link rather than as one of the
+          two things you came here to press.
+          ⚠️ The review's other half of this item — twenty ghosted slots that
+          fill in as you name grounds — is deliberately NOT implemented. That
+          exact design shipped and was pulled after a player reported it
+          (2026-08-21, "this looks terrible"): twenty identical featureless
+          bars with nothing to read, which also pushed real content under the
+          keyboard. See the note on the empty-board card above. */}
+      {!done && solvedSet.size > 0 && (
         <button onClick={giveUp}
-          style={{ marginTop: 16, width: "100%", padding: 12, borderRadius: 12, background: "transparent", border: "1px solid var(--border)", color: "var(--t2)", fontFamily: "inherit", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+          style={{ marginTop: 16, display: "block", marginLeft: "auto", marginRight: "auto", padding: 8, background: "none", border: "none", color: "var(--t3)", fontFamily: "inherit", fontSize: 13, fontWeight: 700, textDecoration: "underline", cursor: "pointer" }}>
           Show me the answers
         </button>
       )}

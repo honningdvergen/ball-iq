@@ -4218,8 +4218,8 @@ function LocalResults({ result, onHome, onRetry, onShare }) {
 
       <div className="results-actions" style={{marginTop:16}}>
         <button className="btn-3d" onClick={onRetry}>Play Again</button>
-        {onShare && <button className="btn-3d ghost" onClick={onShare}>Share Score</button>}
-        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+        {onShare && <button className="btn-3d share" onClick={onShare}>Share Score</button>}
+        <button className="results-exit" onClick={onHome}>Back to Home</button>
       </div>
     </div>
   );
@@ -5270,9 +5270,9 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, surviva
             Both dailies done — come back tomorrow 🌙
           </div>
         )}
-        <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
-        {stumpQ && <button className="btn-3d ghost" onClick={onStump}>🥜 Stump a mate</button>}
-        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+        <button className="btn-3d share" onClick={onShare}>Share Score</button>
+        {stumpQ && <button className="btn-3d share" onClick={onStump}>Stump a mate</button>}
+        <button className="results-exit" onClick={onHome}>Back to Home</button>
       </div>
 
       {/* Wrong answers review — below the buttons */}
