@@ -568,11 +568,11 @@ function HomeScreenImpl({
           // lifetime play and Trail is a daily, so it earns the position. The
           // whole entry is gated on the schedule actually having a puzzle, so
           // nothing advertises a mode that cannot be played.
-          ...(trailLive ? [{ key:"trail", Icon: Route, name: "Transfer Trail", desc: "Name the player", onTap: () => setScreen("trail") }] : []),
+          ...(trailLive ? [{ key:"trail", Icon: Route, iconColor: "#7CC3F0", name: "Transfer Trail", desc: "Name the player", onTap: () => setScreen("trail") }] : []),
           // Same gate as the Trail: the card only exists if the frozen
           // schedule actually has a puzzle for today, so nothing advertises a
           // mode that cannot be played. mysteryLive is computed above.
-          ...(mysteryLive ? [{ key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", desc: "Guess who", isNew: true, onTap: () => setScreen("mystery") }] : []),
+          ...(mysteryLive ? [{ key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", desc: "Guess who", isNew: true, iconColor: "#B9A5FF", onTap: () => setScreen("mystery") }] : []),
           // Stadiums (2026-08-20, Alex's design): a completion run, not a
           // quiz — name every ground in the league. No live-gate needed:
           // the dataset is season-pinned and always playable.

@@ -2746,7 +2746,27 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       // minutes with seven unrelated timeouts — Playwright waits for elements
       // to stop moving before it will click them. A moving page is a slow page
       // for a person too; they just cannot file a bug about it.
-      try { el.scrollIntoView({ block: 'center', behavior: 'auto' }); } catch { /* older WebViews */ }
+      // ⚠️ MINIMUM SCROLL, NOT `center`. The 1.7.0 design review flagged that
+      // answering "unmounts the entire header" — back button, progress pips and
+      // counter all gone, ~90pt of content jump, ten times a session. The
+      // header is NOT unmounted; it is rendered unconditionally. This scroll is
+      // what removes it, and `center` is why: parking the panel in the middle
+      // of the viewport moves the page much further than revealing the panel
+      // requires, so the chrome above it leaves the screen even when there was
+      // room to keep it.
+      // `nearest`/`end` were both wrong for the original reason (they put the
+      // panel back under the sticky CTA), so this computes the shortest scroll
+      // that clears BOTH the viewport bottom and the CTA sitting on it. When
+      // the panel already fits, it does not scroll at all — which is the common
+      // case on a short explanation, and the header simply stays put.
+      // A sticky .q-top was tried first and did not pin on device; rather than
+      // ship CSS I could not prove, the scroll itself is the fix.
+      try {
+        const CTA_INSET = 96; // sticky Next button + its margin
+        const overshoot = el.getBoundingClientRect().bottom
+          - (window.innerHeight - CTA_INSET) + 12;
+        if (overshoot > 0) window.scrollBy({ top: overshoot, behavior: 'auto' });
+      } catch { /* older WebViews */ }
     });
     return () => cancelAnimationFrame(id);
   }, [answered, idx]);
