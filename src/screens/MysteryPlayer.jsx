@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowLeft, Search } from 'lucide-react';
+import { ArrowLeft, Search, UserRoundSearch } from 'lucide-react';
 // Same kit the Trail imports (TransferTrail.jsx) — the scouting panel measured
 // this file at ZERO haptic/sound/confetti: the hardest, longest-effort daily
 // paid off with a mute green panel while Trail and Footle both celebrate.
@@ -11,6 +11,7 @@ import {
 } from '../lib/mysteryPlayer.js';
 import POOL from '../data/mysteryPool.json';
 import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
+import { MODE_ACCENT, modeTint } from '../lib/accents.js';
 import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
 import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
 import CAREERS from '../data/mysteryCareers.json';
@@ -341,14 +342,33 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         <button onClick={onExit} aria-label="Back" className="back-btn">
           <ArrowLeft size={22} />
         </button>
+        {/* ⚠️ THE MODE HAD NO COLOUR ON ITS OWN SCREEN. The Daily row sells
+            Mystery in violet — tinted well, violet button, violet label — and
+            then opening it landed on a neutral grey page that looked like any
+            other. The promise and the room have to match, so the same well and
+            the same accent come with it. */}
+        <div style={{
+          width: 36, height: 36, borderRadius: 10, flexShrink: 0, marginRight: 10,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: modeTint('mystery', 0.12), border: `1px solid ${modeTint('mystery', 0.3)}`,
+        }} aria-hidden="true">
+          <UserRoundSearch size={19} strokeWidth={2.1} color={MODE_ACCENT.mystery} />
+        </div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em' }}>Mystery Player</div>
-          <div style={{ fontSize: 12, color: 'var(--t3)' }}>No. {mysteryNumber(date)} · unlimited guesses{isArchive ? ' · archive' : ''}</div>
+          <div style={{ fontSize: 12, color: 'var(--t3)' }}>
+            <span style={{ color: MODE_ACCENT.mystery, fontWeight: 700 }}>No. {mysteryNumber(date)}</span>
+            {' · '}unlimited guesses{isArchive ? ' · archive' : ''}
+          </div>
         </div>
-        {!done && guesses.length > 0 && (
+        {/* ⚠️ AVAILABLE FROM THE FIRST SECOND. This used to appear only after a
+            guess had been made, which is backwards: the player who needs the
+            rules is the one who has not played yet, and they had no way to
+            dismiss the wall or bring it back. Footle's ? is always there. */}
+        {!done && (
           <button type="button" className="icon-btn" onClick={() => setShowRules((v) => !v)}
             aria-label="How to play" aria-expanded={showRules} title="How to play"
-            style={{ marginRight: 8 }}>?</button>
+            style={{ marginRight: 8, color: MODE_ACCENT.mystery, borderColor: modeTint('mystery', 0.35) }}>?</button>
         )}
         {best !== null && !done && (
           <div style={{ textAlign: 'right' }}>
@@ -358,7 +378,19 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
         )}
       </div>
 
-      {!done && (guesses.length === 0 || showRules) && (
+      {/* ⚠️ SIXTY WORDS ON A VOID WAS THE FIRST THING A NEW PLAYER SAW. The
+          rules did collapse — but only after guess one, so the person being
+          decided got the wall and everyone else got the clean screen, exactly
+          inverted. Now the load-bearing sentence is always visible as one line
+          and the full explanation lives behind the ?, which is the pattern
+          Footle already set. */}
+      {!done && !showRules && guesses.length === 0 && (
+        <p style={{ margin: '2px 0 14px', color: 'var(--t2)', fontSize: 13.5, lineHeight: 1.5 }}>
+          Guess any player — each one is ranked by similarity.{' '}
+          <strong style={{ color: MODE_ACCENT.mystery }}>Lower is closer: the secret player is rank 1.</strong>
+        </p>
+      )}
+      {!done && showRules && (
         <p style={{ margin: '2px 0 12px', color: 'var(--t2)', fontSize: 13.5, lineHeight: 1.5 }}>
           {/* ⚠️ THIS LINE READ "The secret player is 1." — a sentence that stops
               before it explains anything. It is trying to teach the rank scale:
