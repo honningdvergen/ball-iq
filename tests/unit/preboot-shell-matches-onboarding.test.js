@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
  *   1. EVERY BUTTON IS WIRED. A new control added to the shell markup without
  *      a data hook is a new dead tap, and nothing about the page would look
  *      wrong.
- *   2. THE SHELL AND THE COMPONENT AGREE. The replay is INDEX-based, so if the
+ *   2. THE HTML AND THE COMPONENT AGREE. The replay is INDEX-based, so if the
  *      options drift apart the shell records "option 2" and OnboardingScreen
  *      renders a different option 2 — the player taps Pelé and watches the app
  *      mark Neymar. The file already carried a "KEEP IN SYNC" comment; a
@@ -136,5 +136,32 @@ describe('the pre-boot shell is the screen it imitates', () => {
     expect(correct[1]).toBe('Nice — you’re a natural');
     expect(wrong[1]).toBe(`It's ${sample.o[sample.a]} — the all-time record holder. You'll pick these up fast!`);
     expect(APP, 'the component copy moved — re-sync the shell').toContain(correct[1]);
+  });
+
+  it('the shell\'s primary button LOOKS like the one it hands over to', () => {
+    // ⚠️ THIS TEST PASSED THROUGH THE DRIFT IT EXISTS TO CATCH. It compared
+    // strings and handlers and never once read app.css — so when .onboard-btn
+    // became a 999px pill with a specular shine, the shell kept its 14px
+    // rounded rect and nothing failed. A first-time web/PWA visitor saw a flat
+    // rectangle snap into a glowing pill at hydration: the exact "two
+    // implementations of one screen" seam the file was written for, in the one
+    // dimension it was not looking at.
+    // Native is unaffected (the shell early-returns on isNativePlatform), which
+    // is why a simulator walk could never have found it either.
+    const css = readFileSync(fileURLToPath(new URL('../../src/app.css', import.meta.url)), 'utf8');
+    const i = css.indexOf('.onboard-btn{');
+    const rule = css.slice(i, css.indexOf('}', i));
+
+    const radius = /border-radius:\s*([^;]+)/.exec(rule);
+    expect(radius, '.onboard-btn must declare a radius').toBeTruthy();
+    expect(HTML, `the shell button must use the same radius (${radius[1]})`)
+      .toMatch(new RegExp('border-radius:' + radius[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+
+    // The shell cannot use var(--btn-shine): app.css has not loaded yet when it
+    // paints. It carries the resolved values instead, so the two must agree by
+    // VALUE — assert the shell has a shine and a glow at all.
+    expect(HTML, 'the shell button needs the specular highlight').toMatch(/inset 0 1\.5px 0 rgba\(255,255,255,0\.30\)/);
+    expect(HTML, 'the shell button needs the glow').toMatch(/0 8px 22px -8px rgba\(88,204,2,0\.55\)/);
+    expect(HTML, 'and the on-green ink, not a page black').toMatch(/color:#06230C/);
   });
 });

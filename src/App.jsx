@@ -5773,7 +5773,12 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
       <div className="rc">
         <div className="rc-icon">{emoji}</div>
         <div className="rc-title">{title}</div>
-        <div className="score-big" style={{color:"var(--accent)"}}><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:22,color:"var(--t2)",fontWeight:500}}> correct</span></div>
+        {/* ⚠️ THE SIBLING CALL SITE. The quiz results screen earns the accent at
+            70%+; this one hardcoded it, so Survival and Hot Streak showed
+            celebration green for a score of 1. There is no denominator here
+            (it is "N correct in 60 seconds"), so the band is on the count:
+            8+ is a real run on a 60-second clock. */}
+        <div className={`score-big${score >= 8 ? " is-strong" : ""}`}><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:22,color:"var(--t2)",fontWeight:500}}> correct</span></div>
         <div className="score-pct">in 60 seconds · {answered} answered</div>
       </div>
 
