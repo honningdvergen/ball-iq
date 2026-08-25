@@ -6,7 +6,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
-import { Pencil, Milestone, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
+import { Pencil, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 
 // ⚠️ TWELVE OS EMOJI IN ONE VIEWPORT — the densest patch of borrowed art left
@@ -1751,25 +1751,27 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const rows = [];
           if (strongest) rows.push({ icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" });
           if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)" });
-          else rows.push({ icon: "🧭", label: "Next up", value: "Play more to build your card", color: "var(--t2)" });
+          else rows.push({ Icon: Compass, label: "Next up", value: "Play more to build your card", color: "var(--t2)" });
           // Only show "Top X%" when it's actually a flex — iqPercentile floors
           // at 15, so a weak player would otherwise read "Top 85%" (sounds great,
           // means bottom-ish). Show it only for genuine top-half players.
-          rows.push({ icon: "🎯", label: "Accuracy", value: accPct, sub: (pctile && pctile >= 50) ? `Top ${100 - pctile}%` : null, color: "var(--accent)" });
+          rows.push({ Icon: Target, label: "Accuracy", value: accPct, sub: (pctile && pctile >= 50) ? `Top ${100 - pctile}%` : null, color: "var(--accent)" });
           // Suppress a 0 day-streak (gold flame next to 0 reads as broken, and
           // the rest of the app hides a zero streak).
-          if (loginStreak >= 1) rows.push({ icon: "🔥", label: "Day streak", value: String(loginStreak), color: "var(--gold)" });
-          rows.push({ icon: "🏅", label: "Best run", value: `${stats.bestStreak || 0} in a row`, color: "var(--text)" });
-          if (stats.bestScore > 0) rows.push({ icon: "🎮", label: "Best score", value: `${stats.bestScore}/10`, color: "var(--text)" });
-          if (stats.bestHotStreak > 0) rows.push({ icon: "⚡", label: "Hot Streak", value: String(stats.bestHotStreak), color: "var(--gold)" });
-          if (stats.bestTrueFalse > 0) rows.push({ icon: "✅", label: "True/False", value: `${stats.bestTrueFalse}/20`, color: "var(--t1)" });
+          if (loginStreak >= 1) rows.push({ Icon: Flame, label: "Day streak", value: String(loginStreak), color: "var(--gold)" });
+          rows.push({ Icon: Medal, label: "Best run", value: `${stats.bestStreak || 0} in a row`, color: "var(--text)" });
+          if (stats.bestScore > 0) rows.push({ Icon: Gamepad2, label: "Best score", value: `${stats.bestScore}/10`, color: "var(--text)" });
+          if (stats.bestHotStreak > 0) rows.push({ Icon: Zap, label: "Hot Streak", value: String(stats.bestHotStreak), color: "var(--gold)" });
+          if (stats.bestTrueFalse > 0) rows.push({ Icon: CircleCheck, label: "True/False", value: `${stats.bestTrueFalse}/20`, color: "var(--t1)" });
           return (
             <div className="scouting-report" style={{ marginBottom: 16 }}>
-              <div className="ds-eyebrow" style={{ marginBottom: 8 }}>🔍 Scouting Report</div>
+              <div className="ds-eyebrow" style={{ marginBottom: 8, display: "inline-flex", alignItems: "center", gap: 6 }}><Search size={13} strokeWidth={2.4} /> Scouting Report</div>
               <div style={{ background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 14, padding: "2px 16px" }}>
                 {rows.map((r, i) => (
                   <div key={r.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 0", borderTop: i === 0 ? "none" : "1px solid var(--border)" }}>
-                    <div style={{ fontSize: 18, width: 22, textAlign: "center", flexShrink: 0 }}>{r.icon}</div>
+                    <div style={{ width: 22, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>
+                      {r.Icon ? <r.Icon size={17} strokeWidth={2.2} color={r.color} /> : r.icon}
+                    </div>
                     <div style={{ fontSize: 13, color: "var(--t2)", fontWeight: 600 }}>{r.label}</div>
                     <div style={{ marginLeft: "auto", display: "flex", alignItems: "baseline", gap: 7 }}>
                       {r.sub ? <span style={{ fontSize: 11.5, color: "var(--t3)", fontWeight: 700 }}>{r.sub}</span> : null}
