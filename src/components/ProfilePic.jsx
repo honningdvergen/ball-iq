@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { avatarColour } from '../lib/avatarColour.js';
 
 /**
@@ -37,7 +38,15 @@ export function firstLetter(name) {
 }
 
 export function ProfilePic({ value, url, name, seed, className, style }) {
-  if (url) {
+  // ⚠️ A DEAD PHOTO URL USED TO LEAVE A HOLE. onError set visibility:hidden and
+  // stopped there, so a 404 (photo deleted from storage, a network blip, an
+  // expired signed URL) rendered an empty circle with no initial and no colour
+  // — worse than the monogram it replaced, and silent. Falling back to the
+  // shared ball is still wrong; falling back to this person's own monogram is
+  // the correct answer, and it is the same component either way.
+  const [broken, setBroken] = useState(false);
+  useEffect(() => { setBroken(false); }, [url]);   // a new URL deserves a fresh try
+  if (url && !broken) {
     return (
       <img
         src={url}
@@ -46,10 +55,7 @@ export function ProfilePic({ value, url, name, seed, className, style }) {
         className={className}
         style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%",
                  display: "block", ...style }}
-        /* A dead photo URL must not fall back to the shared ball — that is the
-           thing being fixed. Hide the broken image and let the coloured ground
-           behind it show through. */
-        onError={(e) => { e.currentTarget.style.visibility = "hidden"; }}
+        onError={() => setBroken(true)}
       />
     );
   }

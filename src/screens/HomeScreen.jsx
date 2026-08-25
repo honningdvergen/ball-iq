@@ -463,9 +463,10 @@ function HomeScreenImpl({
               <div className="hr-rating-glow" aria-hidden="true" />
               <div className="hr-rating-id">
                 <div className="hr-avatar" style={{ borderColor: "#58CC02" }}>
-                  {authProfile?.avatar_url
-                    ? <img src={authProfile.avatar_url} crossOrigin="anonymous" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                    : <ProfilePic value={authProfile?.avatar_id || profile?.avatar} name={railName} />}
+                  {/* One avatar component, not a hand-rolled <img> beside it. The
+                      bespoke branch hid itself on a dead URL and left a hole;
+                      ProfilePic now falls back to the person's monogram. */}
+                  <ProfilePic value={authProfile?.avatar_id || profile?.avatar} url={authProfile?.avatar_url} name={railName} />
                 </div>
                 <div className="hr-rating-idcol">
                   <div className="hr-rating-name">

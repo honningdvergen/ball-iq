@@ -80,7 +80,11 @@ describe('per-player default avatar', () => {
   it('ProfilePic actually uses the value it is given', () => {
     // ⚠️ THE ORIGINAL BUG. It read `url || BALL_SRC` and dropped `value`.
     expect(PROFILE).toMatch(/avatarColour\(value, seed\)/);
-    expect(PROFILE, 'an uploaded photo must still win').toMatch(/if \(url\) \{/);
+    // Pin the INTENT, not the literal. This matched `if (url) {` verbatim and
+    // broke the moment the condition gained a dead-URL fallback
+    // (`if (url && !broken)`), even though the rule it guards — an uploaded
+    // photo beats the generated monogram — was still perfectly true.
+    expect(PROFILE, 'an uploaded photo must still win').toMatch(/if \(url[^)]*\)\s*\{/);
     // A dead photo URL must NOT fall back to the shared ball.
     expect(PROFILE).not.toMatch(/currentTarget\.src = BALL_SRC/);
   });

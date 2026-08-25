@@ -284,7 +284,7 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
 // Lives inside ProfileScreen. Requires an authenticated user (userId). When
 // isActive is true the section loads friendships on mount and after any action
 // so counts + lists stay fresh when the user returns to the Profile tab.
-function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, onChallenge, onToast, onOpenFriend, onShareProfile }) {
+function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, currentUserPhoto, onChallenge, onToast, onOpenFriend, onShareProfile }) {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -515,15 +515,15 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       .filter(f => f.status === "accepted")
       .map(f => {
         const other = f.requester_id === userId ? f.addressee : f.requester;
-        return other ? { id: other.id, username: other.username, avatar: other.avatar, score: other.total_score || 0, isMe: false } : null;
+        return other ? { id: other.id, username: other.username, avatar: other.avatar, photo: other.photo, score: other.total_score || 0, isMe: false } : null;
       })
       .filter(Boolean)
       // Sprint #84 AAA3: blocked users disappear from the leaderboard too.
       .filter(r => !blockMask.has(r.id));
-    rows.push({ id: userId, username: currentUserName || "You", avatar: currentUserAvatar, score: currentUserScore || 0, isMe: true });
+    rows.push({ id: userId, username: currentUserName || "You", avatar: currentUserAvatar, photo: currentUserPhoto, score: currentUserScore || 0, isMe: true });
     rows.sort((a, b) => b.score - a.score);
     return rows;
-  }, [friendships, userId, currentUserScore, currentUserName, currentUserAvatar, blockMask]);
+  }, [friendships, userId, currentUserScore, currentUserName, currentUserAvatar, currentUserPhoto, blockMask]);
 
   const otherOf = (f) => f.requester_id === userId ? f.addressee : f.requester;
 
@@ -1293,7 +1293,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // chosen emoji could beat an uploaded photo. With the emoji set gone there
   // is nothing left to beat it.
   const showPhoto = !!avatarUrl;
-  const displayEmoji = <ProfilePic value={profile?.avatar || authProfile?.avatar_id} name={profile?.name || authProfile?.username} />;
+  const displayEmoji = <ProfilePic value={profile?.avatar || authProfile?.avatar_id} url={authProfile?.avatar_url || profile?.photo} name={profile?.name || authProfile?.username} />;
   // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
   // native window.alert dialog if no onToast prop was provided. In
   // practice every caller passes onToast — this is defensive.
@@ -1863,6 +1863,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           currentUserScore={authProfile?.total_score || 0}
           currentUserName={authProfile?.username || profile?.name || "You"}
           currentUserAvatar={profile?.avatar || authProfile?.avatar_id}
+          currentUserPhoto={authProfile?.avatar_url || profile?.photo}
           onChallenge={onChallenge}
           onToast={onToast}
           onOpenFriend={onOpenFriend}

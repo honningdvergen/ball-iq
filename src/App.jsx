@@ -13369,7 +13369,7 @@ function AppInner() {
             photoNudge={(user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
               <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
                 <div style={{width:44,height:44,flexShrink:0}}>
-                  <ProfilePic value={authProfile?.avatar_id} name={authProfile?.username} />
+                  <ProfilePic value={authProfile?.avatar_id} url={authProfile?.avatar_url} name={authProfile?.username} />
                 </div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:14,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>Put a face to the name</div>
