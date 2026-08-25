@@ -112,3 +112,44 @@ describe('one primary button, everywhere', () => {
     expect(offenders, '\n  Use 999 — see .btn-3d.\n  ' + offenders.join('\n  ') + '\n').toEqual([]);
   });
 });
+
+/**
+ * ⚠️ THE SAME DEFECT LIVES IN TWO FILES AND MY FIRST GUARD ONLY WATCHED ONE.
+ *
+ * The inline-style guard above caught accent-filled buttons declared in
+ * App.jsx. It could not see the ones declared as CSS classes, so seven more
+ * shipped on small radii — including .onboard-btn, the first button a new
+ * player ever taps. Alex found it by eye, again: "notice the green button
+ * here? it seems to be a pattern this with many buttons where they are
+ * outdated". It was: thirteen in total across the two files.
+ *
+ * A guard that watches one of two definition sites is not a guard, it is a
+ * false sense of coverage. This one watches the stylesheet.
+ */
+describe('no accent button on a rounded rectangle, in CSS either', () => {
+  it('every accent-filled rule is a pill, a circle, or not a button', () => {
+    // ⚠️ ALLOWLIST, NOT A LOOSER PATTERN. These three are genuinely not
+    // buttons — a progress bar, a 9px inline marker, and an element rendered
+    // into the OG share IMAGE (where a pill would look wrong at card scale).
+    // Naming them keeps the rule strict for everything else.
+    const NOT_BUTTONS = new Set(['.prog-bar', '.friends-you-pill', '.og-you']);
+    const offenders = [];
+    const rules = CSS.matchAll(/(^|\})\s*([^{}@]+)\{([^}]*)\}/gm);
+    for (const m of rules) {
+      const sel = m[2].trim().replace(/\s+/g, ' ');
+      const body = m[3];
+      if (sel.startsWith('/*')) continue;
+      if (!/background:\s*(#58CC02|var\(--accent\))/.test(body)) continue;
+      const r = /border-radius:\s*([^;]+)/.exec(body);
+      const rad = r ? r[1].trim() : null;
+      if (!rad || rad === '999px' || rad === '50%') continue;
+      if ([...NOT_BUTTONS].some((n) => sel.includes(n))) continue;
+      offenders.push(`${sel} — border-radius:${rad}`);
+    }
+    expect(
+      offenders,
+      '\n  Accent-filled buttons use the 999px pill — see .btn-3d.\n  ' +
+      offenders.join('\n  ') + '\n',
+    ).toEqual([]);
+  });
+});

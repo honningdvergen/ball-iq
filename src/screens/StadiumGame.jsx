@@ -44,6 +44,33 @@ function mask(stadium, n) {
   }).join("");
 }
 
+/**
+ * League badges — colour and initials, never a crest.
+ *
+ * ⚠️ NOT THE REAL LOGOS, DELIBERATELY. Alex asked whether we could use the
+ * actual league crests. We cannot: the Premier League lion, the La Liga and
+ * Serie A marks and the rest are registered trademarks, and shipping them in a
+ * paid-listing app without a licence is the kind of thing rights holders and
+ * app review act on. A picker screen is not worth that exposure.
+ *
+ * The app already solved this problem once. Club Quizzes identifies 86 clubs
+ * with a coloured tile and an abbreviation (ARS, MUN, RMA) rather than crests,
+ * and the 1.7.0 design review called those rows the strongest visual in the
+ * product. This is the same component pattern applied to leagues, so the two
+ * pickers stop being two different screens.
+ *
+ * Colours are the leagues' own brand hues. A colour is not a trademark in the
+ * way a logo is, and the app already assigns club colours the same way.
+ */
+const LEAGUE_BADGE = {
+  "premier-league": { abbr: "PL",  bg: "#3D195B", ink: "#FFFFFF" },
+  "la-liga":        { abbr: "LAL", bg: "#EE8707", ink: "#221000" },
+  "serie-a":        { abbr: "SEA", bg: "#024494", ink: "#FFFFFF" },
+  "bundesliga":     { abbr: "BUN", bg: "#D20515", ink: "#FFFFFF" },
+  "ligue-1":        { abbr: "L1",  bg: "#DAE023", ink: "#0A1A00" },
+};
+const FALLBACK_BADGE = { abbr: "—", bg: "var(--s3)", ink: "var(--t2)" };
+
 export default function StadiumGame({ onExit }) {
   // League picker first — five leagues now, and a Board keyed by league.id
   // below so every hook re-initialises cleanly when the league changes.
@@ -70,6 +97,14 @@ export default function StadiumGame({ onExit }) {
                   background: done ? "rgba(88,204,2,0.08)" : "var(--s2)",
                   border: `1px solid ${done ? "rgba(88,204,2,0.35)" : "var(--border)"}`,
                   color: "var(--text)", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
+                {(() => {
+                  const b = LEAGUE_BADGE[l.id] || FALLBACK_BADGE;
+                  return (
+                    <span aria-hidden="true" style={{ width: 44, height: 44, flexShrink: 0, borderRadius: 11,
+                      background: b.bg, color: b.ink, display: "flex", alignItems: "center",
+                      justifyContent: "center", fontWeight: 900, fontSize: 13, letterSpacing: 0.3 }}>{b.abbr}</span>
+                  );
+                })()}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 15.5, fontWeight: 800 }}>{l.name}</div>
                   <div style={{ fontSize: 12, color: "var(--t2)" }}>{l.season}</div>
