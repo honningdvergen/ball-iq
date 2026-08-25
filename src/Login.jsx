@@ -256,7 +256,14 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
     },
     btnBase: {
       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, width: '100%',
-      minHeight: 44, borderRadius: 15, fontSize: 15.5, fontWeight: 700, fontFamily: 'inherit',
+      // ⚠️ 999px, NOT 15px. Alex, 2026-08-25, looking at this screen: *"are the
+      // login option buttons also a bit square and outdated?"* They were — the
+      // app's primary button (.btn-3d: Play, Invite friends, Same phone) is a
+      // full pill, and these were rounded rectangles, so the single highest-
+      // stakes screen in the product was the one that looked least like it.
+      // Sign in with Apple permits any radius up to half the height, so a pill
+      // is within Apple's guidance.
+      minHeight: 44, borderRadius: 999, fontSize: 15.5, fontWeight: 700, fontFamily: 'inherit',
       cursor: 'pointer', touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent',
     },
     label: { display: 'block', fontSize: 12, fontWeight: 600, color: C.t2, marginBottom: 6 },

@@ -69,3 +69,46 @@ describe('design review — tier 2', () => {
     expect(tints, 'the long tail must stay quiet').toHaveLength(2);
   });
 });
+
+/**
+ * ⚠️ FOUR PRIMARY BUTTON RADII SHIPPED AT ONCE.
+ *
+ * .btn-3d — Play, Invite friends, Same phone — is a 999px pill with a green
+ * glow. Against it the app also shipped: the quiz's Next at 14px, the Online
+ * tab's main CTA at 16px, the sign-up screen's auth buttons at 15px, and the
+ * local-play button at 10px. Alex found three of them by eye in a single pass
+ * ("does the next button look a bit outdated?", "are the login option buttons
+ * also a bit square?", "also sign up to play online button?"). The design
+ * review had already named the class and undercounted it as "two Play-button
+ * components".
+ *
+ * This is the assertion that stops a fifth appearing.
+ */
+describe('one primary button, everywhere', () => {
+  const LOGIN = readFileSync(fileURLToPath(new URL('../../src/Login.jsx', import.meta.url)), 'utf8');
+
+  it('the sign-up screen uses the pill', () => {
+    // The highest-stakes screen in the product: scouting report #4's five-star
+    // blocker was a sign-up dead end, and 36% of accounts never play a game.
+    expect(LOGIN).toMatch(/minHeight: 44, borderRadius: 999,/);
+  });
+
+  it('the Online tab CTA uses the pill and the standard glow', () => {
+    expect(APP).toMatch(/borderRadius:999,background:"var\(--accent\)",color:"#06230C",boxShadow:"0 8px 22px -8px rgba\(88,204,2,0\.55\)"/);
+  });
+
+  it('no primary green button is left on a rounded rectangle', () => {
+    // Catches the shape rather than any one element: a full-width or
+    // accent-filled button carrying a small radius is the defect.
+    const offenders = [];
+    // ⚠️ \d{1,3} then filter — \d{1,2} silently matched the "99" of "999" and
+    // reported every CORRECT button as an offender. A guard that flags the fix
+    // gets deleted for crying wolf.
+    for (const m of APP.matchAll(/borderRadius:(\d{1,3})[^}]{0,160}background:"var\(--accent\)"/g)) {
+      if (m[1] === '999') continue;
+      const line = APP.slice(0, m.index).split('\n').length;
+      offenders.push(`App.jsx:${line} borderRadius:${m[1]} on an accent-filled button`);
+    }
+    expect(offenders, '\n  Use 999 — see .btn-3d.\n  ' + offenders.join('\n  ') + '\n').toEqual([]);
+  });
+});

@@ -713,7 +713,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .typed-btn{width:100%;margin-top:9px;padding:13px;background:var(--accent);border:none;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#0a1a00;cursor:pointer;transition:all 0.15s;}
 .typed-btn:hover{background:#58CC02;transform:translateY(-1px);}
 .typed-btn:disabled{opacity:0.25;cursor:default;transform:none;}
-.hint-note{font-size:12px;color:var(--t3);margin-top:7px;font-style:italic;}
+.hint-note{font-size:12px;color:var(--t3);margin-top:7px;font-style:italic;display:flex;align-items:center;gap:5px;}
 .timer-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .timer-fill{height:100%;border-radius:2px;transition:width 0.9s linear,background 0.3s;will-change:width;}

@@ -20,7 +20,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
@@ -1615,7 +1615,7 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
         </div>
       </div>
       <div style={{borderTop:"1px solid var(--s1)",background:"#0C0E14",padding:"12px 20px calc(12px + env(safe-area-inset-bottom, 0px))"}}>
-        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:15,background:"var(--accent)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:15,fontSize:15.5,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
+        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,fontSize:15.5,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
       </div>
     </div>
   );
@@ -1893,7 +1893,7 @@ function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
         )}
       </div>
       {hintsEnabled !== false && diff === "easy" && !state && val.length === 0 && firstLetter && (
-        <div className="hint-note">💡 Starts with "{firstLetter}"</div>
+        <div className="hint-note"><Lightbulb size={12} strokeWidth={2.5} aria-hidden="true" /> Starts with "{firstLetter}"</div>
       )}
       <button className="typed-btn" onClick={() => submit()} disabled={!val.trim() || !!state}>Submit →</button>
     </div>
@@ -2419,7 +2419,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
           animation:"fadeIn 0.3s ease-out"
         }}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:10,marginBottom:4}}>
-            <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif"}}>💡 Why?</div>
+            <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> Why?</div>
             {/* ⚠️ A skip nobody can see is not a skip. The hold is capped at
                 1.8s, but a player racing a 60-second clock has no way to know
                 a tap will work unless we say so. Muted on purpose — this is
@@ -2574,7 +2574,7 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
           color:"var(--t2)",
           animation:"fadeIn 0.3s ease-out"
         }}>
-          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
+          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4,display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> Why?</div>
           <div>{q.hint}</div>
         </div>
       )}
@@ -3238,7 +3238,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           <div role="status" className={`feedback ${gotIt ? "correct" : "wrong"}`}>
             <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{
               gotIt ? "✓ Correct!"
-                : timedOut ? "⏱ Time's up"
+                : timedOut ? "Time's up"
                 : isTyped ? `✗ ${q.typed_a}`
                 : "✗ Incorrect"
             }</span>
@@ -3277,7 +3277,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           color:"var(--t2)",
           animation:"fadeIn 0.4s ease-out"
         }}>
-          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4}}>💡 Why?</div>
+          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4,display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> Why?</div>
           <div>{q.hint}</div>
         </div>
       )}
@@ -6260,7 +6260,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           anywhere, so the most important CTA on the Online tab carried the one
           off-palette hue in the product, and only on iOS. Setting it on the button
           makes both children inherit the same ink. */}
-      <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:16,background:"var(--accent)",color:"#06230C",boxShadow:"0 8px 24px rgba(88,204,2,0.25)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
+      <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"#06230C",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
         <span style={{display:"flex",alignItems:"center"}} aria-hidden="true">{needsAccount ? <Zap size={17} strokeWidth={2.4} /> : <Gamepad2 size={17} strokeWidth={2.2} />}</span><span style={{fontSize:17,fontWeight:800,color:"#06230C"}}>{needsAccount ? "Sign up to play online" : "Create Room"}</span>
       </button>
       {needsAccount && (
@@ -6271,7 +6271,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
       {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
           sits dimmed until there's input, lights green once typing starts. */}
       <div style={{display:"flex",gap:9,marginTop:10}}>
-        <div style={{flex:1,minWidth:0,borderRadius:16,background:"var(--s1)",padding:"0 15px",display:"flex",alignItems:"center",gap:10,
+        <div style={{flex:1,minWidth:0,borderRadius:999,background:"var(--s1)",padding:"0 15px",display:"flex",alignItems:"center",gap:10,
           border:joinFocus ? "1.5px solid rgba(88,204,2,0.55)" : "1px solid var(--border)",
           boxShadow:joinFocus ? "0 0 0 4px rgba(88,204,2,0.12)" : undefined}}>
           <span style={{flexShrink:0,display:"flex",color:"var(--t3)"}} aria-hidden="true"><KeyRound size={15} strokeWidth={2} /></span>
@@ -6307,7 +6307,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           />
         </div>
         <button onClick={submitJoin} disabled={joining || joinCode.length === 0}
-          style={{borderRadius:16,padding:"15px 24px",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit",flexShrink:0,
+          style={{borderRadius:999,padding:"15px 24px",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit",flexShrink:0,
             ...(joinCode.length > 0 && !joining
               ? {border:"none",background:"var(--accent)",color:"#06230C",boxShadow:"0 8px 24px rgba(88,204,2,0.25)"}
               : {background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t3)"})}}>
@@ -6357,8 +6357,8 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
             do, so it stops being a ghost button. Signed in, it goes back to
             secondary — online is the point of the tab by then. */}
         <button onClick={() => startMode("local")} style={needsAccount
-          ? {padding:"10px 18px",borderRadius:10,border:"none",background:"var(--accent)",color:"#06230C",WebkitTextFillColor:"#06230C",fontWeight:800,fontSize:13.5,cursor:"pointer",fontFamily:"inherit",flexShrink:0}
-          : {padding:"9px 16px",borderRadius:10,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
+          ? {padding:"10px 20px",borderRadius:999,border:"none",background:"var(--accent)",color:"#06230C",WebkitTextFillColor:"#06230C",fontWeight:800,fontSize:13.5,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 6px 16px -6px rgba(88,204,2,0.5)"}
+          : {padding:"9px 18px",borderRadius:999,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
       </div>
       </div>{/* /.online-col-b */}
       </div>{/* /.online-cols */}
@@ -6406,7 +6406,7 @@ function ResetPasswordOverlay() {
               style={{width:"100%",padding:"14px 16px",marginBottom:14,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:16,fontFamily:"inherit",outline:"none"}} />
             {err && <div style={{color:"#FF6B6B",fontSize:13,marginBottom:12}}>{err}</div>}
             <button onClick={submit} disabled={busy || !pw || !pw2}
-              style={{width:"100%",border:"none",borderRadius:14,background:"var(--accent)",padding:15,fontSize:15,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>
+              style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,fontSize:15,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>
               {busy ? "Saving…" : "Save new password"}
             </button>
             <button onClick={clearPasswordRecovery} style={{marginTop:10,background:"transparent",border:"none",color:"var(--t3)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Cancel</button>
@@ -6911,15 +6911,15 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               Share (referral growth), Feedback. Equal ghost buttons. */}
           <div style={{display:"flex",gap:8,marginTop:18}}>
             <button onClick={rateApp} style={ABOUT_ACTION_STYLE} aria-label="Rate Ball IQ on the App Store">
-              <span style={{fontSize:18}} aria-hidden="true">⭐</span>
+              <Star size={17} strokeWidth={2.25} aria-hidden="true" />
               <span>Rate</span>
             </button>
             <button onClick={shareApp} style={ABOUT_ACTION_STYLE} aria-label="Share Ball IQ">
-              <span style={{fontSize:18}} aria-hidden="true">↗</span>
+              <ArrowUpRight size={17} strokeWidth={2.25} aria-hidden="true" />
               <span>Share</span>
             </button>
             <a href="mailto:hello@balliq.app" style={ABOUT_ACTION_STYLE} aria-label="Send feedback">
-              <span style={{fontSize:18}} aria-hidden="true">✉️</span>
+              <Mail size={17} strokeWidth={2.25} aria-hidden="true" />
               <span>Feedback</span>
             </a>
           </div>
@@ -12420,7 +12420,7 @@ function AppInner() {
                 </>
               ) : (
                 <>
-                  <div style={{fontSize:48,marginBottom:12}}>⭐</div>
+                  <div style={{width:56,height:56,margin:"0 auto 12px",borderRadius:16,background:"rgba(255,193,7,0.14)",border:"1px solid rgba(255,193,7,0.3)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--gold)"}}><Star size={26} strokeWidth={2.25} aria-hidden="true" /></div>
                   <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Glad you're enjoying it!</div>
                   <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
                   <button className="btn btn-p" style={{marginBottom:10}} onClick={() => {
