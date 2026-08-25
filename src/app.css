@@ -1824,7 +1824,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
 
-.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:flex-start;flex:0 0 auto;padding:8px 0;}
+.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1 1 auto;padding:8px 0;}
+/* flex:1 + centred so the slack left over by the bottom-anchored keyboard
+   splits above and below the tiles instead of collecting into one 122px
+   hole between the grid and the keys. --ended overrides back to 0 0 auto
+   below, because the finished board packs tight against its result copy. */
 /* Once the game has ended the keyboard collapses and a result card slides in
    below, so the grid no longer needs to fill remaining space. Hug content,
    tighten internal gaps, and leave a clean 14px breathing zone above the
@@ -1932,7 +1936,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    -14px and gap to 3px. Do NOT go past -14px / below 3px gap: curved screen
    edges start eating the Q/P keys and keys start touching. This is the limit;
    further tap-accuracy would need taller keys (a design change, vetoed). */
-.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-bottom:auto;margin-inline:-20px;}
+.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-top:auto;margin-inline:-20px;}
+/* ⚠️ margin-TOP:auto, not margin-bottom. With margin-bottom:auto the flex
+   column pushed the keyboard UP and parked every spare pixel underneath it —
+   233px at 405x881, a quarter of the screen — so the player reached UP to
+   type on a 6.3" phone. The slack belongs between the grid and the keys.
+   The desktop block below re-centres by resetting this, not margin-bottom. */
 /* ⚠️ UNIFORM KEY WIDTH, AND THE STAGGER COMES FREE.
    The three rows hold 10 / 9 / 8 keys and every key was flex:1, so each row
    divided the SAME width by a different number: row 1 keys measured ~39pt and
@@ -1948,7 +1957,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    guidance, and by the gap between keys. */
 .wd-keyboard{--kb-gap:6px;--kb-key:calc((100% - 9 * var(--kb-gap)) / 10);}
 .wd-kb-row{display:flex;justify-content:center;gap:var(--kb-gap);}
-.wd-key{position:relative;flex:0 0 var(--kb-key,auto);min-width:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
+.wd-key{position:relative;flex:0 0 var(--kb-key,auto);min-width:0;height:56px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
 /* Big-thumbs, round three (2026-08-21, playtester with large hands). Width is
    ARITHMETIC now — ten keys across a 375-402pt screen at full bleed is 35.7-38.4pt
    each, under Apple's 44pt minimum, and no CSS recovers that. What was still on
@@ -2038,6 +2047,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .wd-grid{gap:4px;padding:2px 0;}
   .wd-row{gap:4px;max-width:calc(var(--wd-cols) * 46px + (var(--wd-cols) - 1) * 4px);}
   .wd-keyboard{gap:4px;padding:0 0 2px;}
+  .wd-key{height:46px;}
   .wd-key-enter{height:46px;margin-top:0;}
 }
 
@@ -2050,7 +2060,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    directory reviewers and r/WebGames. Mobile (<1024px) untouched. */
 @media (min-width: 1024px) {
   .wd-screen{max-width:500px;margin-inline:auto;justify-content:center;min-height:calc(100dvh - 132px);}
-  .wd-keyboard{margin-bottom:0;}
+  .wd-keyboard{margin-top:0;}
   .wd-key{height:52px;font-size:15px;}
 }
 
