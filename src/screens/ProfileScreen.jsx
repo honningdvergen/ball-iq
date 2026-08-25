@@ -6,7 +6,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
-import { Pencil, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
+import { Pencil, Sparkles, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 
 // ⚠️ TWELVE OS EMOJI IN ONE VIEWPORT — the densest patch of borrowed art left
@@ -894,14 +894,19 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
               <div style={{ fontSize: 40, fontWeight: 900, color: "var(--gold)", lineHeight: 1, fontFeatureSettings: '"tnum"' }}>{card.overall}</div>
               <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)" }}>{tier.label}</div>
             </div>
-            <div className="pd-leagues-grid" style={{ marginTop: 12 }}>
+            {/* ⚠️ ITS OWN CLASSES, NOT .pd-leagues-grid. That one is declared
+                inside @media (min-width: 1024px), so borrowing it gave the
+                phone no grid at all — six ratings stacked in a single column
+                with the number jammed against the abbreviation. Alex: "why is
+                the scorecard broken on my friends profile". Mobile-first here. */}
+            <div className="fpc-grid">
               {card.ratings.map(r => (
-                <div key={r.abbr} className="pd-league">
-                  <span className="pd-league-flag">{r.icon}</span>
-                  <span className="pd-league-val" style={{ color: r.abbr === strongest ? "var(--accent)" : "var(--t1)" }}>
+                <div key={r.abbr} className="fpc-row">
+                  <span className="fpc-flag">{r.icon}</span>
+                  <span className="fpc-val" style={{ color: r.abbr === strongest ? "var(--accent)" : "var(--t1)" }}>
                     {r.answered > 0 ? r.rating : "—"}
                   </span>
-                  <span className="pd-league-abbr">{r.abbr}</span>
+                  <span className="fpc-abbr">{r.abbr}</span>
                 </div>
               ))}
             </div>
@@ -1041,13 +1046,13 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
                 type="button"
                 onClick={() => setReportOpen(false)}
                 disabled={submitting}
-                style={{flex:1,padding:"14px",background:"var(--s2)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:15,fontWeight:600,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.5:1}}
+                style={{flex:1,padding:"14px",background:"var(--s2)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:15,fontWeight:600,cursor:submitting?"not-allowed":"pointer",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",opacity:submitting?0.5:1}}
               >Cancel</button>
               <button
                 type="button"
                 onClick={handleReportSubmit}
                 disabled={submitting}
-                style={{flex:1,padding:"14px",background:"var(--accent)",border:"none",color:"#000",fontSize:15,fontWeight:700,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.6:1}}
+                style={{flex:1,padding:"14px",background:"var(--accent)",border:"none",color:"#000",fontSize:15,fontWeight:700,cursor:submitting?"not-allowed":"pointer",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",opacity:submitting?0.6:1}}
               >{submitting ? "Submitting…" : "Submit report"}</button>
             </div>
           </div>
@@ -1443,7 +1448,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           alignItems:"flex-start",
           gap:6,
         }}>
-          <div style={{fontSize:16,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>🌟 Save your progress</div>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            {/* Every other card in the app carries a lucide glyph in a tinted
+                well; this one still had a bare 🌟 inline with its heading, on
+                the screen that asks a guest to make an account. */}
+            <span style={{width:32,height:32,borderRadius:9,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.12)",border:"1px solid rgba(88,204,2,0.28)"}} aria-hidden="true">
+              <Sparkles size={17} strokeWidth={2.1} color="var(--accent)" />
+            </span>
+            <span style={{fontSize:16,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>Save your progress</span>
+          </div>
           <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.4}}>
             {/* v1.6 guest entry: anonymous (invite-link) players already HAVE
                 a server account — the pitch is not "create one to play" but
@@ -1456,7 +1469,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           </div>
           <button
             onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }}
-            style={{marginTop:8,alignSelf:"stretch",minHeight:44,padding:"12px 18px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
+            style={{marginTop:8,alignSelf:"stretch",minHeight:44,padding:"12px 18px",background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
           >
             {isAnonUser ? 'Save my account' : 'Sign in / Create account'}
           </button>
@@ -1493,7 +1506,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                     ) : editingName ? (
                       <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
                         <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:"#fff"}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
-                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name" style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"none", background:"#58CC02", color:"#06230C", fontSize:15, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name" style={{flexShrink:0, width:32, height:32, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"#58CC02", color:"#06230C", fontSize:15, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
                         <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit" style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:14, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
                       </span>
                     ) : (
@@ -1675,9 +1688,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                     <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
                       <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
                       <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
-                        style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                        style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
                       <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
-                        style={{flexShrink:0, width:34, height:34, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
+                        style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
                     </span>
                   ) : showNameCTA ? (
                     <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">

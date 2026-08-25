@@ -5,6 +5,7 @@ import { Share as CapShare } from '@capacitor/share';
 import { APP_NAME } from '../lib/scoring.js';
 import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { supabase } from '../supabase.js';
+import { useProfilePhotos } from '../lib/profilePhotos.js';
 import { useAuth } from '../useAuth.jsx';
 import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName, mpSetPlayerReady, mpStartNextRound } from '../multiplayerRpc.js';
 import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName } from '../App.jsx';
@@ -479,7 +480,7 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
 // topicMeta + TopicPickerSheet moved to App.jsx (shared with LocalSetup).
 
 function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, pack, setPack, scoringMode, onSetScoringMode }) {
-  const photos = useOpponentPhotos(players);
+  const photos = useProfilePhotos(useMemo(() => (players || []).map(p => p.user_id), [players]));
   // Optimistic mode highlight: reflect the host's tap instantly, then let the
   // realtime room.mode echo confirm it. Revert + toast if the RPC fails so the
   // picker never silently no-ops or sticks on a value the server didn't accept.
@@ -675,7 +676,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                 <button
                   onClick={saveName}
                   disabled={savingName}
-                  style={{ padding: "10px 14px", borderRadius: 10, background: "var(--accent)", color: "#0a1a00", border: "none", fontFamily: "inherit", fontSize: 13, fontWeight: 800, cursor: "pointer", WebkitTextFillColor: "#0a1a00", opacity: savingName ? 0.6 : 1 }}
+                  style={{ padding: "10px 14px", borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", background: "var(--accent)", color: "#0a1a00", border: "none", fontFamily: "inherit", fontSize: 13, fontWeight: 800, cursor: "pointer", WebkitTextFillColor: "#0a1a00", opacity: savingName ? 0.6 : 1 }}
                 >
                   {savingName ? "…" : "Save"}
                 </button>
@@ -886,46 +887,6 @@ function useCountUp(target, { duration = 850, delay = 400 } = {}) {
    having. Existing friends and already-pending requests are filtered out
    BEFORE paint, so nobody is ever offered a button that will fail. */
 
-// ── Opponent photos ─────────────────────────────────────────────────────────
-// ⚠️ room_players CARRIES AN AVATAR ID AND NO PHOTO. Alex, from the Online tab:
-// "i still do not see my friends chosen profile picture but just the j for his
-// username". Every render site here passed `value={p.avatar}` with no `url`,
-// because there was no url to pass — `p_avatar` is all create_room / join_room
-// / claim_rematch ever carried.
-//
-// It does NOT need a migration. profiles.avatar_url is readable by any signed-in
-// client, so the room's user_ids resolve to photos in one query. Keyed by
-// user_id, refetched when the roster changes, and silently degrades to the
-// monogram if the query fails — a lobby must never block on decoration.
-function useOpponentPhotos(players) {
-  const [photos, setPhotos] = useState({});
-  const ids = useMemo(
-    () => (players || []).map((p) => p.user_id).filter(Boolean).sort().join(','),
-    [players]
-  );
-  useEffect(() => {
-    if (!ids) { setPhotos({}); return undefined; }
-    let alive = true;
-    (async () => {
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('id, avatar_url')
-          .in('id', ids.split(','));
-        if (error) throw error;
-        if (!alive) return;
-        const map = {};
-        for (const r of data || []) if (r.avatar_url) map[r.id] = r.avatar_url;
-        setPhotos(map);
-      } catch {
-        if (alive) setPhotos({});   // monograms, not a broken screen
-      }
-    })();
-    return () => { alive = false; };
-  }, [ids]);
-  return photos;
-}
-
 function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
   const opponents = useMemo(
     () => (players || []).filter(p => p.user_id && p.user_id !== myUserId),
@@ -1053,7 +1014,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
 }
 
 function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defaultAvatar }) {
-  const photos = useOpponentPhotos(players);
+  const photos = useProfilePhotos(useMemo(() => (players || []).map(p => p.user_id), [players]));
   // v1.6 guest entry — upgrade CTA in the actions column below.
   const { isAnonUser, openAuthPrompt } = useAuth();
   const isSurvival = room?.mode === 'survival';

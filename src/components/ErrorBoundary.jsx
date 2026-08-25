@@ -68,8 +68,8 @@ export class ErrorBoundary extends React.Component {
             onClick={() => { this.setState({ hasError:false, error:null }); window.location.reload(); }}
             style={{
               padding:"13px 28px", background:"#58CC02", border:"none",
-              borderRadius:11, fontFamily:"Inter,sans-serif", fontSize:14,
-              fontWeight:700, color:"#0a1a00", cursor:"pointer"
+              borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", fontFamily:"Inter,sans-serif", fontSize:14,
+              fontWeight:700, color:"#06230C", cursor:"pointer"
             }}
           >
             Restart App

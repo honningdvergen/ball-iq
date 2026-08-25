@@ -21,6 +21,25 @@ import { fileURLToPath } from 'node:url';
 const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8');
 const CSS = read('../../src/app.css');
 const APP = read('../../src/App.jsx');
+
+// ⚠️ SCAN EVERY JSX FILE, NOT TWO OF THEM.
+// The inline-style button rule below originally read only App.jsx (and Login).
+// Alex found a rounded-rect accent button on the Profile screen — "does this
+// look a bit outdated to you?" — and widening the scan turned up FIFTEEN more
+// across six files that had never been looked at. Third time in one session a
+// guard watched one of several definition sites and reported clean.
+import { readdirSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+const SRC_DIR = fileURLToPath(new URL('../../src', import.meta.url));
+const ALL_JSX = (function walk(d) {
+  const out = [];
+  for (const n of readdirSync(d)) {
+    const p = join(d, n);
+    if (statSync(p).isDirectory()) out.push(...walk(p));
+    else if (n.endsWith('.jsx')) out.push(p);
+  }
+  return out;
+})(SRC_DIR);
 const HOME = read('../../src/screens/HomeScreen.jsx');
 
 describe('design review — tier 2', () => {

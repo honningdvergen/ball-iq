@@ -304,7 +304,7 @@ function StadiumBoard({ league, onExit }) {
           </div>
           <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 14, flexWrap: "wrap" }}>
             {!state.gaveUp && (
-              <button onClick={share} style={{ padding: "12px 22px", borderRadius: 12, background: "var(--accent)", border: "none", color: "#0a1a00", fontFamily: "inherit", fontSize: 14, fontWeight: 800, cursor: "pointer" }}>
+              <button onClick={share} style={{ padding: "12px 22px", borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", background: "var(--accent)", border: "none", color: "#0a1a00", fontFamily: "inherit", fontSize: 14, fontWeight: 800, cursor: "pointer" }}>
                 Share result
               </button>
             )}

@@ -8,6 +8,7 @@ import { safeSetItem } from './safeStorage.js';
 import { useMultiplayerRoom } from './useMultiplayerRoom.js';
 import Login from './Login.jsx';
 import ReportButton from './components/ReportButton.jsx';
+import { useProfilePhotos } from './lib/profilePhotos.js';
 // Lazy: the 523-line review screen is settings-only, never on the cold/first
 // paint — React.lazy keeps it out of the initial bundle (Suspense at render).
 const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
@@ -1560,7 +1561,7 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
         <span style={{fontSize:24,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Topics</span>
       </div>
       <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:"0 20px 20px"}}>
-        <button onClick={() => setDraft("mixed")} style={{width:"100%",marginTop:14,borderRadius:15,textAlign:"left",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,padding:"13px 15px",
+        <button onClick={() => setDraft("mixed")} style={{width:"100%",marginTop:14,borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",textAlign:"left",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,padding:"13px 15px",
           ...(draft === "mixed" ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
           <span style={{fontSize:19}}>🎲</span>
           <span style={{fontSize:14.5,fontWeight:draft === "mixed" ? 800 : 700,color:draft === "mixed" ? "#8AE042" : "var(--t1)"}}>Mixed — all topics</span>
@@ -6213,6 +6214,10 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
     }
     return { games, wins, losses: games - wins, winRate: games ? Math.round(100 * wins / games) : null, streak, recent, rival: recent[0] || null };
   }, [history]);
+  // ⚠️ THE SCREEN ALEX WAS ACTUALLY LOOKING AT. The first photo fix went into
+  // the lobby and podium; the Online hub — the VS card and Recent opponents —
+  // kept showing monograms, which is what he reported twice.
+  const oppPhotos = useProfilePhotos(useMemo(() => stats.recent.map(r => r.id), [stats.recent]));
   const createRoom = () => { setOnlineAutoCreate?.(true); startMode("online"); };
   return (
     <div className="screen tab-content online-hub">
@@ -6246,7 +6251,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:19,fontWeight:800,color:"var(--t3)"}}>VS</span>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
             {stats.rival
-              ? <span style={{width:84,height:84,borderRadius:"50%",border:`2.5px solid ${stats.rival.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",background:"var(--s2)",overflow:"hidden"}}><ProfilePic value={stats.rival.avatar} name={stats.rival.name} /></span>
+              ? <span style={{width:84,height:84,borderRadius:"50%",border:`2.5px solid ${stats.rival.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",background:"var(--s2)",overflow:"hidden"}}><ProfilePic value={stats.rival.avatar} url={oppPhotos[stats.rival.id]} name={stats.rival.name} /></span>
               : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px dashed #3A3D4A",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:30,color:"var(--t3)"}}>?</span>}
             <span style={{fontSize:13,fontWeight:stats.rival ? 700 : 600,color:stats.rival ? "var(--t1)" : "var(--t3)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.rival ? stats.rival.name : "Your rival here"}</span>
           </div>
@@ -6359,7 +6364,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           <div style={{display:"flex",gap:9,marginTop:12}}>
             {stats.recent.map((o) => (
               <div key={o.name} style={{flex:1,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"14px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:7}}>
-                <span style={{width:46,height:46,borderRadius:"50%",background:"var(--s2)",border:`2px solid ${o.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}><ProfilePic value={o.avatar} name={o.name} /></span>
+                <span style={{width:46,height:46,borderRadius:"50%",background:"var(--s2)",border:`2px solid ${o.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}><ProfilePic value={o.avatar} url={oppPhotos[o.id]} name={o.name} /></span>
                 <span style={{fontSize:13,fontWeight:700,color:"var(--t1)",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.name}</span>
                 {/* Scores are variable-width — "Won 3241–2055" wraps to two lines
                     in a third-of-screen card while "Lost 3329–5274" fits on one.
@@ -7897,8 +7902,8 @@ class TabErrorBoundary extends React.Component {
             onClick={() => this.setState({ hasError:false })}
             style={{
               padding:"11px 24px", background:"#58CC02", border:"none",
-              borderRadius:11, fontFamily:"Inter,sans-serif", fontSize:13.5,
-              fontWeight:700, color:"#0a1a00", cursor:"pointer"
+              borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", fontFamily:"Inter,sans-serif", fontSize:13.5,
+              fontWeight:700, color:"#06230C", cursor:"pointer"
             }}
           >
             Try again
@@ -12696,7 +12701,7 @@ function AppInner() {
               </div>
               <button
                 onClick={() => { setChallengeResult(null); shareDaily(); }}
-                style={{width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#0a1a00"}}
+                style={{width:"100%",padding:14,background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#0a1a00"}}
               >
                 Send it back 🔁
               </button>
@@ -12799,7 +12804,7 @@ function AppInner() {
               <div style={{fontSize:32,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",marginBottom:12}}>{levelUpOverlay.name}</div>
               <div style={{fontSize:14,color:"rgba(255,255,255,0.6)"}}>Keep playing to reach the next level</div>
             </div>
-            <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:24,fontSize:15,fontWeight:700,cursor:"pointer"}}>Let's Go ⚽</button>
+            <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>Let's Go ⚽</button>
           </div>
         )}
         {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
@@ -13114,7 +13119,7 @@ function AppInner() {
               {IS_IOS_WEB && (
                 <button
                   onClick={() => { try { window.location.href = `app.balliq://balliq.app/join/${pendingJoinCode}`; } catch {} }}
-                  style={{width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+                  style={{width:"100%",padding:14,background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
                 >
                   📲 Got the app? Open it there
                 </button>
@@ -13128,8 +13133,8 @@ function AppInner() {
                 onClick={handleGuestJoin}
                 disabled={guestJoining}
                 style={IS_IOS_WEB
-                  ? {width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:14,fontWeight:700,cursor:"pointer",marginBottom:8,opacity:guestJoining?0.6:1}
-                  : {width:"100%",padding:14,background:"var(--accent)",color:"#0a1a00",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8,opacity:guestJoining?0.6:1}}
+                  ? {width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:14,fontWeight:700,cursor:"pointer",marginBottom:8,opacity:guestJoining?0.6:1}
+                  : {width:"100%",padding:14,background:"var(--accent)",color:"#06230C",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8,opacity:guestJoining?0.6:1}}
               >
                 {guestJoining ? "Joining…" : "⚡ Play as guest"}
               </button>

@@ -3600,5 +3600,11 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
    the one thing worth opening someone's profile for. Reuses .pd-leagues-grid
    and .pd-league from the owner's card so both read as the same object. */
 .pd-card{background:var(--s1);border:1px solid rgba(255,193,7,0.28);border-radius:16px;padding:16px;}
-.pd-league-val{font-size:15px;font-weight:800;font-feature-settings:"tnum";}
-.pd-league-abbr{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.06em;}
+/* Two columns on a phone, three from 420px. Base rules — NOT inside a desktop
+   media query, which is what broke the first cut. */
+.fpc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:14px;}
+@media (min-width:420px){.fpc-grid{grid-template-columns:1fr 1fr 1fr;}}
+.fpc-row{display:flex;align-items:baseline;gap:7px;min-width:0;}
+.fpc-flag{font-size:14px;line-height:1;flex:0 0 auto;}
+.fpc-val{font-size:16px;font-weight:800;font-feature-settings:"tnum";line-height:1;}
+.fpc-abbr{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.06em;line-height:1;}
