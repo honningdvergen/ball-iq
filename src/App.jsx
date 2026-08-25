@@ -10540,11 +10540,18 @@ function AppInner() {
     // Create Room, got walled, and landed somewhere with no trace of the thing
     // they'd asked for — the single worst step in the online funnel.
     const goTab = (e) => { setScreen("home"); setTab(e?.detail?.tab || "home"); };
+    // Multiplayer's ended screen asks for a player card. Same window-event
+    // pattern as the two above, because OnlineMultiplayer is lazy-loaded and
+    // has no path to openFriendProfile. Only the ENDED screen dispatches this —
+    // firing it from a live lobby would pull the player out of their room.
+    const openFriend = (e) => { const id = e?.detail?.id; if (id) openFriendProfile({ id }); };
     window.addEventListener("biq:go-home", goHome);
     window.addEventListener("biq:auth-dismissed", goTab);
+    window.addEventListener("biq:open-friend", openFriend);
     return () => {
       window.removeEventListener("biq:go-home", goHome);
       window.removeEventListener("biq:auth-dismissed", goTab);
+      window.removeEventListener("biq:open-friend", openFriend);
     };
   }, []);
 

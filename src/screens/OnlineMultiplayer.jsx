@@ -1259,6 +1259,36 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
     enterRematch();
   };
 
+  // ⚠️ ONLY FROM THE ENDED SCREEN. Opening a card navigates away from Online,
+  // which in a LOBBY or mid-question would pull the player out of a live room —
+  // so this lives in LobbyEnded and nowhere else. Here room.state is already
+  // "ended", so leaving costs nothing.
+  //
+  // The whole card already exists: FriendProfileScreen takes a friendId and
+  // fetches the avatar, level, XP, stat grid, badges and Ball IQ ratings itself.
+  // This is the wire, not a new screen. Guests carry no user_id and your own row
+  // would just be your profile, so both are left inert rather than tappable.
+  const openCard = (p) => {
+    if (!p?.user_id || p.user_id === myUserId) return;
+    haptic('soft');
+    try {
+      window.dispatchEvent(new CustomEvent('biq:open-friend', {
+        detail: { id: p.user_id, username: p.name, avatar: p.avatar },
+      }));
+    } catch { /* host absent — the row simply does nothing */ }
+  };
+  const cardProps = (p) => {
+    const can = !!p?.user_id && p.user_id !== myUserId;
+    return can ? {
+      onClick: () => openCard(p),
+      role: 'button',
+      tabIndex: 0,
+      onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(p); } },
+      'aria-label': `View ${p.name || 'player'}'s profile`,
+      style: { cursor: 'pointer' },
+    } : {};
+  };
+
   // Medal emoji for podium positions; numeric rank thereafter.
   function rankBadge(idx) {
     if (idx === 0) return '🥇';
@@ -1498,7 +1528,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                 if (!p) return <div key={rank} className="mp-podium-col" />;
                 const isMe = !!myUserId && p.user_id === myUserId;
                 return (
-                  <div key={`${p.room_id}:${p.user_id}`} className={`mp-podium-col mp-podium-${rank + 1}`}>
+                  <div key={`${p.room_id}:${p.user_id}`} {...cardProps(p)} className={`mp-podium-col mp-podium-${rank + 1}`}>
                     <div className="mp-podium-who">
                       <span style={{
                         width: 40, height: 40, borderRadius: '50%', display: 'inline-flex',
@@ -1533,7 +1563,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
             const idx = showPodium ? i + 3 : i;
             const isMe = !!myUserId && p.user_id === myUserId;
             return (
-              <div key={`${p.room_id}:${p.user_id}`} style={rowStyle(p, idx)}>
+              <div key={`${p.room_id}:${p.user_id}`} {...cardProps(p)} style={{ ...rowStyle(p, idx), ...(cardProps(p).style || {}) }}>
                 <div style={{
                   fontSize: idx < 3 ? 24 : 14,
                   fontWeight: 700,
