@@ -3196,7 +3196,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     top: 4px !important;
     bottom: 4px !important;
     width: 25% !important;
-    transition: transform .52s cubic-bezier(0.34,1.32,0.52,1) !important;
+    /* ⚠️ LOCKSTEP WITH THE BASE RULE — and the reason this comment exists is
+       that it was broken the very next time the base changed. The .26s fix for
+       "tab changes are not really responsive" was applied to the base rule
+       only, so it was INERT in the installed app and the native build: this
+       !important copy outranked it, and the one surface Alex reports from kept
+       the old half-second. Verified by grepping the built bundle, which
+       contained both .26s and .52s!important. Pinned by
+       tests/unit/tab-pill-lockstep.test.js now. */
+    transition: transform .26s cubic-bezier(0.34,1.22,0.5,1) !important;
     pointer-events: none !important;
   }
   .tab-pill i {
