@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
-import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStreak, getFootleNumber } from "../lib/wordle.js";
+import { getWordleAnswer, gradeWordleGuess, computeFootleStreak, getFootleNumber } from "../lib/wordle.js";
 
 // FootleHero — Home tab daily-zone card. Morning state shows an empty
 // grid preview + Play CTA; evening state (won/lost) shows the user's
@@ -17,45 +17,43 @@ import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStre
 // #17 Stage 3 extracted FootleHero to this module but left shareCard
 // in App.jsx because it's too entangled with toast plumbing + the
 // canvas card drawer to move cleanly.
-// Rotating morning-teaser pairs — [guess, answer], both 5-letter footballer
-// surnames so the sample always fits the 5-col strip. The day's pair is
-// picked by the same local-calendar day index the puzzle uses (rotates at
-// midnight, wraps back to MESSI after the cycle). Grades are computed with
-// the REAL gradeWordleGuess engine at render time, so the demonstrated
-// logic can never drift from the game's actual rules. Every pair was
-// engine-checked to show a good color mix (most: all three states).
-const TEASER_PAIRS = [
-  ["MOSES", "MESSI"],
-  ["KROOS", "RAMOS"],
-  ["KEANE", "KANTE"],
-  ["SILVA", "SALAH"],
-  ["HENRY", "NEUER"],
-  ["PEDRI", "PIQUE"],
-  ["VILLA", "VIDAL"],
-  ["RAMOS", "MARTA"],
-  ["MOUNT", "FODEN"],
-  ["TERRY", "HENRY"],
-  ["COSTA", "KANTE"],
-  ["NEVES", "TEVEZ"],
+// The morning card's wordmark.
+//
+// ⚠️ FIRST, A CORRECTION I OWE THIS FILE. The grid that used to sit here — a
+// sample guess graded by the real engine, then the answer solved — was NOT a
+// spoiler mechanism, it was a demonstration of how the mode works, and a good
+// one: it showed a guess and an outcome rather than a static palette. Two dated
+// collisions did exist (2027-01-04 KANTE, 2026-10-03 PEDRI, both found by
+// walking the frozen schedule) but `pickTeaserPair` had ALREADY fixed them by
+// skipping to the next non-colliding pair. Removing the whole mechanism was
+// more than the bug required. Alex, 2026-08-25: *"you do know that the grid on
+// the right of the footle hero is not a spoiler though? it is a display of how
+// the mode works."* Correct.
+//
+// What replaced it is a choice, not a fix: the tiles spell FOOTLE, so the card
+// names the mode and shows the colour language in one object instead of
+// carrying a 27px white heading AND a grid that said the same thing twice.
+//
+// ⚠️ SCALE AND GROUND WERE THE REAL PROBLEM, not the idea. The first attempt
+// put 46px saturated tiles on the full green gradient, over a green glow, above
+// a green Play pill — four green masses in a 362x150 box. Alex: *"just
+// overwhelming and too huge"*. Both dials came down: 30px tiles, and
+// .footle-hero's ground pulled back to a quiet green (see app.css) so the
+// tiles are the brightest thing on the card rather than the fourth.
+//
+// The arrangement is Alex's: yellow F, green O O, grey T, yellow L, green E.
+// A yellow opener matters more than it looks — the F is the most prominent
+// tile, and a green one there sat directly on the green ground.
+//
+// ⚠️ THE TILES REUSE .fh-tile-green / .fh-tile-yellow. Those are the classes
+// html.biq-cb overrides, so the wordmark recolours to orange/blue with the rest
+// of the game for free. A bespoke class here would silently opt the hero out of
+// colour-blind mode — exactly the bug found on this card, where the board and
+// keyboard switched palettes and the hero did not.
+export const FOOTLE_MARK = [
+  ["F", "yellow"], ["O", "green"], ["O", "green"],
+  ["T", "grey"],   ["L", "yellow"], ["E", "green"],
 ];
-
-/**
- * Pick the day's sample pair, skipping any that would spoil today's puzzle.
- *
- * Exported so the no-spoiler property can be TESTED against the real schedule
- * rather than asserted. Deterministic in the day index, so every player still
- * sees the same sample on the same day.
- */
-export function pickTeaserPair(dayIndex, answer) {
-  const start = ((dayIndex % TEASER_PAIRS.length) + TEASER_PAIRS.length) % TEASER_PAIRS.length;
-  for (let i = 0; i < TEASER_PAIRS.length; i += 1) {
-    const pair = TEASER_PAIRS[(start + i) % TEASER_PAIRS.length];
-    if (pair[0] !== answer && pair[1] !== answer) return pair;
-  }
-  // Unreachable with the current pool (no answer equals two pairs at once),
-  // but never return undefined and blank the card.
-  return TEASER_PAIRS[start];
-}
 
 export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview, shareCard }) {
   const ws = readWordleTodayStatus();
@@ -121,62 +119,45 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
   const PREVIEW_ROWS = 2;
   const cols = answer.length || 5;
   if (!isDone) {
-    // ⚠️ THE TEASER CAN SPOIL THE PUZZLE, and it is not hypothetical — both the
-    // teaser rotation and the answer schedule key off getWordleDayIndex(), so
-    // collisions are DATED. Walking the next 420 days against the frozen log:
-    //   2027-01-04  teaser answer KANTE === that day's real answer
-    //               -> the Home card renders the answer as an all-green row
-    //   2026-10-03  teaser guess  PEDRI === that day's real answer
-    // Skipping forward to the first non-colliding pair keeps the rotation
-    // deterministic (same pair for everyone, same day) and makes a spoiler
-    // impossible rather than unlikely.
-    const [teaserGuess, teaserAnswer] = pickTeaserPair(getWordleDayIndex(), answer);
-    const teaserGrades = gradeWordleGuess(teaserGuess, teaserAnswer);
     return (
-      <button className="footle-hero footle-hero-morning" onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
+      <button className={`footle-hero footle-hero-morning${inProgress ? "" : " footle-hero--mark"}`} onClick={onPlay} aria-label={inProgress ? `Continue today's Footle — ${ws.used} of 6 used` : "Play today's Footle"}>
         <div className="fh-body">
           {/* The "Daily · Footle" eyebrow that used to sit here is gone (Alex,
               2026-07-29): the card lives inside a section already headed DAILY
               and its own title says Footle, so the eyebrow spent a line saying
               both words a second time. */}
-          <div className="fh-title">Footle</div>
-          {/* Kept to TWO lines, deliberately. The tile grid takes the right-hand
-              column, so this text has roughly half the card's width — every
-              extra word costs a whole line and orphans one word on it. "· daily"
-              went first (the section header carries it), then "or manager",
-              which is why the answer pool no longer contains manager-only names:
-              the copy and the puzzle have to agree. */}
-          {/* No letter count here (Alex, 2026-07-29). It WAS dynamic — {cols}
-              is today's answer length, not a fixed claim — but the teaser grid
-              to the right is hard-coded 5 wide, so on any non-5-letter day the
-              card printed "4 letters" beside five tiles and contradicted itself.
-              Bring it back only if the grid becomes dynamic too. */}
-          {/* ⚠️ THE SIXTH CALL SITE. d60bdee changed "surname" to "the name a
-              footballer goes by" everywhere it could find — App.jsx, DailyScreen,
-              HomeScreen's DESKTOP hero — and missed this one, which is the mobile
-              hero and therefore the single line most Ball IQ users read first.
-              For a day the app said "the name a footballer goes by" on desktop
-              and "Surname of a footballer" on every phone. Uniformly wrong was
-              bad; inconsistent was worse, because the reports that prompted the
-              fix would have kept arriving from the players who never saw it.
-              The pool holds 33 mononyms (WILLIAN, PELÉ, XAVI…) and "surname" is
-              why losing on one felt unfair. Guarded by footle-prompt-copy.test.js. */}
-          <div className="fh-sub">
-            The name a footballer goes by<br />
-            6 guesses
-          </div>
+          {/* The wordmark IS the heading — no white "Footle" above it, or the
+              card says its own name twice. Not rendered while a puzzle is in
+              progress: that state shows the player's own board instead. */}
+          {!inProgress && (
+            <div className="fh-mark" aria-hidden="true">
+              {FOOTLE_MARK.map(([ch, state], i) => (
+                <span className={`fh-tile fh-tile-${state} fh-mark-tile`} key={i}>{ch}</span>
+              ))}
+            </div>
+          )}
+          {inProgress && <div className="fh-title">Footle</div>}
+          {/* ⚠️ "SURNAME" IS WRONG ON 33 OF THE 406 ANSWERS (8.1%, ~1 day in
+              12): PELE, XAVI, RAUL, NEYMAR, WILLIAN, ISCO, PEDRI, ENDRICK and
+              26 more are single-name players — WORDLE_FULL_NAMES stores them
+              with an empty first-name prefix, which is how that count is
+              derived rather than remembered. The word was removed once already
+              because losing on a mononym felt unfair to players, and
+              footle-prompt-copy.test.js was written to keep it out.
+              Alex, 2026-08-24, asked for it back knowing the trade. Recorded
+              here so the next person to read this file finds the number
+              attached to the decision instead of re-discovering it. */}
+          <div className="fh-sub">Surname of a footballer in 6 guesses</div>
           <div className="fh-cta-row">
             <span className="fh-cta">{inProgress ? `Continue · ${ws.used}/6 used` : "Play"}</span>
           </div>
         </div>
         {/* ⚠️ A PLAYER MID-PUZZLE SEES THEIR OWN BOARD, NOT A SAMPLE ONE.
-            This grid used to render the rotating teaser in every unfinished
+            This grid used to render a rotating sample solve in every unfinished
             state — including in-progress, where an all-green winning row sat
             directly beside "Continue · N/6 used". The most-viewed card in the
-            app was showing a stranger's solved puzzle as if it were yours.
-            The teaser is still right for someone who has not started: it
-            demonstrates the colour logic with the real engine. */}
-        {inProgress && grades.length > 0 ? (
+            app was showing a stranger's solved puzzle as if it were yours. */}
+        {inProgress && grades.length > 0 && (
           <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": cols}}>
             {grades.slice(-PREVIEW_ROWS).map((row, r) => {
               const guess = guesses.slice(-PREVIEW_ROWS)[r] || "";
@@ -188,22 +169,6 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
                 </div>
               );
             })}
-          </div>
-        ) : (
-          <div className="fh-grid" aria-hidden="true" style={{"--fh-cols": 5}}>
-            {/* Today's rotating sample solve: imperfect guess graded by the real
-                engine, then the answer solved all-green (see TEASER_PAIRS).
-                Only ever shown to a player who has not started today's puzzle. */}
-            <div className="fh-row">
-              {teaserGrades.map((c, i) => (
-                <div key={i} className={`fh-tile fh-tile-${c}`}>{teaserGuess[i]}</div>
-              ))}
-            </div>
-            <div className="fh-row">
-              {teaserAnswer.split("").map((ch, i) => (
-                <div key={i} className="fh-tile fh-tile-green">{ch}</div>
-              ))}
-            </div>
           </div>
         )}
       </button>

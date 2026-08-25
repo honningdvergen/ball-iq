@@ -1895,7 +1895,17 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-key-action{flex:1.6;font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
 .wd-key-green{background:#58CC02;color:#0A0A0A;}
 .wd-key-yellow{background:#FFC107;color:#0A0A0A;}
-.wd-key-grey{background:#3a3f55;color:rgba(255,255,255,0.6);}
+/* ⚠️ ELIMINATED KEYS MUST RECEDE, AND THESE ADVANCED. Untried keys sit on
+   --s3 (#1C1F28); this was #3a3f55 — LIGHTER, and blue-tinted. Ruling a letter
+   out made it the most prominent thing on the keyboard, which is backwards in
+   the one interaction the mode is built around. The #3a3f55 is also a leftover
+   from the navy palette the rest of the app migrated off (see the "was
+   #2C3050 blue-purple" notes on --s3): every neighbouring token was reneutralised
+   and this one was missed.
+   Darker ground + dimmed ink now, which reads as "spent" at a glance and still
+   clears 4.5:1 on the letter (≈6.2:1) so the key stays readable. Deliberately
+   NOT recoloured in html.biq-cb — absent is absent in both palettes. */
+.wd-key-grey{background:#101219;color:rgba(255,255,255,0.55);}
 .wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:2px;background:#58CC02;color:#0A0A0A;border:none;border-radius:8px;font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#0A0A0A;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
@@ -1943,17 +1953,26 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Morning state is one big <button>; evening state is a <div> hosting
    discrete Review + Share buttons. CTAs share .fh-cta styling — primary
    (white pill) and secondary (translucent pill). */
-.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(150deg,#10331B 0%,#0E1912 46%,#0F1117 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid #234029;box-shadow:0 4px 16px rgba(0,0,0,0.30),0 2px 6px rgba(0,0,0,0.18);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
-.footle-hero::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(circle at 95% 0%, rgba(88,204,2,0.16), transparent 55%);pointer-events:none;}
+.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:13px 16px;border-radius:18px;background:linear-gradient(150deg,#12211A 0%,#101720 46%,#0F1117 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid #1E3327;box-shadow:0 4px 16px rgba(0,0,0,0.30),0 2px 6px rgba(0,0,0,0.18);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
+/* ⚠️ THE GROUND WAS THE COLLISION. This card carried a green gradient, a
+   green corner glow, a green Play pill with a green glow — and then tiles.
+   Four green masses in a 362x150 box, which is why a saturated wordmark read
+   as "overwhelming" no matter how it was arranged. Ground and glow are pulled
+   back so the tiles are the brightest thing on the card instead of the fourth.
+   ⚠️ NOT NEUTRAL, deliberately. Footle's green pairs against Daily 7's amber
+   card inside the same .daily-zone, and .mp-card (Play with Friends) is green
+   too — go fully neutral here and the only green card on Home becomes
+   multiplayer, so the social card outranks the daily. Quiet, not absent. */
+.footle-hero::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(circle at 95% 0%, rgba(88,204,2,0.07), transparent 55%);pointer-events:none;}
 .footle-hero-morning:active{transform:scale(0.99);}
 .footle-hero-evening{cursor:default;}
 .fh-body{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
 .fh-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#8AE042;-webkit-text-fill-color:#8AE042;margin-bottom:6px;}
-.fh-title{font-size:30px;font-weight:900;line-height:1;letter-spacing:-0.8px;}
+.fh-title{font-size:27px;font-weight:900;line-height:1;letter-spacing:-0.7px;}
 .fh-score{font-size:18px;font-weight:700;line-height:1.1;margin-top:6px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
 .fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:#FFC107;-webkit-text-fill-color:#FFC107;}
-.fh-sub{font-size:12px;line-height:1.4;margin-top:8px;color:rgba(255,255,255,0.78);font-weight:600;}
-.fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:12px;}
+.fh-sub{font-size:12px;line-height:1.35;margin-top:6px;color:rgba(255,255,255,0.78);font-weight:600;}
+.fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:10px;}
 /* Page hero. Measured on device it was the SMALLEST green control on Home —
    36px tall / 13px type / no shadow — while the secondary "Play with Friends"
    card's Online button was ~45px, 15px type, 2.5x wider AND glowing. The
@@ -1974,6 +1993,25 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    length (4-8). Tile size matched D1 mockup proportions — 13×13 with 3px
    gaps — so the squares carry the visual weight the smaller tiles lacked. */
 .fh-grid{flex-shrink:0;display:flex;flex-direction:column;gap:5px;align-self:center;}
+/* ── The FOOTLE wordmark (not-started state) ─────────────────────────────────
+   The tiles are the heading, so there is no white "Footle" above them — the
+   card used to say its own name twice, once in 27px type and again letter by
+   letter, with neither reading as dominant.
+   ⚠️ 30px, NOT 46px. The first attempt was the same idea at heading scale and
+   read as a fragment of a game board rather than a wordmark. Six tiles plus
+   five gaps at 30px is 205px, which sits comfortably inside the 330px of card
+   left after the app's 20px gutters and the card's 16px padding — on a 375pt
+   SE as well as a Pro Max.
+   ⚠️ SPECIFICITY IS LOAD-BEARING. .fh-tile is defined BELOW this block and
+   sizes off --fh-tile, so a bare `.fh-mark-tile` ties on specificity and LOSES
+   on order — that is how the legend chips once rendered at full tile size and
+   the monogram's F shrank to 13px inside its box. Hence `.fh-tile.fh-mark-tile`.
+   ⚠️ The tiles keep .fh-tile-green/-yellow/-grey so html.biq-cb recolours the
+   wordmark with the rest of the game. Never give them bespoke colours. */
+.footle-hero--mark{align-items:flex-start;}
+.fh-mark{display:flex;gap:5px;margin-bottom:2px;}
+.fh-tile.fh-mark-tile{width:30px;height:30px;border-radius:7px;border:none;
+  font-size:17px;font-weight:900;letter-spacing:-0.3px;flex:0 0 auto;}
 /* --fh-tile scales with answer length (set inline by FootleHero): long
    surnames (7-8+ letters) shrink the tiles so the grid never collides with
    the "Solved in N guesses" text column (Alex device catch). */
@@ -3254,6 +3292,14 @@ html.biq-cb .wd-key-yellow{background:#85C0F9;}
 html.biq-cb .wd-legend-chip.is-green{background:#F5793A;}
 html.biq-cb .wd-legend-chip.is-amber{background:#85C0F9;}
 html.biq-cb .wd-tile--next{border-color:rgba(245,121,58,0.55);box-shadow:inset 0 0 0 1px rgba(245,121,58,0.14);}
+/* ⚠️ THE HOME HERO WAS NEVER RECOLOURED. A colour-blind player turned the
+   setting on, the board and keyboard switched to orange/blue, and the most-
+   viewed card in the app carried on showing green and amber — the two hues the
+   setting exists because they read as one. It matters more now that the hero's
+   whole job is to TEACH the colour language (it spells FOOTLE in it), so the
+   card was demonstrating a palette the player would never see in the game. */
+html.biq-cb .fh-tile-green{background:#F5793A;color:#231000;-webkit-text-fill-color:#231000;}
+html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-color:#04203A;}
 
 /* ─── NATIVE SHELL: NAVIGATION AT DESKTOP WIDTHS ─────────────────────────────
    ⚠️ THE NATIVE APP HAD NO NAVIGATION AT ALL AT >=1024px. Two rules, each

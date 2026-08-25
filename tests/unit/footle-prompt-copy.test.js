@@ -103,6 +103,19 @@ describe('Footle never promises a surname', () => {
     /const \[prefix, surname\] = WORDLE_FULL_NAMES/,
     /\+ surname\}\)`/,
     /<strong>\{surname\}<\/strong>/,
+    // ⚠️ PENDING AN EDITORIAL DECISION — Alex, 2026-08-24: *"just make it say
+    // Surname of a footballer in 6 guesses"*. Allowed in the mobile hero only,
+    // so the compact-lockup layout could be seen on a device, and NOT
+    // propagated to the other five render sites yet. That is the open
+    // question: the FAQ in App.jsx currently reads "Usually a surname,
+    // sometimes a one-name legend like Pelé or Xavi", and 33 of the 406
+    // answers are single-name players (counted from WORDLE_FULL_NAMES entries
+    // with an empty first-name prefix — PELE, XAVI, RAUL, NEYMAR, WILLIAN,
+    // ISCO, PEDRI, ENDRICK…), so "surname" is wrong roughly one day in twelve.
+    // Either it goes everywhere or it comes back out; a split between the
+    // mobile hero and the desktop one is precisely the bug d60bdee caused and
+    // this file was written to catch. DELETE THIS ALLOWANCE once decided.
+    /Surname of a footballer in 6\b/,
   ];
 
   it('no rendered string promises the answer is a surname', () => {
@@ -135,10 +148,9 @@ describe('Footle never promises a surname', () => {
       hits.length,
       `expected the agreed wording in several render sites, found: ${hits.join(', ') || 'none'}`,
     ).toBeGreaterThanOrEqual(3);
-    // The mobile hero is the one that was missed, and the one most users see.
-    expect(
-      hits.some((p) => p.includes('FootleHero')),
-      'components/FootleHero.jsx is the MOBILE hero — the site d60bdee missed.',
-    ).toBe(true);
+    // ⚠️ The FootleHero assertion is suspended while the wording above is
+    // undecided — see the ALLOWED note. Restore it (or repoint it at the new
+    // sentence) the moment the decision lands, because the mobile hero is both
+    // the site d60bdee missed and the one most users read first.
   });
 });
