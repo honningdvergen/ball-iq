@@ -2212,8 +2212,36 @@ function CB_MODE() {
   try { return document.documentElement.classList.contains("biq-cb"); } catch { return false; }
 }
 
+// ⚠️ EVERY CALL IS A NATIVE BRIDGE ROUND TRIP, AND THEY SERIALISE.
+// From Alex's device log while tab switching felt slow — ~57 of these back to
+// back, each a full JS -> native -> JS hop, with
+// `WebProcessProxy::didBecomeUnresponsive` in the same log:
+//
+//     ⚡️ To Native ->  Haptics impact 120633433
+//     ⚡️ TO JS undefined
+//     ⚡️ To Native ->  Haptics impact 120633434
+//     ⚡️ TO JS undefined      … x57
+//
+// No amount of browser profiling can see this: there is no bridge in Chrome,
+// which is why three rounds of CSS measurement kept saying the app was fine
+// while the phone said otherwise. Capacitor builds a fresh
+// UIImpactFeedbackGenerator per call and iOS charges latency for one that has
+// not been prepare()d, so a burst of taps queues a burst of hops in front of
+// the UI work.
+//
+// 55ms floor for the LIGHT taps only. Two impacts closer together than that
+// are not distinguishable by a fingertip anyway, so nothing is lost — while a
+// spammed tab bar or a fast Footle typist stops flooding the bridge. The
+// meaningful, once-per-moment haptics (correct, wrong, levelup, hardCorrect)
+// are deliberately exempt: those must never be swallowed.
+let _lastLightHapticAt = 0;
 export function haptic(type) {
   try {
+    if (type === "soft" || type === "select") {
+      const now = Date.now();
+      if (now - _lastLightHapticAt < 55) return;
+      _lastLightHapticAt = now;
+    }
     let enabled = true;
     try {
       const raw = localStorage.getItem("biq_settings");
@@ -13456,7 +13484,7 @@ function AppInner() {
               { id:"daily",    Icon: CalendarDays, label:"Daily",  badge: !dailyDone },
               { id:"profile",  Icon: User,         label:"Profile" },
             ].map(({ id, Icon, label, badge }) => (
-              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => { haptic("soft"); setTab(id); }}>
+              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => { setTab(id); haptic("soft"); }}>
                 <span className="tab-svg"><Icon size={22} strokeWidth={2.25} aria-hidden="true" /></span>
                 <span className="tab-label">{label}</span>
                 {badge && <span className="tab-badge" />}

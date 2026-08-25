@@ -47,7 +47,14 @@
    a pane returns from display:none to visible. Sub-perception for
    "lag" but smooths the instant swap. Neutralised automatically by
    the reduced-motion rule above. */
-.tab-pane{animation:tabPaneFadeIn 120ms ease;}
+/* ⚠️ NO FADE, AND contain:content.
+   The fade repainted a whole freshly-laid-out screen for 120ms on every tab
+   tap, on top of the relayout that showing a display:none subtree already
+   costs. `contain: content` tells the engine the pane's layout and paint cannot
+   affect anything outside it, so switching stops invalidating the rest of the
+   document — the trace showed 406 of 454 nodes needing layout for what is
+   visually one subtree swap. */
+.tab-pane{contain:content;}
 @keyframes tabPaneFadeIn{from{opacity:0;}to{opacity:1;}}
 /* Lazy game-screen loading spinner (ScreenLoading in App.jsx). The six game
    screens used to fall back to `null`, so tapping one showed an EMPTY frame
@@ -3586,3 +3593,12 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
      here so a dialog does not balloon with the column. */
   .modal-overlay > * { max-width: 480px !important; }
 }
+
+
+/* ── Friend profile: Ball IQ rating card ────────────────────────────────────
+   The friend profile rendered a bare stat grid and no card at all, which is
+   the one thing worth opening someone's profile for. Reuses .pd-leagues-grid
+   and .pd-league from the owner's card so both read as the same object. */
+.pd-card{background:var(--s1);border:1px solid rgba(255,193,7,0.28);border-radius:16px;padding:16px;}
+.pd-league-val{font-size:15px;font-weight:800;font-feature-settings:"tnum";}
+.pd-league-abbr{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.06em;}

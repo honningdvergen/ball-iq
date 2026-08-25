@@ -870,6 +870,44 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         <div className="profile-name" style={{cursor:'default'}}>{username}</div>
         <div className="profile-level-badge"><level.Icon size={14} strokeWidth={2.3} /> {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{friendXp.toLocaleString()} XP</span></div>
       </div>
+      {/* ⚠️ THE FRIEND PROFILE HAD NO BALL IQ CARD AT ALL. Alex: "i still can
+          not see my friends score card or ball iq rating card when i tap on
+          their profile" — correct, it rendered a bare stat grid and stopped.
+          The card is the reason to open someone's profile: the overall, the
+          tier, and the six league ratings are what make a friend worth
+          comparing yourself to.
+          No new query was needed — the fetch above already selects `stats`,
+          which carries catStats, and computeCard turns that into the same card
+          the owner sees. Same model, same numbers, no second source of truth. */}
+      {(() => {
+        const fCat = friendStats.catStats || {};
+        const played = Object.values(fCat).some((c) => (c?.a || 0) > 0);
+        if (!played) return null;   // a card of six dashes is worse than none
+        const acc = (totalAnswered > 0 && totalCorrect <= totalAnswered) ? totalCorrect / totalAnswered : 0.4;
+        const card = computeCard(fCat, acc);
+        const tier = CARD_TIERS[card.tier] || CARD_TIERS.prospect;
+        const strongest = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating)[0]?.abbr || null;
+        return (
+          <div className="pd-card" style={{ marginBottom: 16 }}>
+            <div className="ds-eyebrow" style={{ marginBottom: 6 }}>Ball IQ rating</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 2 }}>
+              <div style={{ fontSize: 40, fontWeight: 900, color: "var(--gold)", lineHeight: 1, fontFeatureSettings: '"tnum"' }}>{card.overall}</div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--gold)" }}>{tier.label}</div>
+            </div>
+            <div className="pd-leagues-grid" style={{ marginTop: 12 }}>
+              {card.ratings.map(r => (
+                <div key={r.abbr} className="pd-league">
+                  <span className="pd-league-flag">{r.icon}</span>
+                  <span className="pd-league-val" style={{ color: r.abbr === strongest ? "var(--accent)" : "var(--t1)" }}>
+                    {r.answered > 0 ? r.rating : "—"}
+                  </span>
+                  <span className="pd-league-abbr">{r.abbr}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
       {hasAnyStats && (
         <div className="stat-grid" style={{marginBottom:16}}>
           <div className="stat-tile"><div className="st-val">{gamesPlayed}</div><div className="ds-eyebrow st-key">Games</div></div>
