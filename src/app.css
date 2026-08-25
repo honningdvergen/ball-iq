@@ -1392,14 +1392,16 @@ button.friends-lb-row:hover{background:var(--s3);}
 .badge-tile.locked .badge-name{color:var(--t3);}
 /* Phase 6a Item 4: inline detail card below the badges grid. */
 .badge-detail-card{display:flex;align-items:center;gap:14px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:12px;}
-.bd-icon{font-size:36px;line-height:1;flex-shrink:0;}
+.bd-icon{display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
+.bd-icon svg{width:32px;height:32px;}
 .bd-body{display:flex;flex-direction:column;gap:3px;min-width:0;}
 .bd-name{font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-0.2px;}
 .bd-desc{font-size:13px;color:var(--t2);line-height:1.4;}
 .bd-status{font-size:10px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;margin-top:4px;}
 .bd-status-earned{color:var(--accent);}
 .bd-status-locked{color:var(--t3);}
-.badge-icon{font-size:20px;}
+.badge-icon{display:flex;align-items:center;justify-content:center;line-height:1;}
+.badge-icon svg{width:22px;height:22px;}
 .badge-name{font-size:9px;font-weight:600;color:var(--t2);text-align:center;line-height:1.3;font-family:'Inter',sans-serif;}
 .badge-tile.earned .badge-name{color:var(--accent);}
 .avatar-spinner{width:28px;height:28px;border-radius:50%;border:3px solid rgba(88,204,2,0.25);border-top-color:var(--accent);animation:spin 0.8s linear infinite;}
@@ -1512,7 +1514,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 /* ── XP BAR ── */
 .xp-bar-wrap{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:11px 14px 10px;margin-top:14px;}
 .xp-bar-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
-.xp-level-icon{font-size:16px;}
+.xp-level-icon{display:inline-flex;align-items:center;line-height:1;}
 .xp-level-name{font-size:13px;font-weight:700;letter-spacing:-0.1px;flex:1;}
 .xp-total{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t2);font-weight:600;}
 .xp-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
@@ -2639,7 +2641,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      instead of 3 sparse rows of 4). Icons + labels bumped so they're
      readable in the wider tile. Mobile stays 4-col via the base rule. */
   .badges-grid { grid-template-columns: repeat(6, 1fr); gap: 10px; }
-  .badge-icon { font-size: 26px; }
+  .badge-icon svg { width: 26px; height: 26px; }
   .badge-name { font-size: 11px; }
 
   /* F-P3: profile card avatar + name + level badge enlarged. Centered

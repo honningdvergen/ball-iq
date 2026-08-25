@@ -81,6 +81,50 @@ describe('icons are icons, not emoji', () => {
     ).toEqual([]);
   });
 
+  it('no icon TABLE stores an emoji as its glyph', () => {
+    // ⚠️ THE BADGE GRID HID FROM EVERY CHECK ABOVE. Twelve OS emoji rendered
+    // into twelve icon slots — and not one of them appeared in the JSX, because
+    // they lived in a DATA TABLE (`BADGE_DEFS`) and reached the markup through a
+    // variable. Every rule in this file scans markup, so all twelve were
+    // invisible to it while sitting on the screen a player opens to feel proud.
+    //
+    // Emoji in a table are also worse than emoji in markup: 🔥 was doing double
+    // duty for BOTH streak badges, which is only visible when you look at the
+    // rendered grid, never at the line of code.
+    const offenders = [];
+    // Match string literals of ANY length, then test each. A capped pattern
+    // (`"[^"]{1,6}"`) pairs the CLOSING quote of a long member with the OPENING
+    // quote of the next one, swallows the emoji, and reports 3 of 12 — which is
+    // what the first cut of this rule did before it was run against the known
+    // pre-fix file.
+    const STR = /"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'/g;
+    const TABLE = /(?:export\s+)?(?:const|let|var)\s+([A-Z][A-Z0-9_]*(?:_DEFS|_TIERS|_ICONS|_ITEMS|_LEVELS))\s*=\s*\[/g;
+    for (const f of FILES) {
+      const src = readFileSync(f, 'utf8');
+      for (const m of src.matchAll(TABLE)) {
+        let i = m.index + m[0].length, depth = 1;
+        while (i < src.length && depth > 0) {
+          if (src[i] === '[') depth++;
+          else if (src[i] === ']') depth--;
+          i++;
+        }
+        const body = src.slice(m.index + m[0].length, i - 1);
+        for (const sm of body.matchAll(STR)) {
+          const v = sm[0].slice(1, -1);
+          // A lone glyph — an emoji inside real words is content, not an icon.
+          if (v && EMOJI.test(v) && !/[a-zA-Z]{2}/.test(v)) {
+            offenders.push(`${rel(f)}: ${m[1]} holds ${v}`);
+          }
+        }
+      }
+    }
+    expect(
+      offenders,
+      '\n  A table that feeds an icon slot must hold components, not emoji —\n' +
+      '  see BADGE_DEFS. Content emoji (toasts, celebrations) stay welcome.\n',
+    ).toEqual([]);
+  });
+
   it('no sheet or modal leads with an emoji as its hero mark', () => {
     // A large decorative glyph (fontSize >= 30, aria-hidden) is a hero mark.
     const offenders = [];

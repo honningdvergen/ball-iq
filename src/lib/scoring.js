@@ -1,3 +1,4 @@
+import { Footprints, Sprout, TrendingUp, Shield, Sparkles, Award, Medal, Trophy } from 'lucide-react';
 export const APP_NAME = "Ball IQ";
 
 export function iqPercentile(iq) {
@@ -28,15 +29,32 @@ export function iqPercentile(iq) {
 //
 // Icon ≈ 8 weeks of daily play, Immortal ≈ 6 months. Both are deliberately
 // far: they exist so the bar is never empty, not to be finished.
+// ⚠️ TWO GLYPH FIELDS, AND BOTH ARE LOAD-BEARING.
+//
+// `Icon` is a lucide component and is what every IN-APP surface renders: the
+// journey ladder, the level pills, the level-up overlay. The ladder sits
+// directly above the badge grid on Profile, and once the badges became icons
+// a column of eight OS emoji beside them looked worse than it had before —
+// consistency cuts both ways.
+//
+// `icon` is the EMOJI and must stay a string. It is serialised into the share
+// payload at App.jsx (`li:`), and api/og.js renders that as TEXT at 100px on
+// the card. A React component there stringifies to "[object Object]" and the
+// share image breaks — which is exactly the kind of thing that survives review
+// because nobody opens the card.
+//
+// Ladder icons are deliberately disjoint from BADGE_DEFS: both sets are on
+// screen together, and a glyph that means "Legend the rank" in one grid and
+// "Legend the badge" in the other is worse than either.
 export const LEVELS = [
-  { name:"Sunday League",  xpNeeded:0,     icon:"⚽" },
-  { name:"Non-League",     xpNeeded:100,   icon:"🌱" },
-  { name:"Championship",   xpNeeded:300,   icon:"📈" },
-  { name:"Premier League", xpNeeded:700,   icon:"🏟️" },
-  { name:"Champions League",xpNeeded:1500, icon:"⭐" },
-  { name:"Legend",         xpNeeded:3000,  icon:"🐐" },
-  { name:"Icon",           xpNeeded:8000,  icon:"👑" },
-  { name:"Immortal",       xpNeeded:20000, icon:"🏆" },
+  { name:"Sunday League",   xpNeeded:0,     icon:"⚽",  Icon:Footprints },
+  { name:"Non-League",      xpNeeded:100,   icon:"🌱",  Icon:Sprout },
+  { name:"Championship",    xpNeeded:300,   icon:"📈",  Icon:TrendingUp },
+  { name:"Premier League",  xpNeeded:700,   icon:"🏟️",  Icon:Shield },
+  { name:"Champions League",xpNeeded:1500,  icon:"⭐",  Icon:Sparkles },
+  { name:"Legend",          xpNeeded:3000,  icon:"🐐",  Icon:Award },
+  { name:"Icon",            xpNeeded:8000,  icon:"👑",  Icon:Medal },
+  { name:"Immortal",        xpNeeded:20000, icon:"🏆",  Icon:Trophy },
 ];
 
 export function getLevelInfo(xp) {

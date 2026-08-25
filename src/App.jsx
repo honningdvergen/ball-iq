@@ -7510,7 +7510,7 @@ function XPBar({ xp, streak }) {
   return (
     <div className="xp-bar-wrap">
       <div className="xp-bar-top">
-        <span className="xp-level-icon">{level.icon}</span>
+        <span className="xp-level-icon"><level.Icon size={13} strokeWidth={2.3} /></span>
         <span className="xp-level-name">{level.name}</span>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           {streak > 0 && (
@@ -10804,7 +10804,7 @@ function AppInner() {
       if (leveledUp) {
         if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
         levelUpTimerRef.current = setTimeout(() => {
-          setLevelUpOverlay({ name: newInfo.level.name, icon: newInfo.level.icon }); haptic("levelup"); playSound("levelup");
+          setLevelUpOverlay({ name: newInfo.level.name, Icon: newInfo.level.Icon }); haptic("levelup"); playSound("levelup");
           levelUpTimerRef.current = setTimeout(() => setLevelUpOverlay(null), TIMINGS.STREAK_TOAST);
         }, 400);
       }
@@ -12745,7 +12745,9 @@ function AppInner() {
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.85)",zIndex:999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.3s ease"}}>
             <Confetti />
             <div style={{textAlign:"center",padding:"0 32px"}}>
-              <div style={{fontSize:80,marginBottom:16,animation:"iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1)"}}>{levelUpOverlay.icon}</div>
+              <div style={{marginBottom:16,animation:"iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1)",display:"flex",justifyContent:"center"}}>
+                {levelUpOverlay.Icon && <levelUpOverlay.Icon size={80} strokeWidth={1.6} color="var(--gold)" />}
+              </div>
               <div style={{fontSize:14,color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:8}}>Level Up!</div>
               <div style={{fontSize:32,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",marginBottom:12}}>{levelUpOverlay.name}</div>
               <div style={{fontSize:14,color:"rgba(255,255,255,0.6)"}}>Keep playing to reach the next level</div>

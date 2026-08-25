@@ -6,22 +6,34 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
-import { Pencil } from 'lucide-react';
+import { Pencil, Milestone, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 
+// ⚠️ TWELVE OS EMOJI IN ONE VIEWPORT — the densest patch of borrowed art left
+// in the product, and it sat on the screen a player opens to feel proud. Every
+// other glyph in the chrome had already moved to lucide, so the badge grid read
+// as the one place that got skipped. Second Reading called it the single largest
+// remaining contributor to an "assembled" impression.
+//
+// Emoji also render differently on every OS, at a weight and colour nobody here
+// chose, and 🔥 was doing double duty for BOTH streak badges — two rewards that
+// looked identical in a grid whose whole job is to be scanned.
+//
+// Icons are components now, not strings. Each is distinct, and each was checked
+// against lucide-react 0.383 rather than assumed to exist.
 export const BADGE_DEFS = [
-  ["first_blood", "🎯", "First Whistle", "Complete your first game"],
-  ["roll5",       "🔥", "On a Roll",     "5-day streak"],
-  ["roll30",      "🔥", "Obsessed",      "30-day streak"],
-  ["speed_demon", "⚡", "Speed Demon",   "Score 600+ Speed Round"],
-  ["big_brain",   "🧠", "Big Brain",     `${APP_NAME} 120+`],
-  ["goat",        "🐐", "The GOAT",      `${APP_NAME} 140+`],
-  ["perfect",     "💎", "Perfectionist", "Score 10/10"],
-  ["survivor",    "🏆", "Survivor",      "20+ in Survival"],
-  ["scholar",     "📚", "Scholar",       "500 correct answers"],
-  ["faithful",    "⚽", "Faithful",      "Play 50 games"],
-  ["legend_xp",   "👑", "Legend",        "Reach 3000 XP"],
-  ["world_class", "🌍", "World Class",   "100 International Qs"]
+  ["first_blood", Flag,          "First Whistle", "Complete your first game"],
+  ["roll5",       Flame,         "On a Roll",     "5-day streak"],
+  ["roll30",      CalendarCheck, "Obsessed",      "30-day streak"],
+  ["speed_demon", Zap,           "Speed Demon",   "Score 600+ Speed Round"],
+  ["big_brain",   Brain,         "Big Brain",     `${APP_NAME} 120+`],
+  ["goat",        Star,          "The GOAT",      `${APP_NAME} 140+`],
+  ["perfect",     Gem,           "Perfectionist", "Score 10/10"],
+  ["survivor",    Heart,         "Survivor",      "20+ in Survival"],
+  ["scholar",     GraduationCap, "Scholar",       "500 correct answers"],
+  ["faithful",    Repeat,        "Faithful",      "Play 50 games"],
+  ["legend_xp",   Crown,         "Legend",        "Reach 3000 XP"],
+  ["world_class", Globe,         "World Class",   "100 International Qs"]
 ];
 
 // ── Profile picture ─────────────────────────────────────────────────────────
@@ -856,7 +868,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
           <div className="profile-avatar" style={{cursor:'default'}}>{avatar}</div>
         </div>
         <div className="profile-name" style={{cursor:'default'}}>{username}</div>
-        <div className="profile-level-badge">{level.icon} {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{friendXp.toLocaleString()} XP</span></div>
+        <div className="profile-level-badge"><level.Icon size={14} strokeWidth={2.3} /> {level.name} <span style={{fontSize:11,color:"var(--t3)",marginLeft:4}}>{friendXp.toLocaleString()} XP</span></div>
       </div>
       {hasAnyStats && (
         <div className="stat-grid" style={{marginBottom:16}}>
@@ -879,7 +891,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         const ordered = LEVELS.map((l, i) => ({ ...l, idx: i }));
         return (
           <div className="journey-section">
-            <div className="journey-title">🏆 {username}'s Journey</div>
+            <div className="journey-title"><Milestone size={17} strokeWidth={2.2} /> {username}'s Journey</div>
             <div className="journey-list">
               <div className="journey-line" />
               {ordered.map(tier => {
@@ -891,7 +903,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
                 const xpToGo = Math.max(0, tier.xpNeeded - friendXp);
                 return (
                   <div key={tier.name} className={`journey-row ${state}`}>
-                    <div className="journey-dot">{isDone ? "✓" : tier.icon}</div>
+                    <div className="journey-dot">{isDone ? "✓" : <tier.Icon size={17} strokeWidth={2.1} />}</div>
                     <div className="journey-body">
                       <div className="journey-name">{tier.name}</div>
                       <div className="journey-sub">{tier.xpNeeded.toLocaleString()} XP</div>
@@ -1453,7 +1465,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                       </button>
                     )}
                   </div>
-                  <div className="pd-levelpill">{level.icon} {level.name} · {xp.toLocaleString()} XP</div>
+                  <div className="pd-levelpill"><level.Icon size={13} strokeWidth={2.3} /> {level.name} · {xp.toLocaleString()} XP</div>
                 </div>
                 <div className="pd-score">
                   {hasPlayed ? (
@@ -1642,7 +1654,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 </div>
 
                 {/* Level + IQ */}
-                <div className="profile-level-badge" style={{marginTop:8}}>{level.icon} {level.name} <span style={{fontSize:11,opacity:0.75,marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
+                <div className="profile-level-badge" style={{marginTop:8}}><level.Icon size={14} strokeWidth={2.3} /> {level.name} <span style={{fontSize:11,opacity:0.75,marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
                 {iq ? <div className="profile-iq-line" style={{marginTop:5,color:t.text,opacity:0.7}}>{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong></div> : null}
               </div>
               <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
@@ -1828,7 +1840,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         const ordered = LEVELS.map((l, i) => ({ ...l, idx: i }));
         return (
           <div className="journey-section">
-            <div className="journey-title">🏆 Your Journey</div>
+            <div className="journey-title"><Milestone size={17} strokeWidth={2.2} /> Your Journey</div>
             <div className="journey-list">
               <div className="journey-line" />
               {ordered.map(tier => {
@@ -1840,7 +1852,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 const xpToGo = Math.max(0, tier.xpNeeded - xp);
                 return (
                   <div key={tier.name} className={`journey-row ${state}`}>
-                    <div className="journey-dot">{isDone ? "✓" : tier.icon}</div>
+                    <div className="journey-dot">{isDone ? "✓" : <tier.Icon size={17} strokeWidth={2.1} />}</div>
                     <div className="journey-body">
                       <div className="journey-name">{tier.name}</div>
                       <div className="journey-sub">{tier.xpNeeded.toLocaleString()} XP</div>
@@ -1886,7 +1898,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             const bE = earned.has(b[0]);
             if (aE === bE) return 0;
             return aE ? -1 : 1;
-          }).map(([id,icon,name]) => {
+          }).map(([id, Icon, name]) => {
             const isEarned = earned.has(id);
             const isSelected = selectedBadgeId === id;
             const baseStyle = isEarned ? {background:"rgba(88,204,2,0.1)",borderColor:"rgba(88,204,2,0.25)"} : {};
@@ -1901,7 +1913,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 aria-label={`${name} — ${isEarned ? "earned" : "locked"}. Tap for details.`}
                 aria-expanded={isSelected}
               >
-                <span className="badge-icon" style={{filter:isEarned?"none":"grayscale(1) opacity(0.35)"}}>{icon}</span>
+                {/* grayscale() did the dimming when this was emoji; an SVG has
+                    no colour to remove, so the locked state now uses the muted
+                    token directly. The tile itself is no longer dimmed — that
+                    was the 1.71:1 label bug. */}
+                <span className="badge-icon" aria-hidden="true">
+                  <Icon size={22} strokeWidth={2.1} color={isEarned ? "var(--accent)" : "var(--t3)"} />
+                </span>
                 <span className="badge-name" style={{color:isEarned?"var(--t1)":"var(--t3)"}}>{name}</span>
               </button>
             );
@@ -1910,11 +1928,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         {selectedBadgeId && (() => {
           const def = BADGE_DEFS.find(b => b[0] === selectedBadgeId);
           if (!def) return null;
-          const [id, icon, name, desc] = def;
+          const [id, Icon, name, desc] = def;
           const isEarned = earned.has(id);
           return (
             <div className="badge-detail-card">
-              <div className="bd-icon" style={{filter:isEarned?"none":"grayscale(1) opacity(0.4)"}}>{icon}</div>
+              <div className="bd-icon" aria-hidden="true">
+                <Icon size={26} strokeWidth={2.1} color={isEarned ? "var(--accent)" : "var(--t3)"} />
+              </div>
               <div className="bd-body">
                 <div className="bd-name">{name}</div>
                 <div className="bd-desc">{desc}</div>
