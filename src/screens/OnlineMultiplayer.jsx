@@ -930,6 +930,23 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
       haptic('correct');
       setSent(prev => new Set(prev).add(p.user_id));
     } catch (e) {
+      // ⚠️ THE PLAYER USED TO BE TOLD NOTHING. The error reached Sentry and
+      // stopped there: `sent` never updated, `busy` cleared, and the button
+      // slid back to "Add friend" exactly as if it had never been tapped. Its
+      // twin in ProfileScreen.sendRequest has always toasted "Couldn't send
+      // request — try again"; this copy was written without it.
+      //
+      // That matters more here than anywhere else in the app. The MP game-over
+      // screen is the highest-intent moment for adding a friend — you just
+      // played them — and the friend loop is the measured weak link (k = 0.23,
+      // 24% of signups arriving through room invites). A request that fails
+      // invisibly at this exact moment is the worst place to lose one.
+      haptic('wrong');
+      try {
+        window.dispatchEvent(new CustomEvent('biq:show-toast', {
+          detail: "Couldn't send request — try again",
+        }));
+      } catch { /* toast host absent — Sentry still has it */ }
       Sentry.captureException(e, { tags: { area: 'friends', from: 'mp-gameover' } });
     } finally {
       setBusy(prev => { const n = new Set(prev); n.delete(p.user_id); return n; });

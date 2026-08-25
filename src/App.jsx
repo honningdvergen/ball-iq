@@ -7619,7 +7619,17 @@ function OnboardingScreen({ onDone }) {
           supabase.from('profiles')
             .update({ onboarded_at: new Date().toISOString() })
             .eq('id', data.user.id)
-            .then(() => {});
+            .then(({ error }) => {
+              // Local storage already carries the flag, so there is nothing to
+              // roll back and nothing worth interrupting the player for — but
+              // it must not vanish. A silent failure here costs them a second
+              // onboarding on their next device.
+              if (error) {
+                console.warn('[onboarding] onboarded_at write failed', error.message || error);
+                Sentry.captureException(error, { tags: { area: 'onboarding-flag', site: 'onboard-done' } });
+              }
+            })
+            .catch((e) => Sentry.captureException(e, { tags: { area: 'onboarding-flag', site: 'onboard-done' } }));
         }
       });
     } catch {}
@@ -9960,7 +9970,16 @@ function AppInner() {
       supabase.from('profiles')
         .update({ onboarded_at: new Date().toISOString() })
         .eq('id', user.id)
-        .then(() => {});
+        .then(({ error }) => {
+          // Same write, second implementation — the migration path for a
+          // player who onboarded locally before ever signing in. Both were
+          // blind; fixing one would have left the other.
+          if (error) {
+            console.warn('[onboarding] onboarded_at migration failed', error.message || error);
+            Sentry.captureException(error, { tags: { area: 'onboarding-flag', site: 'local-to-profile' } });
+          }
+        })
+        .catch((e) => Sentry.captureException(e, { tags: { area: 'onboarding-flag', site: 'local-to-profile' } }));
     }
   }, [authProfile, user?.id]);
 

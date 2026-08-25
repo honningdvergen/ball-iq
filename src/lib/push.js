@@ -32,12 +32,14 @@ let _uid = null;           // current signed-in user id (token may arrive async)
 let _tapCb = null;         // app-provided router for notification taps
 let _pendingTap = null;    // a tap that arrived before the router was set
 let _tapWired = false;     // tap listener attached (independent of sign-in)
+let _token = null;         // THIS device's token, so sign-out can scope its delete
 
 // Persist this device's APNs token for the signed-in user so the edge function
 // can target it. Goes through the SECURITY DEFINER register_device_token RPC,
 // which clears any prior owner of the token (device re-homed) before inserting.
 async function saveToken(token) {
   if (!_uid || !token) return;
+  _token = token;   // remembered so unregisterPush can target this device alone
   try {
     // ⚠️ supabase.rpc() RESOLVES with {data, error} on a Postgres error — it does
     // NOT throw — so the previous try/catch here discarded failures without even
@@ -152,12 +154,46 @@ export async function registerPush(userId, { requestPermission = true } = {}) {
   }
 }
 
-// On sign-out, drop this device's token(s) for the user so a shared device
-// doesn't keep pushing the previous account. Best-effort.
+// On sign-out, drop THIS device's token so a shared device doesn't keep
+// pushing the previous account.
+//
+// ⚠️ IT USED TO DELETE EVERY DEVICE THE USER OWNED ON THIS PLATFORM. The
+// filter was .eq('user_id', userId).eq('platform', ...) — no token — so
+// signing out on an iPhone silently killed push on that person's iPad too,
+// with nothing to tell them and no re-registration until the iPad next ran
+// the register path. The comment above it said "this device's token(s)"; the
+// query said otherwise, and the comment is why it read as correct for months.
+//
+// Scoping to the token is safe because sign-in already re-homes it. Verified
+// against the deployed function, not the comment claiming so —
+// register_device_token runs `delete from device_tokens where token = p_token`
+// before inserting under auth.uid(). So the shared-device case is covered by
+// the next sign-in regardless; this delete only shortens the window in
+// between.
+//
+// If the token is unknown (registration never completed this session) we
+// delete NOTHING. The residual risk is one push to a device between sign-out
+// and the next sign-in. The alternative — falling back to the platform-wide
+// delete — trades that for permanently silencing the user's other devices,
+// which is strictly worse and is the bug being fixed.
 export async function unregisterPush(userId) {
   if (!pushSupported()) return;
   _uid = null;
+  const token = _token;
+  _token = null;
+  if (!userId || !token) return;
   try {
-    if (userId) await supabase.from('device_tokens').delete().eq('user_id', userId).eq('platform', Capacitor.getPlatform());
-  } catch { /* noop */ }
+    // ⚠️ A query builder RESOLVES on error — destructure, never bare-await.
+    const { error } = await supabase
+      .from('device_tokens')
+      .delete()
+      .eq('user_id', userId)
+      .eq('token', token);
+    if (error) {
+      console.warn('[push] unregister', error.message || error);
+      Sentry.captureException(error, { tags: { area: 'push-token', op: 'unregister' } });
+    }
+  } catch (e) {
+    console.warn('[push] unregister threw', e?.message || e);
+  }
 }
