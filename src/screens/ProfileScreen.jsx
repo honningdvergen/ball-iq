@@ -12,7 +12,6 @@ import { avatarColour } from '../lib/avatarColour.js';
 // invisible — written for Juventus black on the Trail ladder, and the Premier
 // League's #3D195B and the Champions League's #123A8F have exactly that
 // problem here. Same helper, same reason; no second copy.
-import { tint, lift } from '../lib/clubColour.js';
 
 // ⚠️ TWELVE OS EMOJI IN ONE VIEWPORT — the densest patch of borrowed art left
 // in the product, and it sat on the screen a player opens to feel proud. Every
@@ -70,6 +69,7 @@ const BALL_SRC = "/marketing/ball.png";
 // the moment the component moved out — invisible to no-undef, and caught only
 // by react/jsx-no-undef, which was enabled minutes earlier for exactly this.
 import { ProfilePic } from '../components/ProfilePic.jsx';
+import BallIqCardFace from '../components/BallIqCardFace.jsx';
 export { ProfilePic };
 
 
@@ -887,51 +887,31 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         const acc = (totalAnswered > 0 && totalCorrect <= totalAnswered) ? totalCorrect / totalAnswered : 0.4;
         const card = computeCard(fCat, acc);
         const t = tierPalette(card.tier);
-        const strongest = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating)[0]?.abbr || null;
         return (
-          <div style={{ position: "relative", overflow: "hidden", background: t.bg, border: `1.5px solid ${t.accent}55`, borderRadius: 20, padding: "20px 20px 18px", boxShadow: "0 8px 28px rgba(0,0,0,0.35)", marginBottom: 16 }}>
-            <div style={{ position: "absolute", top: -50, left: -50, width: 180, height: 180, borderRadius: "50%", background: `radial-gradient(circle, ${t.accent}22 0%, transparent 70%)`, pointerEvents: "none" }} />
-            <div style={{ position: "relative", fontSize: 10, fontWeight: 800, letterSpacing: 2.5, color: t.text, opacity: 0.5, marginBottom: 10 }}>BALL IQ RATING</div>
-            <div style={{ position: "relative", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14 }}>
-              <div style={{ minWidth: 0 }}>
-                {played ? (
-                  <>
-                    <div style={{ fontSize: 52, fontWeight: 900, lineHeight: 0.95, color: t.accent, fontFeatureSettings: '"tnum"' }}>{card.overall}</div>
-                    <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: t.text, opacity: 0.55, marginTop: 4 }}>OVERALL</div>
-                    <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: 0.4, color: t.accent, marginTop: 2 }}>{t.label}</div>
-                  </>
-                ) : (
-                  <div style={{ fontSize: 14, fontWeight: 600, color: t.text, opacity: 0.7, maxWidth: 190 }}>No rating yet — they haven&apos;t played enough.</div>
-                )}
-                <div style={{ fontSize: 20, fontWeight: 900, color: t.text, marginTop: 12, letterSpacing: "-0.02em", overflow: "hidden", textOverflow: "ellipsis" }}>{username}</div>
-                <div className="profile-level-badge" style={{ marginTop: 8 }}>
-                  <level.Icon size={14} strokeWidth={2.3} /> {level.name}
-                  <span style={{ fontSize: 11, color: "var(--t3)", marginLeft: 4 }}>{friendXp.toLocaleString()} XP</span>
-                </div>
+          // ⚠️ THE OWNER'S CARD, NOT A COPY OF IT. Alex, twice: "why does the
+          // card look like this with 2 sections? and not like on my profile?
+          // just use the same card design", then "you see how my friends card
+          // still is not exactly like the one on my profile?" Both times I
+          // fixed it by pasting the markup across, and both times the next
+          // restyle forked it again. It is now literally the same component —
+          // the only difference a friend's card carries is that the name and
+          // the face are not editable here.
+          <BallIqCardFace
+            card={card}
+            played={played}
+            style={{ marginBottom: 16 }}
+            avatar={
+              <div style={{ width: 96, height: 96, flexShrink: 0, borderRadius: "50%", border: `2.5px solid ${t.accent}`, overflow: "hidden" }}>{avatar}</div>
+            }
+            name={
+              <div style={{ fontSize: 30, fontWeight: 900, color: t.text, letterSpacing: "-0.02em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{username}</div>
+            }
+            subline={
+              <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.2, color: t.text, opacity: 0.55, display: "flex", alignItems: "center", gap: 6 }}>
+                <level.Icon size={13} strokeWidth={2.3} aria-hidden="true" /> {level.name} · {friendXp.toLocaleString()} XP
               </div>
-              <div style={{ width: 84, height: 84, flexShrink: 0, borderRadius: "50%", border: `2.5px solid ${t.accent}`, overflow: "hidden" }}>{avatar}</div>
-            </div>
-            {played && (
-              <>
-                <div style={{ position: "relative", height: 1, background: `${t.accent}33`, margin: "16px 0 14px" }} />
-                {/* ⚠️ THE OWNER'S GRID, VERBATIM. Alex: "you see how my friends
-                    card still is not exactly like the one on my profile?" — it
-                    was 3 columns of small numbers against his 2 columns of big
-                    ones, because I kept my own .fpc-* classes instead of the
-                    markup the owner card uses. Same values, same sizes, same
-                    tier colours. Copied rather than approximated. */}
-                <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", rowGap: 12, columnGap: 18 }}>
-                  {card.ratings.map(r => (
-                    <div key={r.abbr} style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                      <div style={{ fontSize: 17, width: 22, textAlign: "center", flexShrink: 0, opacity: r.answered > 0 ? 1 : 0.45 }}>{r.icon}</div>
-                      <div style={{ fontSize: 19, fontWeight: 900, color: r.answered > 0 ? t.accent : t.text, opacity: r.answered > 0 ? 1 : 0.4, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.answered > 0 ? r.rating : "—"}</div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: t.text, opacity: r.answered > 0 ? 0.8 : 0.45, letterSpacing: 0.5 }}>{r.abbr}</div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+            }
+          />
         );
       })()}
       {hasAnyStats && (
@@ -1654,168 +1634,67 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         const hasPlayed = (stats?.gamesPlayed || 0) > 0;
         const t = tierPalette(_card.tier);
         return (
-          <div style={{ background: t.bg, border: `1.5px solid ${t.accent}55`, borderRadius: 20, padding: "20px 20px 18px", boxShadow: "0 8px 28px rgba(0,0,0,0.4)", position: "relative", overflow: "hidden", marginBottom: 14 }}>
-            <div style={{ position: "absolute", top: -50, left: -50, width: 180, height: 180, borderRadius: "50%", background: `radial-gradient(circle, ${t.accent}22 0%, transparent 70%)`, pointerEvents: "none" }} />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.055) 0%, transparent 38%)", pointerEvents: "none" }} />
-
-            {/* Brand eyebrow — frames this as a Ball IQ rating, not a generic player card */}
-            <div style={{ position: "relative", fontSize: 10, fontWeight: 800, letterSpacing: 2.5, color: t.text, opacity: 0.5, marginBottom: 12 }}>BALL IQ RATING</div>
-
-            {/* Two-column header: the full identity stack (overall + name + level
-                + IQ) lives in the left column; the avatar sits bigger and
-                vertically CENTERED against the whole stack on the right — no
-                dead space under a top-corner avatar. */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, position: "relative" }}>
-              {/* ⚠️ NO RATING BEFORE THE FIRST GAME. A signed-out visitor with zero
-                  games was shown "64 · OVERALL · PROSPECT" as the largest number on
-                  the screen, directly above the "No stats yet — play your first game"
-                  card below. The two contradicted each other in the same viewport.
-
-                  And 64 was not their score, it was everyone's: compRating smooths
-                  toward a prior, so with no data it resolves to a constant —
-                  (0 + 0.4*2) / (0 + 2) = 0.4 → 40 + 0.4*59 = 63.6 → 64. Every new
-                  profile showed the identical number. A placeholder dressed as a
-                  measurement, attached to the app's central claim.
-
-                  Gated on `stats.gamesPlayed`, the SAME condition the empty state and
-                  the share/weekly buttons already use, so nothing on this screen can
-                  disagree with anything else on it. The six competition rows below
-                  already render "—" when unplayed; the overall simply never got the
-                  same treatment. It does now. */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                {hasPlayed ? (
-                  <>
-                    <div style={{ fontSize: 50, fontWeight: 900, color: t.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{_card.overall}</div>
-                    <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
-                    <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.accent, marginTop: 7 }}>{t.label}</div>
-                  </>
-                ) : (
-                  <>
-                    {/* An em-dash set at the 50px number size renders as a long
-                        horizontal bar and reads as a LOADING SKELETON, not as
-                        "no value" — caught on the simulator, not in the markup.
-                        Two-thirds the size, and it reads as a dash again while
-                        the block keeps the same optical height. */}
-                    <div style={{ fontSize: 34, fontWeight: 900, color: t.text, opacity: 0.3, lineHeight: 50 / 34, fontVariantNumeric: "tabular-nums" }} aria-label="No rating yet">—</div>
-                    <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
-                    <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.text, opacity: 0.45, marginTop: 7 }}>UNRATED</div>
-                  </>
-                )}
-                {/* Editable name */}
-                <div style={{ marginTop: 12 }}>
-                  {(authLoading && !currentName) ? (
-                    <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
-                  ) : editingName ? (
-                    <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
-                      <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
-                      <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
-                        style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
-                      <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
-                        style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
-                    </span>
-                  ) : showNameCTA ? (
-                    <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
-                      Set your name <Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.7}} />
-                    </button>
-                  ) : (
-                    <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Edit your name">
-                      {currentName || authProfile?.username || profile?.name || "Player"}
-                      <Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.65}} />
-                    </button>
-                  )}
-                </div>
-
-                {/* Level + IQ */}
-                <div className="profile-level-badge" style={{marginTop:8}}><level.Icon size={14} strokeWidth={2.3} /> {level.name} <span style={{fontSize:11,opacity:0.75,marginLeft:4}}>{xp.toLocaleString()} XP</span></div>
-                {iq ? <div className="profile-iq-line" style={{marginTop:5,color:t.text,opacity:0.7}}>{APP_NAME}: <strong>{iq}</strong> — Top <strong>{100-pctile}%</strong></div> : null}
-              </div>
-              <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
-                <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label="Edit profile photo" style={showPhoto
-                  ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
-                  : {width:96, height:96, fontSize:44, border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
-                  {uploading ? (
-                    <span className="avatar-spinner" aria-label="Uploading…" />
-                  ) : showPhoto ? (
-                    <img crossOrigin="anonymous" src={avatarUrl} alt={currentName ? `${currentName}'s avatar` : "Profile avatar"} onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}} />
-                  ) : (
-                    displayEmoji
-                  )}
-                </button>
-                <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit", display:"inline-flex", alignItems:"center", justifyContent:"center"}}><Pencil size={14} strokeWidth={2.5} aria-hidden="true" /></button>
-              </div>
-            </div>
-
-            <div style={{ height: 1, background: `${t.accent}33`, margin: "16px 0 14px" }} />
-
-            {/* Six competition ratings. An unplayed competition shows "—", not
-                its prior-seeded number: computeCard seeds every unplayed comp
-                from `overall`, so a fresh account rendered the SAME value six
-                times under a six-times-repeated heading. Six identical numbers
-                as the largest element on the card named after the app's core
-                metric doesn't read as "unplayed", it reads as broken. The
-                desktop rating grid above (`pd-league-rating`) has always done
-                this; the mobile card never got it. */}
-            {/* ⚠️ AN UNPLAYED COMPETITION STILL SHOWS NO NUMBER. Six faded
-                dashes was the honest answer to a fresh account, and it is still
-                the honest answer — computeCard seeds every unplayed comp from
-                the same prior, so printing it would put one invented value in
-                six places on the card named after the app's core metric. That
-                bug has been fixed here once already; this does not reopen it.
-
-                What changed is that "nothing yet" no longer has to look like
-                nothing. Each slot now carries its competition's own colour, so
-                a first-time card reads as six things waiting to be filled
-                rather than a form that failed to load. The played state keeps
-                the accent number and takes the same chip, so the card does not
-                change shape as it populates — it just lights up. */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", rowGap: 9, columnGap: 10 }}>
-              {_card.ratings.map(r => {
-                const played = r.answered > 0;
-                return (
-                  <div key={r.abbr} style={{
-                    display: "flex", alignItems: "center", gap: 8,
-                    /* ⚠️ FIXED HEIGHT, because the emoji decides otherwise.
-                       All six chips measure exactly 39px in Chrome, and on iOS
-                       the EPL and UCL rows came out SHORTER than the other
-                       four — Apple Color Emoji gives the England tag-sequence
-                       flag and the star different metrics from the
-                       regional-indicator flags. A between-engines difference,
-                       invisible in the browser and only visible on device.
-                       Pin the box so no emoji can push the row around. */
-                    height: 38, boxSizing: "border-box",
-                    padding: "0 10px", borderRadius: 11, minWidth: 0,
-                    /* ⚠️ THE COMPETITION COLOUR IS NOT A PLACEHOLDER. First pass
-                       tinted played chips with the tier accent and kept the
-                       competition colour for empty ones, so the card LOST its
-                       colour as you filled it in — the identity vanished at
-                       exactly the moment the row became worth reading, and a
-                       finished card went back to six near-identical green
-                       boxes. Alex: "i see there are no colors to the 6
-                       categories here". The colour is which competition this
-                       is; it belongs in both states. Played is signalled by
-                       the number being there and carrying the tier accent,
-                       which does not need the background's help. */
-                    background: tint(lift(r.color), played ? 0.26 : 0.20),
-                    border: `1px solid ${tint(lift(r.color), played ? 0.6 : 0.52)}`,
-                    transition: "background .3s, border-color .3s",
-                  }}>
-                    {/* Same reason: a fixed box the glyph is centred inside,
-                        rather than a text run whose line box varies by glyph. */}
-                    <span aria-hidden="true" style={{ fontSize: 15, width: 20, height: 20, lineHeight: "20px", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>{r.icon}</span>
-                    {played ? (
-                      <span style={{ fontSize: 19, fontWeight: 900, color: t.accent, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
+          // ⚠️ ONE CARD, THREE SURFACES. The layout lives in
+          // components/BallIqCardFace.jsx — read the header there before
+          // touching anything visual. This card forked twice (friend profile,
+          // then the share PNG) and Alex caught both, so there is exactly one
+          // copy of it now and the screens pass in only what genuinely differs:
+          // here the name and the face are editable controls.
+          <BallIqCardFace
+            card={_card}
+            played={hasPlayed}
+            style={{ marginBottom: 14 }}
+            avatar={
+                <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
+                  <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label="Edit profile photo" style={showPhoto
+                    ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
+                    : {width:96, height:96, fontSize:44, border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
+                    {uploading ? (
+                      <span className="avatar-spinner" aria-label="Uploading…" />
+                    ) : showPhoto ? (
+                      <img crossOrigin="anonymous" src={avatarUrl} alt={currentName ? `${currentName}'s avatar` : "Profile avatar"} onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}} />
                     ) : (
-                      /* A short rule, not an em-dash: at this size a dash next
-                         to a flag reads as a hyphenated label. This reads as an
-                         empty slot. */
-                      <span aria-label={`${r.name} — not rated yet`} style={{ width: 24, minWidth: 24, height: 3, borderRadius: 2, background: t.text, opacity: 0.3, flexShrink: 0 }} />
+                      displayEmoji
                     )}
-                    <span style={{ fontSize: 12, fontWeight: 800, color: t.text, opacity: played ? 0.85 : 0.72, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.abbr}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+                  </button>
+                  <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit", display:"inline-flex", alignItems:"center", justifyContent:"center"}}><Pencil size={14} strokeWidth={2.5} aria-hidden="true" /></button>
+                </div>
+            }
+            name={
+                    (authLoading && !currentName) ? (
+                      <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
+                    ) : editingName ? (
+                      <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
+                        <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
+                          style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"#0A0A0A", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
+                          style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
+                      </span>
+                    ) : showNameCTA ? (
+                      <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
+                        Set your name <Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.7}} />
+                      </button>
+                    ) : (
+                      <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Edit your name">
+                        {currentName || authProfile?.username || profile?.name || "Player"}
+                        <Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.65}} />
+                      </button>
+                    )
+            }
+            /* ⚠️ NOT `.profile-level-badge` HERE. That class is a GREEN pill,
+               and a green pill on a gold card puts the app's "correct / go"
+               colour in direct competition with the tier it is supposed to sit
+               quietly beneath — the same reason the tiers stopped being green
+               at all. The class is untouched and still used by the desktop
+               pane and the journey list; this card just does not wear it. */
+            subline={<>
+              <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.2, color: t.text, opacity: 0.55, display: "flex", alignItems: "center", gap: 6 }}>
+                <level.Icon size={13} strokeWidth={2.3} aria-hidden="true" /> {level.name} · {xp.toLocaleString()} XP
+              </div>
+              {iq ? <div style={{ marginTop: 3, fontSize: 12.5, fontWeight: 700, color: t.text, opacity: 0.42 }}>{APP_NAME}: {iq} — Top {100 - pctile}%</div> : null}
+            </>}
+          />
         );
       })()}
       {/* Two peer secondary actions. Both are ghost buttons; the gap-based

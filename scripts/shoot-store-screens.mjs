@@ -14,10 +14,16 @@
 // ⚠️ THE RATING IS COMPUTED, NOT FAKED. The card is driven by
 // computeCard(catStats, accuracy) in src/lib/ballIqCard.js:
 //     rating = 40 + 59 * (correct + 2*prior) / (answered + 2)
-// so the numbers below were solved BACKWARDS from a target overall of 82 and
-// then verified through the real function. Hard-coding "82" into the DOM would
+// so the numbers below were solved BACKWARDS from a target overall of 87 and
+// then verified through the real function. Hard-coding "87" into the DOM would
 // have produced a card whose six sub-ratings do not average to their own
 // overall — the kind of detail a screenshot makes permanent.
+//
+// ⚠️ 87 MATCHES THE SHARE CARD. The store gallery carries both this profile
+// shot and the saved Ball IQ card (10-iq-card), and they are the same player:
+// same name, same face, same rating. A gallery that shows Alex on 82 in the app
+// and Alex on 87 on the card he shares tells the viewer the two are unrelated
+// screens — when the entire pitch is that they are the same object.
 import { webkit } from '@playwright/test';
 // ⚠️ DERIVE THE DAILY ANSWER IN NODE, NOT IN THE PAGE.
 // The first version did `import('/src/lib/wordle.js')` inside the browser —
@@ -44,22 +50,27 @@ const BASE = process.env.BASE || 'http://localhost:4324';
 const RAW = resolve('screenshots/raw');
 mkdirSync(RAW, { recursive: true });
 
-// Solved for OVERALL 82 (>=80 = elite, the gold card). Spread is deliberately
-// uneven — a real player is better at the league they watch.
-//   EPL 88 · UCL 85 · LAL 83 · SEA 82 · INT 79 · BUN 76
+// Solved for OVERALL 87 (>=75 = GOLD), and for the SIX EXACT sub-ratings the
+// saved card in 10-iq-card.png already shows. Spread is deliberately uneven —
+// a real player is better at the league they watch.
+//   EPL 92 · UCL 89 · LAL 88 · SEA 85 · INT 84 · BUN 83
+//
+// The volume (2,510 answered ≈ 251 games) is what an Immortal-level 208k XP
+// player would actually have on the clock. The old seed paired 46 games with
+// that XP, which the stat grid printed directly beneath the card.
 const SEED_STATS = {
-  gamesPlayed: 46,
+  gamesPlayed: 251,
   bestScore: 10,
   bestStreak: 14,
-  totalCorrect: 287,
-  totalAnswered: 385,
+  totalCorrect: 2043,
+  totalAnswered: 2510,
   catStats: {
-    PL:         { c: 114, a: 140 },
-    UCL:        { c: 58,  a: 76  },
-    WorldCup:   { c: 36,  a: 54  },
-    LaLiga:     { c: 35,  a: 48  },
-    Bundesliga: { c: 18,  a: 30  },
-    SerieA:     { c: 26,  a: 37  },
+    PL:         { c: 821, a: 940 },
+    UCL:        { c: 395, a: 480 },
+    WorldCup:   { c: 244, a: 330 },
+    LaLiga:     { c: 242, a: 300 },
+    Bundesliga: { c: 152, a: 210 },
+    SerieA:     { c: 189, a: 250 },
   },
 };
 
@@ -157,7 +168,16 @@ const SHOTS = [
   // the screen. As a store shot it says "you are not signed in" before it says
   // anything about the app. Suppressing it shows exactly what a real signed-in
   // user sees, which is what the listing is advertising.
-  { name: '06-profile',        expect: 'Ball IQ rating', settle: true, go: async (p) => {
+  // ⚠️ THE EYEBROW IS NOW THE WORDMARK, NOT A DESCRIPTION. The card used to say
+  // "BALL IQ RATING" and this asserted on that string; it now reads "BALL IQ" to
+  // match the shared PNG, so the screen marker moved to the tier row. `verify`
+  // carries the real proof: the seeded 87 has to be on screen, which is what
+  // catches a card that rendered empty or fell back to a default palette.
+  { name: '06-profile',        expect: 'OVERALL', settle: true,
+    verify: async (p) => (await p.evaluate(() => /\b87\b/.test(document.body.innerText)
+      && /GOLD/.test(document.body.innerText)
+      && !/Create a free account/.test(document.body.innerText))),
+    go: async (p) => {
       await p.getByText('Profile', { exact: true }).last().click();
       await p.waitForTimeout(1200);
       await p.evaluate(() => {
@@ -166,8 +186,15 @@ const SHOTS = [
         // first thing in the profile container, which makes the container's
         // own textContent start with the same string. A startsWith+find hid
         // the entire screen. The screen assertion is what caught it.
+        //
+        // ⚠️ AND DO NOT MATCH ON THE EMOJI. This read '🌟 Save your progress'
+        // until the banner's star became an inline SVG — after which the
+        // matcher found nothing, threw nothing, and the sign-up banner led the
+        // marketing panel with "Create a free account" while the card it is
+        // supposed to be selling sat below it. Silent, and it shipped once.
+        // The `verify` on this shot now fails the run if the banner survives.
         const title = [...document.querySelectorAll('div')]
-          .find((d) => (d.textContent || '').trim() === '🌟 Save your progress');
+          .find((d) => (d.textContent || '').trim() === 'Save your progress');
         if (title?.parentElement) title.parentElement.style.display = 'none';
       });
       await p.waitForTimeout(400); } },
@@ -456,7 +483,11 @@ await ctx.addInitScript((stats) => {
   localStorage.setItem('biq_login_streak', JSON.stringify({
     streak: 9, best: 14, lastDay: Math.floor(Date.now() / 86400000),
   }));
-  localStorage.setItem('biq_xp', '1840');
+  // ⚠️ MATCHES THE SAVED CARD'S LEVEL LINE. 10-iq-card.png reads "Immortal ·
+  // 208,515 XP"; the profile shot sits next to it in the same store gallery, so
+  // a different level under the same name and the same 87 would read as two
+  // unrelated screens rather than one player's card in two places.
+  localStorage.setItem('biq_xp', '208515');
   // ⚠️ THE CONSENT BANNER WOULD OTHERWISE SHIP IN THE STORE SCREENSHOTS.
   // public/consent.js mounts for any European/UTC time zone, and the machine
   // these are shot on is in Norway — so the first re-shoot after the banner

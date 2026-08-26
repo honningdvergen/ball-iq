@@ -57,16 +57,16 @@ describe("card competition colours", () => {
 
   it("STILL shows no number for an unplayed competition", () => {
     // The card must never print the prior-seeded value as if it were measured.
-    // A fabricated 64 shown as the visitor's own rating was a real bug; the
-    // colour work must not have reopened it.
-    const PROFILE = readFileSync(join(ROOT, "src/screens/ProfileScreen.jsx"), "utf8");
-    // Anchor on the RENDER ternary, not on a character distance — the first
+    // A fabricated 64 shown as the visitor's own rating was a real bug; neither
+    // the colour work nor the extraction into a shared component may reopen it.
+    const FACE = readFileSync(join(ROOT, "src/components/BallIqCardFace.jsx"), "utf8");
+    // Anchor on the RENDER ternary, not on a character distance — an earlier
     // version measured from the nearest `played ?` (a style prop) and broke the
     // moment a comment was added between it and the number.
-    const grid = PROFILE.slice(PROFILE.indexOf("_card.ratings.map"));
-    expect(grid).toMatch(/const played = r\.answered > 0;/);
+    const grid = FACE.slice(FACE.indexOf("card.ratings.map"));
+    expect(grid).toMatch(/const has = r\.answered > 0;/);
 
-    const open = grid.indexOf("{played ? (");
+    const open = grid.indexOf("{has ? (");
     expect(open, "the played/unplayed render ternary is gone").toBeGreaterThan(-1);
     const split = grid.indexOf(") : (", open);
     const close = grid.indexOf(")}", split);
@@ -76,5 +76,28 @@ describe("card competition colours", () => {
     // the number lives ONLY in the played branch
     expect(grid.slice(open, split)).toMatch(/r\.rating/);
     expect(grid.slice(split, close)).not.toMatch(/r\.rating/);
+  });
+
+  it("there is exactly ONE card layout, and both profiles use it", () => {
+    // ⚠️ THIS IS THE REAL REGRESSION GUARD. The card was built on the owner's
+    // profile, re-approximated on a friend's, and Alex caught the difference
+    // twice — "just use the same card design", then "you see how my friends
+    // card still is not exactly like the one on my profile?". Both times the
+    // fix was to copy the markup across, and a copy is a promise that somebody
+    // will edit one of them. Now there is one component; nothing else may
+    // render the six competitions itself.
+    const PROFILE = readFileSync(join(ROOT, "src/screens/ProfileScreen.jsx"), "utf8");
+    expect((PROFILE.match(/<BallIqCardFace[\s/>]/g) || []).length,
+      "owner and friend profiles must both render the shared card").toBe(2);
+
+    // Exactly one hand-rolled ratings grid may remain, and only the ≥1024px
+    // desktop reflow is allowed to be it. That pane is a genuinely different
+    // layout — wide, horizontal, driven by .pd-* classes in app.css and
+    // mirrored in the standalone block — not an approximation of this card.
+    // A SECOND one appearing here means the phone card has forked again.
+    const grids = [...PROFILE.matchAll(/ratings\.map/g)];
+    expect(grids.length, "a phone-side card grid has come back").toBe(1);
+    expect(PROFILE.slice(Math.max(0, grids[0].index - 1200), grids[0].index),
+      "the surviving grid is not the desktop pane").toMatch(/pd-/);
   });
 });
