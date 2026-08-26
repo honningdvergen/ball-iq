@@ -162,7 +162,21 @@ export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
               onChange={(e) => { setDraft(e.target.value.slice(0, 24)); if (error) setError(""); }}
               onKeyDown={(e) => { if (e.key === "Enter" && !saving) handleContinue(); }}
               placeholder="Your username"
-              autoFocus
+              /* ⚠️ NO autoFocus. THIS IS THE THIRD BUG FROM THIS ROOT.
+                 The happy path here needs ZERO typing — derivePrefill() has
+                 already filled the field and the player only has to press
+                 Continue. autoFocus opened the keyboard anyway, and this
+                 overlay cannot get out of its way: `.onboard-wrap` is
+                 position:fixed; inset:0; overflow:hidden (app.css) and
+                 capacitor.config.json sets Keyboard "resize":"none", so the
+                 viewport never shrinks and `.onboard-actions` — the Continue
+                 button — ends up UNDER the keyboard. Nothing in the app does
+                 visualViewport handling to rescue it.
+                 Same root as the Trail and Footle keyboard bugs: content laid
+                 out around a focused input, in a container that will not
+                 resize. It is the mandatory screen every social sign-up must
+                 pass, which is how it became the sign-up dead end.
+                 A player who WANTS to change the name still taps the field. */
               maxLength={24}
               aria-label="Your username"
               aria-invalid={!!error}
