@@ -6,13 +6,17 @@
 // 3-letter card label (the competition's short code).
 // `icon` uses country flags (license-safe, unlike the trademarked competition
 // logos). England flag for the PL, a star for the UCL, a globe for international.
+// `color` is the competition's own colour, and it must stay equal to the one
+// LEAGUE_QUIZ_SECTIONS (App.jsx) uses for the same `cat` — the quiz picker and
+// the rating card naming the same competition in two different colours is the
+// drift this app keeps producing. Pinned by tests/unit/card-comp-colours.test.js.
 export const CARD_COMPS = [
-  { abbr: "EPL", cat: "PL",         name: "Premier League",   icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
-  { abbr: "UCL", cat: "UCL",        name: "Champions League", icon: "⭐" },
-  { abbr: "INT", cat: "WorldCup",   name: "International",     icon: "🌍" },
-  { abbr: "LAL", cat: "LaLiga",     name: "La Liga",          icon: "🇪🇸" },
-  { abbr: "BUN", cat: "Bundesliga", name: "Bundesliga",       icon: "🇩🇪" },
-  { abbr: "SEA", cat: "SerieA",     name: "Serie A",          icon: "🇮🇹" },
+  { abbr: "EPL", cat: "PL",         name: "Premier League",   icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
+  { abbr: "UCL", cat: "UCL",        name: "Champions League", icon: "⭐", color: "#123A8F" },
+  { abbr: "INT", cat: "WorldCup",   name: "International",     icon: "🌍", color: "#8A6D1B" },
+  { abbr: "LAL", cat: "LaLiga",     name: "La Liga",          icon: "🇪🇸", color: "#EE8707" },
+  { abbr: "BUN", cat: "Bundesliga", name: "Bundesliga",       icon: "🇩🇪", color: "#D20515" },
+  { abbr: "SEA", cat: "SerieA",     name: "Serie A",          icon: "🇮🇹", color: "#0578D3" },
 ];
 
 // Accuracy → a 40-99 rating. Bayesian-smoothed with a weak ~0.33 prior (weight 3)
@@ -48,7 +52,7 @@ export const CARD_TIERS = {
 export function computeCard(catStats = {}, priorAcc = 0.4) {
   const ratings = CARD_COMPS.map(comp => {
     const cs = catStats[comp.cat];
-    return { abbr: comp.abbr, name: comp.name, icon: comp.icon, rating: compRating(cs, priorAcc), answered: cs?.a || 0 };
+    return { abbr: comp.abbr, cat: comp.cat, name: comp.name, icon: comp.icon, color: comp.color, rating: compRating(cs, priorAcc), answered: cs?.a || 0 };
   });
   const overall = Math.round(ratings.reduce((s, r) => s + r.rating, 0) / ratings.length);
   return { ratings, overall, tier: cardTier(overall) };

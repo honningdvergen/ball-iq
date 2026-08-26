@@ -64,11 +64,18 @@ function mask(stadium, n) {
  * way a logo is, and the app already assigns club colours the same way.
  */
 const LEAGUE_BADGE = {
-  "premier-league": { abbr: "PL",  bg: "#3D195B", ink: "#FFFFFF" },
-  "la-liga":        { abbr: "LAL", bg: "#EE8707", ink: "#221000" },
-  "serie-a":        { abbr: "SEA", bg: "#024494", ink: "#FFFFFF" },
-  "bundesliga":     { abbr: "BUN", bg: "#D20515", ink: "#FFFFFF" },
-  "ligue-1":        { abbr: "L1",  bg: "#DAE023", ink: "#0A1A00" },
+  // ⚠️ These are the LEAGUES' own initialisms, not the Ball IQ card's
+  // competition codes. This map used to carry LAL and SEA, lifted from
+  // CARD_COMPS — where they sit beside a Spanish and an Italian flag and mean
+  // "La Liga" and "Serie A". Standing alone in a coloured badge they read as
+  // the Lakers and Seattle, which Alex spotted immediately. The full league
+  // name is rendered right beside the badge, so the badge only has to carry
+  // identity: two characters, the form a fan already uses.
+  "premier-league": { abbr: "PL", bg: "#3D195B", ink: "#FFFFFF" },
+  "la-liga":        { abbr: "LL", bg: "#EE8707", ink: "#221000" },
+  "serie-a":        { abbr: "SA", bg: "#024494", ink: "#FFFFFF" },
+  "bundesliga":     { abbr: "BL", bg: "#D20515", ink: "#FFFFFF" },
+  "ligue-1":        { abbr: "L1", bg: "#DAE023", ink: "#0A1A00" },
 };
 const FALLBACK_BADGE = { abbr: "—", bg: "var(--s3)", ink: "var(--t2)" };
 

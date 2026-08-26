@@ -8,6 +8,11 @@ import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS 
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
 import { Pencil, Sparkles, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
+// lift() exists because a dark brand colour at low alpha on a dark card is
+// invisible — written for Juventus black on the Trail ladder, and the Premier
+// League's #3D195B and the Champions League's #123A8F have exactly that
+// problem here. Same helper, same reason; no second copy.
+import { tint, lift } from '../lib/clubColour.js';
 
 // ⚠️ TWELVE OS EMOJI IN ONE VIEWPORT — the densest patch of borrowed art left
 // in the product, and it sat on the screen a player opens to feel proud. Every
@@ -1750,14 +1755,43 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 metric doesn't read as "unplayed", it reads as broken. The
                 desktop rating grid above (`pd-league-rating`) has always done
                 this; the mobile card never got it. */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", rowGap: 12, columnGap: 18 }}>
-              {_card.ratings.map(r => (
-                <div key={r.abbr} style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                  <div style={{ fontSize: 17, width: 22, textAlign: "center", flexShrink: 0, opacity: r.answered > 0 ? 1 : 0.45 }}>{r.icon}</div>
-                  <div style={{ fontSize: 19, fontWeight: 900, color: r.answered > 0 ? t.accent : t.text, opacity: r.answered > 0 ? 1 : 0.4, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.answered > 0 ? r.rating : "—"}</div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: t.text, opacity: r.answered > 0 ? 0.8 : 0.45, letterSpacing: 0.5 }}>{r.abbr}</div>
-                </div>
-              ))}
+            {/* ⚠️ AN UNPLAYED COMPETITION STILL SHOWS NO NUMBER. Six faded
+                dashes was the honest answer to a fresh account, and it is still
+                the honest answer — computeCard seeds every unplayed comp from
+                the same prior, so printing it would put one invented value in
+                six places on the card named after the app's core metric. That
+                bug has been fixed here once already; this does not reopen it.
+
+                What changed is that "nothing yet" no longer has to look like
+                nothing. Each slot now carries its competition's own colour, so
+                a first-time card reads as six things waiting to be filled
+                rather than a form that failed to load. The played state keeps
+                the accent number and takes the same chip, so the card does not
+                change shape as it populates — it just lights up. */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", rowGap: 9, columnGap: 10 }}>
+              {_card.ratings.map(r => {
+                const played = r.answered > 0;
+                return (
+                  <div key={r.abbr} style={{
+                    display: "flex", alignItems: "center", gap: 8,
+                    padding: "8px 10px", borderRadius: 11, minWidth: 0,
+                    background: played ? `${t.accent}14` : tint(lift(r.color), 0.20),
+                    border: `1px solid ${played ? `${t.accent}40` : tint(lift(r.color), 0.52)}`,
+                    transition: "background .3s, border-color .3s",
+                  }}>
+                    <span style={{ fontSize: 16, width: 20, textAlign: "center", flexShrink: 0 }} aria-hidden="true">{r.icon}</span>
+                    {played ? (
+                      <span style={{ fontSize: 19, fontWeight: 900, color: t.accent, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
+                    ) : (
+                      /* A short rule, not an em-dash: at this size a dash next
+                         to a flag reads as a hyphenated label. This reads as an
+                         empty slot. */
+                      <span aria-label={`${r.name} — not rated yet`} style={{ width: 24, minWidth: 24, height: 3, borderRadius: 2, background: t.text, opacity: 0.3, flexShrink: 0 }} />
+                    )}
+                    <span style={{ fontSize: 12, fontWeight: 800, color: t.text, opacity: played ? 0.85 : 0.72, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.abbr}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         );
