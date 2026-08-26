@@ -164,3 +164,24 @@ Ligue 1 — 96 grounds.)
 - **No multiplayer screenshot exists**, though the promo text sells live 1v1
   and the description lists Online Multiplayer. Two slots are free (8 of 10).
 - No Stadiums screenshot either, now that it is a shipped, advertised mode.
+
+## 2026-08-26 — Google Play, main store listing
+
+App `4976141665883518498` (Ball IQ: Football Quiz). Checked the header read
+"Ball IQ", not Tide, before touching anything — per the warning at the top of
+this file.
+
+- **Play never carried the Ball IQ Test claim.** That stale mode was iOS-only;
+  the Play description has no mention of it. Nothing to remove.
+- **Stadiums was missing**, so a `📍 NAME THE STADIUM` section was added before
+  the club section (🏟️ is already taken by "A QUIZ FOR YOUR CLUB"). 2,658 →
+  2,902 chars of 4,000.
+- This matters more on Play than on Apple: Play indexes the full description,
+  so "stadium", "ground" and the five league names are a ranking surface here,
+  where on Apple the description is conversion-only.
+- **Saved as a draft** ("Lagre som utkast"), verified by full page reload.
+  Nothing submitted for review.
+
+⚠️ The console already showed "Ikke sendt til gjennomgang ennå" BEFORE this
+change — there were pending listing edits from 24 Aug. Whatever ships next
+will carry those too; check what they are before submitting.
