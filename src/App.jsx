@@ -10834,6 +10834,38 @@ function AppInner() {
     })();
   }, [user?.id]);
 
+  // first-game-finished — the other half of `first-game-started`, and the
+  // number the activation work has been flying blind without.
+  //
+  // Measured in prod 2026-08-26: 57 visitors fired `first-game-started` and
+  // 34 of them (59.6%) never fired another event, median footprint 1.3 events
+  // over TEN SECONDS. Whether any of that is "started and finished" or
+  // "started and bounced" was unanswerable, because no finish event existed.
+  //
+  // `acct-first-finish` does exist and is NOT this: it is account-scoped and
+  // has fired exactly ONCE, because first games are overwhelmingly played
+  // before or during sign-up when there is no user id to attribute to — the
+  // same reason 907 of 908 `first-game-started` rows carry a NULL user_id.
+  // Keep both; they answer different questions.
+  //
+  // ⚠️ Fires from BOTH completion families — handleComplete (the quiz
+  // engines) and the `biq:daily-completed` event (Footle, Trail, Mystery,
+  // Stadiums). Wiring only the first would report that nobody ever finishes
+  // Footle, which is the most-played mode in the product and writes 381 rows.
+  //
+  // Declared HERE deliberately: above the biq:daily-completed effect and above
+  // handleComplete, both of which name it. A callback placed below a hook that
+  // references it is a temporal dead zone error that ESLint, the production
+  // build and all 426 tests pass — that exact mistake took the app down on
+  // 2026-08-25.
+  const markFirstGameFinished = useCallback((meta) => {
+    try {
+      if (localStorage.getItem("biq_first_game_finished")) return;
+      localStorage.setItem("biq_first_game_finished", "1");
+      loopEvent("first-game-finished", meta);
+    } catch { /* never block a results screen in order to measure it */ }
+  }, []);
+
   const awardXp = useCallback((earned) => {
     if (!earned || earned <= 0) return;
     setXp(prev => {
@@ -10879,6 +10911,12 @@ function AppInner() {
   useEffect(() => {
     const onDailyDone = (e) => {
       cancelTodayReminder();
+      // Every daily mode dispatches this event, so one call covers Footle,
+      // Trail, Mystery and Stadiums — the modes handleComplete never sees.
+      // Daily 7 reaches BOTH paths; the localStorage guard inside makes the
+      // second call a no-op, which is exactly why the guard lives in the
+      // helper rather than at each call site.
+      markFirstGameFinished({ mode: e?.detail?.game || 'daily', won: e?.detail?.won });
       // ⭐ THE STREAK TICKS HERE, and only here. Every daily mode dispatches
       // this event — Footle, Daily 7, Trail, Mystery — so one call covers all
       // four and adding a fifth mode inherits it for free.
@@ -11070,7 +11108,7 @@ function AppInner() {
       window.removeEventListener('biq:stadiums-exit', onStadiumsExit);
       window.removeEventListener('biq:daily-completed', onDailyDoneAndSync);
     };
-  }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak, recordDailyPlay]);
+  }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak, recordDailyPlay, markFirstGameFinished]);
 
   // Online multiplayer joins the XP economy (it was the only mode outside it).
   // The emitter in OnlineMultiplayer is the once-per-room gate, so no dedup is
@@ -11174,6 +11212,9 @@ function AppInner() {
     // Reaching the results screen at all is the end of the funnel: this is the
     // moment a signup becomes a player. 85% of people who get here come back.
     markAcctStep(user?.id, 'acct-first-finish', loopEvent, { mode, total: res.total });
+    // Device-scoped twin of the above, so the ~60% of first games played with
+    // no user id are counted too. See markFirstGameFinished.
+    markFirstGameFinished({ mode, total: res.total, score: res.score });
 
     const answers = Array.isArray(res.allAnswers) ? res.allAnswers : [];
     let missRun = 0, worstMissRun = 0, timeouts = 0;
@@ -11482,7 +11523,7 @@ function AppInner() {
     setResult(res);
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
-  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions, pendingChallenge, clearChallenge, awardXp, isGuest, openAuthPrompt, xp]);
+  }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions, pendingChallenge, clearChallenge, awardXp, isGuest, openAuthPrompt, xp, markFirstGameFinished]);
 
   const updateSettings = useCallback((patch) => {
     setSettings(prev => {
