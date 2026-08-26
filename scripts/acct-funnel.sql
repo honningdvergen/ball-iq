@@ -30,10 +30,19 @@
 with played as (
   select p.id, p.created_at,
     (exists (select 1 from scores s where s.user_id = p.id)
+     -- ⚠️ A REAL GUESS, NOT AN OPEN. wordle_state writes a date key the instant
+     -- Footle is opened — {"status":"playing","guesses":[]} — so `<> '{}'`
+     -- counted anyone who looked at the board and left as having played, and
+     -- flattered activation. daily_scores is safe: its values are finished
+     -- scores (plain integers), so any key there is a genuine play.
+     or exists (select 1 from user_game_state u,
+                       lateral jsonb_each(coalesce(u.wordle_state, '{}'::jsonb)) e
+                 where u.user_id = p.id
+                   and jsonb_array_length(coalesce(e.value -> 'guesses', '[]'::jsonb)) > 0)
      or exists (select 1 from user_game_state u
                  where u.user_id = p.id
-                   and ((jsonb_typeof(u.wordle_state) = 'object' and u.wordle_state <> '{}'::jsonb)
-                     or (jsonb_typeof(u.daily_scores) = 'object' and u.daily_scores <> '{}'::jsonb)))
+                   and jsonb_typeof(u.daily_scores) = 'object'
+                   and u.daily_scores <> '{}'::jsonb)
     ) as ever_played
   from profiles p
 )
@@ -73,10 +82,19 @@ from reached order by ord;
 with played as (
   select p.id,
     (exists (select 1 from scores s where s.user_id = p.id)
+     -- ⚠️ A REAL GUESS, NOT AN OPEN. wordle_state writes a date key the instant
+     -- Footle is opened — {"status":"playing","guesses":[]} — so `<> '{}'`
+     -- counted anyone who looked at the board and left as having played, and
+     -- flattered activation. daily_scores is safe: its values are finished
+     -- scores (plain integers), so any key there is a genuine play.
+     or exists (select 1 from user_game_state u,
+                       lateral jsonb_each(coalesce(u.wordle_state, '{}'::jsonb)) e
+                 where u.user_id = p.id
+                   and jsonb_array_length(coalesce(e.value -> 'guesses', '[]'::jsonb)) > 0)
      or exists (select 1 from user_game_state u
                  where u.user_id = p.id
-                   and ((jsonb_typeof(u.wordle_state) = 'object' and u.wordle_state <> '{}'::jsonb)
-                     or (jsonb_typeof(u.daily_scores) = 'object' and u.daily_scores <> '{}'::jsonb)))
+                   and jsonb_typeof(u.daily_scores) = 'object'
+                   and u.daily_scores <> '{}'::jsonb)
     ) as ever_played
   from profiles p
 )
@@ -106,3 +124,54 @@ select '4. instrument health' as section,
             then 'AT THE CAP — events are being dropped' else 'ok' end      as cap_status,
        max(created_at) filter (where event like 'acct-%')                   as last_acct_event
 from funnel_events;
+
+
+-- ── 5. NEVER-PLAYED BY COHORT AGE ───────────────────────────────────────────
+-- ⚠️ RUN THIS BEFORE BELIEVING ANY HEADLINE ACTIVATION NUMBER.
+--
+-- Section 1's "% of the last 30 days who never played" is confounded by a
+-- signup burst: people who joined yesterday have not had time to come back, so
+-- a good week of acquisition makes activation look like it collapsed. On
+-- 2026-08-26 the 30-day figure read 44% and the honest number was ~35% — the
+-- gap was 21 accounts under three days old, of whom 81% had not played yet.
+--
+-- What this splits out, measured 2026-08-26:
+--     0-3 days   21 accounts   81.0% never played   <- recency, not a problem
+--     3-7 days   22             31.8%
+--     7-14 days  32             37.5%
+--     14-30 days 57             31.6%
+--     30+ days  104             38.5%
+--
+-- The shape is the finding: once past three days it is FLAT at ~32-38% and it
+-- does not improve with age. People who do not play in their first few days
+-- essentially never do. So the dead end is structural, not a recent
+-- regression, and the window to fix is the first session — not a re-engagement
+-- campaign later.
+with played as (
+  select p.id, p.created_at,
+    (exists (select 1 from scores s where s.user_id = p.id)
+     or exists (select 1 from user_game_state u,
+                       lateral jsonb_each(coalesce(u.wordle_state, '{}'::jsonb)) e
+                 where u.user_id = p.id
+                   and jsonb_array_length(coalesce(e.value -> 'guesses', '[]'::jsonb)) > 0)
+     or exists (select 1 from user_game_state u
+                 where u.user_id = p.id
+                   and jsonb_typeof(u.daily_scores) = 'object'
+                   and u.daily_scores <> '{}'::jsonb)
+    ) as ever_played
+  from profiles p
+)
+select '5. by cohort age' as section,
+       case
+         when created_at > now() - interval '3 days'  then 'a. 0-3 days'
+         when created_at > now() - interval '7 days'  then 'b. 3-7 days'
+         when created_at > now() - interval '14 days' then 'c. 7-14 days'
+         when created_at > now() - interval '30 days' then 'd. 14-30 days'
+         else 'e. 30+ days'
+       end as cohort,
+       count(*)                                                            as accounts,
+       count(*) filter (where not ever_played)                             as never_played,
+       round(100.0 * count(*) filter (where not ever_played) / count(*), 1) as pct_never_played
+from played
+group by 2
+order by 2;
