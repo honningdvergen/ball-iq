@@ -5,7 +5,7 @@ import { useModalA11y } from "../useModalA11y.js";
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../lib/scoring.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
-import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
+import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 // lift() exists because a dark brand colour at low alpha on a dark card is
@@ -886,7 +886,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         const played = Object.values(fCat).some((c) => (c?.a || 0) > 0);
         const acc = (totalAnswered > 0 && totalCorrect <= totalAnswered) ? totalCorrect / totalAnswered : 0.4;
         const card = computeCard(fCat, acc);
-        const t = CARD_TIERS[card.tier] || CARD_TIERS.prospect;
+        const t = tierPalette(card.tier);
         const strongest = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating)[0]?.abbr || null;
         return (
           <div style={{ position: "relative", overflow: "hidden", background: t.bg, border: `1.5px solid ${t.accent}55`, borderRadius: 20, padding: "20px 20px 18px", boxShadow: "0 8px 28px rgba(0,0,0,0.35)", marginBottom: 16 }}>
@@ -1505,7 +1505,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc);
-          const tierLabel = (CARD_TIERS[card.tier] || CARD_TIERS.prospect).label;
+          const tierLabel = tierPalette(card.tier).label;
           const hasPlayed = (stats?.gamesPlayed || 0) > 0 || (stats?.totalAnswered || 0) > 0;
           return (
             <div className="pd-rating">
@@ -1652,7 +1652,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         // Same expression the empty state and the share/weekly buttons use, so the
         // whole screen agrees with itself — see the rating block below.
         const hasPlayed = (stats?.gamesPlayed || 0) > 0;
-        const t = CARD_TIERS[_card.tier] || CARD_TIERS.prospect;
+        const t = tierPalette(_card.tier);
         return (
           <div style={{ background: t.bg, border: `1.5px solid ${t.accent}55`, borderRadius: 20, padding: "20px 20px 18px", boxShadow: "0 8px 28px rgba(0,0,0,0.4)", position: "relative", overflow: "hidden", marginBottom: 14 }}>
             <div style={{ position: "absolute", top: -50, left: -50, width: 180, height: 180, borderRadius: "50%", background: `radial-gradient(circle, ${t.accent}22 0%, transparent 70%)`, pointerEvents: "none" }} />

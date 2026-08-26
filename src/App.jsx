@@ -41,7 +41,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, tierPalette } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
@@ -4529,7 +4529,7 @@ async function generateShareCard(type, data) {
     // this should be changed with it — they are one design, drawn twice
     // because canvas and DOM cannot share a renderer.
     const card = data?.card;
-    const t = CARD_TIERS[card?.tier] || CARD_TIERS.prospect;
+    const t = tierPalette(card?.tier);
     const name = (data?.name || `${APP_NAME} Player`).slice(0, 18);
     const stops = String(t.bg).match(/#[0-9a-f]{6}/gi) || ["#14161e", "#080a0f"];
 

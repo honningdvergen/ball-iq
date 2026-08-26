@@ -32,21 +32,41 @@ export function compRating(cs, priorAcc = 0.4) {
   return Math.max(40, Math.min(99, Math.round(40 + acc * 59)));
 }
 
-// overall < 65 → prospect, 65-79 → pro, 80+ → elite.
+// BRONZE / SILVER / GOLD. Alex, 2026-08-26: "maybe we should have silver cards
+// from 60-74 and gold above that? and bronze below 60? i think maybe the green
+// color is worse than silver".
+//
+// He is right, and for a reason this codebase already had written down: GREEN
+// IN THIS APP MEANS CORRECT AND GO. The mode grid was de-greened for exactly
+// that reason — nine green icons meant the eye could not rank them — and a
+// green TIER competes with green-as-correct in the same way. Bronze/silver/gold
+// is also a ladder every football fan already reads, where "prospect / pro /
+// elite" had to be learned.
 export function cardTier(overall) {
-  if (overall >= 80) return "elite";
-  if (overall >= 65) return "pro";
-  return "prospect";
+  if (overall >= 75) return "gold";
+  if (overall >= 60) return "silver";
+  return "bronze";
 }
 
-// Tier palettes — Ball IQ's grey → green → gold ramp (neutral slate prospect,
-// brand-green pro, gold elite). Shared by the in-app card header and the share
-// render (api/og.js imports these — keep this module the single source of truth).
+// Tier palettes. Shared by the in-app card header and the share render
+// (api/og.js imports these — keep this module the single source of truth).
 export const CARD_TIERS = {
-  elite:    { bg: "linear-gradient(160deg,#2a2410 0%,#0a0a0a 100%)", accent: "#FFC107", text: "#FFF6E0", label: "ELITE" },
-  pro:      { bg: "linear-gradient(160deg,#0f2417 0%,#050d08 100%)", accent: "#58CC02", text: "#EAFBF0", label: "PRO" },
-  prospect: { bg: "linear-gradient(160deg,#14161e 0%,#080a0f 100%)", accent: "#9BA0B8", text: "#E8EAF0", label: "PROSPECT" },
+  gold:   { bg: "linear-gradient(160deg,#2a2410 0%,#0a0a0a 100%)", accent: "#FFC107", text: "#FFF6E0", label: "GOLD" },
+  silver: { bg: "linear-gradient(160deg,#1b212a 0%,#080a0f 100%)", accent: "#C7D2E0", text: "#EDF1F7", label: "SILVER" },
+  bronze: { bg: "linear-gradient(160deg,#2a1a0e 0%,#0b0705 100%)", accent: "#D08A4E", text: "#F6E7D8", label: "BRONZE" },
 };
+
+// ⚠️ OLD SHARE LINKS MUST STILL RENDER. api/og.js takes the tier key from a URL
+// parameter, and every /p?... card already sitting in somebody's chat history
+// carries elite / pro / prospect. Renaming the keys without this would drop all
+// of them to a default palette — a silent regression in the one artefact that
+// outlives every deploy.
+const LEGACY_TIER = { elite: "gold", pro: "silver", prospect: "bronze" };
+
+/** Resolve a tier key — current or legacy — to a palette. Never returns undefined. */
+export function tierPalette(key) {
+  return CARD_TIERS[key] || CARD_TIERS[LEGACY_TIER[key]] || CARD_TIERS.silver;
+}
 
 // Compute the full card model from catStats.
 export function computeCard(catStats = {}, priorAcc = 0.4) {

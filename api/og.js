@@ -1,5 +1,5 @@
 import { ImageResponse } from '@vercel/og';
-import { CARD_TIERS, CARD_COMPS } from '../src/lib/ballIqCard.js';
+import { CARD_TIERS, CARD_COMPS, tierPalette } from '../src/lib/ballIqCard.js';
 
 // Dynamic Open Graph image — renders the player's Ball IQ rating card so a
 // shared balliq.app/p?... link previews as their card (overall + tier + six
@@ -308,7 +308,9 @@ export default function handler(req) {
   // plain object lookup and would render the card with undefined styling
   // (fresh-code audit — no crash, but deterministic fallback is better).
   const tiKey = sp.get('ti');
-  const t = (tiKey && Object.prototype.hasOwnProperty.call(CARD_TIERS, tiKey)) ? CARD_TIERS[tiKey] : CARD_TIERS.prospect;
+  // tierPalette resolves the CURRENT keys and the legacy elite/pro/prospect
+  // that every already-shared /p link still carries.
+  const t = tierPalette(tiKey);
   const ratings = (sp.get('r') || '').slice(0, 64).split(',').slice(0, 6);
   // `s` = day streak (same param the /p description line uses). ≥2 earns a flame
   // chip — a 0/1 "streak" is noise, not a brag.

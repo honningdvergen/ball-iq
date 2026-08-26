@@ -10,7 +10,7 @@ import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED, loadMysteryResult } f
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD } from "../lib/date.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
-import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
+import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
 import { QB_INDEX } from "../questions-index.js";
 import { FootleHero } from "../components/FootleHero.jsx";
@@ -466,7 +466,7 @@ function HomeScreenImpl({
           const acc = (stats?.totalAnswered > 0 && (stats?.totalCorrect || 0) <= stats.totalAnswered)
             ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc);
-          const tm = CARD_TIERS[card.tier] || CARD_TIERS.prospect;
+          const tm = tierPalette(card.tier);
           const lvl = getLevelInfo(xp || 0);
           return (
             <div className="hr-card hr-rating">
