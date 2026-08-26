@@ -46,10 +46,14 @@ upload itself remain.
       YOUR BALL IQ section. Play: description gained 📊 YOUR BALL IQ CARD, and
       all three screenshot slots (phone / 7in / 10in) replaced — the old set was
       from 18 Aug and predated the card entirely.
-- [ ] **Send the Play release for review.** versionCode 41 (1.7.0) is uploaded
-      and saved as a **draft production release** with notes in all 11 locales.
-      Production currently serves 20 (1.6.2). **Alex's call** — I do not roll
-      out to 177 countries.
+- [x] **Play submitted 2026-08-26.** 5 changes under review: production
+      release **41 (1.7.0), full rollout**, plus the description and all three
+      screenshot slots. Notes in all 11 Play locales (500-char cap each, a third
+      of Apple's). ⚠️ **Managed publishing is OFF**, so this goes live to 177
+      countries the moment Google approves — no second gate. Revocable from the
+      publishing overview until then.
+      ⚠️ Play was in PRODUCTION at 1.6.2/vc20, not the closed test the memory
+      file claimed for over a month.
 - [ ] Attach **build 102** (Stadiums "Hint" label) on the next iOS submission,
       or on a resubmit if 101 is rejected. Archived and preflighted already.
 
