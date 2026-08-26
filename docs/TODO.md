@@ -41,6 +41,16 @@ upload itself remain.
       Review. Add for Review first failed on **14 locales** missing What's New;
       ASC requires it in every localization and says so only when you press the
       button. All 15 now carry translated notes.
+- [ ] ⚠️ **The two stores now carry DIFFERENT card curation.** Alex, on the App
+      Store: *"removed one of the scorecard screenshots, it is enough with one"* —
+      so Apple shows **06-profile** (the card in context) and not 10-iq-card,
+      9 panels total. Play still shows BOTH, because it was curated an hour
+      earlier and is now mid-review. Not worth revoking the Play release over;
+      Play listing edits ship independently, so swap it after approval — and
+      note that dropping iq-card frees a slot for daily-chips or
+      quiz-explanation, which were cut for Play's 8-slot cap.
+      ⚠️ `frame-store-screens.mjs` still emits all 10; the curation lives only
+      in the consoles, so a future re-upload will bring 10-iq-card back.
 - [x] **Store galleries re-done 2026-08-26.** App Store: 10 screenshots
       (home · footle · profile lead the install sheet), description gained a
       YOUR BALL IQ section. Play: description gained 📊 YOUR BALL IQ CARD, and
