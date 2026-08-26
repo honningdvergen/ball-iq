@@ -402,9 +402,20 @@ function StadiumBoard({ league, onExit }) {
                 {isSolved ? c.stadium : (letters > 0 ? mask(c.stadium, letters) : "")}
               </div>
               {!isSolved && showClubs && (
+                /* ⚠️ THE LABEL SAYS "Hint", NOT "A…". It read "A…" — meaning
+                   "reveal a letter" — and the aria-label spelled that out, so
+                   screen readers were fine and sighted players were not: an
+                   unsolved board is eighteen rows of the identical two-glyph
+                   chip, which parses as text that failed to render rather than
+                   as a control. It looked like a bug in the store screenshot
+                   for the same reason it looked like one in the app.
+                   "Hint" is also the word this screen already uses — the
+                   counter below the input reads "No hints yet" / "3 hints" and
+                   is fed by this exact button. */
                 <button onClick={() => revealLetter(c.club)} aria-label={`Reveal a letter of ${c.club}'s stadium`}
-                  style={{ flexShrink: 0, padding: "6px 10px", borderRadius: 9, background: "transparent", border: "1px solid var(--border)", color: "var(--t2)", fontFamily: "inherit", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
-                  A…
+                  style={{ flexShrink: 0, padding: "6px 10px", borderRadius: 9, background: "transparent", border: "1px solid var(--border)", color: "var(--t2)", fontFamily: "inherit", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
+                  <Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" />
+                  Hint
                 </button>
               )}
             </div>
