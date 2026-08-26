@@ -37,7 +37,21 @@ upload itself remain.
 - [ ] **Alex's device evening** (8 tests, in the report). #1 is the on-screen
       keyboard in Trail — unrun for three consecutive reports, and build 77
       changes it again.
-- [ ] Upload iOS. **Alex's call, always.**
+- [x] **Upload iOS — DONE 2026-08-26.** 1.7.0 (101) submitted, Waiting for
+      Review. Add for Review first failed on **14 locales** missing What's New;
+      ASC requires it in every localization and says so only when you press the
+      button. All 15 now carry translated notes.
+- [x] **Store galleries re-done 2026-08-26.** App Store: 10 screenshots
+      (home · footle · profile lead the install sheet), description gained a
+      YOUR BALL IQ section. Play: description gained 📊 YOUR BALL IQ CARD, and
+      all three screenshot slots (phone / 7in / 10in) replaced — the old set was
+      from 18 Aug and predated the card entirely.
+- [ ] **Send the Play release for review.** versionCode 41 (1.7.0) is uploaded
+      and saved as a **draft production release** with notes in all 11 locales.
+      Production currently serves 20 (1.6.2). **Alex's call** — I do not roll
+      out to 177 countries.
+- [ ] Attach **build 102** (Stadiums "Hint" label) on the next iOS submission,
+      or on a resubmit if 101 is rejected. Archived and preflighted already.
 
 ### 2 · One sitting on the question bank — SELF-ANSWERS DONE (`9ac6dc6`)
 - [x] **Stems that state their own answer.** Reported 26; **actual 3.** My own
