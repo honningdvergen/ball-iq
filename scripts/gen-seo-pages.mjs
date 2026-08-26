@@ -809,7 +809,20 @@ const BQ_PUBLISHABLE_KEY = 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR';
    "51% of impressions, 5% of clicks" could be argued about but never measured.
    The reveal below already knows when someone answers; it just never said so.
    One event on the first answer, gesture-gated so crawlers cannot inflate it. */
+/* ONE definition of "which surface is this page", interpolated into every
+   tracking block below. It used to exist twice — derived from the path in the
+   taster, hardcoded to 'list-page' in the list tracker — so 111 pages reported
+   as list pages when only 37 were. Keep it single-sourced. */
+const SURFACE_FN_JS = `function biqSurface(){try{
+var seg=location.pathname.split('/').filter(Boolean);
+if(seg[0]==='lists')return 'list-page';
+if(seg[0]&&seg[0].length===2&&seg[1])return 'localised';
+if(seg[0]==='questions')return 'questions-page';
+return 'taster';
+}catch(e){return 'taster'}}`;
+
 const QA_TRACK_JS = `(function(){
+${SURFACE_FN_JS}
 function qSyn(){try{
 if(navigator.webdriver===true)return true;
 var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
@@ -823,7 +836,7 @@ return (v&&v.length===36)?v:null;
 function qev(n){
 if(qSyn())return;
 try{if(window.clarity)window.clarity('event',n)}catch(e){}
-var meta={surface:'list-page'};
+var meta={surface:biqSurface()};
 try{
 var seg=location.pathname.split('/').filter(Boolean);
 if(seg[1])meta.slug=seg[1];
@@ -839,8 +852,14 @@ window.__biqListAnswered=function(){if(qSeen)return;qSeen=true;qev('list-answere
 document.addEventListener('click',function(e){
 var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
 if(!a)return;var h=a.getAttribute('href')||'';
-if(h.indexOf('/play')>-1)qev('list-out-play');
-else if(h.indexOf('/get')>-1||h.indexOf('apps.apple.com')>-1||h.indexOf('play.google.com')>-1)qev('list-out-store');
+/* Match on the RESOLVED hostname, never a substring of the href: the string
+   "https://play.google.com/..." contains "/play" at index 7, so an href-first
+   test scored every Play Store badge as a web-app click. Store branch first,
+   exact host, so a substring can never win again. /get redirects to /play, so
+   it belongs with the web app. */
+var qh=(a.hostname||'');
+if(qh==='play.google.com'||qh==='apps.apple.com')qev('list-out-store');
+else if(h.indexOf('/play')>-1||h.indexOf('/get')>-1)qev('list-out-play');
 },true);
 })();`;
 
@@ -854,6 +873,23 @@ const QA_JS = `(function(){var cs=document.querySelectorAll('.qa[data-a]');for(v
 // bank and are EXCLUDED from the static Q&A block so playing isn't spoiled.
 // Self-contained per page (inline JS, no shared bundle) so each page is robust
 // on a cold load. IQ map + fan tiers per the handoff spec.
+/* Answer-option rules, emitted under whatever selector the caller needs.
+   The taster card uses a bare `.to`; the static Q&A blocks on list pages use
+   `.qa-opts .to`. Those were separate declarations and list pages only ever
+   got the padding override — so their `.tl` letter badge rendered with NO
+   layout at all and read as "AEintracht Frankfurt". One source, two scopes. */
+const OPTION_CSS = (s) => `  ${s}{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 14px;border-radius:13px;border:1.5px solid #242836;background:#0B0D13;color:#E8EAF0;font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
+  ${s}:hover:not(:disabled){border-color:#3A3D4A;background:#14161E}
+  ${s}:disabled{cursor:default}
+  ${s}.correct{border-color:rgba(88,204,2,.55);background:rgba(88,204,2,.12);color:#8AE042}
+  ${s}.wrong{border-color:rgba(255,71,71,.5);background:rgba(255,71,71,.1);color:#FF8A82}
+  ${s}.dim{opacity:.5}
+  ${s} .tl{flex:0 0 auto;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:12px;background:#1F2430;color:#9BA0B8}
+  ${s}.correct .tl{background:#58CC02;color:#06230C}
+  ${s}.wrong .tl{background:#FF4747;color:#fff}
+  ${s} .tt{flex:1}
+  ${s} .tm{font-size:16px}`;
+
 const TASTER_CSS = `  .taster{text-align:left}
   .taster .eyebrow{display:block;margin-bottom:8px}
   .taster h2{margin:8px 0 16px;text-align:left;font-size:clamp(21px,2.4vw,28px)}
@@ -867,17 +903,7 @@ const TASTER_CSS = `  .taster{text-align:left}
   .tbf{height:100%;background:#58CC02;border-radius:999px;transition:width .3s ease}
   .tqx{font-size:18px;font-weight:800;color:#fff;line-height:1.32;margin-bottom:16px}
   .tos{display:flex;flex-direction:column;gap:9px}
-  .to{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 14px;border-radius:13px;border:1.5px solid #242836;background:#0B0D13;color:#E8EAF0;font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
-  .to:hover:not(:disabled){border-color:#3A3D4A;background:#14161E}
-  .to:disabled{cursor:default}
-  .to.correct{border-color:rgba(88,204,2,.55);background:rgba(88,204,2,.12);color:#8AE042}
-  .to.wrong{border-color:rgba(255,71,71,.5);background:rgba(255,71,71,.1);color:#FF8A82}
-  .to.dim{opacity:.5}
-  .to .tl{flex:0 0 auto;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:12px;background:#1F2430;color:#9BA0B8}
-  .to.correct .tl{background:#58CC02;color:#06230C}
-  .to.wrong .tl{background:#FF4747;color:#fff}
-  .to .tt{flex:1}
-  .to .tm{font-size:16px}
+${OPTION_CSS('.to')}
   .tw{margin-top:12px;font-size:13.5px;color:#9BA0B8;line-height:1.55}
   .tn{margin-top:16px;width:100%;padding:13px;border:none;border-radius:13px;background:#58CC02;color:#06230C;font:inherit;font-weight:800;font-size:15px;cursor:pointer}
   .tn:hover{filter:brightness(1.05)}
@@ -917,18 +943,13 @@ if(!v)return null;localStorage.setItem('biq_vid',v)}
 return (v&&v.length===36)?v:null;
 }catch(e){return null}}
 /* Surface comes from the path, so one taster serves every page type and the
-   rows stay separable: list pages, the localised layer, and everything else. */
-function tSurface(){try{
-var seg=location.pathname.split('/').filter(Boolean);
-if(seg[0]==='lists')return 'list-page';
-if(seg[0]&&seg[0].length===2&&seg[1])return 'localised';
-if(seg[0]==='questions')return 'questions-page';
-return 'taster';
-}catch(e){return 'taster'}}
+   rows stay separable: list pages, the localised layer, and everything else.
+   Single-sourced in SURFACE_FN_JS — do not re-declare it here. */
+${SURFACE_FN_JS}
 function tev(n){
 if(tSyn())return;
 try{if(window.clarity)window.clarity('event',n)}catch(e){}
-var meta={surface:tSurface()};
+var meta={surface:biqSurface()};
 try{
 var seg=location.pathname.split('/').filter(Boolean);
 var sl=seg[seg.length-1];if(sl)meta.slug=sl;
@@ -1829,6 +1850,8 @@ ${ADS_ACTIVE ? `<script>
   .qa .q{font-weight:700;color:#fff;font-size:16px;margin-bottom:12px;line-height:1.4}
   .qa .q::before{counter-increment:qa;content:counter(qa) ". ";color:var(--grn-soft);font-family:var(--mono)}
   .qa-opts{display:flex;flex-direction:column;gap:8px}
+${OPTION_CSS('.qa-opts .to')}
+  /* tighter than the taster card — must stay AFTER OPTION_CSS to win */
   .qa-opts .to{padding:11px 13px;font-size:14px}
   .qa-why{border-top:1px dashed var(--bd);padding-top:12px;margin-top:12px;color:var(--tx3);font-size:14px;line-height:1.55}
   .qa-why::before{content:"✓ ";color:var(--grn-soft);font-weight:800}
@@ -2245,7 +2268,7 @@ function buildClubPageIntl(cfg, siblings = []) {
 <div class="eyebrow">${esc(c.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(c.tasterH)}</h2>
 <div class="tcard" id="biq-taster" data-name="${esc(cfg.name)}" data-play="${SITE.base}/play?club=${cfg.slug}" data-store="${SITE.getApp}" data-i18n="${esc(JSON.stringify(TASTER_I18N[cfg.lang] || {}))}">
-<p class="tph">${esc(c.tasterPh)} <a href="${SITE.base}/play?club=${cfg.slug}">${esc(c.playLabel)} →</a></p>
+<p class="tph">${esc(c.tasterPh)} <a href="${SITE.base}/play?club=${cfg.slug}">${esc(cfg.playLabel)} →</a></p>
 </div>
 <p class="taster-note">${esc(c.tasterNote)}</p>
 <script type="application/json" id="biq-taster-data">${JSON.stringify(payload).replace(/</g, '\\u003c')}</script>

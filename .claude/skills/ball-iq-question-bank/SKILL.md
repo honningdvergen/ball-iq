@@ -83,4 +83,14 @@ still-accurate hint.
 
 ## Measurement caveat
 
-`scores` records survival/daily/classic/wc2026/chaos/legends only — **Footle, Club Quiz and League Quiz write nothing to it**. Don't answer "what do people play?" from `scores` alone; Footle lives in `user_game_state.wordle_state` and is, by the 2026-07-15 numbers, the most-played mode.
+⚠️ **This section used to say `scores` held only survival/daily/classic/wc2026/chaos/legends and that Footle, Club Quiz and League Quiz wrote nothing to it. That was wrong**, and it caused the activation rate to be reported as 50.7% when the real figure is ~31% (re-measured 2026-08-26). Verified counts by `game_mode`:
+
+    daily 388 · footle 381 · classic 255 · survival 253 · trail 128
+    chaos 41 · hotstreak 40 · wc2026 32 · legends 31 · league:PL 29
+    mystery 26 · club:ManUtd 14 · club:Liverpool 14 · club:Arsenal 12 …
+
+So `scores` **is** a usable answer to "did this account play anything". Two caveats that are still true:
+
+- Footle's authoritative per-day record is `user_game_state.wordle_state`, and ~10% of finished Footle days have no matching `scores` row (was 84% in launch week, decaying — a residual leak, not a stopped write).
+- `wordle_state` is **a map keyed by date**, not a state object: `{"2026-07-11":{"status":"won","guesses":[…]}}`. Query it with `jsonb_each`, and require `jsonb_array_length(guesses) > 0` — opening the board writes an empty `guesses` array, so counting non-empty JSON overcounts players by 10.
+- `club_quiz_results` (the SEO-page surface) has **no `user_id` column at all**, so web club-quiz play can never be joined to a signup.
