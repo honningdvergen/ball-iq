@@ -43,11 +43,26 @@ import { answerIdForDay, mysteryDayIndex, matchGuess } from '../src/lib/mysteryP
 import MYSTERY_SCHEDULE from '../src/data/mysterySchedule.json' with { type: 'json' };
 import MYSTERY_POOL from '../src/data/mysteryPool.json' with { type: 'json' };
 import MYSTERY_ANSWERS from '../src/data/mysteryAnswers.json' with { type: 'json' };
-import { mkdirSync } from 'fs';
+import { mkdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
 const BASE = process.env.BASE || 'http://localhost:4324';
 const RAW = resolve('screenshots/raw');
+
+// ⚠️ THE CARD NEEDS A FACE, AND THE HARNESS RUNS AS A GUEST.
+// ProfileScreen reads the photo from `authProfile.avatar_url`, which only
+// exists for a signed-in account — so a seeded run falls back to the monogram
+// and the store panel showed a red "A" where a person should be. That is
+// honest for the 93.6% of accounts with no photo, and wrong for a shop window:
+// the card is the thing being sold and it looks like a placeholder.
+//
+// Faking auth to fix a screenshot would be worse. This injects the image at
+// CAPTURE TIME only — the same category of thing as forceOpaqueMaterials()
+// below, and it touches no product code.
+//
+// The file is Alex's own avatar, given for exactly this. Do not swap in any
+// other player's uploaded photo: those belong to the people who uploaded them.
+const AVATAR_DATA_URL = 'data:image/jpeg;base64,' + readFileSync(resolve('screenshots/assets/alex-avatar.jpg')).toString('base64');
 mkdirSync(RAW, { recursive: true });
 
 // Solved for OVERALL 87 (>=75 = GOLD), and for the SIX EXACT sub-ratings the
@@ -176,7 +191,10 @@ const SHOTS = [
   { name: '06-profile',        expect: 'OVERALL', settle: true,
     verify: async (p) => (await p.evaluate(() => /\b87\b/.test(document.body.innerText)
       && /GOLD/.test(document.body.innerText)
-      && !/Create a free account/.test(document.body.innerText))),
+      && !/Create a free account/.test(document.body.innerText)
+      // the face has to be a real, decoded image — not the monogram fallback
+      && (() => { const im = document.querySelector('.profile-avatar img');
+                  return !!im && im.complete && im.naturalWidth > 0; })())),
     go: async (p) => {
       await p.getByText('Profile', { exact: true }).last().click();
       await p.waitForTimeout(1200);
@@ -197,7 +215,22 @@ const SHOTS = [
           .find((d) => (d.textContent || '').trim() === 'Save your progress');
         if (title?.parentElement) title.parentElement.style.display = 'none';
       });
-      await p.waitForTimeout(400); } },
+      // The card's face. Waits for decode: a half-painted avatar in a store
+      // screenshot is worse than the monogram it replaces.
+      await p.evaluate(async (src) => {
+        const btn = document.querySelector('.profile-avatar');
+        if (!btn) throw new Error('.profile-avatar not found — the card markup moved');
+        btn.style.padding = '0';
+        btn.style.overflow = 'hidden';
+        btn.style.background = 'transparent';
+        btn.textContent = '';
+        const im = document.createElement('img');
+        im.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;display:block';
+        im.src = src;
+        btn.appendChild(im);
+        await im.decode();
+      }, AVATAR_DATA_URL);
+      await p.waitForTimeout(500); } },
   // ⚠️ WIN ON THE LAST ATTEMPT, NOT THE FIRST. Alex, 2026-08-15: solve it "on
   // the fifth or sixth so people understand how they work". An instant win
   // teaches nothing — the ladder of revealed clubs IS the mechanic, and only a
