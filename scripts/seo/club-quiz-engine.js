@@ -280,18 +280,33 @@ served=off+run.length;var hasMore=total>served;
    interest the gate was waiting for, and "Keep going" remains the primary
    action, so staying on the page is still what the layout pushes hardest.
    Ordering is deliberate: stay here, then play on the web, then install. */
-var appLink='<a href="'+store+'" rel="noopener">Get the app — a new one daily →</a>';
+/* ⚠️ THREE DESTINATIONS, THREE WEIGHTS — and they used to be two greens.
+   Rendered, the old row put "Keep going" and "Get the app" in the SAME green
+   at the SAME size, diagonally opposite in a 2x2 grid, with the club-coloured
+   "Play the full quiz" as the loudest thing on the card. The stated ordering
+   here has always been "stay here, then play on the web, then install", and
+   the markup said so — but the paint did not. A reader who has decided the
+   green button means "more questions here" does not read a second, identical
+   green button as a different place.
+   That is not a theory: clubq-out-store recorded ZERO clicks in 30 days
+   against 107 finishers, while clubq-out-play (the visually distinct red one)
+   got 16. The link was not unpersuasive, it was camouflaged — the same defect
+   as the Stadiums "A…" chip, an affordance whose appearance contradicts it.
+   Now: Keep going is full width and unmistakably primary, the web-app cross
+   keeps the club colour, and the store link gets its own quiet treatment so it
+   reads as a third thing rather than a second copy of the first. */
+var appLink='<a class="bq-app" href="'+store+'" rel="noopener">Get the app — a new one daily →</a>';
 var cont=(hasMore
-?'<a class="bq-go" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
+?'<a class="bq-go bq-wide" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
 +'<a class="bq-cross" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
 +appLink
-:'<a class="bq-go" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
+:'<a class="bq-go bq-wide" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
 +appLink);
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
 +(sday>=2?'<div class="bq-days">'+sday+' days in a row</div>':'')
-+'<div class="bq-row">'+cont+'<button class="ghost" data-again="1">Play again</button></div>'
++'<div class="bq-row">'+cont+(hasMore?'':'<button class="ghost" data-again="1">Play again</button>')+'</div>'
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
    is still the primary action (that decision came from the 94.6% single-page
    measurement); share is the authority lever and gets full width and the club's

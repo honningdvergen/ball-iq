@@ -1249,6 +1249,14 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
      loud, because roughly 40% of journeys actually take it (see cad736e); it
      just stops competing with staying. */
   .bq-row .bq-cross{background:var(--club,var(--grn));color:var(--club-ink,var(--grn-ink))}
+  /* Full-width primary: the action that keeps the reader where they already
+     are. It is first in the DOM and now first in the eye. */
+  .bq-row .bq-wide{flex:1 1 100%}
+  /* The store link is a THIRD destination, not a second green button. Quiet,
+     outlined, and visually unlike both siblings — see the note in
+     club-quiz-engine.js finish() for why this was costing every click. */
+  .bq-row .bq-app{background:transparent;border:1px solid var(--bd2);color:var(--tx2);font-weight:700}
+  .bq-row .bq-app:hover{border-color:var(--grn);color:var(--grn)}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-days{display:inline-block;margin-top:9px;padding:4px 11px;border-radius:999px;
