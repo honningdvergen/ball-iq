@@ -1,7 +1,7 @@
 import './app.css';
 import React, { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo } from "react";
 import * as Sentry from '@sentry/react';
-import { CLUB_COLOUR_ALIASES } from './lib/clubColour.js';
+import { CLUB_COLOUR_ALIASES, tint as _tint, lift as _lift } from './lib/clubColour.js';
 import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
@@ -40,7 +40,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 // Small enough to sit in the main bundle — the heavy ProfileScreen stays lazy.
 import { ProfilePic } from './components/ProfilePic.jsx';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
@@ -4517,6 +4517,74 @@ async function generateShareCard(type, data) {
     ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Can you beat me? ⚽", cx, 520);
+  } else if (type === "iq") {
+    // ⚠️ THIS IS AN ADDITION TO THE LINK SHARE, NOT A REPLACEMENT FOR IT.
+    // shareProfile deliberately sends a /p?... URL: iMessage strips the
+    // caption off a bare image file, and a link gives both a tappable target
+    // and the rich OG preview. That reasoning still holds for chat. What it
+    // does not cover is Instagram Stories, a camera roll, or anywhere a link
+    // is inert — which is exactly where a rating people want to show off
+    // belongs. So: link for chat, PNG for everywhere else.
+    //
+    // Drawn from the SAME computeCard model the in-app card uses, so the
+    // image cannot drift from the screen it claims to be a picture of.
+    const card = data?.card;
+    const t = CARD_TIERS[card?.tier] || CARD_TIERS.prospect;
+    const name = (data?.name || `${APP_NAME} Player`).slice(0, 20);
+
+    ctx.font = '800 11px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("BALL IQ RATING", cx, 108);
+
+    ctx.font = '900 92px "JetBrains Mono", "Courier New", monospace';
+    ctx.fillStyle = t.accent;
+    ctx.fillText(String(card?.overall ?? "—"), cx, 200);
+
+    ctx.font = '800 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = t.accent;
+    ctx.fillText(t.label, cx, 228);
+
+    ctx.font = '800 26px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(name, cx, 268);
+
+    // The six competitions, two columns — the part that makes the card worth
+    // showing anyone: it says WHERE you are strong, not just a single number.
+    const rows = Array.isArray(card?.ratings) ? card.ratings : [];
+    const chipW = (W - padX * 2 - 10) / 2, chipH = 42, gapY = 8;
+    let top = 300;
+    rows.forEach((r, i) => {
+      const col = i % 2, row = Math.floor(i / 2);
+      const x = padX + col * (chipW + 10);
+      const y = top + row * (chipH + gapY);
+      const col6 = r.color || "#2A2D3A";
+      _roundRectPath(ctx, x, y, chipW, chipH, 11);
+      ctx.fillStyle = _tint(_lift(col6), 0.24);
+      ctx.fill();
+      ctx.strokeStyle = _tint(_lift(col6), 0.55);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.textAlign = "left";
+      ctx.font = '900 20px "JetBrains Mono", "Courier New", monospace';
+      ctx.fillStyle = r.answered > 0 ? t.accent : "rgba(255,255,255,0.32)";
+      ctx.fillText(r.answered > 0 ? String(r.rating) : "—", x + 14, y + 28);
+      ctx.font = '800 12px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "rgba(255,255,255,0.78)";
+      ctx.fillText(r.abbr, x + 58, y + 27);
+      ctx.textAlign = "center";
+    });
+
+    const ctaText = "Can you beat me? ⚽";
+    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    const ctaW = ctx.measureText(ctaText).width + 46;
+    const ctaH = 42, ctaY = top + 3 * (chipH + gapY) + 16;
+    ctx.fillStyle = "#58CC02";
+    _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 21);
+    ctx.fill();
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#06250F";
+    ctx.fillText(ctaText, cx, ctaY + ctaH / 2 + 1);
+    ctx.textBaseline = "alphabetic";
   } else {
     // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
     const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();
@@ -11624,6 +11692,33 @@ function AppInner() {
     await shareCard(cardType, cardData, { onToast: showToast, textFallback: text });
   }, [showToast]);
 
+  // Save / share the rating card as a PNG.
+  //
+  // Deliberately SEPARATE from shareProfile, which sends a /p?... link. That
+  // choice is still right for chat — iMessage strips the caption off a bare
+  // image file, and a link gives both a tappable target and the OG preview.
+  // But a link is inert in an Instagram story or a camera roll, which is
+  // exactly where a rating worth showing off wants to go. Link for chat, image
+  // for everywhere else; neither replaces the other.
+  //
+  // shareCard() already handles the whole ladder: native share sheet, then a
+  // download with a "Saved!" toast, then text. So one call covers both "share
+  // it" and "save it" without a second code path.
+  const saveCardImage = useCallback(async () => {
+    const correct = stats.totalCorrect || 0;
+    const answered = stats.totalAnswered || 0;
+    const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4);
+    const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
+    const u = authProfile?.username;
+    const name = (u && !isDef(u)) ? u
+      : (profile.name && !isDef(profile.name)) ? profile.name
+      : `${APP_NAME} Player`;
+    await shareCard("iq", { card, name }, {
+      onToast: showToast,
+      textFallback: `My Ball IQ is ${card.overall}. Can you beat me? ⚽ ${INVITE_BASE_URL}/play`,
+    });
+  }, [stats, authProfile?.username, profile.name, showToast]);
+
   const shareProfile = useCallback(async () => {
     // 1.1: share a balliq.app/p?... LINK that renders the player's Ball IQ card as
     // its Open Graph preview (server-rendered via /api/og). On iMessage a single
@@ -13024,7 +13119,7 @@ function AppInner() {
           <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="profile">
             <React.Suspense fallback={<ScreenLoading label="Loading profile" />}>
-              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
+              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onSaveCard={saveCardImage} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} nameEditNonce={nameEditNonce} />
             </React.Suspense>
             </TabErrorBoundary>
           </div>

@@ -1202,7 +1202,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
   const { user, profile: authProfile, isGuest, isAnonUser, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -1833,6 +1833,14 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       {(stats.gamesPlayed || 0) > 0 && (
         <div className="profile-secondary-actions" style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
           <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>Share Profile Card</button>
+          {/* A LINK and an IMAGE are different jobs, so both are offered.
+              shareProfile sends /p?... — tappable, unfurls the card, right for
+              a group chat. This one hands over an actual PNG, which is the only
+              useful thing in an Instagram story or a camera roll, where a link
+              does nothing. */}
+          {onSaveCard && (
+            <button className="share-profile-btn" style={{marginBottom:0}} onClick={onSaveCard}>Save card as image</button>
+          )}
           {onShowWeekly && (
             <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>Weekly Summary</button>
           )}
