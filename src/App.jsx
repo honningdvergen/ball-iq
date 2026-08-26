@@ -38,7 +38,8 @@ import { maybeRequestReview, nativeAskBlockedReason, markBadReviewMoment, clearB
 import { saveScore, flushScoreOutbox } from './lib/scoreOutbox.js';
 import { markAcctStep } from './lib/acctFunnel.js';
 // Small enough to sit in the main bundle — the heavy ProfileScreen stays lazy.
-import { ProfilePic } from './components/ProfilePic.jsx';
+import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
+import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard, CARD_TIERS } from './lib/ballIqCard.js';
 import { getTrailAnswer } from './lib/trail.js';
@@ -4518,73 +4519,140 @@ async function generateShareCard(type, data) {
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Can you beat me? ⚽", cx, 520);
   } else if (type === "iq") {
-    // ⚠️ THIS IS AN ADDITION TO THE LINK SHARE, NOT A REPLACEMENT FOR IT.
-    // shareProfile deliberately sends a /p?... URL: iMessage strips the
-    // caption off a bare image file, and a link gives both a tappable target
-    // and the rich OG preview. That reasoning still holds for chat. What it
-    // does not cover is Instagram Stories, a camera roll, or anywhere a link
-    // is inert — which is exactly where a rating people want to show off
-    // belongs. So: link for chat, PNG for everywhere else.
-    //
-    // Drawn from the SAME computeCard model the in-app card uses, so the
-    // image cannot drift from the screen it claims to be a picture of.
+    // ⚠️ THIS IS A PICTURE OF THE CARD, NOT A CARD-THEMED POSTER.
+    // The first version invented its own layout — number, six bare chips, a
+    // green pill — and Alex's verdict was "that png is bad, why not just use
+    // the profile picture and the look of the card on the profile". Right: the
+    // thing worth sharing is the object people already recognise from their own
+    // screen. Same tier gradient, same accent, same avatar, same level chip,
+    // same six competition colours and flags. If the on-screen card changes,
+    // this should be changed with it — they are one design, drawn twice
+    // because canvas and DOM cannot share a renderer.
     const card = data?.card;
     const t = CARD_TIERS[card?.tier] || CARD_TIERS.prospect;
-    const name = (data?.name || `${APP_NAME} Player`).slice(0, 20);
+    const name = (data?.name || `${APP_NAME} Player`).slice(0, 18);
+    const stops = String(t.bg).match(/#[0-9a-f]{6}/gi) || ["#14161e", "#080a0f"];
 
+    // The card body, inset so the wordmark row above it still reads.
+    const cardX = 18, cardY = 70, cardW = W - 36, cardH = 492, cardR = 20;
+    const g = ctx.createLinearGradient(cardX, cardY, cardX + cardW * 0.5, cardY + cardH);
+    g.addColorStop(0, stops[0]);
+    g.addColorStop(1, stops[1] || stops[0]);
+    ctx.save();
+    _roundRectPath(ctx, cardX, cardY, cardW, cardH, cardR);
+    ctx.fillStyle = g;
+    ctx.fill();
+    ctx.clip();
+    // The same top-left bloom the DOM card carries.
+    const glow = ctx.createRadialGradient(cardX + 30, cardY + 20, 0, cardX + 30, cardY + 20, 190);
+    glow.addColorStop(0, _tint(t.accent, 0.13));
+    glow.addColorStop(1, _tint(t.accent, 0));
+    ctx.fillStyle = glow;
+    ctx.fillRect(cardX, cardY, cardW, cardH);
+    ctx.restore();
+    _roundRectPath(ctx, cardX, cardY, cardW, cardH, cardR);
+    ctx.strokeStyle = _tint(t.accent, 0.36);
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    const inX = cardX + 22;
+    ctx.textAlign = "left";
+    ctx.font = '800 10px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = _tint(t.text, 0.55);
+    ctx.fillText("B A L L   I Q   R A T I N G", inX, cardY + 34);
+
+    ctx.font = '900 62px "JetBrains Mono", "Courier New", monospace';
+    ctx.fillStyle = t.accent;
+    ctx.fillText(String(card?.overall ?? "—"), inX, cardY + 104);
+
+    ctx.font = '800 10px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = _tint(t.text, 0.65);
+    ctx.fillText("O V E R A L L", inX, cardY + 124);
     ctx.font = '800 11px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#9BA0B8";
-    ctx.fillText("BALL IQ RATING", cx, 108);
-
-    ctx.font = '900 92px "JetBrains Mono", "Courier New", monospace';
     ctx.fillStyle = t.accent;
-    ctx.fillText(String(card?.overall ?? "—"), cx, 200);
+    ctx.fillText(t.label, inX, cardY + 144);
 
-    ctx.font = '800 15px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = t.accent;
-    ctx.fillText(t.label, cx, 228);
-
-    ctx.font = '800 26px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '900 26px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(name, cx, 268);
+    ctx.fillText(name, inX, cardY + 182);
 
-    // The six competitions, two columns — the part that makes the card worth
-    // showing anyone: it says WHERE you are strong, not just a single number.
-    const rows = Array.isArray(card?.ratings) ? card.ratings : [];
-    const chipW = (W - padX * 2 - 10) / 2, chipH = 42, gapY = 8;
-    let top = 300;
-    rows.forEach((r, i) => {
-      const col = i % 2, row = Math.floor(i / 2);
-      const x = padX + col * (chipW + 10);
-      const y = top + row * (chipH + gapY);
-      const col6 = r.color || "#2A2D3A";
-      _roundRectPath(ctx, x, y, chipW, chipH, 11);
-      ctx.fillStyle = _tint(_lift(col6), 0.24);
+    // Level chip, as on the card.
+    if (data?.levelName) {
+      const chipTxt = `${data.levelIcon || "🏆"} ${data.levelName}   ${Number(data.xp || 0).toLocaleString()} XP`;
+      ctx.font = '800 12px Inter, "Helvetica Neue", Arial, sans-serif';
+      const cw = ctx.measureText(chipTxt).width + 26;
+      _roundRectPath(ctx, inX, cardY + 194, cw, 28, 14);
+      ctx.fillStyle = _tint(t.accent, 0.14);
       ctx.fill();
-      ctx.strokeStyle = _tint(_lift(col6), 0.55);
+      ctx.fillStyle = t.accent;
+      ctx.textBaseline = "middle";
+      ctx.fillText(chipTxt, inX + 13, cardY + 209);
+      ctx.textBaseline = "alphabetic";
+    }
+
+    // Avatar — the photo if there is one, otherwise this player's own colourway
+    // and monogram, which is exactly what ProfilePic does on screen.
+    const aR = 44, aCx = cardX + cardW - 22 - aR, aCy = cardY + 128;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(aCx, aCy, aR, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    if (data?.avatarImg) {
+      ctx.drawImage(data.avatarImg, aCx - aR, aCy - aR, aR * 2, aR * 2);
+    } else {
+      ctx.fillStyle = data?.avatarBg || "#1F2430";
+      ctx.fillRect(aCx - aR, aCy - aR, aR * 2, aR * 2);
+      ctx.textAlign = "center";
+      ctx.font = '900 44px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFFFFF";
+      ctx.textBaseline = "middle";
+      ctx.fillText(data?.initial || "?", aCx, aCy + 2);
+      ctx.textBaseline = "alphabetic";
+      ctx.textAlign = "left";
+    }
+    ctx.restore();
+    ctx.beginPath();
+    ctx.arc(aCx, aCy, aR, 0, Math.PI * 2);
+    ctx.strokeStyle = t.accent;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Divider, then the six competitions in their own colours — with flags,
+    // which the first version dropped and which are half of what makes a row
+    // readable at a glance.
+    ctx.fillStyle = _tint(t.accent, 0.22);
+    ctx.fillRect(inX, cardY + 244, cardW - 44, 1);
+
+    const rows = Array.isArray(card?.ratings) ? card.ratings : [];
+    const chipW = (cardW - 44 - 10) / 2, chipH = 46, gapY = 9;
+    const top = cardY + 264;
+    rows.forEach((r, i) => {
+      const cIdx = i % 2, rIdx = Math.floor(i / 2);
+      const x = inX + cIdx * (chipW + 10);
+      const y = top + rIdx * (chipH + gapY);
+      const col6 = r.color || "#2A2D3A";
+      _roundRectPath(ctx, x, y, chipW, chipH, 12);
+      ctx.fillStyle = _tint(_lift(col6), 0.26);
+      ctx.fill();
+      ctx.strokeStyle = _tint(_lift(col6), 0.6);
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.textAlign = "left";
-      ctx.font = '900 20px "JetBrains Mono", "Courier New", monospace';
-      ctx.fillStyle = r.answered > 0 ? t.accent : "rgba(255,255,255,0.32)";
-      ctx.fillText(r.answered > 0 ? String(r.rating) : "—", x + 14, y + 28);
+      ctx.font = '20px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+      ctx.fillText(r.icon || "", x + 12, y + 31);
+      ctx.font = '900 21px "JetBrains Mono", "Courier New", monospace';
+      ctx.fillStyle = r.answered > 0 ? t.accent : _tint(t.text, 0.3);
+      ctx.fillText(r.answered > 0 ? String(r.rating) : "—", x + 44, y + 31);
       ctx.font = '800 12px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = "rgba(255,255,255,0.78)";
-      ctx.fillText(r.abbr, x + 58, y + 27);
-      ctx.textAlign = "center";
+      ctx.fillStyle = _tint(t.text, 0.8);
+      ctx.fillText(r.abbr, x + 88, y + 30);
     });
 
-    const ctaText = "Can you beat me? ⚽";
-    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
-    const ctaW = ctx.measureText(ctaText).width + 46;
-    const ctaH = 42, ctaY = top + 3 * (chipH + gapY) + 16;
-    ctx.fillStyle = "#58CC02";
-    _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 21);
-    ctx.fill();
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#06250F";
-    ctx.fillText(ctaText, cx, ctaY + ctaH / 2 + 1);
-    ctx.textBaseline = "alphabetic";
+    ctx.textAlign = "center";
+    ctx.font = '800 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("Can you beat me? ⚽", cx, H - 46);
   } else {
     // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
     const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();
@@ -11713,11 +11781,38 @@ function AppInner() {
     const name = (u && !isDef(u)) ? u
       : (profile.name && !isDef(profile.name)) ? profile.name
       : `${APP_NAME} Player`;
-    await shareCard("iq", { card, name }, {
+    const { level } = getLevelInfo(xp);
+
+    // The avatar is the reason this looks like the player's card rather than a
+    // generic one, so it is worth waiting for. A photo that will not load falls
+    // back to the same colourway + monogram ProfilePic draws on screen — never
+    // to a blank circle, which is the failure that component already documents.
+    let avatarImg = null;
+    const photo = authProfile?.avatar_url;
+    if (photo) {
+      avatarImg = await new Promise((resolve) => {
+        const im = new Image();
+        im.crossOrigin = "anonymous";
+        im.onload = () => resolve(im);
+        im.onerror = () => resolve(null);
+        // Never hang the share on a slow CDN.
+        setTimeout(() => resolve(null), 3000);
+        im.src = photo;
+      });
+    }
+    const colourway = avatarColour(profile.avatar, user?.id || name);
+
+    await shareCard("iq", {
+      card, name,
+      levelName: level?.name || "", levelIcon: level?.icon || "🏆", xp: xp || 0,
+      avatarImg,
+      avatarBg: colourway?.bg,
+      initial: firstLetterOf(name),
+    }, {
       onToast: showToast,
       textFallback: `My Ball IQ is ${card.overall}. Can you beat me? ⚽ ${INVITE_BASE_URL}/play`,
     });
-  }, [stats, authProfile?.username, profile.name, showToast]);
+  }, [stats, authProfile?.username, authProfile?.avatar_url, profile.name, profile.avatar, user?.id, xp, showToast]);
 
   const shareProfile = useCallback(async () => {
     // 1.1: share a balliq.app/p?... LINK that renders the player's Ball IQ card as
