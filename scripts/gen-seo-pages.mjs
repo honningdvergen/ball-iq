@@ -830,6 +830,13 @@ return 'taster';
 }catch(e){return 'taster'}}`;
 
 const QA_TRACK_JS = `(function(){
+/* ⚠️ IDEMPOTENT ON PURPOSE — this block registers a document-level click
+   listener, and it is now emitted from two places: renderQA() (wherever a
+   taster exists) and the list-page template (so the 13 list pages with no
+   taster can still measure their CTA). Without this guard those two would both
+   fire on the same page and every outbound click would count twice. A gate
+   firing 30.5x per visitor has already happened here once; do not remove it. */
+if(window.__biqQaTrack)return;window.__biqQaTrack=1;
 ${SURFACE_FN_JS}
 function qSyn(){try{
 if(navigator.webdriver===true)return true;
@@ -3171,6 +3178,11 @@ ${/* The taster sits ABOVE the table. It was below it first, and the viewport
       block of substance. ctaName is not used in the heading: it is phrased for
       "…quizzes about the Bundesliga" and carries its own article, which read as
       "Know your the Bundesliga". */ ''}
+${/* Outbound tracking rides renderQA(), so the 13 list pages with no taster —
+      7 name-game-only and 6 with no widget at all — had a /play CTA nobody
+      could count. Emitted here for every list page; QA_TRACK_JS guards itself
+      against the double registration this creates on the other 37. */ ''}
+<script>${QA_TRACK_JS}</script>
 ${taster.length ? `<section class="sec narrow">
 <h2>Think you know this? Five questions</h2>
 <p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Tap to answer — no sign-up. The full list is right below.</p>
