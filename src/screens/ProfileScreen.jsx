@@ -1774,12 +1774,23 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 return (
                   <div key={r.abbr} style={{
                     display: "flex", alignItems: "center", gap: 8,
-                    padding: "8px 10px", borderRadius: 11, minWidth: 0,
+                    /* ⚠️ FIXED HEIGHT, because the emoji decides otherwise.
+                       All six chips measure exactly 39px in Chrome, and on iOS
+                       the EPL and UCL rows came out SHORTER than the other
+                       four — Apple Color Emoji gives the England tag-sequence
+                       flag and the star different metrics from the
+                       regional-indicator flags. A between-engines difference,
+                       invisible in the browser and only visible on device.
+                       Pin the box so no emoji can push the row around. */
+                    height: 38, boxSizing: "border-box",
+                    padding: "0 10px", borderRadius: 11, minWidth: 0,
                     background: played ? `${t.accent}14` : tint(lift(r.color), 0.20),
                     border: `1px solid ${played ? `${t.accent}40` : tint(lift(r.color), 0.52)}`,
                     transition: "background .3s, border-color .3s",
                   }}>
-                    <span style={{ fontSize: 16, width: 20, textAlign: "center", flexShrink: 0 }} aria-hidden="true">{r.icon}</span>
+                    {/* Same reason: a fixed box the glyph is centred inside,
+                        rather than a text run whose line box varies by glyph. */}
+                    <span aria-hidden="true" style={{ fontSize: 15, width: 20, height: 20, lineHeight: "20px", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>{r.icon}</span>
                     {played ? (
                       <span style={{ fontSize: 19, fontWeight: 900, color: t.accent, minWidth: 24, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
                     ) : (
