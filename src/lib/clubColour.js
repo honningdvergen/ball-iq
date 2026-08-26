@@ -182,3 +182,47 @@ export function clubAbbr(club, abbrMap = {}) {
 
 export const CLUB_COLOUR_ALIASES = ALIASES;
 export const CLUB_COLOUR_EXTRA = EXTRA;
+
+// ── Rendering a club colour ──────────────────────────────────────────────────
+// These three lived inside TransferTrail.jsx. Stadiums needs the identical
+// treatment, and a second copy of a colour-maths helper is precisely how two
+// screens drift into rendering the same club two different shades. Moved here
+// so there is one answer to "what colour is this club" AND one answer to "how
+// do I paint it".
+
+// CLUB_PACKS carries { name, color }; this is the shape clubColour() wants.
+export function packColourMap(packs) {
+  return Object.fromEntries(
+    Object.values(packs || {}).map((p) => [p?.name, p?.color]).filter(([n, c]) => n && c)
+  );
+}
+
+export function tint(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+}
+
+// Every black-and-white side carries #111111 (Juventus, Santos, Botafogo,
+// Atlético Mineiro). At 30% alpha on a dark card that is invisible, so those
+// rows looked uncoloured even though the lookup had succeeded — which is how
+// Gilberto Silva's real América-MG → Atlético-MG move read as one club twice.
+// Lift ONLY the value used for the card tint and border. The badge keeps the
+// true club colour, where black with white type is authentic and legible.
+export function lift(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  if ((0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 >= 0.18) return hex;
+  const mix = (c) => Math.round(c + (255 - c) * 0.55);
+  return `#${[mix(r), mix(g), mix(b)].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
+}
+
+// Readable ink on a club colour — WCAG relative luminance, not a naive average,
+// so Dortmund yellow and Real Madrid white get dark type.
+export function onColour(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  const f = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) => {
+    const v = c / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2] > 0.42 ? "#14181F" : "#FFFFFF";
+}

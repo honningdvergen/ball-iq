@@ -22,7 +22,7 @@ import {
   buildTrailShareText,
 } from "../lib/trail.js";
 import { Confetti, haptic, playSound, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
-import { clubColour, clubAbbr } from "../lib/clubColour.js";
+import { clubColour, clubAbbr, packColourMap, tint, lift, onColour } from "../lib/clubColour.js";
 /* Shares mysteryPool.json with Mystery Player ON PURPOSE. Vite hoists it into
    one chunk both modes use, so a player who does the dailies downloads it ONCE
    (661 KB gzip) instead of twice. A slim 4-field index was built and measured
@@ -209,32 +209,10 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   // Club identity on the ladder, mirroring the Club Quiz rows. CLUB_PACKS
   // carries {name, color}; the resolver handles the fact that careers say
   // "Man Utd" where the packs say "Man United".
-  const packColours = Object.fromEntries(Object.values(CLUB_PACKS).map((p) => [p.name, p.color]));
-  const tint = (hex, a) => {
-    const n = parseInt(hex.slice(1), 16);
-    return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
-  };
-  // Every black-and-white side carries #111111 (Juventus, Santos, Botafogo,
-  // Atlético Mineiro). At 30% alpha on a dark card that is invisible, so those
-  // rungs looked uncoloured even though the lookup had succeeded — which is how
-  // Gilberto Silva's real América-MG → Atlético-MG move read as one club twice.
-  // Lift ONLY the value used for the card tint and border. The badge keeps the
-  // true club colour, where black with white type is authentic and legible.
-  const lift = (hex) => {
-    const n = parseInt(hex.slice(1), 16);
-    const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
-    if ((0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 >= 0.18) return hex;
-    const mix = (c) => Math.round(c + (255 - c) * 0.55);
-    return `#${[mix(r), mix(g), mix(b)].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
-  };
-  const onColour = (hex) => {
-    const n = parseInt(hex.slice(1), 16);
-    const f = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) => {
-      const v = c / 255;
-      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-    });
-    return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2] > 0.42 ? "#14181F" : "#FFFFFF";
-  };
+  // tint / lift / onColour now live in lib/clubColour.js alongside the lookup,
+  // because Stadiums needs the identical treatment and two copies of colour
+  // maths is how two screens drift into painting the same club differently.
+  const packColours = packColourMap(CLUB_PACKS);
 
   return (
     <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20 + kbInset, maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>

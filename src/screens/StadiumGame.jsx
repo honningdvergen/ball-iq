@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
 import { STADIUM_LEAGUES, matchStadium } from "../data/stadiums.js";
-import { Confetti, haptic, playSound } from "../App.jsx";
+import { Confetti, haptic, playSound, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
+import { clubColour, clubAbbr, packColourMap, tint, lift, onColour } from "../lib/clubColour.js";
 import { Lightbulb } from "lucide-react";
 
 // Stadiums — a Sporcle-style completion run: name every ground in the league.
@@ -25,7 +26,7 @@ function loadState(leagueId) {
       if (p && typeof p === "object") return p;
     }
   } catch { /* fresh run */ }
-  return { solved: [], clubsRevealed: false, letters: {}, gaveUp: false };
+  return { solved: [], clubsHidden: false, letters: {}, gaveUp: false };
 }
 
 function saveState(leagueId, state) {
@@ -138,8 +139,22 @@ function StadiumBoard({ league, onExit }) {
   // Every solved stadium inserts a row above the input.
   useEffect(keepInputVisible, [solvedSet.size, keepInputVisible]);
   const done = solvedSet.size === total;
-  const hintsUsed = (state.clubsRevealed ? 1 : 0)
-    + Object.values(state.letters || {}).reduce((a, b) => a + b, 0);
+  // ⚠️ Showing the clubs is NOT a hint any more, and this is a deliberate
+  // reversal of the 2026-08-20 design ("start cold with just a counter").
+  // That cold start meant a first-time player opened Stadiums to 0/20, an
+  // empty box and nothing else, and had to spend a hint to find out what was
+  // even being asked. The club list is the PROMPT, not a crutch: "Arsenal ->
+  // Emirates" is a football question, "name 20 grounds from nothing" is a
+  // memory test. The pure version is still one tap away via Hide the clubs.
+  const showClubs = !state.clubsHidden;
+  // Club identity on the rows, the same treatment Transfer Trail's ladder uses
+  // — twenty identical grey bars is what this list was. Resolver + helpers are
+  // shared (lib/clubColour.js) so the two screens cannot drift apart.
+  // Coverage is 20/20 for the Premier League and 55/96 across all five
+  // leagues; an unknown club deliberately gets a NEUTRAL chip rather than a
+  // guessed one, because a football audience spots Everton in red instantly.
+  const packColours = useMemo(() => packColourMap(CLUB_PACKS), []);
+  const hintsUsed = Object.values(state.letters || {}).reduce((a, b) => a + b, 0);
 
   useEffect(() => { saveState(league.id, state); }, [league.id, state]);
 
@@ -216,7 +231,7 @@ function StadiumBoard({ league, onExit }) {
     if (text.trim()) { haptic("wrong"); playSound("wrong"); setShake(true); setTimeout(() => setShake(false), 420); }
   };
 
-  const revealClubs = () => { haptic("select"); setState((s) => ({ ...s, clubsRevealed: true })); };
+  const toggleClubs = () => { haptic("select"); setState((s) => ({ ...s, clubsHidden: !s.clubsHidden })); };
   const revealLetter = (club) => {
     haptic("select");
     setState((s) => ({ ...s, letters: { ...s.letters, [club]: (s.letters?.[club] || 0) + 1 } }));
@@ -242,7 +257,7 @@ function StadiumBoard({ league, onExit }) {
   };
 
   const resetRun = () => {
-    setState({ solved: [], clubsRevealed: false, letters: {}, gaveUp: false });
+    setState({ solved: [], clubsHidden: false, letters: {}, gaveUp: false });
     setText("");
     try { inputRef.current?.focus(); } catch {}
   };
@@ -279,12 +294,13 @@ function StadiumBoard({ league, onExit }) {
             }}
           />
           <div style={{ display: "flex", gap: 8, marginTop: 10, alignItems: "center" }}>
-            {!state.clubsRevealed && (
-              <button onClick={revealClubs}
-                style={{ padding: "9px 14px", borderRadius: 11, background: "var(--s2)", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "inherit", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
-                <Lightbulb size={13} strokeWidth={2.5} aria-hidden="true" /> Show the clubs
-              </button>
-            )}
+            {/* Hard mode, not a hint. Hiding the clubs is the pure recall run
+                the cold start used to force on everybody; it is now opt-in. */}
+            <button onClick={toggleClubs} aria-pressed={state.clubsHidden}
+              style={{ padding: "9px 14px", borderRadius: 11, background: "var(--s2)", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "inherit", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <Lightbulb size={13} strokeWidth={2.5} aria-hidden="true" />
+              {showClubs ? "Hide the clubs" : "Show the clubs"}
+            </button>
             <div style={{ flex: 1 }} />
             <span style={{ fontSize: 12, color: "var(--t3, var(--t2))" }}>{hintsUsed === 0 ? "No hints yet" : `${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}`}</span>
           </div>
@@ -324,7 +340,7 @@ function StadiumBoard({ league, onExit }) {
           fills as you play; "Show the clubs" still expands the full scaffold
           with its per-row letter hints, and giving up reveals everything. The
           hint ladder is unchanged — this only stops drawing empty rows. */}
-      {!state.clubsRevealed && !done && solvedSet.size === 0 && (
+      {!showClubs && !done && solvedSet.size === 0 && (
         <div style={{ marginTop: 18, padding: "22px 18px", borderRadius: 14, textAlign: "center",
                       background: "var(--s2)", border: "1px dashed var(--border)" }}>
           <div style={{ fontSize: 14.5, fontWeight: 800, color: "var(--text)" }}>
@@ -338,25 +354,47 @@ function StadiumBoard({ league, onExit }) {
       )}
 
       <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 7 }}>
-        {(state.clubsRevealed || done ? rows : rows.filter((c) => solvedSet.has(c.club))).map((c) => {
+        {(showClubs || done ? rows : rows.filter((c) => solvedSet.has(c.club))).map((c) => {
           const isSolved = solvedSet.has(c.club);
           const letters = state.letters?.[c.club] || 0;
           const flash = justSolved === c.club;
+          // Only paint a club you are allowed to see — in hard mode the row is
+          // "•••" and a Liverpool-red bar would hand the answer straight back.
+          const named = isSolved || showClubs;
+          const col = named ? clubColour(c.club, packColours) : null;
+          // Solved stays GREEN. That is the mode's core feedback and club
+          // colour must not compete with it, so identity lives on the chip and
+          // the tint only dresses rows still to be named.
+          const bg = isSolved
+            ? (state.gaveUp && !flash ? "var(--s2)" : "rgba(88,204,2,0.10)")
+            : (col ? `linear-gradient(90deg, ${tint(lift(col), 0.22)} 0%, ${tint(lift(col), 0.04)} 100%)` : "var(--s2)");
+          const bd = isSolved && !state.gaveUp
+            ? "rgba(88,204,2,0.35)"
+            : (col ? tint(lift(col), 0.38) : "var(--border)");
           return (
             <div key={c.club} style={{
               display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
               borderRadius: 11, minHeight: 44,
-              background: isSolved ? (state.gaveUp && !flash ? "var(--s2)" : "rgba(88,204,2,0.10)") : "var(--s2)",
-              border: `1px solid ${isSolved && !state.gaveUp ? "rgba(88,204,2,0.35)" : "var(--border)"}`,
+              background: bg,
+              border: `1px solid ${bd}`,
               transition: "background .25s, border-color .25s",
             }}>
-              <div style={{ flex: "0 0 40%", minWidth: 0, fontSize: 13.5, fontWeight: 700, color: "var(--t2)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {isSolved || state.clubsRevealed ? c.club : "•••"}
+              {named && (
+                <span aria-hidden="true" style={{
+                  width: 28, height: 28, flexShrink: 0, borderRadius: 8,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 10.5, fontWeight: 800, letterSpacing: "0.02em",
+                  background: col || "var(--s3, var(--s2))", color: col ? onColour(col) : "var(--t3, var(--t2))",
+                  border: col ? "none" : "1px solid var(--border)",
+                }}>{clubAbbr(c.club, CLUB_ABBR)}</span>
+              )}
+              <div style={{ flex: "0 0 34%", minWidth: 0, fontSize: 13.5, fontWeight: 700, color: "var(--t2)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {named ? c.club : "•••"}
               </div>
               <div style={{ flex: 1, minWidth: 0, fontSize: 14, fontWeight: 800, color: isSolved ? "var(--text)" : "var(--t2)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", letterSpacing: isSolved ? 0 : "1px" }}>
                 {isSolved ? c.stadium : (letters > 0 ? mask(c.stadium, letters) : "")}
               </div>
-              {!isSolved && state.clubsRevealed && (
+              {!isSolved && showClubs && (
                 <button onClick={() => revealLetter(c.club)} aria-label={`Reveal a letter of ${c.club}'s stadium`}
                   style={{ flexShrink: 0, padding: "6px 10px", borderRadius: 9, background: "transparent", border: "1px solid var(--border)", color: "var(--t2)", fontFamily: "inherit", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                   A…
