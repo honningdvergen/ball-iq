@@ -1,0 +1,14 @@
+{
+ "_warning": "UNVERIFIED. candidates passed zero checks; examiner approvals passed one of two. ZERO ERROR = survive BOTH passes. Do not ship from this file.",
+ "runDir": "/Users/alexanderbrynolsen/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/subagents/workflows/wf_166c536b-933",
+ "rescuedAt": null,
+ "counts": {
+  "candidates": 0,
+  "byClub": {},
+  "verdicts": {
+   "examiner:fix": 13,
+   "examiner:reject": 2
+  }
+ },
+ "candidates": {}
+}
