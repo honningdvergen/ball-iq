@@ -140,6 +140,14 @@ const COPY = {
     head: ['Name {every ground}', 'in the league'],
     sub: 'Five leagues. No multiple choice.',
   },
+  // Not a screenshot of a screen — the card the app hands you, which is why it
+  // is `bare`. In a row of nine phone thumbnails it is the one that stops the eye.
+  '10-iq-card': {
+    eyebrow: 'YOUR BALL IQ CARD', accent: AMBER,
+    head: ['One card.', '{Settle it} with your mates.'],
+    sub: 'Save it, send it, see who actually knows football.',
+    bare: true,
+  },
 };
 
 const hl = (line, accent) =>
@@ -238,6 +246,17 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
     box-shadow:0 0 0 1px rgba(255,255,255,.06);
   }`}
   .screen img{display:block;width:100%;flex:1 1 auto;min-height:0;object-fit:cover;object-position:top center}
+  /* A bare panel shows an ARTEFACT rather than a screen — the shareable card
+     is not a screenshot of the app, it is the thing the app hands you, so
+     wrapping it in a phone frame would misrepresent it as a screen. */
+  /* Centred in the space the phone would occupy, and sized to fill it: at 78%
+     with flex-start the card floated in the top third with a ~600px void under
+     it, which reads as a layout that failed rather than a deliberate crop. */
+  .bare{flex:1 1 auto;display:flex;align-items:center;justify-content:center;width:100%;padding-bottom:${f(40)}px}
+  .bare img{
+    width:${Math.round(IMG_W * 0.96)}px;height:auto;display:block;border-radius:${f(34)}px;
+    box-shadow:0 ${f(44)}px ${f(100)}px rgba(0,0,0,.6);
+  }
 </style></head><body>
   <div class="top">
     <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b></span></div>
@@ -245,6 +264,7 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
     <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
     <div class="sub">${c.sub}</div>
   </div>
+  ${c.bare ? `<div class="bare"><img src="${dataUri}"></div>` : `
   <div class="phone"><div class="screen">
     <div class="statusbar">
       <span class="t">9:41</span><span class="island"></span>
@@ -255,7 +275,7 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
       </span>
     </div>
     <img src="${dataUri}">
-  </div></div>
+  </div></div>`}
 </body></html>`;
 
 // Brand mark, if the app icon is on disk — inlined so the CSP-free file:// page
