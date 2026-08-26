@@ -25,7 +25,7 @@ describe("SEO funnel attribution", () => {
   });
 
   it("classifies outbound clicks by resolved hostname, store branch first", () => {
-    const m = GEN.match(/var qh=\(a\.hostname\|\|''\);([\s\S]{0,400}?list-out-play'\);)/);
+    const m = GEN.match(/var qh=\(a\.hostname\|\|''\);([\s\S]{0,1200}?list-out-play'\);)/);
     expect(m, "outbound-click classifier not found — did it move or get rewritten?").toBeTruthy();
     const snippet = m[1];
 
@@ -42,8 +42,18 @@ describe("SEO funnel attribution", () => {
     expect(snippet).not.toMatch(/h\.indexOf\('play\.google\.com'\)/);
     expect(snippet).not.toMatch(/h\.indexOf\('apps\.apple\.com'\)/);
 
-    // /get 302s to /play, so it belongs with the web app, not the store hop.
-    expect(snippet).toMatch(/h\.indexOf\('\/get'\)>-1/);
+    // /get is NOT folded into either side. api/get.js is platform-aware —
+    // iPhone -> App Store, Android -> Play, desktop -> /play — so the same
+    // href is a store hop for most traffic and a web-app click for the rest.
+    // I originally put it in the web-app branch after testing with curl, whose
+    // unrecognised UA takes the desktop path. That was a precise-looking wrong
+    // number; it now has its own event.
+    expect(snippet).toMatch(/h\.indexOf\('\/get'\)>-1\)qev\('list-out-get'\)/);
+    const getBranch = snippet.indexOf("list-out-get");
+    expect(getBranch).toBeGreaterThan(-1);
+    // /get must be decided BEFORE /play, because "/get" would otherwise fall
+    // through to the /play test on any URL containing both.
+    expect(getBranch).toBeLessThan(snippet.indexOf("list-out-play"));
   });
 
   it("never hardcodes the surface — it is derived from the path, in ONE place", () => {

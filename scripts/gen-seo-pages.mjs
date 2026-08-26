@@ -607,12 +607,20 @@ function heroTwoCol(props, rightHtml) {
 }
 
 // Orange app CTA band (matches the homepage Daily band). Black App Store badge.
+/* ⚠️ THIS OFFERED STORE BADGES AND NOTHING ELSE.
+   On a /lists page it is the only exit on the page, and it asked a reader who
+   had spent 40 seconds with us to go and install something. The web app is
+   free, instant and needs no account — and it was never mentioned. Play here
+   first, install second, which is the same ordering the club engine settled on
+   against the 94.6% single-page measurement. */
 function appCtaBand(name) {
   return `<section class="sec"><div class="appband">
 <div class="appband-flame" aria-hidden="true">🔥</div>
 <div class="appband-in">
-<h2>Think you know ${esc(name)}? Prove it in the app.</h2>
-<p>Streaks, live 1v1, a rating out of 99 — and every quiz in one app.</p>
+<h2>Think you know ${esc(name)}? Prove it.</h2>
+<p>Streaks, live 1v1, a rating out of 99 — and every quiz in one place.</p>
+<a class="appband-play" href="${SITE.base}/play">Play free in your browser →</a>
+<p class="appband-or">No account, nothing to install. Or get it on your phone:</p>
 ${storeBadges()}
 </div>
 </div></section>`;
@@ -833,10 +841,11 @@ if(!v){v=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():nu
 if(!v)return null;localStorage.setItem('biq_vid',v)}
 return (v&&v.length===36)?v:null;
 }catch(e){return null}}
-function qev(n){
+function qev(n,x){
 if(qSyn())return;
 try{if(window.clarity)window.clarity('event',n)}catch(e){}
 var meta={surface:biqSurface()};
+if(x)for(var xk in x){if(Object.prototype.hasOwnProperty.call(x,xk))meta[xk]=x[xk]}
 try{
 var seg=location.pathname.split('/').filter(Boolean);
 if(seg[1])meta.slug=seg[1];
@@ -847,6 +856,11 @@ headers:{'content-type':'application/json','apikey':'${BQ_PUBLISHABLE_KEY}','aut
 body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:qVid()})}).catch(function(){})}catch(e){}}
 var qSeen=false;
 window.__biqListAnswered=function(){if(qSeen)return;qSeen=true;qev('list-answered')};
+/* Answering ONE question and answering ALL FIVE are different levels of
+   intent, and only the first was ever recorded — so "they engaged but did not
+   convert" and "they tried one and left" were the same row. */
+var qFin=false;
+window.__biqListFinished=function(s,t){if(qFin)return;qFin=true;qev('list-finished',{score:s,total:t})};
 /* A tap through to the product from a list page — the step the whole surface
    exists to produce, and the one nobody could count. */
 document.addEventListener('click',function(e){
@@ -859,11 +873,62 @@ if(!a)return;var h=a.getAttribute('href')||'';
    it belongs with the web app. */
 var qh=(a.hostname||'');
 if(qh==='play.google.com'||qh==='apps.apple.com')qev('list-out-store');
-else if(h.indexOf('/play')>-1||h.indexOf('/get')>-1)qev('list-out-play');
+/* /get gets its OWN event and is deliberately not folded into either side.
+   api/get.js is platform-aware: iPhone -> App Store, Android -> Play, desktop
+   -> /play. So the same href is a store hop for most of our traffic and a
+   web-app click for the rest, and calling it either one would be a number that
+   looks precise and is wrong. Counted separately; resolve it against the
+   platform breakdown when reading. */
+else if(h.indexOf('/get')>-1)qev('list-out-get');
+else if(h.indexOf('/play')>-1)qev('list-out-play');
 },true);
 })();`;
 
-const QA_JS = `(function(){var cs=document.querySelectorAll('.qa[data-a]');for(var c=0;c<cs.length;c++){(function(card){var a=+card.getAttribute('data-a'),bs=card.querySelectorAll('.to'),w=card.querySelector('.qa-why'),done=false;if(w)w.hidden=true;function pick(ev){if(done)return;done=true;var k=+ev.currentTarget.getAttribute('data-i');for(var b=0;b<bs.length;b++){bs[b].disabled=true;if(b===a){bs[b].className='to correct';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2713</span>')}else if(b===k){bs[b].className='to wrong';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2717</span>')}else{bs[b].className='to dim'}}if(w)w.hidden=false;try{window.__biqListAnswered&&window.__biqListAnswered()}catch(e){}}for(var b=0;b<bs.length;b++)bs[b].addEventListener('click',pick)})(cs[c])}})();`;
+/* ⚠️ THIS WIDGET USED TO END IN NOTHING, on the surface that carries 47% of
+   impressions and returns 4% of clicks.
+
+   renderTaster()/TASTER_JS — the club-page widget — has had a finish state all
+   along (see `.tdone` below: score, a /play link, a store link). renderQA() is
+   a different widget used by the /lists pages, and it just marked the last
+   answer and stopped. The next DOM siblings after `.qa-list` were two <script>
+   tags. So a reader answered five questions correctly and was offered nothing.
+
+   Worse, `appCtaBand` — the only other exit on a list page — ships STORE
+   BADGES ONLY and sits below a table that runs to 70+ rows. The free,
+   instant, no-install version of the product was never offered at all.
+
+   Ordering copies the club engine, which was tuned against the 94.6%
+   single-page measurement: play here first, install second. */
+const QA_JS = `(function(){
+var cs=document.querySelectorAll('.qa[data-a]');
+if(!cs.length)return;
+var list=cs[0].closest('.qa-list'),total=cs.length,answered=0,score=0;
+function finish(){
+if(!list||document.getElementById('qa-done'))return;
+var d=document.createElement('div');
+d.id='qa-done';d.className='qa-done';
+d.innerHTML='<div class="qa-done-h">'+score+' of '+total+'</div>'
++'<p class="qa-done-s">There are thousands more, and a new one every day.</p>'
++'<a class="qa-done-go" href="${SITE.base}/play">Keep playing — free in your browser \\u2192</a>'
++'<a class="qa-done-alt" href="${SITE.getApp}" rel="noopener">Get the app</a>';
+list.parentNode.insertBefore(d,list.nextSibling);
+try{window.__biqListFinished&&window.__biqListFinished(score,total)}catch(e){}}
+for(var c=0;c<cs.length;c++){(function(card){
+var a=+card.getAttribute('data-a'),bs=card.querySelectorAll('.to'),w=card.querySelector('.qa-why'),done=false;
+if(w)w.hidden=true;
+function pick(ev){
+if(done)return;done=true;
+var k=+ev.currentTarget.getAttribute('data-i');
+for(var b=0;b<bs.length;b++){bs[b].disabled=true;
+if(b===a){bs[b].className='to correct';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2713</span>')}
+else if(b===k){bs[b].className='to wrong';bs[b].insertAdjacentHTML('beforeend','<span class="tm">\\u2717</span>')}
+else{bs[b].className='to dim'}}
+if(w)w.hidden=false;
+answered++;if(k===a)score++;
+try{window.__biqListAnswered&&window.__biqListAnswered()}catch(e){}
+if(answered===total)finish();}
+for(var b=0;b<bs.length;b++)bs[b].addEventListener('click',pick)})(cs[c])}
+})();`;
 
 // ── Interactive quiz taster (Claude Design website handoff) ───────────────────
 // A playable 5-question widget injected into every club/league landing page:
@@ -1799,6 +1864,10 @@ ${ADS_ACTIVE ? `<script>
   .appband{position:relative;overflow:hidden;border-radius:24px;padding:clamp(28px,5vw,44px);background:linear-gradient(120deg,#FF6A00,#FFC107)}
   .appband-flame{position:absolute;right:-16px;bottom:-40px;font-size:180px;opacity:.16;pointer-events:none;line-height:1}
   .appband-in{position:relative;max-width:34ch}
+  .appband-play{display:inline-block;margin:14px 0 0;padding:13px 22px;border-radius:999px;
+    background:var(--grn,#58CC02);color:#06230C;font-weight:800;font-size:15.5px;text-decoration:none}
+  .appband-play:hover{filter:brightness(1.06)}
+  .appband-or{margin:12px 0 10px!important;font-size:13px;color:var(--tx3)}
   .appband h2{color:#0A0A0A;font-size:clamp(23px,3.4vw,34px);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin-bottom:12px}
   .appband p{color:rgba(10,10,10,.72);font-size:16px;font-weight:600;line-height:1.5;margin-bottom:22px}
   .appband .store-badge{border-color:rgba(10,10,10,.25)}
@@ -1853,6 +1922,17 @@ ${ADS_ACTIVE ? `<script>
 ${OPTION_CSS('.qa-opts .to')}
   /* tighter than the taster card — must stay AFTER OPTION_CSS to win */
   .qa-opts .to{padding:11px 13px;font-size:14px}
+  /* Finish state for the static Q&A widget. Lives in the BASE stylesheet, not
+     in TASTER_CSS: list pages never include the taster, which is exactly how
+     they ended up with a widget that had no ending. */
+  .qa-done{margin-top:16px;padding:20px 18px;border-radius:16px;text-align:center;
+    border:1px solid rgba(88,204,2,.32);background:linear-gradient(160deg,rgba(88,204,2,.10) 0%,rgba(88,204,2,.02) 100%)}
+  .qa-done-h{font-family:var(--mono);font-size:30px;font-weight:800;color:var(--grn-soft);line-height:1}
+  .qa-done-s{margin:8px 0 16px;font-size:14.5px;color:var(--tx2)}
+  .qa-done-go{display:block;padding:14px 18px;border-radius:999px;background:var(--grn,#58CC02);color:#06230C;
+    font-weight:800;font-size:15.5px;text-decoration:none}
+  .qa-done-go:hover{filter:brightness(1.06)}
+  .qa-done-alt{display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:var(--tx3);text-decoration:underline}
   .qa-why{border-top:1px dashed var(--bd);padding-top:12px;margin-top:12px;color:var(--tx3);font-size:14px;line-height:1.55}
   .qa-why::before{content:"✓ ";color:var(--grn-soft);font-weight:800}
   /* footer */
