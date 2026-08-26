@@ -4231,3 +4231,55 @@ the ones living in more than one file. 100 sites, 10 cross-file twins.
       (App.jsx vs ProfileScreen, component vs pre-boot shell, mobile vs desktop
       results). Sweep duplicated USER-FACING COPY and duplicated localStorage
       key writers the same way.
+
+## 2026-08-26 — morning session
+
+### Landed
+- [x] Trail schedule lapsed at midnight (day #24) and took the whole Vercel
+      deploy down with it, so the previous night's four commits never reached
+      players. Frozen via `npm run trail:freeze` (WERNER); deploy verified
+      rendering, not just green. df258dc.
+- [x] SEO outbound attribution was inverted: `h.indexOf('/play')` matched
+      "https://play.google.com/..." at index 7, so every Play Store badge
+      counted as a web-app conversion on 111 pages. Now decided on the resolved
+      hostname, store branch first. a5bafbe.
+- [x] `surface` was hardcoded to 'list-page' on all 111 pages while a correct
+      path-derived version sat in another script block. Single-sourced.
+- [x] 35 localised club pages printed "undefined →" as their app CTA
+      (`c.playLabel` vs `cfg.playLabel`). Verified live: now "Jugar el quiz →".
+- [x] List-page answer options rendered with no layout — they emit `.tl` letter
+      badges but only the taster's bare `.to` had rules, so it read
+      "AEintracht Frankfurt". OPTION_CSS(selector) now serves both.
+- [x] Guard: tests/unit/seo-funnel-attribution.test.js, proven by breaking all
+      three structural fixes in turn and watching it go red for each.
+- [x] Corrected the activation figure everywhere (memory + question-bank skill).
+
+### Open — measurement gaps, ranked
+- [ ] **No `first-game-finished` event exists.** 60% of first sessions end at
+      `first-game-started` and the data stops. Until this lands, no activation
+      change can be evaluated. Smallest, highest-value item on this list.
+- [ ] 94% of question reports (63 of 67) carry a NULL reason, and 41 point at
+      questions never triaged. Highest-precision feedback channel in the
+      product, discarding its payload. Capture a reason at report time.
+- [ ] `challenge_events` has never recorded a row though its RPC is deployed —
+      the /c/ Daily-7 measurement layer is inert.
+- [ ] Web push cron has run 278 successful cycles against ZERO subscribers
+      (`web_push_subscriptions` is empty). Either wire the subscribe path or
+      stop the job.
+- [ ] `club_quiz_results` has no `user_id` column, so the SEO surface — which
+      out-plays the app roughly 2:1 — can never be joined to a signup.
+
+### Open — needs Alex's call (migrations / product)
+- [ ] MP history is deleted on a rolling 7 days by `reap_stale_rooms`, and
+      `room_players` cascades. Roll up to an `mp_pairings` aggregate BEFORE the
+      delete or the friend loop can never be measured. Do not just disable the
+      job — it also force-ends abandoned lobbies.
+- [ ] /lists pages have no visible route into the product at all: 0 of 50 carry
+      a `/play` link, and both playable widgets end in nothing. The club engine
+      already has the CTA ladder to copy. This is the 47%-of-impressions
+      surface.
+- [ ] 6 list pages have no playable element whatsoever (gated at groups >= 8).
+- [ ] 76 `/questions/` pages are internally linked, live, and have zero
+      playable content.
+- [ ] Home says "up to 8 players"; the observed maximum in any room is 4.
+      Capacity is designed, never demonstrated — 3+ device smoke test.
