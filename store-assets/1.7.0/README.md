@@ -112,3 +112,55 @@ native OS file picker, and that dialog cannot be driven from the page.
 So this one is a drag-and-drop job: open the listing, drop
 `screenshots/android/01…08` onto each of the three sets. Order matters least on
 Play, but keep 01-home first.
+
+## 2026-08-26 — three corrections applied to the live 1.7.0 listing
+
+Applied via App Store Connect and verified by full page reload. Build was
+not attached and Add for Review was not clicked.
+
+### ⚠️ The description advertised a mode that does not exist
+
+> `- Ball IQ Test — 15 calibrated questions produce a score from 60 to 160.`
+
+**Ball IQ Test was killed on 2026-08-11** (commit `04303db`, "kill Ball IQ
+Test mode"). The App.jsx mode went then; the HomeScreen tile outlived it and
+was removed later because it "silently started an unbranded generic quiz".
+The store listing was never updated, so for fifteen days the product page
+advertised a mode a new installer could not find.
+
+Caught by accident: the zero-state work needed somewhere to send a new user,
+the description named the Ball IQ Test as the mode that produces the rating,
+and grepping for it found only a gravestone comment. Every other claimed mode
+was then checked against the code — daily, classic, survival, hotstreak,
+online, local, legends, chaos, stadiums are all live. One false claim, now
+removed (3,784 → 3,684 chars).
+
+This is the SECOND time this listing has carried a stale claim, and it is the
+exact failure this file was created to prevent. **The console is not version
+control, and nothing in the build gate reads it.** Worth a script that diffs
+the GAME MODES block against the mode keys in HomeScreen.jsx.
+
+### What's New claimed 1.7.0 had no new modes
+
+> "This one is polish rather than new modes"
+
+`StadiumGame.jsx` was added 2026-08-20, and 1.6.0 was approved on the 19th —
+so Stadiums IS new in 1.7.0, and the app badges it NEW on the Home screen.
+Opener is now "One new mode, and a long list of rough edges you told us
+about.", with a Stadiums bullet added at the top of the list.
+
+### Stadiums was missing from GAME MODES
+
+Added: `- Stadiums — name every ground in five leagues, one at a time. A
+completion run, not a timer.` (Premier League, La Liga, Serie A, Bundesliga,
+Ligue 1 — 96 grounds.)
+
+### Screenshot review (not yet applied)
+
+- `04-transfer-trail` is the weakest of the eight: ~18% dead black space
+  below the content, the in-app "Career looks wrong? Tell us" button visible
+  in a marketing shot, and three red rows that read as failure on a screenshot
+  headed "Solved".
+- **No multiplayer screenshot exists**, though the promo text sells live 1v1
+  and the description lists Online Multiplayer. Two slots are free (8 of 10).
+- No Stadiums screenshot either, now that it is a shipped, advertised mode.
