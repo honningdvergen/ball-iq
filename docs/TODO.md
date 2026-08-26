@@ -560,9 +560,13 @@ Full report: the panel artifact (16 areas, each with its path to 8+).
       now lands on the 5.0★ Norwegian shelf.**
 
 ### Next up — still web-only, no upload needed
-- [ ] Re-shoot `01-home.png` (`animations:'disabled'`, shoot-store-screens.mjs:422)
-      — the hero shot on both stores has glyphs bleeding through the tab bar and
-      the Daily tab reads "🔥aily". Play takes screenshot edits with no release.
+- [x] Re-shoot `01-home.png` — **already fixed, by something else.** The glyph
+      bleed and "🔥aily" were the translucent `.tab-bar` compositing over the
+      cards behind it, not an animation frame; `forceOpaqueMaterials()` in the
+      shot harness closed it. Verified on the 2026-08-26 re-shoot: tab bar is
+      opaque, "Daily" reads clean, no bleed. No `animations:'disabled'` needed.
+      Whole set re-shot and re-framed the same day (`660dd14`) for the new
+      Ball IQ card, so both stores' galleries are current.
 - [x] **Privacy §4 vs the native funnel — UPLOAD BLOCKER CLEARED.** Alex chose
       *anonymous counts*: native sends the event name and nothing else. ⚠️ The
       client half alone was NOT enough — `record_funnel_event` also inserts
