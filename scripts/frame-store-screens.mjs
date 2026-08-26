@@ -133,6 +133,13 @@ const COPY = {
     head: ["What's your {Ball IQ}?"],
     sub: 'Every answer builds your rating.',
   },
+  // Stadiums shipped 2026-08-20, is badged NEW in the app and named in both the
+  // description and What's New — and had no screenshot at all.
+  '09-stadiums': {
+    eyebrow: 'NEW · STADIUMS', accent: GREEN,
+    head: ['Name {every ground}', 'in the league'],
+    sub: 'Five leagues. No multiple choice.',
+  },
 };
 
 const hl = (line, accent) =>

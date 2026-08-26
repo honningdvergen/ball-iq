@@ -187,9 +187,14 @@ const SHOTS = [
       const t = getTrailAnswer(new Date());
       const answer = t ? t.display.join(' ') : null;
       if (!answer) return;
+      // ⚠️ TWO DECOYS, NOT FOUR. Four meant five clubs revealed: three red
+      // rows dominating a frame whose own header reads "Solved", and "Got it
+      // on 5 clubs" printed under a subhead that says fewer clubs scores more.
+      // The shot argued against its own copy. Two is a good result, still an
+      // honest one, and leaves the ladder mostly neutral.
       const decoys = ['Toni Kroos', 'İlkay Gündoğan', 'Leon Goretzka', 'Thomas Müller']
         .filter((n) => n.toLowerCase() !== answer.toLowerCase());
-      for (const g of [...decoys.slice(0, 4), answer]) {
+      for (const g of [...decoys.slice(0, 2), answer]) {
         // ⚠️ BY aria-label, NOT BY PLACEHOLDER. This read
         // getByPlaceholder('Type a surname…') and broke the moment that copy
         // changed (2026-08-24: the Footle "surname" sweep renamed it to "Type a
@@ -203,7 +208,17 @@ const SHOTS = [
         await p.getByText('Guess', { exact: true }).first().click();
         await p.waitForTimeout(900);
       }
-      await p.waitForTimeout(1200); } },
+      await p.waitForTimeout(1200);
+      // ⚠️ "Career looks wrong? Tell us" is a bug-report affordance, and it was
+      // sitting in the middle of a store screenshot telling every browser that
+      // our career data might be wrong. It stays in the app; it does not
+      // belong in the advert. Hidden for capture only.
+      await p.evaluate(() => {
+        for (const el of document.querySelectorAll('button, a')) {
+          if (/career looks wrong/i.test(el.textContent || '')) el.style.setProperty('visibility', 'hidden', 'important');
+        }
+      });
+      await p.waitForTimeout(300); } },
 
   // Mystery is unlimited-guess, so this one lands on the SIXTH. The decoys are
   // all keepers when the answer is a keeper: guessing the same position returns
@@ -344,6 +359,44 @@ const SHOTS = [
         }
       }
       await p.waitForTimeout(900); } },
+
+  // Stadiums shipped 2026-08-20 and is badged NEW in the app, listed in the
+  // App Store description, and named in What's New — with no screenshot
+  // anywhere. A mode we advertise and never show.
+  //
+  // Two grounds are solved on purpose. An untouched board is twenty identical
+  // rows and does not explain the game; two green rows against eighteen
+  // club-coloured ones show the mechanic in one glance. Real answers from
+  // src/data/stadiums.js, never typed from memory.
+  // settle: the board runs well past the fold, so the BOTTOM edge is the only
+  // problem and nothing above it is at risk — exactly the case settleScroll is
+  // for. Without it the frame sliced Ipswich Town in half.
+  { name: '09-stadiums', expect: 'Name the Stadium', settle: true,
+    verify: async (p) => (await p.evaluate(() => {
+      const t = document.body.innerText;
+      // the board is up, the clubs are visible by default, and the two
+      // answers actually registered — a shot of an empty board is the failure
+      // this assertion exists to catch.
+      return /Premier League/.test(t) && /Arsenal/.test(t)
+        && /Emirates Stadium/i.test(t) && /Villa Park/i.test(t) && /2\s*\/\s*20/.test(t);
+    })),
+    go: async (p) => {
+      await p.getByText('Stadiums', { exact: true }).first().click();
+      await p.waitForTimeout(1400);
+      await p.getByText('Premier League', { exact: true }).first().click();
+      await p.waitForTimeout(1600);
+      for (const answer of ['Emirates Stadium', 'Villa Park']) {
+        await p.getByLabel('Type any stadium').fill(answer).catch(async () => {
+          await p.locator('input[type="search"], input').first().fill(answer);
+        });
+        await p.waitForTimeout(900);
+      }
+      // Blur so the software keyboard is not in the frame and the list is not
+      // scrolled under it — the same trap the Trail shot hit.
+      await p.evaluate(() => { const a = document.activeElement; if (a && a.blur) a.blur(); });
+      await p.waitForTimeout(700);
+      await p.evaluate(() => window.scrollTo(0, 0));
+      await p.waitForTimeout(500); } },
 ];
 
 
