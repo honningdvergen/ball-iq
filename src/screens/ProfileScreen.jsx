@@ -6,7 +6,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS } from "../lib/ballIqCard.js";
-import { Pencil, Sparkles, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
+import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 // lift() exists because a dark brand colour at low alpha on a dark card is
 // invisible — written for Juventus black on the Trail ladder, and the Premier
@@ -1832,15 +1832,22 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           uses, so the two can never disagree. */}
       {(stats.gamesPlayed || 0) > 0 && (
         <div className="profile-secondary-actions" style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
-          <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>Share Profile Card</button>
-          {/* A LINK and an IMAGE are different jobs, so both are offered.
-              shareProfile sends /p?... — tappable, unfurls the card, right for
-              a group chat. This one hands over an actual PNG, which is the only
-              useful thing in an Instagram story or a camera roll, where a link
-              does nothing. */}
-          {onSaveCard && (
-            <button className="share-profile-btn" style={{marginBottom:0}} onClick={onSaveCard}>Save card as image</button>
-          )}
+          {/* A LINK and an IMAGE are different jobs, so both are offered, but
+              they are not equals: sharing is the action this app most wants
+              taken, so it carries the go colour and saving sits beside it as a
+              quieter sibling. shareProfile sends /p?... — tappable, unfurls the
+              card, right for a group chat; onSaveCard hands over an actual PNG,
+              the only useful thing in a story or a camera roll. */}
+          <div className="card-actions">
+            <button className="card-action-primary" onClick={onShareProfile}>
+              <Share2 size={16} strokeWidth={2.6} aria-hidden="true" /> Share card
+            </button>
+            {onSaveCard && (
+              <button className="card-action-secondary" onClick={onSaveCard}>
+                <Download size={16} strokeWidth={2.6} aria-hidden="true" /> Save image
+              </button>
+            )}
+          </div>
           {onShowWeekly && (
             <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>Weekly Summary</button>
           )}

@@ -202,18 +202,52 @@ export function tint(hex, a) {
   return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
 }
 
+// Make a colour visible as a tint on a dark card, WITHOUT throwing away its hue.
+//
 // Every black-and-white side carries #111111 (Juventus, Santos, Botafogo,
 // Atlético Mineiro). At 30% alpha on a dark card that is invisible, so those
 // rows looked uncoloured even though the lookup had succeeded — which is how
 // Gilberto Silva's real América-MG → Atlético-MG move read as one club twice.
-// Lift ONLY the value used for the card tint and border. The badge keeps the
-// true club colour, where black with white type is authentic and legible.
+//
+// ⚠️ THE FIRST VERSION MIXED TOWARDS WHITE, and that is a different operation
+// from lightening: it desaturates. On the rating card exactly one competition
+// crosses the threshold — the Premier League's #3D195B — and it came out
+// #a898b5, a washed lavender-grey. Alex, looking at his own card: "is epl not
+// supposed to have that purple hue?" It is. Lightening in HSL keeps hue and
+// saturation and only raises lightness, so a dark purple becomes a lighter
+// PURPLE. A genuinely neutral colour (#111111 has zero saturation) still
+// resolves to grey, which is correct — it has no hue to preserve.
+//
+// Lift ONLY the value used for a tint or border. The badge keeps the true club
+// colour, where black with white type is authentic and legible.
 export function lift(hex) {
   const n = parseInt(hex.slice(1), 16);
-  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
-  if ((0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 >= 0.18) return hex;
-  const mix = (c) => Math.round(c + (255 - c) * 0.55);
-  return `#${[mix(r), mix(g), mix(b)].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
+  const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+  if ((0.2126 * r + 0.7152 * g + 0.0722 * b) >= 0.18) return hex;
+
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  const d = max - min;
+  let h = 0, sat = 0;
+  if (d !== 0) {
+    sat = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+    else if (max === g) h = ((b - r) / d + 2) / 6;
+    else h = ((r - g) / d + 4) / 6;
+  }
+  const L = Math.max(l, 0.45);
+  const hue = (p, q, t) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+  const q = L < 0.5 ? L * (1 + sat) : L + sat - L * sat;
+  const pp = 2 * L - q;
+  const out = sat === 0 ? [L, L, L] : [hue(pp, q, h + 1 / 3), hue(pp, q, h), hue(pp, q, h - 1 / 3)];
+  return `#${out.map((c) => Math.round(c * 255).toString(16).padStart(2, '0')).join('')}`;
 }
 
 // Readable ink on a club colour — WCAG relative luminance, not a naive average,
