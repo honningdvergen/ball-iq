@@ -13529,13 +13529,26 @@ function AppInner() {
                 Decorative: the active tab is already announced by aria-current. */}
             <span className="tab-pill" aria-hidden="true"
                   style={{ transform: `translateX(${Math.max(0, ["home","online","daily","profile"].indexOf(tab)) * 100}%)` }}><i /></span>
+            {/* ⚠️ NO HAPTIC ON TAB SWITCH — deliberate, do not add one back.
+                Every haptic() is a JS→native→JS bridge round trip and Capacitor
+                builds a fresh UIImpactFeedbackGenerator per call, so bursts
+                serialise and block the main thread. Alex's device log showed
+                ~57 queued `Haptics impact` calls followed by
+                WebProcessProxy::didBecomeUnresponsive — switching tabs fast was
+                literally waiting on the taptic engine. Throttling to 55ms
+                helped and was not enough; removing it is the fix.
+                It is also the platform convention: Threads and Instagram fire
+                nothing on tab change. A tab switch is navigation, not a
+                confirmation — the screen changing IS the feedback. Haptics stay
+                where they mark a real moment (starting a game, answering,
+                winning). Pinned by tests/unit/tab-switch-no-haptic.test.js. */}
             {[
               { id:"home",     Icon: Home,         label:"Home"    },
               { id:"online",   Icon: Globe,        label:"Online"  },
               { id:"daily",    Icon: CalendarDays, label:"Daily",  badge: !dailyDone },
               { id:"profile",  Icon: User,         label:"Profile" },
             ].map(({ id, Icon, label, badge }) => (
-              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => { setTab(id); haptic("soft"); }}>
+              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => setTab(id)}>
                 <span className="tab-svg"><Icon size={22} strokeWidth={2.25} aria-hidden="true" /></span>
                 <span className="tab-label">{label}</span>
                 {badge && <span className="tab-badge" />}
