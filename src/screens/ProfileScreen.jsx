@@ -1784,8 +1784,19 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                        Pin the box so no emoji can push the row around. */
                     height: 38, boxSizing: "border-box",
                     padding: "0 10px", borderRadius: 11, minWidth: 0,
-                    background: played ? `${t.accent}14` : tint(lift(r.color), 0.20),
-                    border: `1px solid ${played ? `${t.accent}40` : tint(lift(r.color), 0.52)}`,
+                    /* ⚠️ THE COMPETITION COLOUR IS NOT A PLACEHOLDER. First pass
+                       tinted played chips with the tier accent and kept the
+                       competition colour for empty ones, so the card LOST its
+                       colour as you filled it in — the identity vanished at
+                       exactly the moment the row became worth reading, and a
+                       finished card went back to six near-identical green
+                       boxes. Alex: "i see there are no colors to the 6
+                       categories here". The colour is which competition this
+                       is; it belongs in both states. Played is signalled by
+                       the number being there and carrying the tier accent,
+                       which does not need the background's help. */
+                    background: tint(lift(r.color), played ? 0.26 : 0.20),
+                    border: `1px solid ${tint(lift(r.color), played ? 0.6 : 0.52)}`,
                     transition: "background .3s, border-color .3s",
                   }}>
                     {/* Same reason: a fixed box the glyph is centred inside,

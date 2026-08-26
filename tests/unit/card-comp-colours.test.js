@@ -60,12 +60,21 @@ describe("card competition colours", () => {
     // A fabricated 64 shown as the visitor's own rating was a real bug; the
     // colour work must not have reopened it.
     const PROFILE = readFileSync(join(ROOT, "src/screens/ProfileScreen.jsx"), "utf8");
-    const grid = PROFILE.slice(PROFILE.indexOf("_card.ratings.map"), PROFILE.indexOf("_card.ratings.map") + 1900);
+    // Anchor on the RENDER ternary, not on a character distance — the first
+    // version measured from the nearest `played ?` (a style prop) and broke the
+    // moment a comment was added between it and the number.
+    const grid = PROFILE.slice(PROFILE.indexOf("_card.ratings.map"));
     expect(grid).toMatch(/const played = r\.answered > 0;/);
-    expect(grid).toMatch(/played \?[\s\S]{0,260}r\.rating/);
-    // the unplayed branch must not reference r.rating at all
-    const at = grid.indexOf(") : (");
-    expect(at).toBeGreaterThan(-1);
-    expect(grid.slice(at, at + 700)).not.toMatch(/r\.rating/);
+
+    const open = grid.indexOf("{played ? (");
+    expect(open, "the played/unplayed render ternary is gone").toBeGreaterThan(-1);
+    const split = grid.indexOf(") : (", open);
+    const close = grid.indexOf(")}", split);
+    expect(split).toBeGreaterThan(open);
+    expect(close).toBeGreaterThan(split);
+
+    // the number lives ONLY in the played branch
+    expect(grid.slice(open, split)).toMatch(/r\.rating/);
+    expect(grid.slice(split, close)).not.toMatch(/r\.rating/);
   });
 });
