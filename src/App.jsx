@@ -4391,7 +4391,14 @@ function _loadImage(url, timeoutMs = 3000) {
 }
 
 async function generateShareCard(type, data) {
-  const W = SHARE_CARD_W, H = SHARE_CARD_H;
+  // ⚠️ THE IQ CARD GETS ITS OWN CANVAS, AND IT IS THE BIGGEST FIX HERE.
+  // 390x600 is a 1x render. Saved to a modern camera roll and opened on a
+  // ~1200px-wide phone it is upscaled 3x and looks soft — which is most of why
+  // Alex called it "assembled, not designed". Layout cannot rescue resolution.
+  // 1080x1350 is 4:5, the tallest ratio Instagram allows in feed and the one
+  // people actually post, and it sits inside a 9:16 Story with clean margins.
+  const IS_IQ = type === "iq";
+  const W = IS_IQ ? 1080 : SHARE_CARD_W, H = IS_IQ ? 1350 : SHARE_CARD_H;
   const canvas = document.createElement("canvas");
   canvas.width = W;
   canvas.height = H;
@@ -4411,21 +4418,26 @@ async function generateShareCard(type, data) {
   // Clip to a 20px rounded rect so the share card has soft corners on
   // platforms that render the file as-is (iMessage, Slack image previews).
   ctx.save();
-  _roundRectPath(ctx, 0, 0, W, H, 20);
+  _roundRectPath(ctx, 0, 0, W, H, IS_IQ ? 0 : 20);
   ctx.clip();
 
   // Background
   ctx.fillStyle = "#0A0A0A";
   ctx.fillRect(0, 0, W, H);
 
-  // Top accent bar
-  ctx.fillStyle = "#58CC02";
-  ctx.fillRect(0, 0, W, 6);
-
-  // Header row — wordmark left, URL right
+  // ⚠️ SKIPPED FOR THE IQ CARD. This chrome — accent bar, wordmark row, divider,
+  // footer URL — wraps the small result cards, and wrapping the rating card in
+  // it produced a CARD INSIDE A CARD: two nested rounded rects each with their
+  // own border and padding, with the brand stamped THREE times (wordmark, URL
+  // top-right, URL again at the foot). That is exactly what "assembled rather
+  // than designed" looks like. The IQ card is one object and carries the mark
+  // once, placed deliberately.
   const padX = 24;
   const headerY = 38;
   ctx.textBaseline = "alphabetic";
+  if (!IS_IQ) {
+  ctx.fillStyle = "#58CC02";
+  ctx.fillRect(0, 0, W, 6);
   ctx.font = '800 22px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#FFFFFF";
   ctx.textAlign = "left";
@@ -4445,6 +4457,7 @@ async function generateShareCard(type, data) {
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "center";
   ctx.fillText("balliq.app", W / 2, H - 24);
+  }
 
   // Per-variant content. All variants set textAlign = "center" by default.
   ctx.textAlign = "center";
@@ -4519,80 +4532,60 @@ async function generateShareCard(type, data) {
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("Can you beat me? ⚽", cx, 520);
   } else if (type === "iq") {
-    // ⚠️ THIS IS A PICTURE OF THE CARD, NOT A CARD-THEMED POSTER.
-    // The first version invented its own layout — number, six bare chips, a
-    // green pill — and Alex's verdict was "that png is bad, why not just use
-    // the profile picture and the look of the card on the profile". Right: the
-    // thing worth sharing is the object people already recognise from their own
-    // screen. Same tier gradient, same accent, same avatar, same level chip,
-    // same six competition colours and flags. If the on-screen card changes,
-    // this should be changed with it — they are one design, drawn twice
-    // because canvas and DOM cannot share a renderer.
+    // A SOCIAL ARTEFACT, not a screenshot of a screen. Drawn edge to edge at
+    // 1080x1350 with one brand mark, a single focal point, and the six
+    // competitions given a hierarchy — the best one is called out, because
+    // "where I am strong" is the part a football fan actually wants to argue
+    // about, and six identical boxes said nothing.
     const card = data?.card;
     const t = tierPalette(card?.tier);
-    const name = (data?.name || `${APP_NAME} Player`).slice(0, 18);
+    const name = (data?.name || `${APP_NAME} Player`).slice(0, 16);
     const stops = String(t.bg).match(/#[0-9a-f]{6}/gi) || ["#14161e", "#080a0f"];
+    const M = 72;
 
-    // The card body, inset so the wordmark row above it still reads.
-    const cardX = 18, cardY = 70, cardW = W - 36, cardH = 492, cardR = 20;
-    const g = ctx.createLinearGradient(cardX, cardY, cardX + cardW * 0.5, cardY + cardH);
-    g.addColorStop(0, stops[0]);
-    g.addColorStop(1, stops[1] || stops[0]);
-    ctx.save();
-    _roundRectPath(ctx, cardX, cardY, cardW, cardH, cardR);
-    ctx.fillStyle = g;
-    ctx.fill();
-    ctx.clip();
-    // The same top-left bloom the DOM card carries.
-    const glow = ctx.createRadialGradient(cardX + 30, cardY + 20, 0, cardX + 30, cardY + 20, 190);
-    glow.addColorStop(0, _tint(t.accent, 0.13));
-    glow.addColorStop(1, _tint(t.accent, 0));
-    ctx.fillStyle = glow;
-    ctx.fillRect(cardX, cardY, cardW, cardH);
-    ctx.restore();
-    _roundRectPath(ctx, cardX, cardY, cardW, cardH, cardR);
-    ctx.strokeStyle = _tint(t.accent, 0.36);
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
+    const bg = ctx.createLinearGradient(0, 0, W * 0.55, H);
+    bg.addColorStop(0, stops[0]);
+    bg.addColorStop(1, stops[1] || stops[0]);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+    const bloom = ctx.createRadialGradient(M + 40, 200, 0, M + 40, 200, 620);
+    bloom.addColorStop(0, _tint(t.accent, 0.14));
+    bloom.addColorStop(1, _tint(t.accent, 0));
+    ctx.fillStyle = bloom;
+    ctx.fillRect(0, 0, W, H);
 
-    const inX = cardX + 22;
+    // The mark, once.
     ctx.textAlign = "left";
-    ctx.font = '800 10px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = _tint(t.text, 0.55);
-    ctx.fillText("B A L L   I Q   R A T I N G", inX, cardY + 34);
+    ctx.font = '800 30px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = _tint(t.text, 0.75);
+    ctx.fillText("B A L L   I Q", M, 118);
 
-    ctx.font = '900 62px "JetBrains Mono", "Courier New", monospace';
+    ctx.font = '800 26px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = _tint(t.text, 0.5);
+    ctx.fillText("R A T I N G", M, 232);
+
+    // The focal point, and nothing competes with it.
+    ctx.font = '900 250px "JetBrains Mono", "Courier New", monospace';
     ctx.fillStyle = t.accent;
-    ctx.fillText(String(card?.overall ?? "—"), inX, cardY + 104);
+    ctx.fillText(String(card?.overall ?? "—"), M - 8, 430);
 
-    ctx.font = '800 10px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = _tint(t.text, 0.65);
-    ctx.fillText("O V E R A L L", inX, cardY + 124);
-    ctx.font = '800 11px Inter, "Helvetica Neue", Arial, sans-serif';
+    // Tier as a pill — it is a badge, not a caption.
+    const pill = t.label;
+    ctx.font = '900 28px Inter, "Helvetica Neue", Arial, sans-serif';
+    const pw = ctx.measureText(pill).width + 52;
+    _roundRectPath(ctx, M, 468, pw, 58, 29);
+    ctx.fillStyle = _tint(t.accent, 0.16);
+    ctx.fill();
+    ctx.strokeStyle = _tint(t.accent, 0.5);
+    ctx.lineWidth = 2;
+    ctx.stroke();
     ctx.fillStyle = t.accent;
-    ctx.fillText(t.label, inX, cardY + 144);
+    ctx.textBaseline = "middle";
+    ctx.fillText(pill, M + 26, 498);
+    ctx.textBaseline = "alphabetic";
 
-    ctx.font = '900 26px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(name, inX, cardY + 182);
-
-    // Level chip, as on the card.
-    if (data?.levelName) {
-      const chipTxt = `${data.levelIcon || "🏆"} ${data.levelName}   ${Number(data.xp || 0).toLocaleString()} XP`;
-      ctx.font = '800 12px Inter, "Helvetica Neue", Arial, sans-serif';
-      const cw = ctx.measureText(chipTxt).width + 26;
-      _roundRectPath(ctx, inX, cardY + 194, cw, 28, 14);
-      ctx.fillStyle = _tint(t.accent, 0.14);
-      ctx.fill();
-      ctx.fillStyle = t.accent;
-      ctx.textBaseline = "middle";
-      ctx.fillText(chipTxt, inX + 13, cardY + 209);
-      ctx.textBaseline = "alphabetic";
-    }
-
-    // Avatar — the photo if there is one, otherwise this player's own colourway
-    // and monogram, which is exactly what ProfilePic does on screen.
-    const aR = 44, aCx = cardX + cardW - 22 - aR, aCy = cardY + 128;
+    // Avatar, big enough to read as a face rather than a bullet point.
+    const aR = 132, aCx = W - M - aR, aCy = 300;
     ctx.save();
     ctx.beginPath();
     ctx.arc(aCx, aCy, aR, 0, Math.PI * 2);
@@ -4604,10 +4597,10 @@ async function generateShareCard(type, data) {
       ctx.fillStyle = data?.avatarBg || "#1F2430";
       ctx.fillRect(aCx - aR, aCy - aR, aR * 2, aR * 2);
       ctx.textAlign = "center";
-      ctx.font = '900 44px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.font = '900 132px Inter, "Helvetica Neue", Arial, sans-serif';
       ctx.fillStyle = "#FFFFFF";
       ctx.textBaseline = "middle";
-      ctx.fillText(data?.initial || "?", aCx, aCy + 2);
+      ctx.fillText(data?.initial || "?", aCx, aCy + 6);
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "left";
     }
@@ -4615,44 +4608,55 @@ async function generateShareCard(type, data) {
     ctx.beginPath();
     ctx.arc(aCx, aCy, aR, 0, Math.PI * 2);
     ctx.strokeStyle = t.accent;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 7;
     ctx.stroke();
 
-    // Divider, then the six competitions in their own colours — with flags,
-    // which the first version dropped and which are half of what makes a row
-    // readable at a glance.
-    ctx.fillStyle = _tint(t.accent, 0.22);
-    ctx.fillRect(inX, cardY + 244, cardW - 44, 1);
+    // Name under the avatar, right-aligned to it — balances the number block.
+    ctx.textAlign = "center";
+    ctx.font = '900 56px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(name, aCx, aCy + aR + 76);
+    ctx.textAlign = "left";
 
+    // The six competitions. The strongest is called out — a football fan reads
+    // "best at Serie A" as an identity, and six equal boxes said nothing.
     const rows = Array.isArray(card?.ratings) ? card.ratings : [];
-    const chipW = (cardW - 44 - 10) / 2, chipH = 46, gapY = 9;
-    const top = cardY + 264;
+    const played = rows.filter((r) => r.answered > 0);
+    const bestAbbr = played.length
+      ? played.reduce((a, b) => (b.rating > a.rating ? b : a)).abbr
+      : null;
+    const gridTop = 640, chipH = 124, gapY = 20, gapX = 24;
+    const chipW = (W - M * 2 - gapX) / 2;
     rows.forEach((r, i) => {
       const cIdx = i % 2, rIdx = Math.floor(i / 2);
-      const x = inX + cIdx * (chipW + 10);
-      const y = top + rIdx * (chipH + gapY);
-      const col6 = r.color || "#2A2D3A";
-      _roundRectPath(ctx, x, y, chipW, chipH, 12);
-      ctx.fillStyle = _tint(_lift(col6), 0.26);
+      const x = M + cIdx * (chipW + gapX);
+      const y = gridTop + rIdx * (chipH + gapY);
+      const col = r.color || "#2A2D3A";
+      const best = r.abbr === bestAbbr;
+      _roundRectPath(ctx, x, y, chipW, chipH, 26);
+      ctx.fillStyle = _tint(_lift(col), best ? 0.4 : 0.24);
       ctx.fill();
-      ctx.strokeStyle = _tint(_lift(col6), 0.6);
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = best ? _tint(_lift(col), 0.95) : _tint(_lift(col), 0.5);
+      ctx.lineWidth = best ? 4 : 2;
       ctx.stroke();
-      ctx.textAlign = "left";
-      ctx.font = '20px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
-      ctx.fillText(r.icon || "", x + 12, y + 31);
-      ctx.font = '900 21px "JetBrains Mono", "Courier New", monospace';
+      ctx.font = '52px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+      ctx.fillText(r.icon || "", x + 30, y + 82);
+      ctx.font = '900 56px "JetBrains Mono", "Courier New", monospace';
       ctx.fillStyle = r.answered > 0 ? t.accent : _tint(t.text, 0.3);
-      ctx.fillText(r.answered > 0 ? String(r.rating) : "—", x + 44, y + 31);
-      ctx.font = '800 12px Inter, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = _tint(t.text, 0.8);
-      ctx.fillText(r.abbr, x + 88, y + 30);
+      ctx.fillText(r.answered > 0 ? String(r.rating) : "—", x + 110, y + 82);
+      ctx.font = '800 30px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = _tint(t.text, 0.82);
+      ctx.fillText(r.abbr, x + 232, y + 80);
     });
 
+    // The invitation — the entire reason anyone sends this to anyone.
     ctx.textAlign = "center";
-    ctx.font = '800 15px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#9BA0B8";
-    ctx.fillText("Can you beat me? ⚽", cx, H - 46);
+    ctx.font = '900 46px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText("Can you beat me?", W / 2, 1218);
+    ctx.font = '700 32px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = _tint(t.text, 0.55);
+    ctx.fillText("balliq.app", W / 2, 1276);
   } else {
     // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
     const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();
