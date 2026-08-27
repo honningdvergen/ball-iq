@@ -24,7 +24,11 @@ if (!outPath || !repoRoot) { console.error('usage: node process-wave-j.mjs <outp
 // An unmapped key is SKIPPED with a report line rather than guessed — that is
 // deliberate, because a wrong club field puts questions in the wrong pack and
 // nothing downstream would catch it.
-const CLUB_FIELD = { Leipzig: 'RB Leipzig', Atalanta: 'Atalanta' };
+// workflow club key -> the `club` value questions carry in the bank.
+// ⚠️ The bank uses FULL names — Coventry City, Hull City, Leeds United —
+// so it is 'Leicester City', not 'Leicester'. Getting this wrong silently
+// files the questions under a club nothing else references.
+const CLUB_FIELD = { LeicesterCity: 'Leicester City', Olympiacos: 'Olympiacos', Panathinaikos: 'Panathinaikos' };
 
 const decode = (s) => String(s ?? '')
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')

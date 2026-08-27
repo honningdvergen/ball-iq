@@ -15,7 +15,8 @@
     ],
     "a": 2,
     "hint": "Vardy's goal against Manchester United in November 2015 was his 11th in a row, passing Ruud van Nistelrooy's 10-game run for Manchester United set in 2003.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Ranieri promised his players pizza if they kept a clean sheet. Which side did Leicester shut out in October 2015 to earn it?",
@@ -27,7 +28,8 @@
     ],
     "a": 0,
     "hint": "Leicester's first clean sheet of 2015-16 came in a 1-0 win over Crystal Palace in October, after which Ranieri took the squad to a pizzeria to make their own.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester's last competitive match at Filbert Street, in May 2002, finished 2-1 against Tottenham. Who scored their final goal at the old ground?",
@@ -39,7 +41,8 @@
     ],
     "a": 2,
     "hint": "Academy graduate Matt Piper headed the winner on 11 May 2002, the last goal scored at Filbert Street after 111 years of football there.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "PL"
    },
    {
     "q": "Leicester sold Peter Shilton in November 1974 for £325,000, then a world record for a goalkeeper. Which club signed him?",
@@ -51,7 +54,8 @@
     ],
     "a": 2,
     "hint": "Shilton went to Stoke City — the same club Leicester had sold Gordon Banks to in 1967 to make room for the teenage Shilton.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "PL"
    },
    {
     "q": "Who scored the goal that won Leicester the 2021 FA Cup final against Chelsea?",
@@ -63,7 +67,8 @@
     ],
     "a": 2,
     "hint": "Tielemans struck from distance in the 63rd minute at Wembley for the only goal of a 1-0 win that gave Leicester their first FA Cup.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "PL"
    },
    {
     "q": "Leicester left Filbert Street in 2002, the year they were relegated from the Premier League. What was their new stadium called when it opened?",
@@ -75,7 +80,8 @@
     ],
     "a": 1,
     "hint": "The ground opened in 2002 as the Walkers Stadium, named after the Leicester crisp company, and became the King Power Stadium in 2011.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "PL"
    },
    {
     "q": "Chelsea thought they had equalised in the closing minutes of the 2021 FA Cup final, only for VAR to chalk the goal off. Which Chelsea player was ruled offside in the build-up?",
@@ -87,7 +93,8 @@
     ],
     "a": 3,
     "hint": "Thiago Silva's cross-field ball picked out Ben Chilwell — a Leicester academy graduate — and VAR judged him offside by the finest of margins, so the scrambled finish that followed did not stand.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester won the FA Cup for the first time in their history in 2021, beating Chelsea 1-0 at Wembley. Who scored the winner?",
@@ -99,7 +106,8 @@
     ],
     "a": 3,
     "hint": "Youri Tielemans struck from distance into the top corner in the 63rd minute of the 2021 FA Cup final, ending a wait that had included four previous losing finals, the last of them in 1969.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "N'Golo Kanté was signed in the summer of 2015 for a reported £5.6m. Which French club did Leicester take him from?",
@@ -111,7 +119,8 @@
     ],
     "a": 0,
     "hint": "He had helped the club win promotion from Ligue 2 in 2014 and played one Ligue 1 season there before Leicester moved; a year after arriving he was a Premier League champion, and Chelsea paid around £32m for him.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Kasper Schmeichel joined Leicester in 2011 and stayed for eleven years. Which club did Leicester sign him from?",
@@ -123,7 +132,8 @@
     ],
     "a": 3,
     "hint": "Leicester signed Schmeichel from Leeds United in June 2011; Manchester City, Cardiff City and Notts County had all come earlier in his career.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester were relegated on the final day of the 2022-23 Premier League season despite beating West Ham 2-1. Which club's win that same afternoon sent them down?",
@@ -135,7 +145,8 @@
     ],
     "a": 0,
     "hint": "Everton's 1-0 win over Bournemouth at Goodison Park lifted them to 36 points and left Leicester stranded in 18th on 34, relegated despite winning their own game.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester went straight back up as champions in 2023-24, finishing on 97 points. Which club finished second, a single point behind, and was promoted automatically with them?",
@@ -147,7 +158,8 @@
     ],
     "a": 1,
     "hint": "Ipswich Town finished second on 96 points to Leicester's 97, with Leeds United third on 90 and Southampton going up through the play-offs.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Harry Maguire's £80m move from Leicester to Manchester United in 2019 made him the world's most expensive defender. Whose fee did it beat?",
@@ -159,7 +171,8 @@
     ],
     "a": 0,
     "hint": "Maguire's reported £80m fee in August 2019 overtook the £75m Liverpool had paid Southampton for Virgil van Dijk in January 2018 — and Leicester had bought Maguire from Hull City two years earlier.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester City's first ever Champions League goal came inside five minutes of their debut in the competition, a 3-0 win away at Club Brugge in September 2016. Who scored it?",
@@ -171,7 +184,8 @@
     ],
     "a": 0,
     "hint": "Marc Albrighton scored Leicester's first ever Champions League goal in the fifth minute at the Jan Breydel Stadium in September 2016, with Riyad Mahrez adding the other two in a 3-0 win.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Under Brendan Rodgers, Leicester reached the semi-finals of the first ever Europa Conference League in 2021-22. Which side knocked them out?",
@@ -183,7 +197,8 @@
     ],
     "a": 1,
     "hint": "José Mourinho's Roma won the semi-final 2-1 on aggregate, Tammy Abraham's header settling the second leg in Rome, and went on to win the inaugural final against Feyenoord.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "PL"
    },
    {
     "q": "Claudio Ranieri was sacked by Leicester in February 2017, less than 24 hours after which match?",
@@ -195,7 +210,8 @@
     ],
     "a": 2,
     "hint": "Leicester lost the Champions League last-16 first leg 2-1 in Seville on 22 February 2017, and Ranieri was dismissed the following evening with the club a point above the relegation zone — nine months after winning the Premier League.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "PL"
    },
    {
     "q": "Leicester signed the teenage centre-back Wesley Fofana in October 2020 from which club?",
@@ -207,7 +223,8 @@
     ],
     "a": 0,
     "hint": "Fofana arrived from Saint-Étienne in October 2020 aged 19, and two years later left for Chelsea for a reported £70m plus add-ons.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Claudio Ranieri was appointed Leicester manager in July 2015. Which team had he managed immediately before that?",
@@ -219,7 +236,8 @@
     ],
     "a": 1,
     "hint": "Ranieri's previous job was with the Greece national team, who sacked him in November 2014 after a home defeat by the Faroe Islands.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "PL"
    },
    {
     "q": "Harvey Barnes, a Leicester academy product, was sold for around £38m in July 2023 after relegation. Which club signed him?",
@@ -231,7 +249,8 @@
     ],
     "a": 2,
     "hint": "Newcastle United paid a reported £38m for Barnes in July 2023, weeks after he had scored 13 Premier League goals in Leicester's relegation season.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "PL"
    },
    {
     "q": "Tottenham's 2-2 draw at Chelsea on 2 May 2016 confirmed Leicester as Premier League champions. Which Chelsea player scored the late equaliser that sealed it?",
@@ -243,7 +262,8 @@
     ],
     "a": 1,
     "hint": "Eden Hazard curled in an equaliser at Stamford Bridge with seven minutes left, after Gary Cahill had pulled one back, ending Tottenham's title hopes and crowning Leicester.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester played in the third tier for the first time in their history in 2008-09. Who managed them straight back up as League One champions?",
@@ -255,7 +275,8 @@
     ],
     "a": 2,
     "hint": "Nigel Pearson took over in the summer of 2008 and won the League One title at the first attempt, including a club-record 23-game unbeaten league run.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Gary Lineker left Leicester in the summer of 1985 for £800,000. Which club did he join?",
@@ -267,7 +288,8 @@
     ],
     "a": 3,
     "hint": "Lineker joined reigning champions Everton in 1985, and only moved on to Barcelona a year later.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "In April 2016 Riyad Mahrez became the first African player to win which award?",
@@ -279,7 +301,8 @@
     ],
     "a": 2,
     "hint": "This one is voted for by fellow professionals rather than by football writers; Mahrez reached the London ceremony hours after scoring his 17th league goal of Leicester's title season.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester paid a reported £1m for Jamie Vardy in 2012, then a record fee for a non-league player. Which club did they buy him from?",
@@ -291,7 +314,8 @@
     ],
     "a": 2,
     "hint": "Vardy joined Leicester in May 2012 from Fleetwood Town, who had just won the Conference Premier, having previously played for Stocksbridge Park Steels and FC Halifax Town.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "PL"
    },
    {
     "q": "Kasper Schmeichel finally left Leicester in the summer of 2022. Which club did he join?",
@@ -303,7 +327,8 @@
     ],
     "a": 1,
     "hint": "Schmeichel signed a three-year contract with Ligue 1 side Nice in August 2022, ending eleven years and more than 450 competitive appearances for Leicester.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Who was Leicester's manager for the Champions League quarter-final against Atlético Madrid in April 2017?",
@@ -315,7 +340,8 @@
     ],
     "a": 2,
     "hint": "Craig Shakespeare, Ranieri's assistant, was promoted after the Italian's sacking and led Leicester past Sevilla and into the quarter-final, which Atlético Madrid won 2-1 on aggregate.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Brendan Rodgers left which club to become Leicester manager in February 2019, replacing Claude Puel?",
@@ -327,7 +353,8 @@
     ],
     "a": 0,
     "hint": "Rodgers walked out on Celtic mid-season in February 2019, with the club well clear at the top of the Scottish Premiership, to take over from Claude Puel at Leicester.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "PL"
    },
    {
     "q": "Riyad Mahrez cost Leicester about £400,000 in January 2014, when they were still a Championship club. Which club did he join from?",
@@ -339,7 +366,8 @@
     ],
     "a": 2,
     "hint": "Leicester plucked him out of Ligue 2, from the port-city side founded in 1872 and generally reckoned the oldest football club in France.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester sacked Ranieri in February 2017. Who took charge and led them past Sevilla into the Champions League quarter-finals weeks later?",
@@ -351,7 +379,8 @@
     ],
     "a": 3,
     "hint": "Assistant manager Craig Shakespeare stepped up after Ranieri's dismissal and oversaw the 2-0 second-leg win over Sevilla that sent Leicester through 3-2 on aggregate.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "PL"
    },
    {
     "q": "Leicester beat Tranmere Rovers 2-1 in the 2000 League Cup final, the last one staged at the old Wembley. Who scored both of their goals?",
@@ -363,7 +392,8 @@
     ],
     "a": 0,
     "hint": "Captain and centre-back Matt Elliott headed both goals, each from a Steve Guppy corner, in the February 2000 win over Tranmere.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Leicester's relegation in 2023 made them only the second club to have won the Premier League and later be relegated from it. Which club was the first?",
@@ -375,7 +405,8 @@
     ],
     "a": 3,
     "hint": "Blackburn Rovers won the Premier League in 1995 and went down in 1999. Leeds United and Nottingham Forest were English champions only before the Premier League began, and Manchester City, champions since 2012, have never been relegated after winning it.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "PL"
    },
    {
     "q": "Who scored the 89th-minute penalty that won Leicester the 2021 Community Shield against Manchester City?",
@@ -387,7 +418,8 @@
     ],
     "a": 1,
     "hint": "Substitute Kelechi Iheanacho converted an 89th-minute penalty after being tripped by Nathan Aké, beating Manchester City — the club Leicester had signed him from in 2017.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "PL"
    },
    {
     "q": "The 1997 League Cup final went to a replay at Hillsborough after a 1-1 draw at Wembley. Who scored Leicester's extra-time winner in the replay?",
@@ -399,7 +431,8 @@
     ],
     "a": 1,
     "hint": "Steve Claridge's extra-time strike beat Middlesbrough 1-0 on 16 April 1997 and gave Leicester their first major trophy in 33 years.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    },
    {
     "q": "Enzo Maresca was appointed Leicester manager in June 2023, weeks after relegation. What job had he held immediately before taking it?",
@@ -411,7 +444,8 @@
     ],
     "a": 2,
     "hint": "Maresca had returned to Manchester City as one of Pep Guardiola's assistant managers in June 2022, following a short spell in charge of Parma, before Leicester appointed him on 16 June 2023.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "PL"
    }
   ],
   "prose": {
