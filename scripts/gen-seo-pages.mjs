@@ -263,6 +263,7 @@ const PAGE_FG = '#F0F1F5';
 // Mirrors the homepage mesh (MarketingHome QUIZ_CLUBS / QUIZ_LEAGUES) so the
 // landing pages read as one system with balliq.app/.
 const CLUB_BADGE = {
+  'leicester-city': 'LEI',
   'derby-county': 'DER', 'swansea-city': 'SWA',
   'cardiff-city': 'CAR', 'stoke-city': 'STK',
   wrexham: 'WRX', 'norwich-city': 'NOR',
@@ -325,6 +326,7 @@ const clubOgImage = ({ name, badge, color, kind }) => {
 // yellow) get dark text via badgeColors(); a hairline border keeps very dark
 // badges (Juventus, Newcastle) legible on the near-black cards.
 const CLUB_COLOR = {
+  'leicester-city': '#003090',
   'derby-county': '#FFFFFF', 'swansea-city': '#FFFFFF',
   'cardiff-city': '#0070B5', 'stoke-city': '#E03A3E',
   wrexham: '#DC241F', 'norwich-city': '#FFF200',
