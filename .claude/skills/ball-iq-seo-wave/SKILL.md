@@ -70,6 +70,11 @@ four defect classes that per-question verifiers structurally CANNOT see:
   yields a page with ZERO questions that then throws on MIN_HINTS. It looks like
   a hint problem and is a naming problem. (`slug` may still be short:
   `coventry` → `Coventry City` via DIR_ALIAS.)
+- **CLUB_LEAGUES is MANDATORY per pack, never left to fall through.** The call
+  site reads `CLUB_LEAGUES[key] || "other"`, which makes an entry look optional.
+  It is not: `club-sections.test.js` asserts every CLUB_PACKS key has a country
+  and fails the build without one. A club whose country has no section (Greece,
+  Serbia, Switzerland) gets an EXPLICIT `"other"` — the "More clubs" bucket.
 - **`scripts/seo/club-competition.mjs`** — the eleventh point, also missing here
   until wave P. `gen-club-index.mjs` HARD-EXITS for any club it cannot resolve a
   competition for. The value must be a real `league` string from leagues.mjs

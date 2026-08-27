@@ -2675,5 +2675,37 @@ export const CLUBS = [
         "a": "Blackburn Rovers, who won the title in 1995 and went down in 1999. Leeds United and Nottingham Forest were English champions only before the Premier League began, and Manchester City, champions since 2012, have never been relegated after winning it. Leicester's own drop came on a final day when they won their own match and still fell: Everton's 1-0 over Bournemouth at Goodison Park lifted them to 36 points and left Leicester 18th on 34. They went back up as champions on 97 points, one ahead of Ipswich Town, with Leeds third on 90."
       }
     ]
+  },
+  {
+    "club": "Olympiacos",
+    "slug": "olympiacos",
+    "name": "Olympiacos",
+    "h1": "Olympiacos Quiz",
+    "title": "Olympiacos Quiz With Answers | Ball IQ",
+    "description": "El Kaabi's 116th minute, Van Persie's hat-trick at Old Trafford and Ospina at the Emirates — an Olympiacos quiz with explained answers.",
+    "intro": [
+      "On 29 May 2024 Ayoub El Kaabi headed in Santiago Hezze cross in the 116th minute and Olympiacos beat Fiorentina 1-0. It was the first European trophy in the club history and the first won by any Greek club — and they lifted it at the Agia Sophia, AEK Athens ground, in their own city but not at their own stadium.",
+      "The road there ran through Aston Villa. A 4-2 win at Villa Park and a 2-0 second leg made it 6-2 on aggregate, under a coach who had only arrived in February. Jose Luis Mendilibar took charge on 11 February 2024, months after winning the Europa League with Sevilla, and had the Conference League by May.",
+      "European nights are the spine of this quiz. Michel side beat Manchester United 2-0 at the Karaiskakis in February 2014, Alejandro Dominguez turning in Giannis Maniatis effort before half-time and Joel Campbell — on loan from Arsenal — making it two, before Robin van Persie hat-trick at Old Trafford turned the tie. Eighteen months later Olympiacos won 3-2 at the Emirates, with Arsene Wenger having picked David Ospina ahead of Petr Cech.",
+      "And there is the rest of it: Kostas Fortounis arriving from Kaiserslautern by way of Asteras Tripolis, Vasilis Torosidis heading for Rome, Yaya Toure winning a double in 2005-06 before Monaco, and the Derby of the Eternal Enemies — working-class Piraeus, where the club was founded in 1925, against the old Athenian society in the city centre."
+    ],
+    "faq": [
+      {
+        "q": "Have Olympiacos ever won a European trophy?",
+        "a": "Yes — the 2024 UEFA Europa Conference League, beating Fiorentina 1-0 in extra time through Ayoub El Kaabi 116th-minute header. It was the first European title for Olympiacos and the first for any Greek club."
+      },
+      {
+        "q": "Who was the Olympiacos manager when they won the Conference League?",
+        "a": "Jose Luis Mendilibar, appointed on 11 February 2024 — only months after he had won the Europa League with Sevilla — and lifting the Conference League that May."
+      },
+      {
+        "q": "Did Olympiacos beat Manchester United and Arsenal?",
+        "a": "Both. They won 2-0 at home against Manchester United in the 2013-14 Champions League round of 16 before losing 3-0 at Old Trafford to a Robin van Persie hat-trick, and they won 3-2 away at Arsenal in September 2015."
+      },
+      {
+        "q": "What is the Olympiacos v Panathinaikos derby called?",
+        "a": "The Derby of the Eternal Enemies — a rivalry between working-class Piraeus, where Olympiacos were founded in 1925, and the old Athenian society of Panathinaikos in the city centre."
+      }
+    ]
   }
 ];

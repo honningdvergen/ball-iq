@@ -264,6 +264,7 @@ const PAGE_FG = '#F0F1F5';
 // landing pages read as one system with balliq.app/.
 const CLUB_BADGE = {
   'leicester-city': 'LEI',
+  'olympiacos': 'OLY',
   'derby-county': 'DER', 'swansea-city': 'SWA',
   'cardiff-city': 'CAR', 'stoke-city': 'STK',
   wrexham: 'WRX', 'norwich-city': 'NOR',
@@ -327,6 +328,7 @@ const clubOgImage = ({ name, badge, color, kind }) => {
 // badges (Juventus, Newcastle) legible on the near-black cards.
 const CLUB_COLOR = {
   'leicester-city': '#003090',
+  'olympiacos': '#DA020E',
   'derby-county': '#FFFFFF', 'swansea-city': '#FFFFFF',
   'cardiff-city': '#0070B5', 'stoke-city': '#E03A3E',
   wrexham: '#DC241F', 'norwich-city': '#FFF200',
@@ -5134,6 +5136,7 @@ const MORE_META = {
   // Premier League and Championship only. There is no league row to alias FROM,
   // so DIR_ALIAS cannot reach them and the build was right to refuse an orphan.
   'leicester-city': { code: 'LEI', color: '#003090', name: 'Leicester City' },
+  'olympiacos': { code: 'OLY', color: '#DA020E', name: 'Olympiacos' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {

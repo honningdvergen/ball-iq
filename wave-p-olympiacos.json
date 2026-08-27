@@ -15,7 +15,8 @@
     ],
     "a": 2,
     "hint": "Kostas Fortounis started the final wearing the armband and was the first to raise the trophy after Ayoub El Kaabi's 116th-minute header settled it 1-0 in extra time against Fiorentina — the first European title for Olympiacos and for Greek club football.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "UCL"
    },
    {
     "q": "Which club did Olympiacos beat 6-2 on aggregate in the semi-finals on the way to the 2024 Conference League title?",
@@ -26,8 +27,9 @@
      "Fiorentina"
     ],
     "a": 1,
-    "hint": "Ayoub El Kaabi scored a hat-trick in a 4-2 win at Villa Park and both goals in the 2-0 second leg as Olympiacos beat Aston Villa 6-2.",
-    "diff": "medium"
+    "hint": "A 4-2 win at Villa Park and a 2-0 second leg at home made it 6-2 on aggregate against Aston Villa.",
+    "diff": "medium",
+    "cat": "UCL"
    },
    {
     "q": "Before moving to Germany, Kostas Fortounis broke into the Greek top flight with which club?",
@@ -39,7 +41,8 @@
     ],
     "a": 0,
     "hint": "Fortounis scored his first Super League goal for Asteras Tripolis in 2010-11, the season before he left for Kaiserslautern.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "History"
    },
    {
     "q": "Olympiacos supporters call the club 'Thrylos'. What does the nickname mean?",
@@ -51,7 +54,8 @@
     ],
     "a": 0,
     "hint": "Thrylos translates as 'The Legend', the club's best-known nickname alongside Erythrolefkoi, the Red-Whites.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "History"
    },
    {
     "q": "Which coach, appointed only in February 2024, led Olympiacos to the Conference League title that season?",
@@ -63,7 +67,8 @@
     ],
     "a": 2,
     "hint": "José Luis Mendilibar took charge on 11 February 2024, months after winning the Europa League with Sevilla, and lifted the Conference League in May.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "UCL"
    },
    {
     "q": "Tottenham led 2-0 at the Karaiskakis in Olympiacos's opening game of the 2019-20 Champions League group stage before the hosts drew 2-2. Who scored the equaliser from the penalty spot?",
@@ -75,7 +80,8 @@
     ],
     "a": 1,
     "hint": "Mathieu Valbuena converted the penalty on 54 minutes after Daniel Podence had pulled one back just before half-time.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "UCL"
    },
    {
     "q": "From which German club did Olympiacos sign Kostas Fortounis in 2014?",
@@ -87,7 +93,8 @@
     ],
     "a": 1,
     "hint": "He spent three seasons with the Red Devils of the Fritz-Walter-Stadion, who were in the 2. Bundesliga by the time he left for Piraeus.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "History"
    },
    {
     "q": "Vasilis Torosidis scored the winner in Greece's first ever World Cup victory, at South Africa 2010. Who were the opponents?",
@@ -99,7 +106,8 @@
     ],
     "a": 2,
     "hint": "Torosidis struck on 71 minutes as Greece beat 10-man Nigeria 2-1 on 17 June 2010 for their first win at a World Cup.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "History"
    },
    {
     "q": "Olympiacos beat Manchester United 2-0 at the Karaiskakis Stadium in the first leg of the 2013-14 Champions League round of 16. Who opened the scoring before half-time?",
@@ -111,7 +119,8 @@
     ],
     "a": 2,
     "hint": "Alejandro Domínguez turned in Giannis Maniatis's effort on 38 minutes to start the 2-0 win on 25 February 2014.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "UCL"
    },
    {
     "q": "Where was the 2024 UEFA Conference League final, won by Olympiacos, played?",
@@ -123,7 +132,8 @@
     ],
     "a": 1,
     "hint": "The final was staged at the Agia Sophia Stadium, AEK Athens's ground, so Olympiacos won Greece's first European trophy in their own city but not at their own stadium.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "UCL"
    },
    {
     "q": "Which coach was in charge of Olympiacos for their 2013-14 Champions League campaign?",
@@ -135,7 +145,8 @@
     ],
     "a": 1,
     "hint": "Míchel, the former Real Madrid and Spain midfielder, was Olympiacos head coach in 2013-14 and took them to the round of 16.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "UCL"
    },
    {
     "q": "In Olympiacos's 2-0 win over Manchester United in the 2013-14 round of 16, the second goal was scored by a forward spending the season on loan from Arsenal. Who was he?",
@@ -147,7 +158,8 @@
     ],
     "a": 1,
     "hint": "Costa Rica forward Joel Campbell, on loan at Olympiacos from Arsenal, made it 2-0 on 54 minutes.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "History"
    },
    {
     "q": "Who scored the goal that won Olympiacos the 2024 Conference League final against Fiorentina?",
@@ -159,7 +171,8 @@
     ],
     "a": 1,
     "hint": "Ayoub El Kaabi headed in Santiago Hezze's cross in the 116th minute to settle the final 1-0 in Athens.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "UCL"
    },
    {
     "q": "Vasilis Torosidis left Olympiacos in January 2013 to join which Italian club?",
@@ -171,7 +184,8 @@
     ],
     "a": 1,
     "hint": "The Greek right-back headed for a club in the Italian capital, and only left three and a half seasons later when Bologna signed him in 2016.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "History"
    },
    {
     "q": "Before taking the Olympiacos job in 2018, Pedro Martins had most recently managed which Portuguese club?",
@@ -183,7 +197,8 @@
     ],
     "a": 2,
     "hint": "He spent a season and a half in the Minho, taking that side to the 2017 Taça de Portugal final before walking away in February 2018; at Olympiacos he went on to win three straight Greek titles.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "History"
    },
    {
     "q": "Olympiacos knocked Arsenal out of the 2019-20 Europa League on away goals, winning 2-1 at the Emirates with a goal in the 119th minute. Who scored it?",
@@ -195,7 +210,8 @@
     ],
     "a": 0,
     "hint": "Youssef El Arabi struck in the 119th minute on 27 February 2020 to send Olympiacos through 2-2 on away goals.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "UCL"
    },
    {
     "q": "Olympiacos won 3-2 away to Arsenal in the Champions League group stage in September 2015. Which Arsenal goalkeeper, picked ahead of Petr Čech, dropped a corner over his own line?",
@@ -207,7 +223,8 @@
     ],
     "a": 0,
     "hint": "Arsène Wenger selected David Ospina instead of Petr Čech, and Ospina's errors — including a corner spilled over his line — helped Olympiacos win 3-2 at the Emirates.",
-    "diff": "medium"
+    "diff": "medium",
+    "cat": "UCL"
    },
    {
     "q": "Olympiacos carried a 2-0 lead to Old Trafford in the 2013-14 round of 16 second leg but lost 3-0. Whose hat-trick knocked them out?",
@@ -219,7 +236,8 @@
     ],
     "a": 2,
     "hint": "Robin van Persie scored all three — a penalty, a close-range finish and a free-kick — as Manchester United went through 3-2 on aggregate on 19 March 2014.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "History"
    },
    {
     "q": "What is the Olympiacos v Panathinaikos fixture commonly called in English?",
@@ -231,7 +249,8 @@
     ],
     "a": 0,
     "hint": "Olympiacos v Panathinaikos is known as the Derby of the Eternal Enemies, a rivalry rooted in working-class Piraeus, where Olympiacos were founded in 1925, against the old Athenian society of Panathinaikos in the city centre.",
-    "diff": "easy"
+    "diff": "easy",
+    "cat": "History"
    },
    {
     "q": "Yaya Touré returned to Olympiacos in September 2018 but was released three months later after only five appearances. Who was the coach who left him out?",
@@ -243,7 +262,8 @@
     ],
     "a": 0,
     "hint": "Touré failed to convince Pedro Martins and his contract was terminated by mutual agreement in December 2018.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "History"
    },
    {
     "q": "Yaya Touré's first spell at Olympiacos began in 2005, when he arrived from which Ukrainian club?",
@@ -255,7 +275,8 @@
     ],
     "a": 2,
     "hint": "Touré signed from Metalurh Donetsk in 2005, won the Greek league and cup double, then left for Monaco in the summer of 2006.",
-    "diff": "hard"
+    "diff": "hard",
+    "cat": "History"
    }
   ],
   "prose": null

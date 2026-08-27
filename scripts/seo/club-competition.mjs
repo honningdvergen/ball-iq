@@ -49,6 +49,8 @@ export const CLUB_COMPETITION = {
   // no roster behind it. If a League One section is ever added to leagues.mjs,
   // this entry becomes redundant and the name match takes over.
   'Leicester City': 'League One',
+  // Greece is not in the clubs directory either — same reasoning as above.
+  'Olympiacos': 'Super League Greece',
   // Short-form in leagues.mjs, long-form in clubs.mjs. Verified one by one.
   'Manchester United': 'Premier League', // leagues.mjs: "Man United"
   'Manchester City': 'Premier League', // "Man City"
