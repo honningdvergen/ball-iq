@@ -2707,5 +2707,37 @@ export const CLUBS = [
         "a": "The Derby of the Eternal Enemies — a rivalry between working-class Piraeus, where Olympiacos were founded in 1925, and the old Athenian society of Panathinaikos in the city centre."
       }
     ]
+  },
+  {
+    "club": "Panathinaikos",
+    "slug": "panathinaikos",
+    "name": "Panathinaikos",
+    "h1": "Panathinaikos Quiz",
+    "title": "Panathinaikos Quiz With Answers | Ball IQ",
+    "description": "Wembley 1971, Karagounis diving header past Seaman and Warzycha winning at Ajax — a Panathinaikos quiz with explained answers.",
+    "intro": [
+      "Ferenc Puskas arrived in Athens in 1970 and took Panathinaikos to Wembley, still the only European Cup final reached by a Greek club. Getting there took two away-goals escapes: Red Star Belgrade won 4-1 in Belgrade and were then beaten 3-0 in Athens, the tie finishing 4-4, and Everton were held 1-1 at Goodison Park and 0-0 in Athens. Antonis Antoniadis top-scored in that 1970-71 European Cup with 10 goals. The final was settled early and late — Dick van Dijk heading in a Piet Keizer cross in the fifth minute, Arie Haan making it 2-0 to Ajax in the 87th.",
+      "Krzysztof Warzycha arrived from Ruch Chorzow in December 1989, having just won the Polish championship and finished as the top scorer in that league, and stayed 15 years to become the all-time leading scorer at Panathinaikos. His biggest European season came under Juan Ramon Rocha in 1995-96, which brought the Greek championship and a Champions League run that survived a scandal: the 1-0 Dynamo Kyiv win of 13 September 1995 was annulled after Kyiv were expelled for attempting to bribe referee Antonio Lopez Nieto, with the Danish side AaB taking their place in the group. Legia Warsaw were held 0-0 in Warsaw and beaten 3-0 at the Athens Olympic Stadium on 20 March 1996, Warzycha scoring twice and Juan Jose Borrelli adding the third. Then came the 87th minute at the Olympisch Stadion on 3 April 1996 and a 1-0 win at Ajax, before the 3-0 defeat in Athens ended the semi-final 3-1 on aggregate.",
+      "On 26 September 2001 Giorgos Karagounis beat David Seaman with a diving header — a fourth successive 1-0 away defeat in the competition for Arsenal, and a goal Arsene Wenger called a cheap one to give away. Arsenal won the return at Highbury 2-1, but Panathinaikos still took Group C with 12 points from four wins, three clear of them. Giannis Goumas then put them 2-1 up in the 64th minute against Real Madrid at the Leoforos Alexandras on 20 March 2002 before Javier Portillo levelled late for the side that went on to win the trophy, and Barcelona were beaten 1-0 in Athens on 3 April 2002 only to advance 3-2 by winning the return 3-1 at Camp Nou. Jarni signed from the Spanish side Las Palmas on 30 January 2002 until the end of the season, then retired at 33. The following year Itzhak Shum won the 2003-04 double, the cup coming from a 3-1 win over Olympiacos at Nea Smyrni, and was replaced by Zdenek Scasny early the next season.",
+      "Henk ten Cate was sacked in December 2009 after top spot went to Olympiacos, Nioplias took over and won another double, and Djibril Cisse — bought from Marseille for a reported 8 million euros on 25 June 2009 — scored 23 league goals and 29 in all competitions. Roma were beaten 3-2 in Athens and 3-2 in Rome in February 2010 to reach the last 16, and a 63rd-minute goal from Sebastian Leto beat Aris 1-0 in the cup final on 24 April 2010 in front of 48,926. Cisse left for Lazio on 12 July 2011 with 55 goals in 89 games. Around all of it sits the rest of the identity: the three-leaf clover adopted in 1918 on the suggestion of Michalis Papazoglou and the nickname to Trifylli, Domazos leaving after nearly two decades for a short spell at AEK Athens from 1978 before returning to end his career with the Greens, the Derby of the Eternal Enemies against Olympiacos, and two shoot-outs a year apart — 5-3 past Marseille at the Stade Velodrome on 15 August 2023 after Fotis Ioannidis forced extra time from the spot, and 13-12 to Ajax on 15 August 2024, the longest in UEFA club competition history, Remko Pasveer saving five penalties and scoring his own."
+    ],
+    "faq": [
+      {
+        "q": "Have Panathinaikos ever reached a European Cup final?",
+        "a": "Yes — the 1971 final at Wembley, where Ajax won 2-0 through Dick van Dijk header from a Piet Keizer cross in the fifth minute and Arie Haan in the 87th. Ferenc Puskas had arrived in Athens in 1970, and it remains the only European Cup final reached by a Greek club."
+      },
+      {
+        "q": "Who is the all-time top scorer for Panathinaikos?",
+        "a": "Krzysztof Warzycha. The Polish striker signed from Ruch Chorzow in December 1989, having just won the Polish championship and finished as that league top scorer, and stayed 15 years to finish as the all-time leading scorer at the club."
+      },
+      {
+        "q": "When did Panathinaikos beat Arsenal?",
+        "a": "On 26 September 2001 in Athens, Giorgos Karagounis beating David Seaman with a diving header for a 1-0 win — the fourth successive 1-0 away defeat in the competition for Arsenal, with Arsene Wenger calling it a cheap goal to give away. Arsenal won the return at Highbury 2-1, but Panathinaikos took Group C with 12 points from four wins, three clear of them."
+      },
+      {
+        "q": "Who won the double with Panathinaikos in 2009-10?",
+        "a": "Nioplias, who took over after Henk ten Cate was sacked in December 2009 following the loss of top spot to Olympiacos. Djibril Cisse scored 23 league goals and 29 in all competitions, and a 63rd-minute goal from Sebastian Leto beat Aris 1-0 in the cup final on 24 April 2010 in front of 48,926 at the Athens Olympic Stadium."
+      }
+    ]
   }
 ];

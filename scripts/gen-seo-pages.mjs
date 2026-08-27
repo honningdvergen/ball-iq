@@ -265,6 +265,7 @@ const PAGE_FG = '#F0F1F5';
 const CLUB_BADGE = {
   'leicester-city': 'LEI',
   'olympiacos': 'OLY',
+  'panathinaikos': 'PAO',
   'derby-county': 'DER', 'swansea-city': 'SWA',
   'cardiff-city': 'CAR', 'stoke-city': 'STK',
   wrexham: 'WRX', 'norwich-city': 'NOR',
@@ -329,6 +330,7 @@ const clubOgImage = ({ name, badge, color, kind }) => {
 const CLUB_COLOR = {
   'leicester-city': '#003090',
   'olympiacos': '#DA020E',
+  'panathinaikos': '#00614E',
   'derby-county': '#FFFFFF', 'swansea-city': '#FFFFFF',
   'cardiff-city': '#0070B5', 'stoke-city': '#E03A3E',
   wrexham: '#DC241F', 'norwich-city': '#FFF200',
@@ -5137,6 +5139,7 @@ const MORE_META = {
   // so DIR_ALIAS cannot reach them and the build was right to refuse an orphan.
   'leicester-city': { code: 'LEI', color: '#003090', name: 'Leicester City' },
   'olympiacos': { code: 'OLY', color: '#DA020E', name: 'Olympiacos' },
+  'panathinaikos': { code: 'PAO', color: '#00614E', name: 'Panathinaikos' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {

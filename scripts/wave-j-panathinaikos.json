@@ -1,0 +1,437 @@
+[
+  {
+    "q": "Panathinaikos won 1-0 away to Ajax in the first leg of the 1996 Champions League semi-final. Who scored the 87th-minute goal in Amsterdam?",
+    "o": [
+      "Angelos Basinas",
+      "Giorgos Donis",
+      "Krzysztof Warzycha",
+      "Nikos Nioplias"
+    ],
+    "a": 2,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Krzysztof Warzycha struck in the 87th minute on 3 April 1996 for a 1-0 win at Ajax, though Panathinaikos lost the return 3-0 in Athens.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Panathinaikos lost the first leg of the 1971 European Cup semi-final 4-1 away, then won the return 3-0 to go through on away goals. Who did they knock out?",
+    "o": [
+      "Partizan Belgrade",
+      "Red Star Belgrade",
+      "Dinamo Zagreb",
+      "Hajduk Split"
+    ],
+    "a": 1,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Red Star Belgrade were beaten 3-0 in Athens after winning 4-1 in Belgrade, the tie finishing 4-4 with Panathinaikos through on away goals.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Who is Panathinaikos' all-time leading goalscorer?",
+    "o": [
+      "Antonis Antoniadis",
+      "Krzysztof Warzycha",
+      "Dimitris Saravakos",
+      "Mimis Domazos"
+    ],
+    "a": 1,
+    "cat": "History",
+    "diff": "medium",
+    "hint": "Polish striker Krzysztof Warzycha joined in 1989, stayed 15 years and finished as the club's all-time top scorer.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "What is the meeting between Panathinaikos and Olympiacos traditionally known as?",
+    "o": [
+      "The Derby of the Eternal Enemies",
+      "The Athens Classic",
+      "The Aegean Derby",
+      "The Derby of the Two Harbours"
+    ],
+    "a": 0,
+    "cat": "History",
+    "diff": "easy",
+    "hint": "The Panathinaikos-Olympiacos fixture is known as the Derby of the Eternal Enemies, Greek football's fiercest rivalry.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Panathinaikos completed the 2010 domestic double by winning the Greek Cup final 1-0 at the Olympic Stadium. Who did they beat?",
+    "o": [
+      "Olympiacos",
+      "PAOK",
+      "AEK Athens",
+      "Aris"
+    ],
+    "a": 3,
+    "cat": "History",
+    "diff": "medium",
+    "hint": "Sebastián Leto's 63rd-minute goal beat Aris 1-0 in the Greek Cup final on 24 April 2010, in front of 48,926 at the Athens Olympic Stadium.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Panathinaikos lost their opening match of the 1995-96 Champions League group stage 1-0 away, only for UEFA to annul the result and expel their hosts for trying to bribe the referee. Which club was thrown out?",
+    "o": [
+      "Steaua București",
+      "Legia Warsaw",
+      "Spartak Moscow",
+      "Dynamo Kyiv"
+    ],
+    "a": 3,
+    "cat": "UCL",
+    "diff": "hard",
+    "hint": "Dynamo Kyiv's 1-0 win over Panathinaikos on 13 September 1995 was annulled after they were expelled for attempting to bribe referee Antonio López Nieto, with Danish side AaB taking their place in the group.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Panathinaikos knocked a French club out of Champions League qualifying on penalties in August 2023 after a 2-2 aggregate draw. Which one?",
+    "o": [
+      "Rennes",
+      "Nice",
+      "Marseille",
+      "Lille"
+    ],
+    "a": 2,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Panathinaikos beat Marseille 5-3 on penalties on 15 August 2023, Fotis Ioannidis having forced extra time with a spot-kick deep into stoppage time at the Stade Vélodrome.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Panathinaikos topped Group C in the first group stage of the 2001-02 Champions League. Which English club finished as runners-up behind them?",
+    "o": [
+      "Liverpool",
+      "Arsenal",
+      "Leeds United",
+      "Newcastle United"
+    ],
+    "a": 1,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Panathinaikos took Group C with 12 points from four wins, three clear of the runners-up, having won 1-0 in Athens before losing the return 2-1 at Highbury.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Robert Jarni wound up his playing career with a half-season at Panathinaikos in 2002. Which club did he join them from?",
+    "o": [
+      "Real Betis",
+      "Las Palmas",
+      "Coventry City",
+      "Real Madrid"
+    ],
+    "a": 1,
+    "cat": "History",
+    "diff": "hard",
+    "hint": "Jarni signed for Panathinaikos from Spanish side Las Palmas on 30 January 2002 on a deal until the end of the season, then retired aged 33.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Mimis Domazos, captain at Wembley in 1971, briefly left Panathinaikos late in his career before returning to retire there. Where did he go?",
+    "o": [
+      "Olympiacos",
+      "PAOK",
+      "AEK Athens",
+      "Aris"
+    ],
+    "a": 2,
+    "cat": "History",
+    "diff": "hard",
+    "hint": "After nearly two decades at Panathinaikos, Domazos had a short spell at AEK Athens from 1978 before returning to end his career with the Greens.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Which emblem on the Panathinaikos club badge gave the club its nickname?",
+    "o": [
+      "An olive branch",
+      "A shamrock",
+      "An owl",
+      "A laurel wreath"
+    ],
+    "a": 1,
+    "cat": "History",
+    "diff": "easy",
+    "hint": "Adopted as the club's emblem in 1918 on Michalis Papazoglou's suggestion, the three-leaf clover gave Panathinaikos the nickname \"to Trifylli\".",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Nikos Nioplias was appointed in December 2009 and went on to win the double that season. Which manager had he replaced?",
+    "o": [
+      "Ronald Koeman",
+      "Henk ten Cate",
+      "Jesualdo Ferreira",
+      "Fernando Santos"
+    ],
+    "a": 1,
+    "cat": "History",
+    "diff": "hard",
+    "hint": "Henk ten Cate was sacked in December 2009 after Panathinaikos lost top spot to Olympiacos, and Nioplias took over and won the double.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Which coach led Panathinaikos to the league and cup double in 2003-04?",
+    "o": [
+      "Itzhak Shum",
+      "Juan Ramón Rocha",
+      "Zdeněk Ščasný",
+      "Alberto Malesani"
+    ],
+    "a": 0,
+    "cat": "History",
+    "diff": "hard",
+    "hint": "Israeli coach Itzhak Shum won the 2003-04 double, and was replaced by Zdeněk Ščasný early the following season.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "On the way to the 2009-10 double, Panathinaikos also knocked an Italian side out of the Europa League 6-4 on aggregate. Which one?",
+    "o": [
+      "Lazio",
+      "Juventus",
+      "Fiorentina",
+      "Roma"
+    ],
+    "a": 3,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Panathinaikos beat Roma 3-2 in Athens and 3-2 in Rome in February 2010 to reach the last 16.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Which English club ended the Panathinaikos run at the semi-final stage of the 1984-85 European Cup?",
+    "o": [
+      "Nottingham Forest",
+      "Aston Villa",
+      "Everton",
+      "Liverpool"
+    ],
+    "a": 3,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Liverpool won both legs against Panathinaikos in 1985 and went on to the Heysel final against Juventus.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Who finished as the leading scorer of the 1970-71 European Cup with 10 goals?",
+    "o": [
+      "Johan Cruyff",
+      "Mimis Domazos",
+      "Antonis Antoniadis",
+      "Totis Filakouris"
+    ],
+    "a": 2,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Antonis Antoniadis top-scored in the 1970-71 European Cup with 10 goals as Panathinaikos reached the final.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Which side did Panathinaikos eliminate 3-0 on aggregate in the 1995-96 Champions League quarter-finals?",
+    "o": [
+      "Legia Warsaw",
+      "Nantes",
+      "Porto",
+      "Hajduk Split"
+    ],
+    "a": 0,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Panathinaikos drew 0-0 in Warsaw and then beat Legia Warsaw 3-0 at the Athens Olympic Stadium on 20 March 1996, Krzysztof Warzycha scoring twice and Juan José Borrelli adding the third.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "In August 2024 Panathinaikos went out of Europa League qualifying 13-12 on penalties, after a UEFA-record 34 spot-kicks were taken. Who beat them?",
+    "o": [
+      "Ajax",
+      "Rangers",
+      "Braga",
+      "Dynamo Kyiv"
+    ],
+    "a": 0,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Ajax won the third-qualifying-round shoot-out 13-12 on 15 August 2024, the longest in UEFA club competition history, with goalkeeper Remko Pasveer saving five penalties and converting his own.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Panathinaikos beat Arsenal 1-0 in Athens in the 2001-02 Champions League group stage. Who headed in the only goal?",
+    "o": [
+      "Angelos Basinas",
+      "Michalis Konstantinou",
+      "Giorgos Karagounis",
+      "Emmanuel Olisadebe"
+    ],
+    "a": 2,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Giorgos Karagounis beat David Seaman with a diving header on 26 September 2001. It was Arsenal's fourth successive 1-0 away defeat in the competition, and Arsene Wenger called it a cheap goal to give away, though Arsenal won the return at Highbury 2-1.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Who was the manager who led Panathinaikos to both the Greek title and the Champions League semi-finals in 1995-96?",
+    "o": [
+      "Jacek Gmoch",
+      "Giannis Kyrastas",
+      "Juan Ramón Rocha",
+      "Ferenc Puskás"
+    ],
+    "a": 2,
+    "cat": "UCL",
+    "diff": "hard",
+    "hint": "Argentine Juan Ramón Rocha was in charge as Panathinaikos won the 1995-96 Greek championship and reached the Champions League semi-finals, where they lost 3-1 on aggregate to Ajax.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Krzysztof Warzycha, still Panathinaikos's all-time leading scorer, joined the club in December 1989 from which Polish side?",
+    "o": [
+      "Ruch Chorzów",
+      "Legia Warsaw",
+      "Widzew Łódź",
+      "Górnik Zabrze"
+    ],
+    "a": 0,
+    "cat": "History",
+    "diff": "easy",
+    "hint": "Warzycha arrived from Ruch Chorzów in December 1989, having just won the Polish championship and finished as the league's top scorer with them.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Djibril Cissé signed for Panathinaikos in June 2009. Which club did they buy him from?",
+    "o": [
+      "Liverpool",
+      "Auxerre",
+      "Marseille",
+      "Bordeaux"
+    ],
+    "a": 2,
+    "cat": "History",
+    "diff": "easy",
+    "hint": "Panathinaikos paid Marseille a reported €8 million for Cissé on 25 June 2009, handing him a four-year contract.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Which Hungarian great was in the Panathinaikos dugout for the 1971 European Cup final?",
+    "o": [
+      "Nándor Hidegkuti",
+      "Ferenc Puskás",
+      "Béla Guttmann",
+      "Gyula Grosics"
+    ],
+    "a": 1,
+    "cat": "UCL",
+    "diff": "easy",
+    "hint": "Ferenc Puskás arrived in Athens in 1970 and took Panathinaikos to Wembley, still the only European Cup final reached by a Greek club.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Djibril Cissé left Panathinaikos in July 2011 after two prolific seasons in Athens. Where did he go next?",
+    "o": [
+      "Queens Park Rangers",
+      "Lazio",
+      "Kuban Krasnodar",
+      "Al-Gharafa"
+    ],
+    "a": 1,
+    "cat": "History",
+    "diff": "medium",
+    "hint": "Cissé joined Lazio on 12 July 2011 for a reported €5.8 million, having scored 55 goals in 89 games for Panathinaikos.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Nikos Liberopoulos opened the scoring as Panathinaikos drew 2-2 with eventual champions Real Madrid in Athens in March 2002. Who scored their second goal?",
+    "o": [
+      "Giannis Goumas",
+      "Angelos Basinas",
+      "Michalis Konstantinou",
+      "Joonas Kolkka"
+    ],
+    "a": 0,
+    "cat": "History",
+    "diff": "hard",
+    "hint": "Defender Giannis Goumas put Panathinaikos 2-1 ahead in the 64th minute at the Leoforos Alexandras on 20 March 2002, before Javier Portillo levelled late for a Real Madrid side that went on to win the trophy.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Which English club did Panathinaikos eliminate on away goals in the quarter-finals of their 1970-71 European Cup run?",
+    "o": [
+      "Everton",
+      "Leeds United",
+      "Arsenal",
+      "Manchester City"
+    ],
+    "a": 0,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Panathinaikos drew 1-1 at Goodison Park and 0-0 in Athens to go through on away goals, and reached the final at Wembley, where Ajax beat them 2-0.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Panathinaikos won the home leg of their 2001-02 Champions League quarter-final 1-0 through an Angelos Basinas penalty, but still went out. Who beat them?",
+    "o": [
+      "Bayern Munich",
+      "Manchester United",
+      "Barcelona",
+      "Real Madrid"
+    ],
+    "a": 2,
+    "cat": "UCL",
+    "diff": "medium",
+    "hint": "Barcelona lost 1-0 in Athens on 3 April 2002 but won the return 3-1 at Camp Nou to advance 3-2 on aggregate.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Panathinaikos completed the 2004 domestic double by winning the Greek Cup final 3-1. Who did they beat?",
+    "o": [
+      "AEK Athens",
+      "Olympiacos",
+      "PAOK",
+      "Aris"
+    ],
+    "a": 1,
+    "cat": "History",
+    "diff": "easy",
+    "hint": "Panathinaikos beat Olympiacos 3-1 in the 2004 Greek Cup final at Nea Smyrni to add the cup to the title.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  },
+  {
+    "q": "Ajax were in front inside five minutes of the 1971 European Cup final at Wembley. Who headed in that opening goal against Panathinaikos?",
+    "o": [
+      "Johan Cruyff",
+      "Dick van Dijk",
+      "Arie Haan",
+      "Piet Keizer"
+    ],
+    "a": 1,
+    "cat": "UCL",
+    "diff": "hard",
+    "hint": "Dick van Dijk headed in a Piet Keizer cross in the fifth minute, and Arie Haan added Ajax's second in the 87th as they won 2-0.",
+    "club": "Panathinaikos",
+    "type": "mcq"
+  }
+]
