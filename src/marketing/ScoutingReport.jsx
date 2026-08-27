@@ -35,7 +35,6 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 import { CLUB_HEADING, CLUB_INDEX } from './clubIndex.js';
 import FootleBand from './FootleBand.jsx';
 
-const GET_APP = '/get';
 const PLAY = '/play';
 
 // The five FAQs, copy identical to MarketingHome's CORRECTED set (Android
@@ -560,7 +559,7 @@ export default function ScoutingReport() {
                   <a className="sr-a" href={PLAY_STORE_URL}><PlayMark />Google Play</a>
                 </div>
                 <p className="sr-web">
-                  Or <a href={GET_APP}>keep going in the browser</a> — same test, nothing to install
+                  Or <a href={PLAY}>keep going in the browser</a> — same test, nothing to install
                 </p>
               </div>
             </div>
