@@ -414,7 +414,35 @@
     "diff": "medium"
    }
   ],
-  "prose": null,
+  "prose": {
+   "h1": "Leicester City Quiz",
+   "title": "Leicester City Quiz With Answers | Ball IQ",
+   "description": "From Vardy's record run and Hazard's equaliser at Stamford Bridge to Tielemans at Wembley and the 97-point promotion — a Leicester City quiz with answers.",
+   "intro": [
+    "You already know where you were when Eden Hazard curled one in at Stamford Bridge with seven minutes left. Gary Cahill had pulled one back, Tottenham's title hopes went with the equaliser, and Leicester were champions of England. The season had been built on stranger stuff than that: a first clean sheet that did not arrive until October, a 1-0 against Crystal Palace, after which Claudio Ranieri took the squad to a pizzeria and made them make their own. Then Jamie Vardy scored against Manchester United in November for the eleventh league game running, one better than the ten-match run Ruud van Nistelrooy had set for United in 2003. Riyad Mahrez reached the London ceremony for the award voted by fellow professionals rather than by the writers, hours after scoring his 17th league goal of the title season.",
+    "Europe came next, and it went further than the fixture list suggested it would. Marc Albrighton scored the club's first ever Champions League goal inside five minutes at the Jan Breydel Stadium in September 2016, Mahrez added the other two, 3-0. By February the domestic picture had turned: a 2-1 defeat in Seville in the last-16 first leg on 22 February 2017, and the following evening Ranieri was dismissed with Leicester a point above the relegation zone — nine months after winning the Premier League. His assistant Craig Shakespeare stepped up, oversaw a 2-0 second leg to go through 3-2 on aggregate, and took the club into a quarter-final that Atlético Madrid settled 2-1 on aggregate.",
+    "The trophies each have their own texture. Steve Claridge's extra-time strike beat Middlesbrough 1-0 on 16 April 1997 for the club's first major trophy in 33 years; captain and centre-back Matt Elliott headed both goals, each from a Steve Guppy corner, against Tranmere in February 2000. Then Wembley in 2021: Youri Tielemans from distance into the top corner in the 63rd minute, 1-0, ending a wait that had included four previous losing finals, the last of them in 1969. At the other end Thiago Silva's cross-field ball picked out Ben Chilwell — a Leicester academy graduate wearing the other shirt that day — and VAR ruled him offside by the finest of margins, so the scramble that followed did not stand. A year on, José Mourinho's Roma edged the semi-final 2-1 on aggregate, Tammy Abraham's header settling the second leg in Rome, and went on to win that competition's inaugural final against Feyenoord. Somewhere in among all this, substitute Kelechi Iheanacho was tripped by Nathan Aké and converted an 89th-minute penalty to beat Manchester City — the club Leicester had signed him from in 2017.",
+    "The squad has never stopped turning over. Schmeichel arrived from Leeds United in June 2011, with Manchester City, Cardiff City and Notts County already behind him, and left for Ligue 1 side Nice in August 2022 on eleven years and more than 450 competitive appearances. Vardy had come the other way from Fleetwood Town in May 2012, fresh from their Conference Premier title and Stocksbridge Park Steels and FC Halifax Town before that. Maguire left in August 2019 for a reported £80m, overtaking the £75m Liverpool had paid Southampton for Virgil van Dijk in January 2018, two years after Leicester bought him from Hull City. Fofana arrived from Saint-Étienne aged 19 in October 2020 and was gone to Chelsea two years later for a reported £70m plus add-ons. Newcastle United paid a reported £38m for Barnes in July 2023, weeks after his 13 Premier League goals in a relegation season — the one where Leicester won their own final-day game and still went down, Everton's 1-0 over Bournemouth at Goodison Park leaving them on 36 points to Leicester's 34. They came straight back up with 97, a point clear of Ipswich Town, Leeds United third on 90 and Southampton going up through the play-offs, under Enzo Maresca — appointed on 16 June 2023, a year after returning to Manchester City as one of Pep Guardiola's assistants following a short spell in charge of Parma. If you sat through all of it, the questions here should be a pleasure. If you joined somewhere in the middle, they fill in the gaps."
+   ],
+   "faq": [
+    {
+     "q": "How did Leicester actually clinch the 2015-16 Premier League title?",
+     "a": "At Stamford Bridge, without kicking a ball. Gary Cahill pulled one back for Chelsea and Eden Hazard curled in an equaliser with seven minutes left, ending Tottenham's title hopes and crowning Leicester. The run that got them there included Jamie Vardy scoring against Manchester United in November for the eleventh league game in a row, passing the ten-match run Ruud van Nistelrooy set for United in 2003, and Riyad Mahrez taking the players' own award after scoring his 17th league goal of the season."
+    },
+    {
+     "q": "Who scored Leicester's winning goal in the 2021 FA Cup final?",
+     "a": "Youri Tielemans, from distance into the top corner in the 63rd minute at Wembley, for the only goal of a 1-0 win and Leicester's first FA Cup. It ended a wait that had taken in four previous losing finals, the last of them in 1969. Chelsea thought they had levelled when Thiago Silva's cross-field ball found Ben Chilwell — a Leicester academy graduate — but VAR judged him offside by the finest of margins and the scrambled finish was ruled out."
+    },
+    {
+     "q": "Where did Leicester sign Jamie Vardy from?",
+     "a": "Fleetwood Town, in May 2012, right after they had won the Conference Premier. Before that he had played for Stocksbridge Park Steels and FC Halifax Town. Within four years he was a Premier League champion, and in November 2015 he scored against Manchester United to make it eleven league games in a row, one more than Ruud van Nistelrooy's ten-game United run from 2003."
+    },
+    {
+     "q": "Which other Premier League champions have been relegated?",
+     "a": "Blackburn Rovers, who won the title in 1995 and went down in 1999. Leeds United and Nottingham Forest were English champions only before the Premier League began, and Manchester City, champions since 2012, have never been relegated after winning it. Leicester's own drop came on a final day when they won their own match and still fell: Everton's 1-0 over Bournemouth at Goodison Park lifted them to 36 points and left Leicester 18th on 34. They went back up as champions on 97 points, one ahead of Ipswich Town, with Leeds third on 90."
+    }
+   ]
+  },
   "qbClub": "Leicester",
   "cat": "PL"
  }
