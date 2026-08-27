@@ -57,10 +57,30 @@ four defect classes that per-question verifiers structurally CANNOT see:
 
 - `node scripts/add-questions.mjs <club>.json` — per-question `cat`/`club` ride
   the JSON; ids are sha1-stable; dedup is automatic.
-- **App.jsx ×5**: CLUB_PACK_TO_QB, CLUB_LEAGUES, CLUB_ABBR, CLUB_SLUG_TO_PACK,
-  CLUB_PACKS (`{name, icon, color, questions: []}`). League bucket: in-app has NO
-  Championship section — big English clubs go under "pl" (West Ham precedent);
-  the web directory shows the true division regardless.
+- **App.jsx ×6** — not five. CLUB_PACK_TO_QB, CLUB_LEAGUES, **CLUB_ORDER**,
+  CLUB_ABBR, CLUB_SLUG_TO_PACK, CLUB_PACKS (`{name, icon, color, questions: []}`).
+  ⚠️ CLUB_ORDER was missing from this list until wave P. It is a flat
+  league→array map and an unlisted club falls to `?? 1e6`, sorting silently to
+  the end of its section — no error, just a club nobody scrolls to.
+  League bucket: in-app has NO Championship section — big English clubs go under
+  "pl" (West Ham precedent); the web directory shows the true division regardless.
+- **`clubs.mjs` `club` MUST equal the bank's `club` value**, which is the FULL
+  name — "Leicester City", "Coventry City", "Leeds United", never the short
+  form. The generator joins pages to questions on that field, so a mismatch
+  yields a page with ZERO questions that then throws on MIN_HINTS. It looks like
+  a hint problem and is a naming problem. (`slug` may still be short:
+  `coventry` → `Coventry City` via DIR_ALIAS.)
+- **`scripts/seo/club-competition.mjs`** — the eleventh point, also missing here
+  until wave P. `gen-club-index.mjs` HARD-EXITS for any club it cannot resolve a
+  competition for. The value must be a real `league` string from leagues.mjs
+  **or** a deliberate hand entry; it is rendered as text in the club-index row,
+  so it needs no roster behind it. ⚠️ Never guess a current division — it is
+  usually past the model's cutoff. Ask.
+- **MORE_META (gen-seo), NOT DIR_ALIAS, for a club leagues.mjs does not list at
+  all.** DIR_ALIAS maps a league row's short name onto our page name; if there
+  is no row there is nothing to map FROM, and aliasing points another club's row
+  at this club's quiz. Precedents: Sheffield Wednesday, and Leicester (League
+  One, outside the PL/Championship directory).
 - **MarketingHome ×2**: QUIZ_CLUBS tile + CLUB_COLOR.
 - **gen-seo ×2 (+1)**: CLUB_BADGE, CLUB_COLOR, and **DIR_ALIAS when the
   directory name ≠ page club name** ('Coventry' → 'Coventry City') — the
@@ -83,6 +103,14 @@ club pages once. Third-party scripts follow the native-guard rule from
 
 1. `npm run build` — the gates are friends: eslint, ≥15 hint-bearing MCQs per
    club page, directory guards. Confirm "✓ /quiz/<slug>/ (club, N Qs in bank)".
+   ⚠️ Expect to fail it several times; each failure names the exact missing
+   wiring point. Wave P failed four times in a row — wrong `club` key, two
+   pre-1992 questions filed under `cat: PL` (the PL era gate), a missing
+   club-competition entry, and an unreachable directory row. Every one would
+   have shipped silently without the gate. Do not "fix" a gate to get green.
+   ⚠️ The PL era gate: `cat: "PL"` means the Premier League, which began in
+   1992. Pre-1992 club history goes to History/Legends/Records, and generation
+   lenses that ask for heritage WILL produce these.
 2. One commit for the wave; push main → Vercel deploy regenerates the sitemap and
    **pings IndexNow automatically** (prod builds only). No manual index step.
 3. **Verify live by static `<title>`, not HTTP 200** — the SPA catch-all answers
