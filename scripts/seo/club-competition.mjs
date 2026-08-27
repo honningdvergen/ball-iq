@@ -38,6 +38,17 @@ export const CLUB_COMPETITION = {
   'Stoke City': 'Championship',
   'Derby County': 'Championship',
   'Swansea City': 'Championship',
+  // ⚠️ LEAGUE ONE IS NOT A leagues.mjs ROSTER, and that is deliberate.
+  // Every other value here names a `league` string that exists in leagues.mjs,
+  // so a reader can check it. Leicester appears in NEITHER the 2026-27 Premier
+  // League nor the Championship roster — they are in League One, which the
+  // clubs directory does not cover and which nobody has verified a full roster
+  // for. Confirmed by Alex 2026-08-27; the 2026-27 division is past my training
+  // cutoff, so recalling it would have been fabrication.
+  // The value is only ever rendered as text in the club-index row, so it needs
+  // no roster behind it. If a League One section is ever added to leagues.mjs,
+  // this entry becomes redundant and the name match takes over.
+  'Leicester City': 'League One',
   // Short-form in leagues.mjs, long-form in clubs.mjs. Verified one by one.
   'Manchester United': 'Premier League', // leagues.mjs: "Man United"
   'Manchester City': 'Premier League', // "Man City"

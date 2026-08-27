@@ -2645,7 +2645,7 @@ export const CLUBS = [
   }
 ,
   {
-    "club": "Leicester",
+    "club": "Leicester City",
     "slug": "leicester-city",
     "name": "Leicester City",
     "h1": "Leicester City Quiz",

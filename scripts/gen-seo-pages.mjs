@@ -5128,6 +5128,12 @@ const MORE_META = {
   // FROM. Aliasing them to "Sheffield Utd" would have satisfied the build by
   // pointing one Sheffield club's row at the other's quiz.
   'sheffield-wednesday': { code: 'SHW', color: '#0066B3', name: 'Sheffield Wednesday' },
+  // ⚠️ Same case as Sheffield Wednesday, one division lower. Leicester are in
+  // League One for 2026-27 (confirmed by Alex — it is past my training cutoff,
+  // so it is his fact, not a recalled one), and the clubs directory covers the
+  // Premier League and Championship only. There is no league row to alias FROM,
+  // so DIR_ALIAS cannot reach them and the build was right to refuse an orphan.
+  'leicester-city': { code: 'LEI', color: '#003090', name: 'Leicester City' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {
