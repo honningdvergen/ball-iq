@@ -52,3 +52,7 @@ public/lineup/cutouts/*.png
 # VAPID private key — generated locally, never committed (scripts/gen-vapid-keys.mjs)
 .vapid-keys.local.json
 android/app/google-services.json
+
+# screenshot generator scratch — frame-store-screens.mjs writes this every run.
+# It was tracked, so each regeneration committed another 2.4MB blob.
+.tmp.html
