@@ -136,6 +136,10 @@ function StadiumBoard({ league, onExit }) {
   const [text, setText] = useState("");
   const [shake, setShake] = useState(false);
   const [justSolved, setJustSolved] = useState(null);
+  // Two-tap confirm for the reset. A window.confirm() blocks the whole webview
+  // and looks like a browser, not the app; a second tap on the same button is
+  // lighter and undoable by simply not tapping again.
+  const [confirmReset, setConfirmReset] = useState(false);
   // Shared keyboard handling (lib/useKeyboardAwareInput.js). This mode already
   // had the INSET half — content below the field could be scrolled clear of
   // the keyboard — but was missing the other half: as solved rows accumulate
@@ -264,6 +268,7 @@ function StadiumBoard({ league, onExit }) {
   };
 
   const resetRun = () => {
+    setConfirmReset(false);
     setState({ solved: [], clubsHidden: false, letters: {}, gaveUp: false });
     setText("");
     try { inputRef.current?.focus(); } catch {}
@@ -309,6 +314,34 @@ function StadiumBoard({ league, onExit }) {
               {showClubs ? "Hide the clubs" : "Show the clubs"}
             </button>
             <div style={{ flex: 1 }} />
+            {/* ⚠️ RESET WAS ONLY REACHABLE ONCE YOU HAD FINISHED. `resetRun`
+                has always existed, but it was rendered inside the `done`
+                block — so a player stuck at 14 of 20, or one who wanted a
+                clean run after peeking, had no way back. Stadiums is a
+                completion run and progress is per-league in localStorage
+                (biq_stadiums_v1_<leagueId>), so a reset here clears exactly
+                this league and leaves the others alone. Alex: "it should be
+                possible to reset the stadium gamemode, each league that is."
+                Only shown once there is something to lose — an untouched
+                board has nothing to reset and the control would be noise. */}
+            {(solvedSet.size > 0 || hintsUsed > 0) && (
+              <button
+                onClick={() => {
+                  if (!confirmReset) { setConfirmReset(true); return; }
+                  setConfirmReset(false);
+                  haptic("select");
+                  resetRun();
+                }}
+                onBlur={() => setConfirmReset(false)}
+                aria-label={confirmReset ? `Confirm starting ${league.name} over` : `Start ${league.name} over`}
+                style={{ padding: "9px 12px", borderRadius: 11, marginRight: 8,
+                  background: confirmReset ? "rgba(239,68,68,0.14)" : "transparent",
+                  border: `1px solid ${confirmReset ? "rgba(239,68,68,0.5)" : "var(--border)"}`,
+                  color: confirmReset ? "#ef4444" : "var(--t2)", fontFamily: "inherit",
+                  fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+                {confirmReset ? "Tap again to clear" : "Start over"}
+              </button>
+            )}
             <span style={{ fontSize: 12, color: "var(--t3, var(--t2))" }}>{hintsUsed === 0 ? "No hints yet" : `${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}`}</span>
           </div>
         </>
