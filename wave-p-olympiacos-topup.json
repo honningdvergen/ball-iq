@@ -1,0 +1,236 @@
+[
+  {
+    "club": "Olympiacos",
+    "clubName": "Olympiacos",
+    "full": "Olympiacos",
+    "count": 15,
+    "survivors": [
+      {
+        "q": "Predrag Djordjevic and Stelios Giannakopoulos arrived at Olympiacos together in 1996 from the same Greek club. Which one?",
+        "o": [
+          "Panionios",
+          "Paniliakos",
+          "Ionikos",
+          "Kalamata"
+        ],
+        "a": 1,
+        "hint": "Dusan Bajevic signed both Djordjevic and Giannakopoulos from Paniliakos in 1996, and both went on to win every title of the seven-year run.",
+        "diff": "hard",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Olympiacos led 1-0 at Anfield in December 2004 through a curling free-kick, before Liverpool won 3-1 with a late Steven Gerrard strike. Who scored that free-kick?",
+        "o": [
+          "Giovanni",
+          "Rivaldo",
+          "Predrag Djordjevic",
+          "Ieroklis Stoltidis"
+        ],
+        "a": 1,
+        "hint": "Rivaldo bent the free-kick into the Kop end to put Olympiacos ahead on 8 December 2004, before Sinama Pongolle, Mellor and Gerrard turned the group tie around and sent Liverpool on their way to Istanbul.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Olympiacos' seven-in-a-row ended when they were beaten to the 2003-04 title. Which club took it?",
+        "o": [
+          "AEK Athens",
+          "PAOK",
+          "Panathinaikos",
+          "Aris"
+        ],
+        "a": 2,
+        "hint": "Panathinaikos won the 2003-04 championship, ending Olympiacos' seven consecutive titles from 1996-97 to 2002-03.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Predrag Djordjevic played 13 seasons at Olympiacos between 1996 and 2009. How many Greek championships did he collect?",
+        "o": [
+          "Eight",
+          "Ten",
+          "Twelve",
+          "Thirteen"
+        ],
+        "a": 2,
+        "hint": "Twelve, from thirteen attempts. Olympiacos won the title every season Djordjevic was there apart from 2003-04, when their Athens rivals pipped them by two points.",
+        "diff": "hard",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Olympiacos signed the Brazilian playmaker Giovanni in the summer of 1999. Which club did they buy him from?",
+        "o": [
+          "Santos",
+          "Barcelona",
+          "Valencia",
+          "Fiorentina"
+        ],
+        "a": 1,
+        "hint": "Giovanni joined Olympiacos from Barcelona in 1999, three years after the Catalans had signed him from Santos.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Olympiacos demolished and rebuilt Karaiskakis Stadium in just 14 months, moving into the new ground in which year?",
+        "o": [
+          "1998",
+          "2001",
+          "2004",
+          "2007"
+        ],
+        "a": 2,
+        "hint": "The rebuilt Karaiskakis Stadium opened in 2004, in time to stage football at the Athens Olympics; Olympiacos' first competitive match there was a 2-1 win over Kallithea on 19 September 2004.",
+        "diff": "easy",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Stelios Giannakopoulos won the Greek championship in all seven of his seasons at Olympiacos, from 1996-97 to 2002-03, then left in May 2003 for which Premier League club?",
+        "o": [
+          "Charlton Athletic",
+          "Portsmouth",
+          "Bolton Wanderers",
+          "Blackburn Rovers"
+        ],
+        "a": 2,
+        "hint": "Sam Allardyce signed him on 28 May 2003, a year before he won Euro 2004 with Greece, and he stayed at the Reebok until he was released in 2008.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Olympiacos signed a Brazilian Ballon d'Or winner in July 2004. Which club did they buy him from?",
+        "o": [
+          "AC Milan",
+          "Cruzeiro",
+          "Corinthians",
+          "Barcelona"
+        ],
+        "a": 1,
+        "hint": "He joined Olympiacos on 22 July 2004 from Cruzeiro, where he had spent only around two months after leaving AC Milan.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "In February 1981, 21 fans were crushed to death leaving Karaiskakis Stadium after a 6-0 Olympiacos win. Which gate gave the tragedy its name?",
+        "o": [
+          "Gate 3",
+          "Gate 7",
+          "Gate 9",
+          "Gate 13"
+        ],
+        "a": 1,
+        "hint": "The crush on 8 February 1981 happened at Gate 7, where a half-closed exit door trapped fans rushing out to celebrate. Olympiacos' main supporters' association still carries the name Gate 7 in memory of the 21 who died.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Before taking charge at Olympiacos in 1996, Dusan Bajevic had already won four Greek championships as manager of which club?",
+        "o": [
+          "AEK Athens",
+          "Panathinaikos",
+          "PAOK",
+          "Aris"
+        ],
+        "a": 0,
+        "hint": "Bajevic won four league titles at AEK Athens between 1989 and 1994 before crossing to Olympiacos, where he won three more in a row and later added the 2004-05 championship.",
+        "diff": "hard",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Olympiacos won the 2024 UEFA Europa Conference League final 1-0 against Fiorentina with a header in the 116th minute. Who scored it?",
+        "o": [
+          "Youssef El-Arabi",
+          "Ayoub El Kaabi",
+          "Kostas Fortounis",
+          "Daniel Podence"
+        ],
+        "a": 1,
+        "hint": "Ayoub El Kaabi headed in Santiago Hezze's cross in the 116th minute at the Agia Sophia Stadium in Athens, making Olympiacos the first Greek club to win a European trophy.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Olympiacos reached the Champions League quarter-finals in 1998-99, losing 2-1 away and drawing 1-1 at home to go out 3-2 on aggregate. Which club knocked them out?",
+        "o": [
+          "Bayern Munich",
+          "Dynamo Kyiv",
+          "Internazionale",
+          "Juventus"
+        ],
+        "a": 3,
+        "hint": "Juventus won the Turin leg 2-1 through Inzaghi and Conte, and a 1-1 draw in Athens was enough to see them through 3-2. They went out themselves in the semi-final, beaten 4-3 on aggregate by Manchester United.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Rivaldo left Olympiacos in 2007 after three league titles and signed immediately for which club, a move that did not go down well in Piraeus?",
+        "o": [
+          "Panathinaikos",
+          "AEK Athens",
+          "PAOK",
+          "Aris"
+        ],
+        "a": 1,
+        "hint": "Rivaldo joined AEK Athens on a free transfer on 29 May 2007 straight from Olympiacos, having won the Greek championship in each of his three seasons at the club.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Olympiacos' run of seven straight championships began in 1996-97, and one manager delivered the first three before leaving in November 1999. Who was he?",
+        "o": [
+          "Takis Lemonis",
+          "Dusan Bajevic",
+          "Oleg Protasov",
+          "Trond Sollied"
+        ],
+        "a": 1,
+        "hint": "Dusan Bajevic crossed from AEK Athens in June 1996 and won the 1996-97, 1997-98 and 1998-99 titles - the first of them Olympiacos' first championship in ten years. He departed in November 1999, and a succession of coaches carried the run on to a seventh title in 2003.",
+        "diff": "medium",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      },
+      {
+        "q": "Giovanni spent six seasons at Olympiacos, from 1999 until 2005. How many Greek league titles did he win there?",
+        "o": [
+          "Three",
+          "Four",
+          "Five",
+          "Six"
+        ],
+        "a": 2,
+        "hint": "Giovanni won five championships with Olympiacos — 1999-2000, 2000-01, 2001-02, 2002-03 and 2004-05 — missing out only in 2003-04, the season he finished as the league's top scorer with 21 goals.",
+        "diff": "hard",
+        "type": "mcq",
+        "club": "Olympiacos",
+        "cat": "History"
+      }
+    ],
+    "prose": null
+  }
+]
