@@ -87,6 +87,7 @@ describe("Trail schedule is frozen", () => {
     "MINAMINO",           // #23 · 2026-08-25 — verified against getTrailAnswerForDayIndex
     "WERNER",             // #24 · 2026-08-26 — verified against getTrailAnswerForDayIndex
     "BENZEMA",            // #25 · 2026-08-27 — verified against getTrailAnswerForDayIndex
+    "SAKAI",              // #26 · 2026-08-28 — verified against getTrailAnswerForDayIndex
   ];
 
   it("no already-published day ever moves", () => {
