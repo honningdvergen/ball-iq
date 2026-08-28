@@ -256,6 +256,9 @@ for (const row of squad) {
 
   results.push({ qid: row.qid, name, pos: row.pos, winner, tried, hadPhoto: !!pooled?.f });
   writeFileSync(`${WORK}/wave.json`, JSON.stringify(results, null, 1));
+// Per-club copy: a 20-club overnight loop overwrites wave.json each run, and
+// the eyeball pass needs every club's review detail, not the last one's.
+writeFileSync(`${WORK}/wave-${CLUB.replace(/[^A-Za-z0-9]+/g, '-').toLowerCase()}.json`, JSON.stringify(results, null, 1));
   const mark = winner ? '✓' : '✗';
   console.log(`${mark} ${name.padEnd(24)} ${winner ? `${winner.year || '?'} · ${winner.crop}px crop · top ${winner.top.toFixed(3)}` : `no candidate passed (${cands.length} tried)`}`);
 }
@@ -266,6 +269,9 @@ const review = pass.filter((r) => r.winner.confidence === 'review');
 console.log(`\n${pass.length}/${results.length} reached the standard — ${confident.length} confident, ${review.length} NEED AN EYEBALL (identity from description, not filename)`);
 if (review.length) console.log('  review: ' + review.map((r) => r.name).join(', '));
 writeFileSync(`${WORK}/wave.json`, JSON.stringify(results, null, 1));
+// Per-club copy: a 20-club overnight loop overwrites wave.json each run, and
+// the eyeball pass needs every club's review detail, not the last one's.
+writeFileSync(`${WORK}/wave-${CLUB.replace(/[^A-Za-z0-9]+/g, '-').toLowerCase()}.json`, JSON.stringify(results, null, 1));
 console.log(`detail: ${WORK}/wave.json  ·  cutouts: ${WORK}/cut_<qid>.png`);
 console.log('\n⚠️ NOTHING IS PUBLISHED YET. Cutouts stage in /tmp/squad-wave for an');
 console.log(`   eyeball pass; only approved ones are copied into ${OUTDIR}.`);
