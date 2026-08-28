@@ -35,9 +35,24 @@ const UA = { 'User-Agent': 'BallIQ/1.0 (https://balliq.app; squad cutout wave)' 
 const CLUB = process.argv.find((a) => !a.startsWith('--') && a !== process.argv[0] && a !== process.argv[1]) || 'Manchester United';
 const LIMIT = process.argv.includes('--limit') ? +process.argv[process.argv.indexOf('--limit') + 1] : Infinity;
 
+
+// ⚠️ THE /tmp HELPERS ARE BUILD ARTIFACTS AND /tmp GETS WIPED. On 2026-08-28 a
+// full 27-player wave returned 0/27 with every candidate "unreadable" because
+// /tmp/facebox had vanished — the tool call threw, the catch defaulted to 99,
+// and a missing binary was indistinguishable from 27 bad photos. Compile on
+// demand so the scripts carry their own dependencies.
+function ensureTool(bin, src) {
+  if (existsSync(bin)) return;
+  console.log(`building ${bin} from ${src}…`);
+  execFileSync('swiftc', ['-O', '-o', bin, src], { stdio: 'inherit' });
+}
+
 const CACHE = '/tmp/cutout-orig';
 const WORK = '/tmp/squad-wave';
 mkdirSync(WORK, { recursive: true });
+ensureTool('/tmp/facebox', 'scripts/facebox/main.swift');
+ensureTool('/tmp/facecut', 'scripts/facecut/main.swift');
+
 mkdirSync(CACHE, { recursive: true });
 
 const OUTDIR = 'public/lineup/cutouts';

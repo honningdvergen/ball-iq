@@ -20,6 +20,18 @@ import { createHash } from 'crypto';
 
 const LINEUP = JSON.parse(readFileSync('public/data/lineup.json', 'utf8'));
 const OUTDIR = 'public/lineup/cutouts';
+
+// ⚠️ THE /tmp HELPERS ARE BUILD ARTIFACTS AND /tmp GETS WIPED. On 2026-08-28 a
+// full 27-player wave returned 0/27 with every candidate "unreadable" because
+// /tmp/facebox had vanished — the tool call threw, the catch defaulted to 99,
+// and a missing binary was indistinguishable from 27 bad photos. Compile on
+// demand so the scripts carry their own dependencies.
+function ensureTool(bin, src) {
+  if (existsSync(bin)) return;
+  console.log(`building ${bin} from ${src}…`);
+  execFileSync('swiftc', ['-O', '-o', bin, src], { stdio: 'inherit' });
+}
+
 const CACHE = '/tmp/cutout-orig';
 const LOG = '/tmp/cutouts-batch.log';
 const MANIFEST = OUTDIR + '/manifest.json';
@@ -39,6 +51,8 @@ const MANIFEST = OUTDIR + '/manifest.json';
 const MIN_CROP_PX = 240;
 mkdirSync(OUTDIR, { recursive: true });
 mkdirSync(CACHE, { recursive: true });
+ensureTool('/tmp/facecut', 'scripts/facecut/main.swift');
+
 
 const manifest = new Set(existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, 'utf8')) : []);
 const rejects = {};
