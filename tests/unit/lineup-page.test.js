@@ -53,6 +53,7 @@ const GLOBALS = new Set([
   'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'console',
   'requestAnimationFrame', 'cancelAnimationFrame', 'alert', 'atob', 'btoa',
   'getComputedStyle', 'CustomEvent', 'Event', 'DOMParser', 'AbortController',
+  'ResizeObserver', 'MutationObserver',
   'localStorage', 'sessionStorage', 'history', 'matchMedia', 'structuredClone',
   // Keywords that the call-site regex cannot distinguish from a function name.
   'if', 'for', 'while', 'switch', 'catch', 'return', 'typeof', 'function',
