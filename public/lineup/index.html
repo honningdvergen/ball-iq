@@ -366,7 +366,18 @@ function fillDisc(disc, p, size){
     if (cm){
       // Face-anchored: face width -> 40% of the disc, face centre parked just
       // above disc centre. Same model as photo crops; uniform heads by law.
-      ci.addEventListener('load', function(){
+      //
+      // ⚠️ place() MUST BE RE-RUNNABLE, NOT A ONE-SHOT LOAD HANDLER. On a
+      // COLD cache (i.e. every first-time visitor) the image can finish
+      // loading while the disc still has no layout, and the one-shot handler
+      // then positioned the player outside the circle — an empty disc with a
+      // fully-loaded image in it. Observed live 2026-08-28: Ødegaard, Rice
+      // and Kepa blank on first visit, all present on every warm reload,
+      // which is exactly why the bug only ever bit NEW visitors and read as
+      // "many players have no picture". Now it runs on load, immediately if
+      // the image is already complete, and again whenever the disc gets or
+      // changes its geometry.
+      var place = (function(){
         var W = ci.naturalWidth, H = ci.naturalHeight, D = disc.clientWidth || size;
         if (!W || !H) return;
         var sc = (FACE_SHARE * D) / (cm.w * W);
@@ -388,6 +399,10 @@ function fillDisc(disc, p, size){
         if (cm.t != null) top = Math.max(top, D * CROWN_PAD - cm.t * H * sc);
         ci.style.top = top + 'px';
       });
+      ci.addEventListener('load', place);
+      if (window.ResizeObserver){
+        try { new ResizeObserver(place).observe(disc); } catch (e) {}
+      }
     } else {
       ci.className = 'cutimg';
     }
@@ -397,6 +412,9 @@ function fillDisc(disc, p, size){
       fillDisc(disc, p, size);
     });
     ci.src = CUTOUT_BASE + p.i + '.png';
+    // Cache-hit images can be complete before the load listener attaches in
+    // some engines — never depend on the event alone.
+    if (cm && ci.complete && ci.naturalWidth) place();
     disc.appendChild(ci); return;
   }
   if (!p.f){
