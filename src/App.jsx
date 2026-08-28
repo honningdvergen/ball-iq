@@ -10902,9 +10902,12 @@ function AppInner() {
         let webPlays = 0;
         try { webPlays = JSON.parse(localStorage.getItem('biq_stats') || '{}')?.gamesPlayed || 0; } catch {}
         if (webPlays < 2) return bail("too-early");
-        localStorage.setItem('biq_notif_asks', String(asks + 1));
         if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
-        notifTimerRef.current = setTimeout(() => { loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
+        // Spend the ask WHEN THE SHEET OPENS, not at schedule time. A player
+        // who closes the tab inside the 7s hold used to burn one of their two
+        // lifetime asks on a sheet they never saw — prod showed a visitor at
+        // asks-exhausted with notif-prompt-shown fired twice ever.
+        notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks', String(asks + 1)); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
         return true;
       } catch { return false; }
     }
@@ -10930,7 +10933,6 @@ function AppInner() {
 
       const perm = await getNotifPermission();
       if (perm !== 'prompt' && perm !== 'prompt-with-rationale') return nBail(`perm-${perm}`);
-      localStorage.setItem('biq_notif_asks', String(asks + 1));
       // ⏱ HOLD THE SHEET UNTIL THE PAYOFF HAS LANDED.
       // The moment is right — solving is the app's happiest second, and that
       // call stands. The problem was that the sheet opened on the SAME frame
@@ -10948,7 +10950,8 @@ function AppInner() {
       // anyone could reach it — a glance, not a window. Sharing is the action
       // we most want here, so it gets the beat. The ask still lands on the
       // result screen, which is the moment Alex called correctly.
-      notifTimerRef.current = setTimeout(() => { loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
+      // Ask spent at open time, same reason as the web path above.
+      notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks', String(asks + 1)); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
       return true;
     } catch { return false; }
   }, [user?.id, webPushOn]);
