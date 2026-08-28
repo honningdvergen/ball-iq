@@ -14,6 +14,7 @@ const DIST = 'dist';
 const pages = [];
 (function walk(dir) {
   for (const e of readdirSync(dir)) {
+    if (String(e.name ?? e).startsWith('.')) continue; // skip src/.claude worktrees
     const p = join(dir, e);
     if (statSync(p).isDirectory()) walk(p);
     else if (e === 'index.html') pages.push(p);

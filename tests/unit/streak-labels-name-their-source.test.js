@@ -33,6 +33,7 @@ function allSource(dir = 'src') {
   const root = fileURLToPath(new URL(`../../${dir}`, import.meta.url));
   const out = [];
   for (const e of readdirSync(root, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue; // skip src/.claude worktrees
     if (e.isDirectory()) out.push(...allSource(`${dir}/${e.name}`));
     else if (/\.(js|jsx)$/.test(e.name)) out.push(`${dir}/${e.name}`);
   }

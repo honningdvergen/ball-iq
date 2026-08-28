@@ -11314,10 +11314,25 @@ function AppInner() {
     const onMpDone = (e) => {
       const d = e?.detail || {};
       awardXp(getMpXP(d.won === true, d.score));
+      // Persist the game like every other mode does. Measured 2026-08-28:
+      // scores held ZERO mp rows across a week of daily ended rooms — MP was
+      // the only mode whose completion event paid XP but never wrote a row,
+      // so finished games vanished from server-side history. That also made
+      // the guest "save your stats" upgrade pitch empty for MP-only guests,
+      // who are most guests (8 of 11 entered through a room invite).
+      // score = points as the podium shows them; correct_answers stays null
+      // because room_players has no per-player correct count.
+      if (user?.id) {
+        saveScore(user?.id, {
+          game_mode: `mp:${d.mode || 'race'}`,
+          score: d.score || 0,
+          total_questions: Number.isInteger(d.total) ? d.total : null,
+        });
+      }
     };
     window.addEventListener('biq:mp-completed', onMpDone);
     return () => window.removeEventListener('biq:mp-completed', onMpDone);
-  }, [awardXp]);
+  }, [awardXp, user?.id]);
 
   // Re-ask at the FIRST crossing into a 3-day streak — not on every open of a
   // long-streak user (that would burn both lifetime asks before they ever see a

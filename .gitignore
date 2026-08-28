@@ -56,3 +56,6 @@ android/app/google-services.json
 # screenshot generator scratch — frame-store-screens.mjs writes this every run.
 # It was tracked, so each regeneration committed another 2.4MB blob.
 .tmp.html
+
+# background-task worktrees can be created inside subdirs; never commit or lint them
+**/.claude/worktrees/

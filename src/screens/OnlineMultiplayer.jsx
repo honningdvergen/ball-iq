@@ -327,7 +327,16 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
       // realtime 'ended' echoes, and recordMpResult dedupes by roomId behind
       // it. The results screen re-renders and can be revisited; this cannot.
       window.dispatchEvent(new CustomEvent('biq:mp-completed', {
-        detail: { won: iWon, score: mine ? mine.score : 0, mode: gameMode },
+        detail: {
+          won: iWon,
+          score: mine ? mine.score : 0,
+          mode: gameMode,
+          // For the scores row the listener writes. Only what is actually
+          // known: points and how many questions the room ran. Per-player
+          // correct counts don't exist in room_players — null is honest,
+          // a fabricated 0 would look like data.
+          total: Array.isArray(room.questions) ? room.questions.length : null,
+        },
       }));
     } catch {}
   }, [room, players, myPlayer]);

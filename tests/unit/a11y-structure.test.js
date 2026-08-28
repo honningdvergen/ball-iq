@@ -8,6 +8,7 @@ const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 
 function walk(dir, out = []) {
   for (const name of readdirSync(join(ROOT, dir))) {
+    if (name.startsWith('.')) continue; // background-task worktrees under src/.claude
     const rel = `${dir}/${name}`;
     if (statSync(join(ROOT, rel)).isDirectory()) walk(rel, out);
     else if (/\.(jsx?|tsx?)$/.test(name)) out.push(rel);

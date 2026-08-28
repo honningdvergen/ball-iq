@@ -32,6 +32,7 @@ const SRC = fileURLToPath(new URL('../../src', import.meta.url));
 function allJsx(dir = SRC) {
   const out = [];
   for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue; // skip src/.claude worktrees
     const p = `${dir}/${e.name}`;
     if (e.isDirectory()) out.push(...allJsx(p));
     else if (e.name.endsWith('.jsx')) out.push(p);

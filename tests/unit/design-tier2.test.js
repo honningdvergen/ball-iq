@@ -34,6 +34,7 @@ const SRC_DIR = fileURLToPath(new URL('../../src', import.meta.url));
 const ALL_JSX = (function walk(d) {
   const out = [];
   for (const n of readdirSync(d)) {
+    if (n.startsWith('.')) continue; // background-task worktrees under src/.claude
     const p = join(d, n);
     if (statSync(p).isDirectory()) out.push(...walk(p));
     else if (n.endsWith('.jsx')) out.push(p);

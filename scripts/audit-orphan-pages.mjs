@@ -42,6 +42,7 @@ const EXEMPT = new Set(['/']);
 
 function* walk(dir) {
   for (const entry of readdirSync(dir)) {
+    if (String(entry.name ?? entry).startsWith('.')) continue; // skip src/.claude worktrees
     const p = join(dir, entry);
     const s = statSync(p);
     if (s.isDirectory()) yield* walk(p);

@@ -28,6 +28,9 @@ const SRC = fileURLToPath(new URL('../../src', import.meta.url));
 function walk(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
+    // Hidden dirs are never product source — .claude/worktrees from
+    // background tasks lands inside src/ and duplicates every component.
+    if (name.startsWith('.')) continue;
     const p = join(dir, name);
     if (statSync(p).isDirectory()) out.push(...walk(p));
     else if (/\.jsx?$/.test(name)) out.push(p);

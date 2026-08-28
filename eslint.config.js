@@ -19,7 +19,7 @@ export default [
   // offset there and broke both the clubq-start count and "Keep going", with
   // nothing to catch it. no-redeclare finds that in a second — but only if the
   // file is parsed, which is the entire reason it now exists on disk.
-  { ignores: ['dist/**', 'ios/**', 'android/**', 'node_modules/**', 'public/**', 'scripts/!(seo)/**', 'scripts/*.mjs', 'scripts/seo/!(club-quiz-engine).*', '*.config.js', 'src/questions-index.js'] },
+  { ignores: ['**/.claude/**', 'dist/**', 'ios/**', 'android/**', 'node_modules/**', 'public/**', 'scripts/!(seo)/**', 'scripts/*.mjs', 'scripts/seo/!(club-quiz-engine).*', '*.config.js', 'src/questions-index.js'] },
   {
     files: ['scripts/seo/club-quiz-engine.js'],
     languageOptions: {
