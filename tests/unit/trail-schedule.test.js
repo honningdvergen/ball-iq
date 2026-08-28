@@ -72,9 +72,15 @@ describe("Trail schedule is frozen", () => {
   // schedule they were compiled with. Android production was 1.5.1, cut before
   // the rewrite, so native and web have disagreed every day since.
   //
-  // EXTENDING THIS ARRAY IS THE ONLY LEGAL EDIT: append the keys for days that
-  // have now been published. Never reorder, never replace. A day that has been
+  // EXTENDING THIS ARRAY IS THE ONLY LEGAL EDIT: append keys via
+  // `npm run trail:freeze`. Never reorder, never replace. A day that has been
   // served to a human is history and history does not move.
+  //
+  // Since 2026-08-28 the freeze runs ~14 days AHEAD of today (the gate below
+  // lapsed at midnight and blocked three builds). A pre-frozen day is exactly
+  // as immovable as a served one — native bundles compile the schedule in, so
+  // anything inside the horizon is already in installed apps' hands. Reshuffle
+  // unserved days only BEYOND the frozen horizon.
   const PUBLISHED = [
     "TORRES", "GILBERTO_SILVA", "RONALDO_C", "RAMOS", "MATUIDI", "ROONEY",
     "CECH", "HENRY", "SNEIJDER", "FLAMINI", "ERIKSEN", "VALVERDE", "CAN",
@@ -88,6 +94,20 @@ describe("Trail schedule is frozen", () => {
     "WERNER",             // #24 · 2026-08-26 — verified against getTrailAnswerForDayIndex
     "BENZEMA",            // #25 · 2026-08-27 — verified against getTrailAnswerForDayIndex
     "SAKAI",              // #26 · 2026-08-28 — verified against getTrailAnswerForDayIndex
+    "MAKELELE",           // #27 · 2026-08-29 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "KONNO",              // #28 · 2026-08-30 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "AFELLAY",            // #29 · 2026-08-31 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "UCHIDA",             // #30 · 2026-09-01 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "RDIGER",             // #31 · 2026-09-02 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "VERRATTI",           // #32 · 2026-09-03 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "TORRES_FER",         // #33 · 2026-09-04 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "XHAKA",              // #34 · 2026-09-05 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "JONG",               // #35 · 2026-09-06 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "POGBA",              // #36 · 2026-09-07 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "MANE",               // #37 · 2026-09-08 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "OZIL",               // #38 · 2026-09-09 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ROBBEN",             // #39 · 2026-09-10 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "MESSI",              // #40 · 2026-09-11 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
   ];
 
   it("no already-published day ever moves", () => {
@@ -105,6 +125,26 @@ describe("Trail schedule is frozen", () => {
     // Never delete this check, and never edit PUBLISHED to make it pass.
     const servedSoFar = Math.floor(Date.now() / 86400000) - TRAIL_ANCHOR_DAY + 1;
     expect(PUBLISHED.length).toBeGreaterThanOrEqual(Math.min(servedSoFar, TRAIL_ANSWER_LOG.length));
+  });
+
+  it("warns while the freeze horizon is thin — so the fix happens before midnight, not at it", () => {
+    // The gate above hard-fails the moment an unfrozen day is served — which,
+    // arriving at midnight, is exactly when nobody is at the keyboard. It
+    // blocked builds on days 24, 25 and 26. trail:freeze now extends ~14 days
+    // ahead; this check WARNS (build stays green) once fewer than 3 of those
+    // remain, so the lapse announces itself days early in normal test output.
+    // Deliberately a warning, not a failure: the invariant is "history never
+    // moves", not "the horizon is wide" — never promote this to an expect().
+    const servedSoFar = Math.floor(Date.now() / 86400000) - TRAIL_ANCHOR_DAY + 1;
+    const margin = PUBLISHED.length - Math.min(servedSoFar, TRAIL_ANSWER_LOG.length);
+    if (PUBLISHED.length < TRAIL_ANSWER_LOG.length && margin < 3) {
+      console.warn(
+        `\n⚠️  TRAIL FREEZE HORIZON LOW: ${Math.max(margin, 0)} future day(s) frozen; ` +
+        `the build starts failing in ${Math.max(margin + 1, 0)} day(s).\n` +
+        `   Fix now:  npm run trail:freeze\n`,
+      );
+    }
+    expect(PUBLISHED.length).toBeLessThanOrEqual(TRAIL_ANSWER_LOG.length);
   });
 
   it("never repeats a career on consecutive days", () => {

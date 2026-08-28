@@ -27,9 +27,20 @@
  * If the log has been tampered with, guard 1 still fails and this script
  * cannot paper over it: it refuses to touch any day already frozen.
  *
+ * THE HORIZON. After guard 2 lapsed at midnight and blocked a build three
+ * times (days 24, 25, 26), this script now freezes HORIZON_DAYS ahead of
+ * today, not just through today. That is safe because the answers for future
+ * days are not invented here — they already sit in TRAIL_ANSWER_LOG, committed
+ * source that every native bundle compiles in. A day inside the horizon is
+ * already published to installed apps in every way that matters; freezing it
+ * early only converts "mutable future" to "immutable history" a little sooner.
+ * Consequence, on purpose: a frozen-but-unserved day may no longer be
+ * reshuffled. To reshuffle unserved days, do it BEYOND the frozen horizon.
+ *
  * Usage:
- *   node scripts/trail-freeze.mjs           # report only
- *   node scripts/trail-freeze.mjs --apply   # append missing days
+ *   node scripts/trail-freeze.mjs                 # report only
+ *   node scripts/trail-freeze.mjs --apply         # append through today+14
+ *   node scripts/trail-freeze.mjs --horizon=30    # widen the horizon
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -51,10 +62,20 @@ if (!block) {
 }
 const published = [...block[1].matchAll(/"([A-Z0-9_]+)"/g)].map((m) => m[1]);
 
-const servedSoFar = Math.floor(Date.now() / 86400000) - TRAIL_ANCHOR_DAY + 1;
-const target = Math.min(servedSoFar, TRAIL_ANSWER_LOG.length);
+const HORIZON_DAYS = 14;
+const horizonArg = process.argv.find((a) => a.startsWith('--horizon='));
+const horizon = horizonArg ? Number(horizonArg.split('=')[1]) : HORIZON_DAYS;
+if (!Number.isInteger(horizon) || horizon < 0) {
+  console.error(`✗ --horizon must be a non-negative integer, got ${horizonArg}`);
+  process.exit(2);
+}
 
-console.log(`PUBLISHED holds ${published.length} day(s); ${target} have been served.`);
+const servedSoFar = Math.floor(Date.now() / 86400000) - TRAIL_ANCHOR_DAY + 1;
+const target = Math.min(servedSoFar + horizon, TRAIL_ANSWER_LOG.length);
+
+console.log(
+  `PUBLISHED holds ${published.length} day(s); ${Math.min(servedSoFar, TRAIL_ANSWER_LOG.length)} served, freezing through today+${horizon}.`,
+);
 
 // ── Verify history FIRST, always — before deciding whether there is anything
 //    to append. The integrity check used to sit after the "nothing to freeze"
@@ -78,7 +99,8 @@ for (let i = 0; i < published.length; i++) {
 console.log(`✓ the ${published.length} frozen day(s) still match the live log.`);
 
 if (published.length >= target) {
-  console.log('✅ nothing to freeze — the record is current.');
+  const margin = published.length - Math.min(servedSoFar, TRAIL_ANSWER_LOG.length);
+  console.log(`✅ nothing to freeze — ${margin} future day(s) already frozen.`);
   process.exit(0);
 }
 
@@ -99,11 +121,11 @@ for (let n = published.length + 1; n <= target; n++) {
     process.exit(1);
   }
   const date = new Date((dayIndex) * 86400000).toISOString().slice(0, 10);
-  rows.push({ n, key, date });
+  rows.push({ n, key, date, ahead: n > servedSoFar });
 }
 
 console.log('\nto freeze:');
-rows.forEach((r) => console.log(`  #${r.n} · ${r.date} · ${r.key}`));
+rows.forEach((r) => console.log(`  #${r.n} · ${r.date} · ${r.key}${r.ahead ? ' (ahead)' : ''}`));
 
 if (!process.argv.includes('--apply')) {
   console.log('\n(dry run — re-run with --apply to write)');
@@ -112,7 +134,12 @@ if (!process.argv.includes('--apply')) {
 
 const pad = (k) => `"${k}",`.padEnd(22);
 const added = rows
-  .map((r) => `    ${pad(r.key)}// #${r.n} · ${r.date} — verified against getTrailAnswerForDayIndex`)
+  .map((r) => {
+    const note = r.ahead
+      ? 'pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex'
+      : 'verified against getTrailAnswerForDayIndex';
+    return `    ${pad(r.key)}// #${r.n} · ${r.date} — ${note}`;
+  })
   .join('\n');
 
 const updated = src.replace(
