@@ -89,6 +89,8 @@
     '#biq-consent .biq-c-btns{display:flex;gap:10px;flex:0 0 auto}',
     /* Equal weight, and a 44px min height so both clear the tap-target floor. */
     '#biq-consent button{font:inherit;font-size:13px;font-weight:600;',
+    /* A slow tap must never SELECT the label instead of pressing the button. */
+    '-webkit-user-select:none;user-select:none;',
     'min-height:44px;padding:0 20px;border-radius:10px;cursor:pointer;',
     'border:1px solid #3A3A3A;background:#1F1F1F;color:#E8E8E8;',
     'transition:background .15s ease,border-color .15s ease}',
