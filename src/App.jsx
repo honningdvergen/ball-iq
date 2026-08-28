@@ -11326,6 +11326,11 @@ function AppInner() {
         saveScore(user?.id, {
           game_mode: `mp:${d.mode || 'race'}`,
           score: d.score || 0,
+          // Explicit null: omitting the key lets the column default write a 0,
+          // which reads as "answered nothing right" when the truth is
+          // "per-player correct counts don't exist in MP". Verified live —
+          // the first row landed with 0 before this was made explicit.
+          correct_answers: null,
           total_questions: Number.isInteger(d.total) ? d.total : null,
         });
       }
