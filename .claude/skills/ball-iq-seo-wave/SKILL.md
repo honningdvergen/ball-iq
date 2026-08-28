@@ -10,6 +10,17 @@ The pipeline that took the bank 4,030 → 5,834 and the site to 61 live club pag
 The zero-error bar from [ball-iq-question-bank] governs throughout: verify inline,
 only survivors ship, reject-when-in-doubt.
 
+## Curate-time gate: the format tell (added 2026-08-28)
+
+Measured on the live bank: when exactly one option's name format (single word
+vs multi-word) differs from all others, that odd one is the answer 29% of the
+time against a 25% chance baseline — 1,298 questions carry the pattern. The
+bank is NOT being bulk-edited (too much churn for ~4 points of guessing edge),
+so the forge must stop adding to it: at curation, for every survivor whose
+keyed answer is the format odd-one-out among its options, reword one
+distractor to match the answer's shape ("Henry" among full names → make one
+distractor "Bergkamp"). Free at curate time, expensive forever after.
+
 ## 0. Pick the wave
 
 `scripts/seo/leagues.mjs` IS the coverage map — 356 clubs; built ones light up in
