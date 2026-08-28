@@ -1008,20 +1008,30 @@ falls back to the sign-in prompt while the provider is off).
 - [x] ~~Apply `v1_6_anon_guest_entry.sql`~~ — **ALREADY APPLIED, verified
       2026-08-24**: `profiles.is_anon` exists, `set_player_name` exists, and
       the `cleanup-stale-anon-users` cron is scheduled (04:37 daily).
-      ⚠️ **So guest entry is UNBLOCKED server-side and has been for some time —
-      yet there are ZERO anonymous users in prod.** Either no one has hit the
-      invite-link guest path, or the client half is not reachable. That is now
-      the question, not the migration.
+      ✅ **RESOLVED 2026-08-28: the client half IS reachable and guests ARE
+      using it.** The "zero anonymous users" read was stale within days: prod
+      now holds 12 anon users (Aug 24 ×4, 26 ×1, 27 ×6, plus one test), all
+      with is_anon profiles from the trigger. 8 of them reached rooms — all 9
+      such rooms ended — and one played the Daily 7. Verified end-to-end by
+      playing it signed-out: /join/CODE renders the gate with "Play as guest"
+      as the PRIMARY CTA, anonymous sign-in succeeds, auto-join fires, and a
+      bad code errors correctly ("No room with that code").
       ⚠️ One anon user (`f2541858…`) exists from my enablement probe. I could
       not delete it — removing auth.users rows is blocked here — and the
       cleanup cron only reaps anon users older than **30 days** with no recent
       session, so it will linger until then. Delete it from the dashboard if
       you would rather not wait.
       Still to do: refresh `supabase/prod-snapshot/`.
-- [ ] 2-device test: device A creates a room and shares the link; device B
-      (fresh browser, signed out) taps it → "Play as guest" → lands in the
-      lobby, renames itself, plays a game, sees the "save your stats" CTA on
-      the game-over screen, upgrades with email+password, stats survive.
+- [ ] 2-device test, NARROWED 2026-08-28 — entry/join/room-end are proven by
+      prod data above, so what actually remains: device B renames itself in
+      the lobby, sees the "save your stats" CTA on game over, upgrades with
+      email+password, stats survive.
+      ⚠️ MEASURED while verifying: MP writes NO scores rows for ANYONE —
+      zero race/mp rows in scores across the whole last 7 days despite ended
+      rooms daily. The "MP stats never saved (realtime-gated)" backlog item
+      is now a quantified product gap, not a hypothesis — and it hollows the
+      guest upgrade pitch, since a guest who only played MP has no stats to
+      save.
 
 Notes: anonymous users hold the `authenticated` role, so no RPC/RLS changes
 were needed. Social (Apple/Google) upgrade is deliberately NOT offered to
