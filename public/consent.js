@@ -210,6 +210,20 @@
       } catch (e) { /* worst case the banner shows during onboarding */ }
     }
   }
-  if (document.body) mount();
-  else document.addEventListener('DOMContentLoaded', mount);
+  function start() {
+    if (document.body) mount();
+    else document.addEventListener('DOMContentLoaded', mount);
+  }
+  // Deep-linked players (index.html sets the flag for ?club=/?quiz=/?c= and
+  // /c/ /join/ arrivals) land straight in a TIMED question, and the banner was
+  // eating their first one — it covered option D while the clock ran. Clarity
+  // is off until consent either way, so waiting for the app's first natural
+  // pause (results screen, or bailing home) collects the same consent without
+  // spending the visitor's first question on it. Static pages never set the
+  // flag; their taster is untimed and the banner still shows on load there.
+  if (window.__biqConsentDefer && !window.__biqConsentMomentFired) {
+    window.addEventListener('biq:consent-moment', start, { once: true });
+  } else {
+    start();
+  }
 })();

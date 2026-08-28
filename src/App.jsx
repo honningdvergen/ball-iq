@@ -8907,6 +8907,23 @@ function AppInner() {
   useEffect(() => { perfMark('AppInner mounted'); removePrebootOnboard(); }, []);
   const { user, profile: authProfile, isGuest, isAnonUser, signInAsGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
+  // The first natural pause, for the deferred consent banner (see index.html
+  // and public/consent.js). Deep-linked players start mid-question; the banner
+  // waits for this. Two races matter here: the app boots on screen === "home"
+  // BEFORE the ?club= capture launches the quiz, so home only counts once the
+  // player has actually been somewhere else — and consent.js (a deferred
+  // script) may attach its listener AFTER this fires, so the moment is also
+  // recorded on window for it to read at startup.
+  const consentAwayRef = useRef(false);
+  useEffect(() => {
+    if (screen !== "home") consentAwayRef.current = true;
+    if (screen === "results" || (screen === "home" && consentAwayRef.current)) {
+      try {
+        window.__biqConsentMomentFired = true;
+        window.dispatchEvent(new Event("biq:consent-moment"));
+      } catch {}
+    }
+  }, [screen]);
   // QA S-03: screens are full-page swaps, but nothing reset the scroll — so
   // quitting a Classic quiz returned you to Home still scrolled wherever you
   // had been, leaving the Daily 7 / Footle cards below the fold. The daily

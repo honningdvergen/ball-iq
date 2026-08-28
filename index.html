@@ -339,7 +339,22 @@
               document.head.appendChild(c);
             } else if (choice !== 'denied') {
               /* Undecided, and in scope: ask. The banner is a separate file so
-                 that the ~87% of loads which never show it do not carry it. */
+                 that the ~87% of loads which never show it do not carry it.
+
+                 DEFERRED for deep-linked players: a visitor arriving from a
+                 club page's "Play the full quiz" lands DIRECTLY in a timed
+                 question, and the banner was covering option D while the 10s
+                 clock ran — a first-timer's first question spent on GDPR
+                 furniture (seen live, 2026-08-28). The banner gates CLARITY,
+                 not gameplay, and Clarity stays off until consent — so with
+                 this flag consent.js waits for the app to signal the first
+                 natural pause (results screen / back to home) and nothing is
+                 collected in the meantime. Static pages never set the flag:
+                 their taster has no timer, so banner-on-load stays right. */
+              if (/[?&](club|quiz|c)=/.test(location.search) ||
+                  /^\/(c|join)\//.test(location.pathname)) {
+                window.__biqConsentDefer = true;
+              }
               var b = document.createElement('script');
               b.src = '/consent.js';
               b.defer = true;
