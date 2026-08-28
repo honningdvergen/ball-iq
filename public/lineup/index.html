@@ -944,7 +944,10 @@ function drawPitch(ctx, x, y, w, h){
 // DO NOT change FACE_SHARE again without Alex picking the value from a
 // side-by-side on real players. The number is a taste call, not a measurement,
 // and measuring it harder is what produced two bad guesses.
-var FACE_SHARE = 0.40;
+// 0.46, picked by Alex 2026-08-28 from a three-way A/B (40% production /
+// 52% / 62% FotMob-ish) of the same XI: "somewhere between A and B, not C".
+// One constant, shared by the on-screen pitch and the canvas share image.
+var FACE_SHARE = 0.46;
 // ⚠️ CENTRE THE COMPOSITION, NOT JUST THE FACE. Centring purely on the face box
 // is correct for the head and wrong for the picture: a player turned or leaning
 // throws his whole body to one side, so the disc shows a shoulder jammed
