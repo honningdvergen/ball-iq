@@ -1581,7 +1581,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           Uses the app's own .modal-overlay so it dims, animates and respects the
           safe area exactly like every other sheet. */}
       {(stats?.gamesPlayed || 0) === 0 && !sampleDismissed && (() => {
-        const t = CARD_TIERS.elite;
+        // tierPalette, not a raw key: the bronze/silver/gold rename left
+        // CARD_TIERS.elite undefined, and t.bg then crashed the WHOLE Profile
+        // tab — but only for gamesPlayed === 0, i.e. precisely the guests and
+        // first-timers this popup exists for, which is why no signed-in
+        // account could ever see it. Found live by a guest session 2026-08-28.
+        const t = tierPalette("gold");
         const rows = [
           { icon: "\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}", abbr: "EPL", v: 88 }, { icon: "\u2B50", abbr: "UCL", v: 91 },
           { icon: "\u{1F30D}", abbr: "INT", v: 84 }, { icon: "\u{1F1EA}\u{1F1F8}", abbr: "LAL", v: 83 },
