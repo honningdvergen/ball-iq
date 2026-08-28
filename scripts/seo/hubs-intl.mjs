@@ -30,6 +30,7 @@ export const LANG_LABEL = {
   de: 'Deutsch',
   tr: 'Türkçe',
   id: 'Bahasa Indonesia',
+  nl: 'Nederlands',
 };
 
 export const HUBS_INTL = [
@@ -142,6 +143,27 @@ export const HUBS_INTL = [
     alsoH: 'Dieselbe Seite auf Englisch',
   },
   {
+    lang: 'nl',
+    title: 'Voetbalquiz — Test wat je écht weet | Ball IQ',
+    description: 'Voetbalquiz, geschreven en gecontroleerd door fans. Kies je club, beantwoord de vragen en ontdek hoeveel je echt weet. Gratis en zonder account.',
+    h1: 'Voetbalquiz',
+    kind: 'Voetbalquiz',
+    intro: [
+      'Een voetbalquiz voor wie echt voetbal kijkt. Elke vraag wordt door fans geschreven en gecontroleerd: nooit overgeschreven, nooit automatisch gegenereerd.',
+      'Kies de club die jij aanmoedigt en beantwoord tien vragen. Bij de meeste hoort een korte uitleg — je eindigt dus met iets dat je aan het begin nog niet wist.',
+    ],
+    tasterEyebrow: 'Gratis proberen · Zonder account',
+    tasterH: 'Hoe goed ken jij het voetbal?',
+    tasterPh: 'Een paar snelle vragen om je Ball IQ te meten.',
+    tasterNote: 'Voorbeeldvragen — per club is er veel meer.',
+    playLabel: 'Spelen',
+    clubsH: 'Kies je club',
+    clubsSub: 'Voor elke club een eigen, gecontroleerde quiz.',
+    bandH: 'Denk je dat je verstand van voetbal hebt? Bewijs het.',
+    bandP: 'Winstreeksen, 1-tegen-1 in realtime en een rating tot 99. De app is in het Engels.',
+    alsoH: 'Dezelfde pagina in het Engels',
+  },
+  {
     lang: 'fr',
     title: 'Quiz Football — Teste ce que tu sais | Ball IQ',
     description: 'Quiz football écrit et vérifié par des passionnés. Choisis ton club, réponds et découvre ce que tu sais vraiment. Gratuit, sans inscription.',
@@ -200,6 +222,7 @@ export const HUBS_INTL = [
 export const TASTER_I18N = {
   es: { question: 'Pregunta', correct: 'correctas', correct1: 'correcta', next: 'Siguiente →', seeScore: 'Ver tu resultado →', yourIq: 'Tu Ball IQ', scored: 'Acertaste', playFull: 'Jugar el quiz completo', getApp: 'Descargar la app', again: 'Jugar otra vez' },
   de: { question: 'Frage', correct: 'richtig', next: 'Weiter →', seeScore: 'Ergebnis ansehen →', yourIq: 'Dein Ball IQ', scored: 'Du hattest', playFull: 'Das komplette Quiz spielen', getApp: 'App herunterladen', again: 'Nochmal spielen' },
+  nl: { question: 'Vraag', correct: 'goed', next: 'Volgende →', seeScore: 'Bekijk je score →', yourIq: 'Jouw Ball IQ', scored: 'Je had', playFull: 'Speel de volledige quiz', getApp: 'Download de app', again: 'Nog een keer' },
   fr: { question: 'Question', correct: 'bonnes', correct1: 'bonne', next: 'Suivant →', seeScore: 'Voir ton résultat →', yourIq: 'Ton Ball IQ', scored: 'Tu as trouvé', playFull: 'Jouer au quiz complet', getApp: 'Télécharger l’application', again: 'Rejouer' },
   it: { question: 'Domanda', correct: 'giuste', correct1: 'giusta', next: 'Avanti →', seeScore: 'Vedi il tuo risultato →', yourIq: 'Il tuo Ball IQ', scored: 'Hai indovinato', playFull: 'Gioca il quiz completo', getApp: 'Scarica l’app', again: 'Gioca ancora' },
   pt: { question: 'Pergunta', correct: 'certas', correct1: 'certa', next: 'Próxima →', seeScore: 'Ver seu resultado →', yourIq: 'Seu Ball IQ', scored: 'Você acertou', playFull: 'Jogar o quiz completo', getApp: 'Baixar o app', again: 'Jogar de novo' },

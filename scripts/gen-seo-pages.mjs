@@ -92,6 +92,7 @@ import { CLUBS_ID } from './seo/clubs-id.mjs';
 import { CLUBS_IT } from './seo/clubs-it.mjs';
 import { CLUBS_DE } from './seo/clubs-de.mjs';
 import { CLUBS_FR } from './seo/clubs-fr.mjs';
+import { CLUBS_NL } from './seo/clubs-nl.mjs';
 import { HUBS_INTL, TASTER_I18N, LANG_LABEL } from './seo/hubs-intl.mjs';
 // One list, so another language is a file plus a spread rather than a rewrite.
 // Two shapes live in here side by side and both are intentional:
@@ -101,7 +102,7 @@ import { HUBS_INTL, TASTER_I18N, LANG_LABEL } from './seo/hubs-intl.mjs';
 //     United/id, and more to come) — the multi-language cluster, which holds
 //     the club constant so differences between pages are attributable to the
 //     MARKET rather than the badge.
-const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT, ...CLUBS_TR, ...CLUBS_ID, ...CLUBS_IT, ...CLUBS_DE, ...CLUBS_FR];
+const CLUBS_INTL = [...CLUBS_ES, ...CLUBS_PT, ...CLUBS_TR, ...CLUBS_ID, ...CLUBS_IT, ...CLUBS_DE, ...CLUBS_FR, ...CLUBS_NL];
 import { PLAYERS } from './seo/players.mjs';
 import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
