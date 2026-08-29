@@ -46,6 +46,19 @@ const RETRY_CONFIG = {
   leave_room:       { attempts: 3, backoffMs: [500, 1500, 3000] },
   // Lobby-only host action (Race/Hot Streak). Idempotent — patient retry.
   set_room_mode:    { attempts: 3, backoffMs: [500, 1500, 3000] },
+  // ⚠️ The three below were MISSING until 2026-08-29 — withRetry threw at
+  // call time for every player, which the busy-flag in toggleReady then
+  // turned into a permanently dead button (caught in Alex's live device
+  // test: zero set_player_ready requests ever reached the server). A
+  // wrapper without a config entry is a feature that has never worked.
+  // Idempotent — sets an absolute value. Patient retry.
+  set_player_ready: { attempts: 3, backoffMs: [500, 1500, 3000] },
+  // Effectively idempotent — a second call after reset returns
+  // reason:'not_ended' and realtime carries the true state. Patient.
+  start_next_round: { attempts: 3, backoffMs: [500, 1500, 3000] },
+  // Serialised server-side (FOR UPDATE + stamped code); every tap after the
+  // first reads the stamp and joins, so retries are safe. Patient.
+  claim_rematch:    { attempts: 3, backoffMs: [500, 1500, 3000] },
 }
 
 // ±20% jitter on each backoff to prevent thundering-herd when many
@@ -112,10 +125,15 @@ export function useMpRetryStatus() {
 // ─── Core retry runner ───────────────────────────────────────────────
 
 async function withRetry(rpcName, rpcArgs) {
-  const config = RETRY_CONFIG[rpcName]
+  let config = RETRY_CONFIG[rpcName]
   if (!config) {
-    // Defensive — should never hit production. Throw at call time.
-    throw new Error(`[multiplayerRpc] no retry config for RPC ${rpcName}`)
+    // "Should never hit production" hit production: three wrappers shipped
+    // without entries and this throw made each of them a button that does
+    // nothing, forever, with no error UI. A missing entry is a POLICY gap,
+    // not a reason to fail the player's tap — degrade to a single attempt,
+    // and let Sentry + the unit gate flag the omission.
+    Sentry.captureException(new Error(`[multiplayerRpc] no retry config for RPC ${rpcName}`), { tags: { rpc: rpcName } })
+    config = { attempts: 1, backoffMs: [] }
   }
 
   let lastErr = null

@@ -1176,12 +1176,21 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
     setReadyBusy(true);
     setNextError("");
     haptic("soft");
-    const res = await mpSetPlayerReady({ p_code: room?.code, p_ready: !iAmReady });
-    if (res?.error) {
-      console.warn('[toggleReady]', res.error);
+    // try/finally, not politeness: a throw between the busy-set and the
+    // busy-clear wedges the button into a silent no-op forever — exactly
+    // how the missing retry-config entry presented on device (2026-08-29).
+    try {
+      const res = await mpSetPlayerReady({ p_code: room?.code, p_ready: !iAmReady });
+      if (res?.error) {
+        console.warn('[toggleReady]', res.error);
+        setNextError("Couldn't update — check your connection.");
+      }
+    } catch (e) {
+      console.warn('[toggleReady]', e);
       setNextError("Couldn't update — check your connection.");
+    } finally {
+      setReadyBusy(false);
     }
-    setReadyBusy(false);
   };
 
   const startNextRound = async () => {
@@ -1203,7 +1212,15 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
       setNextBusy(false);
       return;
     }
-    const res = await mpStartNextRound({ p_code: room?.code, p_questions: questions });
+    let res;
+    try {
+      res = await mpStartNextRound({ p_code: room?.code, p_questions: questions });
+    } catch (e) {
+      console.warn('[startNextRound]', e);
+      setNextError("Couldn't start the next round — try again.");
+      setNextBusy(false);
+      return;
+    }
     if (res?.started) {
       // No navigation here on purpose: the room flips to 'playing' and the
       // game_rooms subscription moves EVERY device, including this one, down
