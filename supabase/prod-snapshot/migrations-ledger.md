@@ -106,3 +106,19 @@ Refresh the snapshot after applying.
   player_1437af8f with is_anon=true; cleanup_stale_anon_users() was INVOKED
   and returned 0 with 205 real accounts present, proving the guard. Test
   account deleted; back to 205/205 with 0 anonymous.
+
+- **v1_9_challenge_result_notification** (2026-08-29, via MCP apply_migration,
+  Alex approved "apply it") — challenge_events.sender_id uuid;
+  record_challenge_event DROPPED (5-arg) and recreated as 6-arg with
+  p_sender uuid default null [grant anon+authenticated, revoke public]. On a
+  real 'played' with a valid, distinct, existing p_sender it inserts a
+  notifications row type='challenge_result' (head-to-head body), which the
+  existing send-push/send-web-push triggers deliver — their default case
+  reads payload.body, no edge redeploy needed. Dedupe: one per
+  (challenger, date, responder) via a 48h payload lookback; anon responders
+  collapse to one/day. Client half (share links carry ?f=<uuid>, api/c.js
+  forwards it, three RPC sites pass p_sender) shipped in repo commit 184362c
+  AFTER the migration — ship order mattered, the 6-arg call 404s against the
+  old function. ⚠️ The repo migration FILE could not be written this session
+  (tooling permission); prod + this ledger entry are the source of truth
+  until the file lands. Verified single overload + grants post-apply.
