@@ -74,6 +74,19 @@ it. And compare answers by normalised containment, not string equality, or
 "Lewandowski" → "Robert Lewandowski" reads as a changed answer and bins a
 still-accurate hint.
 
+## The long-answer tell (gated 2026-08-29)
+
+Alex, mid-MP-game: *"almost always the drastically longer answer option is
+right which is a real defect."* Measured: longest-option-is-correct ran 42.4%
+across 6,823 MCQs (chance ≈ 25-30%), with 21 DRASTIC cases (correct ≥1.6× the
+longest distractor and ≥20 chars longer) — answerable with zero football
+knowledge. Those were rebalanced by PADDING DISTRACTORS with parallel
+plausible-but-wrong detail; the correct answer's text is never changed (hints
+and SEO reference it). `tests/unit/answer-length-tell.test.js` fails the build
+on any new drastic case. **When generating questions, write the four options
+to comparable length** — if the true answer needs a clause of detail, give
+every distractor a clause of (wrong) detail too.
+
 ## Standards
 
 - **Hints:** the SEO generator throws rather than emit a page for any category/club with fewer than `MIN_HINTS` (15) hint-bearing MCQs. Adding a club without hints breaks the build, by design.
