@@ -30,6 +30,7 @@ import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { FOOTLE_SHORT } from './lib/modeCopy.js';
 import { APP_NAME, LEVELS, getLevelInfo, computeBadges } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate, msToNextLocalMidnight, formatCountdown } from './lib/date.js';
+import { bumpUsage } from './lib/usageCounters.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
@@ -5285,6 +5286,8 @@ function StumpScreen({ row, onPlayFull, onHome }) {
 // is already re-reading the questions they got wrong, and every MCQ mode — daily,
 // classic, club, league, survival, hot streak — ends up on this one component.
 function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
+  // Usage counter INSIDE the guard: an empty review isn't a stats view.
+  useEffect(() => { if (wrongAnswers?.length) bumpUsage('review-viewed'); }, []);
   if (!wrongAnswers || wrongAnswers.length === 0) return null;
   return (
     <div style={{marginTop:24}}>
@@ -9251,6 +9254,8 @@ function AppInner() {
     try { return localStorage.getItem("biq_onboarded") === "1"; } catch { return true; }
   });
   const [tab, setTab] = useState("home");
+  // 4th usage counter: opening the Profile tab is the stats-appetite signal.
+  useEffect(() => { if (tab === 'profile') bumpUsage('stats-view'); }, [tab]);
   const [profile, setProfileState] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_profile");
@@ -9579,6 +9584,7 @@ function AppInner() {
         else if (prevLastDay === todayNum - 2 && prevStreak > 0 && shieldsAvail > 0) {
           newStreak = prevStreak + 1;
           shieldSaved = true;
+          bumpUsage('shield-saved');
         } else newStreak = 1;
         // Un-shielded break: stash the fallen streak for same-day repair,
         // mirroring the RPC (see v1_6_streak_repair.sql + the floor-2 follow-up).
@@ -13900,7 +13906,7 @@ function AppInner() {
               // so the recipient gets the head-to-head compare flow.
               ? shareDaily()
               : shareScore(result?.score, result?.total, mode, { streak: result?.bestStreak, club: activeClub, league: activeLeague }))}
-            onRetry={() => startMode(mode)}
+            onRetry={() => { bumpUsage('retry'); startMode(mode); }}
             // Daily results primary CTA: same navigation the Daily tab uses.
             onPlayFootle={() => setScreen("wordle")}
           />
