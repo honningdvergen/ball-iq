@@ -19,7 +19,11 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       lobby facelift (open-seat invite, HOST chip)
 - [x] Monetization phase 1: local usage counters accruing (4 signals)
 - [x] Bank: Club Brugge self-answering q deleted; era sweep done yesterday
-- [ ] Alex: device-test 1.7.1 (105), upload both stores when happy
+- [x] MP 2-device test PASSED on device: native mp:race row (first ever),
+      ready-up persisted, 10/10 clean advances
+- [x] Long-answer tell: 42.4% measured, 21 drastic giveaways rebalanced,
+      build gate added (Alex caught it live mid-game)
+- [ ] Alex: upload 1.7.1 — iOS build 106 / Android vc45 (NOT 103/104/105)
 - [ ] Alex: Bulgarian editorial call (q_b312e9)
 - [ ] Next builds: guest reachability design, FAQ store-first copy pass
       (drafts/nations prose), entitlements migration (needs "apply it"),
