@@ -642,8 +642,8 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
         {/* Player list */}
         <div style={{ marginBottom: 24 }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 8 }}>
-            <div style={{ fontSize: 11, color: "var(--t2)", letterSpacing: 0.4, textTransform: "uppercase" }}>Players</div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{players.length} / {room.capacity}</div>
+            <div className="ds-eyebrow">Players</div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: players.length >= 2 ? "var(--accent)" : "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{players.length} / {room.capacity}</div>
           </div>
           {players.length === 0 ? (
             <div style={{ padding: "20px", textAlign: "center", color: "var(--t2)", fontSize: 13 }}>
@@ -661,10 +661,26 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                   <div style={{ flex: 1, fontSize: 15, fontWeight: 600, color: "var(--text)" }}>
                     {p.name}
                     {isMe(p) && <span style={{ fontSize: 11, color: "var(--t3)", fontWeight: 500, marginLeft: 6 }}>(you)</span>}
-                    {p.user_id === room.host_id && <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600, marginLeft: 6 }} aria-label="Host">HOST</span>}
+                    {p.user_id === room.host_id && <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", color: "var(--accent)", background: "rgba(88,204,2,0.12)", border: "1px solid rgba(88,204,2,0.3)", borderRadius: 999, padding: "2px 8px", marginLeft: 8, verticalAlign: "middle" }} aria-label="Host">HOST</span>}
                   </div>
                 </div>
               ))}
+              {/* Facelift 2026-08-29 (Alex: "give the lobby a facelift, make
+                  it more modern looking"): an open seat is the lobby's whole
+                  job — render ONE as a dashed ghost row that shares the
+                  invite, instead of leaving the capacity implicit. */}
+              {players.length < room.capacity && (
+                <button
+                  type="button"
+                  onClick={onShareInvite}
+                  style={{ display: "flex", alignItems: "center", gap: 12, background: "transparent", border: "1.5px dashed var(--border2)", borderRadius: 12, padding: "10px 14px", width: "100%", cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}
+                >
+                  <span aria-hidden="true" style={{ width: 30, height: 30, borderRadius: "50%", border: "1.5px dashed var(--border2)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--t3)", fontSize: 16, flexShrink: 0 }}>+</span>
+                  <span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--t3)" }}>
+                    Open seat — invite a friend
+                  </span>
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -709,10 +725,12 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
 
         {/* Scoring mode — shown to EVERYONE (room.mode broadcasts) so joiners
             know what they're playing before the host hits Start. */}
-        <div style={{ textAlign: "center", fontSize: 13, color: "var(--t2)", marginBottom: 16 }}>
-          {activeMode === "survival"
-            ? "💀 Survival — one wrong answer and you're out"
-            : "🏁 Race — fastest correct answers win"}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", padding: "7px 14px", borderRadius: 999, background: "var(--s1)", border: "1px solid var(--border)", fontSize: 12.5, fontWeight: 700, color: "var(--t2)" }}>
+            {activeMode === "survival"
+              ? "💀 Survival — one wrong answer and you're out"
+              : "🏁 Race — fastest correct answers win"}
+          </span>
         </div>
 
         {/* Host-only TOPIC card (design handoff lobby.dc.html) — Change opens
