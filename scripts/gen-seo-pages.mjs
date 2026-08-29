@@ -1718,7 +1718,10 @@ ${ADS_ACTIVE ? `<script>
   .brand{display:inline-flex;align-items:center;min-height:44px;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.02em;color:#fff}
   .brand:hover{text-decoration:none}
   .brand img{width:32px;height:32px;border-radius:8px}
-  .brand b{color:var(--amber);font-weight:900}
+  /* Lockup unification (critique #5, 2026-08-29): the homepage's identity is
+     the GREEN IQ; the SEO template's gold one made a visitor crossing between
+     them change sites. Colors only — layout untouched. */
+  .brand b{color:var(--grn);font-weight:900}
   /* Groups CENTERED in the bar, CTAs hard right. Two auto margins — one before
      the first group, one before the play button — split the free space evenly,
      which centres the group cluster without taking it out of flow or needing a
