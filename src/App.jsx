@@ -9162,9 +9162,15 @@ function AppInner() {
         // recipients on the MARKETING home after a refresh (main.jsx renders
         // marketing when path === "/"). Only our own param is stripped,
         // mirroring the ?club=/?quiz= capture. (fresh-code audit)
-        try { const u = new URL(window.location.href); u.searchParams.delete("c"); window.history.replaceState({}, "", u.pathname + u.search + u.hash); } catch {}
+        let fromId = null;
+        try {
+          const fRaw = new URLSearchParams(window.location.search).get("f");
+          if (fRaw && /^[0-9a-f-]{36}$/i.test(fRaw)) fromId = fRaw;
+        } catch {}
+        try { const u = new URL(window.location.href); u.searchParams.delete("c"); u.searchParams.delete("f"); window.history.replaceState({}, "", u.pathname + u.search + u.hash); } catch {}
         const challenge = parseChallengeStr(raw);
         if (challenge) {
+          if (fromId) challenge.from = fromId;
           try { localStorage.setItem("biq_pending_challenge", JSON.stringify(challenge)); } catch {}
           return challenge;
         }
@@ -9225,6 +9231,8 @@ function AppInner() {
         if (cm) {
           const ch = parseChallengeStr(cm[1]);
           if (ch) {
+            const fRaw = u.searchParams.get('f');
+            if (fRaw && /^[0-9a-f-]{36}$/i.test(fRaw)) ch.from = fRaw;
             try { localStorage.setItem('biq_pending_challenge', JSON.stringify(ch)); } catch {}
             setPendingChallenge(ch);
           }
@@ -9951,6 +9959,7 @@ function AppInner() {
       supabase.rpc("record_challenge_event", {
         p_event: "open", p_date: pendingChallenge.date,
         p_score: pendingChallenge.score, p_name: pendingChallenge.name || null,
+        p_sender: pendingChallenge.from || null,
       }).then(({ error }) => { if (error) console.warn("[challenge open]", error.message); });
     }
     const age = challengeDayOffset(pendingChallenge.date);
@@ -9971,6 +9980,7 @@ function AppInner() {
           p_event: "played", p_date: pendingChallenge.date,
           p_score: pendingChallenge.score, p_name: pendingChallenge.name || null,
           p_my_score: dailyScore,
+          p_sender: pendingChallenge.from || null,
         }).then(({ error }) => { if (error) console.warn("[challenge played]", error.message); });
       }
       clearChallenge();
@@ -11801,6 +11811,7 @@ function AppInner() {
               p_event: "played", p_date: pendingChallenge.date,
               p_score: pendingChallenge.score, p_name: pendingChallenge.name || null,
               p_my_score: res.score,
+              p_sender: pendingChallenge.from || null,
             }).then(({ error }) => { if (error) console.warn("[challenge played]", error.message); });
           }
           celebrationTimeoutsRef.current.push(setTimeout(() => setChallengeResult(payload), 1800));
@@ -12573,7 +12584,7 @@ function AppInner() {
     // Daily 7 and gets a head-to-head compare after they finish. Format:
     // balliq.app/?c=SCORE.YYYYMMDD[.Name]
     const ymd = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; })();
-    const challengeUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}`;
+    const challengeUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}${user?.id ? `?f=${user.id}` : ""}`;
     const text = [
       `⚽ ${APP_NAME} Daily 7`,
       `📅 ${dateStr}`,

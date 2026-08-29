@@ -62,8 +62,13 @@ export default function handler(req) {
   // dots (unreserved) — so a dotted name like "J.Doe" would reach the app's
   // dot-splitting parser corrupted. Rebuild with the sharer's own encoding
   // (dots in names ride as %2E), keeping even old cached clients correct.
+  // ?f=<uuid> is the challenger's id (2026-08-29) — it closes the loop by
+  // letting the friend's play notify the challenger. Forwarded only if it
+  // looks like a uuid; anything else is dropped rather than reflected.
+  const fRaw = (url.searchParams.get('f') || '').trim();
+  const fQ = /^[0-9a-f-]{36}$/i.test(fRaw) ? `&f=${fRaw}` : '';
   const appUrl = valid
-    ? `${origin}/play?c=${m[1]}.${m[2]}${name ? '.' + encodeURIComponent(name).replace(/\./g, '%2E') : ''}`
+    ? `${origin}/play?c=${m[1]}.${m[2]}${name ? '.' + encodeURIComponent(name).replace(/\./g, '%2E') : ''}${fQ}`
     : `${origin}/play`;
 
   const html = `<!DOCTYPE html>
