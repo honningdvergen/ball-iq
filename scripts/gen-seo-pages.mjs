@@ -627,7 +627,7 @@ function appCtaBand(name) {
 <h2>Think you know ${esc(name)}? Prove it.</h2>
 <p>Streaks, live 1v1, your own Ball IQ score — and every quiz in one place.</p>
 <a class="appband-play" href="${SITE.base}/play">Play free in your browser →</a>
-<p class="appband-or">No account, nothing to install. Or get it on your phone:</p>
+<p class="appband-or">Free either way — in your browser right now, or on your phone:</p>
 ${storeBadges()}
 </div>
 </div></section>`;

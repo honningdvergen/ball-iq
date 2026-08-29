@@ -91,6 +91,8 @@ const CSS = `
          padding:12px var(--sp3);border:1px solid var(--bd3);border-radius:var(--rc);color:var(--tx);
          font:var(--ty-sec);font-weight:700;
          transition:background-color .15s var(--ease)}
+.fb-real.fb-primary{background:#58CC02;border-color:#58CC02;color:#06230C}
+@media (hover:hover){.fb-real.fb-primary:hover{background:#4CB102}}
 @media (hover:hover){.fb-real:hover{background:var(--card)}}
 
 .fb-clock{margin-top:var(--sp4);padding-top:var(--sp3);border-top:1px solid var(--bd)}
@@ -255,7 +257,7 @@ export default function FootleBand() {
         {/* Two doors, one band: the sub already introduced the Daily 7, so
             its door lives beside Footle's rather than in a section of its own. */}
         <div style={{ display: 'flex', gap: 'var(--sp1)', flexWrap: 'wrap' }}>
-          <a className="fb-real" href="/footle">Play today’s Footle</a>
+          <a className="fb-real fb-primary" href="/footle">Play today’s Footle</a>
           <a className="fb-real" href="/play?game=daily">Play the Daily 7</a>
         </div>
         </div>

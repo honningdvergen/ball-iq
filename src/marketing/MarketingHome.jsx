@@ -943,7 +943,7 @@ const MODES = [
 ];
 
 const FAQS = [
-  { q: 'Is Ball IQ free?', a: 'Yes — 100% free, and the app shows no ads. Guests can jump straight into solo and local games, no account needed.' },
+  { q: 'Is Ball IQ free?', a: 'Yes — 100% free with no ads, in your browser and in the apps. Guests can jump straight into solo and local games, no account needed.' },
   { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online with up to 8 friends, save your streak, and build your profile card and leaderboard rank.' },
   { q: "What's Footle?", a: "Our daily Wordle-style game: guess the name a footballer goes by in six tries. A fresh one drops every day." },
   { q: 'Can I play with friends?', a: 'Absolutely — race friends in real time online, or pass-and-play locally on a single device.' },

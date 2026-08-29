@@ -56,7 +56,7 @@ export const P3_CATEGORIES = [
       { q: 'Who is considered the greatest footballer of all time?', a: 'It’s the sport’s eternal debate — Pelé (three World Cups), Diego Maradona (1986), and Lionel Messi are the names most often cited, with Johan Cruyff and Alfredo Di Stéfano close behind.' },
       { q: 'What was the “Hand of God”?', a: 'Diego Maradona’s handballed goal against England in the 1986 World Cup quarter-final. Four minutes later he scored the “Goal of the Century” — solo from the halfway line — in the same match.' },
       { q: 'Which club did Johan Cruyff define?', a: 'Both Ajax and Barcelona. He starred in Ajax’s “Total Football” European Cup era, then as Barcelona’s manager built the passing philosophy that shaped Pep Guardiola and the modern club.' },
-      { q: 'Is the Legends quiz free to play?', a: 'Yes — the sample is free in your browser, and the full bank is in the Ball IQ app.' },
+      { q: 'Is the Legends quiz free to play?', a: 'Yes — the sample is free in your browser, and the full bank is free too — in your browser at balliq.app/play or in the app.' },
     ],
   },
 
@@ -74,7 +74,7 @@ export const P3_CATEGORIES = [
       `Great teams are built in the dugout, and this free quiz is all about the managers who shaped the game. Sir Alex Ferguson's 26 years and 13 league titles at Manchester United. Arsène Wenger's Invincibles. José Mourinho announcing himself as "the Special One" after winning the 2004 Champions League with Porto. The tacticians, motivators and dynasty-builders whose names became shorthand for an era.`,
       `It spans the philosophies as much as the trophies. Pep Guardiola's tiki-taka treble at Barcelona and his record-breaking Manchester City. Carlo Ancelotti collecting Champions League titles like no manager before him. Jürgen Klopp's heavy-metal football. And the older masters — Brian Clough taking unfashionable Nottingham Forest to back-to-back European Cups, Arrigo Sacchi's AC Milan, Rinus Michels and Total Football.`,
       `The questions range from the famous — who managed England as its first foreign coach, who succeeded Ferguson at United — to the deep cuts about specific title wins, club tenures and tactical firsts. It's a category for fans who watch the touchline as closely as the pitch.`,
-      `Each answer comes with the context behind it, so you finish knowing the story, not just the name. Play the free sample below, then the full Managers bank in the Ball IQ app.`,
+      `Each answer comes with the context behind it, so you finish knowing the story, not just the name. Play the free sample below, then the full Managers bank — free in your browser at balliq.app/play or in the Ball IQ app.`,
     ],
     faq: [
       { q: 'Which manager has won the most Champions League titles?', a: 'Carlo Ancelotti, with five European Cup / Champions League titles as a manager — more than any other, across spells at AC Milan and Real Madrid.' },
@@ -98,13 +98,13 @@ export const P3_CATEGORIES = [
       `Spanish football has given the game some of its greatest teams, players and rivalries, and this free La Liga quiz covers all of it. Real Madrid and Barcelona — the two superpowers whose Clásico is the biggest club fixture in world football — plus Atlético Madrid, Valencia, Sevilla and the upsets that broke the duopoly.`,
       `Messi runs through it: his record 474 La Liga goals, the Pichichi awards, and the Barcelona side that played the most admired football of its generation under Pep Guardiola, winning the treble in 2009. On the other side, Real Madrid's record 36 league titles, the Galácticos, and the Cristiano Ronaldo era. The quiz also remembers the romance — Deportivo La Coruña's stunning title in 2000, Valencia's two crowns in three seasons, Atlético breaking through under Diego Simeone.`,
       `Questions cover champions and top scorers, famous Clásicos, managers and the moments that defined seasons — from the obvious (which club has won La Liga most) to the hard ones about specific title races and record transfers. Difficulty builds from easy to deep so every level of fan gets tested.`,
-      `As always, each answer carries a short explanation, so a miss still teaches you something. Try the free sample below, then play the full La Liga bank in the Ball IQ app.`,
+      `As always, each answer carries a short explanation, so a miss still teaches you something. Try the free sample below, then play the full La Liga bank — free in your browser at balliq.app/play or in the Ball IQ app.`,
     ],
     faq: [
       { q: 'Which club has won La Liga the most times?', a: 'Real Madrid, with 36 titles — ahead of Barcelona. The two have dominated the competition throughout its history.' },
       { q: 'Who is La Liga’s all-time top scorer?', a: 'Lionel Messi, with 474 goals for Barcelona — comfortably the record, ahead of Cristiano Ronaldo’s 311 for Real Madrid.' },
       { q: 'What is El Clásico?', a: 'The match between Real Madrid and Barcelona — the most-watched club game in the world, loaded with a century of sporting, political and cultural rivalry.' },
-      { q: 'Is the La Liga quiz free?', a: 'Yes — the sample is free in your browser, and the full bank is in the Ball IQ app.' },
+      { q: 'Is the La Liga quiz free?', a: 'Yes — the sample is free in your browser, and the full bank is free too — in your browser at balliq.app/play or in the app.' },
     ],
   },
 
@@ -122,7 +122,7 @@ export const P3_CATEGORIES = [
       `Italian football has long been the home of tactical mastery and great defending, and this free Serie A quiz spans its drama and dynasties. Juventus's nine consecutive titles from 2012 to 2020, Inter ending that run in 2021, the two Milan giants, Roma and Lazio — and Napoli, where Diego Maradona became a god in the late 1980s and where the Scudetto finally returned in 2023.`,
       `It covers the eras that made the league. The great AC Milan side of Arrigo Sacchi and then Fabio Capello, unbeaten and untouchable. The defenders Italy produced — Paolo Maldini, Franco Baresi, Alessandro Nesta, Fabio Cannavaro winning the Ballon d'Or. The Calciopoli scandal of 2006 that sent Juventus down. And the modern title races that brought the Scudetto back to Milan and to Naples.`,
       `Questions take in champions and managers, famous transfers and the moments that decided seasons — from easy openers about recent winners to hard ones about specific years, scandals and squads. It rewards anyone who's followed Calcio across the decades.`,
-      `Every answer comes with a short explanation, so the quiz teaches as it tests. Play the free sample below, then the full Serie A bank in the Ball IQ app.`,
+      `Every answer comes with a short explanation, so the quiz teaches as it tests. Play the free sample below, then the full Serie A bank — free in your browser at balliq.app/play or in the Ball IQ app.`,
     ],
     faq: [
       { q: 'Which club has won Serie A the most times?', a: 'Juventus, by a distance — including nine consecutive titles from 2011-12 to 2019-20, the longest unbroken run of league dominance in Italian football.' },
@@ -152,7 +152,7 @@ export const P3_CATEGORIES = [
       { q: 'Which club has won the most Bundesliga titles?', a: 'Bayern Munich, by a huge margin — including a record 11 consecutive titles from 2012-13 to 2022-23.' },
       { q: 'Who broke Gerd Müller’s single-season scoring record?', a: 'Robert Lewandowski, who scored 41 Bundesliga goals in 2020-21 — beating Müller’s 40, a record that had stood since 1971-72.' },
       { q: 'What is the “Yellow Wall”?', a: 'Borussia Dortmund’s south terrace (Südtribüne) at Signal Iduna Park — the largest standing terrace in European football, holding around 25,000 fans.' },
-      { q: 'Is the Bundesliga quiz free?', a: 'Yes — the sample is free in your browser, and the full bank is in the Ball IQ app.' },
+      { q: 'Is the Bundesliga quiz free?', a: 'Yes — the sample is free in your browser, and the full bank is free too — in your browser at balliq.app/play or in the app.' },
     ],
   },
 
@@ -170,7 +170,7 @@ export const P3_CATEGORIES = [
       `The European Championship is the World Cup's fiercest rival for prestige, and this free Euros quiz runs the length of its history — from the first tournament in 1960, won by the Soviet Union, to Spain's record-extending fourth title in Germany in 2024.`,
       `It's a competition that loves an underdog. Denmark's 1992 fairytale, called up from their holidays to replace banned Yugoslavia and winning the whole thing. Greece's astonishing defensive triumph in 2004. And it has its share of giants too — Spain's golden generation winning back-to-back in 2008 and 2012, Portugal finally landing a trophy in 2016, and Italy's penalty-shootout win at Wembley in 2021. The quiz also remembers the quirks: the golden goal that settled Euro 1996 and Euro 2000, the co-hosted tournaments, and Lamine Yamal lighting up 2024 as a teenager.`,
       `Questions cover hosts, winners, top scorers and famous knockouts — from easy openers (who won Euro 2024?) to hard ones about specific finals, formats and the trophy itself. Difficulty builds so every fan gets a proper test.`,
-      `Each answer comes with a short explanation, so a miss still teaches you something. Play the free sample below, then the full Euros bank in the Ball IQ app.`,
+      `Each answer comes with a short explanation, so a miss still teaches you something. Play the free sample below, then the full Euros bank — free in your browser at balliq.app/play or in the Ball IQ app.`,
     ],
     faq: [
       { q: 'Which country has won the most Euros?', a: 'Spain, with four titles (1964, 2008, 2012 and 2024) — now the outright record holder ahead of Germany’s three.' },
@@ -276,7 +276,7 @@ export const P3_CATEGORIES = [
       },
       {
         "q": "Is the Primeira Liga quiz free?",
-        "a": "Yes — the sample is free in your browser, and the full bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample is free in your browser, and the full bank is free too — in your browser at balliq.app/play or in the app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Primeira Liga quiz?",

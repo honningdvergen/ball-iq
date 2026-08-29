@@ -35,13 +35,19 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 import { CLUB_HEADING, CLUB_INDEX } from './clubIndex.js';
 import FootleBand from './FootleBand.jsx';
 
+// OS-matched store badges (critique #3): an iPhone shown a Google Play button
+// is friction with zero payoff. Desktop (neither) keeps the pair.
+const _UA = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+const IS_IOS = /iPhone|iPad|iPod/.test(_UA);
+const IS_ANDROID = /Android/.test(_UA);
+
 const PLAY = '/play';
 
 // The five FAQs, copy identical to MarketingHome's CORRECTED set (Android
 // live since 2026-07-30; no question counts). One array feeds both the
 // rendered section and the FAQPage JSON-LD, so they cannot diverge.
 const FAQS = [
-  { q: 'Is Ball IQ free?', a: 'Yes — 100% free, and the app shows no ads. Guests can jump straight into solo and local games, no account needed.' },
+  { q: 'Is Ball IQ free?', a: 'Yes — 100% free with no ads, in your browser and in the apps. Guests can jump straight into solo and local games, no account needed.' },
   { q: 'Do I need an account?', a: 'No. Play as a guest, or sign up to play online with up to 8 friends, save your streak, and build your profile card and leaderboard rank.' },
   { q: "What's Footle?", a: "Our daily Wordle-style game: guess the name a footballer goes by in six tries. A fresh one drops every day." },
   { q: 'Can I play with friends?', a: 'Absolutely — race friends in real time online, or pass-and-play locally on a single device.' },
@@ -171,6 +177,8 @@ const CSS = `
   .sr-grp{flex:1 1 auto}
   .sr-drop{left:0;right:0;min-width:0}
 }
+.sr a.sr-webbtn{display:flex;justify-content:center;width:100%;margin-top:10px}
+.sr-footwhy{font-size:12.5px;opacity:.75;margin:4px 0 2px}
 .sr a.sr-play{display:inline-flex;align-items:center;min-height:44px;padding:10px var(--sp3);
          background:var(--grn);color:var(--grn-ink);font:var(--ty-sec);font-weight:700;
          border:1px solid var(--grn);border-radius:var(--rc);transition:opacity .15s var(--ease)}
@@ -478,7 +486,10 @@ export default function ScoutingReport() {
             </div>
           ))}
         </nav>
-        <a className="sr-play" href={PLAY}>Play free</a>
+        {/* Critique #4 (2026-08-29): after the verdict is filed the earned
+            moment shouldn't live and die inside the card — the header CTA
+            graduates from acquisition to the retention offer. */}
+        <a className="sr-play" href={done ? '/get' : PLAY}>{done ? 'Get the app' : 'Play free'}</a>
       </header>
 
       {!done && (
@@ -554,13 +565,16 @@ export default function ScoutingReport() {
                   The app is also the only version that can nudge you when tomorrow&rsquo;s
                   puzzle drops.
                 </p>
+                {/* Critique #3: on a phone, show only the store this phone
+                    can use — the other badge is pure choice friction. Desktop
+                    keeps the pair. And the browser path gets a real control:
+                    it is the proven converter for cold traffic, and an inline
+                    text link was the weakest tap target on the screen. */}
                 <div className="sr-links">
-                  <a className="sr-a" href={appStoreUrl()}><AppleMark />App Store</a>
-                  <a className="sr-a" href={PLAY_STORE_URL}><PlayMark />Google Play</a>
+                  {!IS_ANDROID && <a className="sr-a" href={appStoreUrl()}><AppleMark />App Store</a>}
+                  {!IS_IOS && <a className="sr-a" href={PLAY_STORE_URL}><PlayMark />Google Play</a>}
                 </div>
-                <p className="sr-web">
-                  Or <a href={PLAY}>keep going in the browser</a> — same test, nothing to install
-                </p>
+                <a className="sr-a sr-webbtn" href={PLAY}>Keep going in the browser — free</a>
               </div>
             </div>
           )}
@@ -625,6 +639,7 @@ export default function ScoutingReport() {
 
       <footer className="sr-foot">
         <p>Ball IQ — an independent football quiz. Made by one person.</p>
+        <p className="sr-footwhy">Streaks, live 1v1 and the daily nudge live in the app.</p>
         <div className="sr-dist">
           <a className="sr-badge" href={appStoreUrl()}><AppleMark />App Store</a>
           <a className="sr-badge" href={PLAY_STORE_URL}><PlayMark />Google Play</a>

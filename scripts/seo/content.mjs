@@ -239,7 +239,7 @@ export const CATEGORIES = [
       // 'ChampionsLeague' cat. It claimed "every answer" until 2026-07-31.
       // Club and player packs ARE 100%, so their claims stay; category pages
       // must say "most". Re-measure before ever strengthening this back.
-      `Most answers come with the story behind them, so you finish the quiz knowing more than you started. Try the free sample below, then play the full Champions League bank in the Ball IQ app.`,
+      `Most answers come with the story behind them, so you finish the quiz knowing more than you started. Try the free sample below, then play the full Champions League bank — free in your browser at balliq.app/play or in the Ball IQ app.`,
     ],
     faq: [
       {

@@ -21,7 +21,7 @@ export const CLUBS = [
       "Arsenal were founded by munitions workers in Woolwich in 1886, crossed the river to Highbury in 1913, and have spent the century since turning north London into one of football's great addresses. This free Arsenal quiz covers the whole story — Herbert Chapman's pioneering side of the 1930s, George Graham's famous back four, Arsène Wenger's revolution and the Mikel Arteta team that are the reigning Premier League champions. Few clubs carry an identity this strong: the cannon on the crest, the marble halls, '1-0 to the Arsenal', the insistence on winning with a certain style. If you call it 'The Arsenal', this quiz is for you.",
       "The moments come thick and fast. Michael Thomas surging through at Anfield in 1989 to snatch the title from Liverpool with virtually the last kick of the season. The Invincibles of 2003-04 — Henry, Bergkamp, Vieira and Pires going all 38 league games unbeaten, the heart of a 49-match unbeaten run in the league. Thierry Henry's 228 goals, still the club record, and Ian Wright's celebrations before him. And now a new chapter: Arteta's side ending a 22-year wait by winning the 2025-26 Premier League with a game to spare — the club's 14th top-flight title — days before the heartbreak of losing the Champions League final to Paris Saint-Germain on penalties in Budapest.",
       "Expect questions on the transfers (which club Arsenal signed Henry from in 1999), the managers from Chapman to Graham to Wenger to Arteta, the record 14 FA Cups, and the cult heroes fans still sing about. You'll be asked who captained the Invincibles, who scored at Anfield in '89, and what happened in the 2006 Champions League final in Paris after Jens Lehmann saw red. Difficulty climbs from easy openers about famous champions and legendary No.14s to genuinely hard deep cuts about specific seasons, scorelines and squad players. Casual matchgoers and stat obsessives both get a proper test.",
-      "Every question comes with a short explained answer, so even when you miss one you pick up the detail that makes it stick — whether that's the year of the club's first Double or the story behind a famous chant. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Arsenal quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even when you miss one you pick up the detail that makes it stick — whether that's the year of the club's first Double or the story behind a famous chant. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Arsenal quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -34,7 +34,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Arsenal quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Arsenal question bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Arsenal question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Arsenal quiz?",
@@ -149,7 +149,7 @@ export const CLUBS = [
       "Tottenham Hotspur have chased glory their own stylish way since 1882 — this is the club of \"To Dare Is to Do\", of Danny Blanchflower's insistence that the game is about glory. This free Tottenham quiz covers the full sweep: from the 1901 FA Cup, when Spurs became the only non-League club to win it since the Football League was formed, to Bilbao in May 2025, when Brennan Johnson's goal against Manchester United ended a seventeen-year wait for a trophy. In between sit Arthur Rowe's push-and-run champions of 1951, the Glory Glory European nights at White Hart Lane, and the move into the vast new Tottenham Hotspur Stadium in 2019. If you know your Spurs, this is where you prove it.",
       "The defining moments are all in here. Bill Nicholson's 1960-61 side winning the League and FA Cup Double — the first English club to do it in the twentieth century — then beating Atlético Madrid 5-1 in 1963 to become the first British winners of a European trophy. Ricky Villa slaloming through Manchester City's defence in the 1981 FA Cup final replay. Paul Gascoigne's ferocious free-kick past David Seaman in the 1991 FA Cup semi-final against Arsenal at Wembley. Lucas Moura's second-half hat-trick in Amsterdam that sent Spurs to the 2019 Champions League final, and Son Heung-min lifting the Europa League as captain six years later.",
       "The questions range across transfers, records, managers and cult heroes. Easy ones first: who scored in Bilbao, which club Gareth Bale joined for a then-world-record fee in 2013, who holds the club's all-time scoring record. Then it gets harder — the two Argentinian World Cup winners who arrived together in 1978, Jürgen Klinsmann and the dive celebration of 1994, Jimmy Greaves' goals, David Ginola gliding down the left, and the chaotic 2025-26 season that ran through three head coaches before Roberto De Zerbi kept Spurs up on the final day. Difficulty is graded easy to hard, so you settle in before the deep cuts on specific finals, fees and managerial reigns.",
-      "Every question comes with a short explained answer — miss one and you still walk away with the story behind it, whether that's why the 1961 Double mattered so much or what actually happened in Bilbao. Play the sample set here for free, straight in your browser, no sign-up needed. When you want the full Tottenham Hotspur quiz — plus the daily challenge, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer — miss one and you still walk away with the story behind it, whether that's why the 1961 Double mattered so much or what actually happened in Bilbao. Play the sample set here for free, straight in your browser, no sign-up needed. When you want the full Tottenham Hotspur quiz — plus the daily challenge, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -162,7 +162,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Tottenham quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up. The full Tottenham Hotspur question bank is in the Ball IQ app, alongside daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up. The full Tottenham Hotspur question bank is free too — in your browser at balliq.app/play or in the Ball IQ app, alongside daily challenges and multiplayer."
       },
       {
         "q": "How hard are the questions?",
@@ -181,7 +181,7 @@ export const CLUBS = [
       "Chelsea have crammed more drama into the last twenty-five years than most clubs manage in a century — and this quiz covers all of it, plus the decades before. It runs from the club's founding at Stamford Bridge in 1905 and Ted Drake's 1955 title winners, through Roman Abramovich's 2003 takeover that rewrote English football's economics, to Cole Palmer dismantling Paris Saint-Germain in the 2025 Club World Cup final. In between, the Blues became the first club to win all five UEFA trophies — the 2025 Conference League, sealed 4-1 against Real Betis in Wrocław, completed a set that already held the Champions League, Europa League, Cup Winners' Cup and Super Cup. Restless, glamorous and never boring: that's the club, and that's the quiz.",
       "The defining moments are all here. Didier Drogba's 88th-minute header in Munich in 2012, then the winning penalty that beat Bayern on their own ground and delivered Chelsea's first Champions League. José Mourinho arriving in 2004 as 'the Special One' and winning back-to-back titles, the first with a record 95 points and Chelsea's first championship in fifty years. Frank Lampard's 211 goals — still the club's all-time scoring record, set by a midfielder signed from West Ham — alongside John Terry, Petr Čech and Gianfranco Zola. And the modern silverware: Kai Havertz's winner against Manchester City in the 2021 Champions League final in Porto, then Palmer's brace and an assist for João Pedro in the 3-0 demolition of PSG at MetLife Stadium.",
       "Expect questions on transfers, records, managers and cult heroes, graded easy to hard. Easy might be naming the venue of the 2012 final; hard is knowing which interim manager lifted that trophy, or who Chelsea beat in the 2021 Club World Cup final. The managerial churn gets its own seam of questions — Mourinho twice, Carlo Ancelotti's 2010 Double, Thomas Tuchel winning the Champions League within months of arriving, and now Xabi Alonso, who took charge on 1 July 2026. There are deep cuts too: the Dennis Wise era, Demba Ba pouncing on the Gerrard slip in 2014, and the academy graduates who broke through under Lampard.",
-      "Every question comes with a short explained answer, so a miss still teaches you the fact behind it — the year, the scorer, the story. Play the sample set below free in your browser, no sign-up needed. When you want the full Chelsea question bank, plus daily challenges and multiplayer, it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so a miss still teaches you the fact behind it — the year, the scorer, the story. Play the sample set below free in your browser, no sign-up needed. When you want the full Chelsea question bank, plus daily challenges and multiplayer, it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -277,7 +277,7 @@ export const CLUBS = [
       "No club in football carries more weight than Real Madrid: a record fifteen European Cups, a record 36 Spanish league titles, and a self-image built on winning the biggest games in white. This free Real Madrid quiz spans the whole story — from the club's founding in 1902 and the presidency of Santiago Bernabéu that turned it into Europe's first superpower, through Alfredo Di Stéfano's 1950s dynasty, all the way to Kylian Mbappé and the modern side. It covers the finals, the Galácticos, the Clásicos and the records that make Madrid the reference point for everyone else. If it happened at the Bernabéu, it's fair game.",
       "The legends come thick and fast. Di Stéfano's side won the first five European Cups from 1956 to 1960, capped by the 7-3 demolition of Eintracht Frankfurt at Hampden Park, where Ferenc Puskás scored four. Zinedine Zidane's left-foot volley won the 2002 final in Glasgow; twelve years later Sergio Ramos headed the 93rd-minute equaliser in Lisbon that rescued La Décima against Atlético Madrid. Zidane returned as manager to win three Champions Leagues in a row from 2016 to 2018, the last sealed by Gareth Bale's overhead kick in Kyiv. And the 2022 run might be the maddest of the lot — Rodrygo's two stoppage-time goals to break Manchester City, Thibaut Courtois defying Liverpool in the Paris final — before the fifteenth arrived at Wembley in 2024 against Borussia Dortmund.",
       "Expect questions on the transfers that shook football — Luís Figo crossing the divide from Barcelona in 2000, Zidane and Beckham completing the Galácticos, Gareth Bale's world-record move in 2013, Mbappé finally arriving on a free in 2024 — and on the records behind them, like Cristiano Ronaldo's 450 goals in just 438 games. The managers get their own questions too: Miguel Muñoz, the first man to win the European Cup as both player and coach; Carlo Ancelotti, who lifted it three times from the Madrid dugout; and José Mourinho, whose 100-point champions of 2011-12 broke Barcelona's grip — and who returns to the Bernabéu for 2026-27. There's room for the cult heroes as well, from Guti's no-look backheels to Juanito's never-say-die European nights. Difficulty is graded from easy openers about famous finals to deep cuts about exact minutes, shirt numbers and 1950s line-ups.",
-      "Every question comes with a short explained answer, so even a miss teaches you the fact behind it — the year, the scorer, the story. Play the sample set below free in your browser, no sign-up needed. When you want the full Real Madrid question bank — plus the daily challenge, leaderboards and live multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss teaches you the fact behind it — the year, the scorer, the story. Play the sample set below free in your browser, no sign-up needed. When you want the full Real Madrid question bank — plus the daily challenge, leaderboards and live multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -341,7 +341,7 @@ export const CLUBS = [
       "Bayern Munich are German football's great constant — the Rekordmeister, winners of a record 34 Bundesliga titles and six European Cups, a club whose 'Mia san mia' motto long ago hardened into an institutional attitude. This free Bayern Munich quiz spans the whole story, from the Franz Beckenbauer side that ruled Europe in the mid-1970s, through the FC Hollywood soap opera of the 1990s, to Vincent Kompany's current team, who swept the 2025-26 Bundesliga and DFB-Pokal double. Founded in 1900, Bayern have spent the last half-century as Europe's most reliable winner. If you know your Säbener Strasse from your Allianz Arena, this is your category.",
       "The legends do a lot of the asking. Gerd Müller, 'Der Bomber', whose 365 Bundesliga goals are still the league record; Sepp Maier and Beckenbauer, the spine of the team that won three straight European Cups in 1974, 1975 and 1976. Then the modern epics: Oliver Kahn's shoot-out heroics against Valencia in 2001, two years after the stoppage-time heartbreak against Manchester United at Camp Nou; Arjen Robben's 89th-minute winner against Dortmund at Wembley to seal the 2013 treble; Kingsley Coman heading past his boyhood club PSG to win the 2020 final in Lisbon, capping a campaign in which Hansi Flick's side won every competition they entered. And Robert Lewandowski's 41 goals in 2020-21, breaking a Müller record that had stood for half a century.",
       "Expect questions on transfers — Harry Kane's 2023 move from Tottenham, the deal that turned into three straight top-scorer crowns and, at last, silverware; on records, like the 11 consecutive titles from 2013 to 2023 or the 122 league goals Kompany's side plundered in 2025-26; and on the managers, from Udo Lattek and Jupp Heynckes to Pep Guardiola, Flick and Kompany himself. The cult heroes get their due too: Stefan Effenberg, the Robben-and-Ribéry 'Robbery' wing pairing, Thomas Müller and his Raumdeuter self-description. Difficulty climbs from easy — which stadium has Bayern called home since 2005? — to genuinely hard deep cuts about specific finals, fees and seasons.",
-      "Every question comes with a short explained answer — not just 'wrong, the answer was 1974' but why that final against Atlético Madrid needed a replay — so even a miss leaves you knowing more. The quiz doubles as a history lesson in the club everyone in Germany measures themselves against. Play the sample set here for free, no sign-up needed. When you want the lot — the full Bayern Munich bank, the daily challenge and multiplayer against your mates — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer — not just 'wrong, the answer was 1974' but why that final against Atlético Madrid needed a replay — so even a miss leaves you knowing more. The quiz doubles as a history lesson in the club everyone in Germany measures themselves against. Play the sample set here for free, no sign-up needed. When you want the lot — the full Bayern Munich bank, the daily challenge and multiplayer against your mates — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -610,7 +610,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Galatasaray quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Galatasaray question bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Galatasaray question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Galatasaray quiz?",
@@ -661,7 +661,7 @@ export const CLUBS = [
       "Fenerbahçe were founded in 1907 in Kadıköy, on the Asian shore of Istanbul, and have spent well over a century as one of the great institutions of Turkish football. This free Fenerbahçe quiz covers the whole arc — from the Ottoman-era beginnings under founders Ziya Songülen, Ayetullah Bey and Necip Okaner, through the club's dominance of the Istanbul league and the professional Süper Lig era that began in 1959, to the modern sides that keep chasing an elusive league title. Few clubs carry an identity this vivid: the yellow-and-navy of the Sarı-Lacivertliler, the roar of the Şükrü Saracoğlu, and the badge worn like a crest of the city's Anatolian side. They are the Sarı Kanaryalar — the Yellow Canaries. If you bleed sarı-lacivert, this quiz is for you.",
       "The defining moments come with dates worth knowing. On 30 October 1996 Elvir Bolić struck the only goal at Old Trafford to win 1-0 and end Manchester United's 40-year unbeaten run in European home matches. Under Zico in 2007-08 Fenerbahçe reached the club's first Champions League quarter-final, seeing off Sevilla on penalties before beating Chelsea 2-1 in Kadıköy on 2 April 2008 and going out only 3-2 on aggregate at Stamford Bridge. Then there are the legends: Zeki Rıza Sporel, the all-time top scorer with 470 goals; Lefter Küçükandonyadis, the 'Ordinaryüs' who scored over 420; and Alex de Souza, the beloved captain of 2004-2012 with 171 goals in 344 games. And always, the Intercontinental Derby with Galatasaray — a rivalry that spans two continents.",
       "Expect questions on the transfers, the managers, the iconic games and the club records. You'll be asked about the record-breaking Süper Lig fee paid for Youssef En-Nesyri from Sevilla in 2024, the managerial merry-go-round from Zico to José Mourinho and Domenico Tedesco, and the count of Süper Lig titles — 19 in the professional era, the last of them in 2013-14. There are cult heroes to name, derby scorelines to place, and European nights to date. Difficulty climbs from gentle openers about the Yellow Canaries and their most famous No.10 to genuinely hard deep cuts about specific seasons, line-ups and long-serving squad men, so casual matchgoers at Kadıköy and stat-hungry obsessives both get a proper test.",
-      "Every question comes with a short explained answer, so even a miss leaves you with the detail that makes it stick — why Bolić's goal mattered so much, or how the pre-1959 championships fold into the club's honours. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Fenerbahçe quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss leaves you with the detail that makes it stick — why Bolić's goal mattered so much, or how the pre-1959 championships fold into the club's honours. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Fenerbahçe quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -674,7 +674,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Fenerbahçe quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fenerbahçe question bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fenerbahçe question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Fenerbahçe quiz?",
@@ -693,7 +693,7 @@ export const CLUBS = [
       "Porto are the relentless engine of Portuguese football — founded in the northern port city in 1893, based since 2003 at the Estádio do Dragão, and crowned champions of Portugal more often than any other club. This free Porto quiz covers the whole story: the Fernando Gomes goal glut of the 1980s, the two European crowns, the five-in-a-row league dynasty of the 1990s, and the conveyor belt of South American talent bought cheap and sold on for fortunes. For a club from a country of barely ten million, Porto have punched at the very top of Europe for four decades, and they wear the nickname to match — Os Dragões, the Dragons, the fire-breathing beast on the crest. Their rivalry with Benfica and Sporting frames the domestic season, but Porto's real identity has always been European: cussed, well-drilled and forever ready to upset a bigger name. If you call them the Dragons, this quiz is for you.",
       "The defining nights are unforgettable. Vienna, 27 May 1987: a European Cup final against Bayern Munich slipping away at 1-0 down until Rabah Madjer flicked in an outrageous backheel on 77 minutes, then teed up Juary to win it 2-1 and land Porto's first continental crown. Gelsenkirchen, 26 May 2004: José Mourinho's young, fearless side dismantling Monaco 3-0 through Carlos Alberto, Deco and Dmitri Alenichev — the night the 'Special One' was born, a week before he left for Chelsea. Around those came more silverware: the 2003 UEFA Cup, won 3-2 after extra time against Celtic in Seville, and the 2011 Europa League, a 1-0 win over Braga in an all-Portuguese final in Dublin, Radamel Falcao heading the winner in André Villas-Boas's treble season. Add Fernando Gomes's club-record 352 goals and two European Golden Shoes, and the five straight titles from 1994-95 to 1998-99 — a first for any Portuguese club — and the history runs deep.",
       "Expect questions on the famous sell-on transfers — Deco to Barcelona in 2004, Falcao to Atlético Madrid for around €40 million in 2011, Hulk's big-money move to Zenit St Petersburg in 2012, James Rodríguez to Monaco for €45 million in 2013 — the model that turned the Dragão into Europe's smartest trading floor. The managers get their turn too, from Mourinho and Villas-Boas to Francesco Farioli, the debutant head coach who led Porto to a record 31st Primeira Liga title in 2025-26. You'll be asked about the iconic finals, the Intercontinental Cups of 1987 and 2004, the club's record league haul, and the cult heroes fans still sing about. Difficulty climbs from easy openers — who scored the 1987 backheel, which club Porto beat in the 2004 final — to genuinely hard deep cuts about specific scorelines, squad players and transfer fees. Casual fans and lifelong Super Dragões both get a proper test.",
-      "Every question comes with a short explained answer, so even when you miss one you pick up the detail that makes it stick — the exact minute of Madjer's backheel, or which club Porto sold a future Galáctico to. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Porto quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even when you miss one you pick up the detail that makes it stick — the exact minute of Madjer's backheel, or which club Porto sold a future Galáctico to. That's the Ball IQ way: the quiz teaches as it tests. Play the sample set below free in your browser, no sign-up needed. When you want the full Porto quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -706,7 +706,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Porto quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Porto question bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Porto question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Porto quiz?",
@@ -738,7 +738,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Roma quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Roma question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Roma question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Roma quiz?",
@@ -770,7 +770,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Celtic quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Celtic question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Celtic question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Celtic quiz?",
@@ -802,7 +802,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Rangers quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Rangers question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Rangers question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Rangers quiz?",
@@ -834,7 +834,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Marseille quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Marseille question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Marseille question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Marseille quiz?",
@@ -866,7 +866,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Feyenoord quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Feyenoord question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Feyenoord question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Feyenoord quiz?",
@@ -898,7 +898,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the PSV quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full PSV question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full PSV question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the PSV quiz?",
@@ -930,7 +930,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Anderlecht quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Anderlecht question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Anderlecht question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Anderlecht quiz?",
@@ -994,7 +994,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Trabzonspor quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Trabzonspor question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Trabzonspor question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Trabzonspor quiz?",
@@ -1026,7 +1026,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Club Brugge quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Club Brugge question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Club Brugge question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Club Brugge quiz?",
@@ -1058,7 +1058,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Red Star quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Red Star question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Red Star question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Red Star quiz?",
@@ -1090,7 +1090,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Dinamo Zagreb quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Dinamo Zagreb question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Dinamo Zagreb question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Dinamo Zagreb quiz?",
@@ -1122,7 +1122,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the FC Basel quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Basel question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Basel question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the FC Basel quiz?",
@@ -1154,7 +1154,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Nottingham Forest quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Forest question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Forest question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Nottingham Forest quiz?",
@@ -1186,7 +1186,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Aston Villa quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Villa question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Villa question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Aston Villa quiz?",
@@ -1218,7 +1218,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Everton quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Everton question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Everton question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Everton quiz?",
@@ -1250,7 +1250,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Leeds United quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Leeds question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Leeds question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Leeds United quiz?",
@@ -1282,7 +1282,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the West Ham quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full West Ham question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full West Ham question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the West Ham quiz?",
@@ -1314,7 +1314,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Athletic Bilbao quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Athletic question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Athletic question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Athletic Bilbao quiz?",
@@ -1346,7 +1346,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Sevilla quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sevilla question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sevilla question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Sevilla quiz?",
@@ -1378,7 +1378,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Real Betis quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Betis question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Betis question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Real Betis quiz?",
@@ -1410,7 +1410,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Schalke 04 quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Schalke question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Schalke question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Schalke 04 quiz?",
@@ -1442,7 +1442,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Hamburger SV quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full HSV question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full HSV question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Hamburger SV quiz?",
@@ -1474,7 +1474,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Fiorentina quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fiorentina question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fiorentina question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Fiorentina quiz?",
@@ -1506,7 +1506,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Lazio quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Lazio question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Lazio question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Lazio quiz?",
@@ -1538,7 +1538,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Torino quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Torino question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Torino question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Torino quiz?",
@@ -1570,7 +1570,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Sporting CP quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sporting question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sporting question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Sporting CP quiz?",
@@ -1602,7 +1602,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Saint-Étienne quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Saint-Étienne question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Saint-Étienne question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Saint-Étienne quiz?",
@@ -1634,7 +1634,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Sunderland quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sunderland question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Sunderland question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Sunderland quiz?",
@@ -1666,7 +1666,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Ipswich Town quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Ipswich Town question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Ipswich Town question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Ipswich Town quiz?",
@@ -1698,7 +1698,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Crystal Palace quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Crystal Palace question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Crystal Palace question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Crystal Palace quiz?",
@@ -1730,7 +1730,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Fulham quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fulham question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Fulham question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Fulham quiz?",
@@ -1762,7 +1762,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Brighton quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Brighton question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Brighton question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Brighton quiz?",
@@ -1781,7 +1781,7 @@ export const CLUBS = [
       "AFC Bournemouth began life in 1899 as Boscombe FC, took the name Bournemouth & Boscombe Athletic on joining the Football League in 1923, and have long been known simply as the Cherries. Few clubs wear their identity so plainly: red-and-black striped shirts modelled on AC Milan's, introduced in the early 1970s; a crest showing a player heading a football; and a home ground everyone still calls by its traditional name, Dean Court. This free Bournemouth quiz covers the whole story — the FA Cup giant-killings, the Great Escape of 2009, and Eddie Howe's climb from League Two to the Premier League.",
       "For most of their history the Cherries were a lower-league club with a habit of embarrassing bigger ones. The Third Division side of 1956-57 knocked out Wolves and Tottenham on the way to the FA Cup quarter-finals; Ted MacDougall scored nine goals in a single tie in 1971, an 11-0 rout of Margate that set an FA Cup record; and in January 1984 Harry Redknapp's team beat cup holders Manchester United 2-0. The Third Division title of 1986-87 was the first divisional championship in the club's history. Then came the hard road back: docked 17 points after exiting administration in 2008-09, Bournemouth were all but saved by Steve Fletcher — the much-loved striker who holds the club's all-time appearance record across two spells — scoring the decisive goal against Grimsby in April 2009. Eddie Howe, a former Bournemouth defender, took it from there, guiding the club from League Two all the way to the 2014-15 Championship title and a first-ever top-flight season in 2015-16.",
       "The questions range across the eras. You'll meet the famous 4-3 at Dean Court in December 2016, when Bournemouth came from 3-1 down to beat Liverpool; the club-record fee of around £25m paid to Levante for Jefferson Lerma in 2018; Callum Wilson scoring on his England debut against the USA that November; and Ryan Fraser's 14 assists in 2018-19, one of the highest tallies in the division. The bruises are in here too — the 9-0 defeat by Liverpool in August 2022 that equalled the Premier League's record scoreline, and Scott Parker winning promotion back to the Premier League in 2022 only to be sacked early the following season. Difficulty climbs from easy openers about nicknames and famous wins to hard deep cuts about points deductions, name changes and Howe's brief 2011 spell at Burnley, so casual fans and lifelong Cherries both get a proper test.",
-      "Every question comes with a short explained answer, so even a miss leaves you knowing more — why the club began 2008-09 seventeen points down, or which club those red-and-black stripes were modelled on. Play the sample set below free in your browser, no sign-up needed. When you want the full Bournemouth quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss leaves you knowing more — why the club began 2008-09 seventeen points down, or which club those red-and-black stripes were modelled on. Play the sample set below free in your browser, no sign-up needed. When you want the full Bournemouth quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -1794,7 +1794,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Bournemouth quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Bournemouth question bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Bournemouth question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Bournemouth quiz?",
@@ -1813,7 +1813,7 @@ export const CLUBS = [
       "Brentford began with a show of hands: members of Brentford Rowing Club voted to take up football rather than rugby, and west London gained the club everyone knows as the Bees. From 1904 to 2020 the red-and-white vertical stripes played at Griffin Park, famously said to be the only English league ground with a pub on each of its four corners, before the move to the stadium that has carried the Gtech name since a 2022 naming-rights deal. This free Brentford quiz covers the whole story — the rowing-club origins, the Griffin Park decades, and the data-driven rise that ended 74 years outside the top flight.",
       "The old days reward knowing. Brentford were founder members of the Third Division in 1920, one of 21 Southern League clubs who formed the new tier, and under Harry Curtis — manager for 23 years from 1926 to 1949 — climbed from the Third Division to the First, finishing fifth in 1935-36, still the club's highest-ever placing. Griffin Park's record crowd of 38,678 squeezed in for a 1949 FA Cup tie against Leicester City, and Jim Towers remains the record goalscorer with 163 goals between 1954 and 1961. The modern chapter belongs to Matthew Benham, the professional gambler whose analytics-first recruitment rebuilt the club: Dean Smith laid the foundations from 2015 until Aston Villa came calling in October 2018, and Thomas Frank absorbed the pain of losing the 2020 play-off final to Fulham at Wembley before beating Swansea City 2-0 a year later to end the 74-year wait. On the opening night of 2021-22, Sergi Canós scored the club's first Premier League goal in a 2-0 home win over Arsenal.",
       "Expect the full spread — transfers, records, managers and cult heroes. The recruitment model is a quiz in itself: David Raya signed from Blackburn Rovers and Pontus Jansson from Leeds United in 2019, with Jansson later made club captain; Ivan Toney arrived from League One Peterborough United in 2020; Ollie Watkins left for Aston Villa the same year in a then-record sale reported around £28 million, after Neal Maupay's 2019 move to Brighton. And in January 2022, Christian Eriksen — months after his cardiac arrest at Euro 2020 — joined a Danish head coach at Brentford. Difficulty climbs from easy openers (the nickname, the pubs on Griffin Park's corners) to genuinely hard deep cuts about record crowds, Harry Curtis-era finishes and exact fees.",
-      "Every question comes with a short explained answer, so a miss still teaches you something — why the fifth-place finish of 1935-36 still stands, or how a rowing club ended up producing a Premier League football team. Play the sample set below free in your browser, no sign-up needed. When you want the full Brentford quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so a miss still teaches you something — why the fifth-place finish of 1935-36 still stands, or how a rowing club ended up producing a Premier League football team. Play the sample set below free in your browser, no sign-up needed. When you want the full Brentford quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -1826,7 +1826,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Brentford quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Brentford question bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Brentford question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Brentford quiz?",
@@ -1858,7 +1858,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Burnley quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Burnley question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Burnley question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Burnley quiz?",
@@ -1877,7 +1877,7 @@ export const CLUBS = [
       "Wolverhampton Wanderers were there at the very beginning — one of the twelve founder members of the Football League in 1888 — and they have called Molineux home since 1889, wearing old gold and black like nobody else in the game. This free Wolves quiz covers the whole story: the imperious Stan Cullis side of the 1950s, the famous floodlit nights, the fall and rise that followed, and the modern Premier League era shaped by Nuno Espírito Santo's promotion winners. If the old gold means something to you, this is your quiz.",
       "The golden age arrived in the 1950s, when Stan Cullis's team won all three of the club's First Division titles, captained by Billy Wright — the one-club man who became the first footballer in the world to win 100 international caps. In 1954, under the Molineux floodlights, Wolves came from 2-0 down to beat the Hungarian side Budapest Honvéd 3-2, a friendly so celebrated it prompted 'Champions of the World' headlines. There were cups too: the FA Cup in 1949, won 3-1 against Leicester City, and the 1980 League Cup, when a 1-0 win toppled Nottingham Forest, the reigning European champions. In between, Bill McGarry's side reached the first UEFA Cup final in 1972 — the first all-English European final, lost to Tottenham Hotspur — and lifted the 1974 League Cup. The modern era has its landmarks as well: a 3-0 play-off final win over Sheffield United in 2003 took Wolves into the Premier League for the first time, and the 2019-20 team reached a Europa League quarter-final before falling 1-0 to Sevilla.",
       "Expect the full spread — transfers, records, managers and cult heroes like Derek Dougan, 'The Doog', the Northern Ireland forward who became a Molineux favourite in the late 1960s. Transfers run from the British record Wolves broke in 1979 to sign Andy Gray from Aston Villa, through João Moutinho's arrival from Monaco in 2018, to Diogo Jota's 2020 move to Liverpool, Fábio Silva's club-record signing the same year and Rúben Neves's record sale to Al-Hilal in 2023. Records mean Steve Bull, the all-time leading goalscorer, and Derek Parkin's 609 appearances. Managers span Major Frank Buckley — the 1930s innovator famous for promoting young players and for his controversial 'monkey gland' treatments — through Cullis and McGarry to Mick McCarthy's 2008-09 Championship winners and Nuno's 2017-18 title side. Difficulty climbs from easy openers about the colours and the name of the ground to hard deep cuts: which division Wolves were in when they won the 1908 FA Cup, and just how far three straight relegations dropped them in the mid-1980s.",
-      "Every question comes with a short explained answer, so even a miss teaches you something — which country Raúl Jiménez plays his international football for, or how a 2-0 lead in the 2019 FA Cup semi-final against Watford became a 3-2 defeat. Play the sample set below free in your browser, no sign-up needed. When you want the full Wolves quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss teaches you something — which country Raúl Jiménez plays his international football for, or how a 2-0 lead in the 2019 FA Cup semi-final against Watford became a 3-2 defeat. Play the sample set below free in your browser, no sign-up needed. When you want the full Wolves quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -1890,7 +1890,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Wolves quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Wolves question bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Wolves question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Wolves quiz?",
@@ -1909,7 +1909,7 @@ export const CLUBS = [
       "Coventry City began life in 1883 as Singers FC, a works team formed by employees of a local bicycle factory, and few English clubs wear their identity so distinctively: an elephant on the crest, borrowed from the city's coat of arms, and an anthem sung to the tune of the Eton Boating Song. Highfield Road was home for the glory years — in 1981 it became the first ground in England to go all-seater — and this free Coventry City quiz covers the lot: Jimmy Hill's Sky Blue Revolution, thirty-four unbroken seasons in the top flight, the 1987 FA Cup and the fall and rise that followed. If you can sing the Sky Blue Song from memory, this is your quiz.",
       "The golden thread runs through the 1960s and the 1980s. Jimmy Hill's Sky Blue Revolution gave Coventry their famous sky blue kit and carried them from the Third Division to the top flight — 51,455 packed into Highfield Road in April 1967 for the promotion showdown with Wolverhampton Wanderers — and the stay that began that year lasted thirty-four consecutive seasons, taking in the club's only European campaign, a 1970-71 Inter-Cities Fairs Cup run ended in the second round by Bayern Munich. The peak came at Wembley in 1987: Keith Houchen's spectacular diving header, voted BBC Goal of the Season, levelled the FA Cup final at 2-2, John Sillett and managing director George Curtis guided the side to a 3-2 extra-time win over Tottenham Hotspur, and captain Brian Kilcline lifted the club's greatest trophy.",
       "The questions range across transfers, managers, records and great escapes. Transfers run from Cyrille Regis arriving from West Bromwich Albion in 1984 to Robbie Keane joining Internazionale in 2000, James Maddison's sale to Norwich City and Viktor Gyökeres's club-record move to Sporting CP. Managers span Hill, Sillett, Terry Butcher's spell as player-manager, Gordon Strachan's relegation in 2001 — the end of the 34-season run — and Mark Robins, who returned in 2017, lifted the EFL Trophy at Wembley, and took Coventry from League Two back to the Championship with promotions in 2018 and 2020. Records mean Steve Ogrizovic, the goalkeeper whose service from 1984 to 2000 made him the club's all-time record appearance-maker. And the famous moments are all here: Peter Ndlovu's 1995 Anfield hat-trick — the first there by a visiting league player in over 30 years — Dion Dublin's shared 1997-98 Golden Boot, the final-day escape at Tottenham in 1997, penalties against Luton Town at Wembley in 2023 and the fightback from 3-0 down to 3-3 against Manchester United in the 2024 FA Cup semi-final. Difficulty climbs from easy openers to genuinely hard deep cuts, so casual fans and Sky Blue lifers both get a proper test.",
-      "Every question comes with a short explained answer, so a miss still teaches you something — the year Highfield Road went all-seater, or which German giants ended the club's only European adventure. Play the sample set below free in your browser, no sign-up needed. When you want the full Coventry City quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so a miss still teaches you something — the year Highfield Road went all-seater, or which German giants ended the club's only European adventure. Play the sample set below free in your browser, no sign-up needed. When you want the full Coventry City quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -1922,7 +1922,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Coventry City quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Coventry City question bank is in the Ball IQ app along with daily challenges and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Coventry City question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges and multiplayer."
       },
       {
         "q": "How hard is the Coventry City quiz?",
@@ -1954,7 +1954,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Hull City quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Hull City question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Hull City question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Hull City quiz?",
@@ -1973,7 +1973,7 @@ export const CLUBS = [
       "Valencia CF were founded in March 1919, moved into Mestalla in 1923 and have been there ever since — a steep, loud, old-fashioned ground pressed right up against the pitch, and one of the most intimidating in Spain. This free Valencia quiz covers the whole story: the bat on the crest, borrowed from the coat of arms of the city itself, the six league titles won in 1942, 1944, 1947, 1971, 2002 and 2004, and the European nights that made Los Che a name across the continent. The city derby against Levante and the regional rivalry with Villarreal are in here too. If Mestalla means something to you, this is your quiz.",
       "The European story starts early and never really stops. Valencia won the Inter-Cities Fairs Cup in 1962 and retained it in 1963, then beat Arsenal in Brussels to lift the 1980 Cup Winners' Cup after a goalless 120 minutes. Under Héctor Cúper the club reached back-to-back Champions League finals and lost both — 3-0 to Real Madrid in Paris in 2000, the first all-Spanish European Cup final, and then on penalties to Bayern Munich at the San Siro in 2001, where Oliver Kahn saved three spot-kicks and Mauricio Pellegrino's was the last of them. Redemption came under Rafael Benítez in 2003-04: the league title and the UEFA Cup in the same season, Marseille beaten 2-0 in the Gothenburg final through a Vicente Rodríguez penalty and a Mista finish. Claudio Ranieri, back for a second spell, then added the UEFA Super Cup against Porto.",
       "Expect the full spread — transfers, managers, records and cult heroes. Mario Kempes scored both goals to beat Real Madrid in the 1979 Copa del Rey final; Alfredo Di Stéfano took charge at Mestalla in 1970 and won the league in his first season; Fernando Gómez made more than 550 appearances between 1983 and 1998, a club record nobody has touched. The trophy years were built on Santiago Cañizares in goal, Roberto Ayala at the back and the Rubén Baraja-David Albelda double pivot in midfield, with Pablo Aimar arriving from River Plate in 2001 to provide the imagination. Transfers run from Gaizka Mendieta's 2001 move to Lazio and John Carew's arrival from Rosenborg, to David Villa's 129 goals after signing from Real Zaragoza in 2005 and David Silva's 2010 departure for Manchester City. The modern era is here as well: Unai Emery's three consecutive third-place finishes, Ronald Koeman's 2008 Copa del Rey, Peter Lim's 2014 takeover, and the 2-1 win over Barcelona in Seville that won the 2019 Copa del Rey in the club's centenary season.",
-      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — why the ground is called Mestalla, or what happened to the last penalty in Milan. Play the sample set below free in your browser, no sign-up needed. When you want the full Valencia quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — why the ground is called Mestalla, or what happened to the last penalty in Milan. Play the sample set below free in your browser, no sign-up needed. When you want the full Valencia quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -1986,7 +1986,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Valencia quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Valencia question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Valencia question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Valencia quiz?",
@@ -2005,7 +2005,7 @@ export const CLUBS = [
       "Bayer 04 Leverkusen were founded in 1904 by employees of the Bayer chemical works, which is why everyone still calls them Die Werkself — the works eleven. They play in red and black at the BayArena, known as the Ulrich-Haberland-Stadion until the 1998 renaming, and for most of their history they were German football's great nearly men. Then came 2023-24. This free Bayer Leverkusen quiz covers both halves of that story: the seasons that earned the 'Neverkusen' nickname, and the one that finally buried it.",
       "The near-misses are legendary. On the final day of 1999-2000 Leverkusen lost 2-0 at newly promoted SpVgg Unterhaching — Michael Ballack scoring an own goal — and handed Bayern Munich the title on goal difference. Two years later, Klaus Toppmöller's side finished second in the Bundesliga, second in the DFB-Pokal and second in Europe: at Hampden Park in May 2002, Raúl put Real Madrid ahead, Lúcio headed the equaliser, and Zinedine Zidane volleyed in Roberto Carlos's cross on the stroke of half-time to win it 2-1. Captain Jens Nowotny had torn his cruciate in the semi-final second leg against Manchester United — a tie Leverkusen won on away goals — and watched the final from the sidelines, with Hans-Jörg Butt in goal. The silverware that did arrive came in 1988, when Erich Ribbeck's team overturned a 3-0 first-leg deficit against Espanyol and won the UEFA Cup shootout, and in the 1993 DFB-Pokal final against the Hertha BSC amateur side.",
       "Then Xabi Alonso, appointed in October 2022 in place of Gerardo Seoane after coaching Real Sociedad B, built something unprecedented. Leverkusen went through the entire 2023-24 Bundesliga season unbeaten — 28 wins, six draws, 90 points — sealing the club's first German championship on 14 April with a 5-0 win over Werder Bremen in which Florian Wirtz scored a hat-trick, five games still to play. The double followed in Berlin, Granit Xhaka's early goal beating Kaiserslautern 1-0 in the DFB-Pokal final. The unbeaten run reached 51 matches across all competitions, a record for a European top-flight club, before Atalanta won the Europa League final 3-0 in Dublin through an Ademola Lookman hat-trick. Around all of it runs Leverkusen's real speciality — talent. Ulf Kirsten arrived from Dynamo Dresden in 1990 and became the club's all-time leading Bundesliga scorer; Ballack came from Kaiserslautern in 1999 and left for Bayern in 2002 alongside Zé Roberto; Dimitar Berbatov, Arturo Vidal, Bernd Schneider, a loaned Toni Kroos, Son Heung-min and Kai Havertz all passed through.",
-      "Every question comes with a short explained answer, so even a miss teaches you something — what the BayArena used to be called, or exactly how long that unbeaten run lasted. Play the sample set below free in your browser, no sign-up needed. When you want the full Bayer Leverkusen quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss teaches you something — what the BayArena used to be called, or exactly how long that unbeaten run lasted. Play the sample set below free in your browser, no sign-up needed. When you want the full Bayer Leverkusen quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -2018,7 +2018,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Bayer Leverkusen quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Leverkusen question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Leverkusen question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Bayer Leverkusen quiz?",
@@ -2037,7 +2037,7 @@ export const CLUBS = [
       "Olympique Lyonnais were a second-division side when Jean-Michel Aulas arrived as president in 1987 with a plan he called 'OL – Europe'. Fourteen years later they won the first league title in the club's history, and then six more in a row. This free Lyon quiz covers the lot: Les Gones in their white shirts, the move from Gerland to the purpose-built Groupama Stadium in January 2016, the fiercest derby in France against Saint-Étienne 60km down the road, and the women's team whose eight UEFA Women's Champions League titles are more than any other club has won.",
       "The dynasty is the heart of it. Lyon's first championship came in 2001-02, clinched on the final day at Gerland with a 3-1 win over RC Lens, who needed only a draw to be champions themselves — Jacques Santini's side took it instead. Seven consecutive titles followed, a Ligue 1 record, and the run ended with a domestic double: Alain Perrin's 2007-08 team added the Coupe de France, Karim Benzema's goal beating Paris Saint-Germain 1-0 at the Stade de France. The launchpad had come in 2001, when Lyon beat Monaco 2-1 after extra time to win the Coupe de la Ligue, their first major trophy in decades. Juninho Pernambucano, signed from Vasco da Gama that same year, captained the side through all of it and turned the dipping free-kick into a Lyon trademark; Grégory Coupet kept goal for every one of the seven titles before joining Atlético Madrid in 2008.",
       "Europe brought the near-misses and the great upsets. PSV Eindhoven knocked Lyon out on penalties in the 2004-05 quarter-finals; in 2009-10 they beat Real Madrid 2-1 on aggregate before Bayern Munich, with an Ivica Olić hat-trick in the second leg, ended the run in the semi-finals; Ajax edged them out of the 2016-17 Europa League at the same stage. Then came Lisbon in 2020, where Rudi Garcia's side beat Manchester City 3-1 in the one-legged quarter-final with Moussa Dembélé scoring twice off the bench, before losing another semi-final to Bayern. The academy and the trading are just as much a part of the identity: Karim Benzema left for Real Madrid in 2009, Alexandre Lacazette scored 27 league goals to win the 2014-15 golden boot before joining Arsenal, Hugo Lloris went to Tottenham in 2012 and Tanguy Ndombele followed for a then club-record fee in 2019. Coming the other way were Sonny Anderson from Barcelona in 1999, Michael Essien from Bastia in 2003, Lisandro López from Porto and Memphis Depay from Manchester United. And the club's all-time leading scorer still belongs to an earlier age: Fleury Di Nallo, 222 goals, 'le Petit Prince de Gerland'.",
-      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — who was in charge for the first title, or which club Juninho arrived from. Play the sample set below free in your browser, no sign-up needed. When you want the full Lyon quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — who was in charge for the first title, or which club Juninho arrived from. Play the sample set below free in your browser, no sign-up needed. When you want the full Lyon quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -2050,7 +2050,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Lyon quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Olympique Lyonnais question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Olympique Lyonnais question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Lyon quiz?",
@@ -2069,7 +2069,7 @@ export const CLUBS = [
       "Parma play at the Stadio Ennio Tardini, their home since 1923, in the Emilia-Romagna city famous for its ham and its cheese — and for a decade in the 1990s they were one of the best teams in Europe. This free Parma quiz covers the whole arc: the Nevio Scala sides that won the club's first major trophies, the Parmalat money that funded them, the 2003 accounting scandal and the 2015 bankruptcy that sent the Crociati all the way down to Serie D, and the three straight promotions that brought them back to Serie A.",
       "The trophies came in a rush. Scala, in charge from 1989 to 1996, won the 1992 Coppa Italia and then the 1993 European Cup Winners' Cup, beating Royal Antwerp 3-1 in the final at Wembley — and later that year Parma took the European Super Cup, facing AC Milan after holders Marseille were barred from taking part. The 1995 UEFA Cup was an all-Italian final against Juventus, settled by Dino Baggio scoring in both legs. Alberto Malesani then delivered a UEFA Cup and Coppa Italia double in his first season, 1999, Marseille beaten 3-0 in the final with Hernán Crespo, Enrico Chiesa and full-back Paolo Vanoli among the scorers. The one prize that never came was the league: Carlo Ancelotti's 1996-97 side finished second, still the best placing in Parma's history.",
       "The squads were extraordinary. Gianluigi Buffon came through the youth system and made his Serie A debut in November 1995, aged 17, in a goalless draw with AC Milan; Fabio Cannavaro arrived from Napoli that same year and stayed seven seasons; Lilian Thuram came from Monaco in 1996. Add Faustino Asprilla — whose finish ended AC Milan's record unbeaten league run in March 1993 before he left for Newcastle United — Crespo, signed from River Plate and sold to Lazio in 2000 for what was then a world-record fee, Gianfranco Zola's mid-season move to Chelsea in 1996, a season of Hristo Stoichkov between two spells at Barcelona, and Hidetoshi Nakata, part of the 2002 Coppa Italia-winning squad. Arrigo Sacchi had managed here in the mid-1980s before Silvio Berlusconi took him to Milan. Then Parmalat collapsed, and in 2015 so did the club: refounded in Serie D with Scala as president, Serie D champions under former defender Luigi Apolloni, and back-to-back promotions under Roberto D'Aversa in 2017 and 2018 — captain Alessandro Lucarelli, who had stayed through the bankruptcy, wearing the armband for all three.",
-      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — which company bankrolled the golden era, or where the 1993 final was played. Play the sample set below free in your browser, no sign-up needed. When you want the full Parma quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — which company bankrolled the golden era, or where the 1993 final was played. Play the sample set below free in your browser, no sign-up needed. When you want the full Parma quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -2082,7 +2082,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the Parma quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Parma question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full Parma question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the Parma quiz?",
@@ -2101,7 +2101,7 @@ export const CLUBS = [
       "AS Monaco were founded on 23 August 1924 and are unlike anyone else in European football: a club from a sovereign principality of barely two square kilometres that has spent its entire history competing in the French league system. Home since January 1985 has been the Stade Louis II, built on land reclaimed from the sea, and the diagonal red-and-white shirt is one of the game's most recognisable. This free AS Monaco quiz covers all of it — eight French championships in 1961, 1963, 1978, 1982, 1988, 1997, 2000 and 2017, the 1960 Coupe de France win over Saint-Étienne that brought the club's first major trophy, and the double completed in 1962-63.",
       "The managers alone make a quiz. Lucien Leduc took a newly promoted side straight to the 1977-78 title. Arsène Wenger won the championship in his first season in 1987-88 and stayed until 1994, bringing George Weah over from Tonnerre Yaoundé in 1988 and Jürgen Klinsmann from Internazionale in 1992. Jean Tigana's 1996-97 champions had Fabien Barthez in goal and Thierry Henry, David Trezeguet and Emmanuel Petit in front of him. Then Didier Deschamps, in charge from 2001 to 2005, won the 2003 Coupe de la Ligue 4-1 against Sochaux and took Monaco to the 2004 Champions League final, knocking Real Madrid out on away goals along the way — Fernando Morientes, on loan from the very club he eliminated, finishing as the competition's top scorer with nine — before José Mourinho's Porto won the final 3-0 in Gelsenkirchen. Europe had come close before too: a 2-0 defeat to Werder Bremen in the 1992 Cup Winners' Cup final, and a 1997-98 Champions League semi-final lost to Juventus after Alessandro Del Piero's hat-trick in Turin.",
       "The modern era is a story of collapse and reinvention. Monaco were relegated to Ligue 2 in 2010-11, their first drop out of the top flight in 35 years, and were bottom of the second division when Dmitry Rybolovlev bought a two-thirds stake in December 2011. Claudio Ranieri won the Ligue 2 title at the first attempt in 2012-13, Radamel Falcao arrived from Atlético Madrid as the marquee signing of the spending that followed, and by 2016-17 Leonardo Jardim's team were champions of France — 107 goals, 95 points, eight clear of Paris Saint-Germain, with Manchester City beaten on away goals and Borussia Dortmund 6-3 on the way to a Champions League semi-final. At the centre of it was a teenager who had broken Thierry Henry's club record as Monaco's youngest first-team player in December 2015, aged 16 years and 347 days, and who left for Paris Saint-Germain the summer the title was won. Older heroes hold up the other end: Jean-Luc Ettori made 755 appearances between 1975 and 1994 without ever playing for another club.",
-      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — which club Trezeguet arrived from, or how many goals the 2017 champions scored. Play the sample set below free in your browser, no sign-up needed. When you want the full AS Monaco quiz — plus daily challenges, leaderboards and multiplayer — it's all in the Ball IQ app."
+      "Every question comes with a short explained answer, so even a miss teaches you the detail that makes it stick — which club Trezeguet arrived from, or how many goals the 2017 champions scored. Play the sample set below free in your browser, no sign-up needed. When you want the full AS Monaco quiz — plus daily challenges, leaderboards and multiplayer — it's all free in your browser at balliq.app/play — or in the Ball IQ app."
     ],
     "faq": [
       {
@@ -2114,7 +2114,7 @@ export const CLUBS = [
       },
       {
         "q": "Is the AS Monaco quiz free to play?",
-        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full AS Monaco question bank is in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
+        "a": "Yes — the sample questions are free in your browser with no sign-up, and the full AS Monaco question bank is free too — in your browser at balliq.app/play or in the Ball IQ app along with daily challenges, leaderboards and multiplayer."
       },
       {
         "q": "How hard is the AS Monaco quiz?",
