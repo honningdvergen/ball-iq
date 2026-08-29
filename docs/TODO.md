@@ -1,5 +1,31 @@
 # Ball IQ — the board
 
+## 📅 2026-08-29 — critique day (all shipped, prod-verified)
+
+Three critique agents + a design critique ran; every surviving finding was
+fixed same-day. Web is live; native waits on Alex uploading **1.7.1 (105) /
+vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
+
+- [x] Retention wave: results-screen countdown + streak stake + Remind-me;
+      notif sheet v2 (asks re-keyed, `copy:v2-stake` tagged); challenge loop
+      closed (v1_9 + v1_9b; `?f=` links; e2e-verified push copy)
+- [x] Website wave: mobile header fix, taster touch CSS, lists taster
+      topicality (34/50 keep tasters), honest copy, invite-code expiry
+- [x] Design-critique wave: hero "No account, no waiting", truthful FAQ ×57,
+      verdict-card OS badges + browser button, header CTA graduation, footer
+      reason, Footle primary, green-IQ lockup on SEO pages
+- [x] MP: ready-up NEVER worked (3 RPCs missing retry config) — fixed + gate;
+      game-over redesign (actions first, review collapsed, joiner refetch);
+      lobby facelift (open-seat invite, HOST chip)
+- [x] Monetization phase 1: local usage counters accruing (4 signals)
+- [x] Bank: Club Brugge self-answering q deleted; era sweep done yesterday
+- [ ] Alex: device-test 1.7.1 (105), upload both stores when happy
+- [ ] Alex: Bulgarian editorial call (q_b312e9)
+- [ ] Next builds: guest reachability design, FAQ store-first copy pass
+      (drafts/nations prose), entitlements migration (needs "apply it"),
+      /nl/ GSC read ~Sept 11, sheet-v2 conversion read ~Sept 5
+
+
 ## ⭐ SCOUTING REPORT #4 — THE PLAN (opened 2026-08-24)
 
 Overall **5.8/10**, up 0.3. 116 findings, 11 critical.
