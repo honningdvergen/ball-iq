@@ -141,7 +141,7 @@ const CSS = `
 .sr-nav a{display:inline-flex;align-items:center;min-height:44px;padding:10px 12px;
           font:var(--ty-sec);color:var(--on-desk-mut);transition:color .12s var(--ease)}
 @media (hover:hover){.sr-nav a:hover{color:var(--tx)}}
-@media (max-width:699px){.sr-nav{order:3;width:100%;margin-top:2px}}
+@media (max-width:699px){.sr-nav{order:3;flex:1 1 100%;width:100%;margin-top:2px}}
 .sr-grp{position:relative}
 .sr-top{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:10px 12px;
         background:none;border:0;cursor:pointer;font:var(--ty-sec);color:var(--on-desk-mut);

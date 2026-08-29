@@ -625,7 +625,7 @@ function appCtaBand(name) {
 <div class="appband-flame" aria-hidden="true">🔥</div>
 <div class="appband-in">
 <h2>Think you know ${esc(name)}? Prove it.</h2>
-<p>Streaks, live 1v1, a rating out of 99 — and every quiz in one place.</p>
+<p>Streaks, live 1v1, your own Ball IQ score — and every quiz in one place.</p>
 <a class="appband-play" href="${SITE.base}/play">Play free in your browser →</a>
 <p class="appband-or">No account, nothing to install. Or get it on your phone:</p>
 ${storeBadges()}
@@ -1214,7 +1214,8 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-qn{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx4);margin-bottom:7px}
   .bq-qx{font-size:19px;font-weight:700;color:var(--tx);line-height:1.3;letter-spacing:-.015em;margin:0 0 15px;text-wrap:balance}
   .bq-os{display:grid;gap:8px}
-  .bq-o{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;text-align:left;padding:12px 13px;border-radius:11px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s}
+  .bq-o{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;text-align:left;padding:12px 13px;border-radius:11px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+  .bq-o:active{border-color:var(--tx2)}
   .bq-o:hover:not(:disabled){border-color:var(--bd3);background:var(--card2)}
   .bq-o:disabled{cursor:default}
   .bq-o .k{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;background:#1B2029;color:var(--tx4)}
@@ -2224,7 +2225,7 @@ ${heroTwoCol({
       // — this row printed "556 questions / 151 hard ones" live.
       { n: 'Free', label: 'always' },
       ...(pct100(all) ? [{ n: '100%', label: 'explained' }] : []),
-      { n: 'Daily', label: 'new questions' },
+      { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), slug: catCfg.slug, play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
@@ -2702,7 +2703,7 @@ ${heroTwoCol({
       // — this row printed "556 questions / 151 hard ones" live.
       { n: 'Free', label: 'always' },
       ...(pct100(all) ? [{ n: '100%', label: 'explained' }] : []),
-      { n: 'Daily', label: 'new questions' },
+      { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, slug: cfg.slug, color: CLUB_COLOR[cfg.slug] || '', play: `${SITE.base}/play?club=${cfg.slug}` }))}
@@ -2849,7 +2850,7 @@ ${heroTwoCol({
       // pct100(hints) would be a tautology — `hints` IS the explained rows.
       // Measure the unfiltered pool or the claim means nothing.
       ...(pct100(poolAll) ? [{ n: '100%', label: 'explained' }] : []),
-      { n: 'Daily', label: 'new questions' },
+      { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), slug: cfg.slug }))}
@@ -2953,14 +2954,41 @@ function listTasterRows(cfg, usedIds) {
     ents.push(v.toLowerCase());
   }
   const uniq = [...new Set(ents)];
-  const mentions = (r) => {
-    const hay = (r.q + ' ' + r.o.join(' ')).toLowerCase();
-    return uniq.some((e) => hay.includes(e));
+  // Topicality, tightened twice on 2026-08-29. Round one matched entities
+  // anywhere in question + OPTIONS, so a Ronaldo-as-distractor smuggled an
+  // Al-Mutawa caps question onto the Ballon d'Or page. Round two proved
+  // stem-matching is also insufficient: "Ronaldinho was imprisoned in 2020"
+  // mentions a winner without being about the award. What survives both
+  // failure modes: the stem names the list's SUBJECT (h1 minus qualifier and
+  // category words), or the CORRECT ANSWER is a table entity — a question a
+  // reader of this table could answer from it.
+  const subject = cfg.h1.toLowerCase()
+    .replace(/^(most|every|all[- ]time|the|top)\s+/g, '')
+    .replace(/\s+(winners?|champions?|titles?|records?|holders?|scorers?|list)$/g, '')
+    .trim();
+  const stemOnSubject = (r) => subject.length >= 4 && r.q.toLowerCase().includes(subject);
+  // Answer-matching uses only the SUBJECT column (first mostly-proper-name
+  // column), not the whole table: club/nation side-columns let "John Charles
+  // joined Juventus" onto the Ballon d'Or page because Juventus appears in
+  // the winners' club column. The subject column is who the list is ABOUT.
+  const colLooksProper = (ci) => {
+    const cells = cfg.rows.map((row) => String(row[ci] ?? '').trim());
+    const proper = cells.filter((v) => v.length >= 5 && !/^\d/.test(v) && /^[A-ZÀ-Þ]/.test(v));
+    return proper.length >= cells.length * 0.6;
+  };
+  const subjectCol = cfg.columns.findIndex((_, ci) => colLooksProper(ci));
+  const subjEnts = subjectCol < 0 ? uniq : [...new Set(cfg.rows
+    .map((row) => String(row[subjectCol] ?? '').trim().toLowerCase())
+    .filter((v) => v.length >= 4 && !LIST_STOP.has(v)))];
+  const answerIsEntity = (r) => {
+    const ans = String(r.o[r.a] ?? '').toLowerCase().trim();
+    if (ans.length < 4) return false;
+    return subjEnts.some((e) => e === ans || e.includes(ans) || ans.includes(e));
   };
 
   // No generic fallback: a page with an off-topic quiz is worse than a page
   // with none, so fewer than 5 genuinely on-topic questions means no taster.
-  const onTopic = pool.filter(mentions);
+  const onTopic = pool.filter((r) => stemOnSubject(r) || answerIsEntity(r));
   if (onTopic.length < 5) return [];
   const rows = tasterPick(onTopic, 5);
   rows.forEach((r) => usedIds.add(r.id));   // no two lists share a question set
@@ -3738,7 +3766,7 @@ ${heroTwoCol({
       // pct100(hints) would be a tautology — `hints` IS the explained rows.
       // Measure the unfiltered pool or the claim means nothing.
       ...(pct100(poolAll) ? [{ n: '100%', label: 'explained' }] : []),
-      { n: 'Daily', label: 'new questions' },
+      { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), badge: deriveBadge(cfg.name), slug: cfg.slug }))}

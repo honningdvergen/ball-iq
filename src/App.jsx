@@ -9084,7 +9084,7 @@ function AppInner() {
       const fromQuery = params.get("join");
       const fromUrl = fromPath || fromQuery;
       if (fromUrl) {
-        try { localStorage.setItem("biq_pending_join", fromUrl); } catch {}
+        try { localStorage.setItem("biq_pending_join", JSON.stringify({ c: fromUrl, at: Date.now() })) } catch {}
         // Strip the path/query so a refresh doesn't re-trigger the auto-join —
         // but drop ONLY the /join path + join param, preserving any other params
         // (e.g. a co-present ?c= challenge token, read by the next init).
@@ -9096,7 +9096,24 @@ function AppInner() {
         return normalizeJoinCode(fromUrl);
       }
       const stored = localStorage.getItem("biq_pending_join");
-      if (stored) return normalizeJoinCode(stored);
+      if (stored) {
+        // 2026-08-29: stored codes carry a timestamp and yield to explicit
+        // deep-link intent. Before this, a code persisted FOREVER and was
+        // never validated against room existence — but the cron deletes rooms
+        // at 7 days, so an unconsumed invite became a dead "Join the game"
+        // modal over every future visit, including SEO deep links with a
+        // quiz clock already running underneath. A bare legacy value is
+        // stale by construction and dropped on sight.
+        let code = null;
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed?.c && Date.now() - (parsed.at || 0) < 24 * 3600 * 1000) code = parsed.c;
+        } catch { /* legacy bare string */ }
+        if (!code) { try { localStorage.removeItem("biq_pending_join"); } catch {} return null; }
+        const otherIntent = /[?&](club|quiz|c)=/.test(window.location.search) || /^\/c\//.test(window.location.pathname);
+        if (otherIntent) return null;
+        return normalizeJoinCode(code);
+      }
     } catch {}
     return null;
   });
@@ -9198,7 +9215,7 @@ function AppInner() {
         if (jm) {
           const code = jm[1].toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6);
           if (code) {
-            try { localStorage.setItem('biq_pending_join', code); } catch {}
+            try { localStorage.setItem('biq_pending_join', JSON.stringify({ c: code, at: Date.now() })); } catch {}
             setPendingJoinCode(code);
           }
           return;
