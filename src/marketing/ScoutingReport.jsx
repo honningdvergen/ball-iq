@@ -624,7 +624,7 @@ export default function ScoutingReport() {
       </section>
 
       <footer className="sr-foot">
-        <p>Ball IQ — an independent football quiz. Most answers tell you why. Made by one person.</p>
+        <p>Ball IQ — an independent football quiz. Made by one person.</p>
         <div className="sr-dist">
           <a className="sr-badge" href={appStoreUrl()}><AppleMark />App Store</a>
           <a className="sr-badge" href={PLAY_STORE_URL}><PlayMark />Google Play</a>
