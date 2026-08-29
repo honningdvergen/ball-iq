@@ -9910,9 +9910,26 @@ function AppInner() {
   // `pushsubscriptionchange` reliably — without this a rotated endpoint leaves
   // a stale row and the user goes silent with no error anywhere. Never prompts:
   // it returns immediately unless permission is ALREADY granted.
+  //
+  // Then reconcile the toggle against the REAL subscription. The optimistic
+  // init above reads bare permission, and permission ≠ subscription: a
+  // granted browser with no live sub (seen in the wild 2026-08-29 — a
+  // consent-banner "Allow" misread as the push prompt, sub never created)
+  // showed reminders ON while nothing could ever arrive. Runs after the
+  // refresh so a sign-in self-heal is reflected, and for signed-out visitors
+  // too, where the answer is honestly OFF.
   useEffect(() => {
-    if (!user?.id) return;
-    refreshWebPushSubscription();
+    let dead = false;
+    (async () => {
+      try {
+        if (!webPushSupported()) return;
+        if (user?.id) await refreshWebPushSubscription();
+        const reg = await navigator.serviceWorker.getRegistration();
+        const sub = reg ? await reg.pushManager.getSubscription() : null;
+        if (!dead) setWebPushOn(!!sub && Notification.permission === 'granted');
+      } catch { /* keep the optimistic state rather than lying OFF on a flake */ }
+    })();
+    return () => { dead = true; };
   }, [user?.id]);
 
   const handleToggleWebPush = useCallback(async (on) => {
