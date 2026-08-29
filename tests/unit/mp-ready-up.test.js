@@ -95,6 +95,6 @@ describe('the room survives the final whistle', () => {
     // Deliberately kept, deliberately demoted. Deleting it would strand a room
     // whose players really did leave.
     expect(MP).toMatch(/mpClaimRematch/);
-    expect(lobbyEnded()).toMatch(/Someone left — start a new room/);
+    expect(lobbyEnded()).toMatch(/Opponent gone\? Start a new room/);
   });
 });
