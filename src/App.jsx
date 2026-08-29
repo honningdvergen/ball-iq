@@ -29,7 +29,7 @@ import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { FOOTLE_SHORT } from './lib/modeCopy.js';
 import { APP_NAME, LEVELS, getLevelInfo, computeBadges } from './lib/scoring.js';
-import { dateToYMD, keyForDate, dayIndexForDate } from './lib/date.js';
+import { dateToYMD, keyForDate, dayIndexForDate, msToNextLocalMidnight, formatCountdown } from './lib/date.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
 import { notificationsSupported, getNotifPermission, requestNotifPermission, scheduleReminderWindow, cancelTodayReminder, cancelAllReminders, onReminderTap } from './lib/notifications.js';
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from './lib/webpush.js';
@@ -5322,7 +5322,51 @@ function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
   );
 }
 
-function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge }) {
+// Results-screen return moment (2026-08-29). "Come back tomorrow 🌙" was a
+// dead static line: no clock, no stake, no action — at the one moment the
+// player is provably engaged AND finished for the day. The countdown is the
+// genre's proven return device (Wordle), the streak line names what tonight
+// puts at risk, and Remind me rides this real click gesture (Safari requires
+// the permission request inside one) without spending a lifetime soft-ask.
+function TomorrowTeaser({ streak, remindState, onRemind, compact }) {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const [busy, setBusy] = useState(false);
+  const ko = formatCountdown(msToNextLocalMidnight(now));
+  const MONO = "ui-monospace, SFMono-Regular, Menlo, monospace";
+  return (
+    <div style={{ textAlign: "center", padding: compact ? "2px 0" : "10px 0 2px", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+      <div style={{ fontSize: compact ? 13.5 : 14, fontWeight: 700, color: "var(--t2)" }}>
+        {streak >= 1
+          ? <>Both dailies done — tomorrow makes it <span style={{ color: "#FFC107" }}>🔥{streak + 1}</span></>
+          : <>Both dailies done 🌙</>}
+      </div>
+      {/* Mirrors the Daily tab's amber countdown pill so "when do I return"
+          reads identically everywhere. */}
+      <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
+        <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
+        <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 800, color: "#FFC107", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
+      </span>
+      {remindState === "off" && (
+        <button
+          disabled={busy}
+          onClick={async () => { setBusy(true); try { await onRemind(); } finally { setBusy(false); } }}
+          style={{ padding: "9px 16px", borderRadius: 999, background: "none", border: "1px solid var(--border)", color: "var(--t1)", fontFamily: "inherit", fontSize: 13.5, fontWeight: 700, cursor: "pointer", opacity: busy ? 0.6 : 1 }}
+        >
+          🔔 Remind me tomorrow
+        </button>
+      )}
+      {remindState === "on" && (
+        <div style={{ fontSize: 12.5, fontWeight: 600, color: "var(--t3)" }}>🔔 We’ll nudge you tomorrow evening</div>
+      )}
+    </div>
+  );
+}
+
+function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, streak, remindState, onRemind }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -5495,9 +5539,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, surviva
         {!isDaily && <button className="btn-3d" onClick={onRetry}>Play Again</button>}
         {isDaily && footleOpen && <button className="btn-3d" onClick={onPlayFootle}>{footleCta}</button>}
         {isDaily && !footleOpen && (
-          <div style={{textAlign:"center", padding:"12px 0 2px", fontSize:14, fontWeight:700, color:"var(--t2)"}}>
-            Both dailies done — come back tomorrow 🌙
-          </div>
+          <TomorrowTeaser streak={streak} remindState={remindState} onRemind={onRemind} />
         )}
         <button className="btn-3d share" onClick={onShare}>Share Score</button>
         {stumpQ && <button className="btn-3d share" onClick={onStump}>Stump a mate</button>}
@@ -5578,7 +5620,9 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, surviva
             {!isDaily && <button className="rd-btn rd-btn-primary" onClick={onRetry}>Play again</button>}
             {isDaily && footleOpen && <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>}
             {isDaily && !footleOpen && (
-              <span style={{alignSelf:"center", fontSize:13.5, fontWeight:700, color:"var(--t2)"}}>Come back tomorrow 🌙</span>
+              <div style={{alignSelf:"center"}}>
+                <TomorrowTeaser streak={streak} remindState={remindState} onRemind={onRemind} compact />
+              </div>
             )}
             <button className="rd-btn rd-btn-ghost" onClick={onHome}>Home</button>
             <button className="rd-btn rd-btn-ghost" onClick={onShare}>
@@ -10866,6 +10910,18 @@ function AppInner() {
     }
   }, [dailyDone, showToast, user?.id]);
 
+  // Results-screen "Remind me tomorrow" (2026-08-29): one state string keeps
+  // TomorrowTeaser dumb. Native = local notifications (work signed-out);
+  // web = push subscription (persists by account, so guests don't see it).
+  const resultsRemindState = notificationsSupported()
+    ? (notifEnabled ? 'on' : (notifBlocked ? 'blocked' : 'off'))
+    : (webPushSupported() && user?.id ? (webPushOn ? 'on' : (webPushPermission() === 'denied' ? 'blocked' : 'off')) : 'unsupported');
+  const remindFromResults = useCallback(async () => {
+    loopEvent('results-remind-tap', { engine: notificationsSupported() ? 'native' : 'web' });
+    if (notificationsSupported()) await handleToggleNotif(true);
+    else await handleToggleWebPush(true);
+  }, [handleToggleNotif, handleToggleWebPush]);
+
   // Soft pre-prompt: ask in-app BEFORE spending the one-shot iOS prompt. Caps at
   // 2 lifetime asks (after the first daily, then again at a 3-day streak if the
   // user declined). Only shows while the OS permission is still undecided.
@@ -10912,7 +10968,7 @@ function AppInner() {
         if (!user?.id) return bail("guest");
         if (webPushOn) return bail("already-on");
         if (webPushPermission() !== 'default') return bail(`perm-${webPushPermission()}`);
-        const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
+        const asks = parseInt(localStorage.getItem('biq_notif_asks_v2') || '0', 10);
         if (asks >= 2) return bail("asks-exhausted");
         // Same rule as the native path — see the note there. Bails are already
         // instrumented, so this one is measurable rather than invisible.
@@ -10924,14 +10980,14 @@ function AppInner() {
         // who closes the tab inside the 7s hold used to burn one of their two
         // lifetime asks on a sheet they never saw — prod showed a visitor at
         // asks-exhausted with notif-prompt-shown fired twice ever.
-        notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks', String(asks + 1)); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
+        notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks_v2', String(asks + 1)); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web", copy: "v2-stake" }); setNotifPromptOpen(true); }, 7000);
         return true;
       } catch { return false; }
     }
     const nBail = (reason) => { loopEvent("notif-prompt-skipped", { reason, engine: "native" }); return false; };
     try {
       if (localStorage.getItem('biq_notif_enabled') === '1') return nBail("already-enabled");
-      const asks = parseInt(localStorage.getItem('biq_notif_asks') || '0', 10);
+      const asks = parseInt(localStorage.getItem('biq_notif_asks_v2') || '0', 10);
       if (asks >= 2) return nBail("asked-twice");
       // ⚠️ NEVER ON A PLAYER'S FIRST RESULT SCREEN.
       // The 7s hold below fixed the sheet COVERING the payoff. It did not fix
@@ -10968,7 +11024,7 @@ function AppInner() {
       // we most want here, so it gets the beat. The ask still lands on the
       // result screen, which is the moment Alex called correctly.
       // Ask spent at open time, same reason as the web path above.
-      notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks', String(asks + 1)); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web" }); setNotifPromptOpen(true); }, 7000);
+      notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks_v2', String(asks + 1)); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web", copy: "v2-stake" }); setNotifPromptOpen(true); }, 7000);
       return true;
     } catch { return false; }
   }, [user?.id, webPushOn]);
@@ -11514,7 +11570,7 @@ function AppInner() {
     // rating while retention is the binding constraint.
     const notifOwnsDailyMoment = IS_NATIVE && mode === "daily"
       && localStorage.getItem('biq_notif_enabled') !== '1'
-      && parseInt(localStorage.getItem('biq_notif_asks') || '0', 10) < 2;
+      && parseInt(localStorage.getItem('biq_notif_asks_v2') || '0', 10) < 2;
     const challengeOwnsDailyMoment = mode === "daily" && !!pendingChallenge
       && challengeDayOffset(pendingChallenge.date) <= 1;
     const willAskNativeReview = hadGreatMoment && newTotal >= 5
@@ -11604,7 +11660,7 @@ function AppInner() {
       const peak = mode === "daily" || isPB;
       const notifWillClaim = IS_NATIVE && mode === "daily"
         && localStorage.getItem('biq_notif_enabled') !== '1'
-        && parseInt(localStorage.getItem('biq_notif_asks') || '0', 10) < 2;
+        && parseInt(localStorage.getItem('biq_notif_asks_v2') || '0', 10) < 2;
       // Level-up guard (fresh-code audit): the full-screen level-up overlay
       // owns +400..+3900ms; the auth sheet at +2000ms would cover it. Skip
       // and leave the once-flag unset so the nudge takes the next peak.
@@ -13095,9 +13151,16 @@ function AppInner() {
               <div aria-hidden="true" style={{width:56,height:56,borderRadius:16,margin:"0 auto 12px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
                 <Bell size={26} strokeWidth={2.25} color="#58CC02" />
               </div>
-              <div id="notif-sheet-title" style={{fontSize:19,fontWeight:800,color:"var(--t1)",textAlign:"center",marginBottom:8,letterSpacing:"-0.3px"}}>Keep your streak alive</div>
+              {/* Copy v2 (2026-08-29): the generic "Keep your streak alive"
+                  converted 0 of its first 10 shows in prod. Name the actual
+                  stake — THIS player's live streak — when there is one. */}
+              <div id="notif-sheet-title" style={{fontSize:19,fontWeight:800,color:"var(--t1)",textAlign:"center",marginBottom:8,letterSpacing:"-0.3px"}}>
+                {loginStreak >= 2 ? `Don’t lose your ${loginStreak}-day streak` : 'Never miss a daily'}
+              </div>
               <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.5,marginBottom:20}}>
-                One reminder each evening, only if you haven't played. Turn it off anytime in Settings.
+                {loginStreak >= 2
+                  ? `One nudge at 7pm — only on a day you haven’t played yet. Off anytime in Settings.`
+                  : `New puzzles drop at midnight. One nudge at 7pm if you haven’t played — off anytime in Settings.`}
               </div>
               <button
                 onClick={async () => {
@@ -13754,6 +13817,9 @@ function AppInner() {
             wrongAnswers={wrongAnswers}
             onReport={reportQuestion}
             askedQuestions={questions}
+            streak={loginStreak}
+            remindState={resultsRemindState}
+            onRemind={remindFromResults}
             photoNudge={(user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
               <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
                 <div style={{width:44,height:44,flexShrink:0}}>
