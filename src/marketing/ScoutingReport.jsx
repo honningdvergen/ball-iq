@@ -485,7 +485,7 @@ export default function ScoutingReport() {
         <div className="sr-w sr-open">
           <h1 className="sr-h1">Five questions.<br />One honest verdict.</h1>
           <p className="sr-lede">
-            No account, nothing to install. The report writes itself while you answer.
+            No account, no waiting. The report writes itself while you answer.
           </p>
         </div>
       )}

@@ -603,6 +603,12 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
           >
             {room.code}
           </button>
+          {/* Alex, device test 2026-08-29: the tap-to-copy was invisible —
+              "it does not say tap to copy or anything which it probably
+              should". An affordance nobody can see is half a feature. */}
+          <div aria-hidden="true" style={{ fontSize: 10.5, fontWeight: 600, color: "var(--t3)", marginTop: 2 }}>
+            tap to copy
+          </div>
           {/* Sprint #92 GGG4: native share sheet for the canonical /join/CODE
               URL. Recipient with the app installed triggers the Universal
               Link and lands in the join flow; without the app, the SPA
@@ -1108,6 +1114,31 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
   const winner = sorted[0];
   const isWinner = !!myUserId && !!winner && winner.user_id === myUserId;
   const [reportedQs, setReportedQs] = useState(() => new Set());
+  // Review collapsed by default — the rematch board owns the screen.
+  const [reviewOpen, setReviewOpen] = useState(false);
+  // Joiners usually have NO room.questions: their initial room select ran
+  // before start_game wrote them, and realtime UPDATE payloads omit
+  // unchanged TOASTed columns — so the review section silently never
+  // rendered for the non-host side (found on the 2026-08-29 web e2e; the
+  // host device always had it, which is why nobody noticed). One refetch
+  // when the ended screen mounts closes the gap.
+  const [fetchedQuestions, setFetchedQuestions] = useState(null);
+  useEffect(() => {
+    if (Array.isArray(room?.questions) && room.questions.length > 0) return;
+    if (!room?.code) return;
+    let dead = false;
+    (async () => {
+      try {
+        const { data, error } = await supabase.from('game_rooms').select('questions').eq('code', room.code).limit(1);
+        if (error) return;
+        if (!dead && Array.isArray(data?.[0]?.questions) && data[0].questions.length > 0) setFetchedQuestions(data[0].questions);
+      } catch { /* review is optional — fail to absent, not to broken */ }
+    })();
+    return () => { dead = true; };
+  }, [room?.code]);
+  const reviewQuestions = (Array.isArray(room?.questions) && room.questions.length > 0)
+    ? room.questions
+    : (fetchedQuestions || []);
   // Survival: if everyone got eliminated, the "winner" is whoever lasted
   // longest — frame it as that rather than "You won!" beside their own 💀 row.
   const survivalLastStanding = isSurvival && !!winner && winner.eliminated_at_q != null;
@@ -1707,55 +1738,6 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
         </div>
         )}
 
-        {/* The round's questions, with a report on each. Two things at once:
-            multiplayer was the last mode with NO report path, and the playtester
-            note that this screen is dull was fair — it showed scores and nothing
-            you actually played.
-
-            ⚠️ Deliberately renders the PROMPT ONLY, never question.correct. The
-            answer key is embedded in the stored jsonb today, but Phase 2 of the
-            answer-key hardening strips it (task #12) — anything reading `correct`
-            here would break the day that ships. A full answer review belongs with
-            Phase 2, sourced from the member-gated reveal_question RPC. */}
-        {Array.isArray(room?.questions) && room.questions.length > 0 && onReport && (
-          <div style={{ marginBottom: 20 }}>
-            <div className="ds-eyebrow" style={{ textAlign: 'center', marginBottom: 10 }}>
-              This round's {room.questions.length} questions
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {room.questions.map((q, i) => {
-                const rkey = q?.id != null ? String(q.id) : `idx:${i}`;
-                const done = reportedQs.has(rkey);
-                return (
-                  <div key={i} style={{ background: 'var(--s1)', border: '1px solid var(--border)',
-                                        borderRadius: 11, padding: '11px 13px' }}>
-                    <div style={{ fontSize: 13.5, color: 'var(--t1)', lineHeight: 1.5 }}>
-                      <span style={{ color: 'var(--t3)', fontWeight: 700 }}>{i + 1}. </span>{q?.prompt}
-                    </div>
-                    <button
-                      type="button"
-                      disabled={done}
-                      onClick={() => {
-                        if (done) return;
-                        onReport({ id: q?.id, q: q?.prompt, picked: null, correct: null,
-                                   mode: `mp-${room?.mode || 'race'}` });
-                        setReportedQs(prev => new Set(prev).add(rkey));
-                      }}
-                      style={{ marginTop: 8, padding: '6px 10px', minHeight: 34,
-                               background: 'none', border: '1px solid var(--border)', borderRadius: 8,
-                               cursor: done ? 'default' : 'pointer',
-                               color: done ? 'var(--accent)' : 'var(--t3)',
-                               fontSize: 11.5, fontWeight: 700, fontFamily: 'inherit',
-                               WebkitAppearance: 'none', appearance: 'none',
-                               WebkitTextFillColor: 'currentColor' }}>
-                      {done ? '✓ Reported' : '⚑ This looks wrong'}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
         {/* Sits ABOVE the action stack on purpose: Rematch and Back to Home
             are both exits, and an offer placed after them is an offer made
             to someone already leaving. */}
@@ -1814,14 +1796,13 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
             >
               {iAmReady ? "✓ You're ready — tap to cancel" : "I'm ready"}
             </button>
-            {iCanStart && (
+            {iCanStart && readyCount >= 2 && (
               <button
                 onClick={startNextRound}
-                disabled={nextBusy || readyCount < 2 || !iAmReady}
+                disabled={nextBusy || !iAmReady}
                 style={{ width: '100%', marginTop: 8, padding: 13, borderRadius: 999, background: (readyCount >= 2 && iAmReady) ? 'var(--accent)' : 'var(--s2)', border: 'none', color: (readyCount >= 2 && iAmReady) ? '#06230C' : 'var(--t3)', boxShadow: (readyCount >= 2 && iAmReady) ? '0 8px 22px -8px rgba(88,204,2,0.55)' : 'none', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: (readyCount >= 2 && iAmReady) ? 'pointer' : 'not-allowed' }}
               >
                 {nextBusy ? 'Starting…'
-                  : readyCount < 2 ? 'Waiting for one more…'
                   : readyCount < totalHere ? `Start next round (${totalHere - readyCount} not ready)`
                   : 'Start next round'}
               </button>
@@ -1849,9 +1830,9 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
             <button
               onClick={handleRematch}
               disabled={rematching}
-              style={{ width: '100%', marginBottom: 10, padding: 12, borderRadius: 999, background: 'transparent', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, cursor: 'pointer' }}
+              style={{ width: '100%', marginBottom: 6, padding: '8px 12px', minHeight: 36, background: 'none', border: 'none', color: 'var(--t3)', fontFamily: 'inherit', fontSize: 12.5, fontWeight: 600, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 3 }}
             >
-              {rematching ? 'Setting up…' : 'Someone left — start a new room'}
+              {rematching ? 'Setting up…' : 'Opponent gone? Start a new room'}
             </button>
           )}
           {rematchError && (
@@ -1865,11 +1846,62 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
           </button>
           <button
             onClick={onExit}
-            style={{ width: '100%', padding: 13, borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+            style={{ width: '100%', padding: '10px 12px', minHeight: 40, background: 'none', border: 'none', color: 'var(--t3)', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 600, cursor: 'pointer' }}
           >
             Back to Home
           </button>
         </div>
+        {/* The round's questions, with a report on each — MOVED BELOW the
+            action stack and collapsed (Alex, device test 2026-08-29: "all the
+            10 questions are in the way… a shame we have to scroll down all
+            this way to play again"). The rematch board is the screen's job;
+            the review is reference material for whoever wants it. */}
+        {reviewQuestions.length > 0 && onReport && (
+          <div style={{ marginTop: 18, marginBottom: 8 }}>
+            <button
+              type="button"
+              onClick={() => setReviewOpen(o => !o)}
+              aria-expanded={reviewOpen}
+              style={{ width: '100%', padding: '10px 12px', minHeight: 40, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--t3)', fontFamily: 'inherit', fontSize: 12.5, fontWeight: 700, letterSpacing: '0.04em' }}
+            >
+              {reviewOpen ? 'HIDE THE QUESTIONS ▴' : `REVIEW THIS ROUND'S ${reviewQuestions.length} QUESTIONS ▾`}
+            </button>
+            {reviewOpen && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {reviewQuestions.map((q, i) => {
+                  const rkey = q?.id != null ? String(q.id) : `idx:${i}`;
+                  const done = reportedQs.has(rkey);
+                  return (
+                    <div key={i} style={{ background: 'var(--s1)', border: '1px solid var(--border)',
+                                          borderRadius: 11, padding: '11px 13px' }}>
+                      <div style={{ fontSize: 13.5, color: 'var(--t1)', lineHeight: 1.5 }}>
+                        <span style={{ color: 'var(--t3)', fontWeight: 700 }}>{i + 1}. </span>{q?.prompt}
+                      </div>
+                      <button
+                        type="button"
+                        disabled={done}
+                        onClick={() => {
+                          if (done) return;
+                          onReport({ id: q?.id, q: q?.prompt, picked: null, correct: null,
+                                     mode: `mp-${room?.mode || 'race'}` });
+                          setReportedQs(prev => new Set(prev).add(rkey));
+                        }}
+                        style={{ marginTop: 8, padding: '6px 10px', minHeight: 34,
+                                 background: 'none', border: '1px solid var(--border)', borderRadius: 8,
+                                 cursor: done ? 'default' : 'pointer',
+                                 color: done ? 'var(--accent)' : 'var(--t3)',
+                                 fontSize: 11.5, fontWeight: 700, fontFamily: 'inherit',
+                                 WebkitAppearance: 'none', appearance: 'none',
+                                 WebkitTextFillColor: 'currentColor' }}>
+                        {done ? '✓ Reported' : '⚑ This looks wrong'}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
