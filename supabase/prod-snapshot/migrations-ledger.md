@@ -122,3 +122,13 @@ Refresh the snapshot after applying.
   old function. ⚠️ The repo migration FILE could not be written this session
   (tooling permission); prod + this ledger entry are the source of truth
   until the file lands. Verified single overload + grants post-apply.
+
+- **v1_9b_notifications_type_challenge_result** (2026-08-29, minutes after
+  v1_9) — notifications_type_check re-created to admit 'challenge_result'.
+  The live e2e caught v1_9's miss: the CHECK rejected the insert and the
+  exception rolled back the WHOLE record_challenge_event call, losing the
+  'played' event too. Lesson for every future notification type: the type
+  CHECK gates inserts and a definer-function insert failure is not partial —
+  extend the constraint IN the same migration that introduces a type.
+  E2E after fix: anon responder on a ?f= link produced the notifications row
+  ("A friend took your Daily 7 challenge — you hold the edge 4–1").
