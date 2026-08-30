@@ -1,0 +1,15 @@
+-- v1_10c: repair — service_role had NO DML on email_events, so the day-2
+-- sender's record-first insert failed permission-denied on every candidate
+-- (the unique-violation `continue` swallowed it: {"candidates":1,"sent":0})
+-- and email-unsub's opt-out insert would have failed the same way.
+-- Found 2026-08-30 by reading the instrument the day after go-live.
+--
+-- Why it happened: v1_10's `revoke all ... from public, anon, authenticated`
+-- was the house rule for locking a new table down — but on this table the
+-- creation-time defaults left service_role with only REFERENCES/TRUNCATE/
+-- TRIGGER, no DML. The house rule guards against grants that are too WIDE;
+-- nothing guarded against too NARROW. Lesson: after any new-table migration,
+-- verify the intended writer's grants, not just the revokes.
+--
+-- Minimal DML for both edge functions; postgres keeps full ownership for ops.
+grant select, insert on table public.email_events to service_role;
