@@ -105,7 +105,33 @@ const C = {
 }
 
 export default function Login({ asOverlay = false, onClose, promptReason = null }) {
-  const { signUp, signIn, resetPassword, signInWithGoogle, signInWithApple, continueAsGuest, isAnonUser, upgradeAnonAccount } = useAuth()
+  const { signUp, signIn, resetPassword, signInWithGoogle, signInWithApple, continueAsGuest, isAnonUser, upgradeAnonAccount, signInAsGuest } = useAuth()
+
+  // Device test 2026-08-30: a signed-out player who was TOLD a room code (not
+  // sent a link) had no way in without creating an account — while the exact
+  // same room admits link-tapping guests anonymously. Same engine, new door:
+  // normalize the code, persist it where the boot initializer already looks,
+  // broadcast it for a mounted AppInner, and start the anon session. Shown on
+  // the online/invite hard gates only — 'friends' genuinely needs an account.
+  const [joinCode, setJoinCode] = useState('')
+  const [joinOpen, setJoinOpen] = useState(false)
+  const [joinBusy, setJoinBusy] = useState(false)
+  const [joinErr, setJoinErr] = useState('')
+  const joinWithCode = async () => {
+    if (joinBusy) return
+    const code = joinCode.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6)
+    if (code.length < 4) { setJoinErr('That code looks too short — check it and try again.'); return }
+    setJoinBusy(true); setJoinErr('')
+    try { localStorage.setItem('biq_pending_join', JSON.stringify({ c: code, at: Date.now() })) } catch {}
+    try { window.dispatchEvent(new CustomEvent('biq:join-code', { detail: code })) } catch {}
+    const { error } = await signInAsGuest()
+    if (error) {
+      setJoinBusy(false)
+      setJoinErr("Guest entry isn't available right now — sign up free instead, it takes a minute.")
+      return
+    }
+    onClose?.()
+  }
   // Progressive disclosure: 'choices' (brand + social + guest) → 'email' (form).
   // v1.6 guest entry: anonymous users land straight on the email form —
   // their upgrade path is email+password (social sign-in would START A NEW
@@ -354,6 +380,37 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                 style={{ ...S.btnBase, padding: 16, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1 }}>
                 {MAIL_GLYPH}<span>Continue with email</span>
               </button>
+              {prompt?.hardGate && (promptReason === 'online' || promptReason === 'invite') && (
+                joinOpen ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 2 }}>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <input
+                        value={joinCode}
+                        onChange={(e) => { setJoinCode(e.target.value.toUpperCase()); setJoinErr('') }}
+                        onKeyDown={(e) => { if (e.key === 'Enter') joinWithCode() }}
+                        placeholder="ROOM CODE"
+                        maxLength={6}
+                        autoFocus
+                        autoCapitalize="characters"
+                        autoCorrect="off"
+                        spellCheck={false}
+                        aria-label="Room code"
+                        style={{ flex: 1, minWidth: 0, padding: '13px 14px', borderRadius: 12, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 16, fontWeight: 700, letterSpacing: '0.2em', textAlign: 'center', outline: 'none' }}
+                      />
+                      <button type="button" onClick={joinWithCode} disabled={joinBusy}
+                        style={{ ...S.btnBase, width: 'auto', padding: '13px 20px', border: 'none', background: '#58CC02', color: '#06230C', fontWeight: 800, opacity: joinBusy ? 0.6 : 1 }}>
+                        {joinBusy ? 'Joining…' : 'Join'}
+                      </button>
+                    </div>
+                    {joinErr && <div role="alert" style={{ fontSize: 12, lineHeight: 1.4, color: '#ff6b6b', textAlign: 'center' }}>{joinErr}</div>}
+                  </div>
+                ) : (
+                  <button type="button" onClick={() => setJoinOpen(true)}
+                    style={{ ...S.btnBase, gap: 8, padding: 15, marginTop: 2, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, fontSize: 15 }}>
+                    Have a room code? Join as a guest
+                  </button>
+                )
+              )}
               <button type="button" className="biql-guest" onClick={guestContinue}
                 style={{ ...S.btnBase, gap: 8, padding: 15, marginTop: 2, border: `1px solid ${C.border}`, background: 'transparent', color: C.t2, fontSize: 15 }}>
                 {/* NOT "Continue as guest" on a hard gate. At the front door that

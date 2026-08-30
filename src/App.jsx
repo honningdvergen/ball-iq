@@ -9190,6 +9190,18 @@ function AppInner() {
     } catch {}
     return null;
   });
+  // Typed-code guest entry (Login.jsx's joinWithCode): when AppInner is
+  // already mounted (local-guest overlay case) the localStorage write alone
+  // is invisible — this event carries the code into live state, and the
+  // existing gate modal / autoJoin routing takes it from there.
+  useEffect(() => {
+    const onJoinCode = (e) => {
+      const code = String(e?.detail || '').toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6);
+      if (code) setPendingJoinCode(code);
+    };
+    window.addEventListener('biq:join-code', onJoinCode);
+    return () => window.removeEventListener('biq:join-code', onJoinCode);
+  }, []);
   const clearPendingJoin = useCallback(() => {
     setPendingJoinCode(null);
     loopEvent("join-token-consumed");
@@ -12381,7 +12393,21 @@ function AppInner() {
   // Inline join from the Online tab — same RPC + SQLSTATE copy as OnlineEntry,
   // but the code row lives on the tab (no intermediate entry screen).
   const hubJoinRoom = useCallback(async (rawCode) => {
-    if (!user || isGuest) { openAuthPrompt("online"); return { ok: false, error: "" }; }
+    // Device test 2026-08-30: signed out, a TYPED code hit the auth wall and
+    // was silently discarded — while the same room admits link-tapping guests.
+    // Route the typed code into pendingJoinCode instead: the join-gate modal
+    // (guest primary, sign-in secondary) and autoJoin routing take over, the
+    // exact machinery /join/CODE links already use.
+    if (!user || isGuest) {
+      const code = String(rawCode || "").toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6);
+      if (code.length >= 4) {
+        try { localStorage.setItem("biq_pending_join", JSON.stringify({ c: code, at: Date.now() })); } catch {}
+        setPendingJoinCode(code);
+      } else {
+        openAuthPrompt("online");
+      }
+      return { ok: false, error: "" };
+    }
     const trimmed = String(rawCode || "").trim().toUpperCase();
     if (trimmed.length !== 6) return { ok: false, error: "Enter the 6-character room code" };
     const result = await mpJoinRoom({
@@ -12399,7 +12425,7 @@ function AppInner() {
     setStage1RoomCode(result.code || trimmed);
     setScreen("online-stage1-lobby");
     return { ok: true };
-  }, [user, isGuest, authProfile?.username, profile?.name, openAuthPrompt]);
+  }, [user, isGuest, authProfile?.username, profile?.name, openAuthPrompt, setPendingJoinCode]);
 
   // Stable callbacks for memoized children
   // ── The one-day archive ────────────────────────────────────────────────────
