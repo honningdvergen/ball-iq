@@ -90,6 +90,16 @@ function preloadGameRootPlugin() {
           'Update this plugin (or delete it) rather than shipping a dead preload.',
         )
       }
+      // Marketing gets the mirror treatment (perf critique 2026-08-30: lab
+      // LCP 4.0s at / — the hero text waits on entry bundle → THEN the lazy
+      // ScoutingReport chunk, a full serial RTT). Same throw discipline.
+      const mktFile = readdirSync(assets).find((f) => /^ScoutingReport-.*\.js$/.test(f))
+      if (!mktFile) {
+        throw new Error(
+          '[preload-gameroot] no ScoutingReport-*.js in dist/assets — the lazy entry was renamed or inlined. ' +
+          'Update this plugin (or delete it) rather than shipping a dead preload.',
+        )
+      }
       // Injected as a script, not a static <link>: a static tag would make every
       // marketing visitor at / download the game bundle, breaking main.jsx's
       // "marketing visitors never download the game bundle" guarantee. Mirrors
@@ -104,16 +114,15 @@ function preloadGameRootPlugin() {
         '||!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());' +
         "var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;" +
         'var p=location.pathname;' +
-        "var mkt=(p==='/'||p.indexOf('/home-preview')===0)&&!native&&!standalone;" +
-        'if(mkt)return;' +
+        "var mkt=(p==='/'||p.indexOf('/home-preview')===0||p.indexOf('/home-old')===0)&&!native&&!standalone;" +
         "var l=document.createElement('link');l.rel='modulepreload';" +
-        `l.href=${JSON.stringify('/assets/' + file)};l.crossOrigin='';` +
+        `l.href=mkt?${JSON.stringify('/assets/' + mktFile)}:${JSON.stringify('/assets/' + file)};l.crossOrigin='';` +
         'document.head.appendChild(l);' +
         '}catch(e){}})();'
       const html = readFileSync(indexHtml, 'utf8')
       if (!html.includes('</head>')) throw new Error('[preload-gameroot] no </head> in dist/index.html')
       writeFileSync(indexHtml, html.replace('</head>', `<script>${js}</script>\n</head>`))
-      console.log(`[preload-gameroot] injected modulepreload for /assets/${file}`)
+      console.log(`[preload-gameroot] injected modulepreload for /assets/${file} (game) + /assets/${mktFile} (marketing)`)
     },
   }
 }

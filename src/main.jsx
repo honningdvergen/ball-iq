@@ -177,7 +177,8 @@ const showMarketing =
 // nodes. MarketingHome remains at /home-old for comparison and as the
 // visual rollback; the real rollback is reverting this commit.
 const _isOldHome = showMarketing && _path.startsWith('/home-old')
-const ScoutingReport = React.lazy(() => import('./marketing/ScoutingReport.jsx'))
+const loadScoutingReport = () => import('./marketing/ScoutingReport.jsx')
+const ScoutingReport = React.lazy(loadScoutingReport)
 
 // The game tree is lazy too (see GameRoot.jsx) so marketing visitors never
 // download the ~200KB-gz game bundle. React.lazy only fires its import() on
@@ -188,6 +189,9 @@ const ScoutingReport = React.lazy(() => import('./marketing/ScoutingReport.jsx')
 const loadGameRoot = () => import('./GameRoot.jsx')
 const GameRoot = React.lazy(loadGameRoot)
 if (!showMarketing) loadGameRoot()
+// Same render-cycle head start for the homepage itself — React.lazy waits
+// for first render; marketing visitors' LCP is inside this chunk.
+else if (!_isOldHome) loadScoutingReport()
 
 // Suspense fallback for the lazily-loaded game tree: reproduces index.html's
 // #root splash markup (the same wordmark + animated bar) so swapping the
