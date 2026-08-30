@@ -2693,6 +2693,13 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   useEffect(() => { prevTimeLeftRef.current = timeLeft; timeLeftRef.current = timeLeft; }, [timeLeft]);
   useEffect(() => { speedScoreRef.current = speedScore; }, [speedScore]);
   const [showQuit, setShowQuit] = useState(false);
+  // First-session audit 2026-08-30 (#4): coming from the untimed Daily 7, a
+  // timed run's clock was already draining before the player could read Q1 —
+  // the first ~2 seconds of every club quiz were stolen. Timed modes now hold
+  // Q1 behind a tap-to-start gate (one tap, no 3-2-1 wait); the timer effect
+  // below doesn't run until armed. Q2+ are mid-flow, so they start hot as
+  // before. Untimed modes never see the gate.
+  const [armed, setArmed] = useState(false);
   const [showNext, setShowNext] = useState(false);
   // ⚠️ RE-ENTRY GUARD — a double-tap on "Next →" used to SKIP A QUESTION.
   // Found 2026-08-19 from Clarity: "Next →" was the most dead-clicked element
@@ -2755,25 +2762,33 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // directly, later questions raise the quit-confirm; a press while the
   // confirm is up dismisses it (same as the backdrop tap). The quit modal is
   // deliberately NOT on the useModalA11y stack, so the shell can't close it.
-  useEffect(() => {
-    const onHwBack = (e) => {
-      e.preventDefault();
-      if (showQuit) { setShowQuit(false); return; }
-      if (idx === 0) { onBack(); return; }
-      setShowQuit(true);
-    };
-    window.addEventListener("biq:hw-back", onHwBack);
-    return () => window.removeEventListener("biq:hw-back", onHwBack);
-  }, [idx, showQuit, onBack]);
-
-
   const total = questions?.length || 0;
   const q = questions?.[idx];
   // Phase 6b Issue A: Daily 7 is a leisurely review experience; the
   // auto-fail-after-20s signal was creating frustration on re-entry
   // (the timer-at-full initial render read as "stale state"). Daily
   // joins survival/legends/chaos in skipping the timer.
+  // ⚠️ Declared ABOVE the hw-back effect below — its dep array reads `timed`
+  // during render, and a dep array evaluates at the call site, not inside the
+  // closure. Declaring it after the effect is a TDZ crash on first render
+  // (caught by the browser verify pass, 2026-08-30).
   const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "daily" && q?.type !== "tf";
+
+  useEffect(() => {
+    const onHwBack = (e) => {
+      e.preventDefault();
+      if (showQuit) { setShowQuit(false); return; }
+      // Q1 before the clock starts (or in an untimed mode) has nothing at
+      // stake — exit instantly. Once a timed run is live, a back press is a
+      // question with time draining: confirm it (audit #5 — a mis-tap on Q1
+      // of a timed run killed the attempt with no warning).
+      if (idx === 0 && (!timed || !armed)) { onBack(); return; }
+      setShowQuit(true);
+    };
+    window.addEventListener("biq:hw-back", onHwBack);
+    return () => window.removeEventListener("biq:hw-back", onHwBack);
+  }, [idx, showQuit, onBack, timed, armed]);
+
   const isTyped = q?.type === "typed";
   const isTF = q?.type === "tf";
   const answered = selected !== null || typedResult !== null;
@@ -2962,6 +2977,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
 
   useEffect(() => {
     if (!timed || done || isTyped) return;
+    if (idx === 0 && !armed) return; // Q1 waits for the tap-to-start gate
     setTimeLeft(timerDuration);
     clearInterval(timerRef.current);
     // ⚠️ ONE CLOCK, NOT TWO. This used to DECREMENT a counter on an interval
@@ -3047,7 +3063,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       });
     }, timeoutMs);
     return () => { clearInterval(timerRef.current); clearTimeout(answerTimeoutRef.current); };
-  }, [idx, timed, done, isTyped]);
+  }, [idx, timed, done, isTyped, armed]);
 
   if (done) return null;
   if (!q) return (
@@ -3109,7 +3125,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       <div className="qd-play">
       <div className="q-top">
         <button className="back-btn" onClick={() => {
-          if (idx === 0) { onBack(); return; }
+          if (idx === 0 && (!timed || !armed)) { onBack(); return; }
           setShowQuit(true);
         }} aria-label="Go back">←</button>
         {mode === "survival" ? (
@@ -3395,6 +3411,28 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       })()}
       </div>{/* /.qd-play */}
 
+      {timed && idx === 0 && !armed && !done && (
+        <div
+          onClick={() => setArmed(true)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setArmed(true); }}
+          aria-label="Start the quiz"
+          style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,zIndex:60,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:8,cursor:"pointer",padding:24,textAlign:"center"}}
+        >
+          <div aria-hidden="true" style={{width:56,height:56,borderRadius:16,marginBottom:6,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
+            <Timer size={26} strokeWidth={2.25} color="#58CC02" />
+          </div>
+          <div style={{fontSize:22,fontWeight:900,color:"var(--t1)"}}>Ready?</div>
+          <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5}}>{timerDuration}s per question — the clock starts when you tap.</div>
+          <button
+            onClick={(e) => { e.stopPropagation(); setArmed(true); }}
+            style={{marginTop:14,minHeight:48,padding:"13px 38px",borderRadius:999,background:"var(--accent)",border:"none",color:"#06230C",WebkitTextFillColor:"#0a1a00",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",boxShadow:"0 10px 26px -8px rgba(88,204,2,0.55)"}}
+          >
+            Start
+          </button>
+        </div>
+      )}
       {showQuit && (
         <div className="modal-overlay" onClick={() => setShowQuit(false)}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
@@ -13943,7 +13981,14 @@ function AppInner() {
               quizLabel={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
                 : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
                 : undefined}
-              onBack={() => { if(mode==="daily"){setScreen("home");setTab("daily");}else{setScreen("home");setTab("home");} }}
+              // Audit #5: a club/league quit stranded the player on Home —
+              // send them back to the picker they came from instead.
+              onBack={() => {
+                if (mode === "daily") { setScreen("home"); setTab("daily"); }
+                else if (activeClub) { setScreen("club-quiz"); }
+                else if (activeLeague) { setScreen("league-quiz"); }
+                else { setScreen("home"); setTab("home"); }
+              }}
               // Only modes with a HOW_TO_PLAY entry get the "?" — passing an
               // opener for (say) Classic would open an empty sheet.
               onHowToPlay={HOW_TO_PLAY[mode] ? openQuizRules : undefined}
