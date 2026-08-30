@@ -141,3 +141,19 @@ Refresh the snapshot after applying.
   still be saved 🛡". True to mechanics: tonight's play auto-shields or
   stashes fell/fellDay for same-day repair_login_streak. Grants unchanged
   (postgres-only, pg_cron); explicit revoke re-asserted.
+
+- **v1_10_day2_email** (2026-08-30, via MCP apply_migration, within Alex's
+  approved email-channel build) — email_events table (PK user_id+kind; kinds
+  day2/unsub; RLS on, all client grants revoked) and
+  select_day2_email_candidates() [definer; reads auth.users; grant
+  service_role ONLY, revoke public/anon/authenticated]. Selection: signed up
+  yesterday, played, unreachable by push on any platform, not returned
+  today, never emailed, not opted out, limit 40. Edge functions deployed the
+  same hour: send-day2-email (verify_jwt on; needs RESEND_API_KEY +
+  EMAIL_UNSUB_SECRET; record-first at-most-once) and email-unsub (verify_jwt
+  OFF by design — HMAC token is the auth; renders a human page always).
+  Resend domain balliq.app added; DKIM + send-subdomain SPF/MX installed in
+  Cloudflare by hand (root MX untouched — inbound routing preserved);
+  verification Pending at write time. REMAINING WIRE-UP: Alex pastes the two
+  secrets → apply the pg_cron hourly net.http_post entry → test send to
+  Alex's own email first.
