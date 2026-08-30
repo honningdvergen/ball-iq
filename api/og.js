@@ -237,6 +237,11 @@ function scoreCard(sp) {
   const tier = (sp.get('r') || '').slice(0, 28);
   const iq = String(Math.min(999, Math.max(0, parseInt((sp.get('iq') || '0').slice(0, 4), 10) || 0)));
   const line = (sp.get('sc') || '').slice(0, 12).replace(/[^0-9/]/g, '');
+  // Sender's name. The kicker line has ~34 chars of safe width next to the
+  // 250px badge; a combo that would overflow moves the name to the caption
+  // instead of risking a clipped card.
+  const sender = (sp.get('p') || '').slice(0, 14);
+  const senderInKicker = sender && (sender.length + name.length) <= 30;
   // Same hex sanitiser and luminance test as clubCard — the colour goes
   // straight into a style value and the param rides in from a crafted link.
   const rawC = sp.get('c') || '';
@@ -268,11 +273,11 @@ function scoreCard(sp) {
         h('div', { style: { fontSize: 118, fontWeight: 900, lineHeight: 1, display: 'flex' } }, iq),
       ),
       h('div', { style: { display: 'flex', flexDirection: 'column', gap: 14 } },
-        h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: '#9BA0B8', display: 'flex' } }, `${name.toUpperCase()} IQ`),
+        h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: '#9BA0B8', display: 'flex' } }, senderInKicker ? `${sender.toUpperCase()}'S ${name.toUpperCase()} IQ` : `${name.toUpperCase()} IQ`),
         ...(tier ? [h('div', { style: { fontSize: 72, fontWeight: 900, lineHeight: 1.04, color: '#FFFFFF', display: 'flex' } }, tier)] : []),
         h('div', { style: { display: 'flex', alignItems: 'center', gap: 16, marginTop: 8 } },
           ...(line ? [h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, `${line} correct`)] : []),
-          h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Beat it — free, no sign-up'),
+          h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, sender && !senderInKicker ? `Beat ${sender} — free, no sign-up` : 'Beat it — free, no sign-up'),
         ),
       ),
     ),

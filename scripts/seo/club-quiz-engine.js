@@ -332,8 +332,15 @@ var sh=res.querySelector('[data-share]');if(sh)sh.addEventListener('click',funct
    colour, the number and the club's own word for it. Humans who tap it land on
    the CLUB PAGE, not the app — so the loop can produce another share. */
 var u=location.href.split('#')[0].split('?')[0];
+/* Signed cards convert; ask for a first name ONCE, ever. '-' is the
+   "declined" sentinel so cancel is also remembered and never re-asked. */
+var pn='';try{pn=(localStorage.getItem('biq_share_name')||'').trim().slice(0,22)}catch(e){}
+if(!pn){try{var pna=window.prompt('Add your first name to the score card? (optional)','');
+pn=(pna||'').trim().slice(0,22);localStorage.setItem('biq_share_name',pn||'-')}catch(e){}}
+if(pn==='-')pn='';
 if(cslug){var t=cslug+'.'+G.iq+'.'+sc+'.'+run.length;
 var qp='?n='+encodeURIComponent(name)+'&r='+encodeURIComponent(G.tier);
+if(pn)qp+='&p='+encodeURIComponent(pn);
 if(badge)qp+='&b='+encodeURIComponent(badge);
 if(ccol)qp+='&c='+encodeURIComponent(ccol.replace('#',''));
 u=location.origin+'/iq/'+t+qp}

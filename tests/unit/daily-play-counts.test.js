@@ -96,7 +96,7 @@ describe('every daily mode counts as a game played', () => {
     // a bare false, so "never asked" and "asked and declined" looked identical.
     expect(APP).toMatch(/engine: "native"/);
     const skips = APP.match(/notif-prompt-skipped/g) || [];
-    expect(skips.length).toBe(2);   // one web bail, one native bail
+    expect(skips.length).toBe(3);   // web bail, native bail, 24h-gap bail
   });
 });
 

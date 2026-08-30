@@ -33,13 +33,15 @@ export default function handler(req) {
   const validId = /^q_[a-z0-9]+$/.test(id);
   const qt = (sp.get('qt') || '').slice(0, 160);
   const cat = (sp.get('c') || '').slice(0, 24);
+  // Sender's first name — preview text only, same trust model as qt.
+  const sender = (sp.get('p') || '').slice(0, 22);
 
   const ogParams = new URLSearchParams({ t: 'stump' });
   if (qt) ogParams.set('qt', qt);
   if (cat) ogParams.set('c', cat);
   const ogImage = `${origin}/api/og?${ogParams.toString()}`;
 
-  const title = 'Can you get this one? ⚽';
+  const title = sender ? `${sender} bets you can't get this one ⚽` : 'Can you get this one? ⚽';
   const description = qt
     ? `“${qt}” — tap to answer. Free, no sign-up.`
     : 'A football question is doing the rounds — tap to answer. Free, no sign-up.';

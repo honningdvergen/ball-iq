@@ -51,6 +51,7 @@ export default function handler(req) {
   const tier = (sp.get('r') || '').slice(0, 28);
   const badge = (sp.get('b') || '').slice(0, 4);
   const colour = (sp.get('c') || '').slice(0, 7);
+  const sender = (sp.get('p') || '').slice(0, 22);
 
   const valid = slug && iq !== null;
   // A score of "9/10" only makes sense when both halves survived validation.
@@ -62,6 +63,7 @@ export default function handler(req) {
   if (badge) ogParams.set('b', badge);
   if (colour) ogParams.set('c', colour);
   if (line) ogParams.set('sc', line);
+  if (sender) ogParams.set('p', sender);
   const ogImage = `${origin}/api/og?${ogParams.toString()}`;
 
   const who = name || 'football';
@@ -69,7 +71,7 @@ export default function handler(req) {
     ? `${who} IQ ${iq} — ${tier}`
     : `How well do you know ${who}?`;
   const description = valid
-    ? `Someone scored ${line ? line + ' ' : ''}on the ${who} quiz${tier ? ` — ${tier}` : ''}. Think you can beat it? Free, no sign-up, every answer explained.`
+    ? `${sender || 'Someone'} scored ${line ? line + ' ' : ''}on the ${who} quiz${tier ? ` — ${tier}` : ''}. Think you can beat ${sender ? 'them' : 'it'}? Free, no sign-up, every answer explained.`
     : `Take the ${who} quiz — free, no sign-up, every answer explained.`;
   const dest = valid ? `${origin}/quiz/${slug}/` : `${origin}/quiz/`;
 

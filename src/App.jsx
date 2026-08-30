@@ -4440,10 +4440,15 @@ async function generateShareCard(type, data) {
   // people actually post, and it sits inside a 9:16 Story with clean margins.
   const IS_IQ = type === "iq";
   const W = IS_IQ ? 1080 : SHARE_CARD_W, H = IS_IQ ? 1440 : SHARE_CARD_H;
+  // The IQ card is authored at full resolution above; every other card is
+  // authored in 390x600 coordinates, so give those a 2x backing store and
+  // scale the context — same sharpness fix, zero layout-math changes.
+  const SCALE = IS_IQ ? 1 : 2;
   const canvas = document.createElement("canvas");
-  canvas.width = W;
-  canvas.height = H;
+  canvas.width = W * SCALE;
+  canvas.height = H * SCALE;
   const ctx = canvas.getContext("2d");
+  if (SCALE !== 1) ctx.scale(SCALE, SCALE);
 
   // Wait up to 1s for fonts to load. Without this the first card draw can
   // fall back to the platform default which looks off.
@@ -5202,8 +5207,19 @@ function ResultsCloseBtn({ onClose }) {
 // The recipient side of the viral loop: answer a single question with zero
 // login, get the reveal + the hint story, then the chain CTA ("pass it on")
 // and a full-quiz conversion path. Sender side lives in Results (🥜 button).
-const stumpLink = (row) =>
-  `https://balliq.app/q?id=${row.id}&qt=${encodeURIComponent(row.q.slice(0, 160))}${row.cat ? `&c=${encodeURIComponent(row.cat)}` : ""}`;
+// Share-family audit 2026-08-30: an unsigned card converts worse than a
+// signed one — "Alex bets you can't get this" beats "Can you get this one?".
+// Read the name the challenge-share flow already persists (profile.name in
+// biq_profile); no new ask, no new state. Preview-only, like qt/c.
+const shareSenderName = () => {
+  try {
+    return String(JSON.parse(localStorage.getItem("biq_profile") || "{}").name || "").trim().slice(0, 22);
+  } catch { return ""; }
+};
+const stumpLink = (row) => {
+  const p = shareSenderName();
+  return `https://balliq.app/q?id=${row.id}&qt=${encodeURIComponent(row.q.slice(0, 160))}${row.cat ? `&c=${encodeURIComponent(row.cat)}` : ""}${p ? `&p=${encodeURIComponent(p)}` : ""}`;
+};
 
 async function shareStumpText(text) {
   try {
@@ -9170,6 +9186,11 @@ function AppInner() {
   // today (Daily 7 is deterministic per day) and the user hasn't played yet;
   // the head-to-head compare fires when they finish. (Native deep-linking into
   // the installed app needs an AASA path entry — follow-up; web handles it now.)
+  // Share-family audit 2026-08-30: a challenge recipient landed on Home with
+  // a passive banner — the least committed moment of the loop got the softest
+  // ask. When the challenge arrives FROM THE URL THIS BOOT (tap-through, not a
+  // stored leftover rehydrating), open a head-to-head interstitial instead.
+  const challengeArrivedThisBoot = useRef(false);
   const [pendingChallenge, setPendingChallenge] = useState(() => {
     try {
       // Path form /c/TOKEN (Universal-Link-friendly) takes priority; ?c=TOKEN
@@ -9190,6 +9211,7 @@ function AppInner() {
         const challenge = parseChallengeStr(raw);
         if (challenge) {
           if (fromId) challenge.from = fromId;
+          challengeArrivedThisBoot.current = true;
           try { localStorage.setItem("biq_pending_challenge", JSON.stringify(challenge)); } catch {}
           return challenge;
         }
@@ -9199,8 +9221,10 @@ function AppInner() {
     } catch {}
     return null;
   });
+  const [challengeIntro, setChallengeIntro] = useState(() => challengeArrivedThisBoot.current);
   const clearChallenge = useCallback(() => {
     setPendingChallenge(null);
+    setChallengeIntro(false);
     try { localStorage.removeItem("biq_pending_challenge"); } catch {}
   }, []);
   // opportunity-scan #9: settled head-to-head outcome — { mine, theirs, name,
@@ -9254,6 +9278,7 @@ function AppInner() {
             if (fRaw && /^[0-9a-f-]{36}$/i.test(fRaw)) ch.from = fRaw;
             try { localStorage.setItem('biq_pending_challenge', JSON.stringify(ch)); } catch {}
             setPendingChallenge(ch);
+            setChallengeIntro(true);
           }
         }
       } catch {}
@@ -12728,6 +12753,10 @@ function AppInner() {
   // opportunity-scan #9: async-challenge "Send it back" result modal.
   const challengeResultRef = useRef(null);
   useModalA11y({ isOpen: !!challengeResult, onClose: () => setChallengeResult(null), ref: challengeResultRef });
+  const challengeIntroRef = useRef(null);
+  const challengeIntroOpen = !!(challengeIntro && pendingChallenge && challengeDayOffset(pendingChallenge.date) <= 1 && !dailyDone);
+  const closeChallengeIntro = useCallback(() => setChallengeIntro(false), []);
+  useModalA11y({ isOpen: challengeIntroOpen, onClose: closeChallengeIntro, ref: challengeIntroRef });
 
   // ── Android hardware back (opportunity-scan #11) ─────────────────────────
   // Registering ANY Capacitor backButton listener replaces the Android
@@ -13136,6 +13165,46 @@ function AppInner() {
         {/* opportunity-scan #9: async-challenge head-to-head result. Replaces
             the old ~2s toast — the "Send it back" re-share is the viral step,
             so the outcome needs a persistent surface with a share CTA. */}
+        {challengeIntroOpen && (
+          <div
+            style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
+            onClick={closeChallengeIntro}
+          >
+            <div
+              ref={challengeIntroRef}
+              tabIndex={-1}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Daily 7 challenge"
+              style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px calc(28px + env(safe-area-inset-bottom, 0px))",textAlign:"center",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div aria-hidden="true" style={{width:56,height:56,borderRadius:16,margin:"0 auto 12px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
+                <Trophy size={26} strokeWidth={2.25} color="#58CC02" />
+              </div>
+              <div style={{fontSize:20,fontWeight:900,color:"var(--t1)",marginBottom:6}}>
+                {pendingChallenge.name ? `${pendingChallenge.name} scored ${pendingChallenge.score}/7` : `A friend scored ${pendingChallenge.score}/7`}
+              </div>
+              <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:20}}>
+                {challengeDayOffset(pendingChallenge.date) === 0
+                  ? "Same day, same 7 questions. Beat that score and it's settled."
+                  : "That was yesterday's Daily 7 — play today's and settle it."}
+              </div>
+              <button
+                onClick={() => { closeChallengeIntro(); playDaily(); }}
+                style={{width:"100%",minHeight:50,padding:"14px",background:"var(--accent)",color:"#06230C",border:"none",borderRadius:14,boxShadow:"0 10px 26px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:16,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
+              >
+                Play the Daily 7
+              </button>
+              <button
+                onClick={closeChallengeIntro}
+                style={{marginTop:12,background:"none",border:"none",color:"var(--t3)",fontFamily:"inherit",fontSize:13.5,fontWeight:700,cursor:"pointer",padding:"8px"}}
+              >
+                Not now
+              </button>
+            </div>
+          </div>
+        )}
         {challengeResult && (
           <div
             style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
