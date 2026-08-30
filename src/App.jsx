@@ -5332,6 +5332,17 @@ function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
 // puts at risk, and Remind me rides this real click gesture (Safari requires
 // the permission request inside one) without spending a lifetime soft-ask.
 function TomorrowTeaser({ streak, remindState, onRemind, compact }) {
+  // Shield visibility (retention critique #8): the mechanic is live but was
+  // only ever shown inside the Daily tab. The results screen is where the
+  // stake is named, so say whether tonight's stake is protected. Same
+  // formula as the tick effect: floor(xp/200) - used, capped at 3.
+  const shields = (() => {
+    try {
+      const xpVal = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0;
+      const used = (JSON.parse(localStorage.getItem('biq_stats') || '{}')?.shieldsUsed) || 0;
+      return Math.min(3, Math.max(0, Math.floor(xpVal / 200) - used));
+    } catch { return 0; }
+  })();
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
@@ -5364,6 +5375,11 @@ function TomorrowTeaser({ streak, remindState, onRemind, compact }) {
       )}
       {remindState === "on" && (
         <div style={{ fontSize: 12.5, fontWeight: 600, color: "var(--t3)" }}>🔔 We’ll nudge you tomorrow evening</div>
+      )}
+      {streak >= 2 && shields > 0 && (
+        <div style={{ fontSize: 12, fontWeight: 600, color: "var(--t3)" }}>
+          🛡 {shields} streak shield{shields === 1 ? "" : "s"} banked — one missed day won’t break it
+        </div>
       )}
     </div>
   );

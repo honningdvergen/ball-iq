@@ -132,3 +132,12 @@ Refresh the snapshot after applying.
   extend the constraint IN the same migration that introduces a type.
   E2E after fix: anon responder on a ?f= link produced the notifications row
   ("A friend took your Daily 7 challenge — you hold the edge 4–1").
+
+- **v1_9c_reminder_repair_branch** (2026-08-30, via MCP apply_migration,
+  within Alex's approved retention-wave scope) — enqueue_web_daily_reminders
+  replaced: new CASE branch between the alive-streak and best-run copy.
+  `last_day = local_day_index - 2 AND streak >= 2` (the repair RPC's own
+  floor) → "You missed yesterday — play tonight and your N-day streak can
+  still be saved 🛡". True to mechanics: tonight's play auto-shields or
+  stashes fell/fellDay for same-day repair_login_streak. Grants unchanged
+  (postgres-only, pg_cron); explicit revoke re-asserted.
