@@ -93,9 +93,9 @@ const PROMPT_COPY = {
   invite:      { title: 'Sign up to invite a friend', sub: 'Create a free account to open a room and send your mate the link — takes seconds.', hardGate: true, back: 'online' },
   friends:     { title: 'Sign up to add friends', sub: 'Create a free account to add friends, compare scores, and challenge them.', hardGate: true, back: 'online' },
   leaderboard: { title: 'Sign up for leaderboards', sub: 'Create a free account to climb the leaderboard and save your progress across devices.' },
-  save:        { title: 'Save your progress', sub: 'Create a free account so your XP, stats, and streak follow you to any device.' },
+  save:        { title: 'Save your progress', sub: 'Create a free account so your XP, stats, and streak follow you to any device — and we can nudge you when tomorrow\u2019s puzzles drop.' },
   // v1.6 guest entry — anonymous (invite-link) players upgrading in place.
-  upgrade:     { title: 'Save your progress', sub: 'Add an email and password to keep your stats, XP and games — everything you played as a guest comes with you.' },
+  upgrade:     { title: 'Save your progress', sub: 'Add an email and password to keep your stats, XP and games — everything you played as a guest comes with you, and we can nudge you when tomorrow\u2019s puzzles drop.' },
 }
 
 const C = {
