@@ -10886,6 +10886,19 @@ function AppInner() {
     setPhotoNudgeDismissed(true);
     try { safeSetItem('biq_photo_nudge', '1'); } catch { /* quota */ }
   }, []);
+  // First-session audit 2026-08-30 (#3): a guest banks XP, a rating and a
+  // streak with zero mention any of it is device-local — the peak-moment auth
+  // SHEET can be missed (its guards defer it) and then nothing ever says so
+  // again. This is the inline, dismissible line on Daily-7 results; it rides
+  // the same results slot as the photo nudge (the two are mutually exclusive:
+  // photo needs an account, this needs the lack of one).
+  const [saveLineDismissed, setSaveLineDismissed] = useState(() => {
+    try { return localStorage.getItem('biq_save_line') === '1'; } catch { return false; }
+  });
+  const dismissSaveLine = useCallback(() => {
+    setSaveLineDismissed(true);
+    try { safeSetItem('biq_save_line', '1'); } catch { /* quota */ }
+  }, []);
 
   // ⚠️ role="dialog" without useModalA11y is half an accessibility fix, and the
   // repo's own a11y-structure test enforces the pair — it caught this sheet the
@@ -13826,7 +13839,19 @@ function AppInner() {
           // empty board; a deep link that lands on a blank screen is worse
           // than one that lands somewhere real.
           if (!p) { setTimeout(goHome, 0); return null; }
-          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} /></React.Suspense></TabErrorBoundary>;
+          // First-session audit 2026-08-30 (HIGH): a Trail LOSS dead-ended the
+          // session — primary CTA was "Share result" (nobody shares a loss)
+          // and the one remaining daily wasn't offered. Chain into Mystery
+          // Player when it's live, today's, and still unplayed.
+          const mysteryOffer = (() => {
+            if (!MYSTERY_ENABLED || archiveDate) return undefined;
+            try {
+              const m = JSON.parse(localStorage.getItem(`biq_mystery_${dateToYMD(new Date())}`) || "null");
+              if (m && (m.won || m.gaveUp)) return undefined;
+            } catch {}
+            return () => setScreen("mystery");
+          })();
+          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} onPlayMystery={mysteryOffer} /></React.Suspense></TabErrorBoundary>;
         })()}
         {screen === "mystery" && (
           <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} /></React.Suspense></TabErrorBoundary>
@@ -13970,7 +13995,30 @@ function AppInner() {
             streak={loginStreak}
             remindState={resultsRemindState}
             onRemind={remindFromResults}
-            photoNudge={(user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
+            photoNudge={((!user || isGuest) && mode === "daily" && (stats.gamesPlayed || 0) >= 2 && !saveLineDismissed) ? (
+              <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
+                <div aria-hidden="true" style={{width:44,height:44,flexShrink:0,borderRadius:14,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
+                  <Star size={22} strokeWidth={2.25} color="#58CC02" />
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:14,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{`${getLevelInfo(xp).level.name} · ${xp} XP — on this phone only`}</div>
+                  <div style={{fontSize:12.5,color:"var(--t2)",lineHeight:1.4,marginTop:2}}>Save your progress so it follows you.</div>
+                </div>
+                <button
+                  onClick={() => { dismissSaveLine(); loopEvent('save-line-tap'); openAuthPrompt?.('save'); }}
+                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"#06230C",WebkitTextFillColor:"#06230C",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => { dismissSaveLine(); loopEvent('save-line-dismiss'); }}
+                  aria-label="Not now"
+                  style={{flexShrink:0,padding:"9px 6px",background:"none",border:"none",color:"var(--t3)",fontFamily:"inherit",fontSize:13,fontWeight:700,cursor:"pointer"}}
+                >
+                  Later
+                </button>
+              </div>
+            ) : (user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
               <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
                 <div style={{width:44,height:44,flexShrink:0}}>
                   <ProfilePic value={authProfile?.avatar_id} url={authProfile?.avatar_url} name={authProfile?.username} />
