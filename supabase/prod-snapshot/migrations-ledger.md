@@ -166,12 +166,12 @@ Refresh the snapshot after applying.
   balliq.app VERIFIED in Resend. Pipeline proven end-to-end: test_to send to
   Alex's inbox via net.http_post returned 200/200 before scheduling.
 
-## v1_10c_email_events_service_role_grant — PENDING ALEX APPROVAL (2026-08-30)
+## v1_10c_email_events_service_role_grant — APPLIED 2026-08-30 (Alex: "go ahead and apply it")
 Repair within v1_10 scope: service_role had zero DML on email_events (creation
 defaults gave it only REFERENCES/TRUNCATE/TRIGGER), so send-day2-email's
 record-first insert failed permission-denied and every run reported sent:0;
 email-unsub's insert would fail identically. File:
 supabase/migrations/v1_10c_email_events_grant.sql — one GRANT (select, insert
-to service_role). Verify after apply: begin/set local role service_role/insert/
-rollback probe, then the next :45 cron tick should flip net._http_response to
-{"candidates":N,"sent":N} and land rows in email_events.
+to service_role). Verified after apply: the set-local-role insert probe succeeded (rolled
+back, 0 rows), service_role now shows SELECT+INSERT. Awaiting the 17:45 UTC
+cron tick for the first real send.
