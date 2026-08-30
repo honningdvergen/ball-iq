@@ -10998,6 +10998,18 @@ function AppInner() {
   // one. Two modals stacked on the first puzzle a person ever finished, with
   // the notification opt-in buried behind the one they'd reflexively dismiss.
   const maybePromptNotif = useCallback(async () => {
+    // Min-gap between soft-prompt asks (first-session audit 2026-08-30: the
+    // sheet fired twice within ~3 minutes of one session — the second time
+    // over a LOSS screen, minutes after being declined). The 2-lifetime-ask
+    // cap bounds the total; this bounds the RATE. Shared by both platform
+    // paths below.
+    try {
+      const lastAsk = parseInt(localStorage.getItem('biq_notif_last_ask') || '0', 10);
+      if (lastAsk && Date.now() - lastAsk < 24 * 3600 * 1000) {
+        loopEvent('notif-prompt-skipped', { reason: 'asked-recently', engine: notificationsSupported() ? 'native' : 'web' });
+        return false;
+      }
+    } catch {}
     // WEB PATH (scouting report, retention 5/C): the delivery engine — sw.js
     // push handlers, the send-web-push edge function, an hourly pg_cron — has
     // been live in prod with ZERO subscribers, because the only surface that
@@ -11046,7 +11058,7 @@ function AppInner() {
         // who closes the tab inside the 7s hold used to burn one of their two
         // lifetime asks on a sheet they never saw — prod showed a visitor at
         // asks-exhausted with notif-prompt-shown fired twice ever.
-        notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks_v2', String(asks + 1)); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web", copy: "v2-stake" }); setNotifPromptOpen(true); }, 7000);
+        notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks_v2', String(asks + 1)); } catch {} try { localStorage.setItem('biq_notif_last_ask', String(Date.now())); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web", copy: "v2-stake" }); setNotifPromptOpen(true); }, 7000);
         return true;
       } catch { return false; }
     }
@@ -11090,7 +11102,7 @@ function AppInner() {
       // we most want here, so it gets the beat. The ask still lands on the
       // result screen, which is the moment Alex called correctly.
       // Ask spent at open time, same reason as the web path above.
-      notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks_v2', String(asks + 1)); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web", copy: "v2-stake" }); setNotifPromptOpen(true); }, 7000);
+      notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks_v2', String(asks + 1)); } catch {} try { localStorage.setItem('biq_notif_last_ask', String(Date.now())); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web", copy: "v2-stake" }); setNotifPromptOpen(true); }, 7000);
       return true;
     } catch { return false; }
   }, [user?.id, webPushOn]);
@@ -11292,7 +11304,9 @@ function AppInner() {
       //     opinion. Rating an app on the first puzzle you have ever played is
       //     how you collect three-star "seems fine?" ratings.
       // Everything past that is Apple's to decide — see lib/review.js.
-      const askedNotif = maybePromptNotif();
+      // Never prompt over a LOSS (Trail/Mystery dispatch positive:false).
+      // The event has carried the flag all along; the ask now honors it.
+      const askedNotif = e?.detail?.positive === false ? false : maybePromptNotif();
       if (e?.detail?.game === 'footle' && e.detail.won === true) {
         Promise.resolve(askedNotif).then((notifOpened) => {
           if (notifOpened) return;
