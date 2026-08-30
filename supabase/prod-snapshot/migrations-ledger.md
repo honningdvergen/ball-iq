@@ -157,3 +157,11 @@ Refresh the snapshot after applying.
   verification Pending at write time. REMAINING WIRE-UP: Alex pastes the two
   secrets → apply the pg_cron hourly net.http_post entry → test send to
   Alex's own email first.
+
+- **v1_10b_day2_email_cron** (2026-08-30) — cron.schedule 'day2-email-hourly'
+  at :45, net.http_post → send-day2-email with the service bearer (same JWT
+  the notification webhooks embed). Function redeployed v4 with an in-code
+  service_role check (verify_jwt alone admits the PUBLIC anon key — without
+  the role gate anyone could trigger sends or abuse test_to). Domain
+  balliq.app VERIFIED in Resend. Pipeline proven end-to-end: test_to send to
+  Alex's inbox via net.http_post returned 200/200 before scheduling.

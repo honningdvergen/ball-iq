@@ -6,22 +6,33 @@
 // slice: signed up yesterday, actually played, no push subscription on any
 // platform, hasn't played today, never emailed before, hasn't opted out.
 //
-// Invoked hourly (pg_cron → net.http_post, see v1_10 migration). Sends via
-// Resend. Hard caps: 40 sends per invocation (free tier is 100/day; the
-// selection is naturally small anyway). Every send is recorded in
-// email_events BEFORE the API call is confirmed — a duplicate email to the
-// same person is worse than a missed one, so we bias to at-most-once.
+// Invoked hourly (pg_cron → net.http_post with the service-role bearer,
+// v1_10b). Sends via Resend. Hard caps: 40 sends per invocation; every send
+// recorded in email_events BEFORE the API call is confirmed (at-most-once).
 //
-// Secrets: RESEND_API_KEY (Resend dashboard), EMAIL_UNSUB_SECRET (any long
-// random string; HMAC for unsubscribe links). ⚠️ .trim() on every env —
+// AUTH: verify_jwt admits any project JWT — including the PUBLIC anon key —
+// so the function additionally requires role=service_role in the token.
+// {"test_to": "addr"} sends ONE sample email and touches nothing else.
+//
+// Secrets: RESEND_API_KEY, EMAIL_UNSUB_SECRET. ⚠️ .trim() on every env —
 // dashboard-pasted secrets routinely carry trailing newlines (the send-push
 // postmortem found FIVE of five affected).
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const RESEND_KEY = (Deno.env.get("RESEND_API_KEY") ?? "").trim();
 const UNSUB_SECRET = (Deno.env.get("EMAIL_UNSUB_SECRET") ?? "").trim();
-const CRON_SECRET = (Deno.env.get("EMAIL_CRON_SECRET") ?? "").trim();
 const FROM = "Ball IQ <nudge@balliq.app>";
+
+function callerIsServiceRole(req: Request): boolean {
+  try {
+    const auth = req.headers.get("authorization") ?? "";
+    const jwt = auth.replace(/^Bearer\s+/i, "");
+    const payload = JSON.parse(atob(jwt.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+    return payload?.role === "service_role";
+  } catch {
+    return false;
+  }
+}
 
 const admin = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -48,15 +59,36 @@ function emailHtml(unsubUrl: string): string {
 </div></body></html>`;
 }
 
+async function sendOne(to: string, unsubUrl: string): Promise<Response> {
+  return fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { "authorization": `Bearer ${RESEND_KEY}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      from: FROM,
+      to: [to],
+      subject: "Your streak is one puzzle from day 2 🔥",
+      html: emailHtml(unsubUrl),
+    }),
+  });
+}
+
 Deno.serve(async (req) => {
   try {
     if (req.method !== "POST") return new Response("ok", { status: 200 });
-    // Only the cron (or an operator with the secret) may trigger sends.
-    if (CRON_SECRET && req.headers.get("x-cron-secret") !== CRON_SECRET) {
+    if (!callerIsServiceRole(req)) {
       return new Response("unauthorized", { status: 401 });
     }
     if (!RESEND_KEY || !UNSUB_SECRET) {
       return new Response("email channel not configured", { status: 200 });
+    }
+
+    const body = await req.json().catch(() => ({}));
+    if (body?.test_to && typeof body.test_to === "string") {
+      const res = await sendOne(body.test_to, "https://balliq.app");
+      const detail = res.ok ? "" : (await res.text()).slice(0, 300);
+      return new Response(JSON.stringify({ test: true, status: res.status, detail }), {
+        status: 200, headers: { "content-type": "application/json" },
+      });
     }
 
     // The unreachable day-2 slice. auth.admin listUsers is paginated and
@@ -76,16 +108,7 @@ Deno.serve(async (req) => {
       if (insErr) continue; // unique violation = already handled
       const token = await hmac(uid);
       const unsubUrl = `https://blcisypmngimqkwxrrdm.supabase.co/functions/v1/email-unsub?u=${uid}&t=${token}`;
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { "authorization": `Bearer ${RESEND_KEY}`, "content-type": "application/json" },
-        body: JSON.stringify({
-          from: FROM,
-          to: [email],
-          subject: "Your streak is one puzzle from day 2 🔥",
-          html: emailHtml(unsubUrl),
-        }),
-      });
+      const res = await sendOne(email, unsubUrl);
       if (res.ok) sent++;
       else console.warn("[day2] resend", res.status, (await res.text()).slice(0, 200));
     }
