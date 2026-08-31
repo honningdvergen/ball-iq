@@ -1880,7 +1880,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    it is a caption, not a control, and it sits between the header and the board
    without owning either. Chips reuse the board's own tile colours so the
    mapping is literal rather than described. */
-.wd-legend{display:flex;justify-content:center;gap:18px;margin:10px 0 2px;font-size:12px;font-weight:600;color:var(--t2);}
+.wd-legend{display:flex;justify-content:center;gap:18px;margin:0 0 4px;font-size:12px;font-weight:600;color:var(--t2);}
 .wd-legend-item{display:inline-flex;align-items:center;gap:6px;}
 .wd-legend-chip{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
 .wd-legend-chip.is-green{background:#58CC02;}  /* == .wd-tile.wd-green  */
@@ -2129,7 +2129,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    can afford to: they are display, not touch targets. */
 @media (max-height: 700px) {
   .wd-screen{gap:6px;padding:4px 0 2px;}
-  .wd-legend{margin:2px 0 0;font-size:11px;}
+  /* 6px, not 2px: on a 667pt screen the swatches measured 6px from the first
+     tile row and read as colliding with it rather than captioning it. All three
+     design lenses flagged it independently. This brings the SE to ~10px, the
+     same legend-to-board pairing as every larger phone, and it comes out of
+     slack — variant A still measures 94px of clearance below ENTER there. */
+  .wd-legend{margin:0 0 6px;font-size:11px;}
   .wd-grid{gap:4px;padding:2px 0;}
   .wd-grid{--wd-tile-max:46px;--wd-chrome:455px;}
   .wd-row{gap:4px;max-width:calc(var(--wd-cols) * var(--wd-tile-cap, 46px) + (var(--wd-cols) - 1) * 4px);}

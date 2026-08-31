@@ -8768,14 +8768,26 @@ const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHo
           constrained — a longer one already wrapped the header onto a third
           line at 375px once). Gone the moment a guess lands, because by then
           the board has taught it better than any caption could. */}
-      {showLegend && (
-        <div className="wd-legend" aria-hidden="true">
-          <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
-          <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
-        </div>
-      )}
-
+      {/* ⚠️ THE LEGEND LIVES INSIDE THE BOARD, and that is a layout decision, not
+          tidiness. As a SIBLING of .wd-grid it was separated from the tiles by
+          the grid's centring slack — measured 54px to the first row on a 440pt
+          phone while sitting only 24px under the header, so the caption read as
+          part of the HEADER rather than as a key to the board it describes.
+          Proximity is what carries that meaning and it pointed at the wrong
+          thing. Reported on device: "should we not shorten the gap between the
+          grid and the green and yellow explainer?"
+          Inside the grid it rides with the tiles (6-10px away on every device
+          measured) and the spare height collects above the pair instead of
+          between them. This KEEPS .wd-grid's justify-content:center, which the
+          footle-keyboard-geometry gate requires — that centring is what stops
+          slack pooling as a single hole (233px below ENTER, once). */}
       <div className={`wd-grid${state.status !== "playing" ? " wd-grid--ended" : ""}`} style={{ "--wd-cols": answer.length }}>
+        {showLegend && (
+          <div className="wd-legend" aria-hidden="true">
+            <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
+            <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
+          </div>
+        )}
         {rows}
       </div>
 
