@@ -1865,7 +1865,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-mark.ok{background:rgba(88,204,2,0.16);color:var(--accent);}
 
 /* ── FOOTBALL WORDLE ────────────────────────────────────────────────────── */
-.wd-screen{display:flex;flex-direction:column;gap:14px;padding:10px 0 8px;min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px);}
+/* ⚠️ SAFE-AREA BOTTOM. .quiz-wrap has carried this since the 2026-07 pass —
+   Footle never got it, so ENTER sat against the home indicator on device while
+   looking perfectly fine in a desktop browser (which has no inset). Reported
+   2026-08-31 with a screenshot. Same max() guard as .quiz-wrap: some WebViews
+   report env(safe-area-inset-bottom) as 0, and a bare env() with a 0 fallback
+   moves nothing — that exact mistake is recorded in the comment above it. */
+.wd-screen{display:flex;flex-direction:column;gap:14px;padding:10px 0 calc(8px + max(env(safe-area-inset-bottom,34px),34px));min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px);}
 .wd-header{display:flex;align-items:center;gap:12px;}
 .wd-header-text{flex:1;min-width:0;}
 .wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
@@ -1901,7 +1907,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    with no breakpoint to fall through. Tiles are display, not touch targets
    (the max-height:700 block already reasons this way), so they are the right
    thing to give up the space. */
-.wd-grid{--wd-tile-max:64px;--wd-chrome:470px;}
+.wd-grid{--wd-tile-max:64px;--wd-chrome:505px;}
 @supports (height:100dvh){
   .wd-grid{--wd-tile-cap:clamp(26px, calc((100dvh - var(--wd-chrome)) / 6), var(--wd-tile-max));}
 }
@@ -2125,11 +2131,31 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .wd-screen{gap:6px;padding:4px 0 2px;}
   .wd-legend{margin:2px 0 0;font-size:11px;}
   .wd-grid{gap:4px;padding:2px 0;}
-  .wd-grid{--wd-tile-max:46px;--wd-chrome:420px;}
+  .wd-grid{--wd-tile-max:46px;--wd-chrome:455px;}
   .wd-row{gap:4px;max-width:calc(var(--wd-cols) * var(--wd-tile-cap, 46px) + (var(--wd-cols) - 1) * 4px);}
   .wd-keyboard{gap:4px;padding:0 0 2px;}
   .wd-key{height:46px;}
   .wd-key-enter{height:46px;margin-top:0;}
+}
+
+/* ⚠️ TALL SCREENS: SPEND THE SLACK ON THE KEYS, NOT ON WHITESPACE.
+   Reported 2026-08-31 with a screenshot — the board looked "pushed down the
+   screen". Measured at 440x956: the six-row board needs 358px but the grid box
+   was 474px, because ~200px of the viewport is genuinely spare. It is spare for
+   a reason that is arithmetic, not styling: a 7-letter answer must fit seven
+   tiles across ~400px, so each tile is width-limited to 52px and the board
+   simply cannot grow to fill the height.
+   Redistributing that slack is not the fix — the grid centres it deliberately,
+   because it once pooled as a single 233px hole below ENTER and the keyboard
+   geometry gate exists to keep that from coming back. So CONSUME it instead,
+   on the axis the same pass identified as the one with room left: key height.
+   Bigger keys on a big phone are fewer mis-taps AND less dead space, and the
+   board rises on its own as a result. --wd-chrome grows by exactly the height
+   this adds, so the six-rows-always-fit guarantee still holds. */
+@media (min-height: 850px) and (max-width: 1023px) {
+  .wd-grid{--wd-chrome:569px;}
+  .wd-key{height:62px;}
+  .wd-key-enter{height:56px;}
 }
 
 /* Desktop composition. On mobile the full-height flow is perfect; on a wide
