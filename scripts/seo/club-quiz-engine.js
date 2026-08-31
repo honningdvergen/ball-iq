@@ -341,7 +341,14 @@ var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',funct
 var outs=res.querySelectorAll('a[href]');
 for(var oi=0;oi<outs.length;oi++)(function(el){el.addEventListener('click',function(){
 if(el.hasAttribute('data-more'))return;var h=el.getAttribute('href');
-bqev(h===play?'clubq-out-play':h.indexOf('/footle')===0?'clubq-out-daily':'clubq-out-store')})})(outs[oi]);
+/* ⚠️ THE DESTINATION DECIDES, not identity with the play href. Asking "is this
+   the play link?" first was safe only while play could never be /footle — but
+   the pages with no in-app quiz are about to point their play link AT the daily
+   door, and on those pages every daily click would have been logged as
+   clubq-out-play. That is the one comparator this slot is measured against
+   (30 of 208 finishers), so the corruption would have been invisible and would
+   have made the tripwire unreadable. Match the destination first. */
+bqev(h.indexOf('/footle')>=0?'clubq-out-daily':h===play?'clubq-out-play':'clubq-out-store')})})(outs[oi]);
 var sh=res.querySelector('[data-share]');if(sh)sh.addEventListener('click',function(){bqev('clubq-share');
 /* THE AUTHORITY LEVER. Our ranking ceiling is links, not pages — 11 referral
    sessions in the week to 2026-08-13 — and a score is the one thing a football
