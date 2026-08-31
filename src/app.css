@@ -1889,7 +1889,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
 
-.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1 1 auto;padding:8px 0;}
+/* ⚠️ margin-inline:-20px — the SAME escape .wd-keyboard uses. Without it the
+   board sat inside .app's 20px padding while the keyboard spanned the full
+   width beneath it, so the two disagreed by 20px a side and the board read as
+   arbitrarily inset (reported on device: "we do not need to leave lots of room
+   on each side of the grid"). Matching them also hands the tiles that width
+   back — measured +6px per tile at 440pt. */
+.wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1 1 auto;padding:8px 8px;margin-inline:-20px;}
 /* ⚠️ THE 64px WIDTH CAP ABOVE IS ONLY HALF THE CONSTRAINT — this is the other
    half, and its absence is the same bug twice. Sprint #82 capped tile WIDTH
    because 4-5 letter answers ballooned the grid and pushed the keyboard off
@@ -2136,11 +2142,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      slack — variant A still measures 94px of clearance below ENTER there. */
   .wd-legend{margin:0 0 6px;font-size:11px;}
   .wd-grid{gap:4px;padding:2px 0;}
-  .wd-grid{--wd-tile-max:46px;--wd-chrome:455px;}
+  .wd-grid{--wd-tile-max:46px;--wd-chrome:392px;}
   .wd-row{gap:4px;max-width:calc(var(--wd-cols) * var(--wd-tile-cap, 46px) + (var(--wd-cols) - 1) * 4px);}
   .wd-keyboard{gap:4px;padding:0 0 2px;}
   .wd-key{height:46px;}
-  .wd-key-enter{height:46px;margin-top:0;}
+  /* margin-top 0 left ENTER 4px from the last key row against a 4px row gap —
+     indistinguishable from a fourth row of keys. 10px is the least that reads
+     as a separate action; --wd-chrome below pays for it. */
+  .wd-key-enter{height:46px;margin-top:10px;}
 }
 
 /* ⚠️ TALL SCREENS: SPEND THE SLACK ON THE KEYS, NOT ON WHITESPACE.
