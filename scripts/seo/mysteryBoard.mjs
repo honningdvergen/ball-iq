@@ -82,6 +82,8 @@ function row(name, rank, solved){
 function submit(){
   if(over||busy) return;
   var v=inp.value.trim(); if(!v) return;
+  /* Start on a real guess, not on render — a render event counts crawlers. */
+  if(window.__biqGameStart)window.__biqGameStart('mystery');
   busy=true; go.disabled=true; msg.className='mb-msg'; msg.textContent='Checking…';
   fetch('/api/mystery-rank?n='+encodeURIComponent(n)+'&g='+encodeURIComponent(v))
     .then(function(r){ return r.json(); })
@@ -98,6 +100,9 @@ function submit(){
       seen[d.name]=1; inp.value=''; msg.textContent='';
       row(d.name, d.rank, d.solved);
       if(d.solved){ over=true; inp.disabled=true; go.disabled=true;
+        /* Mystery has no losing state — you keep guessing until you get it —
+           so a finish here is always a win, and the guess count is the score. */
+        if(window.__biqGameFinish)window.__biqGameFinish('mystery',true,{guesses:Object.keys(seen).length});
         msg.className='mb-msg win'; msg.textContent='Got it — the secret player was ' + (d.answer||d.name) + '.'; }
     })
     .catch(function(){ busy=false; go.disabled=false; msg.textContent='Could not reach the ranker — try again.'; });

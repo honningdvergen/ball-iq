@@ -111,10 +111,17 @@ function reveal(){ if(shown>=total) return false;
   var el=g.querySelector('.tb-rung[data-i="'+shown+'"]'); if(el) el.classList.add('shown');
   shown++; if(shown>=total) rev.disabled=true; return true; }
 function finish(won){ over=true; inp.disabled=true; go.disabled=true; rev.disabled=true;
+  /* Read BEFORE the reveal-all below, while shown still says how many clubs
+     the player actually needed rather than how many exist. (No backticks in
+     this comment — it lives inside a template literal and one would end the
+     string. That exact mistake was made here first.) */
+  if(window.__biqGameFinish)window.__biqGameFinish('trail',won,{clubs:shown});
   while(shown<total) reveal();
   msg.className='tb-msg '+(won?'win':'lose');
   msg.textContent=won ? 'Correct — that is the trail.' : 'Out of guesses. The full career is above.'; }
 function submit(){ if(over) return; var v=inp.value.trim(); if(!v) return;
+  /* Start on a real guess, not on render — a render event counts crawlers. */
+  if(window.__biqGameStart)window.__biqGameStart('trail');
   if(accept[norm(v)]){ finish(true); return; }
   left--; inp.value=''; leftEl.textContent=left+' guess'+(left===1?'':'es')+' left';
   if(left<=0){ finish(false); return; }

@@ -836,6 +836,75 @@ if(seg[0]==='questions')return 'questions-page';
 return 'taster';
 }catch(e){return 'taster'}}`;
 
+/* ⚠️ DECLARED AFTER SURFACE_FN_JS ON PURPOSE — it interpolates it, and a
+   template literal is evaluated where it is written, so defining this above
+   SURFACE_FN_JS is a temporal-dead-zone crash at module load. `node --check`
+   passes it happily; only running the generator catches it. It did. */
+/* ⚠️ THREE PLAYABLE BOARDS THAT REPORTED NOTHING.
+   /football-wordle/, /transfer-trail/ and /mystery-player/ each ship a real,
+   finishable game in the page — and emitted ZERO events, verified by grepping
+   the built HTML for record_funnel_event and finding none. So the single
+   question those boards exist to answer ("does a playable landing page turn a
+   searcher into a player?") could not be answered for the very pages that are
+   supposed to answer it.
+
+   Same sink, same biq_vid, same synthetic gate and the same surface function
+   as the taster and list trackers. A second measurement system would be a
+   second thing to keep in sync, and this file has already lost that bet.
+
+   ⚠️ START FIRES ON INPUT, NEVER ON RENDER. The club engine calls start()
+   unconditionally at the end of its script, which is why clubq-start counts
+   Googlebot's renderer and every PageSpeed run — 30.5 fires per visitor. A
+   render event measures traffic; only an input event measures play.
+
+   ⚠️ GUARDS ARE PER PAGE, NOT PER BOARD. /transfer-trail/ ships two trail
+   boards (hero + #practice), so a guard local to a board would post two starts
+   for one visitor playing one game. */
+const GAME_TRACK_JS = `(function(){
+if(window.__biqGameTrack)return;window.__biqGameTrack=1;
+${SURFACE_FN_JS}
+function gSyn(){try{
+if(navigator.webdriver===true)return true;
+var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
+}catch(e){return false}}
+function gVid(){try{
+var v=localStorage.getItem('biq_vid');
+if(!v){v=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():null;
+if(!v)return null;localStorage.setItem('biq_vid',v)}
+return (v&&v.length===36)?v:null;
+}catch(e){return null}}
+function gev(n,x){
+if(gSyn())return;
+try{if(window.clarity)window.clarity('event',n)}catch(e){}
+var meta={surface:biqSurface()};
+if(x)for(var xk in x){if(Object.prototype.hasOwnProperty.call(x,xk))meta[xk]=x[xk]}
+try{
+var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
+}catch(e){}
+try{fetch('${BQ_SUPABASE_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
+headers:{'content-type':'application/json','apikey':'${BQ_PUBLISHABLE_KEY}','authorization':'Bearer ${BQ_PUBLISHABLE_KEY}'},
+body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:gVid()})}).catch(function(){})}catch(e){}}
+var gOn={},gFin={};
+window.__biqGameStart=function(g){if(gOn[g])return;gOn[g]=1;gev('game-start',{game:g})};
+window.__biqGameFinish=function(g,won,x){
+if(gFin[g])return;gFin[g]=1;
+var m={game:g,won:!!won};
+if(x)for(var k in x){if(Object.prototype.hasOwnProperty.call(x,k))m[k]=x[k]}
+gev('game-finish',m)};
+/* The exit into the product is what these pages exist to produce. Test the
+   RESOLVED hostname for stores, never an href substring: "play.google.com"
+   contains "/play" at index 7, which would score every Play badge as a web-app
+   click. */
+document.addEventListener('click',function(e){
+var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
+if(!a)return;var h=a.getAttribute('href')||'';var gh=(a.hostname||'');
+if(gh==='play.google.com'||gh==='apps.apple.com'){gev('game-out-store');return}
+if(h.indexOf('/get')>-1){gev('game-out-get');return}
+if(h.indexOf('/play')>-1||h.indexOf('/footle')>-1)gev('game-out-play');
+},true);
+})();`;
+
+
 const QA_TRACK_JS = `(function(){
 /* ⚠️ IDEMPOTENT ON PURPOSE — this block registers a document-level click
    listener, and it is now emitted from two places: renderQA() (wherever a
@@ -4903,6 +4972,8 @@ function paint(){var ts=tiles(guesses.length);for(var i=0;i<N;i++){var ch=cur.ch
 function rank(s){return s==='green'?3:(s==='yellow'?2:1)}
 function shake(){var r=rows[guesses.length];if(!r)return;r.classList.add('fw-shake');setTimeout(function(){r.classList.remove('fw-shake')},450)}
 function finish(won){
+/* Guarded: the partners page ships this board without the tracker. */
+if(window.__biqGameFinish)window.__biqGameFinish('footle',won,{guesses:guesses.length});
 var head=won?('Solved it in '+guesses.length+' of '+MAX+'.'):'Out of guesses.';
 say(head+' The answer was '+FULL+'.');
 if(done){
@@ -4927,6 +4998,10 @@ ts[i].setAttribute('aria-label','Row '+(guesses.length+1)+', letter '+(i+1)+', '
 var k=keys[cur.charAt(i)];
 if(k){var pv=k.getAttribute('data-s')||'';if(!pv||rank(g[i])>rank(pv)){k.setAttribute('data-s',g[i]);k.className='fw-k fw-'+g[i]}}
 }
+/* ⚠️ START ON A SUBMITTED GUESS, never on render — a render event counts
+   Googlebot and every PageSpeed run (clubq-start once fired 30.5x per
+   visitor). Only an input event measures play. */
+if(window.__biqGameStart)window.__biqGameStart('footle');
 guesses.push(cur);
 var won=cur===A;cur='';
 if(won){status='won';finish(true)}
@@ -5009,6 +5084,7 @@ ${fwKeyboardHtml()}
 </div>
 <p class="fw-foot">Green means right letter, right place. Yellow means the letter is in the surname somewhere else. Grey means it is not in there at all. Any surname of the right length is accepted as a guess, exactly as in the real game — and when you want the one that counts, <a href="${SITE.base}/footle">today&#39;s Footle</a> is waiting.</p>
 </section>
+<script>${GAME_TRACK_JS}</script>
 <script>${FOOTLE_PRACTICE_JS}</script>`;
 }
 
@@ -5464,6 +5540,7 @@ ${NAV}
 <main id="main">
 ${board ? heroTwoCol(heroProps, board) : heroSection(heroProps)}
 ${hasDailyTaster ? renderTaster(dailyTaster, 'the Daily 7', playHref) : ''}
+<script>${GAME_TRACK_JS}</script>
 ${cfg.gameParam === 'trail' ? `<style>${TRAIL_BOARD_CSS}</style>${trailBoardHtml()}<script>${TRAIL_BOARD_JS}</script>` : ''}
 ${cfg.gameParam === 'mystery' ? `<style>${MYSTERY_BOARD_CSS}</style>${mysteryBoardHtml()}<script>${MYSTERY_BOARD_JS}</script>` : ''}
 <section class="sec"><h2>How to play</h2>
