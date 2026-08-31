@@ -5439,7 +5439,7 @@ function TomorrowTeaser({ streak, remindState, onRemind, compact }) {
   );
 }
 
-function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, streak, remindState, onRemind }) {
+function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, streak, remindState, onRemind }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -5455,7 +5455,14 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, surviva
   // and toast "Already done today" — a dead primary button. Point the CTA at
   // the OTHER daily loop (Footle) while it's still open; when both dailies
   // are done, show a non-button "come back tomorrow" state instead.
-  const footleToday = isDaily ? readWordleTodayStatus() : null;
+  /* ⚠️ READ FOR EVERY MODE, not just the daily. This was isDaily-gated, which
+     meant the daily cross-sell could only ever appear on the ONE results screen
+     whose players are already inside the daily loop. Measured 2026-08-31: 77%
+     of players who enter through a non-daily door never reach a daily game, and
+     of everyone who has ever finished a club quiz, the number whose first app
+     event came on a later day is zero. The door has to exist where the people
+     without it actually are. */
+  const footleToday = readWordleTodayStatus();
   const footleOpen = footleToday && (footleToday.kind === "ready" || footleToday.kind === "in-progress");
   const footleCta = footleToday?.kind === "in-progress" ? "Continue today's Footle" : "Play today's Footle";
 
@@ -5609,7 +5616,17 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, surviva
       {photoNudge}
 
       <div className="results-actions" style={{marginTop:18}}>
-        {!isDaily && <button className="btn-3d" onClick={onRetry}>Play Again</button>}
+        {/* Non-daily finish: whichever daily is still open is the PRIMARY, and
+            "Play Again" demotes to a ghost. Daily 7 is preferred over Footle for
+            a player who just answered questions — it is the nearer neighbour —
+            and Footle is the fallback when the Daily 7 is already done. */}
+        {!isDaily && dailyOpen && onPlayDaily && (
+          <button className="btn-3d" onClick={onPlayDaily}>Play today&#39;s Daily 7</button>
+        )}
+        {!isDaily && !dailyOpen && footleOpen && (
+          <button className="btn-3d" onClick={onPlayFootle}>{footleCta}</button>
+        )}
+        {!isDaily && <button className={`btn-3d${(dailyOpen && onPlayDaily) || footleOpen ? " ghost" : ""}`} onClick={onRetry}>Play Again</button>}
         {isDaily && footleOpen && <button className="btn-3d" onClick={onPlayFootle}>{footleCta}</button>}
         {isDaily && !footleOpen && (
           <TomorrowTeaser streak={streak} remindState={remindState} onRemind={onRemind} />
@@ -5690,7 +5707,13 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, surviva
             <div className="rd-tile"><div className="rd-tile-v rd-green">{rdBestStreak}</div><div className="rd-tile-k">Best streak</div></div>
           </div>
           <div className="rd-actions">
-            {!isDaily && <button className="rd-btn rd-btn-primary" onClick={onRetry}>Play again</button>}
+            {!isDaily && dailyOpen && onPlayDaily && (
+              <button className="rd-btn rd-btn-primary" onClick={onPlayDaily}>Play today&#39;s Daily 7</button>
+            )}
+            {!isDaily && !dailyOpen && footleOpen && (
+              <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>
+            )}
+            {!isDaily && <button className={`rd-btn ${(dailyOpen && onPlayDaily) || footleOpen ? "rd-btn-ghost" : "rd-btn-primary"}`} onClick={onRetry}>Play again</button>}
             {isDaily && footleOpen && <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>}
             {isDaily && !footleOpen && (
               <div style={{alignSelf:"center"}}>
@@ -13872,6 +13895,9 @@ function AppInner() {
               onReport={reportQuestion}
               key={stage1RoomCode}
               code={stage1RoomCode}
+              // Only when today's Daily 7 is genuinely still open — a door that
+              // points at something already finished is worse than no door.
+              onPlayDaily={dailyDone ? undefined : () => { setStage1RoomCode(""); playDaily(); }}
               onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}
               defaultName={isAnonUser ? getGuestDisplayName() : (authProfile?.username || profile?.name || "")}
               defaultAvatar={authProfile?.avatar_id || profile?.avatar || ""}
@@ -14139,6 +14165,8 @@ function AppInner() {
             onRetry={() => { bumpUsage('retry'); startMode(mode); }}
             // Daily results primary CTA: same navigation the Daily tab uses.
             onPlayFootle={() => setScreen("wordle")}
+            dailyOpen={!dailyDone}
+            onPlayDaily={playDaily}
           />
         )}
 

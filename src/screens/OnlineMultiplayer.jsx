@@ -264,7 +264,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
 // joiner (after join_room). Consumes useMultiplayerRoom to subscribe + sync.
 // Renders different sub-views based on room.state:
 //   loading | error | lobby | playing (1B placeholder) | ended
-function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch, onReport }) {
+function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch, onReport, onPlayDaily }) {
   const { room, players, myPlayer, isHost, loading, error, channelStatus, actions } = useMultiplayerRoom(code);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState("");
@@ -448,7 +448,7 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
   // paint timing made the flash visible.
   if (error) return <LobbyError error={error} onExit={onExit} onRetry={actions.retry} />;
   if (loading || !room) return <LobbyLoading />;
-  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} onRematch={onRematch} onReport={onReport} defaultAvatar={defaultAvatar} />;
+  if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} onRematch={onRematch} onReport={onReport} defaultAvatar={defaultAvatar} onPlayDaily={onPlayDaily} />;
   if (room.state === "playing") {
     return (
       <MultiplayerGameplay
@@ -1107,7 +1107,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
   );
 }
 
-function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defaultAvatar }) {
+function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defaultAvatar, onPlayDaily }) {
   const photos = useProfilePhotos(useMemo(() => (players || []).map(p => p.user_id), [players]));
   // v1.6 guest entry — upgrade CTA in the actions column below.
   const { isAnonUser, openAuthPrompt } = useAuth();
@@ -1862,6 +1862,22 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
           >
             📣 Share result
           </button>
+{/* ⚠️ THE ONLY ROUTE OUT OF MULTIPLAYER THAT IS NOT AN EXIT. Measured
+              2026-08-31: of the 17 players whose FIRST game was multiplayer,
+              76.5% never played a second day and ZERO reached 8 active days —
+              the worst first-mode in the product — and exactly one of them ever
+              played the Daily 7. A room needs a second person, so it cannot be
+              a daily habit on its own; the daily games can. Offered only when
+              the parent says a daily is still open, so it never points at
+              something already done. */}
+          {onPlayDaily && (
+            <button
+              onClick={onPlayDaily}
+              style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
+            >
+              Not done yet? Play today&#39;s Daily 7 &rarr;
+            </button>
+          )}
           <button
             onClick={onExit}
             style={{ width: '100%', padding: '10px 12px', minHeight: 40, background: 'none', border: 'none', color: 'var(--t3)', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 600, cursor: 'pointer' }}
