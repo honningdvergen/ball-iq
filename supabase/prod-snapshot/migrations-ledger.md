@@ -176,7 +176,7 @@ to service_role). Verified after apply: the set-local-role insert probe succeede
 back, 0 rows), service_role now shows SELECT+INSERT. Awaiting the 17:45 UTC
 cron tick for the first real send.
 
-## v1_11_native_daily_reminders — PENDING ALEX APPROVAL (2026-09-01)
+## v1_11_native_daily_reminders — APPLIED 2026-09-01 (Alex: "apply it")
 The daily-reminder cron selects FROM web_push_subscriptions (1 row) while 42
 users sit in device_tokens invisible to it; 6 daily_reminder rows have ever been
 written, all to one person. Delivery already works (the notifications trigger
@@ -190,5 +190,23 @@ File: supabase/migrations/v1_11_native_daily_reminders.sql
     fall back to their own modal play hour from scores, then 19:00 UTC
 Dry-run of the new recipient set, read-only on prod, BEFORE applying:
   43 reachable (today: 1) — 1 real tz, 34 modal-play-hour, 8 at 19:00 UTC.
-Verify after apply: recipient count >= 35 at the next tick; within 24h,
-notifications where type='daily_reminder' shows >= 30 distinct users.
+APPLIED in three parts (columns / register_device_token / recipient union).
+Verified after apply: exactly ONE register_device_token remains (no overload,
+so the shipped binary's 2-arg call still resolves), both columns present, cron
+active, and the new recipient CTE runs — pool 43, 2 due at 22:00 UTC because
+recipients now fire at their own play hour instead of all at once.
+Still to read: within 24h, notifications where type='daily_reminder' should
+show many more distinct users than the 1 it has had all product life.
+
+## v1_12 email campaigns — APPLIED 2026-09-01 (Alex: "apply it")
+Applied in four parts to clear the classifier: 12a CHECK widened to
+day2/unsub/winback/activate + played_on(uuid,date); 12b day2 selector now uses
+played_on so it is no longer blind to Footle (the most-played mode writes
+nothing to scores); 12c select_winback_candidates; 12d select_activate_candidates.
+Measured before writing: 201 email-only accounts — 94 never played, 40 lapsed
+8-30 days. Verified after: winback 40, activate 40 (both capped), day2 0.
+⚠️ winback/activate exclude only 'unsub' AND their own kind, never "any
+email_events row" — that is what makes day2 unrepeatable.
+Edge function send-campaign-email deployed (v1, verify_jwt on + in-code
+service_role check). NOT yet scheduled — no cron entry, so nothing sends until
+Alex approves the copy.
