@@ -27,7 +27,10 @@ var list=root.querySelector('.bq-list');if(!list)return;
 var qs=[].slice.call(list.querySelectorAll('.bq-q'));if(!qs.length)return;
 var total=qs.length,name=root.getAttribute('data-name')||'this club';
 var tiers=(root.getAttribute('data-tiers')||'').split('|');
-var store=root.getAttribute('data-store')||'#',more=+(root.getAttribute('data-more')||0),badge=root.getAttribute('data-badge')||'';
+/* data-store is still emitted on the section (the taster on the same page
+   reads its own copy) — this engine simply no longer needs it: the result
+   card's third link now points at /footle, not the App Store. */
+var more=+(root.getAttribute('data-more')||0),badge=root.getAttribute('data-badge')||'';
 var play=root.getAttribute('data-play')||'/play';
 var cslug=root.getAttribute('data-slug')||'',ccol=root.getAttribute('data-color')||'';
 var BANDS=[0,25,45,65,85,100];
@@ -295,7 +298,23 @@ served=off+run.length;var hasMore=total>served;
    Now: Keep going is full width and unmistakably primary, the web-app cross
    keeps the club colour, and the store link gets its own quiet treatment so it
    reads as a third thing rather than a second copy of the first. */
-var appLink='<a class="bq-app" href="'+store+'" rel="noopener">Get the app — a new one daily →</a>';
+/* ⚠️ THE DAILY DOOR — this slot's third redesign, and the first one that
+   points somewhere we own. Audited 2026-08-31: of every visitor who has ever
+   finished a club quiz, the number whose first app-side event came on a LATER
+   day is zero, all time. The site and the daily games are one product joined by
+   nothing, and this is the highest-intent moment on the static surface — they
+   just answered ten questions about their club and are still here.
+   It replaces the store link, which recorded ZERO clicks across two different
+   treatments and 200+ finishers: first camouflaged as a second green button,
+   then quietened into a third thing. Both read as "leave and install", which is
+   the largest possible ask at the smallest possible moment. /footle is one tap,
+   needs no account, and is the loop that actually retains (66.9% of players who
+   ever play come back on another day).
+   ⚠️ METHOD NOTE for whoever reads the number: this is the same slot that has
+   twice produced a zero, so a zero here cannot cleanly separate "wrong offer"
+   from "dead slot". A NON-zero is the informative result. The fair comparator
+   is clubq-out-play in the row above — 30 of 208 finishers ≈ 14%. */
+var appLink='<a class="bq-app" href="/footle">Today\'s Football Wordle — a new one at midnight →</a>';
 var cont=(hasMore
 ?'<a class="bq-go bq-wide" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
 +'<a class="bq-cross" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
@@ -321,7 +340,8 @@ var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',funct
    the whole rebuild. */
 var outs=res.querySelectorAll('a[href]');
 for(var oi=0;oi<outs.length;oi++)(function(el){el.addEventListener('click',function(){
-if(el.hasAttribute('data-more'))return;bqev(el.getAttribute('href')===play?'clubq-out-play':'clubq-out-store')})})(outs[oi]);
+if(el.hasAttribute('data-more'))return;var h=el.getAttribute('href');
+bqev(h===play?'clubq-out-play':h.indexOf('/footle')===0?'clubq-out-daily':'clubq-out-store')})})(outs[oi]);
 var sh=res.querySelector('[data-share]');if(sh)sh.addEventListener('click',function(){bqev('clubq-share');
 /* THE AUTHORITY LEVER. Our ranking ceiling is links, not pages — 11 referral
    sessions in the week to 2026-08-13 — and a score is the one thing a football
