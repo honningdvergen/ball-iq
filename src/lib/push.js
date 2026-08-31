@@ -52,8 +52,20 @@ async function saveToken(token) {
     // had already cost us two real failures that day — sendPlayInvite telling
     // users an opponent was invited when the RPC raised, and report_question
     // thanking users while question_reports stayed empty for the app's whole life.
+    // ⚠️ MINUTES EAST OF UTC — getTimezoneOffset() returns the OPPOSITE sign,
+    // so it must be negated. Same convention as webpush.js:65, and the two must
+    // agree because v1_11's reminder query reads them from a single union.
+    //
+    // Why it is sent at all: the daily-reminder cron used to select only from
+    // web_push_subscriptions — one row — while 42 native users sat in
+    // device_tokens invisible to it, and six reminders had ever been sent in
+    // the product's life. The cron now reads both, but it needs a local hour
+    // to fire at. Until a device re-registers, v1_11 falls back to the hour
+    // that user actually plays in; this is what replaces the guess with a fact.
     const { error } = await supabase.rpc('register_device_token', {
-      p_token: token, p_platform: Capacitor.getPlatform(),
+      p_token: token,
+      p_platform: Capacitor.getPlatform(),
+      p_tz_offset: -new Date().getTimezoneOffset(),
     });
     if (error) {
       console.warn('[push] register_device_token', error.message);

@@ -175,3 +175,20 @@ supabase/migrations/v1_10c_email_events_grant.sql — one GRANT (select, insert
 to service_role). Verified after apply: the set-local-role insert probe succeeded (rolled
 back, 0 rows), service_role now shows SELECT+INSERT. Awaiting the 17:45 UTC
 cron tick for the first real send.
+
+## v1_11_native_daily_reminders — PENDING ALEX APPROVAL (2026-09-01)
+The daily-reminder cron selects FROM web_push_subscriptions (1 row) while 42
+users sit in device_tokens invisible to it; 6 daily_reminder rows have ever been
+written, all to one person. Delivery already works (the notifications trigger
+reads device_tokens) — only the SELECT was wrong.
+File: supabase/migrations/v1_11_native_daily_reminders.sql
+  · device_tokens gains tz_offset_minutes + last_seen_at
+  · register_device_token DROPPED then recreated with a 3rd defaulted arg
+    (adding a defaulted param creates an OVERLOAD, which would make every 2-arg
+    call from the shipped binary fail with "function is not unique")
+  · enqueue_web_daily_reminders unions both tables; users with no offset yet
+    fall back to their own modal play hour from scores, then 19:00 UTC
+Dry-run of the new recipient set, read-only on prod, BEFORE applying:
+  43 reachable (today: 1) — 1 real tz, 34 modal-play-hour, 8 at 19:00 UTC.
+Verify after apply: recipient count >= 35 at the next tick; within 24h,
+notifications where type='daily_reminder' shows >= 30 distinct users.
