@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { useAuth } from "../useAuth.jsx";
 import { supabase } from "../supabase.js";
 import { useModalA11y } from "../useModalA11y.js";
@@ -1187,7 +1188,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, nameEditNonce }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, nameEditNonce }) {
   const { user, profile: authProfile, isGuest, isAnonUser, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -1221,6 +1222,20 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     setSampleDismissed(true);
     try { localStorage.setItem(SAMPLE_KEY, '1'); } catch { /* Safari private mode */ }
   }, []);
+  // "Start building mine" used to be wired to dismissSample — byte-identical to
+  // the X button beside it. A first-timer pressed a button promising to start
+  // something and got a closed dialog and a blank card. Same defect as the
+  // onboarding "Let's play", found the same day on the simulator.
+  //
+  // It launches DAILY 7, not Footle, because of what the modal just promised:
+  // "every answer you get right moves a rating". The six ratings are fed by
+  // catStats, which only MCQ answers write — Footle writes wordle_state and
+  // would move nothing. Routing the retention engine here would be the better
+  // growth bet and the worse honesty bet; the copy decides it.
+  const startBuildingCard = useCallback(() => {
+    dismissSample();
+    onPlayDaily?.();
+  }, [dismissSample, onPlayDaily]);
   // ⚠️ This dialog was the odd one out: 19 of the app's 20 role="dialog" nodes
   // already run useModalA11y, and this one declared aria-modal="true" without
   // it — which is the worst of both worlds. aria-modal tells assistive tech to
@@ -1597,7 +1612,17 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           { icon: "\u{1F30D}", abbr: "INT", v: 84 }, { icon: "\u{1F1EA}\u{1F1F8}", abbr: "LAL", v: 83 },
           { icon: "\u{1F1E9}\u{1F1EA}", abbr: "BUN", v: 80 }, { icon: "\u{1F1EE}\u{1F1F9}", abbr: "SEA", v: 84 },
         ];
-        return (
+        // ⚠️ PORTALLED TO document.body, and it must stay that way.
+        // `.tab-pane { contain: content }` (app.css) is a real perf win — it
+        // stopped a tab tap relaying out 406 of 454 nodes — but containment
+        // makes the pane a containing block for FIXED descendants. Rendered in
+        // place, this overlay's `position:fixed; inset:0` resolved against the
+        // Profile pane, not the viewport: measured 1579px tall starting 60px
+        // down, so the card landed below the fold with the tab bar over it.
+        // There is no containment value that keeps the win and fixes this —
+        // BOTH layout and paint containment establish the fixed containing
+        // block — so the modal moves out of the pane instead.
+        return createPortal(
           <div ref={sampleRef} tabIndex={-1} className="modal-overlay" role="dialog" aria-modal="true" aria-label="What an elite card looks like"
                onClick={dismissSample}>
             <div onClick={(e) => e.stopPropagation()}
@@ -1627,12 +1652,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
               <div style={{ fontSize: 13, color: t.text, opacity: 0.8, marginTop: 16, lineHeight: 1.45 }}>
                 This is an elite card. Yours starts blank &mdash; every answer you get right moves a rating.
               </div>
-              <button type="button" onClick={dismissSample}
+              <button type="button" onClick={startBuildingCard}
                       style={{ width: "100%", marginTop: 16, padding: 13, borderRadius: 13, border: "none", background: t.accent, color: "#241B00", fontSize: 15, fontWeight: 800, fontFamily: "inherit", cursor: "pointer" }}>
                 Start building mine
               </button>
             </div>
-          </div>
+          </div>,
+          document.body,
         );
       })()}
       {(() => {

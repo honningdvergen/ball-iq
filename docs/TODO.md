@@ -1,5 +1,42 @@
 # Ball IQ — the board
 
+## 🎨 QUEUED — FULL WEBSITE CRITIQUE: design + strategy, with gradings (Alex, 2026-09-01)
+
+Alex opened balliq.app from **TikTok's in-app browser** and hit the Scouting
+Report assessment block. His words: *"i do not really love this at all"*. He
+wants a **design AND strategy critique, phone-sim and web, full report with
+gradings**, once the running first-session/Footle audit lands.
+
+**Evidence already captured from his screenshot — start here, don't re-derive:**
+
+- ⚠️ **The page opens by telling the visitor they are nothing.** "Subject: you ·
+  nothing filed yet", then FIVE consecutive rows of *not assessed*. This is the
+  same failure mode Alex rejected in the email creative the same morning —
+  leading with the reader's failure. He called those drafts "passive
+  aggressive". The scouting-report conceit is structurally doing it too.
+- **The TikTok in-app browser eats ~200px of chrome** (nav bar + title + URL).
+  Nothing on the page accounts for it. TikTok is a live acquisition channel and
+  this constrained viewport has never been designed for or tested.
+- **The marketing taster does not shuffle its options.** `MarketingHome.jsx` has
+  no shuffle — verified. So `q_cad396` renders **£80m, £90m, £115m, £100m**
+  every time, answer permanently in slot D, and the numbers are non-ascending.
+  Not a wrong answer (key checked: `a:3` → £100m ✅) but it reads careless to
+  the exact audience we're courting.
+- **Light-on-dark slab.** The report card is a large pale-grey panel inside an
+  otherwise dark page; in the in-app browser it reads washed out.
+- **He landed mid-page**, not at the top — the page itself has no auto-scroll
+  (`scrollIntoView`/`scrollTo` absent from MarketingHome), so this came from
+  in-app-browser scroll restoration. **Reproduce it before theorising.**
+
+**Scope when it runs:** phone sim + desktop web + the TikTok/Instagram in-app
+browser viewport specifically. Design critique AND strategy (what is this page
+FOR, does it convert, does it match the "Both hero" ruling). Graded report.
+
+Related: [[project_homepage_scouting_report]] (dice-assigned direction, 14
+commands applied, 5 owed), [[feedback_homepage_both_hero]],
+[[project_playable_page_finding]] (playable beats readable — the taster is the
+most valuable thing on the page and it's buried below a "not assessed" table).
+
 ## 📅 2026-08-29 — critique day (all shipped, prod-verified)
 
 Three critique agents + a design critique ran; every surviving finding was
