@@ -61,7 +61,9 @@ const prefGet = async (key) => {
   }
 }
 
-const nativeStorage = {
+// Exported for tests/unit/native-session-storage.test.js — the false-logout
+// gate needs to drive this adapter directly with a failing bridge.
+export const nativeStorage = {
   getItem: async (key) => {
     if (mirror.has(key)) return mirror.get(key)
     const v = await prefGet(key)

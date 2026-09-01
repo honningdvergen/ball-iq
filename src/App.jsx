@@ -2939,6 +2939,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         q: q.q,
         type,
         cat: q.cat || null,
+        diff: q.diff || 'medium', // rating weight — see saveStats DIFF_CREDIT
         options,
         userIdx: uIdx,
         correctIdx,
@@ -3022,6 +3023,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           q: tq.q,
           type,
           cat: tq.cat || null,
+          diff: tq.diff || 'medium', // rating weight — see saveStats DIFF_CREDIT
           options,
           userIdx: -1,
           correctIdx,
@@ -10490,14 +10492,33 @@ function AppInner() {
     // unchanged (floats now) so the server jsonb, the hydrate merge and
     // computeCard all keep working; legacy integer counts simply start
     // decaying from here.
+    // ⚠️ DIFFICULTY IS EVIDENCE STRENGTH. The bank labels every question
+    // easy/medium/hard, and the rating used to ignore it — a hard-question
+    // specialist and an easy-question farmer at the same accuracy got the
+    // same card (Alex, 2026-09-01: "do the cards accumulate the right rating
+    // when people answer correctly and wrongly on easy to hard questions?").
+    // Each answer now moves the accuracy ratio with a weight equal to how
+    // much it PROVES: a hard question answered correctly is strong evidence
+    // you're good (1.3 pulls the ratio up hard); an easy one missed is
+    // strong evidence you're not (1.15 pulls it down hard); a hard one
+    // missed proves little (0.85); an easy one answered proves little (0.8).
+    // A correct answer contributes (w, w) — full marks at that weight — so
+    // the ratio stays in [0,1] and the 40–99 mapping is untouched. Bank mix
+    // (25/48/27) keeps the average weight ≈1, so nobody's rating jumps on
+    // upgrade; only the MARGINS change, in the direction players expect.
     const CAT_DECAY = 0.98;
+    const DIFF_CREDIT = { easy: 0.8, medium: 1.0, hard: 1.3 };  // weight when correct
+    const DIFF_MISS   = { easy: 1.15, medium: 1.0, hard: 0.85 }; // weight when wrong
     const catStats = { ...(stats.catStats || {}) };
     for (const ans of (newResult.allAnswers || [])) {
       if (!ans || !ans.cat) continue;
       const cur = catStats[ans.cat] || { c: 0, a: 0 };
+      const w = ans.isCorrect
+        ? (DIFF_CREDIT[ans.diff] || 1.0)
+        : (DIFF_MISS[ans.diff] || 1.0);
       catStats[ans.cat] = {
-        c: (cur.c || 0) * CAT_DECAY + (ans.isCorrect ? 1 : 0),
-        a: (cur.a || 0) * CAT_DECAY + 1,
+        c: (cur.c || 0) * CAT_DECAY + (ans.isCorrect ? w : 0),
+        a: (cur.a || 0) * CAT_DECAY + w,
       };
     }
     const updated = {
