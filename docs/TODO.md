@@ -49,6 +49,10 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       ⚠️ Play's "target API 36 / sanksjonert" card is STALE — targetSdk 36
       landed 2026-07-22, and Play accepted vc47 reporting mål-SDK 36. Do not
       click "Be om mer tid".
+- [x] **Android developer verification: ALREADY DONE** (checked 2026-09-01).
+      Play: "Alle appene dine er registrert og oppfyller kravene". Package
+      names registered (app.balliq since 9 July), identity populated. The
+      30 Sept date is the global deadline, not an outstanding task.
 - [ ] ⚠️ MinimumOSVersion must reach 15.0 by Spring 2027 (Apple upload warning).
 - [ ] Verify Johannes's card converges after he updates (server XP → 10,961).
 - [x] **Email answer links now answer something** (`/play?eq=&ea=`). The emails'
