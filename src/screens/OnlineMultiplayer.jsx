@@ -7,6 +7,7 @@ import { useMultiplayerRoom } from '../useMultiplayerRoom.js';
 import { supabase } from '../supabase.js';
 import { useProfilePhotos } from '../lib/profilePhotos.js';
 import { useAuth } from '../useAuth.jsx';
+import { gameEverStarted } from '../lib/mpRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName, mpSetPlayerReady, mpStartNextRound } from '../multiplayerRpc.js';
 import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName, loopEvent} from '../App.jsx';
 import { maybeRequestReview } from '../lib/review.js';
@@ -299,6 +300,11 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
   useEffect(() => {
     if (!room || room.state !== "ended" || endedRecordedRef.current) return;
     if (!myPlayer || !players.length) return;
+    // Nothing was played, so there is nothing to record, pay or persist. This
+    // guard covers all three at once: the head-to-head W/L row, the XP award
+    // and the scores insert the listener does. Without it an abandoned lobby
+    // minted 50 XP and a phantom win, repeatably.
+    if (!gameEverStarted(room, players)) return;
     endedRecordedRef.current = true;
     try {
       const gameMode = room.mode || "race";
@@ -598,12 +604,23 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             exit — the same daily-door pattern already proven on every other
             finish screen. Rendered only when the room is genuinely closed, so
             it never competes with a live lobby's Start button. */}
-        {!isHost && !hostStillPresent && onPlayDaily && (
+        {/* ⚠️ THIS USED TO REQUIRE !hostStillPresent AND NEVER FIRED. A host who
+            LEAVES politely triggers leave_room, which sets state='ended' and
+            unmounts LobbyView entirely — so the condition could not be true
+            while this rendered. And the realistic abandonment, a host closing
+            their tab, leaves their room_players row behind, so hostStillPresent
+            stays TRUE: measured 70s after a hard close, the joiner's lobby
+            still read "PLAYERS 2/8 · HOST". The rescue was unreachable from
+            both directions.
+            A guest with nothing to do is the same dead end whether the host is
+            there or not — they cannot press Start either way — so it now shows
+            for any non-host, and only the wording changes. */}
+        {!isHost && onPlayDaily && (
           <button
             onClick={onPlayDaily}
             style={{ width: '100%', marginBottom: 16, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
           >
-            Play today&#39;s Daily 7 instead &rarr;
+            {hostStillPresent ? 'Waiting? Play today\u2019s Daily 7 \u2192' : 'Play today\u2019s Daily 7 instead \u2192'}
           </button>
         )}
         {/* Room-code card (design handoff lobby.dc.html): eyebrow + mono code
@@ -1149,6 +1166,10 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
     return ta < tb ? -1 : ta > tb ? 1 : 0;
   });
 
+  // See gameEverStarted: 'ended' does NOT imply a match happened. When it
+  // didn't, this screen must congratulate nobody — no trophy, no confetti, no
+  // XP line, no share — and offer the one thing the visitor can actually do.
+  const gamePlayed = gameEverStarted(room, players);
   const myUserId = myPlayer?.user_id || null;
   const myRank = myUserId ? sorted.findIndex(p => p.user_id === myUserId) + 1 : 0;
   const winner = sorted[0];
@@ -1194,12 +1215,12 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
   const reviewAskedRef = useRef(false);
   useEffect(() => {
     if (reviewAskedRef.current) return;
-    if (isWinner && !survivalDraw && (players?.length || 0) >= 2) {
+    if (gamePlayed && isWinner && !survivalDraw && (players?.length || 0) >= 2) {
       reviewAskedRef.current = true;
       const t = setTimeout(() => { maybeRequestReview(); }, 3500);
       return () => clearTimeout(t);
     }
-  }, [isWinner, survivalDraw, players]);
+  }, [gamePlayed, isWinner, survivalDraw, players]);
 
   // The winner's sensory beat: confetti already falls (below), but the screen
   // was silent to the hand and ear while every SOLO win pulses + chords —
@@ -1209,12 +1230,12 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
   const winBeatRef = useRef(false);
   useEffect(() => {
     if (winBeatRef.current) return;
-    if (isWinner && !survivalDraw) {
+    if (gamePlayed && isWinner && !survivalDraw) {
       winBeatRef.current = true;
       haptic("hardCorrect");
       try { playSound("daily_complete"); } catch { /* audio unavailable */ }
     }
-  }, [isWinner, survivalDraw]);
+  }, [gamePlayed, isWinner, survivalDraw]);
 
   // ── STAY IN THE ROOM AND READY UP ─────────────────────────────────────────
   //
@@ -1606,18 +1627,22 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
     <div className="screen">
       {/* Multiplayer winners deserve the same celebration solo wins get.
           (Not for a draw — nobody outlasted anybody.) */}
-      {isWinner && !survivalDraw && <Confetti />}
+      {gamePlayed && isWinner && !survivalDraw && <Confetti />}
       <div className="page-hdr">
         <div className="page-title">Game over</div>
       </div>
       <div style={{ padding: '12px 4px', maxWidth: 480, margin: '0 auto' }}>
         {/* Headline — winner / your-result framing */}
         <div style={{ textAlign: 'center', padding: '8px 12px 20px' }}>
-          <div className={'mp-go-emoji' + (isWinner && !survivalDraw ? ' mp-go-winner' : '')} style={{ fontSize: 48, marginBottom: 8 }}>{survivalDraw ? '🤝' : isWinner ? (survivalLastStanding ? '🏅' : '🏆') : '👋'}</div>
+          <div className={'mp-go-emoji' + (gamePlayed && isWinner && !survivalDraw ? ' mp-go-winner' : '')} style={{ fontSize: 48, marginBottom: 8 }}>{!gamePlayed ? '\u{1F44B}' : survivalDraw ? '\u{1F91D}' : isWinner ? (survivalLastStanding ? '\u{1F3C5}' : '\u{1F3C6}') : '\u{1F44B}'}</div>
           <div className="mp-go-headline" style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
-            {survivalDraw ? "It's a draw!" : winner ? (isWinner ? (survivalLastStanding ? 'You lasted longest!' : 'You won!') : `${winner.name || 'Player'} ${survivalLastStanding ? 'lasted longest' : 'wins'}`) : 'Game over'}
+            {!gamePlayed ? 'Your mate left before kick-off' : survivalDraw ? "It's a draw!" : winner ? (isWinner ? (survivalLastStanding ? 'You lasted longest!' : 'You won!') : `${winner.name || 'Player'} ${survivalLastStanding ? 'lasted longest' : 'wins'}`) : 'Game over'}
           </div>
-          {survivalDraw ? (
+          {!gamePlayed ? (
+            <div className="mp-go-sub" style={{ fontSize: 13, color: 'var(--t2)' }}>
+              The room closed before a question was asked — nothing was scored.
+            </div>
+          ) : survivalDraw ? (
             <div className="mp-go-sub" style={{ fontSize: 13, color: 'var(--t2)' }}>
               Everyone knocked out on Q{(winner.eliminated_at_q ?? 0) + 1}
             </div>
@@ -1632,7 +1657,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               Recomputed from getMpXP rather than passed down — the award itself
               fires from the once-per-room effect in MultiplayerLobby, and this
               must never be the thing that pays it. */}
-          {myPlayer && (
+          {gamePlayed && myPlayer && (
             <div style={{ marginTop: 10, fontSize: 14, fontWeight: 800, color: 'var(--accent)' }}>
               +{getMpXP(isWinner && !survivalDraw, myPlayer.score || 0)} XP earned ⚡
             </div>
@@ -1878,12 +1903,17 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
           {rematchError && (
             <div style={{ color: '#FF6B6B', fontSize: 13, textAlign: 'center', marginBottom: 10 }}>{rematchError}</div>
           )}
+          {/* Nothing happened, so there is no result. Offering "Share result"
+              on a 0-0 abandoned lobby asks someone to broadcast their own
+              disappointment under our name. */}
+          {gamePlayed && (
           <button
             onClick={handleShareResult}
             style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
           >
             📣 Share result
           </button>
+          )}
 {/* ⚠️ THE ONLY ROUTE OUT OF MULTIPLAYER THAT IS NOT AN EXIT. Measured
               2026-08-31: of the 17 players whose FIRST game was multiplayer,
               76.5% never played a second day and ZERO reached 8 active days —
@@ -1892,12 +1922,17 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               a daily habit on its own; the daily games can. Offered only when
               the parent says a daily is still open, so it never points at
               something already done. */}
+          {/* When no game happened this is the ONLY thing worth offering, so it
+              becomes the solid primary rather than an outline also-ran — the
+              screen's whole job is turning a dead room into a first play. */}
           {onPlayDaily && (
             <button
               onClick={onPlayDaily}
-              style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
+              style={gamePlayed
+                ? { width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }
+                : { width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'var(--accent)', border: 'none', color: '#06230C', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
             >
-              Not done yet? Play today&#39;s Daily 7 &rarr;
+              {gamePlayed ? 'Not done yet? Play today\u2019s Daily 7 \u2192' : 'Play today\u2019s Daily 7 \u2192'}
             </button>
           )}
           <button
