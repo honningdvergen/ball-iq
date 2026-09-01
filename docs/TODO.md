@@ -45,12 +45,21 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       BeSoccer (won't link Romano while quoting him), Bola.net (links Romano to
       its own tag page), Sofascore (2 articles: zero). Every one passed "alive /
       no quiz / contactable / audience fit" and failed the only test that pays.
+- [ ] ⚠️ **Check your inbox for a submission confirmation FIRST** — Alex thinks
+      the directories are done; BACKLINK-SUBMISSIONS.md still lists likewordle
+      as an open gap and never mentions PWA Directory. Live probe found no
+      Footle/Ball IQ on likewordle, pwa.directory or listdle (curl + sitemap +
+      browser), but those sites are partly JS-rendered so absence is not proof.
+      Do NOT re-submit blind — the doc warns it looks like spam.
 - [ ] **DO FIRST — two ~10-minute wins, both dofollow, no pitch needed:**
       PWA Directory (`/submit`, free Standard queue — do NOT buy the $49 Pro
       tier) and LikeWordle (`/submit-app`). Footle is exactly LikeWordle's
       category.
-- [ ] Then ranks 1-5 (The Peoples Person, Grand Old Team, The Celtic Star,
-      The Football Faithful, Sports Mole). ⚠️ Every email must specify **a
+- [ ] **Alex: send the five emails** — written and ready to paste in
+      `docs/OUTREACH-EMAILS.md` (ranks 1-5). ⚠️ Send from YOUR OWN inbox, not
+      balliq.app: cold outreach draws spam complaints and that domain sends the
+      win-back/activate/day-2 product mail. A solo dev writing personally also
+      gets replies where a brand address does not. ⚠️ Every email must specify **a
       dofollow text credit in the body, not an iframe embed** — three of the
       five have prior quiz precedent that was an embed passing zero equity.
 - [ ] **Alex's judgment call:** The Blizzard (rank 12) has two contradictory
