@@ -482,13 +482,14 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
       setPack={setPack}
       scoringMode={room.mode || "race"}
       onSetScoringMode={actions.setRoomMode}
+      onPlayDaily={onPlayDaily}
     />
   );
 }
 
 // topicMeta + TopicPickerSheet moved to App.jsx (shared with LocalSetup).
 
-function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, pack, setPack, scoringMode, onSetScoringMode }) {
+function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, pack, setPack, scoringMode, onSetScoringMode, onPlayDaily }) {
   const photos = useProfilePhotos(useMemo(() => (players || []).map(p => p.user_id), [players]));
   // Optimistic mode highlight: reflect the host's tap instantly, then let the
   // realtime room.mode echo confirm it. Revert + toast if the RPC fails so the
@@ -583,6 +584,27 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
               Leave
             </button>
           </div>
+        )}
+        {/* ⚠️ THE MEASURED DEAD END. Of 26 guests who arrived on an invite link
+            in the 30 days to 2026-09-01, 18 successfully joined a room and only
+            THREE ever played a multiplayer game — and 21 of the 26 never played
+            anything at all, not the match, not Footle, not a Daily 7. This
+            banner is where a good number of them stopped: an invited stranger
+            reaches a closed room and is offered one action, "Leave", which
+            returns them to a Home screen they have no reason to trust yet.
+            They came to play a football game with a friend and the product's
+            entire answer was an apology.
+            So the closed room now offers today's puzzle instead of only an
+            exit — the same daily-door pattern already proven on every other
+            finish screen. Rendered only when the room is genuinely closed, so
+            it never competes with a live lobby's Start button. */}
+        {!isHost && !hostStillPresent && onPlayDaily && (
+          <button
+            onClick={onPlayDaily}
+            style={{ width: '100%', marginBottom: 16, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
+          >
+            Play today&#39;s Daily 7 instead &rarr;
+          </button>
         )}
         {/* Room-code card (design handoff lobby.dc.html): eyebrow + mono code
             + share pill in one compact card. Tapping the code still copies. */}
