@@ -12792,6 +12792,56 @@ function AppInner() {
   const closeKnownIssues = useCallback(() => setShowKnownIssues(false), []);
   const playDaily = useCallback(() => startMode("daily"), [startMode]);
   const suggestMode = useCallback((m) => { startMode(m); }, [startMode]);
+  // Email deep link: /play?eq=<bankQuestionId>&ea=<authoredOptionIndex>.
+  // The win-back / activate emails put a real bank question IN the inbox and
+  // make every option a link, so the tap must keep the email's promise — tell
+  // them whether they were right, then open the Daily 7. A link that silently
+  // dumps a lapsed player into a quiz is the opposite of winning them back.
+  //
+  // ea indexes the AUTHORED option order (the email renders q.o as written),
+  // so correctness is `ea === q.a`. Unknown id or malformed index degrades to
+  // just opening the Daily — never a dead end. Params are stripped
+  // immediately (mirrors the ?c=/?f= capture) so a refresh cannot replay it.
+  //
+  // ⚠️ THE VERDICT MUST LAND BEFORE THE DAILY OPENS. The toast lives in the
+  // home subtree; the quiz screen renders a DIFFERENT tree with no toast node
+  // at all (verified live: showToast ran with correct data, `.toast` was
+  // absent from the DOM, and the daily opened anyway). Firing both in the same
+  // tick therefore shows nothing. So: toast first, open the daily after it has
+  // been on screen. Timer is cleaned up on unmount so a fast tab-away cannot
+  // start a quiz behind the user's back.
+  const emailAnswerHandled = useRef(false);
+  const emailAnswerTimer = useRef(null);
+  useEffect(() => {
+    if (emailAnswerHandled.current) return;
+    let eq = null, ea = null;
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      eq = sp.get('eq'); ea = sp.get('ea');
+    } catch {}
+    if (!eq) return;
+    emailAnswerHandled.current = true;
+    try { const u = new URL(window.location.href); u.searchParams.delete('eq'); u.searchParams.delete('ea'); window.history.replaceState({}, "", u.pathname + u.search + u.hash); } catch {}
+    (async () => {
+      try {
+        const { QB } = await loadQuestions();
+        const q = QB.find(x => x.id === eq);
+        if (!q || !Array.isArray(q.o)) { playDaily(); return; }
+        const idx = parseInt(ea, 10);
+        const answered = Number.isInteger(idx) && idx >= 0 && idx < q.o.length;
+        const correct = answered && idx === q.a;
+        const answerText = q.o[q.a];
+        showToast(
+          correct
+            ? `\u2713 ${answerText} \u2014 correct. Here's today's Daily 7`
+            : `\u2717 It was ${answerText} \u2014 today's seven are waiting`,
+          4200
+        );
+        emailAnswerTimer.current = setTimeout(() => { emailAnswerTimer.current = null; playDaily(); }, 2100);
+      } catch { playDaily(); }
+    })();
+    return () => { if (emailAnswerTimer.current) { clearTimeout(emailAnswerTimer.current); emailAnswerTimer.current = null; } };
+  }, [playDaily, showToast]);
   // 1.1 streak freeze: shields now AUTO-protect a missed day (consumed in
   // tickLoginStreak for guests / the tick_login_streak RPC for signed-in users),
   // so the old manual "Use Shield" action is gone — spending one by hand would
