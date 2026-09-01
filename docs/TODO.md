@@ -29,6 +29,26 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       (drafts/nations prose), entitlements migration (needs "apply it"),
       /nl/ GSC read ~Sept 11, sheet-v2 conversion read ~Sept 5
 
+## 📅 2026-09-01 — headline truth pass
+
+- [x] **/lists headlines were a season behind the data.** 17 of 50 pages
+      advertised "(1992-93 to 2024-25)" above a table whose last row is
+      2025-26. The DATA was current the whole time; only the prose was stale.
+      41 fields fixed across h1/title/description — no football fact added or
+      changed. New gate `tests/unit/lists-headline-truth.test.js` fails the
+      build if a headline ever claims an older terminus than the rows hold;
+      falsified by reinstating one old headline.
+      ⚠️ **Do not oversell this as the /lists CTR fix.** C2 (2026-08-15) already
+      measured that head-term list pages lose the click to Google's own answer
+      box regardless of rank — `premier-league-champions` sits at 1,671
+      impressions and 0 clicks at position 50.8. This is a correctness fix that
+      removes an "out of date" signal; it should matter most on the 6 NICHE
+      pages that actually reach page 1. Treat any CTR movement as a hypothesis
+      to measure, not a predicted win.
+      ⚠️ `lists-staleness.mjs` never missed this — it checks cadence lag and
+      cross-list disagreement in the ROWS, and was correctly reporting the data
+      as current. Nothing read the prose. Two invariants, one gate.
+
 
 ## ⭐ SCOUTING REPORT #4 — THE PLAN (opened 2026-08-24)
 
