@@ -210,3 +210,19 @@ email_events row" — that is what makes day2 unrepeatable.
 Edge function send-campaign-email deployed (v1, verify_jwt on + in-code
 service_role check). NOT yet scheduled — no cron entry, so nothing sends until
 Alex approves the copy.
+
+## v1_13 activate campaign schedule — APPLIED 2026-09-01 (Alex: "no need to park anything")
+Both campaign crons are now LIVE and will send:
+  jobid 6  balliq-winback-daily   '0 10 * * *'   → send-campaign-email {"campaign":"winback"}
+  jobid 7  balliq-activate-daily  '30 10 * * *'  → send-campaign-email {"campaign":"activate"}
+First send 2026-09-02 ~10:00 UTC. Max 40 per run; at-most-once per person via
+the email_events ledger; audiences disjoint (winback = played then lapsed
+8-30d, activate = never played).
+⚠️ The auth header is resolved AT RUN TIME by regexp from day2-email-hourly's
+command rather than copied. The service_role JWT therefore lives in ONE place
+— rotate the key and these jobs follow, instead of silently 401-ing. If
+day2-email-hourly is ever renamed or deleted, BOTH campaign jobs break; keep
+the name or inline a header first.
+Verified before scheduling: header_has_auth = true, bearer_wellformed = true,
+and two test sends (test_to, no ledger write) returned Resend 200 for both
+creatives.
