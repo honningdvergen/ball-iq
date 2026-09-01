@@ -1,4 +1,6 @@
-# The five outreach emails — ready to send
+# The outreach emails — ready to send
+
+*Five free-quiz pitches plus a licensing feeler. Cadence differs by target — see the warning below before changing any of them.*
 
 Written 2026-09-01, off the back of `docs/PARTNERSHIP-TARGETS.md`.
 
@@ -26,11 +28,36 @@ matter:
 - **Ask for a reply, not a meeting.** Lower cost to say yes.
 - Short. Editors are busy and a long cold email reads as a sales sequence.
 
+## ⚠️ CADENCE IS NOT THE SAME FOR EVERY TARGET — this nearly shipped wrong
+
+Alex caught this before a single email went out. The first drafts promised a
+**weekly** quiz to all five. Measured against the actual bank:
+
+| Target | Club-tagged questions | Weekly editions of 10 before repeats |
+|---|---|---|
+| The Peoples Person (Man Utd) | 42 | **4.2 weeks** |
+| Grand Old Team (Everton) | 45 | **4.5 weeks** |
+| The Celtic Star | 49 | **4.9 weeks** |
+
+A weekly *club* quiz runs out in **five weeks**. We would be repeating
+questions by the second month, in front of the most obsessive readers in
+football — worse than never having pitched. So:
+
+- **Club sites (1, 2, 3) are offered MONTHLY.** Sustainable indefinitely, and
+  a free monthly feature is still free content.
+- **General sites (4, 5) are offered WEEKLY.** The general pool is 591 PL
+  questions inside a 6,830-question bank — 683 non-repeating editions of ten,
+  over a decade of weekly quizzes. That promise is safe.
+
+**Never promise a cadence without dividing the relevant pool by the questions
+per edition first.** An over-promise here does not fail quietly; it fails in
+public, on someone else's website, with our name on it.
+
 ---
 
 ## 1 · The Peoples Person (Manchester United) — `redbilly@mymanunited.com`
 
-**Subject:** A free weekly Man United quiz, built and run by me
+**Subject:** A free monthly Man United quiz, built and run by me
 
 > Hi,
 >
@@ -40,8 +67,8 @@ matter:
 >
 > I noticed you run EasyPolls on your articles and credit them with a link in
 > the piece. I'd like to offer you the same arrangement, one level up: a
-> weekly Manchester United quiz, written and fact-checked by me, delivered to
-> you ready to publish under your own byline. You'd do nothing — no editing,
+> monthly Manchester United quiz, written and fact-checked by me, delivered
+> to you ready to publish under your own byline. You'd do nothing — no editing,
 > no embedding, no maintenance. In return, one normal text link back to
 > balliq.app in the article, the same way EasyPolls gets one.
 >
@@ -65,7 +92,7 @@ matter:
 > nothing.
 >
 > Your site has a quiz section wired up at /everton/quiz/ but it's been empty
-> since 2017. I'd like to fill it every week, for free: an Everton quiz,
+> since 2017. I'd like to fill it every month, for free: an Everton quiz,
 > hand-written and fact-checked by me, sent over ready to publish. You keep the
 > content and the audience and you don't lift a finger. All I'd ask is a normal
 > text link back to balliq.app in the body of the piece — a plain link in the
@@ -84,7 +111,7 @@ matter:
 paragraph** — their parent network sells link inventory, and an early mention
 routes this into a sales conversation.
 
-**Subject:** Bringing back the Friday Quiz
+**Subject:** Bringing back the Celtic quiz
 
 > Hi,
 >
@@ -93,15 +120,17 @@ routes this into a sales conversation.
 >
 > You ran a Friday Quiz back in 2018, and David Potter's twenty-question era
 > quizzes ran until 2021. Both stopped. I build football quizzes for a living
-> (Ball IQ, balliq.app), and I'd like to write that weekly Celtic quiz for you
-> again, for free, indefinitely, delivered ready to publish. You'd never have
-> to touch it.
+> (Ball IQ, balliq.app), and I'd like to write that Celtic quiz for you again
+> — monthly, free, indefinitely, delivered ready to publish. You'd never have
+> to touch it. Monthly rather than weekly is deliberate: it keeps every
+> question fresh and properly checked rather than scraping the barrel by
+> Christmas.
 >
 > The only thing I'd want in return is a normal text credit back to my site at
 > the bottom of each one — the same courtesy you already extend when you cite
 > the Celtic Way or the Herald.
 >
-> Shall I send this Friday's over so you can see it?
+> Shall I send the first one over so you can see it?
 >
 > Alexander
 
@@ -167,11 +196,22 @@ sales funnel.
 
 ## If someone says yes
 
-The whole economic case rests on **one quiz built per week, reused across every
-publisher** — not bespoke content per partner. Club-specific targets (1, 2, 3)
-need a club-flavoured variant; the general ones (4, 5) can share a single
-Premier League set. If that stops being true, the cost outruns the return and
-this should be stopped.
+The economics only work if the build is **shared, not bespoke**:
+
+- **One general quiz per week** serves targets 4 and 5 (and any future
+  non-club site) from the same set. Pool: 6,830 questions — no repeat risk
+  this decade.
+- **One club quiz per month per club** for targets 1, 2 and 3. At 42-49
+  questions each these packs support roughly four editions of pure club
+  content, so beyond that the set must be widened with genuinely
+  club-relevant material — their rivals, their era, the competitions they
+  played in — which is how real club quizzes are written anyway. What it must
+  never become is the same questions cycled round.
+
+⚠️ **If a club site asks for weekly instead, the honest answer is no** — or
+"yes, if you'll take club-adjacent questions too". Do not agree to a cadence
+the bank cannot feed. Saying no here costs one publisher; saying yes and then
+repeating costs the reputation the whole pitch is built on.
 
 **Instrument it before scaling.** Per the standing lesson that shipping is not
 delivering: thirteen links from domains of unmeasured authority have no proven
