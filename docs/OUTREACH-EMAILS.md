@@ -177,3 +177,61 @@ this should be stopped.
 delivering: thirteen links from domains of unmeasured authority have no proven
 relationship to moving "football quiz" off position 41. Track whether a live
 link actually moves a position before committing to a weekly cadence forever.
+
+---
+
+# 6 · The licensing feeler — testing whether anyone will *pay*
+
+**Why this exists.** Every per-user revenue model multiplies by our user count,
+and on 272 accounts with 98 monthly players that arithmetic returns pocket
+money whatever we charge. The question bank is the one asset whose value does
+**not** scale with our audience: it is hand-written, fact-checked football
+content with an audited zero-error bar, which is expensive to build and which
+quiz operators cannot buy off the shelf. One licence can be worth more than
+years of ads at this scale, because we sell the asset once instead of renting
+attention 272 times.
+
+**Send this to two kinds of recipient:**
+
+1. **Any of the five publishers who replies warmly** to the free-quiz offer.
+   The relationship is already open; this is simply the next question.
+2. **Pub-quiz and quiz-night operators** — companies that run weekly quizzes in
+   venues and need fresh, correct football rounds every single week. They
+   already pay writers for exactly this.
+
+⚠️ **Never send this as the FIRST contact to the five publishers.** The free
+weekly quiz is the door-opener; leading with an invoice closes it.
+
+⚠️ **Do not state a price in the first email.** We have no idea what this is
+worth yet, and the first number said aloud anchors the deal. The goal of this
+email is one reply that tells us whether a budget exists at all.
+
+**Subject:** Football quiz questions — licensing?
+
+> Hi,
+>
+> I'm Alexander, a developer in Norway. I run Ball IQ, a football quiz app, and
+> the thing underneath it is a large bank of football questions I've written
+> and fact-checked by hand — every one verified against the record books, with
+> a hard rule that a wrong answer never ships.
+>
+> I'm exploring whether that bank is worth licensing to people who need
+> reliable football questions on a schedule, rather than only powering my own
+> app. It's categorised by competition, era and difficulty, and I can deliver
+> it however suits you — a weekly set, a bulk export, or an API.
+>
+> Is that something you'd have a use for? If it's not for you, no problem at
+> all, and I'd genuinely welcome a steer on who might.
+>
+> Alexander
+> balliq.app
+
+## How to read the replies
+
+- **"How much?"** — the budget exists. That is the signal worth having; price
+  it after you know what they want, not before.
+- **"We write our own."** — normal, and the useful follow-up is *"what does a
+  week of that cost you?"*, which prices our alternative for us.
+- **Silence from all of them** — the honest answer is that there is no
+  licensing market at our door, and the money has to come from growing players
+  instead. That is worth knowing in a week rather than assuming for a year.

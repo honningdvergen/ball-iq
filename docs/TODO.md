@@ -55,6 +55,15 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       PWA Directory (`/submit`, free Standard queue — do NOT buy the $49 Pro
       tier) and LikeWordle (`/submit-app`). Footle is exactly LikeWordle's
       category.
+- [ ] **Alex: send the licensing feeler** (email 6 in OUTREACH-EMAILS.md) to
+      pub-quiz/quiz-night operators, and to any of the five publishers who
+      replies warmly. ⚠️ Never as first contact, and never name a price first.
+      This is the only revenue route that does NOT multiply by our 272 accounts.
+- [ ] ⚠️ **DIRECTORIES ARE NOT DONE — verified 2026-09-01 by sitemap, which is
+      definitive.** pwa.directory, likewordle.com (100 app URLs) and
+      listdle.com (556 URLs) contain no Footle/Ball IQ entry. Worse:
+      `listdle.com/games/football-wordle/` is a COMPETITOR's football wordle
+      holding the obvious slug on the most on-target directory we have.
 - [ ] **Alex: send the five emails** — written and ready to paste in
       `docs/OUTREACH-EMAILS.md` (ranks 1-5). ⚠️ Send from YOUR OWN inbox, not
       balliq.app: cold outreach draws spam complaints and that domain sends the
