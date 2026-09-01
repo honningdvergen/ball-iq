@@ -1,5 +1,5 @@
 {
-  "_readme": "1.7.2 What's New — login persistence, card parity, form-based ratings. Applied to ASC 2026-09-01.",
+  "_readme": "1.7.2 What's New — login persistence, card parity, form-based ratings. Applied to ASC 2026-09-01. Promotional text added same day, all 15 locales, applied to ASC.",
   "whatsNew": {
     "en-GB": "You now stay signed in when you update the app — no more surprise login screens.\n\nYour player card shows the same rating to you and to friends who visit your profile.\n\nRatings now follow your current form, and hard questions count for more than easy ones.\n\nDaily reminders arrive at your usual playing time. Plus small layout and stability fixes.",
     "en-US": "You now stay signed in when you update the app — no more surprise login screens.\n\nYour player card shows the same rating to you and to friends who visit your profile.\n\nRatings now follow your current form, and hard questions count for more than easy ones.\n\nDaily reminders arrive at your usual playing time. Plus small layout and stability fixes.",
@@ -16,5 +16,22 @@
     "it": "Ora resti connesso quando aggiorni l'app — niente più schermate di accesso a sorpresa.\n\nLa tua carta giocatore mostra la stessa valutazione a te e agli amici che visitano il tuo profilo.\n\nLa valutazione segue la tua forma attuale e le domande difficili valgono più di quelle facili.\n\nI promemoria giornalieri arrivano al tuo solito orario di gioco. Inoltre piccole correzioni di layout e stabilità.",
     "id": "Kamu kini tetap masuk saat memperbarui aplikasi — tidak ada lagi layar login mendadak.\n\nKartu pemainmu menampilkan rating yang sama untukmu dan teman yang mengunjungi profilmu.\n\nRating kini mengikuti performa terbarumu, dan pertanyaan sulit bernilai lebih dari yang mudah.\n\nPengingat harian tiba di jam bermainmu yang biasa. Ditambah perbaikan kecil tata letak dan stabilitas.",
     "ar": "تبقى الآن مسجّل الدخول عند تحديث التطبيق — لا مزيد من شاشات تسجيل الدخول المفاجئة.\n\nتعرض بطاقة اللاعب التقييم نفسه لك ولأصدقائك الذين يزورون ملفك.\n\nيعكس التقييم الآن مستواك الحالي، والأسئلة الصعبة تُحتسب أكثر من السهلة.\n\nتصل التذكيرات اليومية في وقت لعبك المعتاد، مع إصلاحات بسيطة في التصميم والاستقرار."
+  },
+  "promotionalText": {
+    "en-GB": "Four daily football puzzles, quizzes for your club, and a player card that tracks your form. No ads in the app, no nonsense — just proper football knowledge.",
+    "en-US": "Four daily football puzzles, quizzes for your club, and a player card that tracks your form. No ads in the app, no nonsense — just proper football knowledge.",
+    "en-CA": "Four daily football puzzles, quizzes for your club, and a player card that tracks your form. No ads in the app, no nonsense — just proper football knowledge.",
+    "en-AU": "Four daily football puzzles, quizzes for your club, and a player card that tracks your form. No ads in the app, no nonsense — just proper football knowledge.",
+    "es-ES": "Cuatro retos diarios, quizzes de tu club y una tarjeta de jugador que sigue tu forma. Sin anuncios en la app — solo fútbol de verdad.",
+    "es-MX": "Cuatro retos diarios, quizzes de tu club y una tarjeta de jugador que sigue tu forma. Sin anuncios en la app — solo fútbol de verdad.",
+    "pt-BR": "Quatro desafios diários, quizzes do seu clube e um cartão de jogador que acompanha sua forma. Sem anúncios no app — só futebol de verdade.",
+    "pt-PT": "Quatro desafios diários, quizzes do teu clube e um cartão de jogador que acompanha a tua forma. Sem anúncios na app — só futebol a sério.",
+    "tr": "Her gün dört bulmaca, kulübünüz için quizler ve formunuzu izleyen oyuncu kartı. Uygulamada reklam yok — sadece gerçek futbol bilgisi.",
+    "fr": "Quatre défis quotidiens, des quiz pour votre club et une carte de joueur qui suit votre forme. Pas de pub dans l'app — que du vrai football.",
+    "fr-CA": "Quatre défis quotidiens, des quiz pour votre club et une carte de joueur qui suit votre forme. Pas de pub dans l'app — que du vrai football.",
+    "de": "Vier tägliche Rätsel, Quizze für deinen Klub und eine Spielerkarte, die deine Form verfolgt. Keine Werbung in der App — nur echtes Fußballwissen.",
+    "it": "Quattro sfide al giorno, quiz per il tuo club e una carta giocatore che segue la tua forma. Niente pubblicità nell'app — solo vero calcio.",
+    "id": "Empat teka-teki harian, kuis untuk klubmu, dan kartu pemain yang mengikuti performamu. Tanpa iklan di aplikasi — murni pengetahuan sepak bola.",
+    "ar": "أربعة ألغاز يومية، واختبارات لناديك، وبطاقة لاعب تتبع مستواك. بلا إعلانات داخل التطبيق — كرة قدم حقيقية فقط."
   }
 }
