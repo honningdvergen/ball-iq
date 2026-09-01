@@ -45,6 +45,16 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       ASC, Alex pressed Submit ~13:15. Android vc47 bumped, NOT yet built.
 - [ ] ⚠️ MinimumOSVersion must reach 15.0 by Spring 2027 (Apple upload warning).
 - [ ] Verify Johannes's card converges after he updates (server XP → 10,961).
+- [x] **Email answer links now answer something** (`/play?eq=&ea=`). The emails'
+      tappable options previously went nowhere — the app ignored the param, so
+      the email promised a verdict and delivered silence. Now: resolves the
+      question, shows the verdict, then opens the Daily 7 on a timer.
+      ⚠️ Ordering is load-bearing — the quiz screen has NO `.toast` node, so
+      firing both in one tick shows nothing. Gated + falsified.
+      ✅ Visually confirmed both paths (✓ correct / ✗ wrong). The commit's
+      "not visually confirmed" caveat is WITHDRAWN — two verification
+      artefacts had hidden it: a content-hashed chunk served from cache after
+      patching dist, and the Clarity consent banner covering `bottom:28px`.
 
 ## 📅 2026-09-01 — headline truth pass
 
