@@ -29,6 +29,23 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       (drafts/nations prose), entitlements migration (needs "apply it"),
       /nl/ GSC read ~Sept 11, sheet-v2 conversion read ~Sept 5
 
+## 📅 2026-09-01 — the Johannes wave: 1.7.2 (111) SUBMITTED same day
+- [x] **"Logged out every update" was a client-side illusion** — server showed
+      his June session alive, refreshed the morning he reported it. Fixed both
+      causes (Preferences bridge retry+legacy fallback; watchdog optimistic
+      restore), unit-gated (falsified vs old adapter), device-tested via a
+      credential-free anon room-join on the simulator (kill+relaunch → signed in).
+- [x] **Card parity** — 66 vs 70 / 10,961 vs 4,591 XP was a forked ledger from
+      false-guest play. Delta reconcile in hydrate; snapshots self-heal.
+- [x] **"175 games played" stuck toast** — one-shot per milestone, live-verified
+      both directions.
+- [x] **Ratings** — decay (~34-answer half-life), difficulty-as-evidence
+      (hard-wrong 0.85 verified live), prior clamp (2 answers ≠ 99 GOLD).
+- [x] **1.7.2 submitted**: build 111 attached, 15×What's New + 15×promo text in
+      ASC, Alex pressed Submit ~13:15. Android vc47 bumped, NOT yet built.
+- [ ] ⚠️ MinimumOSVersion must reach 15.0 by Spring 2027 (Apple upload warning).
+- [ ] Verify Johannes's card converges after he updates (server XP → 10,961).
+
 ## 📅 2026-09-01 — headline truth pass
 
 - [x] **/lists headlines were a season behind the data.** 17 of 50 pages
