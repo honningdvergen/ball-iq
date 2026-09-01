@@ -485,7 +485,7 @@ export const LISTS = [
     "slug": "champions-league-winners",
     "h1": "Every Champions League Winner (1956–2026)",
     "title": "Champions League Winners: Every Season 1956–2026 | Ball IQ",
-    "description": "Complete list of every European Cup and UEFA Champions League winner by season from 1955-56 to 2026-26, with runners-up and final scores.",
+    "description": "Complete list of every European Cup and UEFA Champions League winner by season from 1955-56 to 2025-26, with runners-up and final scores.",
     "intro": [
       "Europe's premier club competition began in 1955-56 as the European Cup, a straight knockout for national champions, and was rebranded the UEFA Champions League in 1992-93 with the addition of group stages and, later, entry for multiple clubs from the strongest leagues. This table lists every winner from the very first final through 2024-25, alongside the runners-up and the score in the final.",
       "A handful of names dominate the honours board. Real Madrid stand alone with 15 titles, including the first five in a row from 1956 to 1960 and a modern run of six between 2014 and 2024. AC Milan follow on seven, with Bayern Munich, Liverpool and Barcelona among the other multiple winners. Eleven finals have been settled by a penalty shootout, and a single replay decided the 1974 final between Bayern and Atlético Madrid.",
@@ -948,9 +948,9 @@ export const LISTS = [
   },
   {
     "slug": "premier-league-top-scorers",
-    "h1": "Every Premier League Golden Boot Winner (1992-93 to 2026-26)",
+    "h1": "Every Premier League Golden Boot Winner (1992-93 to 2025-26)",
     "title": "Premier League Golden Boot Winners by Season | Ball IQ",
-    "description": "The complete list of Premier League Golden Boot winners and top scorers for every season from 1992-93 to 2026-26, with clubs and goal tallies.",
+    "description": "The complete list of Premier League Golden Boot winners and top scorers for every season from 1992-93 to 2025-26, with clubs and goal tallies.",
     "intro": [
       "The Premier League Golden Boot goes to the division's leading goalscorer at the end of each 38-game campaign. Since the competition's first season in 1992-93, the award has traced the careers of the game's most feared strikers — from Alan Shearer's mid-90s dominance to Thierry Henry's Arsenal peak, and on to the record-breaking hauls of Mohamed Salah and Erling Haaland.",
       "This table lists the top scorer for every completed Premier League season, along with the club they scored for and their final goal tally. Where the Boot was shared, all joint winners are listed together — the award has been split five times, most notably the three-way ties of 1997-98 and 1998-99, both settled on 18 goals.",
@@ -1551,7 +1551,7 @@ export const LISTS = [
   },
   {
     "slug": "la-liga-champions",
-    "h1": "Every La Liga Champion by Season (1928-29 to 2026-26)",
+    "h1": "Every La Liga Champion by Season (1928-29 to 2025-26)",
     "title": "La Liga Champions: Every Winner, 1929–2026 | Ball IQ",
     "description": "The complete list of Spanish La Liga champions and runners-up, season by season from 1928-29 through 2025-26. Every winner in one chronological table.",
     "intro": [
@@ -2066,7 +2066,7 @@ export const LISTS = [
     "slug": "serie-a-champions",
     "h1": "Every Serie A Champion by Season (1929–2026)",
     "title": "Serie A Champions: Every Scudetto, 1929–2026 | Ball IQ",
-    "description": "The complete list of Italian Serie A champions and runners-up by season, from 1929-30 to 2026-26 — every Scudetto winner, including the Calciopoli revocation.",
+    "description": "The complete list of Italian Serie A champions and runners-up by season, from 1929-30 to 2025-26 — every Scudetto winner, including the Calciopoli revocation.",
     "intro": [
       "Since Italy's top division was unified into a single national round-robin in 1929, the Scudetto — the small tricolour shield champions wear the following season — has been the ultimate prize in Italian football. This page lists every Serie A champion and runner-up by season, from Ambrosiana-Inter's inaugural 1929-30 crown through Napoli's 2024-25 triumph.",
       "A handful of seasons carry footnotes. No championship was contested during 1943-44 and 1944-45 because of the Second World War, so those years are absent from the list. And the 2004-05 and 2005-06 titles were reshaped by the 2006 Calciopoli scandal: the 2004-05 Scudetto was stripped from Juventus and never reassigned, while the 2005-06 title was taken from Juventus and awarded to Internazionale by the courts. Both are shown here exactly as the record stands.",
@@ -2577,9 +2577,9 @@ export const LISTS = [
   },
   {
     "slug": "bundesliga-champions",
-    "h1": "Every Bundesliga Champion by Season (1963-64 to 2026-26)",
+    "h1": "Every Bundesliga Champion by Season (1963-64 to 2025-26)",
     "title": "Bundesliga Champions: Every Winner by Season | Ball IQ",
-    "description": "The complete list of German Bundesliga champions and runners-up for every season from the competition's 1963-64 debut through to 2026-26.",
+    "description": "The complete list of German Bundesliga champions and runners-up for every season from the competition's 1963-64 debut through to 2025-26.",
     "intro": [
       "The Bundesliga launched in 1963-64, replacing Germany's old regional-league playoff system with a single national top flight. Its very first champions were 1. FC Koln, and in the six decades since, the title has told the story of German football's shifting powers - from the Borussia Monchengladbach and Hamburger SV sides of the 1970s to the era of near-total Bayern Munich dominance.",
       "Bayern Munich are comfortably the record holders, having lifted the Meisterschale more than 30 times, including an unbroken run of eleven consecutive titles between 2012-13 and 2022-23. That streak was finally ended by Bayer Leverkusen, who went the entire 2023-24 season unbeaten to win their first-ever German championship under Xabi Alonso.",
@@ -2932,7 +2932,7 @@ export const LISTS = [
     "slug": "super-lig-champions",
     "h1": "Every Süper Lig Champion (1959-2026)",
     "title": "Süper Lig Champions: Every Winner, 1959–2026 | Ball IQ",
-    "description": "The complete list of Turkish Süper Lig champions and runners-up, season by season from 1959 to 2026-26. Every title from Galatasaray to Fenerbahçe, verified.",
+    "description": "The complete list of Turkish Süper Lig champions and runners-up, season by season from 1959 to 2025-26. Every title from Galatasaray to Fenerbahçe, verified.",
     "intro": [
       "Turkey's top flight was founded in 1959 as the Milli Lig, uniting the strongest clubs from Istanbul, Ankara and Izmir into a single national league for the first time. Fenerbahçe claimed that inaugural title, and for decades the competition has been dominated by a familiar core of giants. Galatasaray, Fenerbahçe and Beşiktaş, the three great Istanbul clubs, have shared the overwhelming majority of championships since day one.",
       "Only two sides have broken the big-three grip on the trophy. Trabzonspor stormed to six titles between 1976 and 1984, becoming the first champion from outside Istanbul and earning their place among the historic powers. Decades later, Bursaspor (2009-10) and İstanbul Başakşehir (2019-20) each managed a single surprise crown, brief interruptions in an otherwise metropolitan story.",
@@ -3310,7 +3310,7 @@ export const LISTS = [
     "slug": "premier-league-champions",
     "h1": "Every Premier League Champion (1992-2026)",
     "title": "Premier League Champions: Every Winner, 1992–2026 | Ball IQ",
-    "description": "The complete list of Premier League champions and runners-up for every season from 1992-93 to 2026-26, with title winners in full chronological order.",
+    "description": "The complete list of Premier League champions and runners-up for every season from 1992-93 to 2025-26, with title winners in full chronological order.",
     "intro": [
       "The Premier League launched in 1992-93, breaking away from the old Football League First Division to become English football's top tier. Since then, only a handful of clubs have managed to get their hands on the trophy, and the roll of honour tells the story of shifting eras of dominance across more than three decades.",
       "Manchester United set the early pace, racking up title after title through the 1990s and 2000s. The last fifteen years, though, belong largely to Manchester City, whose spending and squad depth produced an unprecedented run of championships, including four in a row. Only two clubs, Blackburn Rovers and Leicester City, have ever crashed the party as unexpected one-off winners.",
@@ -3518,7 +3518,7 @@ export const LISTS = [
     "slug": "ligue-1-champions",
     "h1": "Every Ligue 1 Champion (1932-2026)",
     "title": "Ligue 1 Champions: Every Winner, 1932–2026 | Ball IQ",
-    "description": "The complete list of French Ligue 1 champions and runners-up for every season from 1932-33 to 2026-26, from Olympique Lillois to PSG's modern dynasty.",
+    "description": "The complete list of French Ligue 1 champions and runners-up for every season from 1932-33 to 2025-26, from Olympique Lillois to PSG's modern dynasty.",
     "intro": [
       "France's top flight kicked off as a professional league in 1932, and its roll of honour reads like a tour of the country's football heartlands: the northern mill towns of Lille and Roubaix, the Mediterranean giants of Marseille and Nice, and the green wave of Saint-Étienne, whose 10 titles set the early benchmark. For decades no single club could keep a grip on the trophy for long.",
       "That changed with the Qatari takeover of Paris Saint-Germain. Since 2013 PSG have turned the Ligue 1 title into an almost annual formality, assembling the most dominant era any French club has known and pushing their tally past Saint-Étienne and Marseille to lead the all-time count. Only Montpellier, Monaco and Lille have interrupted the run.",
@@ -3999,7 +3999,7 @@ export const LISTS = [
   },
   {
     "slug": "eredivisie-champions",
-    "h1": "Every Eredivisie Champion (1956-57 to 2026-26)",
+    "h1": "Every Eredivisie Champion (1956-57 to 2025-26)",
     "title": "Eredivisie Champions: Every Winner by Season | Ball IQ",
     "description": "The complete list of Eredivisie champions and runners-up, season by season from 1956-57 through 2025-26. Every Dutch top-flight title winner in one table.",
     "intro": [
@@ -4387,9 +4387,9 @@ export const LISTS = [
   },
   {
     "slug": "primeira-liga-champions",
-    "h1": "Every Primeira Liga Champion (1934-35 to 2026-26)",
+    "h1": "Every Primeira Liga Champion (1934-35 to 2025-26)",
     "title": "Primeira Liga Champions: Every Winner by Season | Ball IQ",
-    "description": "Every Portuguese Primeira Liga champion and runner-up, season by season from 1934-35 to 2026-26 — Benfica, Porto and Sporting CP's title history.",
+    "description": "Every Portuguese Primeira Liga champion and runner-up, season by season from 1934-35 to 2025-26 — Benfica, Porto and Sporting CP's title history.",
     "intro": [
       "Portugal's top flight has crowned a champion every season since Porto lifted the very first title in 1934-35. Nine decades later the story is still written almost entirely by three clubs — Benfica, Porto and Sporting CP, the 'três grandes' who between them have taken all but two championships in league history.",
       "Only Os Belenenses (1945-46) and Boavista (2000-01) have ever broken the monopoly, each managing a single, celebrated title. Everything else has been a Lisbon-versus-Porto tug of war, from Benfica's Eusébio-era dominance in the 1960s to Porto's run of six titles in seven seasons in the 2000s.",
@@ -4887,7 +4887,7 @@ export const LISTS = [
     "slug": "scottish-premiership-champions",
     "h1": "Every Scottish Premiership Champion (1998-2026)",
     "title": "Scottish Premiership Champions, 1998–2026 | Ball IQ",
-    "description": "Every Scottish top-flight champion by season from 1998-99 to 2026-26, with runners-up. Celtic and Rangers's grip on the SPL and SPFL Premiership title, in full.",
+    "description": "Every Scottish top-flight champion by season from 1998-99 to 2025-26, with runners-up. Celtic and Rangers's grip on the SPL and SPFL Premiership title, in full.",
     "intro": [
       "Scotland's top flight rebranded twice across this era. The Scottish Premier League broke away from the old Premier Division in 1998, then merged with the Scottish Football League in 2013 to form the SPFL, whose top tier became the Premiership. Through every name change, one truth held: the trophy almost never left Glasgow.",
       "Since 1998-99 the title has gone to Celtic or Rangers in every single season. The pattern swings in blocks — Rangers opened the era, Celtic answered, and the two traded three- and four-year runs of dominance. Rangers's 2012 financial collapse and demotion to the fourth tier handed Celtic an uninterrupted nine-in-a-row stretch, broken only when a rebuilt Rangers took the 2020-21 crown.",
@@ -5493,9 +5493,9 @@ export const LISTS = [
   },
   {
     "slug": "la-liga-top-scorers",
-    "h1": "La Liga Top Scorers: Every Pichichi Trophy Winner (1928–29 to 2026–26)",
+    "h1": "La Liga Top Scorers: Every Pichichi Trophy Winner (1928–29 to 2025–26)",
     "title": "La Liga Top Scorers: Every Pichichi Winner | Ball IQ",
-    "description": "The complete list of La Liga Pichichi Trophy winners, season by season, from 1928–29 to 2026–26 — every top scorer, their club, and their goal tally.",
+    "description": "The complete list of La Liga Pichichi Trophy winners, season by season, from 1928–29 to 2025–26 — every top scorer, their club, and their goal tally.",
     "intro": [
       "The Pichichi Trophy, awarded each year by Spanish sports daily Marca, honours the top goalscorer in La Liga. Named after Athletic Bilbao legend Rafael 'Pichichi' Moreno, the award has crowned Spain's most lethal finishers since the league's inaugural 1928–29 season. This table gathers every winner in one place, from Paco Bienzobas's modest 14-goal haul to the record-shattering seasons of the modern era.",
       "No name looms larger than Lionel Messi, who claimed a record eight Pichichis for Barcelona, including the astonishing 50-goal campaign of 2011–12 that still stands as the single-season La Liga record. Telmo Zarra and Hugo Sánchez each won it five times, while the Messi–Cristiano Ronaldo duopoly defined the 2010s before newcomers began breaking through again.",
@@ -6104,7 +6104,7 @@ export const LISTS = [
     "slug": "serie-a-top-scorers",
     "h1": "Serie A Top Scorers: Every Capocannoniere Since 1929-30",
     "title": "Serie A Top Scorers: Capocannoniere, 1929–2026 | Ball IQ",
-    "description": "The complete list of Serie A top scorers (Capocannoniere) for every season from 1929-30 to 2026-26 — player, club and goal tally, with joint winners.",
+    "description": "The complete list of Serie A top scorers (Capocannoniere) for every season from 1929-30 to 2025-26 — player, club and goal tally, with joint winners.",
     "intro": [
       "The Capocannoniere is the award given to the leading goalscorer in Italy's Serie A each season. Since the league adopted its single-division round-robin format in 1929-30, the title has traced the arc of Italian football — from the marksmen of the pre-war Ambrosiana-Inter and Juventus sides to the imported goal machines of the modern game.",
       "No footballer has dominated the charts quite like Gunnar Nordahl, the Swedish AC Milan striker who claimed the honour five times between 1949 and 1955 and set benchmarks that stood for decades. Later eras produced their own serial winners, from Michel Platini's hat-trick of titles at Juventus in the mid-1980s to Ciro Immobile, whose four crowns for Lazio include a record-equalling 36-goal haul in 2019-20.",
@@ -6711,9 +6711,9 @@ export const LISTS = [
   },
   {
     "slug": "bundesliga-top-scorers",
-    "h1": "Bundesliga Top Scorers by Season (1963-64 to 2026-26)",
+    "h1": "Bundesliga Top Scorers by Season (1963-64 to 2025-26)",
     "title": "Bundesliga Top Scorers: Every Torschützenkönig | Ball IQ",
-    "description": "The complete list of Bundesliga top scorers (Torschützenkönig) for every season from 1963-64 to 2026-26, with player, club and goal tally.",
+    "description": "The complete list of Bundesliga top scorers (Torschützenkönig) for every season from 1963-64 to 2025-26, with player, club and goal tally.",
     "intro": [
       "Since the Bundesliga kicked off in 1963-64, the league's leading marksman has been crowned Torschützenkönig — and from 1966 onward handed the Kicker Torjägerkanone, the miniature cannon trophy that remains German football's most coveted individual prize for a striker. This table tracks every winner across more than six decades, from Uwe Seeler's opening-season 30 goals to Harry Kane's back-to-back cannons in Bavaria.",
       "Two names tower over the rest. Gerd Müller bagged the award seven times for Bayern Munich, including a staggering 40-goal haul in 1971-72 that stood as the single-season record for nearly half a century. Robert Lewandowski matched Müller's seven titles and finally broke that record with 41 goals in 2020-21, capping a run of five straight cannons that no one had managed before.",
@@ -7128,9 +7128,9 @@ export const LISTS = [
   },
   {
     "slug": "ligue-1-top-scorers",
-    "h1": "Ligue 1 Top Scorer Every Season (1932–33 to 2026–26)",
+    "h1": "Ligue 1 Top Scorer Every Season (1932–33 to 2025–26)",
     "title": "Ligue 1 Top Scorers: Every Golden Boot Winner | Ball IQ",
-    "description": "Every Ligue 1 top scorer from 1932–33 to 2026–26 — player, club and goals, from Just Fontaine and Josip Skoblar to Kylian Mbappé.",
+    "description": "Every Ligue 1 top scorer from 1932–33 to 2025–26 — player, club and goals, from Just Fontaine and Josip Skoblar to Kylian Mbappé.",
     "intro": [
       "France's top flight has crowned a leading marksman every season since its 1932–33 debut, and the roll call doubles as a history of European goalscoring. The early decades belonged to prolific imports and homegrown talents alike — Roger Courtois, Just Fontaine and the astonishing Josip Skoblar, whose 44 goals for Marseille in 1970–71 remain the single-season Ligue 1 record that no one has come close to touching since.",
       "A handful of names recur like a drumbeat. Carlos Bianchi topped the charts five times in the 1970s across Reims and Paris Saint-Germain, Delio Onnis piled up goals for Monaco, Tours and Toulon, and Jean-Pierre Papin strung together five straight Golden Boots for Marseille from 1988 to 1992 — a run only Kylian Mbappé has since rivalled. Ties were common in the amateur and early professional eras, when two or even three players finished level and shared the honour.",
@@ -7695,9 +7695,9 @@ export const LISTS = [
   },
   {
     "slug": "champions-league-top-scorers",
-    "h1": "Champions League Top Scorer Every Season (1955-56 to 2026-26)",
+    "h1": "Champions League Top Scorer Every Season (1955-56 to 2025-26)",
     "title": "Champions League Top Scorers by Season | Ball IQ",
-    "description": "The top scorer of every European Cup and UEFA Champions League season from 1955-56 to 2026-26, with player, club and goal tally for each year.",
+    "description": "The top scorer of every European Cup and UEFA Champions League season from 1955-56 to 2025-26, with player, club and goal tally for each year.",
     "intro": [
       "Since the European Cup kicked off in 1955, one player has finished ahead of the rest in front of goal almost every season. This complete list runs from Miloš Milutinović's eight goals in that debut 1955-56 campaign, through the 1992 rebrand to the UEFA Champions League, all the way to the 2024-25 final. In the early decades the leading tallies were modest — often five, six or seven goals — and ties at the top were common, reflecting a straight knockout format with far fewer matches than today's expanded league phase.",
       "The modern era belongs to two names above all others. Cristiano Ronaldo topped the scoring charts a record seven times and set the single-season benchmark of 17 goals in 2013-14, while Lionel Messi led or shared the lead five times, peaking at 14 in 2011-12. Between them they dominated a remarkable twelve-year stretch until Robert Lewandowski broke the streak with 15 goals for Bayern Munich in 2019-20.",
@@ -8160,9 +8160,9 @@ export const LISTS = [
   },
   {
     "slug": "europa-league-winners",
-    "h1": "Every UEFA Cup & Europa League Winner (1971-72 to 2026-26)",
+    "h1": "Every UEFA Cup & Europa League Winner (1971-72 to 2025-26)",
     "title": "Europa League Winners: Full List by Season | Ball IQ",
-    "description": "Complete season-by-season list of every UEFA Cup and UEFA Europa League winner from 1971-72 to 2026-26, with runners-up and final scores.",
+    "description": "Complete season-by-season list of every UEFA Cup and UEFA Europa League winner from 1971-72 to 2025-26, with runners-up and final scores.",
     "intro": [
       "Europe's second-tier club competition began life as the UEFA Cup in 1971-72, replacing the old Inter-Cities Fairs Cup. For its first 26 seasons the final was played over two legs, home and away, with the trophy decided on aggregate score. From the 1997-98 edition onwards it switched to a single showpiece match at a neutral venue.",
       "In 2009-10 the tournament was rebranded as the UEFA Europa League and folded in the former UEFA Cup and Intertoto strands, expanding to a group-stage format. The competition has become a Spanish stronghold in the modern era: Sevilla alone have lifted the trophy a record seven times, while Italian, German and English clubs have all enjoyed sustained runs of success.",

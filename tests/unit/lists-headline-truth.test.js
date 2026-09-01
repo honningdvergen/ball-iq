@@ -28,6 +28,17 @@ import { LISTS } from '../../scripts/seo/lists.mjs';
  *    largest token as 1930 and fails the page forever — the fastest way to
  *    get a gate deleted. So we only compare when the text actually names a
  *    terminus: "to X", "through X", or a literal YYYY–YYYY range.
+ *
+ * 3. ⚠️ THIS GATE SHIPPED A BUG ON ITS FIRST DAY, AND THEN PASSED IT.
+ *    The scripted repair chained three .replace() calls. The first correctly
+ *    rewrote "2024-25" -> "2025-26"; the third, /(\bto\s+)2025\b/, then matched
+ *    the 2025 it had just written — \b sits happily before a hyphen — and
+ *    produced "to 2026-26". Ten live pages read "(1992-93 to 2026-26)".
+ *    Both the ad-hoc detector and this gate passed it, because both resolve a
+ *    season token to its SECOND year: endYear("2026-26") is 2026, which is the
+ *    right terminus. Checking the endpoint was never enough. A season token
+ *    must also be INTERNALLY COHERENT — YYYY-YY where YY is the year after
+ *    YYYY — or "2026-26" and "1992-47" sail straight through.
  */
 
 const TOKEN = String.raw`\d{4}(?:\s*[-–]\s*\d{2})?`;
@@ -73,6 +84,21 @@ describe('/lists headlines tell the truth about the data underneath', () => {
     expect(claimedEnd('Clubs With the Most FA Cups')).toBe(null);
     expect(claimedEnd('Every Champion (1992-93 to 2025-26)')).toBe(2026);
     expect(claimedEnd('Every Winner, 1929–2026 | Ball IQ')).toBe(2026);
+  });
+
+  it('never prints an incoherent season token', () => {
+    // "2025-26" is a season. "2026-26" is a typo that still resolves to the
+    // right end year, which is exactly why the terminus check cannot see it.
+    const bad = [];
+    for (const L of LISTS) {
+      for (const field of ['h1', 'title', 'description']) {
+        for (const m of String(L[field]).matchAll(/\b(\d{4})\s*[-–]\s*(\d{2})\b/g)) {
+          const start = Number(m[1]), end = Number(m[2]);
+          if ((start + 1) % 100 !== end) bad.push(`${L.slug}.${field}: "${m[0]}" is not a season`);
+        }
+      }
+    }
+    expect(bad, `\n${bad.join('\n')}\n`).toEqual([]);
   });
 
   it('never advertises an older end than the table holds', () => {
