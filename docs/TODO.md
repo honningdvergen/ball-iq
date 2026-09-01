@@ -43,6 +43,12 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       (hard-wrong 0.85 verified live), prior clamp (2 answers ≠ 99 GOLD).
 - [x] **1.7.2 submitted**: build 111 attached, 15×What's New + 15×promo text in
       ASC, Alex pressed Submit ~13:15. Android vc47 bumped, NOT yet built.
+- [x] **Android 1.7.2 (vc47) SUBMITTED to Play review** 2026-09-01 ~17:25 —
+      full production rollout, 11/11 locale notes, 0 warnings, 13,816 phones
+      supported / 0 lost. iOS 1.7.2 (111) APPROVED the same afternoon.
+      ⚠️ Play's "target API 36 / sanksjonert" card is STALE — targetSdk 36
+      landed 2026-07-22, and Play accepted vc47 reporting mål-SDK 36. Do not
+      click "Be om mer tid".
 - [ ] ⚠️ MinimumOSVersion must reach 15.0 by Spring 2027 (Apple upload warning).
 - [ ] Verify Johannes's card converges after he updates (server XP → 10,961).
 - [x] **Email answer links now answer something** (`/play?eq=&ea=`). The emails'
