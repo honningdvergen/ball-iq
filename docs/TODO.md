@@ -29,6 +29,39 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       (drafts/nations prose), entitlements migration (needs "apply it"),
       /nl/ GSC read ~Sept 11, sheet-v2 conversion read ~Sept 5
 
+## 📅 2026-09-01 — partnership targets: 13 qualified, and the pitch's proof point is DEAD
+- [x] **The audit's last unstarted item is delivered**: `docs/PARTNERSHIP-TARGETS.md`
+      — 66 agents, 81 candidates found, 61 adversarially qualified, 29 killed,
+      then a LINK-OUT test on the survivors. 13 targets, every one with a
+      verified public role-based contact route. No name was invented.
+- [x] 🛑 **`docs/PARTNERSHIP-PITCH.md` now carries a STOP banner.** The kit told
+      Alex to cite FotMob × fcQuiz as a live weekly mechanic. It is dead: 33
+      FotMob sitemaps hold 32 quiz URLs, newest **2024-04-27**, sitemaps current
+      to 2026-08-30 — five quizzes in three weeks of April 2024, then nothing
+      for 28 months. A recipient finds the dead hub in 90 seconds, and it now
+      reads as a counter-example. Rewritten as "the slot is open".
+- [x] **The finding that reshaped the list:** big score-aggregators emit NO
+      external editorial links. Flashscore (6 articles/3 domains: zero),
+      BeSoccer (won't link Romano while quoting him), Bola.net (links Romano to
+      its own tag page), Sofascore (2 articles: zero). Every one passed "alive /
+      no quiz / contactable / audience fit" and failed the only test that pays.
+- [ ] **DO FIRST — two ~10-minute wins, both dofollow, no pitch needed:**
+      PWA Directory (`/submit`, free Standard queue — do NOT buy the $49 Pro
+      tier) and LikeWordle (`/submit-app`). Footle is exactly LikeWordle's
+      category.
+- [ ] Then ranks 1-5 (The Peoples Person, Grand Old Team, The Celtic Star,
+      The Football Faithful, Sports Mole). ⚠️ Every email must specify **a
+      dofollow text credit in the body, not an iframe embed** — three of the
+      five have prior quiz precedent that was an embed passing zero equity.
+- [ ] **Alex's judgment call:** The Blizzard (rank 12) has two contradictory
+      verdicts on file. Both are factually right — they DO pay a dofollow credit
+      to an external quiz partner, and that partner is **fcQuiz, our direct
+      competitor**. Ship or skip is a positioning call, not a fact question.
+- [ ] ⚠️ **No authority metric exists for any of the 13.** Ahrefs/Similarweb/Moz
+      were unauthenticated every pass — no DR, no traffic, no referring domains.
+      The ranking is by observed linking behaviour, NOT measured link value.
+      Per [[feedback_shipping_isnt_delivering]]: instrument before scaling.
+
 ## 📅 2026-09-01 — the Johannes wave: 1.7.2 (111) SUBMITTED same day
 - [x] **"Logged out every update" was a client-side illusion** — server showed
       his June session alive, refreshed the morning he reported it. Fixed both

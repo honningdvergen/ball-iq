@@ -9,6 +9,37 @@ already have; this is what adds a zero to them.
 
 ---
 
+## 🛑 STOP — THE PROOF POINT BELOW IS DEAD (verified 2026-09-01)
+
+**Do not send any email that describes the FotMob × fcQuiz arrangement as
+live.** Re-verified by pulling all 33 FotMob EN news sitemaps: they contain
+exactly **32 quiz URLs, the newest published 2024-04-27**, while the same
+sitemaps are current to 2026-08-30. FotMob has published **zero quizzes in 28
+months** on a site that publishes daily. The collaboration was real — two
+plain dofollow links per article, ~20 locale paths, hub still live — but it
+was **five quizzes across three weeks in April 2024**, not a perpetual engine.
+
+Any recipient can find the dead hub in ninety seconds. Worse, as a case study
+it now argues AGAINST us: a publisher tried this exact trade and walked away
+inside a month.
+
+**Rewrite the line as:** "FotMob ran one in 2024, it worked, and nobody is
+running it now — the slot is open."
+
+**And the second finding, which reshapes the whole target list:** most big
+score-aggregators emit NO external editorial links at all. Flashscore (six
+articles, three domains, zero), BeSoccer (won't link Romano while quoting
+him), Bola.net (links "Fabrizio Romano" to its own tag page), Sofascore (two
+articles, zero third-party links) all fail the only test that matters. A
+publisher who never links out cannot pay us in the currency this outreach
+exists to earn.
+
+👉 **The qualified, link-tested shortlist is `docs/PARTNERSHIP-TARGETS.md`**
+(13 targets, each with a verified public contact route). Two of them are
+~10-minute directory submissions that should be done FIRST.
+
+---
+
 ## Why this works — the mechanic, copied from a competitor who is beating us
 
 `fcquiz.app` is a Norwegian operation at roughly 27K visits/month, and it
