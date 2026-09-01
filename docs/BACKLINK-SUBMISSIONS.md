@@ -21,6 +21,8 @@ Re-submitting looks like spam and can get a listing pulled.
 | **Product Hunt** | ~2026-07-09 | PH only allows a relaunch for a *materially different* product. The next legitimate PH moment is Transfer Trail or Mystery Player — **not** a re-run of this listing. |
 | **AlternativeTo** | 2026-07-13 | Footle, balliq.app/footle, Free, Web+iPhone+iPad, as an alternative to Wordle. Worth checking whether it ever went live. |
 | **IndexNow** | shipped in code | Auto-pings Bing/DDG on every production build. Nothing to do. |
+| **PWA Directory** | 2026-09-01 | ✅ SUBMITTED, free Standard tier. "Submission received — thank you!" Human review, up to 4 weeks, reply to hello@balliq.app. url `https://balliq.app`, name "Ball IQ", category Games & Entertainment. ⚠️ The $49 "Pro Launch" tier is PRE-SELECTED on that form — deselect it. Their sales page markets "Do-follow backlink" as a Pro benefit, which contradicts the 33 dofollow anchors observed on obviously-unpaid listings (Bitwarden, Excalidraw, Lichess). Unresolved; the free listing is worth having either way. |
+| **LikeWordle** | 2026-09-01 | 🟡 FORM FILLED, NOT SUBMITTED — the page has a reCAPTCHA, which Claude will not solve. All fields are complete and verified: Footle — the daily football Wordle / Puzzle / Web / Ball IQ / `https://balliq.app/football-wordle` / hello@balliq.app. Alex ticks the captcha and presses Submit. |
 
 **Deliberately dropped — do not revive:** `playfootball.games` / the "dan@"
 email. It was fetched and verified: Digital Football Games Ltd, hosts only its

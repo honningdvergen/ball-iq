@@ -51,7 +51,13 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       Footle/Ball IQ on likewordle, pwa.directory or listdle (curl + sitemap +
       browser), but those sites are partly JS-rendered so absence is not proof.
       Do NOT re-submit blind — the doc warns it looks like spam.
-- [ ] **DO FIRST — two ~10-minute wins, both dofollow, no pitch needed:**
+- [x] **PWA Directory: SUBMITTED 2026-09-01** (free Standard tier; "Submission
+      received"; review up to 4 weeks to hello@balliq.app). ⚠️ Their $49 Pro
+      tier is pre-selected on the form — always deselect.
+- [ ] **Alex: LikeWordle needs 30 seconds** — the form is filled and verified in
+      the browser but has a reCAPTCHA, which I will not solve. Tick it, press
+      Submit. Footle / Puzzle / Web / balliq.app/football-wordle.
+- [ ] ~~DO FIRST — two ~10-minute wins~~ (superseded by the two lines above):
       PWA Directory (`/submit`, free Standard queue — do NOT buy the $49 Pro
       tier) and LikeWordle (`/submit-app`). Footle is exactly LikeWordle's
       category.
