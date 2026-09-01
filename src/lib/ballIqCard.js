@@ -25,10 +25,20 @@ export const CARD_COMPS = [
 export function compRating(cs, priorAcc = 0.4) {
   const c = cs?.c || 0;
   const a = cs?.a || 0;
+  // ⚠️ A PRIOR IS A PRIOR, NOT A VERDICT. Callers pass the player's overall
+  // accuracy as priorAcc — and for a brand-new player that "overall" is two
+  // answers. Seen live on a fresh device (2026-09-01): 2/2 correct made the
+  // prior 1.0, which made acc 1.0, which rendered a 99 GOLD card off two
+  // questions — a number that can only fall from there, which is exactly the
+  // "it keeps going down the more I play" feeling a real player reported.
+  // Clamping the prior to [0.25, 0.75] keeps an unproven player believably
+  // mid-table in both directions; with real volume the prior's weight (2)
+  // vanishes and the clamp changes nothing.
+  const prior = Math.max(0.25, Math.min(0.75, priorAcc));
   // Smoothed toward the player's overall accuracy (prior, weight 2): an unplayed
   // competition starts at a rating reflecting their level, then diverges quickly
   // (even a few answers move it) toward the category-specific accuracy.
-  const acc = (c + priorAcc * 2) / (a + 2);
+  const acc = (c + prior * 2) / (a + 2);
   return Math.max(40, Math.min(99, Math.round(40 + acc * 59)));
 }
 
