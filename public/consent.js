@@ -60,10 +60,22 @@
     try {
       if (prevPad === null) prevPad = document.body.style.paddingBottom || '';
       document.body.style.paddingBottom = el.offsetHeight + 'px';
+      // ⚠️ Body padding is NOT enough, and this is why ENTER was unreachable.
+      // A screen sized `min-height: calc(100dvh - 100px)` does not shrink when
+      // the body gains padding — it keeps its full dvh height and the padding
+      // simply pushes it into scroll. So on Footle the 172px bar sat straight
+      // over the ENTER key: on an iPhone 17 Pro Max the key was not merely
+      // intercepted, it was off-screen entirely, with a completed six-letter
+      // guess on the board and no way to submit it. Publishing the height as a
+      // custom property lets dvh-sized layouts subtract it for real.
+      document.documentElement.style.setProperty('--biq-consent-h', el.offsetHeight + 'px');
     } catch (e) { /* layout is a nicety; the banner still works without it */ }
   }
   function releaseSpace() {
     try { if (prevPad !== null) document.body.style.paddingBottom = prevPad; } catch (e) {}
+    // Must be removed, not set to 0px: the fallback in var(--biq-consent-h, 0px)
+    // is what every consumer relies on once the bar is gone.
+    try { document.documentElement.style.removeProperty('--biq-consent-h'); } catch (e) {}
   }
 
   function dismiss(el) {

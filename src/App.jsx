@@ -8049,10 +8049,19 @@ function OnboardingScreen({ onDone }) {
   //
   // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount;
   // persistAndFinish closes over the seeded sampleAnswered, which is what we want.
+  //
+  // ⚠️ The ARGUMENT is the whole point. persistAndFinish(startGame) ends with
+  // `onDone?.(startGame === true)`, so calling it bare passed undefined,
+  // `undefined === true` was false, and the shell path landed on Home — the
+  // exact menu this change exists to bypass. The React path got the Footle
+  // handoff; anyone quick enough to tap the shell (a ~0.9s window on 4G, ~8.6s
+  // on Slow 3G — i.e. precisely the impatient cohort the shell was built for)
+  // still had their momentum die on a menu. Mirror `next`/`skip` instead:
+  // act 'start' + an answered sample starts the game, 'skip' correctly does not.
   useEffect(() => {
     if (!prebootRef.current?.act || prebootActReplayed) return;
     prebootActReplayed = true;
-    persistAndFinish();
+    persistAndFinish(prebootRef.current.act === 'start' && sampleAnswered !== null);
   }, []);
 
   return (

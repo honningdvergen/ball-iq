@@ -1871,7 +1871,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    2026-08-31 with a screenshot. Same max() guard as .quiz-wrap: some WebViews
    report env(safe-area-inset-bottom) as 0, and a bare env() with a 0 fallback
    moves nothing — that exact mistake is recorded in the comment above it. */
-.wd-screen{display:flex;flex-direction:column;gap:14px;padding:10px 0 calc(8px + max(env(safe-area-inset-bottom,34px),34px));min-height:calc(100vh - 100px);min-height:calc(100dvh - 100px);}
+/* ⚠️ --biq-consent-h: the consent bar's live height, published by
+   public/consent.js while the bar is up (0px via the var fallback once it
+   is gone). It MUST be subtracted here. Body padding-bottom cannot do this
+   job — a dvh-sized min-height ignores it and pushes into scroll instead —
+   which is how a 172px cookie bar came to sit directly over ENTER on prod,
+   with the key fully off-screen on the tallest iPhone we ship to. */
+.wd-screen{display:flex;flex-direction:column;gap:14px;padding:10px 0 calc(8px + max(env(safe-area-inset-bottom,34px),34px));min-height:calc(100vh - 100px - var(--biq-consent-h, 0px));min-height:calc(100dvh - 100px - var(--biq-consent-h, 0px));}
 .wd-header{display:flex;align-items:center;gap:12px;}
 .wd-header-text{flex:1;min-width:0;}
 .wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
@@ -1915,7 +1921,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    thing to give up the space. */
 .wd-grid{--wd-tile-max:64px;--wd-chrome:505px;}
 @supports (height:100dvh){
-  .wd-grid{--wd-tile-cap:clamp(26px, calc((100dvh - var(--wd-chrome)) / 6), var(--wd-tile-max));}
+  /* Subtract the consent bar here too. A tile is SQUARE, so capping it on one
+     axis caps it on both — shrinking .wd-screen alone leaves the tiles at
+     their old size and simply pushes ENTER back down under the bar. This
+     repo has shipped an unreachable ENTER twice already from exactly that. */
+  .wd-grid{--wd-tile-cap:clamp(26px, calc((100dvh - var(--wd-chrome) - var(--biq-consent-h, 0px)) / 6), var(--wd-tile-max));}
 }
 /* flex:1 + centred so the slack left over by the bottom-anchored keyboard
    splits above and below the tiles instead of collecting into one 122px

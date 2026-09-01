@@ -96,9 +96,17 @@ describe('the pre-boot shell is the screen it imitates', () => {
     // The answer may be adopted on every mount; this one leaves the screen and
     // writes a funnel event, so a StrictMode remount would double-count it.
     expect(APP).toMatch(/prebootActReplayed/);
-    const eff = APP.slice(APP.indexOf('if (!prebootRef.current?.act'), APP.indexOf('if (!prebootRef.current?.act') + 200);
+    const eff = APP.slice(APP.indexOf('if (!prebootRef.current?.act'), APP.indexOf('if (!prebootRef.current?.act') + 300);
+    // ⚠️ This assertion is about ORDERING ONLY — do not re-pin the call's
+    // arguments here. It used to end `persistAndFinish\(\);`, matching the bare
+    // call literally, and in doing so it froze a real bug in place: the bare
+    // call passed `undefined` for startGame, so the shell path landed on Home
+    // instead of Footle. When that was fixed on 2026-09-01 this gate went red,
+    // and a gate going red for a CORRECT change is how a fix gets reverted.
+    // What the argument must be is pinned by preboot-replay-starts-game.test.js;
+    // this one only guards that the latch is set before the side effect.
     expect(eff, 'latch must be set BEFORE the side effect').toMatch(
-      /prebootActReplayed\) return;\s*prebootActReplayed = true;\s*persistAndFinish\(\);/,
+      /prebootActReplayed\) return;\s*prebootActReplayed = true;\s*persistAndFinish\(/,
     );
   });
 
