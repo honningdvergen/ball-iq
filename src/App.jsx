@@ -7975,7 +7975,7 @@ function OnboardingScreen({ onDone }) {
     typeof prebootRef.current.opt === 'number' ? prebootRef.current.opt : null,
   );
 
-  const persistAndFinish = () => {
+  const persistAndFinish = (startGame) => {
     try {
       localStorage.setItem("biq_onboarded", "1");
     } catch {}
@@ -8007,7 +8007,7 @@ function OnboardingScreen({ onDone }) {
         }
       });
     } catch {}
-    onDone?.();
+    onDone?.(startGame === true);
   };
 
   // Both controls now do the same thing, and that is the point: with a single
@@ -8015,11 +8015,29 @@ function OnboardingScreen({ onDone }) {
   // so a player who does not want to answer is never trapped.
   // persistAndFinish() writes biq_onboarded + profiles.onboarded_at, so neither
   // path is ever re-prompted.
+  // ⚠️ "LET'S PLAY" MUST ACTUALLY PLAY SOMETHING.
+  // Measured 2026-09-01: 48% of the last 30 days' accounts never played a
+  // single game, and the web funnel says the drop is not a wall — 18 reached
+  // acct-home and only 5 ever started (`home → first-play: NOT blocked, they
+  // saw the app and did not start`). Watching it as a stranger showed why.
+  // Onboarding spends three interactions building intent — asks a real
+  // question, marks it right, says "Nice — you're a natural" — then the button
+  // labelled "Let's play" dismissed to a Home screen offering FOURTEEN
+  // choices, and asked them to decide all over again. The momentum died on a
+  // menu.
+  // So an ANSWERED sample now hands the player straight into Footle, which is
+  // where the habit actually forms: 94% of players who reach three active days
+  // got there through Footle (62 of 66). Skip still goes to Home untouched —
+  // someone who declined to answer has told us they want to look around, and
+  // launching a game at them would be the opposite of listening.
   const next = () => {
     haptic("soft");
-    persistAndFinish();
+    persistAndFinish(sampleAnswered !== null);
   };
-  const skip = next;
+  const skip = () => {
+    haptic("soft");
+    persistAndFinish(false);
+  };
 
   // They already pressed Skip or Start playing on the shell. Honour it instead
   // of showing them the screen they just dismissed and asking again.
@@ -13142,8 +13160,15 @@ function AppInner() {
             the gate returns on the next organic Home visit. ── */}
         {!hasOnboarded && !deferOnboarding && (
           <OnboardingScreen
-            onDone={() => {
+            onDone={(startGame) => {
               setHasOnboarded(true);
+              // They answered the sample question and pressed "Let's play", so
+              // put them IN a game rather than in front of a menu. Footle is
+              // the choice because it is where the habit forms (94% of players
+              // reaching three active days got there through it) and because
+              // it needs nobody else, unlike a room. Deferred a tick so the
+              // onboarding unmount completes first.
+              if (startGame === true) setTimeout(() => { try { setScreen("wordle"); } catch { /* stay on home */ } }, 0);
               // The component has already written biq_onboarded + any chosen fav_club / skill_level.
               // Pull through the new default difficulty so it takes effect immediately.
               try {
