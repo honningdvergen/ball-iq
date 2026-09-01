@@ -966,7 +966,12 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
       })()}
       <button
         className="btn-3d"
-        style={{marginTop:16,marginBottom:8}}
+        // Bottom clearance: 8px put the button nearly flush with the screen
+        // edge on devices with a home indicator (Alex, from a live screenshot,
+        // 2026-09-01: "slightly too low... could be a bit further up"). 16px
+        // plus the safe-area inset keeps it clear of the indicator on notched
+        // phones and still only nudges it ~20px on older ones.
+        style={{marginTop:16,marginBottom:"calc(16px + env(safe-area-inset-bottom, 12px))"}}
         onClick={() => onChallenge && onChallenge({ id: data.id, username, avatar: data.avatar_id })}
       >
         Challenge {username}

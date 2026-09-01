@@ -43,20 +43,41 @@ const isNative = (() => { try { return Capacitor.isNativePlatform() } catch { re
 // "not yet loaded" and doesn't re-hit the bridge on every read.
 const mirror = new Map()
 
+// ⚠️ A TRANSIENT BRIDGE FAILURE MUST NEVER READ AS "LOGGED OUT".
+// Diagnosed 2026-09-01 from a real player's device: after every app update he
+// was greeted by the sign-in card — yet prod showed his June session ALIVE,
+// refreshed that same morning, with no re-auth since Aug 3. The logout was an
+// illusion the client painted for itself: a cold start after an update always
+// needs this storage read, and if it comes back empty ONCE, supabase-js
+// resolves getSession() as null, the app commits to guest, and 107 of his
+// games forked into a guest bucket the server never saw. So: retry the bridge
+// once, and distinguish "the bridge failed" (undefined — never cached, never
+// trusted) from "the key is truly absent" (null — cacheable).
+const prefGet = async (key) => {
+  try { return (await Preferences.get({ key })).value }
+  catch {
+    try { return (await Preferences.get({ key })).value }
+    catch { return undefined }
+  }
+}
+
 const nativeStorage = {
   getItem: async (key) => {
     if (mirror.has(key)) return mirror.get(key)
-    try {
-      const { value } = await Preferences.get({ key })
-      if (value != null) { mirror.set(key, value); return value }
-      // One-time migration from the old WKWebView localStorage location.
-      const legacy = (typeof localStorage !== 'undefined') ? localStorage.getItem(key) : null
-      if (legacy != null) {
-        await Preferences.set({ key, value: legacy })
-        mirror.set(key, legacy)
-        return legacy
-      }
-    } catch { return null }   // do NOT cache a transient bridge failure
+    const v = await prefGet(key)
+    if (v != null) { mirror.set(key, v); return v }
+    // One-time migration from the old WKWebView localStorage location.
+    // ⚠️ Deliberately OUTSIDE the Preferences try/catch: the old shape ran
+    // this inside it, so the one boot where the bridge failed was also the
+    // one boot that skipped the fallback that would have saved the session.
+    let legacy = null
+    try { legacy = (typeof localStorage !== 'undefined') ? localStorage.getItem(key) : null } catch {}
+    if (legacy != null) {
+      mirror.set(key, legacy)
+      try { await Preferences.set({ key, value: legacy }) } catch { /* best-effort */ }
+      return legacy
+    }
+    if (v === undefined) return null   // bridge failure: do NOT cache
     mirror.set(key, null)
     return null
   },
@@ -77,3 +98,21 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     ...(isNative ? { storage: nativeStorage } : {}),
   },
 })
+
+// Read the persisted session blob WITHOUT going through supabase-js.
+// useAuth's boot watchdog uses this to answer one question when getSession()
+// is slow or offline: "does a session exist on disk?" If yes, the player is
+// shown as themselves (a refresh in flight, writes queue via the score
+// outbox) instead of being demoted to a guest with a sign-in card — the
+// false logout that forked a real player's history in two. Returns the
+// parsed blob when it has a user, else null. Never throws.
+export async function readStoredSession() {
+  try {
+    const raw = isNative
+      ? await nativeStorage.getItem(STORAGE_KEY)
+      : (typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null)
+    if (!raw) return null
+    const blob = JSON.parse(raw)
+    return blob?.user?.id ? blob : null
+  } catch { return null }
+}

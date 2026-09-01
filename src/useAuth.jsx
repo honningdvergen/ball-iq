@@ -4,7 +4,7 @@ import { Capacitor } from '@capacitor/core'
 import { Browser } from '@capacitor/browser'
 import { App as CapApp } from '@capacitor/app'
 import { SignInWithApple } from '@capacitor-community/apple-sign-in'
-import { supabase } from './supabase.js'
+import { supabase, readStoredSession } from './supabase.js'
 import { safeSetItem } from './safeStorage.js'
 import { perfMark } from './lib/perf.js'
 import { isProfaneUsername } from './lib/profanity.js'
@@ -63,6 +63,7 @@ const USER_SCOPED_STATIC_KEYS = [
   'biq_pending_join',
   'biq_last_email',
   'biq_mp_history', // Online-tab h2h ledger — per-user W/L record, must not leak across accounts
+  'biq_ledger_reconcile_at', // per-user delta-reconcile throttle — a stale one would suppress the next user's reconcile
 ]
 const USER_SCOPED_PREFIXES = ['biq_daily_', 'biq_wordle_']
 
@@ -126,6 +127,11 @@ export function AuthProvider({ children }) {
       // Sprint #61 DD3: tag initial-session user. onAuthStateChange handles
       // subsequent sign-ins / sign-outs.
       if (session?.user) {
+        // Clear any stale guest pre-set (line above may have set it from the
+        // ballIQ_guestMode flag). The event listener also does this, but the
+        // watchdog's optimistic restore below bypasses supabase-js events
+        // entirely — without this, a restored user renders with guest chrome.
+        setIsGuest(false)
         try { Sentry.setUser({ id: session.user.id, segment: 'authenticated' }) } catch {}
       } else {
         // Sprint #100 guest-first: no stored session → land in the app as a
@@ -156,8 +162,30 @@ export function AuthProvider({ children }) {
     let authSettled = false
     const authWatchdog = setTimeout(() => {
       if (authSettled) return
-      perfMark('useAuth: getSession() TIMED OUT — entering as guest (offline?)')
-      applySession(null)
+      // ⚠️ SLOW IS NOT SIGNED OUT. A cold start after an app update ALWAYS
+      // lands here with an expired access token, so getSession() has to
+      // refresh over the network before it settles — and on a busy
+      // post-update launch that can outlast this timer. The old fallback
+      // dropped straight to guest, which showed a real signed-in player the
+      // "Sign in / Create account" card after every single update (verified
+      // 2026-09-01: his June session was alive and refreshing server-side the
+      // whole time — 107 of his games forked into a guest-local bucket the
+      // server never saw). So before demoting anyone, ask the disk: if a
+      // session blob exists, show the player as themselves. supabase-js keeps
+      // refreshing in the background and the real session state reconciles
+      // through applySession/onAuthStateChange; score writes queue in the
+      // outbox until the token lands. Guest is now only for people who
+      // genuinely have no session.
+      readStoredSession().then((stored) => {
+        if (authSettled) return
+        if (stored?.user) {
+          perfMark('useAuth: getSession() slow — restored stored session optimistically')
+          applySession({ user: stored.user })
+        } else {
+          perfMark('useAuth: getSession() TIMED OUT — entering as guest (offline?)')
+          applySession(null)
+        }
+      })
     }, 5000)
 
     supabase.auth.getSession()
@@ -464,12 +492,46 @@ export function AuthProvider({ children }) {
     finalStats.catStats = mergedCat
 
     // Write to localStorage. Hydration is intentionally read-only with respect
-    // to Supabase: saveStats (App.jsx) is the canonical writer for aggregate
-    // stats via atomic delta RPCs. Letting hydration also write back creates
-    // a race where stale localStorage values can overwrite freshly-zeroed or
-    // freshly-incremented Supabase values.
+    // to Supabase for ABSOLUTE values: saveStats (App.jsx) is the canonical
+    // writer for aggregate snapshots. Letting hydration write absolutes back
+    // creates a race where stale localStorage values can overwrite
+    // freshly-zeroed or freshly-incremented Supabase values.
     safeSetItem('biq_xp', String(finalXp))
     safeSetItem('biq_stats', JSON.stringify(finalStats))
+
+    // ⚠️ DELTA LEDGERS CANNOT SELF-HEAL — reconcile them here, as deltas.
+    // xp and total_score are written by atomic delta RPCs (increment_xp /
+    // increment_score) that no-op for guests. Every game finished while the
+    // app wrongly believed the player was a guest (the false-logout boot bug,
+    // 2026-09-01) is a delta the server never received and never will:
+    // snapshot columns (games_played, stats jsonb) converge on the next
+    // signed-in save, but a delta ledger stays short forever. Measured on the
+    // player who reported it: device 10,961 XP, server 4,591 — his friends saw
+    // a card 6,370 XP poorer than the one he sees.
+    // Pushing the DEFICIT as a delta is safe against the clobber race the
+    // note above guards: adds compose with concurrent adds from other
+    // devices, unlike an absolute SET. The one residual risk is double-adding
+    // if two boots race the same deficit, so a short-lived marker suppresses
+    // repeat pushes while one is in flight.
+    try {
+      const RECONCILE_FLAG = 'biq_ledger_reconcile_at'
+      const lastAt = parseInt(localStorage.getItem(RECONCILE_FLAG) || '0', 10) || 0
+      if (Date.now() - lastAt > 5 * 60 * 1000) {
+        const xpDeficit = finalXp - remoteXp
+        const scoreDeficit = finalTotalCorrect - remoteTotalScore
+        if (xpDeficit > 0 || scoreDeficit > 0) {
+          safeSetItem(RECONCILE_FLAG, String(Date.now()))
+          if (xpDeficit > 0) {
+            const { error } = await supabase.rpc('increment_xp', { user_id: userId, xp_delta: xpDeficit })
+            if (error) console.warn('[hydrate] xp reconcile failed', error.message)
+          }
+          if (scoreDeficit > 0) {
+            const { error } = await supabase.rpc('increment_score', { user_id: userId, score_delta: scoreDeficit })
+            if (error) console.warn('[hydrate] score reconcile failed', error.message)
+          }
+        }
+      }
+    } catch { /* reconcile is best-effort; the next hydrate retries */ }
 
     // ── Phase 5v: cross-device sync for daily/wordle ──
     // (login_streak removed from hydrate in Phase G — handled by the

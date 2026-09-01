@@ -10474,11 +10474,31 @@ function AppInner() {
     }
     // Per-category accuracy → powers the Ball IQ player-rating card (per-
     // competition ratings). allAnswers already carries { cat, isCorrect }.
+    //
+    // ⚠️ EXPONENTIAL DECAY, NOT A LIFETIME AVERAGE. The counters used to grow
+    // forever, which made the rating a lifetime accuracy — and a lifetime
+    // average has a property players read as a bug: once your early games set
+    // an anchor, answering "correctly more often than not" still DRAGS THE
+    // NUMBER DOWN whenever a session lands under your all-time mean. A real
+    // player reported exactly that on 2026-09-01 ("it keeps going down the
+    // more I play, even though I answer correctly more often than not") — and
+    // he was right about the feel: the old model could never reward current
+    // form, only punish it. Each answer now decays the history by 0.98, which
+    // makes the effective window ~50 answers (≈34-answer half-life): recent
+    // form moves the rating in BOTH directions, a hot streak visibly climbs,
+    // and an ancient bad patch stops being a life sentence. The {c,a} shape is
+    // unchanged (floats now) so the server jsonb, the hydrate merge and
+    // computeCard all keep working; legacy integer counts simply start
+    // decaying from here.
+    const CAT_DECAY = 0.98;
     const catStats = { ...(stats.catStats || {}) };
     for (const ans of (newResult.allAnswers || [])) {
       if (!ans || !ans.cat) continue;
       const cur = catStats[ans.cat] || { c: 0, a: 0 };
-      catStats[ans.cat] = { c: cur.c + (ans.isCorrect ? 1 : 0), a: cur.a + 1 };
+      catStats[ans.cat] = {
+        c: (cur.c || 0) * CAT_DECAY + (ans.isCorrect ? 1 : 0),
+        a: (cur.a || 0) * CAT_DECAY + 1,
+      };
     }
     const updated = {
       // Preserve any stats keys not explicitly recomputed below — without this
@@ -11728,12 +11748,31 @@ function AppInner() {
       loopEvent("bad-moment", { source: "session", mode, worstMissRun, timeouts, score: res.score, total: res.total });
     }
 
-    // Milestone celebrations
+    // Milestone celebrations — ONE-SHOT per milestone value. gamesPlayed is
+    // not monotonic on a real device: hydrate max-merges local vs remote at
+    // every sign-in, and the false-guest boot bug (2026-09-01) had players
+    // flip-flopping between a guest-local count and an account count, so the
+    // same total could be re-crossed for days. A player screenshotted
+    // "⚡ 175 games played" as the toast that "will not go away". Remember the
+    // highest milestone already celebrated and never replay it — persisted
+    // immediately, because the streak flags nearby once relied on the next
+    // save's spread and replayed after reload (2026-07-12 medical).
     const newTotal = (stats.gamesPlayed || 0) + 1;
-    if (newTotal === 10) showToast("🎉 10 games played, you're on a roll");
-    else if (newTotal === 50) showToast(`🔥 50 games — serious ${APP_NAME} energy`);
-    else if (newTotal === 100) showToast(`🏆 100 games — you're a ${APP_NAME} legend`);
-    else if (newTotal % 25 === 0 && newTotal > 10) showToast(`⚡ ${newTotal} games played, keep going`);
+    if (newTotal > (stats.lastGamesMilestone || 0)) {
+      let milestone = true;
+      if (newTotal === 10) showToast("🎉 10 games played, you're on a roll");
+      else if (newTotal === 50) showToast(`🔥 50 games — serious ${APP_NAME} energy`);
+      else if (newTotal === 100) showToast(`🏆 100 games — you're a ${APP_NAME} legend`);
+      else if (newTotal % 25 === 0 && newTotal > 10) showToast(`⚡ ${newTotal} games played, keep going`);
+      else milestone = false;
+      if (milestone) {
+        setStats(p => {
+          const next = { ...p, lastGamesMilestone: newTotal };
+          safeSetItem("biq_stats", JSON.stringify(next));
+          return next;
+        });
+      }
+    }
 
     // Streak milestones (independent of game count)
     if (loginStreak === 7 && !stats.streak7Celebrated) {
