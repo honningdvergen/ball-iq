@@ -9122,6 +9122,7 @@ function AppInner() {
       // "mystery" intentionally absent while MYSTERY_ENABLED is false — a shared
       // ?game=mystery link must not hold the boot screen for a hidden mode.
       if (["footle", "trail", ...(MYSTERY_ENABLED ? ["mystery"] : [])].includes(sp.get("game"))) return true;
+      if (/^q_[a-z0-9]+$/.test((sp.get("eq") || "").trim().toLowerCase())) return true; // email answer link — the verdict must not land behind onboarding
       if (normalizeJoinCode(sp.get("join"))) return true; // legacy query-form invite
       if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
       if (CLUB_SLUG_TO_PACK[(sp.get("club") || "").toLowerCase()]) return true;

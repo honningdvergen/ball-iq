@@ -48,37 +48,97 @@ async function hmac(input: string): Promise<string> {
   return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 32);
 }
 
-function shell(bodyHtml: string, cta: string, ctaHref: string, unsubUrl: string): string {
-  return `<!doctype html><html><body style="margin:0;background:#0d0e12;padding:32px 16px;font-family:-apple-system,Segoe UI,Roboto,sans-serif">
-<div style="max-width:440px;margin:0 auto;background:#15171c;border:1px solid #262933;border-radius:16px;padding:28px 24px;color:#e8e6e2">
-<div style="font-size:20px;font-weight:800;margin-bottom:4px">Ball <span style="color:#58CC02">IQ</span></div>
-${bodyHtml}
-<a href="${ctaHref}" style="display:block;text-align:center;background:#58CC02;color:#06230C;text-decoration:none;font-weight:800;font-size:15px;padding:13px 20px;border-radius:999px">${cta}</a>
-<p style="font-size:11.5px;color:#7c7a75;margin:24px 0 0;line-height:1.5">You're getting this because you created a Ball IQ account. One nudge, not a newsletter.<br><a href="${unsubUrl}" style="color:#7c7a75">Unsubscribe from all Ball IQ emails</a></p>
+// ── Creatives ───────────────────────────────────────────────────────────────
+// Alex, 2026-09-01, delegating the choice: "i trust you with the email
+// creative". The first drafts were rejected as "boring" and, on re-reading,
+// as faintly passive-aggressive — every headline led with the reader's
+// FAILURE ("you have never answered one of these", "four days, then
+// nothing"). That is a telling-off, not an invitation, and these go to people
+// who already stopped playing once. Football's register is anticipation and
+// matchday, so both creatives now lead with the FOOTBALL and let the reader
+// be the one who knows things.
+//
+// ACTIVATE → THE MOMENT. 94 accounts have never answered a single question,
+// so the barrier is "what even is this". Putting a real question IN the inbox
+// removes that step entirely — they are playing before they have decided to.
+// The options are links that actually resolve now (/play?eq=&ea=), so the tap
+// is answered with a verdict instead of dumping them into a quiz.
+// WIN-BACK → MATCHDAY. They already know what the app is, so the pull is the
+// fixture list plus their OWN record as a thing to beat.
+
+const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+const GREEN = "#58CC02";
+const INK = "#06230C";
+
+// ⚠️ The question is PINNED, not drawn from the daily. An email is rendered
+// once and read whenever — a rotating question would make the verdict link
+// wrong for anyone who opens it tomorrow. `ea` indexes the AUTHORED option
+// order (the app shuffles per player; an email cannot), which is why the
+// answer index below is the bank's own. Pinned by
+// tests/unit/email-answer-link.test.js so a bank edit cannot silently rot it.
+const Q = {
+  id: "q_e15d6b",
+  text: "Who scored the stoppage-time goal that won Man City the 2012 Premier League title against QPR?",
+  options: ["Tevez", "Dzeko", "Balotelli", "Agüero"],
+};
+
+function shell(inner: string, unsubUrl: string, preheader: string): string {
+  return `<!doctype html><html><body style="margin:0;background:#0d0e12;padding:32px 16px;font-family:${FONT}">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0">${preheader}</div>
+<div style="max-width:440px;margin:0 auto;background:#15171c;border:1px solid #262933;border-radius:16px;padding:26px 24px;color:#e8e6e2">
+<div style="font-size:20px;font-weight:800;margin-bottom:2px">Ball <span style="color:${GREEN}">IQ</span></div>
+${inner}
+<p style="font-size:11.5px;color:#7c7a75;margin:24px 0 0;line-height:1.5">You created a Ball IQ account. One nudge, not a newsletter.<br><a href="${unsubUrl}" style="color:#7c7a75">Unsubscribe from all Ball IQ emails</a></p>
 </div></body></html>`;
+}
+
+function ctaButton(label: string, href: string): string {
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px"><tr>
+<td align="center" bgcolor="${GREEN}" style="border-radius:999px">
+<a href="${href}" style="display:block;padding:15px 20px;font-size:16px;font-weight:800;color:${INK};text-decoration:none">${label}</a>
+</td></tr></table>`;
 }
 
 // Copy leads with something true about THIS person, not about the product.
 function build(campaign: Campaign, row: Record<string, unknown>, unsubUrl: string) {
   if (campaign === "winback") {
     const best = Number(row.best_streak ?? 0);
-    const streakLine = best >= 2
-      ? `<p style="font-size:16px;line-height:1.6;margin:16px 0 6px"><strong>Your best run was ${best} days in a row.</strong></p>
-         <p style="font-size:14.5px;line-height:1.6;color:#b3b0aa;margin:6px 0 20px">Today's puzzles are live. One game and you're building again — two minutes, no hoops.</p>`
-      : `<p style="font-size:16px;line-height:1.6;margin:16px 0 6px"><strong>Today's football puzzles are live.</strong></p>
-         <p style="font-size:14.5px;line-height:1.6;color:#b3b0aa;margin:6px 0 20px">You played once and drifted off — fair enough. There's a fresh one waiting, and it takes two minutes.</p>`;
+    const recordBadge = best >= 2
+      ? `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px"><tr><td style="padding:9px 15px;background:rgba(88,204,2,0.10);border:1px solid rgba(88,204,2,0.28);border-radius:999px;font-size:13.5px;font-weight:700;color:${GREEN}">Your best run &middot; ${best} days</td></tr></table>`
+      : "";
+    const fixture = (name: string, meta: string, last = false) =>
+      `<tr><td style="padding:13px 16px;font-size:15.5px;font-weight:700;color:#e8e6e2${last ? "" : ";border-bottom:1px solid #22262b"}">${name}</td>
+       <td align="right" style="padding:13px 16px;font-size:12.5px;color:#9aa0a6${last ? "" : ";border-bottom:1px solid #22262b"}">${meta}</td></tr>`;
+    const body =
+      `<div style="font-size:11px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:${GREEN};margin-top:18px">Today's fixtures</div>
+       <p style="font-size:23px;line-height:1.25;font-weight:800;margin:8px 0 0;letter-spacing:-0.5px">The team sheet is up.</p>
+       <p style="font-size:14.5px;line-height:1.6;color:#b3b0aa;margin:12px 0 0">All three are live and everybody gets the same ones today.${best >= 2 ? " Your record is still on your profile, waiting to be beaten." : ""}</p>
+       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;background:#101418;border:1px solid #262933;border-radius:12px">
+       ${fixture("Footle", "six guesses")}${fixture("Daily 7", "about three minutes")}${fixture("Mystery Player", "one career, no name", true)}
+       </table>
+       ${recordBadge}
+       ${ctaButton("Kick off", "https://balliq.app/play?game=footle&utm_source=winback")}`;
     return {
-      subject: best >= 2 ? `Your ${best}-day streak is still yours to beat` : "Today's football puzzles are live",
-      html: shell(streakLine, "Play today's Footle", "https://balliq.app/footle?utm_source=winback", unsubUrl),
+      subject: best >= 2 ? `Your ${best}-day run is still the one to beat` : "Today's team sheet is up",
+      html: shell(body, unsubUrl, "Three puzzles, everyone gets the same ones."),
     };
   }
+
+  // ACTIVATE — the moment, then the question, with tappable answers.
+  const opts = Q.options.map((o, i) =>
+    `<tr><td style="padding:0 0 8px">
+     <a href="https://balliq.app/play?eq=${Q.id}&amp;ea=${i}&amp;utm_source=activate" style="display:block;padding:14px 17px;border:1px solid #33383f;border-radius:10px;font-size:15.5px;font-weight:600;color:#e8e6e2;text-decoration:none;background:#1b1f24">${o}</a>
+     </td></tr>`).join("");
+  const body =
+    `<div style="font-size:11px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:${GREEN};margin-top:18px">Manchester &middot; 13 May 2012</div>
+     <div style="font-size:56px;line-height:1;font-weight:800;color:${GREEN};letter-spacing:-2.5px;margin-top:6px">93:20</div>
+     <p style="font-size:14.5px;line-height:1.6;color:#b3b0aa;margin:14px 0 0">The most famous ten seconds in Premier League history. You already know how it ends.</p>
+     <div style="border-left:3px solid ${GREEN};padding:2px 0 2px 13px;margin:18px 0 0;font-size:16px;line-height:1.5;font-weight:600">${Q.text}</div>
+     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px">${opts}</table>
+     <p style="font-size:14px;line-height:1.6;color:#b3b0aa;margin:10px 0 0">Tap your answer. It opens today's Daily 7 and tells you straight away whether you were right.</p>`;
   return {
-    subject: "You made an account and never got to the good bit",
-    html: shell(
-      `<p style="font-size:16px;line-height:1.6;margin:16px 0 6px"><strong>You signed up, then never played a game.</strong></p>
-       <p style="font-size:14.5px;line-height:1.6;color:#b3b0aa;margin:6px 0 20px">Which means you've seen none of it. The Daily 7 takes about three minutes, every answer explains itself, and it's the same set everyone else gets today.</p>`,
-      "Play today's Daily 7", "https://balliq.app/play?game=daily&utm_source=activate", unsubUrl,
-    ),
+    subject: "You know this one. 93:20, Manchester, 2012",
+    html: shell(body, unsubUrl, "One question. You already know it or you don't."),
   };
 }
 
