@@ -3291,17 +3291,68 @@ function buildListPage(cfg, clubPages, playerPages, catPages, usedIds) {
   const playData = { col: playCol, title: cfg.h1, groups, rowGroup };
   const playable = playCol >= 0 && Object.keys(groups).length >= 8;
 
-  const table = `<div class="ltable-wrap"><table class="ltable">
+  // ⚠️ id + scroll-margin so the jump lands BELOW the sticky name-game bar
+  // rather than under it. The sentence above the taster used to read "The full
+  // list is right below"; measured 2026-09-02 in WebKit at 390x664 that
+  // sentence sat at y=704 and the first table row at y=2,874 — 2,170px, 3.3
+  // screens. It was the only navigational promise on the page and the page had
+  // no in-page anchor at all except "#main".
+  const table = `<div class="ltable-wrap" id="full-list"><table class="ltable">
 <thead><tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead>
 <tbody>
 ${bodyRows}
 </tbody></table></div>`;
   const style = `<style>
-  .ltable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
+  .ltable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--bd);border-radius:14px;background:var(--card);
+    scroll-margin-top:76px;
+    /* ⚠️ CSS-ONLY SCROLL SHADOW — and no backticks in here, they would close
+       the template literal this CSS lives inside.
+       background-attachment:local pins the two card-coloured covers to the
+       CONTENT; scroll pins the two shadows to the BOX. So each shadow hides at
+       its own end of the scroll and shows only when there is genuinely more
+       table off-screen. Needed because the wrapper had overflow-x:auto with NO
+       fade, shadow or hint on any of four pages measured: the table simply
+       looked complete. */
+    background-image:
+      linear-gradient(to right, var(--card) 30%, rgba(0,0,0,0)),
+      linear-gradient(to left,  var(--card) 30%, rgba(0,0,0,0)),
+      linear-gradient(to right, rgba(0,0,0,.45), rgba(0,0,0,0) 22px),
+      linear-gradient(to left,  rgba(0,0,0,.45), rgba(0,0,0,0) 22px);
+    background-position:left center, right center, left center, right center;
+    background-repeat:no-repeat;
+    background-size:44px 100%, 44px 100%, 20px 100%, 20px 100%;
+    background-attachment:local, local, scroll, scroll}
+  .lt-jump{color:var(--accent,#58CC02);font-weight:700;text-decoration:underline;text-underline-offset:3px}
   .ltable{border-collapse:collapse;width:100%;font-size:15px;min-width:min(100%,520px)}
   .ltable th{text-align:left;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.04em;font-size:12px;padding:12px 14px;border-bottom:1px solid var(--bd2);white-space:nowrap;position:sticky;top:0;background:var(--card2)}
   .ltable td{padding:11px 14px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align:top}
   .ltable tbody tr:last-child td{border-bottom:0}
+  /* ⚠️ THE KEY COLUMN WAS OFF-SCREEN. Measured at 390x664: the wrapper is
+     350px but the tables render 416-489px, so on /lists/premier-league-top-
+     scorers/ 66 of the GOALS column's 72px sat outside the viewport, and on
+     ballon-dor NATIONALITY (x 371-510) was entirely invisible — the column the
+     searcher came for, on the page type that is 47% of all impressions.
+     Cause was horizontal DEMAND, not min-width: 14px cell padding on four
+     columns plus nowrap headers. Trimming padding and letting headers wrap
+     costs vertical space, which this page has, and buys back the column. */
+  @media (max-width:520px){
+    .ltable{font-size:13.5px}
+    .ltable th{white-space:normal;padding:10px 7px;font-size:10.5px;letter-spacing:.03em}
+    .ltable td{padding:9px 7px}
+  }
+  /* ⚠️ min-width forces 520px of demand into a 350px wrapper on a phone. The
+     media query above only wins if the override also releases this. */
+  @media (max-width:520px){ .ltable{min-width:0} }
+  /* A second tier for the narrowest phones and the widest tables. Ballon d'Or
+     carries Year + Winner + Club(s) + Nationality, and nationalities are single
+     unwrappable words ("Netherlands"), so it still ran 45px over after the
+     520px tier. Any residual overflow is now at least VISIBLE — the scroll
+     shadow above appears only when there is genuinely more table off-screen. */
+  @media (max-width:430px){
+    .ltable{font-size:12.5px}
+    .ltable th{padding:9px 5px;font-size:10px}
+    .ltable td{padding:8px 5px}
+  }
   .ltable tbody tr:nth-child(even){background:rgba(255,255,255,.015)}
   .ltable .lt-first{font-weight:700;color:#fff;white-space:nowrap}
   .ltable-ad td{padding:0;border:0}
@@ -3342,7 +3393,7 @@ ${/* Outbound tracking rides renderQA(), so the 13 list pages with no taster —
 <script>${QA_TRACK_JS}</script>
 ${taster.length ? `<section class="sec narrow">
 <h2>Think you know this? Five questions</h2>
-<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Tap to answer — no sign-up. The full list is right below.</p>
+<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Tap to answer — no sign-up. <a href="#full-list" class="lt-jump">Or jump to the full list &darr;</a></p>
 ${renderQA(taster)}
 </section>` : ''}
 <section class="sec narrow">
