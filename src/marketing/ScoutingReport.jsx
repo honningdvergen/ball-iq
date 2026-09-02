@@ -29,6 +29,7 @@ import '../design/report.css';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
+import { marketingEvent } from '../lib/marketingEvent.js';
 // Generated (gen-club-index.mjs): 72 rows of {name, slug, competition}, 3.8KB.
 // Never import scripts/seo/clubs.mjs here — it carries every club's SEO prose
 // and would put ~200KB into this chunk to read three fields.
@@ -42,6 +43,9 @@ const IS_IOS = /iPhone|iPad|iPod/.test(_UA);
 const IS_ANDROID = /Android/.test(_UA);
 
 const PLAY = '/play';
+// /footle loads STRAIGHT into a playable board (measured 4.2s) — unlike
+// /football-wordle/, which is a 4,931px marketing page about Footle.
+const FOOTLE = '/footle';
 
 // The five FAQs, copy identical to MarketingHome's CORRECTED set (Android
 // live since 2026-07-30; no question counts). One array feeds both the
@@ -269,6 +273,16 @@ const CSS = `
          border:1px solid var(--ink);border-radius:var(--rc);font:var(--ty-body);font-weight:700;cursor:pointer;
          transition:opacity .15s var(--ease)}
 @media (hover:hover){.sr-next:hover{opacity:.86}}
+/* The verdict's primary. Deliberately the SAME filled ink treatment as
+   .sr-next, because this system has exactly one filled control and a second
+   visual language for "the most important button" would weaken both. */
+.sr-next-up{margin-top:var(--sp3)}
+.sr-primary{display:flex;align-items:center;justify-content:center;min-height:56px;width:100%;
+            background:var(--ink);color:var(--pa);border:1px solid var(--ink);border-radius:var(--rc);
+            font:var(--ty-body);font-weight:700;text-align:center;
+            transition:opacity .15s var(--ease)}
+@media (hover:hover){.sr-primary:hover{opacity:.86;color:var(--pa)}}
+.sr-nextp{margin-top:8px;font:var(--ty-meta);color:var(--mut)}
 
 .sr-stubwrap{padding:var(--sp3);border-top:1px solid var(--rule);margin-top:var(--sp3)}
 @media (min-width:700px){.sr-stubwrap{padding:var(--sp3) var(--sp4) var(--sp4)}}
@@ -555,8 +569,36 @@ export default function ScoutingReport() {
               <div className="sr-band" style={{ color: band.v }}>{band.t}</div>
               <p className="sr-bsub">{band.s}</p>
 
+              {/* ⚠️ THE PAYOFF USED TO POINT AT A STORE LISTING.
+                  Measured 2026-09-02 (WebKit, iPhone 13): after five answered
+                  questions — the single highest-intent moment on the site — the
+                  only two controls were "App Store" (y=772) and "Keep going in
+                  the browser" (y=834), both 303x52 OUTLINE buttons. Same weight,
+                  same border, no filled primary, no hierarchy: the one filled
+                  control in this design system ("Next question") had just
+                  unmounted. Footle appeared nowhere.
+                  A warm visitor inside a working session was pointed at a
+                  download, and away from the mode 62 of 66 three-day-active
+                  players arrived through. Alex, 2026-09-02, asked for the trade
+                  explicitly: browser plays over app installs.
+                  ⚠️ EXPECT INSTALLS TO FALL. The metric is D3 return of the
+                  cohort that clicks this, NOT installs — watching installs will
+                  read this as a regression. */}
+              <div className="sr-next-up">
+                <a
+                  className="sr-primary"
+                  href={FOOTLE}
+                  onClick={() => marketingEvent('sr-verdict-footle', { score })}
+                >
+                  Play today&rsquo;s Footle &rarr;
+                </a>
+                <p className="sr-nextp">
+                  One puzzle, six guesses. Everyone gets the same player today.
+                </p>
+              </div>
+
               <div className="sr-keep">
-                <div className="sr-keept">Keep this report</div>
+                <div className="sr-keept">Or take it with you</div>
                 <p className="sr-keepp">
                   The full test scores you 60 to 160 and remembers it. Your streak, your clubs,
                   your card — and friends to race online, up to eight of you.
@@ -571,10 +613,10 @@ export default function ScoutingReport() {
                     it is the proven converter for cold traffic, and an inline
                     text link was the weakest tap target on the screen. */}
                 <div className="sr-links">
-                  {!IS_ANDROID && <a className="sr-a" href={appStoreUrl()}><AppleMark />App Store</a>}
-                  {!IS_IOS && <a className="sr-a" href={PLAY_STORE_URL}><PlayMark />Google Play</a>}
+                  {!IS_ANDROID && <a className="sr-a" href={appStoreUrl()} onClick={() => marketingEvent('sr-verdict-store', { store: 'ios' })}><AppleMark />App Store</a>}
+                  {!IS_IOS && <a className="sr-a" href={PLAY_STORE_URL} onClick={() => marketingEvent('sr-verdict-store', { store: 'android' })}><PlayMark />Google Play</a>}
                 </div>
-                <a className="sr-a sr-webbtn" href={PLAY}>Keep going in the browser — free</a>
+                <a className="sr-a sr-webbtn" href={PLAY} onClick={() => marketingEvent('sr-verdict-play')}>Keep going in the browser — free</a>
               </div>
             </div>
           )}
