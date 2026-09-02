@@ -12407,6 +12407,22 @@ function AppInner() {
   }, []);
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
+  // Departure tracking for game-abandon (see the playing effect below).
+  const playStartRef = useRef(null);
+  const playModeRef = useRef(null);
+  const dailyDoneRef = useRef(false);
+  useEffect(() => {
+    // Footle/Trail/Mystery/Stadiums finish WITHOUT changing screen, so the
+    // "results" test cannot see them. This latch is what stops a completed
+    // daily being recorded as an abandonment.
+    const onDone = () => { dailyDoneRef.current = true; };
+    window.addEventListener('biq:daily-completed', onDone);
+    window.addEventListener('biq:stadiums-completed', onDone);
+    return () => {
+      window.removeEventListener('biq:daily-completed', onDone);
+      window.removeEventListener('biq:stadiums-completed', onDone);
+    };
+  }, []);
 
   // ⚠️ THE STEP THAT SEPARATES "STUCK" FROM "CHOSE NOT TO PLAY". Reaching Home
   // signed in means the app is usable — past auth, past the mandatory username
@@ -12447,6 +12463,37 @@ function AppInner() {
         // launcher, for the reason given above — launchers multiply.
         markAcctStep(user?.id, 'acct-first-play', loopEvent, { mode });
       } catch {}
+    }
+    // ⚠️ THE OTHER HALF OF first-game-finished. Measured 2026-09-02 over the
+    // window where both events existed: of 62 visitors who started a first game
+    // and had a real chance to return, 29 finished it and only 4 ever came back
+    // on a later day — and ALL FOUR of the returners were finishers. Zero of
+    // the 33 non-finishers returned.
+    // So the binding step is not the finish SCREEN, it is reaching one at all:
+    // roughly half never do. What we could not answer is WHICH mode they quit
+    // and HOW FAR IN, because nothing recorded a departure.
+    //
+    // Finished vs gave up is read from the signals that already exist rather
+    // than plumbing a question index up through the tree: a completed quiz
+    // ends on screen "results" (the last statement of handleComplete), and the
+    // dailies — Footle, Trail, Mystery, Stadiums — dispatch
+    // biq:daily-completed. Anything else that leaves a game is a departure.
+    // ⚠️ Duration, not question index, on purpose: `idx` lives inside the quiz
+    // components, and threading it up would touch every engine to answer a
+    // question that "how long did they last" already answers.
+    if (playing) {
+      playStartRef.current = Date.now();
+      playModeRef.current = mode || screen;
+      dailyDoneRef.current = false;
+    } else if (playStartRef.current) {
+      const secs = Math.round((Date.now() - playStartRef.current) / 1000);
+      const finished = screen === "results" || dailyDoneRef.current === true;
+      playStartRef.current = null;
+      // Under 3s is a bounce off a mis-tap, not an abandoned game; counting it
+      // would swamp the signal we actually want.
+      if (!finished && secs >= 3) {
+        try { loopEvent("game-abandon", { mode: playModeRef.current || "unknown", secs }); } catch {}
+      }
     }
     try {
       if (playing) document.body.classList.add("in-focused-play");

@@ -1,5 +1,71 @@
 # Ball IQ — the board
 
+## 🎯 2026-09-02 — THE REAL LEAK IS DAY 1→2, AND IT HANGS ON FINISHING (baseline frozen)
+
+⚠️ **First: "DAU flat at 13-17" was measured from `scores`, and `scores` does
+not record Footle.** True DAU, counting Footle plays with `guesses > 0`, is
+**~20 and drifting down** (28 on 08-20 → 12 on 09-02). Not flat. Worse.
+
+### Why DAU does not move — the frequency distribution, 107 players / 30 days
+| days played in 30 | players |
+|---|---|
+| **1 day** | **45 (42%)** |
+| 2-3 | 24 |
+| 4-7 | 14 |
+| 8-14 | 11 |
+| 15+ | **13 ← the entire habit core** |
+
+**71 of the 107 are NEW this month.** So each month ~70 new people play, ~42%
+play once and leave, a handful join the core, and DAU stands still. The bucket
+is being refilled at exactly the rate it leaks. A one-day player contributes
+one day.
+
+⚠️ This CORRECTS the August reading of "retention is fine, activation is the
+problem", which came from `scores` averages. Activation puts water in; **day 1→2
+is the hole**.
+
+### The finish/return baseline — measured 2026-09-02, window 2026-08-27..09-02
+Both `first-game-started` and `first-game-finished` are once-per-device
+localStorage-gated, so they are directly comparable — but ⚠️ `first-game-finished`
+only exists from **2026-08-26**, so any window before that reports a fake
+collapse (a naive 30-day read showed 1,021 started vs 45 finished; it is an
+artefact, not a finding).
+
+Counting only visitors who started **and had at least 2 days to come back**:
+
+| | n |
+|---|---|
+| started a first game | **62** |
+| finished it | 29 (47%) |
+| came back on a later day | **4 (6.5%)** |
+| of those returners, had finished | **4 — all of them** |
+
+⚠️ **Zero of the 33 non-finishers ever returned.** n=4 is far too small to call
+a law, but it points the fix one step earlier than expected: not the finish
+SCREEN, but reaching one — **~half never do**.
+
+⚠️ Caveats, stated before anyone quotes these: n is tiny; the window is 7 days;
+`visitor_id` is per-device localStorage, so cleared storage or a second device
+reads as a new visitor and true return is somewhat higher than 6.5%.
+
+### NEW INSTRUMENT shipped today: `game-abandon`
+Fires when a game screen is left without finishing, carrying `{mode, secs}`.
+Finished-vs-gave-up is read from signals that already existed — a completed quiz
+ends on screen "results"; the dailies dispatch `biq:daily-completed` /
+`biq:stadiums-completed`, latched so a completed Footle is never miscounted as
+an abandonment. Duration rather than question index on purpose: `idx` lives
+inside the quiz components and threading it up would touch every engine to
+answer what "how long did they last" already answers. Bounces under 3s are
+ignored so mis-taps do not swamp the signal.
+
+**Read at 7 days.** The question it answers: WHICH mode loses people, and HOW
+FAR IN. Nothing recorded a departure before, so there is no baseline — week one
+establishes one.
+⚠️ **Honest null:** if abandons spread evenly across modes and durations, there
+is no single bad screen and the problem is the offer itself, not a fixable
+moment. That would point at content, not UX.
+
+
 ## 🔔 2026-09-02 — WHY WEB PUSH HAS ONE SUBSCRIBER (diagnosed, not guessed)
 
 Web push is **fully built and live**: `src/lib/webpush.js`, a Settings toggle, a
