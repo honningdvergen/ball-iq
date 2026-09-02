@@ -3410,7 +3410,7 @@ ${/* Outbound tracking rides renderQA(), so the 13 list pages with no taster —
 <script>${QA_TRACK_JS}</script>
 ${taster.length ? `<section class="sec narrow">
 <h2>Think you know this? Five questions</h2>
-<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Tap to answer — no sign-up. <a href="#full-list" class="lt-jump">Or jump to the full list &darr;</a></p>
+<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Tap to answer — no sign-up. <a href="#full-list" class="lt-jump" onclick="try{qev('list-jump')}catch(e){}">Or jump to the full list &darr;</a></p>
 ${renderQA(taster)}
 </section>` : ''}
 <section class="sec narrow">

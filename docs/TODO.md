@@ -1,5 +1,44 @@
 # Ball IQ — the board
 
+## 📏 MEASUREMENT PLAN — read 2026-09-09 and 2026-09-16 (baseline frozen 2026-09-02)
+
+⚠️ **The null result is written here BEFORE the read.** Thirteen items closed in
+48 hours once moved zero numbers; the rule from the strategy report is that a
+change with no metric is not shipped, it is just deployed.
+
+### Baseline, funnel_events, captured 2026-09-02 (7d column = the week BEFORE today's fixes)
+
+| event | 14d | 7d | distinct visitors 14d |
+|---|---|---|---|
+| first-game-started | 1,126 | 188 | 1,021 |
+| clubq-start | 1,048 | 373 | 581 |
+| clubq-play | 652 | 411 | 370 |
+| clubq-finish | 465 | 318 | 235 |
+| taster-start | 92 | 68 | 77 |
+| taster-out-play | 26 | 24 | 17 |
+| list-out-play | 21 | 16 | 18 |
+| list-answered | 17 | 11 | 16 |
+
+### What each change should move, and what it means if it doesn't
+
+| Shipped 2026-09-02 | Watch | Honest null |
+|---|---|---|
+| Consent deferral on ~143 SEO pages (options were covered) | **clubq-start**, list-answered | If arrivals skew non-EU most never saw the bar. Taps up + signups flat is EXPECTED — taps are not the bottleneck. |
+| `/football-quiz/` taster (page had 0 playable elements) | **taster-start** on that URL | Page is position ~41; if nobody lands there the fix is correct and invisible. |
+| Club CTA scoped to `?club=` (was serving Messi) | **clubq-play** → then whether those sessions record a game | Destination quality, not click count. clubq-play may not move at all; what changes is what happens AFTER. |
+| Verdict CTA → Footle (was App Store) | **sr-verdict-footle** vs sr-verdict-store, and D3 return of the Footle cohort | ⚠️ WATCH D3 RETURN, NOT INSTALLS. Installs will probably fall — that is the trade Alex chose 2026-09-02. Unknown what share of visitors finish all five questions; if tiny, this touches few people. |
+| Homepage: consent + category sentence | **sr-taster-1** (NEW — homepage had zero instrumentation) | No prior number exists, so week one only establishes the baseline. |
+| `/lists` jump anchor + tables that fit | **list-jump** (NEW), list-answered | /lists is 47% impressions / 4% clicks and that ratio is mostly RANK, not layout. Fixing the page does not fix the ratio; it fixes what a click is worth. |
+| Next-question scroll, Safari nav | — | Not directly measurable. Correctness fixes; judge by absence of complaints. |
+
+### New events added 2026-09-02
+`sr-taster-1` (first homepage answer — counts PEOPLE not answers), `sr-taster-done`,
+`sr-verdict-footle`, `sr-verdict-store`, `sr-verdict-play`, `list-jump`.
+
+⚠️ All robot-guarded (`navigator.webdriver` + localhost). On 2026-08-21 the e2e
+suite put 867 fake rows into funnel_events against a real DAU of 13-17.
+
+
 ## 🔴 2026-09-02 — APPLE PRIVATE RELAY BOUNCES EVERY EMAIL WE SEND (Alex must fix in the Apple Developer Portal)
 
 **Found by opening Resend, not by a query.** Every message to

@@ -461,12 +461,27 @@ export default function ScoutingReport() {
   const answered = picked !== null;
   const filed = results.filter((r) => r !== null).length;
 
+  // ⚠️ THE HOMEPAGE TASTER WAS UNMEASURED. The SEO surfaces have emitted
+  // clubq-start / taster-start / list-answered for months, so their engagement
+  // is readable — the homepage, which carries the whole Scouting Report
+  // conceit, emitted nothing at all until the verdict CTAs were added today.
+  // Without sr-taster-1 there is no way to read whether deferring the consent
+  // bar (which had been cutting the question mid-sentence with ZERO options
+  // visible) or adding the category sentence changed anything.
+  // Fired only on the FIRST answer, so this counts PEOPLE WHO STARTED rather
+  // than answers given, and cannot be inflated by a fast tapper.
+  const startedRef = useRef(false);
   const choose = useCallback((k) => {
     if (picked !== null) return;
     setPicked(k);
     const right = k === QS[i].a;
     setResults((r) => r.map((v, j) => (j === i ? right : v)));
     if (right) { scoreRef.current += 1; setScore(scoreRef.current); }
+    if (!startedRef.current) { startedRef.current = true; marketingEvent('sr-taster-1'); }
+    // The completion beat. Pairs with sr-taster-1 to give a start->finish rate
+    // for the homepage, the same shape clubq-start/clubq-finish already gives
+    // the club pages.
+    if (i + 1 >= QS.length) marketingEvent('sr-taster-done', { score: scoreRef.current });
   }, [picked, i]);
 
   const next = useCallback(() => {
