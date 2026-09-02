@@ -1490,12 +1490,30 @@ const PLAYER_COVERS = (n) => [
 // and finding a wall, at the precise moment of peak intent. They are now links
 // to the full quiz: same reassurance for a scanner, a real destination for
 // anyone who taps.
-function renderCovers(name, isLeague, isPlayer, href) {
+// ⚠️ THESE ARE DESCRIPTIONS, NOT DOORS — and `href` is now ignored on purpose.
+// Six tiles labelled Club history / Players & legends / Managers / Trophies &
+// honours / Records & stats / Iconic moments each linked to the IDENTICAL pool.
+// A reader who tapped "Managers" and got a random Henry question learned the
+// labels were decoration, which is precisely the impression the hand-checked
+// voice exists to avoid. That is the CTA-parity bug class: a control whose
+// label does not match what pressing it does.
+//
+// ⚠️ AND A REAL TOPIC FILTER IS NOT POSSIBLE ON THIS BANK. Both audit reports
+// offered "wire them to a topic filter" as the better fix. Measured 2026-09-02
+// against the four tiles that map onto a real `cat` (History, Legends,
+// Managers, Records), across all 89 clubs carrying club-tagged questions:
+//   • only 4 clubs support 4 topics at >=5 questions — Dortmund, Athletic
+//     Bilbao, Fiorentina, Sunderland. Not the clubs anyone searches for.
+//   • Arsenal, the biggest club page, has TWO History questions.
+//   • 26-32 clubs have ZERO questions in each given topic.
+// Wiring the filter would ship six doors into two-question or empty rooms —
+// worse than one honest door. So they become plain, non-clickable descriptions
+// of what the quiz covers, which is true today and reads as useful copy.
+// Revisit only if a wave ever gives the big clubs real per-topic depth.
+function renderCovers(name, isLeague, isPlayer, _href) {
   const set = isPlayer ? PLAYER_COVERS(name) : isLeague ? LEAGUE_COVERS(name) : CLUB_COVERS(name);
   const cards = set
-    .map(([t, d]) => (href
-      ? `<a class="cov" href="${href}"><h3>${esc(t)}</h3><p>${esc(d)}</p></a>`
-      : `<div class="cov"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`))
+    .map(([t, d]) => `<div class="cov"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`)
     .join('\n');
   return `<section class="sec">
 <h2 id="covers">What the ${esc(name)} quiz covers</h2>

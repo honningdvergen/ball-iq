@@ -195,6 +195,10 @@ const CSS = `
 .sr-h1{font:var(--ty-headline);letter-spacing:var(--ty-headline-ls);
        text-transform:uppercase;color:var(--tx);text-wrap:balance}
 .sr-lede{margin-top:var(--sp2);font:var(--ty-lede);color:var(--tx4);max-width:60ch}
+/* Same size and family as the lede — only the weight and colour lift it, so
+   the category noun reads first without adding a fourth headline moment to a
+   page already measured as having a flat type scale (h1 35px vs h2 32px). */
+.sr-what{font-weight:700;color:var(--ink)}
 
 /* The file: wider than the container, lying on the desk, with the stacked
    second sheet behind it — a sheet, not a glow. */
@@ -509,7 +513,21 @@ export default function ScoutingReport() {
       {!done && (
         <div className="sr-w sr-open">
           <h1 className="sr-h1">Five questions.<br />One honest verdict.</h1>
+          {/* ⚠️ THE CATEGORY NOUN, FINALLY POINTED AT A HUMAN.
+              Measured 2026-09-02: the rendered homepage is 399 words, the word
+              "football" first appears in prose at character 544 — below the
+              fold on every phone — "quiz" appears twice in the whole page (a
+              nav item and a footer line), and document.images.length is ZERO,
+              so nothing reads as football before the words are read.
+              Meanwhile index.html's static block, which is what Googlebot
+              gets, opens "Ball IQ is a free football quiz game. There is no
+              sign-up and nothing to install." After hydration that sentence is
+              not in document.body.innerText. The best sentence on the page was
+              written, shipped, and shown to a crawler instead of a stranger.
+              The headline stays — it is good, and it is the conceit's hook.
+              This sits under it so the first screen says what this IS. */}
           <p className="sr-lede">
+            <b className="sr-what">Ball IQ is a free football quiz.</b>{' '}
             No account, no waiting. The report writes itself while you answer.
           </p>
         </div>
