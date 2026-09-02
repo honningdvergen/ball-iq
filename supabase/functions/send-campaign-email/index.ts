@@ -176,10 +176,22 @@ Deno.serve(async (req) => {
 
     const list = (cands ?? []).slice(0, 40);
     let sent = 0;
+    let skippedRelay = 0;
     for (const row of list) {
       const uid = row.user_id as string;
       const email = row.email as string;
       if (!email) continue;
+      // ⚠️ APPLE PRIVATE RELAY BOUNCES EVERYTHING FROM US. Resend, 2026-09-02:
+      // 4 of 7 day-2 emails bounced, all to @privaterelay.appleid.com, reason
+      // "Unauthorized Sender to Apple Private Relay: misconfiguration within
+      // your Apple Developer Portal" — balliq.app is not registered under Sign
+      // in with Apple → Email Communication. 80 of 246 email accounts (33%) are
+      // relay addresses; 9/40 activate + 11/40 winback candidates today.
+      // Because this loop is record-first, sending to them would burn their
+      // at-most-once ledger row on a guaranteed bounce and they would never be
+      // retried. Skip them — leaving NO ledger row — until the portal is fixed,
+      // then delete this guard so they get their turn.
+      if (/@privaterelay\.appleid\.com$/i.test(email)) { skippedRelay++; continue; }
       // record-first: at-most-once beats at-least-once for email. A unique
       // violation means another invocation already claimed this person.
       const { error: insErr } = await admin.from("email_events").insert({ user_id: uid, kind: campaign });
@@ -191,7 +203,7 @@ Deno.serve(async (req) => {
       if (res.ok) sent++;
       else console.warn(`[${campaign}] resend`, res.status, (await res.text()).slice(0, 200));
     }
-    return new Response(JSON.stringify({ campaign, candidates: list.length, sent }), {
+    return new Response(JSON.stringify({ campaign, candidates: list.length, sent, skippedRelay }), {
       status: 200, headers: { "content-type": "application/json" },
     });
   } catch (e) {

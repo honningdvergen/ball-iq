@@ -1,5 +1,48 @@
 # Ball IQ — the board
 
+## 🔴 2026-09-02 — APPLE PRIVATE RELAY BOUNCES EVERY EMAIL WE SEND (Alex must fix in the Apple Developer Portal)
+
+**Found by opening Resend, not by a query.** Every message to
+`@privaterelay.appleid.com` bounces with:
+> *"Unauthorized Sender to Apple Private Relay: The email couldn't be delivered
+> because of a misconfiguration within your Apple Developer Portal."*
+
+**Blast radius: 80 of 246 email accounts (33%) are relay addresses.** Today's
+first real campaign send (10:00 winback + 10:30 activate, 40 each) burned
+**20 of them** — 9 activate + 11 winback. The send loop is RECORD-FIRST, so
+each of those 20 has an at-most-once `email_events` row saying "contacted"
+while having received nothing, and would never be retried. Plus 4 of 7 `day2`
+emails had already bounced this way.
+
+### ⚠️ WHAT ALEX MUST DO — I cannot; it is Apple Developer Portal account config
+Per Resend's own docs (via context7, `/websites/resend`
+→ *knowledge-base/sending-apple-private-relay*), register ALL THREE under
+**Certificates, Identifiers & Profiles → Sign in with Apple → Email Communication**:
+1. the sending domain **`balliq.app`**
+2. the **return-path subdomain** Resend uses — check Resend → Domains for the
+   exact value (Resend's default `custom_return_path` is `send`, so most likely
+   **`send.balliq.app`**). Apple requires the return-path domain listed too.
+3. the From address **`nudge@balliq.app`**
+
+SPF/DKIM are already correct (`v=spf1 include:_spf.mx.cloudflare.net ~all`,
+`resend._domainkey` present) — Resend mandates them, so once Apple has the
+sources registered, authentication passes automatically.
+
+### ✅ SHIPPED — stopgap guard (send-campaign-email v4, ACTIVE)
+Skips `@privaterelay.appleid.com` BEFORE the ledger insert, so those users keep
+their one shot instead of spending it on a guaranteed bounce. Returns
+`skippedRelay` in the response. **⚠️ DELETE THE GUARD once the portal is fixed.**
+
+### ⏳ OPEN — the 20 already-burned rows
+Once the portal is fixed, clear today's relay rows so those people get their
+email. NOT done yet — it is a prod delete and needs Alex's go-ahead:
+```sql
+delete from public.email_events e using auth.users u
+ where u.id = e.user_id and e.created_at >= '2026-09-02'
+   and u.email ilike '%privaterelay.appleid.com';
+```
+
+
 ## 🎨 QUEUED — FULL WEBSITE CRITIQUE: design + strategy, with gradings (Alex, 2026-09-01)
 
 ### 🛟 RECOVERY — if the session dies before the critique returns (Alex, 2026-09-02: "make sure nothing gets lost")
