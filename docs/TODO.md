@@ -2,6 +2,15 @@
 
 ## 🎨 QUEUED — FULL WEBSITE CRITIQUE: design + strategy, with gradings (Alex, 2026-09-01)
 
+### 🛟 RECOVERY — if the session dies before the critique returns (Alex, 2026-09-02: "make sure nothing gets lost")
+- Workflow run id: **wf_4d9cb37e-1be** · task wgxpquug2 · launched 2026-09-02 ~09:10 UTC (resume of a run killed with the process overnight; 0 agents had completed).
+- Live journal (one `{"type":"result",...}` line per finished agent, written by the harness as it goes — survives my session dying):
+  `~/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/subagents/workflows/wf_4d9cb37e-1be/journal.jsonl`
+- Script: `~/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/workflows/scripts/balliq-website-critique-wf_48e20ed5-e50.js`
+- Final reports auto-copy to **`.audit/critique-2026-09-02/`** (design.md, strategy.md, raw.json) by a watcher; if that dir is empty, harvest the journal: `node scripts/forge-harvest.mjs <journal path>` — or read the `result` lines directly; labels are `look:*`, `refute:*`, `gaps:completeness`, `report:design`, `report:strategy`.
+- Resume (same-session only per memory) — a fresh session must relaunch: `Workflow({scriptPath, resumeFromRunId:"wf_4d9cb37e-1be"})` replays cached agents.
+
+
 Alex opened balliq.app from **TikTok's in-app browser** and hit the Scouting
 Report assessment block. His words: *"i do not really love this at all"*. He
 wants a **design AND strategy critique, phone-sim and web, full report with
@@ -28,9 +37,28 @@ gradings**, once the running first-session/Footle audit lands.
   (`scrollIntoView`/`scrollTo` absent from MarketingHome), so this came from
   in-app-browser scroll restoration. **Reproduce it before theorising.**
 
-**Scope when it runs:** phone sim + desktop web + the TikTok/Instagram in-app
-browser viewport specifically. Design critique AND strategy (what is this page
-FOR, does it convert, does it match the "Both hero" ruling). Graded report.
+**Scope when it runs — CORRECTED 2026-09-01 late:** Alex: *"do not base
+everything off the tiktok screenshot either, it was just an example. i think the
+website itself from safari too needs massive work."* So **ordinary iPhone Safari
+and desktop are the main event**; the TikTok/Instagram in-app browser is ONE
+secondary arrival context. The fleet was relaunched with WebKit (Safari's real
+engine, installed 2026-09-02) as the primary lens for exactly this reason. Design critique AND
+strategy (what is this page FOR, does it convert, does it match the "Both hero"
+ruling). Graded report, per-area plus overall.
+
+⚠️ **"Scouting Report" names TWO different things — do not conflate them.**
+Asked how attached he was, Alex said it *"gave us structure previously on where
+to go and what to do"*. That is the **internal audit method** (reports #1-#4,
+116 findings, the graded work lists) — a working process that is genuinely
+valuable and which this critique must not touch. The **homepage design
+conceit** is a separate artefact aimed at strangers, and it can be replaced
+outright without losing any of the method. The dice assigned a visual
+direction, not a permanent commitment. Say plainly in the report whether it
+earns its place; replacing it is on the table.
+
+Alex's frame for all of it, in his words: *"keep things moving onwards and
+upwards and make our product, app and website better every single day, brick by
+brick."*
 
 Related: [[project_homepage_scouting_report]] (dice-assigned direction, 14
 commands applied, 5 owed), [[feedback_homepage_both_hero]],
