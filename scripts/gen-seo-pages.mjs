@@ -620,13 +620,24 @@ function heroTwoCol(props, rightHtml) {
    free, instant and needs no account — and it was never mentioned. Play here
    first, install second, which is the same ordering the club engine settled on
    against the 94.6% single-page measurement. */
-function appCtaBand(name) {
+// ⚠️ THE BUTTON MUST DELIVER WHAT THE HEADING PROMISES. `playHref` exists
+// because this band's h2 says "Think you know Arsenal? Prove it." and its
+// button then pointed at a BARE /play, which serves the generic Messi warm-up.
+// A fan who searched "arsenal quiz", played the taster and pressed the button
+// promising more was asked about Messi. Measured live 2026-09-02: the CTA at
+// y=1269 was `/play`, while `/play?club=arsenal` — which serves real Arsenal
+// questions — was already generated SIX times further down the same page.
+// That is the CTA-parity bug class (a control whose verb does not match what
+// pressing it does) on ~124 generated pages. Club terms are the best-ranked
+// queries on the site, so this was the best traffic meeting the worst promise.
+// Defaults to bare /play so every non-club caller is unchanged.
+function appCtaBand(name, playHref) {
   return `<section class="sec"><div class="appband">
 <div class="appband-flame" aria-hidden="true">🔥</div>
 <div class="appband-in">
 <h2>Think you know ${esc(name)}? Prove it.</h2>
 <p>Streaks, live 1v1, your own Ball IQ score — and every quiz in one place.</p>
-<a class="appband-play" href="${SITE.base}/play">Play free in your browser →</a>
+<a class="appband-play" href="${playHref || `${SITE.base}/play`}">Play free in your browser →</a>
 <p class="appband-or">Free either way — in your browser right now, or on your phone:</p>
 ${storeBadges()}
 </div>
@@ -2810,7 +2821,7 @@ ${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts eve
 
      ⚠️ Do NOT move adSlot('afterQA') below this — the placement policy at
      the top of this file requires ad slots to sit below appCtaBand(). */''}
-${appCtaBand(cfg.name)}
+${appCtaBand(cfg.name, `${SITE.base}/play?club=${cfg.slug}`)}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
