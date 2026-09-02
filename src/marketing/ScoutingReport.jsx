@@ -280,6 +280,7 @@ const CSS = `
 /* The verdict's primary. Deliberately the SAME filled ink treatment as
    .sr-next, because this system has exactly one filled control and a second
    visual language for "the most important button" would weaken both. */
+.sr-ab{scroll-margin-top:12px}
 .sr-next-up{margin-top:var(--sp3)}
 .sr-primary{display:flex;align-items:center;justify-content:center;min-height:56px;width:100%;
             background:var(--ink);color:var(--pa);border:1px solid var(--ink);border-radius:var(--rc);
@@ -442,6 +443,17 @@ export default function ScoutingReport() {
   const [picked, setPicked] = useState(null);
   const [results, setResults] = useState(() => QS.map(() => null));
   const scoreRef = useRef(0);
+  // ⚠️ THE NEW QUESTION LANDS ABOVE THE SCREEN. Measured in WebKit (Safari's
+  // engine, iPhone 13) on all three transitions: tap Next at the bottom of a
+  // long answered card, the WHY panel and the Next block (~194px) unmount, the
+  // document shortens, and scrollY stays exactly where it was. The incoming
+  // question sits at viewport top -200 and option A at -71 — the visitor is
+  // looking at options C and D with no question visible at all.
+  // It happens FOUR TIMES per completed taster, on a page whose own lede
+  // promises "the report writes itself while you answer".
+  // Re-measured at 350ms / 700ms: identical, so this is settled layout, not an
+  // animation still running.
+  const abRef = useRef(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
 
@@ -461,6 +473,17 @@ export default function ScoutingReport() {
     if (i + 1 >= QS.length) { setDone(true); return; }
     setI(i + 1);
     setPicked(null);
+    // Put the question back on screen after React has re-laid the shorter
+    // document out. rAF rather than a timeout: it fires after paint, so the
+    // element is at its final position and there is no arbitrary delay to tune.
+    // 'nearest' rather than 'start' so a question already fully visible on a
+    // tall screen does not get yanked — this must fix the phone without
+    // introducing a jump on desktop.
+    try {
+      requestAnimationFrame(() => {
+        abRef.current?.scrollIntoView({ block: 'nearest', behavior: 'auto' });
+      });
+    } catch { /* scrolling is a nicety; never break the quiz */ }
   }, [i]);
 
   const band = BANDS[Math.min(score, BANDS.length - 1)];
@@ -543,7 +566,7 @@ export default function ScoutingReport() {
           {!done ? (
             <>
               <div className="sr-assess">
-                <div className="sr-ab">
+                <div className="sr-ab" ref={abRef}>
                   <span className="sr-abt">Assessment</span>
                   <span className="sr-abn">{i + 1} of {QS.length}</span>
                 </div>

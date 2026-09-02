@@ -1824,7 +1824,24 @@ ${ADS_ACTIVE ? `<script>
   .narrow{max-width:760px;margin-left:auto;margin-right:auto}
   h2{font-size:clamp(22px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1.12;margin:0 0 16px}
   /* nav */
-  .nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #16181F}
+  /* ⚠️ SAFARI DOES NOT PAINT THIS BLUR — verified by pixels, not by CSS.
+     Both engines report backdrop-filter:blur(14px) from getComputedStyle, so
+     the bug is invisible to any feature test; @supports will NOT catch it
+     either, because WebKit claims support while declining to render. Only a
+     screenshot shows it. Captured 2026-09-02 at scrollY 240, iPhone 13, on
+     /quiz/arsenal/: in WebKit the sentence "...Arsenal set - September 2 - a
+     fresh order every day" reads through the bar sharply enough to collide
+     with the Ball IQ wordmark; Chromium blurs the same pixels to nothing.
+     Cause is the known WebKit condition — the nav's scrolling ancestor
+     computes overflow: hidden auto, and a clipped backdrop root drops the
+     filter.
+     Tried .97 first and the sentence was STILL ghosting through legibly in
+     WebKit, so the bar is now SOLID #0A0A0A — the page background — and the
+     blur declaration is dropped entirely rather than left as decoration that
+     one engine ignores. Nothing is lost: on a near-black page the translucency
+     was never perceptible except as this bug. This is every Google landing
+     page, on every scroll, and it was invisible in the owner's own Chrome. */
+  .nav{position:sticky;top:0;z-index:100;background:#0A0A0A;border-bottom:1px solid #16181F}
   .nav-in{max-width:none;margin:0 auto;padding:13px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:inline-flex;align-items:center;min-height:44px;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.02em;color:#fff}
   .brand:hover{text-decoration:none}
