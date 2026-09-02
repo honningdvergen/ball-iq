@@ -1,5 +1,58 @@
 # Ball IQ — the board
 
+## 🔔 2026-09-02 — WHY WEB PUSH HAS ONE SUBSCRIBER (diagnosed, not guessed)
+
+Web push is **fully built and live**: `src/lib/webpush.js`, a Settings toggle, a
+soft-prompt sheet at the post-solve moment, sw.js handlers, a send-web-push edge
+function and an hourly `web-daily-reminder` pg_cron. Yet
+`web_push_subscriptions` holds **1 row** against 247 accounts and 94 monthly
+players. It is not a build problem. The funnel says where it stops.
+
+### The measured funnel (funnel_events, 90 days)
+
+| step | n |
+|---|---|
+| notif-prompt-skipped | **275** |
+| notif-prompt-shown | 32 |
+| notif-prompt-no | **24** |
+| notif-prompt-yes | **3** |
+| notif-permission-granted | 2 |
+| live subscriptions | **1** |
+
+### Two separate problems, and only one is about reach
+
+**1. The ask is skipped ~9x more often than it is shown.**
+Skip reasons split cleanly once native is separated — verified, all 216
+unattributed rows carry `{anon:true, native:true}`, i.e. stripped by the privacy
+contract, not missing:
+  · 216 native (meta stripped by design — cannot be attributed further)
+  · **40 web: `guest`** ← 68% of all attributable web skips
+  · 11 web: unsupported · 7 web: asks-exhausted · 1 web: too-early
+
+⚠️ **`guest` is the binding constraint on web, and it is architectural.** The
+prompt refuses guests because `persist()` upserts by user id, so a guest's
+subscription cannot stick. But most web players ARE guests. Web push currently
+requires an account, and the people it most needs to reach do not have one.
+
+**2. Of those actually asked, 75% say no.** 24 no against 3 yes, plus 14
+permission-denied against 2 granted. So even solving reach does not solve this —
+the ask itself is not persuading people. More asking would burn the 2-lifetime
+cap faster, not produce subscribers.
+
+### What this implies (not yet decided)
+- ⚠️ **Do not "prompt harder".** The cap and 24h gap exist because the sheet
+  once fired twice in three minutes, the second time over a LOSS screen.
+- The honest options are (a) make guest subscriptions persist by visitor id
+  rather than user id, (b) make the ask worth a yes, or (c) accept web push is
+  structurally small here and lean on EMAIL — which became viable today when
+  the Apple Private Relay registration unblocked **33 of the 94 active players**.
+- Native is the working channel: 48 device tokens vs 1 web subscription.
+
+**Reachability of the 94 players who played in the last 30 days:** 27 by push,
+53 by deliverable email, 33 on Apple relay (unreachable until today), and **67
+with no push at all**.
+
+
 ## 📏 MEASUREMENT PLAN — read 2026-09-09 and 2026-09-16 (baseline frozen 2026-09-02)
 
 ⚠️ **The null result is written here BEFORE the read.** Thirteen items closed in
