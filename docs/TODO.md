@@ -14,7 +14,33 @@ each of those 20 has an at-most-once `email_events` row saying "contacted"
 while having received nothing, and would never be retried. Plus 4 of 7 `day2`
 emails had already bounced this way.
 
-### ⚠️ WHAT ALEX MUST DO — I cannot; it is Apple Developer Portal account config
+### ✅ FIXED 2026-09-02 ~16:20 — registered in the Apple Developer Portal
+Alex opened the portal and handed over the driving. Registered under
+Certificates, Identifiers & Profiles → Services → **Sign in with Apple for
+Email Communication** (NOT on the App ID's Capabilities tab, which is where it
+looks like it should live). Email Sources was **completely empty** before —
+"No result found" — which is exactly why every relay message bounced.
+
+Now registered, and Apple validated SPF on all three immediately:
+| Source | Type | Status |
+|---|---|---|
+| `balliq.app` | Domain | ✅ SPF |
+| `send.balliq.app` | Domain | ✅ SPF |
+| `nudge@balliq.app` | Email address | ✅ SPF |
+
+`send` confirmed as the real return-path by reading Resend → Domains → balliq.app
+(MX + SPF both on `send`, Verified) rather than trusting the documented default.
+
+### ⏭️ NEXT: prove it, then remove the stopgap
+1. Test a send to ONE relay address before trusting it (Alex can make a Hide My
+   Email address, or use the function's `{"test_to":"..."}` path which touches
+   no ledger).
+2. Once a relay message DELIVERS, delete the guard in
+   `supabase/functions/send-campaign-email/index.ts` (marked "DELETE THIS GUARD")
+   and redeploy.
+3. Then clear the 20 burned rows (SQL below) so they get their email.
+
+### (superseded) WHAT ALEX MUST DO — I cannot; it is Apple Developer Portal account config
 Per Resend's own docs (via context7, `/websites/resend`
 → *knowledge-base/sending-apple-private-relay*), register ALL THREE under
 **Certificates, Identifiers & Profiles → Sign in with Apple → Email Communication**:
