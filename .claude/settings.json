@@ -52,5 +52,19 @@
       "Bash(~/.nvm/versions/node/v25.9.0/bin/node /private/tmp/claude-501/-Users-alexanderbrynolsen-ball-iq/e420d99a-b769-4f62-beb3-62c68594f5c4/scratchpad/analyze.mjs)",
       "Bash(echo \"exit:$?\")"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-critical-files.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
