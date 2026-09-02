@@ -235,8 +235,52 @@
   // pause (results screen, or bailing home) collects the same consent without
   // spending the visitor's first question on it. Static pages never set the
   // flag; their taster is untimed and the banner still shows on load there.
+  // ⚠️ A DEFERRED BANNER NEEDS A TRIGGER THAT ACTUALLY FIRES.
+  // biq:consent-moment is dispatched only by the /play app (App.jsx). The
+  // marketing homepage now defers too, and it never dispatches that event — so
+  // waiting on it alone would mean the banner never appears, no consent is ever
+  // asked, and Clarity never runs anywhere on the marketing site. That fails
+  // safe for privacy and silently kills the analytics we deferred it for.
+  //
+  // So: whichever comes first — the app's natural pause, or the visitor's first
+  // real interaction. Scroll/pointer/key all count, because any of them means
+  // they have engaged and are no longer staring at the first screen we were
+  // protecting. { once: true } on each, and start() is idempotent via the
+  // started latch below.
+  //
+  // ⚠️ DO NOT TRIGGER ON TAP. The first draft of this armed pointerdown, which
+  // would have fired the banner the instant someone answered the hero taster —
+  // popping it up over the NEXT question and recreating, one interaction later,
+  // exactly the bug the deferral exists to fix. The taster is the thing being
+  // protected; touching it must not summon the bar.
+  //
+  // Triggers, whichever lands first:
+  //   • the app's own natural pause (results screen / back to home)
+  //   • a scroll past roughly one full viewport — they have left the hero, so
+  //     the fold we were protecting is behind them
+  //   • a 60s dwell backstop, so a reader who never scrolls is still asked
+  //     rather than silently never counted
+  function armDeferredFallback() {
+    var started = false;
+    var timer = null;
+    var onScroll = function () {
+      if ((window.scrollY || 0) > (window.innerHeight || 600) * 0.9) go();
+    };
+    var go = function () {
+      if (started) return;
+      started = true;
+      try { if (timer) clearTimeout(timer); } catch (e) {}
+      try { window.removeEventListener('scroll', onScroll); } catch (e) {}
+      try { window.removeEventListener('biq:consent-moment', go); } catch (e) {}
+      start();
+    };
+    window.addEventListener('biq:consent-moment', go, { once: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    timer = setTimeout(go, 60000);
+  }
+
   if (window.__biqConsentDefer && !window.__biqConsentMomentFired) {
-    window.addEventListener('biq:consent-moment', start, { once: true });
+    armDeferredFallback();
   } else {
     start();
   }

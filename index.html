@@ -355,6 +355,23 @@
                   /^\/(c|join)\//.test(location.pathname)) {
                 window.__biqConsentDefer = true;
               }
+              /* ⚠️ THE MARKETING HOMEPAGE, for the same reason one layer up.
+                 Measured in real Safari (WebKit, iPhone 13, 390x664) on
+                 2026-09-02: the bar's 172px leaves a 492px usable fold, the
+                 nav takes ~200px of it, and the hero taster's question is cut
+                 off mid-sentence at "How much did Man City pay" with ZERO
+                 answer options visible. The single most valuable element on
+                 the page — a playable question, on the surface where
+                 "playable beats readable" was measured — is decapitated by
+                 GDPR furniture before anyone has done anything.
+                 Same argument as the deep-link case: the banner gates CLARITY,
+                 not gameplay, Clarity stays off until consent, so nothing is
+                 collected while we wait. consent.js arms an interaction
+                 fallback (see armDeferredFallback) because the marketing page
+                 is not the /play app and never fires biq:consent-moment. */
+              if (location.pathname === '/' || location.pathname === '/index.html') {
+                window.__biqConsentDefer = true;
+              }
               var b = document.createElement('script');
               b.src = '/consent.js';
               b.defer = true;
