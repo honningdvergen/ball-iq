@@ -46,7 +46,15 @@ delete from public.email_events e using auth.users u
 ## 🎨 QUEUED — FULL WEBSITE CRITIQUE: design + strategy, with gradings (Alex, 2026-09-01)
 
 ### 🛟 RECOVERY — if the session dies before the critique returns (Alex, 2026-09-02: "make sure nothing gets lost")
-- Workflow run id: **wf_4d9cb37e-1be** · task wgxpquug2 · launched 2026-09-02 ~09:10 UTC (resume of a run killed with the process overnight; 0 agents had completed).
+- ⚠️ 2026-09-02: the 8-lens fleet HIT THE SESSION LIMIT after 3 lenses (1.36M
+  subagent tokens for 3 results). 26 findings salvaged to
+  `.audit/critique-2026-09-02/PARTIAL-FINDINGS.md` — **UNVERIFIED**, every
+  skeptic died, so the run's `refuted: 0` means nobody checked. A LEAN follow-up
+  (3 missing lenses + 2 reports, 5 agents) runs as **wf_085d47d7-0db**,
+  journal `…/subagents/workflows/wf_085d47d7-0db/journal.jsonl`, script
+  `…/workflows/scripts/balliq-critique-lean.js`. Reports land in
+  `.audit/critique-2026-09-02/{design,strategy}.md`.
+- Original run id: **wf_4d9cb37e-1be** · task wgxpquug2 · launched 2026-09-02 ~09:10 UTC (resume of a run killed with the process overnight; 0 agents had completed).
 - Live journal (one `{"type":"result",...}` line per finished agent, written by the harness as it goes — survives my session dying):
   `~/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/subagents/workflows/wf_4d9cb37e-1be/journal.jsonl`
 - Script: `~/.claude/projects/-Users-alexanderbrynolsen-ball-iq-src/c6c4d416-cca9-4515-bc5c-315a9e6d20f0/workflows/scripts/balliq-website-critique-wf_48e20ed5-e50.js`
