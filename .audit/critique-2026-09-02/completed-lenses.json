@@ -1,0 +1,304 @@
+[
+ {
+  "lens": "SEO surfaces as landing pages (/lists/* and /quiz/*)",
+  "grade": "B-",
+  "gradeRationale": "The /quiz/ club pages are genuinely strong landing pages (static HTML, question and 4 answer options inside the first 664px, 145-150ms tap feedback, Quiz schema, hreflang) and the localised ones match them. The /lists/ pages have a real playable taster, but the thing the searcher came for sits 4.1-4.3 folds down behind a 1,972px quiz block, the table is 66-139px wider than the phone with the key column cut off and no scroll hint, and there are zero localised lists.",
+  "whatWorks": [
+   "Every sampled page is static HTML: the raw response carries the real <title> and <h1> (e.g. raw <title> 'Arsenal Quiz with Answers — Gunners | Ball IQ'), so nothing depends on the SPA booting. First-contentful-paint 407-1,888ms across 10 pages; load event 1.2-2.4s.",
+   "Club pages put the taster IN the first fold: /quiz/arsenal/ question at y=402 and options A-D at y=467/524/581/638 on a 664px viewport (quiz_arsenal__fold_nobanner.png). Liverpool 491-663, Premier League 541-712. Tapping an option changes the DOM in 149ms with correct/incorrect marks and no sign-up (quiz_arsenal after-tap in sections.log).",
+   "Localised club pages mirror the English pattern exactly: /es/quiz/river-plate/ first option at y=468, /tr/quiz/galatasaray/ at y=491, both with 3 hreflang links and a 'PREGUNTA 1 / 10 · 0 correctas' live score chip (es_quiz_river-plate__fold_consent.png). Tap feedback 480ms on River Plate.",
+   "/lists/ pages are NOT text-only: each carries a 5-question tappable taster (23 option buttons) that responds in 144-149ms (lists_ballon-dor-winners__after_tap.png), plus ItemList schema with 70-73 ListItems, a 'Play — hide the answers' name-guessing game that actually blurs the names (lists_ballon-dor-winners__after_play.png), and a type-to-find search input.",
+   "No horizontal page overflow on any of the 10 pages (documentElement.scrollWidth <= 390); the only overflow is inside the table wrapper (overflow-x:auto)."
+  ],
+  "findings": [
+   {
+    "id": "SEO-1",
+    "severity": "high",
+    "title": "On /lists/ the thing the searcher came for is 4.1-4.3 folds down, behind a 1,972px quiz block",
+    "whatHappens": "Measured on four /lists/ pages at 390x664: H1 at y=182, then the 'Think you know this? Five questions' taster section starts at y=560-637 and is 1,972-2,040px tall (five stacked questions, 23 option buttons), then a 'Reckon you can name them all?' game header, and only then the winners table at y=2,750-2,874 (ballon-dor 2,829; world-cup 2,750; PL top scorers 2,874; UCL 2,826). That is 4.1-4.3 viewports of scrolling. The taster copy literally says 'The full list is right below' but the only in-page anchor on the page is 'Skip to content -> #main'; there is no jump link to the table. Desktop 1440x900 WebKit: table at y=2,378 (2.6 folds). Document heights 7,420-11,231px (11-17 mobile folds) for a list of 23-71 rows.",
+    "userCost": "Ground truth says text-only list pages average 2.3s dwell. A searcher for 'ballon d'or winners' who does not see a single winner within 2,750px of scrolling has no reason to stay; the page answers a different question (a quiz) before the one they typed. This is the on-page half of the 47%-impressions / 4%-clicks problem: it does not raise CTR, but it caps what any click is worth.",
+    "fix": "In scripts/seo/gen-seo-pages.mjs buildListPage(): render the table FIRST (directly under the intro, target y<700), then the 5-question taster, or at minimum add a real anchor ('Jump to the full list' -> #list) next to the H1 and make the 'The full list is right below' sentence a link to that anchor. Consider collapsing questions 2-5 of the taster behind the first answer so the block is ~450px not 1,972px.",
+    "evidence": "lists_ballon-dor-winners__full_consent.png (full page), lists_ballon-dor-winners__table_region_y2600.png, overflow.mjs output: tasterTop 637 / tasterH 1972 / tableTop 2829; sections.log MAIN CHILDREN y=637 h=1972 then y=2609.",
+    "confidence": "measured"
+   },
+   {
+    "id": "SEO-2",
+    "severity": "high",
+    "title": "List tables are 66-139px wider than the phone; the answer column is cut off with no scroll hint",
+    "whatHappens": "Table wrapper is 350px wide (left 20 to right 370) on the 390px viewport, but the tables measure 489px (ballon-dor), 477px (world-cup), 456px (UCL) and 416px (PL top scorers). Column boxes measured: on /lists/premier-league-top-scorers/ the GOALS column spans x=365-437, so 67 of its 72px are off-screen — the one number a 'golden boot winners' searcher wants. On /lists/world-cup-winners/ SCORE spans 317-390 (20px hidden) and HOST 390-498 is entirely hidden; on ballon-dor NATIONALITY (371-510) is entirely hidden. The wrapper is overflow-x:auto but there is no visual affordance (no fade, no 'swipe' text, no shadow) — scrollHint=false on all four. Rows are 71px tall on three of the four pages, so 70 rows = ~5,000px of table.",
+    "userCost": "The table looks complete (it ends cleanly at the card edge in lists_ballon-dor-winners__table_region_y2600.png) so a reader has no cue that a fourth column exists; on the Golden Boot page the goals tally is effectively invisible on an iPhone.",
+    "fix": "In the /lists/ table CSS: at max-width 480px either drop to a 3-column layout (year / winner / one context column) and put the remaining fields on a second line inside the winner cell, or add a right-edge gradient fade plus a one-line 'swipe for more' hint on the wrapper. For PL top scorers specifically, move GOALS to column 2.",
+    "evidence": "overflow.mjs output: wrapW 350, tableW 489/477/456/416, hiddenPx 139/127/106/66, ths left/right coordinates, scrollHint false x4; lists_ballon-dor-winners__table_region_y2600.png shows YEAR/WINNER/CLUB(S) only.",
+    "confidence": "measured"
+   },
+   {
+    "id": "SEO-3",
+    "severity": "medium",
+    "title": "Zero localised /lists/ pages exist, while 46 localised /quiz/ pages do",
+    "whatHappens": "sitemap.xml (255 URLs) contains 51 /lists/ URLs and 0 under any /xx/lists/ prefix, versus 46 localised /xx/quiz/ URLs (es 11, it 9, pt 8, fr 5, nl 4, de 4, id 3, tr 2). Confirmed by a second route: GET /es/lists/, /es/lists/ballon-dor-winners/ and /tr/lists/super-lig-champions/ all return HTTP 404 'Page not found — Ball IQ'. The English /lists/ pages also carry 0 hreflang links (curl grep), whereas /quiz/arsenal/ carries en/id/x-default.",
+    "userCost": "Memory notes (prior measurement, not re-measured this session) say localised club pages convert 2.6x and that the Netherlands and Nordics show thousands of impressions with no locale; lists like Eredivisie champions, Süper Lig top scorers and Primeira Liga top scorers are exactly the second-tier competitions that reach page 1, yet they are English-only.",
+    "fix": "Extend buildListPage() to accept a locale and generate /nl/lists/eredivisie-champions/, /tr/lists/super-lig-champions/, /pt/lists/primeira-liga-champions/ (start with the 6 lists already on page 1), with reciprocal hreflang on the English page.",
+    "evidence": "urls.txt from sitemap.xml (grep counts 51 / 0 / 46); curl status lines in the localised-lists check (404 x3).",
+    "confidence": "measured"
+   },
+   {
+    "id": "SEO-4",
+    "severity": "medium",
+    "title": "First-visit fold on /lists/ contains no tappable football at all; the consent bar covers y=492-664 on top of that",
+    "whatHappens": "On all four /lists/ pages the count of non-navigation tappables in the first 664px is 0 (the only tappables are Skip, logo, menu, Home, Football lists). First-visit fold = breadcrumb, H1, '70 entries · verified 2026-07-20' meta line and the opening paragraph; the #biq-consent bar (position:fixed, 172px tall, z-index 2147483000) then covers the bottom 26% of the viewport (y=492-664) so the visible page is 425px of prose. The first football tappable is option A of question 1 at y=810-909 (1.2-1.4 folds). Club pages by comparison have 3-4 answer buttons in the same 664px (arsenal 4, liverpool 4, premier-league 3, river-plate 3, galatasaray 3), though options B-D on club pages sit under the consent bar (already known). This confirms and quantifies the already-known 'no tappable football above the fold' item; the new number is that it is exactly 0 on every list page sampled.",
+    "userCost": "Nothing to do in the first screen on a 2.3s-dwell page type.",
+    "fix": "Move the first taster question (or the table's first 5 rows) above the intro paragraph so at least one football tappable lands under y=490 (above the consent bar) on a 664px viewport.",
+    "evidence": "lists_ballon-dor-winners__fold_consent.png, lists_world-cup-winners__fold_consent.png; results.json taps (first non-nav tappable y=909/835/886/810); consent rect top 492 h 172.",
+    "confidence": "measured"
+   },
+   {
+    "id": "SEO-5",
+    "severity": "low",
+    "title": "Name-game chrome ('Type a name… · 0 found · Give up') is shown before anyone presses Play",
+    "whatHappens": "On page load, before 'Play — hide the answers' is tapped, the sticky #lp-live bar is already visible with a search input, '0 found' and a 'Give up' button, directly above a table whose answers are all still visible (liveBarBeforePlay.visible=true on all four pages). The bar is position:sticky (z-index 5) so it follows the reader down the entire 5,000px table.",
+    "userCost": "A reader who only wants the list sees a scoreboard for a game they did not start and a 'Give up' button with nothing to give up on; on a 664px viewport with the 67px nav and 64px sticky bar, 131px (20%) of every table screen is chrome.",
+    "fix": "Render #lp-live hidden until the Play button is pressed; keep only the 'Play — hide the answers' pill as the pre-game affordance.",
+    "evidence": "lists_ballon-dor-winners__table_region_y2600.png (pre-Play: input + '0 found' + 'Give up' shown, names visible) vs lists_ballon-dor-winners__after_play.png; overflow.mjs liveBarBeforePlay.",
+    "confidence": "measured"
+   },
+   {
+    "id": "SEO-6",
+    "severity": "low",
+    "title": "The 47% / 4% ratio is mostly SERP-side (rank and head terms), and the page only decides what a click is worth",
+    "whatHappens": "I could not query Search Console this session (connector returned entitlement_required; see couldNotTest), so the ratio explanation combines prior measured data with this session's page measurements. Prior GSC read (memory, 2026-08-15, 28 days): /lists 18,161 impressions, 28 clicks, CTR 0.15%, avg position 25.8; /quiz 19,145 impressions, 544 clicks, CTR 2.84%, position 9.8; only 6 of 51 lists on page 1, and the three biggest-impression lists are head terms at positions 21-51 with 4 clicks on 4,682 impressions. Measured this session: the pages themselves are fast and static (FCP 0.4-1.9s), so the low CTR is not a rendering or indexing failure — it is impressions accruing at positions 20-50 on queries Google answers in a featured snippet. What the page controls is what happens after a click, and there SEO-1/2/4 apply: table 4.1-4.3 folds down, key column hidden, zero tappables in fold.",
+    "userCost": "Treating /lists as a landing-page-design problem alone will not move the click count; treating it as a rank problem alone will not move dwell. Both halves need the specific fixes above.",
+    "fix": "Keep the head-term lists (premier-league-champions, serie-a-top-scorers, ballon-dor-winners) but stop scaling that pattern; apply SEO-1/2/4 to the 6 page-1 lists first (Süper Lig top scorers, Copa Libertadores, EFL Cup, Eredivisie top scorers, Primeira Liga top scorers, the hub) where a click actually arrives.",
+    "evidence": "results.json paints/timings for 10 pages; prior GSC figures from memory file project_lists_content_type.md (labelled as prior, not re-measured).",
+    "confidence": "inferred"
+   }
+  ]
+ },
+ {
+  "lens": "Mobile design critique — and the Scouting Report conceit",
+  "grade": "C+",
+  "gradeRationale": "The craft fundamentals are measurably strong (every text ≥5.15:1, every primary target ≥44px, one saturated hue in the fold, a 102px verdict payoff), so this is not a broken page. It is held to C+ by two measured defects on the core loop — every \"Next question\" tap lands with the new question 187px above the viewport, and a first-time visitor sees zero answer options — plus a flat headline scale and a 210px empty ledger that the conceit does not earn before play.",
+  "whatWorks": [
+   "Contrast discipline is real, not claimed: a census of every text node inside .sr found nothing under 4.5:1; the floor is the lede/footer grey rgb(126,130,140) on rgb(10,10,10) at 5.15:1 (hand-verified), ink-on-paper is 14.71:1, the verdict rust rgb(148,71,42) on paper is 5.38:1.",
+   "Touch targets: nav buttons 44px, Play free 108x44, answer options 273x52, Next question 273x52, club rows 44px, summary/store badges 48px. The only sub-44 targets on the page are the Footle keyboard keys (27.4x48, a keyboard convention) and the consent bar's own Privacy policy link (85.7x15.7).",
+   "Colour hierarchy is correct in the fold: exactly one saturated hue, rgb(88,204,2), on two elements (the IQ mark and Play free); page-wide there are only two green buttons (y=14 and y=2054). The eye lands on Play free, then drops to the pale paper — the paper is the only light surface on a 4,137px page (16.2:1 luminance step vs the desk), so the question is where the eye goes second. That is the right order.",
+   "The verdict payoff is the best screen on the page: a 102px score in a tier-coded colour, a 34px tier name, and the five disciplines filled in as 0 of 1 / 1 of 1 in red/green (375x812-11-verdict-slab.png). The dossier conceit fully earns itself here.",
+   "Option rows are well built: 52px, A–D key glyphs, filled-ink Next (the only filled button on the paper), and the wrong/right marks use the same ink-red/ink-green as the ledger, so the language is internally consistent (375x812-06-slab-after-answer.png)."
+  ],
+  "findings": [
+   {
+    "id": "DM-1",
+    "severity": "high",
+    "title": "Every 'Next question' tap lands with the new question above the viewport",
+    "whatHappens": "Consent dismissed. Answer Q1, tap Next question (which sits at y=951 in a 635px viewport, so the user has scrolled to it, scrollY≈660). Question 2 mounts, the Why panel + Next block (~194px) unmount, the document shortens, scrollY stays at 660: .sr-q now spans viewport top −187 to −99 and option A is at −85 to −33. The user is looking at options C 'Inter' and D 'Napoli' and the not-assessed ledger with no question visible. Re-measured at 300ms, 1s and 3s after the tap: identical, so this is settled layout, not animation. Same at 390x664 (q top −173, option A −71). Reproduces on all four transitions (flow log: qTop −162 to −187 each time).",
+    "userCost": "100% of visitors who play past Q1 get this four times; the first thing they see after committing is a set of answers with no question. On a page whose whole promise is 'the report writes itself while you answer', the answering step itself breaks. Ground truth: ~48% of new accounts never play anything — this is friction inside the one taster that is supposed to convert them.",
+    "fix": "In src/marketing/ScoutingReport.jsx, in the `next` handler (there is no scrollIntoView anywhere in the file — grep confirmed), after setting the new index call `document.querySelector('.sr-ab')?.scrollIntoView({block:'start', behavior:'smooth'})` on the next frame; or reserve the height so the layout never collapses: give .sr-abody a min-height equal to its answered state (question + 4 options + why + next). Either change fixes all four transitions.",
+    "evidence": "375x812-15-viewport-after-next-q1.png, 375x812-17-after-next-q1-settled.png (both show 'Inter / Napoli' at the top with no question), m2-flow.json (qTop −187/−162/−162/−162), audit4 output (t+300/1000/3000 all scrollY 660, qTop −187).",
+    "confidence": "measured"
+   },
+   {
+    "id": "DM-2",
+    "severity": "high",
+    "title": "First-time visitor sees zero answer options: 133px mast + 172px consent bar squeeze the question out of the fold",
+    "whatHappens": "First visit, consent up, 375x635: mast occupies 0–133 (21% of the fold), h1 155–221, lede 235–297, letterhead 319–380, Assessment band 395–432, 'Premier League' 446–467, then the consent bar covers 463–635. The question text (.sr-q, 473–560) is 100% under the bar; option A is at 574. At 390x664 the bar starts at 492 so 19px of the question's first line peeks out; options are still fully covered. What is visible is the frame of a quiz — headline, letterhead, 'ASSESSMENT 1 of 5', a department name — and no quiz.",
+    "userCost": "Every new EU visitor's first paint has nothing to tap that plays football. 'Playable beats readable' is the site's own measured law and the homepage fails it on first paint at both sizes. The known 'consent covers Next' class is confirmed here with numbers — but the mast is the half the owner controls: 60px of it is a second nav row.",
+    "fix": "Two independent levers, both in src/marketing/ScoutingReport.jsx CSS: (1) collapse .sr-mast to one row under 700px — put Games/Quizzes/Discover in the same row as the mark with Play free, or drop the nav row into a single 'Menu' button; that alone returns ~60px and brings option A to y≈514, above a 492px bar at 390 and 51px under it at 375. (2) Reduce .sr-open padding (22px 28px) and the 14px lede top margin on mobile, or set the letterhead to a single line ('Scouting report · Subject: you'), to recover another ~40px. Together the first option clears the bar on both devices.",
+    "evidence": "375x812-01-fold-firstvisit.png, 390x844-01-fold-firstvisit.png (only 'Premier League' visible above the bar), measure-375x812-firstvisit.json (consent y=463.4 h=171.6; .sr-q y=473.1 h=87.5; .sr-opt y=574.5; .sr-mast h=133), measure-390x844-firstvisit.json (consent y=492.4).",
+    "confidence": "measured"
+   },
+   {
+    "id": "DM-3",
+    "severity": "medium",
+    "title": "Games dropdown is 105px wide and its labels spill over the headline",
+    "whatHappens": "Tap Games: .sr-drop renders at 22,118 size 105x221 with 7px padding. Anchors are white-space:nowrap in a container with overflow:visible; 'Footle — football Wordle' has scrollWidth 174px in an 89px box, 'Mystery Player' 110px, 'Transfer Trail' and 'Guess the XI' 97px. The text runs outside the dark panel across 'FIVE QUESTIONS.' in the h1. Same at 390 (94px box). Row height 41px (<44).",
+    "userCost": "The first thing a curious visitor taps in the nav renders as a broken overlay: four of five labels overflow, and the one that names Footle — the retention engine — is the worst clipped. It reads as a bug within one tap of arrival.",
+    "fix": "In the .sr-drop rule (ScoutingReport.jsx CSS): `min-width:max-content` (or width:auto) and on ≤700px make it `left:22px; right:22px; width:auto` so it spans the mast; set anchor padding to 12px 14px to reach 44px rows. Screenshot 375x812-08-nav-games-open.png shows the overflow.",
+    "evidence": "375x812-08-nav-games-open.png; audit3 output: drop items [label, clientWidth, scrollWidth] = ['Footle — football Wordle',89,174], ['Mystery Player',89,110], ['Transfer Trail',89,97], ['Guess the XI',89,97], nowrap, overflow visible; m2-navopen.json (.sr-drop w=105.2, item h=41).",
+    "confidence": "measured"
+   },
+   {
+    "id": "DM-4",
+    "severity": "medium",
+    "title": "The Scouting Report conceit: keep the letterhead, drop the five-row 'not assessed' ledger before play",
+    "whatHappens": "Pre-answer, .sr-file is 736.5px tall. The letterhead ('BALL IQ — SCOUTING REPORT' 12px/1.56px tracking + 'Subject: you · nothing filed yet' 13.5px at 6.11:1) is 61px. The stub (.sr-stubwrap) is 209.5px — 28.4% of the slab — holding five 32.9px rows that all read 'not assessed' in the muted rgb(74,82,76) at 13.5px. It sits at y=846–1056, i.e. it is the entire second screen on a 635px device (375x812-03-fold1-firstvisit.png shows it as the only content under the consent bar), and it pushes the Footle band start to y=1132 (1.78 viewports down). After one answer it shows '0 of 1' + four 'not assessed'. At the verdict the same table leads the slab and the 102px score comes second (375x812-11-verdict-slab.png), and the post-answer scroll lands at 466 with the letterhead off-screen.",
+    "userCost": "Straight answer requested: the letterhead earns its 61px — it is the framing device, it updates ('1 of 5 filed', 'verdict filed — passer-by'), and it costs one line. The pre-play ledger does not. It is 210px and a full mobile screen of five negatives shown to someone who has done nothing yet — 'not assessed' x5 plus 'nothing filed yet' is six null statements before the first tap. The pale slab does not 'fight' the dark page: it is the only light surface on the page and it is where the question lives, so the 16.2:1 step is doing correct work — the sheet-shadow (0 18px 50px rgba(0,0,0,.55)) is invisible on rgb(10,10,10) but nothing is lost. The cost is pixels and mood, not the paper.",
+    "fix": "(1) Do not render .sr-stubwrap until `filed >= 1`; instead render one caption line under the assessment ('Filed so far: 0 of 5 · Premier League, Euros, Transfers, Champions League, Legends') so the promise of the ledger is kept in 21px instead of 210px. (2) From the first answer, grow the table one row at a time (only the filed disciplines), which turns it into the 'report writing itself' the lede promises. (3) In the verdict, move .sr-score/.sr-band above the table so the payoff leads, and scroll to the letterhead (block:'start') when the verdict mounts.",
+    "evidence": "375x812-05-report-slab.png, 375x812-03-fold1-firstvisit.png, 375x812-11-verdict-slab.png; measure-375x812-firstvisit.json (.sr-file h=736.5, .sr-stubwrap y=846.5 h=209.5, .sr-stub h=164.5, rows 32.9px, .sr-out 13.5px 6.6:1, .sr-lh h=60.7); m2-base.json (.fb y=1132); m2-verdict.json (scrollY 466, .sr-score y=402 h=75.5 after the table).",
+    "confidence": "measured"
+   },
+   {
+    "id": "DM-5",
+    "severity": "medium",
+    "title": "Headline scale is flat: h1 35px vs three h2s at 32px, all uppercase Archivo Narrow",
+    "whatHappens": "--ty-headline resolves to 35px on mobile (clamp min) and --ty-section to 32px: the h1 'FIVE QUESTIONS. ONE HONEST VERDICT.' is 35px/33px lh, while 'FOOTLE. FOOTBALL WORDLE.', 'EIGHTY-NINE CLUBS ON FILE' and 'COMMON QUESTIONS' are 32px/31px — 91% of the h1, same weight (700), same face, same uppercase, same −0.02em tracking. On the full-page capture the page reads as four equal headline moments (375x812-02-full-firstvisit.png). Type census: 14 distinct sizes in use, seven of them between 12 and 18px (12, 12.5, 13.5, 14, 15, 16, 17, 18) with 15px/400 used 106 times and 13.5px/400 98 times.",
+    "userCost": "The hero does not announce itself as the hero on the device where 100% of the fold is vertical; the reader scanning down meets three more 'headlines' of the same voltage and the page loses the dossier's single-subject feel. The 12–18px wobble means labels, metas and body sit at half-steps that read as inconsistency rather than a scale.",
+    "fix": "In src/design/report.css: raise the mobile floor of --ty-headline to clamp(44px,5vw,64px) (at 375 wide the two-line h1 still fits: 'ONE HONEST VERDICT.' is ~319px at 35px, ~400px at 44px — so break to three lines or let it wrap; alternatively 42px), and drop --ty-section's floor to 28px. Collapse 12.5→12 and 13.5/14→13 or 15 so the small end has three sizes (12 label, 15 secondary, 17 body).",
+    "evidence": "measure-375x812-firstvisit.json (.sr-h1 35px/33.25px; .sr-h2 32px/31.36px), m2-base.json (.fb-h2 32px; typeCensus 17 size/weight combos), report.css line 5 (--ty-headline clamp(35px…), --ty-section clamp(32px…)), 375x812-02-full-firstvisit.png.",
+    "confidence": "measured"
+   },
+   {
+    "id": "DM-6",
+    "severity": "medium",
+    "title": "Verdict has no primary action: two identical outline buttons at the payoff",
+    "whatHappens": "After the fifth answer the slab ends with .sr-a 'App Store' (303x52, ink outline, transparent) and .sr-webbtn 'Keep going in the browser — free' (303x52, ink outline, transparent) — same size, same weight (15px/700), same border, stacked 10px apart. The only filled-ink button in the system, 'Next question', is gone. No green appears anywhere on the paper (standing rule: action on paper is ink).",
+    "userCost": "At the one moment the page has earned a decision, it presents two equals and lets the user choose neither. Given 62 of 66 retained players arrived via Footle and the Footle door is 1,100px further down, the verdict's CTAs also point away from the retention engine — that is a funnel observation, labelled inference; the design fact is the absence of hierarchy.",
+    "fix": "Make the intended primary a filled-ink button (reuse the .sr-next style: bg var(--ink), color var(--pa)) and leave the other as outline. If the goal is retention rather than install, the filled one should be 'Play today's Footle' (href /footle) with the store link secondary; if the goal is install, keep App Store filled. Either way one of them must be filled.",
+    "evidence": "375x812-11-verdict-slab.png, 375x812-12-verdict-fold-top.png; m2-verdict.json (.sr-a and .sr-webbtn both 303x52, color rgb(20,23,26), transparent bg; allCtas shows only two green buttons on the whole page at y=14 and y=2054.7).",
+    "confidence": "measured"
+   },
+   {
+    "id": "DM-7",
+    "severity": "low",
+    "title": "Two-row mast eats 21% of the fold",
+    "whatHappens": ".sr-mast is 133px tall at both widths: row 1 mark + Play free (y 14–58), row 2 Games/Quizzes/Discover (y 74–118), 1px border at 132. The h1 begins at y=155. On a 635px viewport that is 20.9% of the first screen spent on chrome before the page says anything.",
+    "userCost": "Directly feeds DM-2: the 60px second row is the difference between the first answer option clearing the consent bar or not at 390 wide. Also unusual for mobile — a single 56–64px bar is the norm and the dropdowns already exist to hold the groups.",
+    "fix": "Under 700px, lay the mast in one row: mark left, a single 'Menu' (or the three group buttons at 13.5px) centre, Play free right; target height 60–64px. This is the same change as DM-2 lever (1).",
+    "evidence": "measure-375x812-firstvisit.json (.sr-mast h=133; .sr-nav y=74 h=44; .sr-h1 y=155), 375x812-04-fold-dismissed.png.",
+    "confidence": "measured"
+   },
+   {
+    "id": "DM-8",
+    "severity": "low",
+    "title": "Footle band is 1,430px tall and explains the game after asking you to play it",
+    "whatHappens": ".fb spans y=1132–2562 (1,429.7px = 2.25 viewports) on a distinct navy surface rgb(20,22,30) (the page is neutral rgb(10,10,10); the nav dropdown is a third navy, rgb(18,20,27)). Order inside it: h2, 146px sub paragraph, worked example (Laporte/Haaland), note, 6x7 archive board (36px tiles), keyboard (27.4x48 keys, 5px gaps), 'Play today's Footle' (green, y=2054), 'Play the Daily 7' (outline, y=2132), then the colour legend (y=2236, 273px block) and 'Six guesses.' (y=2331), then a 44px countdown clock. The legend that explains the tile colours comes 182px after the primary CTA.",
+    "userCost": "A taster that is meant to be tried in seconds spends more than two screens before its own CTA and puts the rules after the button. The blue-cast surfaces on a neutral page are a small but measurable palette inconsistency (three dark greys: 10/10/10, 18/20/27, 20/22/30).",
+    "fix": "In src/marketing/FootleBand.jsx: move .fb-legend + .fb-six up beside the worked example (they are the same idea — what the colours mean) and drop the 146px sub to two lines; cut the archive board to 3 visible rows on mobile (the 6-row empty grid is 300px of empty boxes). Pick one dark: either give .fb the page's rgb(10,10,10) with a hairline rule, or adopt rgb(20,22,30) as the page's card surface and use it for the dropdown too.",
+    "evidence": "375x812-07-footle-band.png, 375x812-03-fold2-firstvisit.png, 375x812-03-fold3-firstvisit.png; m2-base.json (.fb y=1132 h=1429.7 bg rgb(20,22,30); .fb-real.fb-primary y=2054.7; .fb-legend y=2236.7 h=273; .fb-six y=2331.7; .fb-time 44px; sectionBgs; .sr-drop bg rgb(18,20,27)); audit4 output (keys 27.4x48, gap 5px, tiles 36px).",
+    "confidence": "measured"
+   },
+   {
+    "id": "DM-9",
+    "severity": "low",
+    "title": "Answering with the consent bar up hides the explanation and Next (confirms the known class on the homepage)",
+    "whatHappens": "First visit, bar up, scroll to option A and tap it: the Why panel + Next question render at viewport y=667–719 while the bar covers 463–635 and the viewport ends at 635. The user sees the red mark on A and options B/C, nothing else (375x812-16-consent-up-after-answer.png).",
+    "userCost": "The known 'consent covers Next question' item applies to the homepage taster too, not only club quizzes; here it also hides the Why panel, which is the feature the clubs section brags about ('most of them tell you why').",
+    "fix": "Same root as the fixed Footle ENTER item: honour --biq-consent-h as bottom padding on .sr-file while the bar is mounted, or scroll .sr-whywrap into view (block:'end' minus the bar height) when it mounts.",
+    "evidence": "375x812-16-consent-up-after-answer.png; audit3 output: next top 667 bottom 719, consentTop 463, vh 635, scrollY 284.",
+    "confidence": "measured"
+   }
+  ]
+ },
+ {
+  "lens": "Desktop design critique (1440x900 and 1920x1080)",
+  "grade": "B-",
+  "gradeRationale": "Desktop is a designed experience on the flagship surfaces (homepage, club quiz hero, clubs index) — real two-column compositions that hold at 1440 and 1920 with no horizontal scroll and full focus-visible coverage. It loses a grade for one functional bug (the lists sticky name-bar disappears under the sticky header), stranded mobile components (Footle card with a 552px void, truncated club chips, single-column lists), and two design systems running side by side.",
+  "whatWorks": [
+   "Homepage is genuinely composed for width: hero column 944px, Scouting Report card 1080px with a 2x2 answer grid, Footle section as a 2-col grid (board left, legend + countdown right), clubs list in 2 columns. docH is identical (3271px) at 1440 and 1920, i.e. the layout is stable, not stretched (home@1440-fold-consent.png, home@1920-full-clean.png).",
+   "/quiz/clubs/ is a true desktop page: 238px league sidebar + 874px 5-column club grid + filter input, 65 tappables above the 900px fold (quiz-clubs-index@1920-fold-consent.png).",
+   "/quiz/arsenal/ hero is 2-col: copy + store badges left, a live 4-option question right at y=201-563, so a desktop visitor can play from the fold (clubquiz-arsenal@1920-fold-consent.png).",
+   "Physical keyboard works for Footle on both / and /football-wordle/: typing SALAH landed S-A-L-A-H in the board tiles with no click on the on-screen keyboard (home@1440-physical-keyboard-typed.png, footle@1440-physical-keyboard-enter.png).",
+   "Keyboard focus is visible on 118 of 119 tabbed controls across 10 page/viewport runs (3px outlines); nav dropdowns open on click, positioned correctly (Games menu 236x232 at l534 t65, arsenal@1440-nav-games-open.png); no horizontal scroll and zero page errors on any of the 10 runs."
+  ],
+  "findings": [
+   {
+    "id": "DD-1",
+    "severity": "high",
+    "title": "Lists page: the sticky 'Type a name…' bar scrolls under the sticky header and becomes unclickable",
+    "whatHappens": "On /lists/ballon-dor-winners/ the 'Reckon you can name them all?' input sits in a div with position:sticky; top:0; z-index:5. The site header is position:sticky, 71px tall, z-index:100. Once the 70-row table is scrolled, the input is at viewport y=11-53, entirely inside the header's 0-71 band; document.elementFromPoint at the input's centre returns BUTTON.nav-top (the header's Games button), i.e. the input is painted behind the header and cannot be clicked. The '0 found' / 'Give up' controls are hidden the same way.",
+    "userCost": "/lists is 47% of Google impressions and averages 2.3s dwell; the name-them-all game is the one playable thing on the page, and it vanishes for the entire 3,333px table scroll (6.3 folds at 900px) on desktop.",
+    "fix": "In the lists page CSS give the sticky wrapper `top: var(--biq-header-h, 71px)` (or raise it above the header with `z-index: 101` and a solid background). Verify by scrolling to row 1990 and clicking the input.",
+    "evidence": "lists@1440-sticky-under-header.png (input ghosted behind Games/Quizzes/Discover); measured: input top 11 bottom 53, sticky top 0px z 5, header sticky 0-71 z 100, hitAtInputCentre=BUTTON.nav-top",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-2",
+    "severity": "high",
+    "title": "Club quiz 'More quizzes to try' truncates 29 of 134 club names in 116px tiles at 1440",
+    "whatHappens": "The related-quiz grid renders 116x65px tiles in a 9-column grid inside a 1112px container with line-clamp on the name. 29 of 134 tiles overflow (scrollWidth > clientWidth) and show ellipses: 'Manch… United quiz', 'Manch… City quiz', 'Tottenh… Hotspur', 'Newca… United', 'Barcelo… quiz', 'Galatas… quiz', 'Fenerb… quiz', 'Borussia Dortmu…'. Identical at 1920 because the container is capped at 1200px.",
+    "userCost": "This is the internal-link block on the pages that already rank top-10 for 'X quiz with answers'; on a 1440px screen with 1112px available, Manchester United and Barcelona are unreadable as names.",
+    "fix": "In the club-quiz page stylesheet change the related grid to `grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))` at >=1024px and drop the ' quiz' suffix from the tile label (it is the same on all 134), which also removes the line-clamp need.",
+    "evidence": "arsenal@1440-chips.png; measured tile 116x65, 134 tiles, 29 truncated (scrollWidth > clientWidth), all tiles carry text-overflow:ellipsis/line-clamp",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-3",
+    "severity": "medium",
+    "title": "Primary CTAs have no hover state on desktop",
+    "whatHappens": "Computed style (color, background, transform, box-shadow, filter, text-decoration) is byte-identical before and after mouse hover on: header 'Play free' (home, both viewports), 'Play today's Footle', 'Play the Daily 7', the orange banner's 'Play free in your browser →' and its App Store / Google Play badges (arsenal + footle pages). By contrast nav buttons (Games: text #98A199 → #F0F1F5) and answer options (#E7E9E4 → #DEE1DB) do respond, so the pattern exists but was not applied to the buttons that matter.",
+    "userCost": "On a pointer device the only buttons that give no feedback are the ones that start a game or install the app; 48% of new accounts never play, and the desktop CTA reads as a static badge.",
+    "fix": "Add one rule to the shared button styles, e.g. `.btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px)} .btn-primary:active{transform:none}` covering the home 'Play free'/'Play today's Footle'/'Play the Daily 7' classes and the .sec CTA banner button + badges.",
+    "evidence": "results.json hovers: home 'Play free' b4==af (rgb(6,35,12)|rgb(88,204,2)…) at 1440 and 1920; 'Play today' b4==af; arsenal 'Play free in your browser →' and orange-banner badges in the unchanged list; nav Games changed",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-4",
+    "severity": "medium",
+    "title": "/football-wordle/ game card is a 560px mobile card stranded in a 1112px column (552px dead void)",
+    "whatHappens": ".fw-card has max-width:560px, left-aligned at x=164 inside a 1112px section; the right 552px is empty at both 1440 and 1920 (void identical because the container caps at 1200). The hint block directly above ('If you guessed Laporte…') is the full 1112px, so the right edge jumps by 552px between adjacent blocks. The board tiles are 55px, keys 48x48 — phone sizes. The homepage already solves this with a 2-col grid (board left, legend + countdown right).",
+    "userCost": "Footle is the retention engine (62 of 66 players with 3+ active days came through it) and this is its SEO landing page; on a laptop the playable part occupies 39% of the content width beside a hole.",
+    "fix": "Reuse the homepage's fb-cols pattern on /football-wordle/: at >=1024px make .fw-wrap a 2-col grid (`grid-template-columns: 560px 1fr; gap: 48px`) and move the legend, 'How to play' steps and the 'today's Footle' link into the right column; cap the hint block to the same 560px or span both columns deliberately.",
+    "evidence": "footle@1440-card.png, footle@1920-fold-consent.png; measured card left 164 width 560 max-width 560px, wrap width 1112, voidRight 552, hint width 1112, tile 55px, key 48x48",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-5",
+    "severity": "medium",
+    "title": "Two design systems ship side by side: homepage vs every SEO page",
+    "whatHappens": "Homepage header: text wordmark 'Ball IQ' in Archivo Narrow 21px, no icon, position:static, transparent background, one CTA ('Play free'), 73px tall. SEO pages (/quiz/*, /lists/*, /football-wordle/): icon + 'Ball IQ' in Inter 20px, position:sticky, rgba(10,10,10,.82), two CTAs ('Play free' + 'Get the app'), 71px. Display face for h1 is Archivo Narrow 64px (home), Anton 64px (arsenal, footle), Inter 40px (lists), Inter 28px (clubs index) — four h1 treatments across five pages. Footers: home 5 links/231px vs SEO 21 links/412px. Focus rings: solid 3px #58CC02 (home), UA-default 'auto' grey (SEO nav), 3px #FFC107 yellow (Footle keys).",
+    "userCost": "A visitor who lands on /quiz/arsenal/ from Google and clicks the logo arrives on a page with a different header, logo, typeface and footer; on desktop, where both are fully visible, this reads as two sites.",
+    "fix": "Make the SEO header (sticky, icon, both CTAs) the single header component and mount it on the homepage; pick one display face (Anton is on 143 quiz pages — adopt it on home, or vice-versa) and set one `:focus-visible` token (`outline: 3px solid #58CC02; outline-offset: 2px`) in the shared stylesheet.",
+    "evidence": "home@1440-fold-consent.png vs clubquiz-arsenal@1920-fold-consent.png; hdr_home/hdr_seo JSON (logoFont Archivo Narrow vs Inter, position static vs sticky, bg transparent vs rgba(10,10,10,.82), links 5 vs 6); h1 fonts from results.json; focus outline colours from results.json focus arrays",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-6",
+    "severity": "medium",
+    "title": "/lists pages are a single 760px mobile column at desktop: 87-96 characters per line, 60% of a 1920 screen empty, 8.8 folds tall",
+    "whatHappens": "On /lists/ballon-dor-winners/ the content column is 760px at both widths (left 340 at 1440, left 580 at 1920 → 1160px of the 1920 viewport is empty). Three intro/outro paragraphs at 16px/25.6px Inter measure 96, 90 and 87 characters per line (ceiling for comfortable reading ~75). The 70-row table is 758px wide and 3,333px tall; the page is 7,886px = 8.8 viewport-heights at 900px, with the table ending at fold 6.3. Answer buttons in the 5-question taster are 726x52px full-width rows holding one-word answers (Kopa, Puskas, Gento), 4 stacked, whereas the homepage renders the same component as a 2x2 grid.",
+    "userCost": "This is the content type with 47% of impressions and 4% of clicks and 2.3s dwell; on a laptop it presents as a phone page pasted in the middle of the screen, with over-long lines on the only prose.",
+    "fix": "For .sec.narrow prose set `max-width: 65ch` (≈680px at 16px) or raise body copy to 17-18px; at >=1280px lay out the taster as a 2-col answer grid (`.qa .to{grid-template-columns:1fr 1fr}`) and consider a 2-col layout with the table left and the taster/related lists in a sticky right rail so the table does not run 6 folds alone.",
+    "evidence": "lists-ballondor@1920-fold-consent.png, lists@1440-table.png, lists-ballondor@1440-full-clean.png; measured col left 340/580 width 760, cpl samples 96/90/87 at 16px, table 758x3333 rows 70, docH 7886, foldsToTableEnd 6.3, taster buttons 726x52",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-7",
+    "severity": "low",
+    "title": "Footle hero subtitle orphans 'up.' on its own line at both 1440 and 1920",
+    "whatHappens": "'Guess the footballer in 6 tries. New player every day — free, no sign-up.' is 19px in a p with max-width 623px; it wraps to 2 lines with the last line 28px wide ('up.'). Because the max-width is fixed, the orphan appears identically at 1440 and 1920. The board caption '.fw-foot' runs 286 characters at 13.5px across the full 1112px, i.e. 143 characters per line.",
+    "userCost": "Cosmetic, but it is the first sentence on the Footle landing page and the hyphen split 'sign-\\nup.' reads like a typo on a large screen.",
+    "fix": "On /football-wordle/ set the hero p to `max-width: 640px; text-wrap: balance` (or shorten to 'free, no account') and give .fw-foot `max-width: 60ch`.",
+    "evidence": "footle@1920-fold-consent.png, footle@1440-full-clean.png; measured p width 623 max-width 623.29px fontSize 19px lines 2 lastLineW 28; .fw-foot width 1112 chars 286 lines 2 cpl 143 fontSize 13.5px",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-8",
+    "severity": "low",
+    "title": "Clubs-index filter input has no visible keyboard focus indicator",
+    "whatHappens": "On /quiz/clubs/ the 'Type to filter 350+ clubs' input, when focused via Tab, matches :focus-visible but computed outline is none, box-shadow none, and border-color is unchanged (rgb(255,255,255) before and after); nothing on screen changes. It is the only control in 119 tab stops across all runs without an indicator.",
+    "userCost": "A keyboard user tabbing into the page (first stop after the nav) cannot tell that the filter is focused before they start typing.",
+    "fix": "Add `.cd-filter input:focus-visible{outline:3px solid #58CC02;outline-offset:2px}` (same token as the consent buttons and homepage).",
+    "evidence": "clubs@1440-input-focus.png (no ring); measured afterKb fv=true, outline none 3px rgb(255,255,255), boxShadow none, border unchanged",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-9",
+    "severity": "low",
+    "title": "Orange 'Prove it' banner uses a 343px text column inside a 1112x432 banner",
+    "whatHappens": "On /quiz/arsenal/ and /football-wordle/ the CTA banner is 1112px wide and 432px tall, but its heading, sub-copy and 'Free either way — in your browser right / now, or on your phone:' are constrained to 343px (each wraps to 2 lines); the remaining ~770px is gradient plus a flame emoji. At 1440 with the consent bar up, the banner's 'Play free in your browser →' button (y=882-933) sits under the bar (top 823).",
+    "userCost": "The strongest conversion block on the club pages reads as a phone card blown up; the copy wraps where it has 3x the room.",
+    "fix": "At >=1024px make the banner a 2-col grid: copy + browser CTA left (max-width 520px), store badges right where the flame is; or simply raise the inner max-width to 560px.",
+    "evidence": "arsenal@1440-cta.png; measured banner 1112x432, innerW 343, three text nodes width 343 each at 2 lines; consent overlap from results.json coveredByConsent ['Play free in your browser →@882-933'] vs consent top 823",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-10",
+    "severity": "low",
+    "title": "1920 gets the 1440 layout centred: no fluid type or wider container",
+    "whatHappens": "h1 is 64px at both widths on home, arsenal and footle; the homepage column is 944px (488px void each side, 49% of the width), the hero text block is 576px wide leaving 856px to its right; SEO pages cap at 1200px (404px each side), lists at 760px (580px each side). Nothing scales between 1440 and 1920 — the only change is margin.",
+    "userCost": "On a 1920 monitor the page is legible but small; the dark background hides the void, so this is the least costly of the width issues.",
+    "fix": "Use `clamp()` for display type (e.g. h1 `clamp(56px, 4vw, 84px)`, hero sub `clamp(18px, 1.2vw, 22px)`) and let the SEO container grow to 1320px at >=1600px.",
+    "evidence": "home@1920-fold-consent.png; measured h1 64px at both, home column 944 left 248/488, heroVoidR 856 at 1920, arsenal container 1112 left 404, lists column 760 left 580",
+    "confidence": "measured"
+   },
+   {
+    "id": "DD-11",
+    "severity": "low",
+    "title": "Known consent-bar coverage, confirmed at desktop widths (not a new finding)",
+    "whatHappens": "First-visit consent bar is 77px tall on desktop (top 823 at 900px, top 1003 at 1080px) — smaller than the 172px mobile figure. At 1440 it covers: arsenal 'Play free in your browser →' (882-933), lists answer D 'Di Stéfano' (801-853), and 8 tappables on /quiz/clubs/ (Süper Lig, Premiership, Southampton, Wrexham, Birmingham, West Ham, Burnley, Wolves). At 1920: 2-5 tappables per page. Homepage and Footle page: 0 covered at either width.",
+    "userCost": "Adds depth to the already-open item; desktop cost is bounded to the last 77px of the fold.",
+    "fix": "Already tracked; on desktop the bar could be a 56px single-row variant (text 13px + two 36px buttons) to reclaim 21px.",
+    "evidence": "*-fold-consent.png for all 10 runs; results.json consentUp.consent and coveredByConsent per run",
+    "confidence": "measured"
+   }
+  ]
+ }
+]

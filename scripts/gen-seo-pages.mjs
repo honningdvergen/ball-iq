@@ -1649,6 +1649,19 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
     c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
     document.head.appendChild(c);
   } else if (choice !== 'denied') {
+    /* ⚠️ DEFER THE BAR ON PAGES WHOSE POINT IS A PLAYABLE QUESTION.
+       index.html sets this flag for deep links and the homepage; the static
+       generator injected the SAME consent.js and never set it, so every club
+       and list page got the bar on load. Measured in WebKit (Safari's engine)
+       on an iPhone 13 at 390x664, 2026-09-02: on /quiz/arsenal/ the four
+       answer options sit at y=467/524/581/638 and the bar's top edge is at
+       y=492 — so options B, C and D are covered and option A is clipped
+       mid-word, on the best-converting arrival on the site.
+       The bar gates CLARITY, not gameplay, and Clarity stays off until
+       consent, so nothing is collected while we wait. consent.js triggers on
+       a scroll past ~90% of a viewport or a 60s dwell — never on tap, so
+       answering the taster cannot summon it over the next question. */
+    window.__biqConsentDefer = true;
     var b = document.createElement('script');
     b.src = '/consent.js';
     b.defer = true;
@@ -4385,6 +4398,30 @@ function buildFootballQuizPage() {
   const rest = CLUBS.filter((c) => !listed.has(c.club)).map((c) => ({ club: c.club, slug: c.slug }));
   if (rest.length) groups.push({ league: 'More clubs', flag: '', rows: rest });
 
+  // ⚠️ THE HEAD-TERM PAGE HAD NOTHING TO PLAY. Measured in WebKit (Safari's
+  // real engine) on prod, 2026-09-02, iPhone 13 at 390x664: /football-quiz/
+  // rendered a 6,983px document — 10.5 folds — containing exactly TWO tappable
+  // buttons, and both were the consent bar's "Decline" and "Allow". Zero
+  // playable elements, on the one page the whole authority strategy is aimed
+  // at. /quiz/arsenal/ meanwhile puts four real answer buttons at y=467, inside
+  // the first fold.
+  //
+  // That contradicts the site's own strongest measured finding — playable beats
+  // readable; taster-less list pages hold attention for 2.3s. The component
+  // already existed and shipped on club pages, leaf list pages and the
+  // homepage. It was simply never placed here.
+  //
+  // ⚠️ DISJOINT FROM THE DAILY PAGE'S TASTER. tasterPick is deterministic (it
+  // sorts by id), so reusing the same pool would serve /football-quiz/ the
+  // IDENTICAL five questions as /daily-football-quiz/. Excluding the daily's
+  // five by id keeps that page byte-identical and guarantees a different set
+  // here, rather than relying on slice arithmetic that a future pool change
+  // could silently break.
+  const generalPool = QB.filter((r) => r.hint && r.type === 'mcq' && Array.isArray(r.o));
+  const dailyTasterIds = new Set(tasterPick(generalPool, 5).map((r) => r.id));
+  const tasterRows = tasterPick(generalPool.filter((r) => !dailyTasterIds.has(r.id)), 5);
+  const hasTaster = tasterRows.length === 5;
+
   const clubCount = CLUBS.length;
   const title = `Football Quiz — Free Club Quizzes With Answers | Ball IQ`;
   const description = `Play a free football quiz on any of ${clubCount} clubs, plus daily games. Every question has an answer and an explanation. No sign-up.`;
@@ -4457,7 +4494,7 @@ function buildFootballQuizPage() {
     }).join('')
   }</div></div>`).join('');
 
-  const html = `${head({ title, description, canonical, ld })}
+  const html = `${head({ title, description, canonical, ld, taster: hasTaster })}
 <body>
 ${NAV}
 <main id="main">
@@ -4465,6 +4502,11 @@ ${style}
 <section class="sec narrow fq-hero">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football quiz</span></nav>
 <h1 style="font-size:clamp(30px,5.2vw,46px);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1.05;margin:10px 0 10px">Football quiz</h1>
+</section>
+
+${hasTaster ? renderTaster(tasterRows, 'football', `${SITE.base}/play`) : ''}
+
+<section class="sec narrow">
 <p style="margin:0;color:var(--tx2);font-size:16.5px;max-width:62ch">Pick a club and play, or take one of the daily games. Every question is written and fact-checked by hand rather than scraped, and every answer comes with the reason it is the answer — the part most football quizzes leave out.</p>
 <ul class="fq-trust"><li>FREE</li><li>NO SIGN-UP</li><li>ANSWERS EXPLAINED</li><li>${clubCount} CLUBS</li></ul>
 </section>
