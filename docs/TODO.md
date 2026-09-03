@@ -33,8 +33,12 @@ to you" → both. One page per finished Footle puzzle (/football-wordle/answer/N
 (tests/unit/answer-pages.test.js), last 30 in the sitemap and linked from both landing pages (orphan
 gate holds). Future → noindex 404; Daily 7 before the 08-19 log → 404. Discover re-pointed on all three
 footers from src/marketing/siteNav.js; facts/quotes/nicknames under Ball IQ. Prod-verified all seven
-route classes. Found + fixed on prod: SWR=3600 served yesterday's number for up to an hour after UTC
-midnight → today-pages SWR=60. Known: server "today" is UTC (Oslo 00:00–02:00 disagrees with the app).
+route classes. ⚠️ I first read "No. 123 at 00:44 Oslo" as a stale cache and shipped SWR=60 for it — WRONG diagnosis: it
+was 22:44 UTC, the server was correctly on the 3rd. The real defect: the app keys a puzzle to the
+LOCAL date, the server to UTC, so every European between local midnight and 02:00 (peak "footle
+answer today" time) is on N+1 in the app and N on the hub. Fixed: from 10:00 UTC (the date has begun
+at UTC+14) /answer/N+1/ renders with the answer behind the reveal and the hub links to it. Daily 7
+answers have the same UTC/local gap — not yet fixed (its hub is the only "today" URL).
 **Read:** GSC page filters ~/football-wordle/answer/ and ~/daily-football-quiz/answers/ from ~09-18.
 Memory: project_answer_pages.
 **Next bricks, in order:** a) the return trip — bring Alex two concrete options with the data above

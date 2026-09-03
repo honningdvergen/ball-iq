@@ -4,9 +4,9 @@
 // one canonical per URL, no future puzzle ever rendered, past pages open,
 // today's hidden, and the site shell on every one of them.
 import { describe, it, expect } from 'vitest';
-import { renderFootleAnswer, recentFootleAnswers, footleNumber, pageUrl as footleUrl } from '../../scripts/seo/footle-answer-page.mjs';
+import { renderFootleAnswer, recentFootleAnswers, footleNumber, todayUtc, pageUrl as footleUrl } from '../../scripts/seo/footle-answer-page.mjs';
 import { renderDailyAnswers, recentDailyDays, todayIndex, isoOf } from '../../scripts/seo/daily-answers-page.mjs';
-import { getWordleDayIndex, getWordleAnswerForDayIndex } from '../../src/lib/wordle.js';
+import { getWordleAnswerForDayIndex } from '../../src/lib/wordle.js';
 import DAILY_LOG from '../../src/data/dailyLog.js';
 
 const NOW = new Date(Date.UTC(2026, 8, 4, 12)); // 2026-09-04 noon UTC
@@ -15,11 +15,11 @@ const canonical = (html) => (html.match(/<link rel="canonical" href="([^"]*)"/) 
 const robots = (html) => (html.match(/<meta name="robots" content="([^"]*)"/) || [])[1];
 
 describe('Footle answer pages', () => {
-  const todayN = footleNumber(getWordleDayIndex(NOW));
+  const todayN = footleNumber(todayUtc(NOW));
 
   it('the hub carries today\'s answer behind a reveal, in the site shell', () => {
     const p = renderFootleAnswer({ now: NOW });
-    const ans = getWordleAnswerForDayIndex(getWordleDayIndex(NOW));
+    const ans = getWordleAnswerForDayIndex(todayUtc(NOW));
     expect(p.status).toBe(200);
     expect(title(p.html).length).toBeLessThanOrEqual(60);
     expect(canonical(p.html)).toBe('https://balliq.app/football-wordle/answer/');
@@ -35,7 +35,7 @@ describe('Footle answer pages', () => {
   it('a past puzzle is its own open page with prev/next and a month of cache', () => {
     const n = todayN - 3;
     const p = renderFootleAnswer({ n, now: NOW });
-    const ans = getWordleAnswerForDayIndex(getWordleDayIndex(NOW) - 3);
+    const ans = getWordleAnswerForDayIndex(todayUtc(NOW) - 3);
     expect(p.status).toBe(200);
     expect(title(p.html).length).toBeLessThanOrEqual(60);
     expect(title(p.html)).toContain(`No. ${n}`);
@@ -48,9 +48,27 @@ describe('Footle answer pages', () => {
     expect(p.staleSeconds).toBe(24 * 3600);
   });
 
+  it('the next puzzle opens once its date has begun somewhere on Earth, hidden behind the reveal', () => {
+    const early = new Date(Date.UTC(2026, 8, 4, 9, 59)); // 09:59 UTC — nowhere is on the 5th yet
+    const late = new Date(Date.UTC(2026, 8, 4, 22, 44)); // 22:44 UTC — Oslo is on the 5th (the prod moment)
+    expect(renderFootleAnswer({ n: todayN + 1, now: early }).status).toBe(404);
+    expect(renderFootleAnswer({ now: early }).html).not.toContain(footleUrl(todayN + 1));
+    const p = renderFootleAnswer({ n: todayN + 1, now: late });
+    const ans = getWordleAnswerForDayIndex(todayUtc(NOW) + 1);
+    expect(p.status).toBe(200);
+    expect(canonical(p.html)).toBe(footleUrl(todayN + 1));
+    expect(p.html).toContain('<details class="reveal">');
+    expect(p.html).toContain(`<div class="big">${ans}</div>`);
+    expect(title(p.html).length).toBeLessThanOrEqual(60);
+    expect(p.staleSeconds).toBe(60);
+    expect(renderFootleAnswer({ now: late }).html).toContain(footleUrl(todayN + 1)); // the hub points forward
+    expect(renderFootleAnswer({ n: todayN + 2, now: late }).status).toBe(404); // but only one day
+  });
+
   it('today\'s number resolves to the hub, and the future is a noindex 404', () => {
     expect(canonical(renderFootleAnswer({ n: todayN, now: NOW }).html)).toBe('https://balliq.app/football-wordle/answer/');
-    for (const n of [todayN + 1, 0, -4, 1.5, NaN]) {
+    // NOW is noon UTC, so todayN + 1 is legitimately open (see the test above); +2 never is.
+    for (const n of [todayN + 2, 0, -4, 1.5, NaN]) {
       const p = renderFootleAnswer({ n, now: NOW });
       expect(p.status, `n=${n}`).toBe(404);
       expect(robots(p.html)).toContain('noindex');

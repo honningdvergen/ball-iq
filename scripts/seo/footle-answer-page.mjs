@@ -17,7 +17,6 @@
 // noindex, not a spoiler.
 import {
   WORDLE_FULL_NAMES,
-  getWordleDayIndex,
   getWordleAnswerForDayIndex,
   WORDLE_ANCHOR_DAY,
 } from '../../src/lib/wordle.js';
@@ -28,9 +27,23 @@ const HUB = `${SITE.base}/football-wordle/answer/`;
 const PLAY = `${SITE.base}/play?game=footle`;
 const ARCHIVE_ROWS = 90;
 
+// "Today" on this server is the UTC date, explicitly. The game's
+// getWordleDayIndex reads LOCAL date fields — right for a player's device,
+// wrong for a renderer whose answer must not depend on where it runs (a test
+// on a Mac in Oslo and the edge in UTC disagreed by a day at 22:44 UTC).
+export const todayUtc = (now = new Date()) => Math.floor(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) / DAY_MS);
 export const footleNumber = (di) => di - WORDLE_ANCHOR_DAY + 1;
 export const dayIndexOfFootle = (n) => WORDLE_ANCHOR_DAY + n - 1;
 export const pageUrl = (n) => `${SITE.base}/football-wordle/answer/${n}/`;
+
+// The app keys a puzzle to the player's LOCAL date; this server only has UTC.
+// Between local midnight and UTC midnight a player east of Greenwich — most
+// of ours — is on No. N+1 in the app while the hub still says No. N (seen on
+// prod 2026-09-03 at 22:44 UTC, 00:44 in Oslo). The next puzzle's date has
+// begun somewhere on Earth from 10:00 UTC (UTC+14), so from then its page
+// renders — answer behind the reveal like today's — and the hub points to it.
+export const NEXT_FROM_UTC_HOUR = 10;
+export const nextIsOpen = (now) => now.getUTCHours() >= NEXT_FROM_UTC_HOUR;
 const dateOf = (di) => new Date(di * DAY_MS);
 export const fullNameOf = (surname) => {
   const fn = WORDLE_FULL_NAMES[surname] || ['', surname];
@@ -39,7 +52,7 @@ export const fullNameOf = (surname) => {
 
 /** The last `count` finished puzzles, newest first — for the sitemap and the landing page's link block. */
 export function recentFootleAnswers(count = 30, now = new Date()) {
-  const today = getWordleDayIndex(now);
+  const today = todayUtc(now);
   const out = [];
   for (let di = today - 1; di > today - 1 - count; di--) {
     const n = footleNumber(di);
@@ -92,7 +105,7 @@ function notFound() {
 }
 
 function hubPage(now) {
-  const today = getWordleDayIndex(now);
+  const today = todayUtc(now);
   const num = footleNumber(today);
   const answer = getWordleAnswerForDayIndex(today);
   const todayLabel = fmtUtc(dateOf(today), { weekday: 'long', ...MONTH_LONG });
@@ -118,6 +131,7 @@ function hubPage(now) {
 <details class="reveal"><summary><span>Reveal today's answer (No. ${num})</span><span class="chev" aria-hidden="true">+</span></summary>
 <div class="answer"><div class="big">${esc(answer)}</div><div class="who">Today's Footle answer is <strong>${esc(fullNameOf(answer))}</strong>.</div></div></details>
 <div class="cta-row"><a class="btn-green" href="${PLAY}">Play today's Footle</a>${yAns ? `<a class="btn-ghost" href="${pageUrl(yN)}">Yesterday's answer: ${esc(fullNameOf(yAns))}</a>` : ''}</div>
+${nextIsOpen(now) ? `<p class="prose" style="margin-top:14px">Already past midnight where you are? <a href="${pageUrl(num + 1)}">Footle No. ${num + 1} hints and answer →</a></p>` : ''}
 </section>
 <section class="sec narrow"><h2>What Footle is</h2><div class="prose">
 <p><strong>Footle</strong> is the football Wordle: one hidden surname of a real footballer each day, six guesses, and after each guess the tiles turn green (right letter, right place), yellow (in the name, wrong place) or grey (not in it). The length changes from day to day. A new name drops at midnight, and the same one is served to everyone, so a result is worth comparing.</p>
@@ -131,7 +145,7 @@ function hubPage(now) {
   return {
     status: 200,
     cacheSeconds: secondsToUtcMidnight(now),
-    staleSeconds: 60, // seen on prod 2026-09-04: with 3600 the hub showed yesterday's number after the roll
+    staleSeconds: 60, // a today-page rolls at UTC midnight; an hour of stale would overlap the searches
     html: answerDocument({
       title,
       description,
@@ -140,6 +154,33 @@ function hubPage(now) {
       ld: breadcrumbLd([{ name: 'Answer', item: HUB }]),
       body,
     }),
+  };
+}
+
+function upcomingPage(n, now) {
+  const di = dayIndexOfFootle(n);
+  const answer = getWordleAnswerForDayIndex(di);
+  const d = dateOf(di);
+  const label = fmtUtc(d, { weekday: 'long', ...MONTH_LONG });
+  const canonical = pageUrl(n);
+  const title = `Footle No. ${n} Hints & Answer (${fmtUtc(d, MONTH_SHORT_Y)}) | Ball IQ`;
+  const description = `Hints for Footle No. ${n}, the football Wordle for ${label}, with the answer hidden until you tap. Already past midnight where you are? This is your puzzle.`;
+  const body = `<section class="hero narrow">${crumbs(`<a href="${HUB}">Answers</a><span class="sep" aria-hidden="true">›</span>No. ${n}`)}
+<div class="kicker"><span class="eyebrow">Answer hidden until you tap</span></div>
+<h1>Footle No. ${n} hints and answer</h1>
+<p class="lead">${esc(label)}. If it is already past midnight where you are, this is today's puzzle; otherwise <a href="${HUB}">No. ${n - 1} is still on</a>.</p>
+</section>
+<section class="sec narrow"><h2>Hints for No. ${n}</h2>
+<div class="card"><ul class="hints">${hintsFor(answer, 'The answer')}</ul></div>
+<details class="reveal"><summary><span>Reveal the answer (No. ${n})</span><span class="chev" aria-hidden="true">+</span></summary>
+<div class="answer"><div class="big">${esc(answer)}</div><div class="who">Footle No. ${n} is <strong>${esc(fullNameOf(answer))}</strong>.</div></div></details>
+<div class="cta-row"><a class="btn-green" href="${PLAY}">Play Footle</a><a class="btn-ghost" href="${pageUrl(n - 1)}">Yesterday's answer</a></div>
+</section>`;
+  return {
+    status: 200,
+    cacheSeconds: secondsToUtcMidnight(now),
+    staleSeconds: 60,
+    html: answerDocument({ title, description, canonical, ogTitle: `Footle No. ${n} Hints & Answer`, ld: breadcrumbLd([{ name: 'Answers', item: HUB }, { name: `No. ${n}`, item: canonical }]), body }),
   };
 }
 
@@ -195,9 +236,11 @@ function pastPage(n, todayN) {
  * @returns {{ status: number, cacheSeconds: number, html: string }}
  */
 export function renderFootleAnswer({ n = null, now = new Date() } = {}) {
-  const todayN = footleNumber(getWordleDayIndex(now));
+  const todayN = footleNumber(todayUtc(now));
   if (n == null) return hubPage(now);
-  if (!Number.isInteger(n) || n < 1 || n > todayN) return notFound();
+  if (!Number.isInteger(n) || n < 1) return notFound();
+  if (n === todayN + 1 && nextIsOpen(now)) return upcomingPage(n, now);
+  if (n > todayN) return notFound();
   if (n === todayN) return hubPage(now); // today's answer lives on the hub; one URL, one canonical
   return pastPage(n, todayN);
 }
