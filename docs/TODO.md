@@ -23,6 +23,19 @@ Do this in a FRESH session (the old one hit 99% context — each turn cost ~1M t
 6. Still open from 2026-09-02: delete relay guard in send-campaign-email + clear 20 burned
    email_events rows; commit generated src/marketing/footlePractice.js drift.
 
+### ⚠️ Data the lists question needs (measured 2026-09-02, funnel-analyst)
+
+On a day with 319 funnel events from 64 visitors, `/lists/*` produced **ZERO engaged events**.
+Filter on `meta.surface='list-page'` — the 3 `list-answered` rows that look like list activity
+are `surface='localised'` and `'taster'` (localised quiz pages + Mystery Player), NOT lists.
+There is also no page-VIEW event on lists, so "no traffic" and "instant bounce" are currently
+indistinguishable. Before proposing anything to ADD to lists, consider instrumenting a view
+event — otherwise the new pages are unmeasurable too.
+
+Smoke test same day: `sr-taster-1`, `sr-taster-done`, `game-abandon` all WIRED and firing
+(game-abandon already caught two daily bounces at 11s and 4s). `list-jump` + the 3 verdict
+CTAs: code confirmed live, zero opportunity yet.
+
 # Ball IQ — the board
 
 ## 🎯 2026-09-02 — THE REAL LEAK IS DAY 1→2, AND IT HANGS ON FINISHING (baseline frozen)
