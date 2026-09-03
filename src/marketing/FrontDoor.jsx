@@ -172,7 +172,9 @@ export default function FrontDoor() {
   const byLeague = useMemo(() => {
     const m = new Map();
     for (const c of CLUB_INDEX) { if (!m.has(c.c)) m.set(c.c, []); m.get(c.c).push(c); }
-    return [...m.entries()].sort((a, b) => b[1].length - a[1].length);
+    const order = ['Premier League', 'La Liga', 'Serie A', 'Bundesliga', 'Ligue 1', 'Championship'];
+    const rank = (k) => { const i = order.indexOf(k); return i < 0 ? 99 : i; };
+    return [...m.entries()].sort((a, b) => rank(a[0]) - rank(b[0]) || b[1].length - a[1].length);
   }, []);
   const clubBySlug = useMemo(() => Object.fromEntries(CLUB_INDEX.map((c) => [c.s, c])), []);
   const featured = MOST_PLAYED.map((s) => clubBySlug[s]).filter(Boolean);
@@ -253,7 +255,8 @@ export default function FrontDoor() {
           <div className="fd-clubs">
             {(allClubs ? CLUB_INDEX : featured).map((c) => (
               <a key={c.s} className="fd-club" href={`${PLAY}?club=${c.s}`} onClick={() => go('fd-club', c.s)}>
-                <span className="fd-club-n">{c.n}</span><span className="fd-club-c">{c.c}</span>
+                <span className="fd-club-dot" style={c.h ? { background: c.h } : undefined} aria-hidden="true" />
+                <span className="fd-club-body"><span className="fd-club-n">{c.n}</span><span className="fd-club-c">{c.c}</span></span>
               </a>
             ))}
           </div>
@@ -275,7 +278,7 @@ export default function FrontDoor() {
               <a key={g.k} className="fd-card fd-game" href={g.href} onClick={() => go(`fd-game-${g.k}`, g.href)}>
                 <span className="fd-card-ic"><Icon k={g.k} /></span>
                 <span className="fd-card-body"><span className="fd-card-n">{g.n}{g.daily ? <span className="fd-tag">Daily</span> : null}</span><span className="fd-card-line">{g.line}</span></span>
-                <span className="fd-play">Play</span>
+                <span className="fd-play" aria-hidden="true">→</span>
               </a>
             ))}
           </div>
