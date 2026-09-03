@@ -1,339 +1,258 @@
 ---
-name: Ball IQ — The Scouting Report
-description: A dark desk carrying an oversized paper scouting report — near-monochrome ink and newsprint, with a single scout's attribute ramp as the only saturated colour.
+name: Ball IQ — The Fixture List
+description: A dark, calm football site where every page is a list of things to play — one header, one frame, one accent spent only on Play.
 colors:
-  desk: "#0E1110"
-  desk-shadow: "#161A17"
-  desk-hairline: "#252B26"
-  on-desk: "#C3CBC3"
-  on-desk-hi: "#F2F5F1"
-  on-desk-mute: "#98A199"
-  newsprint: "#E7E9E4"
-  newsprint-shade: "#DEE1DB"
-  newsprint-track: "#D5D8D2"
-  ink: "#14171A"
-  ink-mute: "#4A524C"
-  hairline-rule: "#B9BFB6"
-  control-rule: "#7A8078"
-  control-rule-dark: "#6E776F"
-  ramp-fail: "#8B2635"
-  ramp-near: "#C9992B"
-  ramp-pass: "#2F6B3A"
-  verdict-0: "#8B2635"
-  verdict-1: "#94472A"
-  verdict-2: "#7E6318"
-  verdict-3: "#5F6A22"
-  verdict-4: "#46702E"
-  verdict-5: "#2F6B3A"
+  bg: "#0A0A0A"
+  bg-raised: "#0C0E13"
+  card: "#0F1117"
+  card-inset: "#14161E"
+  border: "#242836"
+  border-strong: "#2A2D3A"
+  border-loud: "#3A3D4A"
+  text: "#F0F1F5"
+  text-secondary: "#9BA0B8"
+  text-muted: "#7E828C"
+  green: "#58CC02"
+  green-ink: "#06230C"
+  green-soft: "#8AE042"
+  amber: "#FFC107"
+  wrong: "#FF4747"
 typography:
-  headline:
-    fontFamily: "'Archivo Narrow', sans-serif"
-    fontSize: "clamp(41px, 6.6vw, 88px)"
-    fontWeight: 700
-    lineHeight: 0.95
+  display:
+    fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    fontSize: "clamp(30px, 4.4vw, 46px)"
+    fontWeight: 800
+    lineHeight: 1.05
     letterSpacing: "-0.02em"
   section:
-    fontFamily: "'Archivo Narrow', sans-serif"
-    fontSize: "clamp(32px, 5.2vw, 60px)"
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "22px"
+    fontWeight: 800
+    lineHeight: 1.15
+    letterSpacing: "-0.02em"
+  title:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "15px"
     fontWeight: 700
-    lineHeight: 0.98
-    letterSpacing: "-0.018em"
-  verdict-number:
-    fontFamily: "'Archivo Narrow', sans-serif"
-    fontSize: "clamp(102px, 13.4vw, 176px)"
-    fontWeight: 700
-    lineHeight: 0.74
-    letterSpacing: "-0.035em"
-  verdict-tier:
-    fontFamily: "'Archivo Narrow', sans-serif"
-    fontSize: "clamp(34px, 5.4vw, 66px)"
-    fontWeight: 700
-    lineHeight: 0.94
-    letterSpacing: "-0.008em"
-  lede:
-    fontFamily: "Archivo, system-ui, sans-serif"
-    fontSize: "20px"
-    fontWeight: 400
-    lineHeight: 1.55
-  sub:
-    fontFamily: "Archivo, system-ui, sans-serif"
-    fontSize: "18px"
-    fontWeight: 400
-    lineHeight: 1.62
+    lineHeight: 1.3
+    letterSpacing: "-0.01em"
   body:
-    fontFamily: "Archivo, system-ui, sans-serif"
-    fontSize: "17px"
-    fontWeight: 400
-    lineHeight: 1.55
-  sec:
-    fontFamily: "Archivo, system-ui, sans-serif"
+    fontFamily: "Inter, system-ui, sans-serif"
     fontSize: "15px"
     fontWeight: 400
-    lineHeight: 1.4
-  meta:
-    fontFamily: "Archivo, system-ui, sans-serif"
+    lineHeight: 1.5
+  caption:
+    fontFamily: "Inter, system-ui, sans-serif"
     fontSize: "13.5px"
     fontWeight: 400
     lineHeight: 1.4
+  meta:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "12.5px"
+    fontWeight: 600
+    lineHeight: 1.4
   label:
-    fontFamily: "Archivo, system-ui, sans-serif"
+    fontFamily: "Inter, system-ui, sans-serif"
     fontSize: "12px"
     fontWeight: 700
     lineHeight: 1.4
-    letterSpacing: "0.13em"
+    letterSpacing: "0.06em"
+  counter:
+    fontFamily: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace"
+    fontSize: "14px"
+    fontWeight: 700
+    lineHeight: 1
 rounded:
-  none: "0px"
+  sm: "8px"
+  md: "10px"
+  lg: "12px"
+  xl: "14px"
+  pill: "999px"
 spacing:
-  s1: "8px"
-  s2: "14px"
-  s3: "22px"
-  s4: "34px"
-  s5: "52px"
-  s6: "76px"
+  xs: "8px"
+  sm: "12px"
+  md: "16px"
+  lg: "24px"
+  xl: "36px"
+  xxl: "48px"
 components:
-  button-primary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.newsprint}"
-    typography: "{typography.label}"
-    rounded: "{rounded.none}"
-    padding: "0 26px"
-    height: "52px"
-  button-primary-hover:
-    backgroundColor: "#2B3136"
-    textColor: "{colors.newsprint}"
-  button-alt:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink}"
-    typography: "{typography.label}"
-    rounded: "{rounded.none}"
-    padding: "0 26px"
-    height: "52px"
-  get-app-cta:
-    backgroundColor: "{colors.newsprint}"
-    textColor: "{colors.ink}"
-    typography: "{typography.label}"
-    rounded: "{rounded.none}"
-    padding: "0 16px"
+  button-play:
+    backgroundColor: "{colors.green}"
+    textColor: "{colors.green-ink}"
+    typography: "{typography.meta}"
+    rounded: "{rounded.pill}"
+    height: "36px"
+    padding: "0 14px"
+  button-play-large:
+    backgroundColor: "{colors.green}"
+    textColor: "{colors.green-ink}"
+    typography: "{typography.title}"
+    rounded: "{rounded.pill}"
     height: "44px"
-  answer-option:
-    backgroundColor: "{colors.newsprint}"
-    textColor: "{colors.ink}"
+    padding: "0 22px"
+  button-quiet:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.text}"
+    typography: "{typography.meta}"
+    rounded: "{rounded.pill}"
+    height: "40px"
+    padding: "0 16px"
+  card:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.text}"
+    rounded: "{rounded.lg}"
+    padding: "12px 14px"
+  card-hover:
+    backgroundColor: "{colors.card-inset}"
+    textColor: "{colors.text}"
+  chip:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.text-secondary}"
+    typography: "{typography.caption}"
+    rounded: "{rounded.pill}"
+    height: "36px"
+    padding: "0 13px"
+  input-search:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.text}"
     typography: "{typography.body}"
-    rounded: "{rounded.none}"
+    rounded: "{rounded.md}"
+    height: "40px"
+    padding: "0 12px 0 38px"
+  answer-option:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.text}"
+    typography: "{typography.title}"
+    rounded: "{rounded.xl}"
     padding: "14px"
-    height: "52px"
-  answer-option-hit:
-    backgroundColor: "#E3EDE2"
-    textColor: "{colors.ink}"
-  answer-option-miss:
-    backgroundColor: "#F1E3E4"
-    textColor: "{colors.ink}"
-  answer-option-dim:
-    backgroundColor: "{colors.newsprint-shade}"
-    textColor: "{colors.ink-mute}"
+  header:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text}"
+    height: "60px"
+  app-bar:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.text-secondary}"
+    typography: "{typography.title}"
+    height: "46px"
 ---
 
-# Design System: Ball IQ — The Scouting Report
+# Design System: Ball IQ — The Fixture List
 
 ## Overview
 
-**Creative North Star: "The Scouting Report"**
+**Creative North Star: "The Fixture List."** Ball IQ is a football quiz website that is the product, not a pitch for one. Every page is a list of things to play, arranged the way a fixture list is: what is on today first, then everything else you can find. A visitor from Google lands on a club quiz and sees the same header, the same search box and the same footer as the homepage; a returning player sees today's four puzzles with their state. Nothing shouts. There is one accent, and it is spent on exactly two things: the Play button and a correct answer.
 
-The page is not about a football test; the page IS the test, and it files a report on the person taking it. It rejects the category's stock furniture on sight — no dark hero with a phone mockup floating in it, no three-card feature triptych, no counted stat ("6,407 questions") printed as if size were the pitch. In its place: a near-black desk, grained like paper under raking light, with the scouting report itself lying on top of it as a physical, oversized sheet — wider than its own column, tilted a fraction of a degree, backed by a second sheet, casting a real double shadow. The report is not a card that happens to hold a quiz; the quiz is the report, and it fills itself in, in front of the reader, as they answer.
+This system replaced the "Scouting Report" world on 2026-09-03 after the owner rejected it and its three proposed successors as generated-looking. It was rebuilt from a field study of thirteen quiz and sports-puzzle sites (memory: `project_quiz_sites_field_study`), whose findings are the rules below: a website prints the date, puts its whole catalogue on the page as links, keeps the browser's own scroll, has no marketing button in its header, and keeps prose above the fold to a line or two.
 
-Everything that is not the report is desk: dark, quiet, near-monochrome, and flat. Everything that is the report is paper: ink on newsprint, ruled like a table, printed rather than glowing. The only place either surface is allowed a second colour is the one place a scout actually grades something — the pass/fail marks in the running ledger, the Footle board, and the verdict tier — and that colour is always the same scout's ramp, oxblood through amber to green, never a decorative accent borrowed for anything else. Action itself is never a fourth hue: a button is filled with whichever of ink or newsprint is NOT the ground it sits on, so the control is always the highest-contrast object available, not a brand-coloured one.
-
-This was built by resonance-assignment (seed key `cf2f8891`, candidate 4 of 7), not by open-ended taste, and its own direction contract (top of `docs/mockups/scouting-d.html`) is the closest thing to a spec this world has. It was explicitly built against and rejected `home-final.html`, an earlier all-dark, no-paper direction kept in the same folder as an anti-reference.
-
-**Key Characteristics:**
-- Two grounds, not one: a dark desk (the world) and a lit paper sheet (the report), and every token belongs to exactly one of them.
-- One saturated family in the whole system — the scout's ramp — appearing only where something is actually being graded.
-- Zero border-radius anywhere in the file. Every edge is a hard corner; the only curves are the paper's own slight rotation.
-- Motion exists only as feedback tied to the reader's own action (a bar filling, a verdict landing, a wrong Footle guess shaking) — never ambient, never on load, never decorative.
-- Contrast is measured, not assumed: several rules in the CSS carry the exact ratio a prior attempt failed and the ratio the shipped version clears.
+**Key characteristics**
+- Dark throughout, on the app's own tokens. No lifted blacks, no gradients, no glows, no grain.
+- One header for the website, the generated pages and the app in a browser: wordmark, five section links, the club-and-league finder, Sign in or Profile. No call to action lives in the header.
+- One card anatomy, used for today's puzzles, every game, clubs and lists alike: an icon or dot, a name, one line, a state or an arrow.
+- Inter for everything a person reads. JetBrains Mono only for counters inside a game.
+- The browser owns the scroll. Nothing is an inner-scrolling app shell on the web.
 
 ## Colors
 
-The palette is built from two near-achromatic grounds plus a single accent family that is never used decoratively — it exists only to grade something.
+The palette is the app's, defined once in `src/design/tokens.js` and emitted into every generated page by `rootCss()`; `src/design/front.css` and `scripts/seo/shell.mjs` name the same values locally.
 
-### Primary
-- **Scout's Ramp — Fail** (`#8B2635`, oxblood): the "wrong" mark across the whole system — running-report `0 of 1` text, the empty/red progress bar, Footle's "not in it" key state is a separate near-black tone, but a wrong quiz answer and a wrong verdict-0 score both use this exact red.
-- **Scout's Ramp — Near** (`#C9992B`, amber): the middle mark — Footle's "right letter, wrong place" tile and key. This is the *screen* amber, and it reads only 2.13:1 against newsprint. That is not a defect, because it is never ink: `--r3` appears exclusively as a `background` and `border-color` on the dark Footle board, with its own dark text (`#1A1200`) sitting on top of it.
-- **Scout's Ramp — Pass** (`#2F6B3A`, green): the "correct" mark — running-report `1 of 1` text, the filled progress bar, Footle's "right letter, right place" tile and key, and the verdict's best tier.
-- **Verdict Ramp** (`--verdict-0` through `--verdict-5`): the same oxblood→amber→green family, rendered at **ink strength** for the one place the ramp is used as text on paper — the verdict number and the tier headline's rule, one step per score. It is not a second, unrelated scale. Measured in Lab, its hue sweeps monotonically through the same arc as the three-step ramp (20.1° → 46.7° → **85.9°** → 111.8° → 131.0° → 145.1°), and its amber stop `verdict-2` sits at hue 85.9° against `ramp-near`'s 82.6° — the same colour, three degrees apart. What differs is lightness, and only because it has to: `ramp-near` at L\*66.0 reads 2.13:1 on newsprint, while `verdict-2` at L\*43.4 reads 4.66:1. Every verdict stop clears 4.5:1 on paper (7.08 / 5.38 / 4.66 / 4.81 / 4.75 / 5.23).
+### Surfaces, darkest to lightest
+- **bg** `#0A0A0A` — the page.
+- **bg-raised** `#0C0E13` — the footer and alternating bands.
+- **card** `#0F1117` — every card, chip, input and dropdown.
+- **card-inset** `#14161E` — a card's hover state, and surfaces inside a card.
 
-### Neutral — Desk (the world)
-- **Desk** (`#0E1110`): the page's base background, carrying a fine authored SVG grain (`--grain`; the paper has a second, separately authored one — see **The Two Grains Rule**). This is the ground for the masthead, hero, section bands, club index, Footle, and footer — everything that is not the report itself.
-- **Desk Shadow** (`#161A17`): the one deliberately lighter band on the desk, used for the "Tomorrow" (Footle) section to give the eye a quiet, wide object to land on after a dense ruled passage.
-- **Desk Hairline** (`#252B26`): every divider rule on the desk ground (masthead border, section rules, footer rule, Footle board dividers).
-- **Desk Text — High** (`#F2F5F1`): headline, section headings (`h2`), and other peak text on the desk.
-- **Desk Text — Body** (`#C3CBC3`): running prose on the desk (lede, sub-paragraphs).
-- **Desk Text — Mute** (`#98A199`): secondary/supporting text on the desk (nav links, captions, the club index's competition column, Footle labels).
+### Lines
+- **border** `#242836` — every card, input and divider. One weight, 1px.
+- **border-strong** `#2A2D3A` — a card's hover border, a focused input.
+- **border-loud** `#3A3D4A` — reserved for the rare emphasised outline.
 
-### Neutral — Paper (the report)
-- **Newsprint** (`#E7E9E4`): the report sheet's own background — cool, not warm, and named "newsprint" rather than "cream" or "off-white" because the direction contract is explicit that this is cool paper, not warm parchment.
-- **Newsprint Shade** (`#DEE1DB`): the zebra-stripe on alternating running-report rows, and the background a dimmed wrong-answer option recedes into.
-- **Newsprint Track** (`#D5D8D2`): the empty track behind a progress bar.
-- **Ink** (`#14171A`): the report's primary text colour, and — inverted — the fill colour for the assessment header band and every button that lives on paper.
-- **Ink Mute** (`#4A524C`): secondary text on paper (subject-line captions, disqualified answer text, Footle-clock labels' desk equivalent is a different token — this one is paper-only).
-- **Hairline Rule** (`#B9BFB6`): the *decorative* table rule — 1.53:1 against newsprint. Used only where a rule is separating rows of data, never where it is standing in for a control boundary.
-- **Control Rule** (`#7A8078`): the *functional* rule — 3.31:1 against newsprint, meeting WCAG 1.4.11's 3:1 floor for a non-text control boundary. Used for answer-option borders and anywhere a rule is doing a button's job, not a table's.
+### Text
+- **text** `#F0F1F5` — headings, names, the current tab.
+- **text-secondary** `#9BA0B8` — one-line descriptions, section links, tabs at rest.
+- **text-muted** `#7E828C` — captions, dates, edition numbers, placeholder text.
 
-### Named Rules
-**The One Ramp Rule.** The only saturated colours anywhere in the system are the scout's ramp and its verdict variant. Nothing else — not a link, not a CTA, not a decorative flourish — is allowed a hue that isn't ink, paper, or desk.
+### The accent
+- **green** `#58CC02` with **green-ink** `#06230C` on it — the Play button, a correct answer, the active tab's rule, a "done" state, a notification dot. Nothing else.
+- **green-soft** `#8AE042` — the hover fill of a green link, and green as text on a dark surface where the full green would fail contrast.
+- **amber** `#FFC107` — a streak, a "near" state, the Daily 7's tint. Never a call to action.
+- **wrong** `#FF4747` — an incorrect answer.
 
-**The Two Strengths Rule.** There is one ramp and two renderings of it, and which one you reach for is decided by the *ground and the job*, never by the component:
+### Club colours are data, not tokens
+A club's colour comes from its pack (`CLUB_PACKS` in `src/App.jsx`, resolved through `src/lib/clubColour.js` and baked into `src/marketing/clubIndex.js` at build time). It appears as a 12px dot on a club card and as the badge on a club page. It never colours a button.
 
-| | as a **fill** on the dark desk | as **ink** on newsprint |
-|---|---|---|
-| tokens | `--r1` `--r3` `--r5` | `--v0` … `--v5` |
-| used by | Footle tiles and keys, chip fills, answer-option borders | the verdict number, the tier rule |
-| contrast floor | text sits *on* the colour, so the fill is free | every stop must clear 4.5:1 on paper |
+### Named rules
+**The One Accent Rule.** Green means "press this to play" or "you got it right". A page with more than one green control per screen is a page that has stopped ranking its own actions. Every-game cards therefore carry a grey arrow, not a green pill; only today's four carry Play.
 
-This is why `ramp-near` never needed an ink version of its own: it is the one stop that is never text on paper. `--r1` and `--r5` appear in both columns because they happen to clear 4.5:1 on newsprint unaided (7.08:1 and 5.23:1), so the fill value doubles as the ink value.
-
-**The Same-Weight Rule Rule.** `hairline-rule` and `control-rule` are the same *visual* weight (both thin, both grey-green) but different jobs: one is furniture (a table row separator), the other is a control's boundary and is held to a harder contrast floor because a reader has to be able to find it to use it.
-
-**The Both-Grounds Rule.** Every rule token needs a twin on the other ground, and the control tokens are the ones that actually matter. `control-rule` (`#7A8078`, 3.31:1 on newsprint) had no dark-side counterpart for a long time and every control on the desk was outlined in `desk-hairline` instead — 1.58:1 against the Footle board, which made the section's only playable surface all but invisible. `control-rule-dark` (`#6E776F`) is its twin, and it is set against the *worst* surface it has to sit on rather than the easiest: 3.53:1 on an empty tile, 3.12:1 on a live key, 3.65:1 on a spent key, 3.79:1 on the Footle band, 4.10:1 on the desk. Furniture may stay at `desk-hairline`; anything a reader has to press may not.
+**Grey-on-grey has a floor.** Body copy is `text-secondary` on `card` (7.1:1); captions are `text-muted` on `bg` (4.6:1). Nothing readable goes below 4.5:1, and nothing under 12px is user-facing text.
 
 ## Typography
 
-**Display Font:** Archivo Narrow (bold, uppercase, tracked tight) — every headline, section heading, verdict number/tier, masthead wordmark, and countdown clock.
-**Body Font:** Archivo (regular/medium) — every paragraph, question, answer option, table cell, and caption.
-
-**Character:** A narrow, heavy display face doing all the shouting (headlines, the verdict, the clock) against a plain grotesque doing all the reading. The pairing reads like a back page and a team-sheet: bold masthead type over plain report type, never a third voice.
-
-**Delivery:** both faces are embedded as base64 woff2 so the file renders identically with no network. Archivo is a **variable** font declared once across `font-weight:100 900`; Archivo Narrow is a single static 700, which is the only weight it is ever asked for. Archivo was previously declared three times — at 400, 600 and 800 — each carrying a byte-identical copy of the same variable payload (34,940 B, md5 `92895aba…`). Collapsing them to one declaration reproduced 400/600/800 to the pixel and cut the file 214,713 → 121,269 bytes (gzip −49.3%). It also *fixed* two weights: with only three pinned faces, CSS font-matching snapped `font-weight:500` down to the 400 face and `700` up to the 800 face, so the answer options and every uppercase micro-label were rendering at a weight nobody wrote. They now render at the weights this document specifies.
+**Body and display face:** Inter, weights 400 / 600 / 700 / 800. One family for everything a person reads; personality comes from weight and size, not from a second face.
+**Counter face:** JetBrains Mono, 700, only for numbers a player watches change inside a game: "Q 01 / 10", a timer, a streak. Never in chrome, breadcrumbs, eyebrows or stat strips.
 
 ### Hierarchy
-- **Headline** (700, `clamp(41px, 6.6vw, 88px)`, line-height .95): the page's own `h1` only — two lines, then straight into the question.
-- **Verdict Number** (700, `clamp(102px, 13.4vw, 176px)`, line-height .74): the single largest object on the page. It only exists after the last question is answered, and it is coloured by the six-step verdict ramp.
-- **Verdict Tier** (700, `clamp(34px, 5.4vw, 66px)`, line-height .94, 6px bottom rule in the verdict colour): the tier word ("Cone" through "Ballon d'Or") — sized to out-rank every section heading below it, which an earlier pass had gotten backwards.
-- **Section** (700, `clamp(32px, 5.2vw, 60px)`, line-height .98): every `h2` — "Footle. Football Wordle.", "Seventy-two clubs on file". Deliberately kept under the verdict tier's size so the page's one true peak stays the peak.
-- **Lede** (400, 20px, line-height 1.55): the one line under the headline.
-- **Sub** (400, 18px, line-height 1.62): the paragraph under a section heading.
-- **Body** (400, 17px, line-height 1.55): prose, answer options, and table data — the page's base size.
-- **Sec** (400, 15px): supporting text — keys, the colophon-style footer, Footle labels.
-- **Meta** (400, 13.5px): subject lines, counters ("1 of 5"), captions.
-- **Label** (700, 12px, tracking .13em, uppercase): the single uppercase micro-label rule (`.adlab`, `.vlab`, `.why b`) — one rule shared by three call-sites rather than three near-identical ones. It was five: `.dl` ("Also on", above the store links) and `.clab` ("Next one in", above the countdown) were deleted rather than restyled in the finish review, because a tracked uppercase label sitting above the biggest number in its section is an eyebrow and the hero-metric template at once. Both are now unconditional refusals, so this treatment is only ever a **field label on a form** — which is what a report is.
+- **Display** (800, `clamp(30px, 4.4vw, 46px)`, line-height 1.05, −0.02em): the page's `h1`, sentence case, left-aligned on the same edge as everything below it.
+- **Section** (800, 22px, −0.02em): "Today", "Your club", "Every game", "Lists and records", and every `h2` on a generated page.
+- **Title** (700, 15px, −0.01em): a card's name, an answer option, a tab.
+- **Body** (400, 15px, line-height 1.5): running prose. Kept to 0–2 sentences above the fold on any page.
+- **Caption** (400, 13.5px): the one line under a card's name; a section's subtitle.
+- **Meta** (600, 12.5px): states ("Not played", "3 of 7"), edition numbers, "checked 20 July".
+- **Label** (700, 12px, 0.06em, uppercase): footer column headings and the eyebrow above an `h1`. The only uppercase treatment in the system, and it is always a field label, never a slogan.
 
-### Named Rules
-**The Five-Plus-One Rule.** Five body-scale sizes (lede/sub/body/sec/meta) carry every prose job on the page; a sixth would be a size looking for a role. The uppercase micro-label is the deliberate exception because it is a distinct *treatment* (case + tracking), not a seventh size.
+### Named rules
+**Sentence case everywhere.** Uppercase exists only in the 12px label. Headlines are sentence case at 800 weight; the condensed, tracked, all-caps headline is the retired system's signature and must not return.
 
-**The Tabular Figures Rule.** Any number a reader might compare against another number (`.stub .out`, the verdict number, the countdown clock, Footle's `.depth`) is set with `font-variant-numeric: tabular-nums`. A date or a score wobbling against neighbouring rows on a proportional grid was the bug this closed.
-
-**The Light-on-Dark Compensation Rule.** Text on the desk (light on near-black) gets a touch more letter-spacing (`.006em`) than the equivalent prose on paper. Dark-on-light does not get the same bump — it doesn't need it, and adding it would just loosen type that was already reading fine.
+**Tabular numerals wherever numbers align**: countdowns, "N of 4", entry counts, stat strips.
 
 ## Layout
 
-The page is a single centred column (`.w`, `max-width: 1000px`, `28px` side padding, `16px` under 640px) for everything *except* the report sheet, which is the one element deliberately allowed to run wider than the column — by a `66px` bleed on each side at desktop width, tapering to `26px` between 641–1180px and `11px` under 640px, so the sheet still overhangs its column without eating into the viewport's own edge margin on narrow screens.
+One frame: `max-width: 1200px`, padding `clamp(20px, 4vw, 44px)`. The site header, the app bar, every generated page's `main`, and the app's content column at desktop all use it, so the left edge is the same on every page and on every screen inside the app.
 
-Spacing runs on a six-step scale (`--s1` 8px, `s2` 14px, `s3` 22px, `s4` 34px, `s5` 52px, `s6` 76px), each step roughly 1.4–1.6× the last. Section bands (`.sec`) use the top of that scale (`s5`/`s6`) for their own vertical padding, with a hairline rule between adjacent sections (`.sec + .sec`) rather than a background change — rhythm is carried by air and a rule, not by alternating tone.
+**One left edge.** Headings, prose, cards and tables share the frame's left edge. A narrow reading measure (`.narrow`, 760px) limits line length but is never centred inside the wide frame.
 
-Responsive behaviour has three real breakpoints (900px, 640px, 360px), not a single mobile cutoff:
-- **900px**: the Footle board and countdown clock stack instead of sitting side by side; the clock's left border becomes a top border.
-- **640px**: the masthead's centre nav disappears entirely (kept only as the `Play now` CTA), the answer grid drops to one column, and most of the display-scale type steps down a notch.
-- **360px**: a floor pass — board and keyboard gaps tighten further so the on-screen keyboard keeps its width rather than the page losing its margin.
+**Section rhythm:** 26px above a section, a 14px gap between its heading row and its content, 8–10px gaps between cards. Sections are separated by air, not by rules or background bands.
+
+**Grids:** today's four in two columns; every game in three; clubs in four; lists in two. All collapse to one column under 720px, clubs to two.
+
+**The browser owns the scroll.** No inner-scrolling shells, no fixed sidebars, no floating tab bars on the web. Native apps and installed PWAs keep their sidebar and tab bar; `body.biq-web` is the switch.
+
+**Header:** one row, 60px (56px under 720px), sticky. Wordmark · Today · Games · Clubs · Quizzes · Lists · a 420px search field · Sign in. Under 720px the section links fold behind a menu and the search fills the row.
+
+**App bar (browser only, inside the app):** one row, 46px, sticky under the header: Play · Daily · Online · Profile, then notifications and Settings on the right. The current tab carries a 2px green rule.
 
 ## Elevation & Depth
 
-This is a hybrid system, and deliberately so: the desk and everything on it is flat — no shadow on the masthead, section bands, club rows, or Footle board. Depth is reserved for the one place the metaphor calls for a physical object: the report sheet and the verdict slip.
-
-The report (`.file`) sits on a second, slightly rotated backing sheet (`.file::after`, offset and independently shadowed) so the desk reads as a stack, not a single card. Both the report and the verdict use a two-layer shadow — a large, soft, dark blur plus a tighter, closer, darker one — rather than a single flat drop, because a zero-blur block shadow was rejected in the source comments as "a neobrutalist costume" that doesn't belong in a paper-on-desk world. The verdict additionally *lands*: a half-second `land` keyframe (rotate + scale + fade, eased with `cubic-bezier(.16,1,.3,1)`) plays once, when the score is revealed, and is fully suppressed under `prefers-reduced-motion`.
-
-### Shadow Vocabulary
-- **Report sheet** (`26px 44px 84px -28px rgba(0,0,0,.92), 4px 8px 22px -10px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.9)`): the primary paper object's shadow, plus an inset highlight simulating a sheet edge catching light.
-- **Backing sheet** (`14px 26px 46px -22px rgba(0,0,0,.8)`): the second sheet under the report, visible only at its rotated edges.
-- **Verdict slip** (`9px 15px 30px -12px rgba(20,23,26,.34), 2px 4px 9px -4px rgba(20,23,26,.24)`): lighter and tighter than the report's own shadow, since the verdict is a smaller object landing on top of an already-shadowed stack.
-
-### Material
-Both grounds are grained, and they need two separately authored grains — this is the part the first build got wrong. `--grain` is tuned for near-black and works there. Laid over newsprint at the same settings it moved the sheet by 13 levels peak-to-peak, standard deviation 1.6: under half a JND, invisible in a screenshot, which left the focal object of a world called The Scouting Report as a flat fill.
-
-`--paper` is the light-ground turbulence, and two things had to be true for it to be a material rather than a haze:
-
-1. **feTurbulence writes noise into the alpha channel too.** A `<rect>` filled with raw turbulence arrives at roughly half its declared opacity. `feFuncA type="table" tableValues="1 1"` pins alpha to 1 so the rect's own `opacity` is the only dial.
-2. **Four octaves of fractalNoise converge on mid-grey** (measured sigma 0.061). Reaching for more opacity to compensate darkens the sheet instead of texturing it. The transfer stretches the greys 2× around the paper's own value first, so the mottle is carried by contrast rather than by weight.
-
-Measured on the composited sheet: mean 228.6 against a flat 231 — the declared `newsprint` is mottled, not restated — sd 6.9, 2nd-to-98th percentile 212–235, darkest fleck 196, where ink still reads 10.3:1 against 14.7:1 on flat stock. In a rendered 1.5× screenshot the same region measures sd 5.3 over a 205–236 range.
-
-It is applied to the three paper objects the reader actually looks at: the report sheet, its backing sheet, and the verdict slip, plus the answer rows. **Every `.opt` state moves `background-color` only** — a `background:` shorthand there silently drops the grain and leaves four rows of flat stock in the middle of a sheet that has it.
-
-### Named Rules
-**The Object Shadow Rule.** A shadow only appears where something is meant to read as a physical sheet resting on the desk. It is never used for hover feedback, never for a card, and never as ambient page atmosphere.
-
-**The Two Grains Rule.** A grain authored for one ground does nothing on the other, and "nothing" is invisible rather than obviously broken, so it survives review. Measure it: rasterise the tile, composite it over the ground it will actually sit on, and read the standard deviation. Under ~3 is a haze. Do not answer a missing material with a gradient or a lighter base colour.
+Flat. Depth is expressed by surface tone, not by shadow: `bg` → `card` → `card-inset`, and a 1px `border` around anything that can be pressed. The only shadows in the system are the search dropdown's (`0 18px 44px rgba(0,0,0,.55)`) and, inside the game, the app's own card shadow tokens. There are no glows behind heroes or buttons, no gradients on bands, no grain.
 
 ## Shapes
 
-Zero border-radius exists anywhere in the file — every rule, button, tile, chip, and panel is a hard rectangle. The only non-rectilinear gestures in the entire system are the report's own slight physical rotations: `-0.45deg` at desktop (`-0.3deg` under 640px) for the report sheet, `+1.1deg` for its backing sheet, and `+0.7deg` for the verdict slip (arriving from `+2.6deg` mid-animation). Borders are uniformly hairline (1px, using `hairline-rule`, `control-rule`, or `desk-hairline` depending on ground and job) except for two intentionally heavier 2px ink rules: the letterhead's bottom border and the assessment/verdict panel borders, which are the two places the paper world draws its own frame.
+Radii come from a five-step scale and every element sits on one step: 8px for small controls and icon tiles, 10px for inputs and list rows, 12px for cards, 14px for the game's answer options and cards, and a pill for buttons, chips and tags. Nothing is square-cornered and nothing is rounder than 14px except a pill. Borders are 1px (1.5px on an answer option, 2px on a selected difficulty).
 
 ## Components
 
-### Masthead (`.mast`)
-A flat, dark-ground bar: the wordmark, a centred section nav (hidden entirely under 640px), and a single `Play now` CTA pointing at `/play`. The CTA is the one masthead element that borrows paper — newsprint background, ink text — so it reads as the highest-contrast object in the bar; on hover it brightens further to pure white. It is deliberately **not** a store link: one href cannot serve two platforms honestly, and a masthead that says "get the app" while pointing at a browser is a lie. The store ask lives where intent peaks — the Verdict — and again in the Footer. There is no icon row here (see **Do's and Don'ts**).
-
-### The Paper Sheet (`.file`) — signature component
-The report itself: an oversized newsprint rectangle, wider than its own column, rotated a fraction of a degree, sitting on a second rotated sheet, with the two-layer directional shadow described in Elevation. It is the one element in the whole page allowed to break the grid, and it is the literal subject of the page's own thesis — the report you are being handed as you play.
-
-### Letterhead (`.head`)
-The band at the top of the paper sheet: a bold uppercase "Ball IQ — scouting report" line and a live "Subject:" caption underneath it, separated from the report body by a 2px ink rule. The subject line is not static copy — it updates in place as the reader answers ("not yet assessed" → "under assessment · 2 of 5 filed" → "Cone · Filed 14:32"), so the letterhead is describing the actual reader, not a placeholder. It carries no distribution links; those live in the Masthead and the Footer, not here.
-
-### Running Report / Ledger (`.stub`)
-A hairline table that appears the moment the first question is answered, one row per discipline, zebra-striped on alternating rows. Each row shows a progress bar (filled only on a *correct* answer — a wrong answer leaves the bar visibly empty rather than filled in the "wrong" colour, since a full bar reads as full regardless of hue) and a `1 of 1` / `0 of 1` / `not assessed` outcome cell in tabular figures. An unasked row gets no bar at all — an empty outline was found to draw the same mark for "wrong" and "not yet asked," which this corrects.
-
-### Assessment Card (`.asmt`)
-A bordered ink-framed panel holding one question: a dark ink header band (discipline label + "N of 5" counter) inverted against the paper body beneath it, then the question, a two-column answer grid (one column under 640px), and a "Why" panel that only appears after answering.
-
-### Answer Option (`.opt`)
-A bordered newsprint button with a boxed letter chip (A–D). Four states: default (paper, `control-rule` border), hover (white, ink border, non-touch only), **hit** (`#E3EDE2` background, `ramp-pass` border, white-on-green chip), **miss** (`#F1E3E4` background, `ramp-fail` border, white-on-red chip), and **dim** (the three unchosen options, which recede via a solid darker ink-on-newsprint-shade combination rather than opacity — see Accessibility).
-
-### Verdict Stamp (`.verdict`) — signature component
-A second paper slip laid on the report, appearing only once all five questions are answered, animated in with the `land` keyframe. It states the grade three redundant ways at once — a giant number, a tier word, and a colour — all driven by the same six-step verdict ramp, so no single one of the three is load-bearing for a reader who can't see colour or doesn't read past the headline. A "Scout's note," a short generated line naming the reader's best and worst discipline, sits alongside in its own rail.
-
-Below the grade the slip continues as **ruled rows, not panels**: one row carrying the download ask (a sentence plus `App Store` and `Google Play`, both ink-filled), then one row of ink text links (`Take the full test here` / `Just my club instead`). This replaced a titled, tinted, top-ruled `Keep this report` panel that itself held two more bordered boxes — four frames deep inside a sheet, on a page whose contract says no cards. The *placement* of the download ask was right and is unchanged; only the boxing was wrong.
-
-### Club Index (`.clubs`)
-A two-column (one column under 760px) list of club rows, each a club name, a **dotted leader rule**, and the competition the file belongs to. Rows highlight on hover (non-touch only).
-
-Two earlier versions of this row are instructive. It first carried a question count, which contradicted the "same depth for Hajduk Split as for Real Madrid" sentence directly above it. It then carried a colour swatch per club and an "era covered" date range, and the finish review killed both: twelve saturated crests are a **second palette** inside a world whose only saturation is the ramp, and the era range was derived by a 4-digit-year regex over each club's questions, options and hints — so most of its start years were *distractors* (Liverpool 1892 and Celtic 1878 are wrong answers to "in which year…", Real Madrid 1885 is a decoy on a 1920 crest question) or name artifacts (Bayern Munich "1860" is 1860 Munich). The competition column is checkable in the repo (`scripts/seo/leagues.mjs`) and by any reader, and the leader rule is a device the world already owns.
-
-### Footle Board + Keyboard (`.ftl`)
-A dark-ground word-game board: a 7-wide tile grid (one row per guess, 6 rows) and a 3-row on-screen keyboard with wide `ENTER`/`DEL` keys. Tile and key states share the Scout's Ramp exactly (`ramp-pass` = right letter/right place, `ramp-near` = in the word/wrong place, a near-black grey = not in it — deliberately *not* the same colour as an unplayed tile, which was found to read as the same "nothing happened" state). An invalid submit (wrong letter count) triggers a short horizontal shake and a status message rather than doing nothing. A "used" keyboard key recedes the same way a dimmed answer option does — solid darkened colour, not opacity (see Accessibility).
-
-### Countdown Clock (`.clock`)
-Display-scale, tabular-figure countdown to the next midnight reset, self-correcting: if the page is left open across midnight, it detects the date rollover and swaps its own copy to "reload for today's board" rather than silently counting from a stale target.
-
-It is **the last thing on the page**, and that is structural, not incidental: the direction contract promises a page that "ends on tomorrow rather than on a footer". The club index and the ad band sit between the report and the Footle band; the Footle band closes the page; a 5.8%-tall colophon follows it. Inside the rail the legend comes first and the clock last, so the final statement at every width is the countdown.
-
-The clock also carries **no label**. It used to open with a tracked uppercase "NEXT ONE IN" — an eyebrow over the biggest number in its section. The time and the line beneath it are now a single sentence that happens to start with a number ("23:41:08 / until a new surname and seven new questions"), which means **every** state of `#cnote` — solved, out of guesses, mid-game, midnight-rollover — has to be written to continue from a number. Check that before editing any of them.
-
-### Footer Distribution Line (`.dist`)
-Two inline SVG store marks with their store names — `App Store` and `Google Play` — on the dark ground. This is the *only* icon-based distribution row in the file, a related but distinct affordance from the Masthead's single CTA button.
-
-It used to open with an "ALSO ON" micro-label. That label is gone: it was a tracked uppercase eyebrow over two links that already name themselves, and the store names carry the sentence without it.
-
-It is a **single-ground component with exactly one call-site**, and it is defined once. It used to carry a second, paper-ground skin (`--rule` borders, `--mut` label, white hover) left over from an earlier placement inside the Letterhead; when that placement was removed the paper styling stayed behind, and every one of its declarations was being overridden by a `.footin .dist` block further down. Both halves are now collapsed into one dark-ground definition, and the icons inherit their fill from `.mk-i` rather than re-specifying it. If a second, light-ground placement is ever wanted, add a modifier deliberately — do not reintroduce a default skin for a ground the component does not appear on.
-
-### Ad Slot (`.adslot`)
-A quiet, bordered, centred band with a single "Advertisement" label — no framing copy, no explanation of ad policy on the page itself. The source comments are explicit that an ad slot which explains itself is addressed to a reviewer, not to the person who arrived from a club search.
+- **Play button** — green fill, green-ink text, pill, 36px in a card and 44px standalone, weight 700–800. One per card at most, and only on a card that starts a game.
+- **Quiet button** — `card` fill, `border-strong` outline, pill, 40px: "Every club on file", "Search for one".
+- **Card** — `card` fill, 1px `border`, 12px radius, 12–14px padding, grid of icon · body · action. Hover lifts the fill to `card-inset` and the border to `border-strong`. Used for today's puzzles, every game, clubs and lists.
+- **Chip** — `card` fill, pill, 36px, caption-size text in `text-secondary`: leagues, "All 89 clubs".
+- **Search field** — `card` fill, 10px radius, 40px, a 20px search icon at 12px, 16px input text (the iOS zoom floor). Results drop from the field in a `card` panel with 44px rows: name · context · a green "Play".
+- **Answer option** — `card` fill, 1.5px border, 14px radius, 14px padding, a 22–28px letter key on the left; correct turns the key green, wrong turns it red.
+- **Tab** — text-secondary at rest, text on hover, a 2px green rule when current.
+- **Footer** — `bg-raised`, a seven-column sitemap under 12px labels, the app-store links as plain text at the end of the last column, one line of disclaimer.
+- **State chip** — meta-size text: "Not played" in `text-muted`, "In progress" in amber, "Solved" or a score in green.
 
 ## Do's and Don'ts
 
-### Do:
-- **Do** keep the scout's ramp (oxblood → amber → green) as the only saturated colour family anywhere in the system; it exists to grade something, not to decorate.
-- **Do** fill a button with whichever of ink or newsprint is *not* the ground it sits on — that is the whole action-colour rule, and it is why the masthead CTA is paper-coloured while the verdict CTAs are ink-coloured.
-- **Do** recede a de-emphasized state (a wrong answer's unchosen options, a spent Footle key) with a darker solid colour, never with opacity — opacity was measured to fail contrast in three separate cases (3.0:1, 4.13:1, 2.61:1) before this rule was adopted.
-- **Do** reserve shadow for the two paper objects (the report, the verdict); everything else on the desk stays flat.
-- **Do** guard every hover-only affordance with `@media (hover:hover)` — this is a 66%-mobile product and sticky hover states are a real cost, not a nicety.
-- **Do** move focus explicitly whenever a click removes the element that held it (to the next question button, to the newly-revealed verdict panel) — the alternative is focus silently landing on `<body>`.
+**Do**
+- Print the date and today's edition numbers on the homepage, and a checked date on every list.
+- Put every game, club, league and list on the page as a real link; the footer is a sitemap.
+- Keep the same header, frame and footer on the homepage, every generated page and the app in a browser. `src/marketing/SiteHeader.jsx` and `scripts/seo/shell.mjs` must stay in step by hand.
+- Show a club's colour as a dot or badge, from data.
+- Leave the rating empty until a player has answered something.
 
-### Don't:
-- **Don't** introduce a fourth colour family for any reason — a new accent, a decorative tint, a brand colour borrowed from elsewhere in the product. The direction contract is explicit that action is ink or paper, never a fourth colour.
-- **Don't** add border-radius anywhere. This build has none, on any element, and it is a stated rejection ("no radius") in the direction contract, not an oversight.
-- **Don't** treat the three-step Scout's Ramp and the six-step Verdict Ramp as two unrelated scales — they are one hue family at two rendering strengths (see **The Two Strengths Rule**). If you add a stop to either, put it on the same hue arc and hold it to that column's contrast floor.
-- **Don't** use `--r3` as text on newsprint. It is a fill, it reads 2.13:1 on paper, and the ink-strength stop for that hue already exists as `--v2`.
-- **Don't** add motion that isn't a direct response to the reader's own action. Nothing on this page moves on load, on scroll, or ambiently — a bar fills because an answer was correct, the verdict lands because the last question was answered, a Footle row shakes because a guess was invalid.
-- **Don't** put a tracked uppercase micro-label above a heading, a big number, or a row of links. The three surviving call-sites (`.adlab`, `.vlab`, `.why b`) are field labels on a form. Two others were deleted in the finish review and neither comes back — if the words matter, fold them into the sentence the element is already making.
-- **Don't** re-nest the Verdict. Sheet → slip → **ruled row** is the depth limit; a panel inside the slip, or a bordered box inside that, is the exact pattern the finish review removed.
-- **Don't** ship a derived data column without checking what the derivation actually caught. The club index's era range read as fact and was mostly distractor years. A column that states something untrue is worse than no column.
-- **Don't** collapse the Masthead CTA, the Letterhead, and the Footer distribution line into one component. They look related (all "get the app / find us elsewhere") but are three different patterns living in three different places, and only the footer carries the icon row.
+**Don't**
+- Put a marketing button in the header, or store badges anywhere above the footer's last column.
+- Use a second display face, uppercase headlines, or monospace outside a game counter.
+- Add a glow, a gradient band, grain, or a tilted sheet.
+- Spend green on anything that is not Play or correct.
+- Print a question count, a fabricated rating, or a "people are playing" number that is not measured.
+- Render an inner-scrolling shell, a sidebar or a floating tab bar on the web.

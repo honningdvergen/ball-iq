@@ -1,160 +1,86 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-01T16:25:36Z",
-  "title": "Design System: Ball IQ — The Scouting Report",
+  "generatedAt": "2026-09-03T21:40:00Z",
+  "title": "Design System: Ball IQ — The Fixture List",
   "extensions": {
     "colorMeta": {
-      "ramp-fail": { "role": "primary", "displayName": "Scout's Ramp — Fail (Oxblood)", "canonical": "#8B2635" },
-      "ramp-near": { "role": "primary", "displayName": "Scout's Ramp — Near (Amber, FILL ONLY — 2.13:1 on newsprint; the ink-strength stop for this hue is verdict-2)", "canonical": "#C9992B" },
-      "ramp-pass": { "role": "primary", "displayName": "Scout's Ramp — Pass (Green)", "canonical": "#2F6B3A" },
-      "verdict-0": { "role": "primary", "displayName": "Verdict Ramp 0/5", "canonical": "#8B2635" },
-      "verdict-1": { "role": "primary", "displayName": "Verdict Ramp 1/5", "canonical": "#94472A" },
-      "verdict-2": { "role": "primary", "displayName": "Verdict Ramp 2/5 (the ink-strength amber — same hue as ramp-near, 4.66:1 on newsprint)", "canonical": "#7E6318" },
-      "verdict-3": { "role": "primary", "displayName": "Verdict Ramp 3/5", "canonical": "#5F6A22" },
-      "verdict-4": { "role": "primary", "displayName": "Verdict Ramp 4/5", "canonical": "#46702E" },
-      "verdict-5": { "role": "primary", "displayName": "Verdict Ramp 5/5", "canonical": "#2F6B3A" },
-      "desk": { "role": "neutral", "displayName": "Desk", "canonical": "#0E1110", "tonalRamp": ["#0E1110","#161A17","#1E241F","#2A312B","#3A423C","#98A199","#C3CBC3","#F2F5F1"] },
-      "desk-shadow": { "role": "neutral", "displayName": "Desk Shadow", "canonical": "#161A17" },
-      "desk-hairline": { "role": "neutral", "displayName": "Desk Hairline", "canonical": "#252B26" },
-      "on-desk": { "role": "neutral", "displayName": "Desk Text — Body", "canonical": "#C3CBC3" },
-      "on-desk-hi": { "role": "neutral", "displayName": "Desk Text — High", "canonical": "#F2F5F1" },
-      "on-desk-mute": { "role": "neutral", "displayName": "Desk Text — Mute", "canonical": "#98A199" },
-      "newsprint": { "role": "neutral", "displayName": "Newsprint", "canonical": "#E7E9E4", "tonalRamp": ["#14171A","#4A524C","#7A8078","#B9BFB6","#D5D8D2","#DEE1DB","#E7E9E4","#FFFFFF"] },
-      "newsprint-shade": { "role": "neutral", "displayName": "Newsprint Shade", "canonical": "#DEE1DB" },
-      "newsprint-track": { "role": "neutral", "displayName": "Newsprint Track", "canonical": "#D5D8D2" },
-      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#14171A" },
-      "ink-mute": { "role": "neutral", "displayName": "Ink Mute", "canonical": "#4A524C" },
-      "hairline-rule": { "role": "neutral", "displayName": "Hairline Rule (decorative, 1.53:1)", "canonical": "#B9BFB6" },
-      "control-rule": { "role": "neutral", "displayName": "Control Rule (functional, 3.31:1)", "canonical": "#7A8078" }
+      "green": { "role": "primary", "displayName": "Play green — the only accent; Play and correct, nothing else", "canonical": "#58CC02" },
+      "green-ink": { "role": "primary", "displayName": "Text on green", "canonical": "#06230C" },
+      "green-soft": { "role": "primary", "displayName": "Green as text or hover fill on dark", "canonical": "#8AE042" },
+      "amber": { "role": "secondary", "displayName": "Streak / near / Daily 7 tint — never a call to action", "canonical": "#FFC107" },
+      "wrong": { "role": "secondary", "displayName": "Incorrect answer", "canonical": "#FF4747" },
+      "bg": { "role": "neutral", "displayName": "Page", "canonical": "#0A0A0A", "tonalRamp": ["#0A0A0A", "#0C0E13", "#0F1117", "#14161E"] },
+      "card": { "role": "neutral", "displayName": "Card / chip / input / dropdown", "canonical": "#0F1117" },
+      "card-inset": { "role": "neutral", "displayName": "Card hover, surfaces inside a card", "canonical": "#14161E" },
+      "border": { "role": "neutral", "displayName": "Every 1px line", "canonical": "#242836", "tonalRamp": ["#242836", "#2A2D3A", "#3A3D4A"] },
+      "text": { "role": "neutral", "displayName": "Headings, names, current tab", "canonical": "#F0F1F5" },
+      "text-secondary": { "role": "neutral", "displayName": "One-line descriptions, links at rest", "canonical": "#9BA0B8" },
+      "text-muted": { "role": "neutral", "displayName": "Captions, dates, placeholders (4.6:1 on bg)", "canonical": "#7E828C" }
     },
     "typographyMeta": {
-      "headline": { "displayName": "Headline", "purpose": "The page's h1 only, two lines then straight into the question." },
-      "verdict-number": { "displayName": "Verdict Number", "purpose": "The single largest object on the page; appears only after the last question, coloured by the six-step verdict ramp." },
-      "verdict-tier": { "displayName": "Verdict Tier", "purpose": "The tier word (Cone → Ballon d'Or); sized to out-rank every section heading." },
-      "section": { "displayName": "Section", "purpose": "Every h2 signpost; kept under the verdict tier's size deliberately." },
-      "lede": { "displayName": "Lede", "purpose": "The one line under the headline." },
-      "sub": { "displayName": "Sub", "purpose": "The paragraph under a section heading." },
-      "body": { "displayName": "Body", "purpose": "Base size: prose, answer options, table data." },
-      "sec": { "displayName": "Sec", "purpose": "Supporting text: keys, colophon-style footer, Footle labels." },
-      "meta": { "displayName": "Meta", "purpose": "Subject lines, counters, captions." },
-      "label": { "displayName": "Label", "purpose": "The one uppercase micro-label treatment, shared by five call-sites." }
+      "display": { "displayName": "Display", "purpose": "The page h1 only. Sentence case, left-aligned on the shared edge." },
+      "section": { "displayName": "Section", "purpose": "Every h2: Today, Your club, Every game, Lists and records." },
+      "title": { "displayName": "Title", "purpose": "A card's name, an answer option, a tab." },
+      "body": { "displayName": "Body", "purpose": "Running prose; 0–2 sentences above the fold." },
+      "caption": { "displayName": "Caption", "purpose": "The one line under a card's name; a section subtitle." },
+      "meta": { "displayName": "Meta", "purpose": "States, edition numbers, checked dates. Tabular numerals." },
+      "label": { "displayName": "Label", "purpose": "Footer column headings and the eyebrow above an h1 — the only uppercase treatment." },
+      "counter": { "displayName": "Counter", "purpose": "JetBrains Mono, only for numbers a player watches change inside a game." }
     },
     "shadows": [
-      { "name": "report-sheet", "value": "26px 44px 84px -28px rgba(0,0,0,.92), 4px 8px 22px -10px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.9)", "purpose": "The primary paper object's shadow, plus an inset highlight simulating a lit sheet edge." },
-      { "name": "backing-sheet", "value": "14px 26px 46px -22px rgba(0,0,0,.8)", "purpose": "The second sheet under the report, visible at its rotated edges." },
-      { "name": "verdict-slip", "value": "9px 15px 30px -12px rgba(20,23,26,.34), 2px 4px 9px -4px rgba(20,23,26,.24)", "purpose": "Lighter and tighter than the report's shadow; a smaller object landing on an already-shadowed stack." }
+      { "name": "dropdown", "value": "0 18px 44px rgba(0,0,0,0.55)", "purpose": "The search results panel. The only chrome shadow; depth is otherwise surface tone." }
     ],
     "motion": [
-      { "name": "ease-standard", "value": "cubic-bezier(.16,1,.3,1)", "purpose": "Verdict land animation and stub bar fill easing." },
-      { "name": "verdict-land", "value": "land .5s cubic-bezier(.16,1,.3,1) both — rotate(2.6deg) scale(1.045) opacity:0 to rotate(.7deg) scale(1) opacity:1", "purpose": "Plays once when the verdict is revealed; fully suppressed under prefers-reduced-motion." },
-      { "name": "footle-shake", "value": "nudge .34s cubic-bezier(.36,.07,.19,.97) — translateX 0/-2/4/-4/0 px", "purpose": "Plays on an invalid Footle submission (wrong letter count)." }
+      { "name": "ease-standard", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "The app's easing for sheets and state changes." },
+      { "name": "hover", "value": "border-color .15s, background .15s", "purpose": "Card and chip hover. No transforms, no glows." }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "360px" },
-      { "name": "md", "value": "640px" },
-      { "name": "lg", "value": "900px" },
-      { "name": "file-taper", "value": "1180px" }
+      { "name": "phone", "value": "720px" },
+      { "name": "tablet", "value": "1000px" },
+      { "name": "desktop", "value": "1024px" },
+      { "name": "frame", "value": "1200px" }
     ]
   },
   "components": [
-    {
-      "name": "Button — Primary",
-      "kind": "button",
-      "refersTo": "button-primary",
-      "description": "The single button shape on the page: ink-filled, used for verdict CTAs and any control living on paper.",
-      "html": "<button class=\"ds-btn-primary\">Take the full test</button>",
-      "css": ".ds-btn-primary{display:inline-flex;align-items:center;min-height:52px;padding:0 26px;font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;font-size:18px;letter-spacing:.05em;background:#14171A;color:#E7E9E4;transition:background-color .16s,color .16s}.ds-btn-primary:hover{background:#2B3136}.ds-btn-primary:focus-visible{outline:2px solid #14171A;outline-offset:3px}"
-    },
-    {
-      "name": "Button — Alt",
-      "kind": "button",
-      "refersTo": "button-alt",
-      "description": "Ink-bordered, transparent-fill secondary action; inverts to the primary fill on hover.",
-      "html": "<button class=\"ds-btn-alt\">Just my club instead</button>",
-      "css": ".ds-btn-alt{display:inline-flex;align-items:center;min-height:52px;padding:0 26px;font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;font-size:18px;letter-spacing:.05em;border:1px solid #14171A;background:transparent;color:#14171A;transition:background-color .16s,color .16s}.ds-btn-alt:hover{background:#14171A;color:#E7E9E4}.ds-btn-alt:focus-visible{outline:2px solid #14171A;outline-offset:3px}"
-    },
-    {
-      "name": "Get App CTA",
-      "kind": "button",
-      "refersTo": "get-app-cta",
-      "description": "The masthead's single store-distribution affordance: paper-filled on the dark desk ground, the highest-contrast object in the bar.",
-      "html": "<a class=\"ds-getapp\" href=\"#\">Get the app</a>",
-      "css": ".ds-getapp{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;background:#E7E9E4;color:#14171A;font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;font-size:15px;letter-spacing:.05em;white-space:nowrap;transition:background-color .16s}.ds-getapp:hover{background:#fff}.ds-getapp:focus-visible{outline:2px solid #F2F5F1;outline-offset:3px}"
-    },
-    {
-      "name": "Answer Option",
-      "kind": "chip",
-      "refersTo": "answer-option",
-      "description": "A bordered newsprint answer button with a boxed letter chip; shown here in its four states (default, hit, miss, dim) as one reference block.",
-      "html": "<div style=\"display:grid;gap:9px\"><button class=\"ds-opt\"><span class=\"ds-chip\">A</span><span>Default option</span></button><button class=\"ds-opt ds-opt--hit\"><span class=\"ds-chip ds-chip--hit\">B</span><span>Correct answer</span></button><button class=\"ds-opt ds-opt--miss\"><span class=\"ds-chip ds-chip--miss\">C</span><span>Chosen, wrong</span></button><button class=\"ds-opt ds-opt--dim\"><span class=\"ds-chip\">D</span><span>Unchosen, receded</span></button></div>",
-      "css": ".ds-opt{display:flex;align-items:center;gap:12px;text-align:left;padding:14px;border:1px solid #7A8078;background:#E7E9E4;font-family:Archivo,sans-serif;font-size:17px;font-weight:500;color:#14171A;min-height:52px;width:100%;transition:border-color .15s,background-color .15s}.ds-opt:hover{border-color:#14171A;background:#fff}.ds-chip{flex:0 0 24px;height:24px;display:grid;place-items:center;border:1px solid #7A8078;font-size:12px;font-weight:700;color:#4A524C}.ds-opt--hit{border-color:#2F6B3A;background:#E3EDE2}.ds-chip--hit{background:#2F6B3A;border-color:#2F6B3A;color:#fff}.ds-opt--miss{border-color:#8B2635;background:#F1E3E4}.ds-chip--miss{background:#8B2635;border-color:#8B2635;color:#fff}.ds-opt--dim{background:#DEE1DB;border-color:#B9BFB6;color:#4A524C}.ds-opt--dim .ds-chip{border-color:#B9BFB6}"
-    },
-    {
-      "name": "The Paper Sheet",
-      "kind": "card",
-      "refersTo": null,
-      "description": "Signature component. The oversized, rotated, double-shadowed newsprint report sitting on the dark desk — the page's central metaphor.",
-      "html": "<div class=\"ds-file\"><div class=\"ds-file-inner\">Ball IQ &mdash; scouting report</div></div>",
-      "css": ".ds-file{position:relative;background:#E7E9E4;color:#14171A;width:calc(100% + 44px);margin:0 -22px;transform:rotate(-.45deg);box-shadow:26px 44px 84px -28px rgba(0,0,0,.92),4px 8px 22px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.9);outline:1px solid rgba(0,0,0,.35)}.ds-file::after{content:'';position:absolute;inset:12px -9px -11px 8px;z-index:-1;background:#CBCFC7;transform:rotate(1.1deg);box-shadow:14px 26px 46px -22px rgba(0,0,0,.8)}.ds-file-inner{padding:26px 24px;font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;font-size:23px}"
-    },
-    {
-      "name": "Verdict Stamp",
-      "kind": "card",
-      "refersTo": null,
-      "description": "Signature component. A second paper slip landing on the report once all five questions are answered; states the grade as number, word, and colour at once.",
-      "html": "<div class=\"ds-verdict\"><div class=\"ds-vnum\">3</div><div class=\"ds-vtier\">Bang average</div></div>",
-      "css": ".ds-verdict{position:relative;border:2px solid #14171A;background:#E7E9E4;transform:rotate(.7deg);padding:26px;box-shadow:9px 15px 30px -12px rgba(20,23,26,.34),2px 4px 9px -4px rgba(20,23,26,.24)}.ds-vnum{font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:96px;line-height:.74;letter-spacing:-.035em;color:#5F6A22}.ds-vtier{font-family:'Archivo Narrow',sans-serif;font-weight:700;text-transform:uppercase;font-size:34px;letter-spacing:-.008em;line-height:.94;padding-bottom:9px;display:inline-block;border-bottom:6px solid #5F6A22;margin-top:6px}"
-    },
-    {
-      "name": "Running Report Row",
-      "kind": "custom",
-      "refersTo": null,
-      "description": "One ledger row: discipline label, fill-only-on-correct progress bar, tabular outcome cell.",
-      "html": "<table class=\"ds-stub\"><tr><th class=\"ds-lab\" scope=\"row\">Premier League</th><td><span class=\"ds-bar\"><i class=\"ds-bar-fill\"></i></span></td><td class=\"ds-out ds-out--yes\">1 of 1</td></tr></table>",
-      "css": ".ds-stub{width:100%;border-collapse:collapse;font-family:Archivo,sans-serif}.ds-lab{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:9px 10px;border-bottom:1px solid #B9BFB6;color:#14171A;text-align:left}.ds-stub td{padding:9px 10px;border-bottom:1px solid #B9BFB6;font-size:15px}.ds-bar{display:block;height:9px;background:#D5D8D2;border:1px solid #B9BFB6;min-width:70px}.ds-bar-fill{display:block;height:100%;width:100%;background:#2F6B3A;transform:scaleX(1);transform-origin:left center}.ds-out{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.ds-out--yes{color:#2F6B3A}.ds-out--no{color:#8B2635}"
-    },
-    {
-      "name": "Footle Tile",
-      "kind": "custom",
-      "refersTo": null,
-      "description": "One square of the Footle board in its three scored states plus the unplayed default.",
-      "html": "<div style=\"display:flex;gap:8px\"><span class=\"ds-tile\">A</span><span class=\"ds-tile ds-tile--hit\">H</span><span class=\"ds-tile ds-tile--near\">A</span><span class=\"ds-tile ds-tile--off\">Z</span></div>",
-      "css": ".ds-tile{width:44px;aspect-ratio:1;display:grid;place-items:center;font-family:'Archivo Narrow',sans-serif;font-weight:700;font-size:22px;border:1px solid #3A423C;background:#1B211D;color:#E7E9E4}.ds-tile--hit{background:#2F6B3A;border-color:#2F6B3A;color:#fff}.ds-tile--near{background:#C9992B;border-color:#C9992B;color:#1A1200}.ds-tile--off{background:#2A312B;border-color:#495148;color:#A7B0A8}"
-    }
+    { "name": "Play button", "kind": "button", "refersTo": "button-play", "description": "Green pill; one per card at most, only on a card that starts a game.", "html": "<a class=\"ds-play\">Play</a>", "css": ".ds-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:#58CC02;color:#06230C;font:800 13.5px/1 Inter,system-ui,sans-serif;text-decoration:none}" },
+    { "name": "Quiet button", "kind": "button", "refersTo": "button-quiet", "description": "Card-fill pill for secondary actions.", "html": "<button class=\"ds-quiet\">Every club on file</button>", "css": ".ds-quiet{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;background:#0F1117;border:1px solid #2A2D3A;color:#F0F1F5;font:700 13.5px/1 Inter,system-ui,sans-serif;cursor:pointer}.ds-quiet:hover{background:#14161E}" },
+    { "name": "Card", "kind": "card", "refersTo": "card", "description": "Icon · body · action. Today's puzzles, every game, clubs and lists share it.", "html": "<a class=\"ds-card\"><span class=\"ds-card-ic\"></span><span class=\"ds-card-body\"><span class=\"ds-card-n\">Footle <small>No. 123</small></span><span class=\"ds-card-line\">Guess the surname in six</span></span><span class=\"ds-state\">Not played</span><span class=\"ds-play\">Play</span></a>", "css": ".ds-card{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;min-height:64px;padding:12px 14px;background:#0F1117;border:1px solid #242836;border-radius:12px;color:#F0F1F5;text-decoration:none;font-family:Inter,system-ui,sans-serif;transition:border-color .15s,background .15s}.ds-card:hover{border-color:#2A2D3A;background:#14161E}.ds-card-ic{width:38px;height:38px;border-radius:9px;background:#14161E;border:1px solid #242836}.ds-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}.ds-card-n{font-size:15px;font-weight:700;letter-spacing:-.01em}.ds-card-n small{font-size:12.5px;font-weight:500;color:#7E828C;margin-left:8px}.ds-card-line{font-size:13.5px;color:#9BA0B8}.ds-state{font-size:12.5px;font-weight:600;color:#7E828C;white-space:nowrap}.ds-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:#58CC02;color:#06230C;font:800 13.5px/1 Inter,system-ui,sans-serif}" },
+    { "name": "Chip", "kind": "chip", "refersTo": "chip", "description": "Leagues and 'All 89 clubs'.", "html": "<a class=\"ds-chip\">Premier League</a>", "css": ".ds-chip{display:inline-flex;align-items:center;min-height:36px;padding:0 13px;border-radius:999px;background:#0F1117;border:1px solid #242836;font:600 13.5px/1 Inter,system-ui,sans-serif;color:#9BA0B8;text-decoration:none}.ds-chip:hover{color:#F0F1F5;border-color:#2A2D3A;background:#14161E}" },
+    { "name": "Search field", "kind": "input", "refersTo": "input-search", "description": "The club-and-league finder in the header; results drop from it.", "html": "<div class=\"ds-find\"><input class=\"ds-find-in\" type=\"search\" placeholder=\"Find your club or league\"></div>", "css": ".ds-find{position:relative;max-width:420px}.ds-find-in{width:100%;height:40px;padding:0 12px 0 38px;border-radius:10px;background:#0F1117;border:1px solid #242836;color:#F0F1F5;font:400 16px/1 Inter,system-ui,sans-serif;outline:none}.ds-find-in::placeholder{color:#7E828C}.ds-find-in:focus{border-color:#2A2D3A;background:#14161E}" },
+    { "name": "Site header", "kind": "nav", "refersTo": "header", "description": "One row: wordmark · five sections · search · Sign in. No call to action.", "html": "<header class=\"ds-head\"><span class=\"ds-mark\">Ball IQ</span><nav class=\"ds-nav\"><a>Today</a><a>Games</a><a>Clubs</a><a>Quizzes</a><a>Lists</a></nav><input class=\"ds-find-in\" placeholder=\"Find your club or league\"><a class=\"ds-signin\">Sign in</a></header>", "css": ".ds-head{display:flex;align-items:center;gap:22px;height:60px;padding:0 24px;background:#0A0A0A;border-bottom:1px solid #242836;font-family:Inter,system-ui,sans-serif;color:#F0F1F5}.ds-mark{font-weight:800;font-size:18px;letter-spacing:-.01em}.ds-nav{display:flex;gap:4px}.ds-nav a{padding:8px 10px;border-radius:8px;font-size:14px;font-weight:600;color:#9BA0B8}.ds-find-in{flex:1;max-width:420px;margin-left:auto;height:40px;padding:0 12px;border-radius:10px;background:#0F1117;border:1px solid #242836;color:#F0F1F5;font:400 16px/1 Inter,system-ui,sans-serif}.ds-signin{font-size:14px;font-weight:600;color:#9BA0B8;padding:8px 10px}" },
+    { "name": "App bar", "kind": "nav", "refersTo": "app-bar", "description": "The app's tabs under the site header, browser only.", "html": "<nav class=\"ds-appbar\"><button aria-current=\"page\">Play</button><button>Daily</button><button>Online</button><button>Profile</button><span class=\"ds-sp\"></span><button>Settings</button></nav>", "css": ".ds-appbar{display:flex;align-items:center;gap:2px;height:46px;padding:0 24px;background:#0A0A0A;border-bottom:1px solid #242836;font-family:Inter,system-ui,sans-serif}.ds-appbar button{min-height:44px;padding:0 12px;border:0;background:none;color:#9BA0B8;font:600 14px/1 Inter,system-ui,sans-serif;cursor:pointer;border-radius:8px}.ds-appbar button:hover{color:#F0F1F5;background:#0F1117}.ds-appbar button[aria-current=page]{color:#F0F1F5;box-shadow:inset 0 -2px 0 #58CC02;border-radius:0}.ds-sp{flex:1}" }
   ],
   "narrative": {
-    "northStar": "The Scouting Report",
-    "overview": "The page is not about a football test; the page IS the test, and it files a report on the person taking it. It rejects the category's stock furniture on sight — no dark hero with a phone mockup floating in it, no three-card feature triptych, no counted stat printed as if size were the pitch. In its place: a near-black desk, grained like paper under raking light, with the scouting report itself lying on top of it as a physical, oversized sheet — wider than its own column, tilted a fraction of a degree, backed by a second sheet, casting a real double shadow. The report is not a card that happens to hold a quiz; the quiz is the report, and it fills itself in, in front of the reader, as they answer.\n\nEverything that is not the report is desk: dark, quiet, near-monochrome, and flat. Everything that is the report is paper: ink on newsprint, ruled like a table, printed rather than glowing. The only place either surface is allowed a second colour is the one place a scout actually grades something, and that colour is always the same scout's ramp — oxblood through amber to green — never a decorative accent borrowed for anything else. Action itself is never a fourth hue: a button is filled with whichever of ink or newsprint is NOT the ground it sits on.\n\nThis was built by resonance-assignment (seed key cf2f8891, candidate 4 of 7), not by open-ended taste, and its own direction contract is the closest thing to a spec this world has. It explicitly rejects home-final.html, an earlier all-dark, no-paper direction kept in the same folder as an anti-reference.",
+    "northStar": "The Fixture List",
+    "overview": "Ball IQ is a football quiz website that is the product, not a pitch for one. Every page is a list of things to play, arranged like a fixture list: what is on today first, then everything else you can find. One header, one frame, one accent spent only on Play and on a correct answer. Rebuilt on 2026-09-03 from a field study of thirteen quiz and sports-puzzle sites after the Scouting Report world and three editorial successors were rejected as generated-looking.",
     "keyCharacteristics": [
-      "Two grounds, not one: a dark desk (the world) and a lit paper sheet (the report), and every token belongs to exactly one of them.",
-      "One saturated family in the whole system — the scout's ramp — appearing only where something is actually being graded.",
-      "Zero border-radius anywhere in the file. Every edge is a hard corner; the only curves are the paper's own slight rotation.",
-      "Motion exists only as feedback tied to the reader's own action — never ambient, never on load, never decorative.",
-      "Contrast is measured, not assumed: several rules in the CSS carry the exact ratio a prior attempt failed and the ratio the shipped version clears."
+      "Dark throughout on the app's own tokens; no gradients, glows, grain or lifted blacks.",
+      "One header for the website, the generated pages and the app in a browser; no call to action in it.",
+      "One card anatomy for today's puzzles, every game, clubs and lists.",
+      "Inter for everything read; JetBrains Mono only for in-game counters.",
+      "The browser owns the scroll; no sidebars or floating tab bars on the web."
     ],
     "rules": [
-      { "name": "The One Ramp Rule", "body": "The only saturated colours anywhere in the system are the scout's ramp and its verdict variant. Nothing else is allowed a hue that isn't ink, paper, or desk.", "section": "colors" },
-      { "name": "The Two Strengths Rule", "body": "There is ONE ramp rendered at two strengths, chosen by ground and job, not by component. As a fill on the dark desk: --r1/--r3/--r5 (Footle tiles and keys, chip fills, option borders) — text sits on the colour, so the fill is free. As ink on newsprint: --v0 through --v5 (the verdict number and tier rule) — every stop must clear 4.5:1 on paper, and they do (7.08/5.38/4.66/4.81/4.75/5.23). Measured in Lab the two share one monotonic hue arc: 20.1 -> 46.7 -> 85.9 -> 111.8 -> 131.0 -> 145.1 degrees, with verdict-2 at hue 85.9 against ramp-near at 82.6. They are not two scales. ramp-near needs no ink twin because it is the one stop never used as text; r1 and r5 serve both columns because they clear 4.5:1 on newsprint unaided.", "section": "colors" },
-      { "name": "The Same-Weight Rule Rule", "body": "hairline-rule and control-rule are the same visual weight but different jobs: one is furniture, the other is a control boundary held to a harder contrast floor.", "section": "colors" },
-      { "name": "The Five-Plus-One Rule", "body": "Five body-scale sizes carry every prose job; the uppercase micro-label is a distinct treatment (case + tracking), not a sixth size.", "section": "typography" },
-      { "name": "The Tabular Figures Rule", "body": "Any number a reader might compare against another number is set with tabular-nums.", "section": "typography" },
-      { "name": "The Light-on-Dark Compensation Rule", "body": "Text on the desk gets a touch more letter-spacing than the equivalent prose on paper; dark-on-light does not get the same bump.", "section": "typography" },
-      { "name": "The Object Shadow Rule", "body": "A shadow only appears where something is meant to read as a physical sheet resting on the desk — never for hover feedback, a generic card, or ambient atmosphere.", "section": "elevation" }
+      { "name": "The One Accent Rule", "body": "Green means press this to play, or you got it right. More than one green control per screen means the page has stopped ranking its own actions.", "section": "colors" },
+      { "name": "Grey-on-grey has a floor", "body": "Nothing readable below 4.5:1; nothing user-facing under 12px.", "section": "colors" },
+      { "name": "Sentence case everywhere", "body": "Uppercase exists only in the 12px label. The condensed all-caps headline is the retired system's signature.", "section": "typography" },
+      { "name": "One left edge", "body": "Headings, prose, cards and tables share the 1200px frame's left edge; a narrow measure is never centred inside it.", "section": "layout" },
+      { "name": "Depth is tone, not shadow", "body": "bg → card → card-inset with a 1px border on anything pressable; the search dropdown is the only chrome shadow.", "section": "elevation" }
     ],
     "dos": [
-      "Do keep the scout's ramp (oxblood → amber → green) as the only saturated colour family anywhere in the system.",
-      "Do fill a button with whichever of ink or newsprint is not the ground it sits on.",
-      "Do recede a de-emphasized state with a darker solid colour, never with opacity.",
-      "Do reserve shadow for the two paper objects (the report, the verdict); everything else on the desk stays flat.",
-      "Do guard every hover-only affordance with @media (hover:hover).",
-      "Do move focus explicitly whenever a click removes the element that held it."
+      "Print the date and today's edition numbers on the homepage, and a checked date on every list.",
+      "Put every game, club, league and list on the page as a real link; the footer is a sitemap.",
+      "Keep SiteHeader.jsx and scripts/seo/shell.mjs in step by hand.",
+      "Show a club's colour as a dot or badge, from data.",
+      "Leave the rating empty until a player has answered something."
     ],
     "donts": [
-      "Don't introduce a fourth colour family for any reason.",
-      "Don't add border-radius anywhere.",
-      "Don't assume the three-step Scout's Ramp and the six-step Verdict Ramp are the same scale re-sampled.",
-      "Don't add motion that isn't a direct response to the reader's own action.",
-      "Don't collapse the Masthead CTA, the Letterhead, and the Footer distribution line into one component."
+      "Put a marketing button in the header, or store badges anywhere above the footer's last column.",
+      "Use a second display face, uppercase headlines, or monospace outside a game counter.",
+      "Add a glow, a gradient band, grain, or a tilted sheet.",
+      "Spend green on anything that is not Play or correct.",
+      "Print a question count, a fabricated rating, or an unmeasured people number.",
+      "Render an inner-scrolling shell, a sidebar or a floating tab bar on the web."
     ]
   }
 }
