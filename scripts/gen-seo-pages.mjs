@@ -1818,7 +1818,12 @@ ${ADS_ACTIVE ? `<script>
   a:hover{text-decoration:underline}
   main{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,44px)}
   /* readable inner width for long-form/list sections (handoff keeps prose + FAQ narrow inside the wide frame) */
-  .narrow{max-width:760px;margin-left:auto;margin-right:auto}
+  /* Left-aligned, not centred (Alex, 2026-09-03, on /football-quiz/: "look at
+     the placement of football quiz"). A centred 760px heading above a
+     full-width card grid put the h1 180px to the right of the cards' edge;
+     the same wrapper carries prose and FAQ blocks on every page type, so every
+     page had two left edges. One edge now, like the front door. */
+  .narrow{max-width:760px}
   h2{font-size:clamp(22px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1.12;margin:0 0 16px}
 ${SHELL_CSS}
   /* hero */
