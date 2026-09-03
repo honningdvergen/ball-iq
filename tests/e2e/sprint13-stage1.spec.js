@@ -90,9 +90,10 @@ test('K1 — Profile tab renders Badges + Journey in guest mode', async ({ page,
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
-  // Tap the Profile tab. Mobile exposes it in the .tab-bar, desktop in the
-  // .biq-nav left rail — both live in the DOM, so filter for the visible one.
-  const profileTab = page.locator('.tab-item, .biq-nav .bn-item')
+  // Tap the Profile tab. In a browser tab the app's tabs live in the
+  // .fd-appbar under the site header (2026-09-03 web shell); native and
+  // installed PWAs keep the .tab-bar / .biq-nav rail. Filter for the visible one.
+  const profileTab = page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
     .filter({ hasText: 'Profile', visible: true });
   await profileTab.first().click();
   await page.waitForTimeout(400);
@@ -117,7 +118,7 @@ test('K1 — Profile avatar tap routes guests to the save auth prompt', async ({
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
-  await page.locator('.tab-item, .biq-nav .bn-item')
+  await page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
     .filter({ hasText: 'Profile', visible: true }).first().click();
   await page.waitForTimeout(400);
   // The emoji picker is gone (photo avatars replaced the emoji set). A guest

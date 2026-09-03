@@ -5242,8 +5242,8 @@ export const LISTS = [
   {
     "slug": "most-ballon-dors",
     "h1": "Players With the Most Ballon d'Or Awards",
-    "title": "Most Ballon d'Ors: Lionel Messi, 8 | Ball IQ",
-    "description": "Who has won the most Ballon d'Or awards? Lionel Messi leads with a record eight. Every multiple winner, ranked, with the years they won.",
+    "title": "Most Ballon d'Ors: Every Multiple Winner, by Year | Ball IQ",
+    "description": "Messi has eight and Ronaldo five — but who else won it more than once, and in which years? Every multiple Ballon d’Or winner ranked with the years he won.",
     "intro": [
       "The Ballon d'Or has gone to the best player in the world (in Europe, until 2007) every year since 1956. This page ranks the players who have won it more than once — the small club of true greats who dominated their eras.",
       "Lionel Messi stands alone at the top with a record eight, ahead of Cristiano Ronaldo on five. Behind that modern duopoly sit three of the game's all-time icons — Johan Cruyff, Michel Platini and Marco van Basten — each a three-time winner."
@@ -5494,8 +5494,8 @@ export const LISTS = [
   {
     "slug": "la-liga-top-scorers",
     "h1": "La Liga Top Scorers: Every Pichichi Trophy Winner (1928–29 to 2025–26)",
-    "title": "La Liga Top Scorers: Every Pichichi Winner | Ball IQ",
-    "description": "The complete list of La Liga Pichichi Trophy winners, season by season, from 1928–29 to 2025–26 — every top scorer, their club, and their goal tally.",
+    "title": "La Liga Top Scorers by Season: Club & Goals | Ball IQ",
+    "description": "Every La Liga top scorer since 1928–29 with the club he played for and his goal tally that season — the full Pichichi table, from Bienzobas to Messi’s 50.",
     "intro": [
       "The Pichichi Trophy, awarded each year by Spanish sports daily Marca, honours the top goalscorer in La Liga. Named after Athletic Bilbao legend Rafael 'Pichichi' Moreno, the award has crowned Spain's most lethal finishers since the league's inaugural 1928–29 season. This table gathers every winner in one place, from Paco Bienzobas's modest 14-goal haul to the record-shattering seasons of the modern era.",
       "No name looms larger than Lionel Messi, who claimed a record eight Pichichis for Barcelona, including the astonishing 50-goal campaign of 2011–12 that still stands as the single-season La Liga record. Telmo Zarra and Hugo Sánchez each won it five times, while the Messi–Cristiano Ronaldo duopoly defined the 2010s before newcomers began breaking through again.",
@@ -10889,8 +10889,8 @@ export const LISTS = [
   {
     "slug": "efl-cup-winners",
     "h1": "Every EFL Cup (League Cup) Winner by Season",
-    "title": "EFL Cup Winners: Full List by Season (1961–2026) | Ball IQ",
-    "description": "Every EFL Cup / League Cup winner by season from 1960-61 to 2025-26, with runners-up and final scores. The complete Carabao Cup roll of honour.",
+    "title": "EFL Cup Winners & Runners-up: Every Final Score | Ball IQ",
+    "description": "Every League Cup final since 1961 — the winner, the beaten finalist and the score, from Aston Villa v Rotherham to the latest Carabao Cup final.",
     "intro": [
       "The EFL Cup is England's second domestic knockout competition, born in 1960 as a midweek tournament for Football League clubs. Aston Villa lifted the first trophy in 1961, edging Rotherham United over a two-legged final — a format the cup kept until 1966, when it switched to the familiar single showpiece match.",
       "Few competitions have changed their name as often. Sponsorship has rebadged the same trophy as the Milk Cup, Littlewoods Cup, Rumbelows Cup, Coca-Cola Cup, Worthington Cup, Carling Cup, Capital One Cup and, since 2017, the Carabao Cup. Through every rebrand the prize has stayed the same: silverware, a strong run of cup nights, and in most eras a place in European competition for the winner.",
@@ -13757,8 +13757,8 @@ export const LISTS = [
   {
     "slug": "eredivisie-top-scorers",
     "h1": "Eredivisie Top Scorer Every Season (1956-57 to 2025-26)",
-    "title": "Eredivisie Top Scorer Every Season (1956-2026) | Ball IQ",
-    "description": "Complete list of the Eredivisie top scorer for every season from 1956-57 to 2025-26, with player, club and goal tally.",
+    "title": "Eredivisie Top Scorers by Season: Club & Goals | Ball IQ",
+    "description": "Every Eredivisie top scorer from 1956–57 to 2025–26 with his club and goal tally — Dillen’s 43, Cruyff, Van Basten, Van Nistelrooy, Suárez — season by season.",
     "intro": [
       "Since the Dutch top flight turned fully professional in 1956, the Eredivisie has produced a golden boot winner every single season. The very first belonged to PSV's Coen Dillen, whose 43 goals in 1956-57 remain the highest single-season total the league has ever seen, a record that has stood untouched for seven decades.",
       "The roll call reads like a history of Dutch football greatness. Johan Cruyff, Marco van Basten, Dennis Bergkamp, Ruud van Nistelrooy and Luis Suarez all topped the charts before moving on to conquer Europe, while imports like Romario, Ronaldo and Wilfried Bony announced themselves in the Netherlands. Ajax, PSV and Feyenoord players dominate the list, though provincial clubs such as Heerenveen, AZ and Vitesse have regularly gatecrashed the party. Since 2020-21 the award has carried the name of the Willy van der Kuijlen Trophy, honouring the Eredivisie's all-time leading scorer.",
@@ -14807,8 +14807,8 @@ export const LISTS = [
   {
     "slug": "super-lig-top-scorers",
     "h1": "Süper Lig Top Scorers (Gol Kralı) — Every Season, 1959 to 2025-26",
-    "title": "Süper Lig Top Scorers: Gol Kralı, 1959–2026 | Ball IQ",
-    "description": "The Turkish Süper Lig top scorer (Gol Kralı) for every season from 1959 to 2025-26 — player, club and goal tally in one complete, verified list.",
+    "title": "Süper Lig Top Scorers by Season: Club & Goals | Ball IQ",
+    "description": "Every Süper Lig Gol Kralı from 1959 to 2025–26 with his club and goals that season, shared crowns shown together — from Metin Oktay to Icardi and Osimhen.",
     "intro": [
       "Turkey crowns a Gol Kralı — literally 'goal king' — at the end of every Süper Lig season, and the honour roll reads like a history of Turkish football itself. It opens with Metin Oktay, the Galatasaray idol who topped the charts six times and still holds a share of the early scoring records, and runs all the way to the imported goal machines of the modern era.",
       "The list below covers every campaign from the league's 1959 debut through 2025-26. A handful of seasons ended in a tie, with two players sharing the crown on equal goals — those are shown together on a single row. Tanju Çolak's 39 goals in 1987-88 remains the single-season benchmark, a mark that even prolific recent kings like Mauro Icardi and Victor Osimhen have not threatened.",
@@ -15254,8 +15254,8 @@ export const LISTS = [
   {
     "slug": "coupe-de-france-winners",
     "h1": "Coupe de France Winners: Every Final from 1918 to 2026",
-    "title": "Coupe de France Winners: Full List of Every Final | Ball IQ",
-    "description": "Every Coupe de France winner from 1918 to 2026 — full list of finals with runners-up and scores. PSG lead the all-time roll; Lens won the 2026 final.",
+    "title": "Coupe de France Winners: Runners-up & Scores | Ball IQ",
+    "description": "Every Coupe de France final since 1918 with the beaten finalist and the score, not just the winner — PSG’s record 16 and the 2026 final won by Lens.",
     "intro": [
       "The Coupe de France is French football's oldest and most open knockout competition, first contested in the 1917-18 season and playable by clubs from every tier of the pyramid. That open format is why the final has pitted amateurs against giants, and why each spring a single decider — long staged at the Stade de France — settles the whole tournament.",
       "Red Star and the early Paris clubs dominated the opening decades, but the modern era belongs to Paris Saint-Germain, whose 16 triumphs are a record. Marseille sit next on the all-time list, with Lille, Saint-Étienne and Monaco among the other clubs to have lifted the trophy multiple times.",
@@ -16094,8 +16094,8 @@ export const LISTS = [
   {
     "slug": "concacaf-gold-cup-winners",
     "h1": "Every CONCACAF Gold Cup Winner (1963–2025)",
-    "title": "Every CONCACAF Gold Cup Winner (1963–2025) | Ball IQ",
-    "description": "Complete list of every CONCACAF Gold Cup winner and its predecessor the CONCACAF Championship, from 1963 to 2025, with runners-up and hosts.",
+    "title": "CONCACAF Gold Cup Winners & Runners-up by Year | Ball IQ",
+    "description": "Every CONCACAF Gold Cup final since 1963 with the beaten finalist and the host nation — Mexico’s record ten titles and Canada’s 2000 shock — year by year.",
     "intro": [
       "The CONCACAF Gold Cup is the championship of North America, Central America and the Caribbean, contested every two years by the region's national teams. It took its current name and knockout format in 1991, but its lineage runs back to 1963, when the tournament was played as the CONCACAF Championship. Both eras are included below for the complete continental record.",
       "Two nations tower over the competition. Mexico and the United States have shared almost every Gold Cup trophy since 1991, with Mexico moving to a record ten titles after beating the USA in the 2025 final. Canada is the only other side to break their grip, winning as a surprise in 2000. The earlier Championship years were far more open, with Costa Rica, Guatemala, Haiti and Honduras all lifting the trophy.",

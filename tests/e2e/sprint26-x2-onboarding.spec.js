@@ -12,8 +12,11 @@
 
 import { test, expect } from '@playwright/test';
 
-test('fresh guest sees onboarding', async ({ page, context }) => {
-  // No localStorage at all — first-time visitor as guest.
+test('fresh guest in a browser tab lands on the app, not the warm-up', async ({ page, context }) => {
+  // 2026-09-03: a browser tab opening /play cold skips the onboarding warm-up
+  // — main.jsx marks biq_onboarded on the way in, because the front door at
+  // / is the taster now. Native and installed PWAs keep their first-run flow,
+  // which Playwright (a plain browser tab) cannot reach.
   await context.addInitScript(() => {
     try {
       localStorage.setItem('ballIQ_guestMode', 'true');
@@ -23,15 +26,9 @@ test('fresh guest sees onboarding', async ({ page, context }) => {
 
   await page.goto('/play');
   await page.waitForLoadState('networkidle');
-  // Onboarding has a skip button at minimum. Look for any "Skill" / "Skip" /
-  // welcome-style text typical of step 0/1.
-  const body = await page.evaluate(() => document.body.innerText);
-  // The OnboardingScreen renders before tab-bar appears. Settled state:
-  // tab-bar absent OR onboarding-specific text present.
-  const onboardingSignals = /skill|skip|welcome|let.?s go/i.test(body);
-  // Tab bar would mean we skipped past onboarding incorrectly.
-  const tabBar = await page.locator('.tab-bar').isVisible().catch(() => false);
-  expect(onboardingSignals || !tabBar, 'fresh guest should see onboarding flow').toBeTruthy();
+  await expect(page.locator('.fd-appbar')).toBeVisible();
+  await expect(page.locator('.onboard-wrap')).toHaveCount(0);
+  expect(await page.evaluate(() => localStorage.getItem('biq_onboarded'))).toBe('1');
 });
 
 test('guest with biq_onboarded=1 skips onboarding', async ({ page, context }) => {
@@ -45,9 +42,9 @@ test('guest with biq_onboarded=1 skips onboarding', async ({ page, context }) =>
   await page.goto('/play');
   await page.waitForLoadState('networkidle');
   // Main-app nav visible = we reached the app, onboarding was skipped.
-  // Mobile renders the .tab-bar; desktop (>=1024px) hides it and shows the
-  // .biq-nav left rail instead — accept whichever is live.
-  await expect(page.locator('.tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
+  // A browser tab renders the .fd-appbar; native / PWA the .tab-bar or the
+  // .biq-nav left rail — accept whichever is live.
+  await expect(page.locator('.fd-appbar, .tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
 });
 
 test('onboarded user does NOT replay onboarding after refresh', async ({ page, context }) => {
@@ -60,12 +57,12 @@ test('onboarded user does NOT replay onboarding after refresh', async ({ page, c
 
   await page.goto('/play');
   await page.waitForLoadState('networkidle');
-  await expect(page.locator('.tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
+  await expect(page.locator('.fd-appbar, .tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
 
   await page.reload();
   await page.waitForLoadState('networkidle');
   // Nav visible after reload too — biq_onboarded persisted, no replay.
-  await expect(page.locator('.tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
+  await expect(page.locator('.fd-appbar, .tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
 });
 
 // NOTE on signed-in cross-device path: the authProfile-driven sync

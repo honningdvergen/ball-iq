@@ -27,7 +27,7 @@ export function AppBar({ tab, active, setTab, setScreen, dailyDone, notifCount =
     <nav className="fd-appbar" aria-label="App">
       <div className="fd-w fd-appbar-in">
         {TABS.map(({ id, Icon, label }) => (
-          <button key={id} type="button" className="fd-appbar-tab" aria-current={cur === id ? 'page' : undefined} onClick={goTab(id)}>
+          <button key={id} type="button" className="fd-appbar-tab" aria-label={label} aria-current={cur === id ? 'page' : undefined} onClick={goTab(id)}>
             <Icon size={16} strokeWidth={2.25} aria-hidden="true" />
             <span>{label}</span>
             {id === 'daily' && !dailyDone && <i className="fd-appbar-dot" aria-hidden="true" />}
@@ -40,7 +40,7 @@ export function AppBar({ tab, active, setTab, setScreen, dailyDone, notifCount =
             {notifCount > 0 && <i className="fd-appbar-dot" aria-hidden="true" />}
           </button>
         )}
-        <button type="button" className="fd-appbar-tab" aria-current={cur === 'settings' ? 'page' : undefined} onClick={() => setScreen('settings')}>
+        <button type="button" className="fd-appbar-tab fd-appbar-settings" aria-label="Settings" aria-current={cur === 'settings' ? 'page' : undefined} onClick={() => setScreen('settings')}>
           <Settings size={16} strokeWidth={2.25} aria-hidden="true" />
           <span>Settings</span>
         </button>

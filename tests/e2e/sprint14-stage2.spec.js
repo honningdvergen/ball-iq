@@ -42,11 +42,10 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
-  // At desktop viewports the mobile tab bar is replaced by the .biq-nav
-  // left rail (desktop-web refresh; previously .desktop-nav). Both targets
-  // exist in the DOM at all viewports — the inactive one is display:none.
-  // Filter for the visible one.
-  const dailyNav = page.locator('.tab-item, .biq-nav .bn-item')
+  // In a browser tab the app's tabs are the .fd-appbar under the site
+  // header (2026-09-03 web shell); native and installed PWAs keep the
+  // .tab-bar / .biq-nav rail. Filter for whichever is visible.
+  const dailyNav = page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
     .filter({ hasText: 'Daily', visible: true }).first();
   await dailyNav.click();
   await page.waitForTimeout(500);
@@ -68,9 +67,9 @@ test('Daily tab — "Today first" redesign renders', async ({ page, context }) =
   await page.goto('/play');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  // Desktop uses the .biq-nav left rail; mobile the .tab-bar. Filter for
-  // whichever is visible at this viewport.
-  const dailyNav = page.locator('.tab-item, .biq-nav .bn-item')
+  // Browser tab: .fd-appbar; native / PWA: .tab-bar or .biq-nav. Filter
+  // for whichever is visible at this viewport.
+  const dailyNav = page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
     .filter({ hasText: 'Daily', visible: true }).first();
   await dailyNav.click();
   await page.waitForTimeout(400);
@@ -92,7 +91,10 @@ test('Daily tab — "Today first" redesign renders', async ({ page, context }) =
     await expect(streak).toBeVisible();
     await expect(streak.locator('.hr-form-cell')).toHaveCount(14);
   } else {
-    await expect(page.getByText('Guess the player').filter({ visible: true }).first()).toBeVisible();
+    // Same Footle prompt on both breakpoints since d58982a ("the prompt says
+    // surname again"); this branch still asserted the older "Guess the player"
+    // and was the one red test in the 2026-09-03 web-shell run.
+    await expect(page.getByText('Surname of a footballer').filter({ visible: true }).first()).toBeVisible();
     // ⚠️ Do NOT hard-code the daily COUNT. This assertion read "of 2 played"
     // and silently broke the moment Trail and Mystery joined Footle and the
     // Daily 7 — the product now says 4. The contract worth testing is the

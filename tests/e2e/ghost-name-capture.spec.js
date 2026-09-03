@@ -22,9 +22,10 @@ async function seedNamelessGuest(context) {
       localStorage.setItem('ballIQ_guestMode', 'true');
       localStorage.setItem('biq_onboarded', '1');
       localStorage.removeItem('biq_profile');   // the ghost: no name at all
-      // The +2000ms guest 'save' auth nudge fires once ever and would cover
-      // the results screen mid-test. Mark it already-seen so this spec tests
-      // the share path, not the nudge. (The collision itself is guarded in
+      // The once-ever guest 'save' auth nudge fires when the player leaves
+      // the results screen (2026-09-03: no longer on a 2s timer over it) and
+      // would collide with the share path. Mark it already-seen so this spec
+      // tests the share path, not the nudge. (The collision itself is guarded in
       // App.jsx via askShareNameRef — this is isolation, not a workaround.)
       localStorage.setItem('biq_save_nudge_shown', '1');
       // ⚠️ AND the notification pre-prompt, for exactly the same reason — this

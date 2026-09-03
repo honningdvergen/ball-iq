@@ -3,11 +3,30 @@
 Polish (main 6beafb9): generated /404.html with the shell; /home-preview + /home-old retired (files
 deleted, vercel redirects → /); mono chrome → Inter on generated pages. Web shell (branch web-shell
 f7a1994, merging): SiteHeader.jsx + AppBar.jsx replace the 248px sidebar / floating tab bar for
-browser visitors (native + PWA untouched); wordmark → `/` in a browser. **Next:** 1) verify prod
+browser visitors (native + PWA untouched); wordmark → `/` in a browser. **Done:** 1) ✅ prod verified
 after merge (/play, a game, wordmark, /home-preview → /) · 2) ✅ DESIGN.md re-documented (c47ff31,
-"The Fixture List") · 3) ✅ results nudge now fires on leaving results (goHome), not on a timer · 3b) ✅ cold /play in a
-browser skips the warm-up; preboot shell PWA-only · 4) the 7-URL lists title test · 5) e2e specs that
-assumed `/` = marketing or a sidebar at /play (agent updating them 2026-09-03 late).
+"The Fixture List") · 3) ✅ results nudge fires on leaving results — PROVEN ON PROD 2026-09-03 late
+(guest Daily 7 → results clean at +3s → Home → save sheet) · 3b) ✅ cold /play in a browser skips the
+warm-up; preboot shell PWA-only · 4) ✅ the 7-URL lists title test (below) · 5) ✅ e2e specs rewritten
+for the web shell (.fd-appbar-tab first in every nav locator; sprint26 asserts the /play bypass; one
+PRE-EXISTING red fixed — sprint14's phone branch asserted "Guess the player", the product has said
+"Surname of a footballer" since d58982a) · 6) ✅ phone app bar: Settings was scrolled off with no
+affordance ≤720px (overflow:auto, hidden scrollbar) — now icon-only, five controls on one row.
+**Open:** the exit save sheet's "Continue as guest" sits BEHIND the consent banner at 1440×900 for a
+first-time EU visitor (both fire on visit one; seen in the prod play-through) — same class as
+feedback_verify_ui_two_blockers; fold into "style Continue as guest as a real button".
+
+### Lists title test — shipped 2026-09-03 late · READ ON 2026-09-17
+Thesis: the seven page-one lists pages lose the click to Google's answer box, which already gives the
+headline fact; each snippet now sells what the box lacks (per-season club + goals, beaten finalist +
+score, years won, host). **Baseline (GSC 28d to 2026-09-03: clicks / impressions / position):**
+la-liga-top-scorers 6 / 2,242 / 9.9 · eredivisie-top-scorers 2 / 361 / 10.2 · super-lig-top-scorers
+2 / 309 / 9.9 · efl-cup-winners 2 / 187 / 9.7 · coupe-de-france-winners 0 / 751 / 9.4 ·
+most-ballon-dors 0 / 446 / 9.1 · concacaf-gold-cup-winners 1 / 777 / 10.6. Read: the same 7 URLs,
+14d vs the prior 14d (sc_compare_periods, or GSC in Alex's Chrome); a title change re-crawls within
+about a week, so judge CTR, not clicks. Success = CTR up on ≥4 of 7 with position flat → roll the
+pattern to the other 43 lists pages. Titles live in scripts/seo/lists.mjs (title/description only;
+h1 and body untouched so the test isolates the snippet).
 
 ## ✅ 2026-09-03 — FRONT DOOR MERGED TO MAIN (69aeac2) — verify prod, then DESIGN.md
 
