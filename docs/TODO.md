@@ -5,8 +5,9 @@ deleted, vercel redirects → /); mono chrome → Inter on generated pages. Web 
 f7a1994, merging): SiteHeader.jsx + AppBar.jsx replace the 248px sidebar / floating tab bar for
 browser visitors (native + PWA untouched); wordmark → `/` in a browser. **Next:** 1) verify prod
 after merge (/play, a game, wordmark, /home-preview → /) · 2) ✅ DESIGN.md re-documented (c47ff31,
-"The Fixture List") · 3) the results nudge off the +2s timer · 4) the 7-URL lists title test · 5) e2e specs that
-assumed `/` = marketing or a sidebar at /play.
+"The Fixture List") · 3) ✅ results nudge now fires on leaving results (goHome), not on a timer · 3b) ✅ cold /play in a
+browser skips the warm-up; preboot shell PWA-only · 4) the 7-URL lists title test · 5) e2e specs that
+assumed `/` = marketing or a sidebar at /play (agent updating them 2026-09-03 late).
 
 ## ✅ 2026-09-03 — FRONT DOOR MERGED TO MAIN (69aeac2) — verify prod, then DESIGN.md
 
