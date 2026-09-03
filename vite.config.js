@@ -65,7 +65,7 @@ function stripSourcemapsPlugin() {
 // visitor at / download the game bundle, breaking the front-door guarantee
 // in main.jsx ("marketing visitors never download the game bundle"). The
 // script mirrors main.jsx's routing — it skips only plain browser tabs on
-// / and /home-preview*; native + PWA + every game path
+// / and / (the front door); native + PWA + every game path
 // preload. Degrades gracefully: if the chunk isn't in the bundle (renamed,
 // inlined, future refactor), nothing is injected and the build proceeds.
 // Runs at closeBundle, resolving the chunk off disk rather than from the
@@ -92,11 +92,12 @@ function preloadGameRootPlugin() {
       }
       // Marketing gets the mirror treatment (perf critique 2026-08-30: lab
       // LCP 4.0s at / — the hero text waits on entry bundle → THEN the lazy
-      // ScoutingReport chunk, a full serial RTT). Same throw discipline.
-      const mktFile = readdirSync(assets).find((f) => /^ScoutingReport-.*\.js$/.test(f))
+      // marketing chunk, a full serial RTT). Same throw discipline. The
+      // front door (FrontDoor.jsx) replaced the Scouting Report on 2026-09-03.
+      const mktFile = readdirSync(assets).find((f) => /^FrontDoor-.*\.js$/.test(f))
       if (!mktFile) {
         throw new Error(
-          '[preload-gameroot] no ScoutingReport-*.js in dist/assets — the lazy entry was renamed or inlined. ' +
+          '[preload-gameroot] no FrontDoor-*.js in dist/assets — the lazy entry was renamed or inlined. ' +
           'Update this plugin (or delete it) rather than shipping a dead preload.',
         )
       }
@@ -114,7 +115,7 @@ function preloadGameRootPlugin() {
         '||!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());' +
         "var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;" +
         'var p=location.pathname;' +
-        "var mkt=(p==='/'||p.indexOf('/home-preview')===0||p.indexOf('/home-old')===0)&&!native&&!standalone;" +
+        "var mkt=(p==='/')&&!native&&!standalone;" +
         "var l=document.createElement('link');l.rel='modulepreload';" +
         `l.href=mkt?${JSON.stringify('/assets/' + mktFile)}:${JSON.stringify('/assets/' + file)};l.crossOrigin='';` +
         'document.head.appendChild(l);' +

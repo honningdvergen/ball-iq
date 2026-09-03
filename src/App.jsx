@@ -12647,7 +12647,16 @@ function AppInner() {
   // Calls leave_room directly (bypassing MultiplayerLobby's actions.leave)
   // since we need to clean up before the screen-state change unmounts the
   // hook. Other players see the resulting room_players DELETE event.
+  // The wordmark means THE WEBSITE on the web (Alex, 2026-09-03: "i still end
+  // up here to the app design when i hit ball iq top left, that should not
+  // even be possible anymore"). In a browser tab the brand goes to "/", the
+  // front door; only native and installed PWAs — which have no website to go
+  // to — keep the in-app home. A lobby still gets its leave-room confirm first.
+  const isWebBrowser = (() => {
+    try { return !IS_NATIVE && !(window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone === true); } catch { return false; }
+  })();
   const handleHomeClick = useCallback(async () => {
+    if (isWebBrowser && !(screen === "online-stage1-lobby" && stage1RoomCode)) { window.location.assign('/'); return; }
     if (screen === "online-stage1-lobby" && stage1RoomCode) {
       // Sprint #71 MM1: in-app modal instead of window.confirm. The async
       // leave-room + navigate work is the modal's confirm callback.
