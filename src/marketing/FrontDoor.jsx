@@ -168,6 +168,10 @@ export default function FrontDoor() {
         </div>
 
         {/* 2 · today's four, as a strip with progress */}
+        {/* The page's one h1. Visually the masthead is the date line and the
+            Today strip; the h1 is for the crawler and the screen reader, and
+            it says what the site is in the words people search for. */}
+        <h1 className="fd-sr">Ball IQ — football quizzes, Footle and today's puzzles</h1>
         <section className="fd-sec" aria-labelledby="fd-today-h">
           <div className="fd-sec-head">
             <h2 id="fd-today-h">Today</h2>

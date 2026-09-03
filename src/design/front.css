@@ -25,6 +25,7 @@
 .fd-w{max-width:1120px;margin:0 auto;padding:0 24px}
 .fd-skip{position:absolute;left:-9999px;top:8px;z-index:200;padding:10px 14px;background:var(--grn);color:var(--grn-ink);font-weight:700;border-radius:8px}
 .fd-skip:focus{left:8px}
+.fd-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .fd :focus-visible{outline:2px solid var(--grn);outline-offset:2px;border-radius:6px}
 
 /* header: one row, wordmark · nav · search · sign in. No marketing button. */
@@ -54,7 +55,7 @@
 
 /* date line */
 .fd-date{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;padding:28px 0 6px;scroll-margin-top:72px}
-.fd-date-d{font-size:17px;font-weight:700}
+.fd-date-d{font-size:15px;font-weight:700;letter-spacing:-.01em}
 .fd-date-eds{font-size:13.5px;color:var(--t3)}
 
 /* sections */
@@ -70,18 +71,18 @@
 /* cards: one anatomy for today's four and for every game */
 .fd-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;min-height:64px;padding:12px 14px;background:var(--s1);border:1px solid var(--bd);border-radius:12px;transition:border-color .15s,background .15s}
 .fd-card:hover{border-color:var(--bd2);background:var(--s2)}
-.fd-card-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:9px;background:var(--s2);border:1px solid var(--bd);color:var(--t2)}
+.fd-card-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--s2);border:1px solid var(--bd);color:var(--t2)}
 .fd-card:hover .fd-card-ic{color:var(--t1)}
 .fd-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}
 .fd-card-n{font-size:15px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .fd-card-no{font-size:12.5px;font-weight:500;color:var(--t3)}
 .fd-card-line{font-size:13.5px;color:var(--t2)}
-.fd-tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border:1px solid var(--bd2);border-radius:999px;padding:2px 7px}
+.fd-tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border:1px solid var(--bd2);border-radius:999px;padding:2px 7px}
 .fd-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:var(--grn);color:var(--grn-ink);font-size:13.5px;font-weight:800}
 .fd-today{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .fd-daily{grid-template-columns:auto 1fr auto auto}
 .fd-state{font-size:12.5px;font-weight:600;color:var(--t3);white-space:nowrap}
-.fd-state.is-open{color:#E0B13A}
+.fd-state.is-open{color:#FFC107}
 .fd-state.is-done{color:var(--grn)}
 .fd-daily.is-done .fd-play{background:var(--s2);color:var(--t1);border:1px solid var(--bd2)}
 .fd-games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -99,7 +100,7 @@
 .fd-chip:hover{color:var(--t1);border-color:var(--bd2);background:var(--s2)}
 .fd-clubs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .fd-club{display:flex;align-items:center;gap:10px;min-height:52px;padding:9px 12px;background:var(--s1);border:1px solid var(--bd);border-radius:10px}
-.fd-club-dot{flex:0 0 auto;width:12px;height:12px;border-radius:50%;background:var(--bd2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.fd-club-dot{flex:0 0 auto;width:12px;height:12px;border-radius:50%;background:var(--bd2);box-shadow:inset 0 0 0 1px var(--bd2)}
 .fd-club-body{display:flex;flex-direction:column;gap:1px;min-width:0}
 .fd-club:hover{border-color:var(--bd2);background:var(--s2)}
 .fd-club-n{font-size:14.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

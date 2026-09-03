@@ -16,12 +16,12 @@
     <link rel="preconnect" href="https://blcisypmngimqkwxrrdm.supabase.co" crossorigin />
     <!-- iOS Smart App Banner — free native install surface in Safari; inert in the Capacitor WKWebView and installed PWAs. -->
     <meta name="apple-itunes-app" content="app-id=6775975961" />
-    <meta name="description" content="The ultimate football quiz. Daily puzzles, club quizzes, Footle and online multiplayer — free in your browser." />
+    <meta name="description" content="Your club's quiz, today's Footle, Daily 7, Transfer Trail and Mystery Player, plus every league quiz and record list. Free football quiz in your browser." />
     <!-- Open Graph (iMessage / Slack / Discord / Facebook share previews). -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://balliq.app/" />
-    <meta property="og:title" content="Ball IQ — The Ultimate Football Quiz" />
-    <meta property="og:description" content="Test your football knowledge. Daily puzzles, club quizzes and online multiplayer." />
+    <meta property="og:title" content="Ball IQ — Football Quiz, Footle and Daily Puzzles" />
+    <meta property="og:description" content="Your club's quiz, today's Footle and Daily 7, every league quiz and record list — free in your browser." />
     <meta property="og:image" content="https://balliq.app/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -34,14 +34,14 @@
     <meta name="twitter:description" content="Test your football knowledge. Daily puzzles, club quizzes and online multiplayer." />
     <meta name="twitter:image" content="https://balliq.app/og-image.png" />
     <meta name="twitter:image:alt" content="Ball IQ — The Ultimate Football Quiz" />
-    <title>Ball IQ — The Ultimate Football Quiz</title>
+    <title>Ball IQ — Football Quiz, Footle and Daily Puzzles</title>
     <link rel="canonical" href="https://balliq.app/" />
     <!-- Homepage structured data (brand + app). Site-wide @graph; the /quiz/*
          pages carry their own Quiz/Breadcrumb/FAQ schema. -->
     <script type="application/ld+json">
     {"@context":"https://schema.org","@graph":[
       {"@type":"Organization","@id":"https://balliq.app/#org","name":"Ball IQ","alternateName":["Ball IQ Footle","Footle"],"url":"https://balliq.app/","logo":"https://balliq.app/icon-512.png","sameAs":["https://apps.apple.com/app/id6775975961","https://play.google.com/store/apps/details?id=app.balliq"]},
-      {"@type":"WebSite","@id":"https://balliq.app/#website","url":"https://balliq.app/","name":"Ball IQ","description":"The ultimate football quiz — thousands of questions across 10 game modes.","publisher":{"@id":"https://balliq.app/#org"}},
+      {"@type":"WebSite","@id":"https://balliq.app/#website","url":"https://balliq.app/","name":"Ball IQ","description":"Football quizzes for every club and league, Footle and daily puzzles — free in the browser.","publisher":{"@id":"https://balliq.app/#org"}},
       {"@type":"MobileApplication","@id":"https://balliq.app/#app","name":"Ball IQ — Football Trivia","operatingSystem":"iOS, Android","applicationCategory":"GameApplication","url":"https://balliq.app/","downloadUrl":"https://apps.apple.com/app/id6775975961","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
     ]}
     </script>
@@ -1029,65 +1029,49 @@
            here was wrong too (there are 50). If a number must appear, GENERATE
            it; do not type it. -->
       <div id="biq-prerender">
-        <h1>How good is your football knowledge, really?</h1>
-        <p>Ball IQ is a free football quiz game. There is no sign-up and nothing to
-          install — open it in a browser and you are playing in about ten seconds.
-          If you would rather have it on your home screen, there are native apps for
-          iPhone and Android. Whether you call it football or soccer, the questions
-          are the same.</p>
+        <h1>Football quizzes, Footle and today's puzzles</h1>
+        <p>Ball IQ is a free football quiz website. Nothing to install and no
+          account needed — find your club or league at the top of the page and
+          play in your browser. Whether you call it football or soccer, the
+          questions are the same.</p>
 
-        <h2>Two things to play every day</h2>
-        <p><a href="/football-wordle/"><strong>Footle</strong></a> is the daily football word game: guess the mystery
-          footballer's surname in six tries, with green and yellow tiles telling you
-          how close you are. One player a day, the same one for everybody, so a
-          result is worth comparing.</p>
-        <p><strong>The Daily 7</strong> is seven questions in roughly three minutes.
-          Everyone in the world gets the same seven on the same day, which is what
-          makes a score worth arguing about. Both reset at midnight.</p>
+        <h2>Today</h2>
+        <p>Four puzzles reset at midnight, the same for everyone.
+          <a href="/football-wordle/"><strong>Footle</strong></a> is the football
+          Wordle — guess the footballer's surname in six. <strong>The Daily 7</strong>
+          is seven questions in about three minutes. <strong>Transfer Trail</strong>
+          names a player from his moves, and <strong>Mystery Player</strong> asks
+          who it is from career clues.</p>
 
-        <h2>Quizzes for your club, your league, your era</h2>
-        <p>The bank runs to thousands of hand-curated questions, spread across more
-          than a hundred dedicated quiz
-          pages. Clubs run from <a href="/quiz/liverpool/">Liverpool</a>,
-          <a href="/quiz/arsenal/">Arsenal</a> and
-          <a href="/quiz/manchester-united/">Manchester United</a> through to Celtic,
-          Rangers, Galatasaray, Boca Juniors and Hajduk Split — 72 clubs, not just
-          the famous ones. There are league and tournament quizzes for the
-          <a href="/quiz/premier-league/">Premier League</a>, La Liga, Serie A, the
-          Bundesliga, the <a href="/quiz/champions-league/">Champions League</a>, the
-          <a href="/quiz/world-cup/">World Cup</a> and the Euros, plus pages built
-          around individual players.</p>
+        <h2>Your club</h2>
+        <p>Every club on file has its own quiz drawn from its own history — from
+          <a href="/quiz/liverpool/">Liverpool</a>, <a href="/quiz/arsenal/">Arsenal</a>
+          and <a href="/quiz/manchester-united/">Manchester United</a> to Celtic,
+          Galatasaray, Boca Juniors and Hajduk Split — plus league and tournament
+          quizzes for the <a href="/quiz/premier-league/">Premier League</a>, La Liga,
+          Serie A, the Bundesliga, the <a href="/quiz/champions-league/">Champions League</a>
+          and the <a href="/quiz/world-cup/">World Cup</a>.
+          <a href="/quiz/clubs/">Browse clubs by league</a>.</p>
 
-        <h2>Your scouting report</h2>
-        <p>Every answer you give feeds a player card — one rating on a 60-to-160
-          scale, broken down league by league and era by era. Read your scouting
-          report, find your specialism, and share the card with the group chat.
-          The more you play, the sharper the verdict gets.</p>
+        <h2>Every game</h2>
+        <p>Classic ten-question rounds, Survival, Hot Streak, Legends, Stadiums,
+          Guess the XI, Chaos, Club Quiz and League Quiz — and live rooms for up to
+          eight players, or one phone passed around a table. All free, all in the
+          browser. See the <a href="/quiz/">full quiz index</a>.</p>
 
-        <h2>Built on explanations</h2>
+        <h2>Lists and records</h2>
+        <p>Alongside the games there are <a href="/lists/">reference lists</a> — every
+          Ballon d'Or winner, every Champions League final, league top scorers, World
+          Cup winners and more — kept as plain, checkable tables for when you want
+          the fact rather than the game.</p>
+
+        <h2>How it works</h2>
         <p>Most answers come with a short explanation of why they are right — the
-          season it happened, who else was involved, what made it matter. That is the
-          part people come back for. Getting a question wrong and learning something
-          is a better outcome than getting it right and learning nothing, and it is
-          the reason the questions are written by hand rather than scraped.</p>
-
-        <h2>Play against other people</h2>
-        <p>You can host a live room for up to eight players and race them through the
-          same questions in real time, or pass a single phone around a table for two
-          to six players. Both are free, and the online rooms work from a shared
-          link — nobody else needs an account.</p>
-
-        <h2>Reference lists</h2>
-        <p>Alongside the quizzes there are 51 <a href="/lists/">reference lists</a> —
-          every Ballon d'Or winner, every European Cup and Champions League final,
-          Premier League top scorers, World Cup winners and more — kept as plain,
-          checkable tables for when you want the fact rather than the game.</p>
-
-        <h2>Who makes it</h2>
-        <p>Ball IQ is independent, built and maintained by one developer, and free to
-          play. <a href="/about/">Read more about the project</a>, or
-          <a href="/contact/">get in touch</a> if you spot a question that looks
-          wrong — corrections from players are how the bank stays accurate.</p>
+          season it happened, who else was involved, what made it matter. Ball IQ is
+          independent, built by one developer, and free to play.
+          <a href="/about/">About the project</a>, or
+          <a href="/contact/">get in touch</a> if a question looks wrong —
+          corrections from players are how the bank stays accurate.</p>
       </div>
       <div class="biq-splash" aria-label="Loading Ball IQ">
         <div class="biq-splash-mark">Ball <em>IQ</em></div>

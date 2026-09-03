@@ -1,3 +1,28 @@
+## 2026-09-04 — BRICK BY BRICK (Alex: "improve the state of this project every single day")
+
+Alex's phone read of the front door: "good start, can be better but good". Standing order: find where
+we are weak, add to Discover, keep SEO honest, and the four points from 09-03 (his eyes · close the
+results wall · the return trip · then wait for data).
+
+**The 14-day read that sets the agenda (prod, funnel_events, 2026-08-21→09-03):** ~60–75 actors/day,
+of whom **0–7 signed in**. Distinct active days per actor in 14d: **1,713 once · 22 on 2–3 days · 2
+on 4–7 · 0 on 8+.** Caveat: Footle writes wordle_state, not funnel_events, so signed-in daily players
+are under-counted here — but the anonymous web visitor, who is now the product's main customer,
+comes once and does not come back. That is the weakness. Club quiz 7d = 332 vs 767/30d (≈47/day vs
+26/day) — the finder may already be pulling; too early to call. Signups w/c 08-31: 7 (partial week).
+
+**Laid today (main):** 1) crawler-facing homepage was still the taster — `index.html` title /
+description / OG / schema / the whole `#biq-prerender` block rewritten to describe the front door
+(no counts); FrontDoor gets its one `h1` (sr-only; it had only h2s) · 2) the consent bar now hides
+under the sign-in sheet (`.biql`) like it does under onboarding — "Continue as guest" was behind it
+on a first EU visit · 3) "Continue as guest" is a real button (card fill, primary text, 700) ·
+4) front.css drift snapped to the system (date → Title 15px, tag → Label 12px, icon radius 10, amber
+→ #FFC107, dot ring → border token) and a **Wordmark** step declared in DESIGN.md.
+**Next bricks, in order:** a) the return trip — bring Alex two concrete options with the data above
+(the site has no reason to come back tomorrow: web push 1 subscriber, device tokens 48, in-app
+daily_reminder rows 117, email activate 72 / day2 8 / winback 44) · b) Discover: what to add — needs
+GSC per-page (connector down 09-04, use Alex's Chrome) · c) 09-10 and 09-17 reads.
+
 ## ✅ 2026-09-03 late — POLISH + WEB SHELL: the app sits under the site header on the web
 
 Polish (main 6beafb9): generated /404.html with the shell; /home-preview + /home-old retired (files

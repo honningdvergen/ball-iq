@@ -40,7 +40,7 @@ const LOGIN_CSS = `
 .biql-glow { animation:biqGlow 6s ease-in-out infinite; }
 .biql-ball { animation:biqFloat 7s ease-in-out infinite; }
 .biql-google:hover, .biql-email:hover { background:#1A1D27 !important; }
-.biql-guest:hover { background:#101219 !important; border-color:#2A2D3A !important; color:#E8EAF0 !important; }
+.biql-guest:hover { background:#1A1D27 !important; border-color:#3A3E4E !important; color:#FFFFFF !important; }
 .biql-icobtn:hover { border-color:#3A3D4A !important; }
 .biql-login-top:hover { color:#fff !important; }
 @media (prefers-reduced-motion: reduce) { .biql-glow, .biql-ball { animation:none !important; } }
@@ -418,8 +418,12 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                   </button>
                 )
               )}
+              {/* A real button, not a ghost link: on the 'save' sheet this is the
+                  action most first-time players take (2026-09-03 play-through),
+                  and the card fill + primary text keep it legible at the foot of
+                  a full-height sheet. Still quieter than the green sign-up. */}
               <button type="button" className="biql-guest" onClick={guestContinue}
-                style={{ ...S.btnBase, gap: 8, padding: 15, marginTop: 2, border: `1px solid ${C.border}`, background: 'transparent', color: C.t2, fontSize: 15 }}>
+                style={{ ...S.btnBase, gap: 8, padding: 15, marginTop: 2, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, fontSize: 15, fontWeight: 700 }}>
                 {/* NOT "Continue as guest" on a hard gate. At the front door that
                     label is an ACTION — it creates the guest session. Here the
                     user is already a guest, so it describes no change, and under

@@ -56,6 +56,12 @@ typography:
     fontSize: "12px"
     fontWeight: 700
     lineHeight: 1.4
+  wordmark:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "18px"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "-0.01em"
     letterSpacing: "0.06em"
   counter:
     fontFamily: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace"
@@ -198,6 +204,7 @@ A club's colour comes from its pack (`CLUB_PACKS` in `src/App.jsx`, resolved thr
 - **Caption** (400, 13.5px): the one line under a card's name; a section's subtitle.
 - **Meta** (600, 12.5px): states ("Not played", "3 of 7"), edition numbers, "checked 20 July".
 - **Label** (700, 12px, 0.06em, uppercase): footer column headings and the eyebrow above an `h1`. The only uppercase treatment in the system, and it is always a field label, never a slogan.
+- **Wordmark** (800, 18px, −0.01em): "Ball IQ" beside the crest in the site header, and nowhere else. The one size that is neither Title nor Section, because the mark must read at a glance next to a 28px crest without competing with an `h1`.
 
 ### Named rules
 **Sentence case everywhere.** Uppercase exists only in the 12px label. Headlines are sentence case at 800 weight; the condensed, tracked, all-caps headline is the retired system's signature and must not return.

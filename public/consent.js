@@ -186,7 +186,14 @@
    *
    * If onboarding never finishes we never ask and never track: the failure
    * mode points the safe way, so there is deliberately no timeout fallback. */
-  function onboardingUp() { return !!document.querySelector('.onboard-wrap'); }
+  /* …and of the sign-in sheet. The once-ever 'save' prompt opens on the way
+   * out of a first results screen, full-height, with "Continue as guest" at
+   * its foot — exactly where this bar sits. Seen on prod 2026-09-03 at
+   * 1440×900: a first-time EU visitor had the guest button behind the consent
+   * bar, because both fire on visit one. Same rule as onboarding: we collect
+   * nothing while a sheet is up, so we ask once it is down. `.biql` is the
+   * Login component's root (overlay and full-screen alike). */
+  function onboardingUp() { return !!document.querySelector('.onboard-wrap, .biql'); }
 
   var syncQueued = false;
   function syncVisibility() {
