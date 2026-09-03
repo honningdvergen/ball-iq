@@ -18,6 +18,15 @@ under the sign-in sheet (`.biql`) like it does under onboarding — "Continue as
 on a first EU visit · 3) "Continue as guest" is a real button (card fill, primary text, 700) ·
 4) front.css drift snapped to the system (date → Title 15px, tag → Label 12px, icon radius 10, amber
 → #FFC107, dot ring → border token) and a **Wordmark** step declared in DESIGN.md.
+**All four verified on prod (26a2cad, 2026-09-04 ~01:00):** crawler sees the new title/h1/description;
+sheet hides the banner and shows it again on guest close; guest is a real button; front-door h1 present.
+**GSC 28d (read via Chrome; memory project_gsc_28d_2026_09_04):** 1,650 clicks / 55.1k impr / pos
+10.4. Club + league quiz pages are the entire top 10. Discover content is DEAD: /fun-facts/ 0 clicks
+on 69 impr, /football-quotes/ 0/18, /club-nicknames/ 0/17 — don't add more of that type. /lists/
+30/14.9k. **/football-wordle/answer/ 6 clicks on 30 impr = 20% CTR** — the Wordle-answer pattern
+works and is barely built. Discover verdict: re-point the column at what pulls (club quizzes by
+league, "with answers", Footle + its answer page, lists) and build the answer surface, not new
+facts pages.
 **Next bricks, in order:** a) the return trip — bring Alex two concrete options with the data above
 (the site has no reason to come back tomorrow: web push 1 subscriber, device tokens 48, in-app
 daily_reminder rows 117, email activate 72 / day2 8 / winback 44) · b) Discover: what to add — needs
