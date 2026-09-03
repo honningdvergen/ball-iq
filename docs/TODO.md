@@ -7,6 +7,12 @@ Merged on Alex's word ("this is good progress for us"). Live on balliq.app once 
 Scouting Report) · 2) content-level pass on generated pages (mono breadcrumbs/eyebrows, stat strip)
 · 3) results nudge off the +2s timer · 4) the 7-URL lists title test · 5) e2e specs that assumed
 `/` = marketing. Memory: project_app_home_as_front_door, project_quiz_sites_field_study.
+**Prod sweep 2026-09-03 (23 URLs, every page type, 1440 + WebKit 390):** all carry the shell +
+search + footer, one left edge, no old nav / glow / flame / gradient band, no mobile overflow, no
+console errors. Found: **public/404.html has no shell** (static, not generated) — give it the
+header/footer; retire /home-preview + /home-old (the two rejected homepages, still served);
+content-level leftovers: mono breadcrumbs + eyebrows + the Free/100%/Daily stat strip + green
+"N entries →" links on the lists hub; /play still shows the warm-up for cold arrivals.
 
 ## 2026-09-03 — EYES-ON CRITIQUE DONE (history)
 
