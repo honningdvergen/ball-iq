@@ -80,7 +80,7 @@ describe('Apple storefront list stays in sync across all four copies', () => {
       'src/lib/links.js', 'api/get.js', 'index.html',
       'scripts/gen-seo-pages.mjs', 'scripts/seo/content.mjs',
       'src/App.jsx', 'src/BiqNav.jsx', 'src/screens/HomeScreen.jsx',
-      'src/marketing/MarketingHome.jsx', 'src/marketing/ScoutingReport.jsx',
+      'src/marketing/FrontDoor.jsx', 'scripts/seo/shell.mjs',
     ]) {
       for (const line of read(path).split('\n')) {
         // Comments explain the history on purpose — only flag real URLs.

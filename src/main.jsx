@@ -141,7 +141,6 @@ try {
 // root. The native iOS/Android app, installed PWAs, and EVERY other path
 // (/play, /play/*, /join/*, /c/*, …) render the game — so deep links and the
 // installed apps are never sent to the marketing page.
-const MarketingHome = React.lazy(() => import('./marketing/MarketingHome.jsx'))
 
 const _path = (typeof window !== 'undefined' && window.location.pathname) || '/'
 const _isNativeApp =
@@ -178,21 +177,14 @@ const _hasHandoff =
 // puts the whole catalogue on the page as links, and keeps the browser's own
 // scroll. FrontDoor.jsx is that page: dark, one system, every game a link
 // into the app. The app itself stays at /play.
-const showMarketing =
-  _isBrowser && !_hasHandoff &&
-  (_path === '/' || _path.startsWith('/home-preview') || _path.startsWith('/home-old'))
-const _isFrontDoor = showMarketing && _path === '/'
+// RETIRED 2026-09-03: /home-preview (the Scouting Report) and /home-old (the
+// page before it). Both were kept as rollbacks while the front door was on a
+// branch; it is merged and live, and two rejected homepages should not be
+// reachable by anyone. Their files are deleted; the real rollback is git.
+const showMarketing = _isBrowser && !_hasHandoff && _path === '/'
 const loadFrontDoor = () => import('./marketing/FrontDoor.jsx')
 const FrontDoor = React.lazy(loadFrontDoor)
 
-// THE SWAP (Alex, 2026-08-03: "swap it"). The Scouting Report is the
-// homepage. All nine swap-ready items verified — the skip link on real
-// hardware, the report by playing it, contrast by sweeping all 229 text
-// nodes. MarketingHome remains at /home-old for comparison and as the
-// visual rollback; the real rollback is reverting this commit.
-const _isOldHome = showMarketing && _path.startsWith('/home-old')
-const loadScoutingReport = () => import('./marketing/ScoutingReport.jsx')
-const ScoutingReport = React.lazy(loadScoutingReport)
 
 // The game tree is lazy too (see GameRoot.jsx) so marketing visitors never
 // download the ~200KB-gz game bundle. React.lazy only fires its import() on
@@ -203,10 +195,9 @@ const ScoutingReport = React.lazy(loadScoutingReport)
 const loadGameRoot = () => import('./GameRoot.jsx')
 const GameRoot = React.lazy(loadGameRoot)
 if (!showMarketing) loadGameRoot()
-// Same render-cycle head start for the homepage itself — React.lazy waits
-// for first render; marketing visitors' LCP is inside this chunk.
-else if (_isFrontDoor) loadFrontDoor()
-else if (!_isOldHome) loadScoutingReport()
+// Same render-cycle head start for the front door — React.lazy waits for
+// first render; a visitor's LCP is inside this chunk.
+else loadFrontDoor()
 
 // Suspense fallback for the lazily-loaded game tree: reproduces index.html's
 // #root splash markup (the same wordmark + animated bar) so swapping the
@@ -237,7 +228,7 @@ if (showMarketing) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
     <ErrorBoundary><React.Suspense fallback={null}>
-      {_isFrontDoor ? <FrontDoor /> : _isOldHome ? <MarketingHome /> : <ScoutingReport />}
+      <FrontDoor />
     </React.Suspense></ErrorBoundary>,
   )
 } else {

@@ -1890,7 +1890,7 @@ ${SHELL_CSS}
   a.cov:focus-visible{outline:2px solid var(--grn);outline-offset:2px}
   .cov h3{font-size:15.5px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.01em}
   .cov p{font-size:13.5px;color:var(--tx3);line-height:1.5;margin:0}
-  .crumbs{font-family:var(--mono);font-size:12px;color:var(--tx4);margin-bottom:22px}
+  .crumbs{font-size:13px;color:var(--tx4);margin-bottom:22px}
   /* 12px type gave a 16px-tall tap target. Padding lifts it over WCAG 2.2
      2.5.8's 24px floor without changing how the trail looks — the box grows,
      the text does not. Breadcrumbs are exempt from the 44px guideline (they
@@ -1914,19 +1914,19 @@ ${SHELL_CSS}
   .llinks li:hover{border-color:var(--grn);background:var(--card2)}
   .llinks a:focus-visible{outline:2px solid var(--grn);outline-offset:2px}
   .llink-t{min-width:0}
-  .llink-n{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--tx4);white-space:nowrap}
+  .llink-n{flex:0 0 auto;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--tx4);white-space:nowrap}
   .skip{position:absolute;left:-9999px;top:0;z-index:200;padding:12px 20px;background:var(--grn);color:var(--grn-ink);font-weight:800;border-radius:0 0 12px 0}
   .skip:focus{left:0}
   .kicker{display:flex;align-items:center;gap:12px;margin-bottom:16px}
   .badge-chip{display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:32px;padding:0 10px;border-radius:10px;background:#1F2430;font-family:var(--mono);font-weight:800;font-size:13px;letter-spacing:.03em;color:#fff}
   .badge-chip.emoji{background:rgba(255,255,255,.04);font-size:22px;padding:0 8px}
-  .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--club-soft,var(--grn))}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3)}
   .hero h1{font-weight:800;font-size:clamp(30px,4.4vw,46px);line-height:1.05;letter-spacing:-.02em;color:#fff;margin-bottom:14px}
   .hero-lead{font-size:clamp(16px,2vw,19px);line-height:1.55;color:var(--tx3);max-width:52ch;margin-bottom:26px}
   .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:22px}
   .btn-green{display:inline-flex;align-items:center;min-height:44px;gap:8px;padding:12px 22px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:15px;border-radius:999px}
   .btn-green:hover{text-decoration:none;filter:brightness(1.05)}
-  .hero-stat{font-family:var(--mono);font-size:13px;color:var(--tx4)}
+  .hero-stat{font-size:13px;color:var(--tx4)}
   /* App Store badge */
   .store-badge{display:inline-flex;align-items:center;min-height:44px;gap:10px;padding:11px 18px;background:#000;border:1px solid var(--bd2);border-radius:13px}
   .store-badge:hover{text-decoration:none;border-color:var(--bd3)}
@@ -1991,7 +1991,7 @@ ${SHELL_CSS}
   /* prose */
   .prose p{color:#CDD3DE;font-size:16px;line-height:1.7;margin-bottom:14px;max-width:68ch}
   .prose p a{color:var(--grn-soft)}
-  .stats{display:inline-block;font-family:var(--mono);font-size:13px;color:var(--tx3);background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-top:6px}
+  .stats{display:inline-block;font-size:13px;font-variant-numeric:tabular-nums;color:var(--tx3);background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-top:6px}
   /* sample Q&A */
   .qa-list{list-style:none;counter-reset:qa;padding:0;margin:0}
   .qa{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 16px 14px;margin-bottom:12px}
@@ -2022,7 +2022,7 @@ ${BQ_CSS}
   .hero-facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);margin:16px 0 0}
   .hero-facts .hf{padding:12px 0;border-right:1px solid var(--bd);min-width:0}
   .hero-facts .hf:last-child{border-right:0}
-  .hero-facts .hf b{display:block;font-family:var(--mono);font-size:19px;font-weight:700;color:#fff;line-height:1}
+  .hero-facts .hf b{display:block;font-size:19px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;color:#fff;line-height:1}
   .hero-facts .hf span{display:block;font-size:11.5px;color:var(--tx4);margin-top:5px}
   .hero-free{margin:14px 0 0;font-size:13px;color:var(--tx4)}
   .trust-note{font-size:14.5px;color:var(--tx3);line-height:1.65;border-left:2px solid var(--bd2);padding-left:14px}
@@ -3627,7 +3627,7 @@ function buildListsHubPage(lists, clubPages, catPages) {
   .lcard:hover{border-color:var(--bd3);transform:translateY(-2px);text-decoration:none}
   .lcard-t{font-weight:800;color:#fff;font-size:17px;line-height:1.2}
   .lcard-d{color:var(--tx3);font-size:14px;line-height:1.45}
-  .lcard-n{color:var(--grn-soft);font-size:13px;font-weight:600;margin-top:auto}
+  .lcard-n{color:var(--tx3);font-size:13px;font-weight:600;margin-top:auto}
   </style>`;
   const html = `${head({ title: 'Football Lists: Winners, Records & Top Scorers | Ball IQ', description: 'Complete, fact-checked football reference lists — every World Cup and Ballon d\'Or winner, league champions and top scorers, year by year. Free to browse.', canonical, ld, ads: true })}
 <body>
@@ -4031,6 +4031,47 @@ ${footer()}`;
   const dir = resolve(DIST, cfg.slug);
   mkdirSync(dir, { recursive: true });
   writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+}
+
+// ── /404.html ──────────────────────────────────────────────────────────────
+// Generated, not hand-written, so it wears the same shell as every other page.
+// It used to be a static file in public/ with its own header and its own
+// palette — the one page on the site that never got any redesign, and the
+// 2026-09-03 production sweep found it looking like the previous site. Vercel
+// serves dist/404.html for unknown routes; vite copies public/ first, so this
+// overwrites that copy. noindex is the point: a mistyped URL must not become
+// an indexed page (see the AdSense low-value-content history in git).
+function build404Page() {
+  const canonical = `${SITE.base}/404.html`;
+  const cards = [
+    ['All quizzes', 'Clubs, leagues and tournaments', `${SITE.base}/quiz/`],
+    ['Lists and records', 'Winners, top scorers, checked and dated', `${SITE.base}/lists/`],
+    ['Footle', 'The daily football word game', `${SITE.base}/football-wordle/`],
+    ['Every game', 'Daily puzzles and every quiz mode', `${SITE.base}/#games`],
+  ];
+  const html = `${head({ title: 'Page not found — Ball IQ', description: 'That page does not exist. Everything else does.', canonical, ld: '' })
+    .replace('</head>', '<meta name="robots" content="noindex,follow" />\n</head>')}
+<body>
+${NAV}
+<main id="main">
+${heroSection({
+    crumbItems: [{ name: 'Home', url: `${SITE.base}/` }, { name: 'Page not found', url: canonical }],
+    badge: null,
+    kind: 'Error 404',
+    name: 'Ball IQ',
+    h1: 'That page doesn’t exist.',
+    lead: 'The link may be out of date, or the address mistyped. Everything below does work, and every quiz is free to play without an account.',
+    playHref: null,
+  })}
+<section class="sec"><div class="covers">
+${cards.map(([t, d, h]) => `<a class="cov" href="${h}"><h3>${esc(t)}</h3><p>${esc(d)}</p></a>`).join('\n')}
+</div>
+<p class="sub" style="margin-top:18px">Something broken? <a href="${SITE.base}/contact/">Tell us</a>.</p>
+</section>
+</main>
+${footer()}`;
+  writeFileSync(resolve(DIST, '404.html'), html, 'utf8');
+  console.log('  ✓ /404.html  (not-found page, shared shell)');
 }
 
 // ── Footle landing page (/football-wordle/) ──────────────────────────────────
@@ -5937,6 +5978,7 @@ async function main() {
   buildSimplePage(ABOUT);
   buildSimplePage(CONTACT);
   buildSimplePage(TERMS);
+  build404Page();
   // /questions/ pages are canonicalized to their /quiz/ twins and OUT of the
   // sitemap while the AdSense doorway remediation stands (scan 2026-08-11).
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);

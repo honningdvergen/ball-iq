@@ -867,7 +867,7 @@ export function AuthProvider({ children }) {
     let webRedirect
     if (typeof window !== 'undefined') {
       const p = window.location.pathname
-      const onGamePath = p !== '/' && !p.startsWith('/home-preview')
+      const onGamePath = p !== '/'
       webRedirect = window.location.origin + (onGamePath ? p : '/play')
     }
     const { data, error } = await supabase.auth.signInWithOAuth({

@@ -11,8 +11,7 @@ import { readFileSync } from "node:fs";
 // the sign-up dead end in the 1.8 diagnosis: a loop built to the last step and
 // leaking there. The copy and the href have to agree, so gate it.
 const PAGES = [
-  "src/marketing/ScoutingReport.jsx",
-  "src/marketing/MarketingHome.jsx",
+  "src/marketing/FrontDoor.jsx",
 ];
 
 // Anchor text that PROMISES no install. If copy like this grows, add to it.
