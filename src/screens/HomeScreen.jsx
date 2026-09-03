@@ -619,7 +619,7 @@ function HomeScreenImpl({
                   <div className="hr-rating-num" aria-hidden="true">—</div>
                   <div className="hr-rating-scap">
                     <div className="hr-rating-overall">OVERALL</div>
-                    <div className="hr-rating-tier" style={{ color: "var(--t2)" }}>Play a game to get rated</div>
+                    <div className="hr-rating-tier" style={{ color: "var(--t2)", textTransform: "none", letterSpacing: 0, fontWeight: 600 }}>Play a game to get rated</div>
                   </div>
                 </div>
               )}
