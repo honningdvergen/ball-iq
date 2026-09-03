@@ -41,6 +41,10 @@ The Athletic games, Footdle, Planet Football) → a website-shaped IA for `/`, k
 (header w/ search, date line, Today strip w/ progress, one game in place, club/league finder, all-games
 grid w/ Archive, timestamped lists, real numbers, how-to, sitemap footer). Awaiting Alex: light vs
 dark; finder at block 3 or 5. Memory: project_quiz_sites_field_study.
+**✅ DECIDED + BUILT (Alex: dark, search in the header, Today first, park "other people"):**
+`src/marketing/FrontDoor.jsx` — a website at `/` (see memory project_app_home_as_front_door, third
+pass). On branch `front-door`; preview URL below once Vercel builds. ⚠️ DESIGN.md is stale (Scouting
+Report); re-document from the app system after merge. Increment 2 still open: SEO pages → app shell.
 
 **Previous next (superseded):** 1) Alex picks A / A+ / B → build the chosen world as the SHARED question-sheet
 component in gen-seo-pages + homepage + app shell. 2) P1s: "Next question" clipped 18px on club
