@@ -239,7 +239,7 @@ if (showMarketing) {
   // beats the landing chrome's paint far sooner than an AppInner mount effect
   // would, and it also covers the login screen (which is not AppInner). No-op
   // in native/PWA where the landing chrome is already killswitched.
-  try { document.body.classList.add('biq-app') } catch { /* noop */ }
+  try { document.body.classList.add('biq-app'); if (_isBrowser) document.body.classList.add('biq-web') } catch { /* noop */ }
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <ErrorBoundary>

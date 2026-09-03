@@ -14,6 +14,8 @@ import { useProfilePhotos } from './lib/profilePhotos.js';
 const ReviewScreen = React.lazy(() => import('./ReviewScreen.jsx'));
 // Desktop left rail (>= 1024px, browser only — hidden in native + installed PWA).
 import { BiqNav } from './BiqNav.jsx';
+import { AppBar } from './components/AppBar.jsx';
+import { SiteHeader } from './marketing/SiteHeader.jsx';
 import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIndex } from './questions-loader.js';
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
@@ -13284,7 +13286,25 @@ function AppInner() {
             keeps the rail visible mid-quiz (active="none"). It's CSS-gated to
             >=1024 (display:none on mobile/PWA/native), so this is desktop-only;
             `active` is nulled mid-game so no tab highlights. */}
-        <BiqNav
+        {/* THE WEB SHELL (2026-09-03): in a browser tab the app sits under the
+            website's own header — wordmark, sections, the club finder — with
+            its tabs as a slim bar beneath. The sidebar and the floating tab
+            bar are native/PWA furniture and render only there. */}
+        {isWebBrowser && (
+          <>
+            <SiteHeader signedIn={!!user && !isGuest} onProfile={() => { setScreen("home"); setTab("profile"); }} />
+            <AppBar
+              tab={tab}
+              active={inGame || screen === "results" ? null : screen === "settings" ? "settings" : tab}
+              setTab={setTab}
+              setScreen={setScreen}
+              dailyDone={dailyDone}
+              notifCount={notifCount}
+              onOpenNotifs={user ? openNotifs : undefined}
+            />
+          </>
+        )}
+        {!isWebBrowser && <BiqNav
           onHomeClick={handleHomeClick}
           tab={tab}
           active={inGame || screen === "results" ? null : screen === "settings" ? "settings" : tab}
@@ -13294,8 +13314,8 @@ function AppInner() {
           showToast={showToast}
           notifCount={notifCount}
           onOpenNotifs={user ? openNotifs : undefined}
-        />
-        {!inGame && !(screen === "home" && tab === "home") && (
+        />}
+        {!isWebBrowser && !inGame && !(screen === "home" && tab === "home") && (
           <div className="hdr">
             {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
                 — on a tab-bar app the app name on its own home is redundant, and
@@ -14383,7 +14403,7 @@ function AppInner() {
         )}
 
         {/* ── TAB BAR ── */}
-        {!inGame && screen === "home" && (
+        {!isWebBrowser && !inGame && screen === "home" && (
           <nav className="tab-bar" ref={tabBarRef}>
             {/* ONE capsule shared by all four tabs, so it can travel. It used to
                 be .tab-item.active::after — a pseudo-element on whichever tab

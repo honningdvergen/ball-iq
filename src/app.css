@@ -3735,3 +3735,24 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
 .todays-seven-secondary.trail-row{background:linear-gradient(120deg,rgba(124,195,240,0.10),rgba(124,195,240,0.03) 60%,var(--s1));border-color:rgba(124,195,240,0.20);}
 .todays-seven-secondary.trail-row .t7s-icon{color:#7CC3F0;}
 .daily-zone > .todays-seven-secondary + .todays-seven-secondary{margin-top:8px;}
+
+/* ── THE WEB SHELL (2026-09-03) ────────────────────────────────────────────────
+   body.biq-web = a browser tab (main.jsx; never native, never an installed
+   PWA). The app sits under the site header (SiteHeader.jsx, front.css) with
+   its tabs in .fd-appbar; the 248px sidebar and the floating tab bar are
+   native/PWA furniture. The content column matches the website's frame. */
+body.biq-web > #root { padding-left: 0 !important; }
+body.biq-web .biq-nav, body.biq-web .tab-bar { display: none !important; }
+body.biq-web .app { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 44px) 48px; }
+body.biq-web .tab-content { padding-bottom: 24px; }
+body.biq-web .toast { left: 50% !important; transform: translateX(-50%); max-width: min(560px, calc(100vw - 32px)) !important; }
+body.biq-web > .landing-bottom { padding-left: 0 !important; }
+.fd-appbar { position: sticky; top: 60px; z-index: 90; background: var(--bg, #0A0A0A); border-bottom: 1px solid #242836; }
+.fd-appbar-in { display: flex; align-items: center; gap: 2px; height: 46px; overflow-x: auto; scrollbar-width: none; }
+.fd-appbar-in::-webkit-scrollbar { display: none; }
+.fd-appbar-tab { position: relative; display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 12px; border: 0; background: none; color: #9BA0B8; font: 600 14px/1 'Inter', system-ui, sans-serif; cursor: pointer; border-radius: 8px; white-space: nowrap; }
+.fd-appbar-tab:hover { color: #F0F1F5; background: #0F1117; }
+.fd-appbar-tab[aria-current="page"] { color: #F0F1F5; box-shadow: inset 0 -2px 0 #58CC02; border-radius: 0; }
+.fd-appbar-dot { position: absolute; top: 10px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: #58CC02; }
+.fd-appbar-spacer { flex: 1 1 auto; }
+@media (max-width: 720px) { .fd-appbar { top: 56px; } .fd-appbar-tab span { font-size: 13.5px; } }

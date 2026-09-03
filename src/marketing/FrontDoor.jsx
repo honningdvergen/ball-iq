@@ -24,7 +24,8 @@
 import '../design/fonts.css';
 import '../design/report.css';
 import '../design/front.css';
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { SiteHeader } from './SiteHeader.jsx';
 import { CLUB_INDEX } from './clubIndex.js';
 import { LISTS_INDEX } from './listsIndex.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
@@ -40,7 +41,7 @@ const PLAY = '/play';
 const door = (game) => `${PLAY}?game=${game}`;
 
 // Leagues with a static page each (scripts/seo/leagues.mjs slugs).
-const LEAGUES = [
+export const LEAGUES = [
   { s: 'premier-league', n: 'Premier League' }, { s: 'la-liga', n: 'La Liga' },
   { s: 'serie-a', n: 'Serie A' }, { s: 'bundesliga', n: 'Bundesliga' },
   { s: 'ligue-1', n: 'Ligue 1' }, { s: 'super-lig', n: 'Süper Lig' },
@@ -126,37 +127,12 @@ function useCountdown() {
   return formatCountdown(ms);
 }
 
-// Header search: clubs by name, leagues by name; Enter takes the first hit.
-function useFinder(q) {
-  return useMemo(() => {
-    const norm = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-    const nq = norm(q.trim());
-    if (!nq) return [];
-    const clubs = CLUB_INDEX.map((c) => {
-      const n = norm(c.n);
-      const rank = n.startsWith(nq) ? 0 : n.includes(nq) ? 1 : -1;
-      return rank < 0 ? null : { rank, kind: 'club', n: c.n, sub: c.c, href: `${PLAY}?club=${c.s}` };
-    }).filter(Boolean);
-    const leagues = LEAGUES.map((l) => {
-      const n = norm(l.n);
-      const rank = n.startsWith(nq) ? 0 : n.includes(nq) ? 1 : -1;
-      return rank < 0 ? null : { rank, kind: 'league', n: l.n, sub: 'League quiz', href: `/quiz/${l.s}/` };
-    }).filter(Boolean);
-    return [...clubs, ...leagues].sort((a, b) => a.rank - b.rank || a.n.localeCompare(b.n)).slice(0, 8);
-  }, [q]);
-}
-
 export default function FrontDoor() {
   const today = useMemo(() => new Date(), []);
   const [state, setState] = useState(() => readToday());
   useEffect(() => { setState(readToday()); }, []);
   const countdown = useCountdown();
-  const [q, setQ] = useState('');
-  const [open, setOpen] = useState(false);
-  const hits = useFinder(q);
   const [allClubs, setAllClubs] = useState(false);
-  const searchRef = useRef(null);
-  const [menu, setMenu] = useState(false);
 
   useEffect(() => { marketingEvent('fd-view'); }, []);
   const go = (name, href) => { try { marketingEvent(name, { href }); } catch {} };
@@ -183,35 +159,7 @@ export default function FrontDoor() {
   return (
     <div className="fd">
       <a className="fd-skip" href="#today">Skip to today's games</a>
-      <header className="fd-head">
-        <div className="fd-w fd-head-in">
-          <a className="fd-mark" href="/" aria-label="Ball IQ home"><img src="/marketing/ball.png" alt="" width="26" height="26" /><span>Ball IQ</span></a>
-          <nav className={`fd-nav${menu ? ' is-open' : ''}`} aria-label="Sections">
-            <a href="#today">Today</a><a href="#games">Games</a><a href="#clubs">Clubs</a><a href="/football-quiz/">Quizzes</a><a href="/lists/">Lists</a>
-          </nav>
-          <div className="fd-find" role="search">
-            <span className="fd-find-ic"><Icon k="search" /></span>
-            <input ref={searchRef} type="search" className="fd-find-in" value={q} placeholder="Find your club or league"
-              aria-label="Find your club or league" autoCapitalize="none" autoCorrect="off" spellCheck={false} enterKeyHint="search"
-              onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 120)}
-              onKeyDown={(e) => { if (e.key === 'Enter' && hits[0]) { go('fd-find', hits[0].href); window.location.href = hits[0].href; } if (e.key === 'Escape') { setQ(''); setOpen(false); } }} />
-            {open && q.trim() && (
-              <div className="fd-find-res" role="listbox">
-                {hits.length === 0 && <div className="fd-find-empty">Nothing on file called “{q.trim()}” yet. <a href="#clubs">See every club</a></div>}
-                {hits.map((h) => (
-                  <a key={h.href} role="option" className="fd-find-row" href={h.href} onMouseDown={(e) => e.preventDefault()} onClick={() => go('fd-find', h.href)}>
-                    <span className="fd-find-n">{h.n}</span><span className="fd-find-sub">{h.sub}</span><span className="fd-find-go">Play</span>
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-          <a className="fd-signin" href={PLAY}>Sign in</a>
-          <button type="button" className="fd-burger" aria-label={menu ? 'Close menu' : 'Menu'} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">{menu ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
-          </button>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="fd-w">
         {/* 1 · the date line: the page proves it changes every day */}
@@ -266,7 +214,7 @@ export default function FrontDoor() {
             ) : (
               <a className="fd-btn" href="/quiz/clubs/">Club pages, by league</a>
             )}
-            <button type="button" className="fd-btn fd-btn-q" onClick={() => searchRef.current?.focus()}>Search for one</button>
+            <button type="button" className="fd-btn fd-btn-q" onClick={() => document.querySelector('.fd-find-in')?.focus()}>Search for one</button>
           </div>
         </section>
 
