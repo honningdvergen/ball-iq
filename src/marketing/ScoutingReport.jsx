@@ -198,7 +198,7 @@ const CSS = `
 /* Same size and family as the lede — only the weight and colour lift it, so
    the category noun reads first without adding a fourth headline moment to a
    page already measured as having a flat type scale (h1 35px vs h2 32px). */
-.sr-what{font-weight:700;color:var(--ink)}
+.sr-what{font-weight:700;color:var(--tx)}
 
 /* The file: wider than the container, lying on the desk, with the stacked
    second sheet behind it — a sheet, not a glow. */
@@ -282,11 +282,11 @@ const CSS = `
    visual language for "the most important button" would weaken both. */
 .sr-ab{scroll-margin-top:12px}
 .sr-next-up{margin-top:var(--sp3)}
-.sr-primary{display:flex;align-items:center;justify-content:center;min-height:56px;width:100%;
+.sr a.sr-primary{display:flex;align-items:center;justify-content:center;min-height:56px;width:100%;
             background:var(--ink);color:var(--pa);border:1px solid var(--ink);border-radius:var(--rc);
             font:var(--ty-body);font-weight:700;text-align:center;
             transition:opacity .15s var(--ease)}
-@media (hover:hover){.sr-primary:hover{opacity:.86;color:var(--pa)}}
+@media (hover:hover){.sr a.sr-primary:hover{opacity:.86;color:var(--pa)}}
 .sr-nextp{margin-top:8px;font:var(--ty-meta);color:var(--mut)}
 
 .sr-stubwrap{padding:var(--sp3);border-top:1px solid var(--rule);margin-top:var(--sp3)}
