@@ -18,7 +18,15 @@ results/review. First Classic is always a PB vs 0 → every new guest's first re
 Sits on the day-1→2 finish leak below. Fix in progress: guest on 'save' now closes in place
 (src/Login.jsx); STILL TO DECIDE: move the ask off the +2s timer to results-exit or an inline card.
 
-**Next (in order):** 1) Alex picks A / A+ / B → build the chosen world as the SHARED question-sheet
+**⚠️ SUPERSEDED same evening:** Alex rejected ALL THREE directions as "AI slop" and reframed: the site
+is a finder — people want their club/league/mode fast; the 5-question taster is "meaningless";
+Footle + Transfer Trail are the modes that matter. Mode data (30d, signed-in): Footle 86 · Daily 7
+75 · Trail 44 · club quizzes 763 anonymous plays. **New thesis, awaiting Alex's yes:** make the APP
+HOME (/play) the front door at `/`, retire the taster, first-class club finder + Today row (Footle,
+Daily 7, Trail), pull SEO pages into the app shell. Next artefact = the real `/` on a preview URL,
+not a mockup. See memory project_app_home_as_front_door.
+
+**Previous next (superseded):** 1) Alex picks A / A+ / B → build the chosen world as the SHARED question-sheet
 component in gen-seo-pages + homepage + app shell. 2) P1s: "Next question" clipped 18px on club
 pages at 390 (both engines); consent bar over play controls (inline it); 1911 void; 10px text
 (222 nodes on /quiz/arsenal/). 3) /lists/: rewrite title+meta of the 7 page-1 pages to sell what
