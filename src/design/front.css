@@ -26,7 +26,7 @@
 .fd-skip{position:absolute;left:-9999px;top:8px;z-index:200;padding:10px 14px;background:var(--grn);color:var(--grn-ink);font-weight:700;border-radius:8px}
 .fd-skip:focus{left:8px}
 .fd-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.fd :focus-visible{outline:2px solid var(--grn);outline-offset:2px;border-radius:6px}
+.fd :focus-visible{outline:2px solid var(--grn);outline-offset:2px;border-radius:8px}
 
 /* header: one row, wordmark · nav · search · sign in. No marketing button. */
 .fd-head{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--bd)}
