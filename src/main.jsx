@@ -172,17 +172,18 @@ const _hasHandoff =
 // today's Footle, the Daily 7, the club finder, the modes — not a marketing
 // page about them. The two marketing surfaces stay reachable for comparison
 // and as the visual rollback: /home-preview (Scouting Report), /home-old.
+// SECOND PASS, same day: rendering the app shell at "/" read as "a copy of
+// the app, designed for an app" (Alex). A field study of 13 quiz sites
+// (memory: project_quiz_sites_field_study) says a website prints the date,
+// puts the whole catalogue on the page as links, and keeps the browser's own
+// scroll. FrontDoor.jsx is that page: dark, one system, every game a link
+// into the app. The app itself stays at /play.
 const showMarketing =
   _isBrowser && !_hasHandoff &&
-  (_path.startsWith('/home-preview') || _path.startsWith('/home-old'))
-// A browser visitor at the root skips the onboarding warm-up ("Quick one —
-// give it a go") and lands straight on Home. The critique measured seven taps
-// from arrival to the first real question; the warm-up was most of them, and
-// it is a taster — the thing the homepage rethink retired. /play keeps the
-// warm-up for now (native and deep links never reach this branch).
-if (_isBrowser && !_hasHandoff && _path === '/') {
-  try { if (localStorage.getItem('biq_onboarded') !== '1') localStorage.setItem('biq_onboarded', '1') } catch {}
-}
+  (_path === '/' || _path.startsWith('/home-preview') || _path.startsWith('/home-old'))
+const _isFrontDoor = showMarketing && _path === '/'
+const loadFrontDoor = () => import('./marketing/FrontDoor.jsx')
+const FrontDoor = React.lazy(loadFrontDoor)
 
 // THE SWAP (Alex, 2026-08-03: "swap it"). The Scouting Report is the
 // homepage. All nine swap-ready items verified — the skip link on real
@@ -204,6 +205,7 @@ const GameRoot = React.lazy(loadGameRoot)
 if (!showMarketing) loadGameRoot()
 // Same render-cycle head start for the homepage itself — React.lazy waits
 // for first render; marketing visitors' LCP is inside this chunk.
+else if (_isFrontDoor) loadFrontDoor()
 else if (!_isOldHome) loadScoutingReport()
 
 // Suspense fallback for the lazily-loaded game tree: reproduces index.html's
@@ -235,7 +237,7 @@ if (showMarketing) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
     <ErrorBoundary><React.Suspense fallback={null}>
-      {_isOldHome ? <MarketingHome /> : <ScoutingReport />}
+      {_isFrontDoor ? <FrontDoor /> : _isOldHome ? <MarketingHome /> : <ScoutingReport />}
     </React.Suspense></ErrorBoundary>,
   )
 } else {

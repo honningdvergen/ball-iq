@@ -9148,7 +9148,9 @@ function AppInner() {
       const sp = new URLSearchParams(BOOT_SEARCH);
       // "mystery" intentionally absent while MYSTERY_ENABLED is false — a shared
       // ?game=mystery link must not hold the boot screen for a hidden mode.
-      if (["footle", "trail", ...(MYSTERY_ENABLED ? ["mystery"] : [])].includes(sp.get("game"))) return true;
+      // The front door (2026-09-03) links every mode as ?game=<mode>; all of
+      // them bypass onboarding — a visitor who chose a game must not be walled.
+      if (["footle", "trail", "daily", "classic", "survival", "hotstreak", "legends", "chaos", "stadiums", "clubquiz", "leaguequiz", "online", ...(MYSTERY_ENABLED ? ["mystery"] : [])].includes(sp.get("game"))) return true;
       if (/^q_[a-z0-9]+$/.test((sp.get("eq") || "").trim().toLowerCase())) return true; // email answer link — the verdict must not land behind onboarding
       if (normalizeJoinCode(sp.get("join"))) return true; // legacy query-form invite
       if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
@@ -10944,6 +10946,12 @@ function AppInner() {
       // so this stays a one-liner on purpose.
       if (gameSlug === "daily") { startMode("daily"); return; }
       if (gameSlug === "trail") { setScreen("trail"); return; }
+      // Front-door doors (2026-09-03): every card on the website homepage is a
+      // link, so every mode needs a URL. startMode owns the mode's own rules
+      // (difficulty sheet for classic, done-state for dailies).
+      if (["classic", "survival", "hotstreak", "legends", "chaos", "clubquiz", "leaguequiz"].includes(gameSlug)) { startMode(gameSlug); return; }
+      if (gameSlug === "stadiums") { setScreen("stadiums"); return; }
+      if (gameSlug === "online") { setScreen("home"); setTab("online"); return; }
       // ?game=mystery — the /mystery redirect and the share link land here.
       // Guarded: links to this mode are already out in the world (the web
       // landing page, any shared result), and they must fall through to Home

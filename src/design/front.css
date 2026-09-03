@@ -1,0 +1,163 @@
+/* ── THE FRONT DOOR (balliq.app/) ─────────────────────────────────────────────
+   One system, dark. Tokens lifted off pitch black (#0A0A0A → #0F1114) so the
+   page reads as a surface rather than a void; the brand green is spent on
+   Play and on "done", nothing else; every other colour is a grey. Type is the
+   app's own (Inter), on a strict scale: 12.5 · 13.5 · 15 · 17 · 22 · 28.
+   The browser owns the scroll. No glows, no gradients, no emoji. */
+.fd{--bg:#0F1114;--s1:#161A1F;--s2:#1C2128;--bd:#262B33;--bd2:#323944;--t1:#F2F4F6;--t2:#A8AFB9;--t3:#6F7782;
+    --grn:#58CC02;--grn-ink:#06230C;--grn-soft:rgba(88,204,2,.14);
+    background:var(--bg);color:var(--t1);min-height:100vh;
+    font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.fd *{box-sizing:border-box}
+.fd a{color:inherit;text-decoration:none}
+.fd h2{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.fd h3{margin:0 0 8px;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3)}
+.fd-w{max-width:1120px;margin:0 auto;padding:0 24px}
+.fd-skip{position:absolute;left:-9999px;top:8px;z-index:200;padding:10px 14px;background:var(--grn);color:var(--grn-ink);font-weight:700;border-radius:8px}
+.fd-skip:focus{left:8px}
+.fd :focus-visible{outline:2px solid var(--grn);outline-offset:2px;border-radius:6px}
+
+/* header: one row, wordmark · nav · search · sign in. No marketing button. */
+.fd-head{position:sticky;top:0;z-index:100;background:rgba(15,17,20,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd)}
+.fd-head-in{display:flex;align-items:center;gap:22px;height:60px}
+.fd-mark{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.01em;flex:0 0 auto}
+.fd-mark img{display:block}
+.fd-nav{display:flex;gap:4px}
+.fd-nav a{padding:8px 10px;border-radius:8px;font-size:14px;font-weight:600;color:var(--t2)}
+.fd-nav a:hover{color:var(--t1);background:var(--s1)}
+.fd-find{position:relative;flex:1 1 auto;max-width:420px;margin-left:auto}
+.fd-find-ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;display:flex}
+.fd-find-in{width:100%;height:40px;padding:0 12px 0 38px;border-radius:10px;background:var(--s1);border:1px solid var(--bd);color:var(--t1);font:inherit;font-size:16px;outline:none;-webkit-appearance:none;appearance:none}
+.fd-find-in::placeholder{color:var(--t3)}
+.fd-find-in:focus{border-color:var(--bd2);background:var(--s2)}
+.fd-find-in::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.fd-find-res{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:120;padding:6px;background:var(--s1);border:1px solid var(--bd);border-radius:12px;box-shadow:0 18px 44px rgba(0,0,0,.55)}
+.fd-find-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;min-height:44px;padding:8px 10px;border-radius:8px;font-size:15px;font-weight:600}
+.fd-find-row:hover{background:var(--s2)}
+.fd-find-sub{font-size:12.5px;font-weight:500;color:var(--t3)}
+.fd-find-go{font-size:12.5px;font-weight:700;color:var(--grn)}
+.fd-find-empty{padding:10px;font-size:13.5px;color:var(--t2)}
+.fd-find-empty a{color:var(--t1);text-decoration:underline;text-underline-offset:3px}
+.fd-signin{flex:0 0 auto;font-size:14px;font-weight:600;color:var(--t2);padding:8px 10px}
+.fd-signin:hover{color:var(--t1)}
+.fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--t1);cursor:pointer;border-radius:8px}
+
+/* date line */
+.fd-date{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;padding:28px 0 6px;scroll-margin-top:72px}
+.fd-date-d{font-size:17px;font-weight:700}
+.fd-date-eds{font-size:13.5px;color:var(--t3)}
+
+/* sections */
+.fd-sec{padding:26px 0 8px}
+.fd-sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.fd-sec-sub{font-size:13.5px;color:var(--t3)}
+.fd-sec-link{font-size:13.5px;font-weight:600;color:var(--t2)}
+.fd-sec-link:hover{color:var(--t1)}
+.fd-progress{font-size:13.5px;color:var(--t2)}
+.fd-progress b{color:var(--t1)}
+.fd-tnum{font-variant-numeric:tabular-nums;color:var(--t1)}
+
+/* cards: one anatomy for today's four and for every game */
+.fd-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;min-height:64px;padding:12px 14px;background:var(--s1);border:1px solid var(--bd);border-radius:12px;transition:border-color .15s,background .15s}
+.fd-card:hover{border-color:var(--bd2);background:var(--s2)}
+.fd-card-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:9px;background:var(--s2);border:1px solid var(--bd);color:var(--t2)}
+.fd-card:hover .fd-card-ic{color:var(--t1)}
+.fd-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.fd-card-n{font-size:15px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fd-card-no{font-size:12.5px;font-weight:500;color:var(--t3)}
+.fd-card-line{font-size:13.5px;color:var(--t2)}
+.fd-tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border:1px solid var(--bd2);border-radius:999px;padding:2px 7px}
+.fd-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:var(--grn);color:var(--grn-ink);font-size:13.5px;font-weight:800}
+.fd-today{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fd-daily{grid-template-columns:auto 1fr auto auto}
+.fd-state{font-size:12.5px;font-weight:600;color:var(--t3);white-space:nowrap}
+.fd-state.is-open{color:#E0B13A}
+.fd-state.is-done{color:var(--grn)}
+.fd-daily.is-done .fd-play{background:var(--s2);color:var(--t1);border:1px solid var(--bd2)}
+.fd-games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+
+/* practice band: the marketing Footle board keeps its own styles (report.css);
+   here it only gets breathing room and a rounded frame */
+.fd-practice{padding:22px 0 10px}
+.fd-practice .fb-in{border:1px solid var(--bd);border-radius:14px;background:var(--s1)}
+
+/* clubs */
+.fd-leagues{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.fd-chip{display:inline-flex;align-items:center;min-height:36px;padding:0 13px;border-radius:999px;background:var(--s1);border:1px solid var(--bd);font-size:13.5px;font-weight:600;color:var(--t2)}
+.fd-chip:hover{color:var(--t1);border-color:var(--bd2);background:var(--s2)}
+.fd-clubs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.fd-club{display:flex;flex-direction:column;gap:1px;min-height:52px;padding:9px 12px;background:var(--s1);border:1px solid var(--bd);border-radius:10px}
+.fd-club:hover{border-color:var(--bd2);background:var(--s2)}
+.fd-club-n{font-size:14.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-club-c{font-size:12px;color:var(--t3)}
+.fd-more{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.fd-btn{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;background:var(--s1);border:1px solid var(--bd2);color:var(--t1);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+.fd-btn:hover{background:var(--s2)}
+.fd-btn-q{background:none;color:var(--t2)}
+
+/* lists */
+.fd-lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fd-list{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;min-height:56px;padding:10px 12px;background:var(--s1);border:1px solid var(--bd);border-radius:10px}
+.fd-list:hover{border-color:var(--bd2);background:var(--s2)}
+.fd-list-ic{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--s2);color:var(--t3)}
+.fd-list-body{display:flex;flex-direction:column;gap:1px;min-width:0}
+.fd-list-n{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-list-meta{font-size:12.5px;color:var(--t3)}
+
+/* how it works */
+.fd-how{padding-bottom:40px}
+.fd-faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px;margin:14px 0 0}
+.fd-faq dt{font-size:15px;font-weight:700;margin:0 0 3px}
+.fd-faq dd{margin:0;font-size:14px;color:var(--t2);max-width:52ch}
+
+/* footer sitemap */
+.fd-foot{border-top:1px solid var(--bd);background:#0C0E11;padding:36px 0 28px}
+.fd-foot-in{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px}
+.fd-foot-col{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fd-foot-col a{font-size:13.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-foot-col a:hover{color:var(--t1)}
+.fd-foot-app{margin-top:10px;font-size:13px;color:var(--t3)}
+.fd-foot-app a{color:var(--t2);text-decoration:underline;text-underline-offset:3px}
+.fd-foot-line{margin-top:26px;font-size:12.5px;color:var(--t3)}
+
+/* responsive */
+@media (max-width:1000px){
+  .fd-games{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fd-clubs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .fd-foot-in{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  .fd-w{padding:0 16px}
+  .fd-head-in{gap:10px;height:56px}
+  .fd-mark span{display:none}
+  .fd-nav{display:none}
+  .fd-nav.is-open{display:flex;position:absolute;left:0;right:0;top:56px;flex-direction:column;gap:0;padding:8px;background:var(--s1);border-bottom:1px solid var(--bd)}
+  .fd-nav.is-open a{min-height:44px;display:flex;align-items:center;font-size:16px}
+  .fd-find{max-width:none;margin-left:0}
+  .fd-signin{display:none}
+  .fd-burger{display:grid;place-items:center}
+  .fd-date{padding-top:20px}
+  .fd-today,.fd-games,.fd-lists,.fd-faq{grid-template-columns:1fr}
+  .fd-clubs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fd-daily{grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;row-gap:4px}
+  .fd-daily .fd-card-ic{grid-column:1;grid-row:1}
+  .fd-daily .fd-card-body{grid-column:2;grid-row:1}
+  .fd-daily .fd-state{grid-column:2;grid-row:2;justify-self:start}
+  .fd-daily .fd-play{grid-column:3;grid-row:1 / span 2;align-self:center}
+  .fd-foot-in{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){.fd *{transition:none!important}}
+
+/* The practice band arrives styled for the old marketing page (condensed
+   uppercase heading, a 72px clock, two paragraphs). Inside the front door it
+   is one section among others, so it takes the page's voice: the same 22px
+   heading, one line of sub-copy, a modest clock, the page's own greys. */
+.fd .fd-practice .fb{background:transparent;background-image:none;border-top:0;padding:0;margin:0}
+.fd .fd-practice .fb-in{padding:22px 24px 24px;max-width:none;margin:0}
+.fd .fd-practice .fb-h2{font:800 22px/1.15 'Inter',system-ui,sans-serif;letter-spacing:-.02em;text-transform:none;color:var(--t1)}
+.fd .fd-practice .fb-sub{font-size:14px;line-height:1.5;color:var(--t2);max-width:60ch;margin-top:6px}
+.fd .fd-practice .fb-eg,.fd .fd-practice .fb-note,.fd .fd-practice .fb-cnote,.fd .fd-practice .fb-legend{color:var(--t2);font-size:13.5px}
+.fd .fd-practice .fb-time{font:800 40px/1 'Inter',system-ui,sans-serif;letter-spacing:-.02em;color:var(--t1)}
+.fd .fd-practice .fb-six{font-size:14px;color:var(--t1)}
+@media (max-width:720px){.fd .fd-practice .fb-in{padding:18px 14px 20px}}
