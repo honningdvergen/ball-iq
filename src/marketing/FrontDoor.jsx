@@ -25,6 +25,7 @@ import '../design/report.css';
 import '../design/front.css';
 import React, { useState, useEffect, useMemo } from 'react';
 import { SiteHeader } from './SiteHeader.jsx';
+import { DISCOVER, MORE } from './siteNav.js';
 import { CLUB_INDEX } from './clubIndex.js';
 import { LISTS_INDEX } from './listsIndex.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
@@ -280,8 +281,12 @@ export default function FrontDoor() {
             <a href="/lists/">All lists</a>
           </div>
           <div className="fd-foot-col">
+            <h3>Discover</h3>
+            {DISCOVER.map(([n, h]) => <a key={h} href={h}>{n}</a>)}
+          </div>
+          <div className="fd-foot-col">
             <h3>Ball IQ</h3>
-            <a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy">Privacy</a><a href="/terms/">Terms</a>
+            <a href="/about/">About</a><a href="/contact/">Contact</a>{MORE.map(([n, h]) => <a key={h} href={h}>{n}</a>)}<a href="/privacy">Privacy</a><a href="/terms/">Terms</a>
             <span className="fd-foot-app">Also on <a href={appStoreUrl()} rel="noopener">iOS</a> and <a href={PLAY_STORE_URL} rel="noopener">Android</a></span>
           </div>
         </div>

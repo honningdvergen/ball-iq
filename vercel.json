@@ -105,6 +105,30 @@
       "destination": "/api/footle"
     },
     {
+      "source": "/football-wordle/answer/:n(\\d+)",
+      "destination": "/api/footle?n=:n"
+    },
+    {
+      "source": "/football-wordle/answer/:n(\\d+)/",
+      "destination": "/api/footle?n=:n"
+    },
+    {
+      "source": "/daily-football-quiz/answers",
+      "destination": "/api/daily-answers"
+    },
+    {
+      "source": "/daily-football-quiz/answers/",
+      "destination": "/api/daily-answers"
+    },
+    {
+      "source": "/daily-football-quiz/answers/:d(\\d{4}-\\d{2}-\\d{2})",
+      "destination": "/api/daily-answers?d=:d"
+    },
+    {
+      "source": "/daily-football-quiz/answers/:d(\\d{4}-\\d{2}-\\d{2})/",
+      "destination": "/api/daily-answers?d=:d"
+    },
+    {
       "source": "/reset",
       "destination": "/index.html"
     },

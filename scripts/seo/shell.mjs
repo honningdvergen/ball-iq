@@ -12,6 +12,7 @@
 // .fd root). When one changes, change the other.
 import { CLUB_INDEX } from '../../src/marketing/clubIndex.js';
 import { LISTS_INDEX } from '../../src/marketing/listsIndex.js';
+import { DISCOVER, MORE } from '../../src/marketing/siteNav.js';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -29,11 +30,8 @@ const GAMES = [
   ['Classic', '/play?game=classic'], ['Survival', '/play?game=survival'], ['Hot Streak', '/play?game=hotstreak'],
   ['Stadiums', '/play?game=stadiums'], ['Legends', '/quiz/legends/'], ['Chaos', '/play?game=chaos'], ['Play a friend', '/play?game=online'],
 ];
-const DISCOVER = [
-  ['Football quiz', '/football-quiz/'], ['All quizzes', '/quiz/'], ['Clubs by league', '/quiz/clubs/'],
-  ['Football facts', '/fun-facts/'], ['Football quotes', '/football-quotes/'], ['Club nicknames', '/club-nicknames/'],
-  ['Trivia memory study', '/study/football-trivia-memory/'],
-];
+// DISCOVER and MORE live in src/marketing/siteNav.js — one list for this
+// footer, the front door's and the served answer pages'.
 
 const SEARCH_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
 const BURGER_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
@@ -89,7 +87,7 @@ ${col('Games', GAMES.map(([n, h]) => [n, b + h]))}
 ${leagueCols}
 ${col('Lists', [...LISTS_INDEX.slice(0, 8).map((l) => [l.h.replace(/^Every /, ''), `${b}/lists/${l.s}/`]), ['All lists', `${b}/lists/`]])}
 ${col('Discover', DISCOVER.map(([n, h]) => [n, b + h]))}
-<div class="fd-foot-col"><h3>Ball IQ</h3><a href="${b}/about/">About</a><a href="${b}/contact/">Contact</a><a href="${b}/privacy.html">Privacy</a><a href="${b}/terms/">Terms</a><span class="fd-foot-app">Also on <a href="${site.appStore}" rel="noopener">iOS</a> and <a href="${site.playStore}" rel="noopener">Android</a></span></div>
+<div class="fd-foot-col"><h3>Ball IQ</h3><a href="${b}/about/">About</a><a href="${b}/contact/">Contact</a>${MORE.map(([n, h]) => `<a href="${b + h}">${esc(n)}</a>`).join('')}<a href="${b}/privacy.html">Privacy</a><a href="${b}/terms/">Terms</a><span class="fd-foot-app">Also on <a href="${site.appStore}" rel="noopener">iOS</a> and <a href="${site.playStore}" rel="noopener">Android</a></span></div>
 </div>
 <div class="fd-w fd-foot-line">An independent football quiz, made by one person. Not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club; names are used to identify the subject of each quiz.</div>
 </footer>`;
@@ -129,7 +127,7 @@ export const SHELL_CSS = `
   .fd-signin:hover{color:var(--tx);text-decoration:none}
   .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--tx);cursor:pointer;border-radius:8px}
   .fd-foot{border-top:1px solid var(--bd);background:var(--bg2);padding:36px 0 28px;margin-top:36px}
-  .fd-foot-in{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:22px}
+  .fd-foot-in{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:22px}
   .fd-foot-col{display:flex;flex-direction:column;gap:5px;min-width:0}
   .fd-foot-col h3{margin:0 0 8px;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx4)}
   .fd-foot-col a{font-size:13.5px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:24px}

@@ -83,6 +83,8 @@ import { QB } from '../src/questions.js';
 import { rootCss } from '../src/design/tokens.js';
 import { shellHeader, shellFooter, SHELL_CSS } from './seo/shell.mjs';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE } from './seo/content.mjs';
+import { recentFootleAnswers } from './seo/footle-answer-page.mjs';
+import { recentDailyDays } from './seo/daily-answers-page.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
@@ -5083,6 +5085,28 @@ ${fwKeyboardHtml()}
 <script>${FOOTLE_PRACTICE_JS}</script>`;
 }
 
+// The last 30 finished puzzles / days, linked from the landing page so the
+// served answer pages (api/footle.js, api/daily-answers.js) have an inbound
+// link from an ESTABLISHED page — the condition the orphan gate's note asks
+// for — and a person who has just finished today's has somewhere to go.
+const ANS_DAYS_CSS = `<style>.ans-days{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px 14px}.ans-days a{display:block;min-height:36px;line-height:36px;font-size:14px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ans-days a:hover{color:var(--tx)}.ans-days b{color:var(--tx);font-weight:600}</style>`;
+function recentFootleSection() {
+  const rows = recentFootleAnswers(30);
+  if (!rows.length) return '';
+  return `<section class="sec"><h2>Recent Footle answers</h2>
+<p>Each finished puzzle has its own page — the answer, how the letters fell, and the puzzles either side. <a href="${SITE.base}/football-wordle/answer/">Today's hints</a> stay spoiler-free until you tap.</p>
+<ul class="ans-days">${rows.map((a) => `<li><a href="${a.url}"><b>No. ${a.n}</b> · ${esc(a.date)} — ${esc(a.full)}</a></li>`).join('')}</ul>
+${ANS_DAYS_CSS}</section>`;
+}
+function recentDailySection() {
+  const days = recentDailyDays(30);
+  if (!days.length) return '';
+  return `<section class="sec"><h2>Past Daily 7 answers</h2>
+<p>Every day since the Daily 7 was first written down has its own page: the seven questions, the answers, and why each is right. <a href="${SITE.base}/daily-football-quiz/answers/">Today's</a> stay hidden until you tap.</p>
+<ul class="ans-days">${days.map((d) => `<li><a href="${d.url}"><b>${esc(d.wd)}</b> ${esc(d.long)}</a></li>`).join('')}</ul>
+${ANS_DAYS_CSS}</section>`;
+}
+
 function buildFootlePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
   const playHref = `${SITE.base}/play?game=footle`;
@@ -5179,6 +5203,7 @@ ${bodyHtml}
 <div class="prose">
 <p>Need a nudge before you burn a guess? The <a href="${SITE.base}/football-wordle/answer/">Footle hints &amp; answer page</a> gives progressive clues for today's puzzle — the answer stays hidden until you tap to reveal it — plus a running archive of every past Football Wordle solution. Best used after you've had a proper go yourself.</p>
 </div></section>
+${recentFootleSection()}
 ${appCtaBand('football')}
 <section class="sec"><h2>Footle FAQ</h2>
 ${renderFaq(cfg.faq)}
@@ -5550,6 +5575,7 @@ ${bodyHtml}
 <div class="prose">
 ${siblings.map((x) => `<p><a href="${SITE.base}/${x.slug}/"><strong>${esc(x.name)}</strong></a> — ${esc(x.blurb)}</p>`).join('\n')}
 </div></section>
+${cfg.slug === DAILY7_PAGE.slug ? recentDailySection() : ''}
 ${appCtaBand('football')}
 <section class="sec"><h2>${esc(cfg.game)} FAQ</h2>
 ${renderFaq(cfg.faq)}
@@ -5778,6 +5804,13 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/club-nicknames/`, freq: 'monthly', pri: '0.7' },
     { loc: `${SITE.base}/xi/`, freq: 'daily', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
+    // One page per finished puzzle / day, served by api/footle.js and
+    // api/daily-answers.js. Only the last 30 are submitted, because only the
+    // last 30 are linked from the landing pages below — the orphan gate is
+    // right that a sitemap entry nobody links to is a liability, not an asset.
+    ...recentFootleAnswers(30).map((a) => ({ loc: a.url, freq: 'yearly', pri: '0.5' })),
+    { loc: `${SITE.base}/daily-football-quiz/answers/`, freq: 'daily', pri: '0.7' },
+    ...recentDailyDays(30).map((d) => ({ loc: d.url, freq: 'yearly', pri: '0.5' })),
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${TRAIL_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${DAILY7_PAGE.slug}/`, freq: 'daily', pri: '0.9' },

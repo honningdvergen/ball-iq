@@ -127,7 +127,7 @@
 
 /* footer sitemap */
 .fd-foot{border-top:1px solid var(--bd);background:#0C0E13;padding:36px 0 28px}
-.fd-foot-in{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px}
+.fd-foot-in{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:22px}
 .fd-foot-col{display:flex;flex-direction:column;gap:5px;min-width:0}
 .fd-foot-col a{font-size:13.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fd-foot-col a:hover{color:var(--t1)}
