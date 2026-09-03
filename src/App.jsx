@@ -9604,6 +9604,9 @@ function AppInner() {
   // sheet is open by then is only knowable at fire time. A ref, not state:
   // the scheduled closure would otherwise capture a stale `false`.
   const askShareNameRef = useRef(false);
+  // The results-screen 'save' nudge waits here until the player LEAVES results
+  // (see goHome). It used to fire on a 2s timer over the results themselves.
+  const saveNudgePendingRef = useRef(false);
   /**
    * ⚠️ THE RATING ASK IS SCHEDULED AT A CELEBRATION AND FIRES UP TO 3.5s LATER.
    *
@@ -11981,15 +11984,15 @@ function AppInner() {
         // the name sheet first, and the auth prompt would cover it and eat the
         // share. Clear the once-flag so the nudge simply takes the next peak —
         // exactly what the level-up and challenge guards do.
-        celebrationTimeoutsRef.current.push(setTimeout(() => {
-          try {
-            if (askShareNameRef.current) {
-              localStorage.removeItem('biq_save_nudge_shown');
-              return;
-            }
-            openAuthPrompt?.('save');
-          } catch {}
-        }, 2000));
+        // 2026-09-03: NOT a timer any more. The play-through found the sheet
+        // covering the results two seconds in — score, accuracy and the
+        // "Review N missed answers" panel never seen — on the exact moment the
+        // day-1→2 baseline says predicts a return (every returner had finished;
+        // no non-finisher ever came back). The ask now waits until the player
+        // leaves the results by Back to Home (goHome). Play again keeps it
+        // pending for the next exit, so it still fires once, just never over
+        // the thing the player just earned.
+        saveNudgePendingRef.current = true;
       }
     } catch { /* nudge is never load-bearing */ }
 
@@ -12629,6 +12632,14 @@ function AppInner() {
   }, []);
 
   const goHome = useCallback(() => {
+    // The deferred 'save' nudge (results handler): fire it on the way out of
+    // results, once Home has rendered. The share-name sheet keeps precedence,
+    // as before — the nudge simply takes the next exit.
+    if (saveNudgePendingRef.current && screen === "results") {
+      saveNudgePendingRef.current = false;
+      if (!askShareNameRef.current) setTimeout(() => { try { openAuthPrompt?.('save'); } catch {} }, 350);
+      else { try { localStorage.removeItem('biq_save_nudge_shown'); } catch {} }
+    }
     setArchiveDate(null);
     setScreen("home");
     setTab("home");
@@ -12642,7 +12653,8 @@ function AppInner() {
     setLocalResult(null);
     setActiveClub(null);
     setActiveLeague(null);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen]);
   // Wordmark "Home" handler — wired to the mobile .logo and the BiqNav
   // brand. If the user is currently in a Stage 1 multiplayer room,
   // confirm before bailing so we don't accidentally orphan their seat.

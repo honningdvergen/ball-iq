@@ -182,6 +182,14 @@ const _hasHandoff =
 // branch; it is merged and live, and two rejected homepages should not be
 // reachable by anyone. Their files are deleted; the real rollback is git.
 const showMarketing = _isBrowser && !_hasHandoff && _path === '/'
+// A browser visitor who opens /play cold skips the onboarding warm-up ("Quick
+// one — give it a go") and lands on the app under the site header. The
+// front door's game doors already bypass it; a taster before the product is
+// the thing the 2026-09-03 rethink retired. Native and installed PWAs keep
+// their first-run flow; deep links and OAuth returns never reach this line.
+if (_isBrowser && !_hasHandoff && /^\/play\/?$/.test(_path)) {
+  try { if (localStorage.getItem('biq_onboarded') !== '1') localStorage.setItem('biq_onboarded', '1') } catch {}
+}
 const loadFrontDoor = () => import('./marketing/FrontDoor.jsx')
 const FrontDoor = React.lazy(loadFrontDoor)
 

@@ -917,7 +917,12 @@
       var native=location.protocol==='capacitor:'||document.documentElement.classList.contains('native-app')||!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
       if(native)return;
       var p=location.pathname;
-      if(p==='/'||p.indexOf('/home-preview')===0)return;
+      if(p==='/')return;
+      /* 2026-09-03: browser tabs skip onboarding at /play (main.jsx marks the
+         device onboarded before React mounts), so the warm-up shell would be
+         a question nobody is asked. Installed PWAs keep it. */
+      var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+      if(!standalone)return;
       if(localStorage.getItem('biq_onboarded')==='1')return;
       if(/^\/(join|c)\//.test(p))return;
       if(/[?&](join|c|club|quiz|stump)=/.test(location.search))return;
