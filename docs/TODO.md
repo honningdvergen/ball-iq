@@ -26,6 +26,14 @@ HOME (/play) the front door at `/`, retire the taster, first-class club finder +
 Daily 7, Trail), pull SEO pages into the app shell. Next artefact = the real `/` on a preview URL,
 not a mockup. See memory project_app_home_as_front_door.
 
+**✅ APPROVED + BUILT (increment 1, branch `front-door`, 80820b4 + 7ad7d24, not merged):** `/` renders
+the app home; root arrivals skip the warm-up; club finder at the top of Home (search → that club's
+quiz, 8 most-played chips, All clubs / By league); Transfer Trail as a third Daily row; example-card
+popup waits for the Profile tab; desktop rail no longer shows a fabricated 64 before the first
+answer. Verified on dev (Chromium 1440, WebKit 390); vitest 495/495. Alex to review the Vercel
+preview, then merge. Increment 2: SEO pages adopt the app shell, club-page Play → that club's quiz.
+⚠️ e2e specs that assumed `/` = marketing may need updating (consent-banner, viewport-audit).
+
 **Previous next (superseded):** 1) Alex picks A / A+ / B → build the chosen world as the SHARED question-sheet
 component in gen-seo-pages + homepage + app shell. 2) P1s: "Next question" clipped 18px on club
 pages at 390 (both engines); consent bar over play controls (inline it); 1911 void; 10px text
