@@ -21,7 +21,6 @@
 // the tiny pure-math libs. Every Play is a URL into the app at /play, which
 // App.jsx's boot handles (?game=… / ?club=… / ?quiz=…) and which bypasses
 // onboarding for a visitor who has already chosen a game.
-import '../design/fonts.css';
 import '../design/report.css';
 import '../design/front.css';
 import React, { useState, useEffect, useMemo } from 'react';

@@ -167,6 +167,7 @@
    is one section among others, so it takes the page's voice: the same 22px
    heading, one line of sub-copy, a modest clock, the page's own greys. */
 .fd .fd-practice .fb{background:transparent;background-image:none;border-top:0;padding:0;margin:0}
+.fd .fd-practice .fb,.fd .fd-practice .fb *{font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 .fd .fd-practice .fb-in{padding:22px 24px 24px;max-width:none;margin:0}
 .fd .fd-practice .fb-h2{font:800 22px/1.15 'Inter',system-ui,sans-serif;letter-spacing:-.02em;text-transform:none;color:var(--t1)}
 .fd .fd-practice .fb-sub{font-size:14px;line-height:1.5;color:var(--t2);max-width:60ch;margin-top:6px}
