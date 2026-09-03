@@ -599,13 +599,30 @@ function HomeScreenImpl({
                   <span className="hr-rating-lvl"><lvl.level.Icon size={13} strokeWidth={2.3} /> {lvl.level.name ? `${lvl.level.name} · ` : ""}{(xp || 0).toLocaleString()} XP</span>
                 </div>
               </div>
-              <div className="hr-rating-score">
-                <div className="hr-rating-num">{card.overall}</div>
-                <div className="hr-rating-scap">
-                  <div className="hr-rating-overall">OVERALL</div>
-                  <div className="hr-rating-tier">{tm.label}</div>
+              {/* A rating you have not earned is not a rating. computeCard's
+                  0.4 default produced "64 OVERALL SILVER" for a stranger who
+                  had answered nothing — the same fabricated-number bug the
+                  Profile tab fixed on 2026-08-28, still live on the desktop
+                  rail, and now the first thing a front-door visitor reads.
+                  Zero answers → an honest empty state; the card appears
+                  after the first game. */}
+              {(stats?.totalAnswered || 0) > 0 ? (
+                <div className="hr-rating-score">
+                  <div className="hr-rating-num">{card.overall}</div>
+                  <div className="hr-rating-scap">
+                    <div className="hr-rating-overall">OVERALL</div>
+                    <div className="hr-rating-tier">{tm.label}</div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="hr-rating-score hr-rating-empty">
+                  <div className="hr-rating-num" aria-hidden="true">—</div>
+                  <div className="hr-rating-scap">
+                    <div className="hr-rating-overall">OVERALL</div>
+                    <div className="hr-rating-tier" style={{ color: "var(--t2)" }}>Play a game to get rated</div>
+                  </div>
+                </div>
+              )}
               <button type="button" className="hr-rating-view" onClick={() => setTab("profile")}>
                 View full profile →
               </button>
