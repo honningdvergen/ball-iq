@@ -1,6 +1,26 @@
 {
   "redirects": [
     {
+      "source": "/home-old/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home-old",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home-preview/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home-preview",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/t",
       "destination": "/footle?utm_source=threads",
       "permanent": false
