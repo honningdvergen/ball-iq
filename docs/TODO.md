@@ -27,6 +27,16 @@ on 69 impr, /football-quotes/ 0/18, /club-nicknames/ 0/17 — don't add more of 
 works and is barely built. Discover verdict: re-point the column at what pulls (club quizzes by
 league, "with answers", Footle + its answer page, lists) and build the answer surface, not new
 facts pages.
+**✅ BRICK 2 (79f2f00, live ~02:30): the answer surface + Discover.** Alex: "is this an either-or? it is up
+to you" → both. One page per finished Footle puzzle (/football-wordle/answer/N/) and per Daily 7 day
+(/daily-football-quiz/answers/YYYY-MM-DD/), served (edge / Node) in the site shell, tested
+(tests/unit/answer-pages.test.js), last 30 in the sitemap and linked from both landing pages (orphan
+gate holds). Future → noindex 404; Daily 7 before the 08-19 log → 404. Discover re-pointed on all three
+footers from src/marketing/siteNav.js; facts/quotes/nicknames under Ball IQ. Prod-verified all seven
+route classes. Found + fixed on prod: SWR=3600 served yesterday's number for up to an hour after UTC
+midnight → today-pages SWR=60. Known: server "today" is UTC (Oslo 00:00–02:00 disagrees with the app).
+**Read:** GSC page filters ~/football-wordle/answer/ and ~/daily-football-quiz/answers/ from ~09-18.
+Memory: project_answer_pages.
 **Next bricks, in order:** a) the return trip — bring Alex two concrete options with the data above
 (the site has no reason to come back tomorrow: web push 1 subscriber, device tokens 48, in-app
 daily_reminder rows 117, email activate 72 / day2 8 / winback 44) · b) Discover: what to add — needs
