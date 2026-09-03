@@ -179,7 +179,13 @@ const CSS = `
 @media (max-width:699px){
   .sr-nav{gap:0}
   .sr-grp{flex:1 1 auto}
-  .sr-drop{left:0;right:0;min-width:0}
+  /* The panel used to inherit its trigger's width (left:0;right:0 on a 110px
+     flex child) while items were nowrap — 4 of 5 labels spilled over the h1.
+     Measured 2026-09-03: panel 110px, scrollWidth 181. Keep the desktop
+     min-width; only the LAST group hangs from its right edge so it stays on
+     screen. */
+  .sr-drop{left:0;right:auto;min-width:212px;max-width:calc(100vw - 32px)}
+  .sr-grp:last-child .sr-drop{left:auto;right:0}
 }
 .sr a.sr-webbtn{display:flex;justify-content:center;width:100%;margin-top:10px}
 .sr-footwhy{font-size:12.5px;opacity:.75;margin:4px 0 2px}
