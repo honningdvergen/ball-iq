@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Heart, UserRoundSearch, LandPlot, Newspaper, Settings, Pencil } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Heart, UserRoundSearch, LandPlot, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -18,6 +18,87 @@ import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
 import { MODE_ACCENT } from "../lib/accents.js";
 import { PLAY_STORE_URL, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
+
+// ── CLUB FINDER (front door, 2026-09-03) ─────────────────────────────────────
+// Club quizzes are the largest single volume on the site — 763 anonymous plays
+// in 30 days, Arsenal 113, Liverpool 73, Barcelona 51 — and until now the only
+// way in from Home was one tile labelled "Pick your club" in the fourth screen
+// of the mode grid. Alex's brief for the rethink: "you want to find the game
+// mode or quiz you are looking for easily — maybe it is your club or your
+// league". So: a search field at the top of Home that goes straight into a
+// club's quiz, plus the twelve most-played clubs as chips. Search matches on
+// name and the three-letter code, prefix before substring, same rule as the
+// club picker sheet in App.jsx. clubPacks/clubAbbr arrive as props — importing
+// them from App.jsx would be a circular import (App imports this screen).
+// Eight, in 30-day play order (Arsenal 113 … Man Utd 11), so the row is two
+// lines on desktop and one swipe on a phone; the rest are one tap away.
+const FEATURED_CLUB_KEYS = [
+  "Arsenal", "Liverpool", "Barcelona", "Chelsea", "ManCity", "RealMadrid", "Tottenham", "ManUtd",
+];
+// Badge text colour from the club colour's luminance: Real Madrid's white and
+// Tottenham's navy cannot share one text colour.
+const abbrInk = (hex) => {
+  const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ""));
+  if (!m) return "#fff";
+  const n = parseInt(m[1], 16), r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.62 ? "#14171A" : "#fff";
+};
+function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs, onLeagues }) {
+  const [q, setQ] = React.useState("");
+  const [focused, setFocused] = React.useState(false);
+  if (!clubPacks) return null;
+  const norm = (x) => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const nq = norm(q.trim());
+  const matches = !nq ? [] : Object.entries(clubPacks).map(([key, pack]) => {
+    const name = norm(pack.name), abbr = norm(clubAbbr?.[key]);
+    if (name.startsWith(nq) || abbr === nq) return { key, pack, rank: 0 };
+    if (name.includes(nq) || abbr.startsWith(nq)) return { key, pack, rank: 1 };
+    return null;
+  }).filter(Boolean).sort((a, b) => a.rank - b.rank || a.pack.name.localeCompare(b.pack.name)).slice(0, 8);
+  const pick = (key) => { setQ(""); onPickClub(key); };
+  const total = Object.keys(clubPacks).length;
+  return (
+    <div className="club-finder" role="search">
+      <div className="cf-field">
+        <Search size={18} strokeWidth={2.25} aria-hidden="true" className="cf-icon" />
+        <input
+          type="search"
+          className="cf-input"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setTimeout(() => setFocused(false), 120)}
+          onKeyDown={(e) => { if (e.key === "Enter" && matches[0]) pick(matches[0].key); if (e.key === "Escape") setQ(""); }}
+          placeholder="Find your club…"
+          aria-label="Find your club"
+          autoCapitalize="none" autoCorrect="off" spellCheck={false} enterKeyHint="search"
+        />
+      {nq && focused && (
+        <div className="cf-results" role="listbox" aria-label="Clubs">
+          {matches.length === 0 && <div className="cf-empty">No club called “{q.trim()}” on file yet. <button type="button" className="cf-link" onClick={onAllClubs}>See every club</button></div>}
+          {matches.map(({ key, pack }) => (
+            <button key={key} type="button" role="option" className="cf-row" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(key)}>
+              <span className="cf-abbr" style={{ background: pack.color || "var(--s2)", color: abbrInk(pack.color) }}>{clubAbbr?.[key] || pack.name.slice(0, 3).toUpperCase()}</span>
+              <span className="cf-name">{pack.name}</span>
+              <span className="cf-go">Play →</span>
+            </button>
+          ))}
+        </div>
+      )}
+      </div>
+      <div className="cf-chips" aria-label="Most played clubs">
+        {FEATURED_CLUB_KEYS.filter((k) => clubPacks[k]).map((k) => (
+          <button key={k} type="button" className="cf-chip" onClick={() => onPickClub(k)}>
+            <span className="cf-abbr" style={{ background: clubPacks[k].color || "var(--s2)", color: abbrInk(clubPacks[k].color) }}>{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
+            <span className="cf-chip-name">{clubPacks[k].name}</span>
+          </button>
+        ))}
+        <button type="button" className="cf-chip cf-chip-all" onClick={onAllClubs}>All {total} clubs →</button>
+        <button type="button" className="cf-chip cf-chip-all" onClick={onLeagues}>By league →</button>
+      </div>
+    </div>
+  );
+}
 
 // ── Footle HERO card (DESKTOP web only) ──────────────────────────────────────
 // desktop-web-refresh: the Home hero is a compact GREEN hero card matching the
@@ -135,6 +216,9 @@ function HomeScreenImpl({
   setOnlineAutoCreate,
   notifCount = 0,
   onOpenNotifs,
+  clubPacks,
+  clubAbbr,
+  launchClubQuiz,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
 
@@ -332,6 +416,16 @@ function HomeScreenImpl({
         );
       })()}
 
+      {/* FRONT DOOR: the club finder sits above everything but the greeting.
+          Today's dailies follow; the modes grid stays below. */}
+      <ClubFinder
+        clubPacks={clubPacks}
+        clubAbbr={clubAbbr}
+        onPickClub={(key) => { if (launchClubQuiz) launchClubQuiz(key); else startMode("clubquiz"); }}
+        onAllClubs={() => startMode("clubquiz")}
+        onLeagues={() => startMode("leaguequiz")}
+      />
+
       {/* 1.1 async challenge: a friend's "beat my Daily 7" link landed here.
           Shown only when the challenge is for today and the user hasn't played
           yet (gated by the parent). Play routes into today's Daily 7; the
@@ -428,6 +522,25 @@ function HomeScreenImpl({
               </span>
               <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
             </button>
+            {/* Transfer Trail joins the daily zone as a ROW, not a hero (Alex,
+                earlier: "it needs marinating" as a hero; today: "footle and
+                transfer trail are better gamemodes"). Third by play in the
+                30-day read — 44 of 110 signed-in players. Same row style as
+                the Daily 7 so the zone reads as one list of today's fixtures. */}
+            {trailLive && (
+              <button
+                className={`todays-seven-secondary trail-row${trailDone ? ' is-done' : ''}`}
+                onClick={() => setScreen("trail")}
+                aria-label={trailDone ? "Today's Transfer Trail: done — review" : "Play today's Transfer Trail"}
+              >
+                <span className="t7s-icon" aria-hidden="true"><Route size={22} strokeWidth={2} /></span>
+                <span className="t7s-body">
+                  <span className="t7s-title">Transfer Trail</span>
+                  <span className="t7s-sub">{trailDone ? <>✅ Done · today's player</> : <>Follow the moves · name the player</>}</span>
+                </span>
+                <span className="t7s-cta">{trailDone ? "View" : "Play"}</span>
+              </button>
+            )}
           </div>
         );
       })()}

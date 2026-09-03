@@ -1188,7 +1188,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, nameEditNonce }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, nameEditNonce, isActiveTab = true }) {
   const { user, profile: authProfile, isGuest, isAnonUser, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -1600,7 +1600,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
 
           Uses the app's own .modal-overlay so it dims, animates and respects the
           safe area exactly like every other sheet. */}
-      {(stats?.gamesPlayed || 0) === 0 && !sampleDismissed && (() => {
+      {/* isActiveTab (2026-09-03): the popup is portalled to document.body, so
+          it used to appear over HOME on a first visit — stacked with the
+          first-session tip and the consent bar, three overlays at once (seen
+          in the critique's play-through). It is the Profile tab's "here is
+          what you are playing for"; it waits for the Profile tab. */}
+      {isActiveTab && (stats?.gamesPlayed || 0) === 0 && !sampleDismissed && (() => {
         // tierPalette, not a raw key: the bronze/silver/gold rename left
         // CARD_TIERS.elite undefined, and t.bg then crashed the WHOLE Profile
         // tab — but only for gamesPlayed === 0, i.e. precisely the guests and

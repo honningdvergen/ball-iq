@@ -3703,3 +3703,35 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
 .fpc-flag{font-size:14px;line-height:1;flex:0 0 auto;}
 .fpc-val{font-size:16px;font-weight:800;font-feature-settings:"tnum";line-height:1;}
 .fpc-abbr{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.06em;line-height:1;}
+
+/* ── CLUB FINDER (front door, 2026-09-03) ─────────────────────────────────────
+   Search field + most-played club chips at the top of Home. Tokens only —
+   same surfaces, borders and text colours as the rest of the home screen. */
+.club-finder{position:relative;margin:2px 0 12px;}
+.cf-field{position:relative;display:flex;align-items:center;}
+.cf-icon{position:absolute;left:14px;color:var(--t3);pointer-events:none;}
+.cf-input{width:100%;box-sizing:border-box;min-height:48px;padding:12px 14px 12px 42px;border-radius:14px;background:var(--s1);border:1px solid var(--border);color:var(--t1);font-family:inherit;font-size:16px;font-weight:600;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .15s,box-shadow .15s;}
+.cf-input::placeholder{color:var(--t3);font-weight:500;}
+.cf-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(88,204,2,0.18);}
+.cf-input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;}
+.cf-results{position:absolute;left:0;right:0;top:100%;z-index:30;margin-top:6px;padding:6px;background:var(--s1);border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,0.55);}
+.cf-row{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:8px 10px;border:none;border-radius:10px;background:none;color:var(--t1);font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;}
+.cf-row:hover,.cf-row:focus-visible{background:var(--s2);outline:none;}
+.cf-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cf-go{font-size:12.5px;font-weight:700;color:var(--accent);}
+.cf-empty{padding:12px 10px;font-size:13.5px;color:var(--t2);}
+.cf-link{background:none;border:none;padding:0;color:var(--accent);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+.cf-abbr{flex:0 0 auto;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#fff;}
+.cf-chips{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px;mask-image:linear-gradient(90deg,#000 92%,transparent);}
+.cf-chips::-webkit-scrollbar{display:none;}
+.cf-chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--s1);border:1px solid var(--border);color:var(--t1);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s;}
+.cf-chip:hover,.cf-chip:focus-visible{border-color:var(--bd3, #3A3D4A);background:var(--s2);outline:none;}
+.cf-chip-all{padding:6px 14px;color:var(--t2);}
+@media (min-width:1024px){
+  .club-finder{margin:4px 0 16px;}
+  .cf-chips{flex-wrap:wrap;overflow:visible;mask-image:none;}
+}
+/* Transfer Trail row in the daily zone: amber family like the Daily 7, cooler. */
+.todays-seven-secondary.trail-row{background:linear-gradient(120deg,rgba(124,195,240,0.10),rgba(124,195,240,0.03) 60%,var(--s1));border-color:rgba(124,195,240,0.20);}
+.todays-seven-secondary.trail-row .t7s-icon{color:#7CC3F0;}
+.daily-zone > .todays-seven-secondary + .todays-seven-secondary{margin-top:8px;}

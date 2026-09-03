@@ -137,9 +137,10 @@
          non-home routes here — in <head>, before the body is parsed — and let
          CSS hide it. Doing this after paint would flash a wall of marketing
          text over the game on every cold load. */
-      if (location.pathname !== '/' && location.pathname !== '/index.html') {
-        document.documentElement.classList.add('biq-not-home');
-      }
+      /* 2026-09-03: "/" renders the game too (front-door change, main.jsx),
+         so the static copy is now crawler-only on EVERY route. Always hide it
+         before first paint; React's createRoot() removes it on mount. */
+      document.documentElement.classList.add('biq-not-home');
       if (location.protocol === 'capacitor:' ||
           (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform())) {
         document.documentElement.classList.add('native-app');

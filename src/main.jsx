@@ -167,9 +167,22 @@ const _hasHandoff =
   /[?&]join=/.test(_search) ||
   /[?&]code=/.test(_search) ||
   /access_token=/.test(_hash)
+// FRONT DOOR (Alex, 2026-09-03): "/" renders the GAME for everyone. The site
+// is the product; a stranger lands on the same home screen a player uses —
+// today's Footle, the Daily 7, the club finder, the modes — not a marketing
+// page about them. The two marketing surfaces stay reachable for comparison
+// and as the visual rollback: /home-preview (Scouting Report), /home-old.
 const showMarketing =
   _isBrowser && !_hasHandoff &&
-  (_path === '/' || _path.startsWith('/home-preview') || _path.startsWith('/home-old'))
+  (_path.startsWith('/home-preview') || _path.startsWith('/home-old'))
+// A browser visitor at the root skips the onboarding warm-up ("Quick one —
+// give it a go") and lands straight on Home. The critique measured seven taps
+// from arrival to the first real question; the warm-up was most of them, and
+// it is a taster — the thing the homepage rethink retired. /play keeps the
+// warm-up for now (native and deep links never reach this branch).
+if (_isBrowser && !_hasHandoff && _path === '/') {
+  try { if (localStorage.getItem('biq_onboarded') !== '1') localStorage.setItem('biq_onboarded', '1') } catch {}
+}
 
 // THE SWAP (Alex, 2026-08-03: "swap it"). The Scouting Report is the
 // homepage. All nine swap-ready items verified — the skip link on real

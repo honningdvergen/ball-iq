@@ -13768,6 +13768,9 @@ function AppInner() {
               setOnlineAutoCreate={setOnlineAutoCreate}
               notifCount={notifCount}
               onOpenNotifs={user ? openNotifs : undefined}
+              clubPacks={CLUB_PACKS}
+              clubAbbr={CLUB_ABBR}
+              launchClubQuiz={launchClubQuiz}
             />
             </TabErrorBoundary>
           </div>
@@ -13829,7 +13832,7 @@ function AppInner() {
           <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="profile">
             <React.Suspense fallback={<ScreenLoading label="Loading profile" />}>
-              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onSaveCard={saveCardImage} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} onPlayDaily={playDaily} nameEditNonce={nameEditNonce} />
+              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onSaveCard={saveCardImage} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} onPlayDaily={playDaily} nameEditNonce={nameEditNonce} isActiveTab={tab === "profile"} />
             </React.Suspense>
             </TabErrorBoundary>
           </div>
