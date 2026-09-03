@@ -1,3 +1,28 @@
+## ⭐ NEXT SESSION — website critique with EYES (Alex, 2026-09-03)
+
+Alex: *"not really content with the scouting report on our homepage… i do not think our website
+screams 10 thousand dollar website or A+ website… use your eyes, take screenshots, look for
+issues… what needs redesigning or tweaking. think strategically. also what should we add to
+discover lists so more people find the backdoor to ball iq?"*
+
+Do this in a FRESH session (the old one hit 99% context — each turn cost ~1M tokens).
+
+1. Shoot prod: Chromium 1911×990 (Alex's monitor) + 1440×900, WebKit 390×844 — home,
+   /football-quiz/, /quiz/arsenal/, /lists/, one list leaf, /footle, /play. Fold + full-page.
+   Script drafted at scratchpad/shoot.mjs of session c6c4d416 (recreate; ~40 lines).
+2. ⚠️ Suspected bug I shipped 2026-09-02: `.sr-what` ("Ball IQ is a free football quiz.") renders
+   NEAR-INVISIBLE dark grey on the black homepage in Alex's screenshot — the most important
+   sentence is the least visible. Verify computed color vs parent; fix if so.
+3. Desktop at 1900: content ~1000px centred in a black void; 5-row "not assessed" ledger (DM-4);
+   headline scale flat (DM-5); fluid type at 1920 (DD-10). Cross-ref .audit/critique-2026-09-02/lean/design.md.
+4. Constraints: homepage stays a BOTH hero (Footle + quiz) — memory feedback_homepage_both_hero.
+   Store badges stay where Alex put them. No content wave (strategy.md §5) — but lists question
+   is Alex's; answer it with GSC data (sc_top_pages filtered /lists/, which reach page 1 and why).
+5. Deliver: screenshot-backed report artifact (grades per page), THEN offer 2-3 homepage
+   directions on a /design canvas — settle direction with Alex before building.
+6. Still open from 2026-09-02: delete relay guard in send-campaign-email + clear 20 burned
+   email_events rows; commit generated src/marketing/footlePractice.js drift.
+
 # Ball IQ — the board
 
 ## 🎯 2026-09-02 — THE REAL LEAK IS DAY 1→2, AND IT HANGS ON FINISHING (baseline frozen)
