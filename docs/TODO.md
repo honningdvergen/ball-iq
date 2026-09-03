@@ -33,6 +33,10 @@ popup waits for the Profile tab; desktop rail no longer shows a fabricated 64 be
 answer. Verified on dev (Chromium 1440, WebKit 390); vitest 495/495. Alex to review the Vercel
 preview, then merge. Increment 2: SEO pages adopt the app shell, club-page Play → that club's quiz.
 ⚠️ e2e specs that assumed `/` = marketing may need updating (consent-banner, viewport-audit).
+**⚠️ Alex on the preview: "looks like a copy of the app instead of an app… designed for an app."
+DO NOT MERGE as-is.** Next: competitive study of ~12 successful quiz/sports-puzzle sites (Sporcle,
+JetPunk, playfootball.games, NYT Games, Immaculate Grid, Poeltl, Weddle, Missing11, Crossover Grid,
+The Athletic games, Footdle, Planet Football) → a website-shaped IA for `/`, keeping the finder idea.
 
 **Previous next (superseded):** 1) Alex picks A / A+ / B → build the chosen world as the SHARED question-sheet
 component in gen-seo-pages + homepage + app shell. 2) P1s: "Next question" clipped 18px on club
