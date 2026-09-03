@@ -37,6 +37,10 @@ preview, then merge. Increment 2: SEO pages adopt the app shell, club-page Play 
 DO NOT MERGE as-is.** Next: competitive study of ~12 successful quiz/sports-puzzle sites (Sporcle,
 JetPunk, playfootball.games, NYT Games, Immaculate Grid, Poeltl, Weddle, Missing11, Crossover Grid,
 The Athletic games, Footdle, Planet Football) → a website-shaped IA for `/`, keeping the finder idea.
+**✅ STUDY DONE:** https://claude.ai/code/artifact/23bb9004-a669-49a6-99c0-8c43e9332507 — 10-block IA
+(header w/ search, date line, Today strip w/ progress, one game in place, club/league finder, all-games
+grid w/ Archive, timestamped lists, real numbers, how-to, sitemap footer). Awaiting Alex: light vs
+dark; finder at block 3 or 5. Memory: project_quiz_sites_field_study.
 
 **Previous next (superseded):** 1) Alex picks A / A+ / B → build the chosen world as the SHARED question-sheet
 component in gen-seo-pages + homepage + app shell. 2) P1s: "Next question" clipped 18px on club
