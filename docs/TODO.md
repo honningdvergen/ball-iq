@@ -1,4 +1,14 @@
-## ⭐ 2026-09-03 — EYES-ON CRITIQUE DONE · direction pending Alex
+## ✅ 2026-09-03 — FRONT DOOR MERGED TO MAIN (69aeac2) — verify prod, then DESIGN.md
+
+Merged on Alex's word ("this is good progress for us"). Live on balliq.app once Vercel finishes:
+`/` = FrontDoor.jsx (website, not app shell); every generated page carries scripts/seo/shell.mjs
+(one header + search + sitemap footer); one left edge on every page. **Next, in order:**
+1) re-document DESIGN.md from the app system (the design hook still compares against the retired
+Scouting Report) · 2) content-level pass on generated pages (mono breadcrumbs/eyebrows, stat strip)
+· 3) results nudge off the +2s timer · 4) the 7-URL lists title test · 5) e2e specs that assumed
+`/` = marketing. Memory: project_app_home_as_front_door, project_quiz_sites_field_study.
+
+## 2026-09-03 — EYES-ON CRITIQUE DONE (history)
 
 Report (screenshot-backed, grades per page): https://claude.ai/code/artifact/6ef2ec9e-6503-499d-bb85-4608b8d6abdb
 Canvas (Direction A + two bolder takes, page "Bolder takes"): https://claude.ai/code/artifact/f72358fc-7ea7-459c-a75c-006af31283f8
