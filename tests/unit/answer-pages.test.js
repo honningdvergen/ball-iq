@@ -29,6 +29,7 @@ describe('Footle answer pages', () => {
     expect(p.html).toContain('class="fd-foot"');
     expect(p.html).toContain('id="fd-find"');
     expect(p.cacheSeconds).toBeLessThanOrEqual(24 * 3600);
+    expect(p.staleSeconds).toBe(60); // a today-page must roll with the puzzle, not an hour later
   });
 
   it('a past puzzle is its own open page with prev/next and a month of cache', () => {
@@ -44,6 +45,7 @@ describe('Footle answer pages', () => {
     expect(p.html).toContain(footleUrl(n - 1));
     expect(p.html).toContain(footleUrl(n + 1));
     expect(p.cacheSeconds).toBe(30 * 24 * 3600);
+    expect(p.staleSeconds).toBe(24 * 3600);
   });
 
   it('today\'s number resolves to the hub, and the future is a noindex 404', () => {

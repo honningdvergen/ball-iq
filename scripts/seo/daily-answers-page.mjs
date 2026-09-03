@@ -73,6 +73,7 @@ function notFound() {
   return {
     status: 404,
     cacheSeconds: 60,
+    staleSeconds: 60,
     html: answerDocument({ title: 'Daily 7 answers not found | Ball IQ', description: 'No Daily 7 for that date.', canonical: HUB, robots: 'noindex, follow', body }),
   };
 }
@@ -124,6 +125,7 @@ ${recentBlock(now, di)}`;
   return {
     status: 200,
     cacheSeconds: isToday ? secondsToUtcMidnight(now) : 30 * 24 * 60 * 60,
+    staleSeconds: isToday ? 60 : 24 * 60 * 60,
     html: answerDocument({
       title,
       description,

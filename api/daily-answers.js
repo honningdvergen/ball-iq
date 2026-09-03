@@ -12,6 +12,6 @@ export default function handler(req, res) {
   const page = renderDailyAnswers({ date: d });
   res.status(page.status);
   res.setHeader('content-type', 'text/html; charset=utf-8');
-  res.setHeader('cache-control', `public, max-age=0, s-maxage=${page.cacheSeconds}, stale-while-revalidate=3600`);
+  res.setHeader('cache-control', `public, max-age=0, s-maxage=${page.cacheSeconds}, stale-while-revalidate=${page.staleSeconds}`);
   res.send(page.html);
 }

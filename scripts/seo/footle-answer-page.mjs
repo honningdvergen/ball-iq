@@ -86,6 +86,7 @@ function notFound() {
   return {
     status: 404,
     cacheSeconds: 60,
+    staleSeconds: 60,
     html: answerDocument({ title: 'Footle answer not found | Ball IQ', description: 'No Footle puzzle with that number.', canonical: HUB, robots: 'noindex, follow', body }),
   };
 }
@@ -130,6 +131,7 @@ function hubPage(now) {
   return {
     status: 200,
     cacheSeconds: secondsToUtcMidnight(now),
+    staleSeconds: 60, // seen on prod 2026-09-04: with 3600 the hub showed yesterday's number after the roll
     html: answerDocument({
       title,
       description,
@@ -176,6 +178,7 @@ function pastPage(n, todayN) {
   return {
     status: 200,
     cacheSeconds: 30 * 24 * 60 * 60,
+    staleSeconds: 24 * 60 * 60,
     html: answerDocument({
       title,
       description,

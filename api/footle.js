@@ -19,7 +19,7 @@ export default function handler(request) {
     status: page.status,
     headers: {
       'content-type': 'text/html; charset=utf-8',
-      'cache-control': `public, max-age=0, s-maxage=${page.cacheSeconds}, stale-while-revalidate=3600`,
+      'cache-control': `public, max-age=0, s-maxage=${page.cacheSeconds}, stale-while-revalidate=${page.staleSeconds}`,
     },
   });
 }
