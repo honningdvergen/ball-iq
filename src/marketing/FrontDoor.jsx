@@ -65,7 +65,7 @@ const GAMES = [
   { k: 'survival', n: 'Survival', line: 'One wrong answer and it ends', href: door('survival') },
   { k: 'hotstreak', n: 'Hot Streak', line: 'Sixty seconds, as many as you can', href: door('hotstreak') },
   { k: 'stadiums', n: 'Stadiums', line: 'Name every ground in the league', href: door('stadiums') },
-  { k: 'lineup', n: 'Guess the XI', line: 'Name the line-up from a famous match', href: '/lineup/' },
+  { k: 'lineup', n: 'Guess the XI', line: 'Name the line-up from a famous match', href: '/xi/' },
   { k: 'legends', n: 'Legends', line: 'Pre-2000 greats only', href: door('legends') },
   { k: 'chaos', n: 'Chaos', line: 'Quotes, nicknames and the rest', href: door('chaos') },
   { k: 'online', n: 'Play a friend', line: 'Live rooms, up to eight of you', href: door('online') },

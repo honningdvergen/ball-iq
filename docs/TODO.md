@@ -44,7 +44,11 @@ dark; finder at block 3 or 5. Memory: project_quiz_sites_field_study.
 **✅ DECIDED + BUILT (Alex: dark, search in the header, Today first, park "other people"):**
 `src/marketing/FrontDoor.jsx` — a website at `/` (see memory project_app_home_as_front_door, third
 pass). On branch `front-door`; preview URL below once Vercel builds. ⚠️ DESIGN.md is stale (Scouting
-Report); re-document from the app system after merge. Increment 2 still open: SEO pages → app shell.
+Report); re-document from the app system after merge. **✅ Increment 2 BUILT (same evening):** `scripts/seo/shell.mjs` — the front door's header (section
+links + club/league finder + Sign in, no CTA) and sitemap footer as static HTML on all 254 generated
+pages; SHELL_CSS replaces the old nav/footer CSS; hero h1 in Inter (Anton gone), no hero glow, the
+orange "Prove it" band is a card, buttons are pills without glow. Front door tokens aligned to the
+app's (bg #0A0A0A / card / bd / tx). ⚠️ keep front.css and shell.mjs in step. Still on the branch.
 
 **Previous next (superseded):** 1) Alex picks A / A+ / B → build the chosen world as the SHARED question-sheet
 component in gen-seo-pages + homepage + app shell. 2) P1s: "Next question" clipped 18px on club

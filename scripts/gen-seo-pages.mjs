@@ -81,6 +81,7 @@ import { QB } from '../src/questions.js';
 // homepage was still painting #1A1D27, a colour app.css:57 records the product
 // moving off. rootCss() emits the same bytes this file used to hardcode.
 import { rootCss } from '../src/design/tokens.js';
+import { shellHeader, shellFooter, SHELL_CSS } from './seo/shell.mjs';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE } from './seo/content.mjs';
 import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
@@ -488,12 +489,11 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){h.classList
   h.querySelectorAll('.nav-grp.open').forEach(function(x){x.classList.remove('open');x.querySelector('.nav-top').setAttribute('aria-expanded','false');});}});
 })();`;
 
-const navHtml = (active = '') => `<a class="skip" href="#main">Skip to content</a>
-<header class="nav"><div class="nav-in">
-<a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="28" height="28" />Ball&nbsp;<b>IQ</b></a>
-<div class="nav-right">${NAV_GROUPS.map((g) => navGroupHtml(g, active)).join('')}<a class="nav-play" href="${SITE.base}/play">Play free</a><a class="nav-cta" href="${SITE.getApp}" rel="noopener">Get the app</a></div>
-<button type="button" class="nav-burger" aria-expanded="false" aria-label="Open menu"><span></span><span></span><span></span></button>
-</div></header><script>${NAV_JS}</script>`;
+// ONE SHELL (2026-09-03). The header is scripts/seo/shell.mjs — the same
+// one-row header the front door renders in React: wordmark, section links, the
+// club/league finder, Sign in. No marketing button, no dropdown groups. The
+// older markup above (navGroupHtml, NAV_JS) is kept only for reference.
+const navHtml = (active = '') => shellHeader(SITE, active);
 const NAV = navHtml();
 
 function crumbs(items) {
@@ -594,7 +594,6 @@ ${stat}</div>`;
 // Single-column hero (Footle landing, listicles).
 function heroSection(props) {
   return `<section class="hero">
-<div class="hero-glow" aria-hidden="true"></div>
 <div class="hero-in">
 ${heroInner(props)}
 </div>
@@ -605,7 +604,6 @@ ${heroInner(props)}
 // the right (Claude Design "Quiz Landing" handoff). Stacks on narrow screens.
 function heroTwoCol(props, rightHtml) {
   return `<section class="hero">
-<div class="hero-glow" aria-hidden="true"></div>
 <div class="hero-grid">
 <div class="hero-left">${heroInner({ ...props, mini: true })}</div>
 <div class="hero-right">${rightHtml}</div>
@@ -633,7 +631,6 @@ function heroTwoCol(props, rightHtml) {
 // Defaults to bare /play so every non-club caller is unchanged.
 function appCtaBand(name, playHref) {
   return `<section class="sec"><div class="appband">
-<div class="appband-flame" aria-hidden="true">🔥</div>
 <div class="appband-in">
 <h2>Think you know ${esc(name)}? Prove it.</h2>
 <p>Streaks, live 1v1, your own Ball IQ score — and every quiz in one place.</p>
@@ -1823,84 +1820,7 @@ ${ADS_ACTIVE ? `<script>
   /* readable inner width for long-form/list sections (handoff keeps prose + FAQ narrow inside the wide frame) */
   .narrow{max-width:760px;margin-left:auto;margin-right:auto}
   h2{font-size:clamp(22px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1.12;margin:0 0 16px}
-  /* nav */
-  /* ⚠️ SAFARI DOES NOT PAINT THIS BLUR — verified by pixels, not by CSS.
-     Both engines report backdrop-filter:blur(14px) from getComputedStyle, so
-     the bug is invisible to any feature test; @supports will NOT catch it
-     either, because WebKit claims support while declining to render. Only a
-     screenshot shows it. Captured 2026-09-02 at scrollY 240, iPhone 13, on
-     /quiz/arsenal/: in WebKit the sentence "...Arsenal set - September 2 - a
-     fresh order every day" reads through the bar sharply enough to collide
-     with the Ball IQ wordmark; Chromium blurs the same pixels to nothing.
-     Cause is the known WebKit condition — the nav's scrolling ancestor
-     computes overflow: hidden auto, and a clipped backdrop root drops the
-     filter.
-     Tried .97 first and the sentence was STILL ghosting through legibly in
-     WebKit, so the bar is now SOLID #0A0A0A — the page background — and the
-     blur declaration is dropped entirely rather than left as decoration that
-     one engine ignores. Nothing is lost: on a near-black page the translucency
-     was never perceptible except as this bug. This is every Google landing
-     page, on every scroll, and it was invisible in the owner's own Chrome. */
-  .nav{position:sticky;top:0;z-index:100;background:#0A0A0A;border-bottom:1px solid #16181F}
-  .nav-in{max-width:none;margin:0 auto;padding:13px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:inline-flex;align-items:center;min-height:44px;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.02em;color:#fff}
-  .brand:hover{text-decoration:none}
-  .brand img{width:32px;height:32px;border-radius:8px}
-  /* Lockup unification (critique #5, 2026-08-29): the homepage's identity is
-     the GREEN IQ; the SEO template's gold one made a visitor crossing between
-     them change sites. Colors only — layout untouched. */
-  .brand b{color:var(--grn);font-weight:900}
-  /* Groups CENTERED in the bar, CTAs hard right. Two auto margins — one before
-     the first group, one before the play button — split the free space evenly,
-     which centres the group cluster without taking it out of flow or needing a
-     wrapper element (the mobile panel still targets .nav-right). */
-  .nav-right{display:flex;align-items:center;gap:6px;flex:1}
-  .nav-grp:first-of-type{margin-left:auto}
-  .nav-play{margin-left:auto}
-  .nav-link{color:var(--tx3);font-size:14px;font-weight:600}
-  .nav-link:hover{color:#fff;text-decoration:none}
-  .nav-link.active{color:#fff;border-bottom:2px solid var(--grn);padding-bottom:2px}
-  /* ── intent groups (Games / Quizzes / Discover) ── */
-  .nav-grp{position:relative}
-  .nav-top{display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:8px 11px;background:none;border:0;
-    color:var(--tx3);font:inherit;font-size:14px;font-weight:600;cursor:pointer;border-radius:10px}
-  .nav-top:hover,.nav-grp.open .nav-top{color:#fff;background:rgba(255,255,255,.06)}
-  .nav-top.active{color:#fff}
-  .nav-caret{transition:transform .16s;opacity:.7}
-  .nav-grp.open .nav-caret{transform:rotate(180deg)}
-  .nav-drop{position:absolute;top:calc(100% + 8px);left:0;min-width:236px;padding:7px;
-    background:#12141B;border:1px solid #242836;border-radius:14px;
-    box-shadow:0 18px 44px rgba(0,0,0,.55);display:none;flex-direction:column;gap:1px;z-index:120}
-  /* ⚠️ THE 8px GAP WAS EATING THE MENU. .nav-drop sits at top:calc(100% + 8px),
-     so a pointer travelling from the button down to the panel crossed 8px that
-     belonged to NEITHER element — :hover dropped and display:none snapped the
-     menu shut mid-reach. Reported from real use: "very sensitive to disappear
-     ... when i try to tap one of the modes the navigation menu just
-     dissappears". The ::after bridges that strip, and exists ONLY while the
-     group is hovered or open, so it never sits invisibly over content. */
-  .nav-grp:hover::after,.nav-grp.open::after{content:"";position:absolute;top:100%;left:0;right:0;height:10px}
-  .nav-grp.open .nav-drop{display:flex}
-  /* Hover-to-open for FINE POINTERS ONLY. On touch, :hover latches after a tap
-     and leaves a panel stuck open that nothing dismisses. Touch gets the click
-     toggle, which is what the aria-expanded button always promised. */
-  @media (hover:hover) and (pointer:fine){.nav-grp:hover .nav-drop{display:flex}}
-  .nav-drop a{display:block;padding:10px 12px;border-radius:9px;color:var(--tx2);font-size:14px;font-weight:600;white-space:nowrap}
-  .nav-drop a:hover{background:rgba(88,204,2,.10);color:#fff;text-decoration:none}
-  .nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;
-    background:none;border:0;cursor:pointer;padding:0 10px}
-  .nav-burger span{display:block;height:2px;background:#fff;border-radius:2px;transition:transform .18s,opacity .18s}
-  .nav.open .nav-burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-  .nav.open .nav-burger span:nth-child(2){opacity:0}
-  .nav.open .nav-burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-  /* Flat per the 2026-07-21 Clubs Directory handoff — Alex: no 3D look. */
-  /* The 126 quiz pages carried Get-the-app but NOT Play-free -- so the
-     browser-play CTA was missing from exactly the pages where a visitor has
-     most demonstrated intent to play in a browser. They arrived searching
-     "arsenal quiz", and the only action offered was an App Store trip. */
-  .nav-play{display:inline-flex;align-items:center;min-height:44px;padding:9px 15px;border:1.5px solid rgba(88,204,2,.55);border-radius:12px;color:var(--grn-soft);font-weight:800;font-size:13.5px}
-  .nav-play:hover{text-decoration:none;border-color:var(--grn);background:rgba(88,204,2,.08)}
-  .nav-cta{display:inline-flex;align-items:center;min-height:44px;padding:9px 16px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:13.5px;border-radius:12px}
-  .nav-cta:hover{text-decoration:none;filter:brightness(1.04)}
+${SHELL_CSS}
   /* hero */
   .hero{padding:46px 0 40px;position:relative;overflow:hidden}
   .hero-in{position:relative;z-index:2}
@@ -1960,7 +1880,7 @@ ${ADS_ACTIVE ? `<script>
   /* .cov is now an <a> (people were tapping these as divs). display:block +
      colour reset stop it rendering as an underlined default-blue link; the
      hover/focus state gives it the affordance it always lacked. */
-  .cov{display:block;color:inherit;text-decoration:none;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px 18px 16px;transition:border-color .15s,background .15s,transform .15s}
+  .cov{display:block;color:inherit;text-decoration:none;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 18px 16px;transition:border-color .15s,background .15s,transform .15s}
   a.cov:hover{border-color:var(--grn);background:var(--card2);transform:translateY(-2px)}
   a.cov:focus-visible{outline:2px solid var(--grn);outline-offset:2px}
   .cov h3{font-size:15.5px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.01em}
@@ -1996,10 +1916,10 @@ ${ADS_ACTIVE ? `<script>
   .badge-chip{display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:32px;padding:0 10px;border-radius:10px;background:#1F2430;font-family:var(--mono);font-weight:800;font-size:13px;letter-spacing:.03em;color:#fff}
   .badge-chip.emoji{background:rgba(255,255,255,.04);font-size:22px;padding:0 8px}
   .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--club-soft,var(--grn))}
-  .hero h1{font-family:'Anton',Inter,sans-serif;font-weight:400;font-size:clamp(40px,5.6vw,64px);line-height:.92;letter-spacing:.004em;text-transform:uppercase;color:#fff;margin-bottom:16px}
+  .hero h1{font-weight:800;font-size:clamp(30px,4.4vw,46px);line-height:1.05;letter-spacing:-.02em;color:#fff;margin-bottom:14px}
   .hero-lead{font-size:clamp(16px,2vw,19px);line-height:1.55;color:var(--tx3);max-width:52ch;margin-bottom:26px}
   .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:22px}
-  .btn-green{display:inline-flex;align-items:center;min-height:44px;gap:8px;padding:14px 24px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:15px;border-radius:13px;box-shadow:0 10px 26px -8px rgba(88,204,2,.55)}
+  .btn-green{display:inline-flex;align-items:center;min-height:44px;gap:8px;padding:12px 22px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:15px;border-radius:999px}
   .btn-green:hover{text-decoration:none;filter:brightness(1.05)}
   .hero-stat{font-family:var(--mono);font-size:13px;color:var(--tx4)}
   /* App Store badge */
@@ -2015,16 +1935,16 @@ ${ADS_ACTIVE ? `<script>
   .sec{padding:30px 0}
   .sub{color:var(--tx3);font-size:15px;margin:-6px 0 16px;max-width:60ch}
   /* app cta band */
-  .appband{position:relative;overflow:hidden;border-radius:24px;padding:clamp(28px,5vw,44px);background:linear-gradient(120deg,#FF6A00,#FFC107)}
-  .appband-flame{position:absolute;right:-16px;bottom:-40px;font-size:180px;opacity:.16;pointer-events:none;line-height:1}
+  .appband{position:relative;overflow:hidden;border-radius:12px;padding:clamp(24px,4vw,36px);background:var(--card);border:1px solid var(--bd)}
+  .appband-flame{display:none}
   .appband-in{position:relative;max-width:34ch}
   .appband-play{display:inline-block;margin:14px 0 0;padding:13px 22px;border-radius:999px;
     background:var(--grn,#58CC02);color:#06230C;font-weight:800;font-size:15.5px;text-decoration:none}
   .appband-play:hover{filter:brightness(1.06)}
   .appband-or{margin:12px 0 10px!important;font-size:13px;color:var(--tx3)}
-  .appband h2{color:#0A0A0A;font-size:clamp(23px,3.4vw,34px);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin-bottom:12px}
-  .appband p{color:rgba(10,10,10,.72);font-size:16px;font-weight:600;line-height:1.5;margin-bottom:22px}
-  .appband .store-badge{border-color:rgba(10,10,10,.25)}
+  .appband h2{color:#fff;font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+  .appband p{color:var(--tx3);font-size:15px;font-weight:500;line-height:1.5;margin-bottom:18px}
+  .appband .store-badge{border-color:var(--bd2)}
   /* ad slots — min-height reserves the box BEFORE the ad arrives, so filling it
      shifts nothing. Ads are the classic CLS offender and these pages live or die
      on Core Web Vitals; an unreserved slot would trade search rank for ad pennies.
@@ -2089,57 +2009,7 @@ ${OPTION_CSS('.qa-opts .to')}
   .qa-done-alt{display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:var(--tx3);text-decoration:underline}
   .qa-why{border-top:1px dashed var(--bd);padding-top:12px;margin-top:12px;color:var(--tx3);font-size:14px;line-height:1.55}
   .qa-why::before{content:"✓ ";color:var(--grn-soft);font-weight:800}
-  /* footer */
-  .foot{border-top:1px solid #16181F;background:var(--bg2);margin-top:36px}
-  .foot-in{max-width:none;margin:0 auto;padding:40px clamp(20px,4vw,48px) 48px}
-  .foot .brand img{width:28px;height:28px}
-  .foot-links{display:flex;flex-wrap:wrap;gap:2px 20px;margin:14px 0}
-  /* 14px type gave 22px-tall links, stacked one per row on a phone — under
-     even WCAG 2.2 2.5.8's 24px floor, with adjacent targets 10px apart. These
-     are navigation, not prose, so they get the full 44px. It costs nothing:
-     the footer is past the last thing anyone scrolls for. */
-  .foot-links a{display:inline-flex;align-items:center;min-height:44px;color:var(--tx3);font-size:14px}
-  .foot-links a:hover{color:#fff;text-decoration:none}
-  .foot-copy{color:var(--tx4);font-size:13px;margin-top:4px}
-  .foot-disc{color:var(--tx4);font-size:11.5px;line-height:1.6;margin-top:14px;max-width:80ch}
-  /* PHONE NAV. At 375px the old rule only shrank type, so five items still
-     fought over ~347px of usable width: the brand collided with "All quizzes"
-     and BOTH the link and the CTA wrapped onto two lines. It was the first
-     thing a visitor saw and it looked broken.
-     Below 560px the three text links are hidden — they are duplicated in the
-     footer of every page and remain in the DOM, so internal linking and
-     crawlability are unaffected — leaving a clean brand + one green CTA.
-     nowrap on both is the actual guard against the two-line wrap. */
   .cta-row--stores{margin-top:14px}
-  .nav-cta{white-space:nowrap}
-  .brand{white-space:nowrap;flex:0 0 auto}
-  /* ⚠️ MOBILE: the panel, not display:none. Groups stack fully expanded — a
-     phone visitor gets every section in one tap, which is exactly what the
-     old rule denied them. */
-  @media(max-width:860px){
-    .nav-burger{display:flex}
-    /* ⚠️ ABSOLUTE, NOT FIXED. .nav carries backdrop-filter, and a filtered
-       element becomes the containing block for fixed descendants — a
-       position:fixed panel anchors to the 60px header instead of the
-       viewport and renders as a transparent sliver. Caught on the first
-       screenshot; absolute inside the sticky header is the correct anchor. */
-    .nav-right{position:absolute;top:100%;left:0;right:0;max-height:calc(100vh - 58px);overflow-y:auto;
-      flex-direction:column;align-items:stretch;gap:2px;padding:14px 16px calc(28px + env(safe-area-inset-bottom,0px));
-      background:#0A0A0A;border-bottom:1px solid #16181F;box-shadow:0 24px 48px rgba(0,0,0,.6);display:none;z-index:110}
-    .nav.open .nav-right{display:flex}
-    .nav-grp{position:static}
-    .nav-grp:first-of-type,.nav-play{margin-left:0}
-    .nav-top{width:100%;justify-content:space-between;font-size:15px;padding:12px 6px;color:#fff}
-    .nav-drop{position:static;display:flex;min-width:0;border:0;background:none;box-shadow:none;padding:0 0 10px 6px}
-    .nav-grp:hover .nav-drop{display:flex}
-    .nav-drop a{padding:11px 10px;white-space:normal}
-    .nav-play,.nav-cta{margin-top:10px;justify-content:center;font-size:15px}
-    .nav-link{display:none}
-    .nav-in{padding:11px 14px}
-    .nav-cta{padding:9px 15px;font-size:13.5px}
-    .brand{font-size:17px}
-    .brand img{width:25px;height:25px}
-  }
 ${taster ? TASTER_CSS : ''}
 ${BQ_CSS}
   /* Fixed columns, never flex-wrap: a fourth item in a narrow column dropped
@@ -2164,65 +2034,7 @@ const CTA_JS = `(function(){var a=document.querySelector('a[data-scrollto]');if(
 
 function footer() {
   return `<script>${CTA_JS}</script>
-<footer class="foot"><div class="foot-in">
-<a class="brand" href="${SITE.base}/"><img src="/marketing/ball.png" alt="Ball IQ" width="26" height="26" />Ball&nbsp;<b>IQ</b></a>
-${/* THESE THREE SLOTS ARE THE ONLY SITE-WIDE INTERNAL LINKS WE CONTROL, and
-      they were picked once and never revisited. Measured 2026-07-29:
-
-        manchester-united  183 inbound internal links  (footer -> every page)
-        premier-league     183                          (footer -> every page)
-        arsenal            109                          (tile mesh only)
-        chelsea            110
-        liverpool          114
-
-      So ~40% of the site's internal link equity was pointed at Man United,
-      which is not a page we are trying to move — while Arsenal, which GSC has
-      at position 14.9 for "arsenal quiz" and 19.3 for "arsenal quizzes", the
-      two US queries where a click is actually possible, sat in the tile mesh
-      with a third fewer links.
-
-      Arsenal is added rather than swapped in: Man United's own rankings are
-      not a problem to create. Four slots still keeps the footer a signal
-      rather than a link farm. This is a hypothesis — the measured ceiling is
-      authority, not on-page — but it is free, it is directionally right, and
-      pointing site-wide equity at the page closest to breaking page 1 costs
-      nothing if it fails. */ ''}
-<div class="foot-links">
-<a href="${SITE.base}/quiz/premier-league/">Premier League quiz</a>
-<a href="${SITE.base}/quiz/arsenal/">Arsenal quiz</a>
-<a href="${SITE.base}/quiz/manchester-united/">Man United quiz</a>
-<a href="${SITE.base}/quiz/champions-league/">Champions League quiz</a>
-<a href="${SITE.base}/quiz/">All quizzes</a>
-<a href="${SITE.base}/lists/">Football lists</a>
-${/* /study/ measured ZERO inbound internal links on 2026-07-30 — a TRUE orphan,
-      reachable only via sitemap.xml. It is the one page built specifically to
-      EARN links, so leaving it unlinked from our own site was self-defeating. */ ''}
-<a href="${SITE.base}/study/football-trivia-memory/">Trivia memory study</a>
-<a href="${SITE.base}/football-wordle/">Footle — football Wordle</a>
-<a href="${SITE.base}/mystery-player/">Mystery Player — guess the footballer</a>
-<a href="${SITE.base}/transfer-trail/">Transfer Trail — guess by career path</a>
-${/* THREE PAGES SHIPPED THIS WEEK AND NONE WERE IN THE MESH. The footer is the
-      only SITE-WIDE internal link set we control — every entry here earns ~180
-      inbound internal links — and /fun-facts/, /xi/ and the Daily 7 landing
-      page were reachable only from the nav and the sitemap. That is the same
-      orphan condition that left /study/ with ZERO inbound links (see above),
-      caught then and re-created immediately by shipping new pages without
-      adding them here. Anything new and permanent belongs in this list. */ ''}
-<a href="${SITE.base}/daily-football-quiz/">Daily football quiz</a>
-<a href="${SITE.base}/xi/">Guess the XI — name the lineup</a>
-<a href="${SITE.base}/fun-facts/">Football facts that sound made up</a>
-<a href="${SITE.base}/football-quiz/">Football quiz</a>
-<a href="${SITE.base}/football-quotes/">Football quotes</a>
-<a href="${SITE.base}/club-nicknames/">Club nicknames</a>
-<a href="${SITE.base}/about/">About</a>
-<a href="${SITE.base}/contact/">Contact</a>
-<a href="${SITE.base}/terms/">Terms</a>
-<a href="${SITE.base}/privacy.html">Privacy</a>
-</div>
-<p class="foot-copy">Ball IQ is free to play — no sign-up needed.</p>
-<p class="foot-copy">© 2026 ${esc(SITE.name)} — ${esc(SITE.tagline)}.</p>
-<p class="foot-disc">Ball IQ is an independent football trivia game and is not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club or competition. All team and competition names are used for identification and editorial reference only.</p>
-</div></footer>
+${shellFooter(SITE)}
 ${storefrontScript()}
 </body></html>`;
 }
@@ -2547,7 +2359,6 @@ ${renderQA(cfg.sample)}
 </section>
 ${adSlot('afterQA')}
 <section class="sec"><div class="appband">
-<div class="appband-flame" aria-hidden="true">🔥</div>
 <div class="appband-in">
 <h2>${esc(c.bandH)}</h2>
 <p>${esc(c.bandP)}</p>
@@ -2690,7 +2501,6 @@ ${adSlot('afterTaster')}
 ${cfg.intro.slice(1).map((para) => `<p class="sub">${esc(para)}</p>`).join('\n')}
 </section>
 <section class="sec"><div class="appband">
-<div class="appband-flame" aria-hidden="true">🔥</div>
 <div class="appband-in">
 <h2>${esc(cfg.bandH)}</h2>
 <p>${esc(cfg.bandP)}</p>
