@@ -245,6 +245,13 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   // surprised testers who expected "just let me play". AppInner listens for
   // biq:go-home (the overlay is its sibling in AppGate).
   const guestContinue = () => {
+    // The results-screen 'save' nudge is the one overlay that opens ON TOP of
+    // something the player has just earned. Measured 2026-09-03 (Assessment C):
+    // "Continue as guest" here fired biq:go-home, so choosing guest LEFT the
+    // results and the "Review N missed answers" panel was never seen — the
+    // finish moment the day-1→2 baseline says predicts a return. On this one
+    // prompt, guest means "close the sheet and let me see my score".
+    if (asOverlay && promptReason === 'save') { onClose?.(); return }
     if (asOverlay) {
       // Hard gates return you to the tab you were on — you came here WANTING
       // to play online, so Home is a dead end that forgets what you asked for.

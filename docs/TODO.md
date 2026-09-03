@@ -1,40 +1,31 @@
-## ⭐ NEXT SESSION — website critique with EYES (Alex, 2026-09-03)
+## ⭐ 2026-09-03 — EYES-ON CRITIQUE DONE · direction pending Alex
 
-Alex: *"not really content with the scouting report on our homepage… i do not think our website
-screams 10 thousand dollar website or A+ website… use your eyes, take screenshots, look for
-issues… what needs redesigning or tweaking. think strategically. also what should we add to
-discover lists so more people find the backdoor to ball iq?"*
+Report (screenshot-backed, grades per page): https://claude.ai/code/artifact/6ef2ec9e-6503-499d-bb85-4608b8d6abdb
+Canvas (Direction A + two bolder takes, page "Bolder takes"): https://claude.ai/code/artifact/f72358fc-7ea7-459c-a75c-006af31283f8
+Snapshot: .impeccable/critique/2026-09-03T12-29-08Z__balliq-app.md — 22/40, site grade C+.
 
-Do this in a FRESH session (the old one hit 99% context — each turn cost ~1M tokens).
+**Alex, same day:** the website is THE PRODUCT (fully playable, A+), not an app funnel; nothing in the
+current design is protected; the Scouting Report sheet "doesn't look right at all" (confirmed: it reads
+DISABLED — grey-on-grey form). My recommendation moved from A to **B "The Back Page"** (light
+newsprint page, quiz as a ruled column) after seeing both rendered. Awaiting Alex's pick.
 
-1. Shoot prod: Chromium 1911×990 (Alex's monitor) + 1440×900, WebKit 390×844 — home,
-   /football-quiz/, /quiz/arsenal/, /lists/, one list leaf, /footle, /play. Fold + full-page.
-   Script drafted at scratchpad/shoot.mjs of session c6c4d416 (recreate; ~40 lines).
-2. ⚠️ Suspected bug I shipped 2026-09-02: `.sr-what` ("Ball IQ is a free football quiz.") renders
-   NEAR-INVISIBLE dark grey on the black homepage in Alex's screenshot — the most important
-   sentence is the least visible. Verify computed color vs parent; fix if so.
-3. Desktop at 1900: content ~1000px centred in a black void; 5-row "not assessed" ledger (DM-4);
-   headline scale flat (DM-5); fluid type at 1920 (DD-10). Cross-ref .audit/critique-2026-09-02/lean/design.md.
-4. Constraints: homepage stays a BOTH hero (Footle + quiz) — memory feedback_homepage_both_hero.
-   Store badges stay where Alex put them. No content wave (strategy.md §5) — but lists question
-   is Alex's; answer it with GSC data (sc_top_pages filtered /lists/, which reach page 1 and why).
-5. Deliver: screenshot-backed report artifact (grades per page), THEN offer 2-3 homepage
-   directions on a /design canvas — settle direction with Alex before building.
-6. Still open from 2026-09-02: delete relay guard in send-campaign-email + clear 20 burned
-   email_events rows; commit generated src/marketing/footlePractice.js drift.
+**Shipped today:** 1e6d218 (.sr-what + verdict CTA were invisible: ink on desk / ink on ink),
+a5c457e (mobile Games menu spilled over the h1). Both verified on prod.
 
-### ⚠️ Data the lists question needs (measured 2026-09-02, funnel-analyst)
+**⚠️ BIGGEST FINDING (Assessment C, full guest play-through):** after ANY scored game the once-ever
+'save' auth nudge covers the results at +2s; "Continue as guest" fired biq:go-home and DISCARDED the
+results/review. First Classic is always a PB vs 0 → every new guest's first results screen is covered.
+Sits on the day-1→2 finish leak below. Fix in progress: guest on 'save' now closes in place
+(src/Login.jsx); STILL TO DECIDE: move the ask off the +2s timer to results-exit or an inline card.
 
-On a day with 319 funnel events from 64 visitors, `/lists/*` produced **ZERO engaged events**.
-Filter on `meta.surface='list-page'` — the 3 `list-answered` rows that look like list activity
-are `surface='localised'` and `'taster'` (localised quiz pages + Mystery Player), NOT lists.
-There is also no page-VIEW event on lists, so "no traffic" and "instant bounce" are currently
-indistinguishable. Before proposing anything to ADD to lists, consider instrumenting a view
-event — otherwise the new pages are unmeasurable too.
-
-Smoke test same day: `sr-taster-1`, `sr-taster-done`, `game-abandon` all WIRED and firing
-(game-abandon already caught two daily bounces at 11s and 4s). `list-jump` + the 3 verdict
-CTAs: code confirmed live, zero opportunity yet.
+**Next (in order):** 1) Alex picks A / A+ / B → build the chosen world as the SHARED question-sheet
+component in gen-seo-pages + homepage + app shell. 2) P1s: "Next question" clipped 18px on club
+pages at 390 (both engines); consent bar over play controls (inline it); 1911 void; 10px text
+(222 nodes on /quiz/arsenal/). 3) /lists/: rewrite title+meta of the 7 page-1 pages to sell what
+Google's answer box lacks (2-week test; GSC 28d: 30 clicks / 14.9k impr / pos 17.3 — position +8
+since Aug, clicks flat). No new list pages until that moves; never another head term.
+Still open from 09-02: relay guard in send-campaign-email + 20 burned email_events rows; commit
+footlePractice.js drift (still dirty).
 
 # Ball IQ — the board
 
