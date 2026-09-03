@@ -1,3 +1,13 @@
+## ✅ 2026-09-03 late — POLISH + WEB SHELL: the app sits under the site header on the web
+
+Polish (main 6beafb9): generated /404.html with the shell; /home-preview + /home-old retired (files
+deleted, vercel redirects → /); mono chrome → Inter on generated pages. Web shell (branch web-shell
+f7a1994, merging): SiteHeader.jsx + AppBar.jsx replace the 248px sidebar / floating tab bar for
+browser visitors (native + PWA untouched); wordmark → `/` in a browser. **Next:** 1) verify prod
+after merge (/play, a game, wordmark, /home-preview → /) · 2) DESIGN.md re-document from the app
+system · 3) the results nudge off the +2s timer · 4) the 7-URL lists title test · 5) e2e specs that
+assumed `/` = marketing or a sidebar at /play.
+
 ## ✅ 2026-09-03 — FRONT DOOR MERGED TO MAIN (69aeac2) — verify prod, then DESIGN.md
 
 Merged on Alex's word ("this is good progress for us"). Live on balliq.app once Vercel finishes:
