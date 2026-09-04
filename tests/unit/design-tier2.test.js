@@ -90,10 +90,14 @@ describe('design review — tier 2', () => {
     // ⚠️ Asserts the TOKEN, not a literal — the accent set moved to
     // src/lib/accents.js, and a test that still pinned "#7CC3F0" here would be
     // pinning the copy-paste that module exists to stop.
-    expect(HOME).toMatch(/key:"trail", Icon: Route, iconColor: MODE_ACCENT\.trail/);
     expect(HOME).toMatch(/iconColor: MODE_ACCENT\.mystery/);
     const tints = HOME.match(/iconColor: /g) || [];
-    expect(tints, 'the long tail must stay quiet').toHaveLength(2);
+    expect(tints, 'the long tail must stay quiet').toHaveLength(1);
+    // ⚠️ AND NO TRAIL TILE. Trail is a row in the daily zone pointing at the
+    // same screen; a grid tile for it listed one puzzle twice on one screen
+    // (Alex, 2026-09-04). It kept its colour — the row carries it in CSS.
+    expect(HOME, 'Transfer Trail belongs to the daily zone, not the mode grid')
+      .not.toMatch(/key:"trail"/);
     // And nobody re-types a mode colour beside a component.
     expect(HOME, 'import from lib/accents.js instead of pasting a hex')
       .not.toMatch(/iconColor: "#/);
