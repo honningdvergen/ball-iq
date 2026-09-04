@@ -3793,3 +3793,12 @@ body.biq-web > .landing-bottom { padding-left: 0 !important; }
 @media (max-width: 340px) {
   .fd-appbar-tab:not([aria-current="page"]) span { display: none; }
 }
+/* Less chrome, more game. In a browser a Footle screen carried THREE rows
+   before the board — site header, app bar, the game's own back/title/help
+   row — about 180px of an 844px phone, with the board shrunk underneath
+   (prod sweep 2026-09-04). During focused play (the state the app already
+   keeps on <body> for quiz / Footle / Trail / Mystery / Stadiums) the app
+   bar steps out; the site header stays for the brand and the finder, and the
+   game's own back arrow is the way out. The bar returns on results, where
+   navigation matters again. */
+body.biq-web.in-focused-play .fd-appbar { display: none; }
