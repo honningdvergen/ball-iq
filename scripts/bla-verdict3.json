@@ -1,0 +1,85 @@
+[
+  {
+    "_i": 24,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Leicester City",
+    "reason": "1992 Second Division play-off final, Wembley, 25 May 1992: Blackburn 1-0 Leicester (Mike Newell penalty), promoting Blackburn to the inaugural Premier League after 26 years away. Distractors (Cambridge United, Derby County, Middlesbrough) were not in that final; none is the odd-one-out by format.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1992_Football_League_Second_Division_play-off_final",
+      "https://www.11v11.com/matches/blackburn-rovers-v-leicester-city-25-may-1992-218824/"
+    ]
+  },
+  {
+    "_i": 25,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Ewood Park",
+    "reason": "Ewood Park has been Blackburn's home since 1890 and was rebuilt with Jack Walker's money in the 1990s. Distractors are real, correctly-wrong stadiums (Turf Moor=Burnley, Deepdale=Preston, Bloomfield Road=Blackpool).",
+    "sources": ["general knowledge, uncontested stadium fact"]
+  },
+  {
+    "_i": 26,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "West Ham United",
+    "reason": "Final day 14 May 1995: Blackburn lost 2-1 at Anfield but won the title because Man Utd drew 1-1 away at West Ham (Upton Park), finishing 89-88. Confirmed by multiple sources.",
+    "sources": [
+      "https://www.liverpoolfc.com/news/first-team/301346-6-liverpool-2-1-blackburn-may-14-1995",
+      "https://www.skysports.com/football/news/11676/11987913/blackburn-rovers-title-triumph-25-years-on-from-a-dramatic-final-day"
+    ]
+  },
+  {
+    "_i": 27,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Norwich City",
+    "reason": "Chris Sutton joined Blackburn from Norwich City for £5m in July 1994. Verified 'second time' claim: Blackburn set the British record with Shearer (£3.6m, 1992), Man Utd's Roy Keane deal (£3.75m, 1993) broke it, then Sutton's £5m move gave Blackburn the record for a second time. Stem claim holds.",
+    "sources": [
+      "https://www.sportsmole.co.uk/football/blackburn-rovers/on-this-day/feature/otd-blackburn-break-transfer-record-for-sutton_232477.html",
+      "https://www.fourfourtwo.com/features/every-time-the-british-transfer-record-has-been-broken-in-the-premier-league-era",
+      "https://www.newsletter.co.uk/sport/football/international-football/on-this-day-in-1992-alan-shearer-joined-blackburn-for-a-british-record-fee-2924561"
+    ]
+  },
+  {
+    "_i": 28,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "34",
+    "reason": "Shearer scored 34 PL goals in 1994-95, equalling Andy Cole's 1993-94 record, and won the Golden Boot. Widely documented.",
+    "sources": ["https://en.wikipedia.org/wiki/1994%E2%80%9395_Blackburn_Rovers_F.C._season"]
+  },
+  {
+    "_i": 29,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Southampton",
+    "reason": "Tim Flowers joined Blackburn from Southampton for £2.4m in Nov 1993, becoming the most expensive goalkeeper in British (and world) football at the time; reunited with Shearer who'd left Southampton for Blackburn a year earlier. Confirmed.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Tim_Flowers",
+      "https://www.saintsplayers.co.uk/player/tim-flowers/"
+    ]
+  },
+  {
+    "_i": 30,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Tim Sherwood",
+    "reason": "Sherwood captained Blackburn's 1994-95 title-winning side, playing all 38 games. Confirmed by club and multiple retrospectives; all four options are full-name players (no format outlier).",
+    "sources": [
+      "https://www.sportsmole.co.uk/football/blackburn-rovers/feature/premier-league-title-winning-captains-tim-sherwood_399092.html",
+      "https://en.wikipedia.org/wiki/Tim_Sherwood"
+    ]
+  },
+  {
+    "_i": 31,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Newcastle United",
+    "reason": "Souness left Blackburn in Sept 2004 to become Newcastle United manager; Mark Hughes left the Wales job to replace him at Blackburn (Sept 16, 2004). Confirmed by contemporaneous reporting.",
+    "sources": [
+      "https://www.abc.net.au/news/2004-09-06/souness-quits-rovers-for-newcastle/2039684",
+      "https://www.fourfourtwo.com/news/on-this-day-in-2004-graeme-souness-appointed-newcastle-manager-1630839658000"
+    ]
+  }
+]

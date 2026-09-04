@@ -28,7 +28,7 @@ if (!outPath || !repoRoot) { console.error('usage: node process-wave-j.mjs <outp
 // ⚠️ The bank uses FULL names — Coventry City, Hull City, Leeds United —
 // so it is 'Leicester City', not 'Leicester'. Getting this wrong silently
 // files the questions under a club nothing else references.
-const CLUB_FIELD = { WestBrom: 'West Brom', Middlesbrough: 'Middlesbrough', Barcelona: 'Barcelona', Chelsea: 'Chelsea', Celtic: 'Celtic', 'Leeds United': 'Leeds United', Besiktas: 'Besiktas', Juventus: 'Juventus', 'Paris Saint-Germain': 'Paris Saint-Germain', Napoli: 'Napoli' };
+const CLUB_FIELD = { SheffUtd: 'Sheffield United', Blackburn: 'Blackburn Rovers', WestBrom: 'West Brom', Middlesbrough: 'Middlesbrough', Barcelona: 'Barcelona', Chelsea: 'Chelsea', Celtic: 'Celtic', 'Leeds United': 'Leeds United', Besiktas: 'Besiktas', Juventus: 'Juventus', 'Paris Saint-Germain': 'Paris Saint-Germain', Napoli: 'Napoli' };
 
 const decode = (s) => String(s ?? '')
   .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')

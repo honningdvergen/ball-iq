@@ -1,0 +1,106 @@
+[
+  {
+    "q": "In which season did Blackburn Rovers win the Third Division championship?",
+    "o": [
+      "1974-75",
+      "1971-72",
+      "1977-78",
+      "1979-80"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Rovers dropped into the third tier in 1971 and came back up as champions four years later; they were relegated to it once more in 1979 before going up again in 1980.",
+    "_i": 16
+  },
+  {
+    "q": "Ewood Park's record attendance was set at an FA Cup sixth-round tie in March 1929. Which club were the visitors?",
+    "o": [
+      "Burnley",
+      "Preston North End",
+      "Bolton Wanderers",
+      "Manchester City"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "More than 61,000 crammed into Ewood for the visit of Bolton Wanderers on 2 March 1929, a figure the ground has never come close to since.",
+    "_i": 17
+  },
+  {
+    "q": "Which club became the first from the north of England to win the FA Cup, a year before Blackburn Rovers won their first?",
+    "o": [
+      "Darwen",
+      "Preston North End",
+      "Bolton Wanderers",
+      "Blackburn Olympic"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Blackburn Olympic, a side of local mill workers, beat Old Etonians 2-1 after extra time in 1883 — and had folded by 1889.",
+    "_i": 18
+  },
+  {
+    "q": "What is the traditional design of Blackburn Rovers' home shirt, worn since the 1880s?",
+    "o": [
+      "Blue and white vertical stripes",
+      "Blue and white halves",
+      "Claret and blue halves",
+      "Green and white halves"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The halved shirt dates back to Rovers' Victorian sides, and since the Second World War the blue half has almost always sat on the left.",
+    "_i": 19
+  },
+  {
+    "q": "Jack Walker, the local businessman who took full control of Blackburn Rovers in 1991 and bankrolled its rise, made his fortune in which industry?",
+    "o": [
+      "Textiles",
+      "Steel",
+      "Brewing",
+      "Shipbuilding"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Walker built Walkersteel into Britain's largest steel stockholder and sold it to British Steel in 1989, then ploughed the proceeds into his hometown club.",
+    "_i": 20
+  },
+  {
+    "q": "Blackburn broke the British transfer record in July 1992 to sign Alan Shearer. Which club did they buy him from?",
+    "o": [
+      "Everton",
+      "Watford",
+      "Southampton",
+      "Millwall"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Kenny Dalglish prised the England striker away from The Dell for a fee of around £3.6m, then the biggest ever paid by a British club.",
+    "_i": 21
+  },
+  {
+    "q": "Blackburn won the 2002 League Cup final 2-1 at the Millennium Stadium in Cardiff. Which club did they beat?",
+    "o": [
+      "Tottenham Hotspur",
+      "Aston Villa",
+      "Middlesbrough",
+      "Sheffield Wednesday"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Matt Jansen and Andy Cole scored for Graeme Souness's side after Christian Ziege had levelled for Spurs; it was Blackburn's first League Cup.",
+    "_i": 22
+  },
+  {
+    "q": "Venky's, the Indian company that bought Blackburn Rovers in November 2010, built its business in which industry?",
+    "o": [
+      "Mobile telecoms",
+      "Textile mills",
+      "Poultry farming",
+      "Pharmaceuticals"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The Rao family's Pune-based VH Group is an integrated poultry and processed-food business; the takeover was reported at around £23m.",
+    "_i": 23
+  }
+]

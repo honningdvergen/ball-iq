@@ -1,0 +1,97 @@
+[
+  {
+    "_i": 8,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "Derby County",
+    "reason": "1899 FA Cup Final: Sheffield United beat Derby County 4-1 at Crystal Palace, their first FA Cup (confirmed as their 4th by 1925, so 1899 was indeed first). Derby (Boag, 12') led at half-time; United scored four second-half goals (Bennett, Beer, Almond, Priest 89'). Hint accurate — Priest is 'among' not sole scorer. Distractors (Southampton, Notts County, Tottenham Hotspur) are all real, era-appropriate opponents of Sheffield United in other finals, correctly wrong here. No odd-one-out issue (Southampton is the format outlier but is a distractor, not the answer).",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1899_FA_Cup_final",
+      "https://www.11v11.com/matches/sheffield-united-v-derby-county-15-april-1899-205519/",
+      "https://playupliverpool.com/1899/04/15/sheffield-united-v-derby-county-4-1-english-fa-cup-final-april-15-1899/"
+    ]
+  },
+  {
+    "_i": 9,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "Southampton",
+    "reason": "1902 FA Cup Final: Sheffield United 1-1 Southampton (Common/Wood), replay won 2-1 (Hedley, Barnes vs Brown). Southampton were indeed still a Southern League club. Both legs at Crystal Palace. Distractors Everton, Sunderland, Derby are real clubs of the era but not this final's opponent.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1902_FA_Cup_final",
+      "https://playupliverpool.com/1902/04/19/sheffield-united-v-southampton-1-1-english-fa-cup-final-april-19-1902/"
+    ]
+  },
+  {
+    "_i": 10,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "The Khaki Cup Final",
+    "reason": "1915 FA Cup Final: Sheffield United 3-0 Chelsea at Old Trafford, known as the Khaki Cup Final for the many uniformed soldiers in the crowd; the Earl (Lord) of Derby presented the cup and urged enlistment, matching the hint exactly. Distractors are real nicknames of other finals (White Horse Final = 1923, Matthews Final = 1953) or a plausible-but-fictitious label (Munich Final), all correctly wrong for 1915.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1915_FA_Cup_final",
+      "https://footballandthefirstworldwar.org/the-story-of-the-1915-fa-cup-final/",
+      "https://www.thefootballhistoryboys.com/2020/02/the-khaki-cup-final-sheffield-utd-vs.html"
+    ]
+  },
+  {
+    "_i": 11,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "1-0",
+    "reason": "1925 FA Cup Final: Sheffield United 1-0 Cardiff City at Wembley, Fred Tunstall scoring after 30 minutes; this remains United's last FA Cup win (still true as of 2026). Hint fully accurate.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1925_FA_Cup_final",
+      "https://sheffunitedway.co.uk/2025/01/09/100th-anniversary-of-sheffield-uniteds-fa-cup-final-win-over-cardiff/"
+    ]
+  },
+  {
+    "_i": 12,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "4-0",
+    "reason": "26 Dec 1979 'Boxing Day Massacre': Sheffield Wednesday 4-0 Sheffield United at Hillsborough, attendance 49,309 (record for third-tier football). Ian Mellor opened the scoring with a 25-yard strike, followed by goals from Curran, Smith and King — hint detail confirmed via multiple sources including a Yorkshire Post obituary piece on Mellor.",
+    "sources": [
+      "https://www.yorkshirepost.co.uk/sport/football/sheffield-wednesday/ian-mellor-dead-sheffield-wednesday-mourn-hero-of-1979-boxing-day-massacre-win-over-sheffield-united-4611916",
+      "https://en.wikipedia.org/wiki/Ian_Mellor",
+      "https://en.wikipedia.org/wiki/Steel_City_derby"
+    ]
+  },
+  {
+    "_i": 13,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "Brian Deane",
+    "reason": "Dave Bassett signed Brian Deane from Doncaster Rovers for £25,000 in summer 1988; Deane went on to partner Tony Agana and drove back-to-back promotions. Verified each distractor was NOT signed from Doncaster in 1988: Keith Edwards came from Hull City (March 1988), Bob Booker came from Brentford (late 1988), Carl Bradshaw was a Sheffield United academy product with no Doncaster link — all real Bassett-era Blades, correctly wrong.",
+    "sources": [
+      "https://footballleagueworld.co.uk/sheffield-united-will-never-beat-deal-that-secured-brian-deane/",
+      "https://en.wikipedia.org/wiki/Keith_Edwards_(footballer,_born_1957)",
+      "https://www.yorkshirepost.co.uk/sport/football/weekend-interview-ooh-aah-bob-booker-sheffield-united-fans-favourite-1769229",
+      "https://en.wikipedia.org/wiki/Carl_Bradshaw_(footballer)"
+    ]
+  },
+  {
+    "_i": 14,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "Leeds United",
+    "reason": "1989-90 Second Division: Leeds United and Sheffield United both finished on 85 points; Leeds took the title on goal difference (+27 vs +20) and both were promoted. Barnsley, Huddersfield Town and Bradford City are genuine Yorkshire clubs (satisfying the stem's qualifier) but were not in contention that season, so they're correctly wrong distractors.",
+    "sources": [
+      "https://www.yorkshireeveningpost.co.uk/heritage-and-retro/retro/16-iconic-moments-from-leeds-uniteds-1989-90-second-division-title-winning-season-2911886",
+      "https://www.yorkshirepost.co.uk/sport/football/sheffield-united-and-leeds-united-turning-back-the-clock-to-when-they-won-promotion-together-560034"
+    ]
+  },
+  {
+    "_i": 15,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "Harry Johnson",
+    "reason": "Harry Johnson is Sheffield United's all-time record goalscorer with 201 goals (1919-1930/1916-1931 spell). Confirmed all distractors are lower and correctly wrong: Alan Woodward 158 league goals (post-war record), Jimmy Hagan ~117-151 goals, Keith Edwards 171 goals across two spells. None approaches 201.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Harry_Johnson_(footballer,_born_1899)",
+      "https://d3d4football.com/harry-johnson-goal-scoring-hero/",
+      "https://en.wikipedia.org/wiki/Alan_Woodward",
+      "https://www.facebook.com/groups/844940199360108/posts/1594931137694340/"
+    ]
+  }
+]

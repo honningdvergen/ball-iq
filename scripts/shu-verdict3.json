@@ -1,0 +1,66 @@
+[
+  {
+    "_i": 24,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Neil Warnock",
+    "reason": "Warnock was Sheffield United manager on 13 May 2007 when they lost 2-1 to Wigan at Bramall Lane and were relegated; he resigned three days later. Stem's 'runners-up the season before' (2005-06, 90 pts behind Reading's 106) is accurate. Distractors Bassett, Blackwell, Robson are all real SU managers but from other eras (Bassett 1988-91/1997-99, Robson from June 2007, Blackwell from Nov 2008) - correctly disqualified by timing, not by being fictitious.",
+    "sources": ["https://www.thetotallyfootballshow.com/feature/chelsea-3-2-sheffield-united-may-1994-football-kicks-bassett-in-the-cobblers/ (context)", "web search: Warnock resigned three days after 13 May 2007 relegation", "https://en.wikipedia.org/wiki/2007%E2%80%9308_Sheffield_United_F.C._season"]
+  },
+  {
+    "_i": 25,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Billy Sharp",
+    "reason": "Sharp scored 23 league goals in 2018-19, McGoldrick was next with 15, as stated. Sharp is Sheffield-born and came through SU's academy, matching the hint. Distractors McGoldrick, Clarke, Duffy were all genuine SU squad members that promotion season.",
+    "sources": ["https://en.wikipedia.org/wiki/2018%E2%80%9319_Sheffield_United_F.C._season", "https://www.theringer.com/2023/12/7/23992281/billy-sharp-sheffield-united-legend-and-all-time-championship-top-scorer-la-galaxy"]
+  },
+  {
+    "_i": 26,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Chelsea",
+    "reason": "Sheffield United lost 3-2 at Stamford Bridge on 7 May 1994 (final day), Mark Stein scoring twice including a stoppage-time winner, confirming relegation. Everton, Ipswich, Southampton were all genuine top-flight clubs embroiled in that same relegation fight, making them plausible but wrong.",
+    "sources": ["https://www.examinerlive.co.uk/sport/football/news/sheffield-united-chelsea-1994-relegation-18216219", "https://www.thetotallyfootballshow.com/feature/chelsea-3-2-sheffield-united-may-1994-football-kicks-bassett-in-the-cobblers/"]
+  },
+  {
+    "_i": 27,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Wembley",
+    "reason": "The 1993 FA Cup semi-final between Sheffield United and Sheffield Wednesday (2-1 to Wednesday, AET) was played at Wembley on 3 April 1993, not at a normal neutral venue - this is itself the notable/correct fact, not a false premise. Waddle's 2nd-minute free-kick, Alan Cork's equaliser (confirmed by video/reports), and Bright's extra-time header all verified.",
+    "sources": ["https://www.yorkshirepost.co.uk/sport/football/sheffield-united/sheffield-wednesday-and-sheffield-united-players-recall-1993-fa-cup-semi-final-2527827", "https://www.examinerlive.co.uk/sport/football/news/sheffield-wednesday-sheffield-united-cup-18037816", "https://www.youtube.com/watch?v=vKCvKnQRjEI (Alan Cork goal)"]
+  },
+  {
+    "_i": 28,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Liverpool",
+    "reason": "Sheffield United won the first leg 2-1 at Bramall Lane (Tonge x2) but lost 2-0 after extra time at Anfield (Diouf, Owen), going out 3-2 on aggregate; Liverpool went on to win the 2003 League Cup final. SU did also reach the FA Cup semi-final that season (lost to Arsenal), so 'reached both domestic cup semi-finals' holds.",
+    "sources": ["https://www.espn.co.uk/football/match/_/gameId/71894/liverpool-sheffield-united", "https://www.espn.co.uk/football/match/_/gameId/73513/sheffield-united-liverpool", "https://en.wikipedia.org/wiki/2003_Football_League_Cup_final"]
+  },
+  {
+    "_i": 29,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Wolverhampton Wanderers",
+    "reason": "Wolves beat Sheffield United 3-0 in the 2003 First Division play-off final at the Millennium Stadium, all three goals (Kennedy 6', Blake 22', Miller 45') scored before half-time, under manager Dave Jones. SU had beaten Nottingham Forest 5-4 on aggregate in the semi-final (1-1 then 4-3), matching the hint exactly.",
+    "sources": ["https://en.wikipedia.org/wiki/2003_Football_League_First_Division_play-off_final", "https://www.skysports.com/football/news/13024/6959403/wolves-3-0-play-off-final-win-over-sheffield-united-in-2003", "https://www.11v11.com/matches/sheffield-united-v-nottingham-forest-15-may-2003-16180/"]
+  },
+  {
+    "_i": 30,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Reading",
+    "reason": "Reading won the 2005-06 Championship with 106 points (a record), Sheffield United were runners-up on 90 points, and Watford (3rd, 81 pts) came up via the play-offs, exactly as the hint states.",
+    "sources": ["https://en.wikipedia.org/wiki/2005%E2%80%9306_Football_League_Championship", "https://en.wikipedia.org/wiki/2005%E2%80%9306_Sheffield_United_F.C._season"]
+  },
+  {
+    "_i": 31,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Wigan Athletic",
+    "reason": "Sheffield United lost 1-2 to Wigan Athletic at Bramall Lane on 13 May 2007 (Scharner 14', Stead equalised 38', Unsworth penalty 45'), both sides finishing on 38 points with Wigan surviving on goal difference (-22 vs -23), exactly matching the hint. Note this covers the same fixture as q_i=24 from a different angle (opponent vs manager) - not a duplicate stem, but flagging for awareness given both are in the same 8-question batch.",
+    "sources": ["web search: ESPN/Yorkshire Post match report Sheffield United 1-2 Wigan 13 May 2007", "https://en.wikipedia.org/wiki/2006%E2%80%9307_FA_Premier_League"]
+  }
+]

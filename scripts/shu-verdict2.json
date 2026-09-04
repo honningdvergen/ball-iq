@@ -1,0 +1,91 @@
+[
+  {
+    "_i": 16,
+    "verdict": "ok",
+    "check": "all four checks + index resolution",
+    "resolved": "Tulsa Roughnecks",
+    "reason": "Woodward left Sheffield United (1962-1978, 538 apps, 158 goals) and joined Tulsa Roughnecks of the NASL for the 1979 season, playing there through 1981 (his last club). Stem, hint, and answer all consistent; no false premise; distractors (Tampa Bay Rowdies, New York Cosmos, Seattle Sounders) are real NASL clubs of the era, verifiably not his club.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Alan_Woodward",
+      "https://www.nasljerseys.com/Players/W/Woodward.Alan.htm",
+      "https://tulsaworld.com/sportsextra/soccer/roughnecks/alan-woodward-was-key-figure-in-local-soccer-long-after-stellar-roughnecks-career-ended/article_97c47b0b-ee37-531d-9777-e211dde83533.html"
+    ]
+  },
+  {
+    "_i": 17,
+    "verdict": "ok",
+    "check": "all four checks + index resolution",
+    "resolved": "Walsall",
+    "reason": "Sheffield United lost 0-1 at home... actually the decisive match was Sheffield United vs Walsall on 2 May 1981 (Walsall led via Don Penn penalty, United's Don Givens missed a late equalising penalty, saved by Ron Green) confirming a loss that sent United down to the Fourth Division for the first time. Hint matches exactly. Distractors Chesterfield, Colchester United, Blackpool are real lower-league clubs of the period (Blackpool was in fact relegated alongside United that season) but were not United's final-day opponent.",
+    "sources": [
+      "http://that1980ssportsblog.blogspot.com/2019/11/1980-81-sheffield-united-pay-the-penalty.html",
+      "https://en.wikipedia.org/wiki/History_of_Sheffield_United_F.C.",
+      "https://en.wikipedia.org/wiki/1980%E2%80%9381_in_English_football"
+    ]
+  },
+  {
+    "_i": 18,
+    "verdict": "ok",
+    "check": "all four checks + index resolution",
+    "resolved": "Ian Porterfield",
+    "reason": "Porterfield was appointed from Rotherham United in June 1981 and led Sheffield United to the Fourth Division title in 1981-82 with 92 points (Keith Edwards scored 35). Distractors John Harris, Harry Haslam, and Dave Bassett are all real Sheffield United managers from other eras (Harris 1959-68, Haslam 1978-81 -- the man Porterfield replaced -- Bassett 1988-91), plausible but verifiably wrong for this season.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/History_of_Sheffield_United_F.C.",
+      "https://www.scotsman.com/news/obituaries/ian-porterfield-2469221"
+    ]
+  },
+  {
+    "_i": 19,
+    "verdict": "ok",
+    "check": "all four checks + index resolution",
+    "resolved": "16",
+    "reason": "United went 16 league games without a win at the start of 1990-91, sat bottom on Christmas Day with 4 points, then won 13 of their last 22 (incl. a 7-game streak) to finish 13th in Division One. Matches stem and hint exactly.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1990%E2%80%9391_Sheffield_United_F.C._season",
+      "https://www.examinerlive.co.uk/sport/football/news/sheffield-united-1990-91-season-19207732"
+    ]
+  },
+  {
+    "_i": 20,
+    "verdict": "ok",
+    "check": "all four checks + index resolution",
+    "resolved": "Brian Deane",
+    "reason": "Deane scored in the 5th minute (the first-ever Premier League goal) and again from the penalty spot in the 50th; Mark Hughes replied for Man Utd. Distractors Alan Cork, Glyn Hodges, Adrian Littlejohn were all genuine Sheffield United squad members at that time (Cork joined early 1992, Hodges since 1990, Littlejohn scored elsewhere that season) but none scored in this match.",
+    "sources": [
+      "https://www.skysports.com/football/news/11095/11867410/brian-deane-the-story-of-the-first-premier-league-goal",
+      "https://www.mufcinfo.com/manupag/match_data/match_sql.php?my_match_date=1992-08-15",
+      "https://en.wikipedia.org/wiki/1992%E2%80%9393_Sheffield_United_F.C._season"
+    ]
+  },
+  {
+    "_i": 21,
+    "verdict": "ok",
+    "check": "all four checks + index resolution",
+    "resolved": "Manchester United",
+    "reason": "Same fixture as _i 20: Sheffield United won 2-1 at Bramall Lane on the PL's opening day, 15 Aug 1992, attendance 28,070. Manchester United indeed went on to win the inaugural 1992-93 Premier League title (Ferguson's first), matching the hint. Distractors Leeds United, Nottingham Forest, QPR are all real 1992-93 Premier League clubs, verifiably not United's opponent that day.",
+    "sources": [
+      "https://www.givemesport.com/first-ever-premier-league-game-sheffield-utd-man-utd/",
+      "https://en.wikipedia.org/wiki/1992%E2%80%9393_Sheffield_United_F.C._season"
+    ]
+  },
+  {
+    "_i": 22,
+    "verdict": "ok",
+    "check": "all four checks (esp. SHU-page-specific: answer must never be 'Sheffield United')",
+    "resolved": "Sheffield Wednesday",
+    "reason": "Sheffield United's city rivals are Sheffield Wednesday (Steel City derby), a well-established, non-self-answering fact. Answer is not 'Sheffield United'. Distractors Barnsley, Rotherham United, Doncaster Rovers are all real South Yorkshire clubs, plausible but not United's city derby rival.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Steel_City_derby"
+    ]
+  },
+  {
+    "_i": 23,
+    "verdict": "ok",
+    "check": "all four checks + index resolution",
+    "resolved": "100",
+    "reason": "Chris Wilder's Sheffield United won the 2016-17 League One title with 100 points in his first season in charge, ending a six-season stay in the third tier. Distractors 93/96/104 are plausible nearby point totals but verifiably not the actual figure.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2016%E2%80%9317_Sheffield_United_F.C._season"
+    ]
+  }
+]

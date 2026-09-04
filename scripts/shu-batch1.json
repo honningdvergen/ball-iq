@@ -1,0 +1,106 @@
+[
+  {
+    "q": "Sheffield United won their first FA Cup in 1899, beating which club 4-1 in the final?",
+    "o": [
+      "Southampton",
+      "Derby County",
+      "Notts County",
+      "Tottenham Hotspur"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Derby County led at half-time at Crystal Palace before United scored four, with Fred Priest among the scorers.",
+    "_i": 8
+  },
+  {
+    "q": "Sheffield United's 1902 FA Cup final went to a replay after a 1-1 draw. Who did they beat 2-1 to lift the trophy?",
+    "o": [
+      "Everton",
+      "Sunderland",
+      "Southampton",
+      "Derby"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Southampton were still a Southern League club, and both matches were played at Crystal Palace a week apart.",
+    "_i": 9
+  },
+  {
+    "q": "Sheffield United's 3-0 win over Chelsea in the 1915 FA Cup final is remembered by which nickname?",
+    "o": [
+      "The White Horse Final",
+      "The Khaki Cup Final",
+      "The Matthews Final",
+      "The Munich Final"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Uniformed soldiers filled Old Trafford, and Lord Derby used the trophy presentation to urge more men to enlist.",
+    "_i": 10
+  },
+  {
+    "q": "What was the score when Sheffield United beat Cardiff City in the 1925 FA Cup final at Wembley?",
+    "o": [
+      "1-0",
+      "2-0",
+      "2-1",
+      "3-1"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Fred Tunstall's goal after half an hour settled it, and United have not won the cup since.",
+    "_i": 11
+  },
+  {
+    "q": "Sheffield Wednesday's win over Sheffield United on Boxing Day 1979 is known as the 'Boxing Day Massacre'. What was the score?",
+    "o": [
+      "2-1",
+      "3-0",
+      "4-0",
+      "5-1"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "A crowd of 49,309 at Hillsborough saw Ian Mellor open the scoring from 25 yards in a 4-0 rout of the Third Division leaders.",
+    "_i": 12
+  },
+  {
+    "q": "Which player did Dave Bassett sign from Doncaster Rovers in 1988, going on to form a famous strike partnership with Tony Agana?",
+    "o": [
+      "Keith Edwards",
+      "Carl Bradshaw",
+      "Bob Booker",
+      "Brian Deane"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Brian Deane cost £25,000 and his partnership with Agana carried United through back-to-back promotions.",
+    "_i": 13
+  },
+  {
+    "q": "Sheffield United went up in 1989-90 as Second Division runners-up, level on points with the champions. Which Yorkshire club finished above them on goal difference?",
+    "o": [
+      "Barnsley",
+      "Leeds United",
+      "Huddersfield Town",
+      "Bradford City"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Leeds and United both ended the season on 85 points; Leeds took the title on goal difference and both clubs went up.",
+    "_i": 14
+  },
+  {
+    "q": "Which forward holds Sheffield United's all-time club goalscoring record, with 201 goals?",
+    "o": [
+      "Alan Woodward",
+      "Jimmy Hagan",
+      "Harry Johnson",
+      "Keith Edwards"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Harry Johnson scored his 201 goals across the 1920s, comfortably clear of Alan Woodward's 158.",
+    "_i": 15
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "q": "Jack Walker, the local businessman who took full control of Blackburn Rovers in 1991 and bankrolled its rise, made his fortune in which industry?",
+    "o": ["Textiles", "Steel", "Brewing", "Shipbuilding"],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Walker built Walkersteel into Britain's largest steel stockholder and sold it to British Steel in 1989, then ploughed the proceeds into his hometown club."
+  },
+  {
+    "q": "Blackburn broke the British transfer record in July 1992 to sign Alan Shearer. Which club did they buy him from?",
+    "o": ["Norwich City", "Ipswich Town", "Southampton", "Coventry City"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Kenny Dalglish prised the England striker away from The Dell for a fee of around £3.6m, then the biggest ever paid by a British club."
+  },
+  {
+    "q": "Blackburn won the 2002 League Cup final 2-1 at the Millennium Stadium in Cardiff. Which club did they beat?",
+    "o": ["Tottenham Hotspur", "Aston Villa", "Middlesbrough", "Sheffield Wednesday"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Matt Jansen and Andy Cole scored for Graeme Souness's side after Christian Ziege had levelled for Spurs; it was Blackburn's first League Cup."
+  },
+  {
+    "q": "Venky's, the Indian company that bought Blackburn Rovers in November 2010, built its business in which industry?",
+    "o": ["Mobile telecoms", "Textile mills", "Poultry farming", "Pharmaceuticals"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The Rao family's Pune-based VH Group is an integrated poultry and processed-food business; the takeover was reported at around £23m."
+  },
+  {
+    "q": "Kenny Dalglish's Blackburn won the 1992 Second Division play-off final at Wembley to reach the new Premier League. Which club did they beat 1-0?",
+    "o": ["Cambridge United", "Derby County", "Middlesbrough", "Leicester City"],
+    "a": 3,
+    "diff": "easy",
+    "hint": "Mike Newell's penalty settled it, ending 26 years away from the top flight for Rovers."
+  },
+  {
+    "q": "Which stadium has been Blackburn Rovers' home since 1890, and was substantially rebuilt with Jack Walker's money in the 1990s?",
+    "o": ["Turf Moor", "Deepdale", "Ewood Park", "Bloomfield Road"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Walker funded a redevelopment costing around £20m, and one of the new stands was named the Jack Walker Stand in his honour."
+  },
+  {
+    "q": "Blackburn were champions in 1994-95 despite losing 2-1 at Anfield on the final day, because Manchester United could only draw their last match away at which club?",
+    "o": ["Coventry City", "West Ham United", "Southampton", "Crystal Palace"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "United drew 1-1 at Upton Park and finished on 88 points, one behind Blackburn's 89."
+  },
+  {
+    "q": "Blackburn broke the British transfer record for a second time in July 1994, paying £5m for Chris Sutton. Which club did he leave to join them?",
+    "o": ["Nottingham Forest", "Coventry City", "Ipswich Town", "Norwich City"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Sutton moved from Carrow Road to Ewood Park and formed the SAS partnership with Alan Shearer in the title-winning season."
+  },
+  {
+    "q": "How many Premier League goals did Alan Shearer score in Blackburn's title-winning 1994-95 season?",
+    "o": ["25", "28", "31", "34"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Shearer's 34 equalled Andy Cole's record from the previous season and won him the Golden Boot; Chris Sutton added 15."
+  },
+  {
+    "q": "In 1993 Blackburn made Tim Flowers the most expensive goalkeeper in British football. Which club did they sign him from?",
+    "o": ["Southampton", "Wimbledon", "Coventry City", "Queens Park Rangers"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The £2.4m deal reunited Flowers with Alan Shearer, who had left the same club for Ewood Park a year earlier."
+  },
+  {
+    "q": "Who captained Blackburn Rovers through their 1994-95 Premier League title-winning season?",
+    "o": ["Tim Sherwood", "Colin Hendry", "Stuart Ripley", "David Batty"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Sherwood wore the armband in midfield, with Colin Hendry marshalling the defence behind him."
+  },
+  {
+    "q": "Graeme Souness left Blackburn in September 2004 to take charge of which club?",
+    "o": ["Everton", "Southampton", "Newcastle United", "Liverpool"],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Souness swapped Ewood Park for St James' Park, and Mark Hughes left the Wales job to replace him at Blackburn."
+  },
+  {
+    "q": "Blackburn sold Damien Duff for £17m in July 2003. Which club bought him?",
+    "o": ["Arsenal", "Chelsea", "Manchester United", "Newcastle United"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Roman Abramovich's first summer of spending took the Republic of Ireland winger from Ewood Park to Stamford Bridge."
+  },
+  {
+    "q": "Blackburn's eleven-year run in the Premier League ended on 7 May 2012 with a home defeat that confirmed relegation. Which club beat them at Ewood Park?",
+    "o": ["Bolton Wanderers", "Norwich City", "Queens Park Rangers", "Wigan Athletic"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Antolin Alcaraz headed the only goal late on as Wigan won 1-0, sending Steve Kean's side down with a game still to play."
+  },
+  {
+    "q": "Andy Cole scored Blackburn's winner in the 2002 League Cup final, roughly two months after signing. Which club did Blackburn buy him from?",
+    "o": ["Newcastle United", "Manchester United", "Leeds United", "Aston Villa"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Souness paid around £8m to bring Cole from Old Trafford in December 2001; he had been the Premier League's top scorer at Newcastle years earlier."
+  },
+  {
+    "q": "Blackburn's 1994-95 title season began with a first-round UEFA Cup exit at the hands of which club?",
+    "o": ["IFK Gothenburg", "Trelleborgs FF", "Odense BK", "Aalborg BK"],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The little-known Swedish side won 1-0 at Ewood Park and drew 2-2 at home, knocking the future champions out in September 1994."
+  },
+  {
+    "q": "Blackburn won only one match in the 1995-96 Champions League. Which club did they beat 4-1 at Ewood Park in December 1995?",
+    "o": ["Spartak Moscow", "Steaua Bucharest", "Rosenborg", "Legia Warsaw"],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Ray Harford's side still finished bottom of Group B with one win, one draw and four defeats from six games."
+  },
+  {
+    "q": "Two Blackburn team-mates traded punches on the pitch during a Champions League group game in Moscow in November 1995. Graeme Le Saux was one of them, but who was the other?",
+    "o": ["Colin Hendry", "Jason Wilcox", "David Batty", "Tim Sherwood"],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Le Saux broke a bone in his hand throwing the punch and captain Tim Sherwood took a stray blow trying to separate them; Spartak Moscow won 3-0."
+  },
+  {
+    "q": "Blackburn appointed Paul Ince in June 2008, making him the first black British manager in the Premier League. Which club had he just led to the League Two title?",
+    "o": ["Notts County", "Rotherham United", "Macclesfield Town", "Milton Keynes Dons"],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Ince won the League Two title and the Football League Trophy with MK Dons in 2007-08, but lasted only 177 days at Ewood Park."
+  },
+  {
+    "q": "Blackburn goalkeeper Brad Friedel scored a Premier League goal from a corner in stoppage time in February 2004. Which club were Blackburn playing?",
+    "o": ["Charlton Athletic", "Fulham", "Portsmouth", "Bolton Wanderers"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Friedel's 90th-minute equaliser made it 2-2 at The Valley, and Charlton went straight up the other end to win it 3-2."
+  }
+]

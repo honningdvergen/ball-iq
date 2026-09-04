@@ -1,0 +1,73 @@
+[
+  {
+    "_i": 0,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "1889",
+    "reason": "Sheffield United F.C. founded 22 March 1889 as an offshoot of the cricket club. Distractors (1867 = Sheffield Wednesday's founding year, 1878 = Bramall Lane floodlight year, 1901) are all plausible wrong years, none impossible for the stem.",
+    "sources": ["https://en.wikipedia.org/wiki/Sheffield_United_F.C."]
+  },
+  {
+    "_i": 1,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Bramall Lane",
+    "reason": "Sheffield United have played at Bramall Lane since formation in 1889; premise correct. Distractors are all real Sheffield-area grounds (Hillsborough = Sheffield Wednesday, Sandygate Road = Hallam FC, Don Valley Stadium = former athletics stadium) but none is or was Sheffield United's home.",
+    "sources": ["https://en.wikipedia.org/wiki/Bramall_Lane"]
+  },
+  {
+    "_i": 2,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Red and white stripes",
+    "reason": "Confirmed: red-and-white striped shirts (with black shorts from 1904) have been Sheffield United's kit for most of the club's history, giving rise to the 'Blades' nickname reinforcement. Distractors are generic wrong colour combinations, not tied to Sheffield United.",
+    "sources": ["https://casualfootballshirts.co.uk/pages/sheffield-united-shirt-history", "https://en.wikipedia.org/wiki/Sheffield_United_F.C."]
+  },
+  {
+    "_i": 3,
+    "verdict": "fix",
+    "check": "4 - distractor deletion-grade (wrong-era option)",
+    "resolved": "1897-98",
+    "reason": "Keyed answer confirmed correct: Sheffield United won the First Division in 1897-98, their only top-flight title. However the distractor '1889-90' is impossible on its face: Sheffield United were not elected to the Football League until 1892 (Second Division) and did not reach the First Division until promotion via Test Match in 1893, so they could not have won the First Division in 1889-90 -- this is exactly the 'wrong era, cannot possibly be right' pattern that gives the answer away to any informed player. Replace with an in-era, verifiably-wrong season. Sheffield United were runners-up (2nd, behind Aston Villa) in 1899-1900, which is real, plausible, in the correct competition/era, and still wrong.",
+    "sources": ["https://en.wikipedia.org/wiki/1892%E2%80%9393_Football_League_First_Division", "https://en.wikipedia.org/wiki/List_of_Sheffield_United_F.C._records_and_statistics"],
+    "fixed": {
+      "q": "In which season did Sheffield United win the Football League First Division title?",
+      "o": ["1897-98", "1899-1900", "1907-08", "1924-25"],
+      "a": 0,
+      "diff": "easy",
+      "hint": "Ernest 'Nudger' Needham captained Sheffield United to the championship in 1897-98, the club's only top-flight title."
+    }
+  },
+  {
+    "_i": 4,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Four",
+    "reason": "Sheffield United won the FA Cup four times: 1899, 1902, 1915, 1925 -- all before the Premier League formed in 1992. Confirmed they have not reached a final since losing 1-0 to Arsenal in 1936 (hint's claim checks out too). Distractors (Two/Three/Six) are plausible wrong counts.",
+    "sources": ["https://www.sufc.co.uk/club/history/club-history/", "https://en.wikipedia.org/wiki/1936_FA_Cup_final"]
+  },
+  {
+    "_i": 5,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Leeds United",
+    "reason": "Tony Currie joined Sheffield United in 1968, left in 1976 (eight years, matches stem) when Leeds United signed him for a club-record £250,000; he moved on to QPR in 1979, three years later, matching the hint exactly. Distractors are plausible contemporary English clubs.",
+    "sources": ["https://www.yorkshireeveningpost.co.uk/sport/football/leeds-united/leeds-gesture-made-blades-legend-cry-3458505", "https://en.wikipedia.org/wiki/Tony_Currie_(footballer)"]
+  },
+  {
+    "_i": 6,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Sheffield Wednesday",
+    "reason": "Sheffield Wednesday were tenants at Bramall Lane and left for Olive Grove in 1887 following a dispute over rent/gate receipts; this loss of income led the ground's cricket-club owners to found Sheffield United in 1889. Distractors (Sheffield FC, Rotherham Town, Doncaster Rovers) had no Bramall Lane tenancy to depart from.",
+    "sources": ["https://en.wikipedia.org/wiki/Sheffield_United_F.C.", "https://en.wikipedia.org/wiki/Olive_Grove"]
+  },
+  {
+    "_i": 7,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "1878",
+    "reason": "The world's first floodlit football match was played at Bramall Lane on 14 October 1878, eleven years before Sheffield United's 1889 founding, matching the hint. Distractors (1888, 1898, 1908) are plausible alternative years.",
+    "sources": ["https://moneyweek.com/411443/14-october-1878-the-first-football-match-played-under-floodlights", "https://www.chrishobbs.com/firstfloodlitfootball1878.htm"]
+  }
+]

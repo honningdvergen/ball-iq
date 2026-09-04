@@ -1,0 +1,106 @@
+[
+  {
+    "q": "Ted Harper set Blackburn Rovers' club record for league goals in a season in 1925-26, a Football League record at the time. How many did he score?",
+    "o": [
+      "43",
+      "37",
+      "29",
+      "52"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Harper's 43 in 37 games included five at Newcastle and four against Manchester United; the League record lasted only until Dixie Dean's 60 two seasons later.",
+    "_i": 8
+  },
+  {
+    "q": "Which forward scored 168 league goals for Blackburn Rovers between 1978 and 1992, more than any other player in the club's history?",
+    "o": [
+      "Alan Shearer",
+      "Ted Harper",
+      "Simon Garner",
+      "Bryan Douglas"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Garner spent 14 years at Ewood Park, almost all of them outside the top flight, and left for West Bromwich Albion in the summer the Premier League began.",
+    "_i": 9
+  },
+  {
+    "q": "Which defender played 18 seasons for Blackburn Rovers from 1970 to 1987, making more appearances than any other player in the club's history?",
+    "o": [
+      "Ronnie Clayton",
+      "Bob Crompton",
+      "Glenn Keeley",
+      "Derek Fazackerley"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Fazackerley's 671 games in all competitions were played entirely outside the First Division, in Rovers' long exile in the second and third tiers.",
+    "_i": 10
+  },
+  {
+    "q": "Bryan Douglas spent his whole playing career at Blackburn Rovers and went to two World Cups with England. Which two tournaments?",
+    "o": [
+      "1954 and 1958",
+      "1958 and 1962",
+      "1962 and 1966",
+      "1950 and 1954"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Douglas won 36 caps and played in every England game in Sweden and Chile; the Darwen End at Ewood Park now carries his name.",
+    "_i": 11
+  },
+  {
+    "q": "Blackburn Rovers lost the 1960 FA Cup final 3-0 and finished it with ten men after a full-back broke his leg. He later built the JJB Sports chain and bought Wigan Athletic — who was he?",
+    "o": [
+      "Mick McGrath",
+      "Matt Woods",
+      "Dave Whelan",
+      "Ronnie Clayton"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Whelan fractured his leg in a challenge with Wolves' Norman Deeley, and with no substitutes allowed Rovers had to play out the final a man short.",
+    "_i": 12
+  },
+  {
+    "q": "Blackburn Rovers were relegated from the First Division in 1966. How long did they spend away from the top flight before returning?",
+    "o": [
+      "26 years",
+      "14 years",
+      "19 years",
+      "33 years"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Rovers went down in 1966 and did not play top-flight football again until the inaugural Premier League season of 1992-93.",
+    "_i": 13
+  },
+  {
+    "q": "Blackburn Rovers won a Wembley final in 1987, beating Charlton Athletic 1-0. Which competition was it?",
+    "o": [
+      "The Football League Trophy",
+      "The Full Members' Cup",
+      "The Anglo-Italian Cup",
+      "The Watney Cup"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Colin Hendry volleyed the winner five minutes from time in the Full Members' Cup, a competition invented for First and Second Division clubs after English sides were banned from Europe.",
+    "_i": 14
+  },
+  {
+    "q": "How many FA Cup winners' medals did Blackburn Rovers half-back Jimmy Forrest collect between 1884 and 1891?",
+    "o": [
+      "Three",
+      "Four",
+      "Six",
+      "Five"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Forrest played in all five of Rovers' Victorian final wins, and in 1885 he became the first professional ever selected to play for England.",
+    "_i": 15
+  }
+]

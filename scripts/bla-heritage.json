@@ -1,0 +1,242 @@
+[
+  {
+    "q": "Blackburn Rovers moved into which ground in 1890?",
+    "o": [
+      "Ewood Park",
+      "Turf Moor",
+      "Deepdale",
+      "Bloomfield Road"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Rovers took a ten-year lease on Ewood Park in 1890 at £60 a year, then bought the freehold outright in 1893 for £2,500."
+  },
+  {
+    "q": "Blackburn Rovers won the FA Cup in three consecutive seasons in the 1880s. Which three?",
+    "o": [
+      "1882, 1883 and 1884",
+      "1886, 1887 and 1888",
+      "1884, 1885 and 1886",
+      "1890, 1891 and 1892"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Only Wanderers, in the 1870s, had won three FA Cups in a row before Rovers did it in 1884, 1885 and 1886 — and no club has managed it since."
+  },
+  {
+    "q": "Blackburn Rovers beat the same Scottish club in both the 1884 and the 1885 FA Cup final. Which club?",
+    "o": [
+      "Rangers",
+      "Queen's Park",
+      "Heart of Midlothian",
+      "Third Lanark"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Queen's Park, the Glasgow amateurs, reached both finals at Kennington Oval and lost both — 2-1 in 1884 and 2-0 a year later."
+  },
+  {
+    "q": "The 1886 FA Cup final between Blackburn Rovers and West Bromwich Albion ended goalless, and the replay became the first FA Cup final match staged outside London. Where was it played?",
+    "o": [
+      "Bramall Lane, Sheffield",
+      "Trent Bridge, Nottingham",
+      "Anfield, Liverpool",
+      "The Racecourse Ground, Derby"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "A week after the Oval draw the sides met again at Derby's Racecourse Ground, where Jimmy Brown and Joe Sowerbutts scored in a 2-0 win that sealed the third cup in a row."
+  },
+  {
+    "q": "Blackburn Rovers won the 1890 FA Cup final 6-1 at Kennington Oval. Which club did they beat?",
+    "o": [
+      "Notts County",
+      "Aston Villa",
+      "Sheffield Wednesday",
+      "Preston North End"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Wednesday were swept aside by three goals from William Townley — the first hat-trick ever scored in an FA Cup final."
+  },
+  {
+    "q": "Blackburn Rovers won the FA Cup for the sixth and last time in 1928. Who did they beat in the Wembley final?",
+    "o": [
+      "Huddersfield Town",
+      "Arsenal",
+      "Cardiff City",
+      "Bolton Wanderers"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Jack Roscamp scored twice and Tommy McLean once in a 3-1 win over Huddersfield — the last major trophy Rovers would win for 67 years."
+  },
+  {
+    "q": "Blackburn Rovers were champions of the Football League First Division twice before the First World War. In which seasons?",
+    "o": [
+      "1908-09 and 1910-11",
+      "1912-13 and 1914-15",
+      "1905-06 and 1909-10",
+      "1911-12 and 1913-14"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Bob Crompton was the club's captain for both titles, and the 1914 championship stood as Rovers' last league title until 1995."
+  },
+  {
+    "q": "Bob Crompton's 41 England caps, won as a Blackburn Rovers full-back, stood as the England appearance record until 1952. Who finally passed it?",
+    "o": [
+      "Stanley Matthews",
+      "Billy Wright",
+      "Tom Finney",
+      "Nat Lofthouse"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Crompton played his last international in 1914 and his mark survived 38 years, until Wolves' Billy Wright overtook it on the way to 105 caps."
+  },
+  {
+    "q": "Ted Harper set Blackburn Rovers' club record for league goals in a season in 1925-26, a Football League record at the time. How many did he score?",
+    "o": [
+      "43",
+      "37",
+      "29",
+      "52"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Harper's 43 in 37 games included five at Newcastle and four against Manchester United; the League record lasted only until Dixie Dean's 60 two seasons later."
+  },
+  {
+    "q": "Which forward scored 168 league goals for Blackburn Rovers between 1978 and 1992, more than any other player in the club's history?",
+    "o": [
+      "Alan Shearer",
+      "Ted Harper",
+      "Simon Garner",
+      "Bryan Douglas"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Garner spent 14 years at Ewood Park, almost all of them outside the top flight, and left for West Bromwich Albion in the summer the Premier League began."
+  },
+  {
+    "q": "Which defender played 18 seasons for Blackburn Rovers from 1970 to 1987, making more appearances than any other player in the club's history?",
+    "o": [
+      "Ronnie Clayton",
+      "Bob Crompton",
+      "Glenn Keeley",
+      "Derek Fazackerley"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Fazackerley's 671 games in all competitions were played entirely outside the First Division, in Rovers' long exile in the second and third tiers."
+  },
+  {
+    "q": "Bryan Douglas spent his whole playing career at Blackburn Rovers and went to two World Cups with England. Which two tournaments?",
+    "o": [
+      "1954 and 1958",
+      "1958 and 1962",
+      "1962 and 1966",
+      "1950 and 1954"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Douglas won 36 caps and played in every England game in Sweden and Chile; the Darwen End at Ewood Park now carries his name."
+  },
+  {
+    "q": "Blackburn Rovers lost the 1960 FA Cup final 3-0 and finished it with ten men after a full-back broke his leg. He later built the JJB Sports chain and bought Wigan Athletic — who was he?",
+    "o": [
+      "Mick McGrath",
+      "Matt Woods",
+      "Dave Whelan",
+      "Ronnie Clayton"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Whelan fractured his leg in a challenge with Wolves' Norman Deeley, and with no substitutes allowed Rovers had to play out the final a man short."
+  },
+  {
+    "q": "Blackburn Rovers were relegated from the First Division in 1966. How long did they spend away from the top flight before returning?",
+    "o": [
+      "26 years",
+      "14 years",
+      "19 years",
+      "33 years"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Rovers went down in 1966 and did not play top-flight football again until the inaugural Premier League season of 1992-93."
+  },
+  {
+    "q": "Blackburn Rovers won a Wembley final in 1987, beating Charlton Athletic 1-0. Which competition was it?",
+    "o": [
+      "The Football League Trophy",
+      "The Full Members' Cup",
+      "The Anglo-Italian Cup",
+      "The Watney Cup"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Colin Hendry volleyed the winner five minutes from time in the Full Members' Cup, a competition invented for First and Second Division clubs after English sides were banned from Europe."
+  },
+  {
+    "q": "How many FA Cup winners' medals did Blackburn Rovers half-back Jimmy Forrest collect between 1884 and 1891?",
+    "o": [
+      "Three",
+      "Four",
+      "Six",
+      "Five"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Forrest played in all five of Rovers' Victorian final wins, and in 1885 he became the first professional ever selected to play for England."
+  },
+  {
+    "q": "In which season did Blackburn Rovers win the Third Division championship?",
+    "o": [
+      "1974-75",
+      "1971-72",
+      "1977-78",
+      "1979-80"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Rovers dropped into the third tier in 1971 and came back up as champions four years later; they were relegated to it once more in 1979 before going up again in 1980."
+  },
+  {
+    "q": "Ewood Park's record attendance was set at an FA Cup sixth-round tie in March 1929. Which club were the visitors?",
+    "o": [
+      "Burnley",
+      "Preston North End",
+      "Bolton Wanderers",
+      "Manchester City"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "More than 61,000 crammed into Ewood for the visit of Bolton Wanderers on 2 March 1929, a figure the ground has never come close to since."
+  },
+  {
+    "q": "Which club became the first from the north of England to win the FA Cup, a year before Blackburn Rovers won their first?",
+    "o": [
+      "Darwen",
+      "Preston North End",
+      "Bolton Wanderers",
+      "Blackburn Olympic"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Blackburn Olympic, a side of local mill workers, beat Old Etonians 2-1 after extra time in 1883 — and had folded by 1889."
+  },
+  {
+    "q": "What is the traditional design of Blackburn Rovers' home shirt, worn since the 1880s?",
+    "o": [
+      "Blue and white vertical stripes",
+      "Blue and white halves",
+      "Claret and blue halves",
+      "Green and white halves"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The halved shirt dates back to Rovers' Victorian sides, and since the Second World War the blue half has almost always sat on the left."
+  }
+]

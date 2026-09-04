@@ -36,6 +36,7 @@ export const CLUB_COMPETITION = {
   'Norwich City': 'Championship',
   'Middlesbrough': 'Championship',
   'West Brom': 'Championship',
+  'Sheffield United': 'Championship',
   'Cardiff City': 'Championship',
   'Stoke City': 'Championship',
   'Derby County': 'Championship',

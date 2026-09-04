@@ -1,0 +1,106 @@
+[
+  {
+    "q": "In a 1–0 home win in December 2006, Phil Jagielka spent the last half-hour in goal after Paddy Kenny was injured. Which club were Sheffield United beating?",
+    "o": [
+      "Chelsea",
+      "Liverpool",
+      "Arsenal",
+      "Tottenham Hotspur"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Jagielka, an outfield player, kept the clean sheet and made a save from Robin van Persie to seal one of the Blades' best results of that Premier League season.",
+    "_i": 32
+  },
+  {
+    "q": "Sheffield United were promoted to the Premier League as Championship runners-up in 2018–19. Which club finished above them as champions?",
+    "o": [
+      "Norwich City",
+      "Leeds United",
+      "West Bromwich Albion",
+      "Aston Villa"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The champions took 94 points; the Blades finished on 89, six clear of Leeds United, and Aston Villa came up through the play-offs.",
+    "_i": 33
+  },
+  {
+    "q": "Sheffield United's first-choice goalkeeper during their ninth-place 2019–20 Premier League season was on loan from which club?",
+    "o": [
+      "Manchester City",
+      "Chelsea",
+      "Arsenal",
+      "Manchester United"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Dean Henderson played 36 league games on loan as Chris Wilder's newly promoted side, tipped by most pundits for relegation, finished ninth.",
+    "_i": 34
+  },
+  {
+    "q": "Who was Sheffield United's top scorer in 2002–03, with 16 league goals?",
+    "o": [
+      "Paul Peschisolido",
+      "Michael Brown",
+      "Wayne Allison",
+      "Steve Kabba"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "He was a central midfielder rather than a forward, and finished with 22 in all competitions in the season United reached two cup semi-finals and the play-off final.",
+    "_i": 35
+  },
+  {
+    "q": "Arsenal beat Sheffield United 1–0 in the 2003 FA Cup semi-final. At which ground was the tie played?",
+    "o": [
+      "Old Trafford",
+      "Villa Park",
+      "Elland Road",
+      "Hillsborough"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Freddie Ljungberg scored in the 34th minute in front of 59,170 and David Seaman produced a famous late save; Arsenal went on to win the cup.",
+    "_i": 36
+  },
+  {
+    "q": "Which Sheffield United midfielder scored both goals in the 2–1 League Cup semi-final first-leg win over Liverpool in January 2003?",
+    "o": [
+      "Michael Brown",
+      "Nick Montgomery",
+      "Michael Tonge",
+      "Stuart McCall"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "The homegrown midfielder struck in the 76th and 82nd minutes at Bramall Lane, but Liverpool overturned the tie at Anfield.",
+    "_i": 37
+  },
+  {
+    "q": "Who scored the penalty for Wigan Athletic that relegated Sheffield United on the final day of the 2006–07 season?",
+    "o": [
+      "Paul Scharner",
+      "David Unsworth",
+      "Denny Landzaat",
+      "Josip Skoko"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The defender had left Bramall Lane for Wigan that January; his first-half penalty, awarded for a Phil Jagielka handball, kept Wigan up on goal difference.",
+    "_i": 38
+  },
+  {
+    "q": "In June 2020, Sheffield United were denied a clear goal when goal-line technology failed to register that the ball had crossed the line. The 0–0 draw was away at which club?",
+    "o": [
+      "Aston Villa",
+      "Newcastle United",
+      "Burnley",
+      "Wolverhampton Wanderers"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Hawk-Eye apologised unreservedly, saying its cameras were blocked by the goalkeeper, a defender and the post as Ørjan Nyland carried Oliver Norwood's free-kick over his own line.",
+    "_i": 39
+  }
+]

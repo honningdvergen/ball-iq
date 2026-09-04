@@ -1,0 +1,106 @@
+[
+  {
+    "q": "In which year was Sheffield United founded at Bramall Lane?",
+    "o": [
+      "1867",
+      "1878",
+      "1889",
+      "1901"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Sheffield United Cricket Club set up a football branch at its ground in March 1889 to replace the gate money it had lost.",
+    "_i": 0
+  },
+  {
+    "q": "Sheffield United have played their home matches at the same ground since the club was formed. Which one?",
+    "o": [
+      "Hillsborough",
+      "Bramall Lane",
+      "Sandygate Road",
+      "Don Valley Stadium"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Bramall Lane was already a cricket ground when the football club was created there, and United have never had another home.",
+    "_i": 1
+  },
+  {
+    "q": "Which shirt design has been Sheffield United's first choice for most of the club's history?",
+    "o": [
+      "Blue and white stripes",
+      "Amber and black stripes",
+      "Claret and blue halves",
+      "Red and white stripes"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "Red and white stripes with black shorts have been the Blades' colours almost from the beginning.",
+    "_i": 2
+  },
+  {
+    "q": "In which season did Sheffield United win the Football League First Division title?",
+    "o": [
+      "1897-98",
+      "1889-90",
+      "1907-08",
+      "1924-25"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Ernest 'Nudger' Needham captained Sheffield United to the championship in 1897-98, the club's only top-flight title.",
+    "_i": 3
+  },
+  {
+    "q": "How many times did Sheffield United win the FA Cup before the Premier League was formed in 1992?",
+    "o": [
+      "Two",
+      "Three",
+      "Four",
+      "Six"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "United lifted the cup in 1899, 1902, 1915 and 1925, and have not reached a final since 1936.",
+    "_i": 4
+  },
+  {
+    "q": "Tony Currie left Sheffield United in 1976 after eight years at Bramall Lane. Which club signed him?",
+    "o": [
+      "Nottingham Forest",
+      "Leeds United",
+      "Derby County",
+      "Queens Park Rangers"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Leeds paid £250,000 for Currie in 1976, a record fee for them at the time; he moved on to QPR three years later.",
+    "_i": 5
+  },
+  {
+    "q": "Which club's departure from Bramall Lane in 1887 led the ground's owners to start their own football team?",
+    "o": [
+      "Sheffield Wednesday",
+      "Sheffield FC",
+      "Rotherham Town",
+      "Doncaster Rovers"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Wednesday were tenants at Bramall Lane from 1881 to 1887 and walked out after a row over rent, costing the cricket club its biggest earner.",
+    "_i": 6
+  },
+  {
+    "q": "Bramall Lane staged the world's first football match played under floodlights. In which year?",
+    "o": [
+      "1908",
+      "1898",
+      "1888",
+      "1878"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "On 14 October 1878, four 30-foot wooden towers lit an exhibition match at Bramall Lane, eleven years before the football club existed.",
+    "_i": 7
+  }
+]

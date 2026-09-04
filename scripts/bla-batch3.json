@@ -1,0 +1,106 @@
+[
+  {
+    "q": "Kenny Dalglish's Blackburn won the 1992 Second Division play-off final at Wembley to reach the new Premier League. Which club did they beat 1-0?",
+    "o": [
+      "Cambridge United",
+      "Derby County",
+      "Middlesbrough",
+      "Leicester City"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "Mike Newell's penalty settled it, ending 26 years away from the top flight for Rovers.",
+    "_i": 24
+  },
+  {
+    "q": "Which stadium has been Blackburn Rovers' home since 1890, and was substantially rebuilt with Jack Walker's money in the 1990s?",
+    "o": [
+      "Turf Moor",
+      "Deepdale",
+      "Ewood Park",
+      "Bloomfield Road"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Walker funded a redevelopment costing around £20m, and one of the new stands was named the Jack Walker Stand in his honour.",
+    "_i": 25
+  },
+  {
+    "q": "Blackburn were champions in 1994-95 despite losing 2-1 at Anfield on the final day, because Manchester United could only draw their last match away at which club?",
+    "o": [
+      "Coventry City",
+      "West Ham United",
+      "Southampton",
+      "Crystal Palace"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "United drew 1-1 at Upton Park and finished on 88 points, one behind Blackburn's 89.",
+    "_i": 26
+  },
+  {
+    "q": "Blackburn broke the British transfer record for a second time in July 1994, paying £5m for Chris Sutton. Which club did he leave to join them?",
+    "o": [
+      "Nottingham Forest",
+      "Coventry City",
+      "Ipswich Town",
+      "Norwich City"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Sutton moved from Carrow Road to Ewood Park and formed the SAS partnership with Alan Shearer in the title-winning season.",
+    "_i": 27
+  },
+  {
+    "q": "How many Premier League goals did Alan Shearer score in Blackburn's title-winning 1994-95 season?",
+    "o": [
+      "25",
+      "28",
+      "31",
+      "34"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Shearer's 34 equalled Andy Cole's record from the previous season and won him the Golden Boot; Chris Sutton added 15.",
+    "_i": 28
+  },
+  {
+    "q": "In 1993 Blackburn made Tim Flowers the most expensive goalkeeper in British football. Which club did they sign him from?",
+    "o": [
+      "Southampton",
+      "Wimbledon",
+      "Coventry City",
+      "Queens Park Rangers"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The £2.4m deal reunited Flowers with Alan Shearer, who had left the same club for Ewood Park a year earlier.",
+    "_i": 29
+  },
+  {
+    "q": "Who captained Blackburn Rovers through their 1994-95 Premier League title-winning season?",
+    "o": [
+      "Tim Sherwood",
+      "Colin Hendry",
+      "Stuart Ripley",
+      "David Batty"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Sherwood wore the armband in midfield, with Colin Hendry marshalling the defence behind him.",
+    "_i": 30
+  },
+  {
+    "q": "Graeme Souness left Blackburn in September 2004 to take charge of which club?",
+    "o": [
+      "Everton",
+      "Southampton",
+      "Newcastle United",
+      "Manchester City"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Souness swapped Ewood Park for St James' Park, and Mark Hughes left the Wales job to replace him at Blackburn.",
+    "_i": 31
+  }
+]

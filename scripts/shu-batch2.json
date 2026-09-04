@@ -1,0 +1,106 @@
+[
+  {
+    "q": "After leaving Bramall Lane in 1978, Alan Woodward finished his career in the North American Soccer League with which club?",
+    "o": [
+      "Tampa Bay Rowdies",
+      "New York Cosmos",
+      "Tulsa Roughnecks",
+      "Seattle Sounders"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Woodward scored more than 150 goals from the wing for United before joining Tulsa Roughnecks in 1979.",
+    "_i": 16
+  },
+  {
+    "q": "Sheffield United were relegated to the Fourth Division on the final day of the 1980-81 season after losing to which club?",
+    "o": [
+      "Chesterfield",
+      "Walsall",
+      "Colchester United",
+      "Blackpool"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Don Givens' late penalty was saved by Ron Green, and Walsall stayed up at United's expense.",
+    "_i": 17
+  },
+  {
+    "q": "Sheffield United won the Fourth Division title at the first attempt in 1981-82. Who was their manager that season?",
+    "o": [
+      "Ian Porterfield",
+      "John Harris",
+      "Harry Haslam",
+      "Dave Bassett"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Ian Porterfield, scorer of Sunderland's winner in the 1973 FA Cup final, took charge that June and Keith Edwards scored 35 goals.",
+    "_i": 18
+  },
+  {
+    "q": "Sheffield United still avoided relegation in 1990-91 despite going how many league games without a win at the start of the season?",
+    "o": [
+      "8",
+      "12",
+      "16",
+      "20"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "United had four points from their first 16 games, then won 13 of the last 22 to finish 13th in the First Division.",
+    "_i": 19
+  },
+  {
+    "q": "Sheffield United beat Manchester United 2–1 at Bramall Lane on 15 August 1992, in a game that produced the very first goal of the Premier League era. Which Blades player scored it?",
+    "o": [
+      "Alan Cork",
+      "Glyn Hodges",
+      "Brian Deane",
+      "Adrian Littlejohn"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Deane scored twice that afternoon, one of them from the penalty spot, and his opener was the first goal the new competition ever saw.",
+    "_i": 20
+  },
+  {
+    "q": "On the opening day of the first Premier League season in August 1992, Sheffield United won 2–1 at Bramall Lane against which club?",
+    "o": [
+      "Leeds United",
+      "Manchester United",
+      "Nottingham Forest",
+      "Queens Park Rangers"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The visitors went on to win that inaugural Premier League title, but they lost their opening fixture in Sheffield in front of 28,070.",
+    "_i": 21
+  },
+  {
+    "q": "Sheffield United contest the Steel City derby with which club?",
+    "o": [
+      "Barnsley",
+      "Rotherham United",
+      "Doncaster Rovers",
+      "Sheffield Wednesday"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "The two Sheffield clubs sit a few miles apart — Wednesday at Hillsborough, United at Bramall Lane.",
+    "_i": 22
+  },
+  {
+    "q": "Chris Wilder's first season in charge, 2016–17, ended with Sheffield United winning the League One title. How many points did they finish on?",
+    "o": [
+      "93",
+      "96",
+      "100",
+      "104"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Wilder, a boyhood Blade, ended a six-season stay in the third tier at the first attempt — and the Blades reached three figures.",
+    "_i": 23
+  }
+]

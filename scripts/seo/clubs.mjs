@@ -2803,5 +2803,37 @@ export const CLUBS = [
         "a": "Eighth, on a club-record 49 points under Steve Clarke in 2012-13 \u2014 their highest league placing in decades. Tony Pulis later delivered 45 points and a top-half finish in 2016-17."
       }
     ]
+  },
+  {
+    "club": "Sheffield United",
+    "slug": "sheffield-united",
+    "name": "Sheffield United",
+    "h1": "Sheffield United Quiz",
+    "title": "Sheffield United Quiz with Answers \u2014 Blades | Ball IQ",
+    "description": "Free Sheffield United quiz with explained answers \u2014 the 1898 title, four FA Cups, Brian Deane's first Premier League goal and the Wilder years.",
+    "intro": [
+      "Sheffield United were created in March 1889 by the Sheffield United Cricket Club, which wanted football to replace the gate money its ground was losing. Bramall Lane was a cricket ground first \u2014 it had staged an exhibition match under four thirty-foot wooden light towers back in 1878, eleven years before the football club existed \u2014 and the Blades have never played anywhere else. Red and white stripes with black shorts have been the colours almost from the start.",
+      "The trophies came early. Ernest 'Nudger' Needham captained the side to the First Division championship in 1897-98, still the club's only top-flight title, and four FA Cups followed: 1899 and 1902 either side of the turn of the century, then the 1915 final remembered as the Khaki Cup Final, played in front of uniformed soldiers with Lord Derby using the presentation to urge more men to enlist, and finally 1925, settled by Fred Tunstall's goal after half an hour.",
+      "What followed was long and hard. Relegation to the Fourth Division in 1981 turned on a missed penalty against Walsall on the last day; Ian Porterfield, who had scored Sunderland's winner in the 1973 FA Cup final, took charge that June. Tony Currie had gone to Leeds in 1976 for a fee that was a record for them, and Alan Woodward left for Tulsa Roughnecks in 1979 after more than 150 goals from the wing. Harry Johnson's 201 still stands clear of them all.",
+      "The modern Blades are the ones most supporters have lived through: Brian Deane scoring the first goal of the Premier League era in August 1992, Phil Jagielka going in goal for the last half-hour against Arsenal, two cup semi-finals and a play-off final in the same 2002-03 season, and Chris Wilder taking a boyhood club out of the third tier and finishing ninth in the Premier League. Every answer here explains itself."
+    ],
+    "faq": [
+      {
+        "q": "Why are Sheffield United called the Blades?",
+        "a": "Sheffield's steel and cutlery trade gave the city's clubs the name; United have carried it since their founding in 1889 by the Sheffield United Cricket Club, and they play in red and white stripes with black shorts."
+      },
+      {
+        "q": "How many FA Cups have Sheffield United won?",
+        "a": "Four \u2014 1899, 1902, 1915 and 1925. The 1915 final is remembered as the Khaki Cup Final, played before a crowd of uniformed soldiers during the First World War, and the club has not reached a final since 1936."
+      },
+      {
+        "q": "When did Sheffield United win the league?",
+        "a": "1897-98, captained by Ernest 'Nudger' Needham. It remains their only top-flight championship."
+      },
+      {
+        "q": "Who scored the first goal in Premier League history?",
+        "a": "Brian Deane, for Sheffield United against Manchester United at Bramall Lane on 15 August 1992. He scored twice that afternoon, one from the penalty spot, in a 2-1 win."
+      }
+    ]
   }
 ];

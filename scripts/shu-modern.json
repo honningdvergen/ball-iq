@@ -1,0 +1,142 @@
+[
+  {
+    "q": "Sheffield United beat Manchester United 2–1 at Bramall Lane on 15 August 1992, in a game that produced the very first goal of the Premier League era. Which Blades player scored it?",
+    "o": ["Alan Cork", "Glyn Hodges", "Brian Deane", "Adrian Littlejohn"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Deane scored twice that afternoon, one of them from the penalty spot, and his opener was the first goal the new competition ever saw."
+  },
+  {
+    "q": "On the opening day of the first Premier League season in August 1992, Sheffield United won 2–1 at Bramall Lane against which club?",
+    "o": ["Leeds United", "Manchester United", "Nottingham Forest", "Queens Park Rangers"],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The visitors went on to win that inaugural Premier League title, but they lost their opening fixture in Sheffield in front of 28,070."
+  },
+  {
+    "q": "Sheffield United contest the Steel City derby with which club?",
+    "o": ["Barnsley", "Rotherham United", "Doncaster Rovers", "Sheffield Wednesday"],
+    "a": 3,
+    "diff": "easy",
+    "hint": "The two Sheffield clubs sit a few miles apart — Wednesday at Hillsborough, United at Bramall Lane."
+  },
+  {
+    "q": "Chris Wilder's first season in charge, 2016–17, ended with Sheffield United winning the League One title. How many points did they finish on?",
+    "o": ["93", "96", "100", "104"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Wilder, a boyhood Blade, ended a six-season stay in the third tier at the first attempt — and the Blades reached three figures."
+  },
+  {
+    "q": "Sheffield United were relegated from the Premier League on the final day of the 2006–07 season. Who was their manager?",
+    "o": ["Neil Warnock", "Dave Bassett", "Kevin Blackwell", "Bryan Robson"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "He had taken the club up as Championship runners-up the season before, and left within days of the relegation-day defeat at Bramall Lane."
+  },
+  {
+    "q": "Who was Sheffield United's leading scorer in the 2018–19 Championship season, with 23 league goals, as the club won promotion to the Premier League?",
+    "o": ["David McGoldrick", "Leon Clarke", "Billy Sharp", "Mark Duffy"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The Sheffield-born striker came through the club's own academy; McGoldrick was next on the list that season with 15."
+  },
+  {
+    "q": "Sheffield United were relegated from the Premier League on the final day of 1993–94, losing 3–2 away to which club?",
+    "o": ["Everton", "Chelsea", "Ipswich Town", "Southampton"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Mark Stein scored twice at Stamford Bridge on 7 May 1994, the second in stoppage time, on a chaotic final afternoon that sent the Blades down in 20th."
+  },
+  {
+    "q": "Sheffield United lost the 1993 FA Cup semi-final 2–1 to Sheffield Wednesday. At which ground was the all-Sheffield tie played?",
+    "o": ["Old Trafford", "Elland Road", "Villa Park", "Wembley"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Chris Waddle's second-minute free-kick and Mark Bright's extra-time header settled it; Alan Cork had equalised for United."
+  },
+  {
+    "q": "In 2002–03 Sheffield United reached both domestic cup semi-finals. Which club knocked them out of the League Cup?",
+    "o": ["Liverpool", "Arsenal", "Blackburn Rovers", "Manchester United"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "United won the first leg 2–1 at Bramall Lane, but lost 2–0 after extra time at Anfield to go out 3–2 on aggregate — and the winners lifted the trophy."
+  },
+  {
+    "q": "Sheffield United lost the 2003 First Division play-off final 3–0 at the Millennium Stadium. Which club beat them?",
+    "o": ["Nottingham Forest", "Reading", "Wolverhampton Wanderers", "Norwich City"],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Dave Jones's side led 3–0 by half-time in Cardiff through Mark Kennedy, Nathan Blake and Kenny Miller; United had beaten Nottingham Forest 5–4 on aggregate in the semi-final."
+  },
+  {
+    "q": "Sheffield United went up to the Premier League as Championship runners-up in 2005–06. Which club won the title that season with 106 points?",
+    "o": ["Watford", "Leeds United", "Sunderland", "Reading"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "The champions ran away with it on 106 points while the Blades finished second on 90; Watford came up through the play-offs."
+  },
+  {
+    "q": "On the final day of 2006–07 Sheffield United were relegated after losing 2–1 at Bramall Lane. Who were the visitors that afternoon?",
+    "o": ["West Ham United", "Wigan Athletic", "Charlton Athletic", "Fulham"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Both clubs finished on 38 points and the visitors survived on goal difference; Jon Stead had equalised before a first-half penalty won it."
+  },
+  {
+    "q": "In a 1–0 home win in December 2006, Phil Jagielka spent the last half-hour in goal after Paddy Kenny was injured. Which club were Sheffield United beating?",
+    "o": ["Chelsea", "Liverpool", "Arsenal", "Tottenham Hotspur"],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Jagielka, an outfield player, kept the clean sheet and made a save from Robin van Persie to seal one of the Blades' best results of that Premier League season."
+  },
+  {
+    "q": "Sheffield United were promoted to the Premier League as Championship runners-up in 2018–19. Which club finished above them as champions?",
+    "o": ["Norwich City", "Leeds United", "West Bromwich Albion", "Aston Villa"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The champions took 94 points; the Blades finished on 89, six clear of Leeds United, and Aston Villa came up through the play-offs."
+  },
+  {
+    "q": "Sheffield United's first-choice goalkeeper during their ninth-place 2019–20 Premier League season was on loan from which club?",
+    "o": ["Manchester City", "Chelsea", "Arsenal", "Manchester United"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Dean Henderson played 36 league games on loan as Chris Wilder's newly promoted side, tipped by most pundits for relegation, finished ninth."
+  },
+  {
+    "q": "Who was Sheffield United's top scorer in 2002–03, with 16 league goals?",
+    "o": ["Paul Peschisolido", "Michael Brown", "Wayne Allison", "Steve Kabba"],
+    "a": 1,
+    "diff": "hard",
+    "hint": "He was a central midfielder rather than a forward, and finished with 22 in all competitions in the season United reached two cup semi-finals and the play-off final."
+  },
+  {
+    "q": "Arsenal beat Sheffield United 1–0 in the 2003 FA Cup semi-final. At which ground was the tie played?",
+    "o": ["Old Trafford", "Villa Park", "Elland Road", "Hillsborough"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Freddie Ljungberg scored in the 34th minute in front of 59,170 and David Seaman produced a famous late save; Arsenal went on to win the cup."
+  },
+  {
+    "q": "Which Sheffield United midfielder scored both goals in the 2–1 League Cup semi-final first-leg win over Liverpool in January 2003?",
+    "o": ["Michael Brown", "Nick Montgomery", "Michael Tonge", "Stuart McCall"],
+    "a": 2,
+    "diff": "hard",
+    "hint": "The homegrown midfielder struck in the 76th and 82nd minutes at Bramall Lane, but Liverpool overturned the tie at Anfield."
+  },
+  {
+    "q": "Who scored the penalty for Wigan Athletic that relegated Sheffield United on the final day of the 2006–07 season?",
+    "o": ["Paul Scharner", "David Unsworth", "Denny Landzaat", "Josip Skoko"],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The defender had left Bramall Lane for Wigan that January; his first-half penalty, awarded for a Phil Jagielka handball, kept Wigan up on goal difference."
+  },
+  {
+    "q": "In June 2020, Sheffield United were denied a clear goal when goal-line technology failed to register that the ball had crossed the line. The 0–0 draw was away at which club?",
+    "o": ["Aston Villa", "Newcastle United", "Burnley", "Wolverhampton Wanderers"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Hawk-Eye apologised unreservedly, saying its cameras were blocked by the goalkeeper, a defender and the post as Ørjan Nyland carried Oliver Norwood's free-kick over his own line."
+  }
+]

@@ -1,0 +1,89 @@
+[
+  {
+    "_i": 8,
+    "verdict": "ok",
+    "check": "all four + index resolution",
+    "resolved": "43",
+    "reason": "Ted Harper scored 43 league goals in 37 games for Blackburn Rovers in 1925-26, a Football League record at the time (top-flight record until Dixie Dean's 60 two seasons later, per multiple sources including a spartacus-educational bio and englandfootballonline). Distractors (37, 29, 52) are plausible but verifiably wrong; 37 is a decoy matching his games-played count, which is fair (not deletion-grade since it requires knowing goals vs games).",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ted_Harper",
+      "https://spartacus-educational.com/PRESTONharper.htm"
+    ]
+  },
+  {
+    "_i": 9,
+    "verdict": "ok",
+    "check": "all four + index resolution",
+    "resolved": "Simon Garner",
+    "reason": "Simon Garner is Blackburn Rovers' record league goalscorer with 168 league goals (194 in all competitions), 1978-1992. Confirmed by Wikipedia and Blackburn-focused sources. Distractors (Shearer, Harper, Douglas) are all real Blackburn players with fewer league goals, correctly formatted as full names, none deletion-grade.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Simon_Garner",
+      "https://www.sporting-heroes.net/football/blackburn-rovers/simon-garner-10400/league-appearances-for-the-rovers_a14681/"
+    ]
+  },
+  {
+    "_i": 10,
+    "verdict": "fix",
+    "check": "2 - false premise in the stem (date)",
+    "resolved": "Derek Fazackerley",
+    "reason": "Fazackerley is genuinely Blackburn's all-time appearance record holder (671 games, 18-year career) and is the correct keyed answer. However Wikipedia and multiple independent bios (thefa.com, Wikipedia infobox) consistently give his Blackburn tenure as 1969-1987 (joined as apprentice 1969, turned pro 1970, first-team debut 1971), not '1970 to 1987' as the stem states. 1987-1969=18, which matches 'played 18 seasons' cleanly; 1970-1987 is only 17 seasons and misstates his start year. Distractors (Clayton, Crompton, Keeley) are real Blackburn defenders, correctly wrong, no format issue.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Derek_Fazackerley",
+      "https://www.thefa.com/news/2016/jan/29/derek-fazackerley-oxford-blackburn-preview-200116"
+    ],
+    "fixed": {
+      "q": "Which defender played 18 seasons for Blackburn Rovers from 1969 to 1987, making more appearances than any other player in the club's history?"
+    }
+  },
+  {
+    "_i": 11,
+    "verdict": "ok",
+    "check": "all four + index resolution",
+    "resolved": "1958 and 1962",
+    "reason": "Bryan Douglas earned 36 caps for England and played in every England match at the 1958 (Sweden) and 1962 (Chile) World Cups, spending his entire career at Blackburn Rovers. Confirmed by Wikipedia. Distractor year-pairs are all real World Cup year pairings and correctly wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Bryan_Douglas"
+    ]
+  },
+  {
+    "_i": 12,
+    "verdict": "ok",
+    "check": "all four + index resolution + distractor shape",
+    "resolved": "Dave Whelan",
+    "reason": "Dave Whelan, Blackburn's full-back, fractured his leg in the 1960 FA Cup final (lost 3-0 to Wolves) and Rovers played out the game with 10 men (no subs allowed then); Whelan later founded JJB Sports and bought Wigan Athletic. Confirmed by Wikipedia. Verified the full Blackburn XI for that final: Mick McGrath, Matt Woods and Ronnie Clayton were ALL genuine starters in that exact match (McGrath scored the own goal, Clayton was captain, Woods was a defender), so all three distractors satisfy the stem's implicit qualifier (played in that final) while being verifiably wrong about the leg/JJB Sports/Wigan facts -- not deletion-grade.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1960_FA_Cup_final",
+      "https://en.wikipedia.org/wiki/Dave_Whelan"
+    ]
+  },
+  {
+    "_i": 13,
+    "verdict": "ok",
+    "check": "all four + index resolution",
+    "resolved": "26 years",
+    "reason": "Blackburn were relegated from the First Division in 1966 and did not return to the top flight until the inaugural Premier League season 1992-93 -- 26 years. Confirmed by multiple sources. Distractors are plausible durations, correctly wrong, no format issue.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1992%E2%80%9393_Blackburn_Rovers_F.C._season"
+    ]
+  },
+  {
+    "_i": 14,
+    "verdict": "ok",
+    "check": "all four + index resolution",
+    "resolved": "The Full Members' Cup",
+    "reason": "Blackburn Rovers beat Charlton Athletic 1-0 in the 1987 Full Members' Cup final at Wembley (29 March 1987), Colin Hendry scoring the late winner. Confirmed by Wikipedia. Distractors are all real English cup competition names of the era (Football League Trophy, Anglo-Italian Cup, Watney Cup), correctly wrong, not deletion-grade.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1987_Full_Members%27_Cup_final"
+    ]
+  },
+  {
+    "_i": 15,
+    "verdict": "ok",
+    "check": "all four + index resolution",
+    "resolved": "Five",
+    "reason": "Jimmy Forrest won five FA Cup winners' medals with Blackburn Rovers (1884, 1885, 1886, 1890, 1891), confirmed by Wikipedia's honours listing. o[3]='Five' correctly resolves to a=3. Distractors (Three, Four, Six) are plausible nearby numbers, correctly wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Jimmy_Forrest_(footballer)"
+    ]
+  }
+]

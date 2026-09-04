@@ -1,0 +1,87 @@
+[
+  {
+    "_i": 32,
+    "verdict": "ok",
+    "check": "all four checks + SHU-page checks passed",
+    "resolved": "Arsenal",
+    "reason": "Confirmed: 30 Dec 2006, Paddy Kenny injured his thigh on a goal-kick ~61st minute (last ~29 min = 'last half-hour'), Jagielka went in goal, saved from van Persie, Sheffield United won 1-0 (Christian Nade scored). Options are four single-word top-flight clubs, all plausible eras/opponents; answer is not Sheffield United; no format oddity.",
+    "sources": [
+      "https://www.thestar.co.uk/sport/football/sheffield-united/the-day-jagielka-went-in-goal-and-kept-out-arsenal-15-years-ago-today-3510990",
+      "https://www.skysports.com/football/news/11683/11838766/when-phil-jagielka-went-in-goal-sheffield-utds-win-over-arsenal-in-2006"
+    ]
+  },
+  {
+    "_i": 33,
+    "verdict": "ok",
+    "check": "all four checks + SHU-page checks passed",
+    "resolved": "Norwich City",
+    "reason": "Confirmed: Norwich City champions 2018-19 Championship with 94 points; Sheffield United runners-up with 89 points (promoted automatically); Leeds United 3rd with 83 points (89-83=6, matches 'six clear'); Aston Villa promoted via play-offs. All matches hint exactly. Options are four two-word club names, consistent format; answer not SHU.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2018%E2%80%9319_EFL_Championship"
+    ]
+  },
+  {
+    "_i": 34,
+    "verdict": "ok",
+    "check": "all four checks + SHU-page checks passed",
+    "resolved": "Manchester United",
+    "reason": "Confirmed: Dean Henderson on season-long loan from Manchester United, 36 league games, Sheffield United finished 9th in 2019-20 Premier League as newly-promoted side tipped for relegation. Options all plausible parent clubs of the era, consistent single/two-word format; answer not SHU.",
+    "sources": [
+      "https://www.manutd.com/en/news/detail/manchester-united-goalkeeper-dean-henderson-joins-sheffield-united-on-loan"
+    ]
+  },
+  {
+    "_i": 35,
+    "verdict": "ok",
+    "check": "all four checks + SHU-page checks passed",
+    "resolved": "Michael Brown",
+    "reason": "Confirmed: Michael Brown was SHU's top scorer in 2002-03 with 16 league goals / 22 in all competitions, played as central midfielder. Season included FA Cup semi vs Arsenal, League Cup semi vs Liverpool, and the play-off final loss to Wolves (0-3) -- 'two cup semi-finals and the play-off final' checks out. Distractors Peschisolido, Allison, Kabba confirmed as genuine SHU forwards that season (not top scorer). Consistent two-word-name format; answer not SHU.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2002%E2%80%9303_Sheffield_United_F.C._season"
+    ]
+  },
+  {
+    "_i": 36,
+    "verdict": "ok",
+    "check": "all four checks + SHU-page checks passed",
+    "resolved": "Old Trafford",
+    "reason": "Confirmed: Arsenal 1-0 Sheffield United, FA Cup semi-final, 13 April 2003, played at Old Trafford; Freddie Ljungberg scored in the 34th minute; David Seaman made a late save. Could not independently verify the exact attendance figure of 59,170 in the hint but this is a minor unverified detail, not load-bearing to the answer, and is plausible for an Old Trafford semi-final of that era. Distractors are all real, plausible neutral or Sheffield-area venues (Villa Park, Elland Road, Hillsborough) -- Hillsborough is a clever near-miss since it's Sheffield Wednesday's ground, not a giveaway. Answer not SHU.",
+    "sources": [
+      "https://www.skysports.com/football/news/11683/11838766/when-phil-jagielka-went-in-goal-sheffield-utds-win-over-arsenal-in-2006",
+      "https://en.wikipedia.org/wiki/2002%E2%80%9303_Sheffield_United_F.C._season"
+    ]
+  },
+  {
+    "_i": 37,
+    "verdict": "ok",
+    "check": "all four checks + SHU-page checks passed",
+    "resolved": "Michael Tonge",
+    "reason": "Confirmed: Sheffield United beat Liverpool 2-1 at Bramall Lane, League Cup semi-final first leg, 8 Jan 2003; Michael Tonge scored both SHU goals (76th and 82nd minutes); Liverpool won the second leg 2-0 at Anfield (3-2 on aggregate), i.e. 'overturned the tie'. Distractors (Michael Brown, Nick Montgomery, Stuart McCall) were genuine SHU midfielders of that era, consistent two-word format; answer not SHU.",
+    "sources": [
+      "https://www.espn.co.uk/football/match/_/gameId/71894/liverpool-sheffield-united",
+      "https://www.lfchistory.net/games/2423"
+    ]
+  },
+  {
+    "_i": 38,
+    "verdict": "ok",
+    "check": "all four checks + SHU-page checks passed",
+    "resolved": "David Unsworth",
+    "reason": "Confirmed: David Unsworth left Sheffield United for Wigan Athletic on a free transfer on 5 January 2007 ('that January'); on the final day of 2006-07 (13 May 2007), his first-half penalty (awarded after a Phil Jagielka handball) put Wigan 2-1 up in their eventual 2-1 win, relegating Sheffield United and keeping Wigan up on goal difference. Distractors (Scharner, Landzaat, Skoko) were genuine Wigan players that season, Scharner scored Wigan's first goal that day -- all consistent single-surname format; answer not SHU.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/David_Unsworth",
+      "https://www.yorkshirepost.co.uk/sport/football/sheffield-united-v-wigan-unsworth-penalty-still-felt-nine-years-down-line-1804547"
+    ]
+  },
+  {
+    "_i": 39,
+    "verdict": "ok",
+    "check": "all four checks + SHU-page checks passed",
+    "resolved": "Aston Villa",
+    "reason": "Confirmed: Aston Villa 0-0 Sheffield United, 17 June 2020 (Premier League restart after COVID pause), Oliver Norwood's free-kick was carried over the line by Aston Villa keeper Orjan Nyland but goal-line technology failed to register it; Hawk-Eye apologised, citing occlusion by 'the goalkeeper, defender and goalpost' -- matches hint. Options are four plausible top-flight clubs of that season, consistent format; answer not SHU.",
+    "sources": [
+      "https://www.skysports.com/football/news/11095/12008740/aston-villa-0-0-sheffield-united-visitors-denied-by-tech-error-on-premier-leagues-return",
+      "https://www.football365.com/news/hawk-eye-apologise-goal-line-technology-failure-villa-sheffield-united"
+    ]
+  }
+]

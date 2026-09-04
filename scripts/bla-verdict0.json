@@ -1,0 +1,75 @@
+[
+  {
+    "_i": 0,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Ewood Park",
+    "reason": "Blackburn Rovers moved into Ewood Park in 1890 on a ten-year lease at £60/yr, buying the freehold in 1893 for £2,500 — matches hint exactly. Distractors (Turf Moor/Burnley, Deepdale/Preston, Bloomfield Road/Blackpool) are all real Lancashire grounds of other clubs, correctly wrong and equally plausible in format.",
+    "sources": ["https://en.wikipedia.org/wiki/Ewood_Park", "https://www.roverstrust.com/heritage-articles/ewood-park"]
+  },
+  {
+    "_i": 1,
+    "verdict": "fix",
+    "check": "4 (distractor deletion-grade / wrong era)",
+    "resolved": "1884, 1885 and 1886",
+    "reason": "Answer confirmed correct: Blackburn won three straight FA Cups 1884-1886, and no club has repeated the feat since (only Wanderers in the 1870s did it before). BUT the stem explicitly qualifies 'in the 1880s', and the fourth option '1890, 1891 and 1892' falls entirely in the 1890s — a player can eliminate it on era alone without any football knowledge, per check 4 (wrong-era option gives itself away). It is also not even a real three-peat (Blackburn won the Cup in 1890 and 1891 but not 1892), so it's doubly disqualified rather than a clean wrong-but-plausible trap.",
+    "sources": ["https://en.wikipedia.org/wiki/1884_FA_Cup_final", "https://en.wikipedia.org/wiki/1886_FA_Cup_final", "https://en.wikipedia.org/wiki/1891_FA_Cup_final"],
+    "fixed": {
+      "o": [
+        "1882, 1883 and 1884",
+        "1886, 1887 and 1888",
+        "1884, 1885 and 1886",
+        "1883, 1884 and 1885"
+      ],
+      "a": 2
+    }
+  },
+  {
+    "_i": 2,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Queen's Park",
+    "reason": "Queen's Park (Glasgow amateurs) lost both the 1884 (2-1) and 1885 (0-2 rendered per hint as 2-0) FA Cup finals to Blackburn Rovers at Kennington Oval — confirmed. Distractors (Rangers, Heart of Midlothian, Third Lanark) are all genuine Scottish clubs of the era, correctly wrong.",
+    "sources": ["https://en.wikipedia.org/wiki/1884_FA_Cup_final", "https://en.wikipedia.org/wiki/1885_FA_Cup_final"]
+  },
+  {
+    "_i": 3,
+    "verdict": "ok",
+    "check": "none (verified the 'first outside London' superlative claim)",
+    "resolved": "The Racecourse Ground, Derby",
+    "reason": "1886 final was a 0-0 draw at Kennington Oval; the replay at Derby's Racecourse Ground (Blackburn won 2-0) was indeed the first FA Cup final match ever staged outside London — confirmed by two independent sources, so the stem's superlative claim holds. Distractors (Bramall Lane, Trent Bridge — which genuinely hosted the 1892 final, Anfield) are all real non-London grounds of the era, correctly wrong and plausible.",
+    "sources": ["https://en.wikipedia.org/wiki/1886_FA_Cup_final", "https://www.11v11.com/matches/blackburn-rovers-v-west-bromwich-albion-10-april-1886-204855/"]
+  },
+  {
+    "_i": 4,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Sheffield Wednesday",
+    "reason": "Blackburn beat The Wednesday 6-1 at Kennington Oval in 1890; William Townley scored a hat-trick, the first ever in an FA Cup final — matches hint exactly. Distractors (Notts County, Aston Villa, Preston North End) are all genuine top clubs of the era, correctly wrong.",
+    "sources": ["https://en.wikipedia.org/wiki/1890_FA_Cup_final"]
+  },
+  {
+    "_i": 5,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Huddersfield Town",
+    "reason": "1928 final: Blackburn 3-1 Huddersfield Town, goals by Jack Roscamp (2) and Tommy McLean, matching the hint. Confirmed this was Blackburn's sixth FA Cup win (1884, 1885, 1886, 1890, 1891, 1928) and their last to date. Distractors (Arsenal, Cardiff City, Bolton Wanderers) were all genuine strong 1920s FA Cup sides, correctly wrong.",
+    "sources": ["https://en.wikipedia.org/wiki/1928_FA_Cup_final"]
+  },
+  {
+    "_i": 6,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "1911-12 and 1913-14",
+    "reason": "Confirmed: Bob Crompton captained Blackburn to the First Division title in 1911-12 and 1913-14, the second of which stood as the club's last league title until 1994-95 (matches hint's '1995'). Distractor season-pairs are all plausible pre-WWI-era formats, correctly wrong.",
+    "sources": ["https://www.nationalfootballmuseum.com/halloffame/bob-crompton/"]
+  },
+  {
+    "_i": 7,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Billy Wright",
+    "reason": "Confirmed: Bob Crompton's 41-cap England record (set by 1914) stood until Billy Wright won his 43rd cap in 1952 (3-0 win over Switzerland). Distractors (Stanley Matthews, Tom Finney, Nat Lofthouse) are genuine England contemporaries of Wright, correctly wrong and in matching two-word-name format.",
+    "sources": ["https://www.englandcaps.co.uk/BillyWright.html", "https://en.wikipedia.org/wiki/Bob_Crompton"]
+  }
+]

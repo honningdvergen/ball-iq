@@ -1,0 +1,106 @@
+[
+  {
+    "q": "Blackburn Rovers moved into which ground in 1890?",
+    "o": [
+      "Ewood Park",
+      "Turf Moor",
+      "Deepdale",
+      "Bloomfield Road"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Rovers took a ten-year lease on Ewood Park in 1890 at £60 a year, then bought the freehold outright in 1893 for £2,500.",
+    "_i": 0
+  },
+  {
+    "q": "Blackburn Rovers won the FA Cup in three consecutive seasons in the 1880s. Which three?",
+    "o": [
+      "1882, 1883 and 1884",
+      "1886, 1887 and 1888",
+      "1884, 1885 and 1886",
+      "1890, 1891 and 1892"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Only Wanderers, in the 1870s, had won three FA Cups in a row before Rovers did it in 1884, 1885 and 1886 — and no club has managed it since.",
+    "_i": 1
+  },
+  {
+    "q": "Blackburn Rovers beat the same Scottish club in both the 1884 and the 1885 FA Cup final. Which club?",
+    "o": [
+      "Rangers",
+      "Queen's Park",
+      "Heart of Midlothian",
+      "Third Lanark"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Queen's Park, the Glasgow amateurs, reached both finals at Kennington Oval and lost both — 2-1 in 1884 and 2-0 a year later.",
+    "_i": 2
+  },
+  {
+    "q": "The 1886 FA Cup final between Blackburn Rovers and West Bromwich Albion ended goalless, and the replay became the first FA Cup final match staged outside London. Where was it played?",
+    "o": [
+      "Bramall Lane, Sheffield",
+      "Trent Bridge, Nottingham",
+      "Anfield, Liverpool",
+      "The Racecourse Ground, Derby"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "A week after the Oval draw the sides met again at Derby's Racecourse Ground, where Jimmy Brown and Joe Sowerbutts scored in a 2-0 win that sealed the third cup in a row.",
+    "_i": 3
+  },
+  {
+    "q": "Blackburn Rovers won the 1890 FA Cup final 6-1 at Kennington Oval. Which club did they beat?",
+    "o": [
+      "Notts County",
+      "Aston Villa",
+      "Sheffield Wednesday",
+      "Preston North End"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Wednesday were swept aside by three goals from William Townley — the first hat-trick ever scored in an FA Cup final.",
+    "_i": 4
+  },
+  {
+    "q": "Blackburn Rovers won the FA Cup for the sixth and last time in 1928. Who did they beat in the Wembley final?",
+    "o": [
+      "Huddersfield Town",
+      "Arsenal",
+      "Cardiff City",
+      "Bolton Wanderers"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Jack Roscamp scored twice and Tommy McLean once in a 3-1 win over Huddersfield — the last major trophy Rovers would win for 67 years.",
+    "_i": 5
+  },
+  {
+    "q": "Blackburn Rovers were champions of the Football League First Division twice before the First World War. In which seasons?",
+    "o": [
+      "1908-09 and 1910-11",
+      "1912-13 and 1914-15",
+      "1905-06 and 1909-10",
+      "1911-12 and 1913-14"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Bob Crompton was the club's captain for both titles, and the 1914 championship stood as Rovers' last league title until 1995.",
+    "_i": 6
+  },
+  {
+    "q": "Bob Crompton's 41 England caps, won as a Blackburn Rovers full-back, stood as the England appearance record until 1952. Who finally passed it?",
+    "o": [
+      "Stanley Matthews",
+      "Billy Wright",
+      "Tom Finney",
+      "Nat Lofthouse"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Crompton played his last international in 1914 and his mark survived 38 years, until Wolves' Billy Wright overtook it on the way to 105 caps.",
+    "_i": 7
+  }
+]

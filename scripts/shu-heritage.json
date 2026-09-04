@@ -1,0 +1,142 @@
+[
+  {
+    "q": "In which year was Sheffield United founded at Bramall Lane?",
+    "o": ["1867", "1878", "1889", "1901"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Sheffield United Cricket Club set up a football branch at its ground in March 1889 to replace the gate money it had lost."
+  },
+  {
+    "q": "Sheffield United have played their home matches at the same ground since the club was formed. Which one?",
+    "o": ["Hillsborough", "Bramall Lane", "Sandygate Road", "Don Valley Stadium"],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Bramall Lane was already a cricket ground when the football club was created there, and United have never had another home."
+  },
+  {
+    "q": "Which shirt design has been Sheffield United's first choice for most of the club's history?",
+    "o": ["Blue and white stripes", "Amber and black stripes", "Claret and blue halves", "Red and white stripes"],
+    "a": 3,
+    "diff": "easy",
+    "hint": "Red and white stripes with black shorts have been the Blades' colours almost from the beginning."
+  },
+  {
+    "q": "In which season did Sheffield United win the Football League First Division title?",
+    "o": ["1897-98", "1889-90", "1907-08", "1924-25"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Ernest 'Nudger' Needham captained Sheffield United to the championship in 1897-98, the club's only top-flight title."
+  },
+  {
+    "q": "How many times did Sheffield United win the FA Cup before the Premier League was formed in 1992?",
+    "o": ["Two", "Three", "Four", "Six"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "United lifted the cup in 1899, 1902, 1915 and 1925, and have not reached a final since 1936."
+  },
+  {
+    "q": "Tony Currie left Sheffield United in 1976 after eight years at Bramall Lane. Which club signed him?",
+    "o": ["Nottingham Forest", "Leeds United", "Derby County", "Queens Park Rangers"],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Leeds paid £250,000 for Currie in 1976, a record fee for them at the time; he moved on to QPR three years later."
+  },
+  {
+    "q": "Which club's departure from Bramall Lane in 1887 led the ground's owners to start their own football team?",
+    "o": ["Sheffield Wednesday", "Sheffield FC", "Rotherham Town", "Doncaster Rovers"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Wednesday were tenants at Bramall Lane from 1881 to 1887 and walked out after a row over rent, costing the cricket club its biggest earner."
+  },
+  {
+    "q": "Bramall Lane staged the world's first football match played under floodlights. In which year?",
+    "o": ["1908", "1898", "1888", "1878"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "On 14 October 1878, four 30-foot wooden towers lit an exhibition match at Bramall Lane, eleven years before the football club existed."
+  },
+  {
+    "q": "Sheffield United won their first FA Cup in 1899, beating which club 4-1 in the final?",
+    "o": ["Southampton", "Derby County", "Notts County", "Tottenham Hotspur"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Derby County led at half-time at Crystal Palace before United scored four, with Fred Priest among the scorers."
+  },
+  {
+    "q": "Sheffield United's 1902 FA Cup final went to a replay after a 1-1 draw. Who did they beat 2-1 to lift the trophy?",
+    "o": ["Bolton Wanderers", "Newcastle United", "Southampton", "Derby County"],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Southampton were still a Southern League club, and both matches were played at Crystal Palace a week apart."
+  },
+  {
+    "q": "Sheffield United's 3-0 win over Chelsea in the 1915 FA Cup final is remembered by which nickname?",
+    "o": ["The White Horse Final", "The Khaki Cup Final", "The Matthews Final", "The Munich Final"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Uniformed soldiers filled Old Trafford, and Lord Derby used the trophy presentation to urge more men to enlist."
+  },
+  {
+    "q": "What was the score when Sheffield United beat Cardiff City in the 1925 FA Cup final at Wembley?",
+    "o": ["1-0", "2-0", "2-1", "3-1"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Fred Tunstall's goal after half an hour settled it, and United have not won the cup since."
+  },
+  {
+    "q": "Sheffield Wednesday's win over Sheffield United on Boxing Day 1979 is known as the 'Boxing Day Massacre'. What was the score?",
+    "o": ["2-1", "3-0", "4-0", "5-1"],
+    "a": 2,
+    "diff": "medium",
+    "hint": "A crowd of 49,309 at Hillsborough saw Ian Mellor open the scoring from 25 yards in a 4-0 rout of the Third Division leaders."
+  },
+  {
+    "q": "Which player did Dave Bassett sign from Doncaster Rovers in 1988, going on to form a famous strike partnership with Tony Agana?",
+    "o": ["Keith Edwards", "Carl Bradshaw", "Bob Booker", "Brian Deane"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Brian Deane cost £25,000 and his partnership with Agana carried United through back-to-back promotions."
+  },
+  {
+    "q": "Sheffield United went up in 1989-90 as Second Division runners-up, level on points with the champions. Which Yorkshire club finished above them on goal difference?",
+    "o": ["Barnsley", "Leeds United", "Huddersfield Town", "Bradford City"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Leeds and United both ended the season on 85 points; Leeds took the title on goal difference and both clubs went up."
+  },
+  {
+    "q": "Which forward holds Sheffield United's all-time club goalscoring record, with 201 goals?",
+    "o": ["Alan Woodward", "Jimmy Hagan", "Harry Johnson", "Keith Edwards"],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Harry Johnson scored his 201 goals across the 1920s, comfortably clear of Alan Woodward's 158."
+  },
+  {
+    "q": "After leaving Bramall Lane in 1978, Alan Woodward finished his career in the North American Soccer League with which club?",
+    "o": ["Tampa Bay Rowdies", "New York Cosmos", "Tulsa Roughnecks", "Seattle Sounders"],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Woodward scored more than 150 goals from the wing for United before joining Tulsa Roughnecks in 1979."
+  },
+  {
+    "q": "Sheffield United were relegated to the Fourth Division on the final day of the 1980-81 season after losing to which club?",
+    "o": ["Chesterfield", "Walsall", "Colchester United", "Blackpool"],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Don Givens' late penalty was saved by Ron Green, and Walsall stayed up at United's expense."
+  },
+  {
+    "q": "Sheffield United won the Fourth Division title at the first attempt in 1981-82. Who was their manager that season?",
+    "o": ["Ian Porterfield", "John Harris", "Harry Haslam", "Dave Bassett"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Ian Porterfield, scorer of Sunderland's winner in the 1973 FA Cup final, took charge that June and Keith Edwards scored 35 goals."
+  },
+  {
+    "q": "Sheffield United still avoided relegation in 1990-91 despite going how many league games without a win at the start of the season?",
+    "o": ["8", "12", "16", "20"],
+    "a": 2,
+    "diff": "hard",
+    "hint": "United had four points from their first 16 games, then won 13 of the last 22 to finish 13th in the First Division."
+  }
+]

@@ -24,6 +24,7 @@
 // Every line below was verified against CLUBS by exact lookup.
 export const CLUB_ALIAS = {
   // England — long-form pages
+  'Sheffield Utd': 'Sheffield United',
   'Man City': 'Manchester City',
   'Man United': 'Manchester United',
   'Newcastle': 'Newcastle United',

@@ -272,7 +272,7 @@ const CLUB_BADGE = {
   'panathinaikos': 'PAO',
   'derby-county': 'DER', 'swansea-city': 'SWA',
   'cardiff-city': 'CAR', 'stoke-city': 'STK',
-  wrexham: 'WRX', 'norwich-city': 'NOR', middlesbrough: 'MID', 'west-brom': 'WBA',
+  wrexham: 'WRX', 'norwich-city': 'NOR', middlesbrough: 'MID', 'west-brom': 'WBA', 'sheffield-united': 'SHU',
   'birmingham-city': 'BIR', 'sheffield-wednesday': 'SHW',
   portsmouth: 'POR',
   southampton: 'SOU',
@@ -337,7 +337,7 @@ const CLUB_COLOR = {
   'panathinaikos': '#00614E',
   'derby-county': '#FFFFFF', 'swansea-city': '#FFFFFF',
   'cardiff-city': '#0070B5', 'stoke-city': '#E03A3E',
-  wrexham: '#DC241F', 'norwich-city': '#FFF200', middlesbrough: '#DC143C', 'west-brom': '#122F67',
+  wrexham: '#DC241F', 'norwich-city': '#FFF200', middlesbrough: '#DC143C', 'west-brom': '#122F67', 'sheffield-united': '#EE2737',
   'birmingham-city': '#1B4AA0', 'sheffield-wednesday': '#0066B3',
   portsmouth: '#001489',
   southampton: '#D71920',
@@ -5252,6 +5252,7 @@ const cdSlug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').r
 // Directory display name → CLUBS.name where they differ (design short forms).
 const DIR_ALIAS = {
   'Coventry': 'Coventry City',
+  'Sheffield Utd': 'Sheffield United',
   'Man United': 'Manchester United',
   'Man City': 'Manchester City',
   "Nott'm Forest": 'Nottingham Forest',
