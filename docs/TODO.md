@@ -22,6 +22,27 @@ it opens from a text link under the lead (one Footle door, not two). DESIGN.md C
 refreshed (generatedAt bumped, "Lead card" entry). **Opens the next thesis brick:** make the lead board playable
 IN PLACE — today's Footle on the website itself, the practice engine pointed at today's puzzle with the state the
 app reads.
+## 2026-09-04 (day 3, 11:30) — THE AGENDA, FROM THE NUMBERS (Alex: "do these five, in order")
+
+**The read that reframed the day:** the front door had **8 visitors** in its first 36h (fd-view; GSC agrees:
+126 clicks/28d ≈ 5/day). The club pages are the product: **637 visitors started a club quiz in 30d, 262
+finished, ~40 went on into the app, 10 came back on another day.** Sharing: 102 people shared a Daily 7
+result, 2 arrived via share. Accounts: 250 ever, 125 with zero games. Habit core: 9 signed-in users on 8+
+of 14 days (43 games avg), 11 on 4–7. Rooms: 68/7d, 41 started. Two lying instruments: first-game-started
+fires on club pages too (finished only in-app); Derby 223 starts from 4 visitors.
+**Verdict on the playable lead board on `/`:** not with 5 visitors/day — the same engine belongs at the
+END of a club quiz, where 500 people a month finish and see nothing.
+
+**The five, in order:**
+1. ✅ Club-quiz finish → the product. The Footle door on the finish screen was a grey text link: **0
+   clubq-out-daily clicks against 262 finishers in 30d** (its third camouflaged treatment). Now a card —
+   board picture, name, one line, green Play — outside .bq-row. **Baseline 0/262; read clubq-out-daily
+   per clubq-finish on 2026-09-11.** If it draws, next: the board playable in place on the club page.
+2. Share loop: log /c/ hits in the DB; check the share payload carries the link and the landing plays.
+3. Fix the two lying instruments (surface on first-game-*; the Derby loop).
+4. /nl/ hub + Dutch club pages (2,038 NL impressions, no locale; /es/ River Plate 134 vs 8 proves the pattern).
+5. Design order continues (air → icons), aimed at club pages and the game screen, not `/`.
+
 **Next (design):** composition, not colour — the Today cards all weigh the same (nothing says "this one
 first"); the band has no air above the grid; generic outline icons. One a day.
 

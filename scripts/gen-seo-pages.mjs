@@ -1342,8 +1342,19 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   /* The store link is a THIRD destination, not a second green button. Quiet,
      outlined, and visually unlike both siblings — see the note in
      club-quiz-engine.js finish() for why this was costing every click. */
-  .bq-row .bq-app{background:transparent;border:1px solid var(--bd2);color:var(--tx2);font-weight:700}
-  .bq-row .bq-app:hover{border-color:var(--grn);color:var(--grn)}
+  /* The daily door as a card (fourth treatment — see finish() in the engine):
+     a board picture, a name, one line, a green "Play". Outside .bq-row on
+     purpose, so none of the row's button paint reaches it. */
+  .bq-footle{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin-top:10px;padding:12px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--bd);color:var(--tx);text-align:left}
+  .bq-footle:hover{text-decoration:none;border-color:var(--bd2)}
+  .bq-fb{display:grid;grid-template-columns:repeat(7,14px);gap:3px}
+  .bq-fb i{display:block;width:14px;height:14px;border-radius:4px;background:var(--bd);border:1px solid rgba(255,255,255,.07)}
+  .bq-fb i.cur{border-color:rgba(88,204,2,.7);box-shadow:inset 0 0 0 1px rgba(88,204,2,.35)}
+  .bq-ft{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .bq-ft b{font-size:15px;font-weight:700;color:var(--tx)}
+  .bq-ft span{font-size:12.5px;line-height:1.4;color:var(--tx3)}
+  .bq-fgo{font-size:13.5px;font-weight:800;color:var(--grn);white-space:nowrap}
+  .bq-footle:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-days{display:inline-block;margin-top:9px;padding:4px 11px;border-radius:999px;

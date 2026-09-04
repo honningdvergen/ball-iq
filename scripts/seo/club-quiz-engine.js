@@ -314,18 +314,30 @@ served=off+run.length;var hasMore=total>served;
    twice produced a zero, so a zero here cannot cleanly separate "wrong offer"
    from "dead slot". A NON-zero is the informative result. The fair comparator
    is clubq-out-play in the row above — 30 of 208 finishers ≈ 14%. */
-var appLink='<a class="bq-app" href="/footle">Today\'s Football Wordle — a new one at midnight →</a>';
+/* ⚠️ THE DAILY DOOR, FOURTH TREATMENT (2026-09-04). The third one — a grey
+   sentence of a link, "Today's Football Wordle — a new one at midnight →" —
+   recorded ZERO clubq-out-daily clicks against 262 finishers in 30 days. The
+   same defect as the two store links before it: an affordance whose look
+   says "footnote". This slot is the single most valuable pixel on the site
+   (the club page IS the product for ~90% of visitors, 10 of 637 come back on
+   another day, and Footle is the loop that retains), so the door is now a
+   THING: a card with a board picture, a name and a green Play — outside
+   .bq-row so it inherits none of the row's button paint. The click still
+   lands on clubq-out-daily (destination match below), so the number is
+   comparable with the zero it replaces. */
+var fbTiles='';for(var fi=0;fi<14;fi++)fbTiles+='<i'+(fi===0?' class="cur"':'')+'></i>';
+var appLink='<a class="bq-footle" href="/footle"><span class="bq-fb" aria-hidden="true">'+fbTiles+'</span>'
++'<span class="bq-ft"><b>Today\'s Footle</b><span>Guess the footballer in six. A new name at midnight, the same for everyone.</span></span>'
++'<span class="bq-fgo">Play →</span></a>';
 var cont=(hasMore
 ?'<a class="bq-go bq-wide" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
 +'<a class="bq-cross" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
-+appLink
-:'<a class="bq-go bq-wide" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
-+appLink);
+:'<a class="bq-go bq-wide" href="'+play+'">Play the full '+esc(name)+' quiz →</a>');
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
 +(sday>=2?'<div class="bq-days">'+sday+' days in a row</div>':'')
-+'<div class="bq-row">'+cont+(hasMore?'':'<button class="ghost" data-again="1">Play again</button>')+'</div>'
++'<div class="bq-row">'+cont+(hasMore?'':'<button class="ghost" data-again="1">Play again</button>')+'</div>'+appLink
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
    is still the primary action (that decision came from the 94.6% single-page
    measurement); share is the authority lever and gets full width and the club's
