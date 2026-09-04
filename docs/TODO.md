@@ -53,6 +53,15 @@ two sources each; Cazorla retired at Oviedo July 2026 confirmed. The 39 unreview
 not error: 11 trails, 14 Footle "I lost" answers, 13 classics of which most were reported with picked ==
 correct. Disposition: mark reviewed/approved with the verification note; keep the Footle obscurity signal
 (BELOTTI, ELLIOTT, VALVERDE, WILLIAN) for pool curation.
+**✅ 2 DONE:** 39 review rows written (source qb, status approved, edits {triage, verdict: difficulty, kind}); the
+notes carry the verification. Footle obscurity signal kept: BELOTTI, ELLIOTT, VALVERDE, WILLIAN.
+**3 IN PROGRESS — 1.7.3 cut (9eaa802):** iOS 1.7.3 (112) / Android 1.7.3 (vc48); What's New in 15 ASC locales +
+11 Play blocks (store-assets/1.7.3/). cap sync both platforms ✓ (⚠️ CocoaPods needs LANG=en_US.UTF-8 in this
+shell — first run died; now in memory). AAB + preflight running. **Alex's steps:** Xcode → Product → Archive →
+Distribute (automatic signing; no distribution identity lives on this Mac) · ASC: What's New in ALL 15 locales
+(paste from whatsnew.json; the guarded-JS method, never cursor keys) · Play: upload the AAB, notes from
+play-whatsnew.txt (11 blocks in one textarea) · device test on TestFlight before submit.
+
 **THE NEXT FIVE:**
 1. The game door's boot — LCP 6.2s lab on the destination of 1,045 first games/month (5% finish): split
    what a single game needs from GameRoot, preload by door, a first-paint skeleton. Target lab LCP <3s.
