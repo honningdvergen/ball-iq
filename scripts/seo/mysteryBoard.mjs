@@ -35,14 +35,14 @@ export const MYSTERY_BOARD_CSS = `  .mb-wrap.sec{padding-top:0;margin-top:-26px}
   @media (max-width:700px){ .mb-wrap.sec{margin-top:-18px} }
   .mb-eyebrow{font:700 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--tx3);margin-bottom:10px}
   .mb-lede{font-size:15.5px;line-height:1.6;color:#9BA0B8;max-width:62ch;margin:0 0 18px}
-  .mb-card{background:#101219;border:1px solid #222634;border-radius:16px;padding:18px;max-width:560px}
+  .mb-card{background:#181A22;border:1px solid #222634;border-radius:16px;padding:18px;max-width:560px}
   .mb-bar{display:flex;gap:8px}
-  #mb-guess{flex:1;min-width:0;background:#14161E;border:1px solid #2A2D3A;border-radius:12px;padding:12px 14px;
+  #mb-guess{flex:1;min-width:0;background:#1B1E27;border:1px solid #2F3240;border-radius:12px;padding:12px 14px;
     color:#fff;font-size:16px;font-family:inherit;outline:none}
   #mb-guess:focus{border-color:var(--grn)}
   .mb-go{flex:0 0 auto;padding:0 18px;min-height:44px;border:0;border-radius:12px;background:var(--grn);
     color:var(--grn-ink);font-weight:800;font-size:14px;font-family:inherit;cursor:pointer}
-  .mb-go[disabled]{background:#14161E;color:var(--tx3);cursor:default}
+  .mb-go[disabled]{background:#1B1E27;color:var(--tx3);cursor:default}
   .mb-msg{margin:11px 0 0;font-size:14.5px;color:var(--tx2);min-height:20px}
   .mb-msg.win{color:var(--grn-soft);font-weight:700}
   .mb-list{list-style:none;margin:13px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}

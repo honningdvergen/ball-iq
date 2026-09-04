@@ -221,14 +221,14 @@ const SplashFallback = () => (
 )
 
 // Full-bleed surfaces (marketing + the new Play dashboard preview) drop the
-// game-nav gutter + landing chrome and match the #0A0A0A canvas.
+// game-nav gutter + landing chrome and match the #0B0C10 canvas.
 const _fullBleed = () => {
   try {
     document.querySelectorAll('.landing-top, .landing-bottom').forEach((el) => { el.style.display = 'none' })
     const root = document.getElementById('root')
-    if (root) { root.style.paddingLeft = '0'; root.style.maxWidth = 'none'; root.style.margin = '0'; root.style.background = '#0A0A0A' }
-    document.documentElement.style.background = '#0A0A0A'
-    document.body.style.background = '#0A0A0A'
+    if (root) { root.style.paddingLeft = '0'; root.style.maxWidth = 'none'; root.style.margin = '0'; root.style.background = '#0B0C10' }
+    document.documentElement.style.background = '#0B0C10'
+    document.body.style.background = '#0B0C10'
   } catch {}
 }
 

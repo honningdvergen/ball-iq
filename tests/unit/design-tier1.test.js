@@ -66,7 +66,7 @@ describe('design review — tier 1', () => {
     expect(CSS).toMatch(/\.badge-tile\.locked\{opacity:1;\}/);
     expect(CSS).toMatch(/\.badge-tile\.locked \.badge-name\{color:var\(--t3\);\}/);
     // --t3 on --s1 is the floor this relies on.
-    expect(ratio('#7E828C', '#0F1117')).toBeGreaterThanOrEqual(4.5);
+    expect(ratio('#7E828C', '#13151C')).toBeGreaterThanOrEqual(4.5);
   });
 
   it('a weak score is not rendered in celebration green', () => {
@@ -77,11 +77,11 @@ describe('design review — tier 1', () => {
   });
 
   it("Footle's absent tile is distinguishable from an unguessed one", () => {
-    // --s2 (#14161E) measured 1.08:1 against the page: a letter ruled OUT
+    // --s2 (#1B1E27) measured 1.08:1 against the page: a letter ruled OUT
     // looked identical to one never tried, in the mode whose entire feedback
     // language is three tile states.
-    expect(CSS).toMatch(/\.wd-tile\.wd-grey\{background:#2B303B/);
-    expect(ratio('#2B303B', '#0A0A0A')).toBeGreaterThan(ratio('#14161E', '#0A0A0A'));
+    expect(CSS).toMatch(/\.wd-tile\.wd-grey\{background:#2E323E/);
+    expect(ratio('#2E323E', '#0B0C10')).toBeGreaterThan(ratio('#1B1E27', '#0B0C10'));
   });
 
   it('the club-quiz chip shows a label, and the stats key is untouched', () => {
@@ -114,7 +114,7 @@ describe('design review — tier 1', () => {
     expect(block).toMatch(/fg: MODE_ACCENT\.mystery/);
     expect(ACCENTS, 'the mode accent set must declare mystery')
       .toMatch(/mystery: '#B9A5FF'/);
-    expect(ratio('#B9A5FF', '#0F1117')).toBeGreaterThanOrEqual(4.5);
+    expect(ratio('#B9A5FF', '#13151C')).toBeGreaterThanOrEqual(4.5);
   });
 
   it('the two new modes share the app-wide 20px gutter', () => {

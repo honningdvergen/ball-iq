@@ -32,7 +32,7 @@ function stumpCard(sp) {
   const tree = h('div', {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: 'linear-gradient(135deg,#101710 0%,#0A0A0A 60%)',
+      background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
       borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
       padding: '0 72px',
     },
@@ -45,7 +45,7 @@ function stumpCard(sp) {
       h('div', { style: { fontSize: 26, fontWeight: 800, letterSpacing: 4, color: '#58CC02', display: 'flex' } }, 'CAN YOU GET THIS ONE?'),
       h('div', { style: { fontSize: qSize, fontWeight: 900, lineHeight: 1.15, color: '#FFFFFF', display: 'flex' } }, qt),
       h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 8 } },
-        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Tap to answer'),
+        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Tap to answer'),
         h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, cat ? `${cat} · free, no sign-up` : 'Free, no sign-up'),
       ),
     ),
@@ -91,7 +91,7 @@ function challengeCard(sp) {
   const tree = h('div', {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: 'linear-gradient(135deg,#101710 0%,#0A0A0A 60%)',
+      background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
       borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
       padding: '0 72px',
     },
@@ -105,7 +105,7 @@ function challengeCard(sp) {
       h('div', { style: { fontSize: 62, fontWeight: 900, lineHeight: 1.1, color: '#FFFFFF', display: 'flex' } }, `${who} scored ${score}/7`),
       h('div', { style: { display: 'flex', gap: 14 } }, ...dots),
       h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 6 } },
-        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Beat it today'),
+        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Beat it today'),
         h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Same 7 questions · free, no sign-up'),
       ),
     ),
@@ -143,7 +143,7 @@ function inviteCard(sp) {
   const tree = h('div', {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: 'linear-gradient(135deg,#101710 0%,#0A0A0A 60%)',
+      background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
       borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
       padding: '0 72px',
     },
@@ -162,7 +162,7 @@ function inviteCard(sp) {
           )]
         : []),
       h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 6 } },
-        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Tap to join'),
+        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Tap to join'),
         h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Head-to-head · free, no sign-up'),
       ),
     ),
@@ -187,12 +187,12 @@ function clubCard(sp) {
   // Dark brand colours (Juventus, Newcastle) need light badge text; light ones
   // (Dortmund yellow, Madrid white) need dark. Same luminance test the site uses.
   const r = parseInt(brand.slice(1, 3), 16), g = parseInt(brand.slice(3, 5), 16), b = parseInt(brand.slice(5, 7), 16);
-  const badgeText = (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#0A0A0A' : '#FFFFFF';
+  const badgeText = (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#0B0C10' : '#FFFFFF';
 
   const tree = h('div', {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: 'linear-gradient(135deg,#101710 0%,#0A0A0A 60%)',
+      background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
       borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
       padding: '0 72px',
     },
@@ -214,7 +214,7 @@ function clubCard(sp) {
         h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: '#58CC02', display: 'flex' } }, kind.toUpperCase()),
         h('div', { style: { fontSize: 66, fontWeight: 900, lineHeight: 1.05, color: '#FFFFFF', display: 'flex' } }, `How well do you know ${name}?`),
         h('div', { style: { display: 'flex', alignItems: 'center', gap: 16, marginTop: 6 } },
-          h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Play free'),
+          h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Play free'),
           h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'No sign-up · answers explained'),
         ),
       ),
@@ -247,12 +247,12 @@ function scoreCard(sp) {
   const rawC = sp.get('c') || '';
   const brand = /^#?[0-9a-fA-F]{6}$/.test(rawC) ? (rawC[0] === '#' ? rawC : '#' + rawC) : '#58CC02';
   const r = parseInt(brand.slice(1, 3), 16), g = parseInt(brand.slice(3, 5), 16), b = parseInt(brand.slice(5, 7), 16);
-  const onBrand = (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#0A0A0A' : '#FFFFFF';
+  const onBrand = (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#0B0C10' : '#FFFFFF';
 
   const tree = h('div', {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: 'linear-gradient(135deg,#101710 0%,#0A0A0A 60%)',
+      background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
       borderTop: `9px solid ${brand}`, fontFamily: 'sans-serif', position: 'relative',
       padding: '0 72px',
     },
@@ -276,7 +276,7 @@ function scoreCard(sp) {
         h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: '#9BA0B8', display: 'flex' } }, senderInKicker ? `${sender.toUpperCase()}'S ${name.toUpperCase()} IQ` : `${name.toUpperCase()} IQ`),
         ...(tier ? [h('div', { style: { fontSize: 72, fontWeight: 900, lineHeight: 1.04, color: '#FFFFFF', display: 'flex' } }, tier)] : []),
         h('div', { style: { display: 'flex', alignItems: 'center', gap: 16, marginTop: 8 } },
-          ...(line ? [h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, `${line} correct`)] : []),
+          ...(line ? [h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, `${line} correct`)] : []),
           h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, sender && !senderInKicker ? `Beat ${sender} — free, no sign-up` : 'Beat it — free, no sign-up'),
         ),
       ),
@@ -387,7 +387,7 @@ export default function handler(req) {
     ),
     // Challenge line — same tone as the Daily-7 card's "Beat it today" CTA.
     h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, paddingBottom: 30 } },
-      h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0A0A0A', background: t.accent, padding: '10px 24px', borderRadius: 999 } }, 'Think you can beat this?'),
+      h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: t.accent, padding: '10px 24px', borderRadius: 999 } }, 'Think you can beat this?'),
       h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: t.text, opacity: 0.65 } }, 'Free football trivia · balliq.app'),
     ),
   );

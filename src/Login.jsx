@@ -41,7 +41,7 @@ const LOGIN_CSS = `
 .biql-ball { animation:biqFloat 7s ease-in-out infinite; }
 .biql-google:hover, .biql-email:hover { background:#1A1D27 !important; }
 .biql-guest:hover { background:#1A1D27 !important; border-color:#3A3E4E !important; color:#FFFFFF !important; }
-.biql-icobtn:hover { border-color:#3A3D4A !important; }
+.biql-icobtn:hover { border-color:#3E4150 !important; }
 .biql-login-top:hover { color:#fff !important; }
 @media (prefers-reduced-motion: reduce) { .biql-glow, .biql-ball { animation:none !important; } }
 `
@@ -99,7 +99,7 @@ const PROMPT_COPY = {
 }
 
 const C = {
-  canvas: '#0A0A0A', card: '#14161E', border: '#242836', borderHi: '#2A2D3A',
+  canvas: '#0B0C10', card: '#1B1E27', border: '#242730', borderHi: '#2F3240',
   green: '#58CC02', greenOn: '#06230C', greenSoft: '#8AE042',
   t1: '#F0F1F5', t1b: '#E8EAF0', t2: '#9BA0B8', t3: '#6E7180', legal: '#5A5F70',
 }

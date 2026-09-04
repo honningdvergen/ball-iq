@@ -113,7 +113,7 @@ function ScoreCell({ state, text, theme, w = COL_W }) {
         ? <span style={{ fontSize: 13, fontWeight: 700, color: "#FF6B6B" }}>✗</span>
         : state === "open"
         ? <span style={{ fontSize: 13, fontWeight: 700, color: "var(--t3)" }}>·</span>
-        : <span style={{ fontSize: 13, fontWeight: 700, color: "#3A3D4A" }}>—</span>}
+        : <span style={{ fontSize: 13, fontWeight: 700, color: "#3E4150" }}>—</span>}
     </span>
   );
 }

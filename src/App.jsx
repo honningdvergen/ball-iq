@@ -887,7 +887,7 @@ function clubHexToRgba(hex, a) {
 function clubReadableText(hex) {
   const h = String(hex).replace("#", "");
   const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
-  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "#0a0a0a" : "#ffffff";
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "#0B0C10" : "#ffffff";
 }
 
 // Broadcast/club-recognised short codes for the row swatches (MUN, FCB, BVB, …),
@@ -1592,12 +1592,12 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
           <span style={{fontSize:14.5,fontWeight:draft === "mixed" ? 800 : 700,color:draft === "mixed" ? "#8AE042" : "var(--t1)"}}>Mixed — all topics</span>
           <span style={{marginLeft:"auto",width:19,height:19,borderRadius:"50%",...(draft === "mixed"
             ? {background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#06230C",fontWeight:900}
-            : {border:"1.5px solid #3A3D4A"})}}>{draft === "mixed" ? "✓" : ""}</span>
+            : {border:"1.5px solid #3E4150"})}}>{draft === "mixed" ? "✓" : ""}</span>
         </button>
         <div style={{display:"flex",gap:6,marginTop:16,padding:4,borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)"}}>
           {[{ id: "leagues", label: "Leagues" }, { id: "clubs", label: "Clubs" }, { id: "tournaments", label: "Tournaments" }].map(t => (
             <button key={t.id} onClick={() => { setTab(t.id); setQ(""); }} style={{flex:1,borderRadius:10,padding:9,textAlign:"center",fontSize:13,cursor:"pointer",fontFamily:"inherit",
-              ...(tab === t.id ? {background:"var(--s2)",border:"1px solid #3A3D4A",fontWeight:800,color:"var(--t1)"} : {background:"transparent",border:"1px solid transparent",fontWeight:700,color:"var(--t2)"})}}>{t.label}</button>
+              ...(tab === t.id ? {background:"var(--s2)",border:"1px solid #3E4150",fontWeight:800,color:"var(--t1)"} : {background:"transparent",border:"1px solid transparent",fontWeight:700,color:"var(--t2)"})}}>{t.label}</button>
           ))}
         </div>
         {allItems.length > 12 && (
@@ -2221,7 +2221,7 @@ function FootleGetAppCTA({ style }) {
         href={IS_ANDROID_WEB ? PLAY_STORE_URL : appStoreUrl()}
         target="_blank"
         rel="noopener noreferrer"
-        style={{ background: "var(--accent)", color: "#0a0a0a", fontWeight: 800, textDecoration: "none", ...style }}
+        style={{ background: "var(--accent)", color: "#0B0C10", fontWeight: 800, textDecoration: "none", ...style }}
       >
         📲 Get the free app
       </a>
@@ -3198,7 +3198,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
         {timed && !isTyped ? (
           <div className="qd-ring">
             <svg width="78" height="78" viewBox="0 0 78 78">
-              <circle cx="39" cy="39" r="33" fill="none" stroke="#242836" strokeWidth="7"></circle>
+              <circle cx="39" cy="39" r="33" fill="none" stroke="#242730" strokeWidth="7"></circle>
               <circle cx="39" cy="39" r="33" fill="none" stroke={qdRingColor} strokeWidth="7" strokeLinecap="round"
                 strokeDasharray={QD_RING_C} strokeDashoffset={QD_RING_C * (1 - qdRatio)}
                 transform="rotate(-90 39 39)"
@@ -4510,7 +4510,7 @@ async function generateShareCard(type, data) {
   ctx.clip();
 
   // Background
-  ctx.fillStyle = "#0A0A0A";
+  ctx.fillStyle = "#0B0C10";
   ctx.fillRect(0, 0, W, H);
 
   // ⚠️ SKIPPED FOR THE IQ CARD. This chrome — accent bar, wordmark row, divider,
@@ -4537,7 +4537,7 @@ async function generateShareCard(type, data) {
   ctx.fillText("balliq.app", W - padX, headerY);
 
   // Divider
-  ctx.fillStyle = "#2A2D3A";
+  ctx.fillStyle = "#2F3240";
   ctx.fillRect(padX, 56, W - padX * 2, 1);
 
   // Centered footer URL
@@ -4641,7 +4641,7 @@ async function generateShareCard(type, data) {
     const card = data?.card;
     const t = tierPalette(card?.tier);
     const name = (data?.name || `${APP_NAME} Player`).slice(0, 14);
-    const stops = String(t.bg).match(/#[0-9a-f]{6}/gi) || ["#14161e", "#080a0f"];
+    const stops = String(t.bg).match(/#[0-9a-f]{6}/gi) || ["#1B1E27", "#080a0f"];
     const S2 = 2;                       // design px -> canvas px
     const px = (n) => n * S2;
 
@@ -5293,7 +5293,7 @@ function StumpScreen({ row, onPlayFull, onHome }) {
   };
 
   const optStyle = (i) => {
-    const base = { display: "block", width: "100%", textAlign: "left", padding: "14px 16px", marginTop: 10, borderRadius: 12, border: "1.5px solid var(--bd, #2A2D3A)", background: "var(--card, #14161E)", color: "var(--text, #F0F1F5)", fontFamily: "inherit", fontSize: 15, fontWeight: 700, cursor: done ? "default" : "pointer" };
+    const base = { display: "block", width: "100%", textAlign: "left", padding: "14px 16px", marginTop: 10, borderRadius: 12, border: "1.5px solid var(--bd, #2F3240)", background: "var(--card, #1B1E27)", color: "var(--text, #F0F1F5)", fontFamily: "inherit", fontSize: 15, fontWeight: 700, cursor: done ? "default" : "pointer" };
     if (!done) return base;
     if (i === row.a) return { ...base, borderColor: "var(--accent, #58CC02)", background: "rgba(88,204,2,0.12)" };
     if (i === picked) return { ...base, borderColor: "var(--red, #FF5A5A)", background: "rgba(255,90,90,0.10)", opacity: 0.9 };
@@ -5320,7 +5320,7 @@ function StumpScreen({ row, onPlayFull, onHome }) {
             {gotIt ? "⚽ You got it!" : "Stumped! 🥜"}
           </div>
           {row.hint && (
-            <div style={{ marginTop: 10, padding: "12px 14px", borderRadius: 12, background: "var(--card, #14161E)", border: "1px solid var(--bd, #2A2D3A)", fontSize: 14, lineHeight: 1.5, color: "var(--t2)" }}>
+            <div style={{ marginTop: 10, padding: "12px 14px", borderRadius: 12, background: "var(--card, #1B1E27)", border: "1px solid var(--bd, #2F3240)", fontSize: 14, lineHeight: 1.5, color: "var(--t2)" }}>
               {row.hint}
             </div>
           )}
@@ -6348,7 +6348,7 @@ function ClubQuizScreen({ onStart, onBack }) {
                 ) : (
                   <div className="mode-list">
                     {matches.map(({ key, pack }) => {
-                      const lightClub = clubReadableText(pack.color) === "#0a0a0a";
+                      const lightClub = clubReadableText(pack.color) === "#0B0C10";
                       const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
                       return (
                         <button key={key} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
@@ -6392,7 +6392,7 @@ function ClubQuizScreen({ onStart, onBack }) {
             </div>
             <div className="mode-list">
               {shown.map(([key, pack]) => {
-                const lightClub = clubReadableText(pack.color) === "#0a0a0a";
+                const lightClub = clubReadableText(pack.color) === "#0B0C10";
                 const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
                 return (
                   <button key={key} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
@@ -6467,7 +6467,7 @@ function LeagueQuizScreen({ onStart, onBack }) {
           <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t2)", margin: "0 0 8px 2px" }}>{section.label}</div>
           <div className="mode-list">
             {section.items.map((it) => {
-              const lightRow = clubReadableText(it.color) === "#0a0a0a";
+              const lightRow = clubReadableText(it.color) === "#0B0C10";
               const a1 = lightRow ? 0.20 : 0.32, a2 = lightRow ? 0.05 : 0.06;
               return (
                 <button key={it.cat} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(it.cat); }}
@@ -6595,7 +6595,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
             {stats.rival
               ? <span style={{width:84,height:84,borderRadius:"50%",border:`2.5px solid ${stats.rival.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",background:"var(--s2)",overflow:"hidden"}}><ProfilePic value={stats.rival.avatar} url={oppPhotos[stats.rival.id]} name={stats.rival.name} /></span>
-              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px dashed #3A3D4A",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:30,color:"var(--t3)"}}>?</span>}
+              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px dashed #3E4150",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:30,color:"var(--t3)"}}>?</span>}
             <span style={{fontSize:13,fontWeight:stats.rival ? 700 : 600,color:stats.rival ? "var(--t1)" : "var(--t3)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.rival ? stats.rival.name : "Your rival here"}</span>
           </div>
         </div>
@@ -7588,7 +7588,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#0a0a0a",
+      background: "#0B0C10",
       color: "#F0F1F5",
       zIndex: 1000,
       overflowY: "auto",
@@ -7597,10 +7597,10 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
     }}>
       <div style={{
         position: "sticky", top: 0,
-        background: "rgba(10,10,10,0.95)",
+        background: "rgba(11,12,16,0.95)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid #2A2D3A",
+        borderBottom: "1px solid #2F3240",
         // Phase 6a Item 1: safe-area-inset-top so the back button isn't
         // hidden behind the iOS status bar / notch in PWA standalone mode.
         // The outer position:fixed inset:0 ignores safe area by design;
@@ -7615,7 +7615,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
           aria-label="Close privacy policy"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#14161E", border: "1px solid #2A2D3A",
+            background: "#1B1E27", border: "1px solid #2F3240",
             color: "#F0F1F5", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
@@ -7634,9 +7634,9 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: 23 August 2026</div>
 
         <div style={{
-          background: "#14161E", borderRadius: 16,
+          background: "#1B1E27", borderRadius: 16,
           padding: "18px 20px", margin: "12px 0 24px",
-          border: "1px solid #2A2D3A",
+          border: "1px solid #2F3240",
         }}>
           <p style={{fontSize: 15, color: "#9BA0B8", margin: 0}}>
             <span style={{color: "#58CC02", fontWeight: 600}}>The short version:</span>{" "}
@@ -7741,7 +7741,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#0a0a0a",
+      background: "#0B0C10",
       color: "#F0F1F5",
       zIndex: 1000,
       overflowY: "auto",
@@ -7750,10 +7750,10 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
     }}>
       <div style={{
         position: "sticky", top: 0,
-        background: "rgba(10,10,10,0.95)",
+        background: "rgba(11,12,16,0.95)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid #2A2D3A",
+        borderBottom: "1px solid #2F3240",
         // Phase 6a Item 1 followup: same safe-area-inset-top fix as
         // PrivacyScreen — back button hidden behind iOS notch in PWA
         // standalone without explicit top padding.
@@ -7767,7 +7767,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
           aria-label="Close help"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#14161E", border: "1px solid #2A2D3A",
+            background: "#1B1E27", border: "1px solid #2F3240",
             color: "#F0F1F5", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
@@ -7829,7 +7829,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#0A0A0A",
+      background: "#0B0C10",
       color: "#F0F1F5",
       zIndex: 1000,
       overflowY: "auto",
@@ -7841,7 +7841,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
         background: "rgba(15,17,23,0.95)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid #2A2D3A",
+        borderBottom: "1px solid #2F3240",
         padding: "calc(14px + env(safe-area-inset-top, 0px)) 20px 14px",
         display: "flex", alignItems: "center", gap: 12,
         zIndex: 1,
@@ -7852,7 +7852,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
           aria-label="Close known issues"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#14161E", border: "1px solid #2A2D3A",
+            background: "#1B1E27", border: "1px solid #2F3240",
             color: "#F0F1F5", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
@@ -8220,7 +8220,7 @@ function ScreenLoading({ label = "Loading" }) {
     }}>
       <div style={{
         width:38, height:38, borderRadius:"50%",
-        border:"3px solid var(--line, #2A2D3A)", borderTopColor:"#58CC02",
+        border:"3px solid var(--line, #2F3240)", borderTopColor:"#58CC02",
         animation:"biqSpin 0.9s linear infinite",
       }} />
       <div style={{fontSize:13.5, fontWeight:700, color:"var(--t2)", letterSpacing:"-0.2px"}}>
@@ -8287,7 +8287,7 @@ class TabErrorBoundary extends React.Component {
               onClick={() => { this.setState({ hasError:false }); try { this.props.onExit(); } catch {} }}
               style={{
                 marginTop:12, padding:"11px 24px", background:"transparent",
-                border:"1px solid var(--line, #2A2D3A)", borderRadius:11,
+                border:"1px solid var(--line, #2F3240)", borderRadius:11,
                 fontFamily:"Inter,sans-serif", fontSize:13.5, fontWeight:700,
                 color:"var(--t2)", cursor:"pointer"
               }}

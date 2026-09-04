@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" style="background-color:#0A0A0A">
+<html lang="en" style="background-color:#0B0C10">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="theme-color" content="#0B0C10" />
     <!-- ⚠️ Without this iOS renders the LIGHT system keyboard over a pure-black
          app — seen on the Mystery search on device. It also governs form
          controls, scrollbars and the selection UI. Ball IQ has been dark-only
@@ -101,7 +101,7 @@
          this image during WebView cold-boot in place of its default white
          screen. Without these, fresh-day cold launches (iOS evicted the
          WebView entirely overnight) flash white for ~500-1500ms before
-         the page paints. Each PNG is 'icon centered on #0A0A0A'; the
+         the page paints. Each PNG is 'icon centered on #0B0C10'; the
          system shows it briefly until the page's own splash markup
          renders. Media queries follow Apple's device-width/height/scale
          + orientation pattern. -->
@@ -386,11 +386,11 @@
       html, body {
         margin: 0;
         padding: 0;
-        /* Sprint #25 W4: unified to #0A0A0A (was #0a0a0a) so the splash,
+        /* Sprint #25 W4: unified to #0B0C10 (was #0B0C10) so the splash,
            body, #root, and AppInner --bg all match exactly. Eliminates
            the dark-to-darker chroma shift that was visible during the
            splash cross-fade on calibrated displays. */
-        background-color: #0A0A0A;
+        background-color: #0B0C10;
         min-height: 100vh;
         min-height: 100dvh;
         overscroll-behavior: none;
@@ -402,7 +402,7 @@
            changed nothing; the override lives here. */
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         /* A default foreground. Without this, body inherited the UA initial
-           value -- black text on a #0A0A0A background. Everything visible
+           value -- black text on a #0B0C10 background. Everything visible
            today is visible only because some child re-declares a colour; the
            first component that forgets renders invisible. */
         color: #F2F4F7;
@@ -410,7 +410,7 @@
       #root {
         min-height: 100vh;
         min-height: 100dvh;
-        background-color: #0A0A0A;
+        background-color: #0B0C10;
       }
       /* Splash shown from first paint until React mounts and replaces #root's
          contents. Avoids the blank-screen gap during the cold-start Supabase
@@ -422,7 +422,7 @@
         position: fixed; top: 0; right: 0; bottom: 0; left: 0; inset: 0;
         display: flex; align-items: center; justify-content: center;
         flex-direction: column; gap: 14px;
-        background: #0A0A0A; color: #F0F1F5;
+        background: #0B0C10; color: #F0F1F5;
         font-weight: 800; letter-spacing: -0.5px;
         /* Nudge the centred content slightly above geometric centre. Two
            reasons: (1) iOS standalone status bar (~44pt) is larger than
@@ -540,7 +540,7 @@
         padding-left: 0 !important;
         /* desktop-web-refresh: defensive — a native iPad viewport >=1024 also
            matches the #root recolor above; keep native on the mobile --bg. */
-        background-color: #0A0A0A !important;
+        background-color: #0B0C10 !important;
       }
       html.native-app body > .landing-bottom { padding-left: 0 !important; }
       html.native-app body { background-image: none !important; }
@@ -594,10 +594,10 @@
           padding-left: 248px;
           /* desktop-web-refresh: recolor #root to the desktop game surface so
              the space between the rail and the (left-anchored) .app column is
-             one flat #0A0A0A, not the bluish mobile --bg (#0A0A0A) showing
+             one flat #0B0C10, not the bluish mobile --bg (#0B0C10) showing
              through the gap. body > #root beats app.css's html,#root. Reset in
-             the standalone + native blocks below so PWA/native keep #0A0A0A. */
-          background-color: #0A0A0A;
+             the standalone + native blocks below so PWA/native keep #0B0C10. */
+          background-color: #0B0C10;
         }
         /* Marketing chrome below the app needs the same sidebar clearance
            — otherwise the fixed BiqNav rail overlays the leftmost portion
@@ -617,7 +617,7 @@
           /* desktop-web-refresh: an installed PWA at >=1024 also matches the
              #root recolor above; restore the mobile --bg so the installed shell
              stays byte-identical (mirrors the .app --bg standalone reset). */
-          background-color: #0A0A0A !important;
+          background-color: #0B0C10 !important;
         }
         body > .landing-bottom {
           padding-left: 0 !important;
@@ -636,7 +636,7 @@
       .landing-nav {
         position: sticky; top: 0; z-index: 50;
         height: 52px;
-        background: rgba(10,10,10,0.85);
+        background: rgba(11,12,16,0.85);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         border-bottom: 1px solid #1F2230;
@@ -674,10 +674,10 @@
       /* ── Page background gradient ──────────────────────────────────────
          Soft accent-green glow centered above the column at desktop, so
          the side rails read as "intentional dark space" rather than empty
-         void. Layered on top of the existing #0a0a0a background-color via
+         void. Layered on top of the existing #0B0C10 background-color via
          background-image (so we don't disturb the base color).
 
-         Mobile (< 1024px): no rules apply — bg stays solid #0a0a0a.
+         Mobile (< 1024px): no rules apply — bg stays solid #0B0C10.
          PWA standalone (any size): killswitch removes the gradient. */
       @media (min-width: 1024px) {
         body {
@@ -790,7 +790,7 @@
       .landing-signup-form input:focus { border-color: #58CC02; }
       .landing-signup-form button {
         padding: 14px 24px;
-        background: #58CC02; color: #0A0A0A;
+        background: #58CC02; color: #0B0C10;
         border: none; border-radius: 10px;
         font-family: inherit; font-size: 15px; font-weight: 800;
         cursor: pointer;
@@ -809,7 +809,7 @@
         flex: 1;
         display: inline-flex; align-items: center; justify-content: center;
         padding: 11px 16px;
-        border: 1px solid #2A2D3A;
+        border: 1px solid #2F3240;
         background: transparent;
         color: #9BA0B8;
         border-radius: 10px;
@@ -822,7 +822,7 @@
       .landing-store-badge:hover {
         background: #161821;
         color: #F0F1F5;
-        border-color: #3A3D4A;
+        border-color: #3E4150;
       }
       .landing-signup-norway {
         margin-top: 32px;
@@ -846,7 +846,7 @@
       .landing-footer-links a:hover { color: #9BA0B8; }
     </style>
   </head>
-  <body style="background-color:#0A0A0A">
+  <body style="background-color:#0B0C10">
     <!-- The shell lives FIRST in <body> on purpose: the parser used to walk
          ~600 lines of hidden static homepage copy inside #root before
          reaching it, which on a throttled phone cost ~1s of LCP for pure
@@ -881,7 +881,7 @@
          ships inside the GameRoot chunk and does not exist yet at this paint.
     -->
     <div id="preboot-onboard"
-         style="display:none;position:fixed;inset:0;z-index:499;flex-direction:column;padding:24px 0 0;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, #14161E 0%, #0a0a0a 65%);color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;">
+         style="display:none;position:fixed;inset:0;z-index:499;flex-direction:column;padding:24px 0 0;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, #1B1E27 0%, #0B0C10 65%);color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;">
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;text-align:center;width:100%;">
         <!-- .onboard-step-top mirror: flex:1 + centered, so the copy floats
              mid-screen and the actions sit pinned at the bottom, exactly like
@@ -900,10 +900,10 @@
                swap is imperceptible inside a full-screen component replace. -->
           <div style="font-size:16.5px;color:#9BA0B8;line-height:1.6;max-width:320px;margin-bottom:14px;">Who has scored the most goals in men's international football?</div>
           <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;">
-            <button data-biq-opt="0" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Lionel Messi</button>
-            <button data-biq-opt="1" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Cristiano Ronaldo</button>
-            <button data-biq-opt="2" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Pelé</button>
-            <button data-biq-opt="3" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Neymar</button>
+            <button data-biq-opt="0" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2F3240;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Lionel Messi</button>
+            <button data-biq-opt="1" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2F3240;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Cristiano Ronaldo</button>
+            <button data-biq-opt="2" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2F3240;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Pelé</button>
+            <button data-biq-opt="3" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2F3240;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Neymar</button>
           </div>
           <div id="preboot-fb" style="margin:14px 0 2px;font-size:15px;font-weight:700;min-height:22px;"></div>
         </div>

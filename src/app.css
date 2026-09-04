@@ -36,7 +36,7 @@
 .mkt-rise-3{animation-delay:180ms}
 .mkt-rise-4{animation-delay:260ms}
 @keyframes mktBreathe{
-  0%,100%{border-color:#2A2D3A;box-shadow:0 0 0 0 rgba(88,204,2,0)}
+  0%,100%{border-color:#2F3240;box-shadow:0 0 0 0 rgba(88,204,2,0)}
   50%{border-color:rgba(88,204,2,0.55);box-shadow:0 0 0 4px rgba(88,204,2,0.07)}
 }
 .mkt-live-hint{animation:mktBreathe 2.8s ease-in-out infinite}
@@ -68,16 +68,16 @@
 :root{color-scheme:dark;}
 :root{
   /* APP_NAME Dark — Option A: True neutral dark, Duolingo-proven accent */
-  --bg:#0A0A0A;          /* neutral near-black — unified with web (was #09131C bluish); app-wide re-skin 2026-07 */
-  --s1:#0F1117;          /* cards — neutral dark (was #1A1D27 navy) */
-  --s2:#14161E;          /* inset surfaces (was #22263A navy) */
-  --s3:#1C1F28;          /* tertiary / pressed (was #2C3050 blue-purple) */
-  --border:#242836;      /* subtle separator (was #2E3147 blue) */
-  --border2:#2A2D3A;     /* stronger border (was #3A3F60 blue) */
+  --bg:#0B0C10;          /* neutral near-black — unified with web (was #09131C bluish); app-wide re-skin 2026-07 */
+  --s1:#13151C;          /* cards — neutral dark (was #1A1D27 navy) */
+  --s2:#1B1E27;          /* inset surfaces (was #22263A navy) */
+  --s3:#232631;          /* tertiary / pressed (was #2C3050 blue-purple) */
+  --border:#242730;      /* subtle separator (was #2E3147 blue) */
+  --border2:#2F3240;     /* stronger border (was #3A3F60 blue) */
   --text:#FFFFFF;        /* pure white — max contrast */
   --t1:#FFFFFF;          /* alias for --text */
   --t2:#9BA0B8;          /* neutral muted (was #8B8FA8 blue-grey) */
-  --t3:#7E828C;          /* neutral dim — lifted from handoff #6E7180 to clear WCAG AA 4.5:1 on the new #0A0A0A canvas (was #767B98 blue-purple) */
+  --t3:#7E828C;          /* neutral dim — lifted from handoff #6E7180 to clear WCAG AA 4.5:1 on the new #0B0C10 canvas (was #767B98 blue-purple) */
   --accent:#58CC02;      /* Web green — unified app↔web (was #58CC02 muted); on-green text #06230C */
   --accent-dim:rgba(88,204,2,0.10);
   --accent-b:rgba(88,204,2,0.28);
@@ -223,7 +223,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 .btn-3d.amber{background:#FFC800;color:#3D2A00;-webkit-text-fill-color:#3D2A00;box-shadow:0 8px 22px -8px rgba(255,200,0,0.55);}
 .btn-3d.amber:active,.btn-3d.amber.is-pressed{transform:scale(0.97);opacity:0.92;}
-.btn-3d.dark{background:#242836;color:var(--t1);-webkit-text-fill-color:var(--t1);box-shadow:none;}
+.btn-3d.dark{background:#242730;color:var(--t1);-webkit-text-fill-color:var(--t1);box-shadow:none;}
 .btn-3d.dark:active,.btn-3d.dark.is-pressed{transform:scale(0.97);opacity:0.92;}
 .btn-3d.ghost{background:transparent;color:var(--text);box-shadow:none;border:1.5px solid var(--border);-webkit-text-fill-color:var(--text);}
 .btn-3d.ghost:hover{filter:none;background:var(--s1);}
@@ -405,7 +405,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    while they share a colour VALUE. So the ground is now a deep pitch green —
    clearly football, clearly not the CTA — and #58CC02 reads as a light source
    against it instead of disappearing into a tint of itself. */
-.mp-card{position:relative;padding:18px;border-radius:20px;margin-bottom:10px;background:linear-gradient(150deg,#14301C 0%,#122318 34%,#0F1117 78%);border:1px solid #24462C;box-shadow:0 0 34px -16px rgba(88,204,2,0.45);overflow:hidden;contain:layout paint style;}
+.mp-card{position:relative;padding:18px;border-radius:20px;margin-bottom:10px;background:linear-gradient(150deg,#14301C 0%,#122318 34%,#13151C 78%);border:1px solid #24462C;box-shadow:0 0 34px -16px rgba(88,204,2,0.45);overflow:hidden;contain:layout paint style;}
 .mp-card{cursor:pointer;}
 .mp-card-row{display:flex;align-items:flex-start;gap:12px;}
 /* .mp-card-row is a real <button> so the card body is keyboard-reachable and
@@ -417,7 +417,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .mp-card-titles{flex:1;min-width:0;padding-right:78px;}
 .mp-card-title{font-size:16px;font-weight:800;letter-spacing:-0.3px;color:#fff;line-height:1.1;-webkit-text-fill-color:#fff;}
 .mp-card-sub{font-size:12.5px;color:#9BA0B8;margin-top:5px;font-weight:600;line-height:1.4;}
-.mp-card-invite{position:absolute;top:18px;right:18px;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:10px;background:transparent;border:1px solid #2A2D3A;color:#E8EAF0;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#E8EAF0;z-index:2;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
+.mp-card-invite{position:absolute;top:18px;right:18px;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:10px;background:transparent;border:1px solid #2F3240;color:#E8EAF0;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#E8EAF0;z-index:2;transition:background 0.15s,border-color 0.15s,transform 0.1s;}
 .mp-card-invite:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28);}
 .mp-card-invite:active{transform:scale(0.96);}
 .mp-card-ctas{display:flex;gap:10px;margin-top:15px;align-items:stretch;}
@@ -509,7 +509,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    4.5:1, at 8px in the heaviest weight the app uses. The badge went unnoticed
    because nothing rendered it; the NEW badge on the modes grid does. Dark ink
    on green is the same pairing every other green control already uses. */
-.play-card-badge{position:absolute;top:8px;right:8px;font-size:9.5px;font-weight:800;letter-spacing:0.6px;padding:3px 7px;border-radius:20px;background:var(--accent);color:#0A0A0A;}
+.play-card-badge{position:absolute;top:8px;right:8px;font-size:9.5px;font-weight:800;letter-spacing:0.6px;padding:3px 7px;border-radius:20px;background:var(--accent);color:#0B0C10;}
 
 /* FEATURED TILE — spans the full row so one mode reads as the way in.
    Everything else about it is deliberately restrained: same card, same green,
@@ -708,7 +708,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .opt.neutral-after{opacity:0.65;color:var(--t2);}
 /* Letter chip (A/B/C/D) */
 .opt-l{width:30px;height:30px;border-radius:9px;background:var(--s2);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Inter',sans-serif;color:var(--t3);border:1px solid var(--border);transition:background 0.15s,color 0.15s,border-color 0.15s;}
-.opt.correct .opt-l{background:#58CC02;color:#0A0A0A;border-color:#58CC02;}
+.opt.correct .opt-l{background:#58CC02;color:#0B0C10;border-color:#58CC02;}
 .opt.wrong .opt-l{background:#FF3B30;color:#fff;border-color:#FF3B30;}
 .opt.neutral-after .opt-l{background:var(--s2);color:var(--t2);}
 /* ⚠️ This was a full bordered card carrying one word the player already
@@ -912,7 +912,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .local-out-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;background:var(--s2);border:1px solid var(--border);font-size:11px;color:var(--t3);opacity:0.65;}
 
 /* ── LOCAL GAME: ROUND SUMMARY (between-question flash) ── */
-.local-summary-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(10,10,10,0.85);z-index:450;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.18s ease;}
+.local-summary-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(11,12,16,0.85);z-index:450;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.18s ease;}
 .local-summary-card{width:100%;max-width:340px;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px 18px;box-shadow:var(--sh-lg);animation:slideUp 0.25s cubic-bezier(0.22,1,0.36,1);}
 .local-summary-title{font-size:13px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);text-align:center;margin-bottom:12px;}
 .local-summary-row{display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:0.5px solid var(--border);font-size:14px;}
@@ -1466,15 +1466,15 @@ button.friends-lb-row:hover{background:var(--s3);}
 .avatar-menu-row:active{transform:scale(0.98);}
 
 /* ── IMAGE CROP MODAL ── */
-.crop-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:#0a0a0a;z-index:600;display:flex;flex-direction:column;color:#fff;animation:fadeIn 0.18s ease;}
+.crop-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:#0B0C10;z-index:600;display:flex;flex-direction:column;color:#fff;animation:fadeIn 0.18s ease;}
 .crop-header{padding:calc(18px + env(safe-area-inset-top,0)) 20px 12px;text-align:center;font-size:16px;font-weight:800;letter-spacing:-0.2px;color:#fff;flex-shrink:0;}
-.crop-stage{flex:1;position:relative;overflow:hidden;background:#0a0a0a;min-height:0;display:flex;align-items:center;justify-content:center;}
+.crop-stage{flex:1;position:relative;overflow:hidden;background:#0B0C10;min-height:0;display:flex;align-items:center;justify-content:center;}
 .crop-stage img{display:block;max-width:100%;max-height:100%;}
 .crop-circle-mask .cropper-view-box,.crop-circle-mask .cropper-face{border-radius:50%;}
 .crop-circle-mask .cropper-view-box{outline:2px solid #fff;outline-color:rgba(255,255,255,0.85);}
 .crop-status{position:absolute;top:0;right:0;bottom:0;left:0;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:14px;padding:24px;text-align:center;}
 .crop-status-err{color:var(--red);}
-.crop-actions{display:flex;gap:10px;padding:14px 20px calc(16px + env(safe-area-inset-bottom,34px));background:#0a0a0a;flex-shrink:0;}
+.crop-actions{display:flex;gap:10px;padding:14px 20px calc(16px + env(safe-area-inset-bottom,34px));background:#0B0C10;flex-shrink:0;}
 .crop-btn{flex:1;min-height:52px;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;border:none;transition:background 0.15s,transform 0.1s,opacity 0.15s;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--text);}
 .crop-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .crop-btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(88,204,2,0.28);}
@@ -1643,7 +1643,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .social-tip{font-size:12px;color:var(--t3);background:var(--s1);border-radius:12px;padding:12px 14px;line-height:1.6;margin-top:4px;box-shadow:0 1px 6px rgba(0,0,0,0.2);}
 
 /* ── ONBOARDING ── */
-.onboard-wrap{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(ellipse at 50% 0%, #14161E 0%, #0a0a0a 65%);z-index:500;display:flex;flex-direction:column;padding:24px 0 0;color:var(--text);overflow:hidden;}
+.onboard-wrap{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(ellipse at 50% 0%, #1B1E27 0%, #0B0C10 65%);z-index:500;display:flex;flex-direction:column;padding:24px 0 0;color:var(--text);overflow:hidden;}
 /* Onboarding is a single step now (see OnboardingScreen), so the progress bar,
    the 200%-wide sliding track and the skill-picker rules that lived here are
    gone. The track/step widths were hardcoded to a two-step flow — 200%/50% —
@@ -1653,7 +1653,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-track{display:flex;height:100%;width:100%;}
 .onboard-step{width:100%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
 .onboard-sample-opts{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;}
-.onboard-sample-opt{width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2A2D3A;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;transition:transform 120ms ease,background 150ms ease,border-color 150ms ease;-webkit-appearance:none;appearance:none;}
+.onboard-sample-opt{width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2F3240;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;transition:transform 120ms ease,background 150ms ease,border-color 150ms ease;-webkit-appearance:none;appearance:none;}
 .onboard-sample-opt:active{transform:scale(0.99);}
 .onboard-sample-opt.correct{background:rgba(88,204,2,0.16);border-color:#58CC02;color:var(--green-ink);}
 .onboard-sample-opt.wrong{background:rgba(239,68,68,0.14);border-color:#ef4444;color:#fca5a5;}
@@ -1713,9 +1713,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    primary treatment and the destructive one shrinks to its content width.
    White on --red (#FF4B4B) also measured 3.30:1 — an AA failure at 14px.
    Both fills are fixed colours so the ratios hold in either theme
-   (#0A0A0A on #58CC02 = 9.48:1, on #FF4B4B = 6.00:1). */
-.modal-cancel{background:var(--accent);color:#0A0A0A;-webkit-text-fill-color:#0A0A0A;}
-.modal-confirm{flex:0 0 auto;padding-left:20px;padding-right:20px;background:var(--red);color:#0A0A0A;-webkit-text-fill-color:#0A0A0A;}
+   (#0B0C10 on #58CC02 = 9.48:1, on #FF4B4B = 6.00:1). */
+.modal-cancel{background:var(--accent);color:#0B0C10;-webkit-text-fill-color:#0B0C10;}
+.modal-confirm{flex:0 0 auto;padding-left:20px;padding-right:20px;background:var(--red);color:#0B0C10;-webkit-text-fill-color:#0B0C10;}
 .modal-cancel:hover{opacity:0.85;}
 .modal-confirm:hover{opacity:0.85;}
 
@@ -1732,7 +1732,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    right. Restored to 44. Found by scripts/experience-audit.mjs, 2026-08-23;
    the 4px it saved was never worth a mis-tap. */
 .hdr-ic{width:44px;height:44px;min-width:44px;min-height:44px;border-radius:12px;background:var(--s2);border:1px solid var(--border);}
-.notif-dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#FF4D4D;border:1.5px solid #14161E;pointer-events:none;}
+.notif-dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#FF4D4D;border:1.5px solid #1B1E27;pointer-events:none;}
 .bn-badge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#FF3B30;color:#fff;font-size:10px;font-weight:800;line-height:18px;text-align:center;font-family:'Inter',sans-serif;}
 .notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:flex-start;justify-content:center;z-index:210;padding:64px 16px 20px;animation:fadeIn 0.15s ease;}
 .notif-panel{background:var(--s1);border:1px solid var(--border);border-radius:18px;width:100%;max-width:400px;max-height:min(70vh,560px);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh-lg);animation:slideUp 0.22s cubic-bezier(0.22,1,0.36,1);}
@@ -1776,7 +1776,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Same phone all use:
      radius   14px rounded rect   vs  999px pill
      shadow   black drop shadow   vs  a green glow under the fill
-     ink      #0A0A0A             vs  #06230C, the app's on-green ink
+     ink      #0B0C10             vs  #06230C, the app's on-green ink
      press    opacity only        vs  scale(0.97) + opacity
    So the most-tapped button in the app was the one that looked least like the
    app. Now matched to .btn-3d on all four; the properties kept below are the
@@ -1807,7 +1807,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-player-avatar{font-size:36px;line-height:1;}
 .og-player-name{font-size:14px;font-weight:800;color:var(--text);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .og-ready{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:0.04em;}
-.og-you{position:absolute;top:6px;right:6px;background:var(--accent);color:#0A0A0A;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;letter-spacing:0.04em;}
+.og-you{position:absolute;top:6px;right:6px;background:var(--accent);color:#0B0C10;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;letter-spacing:0.04em;}
 .og-vs-divider{font-size:14px;font-weight:900;color:var(--t3);letter-spacing:0.12em;}
 
 .og-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -1837,7 +1837,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-option.picked{border-color:var(--accent);background:rgba(88,204,2,0.14);}
 .og-option.locked{cursor:not-allowed;opacity:0.7;}
 .og-option-letter{flex-shrink:0;width:30px;height:30px;border-radius:8px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--t2);}
-.og-option.picked .og-option-letter{background:var(--accent);color:#0A0A0A;}
+.og-option.picked .og-option-letter{background:var(--accent);color:#0B0C10;}
 .og-option-text{flex:1;font-size:14px;font-weight:600;line-height:1.35;}
 .og-locked{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:10px 14px;background:rgba(88,204,2,0.12);border:1px solid rgba(88,204,2,0.4);border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);}
 
@@ -1959,7 +1959,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    blow past max-width on small viewports. Per-letter 64px tile width
    from Sprint #82 is the cap that drives the formula. */
 .wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),minmax(0,1fr));gap:6px;width:100%;max-width:calc(var(--wd-cols) * var(--wd-tile-cap, 64px) + (var(--wd-cols) - 1) * 6px);margin-left:auto;margin-right:auto;}
-.wd-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:transparent;border:2px solid var(--border);border-radius:6px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
+.wd-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:var(--s2);border:2px solid var(--border);border-radius:8px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
 /* Sprint #67 II1's min-height: 50px iOS 14 fallback was dropped in
    Sprint #86 — combined with Sprint #86's minmax(0,1fr) grid columns,
    the 50px floor forced tile height ≥ 50 even when width shrank below
@@ -1989,15 +1989,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .wd-tile--next{animation:wdNextPulse 1.9s ease-in-out infinite;}
   @keyframes wdNextPulse{0%,100%{border-color:rgba(88,204,2,0.4);}50%{border-color:rgba(88,204,2,0.85);}}
 }
-.wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0A0A0A;}
-.wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0A0A0A;}
-/* ⚠️ 1.08:1 AGAINST THE PAGE. --s2 (#14161E) is all but the page colour, so a
+.wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0B0C10;}
+.wd-tile.wd-yellow{background:#FFC107;border-color:#FFC107;color:#0B0C10;}
+/* ⚠️ 1.08:1 AGAINST THE PAGE. --s2 (#1B1E27) is all but the page colour, so a
    letter ruled OUT looked the same as one never guessed — in the mode whose
    whole feedback language is three tile states. Home's hero has always used a
    visible slate for this same state; the board now agrees with it.
    Deliberately not recoloured under html.biq-cb: absent is absent in both
    palettes, and only green/amber are ambiguous to the players that serves. */
-.wd-tile.wd-grey{background:#2B303B;border-color:#2B303B;color:var(--text);}
+.wd-tile.wd-grey{background:#2E323E;border-color:#2E323E;color:var(--text);}
 .wd-flip{animation:wdFlip 600ms ease forwards;animation-fill-mode:both;}
 @keyframes wdFlip{
   0%{transform:rotateX(0deg);}
@@ -2112,10 +2112,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 }
 .wd-key:active{transform:scale(0.96);}
 .wd-key-action{flex:0 0 calc(var(--kb-key, 34px) * 1.6 + var(--kb-gap, 5px) * 0.6);font-size:11px;letter-spacing:0.1em;background:var(--s1);border:1px solid var(--border);}
-.wd-key-green{background:#58CC02;color:#0A0A0A;}
-.wd-key-yellow{background:#FFC107;color:#0A0A0A;}
+.wd-key-green{background:#58CC02;color:#0B0C10;}
+.wd-key-yellow{background:#FFC107;color:#0B0C10;}
 /* ⚠️ ELIMINATED KEYS MUST RECEDE, AND THESE ADVANCED. Untried keys sit on
-   --s3 (#1C1F28); this was #3a3f55 — LIGHTER, and blue-tinted. Ruling a letter
+   --s3 (#232631); this was #3a3f55 — LIGHTER, and blue-tinted. Ruling a letter
    out made it the most prominent thing on the keyboard, which is backwards in
    the one interaction the mode is built around. The #3a3f55 is also a leftover
    from the navy palette the rest of the app migrated off (see the "was
@@ -2124,11 +2124,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Darker ground + dimmed ink now, which reads as "spent" at a glance and still
    clears 4.5:1 on the letter (~6.2:1) so the key stays readable. Deliberately
    NOT recoloured in html.biq-cb — absent is absent in both palettes. */
-.wd-key-grey{background:#101219;color:rgba(255,255,255,0.55);}
+.wd-key-grey{background:#181A22;color:rgba(255,255,255,0.55);}
 /* ⚠️ The last accent-filled button on an 8px radius. It is full-width, green
    and the primary action of the screen — the same role Play, Invite friends
    and Next fill — so it takes the same pill. #06230C is the app's on-green ink
-   (this carried #0A0A0A, the page colour, which is a different black). */
+   (this carried #0B0C10, the page colour, which is a different black). */
 .wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:8px;background:#58CC02;color:#06230C;border:none;border-radius:999px;box-shadow:var(--btn-shine), var(--btn-glow);font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#06230C;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
@@ -2206,7 +2206,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Morning state is one big <button>; evening state is a <div> hosting
    discrete Review + Share buttons. CTAs share .fh-cta styling — primary
    (white pill) and secondary (translucent pill). */
-.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(150deg,#10331B 0%,#0E1912 46%,#0F1117 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid #234029;box-shadow:0 4px 16px rgba(0,0,0,0.30),0 2px 6px rgba(0,0,0,0.18);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
+.footle-hero{position:relative;display:flex;align-items:stretch;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(150deg,#10331B 0%,#0E1912 46%,#13151C 100%);color:#fff;-webkit-text-fill-color:#fff;border:1px solid #234029;box-shadow:0 4px 16px rgba(0,0,0,0.30),0 2px 6px rgba(0,0,0,0.18);overflow:hidden;text-align:left;font-family:inherit;width:100%;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;contain:layout paint style;margin-bottom:12px;cursor:pointer;transition:transform 0.1s,box-shadow 0.15s;}
 .footle-hero::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;inset:0;background:radial-gradient(circle at 95% 0%, rgba(88,204,2,0.16), transparent 55%);pointer-events:none;}
 .footle-hero-morning:active{transform:scale(0.99);}
 .footle-hero-evening{cursor:default;}
@@ -2393,8 +2393,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  background: #14161E;
-  border: 1px solid #242836;
+  background: #1B1E27;
+  border: 1px solid #242730;
   border-radius: 11px;
   font-family: 'Inter', sans-serif;
   font-size: 13px;
@@ -2404,7 +2404,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   transition: background 0.12s, border-color 0.12s;
 }
 .biq-nav .bn-store svg { flex: 0 0 auto; }
-.biq-nav a.bn-store:hover { background: #191c26; border-color: #2A2D3A; }
+.biq-nav a.bn-store:hover { background: #191c26; border-color: #2F3240; }
 .biq-nav .bn-store.is-disabled {
   opacity: 0.6;
   cursor: default;
@@ -2417,7 +2417,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: #6E7180;
-  border: 1px solid #2A2D3A;
+  border: 1px solid #2F3240;
   border-radius: 5px;
   padding: 2px 5px;
 }
@@ -2445,21 +2445,21 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
        its vars untouched. Reset back to the inherited mobile values in the
        @media(display-mode:standalone) block so installed desktop PWAs stay
        byte-identical. Native never hits >=1024 (iPhone-only, portrait-locked). */
-    --bg: #0A0A0A;
-    --s1: #0F1117;
-    --s2: #14161E;
+    --bg: #0B0C10;
+    --s1: #13151C;
+    --s2: #1B1E27;
     /* COMPLETE token set (light-theme fix): the block originally swapped only
        the surface tokens above, so a light-theme user at >=1024 got light-theme
        near-black TEXT tokens on these dark surfaces (unreadable). Every token
        the themes define must be pinned here, and every line must have a
        matching `inherit` in the @media(display-mode:standalone) mirror below. */
-    --s3: #1C1F28;
+    --s3: #232631;
     --text: #FFFFFF;
     --t1: #FFFFFF;
     --t2: #9BA0B8;
     --t3: #7E828C;
-    --border: #242836;
-    --border2: #2A2D3A;
+    --border: #242730;
+    --border2: #2F3240;
     --accent: #58CC02;
     --accent-dim: rgba(88,204,2,0.10);
     --accent-b: rgba(88,204,2,0.28);
@@ -2497,7 +2497,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     width: 248px;
     height: 100vh;
     padding: 22px 14px;
-    background: #0C0E13;
+    background: #0F1116;
     border-right: 1px solid #16181F;
     box-sizing: border-box;
     overflow-y: auto;
@@ -2533,15 +2533,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .qd-counter { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 14px; font-weight: 700; color: #9BA0B8; font-variant-numeric: tabular-nums; }
   .qd-close {
     width: 46px; height: 46px; flex: 0 0 auto; border-radius: 12px;
-    background: #14161E; border: 1px solid #2A2D3A; color: #9BA0B8;
+    background: #1B1E27; border: 1px solid #2F3240; color: #9BA0B8;
     display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
     transition: border-color .15s ease, color .15s ease, background .15s ease;
   }
   .qd-close svg { width: 20px; height: 20px; }
-  .qd-close:hover { border-color: #3A3D4A; color: #F0F1F5; background: #1C1F28; }
+  .qd-close:hover { border-color: #3E4150; color: #F0F1F5; background: #232631; }
 
   /* Thin progress under the top bar. */
-  .qd-progress { display: block; height: 4px; background: #14161E; }
+  .qd-progress { display: block; height: 4px; background: #1B1E27; }
   .qd-progress-fill { height: 100%; background: #58CC02; transition: width 0.45s cubic-bezier(0.22,1,0.36,1); }
 
   /* ── Play area: a comfortably-wide column, centered BOTH axes (matches the
@@ -2561,7 +2561,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
   /* Meta row: streak pill · circular timer ring · correct pill. */
   .qd-meta { display: flex; align-items: center; justify-content: center; gap: 26px; margin-bottom: 30px; }
-  .qd-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #0F1117; border: 1px solid #242836; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 13.5px; font-weight: 700; }
+  .qd-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #13151C; border: 1px solid #242730; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 13.5px; font-weight: 700; }
   .qd-pill-streak { color: #FFC107; }
   .qd-pill-ic { font-family: 'Inter', sans-serif; font-size: 14px; }
   .qd-pill-correct { color: #9BA0B8; }
@@ -2578,7 +2578,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   /* Options → 2×2 grid with lettered chips. */
   .qd-play .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 34px; }
   .qd-play .opt { padding: 18px; border-radius: 15px; font-size: 16.5px; }
-  .qd-play .opt:hover:not(:disabled):not([aria-disabled="true"]) { transform: none; border-color: #3A3D4A; background: var(--s2); }
+  .qd-play .opt:hover:not(:disabled):not([aria-disabled="true"]) { transform: none; border-color: #3E4150; background: var(--s2); }
   .qd-play .opt-l { width: 32px; height: 32px; border-radius: 9px; }
 
   /* Feedback + Next button centered, non-sticky (the desktop play area is short). */
@@ -2622,7 +2622,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     border-radius: 999px; background: rgba(255,200,0,0.08); border: 1px solid rgba(255,200,0,0.25);
     font-size: 13px; font-weight: 700; color: var(--gold); }
   .rd-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 26px; }
-  .rd-tile { padding: 16px 12px; border-radius: 14px; background: #0F1117; border: 1px solid #242836; }
+  .rd-tile { padding: 16px 12px; border-radius: 14px; background: #13151C; border: 1px solid #242730; }
   .rd-tile-v { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 22px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
   .rd-tile-v.rd-amber { color: #FFC107; }
   .rd-tile-v.rd-green { color: #8AE042; }
@@ -2631,8 +2631,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .rd-btn { padding: 14px 22px; border-radius: 999px; font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: filter .15s ease, background .15s ease; -webkit-appearance: none; appearance: none; }
   .rd-btn-primary { flex: 1; background: var(--accent); color: #06230C; border: none; font-weight: 800; box-shadow: var(--btn-shine), var(--btn-glow); -webkit-text-fill-color: #06230C; }
   .rd-btn-primary:hover { filter: brightness(1.06); }
-  .rd-btn-ghost { flex: 0 0 auto; padding: 14px 20px; background: transparent; border: 1px solid #2A2D3A; color: #E8EAF0; }
-  .rd-btn-ghost:hover { background: #14161E; }
+  .rd-btn-ghost { flex: 0 0 auto; padding: 14px 20px; background: transparent; border: 1px solid #2F3240; color: #E8EAF0; }
+  .rd-btn-ghost:hover { background: #1B1E27; }
   /* Scouting Report: match the profile's 560-left desktop pattern (Sprint #34
      F-S1) so the thin stat rows don't stretch wide. */
   .scouting-report { max-width: 560px; }
@@ -2904,7 +2904,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     overflow: hidden;
     border-radius: 20px;
     border: 1px solid #234029;
-    background: linear-gradient(125deg, #10331B 0%, #0E1912 46%, #0F1117 100%);
+    background: linear-gradient(125deg, #10331B 0%, #0E1912 46%, #13151C 100%);
     padding: 26px;
     margin-bottom: 0;
   }
@@ -2949,7 +2949,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .ffh-review:hover { color: #fff; }
   .ffh-board { flex: 0 0 auto; display: flex; flex-direction: column; gap: 6px; }
   .ffh-board-row { display: flex; gap: 6px; }
-  .ffh-cell { width: 34px; height: 34px; border-radius: 7px; background: #0F1117; border: 2px solid #263042; }
+  .ffh-cell { width: 34px; height: 34px; border-radius: 7px; background: #13151C; border: 2px solid #263042; }
   .ffh-cell.is-active { border-color: #46516A; }
 
   /* ── Right rail cards ── */
@@ -2973,8 +2973,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hr-rating-scap { padding-bottom: 5px; }
   .hr-rating-overall { font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; color: var(--t3); }
   .hr-rating-tier { font-size: 19px; font-weight: 900; letter-spacing: -0.01em; color: #8AE042; text-transform: uppercase; }
-  .hr-rating-view { display: block; width: 100%; text-align: center; margin-top: 16px; padding: 11px; border-radius: 12px; border: 1px solid #2A2D3A; background: transparent; color: #E8EAF0; font-family: inherit; font-weight: 700; font-size: 13.5px; cursor: pointer; transition: background 0.12s; }
-  .hr-rating-view:hover { background: #14161E; }
+  .hr-rating-view { display: block; width: 100%; text-align: center; margin-top: 16px; padding: 11px; border-radius: 12px; border: 1px solid #2F3240; background: transparent; color: #E8EAF0; font-family: inherit; font-weight: 700; font-size: 13.5px; cursor: pointer; transition: background 0.12s; }
+  .hr-rating-view:hover { background: #1B1E27; }
 
   .hr-streak-head { display: flex; align-items: center; gap: 12px; }
   .hr-streak-num { display: flex; align-items: center; gap: 6px; font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 34px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1; }
@@ -3013,8 +3013,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hab-title { font-size: 20px; font-weight: 900; letter-spacing: -0.02em; color: var(--t1); }
   .hab-sub { font-size: 13.5px; color: var(--t2); margin-top: 5px; max-width: 52ch; line-height: 1.5; }
   .hab-actions { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
-  .hab-store { display: inline-flex; align-items: center; gap: 10px; padding: 11px 18px; border-radius: 12px; background: #000; border: 1px solid #2A2D3A; color: #fff; text-decoration: none; transition: border-color 0.15s, transform 0.15s; }
-  .hab-store:hover { border-color: #3A3D4A; transform: translateY(-1px); }
+  .hab-store { display: inline-flex; align-items: center; gap: 10px; padding: 11px 18px; border-radius: 12px; background: #000; border: 1px solid #2F3240; color: #fff; text-decoration: none; transition: border-color 0.15s, transform 0.15s; }
+  .hab-store:hover { border-color: #3E4150; transform: translateY(-1px); }
   .hab-store svg { flex: 0 0 auto; }
   .hab-store-txt { display: flex; flex-direction: column; line-height: 1.1; text-align: left; }
   .hab-store-ey { font-size: 10px; color: #9BA0B8; }
@@ -3132,7 +3132,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .pd-scout-ico { font-size: 15px; }
   .pd-scout-title { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #9BA0B8; }
   .pd-scout-rows { display: flex; flex-direction: column; gap: 2px; }
-  .pd-scout-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid #242836; }
+  .pd-scout-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid #242730; }
   .pd-scout-row.is-last { border-bottom: none; }
   .pd-scout-k { font-size: 14px; color: #9BA0B8; flex: 0 0 auto; }
   .pd-scout-v { font-size: 14px; font-weight: 800; color: #fff; text-align: right; min-width: 0; }
@@ -3175,7 +3175,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     /* desktop-web-refresh: fill the space right of the rail like the handoff
        (was a centered 1180 column that left a big void on wide screens).
        Generous cap so ultra-wide 5K+ doesn't balloon; left-anchored flush to
-       the rail. #root is #0A0A0A (index.html) so any leftover surface is flat. */
+       the rail. #root is #0B0C10 (index.html) so any leftover surface is flat. */
     max-width: 2600px;
     margin-left: 0;
     margin-right: auto;
@@ -3725,7 +3725,7 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
 .cf-chips{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px;mask-image:linear-gradient(90deg,#000 92%,transparent);}
 .cf-chips::-webkit-scrollbar{display:none;}
 .cf-chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--s1);border:1px solid var(--border);color:var(--t1);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s;}
-.cf-chip:hover,.cf-chip:focus-visible{border-color:var(--bd3, #3A3D4A);background:var(--s2);outline:none;}
+.cf-chip:hover,.cf-chip:focus-visible{border-color:var(--bd3, #3E4150);background:var(--s2);outline:none;}
 .cf-chip-all{padding:6px 14px;color:var(--t2);}
 @media (min-width:1024px){
   .club-finder{margin:4px 0 16px;}
@@ -3747,11 +3747,11 @@ body.biq-web .app { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4v
 body.biq-web .tab-content { padding-bottom: 24px; }
 body.biq-web .toast { left: 50% !important; transform: translateX(-50%); max-width: min(560px, calc(100vw - 32px)) !important; }
 body.biq-web > .landing-bottom { padding-left: 0 !important; }
-.fd-appbar { position: sticky; top: 60px; z-index: 90; background: var(--bg, #0A0A0A); border-bottom: 1px solid #242836; }
+.fd-appbar { position: sticky; top: 60px; z-index: 90; background: var(--bg, #0B0C10); border-bottom: 1px solid #242730; }
 .fd-appbar-in { display: flex; align-items: center; gap: 2px; height: 46px; overflow-x: auto; scrollbar-width: none; }
 .fd-appbar-in::-webkit-scrollbar { display: none; }
 .fd-appbar-tab { position: relative; display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 12px; border: 0; background: none; color: #9BA0B8; font: 600 14px/1 'Inter', system-ui, sans-serif; cursor: pointer; border-radius: 8px; white-space: nowrap; }
-.fd-appbar-tab:hover { color: #F0F1F5; background: #0F1117; }
+.fd-appbar-tab:hover { color: #F0F1F5; background: #13151C; }
 .fd-appbar-tab[aria-current="page"] { color: #F0F1F5; box-shadow: inset 0 -2px 0 #58CC02; border-radius: 0; }
 .fd-appbar-dot { position: absolute; top: 10px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: #58CC02; }
 .fd-appbar-spacer { flex: 1 1 auto; }

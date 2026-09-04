@@ -61,7 +61,7 @@ export function cardTier(overall) {
 // Tier palettes. Shared by the in-app card header and the share render
 // (api/og.js imports these — keep this module the single source of truth).
 export const CARD_TIERS = {
-  gold:   { bg: "linear-gradient(160deg,#2a2410 0%,#0a0a0a 100%)", accent: "#FFC107", text: "#FFF6E0", label: "GOLD" },
+  gold:   { bg: "linear-gradient(160deg,#2a2410 0%,#0B0C10 100%)", accent: "#FFC107", text: "#FFF6E0", label: "GOLD" },
   silver: { bg: "linear-gradient(160deg,#1b212a 0%,#080a0f 100%)", accent: "#C7D2E0", text: "#EDF1F7", label: "SILVER" },
   bronze: { bg: "linear-gradient(160deg,#2a1a0e 0%,#0b0705 100%)", accent: "#D08A4E", text: "#F6E7D8", label: "BRONZE" },
 };

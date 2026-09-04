@@ -12,9 +12,9 @@
 //
 //   THE DESK — page canvas, rules, chrome. Measured against the existing dark
 //   ramp, it is the same palette with a green cast instead of a blue one:
-//     --desk     #0E1110  vs  --bg     #0A0A0A   RGB distance 10
-//     --desk2    #161A17  vs  --card2  #14161E   distance  8
-//     --deskline #252B26  vs  --bd     #242836   distance 16
+//     --desk     #0E1110  vs  --bg     #0B0C10   RGB distance 10
+//     --desk2    #161A17  vs  --card2  #1B1E27   distance  8
+//     --deskline #252B26  vs  --bd     #242730   distance 16
 //     --onDeskHi #F2F5F1  vs  --tx     #F0F1F5   distance  6
 //   So the desk is NOT redefined here. It reuses the shared tokens, which is
 //   the entire reason the homepage and the SEO pages can stay consistent.

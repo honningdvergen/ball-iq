@@ -55,7 +55,7 @@ export class ErrorBoundary extends React.Component {
         <div style={{
           minHeight:"100dvh", display:"flex", flexDirection:"column",
           alignItems:"center", justifyContent:"center", padding:"32px 24px",
-          background:"#0A0A0A", fontFamily:"Inter,sans-serif", textAlign:"center"
+          background:"#0B0C10", fontFamily:"Inter,sans-serif", textAlign:"center"
         }}>
           <div style={{fontSize:48, marginBottom:16}}>⚽</div>
           <div style={{fontSize:20, fontWeight:800, color:"#F0F1F5", marginBottom:8, letterSpacing:"-0.3px"}}>

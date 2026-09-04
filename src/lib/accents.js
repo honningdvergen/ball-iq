@@ -24,7 +24,7 @@
  * :root where the rest of the app already reads them — duplicating those into
  * JS would create the second source this file exists to prevent.
  *
- * Every value is checked against --s1 (#0F1117), the surface these render on:
+ * Every value is checked against --s1 (#13151C), the surface these render on:
  *   footle  #8AE042  10.4:1      trail    #7CC3F0  8.9:1
  *   daily7  #FFC107  11.6:1      mystery  #B9A5FF  8.9:1
  */

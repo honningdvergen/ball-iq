@@ -2,13 +2,13 @@
 name: Ball IQ — The Fixture List
 description: A dark, calm football site where every page is a list of things to play — one header, one frame, one accent spent only on Play.
 colors:
-  bg: "#0A0A0A"
-  bg-raised: "#0C0E13"
-  card: "#0F1117"
-  card-inset: "#14161E"
-  border: "#242836"
-  border-strong: "#2A2D3A"
-  border-loud: "#3A3D4A"
+  bg: "#0B0C10"
+  bg-raised: "#0F1116"
+  card: "#13151C"
+  card-inset: "#1B1E27"
+  border: "#242730"
+  border-strong: "#2F3240"
+  border-loud: "#3E4150"
   text: "#F0F1F5"
   text-secondary: "#9BA0B8"
   text-muted: "#7E828C"
@@ -162,15 +162,15 @@ This system replaced the "Scouting Report" world on 2026-09-03 after the owner r
 The palette is the app's, defined once in `src/design/tokens.js` and emitted into every generated page by `rootCss()`; `src/design/front.css` and `scripts/seo/shell.mjs` name the same values locally.
 
 ### Surfaces, darkest to lightest
-- **bg** `#0A0A0A` — the page.
-- **bg-raised** `#0C0E13` — the footer and alternating bands.
-- **card** `#0F1117` — every card, chip, input and dropdown.
-- **card-inset** `#14161E` — a card's hover state, and surfaces inside a card.
+- **bg** `#0B0C10` — the page.
+- **bg-raised** `#0F1116` — the footer and alternating bands.
+- **card** `#13151C` — every card, chip, input and dropdown.
+- **card-inset** `#1B1E27` — a card's hover state, and surfaces inside a card.
 
 ### Lines
-- **border** `#242836` — every card, input and divider. One weight, 1px.
-- **border-strong** `#2A2D3A` — a card's hover border, a focused input.
-- **border-loud** `#3A3D4A` — reserved for the rare emphasised outline.
+- **border** `#242730` — every card, input and divider. One weight, 1px.
+- **border-strong** `#2F3240` — a card's hover border, a focused input.
+- **border-loud** `#3E4150` — reserved for the rare emphasised outline.
 
 ### Text
 - **text** `#F0F1F5` — headings, names, the current tab.

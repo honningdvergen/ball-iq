@@ -45,8 +45,8 @@ export const XI_MARKUP = `<div class="xi-app"><div class="xi-num" id="num"></div
 </div>`;
 
 export const XI_CSS = `.xi-app{
-  --bg:#0A0A0A; --s1:#0F1117; --s2:#14161E; --s3:#1C1F28;
-  --border:#242836; --border2:#2A2D3A;
+  --bg:#0B0C10; --s1:#13151C; --s2:#1B1E27; --s3:#232631;
+  --border:#242730; --border2:#2F3240;
   --text:#fff; --t2:#A6ADBB; --t3:#6F7787;
   --accent:#58CC02; --gold:#FFC53D;
   --line:rgba(255,255,255,.26);

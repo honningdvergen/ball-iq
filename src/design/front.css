@@ -1,5 +1,5 @@
 /* ── THE FRONT DOOR (balliq.app/) ─────────────────────────────────────────────
-   One system, dark. Tokens lifted off pitch black (#0A0A0A → #0F1114) so the
+   One system, dark. Tokens lifted off pitch black (#0B0C10 → #0F1114) so the
    page reads as a surface rather than a void; the brand green is spent on
    Play and on "done", nothing else; every other colour is a grey. Type is the
    app's own (Inter), on a strict scale: 12.5 · 13.5 · 15 · 17 · 22 · 28.
@@ -7,7 +7,7 @@
 /* Tokens are the app's own (src/design/tokens.js: bg / card / card2 / bd / bd2 /
    tx / tx3 / tx4) so the front door, the generated pages and the game share one
    palette. Named locally so this stylesheet reads on its own. */
-.fd,.fd-head,.fd-appbar,.fd-foot{--bg:#0A0A0A;--s1:#0F1117;--s2:#14161E;--bd:#242836;--bd2:#2A2D3A;--t1:#F0F1F5;--t2:#9BA0B8;--t3:#7E828C;
+.fd,.fd-head,.fd-appbar,.fd-foot{--bg:#0B0C10;--s1:#13151C;--s2:#1B1E27;--bd:#242730;--bd2:#2F3240;--t1:#F0F1F5;--t2:#9BA0B8;--t3:#7E828C;
     --grn:#58CC02;--grn-ink:#06230C;--grn-soft:rgba(88,204,2,.14)}
 /* ⚠️ Tokens above, layout below — kept as two rules. Merging them once put
    min-height:100vh on the header inside the app and blanked the screen. */
@@ -127,7 +127,7 @@
 .fd-faq dd{margin:0;font-size:14px;color:var(--t2);max-width:52ch}
 
 /* footer sitemap */
-.fd-foot{border-top:1px solid var(--bd);background:#0C0E13;padding:36px 0 28px}
+.fd-foot{border-top:1px solid var(--bd);background:#0F1116;padding:36px 0 28px}
 .fd-foot-in{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:22px}
 .fd-foot-col{display:flex;flex-direction:column;gap:5px;min-width:0}
 .fd-foot-col a{font-size:13.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

@@ -2,4 +2,4 @@
    Source of truth: src/design/tokens.js
    Emitted here for the app entry, and inlined into the 191 static pages by
    gen-seo-pages.mjs, so both surfaces carry the same bytes. */
-:root{--bg:#0A0A0A;--bg2:#0C0E13;--card:#0F1117;--card2:#14161E;--bd:#242836;--bd2:#2A2D3A;--bd3:#3A3D4A;--grn:#58CC02;--grn-ink:#06230C;--grn-soft:#8AE042;--amber:#FFC107;--wrong:#FF4747;--tx:#F0F1F5;--tx2:#E8EAF0;--tx3:#9BA0B8;--tx4:#7E828C;--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+:root{--bg:#0B0C10;--bg2:#0F1116;--card:#13151C;--card2:#1B1E27;--bd:#242730;--bd2:#2F3240;--bd3:#3E4150;--grn:#58CC02;--grn-ink:#06230C;--grn-soft:#8AE042;--amber:#FFC107;--wrong:#FF4747;--tx:#F0F1F5;--tx2:#E8EAF0;--tx3:#9BA0B8;--tx4:#7E828C;--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}

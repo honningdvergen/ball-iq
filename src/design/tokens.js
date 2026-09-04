@@ -33,15 +33,26 @@
 /** Canonical web palette. Keys are the CSS custom-property names, minus `--`. */
 export const TOKENS = {
   // ── Surfaces, darkest to lightest ──────────────────────────────────────
-  bg: '#0A0A0A', // page canvas
-  bg2: '#0C0E13', // raised canvas / alternating bands
-  card: '#0F1117', // cards
-  card2: '#14161E', // inset surfaces inside a card
+  // Lifted 2026-09-04 (Alex on his phone: "it does not hit me as modern…
+  // not sure if it is the background colour or what"). The old ground was
+  // #0A0A0A with cards at #0F1117 — five points apart, so on an OLED they
+  // were one black and every edge had to be drawn as a border, and a page
+  // made of outlines reads as a wireframe. Three surfaces are now visibly
+  // three steps, and the borders are hairlines one step above their surface
+  // rather than the loudest thing on the page. Chosen on an A/B page of the
+  // Footle band (A as shipped · B filled tiles · C = B + these surfaces);
+  // Alex picked C. Every old value that was inlined anywhere (app.css,
+  // App.jsx, index.html, manifest, OG images, the sign-in sheet) moved with
+  // it in the same commit, so the app and the site stay one palette.
+  bg: '#0B0C10', // page canvas
+  bg2: '#0F1116', // raised canvas / alternating bands
+  card: '#13151C', // cards
+  card2: '#1B1E27', // inset surfaces inside a card
 
   // ── Borders, weakest to strongest ──────────────────────────────────────
-  bd: '#242836',
-  bd2: '#2A2D3A',
-  bd3: '#3A3D4A',
+  bd: '#242730',
+  bd2: '#2F3240',
+  bd3: '#3E4150',
 
   // ── Action. Green means ACT; a club colour means IDENTITY. ─────────────
   // Key order matters here and nowhere else: it is the emission order of

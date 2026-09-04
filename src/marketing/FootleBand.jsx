@@ -39,10 +39,10 @@ const CSS = `
 .fb-legend{display:flex;flex-direction:column;gap:8px;margin-top:var(--sp3)}
 @media (min-width:1000px){.fb-legend{margin-top:0}}
 .fb-li{display:flex;align-items:center;gap:10px;font:var(--ty-sec);color:var(--on-desk)}
-.fb-sw{flex:0 0 auto;width:18px;height:18px;border:1px solid var(--bd3)}
-.fb-sw[data-k="green"]{background:var(--v5);border-color:var(--v5)}
-.fb-sw[data-k="yellow"]{background:var(--attr-mid);border-color:var(--attr-mid)}
-.fb-sw[data-k="grey"]{background:var(--bd);border-color:var(--bd)}
+.fb-sw{flex:0 0 auto;width:18px;height:18px;border-radius:5px;border:1px solid var(--bd2)}
+.fb-sw[data-k="green"]{background:var(--grn);border-color:var(--grn)}
+.fb-sw[data-k="yellow"]{background:var(--amber);border-color:var(--amber)}
+.fb-sw[data-k="grey"]{background:var(--bd2);border-color:var(--bd2)}
 .fb-six{margin-top:var(--sp1);font:var(--ty-sec);font-weight:700;color:var(--tx)}
 .fb-h2{font:var(--ty-section);letter-spacing:var(--ty-section-ls);
        text-transform:uppercase;color:var(--tx);text-wrap:balance}
@@ -55,18 +55,21 @@ const CSS = `
 .fb-note{margin-top:var(--sp3);font:var(--ty-meta);color:var(--on-desk-mut);max-width:52ch}
 
 .fb-grid{margin-top:var(--sp1);display:grid;gap:6px;justify-content:start}
+/* Filled, not outlined (2026-09-04 A/B, Alex: the hollow grid "looks
+   outdated"). One surface step up, a hairline edge, 8px corners; the marks
+   are the GAME's green and amber, not the retired Scouting Report's desk
+   greens, so the practice board and the real board are the same object. */
 .fb-tile{width:52px;height:52px;display:grid;place-items:center;
-         font:700 22px/1 'Archivo Narrow',sans-serif;text-transform:uppercase;
-         border:1px solid var(--bd3);color:var(--tx)}
+         font:800 20px/1 'Archivo Narrow',sans-serif;text-transform:uppercase;
+         background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:8px;color:var(--tx)}
 /* Small screens: the TRACK owns the size (9.5vw), the tile fills it — a
    fixed 44px here overlapped neighbouring tracks by ~8px once the answer
    length hit 7. aspect-ratio keeps them square at any track width. */
 @media (max-width:520px){.fb-tile{width:auto;height:auto;aspect-ratio:1;font-size:17px}}
-.fb-tile[data-m="green"]{background:var(--v5);border-color:var(--v5);color:var(--tx)}
-.fb-tile[data-m="yellow"]{background:var(--attr-mid);border-color:var(--attr-mid);
-                          color:var(--attr-mid-ink)}
-.fb-tile[data-m="grey"]{background:var(--bd);border-color:var(--bd);color:var(--tx3)}
-.fb-tile[data-cur="1"]{border-color:var(--on-desk-mut)}
+.fb-tile[data-m="green"]{background:var(--grn);border-color:var(--grn);color:var(--grn-ink)}
+.fb-tile[data-m="yellow"]{background:var(--amber);border-color:var(--amber);color:#2A1F00}
+.fb-tile[data-m="grey"]{background:var(--bd2);border-color:var(--bd2);color:var(--tx3)}
+.fb-tile[data-cur="1"]{border-color:rgba(88,204,2,.6);box-shadow:inset 0 0 0 1px rgba(88,204,2,.35)}
 .fb-grid[data-shake="1"]{animation:fb-shake .28s var(--ease)}
 @keyframes fb-shake{20%{transform:translateX(-6px)}45%{transform:translateX(5px)}
                     70%{transform:translateX(-3px)}100%{transform:none}}
@@ -77,15 +80,14 @@ const CSS = `
 
 .fb-kb{margin-top:var(--sp2);display:flex;flex-direction:column;gap:6px;max-width:520px}
 .fb-kr{display:flex;gap:5px}
-.fb-k{flex:1;min-height:48px;padding:10px 0;background:var(--card);color:var(--tx);
-      border:1px solid var(--bd3);font:700 14px/1 Archivo,system-ui,sans-serif;
+.fb-k{flex:1;min-height:48px;padding:10px 0;background:var(--bd2);color:var(--tx);
+      border:0;border-radius:10px;font:700 14px/1 Archivo,system-ui,sans-serif;
       cursor:pointer;transition:background-color .1s var(--ease)}
-.fb-k[data-wide="1"]{flex:1.6;font-size:12px;letter-spacing:.06em}
-.fb-k[data-m="green"]{background:var(--v5);border-color:var(--v5);color:var(--tx)}
-.fb-k[data-m="yellow"]{background:var(--attr-mid);border-color:var(--attr-mid);
-                       color:var(--attr-mid-ink)}
-.fb-k[data-m="grey"]{background:var(--bg);border-color:var(--bd);color:var(--tx4)}
-@media (hover:hover){.fb-k:not([data-m]):hover{background:var(--bd2)}}
+.fb-k[data-wide="1"]{flex:1.6;font-size:12px;letter-spacing:.06em;background:var(--bd)}
+.fb-k[data-m="green"]{background:var(--grn);color:var(--grn-ink)}
+.fb-k[data-m="yellow"]{background:var(--amber);color:#2A1F00}
+.fb-k[data-m="grey"]{background:var(--bg);color:var(--tx4)}
+@media (hover:hover){.fb-k:not([data-m]):hover{background:var(--bd3)}}
 
 .fb-real{display:inline-flex;align-items:center;min-height:48px;margin-top:var(--sp3);
          padding:12px var(--sp3);border:1px solid var(--bd3);border-radius:var(--rc);color:var(--tx);

@@ -65,7 +65,7 @@ describe('design review — tier 2', () => {
 
   it('the quiz Next button is the same component as Play', () => {
     // ⚠️ It was a second primary button: 14px radius against the pill's 999px,
-    // a BLACK drop shadow instead of the green glow, #0A0A0A ink instead of
+    // a BLACK drop shadow instead of the green glow, #0B0C10 ink instead of
     // #06230C, and an opacity-only press. The most-tapped button in the app
     // looked least like the app.
     const i = CSS.indexOf('.next-btn-primary{');

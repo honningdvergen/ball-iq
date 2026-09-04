@@ -2604,7 +2604,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             onClick={() => setElimOverlay(false)}
             style={{
               position: 'fixed', inset: 0, zIndex: 1000,
-              background: 'rgba(10,10,10,0.88)', backdropFilter: 'blur(4px)',
+              background: 'rgba(11,12,16,0.88)', backdropFilter: 'blur(4px)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
             }}
           >

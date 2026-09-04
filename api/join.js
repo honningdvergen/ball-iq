@@ -102,7 +102,7 @@ export default function handler(req) {
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${esc(ogImage)}">
 <meta http-equiv="refresh" content="0; url=${esc(appUrl)}">
-<style>body{margin:0;background:#0A0A0A;color:#fff;font-family:-apple-system,system-ui,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}a{color:#58CC02}</style>
+<style>body{margin:0;background:#0B0C10;color:#fff;font-family:-apple-system,system-ui,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}a{color:#58CC02}</style>
 </head>
 <body>
 <p>Opening <a href="${esc(appUrl)}">Ball IQ</a>…</p>

@@ -18,13 +18,13 @@
 <meta property="og:description" content="Build any XI from 3,600+ real footballers. Rumoured signings, all-time teams, whatever you like.">
 <meta property="og:url" content="https://balliq.app/lineup/">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#0A0A0A">
+<meta name="theme-color" content="#0B0C10">
 <link rel="preconnect" href="https://commons.wikimedia.org" crossorigin>
 <link rel="preconnect" href="https://upload.wikimedia.org" crossorigin>
 <style>
 :root{
-  --bg:#0A0A0A; --s1:#0F1117; --s2:#14161E; --s3:#1C1F28;
-  --border:#242836; --border2:#2A2D3A;
+  --bg:#0B0C10; --s1:#13151C; --s2:#1B1E27; --s3:#232631;
+  --border:#242730; --border2:#2F3240;
   --text:#fff; --t2:#A6ADBB; --t3:#6F7787;
   --accent:#58CC02; --accent-dim:rgba(88,204,2,.10); --accent-b:rgba(88,204,2,.28);
   --line:rgba(255,255,255,.26);
@@ -1064,7 +1064,7 @@ async function exportImage(){
     var cvs = document.createElement('canvas');
     cvs.width = CW; cvs.height = CH;
     var ctx = cvs.getContext('2d');
-    ctx.fillStyle = '#0A0A0A'; ctx.fillRect(0, 0, CW, CH);
+    ctx.fillStyle = '#0B0C10'; ctx.fillRect(0, 0, CW, CH);
 
     var title = ($('teamName').value.trim() || 'My XI');
     ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
