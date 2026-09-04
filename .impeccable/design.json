@@ -1,54 +1,218 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-03T21:40:00Z",
+  "generatedAt": "2026-09-04T08:40:39Z",
   "title": "Design System: Ball IQ — The Fixture List",
   "extensions": {
     "colorMeta": {
-      "green": { "role": "primary", "displayName": "Play green — the only accent; Play and correct, nothing else", "canonical": "#58CC02" },
-      "green-ink": { "role": "primary", "displayName": "Text on green", "canonical": "#06230C" },
-      "green-soft": { "role": "primary", "displayName": "Green as text or hover fill on dark", "canonical": "#8AE042" },
-      "amber": { "role": "secondary", "displayName": "Streak / near / Daily 7 tint — never a call to action", "canonical": "#FFC107" },
-      "wrong": { "role": "secondary", "displayName": "Incorrect answer", "canonical": "#FF4747" },
-      "bg": { "role": "neutral", "displayName": "Page", "canonical": "#0B0C10", "tonalRamp": ["#0B0C10", "#0F1116", "#13151C", "#1B1E27"] },
-      "card": { "role": "neutral", "displayName": "Card / chip / input / dropdown", "canonical": "#13151C" },
-      "card-inset": { "role": "neutral", "displayName": "Card hover, surfaces inside a card", "canonical": "#1B1E27" },
-      "border": { "role": "neutral", "displayName": "Every 1px line", "canonical": "#242730", "tonalRamp": ["#242730", "#2F3240", "#3E4150"] },
-      "text": { "role": "neutral", "displayName": "Headings, names, current tab", "canonical": "#F0F1F5" },
-      "text-secondary": { "role": "neutral", "displayName": "One-line descriptions, links at rest", "canonical": "#9BA0B8" },
-      "text-muted": { "role": "neutral", "displayName": "Captions, dates, placeholders (4.6:1 on bg)", "canonical": "#7E828C" }
+      "green": {
+        "role": "primary",
+        "displayName": "Play green — the only accent; Play and correct, nothing else",
+        "canonical": "#58CC02"
+      },
+      "green-ink": {
+        "role": "primary",
+        "displayName": "Text on green",
+        "canonical": "#06230C"
+      },
+      "green-soft": {
+        "role": "primary",
+        "displayName": "Green as text or hover fill on dark",
+        "canonical": "#8AE042"
+      },
+      "amber": {
+        "role": "secondary",
+        "displayName": "Streak / near / Daily 7 tint — never a call to action",
+        "canonical": "#FFC107"
+      },
+      "wrong": {
+        "role": "secondary",
+        "displayName": "Incorrect answer",
+        "canonical": "#FF4747"
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Page",
+        "canonical": "#0B0C10",
+        "tonalRamp": [
+          "#0B0C10",
+          "#0F1116",
+          "#13151C",
+          "#1B1E27"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card / chip / input / dropdown",
+        "canonical": "#13151C"
+      },
+      "card-inset": {
+        "role": "neutral",
+        "displayName": "Card hover, surfaces inside a card",
+        "canonical": "#1B1E27"
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Every 1px line",
+        "canonical": "#242730",
+        "tonalRamp": [
+          "#242730",
+          "#2F3240",
+          "#3E4150"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Headings, names, current tab",
+        "canonical": "#F0F1F5"
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "One-line descriptions, links at rest",
+        "canonical": "#9BA0B8"
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Captions, dates, placeholders (4.6:1 on bg)",
+        "canonical": "#7E828C"
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "The page h1 only. Sentence case, left-aligned on the shared edge." },
-      "section": { "displayName": "Section", "purpose": "Every h2: Today, Your club, Every game, Lists and records." },
-      "title": { "displayName": "Title", "purpose": "A card's name, an answer option, a tab." },
-      "body": { "displayName": "Body", "purpose": "Running prose; 0–2 sentences above the fold." },
-      "caption": { "displayName": "Caption", "purpose": "The one line under a card's name; a section subtitle." },
-      "meta": { "displayName": "Meta", "purpose": "States, edition numbers, checked dates. Tabular numerals." },
-      "label": { "displayName": "Label", "purpose": "Footer column headings and the eyebrow above an h1 — the only uppercase treatment." },
-      "counter": { "displayName": "Counter", "purpose": "JetBrains Mono, only for numbers a player watches change inside a game." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "The page h1 only. Sentence case, left-aligned on the shared edge."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Every h2: Today, Your club, Every game, Lists and records."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "A card's name, an answer option, a tab."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running prose; 0–2 sentences above the fold."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "The one line under a card's name; a section subtitle."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "States, edition numbers, checked dates. Tabular numerals."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Footer column headings and the eyebrow above an h1 — the only uppercase treatment."
+      },
+      "counter": {
+        "displayName": "Counter",
+        "purpose": "JetBrains Mono, only for numbers a player watches change inside a game."
+      }
     },
     "shadows": [
-      { "name": "dropdown", "value": "0 18px 44px rgba(0,0,0,0.55)", "purpose": "The search results panel. The only chrome shadow; depth is otherwise surface tone." }
+      {
+        "name": "dropdown",
+        "value": "0 18px 44px rgba(0,0,0,0.55)",
+        "purpose": "The search results panel. The only chrome shadow; depth is otherwise surface tone."
+      }
     ],
     "motion": [
-      { "name": "ease-standard", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "The app's easing for sheets and state changes." },
-      { "name": "hover", "value": "border-color .15s, background .15s", "purpose": "Card and chip hover. No transforms, no glows." }
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "The app's easing for sheets and state changes."
+      },
+      {
+        "name": "hover",
+        "value": "border-color .15s, background .15s",
+        "purpose": "Card and chip hover. No transforms, no glows."
+      }
     ],
     "breakpoints": [
-      { "name": "phone", "value": "720px" },
-      { "name": "tablet", "value": "1000px" },
-      { "name": "desktop", "value": "1024px" },
-      { "name": "frame", "value": "1200px" }
+      {
+        "name": "phone",
+        "value": "720px"
+      },
+      {
+        "name": "tablet",
+        "value": "1000px"
+      },
+      {
+        "name": "desktop",
+        "value": "1024px"
+      },
+      {
+        "name": "frame",
+        "value": "1200px"
+      }
     ]
   },
   "components": [
-    { "name": "Play button", "kind": "button", "refersTo": "button-play", "description": "Green pill; one per card at most, only on a card that starts a game.", "html": "<a class=\"ds-play\">Play</a>", "css": ".ds-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:#58CC02;color:#06230C;font:800 13.5px/1 Inter,system-ui,sans-serif;text-decoration:none}" },
-    { "name": "Quiet button", "kind": "button", "refersTo": "button-quiet", "description": "Card-fill pill for secondary actions.", "html": "<button class=\"ds-quiet\">Every club on file</button>", "css": ".ds-quiet{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;background:#13151C;border:1px solid #2F3240;color:#F0F1F5;font:700 13.5px/1 Inter,system-ui,sans-serif;cursor:pointer}.ds-quiet:hover{background:#1B1E27}" },
-    { "name": "Card", "kind": "card", "refersTo": "card", "description": "Icon · body · action. Today's puzzles, every game, clubs and lists share it.", "html": "<a class=\"ds-card\"><span class=\"ds-card-ic\"></span><span class=\"ds-card-body\"><span class=\"ds-card-n\">Footle <small>No. 123</small></span><span class=\"ds-card-line\">Guess the surname in six</span></span><span class=\"ds-state\">Not played</span><span class=\"ds-play\">Play</span></a>", "css": ".ds-card{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;min-height:64px;padding:12px 14px;background:#13151C;border:1px solid #242730;border-radius:12px;color:#F0F1F5;text-decoration:none;font-family:Inter,system-ui,sans-serif;transition:border-color .15s,background .15s}.ds-card:hover{border-color:#2F3240;background:#1B1E27}.ds-card-ic{width:38px;height:38px;border-radius:9px;background:#1B1E27;border:1px solid #242730}.ds-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}.ds-card-n{font-size:15px;font-weight:700;letter-spacing:-.01em}.ds-card-n small{font-size:12.5px;font-weight:500;color:#7E828C;margin-left:8px}.ds-card-line{font-size:13.5px;color:#9BA0B8}.ds-state{font-size:12.5px;font-weight:600;color:#7E828C;white-space:nowrap}.ds-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:#58CC02;color:#06230C;font:800 13.5px/1 Inter,system-ui,sans-serif}" },
-    { "name": "Chip", "kind": "chip", "refersTo": "chip", "description": "Leagues and 'All 89 clubs'.", "html": "<a class=\"ds-chip\">Premier League</a>", "css": ".ds-chip{display:inline-flex;align-items:center;min-height:36px;padding:0 13px;border-radius:999px;background:#13151C;border:1px solid #242730;font:600 13.5px/1 Inter,system-ui,sans-serif;color:#9BA0B8;text-decoration:none}.ds-chip:hover{color:#F0F1F5;border-color:#2F3240;background:#1B1E27}" },
-    { "name": "Search field", "kind": "input", "refersTo": "input-search", "description": "The club-and-league finder in the header; results drop from it.", "html": "<div class=\"ds-find\"><input class=\"ds-find-in\" type=\"search\" placeholder=\"Find your club or league\"></div>", "css": ".ds-find{position:relative;max-width:420px}.ds-find-in{width:100%;height:40px;padding:0 12px 0 38px;border-radius:10px;background:#13151C;border:1px solid #242730;color:#F0F1F5;font:400 16px/1 Inter,system-ui,sans-serif;outline:none}.ds-find-in::placeholder{color:#7E828C}.ds-find-in:focus{border-color:#2F3240;background:#1B1E27}" },
-    { "name": "Site header", "kind": "nav", "refersTo": "header", "description": "One row: wordmark · five sections · search · Sign in. No call to action.", "html": "<header class=\"ds-head\"><span class=\"ds-mark\">Ball IQ</span><nav class=\"ds-nav\"><a>Today</a><a>Games</a><a>Clubs</a><a>Quizzes</a><a>Lists</a></nav><input class=\"ds-find-in\" placeholder=\"Find your club or league\"><a class=\"ds-signin\">Sign in</a></header>", "css": ".ds-head{display:flex;align-items:center;gap:22px;height:60px;padding:0 24px;background:#0B0C10;border-bottom:1px solid #242730;font-family:Inter,system-ui,sans-serif;color:#F0F1F5}.ds-mark{font-weight:800;font-size:18px;letter-spacing:-.01em}.ds-nav{display:flex;gap:4px}.ds-nav a{padding:8px 10px;border-radius:8px;font-size:14px;font-weight:600;color:#9BA0B8}.ds-find-in{flex:1;max-width:420px;margin-left:auto;height:40px;padding:0 12px;border-radius:10px;background:#13151C;border:1px solid #242730;color:#F0F1F5;font:400 16px/1 Inter,system-ui,sans-serif}.ds-signin{font-size:14px;font-weight:600;color:#9BA0B8;padding:8px 10px}" },
-    { "name": "App bar", "kind": "nav", "refersTo": "app-bar", "description": "The app's tabs under the site header, browser only.", "html": "<nav class=\"ds-appbar\"><button aria-current=\"page\">Play</button><button>Daily</button><button>Online</button><button>Profile</button><span class=\"ds-sp\"></span><button>Settings</button></nav>", "css": ".ds-appbar{display:flex;align-items:center;gap:2px;height:46px;padding:0 24px;background:#0B0C10;border-bottom:1px solid #242730;font-family:Inter,system-ui,sans-serif}.ds-appbar button{min-height:44px;padding:0 12px;border:0;background:none;color:#9BA0B8;font:600 14px/1 Inter,system-ui,sans-serif;cursor:pointer;border-radius:8px}.ds-appbar button:hover{color:#F0F1F5;background:#13151C}.ds-appbar button[aria-current=page]{color:#F0F1F5;box-shadow:inset 0 -2px 0 #58CC02;border-radius:0}.ds-sp{flex:1}" }
+    {
+      "name": "Play button",
+      "kind": "button",
+      "refersTo": "button-play",
+      "description": "Green pill; one per card at most, only on a card that starts a game.",
+      "html": "<a class=\"ds-play\">Play</a>",
+      "css": ".ds-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:#58CC02;color:#06230C;font:800 13.5px/1 Inter,system-ui,sans-serif;text-decoration:none}"
+    },
+    {
+      "name": "Quiet button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Card-fill pill for secondary actions.",
+      "html": "<button class=\"ds-quiet\">Every club on file</button>",
+      "css": ".ds-quiet{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;background:#13151C;border:1px solid #2F3240;color:#F0F1F5;font:700 13.5px/1 Inter,system-ui,sans-serif;cursor:pointer}.ds-quiet:hover{background:#1B1E27}"
+    },
+    {
+      "name": "Lead card",
+      "kind": "card",
+      "refersTo": ".fd-lead",
+      "description": "The homepage's one larger card: Footle with the player's live board beside a 20px name, one line and a 44px Play. Four equal cards were replaced by this on 2026-09-04 (Today A/B, Alex chose B).",
+      "html": "<a class=\"ds-lead\"><span class=\"ds-lead-body\"><span class=\"ds-n\">Footle <small>No. 124</small></span><span class=\"ds-line\">Guess the surname in six. The same name for everyone, until midnight.</span><span class=\"ds-play\">Play today's Footle</span></span><span class=\"ds-board\"><i class=\"cur\"></i><i></i><i></i><i></i><i></i><i></i><i></i></span></a>",
+      "css": ".ds-lead{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:18px;background:#13151C;border:1px solid #242730;border-radius:14px;color:#F0F1F5;font-family:Inter,system-ui,sans-serif}.ds-lead-body{display:flex;flex-direction:column;gap:6px}.ds-n{font-size:20px;font-weight:700;letter-spacing:-.02em}.ds-n small{font-size:12.5px;font-weight:500;color:#7E828C;margin-left:8px}.ds-line{font-size:14px;color:#9BA0B8;max-width:34ch}.ds-play{display:inline-flex;align-items:center;height:44px;padding:0 22px;border-radius:999px;background:#58CC02;color:#06230C;font-weight:800;font-size:15px;margin-top:8px;width:max-content}.ds-board{display:grid;grid-template-columns:repeat(7,22px);gap:4px}.ds-board i{display:block;width:22px;height:22px;border-radius:5px;background:#1B1E27;border:1px solid rgba(255,255,255,.07)}.ds-board i.cur{border-color:rgba(88,204,2,.6);box-shadow:inset 0 0 0 1px rgba(88,204,2,.35)}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Icon · body · action. Today's puzzles, every game, clubs and lists share it.",
+      "html": "<a class=\"ds-card\"><span class=\"ds-card-ic\"></span><span class=\"ds-card-body\"><span class=\"ds-card-n\">Footle <small>No. 123</small></span><span class=\"ds-card-line\">Guess the surname in six</span></span><span class=\"ds-state\">Not played</span><span class=\"ds-play\">Play</span></a>",
+      "css": ".ds-card{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;min-height:64px;padding:12px 14px;background:#13151C;border:1px solid #242730;border-radius:12px;color:#F0F1F5;text-decoration:none;font-family:Inter,system-ui,sans-serif;transition:border-color .15s,background .15s}.ds-card:hover{border-color:#2F3240;background:#1B1E27}.ds-card-ic{width:38px;height:38px;border-radius:9px;background:#1B1E27;border:1px solid #242730}.ds-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}.ds-card-n{font-size:15px;font-weight:700;letter-spacing:-.01em}.ds-card-n small{font-size:12.5px;font-weight:500;color:#7E828C;margin-left:8px}.ds-card-line{font-size:13.5px;color:#9BA0B8}.ds-state{font-size:12.5px;font-weight:600;color:#7E828C;white-space:nowrap}.ds-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:#58CC02;color:#06230C;font:800 13.5px/1 Inter,system-ui,sans-serif}"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Leagues and 'All 89 clubs'.",
+      "html": "<a class=\"ds-chip\">Premier League</a>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;min-height:36px;padding:0 13px;border-radius:999px;background:#13151C;border:1px solid #242730;font:600 13.5px/1 Inter,system-ui,sans-serif;color:#9BA0B8;text-decoration:none}.ds-chip:hover{color:#F0F1F5;border-color:#2F3240;background:#1B1E27}"
+    },
+    {
+      "name": "Search field",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "The club-and-league finder in the header; results drop from it.",
+      "html": "<div class=\"ds-find\"><input class=\"ds-find-in\" type=\"search\" placeholder=\"Find your club or league\"></div>",
+      "css": ".ds-find{position:relative;max-width:420px}.ds-find-in{width:100%;height:40px;padding:0 12px 0 38px;border-radius:10px;background:#13151C;border:1px solid #242730;color:#F0F1F5;font:400 16px/1 Inter,system-ui,sans-serif;outline:none}.ds-find-in::placeholder{color:#7E828C}.ds-find-in:focus{border-color:#2F3240;background:#1B1E27}"
+    },
+    {
+      "name": "Site header",
+      "kind": "nav",
+      "refersTo": "header",
+      "description": "One row: wordmark · five sections · search · Sign in. No call to action.",
+      "html": "<header class=\"ds-head\"><span class=\"ds-mark\">Ball IQ</span><nav class=\"ds-nav\"><a>Today</a><a>Games</a><a>Clubs</a><a>Quizzes</a><a>Lists</a></nav><input class=\"ds-find-in\" placeholder=\"Find your club or league\"><a class=\"ds-signin\">Sign in</a></header>",
+      "css": ".ds-head{display:flex;align-items:center;gap:22px;height:60px;padding:0 24px;background:#0B0C10;border-bottom:1px solid #242730;font-family:Inter,system-ui,sans-serif;color:#F0F1F5}.ds-mark{font-weight:800;font-size:18px;letter-spacing:-.01em}.ds-nav{display:flex;gap:4px}.ds-nav a{padding:8px 10px;border-radius:8px;font-size:14px;font-weight:600;color:#9BA0B8}.ds-find-in{flex:1;max-width:420px;margin-left:auto;height:40px;padding:0 12px;border-radius:10px;background:#13151C;border:1px solid #242730;color:#F0F1F5;font:400 16px/1 Inter,system-ui,sans-serif}.ds-signin{font-size:14px;font-weight:600;color:#9BA0B8;padding:8px 10px}"
+    },
+    {
+      "name": "App bar",
+      "kind": "nav",
+      "refersTo": "app-bar",
+      "description": "The app's tabs under the site header, browser only.",
+      "html": "<nav class=\"ds-appbar\"><button aria-current=\"page\">Play</button><button>Daily</button><button>Online</button><button>Profile</button><span class=\"ds-sp\"></span><button>Settings</button></nav>",
+      "css": ".ds-appbar{display:flex;align-items:center;gap:2px;height:46px;padding:0 24px;background:#0B0C10;border-bottom:1px solid #242730;font-family:Inter,system-ui,sans-serif}.ds-appbar button{min-height:44px;padding:0 12px;border:0;background:none;color:#9BA0B8;font:600 14px/1 Inter,system-ui,sans-serif;cursor:pointer;border-radius:8px}.ds-appbar button:hover{color:#F0F1F5;background:#13151C}.ds-appbar button[aria-current=page]{color:#F0F1F5;box-shadow:inset 0 -2px 0 #58CC02;border-radius:0}.ds-sp{flex:1}"
+    }
   ],
   "narrative": {
     "northStar": "The Fixture List",
@@ -61,11 +225,31 @@
       "The browser owns the scroll; no sidebars or floating tab bars on the web."
     ],
     "rules": [
-      { "name": "The One Accent Rule", "body": "Green means press this to play, or you got it right. More than one green control per screen means the page has stopped ranking its own actions.", "section": "colors" },
-      { "name": "Grey-on-grey has a floor", "body": "Nothing readable below 4.5:1; nothing user-facing under 12px.", "section": "colors" },
-      { "name": "Sentence case everywhere", "body": "Uppercase exists only in the 12px label. The condensed all-caps headline is the retired system's signature.", "section": "typography" },
-      { "name": "One left edge", "body": "Headings, prose, cards and tables share the 1200px frame's left edge; a narrow measure is never centred inside it.", "section": "layout" },
-      { "name": "Depth is tone, not shadow", "body": "bg → card → card-inset with a 1px border on anything pressable; the search dropdown is the only chrome shadow.", "section": "elevation" }
+      {
+        "name": "The One Accent Rule",
+        "body": "Green means press this to play, or you got it right. More than one green control per screen means the page has stopped ranking its own actions.",
+        "section": "colors"
+      },
+      {
+        "name": "Grey-on-grey has a floor",
+        "body": "Nothing readable below 4.5:1; nothing user-facing under 12px.",
+        "section": "colors"
+      },
+      {
+        "name": "Sentence case everywhere",
+        "body": "Uppercase exists only in the 12px label. The condensed all-caps headline is the retired system's signature.",
+        "section": "typography"
+      },
+      {
+        "name": "One left edge",
+        "body": "Headings, prose, cards and tables share the 1200px frame's left edge; a narrow measure is never centred inside it.",
+        "section": "layout"
+      },
+      {
+        "name": "Depth is tone, not shadow",
+        "body": "bg → card → card-inset with a 1px border on anything pressable; the search dropdown is the only chrome shadow.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Print the date and today's edition numbers on the homepage, and a checked date on every list.",

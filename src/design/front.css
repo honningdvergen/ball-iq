@@ -80,7 +80,27 @@
 .fd-card-line{font-size:13.5px;color:var(--t2)}
 .fd-tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border:1px solid var(--bd2);border-radius:999px;padding:2px 7px}
 .fd-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:var(--grn);color:var(--grn-ink);font-size:13.5px;font-weight:800}
-.fd-today{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+/* Today: Footle leads with its live board (Today A/B 2026-09-04, Alex: B);
+   the other three are compact rows beside it. Phones stack: lead, the
+   practice toggle, then the rows. */
+.fd-today{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-areas:"lead rest" "alt rest";gap:12px;align-items:start}
+.fd-lead{grid-area:lead;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:18px;background:var(--s1);border:1px solid var(--bd);border-radius:14px;transition:border-color .15s,background .15s}
+.fd-lead:hover{border-color:var(--bd2);background:var(--s2)}
+.fd-lead-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fd-lead .fd-card-n{font-size:20px;letter-spacing:-.02em}
+.fd-lead .fd-card-line{font-size:14px;max-width:34ch}
+.fd-lead-cta{margin-top:8px}
+.fd-play-lg{height:44px;padding:0 22px;font-size:15px}
+.fd-board{display:grid;grid-template-columns:repeat(var(--len,7),22px);gap:4px}
+.fd-board i{display:block;width:22px;height:22px;border-radius:5px;background:var(--s2);border:1px solid rgba(255,255,255,.07)}
+.fd-board i[data-m="cur"]{border-color:rgba(88,204,2,.6);box-shadow:inset 0 0 0 1px rgba(88,204,2,.35)}
+.fd-board i[data-m="green"]{background:var(--grn);border-color:var(--grn)}
+.fd-board i[data-m="yellow"]{background:#FFC107;border-color:#FFC107}
+.fd-board i[data-m="grey"]{background:var(--bd2);border-color:var(--bd2)}
+.fd-lead-alt{grid-area:alt;justify-self:start;min-height:36px;background:none;border:0;padding:4px 0;font:inherit;font-size:13.5px;color:var(--t2);cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:3px}
+.fd-lead-alt:hover{color:var(--t1)}
+.fd-today-rest{grid-area:rest;display:grid;gap:8px;align-content:start}
+.fd-today-rest .fd-daily{min-height:56px;padding:10px 14px}
 .fd-daily{grid-template-columns:auto 1fr auto auto}
 .fd-state{font-size:12.5px;font-weight:600;color:var(--t3);white-space:nowrap}
 .fd-state.is-open{color:#FFC107}
@@ -182,3 +202,12 @@
 .fd .fd-practice .fb-real:not(.fb-primary){display:none}
 @media (min-width:900px){.fd .fd-practice .fb-kb{display:none}}
 @media (max-width:720px){.fd .fd-practice .fb-in{padding:18px 14px 20px}}
+
+/* Today on phones: the lead stacks its board under the text; tiles size from
+   the column instead of a fixed 22px so an 11-letter name still fits. */
+@media (max-width:720px){
+  .fd-today{grid-template-columns:1fr;grid-template-areas:"lead" "alt" "rest";gap:10px}
+  .fd-lead{grid-template-columns:1fr;gap:14px;padding:16px}
+  .fd-board{grid-template-columns:repeat(var(--len,7),minmax(0,1fr));max-width:300px}
+  .fd-board i{width:auto;height:auto;aspect-ratio:1}
+}

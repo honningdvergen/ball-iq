@@ -221,7 +221,7 @@ One frame: `max-width: 1200px`, padding `clamp(20px, 4vw, 44px)`. The site heade
 
 **Section rhythm:** 26px above a section, a 14px gap between its heading row and its content, 8–10px gaps between cards. Sections are separated by air, not by rules or background bands.
 
-**Grids:** today's four in two columns; every game in three; clubs in four; lists in two. All collapse to one column under 720px, clubs to two.
+**Grids:** today's four as a lead card (Footle, with its live board) beside three compact rows; every game in three columns; clubs in four; lists in two. All collapse to one column under 720px, clubs to two; the lead stacks its board under its text.
 
 **The browser owns the scroll.** No inner-scrolling shells, no fixed sidebars, no floating tab bars on the web. Native apps and installed PWAs keep their sidebar and tab bar; `body.biq-web` is the switch.
 
@@ -241,6 +241,7 @@ Radii come from a five-step scale and every element sits on one step: 8px for sm
 
 - **Play button** — green fill, green-ink text, pill, 36px in a card and 44px standalone, weight 700–800. One per card at most, and only on a card that starts a game.
 - **Quiet button** — `card` fill, `border-strong` outline, pill, 40px: "Every club on file", "Search for one".
+- **Lead card** — the one card on the homepage that is bigger than the others: Footle, `card` fill, 14px radius, 18px padding, a 20px name, one line, a 44px Play, and the player's real board (six rows of 22px tiles, graded from the same storage the game writes; a newcomer sees empty tiles and a ringed first). Chosen over four equal cards on 2026-09-04 because a board is the one game that is a picture. A text link under it opens the practice board on request — the page has one Footle door, not two.
 - **Card** — `card` fill, 1px `border`, 12px radius, 12–14px padding, grid of icon · body · action. Hover lifts the fill to `card-inset` and the border to `border-strong`. Used for today's puzzles, every game, clubs and lists.
 - **Chip** — `card` fill, pill, 36px, caption-size text in `text-secondary`: leagues, "All 89 clubs".
 - **Search field** — `card` fill, 10px radius, 40px, a 20px search icon at 12px, 16px input text (the iOS zoom floor). Results drop from the field in a `card` panel with 44px rows: name · context · a green "Play".

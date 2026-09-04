@@ -14,6 +14,14 @@ clamp padding — yesterday's shell, fixed). Lesson: when tokens exist but value
 change" is a MAPPING across the repo, not an edit to tokens.js. Prod sweep (8 shots, 0 errors, bg live) found a
 SECOND, older 3px jiggle on the Footle screen: the keys' ::after touch-slop poked past the viewport on the
 outermost keys — fixed (first/last key slop stops at the edge).
+**✅ Brick 2 (same morning): Today gets a front foot.** A/B (https://claude.ai/code/artifact/5a99198c-7b15-496b-acb0-7cadd06b2f03):
+A four equal cards · B Footle leads with a live board · C one list card with a ring. Alex: B. Shipped: .fd-lead
+(20px name, one line, 44px Play, the player's REAL board graded from biq_wordle_<date> — empty + ringed for a
+newcomer), three compact rows beside it (under it on phones); the practice band is no longer its own section —
+it opens from a text link under the lead (one Footle door, not two). DESIGN.md Components + the sidecar
+refreshed (generatedAt bumped, "Lead card" entry). **Opens the next thesis brick:** make the lead board playable
+IN PLACE — today's Footle on the website itself, the practice engine pointed at today's puzzle with the state the
+app reads.
 **Next (design):** composition, not colour — the Today cards all weigh the same (nothing says "this one
 first"); the band has no air above the grid; generic outline icons. One a day.
 

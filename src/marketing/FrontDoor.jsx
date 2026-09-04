@@ -31,7 +31,9 @@ import { LISTS_INDEX } from './listsIndex.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
 import { getTrailNumber, loadTrailDay } from '../lib/trail.js';
 import { mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from '../lib/mysteryPlayer.js';
-import { readWordleTodayStatus } from '../lib/wordleStatus.js';
+import { readWordleTodayStatus, getWordleDateKey } from '../lib/wordleStatus.js';
+import { getWordleAnswer, gradeWordleGuess } from '../lib/wordle.js';
+import { FP_NUMBER } from './footlePractice.js';
 import { keyForDate, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
 import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
@@ -121,6 +123,35 @@ function readToday() {
   return out;
 }
 
+// The lead card's board is the player's REAL board — the same guesses the game
+// stores under biq_wordle_<date>, graded the same way. A newcomer sees six
+// empty rows and a ringed first tile; a returning player sees their colours.
+// It is a picture of today, which is why Footle leads the block: a quiz card
+// cannot be a picture, a board can (2026-09-04, Today A/B — Alex chose B).
+const BOARD_ROWS = 6;
+function readFootleBoard(today) {
+  let answer = '';
+  try { answer = getWordleAnswer(today) || ''; } catch {}
+  let guesses = [];
+  try {
+    const raw = localStorage.getItem(`biq_wordle_${getWordleDateKey(today)}`);
+    const p = raw ? JSON.parse(raw) : null;
+    if (p && Array.isArray(p.guesses)) guesses = p.guesses.filter((g) => typeof g === 'string');
+  } catch {}
+  const len = answer.length || 6;
+  const rows = [];
+  for (let r = 0; r < BOARD_ROWS; r++) {
+    const g = guesses[r];
+    if (g && answer) {
+      const marks = gradeWordleGuess(g.toUpperCase(), answer);
+      rows.push(Array.from({ length: len }, (_, i) => marks[i] || 'grey'));
+    } else {
+      rows.push(Array.from({ length: len }, (_, i) => (r === guesses.length && i === 0 ? 'cur' : '')));
+    }
+  }
+  return { rows, len };
+}
+
 function useCountdown() {
   const [ms, setMs] = useState(() => msToNextLocalMidnight());
   useEffect(() => { const t = setInterval(() => setMs(msToNextLocalMidnight()), 1000); return () => clearInterval(t); }, []);
@@ -130,7 +161,13 @@ function useCountdown() {
 export default function FrontDoor() {
   const today = useMemo(() => new Date(), []);
   const [state, setState] = useState(() => readToday());
-  useEffect(() => { setState(readToday()); }, []);
+  const [board, setBoard] = useState(() => readFootleBoard(today));
+  useEffect(() => { setState(readToday()); setBoard(readFootleBoard(today)); }, [today]);
+  // The practice board (an archive puzzle, nothing about today's given away)
+  // used to be its own section under Today — a second Footle door on one
+  // page. It now opens from the lead card, on request.
+  const [practice, setPractice] = useState(false);
+  const togglePractice = () => { setPractice((p) => !p); go(practice ? 'fd-practice-close' : 'fd-practice-open'); };
   const countdown = useCountdown();
   const [allClubs, setAllClubs] = useState(false);
 
@@ -179,24 +216,43 @@ export default function FrontDoor() {
             <span className="fd-progress"><b>{playedCount} of {dailies.length}</b> played · new ones in <span className="fd-tnum">{countdown}</span></span>
           </div>
           <div className="fd-today">
-            {dailies.map((d) => (
-              <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)}>
-                <span className="fd-card-ic"><Icon k={d.k} /></span>
-                <span className="fd-card-body">
-                  <span className="fd-card-n">{d.n}{d.no ? <span className="fd-card-no"> No. {d.no}</span> : null}</span>
-                  <span className="fd-card-line">{d.line}</span>
+            {(() => { const lead = dailies[0]; const line = lead.done ? (state.footleWon ? 'Solved. The next name drops at midnight.' : 'Played. The next name drops at midnight.') : lead.st === 'open' ? 'In progress — pick up where you left off.' : 'Guess the surname in six. The same name for everyone, until midnight.'; return (
+              <a className={`fd-lead${lead.done ? ' is-done' : ''}`} href={lead.href} onClick={() => go('fd-today-footle', lead.href)}>
+                <span className="fd-lead-body">
+                  <span className="fd-card-n">{lead.n}<span className="fd-card-no"> No. {lead.no}</span></span>
+                  <span className="fd-card-line">{line}</span>
+                  <span className="fd-lead-cta"><span className="fd-play fd-play-lg">{lead.done ? 'See your board' : lead.st === 'open' ? 'Continue' : "Play today's Footle"}</span></span>
                 </span>
-                <span className={`fd-state${d.done ? ' is-done' : d.st === 'open' ? ' is-open' : ''}`}>{d.done ? d.doneText : d.st === 'open' ? 'In progress' : 'Not played'}</span>
-                <span className="fd-play">{d.done ? 'Review' : d.st === 'open' ? 'Continue' : 'Play'}</span>
+                <span className="fd-board" aria-hidden="true" style={{ '--len': board.len }}>
+                  {board.rows.map((row, r) => row.map((m, c) => <i key={`${r}-${c}`} data-m={m || undefined} />))}
+                </span>
               </a>
-            ))}
+            ); })()}
+            <button type="button" className="fd-lead-alt" aria-expanded={practice} aria-controls="fd-practice" onClick={togglePractice}>
+              {practice ? 'Hide the practice board' : `Or practise on No. ${FP_NUMBER} from the archive — nothing about today's is given away`}
+            </button>
+            <div className="fd-today-rest">
+              {dailies.slice(1).map((d) => (
+                <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)}>
+                  <span className="fd-card-ic"><Icon k={d.k} /></span>
+                  <span className="fd-card-body">
+                    <span className="fd-card-n">{d.n}{d.no ? <span className="fd-card-no"> No. {d.no}</span> : null}</span>
+                    <span className="fd-card-line">{d.line}</span>
+                  </span>
+                  <span className={`fd-state${d.done ? ' is-done' : d.st === 'open' ? ' is-open' : ''}`}>{d.done ? d.doneText : d.st === 'open' ? 'In progress' : 'Not played'}</span>
+                  <span className="fd-play">{d.done ? 'Review' : d.st === 'open' ? 'Continue' : 'Play'}</span>
+                </a>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* 3 · one game playable in place: Footle practice, from the archive */}
-        <section className="fd-sec fd-practice" aria-label="Practice Footle">
-          <FootleBand />
-        </section>
+        {/* 3 · the practice board, on request from the lead card */}
+        {practice && (
+          <section className="fd-sec fd-practice" id="fd-practice" aria-label="Practice Footle">
+            <FootleBand />
+          </section>
+        )}
 
         {/* 4 · find your club, find your league */}
         <section className="fd-sec" id="clubs" aria-labelledby="fd-clubs-h">
