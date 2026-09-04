@@ -73,6 +73,38 @@ ${finderScript(b)}`;
 }
 
 /** The sitemap footer: games, four leagues of clubs, lists, discover, the company. */
+// ⚠️ NOT ONE STORE CLICK HAD EVER BEEN MEASURED before 2026-09-04. Every badge
+// on every page was an un-instrumented outbound link, so when Alex said the
+// site felt like a weaker funnel to the app than before, the surface area was
+// provably smaller — the header "Get the app" button went site-wide with this
+// shell on 09-03, and the club-quiz finish screen's store link became the
+// Footle door — but nobody could say what either was worth.
+//
+// It lives HERE rather than in gen-seo's footer() because the answer pages are
+// SERVED (api/footle.js, api/daily-answers.js) and never call that function:
+// putting it there covered 341 static pages and missed the newest surface,
+// which is exactly the one with no app door but the footer line.
+//
+// Same transport the club-quiz engine uses from a static page: one delegated
+// listener, keepalive POST, failure swallowed. `where` separates the app band
+// from the mini badges from the footer; `page` separates club pages from lists
+// from answers, so the read says WHICH surface sends people to the app.
+const SB_URL = 'https://blcisypmngimqkwxrrdm.supabase.co';
+const SB_KEY = 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR';
+function storeClickScript() {
+  return `<script>(function(){try{
+var P=location.pathname,T=P.indexOf('/quiz/')===0?'club':P.indexOf('/lists/')===0?'list':P.indexOf('/football-wordle/')===0?'footle-answer':P.indexOf('/daily-football-quiz/')===0?'daily-answer':P==='/quizzes/'?'directory':P==='/'?'home':'other';
+document.addEventListener('click',function(e){
+var a=e.target&&e.target.closest&&e.target.closest('a[href*="apps.apple.com"],a[href*="play.google.com"]');
+if(!a)return;
+var meta={store:a.href.indexOf('apps.apple.com')>-1?'ios':'android',page:T,
+where:/mini/.test(a.className)?'mini':a.closest('.appband')?'appband':a.closest('.fd-foot,footer')?'footer':'other'};
+fetch('${SB_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
+headers:{'content-type':'application/json','apikey':'${SB_KEY}','authorization':'Bearer ${SB_KEY}'},
+body:JSON.stringify({p_event:'store-out',p_meta:meta,p_visitor:null})}).catch(function(){});
+},true);}catch(e){}})();</script>`;
+}
+
 export function shellFooter(site) {
   const b = site.base;
   const byLeague = new Map();
@@ -90,7 +122,7 @@ ${col('Discover', DISCOVER.map(([n, h]) => [n, b + h]))}
 <div class="fd-foot-col"><h3>Ball IQ</h3><a href="${b}/about/">About</a><a href="${b}/contact/">Contact</a>${MORE.map(([n, h]) => `<a href="${b + h}">${esc(n)}</a>`).join('')}<a href="${b}/privacy.html">Privacy</a><a href="${b}/terms/">Terms</a><span class="fd-foot-app">Also on <a href="${site.appStore}" rel="noopener">iOS</a> and <a href="${site.playStore}" rel="noopener">Android</a></span></div>
 </div>
 <div class="fd-w fd-foot-line">An independent football quiz, made by one person. Not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club; names are used to identify the subject of each quiz.</div>
-</footer>`;
+</footer>${storeClickScript()}`;
 }
 
 // Header + footer CSS. Same values as src/design/front.css, un-scoped. The
