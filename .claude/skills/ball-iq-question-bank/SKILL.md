@@ -87,6 +87,38 @@ on any new drastic case. **When generating questions, write the four options
 to comparable length** — if the true answer needs a clause of detail, give
 every distractor a clause of (wrong) detail too.
 
+## When the qualifier leaves fewer than four candidates (2026-09-04)
+
+Two generation agents working on different clubs, in the same hour, logged the
+same complaint independently: *"distractors must satisfy the stem's qualifier
+while being verifiably wrong"* is **unsatisfiable** when the qualifier names a
+set with fewer than four members — "the goalkeeper who won two FA Cups here",
+"the club Blackburn beat in their 1995-96 Champions League group". There are
+not three other members to be wrong with, so the writer either invents one,
+reaches outside the qualifier (and a knowledgeable player eliminates it for
+free), or gives up on the question.
+
+Two independent hits on the same rule is a signal, not noise. The rule is
+really two tests wearing one sentence, and they apply at different widths:
+
+1. **Category plausibility** — every option must be the same KIND of thing the
+   stem asks for, at the widest honest reading. Four clubs, four goalkeepers,
+   four seasons. This one is never negotiable.
+2. **Verifiable falsity** — every wrong option must be checkably wrong for the
+   specific event. This one is what the narrow qualifier breaks.
+
+**The fix is to widen the stem, not to invent an option.** "Which club did they
+beat in the 1995-96 group stage?" leaves three candidates; "which of these
+1995-96 Champions League group-stage clubs did they beat 4-1 at Ewood Park?"
+leaves the whole competition to draw from and every distractor is genuine and
+wrong. If widening cannot be done honestly, **drop the question** — a
+fabricated fourth option is the exact defect the bar exists to stop, and it is
+worse than a smaller pack.
+
+⚠️ Widening changes what the options are, so re-key the answer **by its string,
+not by its old index**. Swapping options while keeping `a` numeric is how an
+off-by-one ships a fluent, confident, wrong answer.
+
 ## Standards
 
 - **Hints:** the SEO generator throws rather than emit a page for any category/club with fewer than `MIN_HINTS` (15) hint-bearing MCQs. Adding a club without hints breaks the build, by design.
