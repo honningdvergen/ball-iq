@@ -57,6 +57,11 @@ typography:
     fontSize: "12px"
     fontWeight: 700
     lineHeight: 1.4
+  input:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "16px"
+    fontWeight: 600
+    lineHeight: 1.4
   wordmark:
     fontFamily: "Inter, system-ui, sans-serif"
     fontSize: "18px"
@@ -215,6 +220,7 @@ A club's colour comes from its pack (`CLUB_PACKS` in `src/App.jsx`, resolved thr
 - **Caption** (400, 13.5px): the one line under a card's name; a section's subtitle.
 - **Meta** (600, 12.5px): states ("Not played", "3 of 7"), edition numbers, "checked 20 July".
 - **Label** (700, 12px, 0.06em, uppercase): footer column headings and the eyebrow above an `h1`. The only uppercase treatment in the system, and it is always a field label, never a slogan.
+- **Input** (600, 16px): text a person types — the club finder and every field after it. Not a taste decision: iOS zooms the page on focus for anything under 16px, so this step exists to stop the viewport jumping, and it may not be tuned down to fit the ramp.
 - **Lead** (700, 20px, −0.02em): the name on the homepage's one lead card. Bigger than a Title so the card leads, smaller than the Section above it so it does not compete with "Today".
 - **Wordmark** (800, 18px, −0.01em): "Ball IQ" beside the crest in the site header, and nowhere else. The one size that is neither Title nor Section, because the mark must read at a glance next to a 28px crest without competing with an `h1`.
 

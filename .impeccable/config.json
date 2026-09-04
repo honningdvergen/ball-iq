@@ -1,0 +1,16 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [
+      "/private/tmp/claude-501/-Users-alexanderbrynolsen-ball-iq/7c79f3a1-9008-4410-9f7a-2a99269af58f/scratchpad/report-template.html"
+    ],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-09-04T12:17:46.482Z",
+        "reason": "Inter is the documented Ball IQ face (DESIGN.md L207) — one family for everything a person reads"
+      }
+    ]
+  }
+}
