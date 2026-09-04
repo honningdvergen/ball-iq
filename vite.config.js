@@ -146,8 +146,11 @@ function preloadGameRootPlugin() {
         'html.native-app #biq-static-head{display:none}' +
         '@media (display-mode: standalone){#biq-static-head{display:none}}</style>' +
         `<div id="biq-static-head">${shellHeader(SITE, '')}</div>` +
-        // iOS home-screen apps report navigator.standalone, not the media query.
-        "<script>try{if(navigator.standalone===true){var h=document.getElementById('biq-static-head');if(h)h.remove()}}catch(e){}</script>"
+        // Removed, not just hidden, wherever the app has its own chrome: the
+        // native shell (cap sync ships this same index.html), and iOS
+        // home-screen apps, which report navigator.standalone rather than the
+        // display-mode media query.
+        "<script>try{if(navigator.standalone===true||location.protocol==='capacitor:'||document.documentElement.classList.contains('native-app')){var h=document.getElementById('biq-static-head');if(h)h.remove();var c=document.getElementById('biq-static-head-css');if(c)c.remove()}}catch(e){}</script>"
       if (!html.includes('<div id="root"')) throw new Error('[preload-gameroot] no <div id="root"> in dist/index.html')
       html = html.replace('<div id="root"', staticHead + '\n    <div id="root"')
       writeFileSync(indexHtml, html)
