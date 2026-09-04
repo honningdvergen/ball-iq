@@ -22,6 +22,39 @@ it opens from a text link under the lead (one Footle door, not two). DESIGN.md C
 refreshed (generatedAt bumped, "Lead card" entry). **Opens the next thesis brick:** make the lead board playable
 IN PLACE — today's Footle on the website itself, the practice engine pointed at today's puzzle with the state the
 app reads.
+## 2026-09-04 (13:00) — THE AUDIT: weaknesses, upgrades, cleanup → the next five
+
+**Found and fixed on the spot:** CI had been RED on main since f043131 (the share-stub in
+ghost-name-capture.spec.js read only `text`; the link now travels as `url`) — fixed 9c1ff33. Two stale
+git worktrees (285 MB, detached at 28 Aug, no changes) sat INSIDE src/ — removed + pruned.
+**Codebase:** npm audit clean (0). No unimported src modules. Bundle: GameRoot 182 KB gz + index 46 +
+CSS 27; front door 9 KB. App.jsx 14,623 lines, OnlineMultiplayer 3,148 — the long-term debt.
+**Perf (PSI mobile, lab / field):** /quiz/arsenal/ 82 (TBT 700ms — the engine pre-renders all 26 questions'
+260 buttons) · / 74 (LCP 4.5s) · /play?game=footle 65 (LCP 6.2s, 638 KB, 125 KB unused JS). Field is
+FAST at the origin level; the lab number matters because the game door is where 1,045 first games/month
+land and 5% finish.
+**Product signals:** 94 question reports / 70 questions in 30d — 58 reports on 39 questions with NO review
+row, 17 of them Footle answers · 49 of the 125 "zero-game" accounts DID play Footle/Daily 7 —
+profiles.games_played ignores those modes · 27 of 68 lobbies (7d) never started · notif prompt: shown
+43, yes 4, no 33 · native 1.7.2 cut 09-01, 84 commits since (palette, nudge, guest sheet all web-only
+for native users).
+**Ask Alex:** `_tmp-results.mjs`, `assets/social/*.png` (untracked, his), and the pre-session edits to
+`.audit/critique-2026-09-02/watcher.log` + `scripts/forge-curate.mjs` — keep, commit or drop?
+
+**THE NEXT FIVE:**
+1. The game door's boot — LCP 6.2s lab on the destination of 1,045 first games/month (5% finish): split
+   what a single game needs from GameRoot, preload by door, a first-paint skeleton. Target lab LCP <3s.
+   Pair with the 09-11 read of first-game-started by entry.
+2. Question-report triage — 39 reported questions with no review row (players ≈100% precise), and what the
+   17 Footle-answer reports say about the pool.
+3. Native 1.7.3 cut (Alex uploads): vc48 / build 112, cap sync from a clean dist, device test.
+4. Lobbies that never start (27/68 in 7d): 19 had the host ALONE, 8 had two people waiting and still
+   never started — so both halves: nobody came (the invite), and two came and nobody pressed start (the
+   lobby). Fix the wait in both.
+5. Two small honest ones: games_played counts Footle + Daily 7 (Profile shows the wrong number); the
+   notification ask fires after a solved Footle with a Footle-specific line (4/43 today).
+**Rolling:** App.jsx modularisation, one screen per day, e2e as the net.
+
 ## 2026-09-04 (day 3, 11:30) — THE AGENDA, FROM THE NUMBERS (Alex: "do these five, in order")
 
 **The read that reframed the day:** the front door had **8 visitors** in its first 36h (fd-view; GSC agrees:
