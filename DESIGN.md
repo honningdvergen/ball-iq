@@ -17,6 +17,7 @@ colors:
   green-soft: "#8AE042"
   amber: "#FFC107"
   wrong: "#FF4747"
+  hairline: "rgba(255,255,255,.07)"
 typography:
   display:
     fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"

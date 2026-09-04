@@ -1,0 +1,99 @@
+<en-US>
+A fresh look: deeper surfaces, and Footle tiles filled in the game's own green and amber.
+
+Your results stay on screen — the sign-in prompt now waits until you leave, and "Continue as guest" is a proper button.
+
+Find your club straight from Home.
+
+Sharing a Daily 7 result now sends the challenge link properly. Plus small fixes.
+</en-US>
+<ar>
+مظهر جديد: أسطح أعمق، ومربعات Footle مملوءة بالأخضر والكهرماني الخاصين باللعبة.
+
+تبقى نتائجك على الشاشة: طلب تسجيل الدخول ينتظر الآن حتى تغادر، و"المتابعة كضيف" أصبح زرًا حقيقيًا.
+
+اعثر على ناديك مباشرة من الصفحة الرئيسية.
+
+عند مشاركة نتيجة Daily 7، يُرسَل رابط التحدي الآن بشكل صحيح. بالإضافة إلى إصلاحات صغيرة.
+</ar>
+<de-DE>
+Ein frischer Look: tiefere Flächen und Footle-Kacheln, gefüllt im Grün und Bernstein des Spiels.
+
+Deine Ergebnisse bleiben auf dem Bildschirm – die Anmeldeaufforderung wartet jetzt, bis du gehst, und „Als Gast fortfahren“ ist ein richtiger Button.
+
+Finde deinen Verein direkt von der Startseite aus.
+
+Beim Teilen eines Daily-7-Ergebnisses wird der Herausforderungslink jetzt richtig gesendet. Dazu kleine Korrekturen.
+</de-DE>
+<es-419>
+Un aspecto renovado: superficies más profundas y las casillas de Footle rellenas con el verde y el ámbar del juego.
+
+Tus resultados se quedan en pantalla: el aviso para iniciar sesión ahora espera a que salgas, y "Continuar como invitado" es un botón de verdad.
+
+Encuentra tu club directamente desde Inicio.
+
+Al compartir un resultado del Daily 7, el enlace del reto ahora se envía correctamente. Además, pequeñas correcciones.
+</es-419>
+<es-ES>
+Un aspecto renovado: superficies más profundas y las casillas de Footle rellenas con el verde y el ámbar del juego.
+
+Tus resultados se quedan en pantalla: el aviso para iniciar sesión ahora espera a que salgas, y "Continuar como invitado" es un botón de verdad.
+
+Encuentra tu club directamente desde Inicio.
+
+Al compartir un resultado del Daily 7, el enlace del reto ahora se envía correctamente. Además, pequeñas correcciones.
+</es-ES>
+<fr-FR>
+Un nouveau look : des surfaces plus profondes et des cases Footle remplies avec le vert et l'ambre du jeu.
+
+Vos résultats restent à l'écran : l'invitation à se connecter attend maintenant votre départ, et « Continuer en invité » est un vrai bouton.
+
+Trouvez votre club directement depuis l'accueil.
+
+Le partage d'un résultat du Daily 7 envoie maintenant correctement le lien du défi. Et de petites corrections.
+</fr-FR>
+<id>
+Tampilan baru: permukaan yang lebih dalam dan kotak Footle yang terisi dengan hijau dan amber khas gim.
+
+Hasilmu tetap di layar: ajakan masuk kini menunggu sampai kamu keluar, dan "Lanjutkan sebagai tamu" adalah tombol sungguhan.
+
+Temukan klubmu langsung dari Beranda.
+
+Saat membagikan hasil Daily 7, tautan tantangan kini terkirim dengan benar. Plus perbaikan kecil.
+</id>
+<it-IT>
+Un nuovo look: superfici più profonde e caselle di Footle riempite con il verde e l'ambra del gioco.
+
+I tuoi risultati restano sullo schermo: l'invito ad accedere ora aspetta che tu esca, e "Continua come ospite" è un vero pulsante.
+
+Trova il tuo club direttamente dalla Home.
+
+Condividendo un risultato del Daily 7, il link della sfida ora viene inviato correttamente. E piccole correzioni.
+</it-IT>
+<pt-BR>
+Um visual renovado: superfícies mais profundas e as casas do Footle preenchidas com o verde e o âmbar do jogo.
+
+Seus resultados ficam na tela: o aviso de login agora espera você sair, e "Continuar como convidado" é um botão de verdade.
+
+Encontre seu clube direto da tela inicial.
+
+Ao compartilhar um resultado do Daily 7, o link do desafio agora é enviado corretamente. E pequenas correções.
+</pt-BR>
+<pt-PT>
+Um visual renovado: superfícies mais profundas e as casas do Footle preenchidas com o verde e o âmbar do jogo.
+
+Os teus resultados ficam no ecrã: o aviso de início de sessão espera agora que saias, e "Continuar como convidado" é um botão a sério.
+
+Encontra o teu clube diretamente a partir do Início.
+
+Ao partilhar um resultado do Daily 7, a ligação do desafio é agora enviada corretamente. E pequenas correções.
+</pt-PT>
+<tr-TR>
+Yenilenen görünüm: daha derin yüzeyler ve oyunun kendi yeşili ile kehribarıyla dolu Footle kareleri.
+
+Sonuçların ekranda kalır: giriş uyarısı artık sen çıkana kadar bekler ve "Misafir olarak devam et" gerçek bir düğme.
+
+Kulübünü doğrudan Ana Sayfa'dan bul.
+
+Daily 7 sonucunu paylaşınca meydan okuma bağlantısı artık düzgün gönderiliyor. Ayrıca küçük düzeltmeler.
+</tr-TR>
