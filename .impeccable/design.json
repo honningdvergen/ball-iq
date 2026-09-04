@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-04T08:40:39Z",
+  "generatedAt": "2026-09-04T13:50:09Z",
   "title": "Design System: Ball IQ — The Fixture List",
   "extensions": {
     "colorMeta": {
@@ -104,6 +104,18 @@
       "label": {
         "displayName": "Label",
         "purpose": "Footer column headings and the eyebrow above an h1 — the only uppercase treatment."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "The name on the homepage's one lead card — bigger than a Title so the card leads, smaller than the Section above it."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "\"Ball IQ\" beside the crest in the site header, and nowhere else."
+      },
+      "input": {
+        "displayName": "Input",
+        "purpose": "Text a person types — the club finder and every field after it. 16px is the iOS zoom floor, not a taste decision, and must not be tuned down to fit the ramp."
       },
       "counter": {
         "displayName": "Counter",
