@@ -97,7 +97,19 @@ four defect classes that per-question verifiers structurally CANNOT see:
   is no row there is nothing to map FROM, and aliasing points another club's row
   at this club's quiz. Precedents: Sheffield Wednesday, and Leicester (League
   One, outside the PL/Championship directory).
-- **MarketingHome ×2**: QUIZ_CLUBS tile + CLUB_COLOR.
+- ⚠️ **MarketingHome ×2 NO LONGER EXISTS** (checked 2026-09-04). The file was
+  replaced by `src/marketing/FrontDoor.jsx`, which reads the GENERATED
+  `src/marketing/clubIndex.js` — so the front door needs no per-club edit at
+  all. Two of the eleven wiring points below are gone; do not go looking for
+  QUIZ_CLUBS.
+- ⚠️ **A SHORT LEAGUE NAME IS TWO EDITS, NOT ONE.** When `leagues.mjs` calls a
+  club something shorter than the page name — "Sheffield Utd" vs our
+  "Sheffield United", "Coventry" vs "Coventry City" — BOTH
+  `DIR_ALIAS` (gen-seo, or the directory guard fails the build) AND
+  `CLUB_ALIAS` in `scripts/seo/club-alias.mjs` (or the coverage map reports
+  the club as still missing, and the next wave re-forges a club we already
+  have) need the mapping. Wave R+S hit this on Sheffield United; West Brom and
+  Middlesbrough needed neither because the names already matched.
 - **gen-seo ×2 (+1)**: CLUB_BADGE, CLUB_COLOR, and **DIR_ALIAS when the
   directory name ≠ page club name** ('Coventry' → 'Coventry City') — the
   directory guard fails the build loud otherwise, which is correct.
