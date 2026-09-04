@@ -51,6 +51,30 @@ for (const m of bankSrc.matchAll(/o:(\[[^\]]*\]),\s*a:(\d)/g)) {
   try { const o = JSON.parse(m[1]); const a = +m[2]; if (o[a] && o[a].length > 4) bankAnswers.add(norm(o[a])); } catch {}
 }
 
+// ⚠️ THIS SCRIPT ONLY EVER SAW ITS OWN BATCH, AND THAT NEARLY SHIPPED A DUPLICATE.
+// Wave Q's ten recovered questions included the Ayresome Park question already
+// live on the Middlesbrough page, plus one keying a player named in a live stem.
+// Both were caught by hand, which is not a gate. A top-up is the normal shape of
+// this work — every club that grows gets one — so the live pack has to be part of
+// the comparison, not a thing the operator is trusted to remember.
+// Keyed on the `club` field, which is why clubs.mjs must carry the bank's exact
+// club value; a mismatch here reads as "no live pack" and silently checks nothing.
+const livePack = (clubField) => {
+  const out = [];
+  for (const line of bankSrc.split('\n')) {
+    if (!line.includes(`club:"${clubField}"`) && !line.includes(`club: "${clubField}"`)) continue;
+    const mo = line.match(/o:(\[[^\]]*\]),\s*a:(\d)/);
+    const mq = line.match(/q:"((?:[^"\\]|\\.)*)"/);
+    const mh = line.match(/hint:"((?:[^"\\]|\\.)*)"/);
+    if (!mo || !mq) continue;
+    try {
+      const o = JSON.parse(mo[1]);
+      out.push({ q: JSON.parse(`"${mq[1]}"`), o, a: +mo[2], hint: mh ? JSON.parse(`"${mh[1]}"`) : '' });
+    } catch { /* a line we cannot parse is not a licence to claim the pack is empty */ }
+  }
+  return out;
+};
+
 const DROP = new Set((process.env.DROP || '').split(',').map(s => s.trim()).filter(Boolean));
 const report = [];
 
@@ -94,6 +118,44 @@ for (const entry of data) {
   }));
   const weakCount = allLeaks.length - leaks.length;
 
+  // ── AGAINST THE LIVE PACK ───────────────────────────────────────────────
+  // Same leak rules, same dupe rule, run over live+new so a top-up is judged
+  // against what is already on the page. Only pairs involving a NEW question
+  // are reported: the live pack's own internal state is not this run's business.
+  // ⚠️ A QUESTION ALREADY INSERTED IS NOT ITS OWN DUPLICATE. Re-running curation
+  // on a batch that has since been added to the bank matched every question
+  // against its own live copy and reported the whole set as leaking. Exclude
+  // exact stem matches: those are this batch, seen from the other side.
+  const newStems = new Set(qs.map((q) => norm(q.q)));
+  const live = livePack(clubField).filter((l) => !newStems.has(norm(l.q)));
+  const liveDupes = [];
+  const liveLeaks = [];
+  if (live.length) {
+    for (const q of qs) {
+      for (let k = 0; k < live.length; k++) {
+        const l = live[k];
+        if (norm(l.o[l.a]) === norm(q.o[q.a])) {
+          const shared = [...tokens(q.q)].filter(t => tokens(l.q).has(t));
+          if (shared.length >= 2) liveDupes.push({ i: q._i, answer: q.o[q.a], liveQ: l.q.slice(0, 70) });
+        }
+      }
+    }
+    const combined = [...live.map((l, k) => ({ ...l, _live: k })), ...qs];
+    for (const l of findLeaks(combined, { clubName: clubField })) {
+      if (l.severity !== 'strong') continue;
+      const src = combined[l.answerOf], dst = combined[l.at];
+      const srcNew = src && src._live === undefined, dstNew = dst && dst._live === undefined;
+      if (!srcNew && !dstNew) continue;          // both live — not this run's problem
+      if (srcNew && dstNew) continue;            // already reported by the within-batch scan
+      liveLeaks.push({
+        answer: l.answer, where: l.where,
+        text: srcNew
+          ? `new [${src._i}]'s answer "${l.answer}" appears in the ${l.where} of a LIVE question`
+          : `a LIVE answer "${l.answer}" appears in the ${l.where} of new [${dst._i}]`,
+      });
+    }
+  }
+
   // cross-bank: new stems containing existing bank answers (report only)
   const bankHits = qs.filter(q => { const nq = norm(q.q); return [...bankAnswers].some(a => a.length > 12 && nq.includes(a)); }).map(q => q._i);
 
@@ -104,6 +166,9 @@ for (const entry of data) {
   if (dupePairs.length) { report.push(`SEMANTIC-DUPE candidates (review, add loser to DROP):`); dupePairs.forEach(d => report.push(`  [${d.a}] vs [${d.b}] — answer "${d.answer}" shared:${d.shared.join('/')}`)); }
   if (leaks.length) { report.push(`WITHIN-CLUB LEAKS — STRONG (drop or reword one side):`); leaks.forEach(l => report.push(`  answer of [${l.answerOf}] ("${l.answer}") appears in ${l.where} of [${l.inStemOf}]`)); }
   if (weakCount) report.push(`  (${weakCount} weak leak(s) suppressed — competitions, the club itself, topic vocabulary)`);
+  report.push(`live pack: ${live.length} question(s) already on the page`);
+  if (liveDupes.length) { report.push(`!! DUPLICATES A LIVE QUESTION (drop the new one):`); liveDupes.forEach(d => report.push(`  new [${d.i}] "${d.answer}" — live: ${d.liveQ}`)); }
+  if (liveLeaks.length) { report.push(`!! LEAKS AGAINST THE LIVE PACK (drop or reword the NEW side):`); liveLeaks.forEach(l => report.push(`  ${l.text}`)); }
   if (bankHits.length) report.push(`cross-bank stem/answer overlaps (informational): idx ${bankHits.join(',')}`);
 
   const outFile = path.join(path.dirname(new URL(import.meta.url).pathname), `wave-j-${entry.club.toLowerCase()}.json`);
