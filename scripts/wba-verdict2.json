@@ -1,0 +1,66 @@
+[
+  {
+    "_i": 16,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Hayes",
+    "reason": "Regis signed from Isthmian League club Hayes in May 1977 for an initial £5,000 plus a further sum after 20 appearances, matching stem and hint exactly. Distractors (Enfield, Wealdstone, Barnet) are all genuine non-League clubs of the era, none are giveaways.",
+    "sources": ["https://www.wbachronicle.com/cyrille-regis/", "https://en.wikipedia.org/wiki/Cyrille_Regis"]
+  },
+  {
+    "_i": 17,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "£1.5 million",
+    "reason": "Robson's move to Man Utd was finalised 3 October 1981 for £1.5m, a British transfer record at the time, reuniting him with Ron Atkinson who had left WBA for Old Trafford in June 1981 (~4 months earlier, matching 'a few months earlier').",
+    "sources": ["https://www.pressreader.com/uk/sunday-mirror/20211205/283192971652538"]
+  },
+  {
+    "_i": 18,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Notts County",
+    "reason": "Astle moved from Notts County to WBA in 1964; well documented and consistent across sources (fee reported £22,500-£25,000, which is not asked about here). Distractors are plausible lower-league English clubs.",
+    "sources": ["https://x.com/JeffAstleFdn/status/2063632240001589401", "https://en.wikipedia.org/wiki/Jeff_Astle"]
+  },
+  {
+    "_i": 19,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Stoney Lane",
+    "reason": "WBA played at Stoney Lane 1885-1900, winning the FA Cup in 1888 and 1892 there (their 'first two FA Cup wins'), before moving to The Hawthorns for the 1900-01 season. 'Four Acres' is a real but earlier/wrong WBA ground, a legitimate non-giveaway distractor.",
+    "sources": ["https://en.wikipedia.org/wiki/Stoney_Lane", "https://en.wikipedia.org/wiki/The_Hawthorns"]
+  },
+  {
+    "_i": 20,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Gary Megson",
+    "reason": "WBA's first-ever Premier League season was 2002-03, reached via 2001-02 Division One runners-up spot behind champions Manchester City under Gary Megson, with Wolves finishing 3rd (missing automatic promotion) -- all stem claims verified.",
+    "sources": ["https://en.wikipedia.org/wiki/2001%E2%80%9302_West_Bromwich_Albion_F.C._season"]
+  },
+  {
+    "_i": 21,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Portsmouth",
+    "reason": "WBA beat Portsmouth 2-0 at The Hawthorns on 15 May 2005 (goals Horsfield, Richardson) to survive on the final day, having been bottom at Christmas -- the 'Great Escape'. Confirmed by Premier League/press accounts.",
+    "sources": ["https://www.premierleague.com/match/5186", "https://www.abc.net.au/news/2005-05-16/west-brom-complete-great-escape/1572088"]
+  },
+  {
+    "_i": 22,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Bryan Robson",
+    "reason": "Gary Megson was sacked 26 October 2004; Bryan Robson was appointed permanent successor on 9 November 2004 and led the Great Escape survival in May 2005, matching stem and hint exactly.",
+    "sources": ["https://www.fourfourtwo.com/news/bryan-robson-took-us-to-florida-to-unwind-before-2005s-great-escape-then-results-changed-to-this-day-robert-earnshaw-admits-he-has-no-idea-how-west-brom-avoided-relegation-20-years-ago-having-been-bottom-at-christmas"]
+  },
+  {
+    "_i": 23,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Song thrush",
+    "reason": "'Throstle' is the old English/dialect name for the song thrush, the bird on WBA's club badge. Well-established fact.",
+    "sources": ["https://en.wikipedia.org/wiki/West_Bromwich_Albion_F.C."]
+  }
+]

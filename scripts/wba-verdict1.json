@@ -1,0 +1,66 @@
+[
+  {
+    "_i": 8,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "1919-20",
+    "reason": "WBA's only English league title was 1919-20 (First Division), with then-record 104 goals and 60 points. Hint stats confirmed by multiple sources.",
+    "sources": ["https://en.wikipedia.org/wiki/History_of_West_Bromwich_Albion_F.C.", "https://en.wikipedia.org/wiki/1919%E2%80%9320_Football_League"]
+  },
+  {
+    "_i": 9,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Wolverhampton Wanderers",
+    "reason": "WBA won the 1954 FA Cup and finished league runners-up that season; Wolves won their first-ever league title in 1953-54, denying WBA the double. Both stem claims verified.",
+    "sources": ["https://en.wikipedia.org/wiki/1953%E2%80%9354_Football_League", "https://en.wikipedia.org/wiki/1954_FA_Cup_Final"]
+  },
+  {
+    "_i": 10,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "West Ham United",
+    "reason": "1966 League Cup Final (last two-legged final) confirmed: West Ham won leg one 2-1, WBA won leg two 4-1 at The Hawthorns, 5-3 on aggregate to Albion. Hint detail (\"hit four at The Hawthorns\") matches the 4-1 scoreline exactly.",
+    "sources": ["https://en.wikipedia.org/wiki/1966_Football_League_Cup_Final"]
+  },
+  {
+    "_i": 11,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Cambridge United",
+    "reason": "Ron Atkinson left Cambridge United (Fourth Division champions 1976-77) to become WBA manager in January 1978, and soon signed his former captain Brendon Batson from Cambridge.",
+    "sources": ["https://en.wikipedia.org/wiki/Brendon_Batson", "https://en.wikipedia.org/wiki/Ron_Atkinson"]
+  },
+  {
+    "_i": 12,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Tony Brown",
+    "reason": "Tony 'Bomber' Brown holds both WBA all-time records: 720 appearances and 279 goals (1963-1980), confirmed by club and independent sources.",
+    "sources": ["https://en.wikipedia.org/wiki/Tony_Brown_(footballer,_born_1945)", "https://www.wba.co.uk/news/2020/april/legend-days-tony-bomber-brown"]
+  },
+  {
+    "_i": 13,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Willie Johnston",
+    "reason": "Willie Johnston (Scotland) failed a drugs test at the 1978 World Cup after the Peru match and was sent home from Argentina; well-documented fact.",
+    "sources": ["https://en.wikipedia.org/wiki/Willie_Johnston"]
+  },
+  {
+    "_i": 14,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Old Trafford",
+    "reason": "Manchester United 3-5 WBA at Old Trafford on 30 December 1978, 3-3 at half-time, widely regarded as one of English football's greatest matches. Matches hint exactly.",
+    "sources": ["https://en.wikipedia.org/wiki/Manchester_United_3%E2%80%935_West_Bromwich_Albion_(1978)"]
+  },
+  {
+    "_i": 15,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Dunfermline Athletic",
+    "reason": "As FA Cup holders, WBA entered the 1968-69 Cup Winners' Cup and lost to Dunfermline Athletic in the quarter-finals (0-0 away, 0-1 home); Dunfermline went on to the semis, matching the hint.",
+    "sources": ["https://dafc.co.uk/story.php?t=1969:_West_Bromwich_Albion_0_Dunfermline_1&ID=11832", "https://en.wikipedia.org/wiki/1968%E2%80%9369_European_Cup_Winners%27_Cup"]
+  }
+]

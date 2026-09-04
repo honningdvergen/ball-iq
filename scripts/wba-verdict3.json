@@ -1,0 +1,78 @@
+[
+  {
+    "_i": 24,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "England manager",
+    "reason": "Hodgson left West Brom in May 2012 to become England manager ahead of Euro 2012; Steve Clarke was appointed his successor in June 2012. Distractors are all plausible manager jobs, none is the club itself.",
+    "sources": ["https://en.wikipedia.org/wiki/Roy_Hodgson", "https://www.fourfourtwo.com/news/on-this-day-in-2012-steve-clarke-replaces-roy-hodgson-as-west-brom-boss-1654601511000"]
+  },
+  {
+    "_i": 25,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Manchester United",
+    "reason": "Jonny Evans signed for West Brom in summer 2015 from Manchester United after nine years at Old Trafford, for a reported £6m. Fact checks out cleanly.",
+    "sources": ["https://en.wikipedia.org/wiki/Jonny_Evans"]
+  },
+  {
+    "_i": 26,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Derby County",
+    "reason": "Derby beat West Brom 1-0 in the 2007 Championship play-off final via a Stephen Pearson goal; West Brom had beaten Wolves in the semi-final (first leg 13 May, final 28 May — a fortnight is accurate). No false premise.",
+    "sources": ["https://en.wikipedia.org/wiki/2007_Football_League_Championship_play-off_final", "https://www.dcfc.co.uk/news/2022/05/2007-play-off-final-relived-derby-county-1-0-west-bromwich-albion"]
+  },
+  {
+    "_i": 27,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Tony Mowbray",
+    "reason": "Mowbray, appointed October 2006, won the Championship title with West Brom in 2007-08 and reached the FA Cup semi-final the same season. Confirmed.",
+    "sources": ["https://en.wikipedia.org/wiki/2007%E2%80%9308_West_Bromwich_Albion_F.C._season", "https://en.wikipedia.org/wiki/Tony_Mowbray"]
+  },
+  {
+    "_i": 28,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Roberto Di Matteo",
+    "reason": "Di Matteo took West Brom up as Championship runners-up (behind Newcastle) in 2009-10 after the 2008-09 relegation under Mowbray, and was sacked in February 2011 (after a 3-0 loss to Man City) despite the promotion. Both stem and hint check out.",
+    "sources": ["https://en.wikipedia.org/wiki/2010%E2%80%9311_West_Bromwich_Albion_F.C._season", "https://www.skysports.com/football/news/11096/8264386/di-matteo-factfile"]
+  },
+  {
+    "_i": 29,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "8th",
+    "reason": "Steve Clarke's 2012-13 West Brom finished 8th with a club-record 49 points — still their best-ever Premier League finish. Confirmed.",
+    "sources": ["https://en.wikipedia.org/wiki/2012%E2%80%9313_West_Bromwich_Albion_F.C._season"]
+  },
+  {
+    "_i": 30,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Romelu Lukaku",
+    "reason": "Lukaku, on loan from Chelsea, scored a second-half hat-trick as West Brom drew 5-5 with Manchester United in Ferguson's final match, May 2013 — well-documented.",
+    "sources": ["https://en.wikipedia.org/wiki/2012%E2%80%9313_West_Bromwich_Albion_F.C._season"]
+  },
+  {
+    "_i": 31,
+    "verdict": "fix",
+    "check": "false premise (in hint)",
+    "resolved": "Lokomotiv Moscow",
+    "reason": "Stem and keyed answer are correct — Odemwingie joined West Brom in August 2010 from Lokomotiv Moscow for a reported £2.5m, scoring 15 league goals that season. But the hint's 'his first season back in England' is a false premise: before West Brom, Odemwingie's career ran Bendel Insurance (Nigeria) -> La Louvière (Belgium) -> Lille (France) -> Lokomotiv Moscow (Russia). He had never played club football in England before 2010, so it was his first season IN England, not a return.",
+    "sources": ["https://en.wikipedia.org/wiki/Peter_Odemwingie", "https://footballleagueworld.co.uk/west-brom-peter-odemwingie-signing-was-gamechanger-and-they-never-looked-back/"],
+    "fixed": {
+      "q": "Peter Odemwingie joined West Brom in August 2010 from which club?",
+      "o": [
+        "Lokomotiv Moscow",
+        "CSKA Moscow",
+        "Rubin Kazan",
+        "Dynamo Kyiv"
+      ],
+      "a": 0,
+      "hint": "The Nigeria forward arrived from Lokomotiv for a reported £2.5m and scored 15 league goals in his first season in England.",
+      "diff": "medium"
+    }
+  }
+]

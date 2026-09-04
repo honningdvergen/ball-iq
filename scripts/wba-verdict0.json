@@ -1,0 +1,66 @@
+[
+  {
+    "_i": 0,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "West Bromwich Strollers",
+    "reason": "Confirmed: founded 1878 as West Bromwich Strollers by workers of George Salter's Spring Works, renamed West Bromwich Albion in 1880, first English club to adopt the 'Albion' suffix. Distractors (Wanderers, Swifts, Rovers) are plausible fake former names, none is the club's real answer, and the keyed answer is not 'West Brom'/'West Bromwich Albion'.",
+    "sources": ["https://en.wikipedia.org/wiki/West_Bromwich_Albion_F.C.", "https://en.wikipedia.org/wiki/1878%E2%80%9379_West_Bromwich_Strollers_F.C._season"]
+  },
+  {
+    "_i": 1,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "1900",
+    "reason": "Confirmed: The Hawthorns opened 3 September 1900, first match a 1-1 draw with Derby County (Bloomer for Derby, Simmons for Albion). Hint matches exactly.",
+    "sources": ["https://www.wba.co.uk/club/history/history-hawthorns", "https://en.wikipedia.org/wiki/The_Hawthorns"]
+  },
+  {
+    "_i": 2,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "A song thrush",
+    "reason": "Confirmed: the badge depicts a throstle (song thrush) on a hawthorn branch, origin of the 'Throstles' nickname. Distractor birds (magpie, swift, robin) are plausible but wrong.",
+    "sources": ["https://whatsbehindthebadge.com/index.php/west-bromwich-albion/", "https://sportslogohistory.com/west-bromwich-albion-fc-primary-logo/"]
+  },
+  {
+    "_i": 3,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Everton",
+    "reason": "Confirmed: 1968 FA Cup final, West Brom beat Everton 1-0 after extra time, Astle scoring the winner 3 minutes into extra time; Astle also scored in every round of that year's competition (one of only seven players in FA Cup history to do so), matching the hint.",
+    "sources": ["https://en.wikipedia.org/wiki/1968_FA_Cup_final", "https://www.wba.co.uk/news/2020/may/on-this-day-in-1968"]
+  },
+  {
+    "_i": 4,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "The Three Degrees",
+    "reason": "Confirmed as the trio's primary, widely-documented nickname (Premier League feature, book/documentary titles all use 'The Three Degrees'); they were the first British top-flight side to field three black players together, matching the hint. Note: one minor source uses 'The Holy Trinity' as an alternate nickname for the same trio, but it is not the commonly recognised name and does not create real ambiguity against the far more dominant 'Three Degrees' branding.",
+    "sources": ["https://www.premierleague.com/en/news/4154061", "https://thesefootballtimes.co/2017/06/23/how-the-three-degrees-inspired-a-generation-of-young-black-men/"]
+  },
+  {
+    "_i": 5,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Real Madrid",
+    "reason": "Confirmed: Cunningham signed for Real Madrid on 1 July 1979 for a club-record fee (110m pesetas), the first British player to sign for the club, and scored twice on his league debut vs Valencia (after also scoring in a pre-season friendly vs AC Milan). Hint matches.",
+    "sources": ["https://thesefootballtimes.co/2020/03/30/the-story-of-the-electric-but-tragic-laurie-cunningham-at-real-madrid/", "https://en.wikipedia.org/wiki/Laurie_Cunningham"]
+  },
+  {
+    "_i": 6,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Aston Villa",
+    "reason": "Confirmed: 1892 FA Cup final, West Bromwich Albion beat Aston Villa 3-0 at Kennington Oval (Geddes, Nicholls, Reynolds). Distractors (Wolves, Blackburn, Small Heath) are plausible period Midlands/period clubs but did not contest this final.",
+    "sources": ["https://en.wikipedia.org/wiki/1892_FA_Cup_final", "https://www.avfchistory.co.uk/game/140"]
+  },
+  {
+    "_i": 7,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Promotion from the Second Division",
+    "reason": "Confirmed: in 1930-31 Albion won the FA Cup (beating Birmingham 2-1, both goals by W.G. Richardson) while winning promotion from the Second Division in the same season -- a double still unmatched by any other English club. Stem's superlative claim checks out.",
+    "sources": ["https://en.wikipedia.org/wiki/1930%E2%80%9331_FA_Cup", "https://www.wba.co.uk/club/history/club-honours"]
+  }
+]

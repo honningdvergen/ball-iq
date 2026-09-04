@@ -1,0 +1,75 @@
+[
+  {
+    "_i": 32,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Stoke City",
+    "reason": "Berahino left West Brom for Stoke City in January 2017 for an initial £12m; Tottenham's rejected bid was Aug 2015 deadline day, after which he refused to play. Stem, hint, and distractors (Spurs, Newcastle, Burnley — all clubs linked with him at various points) all check out.",
+    "sources": ["https://www.goal.com/en-gb/news/stoke-city-sign-saido-berahino-for-12m-from-west-brom/1h88iudnz0bp813s9qwdu6e3m9"]
+  },
+  {
+    "_i": 33,
+    "verdict": "fix",
+    "check": "false premise in stem/hint (check 2, in the hint)",
+    "resolved": "Tony Pulis",
+    "reason": "Stem is correct: Pulis was appointed 1 Jan 2015 (succeeding caretaker Rob Kelly after Alan Irvine's Dec 2014 sacking) and led Albion to 10th in 2016-17. But the hint's claim that this was 'only Albion's second top-half Premier League finish' is false — West Brom also finished 10th in 2011-12 (Hodgson) and 8th in 2012-13 (Clarke), making 2016-17 at least their third top-half finish, not their second.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2011%E2%80%9312_West_Bromwich_Albion_F.C._season",
+      "https://www.itv.com/news/central/2015-01-02/who-is-tony-pulis-five-facts-about-west-broms-new-manager"
+    ],
+    "fixed": {
+      "q": "Which manager took charge of West Brom in January 2015 and later led them to a 10th-place finish in 2016-17?",
+      "o": ["Tony Pulis", "Alan Irvine", "Alan Pardew", "Steve Clarke"],
+      "a": 0,
+      "hint": "Pulis took over from Alan Irvine that January and delivered 45 points in 2016-17, one of only a handful of top-half Premier League finishes in Albion's history."
+    }
+  },
+  {
+    "_i": 34,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Aston Villa",
+    "reason": "Phillips joined Aston Villa in 2005, spent a single season there (2005-06), then signed for West Brom in Aug 2006, spending two seasons (2006-08) and winning the Championship title in 2007-08. Matches stem and hint exactly.",
+    "sources": ["https://en.wikipedia.org/wiki/Kevin_Phillips_(English_footballer)"]
+  },
+  {
+    "_i": 35,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Ossie Ardiles",
+    "reason": "Confirmed 3-0 win over Port Vale at Wembley, 30 May 1993, under Ossie Ardiles, who managed West Brom for a single season (May 1992 to summer 1993) before leaving for Tottenham. Hint's '13 months/one season' and crowd-colour detail check out.",
+    "sources": ["https://en.wikipedia.org/wiki/1993_Football_League_Second_Division_play-off_final", "https://www.expressandstar.com/sport/football/west-bromwich-albion/2023/05/30/30-years-on-when-west-brom-dominated-port-vale-on-and-off-the-field-at-wembley-play-off-final/"]
+  },
+  {
+    "_i": 36,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Geoff Horsfield",
+    "reason": "Confirmed: 15 May 2005, West Brom 2-0 Portsmouth, Horsfield came off the bench and volleyed the opener (58th minute), Kieran Richardson added the second. Matches stem and hint.",
+    "sources": ["https://footballleagueworld.co.uk/69-appearances-14-goals-how-is-ex-west-brom-man-geoff-horsfield-getting-on-these-days/", "https://www.baggies.com/games/?id=133"]
+  },
+  {
+    "_i": 37,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Queens Park Rangers",
+    "reason": "Confirmed: Odemwingie drove to Loftus Road on 31 Jan 2013 deadline day, was filmed in his car, and the QPR move never happened for lack of an agreed fee.",
+    "sources": ["https://www.skysports.com/football/news/11095/11195224/peter-odemwingie-on-infamous-failed-deadline-day-transfer-to-qpr"]
+  },
+  {
+    "_i": 38,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Pepe Mel",
+    "reason": "Confirmed: Pepe Mel appointed 13 Jan 2014 from Real Betis, left by mutual consent 12 May 2014 (almost exactly four months), won 3 of 17 games, finished 17th and kept Albion up.",
+    "sources": ["https://www.itv.com/news/update/2014-05-12/pepe-mel-leaves-west-brom-by-mutual-consent/"]
+  },
+  {
+    "_i": 39,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Paris Saint-Germain",
+    "reason": "Confirmed: Mulumbu joined West Brom on loan from PSG in Jan 2009, made permanent for £175,000 on 10 July 2009 — both dates fall within 2009 as the stem states.",
+    "sources": ["https://en.wikipedia.org/wiki/Youssouf_Mulumbu"]
+  }
+]

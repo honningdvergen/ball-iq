@@ -1,0 +1,106 @@
+[
+  {
+    "q": "Albion signed Cyrille Regis in 1977 from which non-League club?",
+    "o": [
+      "Enfield",
+      "Wealdstone",
+      "Hayes",
+      "Barnet"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Regis was playing for Hayes when Albion paid an initial £5,000, with a further sum due after 20 appearances — one of the great bargains of the era.",
+    "_i": 16
+  },
+  {
+    "q": "Manchester United paid a then British record fee to sign Bryan Robson from Albion in October 1981. How much was it?",
+    "o": [
+      "£750,000",
+      "£1.5 million",
+      "£2.3 million",
+      "£3 million"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The £1.5m deal reunited Robson with Ron Atkinson, who had left The Hawthorns for Old Trafford a few months earlier.",
+    "_i": 17
+  },
+  {
+    "q": "Albion signed Jeff Astle in 1964 from which club?",
+    "o": [
+      "Bury",
+      "Notts County",
+      "Mansfield Town",
+      "Rotherham United"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Astle stepped up from Notts County to the First Division with Albion, and supporters came to know him simply as 'The King'.",
+    "_i": 18
+  },
+  {
+    "q": "Which ground did Albion leave when they moved to The Hawthorns in 1900?",
+    "o": [
+      "Four Acres",
+      "Dartmouth Park",
+      "Stoney Lane",
+      "Bunn's Field"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Stoney Lane was Albion's home from 1885 to 1900, covering their first two FA Cup wins; the club's earlier grounds were all short stays.",
+    "_i": 19
+  },
+  {
+    "q": "West Brom reached the Premier League for the first time in 2002, going up as Division One runners-up. Which manager took them there?",
+    "o": [
+      "Gary Megson",
+      "Bryan Robson",
+      "Denis Smith",
+      "Tony Mowbray"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Megson's side finished second behind champions Manchester City, holding off local rivals Wolves in the run-in.",
+    "_i": 20
+  },
+  {
+    "q": "On the final day of the 2004-05 season West Brom won 2-0 at The Hawthorns to complete the Great Escape. Who were the visitors that afternoon?",
+    "o": [
+      "Portsmouth",
+      "Charlton Athletic",
+      "Blackburn Rovers",
+      "Fulham"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Albion had been bottom of the table at Christmas; beating Portsmouth on 15 May 2005 lifted them out of the drop zone for the first time all season.",
+    "_i": 21
+  },
+  {
+    "q": "Who was West Brom's manager for the final-day survival in May 2005?",
+    "o": [
+      "Bryan Robson",
+      "Gary Megson",
+      "Roberto Di Matteo",
+      "Steve Clarke"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Robson had taken over from Gary Megson in November 2004 with the club adrift at the bottom, and became the first manager to keep a Premier League side up after being last at Christmas.",
+    "_i": 22
+  },
+  {
+    "q": "West Brom's older nickname, the Throstles, comes from a bird long associated with the club. Which bird is a throstle?",
+    "o": [
+      "Song thrush",
+      "House martin",
+      "Robin",
+      "Swallow"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Throstle is an old English word for the song thrush, the bird perched on a crossbar in the club's badge.",
+    "_i": 23
+  }
+]

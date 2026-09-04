@@ -1,0 +1,142 @@
+[
+  {
+    "q": "West Bromwich Albion were formed in 1878 by workers from George Salter's Spring Works. Under what name did the club play before adopting 'Albion' in 1880?",
+    "o": ["West Bromwich Wanderers", "West Bromwich Strollers", "West Bromwich Swifts", "West Bromwich Rovers"],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The factory men who founded the club called themselves the Strollers. The 'Albion' suffix arrived in 1880, and Albion were the first English club to take it."
+  },
+  {
+    "q": "In which year did Albion move into The Hawthorns?",
+    "o": ["1888", "1900", "1919", "1931"],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The first match at the new ground was a 1-1 draw with Derby County in September 1900, and Albion have never moved since."
+  },
+  {
+    "q": "Which bird appears on Albion's club badge, perched on a branch?",
+    "o": ["A magpie", "A swift", "A song thrush", "A robin"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The song thrush, known locally as a throstle, gave Albion one of their oldest nicknames — the Throstles — and it sits on a sprig of hawthorn."
+  },
+  {
+    "q": "Jeff Astle's extra-time goal won the 1968 FA Cup final for Albion. Which club did they beat at Wembley?",
+    "o": ["Everton", "Leeds United", "Sheffield Wednesday", "Chelsea"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Astle struck three minutes into extra time to settle it 1-0 against Everton, completing a run in which he had scored in every round of the competition."
+  },
+  {
+    "q": "Cyrille Regis, Laurie Cunningham and Brendon Batson were known collectively by which nickname during their time together at Albion?",
+    "o": ["The Holy Trinity", "The Famous Five", "The Three Degrees", "The Three Kings"],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The trio were named after the American vocal group, and were among the first black players to line up together in a First Division side."
+  },
+  {
+    "q": "Laurie Cunningham left Albion in 1979 for which club, becoming the first British player to sign for them?",
+    "o": ["Real Madrid", "Barcelona", "Internazionale", "Saint-Étienne"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Real Madrid paid a club-record fee in pesetas for the winger in July 1979, and he scored twice on his debut."
+  },
+  {
+    "q": "Albion won the 1892 FA Cup final 3-0. Which Midlands club did they beat?",
+    "o": ["Wolverhampton Wanderers", "Blackburn Rovers", "Aston Villa", "Small Heath"],
+    "a": 2,
+    "diff": "medium",
+    "hint": "A one-sided derby win over Aston Villa gave Albion their second FA Cup, after the 1888 victory over Preston North End."
+  },
+  {
+    "q": "In 1930-31 Albion completed a double no English club has managed before or since: the FA Cup plus what?",
+    "o": ["The First Division championship", "Promotion from the Second Division", "The Second Division championship", "The FA Charity Shield"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Albion went up from the Second Division and beat Birmingham 2-1 at Wembley in the same season, W. G. Richardson scoring both goals in the final."
+  },
+  {
+    "q": "Albion have been champions of England once. In which season?",
+    "o": ["1888-89", "1919-20", "1930-31", "1953-54"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "In the first season after the First World War Albion took the title with 104 goals and 60 points, both league records at the time."
+  },
+  {
+    "q": "In the season Albion won the 1954 FA Cup they also finished league runners-up. Which club took the title ahead of them?",
+    "o": ["Portsmouth", "Manchester United", "Wolverhampton Wanderers", "Huddersfield Town"],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Wolves won their first championship in 1953-54, denying Vic Buckingham's side the League and Cup double."
+  },
+  {
+    "q": "Albion's only League Cup triumph came in 1966, in the last final played over two legs. Who did they beat 5-3 on aggregate?",
+    "o": ["Queens Park Rangers", "West Ham United", "Leicester City", "Chelsea"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "West Ham won the first leg 2-1 in London before Albion hit four at The Hawthorns; a year later Albion lost the first Wembley League Cup final to QPR."
+  },
+  {
+    "q": "Ron Atkinson signed Brendon Batson for Albion in 1978 from the club he had himself just left as manager. Which club?",
+    "o": ["Colchester United", "Oxford United", "Peterborough United", "Cambridge United"],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Atkinson had taken Cambridge United out of the Fourth Division before moving to The Hawthorns in January 1978, and brought Batson with him."
+  },
+  {
+    "q": "Which player holds Albion's club records for both most appearances and most goals?",
+    "o": ["Ronnie Allen", "Tony Brown", "Jeff Astle", "Cyrille Regis"],
+    "a": 1,
+    "diff": "medium",
+    "hint": "'Bomber' Brown played 720 games and scored 279 goals between 1963 and 1980, and finished 1970-71 as the First Division's top scorer from midfield."
+  },
+  {
+    "q": "Which Albion player was sent home from the 1978 World Cup finals after failing a drugs test?",
+    "o": ["Len Cantello", "Ally Robertson", "Willie Johnston", "Asa Hartford"],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Johnston tested positive after Scotland's defeat by Peru in Argentina, was banned from international football, and soon left The Hawthorns for Vancouver."
+  },
+  {
+    "q": "On 30 December 1978 Albion won 5-3 away from home in a match still rated among English football's greatest. At which ground?",
+    "o": ["Old Trafford", "Highbury", "Anfield", "Elland Road"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "It was 3-3 at half-time at Old Trafford before Albion pulled away; Len Cantello's volley was voted goal of the season."
+  },
+  {
+    "q": "As holders of the FA Cup, Albion entered the 1968-69 European Cup Winners' Cup and went out in the quarter-finals to which club?",
+    "o": ["Dunfermline Athletic", "Rangers", "Slovan Bratislava", "Barcelona"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "A goalless draw in Scotland was followed by a 1-0 Dunfermline win at The Hawthorns, and the Scots went on to reach the semi-finals."
+  },
+  {
+    "q": "Albion signed Cyrille Regis in 1977 from which non-League club?",
+    "o": ["Enfield", "Wealdstone", "Hayes", "Barnet"],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Regis was playing for Hayes when Albion paid an initial £5,000, with a further sum due after 20 appearances — one of the great bargains of the era."
+  },
+  {
+    "q": "Manchester United paid a then British record fee to sign Bryan Robson from Albion in October 1981. How much was it?",
+    "o": ["£750,000", "£1.5 million", "£2.3 million", "£3 million"],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The £1.5m deal reunited Robson with Ron Atkinson, who had left The Hawthorns for Old Trafford a few months earlier."
+  },
+  {
+    "q": "Albion signed Jeff Astle in 1964 from which club?",
+    "o": ["Bury", "Notts County", "Mansfield Town", "Rotherham United"],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Astle stepped up from Notts County to the First Division with Albion, and supporters came to know him simply as 'The King'."
+  },
+  {
+    "q": "Which ground did Albion leave when they moved to The Hawthorns in 1900?",
+    "o": ["Four Acres", "Dartmouth Park", "Stoney Lane", "Bunn's Field"],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Stoney Lane was Albion's home from 1885 to 1900, covering their first two FA Cup wins; the club's earlier grounds were all short stays."
+  }
+]

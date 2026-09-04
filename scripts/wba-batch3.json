@@ -1,0 +1,106 @@
+[
+  {
+    "q": "Roy Hodgson left West Brom in May 2012 to take which job?",
+    "o": [
+      "England manager",
+      "Liverpool manager",
+      "Fulham manager",
+      "Crystal Palace manager"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Hodgson had steadied Albion after arriving in February 2011, and the FA appointed him England manager ahead of Euro 2012; Steve Clarke replaced him at The Hawthorns.",
+    "_i": 24
+  },
+  {
+    "q": "West Brom signed defender Jonny Evans in the summer of 2015 from which club?",
+    "o": [
+      "Manchester United",
+      "Celtic",
+      "Everton",
+      "Norwich City"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The Northern Ireland centre-back ended a nine-year stay at Old Trafford in a deal worth an initial £6m, and went on to captain Albion.",
+    "_i": 25
+  },
+  {
+    "q": "West Brom lost the 2007 Championship play-off final at Wembley. Which club beat them 1-0?",
+    "o": [
+      "Derby County",
+      "Wolverhampton Wanderers",
+      "Watford",
+      "Hull City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Stephen Pearson's second-half finish won it for Derby, a fortnight after Albion had knocked Wolves out in the semi-finals.",
+    "_i": 26
+  },
+  {
+    "q": "West Brom won the Championship title in 2007-08 to return to the Premier League. Who was their manager?",
+    "o": [
+      "Tony Mowbray",
+      "Roberto Di Matteo",
+      "Alan Irvine",
+      "Bryan Robson"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Mowbray arrived in October 2006 and built a passing side that won the title and reached an FA Cup semi-final in the same season.",
+    "_i": 27
+  },
+  {
+    "q": "After relegation in 2009, which manager took West Brom straight back up as Championship runners-up in 2010?",
+    "o": [
+      "Roberto Di Matteo",
+      "Roy Hodgson",
+      "Tony Mowbray",
+      "Steve Clarke"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Di Matteo's first job in England ended in promotion behind champions Newcastle; he was sacked the following February despite it.",
+    "_i": 28
+  },
+  {
+    "q": "Steve Clarke's first season in charge, 2012-13, ended with West Brom in which Premier League position?",
+    "o": [
+      "8th",
+      "10th",
+      "12th",
+      "14th"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Eighth on a club-record 49 points remains Albion's best Premier League finish, and their highest league placing since 1985.",
+    "_i": 29
+  },
+  {
+    "q": "West Brom drew 5-5 with Manchester United in Sir Alex Ferguson's final match in May 2013. Which Albion striker scored a second-half hat-trick?",
+    "o": [
+      "Romelu Lukaku",
+      "Shane Long",
+      "Saido Berahino",
+      "Peter Odemwingie"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Lukaku, on loan from Chelsea, came on at half-time with Albion 3-0 down and scored three as they hit back from 5-2 to 5-5.",
+    "_i": 30
+  },
+  {
+    "q": "Peter Odemwingie joined West Brom in August 2010 from which club?",
+    "o": [
+      "Lokomotiv Moscow",
+      "CSKA Moscow",
+      "Rubin Kazan",
+      "Dynamo Kyiv"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The Nigeria forward arrived from Lokomotiv for a reported £2.5m and scored 15 league goals in his first season back in England.",
+    "_i": 31
+  }
+]

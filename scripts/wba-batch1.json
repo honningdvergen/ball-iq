@@ -1,0 +1,106 @@
+[
+  {
+    "q": "Albion have been champions of England once. In which season?",
+    "o": [
+      "1888-89",
+      "1919-20",
+      "1930-31",
+      "1953-54"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "In the first season after the First World War Albion took the title with 104 goals and 60 points, both league records at the time.",
+    "_i": 8
+  },
+  {
+    "q": "In the season Albion won the 1954 FA Cup they also finished league runners-up. Which club took the title ahead of them?",
+    "o": [
+      "Portsmouth",
+      "Manchester United",
+      "Wolverhampton Wanderers",
+      "Huddersfield Town"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Wolves won their first championship in 1953-54, denying Vic Buckingham's side the League and Cup double.",
+    "_i": 9
+  },
+  {
+    "q": "Albion's only League Cup triumph came in 1966, in the last final played over two legs. Who did they beat 5-3 on aggregate?",
+    "o": [
+      "Queens Park Rangers",
+      "West Ham United",
+      "Leicester City",
+      "Chelsea"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "West Ham won the first leg 2-1 in London before Albion hit four at The Hawthorns; a year later Albion lost the first Wembley League Cup final to QPR.",
+    "_i": 10
+  },
+  {
+    "q": "Ron Atkinson signed Brendon Batson for Albion in 1978 from the club he had himself just left as manager. Which club?",
+    "o": [
+      "Colchester United",
+      "Oxford United",
+      "Peterborough United",
+      "Cambridge United"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Atkinson had taken Cambridge United out of the Fourth Division before moving to The Hawthorns in January 1978, and brought Batson with him.",
+    "_i": 11
+  },
+  {
+    "q": "Which player holds Albion's club records for both most appearances and most goals?",
+    "o": [
+      "Ronnie Allen",
+      "Tony Brown",
+      "Jeff Astle",
+      "Cyrille Regis"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "'Bomber' Brown played 720 games and scored 279 goals between 1963 and 1980, and finished 1970-71 as the First Division's top scorer from midfield.",
+    "_i": 12
+  },
+  {
+    "q": "Which Albion player was sent home from the 1978 World Cup finals after failing a drugs test?",
+    "o": [
+      "Len Cantello",
+      "Ally Robertson",
+      "Willie Johnston",
+      "Asa Hartford"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Johnston tested positive after Scotland's defeat by Peru in Argentina, was banned from international football, and soon left The Hawthorns for Vancouver.",
+    "_i": 13
+  },
+  {
+    "q": "On 30 December 1978 Albion won 5-3 away from home in a match still rated among English football's greatest. At which ground?",
+    "o": [
+      "Old Trafford",
+      "Highbury",
+      "Anfield",
+      "Elland Road"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "It was 3-3 at half-time at Old Trafford before Albion pulled away; Len Cantello's volley was voted goal of the season.",
+    "_i": 14
+  },
+  {
+    "q": "As holders of the FA Cup, Albion entered the 1968-69 European Cup Winners' Cup and went out in the quarter-finals to which club?",
+    "o": [
+      "Dunfermline Athletic",
+      "Rangers",
+      "Slovan Bratislava",
+      "Barcelona"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "A goalless draw in Scotland was followed by a 1-0 Dunfermline win at The Hawthorns, and the Scots went on to reach the semi-finals.",
+    "_i": 15
+  }
+]

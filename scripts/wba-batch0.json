@@ -1,0 +1,106 @@
+[
+  {
+    "q": "West Bromwich Albion were formed in 1878 by workers from George Salter's Spring Works. Under what name did the club play before adopting 'Albion' in 1880?",
+    "o": [
+      "West Bromwich Wanderers",
+      "West Bromwich Strollers",
+      "West Bromwich Swifts",
+      "West Bromwich Rovers"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The factory men who founded the club called themselves the Strollers. The 'Albion' suffix arrived in 1880, and Albion were the first English club to take it.",
+    "_i": 0
+  },
+  {
+    "q": "In which year did Albion move into The Hawthorns?",
+    "o": [
+      "1888",
+      "1900",
+      "1919",
+      "1931"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The first match at the new ground was a 1-1 draw with Derby County in September 1900, and Albion have never moved since.",
+    "_i": 1
+  },
+  {
+    "q": "Which bird appears on Albion's club badge, perched on a branch?",
+    "o": [
+      "A magpie",
+      "A swift",
+      "A song thrush",
+      "A robin"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The song thrush, known locally as a throstle, gave Albion one of their oldest nicknames — the Throstles — and it sits on a sprig of hawthorn.",
+    "_i": 2
+  },
+  {
+    "q": "Jeff Astle's extra-time goal won the 1968 FA Cup final for Albion. Which club did they beat at Wembley?",
+    "o": [
+      "Everton",
+      "Leeds United",
+      "Sheffield Wednesday",
+      "Chelsea"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Astle struck three minutes into extra time to settle it 1-0 against Everton, completing a run in which he had scored in every round of the competition.",
+    "_i": 3
+  },
+  {
+    "q": "Cyrille Regis, Laurie Cunningham and Brendon Batson were known collectively by which nickname during their time together at Albion?",
+    "o": [
+      "The Holy Trinity",
+      "The Famous Five",
+      "The Three Degrees",
+      "The Three Kings"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The trio were named after the American vocal group, and were among the first black players to line up together in a First Division side.",
+    "_i": 4
+  },
+  {
+    "q": "Laurie Cunningham left Albion in 1979 for which club, becoming the first British player to sign for them?",
+    "o": [
+      "Real Madrid",
+      "Bayern Munich",
+      "Internazionale",
+      "Saint-Étienne"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Real Madrid paid a club-record fee in pesetas for the winger in July 1979, and he scored twice on his debut.",
+    "_i": 5
+  },
+  {
+    "q": "Albion won the 1892 FA Cup final 3-0. Which Midlands club did they beat?",
+    "o": [
+      "Wolverhampton Wanderers",
+      "Blackburn Rovers",
+      "Aston Villa",
+      "Small Heath"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "A one-sided derby win over Aston Villa gave Albion their second FA Cup, after the 1888 victory over Preston North End.",
+    "_i": 6
+  },
+  {
+    "q": "In 1930-31 Albion completed a double no English club has managed before or since: the FA Cup plus what?",
+    "o": [
+      "The First Division championship",
+      "Promotion from the Second Division",
+      "The Second Division championship",
+      "The FA Charity Shield"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Albion went up from the Second Division and beat Birmingham 2-1 at Wembley in the same season, W. G. Richardson scoring both goals in the final.",
+    "_i": 7
+  }
+]

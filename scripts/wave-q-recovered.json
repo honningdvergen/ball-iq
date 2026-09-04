@@ -1,0 +1,122 @@
+[
+  {
+    "q": "Locked out of a padlocked Ayresome Park as the club fought liquidation, Middlesbrough staged their first home fixture of the 1986-87 season at another club's ground. Which one?",
+    "o": [
+      "Feethams, Darlington",
+      "Bootham Crescent, York",
+      "Victoria Park, Hartlepool",
+      "Roker Park, Sunderland"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Hartlepool United lent Boro their ground for the Port Vale game on 23 August 1986, three weeks after the gates were padlocked and thirty non-playing staff, Bruce Rioch among them, were sacked."
+  },
+  {
+    "q": "Who was Middlesbrough's manager for the 2006 UEFA Cup final against Sevilla?",
+    "o": [
+      "Steve McClaren",
+      "Bryan Robson",
+      "Gareth Southgate",
+      "Gordon Strachan"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Steve McClaren took charge in June 2001, and the Eindhoven final was his last game for Boro: the FA had named him England's next manager on 4 May, six days before the final, and he left the club on 11 May, the day after the 4-0 defeat. Robson (1994-2001), Southgate (appointed June 2006) and Strachan (2009-10) all managed Middlesbrough, but none of them was in the dugout that night."
+  },
+  {
+    "q": "Which Italian striker joined Middlesbrough from Juventus in 1996, just weeks after scoring in that year's Champions League final?",
+    "o": [
+      "Benito Carbone",
+      "Pierluigi Casiraghi",
+      "Massimo Maccarone",
+      "Fabrizio Ravanelli"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "Fabrizio Ravanelli put Juventus ahead against Ajax in Rome, then arrived on Teesside for around £7m and scored a hat-trick on his league debut in a 3-3 draw with Liverpool."
+  },
+  {
+    "q": "Then club-record signing Afonso Alves scored a hat-trick in an 8-1 home win on the final day of the 2007-08 season — against which club?",
+    "o": [
+      "Derby County",
+      "Wigan Athletic",
+      "Newcastle United",
+      "Manchester City"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Manchester City were dismantled at the Riverside in May 2008. Alves had arrived from Heerenveen that January for what was then a club-record fee of around £12.5m."
+  },
+  {
+    "q": "The last competitive match at Ayresome Park, in April 1995, was a 2-1 win that sealed the Division One title. Who were the visitors?",
+    "o": [
+      "Watford",
+      "Luton Town",
+      "Barnsley",
+      "Tranmere Rovers"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "John Hendrie scored both goals — the last competitive goals at the old ground — as Boro went up as champions before the move across town."
+  },
+  {
+    "q": "Academy graduate Stewart Downing left Middlesbrough in 2009 in a deal worth up to £12m — which club did he join?",
+    "o": [
+      "Liverpool",
+      "Tottenham Hotspur",
+      "West Ham United",
+      "Aston Villa"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Downing moved to Aston Villa after relegation, later playing for Liverpool and West Ham. He returned to his boyhood club in 2015 for a reported £5.5m."
+  },
+  {
+    "q": "Juninho left Middlesbrough after their 1997 relegation from the Premier League — which Spanish club did he join?",
+    "o": [
+      "Celta Vigo",
+      "Real Betis",
+      "Real Zaragoza",
+      "Atlético Madrid"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Atlético Madrid took him to the Vicente Calderón, and it was from there that he returned to Teesside on loan in 1999-2000."
+  },
+  {
+    "q": "Which Australian striker did Middlesbrough sign from Leeds United in 2004?",
+    "o": [
+      "Harry Kewell",
+      "Mark Viduka",
+      "John Aloisi",
+      "Josh Kennedy"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Mark Viduka cost £4.5m and scored twice in the 4-1 second-leg win over Basel during the UEFA Cup run. He left for Newcastle United on a free in 2007."
+  },
+  {
+    "q": "In 1989 Middlesbrough sold Gary Pallister for £2.3m, at the time a British record fee for a defender. Which club bought him?",
+    "o": [
+      "Manchester United",
+      "Liverpool",
+      "Tottenham Hotspur",
+      "Everton"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Pallister had just been relegated with Boro that summer; at Old Trafford he went on to form a title-winning centre-back partnership with Steve Bruce."
+  },
+  {
+    "q": "Middlesbrough played at which ground for more than 90 years before moving to the Riverside Stadium in 1995?",
+    "o": [
+      "Ayresome Park",
+      "Roker Park",
+      "Baseball Ground",
+      "Victoria Ground"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Ayresome Park was Boro's home from 1903 and hosted its last competitive game in April 1995; the club began the following season at the newly built Riverside Stadium on the town's old dockland."
+  }
+]

@@ -231,8 +231,17 @@ const judged = await pipeline(
     + `break it and could not.`,
     { schema: VERDICT, phase: 'Skeptic', label: `skep:${item.club}:${item.i}`, effort: 'high' },
   ).then((v) => {
-    if (!v || v.verdict !== 'keep') throw new Error('rejected by skeptic');
-    return item;
+    // ⚠️ 'fix' IS A PASS, NOT A REJECTION — and this line threw away ten
+    // verified Middlesbrough questions on 2026-09-04. The skeptic's schema has
+    // three verdicts; only 'reject' means the question is unsound. A 'fix'
+    // means "I tried to break this and could not, but tighten the hint", and
+    // it arrives WITH the corrected text in v.fixed. Discarding it loses a
+    // good question AND the improvement. Wave Q's journal held 56 keep, 18
+    // fix and ZERO reject, while the run reported 10 casualties.
+    // The examiner branch above always handled this correctly; only this one
+    // was wrong, which is why it looked like the skeptic being strict.
+    if (!v || v.verdict === 'reject') throw new Error('rejected by skeptic');
+    return v.verdict === 'fix' && v.fixed ? { ...item, q: { ...item.q, ...v.fixed } } : item;
   }),
 );
 
