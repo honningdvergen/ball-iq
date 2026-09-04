@@ -2083,6 +2083,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    thumbs behave as though they are not. Effective target ≈ 41x54pt against a
    ~35pt visual key, which is how the system keyboard does it too. */
 .wd-key::after{content:"";position:absolute;inset:-3px -3px;border-radius:8px;}
+/* The slop must not leave the screen. The keyboard is full-bleed, so the
+   first and last key's outward slop (3px) sat beyond the viewport edge and
+   gave every phone a 3px horizontal jiggle (scrollWidth 393 on a 390 view,
+   found by the 2026-09-04 palette sweep). Nothing is tappable out there. */
+.wd-kb-row > .wd-key:first-child::after{left:0;}
+.wd-kb-row > .wd-key:last-child::after{right:0;}
 
 /* ── HIT SLOP ───────────────────────────────────────────────────────────────
    Grows a control's TOUCH area to the 44x44 floor without changing a pixel of

@@ -11,7 +11,9 @@ tests) so the mapping was applied everywhere in one commit. Band tiles/keys fill
 8/10px corners; the game's own tiles filled (--s2, 8px). Sweep: 11 screen types × 390/1440 on the local
 build — clean except the Footle board at 390 (7px overflow: fixed -20px escape vs the web shell's
 clamp padding — yesterday's shell, fixed). Lesson: when tokens exist but values are inlined, a "token
-change" is a MAPPING across the repo, not an edit to tokens.js.
+change" is a MAPPING across the repo, not an edit to tokens.js. Prod sweep (8 shots, 0 errors, bg live) found a
+SECOND, older 3px jiggle on the Footle screen: the keys' ::after touch-slop poked past the viewport on the
+outermost keys — fixed (first/last key slop stops at the edge).
 **Next (design):** composition, not colour — the Today cards all weigh the same (nothing says "this one
 first"); the band has no air above the grid; generic outline icons. One a day.
 
