@@ -1,0 +1,99 @@
+[
+  {
+    "_i": 9,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Mark Viduka",
+    "reason": "Viduka, an Australian striker, signed for Middlesbrough from Leeds United in July 2004 for \u00a34.5m following Leeds' relegation. Distractors (Kewell, Emerton, Neill) are all Australians but none moved from Leeds to Boro in 2004, so they remain plausible-but-wrong. Answer is not 'Middlesbrough'; all options are full player names (no format odd-one-out).",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Mark_Viduka",
+      "https://footballleagueworld.co.uk/leeds-united-smashed-it-with-mark-viduka-celtic-transfer/"
+    ]
+  },
+  {
+    "_i": 10,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Bradford City",
+    "reason": "Schwarzer moved to Middlesbrough from Bradford City in February 1997 (16 appearances there, matching the hint) and stayed until leaving for Fulham in May 2008 \u2014 11 years, 1997-2008, checks out. Minor note: hint cites 446 Boro appearances vs 445 per Wikipedia's infobox; a 1-appearance discrepancy across sources, not answer-determining, so not flagged as fix. Answer is not 'Middlesbrough'; options are all English club names, no format outlier.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Mark_Schwarzer"
+    ]
+  },
+  {
+    "_i": 11,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Steve McClaren",
+    "reason": "McClaren managed Middlesbrough at the 2006 UEFA Cup final in Eindhoven vs Sevilla, and departed for the England job that took effect 1 August 2006 \u2014 'weeks after' the 10 May final holds even though the England appointment was publicly announced six days before the final. Answer is not 'Middlesbrough'; options are all full manager names.",
+    "sources": [
+      "https://www.cnn.com/2006/SPORT/football/05/04/england.coach/",
+      "https://en.wikipedia.org/wiki/Steve_McClaren"
+    ]
+  },
+  {
+    "_i": 12,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Manchester United",
+    "reason": "Pallister moved from Middlesbrough to Manchester United in August 1989 for \u00a32.3m, a British record fee for a defender at the time \u2014 confirmed by multiple sources. Answer is not 'Middlesbrough'; options are all club names.",
+    "sources": [
+      "https://www.gazettelive.co.uk/sport/football/football-news/gary-pallisters-manchester-united-transfer-18002284",
+      "https://www.gazettelive.co.uk/sport/football/football-news/revisiting-sale-gary-pallister-manchester-21135514"
+    ]
+  },
+  {
+    "_i": 13,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Chesterfield",
+    "reason": "Chesterfield (Football League Second Division, then England's third tier) drew 3-3 with Middlesbrough at Old Trafford in the 1997 FA Cup semi-final before losing the Hillsborough replay 3-0. 'Third-tier' claim confirmed. Answer is not 'Middlesbrough'; options are all club names.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1996%E2%80%9397_Chesterfield_F.C._season",
+      "https://www.gazettelive.co.uk/sport/onthisboroday-1997-boro-chesterfield-play-9027224"
+    ]
+  },
+  {
+    "_i": 14,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Ayresome Park",
+    "reason": "Ayresome Park was Boro's home from 1903 until April 1995 (92 years, 'more than 90'), before the move to the Riverside Stadium the following season. Answer is not 'Middlesbrough'; options are all ground names. Note: this question is textually near-identical to _i15 (same options, same answer, slightly reworded hint) \u2014 a within-pack duplicate, flagged for the human curator's awareness though it is not one of the four required checks.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ayresome_Park",
+      "https://footballgroundguide.com/leagues/england/middlesbrough-ayresome-park.html"
+    ]
+  },
+  {
+    "_i": 15,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Ayresome Park",
+    "reason": "Same fact pattern as _i14, verified true. Flagging again: _i14 and _i15 are duplicate questions (identical stem, options, and answer; hint reworded) \u2014 recommend the curator drop one before both ship in the same Middlesbrough pack.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ayresome_Park"
+    ]
+  },
+  {
+    "_i": 16,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Manchester City",
+    "reason": "Middlesbrough beat Manchester City 8-1 at the Riverside on 11 May 2008, the final day of 2007-08; Alves scored a hat-trick (37', 60', 90'). He'd joined from Heerenveen in January 2008 for a fee reported around \u20ac12m/\u20ac13m, a Boro club record at the time. Answer is not 'Middlesbrough'; options are all club names.",
+    "sources": [
+      "https://www.90min.com/posts/6592137-middlesbrough-8-1-man-city-the-citizens-final-taste-of-life-without-billionaire-owners",
+      "https://www.skysports.com/football/mboro-vs-man-city/report/102770"
+    ]
+  },
+  {
+    "_i": 17,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Massimo Maccarone",
+    "reason": "Maccarone scored the 90th-minute equaliser/winner completing the comeback vs Basel and an 89th-minute header vs Steaua Bucharest in the 2006 UEFA Cup run, both recovering three-goal aggregate deficits. Answer is not 'Middlesbrough'; options are all full player names.",
+    "sources": [
+      "https://www.gazettelive.co.uk/sport/football/football-news/massimo-maccarone-those-incredible-uefa-14741469",
+      "https://en.wikipedia.org/wiki/2006_UEFA_Cup_Final"
+    ]
+  }
+]

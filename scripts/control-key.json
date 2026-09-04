@@ -1,0 +1,92 @@
+[
+  {
+    "_i": 0,
+    "stage": "skeptic",
+    "opusSaid": "Keyed answer verified: Middlesbrough's first fixture of 1986-87, home to Port Vale on 23 Aug 1986, was staged at Hartlepool United's ground (2-2, 3,690 Boro fans; Port Vale objected, the Football Leag"
+  },
+  {
+    "_i": 1,
+    "stage": "skeptic",
+    "opusSaid": "Stem, key and distractors survive attack. Final: 10 May 2006, Philips Stadion Eindhoven, Sevilla 4-0; McClaren managed Middlesbrough 12 June 2001 - 11 May 2006 and the final was his last game (250th) "
+  },
+  {
+    "_i": 2,
+    "stage": "skeptic",
+    "opusSaid": "Key resolves correctly: o[3] = \\\"Fabrizio Ravanelli\\\" — verified he scored the 12th-minute opener for Juventus in the 22 May 1996 Champions League final against Ajax in Rome (1-1, Juve won on penaltie"
+  },
+  {
+    "_i": 3,
+    "stage": "skeptic",
+    "opusSaid": "Tried to break every assertion in the stem and could not. VERIFIED: Middlesbrough 8-1 Manchester City, Riverside Stadium, Sunday 11 May 2008 — matchday 38, genuinely the final day of 2007-08 (corrobor"
+  },
+  {
+    "_i": 4,
+    "stage": "skeptic",
+    "opusSaid": "Stem and key survive attack. o[1]=\\\"Luton Town\\\" is correct (Middlesbrough 2-1 Luton Town, 30 Apr 1995, att. 23,903), and the load-bearing premise — that the win \\\"sealed the Division One title\\\" desp"
+  },
+  {
+    "_i": 5,
+    "stage": "examiner",
+    "opusSaid": "Keyed answer resolves correctly: o[1] = \\\"Alen Boksic\\\", who joined Middlesbrough from Lazio on 7 August 2000 for £2.5m, aged 30. Stem claims all check out (Croatian, striker, Lazio, 2000). Not self-a"
+  },
+  {
+    "_i": 6,
+    "stage": "skeptic",
+    "opusSaid": "Key and distractors survive attack; one stem claim is soft and worth hardening.\\n\\nHOLDS: o[3]=\\\"Aston Villa\\\" is correct (16 July 2009, O'Neill's first summer signing after Boro's relegation). \\\"Acad"
+  },
+  {
+    "_i": 7,
+    "stage": "skeptic",
+    "opusSaid": "Keyed answer resolves correctly (o[3] = \\\"Atletico Madrid\\\") and every other stem claim holds: Middlesbrough were relegated at the end of 1996-97, Juninho left for Atletico Madrid in summer 1997, and "
+  },
+  {
+    "_i": 8,
+    "stage": "examiner",
+    "opusSaid": "Keyed answer resolves to \"Basel\" and is correct: Basel won the QF first leg 2-0 and Middlesbrough won the return 4-1 (agg 4-3). The stem's \"three goals down on aggregate twice\" checks out — Basel led "
+  },
+  {
+    "_i": 9,
+    "stage": "skeptic",
+    "opusSaid": "Stem, key and hint all survive attack — the defect is in the distractor set (rule 4).\n\nVERIFIED (tried to break, could not):\n- o[1] resolves to \"Mark Viduka\" — correct index, no off-by-one.\n- Stem pre"
+  },
+  {
+    "_i": 10,
+    "stage": "examiner",
+    "opusSaid": "Core facts check out: Mark Schwarzer signed for Middlesbrough from Bradford City in February 1997, having arrived at Valley Parade from Kaiserslautern in late 1996, and he left Boro for Fulham in 2008"
+  },
+  {
+    "_i": 11,
+    "stage": "examiner",
+    "opusSaid": "Resolved answer o[0]=\\\"Steve McClaren\\\" is correct: he managed Middlesbrough in the 2006 UEFA Cup final, lost 4-0 to Sevilla in Eindhoven on 10 May 2006. Every stem claim is true, the question is not "
+  },
+  {
+    "_i": 12,
+    "stage": "skeptic",
+    "opusSaid": "Stem and key survive attack. Pallister: Middlesbrough -> Manchester United, 29 Aug 1989, £2.3m, and multiple sources confirm it broke the national/British record for a fee paid for a defender (also th"
+  },
+  {
+    "_i": 13,
+    "stage": "examiner",
+    "opusSaid": "Answer and stem are sound: Middlesbrough 3-3 Chesterfield at Old Trafford, 13 April 1997, replay won 3-0 at Hillsborough, Boro on to the final. Chesterfield were third tier (Division Two, 1996-97); Wr"
+  },
+  {
+    "_i": 14,
+    "stage": "examiner",
+    "opusSaid": "Answer and stem check out; only the hint needs tightening. Resolved o[0] = \"Ayresome Park\" is correct: it was Middlesbrough's home from its 1903 opening until the final match there on 30 April 1995, s"
+  },
+  {
+    "_i": 15,
+    "stage": "skeptic",
+    "opusSaid": "Tried to break the stem and could not. Ayresome Park was Boro's home from the 1903-04 season until the Riverside opened in 1995 (91+ years, so the \\\"more than 90 years\\\" floor is safe), and the final "
+  },
+  {
+    "_i": 16,
+    "stage": "examiner",
+    "opusSaid": "Answer and stem check out: Middlesbrough beat Manchester City 8-1 at the Riverside on 11 May 2008, the final day of 2007-08, with Afonso Alves scoring in the 37th, 60th and 90th minutes; Alves was Bor"
+  },
+  {
+    "_i": 17,
+    "stage": "examiner",
+    "opusSaid": "(a) Resolved answer o[2] = \\\"Massimo Maccarone\\\" is correct: he scored the 90th-minute goal that completed the 4-1 win over FC Basel (agg. 4-3) in the 2006 UEFA Cup quarter-final and the 89th-minute h"
+  }
+]

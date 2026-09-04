@@ -1,0 +1,572 @@
+[
+  {
+    "q": "West Bromwich Albion were formed in 1878 by workers from George Salter's Spring Works. Under what name did the club play before adopting 'Albion' in 1880?",
+    "o": [
+      "West Bromwich Wanderers",
+      "West Bromwich Strollers",
+      "West Bromwich Swifts",
+      "West Bromwich Rovers"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The factory men who founded the club called themselves the Strollers. The 'Albion' suffix arrived in 1880, and Albion were the first English club to take it.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "In which year did Albion move into The Hawthorns?",
+    "o": [
+      "1888",
+      "1900",
+      "1919",
+      "1931"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The first match at the new ground was a 1-1 draw in September 1900, and Albion have never moved since.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Jeff Astle's extra-time goal won the 1968 FA Cup final for Albion. Which club did they beat at Wembley?",
+    "o": [
+      "Everton",
+      "Leeds United",
+      "Sheffield Wednesday",
+      "Chelsea"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Astle struck three minutes into extra time to settle it 1-0 against Everton, completing a run in which he had scored in every round of the competition.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Cyrille Regis, Laurie Cunningham and Brendon Batson were known collectively by which nickname during their time together at Albion?",
+    "o": [
+      "The Holy Trinity",
+      "The Famous Five",
+      "The Three Degrees",
+      "The Three Kings"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The trio were named after the American vocal group, and were among the first black players to line up together in a First Division side.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Laurie Cunningham left Albion in 1979 for which club, becoming the first British player to sign for them?",
+    "o": [
+      "Real Madrid",
+      "Bayern Munich",
+      "Internazionale",
+      "Saint-Étienne"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Real Madrid paid a club-record fee in pesetas for the winger in July 1979, and he scored twice on his debut.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Albion won the 1892 FA Cup final 3-0. Which Midlands club did they beat?",
+    "o": [
+      "Wolverhampton Wanderers",
+      "Blackburn Rovers",
+      "Aston Villa",
+      "Small Heath"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "A one-sided Midlands derby gave Albion their second FA Cup, after the 1888 victory over Preston North End.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "In 1930-31 Albion completed a double no English club has managed before or since: the FA Cup plus what?",
+    "o": [
+      "The First Division championship",
+      "Promotion from the Second Division",
+      "The Second Division championship",
+      "The FA Charity Shield"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Albion went up from the Second Division and beat Birmingham 2-1 at Wembley in the same season, W. G. Richardson scoring both goals in the final.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Albion have been champions of England once. In which season?",
+    "o": [
+      "1888-89",
+      "1919-20",
+      "1930-31",
+      "1953-54"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "In the first season after the First World War Albion took the title with 104 goals and 60 points, both league records at the time.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "In the season Albion won the 1954 FA Cup they also finished league runners-up. Which club took the title ahead of them?",
+    "o": [
+      "Portsmouth",
+      "Manchester United",
+      "Wolverhampton Wanderers",
+      "Huddersfield Town"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Wolves won their first championship in 1953-54, denying Vic Buckingham's side the League and Cup double.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Albion's only League Cup triumph came in 1966, in the last final played over two legs. Who did they beat 5-3 on aggregate?",
+    "o": [
+      "Queens Park Rangers",
+      "West Ham United",
+      "Leicester City",
+      "Chelsea"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "West Ham won the first leg 2-1 in London before Albion hit four at The Hawthorns; a year later Albion lost the first Wembley League Cup final to QPR.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Ron Atkinson signed Brendon Batson for Albion in 1978 from the club he had himself just left as manager. Which club?",
+    "o": [
+      "Colchester United",
+      "Oxford United",
+      "Peterborough United",
+      "Cambridge United"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Atkinson had taken Cambridge United out of the Fourth Division before moving to The Hawthorns in January 1978, and brought Batson with him.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Which player holds Albion's club records for both most appearances and most goals?",
+    "o": [
+      "Ronnie Allen",
+      "Tony Brown",
+      "Jeff Astle",
+      "Cyrille Regis"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "'Bomber' Brown played 720 games and scored 279 goals between 1963 and 1980, and finished 1970-71 as the First Division's top scorer from midfield.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Which Albion player was sent home from the 1978 World Cup finals after failing a drugs test?",
+    "o": [
+      "Len Cantello",
+      "Ally Robertson",
+      "Willie Johnston",
+      "Asa Hartford"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Johnston tested positive after Scotland's defeat by Peru in Argentina, was banned from international football, and soon left The Hawthorns for Vancouver.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "On 30 December 1978 Albion won 5-3 away from home in a match still rated among English football's greatest. At which ground?",
+    "o": [
+      "Old Trafford",
+      "Highbury",
+      "Anfield",
+      "Elland Road"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "It was 3-3 at half-time at Old Trafford before Albion pulled away; Len Cantello's volley was voted goal of the season.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "As holders of the FA Cup, Albion entered the 1968-69 European Cup Winners' Cup and went out in the quarter-finals to which club?",
+    "o": [
+      "Dunfermline Athletic",
+      "Rangers",
+      "Slovan Bratislava",
+      "Barcelona"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "A goalless draw in Scotland was followed by a 1-0 Dunfermline win at The Hawthorns, and the Scots went on to reach the semi-finals.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Albion signed Cyrille Regis in 1977 from which non-League club?",
+    "o": [
+      "Enfield",
+      "Wealdstone",
+      "Hayes",
+      "Barnet"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Regis was playing for Hayes when Albion paid an initial £5,000, with a further sum due after 20 appearances — one of the great bargains of the era.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Manchester United paid a then British record fee to sign Albion's young midfielder in October 1981. How much was it?",
+    "o": [
+      "£750,000",
+      "£1.5 million",
+      "£2.3 million",
+      "£3 million"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The £1.5m deal reunited him with Ron Atkinson, his manager at The Hawthorns a few months earlier.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Albion signed Jeff Astle in 1964 from which club?",
+    "o": [
+      "Bury",
+      "Notts County",
+      "Mansfield Town",
+      "Rotherham United"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Astle stepped up from Notts County to the First Division with Albion, and supporters came to know him simply as 'The King'.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "Which ground did Albion leave when they moved to The Hawthorns in 1900?",
+    "o": [
+      "Four Acres",
+      "Dartmouth Park",
+      "Stoney Lane",
+      "Bunn's Field"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Stoney Lane was Albion's home from 1885 to 1900, covering their first two FA Cup wins; the club's earlier grounds were all short stays.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "History"
+  },
+  {
+    "q": "West Brom reached the Premier League for the first time in 2002, going up as Division One runners-up. Which manager took them there?",
+    "o": [
+      "Gary Megson",
+      "Bryan Robson",
+      "Denis Smith",
+      "Tony Mowbray"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Megson's side finished second behind champions Manchester City, holding off local rivals Wolves in the run-in.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "On the final day of the 2004-05 season West Brom won 2-0 at The Hawthorns to complete the Great Escape. Who were the visitors that afternoon?",
+    "o": [
+      "Portsmouth",
+      "Charlton Athletic",
+      "Blackburn Rovers",
+      "Fulham"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Albion had been bottom of the table at Christmas; beating Portsmouth on 15 May 2005 lifted them out of the drop zone for the first time all season.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Who was West Brom's manager for the final-day survival in May 2005?",
+    "o": [
+      "Bryan Robson",
+      "Gary Megson",
+      "Roberto Di Matteo",
+      "Steve Clarke"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Robson had taken over in November 2004 with the club adrift at the bottom, and became the first manager to keep a Premier League side up from bottom place at Christmas.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "West Brom's older nickname, the Throstles, comes from a bird long associated with the club. Which bird is a throstle?",
+    "o": [
+      "Song thrush",
+      "House martin",
+      "Robin",
+      "Swallow"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Throstle is an old English word for the song thrush, the bird perched on a crossbar in the club's badge.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Roy Hodgson left West Brom in May 2012 to take which job?",
+    "o": [
+      "England manager",
+      "Liverpool manager",
+      "Fulham manager",
+      "Crystal Palace manager"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Hodgson had steadied Albion after arriving in February 2011, and the FA appointed him England manager ahead of Euro 2012; Steve Clarke replaced him at The Hawthorns.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "West Brom lost the 2007 Championship play-off final at Wembley. Which club beat them 1-0?",
+    "o": [
+      "Derby County",
+      "Wolverhampton Wanderers",
+      "Watford",
+      "Hull City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Stephen Pearson's second-half finish won it for Derby, a fortnight after Albion had knocked Wolves out in the semi-finals.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "West Brom won the Championship title in 2007-08 to return to the Premier League. Who was their manager?",
+    "o": [
+      "Tony Mowbray",
+      "Roberto Di Matteo",
+      "Alan Irvine",
+      "Bryan Robson"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Mowbray arrived in October 2006 and built a passing side that won the title and reached an FA Cup semi-final in the same season.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "After relegation in 2009, which manager took West Brom straight back up as Championship runners-up in 2010?",
+    "o": [
+      "Roberto Di Matteo",
+      "Roy Hodgson",
+      "Tony Mowbray",
+      "Steve Clarke"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Di Matteo's first job in England ended in promotion behind champions Newcastle; he was sacked the following February despite it.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Steve Clarke's first season in charge, 2012-13, ended with West Brom in which Premier League position?",
+    "o": [
+      "8th",
+      "10th",
+      "12th",
+      "14th"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Eighth on a club-record 49 points remains Albion's best Premier League finish, and their highest league placing since 1985.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "West Brom drew 5-5 with Manchester United in Sir Alex Ferguson's final match in May 2013. Which Albion striker scored a second-half hat-trick?",
+    "o": [
+      "Romelu Lukaku",
+      "Shane Long",
+      "Saido Berahino",
+      "Peter Odemwingie"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Lukaku, on loan from Chelsea, came on at half-time with Albion 3-0 down and scored three as they hit back from 5-2 to 5-5.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Peter Odemwingie joined West Brom in August 2010 from which club?",
+    "o": [
+      "Lokomotiv Moscow",
+      "CSKA Moscow",
+      "Rubin Kazan",
+      "Dynamo Kyiv"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The Nigeria forward arrived from Lokomotiv for a reported £2.5m and scored 15 league goals in his first season in England.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Saido Berahino finally left West Brom in January 2017. Which club signed him?",
+    "o": [
+      "Stoke City",
+      "Tottenham Hotspur",
+      "Newcastle United",
+      "Burnley"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Spurs had bids rejected in 2015, after which Berahino refused to play; eighteen months later Stoke paid an initial £12m to take him.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Which manager took charge of West Brom in January 2015 and later led them to a 10th-place finish in 2016-17?",
+    "o": [
+      "Tony Pulis",
+      "Alan Irvine",
+      "Alan Pardew",
+      "Steve Clarke"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Pulis took over from Alan Irvine that January and delivered 45 points in 2016-17, one of only a handful of top-half Premier League finishes in Albion's history.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Kevin Phillips spent two seasons at The Hawthorns from 2006, ending with promotion as Championship champions. Which Midlands club did West Brom sign him from?",
+    "o": [
+      "Aston Villa",
+      "Coventry City",
+      "Derby County",
+      "Leicester City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The former Sunderland and Southampton striker had spent a single season at Villa Park before dropping to the Championship with Albion in 2006.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "West Brom won the 1993 Second Division play-off final 3-0 against Port Vale at Wembley. Which manager led them that day?",
+    "o": [
+      "Ossie Ardiles",
+      "Bobby Gould",
+      "Keith Burkinshaw",
+      "Alan Buckley"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Ardiles lasted only one season at The Hawthorns but ended it with promotion in front of a Wembley crowd four-fifths dressed in blue and white.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Which substitute opened the scoring in West Brom's 2-0 final-day win that sealed survival in May 2005?",
+    "o": [
+      "Geoff Horsfield",
+      "Robert Earnshaw",
+      "Kevin Campbell",
+      "Zoltán Gera"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Horsfield came off the bench and volleyed in just before the hour; Kieran Richardson added the second with a quarter of an hour left.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "On deadline day in January 2013, Peter Odemwingie drove to London and was filmed sitting in his car outside which club's ground?",
+    "o": [
+      "Queens Park Rangers",
+      "Fulham",
+      "West Ham United",
+      "Crystal Palace"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "No fee had been agreed, so Odemwingie was turned away at Loftus Road and was back training with Albion the next day.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Which Spanish coach was in charge of West Brom for four months in 2014?",
+    "o": [
+      "Pepe Mel",
+      "Quique Sánchez Flores",
+      "Juande Ramos",
+      "Míchel"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Mel arrived from Real Betis in January 2014, won three of 17 games but kept Albion up in 17th, and left by mutual consent in May.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  },
+  {
+    "q": "Youssouf Mulumbu arrived at West Brom in 2009 from which club?",
+    "o": [
+      "Paris Saint-Germain",
+      "Standard Liège",
+      "Monaco",
+      "Anderlecht"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The DR Congo midfielder came from PSG, first on loan and then permanently for around £175,000, and became one of Albion's best-value signings of the era.",
+    "club": "West Brom",
+    "type": "mcq",
+    "cat": "PL"
+  }
+]

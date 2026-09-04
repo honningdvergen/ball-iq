@@ -1,0 +1,104 @@
+[
+  {
+    "_i": 0,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Victoria Park, Hartlepool",
+    "reason": "Confirmed: with Ayresome Park's gates padlocked by the provisional liquidator over summer 1986, Boro's opening (home) fixture of 1986-87 vs Port Vale was relocated to Hartlepool United's Victoria Park (23 Aug 1986, 2-2). Distractors (Feethams/Darlington, Bootham Crescent/York, Roker Park/Sunderland) are all plausible NE grounds and none gives away the answer.",
+    "sources": [
+      "https://www.gazettelive.co.uk/sport/football/football-news/middlesbrough-important-games-port-vale-28302239",
+      "https://en.wikipedia.org/wiki/Victoria_Park_(Hartlepool)"
+    ]
+  },
+  {
+    "_i": 1,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Steve McClaren",
+    "reason": "McClaren managed Boro in the 2006 UEFA Cup final vs Sevilla in Eindhoven. He was named England manager on 4 May 2006, six days before the 10 May final, and it was his last match in charge — matches the hint exactly. Robson, Southgate and Strachan did all manage Middlesbrough, just in other seasons.",
+    "sources": [
+      "https://www.oncloudseven.com/583-steve-mcclaren/",
+      "https://en.wikipedia.org/wiki/2006_UEFA_Cup_final"
+    ]
+  },
+  {
+    "_i": 2,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Fabrizio Ravanelli",
+    "reason": "Ravanelli scored for Juventus in the 1996 Champions League final win over Ajax, then joined Middlesbrough for a club-record ~£7m six weeks later that summer, scoring a hat-trick on his league debut (3-3 vs Liverpool). Matches stem and hint.",
+    "sources": [
+      "https://thesefootballtimes.co/2018/11/29/how-fabrizio-ravanelli-brought-glitz-glamour-and-an-unforgettable-hat-trick-on-debut-for-middlesbrough/",
+      "https://www.gazettelive.co.uk/sport/football/football-news/fabrizio-ravanelli-opens-up-transfer-27080720"
+    ]
+  },
+  {
+    "_i": 3,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Manchester City",
+    "reason": "Confirmed: Middlesbrough beat 10-man Man City 8-1 at the Riverside on the final day of 2007-08, with Afonso Alves (club-record ~£12.5m January 2008 signing from Heerenveen) scoring a hat-trick.",
+    "sources": [
+      "https://www.skysports.com/football/mboro-vs-man-city/report/102770",
+      "https://en.wikipedia.org/wiki/Afonso_Alves"
+    ]
+  },
+  {
+    "_i": 4,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Luton Town",
+    "reason": "Confirmed: Boro's 2-1 win over Luton Town on 30 April 1995 was the last competitive match at Ayresome Park and sealed the Division One title; John Hendrie scored both goals.",
+    "sources": [
+      "https://www.thenationalnews.com/sport/football/on-this-day-april-30-1995-middlesbrough-say-goodbye-to-ayresome-park-1.1012974",
+      "https://www.mfc.co.uk/news/2022/04/30/-onthisday-in-1995---farewell-to-ayresome-park/"
+    ]
+  },
+  {
+    "_i": 5,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Alen Boksic",
+    "reason": "Confirmed: Boksic joined Middlesbrough from Lazio in August 2000 aged 30, scoring 13 league goals in his first season, matching the hint.",
+    "sources": [
+      "https://backpagefootball.com/alen-boksic-boro-hero/47145/",
+      "https://en.wikipedia.org/wiki/Alen_Bok%C5%A1i%C4%87"
+    ]
+  },
+  {
+    "_i": 6,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Aston Villa",
+    "reason": "Confirmed: Stewart Downing, a Boro academy graduate, left for Aston Villa on 16 July 2009 for an initial ~£10m fee after Boro's relegation; he later played for Liverpool and West Ham, and returned to Middlesbrough in 2015 for ~£5.5m, exactly as the hint states.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Stewart_Downing",
+      "https://www.skysports.com/football/news/11680/9913965/stewart-downing-closing-on-move-back-to-middlesbrough"
+    ]
+  },
+  {
+    "_i": 7,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Atlético Madrid",
+    "reason": "Confirmed: Juninho left Middlesbrough for Atlético Madrid in summer 1997 (after relegation) for a fee commonly cited around £12m, and returned to Teesside on loan in 1999-2000, matching the hint.",
+    "sources": [
+      "https://www.sportsmole.co.uk/football/atletico-madrid/feature/on-this-day-juninho-joins-middlesbrough_109874.html",
+      "https://www.skysports.com/football/news/2240366/boro-agree-terms-for-juninho"
+    ]
+  },
+  {
+    "_i": 8,
+    "verdict": "fix",
+    "check": "false premise (in the hint, not the stem/answer)",
+    "resolved": "Basel",
+    "reason": "The quarter-final opponent, aggregate scoreline, and comeback are all correct (Basel won leg 1 2-0, Boro trailed 3-0 on aggregate early in leg 2 after Eduardo's 23rd-minute goal, then won 4-1 to progress 4-3), and Roma/Stuttgart/Xanthi were indeed beaten in earlier rounds of that run. But the hint states Basel 'led the tie 3-1' at the Riverside — at the moment Basel took a 3-goal aggregate lead, Boro had not yet scored, so the score was 3-0, not 3-1. Stem and answer are unaffected; only the hint's scoreline needs correcting.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2005%E2%80%9306_Middlesbrough_F.C._season",
+      "https://www.90min.com/posts/middlesbrough-run-to-the-2006-uefa-cup-final"
+    ],
+    "fixed": {
+      "hint": "Basel won the first leg 2-0 and led the tie 3-0 early at the Riverside before Boro won the return 4-1 to go through 4-3. Roma, Stuttgart and Xanthi were all beaten earlier in the same run."
+    }
+  }
+]

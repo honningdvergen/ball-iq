@@ -1,0 +1,119 @@
+[
+  {
+    "_i": 9,
+    "q": "Which Australian striker did Middlesbrough sign from Leeds United in 2004?",
+    "o": [
+      "Harry Kewell",
+      "Mark Viduka",
+      "Brett Emerton",
+      "Lucas Neill"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "Mark Viduka cost £4.5m and scored twice in the 4-1 second-leg win over Basel during the UEFA Cup run. He left for Newcastle United on a free in 2007."
+  },
+  {
+    "_i": 10,
+    "q": "Mark Schwarzer joined Middlesbrough in 1997 and stayed 11 years — which English club did he sign from?",
+    "o": [
+      "Bradford City",
+      "Notts County",
+      "Bolton Wanderers",
+      "Huddersfield Town"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The Australian made just 16 appearances for Bradford City before the February 1997 move. He went on to make 446 appearances for Boro before joining Fulham in 2008."
+  },
+  {
+    "_i": 11,
+    "q": "Who was Middlesbrough's manager for the 2006 UEFA Cup final against Sevilla?",
+    "o": [
+      "Steve McClaren",
+      "Bryan Robson",
+      "Gareth Southgate",
+      "Gordon Strachan"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Steve McClaren took charge in 2001 and left for the England job weeks after the Eindhoven final. Robson, Southgate and Strachan all managed the club, but in different years."
+  },
+  {
+    "_i": 12,
+    "q": "In 1989 Middlesbrough sold Gary Pallister for £2.3m, at the time a British record fee for a defender. Which club bought him?",
+    "o": [
+      "Manchester United",
+      "Liverpool",
+      "Tottenham Hotspur",
+      "Everton"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Pallister went on to form a title-winning centre-back partnership with Steve Bruce at Old Trafford; the fee was badly needed back on Teesside."
+  },
+  {
+    "_i": 13,
+    "q": "On the way to the 1997 FA Cup final, Middlesbrough were held 3-3 at Old Trafford by which third-tier side before winning the semi-final replay?",
+    "o": [
+      "Wrexham",
+      "Burnley",
+      "Crewe Alexandra",
+      "Chesterfield"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Chesterfield, then in the old Second Division, came within minutes of reaching the final; Boro won the replay at Hillsborough 3-0."
+  },
+  {
+    "_i": 14,
+    "q": "Middlesbrough played at which ground for more than 90 years before moving to the Riverside Stadium in 1995?",
+    "o": [
+      "Ayresome Park",
+      "Roker Park",
+      "Baseball Ground",
+      "Victoria Ground"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Ayresome Park was Boro's home from 1903 until April 1995, when the club moved to a newly built stadium on the town's old dockland."
+  },
+  {
+    "_i": 15,
+    "q": "Middlesbrough played at which ground for more than 90 years before moving to the Riverside Stadium in 1995?",
+    "o": [
+      "Ayresome Park",
+      "Roker Park",
+      "Baseball Ground",
+      "Victoria Ground"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Ayresome Park was Boro's home from 1903 and hosted its last game in April 1995; the club began the following season at the newly built Riverside Stadium on the town's old dockland."
+  },
+  {
+    "_i": 16,
+    "q": "Then club-record signing Afonso Alves scored a hat-trick in an 8-1 home win on the final day of the 2007-08 season — against which club?",
+    "o": [
+      "Derby County",
+      "Wigan Athletic",
+      "Newcastle United",
+      "Manchester City"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Manchester City were dismantled at the Riverside in May 2008. Alves had arrived from Heerenveen that January for a fee of about €12m, a club record at the time."
+  },
+  {
+    "_i": 17,
+    "q": "Which Middlesbrough striker scored the decisive late goal in both of the 2006 UEFA Cup comebacks, against Basel and Steaua Bucharest?",
+    "o": [
+      "Mark Viduka",
+      "Stewart Downing",
+      "Massimo Maccarone",
+      "Jimmy Floyd Hasselbaink"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Massimo Maccarone struck in the 90th minute against Basel and headed an 89th-minute winner against Steaua, both completing recoveries from three goals down on aggregate."
+  }
+]

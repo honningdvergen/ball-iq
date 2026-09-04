@@ -2771,5 +2771,37 @@ export const CLUBS = [
         "a": "A three-point deduction. Boro called off a December Premier League fixture at Blackburn Rovers citing an injury and illness crisis, and the appeal against the penalty failed. Without the deduction they would have stayed up \u2014 in a season that also brought the FA Cup final defeat to Chelsea and the League Cup final replay loss to Leicester."
       }
     ]
+  },
+  {
+    "club": "West Brom",
+    "slug": "west-brom",
+    "name": "West Brom",
+    "h1": "West Bromwich Albion Quiz",
+    "title": "West Brom Quiz with Answers \u2014 Baggies | Ball IQ",
+    "description": "Free West Bromwich Albion quiz with explained answers \u2014 the Three Degrees, Astle's 1968 winner, the Great Escape and the 5-5 at Old Trafford.",
+    "intro": [
+      "West Bromwich Albion were founded by factory men who called themselves the Strollers, and the Albion came in 1880. They played at Stoney Lane through their first two FA Cup wins and moved to The Hawthorns in 1900 \u2014 a 1-1 draw in that September, and they have never moved since. The throstle on the badge is a song thrush, which is where the older nickname comes from: the Throstles, long before the Baggies.",
+      "The trophies are older than most clubs' entire histories. The 1892 FA Cup came in a one-sided Midlands derby, four years after beating Preston North End. In 1930-31 Albion did something nobody has repeated \u2014 promotion from the Second Division and the FA Cup in the same season, W. G. Richardson scoring at Wembley. The league title arrived in 1919-20 with 104 goals and 60 points, both records at the time.",
+      "Then Ron Atkinson's side, and the three players everyone still names first. Cyrille Regis came from Hayes for an initial \u00a35,000, Laurie Cunningham and Brendon Batson alongside him, and the press called them the Three Degrees after the American group. That team won 5-3 at Old Trafford in December 1978 \u2014 3-3 at half-time, Len Cantello's volley voted goal of the season. Cunningham left for Real Madrid the next summer.",
+      "The modern chapters are the ones most supporters lived through: Gary Megson's runners-up finish behind Manchester City in 2002, Bryan Robson keeping a side up that had been bottom at Christmas, Tony Mowbray's title, Roy Hodgson leaving for the England job, Steve Clarke's eighth on a club-record 49 points, and Romelu Lukaku's hat-trick in the 5-5 that sent Sir Alex Ferguson into retirement. Every answer here explains itself."
+    ],
+    "faq": [
+      {
+        "q": "Why are West Brom called the Baggies and the Throstles?",
+        "a": "Throstle is an old English word for the song thrush, the bird perched on a crossbar in the club's badge, and it gave Albion their older nickname. The club was founded as West Bromwich Strollers by factory workers, taking the Albion name in 1880."
+      },
+      {
+        "q": "Who were the Three Degrees?",
+        "a": "Cyrille Regis, Laurie Cunningham and Brendon Batson, named after the American vocal group, and among the first black players to line up together in a First Division side. Ron Atkinson signed Regis from Hayes for an initial \u00a35,000; Cunningham left for Real Madrid in July 1979, where he scored twice on his debut."
+      },
+      {
+        "q": "What was the Great Escape?",
+        "a": "West Brom were bottom of the Premier League at Christmas in 2004-05 and stayed up on the final day, beating Portsmouth on 15 May 2005 \u2014 Geoff Horsfield off the bench, Kieran Richardson adding the second. Bryan Robson, who had taken over that November, became the first manager to keep a side up from bottom place at Christmas."
+      },
+      {
+        "q": "What is West Brom's best Premier League finish?",
+        "a": "Eighth, on a club-record 49 points under Steve Clarke in 2012-13 \u2014 their highest league placing in decades. Tony Pulis later delivered 45 points and a top-half finish in 2016-17."
+      }
+    ]
   }
 ];

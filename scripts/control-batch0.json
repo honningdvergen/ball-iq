@@ -1,0 +1,119 @@
+[
+  {
+    "_i": 0,
+    "q": "With the Ayresome Park gates padlocked by the provisional liquidator, Middlesbrough staged their first home fixture of the 1986-87 season at another club's ground. Which one?",
+    "o": [
+      "Feethams, Darlington",
+      "Bootham Crescent, York",
+      "Victoria Park, Hartlepool",
+      "Roker Park, Sunderland"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Hartlepool United lent Boro Victoria Park for the Port Vale game, weeks after a winding-up order and the sacking of the club's non-playing staff."
+  },
+  {
+    "_i": 1,
+    "q": "Who was Middlesbrough's manager for the 2006 UEFA Cup final against Sevilla?",
+    "o": [
+      "Steve McClaren",
+      "Bryan Robson",
+      "Gareth Southgate",
+      "Gordon Strachan"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Steve McClaren took charge in 2001, and had already been named England's next manager six days before the Eindhoven final; he left Boro the day after it. Robson, Southgate and Strachan all managed the club, but in other years."
+  },
+  {
+    "_i": 2,
+    "q": "Which Italian striker joined Middlesbrough from Juventus in 1996, the same summer he had scored in the Champions League final?",
+    "o": [
+      "Benito Carbone",
+      "Pierluigi Casiraghi",
+      "Massimo Maccarone",
+      "Fabrizio Ravanelli"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "Fabrizio Ravanelli put Juventus ahead against Ajax in Rome, then arrived on Teesside for around £7m and scored a hat-trick on his league debut in a 3-3 draw with Liverpool."
+  },
+  {
+    "_i": 3,
+    "q": "Then club-record signing Afonso Alves scored a hat-trick in an 8-1 home win on the final day of the 2007-08 season — against which club?",
+    "o": [
+      "Derby County",
+      "Wigan Athletic",
+      "Newcastle United",
+      "Manchester City"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Manchester City were dismantled at the Riverside in May 2008. Alves had arrived from Heerenveen that January for a club-record fee of around £12.5m."
+  },
+  {
+    "_i": 4,
+    "q": "The last competitive match at Ayresome Park, in April 1995, was a 2-1 win that sealed the Division One title. Who were the visitors?",
+    "o": [
+      "Watford",
+      "Luton Town",
+      "Barnsley",
+      "Tranmere Rovers"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "John Hendrie scored both goals — the last ever at the old ground — as Boro went up as champions before the move across town."
+  },
+  {
+    "_i": 5,
+    "q": "Which Croatian striker did Middlesbrough sign from Lazio in 2000?",
+    "o": [
+      "Davor Suker",
+      "Alen Boksic",
+      "Igor Stimac",
+      "Robert Prosinecki"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Alen Boksic arrived for around £2.5m aged 30 and scored 13 league goals in his first season. He was among the highest earners in the country at the time."
+  },
+  {
+    "_i": 6,
+    "q": "Academy graduate Stewart Downing left Middlesbrough in 2009 for around £10m — which club did he join?",
+    "o": [
+      "Liverpool",
+      "Tottenham Hotspur",
+      "West Ham United",
+      "Aston Villa"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Downing moved to Aston Villa after relegation, later playing for Liverpool and West Ham. He returned to his boyhood club in 2015 for a reported £5.5m."
+  },
+  {
+    "_i": 7,
+    "q": "Juninho left Middlesbrough after the 1997 relegation for a fee of around £12m — which Spanish club did he join?",
+    "o": [
+      "Celta Vigo",
+      "Real Betis",
+      "Real Zaragoza",
+      "Atlético Madrid"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Atlético Madrid took him to the Vicente Calderon, and it was from there that he returned to Teesside on loan in 1999-2000."
+  },
+  {
+    "_i": 8,
+    "q": "Middlesbrough came from three goals down on aggregate twice in the 2005-06 UEFA Cup — against Steaua Bucharest in the semi-final, and which club in the quarter-final?",
+    "o": [
+      "Basel",
+      "Roma",
+      "Stuttgart",
+      "Xanthi"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Basel won the first leg 2-0 and led the tie 3-1 early at the Riverside before Boro won the return 4-1 to go through 4-3. Roma, Stuttgart and Xanthi were all beaten earlier in the same run."
+  }
+]
