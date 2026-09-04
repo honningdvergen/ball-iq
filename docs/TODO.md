@@ -10,7 +10,7 @@ that never started** (6 more were in a room that DID start and still recorded no
 counter bug fixed in f42498f, since MP is usually a guest's only mode). So the invite → dead room path is
 the guest funnel's biggest single loss.
 
-**✅ Shipped: a dead invite link is a door, not a wall (84134f0).** The initial room select filters
+**✅ Shipped: a dead invite link is a door, not a wall (bcd2bd9).** The initial room select filters
 `state='ended'`, so a guest tapping an invite after the host left got "⚠️ Couldn't load room" and a
 **Try again that can never succeed**. The hook now says which failure it is (`errorKind` 'gone' vs
 'fetch'); the gone branch is no longer an error screen — a wave not a warning triangle, plain words,
