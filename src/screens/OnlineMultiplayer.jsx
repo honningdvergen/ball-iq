@@ -347,12 +347,58 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
     } catch {}
   }, [room, players, myPlayer]);
 
+  /* ── THE LOBBY HAD NO INSTRUMENT AT ALL ────────────────────────────────
+     Read 2026-09-04, 7 days of game_rooms: 68 rooms, 41 started, 27 not.
+     Every one of the 27 is state='ended', so none is a room still sitting
+     there waiting — they were left. Thirteen hold ZERO room_players rows,
+     and create_room inserts the host's row in the same transaction, so
+     those are hosts who opened a lobby and left before anyone arrived:
+     48% of the failures and the biggest shape in this funnel.
+
+     What the rows CANNOT say is why — did they try to invite someone and
+     get no answer, or never find the invite control? Nothing here fired a
+     single event (the only loopEvents in this file are the rival prompt's),
+     so the question had no answer at all. Three events, one per decision
+     point. Deliberately no per-question chatter: this is about the doorway.
+
+     ⚠️ And "27 lobbies fail" is not what the rest were either: 4 are a Host
+     Bot harness pair and 3 are one guest opening rooms in 11 minutes.
+     Genuine two-player rooms that never started, in a week: four. */
+  const lobbyEnteredRef = useRef(0);
+  const invitedRef = useRef(false);
+  const lobbyOpenSentRef = useRef(false);
+  useEffect(() => {
+    if (!room || room.state !== 'lobby' || lobbyOpenSentRef.current) return;
+    lobbyOpenSentRef.current = true;
+    lobbyEnteredRef.current = Date.now();
+    loopEvent('mp-lobby-open', { host: !!isHost, mode: room.mode || 'race' });
+  }, [room, isHost]);
+
   const handleLeave = useCallback(async () => {
+    // Fire BEFORE leave(): leave_room ends the room and drops our row, and
+    // onExit unmounts this component — after that there is nothing left to
+    // describe. `secs` separates "opened it to look" from "waited and gave
+    // up", which is the whole question about the thirteen.
+    try {
+      if (room?.state === 'lobby') {
+        loopEvent('mp-lobby-left', {
+          host: !!isHost,
+          players: Array.isArray(players) ? players.length : null,
+          invited: invitedRef.current,
+          secs: lobbyEnteredRef.current ? Math.round((Date.now() - lobbyEnteredRef.current) / 1000) : null,
+        });
+      }
+    } catch {}
     try { await actions.leave(); } catch {}
     onExit();
-  }, [actions, onExit]);
+  }, [actions, onExit, room, isHost, players]);
 
   const handleCopy = useCallback(async () => {
+    // Copying the six-letter code is the other way to invite someone, so it
+    // counts the same as the share sheet — otherwise a host who read the code
+    // out to a friend in the room would be filed under "never tried".
+    invitedRef.current = true;
+    try { loopEvent('mp-invite-shared', { via: 'code' }); } catch {}
     try {
       await navigator.clipboard.writeText(code);
       setCopyToast("Code copied");
@@ -376,6 +422,17 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
     // off the code, so an absent name just falls back to "A mate".
     const url = buildInviteUrl(code, myPlayer?.name);
     const text = `⚽ Play me at ${APP_NAME}! Tap to join:`;
+    // Recorded on the TAP, not on a completed share: a sheet that is opened
+    // and cancelled still means they found the control and meant to invite
+    // someone, which is exactly the half of "why did this lobby die" that
+    // the room rows cannot show.
+    invitedRef.current = true;
+    try {
+      loopEvent('mp-invite-shared', {
+        via: Capacitor.isNativePlatform?.() ? 'native'
+          : (typeof navigator !== 'undefined' && typeof navigator.share === 'function' ? 'web-share' : 'clipboard'),
+      });
+    } catch {}
     try {
       if (Capacitor.isNativePlatform?.()) {
         await CapShare.share({ title: APP_NAME, text, url, dialogTitle: 'Share invite' });
