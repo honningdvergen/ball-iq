@@ -191,9 +191,7 @@ export default function FootleBand() {
       <div className="fb-in">
         <h2 className="fb-h2" id="fbT">Footle. Football Wordle.</h2>
         <p className="fb-sub">
-          Guess the name a footballer goes by, in six. It resets at midnight, along with the
-          Daily 7 — the same seven questions for everybody in the world, which is the
-          only reason a score is worth arguing about.
+          Guess the name a footballer goes by, in six. A new name at midnight, the same one for everyone.
         </p>
 
         <div className="fb-eg" aria-hidden="true">

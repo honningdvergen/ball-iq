@@ -64,7 +64,7 @@ export function shellHeader(site, active = '') {
   return `<a class="fd-skip" href="#main">Skip to content</a>
 <header class="fd-head"><div class="fd-w fd-head-in">
 <a class="fd-mark" href="${b}/" aria-label="Ball IQ home"><img src="/marketing/ball.png" alt="" width="26" height="26"><span>Ball IQ</span></a>
-<nav class="fd-nav" id="fd-nav" aria-label="Sections"><a href="${b}/#today">Today</a><a href="${b}/#games">Games</a><a href="${b}/#clubs"${a('clubs')}>Clubs</a><a href="${b}/football-quiz/"${a('quizzes')}>Quizzes</a><a href="${b}/lists/"${a('lists')}>Lists</a></nav>
+<nav class="fd-nav" id="fd-nav" aria-label="Sections"><a href="${b}/#today">Today</a><a href="${b}/#games">Games</a><a href="${b}/#clubs"${a('clubs')}>Clubs</a><a href="${b}/football-quiz/"${a('quizzes')}>Quizzes</a><a href="${b}/lists/"${a('lists')}>Lists</a><a class="fd-nav-signin" href="${b}/play">Sign in</a></nav>
 <div class="fd-find" role="search"><span class="fd-find-ic">${SEARCH_ICON}</span><input type="search" class="fd-find-in" id="fd-find" placeholder="Find your club or league" aria-label="Find your club or league" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" autocomplete="off"><div class="fd-find-res" id="fd-find-res" role="listbox" aria-label="Clubs and leagues" hidden></div></div>
 <a class="fd-signin" href="${b}/play">Sign in</a>
 <button type="button" class="fd-burger" aria-expanded="false" aria-controls="fd-nav" aria-label="Menu">${BURGER_ICON}</button>
@@ -125,6 +125,7 @@ export const SHELL_CSS = `
   .fd-find-empty a{color:var(--tx);text-decoration:underline;text-underline-offset:3px}
   .fd-signin{flex:0 0 auto;font-size:14px;font-weight:600;color:var(--tx3);padding:8px 10px}
   .fd-signin:hover{color:var(--tx);text-decoration:none}
+  .fd-nav-signin{display:none}
   .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--tx);cursor:pointer;border-radius:8px}
   .fd-foot{border-top:1px solid var(--bd);background:var(--bg2);padding:36px 0 28px;margin-top:36px}
   .fd-foot-in{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:22px}
@@ -142,6 +143,7 @@ export const SHELL_CSS = `
     .fd-nav{display:none}
     .fd-nav.is-open{display:flex;position:absolute;left:0;right:0;top:56px;flex-direction:column;gap:0;padding:8px;background:var(--card);border-bottom:1px solid var(--bd);z-index:110}
     .fd-nav.is-open a{min-height:44px;display:flex;align-items:center;font-size:16px}
+    .fd-nav.is-open .fd-nav-signin{margin-top:6px;padding-top:12px;border-top:1px solid var(--bd);color:var(--tx);font-weight:700}
     .fd-find{max-width:none;margin-left:0}
     .fd-signin{display:none}
     .fd-burger{display:grid;place-items:center}

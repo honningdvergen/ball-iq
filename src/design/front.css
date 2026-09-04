@@ -51,6 +51,7 @@
 .fd-find-empty a{color:var(--t1);text-decoration:underline;text-underline-offset:3px}
 .fd-signin{flex:0 0 auto;font-size:14px;font-weight:600;color:var(--t2);padding:8px 10px}
 .fd-signin:hover{color:var(--t1)}
+.fd-nav-signin{display:none}
 .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--t1);cursor:pointer;border-radius:8px}
 
 /* date line */
@@ -148,6 +149,7 @@
   .fd-nav{display:none}
   .fd-nav.is-open{display:flex;position:absolute;left:0;right:0;top:56px;flex-direction:column;gap:0;padding:8px;background:var(--s1);border-bottom:1px solid var(--bd)}
   .fd-nav.is-open a{min-height:44px;display:flex;align-items:center;font-size:16px}
+  .fd-nav.is-open .fd-nav-signin{margin-top:6px;padding-top:12px;border-top:1px solid var(--bd);color:var(--t1);font-weight:700}
   .fd-find{max-width:none;margin-left:0}
   .fd-signin{display:none}
   .fd-burger{display:grid;place-items:center}
@@ -175,8 +177,8 @@
 .fd .fd-practice .fb-eg,.fd .fd-practice .fb-note,.fd .fd-practice .fb-cnote,.fd .fd-practice .fb-legend{color:var(--t2);font-size:13.5px}
 .fd .fd-practice .fb-time{font:800 40px/1 'Inter',system-ui,sans-serif;letter-spacing:-.02em;color:var(--t1)}
 .fd .fd-practice .fb-six{font-size:14px;color:var(--t1)}
-.fd .fd-practice .fb-sub{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .fd .fd-practice .fb-eg,.fd .fd-practice .fb-eglab{display:none}
+.fd .fd-practice .fb-note{margin-top:14px}
 .fd .fd-practice .fb-real:not(.fb-primary){display:none}
 @media (min-width:900px){.fd .fd-practice .fb-kb{display:none}}
 @media (max-width:720px){.fd .fd-practice .fb-in{padding:18px 14px 20px}}
