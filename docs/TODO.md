@@ -9,7 +9,7 @@ are one guest opening rooms three times in eleven minutes. **Genuine two-player 
 started, in a week: four.** Not a number to build a feature on — and "19 hosts waiting alone"
 conflated an empty room with a host who waited.
 
-**Shipped instead (52e37c8): the lobby now reports its own funnel.** It fired no events at all except
+**Shipped instead (1b698cb): the lobby now reports its own funnel.** It fired no events at all except
 the rival prompt. `mp-lobby-open {host, mode}` · `mp-invite-shared {via}` on the tap, share sheet AND
 code copy · `mp-lobby-left {host, players, invited, secs}` emitted BEFORE leave() ends the room (the
 test pins that order). That answers the only question the rows can't: did the thirteen try to invite
