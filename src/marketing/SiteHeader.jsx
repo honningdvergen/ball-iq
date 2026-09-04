@@ -4,7 +4,7 @@
 // every generated page. Wordmark · section links · the club/league finder ·
 // Sign in · a burger below 720px. No marketing button (none of the 13 sites
 // in the 2026-09-03 field study has one). ⚠️ KEEP IN STEP with shell.mjs.
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useLayoutEffect } from 'react';
 import '../design/front.css';
 import { CLUB_INDEX } from './clubIndex.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
@@ -46,6 +46,13 @@ function useFinder(q) {
  * signedIn/onProfile: inside the app the right-hand link becomes "Profile".
  */
 export function SiteHeader({ active = '', signedIn = false, onProfile } = {}) {
+  // The build injects a static copy of this header into index.html so it
+  // paints before any JavaScript (see vite.config.js, preload-gameroot). Take
+  // it down in a LAYOUT effect — before this render is painted — so the page
+  // never shows two headers for a frame.
+  useLayoutEffect(() => {
+    try { document.getElementById('biq-static-head')?.remove(); document.getElementById('biq-static-head-css')?.remove(); } catch {}
+  }, []);
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState(false);

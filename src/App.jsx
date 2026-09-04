@@ -10354,10 +10354,30 @@ function AppInner() {
         try { import('./screens/ProfileScreen.jsx'); } catch { /* prefetch is best-effort */ }
         try { import('./screens/OnlineMultiplayer.jsx'); } catch { /* prefetch is best-effort */ }
       };
-      if (typeof requestIdleCallback === 'function') {
-        requestIdleCallback(idleIndex, { timeout: 3000 });
-        requestIdleCallback(idleTabs, { timeout: 4000 });
-        requestIdleCallback(() => setTimeout(() => requestIdleCallback(idleBank, { timeout: 8000 }), 4000), { timeout: 3000 });
+      // ⚠️ NOT ON A GAME DOOR, AND NOT ON A SLOW LINK. Measured 2026-09-04 on
+      // /play?game=footle under PageSpeed's mobile profile (1.6 Mbps): the
+      // game chunk landed at 3.4s, and behind it this block queued the
+      // question index (51 KB gz), the Profile chunk (16) and the Online
+      // chunk (17) — 84 KB the visitor cannot use before the board has even
+      // painted, on the door where 1,045 first games a month arrive and 5%
+      // finish. A door arrival is not "sitting on Home deciding what to tap";
+      // the warm-ups wait until the first results screen or 20 seconds, and on
+      // Save-Data / 2G-3G links they do not run at all.
+      const bootDoor = (() => { try { const sp = new URLSearchParams(BOOT_SEARCH); return !!(sp.get("game") || sp.get("club") || sp.get("quiz") || sp.get("c")) || /^\/(footle|c)(\/|$)/.test(window.location.pathname); } catch { return false; } })();
+      const slowLink = (() => { try { const c = navigator.connection; return !!(c && (c.saveData || /(^|-)(2g|3g)$/.test(c.effectiveType || ""))); } catch { return false; } })();
+      const warm = () => {
+        if (slowLink) return;
+        if (typeof requestIdleCallback === 'function') {
+          requestIdleCallback(idleIndex, { timeout: 3000 });
+          requestIdleCallback(idleTabs, { timeout: 4000 });
+          requestIdleCallback(() => setTimeout(() => requestIdleCallback(idleBank, { timeout: 8000 }), 4000), { timeout: 3000 });
+        } else {
+          setTimeout(idleIndex, 1200); setTimeout(idleTabs, 2500); setTimeout(idleBank, 6000);
+        }
+      };
+      if (bootDoor) { setTimeout(warm, 20000); }
+      else if (typeof requestIdleCallback === 'function') {
+        warm();
       } else {
         setTimeout(idleIndex, 1200);
         setTimeout(idleTabs, 1800);

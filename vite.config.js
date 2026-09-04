@@ -79,10 +79,10 @@ function preloadGameRootPlugin() {
   return {
     name: 'preload-gameroot',
     apply: 'build',
-    closeBundle() {
+    async closeBundle() {
       const assets = resolve('dist', 'assets')
       const indexHtml = resolve('dist', 'index.html')
-      if (!existsSync(assets) || !existsSync(indexHtml)) return
+      if (!existsSync(assets) || !existsSync(indexHtml) || process.env.VITEST) return
       const file = readdirSync(assets).find((f) => /^GameRoot-.*\.js$/.test(f))
       if (!file) {
         throw new Error(
@@ -120,10 +120,38 @@ function preloadGameRootPlugin() {
         `l.href=mkt?${JSON.stringify('/assets/' + mktFile)}:${JSON.stringify('/assets/' + file)};l.crossOrigin='';` +
         'document.head.appendChild(l);' +
         '}catch(e){}})();'
-      const html = readFileSync(indexHtml, 'utf8')
+      let html = readFileSync(indexHtml, 'utf8')
       if (!html.includes('</head>')) throw new Error('[preload-gameroot] no </head> in dist/index.html')
-      writeFileSync(indexHtml, html.replace('</head>', `<script>${js}</script>\n</head>`))
-      console.log(`[preload-gameroot] injected modulepreload for /assets/${file} (game) + /assets/${mktFile} (marketing)`)
+      html = html.replace('</head>', `<script>${js}</script>\n</head>`)
+
+      // THE STATIC SITE HEADER FOR BROWSER BOOTS (2026-09-04). PageSpeed's LCP
+      // element on /play?game=footle is the header's search field, and on
+      // /play the header is React — so nothing above the fold paints until
+      // the 183 KB game chunk has arrived AND executed (lab LCP 6.0s, FCP
+      // 1.2s). The generated pages already ship this exact header as static
+      // HTML from scripts/seo/shell.mjs; the app's index.html now does too,
+      // outside #root, with the shell CSS inline so it paints from the first
+      // bytes. SiteHeader.jsx removes it in a layout effect the moment the
+      // React header mounts, so there is never a frame with two. Hidden for
+      // native and installed PWAs, which keep their own chrome.
+      const [{ shellHeader, SHELL_CSS }, { rootCss }, { SITE }] = await Promise.all([
+        import('./scripts/seo/shell.mjs'),
+        import('./src/design/tokens.js'),
+        import('./scripts/seo/content.mjs'),
+      ])
+      const staticHead =
+        `<style id="biq-static-head-css">${rootCss()}${SHELL_CSS}` +
+        '#biq-static-head .fd-head{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx)}' +
+        '#biq-static-head a{color:inherit;text-decoration:none}' +
+        'html.native-app #biq-static-head{display:none}' +
+        '@media (display-mode: standalone){#biq-static-head{display:none}}</style>' +
+        `<div id="biq-static-head">${shellHeader(SITE, '')}</div>` +
+        // iOS home-screen apps report navigator.standalone, not the media query.
+        "<script>try{if(navigator.standalone===true){var h=document.getElementById('biq-static-head');if(h)h.remove()}}catch(e){}</script>"
+      if (!html.includes('<div id="root"')) throw new Error('[preload-gameroot] no <div id="root"> in dist/index.html')
+      html = html.replace('<div id="root"', staticHead + '\n    <div id="root"')
+      writeFileSync(indexHtml, html)
+      console.log(`[preload-gameroot] injected modulepreload for /assets/${file} (game) + /assets/${mktFile} (marketing), and the static site header`)
     },
   }
 }
