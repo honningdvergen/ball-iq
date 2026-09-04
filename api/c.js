@@ -13,19 +13,37 @@ export const config = { runtime: 'edge' };
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-export default function handler(req) {
+export default function handler(req, ctx) {
   const url = new URL(req.url);
-  // Loop instrumentation (opportunity scan 2026-08-10 P0): one line per hit,
-  // same shape as api/get.js's get-click. bot=true means an OG crawler
-  // unfurled the link somewhere — i.e. a share LANDED in a chat; bot=false is
-  // a human click-through. Grep Vercel logs for t:"loop-hit".
-  console.log(JSON.stringify({
-    t: 'loop-hit',
+  // Loop instrumentation (opportunity scan 2026-08-10 P0): one line per hit.
+  // bot=true means an OG crawler unfurled the link somewhere — i.e. a share
+  // LANDED in a chat; bot=false is a human click-through.
+  //
+  // 2026-09-04: this used to go to Vercel's log stream only, which nobody
+  // reads — so 153 share taps a month stood against 4 challenge opens with
+  // the middle of the loop invisible. The same line now also lands in
+  // funnel_events (event 'loop-hit', meta {loop, bot, country}) through the
+  // RPC the client uses, fire-and-forget behind ctx.waitUntil so the
+  // redirect is never slowed. No visitor id: a crawler has none, and a
+  // human's is minted by the app a moment later.
+  const hit = {
     loop: 'c',
     bot: /bot|crawler|spider|preview|facebookexternalhit|whatsapp|telegram|slack|discord|skype/i
       .test(req.headers.get('user-agent') || ''),
     country: req.headers.get('x-vercel-ip-country') || null,
-  }));
+  };
+  console.log(JSON.stringify({ t: 'loop-hit', ...hit }));
+  try {
+    const base = process.env.VITE_SUPABASE_URL, key = process.env.VITE_SUPABASE_KEY;
+    if (base && key) {
+      const p = fetch(`${base}/rest/v1/rpc/record_funnel_event`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', apikey: key, authorization: `Bearer ${key}` },
+        body: JSON.stringify({ p_event: 'loop-hit', p_meta: hit, p_visitor: null }),
+      }).catch(() => {});
+      if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(p);
+    }
+  } catch {}
   const origin = url.origin;
   const token = (url.searchParams.get('t') || '').trim();
 

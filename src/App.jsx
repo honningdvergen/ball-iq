@@ -12991,7 +12991,7 @@ function AppInner() {
     // balliq.app/?c=SCORE.YYYYMMDD[.Name]
     const ymd = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; })();
     const challengeUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}${user?.id ? `?f=${user.id}` : ""}`;
-    const text = [
+    const lines = [
       `⚽ ${APP_NAME} Daily 7`,
       `📅 ${dateStr}`,
       `🎯 ${score}/${total}`,
@@ -13001,19 +13001,32 @@ function AppInner() {
       "",
       "Think you can beat me?",
       challengeUrl,
-    ].filter(Boolean).join("\n");
+    ].filter(Boolean);
+    const text = lines.join("\n");
+    // The share sheet gets the link as a first-class `url`, not buried at the
+    // end of `text`: targets that keep only one field (Instagram, some mail
+    // apps) keep the URL, and chat apps unfurl it as the card /c/ renders.
+    // The clipboard copy keeps the link inside the text — it has nowhere
+    // else to put it. (Share audit 2026-09-04: 153 share taps in 30 days,
+    // 4 challenge opens; this and the /c/ hit log are how we find out where
+    // the other 149 went.)
+    const sheetText = lines.slice(0, -1).join("\n");
 
     try {
       if (navigator.share) {
-        await navigator.share({ text });
+        await navigator.share({ title: `${APP_NAME} Daily 7`, text: sheetText, url: challengeUrl });
+        loopEvent("share-daily-done", { via: "sheet" });
         return;
       }
-    } catch {
-      // User cancelled or share failed — fall through to clipboard
+    } catch (e) {
+      // Cancelling the sheet is not a failure and must not produce a
+      // "Copied to clipboard" toast for a share that never happened.
+      if (e && e.name === "AbortError") { loopEvent("share-daily-cancel"); return; }
     }
     try {
       await navigator.clipboard.writeText(text);
       showToast("📋 Copied to clipboard");
+      loopEvent("share-daily-done", { via: "clipboard" });
     } catch {
       showToast("Couldn't share — try again");
     }
