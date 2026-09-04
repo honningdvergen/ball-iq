@@ -943,8 +943,8 @@ export const CLUBS = [
     "slug": "besiktas",
     "name": "Beşiktaş",
     "h1": "Beşiktaş Quiz",
-    "title": "Beşiktaş Quiz with Answers — Black Eagles | Ball IQ",
-    "description": "Free Beşiktaş quiz with explained answers — from the 1992 unbeaten season and Çarşı to the Black Eagles, Dolmabahçe and the Istanbul derbies.",
+    "title": "Beşiktaş Quiz with Answers — BJK | Ball IQ",
+    "description": "Free Beşiktaş (BJK) quiz with explained answers — from the 1992 unbeaten season and Çarşı to the Black Eagles, Dolmabahçe and the Istanbul derbies.",
     "intro": [
       "Beşiktaş were founded in 1903, making them the oldest club of Istanbul's big three — the football branch followed in 1911 — and they have played in the shadow of the Dolmabahçe Palace on the European shore of the Bosphorus for most of their history. This free Beşiktaş quiz covers the whole story: the black-and-white stripes, the Kara Kartallar — the Black Eagles — and a support that treats the club as a birthright rather than a hobby. If you know your Beşiktaş, this is your test.",
       "The defining season came in 1991-92, when Gordon Milne's side became the first team to go through a Süper Lig campaign unbeaten — an English manager writing one of the most Turkish chapters in the league's history. That side's attack was the club's most beloved: the Metin-Ali-Feyyaz trio of Metin Tekin, Ali Gültiken and Feyyaz Uçar, together since the mid-1980s and still chanted as a single word. Later came Sergen Yalçın, who returned as manager to win the league and cup double in 2020-21, and the ground at Dolmabahçe was rebuilt in 2016 on the site of the old BJK İnönü Stadium.",
