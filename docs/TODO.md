@@ -55,7 +55,15 @@ correct. Disposition: mark reviewed/approved with the verification note; keep th
 (BELOTTI, ELLIOTT, VALVERDE, WILLIAN) for pool curation.
 **✅ 2 DONE:** 39 review rows written (source qb, status approved, edits {triage, verdict: difficulty, kind}); the
 notes carry the verification. Footle obscurity signal kept: BELOTTI, ELLIOTT, VALVERDE, WILLIAN.
-**3 IN PROGRESS — 1.7.3 cut (9eaa802):** iOS 1.7.3 (112) / Android 1.7.3 (vc48); What's New in 15 ASC locales +
+**3 READY FOR ALEX — 1.7.3 cut (9eaa802 + 45f239f):** AAB built (24.2 MB, jarsigner verified) at
+android/app/build/outputs/bundle/release/app-release.aab; iOS synced (ios/App/App/public matches source, 28
+chunks); preflight ✓ on every artefact check — its only ✗ is "working tree dirty", which is the six
+pre-session files (.audit/watcher.log, scripts/forge-curate.mjs, _tmp-results.mjs, assets/social/,
+.impeccable/config.json + critique) awaiting Alex's keep/commit/drop. ⚠️ Two traps found and fixed on the way:
+CocoaPods needs LANG=en_US.UTF-8 here, and public/lineup/cutouts (4,342 gitignored PNGs, 1.7 GB) rode into
+dist and both native bundles — Gradle spent 30 min signing 1.9 GB; moved to assets/lineup-cutouts/, dist is
+now tens of MB. Both in memory (reference_android_signing_build).
+**(was) 3 IN PROGRESS — 1.7.3 cut (9eaa802):** iOS 1.7.3 (112) / Android 1.7.3 (vc48); What's New in 15 ASC locales +
 11 Play blocks (store-assets/1.7.3/). cap sync both platforms ✓ (⚠️ CocoaPods needs LANG=en_US.UTF-8 in this
 shell — first run died; now in memory). AAB + preflight running. **Alex's steps:** Xcode → Product → Archive →
 Distribute (automatic signing; no distribution identity lives on this Mac) · ASC: What's New in ALL 15 locales
