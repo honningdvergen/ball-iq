@@ -41,7 +41,10 @@ async function seedNamelessGuest(context) {
       // navigator.share is absent in headless Chromium, so the app would fall
       // through to the clipboard. Stub it to capture the payload directly.
       window.__shared = [];
-      navigator.share = (d) => { window.__shared.push(d.text || ''); return Promise.resolve(); };
+      // The app hands the sheet {title, text, url} (2026-09-04) — the link
+      // travels as `url`, not at the end of `text`. Capture what a target
+      // would see: text and link together.
+      navigator.share = (d) => { window.__shared.push([d.text || '', d.url || ''].filter(Boolean).join('\n')); return Promise.resolve(); };
     } catch {}
   });
 }
