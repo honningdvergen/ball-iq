@@ -1289,6 +1289,18 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-meter i.no{background:#FF4747}
   .bq-streak{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--grn-ink);background:var(--amber);border-radius:6px;padding:3px 8px}
   .bq-list{list-style:none;margin:0;padding:0}
+  /* ⚠️ EVERY QUESTION IS IN THE HTML AND MUST STAY THERE — it is the crawlable
+     "with answers" text these pages rank on, and it is what a reader with JS
+     off gets. But the browser was laying out all of it before the engine ran:
+     /quiz/arsenal/ ships 66 questions / 264 option buttons, 1,379 of the
+     page's 2,085 tags. Measured on the live page, five runs each: laying the
+     full list out costs 44.5ms median unthrottled, 1.4ms with this rule —
+     and PSI throttles the CPU 4x on top. content-visibility skips the
+     RENDERING work for anything off-screen without touching the DOM, the
+     accessibility tree, find-in-page, or what a crawler reads; it is not
+     display:none. contain-intrinsic-size keeps the scroll height honest so
+     CLS stays at 0. */
+  .bq-q{content-visibility:auto;contain-intrinsic-size:auto 420px}
   .bq-q + .bq-q{margin-top:26px;padding-top:26px;border-top:1px solid var(--bd)}
   .bq-qn{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx4);margin-bottom:7px}
   .bq-qx{font-size:19px;font-weight:700;color:var(--tx);line-height:1.3;letter-spacing:-.015em;margin:0 0 15px;text-wrap:balance}

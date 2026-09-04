@@ -10,6 +10,12 @@
         "value": "inter",
         "createdAt": "2026-09-04T12:17:46.482Z",
         "reason": "Inter is the documented Ball IQ face (DESIGN.md L207) — one family for everything a person reads"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgba(0,0,0,.55)",
+        "createdAt": "2026-09-04T12:58:19.751Z",
+        "reason": "The search dropdown shadow, named in DESIGN.md L250 as one of the system's two shadows"
       }
     ]
   }

@@ -34,6 +34,18 @@
         "--strictPort"
       ],
       "port": 4173
+    },
+    {
+      "name": "perf-lab",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4399",
+        "-d",
+        "/tmp/perflab"
+      ],
+      "port": 4399
     }
   ]
 }
