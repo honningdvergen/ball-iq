@@ -1,3 +1,35 @@
+## 2026-09-04 (16:30) — BREADTH OVER DEPTH (Alex's call), AND WHAT GSC CAN AND CANNOT ANSWER
+
+**Alex: add club packs before topping up thin ones. Agreed — his argument is better than mine.** 95% of
+sessions view exactly one page and the 14d return read was 1,713 once / 22 on 2-3 days, so pack depth
+serves a cohort that barely exists while breadth buys new query surfaces. PRODUCT.md already says it:
+*the obscure club is the moat*. Constraint to plan around: the build gate needs **≥15
+explanation-bearing questions per club page**, so each new club is a 15-20 question wave.
+
+**Coverage today: 89 pages against 356 league clubs.** Biggest gaps: Championship 12/24, Serie A 10/20,
+La Liga 8/20, Bundesliga 6/18, Ligue 1 4/18, Brasileirão 4/20, Eredivisie 3/18, Süper Lig 4/18,
+Primeira Liga 3/18, Pro League 2/18, Scotland 2/12 — and **zero** in Eliteserien, Allsvenskan,
+Superliga, MLS and the Saudi Pro League.
+
+**⛔ GSC CANNOT CHOOSE THE CLUBS.** Scanned all 1,000 queries (3 months, 83.5k impressions) against the
+274 league clubs with no page: **zero matches.** The only "hit" was Angers inside "rangers quiz" — the
+exact fuzzy-match trap club-alias.mjs documents. We never appear for a club we have no page for, so
+our own data holds no signal about them. Any ordering is a bet on external volume, not on evidence.
+
+**What the scan DID show — mid-size beats giant.** Impressions by club: Everton ~335, Beşiktaş 280,
+Feyenoord ~263, Celtic 232, Galatasaray ~207, Rangers ~194, Leeds ~190 — all ahead of Bayern ~167,
+Juventus ~219 across three spellings, Inter ~113, PSG 51, Dortmund 52. Giants sit in a SERP owned by
+big publishers; fanatical mid-size clubs do not. **That is the selection principle**: Championship,
+Scottish Premiership, Eredivisie, Süper Lig, Belgian Pro League and the Nordic leagues over one more
+giant.
+
+**✅ Shipped from the same scan: the one club title missing its abbreviation.** "bjk quiz" 200
+impressions at position 6.8 and "bjkquiz" 80 at 6.6 — **280 impressions, ZERO clicks in 3 months**.
+Every comparable title already carries the abbreviation (— LFC, — BVB, — Barça, — Man Utd) and those
+convert; Beşiktaş's said "Black Eagles". Title now takes BJK. Baseline for the next read: 280i / 0c.
+Six titles still carry no alias (santos, real-sociedad, atalanta, leicester-city, olympiacos,
+panathinaikos) — no abbreviation queries in GSC yet, so they wait for evidence.
+
 ## 2026-09-04 (15:45) — THE GUEST FUNNEL, FOLLOWED TO ITS END
 
 **The "58% of accounts never play" number is two populations.** 30 days, split by `auth.users.is_anonymous`:
