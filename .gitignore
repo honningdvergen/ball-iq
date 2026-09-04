@@ -62,3 +62,7 @@ android/app/google-services.json
 
 # PL cutout wave staging — survives /tmp wipes; published only after the eyeball pass
 .wave-staging/
+
+# Lineup Builder photo cutouts (parked PL wave): 1.7 GB of local PNGs. Lived in public/ until the 1.7.3 cut,
+# where Vite copied them into dist and cap sync shipped a 1.9 GB Android bundle.
+assets/lineup-cutouts/
