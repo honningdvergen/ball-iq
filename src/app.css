@@ -1694,18 +1694,22 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 
 /* ── QUIT MODAL ── */
-.modal-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;padding-bottom:max(env(safe-area-inset-bottom,0px),20px);animation:fadeIn 0.15s ease;}
+.modal-overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;background:rgba(0,0,0,0.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;padding-bottom:max(env(safe-area-inset-bottom,0px),20px);animation:fadeIn 0.15s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes profileSkeletonPulse{0%,100%{opacity:0.4}50%{opacity:0.7}}
 .skeleton{background:var(--s2);border-radius:8px;animation:profileSkeletonPulse 1.4s ease-in-out infinite;display:block;}
 .btn-spin{display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;opacity:0.85;vertical-align:-3px;}
 @keyframes qFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .q-fade{animation:qFadeIn 0.26s cubic-bezier(0.22,1,0.36,1);}
-.modal-box{background:var(--s1);border-radius:18px;padding:24px 22px;width:100%;max-width:320px;box-shadow:var(--sh-lg);}
-.modal-title{font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--text);margin-bottom:8px;}
-.modal-body{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:20px;}
+/* The dialog reads as a sheet of the app's own material, not a grey slab:
+   the lifted card surface, one hairline, and a scrim that blurs what is
+   behind it so the dialog is clearly ON TOP rather than beside. */
+.modal-box{background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:22px 20px 18px;width:100%;max-width:340px;box-shadow:var(--sh-lg);animation:modalPop 0.18s cubic-bezier(0.22,1,0.36,1);}
+@keyframes modalPop{from{opacity:0;transform:translateY(8px) scale(0.97);}to{opacity:1;transform:none;}}
+.modal-title{font-size:19px;font-weight:800;letter-spacing:-0.45px;color:var(--text);margin-bottom:6px;}
+.modal-body{font-size:14.5px;color:var(--t2);line-height:1.55;margin-bottom:22px;}
 .modal-btns{display:flex;gap:10px;}
-.modal-btn{flex:1;padding:13px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:opacity 0.15s;}
+.modal-btn{flex:1;padding:14px 13px;border-radius:13px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:opacity 0.15s,background 0.15s;}
 /* Quit-dialog emphasis. Was: grey "Keep playing" beside a full-width filled
    red "Quit" — so the brightest, widest, most thumb-reachable control on a
    dialog whose entire job is to PREVENT an accidental exit was the exit.
@@ -1715,9 +1719,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Both fills are fixed colours so the ratios hold in either theme
    (#0B0C10 on #58CC02 = 9.48:1, on #FF4B4B = 6.00:1). */
 .modal-cancel{background:var(--accent);color:#0B0C10;-webkit-text-fill-color:#0B0C10;}
-.modal-confirm{flex:0 0 auto;padding-left:20px;padding-right:20px;background:var(--red);color:#0B0C10;-webkit-text-fill-color:#0B0C10;}
+/* The destructive action is TONAL, not a second candy slab. Two saturated
+   fills side by side was the dated part: it read as a toy, and it gave the
+   exit the same visual weight as the thing we want the player to do. Red
+   text on a red-tinted surface still reads unmistakably as "quit" and
+   measures 5.9:1 on the lifted card. */
+.modal-confirm{flex:0 0 auto;padding-left:20px;padding-right:20px;background:rgba(255,75,75,0.12);border:1px solid rgba(255,75,75,0.28);color:#FF7B7B;-webkit-text-fill-color:#FF7B7B;}
 .modal-cancel:hover{opacity:0.85;}
-.modal-confirm:hover{opacity:0.85;}
+.modal-confirm:hover{background:rgba(255,75,75,0.2);opacity:1;}
 
 /* ── Notification center (Phase 1: friend requests) ──────────────────────
    Uses runtime vars so it adapts to light/dark AND the desktop marketing

@@ -718,11 +718,10 @@ function HomeScreenImpl({
           // value DECAYS, so burying it below the evergreen modes wastes it.
           // Gated on topicalLive, and retirable by nulling TOPICAL_PACK.
           ...(topicalLive ? [{ key: TOPICAL_PACK.key, Icon: Newspaper, name: TOPICAL_PACK.name, desc: TOPICAL_PACK.desc, isNew: true, onTap: () => startMode(TOPICAL_PACK.key) }] : []),
-          // Trail takes the second slot once it is live — League Quiz has ONE
-          // lifetime play and Trail is a daily, so it earns the position. The
-          // whole entry is gated on the schedule actually having a puzzle, so
-          // nothing advertises a mode that cannot be played.
-          ...(trailLive ? [{ key:"trail", Icon: Route, iconColor: MODE_ACCENT.trail, name: "Transfer Trail", desc: "Name the player", onTap: () => setScreen("trail") }] : []),
+          // ⚠️ NO TRAIL TILE HERE. Transfer Trail is already a row in the daily
+          // zone above, pointing at the SAME screen — one puzzle a day, listed
+          // twice on one screen. A duplicate entry does not add a way in, it
+          // just makes the grid look longer than the app is (Alex, 2026-09-04).
           // Same gate as the Trail: the card only exists if the frozen
           // schedule actually has a puzzle for today, so nothing advertises a
           // mode that cannot be played. mysteryLive is computed above.
