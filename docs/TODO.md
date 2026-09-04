@@ -1,3 +1,25 @@
+## 2026-09-04 (15:45) — THE GUEST FUNNEL, FOLLOWED TO ITS END
+
+**The "58% of accounts never play" number is two populations.** 30 days, split by `auth.users.is_anonymous`:
+**real signups 114, of which 92 played — 81%.** Anonymous guests 49, of which 16 played — 33%. Activation
+on real accounts is healthy; the leak is entirely in the guest population, and counting guest sessions as
+"accounts" hid that. Median time from signup to first play is 176 seconds.
+
+**Following the 33 guests who never played:** 18 of them reached a room, and **12 of those were in a room
+that never started** (6 more were in a room that DID start and still recorded nothing — that is the
+counter bug fixed in f42498f, since MP is usually a guest's only mode). So the invite → dead room path is
+the guest funnel's biggest single loss.
+
+**✅ Shipped: a dead invite link is a door, not a wall (84134f0).** The initial room select filters
+`state='ended'`, so a guest tapping an invite after the host left got "⚠️ Couldn't load room" and a
+**Try again that can never succeed**. The hook now says which failure it is (`errorKind` 'gone' vs
+'fetch'); the gone branch is no longer an error screen — a wave not a warning triangle, plain words,
+no retry, and the same door LobbyEnded already gives the guest who was in the room when it died:
+today's Daily 7 as the primary button. `mp-join-dead` counts how often an invite outlives its room.
+⚠️ **NOT seen rendering** — reaching LobbyError needs a signed-in client opening a link to a dead room.
+Alex's device test: create a room, leave it, then open the invite link you shared. Strings verified in
+the built bundle; the branch is pinned by tests/unit/mp-dead-invite.test.js.
+
 ## 2026-09-04 (15:20) — ✅ 2. THE LOBBY: the number was wrong, and the instrument was missing
 
 **"27 of 68 lobbies never start, 19 with the host alone" does not survive a proper read.** All 27 are
