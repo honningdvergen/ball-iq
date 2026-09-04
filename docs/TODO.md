@@ -38,10 +38,25 @@ END of a club quiz, where 500 people a month finish and see nothing.
    clubq-out-daily clicks against 262 finishers in 30d** (its third camouflaged treatment). Now a card —
    board picture, name, one line, green Play — outside .bq-row. **Baseline 0/262; read clubq-out-daily
    per clubq-finish on 2026-09-11.** If it draws, next: the board playable in place on the club page.
-2. Share loop: log /c/ hits in the DB; check the share payload carries the link and the landing plays.
-3. Fix the two lying instruments (surface on first-game-*; the Derby loop).
-4. /nl/ hub + Dutch club pages (2,038 NL impressions, no locale; /es/ River Plate 134 vs 8 proves the pattern).
-5. Design order continues (air → icons), aimed at club pages and the game screen, not `/`.
+2. ✅ Share loop (f043131 + 65ed9e3): navigator.share gets {title, text, url}; a cancelled sheet is
+   share-daily-cancel, a completed one share-daily-done {via}; /c/ hits land in funnel_events as
+   'loop-hit' {loop, bot, country}. ⚠️ First deploy wrote nothing: VITE_SUPABASE_URL is NOT set on
+   Vercel's functions — api/p.js already falls back to the project URL, c.js now does too.
+   ⚠️ And fire-and-forget behind ctx.waitUntil landed 1 probe in 4 — the write is now AWAITED with an
+   800ms ceiling (f0c292b); 3/3 probes landed after that. Probe rows deleted; the read starts clean.
+   **Correction:** the "every share was a clipboard copy" reading was wrong — native=false means the
+   WEB platform (loopEvent strips meta on native). 153 web share taps, landings unknown → now measurable.
+3. ✅ Instruments (a980972): first-game-started carries {mode, entry ∈ door|challenge|club-door|quiz-door|
+   invite|link|app} — on the web 1,045 first games started vs 53 finished (5%) against 57% signed-in,
+   and next week's read can say WHICH door bleeds. clubq-start guarded to once per page load (the
+   Derby 220 was one visitor in 4 minutes on 08-23, a cached pre-fix page).
+4. ✅ Netherlands — nothing to build: a /nl/ layer already exists (hub + ajax/feyenoord/psv, reciprocal
+   hreflang, visible cross-links). NL 28d: 1.71k impr / 25 clicks; "feyenoord quiz" 84 impr goes to the
+   EN page (150 impr), /nl/quiz/feyenoord/ gets 36 and 0 clicks. Young + thin; read with the lists test.
+5. ✅ Design → the game screen: in a browser Footle carried three rows of chrome (~180px of 844) before
+   the board; the app bar now steps out during focused play and returns on results.
+**Reads due:** clubq-out-daily/clubq-finish (baseline 0/262) and loop-hit bot/human and
+first-game-started by entry — 2026-09-11.
 
 **Next (design):** composition, not colour — the Today cards all weigh the same (nothing says "this one
 first"); the band has no air above the grid; generic outline icons. One a day.
