@@ -34,7 +34,10 @@ export default function handler(req, ctx) {
   };
   console.log(JSON.stringify({ t: 'loop-hit', ...hit }));
   try {
-    const base = process.env.VITE_SUPABASE_URL, key = process.env.VITE_SUPABASE_KEY;
+    // VITE_SUPABASE_URL is a build-time name and is NOT set on Vercel's
+    // functions (found the hard way: the first deploy of this wrote nothing).
+    // Same fallback api/p.js uses; the key IS set.
+    const base = process.env.VITE_SUPABASE_URL || 'https://blcisypmngimqkwxrrdm.supabase.co', key = process.env.VITE_SUPABASE_KEY;
     if (base && key) {
       const p = fetch(`${base}/rest/v1/rpc/record_funnel_event`, {
         method: 'POST',
