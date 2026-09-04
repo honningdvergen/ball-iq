@@ -66,3 +66,8 @@ android/app/google-services.json
 # Lineup Builder photo cutouts (parked PL wave): 1.7 GB of local PNGs. Lived in public/ until the 1.7.3 cut,
 # where Vite copied them into dist and cap sync shipped a 1.9 GB Android bundle.
 assets/lineup-cutouts/
+
+# Social/marketing exports (Alex, 2026-09-04): screenshots staged for Instagram
+# and Threads posts. Product images, not source — they are made from the app,
+# not used by it, and 2.3 MB of PNGs would only grow.
+assets/social/
