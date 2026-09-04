@@ -74,6 +74,19 @@
 .fd-card:hover{border-color:var(--bd2);background:var(--s2)}
 .fd-card-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--s2);border:1px solid var(--bd);color:var(--t2)}
 .fd-card:hover .fd-card-ic{color:var(--t1)}
+/* Mode colour on the chip — the app's MODE_ACCENT, set per row as --mode. A
+   14% tint and a 30% ring, the same proportions the app's own chips use, so
+   the four rows read as four games rather than four copies of one card. */
+.fd-daily .fd-card-ic{color:var(--mode,var(--t2));background:color-mix(in srgb,var(--mode,var(--s2)) 14%,var(--s1));border-color:color-mix(in srgb,var(--mode,var(--bd)) 30%,transparent)}
+.fd-daily:hover .fd-card-ic{color:var(--mode,var(--t1))}
+/* Footle's chip is the game: two rows of 5, letters graded by the real engine,
+   in the 38px footprint every other chip has. Overflow is deliberate — a
+   6-letter teaser gets a hair wider rather than squashing the letters. */
+.fd-card-ic.fd-mini{display:grid;grid-template-columns:repeat(var(--len,5),1fr);grid-auto-rows:1fr;gap:2px;width:auto;min-width:38px;height:38px;padding:3px;background:var(--s2);border-color:var(--bd)}
+.fd-card-ic.fd-mini i{display:flex;align-items:center;justify-content:center;width:12px;height:100%;border-radius:2px;font-style:normal;font-weight:800;font-size:8px;line-height:1;color:var(--tx);background:var(--bd2)}
+.fd-card-ic.fd-mini i[data-m="green"]{background:var(--grn);color:#06230C}
+.fd-card-ic.fd-mini i[data-m="yellow"]{background:#FFC107;color:#06230C}
+.fd-card-ic.fd-mini i[data-m="grey"]{background:var(--bd2);color:var(--tx2)}
 .fd-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}
 .fd-card-n{font-size:15px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .fd-card-no{font-size:12.5px;font-weight:500;color:var(--t3)}
@@ -92,7 +105,12 @@
 .fd-lead-cta{margin-top:8px}
 .fd-play-lg{height:44px;padding:0 22px;font-size:15px}
 .fd-board{display:grid;grid-template-columns:repeat(var(--len,7),22px);gap:4px}
-.fd-board i{display:block;width:22px;height:22px;border-radius:5px;background:var(--s2);border:1px solid rgba(255,255,255,.07)}
+/* The tiles carry letters now — a mark with no letter reads as a colour swatch,
+   not a word game. Sized off the tile so the type scales with it in the phone
+   rule below, where the columns become fluid. */
+.fd-board i{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;background:var(--s2);border:1px solid rgba(255,255,255,.07);font-style:normal;font-weight:800;font-size:12px;line-height:1;color:var(--tx);letter-spacing:0}
+.fd-board i[data-m="green"],.fd-board i[data-m="yellow"]{color:#06230C}
+.fd-board i[data-m="grey"]{color:var(--tx2)}
 .fd-board i[data-m="cur"]{border-color:rgba(88,204,2,.6);box-shadow:inset 0 0 0 1px rgba(88,204,2,.35)}
 .fd-board i[data-m="green"]{background:var(--grn);border-color:var(--grn)}
 .fd-board i[data-m="yellow"]{background:#FFC107;border-color:#FFC107}
@@ -208,6 +226,10 @@
 @media (max-width:720px){
   .fd-today{grid-template-columns:1fr;grid-template-areas:"lead" "alt" "rest";gap:10px}
   .fd-lead{grid-template-columns:1fr;gap:14px;padding:16px}
-  .fd-board{grid-template-columns:repeat(var(--len,7),minmax(0,1fr));max-width:300px}
-  .fd-board i{width:auto;height:auto;aspect-ratio:1}
+  /* ⚠️ 220px, not 300. At five columns instead of seven the tiles ballooned to
+     ~50px each and two rows of them dominated the card — the opposite of the
+     complaint they were fixing. The board is an illustration beside the copy,
+     not the hero. */
+  .fd-board{grid-template-columns:repeat(var(--len,7),minmax(0,1fr));max-width:220px}
+  .fd-board i{width:auto;height:auto;aspect-ratio:1;font-size:clamp(11px,3.2vw,15px)}
 }

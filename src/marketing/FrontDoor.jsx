@@ -32,7 +32,11 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 import { getTrailNumber, loadTrailDay } from '../lib/trail.js';
 import { mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from '../lib/mysteryPlayer.js';
 import { readWordleTodayStatus, getWordleDateKey } from '../lib/wordleStatus.js';
-import { getWordleAnswer, gradeWordleGuess } from '../lib/wordle.js';
+import { getWordleAnswer, gradeWordleGuess, getWordleDayIndex } from '../lib/wordle.js';
+// The app's teaser picker, reused rather than re-invented: it is exported so
+// the no-spoiler property can be tested against the real schedule.
+import { pickTeaserPair } from '../components/FootleHero.jsx';
+import { MODE_ACCENT } from '../lib/accents.js';
 import { FP_NUMBER } from './footlePractice.js';
 import { keyForDate, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
 import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
@@ -138,15 +142,44 @@ function readFootleBoard(today) {
     const p = raw ? JSON.parse(raw) : null;
     if (p && Array.isArray(p.guesses)) guesses = p.guesses.filter((g) => typeof g === 'string');
   } catch {}
+  // ⚠️ A NEWCOMER SAW FORTY-TWO EMPTY OUTLINES. Alex, 2026-09-04, on the live
+  // homepage: the lead card "looks assembled and not designed… it does not have
+  // the green and yellow explainer", and hitting Play revealed a Footle screen
+  // "way superior to that one on the website homepage itself". He is right: with
+  // no guesses stored, every cell here resolved to '' and the card led with a
+  // blank wireframe — on the one surface that has to explain the game to someone
+  // who has never played it.
+  //
+  // The app already solved this and the website ignored it. FootleHero shows a
+  // worked example: a guess and the answer, graded green/amber/grey by the REAL
+  // engine so the demonstrated rules cannot drift from the game's, rotated daily
+  // and checked against today's answer so it can never spoil. pickTeaserPair is
+  // exported precisely so that no-spoiler property is testable rather than
+  // asserted. Same function, same day index — the two surfaces now teach the
+  // same lesson with the same colours instead of disagreeing about what Footle
+  // looks like.
+  if (!guesses.length) {
+    const [g, a] = pickTeaserPair(getWordleDayIndex(today), answer);
+    // ⚠️ WITH MARKS BUT NO LETTERS this is abstract colour swatches, which reads
+    // as a loading state rather than a word game — arguably worse than the blank
+    // grid it replaced. The letters are the whole point: they show a guess being
+    // scored against an answer, which is the rule the card has to teach.
+    return {
+      rows: [g, a].map((word) => Array.from(gradeWordleGuess(word, a)).map((m, i) => ({ m, ch: word[i] }))),
+      len: a.length,
+      teaser: true,
+    };
+  }
   const len = answer.length || 6;
   const rows = [];
   for (let r = 0; r < BOARD_ROWS; r++) {
     const g = guesses[r];
     if (g && answer) {
-      const marks = gradeWordleGuess(g.toUpperCase(), answer);
-      rows.push(Array.from({ length: len }, (_, i) => marks[i] || 'grey'));
+      const up = g.toUpperCase();
+      const marks = gradeWordleGuess(up, answer);
+      rows.push(Array.from({ length: len }, (_, i) => ({ m: marks[i] || 'grey', ch: up[i] || '' })));
     } else {
-      rows.push(Array.from({ length: len }, (_, i) => (r === guesses.length && i === 0 ? 'cur' : '')));
+      rows.push(Array.from({ length: len }, (_, i) => ({ m: r === guesses.length && i === 0 ? 'cur' : '', ch: '' })));
     }
   }
   return { rows, len };
@@ -216,35 +249,38 @@ export default function FrontDoor() {
             <span className="fd-progress"><b>{playedCount} of {dailies.length}</b> played · new ones in <span className="fd-tnum">{countdown}</span></span>
           </div>
           <div className="fd-today">
-            {(() => { const lead = dailies[0]; const line = lead.done ? (state.footleWon ? 'Solved. The next name drops at midnight.' : 'Played. The next name drops at midnight.') : lead.st === 'open' ? 'In progress — pick up where you left off.' : 'Guess the surname in six. The same name for everyone, until midnight.'; return (
-              <a className={`fd-lead${lead.done ? ' is-done' : ''}`} href={lead.href} onClick={() => go('fd-today-footle', lead.href)}>
-                <span className="fd-lead-body">
-                  <span className="fd-card-n">{lead.n}<span className="fd-card-no"> No. {lead.no}</span></span>
-                  <span className="fd-card-line">{line}</span>
-                  <span className="fd-lead-cta"><span className="fd-play fd-play-lg">{lead.done ? 'See your board' : lead.st === 'open' ? 'Continue' : "Play today's Footle"}</span></span>
-                </span>
-                <span className="fd-board" aria-hidden="true" style={{ '--len': board.len }}>
-                  {board.rows.map((row, r) => row.map((m, c) => <i key={`${r}-${c}`} data-m={m || undefined} />))}
-                </span>
-              </a>
-            ); })()}
-            <button type="button" className="fd-lead-alt" aria-expanded={practice} aria-controls="fd-practice" onClick={togglePractice}>
-              {practice ? 'Hide the practice board' : `Or practise on No. ${FP_NUMBER} from the archive — nothing about today's is given away`}
-            </button>
-            <div className="fd-today-rest">
-              {dailies.slice(1).map((d) => (
-                <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)}>
-                  <span className="fd-card-ic"><Icon k={d.k} /></span>
-                  <span className="fd-card-body">
-                    <span className="fd-card-n">{d.n}{d.no ? <span className="fd-card-no"> No. {d.no}</span> : null}</span>
-                    <span className="fd-card-line">{d.line}</span>
+            {/* ⚠️ FOUR EQUAL ROWS, BY DECISION. This morning's A/B chose B — Footle
+                as a lead card with a live board. By evening Alex had seen it on
+                his phone: "assembled and not designed", and the board it led
+                with was forty-two empty outlines. He went back to A: "the
+                simpler design… we can spice it up a bit though." So: A's shape,
+                with two things it lacked. Each row's icon chip carries its
+                mode's colour from the app's own MODE_ACCENT set, and Footle's
+                chip is the game itself — a two-row worked example graded by
+                the real engine, letters and all, the same teaser the app's
+                hero shows. The explainer he asked for, at 38px instead of as
+                the hero. */}
+            {dailies.map((d) => (
+              <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)} style={{ '--mode': MODE_ACCENT[d.k === 'daily' ? 'daily7' : d.k] }}>
+                {d.k === 'footle' && board.teaser ? (
+                  <span className="fd-card-ic fd-mini" aria-hidden="true" style={{ '--len': board.len }}>
+                    {board.rows.map((row, r) => row.map((cell, c) => <i key={`${r}-${c}`} data-m={cell.m || undefined}>{cell.ch}</i>))}
                   </span>
-                  <span className={`fd-state${d.done ? ' is-done' : d.st === 'open' ? ' is-open' : ''}`}>{d.done ? d.doneText : d.st === 'open' ? 'In progress' : 'Not played'}</span>
-                  <span className="fd-play">{d.done ? 'Review' : d.st === 'open' ? 'Continue' : 'Play'}</span>
-                </a>
-              ))}
-            </div>
+                ) : (
+                  <span className="fd-card-ic"><Icon k={d.k} /></span>
+                )}
+                <span className="fd-card-body">
+                  <span className="fd-card-n">{d.n}{d.no ? <span className="fd-card-no"> No. {d.no}</span> : null}</span>
+                  <span className="fd-card-line">{d.line}</span>
+                </span>
+                <span className={`fd-state${d.done ? ' is-done' : d.st === 'open' ? ' is-open' : ''}`}>{d.done ? d.doneText : d.st === 'open' ? 'In progress' : 'Not played'}</span>
+                <span className="fd-play">{d.done ? 'Review' : d.st === 'open' ? 'Continue' : 'Play'}</span>
+              </a>
+            ))}
           </div>
+          <button type="button" className="fd-lead-alt" aria-expanded={practice} aria-controls="fd-practice" onClick={togglePractice}>
+            {practice ? 'Hide the practice board' : `Or practise on No. ${FP_NUMBER} from the archive — nothing about today's is given away`}
+          </button>
         </section>
 
         {/* 3 · the practice board, on request from the lead card */}
