@@ -1,3 +1,20 @@
+## 2026-09-04 (day 3, 10:00) — THE GROUND LIFTS: C with B inside
+
+Alex on his phone: "does not hit me as modern… not sure if it is the background colour or what; the
+Footle grid looks outdated". A/B page (https://claude.ai/code/artifact/ec2e8dc1-e29c-4b47-b19f-29f9ed56c048):
+A as shipped · B filled tiles/keys in the game's colours · C = B + lifted surfaces. Alex: C.
+**Shipped (deca1fc + the escape fix):** bg #0A0A0A→#0B0C10 · bg2→#0F1116 · card #0F1117→#13151C ·
+card2 #14161E→#1B1E27 · pressed→#232631 · bd #242836→#242730 · bd2→#2F3240 · bd3→#3E4150 · hover→#181A22
+· ruled-out tile→#2E323E · rgba(10,10,10)→(11,12,16). The values were INLINED in 32 files / 310 sites
+(app.css, App.jsx, index.html, manifest + theme-color, OG images, sign-in sheet, generator, sidecar,
+tests) so the mapping was applied everywhere in one commit. Band tiles/keys filled, game's green/amber,
+8/10px corners; the game's own tiles filled (--s2, 8px). Sweep: 11 screen types × 390/1440 on the local
+build — clean except the Footle board at 390 (7px overflow: fixed -20px escape vs the web shell's
+clamp padding — yesterday's shell, fixed). Lesson: when tokens exist but values are inlined, a "token
+change" is a MAPPING across the repo, not an edit to tokens.js.
+**Next (design):** composition, not colour — the Today cards all weigh the same (nothing says "this one
+first"); the band has no air above the grid; generic outline icons. One a day.
+
 ## 2026-09-04 — BRICK BY BRICK (Alex: "improve the state of this project every single day")
 
 Alex's phone read of the front door: "good start, can be better but good". Standing order: find where

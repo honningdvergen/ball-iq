@@ -3745,6 +3745,14 @@ body.biq-web > #root { padding-left: 0 !important; }
 body.biq-web .biq-nav, body.biq-web .tab-bar { display: none !important; }
 body.biq-web .app { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 44px) 48px; }
 body.biq-web .tab-content { padding-bottom: 24px; }
+/* The Footle board and keyboard escape the column with margin-inline:-20px —
+   the app's own .app padding. Under the web shell the padding is
+   clamp(16px,4vw,44px), so on a 390px phone the fixed escape ran 4px past
+   each edge (sweep 2026-09-04: scrollWidth 397 on a 390 viewport). Match the
+   shell's padding on phones. Above 720px the padding is ≥28px, so the fixed
+   -20px escape already sits inside the column — no rule needed there, and
+   tablet-band.test.js forbids one between the phone cap and the band. */
+@media (max-width: 720px) { body.biq-web .wd-grid, body.biq-web .wd-keyboard { margin-inline: calc(-1 * clamp(16px, 4vw, 44px)); } }
 body.biq-web .toast { left: 50% !important; transform: translateX(-50%); max-width: min(560px, calc(100vw - 32px)) !important; }
 body.biq-web > .landing-bottom { padding-left: 0 !important; }
 .fd-appbar { position: sticky; top: 60px; z-index: 90; background: var(--bg, #0B0C10); border-bottom: 1px solid #242730; }

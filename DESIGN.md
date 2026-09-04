@@ -167,6 +167,8 @@ The palette is the app's, defined once in `src/design/tokens.js` and emitted int
 - **card** `#13151C` — every card, chip, input and dropdown.
 - **card-inset** `#1B1E27` — a card's hover state, and surfaces inside a card.
 
+Lifted one step on 2026-09-04. The previous ground (`#0A0A0A` / `#0F1117` / `#14161E`) put the page and its cards five points apart, so on an OLED they were one black and every edge had to be drawn as a border — a page made of outlines, which Alex read on his phone as "not modern". The three surfaces are now three visible steps and the borders are hairlines one step above the surface they sit on. Chosen from an A/B of the Footle band (as shipped · filled tiles · filled tiles + this ground); the game's tiles and the practice board are filled `card-inset` with 8px corners for the same reason.
+
 ### Lines
 - **border** `#242730` — every card, input and divider. One weight, 1px.
 - **border-strong** `#2F3240` — a card's hover border, a focused input.
