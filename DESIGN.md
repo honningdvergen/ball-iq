@@ -62,6 +62,12 @@ typography:
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.01em"
+  lead:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "20px"
+    fontWeight: 700
+    lineHeight: 1.2
+    letterSpacing: "-0.02em"
     letterSpacing: "0.06em"
   counter:
     fontFamily: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace"
@@ -69,6 +75,7 @@ typography:
     fontWeight: 700
     lineHeight: 1
 rounded:
+  tile: "5px"
   sm: "8px"
   md: "10px"
   lg: "12px"
@@ -173,6 +180,7 @@ Lifted one step on 2026-09-04. The previous ground (`#0A0A0A` / `#0F1117` / `#14
 - **border** `#242730` — every card, input and divider. One weight, 1px.
 - **border-strong** `#2F3240` — a card's hover border, a focused input.
 - **border-loud** `#3E4150` — reserved for the rare emphasised outline.
+- **hairline** `rgba(255,255,255,.07)` — the edge of a filled tile on `card-inset` (the practice board, the lead card's miniature). Alpha rather than a hex so it reads the same on any of the three surfaces.
 
 ### Text
 - **text** `#F0F1F5` — headings, names, the current tab.
@@ -206,6 +214,7 @@ A club's colour comes from its pack (`CLUB_PACKS` in `src/App.jsx`, resolved thr
 - **Caption** (400, 13.5px): the one line under a card's name; a section's subtitle.
 - **Meta** (600, 12.5px): states ("Not played", "3 of 7"), edition numbers, "checked 20 July".
 - **Label** (700, 12px, 0.06em, uppercase): footer column headings and the eyebrow above an `h1`. The only uppercase treatment in the system, and it is always a field label, never a slogan.
+- **Lead** (700, 20px, −0.02em): the name on the homepage's one lead card. Bigger than a Title so the card leads, smaller than the Section above it so it does not compete with "Today".
 - **Wordmark** (800, 18px, −0.01em): "Ball IQ" beside the crest in the site header, and nowhere else. The one size that is neither Title nor Section, because the mark must read at a glance next to a 28px crest without competing with an `h1`.
 
 ### Named rules
@@ -234,6 +243,8 @@ One frame: `max-width: 1200px`, padding `clamp(20px, 4vw, 44px)`. The site heade
 Flat. Depth is expressed by surface tone, not by shadow: `bg` → `card` → `card-inset`, and a 1px `border` around anything that can be pressed. The only shadows in the system are the search dropdown's (`0 18px 44px rgba(0,0,0,.55)`) and, inside the game, the app's own card shadow tokens. There are no glows behind heroes or buttons, no gradients on bands, no grain.
 
 ## Shapes
+
+Miniature tiles (the lead card's 22px board, the legend swatches) use the `tile` radius, 5px — a quarter of their size, the same proportion 8px is on the game's larger tiles.
 
 Radii come from a five-step scale and every element sits on one step: 8px for small controls and icon tiles, 10px for inputs and list rows, 12px for cards, 14px for the game's answer options and cards, and a pill for buttons, chips and tags. Nothing is square-cornered and nothing is rounder than 14px except a pill. Borders are 1px (1.5px on an answer option, 2px on a selected difficulty).
 
