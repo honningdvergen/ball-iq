@@ -1,3 +1,36 @@
+## 2026-09-04 (17:00) — ⏳ WAVE Q IN FLIGHT: Middlesbrough (one club, forge only)
+
+**Run ID `wf_5da68475-9b0`** · script `scripts/wave-q-forge.workflow.js` · ~70 agents (2 gen lenses ×20,
+then examiner + skeptic per question, then prose). One club on purpose: wave P put three through at
+~180 agents, burned 7.4M subagent tokens and died at the session limit.
+
+**⚠️ IF THIS SESSION ENDED MID-RUN — DO NOT START A NEW FORGE.** Every finished agent has already
+written its result to disk and `resumeFromRunId` is SAME-SESSION ONLY. From a fresh session, harvest:
+```
+node scripts/forge-harvest.mjs \
+  /Users/alexanderbrynolsen/.claude/projects/-Users-alexanderbrynolsen-ball-iq/7c79f3a1-9008-4410-9f7a-2a99269af58f/subagents/workflows/wf_5da68475-9b0 \
+  wave-q.json
+```
+Same session? `Workflow({scriptPath: 'scripts/wave-q-forge.workflow.js', resumeFromRunId: 'wf_5da68475-9b0'})`
+— finished agents replay from cache for free. ⚠️ forge-rescue.mjs has failed at this job before; the
+harvester is the route.
+
+**Still to do after the forge (each its own slice, not one sitting):**
+1. `node scripts/forge-curate.mjs wave-q.json .` — ⚠️ its CLUB_FIELD map currently holds Alex's
+   uncommitted 8-club edit; Middlesbrough must be added and his edit left intact. Required: catches
+   HTML entities, semantic dupes, mutual-leak pairs and within-club answer leaks.
+2. `node scripts/add-questions.mjs` then the wiring: App.jsx ×6 (incl. CLUB_ORDER), MarketingHome ×2,
+   gen-seo ×2, club-competition.mjs, clubs.mjs prose. **`clubs.mjs` `club` must equal the bank's
+   `club` value — "Middlesbrough".** In-app league bucket "pl" (no Championship section; West Ham
+   precedent); `club-competition` "Championship" per leagues.mjs, which is data not a guess.
+3. Build (expect several named failures — each one is the gate doing its job), commit, push, then
+   verify live by static `<title>`, never HTTP 200.
+
+**Why Middlesbrough opens the frontier:** mid-size clubs out-pull giants in our own GSC (Everton ~335
+impressions, Celtic 232, Leeds ~190 vs Bayern ~167, PSG 51) because a fanatical mid-size club's SERP
+is not owned by big publishers. Next in the queue: West Brom, QPR, Watford, Sheffield Utd, Blackburn,
+Millwall, Preston.
+
 ## 2026-09-04 (16:30) — BREADTH OVER DEPTH (Alex's call), AND WHAT GSC CAN AND CANNOT ANSWER
 
 **Alex: add club packs before topping up thin ones. Agreed — his argument is better than mine.** 95% of
