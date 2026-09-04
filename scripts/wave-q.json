@@ -1,0 +1,364 @@
+[
+  {
+    "club": "Middlesbrough",
+    "full": 37,
+    "count": 27,
+    "survivors": [
+      {
+        "q": "Middlesbrough were formed in 1876 by members of a local club in a different sport, looking for something to keep them fit through the winter. Which sport?",
+        "o": [
+          "Rowing",
+          "Cricket",
+          "Rugby",
+          "Athletics"
+        ],
+        "a": 1,
+        "diff": "easy",
+        "hint": "The founders came from Middlesbrough Cricket Club, meeting in a gymnasium behind the Albert Park Hotel on Linthorpe Road."
+      },
+      {
+        "q": "Which former England captain took over as Middlesbrough's player-manager in 1994 and won the Division One title in his first season in charge?",
+        "o": [
+          "Terry Butcher",
+          "Stuart Pearce",
+          "Bryan Robson",
+          "Kevin Keegan"
+        ],
+        "a": 2,
+        "diff": "easy",
+        "hint": "Robson left Manchester United in 1994 to take the job, made 22 league appearances himself, and took Boro straight up as champions."
+      },
+      {
+        "q": "Middlesbrough reached the 1997 FA Cup final and lost 2-0 at Wembley to which club?",
+        "o": [
+          "Arsenal",
+          "Newcastle United",
+          "Manchester United",
+          "Chelsea"
+        ],
+        "a": 3,
+        "diff": "easy",
+        "hint": "Roberto Di Matteo scored inside the first minute — then the fastest goal in an FA Cup final at Wembley — and Eddie Newton added a second late on."
+      },
+      {
+        "q": "Which local businessman was part of the consortium that saved Middlesbrough from liquidation in 1986 and went on to become the club's chairman in 1994?",
+        "o": [
+          "Peter Ridsdale",
+          "Steve Gibson",
+          "Jack Walker",
+          "Doug Ellis"
+        ],
+        "a": 1,
+        "diff": "easy",
+        "hint": "Gibson had founded the haulage firm Bulkhaul in his early twenties and joined the Boro board at 26, the youngest director in the club's history."
+      },
+      {
+        "q": "Which manager took Middlesbrough from the Third Division to the First in successive promotions in 1987 and 1988, months after the club had nearly ceased to exist?",
+        "o": [
+          "Bruce Rioch",
+          "Colin Todd",
+          "Willie Maddren",
+          "Jack Charlton"
+        ],
+        "a": 0,
+        "diff": "medium",
+        "hint": "Rioch worked without pay through the 1986 crisis, training his young squad in parks and schools, then led them up twice in two years."
+      },
+      {
+        "q": "Middlesbrough were founder members of the Premier League in 1992 but went straight back down. Which manager took them up in 1992 and was in charge for that relegation?",
+        "o": [
+          "Malcolm Allison",
+          "Colin Todd",
+          "Lennie Lawrence",
+          "Jack Charlton"
+        ],
+        "a": 2,
+        "diff": "medium",
+        "hint": "Lawrence's side finished runners-up in the old Second Division in 1992, then came 21st in the Premier League's first season, five points adrift of safety."
+      },
+      {
+        "q": "Middlesbrough signed Juninho in October 1995 from which Brazilian club?",
+        "o": [
+          "Vasco da Gama",
+          "Atlético Mineiro",
+          "Flamengo",
+          "São Paulo"
+        ],
+        "a": 3,
+        "diff": "medium",
+        "hint": "Boro paid around £4.75m to São Paulo and paraded the 22-year-old at the brand-new Riverside, a statement signing by a newly promoted club."
+      },
+      {
+        "q": "Fabrizio Ravanelli scored a hat-trick on his Middlesbrough debut on the opening day of 1996-97, in a 3-3 draw against which club?",
+        "o": [
+          "Everton",
+          "Arsenal",
+          "Liverpool",
+          "Aston Villa"
+        ],
+        "a": 2,
+        "diff": "medium",
+        "hint": "Boro came from behind three times at the Riverside, Ravanelli's treble starting with a penalty driven past David James."
+      },
+      {
+        "q": "Ravanelli arrived on Teesside in 1996 from the club he had just scored for in that year's Champions League final. Which club was it?",
+        "o": [
+          "Juventus",
+          "AC Milan",
+          "Lazio",
+          "Sampdoria"
+        ],
+        "a": 0,
+        "diff": "medium",
+        "hint": "He opened the scoring for Juventus against Ajax in the 1996 final, then swapped Turin for Middlesbrough in a £7m deal that summer."
+      },
+      {
+        "q": "Middlesbrough were docked three points in 1996-97 for failing to fulfil a Premier League fixture, a deduction that ultimately sent them down. Which club were they due to play?",
+        "o": [
+          "Southampton",
+          "Coventry City",
+          "Sheffield Wednesday",
+          "Blackburn Rovers"
+        ],
+        "a": 3,
+        "diff": "medium",
+        "hint": "Boro called off the December trip to Blackburn citing an injury and illness crisis; the appeal failed, and without the deduction they would have stayed up."
+      },
+      {
+        "q": "Middlesbrough lost the 1997 League Cup final after a replay. Which club beat them?",
+        "o": [
+          "Aston Villa",
+          "Leicester City",
+          "Wimbledon",
+          "Sunderland"
+        ],
+        "a": 1,
+        "diff": "medium",
+        "hint": "Ravanelli put Boro ahead in extra time at Wembley before Emile Heskey equalised in the 118th minute; Steve Claridge won the replay for Leicester."
+      },
+      {
+        "q": "Paul Gascoigne joined Middlesbrough in 1998 from which club?",
+        "o": [
+          "Lazio",
+          "Everton",
+          "Celtic",
+          "Rangers"
+        ],
+        "a": 3,
+        "diff": "medium",
+        "hint": "Gascoigne left Rangers for Teesside as Bryan Robson's side pushed for promotion straight back to the Premier League."
+      },
+      {
+        "q": "Which Brazilian midfielder did Middlesbrough sign in 1996 from Porto, only for him to go AWOL during his time on Teesside?",
+        "o": [
+          "Emerson",
+          "Juninho",
+          "Branco",
+          "Afonso Alves"
+        ],
+        "a": 0,
+        "diff": "medium",
+        "hint": "Emerson had won back-to-back titles and the Portuguese player of the year award at Porto before his £4m move, and started brilliantly before disappearing."
+      },
+      {
+        "q": "Who scored the first goal at the Riverside Stadium, in a 2-0 win over Chelsea in August 1995?",
+        "o": [
+          "John Hendrie",
+          "Craig Hignett",
+          "Nick Barmby",
+          "Jan Aage Fjortoft"
+        ],
+        "a": 1,
+        "diff": "hard",
+        "hint": "Hignett opened the scoring on the new ground's first afternoon in front of 28,286, and Fjortoft added the second."
+      },
+      {
+        "q": "Bernie Slaven, Middlesbrough's cult goalscorer of the late 1980s, was signed in 1985 for £25,000 from which Scottish club?",
+        "o": [
+          "Greenock Morton",
+          "Airdrieonians",
+          "Queen of the South",
+          "Albion Rovers"
+        ],
+        "a": 3,
+        "diff": "hard",
+        "hint": "Slaven had been the Scottish league's leading scorer at Albion Rovers; on Teesside he won three promotions and later played for the Republic of Ireland."
+      },
+      {
+        "q": "On the way to the 1997 FA Cup final, Middlesbrough were held 3-3 at Old Trafford by which third-tier side before winning the semi-final replay?",
+        "o": [
+          "Wrexham",
+          "Burnley",
+          "Crewe Alexandra",
+          "Chesterfield"
+        ],
+        "a": 3,
+        "diff": "hard",
+        "hint": "Chesterfield, in the third tier that season, led 2-0 before Middlesbrough fought back to draw 3-3 after extra time; Boro won the replay at Hillsborough 3-0."
+      },
+      {
+        "q": "Middlesbrough moved into the Riverside Stadium in 1995 — which ground did they leave behind after 92 years?",
+        "o": [
+          "Roker Park",
+          "Ayresome Park",
+          "Boothferry Park",
+          "Elm Park"
+        ],
+        "a": 1,
+        "diff": "easy",
+        "hint": "Ayresome Park had been home since 1903, and its gates were famously padlocked during the 1986 financial collapse. The first Riverside game came in August 1995, a 2-0 win over Chelsea."
+      },
+      {
+        "q": "Which Brazilian, signed from São Paulo in 1995, went on to have three separate spells at Middlesbrough?",
+        "o": [
+          "Juninho",
+          "Emerson",
+          "Branco",
+          "Doriva"
+        ],
+        "a": 0,
+        "diff": "easy",
+        "hint": "Juninho Paulista cost £4.75m in October 1995 and became the symbol of the Bryan Robson era. He came back on loan in 1999-2000 and again permanently in 2002, winning the League Cup in his third spell."
+      },
+      {
+        "q": "Middlesbrough lifted the 2004 League Cup, the first major trophy in the club's history — which side did they beat 2-1 in the final?",
+        "o": [
+          "Birmingham City",
+          "Blackburn Rovers",
+          "Bolton Wanderers",
+          "Wigan Athletic"
+        ],
+        "a": 2,
+        "diff": "easy",
+        "hint": "Bolton Wanderers were swept aside inside seven minutes at the Millennium Stadium, Joseph-Desire Job and Boudewijn Zenden scoring. Kevin Davies pulled one back after a Mark Schwarzer error."
+      },
+      {
+        "q": "Which Croatia international did Middlesbrough sign from Lazio in 2000?",
+        "o": [
+          "Davor Suker",
+          "Alen Boksic",
+          "Igor Stimac",
+          "Robert Prosinecki"
+        ],
+        "a": 1,
+        "diff": "medium",
+        "hint": "Alen Boksic arrived for around £2.5m in August 2000, aged 30, and top-scored in his first season with 12 Premier League goals."
+      },
+      {
+        "q": "Which Middlesbrough striker scored the decisive late goal in both of the 2006 UEFA Cup comebacks, against Basel and Steaua Bucharest?",
+        "o": [
+          "Mark Viduka",
+          "Yakubu Aiyegbeni",
+          "Massimo Maccarone",
+          "Jimmy Floyd Hasselbaink"
+        ],
+        "a": 2,
+        "diff": "medium",
+        "hint": "Massimo Maccarone struck in the 90th minute against Basel and headed an 89th-minute winner against Steaua, both completing recoveries from three goals down on aggregate."
+      },
+      {
+        "q": "Which former Middlesbrough defender retired as a player in 2006 and was immediately made the club's manager despite not holding a UEFA Pro Licence?",
+        "o": [
+          "Tony Mowbray",
+          "Nigel Pearson",
+          "Gareth Southgate",
+          "Gary Pallister"
+        ],
+        "a": 2,
+        "diff": "medium",
+        "hint": "Gareth Southgate had captained the League Cup-winning side in 2004. The Premier League granted special dispensation in November 2006 on the grounds that his international career had left no time for the coaching courses."
+      },
+      {
+        "q": "Which former Manchester United captain became Middlesbrough's player-manager in 1994 and won promotion in his first season?",
+        "o": [
+          "Steve Bruce",
+          "Bryan Robson",
+          "Roy Keane",
+          "Gary Neville"
+        ],
+        "a": 1,
+        "diff": "medium",
+        "hint": "Bryan Robson ended a 13-year spell at Old Trafford and took Boro up as First Division champions in 1994-95, combining the job with a role as England assistant under Terry Venables."
+      },
+      {
+        "q": "Which board member assembled the consortium that saved Middlesbrough from liquidation in 1986 and later became the club's long-serving chairman?",
+        "o": [
+          "Keith Lamb",
+          "John Hall",
+          "Steve Gibson",
+          "Doug Ellis"
+        ],
+        "a": 2,
+        "diff": "medium",
+        "hint": "Steve Gibson was in his twenties when the rescue package was registered with the Football League with minutes to spare. He has bankrolled the club ever since, including the Riverside move."
+      },
+      {
+        "q": "Middlesbrough came from three goals down on aggregate twice in the 2005-06 UEFA Cup — against Steaua Bucharest in the semi-final, and which club in the quarter-final?",
+        "o": [
+          "Basel",
+          "Roma",
+          "Stuttgart",
+          "Xanthi"
+        ],
+        "a": 0,
+        "diff": "hard",
+        "hint": "Basel won the first leg 2-0 and led 3-0 on aggregate when Eduardo scored at the Riverside, before Boro won the return 4-1 — Maccarone's 90th-minute goal completing the 4-3 turnaround. Xanthi, Stuttgart and Roma had all been eliminated earlier in the same run."
+      },
+      {
+        "q": "Which midfielder had already lost two Champions League finals with Valencia before joining Middlesbrough in 2003?",
+        "o": [
+          "George Boateng",
+          "Gaizka Mendieta",
+          "Boudewijn Zenden",
+          "Jonathan Greening"
+        ],
+        "a": 1,
+        "diff": "hard",
+        "hint": "Gaizka Mendieta lost the 2000 final to Real Madrid and the 2001 final to Bayern Munich on penalties. He arrived on loan from Lazio and the move was made permanent in 2004."
+      },
+      {
+        "q": "Mark Schwarzer joined Middlesbrough in 1997 and stayed 11 years — which English club did he sign from?",
+        "o": [
+          "Bradford City",
+          "Notts County",
+          "Bolton Wanderers",
+          "Huddersfield Town"
+        ],
+        "a": 0,
+        "diff": "hard",
+        "hint": "The Australian goalkeeper had only a brief spell at Valley Parade, arriving there from Kaiserslautern before the February 1997 move to the Riverside. He finally left Boro for Fulham in 2008."
+      }
+    ],
+    "prose": {
+      "slug": "middlesbrough",
+      "name": "Middlesbrough",
+      "h1": "Middlesbrough Quiz",
+      "title": "Middlesbrough Quiz with Answers — Boro Trivia",
+      "description": "A Middlesbrough quiz with answers: Juninho, Ravanelli, the 2004 League Cup, the 2006 UEFA Cup run and the Riverside. Instant scoring, no sign-up.",
+      "intro": [
+        "Some clubs give you trophies. Boro gave you a decade you couldn't look away from — Juninho arriving from São Paulo in October 1995 for around £4.75m, Fabrizio Ravanelli scoring a hat-trick on his debut in a 3-3 draw with Liverpool, and a three-point deduction for the unfulfilled trip to Blackburn that sent the club down in 1996-97 after two cup finals in the same season. This quiz lives in that territory: the names, the transfers and the afternoons Teesside still argues about.",
+        "Start earlier if you like. Middlesbrough were formed in 1876 by members of Middlesbrough Cricket Club looking for something to keep them fit through the winter, and the club's modern story starts in 1986, when a consortium including Steve Gibson saved it from liquidation and Bruce Rioch — working without pay through the crisis — took a young side from the Third Division to the First in successive promotions in 1987 and 1988. Ayresome Park was home for 92 years before the move to the Riverside in 1995, where Craig Hignett scored the new ground's first goal in a 2-0 win over Chelsea.",
+        "Then the reward. The 2004 League Cup, beaten finalists Bolton Wanderers swept aside inside seven minutes at the Millennium Stadium, was the first major trophy in the club's history, and captain Gareth Southgate went from lifting it to managing the club in 2006 on special dispensation without a Pro Licence. Two seasons later came the run nobody scripts: three goals down on aggregate against Basel, then again against Steaua Bucharest, and Massimo Maccarone scoring the decisive late goal in both.",
+        "The questions are drawn fresh each time, so a second go isn't the same round. Answers come with a line of context — where the fee went, who scored, what it cost — which is usually where the argument starts. Play it on the bus, play it against a mate, and see how much of the Robson era you actually kept."
+      ],
+      "faq": [
+        {
+          "q": "How well do you know Middlesbrough?",
+          "a": "This quiz is a decent test. It covers the 1876 formation by members of Middlesbrough Cricket Club, the 1986 rescue and the Rioch promotions, the Bryan Robson years, the 2004 League Cup and the 2005-06 UEFA Cup run. Every answer comes with a short explanation, so you pick things up even on the ones you miss."
+        },
+        {
+          "q": "When did Middlesbrough win their first major trophy?",
+          "a": "The 2004 League Cup. Boro beat Bolton Wanderers 2-1 at the Millennium Stadium, with Joseph-Desire Job and Boudewijn Zenden scoring inside the first seven minutes and Kevin Davies pulling one back after a Mark Schwarzer error. It was the first major trophy in the club's history."
+        },
+        {
+          "q": "Which players does the Middlesbrough quiz cover?",
+          "a": "Mostly the ones fans still name first: Juninho, who had three separate spells after his 1995 move from São Paulo; Fabrizio Ravanelli, signed from Juventus in 1996; Emerson, Alen Boksic, Gaizka Mendieta, Massimo Maccarone, Bernie Slaven, Craig Hignett, Paul Gascoigne and Mark Schwarzer, who stayed 11 years from 1997."
+        },
+        {
+          "q": "Why were Middlesbrough relegated in 1997?",
+          "a": "A three-point deduction. Boro called off a December Premier League fixture at Blackburn Rovers citing an injury and illness crisis, and the appeal against the penalty failed. Without the deduction they would have stayed up — in a season that also brought the FA Cup final defeat to Chelsea and the League Cup final replay loss to Leicester."
+        }
+      ]
+    }
+  }
+]
