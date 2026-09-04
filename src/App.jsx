@@ -12468,7 +12468,19 @@ function AppInner() {
       try {
         if (!localStorage.getItem("biq_first_game_started")) {
           localStorage.setItem("biq_first_game_started", "1");
-          loopEvent("first-game-started");
+          // WHICH game and THROUGH WHICH DOOR. Read 2026-09-04: on the web,
+          // 1,045 devices started a first game in 30 days and 53 finished one
+          // (5%), against 57% for signed-in players — and the rows could not
+          // say whether the leak was the /footle share landing, a club page's
+          // door, the front door's doors or an in-app launch. Now they can.
+          let entry = "app";
+          try {
+            const sp = new URLSearchParams(BOOT_SEARCH);
+            entry = sp.get("game") ? "door" : sp.get("c") ? "challenge" : sp.get("club") ? "club-door" : sp.get("quiz") ? "quiz-door"
+              : (sp.get("join") || /^\/join\//.test(window.location.pathname)) ? "invite"
+              : /^\/(footle|c)(\/|$)/.test(window.location.pathname) ? "link" : "app";
+          } catch {}
+          loopEvent("first-game-started", { mode: mode || screen, entry });
         }
         // Same beat, but attributable: the device-scoped event above cannot be
         // joined to an account, so it can count first games and never say

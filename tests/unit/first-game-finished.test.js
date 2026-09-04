@@ -67,6 +67,6 @@ describe("first-game-finished", () => {
     // acct-first-finish is attributable but has fired once in prod, because
     // first games are played before sign-up. Neither replaces the other.
     expect(APP).toMatch(/'acct-first-finish'/);
-    expect(APP).toMatch(/loopEvent\("first-game-started"\)/);
+    expect(APP).toMatch(/loopEvent\("first-game-started"(, \{[^)]*\})?\)/);
   });
 });

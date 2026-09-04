@@ -427,7 +427,12 @@ if(!rounds&&!started){started=1;tag('clubq-len',n);
    ESLint never parses it. Found by reading the numbers the instrument
    produced, then catching the TypeError in the live page.
    Prefix anything declared in here. */
-var bqFire=function(){bqev('clubq-start');bqOff()};
+/* Belt to bqOff's braces: at most ONE clubq-start per page load whatever the
+   listener does. 2026-08-23, two days after the detach fix shipped, one
+   visitor still logged 220 starts in four minutes (a cached pre-fix page, most
+   likely) and became 20% of the month's starts on one club. A flag cannot be
+   stale-cached out of. */
+var bqStarted=false;var bqFire=function(){if(bqStarted)return;bqStarted=true;bqev('clubq-start');bqOff()};
 var bqOff=function(){
 try{root.removeEventListener('pointerdown',bqFire);root.removeEventListener('keydown',bqFire);
 root.removeEventListener('touchstart',bqFire)}catch(e){}};
