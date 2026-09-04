@@ -1,3 +1,24 @@
+## 2026-09-04 (23:30) — ⏳ WEBSITE CRITIQUE IN FLIGHT — RECOVERY NOTE
+
+Alex: eyes on the website; "tear it apart"; goals in order: (1) one consistent site — "feels very
+fragmented and like separate products", (2) easy to navigate, (3) time on site, (4) gentle app funnel.
+Running per `.claude/skills/impeccable/reference/critique.md` as two ISOLATED sub-agents (slug
+`balliq-app`, 6 pages × phone+desktop: / · /quiz/arsenal/ (+finish screen) · /play · a list · an answer
+page · /quizzes/).
+
+**⚠️ IF THE SESSION DIED BEFORE SYNTHESIS — nothing is lost, harvest from disk:**
+- Both agents were told to write their full reports to
+  `.impeccable/critique/_assessment-A-2026-09-04.md` and `_assessment-B-2026-09-04.md` before returning.
+- If a file is missing, the agent's transcript is the source of truth — last assistant message of:
+  A `…/subagents/…/tasks/aa96d3744372ce680.output` · B `…/tasks/a3191496cdc7dadd4.output` under
+  `/private/tmp/claude-501/-Users-alexanderbrynolsen-ball-iq/7c79f3a1-9008-4410-9f7a-2a99269af58f/`.
+- Pre-synthesis facts already gathered: `.impeccable/critique/_fragmentation-map-2026-09-04.md`.
+- Then: synthesise (weave A+B, heuristic table, P0-P3 issues, personas), persist with
+  `critique-storage.mjs write`, read the trend, AskUserQuestion on priorities. Do NOT re-run the agents.
+
+**Also parked, verified on disk, resumable:** Watford 40 (wat-final.json, 11 leaks to resolve) and QPR 40
+(qpr-verdict*.json, 2 fixes both the Loftus Road "since 1917" false premise) — curate, prose, wire, ship.
+
 ## 2026-09-04 (17:00) — ⏳ WAVE Q IN FLIGHT: Middlesbrough (one club, forge only)
 
 **Run ID `wf_5da68475-9b0`** · script `scripts/wave-q-forge.workflow.js` · ~70 agents (2 gen lenses ×20,
