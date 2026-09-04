@@ -266,7 +266,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
 // Renders different sub-views based on room.state:
 //   loading | error | lobby | playing (1B placeholder) | ended
 function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch, onReport, onPlayDaily }) {
-  const { room, players, myPlayer, isHost, loading, error, channelStatus, actions } = useMultiplayerRoom(code);
+  const { room, players, myPlayer, isHost, loading, error, errorKind, channelStatus, actions } = useMultiplayerRoom(code);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState("");
   const [showReconnecting, setShowReconnecting] = useState(false);
@@ -509,7 +509,7 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
   // error=null) hit `error || !room` → truthy → LobbyError briefly renders
   // with error=null before the next render shows LobbyLoading. Safari's
   // paint timing made the flash visible.
-  if (error) return <LobbyError error={error} onExit={onExit} onRetry={actions.retry} />;
+  if (error) return <LobbyError error={error} kind={errorKind} onExit={onExit} onRetry={actions.retry} onPlayDaily={onPlayDaily} />;
   if (loading || !room) return <LobbyLoading />;
   if (room.state === "ended") return <LobbyEnded players={players} myPlayer={myPlayer} onExit={onExit} room={room} onRematch={onRematch} onReport={onReport} defaultAvatar={defaultAvatar} onPlayDaily={onPlayDaily} />;
   if (room.state === "playing") {
@@ -936,13 +936,33 @@ function LobbyLoading() {
   );
 }
 
-function LobbyError({ error, onExit, onRetry }) {
+function LobbyError({ error, kind, onExit, onRetry, onPlayDaily }) {
   // Sprint #92 GGG1-#2: previously this screen was a dead end — "Back to Home"
   // discarded the joiner's intent + the user had to navigate back through
   // OnlineEntry to reattempt. Adds an explicit Retry that re-runs the initial
   // fetch in-place. Retry is the primary action (green); Back is the secondary
   // escape hatch. Common case (flaky network) resolves on tap.
-  const retryable = !!onRetry;
+  //
+  // ⚠️ 2026-09-04: THAT WAS ONE FAILURE WEARING TWO FACES. A room that has
+  // ended is gone — the initial select filters state='ended' — so a guest who
+  // taps an invite after the host left got "⚠️ Couldn't load room" and a Try
+  // again that can never succeed. Measured the same day: 13 rooms in a week
+  // were opened by a host who left before anyone arrived, and 12 of the 33
+  // anonymous guests who never played anything had joined a room that never
+  // started. An invite outliving its room is the normal case.
+  //
+  // So the 'gone' branch is not an error screen at all. It says what happened
+  // in plain words, drops the retry, and offers the one thing this person can
+  // still do — the same decision LobbyEnded already made for the guest who
+  // was IN the room when it died. The wave, not the warning triangle: nothing
+  // here is their fault.
+  const gone = kind === 'gone';
+  const retryable = !!onRetry && !gone;
+  useEffect(() => {
+    if (!gone) return;
+    // How often an invite outlives its room, and whether the door gets used.
+    try { loopEvent('mp-join-dead', { hadDoor: !!onPlayDaily }); } catch {}
+  }, [gone, onPlayDaily]);
   return (
     <div className="screen">
       <div className="page-hdr">
@@ -950,14 +970,21 @@ function LobbyError({ error, onExit, onRetry }) {
         <div className="page-title">Lobby</div>
       </div>
       <div style={{ padding: "40px 20px", textAlign: "center", maxWidth: 360, margin: "0 auto" }}>
-        <div style={{ fontSize: 48, marginBottom: 12 }}>⚠️</div>
+        <div style={{ fontSize: 48, marginBottom: 12 }}>{gone ? "\u{1F44B}" : "⚠️"}</div>
         <div style={{ fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 8 }}>
-          Couldn't load room
+          {gone ? "That room has closed" : "Couldn't load room"}
         </div>
         <div style={{ fontSize: 13, color: "var(--t2)", marginBottom: 20, lineHeight: 1.5 }}>
-          {error || "Room not found or no longer active"}
+          {gone
+            ? "Whoever set it up ended it before you arrived. Ask them for a fresh link \u2014 or play today\u2019s puzzle while you\u2019re here."
+            : (error || "Room not found or no longer active")}
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+          {gone && onPlayDaily && (
+            <button className="btn-3d" onClick={onPlayDaily} style={{ padding: "12px 24px", minWidth: 180 }}>
+              Play today&rsquo;s Daily 7 &rarr;
+            </button>
+          )}
           {retryable && (
             <button className="btn-3d" onClick={onRetry} style={{ padding: "12px 24px", minWidth: 180 }}>
               Try again

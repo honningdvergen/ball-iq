@@ -48,6 +48,16 @@ export function useMultiplayerRoom(code) {
   const [players, setPlayers] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  /* ⚠️ NOT EVERY FAILURE IS RETRYABLE, AND THE WALL SAID THEY ALL WERE.
+     A room that has ended is gone: the initial select filters state='ended',
+     so "Room not found" is the answer for a closed room AND for a bad code,
+     and neither improves by tapping Try again. Measured 2026-09-04: 12 of the
+     33 anonymous guests who never played anything had joined a room that
+     never started, and 13 rooms in a week were opened by a host who left
+     before anyone arrived — so an invite link outliving its room is the
+     normal case, not an edge one. The view needs to know WHICH failure this
+     is so it can offer a door instead of a retry that cannot work. */
+  const [errorKind, setErrorKind] = useState(null)   // 'gone' | 'fetch' | null
   const [channelStatus, setChannelStatus] = useState('idle')
   // Sprint #92 GGG1-#2: retryNonce drives a manual re-run of the initial
   // fetch effect after the user taps Retry on LobbyError. Incrementing it
@@ -75,12 +85,14 @@ export function useMultiplayerRoom(code) {
       setPlayers([])
       setLoading(false)
       setError(null)
+      setErrorKind(null)
       setChannelStatus('idle')
       return
     }
 
     setLoading(true)
     setError(null)
+    setErrorKind(null)
     setChannelStatus('connecting')
 
     // Re-fetch initial state after a reconnect catch-up. Doesn't toggle
@@ -128,12 +140,14 @@ export function useMultiplayerRoom(code) {
         if (cancelled) return
         if (roomErr) {
           setError(roomErr.message)
+          setErrorKind('fetch')
           setLoading(false)
           setChannelStatus('error')
           return
         }
         if (!roomData) {
           setError('Room not found')
+          setErrorKind('gone')
           setLoading(false)
           setChannelStatus('error')
           return
@@ -150,6 +164,7 @@ export function useMultiplayerRoom(code) {
           // Non-fatal: room state is at least known. Continue with empty
           // players array; realtime sync below will populate as events fire.
           setError(playersErr.message)
+          setErrorKind('fetch')
         } else if (!playersData || playersData.length === 0) {
           // Silent-empty signal: room exists but room_players is empty. Every
           // active room must have ≥1 player (the host); zero rows points at
@@ -243,6 +258,7 @@ export function useMultiplayerRoom(code) {
       } catch (e) {
         if (cancelled) return
         setError(e?.message || String(e))
+        setErrorKind('fetch')
         setLoading(false)
         setChannelStatus('error')
       }
@@ -373,6 +389,7 @@ export function useMultiplayerRoom(code) {
     isHost,
     loading,
     error,
+    errorKind,
     channelStatus,
     actions: { startGame, submitAnswer, advance, leave, end, retry, setRoomMode },
   }
