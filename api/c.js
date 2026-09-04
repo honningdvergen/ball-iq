@@ -13,7 +13,7 @@ export const config = { runtime: 'edge' };
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-export default function handler(req, ctx) {
+export default async function handler(req) {
   const url = new URL(req.url);
   // Loop instrumentation (opportunity scan 2026-08-10 P0): one line per hit.
   // bot=true means an OG crawler unfurled the link somewhere — i.e. a share
@@ -37,14 +37,20 @@ export default function handler(req, ctx) {
     // VITE_SUPABASE_URL is a build-time name and is NOT set on Vercel's
     // functions (found the hard way: the first deploy of this wrote nothing).
     // Same fallback api/p.js uses; the key IS set.
+    // AWAITED, with an 800ms ceiling: fire-and-forget behind ctx.waitUntil
+    // landed one probe in four (2026-09-04) — the runtime does not reliably
+    // keep the write alive past the response. A share landing can afford
+    // the wait; a lost row cannot be recovered.
     const base = process.env.VITE_SUPABASE_URL || 'https://blcisypmngimqkwxrrdm.supabase.co', key = process.env.VITE_SUPABASE_KEY;
     if (base && key) {
-      const p = fetch(`${base}/rest/v1/rpc/record_funnel_event`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', apikey: key, authorization: `Bearer ${key}` },
-        body: JSON.stringify({ p_event: 'loop-hit', p_meta: hit, p_visitor: null }),
-      }).catch(() => {});
-      if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(p);
+      await Promise.race([
+        fetch(`${base}/rest/v1/rpc/record_funnel_event`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', apikey: key, authorization: `Bearer ${key}` },
+          body: JSON.stringify({ p_event: 'loop-hit', p_meta: hit, p_visitor: null }),
+        }).catch(() => {}),
+        new Promise((resolve) => setTimeout(resolve, 800)),
+      ]);
     }
   } catch {}
   const origin = url.origin;
