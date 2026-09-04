@@ -1,3 +1,24 @@
+## 2026-09-04 (15:20) — ✅ 2. THE LOBBY: the number was wrong, and the instrument was missing
+
+**"27 of 68 lobbies never start, 19 with the host alone" does not survive a proper read.** All 27 are
+`state='ended'` — none is a room still sitting there waiting. Breakdown: **13 hold ZERO room_players
+rows** (create_room inserts the host's row in the same transaction, so these are hosts who opened a
+lobby and left before anyone arrived — 48% of the failures); 6 one player, ended; 8 two players,
+ended — **of which 4 are a "Host Bot 7 + Golden Maestro 53" harness pair**, and 3 of the solo rooms
+are one guest opening rooms three times in eleven minutes. **Genuine two-player rooms that never
+started, in a week: four.** Not a number to build a feature on — and "19 hosts waiting alone"
+conflated an empty room with a host who waited.
+
+**Shipped instead (52e37c8): the lobby now reports its own funnel.** It fired no events at all except
+the rival prompt. `mp-lobby-open {host, mode}` · `mp-invite-shared {via}` on the tap, share sheet AND
+code copy · `mp-lobby-left {host, players, invited, secs}` emitted BEFORE leave() ends the room (the
+test pins that order). That answers the only question the rows can't: did the thirteen try to invite
+anyone, or never find the control? **Read 2026-09-11 with the rest.**
+
+⚠️ Lesson for every MP query: harness traffic sits in `room_players` under "Host Bot", "Headless Bot"
+and `player_<hex>`; real guests get the app's own "Adjective Noun NN" names, which look identical to
+bots at a glance. Exclude by name before counting anything.
+
 ## 2026-09-04 (15:00) — TWO OF THE THREE, AND A NUMBER THAT MEANT SOMETHING ELSE
 
 **✅ 1. The club-quiz page laid out 66 questions to show one (a303605).** /quiz/arsenal/ ships 66
