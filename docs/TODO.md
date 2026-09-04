@@ -15,6 +15,15 @@ Same session? `Workflow({scriptPath: 'scripts/wave-q-forge.workflow.js', resumeF
 — finished agents replay from cache for free. ⚠️ forge-rescue.mjs has failed at this job before; the
 harvester is the route.
 
+**⚠️ COST, MEASURED MID-RUN (Alex spotted the ~100k-per-agent figure).** Per examiner agent: cache
+read 86,535 · cache write 13,669 · genuinely new input **2** · output 870 (323 thinking). The
+headline number is the subagent's fixed context re-paid per agent, mostly as cache READS — real cost
+is ~an order of magnitude below what it looks like. **But 74 agents each writing their own cache to
+do 870 tokens of work is real waste.** Alex's call: **Q finishes on the proven pipeline as the
+control; batch 5 questions per verifier from West Brom onward** and compare survival rates. ⚠️ That
+change also breaks `forge-harvest.mjs`, which keys on the literal "You are the EXAMINER" /
+"You are the SKEPTIC" strings — update it in the same commit.
+
 **Still to do after the forge (each its own slice, not one sitting):**
 1. `node scripts/forge-curate.mjs wave-q.json .` — ⚠️ its CLUB_FIELD map currently holds Alex's
    uncommitted 8-club edit; Middlesbrough must be added and his edit left intact. Required: catches
