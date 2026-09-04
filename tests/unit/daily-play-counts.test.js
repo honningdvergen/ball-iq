@@ -22,10 +22,28 @@ const APP = readFileSync(fileURLToPath(new URL('../../src/App.jsx', import.meta.
  * test that only exercises the branches that were already right.
  */
 describe('every daily mode counts as a game played', () => {
-  it('pairs recordDailyPlay with awardXp in all four daily branches', () => {
-    // One call per daily mode: footle, trail, mystery, stadiums.
-    const calls = APP.match(/recordDailyPlay\(/g) || [];
-    expect(calls.length).toBe(4);
+  it('pairs recordPlay with awardXp in every mode that finishes a game', () => {
+    // Four dailies — footle, trail, mystery, stadiums — plus online
+    // multiplayer, which was the fifth branch to be missing it.
+    const calls = APP.match(/recordPlay\(/g) || [];
+    expect(calls.length).toBe(5);
+  });
+
+  it('online multiplayer records a play, without inventing correct answers', () => {
+    // ⚠️ THE SAME DEFECT, ONE MODE FURTHER ON. Measured 2026-09-04: six
+    // accounts whose only `scores` rows are mp:race / mp:survival still read
+    // games_played = 0, the most recent having played on 1 September. Online
+    // was wired into XP in August and into `scores` on the 28th, and into the
+    // counter never — so a player whose whole experience is rooms with friends
+    // saw "0 games" on their own profile. Those are the invited players the
+    // room funnel converts.
+    const start = APP.indexOf('const onMpDone');
+    expect(start).toBeGreaterThan(-1);
+    const block = APP.slice(start, APP.indexOf("window.addEventListener('biq:mp-completed'", start));
+    // null, never d.won: room_players has no per-player correct count, so this
+    // must add a game and leave correct_answers alone.
+    expect(block).toMatch(/recordPlay\(null\)/);
+    expect(block).not.toMatch(/recordPlay\(d\.won/);
   });
 
   it.each(['footle', 'trail', 'mystery'])('the %s branch records a play', (game) => {
@@ -40,7 +58,7 @@ describe('every daily mode counts as a game played', () => {
     expect(windows.length).toBeGreaterThan(0);
     const xpBranches = windows.filter((w) => /awardXp\(/.test(w.slice(0, 400)));
     expect(xpBranches.length).toBeGreaterThan(0);
-    for (const branch of xpBranches) expect(branch).toMatch(/recordDailyPlay\(/);
+    for (const branch of xpBranches) expect(branch).toMatch(/recordPlay\(/);
   });
 
   it('the stadiums branch records a play even on a give-up', () => {
@@ -48,7 +66,7 @@ describe('every daily mode counts as a game played', () => {
     expect(start).toBeGreaterThan(-1);
     const block = APP.slice(start, start + 900);
     // Outside the !d.gaveUp guard — played-and-stopped is still played.
-    expect(block).toMatch(/recordDailyPlay\(!d\.gaveUp/);
+    expect(block).toMatch(/recordPlay\(!d\.gaveUp/);
   });
 
   it('does not add a lower-is-better daily score to total_score', () => {
@@ -65,7 +83,7 @@ describe('every daily mode counts as a game played', () => {
     // not readable on the next line — the Supabase push would silently never
     // fire. And these handlers close over whatever `stats` was when the effect
     // ran, so state goes stale. localStorage is the authority here.
-    const start = APP.indexOf('const recordDailyPlay');
+    const start = APP.indexOf('const recordPlay');
     const fn = APP.slice(start, APP.indexOf('}, [user?.id]);', start));
     expect(fn).toMatch(/localStorage\.getItem\("biq_stats"\)/);
     expect(fn).toMatch(/const \{ error \} = await supabase/);   // resolves on error
@@ -73,17 +91,17 @@ describe('every daily mode counts as a game played', () => {
 
   it('is declared ABOVE the effect that lists it as a dependency', () => {
     // ⚠️ THIS EXACT ORDERING TOOK THE WHOLE APP DOWN ONCE.
-    // recordDailyPlay first landed just above handleComplete — ~100 lines
+    // recordPlay first landed just above handleComplete — ~100 lines
     // BELOW the effect that registers the daily listeners and names it in its
     // dependency array. A `const` is hoisted but sits in the temporal dead
-    // zone, so the dep array threw `Cannot access 'recordDailyPlay' before
+    // zone, so the dep array threw `Cannot access 'recordPlay' before
     // initialization` on first render and every route under AppInner fell into
     // the error boundary.
     //
     // ESLint passed it. The production build passed it. All 403 tests passed
     // it. Only loading the page caught it — which is the whole reason
     // "verified" has to mean the page rendered.
-    const decl = APP.indexOf('const recordDailyPlay');
+    const decl = APP.indexOf('const recordPlay');
     const effect = APP.indexOf("window.addEventListener('biq:daily-completed'");
     expect(decl).toBeGreaterThan(-1);
     expect(effect).toBeGreaterThan(-1);

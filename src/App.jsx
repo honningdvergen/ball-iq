@@ -11348,7 +11348,7 @@ function AppInner() {
   // below — its dep array reads this const during render (TDZ crash caught by
   // the e2e verify on first build).
   /**
-   * A daily puzzle counts as a game played.
+   * A finished game counts as a game played — in EVERY mode.
    *
    * ⚠️ EIGHT REAL ACCOUNTS SHOW "0 GAMES" WHILE HOLDING 20+ SOLVED PUZZLES.
    * `profiles.games_played` / `correct_answers` were written ONLY by the quiz
@@ -11376,7 +11376,16 @@ function AppInner() {
    * catStats (dailies carry no `cat`, and inventing one orphans history), and
    * the weekly counters.
    */
-  const recordDailyPlay = useCallback((wasCorrect) => {
+  // ⚠️ 2026-09-04, the same bug one mode further on: six accounts whose only
+  // rows in `scores` are mp:race / mp:survival still read games_played = 0,
+  // the most recent having played on 1 September. Online was wired into XP
+  // and into `scores` in August and into this counter never — so a player
+  // whose whole experience of Ball IQ is rooms with friends sees "0 games" on
+  // their own profile, and those are exactly the invited players the room
+  // funnel converts. Hence the rename: this is recordPlay, not
+  // recordDailyPlay, and `wasCorrect` may be null for a mode that has no
+  // per-player correct count (MP does not), which adds a game and no answers.
+  const recordPlay = useCallback((wasCorrect) => {
     // Base the increment on the PERSISTED snapshot, not on `stats`. Two
     // reasons, both of which have bitten this file before:
     //   · a setStats updater runs at render time, so anything computed inside
@@ -11580,7 +11589,7 @@ function AppInner() {
       // day (the won/lost transition), so no dedup guard is needed.
       if (e?.detail?.game === 'footle') {
         awardXp(getFootleXP(e.detail.won === true, e.detail.guesses));
-        recordDailyPlay(e.detail.won === true);
+        recordPlay(e.detail.won === true);
         // Footle wrote NOTHING to `scores` until now — its only trace was the
         // wordle_state jsonb. So the most-played mode, the one that owns every
         // long streak, was invisible in the only table anyone would query, and
@@ -11604,7 +11613,7 @@ function AppInner() {
       // Footle's shape: attempts used out of the max, 1 "question" attempted.
       if (e?.detail?.game === 'trail') {
         awardXp(e.detail.won === true ? 40 : 10);
-        recordDailyPlay(e.detail.won === true);
+        recordPlay(e.detail.won === true);
         if (user?.id) {
           const used = Math.min(e.detail.attempts || 5, 5);
           saveScore(user?.id, {
@@ -11631,7 +11640,7 @@ function AppInner() {
         const tries = Math.max(1, e.detail.attempts || 1);
         const mysteryWon = e.detail.won === true;
         if (mysteryWon) awardXp(tries <= 5 ? 50 : tries <= 15 ? 35 : 20);
-        recordDailyPlay(mysteryWon);
+        recordPlay(mysteryWon);
         if (user?.id) {
           saveScore(user?.id, {
             game_mode: 'mystery',
@@ -11653,7 +11662,7 @@ function AppInner() {
         const xp = d.hints === 0 ? 80 : d.hints <= 3 ? 60 : d.hints <= 10 ? 40 : 25;
         awardXp(xp);
       }
-      recordDailyPlay(!d.gaveUp && (d.solved || 0) >= (d.total || 20));
+      recordPlay(!d.gaveUp && (d.solved || 0) >= (d.total || 20));
       if (user?.id) {
         saveScore(user?.id, {
           game_mode: 'stadiums',
@@ -11683,7 +11692,7 @@ function AppInner() {
       window.removeEventListener('biq:stadiums-exit', onStadiumsExit);
       window.removeEventListener('biq:daily-completed', onDailyDoneAndSync);
     };
-  }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak, recordDailyPlay, markFirstGameFinished]);
+  }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak, recordPlay, markFirstGameFinished]);
 
   // Online multiplayer joins the XP economy (it was the only mode outside it).
   // The emitter in OnlineMultiplayer is the once-per-room gate, so no dedup is
@@ -11692,6 +11701,10 @@ function AppInner() {
     const onMpDone = (e) => {
       const d = e?.detail || {};
       awardXp(getMpXP(d.won === true, d.score));
+      // null, not d.won: room_players carries no per-player correct count, so
+      // this adds a game played and leaves correct_answers alone rather than
+      // inventing one. Same reasoning as the explicit null on the row below.
+      recordPlay(null);
       // Persist the game like every other mode does. Measured 2026-08-28:
       // scores held ZERO mp rows across a week of daily ended rooms — MP was
       // the only mode whose completion event paid XP but never wrote a row,
@@ -11715,7 +11728,7 @@ function AppInner() {
     };
     window.addEventListener('biq:mp-completed', onMpDone);
     return () => window.removeEventListener('biq:mp-completed', onMpDone);
-  }, [awardXp, user?.id]);
+  }, [awardXp, user?.id, recordPlay]);
 
   // Re-ask at the FIRST crossing into a 3-day streak — not on every open of a
   // long-streak user (that would burn both lifetime asks before they ever see a
