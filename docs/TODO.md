@@ -1,3 +1,22 @@
+## 2026-09-04 (14:00) — 1.7.3 SUBMISSIONS PREPARED (both consoles, nothing pressed)
+
+**Play (Ball IQ, production track):** the release draft is built — **App bundle 48 (1.7.3)** attached
+and the 11-locale release notes saved (4,432 chars, `<locale>` blocks, verified after a reload).
+Alex presses **Neste → Start utrulling**. I do not.
+**App Store Connect (1.7.3, Prepare for Submission):** What's New + Promotional Text written for
+**all 15 locales**. ⚠️ The UI verification pass LIED — switching locale repaints the form slower than
+a script reads it, so three locales looked like they held another language's text. Ground truth came
+from ASC's own API (`/iris/v1/appStoreVersions/<id>/appStoreVersionLocalizations`): all 15 match
+`store-assets/1.7.3/whatsnew.json` byte for byte (sha-256 prefix per locale). Waiting on Alex: the
+Xcode archive + upload of build 112, then I attach it. "Add for Review" is his.
+**⚠️ Do NOT drive a native file picker with osascript** — the keystrokes go to whatever is focused.
+The AAB path was typed into Alex's chat box, twice. `file_upload` works under 10 MB and the fresh AAB
+is 7.6 MB (the 24 MB one predated the cutout move).
+**Re-cut before either upload** — two things Alex saw on his phone, fixed and rebuilt (ea6e524 +
+the test gate): Transfer Trail was listed twice on Home (daily row AND a More-modes tile, same
+destination — tile gone, invariant gated in design-tier2), and the quit dialog's two saturated
+slabs became one accent + one tonal destructive (red on red-tint, 5.9:1) on a blurred scrim.
+
 ## 2026-09-04 (day 3, 10:00) — THE GROUND LIFTS: C with B inside
 
 Alex on his phone: "does not hit me as modern… not sure if it is the background colour or what; the
