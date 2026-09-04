@@ -1,3 +1,35 @@
+## 2026-09-04 (15:00) — TWO OF THE THREE, AND A NUMBER THAT MEANT SOMETHING ELSE
+
+**✅ 1. The club-quiz page laid out 66 questions to show one (a303605).** /quiz/arsenal/ ships 66
+questions and 264 option buttons — 1,379 of the page's 2,085 tags — because the whole set must be in
+the HTML (it is the "with answers" text the page ranks on, and what a JS-off reader gets). The engine
+then hides all but one. `content-visibility:auto` + `contain-intrinsic-size` on `.bq-q` lets the
+browser skip the RENDERING work for anything off-screen: no change to the DOM, the a11y tree,
+find-in-page or what a crawler reads — it is not display:none. **Deterministic local measure, five
+runs each, same tab: laying the full list out 44.5ms → 1.4ms.** PSI mobile is too noisy to confirm a
+delta at n=3 (pre: TBT 410ms / Style&Layout 1,254ms; post: 34ms/420ms, 140ms/655ms, 1,050ms/1,057ms).
+⚠️ **Watch CLS on the next read** — it was exactly 0 before, and post-deploy runs show 0 / 0.005 /
+0.029. Well inside "good", but it was perfect; if it holds above 0, tighten the intrinsic size.
+
+**✅ 3a. Online was the one mode that still didn't count as a game played (f42498f).** Six accounts
+whose only `scores` rows are mp:race / mp:survival read games_played = 0, latest play 1 September —
+so a player whose whole experience is rooms with friends sees "0 games" on their own profile, and
+those are the invited players the room funnel converts. `recordDailyPlay` → `recordPlay`, accepting
+null for a mode with no per-player correct count. Guard now pins five branches, not four.
+⚠️ 13 historical accounts still read 0 with rows in `scores` — **a backfill is Alex's call**, not a
+silent prod write.
+
+**⛔ 3b. THE NOTIFICATION NUMBER MEANS SOMETHING ELSE — nothing to fix.** "43 shown, 4 yes, 33 no"
+is **native anonymous rows**: 7d gives 38 shown / 28 no / 5 yes / 4 dismissed with `visitor_id` NULL
+on every one, because `loopEvent` sends native events as name-only by Alex's 2026-08-23 decision,
+which the privacy policy, the App Store label and the Play Data form all state. So it is EVENTS, not
+people, and it can never be split by copy. The **web** ask has been shown **once ever** (2026-09-03):
+17 people hit the deliberate `guest` bail (web push upserts by user id) and 6 the `unsupported` bail.
+The ask already fires post-solve with the streak-stake copy. There was no conversion problem — the
+ask barely runs on web, and native gives a ratio of events at best (5/38 ≈ 13% yes).
+
+**Next:** 2. lobbies that never start (27/68 in 7d — 19 host alone, 8 with two waiting).
+
 ## 2026-09-04 (14:00) — 1.7.3 SUBMISSIONS PREPARED (both consoles, nothing pressed)
 
 **Play (Ball IQ, production track):** the release draft is built — **App bundle 48 (1.7.3)** attached
