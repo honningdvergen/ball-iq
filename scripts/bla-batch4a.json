@@ -1,0 +1,54 @@
+[
+  {
+    "q": "Blackburn sold Damien Duff for £17m in July 2003. Which club bought him?",
+    "o": [
+      "Arsenal",
+      "Chelsea",
+      "Manchester United",
+      "Newcastle United"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Roman Abramovich's first summer of spending took the Republic of Ireland winger from Ewood Park to Stamford Bridge.",
+    "_i": 32
+  },
+  {
+    "q": "Blackburn's eleven-year run in the Premier League ended on 7 May 2012 with a home defeat that confirmed relegation. Which club beat them at Ewood Park?",
+    "o": [
+      "Bolton Wanderers",
+      "Norwich City",
+      "Queens Park Rangers",
+      "Wigan Athletic"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "Antolin Alcaraz headed the only goal late on as Wigan won 1-0, sending Steve Kean's side down with a game still to play.",
+    "_i": 33
+  },
+  {
+    "q": "Andy Cole scored Blackburn's winner in the 2002 League Cup final, roughly two months after signing. Which club did Blackburn buy him from?",
+    "o": [
+      "Newcastle United",
+      "Manchester United",
+      "Leeds United",
+      "Aston Villa"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Souness paid around £8m to bring Cole from Old Trafford in December 2001; he had been the Premier League's top scorer at Newcastle years earlier.",
+    "_i": 34
+  },
+  {
+    "q": "Blackburn's 1994-95 title season began with a first-round UEFA Cup exit at the hands of which club?",
+    "o": [
+      "IFK Gothenburg",
+      "Trelleborgs FF",
+      "Odense BK",
+      "Aalborg BK"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "The little-known Swedish side won 1-0 at Ewood Park and drew 2-2 at home, knocking the future champions out in September 1994.",
+    "_i": 35
+  }
+]

@@ -1,0 +1,88 @@
+[
+  {
+    "_i": 16,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "1974-75",
+    "reason": "Blackburn were relegated to Division Three in 1971, won the Third Division championship in 1974-75 (4 years later, matching hint), were relegated back in 1979, and returned to Division Two in 1979-80 as runners-up (not champions) -- consistent with the hint's wording ('going up again in 1980', not 'champions again'). Distractors 1971-72, 1977-78, 1979-80 are all real Blackburn seasons but none are the Third Division championship-winning season.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Blackburn_Rovers_F.C.",
+      "https://www.fchd.info/BLACKBUR.HTM"
+    ]
+  },
+  {
+    "_i": 17,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Bolton Wanderers",
+    "reason": "Ewood Park's record attendance of 62,522 was set on 2 March 1929 for an FA Cup sixth-round tie against Bolton Wanderers (1-1, Bolton won the replay). Figure remains the ground record. Distractors (Burnley, Preston North End, Manchester City) are plausible Lancashire/rival clubs but did not play that fixture.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ewood_Park",
+      "https://footballgroundguide.com/leagues/england/championship/ewood-park-blackburn-rovers.html"
+    ]
+  },
+  {
+    "_i": 18,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Blackburn Olympic",
+    "reason": "Blackburn Olympic beat Old Etonians 2-1 (aet) in the 1883 FA Cup final, the first northern/working-class club to win the Cup. Blackburn Rovers won their first FA Cup the following year, 1884, beating Queen's Park -- exactly 'a year before' as the stem states. Distractors Darwen, Preston North End (won 1889) and Bolton Wanderers (won 1923) are real northern clubs but none were first, and none preceded Olympic.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1883_FA_Cup_final",
+      "https://en.wikipedia.org/wiki/1884_FA_Cup_final",
+      "https://www.wsc.co.uk/stories/from-the-archive-blackburn-olympic-the-first-northern-fa-cup-winners/"
+    ]
+  },
+  {
+    "_i": 19,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Blue and white halves",
+    "reason": "Blackburn's halved shirt tradition dates to the early-to-mid 1880s (Cambridge blue in use by 1882), consistent with 'worn since the 1880s'. Hint's claim that blue has sat on the left since WWII (with a brief 2013-2015 exception) is accurate ('almost always'). Distractors (vertical stripes, claret/blue halves, green/white halves) are not and have never been Blackburn's home design.",
+    "sources": [
+      "https://www.historicalkits.co.uk/Blackburn_Rovers/Blackburn_Rovers.htm",
+      "https://about.macron.com/en/news/kit-launches/the-colours-and-symbols-of-146-years-of-history-in-blackburn-rovers-new-home-jersey-by-macron/"
+    ]
+  },
+  {
+    "_i": 20,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Steel",
+    "reason": "Jack Walker built Walkersteel into Britain's largest independent steel stockholder, sold it to British Steel in 1989, and took control of Blackburn Rovers in 1991. Distractors (textiles, brewing, shipbuilding) are unrelated industries, plausible as generic 'local Lancashire businessman' guesses but verifiably wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Jack_Walker_(businessman)"
+    ]
+  },
+  {
+    "_i": 21,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Southampton",
+    "reason": "Alan Shearer joined Blackburn from Southampton on 27 July 1992 for £3.6m, a British transfer record at the time. Distractors (Everton, Watford, Millwall) are real clubs of the era but not Shearer's actual former club.",
+    "sources": [
+      "https://www.newsletter.co.uk/sport/football/international-football/on-this-day-in-1992-alan-shearer-joined-blackburn-for-a-british-record-fee-2924561"
+    ]
+  },
+  {
+    "_i": 22,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Tottenham Hotspur",
+    "reason": "Blackburn beat Tottenham Hotspur 2-1 in the 2002 Football League (Worthington) Cup final at the Millennium Stadium, Cardiff (24 Feb 2002); Matt Jansen and Andy Cole scored for Blackburn, Christian Ziege equalised for Spurs -- exactly matching the hint. Distractors are plausible early-2000s cup finalists but not Blackburn's 2002 opponent.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2002_Football_League_Cup_final",
+      "https://www.espn.co.uk/football/match/_/gameId/38134/tottenham-hotspur-blackburn-rovers"
+    ]
+  },
+  {
+    "_i": 23,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Poultry farming",
+    "reason": "Venky's (VH Group, Pune) bought Blackburn Rovers for approximately £23m, finalised 19 November 2010; the group's core business is poultry/processed food. Distractors (telecoms, textile mills, pharma) are plausible Indian-conglomerate industries but not Venky's actual business.",
+    "sources": [
+      "https://www.thepoultrysite.com/news/2010/11/venkys-completes-purchase-of-english-football-club"
+    ]
+  }
+]

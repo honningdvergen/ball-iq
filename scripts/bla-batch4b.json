@@ -1,0 +1,54 @@
+[
+  {
+    "q": "Blackburn won only one match in the 1995-96 Champions League. Which club did they beat 4-1 at Ewood Park in December 1995?",
+    "o": [
+      "Spartak Moscow",
+      "Steaua Bucharest",
+      "Rosenborg",
+      "Ferencvaros"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Ray Harford's side still finished bottom of Group B with one win, one draw and four defeats from six games.",
+    "_i": 36
+  },
+  {
+    "q": "Two Blackburn team-mates traded punches on the pitch during a Champions League group game in Moscow in November 1995. Graeme Le Saux was one of them, but who was the other?",
+    "o": [
+      "Colin Hendry",
+      "Jason Wilcox",
+      "David Batty",
+      "Tim Sherwood"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "Le Saux broke a bone in his hand throwing the punch and captain Tim Sherwood took a stray blow trying to separate them; Spartak Moscow won 3-0.",
+    "_i": 37
+  },
+  {
+    "q": "Blackburn appointed Paul Ince in June 2008, making him the first black British manager in the Premier League. Which club had he just led to the League Two title?",
+    "o": [
+      "Notts County",
+      "Rotherham United",
+      "Macclesfield Town",
+      "Milton Keynes Dons"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "Ince won the League Two title and the Football League Trophy with MK Dons in 2007-08, but lasted only 177 days at Ewood Park.",
+    "_i": 38
+  },
+  {
+    "q": "Blackburn goalkeeper Brad Friedel scored a Premier League goal from a corner in stoppage time in February 2004. Which club were Blackburn playing?",
+    "o": [
+      "Charlton Athletic",
+      "Fulham",
+      "Portsmouth",
+      "Bolton Wanderers"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Friedel's 90th-minute equaliser made it 2-2 at The Valley, and Charlton went straight up the other end to win it 3-2.",
+    "_i": 39
+  }
+]

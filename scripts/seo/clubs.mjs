@@ -2835,5 +2835,37 @@ export const CLUBS = [
         "a": "Brian Deane, for Sheffield United against Manchester United at Bramall Lane on 15 August 1992. He scored twice that afternoon, one from the penalty spot, in a 2-1 win."
       }
     ]
+  },
+  {
+    "club": "Blackburn Rovers",
+    "slug": "blackburn-rovers",
+    "name": "Blackburn Rovers",
+    "h1": "Blackburn Rovers Quiz",
+    "title": "Blackburn Rovers Quiz with Answers \u2014 Rovers | Ball IQ",
+    "description": "Free Blackburn Rovers quiz with explained answers \u2014 the 1880s FA Cup treble, Jack Walker, the SAS partnership and the 1995 title.",
+    "intro": [
+      "Blackburn Rovers have been at Ewood Park since 1890, and the blue and white halved shirt goes back to their Victorian sides. They won the FA Cup in three consecutive seasons \u2014 1884, 1885 and 1886 \u2014 a feat only Wanderers had managed before them, beating the Glasgow amateurs Queen's Park in the first two. William Townley scored the first hat-trick in an FA Cup final in the 6-1 win of 1890, and the sixth and last cup came in 1928 against Huddersfield Town.",
+      "Two league titles followed in 1911-12 and 1913-14, both captained by Bob Crompton, whose England caps stood as a record for 38 years until Billy Wright passed him. Ted Harper's 43 league goals in 1925-26 remain the club record. Then came the long years down: relegated in 1966, into the third tier by 1971, back up as champions in 1974-75, with Simon Garner and Derek Fazackerley playing hundreds of games almost entirely outside the top flight.",
+      "Jack Walker changed all of it. A local man who had built Walkersteel into Britain's largest steel stockholder and sold it to British Steel, he funded a rebuild of Ewood Park costing around \u00a320m and backed Kenny Dalglish's team: promotion through the play-offs in 1992, Alan Shearer from Southampton for a British record, Chris Sutton from Norwich to form the SAS partnership, and the 1994-95 title won on 89 points while Manchester United finished a point behind.",
+      "What came after is its own story \u2014 the 2002 League Cup against Tottenham under Graeme Souness, Damien Duff sold to Chelsea in Abramovich's first summer, Brad Friedel scoring a 90th-minute equaliser at The Valley, Paul Ince arriving as the first black British manager in the Premier League, and relegation in 2012 under the Rao family's ownership. Every answer here explains itself."
+    ],
+    "faq": [
+      {
+        "q": "How many FA Cups have Blackburn Rovers won?",
+        "a": "Six. Three in a row in 1884, 1885 and 1886 \u2014 beating Queen's Park in the first two \u2014 then 1890 and 1891, and finally 1928 against Huddersfield Town. Only Wanderers had won three consecutively before Rovers did it."
+      },
+      {
+        "q": "When did Blackburn Rovers win the Premier League?",
+        "a": "1994-95, on 89 points. They lost 2-1 at Anfield on the final day and still went up as champions because West Ham held Manchester United to a 1-1 draw at Upton Park, leaving United a point behind."
+      },
+      {
+        "q": "Who were the SAS at Blackburn?",
+        "a": "Alan Shearer and Chris Sutton. Shearer arrived from Southampton for a British record fee in 1992 and scored 34 in the title season, equalling Andy Cole's record; Sutton came from Norwich City in 1994, again for a British record."
+      },
+      {
+        "q": "Who was Jack Walker?",
+        "a": "A Blackburn-born steel magnate who built Walkersteel into Britain's largest steel stockholder, sold it to British Steel, and used the money to rebuild Ewood Park and bankroll the side that won the 1995 title. One of the new stands carries his name."
+      }
+    ]
   }
 ];

@@ -1,0 +1,478 @@
+[
+ {
+  "q": "Blackburn Rovers won the FA Cup in three consecutive seasons in the 1880s. Which three?",
+  "o": [
+   "1882, 1883 and 1884",
+   "1886, 1887 and 1888",
+   "1884, 1885 and 1886",
+   "1883, 1884 and 1885"
+  ],
+  "a": 2,
+  "diff": "easy",
+  "hint": "Only Wanderers, in the 1870s, had won three FA Cups in a row before Rovers did it in 1884, 1885 and 1886 — and no club has managed it since.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn Rovers beat the same Scottish club in both the 1884 and the 1885 FA Cup final. Which club?",
+  "o": [
+   "Rangers",
+   "Queen's Park",
+   "Heart of Midlothian",
+   "Third Lanark"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Queen's Park, the Glasgow amateurs, reached both finals at Kennington Oval and lost both — 2-1 in 1884 and 2-0 a year later.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn Rovers won the 1890 FA Cup final 6-1 at Kennington Oval. Which club did they beat?",
+  "o": [
+   "Notts County",
+   "Aston Villa",
+   "Sheffield Wednesday",
+   "Preston North End"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "Wednesday were swept aside by three goals from William Townley — the first hat-trick ever scored in an FA Cup final.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn Rovers won the FA Cup for the sixth and last time in 1928. Who did they beat in the Wembley final?",
+  "o": [
+   "Huddersfield Town",
+   "Arsenal",
+   "Cardiff City",
+   "Bolton Wanderers"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Jack Roscamp scored twice and Tommy McLean once in a 3-1 win over Huddersfield — the last major trophy Rovers would win for 67 years.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn Rovers were champions of the Football League First Division twice before the First World War. In which seasons?",
+  "o": [
+   "1908-09 and 1910-11",
+   "1912-13 and 1914-15",
+   "1905-06 and 1909-10",
+   "1911-12 and 1913-14"
+  ],
+  "a": 3,
+  "diff": "medium",
+  "hint": "Bob Crompton was the club's captain for both titles, and the 1914 championship stood as Rovers' last league title until 1995.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Bob Crompton's 41 England caps, won as a Blackburn Rovers full-back, stood as the England appearance record until 1952. Who finally passed it?",
+  "o": [
+   "Stanley Matthews",
+   "Billy Wright",
+   "Tom Finney",
+   "Nat Lofthouse"
+  ],
+  "a": 1,
+  "diff": "hard",
+  "hint": "Crompton played his last international in 1914 and his mark survived 38 years, until Wolves' Billy Wright overtook it on the way to 105 caps.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Ted Harper set Blackburn Rovers' club record for league goals in a season in 1925-26, a Football League record at the time. How many did he score?",
+  "o": [
+   "43",
+   "37",
+   "29",
+   "52"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Harper's 43 in 37 games included five at Newcastle and four against the eventual champions; the League record lasted only until Dixie Dean's 60 two seasons later.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Which forward scored 168 league goals for Blackburn Rovers between 1978 and 1992, more than any other player in the club's history?",
+  "o": [
+   "Alan Shearer",
+   "Ted Harper",
+   "Simon Garner",
+   "Bryan Douglas"
+  ],
+  "a": 2,
+  "diff": "easy",
+  "hint": "Garner spent 14 years at Ewood Park, almost all of them outside the top flight, and left for West Bromwich Albion in the summer the Premier League began.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Which defender played 18 seasons for Blackburn Rovers from 1969 to 1987, making more appearances than any other player in the club's history?",
+  "o": [
+   "Ronnie Clayton",
+   "Bob Crompton",
+   "Glenn Keeley",
+   "Derek Fazackerley"
+  ],
+  "a": 3,
+  "diff": "medium",
+  "hint": "Fazackerley's 671 games in all competitions were played entirely outside the First Division, in Rovers' long exile in the second and third tiers.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Bryan Douglas spent his whole playing career at Blackburn Rovers and went to two World Cups with England. Which two tournaments?",
+  "o": [
+   "1954 and 1958",
+   "1958 and 1962",
+   "1962 and 1966",
+   "1950 and 1954"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Douglas won 36 caps and played in every England game in Sweden and Chile; the Darwen End at Ewood Park now carries his name.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn Rovers lost the 1960 FA Cup final 3-0 and finished it with ten men after a full-back broke his leg. He later built the JJB Sports chain and bought Wigan — who was he?",
+  "o": [
+   "Mick McGrath",
+   "Matt Woods",
+   "Dave Whelan",
+   "Ronnie Clayton"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "Whelan fractured his leg in a challenge with Wolves' Norman Deeley, and with no substitutes allowed Rovers had to play out the final a man short.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn Rovers were relegated from the First Division in 1966. How long did they spend away from the top flight before returning?",
+  "o": [
+   "26 years",
+   "14 years",
+   "19 years",
+   "33 years"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Rovers went down in 1966 and did not play top-flight football again until the inaugural Premier League season of 1992-93.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn Rovers won a Wembley final in 1987, beating Charlton 1-0. Which competition was it?",
+  "o": [
+   "The Football League Trophy",
+   "The Full Members' Cup",
+   "The Anglo-Italian Cup",
+   "The Watney Cup"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Colin Hendry volleyed the winner five minutes from time in the Full Members' Cup, a competition invented for First and Second Division clubs after English sides were banned from Europe.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "In which season did Blackburn Rovers win the Third Division championship?",
+  "o": [
+   "1974-75",
+   "1971-72",
+   "1977-78",
+   "1979-80"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Rovers dropped into the third tier in 1971 and came back up as champions four years later; they were relegated to it once more in 1979 before going up again in 1980.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "What is the traditional design of Blackburn Rovers' home shirt, worn since the 1880s?",
+  "o": [
+   "Blue and white vertical stripes",
+   "Blue and white halves",
+   "Claret and blue halves",
+   "Green and white halves"
+  ],
+  "a": 1,
+  "diff": "easy",
+  "hint": "The halved shirt dates back to Rovers' Victorian sides, and since the Second World War the blue half has almost always sat on the left.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Jack Walker, the local businessman who took full control of Blackburn Rovers in 1991 and bankrolled its rise, made his fortune in which industry?",
+  "o": [
+   "Textiles",
+   "Steel",
+   "Brewing",
+   "Shipbuilding"
+  ],
+  "a": 1,
+  "diff": "easy",
+  "hint": "Walker built Walkersteel into Britain's largest steel stockholder and sold it to British Steel in 1989, then ploughed the proceeds into his hometown club.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn won the 2002 League Cup final 2-1 at the Millennium Stadium in Cardiff. Which club did they beat?",
+  "o": [
+   "Tottenham Hotspur",
+   "Aston Villa",
+   "Middlesbrough",
+   "Sheffield Wednesday"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Matt Jansen and Andy Cole scored for Graeme Souness's side after Christian Ziege had levelled for Spurs; it was Blackburn's first League Cup.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Venky's, the Indian company that bought Blackburn Rovers in November 2010, built its business in which industry?",
+  "o": [
+   "Mobile telecoms",
+   "Textile mills",
+   "Poultry farming",
+   "Pharmaceuticals"
+  ],
+  "a": 2,
+  "diff": "easy",
+  "hint": "The Rao family's Pune-based VH Group is an integrated poultry and processed-food business; the takeover was reported at around £23m.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Kenny Dalglish's Blackburn won the 1992 Second Division play-off final at Wembley to reach the new Premier League. Which club did they beat 1-0?",
+  "o": [
+   "Cambridge United",
+   "Derby County",
+   "Middlesbrough",
+   "Leicester City"
+  ],
+  "a": 3,
+  "diff": "easy",
+  "hint": "Mike Newell's penalty settled it, ending more than two decades away from the top flight for Rovers.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Which stadium has been Blackburn Rovers' home since 1890, and was substantially rebuilt with Jack Walker's money in the 1990s?",
+  "o": [
+   "Turf Moor",
+   "Deepdale",
+   "Ewood Park",
+   "Bloomfield Road"
+  ],
+  "a": 2,
+  "diff": "easy",
+  "hint": "Walker funded a redevelopment costing around £20m, and one of the new stands was named the Jack Walker Stand in his honour.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn were champions in 1994-95 despite losing 2-1 at Anfield on the final day, because the side chasing them could only draw their last match away at which club?",
+  "o": [
+   "Coventry City",
+   "West Ham United",
+   "Southampton",
+   "Crystal Palace"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "United drew 1-1 at Upton Park and finished on 88 points, one behind Blackburn's 89.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn broke the British transfer record for a second time in July 1994, paying £5m for Chris Sutton. Which club did he leave to join them?",
+  "o": [
+   "Nottingham Forest",
+   "Coventry City",
+   "Ipswich Town",
+   "Norwich City"
+  ],
+  "a": 3,
+  "diff": "medium",
+  "hint": "Sutton moved from Carrow Road to Ewood Park and formed the SAS partnership with Alan Shearer in the title-winning season.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "How many Premier League goals did Alan Shearer score in Blackburn's title-winning 1994-95 season?",
+  "o": [
+   "25",
+   "28",
+   "31",
+   "34"
+  ],
+  "a": 3,
+  "diff": "medium",
+  "hint": "Shearer's 34 equalled Andy Cole's record from the previous season and won him the Golden Boot; Chris Sutton added 15.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "In 1993 Blackburn made Tim Flowers the most expensive goalkeeper in British football. Which club did they sign him from?",
+  "o": [
+   "Southampton",
+   "Wimbledon",
+   "Coventry City",
+   "Queens Park Rangers"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "The £2.4m deal reunited Flowers with Alan Shearer, who had left the same club for Ewood Park a year earlier.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Who captained Blackburn Rovers through their 1994-95 Premier League title-winning season?",
+  "o": [
+   "Tim Sherwood",
+   "Colin Hendry",
+   "Stuart Ripley",
+   "David Batty"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Sherwood wore the armband in midfield, with Colin Hendry marshalling the defence behind him.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Graeme Souness left Blackburn in September 2004 to take charge of which club?",
+  "o": [
+   "Everton",
+   "Southampton",
+   "Newcastle United",
+   "Manchester City"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "Souness swapped Ewood Park for St James' Park, and Mark Hughes left the Wales job to replace him at Blackburn.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn sold Damien Duff for £17m in July 2003. Which club bought him?",
+  "o": [
+   "Arsenal",
+   "Chelsea",
+   "Manchester United",
+   "Newcastle United"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Roman Abramovich's first summer of spending took the Republic of Ireland winger from Ewood Park to Stamford Bridge.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn's eleven-year run in the Premier League ended on 7 May 2012 with a home defeat that confirmed relegation. Which club beat them at Ewood Park?",
+  "o": [
+   "Bolton Wanderers",
+   "Norwich City",
+   "Queens Park Rangers",
+   "Wigan Athletic"
+  ],
+  "a": 3,
+  "diff": "medium",
+  "hint": "Antolin Alcaraz headed the only goal late on as Wigan won 1-0, sending Steve Kean's side down with a game still to play.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Andy Cole scored Blackburn's winner in the 2002 League Cup final, roughly two months after signing. Which club did Blackburn buy him from?",
+  "o": [
+   "Newcastle United",
+   "Manchester United",
+   "Leeds United",
+   "Aston Villa"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Souness paid around £8m to bring Cole from Old Trafford in December 2001; he had been the Premier League's top scorer at Newcastle years earlier.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn's 1994-95 title season began with a first-round UEFA Cup exit at the hands of which club?",
+  "o": [
+   "IFK Gothenburg",
+   "Trelleborgs FF",
+   "Odense BK",
+   "Aalborg BK"
+  ],
+  "a": 1,
+  "diff": "hard",
+  "hint": "The little-known Swedish side won 1-0 at Ewood Park and drew 2-2 in the return leg in Sweden, knocking the future champions out in September 1994.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn won only one match in the 1995-96 Champions League. Which club did they beat 4-1 at Ewood Park in December 1995?",
+  "o": [
+   "Spartak Moscow",
+   "Steaua Bucharest",
+   "Rosenborg",
+   "Ferencvaros"
+  ],
+  "a": 2,
+  "diff": "hard",
+  "hint": "Ray Harford's side still finished bottom of Group B with one win, one draw and four defeats from six games.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Two Blackburn team-mates traded punches on the pitch during a Champions League group game in Moscow in November 1995. Graeme Le Saux was one of them, but who was the other?",
+  "o": [
+   "Colin Hendry",
+   "Jason Wilcox",
+   "David Batty",
+   "Tim Sherwood"
+  ],
+  "a": 2,
+  "diff": "hard",
+  "hint": "Le Saux broke a bone in his hand throwing the punch, and the captain took a stray blow trying to separate them; Spartak Moscow won 3-0.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn appointed Paul Ince in June 2008, making him the first black British manager in the Premier League. Which club had he just led to the League Two title?",
+  "o": [
+   "Notts County",
+   "Rotherham United",
+   "Macclesfield Town",
+   "Milton Keynes Dons"
+  ],
+  "a": 3,
+  "diff": "hard",
+  "hint": "Ince won the League Two title and the Football League Trophy with MK Dons in 2007-08, but lasted only 177 days at Ewood Park.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ },
+ {
+  "q": "Blackburn goalkeeper Brad Friedel scored a Premier League goal from a corner in stoppage time in February 2004. Which club were Blackburn playing?",
+  "o": [
+   "Charlton Athletic",
+   "Fulham",
+   "Portsmouth",
+   "Bolton Wanderers"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "Friedel's 90th-minute equaliser made it 2-2 at The Valley, and Charlton went straight up the other end to win it 3-2.",
+  "club": "Blackburn Rovers",
+  "type": "mcq"
+ }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "_i": 36,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractor plausibility",
+    "resolved": "o[2] = \"Rosenborg\"",
+    "reason": "Confirmed: Blackburn's 1995-96 Champions League Group B was Spartak Moscow, Legia Warsaw, Rosenborg, Blackburn. Blackburn beat Rosenborg 4-1 at Ewood Park (Dec 1995) with Alan Shearer scoring; this was their only group win, and they finished bottom (1W-1D-4L matches the hint). Ferencvaros is a genuine 1995-96 UCL group-stage club (Group C with Ajax, Real Madrid, Grasshoppers per UEFA.com match records) and is NOT the club beaten 4-1, so the hand-edited 4th option is a valid, non-giveaway distractor. Answer is not 'Blackburn Rovers' and not a format odd-one-out.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1995%E2%80%9396_Blackburn_Rovers_F.C._season",
+      "https://www.uefa.com/uefachampionsleague/match/52146--ferencvaros-vs-ajax/",
+      "https://www.uefa.com/uefachampionsleague/match/52150--ferencvaros-vs-real-madrid/"
+    ]
+  },
+  {
+    "_i": 37,
+    "verdict": "ok",
+    "check": "index resolution, false premise",
+    "resolved": "o[2] = \"David Batty\"",
+    "reason": "Confirmed: the Le Saux-Batty fight occurred during Blackburn's away game at Spartak Moscow in November 1995 (Champions League group stage), which Spartak won 3-0. Le Saux broke a bone in his hand throwing the punch, matching the hint. Answer is not 'Blackburn Rovers' and not a format odd-one-out (all four options are Blackburn players from that squad).",
+    "sources": [
+      "https://www.planetfootball.com/nostalgia/a-forensic-analysis-of-graeme-le-sauxs-on-pitch-fight-with-david-batty",
+      "https://www.sportsmole.co.uk/football/blackburn-rovers/on-this-day/feature/otd-teammates-le-saux-batty-fight-in-moscow_189412.html",
+      "https://www.uefa.com/uefachampionsleague/match/52128--spartak-moskva-vs-blackburn/"
+    ]
+  },
+  {
+    "_i": 38,
+    "verdict": "ok",
+    "check": "index resolution, false premise",
+    "resolved": "o[3] = \"Milton Keynes Dons\"",
+    "reason": "Confirmed: Paul Ince was appointed Blackburn manager on 22 June 2008, commonly reported as the first black British manager in the Premier League (distinct from Ruud Gullit/Jean Tigana, who were black managers but not British). He had just led MK Dons to the 2007-08 League Two title (also winning the Football League Trophy that season). Distractors (Notts County, Rotherham United, Macclesfield Town) are real League Two-era clubs but did not win the title under Ince. Answer is not 'Blackburn Rovers' and not a format odd-one-out.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2007%E2%80%9308_Milton_Keynes_Dons_F.C._season",
+      "https://www.goal.com/en-sa/news/how-many-black-managers-coached-premier-league-clubs/h01an0r6n5w41uf9dunlsxejg",
+      "https://en.wikipedia.org/wiki/2008%E2%80%9309_Blackburn_Rovers_F.C._season"
+    ]
+  },
+  {
+    "_i": 39,
+    "verdict": "ok",
+    "check": "index resolution, false premise (minor timing caveat noted)",
+    "resolved": "o[0] = \"Charlton Athletic\"",
+    "reason": "Confirmed: on 21 February 2004, Brad Friedel scored a 90th-minute corner-kick equaliser at The Valley to make it 2-2, only for Charlton to win 3-2 moments later via Claus Jensen. Sources vary slightly between calling it '90th minute' and 'stoppage time' for the same goal (it was in the closing seconds of the match, effectively added/injury time even if some records log it as minute 90) -- this is flavor text, not the keyed fact, and doesn't change the correct club. Answer is not 'Blackburn Rovers' and not a format odd-one-out.",
+    "sources": [
+      "https://theanalyst.com/articles/goalkeepers-to-score-premier-league",
+      "https://www.skysports.com/football/video/30998/12547888/on-this-day-brad-friedel-scores-and-then-concedes",
+      "https://premierleague25years.wordpress.com/2017/10/11/iconic-moments-friedel-denied-february-2004/"
+    ]
+  }
+]

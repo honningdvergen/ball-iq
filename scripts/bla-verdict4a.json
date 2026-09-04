@@ -1,0 +1,34 @@
+[
+  {
+    "_i": 32,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Chelsea",
+    "reason": "Duff moved Blackburn to Chelsea for £17m in July 2003, triggering a release clause shortly after Abramovich's takeover; matches stem exactly. Distractors (Arsenal, Man Utd, Newcastle) did not sign him.",
+    "sources": ["https://www.the42.ie/damien-duff-move-to-chelsea-5139562-Jul2020/", "https://en.wikipedia.org/wiki/Damien_Duff"]
+  },
+  {
+    "_i": 33,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Wigan Athletic",
+    "reason": "Confirmed: Blackburn lost 0-1 at home to Wigan Athletic on 7 May 2012 (Alcaraz header, 87th min), confirming relegation after 11 seasons in the top flight, with one round still to play (final day was 13 May). Stem, date, score, scorer all verified. Distractors (Bolton, Norwich, QPR) did not play this fixture.",
+    "sources": ["https://www.aljazeera.com/sports/2012/5/7/blackburn-relegated-as-wigan-snatch-win", "https://bleacherreport.com/articles/1175307-blackburn-vs-wigan-rovers-relegated-amid-protests-as-wigan-complete-escape-act"]
+  },
+  {
+    "_i": 34,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Manchester United",
+    "reason": "Cole signed for Blackburn from Man Utd on 29 Dec 2001 (£8m); scored the winner in the 2002 League Cup final (24 Feb 2002, Blackburn 2-1 Tottenham) — roughly two months later, matching the stem. Distractors (Newcastle, Leeds, Villa) were not the selling club in Dec 2001.",
+    "sources": ["https://www.irishnews.com/sport/soccer/on-this-day-in-2001-blackburn-sign-andy-cole-from-manchester-united-PQWREE3IXVIEJCLWO7RKDR4GKQ/", "https://en.wikipedia.org/wiki/2002_Football_League_Cup_final"]
+  },
+  {
+    "_i": 35,
+    "verdict": "ok",
+    "check": "all four passed",
+    "resolved": "Trelleborgs FF",
+    "reason": "Blackburn's first-ever European tie: lost 0-1 at home to Trelleborgs FF (13 Sept 1994) and drew 2-2 away in Sweden (27 Sept 1994), aggregate 2-3, in September 1994 at the start of the 1994-95 title-winning season. Hint's 'won 1-0 at Ewood Park / drew 2-2 at home' is phrased from Trelleborgs' perspective and is accurate. Distractors (Gothenburg, Odense, Aalborg) were not the actual opponent.",
+    "sources": ["https://www.uefa.com/uefaeuropaleague/match/51332--blackburn-vs-trelleborg/", "https://en.wikipedia.org/wiki/1994%E2%80%9395_Blackburn_Rovers_F.C._season"]
+  }
+]

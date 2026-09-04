@@ -25,6 +25,7 @@
 export const CLUB_ALIAS = {
   // England — long-form pages
   'Sheffield Utd': 'Sheffield United',
+  'Blackburn': 'Blackburn Rovers',
   'Man City': 'Manchester City',
   'Man United': 'Manchester United',
   'Newcastle': 'Newcastle United',
