@@ -41,6 +41,18 @@ for native users).
 **Ask Alex:** `_tmp-results.mjs`, `assets/social/*.png` (untracked, his), and the pre-session edits to
 `.audit/critique-2026-09-02/watcher.log` + `scripts/forge-curate.mjs` — keep, commit or drop?
 
+**✅ 1 SHIPPED (bc5df66):** /play?game=footle PageSpeed mobile **65 → 90, LCP 6.0s → 2.9s, TBT 300 → 70ms.**
+Two causes, two fixes: the LCP element was the header's search field and the header was React (nothing above
+the fold painted before the 183 KB game chunk ran) → the build injects the shell's static header into
+index.html outside #root, SiteHeader removes it in a layout effect; and the boot warmed the question index +
+Profile + Online chunks (84 KB gz) on the same 1.6 Mbps pipe → a door arrival defers them 20s, 2G/3G/Save-Data
+skips them. Verified locally (blocked chunk → one static header; full boot → one header) and on prod.
+**2 in progress:** all 102 Trail careers match Wikipedia today (verify-trail-careers, 0 editorial fixes);
+Werner→San Jose (Jan 2026) and Benzema→Al-Hilal (Feb 2026, left 31 Aug — still the last club) confirmed by
+two sources each; Cazorla retired at Oviedo July 2026 confirmed. The 39 unreviewed reports are DIFFICULTY,
+not error: 11 trails, 14 Footle "I lost" answers, 13 classics of which most were reported with picked ==
+correct. Disposition: mark reviewed/approved with the verification note; keep the Footle obscurity signal
+(BELOTTI, ELLIOTT, VALVERDE, WILLIAN) for pool curation.
 **THE NEXT FIVE:**
 1. The game door's boot — LCP 6.2s lab on the destination of 1,045 first games/month (5% finish): split
    what a single game needs from GameRoot, preload by door, a first-paint skeleton. Target lab LCP <3s.
