@@ -7,7 +7,7 @@
 import { test, expect } from '@playwright/test'
 
 test('home loads and renders', async ({ page }, testInfo) => {
-  await page.goto('/play')
+  await page.goto('/play?tab=home')
   // App shell is mobile-only-render up to 1023px; expects either the
   // "Ball IQ" wordmark in the header (logo) OR the main play CTA.
   // Settle for any visible text on the page after network idle.

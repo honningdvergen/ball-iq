@@ -50,7 +50,7 @@ async function seedNamelessGuest(context) {
 }
 
 async function playDailyToEnd(page) {
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(600);
   const daily = page.locator('text=/Today\'?s 7|Daily 7/i').first();

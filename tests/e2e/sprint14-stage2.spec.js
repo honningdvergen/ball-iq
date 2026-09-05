@@ -38,7 +38,7 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
     }
   });
 
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
@@ -64,7 +64,7 @@ test('Daily tab — "Today first" redesign renders', async ({ page, context }) =
   // 1024px), so every text assertion filters for the visible copy.
   await seedGuestMode(context);
 
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   // Browser tab: .fd-appbar; native / PWA: .tab-bar or .biq-nav. Filter

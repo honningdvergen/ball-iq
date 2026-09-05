@@ -46,7 +46,7 @@ async function expectNoCrash(page, errs, label) {
 test('Footle entry', async ({ page, context }) => {
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   // Mobile renders the .footle-hero card; desktop (>=1024px) hides it and
@@ -59,7 +59,7 @@ test('Footle entry', async ({ page, context }) => {
 test("Today's 7 entry", async ({ page, context }) => {
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await page.locator('.todays-seven-secondary').first().click();
@@ -71,7 +71,7 @@ for (const mode of ['Classic', 'Survival', 'Hot Streak', 'Legends', 'Chaos']) {
   test(`More-modes — ${mode}`, async ({ page, context }) => {
     await seedGuestMode(context);
     const errs = await captureErrors(page);
-    await page.goto('/play');
+    await page.goto('/play?tab=home');
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(500);
     await page.locator('.play-card').filter({ hasText: mode }).first().click();
@@ -86,7 +86,7 @@ test('Ball IQ Test stays dead — no home entry to the killed mode', async ({ pa
   // keeps both the tile and the copy from coming back.
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await expect(page.locator('.play-card').filter({ hasText: /Ball IQ Test|IQ Test/ })).toHaveCount(0);
@@ -101,7 +101,7 @@ test('Multiplayer Online entry (guest → auth prompt, no crash)', async ({ page
   // a guest tapping the online CTA must not crash the app.
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Create a room and invite friends' }).first().click();
@@ -116,7 +116,7 @@ test('Multiplayer Local entry', async ({ page, context }) => {
   // on every project.
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Play locally on one phone' }).first().click();

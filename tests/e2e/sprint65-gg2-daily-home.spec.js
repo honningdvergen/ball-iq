@@ -18,7 +18,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('home — full page', async ({ page }, testInfo) => {
-  await page.goto('/play')
+  await page.goto('/play?tab=home')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
   await page.screenshot({
@@ -28,7 +28,7 @@ test('home — full page', async ({ page }, testInfo) => {
 })
 
 test('daily — full page', async ({ page }, testInfo) => {
-  await page.goto('/play')
+  await page.goto('/play?tab=home')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
   // Browser tab: .fd-appbar tab; native / PWA: .tab-bar or .biq-nav rail —

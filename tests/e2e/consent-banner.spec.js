@@ -125,7 +125,7 @@ test.describe('analytics consent', () => {
     // Clarity must still be withheld the whole time it is hidden.
     const hits = await watchClarity(page);
     await asUndecidedVisitor(page, { skipOnboarding: false });
-    await page.goto('/play');
+    await page.goto('/play?tab=home');
 
     const onboarding = page.locator('.onboard-wrap');
     if (await onboarding.count()) {

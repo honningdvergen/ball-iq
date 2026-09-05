@@ -35,7 +35,7 @@ test('automated traffic never reaches the funnel', async ({ page }) => {
     } catch { /* private mode */ }
   });
 
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 

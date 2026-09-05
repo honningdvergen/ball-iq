@@ -31,7 +31,7 @@ test('home renders without console errors after extraction', async ({ page }) =>
     }
   });
 
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(800);
 
@@ -42,7 +42,7 @@ test('home renders without console errors after extraction', async ({ page }) =>
 test('K3 greeting — no "Guest" / undefined / object placeholders during load', async ({ page, context }) => {
   // Fresh storage state: brand-new install — no auth, no name set.
   await context.clearCookies();
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   // Capture greeting frame-by-frame for the first 4 seconds, covering both
   // the no-name guest path and the signed-in-but-authProfile-still-loading
@@ -86,7 +86,7 @@ test('K1 — Profile tab renders Badges + Journey in guest mode', async ({ page,
     }
   });
 
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 
@@ -114,7 +114,7 @@ test('K1 — Profile avatar tap routes guests to the save auth prompt', async ({
       localStorage.setItem('biq_onboarded', '1');
     } catch {}
   });
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
 

@@ -24,7 +24,7 @@ test('fresh guest in a browser tab lands on the app, not the warm-up', async ({ 
     } catch {}
   });
 
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await expect(page.locator('.fd-appbar')).toBeVisible();
   await expect(page.locator('.onboard-wrap')).toHaveCount(0);
@@ -39,7 +39,7 @@ test('guest with biq_onboarded=1 skips onboarding', async ({ page, context }) =>
     } catch {}
   });
 
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   // Main-app nav visible = we reached the app, onboarding was skipped.
   // A browser tab renders the .fd-appbar; native / PWA the .tab-bar or the
@@ -55,7 +55,7 @@ test('onboarded user does NOT replay onboarding after refresh', async ({ page, c
     } catch {}
   });
 
-  await page.goto('/play');
+  await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await expect(page.locator('.fd-appbar, .tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
 

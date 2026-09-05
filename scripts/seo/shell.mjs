@@ -67,9 +67,9 @@ export function shellHeader(site, active = '') {
   return `<a class="fd-skip" href="#main">Skip to content</a>
 <header class="fd-head"><div class="fd-w fd-head-in">
 <a class="fd-mark" href="${b}/" aria-label="Ball IQ home"><img src="/marketing/ball.png" alt="" width="26" height="26"><span>Ball IQ</span></a>
-<nav class="fd-nav" id="fd-nav" aria-label="Sections"><a href="${b}/#today">Today</a><a href="${b}/#games">Games</a><a href="${b}/#clubs"${a('clubs')}>Clubs</a><a href="${b}/football-quiz/"${a('quizzes')}>Quizzes</a><a href="${b}/lists/"${a('lists')}>Lists</a><a class="fd-nav-signin" href="${b}/play">Sign in</a></nav>
+<nav class="fd-nav" id="fd-nav" aria-label="Sections"><a href="${b}/#today">Today</a><a href="${b}/#games">Games</a><a href="${b}/#clubs"${a('clubs')}>Clubs</a><a href="${b}/football-quiz/"${a('quizzes')}>Quizzes</a><a href="${b}/lists/"${a('lists')}>Lists</a><a class="fd-nav-signin" href="${b}/play?tab=profile">Sign in</a></nav>
 <div class="fd-find" role="search"><span class="fd-find-ic">${SEARCH_ICON}</span><input type="search" class="fd-find-in" id="fd-find" placeholder="Find your club or league" aria-label="Find your club or league" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" autocomplete="off"><div class="fd-find-res" id="fd-find-res" role="listbox" aria-label="Clubs and leagues" hidden></div></div>
-<a class="fd-signin" href="${b}/play">Sign in</a>
+<a class="fd-signin" href="${b}/play?tab=profile">Sign in</a>
 <button type="button" class="fd-burger" aria-expanded="false" aria-controls="fd-nav" aria-label="Menu">${BURGER_ICON}</button>
 </div></header>
 ${finderScript(b)}`;

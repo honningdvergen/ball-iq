@@ -182,6 +182,16 @@ const _hasHandoff =
 // branch; it is merged and live, and two rejected homepages should not be
 // reachable by anyone. Their files are deleted; the real rollback is git.
 const showMarketing = _isBrowser && !_hasHandoff && _path === '/'
+// THE WEBSITE IS THE HOME (Alex, 2026-09-05, on seeing /play in a browser:
+// "why should we have another one that just copies the app?"). A browser
+// visitor who opens BARE /play — no game, no tab, no hand-off — goes to the
+// front door, which already lists every mode as a link. The shell stays for
+// what the site does not have: ?game=<mode> (a bare runner for the modes
+// without a page yet), ?tab=profile|online (account, live rooms), ?club= /
+// ?quiz= / ?join= / ?c= / an OAuth return — and for every installed PWA and
+// native boot, which never see the website and keep the full app home.
+const _barePlay = _isBrowser && !_hasHandoff && /^\/play\/?$/.test(_path) && !_search && !_hash
+if (_barePlay) { try { window.location.replace('/') } catch { /* fall through to the shell */ } }
 // A browser visitor who opens /play cold skips the onboarding warm-up ("Quick
 // one — give it a go") and lands on the app under the site header. The
 // front door's game doors already bypass it; a taster before the product is
@@ -202,7 +212,7 @@ const FrontDoor = React.lazy(loadFrontDoor)
 // starts the network fetch a render-cycle earlier, overlapping it with mount.
 const loadGameRoot = () => import('./GameRoot.jsx')
 const GameRoot = React.lazy(loadGameRoot)
-if (!showMarketing) loadGameRoot()
+if (!showMarketing && !_barePlay) loadGameRoot()
 // Same render-cycle head start for the front door — React.lazy waits for
 // first render; a visitor's LCP is inside this chunk.
 else loadFrontDoor()
@@ -233,7 +243,9 @@ const _fullBleed = () => {
   } catch {}
 }
 
-if (showMarketing) {
+if (_barePlay) {
+  // Redirecting to / — render nothing behind the navigation.
+} else if (showMarketing) {
   _fullBleed()
   ReactDOM.createRoot(document.getElementById('root')).render(
     <ErrorBoundary><React.Suspense fallback={null}>

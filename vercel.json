@@ -52,22 +52,22 @@
     },
     {
       "source": "/trail",
-      "destination": "/play?game=trail",
+      "destination": "/transfer-trail/",
       "permanent": false
     },
     {
       "source": "/trail/",
-      "destination": "/play?game=trail",
+      "destination": "/transfer-trail/",
       "permanent": false
     },
     {
       "source": "/mystery",
-      "destination": "/play?game=mystery",
+      "destination": "/mystery-player/",
       "permanent": false
     },
     {
       "source": "/mystery/",
-      "destination": "/play?game=mystery",
+      "destination": "/mystery-player/",
       "permanent": false
     }
   ],

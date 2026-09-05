@@ -9,7 +9,8 @@ import '../design/front.css';
 import { CLUB_INDEX } from './clubIndex.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
 
-const PLAY = '/play';
+// Bare /play sends a browser to / (main.jsx); the account door is the profile tab.
+const PLAY = '/play?tab=profile';
 export const LEAGUES = [
   { s: 'premier-league', n: 'Premier League' }, { s: 'la-liga', n: 'La Liga' },
   { s: 'serie-a', n: 'Serie A' }, { s: 'bundesliga', n: 'Bundesliga' },

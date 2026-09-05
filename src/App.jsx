@@ -10480,12 +10480,18 @@ function AppInner() {
       const quizSlug = (sp.get("quiz") || "").toLowerCase();
       const gameSlug = (sp.get("game") || "").toLowerCase(); // ?game=footle — /football-wordle/ CTA + directory listings
       const stumpId = (sp.get("stump") || "").trim().toLowerCase(); // ?stump=q_… — Stump-a-mate link (api/q.js)
-      if (!clubSlug && !quizSlug && !gameSlug && !stumpId) return;
+      // ?tab=profile|online|daily|home — the website header's "Sign in" and
+      // the doors into account and live rooms. Bare /play redirects to the
+      // front door in a browser (main.jsx, 2026-09-05), so every way into the
+      // shell from the site names what it is for.
+      const tabSlug = (sp.get("tab") || "").toLowerCase();
+      if (!clubSlug && !quizSlug && !gameSlug && !stumpId && !tabSlug) return;
       try {
         const u = new URL(window.location.href);
-        u.searchParams.delete("club"); u.searchParams.delete("quiz"); u.searchParams.delete("game"); u.searchParams.delete("stump");
+        u.searchParams.delete("club"); u.searchParams.delete("quiz"); u.searchParams.delete("game"); u.searchParams.delete("stump"); u.searchParams.delete("tab");
         window.history.replaceState({}, "", u.pathname + u.search + u.hash);
       } catch {}
+      if (["home", "daily", "online", "profile"].includes(tabSlug)) { setScreen("home"); setTab(tabSlug); return; }
       if (gameSlug === "footle") { setScreen("wordle"); return; }
       // ?game=daily — the homepage Daily 7 door. startMode owns the
       // already-played-today case (shows the done state rather than a replay),
