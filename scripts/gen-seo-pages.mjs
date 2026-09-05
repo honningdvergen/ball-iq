@@ -4921,7 +4921,15 @@ function fwExampleHtml() {
 // screen's padding with margin-inline:-20px, so the host must supply exactly
 // that much or the keyboard overflows the card on a phone.
 const FW_TODAY_CSS = `
-  .fw-today{padding:0 0 8px;margin-top:-18px}
+  /* This page's hero is a masthead, not a pitch: the game is the pitch. On a
+     375px phone the shared hero put the board 429px down (measured on the
+     first build) — two-line h1, a lead AND a stat line saying the same thing,
+     46px of top padding. Tightened here only; every other page keeps the
+     shared hero as it is. */
+  .hero{padding:20px 0 4px}
+  .hero h1{font-size:clamp(28px,7.4vw,40px);margin-bottom:10px}
+  .hero-lead{font-size:15px;margin:0}
+  .fw-today{padding:0 0 8px;margin-top:-14px}
   .fw-mast{margin:0 0 10px;font-size:13.5px;color:var(--tx3);font-variant-numeric:tabular-nums}
   .fw-mast b{color:var(--tx);font-weight:800}
   .fw-host{max-width:520px;margin:0 auto;padding:0 20px;
@@ -5151,7 +5159,7 @@ ${fwKeyboardHtml()}
 <p class="fw-msg" id="fw-msg" role="status" aria-live="polite"></p>
 <div class="fw-done" id="fw-done" hidden></div>
 <button type="button" class="fw-again" id="fw-again" hidden>Play this puzzle again</button>
-<noscript><p class="fw-ns">This practice board needs JavaScript. <a href="${SITE.base}/footle">Play today&#39;s Footle</a> instead.</p></noscript>
+<noscript><p class="fw-ns">This practice board needs JavaScript. <a href="${SITE.base}/football-wordle/answer/">Read today&#39;s hints</a> instead.</p></noscript>
 </div>
 <p class="fw-foot">Green means right letter, right place. Yellow means the letter is in the surname somewhere else. Grey means it is not in there at all. Any surname of the right length is accepted as a guess, exactly as in the real game — and when you want the one that counts, <a href="${SITE.base}/footle">today&#39;s Footle</a> is waiting.</p>
 </section>
@@ -5261,7 +5269,7 @@ ${heroSection({
     name: 'Footle',
     h1: cfg.h1,
     lead: cfg.lede,
-    statLine: 'Free · no sign-up · new footballer every day',
+    statLine: null,
     playHref: null,
     noStores: true,
   })}
