@@ -2,6 +2,15 @@
 
 ## 2026-09-05 (19:15) — 🎯 QUEUED, PRIORITY: RANK TOP 5 FOR "football quiz" AND "football games" (Alex: "not something we park, we queue it")
 
+**✅ FIRST BRICK LIVE (b6e1101, 20:10):** `/football-games/` — title "Football Games — Daily Puzzles, Quizzes and Wordle" (60), today's
+Footle as the island at the top, the four dailies as cards with played-state + countdown, 8 mode cards, doors to /quiz/clubs/, /quiz/ and
+/football-quiz/, FAQ, ItemList(14 Game) + FAQPage schema. Games nav → the hub on every page (static shell + SiteHeader), footer renders
+the same `GAMES_NAV` list (src/marketing/siteNav.js — ONE list), /football-quiz/ links "daily games" → hub. Sitemap daily/0.9. IndexNow
+pings on deploy. **Alex: in GSC, "Request indexing" for https://balliq.app/football-games/ speeds the first crawl.** Gate
+`games-hub.test.js`. **Next bricks:** (2) read GSC for both terms weekly (via Chrome); (3) authority — the Reddit/community plan needs
+Alex's hand; (4) pages for the 7 modes still in the shell (also lifts the hub's outbound quality); (5) revisit /football-quiz/ copy depth
+against the BBC / FourFourTwo / Planet Football hubs once the hub has two weeks of data.
+
 Baseline (memory): "football quiz" ~position 41 on `/football-quiz/`; ranking diagnosis says fundamentals are clean and the ceiling is
 AUTHORITY. "football games" has NO target page yet — the header's Games link is `/#games` (a homepage anchor). Footle has started
 climbing in GSC since the answer page (09-04). Plan to brief next: (1) read GSC for both terms + SERP composition (who holds page 1,
