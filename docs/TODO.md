@@ -1,4 +1,4 @@
-## 2026-09-06 (01:40) — ✅ APP HOME REBUILT FROM THE CRITIQUE (539e912 → 34f3d38, pushed f6083af) — simulator-verified; live check pending
+## 2026-09-06 (01:40) — ✅ APP HOME REBUILT FROM THE CRITIQUE (539e912 → 34f3d38, pushed f6083af) — simulator-verified; LIVE-VERIFIED on prod at 375 (Continue / Review states, Find a quiz, Invite row)
 
 Alex, in the simulator: "Today block = the web's four equal rows" → shipped; then "we can not even see the online tab" / "we still can not
 see the play with friends" / "something about it just does not look right" / "the club scroller and the search bar do not belong where
