@@ -8,9 +8,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { FootballWordle } from '../games/FootballWordle.jsx';
-import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
 import { getFootleNumber } from '../lib/wordle.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
+import { makeGetAppCTA } from './dailyIsland.jsx';
 
 // Events go through the homepage's sink: a literal project URL (an env read
 // here returned undefined at build and the minifier deleted the whole request
@@ -18,26 +18,9 @@ import { marketingEvent } from '../lib/marketingEvent.js';
 // visitor id, and the robot guard. Never a second copy of that contract.
 const funnel = (event, meta) => marketingEvent(event, { surface: 'footle-page', ...(meta || {}) });
 
-const isAndroid = /Android/i.test(navigator.userAgent || '') && !/Windows Phone/i.test(navigator.userAgent || '');
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent || '') || ((navigator.userAgent || '').includes('Mac') && navigator.maxTouchPoints > 1);
-
-// The app's post-game nudge, phone-only, one line — the same copy the app
-// shows (no counts: the binding rule).
-function GetAppCTA() {
-  if (!isAndroid && !isIOS) return null;
-  return (
-    <>
-      <a className="wd-share" href={isAndroid ? PLAY_STORE_URL : appStoreUrl()} target="_blank" rel="noopener noreferrer"
-        onClick={() => funnel('store-out', { store: isAndroid ? 'android' : 'ios', where: 'footle-result' })}
-        style={{ background: 'var(--accent)', color: '#0B0C10', fontWeight: 800, textDecoration: 'none' }}>
-        📲 Get the free app
-      </a>
-      <div style={{ fontSize: 12, color: 'var(--t3)', textAlign: 'center', marginTop: 2 }}>
-        Streaks, daily reminders and every quiz in one app
-      </div>
-    </>
-  );
-}
+// The result CTA is the visitor's own store badge — shared with the Trail and
+// Mystery islands (dailyIsland.jsx) so all three pages draw the same one.
+const GetAppCTA = makeGetAppCTA(funnel, 'footle-result');
 
 const SERVICES = {
   haptic: (type) => { try { navigator.vibrate?.(type === 'correct' ? [20, 40, 20] : type === 'wrong' ? 60 : 10); } catch {} },

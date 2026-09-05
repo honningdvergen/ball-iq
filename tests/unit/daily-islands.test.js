@@ -42,6 +42,21 @@ describe('daily screens stay island-safe', () => {
     expect(gen).toContain('id="${cfg.gameParam}-today"');
   });
 
+  it('the app funnel draws store badges, not platform words or an emoji', () => {
+    const fd = read('src/marketing/FrontDoor.jsx');
+    expect(fd).toContain('StoreBadge');
+    expect(fd).not.toMatch(/>\s*iOS\s*<\/a>|>\s*Android\s*<\/a>/);
+    for (const f of ['src/islands/dailyIsland.jsx', 'src/islands/footle.jsx', 'src/App.jsx']) {
+      expect(read(f)).not.toContain('📲 Get the free app');
+    }
+    // One glyph source for the generated pages and the React badge.
+    expect(read('scripts/gen-seo-pages.mjs')).toContain("from '../src/lib/storeGlyphs.js'");
+    expect(read('scripts/gen-seo-pages.mjs')).not.toMatch(/d="M12\.152 6\.896/);
+    // The islands hand the screens the embedded masthead.
+    expect(read('src/islands/trail.jsx')).toMatch(/<TransferTrail[^>]*\sembedded/);
+    expect(read('src/islands/mystery.jsx')).toMatch(/<MysteryPlayer[^>]*\sembedded/);
+  });
+
   // The app passes its live tables; the island imports the generated module.
   // The generator (scripts/gen-club-index.mjs) runs before vitest in the build,
   // so in the build this always holds; in CI on a branch it catches a CLUB_PACKS

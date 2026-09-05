@@ -3,17 +3,16 @@
 // toast line and the mount itself. Each island stays a few lines of wiring.
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
+import { PlatformStoreBadge, isAndroidUA, isIOSUA } from '../components/StoreBadge.jsx';
 
 // Events go through the homepage's sink (literal project URL, the app's
 // visitor id, the robot guard) — see src/islands/footle.jsx for why an env
 // read here silently deleted the whole request on the first Footle deploy.
 export const makeFunnel = (surface) => (event, meta) => marketingEvent(event, { surface, ...(meta || {}) });
 
-const UA = navigator.userAgent || '';
-export const isAndroid = /Android/i.test(UA) && !/Windows Phone/i.test(UA);
-export const isIOS = /iPad|iPhone|iPod/.test(UA) || (UA.includes('Mac') && navigator.maxTouchPoints > 1);
+export const isAndroid = isAndroidUA();
+export const isIOS = isIOSUA();
 
 // Vibrate where the browser allows it; the app's richer patterns need the
 // native bridge. Cold guesses ('select') get the lightest tap.
@@ -23,24 +22,16 @@ export const haptic = (type) => {
   } catch {}
 };
 
-// The app's post-game nudge, phone-only, one line — the same copy the app
-// shows (no counts: the binding rule).
+// The app's post-game nudge under a result: the visitor's own store badge —
+// the same badge the pages and the homepage draw — plus one line, phone-only
+// (nothing on desktop, where there is no store). No counts: the binding rule.
 export function makeGetAppCTA(funnel, where) {
   return function GetAppCTA() {
-    if (!isAndroid && !isIOS) return null;
-    const store = isAndroid ? 'android' : 'ios';
     return (
-      <>
-        <a href={isAndroid ? PLAY_STORE_URL : appStoreUrl()} target="_blank" rel="noopener noreferrer"
-          onClick={() => funnel('store-out', { store, where })}
-          style={{ display: 'block', textAlign: 'center', padding: '13px 16px', borderRadius: 999, background: 'var(--accent)',
-                   color: '#06230C', fontWeight: 800, fontSize: 15, textDecoration: 'none' }}>
-          📲 Get the free app
-        </a>
-        <div style={{ fontSize: 12, color: 'var(--t3)', textAlign: 'center', marginTop: 4 }}>
-          Streaks, daily reminders and every quiz in one app
-        </div>
-      </>
+      <PlatformStoreBadge
+        onClick={(store) => funnel('store-out', { store, where })}
+        caption="Streaks, daily reminders and every quiz in one app"
+      />
     );
   };
 }

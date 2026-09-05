@@ -31,5 +31,5 @@ mountDaily({
   hostId: 'trail-today',
   game: 'trail',
   funnel,
-  element: <TransferTrail player={getTrailAnswer(new Date())} services={SERVICES} onPlayMystery={mysteryOffer} />,
+  element: <TransferTrail player={getTrailAnswer(new Date())} services={SERVICES} onPlayMystery={mysteryOffer} embedded />,
 });

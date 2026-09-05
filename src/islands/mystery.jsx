@@ -16,5 +16,5 @@ mountDaily({
   hostId: 'mystery-today',
   game: 'mystery',
   funnel,
-  element: <MysteryPlayer services={SERVICES} />,
+  element: <MysteryPlayer services={SERVICES} embedded />,
 });

@@ -54,6 +54,7 @@ import {
 } from './lib/wordle.js';
 import { FootleHero } from './components/FootleHero.jsx';
 import { FootballWordle } from './games/FootballWordle.jsx';
+import { PlatformStoreBadge } from './components/StoreBadge.jsx';
 import { getFootleXP } from './lib/footleXp.js';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 import { APP_STORE_ID, APP_STORE_URL, PLAY_STORE_URL, appStoreUrl } from './lib/links.js';
@@ -2224,26 +2225,15 @@ const IS_ANDROID_WEB = !IS_NATIVE && typeof navigator !== "undefined" &&
   /Android/i.test(navigator.userAgent || "") && !/Windows Phone/i.test(navigator.userAgent || "");
 function FootleGetAppCTA({ style }) {
   if (!IS_IOS_WEB && !IS_ANDROID_WEB) return null;
+  // The visitor's own store badge — the same one the homepage row and the
+  // static pages draw (src/components/StoreBadge.jsx). Was a 📲 emoji button.
+  // ⚠️ NO COUNT in the caption. It said "5,000+ quiz questions" until
+  // 2026-08-19 — disguise #8 of the binding no-counts rule. Sell breadth.
   return (
-    <>
-      <a
-        className="wd-share"
-        href={IS_ANDROID_WEB ? PLAY_STORE_URL : appStoreUrl()}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ background: "var(--accent)", color: "#0B0C10", fontWeight: 800, textDecoration: "none", ...style }}
-      >
-        📲 Get the free app
-      </a>
-      <div style={{ fontSize: 12, color: "var(--t3)", textAlign: "center", marginTop: 2 }}>
-        {/* ⚠️ NO COUNT HERE. This said "5,000+ quiz questions" until 2026-08-19
-            — disguise #8 of the binding no-counts rule, and the first one INSIDE
-            the app rather than on a web page. It was also already wrong: the
-            bank passed 6,600 long ago, so the number undersold us AND rotted.
-            Sell breadth, which never goes stale. */}
-        Streaks, daily reminders and every quiz in one app
-      </div>
-    </>
+    <PlatformStoreBadge
+      style={style}
+      caption="Streaks, daily reminders and every quiz in one app"
+    />
   );
 }
 // Colour-blind palette state, read where share strings are built so the

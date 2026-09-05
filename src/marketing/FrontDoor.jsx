@@ -44,9 +44,9 @@ import { pickTeaserPair } from '../components/FootleHero.jsx';
 import { MODE_ACCENT } from '../lib/accents.js';
 import { FP_NUMBER } from './footlePractice.js';
 import { keyForDate, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
-import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
 import FootleBand from './FootleBand.jsx';
+import { StoreBadge } from '../components/StoreBadge.jsx';
 
 const PLAY = '/play';
 // Footle plays on its own page since 2026-09-05 (the app's component as an
@@ -299,8 +299,8 @@ export default function FrontDoor() {
         <aside className="fd-app" aria-label="Ball IQ app">
           <span className="fd-app-tx"><b>Also on your phone.</b> Streaks, reminders and live 1v1 against a mate — the same games, in the app.</span>
           <span className="fd-app-links">
-            <a href={appStoreUrl()} rel="noopener" onClick={() => go('fd-app-ios')}>iOS</a>
-            <a href={PLAY_STORE_URL} rel="noopener" onClick={() => go('fd-app-android')}>Android</a>
+            <StoreBadge store="ios" onClick={() => go('fd-app-ios')} />
+            <StoreBadge store="android" onClick={() => go('fd-app-android')} />
           </span>
         </aside>
 
@@ -399,7 +399,12 @@ export default function FrontDoor() {
           <div className="fd-foot-col">
             <h3>Ball IQ</h3>
             <a href="/about/">About</a><a href="/contact/">Contact</a>{MORE.map(([n, h]) => <a key={h} href={h}>{n}</a>)}<a href="/privacy">Privacy</a><a href="/terms/">Terms</a>
-            <span className="fd-foot-app">Also on <a href={appStoreUrl()} rel="noopener">iOS</a> and <a href={PLAY_STORE_URL} rel="noopener">Android</a></span>
+            {/* Badges, not "iOS and Android" in prose — the critique's two
+                17px footer words, and the same badge the row after Today draws. */}
+            <span className="fd-foot-app">
+              <StoreBadge store="ios" onClick={() => go('fd-foot-ios')} style={{ minHeight: 40, padding: '0 14px', fontSize: 13.5 }} />
+              <StoreBadge store="android" onClick={() => go('fd-foot-android')} style={{ minHeight: 40, padding: '0 14px', fontSize: 13.5 }} />
+            </span>
           </div>
         </div>
         <div className="fd-w fd-foot-line">An independent football quiz, made by one person.</div>

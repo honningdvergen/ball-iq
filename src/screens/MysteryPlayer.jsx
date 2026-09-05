@@ -94,7 +94,7 @@ const BAND_STYLE = {
   cold: { bg: 'var(--s1)',            bd: 'var(--border)', fg: 'var(--t2)' },
 };
 
-export default function MysteryPlayer({ onExit, date = new Date(), services }) {
+export default function MysteryPlayer({ onExit, date = new Date(), services, embedded = false }) {
   const { haptic, playSound, Confetti, GetAppCTA } = resolveDailyServices(services);
   // `date` drives EVERYTHING dated in here — the answer, the saved result, the
   // puzzle number — so an archive replay of yesterday reads and writes
@@ -356,7 +356,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services }) {
 
   return (
     <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 0 6px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: embedded ? '2px 0 8px' : '14px 0 6px' }}>
         {/* ⚠️ .back-btn, not a bare glyph. The touch target was already legal
             (hit44 supplies 44pt via ::after) — the defect was that this was
             the only back control in the app WITHOUT the chromed well, so the
@@ -371,17 +371,23 @@ export default function MysteryPlayer({ onExit, date = new Date(), services }) {
             then opening it landed on a neutral grey page that looked like any
             other. The promise and the room have to match, so the same well and
             the same accent come with it. */}
-        <div style={{
-          width: 36, height: 36, borderRadius: 10, flexShrink: 0, marginRight: 10,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: modeTint('mystery', 0.12), border: `1px solid ${modeTint('mystery', 0.3)}`,
-        }} aria-hidden="true">
-          <UserRoundSearch size={19} strokeWidth={2.1} color={MODE_ACCENT.mystery} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em' }}>Mystery Player</div>
-          <div style={{ fontSize: 12, color: 'var(--t3)' }}>
-            <span style={{ color: MODE_ACCENT.mystery, fontWeight: 700 }}>No. {mysteryNumber(date)}</span>
+        {/* embedded: on the static page the H1 above already names the game
+            and the hero badge carries the icon, so the well and the title go
+            and the number line becomes the masthead — five things in one
+            row wrapped to three lines at 375px with them in (2026-09-05). */}
+        {!embedded && (
+          <div style={{
+            width: 36, height: 36, borderRadius: 10, flexShrink: 0, marginRight: 10,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: modeTint('mystery', 0.12), border: `1px solid ${modeTint('mystery', 0.3)}`,
+          }} aria-hidden="true">
+            <UserRoundSearch size={19} strokeWidth={2.1} color={MODE_ACCENT.mystery} />
+          </div>
+        )}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {!embedded && <div style={{ fontSize: 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em' }}>Mystery Player</div>}
+          <div style={{ fontSize: embedded ? 13.5 : 12, color: embedded ? 'var(--t2)' : 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ color: MODE_ACCENT.mystery, fontWeight: 800 }}>No. {mysteryNumber(date)}</span>
             {' · '}unlimited guesses{isArchive ? ' · archive' : ''}
           </div>
         </div>

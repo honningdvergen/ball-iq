@@ -54,7 +54,7 @@ function saveDay(ymd, state) {
   try { localStorage.setItem(`biq_trail_${ymd}`, JSON.stringify(state)); } catch {}
 }
 
-export default function TransferTrail({ player, date = new Date(), onBack, onReport, onPlayMystery, services }) {
+export default function TransferTrail({ player, date = new Date(), onBack, onReport, onPlayMystery, services, embedded = false }) {
   const { haptic, playSound, Confetti, GetAppCTA } = resolveDailyServices(services);
   const ymd = dateToYMD(date);
   const number = getTrailNumber(date);
@@ -227,16 +227,26 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
     <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20 + kbInset, maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
       {won && Confetti ? <Confetti /> : null}
 
-      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 4px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "12px 4px" }}>
         {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>
-            Transfer Trail{number > 0 ? ` #${number}` : ""}
+        {/* embedded: on the static page the H1 above already names the game,
+            so the title row becomes one masthead line, like Footle's — the
+            number and the state, nothing said twice. */}
+        {embedded ? (
+          <div style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: "var(--t2)", fontVariantNumeric: "tabular-nums" }}>
+            {number > 0 && <><b style={{ color: "var(--t1)", fontWeight: 800 }}>Trail #{number}</b>{" · "}</>}
+            {done ? (won ? "Solved" : "Not this time") : "name the player from their career"}
           </div>
-          <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
-            {done ? (won ? "Solved" : "Not this time") : "Name the player from their career"}
+        ) : (
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>
+              Transfer Trail{number > 0 ? ` #${number}` : ""}
+            </div>
+            <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
+              {done ? (won ? "Solved" : "Not this time") : "Name the player from their career"}
+            </div>
           </div>
-        </div>
+        )}
         {!done && (
           <div style={{ textAlign: "center", flexShrink: 0 }}>
             <div style={{ fontSize: 17, fontWeight: 800, color: left <= 1 ? "var(--red)" : "var(--t1)" }}>{left}</div>

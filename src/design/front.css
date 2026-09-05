@@ -154,8 +154,7 @@
 .fd-app-tx{font-size:13.5px;line-height:1.45;color:var(--t2);flex:1 1 260px}
 .fd-app-tx b{color:var(--t1)}
 .fd-app-links{display:flex;gap:8px;flex:none}
-.fd-app-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--bd2);color:var(--t1);font-size:13.5px;font-weight:700;text-decoration:none}
-.fd-app-links a:hover{background:var(--s2)}
+.fd-app-links a:hover{border-color:var(--bd3,#3A3E4E)}
 .fd-btn-q{background:none;color:var(--t2)}
 
 /* lists */
@@ -179,8 +178,7 @@
 .fd-foot-col{display:flex;flex-direction:column;gap:5px;min-width:0}
 .fd-foot-col a{font-size:13.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fd-foot-col a:hover{color:var(--t1)}
-.fd-foot-app{margin-top:10px;font-size:13px;color:var(--t3)}
-.fd-foot-app a{color:var(--t2);text-decoration:underline;text-underline-offset:3px}
+.fd-foot-app{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .fd-foot-line{margin-top:26px;font-size:12.5px;color:var(--t3)}
 
 /* responsive */
