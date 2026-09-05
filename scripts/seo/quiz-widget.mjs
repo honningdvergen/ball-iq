@@ -6,6 +6,8 @@
 // a P0; this module is the one that survives. Nothing here is new — the CSS,
 // the engine wiring, the option shuffle and the section markup moved verbatim
 // (the engine itself stays in club-quiz-engine.js, read at import time).
+import { BQ_I18N } from './bq-i18n.mjs';
+import { DEFAULT_TIERS } from './clubTiers.mjs';
 import { readFileSync } from 'node:fs';
 import { SITE } from './content.mjs';
 
@@ -176,7 +178,7 @@ export const BQ_JS = (() => {
     .replaceAll('__BQ_PUBLISHABLE_KEY__', BQ_PUBLISHABLE_KEY);
 })();
 
-export function renderQuizItems(rows) {
+export function renderQuizItems(rows, t = {}) {
   return rows
     .map(shuffleOptions)
     .map((r) => {
@@ -184,12 +186,12 @@ export function renderQuizItems(rows) {
         .map((o, k) => `<button class="bq-o" type="button" data-i="${k}"><span class="k">${'ABCD'[k] || ''}</span><span class="tt">${esc(o)}</span></button>`)
         .join('');
       return `<li class="bq-q" data-a="${r.a}"${r.diff ? ` data-diff="${esc(r.diff)}"` : ''}>
-<p class="bq-qn">${esc(r.diff || 'Question')}</p>
+<p class="bq-qn">${esc(r.diff ? (t['diff_' + String(r.diff).toLowerCase()] || r.diff) : (t.question || 'Question'))}</p>
 <p class="bq-qx">${esc(r.q)}</p>
 <div class="bq-os">${opts}</div>
 <p class="bq-sr" role="status" aria-live="polite"></p>
-<div class="bq-why"><b>Why</b>${esc(r.hint)}</div>
-<button class="bq-next" type="button" hidden>Next question →</button>
+<div class="bq-why"><b>${esc(t.why || 'Why')}</b>${esc(r.hint)}</div>
+<button class="bq-next" type="button" hidden>${esc(t.next || 'Next question →')}</button>
 </li>`;
     })
     .join('\n');
@@ -198,11 +200,17 @@ export function renderQuizItems(rows) {
 // `daily` (a YYYY-MM-DD) turns the widget into the Daily 7: exactly the rows
 // given, no length picker, and the engine's daily branch (one shot, the app's
 // own biq_daily_<date> record, a share line with the date).
-export function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', slug = '', color = '', play = `${SITE.base}/play`, daily = '' }) {
-  const items = renderQuizItems(rows);
+// `lang` (es/de/nl/fr/it/pt/tr/id) localises the widget: the server-rendered
+// labels here and, via data-i18n, everything the engine writes. English needs
+// no table — it is the engine's built-in default. A language's six generic
+// tiers replace the club's English ones unless the caller passes tiers.
+export function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', slug = '', color = '', play = `${SITE.base}/play`, daily = '', lang = '' }) {
+  const t = (lang && BQ_I18N[lang]) || {};
+  if (t.tiers && (!tiers || tiers === DEFAULT_TIERS)) tiers = t.tiers;
+  const items = renderQuizItems(rows, t);
   const lens = daily ? [] : [10, 20, rows.length].filter((n, i, a) => n <= rows.length && a.indexOf(n) === i);
   const picker = lens.length > 1
-    ? `<div class="bq-lenl">Change the length</div><div class="bq-len">${lens
+    ? `<div class="bq-lenl">${esc(t.lenLabel || 'Change the length')}</div><div class="bq-len">${lens
         // ⚠️ "Full set" CARRIES NO NUMBER — it used to read "42 Full set".
         // That is the pack size, i.e. exactly the "N questions in this pack"
         // badge the no-counts rule names as the disguise it keeps coming back
@@ -215,10 +223,10 @@ export function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', 
         // how many questions the player is choosing to answer, not a claim
         // about how much content exists. The rule is about the size of the
         // bank, not about counting things.
-        .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${n === rows.length ? 'Full set' : n === 10 ? '10 Quick' : `${n} Standard`}</button>`)
+        .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${esc(n === rows.length ? (t.fullSet || 'Full set') : n === 10 ? (t.quick ? t.quick.replace('{n}', '10') : '10 Quick') : (t.standard ? t.standard.replace('{n}', String(n)) : `${n} Standard`))}</button>`)
         .join('')}</div>`
     : '';
-  return `<section class="bq" id="quiz" data-total="${rows.length}"${daily ? ` data-daily="${daily}"` : ''} data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}" data-slug="${esc(slug)}" data-color="${esc(color)}">
+  return `<section class="bq" id="quiz" data-total="${rows.length}"${daily ? ` data-daily="${daily}"` : ''} data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}" data-slug="${esc(slug)}" data-color="${esc(color)}"${lang && t.question ? ` data-lang="${esc(lang)}" data-i18n="${esc(JSON.stringify(t))}"` : ''}>
 <div class="bq-head"><p class="bq-daily" hidden><span class="bq-dot" aria-hidden="true"></span><span class="bq-dtx"></span></p>
 <div class="bq-card">
 <div class="bq-top"><div class="bq-meter" aria-hidden="true"></div><span class="bq-streak" hidden></span></div>

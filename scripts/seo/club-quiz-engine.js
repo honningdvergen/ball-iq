@@ -26,7 +26,7 @@ var root=document.querySelector('.bq[data-total]');if(!root)return;
 var list=root.querySelector('.bq-list');if(!list)return;
 var qs=[].slice.call(list.querySelectorAll('.bq-q'));if(!qs.length)return;
 var total=qs.length,name=root.getAttribute('data-name')||'this club';
-var tiers=(root.getAttribute('data-tiers')||'').split('|');
+var tiers=(root.getAttribute('data-tiers')||'').split('|');if(I18N.tiers&&I18N.tiers.length===6)tiers=I18N.tiers;
 /* data-store is still emitted on the section (the taster on the same page
    reads its own copy) — this engine simply no longer needs it: the result
    card's third link now points at /footle, not the App Store. */
@@ -42,6 +42,14 @@ var cslug=root.getAttribute('data-slug')||'',ccol=root.getAttribute('data-color'
    so the club numbers stay clean. */
 var daily=root.getAttribute('data-daily')||'';
 var bqStoreHref=root.getAttribute('data-store')||'/get';
+/* Strings. English lives HERE, inline, as the default of every T() call; a
+   localised page (es/de/nl/fr/it/pt/tr/id) ships its table in data-i18n and
+   the engine reads it once. A missing key falls back to English rather than
+   to a blank label. fmt() fills {placeholders}. See scripts/seo/bq-i18n.mjs. */
+var I18N={};try{I18N=JSON.parse(root.getAttribute('data-i18n')||'{}')||{}}catch(e){I18N={}}
+function T(k,d){return I18N[k]!=null?I18N[k]:d}
+function fmt(t,v){return String(t).replace(/\{(\w+)\}/g,function(m,k){return v[k]!=null?v[k]:m})}
+function diffLabel(d){return d?T('diff_'+String(d).toLowerCase(),d):''}
 var BANDS=[0,25,45,65,85,100];
 function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
 if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
@@ -219,14 +227,14 @@ function show(){
 for(var i=0;i<qs.length;i++)qs[i].hidden=true;
 if(at>=run.length){return finish()}
 var q=run[at].el;q.hidden=false;
-var n=q.querySelector('.bq-qn');if(n)n.textContent='Question '+(at+1)+' of '+run.length+(q.getAttribute('data-diff')?' · '+q.getAttribute('data-diff'):'');
-if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' streak';
+var n=q.querySelector('.bq-qn');if(n)n.textContent=T('question','Question')+' '+(at+1)+' '+T('of','of')+' '+run.length+(q.getAttribute('data-diff')?' · '+diffLabel(q.getAttribute('data-diff')):'');
+if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' '+T('streakWord','streak');
 paintMeter()}
 function answer(q,rec,k){
 var a=+q.getAttribute('data-a'),os=q.querySelectorAll('.bq-o');
 for(var b=0;b<os.length;b++){os[b].disabled=true;
-if(b===a){os[b].className='bq-o ok';os[b].setAttribute('aria-label','Correct answer: '+os[b].querySelector('.tt').textContent);var kc=os[b].querySelector('.k');if(kc)kc.textContent='✓'}
-else if(b===k){os[b].className='bq-o no';os[b].setAttribute('aria-label','Your answer, incorrect: '+os[b].querySelector('.tt').textContent);var kw=os[b].querySelector('.k');if(kw)kw.textContent='✗'}
+if(b===a){os[b].className='bq-o ok';os[b].setAttribute('aria-label',T('ariaCorrect','Correct answer: ')+os[b].querySelector('.tt').textContent);var kc=os[b].querySelector('.k');if(kc)kc.textContent='✓'}
+else if(b===k){os[b].className='bq-o no';os[b].setAttribute('aria-label',T('ariaWrong','Your answer, incorrect: ')+os[b].querySelector('.tt').textContent);var kw=os[b].querySelector('.k');if(kw)kw.textContent='✗'}
 else os[b].className='bq-o dim'}
 /* WCAG 1.4.1 + 4.1.3 on the busiest game surface in the product. Right and
    wrong used to be carried by colour ALONE — the letter chip still read "A"
@@ -238,7 +246,7 @@ else os[b].className='bq-o dim'}
    reinforces it. The live region is the screen-reader half: nothing announced
    the outcome at all, so a blind player pressed a button and heard silence. */
 var lr=q.querySelector('.bq-sr');
-if(lr)lr.textContent=(k===a?'Correct. ':'Incorrect. The answer is ')+os[a].querySelector('.tt').textContent+'.';
+if(lr)lr.textContent=(k===a?T('srCorrect','Correct. '):T('srWrong','Incorrect. The answer is '))+os[a].querySelector('.tt').textContent+'.';
 var w=q.querySelector('.bq-why');if(w)w.hidden=false;
 /* ⚠️ THE EXPLANATION USED TO OPEN BELOW THE FOLD. Measured live 2026-09-05 at
    375x812: after tapping option A on question 1, .bq-why began at y=852 (the
@@ -263,9 +271,9 @@ w.scrollIntoView({block:'nearest',behavior:rm?'instant':'smooth'})}}catch(e){}}
    answered something. */
 if(at===0&&rec.got===-1)bqev('clubq-play');
 if(k===a){sc++;streak++;if(streak>best)best=streak;rec.got=1}else{streak=0;rec.got=0}
-if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' streak';
+if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' '+T('streakWord','streak');
 paintMeter();
-var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?'See your result →':'Next question →'}}
+var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?T('seeResult','See your result →'):T('next','Next question →')}}
 function dailyLabel(){var p=daily.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}
 /* The Daily 7 result. One primary (share: a score everyone can compare is
    the whole point of the same seven), the explained answers one tap away,
@@ -382,8 +390,8 @@ served=off+run.length;var hasMore=total>served;
    comparable with the zero it replaces. */
 var fbTiles='';for(var fi=0;fi<14;fi++)fbTiles+='<i'+(fi===0?' class="cur"':'')+'></i>';
 var appLink='<a class="bq-footle" href="/football-wordle/"><span class="bq-fb" aria-hidden="true">'+fbTiles+'</span>'
-+'<span class="bq-ft"><b>Today\'s Footle</b><span>Guess the footballer in six. A new name at midnight, the same for everyone.</span></span>'
-+'<span class="bq-fgo">Play →</span></a>';
++'<span class="bq-ft"><b>'+esc(T('footleTitle','Today\u2019s Footle'))+'</b><span>'+esc(T('footleLine','Guess the footballer in six. A new name at midnight, the same for everyone.'))+'</span></span>'
++'<span class="bq-fgo">'+esc(T('play','Play →'))+'</span></a>';
 /* 2026-09-05: ONE primary. The row used to carry "Keep going" (green) AND a
    club-coloured "Play the full <club> quiz" that navigated to /play?club=…,
    and on the last batch the /play link WAS the primary. Two problems the
@@ -395,21 +403,21 @@ var appLink='<a class="bq-footle" href="/football-wordle/"><span class="bq-fb" a
    Play again when there is not, and the app gets one quiet line at the foot
    of the card — a destination, not a competitor. */
 var cont=(hasMore
-?'<a class="bq-go bq-wide" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
-:'<button class="bq-go bq-wide" data-again="1">Play again</button>');
+?'<a class="bq-go bq-wide" href="#quiz" data-more="1">'+esc(fmt(T('keepGoing','Keep going — {more} more →'),{more:total-served+more}))+'</a>'
+:'<button class="bq-go bq-wide" data-again="1">'+esc(T('playAgain','Play again'))+'</button>');
 var bqStore=root.getAttribute('data-store')||'/get';
-res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
+res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">'+esc(fmt(T('yourIq','Your {name} IQ'),{name:name}))+'</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
-+'<div class="bq-sub">'+sc+' of '+run.length+' right · '+G.pct+'% · best streak '+best+'</div>'
-+(sday>=2?'<div class="bq-days">'+sday+' days in a row</div>':'')
++'<div class="bq-sub">'+esc(fmt(T('right','{sc} of {n} right · {pct}% · best streak {best}'),{sc:sc,n:run.length,pct:G.pct,best:best}))+'</div>'
++(sday>=2?'<div class="bq-days">'+esc(fmt(T('daysRow','{d} days in a row'),{d:sday}))+'</div>':'')
 +'<div class="bq-row">'+cont+'</div>'+appLink
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
    is still the primary action (that decision came from the 94.6% single-page
    measurement); share is the authority lever and gets full width and the club's
    colour, but it does not outrank staying. */
-+'<button class="bq-share" data-share="1">Share your '+esc(name)+' IQ</button>'
-+(!hasMore?'<p class="bq-note">That is every '+esc(name)+' question we have here — a fresh order tomorrow.</p>':'')
-+'<a class="bq-app" href="'+bqStore+'?src=clubq-finish">Also in the app — streaks, reminders and live 1v1 →</a>';
++'<button class="bq-share" data-share="1">'+esc(fmt(T('share','Share your {name} IQ'),{name:name}))+'</button>'
++(!hasMore?'<p class="bq-note">'+esc(fmt(T('allDone','That is every {name} question we have here \u2014 a fresh order tomorrow.'),{name:name}))+'</p>':'')
++'<a class="bq-app" href="'+bqStore+'?src=clubq-finish">'+esc(T('appLine','Also in the app \u2014 streaks, reminders and live 1v1 \u2192'))+'</a>';
 /* Remember today's result so a reload does not erase it. The critique's
    returning player finished, refreshed, and met question 1 with the score
    gone and the streak kept — the one number they came back for was the one
@@ -445,7 +453,7 @@ var u=location.href.split('#')[0].split('?')[0];
 /* Signed cards convert; ask for a first name ONCE, ever. '-' is the
    "declined" sentinel so cancel is also remembered and never re-asked. */
 var pn='';try{pn=(localStorage.getItem('biq_share_name')||'').trim().slice(0,22)}catch(e){}
-if(!pn){try{var pna=window.prompt('Add your first name to the score card? (optional)','');
+if(!pn){try{var pna=window.prompt(T('namePrompt','Add your first name to the score card? (optional)'),'');
 pn=(pna||'').trim().slice(0,22);localStorage.setItem('biq_share_name',pn||'-')}catch(e){}}
 if(pn==='-')pn='';
 if(cslug){var t=cslug+'.'+G.iq+'.'+sc+'.'+run.length;
@@ -454,10 +462,10 @@ if(pn)qp+='&p='+encodeURIComponent(pn);
 if(badge)qp+='&b='+encodeURIComponent(badge);
 if(ccol)qp+='&c='+encodeURIComponent(ccol.replace('#',''));
 u=location.origin+'/iq/'+t+qp}
-var txt='My '+name+' IQ is '+G.iq+' — '+G.tier+' ('+sc+'/'+run.length+'). Beat that.';
-if(navigator.share){navigator.share({title:name+' quiz',text:txt,url:u})['catch'](function(){})}
-else if(navigator.clipboard){navigator.clipboard.writeText(txt+' '+u).then(function(){sh.textContent='Copied ✓'})}
-else{window.prompt('Copy your score',txt+' '+u)}})
+var txt=fmt(T('shareTxt','My {name} IQ is {iq} \u2014 {tier} ({sc}/{n}). Beat that.'),{name:name,iq:G.iq,tier:G.tier,sc:sc,n:run.length});
+if(navigator.share){navigator.share({title:fmt(T('quizTitle','{name} quiz'),{name:name}),text:txt,url:u})['catch'](function(){})}
+else if(navigator.clipboard){navigator.clipboard.writeText(txt+' '+u).then(function(){sh.textContent=T('copied','Copied \u2713')})}
+else{window.prompt(T('copyPrompt','Copy your score'),txt+' '+u)}})
 /* Lever 3: the length picker moves OUT of the pre-quiz position and appears
    here instead. Meeting "How many questions?" before a single question is
    spending the highest-attention moment of the session on admin — they typed
@@ -562,8 +570,8 @@ start(v,served>=total?0:served)});
 var dl=root.querySelector('.bq-daily');
 if(dl&&total>=24){var dtx=dl.querySelector('.bq-dtx');
 if(dtx){var dd=new Date();
-dtx.appendChild(document.createElement('b')).textContent='Today\u2019s '+name+' set';
-dtx.appendChild(document.createTextNode(' \u00b7 '+dd.toLocaleDateString(undefined,{day:'numeric',month:'long'})+' \u2014 a fresh order every day'));
+dtx.appendChild(document.createElement('b')).textContent=fmt(T('todaySet','Today\u2019s {name} set'),{name:name});
+dtx.appendChild(document.createTextNode(fmt(T('freshOrder',' \u00b7 {date} \u2014 a fresh order every day'),{date:dd.toLocaleDateString(root.getAttribute('data-lang')||undefined,{day:'numeric',month:'long'})})));
 dl.hidden=false}}
 /* The ribbon carries its own base text only on 24+ question clubs. On a thin
    one it is empty, so appending " · day 4" produced a dangling fragment
@@ -571,17 +579,17 @@ dl.hidden=false}}
    streak becomes the ribbon's own label instead. */
 var sv=readStreak(),td=bqday();
 if(dl&&!daily&&sv&&sv.n>=2&&(sv.d===td||sv.d===td-1)){var dx=dl.querySelector('.bq-dtx');
-if(dx){var msg=sv.d===td?'day '+sv.n+' ✓':'day '+sv.n+' — keep it going';
+if(dx){var msg=sv.d===td?fmt(T('dayOk','day {n} \u2713'),{n:sv.n}):fmt(T('dayKeep','day {n} \u2014 keep it going'),{n:sv.n});
 if(dx.textContent){dx.appendChild(document.createTextNode(' · '+msg))}
-else{dx.appendChild(document.createElement('b')).textContent='Your streak';
+else{dx.appendChild(document.createElement('b')).textContent=T('yourStreak','Your streak');
 dx.appendChild(document.createTextNode(' '+msg))}}
 dl.hidden=false}
 /* Today's earlier result, if any — the light done-state. */
 try{var lst=JSON.parse(localStorage.getItem('biq.quiz.last.'+(root.getAttribute('data-slug')||name))||'null');
 if(dl&&lst&&lst.d===td&&lst.n){var lx=dl.querySelector('.bq-dtx');
-if(lx){var lmsg='earlier today '+lst.sc+' of '+lst.n+', IQ '+lst.iq;
+if(lx){var lmsg=fmt(T('earlier','earlier today {sc} of {n}, IQ {iq}'),{sc:lst.sc,n:lst.n,iq:lst.iq});
 if(lx.textContent){lx.appendChild(document.createTextNode(' · '+lmsg))}
-else{lx.appendChild(document.createElement('b')).textContent='You played';lx.appendChild(document.createTextNode(' '+lmsg))}
+else{lx.appendChild(document.createElement('b')).textContent=T('youPlayed','You played');lx.appendChild(document.createTextNode(' '+lmsg))}
 dl.hidden=false}}}catch(e){}
 if(daily){var played=null;try{played=JSON.parse(localStorage.getItem('biq_daily_'+daily)||'null')}catch(e){}
 if(played&&typeof played.score==='number'){root.classList.add('bq-live');dailyCard(played.score,total,false);return}}
