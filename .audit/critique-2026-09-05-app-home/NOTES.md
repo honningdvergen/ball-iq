@@ -113,3 +113,8 @@ Files: HomeScreen.jsx; MultiplayerCard.jsx; App.jsx banner 12957–12981, tab ba
 **Questions:** 1 Why does a returning player have to TYPE before they can TAP? Order Home strictly by cost-to-act: tap, then scroll, then type. 2 PWF has 11 plays/30d and the loudest button — if visual weight were set by 30-day plays, what would be green? 3 Home's Today block and the Daily tab list the same four puzzles — what does Home do that Daily cannot, and if the answer is "the catalogue", should Home BE the catalogue and Daily the front tab?
 
 **Could not verify:** in-app club-quiz volume (web numbers only); screenshots are the guest state — a signed-in user gets a 24px/800 name under the greeting, which changes the header's anchor problem; the guest state is the one the activation cohort sees.
+
+## Synthesis + Alex's decisions (23:30)
+Score 23/40; P0 1, P1 2. Snapshot: .impeccable/critique/2026-09-05T21-29-23Z__src-screens-homescreen-jsx.md
+Alex chose (AskUserQuestion): **P0 + P1 + P2 in one increment**; **drop the Club Quiz tile** (finder is the club entry); **Play with Friends rebuilt in the Today-row anatomy with one quiet Invite pill, "Same phone" moves to the Online tab**.
+Build list: 1 banner block out (first-session state on the Footle row instead) · 2 ClubFinder below Today as head of the catalogue, "Find a quiz"; Club Quiz tile out; chips grey at rest · 3 rows: green Play on all four, Review quiet grey, mode colour on the well only, no wash, subline --t2 (text-fill), rows on the page edge under a "Today" head styled like "More modes" with 0/4 as right meta · 4 PWF as a row-style card after Today · 5 inactive tab label contrast to AA · 6 P3s deferred (emoji glyphs, row ordering, No. duplicates, <12px sizes).
