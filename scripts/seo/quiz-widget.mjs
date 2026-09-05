@@ -144,11 +144,15 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-share:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-lenwrap{margin-top:14px}
   .bq-daily{display:flex;align-items:center;gap:9px;margin:0 0 13px;padding:9px 12px;border-radius:11px;
+    background:linear-gradient(90deg,rgba(240,169,59,.10),transparent);border:1px solid rgba(240,169,59,.28)}
   /* An author display rule beats the UA's [hidden]{display:none} — the ribbon
      painted as an EMPTY amber box on every page under 24 questions (seen on the
-     served Daily 7, 2026-09-05). */
+     served Daily 7, 2026-09-05). ⚠️ This rule MUST sit at the top level: the
+     first fix was pasted INSIDE the .bq-daily block above, which CSS nesting
+     read as ".bq-daily .bq-daily[hidden]" — a descendant that never matches —
+     and the empty bar stayed on every listicle and /football-quiz/ (found
+     while unifying the widget the same day). bq-css.test.js checks the depth. */
   .bq-daily[hidden]{display:none}
-    background:linear-gradient(90deg,rgba(240,169,59,.10),transparent);border:1px solid rgba(240,169,59,.28)}
   .bq-dot{width:7px;height:7px;border-radius:50%;background:#F0A93B;flex:none;box-shadow:0 0 8px rgba(240,169,59,.7)}
   .bq-dtx{font-size:13px;color:var(--tx3);line-height:1.35}
   .bq-dtx b{color:#F0A93B;font-weight:700}
