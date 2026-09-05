@@ -1,3 +1,13 @@
+## 2026-09-05 (23:20) — ⏳ B2 PLUMBING pushed (414af8d + 4a691fc) — the .bq widget speaks 8 languages; localised pages NOT switched yet; live check pending
+
+Engine: `data-i18n` read once, every label through `T(key, english)` + `fmt()` — English inline as the default, so a missing key
+falls back to English. `renderQuizSet({lang})` emits `data-lang` + `data-i18n` and localises its server-rendered labels; a language's
+six generic tiers replace the club's English ones. `scripts/seo/bq-i18n.mjs`: 8 langs × 41 keys, DRAFTED by Claude.
+**⏳ ALEX: review `docs/i18n/bq-strings.md` (es/de/nl/pt first).** Approve a language → add it to `BQ_I18N_REVIEWED`; the switch of that
+language's club pages (buildClubPageIntl + the intl hub builder → renderQuizSet with lang) is the follow-up commit, then TASTER_* dies
+(`one-question-widget.test.js` count 2 → 0). ⚠️ Funnel note: those pages will post `clubq-*` events instead of `taster-*` (taster-start
+143 web visitors/30d) — the series changes name on switch day. Gate `bq-i18n.test.js`. ⚠️ **Caught before push:** the first cut declared `I18N` below the `tiers` line that reads it → the engine died at boot on EVERY club page in the local build (vitest + the build gate were green). Fixed + an ordering assertion; the real fix is a boot test — **add `happy-dom` as a devDependency and boot BQ_JS in vitest** (decision: new devDep).
+
 ## 2026-09-05 (22:10) — ✅ P2 QUICK WINS LIVE (b85119c) — verified on prod at 1440: 44px links, 4-col footer + badges, filter 93→1, --tx4 #8A8E99
 
 All five P2 items of the 09-05 critique, measured on the local build at 1440: header links + Sign in **44px** (were 37) in both
