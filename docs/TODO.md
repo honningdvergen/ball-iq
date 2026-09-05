@@ -1,3 +1,32 @@
+## 2026-09-05 (19:00) — ✅ P0 UNIFICATION, FIRST PASS LIVE: A · B1 · C1/C2 · C3-A · D (fbaee2e) — all live-verified at 375
+
+Order Alex confirmed 17:00: A ghost landing → B one question widget → C tokens → D header. Each its own commit + gate + live check.
+- **A ✅ LIVE (c49b358):** `index.html` −15 KB (22%) — the original marketing landing (`.landing-top/-bottom`, ad-slot asides, their
+  CSS, the `html.full-bleed` head branch) was hidden on EVERY route by five mechanisms and still parsed by every visitor. Kept: pre-boot
+  onboarding shell (owns /play LCP), the crawler copy inside #root, the desktop gradient. Gate `index-html-no-ghost-landing.test.js`.
+- **B1 ✅ LIVE (ace2618 + 24a1efb):** listicles + `/football-quiz/` render `renderQuizSet` (.bq) — `renderTaster()` deleted. ⚠️ Found
+  and fixed a miss from the Daily 7 slice: the `.bq-daily[hidden]` override had been pasted INSIDE the multi-line rule = CSS nesting =
+  never matched; the empty amber bar was live on every listicle/football-quiz page. `bq-css.test.js` now checks brace DEPTH.
+  **B2 (open):** the old taster (TASTER_JS/TASTER_I18N) survives on 46 localised club pages (de 4, es 11, fr 5, id 3, it 9, nl 4, pt 8,
+  tr 2) — the .bq engine's 17 UI strings are English-only; give it a strings table, then delete TASTER_*. `one-question-widget.test.js`
+  pins the count at 2 builders. ⚠️ `renderQA()` (the tap-to-check Q&A LIST on /lists, category, player, nation pages) is NOT a card
+  quiz and must stay a readable list — the "quiz with answers" content those pages rank on; harmonise its look to .bq, don't replace.
+- **C1/C2 ✅ LIVE (8b556d9):** tokens.js carries the APP's names as aliases onto the web palette (`s1: var(--card)`, `accent:
+  var(--grn)`, `t2: var(--tx3)`…) + one `--font`. app.css's :root, the ≥1024 re-pin and 23 `inherit` lines gone; `.fw-host` no longer
+  hand-copies the palette; every body/component font reads var(--font). Two values moved to the web palette: text #FFFFFF→#F0F1F5,
+  red #FF4B4B→#FF4747. Gate `one-tokens-css.test.js`. ⚠️ front.css keeps a scoped `.fd` token block: its `--grn-soft` is a TINT
+  (rgba .14) while tokens' --grn-soft is a lighter GREEN (#8AE042) — a naming collision to resolve before that block can go.
+- **C3-A ✅ LIVE (2e58d2d):** 152 literal hexes in app.css/footle.css/front.css/index.html `<style>` → var(). Left
+  literal: comments, url() data URIs, theme-color, the pre-boot shell's inline styles. Gate `no-inlined-palette-hex.test.js`.
+  **C3-B (open):** JSX inline styles (App.jsx 15 css-ish, screens ~12) and gen-seo's CSS strings (18). Never: canvas, SVG attrs, OG.
+- **D — RESHAPED by Alex (17:45): "why should we have another one that just copies the app?"** → not "a header with a /play mode"
+  but RETIRE the /play home for browser visitors. ✅ LIVE (fbaee2e), verified on prod: bare `/play` → `/` in a browser (main.jsx `_barePlay`); `?tab=` door
+  (home|daily|online|profile); both headers' Sign in → `/play?tab=profile`; `/trail`,`/mystery` → the pages; e2e 27× → `/play?tab=home`.
+  PWA/native unchanged. Gate `play-home-retired.test.js`. **Open after D:** the 7 modes without a page (classic, survival, hotstreak,
+  legends, chaos, stadiums, online) still run in the shell under the site header — each needs a page or an app-only decision; the
+  `?game=` runner still shows the app tab bar (observe, then decide).
+- **Retire `/play?game=footle|daily|trail|mystery` after the 09-12 reads** (`*-web-view/finish`).
+
 ## 2026-09-05 (16:30) — ✅ TRAIL + MYSTERY PLAY ON THEIR PAGES — all four dailies now have a web home
 
 **Live-verified on prod (92c42d6) at 375×812:** `/transfer-trail/` and `/mystery-player/` mount the app's own
