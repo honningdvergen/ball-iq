@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { BQ_I18N, BQ_I18N_KEYS } from '../../scripts/seo/bq-i18n.mjs';
+import { BQ_I18N, BQ_I18N_KEYS, BQ_I18N_REVIEWED } from '../../scripts/seo/bq-i18n.mjs';
 import { renderQuizSet } from '../../scripts/seo/quiz-widget.mjs';
 
 const ENGINE = readFileSync(fileURLToPath(new URL('../../scripts/seo/club-quiz-engine.js', import.meta.url)), 'utf8');
@@ -22,6 +22,13 @@ describe('bq widget i18n', () => {
       for (const [k, ph] of Object.entries(PLACEHOLDERS)) for (const p of ph) expect(t[k], `${lang}.${k} lacks {${p}}`).toContain(`{${p}}`);
     }
     expect(Object.keys(BQ_I18N).sort()).toEqual(['de', 'es', 'fr', 'id', 'it', 'nl', 'pt', 'tr']);
+    for (const l of BQ_I18N_REVIEWED) expect(BQ_I18N[l], `${l} reviewed but has no table`).toBeDefined();
+  });
+  it('reviewed languages switch their pages to the widget; the rest keep the taster', () => {
+    const gen = readFileSync(fileURLToPath(new URL('../../scripts/gen-seo-pages.mjs', import.meta.url)), 'utf8');
+    expect(gen).toContain("import { BQ_I18N_REVIEWED } from './seo/bq-i18n.mjs';");
+    expect((gen.match(/const useBq = BQ_I18N_REVIEWED\.has\(cfg\.lang\);/g) || []).length).toBe(2);
+    expect((gen.match(/taster: !useBq/g) || []).length).toBe(2);
   });
   it('the engine reads data-i18n once and routes its labels through T()', () => {
     expect(ENGINE).not.toContain('`');

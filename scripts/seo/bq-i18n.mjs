@@ -148,4 +148,5 @@ export const BQ_I18N = {
 };
 
 /** Which languages Alex has signed off — the localised pages switch per language. */
-export const BQ_I18N_REVIEWED = new Set([]);
+// Alex, 2026-09-05 23:30: "the strings look good, switch es and de first".
+export const BQ_I18N_REVIEWED = new Set(['es', 'de']);

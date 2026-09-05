@@ -92,6 +92,7 @@ import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
+import { BQ_I18N_REVIEWED } from './seo/bq-i18n.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
@@ -2144,8 +2145,16 @@ function buildClubPageIntl(cfg, siblings = []) {
   // Spanish taster markup. Same widget + same TASTER_JS as the English pages
   // (the script reads its questions from the JSON block, so it is language
   // agnostic); only the surrounding copy differs.
+  // A REVIEWED language renders the site's one question widget with its
+  // strings (bq-i18n.mjs); the rest keep the old taster until Alex has read
+  // their column. Same slot in the hero, same eyebrow and heading.
+  const useBq = BQ_I18N_REVIEWED.has(cfg.lang);
   const payload = cfg.taster.map((r) => ({ q: r.q, o: r.o, a: r.a, why: r.hint }));
-  const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
+  const tasterHtml = useBq ? `<section class="taster" id="taster" aria-labelledby="taster-h">
+<div class="eyebrow">${esc(c.tasterEyebrow)}</div>
+<h2 id="taster-h">${esc(c.tasterH)}</h2>
+${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, badge: clubBadge, slug: cfg.slug, color: CLUB_COLOR[cfg.slug] || '', lang: cfg.lang })}
+</section>` : `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(c.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(c.tasterH)}</h2>
 <div class="tcard" id="biq-taster" data-name="${esc(cfg.name)}" data-play="${SITE.base}/play?club=${cfg.slug}" data-store="${SITE.getApp}" data-i18n="${esc(JSON.stringify(TASTER_I18N[cfg.lang] || {}))}">
@@ -2156,7 +2165,7 @@ function buildClubPageIntl(cfg, siblings = []) {
 <script>${TASTER_JS}</script>
 </section>`;
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates , taster: true})}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates, taster: !useBq })}
 <body>
 ${NAV}
 <main id="main">
@@ -2291,7 +2300,12 @@ function buildLangHub(cfg, clubsInLang, hubLangs) {
      `lead` should have been (I passed `intro`, which heroInner does not accept)
      and once in the right column I never filled. The build was green and the
      SERP audit passed; only opening the page showed it. */
-  const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
+  const useBq = BQ_I18N_REVIEWED.has(cfg.lang);
+  const tasterHtml = useBq ? `<section class="taster" id="taster" aria-labelledby="taster-h">
+<div class="eyebrow">${esc(cfg.tasterEyebrow)}</div>
+<h2 id="taster-h">${esc(cfg.tasterH)}</h2>
+${renderQuizSet(taster, { name: cfg.h1, tiers: DEFAULT_TIERS, more: 0, badge: '', slug: '', lang: cfg.lang })}
+</section>` : `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(cfg.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(cfg.tasterH)}</h2>
 <div class="tcard" id="biq-taster" data-name="${esc(cfg.h1)}" data-play="${SITE.base}/play" data-store="${SITE.getApp}" data-i18n="${esc(JSON.stringify(TASTER_I18N[cfg.lang] || {}))}">
@@ -2302,7 +2316,7 @@ function buildLangHub(cfg, clubsInLang, hubLangs) {
 <script>${TASTER_JS}</script>
 </section>`;
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, lang: cfg.lang, alternates, taster: true })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, lang: cfg.lang, alternates, taster: !useBq })}
 <body>
 ${NAV}
 <main id="main">
