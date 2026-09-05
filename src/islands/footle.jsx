@@ -10,36 +10,13 @@ import { createRoot } from 'react-dom/client';
 import { FootballWordle } from '../games/FootballWordle.jsx';
 import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
 import { getFootleNumber } from '../lib/wordle.js';
+import { marketingEvent } from '../lib/marketingEvent.js';
 
-const SB_URL = import.meta.env.VITE_SUPABASE_URL;
-const SB_KEY = import.meta.env.VITE_SUPABASE_KEY;
-
-// Robots must not vote — the same refusal the club engine and App.jsx make.
-function synthetic() {
-  try {
-    if (navigator.webdriver === true) return true;
-    const h = location.hostname;
-    return h === 'localhost' || h === '127.0.0.1';
-  } catch { return false; }
-}
-
-// First-party, consent-exempt, keyed by the app's own visitor id so a web
-// finish and a later app session are one journey rather than two strangers.
-function funnel(event, meta) {
-  if (synthetic() || !SB_URL || !SB_KEY) return;
-  let vid = null;
-  try {
-    vid = localStorage.getItem('biq_vid');
-    if (!vid && window.crypto?.randomUUID) { vid = window.crypto.randomUUID(); localStorage.setItem('biq_vid', vid); }
-  } catch {}
-  try {
-    fetch(`${SB_URL}/rest/v1/rpc/record_funnel_event`, {
-      method: 'POST', keepalive: true,
-      headers: { 'content-type': 'application/json', apikey: SB_KEY, authorization: `Bearer ${SB_KEY}` },
-      body: JSON.stringify({ p_event: event, p_visitor: vid, p_meta: { surface: 'footle-page', ...meta } }),
-    }).catch(() => {});
-  } catch {}
-}
+// Events go through the homepage's sink: a literal project URL (an env read
+// here returned undefined at build and the minifier deleted the whole request
+// path — measured on the first deploy of this page, 2026-09-05), the app's
+// visitor id, and the robot guard. Never a second copy of that contract.
+const funnel = (event, meta) => marketingEvent(event, { surface: 'footle-page', ...(meta || {}) });
 
 const isAndroid = /Android/i.test(navigator.userAgent || '') && !/Windows Phone/i.test(navigator.userAgent || '');
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent || '') || ((navigator.userAgent || '').includes('Mac') && navigator.maxTouchPoints > 1);
