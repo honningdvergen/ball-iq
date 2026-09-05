@@ -1,22 +1,16 @@
-## 2026-09-04 (23:30) — ⏳ WEBSITE CRITIQUE IN FLIGHT — RECOVERY NOTE
+## 2026-09-05 (11:10) — ✅ WEBSITE CRITIQUE COMPLETE — 24/40 (was 22/40 on 09-03)
 
-Alex: eyes on the website; "tear it apart"; goals in order: (1) one consistent site — "feels very
-fragmented and like separate products", (2) easy to navigate, (3) time on site, (4) gentle app funnel.
-Running per `.claude/skills/impeccable/reference/critique.md` as two ISOLATED sub-agents (slug
-`balliq-app`, 6 pages × phone+desktop: / · /quiz/arsenal/ (+finish screen) · /play · a list · an answer
-page · /quizzes/).
-
-**⚠️ IF THE SESSION DIED BEFORE SYNTHESIS — harvest from disk, do NOT re-run the agents:**
-- 2026-09-05 rerun. The 09-04 pair died at the limit having saved NOTHING (A made 155 tool calls and
-  wrote no notes — it was going to write everything at the end). The rerun agents APPEND per page to
-  `.impeccable/critique/_assessment-A-2026-09-05.md` and `_assessment-B-2026-09-05.md`, so a partial run is
-  still readable. B is on Sonnet; overlay injection skipped this run (pane reliability).
-- Transcripts if a file is thin: A `…/tasks/aaea48861ef61e997.output` · B `…/tasks/a0153a3ceacfe91de.output`
-  under `/private/tmp/claude-501/-Users-alexanderbrynolsen-ball-iq/7c79f3a1-9008-4410-9f7a-2a99269af58f/`.
-- Pre-synthesis facts: `.impeccable/critique/_fragmentation-map-2026-09-04.md` (two headers, four
-  stylesheets, accent green in 19 files, every Play button = /play?game=…).
-- Then: synthesise (weave A+B; heuristic table; P0-P3; personas), `critique-storage.mjs write` under slug
-  `balliq-app`, read the trend (prior run 2026-09-03 = 22/40), AskUserQuestion on priorities.
+Report: `.impeccable/critique/2026-09-05T09-09-37Z__balliq-app.md` (commit 6150ea5). Inputs kept beside it:
+`_assessment-A-2026-09-05.md` (design review, club quiz played to the finish), `_assessment-B-2026-09-05.md`
+(detector + DOM measurements, the app-funnel and header-consistency tables), `_fragmentation-map-2026-09-04.md`.
+Two P0s, both Goal 1 (one site): **one domain, three products** (two headers, four stylesheets, three body
+font-family strings, type ramp 13–21 vs 29–36, /play stacks the site header on the app tab bar, the ghost
+landing = 32% of index.html) and **four multiple-choice widgets**. Four P1s: Next button **212px below the
+fold** after answering on club pages (was 18px on 09-03 — worse); one club → two destinations; the funnel is
+everywhere (6 badges on a club page, 0 visible on /play mobile, two 17px footer words on /); the finish
+screen sells instead of settling. **Waiting on Alex's answers** (AskUserQuestion 09-05): retire or keep the
+web /play game routes · P0 tokens/header first or the measured P1 quick wins · club colour on the website.
+Do NOT fix the site until the answers land — the fix shape changes with the /play decision.
 
 **Also parked, verified on disk, resumable:** Watford 40 (wat-final.json, 11 leaks to resolve) and QPR 40
 (qpr-verdict*.json, 2 fixes both the Loftus Road "since 1917" false premise) — curate, prose, wire, ship.
