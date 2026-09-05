@@ -19,7 +19,10 @@ import { fileURLToPath } from 'node:url';
  */
 
 const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8');
-const CSS = read('../../src/app.css');
+const CSS = read('../../src/app.css')
+  // + the Footle board's rules, which moved to src/games/footle.css on 2026-09-05;
+  // the app bundle imports both, so the gate reads what the app ships.
+  + '\n' + read('../../src/games/footle.css');
 const APP = read('../../src/App.jsx');
 
 // ⚠️ SCAN EVERY JSX FILE, NOT TWO OF THEM.

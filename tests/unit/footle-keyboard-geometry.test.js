@@ -2,7 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-const CSS = readFileSync(fileURLToPath(new URL('../../src/app.css', import.meta.url)), 'utf8');
+const CSS = readFileSync(fileURLToPath(new URL('../../src/app.css', import.meta.url)), 'utf8')
+  // + the Footle board's rules, which moved to src/games/footle.css on 2026-09-05;
+  // the app bundle imports both, so the gate reads what the app ships.
+  + '\n' + readFileSync(fileURLToPath(new URL('../../src/games/footle.css', import.meta.url)), 'utf8');
 /** Body of the first rule whose selector text starts with `start`. Literal
  *  indexOf rather than a built regex — the selectors here contain `.`, `{` and
  *  `-`, and escaping them into a pattern is how the first cut of this helper
