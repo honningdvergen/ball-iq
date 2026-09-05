@@ -90,22 +90,20 @@ describe('design review — tier 2', () => {
       .not.toMatch(/\.qd-play \.next-btn-primary \{[^}]*border-radius: 14px/);
   });
 
-  it('only modes that own a colour are tinted in the grid', () => {
-    // ⚠️ NOT a blanket per-mode tint. HomeScreen already records the decision
-    // that the grid is neutral by default — nine green icons made it nine
-    // competing accents — with an iconColor opt-in "when a tile has earned a
-    // colour of its own". Trail and Mystery own theirs from Daily's MODE_THEME.
-    // ⚠️ Asserts the TOKEN, not a literal — the accent set moved to
-    // src/lib/accents.js, and a test that still pinned "#7CC3F0" here would be
-    // pinning the copy-paste that module exists to stop.
-    expect(HOME).toMatch(/iconColor: MODE_ACCENT\.mystery/);
-    const tints = HOME.match(/iconColor: /g) || [];
-    expect(tints, 'the long tail must stay quiet').toHaveLength(1);
-    // ⚠️ AND NO TRAIL TILE. Trail is a row in the daily zone pointing at the
-    // same screen; a grid tile for it listed one puzzle twice on one screen
-    // (Alex, 2026-09-04). It kept its colour — the row carries it in CSS.
-    expect(HOME, 'Transfer Trail belongs to the daily zone, not the mode grid')
-      .not.toMatch(/key:"trail"/);
+  it('the Today block is four equal rows, each carrying its own mode colour', () => {
+    // 2026-09-06 (Alex, with the app beside the website's Today block): no
+    // hero card, no mode-grid tile for a daily. One row shape; each row sets
+    // --mode / --mode-rgb from src/lib/accents.js so the icon well and the
+    // pill take the mode colour without a per-mode CSS rule.
+    for (const k of ['footle', 'daily7', 'trail', 'mystery']) {
+      expect(HOME, `${k} row carries its accent + rgb`).toContain(`accent: MODE_ACCENT.${k}, rgb: MODE_RGB.${k}`);
+    }
+    // The grid is neutral again: the only tinted tiles were the two dailies,
+    // and both now live in the rows above.
+    expect(HOME, 'no grid tile is tinted').not.toMatch(/iconColor: MODE_ACCENT/);
+    expect(HOME, 'Transfer Trail is a row, not a grid tile').not.toMatch(/key:"trail", Icon/);
+    expect(HOME, 'Mystery Player is a row, not a grid tile').not.toMatch(/\.\.\.\(mysteryLive \? \[\{ key:"mystery"/);
+    expect(HOME, 'no hero card on the home').not.toMatch(/<FootleHero|DesktopFootleHero/);
     // And nobody re-types a mode colour beside a component.
     expect(HOME, 'import from lib/accents.js instead of pasting a hex')
       .not.toMatch(/iconColor: "#/);

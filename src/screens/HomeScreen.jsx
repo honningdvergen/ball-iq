@@ -4,18 +4,17 @@ import { useAuth } from "../useAuth.jsx";
 import { APP_NAME } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
-import { getWordleAnswer } from "../lib/wordle.js";
-import { getTrailAnswer, loadTrailDay } from "../lib/trail.js";
-import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
+import { getTrailAnswer, loadTrailDay, getTrailNumber } from "../lib/trail.js";
+import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD } from "../lib/date.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
 import { QB_INDEX } from "../questions-index.js";
-import { FootleHero } from "../components/FootleHero.jsx";
+import { getFootleNumber } from "../lib/footleNumber.js";
 import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
-import { MODE_ACCENT } from "../lib/accents.js";
+import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { PLAY_STORE_URL, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
 
@@ -100,81 +99,9 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs, onLeagues }) 
   );
 }
 
-// ── Footle HERO card (DESKTOP web only) ──────────────────────────────────────
-// desktop-web-refresh: the Home hero is a compact GREEN hero card matching the
-// Claude Design handoff (reference screen 01), NOT a full playable board. It
-// reads today's real puzzle status from the SAME store the full Footle screen
-// uses (biq_wordle_<ymd>) so the CTA reflects reality — "Play today's Footle"
-// when unplayed, a solved/failed chip + "Review" when done. Playing happens on
-// the dedicated Footle screen (onPlay → setScreen("wordle")); the small board on
-// the right is decorative only. Kept as its own component so its hooks never
-// touch HomeScreenImpl's hook order, and it stays mounted-but-hidden below 1024
-// (the .home-footle-inline reveal class + the PWA-standalone killswitch).
-function DesktopFootleHero({ onPlay }) {
-  // Snapshot today's puzzle at mount (dateKey + answer captured once) so a
-  // mid-session local-midnight rollover can't mismatch the store key. Only the
-  // answer LENGTH is surfaced (as the mock does) — never the answer itself.
-  const [dateKey] = React.useState(getWordleDateKey);
-  const [answer] = React.useState(getWordleAnswer);
-  const L = answer.length;
-  // Decorative board width — cap so a long surname can't crowd the copy column.
-  const cols = Math.min(L, 7);
-
-  const store = (() => {
-    try {
-      const raw = localStorage.getItem(`biq_wordle_${dateKey}`);
-      if (raw) { const p = JSON.parse(raw); if (p && Array.isArray(p.guesses)) return p; }
-    } catch {}
-    return { guesses: [], status: "playing" };
-  })();
-  const won = store.status === "won";
-  const lost = store.status === "lost";
-  const done = won || lost;
-
-  return (
-    <div className="home-footle-inline">
-      <span className="ffh-glow" aria-hidden="true" />
-      <div className="ffh-inner">
-        <div className="ffh-copy">
-          <div className="ffh-eyebrow">Daily · Footle</div>
-          {/* The green F tile is the wordmark, not decoration — it is the
-              same square the grid uses, so the title reads as an instance of
-              the game. It shipped on the mobile hero (FootleHero.jsx) and this
-              desktop twin was left on a plain white "Footle": the third
-              two-implementation miss of the same design pass. Markup mirrors
-              the mobile one exactly; only the tile size is set larger to match
-              this hero's 38px type. */}
-          <div className="ffh-title">
-            <span className="fh-tile fh-tile-green ffh-title-f" aria-hidden="true">F</span><span className="ffh-title-rest">ootle</span>
-          </div>
-          <div className="ffh-sub">{L} letters · {FOOTLE_TAGLINE}</div>
-          {done ? (
-            <div className="ffh-actions">
-              <span className={`ffh-solved${lost ? " is-lost" : ""}`}>
-                {won ? `✓ Solved in ${store.guesses.length}` : "✗ Out of guesses"}
-              </span>
-              <button type="button" className="ffh-review" onClick={onPlay} aria-label="Review today's Footle">
-                Review →
-              </button>
-            </div>
-          ) : (
-            <button type="button" className="ffh-cta" onClick={onPlay}>Play today&apos;s Footle</button>
-          )}
-        </div>
-        <div className="ffh-board" aria-hidden="true">
-          <div className="ffh-board-row">
-            {Array.from({ length: cols }).map((_, i) => (
-              <span key={i} className={`ffh-cell${i === 0 ? " is-active" : ""}`} />
-            ))}
-          </div>
-          <div className="ffh-board-row">
-            {Array.from({ length: cols }).map((_, i) => <span key={i} className="ffh-cell" />)}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+// The desktop Footle hero (an inline board at >=1024) and the mobile FootleHero
+// card left the home on 2026-09-06: today's four are four equal rows, as on the
+// website's Today block. The worked example lives on the Footle screen's ?.
 
 // HomeScreen — Sprint #17 Stage 3 extract. Owns the Home tab layout:
 // greeting strip, Daily zone (FootleHero + Today's 7 secondary), MP card,
@@ -457,40 +384,32 @@ function HomeScreenImpl({
         </div>
       )}
 
-      {/* ── DAILY ZONE (Sprint #12) ──
-          Wraps Footle hero + Today's 7 in a tinted container with a
-          shared "DAILY" eyebrow + X/2 progress indicator. The cards
-          inside keep their distinct identities; the zone just frames
-          them as a coupled unit so they don't read as two unrelated
-          rails.
-
-          desktop-web-refresh: on mobile the container renders <FootleHero/>
-          (byte-identical). At >=1024 the FootleHero wrapper hides and the
-          inline, playable <DesktopFootleBoard/> takes its place. Both read the
-          SAME biq_wordle_<ymd> store so they never diverge. */}
+      {/* ── TODAY ZONE ──
+          Four equal rows (Footle, Daily 7, Transfer Trail, Mystery Player) under
+          a shared "TODAY" eyebrow and an X/4 counter — the same block the website
+          renders. Since 2026-09-06 there is no hero card and no inline board here:
+          the rows carry state (Play / Continue / Review) and the edition number. */}
       {(() => {
         const ws = readWordleTodayStatus();
         const footleDone = ws.kind === "won" || ws.kind === "lost";
-        // Trail and Mystery are NOT heroes here. Alex, on seeing the Trail
-        // previewed in this zone: "it does not belong as a hero, it needs
-        // marinating." So the two CARDS stay Footle + Daily 7.
-        //
-        // The COUNT is a different question. It says "today", and since the
+        // Since 2026-09-06 nothing here is a hero: four equal rows, like the
+        // website's Today block. The COUNT was already all four. It says "today", and since the
         // Daily tab now lists all four it has to mean all four — a Home reading
         // "0/2 today" beside a Daily tab reading "0 of 4 played" is the app
         // contradicting itself. So the fraction counts every live daily puzzle
         // and the whole status becomes the way through to the other two: it
         // promotes them without adding a card.
         const trailDone = ["won", "lost"].includes(loadTrailDay()?.status);
-        const mysteryDone = !!loadMysteryResult(new Date())?.won;
+        const mysteryRes = loadMysteryResult(new Date());
+        const mysteryDone = !!(mysteryRes?.won || mysteryRes?.gaveUp);
         const total = 2 + (trailLive ? 1 : 0) + (mysteryLive ? 1 : 0);
         const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0)
           + (trailLive && trailDone ? 1 : 0) + (mysteryLive && mysteryDone ? 1 : 0);
         const allDone = doneCount === total;
         return (
-          <div className="daily-zone" role="group" aria-label="Daily">
+          <div className="daily-zone" role="group" aria-label="Today">
             <div className="daily-zone-head">
-              <span className="daily-zone-eyebrow">Daily</span>
+              <span className="daily-zone-eyebrow">Today</span>
               <button type="button" className={`daily-zone-status hit44${allDone ? " is-done" : ""}`}
                 onClick={() => setTab("daily")}
                 aria-label={allDone ? `All ${total} of today's puzzles done — open the Daily tab` : `${doneCount} of ${total} puzzles played today — open the Daily tab`}>
@@ -498,49 +417,66 @@ function HomeScreenImpl({
                 <span aria-hidden="true" style={{ marginLeft: 5, opacity: 0.7 }}>›</span>
               </button>
             </div>
-            <div className="home-footle-mobile">
-              <FootleHero
-                onPlay={() => setScreen("wordle")}
-                onReview={(wsArg) => viewPuzzleStatus(wsArg)}
-                shareCard={shareCard}
-              />
-            </div>
-            <DesktopFootleHero onPlay={() => setScreen("wordle")} />
-            <button
-              className={`todays-seven-secondary${dailyDone ? ' is-done' : ''}`}
-              onClick={() => dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")}
-              aria-label={dailyDone ? `Daily 7 complete: ${dailyScore} out of 7` : "Play Daily 7"}
-            >
-              <span className="t7s-icon" aria-hidden="true"><ClipboardList size={22} strokeWidth={2} /></span>
-              <span className="t7s-body">
-                <span className="t7s-title">Daily 7</span>
-                <span className="t7s-sub">
-                  {dailyDone
-                    ? <>✅ Done · <strong>{dailyScore}/7</strong></>
-                    : <>7 questions · ~3 min</>}
-                </span>
-              </span>
-              <span className="t7s-cta">{dailyDone ? "View" : "Play"}</span>
-            </button>
-            {/* Transfer Trail joins the daily zone as a ROW, not a hero (Alex,
-                earlier: "it needs marinating" as a hero; today: "footle and
-                transfer trail are better gamemodes"). Third by play in the
-                30-day read — 44 of 110 signed-in players. Same row style as
-                the Daily 7 so the zone reads as one list of today's fixtures. */}
-            {trailLive && (
-              <button
-                className={`todays-seven-secondary trail-row${trailDone ? ' is-done' : ''}`}
-                onClick={() => setScreen("trail")}
-                aria-label={trailDone ? "Today's Transfer Trail: done — review" : "Play today's Transfer Trail"}
-              >
-                <span className="t7s-icon" aria-hidden="true"><Route size={22} strokeWidth={2} /></span>
-                <span className="t7s-body">
-                  <span className="t7s-title">Transfer Trail</span>
-                  <span className="t7s-sub">{trailDone ? <>✅ Done · today's player</> : <>Follow the moves · name the player</>}</span>
-                </span>
-                <span className="t7s-cta">{trailDone ? "View" : "Play"}</span>
-              </button>
-            )}
+            {/* FOUR EQUAL ROWS (Alex, 2026-09-06, after seeing the app home beside the
+                website's Today block): the Footle hero card carried a worked example
+                the returning player has seen a hundred times, Mystery sat in the mode
+                grid while the counter said "/4", and the Trail row wore the Daily 7's
+                amber pill. One row shape for all four, each carrying its own mode
+                colour in the icon well and the pill through --mode / --mode-rgb, the
+                edition number beside the name, the state in the subline — the same
+                block the website renders, so the app and the site are one product. */}
+            {(() => {
+              const rows = [
+                {
+                  key: "footle", name: "Footle", no: getFootleNumber(), accent: MODE_ACCENT.footle, rgb: MODE_RGB.footle,
+                  icon: <span className="fh-tile fh-tile-green t7s-f" aria-hidden="true">F</span>,
+                  done: footleDone, open: ws.kind === "in-progress",
+                  sub: ws.kind === "won" ? <>✅ Solved in <strong>{ws.used}</strong></>
+                    : ws.kind === "lost" ? <>✗ Out of guesses</>
+                    : ws.kind === "in-progress" ? <>In progress · <strong>{ws.used}</strong> of 6</>
+                    : <>{FOOTLE_TAGLINE}</>,
+                  onTap: () => (footleDone ? viewPuzzleStatus(ws) : setScreen("wordle")),
+                  aria: footleDone ? "Today's Footle: done — review" : "Play today's Footle",
+                },
+                {
+                  key: "daily", name: "Daily 7", Icon: ClipboardList, accent: MODE_ACCENT.daily7, rgb: MODE_RGB.daily7,
+                  done: dailyDone,
+                  sub: dailyDone ? <>✅ Done · <strong>{dailyScore}/7</strong></> : <>7 questions · ~3 min</>,
+                  onTap: () => (dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")),
+                  aria: dailyDone ? `Daily 7 complete: ${dailyScore} out of 7` : "Play Daily 7",
+                },
+                ...(trailLive ? [{
+                  key: "trail", name: "Transfer Trail", no: getTrailNumber(), Icon: Route, accent: MODE_ACCENT.trail, rgb: MODE_RGB.trail,
+                  done: trailDone,
+                  sub: trailDone ? <>✅ Done · today's player</> : <>Follow the moves · name the player</>,
+                  onTap: () => setScreen("trail"),
+                  aria: trailDone ? "Today's Transfer Trail: done — review" : "Play today's Transfer Trail",
+                }] : []),
+                ...(mysteryLive ? [{
+                  key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", no: mysteryNumber(), accent: MODE_ACCENT.mystery, rgb: MODE_RGB.mystery,
+                  done: mysteryDone,
+                  sub: mysteryDone ? <>✅ Done · guess who</> : <>Guess who from career clues</>,
+                  onTap: () => setScreen("mystery"),
+                  aria: mysteryDone ? "Today's Mystery Player: done — review" : "Play today's Mystery Player",
+                }] : []),
+              ];
+              return rows.map((r) => (
+                <button
+                  key={r.key}
+                  className={`todays-seven-secondary ${r.key}-row${r.done ? " is-done" : ""}`}
+                  style={{ "--mode": r.accent, "--mode-rgb": r.rgb }}
+                  onClick={r.onTap}
+                  aria-label={r.aria}
+                >
+                  <span className="t7s-icon" aria-hidden="true">{r.icon || <r.Icon size={22} strokeWidth={2} />}</span>
+                  <span className="t7s-body">
+                    <span className="t7s-title">{r.name}{r.no ? <span className="t7s-no">No. {r.no}</span> : null}</span>
+                    <span className="t7s-sub">{r.sub}</span>
+                  </span>
+                  <span className="t7s-cta">{r.done ? "Review" : r.open ? "Continue" : "Play"}</span>
+                </button>
+              ));
+            })()}
           </div>
         );
       })()}
@@ -725,11 +661,12 @@ function HomeScreenImpl({
           // Same gate as the Trail: the card only exists if the frozen
           // schedule actually has a puzzle for today, so nothing advertises a
           // mode that cannot be played. mysteryLive is computed above.
-          ...(mysteryLive ? [{ key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", desc: "Guess who", isNew: true, iconColor: MODE_ACCENT.mystery, onTap: () => setScreen("mystery") }] : []),
+          // Mystery Player is a row in the Today block above (2026-09-06), same rule
+          // as the Trail: one puzzle a day, listed once.
           // Stadiums (2026-08-20, Alex's design): a completion run, not a
           // quiz — name every ground in the league. No live-gate needed:
           // the dataset is season-pinned and always playable.
-          { key:"stadiums", Icon: LandPlot, name: "Stadiums", desc: "Name every ground", isNew: true, onTap: () => setScreen("stadiums") },
+          { key:"stadiums", Icon: LandPlot, name: "Stadiums", desc: "Name every ground", onTap: () => setScreen("stadiums") },
           { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
           // ⚠️ iconColor deliberately REMOVED. Survival was the only tile using the
