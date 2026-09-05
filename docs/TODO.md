@@ -6,7 +6,11 @@ prose is now two badges (I had only fixed the React footer earlier); `/lists` **
 what "with answers" searchers came for); `/football-quiz/` has a **club filter + league jump chips** (93→1 on "arsen", emptied leagues
 and chips hide, a no-match line points at /quiz/clubs/); caption grey `--tx4` **#7E828C → #8A8E99** (5.97/5.57/5.08 on bg/card/card2;
 the old value was 4.33 on card2). App `--t3` lifts with it (alias). Gate `p2-quick-wins.test.js` incl. the contrast maths.
-**Remaining from the critique:** the 09-03 leftovers (report sheet, 1911px void, Games dropdown at 390) — re-inspect; B2; the 7 modes.
+**09-03 leftovers re-inspected on prod (22:15):** Games dropdown at 390 — GONE with the header redesign; the burger menu opens under the
+header with six 44px rows, no horizontal overflow → closed. 1911px void — a centred 1200px column on club pages (356px each side) and
+1120 on `/` (396 each side): a conventional cap, recorded as ACCEPTED unless Alex wants ≥1600 layouts wider. Report sheet — needs a
+finished game; inspect next session with a played Footle. **Still open from the critique:** B2 (46 localised pages onto .bq — needs the
+strings table + Alex's eye on es/de/nl/pt), the 7 shell modes (page or app-only, per mode — Alex's call), the report sheet.
 
 ## 2026-09-05 (21:25) — ✅ C3-B + F MARK + THE PROD REGRESSION FIXED (810dcd9, ddc13e3, 29605e6, 4a49967) — LIVE-VERIFIED on prod: .fd tokens resolve, F on green, Play pills green, hairlines back, quiz 0 transparent
 
