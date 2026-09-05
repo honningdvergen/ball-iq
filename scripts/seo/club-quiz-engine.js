@@ -230,6 +230,21 @@ else os[b].className='bq-o dim'}
 var lr=q.querySelector('.bq-sr');
 if(lr)lr.textContent=(k===a?'Correct. ':'Incorrect. The answer is ')+os[a].querySelector('.tt').textContent+'.';
 var w=q.querySelector('.bq-why');if(w)w.hidden=false;
+/* ⚠️ THE EXPLANATION USED TO OPEN BELOW THE FOLD. Measured live 2026-09-05 at
+   375x812: after tapping option A on question 1, .bq-why began at y=852 (the
+   viewport ends at 812) and "Next question" ended at 1024 — 212px out of
+   view, worse than the 18px clip the 09-03 critique measured. The WHY is the
+   product's differentiator and the button is already the most dead-clicked
+   element on these pages; both were invisible at the moment they mattered.
+   Two fixes, one here, one in CSS: .bq-next is position:sticky so it is
+   always reachable, and the explanation scrolls into view ONLY when it is
+   below the fold — block:'nearest' moves the page the minimum distance, and
+   .bq-why's scroll-margin-bottom keeps it clear of the sticky button. Never
+   scroll when it is already visible: a page that jumps under a finger that
+   just tapped is the other failure. */
+if(w){try{var wr=w.getBoundingClientRect();
+if(wr.bottom>window.innerHeight-64){var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+w.scrollIntoView({block:'nearest',behavior:rm?'auto':'smooth'})}}catch(e){}}
 /* Fired once per round, on the first answer. The gap between clubq-start and
    clubq-play is the honest engagement number: started the quiz vs actually
    answered something. */
@@ -329,21 +344,37 @@ var fbTiles='';for(var fi=0;fi<14;fi++)fbTiles+='<i'+(fi===0?' class="cur"':'')+
 var appLink='<a class="bq-footle" href="/footle"><span class="bq-fb" aria-hidden="true">'+fbTiles+'</span>'
 +'<span class="bq-ft"><b>Today\'s Footle</b><span>Guess the footballer in six. A new name at midnight, the same for everyone.</span></span>'
 +'<span class="bq-fgo">Play →</span></a>';
+/* 2026-09-05: ONE primary. The row used to carry "Keep going" (green) AND a
+   club-coloured "Play the full <club> quiz" that navigated to /play?club=…,
+   and on the last batch the /play link WAS the primary. Two problems the
+   critique measured: the red/club button out-shouted the green one on the
+   card, and its verb told a reader who had just finished ten questions that
+   the quiz they did was not the "full" one. With Alex's 2026-09-05 decision
+   to retire the web /play game routes, that destination is also the wrong
+   product: this page IS the club quiz. So: Keep going while there is more,
+   Play again when there is not, and the app gets one quiet line at the foot
+   of the card — a destination, not a competitor. */
 var cont=(hasMore
 ?'<a class="bq-go bq-wide" href="#quiz" data-more="1">Keep going — '+(total-served+more)+' more →</a>'
-+'<a class="bq-cross" href="'+play+'">Play the full '+esc(name)+' quiz →</a>'
-:'<a class="bq-go bq-wide" href="'+play+'">Play the full '+esc(name)+' quiz →</a>');
+:'<button class="bq-go bq-wide" data-again="1">Play again</button>');
+var bqStore=root.getAttribute('data-store')||'/get';
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">Your '+esc(name)+' IQ</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
-+'<div class="bq-sub">'+sc+' of '+run.length+' · best streak '+best+'</div>'
++'<div class="bq-sub">'+sc+' of '+run.length+' right · '+G.pct+'% · best streak '+best+'</div>'
 +(sday>=2?'<div class="bq-days">'+sday+' days in a row</div>':'')
-+'<div class="bq-row">'+cont+(hasMore?'':'<button class="ghost" data-again="1">Play again</button>')+'</div>'+appLink
++'<div class="bq-row">'+cont+'</div>'+appLink
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
    is still the primary action (that decision came from the 94.6% single-page
    measurement); share is the authority lever and gets full width and the club's
    colour, but it does not outrank staying. */
 +'<button class="bq-share" data-share="1">Share your '+esc(name)+' IQ</button>'
-+(!hasMore?'<p class="bq-note">That is every '+esc(name)+' question we have here. There is a new daily game in the app, plus your streak.</p>':'');
++(!hasMore?'<p class="bq-note">That is every '+esc(name)+' question we have here — a fresh order tomorrow.</p>':'')
++'<a class="bq-app" href="'+bqStore+'?src=clubq-finish">Also in the app — streaks, reminders and live 1v1 →</a>';
+/* Remember today's result so a reload does not erase it. The critique's
+   returning player finished, refreshed, and met question 1 with the score
+   gone and the streak kept — the one number they came back for was the one
+   thing not saved. Read at load (see the ribbon below); never blocks. */
+try{localStorage.setItem('biq.quiz.last.'+(root.getAttribute('data-slug')||name),JSON.stringify({d:bqday(),sc:sc,n:run.length,iq:G.iq}))}catch(e){}
 res.hidden=false;if(head)head.hidden=true;
 var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();bqev('clubq-more');start(len,served)});
 var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){bqev('clubq-again');start(len,off)});
@@ -505,5 +536,12 @@ if(dx.textContent){dx.appendChild(document.createTextNode(' · '+msg))}
 else{dx.appendChild(document.createElement('b')).textContent='Your streak';
 dx.appendChild(document.createTextNode(' '+msg))}}
 dl.hidden=false}
+/* Today's earlier result, if any — the light done-state. */
+try{var lst=JSON.parse(localStorage.getItem('biq.quiz.last.'+(root.getAttribute('data-slug')||name))||'null');
+if(dl&&lst&&lst.d===td&&lst.n){var lx=dl.querySelector('.bq-dtx');
+if(lx){var lmsg='earlier today '+lst.sc+' of '+lst.n+', IQ '+lst.iq;
+if(lx.textContent){lx.appendChild(document.createTextNode(' · '+lmsg))}
+else{lx.appendChild(document.createElement('b')).textContent='You played';lx.appendChild(document.createTextNode(' '+lmsg))}
+dl.hidden=false}}}catch(e){}
 root.classList.add('bq-live');start(Math.min(10,total));
 })();

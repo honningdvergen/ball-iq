@@ -532,7 +532,7 @@ function storeBadgesMini() {
 
 // Inner hero content (breadcrumb → stat), shared by the single-column heroSection
 // (Footle landing, listicles) and the two-column quiz hero (heroTwoCol).
-function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, chips, playHref, playLabel, mini }) {
+function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, chips, playHref, playLabel, mini, noStores }) {
   let chipStyle = '';
   if (badge && !badge.emoji && badge.color) {
     const [bg, fg] = badgeColors(badge.color);
@@ -562,13 +562,15 @@ function heroInner({ crumbItems, badge, kind, name, h1, lead, statLine, chips, p
   // the way at the bottom in the orange square."
   // The badges now render above the fold on EVERY page type; the green button
   // keeps its original condition.
-  const badgeRow = mini ? storeBadgesMini() : storeBadges();
+  // noStores: the 404 page — the critique found two store badges ABOVE the
+  // way home there. Recovery first; the footer still carries the app.
+  const badgeRow = noStores ? '' : mini ? storeBadgesMini() : storeBadges();
   const ctaRow = (playHref && !playHref.startsWith('#'))
     ? `<div class="cta-row">
 <a class="btn-green" href="${playHref}"${playHref.startsWith('#') ? ' data-scrollto="1"' : ''}>${esc(playLabel || `Play the ${name} quiz`)} ↓</a>
 ${badgeRow}
 </div>`
-    : `<div class="cta-row cta-row--stores">${badgeRow}</div>`;
+    : badgeRow ? `<div class="cta-row cta-row--stores">${badgeRow}</div>` : '';
   // Chips beat a sentence: a searcher scans them, and every value is computed
   // from the bank at build time so none of it can drift or overstate. This is
   // the honest version of the "75 verified questions" badge competitors assert.
@@ -613,31 +615,23 @@ function heroTwoCol(props, rightHtml) {
 </section>`;
 }
 
-// Orange app CTA band (matches the homepage Daily band). Black App Store badge.
-/* ⚠️ THIS OFFERED STORE BADGES AND NOTHING ELSE.
-   On a /lists page it is the only exit on the page, and it asked a reader who
-   had spent 40 seconds with us to go and install something. The web app is
-   free, instant and needs no account — and it was never mentioned. Play here
-   first, install second, which is the same ordering the club engine settled on
-   against the 94.6% single-page measurement. */
-// ⚠️ THE BUTTON MUST DELIVER WHAT THE HEADING PROMISES. `playHref` exists
-// because this band's h2 says "Think you know Arsenal? Prove it." and its
-// button then pointed at a BARE /play, which serves the generic Messi warm-up.
-// A fan who searched "arsenal quiz", played the taster and pressed the button
-// promising more was asked about Messi. Measured live 2026-09-02: the CTA at
-// y=1269 was `/play`, while `/play?club=arsenal` — which serves real Arsenal
-// questions — was already generated SIX times further down the same page.
-// That is the CTA-parity bug class (a control whose verb does not match what
-// pressing it does) on ~124 generated pages. Club terms are the best-ranked
-// queries on the site, so this was the best traffic meeting the worst promise.
-// Defaults to bare /play so every non-club caller is unchanged.
-function appCtaBand(name, playHref) {
-  return `<section class="sec"><div class="appband">
+// The app band: one module, after value, on every generated page.
+// History, because each version was measured: it began as store badges alone
+// (a /lists reader with 40 seconds invested was asked to install something);
+// then gained a green "Play free in your browser" whose bare /play served the
+// Messi warm-up to an Arsenal searcher (the CTA-parity bug, fixed 2026-09-02
+// with a per-club playHref). On 2026-09-05 the critique measured the result —
+// six store badges on a club page, and a "play in your browser" button on a
+// page the reader was already playing in — and Alex decided to retire the web
+// /play game routes altogether. So the button is gone: this page IS the quiz,
+// and the band's only job is to say what the app adds, once, quietly. `name`
+// rides along as data for the store-out instrument (shell.mjs), so a click can
+// be read per band.
+function appCtaBand(name) {
+  return `<section class="sec" data-band="${esc(name)}"><div class="appband">
 <div class="appband-in">
-<h2>Think you know ${esc(name)}? Prove it.</h2>
-<p>Streaks, live 1v1, your own Ball IQ score — and every quiz in one place.</p>
-<a class="appband-play" href="${playHref || `${SITE.base}/play`}">Play free in your browser →</a>
-<p class="appband-or">Free either way — in your browser right now, or on your phone:</p>
+<h2>Also on your phone.</h2>
+<p>Streaks, reminders and live 1v1 against a mate — every quiz here, in the app. Free, like here.</p>
 ${storeBadges()}
 </div>
 </div></section>`;
@@ -1280,7 +1274,12 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-len button{flex:1;min-height:44px;padding:9px 6px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx3);font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
   .bq-len button:hover{border-color:var(--bd3)}
   .bq-len button[aria-pressed="true"]{background:var(--grn);border-color:var(--grn);color:var(--grn-ink)}
-  .bq-card{background:linear-gradient(var(--card2),var(--card));border:1px solid var(--bd2);border-radius:20px;padding:20px;position:relative;overflow:hidden}
+  /* overflow:clip, not hidden. position:sticky sticks to the nearest ancestor
+     that scrolls, and overflow:hidden MAKES the card that ancestor — the Next
+     button would stick to the card instead of the viewport, i.e. not at all.
+     clip clips the 2px top strip to the radius exactly as hidden did, without
+     creating a scroll container. */
+  .bq-card{background:linear-gradient(var(--card2),var(--card));border:1px solid var(--bd2);border-radius:20px;padding:20px;position:relative;overflow:clip}
   .bq-card::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--club,var(--grn)),var(--club-soft,var(--grn-soft)) 60%,transparent)}
   .bq-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;min-height:24px}
   .bq-meter{display:flex;gap:4px;flex-wrap:wrap}
@@ -1320,9 +1319,13 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
      hidden — both remove it from the accessibility tree, which is exactly the
      bug this fixes. */
   .bq-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
-  .bq-why{margin-top:13px;border-left:2px solid var(--club,var(--grn));padding:2px 0 2px 14px;font-size:13.5px;color:var(--tx3);line-height:1.55}
+  .bq-why{margin-top:13px;border-left:2px solid var(--club,var(--grn));padding:2px 0 2px 14px;font-size:13.5px;color:var(--tx3);line-height:1.55;scroll-margin-bottom:76px}
   .bq-why b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--club-soft,var(--grn));margin-bottom:5px;font-weight:700}
-  .bq-next{margin-top:14px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+  /* Sticky: after an answer the button used to land 212px below the fold at
+     375x812 (measured live 2026-09-05), so every question cost a scroll-hunt on
+     the page that holds visitors longest. Pinned to the viewport's foot while
+     the card overflows it; in normal flow the moment the card fits. */
+  .bq-next{position:sticky;bottom:10px;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,.35);margin-top:14px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
   .bq-next:hover{filter:brightness(1.05)}
   .bq-res{text-align:center;padding:6px 2px;position:relative;overflow:hidden}
   .bq-res::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,transparent,var(--club,var(--grn)),transparent)}
@@ -1335,25 +1338,16 @@ const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row a,.bq-row button{flex:1 1 140px;text-align:center;padding:12px;border-radius:11px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:14px;border:none;cursor:pointer}
   .bq-row a:hover{text-decoration:none;filter:brightness(1.05)}
   .bq-row .ghost{background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
-  /* THE APP CROSSING IS NOT A SECOND PRIMARY. Measured on the live page
-     2026-08-14: "Keep going" and "Play the full quiz" both computed to
-     rgb(88,204,2) — two identical green primaries side by side. Not a decision;
-     .bq-row a paints EVERY link green and .ghost was the only opt-out, so the
-     unclassed crossing link inherited the primary treatment and quietly undid
-     the thing the comment below it says it is for.
-     Giving it club colour rather than a third grey also settles what the green
-     MEANS. Green now earns exactly one job on this screen — continue where you
-     already are — and club colour carries identity: solid to cross into this
-     club in the app, outlined to share this club score. The crossing stays
-     loud, because roughly 40% of journeys actually take it (see cad736e); it
-     just stops competing with staying. */
-  .bq-row .bq-cross{background:var(--club,var(--grn));color:var(--club-ink,var(--grn-ink))}
+  /* One primary on the results card since 2026-09-05. The club-coloured
+     "Play the full quiz" crossing (.bq-cross) went with the web /play game
+     routes; green has exactly one job here — continue where you already are —
+     and the app is a quiet line at the foot (.bq-app), a destination rather
+     than a competitor. */
   /* Full-width primary: the action that keeps the reader where they already
      are. It is first in the DOM and now first in the eye. */
   .bq-row .bq-wide{flex:1 1 100%}
-  /* The store link is a THIRD destination, not a second green button. Quiet,
-     outlined, and visually unlike both siblings — see the note in
-     club-quiz-engine.js finish() for why this was costing every click. */
+  .bq-app{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:10px;font-size:13px;color:var(--tx3);text-decoration:none}
+  .bq-app:hover{color:var(--tx);text-decoration:none}
   /* The daily door as a card (fourth treatment — see finish() in the engine):
      a board picture, a name, one line, a green "Play". Outside .bq-row on
      purpose, so none of the row's button paint reaches it. */
@@ -1968,10 +1962,6 @@ ${SHELL_CSS}
   .appband{position:relative;overflow:hidden;border-radius:12px;padding:clamp(24px,4vw,36px);background:var(--card);border:1px solid var(--bd)}
   .appband-flame{display:none}
   .appband-in{position:relative;max-width:34ch}
-  .appband-play{display:inline-block;margin:14px 0 0;padding:13px 22px;border-radius:999px;
-    background:var(--grn,#58CC02);color:#06230C;font-weight:800;font-size:15.5px;text-decoration:none}
-  .appband-play:hover{filter:brightness(1.06)}
-  .appband-or{margin:12px 0 10px!important;font-size:13px;color:var(--tx3)}
   .appband h2{color:#fff;font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
   .appband p{color:var(--tx3);font-size:15px;font-weight:500;line-height:1.5;margin-bottom:18px}
   .appband .store-badge{border-color:var(--bd2)}
@@ -2696,7 +2686,7 @@ ${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts eve
 
      ⚠️ Do NOT move adSlot('afterQA') below this — the placement policy at
      the top of this file requires ad slots to sit below appCtaBand(). */''}
-${appCtaBand(cfg.name, `${SITE.base}/play?club=${cfg.slug}`)}
+${appCtaBand(cfg.name)}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
@@ -4087,6 +4077,7 @@ ${heroSection({
     h1: 'That page doesn’t exist.',
     lead: 'The link may be out of date, or the address mistyped. Everything below does work, and every quiz is free to play without an account.',
     playHref: null,
+    noStores: true,
   })}
 <section class="sec"><div class="covers">
 ${cards.map(([t, d, h]) => `<a class="cov" href="${h}"><h3>${esc(t)}</h3><p>${esc(d)}</p></a>`).join('\n')}

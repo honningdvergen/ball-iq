@@ -18,9 +18,14 @@
 //
 // Nothing here imports the game bundle. Clubs come from the generated
 // clubIndex.js, lists from the generated listsIndex.js, edition numbers from
-// the tiny pure-math libs. Every Play is a URL into the app at /play, which
+// the tiny pure-math libs. Every daily Play is a URL into the app at /play, which
 // App.jsx's boot handles (?game=… / ?club=… / ?quiz=…) and which bypasses
 // onboarding for a visitor who has already chosen a game.
+// Clubs are the exception since 2026-09-05: a club tile goes to the club's own
+// page, /quiz/<slug>/, because that page IS the club quiz on the web. The
+// critique of that day found the same club reachable as two products — tile →
+// app, every other link → page — and Alex decided to retire the web /play game
+// routes rather than keep both.
 import '../design/report.css';
 import '../design/front.css';
 import React, { useState, useEffect, useMemo } from 'react';
@@ -283,6 +288,20 @@ export default function FrontDoor() {
           </button>
         </section>
 
+        {/* 2b · the app, once, after value. The 2026-09-05 critique measured the
+            homepage's entire app funnel as two 17px footer words six screens
+            down (the real badges in index.html's hidden landing render 0×0).
+            A hero badge is still out — none of the 13 sites in the field study
+            has one — so this is one quiet row between today's games and the
+            finder: what the app adds, two links, nothing sold. */}
+        <aside className="fd-app" aria-label="Ball IQ app">
+          <span className="fd-app-tx"><b>Also on your phone.</b> Streaks, reminders and live 1v1 against a mate — the same games, in the app.</span>
+          <span className="fd-app-links">
+            <a href={appStoreUrl()} rel="noopener" onClick={() => go('fd-app-ios')}>iOS</a>
+            <a href={PLAY_STORE_URL} rel="noopener" onClick={() => go('fd-app-android')}>Android</a>
+          </span>
+        </aside>
+
         {/* 3 · the practice board, on request from the lead card */}
         {practice && (
           <section className="fd-sec fd-practice" id="fd-practice" aria-label="Practice Footle">
@@ -298,8 +317,7 @@ export default function FrontDoor() {
           </div>
           <div className="fd-clubs">
             {(allClubs ? CLUB_INDEX : featured).map((c) => (
-              <a key={c.s} className="fd-club" href={`${PLAY}?club=${c.s}`} onClick={() => go('fd-club', c.s)}>
-                <span className="fd-club-dot" style={c.h ? { background: c.h } : undefined} aria-hidden="true" />
+              <a key={c.s} className="fd-club" href={`/quiz/${c.s}/`} onClick={() => go('fd-club', c.s)} style={c.h ? { '--club': c.h } : undefined}>
                 <span className="fd-club-body"><span className="fd-club-n">{c.n}</span><span className="fd-club-c">{c.c}</span></span>
               </a>
             ))}
