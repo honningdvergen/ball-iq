@@ -84,7 +84,11 @@
    6-letter teaser gets a hair wider rather than squashing the letters. */
 /* Footle's chip is the app's own mark: F on the green tile (HomeScreen's
    .fh-tile-green). Replaced the 38px mini worked-example grid on 2026-09-05. */
-.fd-card-ic.fd-fmark{background:var(--grn);border-color:transparent;color:var(--grn-ink);font-weight:900;font-size:21px;letter-spacing:-.02em;line-height:1}
+.fd-card.fd-daily .fd-card-ic.fd-fmark,.fd-card-ic.fd-fmark{background:var(--grn);border-color:transparent;color:var(--grn-ink);font-weight:900;font-size:21px;letter-spacing:-.02em;line-height:1}
+/* ⚠️ Three classes on purpose: the per-mode tint below (.fd-daily .fd-card-ic,
+   colour-mixed from --mode) ties a two-class selector and comes later, so the
+   first cut of this rule lost and the F painted white on a transparent tile
+   (measured on the local build, 2026-09-05). */
 .fd-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}
 .fd-card-n{font-size:15px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .fd-card-no{font-size:12.5px;font-weight:500;color:var(--t3)}
