@@ -13,6 +13,7 @@
 import { CLUB_INDEX } from '../../src/marketing/clubIndex.js';
 import { LISTS_INDEX } from '../../src/marketing/listsIndex.js';
 import { GAMES_NAV, DISCOVER, MORE } from '../../src/marketing/siteNav.js';
+import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../../src/lib/storeGlyphs.js';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -105,21 +106,19 @@ body:JSON.stringify({p_event:'store-out',p_meta:meta,p_visitor:null})}).catch(fu
 
 export function shellFooter(site) {
   const b = site.base;
-  const byLeague = new Map();
-  for (const c of CLUB_INDEX) { if (!byLeague.has(c.c)) byLeague.set(c.c, []); byLeague.get(c.c).push(c); }
   const col = (title, links) => `<div class="fd-foot-col"><h3>${esc(title)}</h3>${links.map(([n, h]) => `<a href="${h}">${esc(n)}</a>`).join('')}</div>`;
-  const leagueCols = ['Premier League', 'La Liga', 'Serie A', 'Bundesliga']
-    .filter((k) => byLeague.has(k))
-    .map((k) => col(k, [...byLeague.get(k).slice(0, 8).map((c) => [c.n, `${b}/quiz/${c.s}/`]), [`All ${k} clubs`, `${b}/quiz/clubs/`]]))
-    .join('');
+  // Four columns, not eight (critique 2026-09-05: eight columns of 13px text
+  // at 1440, three at 390). Games · Quizzes (the leagues, the club directory,
+  // the football quiz) · Discover (what people search for, plus the top lists)
+  // · Ball IQ. The store links are badges, not the words "iOS" and "Android".
+  const badge = (store) => `<a class="fd-foot-badge" href="${store === 'ios' ? site.appStore : site.playStore}" rel="noopener" target="_blank" data-store="${store}" aria-label="${store === 'ios' ? 'Download on the App Store' : 'Get it on Google Play'}"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${store === 'ios' ? APPLE_GLYPH_PATH : PLAY_GLYPH_PATH}"/></svg>${store === 'ios' ? 'App Store' : 'Google Play'}</a>`;
   return `<footer class="fd-foot"><div class="fd-w fd-foot-in">
 ${col('Games', GAMES.map(([n, h]) => [n, b + h]))}
-${leagueCols}
-${col('Lists', [...LISTS_INDEX.slice(0, 8).map((l) => [l.h.replace(/^Every /, ''), `${b}/lists/${l.s}/`]), ['All lists', `${b}/lists/`]])}
-${col('Discover', DISCOVER.map(([n, h]) => [n, b + h]))}
-<div class="fd-foot-col"><h3>Ball IQ</h3><a href="${b}/about/">About</a><a href="${b}/contact/">Contact</a>${MORE.map(([n, h]) => `<a href="${b + h}">${esc(n)}</a>`).join('')}<a href="${b}/privacy.html">Privacy</a><a href="${b}/terms/">Terms</a><span class="fd-foot-app">Also on <a href="${site.appStore}" rel="noopener">iOS</a> and <a href="${site.playStore}" rel="noopener">Android</a></span></div>
+${col('Quizzes', [...LEAGUES.map(([slug, name]) => [name, `${b}/quiz/${slug}/`]), ['Clubs by league', `${b}/quiz/clubs/`], ['Football quiz', `${b}/football-quiz/`]])}
+${col('Discover', [...DISCOVER.filter(([, h]) => h !== '/lists/').map(([n, h]) => [n, b + h]), ...LISTS_INDEX.slice(0, 4).map((l) => [l.h.replace(/^Every /, ''), `${b}/lists/${l.s}/`]), ['All lists', `${b}/lists/`]])}
+<div class="fd-foot-col"><h3>Ball IQ</h3><a href="${b}/about/">About</a><a href="${b}/contact/">Contact</a>${MORE.map(([n, h]) => `<a href="${b + h}">${esc(n)}</a>`).join('')}<a href="${b}/privacy.html">Privacy</a><a href="${b}/terms/">Terms</a><span class="fd-foot-app">${badge('ios')}${badge('android')}</span></div>
 </div>
-<div class="fd-w fd-foot-line">An independent football quiz, made by one person. Not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club; names are used to identify the subject of each quiz.</div>
+<div class="fd-w fd-foot-line">An independent football quiz, made by one person. Not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club; names are used to identify the quizzes' subjects.</div>
 </footer>${storeClickScript()}`;
 }
 
@@ -136,7 +135,7 @@ export const SHELL_CSS = `
   .fd-mark:hover{text-decoration:none}
   .fd-mark img{display:block;width:26px;height:26px}
   .fd-nav{display:flex;gap:4px}
-  .fd-nav a{padding:8px 10px;border-radius:8px;font-size:14px;font-weight:600;color:var(--tx3)}
+  .fd-nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;border-radius:8px;font-size:14px;font-weight:600;color:var(--tx3)}
   .fd-nav a:hover{color:var(--tx);background:var(--card);text-decoration:none}
   .fd-nav a.is-active{color:var(--tx)}
   .fd-find{position:relative;flex:1 1 auto;max-width:420px;margin-left:auto}
@@ -153,18 +152,19 @@ export const SHELL_CSS = `
   .fd-find-go{font-size:12.5px;font-weight:700;color:var(--grn)}
   .fd-find-empty{padding:10px;font-size:13.5px;color:var(--tx3)}
   .fd-find-empty a{color:var(--tx);text-decoration:underline;text-underline-offset:3px}
-  .fd-signin{flex:0 0 auto;font-size:14px;font-weight:600;color:var(--tx3);padding:8px 10px}
+  .fd-signin{flex:0 0 auto;display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:600;color:var(--tx3);padding:0 10px}
   .fd-signin:hover{color:var(--tx);text-decoration:none}
   .fd-nav-signin{display:none}
   .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--tx);cursor:pointer;border-radius:8px}
   .fd-foot{border-top:1px solid var(--bd);background:var(--bg2);padding:36px 0 28px;margin-top:36px}
-  .fd-foot-in{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:22px}
+  .fd-foot-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}
   .fd-foot-col{display:flex;flex-direction:column;gap:5px;min-width:0}
   .fd-foot-col h3{margin:0 0 8px;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx4)}
   .fd-foot-col a{font-size:13.5px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:24px}
   .fd-foot-col a:hover{color:var(--tx);text-decoration:none}
-  .fd-foot-app{margin-top:10px;font-size:13px;color:var(--tx4)}
-  .fd-foot-app a{color:var(--tx3);text-decoration:underline;text-underline-offset:3px}
+  .fd-foot-app{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .fd-foot-badge{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;background:#000;color:#fff;border:1px solid var(--bd2);border-radius:13px;font-weight:700;font-size:13.5px;white-space:nowrap}
+  .fd-foot-badge:hover{border-color:var(--bd3);text-decoration:none}
   .fd-foot-line{margin-top:26px;font-size:12.5px;line-height:1.6;color:var(--tx4);max-width:90ch}
   @media(max-width:1000px){.fd-foot-in{grid-template-columns:repeat(3,minmax(0,1fr))}}
   @media(max-width:720px){

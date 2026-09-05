@@ -841,6 +841,22 @@ return 'taster';
    ⚠️ GUARDS ARE PER PAGE, NOT PER BOARD. /transfer-trail/ ships two trail
    boards (hero + #practice), so a guard local to a board would post two starts
    for one visitor playing one game. */
+const SEARCH_ICON_SM = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
+// /football-quiz/ club filter: hides clubs whose name (or badge code) does not
+// contain the query, hides emptied leagues and their chips, shows one line when
+// nothing matches. Accent-insensitive. No event is posted — the page's
+// start/finish events already say whether the visitor found something to play.
+const FQ_FILTER_JS = `(function(){try{
+var i=document.getElementById('fq-filter');if(!i)return;
+var lgs=[].slice.call(document.querySelectorAll('.fq-lg')),none=document.getElementById('fq-none');
+function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'')}
+function run(){var q=norm(i.value).trim(),any=false;
+lgs.forEach(function(g){var shown=0;[].slice.call(g.querySelectorAll('.fq-club')).forEach(function(a){var ok=!q||norm(a.textContent).indexOf(q)>-1;a.hidden=!ok;if(ok)shown++});
+g.hidden=!shown;var chip=document.querySelector('.fq-chip[href="#'+g.id+'"]');if(chip)chip.hidden=!shown;if(shown)any=true});
+if(none)none.hidden=any||!q}
+i.addEventListener('input',run);
+}catch(e){}})();`;
+
 const GAME_TRACK_JS = `(function(){
 if(window.__biqGameTrack)return;window.__biqGameTrack=1;
 ${SURFACE_FN_JS}
@@ -3037,11 +3053,10 @@ ${/* Outbound tracking rides renderQA(), so the 13 list pages with no taster —
       could count. Emitted here for every list page; QA_TRACK_JS guards itself
       against the double registration this creates on the other 37. */ ''}
 <script>${QA_TRACK_JS}</script>
-${taster.length ? `<section class="sec narrow">
-<h2>Think you know this? Five questions</h2>
-<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Tap to answer — no sign-up. <a href="#full-list" class="lt-jump" onclick="try{qev('list-jump')}catch(e){}">Or jump to the full list &darr;</a></p>
-${renderQA(taster)}
-</section>` : ''}
+${/* TABLE FIRST (critique 2026-09-05, P2). These pages rank on "with answers"
+   — the table IS what the visitor searched for — and it sat under a
+   five-question quiz they did not ask for. The quiz follows, for the ones who
+   want to test themselves after reading. */ ''}
 <section class="sec narrow">
 ${playable ? `<div id="lp-bar" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px;padding:13px 16px;border:1px solid var(--accent-b, rgba(88,204,2,.28));border-radius:13px;background:rgba(88,204,2,.06)">
 <span style="font-weight:800;color:#fff">Reckon you can name them all?</span>
@@ -3058,6 +3073,11 @@ ${playable ? `<div id="lp-bar" style="display:flex;align-items:center;gap:12px;f
 ${table}
 ${playable ? `<script>${LIST_PLAY_JS}</script>` : ''}
 </section>
+${taster.length ? `<section class="sec narrow">
+<h2>Think you know this? Five questions</h2>
+<p class="sub" style="color:var(--tx3);margin:-6px 0 16px">Tap to answer — no sign-up. <a href="#full-list" class="lt-jump" onclick="try{qev('list-jump')}catch(e){}">Or jump to the full list &darr;</a></p>
+${renderQA(taster)}
+</section>` : ''}
 ${cfg.intro.length > 1 ? `<section class="sec narrow">
 ${cfg.intro.slice(1).map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
 </section>` : ''}
@@ -4417,6 +4437,18 @@ function buildFootballQuizPage() {
     font:800 10.5px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.02em;
     background:var(--club,#2A2F3A);color:var(--club-ink,#fff);box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}
   .fq-club span{color:var(--tx2);font-size:13.5px;font-weight:700;line-height:1.2}
+  .fq-tools{margin:0 0 18px}
+  .fq-filter{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 14px;background:var(--card);border:1px solid var(--bd2);border-radius:14px}
+  .fq-filter-ic{display:flex;color:var(--tx3)}
+  #fq-filter{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--tx);font:inherit;font-size:16px;padding:12px 0}
+  #fq-filter::placeholder{color:var(--tx3)}
+  .fq-filter:focus-within{border-color:var(--grn)}
+  .fq-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px 0 2px;-webkit-overflow-scrolling:touch}
+  .fq-chips::-webkit-scrollbar{display:none}
+  .fq-chip{flex:0 0 auto;display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--bd);background:var(--card);color:var(--tx2);font-size:13px;font-weight:700;white-space:nowrap}
+  .fq-chip:hover{border-color:var(--bd3);text-decoration:none;color:var(--tx)}
+  .fq-none{margin:8px 0 0;color:var(--tx3);font-size:14px}
+  .fq-lg{scroll-margin-top:72px}
   .fq-club:hover span{color:#fff}
   .fq-modes{display:grid;gap:11px;grid-template-columns:1fr}
   @media(min-width:700px){.fq-modes{grid-template-columns:1fr 1fr}}
@@ -4439,7 +4471,11 @@ function buildFootballQuizPage() {
     const [r, g2, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
     return (0.2126 * r + 0.7152 * g2 + 0.0722 * b) > 150 ? '#0B0C0F' : '#fff';
   };
-  const groupHtml = groups.map((g) => `<div class="fq-lg"><h3>${g.flag ? g.flag + ' ' : ''}${esc(g.league)}</h3><div class="fq-grid">${
+  // A FINDER, NOT A WALL (critique P2, and Alex 09-03: "the homepage is a
+  // finder"). Every group gets an id, a chip row jumps to it, and a filter box
+  // narrows the grid as you type — the head-term page's grid is 93 clubs long.
+  const lgId = (name) => 'fq-' + String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const groupHtml = groups.map((g) => `<div class="fq-lg" id="${lgId(g.league)}"><h3>${g.flag ? g.flag + ' ' : ''}${esc(g.league)}</h3><div class="fq-grid">${
     g.rows.map((r) => {
       const col = CLUB_COLOR[r.slug] || '';
       const badge = CLUB_BADGE[r.slug] || r.club.slice(0, 3).toUpperCase();
@@ -4477,8 +4513,14 @@ ${hasTaster ? renderQuizSet(tasterRows, { name: 'football', tiers: DEFAULT_TIERS
 
 <section class="sec">
 <h2 style="font-size:19px;margin:0 0 4px">Club quizzes</h2>
-<p style="margin:0 0 16px;color:var(--tx3);font-size:14px">Every club we cover, by league. Each one is a full quiz with answers and explanations.</p>
+<p style="margin:0 0 12px;color:var(--tx3);font-size:14px">Every club we cover, by league. Each one is a full quiz with answers and explanations.</p>
+<div class="fq-tools">
+<label class="fq-filter"><span class="fq-filter-ic" aria-hidden="true">${SEARCH_ICON_SM}</span><input id="fq-filter" type="search" placeholder="Filter clubs…" aria-label="Filter clubs" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false"></label>
+<nav class="fq-chips" aria-label="Jump to a league">${groups.map((g) => `<a class="fq-chip" href="#${lgId(g.league)}">${g.flag ? g.flag + ' ' : ''}${esc(g.league)}</a>`).join('')}</nav>
+<p class="fq-none" id="fq-none" hidden>No club by that name yet — <a href="${SITE.base}/quiz/clubs/">see every club</a> or <a href="${SITE.base}/contact/">ask for it</a>.</p>
+</div>
 ${groupHtml}
+<script>${FQ_FILTER_JS}</script>
 </section>
 
 ${appCtaBand('football')}

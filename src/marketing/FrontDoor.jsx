@@ -167,13 +167,6 @@ export default function FrontDoor() {
   ];
   const playedCount = dailies.filter((d) => d.done).length;
 
-  const byLeague = useMemo(() => {
-    const m = new Map();
-    for (const c of CLUB_INDEX) { if (!m.has(c.c)) m.set(c.c, []); m.get(c.c).push(c); }
-    const order = ['Premier League', 'La Liga', 'Serie A', 'Bundesliga', 'Ligue 1', 'Championship'];
-    const rank = (k) => { const i = order.indexOf(k); return i < 0 ? 99 : i; };
-    return [...m.entries()].sort((a, b) => rank(a[0]) - rank(b[0]) || b[1].length - a[1].length);
-  }, []);
   const clubBySlug = useMemo(() => Object.fromEntries(CLUB_INDEX.map((c) => [c.s, c])), []);
   const featured = MOST_PLAYED.map((s) => clubBySlug[s]).filter(Boolean);
   const latestLists = LISTS_INDEX.slice(0, 8);
@@ -324,21 +317,19 @@ export default function FrontDoor() {
             <h3>Games</h3>
             {GAMES.map((g) => <a key={g.k} href={g.href}>{g.n}</a>)}
           </div>
-          {byLeague.slice(0, 4).map(([comp, clubs]) => (
-            <div className="fd-foot-col" key={comp}>
-              <h3>{comp}</h3>
-              {clubs.slice(0, 8).map((c) => <a key={c.s} href={`/quiz/${c.s}/`}>{c.n}</a>)}
-              {clubs.length > 8 && <a href="/quiz/clubs/">All {comp} clubs</a>}
-            </div>
-          ))}
+          {/* Four columns, not eight (critique 2026-09-05): Games · Quizzes ·
+              Discover · Ball IQ. Same shape as the static shell footer. */}
           <div className="fd-foot-col">
-            <h3>Lists</h3>
-            {LISTS_INDEX.slice(0, 8).map((l) => <a key={l.s} href={`/lists/${l.s}/`}>{l.h.replace(/^Every /, '')}</a>)}
-            <a href="/lists/">All lists</a>
+            <h3>Quizzes</h3>
+            {LEAGUES.map((l) => <a key={l.s} href={`/quiz/${l.s}/`}>{l.n}</a>)}
+            <a href="/quiz/clubs/">Clubs by league</a>
+            <a href="/football-quiz/">Football quiz</a>
           </div>
           <div className="fd-foot-col">
             <h3>Discover</h3>
-            {DISCOVER.map(([n, h]) => <a key={h} href={h}>{n}</a>)}
+            {DISCOVER.filter(([, h]) => h !== '/lists/').map(([n, h]) => <a key={h} href={h}>{n}</a>)}
+            {LISTS_INDEX.slice(0, 4).map((l) => <a key={l.s} href={`/lists/${l.s}/`}>{l.h.replace(/^Every /, '')}</a>)}
+            <a href="/lists/">All lists</a>
           </div>
           <div className="fd-foot-col">
             <h3>Ball IQ</h3>

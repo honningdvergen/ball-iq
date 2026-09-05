@@ -66,11 +66,15 @@ export const TOKENS = {
   amber: '#FFC107',
   wrong: '#FF4747',
 
-  // ── Text, brightest to dimmest. --tx4 is the AA floor on --bg. ─────────
+  // ── Text, brightest to dimmest. --tx4 clears AA on EVERY surface: 5.97:1 on
+  // --bg, 5.57 on --card, 5.08 on --card2. It was #7E828C — 5.08 / 4.74 / 4.33:
+  // fine on the canvas, below AA on an inset card, which is where captions
+  // sit (critique 2026-09-05: "caption grey ≈ 3.9:1"). The app's --t3 is an
+  // alias of this, so the app's dim text lifts with it. ──────────────────────
   tx: '#F0F1F5',
   tx2: '#E8EAF0',
   tx3: '#9BA0B8',
-  tx4: '#7E828C',
+  tx4: '#8A8E99',
 
   // ── Type ───────────────────────────────────────────────────────────────
   mono: "'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace",

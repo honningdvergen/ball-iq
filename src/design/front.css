@@ -42,7 +42,7 @@
 .fd-mark{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.01em;flex:0 0 auto}
 .fd-mark img{display:block}
 .fd-nav{display:flex;gap:4px}
-.fd-nav a{padding:8px 10px;border-radius:8px;font-size:14px;font-weight:600;color:var(--t2)}
+.fd-nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;border-radius:8px;font-size:14px;font-weight:600;color:var(--t2)}
 .fd-nav a:hover{color:var(--t1);background:var(--s1)}
 .fd-find{position:relative;flex:1 1 auto;max-width:420px;margin-left:auto}
 .fd-find-ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;display:flex}
@@ -57,7 +57,7 @@
 .fd-find-go{font-size:12.5px;font-weight:700;color:var(--grn)}
 .fd-find-empty{padding:10px;font-size:13.5px;color:var(--t2)}
 .fd-find-empty a{color:var(--t1);text-decoration:underline;text-underline-offset:3px}
-.fd-signin{flex:0 0 auto;font-size:14px;font-weight:600;color:var(--t2);padding:8px 10px}
+.fd-signin{flex:0 0 auto;display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:600;color:var(--t2);padding:0 10px}
 .fd-signin:hover{color:var(--t1)}
 .fd-nav-signin{display:none}
 .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--t1);cursor:pointer;border-radius:8px}
@@ -184,7 +184,7 @@
 
 /* footer sitemap */
 .fd-foot{border-top:1px solid var(--bd);background:#0F1116;padding:36px 0 28px}
-.fd-foot-in{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:22px}
+.fd-foot-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}
 .fd-foot-col{display:flex;flex-direction:column;gap:5px;min-width:0}
 .fd-foot-col a{font-size:13.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fd-foot-col a:hover{color:var(--t1)}
