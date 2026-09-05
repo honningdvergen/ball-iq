@@ -69,8 +69,13 @@ describe('the club-quiz engine stays linted', () => {
     expect(engine.slice(marker, iife).split('\n').length).toBeLessThan(4);
   });
 
-  it('the generator reads the file rather than inlining a literal', () => {
-    expect(gen, 'the engine is inline again').toMatch(/readFileSync\(\s*new URL\('\.\/seo\/club-quiz-engine\.js'/);
+  it('the widget module reads the file rather than inlining a literal, and the generator imports it', () => {
+    // 2026-09-05: the read moved from gen-seo-pages.mjs to scripts/seo/quiz-widget.mjs
+    // so the served Daily 7 page (api/daily-play.js) can use the same widget.
+    const widget = read('scripts/seo/quiz-widget.mjs');
+    expect(widget, 'the engine is inline again').toMatch(/readFileSync\(\s*new URL\('\.\/club-quiz-engine\.js'/);
+    expect(gen, 'the generator must import BQ_JS from the widget module').toMatch(/import \{[^}]*\bBQ_JS\b[^}]*\} from '\.\/seo\/quiz-widget\.mjs'/);
+    expect(gen, 'the generator must not carry a second copy of the engine').not.toMatch(/function start\(n,from\)/);
     expect(gen, 'placeholder substitution missing').toContain('__BQ_SUPABASE_URL__');
   });
 
