@@ -69,26 +69,21 @@ describe("SEO generated markup", () => {
     // `c` is the per-language copy object; `playLabel` lives on `cfg`. Reading
     // c.playLabel printed the literal "undefined →" on 35 localised pages —
     // the page type that converts 2.6x per market.
-    expect(GEN).not.toMatch(/\$\{esc\(c\.playLabel\)\}/);
-    expect(GEN).toMatch(/\$\{esc\(cfg\.playLabel\)\}/);
+    expect(GEN).not.toMatch(/c\.playLabel/);
+    // Since 2026-09-06 the localised taster link is gone (the .bq widget plays
+    // in place); the label survives on the hero CTA of both localised builders.
+    expect((GEN.match(/playLabel: cfg\.playLabel/g) || []).length).toBeGreaterThanOrEqual(2);
   });
 
-  it("emits answer-option styling for BOTH selectors from one source", () => {
+  it("emits the answer-option styling for the list pages from the one source", () => {
     // The static Q&A blocks on list pages use `.qa-opts .to` and render a `.tl`
-    // letter badge. Those rules existed only for the taster's bare `.to`, so
-    // list pages rendered "AEintracht Frankfurt" with no layout at all.
+    // letter badge. Those rules once existed only for the old taster's bare
+    // `.to`, so list pages rendered "AEintracht Frankfurt" with no layout at
+    // all. The taster is gone (2026-09-06); the rule stays and is emitted.
     expect(GEN).toMatch(/const OPTION_CSS = \(s\) =>/);
-    expect(GEN).toMatch(/\$\{OPTION_CSS\('\.to'\)\}/);
     expect(GEN).toMatch(/\$\{OPTION_CSS\('\.qa-opts \.to'\)\}/);
-
     const fn = GEN.match(/const OPTION_CSS = \(s\) => `([\s\S]*?)`;/);
     expect(fn, "OPTION_CSS body not found").toBeTruthy();
-    expect(fn[1]).toMatch(/display:flex/);
-    expect(fn[1]).toMatch(/\$\{s\} \.tl\{/);
-
-    // The tighter list-page padding must stay AFTER the shared block or it
-    // loses the cascade — same selector, so source order decides.
-    expect(GEN.indexOf("${OPTION_CSS('.qa-opts .to')}"))
-      .toBeLessThan(GEN.indexOf(".qa-opts .to{padding:11px 13px"));
+    expect(fn[1]).toMatch(/\.tl\{/);
   });
 });

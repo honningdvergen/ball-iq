@@ -219,13 +219,5 @@ export const HUBS_INTL = [
 // ("1 correct"), which is exactly why the plural-only shape looked finished.
 // Turkish and Indonesian do not inflect the adjective after a number, so they
 // legitimately have no entry and fall back to the plural.
-export const TASTER_I18N = {
-  es: { question: 'Pregunta', correct: 'correctas', correct1: 'correcta', next: 'Siguiente →', seeScore: 'Ver tu resultado →', yourIq: 'Tu Ball IQ', scored: 'Acertaste', playFull: 'Jugar el quiz completo', getApp: 'Descargar la app', again: 'Jugar otra vez' },
-  de: { question: 'Frage', correct: 'richtig', next: 'Weiter →', seeScore: 'Ergebnis ansehen →', yourIq: 'Dein Ball IQ', scored: 'Du hattest', playFull: 'Das komplette Quiz spielen', getApp: 'App herunterladen', again: 'Nochmal spielen' },
-  nl: { question: 'Vraag', correct: 'goed', next: 'Volgende →', seeScore: 'Bekijk je score →', yourIq: 'Jouw Ball IQ', scored: 'Je had', playFull: 'Speel de volledige quiz', getApp: 'Download de app', again: 'Nog een keer' },
-  fr: { question: 'Question', correct: 'bonnes', correct1: 'bonne', next: 'Suivant →', seeScore: 'Voir ton résultat →', yourIq: 'Ton Ball IQ', scored: 'Tu as trouvé', playFull: 'Jouer au quiz complet', getApp: 'Télécharger l’application', again: 'Rejouer' },
-  it: { question: 'Domanda', correct: 'giuste', correct1: 'giusta', next: 'Avanti →', seeScore: 'Vedi il tuo risultato →', yourIq: 'Il tuo Ball IQ', scored: 'Hai indovinato', playFull: 'Gioca il quiz completo', getApp: 'Scarica l’app', again: 'Gioca ancora' },
-  pt: { question: 'Pergunta', correct: 'certas', correct1: 'certa', next: 'Próxima →', seeScore: 'Ver seu resultado →', yourIq: 'Seu Ball IQ', scored: 'Você acertou', playFull: 'Jogar o quiz completo', getApp: 'Baixar o app', again: 'Jogar de novo' },
-  tr: { question: 'Soru', correct: 'doğru', next: 'Sonraki →', seeScore: 'Sonucunu gör →', yourIq: 'Ball IQ’n', scored: 'Doğru sayın', playFull: 'Quizin tamamını oyna', getApp: 'Uygulamayı indir', again: 'Tekrar oyna' },
-  id: { question: 'Pertanyaan', correct: 'benar', next: 'Berikutnya →', seeScore: 'Lihat skormu →', yourIq: 'Ball IQ kamu', scored: 'Kamu benar', playFull: 'Main kuis lengkapnya', getApp: 'Unduh aplikasinya', again: 'Main lagi' },
-};
+// TASTER_I18N (the old five-question taster's strings) was deleted on 2026-09-06:
+// the localised pages render the .bq widget with scripts/seo/bq-i18n.mjs.

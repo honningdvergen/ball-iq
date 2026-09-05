@@ -92,7 +92,6 @@ import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
-import { BQ_I18N_REVIEWED } from './seo/bq-i18n.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
@@ -101,7 +100,7 @@ import { CLUBS_IT } from './seo/clubs-it.mjs';
 import { CLUBS_DE } from './seo/clubs-de.mjs';
 import { CLUBS_FR } from './seo/clubs-fr.mjs';
 import { CLUBS_NL } from './seo/clubs-nl.mjs';
-import { HUBS_INTL, TASTER_I18N, LANG_LABEL } from './seo/hubs-intl.mjs';
+import { HUBS_INTL, LANG_LABEL } from './seo/hubs-intl.mjs';
 // One list, so another language is a file plus a spread rather than a rewrite.
 // Two shapes live in here side by side and both are intentional:
 //   - a DOMESTIC club in its own country's language (Boca/es, Flamengo/pt,
@@ -779,7 +778,7 @@ function renderQA(rows) {
 
 // Wires every .qa card independently: first tap locks the card, marks the picked
 // option right/wrong, reveals the correct one + the explanation. No deps.
-// ⚠️ MUST STAY ABOVE QA_TRACK_JS AND TASTER_JS. These are `const`, so a
+// ⚠️ MUST STAY ABOVE QA_TRACK_JS. These are `const`, so a
 // consumer declared earlier in the file throws "Cannot access before
 // initialization" at module load — the temporal dead zone, which ESLint
 // does not catch and which has now bitten this repo three times.
@@ -968,8 +967,7 @@ else if(h.indexOf('/play')>-1)qev('list-out-play');
 /* ⚠️ THIS WIDGET USED TO END IN NOTHING, on the surface that carries 47% of
    impressions and returns 4% of clicks.
 
-   The old taster (TASTER_JS; its English wrapper renderTaster was retired on
-   2026-09-05 for renderQuizSet) has had a finish state all
+   The old taster (deleted 2026-09-06 for renderQuizSet) had a finish state all
    along (see `.tdone` below: score, a /play link, a store link). renderQA() is
    a different widget used by the /lists pages, and it just marked the last
    answer and stopped. The next DOM siblings after `.qa-list` were two <script>
@@ -1037,147 +1035,12 @@ const OPTION_CSS = (s) => `  ${s}{display:flex;align-items:center;gap:12px;width
   ${s} .tt{flex:1}
   ${s} .tm{font-size:16px}`;
 
-const TASTER_CSS = `  .taster{text-align:left}
-  .taster .eyebrow{display:block;margin-bottom:8px}
-  .taster h2{margin:8px 0 16px;text-align:left;font-size:clamp(21px,2.4vw,28px)}
-  .tcard{max-width:none;margin:0;text-align:left;background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.85)}
-  .taster-note{margin:14px 0 0;font-size:13px;color:var(--tx4)}
-  .tph{font-size:15px;font-weight:600;color:var(--tx3);margin:0;line-height:1.5}
-  .th{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-  .th .tq{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx4)}
-  .th .ts{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--grn-soft);background:rgba(88,204,2,.1);border-radius:999px;padding:4px 11px}
-  .tbar{height:6px;border-radius:999px;background:#08090E;overflow:hidden;margin-bottom:18px}
-  .tbf{height:100%;background:var(--grn);border-radius:999px;transition:width .3s ease}
-  .tqx{font-size:18px;font-weight:800;color:#fff;line-height:1.32;margin-bottom:16px}
-  .tos{display:flex;flex-direction:column;gap:9px}
-${OPTION_CSS('.to')}
-  .tw{margin-top:12px;font-size:13.5px;color:var(--tx3);line-height:1.55}
-  .tn{margin-top:16px;width:100%;padding:13px;border:none;border-radius:13px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
-  .tn:hover{filter:brightness(1.05)}
-  .tn.again{margin-top:12px;background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
-  .tdone{text-align:center;padding:8px 4px}
-  .tdone .tdl{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3)}
-  .tiq{font-family:var(--mono);font-size:64px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--amber);margin:8px 0 2px}
-  .ttier{font-size:18px;font-weight:800;color:#fff}
-  .tscore{font-size:14px;color:var(--tx3);margin-top:6px}
-  .tcta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px}
-  .tcta .btn{display:inline-flex;align-items:center;padding:12px 20px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:14px;border-radius:12px}
-  .tcta .btn:hover{text-decoration:none;filter:brightness(1.05)}
-  .tcta .btn.store{background:#000;color:#fff;border:1px solid var(--bd2)}
-  .tcta .btn.store:hover{border-color:#3E4150;filter:none}`;
 
-const TASTER_JS = `(function(){
-var box=document.getElementById('biq-taster'),d=document.getElementById('biq-taster-data');
-if(!box||!d)return;
-/* ⚠️ THE TASTER REPORTED TO NOTHING, ON 58% OF THE SEO SURFACE.
-   Measured 2026-08-23 against the built output: of 328 pages, /quiz/ had 136
-   of 140 instrumented and /questions/ 0 of 76, /lists/ 0 of 51 and the
-   localised layer 0 of 42. So the two surfaces we have the strongest evidence
-   about were the two we could not measure: memory records /lists/ at 47% of
-   all impressions, and /es/ River Plate at 134 clicks against 8 for its
-   English twin. Every recommendation about either was reasoning, not
-   measurement — and a dead loop and an unmeasured loop look identical.
-   Same sink and same synthetic gate as the club engine, kept deliberately
-   small: an impression, a first answer, and a tap through to the product. */
-function tSyn(){try{
-if(navigator.webdriver===true)return true;
-var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
-}catch(e){return false}}
-function tVid(){try{
-var v=localStorage.getItem('biq_vid');
-if(!v){v=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():null;
-if(!v)return null;localStorage.setItem('biq_vid',v)}
-return (v&&v.length===36)?v:null;
-}catch(e){return null}}
-/* Surface comes from the path, so one taster serves every page type and the
-   rows stay separable: list pages, the localised layer, and everything else.
-   Single-sourced in SURFACE_FN_JS — do not re-declare it here. */
-${SURFACE_FN_JS}
-function tev(n){
-if(tSyn())return;
-try{if(window.clarity)window.clarity('event',n)}catch(e){}
-var meta={surface:biqSurface()};
-try{
-var seg=location.pathname.split('/').filter(Boolean);
-var sl=seg[seg.length-1];if(sl)meta.slug=sl;
-var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
-}catch(e){}
-try{fetch('${BQ_SUPABASE_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
-headers:{'content-type':'application/json','apikey':'${BQ_PUBLISHABLE_KEY}','authorization':'Bearer ${BQ_PUBLISHABLE_KEY}'},
-body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:tVid()})}).catch(function(){})}catch(e){}}
-/* ⚠️ Impression fires on FIRST HUMAN INPUT, never on load. The club engine
-   calls start() unconditionally at the end of its script, so clubq-start
-   counts every JS-executing render — including Googlebot's renderer and two
-   PageSpeed runs that landed in the table on 2026-08-23. A user-agent
-   blocklist cannot fix that; requiring a gesture makes it robot-proof by
-   construction. */
-var tSeen=false;
-function tFirst(){if(tSeen)return;tSeen=true;tev('taster-start')}
-box.addEventListener('click',tFirst,{once:false});
-/* A tap through to the product is the whole point of these pages. */
-box.addEventListener('click',function(e){
-var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;
-if(!a)return;
-var h=a.getAttribute('href')||'';
-if(h.indexOf('/play')>-1)tev('taster-out-play');
-else if(h.indexOf('apps.apple.com')>-1||h.indexOf('play.google.com')>-1||h.indexOf('/get')>-1)tev('taster-out-store');
-},true);
-var QS;try{QS=JSON.parse(d.textContent)}catch(e){return}
-if(!QS||!QS.length)return;
-var nm=box.getAttribute('data-name')||'this team',play=box.getAttribute('data-play')||'/',store=box.getAttribute('data-store')||'#';
-/* ⚠️ THE TASTER CHROME USED TO BE ENGLISH ON EVERY LOCALISED PAGE.
-   Sixteen translated club pages rendered hand-written Spanish, Portuguese and
-   Turkish questions wrapped in "Question 1 / 6", "correct", "Your Ball IQ" and
-   "Play again". The QUESTIONS were localised and the GAME around them was not,
-   which is the tell that a translation was bolted on rather than finished.
-   Labels now come off the card as JSON; English pages pass nothing and get the
-   defaults, so this is additive. */
-var L={};try{L=JSON.parse(box.getAttribute('data-i18n')||'{}')}catch(e){L={}}
-function T(k,f){return L[k]||f}
-/* ⚠️ SCORE-INDEXED LADDERS BREAK WHEN THE TASTER LENGTH CHANGES.
-   This was IQ=[46,54,63,74,88,99] indexed by raw score — six entries, written
-   when the taster was 5 questions. The taster went to 10 and the ladder did
-   not, so every score from 5 upward fell through to the last entry: 5/10 and
-   10/10 both showed "Ball IQ 99 — Club legend", and 4/10 read "Superfan".
-   Half marks presented as a perfect score on 126 pages.
-   Banding on PERCENTAGE instead is length-independent, so it stays correct
-   for a 10-, 20- or full-length run. Do not reintroduce an index-by-score. */
-var BANDS=[[0,46,'Casual fan'],[25,54,'Getting there'],[45,63,'Solid'],[65,74,'Big fan'],[85,88,'Superfan'],[100,99,'Club legend']];
-function grade(sc,n){var pct=n?Math.round((sc/n)*100):0,b=BANDS[0];
-for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g][0])b=BANDS[g]}
-if(pct>=100)b=BANDS[BANDS.length-1];
-return{iq:b[1],tier:b[2],pct:pct}}
-var i=0,sc=0,p=null;
-function e(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function draw(){
-if(i>=QS.length){return done()}
-var q=QS[i],n=QS.length,pct=Math.round(((i+(p!==null?1:0))/n)*100),os='';
-for(var k=0;k<q.o.length;k++){
-var cl='to',mk='';
-if(p!==null){if(k===q.a){cl+=' correct';mk='<span class="tm">✓</span>'}else if(k===p){cl+=' wrong';mk='<span class="tm">✗</span>'}else{cl+=' dim'}}
-os+='<button class="'+cl+'" data-i="'+k+'"'+(p!==null?' disabled':'')+'><span class="tl">'+('ABCD'[k]||'')+'</span><span class="tt">'+e(q.o[k])+'</span>'+mk+'</button>'}
-var why=(p!==null&&q.why)?'<p class="tw">'+e(q.why)+'</p>':'';
-var nx=(p!==null)?'<button class="tn" data-next="1">'+(i+1>=n?T('seeScore','See your score →'):T('next','Next →'))+'</button>':'';
-box.innerHTML='<div class="th"><span class="tq">'+T('question','Question')+' '+(i+1)+' / '+n+'</span><span class="ts">'+sc+' '+(sc===1?T('correct1',T('correct','correct')):T('correct','correct'))+'</span></div><div class="tbar"><div class="tbf" style="width:'+pct+'%"></div></div><div class="tqx">'+e(q.q)+'</div><div class="tos">'+os+'</div>'+why+nx;
-var bs=box.querySelectorAll('.to');for(var b=0;b<bs.length;b++){bs[b].addEventListener('click',pick)}
-var nb=box.querySelector('.tn');if(nb){nb.addEventListener('click',next)}
-}
-function pick(ev){if(p!==null)return;var k=+ev.currentTarget.getAttribute('data-i');p=k;if(k===QS[i].a)sc++;draw()}
-function next(){i++;p=null;draw()}
-function done(){
-var G=grade(sc,QS.length),iq=G.iq,ti=G.tier;
-box.innerHTML='<div class="tdone"><div class="tdl">'+T('yourIq','Your Ball IQ')+'</div><div class="tiq">'+iq+'</div><div class="ttier">'+e(ti)+'</div><div class="tscore">'+T('scored','You scored')+' '+sc+' / '+QS.length+'</div><div class="tcta"><a class="btn" href="'+play+'">'+T('playFull','Play the full quiz')+' →</a><a class="btn store" href="'+store+'" rel="noopener">'+T('getApp','Get the app')+'</a></div><button class="tn again">'+T('again','Play again')+'</button></div>';
-var ag=box.querySelector('.again');if(ag){ag.addEventListener('click',function(){i=0;sc=0;p=null;draw()})}
-}
-draw();
-})();`;
 
-// renderTaster — the English pages' wrapper around the old five-question
-// taster — was retired on 2026-09-05: the listicle pages and /football-quiz/
-// render renderQuizSet(), the same .bq widget as every club, league and
-// category page and the served Daily 7. TASTER_JS / TASTER_CSS / TASTER_I18N
-// survive ONLY for the localised club pages (/es/, /nl/, /tr/), whose
-// translated UI the .bq engine cannot yet speak; retiring those is a later slice.
+// The old five-question taster is gone (2026-09-05/06): first its English
+// wrapper renderTaster, then — once the .bq engine learned the eight languages
+// (scripts/seo/bq-i18n.mjs) — its script, stylesheet and strings. Every page
+// that asks a question renders renderQuizSet(), the one .bq widget.
 
 // Explanation coverage as a sentence, or nothing when it is not 100%. Club packs
 // all measure 100% today, but this must never assert it blind — categories run
@@ -1273,7 +1136,7 @@ function arcPick(rows, n) {
 // leaves the web funnel entirely. The word "account" appeared on a club page
 // only inside a meta tag.
 //
-// The other taster (TASTER_JS, used on just 10 pages, eight of them
+// The other taster (the old five-question one, used on just 10 pages, eight of them
 // localised near-orphans) already had "Play the full X quiz →". The good
 // done-state existed; it simply ran on the pages nobody visits.
 //
@@ -1466,7 +1329,7 @@ function softenAccent(hex) {
   return `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 }
 
-function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage, lang = 'en', alternates = [], accent = null, taster = false, extraHead = '' }) {
+function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage, lang = 'en', alternates = [], accent = null, extraHead = '' }) {
   return `<!DOCTYPE html>
 <html lang="${lang}" style="background-color:${PAGE_BG}">
 <head>
@@ -1832,7 +1695,7 @@ ${OPTION_CSS('.qa-opts .to')}
   /* tighter than the taster card — must stay AFTER OPTION_CSS to win */
   .qa-opts .to{padding:11px 13px;font-size:14px}
   /* Finish state for the static Q&A widget. Lives in the BASE stylesheet, not
-     in TASTER_CSS: list pages never include the taster, which is exactly how
+     in the old taster's CSS: list pages never included the taster, which is exactly how
      they ended up with a widget that had no ending. */
   .qa-done{margin-top:16px;padding:20px 18px;border-radius:16px;text-align:center;
     border:1px solid rgba(88,204,2,.32);background:linear-gradient(160deg,rgba(88,204,2,.10) 0%,rgba(88,204,2,.02) 100%)}
@@ -1845,7 +1708,6 @@ ${OPTION_CSS('.qa-opts .to')}
   .qa-why{border-top:1px dashed var(--bd);padding-top:12px;margin-top:12px;color:var(--tx3);font-size:14px;line-height:1.55}
   .qa-why::before{content:"✓ ";color:var(--grn-soft);font-weight:800}
   .cta-row--stores{margin-top:14px}
-${taster ? TASTER_CSS : ''}
 ${BQ_CSS}
   /* Fixed columns, never flex-wrap: a fourth item in a narrow column dropped
      onto its own full-width row and read as a layout bug. */
@@ -2142,30 +2004,17 @@ function buildClubPageIntl(cfg, siblings = []) {
   const ogImage = clubOgImage({ name: cfg.name, badge: clubBadge, color: CLUB_COLOR[cfg.slug], kind: 'Quiz de club' });
   const introHtml = cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n');
 
-  // Spanish taster markup. Same widget + same TASTER_JS as the English pages
-  // (the script reads its questions from the JSON block, so it is language
-  // agnostic); only the surrounding copy differs.
-  // A REVIEWED language renders the site's one question widget with its
-  // strings (bq-i18n.mjs); the rest keep the old taster until Alex has read
-  // their column. Same slot in the hero, same eyebrow and heading.
-  const useBq = BQ_I18N_REVIEWED.has(cfg.lang);
-  const payload = cfg.taster.map((r) => ({ q: r.q, o: r.o, a: r.a, why: r.hint }));
-  const tasterHtml = useBq ? `<section class="taster" id="taster" aria-labelledby="taster-h">
+  // The site's one question widget, in the page's language — see below.
+  // The site's one question widget, in the page's language (bq-i18n.mjs).
+  // Replaced the old taster on 2026-09-05/06, language by language as Alex
+  // approved the strings; same slot in the hero, same eyebrow and heading.
+  const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(c.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(c.tasterH)}</h2>
 ${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, badge: clubBadge, slug: cfg.slug, color: CLUB_COLOR[cfg.slug] || '', lang: cfg.lang })}
-</section>` : `<section class="taster" id="taster" aria-labelledby="taster-h">
-<div class="eyebrow">${esc(c.tasterEyebrow)}</div>
-<h2 id="taster-h">${esc(c.tasterH)}</h2>
-<div class="tcard" id="biq-taster" data-name="${esc(cfg.name)}" data-play="${SITE.base}/play?club=${cfg.slug}" data-store="${SITE.getApp}" data-i18n="${esc(JSON.stringify(TASTER_I18N[cfg.lang] || {}))}">
-<p class="tph">${esc(c.tasterPh)} <a href="${SITE.base}/play?club=${cfg.slug}">${esc(cfg.playLabel)} →</a></p>
-</div>
-<p class="taster-note">${esc(c.tasterNote)}</p>
-<script type="application/json" id="biq-taster-data">${JSON.stringify(payload).replace(/</g, '\\u003c')}</script>
-<script>${TASTER_JS}</script>
 </section>`;
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates, taster: !useBq })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates })}
 <body>
 ${NAV}
 <main id="main">
@@ -2300,23 +2149,13 @@ function buildLangHub(cfg, clubsInLang, hubLangs) {
      `lead` should have been (I passed `intro`, which heroInner does not accept)
      and once in the right column I never filled. The build was green and the
      SERP audit passed; only opening the page showed it. */
-  const useBq = BQ_I18N_REVIEWED.has(cfg.lang);
-  const tasterHtml = useBq ? `<section class="taster" id="taster" aria-labelledby="taster-h">
+  const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(cfg.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(cfg.tasterH)}</h2>
 ${renderQuizSet(taster, { name: cfg.h1, tiers: DEFAULT_TIERS, more: 0, badge: '', slug: '', lang: cfg.lang })}
-</section>` : `<section class="taster" id="taster" aria-labelledby="taster-h">
-<div class="eyebrow">${esc(cfg.tasterEyebrow)}</div>
-<h2 id="taster-h">${esc(cfg.tasterH)}</h2>
-<div class="tcard" id="biq-taster" data-name="${esc(cfg.h1)}" data-play="${SITE.base}/play" data-store="${SITE.getApp}" data-i18n="${esc(JSON.stringify(TASTER_I18N[cfg.lang] || {}))}">
-<p class="tph">${esc(cfg.tasterPh)} <a href="${SITE.base}/play">${esc(cfg.playLabel)} →</a></p>
-</div>
-<p class="taster-note">${esc(cfg.tasterNote)}</p>
-<script type="application/json" id="biq-taster-data">${JSON.stringify(taster).replace(/</g, '\\u003c')}</script>
-<script>${TASTER_JS}</script>
 </section>`;
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, lang: cfg.lang, alternates, taster: !useBq })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, lang: cfg.lang, alternates })}
 <body>
 ${NAV}
 <main id="main">
@@ -3271,7 +3110,7 @@ function buildEmbedQuizPage(hints) {
     title: 'Ball IQ weekly football quiz',
     description: 'A ten-question football quiz.',
     canonical: `${SITE.base}/embed/quiz/`,
-    ld: '', taster: true,
+    ld: '',
   }).replace('</head>', '<meta name="robots" content="noindex,follow" />\n</head>')}
 <main style="padding:12px 12px 16px;max-width:760px;margin:0 auto">
 ${renderQuizSet(rows, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '' })}
@@ -3339,7 +3178,7 @@ function buildPartnersPage(hints) {
   const html = `${head({
     title: 'Free Weekly Football Quiz for Publishers | Ball IQ',
     description: 'We build a branded football quiz for your site every week, ready to publish. Free, no work at your end. See a live sample.',
-    canonical, ld, taster: true,
+    canonical, ld,
   })}
 <main>
 <section class="sec">
@@ -4301,7 +4140,7 @@ function buildGamesPage() {
   // This page IS the Games section: mark its own header link current.
   const nav = NAV.replace(`href="${SITE.base}/football-games/">Games`, `href="${SITE.base}/football-games/" class="is-active" aria-current="page">Games`);
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: true, extraHead: island.head })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, extraHead: island.head })}
 <body>
 ${nav}
 <main id="main">
@@ -5275,7 +5114,7 @@ function buildFootlePage(cfg) {
     .map(([t, d], i) => `<p><strong>${i + 1}. ${esc(t)}.</strong> ${esc(d)}</p>`)
     .join('\n');
   const bodyHtml = cfg.body.map((p) => `<p>${esc(p)}</p>`).join('\n');
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: true, extraHead: island.head })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, extraHead: island.head })}
 <body>
 ${NAV}
 <main id="main">
@@ -5518,7 +5357,7 @@ function buildDailyGamePage(cfg) {
     ? "Practise on a past trail — nothing about today's is given away"
     : "Practise on a past puzzle — nothing about today's is given away";
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: true, extraHead: island.head })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, extraHead: island.head })}
 <body>
 ${NAV}
 <main id="main">

@@ -24,11 +24,10 @@ describe('bq widget i18n', () => {
     expect(Object.keys(BQ_I18N).sort()).toEqual(['de', 'es', 'fr', 'id', 'it', 'nl', 'pt', 'tr']);
     for (const l of BQ_I18N_REVIEWED) expect(BQ_I18N[l], `${l} reviewed but has no table`).toBeDefined();
   });
-  it('reviewed languages switch their pages to the widget; the rest keep the taster', () => {
+  it('every language is approved and both localised builders render the widget with lang', () => {
+    expect([...BQ_I18N_REVIEWED].sort()).toEqual(Object.keys(BQ_I18N).sort());
     const gen = readFileSync(fileURLToPath(new URL('../../scripts/gen-seo-pages.mjs', import.meta.url)), 'utf8');
-    expect(gen).toContain("import { BQ_I18N_REVIEWED } from './seo/bq-i18n.mjs';");
-    expect((gen.match(/const useBq = BQ_I18N_REVIEWED\.has\(cfg\.lang\);/g) || []).length).toBe(2);
-    expect((gen.match(/taster: !useBq/g) || []).length).toBe(2);
+    expect((gen.match(/lang: cfg\.lang \}\)/g) || []).length).toBe(2);
   });
   it('the engine reads data-i18n once and routes its labels through T()', () => {
     expect(ENGINE).not.toContain('`');

@@ -148,5 +148,8 @@ export const BQ_I18N = {
 };
 
 /** Which languages Alex has signed off — the localised pages switch per language. */
-// Alex, 2026-09-05 23:30: "the strings look good, switch es and de first".
-export const BQ_I18N_REVIEWED = new Set(['es', 'de']);
+// Alex, 2026-09-05 23:30: "the strings look good, switch es and de first";
+// 2026-09-06 00:10: the remaining six approved — the strings they replaced (the
+// old taster's) had no native pass either, and one widget in the page's language
+// beats two. A native-speaker pass is welcome any time: edit here, rebuild.
+export const BQ_I18N_REVIEWED = new Set(['es', 'de', 'nl', 'fr', 'it', 'pt', 'tr', 'id']);

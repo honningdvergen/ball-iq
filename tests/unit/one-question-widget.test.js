@@ -19,8 +19,14 @@ describe('one question widget on the static site', () => {
     expect(GEN).not.toMatch(/renderTaster\(/);
     expect(GEN).not.toContain('taster: hasTaster');
   });
-  it('TASTER_JS is emitted only by the localised builders (2 sites)', () => {
-    expect((GEN.match(/<script>\$\{TASTER_JS\}<\/script>/g) || []).length).toBe(2);
+  it('the old taster is gone entirely — script, stylesheet, strings, head flag', () => {
+    expect((GEN.match(/<script>\$\{TASTER_JS\}<\/script>/g) || []).length).toBe(0);
+    expect(GEN).not.toContain('const TASTER_CSS');
+    expect(GEN).not.toContain('const TASTER_JS');
+    expect(GEN).not.toContain('TASTER_I18N');
+    expect(GEN).not.toMatch(/\btaster: (true|false)\b/);
+    expect(GEN).toContain('renderQuizSet(cfg.taster, { name: cfg.name');
+    expect(GEN).toContain('renderQuizSet(taster, { name: cfg.h1');
   });
   it('the English pages that had the taster now render the .bq widget', () => {
     expect(GEN).toContain("renderQuizSet(tasterRows, { name: 'this list'");
