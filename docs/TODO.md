@@ -1,3 +1,22 @@
+## 2026-09-05 (21:25) — ✅ C3-B + F MARK + THE PROD REGRESSION FIXED (810dcd9, ddc13e3, 29605e6, 4a49967) — LIVE-VERIFIED on prod: .fd tokens resolve, F on green, Play pills green, hairlines back, quiz 0 transparent
+
+- **C3-B:** ~250 literal palette hexes in JSX inline styles, CSS-in-JS strings and the generator's CSS templates → var(). Left literal
+  BY RULE: canvas fillStyle/strokeStyle (share cards), SVG attrs, JS comparisons (clubReadableText/inkOn/softenAccent), confetti arrays,
+  Lucide color= props, PAGE_BG/PAGE_FG (theme-color), comments. Verified on the local build: 0 unresolved/transparent colours on /play
+  home + a quiz; on-green ink rgb(6,35,12). Script: scratchpad map-hex-jsx.py (quote-boundary matching). `design-tier2` now expects
+  var(--grn-ink). **C3 remaining:** front.css `.fd` token block (the --grn-soft tint-vs-green collision), xiGame.mjs + public/lineup
+  scoped palettes (different values — a deliberate skin? ask), the `renderQA` option CSS harmonised to .bq.
+- **⚠️ REGRESSION I SHIPPED IN C3-A (2e58d2d, live ~1h40):** the hex→token pass also rewrote front.css's SCOPED DEFINITIONS
+  `.fd{--bg:#0B0C10;--grn:#58CC02…}` → five became self-references (`--grn: var(--grn)`) = a CSS cycle = guaranteed-invalid = EMPTY
+  inside `.fd`. On the live homepage the green Play pills went to white text, "Played" lost its green, card hairlines vanished. Found
+  because the new F mark painted transparent. Fix (4a49967): the `.fd` palette block is DELETED (tokens.css defines every name at
+  :root, same values); the gate `one-tokens-css.test.js` now fails on any self-referencing custom property. Memory:
+  `feedback_hex_mapping_must_skip_definitions`. Lesson: verify getPropertyValue on the SCOPED element, not :root.
+- **F MARK (Alex, on his phone: the mini KROOS/RAMOS chip "looks a bit bad — an F with green background"):** the Today card's Footle chip
+  is the app's own mark (F on the green tile). The teaser computation (readFootleBoard/pickTeaserPair) and mini-grid CSS are gone from
+  the front door. ⚠️ First cut painted white on transparent: `.fd-daily .fd-card-ic` (per-mode tint) TIED the two-class selector and
+  came later — fixed with a three-class selector (29605e6). Memory `feedback_today_block_is_four_rows` corrected.
+
 ## 2026-09-05 (19:40) — 💡 TO DISCUSS: an "ideas" subagent (Alex) — a daily scout that reads GSC / Clarity / funnel deltas and the competitor set and brings THREE ideas with evidence, not a wishlist. Shape exists: `.claude/agents/funnel-analyst`. Decide cadence + inputs together.
 
 ## 2026-09-05 (19:15) — 🎯 QUEUED, PRIORITY: RANK TOP 5 FOR "football quiz" AND "football games" (Alex: "not something we park, we queue it")
