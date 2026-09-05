@@ -35,3 +35,12 @@ very fragmented and like separate products almost."
   are in the DOM at 0×0: rendered by React, styled by nothing that ships on `/`. Dead markup in the funnel.
 - B (evidence agent) adds: `/play` at mobile paints zero store links; nearly every store link on every page
   and viewport is below the fold; store URLs use two forms (`/us/app/id…` vs `/app/id…`) for one app.
+
+## The ghost landing (found 2026-09-05)
+`index.html` still carries the ORIGINAL marketing landing — `.landing-top` / `.landing-bottom`: emoji
+feature cards ("🧠 Thousands of Questions", "📅 Daily Challenges", "🤝 Online Multiplayer"), a "Take Ball IQ
+with you" signup section and the two real store badges — and `src/main.jsx:227` force-hides it with
+`display:none` on the web. It ships and parses on every load of `/`, is never shown, and its store badges
+are the 0×0 "dead markup" the evidence pass found. This is the third visual system the 09-03 P0 counted:
+not a page anyone sees, but a page every visitor downloads. Fix: delete it from index.html (the native
+killswitch at :495 becomes moot) or make it the real no-JS fallback and style it like the site.
