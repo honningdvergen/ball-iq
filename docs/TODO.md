@@ -1,3 +1,17 @@
+## 2026-09-06 (01:40) — ✅ APP HOME REBUILT FROM THE CRITIQUE (539e912 → 34f3d38, pushed f6083af) — simulator-verified; live check pending
+
+Alex, in the simulator: "Today block = the web's four equal rows" → shipped; then "we can not even see the online tab" / "we still can not
+see the play with friends" / "something about it just does not look right" / "the club scroller and the search bar do not belong where
+they sit". Two isolated reviews (design director + detector) scored the home **23/40** — `.audit/critique-2026-09-05-app-home/NOTES.md`
+holds both verbatim, the screenshots, and Alex's decisions (P0+P1+P2 in one increment; drop the Club Quiz tile; Play with Friends as a
+row with one quiet Invite). **Shipped:** banner out (Footle row says "Start here" on a first session); finder BELOW Today as "Find a
+quiz", Club Quiz tile + "By league" chip gone, chips grey at rest; Today = head row like "More modes" + rows on the page edge, GREEN Play
+on all four (mode colour on the well only), Review = quiet pill; subline text-fill bug fixed (was painted white); Play with Friends = row
++ Invite, "Same phone" lives on the Online tab; tab bar: desaturated backdrop, no item opacity (labels 2.7:1 → ~7:1). First Play at
+~170pt (was ~380). **Deferred P3s:** header anchor (greeting / Set your name / gear), emoji glyphs 🔥✅✗🏆 → Lucide, done rows above
+open ones, duplicate "No. 34", Footle subline wraps, chip mask. **Next:** live-verify `/play?tab=home` renders on prod; re-run the
+critique after the P3s. ⚠️ e2e `all-modes-smoke` Local entry now goes via the Online tab.
+
 ## 2026-09-06 (00:40) — ✅ B2 COMPLETE: ONE question widget on the whole static site (cf382f9) — LIVE-VERIFIED (fr page: widget, "Suivant →", no taster, no errors)
 
 Alex approved the remaining six languages ("or what do you think?" → my call: ship; the taster's old strings had no native pass either).
