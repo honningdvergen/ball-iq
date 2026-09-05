@@ -8421,6 +8421,13 @@ const FOOTLE_SERVICES = {
   },
 };
 
+// Transfer Trail and Mystery Player take the same seam
+// (src/games/dailyServices.js): the app supplies its haptics, sounds and
+// confetti; the static /transfer-trail/ and /mystery-player/ islands supply
+// stand-ins. Neither screen may import App.jsx — see the note at the top of
+// each. No GetAppCTA here: the app has its own install banner.
+const DAILY_SERVICES = { haptic, playSound, Confetti };
+
 // ⚠️ THE REPORT CHANNEL WAS BLIND: 55 reports, 0 reasons, 25 in the last week
 // alone — p_reason was hardcoded null while the column and the RPC parameter
 // sat there unused. Report #3 measured 54% of reports coming from players who
@@ -13779,10 +13786,10 @@ function AppInner() {
             } catch {}
             return () => setScreen("mystery");
           })();
-          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} onPlayMystery={mysteryOffer} /></React.Suspense></TabErrorBoundary>;
+          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} onPlayMystery={mysteryOffer} services={DAILY_SERVICES} /></React.Suspense></TabErrorBoundary>;
         })()}
         {screen === "mystery" && (
-          <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} /></React.Suspense></TabErrorBoundary>
+          <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} services={DAILY_SERVICES} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stadiums" && (
           <TabErrorBoundary name="stadiums" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stadiums" />}><StadiumGame onExit={goHome} /></React.Suspense></TabErrorBoundary>

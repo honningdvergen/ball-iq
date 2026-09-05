@@ -1,20 +1,22 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ArrowLeft, Search, UserRoundSearch } from 'lucide-react';
-// Same kit the Trail imports (TransferTrail.jsx) — the scouting panel measured
+// Same kit the Trail takes (TransferTrail.jsx) — the scouting panel measured
 // this file at ZERO haptic/sound/confetti: the hardest, longest-effort daily
 // paid off with a mute green panel while Trail and Footle both celebrate.
-import { Confetti, haptic, playSound } from '../App.jsx';
+// ⚠️ NO IMPORT FROM App.jsx: this screen also mounts as an island on the static
+// /mystery-player/ page (src/islands/mystery.jsx). The kit arrives through
+// `services` — src/games/dailyServices.js.
+import { resolveDailyServices } from '../games/dailyServices.js';
 import {
   rankPool, bandFor, matchGuess, normaliseName,
   answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
   saveMysteryResult, loadMysteryResult, computeMysteryStreak,
 } from '../lib/mysteryPlayer.js';
-import POOL from '../data/mysteryPool.json';
+import { usePlayerPool } from '../lib/usePlayerPool.js';
 import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
 import { MODE_ACCENT, modeTint } from '../lib/accents.js';
 import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
 import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
-import CAREERS from '../data/mysteryCareers.json';
 import SCHEDULE from '../data/mysterySchedule.json';
 
 /* ⚠️ `nat` IS NOT RELIABLY NATIONALITY — do not surface it without checking.
@@ -92,25 +94,39 @@ const BAND_STYLE = {
   cold: { bg: 'var(--s1)',            bd: 'var(--border)', fg: 'var(--t2)' },
 };
 
-export default function MysteryPlayer({ onExit, date = new Date() }) {
+export default function MysteryPlayer({ onExit, date = new Date(), services }) {
+  const { haptic, playSound, Confetti, GetAppCTA } = resolveDailyServices(services);
   // `date` drives EVERYTHING dated in here — the answer, the saved result, the
   // puzzle number — so an archive replay of yesterday reads and writes
   // yesterday's slot and cannot overwrite today's board.
   const dayIndex = mysteryDayIndex(date);
   const isArchive = dayIndex !== mysteryDayIndex();
   const answerId = answerIdForDay(SCHEDULE, dayIndex);
-  const answer = useMemo(() => POOL.find((p) => p.id === answerId) || null, [answerId]);
+  // The pool and the careers it is ranked against arrive on the first focus of
+  // the guess box (usePlayerPool) — ~700 KB gzipped that a visitor who only
+  // reads the static page never needs. Until then `answer` and `ranks` are
+  // null and the board renders its header, rules and an empty guess box; the
+  // "no puzzle today" fallback below waits for `ready` so a loading pool is
+  // never mistaken for a missing schedule.
+  const { pool: POOL, careers: CAREERS, ready, ensure: ensureData } = usePlayerPool({ careers: true });
+  const answer = useMemo(() => POOL.find((p) => p.id === answerId) || null, [POOL, answerId]);
 
   // Rank the pool once per puzzle, not per keystroke.
   const ranks = useMemo(
-    () => (answer ? rankPool(POOL, answer, CAREERS) : null),
-    [answer],
+    () => (answer && CAREERS ? rankPool(POOL, answer, CAREERS) : null),
+    [POOL, CAREERS, answer],
   );
 
   // Restore today's game. Without this a refresh — or backgrounding the PWA
   // long enough for iOS to evict it — silently wipes a solved puzzle, and the
   // player cannot re-solve it because they already know the answer.
   const saved = useMemo(() => loadMysteryResult(date), [date]);
+  // A returning player — guesses on the board, or a finished puzzle whose
+  // reveal needs the answer's name — gets the data straight away rather than
+  // on a focus that may never come.
+  useEffect(() => {
+    if (saved?.guesses?.length || saved?.won || saved?.gaveUp) ensureData();
+  }, [saved, ensureData]);
   const [text, setText] = useState('');
   const [guesses, setGuesses] = useState(() => saved?.guesses || []); // [{ id, name, club, rank, band }]
   // Rules collapse after the first guess (they occupied ~90pt of a game
@@ -225,15 +241,17 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
   // Shared with Transfer Trail — see useDropdownMaxHeight.
   const dropMax = useDropdownMaxHeight(inputRef, { gap: 26, kbInset });
 
-  if (!answer || !ranks) {
+  if (ready && (!answer || !ranks)) {
     // No puzzle scheduled for today. The home card is gated on the same
     // condition, so this is a direct-navigation fallback rather than a state
     // a player reaches by tapping.
     return (
       <div style={{ padding: "20px 0" }}>
-        <button onClick={onExit} style={{ background: 'none', border: 'none', color: 'var(--t2)', cursor: 'pointer' }}>
-          <ArrowLeft size={20} /> Back
-        </button>
+        {onExit && (
+          <button onClick={onExit} style={{ background: 'none', border: 'none', color: 'var(--t2)', cursor: 'pointer' }}>
+            <ArrowLeft size={20} /> Back
+          </button>
+        )}
         <p style={{ color: 'var(--t2)', marginTop: 20 }}>No Mystery Player today — check back tomorrow.</p>
       </div>
     );
@@ -325,6 +343,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
 
   const onSubmitText = (e) => {
     e.preventDefault();
+    if (!ready) { ensureData(); setError('Loading the player list — one moment.'); return; }
     const p = matchGuess(POOL, text);
     if (!p) { setError(`No player called "${text.trim()}" in today's pool.`); return; }
     submit(p);
@@ -339,9 +358,11 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
             (hit44 supplies 44pt via ::after) — the defect was that this was
             the only back control in the app WITHOUT the chromed well, so the
             product shipped two different back buttons. */}
-        <button onClick={onExit} aria-label="Back" className="back-btn">
-          <ArrowLeft size={22} />
-        </button>
+        {onExit && (
+          <button onClick={onExit} aria-label="Back" className="back-btn">
+            <ArrowLeft size={22} />
+          </button>
+        )}
         {/* ⚠️ THE MODE HAD NO COLOUR ON ITS OWN SCREEN. The Daily row sells
             Mystery in violet — tinted well, violet button, violet label — and
             then opening it landed on a neutral grey page that looked like any
@@ -420,7 +441,10 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           rich and wrong. Restore the fields when the pull is re-run with a P31
           class filter — see reference_wikidata_traps. */}
       {won && Confetti ? <Confetti /> : null}
-      {won && (
+      {done && !answer && (
+        <p style={{ margin: '4px 0 14px', color: 'var(--t3)', fontSize: 13 }}>Loading today's answer…</p>
+      )}
+      {won && answer && (
         <div style={{ margin: '4px 0 14px', padding: '14px 16px', borderRadius: 14, background: 'rgba(88,204,2,0.12)', border: '1px solid rgba(88,204,2,0.4)' }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: '#8AE042' }}>Got it — {answer.name}</div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
@@ -453,10 +477,12 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           <div style={{ marginTop: 10, fontSize: 12.5, color: 'var(--t3)', textAlign: 'center' }}>
             Next Mystery Player in <strong style={{ color: 'var(--t2)' }}>{formatCountdown(nextIn)}</strong>
           </div>
+          {/* The island passes a phone-only app link here; the app passes nothing. */}
+          {GetAppCTA ? <div style={{ marginTop: 12 }}><GetAppCTA /></div> : null}
         </div>
       )}
 
-      {gaveUp && (
+      {gaveUp && answer && (
         /* Deliberately NOT the green win panel. The player did not solve it, and
            dressing a give-up as a success is the kind of dishonest flourish that
            makes the win itself worth less. Neutral surface, same information. */
@@ -481,6 +507,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
           >
             {copied ? 'Copied!' : 'Share result'}
           </button>
+          {GetAppCTA ? <div style={{ marginTop: 12 }}><GetAppCTA /></div> : null}
         </div>
       )}
 
@@ -491,7 +518,8 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
             <input
               ref={inputRef}
               value={text}
-              onChange={(e) => { setText(e.target.value); setError(''); }}
+              onFocus={ensureData}
+              onChange={(e) => { ensureData(); setText(e.target.value); setError(''); }}
               placeholder="Search a player"
               autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false}
               aria-label="Guess a player"
@@ -500,7 +528,7 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
               style={{ flex: 1, minWidth: 0, border: 'none', background: 'transparent', outline: 'none', padding: '15px 0', fontSize: 16, color: 'var(--t1)', fontFamily: 'inherit' }}
             />
           </div>
-          {suggestions.length > 0 && (
+          {(suggestions.length > 0 || (!ready && text.trim())) && (
             /* ⚠️ SAME DEFECT AS TRANSFER TRAIL, found by grepping for the second
                implementation rather than waiting for a second report. This list
                is position:absolute with overflow:hidden and no height bound, so
@@ -512,6 +540,9 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
                not on the page. Bounded to the space the visual viewport actually
                reports, and scrollable inside it. */
             <div style={{ position: 'absolute', left: 16, right: 16, zIndex: 20, marginTop: 6, background: 'var(--s2)', border: '1px solid var(--border)', borderRadius: 14, maxHeight: dropMax, overflowY: 'auto', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+              {!ready && text.trim() && (
+                <div style={{ padding: '12px 14px', fontSize: 13, color: 'var(--t3)' }} role="status">Loading players…</div>
+              )}
               {suggestions.map((p) => (
                 /* The subtitle used to be p.club alone, which failed at the one
                    job it has. Searching "Ronaldo" offered "Cristiano Ronaldo —
@@ -589,7 +620,9 @@ export default function MysteryPlayer({ onExit, date = new Date() }) {
                 <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{g.rank}</div>
                 {/* The denominator, so the number means something on sight, and
                     the word, so "warmer or colder" is finally true. */}
-                <div style={{ fontSize: 10, color: 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>of {POOL.length.toLocaleString()}</div>
+                {POOL.length > 0 && (
+                  <div style={{ fontSize: 10, color: 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>of {POOL.length.toLocaleString()}</div>
+                )}
                 <div style={{ fontSize: 10, fontWeight: 800, color: st.fg, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 1 }}>{BAND_WORD[g.band]}</div>
               </div>
             </div>

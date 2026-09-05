@@ -21,16 +21,23 @@ import {
   computeTrailStreak,
   buildTrailShareText,
 } from "../lib/trail.js";
-import { Confetti, haptic, playSound, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
-import { clubColour, clubAbbr, packColourMap, tint, lift, onColour } from "../lib/clubColour.js";
-/* Shares mysteryPool.json with Mystery Player ON PURPOSE. Vite hoists it into
-   one chunk both modes use, so a player who does the dailies downloads it ONCE
-   (661 KB gzip) instead of twice. A slim 4-field index was built and measured
+// ⚠️ NO IMPORT FROM App.jsx. This screen also mounts as an island on the static
+// /transfer-trail/ page (src/islands/trail.jsx), and an island that imported
+// App.jsx would bundle the whole monolith. Haptics, sound and confetti arrive
+// through `services` (src/games/dailyServices.js); the club colours and codes
+// come from a module gen-club-index.mjs writes out of App.jsx on every build.
+import { resolveDailyServices } from "../games/dailyServices.js";
+import { clubColour, clubAbbr, tint, lift, onColour } from "../lib/clubColour.js";
+import { CLUB_PACK_COLOURS, CLUB_PACK_ABBR } from "../data/clubPackColours.js";
+/* Shares mysteryPool.json with Mystery Player ON PURPOSE — both screens
+   import() the same module, so Vite hoists it into one chunk a player who does
+   both dailies downloads ONCE. A slim 4-field index was built and measured
    first: it cut a Trail-only visit 359 -> 206 KB, but pushed anyone playing
    BOTH dailies to 867 KB, and duplicated 784 KB into the native binary, which
-   ships all of dist/. Neither chunk is preloaded — only react is — so this
-   costs nothing at boot. */
-import POOL from "../data/mysteryPool.json";
+   ships all of dist/. Loaded on the first focus of the guess box since
+   2026-09-05 (see usePlayerPool) so the static page pays for it only when
+   someone actually starts typing. */
+import { usePlayerPool } from "../lib/usePlayerPool.js";
 import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight } from "../lib/useKeyboardAwareInput.js";
 import ReportButton from "../components/ReportButton.jsx";
@@ -47,7 +54,8 @@ function saveDay(ymd, state) {
   try { localStorage.setItem(`biq_trail_${ymd}`, JSON.stringify(state)); } catch {}
 }
 
-export default function TransferTrail({ player, date = new Date(), onBack, onReport, onPlayMystery }) {
+export default function TransferTrail({ player, date = new Date(), onBack, onReport, onPlayMystery, services }) {
+  const { haptic, playSound, Confetti, GetAppCTA } = resolveDailyServices(services);
   const ymd = dateToYMD(date);
   const number = getTrailNumber(date);
   const career = useMemo(() => player?.clubs || [], [player]);
@@ -143,10 +151,11 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
     () => new Set(attempts.filter((a) => !a.skipped).map((a) => a.text.toLowerCase().trim())),
     [attempts],
   );
+  const { pool, ensure: ensurePool } = usePlayerPool();
   const suggestions = useMemo(
-    () => rankPlayerSuggestions(POOL, entry, { limit: 6 })
+    () => rankPlayerSuggestions(pool, entry, { limit: 6 })
       .filter((p) => !guessedNames.has(p.name.toLowerCase())),
-    [entry, guessedNames],
+    [pool, entry, guessedNames],
   );
 
   // ⚠️ Every miss inserts a club row above the input (and at three misses, the
@@ -197,7 +206,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   if (!career.length) {
     return (
       <div className="screen" style={{ padding: 24, textAlign: "center" }}>
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
         <div style={{ marginTop: 60, fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>Transfer Trail</div>
         <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 8 }}>Coming soon — a new career to name every day.</div>
       </div>
@@ -212,14 +221,14 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   // tint / lift / onColour now live in lib/clubColour.js alongside the lookup,
   // because Stadiums needs the identical treatment and two copies of colour
   // maths is how two screens drift into painting the same club differently.
-  const packColours = packColourMap(CLUB_PACKS);
+  const packColours = CLUB_PACK_COLOURS;
 
   return (
     <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20 + kbInset, maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
       {won && Confetti ? <Confetti /> : null}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 4px" }}>
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>
             Transfer Trail{number > 0 ? ` #${number}` : ""}
@@ -252,7 +261,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 11, fontWeight: 800, letterSpacing: "0.02em",
                 background: col || "var(--s3)", color: col ? onColour(col) : "var(--t3)",
-              }}>{clubAbbr(club, CLUB_ABBR)}</span>
+              }}>{clubAbbr(club, CLUB_PACK_ABBR)}</span>
               <span style={{ fontSize: 15.5, fontWeight: 700, color: "var(--t1)", flex: 1, minWidth: 0 }}>{club}</span>
               {/* ⚠️ RETURN SPELLS READ AS ERRORS WITHOUT THIS. The two most
                   reported careers in question_reports — Alonso (3 reports) and
@@ -298,7 +307,8 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
             <input
               ref={inputRef}
               value={entry}
-              onChange={(e) => setEntry(e.target.value)}
+              onFocus={ensurePool}
+              onChange={(e) => { ensurePool(); setEntry(e.target.value); }}
               onKeyDown={(e) => { if (e.key === "Enter") submit(false); }}
               placeholder="Type a player’s name…"
               aria-label="Your guess"
@@ -423,10 +433,15 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                      fontWeight: 700, fontSize: 13 }}
           />
 
-          <button onClick={onBack}
-            style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
-                     border: "1px solid var(--border)", background: "transparent", color: "var(--t2)",
-                     fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back home</button>
+          {/* The island passes a phone-only app link here; the app passes nothing. */}
+          {GetAppCTA ? <div style={{ marginTop: 10 }}><GetAppCTA /></div> : null}
+
+          {onBack && (
+            <button onClick={onBack}
+              style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
+                       border: "1px solid var(--border)", background: "transparent", color: "var(--t2)",
+                       fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back home</button>
+          )}
         </div>
       )}
     </div>

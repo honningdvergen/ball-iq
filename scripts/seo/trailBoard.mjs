@@ -44,7 +44,7 @@ export function trailBoardHtml() {
   return `<section class="sec tb-wrap" id="practice" aria-labelledby="tb-h">
 <div class="tb-eyebrow">Practice trail · from the archive</div>
 <h2 id="tb-h">Play a Transfer Trail right here</h2>
-<p class="tb-lede">A finished trail you can replay as often as you like — name the player from his career path. Each club you reveal makes it easier. Nothing here spoils <a href="https://balliq.app/play?game=trail">today's trail</a>, which everyone gets at midnight.</p>
+<p class="tb-lede">A finished trail you can replay as often as you like — name the player from his career path. Each club you reveal makes it easier. Nothing here spoils <a href="#today">today's trail</a>, which everyone gets at midnight.</p>
 <div class="tb-card" id="tb-game" data-a="${cloak(names.join('|'))}" data-n="${rungs.length}">
 <ol class="tb-list">
 ${rungHtml}
@@ -59,7 +59,7 @@ ${rungHtml}
 </div>
 <p class="tb-msg" id="tb-msg" role="status" aria-live="polite"></p>
 </div>
-<noscript><p class="tb-ns">This practice trail needs JavaScript. <a href="https://balliq.app/play?game=trail">Play today's trail</a> instead.</p></noscript>
+<noscript><p class="tb-ns">This practice trail needs JavaScript, as does today's trail above.</p></noscript>
 </section>`;
 }
 

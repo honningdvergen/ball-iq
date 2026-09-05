@@ -18,7 +18,7 @@ export function mysteryBoardHtml() {
   return `<section class="sec mb-wrap" id="practice" aria-labelledby="mb-h">
 <div class="mb-eyebrow">Practice puzzle · from the archive</div>
 <h2 id="mb-h">Play a Mystery Player right here</h2>
-<p class="mb-lede">A finished puzzle you can replay as often as you like. Name any footballer and you get back how close they are to the secret player — closest is 1. Unlimited guesses, and nothing here spoils <a href="https://balliq.app/play?game=mystery">today's Mystery Player</a>.</p>
+<p class="mb-lede">A finished puzzle you can replay as often as you like. Name any footballer and you get back how close they are to the secret player — closest is 1. Unlimited guesses, and nothing here spoils <a href="#today">today's Mystery Player</a>.</p>
 <div class="mb-card" id="mb-game" data-n="${MYSTERY_PRACTICE_NO}">
 <div class="mb-bar">
 <input id="mb-guess" type="text" placeholder="Name any footballer…" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="go" aria-label="Name any footballer">
@@ -27,7 +27,7 @@ export function mysteryBoardHtml() {
 <p class="mb-msg" id="mb-msg" role="status" aria-live="polite"></p>
 <ol class="mb-list" id="mb-list"></ol>
 </div>
-<noscript><p class="mb-ns">This practice puzzle needs JavaScript. <a href="https://balliq.app/play?game=mystery">Play today's Mystery Player</a> instead.</p></noscript>
+<noscript><p class="mb-ns">This practice puzzle needs JavaScript, as does today's Mystery Player above.</p></noscript>
 </section>`;
 }
 

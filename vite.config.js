@@ -225,11 +225,14 @@ export default defineConfig(async () => {
     // Footle island's hashed script and stylesheet on /football-wordle/.
     manifest: true,
     rollupOptions: {
-      // Two entries: the app (index.html) and the Footle island, a small
-      // module the static Footle page mounts (src/islands/footle.jsx).
+      // The app (index.html) plus one small island per daily game, mounted by
+      // gen-seo-pages.mjs into its static page: /football-wordle/,
+      // /transfer-trail/, /mystery-player/ (src/islands/*.jsx).
       input: {
         main: new URL('./index.html', import.meta.url).pathname,
         footle: new URL('./src/islands/footle.jsx', import.meta.url).pathname,
+        trail: new URL('./src/islands/trail.jsx', import.meta.url).pathname,
+        mystery: new URL('./src/islands/mystery.jsx', import.meta.url).pathname,
       },
       output: {
         manualChunks: {

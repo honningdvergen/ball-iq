@@ -112,17 +112,6 @@ import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
 import { NATIONS } from './seo/nations.mjs';
 import { LEAGUES } from './seo/leagues.mjs';
-// Transfer Trail data for the playable practice board on /transfer-trail/.
-// Same rule as the Footle board: import the GAME's own module so the practice
-// puzzle cannot drift from the live one, and emit exactly ONE PAST trail.
-import {
-  TRAIL_PLAYERS,
-  TRAIL_ANSWER_LOG,
-  TRAIL_ANCHOR_DAY,
-  getTrailDayIndex,
-  getTrailAnswerForDayIndex,
-  acceptedNamesFor,
-} from '../src/lib/trail.js';
 // Footle answer schedule + the real grading function, for the playable practice
 // board on /football-wordle/. Importing the GAME's own module is deliberate:
 // the grader is inlined from `gradeWordleGuess.toString()` rather than rewritten,
@@ -3918,11 +3907,11 @@ ${footer()}`;
 // the shared chunks, and loads the entry as a module at the mount point. A
 // missing entry fails the build: a Footle page without the game is the one
 // regression this page must never ship silently.
-function footleIsland() {
+function islandAssets(entryKey) {
   const manifestPath = resolve(DIST, '.vite/manifest.json');
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-  const entry = manifest['src/islands/footle.jsx'];
-  if (!entry || !entry.file) throw new Error('[gen-seo] Footle island missing from dist/.vite/manifest.json — is src/islands/footle.jsx a vite input?');
+  const entry = manifest[entryKey];
+  if (!entry || !entry.file) throw new Error(`[gen-seo] island ${entryKey} missing from dist/.vite/manifest.json — is it a vite input (vite.config.js rollupOptions.input)?`);
   const seen = new Set();
   const chunks = [];
   const walk = (key) => {
@@ -3930,9 +3919,9 @@ function footleIsland() {
     if (!e || seen.has(key)) return;
     seen.add(key);
     (e.imports || []).forEach(walk);
-    if (key !== 'src/islands/footle.jsx') chunks.push(e.file);
+    if (key !== entryKey) chunks.push(e.file);
   };
-  walk('src/islands/footle.jsx');
+  walk(entryKey);
   const css = [...(entry.css || []), ...[...seen].flatMap((k) => manifest[k].css || [])];
   const head = [
     ...[...new Set(css)].map((f) => `<link rel="stylesheet" href="/${f}">`),
@@ -4753,7 +4742,7 @@ const FW_TODAY_CSS = `
     --s1:#13151C;--s2:#1B1E27;--s3:#232631;--border:#242730;--border2:#2F3240;
     --text:#FFFFFF;--t1:#FFFFFF;--t2:#9BA0B8;--t3:#7E828C;--accent:#58CC02;
     --btn-shine:inset 0 1.5px 0 rgba(255,255,255,0.30), inset 0 -2px 0 rgba(0,0,0,0.12);
-    --btn-glow:0 8px 22px -8px rgba(88,204,2,0.55);--wd-edge:#5A5E6E;--biq-consent-h:0px}
+    --btn-glow:0 8px 22px -8px rgba(88,204,2,0.55);--gold:#FFC107;--gold-l:rgba(255,193,7,0.10);--red:#FF4B4B;--red-l:rgba(255,75,75,0.10);--wd-edge:#5A5E6E;--biq-consent-h:0px}
   .fw-host .wd-screen{min-height:0}
   .fw-toast{max-width:520px;margin:6px auto 0;text-align:center;font-size:13px;color:var(--tx3)}
   .fw-fold{border-top:1px solid var(--bd);margin-top:6px}
@@ -4762,6 +4751,20 @@ const FW_TODAY_CSS = `
   .fw-fold>summary::before{content:"+ ";color:var(--grn-soft)}
   .fw-fold[open]>summary::before{content:"− "}
   .fw-fold .fw-wrap{margin-top:0;padding-top:0}
+`;
+
+// Trail and Mystery mount the app's own screens (src/islands/trail.jsx,
+// mystery.jsx) into the same .fw-host the Footle island uses. These are the
+// app-shell classes those two screens still reach for, at the 44px floor
+// app.css gives them, plus the fold overrides for the archive practice boards,
+// which were built to sit flush under the hero and now sit under a summary.
+const DAILY_ISLAND_CSS = `
+  .fw-host .back-btn,.fw-host .icon-btn{min-width:44px;min-height:44px;width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--s1);color:var(--t2);font:inherit;font-size:16px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .fw-host button:focus-visible,.fw-host input:focus-visible,.fw-host a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fw-host input::placeholder{color:var(--t3)}
+  .fw-ns{color:var(--tx2);padding:16px 0}
+  .fw-fold .tb-wrap.sec,.fw-fold .mb-wrap.sec{margin-top:0;padding-top:4px}
+  .fw-fold .tb-wrap.sec h2,.fw-fold .mb-wrap.sec h2{font-size:20px}
 `;
 const FW_CSS = `
   /* ⚠️ THE BOARD SHOULD BE THE NEXT THING YOU SEE. hero padding-bottom 40px +
@@ -5009,10 +5012,10 @@ ${ANS_DAYS_CSS}</section>`;
 function buildFootlePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
   // Today's puzzle plays HERE since 2026-09-05 — the app's own component as an
-  // island (see footleIsland). The hero therefore has no "Play" button that
+  // island (see islandAssets). The hero therefore has no "Play" button that
   // leaves the page and no store badges above the board; the app band below
   // the game carries the app.
-  const island = footleIsland();
+  const island = islandAssets('src/islands/footle.jsx');
   // Footle is our most-played mode and carried only a BreadcrumbList — the
   // thinnest markup of any page type, on the page most likely to be searched
   // for by name ("football wordle").
@@ -5192,170 +5195,36 @@ const LEAGUE_PAGE_SLUGS = {
 };
 const DIR_POPULAR = ['Arsenal', 'Liverpool', 'Man United', 'Real Madrid', 'Barcelona', 'Bayern Munich', 'Man City', 'Chelsea', 'Juventus', 'PSG', 'Inter Milan', 'AC Milan'];
 
-const TRAIL_PRACTICE_CSS = `<style>
-  .tr-card{border:1px solid var(--bd);border-radius:16px;background:var(--card);padding:16px 18px;margin:6px 0 4px}
-  .tr-list{list-style:none;margin:0 0 14px;padding:0;counter-reset:rung}
-  .tr-list li{position:relative;padding:9px 12px 9px 34px;margin:0 0 6px;border-radius:10px;font-weight:700;font-size:15px}
-  .tr-list li::before{counter-increment:rung;content:counter(rung);position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:800;color:var(--tx3)}
-  .tr-on{background:rgba(88,204,2,.10);border:1px solid rgba(88,204,2,.35);color:var(--tx)}
-  .tr-off{background:var(--bg2,#12141c);border:1px dashed var(--bd);color:var(--tx3)}
-  .tr-loan{font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-left:6px}
-  .tr-form{display:flex;gap:8px;margin:0 0 10px}
-  /* 16px is a HARD FLOOR — iOS auto-zooms on focusing any smaller input and
-     WKWebView never restores the scale on blur. */
-  .tr-in{flex:1;min-width:0;border:1px solid var(--bd);border-radius:12px;background:var(--bg2,#12141c);color:var(--tx);padding:12px 14px;font-size:16px;font-family:inherit}
-  .tr-go{border:none;border-radius:12px;background:var(--grn);color:#06230C;font-weight:800;padding:12px 18px;font-size:15px;cursor:pointer;font-family:inherit}
-  .tr-more{width:100%;min-height:44px;border:1px solid var(--bd);border-radius:12px;background:none;color:var(--tx2);padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
-  .tr-msg{margin:8px 0 0;color:var(--tx3);font-size:13.5px;min-height:1.2em}
-  /* Six rungs at 50px each is 300px of ladder above the guess box. Tightened
-     on phones only, where that 30px decides whether you can answer without
-     scrolling. The rungs are <li>, not controls, so the 44px tap floor does
-     not apply to them. */
-  @media(max-width:560px){
-    .tr-list{margin-bottom:10px}
-    .tr-list li{padding:7px 12px 7px 34px;margin-bottom:5px}
-  }
-  .tr-note{margin:8px 0 0;color:var(--tx3);font-size:13px}
-  .tr-done{text-align:center}
-  .tr-name{font-size:20px;font-weight:900;color:var(--grn);margin:4px 0 2px}
-  .tr-sub{color:var(--tx2);font-size:14.5px;margin:0 0 12px}
-  .tr-cta .btn{display:inline-block;background:var(--grn);color:#06230C;border-radius:12px;padding:12px 20px;font-weight:800;text-decoration:none}
-</style>`;
-
-// ── Playable Transfer Trail practice board (/transfer-trail/) ───────────────
-//
-// WHY. Measured 2026-07-28: pages with something to play hold 109-145s; list
-// pages without a taster got 2.3s. /transfer-trail/ shipped without one, which
-// put a brand-new page straight into the losing bucket. Mystery Player cannot
-// have the same treatment cheaply (its pool plus ranking model is ~400 kB); a
-// trail is just an array of club names, so this one is nearly free.
-//
-// ⚠️ NEVER TODAY'S TRAIL. Emitting the live answer spoils the real game for
-// anyone who lands here first.
-//
-// ⚠️ AND THE WALK MUST BE BOUNDED AT TRAIL #1 — this is the trap the Footle
-// board's header describes, and it bites HARDER here. Footle has run for
-// months; the Trail launched 2026-08-03, so at time of writing only THREE past
-// puzzles exist. A naive "walk back 30 days" runs off the start of the log and
-// either throws or wraps to a future answer. So: clamp, and if no past trail
-// exists yet, emit NOTHING rather than something wrong.
-function pickPracticeTrail() {
-  const today = getTrailDayIndex();
-  const firstDay = TRAIL_ANCHOR_DAY;
-  // Prefer something a few weeks old so the board is not last night's puzzle,
-  // but clamp into the range that actually exists.
-  const wanted = today - 21;
-  const dayIndex = Math.max(firstDay, Math.min(wanted, today - 1));
-  if (dayIndex < firstDay || dayIndex >= today) return null;   // nothing past yet
-  const player = getTrailAnswerForDayIndex(dayIndex, TRAIL_ANSWER_LOG, TRAIL_PLAYERS);
-  if (!player || !Array.isArray(player.clubs) || player.clubs.length < 2) return null;
-  return { player, number: dayIndex - TRAIL_ANCHOR_DAY + 1 };
-}
-
-const TRAIL_PRACTICE_JS = `(function(){
-var root=document.getElementById('biq-trail');if(!root)return;
-var d=JSON.parse(document.getElementById('biq-trail-data').textContent);
-var shown=1,done=false;
-var norm=function(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]/g,'')};
-var accepted=d.accept.map(norm);
-function draw(){
-  var rungs=d.clubs.map(function(c,i){
-    if(i<shown) return '<li class="tr-on">'+c+(d.loans[i]?' <span class="tr-loan">loan</span>':'')+'</li>';
-    return '<li class="tr-off">?</li>';
-  }).join('');
-  var left=d.clubs.length-shown;
-  root.innerHTML='<ol class="tr-list">'+rungs+'</ol>'+(done?'':
-    '<form class="tr-form"><input class="tr-in" type="text" placeholder="Name the player" autocomplete="off" autocapitalize="words" spellcheck="false" aria-label="Name the player"><button class="tr-go" type="submit">Guess</button></form>'+
-    (left>0?'<button class="tr-more" type="button">Reveal next club ('+left+' left)</button>':'<p class="tr-note">That is the whole career — last guess.</p>')+
-    '<p class="tr-msg" role="status"></p>');
-  if(done) return;
-  var f=root.querySelector('.tr-form'),m=root.querySelector('.tr-more');
-  f.addEventListener('submit',function(e){e.preventDefault();
-    var v=norm(root.querySelector('.tr-in').value);
-    if(!v)return;
-    if(accepted.indexOf(v)>-1){finish(true);return}
-    root.querySelector('.tr-msg').textContent='Not him — reveal another club, or try again.';
-  });
-  if(m)m.addEventListener('click',function(){shown++;draw()});
-}
-function finish(won){
-  done=true;
-  var used=shown;
-  root.innerHTML='<ol class="tr-list">'+d.clubs.map(function(c,i){return '<li class="tr-on">'+c+(d.loans[i]?' <span class="tr-loan">loan</span>':'')+'</li>'}).join('')+'</ol>'+
-   '<div class="tr-done"><div class="tr-name">'+(won?'Got it — ':'It was ')+d.name+'</div>'+
-   (won?'<div class="tr-sub">From '+used+' club'+(used===1?'':'s')+'. Fewer clubs, more points.</div>':'')+
-   '<div class="tr-cta"><a class="btn" href="'+d.play+'">Play the live Transfer Trail →</a></div>'+
-   '<p class="tr-note">That was Trail #'+d.number+' — a past puzzle. The live one is a different career.</p></div>';
-}
-draw();
-})();`;
-
-// `inHero` returns the board WITHOUT its own <section> wrapper, for use as the
-// right column of heroTwoCol.
-//
-// ⚠️ WHY THE BOARD MOVED INTO THE HERO. Shipped as a standalone section it sat
-// at y=601 on a 664px phone — measured, not guessed. The hero above it is 537px
-// tall, so the one thing on the page a visitor can actually DO started 63px from
-// the bottom edge, under a call-to-action that sends them off-site to the app.
-// heroTwoCol already solves this for club pages: `.hero-right` takes `order:1`
-// under 940px, so the playable thing renders ABOVE the prose on a phone while
-// the DOM (and therefore the heading order crawlers read) is unchanged.
-function trailPracticeSection(playHref, { inHero = false } = {}) {
-  const picked = pickPracticeTrail();
-  // No past trail yet (the first day the game is live) — emit nothing rather
-  // than spoil today's. The page still has its hero, how-to-play and FAQ.
-  if (!picked) return '';
-  const { player, number } = picked;
-  const data = JSON.stringify({
-    clubs: player.clubs,
-    loans: player.loans || player.clubs.map(() => false),
-    accept: acceptedNamesFor(player),
-    name: (player.display || []).join(' ').trim(),
-    number,
-    play: playHref,
-  }).replace(/</g, '\\u003c');
-  const board = `<div class="tr-card" id="biq-trail"></div>
-<script type="application/json" id="biq-trail-data">${data}</script>
-<script>${TRAIL_PRACTICE_JS}</script>`;
-
-  if (inHero) {
-    return `${TRAIL_PRACTICE_CSS}<div class="hero-play">
-<div class="eyebrow">Past puzzle · Trail #${number} · no sign-up</div>
-${board}
-</div>`;
-  }
-
-  return `<section class="sec" id="try">
-${TRAIL_PRACTICE_CSS}<div class="eyebrow">Past puzzle · Trail #${number} · no sign-up</div>
-<h2>Try one</h2>
-<p style="margin:0 0 12px;color:var(--tx2)">A career from an earlier Trail. Name him from as few clubs as you can.</p>
-${board}
-</section>`;
-}
 
 // ── Daily-game landing pages (/mystery-player/, /transfer-trail/) ────────────
 //
 // Generalised from buildFootlePage, which is the proven shape for this page
 // type — it is what put Ball IQ on the "football wordle" SERP. Kept SEPARATE
 // from that function rather than refactoring it, because the Footle page also
-// carries a playable practice board, a hints/answer sibling page and its own
-// CSS; folding four pages into one builder to save duplication would make the
-// one that earns the most traffic harder to reason about.
+// carries a hints/answer sibling page and its own CSS; folding the pages into
+// one builder to save duplication would make the one that earns the most
+// traffic harder to reason about.
 //
-// ⚠️ NO PLAYABLE TASTER HERE YET, AND THAT IS THE KNOWN WEAKNESS.
-// Measured 2026-07-28: pages with something to play hold 109-145s; list pages
-// without a taster got 2.3s. Footle's landing page has a real board. These two
-// do not, because the cheap version does not exist yet:
-//   - Mystery Player would need the 1,537-player pool + the ranking model,
-//     which is ~400 kB — far too heavy for a landing page.
-//   - Transfer Trail COULD have one cheaply: a past trail is just an array of
-//     club names plus an answer, the same "past puzzle, never today's" trick
-//     footlePracticeSection() already uses. That is the obvious next increment.
-// Shipping the readable version first is deliberate: right now these games have
-// NO search surface at all, and a page that exists beats a page that is perfect.
+// Since 2026-09-05 TODAY'S PUZZLE PLAYS HERE: the app's own screen
+// (src/screens/TransferTrail.jsx, MysteryPlayer.jsx) mounted as a Vite island
+// (src/islands/trail.jsx, mystery.jsx) into #<game>-today — the same way
+// /football-wordle/ mounts FootballWordle. Same storage key as the app, so a
+// finish on the web reads as done on the homepage Today card and in the app.
+// The guess pool (~410 KB gzipped, plus ~300 KB of careers for Mystery) loads
+// on the first focus of the guess box — src/lib/usePlayerPool.js — so a visitor
+// who only reads the page never downloads it.
+//
+// The archive practice boards (trailBoard.mjs, mysteryBoard.mjs) stay, folded
+// under a <details> below the game as on the Footle page: nothing about
+// today's puzzle is in the page source. The hero practice card that used to
+// stand in for the game is gone with the reason it existed.
+//
+// The Daily 7 is not built here: it is SERVED (api/daily-play.js →
+// scripts/seo/daily-play-page.mjs) because its questions change daily and
+// Vercel serves a static file before any rewrite.
 function buildDailyGamePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
-  const playHref = `${SITE.base}/play?game=${cfg.gameParam}`;
+  const island = islandAssets(`src/islands/${cfg.gameParam}.jsx`);
 
   // Same reasoning as the Footle page: a Google rich result needs an
   // aggregateRating or offers we have not earned, so this is not for stars in
@@ -5414,18 +5283,18 @@ function buildDailyGamePage(cfg) {
   const bodyHtml = cfg.body.map((pp) => `<p>${esc(pp)}</p>`).join('\n');
 
   // Cross-links between the daily games. These are the ONLY internal links each
-  // new page would otherwise have beyond the nav, and an orphan page is exactly
-  // how the Transfer Trail stayed dark — so this is load-bearing, not garnish.
+  // page would otherwise have beyond the nav, and an orphan page is exactly how
+  // the Transfer Trail stayed dark — so this is load-bearing, not garnish.
   const siblings = [
     { slug: 'football-wordle', name: 'Footle', blurb: "the daily football Wordle — guess the footballer's surname in six." },
+    { slug: 'daily-football-quiz', name: 'Daily 7', blurb: 'seven questions, the same for everyone, once a day.' },
     { slug: 'mystery-player', name: 'Mystery Player', blurb: 'one secret footballer, unlimited guesses, every guess ranked by closeness.' },
     { slug: 'transfer-trail', name: 'Transfer Trail', blurb: 'name the player from his career path, one club at a time.' },
   ].filter((x) => x.slug !== cfg.slug);
 
-  // A playable board, when the game has one, becomes the hero's right column so
-  // a phone meets it first (see trailPracticeSection). Without one, the hero
-  // stays single-column — there is nothing to put beside the copy.
-  const board = cfg.slug === 'transfer-trail' ? trailPracticeSection(playHref, { inHero: true }) : '';
+  // The game is right below the hero, so — as on the Footle page — no "Play"
+  // button that leaves the page, no store badges above the board, and no
+  // second line saying free/daily; the app band below the game carries the app.
   const heroProps = {
     crumbItems: [
       { name: 'Home', url: `${SITE.base}/` },
@@ -5436,48 +5305,38 @@ function buildDailyGamePage(cfg) {
     name: cfg.game,
     h1: cfg.h1,
     lead: cfg.lede,
-    statLine: cfg.statLine,
-    playHref,
-    playLabel: `Play today's ${esc(cfg.game)} →`,
+    statLine: null,
+    playHref: null,
+    noStores: true,
   };
 
-  // ⚠️ A GAME PAGE THAT CANNOT BE PLAYED IS A BROCHURE. Read on the live site:
-  // "there is no actual game to play here either" — the green button scrolled
-  // down to more prose. Footle's page holds a real board and /xi/ is the game
-  // itself; the Daily 7 had nothing, which is the wrong way round given it is
-  // the mode the whole app is built on. Clarity measured the cost of this
-  // exact shape: reference pages with nothing to DO held ~2.3 seconds.
-  //
-  // The Daily 7 IS a quiz, so it gets the same playable taster the club pages
-  // use — real bank questions, tap to answer, explanation on a miss. Trail and
-  // Mystery Player are not quizzes and a quiz taster there would be a
-  // non-sequitur; they need their own small widgets, which is the next brick.
-  const dailyTaster = cfg.gameParam === 'daily'
-    ? tasterPick(QB.filter((r) => r.hint && r.type === 'mcq' && Array.isArray(r.o)), 5)
-    : [];
-  const hasDailyTaster = dailyTaster.length === 5;
-  if (cfg.gameParam === 'daily') {
-    heroProps.playHref = hasDailyTaster ? '#taster' : playHref;
-    heroProps.playLabel = hasDailyTaster ? 'Play seven questions now →' : heroProps.playLabel;
-  }
-  if (cfg.gameParam === 'trail') {
-    heroProps.playHref = '#practice';
-    heroProps.playLabel = 'Play a trail now →';
-  }
-  if (cfg.gameParam === 'mystery') {
-    heroProps.playHref = '#practice';
-    heroProps.playLabel = 'Play a puzzle now →';
-  }
+  const isTrail = cfg.gameParam === 'trail';
+  const practice = isTrail
+    ? `<style>${TRAIL_BOARD_CSS}</style>${trailBoardHtml()}<script>${TRAIL_BOARD_JS}</script>`
+    : `<style>${MYSTERY_BOARD_CSS}</style>${mysteryBoardHtml()}<script>${MYSTERY_BOARD_JS}</script>`;
+  const practiceLabel = isTrail
+    ? "Practise on a past trail — nothing about today's is given away"
+    : "Practise on a past puzzle — nothing about today's is given away";
 
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: hasDailyTaster })}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: true, extraHead: island.head })}
 <body>
 ${NAV}
 <main id="main">
-${board ? heroTwoCol(heroProps, board) : heroSection(heroProps)}
-${hasDailyTaster ? renderTaster(dailyTaster, 'the Daily 7', playHref) : ''}
+${heroSection(heroProps)}
+<style>
+${FW_TODAY_CSS}
+${DAILY_ISLAND_CSS}
+</style>
+<section class="sec fw-today" id="today" aria-label="Today's ${esc(cfg.game)}">
+<div class="fw-host" id="${cfg.gameParam}-today"><noscript><p class="fw-ns">Today's ${esc(cfg.game)} needs JavaScript.</p></noscript></div>
+<p class="fw-toast" id="${cfg.gameParam}-toast" role="status" aria-live="polite" hidden></p>
+</section>
+${island.script}
 <script>${GAME_TRACK_JS}</script>
-${cfg.gameParam === 'trail' ? `<style>${TRAIL_BOARD_CSS}</style>${trailBoardHtml()}<script>${TRAIL_BOARD_JS}</script>` : ''}
-${cfg.gameParam === 'mystery' ? `<style>${MYSTERY_BOARD_CSS}</style>${mysteryBoardHtml()}<script>${MYSTERY_BOARD_JS}</script>` : ''}
+<details class="fw-fold" id="practice-fold">
+<summary>${practiceLabel}</summary>
+${practice}
+</details>
 <section class="sec"><h2>How to play</h2>
 <div class="prose">
 ${howHtml}
@@ -5490,7 +5349,6 @@ ${bodyHtml}
 <div class="prose">
 ${siblings.map((x) => `<p><a href="${SITE.base}/${x.slug}/"><strong>${esc(x.name)}</strong></a> — ${esc(x.blurb)}</p>`).join('\n')}
 </div></section>
-${cfg.slug === DAILY7_PAGE.slug ? recentDailySection() : ''}
 ${appCtaBand('football')}
 <section class="sec"><h2>${esc(cfg.game)} FAQ</h2>
 ${renderFaq(cfg.faq)}

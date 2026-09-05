@@ -71,8 +71,8 @@ const MOST_PLAYED = ['arsenal', 'liverpool', 'barcelona', 'chelsea', 'manchester
 const GAMES = [
   { k: 'footle', n: 'Footle', line: 'Guess the surname in six', href: door('footle'), daily: true },
   { k: 'daily', n: 'Daily 7', line: 'Seven questions, the same for everyone', href: '/daily-football-quiz/', daily: true },
-  { k: 'trail', n: 'Transfer Trail', line: 'Follow the moves, name the player', href: door('trail'), daily: true },
-  { k: 'mystery', n: 'Mystery Player', line: 'Guess who from career clues', href: door('mystery'), daily: true },
+  { k: 'trail', n: 'Transfer Trail', line: 'Follow the moves, name the player', href: '/transfer-trail/', daily: true },
+  { k: 'mystery', n: 'Mystery Player', line: 'Guess who from career clues', href: '/mystery-player/', daily: true },
   { k: 'clubquiz', n: 'Club Quiz', line: 'Pick your club, ten on them', href: door('clubquiz') },
   { k: 'leaguequiz', n: 'League Quiz', line: 'One competition, its history', href: door('leaguequiz') },
   { k: 'classic', n: 'Classic', line: 'Ten questions, twenty seconds each', href: door('classic') },
@@ -217,8 +217,8 @@ export default function FrontDoor() {
   const dailies = [
     { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Played', href: '/football-wordle/' },
     { k: 'daily', n: 'Daily 7', no: null, line: 'Seven questions, the same for everyone', st: state.daily, done: state.daily === 'done', doneText: state.dailyScore != null ? `${state.dailyScore} of 7` : 'Played', href: door('daily') },
-    { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Follow the moves, name the player', st: state.trail, done: state.trail === 'done', doneText: 'Played', href: door('trail') },
-    ...(MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from career clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: door('mystery') }] : []),
+    { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Follow the moves, name the player', st: state.trail, done: state.trail === 'done', doneText: 'Played', href: '/transfer-trail/' },
+    ...(MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from career clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: '/mystery-player/' }] : []),
   ];
   const playedCount = dailies.filter((d) => d.done).length;
 
