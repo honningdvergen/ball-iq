@@ -239,12 +239,15 @@ var w=q.querySelector('.bq-why');if(w)w.hidden=false;
    Two fixes, one here, one in CSS: .bq-next is position:sticky so it is
    always reachable, and the explanation scrolls into view ONLY when it is
    below the fold — block:'nearest' moves the page the minimum distance, and
-   .bq-why's scroll-margin-bottom keeps it clear of the sticky button. Never
+   .bq-why's scroll-margin-bottom keeps it clear of the sticky button.
+   'instant', not 'auto', for reduced motion: the site sets
+   html{scroll-behavior:smooth}, and 'auto' defers to that CSS — so 'auto'
+   would still animate for exactly the people who asked it not to. Never
    scroll when it is already visible: a page that jumps under a finger that
    just tapped is the other failure. */
 if(w){try{var wr=w.getBoundingClientRect();
 if(wr.bottom>window.innerHeight-64){var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-w.scrollIntoView({block:'nearest',behavior:rm?'auto':'smooth'})}}catch(e){}}
+w.scrollIntoView({block:'nearest',behavior:rm?'instant':'smooth'})}}catch(e){}}
 /* Fired once per round, on the first answer. The gap between clubq-start and
    clubq-play is the honest engagement number: started the quiz vs actually
    answered something. */
