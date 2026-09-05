@@ -950,7 +950,8 @@ else if(h.indexOf('/play')>-1)qev('list-out-play');
 /* ⚠️ THIS WIDGET USED TO END IN NOTHING, on the surface that carries 47% of
    impressions and returns 4% of clicks.
 
-   renderTaster()/TASTER_JS — the club-page widget — has had a finish state all
+   The old taster (TASTER_JS; its English wrapper renderTaster was retired on
+   2026-09-05 for renderQuizSet) has had a finish state all
    along (see `.tdone` below: score, a /play link, a store link). renderQA() is
    a different widget used by the /lists pages, and it just marked the last
    answer and stopped. The next DOM siblings after `.qa-list` were two <script>
@@ -1153,26 +1154,12 @@ var ag=box.querySelector('.again');if(ag){ag.addEventListener('click',function()
 draw();
 })();`;
 
-// Renders the interactive taster section. `rows` = exactly 5 curated questions
-// (excluded from the static Q&A block). `playHref` sends "Play the full quiz"
-// straight into that topic in the app.
-function renderTaster(rows, name, playHref) {
-  // shuffleOptions: without it the taster could be aced by tapping option 1
-  // every time (the stored `a` is answer-first for 56% of club questions).
-  const payload = rows.map(shuffleOptions).map((r) => ({ q: r.q, o: r.o, a: r.a, why: r.hint }));
-  const data = JSON.stringify(payload).replace(/</g, '\\u003c');
-  const play = playHref || `${SITE.base}/`;
-  return `<section class="taster" id="taster" aria-labelledby="taster-h">
-<div class="eyebrow">Free taster · No sign-up</div>
-<h2 id="taster-h">How well do you know ${esc(name)}?</h2>
-<div class="tcard" id="biq-taster" data-name="${esc(name)}" data-play="${play}" data-store="${SITE.getApp}">
-<p class="tph">Rate your ${esc(name)} Ball IQ — hand-written questions, answers explained. <a href="${play}">Play now →</a></p>
-</div>
-<p class="taster-note">Sample questions shown — the full quiz has many more.</p>
-<script type="application/json" id="biq-taster-data">${data}</script>
-<script>${TASTER_JS}</script>
-</section>`;
-}
+// renderTaster — the English pages' wrapper around the old five-question
+// taster — was retired on 2026-09-05: the listicle pages and /football-quiz/
+// render renderQuizSet(), the same .bq widget as every club, league and
+// category page and the served Daily 7. TASTER_JS / TASTER_CSS / TASTER_I18N
+// survive ONLY for the localised club pages (/es/, /nl/, /tr/), whose
+// translated UI the .bq engine cannot yet speak; retiring those is a later slice.
 
 // Explanation coverage as a sentence, or nothing when it is not 100%. Club packs
 // all measure 100% today, but this must never assert it blind — categories run
@@ -1268,7 +1255,7 @@ function arcPick(rows, n) {
 // leaves the web funnel entirely. The word "account" appeared on a club page
 // only inside a meta tag.
 //
-// The other taster (renderTaster, used on just 10 pages, eight of them
+// The other taster (TASTER_JS, used on just 10 pages, eight of them
 // localised near-orphans) already had "Play the full X quiz →". The good
 // done-state existed; it simply ran on the pages nobody visits.
 //
@@ -3665,10 +3652,10 @@ ${heroSection({
     h1: cfg.h1,
     lead: cfg.lede,
     statLine: `${rows.length} hand-picked football questions · every answer explained`,
-    playHref: hasTaster ? '#taster' : `${SITE.base}/`,
-    playLabel: hasTaster ? 'Play the taster' : 'Play Ball IQ free',
+    playHref: hasTaster ? '#quiz' : `${SITE.base}/football-quiz/`,
+    playLabel: hasTaster ? 'Play five questions now →' : 'Find a quiz →',
   })}
-${hasTaster ? renderTaster(tasterRows, 'football', `${SITE.base}/`) : ''}
+${hasTaster ? renderQuizSet(tasterRows, { name: 'this list', tiers: DEFAULT_TIERS, more: 0, badge: '' }) : ''}
 ${appCtaBand('football')}
 <section class="sec">
 <h2>More quizzes to try</h2>
@@ -4305,7 +4292,7 @@ function buildFootballQuizPage() {
     }).join('')
   }</div></div>`).join('');
 
-  const html = `${head({ title, description, canonical, ld, taster: hasTaster })}
+  const html = `${head({ title, description, canonical, ld })}
 <body>
 ${NAV}
 <main id="main">
@@ -4315,7 +4302,7 @@ ${style}
 <h1 style="font-size:clamp(30px,5.2vw,46px);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1.05;margin:10px 0 10px">Football quiz</h1>
 </section>
 
-${hasTaster ? renderTaster(tasterRows, 'football', `${SITE.base}/play`) : ''}
+${hasTaster ? renderQuizSet(tasterRows, { name: 'football', tiers: DEFAULT_TIERS, more: 0, badge: '' }) : ''}
 
 <section class="sec narrow">
 <p style="margin:0;color:var(--tx2);font-size:16.5px;max-width:62ch">Pick a club and play, or take one of the daily games. Every question is written and fact-checked by hand rather than scraped, and every answer comes with the reason it is the answer — the part most football quizzes leave out.</p>
