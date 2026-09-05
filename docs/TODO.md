@@ -6,15 +6,17 @@ Running per `.claude/skills/impeccable/reference/critique.md` as two ISOLATED su
 `balliq-app`, 6 pages × phone+desktop: / · /quiz/arsenal/ (+finish screen) · /play · a list · an answer
 page · /quizzes/).
 
-**⚠️ IF THE SESSION DIED BEFORE SYNTHESIS — nothing is lost, harvest from disk:**
-- Both agents were told to write their full reports to
-  `.impeccable/critique/_assessment-A-2026-09-04.md` and `_assessment-B-2026-09-04.md` before returning.
-- If a file is missing, the agent's transcript is the source of truth — last assistant message of:
-  A `…/subagents/…/tasks/aa96d3744372ce680.output` · B `…/tasks/a3191496cdc7dadd4.output` under
-  `/private/tmp/claude-501/-Users-alexanderbrynolsen-ball-iq/7c79f3a1-9008-4410-9f7a-2a99269af58f/`.
-- Pre-synthesis facts already gathered: `.impeccable/critique/_fragmentation-map-2026-09-04.md`.
-- Then: synthesise (weave A+B, heuristic table, P0-P3 issues, personas), persist with
-  `critique-storage.mjs write`, read the trend, AskUserQuestion on priorities. Do NOT re-run the agents.
+**⚠️ IF THE SESSION DIED BEFORE SYNTHESIS — harvest from disk, do NOT re-run the agents:**
+- 2026-09-05 rerun. The 09-04 pair died at the limit having saved NOTHING (A made 155 tool calls and
+  wrote no notes — it was going to write everything at the end). The rerun agents APPEND per page to
+  `.impeccable/critique/_assessment-A-2026-09-05.md` and `_assessment-B-2026-09-05.md`, so a partial run is
+  still readable. B is on Sonnet; overlay injection skipped this run (pane reliability).
+- Transcripts if a file is thin: A `…/tasks/aaea48861ef61e997.output` · B `…/tasks/a0153a3ceacfe91de.output`
+  under `/private/tmp/claude-501/-Users-alexanderbrynolsen-ball-iq/7c79f3a1-9008-4410-9f7a-2a99269af58f/`.
+- Pre-synthesis facts: `.impeccable/critique/_fragmentation-map-2026-09-04.md` (two headers, four
+  stylesheets, accent green in 19 files, every Play button = /play?game=…).
+- Then: synthesise (weave A+B; heuristic table; P0-P3; personas), `critique-storage.mjs write` under slug
+  `balliq-app`, read the trend (prior run 2026-09-03 = 22/40), AskUserQuestion on priorities.
 
 **Also parked, verified on disk, resumable:** Watford 40 (wat-final.json, 11 leaks to resolve) and QPR 40
 (qpr-verdict*.json, 2 fixes both the Loftus Road "since 1917" false premise) — curate, prose, wire, ship.
