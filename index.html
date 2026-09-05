@@ -206,12 +206,6 @@
             });
           }, true);
         });
-      } else if (location.pathname === '/' &&
-                 !(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) &&
-                 !window.navigator.standalone) {
-        // Browser marketing homepage: hide the legacy landing chrome BEFORE paint
-        // so it doesn't flash on desktop cold loads before main.jsx's _fullBleed runs.
-        document.documentElement.classList.add('full-bleed');
       }
     </script>
     <!-- AdSense account verification marker — a static, INERT meta tag (loads
@@ -463,40 +457,9 @@
         .biq-splash.is-leaving { transition: none; }
       }
 
-      /* ════════════════════════════════════════════════════════════════════
-         DESKTOP LANDING CHROME
-         ────────────────────────────────────────────────────────────────────
-         Hidden by default (mobile sees the app raw, identical to today).
-         Shown only at >= 1024px viewport in regular browser mode.
-         FORCE-HIDDEN in PWA standalone at any size — installed PWA users
-         (iPhone Add to Home Screen, iPad, desktop installed) ALWAYS see
-         the clean app, never the marketing chrome.
-         ════════════════════════════════════════════════════════════════════ */
-
-      .landing-top, .landing-bottom, .ad-slot-hero, .ad-slot-sidebar {
-        display: none;
-      }
-
-      @media (min-width: 1024px) {
-        .landing-top, .landing-bottom { display: block; }
-      }
-
-      /* PWA killswitch — wins over viewport rules above thanks to !important */
-      @media (display-mode: standalone) {
-        .landing-top, .landing-bottom,
-        .ad-slot-sidebar-left, .ad-slot-sidebar-right,
-        .ad-slot-banner { display: none !important; }
-      }
-
       /* NATIVE killswitch — Capacitor WKWebView is NOT display-mode:
-         standalone, so the PWA rules above never fire in the iOS/Android
-         app. html.native-app is set by the inline head script above.
-         Mirrors every standalone killswitch in this file. */
-      html.native-app .landing-top,
-      html.native-app .landing-bottom,
-      html.native-app .ad-slot-sidebar-left,
-      html.native-app .ad-slot-sidebar-right,
-      html.native-app .ad-slot-banner,
+         standalone, so the PWA rules never fire in the iOS/Android app.
+         html.native-app is set by the inline head script above. */
       html.native-app .biq-nav { display: none !important; }
 
       /* Static homepage copy: crawlers, and first paint on '/' only. React's
@@ -542,35 +505,7 @@
            matches the #root recolor above; keep native on the mobile --bg. */
         background-color: #0B0C10 !important;
       }
-      html.native-app body > .landing-bottom { padding-left: 0 !important; }
       html.native-app body { background-image: none !important; }
-
-      /* Browser marketing homepage: hide the legacy landing chrome pre-paint
-         (html.full-bleed set by the inline head script) so it doesn't flash on
-         desktop cold loads before main.jsx's _fullBleed() runs. */
-      html.full-bleed .landing-top,
-      html.full-bleed .landing-bottom { display: none !important; }
-
-      /* Sprint #64 FF2 killswitch — hide landing chrome while the user is
-         actively mid-game (quiz / Footle / local pass-and-play). Body class
-         is toggled by AppInner's "in-focused-play" effect. Mid-quiz, marketing
-         content scrolling below the active board is distracting; FF1's
-         post-solve install banner replaces the install-funnel touchpoint
-         that landing-bottom otherwise served. */
-      body.in-focused-play .landing-top,
-      body.in-focused-play .landing-bottom,
-      body.in-focused-play .ad-slot-sidebar-left,
-      body.in-focused-play .ad-slot-sidebar-right,
-      body.in-focused-play .ad-slot-banner { display: none !important; }
-
-      /* desktop-web-refresh: on the game route (/play, …) the app owns the
-         whole desktop surface via the BiqNav rail — the marketing landing
-         chrome must not wrap the game. main.jsx sets body.biq-app at the
-         earliest game-route module-eval, so this beats the chrome's paint.
-         Mobile (< 1024px) never shows the chrome anyway; PWA/native already
-         killswitch it above — this is the browser-desktop /play case. */
-      body.biq-app .landing-top,
-      body.biq-app .landing-bottom { display: none !important; }
 
       /* ── Desktop app column ────────────────────────────────────────────
          At >= 1024px in regular browser mode, constrain #root to a
@@ -599,15 +534,6 @@
              the standalone + native blocks below so PWA/native keep #0B0C10. */
           background-color: #0B0C10;
         }
-        /* Marketing chrome below the app needs the same sidebar clearance
-           — otherwise the fixed BiqNav rail overlays the leftmost portion
-           of the features grid / signup / footer at viewport widths
-           1024-1640. Has been broken since Phase 5b; .landing-bottom
-           never got the same offset as #root. */
-        body > .landing-bottom {
-          /* desktop-web-refresh: match the 248px BiqNav rail offset (was 220). */
-          padding-left: 248px;
-        }
       }
       @media (display-mode: standalone) {
         body > #root {
@@ -619,56 +545,9 @@
              stays byte-identical (mirrors the .app --bg standalone reset). */
           background-color: #0B0C10 !important;
         }
-        body > .landing-bottom {
-          padding-left: 0 !important;
-        }
         /* desktop-web-refresh: installed PWA at >=1024 must never render the
            desktop rail — mirror the app.css standalone reset. */
         .biq-nav { display: none !important; }
-      }
-
-      /* ── Sticky top bar ────────────────────────────────────────────────
-         52px frosted-glass bar that spans the full viewport width (so the
-         backdrop-blur covers edge-to-edge), with an inner content wrapper
-         constrained to 1200px so the wordmark and iOS CTA don't scream
-         from opposite corners on wide displays. Matches the 1200px content
-         rhythm used by .landing-features and .landing-footer. */
-      .landing-nav {
-        position: sticky; top: 0; z-index: 50;
-        height: 52px;
-        background: rgba(11,12,16,0.85);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-bottom: 1px solid #1F2230;
-      }
-      .landing-nav-inner {
-        display: flex; align-items: center; justify-content: flex-end;
-        height: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 24px;
-      }
-      .landing-nav-logo {
-        font-size: 17px; font-weight: 900; letter-spacing: -0.02em;
-        color: #F0F1F5;
-      }
-      .landing-nav-logo em {
-        color: #58CC02; font-style: normal;
-      }
-      .landing-nav-cta {
-        display: inline-flex; align-items: center;
-        padding: 7px 14px;
-        border: 1px solid rgba(88,204,2,0.4);
-        background: rgba(88,204,2,0.10);
-        color: #58CC02;
-        border-radius: 8px;
-        font-weight: 700; font-size: 13px;
-        text-decoration: none;
-        transition: background 0.15s, border-color 0.15s;
-      }
-      .landing-nav-cta:hover {
-        background: rgba(88,204,2,0.18);
-        border-color: rgba(88,204,2,0.7);
       }
 
       /* ── Page background gradient ──────────────────────────────────────
@@ -692,158 +571,6 @@
         body { background-image: none !important; }
       }
 
-      /* ── Ad slot reservations ──────────────────────────────────────────
-         All three slots are display:none until AdSense is approved. To
-         enable, change display:none → display:block in each rule below.
-         Already gated against PWA standalone via the killswitch above.
-
-         Sidebar rails are position:fixed and only visible at >= 1280px so
-         they don't crowd the 600px app column at narrower desktop sizes.
-         The left/right offsets use `calc((100vw - 600px) / 2 - 180px)` so
-         they sit just outside the centered app column, with a 20px floor
-         to keep them on-screen at edge-case viewports. */
-      .ad-slot-sidebar-left,
-      .ad-slot-sidebar-right,
-      .ad-slot-banner {
-        display: none;
-      }
-      @media (min-width: 1280px) {
-        .ad-slot-sidebar-left,
-        .ad-slot-sidebar-right {
-          /* When enabled: change display:none above to display:block. */
-          position: fixed;
-          top: 50%; transform: translateY(-50%);
-          width: 160px; height: 600px;
-          background: #161821; border-radius: 8px;
-        }
-        .ad-slot-sidebar-left  { left:  max(20px, calc((100vw - 600px) / 2 - 180px)); }
-        .ad-slot-sidebar-right { right: max(20px, calc((100vw - 600px) / 2 - 180px)); }
-      }
-      .ad-slot-banner {
-        /* When enabled: change display:none above to display:block.
-           Sits below the app, above the features grid. */
-        max-width: 728px; height: 90px;
-        margin: 40px auto;
-        background: #161821; border-radius: 8px;
-      }
-
-      /* ── Features grid ────────────────────────────────────────────── */
-      .landing-features {
-        max-width: 1200px; margin: 96px auto 0;
-        padding: 0 40px;
-      }
-      .landing-features-title {
-        text-align: center;
-        font-size: 36px; font-weight: 900; letter-spacing: -0.03em;
-        margin: 0 0 48px; color: #F0F1F5;
-      }
-      .features-grid {
-        display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
-      }
-      .feature-card {
-        background: #161821;
-        border: 1px solid #1F2230;
-        border-radius: 18px;
-        padding: 32px 28px;
-        text-align: left;
-      }
-      .feature-icon {
-        font-size: 36px; line-height: 1; margin-bottom: 16px;
-      }
-      .feature-title {
-        font-size: 20px; font-weight: 800; letter-spacing: -0.02em;
-        color: #F0F1F5; margin: 0 0 10px;
-      }
-      .feature-desc {
-        font-size: 14px; line-height: 1.6; color: #9BA0B8; margin: 0;
-      }
-
-      /* ── Coming-soon signup ───────────────────────────────────────── */
-      .landing-signup {
-        max-width: 600px; margin: 100px auto 0;
-        padding: 48px 40px;
-        text-align: center;
-      }
-      .landing-signup-eyebrow {
-        font-size: 11px; font-weight: 800; letter-spacing: 0.2em;
-        text-transform: uppercase; color: #58CC02; margin: 0 0 12px;
-      }
-      .landing-signup-title {
-        font-size: 32px; font-weight: 900; letter-spacing: -0.03em;
-        color: #F0F1F5; margin: 0 0 12px;
-      }
-      .landing-signup-sub {
-        font-size: 15px; color: #9BA0B8;
-        margin: 0 0 28px; line-height: 1.6;
-      }
-      .landing-signup-form {
-        display: flex; gap: 8px;
-        max-width: 440px; margin: 0 auto;
-      }
-      .landing-signup-form input {
-        flex: 1; padding: 14px 16px;
-        background: #161821; border: 1px solid #1F2230;
-        color: #F0F1F5; border-radius: 10px;
-        font-family: inherit; font-size: 16px; outline: none;
-        transition: border-color 0.15s;
-      }
-      .landing-signup-form input:focus { border-color: #58CC02; }
-      .landing-signup-form button {
-        padding: 14px 24px;
-        background: #58CC02; color: #0B0C10;
-        border: none; border-radius: 10px;
-        font-family: inherit; font-size: 15px; font-weight: 800;
-        cursor: pointer;
-        transition: opacity 0.15s;
-      }
-      .landing-signup-form button:hover:not(:disabled) { opacity: 0.92; }
-      /* Both listings are approved and live (App Store; Google Play from
-         2026-07-27) and both pills are real links. Optional polish: swap the
-         text pills for the official store badge artwork. */
-      .landing-store-badges {
-        display: flex; gap: 10px; justify-content: center;
-        margin: 0 auto 20px;
-        max-width: 440px;
-      }
-      .landing-store-badge {
-        flex: 1;
-        display: inline-flex; align-items: center; justify-content: center;
-        padding: 11px 16px;
-        border: 1px solid #2F3240;
-        background: transparent;
-        color: #9BA0B8;
-        border-radius: 10px;
-        font-family: 'Inter', sans-serif;
-        font-size: 13px; font-weight: 700;
-        text-decoration: none;
-        cursor: pointer;
-        transition: background 0.12s, color 0.12s, border-color 0.12s;
-      }
-      .landing-store-badge:hover {
-        background: #161821;
-        color: #F0F1F5;
-        border-color: #3E4150;
-      }
-      .landing-signup-norway {
-        margin-top: 32px;
-        font-size: 13px; color: #6B7280;
-      }
-
-      /* ── Footer ───────────────────────────────────────────────────── */
-      .landing-footer {
-        max-width: 1200px; margin: 80px auto 0;
-        padding: 32px 40px 60px;
-        border-top: 1px solid #1F2230;
-        display: flex; justify-content: space-between; align-items: center;
-        font-size: 13px; color: #6B7280;
-      }
-      .landing-footer-links {
-        display: flex; gap: 20px;
-      }
-      .landing-footer-links a {
-        color: #6B7280; text-decoration: none; transition: color 0.15s;
-      }
-      .landing-footer-links a:hover { color: #9BA0B8; }
     </style>
   </head>
   <body style="background-color:#0B0C10">
@@ -985,19 +712,6 @@
         if(start)start.textContent="Let's play";
       });
     }catch(e){}})();</script>
-    <!-- ════════════════════════════════════════════════════════════════
-         LANDING CHROME — TOP HALF
-         Hidden on mobile (< 1024px) and ALWAYS hidden in PWA standalone.
-         See the .landing-top / display-mode rules in <style> above.
-         ════════════════════════════════════════════════════════════════ -->
-    <div class="landing-top">
-      <nav class="landing-nav">
-        <div class="landing-nav-inner">
-          <a href="/get" rel="noopener" class="landing-nav-cta">Get the app</a>
-        </div>
-      </nav>
-    </div>
-
     <div id="root">
       <!-- ── STATIC HOMEPAGE COPY (crawler-visible) ────────────────────────
            WHY THIS EXISTS. balliq.app/ used to serve 144 visible words, nearly
@@ -1080,65 +794,6 @@
     </div>
 
 
-    <aside class="ad-slot-sidebar-left" aria-hidden="true"></aside>
-    <aside class="ad-slot-sidebar-right" aria-hidden="true"></aside>
-
-    <!-- ════════════════════════════════════════════════════════════════
-         LANDING CHROME — BOTTOM HALF
-         Same gating rules as landing-top.
-         ════════════════════════════════════════════════════════════════ -->
-    <div class="landing-bottom">
-      <div class="ad-slot-banner" aria-hidden="true"></div>
-      <section class="landing-features">
-        <h2 class="landing-features-title">What's inside</h2>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">🧠</div>
-            <div class="feature-title">Thousands of Questions</div>
-            <p class="feature-desc">Hand-curated trivia spanning leagues, World Cups, legends, records and the chaos in between.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">📅</div>
-            <div class="feature-title">Daily Challenges</div>
-            <p class="feature-desc">A fresh quiz and a one-shot puzzle every day. Keep the streak alive.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🤝</div>
-            <div class="feature-title">Online Multiplayer</div>
-            <p class="feature-desc">Challenge a friend in real time, or pass the phone for local rounds with up to six players.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="landing-signup" id="cta-signup">
-        <p class="landing-signup-eyebrow">Now on iOS and Android</p>
-        <h2 class="landing-signup-title">Take Ball IQ with you</h2>
-        <p class="landing-signup-sub">Play right here in your browser, or grab the app for daily puzzles, streaks and online multiplayer on the go.</p>
-        <div class="landing-store-badges">
-          <a href="https://apps.apple.com/app/id6775975961" target="_blank" rel="noopener" class="landing-store-badge" data-store="ios">Download on the App Store →</a>
-          <a href="https://play.google.com/store/apps/details?id=app.balliq" target="_blank" rel="noopener" class="landing-store-badge" data-store="android">Get it on Google Play →</a>
-        </div>
-      </section>
-
-      <footer class="landing-footer">
-        <div>© 2026 Ball IQ</div>
-        <div class="landing-footer-links">
-          <a href="/quiz/">Football quizzes</a>
-          <a href="/quiz/world-cup/">World Cup quiz</a>
-          <a href="/quiz/premier-league/">Premier League quiz</a>
-          <a href="/quiz/champions-league/">Champions League quiz</a>
-          <a href="/quiz/arsenal/">Arsenal quiz</a>
-          <a href="/quiz/liverpool/">Liverpool quiz</a>
-          <a href="/quiz/manchester-united/">Man United quiz</a>
-          <a href="/quiz/real-madrid/">Real Madrid quiz</a>
-          <a href="/quiz/barcelona/">Barcelona quiz</a>
-          <a href="/about/">About</a>
-          <a href="/contact/">Contact</a>
-          <a href="/privacy.html">Privacy</a>
-          <a href="mailto:hello@balliq.app">hello@balliq.app</a>
-        </div>
-      </footer>
-    </div>
     <script>
       // Ball IQ is dark-only (light theme removed 2026-07-15). This used to
       // read biq_settings and apply .light pre-mount. It MUST NOT come back

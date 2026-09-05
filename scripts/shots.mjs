@@ -68,7 +68,7 @@ const AUDIT = () => {
 
   // 3. Nav wrapping — the brand/CTA collision (defect 3). A single-line nav
   //    should be near its font size; much taller means it wrapped.
-  const cta = document.querySelector('.nav-cta, .landing-nav-cta');
+  const cta = document.querySelector('.nav-cta');
   if (cta && cta.getBoundingClientRect().height > 56) {
     issues.push(`nav CTA is ${Math.round(cta.getBoundingClientRect().height)}px tall — likely wrapped to two lines`);
   }

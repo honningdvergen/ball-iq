@@ -17,8 +17,12 @@
 
 export const AD_CLIENT = ''; // '' = ads OFF. Set to 'ca-pub-…' to enable.
 
-// Reserved slot containers live in index.html (.ad-slot-* — CLS-safe fixed
-// dimensions). slotId comes from the AdSense dashboard per unit.
+// ⚠️ The reserved .ad-slot-* containers were REMOVED from index.html on
+// 2026-09-05 with the dead desktop landing chrome they sat in (ads have been
+// off since the 2026-08-10 rejection). If AdSense is ever approved, add
+// CLS-safe fixed-size containers back where the ads should actually render —
+// the old positions (beside a 600px app column) no longer exist. slotId comes
+// from the AdSense dashboard per unit.
 const AD_SLOTS = [
   // { selector: '.ad-slot-sidebar-left',  slotId: '', format: 'vertical'   },
   // { selector: '.ad-slot-sidebar-right', slotId: '', format: 'vertical'   },

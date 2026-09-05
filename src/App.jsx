@@ -2198,7 +2198,7 @@ export function loopEvent(name, meta) {
   } catch {}
 }
 // Belt-and-braces for index.html's head script: re-apply the native-app class
-// that hides desktop landing chrome (.landing-top / .landing-bottom / etc.).
+// (hides the desktop rail and the static site header inside the native shell).
 // Covers any case where the bridge wasn't injected before the head script ran.
 if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
 // ⚠️ Attach the push-tap listener at MODULE SCOPE, not in an effect. A cold
@@ -12005,10 +12005,10 @@ function AppInner() {
 
 
   // Sprint #64 FF2: toggle body.in-focused-play during quiz / Footle so the
-  // desktop-browser landing chrome (top nav + bottom features/signup grid
-  // from index.html) hides while the user is mid-game. Empty deps on
-  // unmount cleanup so navigating away always strips the class. The
-  // matching CSS rule lives in the AppInner css string further down.
+  // web app bar (.fd-appbar, app.css) hides while the user is mid-game. It
+  // used to hide the desktop landing chrome too; that chrome was deleted from
+  // index.html on 2026-09-05. Empty deps on unmount cleanup so navigating
+  // away always strips the class.
   useEffect(() => {
     const playing = inGame || screen === "wordle" || screen === "trail" || screen === "mystery" || screen === "stadiums";
     // first_game_started (scouting panel, onboarding): the activation funnel

@@ -3663,7 +3663,6 @@ body.biq-web .tab-content { padding-bottom: 24px; }
    tablet-band.test.js forbids one between the phone cap and the band. */
 
 body.biq-web .toast { left: 50% !important; transform: translateX(-50%); max-width: min(560px, calc(100vw - 32px)) !important; }
-body.biq-web > .landing-bottom { padding-left: 0 !important; }
 .fd-appbar { position: sticky; top: 60px; z-index: 90; background: var(--bg, #0B0C10); border-bottom: 1px solid #242730; }
 .fd-appbar-in { display: flex; align-items: center; gap: 2px; height: 46px; overflow-x: auto; scrollbar-width: none; }
 .fd-appbar-in::-webkit-scrollbar { display: none; }

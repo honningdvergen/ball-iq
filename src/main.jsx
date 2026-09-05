@@ -221,10 +221,11 @@ const SplashFallback = () => (
 )
 
 // Full-bleed surfaces (marketing + the new Play dashboard preview) drop the
-// game-nav gutter + landing chrome and match the #0B0C10 canvas.
+// game-nav gutter and match the #0B0C10 canvas. (The desktop landing chrome
+// this also used to hide was deleted from index.html on 2026-09-05 — it had
+// been hidden on every route since the front door shipped.)
 const _fullBleed = () => {
   try {
-    document.querySelectorAll('.landing-top, .landing-bottom').forEach((el) => { el.style.display = 'none' })
     const root = document.getElementById('root')
     if (root) { root.style.paddingLeft = '0'; root.style.maxWidth = 'none'; root.style.margin = '0'; root.style.background = '#0B0C10' }
     document.documentElement.style.background = '#0B0C10'
@@ -240,13 +241,10 @@ if (showMarketing) {
     </React.Suspense></ErrorBoundary>,
   )
 } else {
-  // desktop-web-refresh: mark the document as the game shell so the desktop
-  // marketing chrome (.landing-top/.landing-bottom in index.html, shown at
-  // >=1024 in browser) stays hidden around the game on /play. Set here at
+  // desktop-web-refresh: mark the document as the game shell (body.biq-app /
+  // body.biq-web drive the desktop rail + web-only CSS in app.css). Set here at
   // module-eval — the earliest point we know this is a game route — so it
-  // beats the landing chrome's paint far sooner than an AppInner mount effect
-  // would, and it also covers the login screen (which is not AppInner). No-op
-  // in native/PWA where the landing chrome is already killswitched.
+  // beats first paint, and it also covers the login screen (not AppInner).
   try { document.body.classList.add('biq-app'); if (_isBrowser) document.body.classList.add('biq-web') } catch { /* noop */ }
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
