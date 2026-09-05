@@ -37,10 +37,6 @@ import { getFootleNumber } from '../lib/footleNumber.js';
 import { getTrailNumber, loadTrailDay } from '../lib/trail.js';
 import { mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from '../lib/mysteryPlayer.js';
 import { readWordleTodayStatus, getWordleDateKey } from '../lib/wordleStatus.js';
-import { getWordleAnswer, gradeWordleGuess, getWordleDayIndex } from '../lib/wordle.js';
-// The app's teaser picker, reused rather than re-invented: it is exported so
-// the no-spoiler property can be tested against the real schedule.
-import { pickTeaserPair } from '../components/FootleHero.jsx';
 import { MODE_ACCENT } from '../lib/accents.js';
 import { FP_NUMBER } from './footlePractice.js';
 import { keyForDate, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
@@ -139,58 +135,8 @@ function readToday() {
 // empty rows and a ringed first tile; a returning player sees their colours.
 // It is a picture of today, which is why Footle leads the block: a quiz card
 // cannot be a picture, a board can (2026-09-04, Today A/B — Alex chose B).
-const BOARD_ROWS = 6;
-function readFootleBoard(today) {
-  let answer = '';
-  try { answer = getWordleAnswer(today) || ''; } catch {}
-  let guesses = [];
-  try {
-    const raw = localStorage.getItem(`biq_wordle_${getWordleDateKey(today)}`);
-    const p = raw ? JSON.parse(raw) : null;
-    if (p && Array.isArray(p.guesses)) guesses = p.guesses.filter((g) => typeof g === 'string');
-  } catch {}
-  // ⚠️ A NEWCOMER SAW FORTY-TWO EMPTY OUTLINES. Alex, 2026-09-04, on the live
-  // homepage: the lead card "looks assembled and not designed… it does not have
-  // the green and yellow explainer", and hitting Play revealed a Footle screen
-  // "way superior to that one on the website homepage itself". He is right: with
-  // no guesses stored, every cell here resolved to '' and the card led with a
-  // blank wireframe — on the one surface that has to explain the game to someone
-  // who has never played it.
-  //
-  // The app already solved this and the website ignored it. FootleHero shows a
-  // worked example: a guess and the answer, graded green/amber/grey by the REAL
-  // engine so the demonstrated rules cannot drift from the game's, rotated daily
-  // and checked against today's answer so it can never spoil. pickTeaserPair is
-  // exported precisely so that no-spoiler property is testable rather than
-  // asserted. Same function, same day index — the two surfaces now teach the
-  // same lesson with the same colours instead of disagreeing about what Footle
-  // looks like.
-  if (!guesses.length) {
-    const [g, a] = pickTeaserPair(getWordleDayIndex(today), answer);
-    // ⚠️ WITH MARKS BUT NO LETTERS this is abstract colour swatches, which reads
-    // as a loading state rather than a word game — arguably worse than the blank
-    // grid it replaced. The letters are the whole point: they show a guess being
-    // scored against an answer, which is the rule the card has to teach.
-    return {
-      rows: [g, a].map((word) => Array.from(gradeWordleGuess(word, a)).map((m, i) => ({ m, ch: word[i] }))),
-      len: a.length,
-      teaser: true,
-    };
-  }
-  const len = answer.length || 6;
-  const rows = [];
-  for (let r = 0; r < BOARD_ROWS; r++) {
-    const g = guesses[r];
-    if (g && answer) {
-      const up = g.toUpperCase();
-      const marks = gradeWordleGuess(up, answer);
-      rows.push(Array.from({ length: len }, (_, i) => ({ m: marks[i] || 'grey', ch: up[i] || '' })));
-    } else {
-      rows.push(Array.from({ length: len }, (_, i) => ({ m: r === guesses.length && i === 0 ? 'cur' : '', ch: '' })));
-    }
-  }
-  return { rows, len };
-}
+// The Footle chip on the Today card is the app's F mark since 2026-09-05; the
+// worked-example board this used to compute lives on /football-wordle/.
 
 function useCountdown() {
   const [ms, setMs] = useState(() => msToNextLocalMidnight());
@@ -201,8 +147,7 @@ function useCountdown() {
 export default function FrontDoor() {
   const today = useMemo(() => new Date(), []);
   const [state, setState] = useState(() => readToday());
-  const [board, setBoard] = useState(() => readFootleBoard(today));
-  useEffect(() => { setState(readToday()); setBoard(readFootleBoard(today)); }, [today]);
+  useEffect(() => { setState(readToday()); }, [today]);
   // The practice board (an archive puzzle, nothing about today's given away)
   // used to be its own section under Today — a second Footle door on one
   // page. It now opens from the lead card, on request.
@@ -262,17 +207,16 @@ export default function FrontDoor() {
                 with was forty-two empty outlines. He went back to A: "the
                 simpler design… we can spice it up a bit though." So: A's shape,
                 with two things it lacked. Each row's icon chip carries its
-                mode's colour from the app's own MODE_ACCENT set, and Footle's
-                chip is the game itself — a two-row worked example graded by
-                the real engine, letters and all, the same teaser the app's
-                hero shows. The explainer he asked for, at 38px instead of as
-                the hero. */}
+                mode's colour from the app's own MODE_ACCENT set. Footle's chip
+                was a two-row worked example graded by the real engine; at 38px
+                on his phone Alex read it as "a bit bad" (2026-09-05), so it is
+                now the app's own Footle mark — an F on the green tile, the same
+                one the app home draws. The worked example lives on the Footle
+                page itself. */}
             {dailies.map((d) => (
               <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)} style={{ '--mode': MODE_ACCENT[d.k === 'daily' ? 'daily7' : d.k] }}>
-                {d.k === 'footle' && board.teaser ? (
-                  <span className="fd-card-ic fd-mini" aria-hidden="true" style={{ '--len': board.len }}>
-                    {board.rows.map((row, r) => row.map((cell, c) => <i key={`${r}-${c}`} data-m={cell.m || undefined}>{cell.ch}</i>))}
-                  </span>
+                {d.k === 'footle' ? (
+                  <span className="fd-card-ic fd-fmark" aria-hidden="true">F</span>
                 ) : (
                   <span className="fd-card-ic"><Icon k={d.k} /></span>
                 )}
