@@ -443,7 +443,7 @@ function HomeScreenImpl({
           </div>
           <button
             onClick={onPlayChallenge}
-            style={{flexShrink:0,minHeight:36,padding:"8px 14px",background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:13.5,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
+            style={{flexShrink:0,minHeight:36,padding:"8px 14px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:13.5,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
           >
             Play
           </button>
@@ -585,7 +585,7 @@ function HomeScreenImpl({
             <div className="hr-card hr-rating">
               <div className="hr-rating-glow" aria-hidden="true" />
               <div className="hr-rating-id">
-                <div className="hr-avatar" style={{ borderColor: "#58CC02" }}>
+                <div className="hr-avatar" style={{ borderColor: "var(--accent)" }}>
                   {/* One avatar component, not a hand-rolled <img> beside it. The
                       bespoke branch hid itself on a dead URL and left a hole;
                       ProfilePic now falls back to the person's monogram. */}

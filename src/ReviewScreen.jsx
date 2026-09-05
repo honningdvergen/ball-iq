@@ -333,7 +333,7 @@ export default function ReviewScreen({ onBack }) {
           <div style={{display:'flex', alignItems:'center', gap:12}}>
             <span style={{
               width:30, height:30, borderRadius:9,
-              background:'#58CC02', color:'#0B0C10',
+              background:'var(--accent)', color:'var(--bg)',
               display:'flex', alignItems:'center', justifyContent:'center',
               fontSize:14, fontWeight:800, flexShrink:0,
             }}>✓</span>

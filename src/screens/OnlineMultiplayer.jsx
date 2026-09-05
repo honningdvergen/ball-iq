@@ -843,7 +843,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                   <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.label}</span>
                   <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
                 </div>
-                <button onClick={() => setTopicOpen(true)} disabled={starting} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"#06230C",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
+                <button onClick={() => setTopicOpen(true)} disabled={starting} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"var(--grn-ink)",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
               </div>
             </>
           );
@@ -866,7 +866,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                   <button key={f.id} type="button" onClick={() => pickFormat(f.id)} disabled={starting} aria-pressed={sel}
                     style={{flex:1,borderRadius:14,padding:"12px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:3,cursor:"pointer",fontFamily:"inherit",
                       ...(sel ? {background:"rgba(88,204,2,0.08)",border:"1.5px solid rgba(88,204,2,0.5)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
-                    <span style={{fontSize:14,fontWeight:800,color:sel ? "#8AE042" : "var(--t2)"}}>{f.title}</span>
+                    <span style={{fontSize:14,fontWeight:800,color:sel ? "var(--grn-soft)" : "var(--t2)"}}>{f.title}</span>
                     <span style={{fontSize:11.5,color:sel ? "#5F9E3B" : "var(--t3)",fontVariantNumeric:"tabular-nums"}}>{f.sub}</span>
                   </button>
                 );
@@ -1216,7 +1216,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
                 aria-label={done ? `Friend request sent to ${p.name || 'player'}` : `Add ${p.name || 'player'} as a friend`}
                 style={{ flexShrink: 0, padding: '8px 14px', borderRadius: 10, border: 'none',
                          background: done ? 'var(--s3)' : 'var(--accent)',
-                         color: done ? 'var(--t2)' : '#06230C',
+                         color: done ? 'var(--t2)' : 'var(--grn-ink)',
                          fontFamily: 'inherit', fontSize: 13, fontWeight: 800,
                          cursor: done ? 'default' : 'pointer' }}
               >
@@ -1700,7 +1700,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
       <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
         {mine ? 'You' : (p?.name || 'Player')}
       </span>
-      <span style={{ fontFamily: MONO, fontSize: 40, fontWeight: 800, lineHeight: 1, color: won ? '#8AE042' : 'var(--text)', fontVariantNumeric: 'tabular-nums' }}>
+      <span style={{ fontFamily: MONO, fontSize: 40, fontWeight: 800, lineHeight: 1, color: won ? 'var(--grn-soft)' : 'var(--text)', fontVariantNumeric: 'tabular-nums' }}>
         {display ?? metricText(p)}
       </span>
       <span style={{ fontSize: 10.5, color: 'var(--t3)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{metricUnit}</span>
@@ -1949,7 +1949,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               <button
                 onClick={startNextRound}
                 disabled={nextBusy || !iAmReady}
-                style={{ width: '100%', marginTop: 8, padding: 13, borderRadius: 999, background: (readyCount >= 2 && iAmReady) ? 'var(--accent)' : 'var(--s2)', border: 'none', color: (readyCount >= 2 && iAmReady) ? '#06230C' : 'var(--t3)', boxShadow: (readyCount >= 2 && iAmReady) ? '0 8px 22px -8px rgba(88,204,2,0.55)' : 'none', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: (readyCount >= 2 && iAmReady) ? 'pointer' : 'not-allowed' }}
+                style={{ width: '100%', marginTop: 8, padding: 13, borderRadius: 999, background: (readyCount >= 2 && iAmReady) ? 'var(--accent)' : 'var(--s2)', border: 'none', color: (readyCount >= 2 && iAmReady) ? 'var(--grn-ink)' : 'var(--t3)', boxShadow: (readyCount >= 2 && iAmReady) ? '0 8px 22px -8px rgba(88,204,2,0.55)' : 'none', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: (readyCount >= 2 && iAmReady) ? 'pointer' : 'not-allowed' }}
               >
                 {nextBusy ? 'Starting…'
                   : readyCount < totalHere ? `Start next round (${totalHere - readyCount} not ready)`
@@ -2014,7 +2014,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               onClick={onPlayDaily}
               style={gamePlayed
                 ? { width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }
-                : { width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'var(--accent)', border: 'none', color: '#06230C', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
+                : { width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'var(--accent)', border: 'none', color: 'var(--grn-ink)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
             >
               {gamePlayed ? 'Not done yet? Play today\u2019s Daily 7 \u2192' : 'Play today\u2019s Daily 7 \u2192'}
             </button>

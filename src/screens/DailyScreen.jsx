@@ -75,7 +75,7 @@ function noon(t) {
 // currentColor — so the caller sets colour on the wrapper, not here.
 function ModeGlyph({ mode, size = 22 }) {
   if (mode === "footle") {
-    return <span style={{ width: 26, height: 26, borderRadius: 7, background: "#58CC02", color: "#06230C", fontWeight: 800, fontSize: 15, display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>F</span>;
+    return <span style={{ width: 26, height: 26, borderRadius: 7, background: "var(--accent)", color: "var(--grn-ink)", fontWeight: 800, fontSize: 15, display: "inline-flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>F</span>;
   }
   if (mode === "daily7") return <ClipboardList size={size} strokeWidth={2} />;
   if (mode === "trail") return <Route size={size} strokeWidth={2} />;
@@ -283,7 +283,7 @@ function DayComplete({ open, onSurvival, wide, todayYMD }) {
     <div style={{ borderRadius: 16, padding: wide ? "18px 20px" : "14px 16px", background: "rgba(88,204,2,0.06)", border: "1px solid rgba(88,204,2,0.28)", display: "flex", flexDirection: "column", gap: hasOpen ? 12 : 0 }}>
       {celebrate && Confetti ? <Confetti /> : null}
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <span style={{ width: 34, height: 34, flexShrink: 0, borderRadius: 10, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.30)", color: "#58CC02", fontSize: 16, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true">✓</span>
+        <span style={{ width: 34, height: 34, flexShrink: 0, borderRadius: 10, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.30)", color: "var(--accent)", fontSize: 16, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true">✓</span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: wide ? 16 : 15, fontWeight: 800, color: "var(--t1)" }}>Clean sweep — today&apos;s done</div>
           <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
@@ -292,7 +292,7 @@ function DayComplete({ open, onSurvival, wide, todayYMD }) {
         </div>
         {!hasOpen && (
           <button onClick={onSurvival}
-            style={{ flexShrink: 0, padding: wide ? "10px 22px" : "11px 20px", borderRadius: 12, background: "rgba(88,204,2,0.14)", border: "1.5px solid rgba(88,204,2,0.42)", color: "#58CC02", fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
+            style={{ flexShrink: 0, padding: wide ? "10px 22px" : "11px 20px", borderRadius: 12, background: "rgba(88,204,2,0.14)", border: "1.5px solid rgba(88,204,2,0.42)", color: "var(--accent)", fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
             Survival
           </button>
         )}
@@ -761,7 +761,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>Daily</div>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
                 <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
-                <span style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 13, fontWeight: 800, color: "#FFC107", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
+                <span style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
               </span>
             </div>
 
@@ -814,8 +814,8 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           {form14.map((d) => {
             const played = d.cls === "W" || d.cls === "D";
             const s = { flex: 1, height: 18, borderRadius: 4 };
-            if (d.isToday && played) Object.assign(s, { background: "#58CC02", boxShadow: "0 0 8px rgba(88,204,2,0.5)" });
-            else if (d.isToday) Object.assign(s, { background: "transparent", border: "1.5px solid #FFC107" });
+            if (d.isToday && played) Object.assign(s, { background: "var(--accent)", boxShadow: "0 0 8px rgba(88,204,2,0.5)" });
+            else if (d.isToday) Object.assign(s, { background: "transparent", border: "1.5px solid var(--gold)" });
             else if (played) Object.assign(s, { background: "#2E7D1F", opacity: d.arcOnly ? 0.55 : 1 });
             else Object.assign(s, { background: "var(--s2)", opacity: d.cls === "pre" ? 0.45 : 1 });
             return <span key={d.ymd} style={s} aria-label={d.aria} title={d.aria} />;
@@ -823,7 +823,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 7 }}>
           <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t3)" }}>2 WK AGO</span>
-          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "#FFC107" }}>TODAY</span>
+          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--gold)" }}>TODAY</span>
         </div>
       </div>
 
@@ -858,7 +858,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   <span key={c.key} style={{ width: COL_W, flexShrink: 0, display: "inline-flex", justifyContent: "center" }}>
                     <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
                       aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
-                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
+                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "var(--gold)", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
                   </span>
                 ) : (!m.isToday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
                   <ReplayCell key={c.key} w={COL_W} theme={c.theme}
@@ -930,7 +930,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                 <div style={{ fontSize: 27, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>Daily</div>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
                   <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
-                  <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 800, color: "#FFC107", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
+                  <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
                 </span>
               </div>
 
@@ -1006,7 +1006,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                                   <span key={c.key} style={{ width: DCOL_W, flexShrink: 0, display: "inline-flex", justifyContent: "center" }}>
                                     <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
                                       aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
-                                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "#FFC107", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
+                                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "var(--gold)", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
                                   </span>
                                 ) : (!m.isToday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
                                   <ReplayCell key={c.key} w={DCOL_W} theme={c.theme}

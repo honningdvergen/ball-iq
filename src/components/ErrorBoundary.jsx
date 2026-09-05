@@ -55,21 +55,21 @@ export class ErrorBoundary extends React.Component {
         <div style={{
           minHeight:"100dvh", display:"flex", flexDirection:"column",
           alignItems:"center", justifyContent:"center", padding:"32px 24px",
-          background:"#0B0C10", fontFamily:"Inter,sans-serif", textAlign:"center"
+          background:"var(--bg)", fontFamily:"Inter,sans-serif", textAlign:"center"
         }}>
           <div style={{fontSize:48, marginBottom:16}}>⚽</div>
-          <div style={{fontSize:20, fontWeight:800, color:"#F0F1F5", marginBottom:8, letterSpacing:"-0.3px"}}>
+          <div style={{fontSize:20, fontWeight:800, color:"var(--text)", marginBottom:8, letterSpacing:"-0.3px"}}>
             Something went wrong
           </div>
-          <div style={{fontSize:14, color:"#9BA0B8", lineHeight:1.7, marginBottom:28}}>
+          <div style={{fontSize:14, color:"var(--t2)", lineHeight:1.7, marginBottom:28}}>
             Even the best teams have bad days. Tap below to restart.
           </div>
           <button
             onClick={() => { this.setState({ hasError:false, error:null }); window.location.reload(); }}
             style={{
-              padding:"13px 28px", background:"#58CC02", border:"none",
+              padding:"13px 28px", background:"var(--accent)", border:"none",
               borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", fontFamily:"Inter,sans-serif", fontSize:14,
-              fontWeight:700, color:"#06230C", cursor:"pointer"
+              fontWeight:700, color:"var(--grn-ink)", cursor:"pointer"
             }}
           >
             Restart App

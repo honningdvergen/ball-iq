@@ -93,7 +93,7 @@ const CSS = `
          padding:12px var(--sp3);border:1px solid var(--bd3);border-radius:var(--rc);color:var(--tx);
          font:var(--ty-sec);font-weight:700;
          transition:background-color .15s var(--ease)}
-.fb-real.fb-primary{background:#58CC02;border-color:#58CC02;color:#06230C}
+.fb-real.fb-primary{background:var(--grn);border-color:var(--grn);color:var(--grn-ink)}
 @media (hover:hover){.fb-real.fb-primary:hover{background:#4CB102}}
 @media (hover:hover){.fb-real:hover{background:var(--card)}}
 

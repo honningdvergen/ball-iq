@@ -331,7 +331,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
             <button onClick={() => submit(false)} disabled={!entry.trim()}
               style={{ flexShrink: 0, padding: "0 20px", borderRadius: 12, border: "none",
                        background: entry.trim() ? "var(--accent)" : "var(--s2)",
-                       color: entry.trim() ? "#06230C" : "var(--t3)", fontWeight: 800, fontSize: 14,
+                       color: entry.trim() ? "var(--grn-ink)" : "var(--t3)", fontWeight: 800, fontSize: 14,
                        fontFamily: "inherit", cursor: entry.trim() ? "pointer" : "default" }}>Guess</button>
             {suggestions.length > 0 && (
               // ⚠️ PLAYER-REPORTED ON DEVICE, 2026-08-23: "i still can not scroll
@@ -411,7 +411,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
             <>
               <button onClick={onPlayMystery}
                 style={{ marginTop: 16, width: "100%", padding: "14px", borderRadius: 999, border: "none",
-                         background: "var(--accent)", color: "#06230C", fontWeight: 800, fontSize: 15,
+                         background: "var(--accent)", color: "var(--grn-ink)", fontWeight: 800, fontSize: 15,
                          fontFamily: "inherit", cursor: "pointer" }}>Try Mystery Player →</button>
               <button onClick={onShare}
                 style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
@@ -421,7 +421,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
           ) : (
             <button onClick={onShare}
               style={{ marginTop: 16, width: "100%", padding: "14px", borderRadius: 999, border: "none",
-                       background: "var(--accent)", color: "#06230C", fontWeight: 800, fontSize: 15,
+                       background: "var(--accent)", color: "var(--grn-ink)", fontWeight: 800, fontSize: 15,
                        fontFamily: "inherit", cursor: "pointer" }}>Share result</button>
           )}
           {/* A wrong career order is UNFALSIFIABLE to the player — they cannot

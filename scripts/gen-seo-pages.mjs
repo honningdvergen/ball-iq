@@ -1008,45 +1008,45 @@ for(var b=0;b<bs.length;b++)bs[b].addEventListener('click',pick)})(cs[c])}
    `.qa-opts .to`. Those were separate declarations and list pages only ever
    got the padding override — so their `.tl` letter badge rendered with NO
    layout at all and read as "AEintracht Frankfurt". One source, two scopes. */
-const OPTION_CSS = (s) => `  ${s}{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 14px;border-radius:13px;border:1.5px solid #242730;background:#0B0D13;color:#E8EAF0;font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
-  ${s}:hover:not(:disabled){border-color:#3E4150;background:#1B1E27}
+const OPTION_CSS = (s) => `  ${s}{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 14px;border-radius:13px;border:1.5px solid var(--bd);background:#0B0D13;color:var(--tx2);font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
+  ${s}:hover:not(:disabled){border-color:#3E4150;background:var(--card2)}
   ${s}:disabled{cursor:default}
-  ${s}.correct{border-color:rgba(88,204,2,.55);background:rgba(88,204,2,.12);color:#8AE042}
+  ${s}.correct{border-color:rgba(88,204,2,.55);background:rgba(88,204,2,.12);color:var(--grn-soft)}
   ${s}.wrong{border-color:rgba(255,71,71,.5);background:rgba(255,71,71,.1);color:#FF8A82}
   ${s}.dim{opacity:.5}
-  ${s} .tl{flex:0 0 auto;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:12px;background:#1F2430;color:#9BA0B8}
-  ${s}.correct .tl{background:#58CC02;color:#06230C}
-  ${s}.wrong .tl{background:#FF4747;color:#fff}
+  ${s} .tl{flex:0 0 auto;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:12px;background:#1F2430;color:var(--tx3)}
+  ${s}.correct .tl{background:var(--grn);color:var(--grn-ink)}
+  ${s}.wrong .tl{background:var(--wrong);color:#fff}
   ${s} .tt{flex:1}
   ${s} .tm{font-size:16px}`;
 
 const TASTER_CSS = `  .taster{text-align:left}
   .taster .eyebrow{display:block;margin-bottom:8px}
   .taster h2{margin:8px 0 16px;text-align:left;font-size:clamp(21px,2.4vw,28px)}
-  .tcard{max-width:none;margin:0;text-align:left;background:#13151C;border:1px solid #242730;border-radius:22px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.85)}
+  .tcard{max-width:none;margin:0;text-align:left;background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.85)}
   .taster-note{margin:14px 0 0;font-size:13px;color:var(--tx4)}
-  .tph{font-size:15px;font-weight:600;color:#9BA0B8;margin:0;line-height:1.5}
+  .tph{font-size:15px;font-weight:600;color:var(--tx3);margin:0;line-height:1.5}
   .th{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
   .th .tq{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx4)}
-  .th .ts{font-family:var(--mono);font-size:12px;font-weight:700;color:#8AE042;background:rgba(88,204,2,.1);border-radius:999px;padding:4px 11px}
+  .th .ts{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--grn-soft);background:rgba(88,204,2,.1);border-radius:999px;padding:4px 11px}
   .tbar{height:6px;border-radius:999px;background:#08090E;overflow:hidden;margin-bottom:18px}
-  .tbf{height:100%;background:#58CC02;border-radius:999px;transition:width .3s ease}
+  .tbf{height:100%;background:var(--grn);border-radius:999px;transition:width .3s ease}
   .tqx{font-size:18px;font-weight:800;color:#fff;line-height:1.32;margin-bottom:16px}
   .tos{display:flex;flex-direction:column;gap:9px}
 ${OPTION_CSS('.to')}
-  .tw{margin-top:12px;font-size:13.5px;color:#9BA0B8;line-height:1.55}
-  .tn{margin-top:16px;width:100%;padding:13px;border:none;border-radius:13px;background:#58CC02;color:#06230C;font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+  .tw{margin-top:12px;font-size:13.5px;color:var(--tx3);line-height:1.55}
+  .tn{margin-top:16px;width:100%;padding:13px;border:none;border-radius:13px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
   .tn:hover{filter:brightness(1.05)}
-  .tn.again{margin-top:12px;background:transparent;border:1px solid #2F3240;color:#9BA0B8}
+  .tn.again{margin-top:12px;background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
   .tdone{text-align:center;padding:8px 4px}
-  .tdone .tdl{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#9BA0B8}
-  .tiq{font-family:var(--mono);font-size:64px;font-weight:800;line-height:1;letter-spacing:-.03em;color:#FFC107;margin:8px 0 2px}
+  .tdone .tdl{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3)}
+  .tiq{font-family:var(--mono);font-size:64px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--amber);margin:8px 0 2px}
   .ttier{font-size:18px;font-weight:800;color:#fff}
-  .tscore{font-size:14px;color:#9BA0B8;margin-top:6px}
+  .tscore{font-size:14px;color:var(--tx3);margin-top:6px}
   .tcta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px}
-  .tcta .btn{display:inline-flex;align-items:center;padding:12px 20px;background:#58CC02;color:#06230C;font-weight:800;font-size:14px;border-radius:12px}
+  .tcta .btn{display:inline-flex;align-items:center;padding:12px 20px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:14px;border-radius:12px}
   .tcta .btn:hover{text-decoration:none;filter:brightness(1.05)}
-  .tcta .btn.store{background:#000;color:#fff;border:1px solid #2F3240}
+  .tcta .btn.store{background:#000;color:#fff;border:1px solid var(--bd2)}
   .tcta .btn.store:hover{border-color:#3E4150;filter:none}`;
 
 const TASTER_JS = `(function(){
@@ -1821,7 +1821,7 @@ ${OPTION_CSS('.qa-opts .to')}
     border:1px solid rgba(88,204,2,.32);background:linear-gradient(160deg,rgba(88,204,2,.10) 0%,rgba(88,204,2,.02) 100%)}
   .qa-done-h{font-family:var(--mono);font-size:30px;font-weight:800;color:var(--grn-soft);line-height:1}
   .qa-done-s{margin:8px 0 16px;font-size:14.5px;color:var(--tx2)}
-  .qa-done-go{display:block;padding:14px 18px;border-radius:999px;background:var(--grn,#58CC02);color:#06230C;
+  .qa-done-go{display:block;padding:14px 18px;border-radius:999px;background:var(--grn,var(--grn));color:var(--grn-ink);
     font-weight:800;font-size:15.5px;text-decoration:none}
   .qa-done-go:hover{filter:brightness(1.06)}
   .qa-done-alt{display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:var(--tx3);text-decoration:underline}
@@ -2968,7 +2968,7 @@ ${bodyRows}
     background-repeat:no-repeat;
     background-size:44px 100%, 44px 100%, 20px 100%, 20px 100%;
     background-attachment:local, local, scroll, scroll}
-  .lt-jump{color:var(--accent,#58CC02);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+  .lt-jump{color:var(--accent,var(--grn));font-weight:700;text-decoration:underline;text-underline-offset:3px}
   .ltable{border-collapse:collapse;width:100%;font-size:15px;min-width:min(100%,520px)}
   .ltable th{text-align:left;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.04em;font-size:12px;padding:12px 14px;border-bottom:1px solid var(--bd2);white-space:nowrap;position:sticky;top:0;background:var(--card2)}
   .ltable td{padding:11px 14px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align:top}
@@ -3045,15 +3045,15 @@ ${renderQA(taster)}
 <section class="sec narrow">
 ${playable ? `<div id="lp-bar" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px;padding:13px 16px;border:1px solid var(--accent-b, rgba(88,204,2,.28));border-radius:13px;background:rgba(88,204,2,.06)">
 <span style="font-weight:800;color:#fff">Reckon you can name them all?</span>
-<button id="lp-start" type="button" style="margin-left:auto;background:var(--accent,#58CC02);color:#06230C;border:0;border-radius:999px;padding:9px 20px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit">Play — hide the answers</button>
+<button id="lp-start" type="button" style="margin-left:auto;background:var(--accent,var(--grn));color:var(--grn-ink);border:0;border-radius:999px;padding:9px 20px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit">Play — hide the answers</button>
 </div>
-<div id="lp-live" hidden style="position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;margin:0 0 12px;padding:10px 12px;border:1px solid var(--bd2);border-radius:13px;background:var(--card2,#1B1E27)">
-<input id="lp-input" type="search" placeholder="Type a name…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your guess" style="flex:1;min-width:0;background:var(--card,#13151C);border:1px solid var(--bd2);border-radius:10px;padding:10px 13px;color:#fff;font-size:16px;font-family:inherit;outline:none">
-<span id="lp-score" style="font-weight:800;color:var(--accent,#58CC02);white-space:nowrap;font-size:13px">0 found</span>
+<div id="lp-live" hidden style="position:sticky;top:0;z-index:5;display:flex;gap:8px;align-items:center;margin:0 0 12px;padding:10px 12px;border:1px solid var(--bd2);border-radius:13px;background:var(--card2,var(--card2))">
+<input id="lp-input" type="search" placeholder="Type a name…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your guess" style="flex:1;min-width:0;background:var(--card,var(--card));border:1px solid var(--bd2);border-radius:10px;padding:10px 13px;color:#fff;font-size:16px;font-family:inherit;outline:none">
+<span id="lp-score" style="font-weight:800;color:var(--accent,var(--grn));white-space:nowrap;font-size:13px">0 found</span>
 <button id="lp-give" type="button" style="background:none;border:1px solid var(--bd2);border-radius:10px;padding:9px 12px;color:var(--tx3);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Give up</button>
-<button id="lp-share" type="button" hidden style="background:var(--accent,#58CC02);color:#06230C;border:0;border-radius:10px;padding:9px 14px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit">Share score</button>
+<button id="lp-share" type="button" hidden style="background:var(--accent,var(--grn));color:var(--grn-ink);border:0;border-radius:10px;padding:9px 14px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit">Share score</button>
 </div>
-<style>.lp-hid{color:transparent!important;text-shadow:0 0 14px rgba(255,255,255,.45);user-select:none}.lp-got .lt-first{color:var(--accent,#58CC02)!important}.lp-shake{animation:lpsh .25s}@keyframes lpsh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}</style>
+<style>.lp-hid{color:transparent!important;text-shadow:0 0 14px rgba(255,255,255,.45);user-select:none}.lp-got .lt-first{color:var(--accent,var(--grn))!important}.lp-shake{animation:lpsh .25s}@keyframes lpsh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}</style>
 <script type="application/json" id="lp-data">${jsonLd ? JSON.stringify(playData).replace(/</g, '\\u003c') : JSON.stringify(playData)}</script>` : ''}
 ${table}
 ${playable ? `<script>${LIST_PLAY_JS}</script>` : ''}
@@ -4468,7 +4468,7 @@ ${hasTaster ? renderQuizSet(tasterRows, { name: 'football', tiers: DEFAULT_TIERS
 <section class="sec narrow">
 <h2 style="font-size:19px;margin:0 0 12px">Daily games</h2>
 <div class="fq-modes">
-<a class="fq-mode" href="${SITE.base}/football-wordle/" style="--accent:#58CC02"><em>DAILY</em><b>Footle</b><span>The football Wordle — guess the player's surname in six.</span></a>
+<a class="fq-mode" href="${SITE.base}/football-wordle/" style="--accent:var(--grn)"><em>DAILY</em><b>Footle</b><span>The football Wordle — guess the player's surname in six.</span></a>
 <a class="fq-mode" href="${SITE.base}/mystery-player/" style="--accent:#FFC53D"><em>DAILY</em><b>Mystery Player</b><span>Guess the footballer; every guess is ranked by how close it is.</span></a>
 <a class="fq-mode" href="${SITE.base}/transfer-trail/" style="--accent:#4EA8FF"><em>DAILY</em><b>Transfer Trail</b><span>Name the player from his club-by-club career path.</span></a>
 <a class="fq-mode" href="${SITE.base}/daily-football-quiz/" style="--accent:#FF6B9D"><em>EVERY DAY</em><b>Daily 7</b><span>Seven fresh questions every day, same seven for everyone.</span></a>
@@ -4921,60 +4921,60 @@ const FW_CSS = `
   .fw-wrap.sec{padding-top:0;margin-top:-26px}
   @media (max-width:700px){ .fw-wrap.sec{margin-top:-18px} }
   .fw-eg{margin:0 0 20px;padding:15px 17px;background:#181A22;border:1px solid #222634;border-radius:14px}
-  .fw-eg-lab{font-size:14px;color:#9BA0B8;margin-bottom:10px}
+  .fw-eg-lab{font-size:14px;color:var(--tx3);margin-bottom:10px}
   .fw-eg-lab b{color:#fff}
   .fw-eg-grid{display:grid;grid-template-columns:repeat(7,min(40px,8.5vw));gap:5px;margin-bottom:12px}
   .fw-eg-t{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:7px;
     font-weight:800;font-size:15px;color:#fff;background:#2F3240}
-  .fw-eg-t[data-m="green"]{background:#58CC02;color:#06230C}
+  .fw-eg-t[data-m="green"]{background:var(--grn);color:var(--grn-ink)}
   .fw-eg-t[data-m="yellow"]{background:#FFC53D;color:#2A1F00}
-  .fw-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:#9BA0B8}
+  .fw-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--tx3)}
   .fw-legend li{display:flex;align-items:center;gap:7px}
-  .fw-sw{width:13px;height:13px;border-radius:4px;background:#2F3240;flex:0 0 auto}
-  .fw-sw[data-k="green"]{background:#58CC02}
+  .fw-sw{width:13px;height:13px;border-radius:4px;background:var(--bd2);flex:0 0 auto}
+  .fw-sw[data-k="green"]{background:var(--grn)}
   .fw-sw[data-k="yellow"]{background:#FFC53D}
   .fw-wrap{margin-top:8px;scroll-margin-top:72px}
-  .fw-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#9BA0B8;margin-bottom:8px}
-  .fw-lede{font-size:15.5px;line-height:1.6;color:#9BA0B8;max-width:62ch;margin:0 0 18px}
+  .fw-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:8px}
+  .fw-lede{font-size:15.5px;line-height:1.6;color:var(--tx3);max-width:62ch;margin:0 0 18px}
   .fw-card{background:var(--card);border:1px solid #6A6E80;border-radius:20px;padding:20px 16px 22px;max-width:560px}
   .fw-board{display:grid;gap:6px;margin:0 auto;max-width:min(100%,calc(var(--fw-n) * 60px))}
   .fw-row{display:grid;grid-template-columns:repeat(var(--fw-n),1fr);gap:6px}
   .fw-t{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:2px solid #6A6E80;border-radius:8px;background:#0F1116;color:#F0F1F5;font-family:var(--mono);font-weight:700;font-size:clamp(17px,6vw,28px);line-height:1;text-transform:uppercase;user-select:none}
-  .fw-t.fw-fill{border-color:#8E92A0;background:#1B1E27}
+  .fw-t.fw-fill{border-color:#8E92A0;background:var(--card2)}
   /* Colour is set by the CLASS, never by an animation keyframe — so the
      reduced-motion rule below can switch the flip off and still land on the
      correct end state. */
-  .fw-t.fw-green{background:#58CC02;border-color:#58CC02;color:#06230C;animation:fwflip .45s ease both}
-  .fw-t.fw-yellow{background:#FFC107;border-color:#FFC107;color:#2A1B00;animation:fwflip .45s ease both}
-  .fw-t.fw-grey{background:#3E4150;border-color:#6A6E80;color:#E8EAF0;animation:fwflip .45s ease both}
+  .fw-t.fw-green{background:var(--grn);border-color:var(--grn);color:var(--grn-ink);animation:fwflip .45s ease both}
+  .fw-t.fw-yellow{background:var(--amber);border-color:var(--amber);color:#2A1B00;animation:fwflip .45s ease both}
+  .fw-t.fw-grey{background:#3E4150;border-color:#6A6E80;color:var(--tx2);animation:fwflip .45s ease both}
   @keyframes fwflip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
   @keyframes fwshake{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(4px)}50%{transform:translateX(-4px)}}
   .fw-row.fw-shake{animation:fwshake .42s ease}
   .fw-kb{display:grid;gap:7px;margin-top:20px}
   .fw-kr{display:flex;gap:5px;justify-content:center}
-  .fw-k{flex:1 1 0;min-width:0;min-height:48px;padding:0 2px;border:1px solid #6A6E80;border-radius:8px;background:#343846;color:#F0F1F5;font:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:background .12s,border-color .12s}
+  .fw-k{flex:1 1 0;min-width:0;min-height:48px;padding:0 2px;border:1px solid #6A6E80;border-radius:8px;background:#343846;color:var(--tx);font:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:background .12s,border-color .12s}
   .fw-k:hover{background:#3E4250}
   .fw-k.fw-wide{flex:1.7 1 0;font-size:11.5px;letter-spacing:.04em}
-  .fw-k.fw-green{background:#58CC02;border-color:#58CC02;color:#06230C}
-  .fw-k.fw-yellow{background:#FFC107;border-color:#FFC107;color:#2A1B00}
+  .fw-k.fw-green{background:var(--grn);border-color:var(--grn);color:var(--grn-ink)}
+  .fw-k.fw-yellow{background:var(--amber);border-color:var(--amber);color:#2A1B00}
   .fw-k.fw-grey{background:#1A1D24;border-color:#6A6E80;color:#8E92A0}
-  .fw-k:focus-visible,.fw-again:focus-visible,.fw-cta:focus-visible{outline:3px solid #FFC107;outline-offset:2px}
-  .fw-msg{min-height:22px;margin:14px 0 0;text-align:center;font-size:14px;font-weight:600;color:#E8EAF0}
+  .fw-k:focus-visible,.fw-again:focus-visible,.fw-cta:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+  .fw-msg{min-height:22px;margin:14px 0 0;text-align:center;font-size:14px;font-weight:600;color:var(--tx2)}
   .fw-done{margin-top:14px;text-align:center;border-top:1px solid #6A6E80;padding-top:14px}
-  .fw-dh{font-size:15px;font-weight:700;color:#F0F1F5;margin:0}
-  .fw-dn{font-family:var(--mono);font-size:20px;font-weight:700;color:#FFC107;margin:6px 0 0;letter-spacing:.02em}
+  .fw-dh{font-size:15px;font-weight:700;color:var(--tx);margin:0}
+  .fw-dn{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--amber);margin:6px 0 0;letter-spacing:.02em}
   .fw-dc{margin:14px 0 0}
-  .fw-cta{display:inline-flex;align-items:center;min-height:48px;padding:0 20px;background:#58CC02;color:#06230C;font-weight:800;font-size:15px;border-radius:12px}
+  .fw-cta{display:inline-flex;align-items:center;min-height:48px;padding:0 20px;background:var(--grn);color:var(--grn-ink);font-weight:800;font-size:15px;border-radius:12px}
   .fw-cta:hover{text-decoration:none;filter:brightness(1.05)}
-  .fw-again{display:block;width:100%;min-height:48px;margin-top:12px;border:1px solid #6A6E80;border-radius:12px;background:transparent;color:#E8EAF0;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+  .fw-again{display:block;width:100%;min-height:48px;margin-top:12px;border:1px solid #6A6E80;border-radius:12px;background:transparent;color:var(--tx2);font:inherit;font-weight:700;font-size:14px;cursor:pointer}
   /* An author \`display:block\` beats the UA stylesheet's [hidden]{display:none}
      no matter the specificity, so the reset button rendered from first paint —
      mid-game and before a game had even started. Any class that sets display on
      a [hidden] element has to re-assert this. */
   .fw-again[hidden]{display:none}
   .fw-again:hover{background:#1A1D24}
-  .fw-foot{margin:16px 0 0;font-size:13.5px;line-height:1.6;color:#9BA0B8}
-  .fw-ns{margin:14px 0 0;font-size:14px;color:#E8EAF0}
+  .fw-foot{margin:16px 0 0;font-size:13.5px;line-height:1.6;color:var(--tx3)}
+  .fw-ns{margin:14px 0 0;font-size:14px;color:var(--tx2)}
   @media (max-width:420px){
     .fw-card{padding:14px 10px 18px}
     .fw-kr{gap:4px}
@@ -5592,23 +5592,23 @@ ${g.leagues.map((L) => `<a class="cd-rl" href="#lg-${cdSlug(L.league)}"><span>${
   // latter is 4.09:1 on this canvas and fails WCAG AA. Same lift the app made.
   const style = `<style>
   .cd-h1{font-size:28px;font-weight:800;letter-spacing:-.02em;color:#fff;margin:10px 0 4px}
-  .cd-sub{font-size:14px;font-weight:500;color:#9ba0b8;margin:0 0 22px}
+  .cd-sub{font-size:14px;font-weight:500;color:var(--tx3);margin:0 0 22px}
   .cd-wrap{display:grid;grid-template-columns:212px 1fr;gap:26px;align-items:start}
   .cd-rail{position:sticky;top:76px}
   .cd-rail-t{font:700 11px Inter,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--tx4);margin:0 0 10px}
   .cd-rg{margin:0 0 14px}
-  .cd-rc{font:700 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#9ba0b8;margin:0 0 6px}
-  .cd-rl{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;color:#f0f1f5;font-size:13px;font-weight:600;text-decoration:none}
+  .cd-rc{font:700 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3);margin:0 0 6px}
+  .cd-rl{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;color:var(--tx);font-size:13px;font-weight:600;text-decoration:none}
   .cd-rl:hover{color:var(--grn);text-decoration:none}
   .cd-rn{color:var(--tx4);font:500 11px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
   .cd-note{font-size:11px;color:#3c3f4c;margin:6px 0 0;line-height:1.5}
-  .cd-search{display:flex;align-items:center;gap:10px;padding:13px 16px;background:#12141b;border:1px solid #2F3240;border-radius:14px;margin:0 0 16px}
+  .cd-search{display:flex;align-items:center;gap:10px;padding:13px 16px;background:#12141b;border:1px solid var(--bd2);border-radius:14px;margin:0 0 16px}
   .cd-search svg{flex:0 0 auto;color:var(--tx4)}
   .cd-search input{flex:1;min-width:0;background:transparent;border:none;outline:none;font:500 14px Inter,sans-serif;color:#fff}
   .cd-search input::placeholder{color:var(--tx4)}
   .cd-pop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 22px}
-  .cd-pop-t{font:700 11px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#9ba0b8;margin-right:2px}
-  .cd-pill{display:flex;align-items:center;gap:6px;padding:7px 11px;background:#1a1d27;border:1px solid #2F3240;border-radius:999px;text-decoration:none;font:600 12px Inter,sans-serif;color:#f0f1f5;white-space:nowrap}
+  .cd-pop-t{font:700 11px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-right:2px}
+  .cd-pill{display:flex;align-items:center;gap:6px;padding:7px 11px;background:#1a1d27;border:1px solid var(--bd2);border-radius:999px;text-decoration:none;font:600 12px Inter,sans-serif;color:var(--tx);white-space:nowrap}
   .cd-pill:hover{border-color:#3a3f52;text-decoration:none}
   .cd-sec{margin:0 0 26px}
   .cd-lh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px}
@@ -5618,13 +5618,13 @@ ${g.leagues.map((L) => `<a class="cd-rl" href="#lg-${cdSlug(L.league)}"><span>${
   .cd-lp{font:700 12px Inter,sans-serif;color:var(--grn);white-space:nowrap;text-decoration:none}
   .cd-lp:hover{text-decoration:underline}
   .cd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px}
-  .cd-card{display:flex;align-items:center;min-width:0;gap:8px;padding:10px 11px;background:#1a1d27;border:1px solid #2F3240;border-radius:12px;text-decoration:none}
+  .cd-card{display:flex;align-items:center;min-width:0;gap:8px;padding:10px 11px;background:#1a1d27;border:1px solid var(--bd2);border-radius:12px;text-decoration:none}
   a.cd-card:hover{border-color:#3a3f52;text-decoration:none}
   .cd-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:0 0 auto}
-  .cd-code{font:700 10px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;color:#9ba0b8;letter-spacing:.04em;flex:0 0 auto}
-  .cd-name{flex:1;min-width:0;font:600 12.5px Inter,sans-serif;color:#f0f1f5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cd-code{font:700 10px 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--tx3);letter-spacing:.04em;flex:0 0 auto}
+  .cd-name{flex:1;min-width:0;font:600 12.5px Inter,sans-serif;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .cd-soon{opacity:.42;cursor:default}
-  #cd-none{color:#9ba0b8;font-size:14px;padding:8px 0 18px;display:none}
+  #cd-none{color:var(--tx3);font-size:14px;padding:8px 0 18px;display:none}
   @media(max-width:960px){.cd-wrap{display:block}.cd-rail{display:none}}
   </style>`;
 

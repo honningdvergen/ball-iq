@@ -88,9 +88,9 @@ function closeness(rank, poolSize) {
 }
 
 const BAND_STYLE = {
-  win:  { bg: 'rgba(88,204,2,0.16)',  bd: '#58CC02', fg: '#8AE042' },
-  hot:  { bg: 'rgba(88,204,2,0.10)',  bd: 'rgba(88,204,2,0.45)', fg: '#8AE042' },
-  warm: { bg: 'rgba(255,193,7,0.10)', bd: 'rgba(255,193,7,0.40)', fg: '#FFC107' },
+  win:  { bg: 'rgba(88,204,2,0.16)',  bd: 'var(--accent)', fg: 'var(--grn-soft)' },
+  hot:  { bg: 'rgba(88,204,2,0.10)',  bd: 'rgba(88,204,2,0.45)', fg: 'var(--grn-soft)' },
+  warm: { bg: 'rgba(255,193,7,0.10)', bd: 'rgba(255,193,7,0.40)', fg: 'var(--gold)' },
   cold: { bg: 'var(--s1)',            bd: 'var(--border)', fg: 'var(--t2)' },
 };
 
@@ -455,7 +455,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       )}
       {won && answer && (
         <div style={{ margin: '4px 0 14px', padding: '14px 16px', borderRadius: 14, background: 'rgba(88,204,2,0.12)', border: '1px solid rgba(88,204,2,0.4)' }}>
-          <div style={{ fontSize: 15, fontWeight: 900, color: '#8AE042' }}>Got it — {answer.name}</div>
+          <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--grn-soft)' }}>Got it — {answer.name}</div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
             {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
           </div>
@@ -479,7 +479,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
                 else { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }
               } catch { /* dismissed or blocked — nothing to recover */ }
             }}
-            style={{ marginTop: 12, width: '100%', border: 'none', borderRadius: 12, background: 'var(--accent)', color: '#06230C', padding: '12px 16px', fontSize: 14.5, fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit' }}
+            style={{ marginTop: 12, width: '100%', border: 'none', borderRadius: 12, background: 'var(--accent)', color: 'var(--grn-ink)', padding: '12px 16px', fontSize: 14.5, fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit' }}
           >
             {copied ? 'Copied!' : 'Share result'}
           </button>

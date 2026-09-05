@@ -237,9 +237,9 @@ const SplashFallback = () => (
 const _fullBleed = () => {
   try {
     const root = document.getElementById('root')
-    if (root) { root.style.paddingLeft = '0'; root.style.maxWidth = 'none'; root.style.margin = '0'; root.style.background = '#0B0C10' }
-    document.documentElement.style.background = '#0B0C10'
-    document.body.style.background = '#0B0C10'
+    if (root) { root.style.paddingLeft = '0'; root.style.maxWidth = 'none'; root.style.margin = '0'; root.style.background = 'var(--bg)' }
+    document.documentElement.style.background = 'var(--bg)'
+    document.body.style.background = 'var(--bg)'
   } catch {}
 }
 

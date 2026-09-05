@@ -1490,7 +1490,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           </div>
           <button
             onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }}
-            style={{marginTop:8,alignSelf:"stretch",minHeight:44,padding:"12px 18px",background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
+            style={{marginTop:8,alignSelf:"stretch",minHeight:44,padding:"12px 18px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
           >
             {isAnonUser ? 'Save my account' : 'Sign in / Create account'}
           </button>
@@ -1527,7 +1527,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                     ) : editingName ? (
                       <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
                         <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:"#fff"}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
-                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name" style={{flexShrink:0, width:32, height:32, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"#58CC02", color:"#06230C", fontSize:15, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name" style={{flexShrink:0, width:32, height:32, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"var(--grn-ink)", fontSize:15, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
                         <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit" style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:14, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
                       </span>
                     ) : (
@@ -1708,7 +1708,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                       <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
                         <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
                         <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
-                          style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"#0B0C10", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                          style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"var(--bg)", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
                         <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
                           style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
                       </span>

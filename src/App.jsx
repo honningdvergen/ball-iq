@@ -892,7 +892,7 @@ function clubHexToRgba(hex, a) {
 function clubReadableText(hex) {
   const h = String(hex).replace("#", "");
   const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
-  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "#0B0C10" : "#ffffff";
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "var(--bg)" : "#ffffff";
 }
 
 // Broadcast/club-recognised short codes for the row swatches (MUN, FCB, BVB, …),
@@ -1600,9 +1600,9 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
         <button onClick={() => setDraft("mixed")} style={{width:"100%",marginTop:14,borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",textAlign:"left",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,padding:"13px 15px",
           ...(draft === "mixed" ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
           <span style={{fontSize:19}}>🎲</span>
-          <span style={{fontSize:14.5,fontWeight:draft === "mixed" ? 800 : 700,color:draft === "mixed" ? "#8AE042" : "var(--t1)"}}>Mixed — all topics</span>
+          <span style={{fontSize:14.5,fontWeight:draft === "mixed" ? 800 : 700,color:draft === "mixed" ? "var(--grn-soft)" : "var(--t1)"}}>Mixed — all topics</span>
           <span style={{marginLeft:"auto",width:19,height:19,borderRadius:"50%",...(draft === "mixed"
-            ? {background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#06230C",fontWeight:900}
+            ? {background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"var(--grn-ink)",fontWeight:900}
             : {border:"1.5px solid #3E4150"})}}>{draft === "mixed" ? "✓" : ""}</span>
         </button>
         <div style={{display:"flex",gap:6,marginTop:16,padding:4,borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)"}}>
@@ -1642,18 +1642,18 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
                 ...(sel ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}>
                   {it.abbr
-                    ? <span style={{width:34,height:34,borderRadius:10,background:it.color || (sel ? "rgba(88,204,2,0.14)" : "var(--s2)"),display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,letterSpacing:"0.04em",color:it.fg || (sel ? "#8AE042" : "var(--t1)"),boxShadow:it.color ? `0 2px 8px ${it.color}55` : undefined}}>{it.abbr}</span>
+                    ? <span style={{width:34,height:34,borderRadius:10,background:it.color || (sel ? "rgba(88,204,2,0.14)" : "var(--s2)"),display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,letterSpacing:"0.04em",color:it.fg || (sel ? "var(--grn-soft)" : "var(--t1)"),boxShadow:it.color ? `0 2px 8px ${it.color}55` : undefined}}>{it.abbr}</span>
                     : <span style={{fontSize:24}}>{it.icon}</span>}
-                  {sel && <span style={{width:19,height:19,borderRadius:"50%",background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"#06230C",fontWeight:900}}>✓</span>}
+                  {sel && <span style={{width:19,height:19,borderRadius:"50%",background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"var(--grn-ink)",fontWeight:900}}>✓</span>}
                 </div>
-                <span style={{fontSize:14.5,fontWeight:sel ? 800 : 700,color:sel ? "#8AE042" : "var(--t1)",marginTop:2}}>{it.label}</span>
+                <span style={{fontSize:14.5,fontWeight:sel ? 800 : 700,color:sel ? "var(--grn-soft)" : "var(--t1)",marginTop:2}}>{it.label}</span>
               </button>
             );
           })}
         </div>
       </div>
       <div style={{borderTop:"1px solid var(--s1)",background:"#0C0E14",padding:"12px 20px calc(12px + env(safe-area-inset-bottom, 0px))"}}>
-        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,fontSize:15.5,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
+        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,fontSize:15.5,fontWeight:800,color:"var(--grn-ink)",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
       </div>
     </div>
   );
@@ -3431,7 +3431,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5}}>{timerDuration}s per question — the clock starts when you tap.</div>
           <button
             onClick={(e) => { e.stopPropagation(); setArmed(true); }}
-            style={{marginTop:14,minHeight:48,padding:"13px 38px",borderRadius:999,background:"var(--accent)",border:"none",color:"#06230C",WebkitTextFillColor:"#0a1a00",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",boxShadow:"0 10px 26px -8px rgba(88,204,2,0.55)"}}
+            style={{marginTop:14,minHeight:48,padding:"13px 38px",borderRadius:999,background:"var(--accent)",border:"none",color:"var(--grn-ink)",WebkitTextFillColor:"#0a1a00",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",boxShadow:"0 10px 26px -8px rgba(88,204,2,0.55)"}}
           >
             Start
           </button>
@@ -3693,7 +3693,7 @@ function LocalSetup({ onStart, onBack }) {
               <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",display:"-webkit-box",WebkitBoxOrient:"vertical",WebkitLineClamp:2,lineHeight:1.25}}>{t.label}</span>
               <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
             </div>
-            <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"#06230C",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
+            <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"var(--grn-ink)",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
           </div>
         );
       })()}
@@ -4095,7 +4095,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
           })}
         </div>
         {phase === "locked" && (
-          <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color:"var(--info, #FFC107)"}}>
+          <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color:"var(--info, var(--gold))"}}>
             ✓ Answer locked in
           </div>
         )}
@@ -5288,9 +5288,9 @@ function StumpScreen({ row, onPlayFull, onHome }) {
   };
 
   const optStyle = (i) => {
-    const base = { display: "block", width: "100%", textAlign: "left", padding: "14px 16px", marginTop: 10, borderRadius: 12, border: "1.5px solid var(--bd, #2F3240)", background: "var(--card, #1B1E27)", color: "var(--text, #F0F1F5)", fontFamily: "inherit", fontSize: 15, fontWeight: 700, cursor: done ? "default" : "pointer" };
+    const base = { display: "block", width: "100%", textAlign: "left", padding: "14px 16px", marginTop: 10, borderRadius: 12, border: "1.5px solid var(--bd, var(--border2))", background: "var(--card, var(--s2))", color: "var(--text, var(--text))", fontFamily: "inherit", fontSize: 15, fontWeight: 700, cursor: done ? "default" : "pointer" };
     if (!done) return base;
-    if (i === row.a) return { ...base, borderColor: "var(--accent, #58CC02)", background: "rgba(88,204,2,0.12)" };
+    if (i === row.a) return { ...base, borderColor: "var(--accent, var(--accent))", background: "rgba(88,204,2,0.12)" };
     if (i === picked) return { ...base, borderColor: "var(--red, #FF5A5A)", background: "rgba(255,90,90,0.10)", opacity: 0.9 };
     return { ...base, opacity: 0.55 };
   };
@@ -5315,7 +5315,7 @@ function StumpScreen({ row, onPlayFull, onHome }) {
             {gotIt ? "⚽ You got it!" : "Stumped! 🥜"}
           </div>
           {row.hint && (
-            <div style={{ marginTop: 10, padding: "12px 14px", borderRadius: 12, background: "var(--card, #1B1E27)", border: "1px solid var(--bd, #2F3240)", fontSize: 14, lineHeight: 1.5, color: "var(--t2)" }}>
+            <div style={{ marginTop: 10, padding: "12px 14px", borderRadius: 12, background: "var(--card, var(--s2))", border: "1px solid var(--bd, var(--border2))", fontSize: 14, lineHeight: 1.5, color: "var(--t2)" }}>
               {row.hint}
             </div>
           )}
@@ -5408,14 +5408,14 @@ function TomorrowTeaser({ streak, remindState, onRemind, compact }) {
     <div style={{ textAlign: "center", padding: compact ? "2px 0" : "10px 0 2px", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
       <div style={{ fontSize: compact ? 13.5 : 14, fontWeight: 700, color: "var(--t2)" }}>
         {streak >= 1
-          ? <>Both dailies done — tomorrow makes it <span style={{ color: "#FFC107" }}>🔥{streak + 1}</span></>
+          ? <>Both dailies done — tomorrow makes it <span style={{ color: "var(--gold)" }}>🔥{streak + 1}</span></>
           : <>Both dailies done 🌙</>}
       </div>
       {/* Mirrors the Daily tab's amber countdown pill so "when do I return"
           reads identically everywhere. */}
       <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
         <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
-        <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 800, color: "#FFC107", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
+        <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
       </span>
       {remindState === "off" && (
         <button
@@ -5529,7 +5529,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
             marginTop:8,
             fontSize:88,
             fontWeight:900,
-            color:"#58CC02",
+            color:"var(--accent)",
             letterSpacing:"-0.03em",
             lineHeight:1,
             textShadow:"0 8px 32px rgba(88,204,2,0.35)",
@@ -6565,7 +6565,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         {stats.streak >= 2 && (
           <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 13px",borderRadius:999,background:"rgba(255,193,7,0.08)",border:"1px solid rgba(255,193,7,0.3)"}}>
             <span style={{fontSize:12}}>🔥</span>
-            <span style={{fontSize:13,fontWeight:800,color:"#FFC107",fontVariantNumeric:"tabular-nums"}}>{stats.streak} win streak</span>
+            <span style={{fontSize:13,fontWeight:800,color:"var(--gold)",fontVariantNumeric:"tabular-nums"}}>{stats.streak} win streak</span>
           </div>
         )}
       </div>
@@ -6604,9 +6604,9 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         ) : (
         <div style={{display:"flex",alignItems:"stretch",marginTop:20,borderTop:"1px solid var(--border)",paddingTop:14}}>
           {[
-            { v: stats.wins, label: "Wins", color: "#8AE042" },
+            { v: stats.wins, label: "Wins", color: "var(--grn-soft)" },
             { v: stats.losses, label: "Losses", color: "var(--t1)" },
-            { v: stats.winRate == null ? "—" : `${stats.winRate}%`, label: "Win rate", color: "#FFC107" },
+            { v: stats.winRate == null ? "—" : `${stats.winRate}%`, label: "Win rate", color: "var(--gold)" },
           ].map((s, i) => (
             <React.Fragment key={s.label}>
               {i > 0 && <div style={{width:1,background:"var(--border)"}} />}
@@ -6637,8 +6637,8 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           anywhere, so the most important CTA on the Online tab carried the one
           off-palette hue in the product, and only on iOS. Setting it on the button
           makes both children inherit the same ink. */}
-      <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"#06230C",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-        <span style={{display:"flex",alignItems:"center"}} aria-hidden="true">{needsAccount ? <Zap size={17} strokeWidth={2.4} /> : <Gamepad2 size={17} strokeWidth={2.2} />}</span><span style={{fontSize:17,fontWeight:800,color:"#06230C"}}>{needsAccount ? "Sign up to play online" : "Create Room"}</span>
+      <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
+        <span style={{display:"flex",alignItems:"center"}} aria-hidden="true">{needsAccount ? <Zap size={17} strokeWidth={2.4} /> : <Gamepad2 size={17} strokeWidth={2.2} />}</span><span style={{fontSize:17,fontWeight:800,color:"var(--grn-ink)"}}>{needsAccount ? "Sign up to play online" : "Create Room"}</span>
       </button>
       {needsAccount && (
         <div style={{marginTop:8,textAlign:"center",fontSize:12.5,color:"var(--t3)",lineHeight:1.45}}>
@@ -6686,7 +6686,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         <button onClick={submitJoin} disabled={joining || joinCode.length === 0}
           style={{borderRadius:999,padding:"15px 24px",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit",flexShrink:0,
             ...(joinCode.length > 0 && !joining
-              ? {border:"none",background:"var(--accent)",color:"#06230C",boxShadow:"0 8px 24px rgba(88,204,2,0.25)"}
+              ? {border:"none",background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)"}
               : {background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t3)"})}}>
           {joining ? "…" : "Join"}
         </button>
@@ -6707,7 +6707,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
                 {/* Scores are variable-width — "Won 3241–2055" wraps to two lines
                     in a third-of-screen card while "Lost 3329–5274" fits on one.
                     Centred so a wrapped second line doesn't sit ragged-left. */}
-                <span style={{fontSize:11,fontWeight:800,textAlign:"center",color:o.won ? "#8AE042" : "#FF6B6B"}}>{o.won ? "Won" : "Lost"} {o.line}</span>
+                <span style={{fontSize:11,fontWeight:800,textAlign:"center",color:o.won ? "var(--grn-soft)" : "#FF6B6B"}}>{o.won ? "Won" : "Lost"} {o.line}</span>
                 {/* marginTop:auto pins Rematch to the bottom of the card. The
                     cards are flex siblings and already stretch to equal height,
                     but the button used to flow straight after the score — so a
@@ -6724,7 +6724,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
 
       {/* Local pass & play — kept reachable (not in the design frame) */}
       <div style={{marginTop:16,display:"flex",alignItems:"center",gap:12,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:16,padding:"13px 14px"}}>
-        <span style={{width:44,height:44,borderRadius:12,background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.3)",display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:"#8AE042"}} aria-hidden="true"><Users size={21} strokeWidth={2} /></span>
+        <span style={{width:44,height:44,borderRadius:12,background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.3)",display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:"var(--grn-soft)"}} aria-hidden="true"><Users size={21} strokeWidth={2} /></span>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:14,fontWeight:800,color:"var(--t1)"}}>Local pass &amp; play</div>
           <div style={{fontSize:12,color:"var(--t2)"}}>Same couch, one phone — up to 6 players.</div>
@@ -6734,7 +6734,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
             do, so it stops being a ghost button. Signed in, it goes back to
             secondary — online is the point of the tab by then. */}
         <button onClick={() => startMode("local")} style={needsAccount
-          ? {padding:"10px 20px",borderRadius:999,border:"none",background:"var(--accent)",color:"#06230C",WebkitTextFillColor:"#06230C",fontWeight:800,fontSize:13.5,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 6px 16px -6px rgba(88,204,2,0.5)"}
+          ? {padding:"10px 20px",borderRadius:999,border:"none",background:"var(--accent)",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontWeight:800,fontSize:13.5,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 6px 16px -6px rgba(88,204,2,0.5)"}
           : {padding:"9px 18px",borderRadius:999,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
       </div>
       </div>{/* /.online-col-b */}
@@ -6783,7 +6783,7 @@ function ResetPasswordOverlay() {
               style={{width:"100%",padding:"14px 16px",marginBottom:14,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:16,fontFamily:"inherit",outline:"none"}} />
             {err && <div style={{color:"#FF6B6B",fontSize:13,marginBottom:12}}>{err}</div>}
             <button onClick={submit} disabled={busy || !pw || !pw2}
-              style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,fontSize:15,fontWeight:800,color:"#06230C",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>
+              style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,fontSize:15,fontWeight:800,color:"var(--grn-ink)",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>
               {busy ? "Saving…" : "Save new password"}
             </button>
             <button onClick={clearPasswordRecovery} style={{marginTop:10,background:"transparent",border:"none",color:"var(--t3)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Cancel</button>
@@ -7583,8 +7583,8 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#0B0C10",
-      color: "#F0F1F5",
+      background: "var(--bg)",
+      color: "var(--text)",
       zIndex: 1000,
       overflowY: "auto",
       WebkitOverflowScrolling: "touch",
@@ -7595,7 +7595,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         background: "rgba(11,12,16,0.95)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid #2F3240",
+        borderBottom: "1px solid var(--border2)",
         // Phase 6a Item 1: safe-area-inset-top so the back button isn't
         // hidden behind the iOS status bar / notch in PWA standalone mode.
         // The outer position:fixed inset:0 ignores safe area by design;
@@ -7610,8 +7610,8 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
           aria-label="Close privacy policy"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#1B1E27", border: "1px solid #2F3240",
-            color: "#F0F1F5", fontSize: 18, lineHeight: 1,
+            background: "var(--s2)", border: "1px solid var(--border2)",
+            color: "var(--text)", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
             WebkitTapHighlightColor: "transparent",
@@ -7626,15 +7626,15 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
             `new Date().toLocaleDateString()` which falsely claimed the
             policy was updated every day the user viewed it. Bump this
             string whenever the policy content materially changes. */}
-        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Last updated: 23 August 2026</div>
+        <div style={{fontSize: 13, color: "var(--t2)", marginBottom: 28}}>Last updated: 23 August 2026</div>
 
         <div style={{
-          background: "#1B1E27", borderRadius: 16,
+          background: "var(--s2)", borderRadius: 16,
           padding: "18px 20px", margin: "12px 0 24px",
-          border: "1px solid #2F3240",
+          border: "1px solid var(--border2)",
         }}>
-          <p style={{fontSize: 15, color: "#9BA0B8", margin: 0}}>
-            <span style={{color: "#58CC02", fontWeight: 600}}>The short version:</span>{" "}
+          <p style={{fontSize: 15, color: "var(--t2)", margin: 0}}>
+            <span style={{color: "var(--accent)", fontWeight: 600}}>The short version:</span>{" "}
             Play as a guest and nothing is collected — your progress lives on your device only. Sign in and we store the minimum needed to sync your account across devices: email, username, scores, and game history. The app shows no ads, and counts how often features are used with no identifier of any kind attached. Our website (balliq.app) uses privacy-friendly cookieless analytics, records a few first-party product events, and uses Microsoft Clarity session analytics — which, in Europe, we load only if you say yes. We are not currently showing ads anywhere, and the app itself stays ad-free and cookie-free. We never sell your data.
           </p>
         </div>
@@ -7663,7 +7663,7 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <p style={privacyP}>Our <strong>website (balliq.app)</strong> uses Vercel Web Analytics — a privacy-friendly, cookieless analytics service — to understand aggregate traffic, such as how many people visit a page. It sets no cookies, does not track you across other websites, and does not identify you personally.</p>
         <p style={privacyP}>Our <strong>website</strong> also records a small number of <strong>first-party product events</strong> of our own — for example “a quiz was started” or “the app link was tapped” — so we can tell which parts of the site are working. Each event stores only its name, the surface it happened on, and a <strong>random identifier we generate on your device</strong> (stored in your browser as <code>biq_vid</code>) so a single visit hangs together. That identifier is a random value, not derived from anything about you or your device: it is not a fingerprint, it is never linked to your account or email, it is not shared with anyone, and clearing this site’s data removes it. No question text and no personal data is recorded. This runs on the website only.</p>
         <p style={privacyP}>Our <strong>website (balliq.app)</strong> also uses <strong>Microsoft Clarity</strong> to understand how visitors use the site. Clarity records anonymised interaction signals — clicks, scrolls, mouse movement — and session replays with typed text masked, which we use to find and fix confusing parts of the site. It may set cookies or similar identifiers. This runs on the website only, never inside the app — and for visitors in Europe it does not run there either unless they allow it, which we ask once on the first visit. See Microsoft's privacy statement at <a href="https://privacy.microsoft.com/privacystatement" style={{color:"var(--accent)",textDecoration:"none"}} target="_blank" rel="noopener noreferrer">privacy.microsoft.com</a>.</p>
-        <p style={privacyP}>We <strong>do not currently display ads</strong> anywhere — not on the website and not in the app. If that changes we will update this page first. The paragraph below describes how <strong>Google AdSense</strong> would work on the <strong>website only</strong> if we enable it. To serve and measure ads, Google and its partners may set and read cookies or similar identifiers in your browser, and — where you agree — use them to show more relevant ads. This applies to the website only; the app remains ad-free and sets no advertising cookies. We are not currently serving ads, so no advertising cookies are set. Visitors in Europe, the UK and Switzerland are asked once, on their first visit to the website, before Microsoft Clarity loads — that prompt covers Clarity only, since no ads run. If we ever enable ads we will extend that prompt to cover them and ask again first. You can review how Google uses data from sites that use its services at <span style={{color:"#58CC02"}}>policies.google.com/technologies/partner-sites</span>, and manage ad personalisation at <span style={{color:"#58CC02"}}>adssettings.google.com</span>.</p>
+        <p style={privacyP}>We <strong>do not currently display ads</strong> anywhere — not on the website and not in the app. If that changes we will update this page first. The paragraph below describes how <strong>Google AdSense</strong> would work on the <strong>website only</strong> if we enable it. To serve and measure ads, Google and its partners may set and read cookies or similar identifiers in your browser, and — where you agree — use them to show more relevant ads. This applies to the website only; the app remains ad-free and sets no advertising cookies. We are not currently serving ads, so no advertising cookies are set. Visitors in Europe, the UK and Switzerland are asked once, on their first visit to the website, before Microsoft Clarity loads — that prompt covers Clarity only, since no ads run. If we ever enable ads we will extend that prompt to cover them and ask again first. You can review how Google uses data from sites that use its services at <span style={{color:"var(--accent)"}}>policies.google.com/technologies/partner-sites</span>, and manage ad personalisation at <span style={{color:"var(--accent)"}}>adssettings.google.com</span>.</p>
 
         <h2 style={privacyH2}>5. Third-party services we use</h2>
         <ul style={{paddingLeft: 20, marginBottom: 12}}>
@@ -7684,14 +7684,14 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <h2 style={privacyH2}>8. Contact</h2>
         <p style={privacyP}>If you have any questions about this privacy policy, please contact us at: <a href="mailto:privacy@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>privacy@balliq.app</a></p>
 
-        <p style={{marginTop: 48, fontSize: 13, color: "#9BA0B8"}}>© 2026 {APP_NAME}. All rights reserved.</p>
+        <p style={{marginTop: 48, fontSize: 13, color: "var(--t2)"}}>© 2026 {APP_NAME}. All rights reserved.</p>
       </div>
     </div>
   );
 });
-const privacyH2 = {fontSize: 17, fontWeight: 700, color: "#F0F1F5", margin: "28px 0 10px"};
-const privacyP = {fontSize: 15, color: "#9BA0B8", marginBottom: 12};
-const privacyLi = {fontSize: 15, color: "#9BA0B8", marginBottom: 6};
+const privacyH2 = {fontSize: 17, fontWeight: 700, color: "var(--text)", margin: "28px 0 10px"};
+const privacyP = {fontSize: 15, color: "var(--t2)", marginBottom: 12};
+const privacyLi = {fontSize: 15, color: "var(--t2)", marginBottom: 6};
 
 // ─── HELP / FAQ SCREEN ────────────────────────────────────────────────────────
 // Same overlay shape as PrivacyScreen so dark / light backgrounds, scroll
@@ -7736,8 +7736,8 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#0B0C10",
-      color: "#F0F1F5",
+      background: "var(--bg)",
+      color: "var(--text)",
       zIndex: 1000,
       overflowY: "auto",
       WebkitOverflowScrolling: "touch",
@@ -7748,7 +7748,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
         background: "rgba(11,12,16,0.95)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid #2F3240",
+        borderBottom: "1px solid var(--border2)",
         // Phase 6a Item 1 followup: same safe-area-inset-top fix as
         // PrivacyScreen — back button hidden behind iOS notch in PWA
         // standalone without explicit top padding.
@@ -7762,8 +7762,8 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
           aria-label="Close help"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#1B1E27", border: "1px solid #2F3240",
-            color: "#F0F1F5", fontSize: 18, lineHeight: 1,
+            background: "var(--s2)", border: "1px solid var(--border2)",
+            color: "var(--text)", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
             WebkitTapHighlightColor: "transparent",
@@ -7774,11 +7774,11 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
       </div>
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
         <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ {APP_NAME}</div>
-        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>Quick answers to common questions.</div>
+        <div style={{fontSize: 13, color: "var(--t2)", marginBottom: 28}}>Quick answers to common questions.</div>
         {/* Phase 6d Issue 3: reuse privacyH2/privacyP from PrivacyScreen so
             Help and Privacy read as visual siblings (same h2 weight/color,
             same body color, same vertical rhythm). Was using a bright
-            #58CC02 on questions which was louder than anywhere else in
+            var(--accent) on questions which was louder than anywhere else in
             the app. */}
         {FAQ_ENTRIES.map((entry, i) => (
           <React.Fragment key={i}>
@@ -7824,8 +7824,8 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
       inset: 0,
-      background: "#0B0C10",
-      color: "#F0F1F5",
+      background: "var(--bg)",
+      color: "var(--text)",
       zIndex: 1000,
       overflowY: "auto",
       WebkitOverflowScrolling: "touch",
@@ -7836,7 +7836,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
         background: "rgba(15,17,23,0.95)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid #2F3240",
+        borderBottom: "1px solid var(--border2)",
         padding: "calc(14px + env(safe-area-inset-top, 0px)) 20px 14px",
         display: "flex", alignItems: "center", gap: 12,
         zIndex: 1,
@@ -7847,8 +7847,8 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
           aria-label="Close known issues"
           style={{
             width: 36, height: 36, borderRadius: 10,
-            background: "#1B1E27", border: "1px solid #2F3240",
-            color: "#F0F1F5", fontSize: 18, lineHeight: 1,
+            background: "var(--s2)", border: "1px solid var(--border2)",
+            color: "var(--text)", fontSize: 18, lineHeight: 1,
             cursor: "pointer", display: "flex",
             alignItems: "center", justifyContent: "center",
             WebkitTapHighlightColor: "transparent",
@@ -7859,7 +7859,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
       </div>
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
         <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ Known issues</div>
-        <div style={{fontSize: 13, color: "#9BA0B8", marginBottom: 28}}>
+        <div style={{fontSize: 13, color: "var(--t2)", marginBottom: 28}}>
           We're a small team and we know about these. Honest about what's a bug,
           what's a deliberate trade-off, and what's just hard.
         </div>
@@ -8215,7 +8215,7 @@ function ScreenLoading({ label = "Loading" }) {
     }}>
       <div style={{
         width:38, height:38, borderRadius:"50%",
-        border:"3px solid var(--line, #2F3240)", borderTopColor:"#58CC02",
+        border:"3px solid var(--line, var(--border2))", borderTopColor:"var(--accent)",
         animation:"biqSpin 0.9s linear infinite",
       }} />
       <div style={{fontSize:13.5, fontWeight:700, color:"var(--t2)", letterSpacing:"-0.2px"}}>
@@ -8266,9 +8266,9 @@ class TabErrorBoundary extends React.Component {
           <button
             onClick={() => this.setState({ hasError:false })}
             style={{
-              padding:"11px 24px", background:"#58CC02", border:"none",
+              padding:"11px 24px", background:"var(--accent)", border:"none",
               borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", fontFamily:"Inter,sans-serif", fontSize:13.5,
-              fontWeight:700, color:"#06230C", cursor:"pointer"
+              fontWeight:700, color:"var(--grn-ink)", cursor:"pointer"
             }}
           >
             Try again
@@ -8282,7 +8282,7 @@ class TabErrorBoundary extends React.Component {
               onClick={() => { this.setState({ hasError:false }); try { this.props.onExit(); } catch {} }}
               style={{
                 marginTop:12, padding:"11px 24px", background:"transparent",
-                border:"1px solid var(--line, #2F3240)", borderRadius:11,
+                border:"1px solid var(--line, var(--border2))", borderRadius:11,
                 fontFamily:"Inter,sans-serif", fontSize:13.5, fontWeight:700,
                 color:"var(--t2)", cursor:"pointer"
               }}
@@ -13130,7 +13130,7 @@ function AppInner() {
               </div>
               <button
                 onClick={() => { closeChallengeIntro(); playDaily(); }}
-                style={{width:"100%",minHeight:50,padding:"14px",background:"var(--accent)",color:"#06230C",border:"none",borderRadius:14,boxShadow:"0 10px 26px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:16,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
+                style={{width:"100%",minHeight:50,padding:"14px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:14,boxShadow:"0 10px 26px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:16,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
               >
                 Play the Daily 7
               </button>
@@ -13179,7 +13179,7 @@ function AppInner() {
               </div>
               <button
                 onClick={() => { setChallengeResult(null); shareDaily(); }}
-                style={{width:"100%",padding:14,background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#0a1a00"}}
+                style={{width:"100%",padding:14,background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#0a1a00"}}
               >
                 Send it back 🔁
               </button>
@@ -13289,7 +13289,7 @@ function AppInner() {
               <div style={{fontSize:32,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",marginBottom:12}}>{levelUpOverlay.name}</div>
               <div style={{fontSize:14,color:"rgba(255,255,255,0.6)"}}>Keep playing to reach the next level</div>
             </div>
-            <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>Let's Go ⚽</button>
+            <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>Let's Go ⚽</button>
           </div>
         )}
         {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
@@ -13607,7 +13607,7 @@ function AppInner() {
               {IS_IOS_WEB && (
                 <button
                   onClick={() => { try { window.location.href = `app.balliq://balliq.app/join/${pendingJoinCode}`; } catch {} }}
-                  style={{width:"100%",padding:14,background:"var(--accent)",color:"#06230C",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+                  style={{width:"100%",padding:14,background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
                 >
                   📲 Got the app? Open it there
                 </button>
@@ -13622,7 +13622,7 @@ function AppInner() {
                 disabled={guestJoining}
                 style={IS_IOS_WEB
                   ? {width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:14,fontWeight:700,cursor:"pointer",marginBottom:8,opacity:guestJoining?0.6:1}
-                  : {width:"100%",padding:14,background:"var(--accent)",color:"#06230C",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8,opacity:guestJoining?0.6:1}}
+                  : {width:"100%",padding:14,background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8,opacity:guestJoining?0.6:1}}
               >
                 {guestJoining ? "Joining…" : "⚡ Play as guest"}
               </button>
@@ -13830,7 +13830,7 @@ function AppInner() {
             )}
             {mode === "chaos" && (
               <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(88,204,2,0.10),rgba(255,106,0,0.06))",borderRadius:12,border:"1px solid rgba(88,204,2,0.22)"}}>
-                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"#8AE042",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>🎭 Chaos</div>
+                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--grn-soft)",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>🎭 Chaos</div>
                 <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>Quotes, moments &amp; madness — take a beat and think.</div>
               </div>
             )}
@@ -13944,7 +13944,7 @@ function AppInner() {
                 </div>
                 <button
                   onClick={() => { dismissSaveLine(); loopEvent('save-line-tap'); openAuthPrompt?.('save'); }}
-                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"#06230C",WebkitTextFillColor:"#06230C",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
+                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
                 >
                   Save
                 </button>
@@ -13967,7 +13967,7 @@ function AppInner() {
                 </div>
                 <button
                   onClick={() => { dismissPhotoNudge(); loopEvent('photo-nudge-tap'); setTab('profile'); setScreen('home'); }}
-                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"#06230C",WebkitTextFillColor:"#06230C",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
+                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
                 >
                   Add
                 </button>

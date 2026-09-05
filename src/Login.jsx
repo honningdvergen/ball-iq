@@ -99,9 +99,9 @@ const PROMPT_COPY = {
 }
 
 const C = {
-  canvas: '#0B0C10', card: '#1B1E27', border: '#242730', borderHi: '#2F3240',
-  green: '#58CC02', greenOn: '#06230C', greenSoft: '#8AE042',
-  t1: '#F0F1F5', t1b: '#E8EAF0', t2: '#9BA0B8', t3: '#6E7180', legal: '#5A5F70',
+  canvas: 'var(--bg)', card: 'var(--s2)', border: 'var(--border)', borderHi: 'var(--border2)',
+  green: 'var(--accent)', greenOn: 'var(--grn-ink)', greenSoft: 'var(--grn-soft)',
+  t1: 'var(--text)', t1b: 'var(--tx2)', t2: 'var(--t2)', t3: '#6E7180', legal: '#5A5F70',
 }
 
 export default function Login({ asOverlay = false, onClose, promptReason = null }) {
@@ -405,7 +405,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                         style={{ flex: 1, minWidth: 0, padding: '13px 14px', borderRadius: 12, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 16, fontWeight: 700, letterSpacing: '0.2em', textAlign: 'center', outline: 'none' }}
                       />
                       <button type="button" onClick={joinWithCode} disabled={joinBusy}
-                        style={{ ...S.btnBase, width: 'auto', padding: '13px 20px', border: 'none', background: '#58CC02', color: '#06230C', fontWeight: 800, opacity: joinBusy ? 0.6 : 1 }}>
+                        style={{ ...S.btnBase, width: 'auto', padding: '13px 20px', border: 'none', background: 'var(--accent)', color: 'var(--grn-ink)', fontWeight: 800, opacity: joinBusy ? 0.6 : 1 }}>
                         {joinBusy ? 'Joining…' : 'Join'}
                       </button>
                     </div>

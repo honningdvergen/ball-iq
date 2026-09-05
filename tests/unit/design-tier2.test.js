@@ -136,7 +136,8 @@ describe('one primary button, everywhere', () => {
   });
 
   it('the Online tab CTA uses the pill and the standard glow', () => {
-    expect(APP).toMatch(/borderRadius:999,background:"var\(--accent\)",color:"#06230C",boxShadow:"0 8px 22px -8px rgba\(88,204,2,0\.55\)"/);
+    // The ink is the token since 2026-09-05 (C3-B: inline styles read tokens).
+    expect(APP).toMatch(/borderRadius:999,background:"var\(--accent\)",color:"var\(--grn-ink\)",boxShadow:"0 8px 22px -8px rgba\(88,204,2,0\.55\)"/);
   });
 
   it('the primary button look is one definition, not six', () => {
