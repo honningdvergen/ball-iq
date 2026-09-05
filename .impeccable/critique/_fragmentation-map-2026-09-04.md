@@ -27,3 +27,11 @@ very fragmented and like separate products almost."
   element spilling off-screen is the visually-hidden skip link — by design, not a defect.
 - 09-03's P0 "three visual systems on one domain; traffic lands on the least designed one" is unchanged
   two days later and is Alex's fragmentation complaint verbatim.
+
+## App funnel on `/`, measured 2026-09-05 at 375×812 (prod)
+- The ONLY painted store links are two footer text links — "iOS" 22×17px and "Android" 50×17px — at y=5379,
+  ~6.6 screens below the fold and far under the 44px tap minimum.
+- Two real badges ("Download on the App Store →", "Get it on Google Play →", class `landing-store-badge`)
+  are in the DOM at 0×0: rendered by React, styled by nothing that ships on `/`. Dead markup in the funnel.
+- B (evidence agent) adds: `/play` at mobile paints zero store links; nearly every store link on every page
+  and viewport is below the fold; store URLs use two forms (`/us/app/id…` vs `/app/id…`) for one app.
