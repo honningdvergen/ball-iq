@@ -18,8 +18,10 @@ failed on exactly that); finish card = one primary (Keep going / Play again), th
 one quiet `.bq-app` → `/get?src=clubq-finish`, score captioned with %, today's result remembered on the ribbon
 after a reload; app band lost its "Play free in your browser" button; 404 hero has no badges; homepage club
 tiles → `/quiz/<slug>/` with a 4px club-colour rule, one `.fd-app` row after Today (44px links).
-**Next (in order):** (1) decide where the dailies live on the web BEFORE removing `/play?game=…` — they have
-no static playable page; (2) P0 unification: one tokens.css, one header component with a /play mode, one
+**Also shipped 09-05:** reveal-scroll honours reduced motion with `instant` (be6…); BOTH header finders (static shell +
+React SiteHeader) send a club hit to `/quiz/<slug>/`, not `/play?club=` — live-verified ("ars" → /quiz/arsenal/).
+**Alex (09-05, 4th answer): build static playable daily pages FIRST — `/football-wordle/` playable Footle, then
+Daily 7, Trail, Mystery — and only then retire `/play?game=…`.** **Next (in order):** (1) the Footle page; (2) P0 unification: one tokens.css, one header component with a /play mode, one
 `.bq-card` for lists + football-quiz pages, delete the ghost landing in index.html (32% of the file), map the
 19-file green; (3) P2s: table-first on /lists, directory filter + jump chips, footer to 4 columns, 37px header
 links → 44, caption grey 3.9:1 → AA; (4) re-inspect the 09-03 items not covered: report sheet, 1911 void, Games
