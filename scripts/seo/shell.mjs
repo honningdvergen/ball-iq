@@ -40,7 +40,10 @@ const BURGER_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"
 // of script. Static pages have no bundle, and search must work on first paint.
 const finderScript = (base) => {
   const data = JSON.stringify([
-    ...CLUB_INDEX.map((c) => [c.n, c.c, `${base}/play?club=${c.s}`]),
+    // A club hit goes to the club's own page, not the app (2026-09-05): the
+    // page IS the club quiz on the web, and the critique found the finder was
+    // the last place sending the same club to a second product.
+    ...CLUB_INDEX.map((c) => [c.n, c.c, `${base}/quiz/${c.s}/`]),
     ...LEAGUES.map(([s, n]) => [n, 'League quiz', `${base}/quiz/${s}/`]),
   ]);
   return `<script>(function(){var D=${data};var i=document.getElementById('fd-find'),r=document.getElementById('fd-find-res'),n=document.getElementById('fd-nav'),b=document.querySelector('.fd-burger');if(!i||!r)return;

@@ -29,7 +29,8 @@ function useFinder(q) {
     const clubs = CLUB_INDEX.map((c) => {
       const n = norm(c.n);
       const rank = n.startsWith(nq) ? 0 : n.includes(nq) ? 1 : -1;
-      return rank < 0 ? null : { rank, kind: 'club', n: c.n, sub: c.c, href: `${PLAY}?club=${c.s}` };
+      // The club's own page, not the app — same rule as the homepage tiles (2026-09-05).
+      return rank < 0 ? null : { rank, kind: 'club', n: c.n, sub: c.c, href: `/quiz/${c.s}/` };
     }).filter(Boolean);
     const leagues = LEAGUES.map((l) => {
       const n = norm(l.n);
