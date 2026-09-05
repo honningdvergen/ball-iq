@@ -83,7 +83,8 @@ describe('design review — tier 2', () => {
     // the duplication the tokens removed — the same trap the copy and accent
     // guards fell into earlier today.
     expect(rule).toMatch(/box-shadow:var\(--btn-shine\), var\(--btn-glow\)/);
-    expect(rule).toMatch(/color:#06230C/);
+    // The ink is the token since 2026-09-05 (C3: stylesheets read tokens).
+    expect(rule).toMatch(/color:(#06230C|var\(--grn-ink\))/);
     expect(CSS).toMatch(/\.next-btn-primary:active\{transform:scale\(0\.97\)/);
     expect(CSS, 'the desktop variant carried the same rounded rect')
       .not.toMatch(/\.qd-play \.next-btn-primary \{[^}]*border-radius: 14px/);

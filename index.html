@@ -384,7 +384,7 @@
            body, #root, and AppInner --bg all match exactly. Eliminates
            the dark-to-darker chroma shift that was visible during the
            splash cross-fade on calibrated displays. */
-        background-color: #0B0C10;
+        background-color: var(--bg);
         min-height: 100vh;
         min-height: 100dvh;
         overscroll-behavior: none;
@@ -399,12 +399,12 @@
            value -- black text on a #0B0C10 background. Everything visible
            today is visible only because some child re-declares a colour; the
            first component that forgets renders invisible. */
-        color: #F2F4F7;
+        color: var(--text);
       }
       #root {
         min-height: 100vh;
         min-height: 100dvh;
-        background-color: #0B0C10;
+        background-color: var(--bg);
       }
       /* Splash shown from first paint until React mounts and replaces #root's
          contents. Avoids the blank-screen gap during the cold-start Supabase
@@ -416,7 +416,7 @@
         position: fixed; top: 0; right: 0; bottom: 0; left: 0; inset: 0;
         display: flex; align-items: center; justify-content: center;
         flex-direction: column; gap: 14px;
-        background: #0B0C10; color: #F0F1F5;
+        background: var(--bg); color: var(--text);
         font-weight: 800; letter-spacing: -0.5px;
         /* Nudge the centred content slightly above geometric centre. Two
            reasons: (1) iOS standalone status bar (~44pt) is larger than
@@ -429,14 +429,14 @@
         padding-bottom: 4vh;
       }
       .biq-splash-mark { font-size: 32px; }
-      .biq-splash-mark em { color: #58CC02; font-style: normal; }
+      .biq-splash-mark em { color: var(--accent); font-style: normal; }
       .biq-splash-dot {
         width: 28px; height: 4px; border-radius: 2px; overflow: hidden;
         background: rgba(255,255,255,0.08);
       }
       .biq-splash-dot::after {
         content: ''; display: block; width: 40%; height: 100%;
-        background: #58CC02;
+        background: var(--accent);
         animation: biqSplashBar 1.1s ease-in-out infinite;
       }
       @keyframes biqSplashBar {
@@ -503,7 +503,7 @@
         padding-left: 0 !important;
         /* desktop-web-refresh: defensive — a native iPad viewport >=1024 also
            matches the #root recolor above; keep native on the mobile --bg. */
-        background-color: #0B0C10 !important;
+        background-color: var(--bg) !important;
       }
       html.native-app body { background-image: none !important; }
 
@@ -532,7 +532,7 @@
              one flat #0B0C10, not the bluish mobile --bg (#0B0C10) showing
              through the gap. body > #root beats app.css's html,#root. Reset in
              the standalone + native blocks below so PWA/native keep #0B0C10. */
-          background-color: #0B0C10;
+          background-color: var(--bg);
         }
       }
       @media (display-mode: standalone) {
@@ -543,7 +543,7 @@
           /* desktop-web-refresh: an installed PWA at >=1024 also matches the
              #root recolor above; restore the mobile --bg so the installed shell
              stays byte-identical (mirrors the .app --bg standalone reset). */
-          background-color: #0B0C10 !important;
+          background-color: var(--bg) !important;
         }
         /* desktop-web-refresh: installed PWA at >=1024 must never render the
            desktop rail — mirror the app.css standalone reset. */
