@@ -8,9 +8,23 @@ font-family strings, type ramp 13–21 vs 29–36, /play stacks the site header 
 landing = 32% of index.html) and **four multiple-choice widgets**. Four P1s: Next button **212px below the
 fold** after answering on club pages (was 18px on 09-03 — worse); one club → two destinations; the funnel is
 everywhere (6 badges on a club page, 0 visible on /play mobile, two 17px footer words on /); the finish
-screen sells instead of settling. **Waiting on Alex's answers** (AskUserQuestion 09-05): retire or keep the
-web /play game routes · P0 tokens/header first or the measured P1 quick wins · club colour on the website.
-Do NOT fix the site until the answers land — the fix shape changes with the /play decision.
+screen sells instead of settling.
+**Alex's answers (09-05):** retire the web `/play` game routes (`/play` keeps account, profile, live rooms) ·
+P1 quick wins before the P0 unification · club colour on the site, subtle (4px rule, no crests).
+**✅ P1 QUICK WINS SHIPPED + LIVE-VERIFIED by DOM at 375×812 (91a0096, 459b04c):** sticky `.bq-next` pins at
+752–802 in an 812 viewport the instant an answer lands (was 974–1024); `.bq-why` scrolls into view only when
+below the fold; `.hero` and `.bq-card` use `overflow:clip` (hidden made them the sticky container — first build
+failed on exactly that); finish card = one primary (Keep going / Play again), the `/play?club` crossing is gone,
+one quiet `.bq-app` → `/get?src=clubq-finish`, score captioned with %, today's result remembered on the ribbon
+after a reload; app band lost its "Play free in your browser" button; 404 hero has no badges; homepage club
+tiles → `/quiz/<slug>/` with a 4px club-colour rule, one `.fd-app` row after Today (44px links).
+**Next (in order):** (1) decide where the dailies live on the web BEFORE removing `/play?game=…` — they have
+no static playable page; (2) P0 unification: one tokens.css, one header component with a /play mode, one
+`.bq-card` for lists + football-quiz pages, delete the ghost landing in index.html (32% of the file), map the
+19-file green; (3) P2s: table-first on /lists, directory filter + jump chips, footer to 4 columns, 37px header
+links → 44, caption grey 3.9:1 → AA; (4) re-inspect the 09-03 items not covered: report sheet, 1911 void, Games
+dropdown at 390. **Reads 09-11 now also include** `clubq-out-store` (replaces out-play), `fd-app-ios/android`,
+`store-out` per `data-band`.
 
 **Also parked, verified on disk, resumable:** Watford 40 (wat-final.json, 11 leaks to resolve) and QPR 40
 (qpr-verdict*.json, 2 fixes both the Loftus Road "since 1917" false premise) — curate, prose, wire, ship.
