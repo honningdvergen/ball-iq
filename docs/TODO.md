@@ -20,6 +20,18 @@ after a reload; app band lost its "Play free in your browser" button; 404 hero h
 tiles → `/quiz/<slug>/` with a 4px club-colour rule, one `.fd-app` row after Today (44px links).
 **Also shipped 09-05:** reveal-scroll honours reduced motion with `instant` (be6…); BOTH header finders (static shell +
 React SiteHeader) send a club hit to `/quiz/<slug>/`, not `/play?club=` — live-verified ("ars" → /quiz/arsenal/).
+**✅ FOOTLE PAGE SHIPPED 09-05 (7ab9edb → 9c…): `/football-wordle/` plays today's Footle — the app's own
+`FootballWordle` component as a Vite island (`src/games/FootballWordle.jsx` + `footle.css` moved out of App.jsx/app.css
+with a `services` seam; `src/islands/footle.jsx`; gen-seo reads `dist/.vite/manifest.json` — build FAILS if the island
+is missing). Page: compact hero (no Play-to-app button, no badges) → runtime masthead "Footle No. N · date" → board →
+folded practice puzzle → How to play (#how) → hints → recent → app band → FAQ. Today card on `/`, club-finish door,
+answer page and practice band all → the page. Events: `footle-web-view`, `footle-web-finish`, `store-out`
+(where=footle-result). Verified on the local build at 375/1440: mounts, tokens resolve, a guess grades and persists
+under `biq_wordle_<date>`, result card renders (share / WhatsApp / Get the app / countdown). ⚠️ In the Browser pane
+animations and smooth scroll are FROZEN (visibilityState hidden, rAF 1 frame/400ms) — mid-flip tiles are a tool
+artifact; verify motion on a device. Known follow-up: ENTER ~1027px at 375×812 (tile cap uses the app's chrome
+budget) — size tiles to this page's chrome. **Next dailies:** Daily 7 → Trail → Mystery, same island pattern; then
+retire `/play?game=footle` once `footle-web-*` has a week of numbers (read 09-12).
 **Alex (09-05, 4th answer): build static playable daily pages FIRST — `/football-wordle/` playable Footle, then
 Daily 7, Trail, Mystery — and only then retire `/play?game=…`.** **Next (in order):** (1) the Footle page; (2) P0 unification: one tokens.css, one header component with a /play mode, one
 `.bq-card` for lists + football-quiz pages, delete the ghost landing in index.html (32% of the file), map the
