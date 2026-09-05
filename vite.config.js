@@ -221,7 +221,16 @@ export default defineConfig(async () => {
     // rotates all chunk hashes vs the 'true' era, orphaning any previously
     // CDN-cached map URLs.) stripSourcemapsPlugin deletes the files post-build.
     sourcemap: 'hidden',
+    // dist/.vite/manifest.json — gen-seo-pages.mjs reads it to place the
+    // Footle island's hashed script and stylesheet on /football-wordle/.
+    manifest: true,
     rollupOptions: {
+      // Two entries: the app (index.html) and the Footle island, a small
+      // module the static Footle page mounts (src/islands/footle.jsx).
+      input: {
+        main: new URL('./index.html', import.meta.url).pathname,
+        footle: new URL('./src/islands/footle.jsx', import.meta.url).pathname,
+      },
       output: {
         manualChunks: {
           // React + ReactDOM live together and change rarely — one stable chunk.

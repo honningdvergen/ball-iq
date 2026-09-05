@@ -344,7 +344,7 @@ served=off+run.length;var hasMore=total>served;
    lands on clubq-out-daily (destination match below), so the number is
    comparable with the zero it replaces. */
 var fbTiles='';for(var fi=0;fi<14;fi++)fbTiles+='<i'+(fi===0?' class="cur"':'')+'></i>';
-var appLink='<a class="bq-footle" href="/footle"><span class="bq-fb" aria-hidden="true">'+fbTiles+'</span>'
+var appLink='<a class="bq-footle" href="/football-wordle/"><span class="bq-fb" aria-hidden="true">'+fbTiles+'</span>'
 +'<span class="bq-ft"><b>Today\'s Footle</b><span>Guess the footballer in six. A new name at midnight, the same for everyone.</span></span>'
 +'<span class="bq-fgo">Play →</span></a>';
 /* 2026-09-05: ONE primary. The row used to carry "Keep going" (green) AND a

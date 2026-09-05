@@ -35,7 +35,7 @@ import { fileURLToPath } from 'node:url';
  */
 
 const CSS = readFileSync(
-  fileURLToPath(new URL('../../src/app.css', import.meta.url)),
+  fileURLToPath(new URL('../../src/games/footle.css', import.meta.url)),
   'utf8',
 );
 

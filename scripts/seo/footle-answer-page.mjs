@@ -24,7 +24,8 @@ import { answerDocument, esc, SITE, secondsToUtcMidnight, fmtUtc, MONTH_LONG, MO
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const HUB = `${SITE.base}/football-wordle/answer/`;
-const PLAY = `${SITE.base}/play?game=footle`;
+// Today's Footle plays on its own page since 2026-09-05.
+const PLAY = `${SITE.base}/football-wordle/`;
 const ARCHIVE_ROWS = 90;
 
 // "Today" on this server is the UTC date, explicitly. The game's

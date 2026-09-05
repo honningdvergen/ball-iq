@@ -26,6 +26,8 @@ import { fileURLToPath } from 'node:url';
 
 const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8');
 const CSS = read('../../src/app.css');
+// The Footle board's rules moved to src/games/footle.css on 2026-09-05.
+const FOOTLE_CSS = read('../../src/games/footle.css');
 const APP = read('../../src/App.jsx');
 const HOME = read('../../src/screens/HomeScreen.jsx');
 const DAILY = read('../../src/screens/DailyScreen.jsx');
@@ -80,7 +82,7 @@ describe('design review — tier 1', () => {
     // --s2 (#1B1E27) measured 1.08:1 against the page: a letter ruled OUT
     // looked identical to one never tried, in the mode whose entire feedback
     // language is three tile states.
-    expect(CSS).toMatch(/\.wd-tile\.wd-grey\{background:#2E323E/);
+    expect(FOOTLE_CSS).toMatch(/\.wd-tile\.wd-grey\{background:#2E323E/);
     expect(ratio('#2E323E', '#0B0C10')).toBeGreaterThan(ratio('#1B1E27', '#0B0C10'));
   });
 

@@ -49,6 +49,8 @@ import { marketingEvent } from '../lib/marketingEvent.js';
 import FootleBand from './FootleBand.jsx';
 
 const PLAY = '/play';
+// Footle plays on its own page since 2026-09-05 (the app's component as an
+// island); the other dailies still open in the app until theirs exist.
 const door = (game) => `${PLAY}?game=${game}`;
 
 // Leagues with a static page each (scripts/seo/leagues.mjs slugs).
@@ -213,7 +215,7 @@ export default function FrontDoor() {
   const go = (name, href) => { try { marketingEvent(name, { href }); } catch {} };
 
   const dailies = [
-    { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Played', href: door('footle') },
+    { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Played', href: '/football-wordle/' },
     { k: 'daily', n: 'Daily 7', no: null, line: 'Seven questions, the same for everyone', st: state.daily, done: state.daily === 'done', doneText: state.dailyScore != null ? `${state.dailyScore} of 7` : 'Played', href: door('daily') },
     { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Follow the moves, name the player', st: state.trail, done: state.trail === 'done', doneText: 'Played', href: door('trail') },
     ...(MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from career clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: door('mystery') }] : []),

@@ -1655,7 +1655,7 @@ function softenAccent(hex) {
   return `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 }
 
-function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage, lang = 'en', alternates = [], accent = null, taster = false }) {
+function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage, lang = 'en', alternates = [], accent = null, taster = false, extraHead = '' }) {
   return `<!DOCTYPE html>
 <html lang="${lang}" style="background-color:${PAGE_BG}">
 <head>
@@ -2048,6 +2048,7 @@ ${BQ_CSS}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script type="application/ld+json">${ld}</script>
+${extraHead}
 </head>`;
 }
 
@@ -4094,6 +4095,37 @@ ${footer()}`;
   console.log('  ✓ /404.html  (not-found page, shared shell)');
 }
 
+// ── The Footle island ────────────────────────────────────────────────────────
+// vite build runs BEFORE this script (package.json) and writes
+// dist/.vite/manifest.json; the entry src/islands/footle.jsx (vite.config.js)
+// lands there with its hashed script, stylesheet and shared chunks. The page
+// links the stylesheet in <head> (the board must not paint unstyled), preloads
+// the shared chunks, and loads the entry as a module at the mount point. A
+// missing entry fails the build: a Footle page without the game is the one
+// regression this page must never ship silently.
+function footleIsland() {
+  const manifestPath = resolve(DIST, '.vite/manifest.json');
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const entry = manifest['src/islands/footle.jsx'];
+  if (!entry || !entry.file) throw new Error('[gen-seo] Footle island missing from dist/.vite/manifest.json — is src/islands/footle.jsx a vite input?');
+  const seen = new Set();
+  const chunks = [];
+  const walk = (key) => {
+    const e = manifest[key];
+    if (!e || seen.has(key)) return;
+    seen.add(key);
+    (e.imports || []).forEach(walk);
+    if (key !== 'src/islands/footle.jsx') chunks.push(e.file);
+  };
+  walk('src/islands/footle.jsx');
+  const css = [...(entry.css || []), ...[...seen].flatMap((k) => manifest[k].css || [])];
+  const head = [
+    ...[...new Set(css)].map((f) => `<link rel="stylesheet" href="/${f}">`),
+    ...chunks.map((f) => `<link rel="modulepreload" href="/${f}">`),
+  ].join('\n');
+  return { head, script: `<script type="module" src="/${entry.file}"></script>` };
+}
+
 // ── Footle landing page (/football-wordle/) ──────────────────────────────────
 // Game-name SEO: "football wordle" / "footle" — Ball IQ was absent from that
 // SERP even though Footle IS the product. Shared chrome; the green CTA
@@ -4882,6 +4914,30 @@ function fwExampleHtml() {
 </div>`;
 }
 
+// Today's board on this page. The component's stylesheet (src/games/footle.css)
+// speaks the app's token names; until the shared tokens.css lands they are
+// defined here on the host, with the same values app.css gives them. The
+// 20px side padding is load-bearing: .wd-grid and .wd-keyboard escape their
+// screen's padding with margin-inline:-20px, so the host must supply exactly
+// that much or the keyboard overflows the card on a phone.
+const FW_TODAY_CSS = `
+  .fw-today{padding:0 0 8px;margin-top:-18px}
+  .fw-mast{margin:0 0 10px;font-size:13.5px;color:var(--tx3);font-variant-numeric:tabular-nums}
+  .fw-mast b{color:var(--tx);font-weight:800}
+  .fw-host{max-width:520px;margin:0 auto;padding:0 20px;
+    --s1:#13151C;--s2:#1B1E27;--s3:#232631;--border:#242730;--border2:#2F3240;
+    --text:#FFFFFF;--t1:#FFFFFF;--t2:#9BA0B8;--t3:#7E828C;--accent:#58CC02;
+    --btn-shine:inset 0 1.5px 0 rgba(255,255,255,0.30), inset 0 -2px 0 rgba(0,0,0,0.12);
+    --btn-glow:0 8px 22px -8px rgba(88,204,2,0.55);--wd-edge:#5A5E6E;--biq-consent-h:0px}
+  .fw-host .wd-screen{min-height:0}
+  .fw-toast{max-width:520px;margin:6px auto 0;text-align:center;font-size:13px;color:var(--tx3)}
+  .fw-fold{border-top:1px solid var(--bd);margin-top:6px}
+  .fw-fold>summary{cursor:pointer;list-style:none;padding:16px 0;font-size:15px;font-weight:700;color:var(--tx2)}
+  .fw-fold>summary::-webkit-details-marker{display:none}
+  .fw-fold>summary::before{content:"+ ";color:var(--grn-soft)}
+  .fw-fold[open]>summary::before{content:"− "}
+  .fw-fold .fw-wrap{margin-top:0;padding-top:0}
+`;
 const FW_CSS = `
   /* ⚠️ THE BOARD SHOULD BE THE NEXT THING YOU SEE. hero padding-bottom 40px +
      .sec padding-top 30px + the wrap's own margin stacked into a dead band
@@ -5127,7 +5183,11 @@ ${ANS_DAYS_CSS}</section>`;
 
 function buildFootlePage(cfg) {
   const canonical = `${SITE.base}/${cfg.slug}/`;
-  const playHref = `${SITE.base}/play?game=footle`;
+  // Today's puzzle plays HERE since 2026-09-05 — the app's own component as an
+  // island (see footleIsland). The hero therefore has no "Play" button that
+  // leaves the page and no store badges above the board; the app band below
+  // the game carries the app.
+  const island = footleIsland();
   // Footle is our most-played mode and carried only a BreadcrumbList — the
   // thinnest markup of any page type, on the page most likely to be searched
   // for by name ("football wordle").
@@ -5187,7 +5247,7 @@ function buildFootlePage(cfg) {
     .map(([t, d], i) => `<p><strong>${i + 1}. ${esc(t)}.</strong> ${esc(d)}</p>`)
     .join('\n');
   const bodyHtml = cfg.body.map((p) => `<p>${esc(p)}</p>`).join('\n');
-  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld , taster: true})}
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: true, extraHead: island.head })}
 <body>
 ${NAV}
 <main id="main">
@@ -5202,14 +5262,24 @@ ${heroSection({
     h1: cfg.h1,
     lead: cfg.lede,
     statLine: 'Free · no sign-up · new footballer every day',
-    playHref,
-    playLabel: "Play today's Footle →",
+    playHref: null,
+    noStores: true,
   })}
 <style>
 ${FW_CSS}
+${FW_TODAY_CSS}
 </style>
+<section class="sec fw-today" aria-label="Today's Footle">
+<p class="fw-mast" id="footle-masthead" hidden></p>
+<div class="fw-host" id="footle-today"><noscript><p class="fw-ns">Today's Footle needs JavaScript. <a href="${SITE.base}/football-wordle/answer/">Read today's hints</a> instead.</p></noscript></div>
+<p class="fw-toast" id="footle-toast" role="status" aria-live="polite" hidden></p>
+</section>
+${island.script}
+<details class="fw-fold" id="practice-fold">
+<summary>Practise on a past puzzle — nothing about today's is given away</summary>
 ${footlePracticeSection()}
-<section class="sec"><h2>How to play</h2>
+</details>
+<section class="sec" id="how"><h2>How to play</h2>
 <div class="prose">
 ${howHtml}
 </div></section>

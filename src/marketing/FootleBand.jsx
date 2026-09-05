@@ -257,7 +257,7 @@ export default function FootleBand() {
         {/* Two doors, one band: the sub already introduced the Daily 7, so
             its door lives beside Footle's rather than in a section of its own. */}
         <div style={{ display: 'flex', gap: 'var(--sp1)', flexWrap: 'wrap' }}>
-          <a className="fb-real fb-primary" href="/footle">Play today’s Footle</a>
+          <a className="fb-real fb-primary" href="/football-wordle/">Play today’s Footle</a>
           <a className="fb-real" href="/play?game=daily">Play the Daily 7</a>
         </div>
         </div>
