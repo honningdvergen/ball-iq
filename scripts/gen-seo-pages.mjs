@@ -4926,10 +4926,12 @@ const FW_TODAY_CSS = `
      first build) — two-line h1, a lead AND a stat line saying the same thing,
      46px of top padding. Tightened here only; every other page keeps the
      shared hero as it is. */
-  .hero{padding:20px 0 4px}
+  .hero{padding:20px 0 12px}
   .hero h1{font-size:clamp(28px,7.4vw,40px);margin-bottom:10px}
   .hero-lead{font-size:15px;margin:0}
-  .fw-today{padding:0 0 8px;margin-top:-14px}
+  /* No negative margin here: the first cut kept one from the practice
+     section's trick and the masthead overprinted the lead's second line. */
+  .fw-today{padding:0 0 8px;margin-top:0}
   .fw-mast{margin:0 0 10px;font-size:13.5px;color:var(--tx3);font-variant-numeric:tabular-nums}
   .fw-mast b{color:var(--tx);font-weight:800}
   .fw-host{max-width:520px;margin:0 auto;padding:0 20px;

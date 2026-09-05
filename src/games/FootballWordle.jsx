@@ -44,7 +44,12 @@ export const DEFAULT_SERVICES = {
       if (navigator.share) { await navigator.share({ text: textFallback }); return; }
       await navigator.clipboard.writeText(textFallback || '');
       onToast?.('Copied — paste it anywhere');
-    } catch { /* the user closed the sheet, or no clipboard: nothing to say */ }
+    } catch (e) {
+      // AbortError is the user closing the share sheet — nothing to say. Any
+      // other failure (no clipboard, unfocused document) must not be silent:
+      // a button that does nothing is the one thing a result card cannot have.
+      if (e?.name !== 'AbortError') onToast?.('Could not copy — use Share on WhatsApp below');
+    }
   },
   Confetti: null,
   InstallBanner: null,
