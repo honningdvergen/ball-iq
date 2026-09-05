@@ -110,16 +110,15 @@ test('Multiplayer Online entry (guest → auth prompt, no crash)', async ({ page
 });
 
 test('Multiplayer Local entry', async ({ page, context }) => {
-  // Sprint #28 used to skip desktop profiles (Local CTA hidden >=1024px).
-  // The desktop-web refresh re-shows both MP CTAs at desktop widths, so the
-  // "Same phone" entry (aria: Play locally on one phone) is now smoke-covered
-  // on every project.
+  // "Same phone" left the Home card on 2026-09-06 (the card became a single
+  // row with one quiet Invite pill). Couch play is entered from the Online
+  // tab's "Local pass & play" row, so the smoke goes there.
   await seedGuestMode(context);
   const errs = await captureErrors(page);
-  await page.goto('/play?tab=home');
+  await page.goto('/play?tab=online');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  await page.getByRole('button', { name: 'Play locally on one phone' }).first().click();
+  await page.getByText('Local pass & play').locator('xpath=ancestor::div[2]').getByRole('button', { name: 'Play' }).first().click();
   await page.waitForTimeout(800);
   await expectNoCrash(page, errs, 'Multiplayer Local entry');
 });

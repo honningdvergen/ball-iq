@@ -104,6 +104,17 @@ describe('design review — tier 2', () => {
     expect(HOME, 'Transfer Trail is a row, not a grid tile').not.toMatch(/key:"trail", Icon/);
     expect(HOME, 'Mystery Player is a row, not a grid tile').not.toMatch(/\.\.\.\(mysteryLive \? \[\{ key:"mystery"/);
     expect(HOME, 'no hero card on the home').not.toMatch(/<FootleHero|DesktopFootleHero/);
+    // 2026-09-06 critique (23/40): the top third was not the product. The
+    // finder sits BELOW the Today block as the head of the catalogue; the Club
+    // Quiz tile (the same door twice) is gone; Play is one colour.
+    expect(HOME.indexOf('<ClubFinder'), 'finder renders after the Today zone').toBeGreaterThan(HOME.indexOf('className="daily-zone"'));
+    expect(HOME, 'no Club Quiz tile — the finder is the club entry').not.toMatch(/key:"clubquiz"/);
+    expect(HOME, 'chips are grey at rest').toMatch(/cf-abbr cf-abbr-quiet/);
+    const cta = CSS.match(/\n\.t7s-cta\{[^}]*\}/)?.[0] || '';
+    expect(cta, 'Play is green on every row, like the website').toContain('background:var(--accent)');
+    expect(CSS, 'inactive tabs are not dimmed by opacity').not.toMatch(/\.tab-item\{[^}]*opacity:0\.6/);
+    expect(APP, 'the first-session banner left the home').not.toMatch(/Welcome to \{APP_NAME\}!/);
+    expect(APP, 'the first-session flag reaches HomeScreen instead').toMatch(/firstSession=\{showFirstQuizTip\}/);
     // And nobody re-types a mode colour beside a component.
     expect(HOME, 'import from lib/accents.js instead of pasting a hex')
       .not.toMatch(/iconColor: "#/);

@@ -42,7 +42,7 @@ const abbrInk = (hex) => {
   const n = parseInt(m[1], 16), r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.62 ? "#14171A" : "#fff";
 };
-function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs, onLeagues }) {
+function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
   const [q, setQ] = React.useState("");
   const [focused, setFocused] = React.useState(false);
   if (!clubPacks) return null;
@@ -88,12 +88,14 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs, onLeagues }) 
       <div className="cf-chips" aria-label="Most played clubs">
         {FEATURED_CLUB_KEYS.filter((k) => clubPacks[k]).map((k) => (
           <button key={k} type="button" className="cf-chip" onClick={() => onPickClub(k)}>
-            <span className="cf-abbr" style={{ background: clubPacks[k].color || "var(--s2)", color: abbrInk(clubPacks[k].color) }}>{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
+            {/* Grey at rest: three full-saturation club reds were the most
+                saturated pixels on the home and outranked the product's own
+                hierarchy. Colour returns on the result row and the club screen. */}
+            <span className="cf-abbr cf-abbr-quiet">{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
             <span className="cf-chip-name">{clubPacks[k].name}</span>
           </button>
         ))}
         <button type="button" className="cf-chip cf-chip-all" onClick={onAllClubs}>All {total} clubs →</button>
-        <button type="button" className="cf-chip cf-chip-all" onClick={onLeagues}>By league →</button>
       </div>
     </div>
   );
@@ -146,6 +148,10 @@ function HomeScreenImpl({
   clubPacks,
   clubAbbr,
   launchClubQuiz,
+  // First session on this device (App.jsx showFirstQuizTip). The banner that
+  // used to carry the tip is gone (2026-09-06 critique): the Footle row says
+  // "Start here" instead, so the tip and its target are the same tap.
+  firstSession = false,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
 
@@ -343,15 +349,6 @@ function HomeScreenImpl({
         );
       })()}
 
-      {/* FRONT DOOR: the club finder sits above everything but the greeting.
-          Today's dailies follow; the modes grid stays below. */}
-      <ClubFinder
-        clubPacks={clubPacks}
-        clubAbbr={clubAbbr}
-        onPickClub={(key) => { if (launchClubQuiz) launchClubQuiz(key); else startMode("clubquiz"); }}
-        onAllClubs={() => startMode("clubquiz")}
-        onLeagues={() => startMode("leaguequiz")}
-      />
 
       {/* 1.1 async challenge: a friend's "beat my Daily 7" link landed here.
           Shown only when the challenge is for today and the user hasn't played
@@ -370,7 +367,7 @@ function HomeScreenImpl({
           </div>
           <button
             onClick={onPlayChallenge}
-            style={{flexShrink:0,minHeight:36,padding:"8px 14px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:13.5,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
+            style={{flexShrink:0,minHeight:36,padding:"8px 14px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:13.5,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"var(--grn-ink)"}}
           >
             Play
           </button>
@@ -407,7 +404,7 @@ function HomeScreenImpl({
           + (trailLive && trailDone ? 1 : 0) + (mysteryLive && mysteryDone ? 1 : 0);
         const allDone = doneCount === total;
         return (
-          <div className="daily-zone" role="group" aria-label="Today">
+          <div className="daily-zone" role="group" aria-label="Today's puzzles">
             <div className="daily-zone-head">
               <span className="daily-zone-eyebrow">Today</span>
               <button type="button" className={`daily-zone-status hit44${allDone ? " is-done" : ""}`}
@@ -434,6 +431,7 @@ function HomeScreenImpl({
                   sub: ws.kind === "won" ? <>✅ Solved in <strong>{ws.used}</strong></>
                     : ws.kind === "lost" ? <>✗ Out of guesses</>
                     : ws.kind === "in-progress" ? <>In progress · <strong>{ws.used}</strong> of 6</>
+                    : firstSession ? <>Start here — everyone gets the same player</>
                     : <>{FOOTLE_TAGLINE}</>,
                   onTap: () => (footleDone ? viewPuzzleStatus(ws) : setScreen("wordle")),
                   aria: footleDone ? "Today's Footle: done — review" : "Play today's Footle",
@@ -481,10 +479,11 @@ function HomeScreenImpl({
         );
       })()}
 
-      {/* ── MULTIPLAYER FEATURED CARD (Sprint #12) ──
-          Online lands on the Online tab (the multiplayer home — auth is
-          gated there on create/join, not on viewing); Local enters
-          pass-and-play immediately. Invite auto-creates a room. */}
+      {/* ── PLAY WITH FRIENDS — one row, same anatomy as the Today rows
+          (2026-09-06 critique: it had the loudest button on the screen and the
+          seventh position, 11 plays in 30 days). The body opens the Online tab;
+          the quiet Invite pill creates a room. "Same phone" lives on the Online
+          tab ("Local pass & play"), where couch play already was. */}
       <MultiplayerCard
         onInvite={() => {
           // 1.1: "Invite" now creates a room and drops you in the lobby (where
@@ -498,7 +497,6 @@ function HomeScreenImpl({
           setOnlineAutoCreate?.(true);
           setScreen("online-stage1");
         }}
-        onLocal={() => startMode("local")}
         // Tapping the card anywhere outside the two buttons was a dead click.
         // Guests are deliberately NOT gated here — the Online tab is viewable
         // signed-out and gates on create/join, so sending them to an auth prompt
@@ -631,6 +629,20 @@ function HomeScreenImpl({
 
       {/* ─────────── BELOW GRID (full-width) ─────────── */}
       <div className="home-col-below">
+      {/* ── FIND A QUIZ ── The club finder moved here from the top of the screen
+          (2026-09-06 critique, Alex: the search bar and the club scroller "do not
+          belong where they sit"). On the return trip tap beats type: the four
+          Today rows come first, the catalogue follows. The finder IS the club
+          entry now — the Club Quiz tile below was the same door twice. */}
+      <div className="home-section-title">Find a quiz</div>
+      {/* FRONT DOOR: the club finder sits above everything but the greeting.
+          Today's dailies follow; the modes grid stays below. */}
+      <ClubFinder
+        clubPacks={clubPacks}
+        clubAbbr={clubAbbr}
+        onPickClub={(key) => { if (launchClubQuiz) launchClubQuiz(key); else startMode("clubquiz"); }}
+        onAllClubs={() => startMode("clubquiz")}
+      />
       {/* ── MORE MODES ── */}
       {/* Lucide icons replace emoji glyphs (2026-05-03). Stroke 2.25
           for a slightly bolder line that holds at the 20px size in
@@ -643,13 +655,9 @@ function HomeScreenImpl({
       <div className="home-section-title">More modes</div>
       <div className="play-grid">
         {[
-          // ⚠️ TEN IDENTICAL TILES IS A LIST, NOT A MENU. Every card here was
-          // the same size, weight and icon treatment, so nothing separated the
-          // mode with 70-odd hand-built club packs behind it from the novelty
-          // one — and a first-time player got no recommended way in. Club Quiz
-          // is promoted to a full-width tile because it is the deepest content
-          // we have and the one that asks the player about themselves.
-          { key:"clubquiz",   Icon: Shield,     name: "Club Quiz",   desc: "Pick your club",   onTap: () => startMode("clubquiz") },
+          // No Club Quiz tile: the finder above this grid is the club entry
+          // (search, chips, "All clubs"). Two doors to one room read as a longer
+          // app, not a bigger one (2026-09-06).
           // The topical pack sits high on purpose: it is the only tile whose
           // value DECAYS, so burying it below the evergreen modes wastes it.
           // Gated on topicalLive, and retirable by nulling TOPICAL_PACK.

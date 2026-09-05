@@ -12952,35 +12952,12 @@ function AppInner() {
         {/* Global toasts */}
         {toast && <div className="toast" role="status" aria-live="polite">{toast}</div>}
 
-        {/* First-session tip. Was position:fixed over the mode grid it was
-            meant to explain; now an inline card above the home content — with
-            nothing to cover, the old bottom-sheet suppression guards and the
-            .first-quiz-tip desktop re-anchoring class are both gone. Points at
-            Footle rather than Daily 7. */}
-        {showFirstQuizTip && !inGame && screen === "home" && tab === "home" && (
-          <div style={{margin:"0 0 12px"}}>
-            {/* ⚠️ QUIETED, DELIBERATELY. This was a full-bleed --accent slab with
-                a green glow, and it sat at the very top of a first viewport that
-                already carries four other full-saturation greens — the Footle F
-                tile, Play, Invite friends and the active tab. Five things all
-                shouting the brand colour stop ranking each other, and the LOUDEST
-                was also the least important: a dismissible first-session tip.
-                Now a normal surface card with a green icon well and a green rule,
-                so it reads as helpful rather than as the main event. */}
-            <div style={{background:"var(--s1)",color:"var(--t1)",borderRadius:14,padding:"14px 16px",border:"1px solid var(--border)",borderLeft:"3px solid var(--accent)",display:"flex",alignItems:"center",gap:12}}>
-              <div style={{width:34,height:34,borderRadius:9,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.12)",border:"1px solid rgba(88,204,2,0.28)"}} aria-hidden="true">
-                <Sparkles size={17} strokeWidth={2.1} color="var(--accent)" />
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:14,fontWeight:800,marginBottom:2,color:"var(--t1)"}}>Welcome to {APP_NAME}!</div>
-                <div style={{fontSize:12,fontWeight:500,color:"var(--t2)"}}>Start with today&apos;s Footle — one puzzle, everyone gets the same player.</div>
-              </div>
-              <button onClick={() => { setShowFirstQuizTip(false); safeSetItem("biq_first_tip_shown","1"); }} aria-label="Dismiss" style={{background:"var(--s2)",border:"1px solid var(--border)",borderRadius:"50%",width:28,height:28,flexShrink:0,color:"var(--t2)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",padding:0}}>
-                <X size={15} strokeWidth={2.4} />
-              </button>
-            </div>
-          </div>
-        )}
+        {/* The first-session tip card left the home on 2026-09-06 (critique: the
+            first block on the screen had no action but a ✕, and it said "start
+            with Footle" above two blocks that said "start with your club"). The
+            same flag now reaches HomeScreen as `firstSession`, and the Footle row
+            itself reads "Start here". Cleared where it always was — when any
+            game starts (see startMode). */}
         {/* Rate prompt */}
         {askShareName && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => submitShareName("")}>
@@ -13405,6 +13382,7 @@ function AppInner() {
               clubPacks={CLUB_PACKS}
               clubAbbr={CLUB_ABBR}
               launchClubQuiz={launchClubQuiz}
+              firstSession={showFirstQuizTip}
             />
             </TabErrorBoundary>
           </div>
