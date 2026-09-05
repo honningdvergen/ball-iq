@@ -1886,23 +1886,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    job — a dvh-sized min-height ignores it and pushes into scroll instead —
    which is how a 172px cookie bar came to sit directly over ENTER on prod,
    with the key fully off-screen on the tallest iPhone we ship to. */
-
-
-
-
-
 /* Colour legend, shown only until the first guess lands. Deliberately quiet —
    it is a caption, not a control, and it sits between the header and the board
    without owning either. Chips reuse the board's own tile colours so the
    mapping is literal rather than described. */
-
-
-
   /* == .wd-tile.wd-green  */
   /* == .wd-tile.wd-yellow */
-
-
-
 
 /* ⚠️ margin-inline:-20px — the SAME escape .wd-keyboard uses. Without it the
    board sat inside .app's 20px padding while the keyboard spanned the full
@@ -1910,7 +1899,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    arbitrarily inset (reported on device: "we do not need to leave lots of room
    on each side of the grid"). Matching them also hands the tiles that width
    back — measured +6px per tile at 440pt. */
-
 /* ⚠️ THE 64px WIDTH CAP ABOVE IS ONLY HALF THE CONSTRAINT — this is the other
    half, and its absence is the same bug twice. Sprint #82 capped tile WIDTH
    because 4-5 letter answers ballooned the grid and pushed the keyboard off
@@ -1929,7 +1917,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    (the max-height:700 block already reasons this way), so they are the right
    thing to give up the space. */
 
-
 /* flex:1 + centred so the slack left over by the bottom-anchored keyboard
    splits above and below the tiles instead of collecting into one 122px
    hole between the grid and the keys. --ended overrides back to 0 0 auto
@@ -1940,9 +1927,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    result card. Row max-width drops ~20% so the tile block feels less
    imposing on wider devices. iPhone SE is unaffected — the 100vw-80px
    ceiling already constrained it before. */
-
-
-
 /* Sprint #82: row max-width is letter-count-aware so 4- and 5-letter
    words don't balloon. Original flat min(440, 100vw-32) let HART/KAKA
    rows fill the viewport → 84px-square tiles → 6 rows × 90px = 540px
@@ -1961,8 +1945,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    minmax(0, 1fr) is required so tile intrinsic min-width doesn't
    blow past max-width on small viewports. Per-letter 64px tile width
    from Sprint #82 is the cap that drives the formula. */
-
-
 /* Sprint #67 II1's min-height: 50px iOS 14 fallback was dropped in
    Sprint #86 — combined with Sprint #86's minmax(0,1fr) grid columns,
    the 50px floor forced tile height ≥ 50 even when width shrank below
@@ -1978,21 +1960,15 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    exception for INACTIVE components. (Reference point: Wordle's own dark
    board measures 1.65:1, so this is us clearing a bar they don't.) */
 :root{--wd-edge:#5A5E6E;}
-
 /* QA S-02: before the first guess all six rows rendered identically, so a
    first-time Wordle-style player could not tell which row was live, where the
    next letter would land, or how many tries were left. Structure now reads at
    a glance: the active row is brighter, the next slot carries a soft accent
    caret, and unplayed rows recede. Colour/size only — no layout change, so the
    grid still fits every word length. */
-
-
-
 @media (prefers-reduced-motion: no-preference){
   @keyframes wdNextPulse{0%,100%{border-color:rgba(88,204,2,0.4);}50%{border-color:rgba(88,204,2,0.85);}}
 }
-
-
 /* ⚠️ 1.08:1 AGAINST THE PAGE. --s2 (#1B1E27) is all but the page colour, so a
    letter ruled OUT looked the same as one never guessed — in the mode whose
    whole feedback language is three tile states. Home's hero has always used a
@@ -2000,25 +1976,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Deliberately not recoloured under html.biq-cb: absent is absent in both
    palettes, and only green/amber are ambiguous to the players that serves. */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* WhatsApp variant — an <a>, so flex-center + no underline to render like
    its sibling button. WhatsApp brand green; dark text keeps AA contrast. */
-
-
-
-
 
 /* Playtester (2026-07-19): thumbs need wider keys, but the design must not
    change — no colours, no placement, no new look. The width comes from space
@@ -2030,7 +1989,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    -14px and gap to 3px. Do NOT go past -14px / below 3px gap: curved screen
    edges start eating the Q/P keys and keys start touching. This is the limit;
    further tap-accuracy would need taller keys (a design change, vetoed). */
-
 /* ⚠️ margin-TOP:auto, not margin-bottom. With margin-bottom:auto the flex
    column pushed the keyboard UP and parked every spare pixel underneath it —
    233px at 405x881, a quarter of the screen — so the player reached UP to
@@ -2049,9 +2007,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    ten keys at 44pt need 440pt on a 402pt screen. Apple's own keyboard keys are
    ~32pt wide. The touch target is carried by the 48px HEIGHT, which clears the
    guidance, and by the gap between keys. */
-
-
-
 /* Big-thumbs, round three (2026-08-21, playtester with large hands). Width is
    ARITHMETIC now — ten keys across a 375-402pt screen at full bleed is 35.7-38.4pt
    each, under Apple's 44pt minimum, and no CSS recovers that. What was still on
@@ -2074,13 +2029,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    with nothing between them. The gap stays VISUAL — keys read as separated,
    thumbs behave as though they are not. Effective target ≈ 41x54pt against a
    ~35pt visual key, which is how the system keyboard does it too. */
-
 /* The slop must not leave the screen. The keyboard is full-bleed, so the
    first and last key's outward slop (3px) sat beyond the viewport edge and
    gave every phone a 3px horizontal jiggle (scrollWidth 393 on a 390 view,
    found by the 2026-09-04 palette sweep). Nothing is tappable out there. */
-
-
 
 /* ── HIT SLOP ───────────────────────────────────────────────────────────────
    Grows a control's TOUCH area to the 44x44 floor without changing a pixel of
@@ -2108,10 +2060,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   top:50%;left:50%;transform:translate(-50%,-50%);
   min-width:44px;min-height:44px;width:100%;height:100%;
 }
-
-
-
-
 /* ⚠️ ELIMINATED KEYS MUST RECEDE, AND THESE ADVANCED. Untried keys sit on
    --s3 (#232631); this was #3a3f55 — LIGHTER, and blue-tinted. Ruling a letter
    out made it the most prominent thing on the keyboard, which is backwards in
@@ -2122,14 +2070,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Darker ground + dimmed ink now, which reads as "spent" at a glance and still
    clears 4.5:1 on the letter (~6.2:1) so the key stays readable. Deliberately
    NOT recoloured in html.biq-cb — absent is absent in both palettes. */
-
 /* ⚠️ The last accent-filled button on an 8px radius. It is full-width, green
    and the primary action of the screen — the same role Play, Invite friends
    and Next fill — so it takes the same pill. #06230C is the app's on-green ink
    (this carried #0B0C10, the page colour, which is a different black). */
-
-
-
 
 /* ⚠️ SHORT VIEWPORTS (iPhone SE/8 at 375x667, and any phone in a browser with
    its address bar showing). MEASURED 2026-08-21: the board + keyboard came to
@@ -3527,13 +3471,6 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    proven choice for deuteranopia/protanopia where green vs amber reads as
    one colour. Scoped to the html.biq-cb root class so the live board, the
    archive board, the legend chips and the keyboard all recolour together. */
-
-
-
-
-
-
-
 /* ⚠️ THE HOME HERO WAS NEVER RECOLOURED. A colour-blind player turned the
    setting on, the board and keyboard switched to orange/blue, and the most-
    viewed card in the app carried on showing green and amber — the two hues the
@@ -3633,15 +3570,31 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
 
    Deliberately NOT the desktop two-column reflow. That needs the BiqNav rail,
    which is hidden in the app shell, and a tablet is still a device you hold. */
-@media (min-width: 421px) and (max-width: 1023px){
+@media (min-width: 421px) and (max-width: 1023px) {
+  /* Wider, but nowhere near full-bleed: past roughly 620px a single column of
+     cards stops reading as a column and starts reading as a stretched phone. */
   .app { max-width: 620px !important; }
   .offline-banner { max-width: 620px !important; }
+
+  /* The navigation has to belong to the content. Capped and centred rather
+     than spanning the device, so four tabs are not stranded at the far edges
+     of a screen held in two hands. */
   .tab-bar { max-width: 460px !important; }
+
+  /* Bottom sheets slide up from the bottom edge and were uncapped, so on a
+     tablet they stretched the full width and stopped reading as sheets. Round
+     only the top corners, the way a sheet anchored to the edge should. */
   .diff-sheet, .emoji-picker-sheet {
     max-width: 480px !important;
     margin-inline: auto !important;
     border-radius: 20px 20px 0 0 !important;
   }
+
+  /* Footle's board centres itself only at >=1024, so in this band it sat hard
+     against the left of a wide screen. Same rule, earlier gate. */
+
+  /* The modal overlay caps its own children on phones; give the same ceiling
+     here so a dialog does not balloon with the column. */
   .modal-overlay > * { max-width: 480px !important; }
 }
 

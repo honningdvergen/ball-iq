@@ -33,6 +33,10 @@
 .wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1 1 auto;padding:8px 8px;margin-inline:-20px;}
 .wd-grid{--wd-tile-max:64px;--wd-chrome:505px;}
 @supports (height:100dvh){
+  /* Subtract the consent bar here too. A tile is SQUARE, so capping it on one
+     axis caps it on both — shrinking .wd-screen alone leaves the tiles at
+     their old size and simply pushes ENTER back down under the bar. This
+     repo has shipped an unreachable ENTER twice already from exactly that. */
   .wd-grid{--wd-tile-cap:clamp(26px, calc((100dvh - var(--wd-chrome) - var(--biq-consent-h, 0px)) / 6), var(--wd-tile-max));}
 }
 .wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0 0 14px;}
@@ -44,7 +48,7 @@
 .wd-row--active .wd-tile{border-color:var(--wd-edge);}
 .wd-row--future .wd-tile{opacity:0.45;}
 .wd-tile--next{border-color:rgba(88,204,2,0.55);box-shadow:inset 0 0 0 1px rgba(88,204,2,0.14);}
-@media (prefers-reduced-motion: no-preference){
+@media (prefers-reduced-motion: no-preference) {
   .wd-tile--next{animation:wdNextPulse 1.9s ease-in-out infinite;}
 }
 .wd-tile.wd-green{background:#58CC02;border-color:#58CC02;color:#0B0C10;}
@@ -91,22 +95,30 @@
 .wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:8px;background:#58CC02;color:#06230C;border:none;border-radius:999px;box-shadow:var(--btn-shine), var(--btn-glow);font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:#06230C;transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
-@media (max-height: 700px){
+@media (max-height: 700px) {
   .wd-screen{gap:6px;padding:4px 0 2px;}
+  /* 6px, not 2px: on a 667pt screen the swatches measured 6px from the first
+     tile row and read as colliding with it rather than captioning it. All three
+     design lenses flagged it independently. This brings the SE to ~10px, the
+     same legend-to-board pairing as every larger phone, and it comes out of
+     slack — variant A still measures 94px of clearance below ENTER there. */
   .wd-legend{margin:0 0 6px;font-size:11px;}
   .wd-grid{gap:4px;padding:2px 0;}
   .wd-grid{--wd-tile-max:46px;--wd-chrome:392px;}
   .wd-row{gap:4px;max-width:calc(var(--wd-cols) * var(--wd-tile-cap, 46px) + (var(--wd-cols) - 1) * 4px);}
   .wd-keyboard{gap:4px;padding:0 0 2px;}
   .wd-key{height:46px;}
+  /* margin-top 0 left ENTER 4px from the last key row against a 4px row gap —
+     indistinguishable from a fourth row of keys. 10px is the least that reads
+     as a separate action; --wd-chrome below pays for it. */
   .wd-key-enter{height:46px;margin-top:10px;}
 }
-@media (min-height: 850px) and (max-width: 1023px){
+@media (min-height: 850px) and (max-width: 1023px) {
   .wd-grid{--wd-chrome:569px;}
   .wd-key{height:62px;}
   .wd-key-enter{height:56px;}
 }
-@media (min-width: 1024px){
+@media (min-width: 1024px) {
   .wd-screen{max-width:500px;margin-inline:auto;justify-content:center;min-height:calc(100dvh - 132px);}
   .wd-keyboard{margin-top:0;}
   .wd-key{height:52px;font-size:15px;}
@@ -118,9 +130,7 @@ html.biq-cb .wd-key-yellow{background:#85C0F9;}
 html.biq-cb .wd-legend-chip.is-green{background:#F5793A;}
 html.biq-cb .wd-legend-chip.is-amber{background:#85C0F9;}
 html.biq-cb .wd-tile--next{border-color:rgba(245,121,58,0.55);box-shadow:inset 0 0 0 1px rgba(245,121,58,0.14);}
-@media (min-width: 421px) and (max-width: 1023px){
+@media (min-width: 421px) and (max-width: 1023px) {
   .wd-screen { margin-left: auto !important; margin-right: auto !important; }
 }
-@media (max-width: 720px){
-  body.biq-web .wd-grid, body.biq-web .wd-keyboard { margin-inline: calc(-1 * clamp(16px, 4vw, 44px)); }
-}
+@media (max-width: 720px) { body.biq-web .wd-grid, body.biq-web .wd-keyboard { margin-inline: calc(-1 * clamp(16px, 4vw, 44px)); } }
