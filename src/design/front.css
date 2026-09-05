@@ -7,8 +7,16 @@
 /* Tokens are the app's own (src/design/tokens.js: bg / card / card2 / bd / bd2 /
    tx / tx3 / tx4) so the front door, the generated pages and the game share one
    palette. Named locally so this stylesheet reads on its own. */
-.fd,.fd-head,.fd-appbar,.fd-foot{--bg:var(--bg);--s1:var(--card);--s2:var(--card2);--bd:var(--bd);--bd2:var(--bd2);--t1:var(--tx);--t2:var(--tx3);--t3:var(--tx4);
-    --grn:var(--grn);--grn-ink:var(--grn-ink);--grn-soft:rgba(88,204,2,.14)}
+/* ⚠️ NO PALETTE HERE EITHER. Every name the block that stood here defined
+   (--bg, --s1, --s2, --bd, --bd2, --t1, --t2, --t3, --grn, --grn-ink) is defined
+   at :root by src/design/tokens.js with the same value, so it was a second copy
+   of the palette. The 2026-09-05 hex-to-token pass then rewrote its DEFINITIONS
+   as var() references, and five of them ended up pointing at their own name —
+   a dependency cycle, which CSS resolves to the guaranteed-invalid value — so
+   --bg/--bd/--bd2/--grn/--grn-ink were EMPTY on the live homepage for about an
+   hour (hairlines and the green "Played" states vanished; the Footle F mark
+   painted transparent). Its one non-token value, a green tint under the token
+   name --grn-soft, had no reader. one-tokens-css.test.js guards both. */
 /* ⚠️ Tokens above, layout below — kept as two rules. Merging them once put
    min-height:100vh on the header inside the app and blanked the screen. */
 .fd{background:var(--bg);color:var(--t1);min-height:100vh;

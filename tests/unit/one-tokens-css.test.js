@@ -37,6 +37,17 @@ describe('one tokens.css', () => {
     expect(host).not.toContain('--s1:');
     expect(host).not.toContain('--accent:');
   });
+  // A custom property set to var() of its own name is a cycle → guaranteed-
+  // invalid → EMPTY wherever that block applies. Shipped once (2e58d2d): a
+  // hex-to-token pass rewrote front.css's scoped DEFINITIONS, and --grn / --bd
+  // / --bg vanished on / for an hour.
+  it('no stylesheet defines a custom property as a reference to itself', () => {
+    for (const f of ['src/design/front.css', 'src/design/report.css', 'src/app.css', 'src/games/footle.css', 'src/design/tokens.css', 'index.html', 'scripts/gen-seo-pages.mjs', 'scripts/seo/shell.mjs', 'scripts/seo/quiz-widget.mjs']) {
+      expect(read(f), f).not.toMatch(/--([a-z0-9-]+):\s*var\(--\1[,)]/);
+    }
+    // and the front door defines no palette of its own
+    expect(read('src/design/front.css')).not.toMatch(/\.fd[^{]*\{[^}]*--grn:/);
+  });
   it('every body font declaration reads var(--font)', () => {
     for (const f of ['src/app.css', 'scripts/gen-seo-pages.mjs', 'scripts/seo/answer-shell.mjs', 'src/design/front.css', 'vite.config.js']) {
       expect(read(f), f).not.toMatch(/font-family:\s*'?Inter'?,/);
