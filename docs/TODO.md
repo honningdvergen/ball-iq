@@ -1,4 +1,11 @@
-## 2026-09-05 (23:20) — ⏳ B2 PLUMBING pushed (414af8d + 4a691fc) — the .bq widget speaks 8 languages; localised pages NOT switched yet; live check pending
+## 2026-09-05 (23:55) — ✅ B2: es + de LIVE on the .bq widget (08736ab) — verified on prod: "Pregunta 1 de 10 · Siguiente →", "Frage 1 von 10 · Weiter →", Spanish finish card end to end; fr/it/pt/nl/tr/id still on the taster pending review
+
+`BQ_I18N_REVIEWED = {es, de}` → 11 Spanish + 4 German club pages and the /es/ + /de/ hubs render `renderQuizSet({lang})`; fr/it/pt/nl/tr/id
+keep the old taster until their columns are approved (`docs/i18n/bq-strings.md`). Plumbing (414af8d + 4a691fc) LIVE-VERIFIED on prod:
+English club page plays, labels right, no uncaught. **Next:** approve more languages → add to `BQ_I18N_REVIEWED`; when all 8 are in,
+delete TASTER_CSS/TASTER_JS/TASTER_I18N and drop `one-question-widget.test.js`'s count to 0. Funnel: es/de pages now post `clubq-*`
+not `taster-*`.
+## 2026-09-05 (23:20) — ✅ B2 PLUMBING LIVE (414af8d + 4a691fc) — the .bq widget speaks 8 languages; localised pages NOT switched yet
 
 Engine: `data-i18n` read once, every label through `T(key, english)` + `fmt()` — English inline as the default, so a missing key
 falls back to English. `renderQuizSet({lang})` emits `data-lang` + `data-i18n` and localises its server-rendered labels; a language's
