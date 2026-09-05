@@ -17,3 +17,13 @@ very fragmented and like separate products almost."
   links into `/play`. The website is a lobby with one exit and the exit is a different product.
 - Two honest directions: render the playable surfaces inside the website's own chrome, or be openly the
   app's front porch and say so at the threshold. Today it is neither.
+
+## Measured 2026-09-05 (pre-synthesis, prod, 375×812)
+- **Club page, after answering: `.bq-next` bottom = 1024px on an 812px viewport — 212px below the fold, not
+  visible without scrolling.** The 09-03 critique had this at 18px clipped (P1); it has got worse since. On
+  the surface with 637 quiz starts/30d. Fix per 09-03: `scrollIntoView` after the reveal, or reserve the
+  reveal height. NOT fixed during the critique so the reviewers see the live state.
+- Homepage phone menu: burger present; opened-panel selector inconclusive (left to Assessment B). The only
+  element spilling off-screen is the visually-hidden skip link — by design, not a defect.
+- 09-03's P0 "three visual systems on one domain; traffic lands on the least designed one" is unchanged
+  two days later and is Alex's fragmentation complaint verbatim.
