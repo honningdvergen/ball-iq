@@ -12,7 +12,7 @@
 // .fd root). When one changes, change the other.
 import { CLUB_INDEX } from '../../src/marketing/clubIndex.js';
 import { LISTS_INDEX } from '../../src/marketing/listsIndex.js';
-import { DISCOVER, MORE } from '../../src/marketing/siteNav.js';
+import { GAMES_NAV, DISCOVER, MORE } from '../../src/marketing/siteNav.js';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -22,16 +22,11 @@ const LEAGUES = [
   ['world-cup', 'World Cup'], ['euros', 'Euros'],
 ];
 
-// Footer "Games" column: the static landing page where one exists (crawlable,
-// and the page a searcher expects), the app door otherwise.
-const GAMES = [
-  ['Footle', '/football-wordle/'], ['Daily 7', '/daily-football-quiz/'], ['Transfer Trail', '/transfer-trail/'],
-  ['Mystery Player', '/mystery-player/'], ['Guess the XI', '/xi/'], ['Club Quiz', '/quiz/clubs/'], ['League Quiz', '/quiz/'],
-  ['Classic', '/play?game=classic'], ['Survival', '/play?game=survival'], ['Hot Streak', '/play?game=hotstreak'],
-  ['Stadiums', '/play?game=stadiums'], ['Legends', '/quiz/legends/'], ['Chaos', '/play?game=chaos'], ['Play a friend', '/play?game=online'],
-];
-// DISCOVER and MORE live in src/marketing/siteNav.js — one list for this
-// footer, the front door's and the served answer pages'.
+// Footer "Games" column: GAMES_NAV in src/marketing/siteNav.js — the same list
+// the /football-games/ hub renders, so the footer and the hub cannot drift.
+// DISCOVER and MORE live there too — one list for this footer, the front
+// door's and the served answer pages'.
+const GAMES = GAMES_NAV.map((g) => [g.name, g.href]);
 
 const SEARCH_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
 const BURGER_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
@@ -59,7 +54,7 @@ if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('is-open
 
 /**
  * @param {{base:string}} site  SITE from gen-seo-pages
- * @param {string} active       'quizzes' | 'lists' | '' — which section link is current
+ * @param {string} active       'games' | 'clubs' | 'quizzes' | 'lists' | '' — which section link is current
  */
 export function shellHeader(site, active = '') {
   const b = site.base;
@@ -67,7 +62,7 @@ export function shellHeader(site, active = '') {
   return `<a class="fd-skip" href="#main">Skip to content</a>
 <header class="fd-head"><div class="fd-w fd-head-in">
 <a class="fd-mark" href="${b}/" aria-label="Ball IQ home"><img src="/marketing/ball.png" alt="" width="26" height="26"><span>Ball IQ</span></a>
-<nav class="fd-nav" id="fd-nav" aria-label="Sections"><a href="${b}/#today">Today</a><a href="${b}/#games">Games</a><a href="${b}/#clubs"${a('clubs')}>Clubs</a><a href="${b}/football-quiz/"${a('quizzes')}>Quizzes</a><a href="${b}/lists/"${a('lists')}>Lists</a><a class="fd-nav-signin" href="${b}/play?tab=profile">Sign in</a></nav>
+<nav class="fd-nav" id="fd-nav" aria-label="Sections"><a href="${b}/#today">Today</a><a href="${b}/football-games/"${a('games')}>Games</a><a href="${b}/#clubs"${a('clubs')}>Clubs</a><a href="${b}/football-quiz/"${a('quizzes')}>Quizzes</a><a href="${b}/lists/"${a('lists')}>Lists</a><a class="fd-nav-signin" href="${b}/play?tab=profile">Sign in</a></nav>
 <div class="fd-find" role="search"><span class="fd-find-ic">${SEARCH_ICON}</span><input type="search" class="fd-find-in" id="fd-find" placeholder="Find your club or league" aria-label="Find your club or league" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" autocomplete="off"><div class="fd-find-res" id="fd-find-res" role="listbox" aria-label="Clubs and leagues" hidden></div></div>
 <a class="fd-signin" href="${b}/play?tab=profile">Sign in</a>
 <button type="button" class="fd-burger" aria-expanded="false" aria-controls="fd-nav" aria-label="Menu">${BURGER_ICON}</button>

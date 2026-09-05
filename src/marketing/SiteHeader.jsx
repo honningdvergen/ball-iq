@@ -67,7 +67,7 @@ export function SiteHeader({ active = '', signedIn = false, onProfile } = {}) {
       <div className="fd-w fd-head-in">
         <a className="fd-mark" href="/" aria-label="Ball IQ home"><img src="/marketing/ball.png" alt="" width="26" height="26" /><span>Ball IQ</span></a>
         <nav className={`fd-nav${menu ? ' is-open' : ''}`} aria-label="Sections">
-          <a href="/#today">Today</a><a href="/#games">Games</a><a className={a('clubs')} href="/#clubs">Clubs</a><a className={a('quizzes')} href="/football-quiz/">Quizzes</a><a className={a('lists')} href="/lists/">Lists</a>{!signedIn && <a className="fd-nav-signin" href={PLAY}>Sign in</a>}
+          <a href="/#today">Today</a><a className={a('games')} href="/football-games/">Games</a><a className={a('clubs')} href="/#clubs">Clubs</a><a className={a('quizzes')} href="/football-quiz/">Quizzes</a><a className={a('lists')} href="/lists/">Lists</a>{!signedIn && <a className="fd-nav-signin" href={PLAY}>Sign in</a>}
         </nav>
         <div className="fd-find" role="search">
           <span className="fd-find-ic"><SearchIcon /></span>

@@ -490,3 +490,31 @@ export const TRAIL_PAGE = {
     { q: 'Is it free? Do I need an account?', a: 'Free, no account, straight in the browser. The free Ball IQ app keeps your streak and adds Footle, Mystery Player and the daily quiz.' },
   ],
 };
+
+// ⚠️ SLUG IS THE SEARCH TERM. "football games" is the second head term Alex
+// queued on 2026-09-05 alongside "football quiz" (top 5 on both is the goal,
+// never parked). The pages that hold page one for it in our cluster are daily
+// football puzzle HUBS — playfootball.games, footballdle.co.uk,
+// statslook.com/play, Planet Football's new "Football Games home" — so this is
+// that: every game on one page, today's Footle playable at the top, and the
+// Games link in every page's header pointing here instead of at a homepage
+// anchor. ⚠️ NO QUESTION COUNT anywhere in this copy (binding rule).
+export const GAMES_PAGE = {
+  slug: 'football-games',
+  h1: 'Football games',
+  title: 'Football Games — Daily Puzzles, Quizzes and Wordle | Ball IQ',
+  description:
+    'Free football games in the browser: Footle, a daily quiz, Transfer Trail, Mystery Player and quiz modes for every club and league. No sign-up.',
+  lede: 'Four puzzles that reset every midnight, quiz modes for every mood, a quiz for every club — free, in the browser, no sign-up.',
+  body: [
+    `Ball IQ's football games are built for people who actually know football, not for a two-minute tap-through. Four of them reset every midnight and are the same for everyone: Footle, the football Wordle, where the answer is always a footballer's surname; the Daily 7, seven questions the whole world gets identically so a score is worth comparing; Transfer Trail, a career revealed one club at a time; and Mystery Player, one secret footballer and unlimited guesses, each ranked by how close it is.`,
+    `Around them sit the quiz modes — Classic against the clock, Survival where one miss ends it, Hot Streak, Legends for the pre-2000 greats, Chaos for quotes and nicknames, Stadiums, Guess the XI — and a quiz for every club and league on file, from Real Madrid to Hajduk Split, each written and fact-checked by hand with the reason behind every answer. Everything here plays free in the browser; the free app keeps your streaks and adds live 1v1 against a friend.`,
+  ],
+  faq: [
+    { q: 'What football games can I play here?', a: 'Four daily puzzles — Footle (the football Wordle), the Daily 7 quiz, Transfer Trail and Mystery Player — plus quiz modes (Classic, Survival, Hot Streak, Legends, Chaos, Stadiums, Guess the XI) and a quiz for every club and league on file.' },
+    { q: 'Are the games free? Do I need an account?', a: 'Free, no account, straight in the browser. The free Ball IQ app adds streaks, daily reminders and live multiplayer against a friend.' },
+    { q: 'When do the daily games reset?', a: 'At midnight, local time. Everyone playing on the same calendar day gets the same Footle, the same seven questions, the same career and the same mystery player.' },
+    { q: 'Can I play on my phone?', a: 'Yes — every game is a responsive web page sized for touch, and the same games are in the free iOS and Android app.' },
+    { q: 'How is this different from other football games sites?', a: 'The questions are written and fact-checked by hand rather than scraped, every answer comes with the reason it is the answer, and small clubs get the same depth as the giants.' },
+  ],
+};

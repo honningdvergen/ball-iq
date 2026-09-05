@@ -26,3 +26,25 @@ export const MORE = [
   ['Club nicknames', '/club-nicknames/'],
   ['Trivia memory study', '/study/football-trivia-memory/'],
 ];
+
+// Every game, once — for the generated pages' footer (shell.mjs), the
+// /football-games/ hub (gen-seo-pages.mjs) and, in time, the front door's
+// mode cards. Static page where one exists (crawlable, and the page a
+// searcher expects), the app runner otherwise. `line` is one line, never a
+// sentence about us. Order: the four dailies, then the modes.
+export const GAMES_NAV = [
+  { key: 'footle', name: 'Footle', href: '/football-wordle/', line: 'Guess the surname in six', daily: true },
+  { key: 'daily', name: 'Daily 7', href: '/daily-football-quiz/', line: 'Seven questions, the same for everyone', daily: true },
+  { key: 'trail', name: 'Transfer Trail', href: '/transfer-trail/', line: 'Follow the moves, name the player', daily: true },
+  { key: 'mystery', name: 'Mystery Player', href: '/mystery-player/', line: 'Guess who from career clues', daily: true },
+  { key: 'xi', name: 'Guess the XI', href: '/xi/', line: 'Name the line-up from a famous match' },
+  { key: 'clubquiz', name: 'Club Quiz', href: '/quiz/clubs/', line: 'Pick your club, ten on them' },
+  { key: 'leaguequiz', name: 'League Quiz', href: '/quiz/', line: 'One competition, its history' },
+  { key: 'classic', name: 'Classic', href: '/play?game=classic', line: 'Ten questions, twenty seconds each' },
+  { key: 'survival', name: 'Survival', href: '/play?game=survival', line: 'One wrong answer and it ends' },
+  { key: 'hotstreak', name: 'Hot Streak', href: '/play?game=hotstreak', line: 'Sixty seconds, as many as you can' },
+  { key: 'stadiums', name: 'Stadiums', href: '/play?game=stadiums', line: 'Name every ground in the league' },
+  { key: 'legends', name: 'Legends', href: '/quiz/legends/', line: 'Pre-2000 greats only' },
+  { key: 'chaos', name: 'Chaos', href: '/play?game=chaos', line: 'Quotes, nicknames and the rest' },
+  { key: 'online', name: 'Play a friend', href: '/play?game=online', line: 'Live rooms, up to eight of you' },
+];

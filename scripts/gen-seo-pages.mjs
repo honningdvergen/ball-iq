@@ -84,7 +84,8 @@ import { QB } from '../src/questions.js';
 // moving off. rootCss() emits the same bytes this file used to hardcode.
 import { rootCss } from '../src/design/tokens.js';
 import { shellHeader, shellFooter, SHELL_CSS } from './seo/shell.mjs';
-import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE, GAMES_PAGE } from './seo/content.mjs';
+import { GAMES_NAV } from '../src/marketing/siteNav.js';
 import { recentFootleAnswers } from './seo/footle-answer-page.mjs';
 import { recentDailyDays } from './seo/daily-answers-page.mjs';
 import { CLUBS } from './seo/clubs.mjs';
@@ -4174,6 +4175,161 @@ ${footer()}`;
 // ⚠️ /daily-football-quiz/ was checked at the same time and is NOT the same
 // problem: it targets "daily football quiz", a distinct query with its own
 // intent and its own feature behind it. Left alone.
+// ── /football-games/ — the hub for the head term (2026-09-05) ─────────────────
+//
+// "football games" is the second head term Alex queued (top 5 on it and on
+// "football quiz"). The pages holding page one in our cluster are daily
+// football puzzle hubs, so this is one: today's Footle playable at the top
+// (playable beats readable — 109-145s vs 2.3s), the four dailies with their
+// played-state, every mode as a card, the two quiz directories, FAQ, and an
+// ItemList of Game entities for the answer engines. Every page's header Games
+// link points here (shell.mjs + SiteHeader.jsx), so ~300 pages send a real
+// link instead of a homepage anchor. The games themselves are GAMES_NAV in
+// src/marketing/siteNav.js — the footer renders the same list.
+const GAMES_CSS = `
+  .gm-sec{padding:26px 0 8px}
+  .gm-h{margin:0 0 4px;font-size:22px;font-weight:800;letter-spacing:-.02em}
+  .gm-sub{margin:0 0 14px;font-size:14.5px;color:var(--tx3)}
+  .gm-sub b{color:var(--tx);font-weight:700;font-variant-numeric:tabular-nums}
+  .gm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+  .gm-card{display:flex;flex-direction:column;gap:4px;min-height:44px;padding:14px 15px;background:var(--card);border:1px solid var(--bd);border-radius:14px;color:var(--tx);text-decoration:none;transition:border-color .15s}
+  .gm-card:hover{border-color:var(--bd3);text-decoration:none}
+  .gm-card.is-daily{border-left:4px solid var(--grn)}
+  .gm-name{font-weight:800;font-size:16px;letter-spacing:-.01em}
+  .gm-line{font-size:13.5px;color:var(--tx3);line-height:1.4}
+  .gm-state{margin-top:6px;font:700 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tx4)}
+  .gm-state.is-done{color:var(--grn-soft)}
+  .gm-dirs{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+  .gm-dir{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--bd2);color:var(--tx);font-weight:700;font-size:14px;text-decoration:none}
+  .gm-dir:hover{border-color:var(--bd3);text-decoration:none}
+`;
+// Played-state for the four daily cards + the countdown, from the same
+// localStorage keys the app and the front door read. Local date on purpose:
+// the dailies roll at LOCAL midnight. Best effort; the page reads fine without it.
+const GAMES_STATE_JS = `(function(){try{
+var d=new Date(),ymd=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+var keys={footle:'biq_wordle_'+ymd,daily:'biq_daily_'+ymd,trail:'biq_trail_'+ymd,mystery:'biq_mystery_'+ymd};
+Object.keys(keys).forEach(function(k){var el=document.querySelector('[data-gm-state="'+k+'"]');if(!el)return;var raw=null;try{raw=localStorage.getItem(keys[k])}catch(e){}
+if(!raw){el.textContent='Not played yet';return}var st=null;try{st=JSON.parse(raw)}catch(e){}
+var done=k==='footle'?(st&&st.status&&st.status!=='playing'):k==='daily'?(st&&typeof st.score==='number'):k==='trail'?(st&&st.status&&st.status!=='playing'):(st&&(st.won||st.gaveUp));
+el.textContent=done?'Played today \\u2713':'In progress';if(done)el.classList.add('is-done')});
+var c=document.getElementById('gm-countdown');if(c){var t=new Date(d);t.setHours(24,0,0,0);var ms=t-d,h=Math.floor(ms/3.6e6),m=Math.floor(ms%3.6e6/6e4);c.textContent=(h?h+'h ':'')+m+'m'}
+}catch(e){}})();`;
+
+function buildGamesPage() {
+  const cfg = GAMES_PAGE;
+  const canonical = `${SITE.base}/${cfg.slug}/`;
+  const island = islandAssets('src/islands/footle.jsx');
+  const dailies = GAMES_NAV.filter((g) => g.daily);
+  const modes = GAMES_NAV.filter((g) => !g.daily && !['clubquiz', 'leaguequiz'].includes(g.key));
+  const abs = (h) => (h.startsWith('/') ? `${SITE.base}${h}` : h);
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Football games', item: canonical },
+        ],
+      },
+      {
+        '@type': 'ItemList',
+        name: 'Football games by Ball IQ',
+        itemListOrder: 'https://schema.org/ItemListOrderAscending',
+        numberOfItems: GAMES_NAV.length,
+        itemListElement: GAMES_NAV.map((g, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          item: {
+            '@type': 'Game',
+            name: g.name,
+            description: g.line,
+            url: abs(g.href),
+            gamePlatform: ['Web browser', 'iOS', 'Android'],
+            isAccessibleForFree: true,
+            publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
+          },
+        })),
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: cfg.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+      },
+    ],
+  });
+
+  const card = (g) => `<a class="gm-card${g.daily ? ' is-daily' : ''}" href="${abs(g.href)}">
+<span class="gm-name">${esc(g.name)}</span><span class="gm-line">${esc(g.line)}</span>${g.daily ? `<span class="gm-state" data-gm-state="${g.key}"></span>` : ''}
+</a>`;
+  const bodyHtml = cfg.body.map((pp) => `<p>${esc(pp)}</p>`).join('\n');
+  // This page IS the Games section: mark its own header link current.
+  const nav = NAV.replace(`href="${SITE.base}/football-games/">Games`, `href="${SITE.base}/football-games/" class="is-active" aria-current="page">Games`);
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, taster: true, extraHead: island.head })}
+<body>
+${nav}
+<main id="main">
+${heroSection({
+    crumbItems: [
+      { name: 'Home', url: `${SITE.base}/` },
+      { name: 'Football games', url: canonical },
+    ],
+    badge: { text: '🎮', emoji: true },
+    kind: 'Every game',
+    name: 'Football games',
+    h1: cfg.h1,
+    lead: cfg.lede,
+    statLine: null,
+    playHref: null,
+    noStores: true,
+  })}
+<style>
+${FW_TODAY_CSS}
+${GAMES_CSS}
+</style>
+<section class="sec fw-today" id="today" aria-label="Today's Footle">
+<p class="fw-mast" id="footle-masthead" hidden></p>
+<div class="fw-host" id="footle-today"><noscript><p class="fw-ns">Today's Footle needs JavaScript. <a href="${SITE.base}/football-wordle/">Open the Footle page</a>.</p></noscript></div>
+<p class="fw-toast" id="footle-toast" role="status" aria-live="polite" hidden></p>
+</section>
+${island.script}
+<section class="sec gm-sec" id="daily" aria-labelledby="gm-daily-h">
+<h2 class="gm-h" id="gm-daily-h">Today's four</h2>
+<p class="gm-sub">The same puzzles for everyone, new ones in <b id="gm-countdown">a few hours</b>.</p>
+<div class="gm-grid">
+${dailies.map(card).join('\n')}
+</div>
+</section>
+<section class="sec gm-sec" id="modes" aria-labelledby="gm-modes-h">
+<h2 class="gm-h" id="gm-modes-h">Quiz modes</h2>
+<p class="gm-sub">Pick a pace. Every question written and fact-checked by hand, every answer explained.</p>
+<div class="gm-grid">
+${modes.map(card).join('\n')}
+</div>
+<div class="gm-dirs">
+<a class="gm-dir" href="${SITE.base}/quiz/clubs/">A quiz for every club →</a>
+<a class="gm-dir" href="${SITE.base}/quiz/">Every league and competition →</a>
+<a class="gm-dir" href="${SITE.base}/football-quiz/">The football quiz →</a>
+</div>
+</section>
+<script>${GAMES_STATE_JS}</script>
+<section class="sec"><h2>What makes these football games different</h2>
+<div class="prose">
+${bodyHtml}
+</div></section>
+${appCtaBand('football')}
+<section class="sec"><h2>Football games FAQ</h2>
+${renderFaq(cfg.faq)}
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+}
+
 function buildFootballQuizPage() {
   const canonical = `${SITE.base}/quiz/`;
   const paged = new Set(CLUBS.map((c) => c.club));
@@ -4305,7 +4461,7 @@ ${style}
 ${hasTaster ? renderQuizSet(tasterRows, { name: 'football', tiers: DEFAULT_TIERS, more: 0, badge: '' }) : ''}
 
 <section class="sec narrow">
-<p style="margin:0;color:var(--tx2);font-size:16.5px;max-width:62ch">Pick a club and play, or take one of the daily games. Every question is written and fact-checked by hand rather than scraped, and every answer comes with the reason it is the answer — the part most football quizzes leave out.</p>
+<p style="margin:0;color:var(--tx2);font-size:16.5px;max-width:62ch">Pick a club and play, or take one of the <a href="${SITE.base}/football-games/">daily games</a>. Every question is written and fact-checked by hand rather than scraped, and every answer comes with the reason it is the answer — the part most football quizzes leave out.</p>
 <ul class="fq-trust"><li>FREE</li><li>NO SIGN-UP</li><li>ANSWERS EXPLAINED</li><li>${clubCount} CLUBS</li></ul>
 </section>
 
@@ -5572,6 +5728,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     ...recentFootleAnswers(30).map((a) => ({ loc: a.url, freq: 'yearly', pri: '0.5' })),
     { loc: `${SITE.base}/daily-football-quiz/answers/`, freq: 'daily', pri: '0.7' },
     ...recentDailyDays(30).map((d) => ({ loc: d.url, freq: 'yearly', pri: '0.5' })),
+    { loc: `${SITE.base}/${GAMES_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${TRAIL_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${DAILY7_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
@@ -5762,6 +5919,7 @@ async function main() {
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
+  buildGamesPage();
   buildFunFactsPage();
   buildXiPage();
   buildQuotesPage();

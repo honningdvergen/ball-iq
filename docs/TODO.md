@@ -1,3 +1,14 @@
+## 2026-09-05 (19:40) — 💡 TO DISCUSS: an "ideas" subagent (Alex) — a daily scout that reads GSC / Clarity / funnel deltas and the competitor set and brings THREE ideas with evidence, not a wishlist. Shape exists: `.claude/agents/funnel-analyst`. Decide cadence + inputs together.
+
+## 2026-09-05 (19:15) — 🎯 QUEUED, PRIORITY: RANK TOP 5 FOR "football quiz" AND "football games" (Alex: "not something we park, we queue it")
+
+Baseline (memory): "football quiz" ~position 41 on `/football-quiz/`; ranking diagnosis says fundamentals are clean and the ceiling is
+AUTHORITY. "football games" has NO target page yet — the header's Games link is `/#games` (a homepage anchor). Footle has started
+climbing in GSC since the answer page (09-04). Plan to brief next: (1) read GSC for both terms + SERP composition (who holds page 1,
+what shape of page), (2) a real `/football-games/` hub (the four dailies + every mode, playable, linked from every page's Games nav),
+(3) `/football-quiz/` as the canonical "football quiz" page — content depth, internal links from all ~250 pages, title/H1,
+(4) authority: the Reddit/community plan (memory: reddit account state), answer pages, llms.txt, (5) measure weekly in GSC.
+
 ## 2026-09-05 (19:00) — ✅ P0 UNIFICATION, FIRST PASS LIVE: A · B1 · C1/C2 · C3-A · D (fbaee2e) — all live-verified at 375
 
 Order Alex confirmed 17:00: A ghost landing → B one question widget → C tokens → D header. Each its own commit + gate + live check.
