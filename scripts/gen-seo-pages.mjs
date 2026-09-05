@@ -1846,7 +1846,11 @@ ${ADS_ACTIVE ? `<script>
   h2{font-size:clamp(22px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1.12;margin:0 0 16px}
 ${SHELL_CSS}
   /* hero */
-  .hero{padding:46px 0 40px;position:relative;overflow:hidden}
+  /* overflow:clip, not hidden — the club quiz renders INSIDE this section, and
+     hidden would make the hero the sticky container for .bq-next (measured
+     2026-09-05: sticky computed, button still 162px below the fold). clip keeps
+     the glow clipped without creating a scroll container. */
+  .hero{padding:46px 0 40px;position:relative;overflow:clip}
   .hero-in{position:relative;z-index:2}
   .hero-glow{position:absolute;top:16%;left:72%;width:min(560px,86vw);height:min(560px,86vw);background:radial-gradient(circle,rgba(var(--club-glow, 88, 204, 2),.16) 0%,rgba(var(--club-glow, 88, 204, 2),.05) 42%,transparent 66%);transform:translate(-50%,-50%);animation:glowPulse 5s ease-in-out infinite;pointer-events:none;z-index:0}
   @keyframes glowPulse{0%,100%{opacity:.4}50%{opacity:.72}}
