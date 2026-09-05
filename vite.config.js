@@ -141,7 +141,7 @@ function preloadGameRootPlugin() {
       ])
       const staticHead =
         `<style id="biq-static-head-css">${rootCss()}${SHELL_CSS}` +
-        '#biq-static-head .fd-head{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx)}' +
+        '#biq-static-head .fd-head{font-family:var(--font);color:var(--tx)}' +
         '#biq-static-head a{color:inherit;text-decoration:none}' +
         'html.native-app #biq-static-head{display:none}' +
         '@media (display-mode: standalone){#biq-static-head{display:none}}</style>' +

@@ -74,6 +74,50 @@ export const TOKENS = {
 
   // ── Type ───────────────────────────────────────────────────────────────
   mono: "'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace",
+  // ONE body stack. There were three on the domain (app.css, the generated
+  // pages, the front door / static header) — Roboto present or absent,
+  // "Helvetica" vs "Helvetica Neue" — for one declared typeface (critique
+  // 2026-09-05). Every body rule now reads var(--font).
+  font: "'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif",
+
+  // ── The APP's names for the same palette (2026-09-05) ─────────────────
+  // App.jsx, app.css and the daily screens speak --s1 / --border / --accent /
+  // --t2; the site speaks --card / --bd / --grn / --tx3. Until now app.css
+  // carried its own :root with the same hexes typed again, and every island
+  // page hand-copied that block into .fw-host. These are ALIASES — var()
+  // references, not values — so they cannot drift from the entries above, and
+  // one :root serves the app, the site and the islands. Two values moved to
+  // the web palette Alex chose on 09-04: text (#FFFFFF → --tx #F0F1F5) and
+  // red (#FF4B4B → --wrong #FF4747). --s3 has no web twin; it is the app's
+  // pressed surface and stays a value.
+  s1: 'var(--card)',
+  s2: 'var(--card2)',
+  s3: '#232631',
+  border: 'var(--bd)',
+  border2: 'var(--bd2)',
+  text: 'var(--tx)',
+  t1: 'var(--tx)',
+  t2: 'var(--tx3)',
+  t3: 'var(--tx4)',
+  accent: 'var(--grn)',
+  'accent-dim': 'rgba(88,204,2,0.10)',
+  'accent-b': 'rgba(88,204,2,0.28)',
+  green: 'var(--grn)',
+  'green-l': 'rgba(88,204,2,0.10)',
+  'green-ink': 'var(--grn)',
+  red: 'var(--wrong)',
+  'red-l': 'rgba(255,71,71,0.10)',
+  gold: 'var(--amber)',
+  'gold-l': 'rgba(255,193,7,0.10)',
+  info: 'var(--amber)',
+  // The primary button look, as two tokens (Alex 2026-08-25: "that slight
+  // shine that makes it more tempting to tap") — 1.5px of light at the top,
+  // 2px of shade at the bottom, a glow beneath.
+  'btn-shine': 'inset 0 1.5px 0 rgba(255,255,255,0.30), inset 0 -2px 0 rgba(0,0,0,0.12)',
+  'btn-glow': '0 8px 22px -8px rgba(88,204,2,0.55)',
+  r: '14px',
+  sh: '0 2px 12px rgba(0,0,0,0.5),0 1px 3px rgba(0,0,0,0.3)',
+  'sh-lg': '0 8px 40px rgba(0,0,0,0.6),0 2px 8px rgba(0,0,0,0.3)',
 };
 
 /**

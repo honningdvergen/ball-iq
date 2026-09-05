@@ -26,7 +26,7 @@ export const esc = (s) =>
 const PAGE_CSS = `
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);-webkit-text-size-adjust:100%}
-  body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--tx2);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{font-family:var(--font);background:var(--bg);color:var(--tx2);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:var(--grn-soft);text-decoration:none}
   .prose a,.sec>p a,.qw a{text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
   main{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,44px)}

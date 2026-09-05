@@ -5,8 +5,8 @@
    the two must never drift, and the gates that used to read app.css for the
    board's height budget (tests/unit/footle-enter-visible.test.js) now read
    this file. Tokens: the app's --s1/--s2/--s3/--border/--text/--t2/--t3/
-   --accent — the island page defines the same names (see gen-seo-pages.mjs,
-   FW_TOKENS) until the shared tokens.css lands.
+   --accent — since 2026-09-05 aliases in src/design/tokens.js, so the app and
+   the island page read the one :root (tokens.css / rootCss()).
    The ⚠️ comments about the tile cap were written in app.css and still hold:
    a tile is SQUARE, so its width cap decides six rows' height, and a SHORT
    answer makes the TALLEST board. --wd-tile-cap derives from the viewport

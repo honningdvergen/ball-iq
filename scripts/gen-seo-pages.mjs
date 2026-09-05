@@ -1609,7 +1609,7 @@ ${ADS_ACTIVE ? `<script>
   ${rootCss()}
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-  body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:${PAGE_FG};line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{font-family:var(--font);background:var(--bg);color:${PAGE_FG};line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   img{max-width:100%;display:block}
   a{color:var(--grn-soft);text-decoration:none}
   /* ⚠️ WCAG 1.4.1 — LINKS IN RUNNING TEXT MUST NOT RELY ON COLOUR ALONE.
@@ -4727,11 +4727,10 @@ const FW_TODAY_CSS = `
   .fw-today{padding:0 0 8px;margin-top:0}
   .fw-mast{margin:0 0 10px;font-size:13.5px;color:var(--tx3);font-variant-numeric:tabular-nums}
   .fw-mast b{color:var(--tx);font-weight:800}
-  .fw-host{max-width:520px;margin:0 auto;padding:0 20px;
-    --s1:#13151C;--s2:#1B1E27;--s3:#232631;--border:#242730;--border2:#2F3240;
-    --text:#FFFFFF;--t1:#FFFFFF;--t2:#9BA0B8;--t3:#7E828C;--accent:#58CC02;
-    --btn-shine:inset 0 1.5px 0 rgba(255,255,255,0.30), inset 0 -2px 0 rgba(0,0,0,0.12);
-    --btn-glow:0 8px 22px -8px rgba(88,204,2,0.55);--gold:#FFC107;--gold-l:rgba(255,193,7,0.10);--red:#FF4B4B;--red-l:rgba(255,75,75,0.10);--wd-edge:#5A5E6E;--biq-consent-h:0px}
+  /* The app's token names (--s1, --accent, --gold …) come from rootCss() in
+     the head since 2026-09-05 — tokens.js aliases them onto the web palette —
+     so this no longer copies the palette by hand. Two island-only values stay. */
+  .fw-host{max-width:520px;margin:0 auto;padding:0 20px;--wd-edge:#5A5E6E;--biq-consent-h:0px}
   .fw-host .wd-screen{min-height:0}
   .fw-toast{max-width:520px;margin:6px auto 0;text-align:center;font-size:13px;color:var(--tx3)}
   .fw-fold{border-top:1px solid var(--bd);margin-top:6px}

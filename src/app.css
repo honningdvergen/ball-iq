@@ -66,45 +66,15 @@
 /* Dark-only app: tell the UA so the system keyboard, form controls,
    scrollbars and selection UI come back dark. See index.html. */
 :root{color-scheme:dark;}
-:root{
-  /* APP_NAME Dark — Option A: True neutral dark, Duolingo-proven accent */
-  --bg:#0B0C10;          /* neutral near-black — unified with web (was #09131C bluish); app-wide re-skin 2026-07 */
-  --s1:#13151C;          /* cards — neutral dark (was #1A1D27 navy) */
-  --s2:#1B1E27;          /* inset surfaces (was #22263A navy) */
-  --s3:#232631;          /* tertiary / pressed (was #2C3050 blue-purple) */
-  --border:#242730;      /* subtle separator (was #2E3147 blue) */
-  --border2:#2F3240;     /* stronger border (was #3A3F60 blue) */
-  --text:#FFFFFF;        /* pure white — max contrast */
-  --t1:#FFFFFF;          /* alias for --text */
-  --t2:#9BA0B8;          /* neutral muted (was #8B8FA8 blue-grey) */
-  --t3:#7E828C;          /* neutral dim — lifted from handoff #6E7180 to clear WCAG AA 4.5:1 on the new #0B0C10 canvas (was #767B98 blue-purple) */
-  --accent:#58CC02;      /* Web green — unified app↔web (was #58CC02 muted); on-green text #06230C */
-  --accent-dim:rgba(88,204,2,0.10);
-  --accent-b:rgba(88,204,2,0.28);
-  --green:#58CC02;
-  --green-l:rgba(88,204,2,0.10);
-  --green-ink:#58CC02;   /* green as TEXT */
-  --red:#FF4B4B;         /* Duolingo red — energetic */
-  --red-l:rgba(255,75,75,0.10);
-  --gold:#FFC107;        /* amber — matches web (was #FFC800) */
-  /* ⚠️ THE PRIMARY BUTTON LOOK, AS TWO TOKENS. Alex, 2026-08-25, on the
-     onboarding CTA: *"it has a better shape now the green button, but it does
-     not have that slight shine that makes it more tempting to tap"*. He is
-     describing specular highlight, and he is right that it was missing — the
-     class is literally named .btn-3d and carried no 3D treatment at all, just
-     a glow cast BENEATH it. A flat fill reads as a label; a lit top edge and a
-     shaded bottom edge read as a physical thing you can press.
-     Kept deliberately restrained: 1.5px of light at the top, 2px of shade at
-     the bottom. Enough to catch the eye, short of the glossy candy buttons
-     that dated every app built in 2011. */
-  --btn-shine:inset 0 1.5px 0 rgba(255,255,255,0.30), inset 0 -2px 0 rgba(0,0,0,0.12);
-  --btn-glow:0 8px 22px -8px rgba(88,204,2,0.55);
-  --gold-l:rgba(255,193,7,0.10);
-  --info:#FFC107;        /* amber locked-in indicator (was #58CC02 blue — no-blue re-skin) */
-  --r:14px;
-  --sh:0 2px 12px rgba(0,0,0,0.5),0 1px 3px rgba(0,0,0,0.3);
-  --sh-lg:0 8px 40px rgba(0,0,0,0.6),0 2px 8px rgba(0,0,0,0.3);
-}
+/* ⚠️ NO PALETTE HERE. The tokens (--bg, --s1, --border, --text, --accent,
+   --gold, --btn-shine, --r, --sh …) live in src/design/tokens.js and reach
+   the app through design/tokens.css (imported by main.jsx before this file),
+   the generated pages through rootCss() inlined in every head, and the
+   islands the same way. This block used to type the same hexes again and
+   every island page copied it a third time; three copies of one palette is
+   how the 2026-09-04 lift became a 32-file edit. Add a token in tokens.js.
+   (--text is --tx #F0F1F5 and --red is --wrong #FF4747 since 2026-09-05 —
+   the web values; the app had #FFFFFF and #FF4B4B.) */
 
 /* ── LIGHT THEME ── */
 
@@ -184,7 +154,7 @@ a{-webkit-tap-highlight-color:transparent;}
   }
 }
 html,#root{background:var(--bg);min-height:100vh;min-height:100dvh;scroll-behavior:smooth;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;transition:color 0.18s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;transition:color 0.18s;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior-y:contain;}
 
 /* ── DESIGN-SYSTEM UTILITIES ─────────────────────────────────────────── */
 /* Numeric displays (scores, timers, IQ, streak counters). Tabular-nums prevents
@@ -194,7 +164,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
 .numeric-mono{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:700;}
 
 /* Eyebrow label — small uppercase pill-less header */
-.ds-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);font-family:'Inter',sans-serif;}
+.ds-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);font-family:var(--font);}
 
 /* 3D "Duolingo" primary button — bright green face, darker rim, press translates Y.
    Use only for the signature primary CTA of a screen. Applied via the .btn-3d
@@ -211,7 +181,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica 
    ⚠️ :active matters as much as the radius — scale(0.97) reads as pressing a
    physical button, opacity 0.85 reads as a web link dimming. That is a FEEL
    change, which is this release's whole brief. */
-.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;box-shadow:var(--btn-shine), var(--btn-glow);transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.btn-3d{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;padding:14px 20px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;box-shadow:var(--btn-shine), var(--btn-glow);transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .btn-3d:hover{filter:brightness(1.06);}
 .btn-3d:active,.btn-3d.is-pressed{transform:scale(0.97);opacity:0.92;}
 .btn-3d:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;filter:none;}
@@ -254,7 +224,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .results-actions .btn-3d.ghost:active,.results-actions .btn-3d.ghost.is-pressed{opacity:0.85;}
 
 /* Pill utility — small uppercase tone-tinted badge. */
-.pill{display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;}
+.pill{display:inline-flex;align-items:center;gap:4px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .pill--green{background:rgba(88,204,2,0.15);color:var(--green-ink);}
 .pill--amber{background:rgba(255,193,7,0.15);color:#FFC107;}
 .pill--neutral{background:rgba(255,255,255,0.08);color:var(--t2);}
@@ -265,7 +235,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 0 4px;}
 .logo{font-size:19px;font-weight:800;letter-spacing:-0.4px;color:var(--text);flex-shrink:0;}
 .hdr-xp{flex:1;min-width:80px;display:flex;align-items:center;gap:8px;}
-.hdr-xp-lbl{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.02em;flex-shrink:0;font-variant-numeric:tabular-nums;}
+.hdr-xp-lbl{font-family:var(--font);font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.02em;flex-shrink:0;font-variant-numeric:tabular-nums;}
 .hdr-xp-track{flex:1;height:6px;background:var(--s2);border-radius:999px;overflow:hidden;}
 .hdr-xp-fill{height:100%;background:#58CC02;border-radius:999px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
 .logo em{color:var(--accent);font-style:normal;}
@@ -283,11 +253,11 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    for in-card eyebrows and other screen uses). Flex container so the
    Daily header can host a streak chip on the right; "More modes" with
    a single child sits left as expected via justify-content:space-between. */
-.home-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 16px;}
+.home-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:var(--font);font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);margin:0 0 16px;}
 /* Optional small uppercase eyebrow above .home-section-title — used to
    give a section a touch more presence. Kept declarative ("Game modes",
    not marketing copy). */
-.home-section-eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin:0 0 4px;}
+.home-section-eyebrow{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin:0 0 4px;}
 /* Coming Soon — demoted to a single muted text line so it doesn't
    compete visually with available game modes. Was a 3-card grid that
    looked nearly identical to active modes. */
@@ -322,7 +292,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 /* Streak chip rendered next to the Daily section title when login streak
    > 0. Outline-only treatment so it reads as a peer to the title rather
    than competing for attention. */
-.hst-streak{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.28);border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;color:#FFC107;-webkit-text-fill-color:#FFC107;letter-spacing:0;text-transform:none;box-shadow:none;will-change:transform;}
+.hst-streak{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.28);border-radius:999px;font-family:var(--font);font-size:12px;font-weight:800;color:#FFC107;-webkit-text-fill-color:#FFC107;letter-spacing:0;text-transform:none;box-shadow:none;will-change:transform;}
 /* Pulse fires once per session when loginStreak exceeds the value
    captured at AppInner mount (i.e. user just earned today's streak day).
    Subtle by design — celebrating the moment, not demanding attention. */
@@ -343,8 +313,8 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .home-stat-chip.tappable:active{transform:scale(0.98);}
 .hsc-left{flex-shrink:0;display:flex;flex-direction:column;}
 .hsc-right{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;}
-.home-stat-hint{font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-top:2px;}
-.home-stat-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);}
+.home-stat-hint{font-family:var(--font);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-top:2px;}
+.home-stat-label{font-family:var(--font);font-size:10px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);}
 .home-stat-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:700;color:var(--t1);margin-top:2px;letter-spacing:-0.02em;}
 .home-stat-val.green{color:var(--accent);}
 .home-stat-val.flame{color:#FF6A00;}
@@ -361,7 +331,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    trailing zero-content child that's invisible in either case. */
 .streak-pulse-dot::before{content:"";display:block;padding-top:100%;}
 .streak-pulse-dot.active{background:var(--accent);border-color:var(--accent);}
-.hsc-meta{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;color:var(--t3);letter-spacing:0.04em;line-height:1;}
+.hsc-meta{font-family:var(--font);font-size:9.5px;font-weight:600;color:var(--t3);letter-spacing:0.04em;line-height:1;}
 
 /* ── IQ rank bar: 5-segment tier visual ──────────────────────────────────── */
 /* Segments 1-5 represent 60-80, 80-100, 100-120, 120-140, 140-160. Active
@@ -434,11 +404,11 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    shipped styling (green FootleHero gradient, tamed amber T7 secondary). */
 .daily-zone{border:1px solid var(--border);background:linear-gradient(180deg,rgba(88,204,2,0.05) 0%,rgba(255,193,7,0.03) 100%);border-radius:18px;padding:10px 10px 10px;margin-bottom:10px;contain:layout paint style;}
 .daily-zone-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:0 4px;}
-.daily-zone-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t2);font-family:'Inter',sans-serif;}
+.daily-zone-eyebrow{font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t2);font-family:var(--font);}
 /* Now a <button> (it opens the Daily tab), so it has to un-inherit the UA
    button chrome — iOS WebKit in particular paints its own blue text colour on
    <button>, which is how the Online CTA lost its ink. */
-.daily-zone-status{font-size:10.5px;font-weight:700;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.02em;background:none;border:0;padding:4px 2px;margin:-4px -2px;cursor:pointer;-webkit-appearance:none;appearance:none;}
+.daily-zone-status{font-size:10.5px;font-weight:700;color:var(--t3);font-family:var(--font);letter-spacing:0.02em;background:none;border:0;padding:4px 2px;margin:-4px -2px;cursor:pointer;-webkit-appearance:none;appearance:none;}
 .daily-zone-status.is-done{color:var(--accent);}
 /* Nested cards inherit their own bottom margin from the shipped components,
    which now serves as the gap between Footle hero and T7 inside the zone.
@@ -674,10 +644,10 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    unanswered question the category chip is the brightest thing on screen,
    so the eye lands on 'RECORDS & ICONS' before it reaches the question.
    The label is the least important element on the card; it should not win. */
-.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700;color:var(--green-ink);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.10);padding:4px 10px;border-radius:999px;white-space:nowrap;}
+.q-tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--font);font-size:11.5px;font-weight:700;color:var(--green-ink);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;background:rgba(88,204,2,0.10);padding:4px 10px;border-radius:999px;white-space:nowrap;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
 .opts{display:flex;flex-direction:column;gap:9px;}
-.opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:var(--font);font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .opt:hover:not(:disabled):not([aria-disabled="true"]){border-color:var(--border2);background:var(--s2);transform:translateX(2px);}
 /* ⚠️ THE MOST-TAPPED CONTROL IN THE APP HAD NO PRESS STATE, while 46 other
    elements in this stylesheet depress under a thumb. Scouting report #4:
@@ -707,7 +677,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .opt.wrong{border-color:rgba(255,59,48,0.55);background:rgba(255,59,48,0.10);color:#FF8080;}
 .opt.neutral-after{opacity:0.65;color:var(--t2);}
 /* Letter chip (A/B/C/D) */
-.opt-l{width:30px;height:30px;border-radius:9px;background:var(--s2);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Inter',sans-serif;color:var(--t3);border:1px solid var(--border);transition:background 0.15s,color 0.15s,border-color 0.15s;}
+.opt-l{width:30px;height:30px;border-radius:9px;background:var(--s2);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font);color:var(--t3);border:1px solid var(--border);transition:background 0.15s,color 0.15s,border-color 0.15s;}
 .opt.correct .opt-l{background:#58CC02;color:#0B0C10;border-color:#58CC02;}
 .opt.wrong .opt-l{background:#FF3B30;color:#fff;border-color:#FF3B30;}
 .opt.neutral-after .opt-l{background:var(--s2);color:var(--t2);}
@@ -739,7 +709,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    softer than the correct tray on purpose: a miss should be legible, not loud. */
 .feedback.wrong{background:rgba(248,113,113,0.11);color:var(--red);border-color:rgba(248,113,113,0.38);}
 .typed-outer{position:relative;}
-.typed-inp{width:100%;padding:14px 16px;background:var(--s1);border:1px solid var(--border);border-radius:11px;font-family:'Inter',sans-serif;font-size:16px;font-weight:500;color:var(--text);outline:none;transition:border-color 0.15s;}
+.typed-inp{width:100%;padding:14px 16px;background:var(--s1);border:1px solid var(--border);border-radius:11px;font-family:var(--font);font-size:16px;font-weight:500;color:var(--text);outline:none;transition:border-color 0.15s;}
 .typed-inp:focus{border-color:var(--accent-b);}
 .typed-inp.correct{border:1px solid rgba(88,204,2,0.55);background:rgba(88,204,2,0.12);color:var(--green-ink);}
 .typed-inp.wrong{border-color:var(--red);background:rgba(248,113,113,0.06);}
@@ -748,7 +718,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .ac-row:last-child{border-bottom:none;}
 .ac-row:hover{background:var(--s3);}
 .ac-hi{color:var(--accent);font-weight:600;}
-.typed-btn{width:100%;margin-top:9px;padding:13px;background:var(--accent);border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#0a1a00;cursor:pointer;transition:all 0.15s;}
+.typed-btn{width:100%;margin-top:9px;padding:13px;background:var(--accent);border:none;border-radius:999px;font-family:var(--font);font-size:14px;font-weight:700;color:#0a1a00;cursor:pointer;transition:all 0.15s;}
 .typed-btn:hover{background:#58CC02;transform:translateY(-1px);}
 .typed-btn:disabled{opacity:0.25;cursor:default;transform:none;}
 .hint-note{font-size:12px;color:var(--t3);margin-top:7px;font-style:italic;display:flex;align-items:center;gap:5px;}
@@ -803,7 +773,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    "this went well" signal — spending it on a bad round both misreads the moment
    and devalues green everywhere else it appears. Neutral by default; the accent
    is earned back at 70%+ (.is-strong, set at the call site). */
-.score-big{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-variant-numeric:tabular-nums;font-size:60px;font-weight:700;color:var(--text);line-height:1;margin:12px 0 2px;letter-spacing:-0.02em;}
+.score-big{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:60px;font-weight:700;color:var(--text);line-height:1;margin:12px 0 2px;letter-spacing:-0.02em;}
 .score-big.is-strong{color:var(--accent);}
 .score-pct{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);}
 .s-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px;}
@@ -813,7 +783,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .s-row .sbox:nth-child(3){animation-delay:0.75s;}
 @keyframes sboxIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .sbox-v{font-size:22px;font-weight:800;letter-spacing:-0.5px;}
-.sbox-k{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);margin-top:3px;letter-spacing:0.8px;}
+.sbox-k{font-family:var(--font);font-size:9px;color:var(--t3);margin-top:3px;letter-spacing:0.8px;}
 /* New best / category breakdown callouts */
 .new-best{animation:bestPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 1.0s both;text-align:center;margin:10px 0 6px;padding:10px 14px;background:linear-gradient(135deg,rgba(255,204,0,0.15),rgba(255,149,0,0.10));border:1px solid rgba(255,204,0,0.35);border-radius:10px;font-size:14px;font-weight:800;color:var(--gold);letter-spacing:0.2px;}
 @keyframes bestPop{from{opacity:0;transform:scale(0.85);}60%{transform:scale(1.04);}to{opacity:1;transform:scale(1);}}
@@ -824,8 +794,8 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .iq-ring.great{animation:iqPulse 1.5s ease infinite;}
 @keyframes iqPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
 .iq-ring-inner{width:120px;height:120px;border-radius:50%;background:var(--s1);display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.iq-num{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-variant-numeric:tabular-nums;font-size:44px;font-weight:700;letter-spacing:-0.02em;color:var(--text);}
-.iq-sub{font-size:9px;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.2px;margin-top:2px;}
+.iq-num{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:44px;font-weight:700;letter-spacing:-0.02em;color:var(--text);}
+.iq-sub{font-size:9px;color:var(--t3);font-family:var(--font);letter-spacing:0.2px;margin-top:2px;}
 .iq-label{font-size:21px;font-weight:800;letter-spacing:-0.3px;margin-bottom:5px;}
 .iq-pct{font-size:14px;color:var(--t2);margin-bottom:24px;}
 .iq-pct strong{color:var(--accent);font-weight:700;}
@@ -845,7 +815,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    the reward registers visually instead of fading in like a stat row. */
 .xp-earned-pop{animation:xpEarnedPop 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.4s both;}
 @keyframes xpEarnedPop{from{opacity:0;transform:scale(0.7);}60%{opacity:1;transform:scale(1.08);}to{opacity:1;transform:scale(1);}}
-.btn{width:100%;padding:14px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);border:none;letter-spacing:-0.1px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--text);}
+.btn{width:100%;padding:14px;border-radius:11px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);border:none;letter-spacing:-0.1px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:var(--text);}
 .btn-p{background:linear-gradient(135deg,#58CC02,#16a34a);color:#0a1a00;box-shadow:0 4px 20px rgba(88,204,2,0.28);}
 .btn-p:hover{background:linear-gradient(135deg,#58CC02,#58CC02);transform:translateY(-1px);}
 .btn-s{background:var(--s1);color:var(--text);border:1px solid var(--border);}
@@ -856,8 +826,8 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .lcard{background:var(--s1);border:none;border-radius:var(--r);padding:20px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.35);}
 .lcard-t{font-size:16px;font-weight:700;margin-bottom:4px;letter-spacing:-0.2px;}
 .lcard-s{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:16px;}
-.inp-lbl{font-family:'Inter',sans-serif;font-size:9px;font-weight:500;color:var(--t3);letter-spacing:0.2px;display:block;margin-bottom:7px;}
-.inp{width:100%;padding:12px 15px;border:1px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;color:var(--text);background:var(--s2);transition:all 0.15s;outline:none;margin-bottom:12px;font-weight:500;}
+.inp-lbl{font-family:var(--font);font-size:9px;font-weight:500;color:var(--t3);letter-spacing:0.2px;display:block;margin-bottom:7px;}
+.inp{width:100%;padding:12px 15px;border:1px solid var(--border);border-radius:10px;font-family:var(--font);font-size:16px;color:var(--text);background:var(--s2);transition:all 0.15s;outline:none;margin-bottom:12px;font-weight:500;}
 .inp:focus{border-color:var(--accent-b);background:var(--s1);}
 .code-box{background:var(--accent-dim);border:1px solid var(--accent-b);border-radius:11px;padding:18px;text-align:center;margin-bottom:13px;}
 .code-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:28px;font-weight:700;color:var(--accent);letter-spacing:8px;}
@@ -867,16 +837,16 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 @keyframes dp{0%,100%{opacity:1;}50%{opacity:0.2;}}
 .cdown{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:65vh;}
 .player-input-row{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
-.player-num{width:28px;height:28px;border-radius:7px;background:var(--s2);border:1px solid var(--border);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t3);font-family:'Inter',sans-serif;}
+.player-num{width:28px;height:28px;border-radius:7px;background:var(--s2);border:1px solid var(--border);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t3);font-family:var(--font);}
 /* font-size is 16px because it MUST be: iOS auto-zooms on focusing any input
    below 16, and WKWebView never restores the scale on blur — so one tap on a
    player-name field would leave the whole app zoomed. Same floor as .typed-inp
    and the Login inputs. Do not shrink for layout; shorten the placeholder. */
-.player-inp{flex:1;padding:11px 13px;border:1px solid var(--border);border-radius:9px;font-family:'Inter',sans-serif;font-size:16px;color:var(--text);background:var(--s1);outline:none;transition:all 0.15s;font-weight:500;}
+.player-inp{flex:1;padding:11px 13px;border:1px solid var(--border);border-radius:9px;font-family:var(--font);font-size:16px;color:var(--text);background:var(--s1);outline:none;transition:all 0.15s;font-weight:500;}
 .player-inp:focus{border-color:var(--accent-b);background:var(--s2);}
 .remove-btn{width:28px;height:28px;border-radius:7px;border:none;background:var(--s2);color:var(--t3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;}
 .remove-btn:hover{background:rgba(248,113,113,0.12);color:var(--red);}
-.add-player-btn{width:100%;padding:11px;border-radius:9px;border:1px dashed var(--border);background:transparent;color:var(--t2);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;margin-bottom:14px;}
+.add-player-btn{width:100%;padding:11px;border-radius:9px;border:1px dashed var(--border);background:transparent;color:var(--t2);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;margin-bottom:14px;}
 .add-player-btn:hover{border-color:var(--accent-b);color:var(--accent);background:var(--accent-dim);}
 
 /* ── LOCAL MULTIPLAYER SETUP ── */
@@ -950,7 +920,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .podium-row.gold{border-color:rgba(251,191,36,0.25);background:rgba(251,191,36,0.04);}
 .pod-rank{font-size:17px;width:26px;text-align:center;}
 .pod-name{flex:1;font-size:14px;font-weight:600;}
-.pod-score{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--t2);}
+.pod-score{font-family:var(--font);font-size:13px;font-weight:500;color:var(--t2);}
 .podium-row.gold .pod-score{color:var(--gold);}
 .settings-section{margin-bottom:20px;}
 /* .settings-section-title — layout-only; visual tokens from .ds-eyebrow. */
@@ -1221,7 +1191,7 @@ html.is-android .tab-bar{ bottom:56px; }
    The label stays white so the pairing reads as emphasis rather than as two
    competing colours. #58CC02 on the lit capsule measures ~6.6:1. */
 .tab-item.active .tab-svg{color:var(--accent);transform:translateY(1px);}
-.tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:'Inter',sans-serif;}
+.tab-label{font-size:10px;font-weight:600;letter-spacing:0.2px;color:var(--t3);transition:color 0.18s;font-family:var(--font);}
 .tab-item.active .tab-label{color:#FFFFFF;}
 .tab-badge{position:absolute;top:4px;right:calc(50% - 20px);width:7px;height:7px;border-radius:50%;background:#FF4B4B;border:1.5px solid rgba(15,17,23,0.9);}
 .tab-content{padding-bottom:calc(78px + max(env(safe-area-inset-bottom,0px),16px));background:var(--bg);}
@@ -1229,7 +1199,7 @@ html.is-android .tab-bar{ bottom:56px; }
 
 /* ── DAILY SCREEN ── */
 .streak-section{background:var(--s1);border:none;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,0.32);}
-.streak-sec-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:14px;}
+.streak-sec-title{font-family:var(--font);font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:14px;}
 .streak-day{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
 .streak-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
 .streak-dot.done{background:var(--accent);color:#0a1a00;}
@@ -1262,7 +1232,7 @@ html.is-android .tab-bar{ bottom:56px; }
 /* CRITICAL: proportional Inter, NOT JetBrains Mono, NOT tabular-nums.
    Round 5 diagnosis identified the mono/tabular treatment as the
    "techy" feel Alex reacted against — do not regress to mono here. */
-.tactics-num{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:56px;font-weight:900;line-height:0.9;letter-spacing:-0.04em;color:var(--accent);font-feature-settings:'lnum';}
+.tactics-num{font-family:var(--font);font-size:56px;font-weight:900;line-height:0.9;letter-spacing:-0.04em;color:var(--accent);font-feature-settings:'lnum';}
 .tactics-num-l{font-size:9.5px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--t2);margin-top:4px;white-space:nowrap;}
 .tactics-divider{height:1px;background:var(--border);margin:4px 0 12px;}
 .tactics-form-row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;font-weight:700;color:var(--t2);margin-bottom:8px;letter-spacing:0.04em;}
@@ -1327,7 +1297,7 @@ html.is-android .tab-bar{ bottom:56px; }
 .m7-cell.m7-pre{background:transparent;border-color:var(--border);opacity:0.45;}
 .m7-cell.m7-today{border-width:2px;border-color:var(--accent);}
 .m7-cell.m7-today.m7-done{box-shadow:inset 0 0 0 2px var(--accent-dim);}
-.m7-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.5px;font-family:'Inter',sans-serif;text-transform:uppercase;}
+.m7-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.5px;font-family:var(--font);text-transform:uppercase;}
 
 
 /* ── PROFILE SCREEN ── */
@@ -1339,12 +1309,12 @@ html.is-android .tab-bar{ bottom:56px; }
 .profile-avatar-edit:hover{transform:scale(1.05);}
 .profile-avatar-edit:active{transform:scale(0.95);}
 .profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
-.profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:'Inter',sans-serif;outline:none;width:100%;max-width:220px;padding:2px 4px;}
+.profile-name-input{font-size:18px;font-weight:700;text-align:center;background:transparent;border:none;border-bottom:1.5px solid var(--accent);color:var(--text);font-family:var(--font);outline:none;width:100%;max-width:220px;padding:2px 4px;}
 /* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
-.profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(88,204,2,0.10);color:var(--green-ink);padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.04em;}
+.profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(88,204,2,0.10);color:var(--green-ink);padding:5px 12px;border-radius:999px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:0.04em;}
 .profile-iq-line{font-size:13px;color:var(--t2);}
 .profile-iq-line strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--accent);}
-.share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
+.share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
 .share-profile-btn:hover{background:var(--accent-dim);}
 /* ⚠️ NEW CLASSES ON PURPOSE, NOT A REWRITE OF .share-profile-btn.
    That class is mirrored in the standalone block and in the desktop reflow, so
@@ -1358,7 +1328,7 @@ html.is-android .tab-bar{ bottom:56px; }
    filled pill; saving is a quieter sibling beside it, not a competing bar. */
 .card-actions{display:flex;gap:10px;margin:0 0 14px;}
 .card-actions button{flex:1 1 0;min-width:0;padding:15px 12px;border-radius:14px;border:0;
-  font-family:'Inter',sans-serif;font-size:14.5px;font-weight:800;cursor:pointer;
+  font-family:var(--font);font-size:14.5px;font-weight:800;cursor:pointer;
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   transition:filter .15s,background .15s;}
 .card-action-primary{background:var(--accent);color:#06250F;box-shadow:0 6px 20px rgba(88,204,2,0.22);}
@@ -1386,7 +1356,7 @@ html.is-android .tab-bar{ bottom:56px; }
 .journey-name{font-size:14px;font-weight:700;color:var(--t1);line-height:1.2;}
 .journey-sub{font-size:11px;color:var(--t3);margin-top:2px;font-weight:500;}
 /* .journey-badge reuses the .pill tokens (tone variants map: current=green solid, next=pill--green, goal=pill--amber). */
-.journey-badge{display:inline-flex;align-items:center;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0;}
+.journey-badge{display:inline-flex;align-items:center;font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0;}
 .journey-badge.current{background:var(--accent);color:#fff;}
 .journey-badge.next{background:rgba(88,204,2,0.15);color:var(--green-ink);}
 .journey-badge.goal{background:rgba(255,193,7,0.15);color:#FFC107;}
@@ -1394,16 +1364,16 @@ html.is-android .tab-bar{ bottom:56px; }
 .club-crest svg{width:100%;height:100%;display:block;}
 
 .badges-section{margin-bottom:14px;}
-.badges-title{font-family:'Inter',sans-serif;font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
+.badges-title{font-family:var(--font);font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}
 
 /* ── FRIENDS ── */
 .friends-section{margin:16px 0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,0.28);}
 .friends-search-wrap{margin-bottom:10px;}
-.friends-search-inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--t1);font-family:'Inter',sans-serif;font-size:16px;outline:none;transition:border-color 0.15s,background 0.15s;-webkit-appearance:none;appearance:none;}
+.friends-search-inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--t1);font-family:var(--font);font-size:16px;outline:none;transition:border-color 0.15s,background 0.15s;-webkit-appearance:none;appearance:none;}
 .friends-search-inp:focus{border-color:var(--accent);background:var(--s1);}
 .friends-results{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:320px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .friends-block{margin-top:14px;}
-.friends-block-title{font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
+.friends-block-title{font-family:var(--font);font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
 .friends-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:var(--s2);}
 /* Tap-area button inside .friends-row — wraps the avatar + meta and opens
    the friend's profile when tapped. Sits next to the Challenge button as
@@ -1419,7 +1389,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 .friends-meta{flex:1;min-width:0;}
 .friends-name{font-size:14px;font-weight:700;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .friends-sub{font-size:11px;color:var(--t3);margin-top:2px;}
-.friends-action{background:var(--s3);border:1px solid var(--border);color:var(--t1);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;padding:8px 14px;min-height:36px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.friends-action{background:var(--s3);border:1px solid var(--border);color:var(--t1);font-family:var(--font);font-size:12px;font-weight:700;padding:8px 14px;min-height:36px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .friends-action:active{transform:scale(0.97);}
 .friends-action.accept{background:var(--accent);color:#0a1a00;border-color:transparent;}
 .friends-action.decline{background:transparent;color:var(--t3);}
@@ -1456,7 +1426,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 .bd-status-locked{color:var(--t3);}
 .badge-icon{display:flex;align-items:center;justify-content:center;line-height:1;}
 .badge-icon svg{width:22px;height:22px;}
-.badge-name{font-size:9px;font-weight:600;color:var(--t2);text-align:center;line-height:1.3;font-family:'Inter',sans-serif;}
+.badge-name{font-size:9px;font-weight:600;color:var(--t2);text-align:center;line-height:1.3;font-family:var(--font);}
 .badge-tile.earned .badge-name{color:var(--accent);}
 .avatar-spinner{width:28px;height:28px;border-radius:50%;border:3px solid rgba(88,204,2,0.25);border-top-color:var(--accent);animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -1510,7 +1480,7 @@ button.friends-lb-row:hover{background:var(--s3);}
    clicks Refresh or Later. Pinned to top with high z-index so it overlays
    route screens without disrupting layout. Uses safe-area-inset-top for
    notched devices. */
-.version-banner{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 8px;background:var(--s2);color:var(--text);border-bottom:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;}
+.version-banner{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 8px;background:var(--s2);color:var(--text);border-bottom:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:var(--font);font-size:13px;font-weight:600;}
 .version-banner-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
 .version-banner-actions{display:flex;gap:8px;flex-shrink:0;}
 .version-banner-refresh{padding:6px 14px;background:var(--accent);color:#06230C;border:none;border-radius:999px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;}
@@ -1575,7 +1545,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 .xp-fill{height:100%;background:linear-gradient(90deg,#58CC02,#16a34a);border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
 .xp-next{font-size:10.5px;color:var(--t3);margin-top:5px;font-weight:500;opacity:0.8;}
 @keyframes xpPop{from{opacity:0;transform:translateX(-50%) scale(0.85);}to{opacity:1;transform:translateX(-50%) scale(1);}}
-.wr-summary{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:0.2px;cursor:pointer;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px;}
+.wr-summary{font-family:var(--font);font-size:11px;font-weight:600;color:var(--t2);letter-spacing:0.2px;cursor:pointer;padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px;}
 .wr-summary::before{content:"▶";font-size:8px;transition:transform 0.2s;}
 details[open] .wr-summary::before{transform:rotate(90deg);}
 
@@ -1600,7 +1570,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .dr-q-mark{font-size:14px;font-weight:800;width:20px;text-align:center;}
 .dr-q-right .dr-q-mark{color:var(--accent);}
 .dr-q-wrong .dr-q-mark{color:#FF5A5A;}
-.dr-q-num{font-size:11px;font-weight:700;color:var(--t3);font-family:'Inter',sans-serif;letter-spacing:0.4px;}
+.dr-q-num{font-size:11px;font-weight:700;color:var(--t3);font-family:var(--font);letter-spacing:0.4px;}
 .dr-q-cat{font-size:10px;font-weight:600;color:var(--t3);background:var(--s2);padding:2px 8px;border-radius:999px;letter-spacing:0.3px;text-transform:uppercase;}
 .dr-q-timeout{font-size:10px;font-weight:600;color:#FF8A65;background:rgba(255,138,101,0.10);padding:2px 8px;border-radius:999px;letter-spacing:0.3px;text-transform:uppercase;}
 .dr-q-text{font-size:14px;font-weight:600;color:var(--t1);line-height:1.4;margin-bottom:10px;}
@@ -1619,7 +1589,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .dr-typed-mark{font-weight:800;width:14px;text-align:center;}
 .dr-typed-correct .dr-typed-mark{color:var(--accent);}
 .dr-typed-user-wrong .dr-typed-mark{color:#FF5A5A;}
-.xp-streak-pill{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:var(--gold);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'Inter',sans-serif;}
+.xp-streak-pill{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:var(--gold);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:var(--font);}
 .streak-toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a0a00;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:998;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(251,191,36,0.4);animation:xpPop 0.3s cubic-bezier(0.22,1,0.36,1);white-space:nowrap;}
 /* ── OFFLINE BANNER ── informational, sits above tab-bar, never blocks UI */
 .offline-banner{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(58px + max(env(safe-area-inset-bottom,34px),34px));width:100%;max-width:420px;padding:10px 16px;background:#F97316;color:#1A0F05;font-size:13px;font-weight:600;text-align:center;z-index:150;box-shadow:0 -4px 16px rgba(0,0,0,0.2);animation:fadeIn 0.18s ease;}
@@ -1628,7 +1598,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
 /* ── IQ HISTORY ── */
 .iq-history{background:var(--s2);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
-.iq-hist-label{font-family:'Inter',sans-serif;font-size:9px;color:var(--t3);letter-spacing:0.2px;margin-bottom:10px;}
+.iq-hist-label{font-family:var(--font);font-size:9px;color:var(--t3);letter-spacing:0.2px;margin-bottom:10px;}
 .iq-hist-bars{display:flex;align-items:flex-end;gap:6px;height:52px;}
 .iq-hist-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
 .iq-hist-bar{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:height 0.4s cubic-bezier(0.22,1,0.36,1);}
@@ -1709,7 +1679,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .modal-title{font-size:19px;font-weight:800;letter-spacing:-0.45px;color:var(--text);margin-bottom:6px;}
 .modal-body{font-size:14.5px;color:var(--t2);line-height:1.55;margin-bottom:22px;}
 .modal-btns{display:flex;gap:10px;}
-.modal-btn{flex:1;padding:14px 13px;border-radius:13px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:opacity 0.15s,background 0.15s;}
+.modal-btn{flex:1;padding:14px 13px;border-radius:13px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:opacity 0.15s,background 0.15s;}
 /* Quit-dialog emphasis. Was: grey "Keep playing" beside a full-width filled
    red "Quit" — so the brightest, widest, most thumb-reachable control on a
    dialog whose entire job is to PREVENT an accidental exit was the exit.
@@ -1742,7 +1712,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    the 4px it saved was never worth a mis-tap. */
 .hdr-ic{width:44px;height:44px;min-width:44px;min-height:44px;border-radius:12px;background:var(--s2);border:1px solid var(--border);}
 .notif-dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#FF4D4D;border:1.5px solid #1B1E27;pointer-events:none;}
-.bn-badge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#FF3B30;color:#fff;font-size:10px;font-weight:800;line-height:18px;text-align:center;font-family:'Inter',sans-serif;}
+.bn-badge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#FF3B30;color:#fff;font-size:10px;font-weight:800;line-height:18px;text-align:center;font-family:var(--font);}
 .notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:flex-start;justify-content:center;z-index:210;padding:64px 16px 20px;animation:fadeIn 0.15s ease;}
 .notif-panel{background:var(--s1);border:1px solid var(--border);border-radius:18px;width:100%;max-width:400px;max-height:min(70vh,560px);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh-lg);animation:slideUp 0.22s cubic-bezier(0.22,1,0.36,1);}
 .notif-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);}
@@ -1775,7 +1745,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    duplicate selector this far from its twin is how the tray's tinting went
    unnoticed in the first place. Removed rather than reconciled; there is one
    `.feedback` rule now and it is the one at the top of this file. */
-.next-btn{padding:9px 18px;background:var(--s1);border:1.5px solid var(--border2);border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
+.next-btn{padding:9px 18px;background:var(--s1);border:1.5px solid var(--border2);border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap;transition:all 0.15s;flex-shrink:0;}
 .next-btn:hover{background:var(--s2);border-color:var(--accent);color:var(--accent);}
 /* ⚠️ THIS WAS A SECOND, DIFFERENT PRIMARY BUTTON. Alex, 2026-08-25, with the
    quiz beside Home: *"does the next button in the quiz also look a bit
@@ -1791,7 +1761,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    app. Now matched to .btn-3d on all four; the properties kept below are the
    ones genuinely specific to this button (sticky to the viewport bottom, full
    width, its own vertical rhythm). */
-.next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;box-shadow:var(--btn-shine), var(--btn-glow);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#06230C;box-shadow:var(--btn-shine), var(--btn-glow);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{transform:scale(0.97);opacity:0.92;}
 .next-btn-primary:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;}
@@ -1861,7 +1831,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-result-side{position:relative;padding:18px 10px;background:var(--s1);border:1px solid var(--border);border-radius:16px;text-align:center;}
 .og-result-side.winner{border-color:var(--accent);background:rgba(88,204,2,0.08);box-shadow:0 4px 18px rgba(88,204,2,0.15);}
 .og-result-name{font-size:13px;font-weight:700;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.og-result-score{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:46px;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;margin-top:6px;}
+.og-result-score{font-family:var(--font);font-size:46px;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;margin-top:6px;}
 .og-result-side.winner .og-result-score{color:var(--accent);}
 .og-result-divider{font-size:22px;font-weight:900;color:var(--t3);}
 
@@ -2159,7 +2129,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    hierarchy was inverted: the card below outshouted the hero above it. Raised
    to match (and the old 36px also missed the 44pt tap-target guideline). The
    glow moves here; .mp-card-cta gives its up. */
-.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:0 22px;height:44px;line-height:1;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:'Inter',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#06230C;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;white-space:nowrap;flex:0 0 auto;box-shadow:var(--btn-shine), var(--btn-glow);}
+.fh-cta{display:inline-flex;align-items:center;justify-content:center;padding:0 22px;height:44px;line-height:1;background:#58CC02;color:#06230C;border:none;border-radius:999px;font-family:var(--font);font-size:15px;font-weight:800;letter-spacing:0.01em;cursor:pointer;-webkit-text-fill-color:#06230C;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform 0.1s,opacity 0.15s;white-space:nowrap;flex:0 0 auto;box-shadow:var(--btn-shine), var(--btn-glow);}
 /* nowrap + no-shrink: on wide Footle grids (6-letter answers) the flex column
    squeezed these CTAs — "↗︎ Share" wrapped to two lines and the 999px radius
    turned it into a blob (Alex's device catch, build 43 test). FIXED height +
@@ -2229,7 +2199,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   border: none;
   padding: 0 8px;
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family:var(--font);
   font-size: 20px;
   font-weight: 900;
   letter-spacing: -0.02em;
@@ -2256,7 +2226,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   background: transparent;
   border: none;
   border-radius: 12px;
-  font-family: 'Inter', sans-serif;
+  font-family:var(--font);
   font-size: 15px;
   font-weight: 600;
   color: #9BA0B8;
@@ -2296,7 +2266,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   gap: 8px;
 }
 .biq-nav .bn-cta-eyebrow {
-  font-family: 'Inter', sans-serif;
+  font-family:var(--font);
   font-size: 10.5px;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -2313,7 +2283,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   background: #1B1E27;
   border: 1px solid #242730;
   border-radius: 11px;
-  font-family: 'Inter', sans-serif;
+  font-family:var(--font);
   font-size: 13px;
   font-weight: 700;
   color: #E8EAF0;
@@ -2357,39 +2327,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    ════════════════════════════════════════════════════════════════════ */
 @media (min-width: 1024px) {
   .app {
-    /* desktop-web-refresh: recolor the app RUNTIME to the marketing palette
-       (dark-only desktop chrome). Scoped to .app (NOT :root) so mobile keeps
-       its vars untouched. Reset back to the inherited mobile values in the
-       @media(display-mode:standalone) block so installed desktop PWAs stay
-       byte-identical. Native never hits >=1024 (iPhone-only, portrait-locked). */
-    --bg: #0B0C10;
-    --s1: #13151C;
-    --s2: #1B1E27;
-    /* COMPLETE token set (light-theme fix): the block originally swapped only
-       the surface tokens above, so a light-theme user at >=1024 got light-theme
-       near-black TEXT tokens on these dark surfaces (unreadable). Every token
-       the themes define must be pinned here, and every line must have a
-       matching `inherit` in the @media(display-mode:standalone) mirror below. */
-    --s3: #232631;
-    --text: #FFFFFF;
-    --t1: #FFFFFF;
-    --t2: #9BA0B8;
-    --t3: #7E828C;
-    --border: #242730;
-    --border2: #2F3240;
-    --accent: #58CC02;
-    --accent-dim: rgba(88,204,2,0.10);
-    --accent-b: rgba(88,204,2,0.28);
-    --green: #58CC02;
-    --green-l: rgba(88,204,2,0.10);
-    --green-ink: #58CC02;
-    --red: #FF4B4B;
-    --red-l: rgba(255,75,75,0.10);
-    --gold: #FFC107;
-    --gold-l: rgba(255,193,7,0.10);
-    --info: #FFC107;
-    --sh: 0 2px 12px rgba(0,0,0,0.5),0 1px 3px rgba(0,0,0,0.3);
-    --sh-lg: 0 8px 40px rgba(0,0,0,0.6),0 2px 8px rgba(0,0,0,0.3);
+    /* The palette re-pin that used to sit here (every token typed again at
+       >=1024, with an `inherit` mirror in the standalone block) is gone with
+       the light theme it defended against; the tokens come from tokens.css. */
     /* Widen 640 -> centered 1180 so redesigned screens have room for
        two-column desktop layouts. margin:0 auto (from the base .app rule)
        centers it within the rail-padded content box. */
@@ -2480,7 +2420,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .qd-meta { display: flex; align-items: center; justify-content: center; gap: 26px; margin-bottom: 30px; }
   .qd-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #13151C; border: 1px solid #242730; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 13.5px; font-weight: 700; }
   .qd-pill-streak { color: #FFC107; }
-  .qd-pill-ic { font-family: 'Inter', sans-serif; font-size: 14px; }
+  .qd-pill-ic { font-family:var(--font); font-size: 14px; }
   .qd-pill-correct { color: #9BA0B8; }
   .qd-pill-num { color: #8AE042; }
   .qd-ring { position: relative; width: 78px; height: 78px; flex: 0 0 auto; }
@@ -2525,7 +2465,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     border: 1px solid #1D2A20;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
-  .rd-badge-score { font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 58px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+  .rd-badge-score { font-family:var(--font); font-size: 58px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
   .rd-badge-total { font-size: 30px; color: #6E7180; }
   .rd-badge-tier { font-size: 13px; font-weight: 700; color: #8AE042; margin-top: 8px; }
   .rd-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin-top: 26px; }
@@ -2886,7 +2826,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hr-rating-pencil { flex: 0 0 auto; color: var(--t3); }
   .hr-rating-lvl { display: inline-flex; align-items: center; gap: 6px; margin-top: 5px; padding: 3px 9px; border-radius: 999px; background: rgba(255,193,7,0.1); font-size: 11.5px; font-weight: 700; color: #FFC107; }
   .hr-rating-score { display: flex; align-items: flex-end; gap: 14px; margin-top: 18px; padding-top: 16px; border-top: 1px solid #1D2A20; }
-  .hr-rating-num { font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 52px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: #fff; }
+  .hr-rating-num { font-family:var(--font); font-size: 52px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: #fff; }
   .hr-rating-scap { padding-bottom: 5px; }
   .hr-rating-overall { font-size: 10.5px; font-weight: 800; letter-spacing: 0.14em; color: var(--t3); }
   .hr-rating-tier { font-size: 19px; font-weight: 900; letter-spacing: -0.01em; color: #8AE042; text-transform: uppercase; }
@@ -2894,7 +2834,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hr-rating-view:hover { background: #1B1E27; }
 
   .hr-streak-head { display: flex; align-items: center; gap: 12px; }
-  .hr-streak-num { display: flex; align-items: center; gap: 6px; font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 34px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1; }
+  .hr-streak-num { display: flex; align-items: center; gap: 6px; font-family:var(--font); font-size: 34px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1; }
   .hr-flame { font-size: 24px; }
   .hr-streak-meta { display: flex; flex-direction: column; gap: 2px; }
   .hr-streak-label { font-size: 13px; font-weight: 700; color: var(--t1); }
@@ -2978,7 +2918,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hr-yf-row { display: flex; align-items: center; justify-content: space-between; }
   .hr-yf-k { font-size: 14px; color: var(--t2); }
   .hr-yf-v { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 15px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; }
-  .hr-yf-v-green { font-family: 'Inter', sans-serif; color: #8AE042; }
+  .hr-yf-v-green { font-family:var(--font); color: #8AE042; }
   .hr-yf-empty { font-size: 13px; color: var(--t3); line-height: 1.4; }
 
   /* ── Play with friends: green tint + show both CTAs (mock). ── */
@@ -3029,7 +2969,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .pd-name-pencil { flex: 0 0 auto; margin-left: 8px; color: #6E7180; }
   .pd-levelpill { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 5px 11px; border-radius: 999px; background: rgba(255,193,7,0.1); font-size: 12px; font-weight: 700; color: #FFC107; }
   .pd-score { flex: 0 0 auto; text-align: right; }
-  .pd-overall-num { font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size: 60px; font-weight: 800; line-height: 0.85; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+  .pd-overall-num { font-family:var(--font); font-size: 60px; font-weight: 800; line-height: 0.85; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
   .pd-overall-cap { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: #6E7180; margin-top: 4px; }
   .pd-tier { font-size: 18px; font-weight: 900; color: #8AE042; }
   .pd-coldstart { font-size: 13px; font-weight: 600; color: var(--t3); line-height: 1.4; max-width: 160px; margin-left: auto; }
@@ -3117,31 +3057,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
        override. Restore the mobile palette by inheriting the vars from #root
        (which carries the :root values) so PWA stays byte-identical.
        Wins by source order (this block is after the reflow). */
-    --bg: inherit;
-    --s1: inherit;
-    --s2: inherit;
     /* Mirror of the >=1024 reflow's COMPLETE token set — every token pinned
        there must inherit back here or installed PWAs keep desktop colors. */
-    --s3: inherit;
-    --text: inherit;
-    --t1: inherit;
-    --t2: inherit;
-    --t3: inherit;
-    --border: inherit;
-    --border2: inherit;
-    --accent: inherit;
-    --accent-dim: inherit;
-    --accent-b: inherit;
-    --green: inherit;
-    --green-l: inherit;
-    --green-ink: inherit;
-    --red: inherit;
-    --red-l: inherit;
-    --gold: inherit;
-    --gold-l: inherit;
-    --info: inherit;
-    --sh: inherit;
-    --sh-lg: inherit;
     max-width: 420px !important;
     /* Phase 6e: padding-bottom 100 → 0 to match the base .app rule that
        Phase 6a (100→24) and Phase 6d (24→0) progressively reduced. The
@@ -3359,8 +3276,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     padding: 10px !important; margin-bottom: 10px !important;
   }
   .daily-zone-head { margin-bottom: 6px !important; padding: 0 4px !important; }
-  .daily-zone-eyebrow { font-family: 'Inter',sans-serif !important; font-size: 10px !important; letter-spacing: 0.14em !important; color: var(--t2) !important; }
-  .daily-zone-status { font-family: 'Inter',sans-serif !important; font-size: 10.5px !important; color: var(--t3) !important; }
+  .daily-zone-eyebrow { font-family:var(--font); font-size: 10px !important; letter-spacing: 0.14em !important; color: var(--t2) !important; }
+  .daily-zone-status { font-family:var(--font); font-size: 10.5px !important; color: var(--t3) !important; }
   /* The mirror's !important beat the .is-done rule, so in an installed PWA the
      "all done" state never turned green. Restate it at the same weight. */
   .daily-zone-status.is-done { color: var(--accent) !important; }
@@ -3377,7 +3294,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .home-col-main .hst-streak {
     background: rgba(255,193,7,0.1) !important; border: 1px solid rgba(255,193,7,0.28) !important;
     color: #FFC107 !important; -webkit-text-fill-color: #FFC107 !important;
-    font-family: 'Inter',sans-serif !important; padding: 3px 10px !important; font-size: 12px !important;
+    font-family:var(--font); padding: 3px 10px !important; font-size: 12px !important;
     box-shadow: none !important;
   }
   .mp-card { background: var(--s1) !important; border-color: var(--border) !important; }

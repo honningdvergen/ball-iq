@@ -22,7 +22,11 @@ const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'ut
 const CSS = read('../../src/app.css')
   // + the Footle board's rules, which moved to src/games/footle.css on 2026-09-05;
   // the app bundle imports both, so the gate reads what the app ships.
-  + '\n' + read('../../src/games/footle.css');
+  + '\n' + read('../../src/games/footle.css')
+  // + the tokens: --btn-shine / --btn-glow moved from app.css's :root to
+  // src/design/tokens.js on 2026-09-05 (one palette, one place); the gate
+  // below still asserts ONE definition, now in the generated tokens.css.
+  + '\n' + read('../../src/design/tokens.css');
 const APP = read('../../src/App.jsx');
 
 // ⚠️ SCAN EVERY JSX FILE, NOT TWO OF THEM.
