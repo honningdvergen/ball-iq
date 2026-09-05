@@ -76,7 +76,7 @@ describe('the club-quiz engine stays linted', () => {
     expect(widget, 'the engine is inline again').toMatch(/readFileSync\(\s*new URL\('\.\/club-quiz-engine\.js'/);
     expect(gen, 'the generator must import BQ_JS from the widget module').toMatch(/import \{[^}]*\bBQ_JS\b[^}]*\} from '\.\/seo\/quiz-widget\.mjs'/);
     expect(gen, 'the generator must not carry a second copy of the engine').not.toMatch(/function start\(n,from\)/);
-    expect(gen, 'placeholder substitution missing').toContain('__BQ_SUPABASE_URL__');
+    expect(widget, 'placeholder substitution missing').toContain('__BQ_SUPABASE_URL__');
   });
 
   it('keeps its placeholders quoted so the file parses standalone', () => {
