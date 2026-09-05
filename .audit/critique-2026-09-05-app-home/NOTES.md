@@ -128,3 +128,12 @@ Alex: "let us build the results component first, then align the daily tab. after
 2. **Reminder: in-panel "Remind me tomorrow", permission asked on that tap, scheduled at the player's own play hour.** The 7-second bottom sheet (v2-stake, 0/10 converted) and its timer go.
 3. **Scope: one `DailyDone` panel** — outcome · share (primary) · streak · countdown · remind me · other unplayed dailies as next steps · report link — under the board on Footle/Trail/Mystery and as the footer of the Daily 7 Results screen. Replaces the guest save-nudge OVERLAY with a quiet in-panel "Save your streak" row (guest, streak≥2). Web keeps Get-the-app badges inside the panel.
 Then: align the Daily tab rows to the new row CSS; then the rest of WHAT-NEXT.md in order.
+
+## DailyDone — brief (shape, 02:10)
+**Job:** the moment after a daily is decided, for a player who is engaged and finished for the day. Success = they come back tomorrow (and tell someone today).
+**Panel order (mobile, one card idiom = the Today rows):** streak line (Flame well, "3-day streak · tomorrow makes 4" / "Start a streak") → countdown + Remind-me in one row ("New puzzles in 13h 12m" · quiet pill) → **Share result** (green pill, the one primary) [+ WhatsApp text link on web] → **How everyone did** (n≥20 only: bars per bucket, yours green; "62% solved · you beat 71%") → **Still open today** (the other unplayed dailies as mini rows with mode-colour wells) → guest+streak≥2: "Your streak lives on this phone · Save it" → Get-the-app badges (web islands only).
+**Not in the panel (stays in hosts):** outcome/answer reveal, XP line, report button, Back.
+**Data:** `daily_results(game, edition, bucket, won, visitor_id, user_id)` via `record_daily_result` / `get_daily_distribution` (security definer, anon+authenticated, revoke public). bucket = guesses/clubs when won, 0 = X; Daily 7 bucket = score. Dedupe per visitor per edition (unique index + localStorage flag). Archive plays never record.
+**Reminder:** `getReminderHour()` = median of the last 7 completion hours (clamped 8–22, default 19); native local window uses it; the web-push cron stays at 19:00 (server column later). The 7s sheet is retired (arming removed, bails kept so `notif-prompt-skipped` ×3 stays for the test).
+**Streak:** the app's ONE streak (loginStreak) everywhere in the app; islands pass the per-game streak with its label.
+**Anti-goals:** no emoji glyphs, no eyebrow labels, no nested cards, no fabricated numbers below n=20, no modal.
