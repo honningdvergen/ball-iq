@@ -121,3 +121,10 @@ Build list: 1 banner block out (first-session state on the Footle row instead) �
 
 ## After (commit 34f3d38, simulator-verified 23:40) — home-after-top.png
 Greeting → **Today** head (0/4 meta) → 4 rows on the page edge, green Play on all, mode colour on the well only, grey sublines → **Play with Friends** row with a quiet Invite pill, fully visible above the bar → **Find a quiz** (search + grey chips) → More modes. Online tab legible. First Play at ~170pt (was ~380). Deferred P3s: header anchor (greeting/name/gear), emoji glyphs (🔥 ✅ ✗ 🏆), done-row ordering, duplicate "No. 34", Footle subline wraps to two lines (rows unequal), chip mask cuts "Barcelona". Re-run the critique after these to move the 23/40.
+
+## Results component — decisions (2026-09-06 ~01:55, AskUserQuestion)
+Alex: "let us build the results component first, then align the daily tab. after that we attack all the other components from the list… let us do this RIGHT".
+1. **Distribution: build now, gated n≥20** — one Supabase table + RPC (anon insert puzzle/outcome/guess-count; read aggregate). Nothing fabricated below 20 results (App Store 2.3 honesty; the old fake percentile was removed).
+2. **Reminder: in-panel "Remind me tomorrow", permission asked on that tap, scheduled at the player's own play hour.** The 7-second bottom sheet (v2-stake, 0/10 converted) and its timer go.
+3. **Scope: one `DailyDone` panel** — outcome · share (primary) · streak · countdown · remind me · other unplayed dailies as next steps · report link — under the board on Footle/Trail/Mystery and as the footer of the Daily 7 Results screen. Replaces the guest save-nudge OVERLAY with a quiet in-panel "Save your streak" row (guest, streak≥2). Web keeps Get-the-app badges inside the panel.
+Then: align the Daily tab rows to the new row CSS; then the rest of WHAT-NEXT.md in order.
