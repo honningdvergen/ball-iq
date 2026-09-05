@@ -26,6 +26,18 @@ var root=document.querySelector('.bq[data-total]');if(!root)return;
 var list=root.querySelector('.bq-list');if(!list)return;
 var qs=[].slice.call(list.querySelectorAll('.bq-q'));if(!qs.length)return;
 var total=qs.length,name=root.getAttribute('data-name')||'this club';
+/* Strings. English lives HERE, inline, as the default of every T() call; a
+   localised page (es/de/nl/fr/it/pt/tr/id) ships its table in data-i18n and
+   the engine reads it once. A missing key falls back to English rather than
+   to a blank label. fmt() fills {placeholders}. See scripts/seo/bq-i18n.mjs. */
+var I18N={};try{I18N=JSON.parse(root.getAttribute('data-i18n')||'{}')||{}}catch(e){I18N={}}
+function T(k,d){return I18N[k]!=null?I18N[k]:d}
+function fmt(t,v){return String(t).replace(/\{(\w+)\}/g,function(m,k){return v[k]!=null?v[k]:m})}
+function diffLabel(d){return d?T('diff_'+String(d).toLowerCase(),d):''}
+/* ⚠️ MUST SIT ABOVE the tiers line: it reads I18N.tiers. The first cut declared I18N
+   forty lines lower and every club page's engine died at boot with
+   "Cannot read properties of undefined (reading 'tiers')" — caught on the
+   local build, never shipped. bq-engine-boot.test.js now boots the engine. */
 var tiers=(root.getAttribute('data-tiers')||'').split('|');if(I18N.tiers&&I18N.tiers.length===6)tiers=I18N.tiers;
 /* data-store is still emitted on the section (the taster on the same page
    reads its own copy) — this engine simply no longer needs it: the result
@@ -42,14 +54,6 @@ var cslug=root.getAttribute('data-slug')||'',ccol=root.getAttribute('data-color'
    so the club numbers stay clean. */
 var daily=root.getAttribute('data-daily')||'';
 var bqStoreHref=root.getAttribute('data-store')||'/get';
-/* Strings. English lives HERE, inline, as the default of every T() call; a
-   localised page (es/de/nl/fr/it/pt/tr/id) ships its table in data-i18n and
-   the engine reads it once. A missing key falls back to English rather than
-   to a blank label. fmt() fills {placeholders}. See scripts/seo/bq-i18n.mjs. */
-var I18N={};try{I18N=JSON.parse(root.getAttribute('data-i18n')||'{}')||{}}catch(e){I18N={}}
-function T(k,d){return I18N[k]!=null?I18N[k]:d}
-function fmt(t,v){return String(t).replace(/\{(\w+)\}/g,function(m,k){return v[k]!=null?v[k]:m})}
-function diffLabel(d){return d?T('diff_'+String(d).toLowerCase(),d):''}
 var BANDS=[0,25,45,65,85,100];
 function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
 if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}

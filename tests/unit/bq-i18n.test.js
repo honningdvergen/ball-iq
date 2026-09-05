@@ -29,6 +29,14 @@ describe('bq widget i18n', () => {
     for (const k of ['question', 'next', 'seeResult', 'srCorrect', 'srWrong', 'keepGoing', 'playAgain', 'share', 'allDone', 'appLine', 'shareTxt', 'yourStreak', 'youPlayed', 'namePrompt']) {
       expect(ENGINE, k).toContain(`T('${k}',`);
     }
+    // Declared BEFORE its first reader. The first cut declared I18N forty lines
+    // below the tiers line that reads I18N.tiers, and every club page's engine
+    // died at boot ("Cannot read properties of undefined (reading 'tiers')") —
+    // caught by playing the local build, not by any gate. There is no DOM in
+    // this test environment to boot the engine, so order is what we can pin.
+    expect(ENGINE.indexOf('var I18N={};')).toBeGreaterThan(-1);
+    expect(ENGINE.indexOf('var I18N={};')).toBeLessThan(ENGINE.indexOf('I18N.tiers'));
+    expect(ENGINE.indexOf('function T(k,d)')).toBeLessThan(ENGINE.indexOf("T('question'"));
     // the raw literals must not survive OUTSIDE a T() default
     expect(ENGINE).not.toMatch(/textContent='Question '/);
     expect(ENGINE).not.toMatch(/\?'See your result →':'Next question →'/);
