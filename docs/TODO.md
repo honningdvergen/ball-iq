@@ -1,3 +1,13 @@
+## 2026-09-06 (00:40) — ✅ B2 COMPLETE: ONE question widget on the whole static site (cf382f9) — LIVE-VERIFIED (fr page: widget, "Suivant →", no taster, no errors)
+
+Alex approved the remaining six languages ("or what do you think?" → my call: ship; the taster's old strings had no native pass either).
+`BQ_I18N_REVIEWED` = all 8 → both localised builders render `renderQuizSet({lang})`; **TASTER_CSS / TASTER_JS / TASTER_I18N and the
+`taster` head flag are DELETED.** Verified locally: fr "Question 1 sur 10 · Suivant → · Faux. La réponse est Monaco."; tr full finish
+card. The 09-05 critique's "four multiple-choice widgets" is now ONE on the static site (club, league, category, listicle, /football-quiz/,
+served Daily 7, 46 localised pages). Native-speaker pass welcome any time: `docs/i18n/bq-strings.md` → `bq-i18n.mjs`. Two stale test
+assertions (playLabel link, bare `.to` CSS) rewritten to the invariants they protect. **Funnel:** `taster-*` events end today; localised
+pages post `clubq-*`.
+
 ## 2026-09-05 (23:55) — ✅ B2: es + de LIVE on the .bq widget (08736ab) — verified on prod: "Pregunta 1 de 10 · Siguiente →", "Frage 1 von 10 · Weiter →", Spanish finish card end to end; fr/it/pt/nl/tr/id still on the taster pending review
 
 `BQ_I18N_REVIEWED = {es, de}` → 11 Spanish + 4 German club pages and the /es/ + /de/ hubs render `renderQuizSet({lang})`; fr/it/pt/nl/tr/id
