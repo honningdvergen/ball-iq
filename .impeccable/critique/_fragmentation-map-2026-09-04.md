@@ -44,3 +44,6 @@ with you" signup section and the two real store badges — and `src/main.jsx:227
 are the 0×0 "dead markup" the evidence pass found. This is the third visual system the 09-03 P0 counted:
 not a page anyone sees, but a page every visitor downloads. Fix: delete it from index.html (the native
 killswitch at :495 becomes moot) or make it the real no-JS fallback and style it like the site.
+- Measured: the hidden landing is **21,825 of index.html's 67,262 bytes — 32%** (6.3 KB markup with the 3
+  emoji feature cards + 2 store badges, 15.3 KB of its own CSS). Downloaded, parsed and styled on every
+  load of `/`, then hidden by main.jsx.
