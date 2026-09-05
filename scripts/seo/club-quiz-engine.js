@@ -33,6 +33,15 @@ var tiers=(root.getAttribute('data-tiers')||'').split('|');
 var more=+(root.getAttribute('data-more')||0),badge=root.getAttribute('data-badge')||'';
 var play=root.getAttribute('data-play')||'/play';
 var cslug=root.getAttribute('data-slug')||'',ccol=root.getAttribute('data-color')||'';
+/* DAILY MODE (2026-09-05). data-daily carries the puzzle's YYYY-MM-DD and turns
+   this widget into the Daily 7 on the served /daily-football-quiz/ page: the
+   rows given are the whole round, there is no length picker, no club streak,
+   no club RPC, and the finish writes the APP's own record (biq_daily_<date>,
+   the key the homepage Today card and the app's history read) so a web finish
+   counts as done everywhere. Events keep their shape but wear a daily- prefix
+   so the club numbers stay clean. */
+var daily=root.getAttribute('data-daily')||'';
+var bqStoreHref=root.getAttribute('data-store')||'/get';
 var BANDS=[0,25,45,65,85,100];
 function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
 if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
@@ -139,8 +148,9 @@ return (v&&v.length===36)?v:null;
    construction, and the answer was one line away the whole time. */
 function bqev(n){
 if(bqSynthetic())return;
+if(daily)n=n.replace(/^clubq-/,'daily-web-');
 try{if(window.clarity)window.clarity('event',n)}catch(e){}
-var meta={surface:'club-page'};
+var meta={surface:daily?'daily-page':'club-page'};
 try{
   var r=document.querySelector('[data-slug]');
   var s=r&&r.getAttribute('data-slug');if(s)meta.slug=s;
@@ -256,9 +266,36 @@ if(k===a){sc++;streak++;if(streak>best)best=streak;rec.got=1}else{streak=0;rec.g
 if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' streak';
 paintMeter();
 var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?'See your result →':'Next question →'}}
+function dailyLabel(){var p=daily.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}
+/* The Daily 7 result. One primary (share: a score everyone can compare is
+   the whole point of the same seven), the explained answers one tap away,
+   the app once, the clock to the next seven. fresh=true is a finish just
+   made: it writes the record; a reload or a second visit renders from it. */
+function dailyCard(score,n,fresh){
+var G=grade(score,n);var url=location.origin+'/daily-football-quiz/';
+if(fresh){try{localStorage.setItem('biq_daily_'+daily,JSON.stringify({score:score,wrongAnswers:[],allAnswers:[],web:1}))}catch(e){}}
+res.innerHTML='<div class="bq-rank">'+(fresh?'Your Daily 7':'You played today\u2019s Daily 7')+'</div><div class="bq-big">'+score+'<small>/'+n+'</small></div>'
++'<span class="bq-tier">'+esc(G.tier)+'</span>'
++'<div class="bq-sub">'+esc(dailyLabel())+' \u00b7 the same seven for everyone</div>'
++'<div class="bq-row"><button class="bq-go bq-wide" type="button" data-share="1">Share your score</button></div>'
++'<a class="bq-share" href="/daily-football-quiz/answers/">Why each answer is right \u2192</a>'
++'<p class="bq-note">A new seven at midnight \u2014 in <b class="bq-cd"></b>.</p>'
++'<a class="bq-app" href="'+bqStoreHref+'?src=daily-finish">Also in the app \u2014 streaks, reminders and live 1v1 \u2192</a>';
+res.hidden=false;if(head)head.hidden=true;if(lenwrap)lenwrap.hidden=true;
+var cd=res.querySelector('.bq-cd');
+function tick(){var now=new Date(),t=new Date(now);t.setDate(t.getDate()+1);t.setHours(0,0,0,0);var ms=t-now,h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),sec=Math.floor(ms%60000/1000);
+if(cd)cd.textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec}
+tick();setInterval(tick,1000);
+var sh=res.querySelector('[data-share]');if(sh)sh.addEventListener('click',function(){bqev('clubq-share');
+var txt='Daily 7 \u00b7 '+dailyLabel()+' \u00b7 '+score+'/'+n+' \u2014 the same seven for everyone. Beat that.';
+if(navigator.share){navigator.share({title:'Daily 7',text:txt,url:url})['catch'](function(){})}
+else if(navigator.clipboard){navigator.clipboard.writeText(txt+' '+url).then(function(){sh.textContent='Copied \u2014 paste it anywhere'},function(){})}});
+var outs=res.querySelectorAll('a[href]');for(var oi=0;oi<outs.length;oi++)(function(el){el.addEventListener('click',function(){var h=el.getAttribute('href');bqev(h.indexOf('/answers')>=0?'clubq-out-answers':'clubq-out-store')})})(outs[oi]);
+}
 function finish(){
 rounds++;var G=grade(sc,run.length);
 bqev('clubq-finish');tag('clubq-rounds',rounds);
+if(daily){dailyCard(sc,run.length,true);return}
 var sday=bumpStreak();tag('clubq-streak',sday);if(sday>=2)bqev('clubq-returned');tag('clubq-score',G.pct>=85?'85+':G.pct>=65?'65-84':G.pct>=45?'45-64':'under-45');
 logRound(sc,run,rounds);
 /* ⚠️ THE PRIMARY ACTION MUST KEEP THEM ON THIS PAGE — but NOT for the reason
@@ -533,7 +570,7 @@ dl.hidden=false}}
    reading "· day 4 ✓". When there is nothing to append to, the
    streak becomes the ribbon's own label instead. */
 var sv=readStreak(),td=bqday();
-if(dl&&sv&&sv.n>=2&&(sv.d===td||sv.d===td-1)){var dx=dl.querySelector('.bq-dtx');
+if(dl&&!daily&&sv&&sv.n>=2&&(sv.d===td||sv.d===td-1)){var dx=dl.querySelector('.bq-dtx');
 if(dx){var msg=sv.d===td?'day '+sv.n+' ✓':'day '+sv.n+' — keep it going';
 if(dx.textContent){dx.appendChild(document.createTextNode(' · '+msg))}
 else{dx.appendChild(document.createElement('b')).textContent='Your streak';
@@ -546,5 +583,7 @@ if(lx){var lmsg='earlier today '+lst.sc+' of '+lst.n+', IQ '+lst.iq;
 if(lx.textContent){lx.appendChild(document.createTextNode(' · '+lmsg))}
 else{lx.appendChild(document.createElement('b')).textContent='You played';lx.appendChild(document.createTextNode(' '+lmsg))}
 dl.hidden=false}}}catch(e){}
-root.classList.add('bq-live');start(Math.min(10,total));
+if(daily){var played=null;try{played=JSON.parse(localStorage.getItem('biq_daily_'+daily)||'null')}catch(e){}
+if(played&&typeof played.score==='number'){root.classList.add('bq-live');dailyCard(played.score,total,false);return}}
+root.classList.add('bq-live');start(daily?total:Math.min(10,total));
 })();

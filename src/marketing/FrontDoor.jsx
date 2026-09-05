@@ -70,7 +70,7 @@ const MOST_PLAYED = ['arsenal', 'liverpool', 'barcelona', 'chelsea', 'manchester
 // Every mode as a card. `line` is one line, never a sentence about us.
 const GAMES = [
   { k: 'footle', n: 'Footle', line: 'Guess the surname in six', href: door('footle'), daily: true },
-  { k: 'daily', n: 'Daily 7', line: 'Seven questions, the same for everyone', href: door('daily'), daily: true },
+  { k: 'daily', n: 'Daily 7', line: 'Seven questions, the same for everyone', href: '/daily-football-quiz/', daily: true },
   { k: 'trail', n: 'Transfer Trail', line: 'Follow the moves, name the player', href: door('trail'), daily: true },
   { k: 'mystery', n: 'Mystery Player', line: 'Guess who from career clues', href: door('mystery'), daily: true },
   { k: 'clubquiz', n: 'Club Quiz', line: 'Pick your club, ten on them', href: door('clubquiz') },

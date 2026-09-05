@@ -113,6 +113,14 @@
       "destination": "/api/footle?n=:n"
     },
     {
+      "source": "/daily-football-quiz",
+      "destination": "/api/daily-play"
+    },
+    {
+      "source": "/daily-football-quiz/",
+      "destination": "/api/daily-play"
+    },
+    {
       "source": "/daily-football-quiz/answers",
       "destination": "/api/daily-answers"
     },
