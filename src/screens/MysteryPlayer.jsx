@@ -222,7 +222,10 @@ export default function MysteryPlayer({ onExit, date = new Date(), services }) {
      either was touched, which is this codebase's most repeated failure. */
   const suggestions = useMemo(
     () => rankPlayerSuggestions(POOL, text, { exclude: new Set(guesses.map((g) => g.id)) }),
-    [text, guesses],
+    // POOL is a dependency now that it arrives after mount: without it, the
+    // first word typed while the pool was loading showed nothing until the
+    // next keystroke (measured on the local build, 2026-09-05).
+    [POOL, text, guesses],
   );
 
   // ⚠️ MUST STAY BELOW `suggestions`. This block first went in ABOVE it, and
