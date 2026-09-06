@@ -15,6 +15,9 @@ describe('timed quiz start + quit (2026-09-06)', () => {
     expect(CSS).toMatch(/\.q-countdown\{[^}]*pointer-events:none/);
     expect(CSS).toMatch(/\.q-card-gated\{visibility:hidden;\}/);
   });
+  it('the countdown effects sit BELOW the `timed` declaration (TDZ crash otherwise)', () => {
+    expect(APP.indexOf('const timed = (timerEnabled !== false)')).toBeLessThan(APP.indexOf('const [countdown, setCountdown]'));
+  });
   it('the quit confirm is a sheet with the real stake, one green primary and a quiet exit', () => {
     expect(APP).toMatch(/Leave this quiz\?/);
     expect(APP).toMatch(/right from <strong>\{idx\}<\/strong> answered/);

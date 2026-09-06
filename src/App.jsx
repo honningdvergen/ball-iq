@@ -2703,21 +2703,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // below doesn't run until armed. Q2+ are mid-flow, so they start hot as
   // before. Untimed modes never see the gate.
   const [armed, setArmed] = useState(false);
-  // 3-2-1 on the question itself (2026-09-06, Alex: "are we sure we need the
-  // ready screen at all? … there is no go back button"). The full-screen
-  // "Ready?" interstitial existed only so a 15s clock would not start while
-  // the screen was still transitioning; a short count does that without
-  // covering the header, so Back still works and nothing needs a tap.
-  const [countdown, setCountdown] = useState(3);
-  useEffect(() => {
-    if (!(timed && idx === 0 && !armed && !done)) return undefined;
-    setCountdown(3);
-    const t = setInterval(() => setCountdown((c) => (c > 0 ? c - 1 : 0)), 800);
-    return () => clearInterval(t);
-  }, [timed, idx, armed, done]);
-  useEffect(() => {
-    if (timed && idx === 0 && !armed && !done && countdown === 0) setArmed(true);
-  }, [countdown, timed, idx, armed, done]);
   const [showNext, setShowNext] = useState(false);
   // ⚠️ RE-ENTRY GUARD — a double-tap on "Next →" used to SKIP A QUESTION.
   // Found 2026-08-19 from Clarity: "Next →" was the most dead-clicked element
@@ -2791,6 +2776,23 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // closure. Declaring it after the effect is a TDZ crash on first render
   // (caught by the browser verify pass, 2026-08-30).
   const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "daily" && q?.type !== "tf";
+  // ⚠️ BELOW `timed` — the effects read it (a TDZ crash on the first render
+  // when this sat 80 lines higher; caught in the simulator).
+  // 3-2-1 on the question itself (2026-09-06, Alex: "are we sure we need the
+  // ready screen at all? … there is no go back button"). The full-screen
+  // "Ready?" interstitial existed only so a 15s clock would not start while
+  // the screen was still transitioning; a short count does that without
+  // covering the header, so Back still works and nothing needs a tap.
+  const [countdown, setCountdown] = useState(3);
+  useEffect(() => {
+    if (!(timed && idx === 0 && !armed && !done)) return undefined;
+    setCountdown(3);
+    const t = setInterval(() => setCountdown((c) => (c > 0 ? c - 1 : 0)), 800);
+    return () => clearInterval(t);
+  }, [timed, idx, armed, done]);
+  useEffect(() => {
+    if (timed && idx === 0 && !armed && !done && countdown === 0) setArmed(true);
+  }, [countdown, timed, idx, armed, done]);
 
   useEffect(() => {
     const onHwBack = (e) => {
