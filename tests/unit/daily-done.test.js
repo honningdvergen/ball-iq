@@ -82,6 +82,17 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(MIG).toMatch(/security definer/i);
   });
 
+  it('the Daily tab lists the four puzzles in the SAME row anatomy as Home', () => {
+    // One product, two screens: the tab wore tinted cards + per-mode Play pills
+    // for a day after Home moved to one green Play. Both draw .todays-seven-secondary.
+    const DAILY = read('../../src/screens/DailyScreen.jsx');
+    expect(DAILY).toMatch(/className=\{`todays-seven-secondary \$\{m\.key\}-row/);
+    expect(DAILY).toMatch(/"--mode": mode, "--mode-rgb": rgb/);
+    expect(DAILY).toMatch(/className="daily-zone-head"/);
+    expect(DAILY, 'no per-mode tinted card or button in the today rows').not.toMatch(/background: m\.theme\.card|m\.theme\.btnBg/);
+    expect(DAILY, 'result strings carry no glyphs').not.toMatch(/`[✓✗] /);
+  });
+
   it('App passes the live services to all three game screens and the results screen', () => {
     expect(APP).toMatch(/services=\{footleServices\}/);
     expect((APP.match(/services=\{dailyScreenServices\}/g) || []).length).toBe(2);

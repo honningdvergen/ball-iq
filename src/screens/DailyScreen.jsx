@@ -8,7 +8,7 @@ import { getTrailAnswer } from "../lib/trail.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { FOOTLE_SHORT } from "../lib/modeCopy.js";
-import { MODE_ACCENT } from "../lib/accents.js";
+import { MODE_ACCENT, MODE_RGB } from '../lib/accents.js';
 
 // Shared monospace stack for tabular numerals (countdown, scores). Mirrors the
 // inline font used by the mobile markup so the >=1024 desktop layout renders
@@ -672,7 +672,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         subLong: `${footleLen > 0 ? `${footleLen} letters · ` : ""}surname of a footballer in 6 guesses`,
         done: f?.status === "won" || f?.status === "lost",
         won: f?.status === "won",
-        result: f?.status === "won" ? `✓ Solved in ${f.used}` : "✗ Not solved",
+        result: f?.status === "won" ? `Solved in ${f.used}` : "Not solved",
         cta: f?.status === "in-progress" ? "Continue" : "Play",
         // Result stays tappable — reopening a solved Footle shows the board
         // and the share button, which is the whole return loop.
@@ -697,7 +697,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         subLong: "Clubs revealed one by one · 5 guesses",
         done: tr?.status === "won" || tr?.status === "lost",
         won: tr?.status === "won",
-        result: tr?.status === "won" ? `✓ In ${tr.used}` : "✗ Not solved",
+        result: tr?.status === "won" ? `Solved in ${tr.used}` : "Not solved",
         cta: tr?.status === "in-progress" ? "Continue" : "Play",
         replay: true,
         onTap: () => setScreen?.("trail"),
@@ -715,7 +715,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         // "done" once it is solved.
         done: my?.status === "won",
         won: my?.status === "won",
-        result: `✓ In ${my?.used || 0}`,
+        result: `Solved in ${my?.used || 0}`,
         cta: my ? "Continue" : "Play",
         replay: true,
         onTap: () => setScreen?.("mystery"),
@@ -769,30 +769,35 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                 Mystery only appear on days they actually have an answer, so the
                 count is derived, never "of 2". */}
             <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", padding: "0 2px", marginBottom: 2 }}>
-                <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)" }}>Today · {todayLabel}</span>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} of {todayModes.length} played</span>
+              {/* Same head + row anatomy as Home's Today block (2026-09-06): the
+                  tab wore its own tinted cards, per-mode Play pills and washes
+                  for a day after Home moved to one green Play — two screens,
+                  one product. Classes come from app.css (.daily-zone-head,
+                  .todays-seven-secondary / .t7s-*); the mode colour rides in
+                  --mode / --mode-rgb and lands on the icon well only. */}
+              <div className="daily-zone-head" style={{ marginBottom: 0 }}>
+                <span className="daily-zone-eyebrow">Today <span style={{ fontWeight: 600, color: "var(--t3)" }}>· {todayLabel}</span></span>
+                <span className="daily-zone-status" style={{ cursor: "default", fontVariantNumeric: "tabular-nums" }}>{playedCount} of {todayModes.length} played</span>
               </div>
-              {todayModes.map(m => (
-                <div key={m.key} style={{ display: "flex", alignItems: "center", gap: 13, background: m.theme.card, border: m.theme.bd, borderRadius: 16, padding: "14px 16px" }}>
-                  <span style={{ width: 46, height: 46, flexShrink: 0, borderRadius: 13, background: m.theme.iconBg, border: m.theme.iconBd, color: m.theme.fg, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true"><ModeGlyph mode={m.key} size={22} /></span>
-                  <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-                    <span style={{ fontSize: 15.5, fontWeight: 800, color: "var(--t1)" }}>{m.name}</span>
-                    <span style={{ fontSize: 12, color: "var(--t3)" }}>{m.sub}</span>
-                  </div>
-                  {m.done && !m.replay ? (
-                    // Daily 7 is the one mode with nothing to come back to once
-                    // scored, so its result is a label rather than a control.
-                    <span style={{ borderRadius: 12, background: m.theme.chipBg, border: m.theme.resBd, padding: "10px 18px", fontSize: 13.5, fontWeight: 800, color: m.theme.fg, flexShrink: 0 }}>{m.result}</span>
-                  ) : (
-                    <button onClick={m.onTap}
-                      aria-label={m.done ? `${m.name} — ${m.result}` : `${m.cta} ${m.name}`}
-                      style={{ borderRadius: 12, background: m.done ? m.theme.chipBg : m.theme.btnBg, border: m.done ? m.theme.resBd : m.theme.btnBd, padding: m.done ? "10px 18px" : "11px 24px", fontSize: m.done ? 13.5 : 14, fontWeight: 800, color: m.theme.fg, cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>
-                      {m.done ? m.result : m.cta}
-                    </button>
-                  )}
-                </div>
-              ))}
+              {todayModes.map(m => {
+                const Row = (m.done && !m.replay) ? "div" : "button";
+                const mode = MODE_ACCENT[m.key], rgb = MODE_RGB[m.key];
+                return (
+                  <Row key={m.key}
+                    className={`todays-seven-secondary ${m.key}-row${m.done ? " is-done" : ""}`}
+                    style={{ "--mode": mode, "--mode-rgb": rgb, margin: 0, cursor: Row === "div" ? "default" : "pointer" }}
+                    {...(Row === "button" ? { type: "button", onClick: m.onTap, "aria-label": m.done ? `${m.name} — ${m.result} — review` : `${m.cta} ${m.name}` } : { role: "group", "aria-label": `${m.name} — ${m.result}` })}>
+                    <span className="t7s-icon" aria-hidden="true"><ModeGlyph mode={m.key} size={22} /></span>
+                    <span className="t7s-body">
+                      <span className="t7s-title">{m.name}</span>
+                      <span className="t7s-sub">{m.done ? m.result : m.sub}</span>
+                    </span>
+                    {/* One green Play; a decided day gets the quiet pill — Review
+                        where the board can be reopened, the score where it can't. */}
+                    <span className="t7s-cta">{m.done ? (m.replay ? "Review" : m.result) : m.cta}</span>
+                  </Row>
+                );
+              })}
               <StreakRepairBanner repair={streakRepair} open={dayOpen} />
               {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} />}
             </div>
@@ -944,29 +949,24 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
 
                   {/* One row-card per live mode — same todayModes the mobile
                       layout renders, so the two can't drift apart again. */}
-                  {todayModes.map(m => (
-                    <div key={m.key} style={{ ...rowCard, border: m.theme.bd, background: m.theme.card }}>
-                      <span style={{ ...iconBox, background: m.theme.iconBg, border: m.theme.iconBd, color: m.theme.fg }} aria-hidden="true"><ModeGlyph mode={m.key} size={21} /></span>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)" }}>{m.name}</div>
-                        <div style={{ fontSize: 12.5, color: "var(--t2)" }}>{m.subLong}</div>
-                      </div>
-                      {m.done && !m.replay ? (
-                        <span style={{ flex: "0 0 auto", padding: "9px 16px", borderRadius: 11, background: m.theme.chipBg, border: m.theme.resBd, color: m.theme.fg, fontWeight: 800, fontSize: 13.5 }}>{m.result}</span>
-                      ) : (
-                        <button onClick={m.onTap}
-                          aria-label={m.done ? `${m.name} — ${m.result}` : `${m.cta} ${m.name}`}
-                          style={{ flex: "0 0 auto", cursor: "pointer", fontFamily: "inherit", fontWeight: 800,
-                            ...(m.done
-                              ? { padding: "9px 16px", borderRadius: 11, fontSize: 13.5, ...(m.won
-                                  ? { background: m.theme.chipBg, border: m.theme.resBd, color: m.theme.fg }
-                                  : { background: "rgba(255,107,107,0.10)", border: "1.5px solid rgba(255,107,107,0.35)", color: "#FF6B6B" }) }
-                              : { padding: "10px 22px", borderRadius: 12, fontSize: 14, background: m.theme.btnBg, border: m.theme.btnBd, color: m.theme.fg }) }}>
-                          {m.done ? m.result : m.cta}
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                  {/* Same anatomy as the mobile rows and Home (2026-09-06). */}
+                  {todayModes.map(m => {
+                    const Row = (m.done && !m.replay) ? "div" : "button";
+                    const mode = MODE_ACCENT[m.key], rgb = MODE_RGB[m.key];
+                    return (
+                      <Row key={m.key}
+                        className={`todays-seven-secondary ${m.key}-row${m.done ? " is-done" : ""}`}
+                        style={{ "--mode": mode, "--mode-rgb": rgb, margin: 0, cursor: Row === "div" ? "default" : "pointer" }}
+                        {...(Row === "button" ? { type: "button", onClick: m.onTap, "aria-label": m.done ? `${m.name} — ${m.result} — review` : `${m.cta} ${m.name}` } : { role: "group", "aria-label": `${m.name} — ${m.result}` })}>
+                        <span className="t7s-icon" aria-hidden="true"><ModeGlyph mode={m.key} size={21} /></span>
+                        <span className="t7s-body">
+                          <span className="t7s-title">{m.name}</span>
+                          <span className="t7s-sub">{m.done ? m.result : m.subLong}</span>
+                        </span>
+                        <span className="t7s-cta">{m.done ? (m.replay ? "Review" : m.result) : m.cta}</span>
+                      </Row>
+                    );
+                  })}
 
                   <StreakRepairBanner repair={streakRepair} open={dayOpen} wide />
                   {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide todayYMD={todayYMD} />}
