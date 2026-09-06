@@ -2214,6 +2214,28 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    not rank the rows. Review / Invite are the quiet pill (.is-done, .mp-row). */
 .t7s-cta{display:inline-flex;align-items:center;justify-content:center;padding:7px 13px;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);border:0;border-radius:999px;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:0.01em;}
 .todays-seven-secondary.is-done .t7s-cta,.mp-row .t7s-cta{background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);border:1px solid var(--border2);}
+/* ⭐ THE FOUR DAILIES ARE BRANDED TILES, NOT LIST ROWS (Alex, 2026-09-06:
+   "should we not have that same color on the tiles on our homepage now?").
+   He was looking at his phone's older build, where the Daily tab painted the
+   whole tile in the mode colour, and he was right that we lost something.
+
+   The rule above — one green Play, mode colour on the well — still governs
+   every LIST in the app, and it should: in a list of similar things, four
+   colours of Play stop the eye ranking them. The Today block is not a list.
+   It is four separate products, deliberately equal (there is nothing to rank),
+   each with a name, a mark and a colour of its own. Judged side by side at
+   390px, a green pill on an amber or purple tile reads as a clash and pulls
+   the eye off the identity the tile is building; one colour story per row
+   reads as four games rather than four rows.
+
+   Scoped to .is-mode so nothing else moves: Play with Friends, Review pills
+   and every future list row keep the shared anatomy. */
+.todays-seven-secondary.is-mode{background:linear-gradient(90deg, rgba(var(--mode-rgb),0.10), rgba(var(--mode-rgb),0.03) 62%, transparent);border:1px solid rgba(var(--mode-rgb),0.28);}
+.todays-seven-secondary.is-mode .t7s-cta{background:rgba(var(--mode-rgb),0.16);color:var(--mode);-webkit-text-fill-color:var(--mode);border:1px solid rgba(var(--mode-rgb),0.45);}
+/* Done stays quiet even on a coloured tile — a finished daily must not shout
+   as loudly as one still waiting to be played. */
+.todays-seven-secondary.is-mode.is-done{background:var(--s1);border:1px solid var(--border);}
+.todays-seven-secondary.is-mode.is-done .t7s-cta{background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);border:1px solid var(--border2);}
 /* Play with Friends as a row (MultiplayerCard.jsx): the wrapper is a div holding
    two buttons, so the body button drops its chrome and the pill is a real
    <button>. Green in the well like the mode colours do. */

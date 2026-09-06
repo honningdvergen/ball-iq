@@ -449,7 +449,7 @@ function HomeScreenImpl({
               return rows.map((r) => (
                 <button
                   key={r.key}
-                  className={`todays-seven-secondary ${r.key}-row${r.done ? " is-done" : ""}`}
+                  className={`todays-seven-secondary is-mode ${r.key}-row${r.done ? " is-done" : ""}`}
                   style={{ "--mode": r.accent, "--mode-rgb": r.rgb }}
                   onClick={r.onTap}
                   aria-label={r.aria}
