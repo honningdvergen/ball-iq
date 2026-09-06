@@ -55,7 +55,12 @@ async function playDailyToEnd(page) {
   await page.waitForTimeout(600);
   const daily = page.locator('text=/Today\'?s 7|Daily 7/i').first();
   await daily.click();
-  await page.waitForTimeout(900);
+  // ⚠️ WAIT FOR THE FIRST OPTION, NOT 900ms. Against the unbundled dev server
+  // (BALLIQ_BASE_URL=http://localhost:5173) with two workers, the Daily 7's
+  // first paint can take longer than that; the loop then found zero options,
+  // broke, and reported "never reached the daily result screen" while the
+  // build-preview run passed 2/2 (2026-09-06). Same lesson as the reveal wait.
+  await page.locator('button.opt').first().waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
   // Answer 7 questions by always taking the first option — correctness is
   // irrelevant here; reaching the result screen is the point.
   for (let i = 0; i < 7; i += 1) {

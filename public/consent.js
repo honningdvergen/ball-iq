@@ -193,7 +193,13 @@
    * bar, because both fire on visit one. Same rule as onboarding: we collect
    * nothing while a sheet is up, so we ask once it is down. `.biql` is the
    * Login component's root (overlay and full-screen alike). */
-  function onboardingUp() { return !!document.querySelector('.onboard-wrap, .biql'); }
+  /* …and of ANY open dialog. The share-name sheet after a Daily 7 (2026-09-06,
+   * seen in the e2e run against the dev origin, where the pre-declined consent
+   * state does not apply): "Share without a name" sat behind this bar for a
+   * first-visit EU player. Every bottom sheet in the app carries role="dialog"
+   * (the a11y-structure test enforces the hook that goes with it), so the
+   * role is the one honest signal — no per-sheet class list to keep in step. */
+  function onboardingUp() { return !!document.querySelector('.onboard-wrap, .biql, [role="dialog"], [aria-modal="true"]'); }
 
   var syncQueued = false;
   function syncVisibility() {
