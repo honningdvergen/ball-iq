@@ -151,13 +151,13 @@ export default function FrontDoor() {
   // The practice board (an archive puzzle, nothing about today's given away)
   // used to be its own section under Today — a second Footle door on one
   // page. It now opens from the lead card, on request.
+  const go = (name, href) => { try { marketingEvent(name, { href }); } catch {} };
   const [practice, setPractice] = useState(false);
   const togglePractice = () => { setPractice((p) => !p); go(practice ? 'fd-practice-close' : 'fd-practice-open'); };
   const countdown = useCountdown();
   const [allClubs, setAllClubs] = useState(false);
 
   useEffect(() => { marketingEvent('fd-view'); }, []);
-  const go = (name, href) => { try { marketingEvent(name, { href }); } catch {} };
 
   const dailies = [
     { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Played', href: '/football-wordle/' },

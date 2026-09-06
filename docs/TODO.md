@@ -1,3 +1,14 @@
+## 2026-09-06 (14:30) — ✅ SENIOR REVIEW A–E LANDED (7 commits, prod-verified) — `.audit/senior-review-2026-09-06/REVIEW.md` § Status
+
+A1–A4 bugs, B5–B7 honesty, C8–C13 craft (results = score → panel → missed answers; one primary + one quiet row; guest save
+line is a panel row; report sheet = the quit sheet with Lucide reasons; local pass & play = numbered colour marks, no
+difficulty picker), D14 (corrected: Home eager JS is 831 KB, GameRoot 561 of it — the index was an idle prefetch all along;
+`audit-home-budget.mjs` now in the build at 900 KB, ratchets down), E15 (`no-use-before-define` over src caught 47 real
+use-before-declare sites, all hoisted; `boot-smoke.spec.js` renders three screens in CI). ⚠️ The first ESLint run said 0 —
+an array hole from a stray comma had crashed it; a probe file with a known TDZ is the proof. **NEXT:** E16 (split App.jsx
+along the services seam — Results, quiz engine, Online hub, Settings; it is the whole Home budget), then the F7 reads
+(~09-13): D1→D2 return, reachable %, share taps per finish, `daily_results` n per puzzle; then re-run the app critique.
+
 ## 2026-09-06 (13:00) — ⭐ SENIOR APP REVIEW DONE — `.audit/senior-review-2026-09-06/REVIEW.md` (+ NOTES.md, screenshots)
 
 Play-through of prod PWA (console clean everywhere) + native. 16 findings in five groups, level-up list in order: **A bugs** — pending

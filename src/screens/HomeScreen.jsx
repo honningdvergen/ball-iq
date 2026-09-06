@@ -11,7 +11,7 @@ import { dateToYMD } from "../lib/date.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
-import { QB_INDEX } from "../questions-index.js";
+import { QB_TAG_COUNTS } from "../questions-index-meta.js";
 import { getFootleNumber } from "../lib/footleNumber.js";
 import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
@@ -205,13 +205,14 @@ function HomeScreenImpl({
   })();
 
   // Same discipline as trailLive/mysteryLive: never advertise a mode that
-  // cannot be played. Counted against the INDEX projection (id/cat/diff/tag,
-  // no question text), so the home screen does not pull the 2.3MB bank just to
-  // decide whether to draw a tile. Retiring the pack is one constant away —
-  // set TOPICAL_PACK to null and this goes false.
+  // cannot be played. Counted against the per-tag COUNTS (a few bytes), not the
+  // index (562 KB) and never the bank (2.3 MB): Home decides, it does not play.
+  // ⚠️ Importing questions-index.js statically here puts it in the Home chunk
+  // the moment TOPICAL_PACK is non-null — scripts/audit-home-budget.mjs fails
+  // the build on that shape. Retiring the pack is one constant away.
   const topicalLive = (() => {
     if (!TOPICAL_PACK?.tag) return false;
-    try { return QB_INDEX.filter((r) => r.tag === TOPICAL_PACK.tag).length >= 10; } catch { return false; }
+    try { return (QB_TAG_COUNTS[TOPICAL_PACK.tag] || 0) >= 10; } catch { return false; }
   })();
 
   const isPlaceholderName = (n) => !n || n === "Player" || /^player_/i.test(n);

@@ -3972,7 +3972,9 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     }, 800);
   };
 
-  const revealSurvivalQuestion = (picksSoFar) => {
+  // A function declaration, not a const arrow: it is called from the
+  // lock-in handler declared above it, and a `const` there is a TDZ read.
+  function revealSurvivalQuestion(picksSoFar) {
     const thisQPicks = picksSoFar.filter(p => p.qIdx === currentQIdx);
     const freshlyOut = [];
     const nextScores = { ...scores };
@@ -3988,9 +3990,11 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     haptic("heavy");
     playSound("streak");
     setPhase("reveal");
-  };
+  }
 
-  const revealChunk = (picksSoFar) => {
+  // A function declaration, not a const arrow: it is called from the
+  // lock-in handler declared above it, and a `const` there is a TDZ read.
+  function revealChunk(picksSoFar) {
     const nextScores = { ...scores };
     for (const pk of picksSoFar) {
       const q = questions[pk.qIdx];
@@ -4002,7 +4006,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
     haptic("heavy");
     playSound("streak");
     setPhase("reveal");
-  };
+  }
 
   const prog = `Q ${String(currentQIdx + 1).padStart(2, "0")} / ${String(Math.min(target, totalQs)).padStart(2, "0")}`;
 
@@ -7540,6 +7544,9 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
 // the same policy as in-app users. Sprint #83 ZZ7 caught a drift; Sprint #84
 // AAA1 re-synced them. Edit both files in the same commit and bump
 // "Last updated" in both when the policy materially changes.
+const privacyH2 = {fontSize: 17, fontWeight: 700, color: "var(--text)", margin: "28px 0 10px"};
+const privacyP = {fontSize: 15, color: "var(--t2)", marginBottom: 12};
+const privacyLi = {fontSize: 15, color: "var(--t2)", marginBottom: 6};
 const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
   return (
     <div style={{
@@ -7652,9 +7659,6 @@ const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
     </div>
   );
 });
-const privacyH2 = {fontSize: 17, fontWeight: 700, color: "var(--text)", margin: "28px 0 10px"};
-const privacyP = {fontSize: 15, color: "var(--t2)", marginBottom: 12};
-const privacyLi = {fontSize: 15, color: "var(--t2)", marginBottom: 6};
 
 // ─── HELP / FAQ SCREEN ────────────────────────────────────────────────────────
 // Same overlay shape as PrivacyScreen so dark / light backgrounds, scroll
@@ -9143,6 +9147,20 @@ function AppInner() {
     celebrationTimeoutsRef.current = [];
   }, []);
   const [toast, setToast] = useState(null);
+  // showToast lives HERE, right under its state, because the streak-repair
+  // callbacks a few hundred lines down call it from inside their bodies — a
+  // const declared below them is a TDZ read the moment one of them runs
+  // during render (review 2026-09-06, E15; ESLint no-use-before-define now
+  // fails the build on that shape).
+  const toastTimerRef = useRef(null);
+  const showToast = useCallback((msg, duration = 2800) => {
+    setToast(msg);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => {
+      setToast(null);
+      toastTimerRef.current = null;
+    }, duration);
+  }, []);
 
   // Phase G (audit finding 2.1): server-authoritative login streak.
   // Replaces the mount-effect-vs-hydrate race that could silently truncate
@@ -9413,6 +9431,7 @@ function AppInner() {
   // resolution that matters here). After the date flips we also rebuild
   // dailyHistory from localStorage so the Daily tab calendar surfaces the
   // freshly-completed previous day immediately.
+  const [dailyHistory, setDailyHistory] = useState({});
   useEffect(() => {
     const dayKey = () => {
       const d = new Date();
@@ -9487,20 +9506,10 @@ function AppInner() {
   }, []);
 
   const todayKey = useMemo(() => keyForDate(new Date()), []);
-  const [dailyHistory, setDailyHistory] = useState({});
   const [activeDailyDate, setActiveDailyDate] = useState(null);
   const [activeClub, setActiveClub] = useState(null);
   const [activeLeague, setActiveLeague] = useState(null);
 
-  const toastTimerRef = useRef(null);
-  const showToast = useCallback((msg, duration = 2800) => {
-    setToast(msg);
-    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-    toastTimerRef.current = setTimeout(() => {
-      setToast(null);
-      toastTimerRef.current = null;
-    }, duration);
-  }, []);
 
   // ⚠️ Placed BELOW showToast on purpose: repairLoginStreak lists it as a
   // dep, and a deps array is evaluated during render — referencing the const
@@ -10615,27 +10624,6 @@ function AppInner() {
   // (the "just let me play" destination), not the screen the overlay was opened
   // from (e.g. Settings' sign-in row). The overlay is a sibling of AppInner in
   // AppGate, so it signals via a window event — same pattern as reminders/pushes.
-  useEffect(() => {
-    const goHome = () => { setScreen("home"); setTab("home"); };
-    // Hard-gate dismissal ("Not now" on the online/friends wall) returns to the
-    // tab the user was actually on. Home discarded their intent: they tapped
-    // Create Room, got walled, and landed somewhere with no trace of the thing
-    // they'd asked for — the single worst step in the online funnel.
-    const goTab = (e) => { setScreen("home"); setTab(e?.detail?.tab || "home"); };
-    // Multiplayer's ended screen asks for a player card. Same window-event
-    // pattern as the two above, because OnlineMultiplayer is lazy-loaded and
-    // has no path to openFriendProfile. Only the ENDED screen dispatches this —
-    // firing it from a live lobby would pull the player out of their room.
-    const openFriend = (e) => { const id = e?.detail?.id; if (id) openFriendProfile({ id }); };
-    window.addEventListener("biq:go-home", goHome);
-    window.addEventListener("biq:auth-dismissed", goTab);
-    window.addEventListener("biq:open-friend", openFriend);
-    return () => {
-      window.removeEventListener("biq:go-home", goHome);
-      window.removeEventListener("biq:auth-dismissed", goTab);
-      window.removeEventListener("biq:open-friend", openFriend);
-    };
-  }, []);
 
   // ─── 1.3 Native push (APNs) ────────────────────────────────────────────────
   // Route a push tap: a play invite deep-links straight into the lobby with the
@@ -12262,6 +12250,7 @@ function AppInner() {
   const isWebBrowser = (() => {
     try { return !IS_NATIVE && !(window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone === true); } catch { return false; }
   })();
+  const [pendingLeaveRoom, setPendingLeaveRoom] = useState(null);
   const handleHomeClick = useCallback(async () => {
     if (isWebBrowser && !(screen === "online-stage1-lobby" && stage1RoomCode)) { window.location.assign('/'); return; }
     if (screen === "online-stage1-lobby" && stage1RoomCode) {
@@ -12279,6 +12268,7 @@ function AppInner() {
     }
     goHome();
   }, [screen, stage1RoomCode, goHome]);
+  const [pendingInviteFriendId, setPendingInviteFriendId] = useState(null);
   const challengeFriend = useCallback((friend) => {
     // Seamless challenge: auto-create a room and drop the challenger straight
     // into the lobby AS HOST (the same one-tap path the Home/Online "Create
@@ -12286,7 +12276,7 @@ function AppInner() {
     // known (onLobbyEnter) we fire an in-app play_invite notification to them —
     // they'll see it in their bell/inbox with a one-tap Join. The share link in
     // the lobby remains as a fallback for non-friends / older clients.
-    // (setPendingInviteFriendId is defined below; referenced only in the body,
+    // (setPendingInviteFriendId is declared above — it was below, which is a TDZ read;
     // which runs at call time — safe, and kept out of deps to avoid a TDZ eval.)
     setPendingInviteFriendId(friend?.id || null);
     setOnlineAutoCreate(true);
@@ -12300,6 +12290,29 @@ function AppInner() {
     if (!friend?.id) return;
     setViewingFriendId(friend.id);
     setScreen("friend-profile");
+  }, []);
+
+  // Below openFriendProfile on purpose — the listener calls it (E15).
+  useEffect(() => {
+    const goHome = () => { setScreen("home"); setTab("home"); };
+    // Hard-gate dismissal ("Not now" on the online/friends wall) returns to the
+    // tab the user was actually on. Home discarded their intent: they tapped
+    // Create Room, got walled, and landed somewhere with no trace of the thing
+    // they'd asked for — the single worst step in the online funnel.
+    const goTab = (e) => { setScreen("home"); setTab(e?.detail?.tab || "home"); };
+    // Multiplayer's ended screen asks for a player card. Same window-event
+    // pattern as the two above, because OnlineMultiplayer is lazy-loaded and
+    // has no path to openFriendProfile. Only the ENDED screen dispatches this —
+    // firing it from a live lobby would pull the player out of their room.
+    const openFriend = (e) => { const id = e?.detail?.id; if (id) openFriendProfile({ id }); };
+    window.addEventListener("biq:go-home", goHome);
+    window.addEventListener("biq:auth-dismissed", goTab);
+    window.addEventListener("biq:open-friend", openFriend);
+    return () => {
+      window.removeEventListener("biq:go-home", goHome);
+      window.removeEventListener("biq:auth-dismissed", goTab);
+      window.removeEventListener("biq:open-friend", openFriend);
+    };
   }, []);
   const closeFriendProfile = useCallback(() => {
     setScreen("home");
@@ -12406,7 +12419,6 @@ function AppInner() {
   }, []);
   // A specific friend can be invited to play: challengeFriend stashes their id;
   // once the auto-created room's code is known (onLobbyEnter) we fire the invite.
-  const [pendingInviteFriendId, setPendingInviteFriendId] = useState(null);
   // Returns whether the invite actually landed.
   //
   // It used to return nothing and swallow everything, and the swallow was worse
@@ -12652,7 +12664,6 @@ function AppInner() {
   // Sprint #71 MM1: in-app confirm modal for "leave the multiplayer room?"
   // replaces a window.confirm() that rendered as the iOS native dialog.
   // pendingLeaveRoomRef carries the cleanup callback; null = closed.
-  const [pendingLeaveRoom, setPendingLeaveRoom] = useState(null);
   const leaveRoomModalRef = useRef(null);
   const howToPlayRef = useRef(null);
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });

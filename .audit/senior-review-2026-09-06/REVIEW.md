@@ -46,3 +46,19 @@
 7. Then measure: D1→D2 return, reachable%, share taps per finish, `daily_results` n per puzzle.
 
 Everything above is grounded in a screenshot in this folder or a line in `NOTES.md`.
+
+
+---
+
+## Status — what landed, 2026-09-06 (afternoon)
+
+Commits on main: `1ec23ff` `bfd18df` (A1–A4), `8cdaab4` (B5+B6), `a3d319f` (B7), `7d0cb85` (C8–C11: results), `eb050af` (C8/C12/C13: report sheet, local pass & play), then D/E in the commit that carries this note. Every item below was verified by RENDERING it (Playwright at 390×844 on the dev server; A3/A4 also on the iOS simulator; the results screens on prod after deploy — screenshots in `shots/`).
+
+- **A1–A4** ✅ join gate validates + expires + never over a game; no web chrome during a game; sticky footer fades; report link above the primary.
+- **B5–B7** ✅ Settings honesty, one version source (1.7.3), ratings gated at 10 answered, era rule judges the ANSWER (13 future days rebuilt; today stays frozen; a year-less pre-1950 fact like Torino 1906 still needs a bank flag).
+- **C8** ✅ results / report sheet / local setup / podium / flag link are Lucide or numbered marks. Left: the Hot Streak and True-or-False hero emoji (`rc-icon`), the ✅❌ share grid, the toast copy — cosmetic, none is an icon in a control.
+- **C9** ✅ one primary (open daily, else play again) + a row of two quiet buttons + a text link. **C10** ✅ Survival Q1 death: soft caption, "Go again" stays primary. **C11** ✅ one save ask — the guest line is a row of the panel. **C12** ✅ local difficulty picker gone. **C13** ✅ the report sheet is the quit sheet; the "join modal" turned out to be the inline Online-tab field, not a modal — nothing to convert.
+- **D14** ⚠️ CORRECTED. The 562 KB index was never in Home's eager JS: rollup shakes the dead static import behind `TOPICAL_PACK = null`, and the index, Supabase and the Profile/Online screens are staged IDLE prefetches. Measured eager Home JS on 2026-09-06: **831 KB** (GameRoot 561, React 138, main 122). Landed: the static import is gone for good (a tiny generated `questions-index-meta.js` carries the tag counts) and `scripts/audit-home-budget.mjs` runs in the build — bans static heavy imports in the Home chunks and holds a 900 KB budget that ratchets down. The ≤600 KB target needs E16 (App.jsx split): GameRoot IS the budget.
+- **E15** ✅ `no-use-before-define` (`variables: true`) on all of src — it found **47** use-before-declare sites in four files, all of the exact shape that crashed three times this week; each is now a hoisted declaration. ⚠️ Audit-the-auditors moment: a stray comma left a hole in the flat config array, ESLint crashed, and the first run reported "0 violations". A probe file with a known TDZ is the only proof the rule runs. Plus `tests/e2e/boot-smoke.spec.js` (Home → Classic Q1, Home → Daily 7 Q1, Home → Footle board) in the CI e2e set.
+- **E16** ⏳ not started — the next real perf lever and the next TDZ-surface reducer.
+- **F7 measure** ⏳ reads due after a week of data: D1→D2 return, reachable %, share taps per finish, `daily_results` n per puzzle.

@@ -49,9 +49,9 @@ test('Footle entry', async ({ page, context }) => {
   await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  // Mobile renders the .footle-hero card; desktop (>=1024px) hides it and
-  // shows the inline DesktopFootleHero whose CTA is .ffh-cta.
-  await page.locator('.footle-hero, .ffh-cta').filter({ visible: true }).first().click();
+  // Footle is the first of the four Today rows since 2026-09-05 (the hero
+  // card and the desktop DesktopFootleHero both left Home with it).
+  await page.locator('.todays-seven-secondary').filter({ hasText: /Footle/ }).first().click();
   await page.waitForTimeout(1500);
   await expectNoCrash(page, errs, 'Footle');
 });

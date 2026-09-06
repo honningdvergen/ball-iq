@@ -77,6 +77,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   const clubsUsed = won ? cluesShown(misses, career.length) : career.length;
   const hint = done ? null : hintFor(player, misses);
   const left = Math.max(0, TRAIL_MAX_ATTEMPTS - misses);
+  const isArchive = ymd !== dateToYMD(new Date());
 
   useEffect(() => {
     // arc: archive plays are visible history but never streak fuel — the
@@ -96,7 +97,6 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   // a way to farm the streak, and a farmable streak stops meaning "I showed up
   // every day", which is the only reason it exists. The board still records
   // the solve; only the habit metrics are protected.
-  const isArchive = ymd !== dateToYMD(new Date());
   useEffect(() => {
     if (!done || announced.current) return;
     announced.current = true;

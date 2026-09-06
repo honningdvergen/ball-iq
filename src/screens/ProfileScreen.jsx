@@ -1189,6 +1189,11 @@ export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, nameEditNonce, isActiveTab = true }) {
+  // Declared first: saveName (well above where this used to sit) calls it.
+  // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
+  // native window.alert dialog if no onToast prop was provided. In
+  // practice every caller passes onToast — this is defensive.
+  const toast = onToast || ((m) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(m) })); } catch {} });
   const { user, profile: authProfile, isGuest, isAnonUser, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -1370,10 +1375,6 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // is nothing left to beat it.
   const showPhoto = !!avatarUrl;
   const displayEmoji = <ProfilePic value={profile?.avatar || authProfile?.avatar_id} url={authProfile?.avatar_url || profile?.photo} name={profile?.name || authProfile?.username} />;
-  // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
-  // native window.alert dialog if no onToast prop was provided. In
-  // practice every caller passes onToast — this is defensive.
-  const toast = onToast || ((m) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(m) })); } catch {} });
 
   const openAvatarPicker = () => {
     if (uploading || authLoading) return;

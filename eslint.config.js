@@ -19,7 +19,7 @@ export default [
   // offset there and broke both the clubq-start count and "Keep going", with
   // nothing to catch it. no-redeclare finds that in a second — but only if the
   // file is parsed, which is the entire reason it now exists on disk.
-  { ignores: ['**/.claude/**', 'dist/**', 'ios/**', 'android/**', 'node_modules/**', 'public/**', 'scripts/!(seo)/**', 'scripts/*.mjs', 'scripts/seo/!(club-quiz-engine).*', '*.config.js', 'src/questions-index.js'] },
+  { ignores: ['**/.claude/**', 'dist/**', 'ios/**', 'android/**', 'node_modules/**', 'public/**', 'scripts/!(seo)/**', 'scripts/*.mjs', 'scripts/seo/!(club-quiz-engine).*', '*.config.js', 'src/questions-index.js', 'src/questions-index-meta.js'] },
   {
     files: ['scripts/seo/club-quiz-engine.js'],
     languageOptions: {
@@ -70,5 +70,16 @@ export default [
       'react-hooks/exhaustive-deps': 'warn',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^[A-Z_]' }],
     },
+  },
+  // ⚠️ THE TDZ CLASS. Three times in one week (review 2026-09-06, E15) a
+  // `const` was read above its declaration in App.jsx — inside an effect or a
+  // memo that ran before the line that declared it — and each shipped past
+  // lint, the unit suite and the build gate, to be caught only by opening the
+  // screen. `variables: true` flags every textual use-before-declare, nested
+  // closures included; hoisted function declarations are exempt (safe by the
+  // language). App.jsx had zero when this landed — it stays at zero.
+  {
+    files: ['src/**/*.{js,jsx}'],
+    rules: { 'no-use-before-define': ['error', { functions: false, classes: false, variables: true }] },
   },
 ];
