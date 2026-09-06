@@ -2,6 +2,8 @@
 // Every knob arrives as a prop; the app-level helpers come along the seam the
 // lazy screens already use.
 import Login from "../Login.jsx";
+import { InstallCard } from "../components/InstallCard.jsx";
+import { APP_VERSION, REVIEWER_EMAIL, ABOUT_ACTION_STYLE } from "../lib/appMeta.js";
 import { useInstallPrompt } from "../installPrompt.js";
 import { appStoreUrl, PLAY_STORE_URL, APP_STORE_ID } from "../lib/links.js";
 import { APP_NAME } from "../lib/scoring.js";
@@ -14,40 +16,6 @@ import { ArrowUpRight, Home, Mail, Settings, Share, Star, Timer } from "lucide-r
 import React, { useEffect, useRef, useState } from "react";
 import { loopEvent } from "../App.jsx";
 
-// APP_STORE_ID / APP_STORE_URL / PLAY_STORE_URL moved to ./lib/links.js
-// (single source of truth for every store CTA in src/ — imported above).
-// Shared style for the three About-card actions (Rate / Share / Feedback).
-export const ABOUT_ACTION_STYLE = {
-  flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-  padding: "12px 6px", background: "transparent", color: "var(--accent)",
-  border: "1.5px solid var(--accent-b)", borderRadius: 12, fontFamily: "inherit",
-  fontSize: 12.5, fontWeight: 800, cursor: "pointer", WebkitAppearance: "none",
-  appearance: "none", textDecoration: "none",
-};
-
-// Centralised durations so we can tune motion/UX feel from one place.
-// ─── APP META ─────────────────────────────────────────────────────────────────
-// Single source of truth for the version string — surfaced in Settings → About.
-// Bump on every shipping release.
-// Web fallback only — on native the About card shows the REAL installed build
-// version via CapApp.getInfo(), so this no longer drifts on each release (the
-// bug that left it stuck at "1.0.0-beta" through 1.0.1/1.0.2). Keep it roughly
-// current for the web build.
-// Injected from package.json at build time (vite.config.js); never hand-edited here.
-export const APP_VERSION = import.meta.env.VITE_APP_VERSION || "1.7.3";
-// Gated reviewer email — only this account sees the Settings → Review entry
-// and can reach the review screen. Server-side RLS on question_review is the
-// real security; this is just UI hiding.
-export const REVIEWER_EMAIL = "alexbo99@hotmail.no";
-
-// (The old async storage shim on window is gone — reads go straight to
-// localStorage; writes go through safeSetItem so QuotaExceededError is
-// surfaced via the biq:storage-quota-exceeded toast instead of vanishing.)
-
-// The visible label lives in a sibling .sr-label div, so to a screen reader
-// this button was an unnamed control with no state — five of them in a row,
-// all announced as just "button" (WCAG 4.1.2). role=switch + aria-checked
-// makes the on/off state readable, and `label` names it.
 export function SettingsToggle({ val, onChange, label, disabled }) {
   return (
     <button
@@ -61,71 +29,6 @@ export function SettingsToggle({ val, onChange, label, disabled }) {
     >
       <div className="toggle-knob" />
     </button>
-  );
-}
-
-// Sprint #34 BB2: PWA install affordance. Renders nothing when the app is
-// already installed, the user has dismissed (within the 30-day TTL window),
-// or the platform has no install path (iOS Chrome/Firefox/Edge, etc).
-// Android/Chrome shows a single Install button driven by the pre-React
-// stashed `beforeinstallprompt` event; iOS Safari shows a Share → Add to
-// Home Screen → Add visual sequence since there's no install API on iOS.
-// Sprint #64 FF1: install banner shown inside the Footle won-result block
-// on solve. Discoverability companion to InstallCard — fresh users who
-// never visit Settings still see an install nudge at a moment they've
-// just succeeded. Hidden when already installed (incl. "installed ever"
-// to catch the EE3 iOS Safari reopen case), when display-mode is
-// standalone, and for 30 days after dismiss.
-export function InstallCard() {
-  const { canPromptNative, platform, showCard, promptInstall, dismiss } = useInstallPrompt();
-  if (!showCard) return null;
-  return (
-    <div className="settings-section">
-      <div className="ds-eyebrow settings-section-title">Install</div>
-      <div className="settings-card install-card">
-        <div className="install-card-header">
-          <div className="install-card-icon" aria-hidden="true">⚽</div>
-          <div className="install-card-body">
-            <div className="install-card-title">Install Ball IQ</div>
-            <div className="install-card-desc">Full-screen, offline-ready, one tap from your home screen.</div>
-          </div>
-          <button
-            type="button"
-            className="install-card-dismiss"
-            onClick={dismiss}
-            aria-label="Dismiss install prompt"
-          >×</button>
-        </div>
-        <div className="install-card-action">
-          {canPromptNative ? (
-            <button
-              type="button"
-              className="install-card-btn"
-              onClick={promptInstall}
-            >Install</button>
-          ) : platform.isIOSSafari ? (
-            <div className="install-card-ios" aria-label="iOS install instructions">
-              <span className="install-card-step">
-                <span className="install-card-step-icon" aria-hidden="true">⤴</span>
-                <span className="install-card-step-label">Share</span>
-              </span>
-              <span className="install-card-pair">
-                <span className="install-card-arrow" aria-hidden="true">→</span>
-                <span className="install-card-step">
-                  <span className="install-card-step-label">Add to Home Screen</span>
-                </span>
-              </span>
-              <span className="install-card-pair">
-                <span className="install-card-arrow" aria-hidden="true">→</span>
-                <span className="install-card-step">
-                  <span className="install-card-step-label">Add</span>
-                </span>
-              </span>
-            </div>
-          ) : null}
-        </div>
-      </div>
-    </div>
   );
 }
 

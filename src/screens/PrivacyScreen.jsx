@@ -1,6 +1,7 @@
 // Privacy policy screen. Extracted from App.jsx on 2026-09-06 (review E16).
 import React from "react";
 import { APP_NAME } from "../lib/scoring.js";
+import { privacyH2, privacyP, privacyLi } from "./privacyStyles.js";
 
 // ─── PRIVACY POLICY SCREEN ────────────────────────────────────────────────────
 // Full-screen in-app overlay. Content is hardcoded (no network fetch, no
@@ -12,9 +13,6 @@ import { APP_NAME } from "../lib/scoring.js";
 // the same policy as in-app users. Sprint #83 ZZ7 caught a drift; Sprint #84
 // AAA1 re-synced them. Edit both files in the same commit and bump
 // "Last updated" in both when the policy materially changes.
-export const privacyH2 = {fontSize: 17, fontWeight: 700, color: "var(--text)", margin: "28px 0 10px"};
-export const privacyP = {fontSize: 15, color: "var(--t2)", marginBottom: 12};
-export const privacyLi = {fontSize: 15, color: "var(--t2)", marginBottom: 6};
 export const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
   return (
     <div style={{

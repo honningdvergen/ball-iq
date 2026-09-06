@@ -51,16 +51,11 @@ import { CountUp } from './components/CountUp.jsx';
 import { ResultsCloseBtn } from './components/ResultsCloseBtn.jsx';
 import { WrongAnswersReview } from './components/WrongAnswersReview.jsx';
 import { Results } from './screens/ResultsScreen.jsx';
-import { LocalSetup, LocalGameScreen, LocalResults } from './screens/LocalPlay.jsx';
 import { OnlineHubTab } from './screens/OnlineHubTab.jsx';
-import { StumpScreen } from './screens/StumpScreen.jsx';
-import { PrivacyScreen, privacyH2, privacyP } from './screens/PrivacyScreen.jsx';
-import { SettingsScreen, InstallCard, APP_VERSION, REVIEWER_EMAIL, ABOUT_ACTION_STYLE } from './screens/SettingsScreen.jsx';
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
 import { resultVerdict, HotStreakResults, TrueFalseResults } from './screens/ModeResults.jsx';
 import { QuizEngine, TypedInput } from './screens/QuizEngine.jsx';
-import { ClubQuizScreen } from './screens/ClubQuizScreen.jsx';
-import { DailyReviewScreen, PuzzleReviewScreen } from './screens/ReviewScreens.jsx';
+import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { dailyTierCopy, scoreTagline } from './lib/resultsCopy.js';
 import { stumpLink, shareStumpText, shareSenderName } from './lib/stump.js';
 import {
@@ -87,6 +82,26 @@ import { UsernameSetupModal } from './components/UsernameSetupModal.jsx';
 const ProfileScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.ProfileScreen })));
 const FriendProfileScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.FriendProfileScreen })));
 const BlockedUsersScreen = React.lazy(() => import('./screens/ProfileScreen.jsx').then(m => ({ default: m.BlockedUsersScreen })));
+// E16 (2026-09-06): the screens extracted from this file that sit OFF the boot
+// path load on demand. Each is wrapped in its own Suspense so the render
+// sites below stay one-liners; ScreenLoading is a hoisted declaration.
+const lazyNamed = (loader, name) => React.lazy(() => loader().then(m => ({ default: m[name] })));
+const withSuspense = (Comp, label = "Loading") => function LazyScreen(props) {
+  // Boundary + Suspense together: a chunk that fails to load, or a screen
+  // that throws, offers the way out (the app's own go-home event) instead of
+  // a dead end. TabErrorBoundary is a hoisted class, used at render time.
+  const exit = () => { try { window.dispatchEvent(new Event("biq:go-home")); } catch { /* no window */ } };
+  return <TabErrorBoundary name={label} onExit={exit}><React.Suspense fallback={<ScreenLoading label={label} />}><Comp {...props} /></React.Suspense></TabErrorBoundary>;
+};
+const SettingsScreen = withSuspense(lazyNamed(() => import('./screens/SettingsScreen.jsx'), 'SettingsScreen'), "Loading settings");
+const DailyReviewScreen = withSuspense(lazyNamed(() => import('./screens/ReviewScreens.jsx'), 'DailyReviewScreen'), "Loading review");
+const PuzzleReviewScreen = withSuspense(lazyNamed(() => import('./screens/ReviewScreens.jsx'), 'PuzzleReviewScreen'), "Loading review");
+const ClubQuizScreen = withSuspense(lazyNamed(() => import('./screens/ClubQuizScreen.jsx'), 'ClubQuizScreen'), "Loading clubs");
+const PrivacyScreen = withSuspense(lazyNamed(() => import('./screens/PrivacyScreen.jsx'), 'PrivacyScreen'));
+const StumpScreen = withSuspense(lazyNamed(() => import('./screens/StumpScreen.jsx'), 'StumpScreen'));
+const LocalSetup = withSuspense(lazyNamed(() => import('./screens/LocalPlay.jsx'), 'LocalSetup'));
+const LocalGameScreen = withSuspense(lazyNamed(() => import('./screens/LocalPlay.jsx'), 'LocalGameScreen'));
+const LocalResults = withSuspense(lazyNamed(() => import('./screens/LocalPlay.jsx'), 'LocalResults'));
 // Online multiplayer (~1700 lines) — only loads when a user goes online, never
 // on the cold/first paint. Both entry points share the one chunk.
 // Transfer Trail — lazy like the other full screens. Self-gating: the entry
