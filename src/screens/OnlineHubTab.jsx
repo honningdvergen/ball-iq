@@ -144,21 +144,13 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
           cannot back; the three steps are literally the flow. */}
       {needsAccount && (
         <div style={{borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)",padding:"18px 16px 16px",marginBottom:14}}>
-          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}>
-            <span className="t7s-icon" style={{"--mode":"var(--accent)","--mode-rgb":"88,204,2",width:46,height:46}} aria-hidden="true"><Users size={24} strokeWidth={2} /></span>
+          <div style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:12}}>
+            <span className="t7s-icon" style={{"--mode":"var(--accent)","--mode-rgb":"88,204,2",width:46,height:46,marginTop:2}} aria-hidden="true"><Users size={24} strokeWidth={2} /></span>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontSize:19,fontWeight:800,letterSpacing:"-0.3px",color:"var(--t1)",lineHeight:1.15}}>Who knows more — you or your mates?</div>
-              <div style={{fontSize:13,color:"var(--t2)",marginTop:4,lineHeight:1.4}}>Ten questions, everyone answers live, the podium settles it. Up to 8 players, any phone.</div>
+              <div style={{fontSize:13.5,color:"var(--t2)",marginTop:5,lineHeight:1.45}}>Ten questions, everyone answers live, the podium settles it. Up to 8 players, any phone.</div>
             </div>
           </div>
-          <ol style={{listStyle:"none",padding:0,margin:"0 0 14px",display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-            {[["1","Create room"],["2","Share link"],["3","Answer live"]].map(([n,t]) => (
-              <li key={n} style={{display:"flex",alignItems:"center",gap:7,padding:"8px 10px",borderRadius:10,background:"var(--bg)",border:"1px solid var(--border)"}}>
-                <span style={{width:18,height:18,borderRadius:999,background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.3)",color:"var(--grn-soft)",fontSize:11,fontWeight:800,display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{n}</span>
-                <span style={{fontSize:12,fontWeight:700,color:"var(--t1)",lineHeight:1.15}}>{t}</span>
-              </li>
-            ))}
-          </ol>
           <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
             <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Zap size={17} strokeWidth={2.4} /></span><span style={{fontSize:16,fontWeight:800,color:"var(--grn-ink)"}}>Challenge your friends</span>
           </button>
@@ -170,6 +162,11 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
         <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Gamepad2 size={17} strokeWidth={2.2} /></span><span style={{fontSize:17,fontWeight:800,color:"var(--grn-ink)"}}>Create Room</span>
       </button>
       )}
+      {/* The join field and the local row used to float loose under the pitch,
+          the only block in the app without a section head — Home has "Today",
+          "Find a quiz", "More modes". Naming them also tells a guest that the
+          two things they CAN do without an account are right here. */}
+      <div className="home-section-title" style={{marginTop:18, marginBottom:2}}>No account needed</div>
       {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
           sits dimmed until there's input, lights green once typing starts. */}
       <div style={{display:"flex",gap:9,marginTop:10}}>
@@ -252,7 +249,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
           alone); quiet for an account, where online is the point. */}
       <div className="todays-seven-secondary mp-row" role="group" aria-label="Local pass and play" style={{marginTop:16, marginBottom:0}}>
         <button type="button" className="mp-row-open" onClick={() => startMode("local")} aria-label="Play locally on one phone">
-          <span className="t7s-icon" aria-hidden="true"><Users size={20} strokeWidth={2} /></span>
+          <span className="t7s-icon" aria-hidden="true"><Gamepad2 size={20} strokeWidth={2} /></span>
           <span className="t7s-body">
             <span className="t7s-title">Local pass &amp; play</span>
             <span className="t7s-sub">Same couch, one phone · up to 6 players</span>

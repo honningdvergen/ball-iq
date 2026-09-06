@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
 import { STADIUM_LEAGUES, matchStadium } from "../data/stadiums.js";
-import { Confetti, haptic, playSound, CLUB_ABBR, CLUB_PACKS } from "../App.jsx";
+import { Confetti, haptic, playSound, CLUB_ABBR, CLUB_PACKS, LEAGUE_QUIZ_BY_CAT } from "../App.jsx";
 import { clubColour, clubAbbr, packColourMap, tint, lift, onColour } from "../lib/clubColour.js";
 import { Lightbulb } from "lucide-react";
 
@@ -63,19 +63,29 @@ function mask(stadium, n) {
  * Colours are the leagues' own brand hues. A colour is not a trademark in the
  * way a logo is, and the app already assigns club colours the same way.
  */
-const LEAGUE_BADGE = {
-  // ⚠️ These are the LEAGUES' own initialisms, not the Ball IQ card's
-  // competition codes. This map used to carry LAL and SEA, lifted from
-  // CARD_COMPS — where they sit beside a Spanish and an Italian flag and mean
-  // "La Liga" and "Serie A". Standing alone in a coloured badge they read as
-  // the Lakers and Seattle, which Alex spotted immediately. The full league
-  // name is rendered right beside the badge, so the badge only has to carry
-  // identity: two characters, the form a fan already uses.
-  "premier-league": { abbr: "PL", bg: "#3D195B", ink: "#FFFFFF" },
-  "la-liga":        { abbr: "LL", bg: "#EE8707", ink: "#221000" },
-  "serie-a":        { abbr: "SA", bg: "#024494", ink: "#FFFFFF" },
-  "bundesliga":     { abbr: "BL", bg: "#D20515", ink: "#FFFFFF" },
-  "ligue-1":        { abbr: "L1", bg: "#DAE023", ink: "#0A1A00" },
+// ⚠️ ONE SOURCE FOR A LEAGUE'S IDENTITY — this screen used to keep its own.
+// It carried PL / LL / SA / BL and a yellow Ligue 1, while the League Quiz two
+// taps away carried EPL / LAL / SEA / BUN and a navy Ligue 1: the same five
+// competitions wearing different badges in one app (Alex, 2026-09-06: "the
+// abbreviations are wrong here... look at the league quiz for reference").
+//
+// An earlier note here argued LAL and SEA read as the Lakers and Seattle when
+// they stand alone. That was true of a bare badge; here — as in the League
+// Quiz — the full league name is rendered immediately beside it, and matching
+// the rest of the app matters more than a code being self-evident in isolation.
+// Reading from LEAGUE_QUIZ_BY_CAT means the next league added is right here
+// for free, and can never drift again.
+const STADIUM_LEAGUE_CAT = {
+  'premier-league': 'PL',
+  'la-liga': 'LaLiga',
+  'serie-a': 'SerieA',
+  'bundesliga': 'Bundesliga',
+  'ligue-1': 'Ligue1',
+};
+const badgeForLeague = (id) => {
+  const lq = LEAGUE_QUIZ_BY_CAT[STADIUM_LEAGUE_CAT[id]];
+  if (!lq) return null;
+  return { abbr: lq.abbr, bg: lq.color, ink: onColour(lq.color) };
 };
 const FALLBACK_BADGE = { abbr: "—", bg: "var(--s3)", ink: "var(--t2)" };
 
@@ -99,14 +109,24 @@ export default function StadiumGame({ onExit }) {
             const saved = loadState(l.id);
             const solvedN = (saved.solved || []).length;
             const done = !saved.gaveUp && solvedN === l.clubs.length;
-            return (
+              // The row wears its league's colour, exactly as the League Quiz
+              // picker does (Alex, 2026-09-06: "we should have tile hues for
+              // stadium and league too"). Same gradient, same alpha pair, same
+              // readable-ink rule — two pickers of the same five competitions
+              // should not look like two different products. A completed league
+              // keeps the green "done" wash, which outranks its own colour.
+              const bd = badgeForLeague(l.id);
+              const light = bd ? onColour(bd.bg) === "#0B0C10" : false;
+              const a1 = light ? 0.20 : 0.32, a2 = light ? 0.05 : 0.06;
+              return (
               <button key={l.id} onClick={() => { haptic("select"); setLeagueId(l.id); }}
                 style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px", borderRadius: 13,
-                  background: done ? "rgba(88,204,2,0.08)" : "var(--s2)",
-                  border: `1px solid ${done ? "rgba(88,204,2,0.35)" : "var(--border)"}`,
+                  background: done ? "rgba(88,204,2,0.08)"
+                    : bd ? `linear-gradient(90deg, ${tint(bd.bg, a1)} 0%, ${tint(bd.bg, a2)} 100%)` : "var(--s2)",
+                  border: `1px solid ${done ? "rgba(88,204,2,0.35)" : bd ? tint(bd.bg, light ? 0.5 : 0.4) : "var(--border)"}`,
                   color: "var(--text)", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
                 {(() => {
-                  const b = LEAGUE_BADGE[l.id] || FALLBACK_BADGE;
+                  const b = badgeForLeague(l.id) || FALLBACK_BADGE;
                   return (
                     <span aria-hidden="true" style={{ width: 44, height: 44, flexShrink: 0, borderRadius: 11,
                       background: b.bg, color: b.ink, display: "flex", alignItems: "center",
