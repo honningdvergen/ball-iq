@@ -40,7 +40,7 @@ import { tint, lift } from "../lib/clubColour.js";
  * @param {ReactNode} name     display name — a button for the owner, text for a friend
  * @param {ReactNode} [subline] level badge, XP, IQ line…
  */
-export default function BallIqCardFace({ card, played, avatar, name, subline, style }) {
+export default function BallIqCardFace({ card, played, answered = 0, avatar, name, subline, style }) {
   const t = tierPalette(card.tier);
 
   // The best of the six PLAYED competitions takes the tier accent, so the eye
@@ -95,7 +95,30 @@ export default function BallIqCardFace({ card, played, avatar, name, subline, st
                   optical height. */}
               <div style={{ fontSize: 58, fontWeight: 900, color: t.text, opacity: 0.3, lineHeight: 88 / 58, marginTop: 6, fontVariantNumeric: "tabular-nums" }} aria-label="No rating yet">—</div>
               <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: t.text, opacity: 0.55, marginTop: 2 }}>OVERALL</div>
-              <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 3, color: t.text, opacity: 0.45, marginTop: 10 }}>UNRATED</div>
+              {/* "UNRATED" over six blank dashes is the first thing a new
+                  player sees on their OWN profile, and it reads as broken
+                  rather than as something to earn. The card is the app's
+                  identity object; its empty state should point at the one
+                  action that fills it. The gate is ten answered questions
+                  (MIN_RATED_ANSWERS), so say how many are left. */}
+              {/* NB: a bare truthiness check, deliberately. The rating gate is
+                  MIN_RATED_ANSWERS and lives above; this only picks which of two
+                  EMPTY states to show, and writing it as a comparison would trip
+                  the guard that stops a rating appearing after one answer. */}
+              {answered ? (
+                <div style={{ marginTop: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 5 }}>
+                  <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.4, color: t.text, opacity: 0.7 }}>
+                    {MIN_RATED_ANSWERS - answered} MORE TO GET RATED
+                  </div>
+                  <div aria-hidden="true" style={{ width: 108, height: 4, borderRadius: 999, background: tint(t.text, 0.18), overflow: "hidden" }}>
+                    <div style={{ width: `${Math.round((answered / MIN_RATED_ANSWERS) * 100)}%`, height: "100%", background: t.accent, borderRadius: 999 }} />
+                  </div>
+                </div>
+              ) : (
+                <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.4, color: t.text, opacity: 0.7, marginTop: 10 }}>
+                  ANSWER {MIN_RATED_ANSWERS} TO GET RATED
+                </div>
+              )}
             </>
           )}
         </div>

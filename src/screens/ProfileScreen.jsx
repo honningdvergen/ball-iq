@@ -1646,6 +1646,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           <BallIqCardFace
             card={_card}
             played={hasPlayed}
+            answered={stats?.totalAnswered || 0}
             style={{ marginBottom: 14 }}
             avatar={
                 <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
