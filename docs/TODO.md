@@ -1,10 +1,12 @@
-## 2026-09-06 (16:30) — ✅ E16: 8 SCREENS OUT OF App.jsx (14,027 → 11,370) — `.audit/senior-review-2026-09-06/REVIEW.md` § E16 progress
+## 2026-09-06 (18:00) — ✅ E16: 10 SCREEN BRICKS OUT OF App.jsx (14,027 → 9,898) + LAZY OFF-PATH SCREENS (Home eager JS 831 → 768 KB) — `.audit/senior-review-2026-09-06/REVIEW.md` § E16 progress
 
 Results, local pass & play, Online hub, Stump, Privacy, Settings, Onboarding, Hot Streak/True-or-False results — each a
 props-seam move; helpers exported from App along the seam the lazy screens use. ⚠️ Playwright targets `BALLIQ_BASE_URL`
 (default 4173 = last build), not `PW_BASE` — a whole day of "passes" were of the previous build; proven by breaking an
-export on purpose (green on 4173, red on 5173). Memory saved. **NEXT:** QuizEngine (+TypedInput, HardRightBurst) and the
-club quiz screen, then AppInner itself — the only remaining budget lever; then the F7 reads (~09-13).
+export on purpose (green on 4173, red on 5173). Memory saved. Bricks 9–10 (quiz engine, club picker, reviews) landed, then Settings/reviews/club/Privacy/Stump/local play went
+lazy behind TabErrorBoundary + Suspense; budget ratcheted 900 → 800. Split surfaced a quit sheet with no focus trap
+(fixed). **NEXT:** AppInner's effects into hooks (behaviour moves — boot smoke + device pass each), `lib/questionSelect.js`,
+then the F7 reads (~09-13).
 
 ## 2026-09-06 (14:30) — ✅ SENIOR REVIEW A–E LANDED (11 commits through 3eb6d53, prod-verified at 4454ac9) — `.audit/senior-review-2026-09-06/REVIEW.md` § Status
 

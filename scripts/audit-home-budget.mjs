@@ -25,7 +25,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = resolve(ROOT, 'dist');
 const ASSETS = resolve(DIST, 'assets');
-const BUDGET_KB = 900; // measured 831 KB on 2026-09-06 (GameRoot 561, react 138, main 122)
+const BUDGET_KB = 800; // measured 768 KB on 2026-09-06 evening after E16 (was 831 before the lazy screens)
 const HEAVY = /^(questions|questions-index|mysteryPool|mysteryCareers)-[A-Za-z0-9_-]+\.js$/;
 const HOME_CHUNKS = /^(main|GameRoot|HomeScreen)-[A-Za-z0-9_-]+\.js$/;
 
