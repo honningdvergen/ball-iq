@@ -806,8 +806,22 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           <span key={c.key} style={{ width: COL_W, flexShrink: 0, textAlign: "center", fontSize: 8.5, fontWeight: 800, letterSpacing: "0.02em", color: c.theme.head }}>{c.label}</span>
         ))}
       </div>
+      {matchdays.filter(m => !m.isToday).length === 0 ? (
+        // A day-0 player used to get the "RECENT DAYS" header, four column
+        // heads, and exactly one row: today, four dashes. A header naming days
+        // that are not there, over the one day it excludes by name. The desktop
+        // path has carried this empty state since it was written; mobile never
+        // got it, and mobile is where nearly everyone is.
+        <div style={{ borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px", marginTop: 9, marginBottom: 14, fontSize: 12.5, color: "var(--t3)" }}>
+          Play today, then your recent days show up here.
+        </div>
+      ) : (
       <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 9, marginBottom: 14 }}>
-        {matchdays.map(m => {
+        {/* Today is excluded, as it already is on desktop. It is not a recent
+            day, the header does not claim it, and its state is on the streak
+            strip above and on Home's Today block. Alex, 2026-09-06: this tab is
+            "HISTORY, not a second Today". */}
+        {matchdays.filter(m => !m.isToday).map(m => {
           const cells = rowCells(m);
           const catchUp = m.isYesterday && !m.t7Done && playDailyForDate;
           return (
@@ -840,6 +854,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           );
         })}
       </div>
+      )}
 
       {shieldCount > 0 && (
         <div style={{background:"rgba(88,204,2,0.04)",border:"1px solid rgba(88,204,2,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>

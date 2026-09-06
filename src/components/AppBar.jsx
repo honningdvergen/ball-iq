@@ -11,7 +11,12 @@ import { CalendarDays, Globe, Home, User, Settings, Bell } from 'lucide-react';
 
 const TABS = [
   { id: 'home', Icon: Home, label: 'Play' },
-  { id: 'daily', Icon: CalendarDays, label: 'Daily' },
+  // Label must match the mobile tab bar (App.jsx) and the desktop rail
+  // (BiqNav.jsx). This said 'Daily' until 2026-09-06: the tab was renamed to
+  // History that day in both of those files and missed here, so the web bar
+  // sent people to a page whose own title disagreed with the button they
+  // pressed. tests/unit/nav-label-parity.test.js now holds the three in step.
+  { id: 'daily', Icon: CalendarDays, label: 'History' },
   { id: 'online', Icon: Globe, label: 'Online' },
   { id: 'profile', Icon: User, label: 'Profile' },
 ];
