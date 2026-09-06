@@ -741,7 +741,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    sparse MP screens sit in a centered comfortable column at desktop instead of
    stretching full-width. display:contents on mobile → byte-identical. */
 .mp-cap{display:contents;}
-.streak-n{font-size:18px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0;}
+.streak-n{display:inline-flex;align-items:center;gap:4px;font-size:18px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0;font-variant-numeric:tabular-nums;}
 .streak-info{font-size:11px;color:var(--t3);display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
 .streak-info strong{color:var(--gold);font-size:12px;font-weight:700;}
 .pc{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
@@ -3402,6 +3402,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    pill. position:fixed so it never reflows the quiz — mounting anything into
    the q-top header has visibly shifted the progress track before. */
 .streak-beat{
+  display:inline-flex;align-items:center;gap:6px;
   position:fixed; top:calc(env(safe-area-inset-top, 0px) + 66px);
   left:50%; transform:translateX(-50%); z-index:60;
   background:var(--card); color:var(--t1);
