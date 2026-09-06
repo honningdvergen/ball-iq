@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { ClipboardList, Route, UserRoundSearch } from "lucide-react";
+import { ClipboardList, Route, UserRoundSearch, Flame, X } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { Confetti, haptic } from "../App.jsx";
 import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
@@ -103,7 +103,7 @@ function ScoreCell({ state, text, theme, w = COL_W }) {
       {state === "win"
         ? <span style={{ display: "inline-flex", padding: "3px 8px", borderRadius: 999, background: theme.chipBg, fontFamily: MONO, fontSize: 11.5, fontWeight: 800, color: theme.fg, fontVariantNumeric: "tabular-nums" }}>{text}</span>
         : state === "miss"
-        ? <span style={{ fontSize: 13, fontWeight: 700, color: "#FF6B6B" }}>✗</span>
+        ? <span style={{ display: "inline-flex", color: "#FF6B6B" }} aria-label="missed"><X size={14} strokeWidth={2.6} /></span>
         : state === "open"
         ? <span style={{ fontSize: 13, fontWeight: 700, color: "var(--t3)" }}>·</span>
         : <span style={{ fontSize: 13, fontWeight: 700, color: "#3E4150" }}>—</span>}
@@ -329,7 +329,7 @@ function StreakRepairBanner({ repair, open, wide }) {
           {open.map(o => (
             <button key={o.key} onClick={o.onTap} aria-label={`Repair the streak — play yesterday's ${o.label}`}
               style={{ padding: "9px 14px", borderRadius: 11, background: o.theme.btnBg, border: o.theme.btnBd, color: o.theme.fg, fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
-              🔥 {o.label}
+              <Flame size={13} strokeWidth={2.4} aria-hidden="true" style={{ verticalAlign: "-2px", marginRight: 4 }} />{o.label}
             </button>
           ))}
         </div>
@@ -750,7 +750,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 2 }}>
               <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>History</div>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
-                <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)" }}>New puzzles in</span>
                 <span style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
               </span>
             </div>
@@ -776,7 +776,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       <div role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}
         style={{ marginTop: 12, borderRadius: 18, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 16 }}>🔥</span>
+          <span style={{ display: "inline-flex", color: "var(--gold)" }} aria-hidden="true"><Flame size={18} strokeWidth={2.3} /></span>
           <span style={{ fontSize: 14, fontWeight: 800, color: "var(--t1)" }}>{streak.unbeaten} day streak</span>
           <span style={{ fontSize: 12, color: "var(--t2)" }}>{streak.unbeaten > 0 ? "— come back tomorrow to keep it" : "— play one puzzle to light it"}</span>
         </div>
@@ -899,7 +899,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div style={{ fontSize: 27, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>History</div>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
-                  <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)" }}>New puzzles in</span>
                   <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
                 </span>
               </div>
@@ -969,7 +969,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                       the mobile strip and this card never disagree. */}
                   <div className="hr-card hr-streak" role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}>
                     <div className="hr-streak-head">
-                      <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true">🔥</span>{streak.unbeaten}</div>
+                      <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true"><Flame size={18} strokeWidth={2.3} /></span>{streak.unbeaten}</div>
                       <div className="hr-streak-meta">
                         <div className="hr-streak-label">Day streak</div>
                         <div className="hr-streak-best">Best · {streak.bestUnbeaten}</div>

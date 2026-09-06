@@ -297,7 +297,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    captured at AppInner mount (i.e. user just earned today's streak day).
    Subtle by design — celebrating the moment, not demanding attention. */
 .hst-streak.is-pulsing{animation:streakPulse 1.5s cubic-bezier(0.22,1,0.36,1);}
-.hst-flame{font-size:16px;line-height:1;}
+.hst-flame{display:inline-flex;line-height:1;}
 .hst-num{font-family:'JetBrains Mono',monospace;font-size:15.5px;font-weight:800;color:var(--gold);-webkit-text-fill-color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;}
 @keyframes streakPulse{
   0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(255,193,7,0.0); }

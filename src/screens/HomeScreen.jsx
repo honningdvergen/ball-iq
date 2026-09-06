@@ -302,7 +302,7 @@ function HomeScreenImpl({
               </div>
               {loginStreak > 0 && (
                 <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
-                  <span className="hst-flame" aria-hidden="true">🔥</span>
+                  <span className="hst-flame" aria-hidden="true"><Flame size={14} strokeWidth={2.4} /></span>
                   <span className="hst-num">{loginStreak}</span>
                 </span>
               )}
@@ -329,7 +329,7 @@ function HomeScreenImpl({
           head-to-head result toasts on completion. */}
       {challenge && (
         <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",marginBottom:10,background:"linear-gradient(135deg, rgba(88,204,2,0.16), rgba(88,204,2,0.05))",border:"1px solid rgba(88,204,2,0.30)",borderRadius:14}}>
-          <span style={{fontSize:22}} aria-hidden="true">🏆</span>
+          <span style={{display:"inline-flex",color:"var(--accent)"}} aria-hidden="true"><Trophy size={22} strokeWidth={2.2} /></span>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:13.5,fontWeight:800,color:"var(--t1)",lineHeight:1.25}}>
               {challenge.name ? `${challenge.name} challenged you` : "You've been challenged"}
@@ -401,8 +401,8 @@ function HomeScreenImpl({
                   key: "footle", name: "Footle", no: getFootleNumber(), accent: MODE_ACCENT.footle, rgb: MODE_RGB.footle,
                   icon: <span className="fh-tile fh-tile-green t7s-f" aria-hidden="true">F</span>,
                   done: footleDone, open: ws.kind === "in-progress",
-                  sub: ws.kind === "won" ? <>✅ Solved in <strong>{ws.used}</strong></>
-                    : ws.kind === "lost" ? <>✗ Out of guesses</>
+                  sub: ws.kind === "won" ? <>Solved in <strong>{ws.used}</strong></>
+                    : ws.kind === "lost" ? <>Out of guesses</>
                     : ws.kind === "in-progress" ? <>In progress · <strong>{ws.used}</strong> of 6</>
                     : firstSession ? <>Start here — everyone gets the same player</>
                     : <>{FOOTLE_TAGLINE}</>,
@@ -416,21 +416,21 @@ function HomeScreenImpl({
                 {
                   key: "daily", name: "Daily 7", Icon: ClipboardList, accent: MODE_ACCENT.daily7, rgb: MODE_RGB.daily7,
                   done: dailyDone,
-                  sub: dailyDone ? <>✅ Done · <strong>{dailyScore}/7</strong></> : <>7 questions · ~3 min</>,
+                  sub: dailyDone ? <>Done · <strong>{dailyScore}/7</strong></> : <>7 questions · ~3 min</>,
                   onTap: () => (dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")),
                   aria: dailyDone ? `Daily 7 complete: ${dailyScore} out of 7` : "Play Daily 7",
                 },
                 ...(trailLive ? [{
                   key: "trail", name: "Transfer Trail", no: getTrailNumber(), Icon: Route, accent: MODE_ACCENT.trail, rgb: MODE_RGB.trail,
                   done: trailDone,
-                  sub: trailDone ? <>✅ Done · today's player</> : <>Follow the moves · name the player</>,
+                  sub: trailDone ? <>Done · today's player</> : <>Follow the moves · name the player</>,
                   onTap: () => setScreen("trail"),
                   aria: trailDone ? "Today's Transfer Trail: done — review" : "Play today's Transfer Trail",
                 }] : []),
                 ...(mysteryLive ? [{
                   key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", no: mysteryNumber(), accent: MODE_ACCENT.mystery, rgb: MODE_RGB.mystery,
                   done: mysteryDone,
-                  sub: mysteryDone ? <>✅ Done · guess who</> : <>Guess who from career clues</>,
+                  sub: mysteryDone ? <>Done · guess who</> : <>Guess who from career clues</>,
                   onTap: () => setScreen("mystery"),
                   aria: mysteryDone ? "Today's Mystery Player: done — review" : "Play today's Mystery Player",
                 }] : []),
@@ -558,7 +558,7 @@ function HomeScreenImpl({
           return (
             <div className="hr-card hr-streak">
               <div className="hr-streak-head">
-                <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true">🔥</span>{loginStreak || 0}</div>
+                <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true"><Flame size={18} strokeWidth={2.3} /></span>{loginStreak || 0}</div>
                 <div className="hr-streak-meta">
                   <div className="hr-streak-label">Day streak</div>
                   <div className="hr-streak-best">Best · {best}</div>

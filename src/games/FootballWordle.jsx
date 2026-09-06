@@ -471,7 +471,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               re-opening today's solved puzzle doesn't re-fire the confetti. */}
           {state.status === "won" && !wasFinishedAtMount.current && Confetti && <Confetti />}
           <div className="wd-result-title">
-            {state.status === "won" ? "⚽ Brilliant!" : "Better luck tomorrow"}
+            {state.status === "won" ? "Brilliant!" : "Better luck tomorrow"}
           </div>
           {/* Sprint #81 YY2: reveal renders proper-cased full name from
               WORDLE_FULL_NAMES (tuple [firstNamePrefix, properSurname]).
