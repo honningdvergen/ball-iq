@@ -1,3 +1,11 @@
+## 2026-09-06 (12:20) — ✅ HEADER ANCHOR (6674f92) + CRAFT PASS (5a0d40b) — simulator-verified, pushed
+
+Home opens on the F mark + "Ball IQ" wordmark with the date beneath (or "Good ebening, Alex" for a named player); "Set your name" and
+the nudge subtext left Home (Profile owns the name); History drops its greeting. Craft: streak flames, the challenge trophy and the
+recent-days miss are Lucide; no ✅/✗/⚽ text glyphs in row sublines or the Footle result title; the countdown pill reads "New puzzles in"
+in sentence case. Screenshots home-header-anchor.png, history-tab-craft.png. **Left on the list:** onboarding = today's Footle (item 6);
+the mobile rating card's fabricated "64 · Silver" after one Footle (needs answered questions, like the desktop rail).
+
 ## 2026-09-06 (12:10) — ✅ GUEST-FIRST ONLINE + PROFILE (6d95792, e71cb4c) + STREAK-AT-RISK NUDGE (d55941b) — simulator-verified, pushed
 
 Online for a guest: Join-by-code → Local pass & play (the one green control) → "Play online with friends · create a room and share a
