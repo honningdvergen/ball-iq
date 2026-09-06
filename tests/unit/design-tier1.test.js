@@ -29,6 +29,7 @@ const CSS = read('../../src/app.css');
 // The Footle board's rules moved to src/games/footle.css on 2026-09-05.
 const FOOTLE_CSS = read('../../src/games/footle.css');
 const APP = read('../../src/App.jsx');
+const MODE_RESULTS = read('../../src/screens/ModeResults.jsx'); // Hot Streak / True-or-False results, extracted 2026-09-06 (E16)
 const HOME = read('../../src/screens/HomeScreen.jsx');
 const DAILY = read('../../src/screens/DailyScreen.jsx');
 const HERO = read('../../src/components/FootleHero.jsx');
@@ -74,7 +75,7 @@ describe('design review — tier 1', () => {
   it('a weak score is not rendered in celebration green', () => {
     expect(CSS).toMatch(/\.score-big\{[^}]*color:var\(--text\)/);
     expect(CSS).toMatch(/\.score-big\.is-strong\{color:var\(--accent\);\}/);
-    expect(APP, 'the accent must be earned at a threshold, not always on')
+    expect(MODE_RESULTS, 'the accent must be earned at a threshold, not always on')
       .toMatch(/score \/ total >= 0\.7 \? " is-strong" : ""/);
   });
 

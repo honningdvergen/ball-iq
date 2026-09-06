@@ -30,7 +30,7 @@ import { fileURLToPath } from 'node:url';
  */
 
 const HTML = readFileSync(fileURLToPath(new URL('../../index.html', import.meta.url)), 'utf8');
-const APP = readFileSync(fileURLToPath(new URL('../../src/App.jsx', import.meta.url)), 'utf8');
+const APP = readFileSync(fileURLToPath(new URL('../../src/screens/OnboardingScreen.jsx' /* onboarding left App.jsx on 2026-09-06 (E16) */, import.meta.url)), 'utf8');
 
 /** The shell only — never the landing chrome further down the document. */
 function shellMarkup() {
