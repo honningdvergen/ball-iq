@@ -1,4 +1,5 @@
 import { tierPalette } from "../lib/ballIqCard.js";
+import { MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { tint, lift } from "../lib/clubColour.js";
 
 /**
@@ -46,7 +47,7 @@ export default function BallIqCardFace({ card, played, avatar, name, subline, st
   // lands on the player's strongest suit without needing a legend. null when
   // nothing is played, so no prior-seeded number can win a highlight it did
   // not earn.
-  const playedRatings = card.ratings.filter(r => r.answered > 0).map(r => r.rating);
+  const playedRatings = card.ratings.filter(r => r.answered >= MIN_RATED_ANSWERS).map(r => r.rating);
   const best = played && playedRatings.length ? Math.max(...playedRatings) : null;
 
   return (
@@ -128,7 +129,7 @@ export default function BallIqCardFace({ card, played, avatar, name, subline, st
           carrying the tier accent. */}
       <div style={{ position: "relative", marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: 20 }}>
         {card.ratings.map(r => {
-          const has = r.answered > 0;
+          const has = r.answered >= MIN_RATED_ANSWERS;
           return (
             <div key={r.abbr} style={{
               display: "flex", alignItems: "center", gap: 9,

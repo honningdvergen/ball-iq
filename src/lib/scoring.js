@@ -1,5 +1,9 @@
 import { Footprints, Sprout, TrendingUp, Shield, Sparkles, Award, Medal, Trophy } from 'lucide-react';
 export const APP_NAME = "Ball IQ";
+// A rating needs data. Below this many answered questions (overall, and per
+// competition) the card prints "—": one round produced "57 · Bronze" and six
+// league numbers 49–71 from the prior (review 2026-09-06, B6).
+export const MIN_RATED_ANSWERS = 10;
 
 export function iqPercentile(iq) {
   if (iq >= 155) return 99;

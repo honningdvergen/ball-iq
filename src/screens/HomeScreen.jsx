@@ -1,7 +1,7 @@
 import React from "react";
 import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Heart, UserRoundSearch, LandPlot, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
-import { APP_NAME } from "../lib/scoring.js";
+import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { getTrailAnswer, loadTrailDay, getTrailNumber } from "../lib/trail.js";
@@ -519,7 +519,7 @@ function HomeScreenImpl({
                   rail, and now the first thing a front-door visitor reads.
                   Zero answers → an honest empty state; the card appears
                   after the first game. */}
-              {(stats?.totalAnswered || 0) > 0 ? (
+              {(stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS ? (
                 <div className="hr-rating-score">
                   <div className="hr-rating-num">{card.overall}</div>
                   <div className="hr-rating-scap">
@@ -532,7 +532,7 @@ function HomeScreenImpl({
                   <div className="hr-rating-num" aria-hidden="true">—</div>
                   <div className="hr-rating-scap">
                     <div className="hr-rating-overall">OVERALL</div>
-                    <div className="hr-rating-tier" style={{ color: "var(--t2)", textTransform: "none", letterSpacing: 0, fontWeight: 600 }}>Play a game to get rated</div>
+                    <div className="hr-rating-tier" style={{ color: "var(--t2)", textTransform: "none", letterSpacing: 0, fontWeight: 600 }}>Answer 10 questions to get rated</div>
                   </div>
                 </div>
               )}
@@ -584,9 +584,9 @@ function HomeScreenImpl({
           const answered = stats?.totalAnswered || 0;
           const correct = stats?.totalCorrect || 0;
           const acc = answered > 0 && correct <= answered ? correct / answered : 0.4;
-          const hasPlayed = (stats?.gamesPlayed || 0) > 0 || answered > 0;
+          const hasPlayed = answered >= MIN_RATED_ANSWERS;
           const card = computeCard(stats?.catStats || {}, acc);
-          const played = (card.ratings || []).filter((r) => r.answered > 0).sort((a, b) => b.rating - a.rating);
+          const played = (card.ratings || []).filter((r) => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating);
           const strongest = played[0] || null;
           const best = stats?.bestScore || 0;
           return (

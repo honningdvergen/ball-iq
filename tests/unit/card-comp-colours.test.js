@@ -64,7 +64,7 @@ describe("card competition colours", () => {
     // version measured from the nearest `played ?` (a style prop) and broke the
     // moment a comment was added between it and the number.
     const grid = FACE.slice(FACE.indexOf("card.ratings.map"));
-    expect(grid).toMatch(/const has = r\.answered > 0;/);
+    expect(grid).toMatch(/const has = r\.answered >= MIN_RATED_ANSWERS;/);
 
     const open = grid.indexOf("{has ? (");
     expect(open, "the played/unplayed render ternary is gone").toBeGreaterThan(-1);

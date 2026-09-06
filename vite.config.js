@@ -209,6 +209,9 @@ export default defineConfig(async () => {
   ],
   define: {
     'import.meta.env.VITE_GIT_SHA': JSON.stringify(gitSha),
+    // One version, from package.json (kept equal to MARKETING_VERSION). About
+    // showed a hardcoded "1.1.0" on the web for months (review 2026-09-06, B5).
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')).version),
     'import.meta.env.VITE_QB_COUNT': JSON.stringify(QB.length),
   },
   build: {

@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useAuth } from "../useAuth.jsx";
 import { supabase } from "../supabase.js";
 import { useModalA11y } from "../useModalA11y.js";
-import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges } from "../lib/scoring.js";
+import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_ANSWERS } from '../lib/scoring.js';
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
@@ -1463,7 +1463,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc);
           const tierLabel = tierPalette(card.tier).label;
-          const hasPlayed = (stats?.totalAnswered || 0) > 0; // a rating needs ANSWERED questions — a Footle solve alone is not one (2026-09-06)
+          const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS; // a rating needs DATA: ten answered questions (2026-09-06)
           return (
             <div className="pd-rating">
               <div className="pd-rating-eyebrow">Ball IQ rating</div>
@@ -1514,11 +1514,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc);
-          const hasPlayed = (stats?.totalAnswered || 0) > 0; // a rating needs ANSWERED questions — a Footle solve alone is not one (2026-09-06)
+          const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS; // a rating needs DATA: ten answered questions (2026-09-06)
           // Green-highlight the single strongest PLAYED league (same "strongest"
           // the scouting report names); everything else reads white. Cold-start
           // (nothing played) → em-dashes, no highlight.
-          const strongestAbbr = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating)[0]?.abbr || null;
+          const strongestAbbr = [...card.ratings].filter(r => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating)[0]?.abbr || null;
           return (
             <div className="pd-leagues">
               <div className="pd-leagues-title">League ratings</div>
@@ -1633,7 +1633,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         // the card printed "64 · Silver" from the 0.4 default accuracy after one
         // puzzle and zero questions — the fabricated-rating bug the desktop rail
         // fixed on 2026-08-28, still live here until 2026-09-06.
-        const hasPlayed = (stats?.totalAnswered || 0) > 0;
+        const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS;
         const t = tierPalette(_card.tier);
         return (
           // ⚠️ ONE CARD, THREE SURFACES. The layout lives in
@@ -1782,7 +1782,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           // answered — computeCard prior-seeds unplayed comps from overall
           // accuracy, so ranking the raw six would name "Strongest"/"Needs work"
           // for leagues with zero data.
-          const played = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating);
+          const played = [...card.ratings].filter(r => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating);
           const strongest = played[0] || null;
           const weakest = played.length >= 2 ? played[played.length - 1] : null;
           const spread = strongest && weakest ? strongest.rating - weakest.rating : 0;
@@ -1840,7 +1840,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc);
-          const strongest = [...card.ratings].filter(r => r.answered > 0).sort((a, b) => b.rating - a.rating)[0] || null;
+          const strongest = [...card.ratings].filter(r => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating)[0] || null;
           const accPct = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)
             ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";
           const DASH = "—";

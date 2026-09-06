@@ -103,7 +103,9 @@ describe('DailyDone — one panel, four surfaces', () => {
 
   it('a rating needs answered questions, not just a game (no 64 · Silver after one Footle)', () => {
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
-    expect((PROFILE.match(/const hasPlayed = \(stats\?\.totalAnswered \|\| 0\) > 0;/g) || []).length).toBe(3);
+    expect((PROFILE.match(/const hasPlayed = \(stats\?\.totalAnswered \|\| 0\) >= MIN_RATED_ANSWERS;/g) || []).length).toBe(3);
+    expect(read('../../src/lib/scoring.js')).toMatch(/export const MIN_RATED_ANSWERS = 10;/);
+    expect(read('../../src/components/BallIqCardFace.jsx')).not.toMatch(/answered > 0/);
     expect(PROFILE).not.toMatch(/const hasPlayed = \(stats\?\.gamesPlayed \|\| 0\) > 0/);
   });
 

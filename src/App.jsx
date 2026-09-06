@@ -30,7 +30,7 @@ import { useModalA11y, closeTopModal } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { FOOTLE_SHORT } from './lib/modeCopy.js';
-import { APP_NAME, LEVELS, getLevelInfo, computeBadges } from './lib/scoring.js';
+import { APP_NAME, LEVELS, getLevelInfo, computeBadges, MIN_RATED_ANSWERS } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate, msToNextLocalMidnight, formatCountdown } from './lib/date.js';
 import { bumpUsage } from './lib/usageCounters.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
@@ -120,7 +120,8 @@ const REVIEWER_EMAIL = "alexbo99@hotmail.no";
 // version via CapApp.getInfo(), so this no longer drifts on each release (the
 // bug that left it stuck at "1.0.0-beta" through 1.0.1/1.0.2). Keep it roughly
 // current for the web build.
-const APP_VERSION = "1.1.0";
+// Injected from package.json at build time (vite.config.js); never hand-edited here.
+const APP_VERSION = import.meta.env.VITE_APP_VERSION || "1.7.3";
 // APP_STORE_ID / APP_STORE_URL / PLAY_STORE_URL moved to ./lib/links.js
 // (single source of truth for every store CTA in src/ — imported above).
 // Shared style for the three About-card actions (Rate / Share / Feedback).
@@ -4716,7 +4717,7 @@ async function generateShareCard(type, data) {
 
     // The six, as an open two-column list on hairlines. No tiles.
     const rows = Array.isArray(card?.ratings) ? card.ratings : [];
-    const played = rows.filter((r) => r.answered > 0);
+    const played = rows.filter((r) => r.answered >= MIN_RATED_ANSWERS);
     const bestAbbr = played.length ? played.reduce((a, b) => (b.rating > a.rating ? b : a)).abbr : null;
     const colW = (W - px(76) - px(36)) / 2;
     const listTop = px(404), rowH = px(64);
@@ -4738,7 +4739,7 @@ async function generateShareCard(type, data) {
       ctx.textAlign = "right";
       ctx.font = `800 ${px(27)}px "JetBrains Mono", "Courier New", monospace`;
       ctx.fillStyle = r.abbr === bestAbbr ? t.accent : _tint(t.text, 0.92);
-      ctx.fillText(r.answered > 0 ? String(r.rating) : "—", x + colW, y + px(36));
+      ctx.fillText(r.answered >= MIN_RATED_ANSWERS ? String(r.rating) : "—", x + colW, y + px(36));
       ctx.textAlign = "left";
     });
 
@@ -7045,7 +7046,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <div className="settings-row" style={{cursor:"default"}}>
                 <div className="sr-left">
                   <div className="sr-label">Playing as guest</div>
-                  <div className="sr-desc">Sign up to unlock leaderboards and online play</div>
+                  <div className="sr-desc">Sign up to play friends online and keep your progress across devices</div>
                 </div>
               </div>
               <button className="settings-row" onClick={() => openAuthPrompt?.('save')} style={{cursor:"pointer",width:"100%",background:"none",border:"none",textAlign:"left",padding:"14px 16px"}}>
@@ -7063,19 +7064,11 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       <div className="settings-section">
         <div className="ds-eyebrow settings-section-title">Gameplay</div>
         <div className="settings-card">
-          <div className="settings-row">
-            <div className="sr-left">
-              <div className="sr-label">Show Hints</div>
-              <div className="sr-desc">First-letter hints on typed questions (Easy mode)</div>
-            </div>
-            <div className="sr-right">
-              <SettingsToggle label="Show Hints" val={settings.hints} onChange={v => onUpdate({hints:v})} />
-            </div>
-          </div>
+          {/* "Show Hints" (first-letter hints on typed questions) left 2026-09-06: the bank has had no typed questions since df54c40 (2026-05-07). settings.hints is kept for storage compatibility. */}
           <div className="settings-row">
             <div className="sr-left">
               <div className="sr-label">Timer</div>
-              <div className="sr-desc">Enable countdown timer in Standard and Speed modes</div>
+              <div className="sr-desc">Per-question clock in Classic and club and league quizzes</div>
             </div>
             <div className="sr-right">
               <SettingsToggle label="Timer" val={settings.timer} onChange={v => onUpdate({timer:v})} />
