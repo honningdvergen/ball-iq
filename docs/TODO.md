@@ -1,3 +1,10 @@
+## 2026-09-06 (12:00) — ✅ DAILY TAB → HISTORY (126e446) — simulator-verified, pushed
+
+Alex chose "History tab: streak + recent days, no rows". Both Daily layouts drop the four rows (Home owns them); the tab keeps the
+countdown pill, the 14-day streak strip, recent days, archive, day-complete + streak-repair. Label History, no red dot. Home's counter
+link copy says History. Screenshot `.audit/critique-2026-09-05-app-home/history-tab.png`. **Next:** streak-at-risk evening nudge
+(local, today only, streak≥2, names the streak) → guest-first Online/Profile → header anchor → craft P3s.
+
 ## 2026-09-06 (11:00) — ✅ DAILY TAB ROWS ALIGNED TO HOME (d712bb7) — simulator-verified; results panel LIVE on prod
 
 Both the mobile and desktop Daily rows now draw `.todays-seven-secondary` with `--mode` on the well only, one green Play, quiet
