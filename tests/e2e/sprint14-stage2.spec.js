@@ -55,52 +55,42 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
   expect(errors, `JS errors: ${errors.join('\n')}`).toEqual([]);
 });
 
-test('Daily tab — "Today first" redesign renders', async ({ page, context }) => {
-  // v4's tactics-card hero was replaced by the "Today first" Daily redesign:
-  // greeting + Daily title with NEW PUZZLES IN countdown pill, the two
-  // today-puzzle row-cards (Footle green / Daily 7 amber), the streak strip
-  // with a last-14-days form group, and the Recent days table. Mobile and
-  // desktop variants both live in the DOM (display:contents/none swap at
-  // 1024px), so every text assertion filters for the visible copy.
+test('Daily tab — History renders (streak + recent days, no rows)', async ({ page, context }) => {
+  // 2026-09-06 (Alex's call in the app-home critique): the Daily tab is
+  // HISTORY — streak, the last-14-days form and the recent-days table. The
+  // four today-puzzle rows live on Home only; the tab no longer repeats them
+  // ("copies the app"). Mobile and desktop variants both live in the DOM
+  // (display:contents/none swap at 1024px), so every text assertion filters
+  // for the visible copy.
   await seedGuestMode(context);
 
   await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  // Browser tab: .fd-appbar; native / PWA: .tab-bar or .biq-nav. Filter
-  // for whichever is visible at this viewport.
+  // Browser tab: .fd-appbar; native / PWA: .tab-bar or .biq-nav. The label is
+  // "Daily" in the app bar and "History" in the native tab bar / left rail.
   const dailyNav = page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
-    .filter({ hasText: 'Daily', visible: true }).first();
+    .filter({ hasText: /Daily|History/, visible: true }).first();
   await dailyNav.click();
   await page.waitForTimeout(400);
 
   await expect(page.locator('.daily-screen')).toBeVisible();
+  await expect(page.getByText('History', { exact: true }).filter({ visible: true }).first()).toBeVisible();
+  await expect(page.getByText(/New puzzles in/i).filter({ visible: true }).first()).toBeVisible();
+  await expect(page.getByText(/Recent days/i).filter({ visible: true }).first()).toBeVisible();
+  await expect(page.getByText(/day streak/i).filter({ visible: true }).first()).toBeVisible();
 
-  // Shared between both breakpoint variants.
-  await expect(page.getByText('NEW PUZZLES IN').filter({ visible: true }).first()).toBeVisible();
-  await expect(page.getByText('7 questions · ~3 min').filter({ visible: true }).first()).toBeVisible();
-  await expect(page.getByText('Recent days').filter({ visible: true }).first()).toBeVisible();
+  // The rows are Home's. Their sublines must NOT appear in THIS screen (Home
+  // stays mounted but hidden behind the tab switch, so scope to the screen).
+  await expect(page.locator('.daily-screen').getByText('7 questions · ~3 min')).toHaveCount(0);
+  await expect(page.locator('.daily-screen').getByText(/Surname of a footballer/i)).toHaveCount(0);
 
-  // The two variants carry different copy — assert the one that's live.
   const isDesktop = await page.locator('.daily-desktop').isVisible();
   if (isDesktop) {
-    await expect(page.getByText('surname of a footballer').filter({ visible: true }).first()).toBeVisible();
-    await expect(page.getByText(/\d+ \/ \d+ played/).filter({ visible: true }).first()).toBeVisible();
-    // Desktop streak card reuses the Home rail's hr-streak shape: 14 form cells.
     const streak = page.locator('.daily-desktop .hr-streak');
     await expect(streak).toBeVisible();
     await expect(streak.locator('.hr-form-cell')).toHaveCount(14);
   } else {
-    // Same Footle prompt on both breakpoints since d58982a ("the prompt says
-    // surname again"); this branch still asserted the older "Guess the player"
-    // and was the one red test in the 2026-09-03 web-shell run.
-    await expect(page.getByText('Surname of a footballer').filter({ visible: true }).first()).toBeVisible();
-    // ⚠️ Do NOT hard-code the daily COUNT. This assertion read "of 2 played"
-    // and silently broke the moment Trail and Mystery joined Footle and the
-    // Daily 7 — the product now says 4. The contract worth testing is the
-    // SHAPE of the counter, not a number that changes every time a mode ships.
-    await expect(page.getByText(/\d+ of \d+ played/).filter({ visible: true }).first()).toBeVisible();
-    await expect(page.getByText(/\d+ day streak/).filter({ visible: true }).first()).toBeVisible();
     const form = page.getByRole('group', { name: 'Form — last 14 days' }).filter({ visible: true }).first();
     await expect(form).toBeVisible();
     await expect(form.locator('span')).toHaveCount(14);

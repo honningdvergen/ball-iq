@@ -61,8 +61,13 @@ test('onboarded user does NOT replay onboarding after refresh', async ({ page, c
 
   await page.reload();
   await page.waitForLoadState('networkidle');
-  // Nav visible after reload too — biq_onboarded persisted, no replay.
-  await expect(page.locator('.fd-appbar, .tab-bar, .biq-nav').filter({ visible: true }).first()).toBeVisible();
+  // No replay: the onboarding screen must not be on screen. What IS on screen
+  // depends on the surface — the app strips the query to bare /play, and in a
+  // browser bare /play is the website's job (main.jsx, 2026-09-05: the /play
+  // home "copies the app"), so a browser reload lands on the front door.
+  // Native / PWA keep the app nav. Accept either; reject onboarding.
+  await expect(page.locator('.onboard-wrap')).toHaveCount(0);
+  await expect(page.locator('.fd-appbar, .tab-bar, .biq-nav, h1').filter({ visible: true }).first()).toBeVisible();
 });
 
 // NOTE on signed-in cross-device path: the authProfile-driven sync
