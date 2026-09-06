@@ -13,6 +13,7 @@
 
 const URL_ = 'https://blcisypmngimqkwxrrdm.supabase.co';
 const KEY_ = (import.meta.env.VITE_SUPABASE_KEY || '').trim();
+import { noteCompletionHour } from './playHour.js';
 export const MIN_N = 20;
 export const DAILY_GAMES = ['footle', 'daily7', 'trail', 'mystery'];
 
@@ -47,6 +48,27 @@ function visitorId() {
 }
 const flagKey = (game, edition) => `biq_dr_${game}_${edition}`;
 
+// ⚠️ TWO PANELS MOUNT PER RESULT. The results screen renders DailyDone twice —
+// the mobile stack and the desktop card — and they are swapped by CSS
+// `display`, not by a conditional, so BOTH mount and both run the record
+// effect in the same tick. `hasRecorded` cannot catch that: its flag is only
+// written after the network round trip, long after the second caller has
+// already read it as false.
+//
+// The web never showed it because the server's partial unique index dedupes on
+// visitor_id. Native rows carry NO visitor_id (the store listing promises no
+// identifiers), so `on conflict … where visitor_id is not null` does not apply
+// to them and the insert simply ran twice — two identical daily7 rows 3ms
+// apart, found in prod on 2026-09-06. At n=11 that is a rounding error; the
+// panel shows "how everyone did" from n >= 20, so it would have become a
+// visibly wrong distribution, in the one place the product promises honesty.
+//
+// A synchronous claim closes the window on every platform, before any await.
+// It is per-session and in-memory: the localStorage flag still carries the
+// answer across reloads, and a failed send releases the claim so a retry can
+// happen.
+const claimed = new Set();
+
 async function rpc(name, body) {
   const r = await fetch(`${URL_}/rest/v1/rpc/${name}`, {
     method: 'POST', keepalive: true,
@@ -74,11 +96,18 @@ export async function recordDailyResult({ game, edition, bucket, won = true }) {
   // visitor id (and the server's unique index).
   const vid = isNative() ? null : visitorId();
   if (!isNative() && !vid) return false;
+  const key = flagKey(game, edition);
+  if (claimed.has(key)) return true;   // the sibling panel already has this one
+  claimed.add(key);
+  // The play hour is a LOCAL fact and belongs to the same one-shot: noting it
+  // from both panels put the same hour into the median twice and skewed the
+  // reminder toward whichever hour they happened to finish.
+  try { noteCompletionHour(); } catch { /* clock unavailable */ }
   try {
     await rpc('record_daily_result', { p_game: game, p_edition: edition, p_bucket: bucket, p_won: !!won, p_visitor: vid });
     try { localStorage.setItem(flagKey(game, edition), '1'); } catch { /* private mode */ }
     return true;
-  } catch { return false; }
+  } catch { claimed.delete(key); return false; }
 }
 
 export async function fetchDistribution({ game, edition }) {

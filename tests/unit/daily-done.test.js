@@ -76,7 +76,9 @@ describe('DailyDone — one panel, four surfaces', () => {
   it('reminds at the player\'s own hour, not a constant', () => {
     expect(NOTIF).toMatch(/getReminderHour\(\)/);
     expect(NOTIF).not.toMatch(/REMINDER_HOUR = 19/);
-    expect(DD).toMatch(/noteCompletionHour\(\)/);
+    // The hour note moved into the lib on 2026-09-06, under the same one-shot
+    // claim as the row write — two panels mount per result and both fired it.
+    expect(LIB).toMatch(/noteCompletionHour\(\)/);
   });
 
   it('a live streak gets ONE evening streak-at-risk nudge, today only, named', () => {

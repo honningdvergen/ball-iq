@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch } from "lucide-react";
 import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
-import { recordDailyResult, fetchDistribution, summariseDistribution, hasRecorded, MIN_N } from "../lib/dailyResults.js";
-import { noteCompletionHour, reminderHourLabel } from "../lib/playHour.js";
+import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N } from "../lib/dailyResults.js";
+import { reminderHourLabel } from "../lib/playHour.js";
 import "./dailyDone.css";
 
 // DailyDone — ONE return-loop panel under every decided daily (Footle, Daily 7,
@@ -62,10 +62,9 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     let alive = true;
     (async () => {
       if (!isArchive) {
-        // The play hour is a LOCAL fact: note it on the first completion of this
-        // edition whether or not the network record succeeds (on the first
-        // device build it never did, and the reminder fell back to 19:00).
-        if (!hasRecorded(game, edition)) noteCompletionHour();
+        // Both the record and the play-hour note live behind one synchronous
+        // claim in the lib — two of these panels mount per result (mobile +
+        // desktop) and used to fire both, twice.
         await recordDailyResult({ game, edition, bucket, won });
       }
       const d = await fetchDistribution({ game, edition });
