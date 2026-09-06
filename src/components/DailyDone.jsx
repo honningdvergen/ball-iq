@@ -128,6 +128,32 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         )}
       </div>
 
+      {/* ABOVE SHARE, DELIBERATELY (Alex, 2026-09-06, looking at his own
+          finish screen: "we can not really see the modes further down, nobody
+          will scroll down here"). He is right, and the ranking is not close.
+          Sharing depends on another person and k-factor measured 0.23 — the
+          floor. Playing a second daily depends on nobody, is one tap, and is
+          the cheapest retention this product has. The panel's job at this
+          moment is "what next?", and another puzzle is a better answer than a
+          share sheet. So: streak, then what is still open, then share. */}
+      {nextUp.filter((n) => n.key !== game).length > 0 && (
+        <div className="dd-next" aria-label="Still open today">
+          <div className="dd-title">Still open today</div>
+          {nextUp.filter((n) => n.key !== game).map((n) => {
+            const Tag = n.href ? "a" : "button";
+            const rgb = MODE_RGB[n.key === "daily" ? "daily7" : n.key] || "88,204,2";
+            const c = MODE_ACCENT[n.key === "daily" ? "daily7" : n.key] || "var(--accent)";
+            return (
+              <Tag key={n.key} className="dd-next-row is-mode" href={n.href} onClick={() => { track?.("dd-next", { game, to: n.key }); n.onTap?.(); }} {...(n.href ? {} : { type: "button" })}>
+                <span className="dd-well" style={{ "--dd-rgb": rgb, "--dd-c": c }} aria-hidden="true">{n.icon || DEFAULT_ICON[n.key] || null}</span>
+                <span className="dd-title">{n.name}</span>
+                <span className="dd-next-go">Play</span>
+              </Tag>
+            );
+          })}
+        </div>
+      )}
+
       <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label="Share your result">
         {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
       </button>
@@ -167,23 +193,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
-      {nextUp.filter((n) => n.key !== game).length > 0 && (
-        <div className="dd-next" aria-label="Still open today">
-          <div className="dd-title">Still open today</div>
-          {nextUp.filter((n) => n.key !== game).map((n) => {
-            const Tag = n.href ? "a" : "button";
-            const rgb = MODE_RGB[n.key === "daily" ? "daily7" : n.key] || "88,204,2";
-            const c = MODE_ACCENT[n.key === "daily" ? "daily7" : n.key] || "var(--accent)";
-            return (
-              <Tag key={n.key} className="dd-next-row" href={n.href} onClick={() => { track?.("dd-next", { game, to: n.key }); n.onTap?.(); }} {...(n.href ? {} : { type: "button" })}>
-                <span className="dd-well" style={{ "--dd-rgb": rgb, "--dd-c": c }} aria-hidden="true">{n.icon || DEFAULT_ICON[n.key] || null}</span>
-                <span className="dd-title">{n.name}</span>
-                <span className="dd-next-go">Play</span>
-              </Tag>
-            );
-          })}
-        </div>
-      )}
 
       {save && save.onSave && (streakN >= 2 || save.line) && (
         <div className="dd-row">

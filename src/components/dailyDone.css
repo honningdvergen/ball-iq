@@ -33,6 +33,10 @@
 .dd-next{display:flex;flex-direction:column;gap:8px;}
 .dd-next-row{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;text-decoration:none;}
 .dd-next-row .dd-well{width:34px;height:34px;border-radius:9px;}
+/* The still-open rows carry their mode colour, like the Home Today tiles —
+   this is the same "four games, not four rows" call (app.css .is-mode). */
+.dd-next-row.is-mode{background:linear-gradient(90deg, rgba(var(--dd-rgb),0.10), rgba(var(--dd-rgb),0.03) 62%, transparent);border:1px solid rgba(var(--dd-rgb),0.28);}
+.dd-next-row.is-mode .dd-next-go{color:var(--dd-c);-webkit-text-fill-color:var(--dd-c);}
 .dd-next-go{margin-left:auto;font-size:12.5px;font-weight:800;color:var(--accent);-webkit-text-fill-color:var(--accent);flex-shrink:0;}
 .dd-hr{height:1px;background:var(--border);margin:0 -14px;}
 .dd-getapp{display:flex;justify-content:center;}
