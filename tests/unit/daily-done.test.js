@@ -15,6 +15,7 @@ const APP = read('../../src/App.jsx');
 // The Daily 7 host is the Results screen, extracted from App.jsx on 2026-09-06 (E16).
 const RESULTS = read('../../src/screens/ResultsScreen.jsx');
 const HUB = read('../../src/screens/OnlineHubTab.jsx'); // the Online tab, extracted the same day
+const NOTIF_HOOK = read('../../src/hooks/useLocalNotifications.js'); // the ask gate + reminder scheduling, extracted 2026-09-06 (E16 hook 6)
 const DD = read('../../src/components/DailyDone.jsx');
 const CSS = read('../../src/components/dailyDone.css');
 const LIB = read('../../src/lib/dailyResults.js');
@@ -46,7 +47,7 @@ describe('DailyDone — one panel, four surfaces', () => {
 
   it('the bails stay measured even though nothing opens', () => {
     // daily-play-counts pins the three notif-prompt-skipped bails; keep them.
-    expect((APP.match(/notif-prompt-skipped/g) || []).length).toBe(3);
+    expect((NOTIF_HOOK.match(/notif-prompt-skipped/g) || []).length).toBe(3);
   });
 
   it('is honest: the distribution only appears at n >= 20, never fabricated', () => {
@@ -83,7 +84,7 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(NOTIF).toMatch(/streak >= 2 && getReminderHour\(\) < STREAK_RISK_HOUR/);
     expect(NOTIF).toMatch(/\$\{streak\}-day daily streak ends at midnight/);
     expect(NOTIF, 'cancelled with tonight when the player plays').toMatch(/\{ id: ID_BASE \}, \{ id: STREAK_RISK_ID \}/);
-    expect((APP.match(/scheduleReminderWindow\(\{ skipToday: [^}]*streak: loginStreak \}\)/g) || []).length).toBe(3);
+    expect((NOTIF_HOOK.match(/scheduleReminderWindow\(\{ skipToday: [^}]*streak: loginStreak \}\)/g) || []).length).toBe(3);
   });
 
   it('guest-first Online + Profile: what a guest can do comes first; the account ask is a quiet, named row', () => {

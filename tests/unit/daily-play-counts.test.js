@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { mysteryDayIndex, MYSTERY_ANCHOR_DAY } from '../../src/lib/mysteryPlayer.js';
 
 const APP = readFileSync(fileURLToPath(new URL('../../src/App.jsx', import.meta.url)), 'utf8');
+const NOTIF = readFileSync(fileURLToPath(new URL('../../src/hooks/useLocalNotifications.js', import.meta.url)), 'utf8'); // the ask gate, extracted 2026-09-06 (E16 hook 6)
 
 /**
  * A DAILY-ONLY PLAYER WAS INVISIBLE TO THE APP.
@@ -112,8 +113,8 @@ describe('every daily mode counts as a game played', () => {
     // The web half already reported which gate it died at; the native half —
     // the one holding the single irreversible iOS permission prompt — returned
     // a bare false, so "never asked" and "asked and declined" looked identical.
-    expect(APP).toMatch(/engine: "native"/);
-    const skips = APP.match(/notif-prompt-skipped/g) || [];
+    expect(NOTIF).toMatch(/engine: "native"/);
+    const skips = NOTIF.match(/notif-prompt-skipped/g) || [];
     expect(skips.length).toBe(3);   // web bail, native bail, 24h-gap bail
   });
 });

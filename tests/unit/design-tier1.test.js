@@ -29,7 +29,8 @@ const CSS = read('../../src/app.css');
 // The Footle board's rules moved to src/games/footle.css on 2026-09-05.
 const FOOTLE_CSS = read('../../src/games/footle.css');
 const APP = read('../../src/App.jsx');
-const MODE_RESULTS = read('../../src/screens/ModeResults.jsx'); // Hot Streak / True-or-False results, extracted 2026-09-06 (E16)
+const MODE_RESULTS = read('../../src/screens/ModeResults.jsx');
+const NOTIF = read('../../src/hooks/useLocalNotifications.js'); // the notification ask gate, extracted 2026-09-06 (E16 hook 6) // Hot Streak / True-or-False results, extracted 2026-09-06 (E16)
 const HOME = read('../../src/screens/HomeScreen.jsx');
 const DAILY = read('../../src/screens/DailyScreen.jsx');
 const HERO = read('../../src/components/FootleHero.jsx');
@@ -155,7 +156,7 @@ describe('design review — tier 1', () => {
     // was instrumented — pinning a literal pins the duplication, not the
     // intent. Both engines must refuse under two completed plays; how they
     // report the refusal is free to change.
-    expect(APP).toMatch(/if \(playsSoFar < 2\) return \w/);
-    expect(APP).toMatch(/if \(webPlays < 2\) return \w/);
+    expect(NOTIF).toMatch(/if \(playsSoFar < 2\) return \w/);
+    expect(NOTIF).toMatch(/if \(webPlays < 2\) return \w/);
   });
 });
