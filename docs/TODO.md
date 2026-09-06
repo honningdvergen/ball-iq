@@ -1,3 +1,18 @@
+## 2026-09-06 (10:55) — ✅ RESULTS PANEL (DailyDone) SHIPPED: one return loop under all four dailies — simulator + local-web verified; live check pending
+
+Alex: "let us build the results component first, then align the daily tab… let us do this RIGHT." Brief + decisions in
+`.audit/critique-2026-09-05-app-home/NOTES.md`. `components/DailyDone.jsx` under the board on Footle/Trail/Mystery (app AND islands)
+and as the Daily 7 results footer: streak line → countdown + **Remind me** (iOS prompt on THAT tap, scheduled at the player's own hour —
+`lib/playHour.js` median of the last 7 completions) → **Share result** (the one green primary) → **How everyone did** (REAL:
+`daily_results` + `record_daily_result`/`get_daily_distribution`, applied to prod, shown only at n≥20) → **Still open today** (the
+other unplayed dailies, real navigation) → Save it (guest, streak≥2) → store badge (islands). Retired: TomorrowTeaser, the 7-second
+notification sheet (bails kept measured), the deferred guest save prompt, four per-game share buttons, the Trail→Mystery chain, the
+Home row's Footle status screen (a fifth finish surface). Native records with NO identifier (store-listing promise; RPC accepts null).
+Verified: app Footle solve → panel → Allow → ✓ 10:00; native row in `daily_results`; `/mystery-player/` give-up → panel with icons +
+Google Play badge. Commits d7b9507 e8ae466 e57d58c 07de48e. Gate: `daily-done.test.js`. ⚠️ Lessons: `vite build` alone leaves island
+HTML on the OLD chunk (full gate to verify); `capacitor://localhost` reads as a dev box to a hostname guard. **Next:** align the Daily
+tab rows to the new row CSS (it still wears per-mode Play pills + washes), then WHAT-NEXT.md items 3→8. Read `daily_results` in a week.
+
 ## 2026-09-06 (01:40) — ✅ APP HOME REBUILT FROM THE CRITIQUE (539e912 → 34f3d38, pushed f6083af) — simulator-verified; LIVE-VERIFIED on prod at 375 (Continue / Review states, Find a quiz, Invite row)
 
 Alex, in the simulator: "Today block = the web's four equal rows" → shipped; then "we can not even see the online tab" / "we still can not
