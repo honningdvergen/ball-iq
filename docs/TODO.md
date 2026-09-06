@@ -1,3 +1,12 @@
+## 2026-09-06 (12:30) — ✅ BALL MARK IN THE HEADER, CLUB COLOURS BACK, ONLINE GUEST PITCH (30d06bb, bd59231) — simulator-verified, pushed
+
+Alex: "the F … is the footle logo and ball iq for what exactly?" → the header wears the app's ball (same as the website header).
+"should we not add color to the clubs?" → club colour back on the finder chips (below Today they no longer fight the first Play).
+"the online tab should tempt players more to sign up and test their football knowledge against their friends" → a guest opens on the
+pitch: "Who knows more — you or your mates?" · ten questions live, the podium settles it · Create room / Share link / Answer live ·
+one green **Challenge your friends** (= sign-up) · then Join-by-code and Local play (quiet). Screenshots home-ball-mark.png,
+online-guest-pitch.png.
+
 ## 2026-09-06 (12:20) — ✅ HEADER ANCHOR (6674f92) + CRAFT PASS (5a0d40b) — simulator-verified, pushed
 
 Home opens on the F mark + "Ball IQ" wordmark with the date beneath (or "Good ebening, Alex" for a named player); "Set your name" and

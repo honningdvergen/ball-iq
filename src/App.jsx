@@ -6607,7 +6607,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
             </div>
           </div>
           <ol style={{listStyle:"none",padding:0,margin:"0 0 14px",display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-            {[["1","Create a room"],["2","Share the link"],["3","Answer live"]].map(([n,t]) => (
+            {[["1","Create room"],["2","Share link"],["3","Answer live"]].map(([n,t]) => (
               <li key={n} style={{display:"flex",alignItems:"center",gap:7,padding:"8px 10px",borderRadius:10,background:"var(--bg)",border:"1px solid var(--border)"}}>
                 <span style={{width:18,height:18,borderRadius:999,background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.3)",color:"var(--grn-soft)",fontSize:11,fontWeight:800,display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{n}</span>
                 <span style={{fontSize:12,fontWeight:700,color:"var(--t1)",lineHeight:1.15}}>{t}</span>
