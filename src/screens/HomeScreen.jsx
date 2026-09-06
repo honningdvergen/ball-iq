@@ -433,7 +433,11 @@ function HomeScreenImpl({
                     : ws.kind === "in-progress" ? <>In progress · <strong>{ws.used}</strong> of 6</>
                     : firstSession ? <>Start here — everyone gets the same player</>
                     : <>{FOOTLE_TAGLINE}</>,
-                  onTap: () => (footleDone ? viewPuzzleStatus(ws) : setScreen("wordle")),
+                  // Done or not, the row opens the Footle screen: a finished board
+                  // shows the result panel (DailyDone) — share, streak, the other
+                  // open dailies. The separate status screen stays for the Daily
+                  // tab's archive rows (2026-09-06).
+                  onTap: () => setScreen("wordle"),
                   aria: footleDone ? "Today's Footle: done — review" : "Play today's Footle",
                 },
                 {
