@@ -137,7 +137,6 @@ function HomeScreenImpl({
   viewPuzzleStatus,
   viewDailyScore,
   startMode,
-  setShowDiffPicker,
   shareCard,
   challenge,
   onPlayChallenge,
@@ -656,7 +655,7 @@ function HomeScreenImpl({
           // the dataset is season-pinned and always playable.
           { key:"stadiums", Icon: LandPlot, name: "Stadiums", desc: "Name every ground", onTap: () => setScreen("stadiums") },
           { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
-          { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, 20s each",   onTap:() => setShowDiffPicker(true) },
+          { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, easy to hard" },
           // ⚠️ iconColor deliberately REMOVED. Survival was the only tile using the
           // opt-out, so after the grid went neutral it was the single remaining
           // green icon — which is worse than all-green was, because one odd tile

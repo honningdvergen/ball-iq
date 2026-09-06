@@ -1676,14 +1676,16 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    behind it so the dialog is clearly ON TOP rather than beside. */
 .modal-box{background:var(--s1);border:1px solid var(--border);border-bottom:none;border-radius:20px 20px 0 0;padding:12px 20px calc(18px + env(safe-area-inset-bottom,0px));width:100%;max-width:440px;box-shadow:0 -8px 40px rgba(0,0,0,0.5);animation:slideUp 0.28s cubic-bezier(0.22,1,0.36,1);}
 .modal-grab{width:36px;height:4px;border-radius:99px;background:var(--border);margin:0 auto 16px;}
-.modal-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
-.modal-well{width:40px;height:40px;border-radius:10px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,75,75,0.12);border:1px solid rgba(255,75,75,0.28);color:#FF7B7B;}
+/* Centred and stacked (Alex, 2026-09-06: the icon-well-beside-title version
+   "looks outdated"): title, one line, a full-width primary, the destructive
+   choice as plain text under it — the shape of a modern quit-lesson sheet. */
+.modal-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin:6px 0 20px;padding:0 8px;}
 @keyframes modalPop{from{opacity:0;transform:translateY(8px) scale(0.97);}to{opacity:1;transform:none;}}
-.modal-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--t1);margin-bottom:4px;line-height:1.2;}
-.modal-body{font-size:13.5px;color:var(--t2);line-height:1.45;}
+.modal-title{font-size:21px;font-weight:800;letter-spacing:-0.4px;color:var(--t1);line-height:1.2;}
+.modal-body{font-size:14.5px;color:var(--t2);line-height:1.5;max-width:32ch;}
 .modal-body strong{color:var(--t1);font-weight:800;}
-.modal-btns{display:flex;gap:10px;}
-.modal-btn{flex:1;min-height:46px;padding:12px 16px;border-radius:999px;font-family:var(--font);font-size:15px;font-weight:800;cursor:pointer;border:none;transition:opacity 0.15s,background 0.15s;-webkit-appearance:none;appearance:none;}
+.modal-btns{display:flex;flex-direction:column;gap:4px;}
+.modal-btn{width:100%;min-height:50px;padding:13px 16px;border-radius:999px;font-family:var(--font);font-size:16px;font-weight:800;cursor:pointer;border:none;transition:opacity 0.15s,background 0.15s;-webkit-appearance:none;appearance:none;}
 /* Quit-dialog emphasis. Was: grey "Keep playing" beside a full-width filled
    red "Quit" — so the brightest, widest, most thumb-reachable control on a
    dialog whose entire job is to PREVENT an accidental exit was the exit.
@@ -1698,9 +1700,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    exit the same visual weight as the thing we want the player to do. Red
    text on a red-tinted surface still reads unmistakably as "quit" and
    measures 5.9:1 on the lifted card. */
-.modal-confirm{flex:0 0 auto;padding-left:22px;padding-right:22px;background:var(--s2);border:1px solid var(--border2);color:#FF7B7B;-webkit-text-fill-color:#FF7B7B;}
+.modal-confirm{background:none;color:#FF7B7B;-webkit-text-fill-color:#FF7B7B;font-weight:700;min-height:46px;}
 .modal-cancel:hover{opacity:0.85;}
-.modal-confirm:hover{background:rgba(255,75,75,0.2);opacity:1;}
+.modal-confirm:hover{background:rgba(255,75,75,0.08);opacity:1;}
 
 /* ── Notification center (Phase 1: friend requests) ──────────────────────
    Uses runtime vars so it adapts to light/dark AND the desktop marketing
@@ -3641,11 +3643,3 @@ body.biq-web .toast { left: 50% !important; transform: translateX(-50%); max-wid
    navigation matters again. */
 body.biq-web.in-focused-play .fd-appbar { display: none; }
 
-/* 3-2-1 on the question (replaces the "Ready?" interstitial, 2026-09-06). The
-   count is click-through and sits over the hidden card, so the header — and
-   Back — stay live. One authored moment: the number pops in. */
-.q-countdown{position:fixed;left:0;right:0;top:38%;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;z-index:5;}
-.q-countdown-n{font-size:72px;font-weight:900;letter-spacing:-0.04em;line-height:1;color:var(--accent);animation:iconPop 0.5s cubic-bezier(0.34,1.56,0.64,1);font-variant-numeric:tabular-nums;}
-.q-countdown-cap{font-size:13px;font-weight:600;color:var(--t2);}
-.q-card-gated{visibility:hidden;}
-@media (prefers-reduced-motion: reduce){.q-countdown-n{animation:none;}}

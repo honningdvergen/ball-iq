@@ -2702,7 +2702,12 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // Q1 behind a tap-to-start gate (one tap, no 3-2-1 wait); the timer effect
   // below doesn't run until armed. Q2+ are mid-flow, so they start hot as
   // before. Untimed modes never see the gate.
-  const [armed, setArmed] = useState(false);
+  // No start gate (2026-09-06). There was a full-screen "Ready?" interstitial,
+  // then for an hour a 3-2-1 count — Alex: "absolutely hated"; dropped. The
+  // clock runs from the moment the first question is on screen, like every
+  // quiz show. `armed` stays as state so the Q1-specific branches below (back
+  // exits directly before the first answer, the timer effect) keep holding.
+  const [armed, setArmed] = useState(true);
   const [showNext, setShowNext] = useState(false);
   // ⚠️ RE-ENTRY GUARD — a double-tap on "Next →" used to SKIP A QUESTION.
   // Found 2026-08-19 from Clarity: "Next →" was the most dead-clicked element
@@ -2776,23 +2781,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // closure. Declaring it after the effect is a TDZ crash on first render
   // (caught by the browser verify pass, 2026-08-30).
   const timed = (timerEnabled !== false) && mode !== "survival" && mode !== "legends" && mode !== "chaos" && mode !== "daily" && q?.type !== "tf";
-  // ⚠️ BELOW `timed` — the effects read it (a TDZ crash on the first render
-  // when this sat 80 lines higher; caught in the simulator).
-  // 3-2-1 on the question itself (2026-09-06, Alex: "are we sure we need the
-  // ready screen at all? … there is no go back button"). The full-screen
-  // "Ready?" interstitial existed only so a 15s clock would not start while
-  // the screen was still transitioning; a short count does that without
-  // covering the header, so Back still works and nothing needs a tap.
-  const [countdown, setCountdown] = useState(3);
-  useEffect(() => {
-    if (!(timed && idx === 0 && !armed && !done)) return undefined;
-    setCountdown(3);
-    const t = setInterval(() => setCountdown((c) => (c > 0 ? c - 1 : 0)), 800);
-    return () => clearInterval(t);
-  }, [timed, idx, armed, done]);
-  useEffect(() => {
-    if (timed && idx === 0 && !armed && !done && countdown === 0) setArmed(true);
-  }, [countdown, timed, idx, armed, done]);
 
   useEffect(() => {
     const onHwBack = (e) => {
@@ -3229,7 +3217,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       </div>
       <div className="qd-eyebrow" aria-hidden="true">Question {idx + 1}</div>
 
-      <div key={idx} className={`q-card q-fade${timed && idx === 0 && !armed && !done ? " q-card-gated" : ""}`}>
+      <div key={idx} className="q-card q-fade">
         <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
         <div className="q-text" style={{fontSize:18}}>{q.q}</div>
       </div>
@@ -3433,12 +3421,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       })()}
       </div>{/* /.qd-play */}
 
-      {timed && idx === 0 && !armed && !done && (
-        <div className="q-countdown" role="status" aria-live="polite" aria-label={`Starting in ${countdown}`}>
-          <div className="q-countdown-n" key={countdown}>{countdown > 0 ? countdown : "Go"}</div>
-          <div className="q-countdown-cap">{timerDuration}s per question</div>
-        </div>
-      )}
       {showQuit && (
         <div className="modal-overlay" onClick={() => setShowQuit(false)}>
           <div className="modal-box" role="dialog" aria-modal="true" aria-labelledby="quit-title" onClick={e => e.stopPropagation()}>
@@ -3447,13 +3429,10 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
                 also looks dull"): a sheet in the app's vocabulary — icon well,
                 what is actually on the line, one green primary, a quiet exit. */}
             <div className="modal-head">
-              <span className="modal-well" aria-hidden="true"><X size={20} strokeWidth={2.4} /></span>
-              <div>
-                <div className="modal-title" id="quit-title">Leave this quiz?</div>
-                <div className="modal-body">{idx > 0
-                  ? <><strong>{score}</strong> right from <strong>{idx}</strong> answered — that&#39;s lost if you quit.</>
-                  : "Your progress will be lost."}</div>
-              </div>
+              <div className="modal-title" id="quit-title">Leave this quiz?</div>
+              <div className="modal-body">{idx > 0
+                ? <><strong>{score}</strong> right from <strong>{idx}</strong> answered — that&#39;s lost if you quit.</>
+                : "Your progress will be lost."}</div>
             </div>
             <div className="modal-btns">
               <button className="modal-btn modal-cancel" onClick={() => setShowQuit(false)}>Keep playing</button>
@@ -10282,7 +10261,10 @@ function AppInner() {
           return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
         });
       }
-      else { qs = await getQs({ cat, diff, n: 10, ramp: true }); }
+      // Classic is the ARC (2026-09-06): the full easy→hard range so the ramp
+      // has real hard questions at the end. `diff` here is a ceiling, and the
+      // Settings default "medium" would have quietly removed every hard one.
+      else { qs = await getQs({ cat, diff: "hard", n: 10, ramp: true }); }
       // Sanity check: filter out undefined/malformed questions (T/F uses `s`, others use `q`)
       qs = (qs || []).filter(item => item && typeof item === "object" && (item.q || item.s));
       if (qs.length === 0) {
@@ -12652,9 +12634,7 @@ function AppInner() {
   }, [setProfile, performDailyShare]);
   const shieldCount = useMemo(() => Math.min(3, Math.max(0, Math.floor(xp/200) - (stats.shieldsUsed||0))), [xp, stats.shieldsUsed]);
 
-  const [showDiffPicker, setShowDiffPicker] = useState(false);
   const [showFriendsPicker, setShowFriendsPicker] = useState(false);
-  const diffPickerRef = useRef(null);
   const friendsPickerRef = useRef(null);
   const joinGateRef = useRef(null);
   // Sprint #68 JJ4: trap focus + ESC-to-close on the three pre-launch
@@ -12666,7 +12646,6 @@ function AppInner() {
   const [pendingLeaveRoom, setPendingLeaveRoom] = useState(null);
   const leaveRoomModalRef = useRef(null);
   const howToPlayRef = useRef(null);
-  useModalA11y({ isOpen: showDiffPicker,    onClose: () => setShowDiffPicker(false),    ref: diffPickerRef });
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
   useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest)), onClose: clearPendingJoin, ref: joinGateRef });
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
@@ -12755,28 +12734,9 @@ function AppInner() {
     };
   }, []);
 
-  const startClassicWithDiff = useCallback(async (d) => {
-    // Build a Classic game with the explicitly-chosen difficulty — don't rely
-    // on the async setDiff → startMode closure, build the questions inline.
-    setShowDiffPicker(false);
-    haptic("soft");
-    setDiff(d);
-    setActiveClub(null);
-    setActiveLeague(null);
-    let qs;
-    try {
-      qs = await getQs({ cat: "All", diff: d, n: 10, ramp: true });
-    } catch (e) {
-      console.warn('[startClassicWithDiff]', e?.message || e);
-      showToast("⚠️ Couldn't load questions — check your connection");
-      return;
-    }
-    if (!qs || qs.length === 0) { showToast("No questions — try another difficulty"); return; }
-    setMode("classic");
-    setCat("All");
-    setQuestions(qs);
-    setScreen("quiz");
-  }, [showToast]);
+  // The Classic difficulty sheet and its start handler retired 2026-09-06 (Alex:
+  // "not sure we should have difficulty at all"). Classic is the easy→hard arc
+  // the engine already builds; the difficulty preference stays in Settings.
 
   const playDailyForDate = useCallback(async (date) => {
     let qs;
@@ -13224,40 +13184,6 @@ function AppInner() {
         )}
         {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
 
-        {/* ── CLASSIC DIFFICULTY SHEET ── */}
-        {showDiffPicker && (
-          <div className="diff-overlay" onClick={() => setShowDiffPicker(false)}>
-            <div ref={diffPickerRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
-              <div className="diff-sheet-title">Choose Difficulty</div>
-              <div className="diff-sheet-sub">10 questions, 20 seconds each</div>
-              <div className="diff-options">
-                {[
-                  { id:"easy",   icon:"🌱", name:"Easy",   desc:"Gentle warm-up questions" },
-                  { id:"medium", icon:"⚽", name:"Medium", desc:"Balanced challenge — a solid test" },
-                  // ⚠️ Do NOT re-add "some typed answers". Commit df54c40
-                  // (2026-05-07) removed every typed-input question from the
-                  // bank to kill spelling-variation friction; this line went on
-                  // promising them to every player on every platform for three
-                  // and a half months. Guarded by tests/unit/difficulty-copy.test.js.
-                  { id:"hard",   icon:"🧠", name:"Hard",   desc:"Deep knowledge — the toughest questions" },
-                ].map(opt => (
-                  <button
-                    key={opt.id}
-                    className={`diff-option${opt.id === "medium" ? " default" : ""}`}
-                    onClick={() => startClassicWithDiff(opt.id)}
-                  >
-                    <span className="diff-option-icon">{opt.icon}</span>
-                    <div className="diff-option-body">
-                      <div className="diff-option-name">{opt.name}</div>
-                      <div className="diff-option-desc">{opt.desc}</div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* ── PLAY WITH FRIENDS SHEET ── */}
         {showFriendsPicker && (
           <div className="diff-overlay" onClick={() => setShowFriendsPicker(false)}>
@@ -13324,7 +13250,6 @@ function AppInner() {
               viewPuzzleStatus={viewPuzzleStatus}
               viewDailyScore={viewDailyScore}
               startMode={startMode}
-              setShowDiffPicker={setShowDiffPicker}
               shareCard={shareCard}
               challenge={(pendingChallenge && challengeDayOffset(pendingChallenge.date) <= 1 && !dailyDone) ? pendingChallenge : null}
               onPlayChallenge={playDaily}

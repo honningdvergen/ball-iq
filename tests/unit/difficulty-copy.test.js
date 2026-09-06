@@ -26,9 +26,11 @@ describe('difficulty copy matches what the bank can actually serve', () => {
   const descs = [...appSrc.matchAll(/\{\s*id:\s*"(easy|medium|hard)"[^}]*?desc:\s*"([^"]*)"/g)]
     .map(([, id, desc]) => ({ id, desc }));
 
-  it('found the difficulty descriptions to check', () => {
-    expect(descs.length, 'difficulty sheet literal not found — update this selector')
-      .toBeGreaterThanOrEqual(3);
+  it('the Classic difficulty sheet is gone (2026-09-06) — Classic is the arc', () => {
+    // If difficulty copy ever returns, the typed-answer guard below still
+    // sweeps whatever literal it finds.
+    expect(appSrc).not.toMatch(/Choose Difficulty/);
+    expect(appSrc).toMatch(/diff: "hard", n: 10, ramp: true/);
   });
 
   it('does not promise typed answers while the bank has none', async () => {
