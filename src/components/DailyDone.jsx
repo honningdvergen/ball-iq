@@ -32,7 +32,8 @@ import "./dailyDone.css";
 //   waText      web-only WhatsApp fallback text (omit on native)
 //   remind      { state: 'off'|'on'|'blocked'|'unsupported', onRemind } | undefined
 //   nextUp      [{ key, name, onTap? , href? }] — today's other unplayed dailies
-//   save        { streak, onSave } | undefined — guest with a streak worth saving
+//   save        { onSave, line? } | null — guest; shows at a 2+ streak or when `line` names what is on this phone
+//   stump       () => void | null — "Stump a mate" under Share (the app's k-factor lever)
 //   GetAppCTA   component | null (islands pass the store badges)
 //   track       (name, meta) => void — optional analytics
 // Default glyph per daily for the "still open today" rows, so a host that passes
@@ -45,7 +46,7 @@ const DEFAULT_ICON = {
   mystery: <UserRoundSearch size={18} strokeWidth={2.2} />,
 };
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], save, GetAppCTA = null, track }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], save, stump, GetAppCTA = null, track }) {
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -131,8 +132,17 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label="Share your result">
         {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
       </button>
-      {waText && (
-        <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>Send on WhatsApp</a>
+      {(waText || stump) && (
+        <div className="dd-share-alts">
+          {waText && (
+            <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>Send on WhatsApp</a>
+          )}
+          {/* The k-factor lever lives under Share, where sharing is. It was a
+              third full-width button below the panel. */}
+          {stump && (
+            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stump", { game }); stump(); }}>Stump a mate</button>
+          )}
+        </div>
       )}
 
       {summary && (
@@ -176,12 +186,14 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
-      {save && save.onSave && streakN >= 2 && (
+      {save && save.onSave && (streakN >= 2 || save.line) && (
         <div className="dd-row">
           <div className="dd-body">
-            <div className="dd-sub">Your <strong className="dd-num">{streakN}-day</strong> streak lives on this phone only.</div>
+            {streakN >= 2
+              ? <div className="dd-sub">Your <strong className="dd-num">{streakN}-day</strong> streak{save.line ? <> and <strong className="dd-num">{save.line}</strong></> : null} live{save.line ? "" : "s"} on this phone only.</div>
+              : <div className="dd-sub"><strong className="dd-num">{save.line}</strong> — on this phone only.</div>}
           </div>
-          <button type="button" className="dd-pill" onClick={() => { track?.("dd-save", { game }); save.onSave(); }}>Save it</button>
+          <button type="button" className="dd-pill" onClick={() => { track?.("dd-save", { game }); save.onSave(); }}>Save</button>
         </div>
       )}
 

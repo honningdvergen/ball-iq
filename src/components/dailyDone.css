@@ -16,7 +16,8 @@
 .dd-pill.is-set{border-color:rgba(88,204,2,0.35);color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);background:rgba(88,204,2,0.08);cursor:default;}
 .dd-share{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:46px;padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .1s;}
 .dd-share:active{transform:scale(0.98);}
-.dd-share-alt{display:block;text-align:center;margin-top:-4px;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;}
+.dd-share-alts{display:flex;justify-content:center;gap:18px;margin-top:-4px;}
+.dd-share-alt{display:inline-block;padding:0;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 /* How everyone did: one bar per bucket, yours in green. */
 .dd-dist{display:flex;flex-direction:column;gap:6px;}
 .dd-dist-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}

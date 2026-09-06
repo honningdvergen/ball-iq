@@ -5438,8 +5438,18 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
   const scoreCaption = isSpeed
     ? `${result.score} correct out of ${result.total} · speed bonus included`
     : isSurvival
-    ? `${result.score} in a row before missing one`
+    ? (result.score === 0 ? "Out on the first question — it happens to everyone" : `${result.score} in a row before missing one`)
     : `${result.score} correct out of ${result.total}`;
+  // Best run rides the caption (review C: the amber pill was a third accent on
+  // a screen that already has green and gold). Hidden below 3 — noise.
+  const bestRun = !isSurvival && result.bestStreak != null && result.bestStreak >= 3 && result.bestStreak < result.total ? result.bestStreak : 0;
+
+  // One primary. Whichever daily is still open wins it, "Play again" demotes to
+  // the quiet row — except a Survival death on the first question, where the
+  // only honest next step is the same run again.
+  const dailyCta = dailyOpen && onPlayDaily ? { label: "Play today's Daily 7", onClick: onPlayDaily }
+    : footleOpen ? { label: footleCta, onClick: onPlayFootle } : null;
+  const retryDemoted = !!dailyCta && !(isSurvival && result.score === 0);
 
   // ── desktop-web-refresh (Results #03): values for the >=1024 card (circular
   //  score badge · per-question dots · stat tiles). Render-always / CSS-revealed
@@ -5478,7 +5488,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
         >
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
         </div>
-        <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{scoreCaption}</div>
+        <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{scoreCaption}{bestRun ? <> · best run <span className="numeric">{bestRun}</span> in a row</> : null}</div>
         {/* Score-tier tagline. Daily uses the daily-specific tier copy so
             the personality from the old DailySocialProof callout is kept
             ("Tomorrow's another chance to climb" etc.) without the
@@ -5492,14 +5502,18 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
               <div style={{marginTop:2, fontSize:13, color:"var(--t3)", fontWeight:500}}>{sub}</div>
             </>
           );
-        })() : !isSurvival && (
+        })() : isSurvival ? (result.score === 0 && (
+          <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
+            One wrong answer ends a run. The next one starts clean.
+          </div>
+        )) : (
           <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
             {scoreTagline(pct)}
           </div>
         )}
         {isNewPersonalBest && (
           <div style={{marginTop:10, display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"var(--gold)"}}>
-            <span>⭐</span>
+            <Star size={14} strokeWidth={2.4} aria-hidden="true" />
             <span>Personal best{isNewBest && classicBest ? ` — was ${classicBest}` : survivalNewBest && survivalBest ? ` — was ${survivalBest}` : ""}</span>
           </div>
         )}
@@ -5509,36 +5523,13 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
             theming elsewhere in the app (toasts, level-up overlay). */}
         {xpEarned > 0 && (
           <div style={{marginTop:14, fontSize:14, color:"var(--gold)", fontWeight:700}}>
-            +{xpEarned} XP earned ⚡
+            +{xpEarned} XP
           </div>
         )}
       </div>
 
-      {/* Best streak as a small gold pill — reads as an achievement
-          badge rather than a stat row. Hides below 3 in a row (anything
-          smaller would be ambient noise). */}
-      {result.bestStreak != null && result.bestStreak >= 3 && (
-        <div style={{textAlign:"center", marginTop:18}}>
-          <span style={{
-            display:"inline-flex",
-            alignItems:"center",
-            gap:8,
-            padding:"8px 14px",
-            background:"rgba(255,200,0,0.08)",
-            border:"1px solid rgba(255,200,0,0.25)",
-            borderRadius:999,
-            fontSize:13,
-            fontWeight:700,
-            color:"var(--gold)",
-          }}>
-            <span>🔥</span>
-            <span>Best streak: {result.bestStreak} in a row</span>
-          </span>
-        </div>
-      )}
-
       {result.winner && (
-        <div style={{textAlign:"center", margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}>🏆 {result.winner} wins!</div>
+        <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:6, margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}><Trophy size={16} strokeWidth={2.4} aria-hidden="true" />{result.winner} wins!</div>
       )}
 
       {/* Two-tier action stack: filled green primary, ghost secondaries.
@@ -5562,29 +5553,39 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
         <div style={{marginTop:18}}>
           <DailyDone game="daily7" edition={dayIndexForDate(new Date())} won bucket={result.score}
             streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp}
-            save={dailyDone.save} track={dailyDone.track} />
+            save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} />
         </div>
       )}
 
-      <div className="results-actions" style={{marginTop:18}}>
-        {/* Non-daily finish: whichever daily is still open is the PRIMARY, and
-            "Play Again" demotes to a ghost. Daily 7 is preferred over Footle for
-            a player who just answered questions — it is the nearer neighbour —
-            and Footle is the fallback when the Daily 7 is already done. */}
-        {!isDaily && dailyOpen && onPlayDaily && (
-          <button className="btn-3d" onClick={onPlayDaily}>Play today&#39;s Daily 7</button>
-        )}
-        {!isDaily && !dailyOpen && footleOpen && (
-          <button className="btn-3d" onClick={onPlayFootle}>{footleCta}</button>
-        )}
-        {!isDaily && <button className={`btn-3d${(dailyOpen && onPlayDaily) || footleOpen ? " ghost" : ""}`} onClick={onRetry}>Play Again</button>}
-        {!isDaily && <button className="btn-3d share" onClick={onShare}>Share Score</button>}
-        {stumpQ && <button className="btn-3d share" onClick={onStump}>Stump a mate</button>}
-        <button className="results-exit" onClick={onHome}>Back to Home</button>
-      </div>
-
-      {/* Wrong answers review — below the buttons */}
-      <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+      {isDaily ? (
+        <>
+          {/* Daily 7: the panel IS the action set — share, remind, stump a mate,
+              save. What is left is the review of what got you, then the way out. */}
+          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+          <div className="results-actions" style={{marginTop:18}}>
+            <button className="results-exit" onClick={onHome}>Back to Home</button>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* One primary, a row of two quiet buttons, a text link, the way out.
+              Five stacked buttons in three weights (review C9) asked the player
+              to rank the app's wishes; this ranks them for them. */}
+          <div className="results-actions" style={{marginTop:18}}>
+            {retryDemoted
+              ? <button className="btn-3d" onClick={dailyCta.onClick}>{dailyCta.label}</button>
+              : <button className="btn-3d" onClick={onRetry}>{isSurvival ? "Go again" : "Play again"}</button>}
+            <div className="results-row">
+              {retryDemoted && <button className="btn-3d ghost" onClick={onRetry}>Play again</button>}
+              <button className="btn-3d ghost" onClick={onShare}>Share score</button>
+              {!retryDemoted && stumpQ && <button className="btn-3d ghost" onClick={onStump}>Stump a mate</button>}
+            </div>
+            {retryDemoted && stumpQ && <button className="results-link" onClick={onStump}>Stump a mate with a question</button>}
+            <button className="results-exit" onClick={onHome}>Back to Home</button>
+          </div>
+          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+        </>
+      )}
       </div>{/* /.rd-mobile */}
 
       {/* ── desktop-web-refresh (Results #03): centered card. display:none <1024;
@@ -5630,7 +5631,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
           )}
           {isNewPersonalBest && (
             <div className="rd-pb">
-              <span aria-hidden="true">⭐</span>
+              <Star size={14} strokeWidth={2.4} aria-hidden="true" />
               <span>
                 Personal best
                 {isNewBest && classicBest ? ` — was ${classicBest}`
@@ -5657,7 +5658,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
             <div style={{margin:"18px 0"}}>
               <DailyDone game="daily7" edition={dayIndexForDate(new Date())} won bucket={result.score}
                 streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp}
-                save={dailyDone.save} track={dailyDone.track} />
+                save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} />
             </div>
           )}
           <div className="rd-actions">
@@ -5673,7 +5674,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
               Share
             </button>}
-            {stumpQ && <button className="rd-btn rd-btn-ghost" onClick={onStump}>🥜 Stump a mate</button>}
+            {stumpQ && !isDaily && <button className="rd-btn rd-btn-ghost" onClick={onStump}>Stump a mate</button>}
           </div>
         </div>
         {/* Same review loop as mobile — constrained to the rd-card column. */}
@@ -6109,13 +6110,13 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
       <div className="results-actions" style={{marginTop:14}}>
-        <button className="btn-3d" onClick={onRetry}>⚡ Run It Back</button>
+        <button className="btn-3d" onClick={onRetry}>Run it back</button>
         <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
       {xpEarned > 0 && (
         <div style={{textAlign:"center", marginTop:10, fontSize:12, color:"var(--t3)", fontWeight:500}}>
-          +{xpEarned} XP earned ⚡
+          +{xpEarned} XP earned
         </div>
       )}
     </div>
@@ -6155,13 +6156,13 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
         <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
       </div>
       <div className="results-actions" style={{marginTop:14}}>
-        <button className="btn-3d" onClick={onRetry}>▶ Another Round</button>
+        <button className="btn-3d" onClick={onRetry}>Another round</button>
         <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
       {xpEarned > 0 && (
         <div style={{textAlign:"center", marginTop:10, fontSize:12, color:"var(--t3)", fontWeight:500}}>
-          +{xpEarned} XP earned ⚡
+          +{xpEarned} XP earned
         </div>
       )}
     </div>
@@ -10588,18 +10589,9 @@ function AppInner() {
     try { safeSetItem('biq_photo_nudge', '1'); } catch { /* quota */ }
   }, []);
   // First-session audit 2026-08-30 (#3): a guest banks XP, a rating and a
-  // streak with zero mention any of it is device-local — the peak-moment auth
-  // SHEET can be missed (its guards defer it) and then nothing ever says so
-  // again. This is the inline, dismissible line on Daily-7 results; it rides
-  // the same results slot as the photo nudge (the two are mutually exclusive:
-  // photo needs an account, this needs the lack of one).
-  const [saveLineDismissed, setSaveLineDismissed] = useState(() => {
-    try { return localStorage.getItem('biq_save_line') === '1'; } catch { return false; }
-  });
-  const dismissSaveLine = useCallback(() => {
-    setSaveLineDismissed(true);
-    try { safeSetItem('biq_save_line', '1'); } catch { /* quota */ }
-  }, []);
+  // streak with zero mention any of it is device-local. That line was a card
+  // above the Daily 7 panel; it is a row INSIDE the panel now (DailyDone
+  // `save.line`, built in dailyDoneServices) — one place, no dismiss state.
 
   // ⚠️ role="dialog" without useModalA11y is half an accessibility fix, and the
   // repo's own a11y-structure test enforces the pair — it caught this sheet the
@@ -10758,13 +10750,19 @@ function AppInner() {
       remind: { state: resultsRemindState, onRemind: remindFromResults },
       // "daily streak" — the cross-mode one; the islands pass the per-game label.
       streak: { count: loginStreak || 0, label: "daily streak" },
-      save: (!user || isGuest) ? { onSave: () => { loopEvent("dd-save-tap"); openAuthPrompt?.("save"); } } : null,
+      // The guest save line used to be its own card above this panel (Alex,
+      // 2026-09-06: "does this look good?" — no). It is a row of the panel now:
+      // what lives on this phone only, and the one tap that makes it follow them.
+      save: (!user || isGuest) ? {
+        onSave: () => { loopEvent("dd-save-tap"); openAuthPrompt?.("save"); },
+        line: ((stats?.gamesPlayed || 0) >= 2 || xp > 0) ? `${getLevelInfo(xp).level.name} · ${xp} XP` : null,
+      } : null,
       nextUp,
       track: (n, m) => loopEvent(n, m),
     };
     // `screen` is a deliberate dep: the open/closed set changes when a game ends.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen]);
+  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.gamesPlayed, xp]);
   const footleServices = useMemo(() => ({ ...FOOTLE_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
   const dailyScreenServices = useMemo(() => ({ ...DAILY_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
 
@@ -13802,30 +13800,7 @@ function AppInner() {
             onReport={reportQuestion}
             askedQuestions={questions}
             dailyDone={dailyDoneServices}
-            photoNudge={((!user || isGuest) && mode === "daily" && (stats.gamesPlayed || 0) >= 2 && !saveLineDismissed) ? (
-              <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
-                <div aria-hidden="true" style={{width:44,height:44,flexShrink:0,borderRadius:14,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
-                  <Star size={22} strokeWidth={2.25} color="#58CC02" />
-                </div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:14,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{`${getLevelInfo(xp).level.name} · ${xp} XP — on this phone only`}</div>
-                  <div style={{fontSize:12.5,color:"var(--t2)",lineHeight:1.4,marginTop:2}}>Save your progress so it follows you.</div>
-                </div>
-                <button
-                  onClick={() => { dismissSaveLine(); loopEvent('save-line-tap'); openAuthPrompt?.('save'); }}
-                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => { dismissSaveLine(); loopEvent('save-line-dismiss'); }}
-                  aria-label="Not now"
-                  style={{flexShrink:0,padding:"9px 6px",background:"none",border:"none",color:"var(--t3)",fontFamily:"inherit",fontSize:13,fontWeight:700,cursor:"pointer"}}
-                >
-                  Later
-                </button>
-              </div>
-            ) : (user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
+            photoNudge={(user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
               <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
                 <div style={{width:44,height:44,flexShrink:0}}>
                   <ProfilePic value={authProfile?.avatar_id} url={authProfile?.avatar_url} name={authProfile?.username} />
