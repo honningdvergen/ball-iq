@@ -137,3 +137,9 @@ Then: align the Daily tab rows to the new row CSS; then the rest of WHAT-NEXT.md
 **Reminder:** `getReminderHour()` = median of the last 7 completion hours (clamped 8–22, default 19); native local window uses it; the web-push cron stays at 19:00 (server column later). The 7s sheet is retired (arming removed, bails kept so `notif-prompt-skipped` ×3 stays for the test).
 **Streak:** the app's ONE streak (loginStreak) everywhere in the app; islands pass the per-game streak with its label.
 **Anti-goals:** no emoji glyphs, no eyebrow labels, no nested cards, no fabricated numbers below n=20, no modal.
+
+## DailyDone — BUILT (2026-09-06 10:50), simulator + local-web verified, not yet pushed
+Commits d7b9507 (panel + hosts + migration), e8ae466 (island default icons; native records anonymously — capacitor://localhost was read as a dev box, so no phone result ever recorded; store-listing promise = no identifier from native, RPC accepts null visitor), e57d58c (play hour noted on first completion regardless of network — the first device build fell back to 19:00), 07de48e (Home's finished Footle row reopens the Footle screen — the old status screen was a FIFTH finish surface with no panel).
+Verified: app Footle solve → panel (streak line, Remind me → iOS prompt on the tap → ✓ pill), Share, Still open today with icons; web /mystery-player/ give-up → panel with page links + Google Play badge. Distribution hidden (n<20) as designed.
+⚠️ `vite build` alone does NOT regenerate the island HTML (hashed chunk refs) — the full `npm run build` gate is required to verify islands locally.
+Remaining before push: full gate → cap sync → native rebuild → confirm a native row lands in daily_results → island icons on local static → push → live verify → Daily tab alignment (next increment).
