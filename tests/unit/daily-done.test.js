@@ -89,8 +89,11 @@ describe('DailyDone — one panel, four surfaces', () => {
     // anatomy, naming what it unlocks.
     expect(APP).toMatch(/\{!needsAccount && \(\n\s*<div style=\{\{borderRadius:22/);
     expect(APP, 'the green slab no longer flips to a sign-up label').not.toMatch(/needsAccount \? "Sign up to play online"/);
-    expect(APP).toMatch(/aria-label="Play online with friends"/);
-    expect(APP.indexOf('aria-label="Play online with friends"')).toBeGreaterThan(APP.indexOf('Local pass &amp; play'));
+    // The guest's first block is the PITCH (what a room is + the one green
+    // button = sign-up), above join-by-code and local play.
+    expect(APP).toMatch(/Who knows more — you or your mates\?/);
+    expect(APP.indexOf('Who knows more')).toBeLessThan(APP.indexOf('Got a code? Type it here'));
+    expect(APP).toMatch(/Challenge your friends/);
     // Profile: the ask comes AFTER the player's own card.
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
     expect(PROFILE).not.toMatch(/>Save your progress</);

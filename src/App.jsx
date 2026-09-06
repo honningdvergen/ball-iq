@@ -6592,6 +6592,34 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           anywhere, so the most important CTA on the Online tab carried the one
           off-palette hue in the product, and only on iOS. Setting it on the button
           makes both children inherit the same ink. */}
+      {/* GUEST PITCH (Alex, 2026-09-06: "the online tab should tempt players
+          more to sign up and test their football knowledge against their
+          friends"). A guest gets the picture first — what a room IS — then the
+          one green button, which is the sign-up. Nothing here is a number we
+          cannot back; the three steps are literally the flow. */}
+      {needsAccount && (
+        <div style={{borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)",padding:"18px 16px 16px",marginBottom:14}}>
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:10}}>
+            <span className="t7s-icon" style={{"--mode":"var(--accent)","--mode-rgb":"88,204,2",width:46,height:46}} aria-hidden="true"><Users size={24} strokeWidth={2} /></span>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:19,fontWeight:800,letterSpacing:"-0.3px",color:"var(--t1)",lineHeight:1.15}}>Who knows more — you or your mates?</div>
+              <div style={{fontSize:13,color:"var(--t2)",marginTop:4,lineHeight:1.4}}>Ten questions, everyone answers live, the podium settles it. Up to 8 players, any phone.</div>
+            </div>
+          </div>
+          <ol style={{listStyle:"none",padding:0,margin:"0 0 14px",display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+            {[["1","Create a room"],["2","Share the link"],["3","Answer live"]].map(([n,t]) => (
+              <li key={n} style={{display:"flex",alignItems:"center",gap:7,padding:"8px 10px",borderRadius:10,background:"var(--bg)",border:"1px solid var(--border)"}}>
+                <span style={{width:18,height:18,borderRadius:999,background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.3)",color:"var(--grn-soft)",fontSize:11,fontWeight:800,display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{n}</span>
+                <span style={{fontSize:12,fontWeight:700,color:"var(--t1)",lineHeight:1.15}}>{t}</span>
+              </li>
+            ))}
+          </ol>
+          <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
+            <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Zap size={17} strokeWidth={2.4} /></span><span style={{fontSize:16,fontWeight:800,color:"var(--grn-ink)"}}>Challenge your friends</span>
+          </button>
+          <div style={{marginTop:8,textAlign:"center",fontSize:12.5,color:"var(--t3)",lineHeight:1.45}}>Free account, takes seconds — then invite anyone with a link.</div>
+        </div>
+      )}
       {!needsAccount && (
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
         <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Gamepad2 size={17} strokeWidth={2.2} /></span><span style={{fontSize:17,fontWeight:800,color:"var(--grn-ink)"}}>Create Room</span>
@@ -6685,25 +6713,8 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
             <span className="t7s-sub">Same couch, one phone · up to 6 players</span>
           </span>
         </button>
-        <button type="button" className={`t7s-cta mp-row-invite${needsAccount ? " is-primary" : ""}`} onClick={() => startMode("local")}>Play</button>
+        <button type="button" className="t7s-cta mp-row-invite" onClick={() => startMode("local")}>Play</button>
       </div>
-      {/* GUEST-FIRST (2026-09-06): the account ask names the one thing it
-          unlocks and sits after the two things a guest can do right now (join
-          a code, play on one phone). Same row anatomy as the Today rows; a
-          quiet pill, not a glowing slab — the tab used to open on
-          "Sign up to play online" in 17px green with a "You vs ?" card above it. */}
-      {needsAccount && (
-        <div className="todays-seven-secondary mp-row" role="group" aria-label="Play online with friends" style={{marginTop:14}}>
-          <button type="button" className="mp-row-open" onClick={createRoom} aria-label="Sign up to create a room and invite friends">
-            <span className="t7s-icon" aria-hidden="true"><Zap size={20} strokeWidth={2.2} /></span>
-            <span className="t7s-body">
-              <span className="t7s-title">Play online with friends</span>
-              <span className="t7s-sub">Create a room and share a link · needs a free account</span>
-            </span>
-          </button>
-          <button type="button" className="t7s-cta mp-row-invite" onClick={createRoom}>Sign up</button>
-        </div>
-      )}
       </div>{/* /.online-col-b */}
       </div>{/* /.online-cols */}
     </div>
