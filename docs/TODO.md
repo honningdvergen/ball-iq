@@ -1,3 +1,14 @@
+## 2026-09-06 (12:10) — ✅ GUEST-FIRST ONLINE + PROFILE (6d95792, e71cb4c) + STREAK-AT-RISK NUDGE (d55941b) — simulator-verified, pushed
+
+Online for a guest: Join-by-code → Local pass & play (the one green control) → "Play online with friends · create a room and share a
+link · needs a free account · Sign up" as a quiet row; the "You vs ?" scoreboard is signed-in only; Create Room stays green for accounts.
+Profile: the ask sits BELOW the player's own card ("Saved on this phone only · Sign in"), row anatomy; anonymous players keep the
+"attach an email" wording. Reminders: one extra local notification today only when a streak ≥2 is live and today is unplayed, 20:30,
+after the player's own hour, names the streak ("Your 3-day daily streak ends at midnight"). Screenshots online-guest-after.png,
+profile-guest-after.png. ⚠️ Seen, not fixed: the Profile card shows "64 · SILVER" after ONE Footle solve (0.4 default accuracy) — the
+fabricated-rating bug the desktop rail fixed on 08-28 is still live on the mobile card. **Next:** header anchor → onboarding = Footle
+→ craft P3s → the rating-card honesty fix.
+
 ## 2026-09-06 (12:00) — ✅ DAILY TAB → HISTORY (126e446) — simulator-verified, pushed
 
 Alex chose "History tab: streak + recent days, no rows". Both Daily layouts drop the four rows (Home owns them); the tab keeps the
