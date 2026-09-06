@@ -30,7 +30,7 @@ import { useModalA11y, closeTopModal } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { FOOTLE_SHORT } from './lib/modeCopy.js';
-import { APP_NAME, LEVELS, getLevelInfo, computeBadges, MIN_RATED_ANSWERS } from './lib/scoring.js';
+import { APP_NAME, LEVELS, getLevelInfo, computeBadges, MIN_RATED_ANSWERS, getXPForResult } from './lib/scoring.js';
 import { dateToYMD, keyForDate, dayIndexForDate, msToNextLocalMidnight, formatCountdown } from './lib/date.js';
 import { bumpUsage } from './lib/usageCounters.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
@@ -47,6 +47,12 @@ import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard, CARD_TIERS, tierPalette } from './lib/ballIqCard.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
+import { CountUp } from './components/CountUp.jsx';
+import { ResultsCloseBtn } from './components/ResultsCloseBtn.jsx';
+import { WrongAnswersReview } from './components/WrongAnswersReview.jsx';
+import { Results } from './screens/ResultsScreen.jsx';
+import { dailyTierCopy, scoreTagline } from './lib/resultsCopy.js';
+import { stumpLink, shareStumpText, shareSenderName } from './lib/stump.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
   WORDLE_FULL_NAMES,
@@ -4361,22 +4367,6 @@ export function getMpXP(won, score) {
   return Math.max(15, Math.round((score || 0) / 40) + (won ? 50 : 0));
 }
 
-function getXPForResult(score, total, mode) {
-  if (mode === "hotstreak") {
-    // Hot Streak: 5 XP per correct, bonus tiers
-    const tierBonus = score >= 25 ? 100 : score >= 15 ? 50 : score >= 8 ? 20 : 0;
-    return score * 5 + tierBonus;
-  }
-  if (mode === "truefalse") {
-    // True/False: 6 XP per correct, perfect bonus
-    const perfectBonus = score === total ? 40 : 0;
-    return score * 6 + perfectBonus;
-  }
-  const base = score * 10;
-  const bonus = mode === "survival" ? Math.floor(score * 1.5) * 10 : 0;
-  const perfectBonus = score === total && mode !== "survival" ? 50 : 0;
-  return base + bonus + perfectBonus;
-}
 
 
 // ─── BRANDED SHARE CARD (NEW, 390×600 PORTRAIT) ─────────────────────────────
@@ -4974,39 +4964,6 @@ async function shareCard(type, data, opts = {}) {
 // ─── CONFETTI ─────────────────────────────────────────────────────────────────
 // ─── COUNT-UP ANIMATION ───────────────────────────────────────────────────────
 // Animates a number from 0 to `value` over `duration` ms. Triggers haptic on finish.
-function CountUp({ value, duration = 900, delay = 150, triggerHaptic = false, suffix = "", ...rest }) {
-  const [display, setDisplay] = useState(0);
-  const rafRef = useRef(null);
-  const startRef = useRef(null);
-  useEffect(() => {
-    const target = Number(value) || 0;
-    if (target === 0) { setDisplay(0); return; }
-    const timeoutId = setTimeout(() => {
-      const step = (t) => {
-        if (!startRef.current) startRef.current = t;
-        const elapsed = t - startRef.current;
-        const progress = Math.min(1, elapsed / duration);
-        // easeOutCubic
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setDisplay(Math.round(target * eased));
-        if (progress < 1) {
-          rafRef.current = requestAnimationFrame(step);
-        } else {
-          setDisplay(target);
-          if (triggerHaptic && typeof haptic === "function") haptic("correct");
-        }
-      };
-      rafRef.current = requestAnimationFrame(step);
-    }, delay);
-    return () => {
-      clearTimeout(timeoutId);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      startRef.current = null;
-    };
-  }, [value, duration, delay, triggerHaptic]);
-  return <span {...rest}>{display}{suffix}</span>;
-}
-
 export function Confetti() {
   const canvasRef = useRef(null);
   useEffect(() => {
@@ -5128,20 +5085,6 @@ function HardRightBurst({ onComplete }) {
 // risked falling foul of App Store guideline 2.3 (Accurate Metadata).
 // This replacement only states facts about the score the user actually
 // got — no fabricated comparisons.
-// Daily-specific tier copy. Returns the same shape DailySocialProof used
-// (emoji + headline + sub), but extracted so the Results screen can use
-// the headline/sub as the score-tier tagline without rendering the full
-// duplicate-card UI. Daily personality preserved, single celebration.
-function dailyTierCopy(score, total) {
-  const safeTotal = total || 7;
-  const safeScore = Math.max(0, Math.min(safeTotal, score || 0));
-  if (safeScore === safeTotal) return { emoji: "🏆", headline: "Perfect run!",        sub: "All seven correct — flawless." };
-  if (safeScore >= 6)          return { emoji: "🌟", headline: "Excellent!",          sub: "One of those days where it just clicks." };
-  if (safeScore >= 4)          return { emoji: "⚽", headline: "Solid challenge.",    sub: "Some tough ones in there today." };
-  if (safeScore >= 2)          return { emoji: "📈", headline: "Keep going.",         sub: "Tomorrow's another chance to climb." };
-  return                              { emoji: "💪", headline: "Everyone starts somewhere.", sub: "Come back tomorrow for a fresh seven." };
-}
-
 function DailySocialProof({ score, total }) {
   const { emoji, headline, sub } = dailyTierCopy(score, total);
   const safeTotal = total || 7;
@@ -5190,81 +5133,6 @@ function DailySocialProof({ score, total }) {
       </div>
     </div>
   );
-}
-
-// Score-tier tagline shown under the score caption on result screens. Maps a
-// percentage (0-100) to a one-line emotional beat. Used by Results today;
-// other result screens already carry their own emoji+title flavour so they
-// don't render this.
-function scoreTagline(pct) {
-  if (pct <= 30) return "Tough round.";
-  if (pct <= 50) return "Solid effort.";
-  if (pct <= 70) return "Strong showing.";
-  if (pct <= 89) return "Excellent.";
-  return "Brilliant!";
-}
-
-// Shared close button for result screens. Absolutely positioned in the screen's
-// top-right so it doesn't compete with the global wordmark on the left. 44×44px
-// touch target. All result screens use this so the affordance is consistent.
-function ResultsCloseBtn({ onClose }) {
-  return (
-    <button
-      onClick={onClose}
-      aria-label="Close results"
-      style={{
-        position: "absolute",
-        top: 8,
-        right: 0,
-        width: 44,
-        height: 44,
-        borderRadius: 12,
-        border: "1px solid var(--border)",
-        background: "var(--s1)",
-        color: "var(--t2)",
-        fontSize: 20,
-        fontWeight: 600,
-        lineHeight: 1,
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-      }}
-    >
-      ×
-    </button>
-  );
-}
-
-// ── Stump-a-mate: one-question challenge screen (balliq.app/q?id=… link) ────
-// The recipient side of the viral loop: answer a single question with zero
-// login, get the reveal + the hint story, then the chain CTA ("pass it on")
-// and a full-quiz conversion path. Sender side lives in Results (🥜 button).
-// Share-family audit 2026-08-30: an unsigned card converts worse than a
-// signed one — "Alex bets you can't get this" beats "Can you get this one?".
-// Read the name the challenge-share flow already persists (profile.name in
-// biq_profile); no new ask, no new state. Preview-only, like qt/c.
-const shareSenderName = () => {
-  try {
-    return String(JSON.parse(localStorage.getItem("biq_profile") || "{}").name || "").trim().slice(0, 22);
-  } catch { return ""; }
-};
-const stumpLink = (row) => {
-  const p = shareSenderName();
-  return `https://balliq.app/q?id=${row.id}&qt=${encodeURIComponent(row.q.slice(0, 160))}${row.cat ? `&c=${encodeURIComponent(row.cat)}` : ""}${p ? `&p=${encodeURIComponent(p)}` : ""}`;
-};
-
-async function shareStumpText(text) {
-  try {
-    if (navigator.share) { await navigator.share({ text }); return; }
-  } catch { return; } // user cancelled the sheet = done
-  try {
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(text);
-      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: "Link copied 📋" }));
-    }
-  } catch {}
 }
 
 function StumpScreen({ row, onPlayFull, onHome }) {
@@ -5323,366 +5191,6 @@ function StumpScreen({ row, onPlayFull, onHome }) {
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-// Wrong-answer review list — shared by the mobile results stack and the
-// desktop rd-card so the learn-loop survives at every width (desktop used to
-// silently drop it: the list lived inside .rd-mobile, display:none >= 1024).
-// The results screen is the RIGHT home for reporting, and until now it had none.
-// In-quiz, the report control sits on a screen that auto-advances, so it can be
-// gone before the player has finished reading. Here there is no timer, the player
-// is already re-reading the questions they got wrong, and every MCQ mode — daily,
-// classic, club, league, survival, hot streak — ends up on this one component.
-function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
-  // Usage counter INSIDE the guard: an empty review isn't a stats view.
-  useEffect(() => { if (wrongAnswers?.length) bumpUsage('review-viewed'); }, []);
-  if (!wrongAnswers || wrongAnswers.length === 0) return null;
-  return (
-    <div style={{marginTop:24}}>
-      <div className="ds-eyebrow" style={{textAlign:"center", marginBottom:10}}>
-        Review {wrongAnswers.length} missed {wrongAnswers.length === 1 ? "answer" : "answers"}
-      </div>
-      <div className="wrong-review">
-        {wrongAnswers.map((w, i) => (
-          <div key={i} className="wr-item">
-            <div className="wr-q">{w.q}</div>
-            {w.user && (
-              <div className="wr-user">
-                <span className="wr-x">✗</span>{w.user}
-              </div>
-            )}
-            <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
-            {w.hint && <div className="wr-why">{w.hint}</div>}
-            {onReport && (
-              <ReportButton
-                key={w.id != null ? String(w.id) : w.q}
-                onReport={onReport}
-                idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" /> This looks wrong</>}
-                info={{ id: w.id, q: w.q, picked: w.user ?? null, correct: w.correct ?? null, mode }}
-                style={{
-                  marginTop:10, padding:"7px 11px", minHeight:36,
-                  background:"none", border:"1px solid var(--border)", borderRadius:9,
-                  fontSize:12, fontWeight:700,
-                }}
-              />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// TomorrowTeaser (the Daily-7-only return moment) retired 2026-09-06: the
-// return loop is one component for all four dailies — components/DailyDone.jsx.
-function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, dailyDone }) {
-  const isPerfect = result && result.score === result.total && result.total >= 10;
-  const pct = Math.round((result.score / result.total) * 100);
-  useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
-  const isSurvival = mode === "survival";
-  const isSpeed = mode === "speed";
-  const isDaily = mode === "daily";
-
-
-  const xpEarned = getXPForResult(result.score, result.total, mode);
-  const showConfetti = isSurvival ? result.score >= 10 : pct >= 80;
-
-  // Daily 7 is one-shot: "Play Again" would just re-call startMode('daily')
-  // and toast "Already done today" — a dead primary button. Point the CTA at
-  // the OTHER daily loop (Footle) while it's still open; when both dailies
-  // are done, show a non-button "come back tomorrow" state instead.
-  /* ⚠️ READ FOR EVERY MODE, not just the daily. This was isDaily-gated, which
-     meant the daily cross-sell could only ever appear on the ONE results screen
-     whose players are already inside the daily loop. Measured 2026-08-31: 77%
-     of players who enter through a non-daily door never reach a daily game, and
-     of everyone who has ever finished a club quiz, the number whose first app
-     event came on a later day is zero. The door has to exist where the people
-     without it actually are. */
-  const footleToday = readWordleTodayStatus();
-  const footleOpen = footleToday && (footleToday.kind === "ready" || footleToday.kind === "in-progress");
-  const footleCta = footleToday?.kind === "in-progress" ? "Continue today's Footle" : "Play today's Footle";
-
-  // Personal best detection
-  const eligibleForPB = mode === "classic" && result.total === 10;
-  const isNewBest = eligibleForPB && result.score > (classicBest || 0) && result.score > 0;
-
-  // Stump-a-mate ammo (contextual, per Alex's call): prefer the hardest
-  // question that got the player (self-deprecating share beats a brag for
-  // k-factor), else the hardest one they aced. Plain code, NOT hooks — this
-  // askedQuestions rows are the
-  // shuffled play copies, but stumpLink only reads id/q/cat, and the
-  // recipient re-resolves the original row from the bank by id.
-  const diffRank = { hard: 3, medium: 2, easy: 1 };
-  const stumpables = (askedQuestions || []).filter((x) => x && x.id && x.type === "mcq" && Array.isArray(x.o) && x.o.length >= 2);
-  const wrongTexts = new Set((wrongAnswers || []).map((w) => w.q));
-  const stumpWrong = stumpables.filter((x) => wrongTexts.has(x.q));
-  const stumpPool = stumpWrong.length ? stumpWrong : stumpables;
-  const stumpQ = stumpPool.length ? stumpPool.slice().sort((a, b) => (diffRank[b.diff] || 0) - (diffRank[a.diff] || 0))[0] : null;
-  const onStump = () => {
-    if (!stumpQ) return;
-    haptic("soft");
-    const text = stumpWrong.length
-      ? `This one got me 🙈 bet you can't get it either ⚽ ${stumpLink(stumpQ)}`
-      : `I got this one — bet you can't 😏 ⚽ ${stumpLink(stumpQ)}`;
-    shareStumpText(text);
-  };
-  const survivalNewBest = isSurvival && result.score > (survivalBest || 0) && result.score >= 3;
-  const isNewPersonalBest = isNewBest || survivalNewBest;
-
-  // Huge-score display + caption per mode
-  const hugeScore = isSpeed ? (result.speedScore || 0) : result.score;
-  const scoreCaption = isSpeed
-    ? `${result.score} correct out of ${result.total} · speed bonus included`
-    : isSurvival
-    ? (result.score === 0 ? "Out on the first question — it happens to everyone" : `${result.score} in a row before missing one`)
-    : `${result.score} correct out of ${result.total}`;
-  // Best run rides the caption (review C: the amber pill was a third accent on
-  // a screen that already has green and gold). Hidden below 3 — noise.
-  const bestRun = !isSurvival && result.bestStreak != null && result.bestStreak >= 3 && result.bestStreak < result.total ? result.bestStreak : 0;
-
-  // One primary. Whichever daily is still open wins it, "Play again" demotes to
-  // the quiet row — except a Survival death on the first question, where the
-  // only honest next step is the same run again.
-  const dailyCta = dailyOpen && onPlayDaily ? { label: "Play today's Daily 7", onClick: onPlayDaily }
-    : footleOpen ? { label: footleCta, onClick: onPlayFootle } : null;
-  const retryDemoted = !!dailyCta && !(isSurvival && result.score === 0);
-
-  // ── desktop-web-refresh (Results #03): values for the >=1024 card (circular
-  //  score badge · per-question dots · stat tiles). Render-always / CSS-revealed
-  //  via the .rd-desktop wrapper; the mobile results is wrapped in .rd-mobile
-  //  (display:contents→none at desktop) so it stays byte-identical. ──
-  const RD_MODE_LABEL = { classic:"Classic", speed:"Speed Round", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos" };
-  const rdSubtitle = [RD_MODE_LABEL[mode] || "Quiz", label].filter(Boolean).join(" · ");
-  const rdDots = (() => {
-    const arr = Array.isArray(result.allAnswers) ? result.allAnswers.map(a => a.isCorrect === true) : [];
-    while (arr.length < result.total) arr.push(false); // timed-out / unanswered → miss
-    return arr.slice(0, result.total);
-  })();
-  const rdTier = isDaily ? dailyTierCopy(result.score, result.total).headline : scoreTagline(pct);
-  const rdBestStreak = result.bestStreak != null ? result.bestStreak : 0;
-
-  return (
-    <div className="screen" style={{paddingTop:8, position:"relative"}}>
-      {(isPerfect || showConfetti) && <Confetti />}
-      <div className="rd-mobile">
-      <ResultsCloseBtn onClose={onHome} />
-
-      {/* Final score eyebrow + huge green number + caption */}
-      <div style={{textAlign:"center", padding:"20px 0 8px"}}>
-        <div className="ds-eyebrow">Final score</div>
-        <div
-          className="numeric"
-          style={{
-            marginTop:8,
-            fontSize:88,
-            fontWeight:900,
-            // Green is the app's "this went well" signal — earned, not automatic.
-            // A zero (Survival's first-question death, a blank round) reads in
-            // the quiet text colour with no glow (review C10).
-            color: hugeScore > 0 ? "var(--accent)" : "var(--t2)",
-            letterSpacing:"-0.03em",
-            lineHeight:1,
-            textShadow: hugeScore > 0 ? "0 8px 32px rgba(88,204,2,0.35)" : "none",
-          }}
-        >
-          <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
-        </div>
-        <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{scoreCaption}{bestRun ? <> · best run <span className="numeric">{bestRun}</span> in a row</> : null}</div>
-        {/* Score-tier tagline. Daily uses the daily-specific tier copy so
-            the personality from the old DailySocialProof callout is kept
-            ("Tomorrow's another chance to climb" etc.) without the
-            duplicate card. Survival skips — its caption + PB callout
-            already carry the moment. */}
-        {isDaily ? (() => {
-          const { headline, sub } = dailyTierCopy(result.score, result.total);
-          return (
-            <>
-              <div style={{marginTop:6, fontSize:15, color:"var(--t1)", fontWeight:700}}>{headline}</div>
-              <div style={{marginTop:2, fontSize:13, color:"var(--t3)", fontWeight:500}}>{sub}</div>
-            </>
-          );
-        })() : isSurvival ? (result.score === 0 && (
-          <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
-            One wrong answer ends a run. The next one starts clean.
-          </div>
-        )) : (
-          <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
-            {scoreTagline(pct)}
-          </div>
-        )}
-        {isNewPersonalBest && (
-          <div style={{marginTop:10, display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"var(--gold)"}}>
-            <Star size={14} strokeWidth={2.4} aria-hidden="true" />
-            <span>Personal best{isNewBest && classicBest ? ` — was ${classicBest}` : survivalNewBest && survivalBest ? ` — was ${survivalBest}` : ""}</span>
-          </div>
-        )}
-        {/* XP indicator promoted into the celebration moment — was a muted
-            footer below the buttons; now sits with the score in gold so it
-            reads as a reward rather than a footnote. Gold matches XP
-            theming elsewhere in the app (toasts, level-up overlay). */}
-        {xpEarned > 0 && (
-          <div style={{marginTop:14, fontSize:14, color:"var(--gold)", fontWeight:700}}>
-            +{xpEarned} XP
-          </div>
-        )}
-      </div>
-
-      {result.winner && (
-        <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:6, margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}><Trophy size={16} strokeWidth={2.4} aria-hidden="true" />{result.winner} wins!</div>
-      )}
-
-      {/* Two-tier action stack: filled green primary, ghost secondaries.
-          Amber Share was dropped for cross-screen consistency — Share is a
-          secondary action everywhere now. */}
-      {/* ⚠️ AFTER the game, never before it. Alex asked for a nudge to set a
-          profile picture "the first time they open the app"; the measurement
-          argued it down to here and he agreed. 36.2% of accounts never play a
-          single game, and the five-star sign-up blocker was LITERALLY a
-          mandatory step in that same gap — the username wall rejecting Apple
-          and Google's own pre-filled names. Another step before the first game
-          is the same bet, placed again. Here they have just finished
-          something, there is a score to attach a face to, and it costs zero
-          activation. */}
-      {photoNudge}
-
-      {/* Daily 7: the return loop — streak, countdown + remind, share, how
-          everyone did, the other open dailies. One component for all four
-          dailies (components/DailyDone.jsx); the edition is the day index. */}
-      {isDaily && dailyDone && (
-        <div style={{marginTop:18}}>
-          <DailyDone game="daily7" edition={dayIndexForDate(new Date())} won bucket={result.score}
-            streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp}
-            save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} />
-        </div>
-      )}
-
-      {isDaily ? (
-        <>
-          {/* Daily 7: the panel IS the action set — share, remind, stump a mate,
-              save. What is left is the review of what got you, then the way out. */}
-          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
-          <div className="results-actions" style={{marginTop:18}}>
-            <button className="results-exit" onClick={onHome}>Back to Home</button>
-          </div>
-        </>
-      ) : (
-        <>
-          {/* One primary, a row of two quiet buttons, a text link, the way out.
-              Five stacked buttons in three weights (review C9) asked the player
-              to rank the app's wishes; this ranks them for them. */}
-          <div className="results-actions" style={{marginTop:18}}>
-            {retryDemoted
-              ? <button className="btn-3d" onClick={dailyCta.onClick}>{dailyCta.label}</button>
-              : <button className="btn-3d" onClick={onRetry}>{isSurvival ? "Go again" : "Play again"}</button>}
-            <div className="results-row">
-              {retryDemoted && <button className="btn-3d ghost" onClick={onRetry}>Play again</button>}
-              <button className="btn-3d ghost" onClick={onShare}>Share score</button>
-              {!retryDemoted && stumpQ && <button className="btn-3d ghost" onClick={onStump}>Stump a mate</button>}
-            </div>
-            {retryDemoted && stumpQ && <button className="results-link" onClick={onStump}>Stump a mate with a question</button>}
-            <button className="results-exit" onClick={onHome}>Back to Home</button>
-          </div>
-          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
-        </>
-      )}
-      </div>{/* /.rd-mobile */}
-
-      {/* ── desktop-web-refresh (Results #03): centered card. display:none <1024;
-          revealed at desktop where .rd-mobile is hidden. Standalone PWA resets
-          both so installed desktop shells keep the mobile results. ── */}
-      <div className="rd-desktop">
-        <div className="rd-card">
-          {/* ⚠️ SURVIVAL IS NOT A ROUND. This card was added in the desktop
-              refresh and inherited none of the survival handling the mobile
-              results above had already worked out, so a sudden-death run ended
-              on "Round complete · 0/1 · 0% accuracy · Tough round." — a
-              denominator for a mode whose whole point is that there isn't one,
-              and a first-timer's very first Survival death reading 0/1/0%/+0/0.
-              The Daily tab now routes finished days straight into Survival, so
-              this is a first impression, not an edge case.
-              Every branch below mirrors a decision the mobile hero already
-              made: no denominator, the run caption instead of a percentage
-              tier, and the personal-best callout. */}
-          <div className="rd-eyebrow">{isSurvival ? "Run over" : "Round complete"}</div>
-          <div className="rd-sub">{rdSubtitle}</div>
-          <div className="rd-badge">
-            <div className="rd-badge-score">
-              {result.score}
-              {!isSurvival && <span className="rd-badge-total">/{result.total}</span>}
-            </div>
-            {/* Mobile deliberately skips the percentage tagline for survival —
-                the caption and the PB carry the moment, and a percentage of a
-                run you died in is noise. Kept SHORT here rather than reusing
-                mobile's full scoreCaption: this sits inside a circular badge,
-                and the long form wrapped to two lines and pushed against the
-                curve. The number already says how many; this says of what. */}
-            <div className="rd-badge-tier">{isSurvival ? "in a row" : rdTier}</div>
-          </div>
-          {/* Dots are a per-question map of a fixed-length round. A survival run
-              has no fixed length — a long one would spray dozens of them across
-              the card — and the streak number is already the whole story. */}
-          {!isSurvival && (
-            <div className="rd-dots" aria-hidden="true">
-              {rdDots.map((ok, i) => (
-                <span key={i} className={`rd-dot ${ok ? "ok" : "no"}`}>{ok ? "✓" : "✗"}</span>
-              ))}
-            </div>
-          )}
-          {isNewPersonalBest && (
-            <div className="rd-pb">
-              <Star size={14} strokeWidth={2.4} aria-hidden="true" />
-              <span>
-                Personal best
-                {isNewBest && classicBest ? ` — was ${classicBest}`
-                  : survivalNewBest && survivalBest ? ` — was ${survivalBest}` : ""}
-              </span>
-            </div>
-          )}
-          <div className="rd-tiles">
-            {/* Accuracy on a sudden-death run is always "everything until the one
-                that ended it", so it carries no information. What a survival
-                player actually wants is the number to beat. */}
-            {isSurvival ? (
-              // "—" not "0" with no PB yet. A first run already shows +0 XP and
-              // best streak 0; a third hard zero reads like the app failed to
-              // record something rather than like a record waiting to be set.
-              <div className="rd-tile"><div className="rd-tile-v">{survivalBest > 0 ? survivalBest : "—"}</div><div className="rd-tile-k">Best ever</div></div>
-            ) : (
-              <div className="rd-tile"><div className="rd-tile-v">{pct}%</div><div className="rd-tile-k">Accuracy</div></div>
-            )}
-            <div className="rd-tile"><div className="rd-tile-v rd-amber">+{xpEarned}</div><div className="rd-tile-k">XP earned</div></div>
-            <div className="rd-tile"><div className="rd-tile-v rd-green">{rdBestStreak}</div><div className="rd-tile-k">Best streak</div></div>
-          </div>
-          {isDaily && dailyDone && (
-            <div style={{margin:"18px 0"}}>
-              <DailyDone game="daily7" edition={dayIndexForDate(new Date())} won bucket={result.score}
-                streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp}
-                save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} />
-            </div>
-          )}
-          <div className="rd-actions">
-            {!isDaily && dailyOpen && onPlayDaily && (
-              <button className="rd-btn rd-btn-primary" onClick={onPlayDaily}>Play today&#39;s Daily 7</button>
-            )}
-            {!isDaily && !dailyOpen && footleOpen && (
-              <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>
-            )}
-            {!isDaily && <button className={`rd-btn ${(dailyOpen && onPlayDaily) || footleOpen ? "rd-btn-ghost" : "rd-btn-primary"}`} onClick={onRetry}>Play again</button>}
-            <button className="rd-btn rd-btn-ghost" onClick={onHome}>Home</button>
-            {!isDaily && <button className="rd-btn rd-btn-ghost" onClick={onShare}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
-              Share
-            </button>}
-            {stumpQ && !isDaily && <button className="rd-btn rd-btn-ghost" onClick={onStump}>Stump a mate</button>}
-          </div>
-        </div>
-        {/* Same review loop as mobile — constrained to the rd-card column. */}
-        <div style={{maxWidth:560, margin:"0 auto"}}>
-          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
-        </div>
-      </div>
     </div>
   );
 }

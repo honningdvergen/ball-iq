@@ -92,3 +92,21 @@ export function computeBadges(stats, xp, loginStreak) {
   if (xp >= 3000)                       e.add("legend_xp");
   return e;
 }
+
+// XP for a finished round, per mode. Moved from App.jsx on 2026-09-06 (E16).
+export function getXPForResult(score, total, mode) {
+  if (mode === "hotstreak") {
+    // Hot Streak: 5 XP per correct, bonus tiers
+    const tierBonus = score >= 25 ? 100 : score >= 15 ? 50 : score >= 8 ? 20 : 0;
+    return score * 5 + tierBonus;
+  }
+  if (mode === "truefalse") {
+    // True/False: 6 XP per correct, perfect bonus
+    const perfectBonus = score === total ? 40 : 0;
+    return score * 6 + perfectBonus;
+  }
+  const base = score * 10;
+  const bonus = mode === "survival" ? Math.floor(score * 1.5) * 10 : 0;
+  const perfectBonus = score === total && mode !== "survival" ? 50 : 0;
+  return base + bonus + perfectBonus;
+}

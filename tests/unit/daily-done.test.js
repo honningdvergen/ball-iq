@@ -12,6 +12,8 @@ import { fileURLToPath } from 'node:url';
  */
 const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8');
 const APP = read('../../src/App.jsx');
+// The Daily 7 host is the Results screen, extracted from App.jsx on 2026-09-06 (E16).
+const RESULTS = read('../../src/screens/ResultsScreen.jsx');
 const DD = read('../../src/components/DailyDone.jsx');
 const CSS = read('../../src/components/dailyDone.css');
 const LIB = read('../../src/lib/dailyResults.js');
@@ -28,7 +30,7 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(HOSTS.footle).toMatch(/<DailyDone[\s\S]*?game="footle"/);
     expect(HOSTS.trail).toMatch(/<DailyDone[\s\S]*?game="trail"/);
     expect(HOSTS.mystery.match(/<DailyDone[\s\S]*?game="mystery"/g) || []).toHaveLength(2); // won + gave up
-    expect(APP.match(/<DailyDone game="daily7"/g) || []).toHaveLength(2);                 // mobile + desktop card
+    expect(RESULTS.match(/<DailyDone game="daily7"/g) || []).toHaveLength(2);             // mobile + desktop card
   });
 
   it('the old per-game finish pieces are gone', () => {
