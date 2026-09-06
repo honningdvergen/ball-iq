@@ -409,7 +409,7 @@ function HomeScreenImpl({
               <span className="daily-zone-eyebrow">Today</span>
               <button type="button" className={`daily-zone-status hit44${allDone ? " is-done" : ""}`}
                 onClick={() => setTab("daily")}
-                aria-label={allDone ? `All ${total} of today's puzzles done — open the Daily tab` : `${doneCount} of ${total} puzzles played today — open the Daily tab`}>
+                aria-label={allDone ? `All ${total} of today's puzzles done — open History` : `${doneCount} of ${total} puzzles played today — open History`}>
                 {allDone ? `${total}/${total} done` : `${doneCount}/${total} today`}
                 <span aria-hidden="true" style={{ marginLeft: 5, opacity: 0.7 }}>›</span>
               </button>

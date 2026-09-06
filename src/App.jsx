@@ -13916,7 +13916,7 @@ function AppInner() {
             {[
               { id:"home",     Icon: Home,         label:"Home"    },
               { id:"online",   Icon: Globe,        label:"Online"  },
-              { id:"daily",    Icon: CalendarDays, label:"Daily",  badge: !dailyDone },
+              { id:"daily",    Icon: CalendarDays, label:"History", badge: false },
               { id:"profile",  Icon: User,         label:"Profile" },
             ].map(({ id, Icon, label, badge }) => (
               <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => setTab(id)}>

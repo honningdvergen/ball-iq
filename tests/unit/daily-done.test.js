@@ -82,14 +82,14 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(MIG).toMatch(/security definer/i);
   });
 
-  it('the Daily tab lists the four puzzles in the SAME row anatomy as Home', () => {
-    // One product, two screens: the tab wore tinted cards + per-mode Play pills
-    // for a day after Home moved to one green Play. Both draw .todays-seven-secondary.
+  it('the History tab (ex-Daily) lists NO puzzle rows — those live on Home only', () => {
+    // Alex, 2026-09-06: Home and the Daily tab listed the same four puzzles.
+    // The tab keeps the countdown, streak strip, recent days and archive.
     const DAILY = read('../../src/screens/DailyScreen.jsx');
-    expect(DAILY).toMatch(/className=\{`todays-seven-secondary \$\{m\.key\}-row/);
-    expect(DAILY).toMatch(/"--mode": mode, "--mode-rgb": rgb/);
-    expect(DAILY).toMatch(/className="daily-zone-head"/);
-    expect(DAILY, 'no per-mode tinted card or button in the today rows').not.toMatch(/background: m\.theme\.card|m\.theme\.btnBg/);
+    expect(DAILY).not.toMatch(/todays-seven-secondary/);
+    expect(DAILY).not.toMatch(/background: m\.theme\.card|m\.theme\.btnBg/);
+    expect(DAILY).toMatch(/>History<\/div>/);
+    expect(APP).toMatch(/id:"daily",\s*Icon: CalendarDays, label:"History", badge: false/);
     expect(DAILY, 'result strings carry no glyphs').not.toMatch(/`[✓✗] /);
   });
 

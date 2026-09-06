@@ -758,7 +758,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               {authLoading ? <b style={{ color: "var(--t1)", fontWeight: 700 }}>…</b> : name ? <b style={{ color: "var(--t1)", fontWeight: 700 }}>{name}</b> : null}
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 2 }}>
-              <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>Daily</div>
+              <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>History</div>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
                 <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
                 <span style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
@@ -769,35 +769,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                 Mystery only appear on days they actually have an answer, so the
                 count is derived, never "of 2". */}
             <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
-              {/* Same head + row anatomy as Home's Today block (2026-09-06): the
-                  tab wore its own tinted cards, per-mode Play pills and washes
-                  for a day after Home moved to one green Play — two screens,
-                  one product. Classes come from app.css (.daily-zone-head,
-                  .todays-seven-secondary / .t7s-*); the mode colour rides in
-                  --mode / --mode-rgb and lands on the icon well only. */}
-              <div className="daily-zone-head" style={{ marginBottom: 0 }}>
-                <span className="daily-zone-eyebrow">Today <span style={{ fontWeight: 600, color: "var(--t3)" }}>· {todayLabel}</span></span>
-                <span className="daily-zone-status" style={{ cursor: "default", fontVariantNumeric: "tabular-nums" }}>{playedCount} of {todayModes.length} played</span>
-              </div>
-              {todayModes.map(m => {
-                const Row = (m.done && !m.replay) ? "div" : "button";
-                const mode = MODE_ACCENT[m.key], rgb = MODE_RGB[m.key];
-                return (
-                  <Row key={m.key}
-                    className={`todays-seven-secondary ${m.key}-row${m.done ? " is-done" : ""}`}
-                    style={{ "--mode": mode, "--mode-rgb": rgb, margin: 0, cursor: Row === "div" ? "default" : "pointer" }}
-                    {...(Row === "button" ? { type: "button", onClick: m.onTap, "aria-label": m.done ? `${m.name} — ${m.result} — review` : `${m.cta} ${m.name}` } : { role: "group", "aria-label": `${m.name} — ${m.result}` })}>
-                    <span className="t7s-icon" aria-hidden="true"><ModeGlyph mode={m.key} size={22} /></span>
-                    <span className="t7s-body">
-                      <span className="t7s-title">{m.name}</span>
-                      <span className="t7s-sub">{m.done ? m.result : m.sub}</span>
-                    </span>
-                    {/* One green Play; a decided day gets the quiet pill — Review
-                        where the board can be reopened, the score where it can't. */}
-                    <span className="t7s-cta">{m.done ? (m.replay ? "Review" : m.result) : m.cta}</span>
-                  </Row>
-                );
-              })}
+              {/* HISTORY, not a second Today (Alex, 2026-09-06). The four rows live
+                  on Home only; this tab keeps what Home does not have — the
+                  countdown, the streak strip, the recent-days table and the
+                  archive. Day-complete and streak-repair still belong here. */}
               <StreakRepairBanner repair={streakRepair} open={dayOpen} />
               {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} />}
             </div>
@@ -932,7 +907,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             <>
               {/* Header: title + amber countdown pill */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div style={{ fontSize: 27, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>Daily</div>
+                <div style={{ fontSize: 27, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>History</div>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
                   <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
                   <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
@@ -942,32 +917,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               <div style={{ display: "grid", gridTemplateColumns: "1.55fr 0.9fr", gap: 22, marginTop: 22, alignItems: "start" }}>
                 {/* ── LEFT column ── */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t3)" }}>Today</span>
-                    <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 700, color: "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{playedCount} / {todayModes.length} played</span>
-                  </div>
-
-                  {/* One row-card per live mode — same todayModes the mobile
-                      layout renders, so the two can't drift apart again. */}
-                  {/* Same anatomy as the mobile rows and Home (2026-09-06). */}
-                  {todayModes.map(m => {
-                    const Row = (m.done && !m.replay) ? "div" : "button";
-                    const mode = MODE_ACCENT[m.key], rgb = MODE_RGB[m.key];
-                    return (
-                      <Row key={m.key}
-                        className={`todays-seven-secondary ${m.key}-row${m.done ? " is-done" : ""}`}
-                        style={{ "--mode": mode, "--mode-rgb": rgb, margin: 0, cursor: Row === "div" ? "default" : "pointer" }}
-                        {...(Row === "button" ? { type: "button", onClick: m.onTap, "aria-label": m.done ? `${m.name} — ${m.result} — review` : `${m.cta} ${m.name}` } : { role: "group", "aria-label": `${m.name} — ${m.result}` })}>
-                        <span className="t7s-icon" aria-hidden="true"><ModeGlyph mode={m.key} size={21} /></span>
-                        <span className="t7s-body">
-                          <span className="t7s-title">{m.name}</span>
-                          <span className="t7s-sub">{m.done ? m.result : m.subLong}</span>
-                        </span>
-                        <span className="t7s-cta">{m.done ? (m.replay ? "Review" : m.result) : m.cta}</span>
-                      </Row>
-                    );
-                  })}
-
+                  {/* Rows live on Home (2026-09-06); this column is the day's streak + history. */}
                   <StreakRepairBanner repair={streakRepair} open={dayOpen} wide />
                   {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide todayYMD={todayYMD} />}
 
