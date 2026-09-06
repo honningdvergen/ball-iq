@@ -1,3 +1,20 @@
+## 2026-09-06 (20:00) — ✅ WATFORD + QPR LIVE (95 packs, 7,045 questions) · online tab + stadium picker reworked · Sheffield Wednesday was a season stale
+
+Picked up the other session's stranded 09-04 forge rather than starting a new one. Cost: 18 strong within-pack answer leaks
+reworded or dropped, per-question era classification (the forge output carries no `cat` and add-questions defaults to
+**Ligue1** — that would have filed 78 English questions under Ligue 1), adversarial fact-check (Watford 36 keep/3 fix — one
+distractor named a player who signed five months after the match; QPR 38 keep/1 fix), page prose drafted from a judge panel
+and fact-checked twice. 39 questions each. Divisions verified against 5 and 4 independent domains — never guessed.
+
+Also: Online tab is one offer instead of six elements explaining one button; the Stadiums picker stopped keeping a private
+copy of the five leagues (it read PL/LL/SA/BL with a yellow Ligue 1 against the League Quiz's EPL/LAL/SEA/BUN and navy) and
+now reads LEAGUE_QUIZ_BY_CAT for both code and colour, rows washed to match. Today tiles carry mode colour again (Alex).
+⚠️ **Sheffield Wednesday's page claimed Championship after relegation to League One** — club-competition.mjs hand-sets ~37
+divisions and they rot every summer. Full audit of the remaining entries in flight; re-audit every August.
+
+**NEXT:** finish the division audit · the 5 priorities (Clubs tab, first-session activation, Profile empty state, push reach)
+· Eintracht Frankfurt is the next club frontier.
+
 ## 2026-09-06 (19:20) — ✅ E16: 10 SCREEN BRICKS + 6 HOOKS OUT OF App.jsx (14,027 → 9,180) + LAZY OFF-PATH SCREENS (Home eager JS 831 → 768 KB) + consent banner yields to dialogs — `.audit/senior-review-2026-09-06/REVIEW.md` § E16 progress
 
 Results, local pass & play, Online hub, Stump, Privacy, Settings, Onboarding, Hot Streak/True-or-False results — each a

@@ -25,18 +25,28 @@
 
 /** CLUBS[].club (the pack key) -> the exact `league` string in leagues.mjs. */
 export const CLUB_COMPETITION = {
-  // ⚠️ Added 2026-08-13 with the South Coast / second-tier wave. All four play
-  // in the Championship in the 2026-27 leagues.mjs roster — Southampton and
-  // Sheffield Wednesday are the ones people assume are top-flight, and are not.
+  // ⚠️ Added 2026-08-13 with the South Coast / second-tier wave. Southampton is
+  // the one people assume is top-flight and is not.
+  //
+  // ⚠️ EVERY VALUE IN THIS FILE HAS A SHELF LIFE, and it prints as text on a
+  // public page. A full audit against live sources on 2026-09-06 checked all 35
+  // entries: 33 were right, two had rotted — Sheffield Wednesday (relegated to
+  // League One) and Saint-Étienne (Ligue 2). Re-audit every August, after the
+  // promotion and relegation window closes. Never write one of these from
+  // memory: the season turns over faster than any model's knowledge of it.
   'Southampton': 'Championship',
   'Portsmouth': 'Championship',
   'Birmingham City': 'Championship',
-  'Sheffield Wednesday': 'Championship',
+  // Relegated to League One — verified 2026-09-06 against the club's season
+  // page, the League One table and the contemporaneous relegation report.
+  'Sheffield Wednesday': 'League One',
   'Wrexham': 'Championship',
   'Norwich City': 'Championship',
   'Middlesbrough': 'Championship',
   'West Brom': 'Championship',
   'Sheffield United': 'Championship',
+  'Watford': 'Championship',
+  'Queens Park Rangers': 'Championship', // leagues.mjs: "QPR"
   'Blackburn Rovers': 'Championship',
   'Cardiff City': 'Championship',
   'Stoke City': 'Championship',
@@ -86,7 +96,9 @@ export const CLUB_COMPETITION = {
 
   Basel: 'Swiss Super League',
   'Red Star Belgrade': 'Serbian SuperLiga',
-  'Saint-Étienne': 'Ligue 1',
+  // Ligue 2 — verified 2026-09-06 against the club's own fixture calendar
+  // (asse.fr /calendrier-ligue-2-bkt/) and the Ligue 2 season page.
+  'Saint-Étienne': 'Ligue 2',
 };
 
 /**

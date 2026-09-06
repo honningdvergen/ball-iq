@@ -765,6 +765,7 @@ export const CLUB_PACK_TO_QB = {
   Birmingham: "Birmingham City", Cardiff: "Cardiff City", Derby: "Derby County",
   Norwich: "Norwich City", Portsmouth: "Portsmouth", SheffWed: "Sheffield Wednesday",
   Middlesbrough: "Middlesbrough", WestBrom: "West Brom", SheffUtd: "Sheffield United", Blackburn: "Blackburn Rovers",
+  Watford: "Watford", QPR: "Queens Park Rangers",
   Southampton: "Southampton", Stoke: "Stoke City", Swansea: "Swansea City",
   Wrexham: "Wrexham",
   Leipzig: "RB Leipzig",
@@ -824,6 +825,7 @@ export const CLUB_LEAGUES = {
   Brentford: "england", Sunderland: "england", Ipswich: "england", Wolves: "england",
   Burnley: "england", Southampton: "england", Norwich: "england", Derby: "england",
   Middlesbrough: "england", WestBrom: "england", SheffUtd: "england", Blackburn: "england",
+  Watford: "england", QPR: "england",
   Stoke: "england", Birmingham: "england", SheffWed: "england", Coventry: "england",
   HullCity: "england", Portsmouth: "england", Cardiff: "england", Swansea: "england",
   Wrexham: "england",
@@ -848,7 +850,7 @@ export const CLUB_LEAGUES = {
 };
 // Position within a country, from the order above. Unknown keys sort last so a
 // club added to CLUB_PACKS but not here still renders instead of vanishing.
-export const CLUB_ORDER = Object.fromEntries(Object.values({"england": ["Arsenal", "ManUtd", "Liverpool", "ManCity", "Chelsea", "Tottenham", "Newcastle", "Everton", "Villa", "WestHam", "Forest", "Leeds", "Palace", "Fulham", "Brighton", "Bournemouth", "Brentford", "Sunderland", "Ipswich", "Wolves", "Burnley", "Southampton", "Leicester", "Norwich", "Derby", "Stoke", "Birmingham", "SheffWed", "Coventry", "HullCity", "Portsmouth", "Cardiff", "Swansea", "Wrexham", "Middlesbrough", "WestBrom", "SheffUtd", "Blackburn"], "spain": ["RealMadrid", "Barcelona", "Atletico", "Sevilla", "Valencia", "Athletic", "Betis", "RealSociedad"], "italy": ["Juventus", "AcMilan", "InterMilan", "Napoli", "Roma", "Lazio", "Atalanta", "Fiorentina", "Torino", "Parma"], "germany": ["BayernMunich", "Dortmund", "Leverkusen", "Leipzig", "Schalke", "Hamburg"], "france": ["PSG", "Marseille", "Lyon", "Monaco", "SaintEtienne"], "portugal": ["Benfica", "Porto", "Sporting"], "netherlands": ["Ajax", "PSV", "Feyenoord"], "turkiye": ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"], "scotland": ["Celtic", "Rangers"], "belgium": ["Anderlecht", "ClubBrugge"], "croatia": ["DinamoZagreb", "Hajduk"], "brazil": ["Flamengo", "Palmeiras", "Corinthians", "Santos"], "argentina": ["Boca", "River"], "other": ["RedStar", "Basel", "Olympiacos", "Panathinaikos"]}).flat().map((k, i) => [k, i]));
+export const CLUB_ORDER = Object.fromEntries(Object.values({"england": ["Arsenal", "ManUtd", "Liverpool", "ManCity", "Chelsea", "Tottenham", "Newcastle", "Everton", "Villa", "WestHam", "Forest", "Leeds", "Palace", "Fulham", "Brighton", "Bournemouth", "Brentford", "Sunderland", "Ipswich", "Wolves", "Burnley", "Southampton", "Leicester", "Norwich", "Derby", "Stoke", "Birmingham", "SheffWed", "Coventry", "HullCity", "Portsmouth", "Cardiff", "Swansea", "Wrexham", "Middlesbrough", "WestBrom", "SheffUtd", "Blackburn", "Watford", "QPR"], "spain": ["RealMadrid", "Barcelona", "Atletico", "Sevilla", "Valencia", "Athletic", "Betis", "RealSociedad"], "italy": ["Juventus", "AcMilan", "InterMilan", "Napoli", "Roma", "Lazio", "Atalanta", "Fiorentina", "Torino", "Parma"], "germany": ["BayernMunich", "Dortmund", "Leverkusen", "Leipzig", "Schalke", "Hamburg"], "france": ["PSG", "Marseille", "Lyon", "Monaco", "SaintEtienne"], "portugal": ["Benfica", "Porto", "Sporting"], "netherlands": ["Ajax", "PSV", "Feyenoord"], "turkiye": ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"], "scotland": ["Celtic", "Rangers"], "belgium": ["Anderlecht", "ClubBrugge"], "croatia": ["DinamoZagreb", "Hajduk"], "brazil": ["Flamengo", "Palmeiras", "Corinthians", "Santos"], "argentina": ["Boca", "River"], "other": ["RedStar", "Basel", "Olympiacos", "Panathinaikos"]}).flat().map((k, i) => [k, i]));
 export const CLUB_LEAGUE_SECTIONS = [
   // ── SECTIONS ARE COUNTRIES, NOT LEAGUES ────────────────────────────────────
   // Alex, 2026-08-23, on seeing Birmingham and Cardiff heading the Premier
@@ -929,6 +931,7 @@ export const CLUB_ABBR = {
   Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU", Leicester: "LEI", Olympiacos: "OLY", Panathinaikos: "PAO",
   Sunderland: "SUN", Ipswich: "IPS", Palace: "CRY", Fulham: "FUL", Brighton: "BHA",
   Middlesbrough: "MID", WestBrom: "WBA", SheffUtd: "SHU", Blackburn: "BLA",
+  Watford: "WAT", QPR: "QPR",
   Bournemouth: "BOU", Brentford: "BRE", Burnley: "BUR", Wolves: "WOL",
   Coventry: "COV", HullCity: "HUL",
   Athletic: "ATH", Sevilla: "SEV", Betis: "BET", Schalke: "S04", Hamburg: "HSV",
@@ -944,6 +947,7 @@ const CLUB_SLUG_TO_PACK = {
   "birmingham-city": "Birmingham", "cardiff-city": "Cardiff",
   "derby-county": "Derby", "norwich-city": "Norwich", "portsmouth": "Portsmouth",
   "middlesbrough": "Middlesbrough", "west-brom": "WestBrom", "sheffield-united": "SheffUtd", "blackburn-rovers": "Blackburn",
+  "watford": "Watford", "queens-park-rangers": "QPR",
   "sheffield-wednesday": "SheffWed", "southampton": "Southampton",
   "stoke-city": "Stoke", "swansea-city": "Swansea", "wrexham": "Wrexham",
   "rb-leipzig": "Leipzig",
@@ -1519,6 +1523,8 @@ export const CLUB_PACKS = {
   WestBrom:    { name: "West Brom",          icon: "🔵", color: "#122F67", questions: [] },
   SheffUtd:    { name: "Sheffield United",   icon: "⚔️", color: "#EE2737", questions: [] },
   Blackburn:   { name: "Blackburn Rovers",   icon: "🔷", color: "#009EE0", questions: [] },
+  Watford:     { name: "Watford",             icon: "🐝", color: "#F2E23A", questions: [] },
+  QPR:         { name: "Queens Park Rangers", icon: "⭕", color: "#1D5BA4", questions: [] },
   Portsmouth:  { name: "Portsmouth",          icon: "⚓", color: "#001489", questions: [] },
   SheffWed:    { name: "Sheffield Wednesday", icon: "🦉", color: "#0066B3", questions: [] },
   Southampton: { name: "Southampton",         icon: "⛵", color: "#D71920", questions: [] },

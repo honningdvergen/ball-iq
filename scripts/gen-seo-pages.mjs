@@ -261,6 +261,7 @@ const PAGE_FG = '#F0F1F5';
 // landing pages read as one system with balliq.app/.
 const CLUB_BADGE = {
   'leicester-city': 'LEI',
+  watford: 'WAT', 'queens-park-rangers': 'QPR',
   'olympiacos': 'OLY',
   'panathinaikos': 'PAO',
   'derby-county': 'DER', 'swansea-city': 'SWA',
@@ -326,6 +327,8 @@ const clubOgImage = ({ name, badge, color, kind }) => {
 // badges (Juventus, Newcastle) legible on the near-black cards.
 const CLUB_COLOR = {
   'leicester-city': '#003090',
+  'watford': '#F2E23A',
+  'queens-park-rangers': '#1D5BA4',
   'olympiacos': '#DA020E',
   'panathinaikos': '#00614E',
   'derby-county': '#FFFFFF', 'swansea-city': '#FFFFFF',
@@ -5184,6 +5187,8 @@ const cdSlug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').r
 // Directory display name → CLUBS.name where they differ (design short forms).
 const DIR_ALIAS = {
   'Coventry': 'Coventry City',
+  // leagues.mjs stores the short form; the bank and the page use the full name.
+  'QPR': 'Queens Park Rangers',
   'Sheffield Utd': 'Sheffield United',
   'Blackburn': 'Blackburn Rovers',
   'Man United': 'Manchester United',

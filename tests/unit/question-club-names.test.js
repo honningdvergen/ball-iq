@@ -33,7 +33,18 @@ describe('question bank club names', () => {
   const count = (c) => QB.filter((q) => q.club === c).length;
   const words = (c) => c.trim().split(/\s+/);
 
+  // ⚠️ ONE exception, and it is not a short form of anything. Rangers play in
+  // Glasgow and Queens Park Rangers play in west London: two clubs, two
+  // countries, and the detector's stated design ("does not fire on genuinely
+  // distinct clubs that merely share a word") simply did not anticipate a
+  // distinct pair where one name ends with the other. Every OTHER hit is a
+  // split and the fix is still to rename the newcomer — do not grow this list
+  // to silence a real one. Both spellings must already be in the bank for the
+  // exemption to mean anything, so it is asserted below rather than assumed.
+  const DISTINCT_PAIRS = new Set(['Rangers|Queens Park Rangers']);
+
   const isPrefixOrSuffix = (a, b) => {
+    if (DISTINCT_PAIRS.has(`${a}|${b}`) || DISTINCT_PAIRS.has(`${b}|${a}`)) return false;
     const A = words(a);
     const B = words(b);
     if (A.length >= B.length) return false;
@@ -42,6 +53,13 @@ describe('question bank club names', () => {
     const key = A.join(' ').toLowerCase();
     return head === key || tail === key;
   };
+
+  it('the one exempted pair is two real clubs, both present', () => {
+    // If either side ever leaves the bank, the exemption is dead weight and
+    // should go with it.
+    expect(clubs, 'Rangers (Glasgow)').toContain('Rangers');
+    expect(clubs, 'Queens Park Rangers (London)').toContain('Queens Park Rangers');
+  });
 
   it('never carries two spellings of the same club', () => {
     const splits = [];
