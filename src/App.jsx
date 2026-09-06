@@ -25,7 +25,7 @@ import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, UserRoundSearch } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
+import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, mpLookupRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
@@ -8766,6 +8766,23 @@ function AppInner() {
     loopEvent("join-token-consumed");
     try { localStorage.removeItem("biq_pending_join"); } catch {}
   }, []);
+  // A stored code is re-armed on boot (links, typed codes) — check it still
+  // points at a joinable room before the gate can show it. Rooms are reaped at
+  // 7 days and end far sooner; a dead code must not become a modal.
+  useEffect(() => {
+    if (!pendingJoinCode) return undefined;
+    let alive = true;
+    (async () => {
+      const look = await mpLookupRoom(pendingJoinCode);
+      if (!alive) return;
+      if (look.found === false || (look.found && !look.joinable)) {
+        loopEvent("join-token-dead", { state: look.state || "missing" });
+        setPendingJoinCode(null);
+        try { localStorage.removeItem("biq_pending_join"); } catch {}
+      }
+    })();
+    return () => { alive = false; };
+  }, [pendingJoinCode]);
 
   // v1.6 guest entry — "Play as guest" on the invite gate. Anonymous sign-in
   // gives the guest a real session; the SIGNED_IN listener clears guest mode
@@ -12172,12 +12189,15 @@ function AppInner() {
     // exact machinery /join/CODE links already use.
     if (!user || isGuest) {
       const code = String(rawCode || "").toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6);
-      if (code.length >= 4) {
-        try { localStorage.setItem("biq_pending_join", JSON.stringify({ c: code, at: Date.now() })); } catch {}
-        setPendingJoinCode(code);
-      } else {
-        openAuthPrompt("online");
-      }
+      if (code.length < 4) { openAuthPrompt("online"); return { ok: false, error: "" }; }
+      // ⚠️ CHECK THE ROOM BEFORE PROMISING IT (review 2026-09-06, A1). A typo
+      // used to be persisted and greeted with "we'll drop you straight into the
+      // room", then re-prompted on every boot. One read-only RPC first.
+      const look = await mpLookupRoom(code);
+      if (look.found === false) return { ok: false, error: "No room with that code — check with your friend" };
+      if (look.found && !look.joinable) return { ok: false, error: look.state === "ended" ? "That game has finished" : "This room is full" };
+      try { localStorage.setItem("biq_pending_join", JSON.stringify({ c: code, at: Date.now() })); } catch {}
+      setPendingJoinCode(code);
       return { ok: false, error: "" };
     }
     const trimmed = String(rawCode || "").trim().toUpperCase();
@@ -12647,7 +12667,7 @@ function AppInner() {
   const leaveRoomModalRef = useRef(null);
   const howToPlayRef = useRef(null);
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
-  useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest)), onClose: clearPendingJoin, ref: joinGateRef });
+  useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest) && !inGame), onClose: clearPendingJoin, ref: joinGateRef });
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
   // Dismissing the name sheet (ESC / backdrop / back) must still SHARE — the
   // user asked to share, not to fill in a form. Closing without sharing would
@@ -13430,7 +13450,9 @@ function AppInner() {
             but they're either signed-out or browsing as a guest. Prompt them
             to sign in; pendingJoinCode persists in localStorage so the
             autoJoinRoutedRef effect picks it up after auth completes. */}
-        {pendingJoinCode && (!user || isGuest) && (
+        {/* Never over a live game (review 2026-09-06, A1): the gate waits until
+            the player is back on a tab, where the invite is the only thing. */}
+        {pendingJoinCode && (!user || isGuest) && !inGame && (
           <div
             style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1100,display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeIn 0.2s ease"}}
             onClick={clearPendingJoin}
@@ -13480,7 +13502,7 @@ function AppInner() {
                   ? {width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:14,fontWeight:700,cursor:"pointer",marginBottom:8,opacity:guestJoining?0.6:1}
                   : {width:"100%",padding:14,background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8,opacity:guestJoining?0.6:1}}
               >
-                {guestJoining ? "Joining…" : "⚡ Play as guest"}
+                {guestJoining ? "Joining…" : <><Zap size={16} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-3px",marginRight:6}} />Play as guest</>}
               </button>
               {guestJoinError && (
                 <div role="alert" style={{fontSize:12,color:"var(--red)",lineHeight:1.4,marginBottom:8}}>{guestJoinError}</div>

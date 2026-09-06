@@ -35,6 +35,8 @@ const RETRY_CONFIG = {
   start_game:       { attempts: 3, backoffMs: [500, 1500, 3000] },
   // Pre-game; joiner just submitted code. Patient retry.
   join_room:        { attempts: 3, backoffMs: [500, 1500, 3000] },
+  // Read-only pre-check of an invite code (signed-out too). One retry is plenty.
+  room_lookup:      { attempts: 2, backoffMs: [300, 800] },
   // NOT IDEMPOTENT — each successful call creates a new room with new
   // code. Retry after server-success would orphan the first room. V1
   // accepts the rare manual re-tap; V1.1 can add a server-side
@@ -212,6 +214,23 @@ export async function mpClaimRematch({ p_code, p_name, p_avatar }) {
   const { data, error } = await withRetry('claim_rematch', { p_code, p_name, p_avatar })
   if (error) return { code: null, error: error.message ?? String(error) }
   return data
+}
+
+/**
+ * Does this invite code point at a joinable room? Callable signed-out. Returns
+ * { found, joinable, state, players, capacity } — never throws; a network
+ * failure reads as { found: null } so the caller can decide to be lenient.
+ * See supabase/migrations/v1_9_room_lookup.sql.
+ */
+export async function mpLookupRoom(code) {
+  const p_code = String(code || '').toUpperCase().trim()
+  if (p_code.length < 4) return { found: false, joinable: false }
+  const { data, error } = await withRetry('room_lookup', { p_code })
+  if (error || !data || typeof data !== 'object') return { found: null, joinable: false, error: error?.message }
+  const found = data.found === true
+  const state = data.state || null
+  const full = Number(data.players || 0) >= Number(data.capacity || 0) && Number(data.capacity || 0) > 0
+  return { found, state, players: Number(data.players || 0), capacity: Number(data.capacity || 0), joinable: found && state !== 'ended' && !full }
 }
 
 export async function mpJoinRoom({ p_code, p_name, p_avatar }) {
