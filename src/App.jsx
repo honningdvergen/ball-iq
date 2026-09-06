@@ -59,6 +59,8 @@ import { SettingsScreen, InstallCard, APP_VERSION, REVIEWER_EMAIL, ABOUT_ACTION_
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
 import { resultVerdict, HotStreakResults, TrueFalseResults } from './screens/ModeResults.jsx';
 import { QuizEngine, TypedInput } from './screens/QuizEngine.jsx';
+import { ClubQuizScreen } from './screens/ClubQuizScreen.jsx';
+import { DailyReviewScreen, PuzzleReviewScreen } from './screens/ReviewScreens.jsx';
 import { dailyTierCopy, scoreTagline } from './lib/resultsCopy.js';
 import { stumpLink, shareStumpText, shareSenderName } from './lib/stump.js';
 import {
@@ -786,7 +788,7 @@ export const CLUB_PACK_TO_QB = {
 // Birmingham and Cardiff above Arsenal and Liverpool — the newest rows, not
 // the ones anyone came looking for. Ordered by who a fan opening this screen
 // is most likely to want; adding a club appends rather than displaces.
-const CLUB_LEAGUES = {
+export const CLUB_LEAGUES = {
   Arsenal: "england", ManUtd: "england", Liverpool: "england", ManCity: "england",
   Chelsea: "england", Tottenham: "england", Newcastle: "england", Everton: "england",
   Villa: "england", WestHam: "england", Forest: "england", Leeds: "england", Leicester: "england",
@@ -825,8 +827,8 @@ const CLUB_LEAGUES = {
 };
 // Position within a country, from the order above. Unknown keys sort last so a
 // club added to CLUB_PACKS but not here still renders instead of vanishing.
-const CLUB_ORDER = Object.fromEntries(Object.values({"england": ["Arsenal", "ManUtd", "Liverpool", "ManCity", "Chelsea", "Tottenham", "Newcastle", "Everton", "Villa", "WestHam", "Forest", "Leeds", "Palace", "Fulham", "Brighton", "Bournemouth", "Brentford", "Sunderland", "Ipswich", "Wolves", "Burnley", "Southampton", "Leicester", "Norwich", "Derby", "Stoke", "Birmingham", "SheffWed", "Coventry", "HullCity", "Portsmouth", "Cardiff", "Swansea", "Wrexham", "Middlesbrough", "WestBrom", "SheffUtd", "Blackburn"], "spain": ["RealMadrid", "Barcelona", "Atletico", "Sevilla", "Valencia", "Athletic", "Betis", "RealSociedad"], "italy": ["Juventus", "AcMilan", "InterMilan", "Napoli", "Roma", "Lazio", "Atalanta", "Fiorentina", "Torino", "Parma"], "germany": ["BayernMunich", "Dortmund", "Leverkusen", "Leipzig", "Schalke", "Hamburg"], "france": ["PSG", "Marseille", "Lyon", "Monaco", "SaintEtienne"], "portugal": ["Benfica", "Porto", "Sporting"], "netherlands": ["Ajax", "PSV", "Feyenoord"], "turkiye": ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"], "scotland": ["Celtic", "Rangers"], "belgium": ["Anderlecht", "ClubBrugge"], "croatia": ["DinamoZagreb", "Hajduk"], "brazil": ["Flamengo", "Palmeiras", "Corinthians", "Santos"], "argentina": ["Boca", "River"], "other": ["RedStar", "Basel", "Olympiacos", "Panathinaikos"]}).flat().map((k, i) => [k, i]));
-const CLUB_LEAGUE_SECTIONS = [
+export const CLUB_ORDER = Object.fromEntries(Object.values({"england": ["Arsenal", "ManUtd", "Liverpool", "ManCity", "Chelsea", "Tottenham", "Newcastle", "Everton", "Villa", "WestHam", "Forest", "Leeds", "Palace", "Fulham", "Brighton", "Bournemouth", "Brentford", "Sunderland", "Ipswich", "Wolves", "Burnley", "Southampton", "Leicester", "Norwich", "Derby", "Stoke", "Birmingham", "SheffWed", "Coventry", "HullCity", "Portsmouth", "Cardiff", "Swansea", "Wrexham", "Middlesbrough", "WestBrom", "SheffUtd", "Blackburn"], "spain": ["RealMadrid", "Barcelona", "Atletico", "Sevilla", "Valencia", "Athletic", "Betis", "RealSociedad"], "italy": ["Juventus", "AcMilan", "InterMilan", "Napoli", "Roma", "Lazio", "Atalanta", "Fiorentina", "Torino", "Parma"], "germany": ["BayernMunich", "Dortmund", "Leverkusen", "Leipzig", "Schalke", "Hamburg"], "france": ["PSG", "Marseille", "Lyon", "Monaco", "SaintEtienne"], "portugal": ["Benfica", "Porto", "Sporting"], "netherlands": ["Ajax", "PSV", "Feyenoord"], "turkiye": ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"], "scotland": ["Celtic", "Rangers"], "belgium": ["Anderlecht", "ClubBrugge"], "croatia": ["DinamoZagreb", "Hajduk"], "brazil": ["Flamengo", "Palmeiras", "Corinthians", "Santos"], "argentina": ["Boca", "River"], "other": ["RedStar", "Basel", "Olympiacos", "Panathinaikos"]}).flat().map((k, i) => [k, i]));
+export const CLUB_LEAGUE_SECTIONS = [
   // ── SECTIONS ARE COUNTRIES, NOT LEAGUES ────────────────────────────────────
   // Alex, 2026-08-23, on seeing Birmingham and Cardiff heading the Premier
   // League list: "they are not even in the premier league? ... maybe we should
@@ -866,16 +868,16 @@ const CLUB_LEAGUE_SECTIONS = [
 ];
 
 // Colour-code helpers for the club rows (no crests — the club colour IS the identity).
-function clubInitials(name) {
+export function clubInitials(name) {
   const w = String(name).trim().split(/\s+/);
   return (w.length === 1 ? w[0].slice(0, 3) : w.map(x => x[0]).join("")).slice(0, 3).toUpperCase();
 }
-function clubHexToRgba(hex, a) {
+export function clubHexToRgba(hex, a) {
   const h = String(hex).replace("#", "");
   const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
   return `rgba(${r},${g},${b},${a})`;
 }
-function clubReadableText(hex) {
+export function clubReadableText(hex) {
   const h = String(hex).replace("#", "");
   const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "var(--bg)" : "#ffffff";
@@ -1949,7 +1951,7 @@ export function playSound(type) {
 // from localStorage so the helper can be called from anywhere (matches the
 // playSound pattern at line 3082). OS-level haptics disabled silently no-ops
 // inside the plugin itself, so no extra guard needed for that case.
-const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
+export const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
 function challengeEventOnce(kind, ch) {
   try {
     const key = `biq_challenge_${kind}_logged`;
@@ -2112,7 +2114,7 @@ const IS_IOS_WEB = !IS_NATIVE && typeof navigator !== "undefined" &&
 // this component exists for — saw nothing at all.
 const IS_ANDROID_WEB = !IS_NATIVE && typeof navigator !== "undefined" &&
   /Android/i.test(navigator.userAgent || "") && !/Windows Phone/i.test(navigator.userAgent || "");
-function FootleGetAppCTA({ style }) {
+export function FootleGetAppCTA({ style }) {
   if (!IS_IOS_WEB && !IS_ANDROID_WEB) return null;
   // The visitor's own store badge — the same one the homepage row and the
   // static pages draw (src/components/StoreBadge.jsx). Was a 📲 emoji button.
@@ -2128,7 +2130,7 @@ function FootleGetAppCTA({ style }) {
 // Colour-blind palette state, read where share strings are built so the
 // emoji squares match the tiles the player actually saw (🟧🟦 vs 🟩🟨) —
 // checked at call time, same lazy-read pattern as haptic()'s settings gate.
-function CB_MODE() {
+export function CB_MODE() {
   try { return document.documentElement.classList.contains("biq-cb"); } catch { return false; }
 }
 
@@ -3186,7 +3188,7 @@ async function generateShareCard(type, data) {
 //
 //   opts.onToast      - (msg) => void  | optional — used for the Saved/copy toast
 //   opts.textFallback - string         | optional — text to share if image flow fails
-async function shareCard(type, data, opts = {}) {
+export async function shareCard(type, data, opts = {}) {
   loopEvent("share-card-" + type);
   const { onToast = () => {}, textFallback = "" } = opts;
   let blob;
@@ -3441,53 +3443,7 @@ function DailySocialProof({ score, total }) {
   );
 }
 
-function Mini7Strip({ history, today }) {
-  const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-  const firstDailyTime = (() => {
-    const keys = history ? Object.keys(history) : [];
-    if (!keys.length) return null;
-    let earliest = Infinity;
-    for (const k of keys) {
-      const [Y, M, D] = k.split("-").map(Number);
-      if (!Y || !M || !D) continue;
-      const t = new Date(Y, M - 1, D).getTime();
-      if (t < earliest) earliest = t;
-    }
-    return earliest === Infinity ? null : earliest;
-  })();
-  const cells = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(todayMid - i * TIMINGS.DAY_MS);
-    const ymd = dateToYMD(d);
-    const score = history?.[ymd];
-    const isCompleted = typeof score === "number";
-    const isToday = d.getTime() === todayMid;
-    const isPreJoin = !isCompleted && firstDailyTime !== null && d.getTime() < firstDailyTime && !isToday;
-    cells.push({ d, isCompleted, isToday, isPreJoin });
-  }
-  return (
-    <div className="m7-strip" aria-label="Last 7 days">
-      {cells.map((c, i) => {
-        let cls = "m7-cell";
-        if (c.isCompleted) cls += " m7-done";
-        else if (c.isPreJoin) cls += " m7-pre";
-        else cls += " m7-miss";
-        if (c.isToday) cls += " m7-today";
-        return (
-          <div key={i} className="m7-col">
-            <div className={cls} />
-            <div className="m7-label">{c.d.toLocaleDateString(undefined, { weekday: "short" })}</div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// Phase 5x — single question card on the Daily review screen. Renders
-// the question, options (or typed UI), highlighting the user's pick
-// (red if wrong) and the correct answer (green).
-function ReviewQuestionCard({ a, index }) {
+export function ReviewQuestionCard({ a, index }) {
   const { q, type, cat, options, userIdx, correctIdx, userText, correctText, isCorrect, timedOut } = a;
   return (
     <div className={`dr-q ${isCorrect ? 'dr-q-right' : 'dr-q-wrong'}`}>
@@ -3533,274 +3489,6 @@ function ReviewQuestionCard({ a, index }) {
   );
 }
 
-// Calm review of a completed Daily 7. Used by:
-// - Today's 7 done card on Home and Daily tab
-// - Calendar past-completed-day tap on Daily tab
-// Deliberately not the full Results screen: no celebration banner, no
-// Play Again, no Share. Phase 5x renders the FULL ordered review when
-// allAnswers is present; falls back to the wrongAnswers-only block for
-// Phase 5u-5w days, or to score-card-only for pre-Phase-5u days.
-function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, dailyHistory, loginStreak, onBack }) {
-  const todayYMD = dateToYMD(new Date());
-  const dateYMD = dateToYMD(date);
-  const isToday = dateYMD === todayYMD;
-  const dayLabel = date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
-  const dateLabel = isToday ? `Today · ${dayLabel}` : dayLabel;
-  const hasAll = Array.isArray(allAnswers) && allAnswers.length > 0;
-  const hasWrong = Array.isArray(wrongAnswers) && wrongAnswers.length > 0;
-  const today = useMemo(() => new Date(), []);
-
-  const streakLine = (() => {
-    if (!loginStreak || loginStreak < 1) return null;
-    if (loginStreak === 1) return "🔥 Day 1 of a new streak";
-    return `🔥 Day ${loginStreak} of your daily streak`;
-  })();
-
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div className="page-title">Daily review</div>
-      </div>
-      <div className="settings-card" style={{padding:"22px 20px", textAlign:"center", marginBottom:18}}>
-        <div style={{fontSize:13, fontWeight:600, color:"var(--t2)", marginBottom:14}}>
-          {dateLabel}
-        </div>
-        <div style={{fontSize:22, fontWeight:700, color:"var(--t1)", letterSpacing:"-0.4px", marginBottom:6}}>
-          You scored <span style={{color:"var(--accent)", fontWeight:800}}>{score}/7</span>
-        </div>
-        <div style={{fontSize:13, color:"var(--t3)"}}>
-          Next challenge in <DailyHeroCountdown />
-        </div>
-        {streakLine && (
-          <div style={{fontSize:13, color:"var(--t2)", marginTop:12, fontWeight:600}}>
-            {streakLine}
-          </div>
-        )}
-      </div>
-      {/* Return-loop (1.4.0): web players finishing the Daily 7 are a prime
-          value moment to convert to an installed shell — install is web's only
-          path to the daily reminder. Renders nothing on native/installed. */}
-      <InstallBanner />
-      <Mini7Strip history={dailyHistory} today={today} />
-      {hasAll ? (
-        <>
-          <div className="ds-eyebrow settings-section-title" style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:12}}>
-            <span>Full review</span>
-            <span style={{color:"var(--t3)", fontSize:11, fontWeight:600, letterSpacing:0.4, textTransform:"none"}}>{score}/7 correct</span>
-          </div>
-          <div className="dr-list">
-            {allAnswers.map((a, i) => <ReviewQuestionCard key={i} a={a} index={i} />)}
-          </div>
-        </>
-      ) : hasWrong ? (
-        <>
-          {/* Legacy Phase 5u–5w fallback: missed-answers-only block. */}
-          <div className="ds-eyebrow settings-section-title">
-            Missed {wrongAnswers.length === 1 ? "answer" : "answers"}
-          </div>
-          <div className="wrong-review">
-            {wrongAnswers.map((w, i) => (
-              <div key={i} className="wr-item">
-                <div className="wr-q">{w.q}</div>
-                {w.user && (
-                  <div className="wr-user">
-                    <span className="wr-x">✗</span>{w.user}
-                  </div>
-                )}
-                <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
-                {w.hint && <div className="wr-why">{w.hint}</div>}
-              </div>
-            ))}
-          </div>
-        </>
-      ) : (
-        <div style={{
-          fontSize:13,
-          color:"var(--t3)",
-          fontStyle:"italic",
-          textAlign:"center",
-          padding:"4px 16px",
-          lineHeight:1.5,
-        }}>
-          Full review wasn't recorded for this day.
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Phase 5z — calm review of a completed Today's Puzzle (won or lost).
-// Mirrors DailyReviewScreen philosophy: no celebration, no Play Again,
-// just the calm "here's what you did" surface. Reuses the active
-// puzzle's grid CSS (.wd-grid, .wd-row, .wd-tile, .wd-grid--ended) and
-// share path (shareCard + the canonical FootballWordle shareText
-// template). Wordle streak isn't tracked separately yet — no streak
-// line until that's its own state.
-function PuzzleReviewScreen({ date, guesses, status, onBack }) {
-  // J1/J2 fix: was using `WORDLE_PLAYERS[dayIndex % length]` here, which
-  // disagrees with the stride formula used by the active game and the home
-  // FootleHero. Result: Review re-graded the user's guesses against the
-  // wrong answer — wrong colors AND, when the wrong answer was longer than
-  // the user's guesses, an extra empty rightmost column from a too-wide
-  // grades array. Now shares getWordleAnswerForDayIndex with the active game.
-  const answer = useMemo(() => {
-    const dayIndex = Math.floor(date.getTime() / TIMINGS.DAY_MS);
-    return getWordleAnswerForDayIndex(dayIndex);
-  }, [date]);
-
-  const won = status === "won";
-  const lost = status === "lost";
-  const hasData = Array.isArray(guesses) && guesses.length > 0;
-  const cols = answer.length;
-
-  const resultLine = won
-    ? `Solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}`
-    : lost ? "Better luck tomorrow"
-    : "";
-
-  // Performance tier on won state. Skip on lost (the "Better luck
-  // tomorrow" already covers tone). Calmly informative — no emoji.
-  const tierLine = !won ? null
-    : guesses.length === 1 ? "Incredible"
-    : guesses.length === 2 ? "Excellent"
-    : guesses.length === 3 ? "Great"
-    : guesses.length === 4 ? "Good"
-    : guesses.length === 5 ? "Phew"
-    : guesses.length === 6 ? "Just made it"
-    : null;
-
-  const dateLabel = useMemo(
-    () => date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }),
-    [date]
-  );
-
-  // Match the active puzzle's share text exactly so users sharing from
-  // FootballWordle's "Share result" button vs this review screen get
-  // identical output. One source of truth.
-  const shareText = useMemo(() => {
-    if (!hasData || (!won && !lost)) return "";
-    const grid = guesses.map(g => {
-      const grades = gradeWordleGuess(g, answer);
-      return grades.map(c => c === "green" ? (CB_MODE() ? "🟧" : "🟩") : c === "yellow" ? (CB_MODE() ? "🟦" : "🟨") : "⬛").join("");
-    }).join("\n");
-    const num = getFootleNumber(date);
-    const tag = num > 0 ? ` #${num}` : "";
-    const streak = won ? computeFootleStreak(date) : 0;
-    // Wordle-convention first line ("Footle #64 3/6") — the number + compact
-    // score is what makes grids comparable between strangers in a feed. The
-    // grid right below disambiguates "3/6" (the Sprint #99 concern), so the
-    // explicit "guesses" wording lives only on the PNG card headline.
-    const head = `⚽ ${APP_NAME} Footle${tag} ${won ? guesses.length : "X"}/6`;
-    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
-    return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
-  }, [guesses, answer, won, lost, hasData, date]);
-
-  const onShare = useCallback(async () => {
-    if (!shareText) return;
-    const grades = guesses.map(g => gradeWordleGuess(g, answer));
-    await shareCard("wordle", {
-      score: guesses.length, total: 6, grades, dateLabel, failed: lost, num: getFootleNumber(date),
-    }, { onToast: () => {}, textFallback: shareText });
-  }, [shareText, guesses, answer, dateLabel, lost, date]);
-
-  // Read-only grid. Phase 5z polish: drop empty rows on won state —
-  // show only the rows the user actually used. Lost state keeps all 6
-  // rows since the user used them all (guesses.length === 6 by game
-  // logic). No flip animation, no shake, no input.
-  const totalRows = lost ? 6 : (hasData ? guesses.length : 0);
-  const rows = [];
-  for (let r = 0; r < totalRows; r++) {
-    if (hasData && r < guesses.length) {
-      const g = guesses[r];
-      const grades = gradeWordleGuess(g, answer);
-      rows.push(
-        <div className="wd-row" key={r}>
-          {Array.from({ length: cols }, (_, i) => (
-            <div key={i} className={`wd-tile wd-${grades[i]}`}>{g[i]}</div>
-          ))}
-        </div>
-      );
-    } else {
-      rows.push(
-        <div className="wd-row" key={r}>
-          {Array.from({ length: cols }, (_, i) => <div key={i} className="wd-tile" />)}
-        </div>
-      );
-    }
-  }
-
-  return (
-    <div className="screen">
-      {/* Phase 5z polish: dropped the top back-btn chevron. Result
-          screens get the bottom "Back to Home" pattern instead.
-          Title stays in the page-hdr; left-aligns by default flex. */}
-      <div className="page-hdr">
-        <div className="page-title">Footle</div>
-      </div>
-
-      {hasData ? (
-        <>
-          <div style={{textAlign:"center", fontSize:15, fontWeight:700, color:"var(--t1)", letterSpacing:"-0.2px", marginBottom: tierLine ? 0 : 18}}>
-            {resultLine}
-          </div>
-          {tierLine && (
-            <div style={{textAlign:"center", fontSize:13, fontWeight:600, color:"var(--t2)", marginTop:8, marginBottom:18}}>
-              {tierLine}
-            </div>
-          )}
-
-          <div className="wd-grid wd-grid--ended" style={{ "--wd-cols": cols }}>
-            {rows}
-          </div>
-
-          {lost && (
-            <div style={{textAlign:"center", marginTop:14, fontSize:14, color:"var(--t2)"}}>
-              Today's word: <strong style={{color:"var(--accent)", fontWeight:800, letterSpacing:"0.5px"}}>{answer}</strong>
-            </div>
-          )}
-
-          {(won || lost) && (
-            <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:10, marginTop:20}}>
-              {/* width:min(310px, calc(100vw - 80px)) matches the
-                  .wd-grid--ended .wd-row max-width — buttons edge-align
-                  with the grid above on every viewport. padding:14px 22px
-                  bumps height inline (base .wd-share keeps 10px 22px so
-                  the active puzzle's share button stays unaffected).
-                  marginTop:0 overrides .wd-share's baked-in margin:4px
-                  auto 0 so Share and Back share an identical 10px gap
-                  from the flex parent. */}
-              <button onClick={onShare} className="wd-share" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>Share result</button>
-              {/* Web-only, same rationale as the active-game screen: native's
-                  share sheet already offers WhatsApp with the PNG card. */}
-              {!IS_NATIVE && shareText && (
-                <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>Share on WhatsApp</a>
-              )}
-              {/* Same App Store nudge as the live puzzle's result (archive
-                  visitors from the indexed /footle archive are pure web). */}
-              <FootleGetAppCTA style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}} />
-              <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>Back to Home</button>
-            </div>
-          )}
-
-          <div style={{textAlign:"center", marginTop:14, fontSize:13, color:"var(--t3)"}}>
-            Next puzzle in <DailyHeroCountdown />
-          </div>
-        </>
-      ) : (
-        <>
-          <div style={{textAlign:"center", padding:"40px 20px", fontSize:14, color:"var(--t3)", fontStyle:"italic"}}>
-            Puzzle wasn't recorded for this day.
-          </div>
-          <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:10, marginTop:8}}>
-            <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>Back to Home</button>
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
 function StatRow({ label, value, valueColor }) {
   return (
     <div style={{
@@ -3825,7 +3513,7 @@ function StatRow({ label, value, valueColor }) {
 // normalisation, so it is reused rather than duplicated — these are only the
 // terrace nicknames it lacks. Search-only: never rendered, so a wrong-ish entry
 // costs nothing but a stray match.
-const CLUB_SEARCH_NICKNAMES = {
+export const CLUB_SEARCH_NICKNAMES = {
   gunners: "Arsenal", reds: "Liverpool", toffees: "Everton", citizens: "Man City",
   "red devils": "Man United", devils: "Man United", blues: "Chelsea",
   barca: "Barcelona", barça: "Barcelona", madrid: "Real Madrid", juve: "Juventus",
@@ -3835,211 +3523,6 @@ const CLUB_SEARCH_NICKNAMES = {
   lilywhites: "Tottenham", potters: "Stoke City", baggies: "West Brom",
 };
 
-function ClubQuizScreen({ onStart, onBack }) {
-  const [showProModal, setShowProModal] = React.useState(false);
-  // Each league collapses to a short preview. The Premier League alone filled
-  // more than a screen, so La Liga sat below the fold with nothing to suggest it
-  // existed — someone looking for Barcelona had no reason to believe scrolling
-  // would help (Alex, 2026-07-29). Previewing two per league puts EVERY league
-  // in view at once, and it gets better rather than worse as club waves land.
-  const CLUB_PREVIEW = 2;
-  const [openLeagues, setOpenLeagues] = React.useState(() => new Set());
-  // Playtester, via Alex: "this NEEDS to have drop down menus, or boxes to search
-  // for a club so you don't have to scroll". 71 packs across 12 league sections,
-  // each collapsed to 2 — finding one club meant scrolling AND expanding. A query
-  // bypasses the grouping entirely and shows a flat ranked list.
-  const [clubQuery, setClubQuery] = React.useState("");
-  const toggleLeague = React.useCallback((key) => {
-    setOpenLeagues((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key); else next.add(key);
-      return next;
-    });
-  }, []);
-  // ⚠️ THE PER-CLUB COUNT IS GONE — do not put it back (Alex, 2026-08-06).
-  // Each row read "Liverpool · 42 questions": the "N questions in this pack"
-  // badge the no-counts rule names as the disguise it keeps returning in. It
-  // also made the thinnest packs advertise their thinness — Hajduk Split's row
-  // said 15. Same call as the web length picker's "42 Full set" the same day.
-  // The crest, the name and the league grouping carry the row without it.
-  //
-  // Removing it also deleted the only reason this screen read the question
-  // index, so it now does strictly less work on open. The prefetch stays and is
-  // unrelated: landing here IS play intent, so warming the bank lets the parse
-  // overlap navigation instead of colliding with the next tap.
-  React.useEffect(() => {
-    prefetchQuestions();
-  }, []);
-  // Sprint #68 JJ4: ESC + focus-trap on the upsell modal.
-  const proModalRef = useRef(null);
-  useModalA11y({ isOpen: showProModal, onClose: () => setShowProModal(false), ref: proModalRef });
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
-        <div className="page-title">Club Quizzes</div>
-      </div>
-      <p style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>
-        Test your deep knowledge of a specific club — history, players, trophies and iconic moments.
-      </p>
-      {(() => {
-        const q = clubQuery.trim().toLowerCase();
-        const norm = (x) => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        // Match on the display name AND the 3-letter code, so "BVB", "psg" and
-        // "dortmund" all land. Prefix matches rank above substring ones, which is
-        // what makes a 2-3 character query feel immediate.
-        const matches = !q ? [] : Object.entries(CLUB_PACKS)
-          .map(([key, pack]) => {
-            const name = norm(pack.name), abbr = norm(CLUB_ABBR[key]);
-            const nq = norm(q);
-            // "spurs" found nothing before this: the pack is named "Tottenham"
-            // with abbr TOT, so the nickname a fan would type matched neither.
-            const aliasTarget = norm(CLUB_COLOUR_ALIASES[nq] || CLUB_SEARCH_NICKNAMES[nq] || "");
-            if (aliasTarget && aliasTarget === name) return { key, pack, rank: 0 };
-            if (name.startsWith(nq) || abbr === nq) return { key, pack, rank: 0 };
-            if (name.includes(nq) || abbr.startsWith(nq)) return { key, pack, rank: 1 };
-            return null;
-          })
-          .filter(Boolean)
-          .sort((a, b) => a.rank - b.rank || a.pack.name.localeCompare(b.pack.name));
-        return (
-          <>
-            <div style={{ position: "relative", marginBottom: 16 }}>
-              <input
-                type="text"
-                value={clubQuery}
-                onChange={(e) => setClubQuery(e.target.value)}
-                placeholder={`Search ${Object.keys(CLUB_PACKS).length} clubs…`}
-                aria-label="Search clubs"
-                autoCapitalize="none"
-                autoCorrect="off"
-                spellCheck={false}
-                enterKeyHint="search"
-                style={{
-                  width: "100%", boxSizing: "border-box", padding: "13px 38px 13px 14px",
-                  borderRadius: 12, background: "var(--s1)", border: "1px solid var(--border)",
-                  color: "var(--t1)",
-                  // ⚠️ 16px is a HARD FLOOR — below it iOS auto-zooms on focus and
-                  // WKWebView never restores the scale, leaving the whole app zoomed.
-                  // Three inputs had to be fixed for exactly this on 2026-07-30.
-                  fontSize: 16, fontFamily: "inherit", outline: "none",
-                }}
-              />
-              {clubQuery && (
-                <button type="button" onClick={() => setClubQuery("")} aria-label="Clear search"
-                  style={{ position: "absolute", right: 6, top: "50%", transform: "translateY(-50%)",
-                           width: 30, height: 30, borderRadius: 9, background: "transparent",
-                           border: "none", color: "var(--t2)", fontSize: 15, cursor: "pointer",
-                           fontFamily: "inherit" }}>✕</button>
-              )}
-            </div>
-            {q && (
-              <div style={{ marginBottom: 18 }}>
-                {matches.length === 0 ? (
-                  <div style={{ fontSize: 13.5, color: "var(--t2)", padding: "6px 2px" }}>
-                    No club matches “{clubQuery}”. Try a shorter search.
-                  </div>
-                ) : (
-                  <div className="mode-list">
-                    {matches.map(({ key, pack }) => {
-                      const lightClub = clubReadableText(pack.color) === "#0B0C10";
-                      const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
-                      return (
-                        <button key={key} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
-                          style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, a1)} 0%, ${clubHexToRgba(pack.color, a2)} 100%)`, borderColor: clubHexToRgba(pack.color, lightClub ? 0.5 : 0.4) }}>
-                          <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}` }}>
-                            <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{CLUB_ABBR[key] || clubInitials(pack.name)}</span>
-                          </div>
-                          <div className="mi-body">
-                            <div className="mi-name">{pack.name}</div>
-                          </div>
-                          <div className="mi-arrow">→</div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            )}
-          </>
-        );
-      })()}
-      {/* League sections hide entirely while searching — two competing lists on
-          one screen is worse than either alone. */}
-      {!clubQuery.trim() && CLUB_LEAGUE_SECTIONS.map((section) => {
-        // ⚠️ Sorted by CLUB_ORDER, not by CLUB_PACKS insertion order. Only the
-        // first two show before "Show all", so insertion order meant the most
-        // RECENTLY ADDED clubs fronted every section — which is how ten new
-        // English clubs ended up above Arsenal and Liverpool.
-        const clubs = Object.entries(CLUB_PACKS)
-          .filter(([key]) => (CLUB_LEAGUES[key] || "other") === section.key)
-          .sort(([a], [b]) => (CLUB_ORDER[a] ?? 1e6) - (CLUB_ORDER[b] ?? 1e6));
-        if (!clubs.length) return null;
-        const isOpen = openLeagues.has(section.key);
-        const shown = isOpen ? clubs : clubs.slice(0, CLUB_PREVIEW);
-        const hidden = clubs.length - shown.length;
-        return (
-          <div key={section.key} style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t2)", margin: "0 0 8px 2px", display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
-              <span>{section.label}</span>
-              <span style={{ letterSpacing: 0, textTransform: "none", fontWeight: 600, color: "var(--t3)" }}>{clubs.length}</span>
-            </div>
-            <div className="mode-list">
-              {shown.map(([key, pack]) => {
-                const lightClub = clubReadableText(pack.color) === "#0B0C10";
-                const a1 = lightClub ? 0.20 : 0.32, a2 = lightClub ? 0.05 : 0.06;
-                return (
-                  <button key={key} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
-                    style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, a1)} 0%, ${clubHexToRgba(pack.color, a2)} 100%)`, borderColor: clubHexToRgba(pack.color, lightClub ? 0.5 : 0.4) }}>
-                    <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}` }}>
-                      <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{CLUB_ABBR[key] || clubInitials(pack.name)}</span>
-                    </div>
-                    <div className="mi-body">
-                      <div className="mi-name">{pack.name}</div>
-                    </div>
-                    <div className="mi-arrow">→</div>
-                  </button>
-                );
-              })}
-            </div>
-            {(hidden > 0 || isOpen) && (
-              <button
-                type="button"
-                onClick={() => { haptic("select"); toggleLeague(section.key); }}
-                style={{ marginTop: 7, width: "100%", background: "transparent", border: "1px solid var(--border)", borderRadius: 11, padding: "9px 12px", color: "var(--t2)", fontSize: 12.5, fontWeight: 700, fontFamily: "inherit", cursor: "pointer" }}
-                aria-expanded={isOpen}
-              >
-                {isOpen ? "Show fewer" : `Show all ${clubs.length}`}
-              </button>
-            )}
-          </div>
-        );
-      })}
-      {/* The card that used to sit here promised "Galatasaray, Benfica, Napoli,
-          Fenerbahçe and more are on the way" — all four have been in the list
-          directly above it since Wave A. It was telling users that clubs they
-          could already play were missing. Replaced with something true. */}
-      <div style={{marginTop:16,background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",border:"1px solid rgba(251,191,36,0.2)",borderRadius:16,padding:"18px 20px",textAlign:"center"}}>
-        <div style={{fontSize:15,fontWeight:800,color:"var(--t1)",marginBottom:4}}>Missing your club?</div>
-        <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6}}>New clubs are added regularly — more leagues are on the way.</div>
-      </div>
-      {showProModal && (
-        <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
-          <div ref={proModalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="More club quizzes coming soon" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
-            <div style={{fontSize:36,textAlign:"center",marginBottom:12}}>🏟️</div>
-            <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>More Coming Soon</div>
-            <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>Additional club packs are on the way. Keep playing to stay ready!</div>
-            <button className="btn btn-p" onClick={() => setShowProModal(false)}>Got it!</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-
-// League-quiz picker — mirrors ClubQuizScreen's colour-coded rows, grouped
-// Leagues / Tournaments. Each row carries the rating hook, never a pool count.
 function LeagueQuizScreen({ onStart, onBack }) {
   React.useEffect(() => {
     // Bank warmed in the background — see the club picker above for why. The
@@ -4156,7 +3639,7 @@ function ResetPasswordOverlay() {
   );
 }
 
-function InstallBanner() {
+export function InstallBanner() {
   const { canPromptNative, platform, showBanner, promptInstall, dismiss } = useInstallBanner();
   if (!showBanner) return null;
   return (
@@ -4512,7 +3995,7 @@ function DailyCountdown({ score }) {
 
 
 // ─── DAILY HERO COUNTDOWN (for home screen hero card) ────────────────────────
-function DailyHeroCountdown() {
+export function DailyHeroCountdown() {
   const [timeStr, setTimeStr] = useState("");
   useEffect(() => {
     const update = () => {
