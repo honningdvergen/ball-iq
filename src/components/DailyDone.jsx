@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch } from "lucide-react";
 import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
-import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N } from "../lib/dailyResults.js";
+import { recordDailyResult, fetchDistribution, summariseDistribution, hasRecorded, MIN_N } from "../lib/dailyResults.js";
 import { noteCompletionHour, reminderHourLabel } from "../lib/playHour.js";
 import "./dailyDone.css";
 
@@ -61,8 +61,11 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     let alive = true;
     (async () => {
       if (!isArchive) {
-        const ok = await recordDailyResult({ game, edition, bucket, won });
-        if (ok) noteCompletionHour();
+        // The play hour is a LOCAL fact: note it on the first completion of this
+        // edition whether or not the network record succeeds (on the first
+        // device build it never did, and the reminder fell back to 19:00).
+        if (!hasRecorded(game, edition)) noteCompletionHour();
+        await recordDailyResult({ game, edition, bucket, won });
       }
       const d = await fetchDistribution({ game, edition });
       if (alive) setDist(d);
