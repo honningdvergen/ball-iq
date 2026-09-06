@@ -770,9 +770,16 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         );
       })()}
 
-      {/* Streak strip (redesign): 🔥 line + last-14 form squares. Played days
-          #2E7D1F, today-played bright green with glow, missed raised bg,
-          today-pending = amber outline until a puzzle is completed. */}
+      {/* Streak strip (redesign): last-14 form squares. Played days #2E7D1F,
+          today-played bright green with glow, missed raised bg, today-pending =
+          amber outline until a puzzle is completed.
+
+          Hidden until the player has completed at least one of those 14 days.
+          Before that it read "0 day streak - play one puzzle to light it" over
+          14 dim squares: a scoreboard of a record nobody has, and an invitation
+          to play on the one tab that offers nothing to play. 44-49% of accounts
+          never play a game, so this was the common case, not the edge. */}
+      {form14.some(d => d.cls === "W" || d.cls === "D") && (
       <div role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}
         style={{ marginTop: 12, borderRadius: 18, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
@@ -796,6 +803,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--gold)" }}>TODAY</span>
         </div>
       </div>
+      )}
 
       {/* Recent days table — one column per mode. The header carries 14px of
           side padding so its labels sit over the cells inside the row cards,
