@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8');
-const APP = read('../../src/App.jsx');
+// The engine left App.jsx on 2026-09-06 (E16, brick 9); the web-shell gate stays in App.
+const APP = read('../../src/App.jsx') + '\n' + read('../../src/screens/QuizEngine.jsx');
 const CSS = read('../../src/app.css');
 
 describe('timed quiz start + quit (2026-09-06)', () => {

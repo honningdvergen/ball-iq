@@ -29,6 +29,7 @@ const CSS = read('../../src/app.css')
   + '\n' + read('../../src/design/tokens.css');
 const APP = read('../../src/App.jsx');
 const HUB = read('../../src/screens/OnlineHubTab.jsx'); // Online tab, extracted 2026-09-06 (E16)
+const ENGINE = read('../../src/screens/QuizEngine.jsx'); // quiz engine, extracted 2026-09-06 (E16)
 
 // ⚠️ SCAN EVERY JSX FILE, NOT TWO OF THEM.
 // The inline-style button rule below originally read only App.jsx (and Login).
@@ -55,11 +56,11 @@ describe('design review — tier 2', () => {
   it('the answer reveal scrolls the minimum, not to centre', () => {
     expect(APP, 'centring is what pushed the header off-screen')
       .not.toMatch(/scrollIntoView\(\{ block: 'center'/);
-    expect(APP).toMatch(/const overshoot = el\.getBoundingClientRect\(\)\.bottom/);
+    expect(ENGINE).toMatch(/const overshoot = el\.getBoundingClientRect\(\)\.bottom/);
     // The inset is why `nearest`/`end` were wrong: both put the panel back
     // under the CTA that sits on the viewport bottom.
-    expect(APP).toMatch(/const CTA_INSET = 96;/);
-    expect(APP, 'no scroll at all when the panel already fits')
+    expect(ENGINE).toMatch(/const CTA_INSET = 96;/);
+    expect(ENGINE, 'no scroll at all when the panel already fits')
       .toMatch(/if \(overshoot > 0\) window\.scrollBy/);
   });
 
