@@ -31,11 +31,13 @@ async function captureErrors(page) {
 }
 
 async function enterLocalSetup(page) {
-  await page.goto('/play?tab=home');
+  // "Same phone" left the Home card on 2026-09-06 (one row, one quiet Invite
+  // pill). Couch play is entered from the Online tab's "Local pass & play" row
+  // — the same path all-modes-smoke takes.
+  await page.goto('/play?tab=online');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  // MultiplayerCard's Local CTA on Home — labelled "Local" or "Pass-and-play"
-  await page.getByRole('button', { name: /local/i }).first().click();
+  await page.getByText('Local pass & play').locator('xpath=ancestor::div[2]').getByRole('button', { name: 'Play' }).first().click();
   await page.waitForTimeout(500);
 }
 

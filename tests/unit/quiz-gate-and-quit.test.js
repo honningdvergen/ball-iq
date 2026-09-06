@@ -30,7 +30,9 @@ describe('timed quiz start + quit (2026-09-06)', () => {
     expect(APP).toMatch(/className="q-sticky-foot"/);
     expect(CSS).toMatch(/\.q-sticky-foot\{position:sticky;bottom:0/);
     expect(CSS).toMatch(/\.next-btn-primary\{position:static/);
-    const report = APP.indexOf('idle="⚑ Report a problem"');
+    // The flag is a Lucide <Flag/> now (review C: no glyphs as icons); the
+    // label text is the stable anchor.
+    const report = APP.indexOf('/> Report a problem</>}');
     const next = APP.indexOf('className="q-sticky-foot"');
     expect(report).toBeGreaterThan(-1);
     expect(report).toBeLessThan(next);

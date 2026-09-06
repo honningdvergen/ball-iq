@@ -97,6 +97,6 @@ describe('the rating funnel is measurable end to end', () => {
 
   it('the reason key matches the sheet that produces it', () => {
     // A gate keyed on a string the UI never emits is a no-op that looks fixed.
-    expect(/\["too-easy", "🥱"/.test(APP), 'the sheet must still emit "too-easy"').toBe(true);
+    expect(/\["too-easy", Moon/.test(APP), 'the sheet must still emit "too-easy"').toBe(true);
   });
 });

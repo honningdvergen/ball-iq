@@ -23,7 +23,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, UserRoundSearch } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, UserRoundSearch, CircleX, CircleHelp, Pencil, Moon, BrickWall, Flag, Handshake } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, mpLookupRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
@@ -3377,7 +3377,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
             // cannot go stale.
             key={rkey}
             onReport={onReport}
-            idle="⚑ Report a problem"
+            idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" /> Report a problem</>}
             idleColor="var(--t3)"
             // A thunk, so picked/correct are read at press time rather than
             // recomputed on every render of the question.
@@ -3628,13 +3628,19 @@ export const QUESTION_DURATION_MS = 20000;
 /* Online-multiplayer components live in ./screens/OnlineMultiplayer.jsx —
    lazy-loaded via the React.lazy imports near the top of this file. */
 
-const EMOJIS = ["⚽","🏆","🔥","⚡","🎯","🥅","🧤","👑"];
+// Six players, six marks. A number in a coloured ring — not an emoji avatar
+// (the review's icon rule) — and the colour follows the player through the
+// handoff, reveal, summary and podium so "who is 3?" never needs reading.
+const PLAYER_RGB = ["88,204,2", "255,170,0", "78,168,222", "139,108,240", "236,72,153", "255,122,0"];
+function PlayerMark({ p, size }) {
+  if (!p) return null;
+  return <span className={`pmark${size === "lg" ? " lg" : ""}`} style={{ "--pm": p.rgb || PLAYER_RGB[(p.id || 0) % PLAYER_RGB.length] }} aria-hidden="true">{p.n || (p.id || 0) + 1}</span>;
+}
 
 function LocalSetup({ onStart, onBack }) {
   const [count, setCount] = useState(2);
   const [names, setNames] = useState(Array.from({ length: 6 }, (_, i) => ""));
   const [lmode, setLmode] = useState("classic");
-  const [ldiff, setLdiff] = useState("medium");
   const [topic, setTopic] = useState("mixed");
   const [topicOpen, setTopicOpen] = useState(false);
 
@@ -3644,9 +3650,12 @@ function LocalSetup({ onStart, onBack }) {
     const players = Array.from({ length: count }, (_, i) => ({
       id: i,
       name: (names[i] || "").trim() || `Player ${i + 1}`,
-      emoji: EMOJIS[i % EMOJIS.length],
+      n: i + 1,
+      rgb: PLAYER_RGB[i % PLAYER_RGB.length],
     }));
-    onStart({ players, mode: lmode, diff: ldiff, topic });
+    // Same call as Classic (Alex, 2026-09-06): no difficulty picker. The arc
+    // ramps easy → hard inside the round; survival draws the hard pool.
+    onStart({ players, mode: lmode, diff: "hard", topic });
   };
 
   return (
@@ -3669,7 +3678,7 @@ function LocalSetup({ onStart, onBack }) {
       <div className="local-names">
         {Array.from({ length: count }, (_, i) => (
           <div key={i} className="player-input-row">
-            <div className="player-num">{EMOJIS[i % EMOJIS.length]}</div>
+            <PlayerMark p={{ id: i, n: i + 1 }} />
             <input
               className="player-inp"
               placeholder={`Player ${i + 1}`}
@@ -3704,29 +3713,14 @@ function LocalSetup({ onStart, onBack }) {
       <div className="ds-eyebrow local-section-label">Mode</div>
       <div className="local-mode-row">
         {[
-          { id:"classic",  icon:"⏱️", name:"Classic",  desc:"10 questions" },
-          { id:"sprint",   icon:"⚡",  name:"Sprint",   desc:"5 questions" },
-          { id:"survival", icon:"🔥", name:"Survival", desc:"Eliminated on wrong" },
+          { id:"classic",  Icon: Timer, name:"Classic",  desc:"10 questions" },
+          { id:"sprint",   Icon: Zap,   name:"Sprint",   desc:"5 questions" },
+          { id:"survival", Icon: Flame, name:"Survival", desc:"Eliminated on wrong" },
         ].map(m => (
           <button key={m.id} className={`local-mode-chip${lmode===m.id?" on":""}`} onClick={() => setLmode(m.id)}>
-            <span className="local-mode-icon">{m.icon}</span>
+            <span className="local-mode-icon"><m.Icon size={22} strokeWidth={2.2} aria-hidden="true" /></span>
             <span className="local-mode-name">{m.name}</span>
             <span className="local-mode-desc">{m.desc}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Difficulty */}
-      <div className="ds-eyebrow local-section-label">Difficulty</div>
-      <div className="local-diff-row">
-        {[
-          { id:"easy",   icon:"🌱", name:"Easy" },
-          { id:"medium", icon:"⚽", name:"Medium" },
-          { id:"hard",   icon:"🧠", name:"Hard" },
-        ].map(d => (
-          <button key={d.id} className={`local-diff-chip${ldiff===d.id?" on":""}`} onClick={() => setLdiff(d.id)}>
-            <span style={{fontSize:18}}>{d.icon}</span>
-            <span>{d.name}</span>
           </button>
         ))}
       </div>
@@ -4030,14 +4024,14 @@ function LocalGameScreen({ config, onComplete, onExit }) {
             ? `Round ${chunkIdx + 1} · Q${chunkStartQ + 1}–${chunkEndQ + 1}`
             : `Next up · ${prog}`}
         </div>
-        <div className="local-ready-emoji">{currentPlayer?.emoji || "🎮"}</div>
+        <div className="local-ready-emoji"><PlayerMark p={currentPlayer} size="lg" /></div>
         <div className="local-ready-name">{headline}</div>
         <div className="local-ready-sub">{sub}</div>
         {mode === "survival" && eliminatedIds.length > 0 && (
           <div className="local-out-list">
             {eliminatedIds.map(id => {
               const p = players.find(pp => pp.id === id);
-              return p ? <span key={id} className="local-out-chip">{p.emoji} {p.name}</span> : null;
+              return p ? <span key={id} className="local-out-chip"><PlayerMark p={p} /> {p.name}</span> : null;
             })}
           </div>
         )}
@@ -4054,7 +4048,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
       <div className="local-ready">
         <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Go back">←</button>
         <div className="ds-eyebrow local-ready-eyebrow">Next up · {prog}</div>
-        <div className="local-ready-emoji">{currentPlayer?.emoji || "🎮"}</div>
+        <div className="local-ready-emoji"><PlayerMark p={currentPlayer} size="lg" /></div>
         <div className="local-ready-name">{currentPlayer?.name}'s turn</div>
         <div className="local-ready-sub">Pass the phone — same question.</div>
         <button className="btn-3d" style={{maxWidth:320}} onClick={() => setPhase("question")}>
@@ -4124,7 +4118,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
                 const outNow = newEliminatedIds.includes(p.id);
                 return (
                   <div key={p.id} className={`local-reveal-row ${ok ? "ok" : "no"}${outNow ? " out" : ""}`}>
-                    <span>{p.emoji}</span>
+                    <PlayerMark p={p} />
                     <span style={{flex:1,fontWeight:700,color:"var(--t1)"}}>{p.name}</span>
                     <span className="local-reveal-chose">{chose}</span>
                     <span className="local-reveal-mark">{ok ? "✓" : "✗"}</span>
@@ -4171,7 +4165,7 @@ function LocalGameScreen({ config, onComplete, onExit }) {
           <div className="local-summary-title">After Q{currentQIdx + 1}</div>
           {rows.map(p => (
             <div key={p.id} className="local-summary-row">
-              <span>{p.emoji}</span>
+              <PlayerMark p={p} />
               <span style={{flex:1,fontWeight:700,color:"var(--t1)"}}>{p.name}</span>
               <span className="local-summary-score">{scores[p.id] || 0}</span>
             </div>
@@ -4233,14 +4227,14 @@ function LocalResults({ result, onHome, onRetry, onShare }) {
       const topScore = scores[byScore[0]?.id] ?? 0;
       const tiedAtTop = byScore.filter(p => (scores[p.id] || 0) === topScore);
       if (tiedAtTop.length > 1) {
-        iconTop = "🤝";
-        headline = "It's a Tie!";
+        iconTop = <Handshake size={40} strokeWidth={2} aria-hidden="true" />;
+        headline = "It's a tie";
         const names = tiedAtTop.map(p => p.name).join(" · ");
         subHeadline = `${names} — all on ${topScore}`;
       } else {
         const top = byScore[0];
-        iconTop = top?.emoji || "🏆";
-        headline = top ? `${top.name} Wins!` : "Game Over";
+        iconTop = top ? <PlayerMark p={top} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
+        headline = top ? `${top.name} wins` : "Game over";
         subHeadline = top ? `${topScore} correct · questions ran out` : null;
       }
       ranked = [...byScore, ...elimRev];
@@ -4252,13 +4246,13 @@ function LocalResults({ result, onHome, onRetry, onShare }) {
     const tiedAtTop = ranked.filter(p => (scores[p.id] || 0) === topScore);
     const top = ranked[0];
     if (tiedAtTop.length > 1) {
-      iconTop = "🤝";
-      headline = "It's a Tie!";
+      iconTop = <Handshake size={40} strokeWidth={2} aria-hidden="true" />;
+      headline = "It's a tie";
       const names = tiedAtTop.map(p => p.name).join(" · ");
       subHeadline = `${names} — all on ${topScore}`;
     } else {
-      iconTop = top?.emoji || "🏆";
-      headline = top ? `${top.name} wins!` : "Game Over";
+      iconTop = top ? <PlayerMark p={top} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
+      headline = top ? `${top.name} wins` : "Game over";
       subHeadline = top ? `${topScore} correct` : null;
     }
   }
@@ -4276,8 +4270,8 @@ function LocalResults({ result, onHome, onRetry, onShare }) {
       <div className="podium">
         {ranked.slice(0, 3).map((p, i) => (
           <div key={p.id} className={`podium-row${i === 0 ? " gold" : ""}`}>
-            <div className="pod-rank">{["🥇","🥈","🥉"][i]}</div>
-            <div className="pod-name">{p.emoji} {p.name}</div>
+            <div className="pod-rank numeric">{i + 1}</div>
+            <div className="pod-name"><PlayerMark p={p} /> {p.name}</div>
             <div className="pod-score">{scores[p.id] || 0}</div>
           </div>
         ))}
@@ -4289,7 +4283,7 @@ function LocalResults({ result, onHome, onRetry, onShare }) {
           {ranked.slice(3).map((p, i) => (
             <div key={p.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderTop: i===0?"none":"0.5px solid var(--border)"}}>
               <span style={{width:24,color:"var(--t3)",fontWeight:700,fontVariantNumeric:"tabular-nums"}}>{i + 4}</span>
-              <span style={{fontSize:18}}>{p.emoji}</span>
+              <PlayerMark p={p} />
               <span style={{flex:1,color:"var(--t1)",fontWeight:700}}>{p.name}</span>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontVariantNumeric:"tabular-nums",fontWeight:700,color:"var(--accent)"}}>{scores[p.id] || 0}</span>
             </div>
@@ -4307,7 +4301,7 @@ function LocalResults({ result, onHome, onRetry, onShare }) {
               return (
                 <span key={id} style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 10px",borderRadius:20,background:"var(--s2)",border:"1px solid var(--border)",fontSize:12,color:"var(--t2)"}}>
                   <span style={{opacity:0.5,fontFamily:"'JetBrains Mono',monospace"}}>#{i+1}</span>
-                  {p.emoji} {p.name}
+                  <PlayerMark p={p} /> {p.name}
                 </span>
               );
             })}
@@ -4316,8 +4310,8 @@ function LocalResults({ result, onHome, onRetry, onShare }) {
       )}
 
       <div className="results-actions" style={{marginTop:16}}>
-        <button className="btn-3d" onClick={onRetry}>Play Again</button>
-        {onShare && <button className="btn-3d share" onClick={onShare}>Share Score</button>}
+        <button className="btn-3d" onClick={onRetry}>Play again</button>
+        {onShare && <button className="btn-3d ghost" onClick={onShare}>Share score</button>}
         <button className="results-exit" onClick={onHome}>Back to Home</button>
       </div>
     </div>
@@ -5361,7 +5355,7 @@ function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
               <ReportButton
                 key={w.id != null ? String(w.id) : w.q}
                 onReport={onReport}
-                idle="⚑ This looks wrong"
+                idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" /> This looks wrong</>}
                 info={{ id: w.id, q: w.q, picked: w.user ?? null, correct: w.correct ?? null, mode }}
                 style={{
                   marginTop:10, padding:"7px 11px", minHeight:36,
@@ -6111,7 +6105,7 @@ function HotStreakResults({ result, onRetry, onHome, onShare, prevBest }) {
       </div>
       <div className="results-actions" style={{marginTop:14}}>
         <button className="btn-3d" onClick={onRetry}>Run it back</button>
-        <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
+        <button className="btn-3d ghost" onClick={onShare}>Share score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
       {xpEarned > 0 && (
@@ -6157,7 +6151,7 @@ function TrueFalseResults({ result, onRetry, onHome, onShare }) {
       </div>
       <div className="results-actions" style={{marginTop:14}}>
         <button className="btn-3d" onClick={onRetry}>Another round</button>
-        <button className="btn-3d ghost" onClick={onShare}>Share Score</button>
+        <button className="btn-3d ghost" onClick={onShare}>Share score</button>
         <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
       </div>
       {xpEarned > 0 && (
@@ -8406,36 +8400,34 @@ function ReportReasonSheet({ onPick, onSkip }) {
   const ref = useRef(null);
   useModalA11y({ isOpen: true, onClose: onSkip, ref });
   const REASONS = [
-    ["wrong-answer", "❌", "The answer is wrong"],
-    ["unclear", "🤔", "Confusing or unclear"],
-    ["typo", "✏️", "Typo or bad grammar"],
-    ["too-easy", "🥱", "Too easy — gives itself away"],
-    ["too-hard", "🧱", "Too hard or unfair"],
+    ["wrong-answer", CircleX, "The answer is wrong"],
+    ["unclear", CircleHelp, "Confusing or unclear"],
+    ["typo", Pencil, "Typo or bad grammar"],
+    ["too-easy", Moon, "Too easy — gives itself away"],
+    ["too-hard", BrickWall, "Too hard or unfair"],
   ];
+  // Same sheet as the quit confirm (grab, head, stacked rows, quiet exit) so a
+  // report feels like the app, not a browser prompt. Rows are the app's row
+  // anatomy: icon well, one line, the whole row is the target.
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="What's wrong with this question?" onClick={onSkip}>
-      <div ref={ref} tabIndex={-1} onClick={(e) => e.stopPropagation()}
-           style={{ background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 18, padding: "18px 16px 12px", width: "100%", maxWidth: 360 }}>
-        <div style={{ fontSize: 16, fontWeight: 800, color: "var(--t1)", marginBottom: 4, textAlign: "center" }}>
-          What&rsquo;s wrong with it?
+      <div ref={ref} tabIndex={-1} className="modal-box" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-grab" aria-hidden="true" />
+        <div className="modal-head">
+          <div className="modal-title">What&rsquo;s wrong with it?</div>
+          <div className="modal-body">One tap — it tells us exactly what to fix.</div>
         </div>
-        <div style={{ fontSize: 12.5, color: "var(--t3)", marginBottom: 12, textAlign: "center" }}>
-          Takes one tap — it tells us exactly what to fix.
+        <div className="report-reasons">
+          {REASONS.map(([slug, Icon, label]) => (
+            <button key={slug} type="button" className="report-reason" onClick={() => onPick(slug)}>
+              <span className="report-reason-well" aria-hidden="true"><Icon size={18} strokeWidth={2.2} /></span>
+              <span className="report-reason-label">{label}</span>
+            </button>
+          ))}
         </div>
-        {REASONS.map(([slug, icon, label]) => (
-          <button key={slug} type="button" onClick={() => onPick(slug)}
-            style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", minHeight: 44,
-                     padding: "10px 12px", marginBottom: 6, background: "var(--s2)",
-                     border: "1px solid var(--border)", borderRadius: 12, color: "var(--t1)",
-                     fontSize: 14, fontWeight: 700, fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
-            <span aria-hidden="true">{icon}</span>{label}
-          </button>
-        ))}
-        <button type="button" onClick={onSkip}
-          style={{ display: "block", width: "100%", minHeight: 44, padding: "10px 12px", background: "none",
-                   border: "none", color: "var(--t3)", fontSize: 13, fontWeight: 700, fontFamily: "inherit", cursor: "pointer" }}>
-          Just flag it
-        </button>
+        <div className="modal-btns">
+          <button type="button" className="modal-btn modal-quiet" onClick={onSkip}>Just flag it</button>
+        </div>
       </div>
     </div>
   );
