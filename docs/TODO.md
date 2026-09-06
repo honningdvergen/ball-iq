@@ -1,3 +1,15 @@
+## 2026-09-06 (12:45) — ✅ CLASSIC: NO DIFFICULTY PICKER, NO START GATE; QUIT SHEET REDRAWN (333d24b) — device check in progress
+
+Alex, playing Classic in the simulator: "are we sure we need the ready screen at all? … there is no go back button", "not sure we
+should have difficulty at all … outdated and dull", the 3-2-1 that briefly replaced the Ready screen: "absolutely hated", the quit
+dialog "also looks dull" / "outdated". Shipped: Classic tile → the arc directly (full range, `diff:"hard"` + ramp — the picker's
+Medium had silently removed every hard question); the clock runs from Q1 (no interstitial, no count); quit confirm = centred
+stacked sheet (title · the stake "3 right from 4 answered" · full-width Keep playing · plain-text Quit). ⚠️ A TDZ crash shipped for
+one build (an effect above `const timed`) — caught in the simulator, order now pinned in `quiz-gate-and-quit.test.js`.
+**NEXT (Alex):** act as a senior app developer / reviewer: play through the whole app looking for bugs, errors and what to change,
+and give actionable feedback to level it up significantly. Craft seen on the way: the difficulty sheet's emoji are gone with it;
+the mode grid's "10 Qs, 20s each" desc now reads "10 Qs, easy to hard".
+
 ## 2026-09-06 (12:30) — ✅ BALL MARK IN THE HEADER, CLUB COLOURS BACK, ONLINE GUEST PITCH (30d06bb, bd59231) — simulator-verified, pushed
 
 Alex: "the F … is the footle logo and ball iq for what exactly?" → the header wears the app's ball (same as the website header).
