@@ -41,7 +41,8 @@ begin
   if p_game is null or p_game not in ('footle','daily7','trail','mystery') then return; end if;
   if p_edition is null or p_edition < 0 or p_edition > 100000 then return; end if;
   if p_bucket is null or p_bucket < 0 or p_bucket > 30 then return; end if;
-  if p_visitor is null then return; end if;
+  -- p_visitor may be NULL: native builds send no identifier (store-listing
+  -- promise). Those rows dedupe client-side only.
   -- Rate limit, same posture as record_funnel_event: a runaway client cannot
   -- fill the table.
   if (select count(*) from public.daily_results where created_at > now() - interval '1 hour') >= 5000 then

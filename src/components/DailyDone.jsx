@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Flame, Bell, Share, Check } from "lucide-react";
+import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch } from "lucide-react";
 import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N } from "../lib/dailyResults.js";
@@ -35,6 +35,16 @@ import "./dailyDone.css";
 //   save        { streak, onSave } | undefined — guest with a streak worth saving
 //   GetAppCTA   component | null (islands pass the store badges)
 //   track       (name, meta) => void — optional analytics
+// Default glyph per daily for the "still open today" rows, so a host that passes
+// only names + links (the static islands) still draws a well with something in
+// it — an empty tinted square read as a bug on the first web play-through.
+const DEFAULT_ICON = {
+  footle: <span className="fh-tile fh-tile-green" style={{ "--fh-tile": "22px", borderRadius: 6 }} aria-hidden="true">F</span>,
+  daily7: <ClipboardList size={18} strokeWidth={2.2} />,
+  trail: <Route size={18} strokeWidth={2.2} />,
+  mystery: <UserRoundSearch size={18} strokeWidth={2.2} />,
+};
+
 export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], save, GetAppCTA = null, track }) {
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
@@ -154,7 +164,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             const c = MODE_ACCENT[n.key === "daily" ? "daily7" : n.key] || "var(--accent)";
             return (
               <Tag key={n.key} className="dd-next-row" href={n.href} onClick={() => { track?.("dd-next", { game, to: n.key }); n.onTap?.(); }} {...(n.href ? {} : { type: "button" })}>
-                <span className="dd-well" style={{ "--dd-rgb": rgb, "--dd-c": c }} aria-hidden="true">{n.icon || null}</span>
+                <span className="dd-well" style={{ "--dd-rgb": rgb, "--dd-c": c }} aria-hidden="true">{n.icon || DEFAULT_ICON[n.key] || null}</span>
                 <span className="dd-title">{n.name}</span>
                 <span className="dd-next-go">Play</span>
               </Tag>

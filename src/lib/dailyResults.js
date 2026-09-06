@@ -16,9 +16,19 @@ const KEY_ = (import.meta.env.VITE_SUPABASE_KEY || '').trim();
 export const MIN_N = 20;
 export const DAILY_GAMES = ['footle', 'daily7', 'trail', 'mystery'];
 
+// Native shells serve from capacitor://localhost (iOS) / https://localhost
+// (Android), so the plain hostname guard would treat every phone as a dev box.
+function isNative() {
+  try {
+    if (typeof location !== 'undefined' && location.protocol === 'capacitor:') return true;
+    const C = typeof window !== 'undefined' ? window.Capacitor : null;
+    return !!(C && typeof C.isNativePlatform === 'function' && C.isNativePlatform());
+  } catch { return false; }
+}
 function synthetic() {
   try {
     if (typeof navigator !== 'undefined' && navigator.webdriver === true) return true;
+    if (isNative()) return false;
     const h = typeof location !== 'undefined' ? location.hostname : '';
     return h === 'localhost' || h === '127.0.0.1' || h === '[::1]' || h.endsWith('.local');
   } catch { return false; }
@@ -58,8 +68,12 @@ export async function recordDailyResult({ game, edition, bucket, won = true }) {
   if (!Number.isInteger(bucket) || bucket < 0 || bucket > 30) return false;
   if (hasRecorded(game, edition)) return true;
   if (synthetic() || !URL_ || !KEY_) return false;
-  const vid = visitorId();
-  if (!vid) return false;
+  // ⚠️ NO IDENTIFIER FROM NATIVE. The store listing promises no analytics on the
+  // native apps, so a phone's result counts toward "how everyone did" with
+  // visitor_id null — deduped only by the per-edition flag below. Web keeps the
+  // visitor id (and the server's unique index).
+  const vid = isNative() ? null : visitorId();
+  if (!isNative() && !vid) return false;
   try {
     await rpc('record_daily_result', { p_game: game, p_edition: edition, p_bucket: bucket, p_won: !!won, p_visitor: vid });
     try { localStorage.setItem(flagKey(game, edition), '1'); } catch { /* private mode */ }
