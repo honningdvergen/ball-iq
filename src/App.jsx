@@ -59,6 +59,8 @@ import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
 import { useShare } from './hooks/useShare.js';
+import { useWebPush } from './hooks/useWebPush.js';
+import { useJoinGate } from './hooks/useJoinGate.js';
 import { dailyTierCopy, scoreTagline } from './lib/resultsCopy.js';
 import { stumpLink, shareStumpText, shareSenderName } from './lib/stump.js';
 import {
@@ -169,7 +171,7 @@ const BOOT_SEARCH = (() => { try { return window.location.search; } catch { retu
 // pendingJoinCode initializer decide "is this a real code?" with ONE rule —
 // they disagreed before, and /join/x deferred onboarding for a code that
 // normalized to null (no gate, no auto-join, nothing staged).
-const normalizeJoinCode = s => (s || "").toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
+export const normalizeJoinCode = s => (s || "").toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6) || null;
 
 // Deep-link onboarding deferral, module-scoped because BOOT_PATH is immutable
 // and AppInner REMOUNTS (AppGate unmounts it whenever effectiveLoading flips —
@@ -4479,6 +4481,11 @@ function AppInner() {
       } catch {}
     }
   }, [screen]);
+  // Join gate → hooks/useJoinGate.js (E16, 2026-09-06): the pending code from
+  // the URL, the boot-time dead-code drop, the auto-join route (startMode is
+  // declared further down, hence the ref), and the two refs the modal uses.
+  const startModeRef = useRef(null);
+  const { pendingJoinCode, setPendingJoinCode, clearPendingJoin, stage1RoomCode, setStage1RoomCode, joinGateRef, autoJoinRoutedRef } = useJoinGate({ user, isGuest, startModeRef });
   // QA S-03: screens are full-page swaps, but nothing reset the scroll — so
   // quitting a Classic quiz returned you to Home still scrolled wherever you
   // had been, leaving the Daily 7 / Footle cards below the fold. The daily
@@ -4577,7 +4584,6 @@ function AppInner() {
   // (which holds the deep-link `?join=CODE` value before it's consumed by the
   // auto-join effect) so the deep-link state and the in-flow state stay
   // independently trackable.
-  const [stage1RoomCode, setStage1RoomCode] = useState("");
   // 1.1: set by the Home "Invite" button so OnlineEntry auto-creates a room and
   // drops the user in the lobby (where the real /join/CODE invite lives).
   const [onlineAutoCreate, setOnlineAutoCreate] = useState(false);
@@ -4587,67 +4593,10 @@ function AppInner() {
   // users. Cleared once consumed (room joined, dismissed, or signed-out
   // away). The native app wrapper should hand the code in via the same
   // localStorage key after parsing the Universal / App Link.
-  const [pendingJoinCode, setPendingJoinCode] = useState(() => {
-    try {
-      // Sprint #92 GGG3: parse BOTH /join/CODE (new path-based, matches
-      // Universal Links) and ?join=CODE (legacy query-based) so previously-
-      // shared invite URLs keep routing correctly. Path form takes priority.
-      const pathMatch = window.location.pathname.match(/^\/join\/([A-Za-z0-9]+)/);
-      const fromPath = pathMatch ? pathMatch[1] : null;
-      const params = new URLSearchParams(window.location.search);
-      const fromQuery = params.get("join");
-      const fromUrl = fromPath || fromQuery;
-      if (fromUrl) {
-        try { localStorage.setItem("biq_pending_join", JSON.stringify({ c: fromUrl, at: Date.now() })) } catch {}
-        // Strip the path/query so a refresh doesn't re-trigger the auto-join —
-        // but drop ONLY the /join path + join param, preserving any other params
-        // (e.g. a co-present ?c= challenge token, read by the next init).
-        try {
-          const u = new URL(window.location.href);
-          u.pathname = "/"; u.searchParams.delete("join");
-          window.history.replaceState({}, "", u.pathname + u.search + u.hash);
-        } catch {}
-        return normalizeJoinCode(fromUrl);
-      }
-      const stored = localStorage.getItem("biq_pending_join");
-      if (stored) {
-        // 2026-08-29: stored codes carry a timestamp and yield to explicit
-        // deep-link intent. Before this, a code persisted FOREVER and was
-        // never validated against room existence — but the cron deletes rooms
-        // at 7 days, so an unconsumed invite became a dead "Join the game"
-        // modal over every future visit, including SEO deep links with a
-        // quiz clock already running underneath. A bare legacy value is
-        // stale by construction and dropped on sight.
-        let code = null;
-        try {
-          const parsed = JSON.parse(stored);
-          if (parsed?.c && Date.now() - (parsed.at || 0) < 24 * 3600 * 1000) code = parsed.c;
-        } catch { /* legacy bare string */ }
-        if (!code) { try { localStorage.removeItem("biq_pending_join"); } catch {} return null; }
-        const otherIntent = /[?&](club|quiz|c)=/.test(window.location.search) || /^\/c\//.test(window.location.pathname);
-        if (otherIntent) return null;
-        return normalizeJoinCode(code);
-      }
-    } catch {}
-    return null;
-  });
   // Typed-code guest entry (Login.jsx's joinWithCode): when AppInner is
   // already mounted (local-guest overlay case) the localStorage write alone
   // is invisible — this event carries the code into live state, and the
   // existing gate modal / autoJoin routing takes it from there.
-  useEffect(() => {
-    const onJoinCode = (e) => {
-      const code = String(e?.detail || '').toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6);
-      if (code) setPendingJoinCode(code);
-    };
-    window.addEventListener('biq:join-code', onJoinCode);
-    return () => window.removeEventListener('biq:join-code', onJoinCode);
-  }, []);
-  const clearPendingJoin = useCallback(() => {
-    setPendingJoinCode(null);
-    loopEvent("join-token-consumed");
-    try { localStorage.removeItem("biq_pending_join"); } catch {}
-  }, []);
   // A stored code is re-armed on boot (links, typed codes) — check it still
   // points at a joinable room before the gate can show it. Rooms are reaped at
   // 7 days and end far sooner; a dead code must not become a modal.
@@ -5468,9 +5417,6 @@ function AppInner() {
   // ── Web Push opt-in (web only; native uses local notifications) ──────────
   // Mirrors the native toggle's shape so Settings can render either behind one
   // identical row.
-  const [webPushOn, setWebPushOn] = useState(() => {
-    try { return webPushSupported() && Notification.permission === 'granted'; } catch { return false; }
-  });
 
   // Re-assert an existing subscription once per session. Browsers rotate push
   // endpoints on their own schedule and Safari does not fire
@@ -5485,37 +5431,9 @@ function AppInner() {
   // showed reminders ON while nothing could ever arrive. Runs after the
   // refresh so a sign-in self-heal is reflected, and for signed-out visitors
   // too, where the answer is honestly OFF.
-  useEffect(() => {
-    let dead = false;
-    (async () => {
-      try {
-        if (!webPushSupported()) return;
-        if (user?.id) await refreshWebPushSubscription();
-        const reg = await navigator.serviceWorker.getRegistration();
-        const sub = reg ? await reg.pushManager.getSubscription() : null;
-        if (!dead) setWebPushOn(!!sub && Notification.permission === 'granted');
-      } catch { /* keep the optimistic state rather than lying OFF on a flake */ }
-    })();
-    return () => { dead = true; };
-  }, [user?.id]);
+  // Web push → hooks/useWebPush.js (E16, 2026-09-06).
+  const { webPushOn, handleToggleWebPush } = useWebPush({ user, showToast });
 
-  const handleToggleWebPush = useCallback(async (on) => {
-    if (on) {
-      // Requesting from inside this handler is load-bearing, not incidental:
-      // Safari rejects requestPermission() outside a user gesture entirely.
-      const ok = await enableWebPush();
-      setWebPushOn(ok);
-      showToast(ok
-        ? 'Daily reminders on 🔔'
-        : (webPushPermission() === 'denied'
-            ? 'Blocked in your browser — allow notifications for balliq.app'
-            : "Couldn't turn reminders on"));
-    } else {
-      await disableWebPush();
-      setWebPushOn(false);
-      showToast('Daily reminders off');
-    }
-  }, [showToast]);
 
 
   // Challenge validity: a token is honored on its own calendar day and — since
@@ -6196,6 +6114,7 @@ function AppInner() {
       } catch {}
     }
   }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
+  startModeRef.current = startMode;
 
   // Launch a specific club's quiz directly (used by the picker AND the Home
   // personalised tile). Prefers our verified, hint-bearing QB questions, and
@@ -6427,18 +6346,6 @@ function AppInner() {
   // Fire-once via the ref so the effect can re-run for state changes without
   // re-navigating mid-game. Guests/unsigned users are caught by the prompt
   // rendered below — they sign in, AppInner remounts, and this effect routes.
-  const autoJoinRoutedRef = useRef(false);
-  useEffect(() => {
-    if (!pendingJoinCode) { autoJoinRoutedRef.current = false; return; }
-    if (!user || isGuest) return;
-    if (autoJoinRoutedRef.current) return;
-    autoJoinRoutedRef.current = true;
-    startMode("online");
-    // Audit Phase 5 (H2): user → user?.id. The effect only checks user
-    // for truthiness; `!user` and `!user?.id` are equivalent for Supabase
-    // auth (user is null OR has an id). Narrowing prevents re-fire on
-    // unrelated auth context updates (token refresh, metadata change).
-  }, [pendingJoinCode, user?.id, isGuest, startMode]);
 
   // LocalSetup gives us a fully-formed config — LocalGameScreen owns the rest
   // (questions, turns, scores, eliminations). No legacy state touched here.
@@ -7865,43 +7772,6 @@ function AppInner() {
 
   // Inline join from the Online tab — same RPC + SQLSTATE copy as OnlineEntry,
   // but the code row lives on the tab (no intermediate entry screen).
-  const hubJoinRoom = useCallback(async (rawCode) => {
-    // Device test 2026-08-30: signed out, a TYPED code hit the auth wall and
-    // was silently discarded — while the same room admits link-tapping guests.
-    // Route the typed code into pendingJoinCode instead: the join-gate modal
-    // (guest primary, sign-in secondary) and autoJoin routing take over, the
-    // exact machinery /join/CODE links already use.
-    if (!user || isGuest) {
-      const code = String(rawCode || "").toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6);
-      if (code.length < 4) { openAuthPrompt("online"); return { ok: false, error: "" }; }
-      // ⚠️ CHECK THE ROOM BEFORE PROMISING IT (review 2026-09-06, A1). A typo
-      // used to be persisted and greeted with "we'll drop you straight into the
-      // room", then re-prompted on every boot. One read-only RPC first.
-      const look = await mpLookupRoom(code);
-      if (look.found === false) return { ok: false, error: "No room with that code — check with your friend" };
-      if (look.found && !look.joinable) return { ok: false, error: look.state === "ended" ? "That game has finished" : "This room is full" };
-      try { localStorage.setItem("biq_pending_join", JSON.stringify({ c: code, at: Date.now() })); } catch {}
-      setPendingJoinCode(code);
-      return { ok: false, error: "" };
-    }
-    const trimmed = String(rawCode || "").trim().toUpperCase();
-    if (trimmed.length !== 6) return { ok: false, error: "Enter the 6-character room code" };
-    const result = await mpJoinRoom({
-      p_code: trimmed,
-      p_name: (authProfile?.username || profile?.name || "Player"),
-      p_avatar: (authProfile?.avatar_id || profile?.avatar || ""),
-    });
-    if (result.error) {
-      const msg = result.code === "53300" ? "This room is full"
-        : result.code === "P0002" ? "No room with that code — check with your friend"
-        : result.code === "42P01" ? "This room isn't accepting joins right now"
-        : (result.error || "Couldn't join room");
-      return { ok: false, error: msg };
-    }
-    setStage1RoomCode(result.code || trimmed);
-    setScreen("online-stage1-lobby");
-    return { ok: true };
-  }, [user, isGuest, authProfile?.username, profile?.name, openAuthPrompt, setPendingJoinCode]);
 
   // Stable callbacks for memoized children
   // ── The one-day archive ────────────────────────────────────────────────────
@@ -7957,6 +7827,43 @@ function AppInner() {
   const isWebBrowser = (() => {
     try { return !IS_NATIVE && !(window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone === true); } catch { return false; }
   })();
+  const hubJoinRoom = useCallback(async (rawCode) => {
+    // Device test 2026-08-30: signed out, a TYPED code hit the auth wall and
+    // was silently discarded — while the same room admits link-tapping guests.
+    // Route the typed code into pendingJoinCode instead: the join-gate modal
+    // (guest primary, sign-in secondary) and autoJoin routing take over, the
+    // exact machinery /join/CODE links already use.
+    if (!user || isGuest) {
+      const code = String(rawCode || "").toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, "").slice(0, 6);
+      if (code.length < 4) { openAuthPrompt("online"); return { ok: false, error: "" }; }
+      // ⚠️ CHECK THE ROOM BEFORE PROMISING IT (review 2026-09-06, A1). A typo
+      // used to be persisted and greeted with "we'll drop you straight into the
+      // room", then re-prompted on every boot. One read-only RPC first.
+      const look = await mpLookupRoom(code);
+      if (look.found === false) return { ok: false, error: "No room with that code — check with your friend" };
+      if (look.found && !look.joinable) return { ok: false, error: look.state === "ended" ? "That game has finished" : "This room is full" };
+      try { localStorage.setItem("biq_pending_join", JSON.stringify({ c: code, at: Date.now() })); } catch {}
+      setPendingJoinCode(code);
+      return { ok: false, error: "" };
+    }
+    const trimmed = String(rawCode || "").trim().toUpperCase();
+    if (trimmed.length !== 6) return { ok: false, error: "Enter the 6-character room code" };
+    const result = await mpJoinRoom({
+      p_code: trimmed,
+      p_name: (authProfile?.username || profile?.name || "Player"),
+      p_avatar: (authProfile?.avatar_id || profile?.avatar || ""),
+    });
+    if (result.error) {
+      const msg = result.code === "53300" ? "This room is full"
+        : result.code === "P0002" ? "No room with that code — check with your friend"
+        : result.code === "42P01" ? "This room isn't accepting joins right now"
+        : (result.error || "Couldn't join room");
+      return { ok: false, error: msg };
+    }
+    setStage1RoomCode(result.code || trimmed);
+    setScreen("online-stage1-lobby");
+    return { ok: true };
+  }, [user, isGuest, authProfile?.username, profile?.name, openAuthPrompt, setPendingJoinCode]);
   const [pendingLeaveRoom, setPendingLeaveRoom] = useState(null);
   const handleHomeClick = useCallback(async () => {
     if (isWebBrowser && !(screen === "online-stage1-lobby" && stage1RoomCode)) { window.location.assign('/'); return; }
@@ -8115,7 +8022,6 @@ function AppInner() {
 
   const [showFriendsPicker, setShowFriendsPicker] = useState(false);
   const friendsPickerRef = useRef(null);
-  const joinGateRef = useRef(null);
   // Sprint #68 JJ4: trap focus + ESC-to-close on the three pre-launch
   // bottom-sheet modals that previously had no a11y wiring.
   const ratePromptRef = useRef(null);
@@ -8125,7 +8031,6 @@ function AppInner() {
   const leaveRoomModalRef = useRef(null);
   const howToPlayRef = useRef(null);
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
-  useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest) && !inGame), onClose: clearPendingJoin, ref: joinGateRef });
   useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
   // Dismissing the name sheet (ESC / backdrop / back) must still SHARE — the
   // user asked to share, not to fill in a form. Closing without sharing would
@@ -8140,6 +8045,7 @@ function AppInner() {
   // renders after a screen transition closed it again in the same tick.
   const closeHowToPlay = useCallback(() => setHowToPlay(null), []);
   useModalA11y({ isOpen: !!howToPlay, onClose: closeHowToPlay, ref: howToPlayRef });
+  useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest) && !inGame), onClose: clearPendingJoin, ref: joinGateRef });
   useModalA11y({ isOpen: !!pendingLeaveRoom, onClose: () => setPendingLeaveRoom(null), ref: leaveRoomModalRef });
   // Openers for the HOW_TO_PLAY sheet. Stable identities so the engines can
   // treat them as effect deps (FootballWordle's one-time auto-open does).
