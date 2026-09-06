@@ -5478,10 +5478,13 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
             marginTop:8,
             fontSize:88,
             fontWeight:900,
-            color:"var(--accent)",
+            // Green is the app's "this went well" signal — earned, not automatic.
+            // A zero (Survival's first-question death, a blank round) reads in
+            // the quiet text colour with no glow (review C10).
+            color: hugeScore > 0 ? "var(--accent)" : "var(--t2)",
             letterSpacing:"-0.03em",
             lineHeight:1,
-            textShadow:"0 8px 32px rgba(88,204,2,0.35)",
+            textShadow: hugeScore > 0 ? "0 8px 32px rgba(88,204,2,0.35)" : "none",
           }}
         >
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
