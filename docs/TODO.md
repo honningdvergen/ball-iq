@@ -1,3 +1,15 @@
+## 2026-09-06 (13:00) — ⭐ SENIOR APP REVIEW DONE — `.audit/senior-review-2026-09-06/REVIEW.md` (+ NOTES.md, screenshots)
+
+Play-through of prod PWA (console clean everywhere) + native. 16 findings in five groups, level-up list in order: **A bugs** — pending
+join re-prompts over a live quiz (no validation / inGame guard / expiry); web shell chrome + tab strip live DURING quizzes; sticky
+Next/Results covers the Why box; "Report a problem" under the primary button (accidental reports — one harness row in
+question_reports). **B honesty** — Settings promises typed-question hints, "Standard" mode, leaderboards; About says v1.1.0; the rating
+card prints 57·Bronze + six league numbers from ONE round; pre-1950 facts in today's Daily 7 (1941-42, 1906). **C craft** — emoji
+clusters on results / report sheet / join modal / local MP setup; five-button non-daily results; Survival's green 0; two save asks on
+one results screen; local MP difficulty picker; sheets vs boxes. **D perf** — Home loads ~1.7 MB JS incl. questions-index 549 KB and
+the Profile/Online screens. **E architecture** — App.jsx 14,027 lines; the TDZ crash class ×3 this week → `no-use-before-define` +
+a Playwright boot smoke in the gate. Fixed during the review: BiqNav "Daily" → "History".
+
 ## 2026-09-06 (12:45) — ✅ CLASSIC: NO DIFFICULTY PICKER, NO START GATE; QUIT SHEET REDRAWN (333d24b) — device check in progress
 
 Alex, playing Classic in the simulator: "are we sure we need the ready screen at all? … there is no go back button", "not sure we
