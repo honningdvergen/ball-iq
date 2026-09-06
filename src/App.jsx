@@ -3365,14 +3365,6 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           <div>{q.hint}</div>
         </div>
       )}
-      {answered && showNext && (
-        <button
-          className="next-btn-primary"
-          onClick={() => doAdvance(showNext.ns, showNext.nb, showNext.correct)}
-        >
-          {idx + 1 >= total ? "Results →" : "Next →"}
-        </button>
-      )}
       {answered && onReport && (() => {
         const rkey = q?._histKey || (q?.id != null ? String(q.id) : q?.q);
         return (
@@ -3419,6 +3411,20 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
           />
         );
       })()}
+      {/* Sticky FOOTER, not a sticky button (review 2026-09-06, A3/A4): the
+          pinned button used to sit flat over the last "Why?" box, and "Report a
+          problem" sat under it where mis-taps landed. The footer fades what it
+          covers, and the report link now precedes it in flow. */}
+      {answered && showNext && (
+        <div className="q-sticky-foot">
+          <button
+            className="next-btn-primary"
+            onClick={() => doAdvance(showNext.ns, showNext.nb, showNext.correct)}
+          >
+            {idx + 1 >= total ? "Results →" : "Next →"}
+          </button>
+        </div>
+      )}
       </div>{/* /.qd-play */}
 
       {showQuit && (
@@ -12897,7 +12903,11 @@ function AppInner() {
             website's own header — wordmark, sections, the club finder — with
             its tabs as a slim bar beneath. The sidebar and the floating tab
             bar are native/PWA furniture and render only there. */}
-        {isWebBrowser && (
+        {/* Not during a game (review 2026-09-06, A2): the site header + tab strip
+            stayed live over a running quiz on the web — a tap on "Daily" left a
+            live round with no confirm, and ~110px of a phone viewport was
+            chrome while a clock ran. Native hides its bar in-game; so does this. */}
+        {isWebBrowser && !inGame && (
           <>
             <SiteHeader signedIn={!!user && !isGuest} onProfile={() => { setScreen("home"); setTab("profile"); }} />
             <AppBar

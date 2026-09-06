@@ -1767,7 +1767,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    app. Now matched to .btn-3d on all four; the properties kept below are the
    ones genuinely specific to this button (sticky to the viewport bottom, full
    width, its own vertical rhythm). */
-.next-btn-primary{position:sticky;bottom:16px;z-index:5;width:100%;min-height:54px;padding:16px;margin-top:14px;background:var(--accent);color:var(--grn-ink);border:none;border-radius:999px;font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:var(--grn-ink);box-shadow:var(--btn-shine), var(--btn-glow);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.next-btn-primary{position:static;width:100%;min-height:54px;padding:16px;margin-top:0;background:var(--accent);color:var(--grn-ink);border:none;border-radius:999px;font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:0.01em;cursor:pointer;transition:transform 100ms ease,opacity 150ms ease,filter 150ms ease;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:var(--grn-ink);box-shadow:var(--btn-shine), var(--btn-glow);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+/* The pinned footer fades the content it covers instead of hiding it, and
+   leaves room below so the last explanation can always scroll clear. */
+.q-sticky-foot{position:sticky;bottom:0;z-index:5;margin:14px -4px 0;padding:22px 4px max(14px, env(safe-area-inset-bottom,0px));background:linear-gradient(to bottom, rgba(11,12,16,0) 0%, var(--bg) 40%);}
 .next-btn-primary:hover{filter:brightness(1.06);}
 .next-btn-primary:active{transform:scale(0.97);opacity:0.92;}
 .next-btn-primary:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none;}

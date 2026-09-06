@@ -25,6 +25,16 @@ describe('timed quiz start + quit (2026-09-06)', () => {
     expect(CSS.match(/\n\.modal-cancel\{[^}]*\}/)?.[0] || '').toContain('background:var(--accent)');
     expect(CSS.match(/\n\.modal-confirm\{[^}]*\}/)?.[0] || '').toContain('background:none');
   });
+  it('web chrome is hidden during a game; the sticky footer fades; report precedes the primary (review A2-A4)', () => {
+    expect(APP).toMatch(/\{isWebBrowser && !inGame && \(\n\s*<>\n\s*<SiteHeader/);
+    expect(APP).toMatch(/className="q-sticky-foot"/);
+    expect(CSS).toMatch(/\.q-sticky-foot\{position:sticky;bottom:0/);
+    expect(CSS).toMatch(/\.next-btn-primary\{position:static/);
+    const report = APP.indexOf('idle="⚑ Report a problem"');
+    const next = APP.indexOf('className="q-sticky-foot"');
+    expect(report).toBeGreaterThan(-1);
+    expect(report).toBeLessThan(next);
+  });
   it('no Classic difficulty picker: the tile starts the arc directly', () => {
     const HOME = read('../../src/screens/HomeScreen.jsx');
     expect(HOME).not.toMatch(/setShowDiffPicker/);
