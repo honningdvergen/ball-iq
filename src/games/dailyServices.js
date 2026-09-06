@@ -13,6 +13,11 @@ export const DEFAULT_DAILY_SERVICES = {
   // store to send anyone to; the web app has its own install banner); the
   // islands pass a phone-only "Get the free app" link.
   GetAppCTA: null,
+  // The return-loop panel's host services (components/DailyDone.jsx): remind,
+  // streak, nextUp, save, track. The app passes its live object; the islands
+  // pass links to the other pages. null → the panel still renders with the
+  // game's own streak and no reminder row.
+  dailyDone: null,
 };
 
 export function resolveDailyServices(services) {

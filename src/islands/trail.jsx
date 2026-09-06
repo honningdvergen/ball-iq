@@ -8,10 +8,11 @@ import React from 'react';
 import TransferTrail from '../screens/TransferTrail.jsx';
 import { getTrailAnswer } from '../lib/trail.js';
 import { dateToYMD } from '../lib/date.js';
-import { haptic, makeFunnel, makeGetAppCTA, mountDaily, toastHost } from './dailyIsland.jsx';
+import { haptic, makeFunnel, makeGetAppCTA, mountDaily, toastHost, makeDailyDoneServices } from './dailyIsland.jsx';
 
 const funnel = makeFunnel('trail-page');
-const SERVICES = { haptic, GetAppCTA: makeGetAppCTA(funnel, 'trail-result') };
+const SERVICES = {
+  dailyDone: makeDailyDoneServices(funnel), haptic, GetAppCTA: makeGetAppCTA(funnel, 'trail-result') };
 
 // On a loss the app chains into Mystery Player when today's is unplayed; here
 // that is the sibling page. Same gate as App.jsx so a finished Mystery is not

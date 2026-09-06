@@ -1,0 +1,38 @@
+/* DailyDone — the return-loop panel under every decided daily (2026-09-06).
+   One card idiom, the same as the Today rows: --s1 surface, --border hairline,
+   14px radius, 40px icon wells at 10px, one green primary. No emoji, no eyebrow
+   labels, no nested cards. */
+.dd{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px;text-align:left;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.dd-row{display:flex;align-items:center;gap:12px;min-width:0;}
+.dd-well{width:40px;height:40px;border-radius:10px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;background:rgba(var(--dd-rgb,255,170,0),0.14);border:1px solid rgba(var(--dd-rgb,255,170,0),0.3);color:var(--dd-c,var(--gold));}
+.dd-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.dd-title{font-size:14px;font-weight:800;line-height:1.2;letter-spacing:-0.2px;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.dd-sub{font-size:12.5px;line-height:1.35;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+.dd-sub strong,.dd-title strong{font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.dd-num{font-variant-numeric:tabular-nums;}
+/* Pills: one green primary (share), quiet pills for everything else. */
+.dd-pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 13px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex-shrink:0;letter-spacing:0.01em;}
+.dd-pill:disabled{opacity:0.6;cursor:default;}
+.dd-pill.is-set{border-color:rgba(88,204,2,0.35);color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);background:rgba(88,204,2,0.08);cursor:default;}
+.dd-share{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:46px;padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .1s;}
+.dd-share:active{transform:scale(0.98);}
+.dd-share-alt{display:block;text-align:center;margin-top:-4px;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;}
+/* How everyone did: one bar per bucket, yours in green. */
+.dd-dist{display:flex;flex-direction:column;gap:6px;}
+.dd-dist-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+.dd-dist-cap{font-size:12px;font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.dd-bars{display:grid;grid-template-columns:22px 1fr 34px;gap:4px 8px;align-items:center;}
+.dd-bar-k{font-size:11.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-align:right;font-variant-numeric:tabular-nums;}
+.dd-bar{height:12px;border-radius:6px;background:var(--s2);overflow:hidden;position:relative;}
+.dd-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--border2);display:block;min-width:2px;transition:width .5s cubic-bezier(0.22,1,0.36,1);}
+.dd-bar.is-mine i{background:var(--accent);}
+.dd-bar-v{font-size:11.5px;font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;}
+.dd-bar-k.is-mine,.dd-bar-v.is-mine{color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);font-weight:800;}
+/* Still open today: the other dailies as mini rows. */
+.dd-next{display:flex;flex-direction:column;gap:8px;}
+.dd-next-row{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;text-decoration:none;}
+.dd-next-row .dd-well{width:34px;height:34px;border-radius:9px;}
+.dd-next-go{margin-left:auto;font-size:12.5px;font-weight:800;color:var(--accent);-webkit-text-fill-color:var(--accent);flex-shrink:0;}
+.dd-hr{height:1px;background:var(--border);margin:0 -14px;}
+.dd-getapp{display:flex;justify-content:center;}
+@media (prefers-reduced-motion: reduce){.dd-bar i{transition:none;}.dd-share:active{transform:none;}}

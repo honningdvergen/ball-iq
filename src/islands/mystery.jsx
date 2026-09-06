@@ -6,10 +6,11 @@
 // (biq_mystery_<date>).
 import React from 'react';
 import MysteryPlayer from '../screens/MysteryPlayer.jsx';
-import { haptic, makeFunnel, makeGetAppCTA, mountDaily, toastHost } from './dailyIsland.jsx';
+import { haptic, makeFunnel, makeGetAppCTA, mountDaily, toastHost, makeDailyDoneServices } from './dailyIsland.jsx';
 
 const funnel = makeFunnel('mystery-page');
-const SERVICES = { haptic, GetAppCTA: makeGetAppCTA(funnel, 'mystery-result') };
+const SERVICES = {
+  dailyDone: makeDailyDoneServices(funnel), haptic, GetAppCTA: makeGetAppCTA(funnel, 'mystery-result') };
 
 toastHost('mystery-toast');
 mountDaily({

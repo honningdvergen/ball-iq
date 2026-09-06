@@ -27,6 +27,7 @@ import {
 // through `services` (src/games/dailyServices.js); the club colours and codes
 // come from a module gen-club-index.mjs writes out of App.jsx on every build.
 import { resolveDailyServices } from "../games/dailyServices.js";
+import { DailyDone } from "../components/DailyDone.jsx";
 import { clubColour, clubAbbr, tint, lift, onColour } from "../lib/clubColour.js";
 import { CLUB_PACK_COLOURS, CLUB_PACK_ABBR } from "../data/clubPackColours.js";
 /* Shares mysteryPool.json with Mystery Player ON PURPOSE — both screens
@@ -54,8 +55,8 @@ function saveDay(ymd, state) {
   try { localStorage.setItem(`biq_trail_${ymd}`, JSON.stringify(state)); } catch {}
 }
 
-export default function TransferTrail({ player, date = new Date(), onBack, onReport, onPlayMystery, services, embedded = false }) {
-  const { haptic, playSound, Confetti, GetAppCTA } = resolveDailyServices(services);
+export default function TransferTrail({ player, date = new Date(), onBack, onReport, services, embedded = false }) {
+  const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
   const ymd = dateToYMD(date);
   const number = getTrailNumber(date);
   const career = useMemo(() => player?.clubs || [], [player]);
@@ -403,27 +404,26 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                 ? "Out of guesses — that one's in the books"
                 : "Out of guesses — back tomorrow"}
           </div>
-          {/* On a LOSS the session's natural next beat is the other daily,
-              not sharing a defeat — chain into Mystery Player when the parent
-              offers it (live, today's, unplayed) and demote share. Wins keep
-              share as the primary: that's the brag moment. */}
-          {lost && onPlayMystery ? (
-            <>
-              <button onClick={onPlayMystery}
-                style={{ marginTop: 16, width: "100%", padding: "14px", borderRadius: 999, border: "none",
-                         background: "var(--accent)", color: "var(--grn-ink)", fontWeight: 800, fontSize: 15,
-                         fontFamily: "inherit", cursor: "pointer" }}>Try Mystery Player →</button>
-              <button onClick={onShare}
-                style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
-                         border: "1px solid var(--border)", background: "transparent", color: "var(--t1)",
-                         fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Share result</button>
-            </>
-          ) : (
-            <button onClick={onShare}
-              style={{ marginTop: 16, width: "100%", padding: "14px", borderRadius: 999, border: "none",
-                       background: "var(--accent)", color: "var(--grn-ink)", fontWeight: 800, fontSize: 15,
-                       fontFamily: "inherit", cursor: "pointer" }}>Share result</button>
-          )}
+          {/* The return loop, built once for all four dailies — see
+              components/DailyDone.jsx. Carries share, streak, countdown, remind,
+              how everyone did and the other open dailies (the Mystery chain a
+              loss used to offer is now one of those rows). */}
+          <div style={{ marginTop: 14 }}>
+            <DailyDone
+              game="trail"
+              edition={number}
+              won={won}
+              bucket={won ? clubsUsed : 0}
+              isArchive={isArchive}
+              streak={dailyDone?.streak || { count: streak, label: "Trail streak" }}
+              onShare={onShare}
+              remind={dailyDone?.remind}
+              nextUp={dailyDone?.nextUp || []}
+              save={dailyDone?.save}
+              GetAppCTA={GetAppCTA}
+              track={dailyDone?.track}
+            />
+          </div>
           {/* A wrong career order is UNFALSIFIABLE to the player — they cannot
               tell a puzzle they misread from data we got wrong, so without this
               they simply lose trust and say nothing. Same trust class as a wrong
@@ -443,8 +443,6 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                      fontWeight: 700, fontSize: 13 }}
           />
 
-          {/* The island passes a phone-only app link here; the app passes nothing. */}
-          {GetAppCTA ? <div style={{ marginTop: 10 }}><GetAppCTA /></div> : null}
 
           {onBack && (
             <button onClick={onBack}

@@ -13,8 +13,10 @@
 
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { getReminderHour } from './playHour.js';
 
-const REMINDER_HOUR = 19;   // 7pm local
+// The hour is no longer a constant (2026-09-06): getReminderHour() is the median
+// of the player's own recent completion hours, default 19, clamped 8–22.
 const WINDOW_DAYS = 7;      // schedule a rolling week ahead
 // Win-back tail: after the daily week goes quiet, a decaying set of nudges so
 // a lapsed user is still reachable (previously the app went permanently silent
@@ -51,10 +53,10 @@ export async function requestNotifPermission() {
   catch { return false; }
 }
 
-// 7pm local on today+offset, or null if that instant has already passed.
+// The player's reminder hour on today+offset, or null if it has already passed.
 function atFutureLocal(offsetDays) {
   const now = new Date();
-  const at = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offsetDays, REMINDER_HOUR, 0, 0, 0);
+  const at = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offsetDays, getReminderHour(), 0, 0, 0);
   return at.getTime() > now.getTime() ? at : null;
 }
 

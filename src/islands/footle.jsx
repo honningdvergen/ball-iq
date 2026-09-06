@@ -10,7 +10,7 @@ import { createRoot } from 'react-dom/client';
 import { FootballWordle } from '../games/FootballWordle.jsx';
 import { getFootleNumber } from '../lib/wordle.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
-import { makeGetAppCTA } from './dailyIsland.jsx';
+import { makeGetAppCTA, makeDailyDoneServices } from './dailyIsland.jsx';
 
 // Events go through the homepage's sink: a literal project URL (an env read
 // here returned undefined at build and the minifier deleted the whole request
@@ -26,6 +26,7 @@ const SERVICES = {
   haptic: (type) => { try { navigator.vibrate?.(type === 'correct' ? [20, 40, 20] : type === 'wrong' ? 60 : 10); } catch {} },
   GetAppCTA,
   isNative: false,
+  dailyDone: makeDailyDoneServices(funnel),
 };
 
 // Status line for share/copy feedback (the app has a toast host; this page

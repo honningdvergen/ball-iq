@@ -23,7 +23,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, UserRoundSearch } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
@@ -45,7 +45,8 @@ import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePi
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard, CARD_TIERS, tierPalette } from './lib/ballIqCard.js';
-import { getTrailAnswer } from './lib/trail.js';
+import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
+import { DailyDone } from './components/DailyDone.jsx';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
   WORDLE_FULL_NAMES,
@@ -5378,67 +5379,9 @@ function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
   );
 }
 
-// Results-screen return moment (2026-08-29). "Come back tomorrow 🌙" was a
-// dead static line: no clock, no stake, no action — at the one moment the
-// player is provably engaged AND finished for the day. The countdown is the
-// genre's proven return device (Wordle), the streak line names what tonight
-// puts at risk, and Remind me rides this real click gesture (Safari requires
-// the permission request inside one) without spending a lifetime soft-ask.
-function TomorrowTeaser({ streak, remindState, onRemind, compact }) {
-  // Shield visibility (retention critique #8): the mechanic is live but was
-  // only ever shown inside the Daily tab. The results screen is where the
-  // stake is named, so say whether tonight's stake is protected. Same
-  // formula as the tick effect: floor(xp/200) - used, capped at 3.
-  const shields = (() => {
-    try {
-      const xpVal = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0;
-      const used = (JSON.parse(localStorage.getItem('biq_stats') || '{}')?.shieldsUsed) || 0;
-      return Math.min(3, Math.max(0, Math.floor(xpVal / 200) - used));
-    } catch { return 0; }
-  })();
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
-  const [busy, setBusy] = useState(false);
-  const ko = formatCountdown(msToNextLocalMidnight(now));
-  const MONO = "ui-monospace, SFMono-Regular, Menlo, monospace";
-  return (
-    <div style={{ textAlign: "center", padding: compact ? "2px 0" : "10px 0 2px", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-      <div style={{ fontSize: compact ? 13.5 : 14, fontWeight: 700, color: "var(--t2)" }}>
-        {streak >= 1
-          ? <>Both dailies done — tomorrow makes it <span style={{ color: "var(--gold)" }}>🔥{streak + 1}</span></>
-          : <>Both dailies done 🌙</>}
-      </div>
-      {/* Mirrors the Daily tab's amber countdown pill so "when do I return"
-          reads identically everywhere. */}
-      <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
-        <span style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t2)" }}>NEW PUZZLES IN</span>
-        <span style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
-      </span>
-      {remindState === "off" && (
-        <button
-          disabled={busy}
-          onClick={async () => { setBusy(true); try { await onRemind(); } finally { setBusy(false); } }}
-          style={{ padding: "9px 16px", borderRadius: 999, background: "none", border: "1px solid var(--border)", color: "var(--t1)", fontFamily: "inherit", fontSize: 13.5, fontWeight: 700, cursor: "pointer", opacity: busy ? 0.6 : 1 }}
-        >
-          🔔 Remind me tomorrow
-        </button>
-      )}
-      {remindState === "on" && (
-        <div style={{ fontSize: 12.5, fontWeight: 600, color: "var(--t3)" }}>🔔 We’ll nudge you tomorrow evening</div>
-      )}
-      {streak >= 2 && shields > 0 && (
-        <div style={{ fontSize: 12, fontWeight: 600, color: "var(--t3)" }}>
-          🛡 {shields} streak shield{shields === 1 ? "" : "s"} banked — one missed day won’t break it
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, streak, remindState, onRemind }) {
+// TomorrowTeaser (the Daily-7-only return moment) retired 2026-09-06: the
+// return loop is one component for all four dailies — components/DailyDone.jsx.
+function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, dailyDone }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -5614,6 +5557,17 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
           activation. */}
       {photoNudge}
 
+      {/* Daily 7: the return loop — streak, countdown + remind, share, how
+          everyone did, the other open dailies. One component for all four
+          dailies (components/DailyDone.jsx); the edition is the day index. */}
+      {isDaily && dailyDone && (
+        <div style={{marginTop:18}}>
+          <DailyDone game="daily7" edition={dayIndexForDate(new Date())} won bucket={result.score}
+            streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp}
+            save={dailyDone.save} track={dailyDone.track} />
+        </div>
+      )}
+
       <div className="results-actions" style={{marginTop:18}}>
         {/* Non-daily finish: whichever daily is still open is the PRIMARY, and
             "Play Again" demotes to a ghost. Daily 7 is preferred over Footle for
@@ -5626,11 +5580,7 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
           <button className="btn-3d" onClick={onPlayFootle}>{footleCta}</button>
         )}
         {!isDaily && <button className={`btn-3d${(dailyOpen && onPlayDaily) || footleOpen ? " ghost" : ""}`} onClick={onRetry}>Play Again</button>}
-        {isDaily && footleOpen && <button className="btn-3d" onClick={onPlayFootle}>{footleCta}</button>}
-        {isDaily && !footleOpen && (
-          <TomorrowTeaser streak={streak} remindState={remindState} onRemind={onRemind} />
-        )}
-        <button className="btn-3d share" onClick={onShare}>Share Score</button>
+        {!isDaily && <button className="btn-3d share" onClick={onShare}>Share Score</button>}
         {stumpQ && <button className="btn-3d share" onClick={onStump}>Stump a mate</button>}
         <button className="results-exit" onClick={onHome}>Back to Home</button>
       </div>
@@ -5705,6 +5655,13 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
             <div className="rd-tile"><div className="rd-tile-v rd-amber">+{xpEarned}</div><div className="rd-tile-k">XP earned</div></div>
             <div className="rd-tile"><div className="rd-tile-v rd-green">{rdBestStreak}</div><div className="rd-tile-k">Best streak</div></div>
           </div>
+          {isDaily && dailyDone && (
+            <div style={{margin:"18px 0"}}>
+              <DailyDone game="daily7" edition={dayIndexForDate(new Date())} won bucket={result.score}
+                streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp}
+                save={dailyDone.save} track={dailyDone.track} />
+            </div>
+          )}
           <div className="rd-actions">
             {!isDaily && dailyOpen && onPlayDaily && (
               <button className="rd-btn rd-btn-primary" onClick={onPlayDaily}>Play today&#39;s Daily 7</button>
@@ -5713,17 +5670,11 @@ function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayD
               <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>
             )}
             {!isDaily && <button className={`rd-btn ${(dailyOpen && onPlayDaily) || footleOpen ? "rd-btn-ghost" : "rd-btn-primary"}`} onClick={onRetry}>Play again</button>}
-            {isDaily && footleOpen && <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>}
-            {isDaily && !footleOpen && (
-              <div style={{alignSelf:"center"}}>
-                <TomorrowTeaser streak={streak} remindState={remindState} onRemind={onRemind} compact />
-              </div>
-            )}
             <button className="rd-btn rd-btn-ghost" onClick={onHome}>Home</button>
-            <button className="rd-btn rd-btn-ghost" onClick={onShare}>
+            {!isDaily && <button className="rd-btn rd-btn-ghost" onClick={onShare}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
               Share
-            </button>
+            </button>}
             {stumpQ && <button className="rd-btn rd-btn-ghost" onClick={onStump}>🥜 Stump a mate</button>}
           </div>
         </div>
@@ -9127,7 +9078,6 @@ function AppInner() {
   const askShareNameRef = useRef(false);
   // The results-screen 'save' nudge waits here until the player LEAVES results
   // (see goHome). It used to fire on a 2s timer over the results themselves.
-  const saveNudgePendingRef = useRef(false);
   /**
    * ⚠️ THE RATING ASK IS SCHEDULED AT A CELEBRATION AND FIRES UP TO 3.5s LATER.
    *
@@ -10740,6 +10690,46 @@ function AppInner() {
     else await handleToggleWebPush(true);
   }, [handleToggleNotif, handleToggleWebPush]);
 
+  // ONE return-loop panel under every decided daily (components/DailyDone.jsx).
+  // Everything the panel needs from this file rides in this object: the
+  // reminder state + handler, the app's one streak, "still open today" with
+  // real navigation, the guest save action, and the analytics sink. Memoised so
+  // the React.memo'd game screens don't re-render on every App state change.
+  const dailyDoneServices = useMemo(() => {
+    const nextUp = [];
+    try {
+      const ws = readWordleTodayStatus();
+      if (ws.kind === "ready" || ws.kind === "in-progress") {
+        nextUp.push({ key: "footle", name: ws.kind === "in-progress" ? "Continue today's Footle" : "Today's Footle",
+          icon: <span className="fh-tile fh-tile-green" style={{ "--fh-tile": "22px", borderRadius: 6 }} aria-hidden="true">F</span>,
+          onTap: () => setScreen("wordle") });
+      }
+    } catch {}
+    if (!dailyDone) nextUp.push({ key: "daily7", name: "Today's Daily 7", icon: <ClipboardList size={18} strokeWidth={2.2} />, onTap: () => startMode("daily") });
+    try {
+      if (getTrailAnswer() && !["won", "lost"].includes(loadTrailDay()?.status)) {
+        nextUp.push({ key: "trail", name: "Today's Transfer Trail", icon: <Route size={18} strokeWidth={2.2} />, onTap: () => setScreen("trail") });
+      }
+    } catch {}
+    try {
+      if (MYSTERY_ENABLED) {
+        const m = JSON.parse(localStorage.getItem(`biq_mystery_${dateToYMD(new Date())}`) || "null");
+        if (!(m && (m.won || m.gaveUp))) nextUp.push({ key: "mystery", name: "Today's Mystery Player", icon: <UserRoundSearch size={18} strokeWidth={2.2} />, onTap: () => setScreen("mystery") });
+      }
+    } catch {}
+    return {
+      remind: { state: resultsRemindState, onRemind: remindFromResults },
+      streak: { count: loginStreak || 0, label: "streak" },
+      save: (!user || isGuest) ? { onSave: () => { loopEvent("dd-save-tap"); openAuthPrompt?.("save"); } } : null,
+      nextUp,
+      track: (n, m) => loopEvent(n, m),
+    };
+    // `screen` is a deliberate dep: the open/closed set changes when a game ends.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen]);
+  const footleServices = useMemo(() => ({ ...FOOTLE_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
+  const dailyScreenServices = useMemo(() => ({ ...DAILY_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
+
   // Soft pre-prompt: ask in-app BEFORE spending the one-shot iOS prompt. Caps at
   // 2 lifetime asks (after the first daily, then again at a 3-day streak if the
   // user declined). Only shows while the OS permission is still undecided.
@@ -10810,8 +10800,10 @@ function AppInner() {
         // who closes the tab inside the 7s hold used to burn one of their two
         // lifetime asks on a sheet they never saw — prod showed a visitor at
         // asks-exhausted with notif-prompt-shown fired twice ever.
-        notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks_v2', String(asks + 1)); } catch {} try { localStorage.setItem('biq_notif_last_ask', String(Date.now())); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web", copy: "v2-stake" }); setNotifPromptOpen(true); }, 7000);
-        return true;
+        // (2026-09-06) The bottom sheet is retired: the results panel (DailyDone)
+        // carries "Remind me" and asks for permission on THAT tap. The bails above
+        // stay measured; nothing opens here any more.
+        return false;
       } catch { return false; }
     }
     const nBail = (reason) => { loopEvent("notif-prompt-skipped", { reason, engine: "native" }); return false; };
@@ -10854,8 +10846,10 @@ function AppInner() {
       // we most want here, so it gets the beat. The ask still lands on the
       // result screen, which is the moment Alex called correctly.
       // Ask spent at open time, same reason as the web path above.
-      notifTimerRef.current = setTimeout(() => { try { localStorage.setItem('biq_notif_asks_v2', String(asks + 1)); } catch {} try { localStorage.setItem('biq_notif_last_ask', String(Date.now())); } catch {} loopEvent("notif-prompt-shown", { engine: notificationsSupported() ? "native" : "web", copy: "v2-stake" }); setNotifPromptOpen(true); }, 7000);
-      return true;
+      // (2026-09-06) The bottom sheet is retired: the results panel (DailyDone)
+      // carries "Remind me" and asks for permission on THAT tap. The bails above
+      // stay measured; nothing opens here any more.
+      return false;
     } catch { return false; }
   }, [user?.id, webPushOn]);
 
@@ -11552,7 +11546,8 @@ function AppInner() {
         // leaves the results by Back to Home (goHome). Play again keeps it
         // pending for the next exit, so it still fires once, just never over
         // the thing the player just earned.
-        saveNudgePendingRef.current = true;
+        // (2026-09-06) No deferred prompt any more: the results panel shows a
+        // quiet "Save it" row to a guest with a streak worth saving (DailyDone).
       }
     } catch { /* nudge is never load-bearing */ }
 
@@ -12207,11 +12202,6 @@ function AppInner() {
     // The deferred 'save' nudge (results handler): fire it on the way out of
     // results, once Home has rendered. The share-name sheet keeps precedence,
     // as before — the nudge simply takes the next exit.
-    if (saveNudgePendingRef.current && screen === "results") {
-      saveNudgePendingRef.current = false;
-      if (!askShareNameRef.current) setTimeout(() => { try { openAuthPrompt?.('save'); } catch {} }, 350);
-      else { try { localStorage.removeItem('biq_save_nudge_shown'); } catch {} }
-    }
     setArchiveDate(null);
     setScreen("home");
     setTab("home");
@@ -13178,83 +13168,6 @@ function AppInner() {
             completion (or first 3-day streak) before spending the one-shot iOS
             permission prompt. "Yes" routes through the same enable path as the
             Settings toggle. */}
-        {notifPromptOpen && (
-          <div
-            style={{position:"fixed",inset:0,top:0,right:0,bottom:0,left:0,background:"rgba(0,0,0,0.6)",zIndex:1100,display:"flex",alignItems:"flex-end",justifyContent:"center"}}
-            /* Backdrop tap. Counted SEPARATELY from "Not now" on purpose: a
-               lifetime ask is already spent by the time this sheet opens, so a
-               mis-tap costs one of only two chances. If dismissals turn out to
-               rival deliberate declines, the ask accounting is the thing to
-               revisit — but measure before changing it. */
-            onClick={() => { loopEvent("notif-prompt-dismissed"); setNotifPromptOpen(false); }}
-          >
-            <div
-              onClick={e => e.stopPropagation()}
-              /* ⚠️ role/aria-modal were MISSING here while the join modal a few
-                 hundred lines down has both. A screen reader announced this as
-                 an anonymous div, on the sheet that spends one of only two
-                 lifetime notification asks. */
-              ref={notifSheetRef}
-              tabIndex={-1}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="notif-sheet-title"
-              style={{width:"100%",maxWidth:440,background:"var(--s1)",borderTopLeftRadius:20,borderTopRightRadius:20,border:"1px solid var(--border)",borderBottom:"none",padding:"14px 22px calc(24px + env(safe-area-inset-bottom))",boxShadow:"0 -8px 40px rgba(0,0,0,0.5)"}}
-            >
-              {/* Grabber. Without it this reads as a panel that appeared, not a
-                  sheet you can dismiss — the backdrop tap was the only exit and
-                  nothing on screen suggested it existed. */}
-              <div aria-hidden="true" style={{width:36,height:4,borderRadius:99,background:"var(--border)",margin:"0 auto 14px"}} />
-              {/* ⚠️ WAS A 🔔 EMOJI. The app already draws a proper bell — the
-                  Home header uses the lucide path — so the one sheet that
-                  actually asks for notification permission was the only place
-                  rendering the concept as an emoji. Emoji-as-icon is the
-                  clearest "assembled, not designed" tell, and this is a
-                  permission ask: it has to look like the app means it.
-                  Container mirrors .t7s-icon (tint 14%, border 30%), scaled
-                  up for a hero. */}
-              <div aria-hidden="true" style={{width:56,height:56,borderRadius:16,margin:"0 auto 12px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
-                <Bell size={26} strokeWidth={2.25} color="#58CC02" />
-              </div>
-              {/* Copy v2 (2026-08-29): the generic "Keep your streak alive"
-                  converted 0 of its first 10 shows in prod. Name the actual
-                  stake — THIS player's live streak — when there is one. */}
-              <div id="notif-sheet-title" style={{fontSize:19,fontWeight:800,color:"var(--t1)",textAlign:"center",marginBottom:8,letterSpacing:"-0.3px"}}>
-                {loginStreak >= 2 ? `Don’t lose your ${loginStreak}-day streak` : 'Never miss a daily'}
-              </div>
-              <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.5,marginBottom:20}}>
-                {loginStreak >= 2
-                  ? `One nudge at 7pm — only on a day you haven’t played yet. Off anytime in Settings.`
-                  : `New puzzles drop at midnight. One nudge at 7pm if you haven’t played — off anytime in Settings.`}
-              </div>
-              <button
-                onClick={async () => {
-                  setNotifPromptOpen(false);
-                  loopEvent("notif-prompt-yes", { engine: notificationsSupported() ? "native" : "web" });
-                  // Same sheet, two engines: native local notifications, or web
-                  // push. Both toggles request permission INSIDE this click —
-                  // Safari rejects requestPermission() outside a user gesture.
-                  if (notificationsSupported()) await handleToggleNotif(true);
-                  else await handleToggleWebPush(true);
-                }}
-                /* Uses .btn-3d rather than re-styling a green button inline — that is
-                    how this one drifted flat while the Footle and Invite CTAs
-                    became pills. One class, one primary button. */
-                className="btn-3d"
-                style={{marginBottom:8}}
-              >
-                Yes, remind me
-              </button>
-              <button
-                onClick={() => { loopEvent("notif-prompt-no"); setNotifPromptOpen(false); }}
-                style={{width:"100%",minHeight:44,padding:"12px",background:"none",color:"var(--t3)",border:"none",fontFamily:"inherit",fontSize:15,fontWeight:600,cursor:"pointer"}}
-              >
-                Not now
-              </button>
-            </div>
-          </div>
-        )}
-
         {levelUpOverlay && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.85)",zIndex:999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.3s ease"}}>
             <Confetti />
@@ -13736,7 +13649,7 @@ function AppInner() {
         )}
 
         {/* ── FOOTBALL WORDLE ── */}
-        {screen === "wordle" && <FootballWordle date={archiveDate || undefined} onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onPlayDaily={dailyDone ? undefined : playDaily} onReport={reportQuestion} services={FOOTLE_SERVICES} />}
+        {screen === "wordle" && <FootballWordle date={archiveDate || undefined} onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onReport={reportQuestion} services={footleServices} />}
         {screen === "trail" && (() => {
           // ⚠️ The player MUST be resolved for the SAME day the screen is told
           // it is showing. Passing an archive date alongside today's player
@@ -13748,22 +13661,12 @@ function AppInner() {
           // empty board; a deep link that lands on a blank screen is worse
           // than one that lands somewhere real.
           if (!p) { setTimeout(goHome, 0); return null; }
-          // First-session audit 2026-08-30 (HIGH): a Trail LOSS dead-ended the
-          // session — primary CTA was "Share result" (nobody shares a loss)
-          // and the one remaining daily wasn't offered. Chain into Mystery
-          // Player when it's live, today's, and still unplayed.
-          const mysteryOffer = (() => {
-            if (!MYSTERY_ENABLED || archiveDate) return undefined;
-            try {
-              const m = JSON.parse(localStorage.getItem(`biq_mystery_${dateToYMD(new Date())}`) || "null");
-              if (m && (m.won || m.gaveUp)) return undefined;
-            } catch {}
-            return () => setScreen("mystery");
-          })();
-          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} onPlayMystery={mysteryOffer} services={DAILY_SERVICES} /></React.Suspense></TabErrorBoundary>;
+          // The Mystery chain a Trail loss used to offer is now a "still open today"
+          // row in the shared results panel (dailyDoneServices.nextUp).
+          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>;
         })()}
         {screen === "mystery" && (
-          <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} services={DAILY_SERVICES} /></React.Suspense></TabErrorBoundary>
+          <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stadiums" && (
           <TabErrorBoundary name="stadiums" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stadiums" />}><StadiumGame onExit={goHome} /></React.Suspense></TabErrorBoundary>
@@ -13908,9 +13811,7 @@ function AppInner() {
             wrongAnswers={wrongAnswers}
             onReport={reportQuestion}
             askedQuestions={questions}
-            streak={loginStreak}
-            remindState={resultsRemindState}
-            onRemind={remindFromResults}
+            dailyDone={dailyDoneServices}
             photoNudge={((!user || isGuest) && mode === "daily" && (stats.gamesPlayed || 0) >= 2 && !saveLineDismissed) ? (
               <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
                 <div aria-hidden="true" style={{width:44,height:44,flexShrink:0,borderRadius:14,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>

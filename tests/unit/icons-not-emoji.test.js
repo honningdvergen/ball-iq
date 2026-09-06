@@ -148,21 +148,23 @@ describe('icons are icons, not emoji', () => {
     // them — the offender lists above would be empty either way.
     const app = readFileSync(`${SRC}/App.jsx`, 'utf8');
     const home = readFileSync(`${SRC}/screens/HomeScreen.jsx`, 'utf8');
-    expect(app, 'the notification sheet needs its bell').toMatch(/<Bell size=\{26\}/);
+    // The notification sheet retired 2026-09-06; the ask now lives in the
+    // results panel (components/DailyDone.jsx) as a Lucide bell on a real button.
+    const dd = readFileSync(`${SRC}/components/DailyDone.jsx`, 'utf8');
+    expect(dd, 'the Remind me control needs its bell').toMatch(/<Bell size=\{14\}/);
     expect(app, 'the join modal needs its gamepad').toMatch(/<Gamepad2 size=\{26\}/);
     expect(home, 'the Home settings button needs its gear').toMatch(/<Settings size=\{18\}/);
     expect(home, 'the name CTA needs its pencil').toMatch(/<Pencil size=\{12\}/);
   });
 
-  it('the notification sheet is announced as a dialog', () => {
-    // It spends one of two lifetime asks and had no role/aria-modal at all,
-    // while the join modal beside it has both.
+  it('the reminder ask is a labelled control, not an anonymous sheet', () => {
+    // The old bottom sheet spent one of two lifetime asks and once had no
+    // role at all. Its replacement is a plain <button> with an aria-label in
+    // the results panel, and it asks for permission on that tap.
+    const dd = readFileSync(`${SRC}/components/DailyDone.jsx`, 'utf8');
+    expect(dd).toMatch(/aria-label="Remind me tomorrow"/);
+    expect(dd).toMatch(/onClick=\{doRemind\}/);
     const app = readFileSync(`${SRC}/App.jsx`, 'utf8');
-    const i = app.indexOf('notifPromptOpen && (');
-    expect(i).toBeGreaterThan(-1);
-    const sheet = app.slice(i, i + 2600);
-    expect(sheet).toMatch(/role="dialog"/);
-    expect(sheet).toMatch(/aria-modal="true"/);
-    expect(sheet).toMatch(/aria-labelledby="notif-sheet-title"/);
+    expect(app, 'nothing opens the retired sheet').not.toMatch(/setNotifPromptOpen\(true\)/);
   });
 });

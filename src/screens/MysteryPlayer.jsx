@@ -7,6 +7,7 @@ import { ArrowLeft, Search, UserRoundSearch } from 'lucide-react';
 // /mystery-player/ page (src/islands/mystery.jsx). The kit arrives through
 // `services` — src/games/dailyServices.js.
 import { resolveDailyServices } from '../games/dailyServices.js';
+import { DailyDone } from '../components/DailyDone.jsx';
 import {
   rankPool, bandFor, matchGuess, normaliseName,
   answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
@@ -15,7 +16,7 @@ import {
 import { usePlayerPool } from '../lib/usePlayerPool.js';
 import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
 import { MODE_ACCENT, modeTint } from '../lib/accents.js';
-import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
+import { dateToYMD } from '../lib/date.js';
 import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
 import SCHEDULE from '../data/mysterySchedule.json';
 
@@ -95,7 +96,7 @@ const BAND_STYLE = {
 };
 
 export default function MysteryPlayer({ onExit, date = new Date(), services, embedded = false }) {
-  const { haptic, playSound, Confetti, GetAppCTA } = resolveDailyServices(services);
+  const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
   // `date` drives EVERYTHING dated in here — the answer, the saved result, the
   // puzzle number — so an archive replay of yesterday reads and writes
   // yesterday's slot and cannot overwrite today's board.
@@ -151,7 +152,6 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // Opt-in, one at a time: the player asks for help, help is never forced on
   // someone still enjoying the hunt.
   const [hintsUsed, setHintsUsed] = useState(() => saved?.hintsUsed || 0);
-  const [copied, setCopied] = useState(false);
   const [streak, setStreak] = useState(() => computeMysteryStreak());
   // ⚠️ Player-reported 2026-08-22: the keyboard sat on top of the board and the
   // page would not scroll. Same root as Trail's two reports — every guess adds
@@ -167,13 +167,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // second half: how long until there is a new one.
   // Ticks per minute, not per second: the wait is measured in hours, and a
   // second hand would re-render sixty times to say the same thing.
-  const [nextIn, setNextIn] = useState(() => msToNextLocalMidnight());
-  useEffect(() => {
-    if (!done) return undefined;
-    setNextIn(msToNextLocalMidnight());
-    const t = setInterval(() => setNextIn(msToNextLocalMidnight()), 60000);
-    return () => clearInterval(t);
-  }, [done]);
+  // The "next Mystery Player in" countdown moved into DailyDone (2026-09-06).
   // Each guess inserts a row above the field. Pull it back into view rather
   // than dropping the keyboard — staying focused is what lets a player guess
   // repeatedly without re-tapping, which this mode depends on.
@@ -354,6 +348,17 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
 
   const best = guesses.length ? guesses[0].rank : null;
 
+  // One share path for win and give-up (the results panel calls it). ⚠️ `date`,
+  // not today: an ARCHIVE win must share under its own puzzle number. Wrapped —
+  // dismissing the sheet REJECTS, and an unhandled rejection here would surface
+  // as a crash on a screen the player has just won.
+  const shareResult = async (w) => {
+    const text = buildMysteryShareText({ number: mysteryNumber(date), guesses, won: w, streak: w ? streak : 0 });
+    try {
+      if (navigator.share) await navigator.share({ text });
+      else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Copied' })); } catch {} }
+    } catch { /* dismissed or blocked — nothing to recover */ }
+  };
   return (
     <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: embedded ? '2px 0 8px' : '14px 0 6px' }}>
@@ -463,31 +468,13 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             Solved in <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}{hintsUsed > 0 ? ` · ${hintsUsed} ${hintsUsed === 1 ? 'hint' : 'hints'}` : ''}.
             {streak > 1 && <> · 🔥 <strong style={{ color: 'var(--t1)' }}>{streak}-day Mystery streak</strong></>}
           </div>
-          <button
-            type="button"
-            onClick={async () => {
-              // ⚠️ `date`, not today. Without it an ARCHIVE win shared
-              // yesterday's board under today's puzzle number — the one number
-              // in the message a reader would use to compare with their own.
-              const text = buildMysteryShareText({ number: mysteryNumber(date), guesses, won: true, streak });
-              try {
-                // Native share sheet where there is one; clipboard otherwise.
-                // Both paths are wrapped because a user dismissing the sheet
-                // REJECTS, and an unhandled rejection here would surface as a
-                // crash on a screen the player has just won.
-                if (navigator.share) await navigator.share({ text });
-                else { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }
-              } catch { /* dismissed or blocked — nothing to recover */ }
-            }}
-            style={{ marginTop: 12, width: '100%', border: 'none', borderRadius: 12, background: 'var(--accent)', color: 'var(--grn-ink)', padding: '12px 16px', fontSize: 14.5, fontWeight: 900, cursor: 'pointer', fontFamily: 'inherit' }}
-          >
-            {copied ? 'Copied!' : 'Share result'}
-          </button>
-          <div style={{ marginTop: 10, fontSize: 12.5, color: 'var(--t3)', textAlign: 'center' }}>
-            Next Mystery Player in <strong style={{ color: 'var(--t2)' }}>{formatCountdown(nextIn)}</strong>
-          </div>
-          {/* The island passes a phone-only app link here; the app passes nothing. */}
-          {GetAppCTA ? <div style={{ marginTop: 12 }}><GetAppCTA /></div> : null}
+        </div>
+      )}
+      {won && answer && (
+        <div style={{ margin: '0 0 14px' }}>
+          <DailyDone game="mystery" edition={mysteryNumber(date)} won bucket={guesses.length} isArchive={isArchive}
+            streak={dailyDone?.streak || { count: streak, label: 'Mystery streak' }} onShare={() => shareResult(true)}
+            remind={dailyDone?.remind} nextUp={dailyDone?.nextUp || []} save={dailyDone?.save} GetAppCTA={GetAppCTA} track={dailyDone?.track} />
         </div>
       )}
 
@@ -503,20 +490,13 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
             Gave up after <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}{hintsUsed > 0 ? ` · ${hintsUsed} ${hintsUsed === 1 ? 'hint' : 'hints'}` : ''}. Back tomorrow.
           </div>
-          <button
-            type="button"
-            onClick={async () => {
-              const shareText = buildMysteryShareText({ number: mysteryNumber(date), guesses, won: false, streak: 0 });
-              try {
-                if (navigator.share) await navigator.share({ text: shareText });
-                else { await navigator.clipboard.writeText(shareText); setCopied(true); setTimeout(() => setCopied(false), 2000); }
-              } catch { /* dismissed or blocked — nothing to recover */ }
-            }}
-            style={{ marginTop: 12, width: '100%', border: '1px solid var(--border)', borderRadius: 12, background: 'var(--s2)', color: 'var(--t1)', padding: '12px 16px', fontSize: 14.5, fontWeight: 800, cursor: 'pointer', fontFamily: 'inherit' }}
-          >
-            {copied ? 'Copied!' : 'Share result'}
-          </button>
-          {GetAppCTA ? <div style={{ marginTop: 12 }}><GetAppCTA /></div> : null}
+        </div>
+      )}
+      {gaveUp && answer && (
+        <div style={{ margin: '0 0 14px' }}>
+          <DailyDone game="mystery" edition={mysteryNumber(date)} won={false} bucket={0} isArchive={isArchive}
+            streak={dailyDone?.streak || { count: 0, label: 'Mystery streak' }} onShare={() => shareResult(false)}
+            remind={dailyDone?.remind} nextUp={dailyDone?.nextUp || []} save={dailyDone?.save} GetAppCTA={GetAppCTA} track={dailyDone?.track} />
         </div>
       )}
 

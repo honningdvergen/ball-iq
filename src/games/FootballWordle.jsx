@@ -21,6 +21,7 @@ import { APP_NAME } from '../lib/scoring.js';
 import { FOOTLE_SHORT } from '../lib/modeCopy.js';
 import { getFootleXP } from '../lib/footleXp.js';
 import ReportButton from '../components/ReportButton.jsx';
+import { DailyDone } from '../components/DailyDone.jsx';
 import './footle.css';
 
 // Per-tile flip duration; the reveal waits for the whole row to turn.
@@ -53,6 +54,7 @@ export const DEFAULT_SERVICES = {
   },
   Confetti: null,
   InstallBanner: null,
+  dailyDone: null,
   GetAppCTA: () => null,
   isNative: false,
 };
@@ -100,10 +102,10 @@ function FootleReportButton({ answer, status, onReport }) {
   );
 }
 
-export const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onPlayDaily, onReport, date = new Date(), services }) {
+export const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onReport, date = new Date(), services }) {
   // Everything the screen needs from the app shell arrives here; the island
   // passes its own (src/islands/footle.jsx). Missing keys fall back to inert.
-  const { haptic, playSound, markBadReviewMoment, onSync, shareCard, Confetti, InstallBanner, GetAppCTA, isNative } = { ...DEFAULT_SERVICES, ...(services || {}) };
+  const { haptic, playSound, markBadReviewMoment, onSync, shareCard, Confetti, InstallBanner, GetAppCTA, isNative, dailyDone } = { ...DEFAULT_SERVICES, ...(services || {}) };
   // One puzzle per day — answer + storage key derive from today's date and
   // automatically resync on the day-rollover reload below.
   // `date` drives the storage key AND the answer together — they must never be
@@ -491,39 +493,40 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           <div style={{fontSize:13,fontWeight:700,color:"var(--accent)",marginBottom:10}}>
             +{getFootleXP(state.status === "won", state.guesses.length)} XP
           </div>
-          <button className="wd-share" onClick={onShare}>Share result</button>
           {/* Footle had NO report path. It is the most-played mode in the app and
               its failure mode is the nastiest we ship: an answer that is
               misspelled or not a real surname is UNWINNABLE, and the player has
               no way to tell us — two literally unwinnable answers have shipped
               before. The daily answer is the whole payload, so one button does it. */}
           {onReport && <FootleReportButton answer={answer} status={state.status} onReport={onReport} />}
-          {/* wa.me is web-only: inside the Capacitor WebView it often loads
-              the wa.me web page instead of app-switching, and the native
-              share sheet (shareCard's IS_NATIVE branch) already surfaces
-              WhatsApp with the PNG card — strictly better there. */}
-          {!isNative && shareText && (
-            <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer">Share on WhatsApp</a>
-          )}
-          {/* Strong post-game App Store nudge for the social-webview funnel
-              (see FootleGetAppCTA def) — the result moment is where
-              Wordle-likes convert. */}
-          <GetAppCTA />
-          <div className="wd-result-foot">New player in {countdown}</div>
-          {/* Second-play CTA. Rendered on won AND lost; hidden once today's
-              Daily 7 is done (the mount site passes no handler then, since
-              startMode would only toast "already done today"). */}
-          {onPlayDaily && (
-            <button className="wd-back" onClick={onPlayDaily} style={{margin:"2px auto 0"}}>
-              Not done yet? Play today's Daily 7 →
-            </button>
-          )}
-          {/* Sprint #64 FF1: post-Footle install nudge. Now rendered on any
-              TERMINAL state, not won-only — install is web's only return
-              mechanism (web has no notifications) and losers were excluded.
-              The internal hook still gates on already-installed, installed-ever
-              (iOS Safari reopen edge case from EE3), display-mode standalone,
-              install-affordance available, and a 30-day dismiss cooldown. */}
+        </div>
+      )}
+
+      {/* The return loop, built once for all four dailies (components/DailyDone.jsx):
+          streak · countdown + remind · SHARE · how everyone did · still open today
+          · save (guest) · get the app (web). Replaced this screen's own share
+          button, WhatsApp link, countdown footer, Daily 7 cross-sell and store
+          CTA (2026-09-06). A sibling of .wd-result, not a child — no card in a
+          card. */}
+      {state.status !== "playing" && revealed && (
+        <div style={{ marginTop: 10 }}>
+          <DailyDone
+            game="footle"
+            edition={getFootleNumber(date)}
+            won={state.status === "won"}
+            bucket={state.status === "won" ? state.guesses.length : 0}
+            isArchive={isArchive}
+            streak={dailyDone?.streak || { count: state.status === "won" ? computeFootleStreak(date) : 0, label: "Footle streak" }}
+            onShare={onShare}
+            waText={!isNative && shareText ? shareText : undefined}
+            remind={dailyDone?.remind}
+            nextUp={dailyDone?.nextUp || []}
+            save={dailyDone?.save}
+            GetAppCTA={GetAppCTA}
+            track={dailyDone?.track}
+          />
+          {/* Sprint #64 FF1: post-Footle install nudge (web only; the hook gates
+              on installed / standalone / affordance / 30-day cooldown). */}
           {InstallBanner && <InstallBanner />}
         </div>
       )}

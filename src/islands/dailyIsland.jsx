@@ -51,6 +51,19 @@ export function toastHost(id) {
 
 // Mounts the screen and answers the one question these pages did not have:
 // does anyone FINISH the daily on the web.
+// Host services for the return-loop panel on a static page: no reminder (web
+// has no local notifications), links to the other daily pages as "still open
+// today", the page's funnel as the tracker. `game` is filtered out by the panel.
+const DAILY_PAGES = [
+  { key: 'footle',  name: "Today's Footle",         href: '/football-wordle/' },
+  { key: 'daily7',  name: "Today's Daily 7",        href: '/daily-football-quiz/' },
+  { key: 'trail',   name: "Today's Transfer Trail", href: '/transfer-trail/' },
+  { key: 'mystery', name: "Today's Mystery Player", href: '/mystery-player/' },
+];
+export function makeDailyDoneServices(funnel) {
+  return { remind: undefined, streak: undefined, save: undefined, nextUp: DAILY_PAGES, track: (n, m) => funnel(n, m) };
+}
+
 export function mountDaily({ hostId, game, funnel, element }) {
   window.addEventListener('biq:daily-completed', (e) => {
     const d = e?.detail || {};
