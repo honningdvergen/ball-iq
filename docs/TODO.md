@@ -1,3 +1,11 @@
+## 2026-09-06 (11:00) — ✅ DAILY TAB ROWS ALIGNED TO HOME (d712bb7) — simulator-verified; results panel LIVE on prod
+
+Both the mobile and desktop Daily rows now draw `.todays-seven-secondary` with `--mode` on the well only, one green Play, quiet
+Review / score pill, `.daily-zone-head` ("Today · Sun, Sep 6" · "1 of 4 played"); ✓/✗ glyphs dropped from result strings. Gate in
+`daily-done.test.js`. Screenshot: `.audit/critique-2026-09-05-app-home/daily-tab-after.png`. **Next (WHAT-NEXT.md):** merge decision
+Home vs Daily → reminder engine (habitual hour is in; streak-at-risk + rollover push next) → guest-first Online/Profile → header
+anchor → craft P3s (⚽ in "Brilliant!", 🔥 streak pill, uppercase "NEW PUZZLES IN" pill).
+
 ## 2026-09-06 (10:55) — ✅ RESULTS PANEL (DailyDone) SHIPPED: one return loop under all four dailies — simulator + local-web verified; live check pending
 
 Alex: "let us build the results component first, then align the daily tab… let us do this RIGHT." Brief + decisions in
