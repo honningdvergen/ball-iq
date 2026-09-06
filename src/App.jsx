@@ -2703,6 +2703,21 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
   // below doesn't run until armed. Q2+ are mid-flow, so they start hot as
   // before. Untimed modes never see the gate.
   const [armed, setArmed] = useState(false);
+  // 3-2-1 on the question itself (2026-09-06, Alex: "are we sure we need the
+  // ready screen at all? … there is no go back button"). The full-screen
+  // "Ready?" interstitial existed only so a 15s clock would not start while
+  // the screen was still transitioning; a short count does that without
+  // covering the header, so Back still works and nothing needs a tap.
+  const [countdown, setCountdown] = useState(3);
+  useEffect(() => {
+    if (!(timed && idx === 0 && !armed && !done)) return undefined;
+    setCountdown(3);
+    const t = setInterval(() => setCountdown((c) => (c > 0 ? c - 1 : 0)), 800);
+    return () => clearInterval(t);
+  }, [timed, idx, armed, done]);
+  useEffect(() => {
+    if (timed && idx === 0 && !armed && !done && countdown === 0) setArmed(true);
+  }, [countdown, timed, idx, armed, done]);
   const [showNext, setShowNext] = useState(false);
   // ⚠️ RE-ENTRY GUARD — a double-tap on "Next →" used to SKIP A QUESTION.
   // Found 2026-08-19 from Clarity: "Next →" was the most dead-clicked element
@@ -3212,7 +3227,7 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       </div>
       <div className="qd-eyebrow" aria-hidden="true">Question {idx + 1}</div>
 
-      <div key={idx} className="q-card q-fade">
+      <div key={idx} className={`q-card q-fade${timed && idx === 0 && !armed && !done ? " q-card-gated" : ""}`}>
         <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
         <div className="q-text" style={{fontSize:18}}>{q.q}</div>
       </div>
@@ -3417,32 +3432,27 @@ function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride,
       </div>{/* /.qd-play */}
 
       {timed && idx === 0 && !armed && !done && (
-        <div
-          onClick={() => setArmed(true)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setArmed(true); }}
-          aria-label="Start the quiz"
-          style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,zIndex:60,background:"var(--bg)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:8,cursor:"pointer",padding:24,textAlign:"center"}}
-        >
-          <div aria-hidden="true" style={{width:56,height:56,borderRadius:16,marginBottom:6,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
-            <Timer size={26} strokeWidth={2.25} color="#58CC02" />
-          </div>
-          <div style={{fontSize:22,fontWeight:900,color:"var(--t1)"}}>Ready?</div>
-          <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5}}>{timerDuration}s per question — the clock starts when you tap.</div>
-          <button
-            onClick={(e) => { e.stopPropagation(); setArmed(true); }}
-            style={{marginTop:14,minHeight:48,padding:"13px 38px",borderRadius:999,background:"var(--accent)",border:"none",color:"var(--grn-ink)",WebkitTextFillColor:"#0a1a00",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",boxShadow:"0 10px 26px -8px rgba(88,204,2,0.55)"}}
-          >
-            Start
-          </button>
+        <div className="q-countdown" role="status" aria-live="polite" aria-label={`Starting in ${countdown}`}>
+          <div className="q-countdown-n" key={countdown}>{countdown > 0 ? countdown : "Go"}</div>
+          <div className="q-countdown-cap">{timerDuration}s per question</div>
         </div>
       )}
       {showQuit && (
         <div className="modal-overlay" onClick={() => setShowQuit(false)}>
-          <div className="modal-box" onClick={e => e.stopPropagation()}>
-            <div className="modal-title">Quit this game?</div>
-            <div className="modal-body">Your progress will be lost.</div>
+          <div className="modal-box" role="dialog" aria-modal="true" aria-labelledby="quit-title" onClick={e => e.stopPropagation()}>
+            <div className="modal-grab" aria-hidden="true" />
+            {/* The stake, not a generic warning (2026-09-06, Alex: "this screen
+                also looks dull"): a sheet in the app's vocabulary — icon well,
+                what is actually on the line, one green primary, a quiet exit. */}
+            <div className="modal-head">
+              <span className="modal-well" aria-hidden="true"><X size={20} strokeWidth={2.4} /></span>
+              <div>
+                <div className="modal-title" id="quit-title">Leave this quiz?</div>
+                <div className="modal-body">{idx > 0
+                  ? <><strong>{score}</strong> right from <strong>{idx}</strong> answered — that&#39;s lost if you quit.</>
+                  : "Your progress will be lost."}</div>
+              </div>
+            </div>
             <div className="modal-btns">
               <button className="modal-btn modal-cancel" onClick={() => setShowQuit(false)}>Keep playing</button>
               {/* ⚠️ A rage-quit is a stated bad moment. The app already knows —
