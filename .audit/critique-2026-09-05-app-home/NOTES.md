@@ -143,3 +143,8 @@ Commits d7b9507 (panel + hosts + migration), e8ae466 (island default icons; nati
 Verified: app Footle solve → panel (streak line, Remind me → iOS prompt on the tap → ✓ pill), Share, Still open today with icons; web /mystery-player/ give-up → panel with page links + Google Play badge. Distribution hidden (n<20) as designed.
 ⚠️ `vite build` alone does NOT regenerate the island HTML (hashed chunk refs) — the full `npm run build` gate is required to verify islands locally.
 Remaining before push: full gate → cap sync → native rebuild → confirm a native row lands in daily_results → island icons on local static → push → live verify → Daily tab alignment (next increment).
+
+## 2026-09-06 12:25 — the list, worked through
+Shipped today (all pushed, simulator-verified): DailyDone results panel (+ daily_results aggregate, remind-at-your-hour) · Daily tab rows aligned → then Daily tab → **History** (rows on Home only) · streak-at-risk nudge (today only, streak≥2, 20:30, named) · guest-first Online (join + local first, quiet named sign-up row, no empty scoreboard) + Profile (ask below the card) · header anchor (F mark + wordmark + date; greeting only with a real name) · craft pass (Lucide flames/trophy/miss, no text ticks, sentence-case countdown) · honest rating (answered questions required).
+**Deliberately not done:** onboarding = Footle. The sample question already hands into Footle when answered and is instrumented (onboard-done-answered); replacing it is a bet to make with data.
+**Re-critique next** to move the 23/40. Read `daily_results` in a week; the distribution appears at n≥20 per puzzle.
