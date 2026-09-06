@@ -236,7 +236,6 @@ function HomeScreenImpl({
         const isDefaultName = (n) => !n || n === "Player" || /^player_/i.test(n);
         const homeRealUsername = authProfile?.username && !isDefaultName(authProfile.username) ? authProfile.username : null;
         const homeHasUsername = !!homeRealUsername;
-        const homeShowCTA = ctaSettled && !homeAuthLoading && !homeHasUsername && (!homeLocalName || isDefaultName(homeLocalName));
         // Brand-new guest installs (no signed-in user, no local name)
         // used to flash "Good morning, Guest" before auth resolved. Drop
         // the placeholder and the trailing comma when no real name is
@@ -280,29 +279,26 @@ function HomeScreenImpl({
         // "0/2 today" and told the user nothing the card wasn't already saying
         // more precisely. The one-done cases stay: naming WHICH ritual is still
         // open is real information the chip's bare count can't give.
-        const subtext = footleDone && dailyDone ? null
-          : footleDone                          ? "Daily 7 is still open."
-          : dailyDone                           ? "Today's Footle is still open."
-          :                                       null;
+        // Sunday 6 September — the anchor NYT Games opens on. A guest saw
+        // "Good evening" with no subject as the first line of the app.
+        const todayLabel = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
         return (
           <div className="hg-block" style={{padding:"6px 0 8px"}}>
+            {/* HEADER ANCHOR (critique 2026-09-06, P1 #1): the app opened on a
+                13.5px grey greeting, an underlined 12px "Set your name" and a
+                44pt gear — the heaviest object in the header was Settings.
+                Now the brand mark + wordmark lead, the second line is the date
+                (or the greeting with a real name — "Good ebening, Alex" stays),
+                and the name is set on Profile, where the card is. */}
             <div style={{display:"flex", alignItems:"center", gap:10}}>
-              {/* Two-line greeting: subtitle-weight line 1 ("Good afternoon,")
-                  above a bold name that truncates with an ellipsis so long
-                  usernames never clip into / collide with the subtitle. */}
-              <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:1, flex:1, minWidth:0}}>
-                <div className="hg-greet" style={{fontSize:13.5, color:"var(--t2)", fontWeight:500, letterSpacing:"-0.2px"}}>{greeting}</div>
-                {(homeAuthLoading && !homeDisplayName) ? (
-                  // Sprint #23 U2: min-width lock keeps the name-box width stable
-                  // across the Loading…→username swap. Only show the skeleton when
-                  // we have NO cached name to show — otherwise the local name
-                  // appears instantly instead of waiting for the server profile.
-                  <div style={{fontSize:24, color:"var(--t1)", fontWeight:800, opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", minWidth:70}}>Loading…</div>
-                ) : homeDisplayName ? (
-                  <div className="hg-name" style={{fontSize:24, color:"var(--t1)", fontWeight:800, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", letterSpacing:"-0.3px"}}>
-                    {homeDisplayName}
-                  </div>
-                ) : null}
+              <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:3, flex:1, minWidth:0}}>
+                <div className="hg-wordmark" style={{display:"flex", alignItems:"center", gap:8}}>
+                  <span className="fh-tile fh-tile-green" style={{"--fh-tile":"26px", borderRadius:7}} aria-hidden="true">F</span>
+                  <span style={{fontSize:17, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1}}>{APP_NAME}</span>
+                </div>
+                <div className="hg-greet" style={{fontSize:13, color:"var(--t2)", fontWeight:500, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>
+                  {homeDisplayName ? `${greeting} ${homeDisplayName}` : todayLabel}
+                </div>
               </div>
               {loginStreak > 0 && (
                 <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
@@ -322,29 +318,6 @@ function HomeScreenImpl({
                   row is hidden on Home) — one tidy top row, no dead space. */}
               <button onClick={() => setScreen("settings")} className="icon-btn hdr-ic" aria-label="Settings" style={{flexShrink:0}}><Settings size={18} strokeWidth={2.25} aria-hidden="true" /></button>
             </div>
-            {subtext && (
-              <div style={{fontSize:12.5, color:"var(--t3)", marginTop:2, fontWeight:500}}>
-                {subtext}
-              </div>
-            )}
-            {homeShowCTA && (
-              <button
-                onClick={() => { setTab("profile"); setNameEditNonce(n => n + 1); }}
-                className="hit44"
-                style={{background:"none",border:"none",padding:"4px 0 0",fontSize:12,fontWeight:600,color:"var(--t2)",textDecoration:"underline",textUnderlineOffset:3,cursor:"pointer",fontFamily:"inherit"}}
-                aria-label="Set your name"
-              >
-                {/* Was "✏️ Tap to set your name" — the same action was worded
-                    three different ways across Home and Profile, and "Tap to"
-                    is redundant on a touch device. All three now read "Set
-                    your name" with a trailing pencil.
-                    De-greened 2026-07-29: it was the THIRD green element in the
-                    top 300px, competing with Footle's Play for the eye — and it
-                    is a settings nudge, not something you came here to do.
-                    Underlined so it still reads as tappable without shouting. */}
-                Set your name <Pencil size={12} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-1px",marginLeft:2}} />
-              </button>
-            )}
           </div>
         );
       })()}

@@ -19,13 +19,6 @@ const MONO = "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace";
 // so the Mystery result screen can show the same countdown. One definition;
 // two surfaces cannot drift about when tomorrow starts.
 // Kept in step with HomeScreen's greeting — 00:00-04:59 is not "morning".
-function timeOfDayGreeting(d = new Date()) {
-  const h = d.getHours();
-  if (h < 5) return "Still up";
-  if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
-  return "Good evening";
-}
 
 // Sprint #24 V2 helpers — the tactics card subtitle + form-row right
 // label encode 5 edge cases the brief calls out: zero history, mid-
@@ -753,10 +746,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         return (
           <>
             {/* No local gear — AppInner's global header already renders one. */}
-            <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 2 }} role="status">
-              {timeOfDayGreeting(now)}{(name || authLoading) ? ", " : ""}
-              {authLoading ? <b style={{ color: "var(--t1)", fontWeight: 700 }}>…</b> : name ? <b style={{ color: "var(--t1)", fontWeight: 700 }}>{name}</b> : null}
-            </div>
+            {/* No greeting here (2026-09-06): the tab is History; the header anchor lives on Home. */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 2 }}>
               <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>History</div>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>

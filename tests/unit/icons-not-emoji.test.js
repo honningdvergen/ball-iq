@@ -154,7 +154,9 @@ describe('icons are icons, not emoji', () => {
     expect(dd, 'the Remind me control needs its bell').toMatch(/<Bell size=\{14\}/);
     expect(app, 'the join modal needs its gamepad').toMatch(/<Gamepad2 size=\{26\}/);
     expect(home, 'the Home settings button needs its gear').toMatch(/<Settings size=\{18\}/);
-    expect(home, 'the name CTA needs its pencil').toMatch(/<Pencil size=\{12\}/);
+    // The name CTA left Home on 2026-09-06 (header anchor); Profile owns it.
+    const profile = readFileSync(`${SRC}/screens/ProfileScreen.jsx`, 'utf8');
+    expect(profile, 'the name CTA needs its pencil').toMatch(/<Pencil size=\{13\}/);
   });
 
   it('the reminder ask is a labelled control, not an anonymous sheet', () => {
