@@ -31,6 +31,10 @@ import { TOPICAL_PACK, RETIRED_TAGS } from '../../src/lib/quiz.js';
  */
 
 const APP = readFileSync(fileURLToPath(new URL('../../src/App.jsx', import.meta.url)), 'utf8');
+// The local pass & play engine draws from the bank too — it left App.jsx on
+// 2026-09-06 (E16). The doors are counted across both files.
+const LOCAL = readFileSync(fileURLToPath(new URL('../../src/screens/LocalPlay.jsx', import.meta.url)), 'utf8');
+const DRAW_SOURCES = APP + '\n' + LOCAL;
 
 describe('a retired pack reaches nobody', () => {
   it('the tile is gone', () => {
@@ -80,16 +84,16 @@ describe('a retired pack reaches nobody', () => {
   });
 
   it('EVERY direct bank draw withholds retired tags', () => {
-    // ⚠️ The load-bearing one. Each `QB.filter(` in App.jsx is a door into the
+    // ⚠️ The load-bearing one. Each `QB.filter(` in App.jsx or LocalPlay.jsx is a door into the
     // bank; every one must apply the withhold within its own filter (or on the
     // line immediately after, which is how getQs does it).
-    const draws = [...APP.matchAll(/QB\.filter\(/g)];
-    expect(draws.length, 'App.jsx should still draw from the bank').toBeGreaterThanOrEqual(5);
+    const draws = [...DRAW_SOURCES.matchAll(/QB\.filter\(/g)];
+    expect(draws.length, 'App.jsx + LocalPlay.jsx should still draw from the bank').toBeGreaterThanOrEqual(5);
     const unguarded = [];
     for (const m of draws) {
-      const window = APP.slice(m.index, m.index + 500);
+      const window = DRAW_SOURCES.slice(m.index, m.index + 500);
       if (!/RETIRED_TAGS\.has\(q\.tag\)/.test(window)) {
-        unguarded.push(APP.slice(m.index, m.index + 90).replace(/\s+/g, ' '));
+        unguarded.push(DRAW_SOURCES.slice(m.index, m.index + 90).replace(/\s+/g, ' '));
       }
     }
     expect(

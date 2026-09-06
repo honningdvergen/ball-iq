@@ -14,6 +14,7 @@ const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'ut
 const APP = read('../../src/App.jsx');
 // The Daily 7 host is the Results screen, extracted from App.jsx on 2026-09-06 (E16).
 const RESULTS = read('../../src/screens/ResultsScreen.jsx');
+const HUB = read('../../src/screens/OnlineHubTab.jsx'); // the Online tab, extracted the same day
 const DD = read('../../src/components/DailyDone.jsx');
 const CSS = read('../../src/components/dailyDone.css');
 const LIB = read('../../src/lib/dailyResults.js');
@@ -89,13 +90,13 @@ describe('DailyDone — one panel, four surfaces', () => {
     // Online: no empty "You vs ?" scoreboard for a guest; Create Room only for
     // accounts; the ask sits after join-by-code and local play, in the row
     // anatomy, naming what it unlocks.
-    expect(APP).toMatch(/\{!needsAccount && \(\n\s*<div style=\{\{borderRadius:22/);
-    expect(APP, 'the green slab no longer flips to a sign-up label').not.toMatch(/needsAccount \? "Sign up to play online"/);
+    expect(HUB).toMatch(/\{!needsAccount && \(\n\s*<div style=\{\{borderRadius:22/);
+    expect(HUB, 'the green slab no longer flips to a sign-up label').not.toMatch(/needsAccount \? "Sign up to play online"/);
     // The guest's first block is the PITCH (what a room is + the one green
     // button = sign-up), above join-by-code and local play.
-    expect(APP).toMatch(/Who knows more — you or your mates\?/);
-    expect(APP.indexOf('Who knows more')).toBeLessThan(APP.indexOf('Got a code? Type it here'));
-    expect(APP).toMatch(/Challenge your friends/);
+    expect(HUB).toMatch(/Who knows more — you or your mates\?/);
+    expect(HUB.indexOf('Who knows more')).toBeLessThan(HUB.indexOf('Got a code? Type it here'));
+    expect(HUB).toMatch(/Challenge your friends/);
     // Profile: the ask comes AFTER the player's own card.
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
     expect(PROFILE).not.toMatch(/>Save your progress</);

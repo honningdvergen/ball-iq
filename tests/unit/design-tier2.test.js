@@ -28,6 +28,7 @@ const CSS = read('../../src/app.css')
   // below still asserts ONE definition, now in the generated tokens.css.
   + '\n' + read('../../src/design/tokens.css');
 const APP = read('../../src/App.jsx');
+const HUB = read('../../src/screens/OnlineHubTab.jsx'); // Online tab, extracted 2026-09-06 (E16)
 
 // ⚠️ SCAN EVERY JSX FILE, NOT TWO OF THEM.
 // The inline-style button rule below originally read only App.jsx (and Login).
@@ -146,7 +147,7 @@ describe('one primary button, everywhere', () => {
 
   it('the Online tab CTA uses the pill and the standard glow', () => {
     // The ink is the token since 2026-09-05 (C3-B: inline styles read tokens).
-    expect(APP).toMatch(/borderRadius:999,background:"var\(--accent\)",color:"var\(--grn-ink\)",boxShadow:"0 8px 22px -8px rgba\(88,204,2,0\.55\)"/);
+    expect(HUB).toMatch(/borderRadius:999,background:"var\(--accent\)",color:"var\(--grn-ink\)",boxShadow:"0 8px 22px -8px rgba\(88,204,2,0\.55\)"/);
   });
 
   it('the primary button look is one definition, not six', () => {

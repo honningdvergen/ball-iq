@@ -57,7 +57,7 @@ const stripComments = (s) => s
   .replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
 
 const htmlSrc = read('public/privacy.html').replace(/<!--[\s\S]*?-->/g, '');
-const appSrc = stripComments(read('src/App.jsx'));
+const appSrc = stripComments(read('src/screens/PrivacyScreen.jsx'));
 
 describe('the two privacy policy copies stay in sync', () => {
   it('both declare the same "Last updated" date', () => {
