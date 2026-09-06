@@ -10665,7 +10665,7 @@ function AppInner() {
       if (user?.id) registerPush(user.id, { requestPermission: true });
       const ws = readWordleTodayStatus();
       const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
-      scheduleReminderWindow({ skipToday: playedToday });
+      scheduleReminderWindow({ skipToday: playedToday, streak: loginStreak });
       showToast('Daily reminders on 🔔');
     } else {
       // Explicit opt-out. The 'disabled' marker distinguishes "user turned it
@@ -10676,7 +10676,7 @@ function AppInner() {
       cancelAllReminders();
       showToast('Daily reminders off');
     }
-  }, [dailyDone, showToast, user?.id]);
+  }, [dailyDone, showToast, user?.id, loginStreak]);
 
   // Results-screen "Remind me tomorrow" (2026-08-29): one state string keeps
   // TomorrowTeaser dumb. Native = local notifications (work signed-out);
@@ -10719,7 +10719,8 @@ function AppInner() {
     } catch {}
     return {
       remind: { state: resultsRemindState, onRemind: remindFromResults },
-      streak: { count: loginStreak || 0, label: "streak" },
+      // "daily streak" — the cross-mode one; the islands pass the per-game label.
+      streak: { count: loginStreak || 0, label: "daily streak" },
       save: (!user || isGuest) ? { onSave: () => { loopEvent("dd-save-tap"); openAuthPrompt?.("save"); } } : null,
       nextUp,
       track: (n, m) => loopEvent(n, m),
@@ -10859,8 +10860,8 @@ function AppInner() {
     if (!notifEnabled) return;
     const ws = readWordleTodayStatus();
     const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
-    scheduleReminderWindow({ skipToday: playedToday });
-  }, [notifEnabled, dailyDone]);
+    scheduleReminderWindow({ skipToday: playedToday, streak: loginStreak });
+  }, [notifEnabled, dailyDone, loginStreak]);
 
   // Shared XP award: local level math + persist + level-up celebration +
   // atomic remote delta for signed-in users. Extracted from handleComplete so
@@ -11310,10 +11311,10 @@ function AppInner() {
   // cancels a stale id, nagging the user tonight after they've already played.
   useEffect(() => {
     if (!notifEnabled) return;
-    const onRollover = () => { scheduleReminderWindow({ skipToday: false }); };
+    const onRollover = () => { scheduleReminderWindow({ skipToday: false, streak: loginStreak }); };
     window.addEventListener('biq:day-rollover', onRollover);
     return () => window.removeEventListener('biq:day-rollover', onRollover);
-  }, [notifEnabled]);
+  }, [notifEnabled, loginStreak]);
 
 
   const handleComplete = useCallback((res) => {

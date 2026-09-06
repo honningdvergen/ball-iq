@@ -34,6 +34,13 @@ const WINBACK = [
 // reschedule the whole window on every app open, "today" is always offset 0 —
 // so cancelTodayReminder() can always target ID_BASE + 0.
 const ID_BASE = 700000;
+// Streak-at-risk: ONE extra nudge, TODAY only, when a streak of 2+ is live and
+// today is still unplayed. Scheduled at app open with the live count, so the
+// copy can name the stake (the rolling window can't — it is written days
+// ahead). Fires at 20:30 local and only if that is later than the player's own
+// reminder hour, so the two never land within the same hour.
+const STREAK_RISK_ID = ID_BASE + 40;
+const STREAK_RISK_HOUR = 20, STREAK_RISK_MIN = 30;
 
 export function notificationsSupported() {
   try { return Capacitor.isNativePlatform(); } catch { return false; }
@@ -75,7 +82,7 @@ const DAILY_BODIES = [
 
 // (Re)schedule the rolling window. skipToday omits offset 0 — pass true when
 // the user has already completed today's daily so we don't nag them tonight.
-export async function scheduleReminderWindow({ skipToday = false } = {}) {
+export async function scheduleReminderWindow({ skipToday = false, streak = 0 } = {}) {
   if (!notificationsSupported()) return;
   try {
     if ((await getNotifPermission()) !== 'granted') return;
@@ -90,6 +97,18 @@ export async function scheduleReminderWindow({ skipToday = false } = {}) {
         body: DAILY_BODIES[at.getDay() % DAILY_BODIES.length],
         schedule: { at, allowWhileIdle: true },
       });
+    }
+    if (!skipToday && streak >= 2 && getReminderHour() < STREAK_RISK_HOUR) {
+      const now = new Date();
+      const at = new Date(now.getFullYear(), now.getMonth(), now.getDate(), STREAK_RISK_HOUR, STREAK_RISK_MIN, 0, 0);
+      if (at.getTime() > now.getTime()) {
+        notifications.push({
+          id: STREAK_RISK_ID,
+          title: 'Ball IQ',
+          body: `Your ${streak}-day daily streak ends at midnight — today's puzzles are still open 🔥`,
+          schedule: { at, allowWhileIdle: true },
+        });
+      }
     }
     for (const w of WINBACK) {
       const at = atFutureLocal(w.off);
@@ -118,7 +137,7 @@ export function onReminderTap(cb) {
 // Cancel tonight's reminder — call when the user completes today's Footle/Daily 7.
 export async function cancelTodayReminder() {
   if (!notificationsSupported()) return;
-  try { await LocalNotifications.cancel({ notifications: [{ id: ID_BASE }] }); } catch { /* noop */ }
+  try { await LocalNotifications.cancel({ notifications: [{ id: ID_BASE }, { id: STREAK_RISK_ID }] }); } catch { /* noop */ }
 }
 
 // Cancel the whole window + win-back tail (Settings → off, or before a
@@ -129,6 +148,7 @@ export async function cancelAllReminders() {
   try {
     const ids = [];
     for (let i = 0; i <= 31; i++) ids.push({ id: ID_BASE + i });
+    ids.push({ id: STREAK_RISK_ID });
     await LocalNotifications.cancel({ notifications: ids });
   } catch { /* noop */ }
 }

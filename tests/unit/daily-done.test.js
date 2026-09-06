@@ -75,6 +75,14 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(DD).toMatch(/noteCompletionHour\(\)/);
   });
 
+  it('a live streak gets ONE evening streak-at-risk nudge, today only, named', () => {
+    expect(NOTIF).toMatch(/STREAK_RISK_ID = ID_BASE \+ 40/);
+    expect(NOTIF).toMatch(/streak >= 2 && getReminderHour\(\) < STREAK_RISK_HOUR/);
+    expect(NOTIF).toMatch(/\$\{streak\}-day daily streak ends at midnight/);
+    expect(NOTIF, 'cancelled with tonight when the player plays').toMatch(/\{ id: ID_BASE \}, \{ id: STREAK_RISK_ID \}/);
+    expect((APP.match(/scheduleReminderWindow\(\{ skipToday: [^}]*streak: loginStreak \}\)/g) || []).length).toBe(3);
+  });
+
   it('the migration follows the house rules', () => {
     expect(MIG).toMatch(/enable row level security/);
     expect(MIG).toMatch(/revoke all on table public\.daily_results from anon, authenticated, public/);
