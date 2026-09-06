@@ -1,13 +1,13 @@
-## 2026-09-06 (18:45) — ✅ E16: 10 SCREEN BRICKS + 2 HOOKS OUT OF App.jsx (14,027 → 9,747) + LAZY OFF-PATH SCREENS (Home eager JS 831 → 768 KB) + consent banner yields to dialogs — `.audit/senior-review-2026-09-06/REVIEW.md` § E16 progress
+## 2026-09-06 (19:20) — ✅ E16: 10 SCREEN BRICKS + 6 HOOKS OUT OF App.jsx (14,027 → 9,180) + LAZY OFF-PATH SCREENS (Home eager JS 831 → 768 KB) + consent banner yields to dialogs — `.audit/senior-review-2026-09-06/REVIEW.md` § E16 progress
 
 Results, local pass & play, Online hub, Stump, Privacy, Settings, Onboarding, Hot Streak/True-or-False results — each a
 props-seam move; helpers exported from App along the seam the lazy screens use. ⚠️ Playwright targets `BALLIQ_BASE_URL`
 (default 4173 = last build), not `PW_BASE` — a whole day of "passes" were of the previous build; proven by breaking an
 export on purpose (green on 4173, red on 5173). Memory saved. Bricks 9–10 (quiz engine, club picker, reviews) landed, then Settings/reviews/club/Privacy/Stump/local play went
 lazy behind TabErrorBoundary + Suspense; budget ratcheted 900 → 800. Split surfaced a quit sheet with no focus trap
-(fixed). Hooks 1–2 landed (notification center, scroll-aware tab bar). Side catch: the consent banner covered the share-name
-sheet's skip for first-visit EU players — it yields to any `[role=dialog]` now. **NEXT:** `useShare` (9 statements),
-`useWebPush` (2), `useJoinGate` (17) — the login-streak domain (31 statements, reaches handleComplete/saveStats) is a
+(fixed). Hooks 1–6 landed (notification center, scroll-aware tab bar, share, web push, join gate, local notifications —
+the last one device-checked on build 26). Side catch: the consent banner covered the share-name
+sheet's skip for first-visit EU players — it yields to any `[role=dialog]` now. **NEXT:** the login-streak domain (31 statements, reaches handleComplete/saveStats) is a
 behaviour refactor with a device pass; `lib/questionSelect.js`; then the F7 reads (~09-13). Map in REVIEW.md § AppInner hooks.
 
 ## 2026-09-06 (14:30) — ✅ SENIOR REVIEW A–E LANDED (11 commits through 3eb6d53, prod-verified at 4454ac9) — `.audit/senior-review-2026-09-06/REVIEW.md` § Status
