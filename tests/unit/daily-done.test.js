@@ -83,6 +83,21 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect((APP.match(/scheduleReminderWindow\(\{ skipToday: [^}]*streak: loginStreak \}\)/g) || []).length).toBe(3);
   });
 
+  it('guest-first Online + Profile: what a guest can do comes first; the account ask is a quiet, named row', () => {
+    // Online: no empty "You vs ?" scoreboard for a guest; Create Room only for
+    // accounts; the ask sits after join-by-code and local play, in the row
+    // anatomy, naming what it unlocks.
+    expect(APP).toMatch(/\{!needsAccount && \(\n\s*<div style=\{\{borderRadius:22/);
+    expect(APP, 'the green slab no longer flips to a sign-up label').not.toMatch(/needsAccount \? "Sign up to play online"/);
+    expect(APP).toMatch(/aria-label="Play online with friends"/);
+    expect(APP.indexOf('aria-label="Play online with friends"')).toBeGreaterThan(APP.indexOf('Local pass &amp; play'));
+    // Profile: the ask comes AFTER the player's own card.
+    const PROFILE = read('../../src/screens/ProfileScreen.jsx');
+    expect(PROFILE).not.toMatch(/>Save your progress</);
+    expect(PROFILE.indexOf('Your progress lives on this phone')).toBeGreaterThan(PROFILE.indexOf('<BallIqCardFace'));
+    expect(PROFILE).toMatch(/className="todays-seven-secondary mp-row" role="group" aria-label="Save your progress"/);
+  });
+
   it('the migration follows the house rules', () => {
     expect(MIG).toMatch(/enable row level security/);
     expect(MIG).toMatch(/revoke all on table public\.daily_results from anon, authenticated, public/);

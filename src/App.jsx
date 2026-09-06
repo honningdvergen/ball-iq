@@ -6528,7 +6528,10 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           base, so the left column holds the app's real head-to-head record. */}
       <div className="online-cols">
       <div className="online-col-a">
-      {/* VS hero card */}
+      {/* VS hero card — signed-in only (2026-09-06 guest-first): for a guest it
+          was "You vs ? · No matches yet" as the first thing on the tab, an empty
+          scoreboard above a sign-up wall. Guests get what they CAN do first. */}
+      {!needsAccount && (
       <div style={{borderRadius:22,background:"var(--s1)",border:"1px solid var(--border)",padding:"22px 18px",boxShadow:"0 4px 16px rgba(0,0,0,0.35)",marginBottom:16}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:22}}>
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
@@ -6571,6 +6574,7 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         </div>
         )}
       </div>
+      )}
 
       </div>{/* /.online-col-a */}
       <div className="online-col-b">
@@ -6588,13 +6592,10 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           anywhere, so the most important CTA on the Online tab carried the one
           off-palette hue in the product, and only on iOS. Setting it on the button
           makes both children inherit the same ink. */}
+      {!needsAccount && (
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-        <span style={{display:"flex",alignItems:"center"}} aria-hidden="true">{needsAccount ? <Zap size={17} strokeWidth={2.4} /> : <Gamepad2 size={17} strokeWidth={2.2} />}</span><span style={{fontSize:17,fontWeight:800,color:"var(--grn-ink)"}}>{needsAccount ? "Sign up to play online" : "Create Room"}</span>
+        <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Gamepad2 size={17} strokeWidth={2.2} /></span><span style={{fontSize:17,fontWeight:800,color:"var(--grn-ink)"}}>Create Room</span>
       </button>
-      {needsAccount && (
-        <div style={{marginTop:8,textAlign:"center",fontSize:12.5,color:"var(--t3)",lineHeight:1.45}}>
-          Free, takes seconds — then challenge anyone with a link.
-        </div>
       )}
       {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
           sits dimmed until there's input, lights green once typing starts. */}
@@ -6688,6 +6689,23 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
           ? {padding:"10px 20px",borderRadius:999,border:"none",background:"var(--accent)",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontWeight:800,fontSize:13.5,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 6px 16px -6px rgba(88,204,2,0.5)"}
           : {padding:"9px 18px",borderRadius:999,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
       </div>
+      {/* GUEST-FIRST (2026-09-06): the account ask names the one thing it
+          unlocks and sits after the two things a guest can do right now (join
+          a code, play on one phone). Same row anatomy as the Today rows; a
+          quiet pill, not a glowing slab — the tab used to open on
+          "Sign up to play online" in 17px green with a "You vs ?" card above it. */}
+      {needsAccount && (
+        <div className="todays-seven-secondary mp-row" role="group" aria-label="Play online with friends" style={{marginTop:14}}>
+          <button type="button" className="mp-row-open" onClick={createRoom} aria-label="Sign up to create a room and invite friends">
+            <span className="t7s-icon" aria-hidden="true"><Zap size={20} strokeWidth={2.2} /></span>
+            <span className="t7s-body">
+              <span className="t7s-title">Play online with friends</span>
+              <span className="t7s-sub">Create a room and share a link · needs a free account</span>
+            </span>
+          </button>
+          <button type="button" className="t7s-cta mp-row-invite" onClick={createRoom}>Sign up</button>
+        </div>
+      )}
       </div>{/* /.online-col-b */}
       </div>{/* /.online-cols */}
     </div>

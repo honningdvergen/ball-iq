@@ -1453,49 +1453,6 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       {/* MAIN column — display:contents on mobile (children flow exactly as
           before), grid-area "main" (left) at desktop. */}
       <div className="profile-col-main">
-      {/* Sprint #100 guest-first: persistent sign-in entry for guests. Shown
-          for ALL guests (not just those who've played) so there's always a
-          path to an account from Profile. Copy leans on the carry-over —
-          signing up now keeps everything you've done as a guest. */}
-      {(isGuest || isAnonUser) && (
-        <div style={{
-          background:"linear-gradient(135deg, rgba(88,204,2,0.18), rgba(88,204,2,0.06))",
-          border:"1px solid var(--accent-b)",
-          borderRadius:16,
-          padding:"18px 18px 16px",
-          marginBottom:14,
-          display:"flex",
-          flexDirection:"column",
-          alignItems:"flex-start",
-          gap:6,
-        }}>
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            {/* Every other card in the app carries a lucide glyph in a tinted
-                well; this one still had a bare 🌟 inline with its heading, on
-                the screen that asks a guest to make an account. */}
-            <span style={{width:32,height:32,borderRadius:9,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.12)",border:"1px solid rgba(88,204,2,0.28)"}} aria-hidden="true">
-              <Sparkles size={17} strokeWidth={2.1} color="var(--accent)" />
-            </span>
-            <span style={{fontSize:16,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>Save your progress</span>
-          </div>
-          <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.4}}>
-            {/* v1.6 guest entry: anonymous (invite-link) players already HAVE
-                a server account — the pitch is not "create one to play" but
-                "attach an email so it can't be lost". */}
-            {isAnonUser
-              ? "You're playing as a guest. Add an email and password so your stats, games and XP can't be lost."
-              : (stats?.gamesPlayed || 0) > 0
-                ? "Create a free account to keep your stats, streak and IQ — and challenge friends online 1v1."
-                : "Create a free account to play online 1v1, add friends, and save your progress across devices."}
-          </div>
-          <button
-            onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }}
-            style={{marginTop:8,alignSelf:"stretch",minHeight:44,padding:"12px 18px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",transition:"opacity 120ms ease"}}
-          >
-            {isAnonUser ? 'Save my account' : 'Sign in / Create account'}
-          </button>
-        </div>
-      )}
       {/* ── DESKTOP (>=1024) LEFT column — mock #04. Rating card + League
           ratings grid. Hidden on mobile via the .pd-left base display:none;
           the mobile merged card below carries these on phones instead. Every
@@ -1738,6 +1695,30 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           />
         );
       })()}
+      {/* GUEST-FIRST (2026-09-06): the account ask comes AFTER the player's own
+          card, not above it, and names what it does — the tab used to open on a
+          glowing "Save your progress" slab over a rating card of dashes. Same
+          row anatomy as the Today rows; a quiet pill. Anonymous (invite-link)
+          players already HAVE a server account — for them it is "attach an
+          email so it can't be lost". */}
+      {(isGuest || isAnonUser) && (
+        <div className="todays-seven-secondary mp-row" role="group" aria-label="Save your progress" style={{marginBottom:14}}>
+          <button type="button" className="mp-row-open" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }} aria-label={isAnonUser ? 'Save my account' : 'Sign in or create a free account'}>
+            <span className="t7s-icon" aria-hidden="true"><Sparkles size={20} strokeWidth={2.1} /></span>
+            <span className="t7s-body">
+              <span className="t7s-title">{isAnonUser ? 'Save this account' : 'Your progress lives on this phone'}</span>
+              <span className="t7s-sub">
+                {isAnonUser
+                  ? 'Add an email and password so your stats, games and XP can\'t be lost.'
+                  : (stats?.gamesPlayed || 0) > 0
+                    ? 'A free account keeps your stats, streak and rating — and unlocks online 1v1.'
+                    : 'A free account saves everything across devices and unlocks online 1v1.'}
+              </span>
+            </span>
+          </button>
+          <button type="button" className="t7s-cta mp-row-invite" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }}>{isAnonUser ? 'Save' : 'Sign in'}</button>
+        </div>
+      )}
       {/* Two peer secondary actions. Both are ghost buttons; the gap-based
           flex container replaces the previous marginTop:-4 hack that was
           overlapping the .share-profile-btn bottom margins. Sprint #34
