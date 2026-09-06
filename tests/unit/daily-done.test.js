@@ -94,7 +94,7 @@ describe('DailyDone — one panel, four surfaces', () => {
     // Profile: the ask comes AFTER the player's own card.
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
     expect(PROFILE).not.toMatch(/>Save your progress</);
-    expect(PROFILE.indexOf('Your progress lives on this phone')).toBeGreaterThan(PROFILE.indexOf('<BallIqCardFace'));
+    expect(PROFILE.lastIndexOf('Saved on this phone only')).toBeGreaterThan(PROFILE.lastIndexOf('<BallIqCardFace'));
     expect(PROFILE).toMatch(/className="todays-seven-secondary mp-row" role="group" aria-label="Save your progress"/);
   });
 

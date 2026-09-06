@@ -1706,7 +1706,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           <button type="button" className="mp-row-open" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }} aria-label={isAnonUser ? 'Save my account' : 'Sign in or create a free account'}>
             <span className="t7s-icon" aria-hidden="true"><Sparkles size={20} strokeWidth={2.1} /></span>
             <span className="t7s-body">
-              <span className="t7s-title">{isAnonUser ? 'Save this account' : 'Your progress lives on this phone'}</span>
+              <span className="t7s-title">{isAnonUser ? 'Save this account' : 'Saved on this phone only'}</span>
               <span className="t7s-sub">
                 {isAnonUser
                   ? 'Add an email and password so your stats, games and XP can\'t be lost.'

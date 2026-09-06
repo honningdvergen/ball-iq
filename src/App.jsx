@@ -6674,20 +6674,18 @@ function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName,
         </>
       )}
 
-      {/* Local pass & play — kept reachable (not in the design frame) */}
-      <div style={{marginTop:16,display:"flex",alignItems:"center",gap:12,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:16,padding:"13px 14px"}}>
-        <span style={{width:44,height:44,borderRadius:12,background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.3)",display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:"var(--grn-soft)"}} aria-hidden="true"><Users size={21} strokeWidth={2} /></span>
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:14,fontWeight:800,color:"var(--t1)"}}>Local pass &amp; play</div>
-          <div style={{fontSize:12,color:"var(--t2)"}}>Same couch, one phone — up to 6 players.</div>
-        </div>
-        {/* Filled for a signed-out user: with the main CTA now honestly saying
-            "sign up", this is the ONLY thing on the tab a guest can actually
-            do, so it stops being a ghost button. Signed in, it goes back to
-            secondary — online is the point of the tab by then. */}
-        <button onClick={() => startMode("local")} style={needsAccount
-          ? {padding:"10px 20px",borderRadius:999,border:"none",background:"var(--accent)",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontWeight:800,fontSize:13.5,cursor:"pointer",fontFamily:"inherit",flexShrink:0,boxShadow:"0 6px 16px -6px rgba(88,204,2,0.5)"}
-          : {padding:"9px 18px",borderRadius:999,border:"1px solid var(--accent-b)",background:"transparent",color:"var(--accent)",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Play</button>
+      {/* Local pass & play — same row anatomy as the rest of the app (2026-09-06).
+          Filled Play for a guest (the one thing on the tab they can start
+          alone); quiet for an account, where online is the point. */}
+      <div className="todays-seven-secondary mp-row" role="group" aria-label="Local pass and play" style={{marginTop:16, marginBottom:0}}>
+        <button type="button" className="mp-row-open" onClick={() => startMode("local")} aria-label="Play locally on one phone">
+          <span className="t7s-icon" aria-hidden="true"><Users size={20} strokeWidth={2} /></span>
+          <span className="t7s-body">
+            <span className="t7s-title">Local pass &amp; play</span>
+            <span className="t7s-sub">Same couch, one phone · up to 6 players</span>
+          </span>
+        </button>
+        <button type="button" className={`t7s-cta mp-row-invite${needsAccount ? " is-primary" : ""}`} onClick={() => startMode("local")}>Play</button>
       </div>
       {/* GUEST-FIRST (2026-09-06): the account ask names the one thing it
           unlocks and sits after the two things a guest can do right now (join
