@@ -7,7 +7,9 @@ export on purpose (green on 4173, red on 5173). Memory saved. Bricks 9–10 (qui
 lazy behind TabErrorBoundary + Suspense; budget ratcheted 900 → 800. Split surfaced a quit sheet with no focus trap
 (fixed). Hooks 1–6 landed (notification center, scroll-aware tab bar, share, web push, join gate, local notifications —
 the last one device-checked on build 26). Side catch: the consent banner covered the share-name
-sheet's skip for first-visit EU players — it yields to any `[role=dialog]` now. **NEXT:** the login-streak domain (31 statements, reaches handleComplete/saveStats) is a
+sheet's skip for first-visit EU players — it yields to any `[role=dialog]` now. ⚠️ E16 STOPS HERE — the rest of AppInner (handleComplete 359 lines / 41 inputs, saveStats, tickLoginStreak, the two
+big effects) is ONE domain that wants state consolidation (a reducer owning stats/xp/streak/daily), not a hook with
+forty-one parameters. See REVIEW.md § where the extraction stops. **NEXT:** the login-streak domain (31 statements, reaches handleComplete/saveStats) is a
 behaviour refactor with a device pass; `lib/questionSelect.js`; then the F7 reads (~09-13). Map in REVIEW.md § AppInner hooks.
 
 ## 2026-09-06 (14:30) — ✅ SENIOR REVIEW A–E LANDED (11 commits through 3eb6d53, prod-verified at 4454ac9) — `.audit/senior-review-2026-09-06/REVIEW.md` § Status

@@ -94,3 +94,19 @@ Mapped for next (statement counts from the analyser, AppInner top-level statemen
 Landed hooks 3–6: `useShare` (score/profile/daily share builders, card image, the ask-your-name sheet), `useWebPush` (toggle + subscription re-assert), `useJoinGate` (URL code, dead-code drop, auto-join through a `startModeRef` because the gate must run before `startMode` exists; the hub join and the modal line stayed in App by `no-use-before-define`'s verdict), `useLocalNotifications` (toggle, reminder-window scheduling, prompt gate, permission reconcile, rollover, three-day re-ask). **App.jsx 9,180.** Each was rendered on the dev server and probed live; the notifications hook also got a native pass (build 26: the Daily reminders toggle off and on). One extraction attempt grabbed two wrong effects by loose text matching and was reverted; the second pass targets effects by their first body line AND their deps line. The import resolver reads App's own import statements to fill a hook's imports and exports App-level helpers on demand.
 
 Still in AppInner (~4,000 lines of logic): the login-streak domain (`tickLoginStreak`, `repairLoginStreak`, the streak states — 31 statements, reaching `handleComplete` 359 and `saveStats` 168), the daily-done effect (207), `startMode` and the launch callbacks, the deep-link boot effects, `awardXp`/`recordPlay`. All behaviour, all wanting a device pass each.
+
+### E16 — where the extraction stops, and why
+
+AppInner is **3,504 lines of logic** (was 5,342), 209 top-level statements. The screens and the six hooks came out cleanly because each had a narrow seam. The remaining large statements do not:
+
+| statement | lines | AppInner values it reads |
+|---|---|---|
+| `handleComplete` | 359 | 41 |
+| daily-done listener effect | 207 | 15 |
+| boot/hydration effect | 197 | 12 |
+| `tickLoginStreak` | 172 | 9 |
+| `saveStats` | 168 | 12 |
+
+A hook taking 41 parameters is worse than the code it replaces: it moves the tangle without untangling it, and every call site then has to keep the argument list in step. These five statements are one domain — *what a finished game writes* — and the honest next move is not extraction but **state consolidation**: a reducer (or a small context) owning `stats`, `xp`, `loginStreak`, `dailyDone`, `dailyScore` and the derived values, after which `handleComplete` reads one dispatch instead of forty-one closures. That is a design change with a device pass per step, not an evening's mechanical move.
+
+So E16 stops here. What it bought: App.jsx 14,027 → 9,180, ten screens and six hooks testable alone, the off-path screens lazy (Home eager JS 831 → 770 KB), and three real defects surfaced by the split (the quit sheet's missing focus trap, the consent banner over the share sheet, four stale test pins).
