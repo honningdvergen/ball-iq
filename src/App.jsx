@@ -6417,10 +6417,14 @@ function AppInner() {
   // leaves the result before it fires — a sheet that appears after they have
   // navigated away is worse than one that never appears.
 
-  // Tapping a reminder deep-links to the Daily tab — the notification's whole
-  // point is "play today's puzzles", so land the user on them.
+  // Tapping a reminder lands on Home — the notification's whole point is "play
+  // today's puzzles", so land the user ON them. This used to send to the Daily
+  // tab, which was right until 2026-09-06: that day the four daily rows moved
+  // to Home and the tab became History. From then until now every reminder tap
+  // arrived on a countdown, a streak strip and a table with no way to start
+  // today's puzzle. The comment stayed true while the code stopped being.
   useEffect(() => {
-    const off = onReminderTap(() => { setScreen("home"); setTab("daily"); });
+    const off = onReminderTap(() => { setScreen("home"); setTab("home"); });
     return off;
   }, []);
 
@@ -8906,7 +8910,13 @@ function AppInner() {
               // Audit #5: a club/league quit stranded the player on Home —
               // send them back to the picker they came from instead.
               onBack={() => {
-                if (mode === "daily") { setScreen("home"); setTab("daily"); }
+                // A daily came from Home's Today block, so back is Home — the
+                // same "return to the picker you came from" rule as the club and
+                // league branches below. It sent to the History tab until
+                // 2026-09-06 moved the rows; that left the row you just played
+                // and its three siblings a tab away, and 66% of players who play
+                // one daily play a second the same day.
+                if (mode === "daily") { setScreen("home"); setTab("home"); }
                 else if (activeClub) { setScreen("club-quiz"); }
                 else if (activeLeague) { setScreen("league-quiz"); }
                 else { setScreen("home"); setTab("home"); }
