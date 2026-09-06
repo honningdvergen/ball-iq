@@ -643,6 +643,12 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     return out;
   }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
 
+  // Has the player completed any of those 14 days? Both streak surfaces gate on
+  // this ONE value -- the mobile strip and the desktop rail card -- because the
+  // card's own comment promises "the mobile strip and this card never disagree",
+  // and gating each separately is exactly how they would come to.
+  const hasFormHistory = useMemo(() => form14.some(d => d.cls === "W" || d.cls === "D"), [form14]);
+
   // Today's playable set. Built once and rendered by BOTH breakpoints — the
   // two-card version had already drifted (mobile said "Guess the player",
   // desktop "N letters · surname of a footballer"), and four modes across two
@@ -779,7 +785,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           14 dim squares: a scoreboard of a record nobody has, and an invitation
           to play on the one tab that offers nothing to play. 44-49% of accounts
           never play a game, so this was the common case, not the edge. */}
-      {form14.some(d => d.cls === "W" || d.cls === "D") && (
+      {hasFormHistory && (
       <div role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}
         style={{ marginTop: 12, borderRadius: 18, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
@@ -990,6 +996,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   {/* Streak card — reuses the Home rail .hr-card.hr-streak markup +
                       tokens, fed with Daily's own streak (runStats) + form14 so
                       the mobile strip and this card never disagree. */}
+                  {hasFormHistory && (
                   <div className="hr-card hr-streak" role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}>
                     <div className="hr-streak-head">
                       <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true"><Flame size={18} strokeWidth={2.3} /></span>{streak.unbeaten}</div>
@@ -1005,6 +1012,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                     </div>
                     <div className="hr-form-cap">Last 14 days</div>
                   </div>
+                  )}
 
                   {/* This week */}
                   <div style={{ borderRadius: 18, border: "1px solid var(--border)", background: "var(--s1)", padding: "18px 20px" }}>

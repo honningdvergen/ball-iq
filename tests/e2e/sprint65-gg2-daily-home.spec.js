@@ -34,7 +34,7 @@ test('daily — full page', async ({ page }, testInfo) => {
   // Browser tab: .fd-appbar tab; native / PWA: .tab-bar or .biq-nav rail —
   // whichever is visible (the hidden ones hang a click).
   const dailyTab = page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
-    .filter({ hasText: 'Daily', visible: true })
+    .filter({ hasText: /History|Daily/, visible: true })
   if (await dailyTab.count()) {
     await dailyTab.first().click()
     await page.waitForTimeout(500)

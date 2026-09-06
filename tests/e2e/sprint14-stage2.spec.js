@@ -45,8 +45,14 @@ test('Daily tab — no console errors after extraction', async ({ page, context 
   // In a browser tab the app's tabs are the .fd-appbar under the site
   // header (2026-09-03 web shell); native and installed PWAs keep the
   // .tab-bar / .biq-nav rail. Filter for whichever is visible.
+  //
+  // The text alternation is deliberate. This tab read "Daily", was renamed
+  // "History" on 2026-09-06, and may be renamed again. e2e only needs to FIND
+  // it; the exact wording is pinned across all three navs by
+  // tests/unit/nav-label-parity.test.js. Keying this locator on the copy meant
+  // a label fix turned CI red, which is why the alternation is here.
   const dailyNav = page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
-    .filter({ hasText: 'Daily', visible: true }).first();
+    .filter({ hasText: /History|Daily/, visible: true }).first();
   await dailyNav.click();
   await page.waitForTimeout(500);
 
@@ -67,8 +73,9 @@ test('Daily tab — History renders (streak + recent days, no rows)', async ({ p
   await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  // Browser tab: .fd-appbar; native / PWA: .tab-bar or .biq-nav. The label is
-  // "Daily" in the app bar and "History" in the native tab bar / left rail.
+  // Browser tab: .fd-appbar; native / PWA: .tab-bar or .biq-nav. All three read
+  // "History" since 2026-09-06; the alternation tolerates a future rename, and
+  // tests/unit/nav-label-parity.test.js is what pins the actual wording.
   const dailyNav = page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
     .filter({ hasText: /Daily|History/, visible: true }).first();
   await dailyNav.click();
@@ -78,7 +85,17 @@ test('Daily tab — History renders (streak + recent days, no rows)', async ({ p
   await expect(page.getByText('History', { exact: true }).filter({ visible: true }).first()).toBeVisible();
   await expect(page.getByText(/New puzzles in/i).filter({ visible: true }).first()).toBeVisible();
   await expect(page.getByText(/Recent days/i).filter({ visible: true }).first()).toBeVisible();
-  await expect(page.getByText(/day streak/i).filter({ visible: true }).first()).toBeVisible();
+
+  // This guest has played nothing, so the streak surfaces are ABSENT — both of
+  // them. Until 2026-09-06 a player with no history was shown "0 day streak —
+  // play one puzzle to light it" over 14 dim squares, on a tab that offers
+  // nothing to play. The strip and the desktop rail card gate on one shared
+  // value so they cannot diverge; this asserts the fresh-guest half on
+  // whichever surface is visible, and the recent-days table shows its empty
+  // state rather than a header over a single all-dashes row.
+  await expect(page.getByText(/day streak/i).filter({ visible: true })).toHaveCount(0);
+  await expect(page.getByText(/Play today, then your recent days show up here/i)
+    .filter({ visible: true }).first()).toBeVisible();
 
   // The rows are Home's. Their sublines must NOT appear in THIS screen (Home
   // stays mounted but hidden behind the tab switch, so scope to the screen).
