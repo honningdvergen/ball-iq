@@ -109,7 +109,7 @@ describe('design review — tier 2', () => {
     // Quiz tile (the same door twice) is gone; Play is one colour.
     expect(HOME.indexOf('<ClubFinder'), 'finder renders after the Today zone').toBeGreaterThan(HOME.indexOf('className="daily-zone"'));
     expect(HOME, 'no Club Quiz tile — the finder is the club entry').not.toMatch(/key:"clubquiz"/);
-    expect(HOME, 'chips are grey at rest').toMatch(/cf-abbr cf-abbr-quiet/);
+    expect(HOME, 'chips wear club colour (Alex 2026-09-06)').toMatch(/className="cf-abbr" style=\{\{ background: clubPacks\[k\]\.color/);
     const cta = CSS.match(/\n\.t7s-cta\{[^}]*\}/)?.[0] || '';
     expect(cta, 'Play is green on every row, like the website').toContain('background:var(--accent)');
     expect(CSS, 'inactive tabs are not dimmed by opacity').not.toMatch(/\.tab-item\{[^}]*opacity:0\.6/);

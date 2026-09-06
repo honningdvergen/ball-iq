@@ -88,10 +88,10 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
       <div className="cf-chips" aria-label="Most played clubs">
         {FEATURED_CLUB_KEYS.filter((k) => clubPacks[k]).map((k) => (
           <button key={k} type="button" className="cf-chip" onClick={() => onPickClub(k)}>
-            {/* Grey at rest: three full-saturation club reds were the most
-                saturated pixels on the home and outranked the product's own
-                hierarchy. Colour returns on the result row and the club screen. */}
-            <span className="cf-abbr cf-abbr-quiet">{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
+            {/* Club colour on the badge (Alex, 2026-09-06: "should we not add
+                color to the clubs?") — the finder sits below Today now, so the
+                reds no longer compete with the first Play. */}
+            <span className="cf-abbr" style={{ background: clubPacks[k].color || "var(--s2)", color: abbrInk(clubPacks[k].color) }}>{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
             <span className="cf-chip-name">{clubPacks[k].name}</span>
           </button>
         ))}
@@ -292,8 +292,11 @@ function HomeScreenImpl({
                 and the name is set on Profile, where the card is. */}
             <div style={{display:"flex", alignItems:"center", gap:10}}>
               <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:3, flex:1, minWidth:0}}>
+                {/* The app's own mark — the ball the website header wears — not
+                    Footle's F (Alex, 2026-09-06: "it is the footle logo and ball iq
+                    for what exactly?"). One brand, one mark, on both surfaces. */}
                 <div className="hg-wordmark" style={{display:"flex", alignItems:"center", gap:8}}>
-                  <span className="fh-tile fh-tile-green" style={{"--fh-tile":"26px", borderRadius:7}} aria-hidden="true">F</span>
+                  <img src="/marketing/ball.png" alt="" width={26} height={26} aria-hidden="true" style={{width:26, height:26, borderRadius:7, display:"block"}} />
                   <span style={{fontSize:17, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1}}>{APP_NAME}</span>
                 </div>
                 <div className="hg-greet" style={{fontSize:13, color:"var(--t2)", fontWeight:500, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>
