@@ -85,8 +85,19 @@ export function yearsReferenced(text) {
 }
 
 export function isModernEra(q, minYear = DAILY_MIN_ERA) {
-  const years = yearsReferenced(`${q.q || ""} ${(q.o || []).join(" ")}`);
-  return years.length === 0 || Math.max(...years) >= minYear;
+  // ⚠️ THE ANSWER'S ERA, not the newest option's. "Roma's first Scudetto — which
+  // season?" carried 1951-52 as a distractor, so the max-of-everything rule
+  // read it as modern and it led today's Daily 7 (review 2026-09-06, B7). The
+  // stem + the correct option decide; the distractors are a second veto (a
+  // 1930s/1870s/1910s/1890s set is pre-era whatever the stem says). A
+  // question with no year anywhere still passes — that class needs a bank
+  // flag, not a regex.
+  const opts = Array.isArray(q.o) ? q.o : [];
+  const answer = Number.isInteger(q.a) && opts[q.a] != null ? String(opts[q.a]) : "";
+  const core = yearsReferenced(`${q.q || ""} ${answer}`);
+  if (core.length > 0 && Math.max(...core) < minYear) return false;
+  const all = yearsReferenced(`${q.q || ""} ${opts.join(" ")}`);
+  return all.length === 0 || Math.max(...all) >= minYear;
 }
 
 // ── THE FROZEN DAILY LOG ─────────────────────────────────────────────────────
