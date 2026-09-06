@@ -8408,6 +8408,7 @@ function AppInner() {
           <div className="tab-pane" style={tab === "home" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="home">
             <HomeScreen
+              showSettings={!isWebBrowser}
               profile={profile}
               loginStreak={loginStreak}
               streakPulsing={streakPulsing}

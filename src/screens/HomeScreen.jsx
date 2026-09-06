@@ -121,6 +121,9 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
 // and Daily). All other state + handlers come in as props — HomeScreen
 // is a presentational orchestrator, not a state owner.
 function HomeScreenImpl({
+  // False when the web app bar is on screen — it carries its own gear, and two
+  // routes to Settings, stacked, is the clutter the wordmark used to hide.
+  showSettings = true,
   profile,
   loginStreak,
   streakPulsing,
@@ -284,24 +287,27 @@ function HomeScreenImpl({
         const todayLabel = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
         return (
           <div className="hg-block" style={{padding:"6px 0 8px"}}>
-            {/* HEADER ANCHOR (critique 2026-09-06, P1 #1): the app opened on a
-                13.5px grey greeting, an underlined 12px "Set your name" and a
-                44pt gear — the heaviest object in the header was Settings.
-                Now the brand mark + wordmark lead, the second line is the date
-                (or the greeting with a real name — "Good ebening, Alex" stays),
-                and the name is set on Profile, where the card is. */}
+            {/* ⚠️ NO LOGO, NO WORDMARK. Alex, 2026-09-06: "why have ball iq app
+                and logo top left here? does not make sense". He is right, and it
+                is the same note he gave about the F mark a week earlier: inside
+                the app nobody needs telling which app they are in. The website
+                header carries the brand, because a visitor arrives there from a
+                search result and needs to know where they landed; a player on
+                the Home tab already knows, and the mark was spending the most
+                valuable strip on screen to tell them.
+
+                What earns the space is what changes: the day (this is a daily
+                app — the date says which puzzles these are), then the streak,
+                then the way out to Settings. A real name still gets the
+                greeting, with the date kept underneath it rather than lost. */}
             <div style={{display:"flex", alignItems:"center", gap:10}}>
-              <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:3, flex:1, minWidth:0}}>
-                {/* The app's own mark — the ball the website header wears — not
-                    Footle's F (Alex, 2026-09-06: "it is the footle logo and ball iq
-                    for what exactly?"). One brand, one mark, on both surfaces. */}
-                <div className="hg-wordmark" style={{display:"flex", alignItems:"center", gap:8}}>
-                  <img src="/marketing/ball.png" alt="" width={26} height={26} aria-hidden="true" style={{width:26, height:26, borderRadius:7, display:"block"}} />
-                  <span style={{fontSize:17, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1}}>{APP_NAME}</span>
-                </div>
-                <div className="hg-greet" style={{fontSize:13, color:"var(--t2)", fontWeight:500, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>
+              <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:2, flex:1, minWidth:0}}>
+                <div className="hg-greet" style={{fontSize:17, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1.15, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>
                   {homeDisplayName ? `${greeting} ${homeDisplayName}` : todayLabel}
                 </div>
+                {homeDisplayName && (
+                  <div className="hg-date" style={{fontSize:13, color:"var(--t2)", fontWeight:500, lineHeight:1.2}}>{todayLabel}</div>
+                )}
               </div>
               {loginStreak > 0 && (
                 <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
@@ -319,7 +325,9 @@ function HomeScreenImpl({
               )}
               {/* 1.1: settings gear inline with the greeting (the shared header
                   row is hidden on Home) — one tidy top row, no dead space. */}
-              <button onClick={() => setScreen("settings")} className="icon-btn hdr-ic" aria-label="Settings" style={{flexShrink:0}}><Settings size={18} strokeWidth={2.25} aria-hidden="true" /></button>
+              {showSettings && (
+                <button onClick={() => setScreen("settings")} className="icon-btn hdr-ic" aria-label="Settings" style={{flexShrink:0}}><Settings size={18} strokeWidth={2.25} aria-hidden="true" /></button>
+              )}
             </div>
           </div>
         );
