@@ -98,6 +98,12 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(PROFILE).toMatch(/className="todays-seven-secondary mp-row" role="group" aria-label="Save your progress"/);
   });
 
+  it('a rating needs answered questions, not just a game (no 64 · Silver after one Footle)', () => {
+    const PROFILE = read('../../src/screens/ProfileScreen.jsx');
+    expect((PROFILE.match(/const hasPlayed = \(stats\?\.totalAnswered \|\| 0\) > 0;/g) || []).length).toBe(3);
+    expect(PROFILE).not.toMatch(/const hasPlayed = \(stats\?\.gamesPlayed \|\| 0\) > 0/);
+  });
+
   it('the migration follows the house rules', () => {
     expect(MIG).toMatch(/enable row level security/);
     expect(MIG).toMatch(/revoke all on table public\.daily_results from anon, authenticated, public/);

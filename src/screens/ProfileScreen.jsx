@@ -1463,7 +1463,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc);
           const tierLabel = tierPalette(card.tier).label;
-          const hasPlayed = (stats?.gamesPlayed || 0) > 0 || (stats?.totalAnswered || 0) > 0;
+          const hasPlayed = (stats?.totalAnswered || 0) > 0; // a rating needs ANSWERED questions — a Footle solve alone is not one (2026-09-06)
           return (
             <div className="pd-rating">
               <div className="pd-rating-eyebrow">Ball IQ rating</div>
@@ -1514,7 +1514,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc);
-          const hasPlayed = (stats?.gamesPlayed || 0) > 0 || (stats?.totalAnswered || 0) > 0;
+          const hasPlayed = (stats?.totalAnswered || 0) > 0; // a rating needs ANSWERED questions — a Footle solve alone is not one (2026-09-06)
           // Green-highlight the single strongest PLAYED league (same "strongest"
           // the scouting report names); everything else reads white. Cold-start
           // (nothing played) → em-dashes, no highlight.
@@ -1629,7 +1629,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         // The single source of truth for "is there anything real to show here".
         // Same expression the empty state and the share/weekly buttons use, so the
         // whole screen agrees with itself — see the rating block below.
-        const hasPlayed = (stats?.gamesPlayed || 0) > 0;
+        // ⚠️ ANSWERED questions, not games. gamesPlayed counted a Footle solve, so
+        // the card printed "64 · Silver" from the 0.4 default accuracy after one
+        // puzzle and zero questions — the fabricated-rating bug the desktop rail
+        // fixed on 2026-08-28, still live here until 2026-09-06.
+        const hasPlayed = (stats?.totalAnswered || 0) > 0;
         const t = tierPalette(_card.tier);
         return (
           // ⚠️ ONE CARD, THREE SURFACES. The layout lives in
