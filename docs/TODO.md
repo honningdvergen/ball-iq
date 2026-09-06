@@ -1,3 +1,38 @@
+## 2026-09-06 (21:00) — ✅ FOUR DAY-0 DEFECTS FIXED · BASELINE FROZEN (3 of 5 numbers were WRONG) · NAV VERDICT IN — `.audit/baselines/2026-09-06-nav-and-activation.md`
+
+**The reminder was pointing at an empty room.** `onReminderTap` and the post-daily quiz exit both sent players to the Daily
+tab — correct until 2026-09-06, when the four daily rows moved to Home and the tab became History. Since then every reminder
+tap landed on a countdown, a streak strip and a table, with no control that starts a puzzle. The comment above the handler
+still read "the notification's whole point is 'play today's puzzles', so land the user on them" — true when written, quietly
+false three days later. Neither file was wrong alone; the invariant lives between them, which is why nothing caught it.
+`reminder-lands-on-play.test.js` pins it, and was confirmed to fail when the bug is put back.
+
+**Three more, all found by opening the app as a new player rather than by reading it.** (1) A third nav exists — `AppBar.jsx`,
+the web bar added 09-03 — and the Daily→History rename missed it, so web visitors pressed "Daily" and arrived on "History";
+`nav-label-parity.test.js` now holds all three navs in step and pins the one deliberate divergence (the web bar says "Play",
+because on the web the site header is the home). (2) Mobile's "RECENT DAYS" header rendered over exactly one row — today, four
+dashes — because `showCount` derives from the player's own first play; desktop has had the empty state all along.
+(3) The streak strip showed "0 day streak" over 14 dim squares to the 40-48% who never play, on the one tab with nothing to
+play. ⚠️ I gated mobile and left the desktop rail card ungated, breaking the card's own promise that the two "never disagree" —
+both now read one hoisted `hasFormHistory`. ⚠️ Renaming the label turned CI red: three e2e specs located the nav by the text
+"Daily", and `npm run build` runs vitest but NOT Playwright, so it was green locally and red on the runner.
+
+**⭐ THE BASELINE WAS WRONG IN THREE PLACES.** Measured before touching navigation: "18 of 95 packs" is **15**; "893 club
+completions across 66" was **every /quiz/ slug**, players and categories included — club-only is **719 across 53**, so the
+app-vs-web gap is ~9:1 not 11:1; "~7% day-1→day-2" is **15-21%**, two to three times higher. Confirmed: 80 in-app completions,
+and 40-48% of real accounts never play. ⚠️ `club_quiz_results` has **no robot gate at all** (its neighbour `bqev()` does) —
+a 46-row scripted burst at an exact 2.000s cadence had to be removed by hand; and two counters written by the same `finish()`
+disagree by 20-30% (589 vs 719), unreconciled.
+
+**NAV VERDICT (judge panel, 3 proposals):** Home · Clubs · **Online** · Profile — History dissolves into Home (countdown,
+gated strip, banners) and Profile (recent-days + archive, ABOVE the card). Steps 1 and 3 of its order are shipped; steps 4-6
+are the slot swap and are unstarted. ⚠️ Its load-bearing evidence was the 11x gap, now measured at 9:1 with the club/non-club
+conflation removed — the direction survives, the magnitude was overstated.
+
+**NEXT:** four heavy workflows in flight — first-session activation (the 40-48%), Eintracht Frankfurt forge, analytics
+integrity (the robot gate + the counter gap), and a two-source audit of all 37 hand-set club divisions (**Coventry City is
+stored as "Premier League" and Schalke 04 as "Bundesliga"** — both look wrong on sight). Then the nav slot swap.
+
 ## 2026-09-06 (20:00) — ✅ WATFORD + QPR LIVE (95 packs, 7,045 questions) · online tab + stadium picker reworked · Sheffield Wednesday was a season stale
 
 Picked up the other session's stranded 09-04 forge rather than starting a new one. Cost: 18 strong within-pack answer leaks
