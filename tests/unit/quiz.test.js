@@ -169,6 +169,22 @@ describe('isModernEra', () => {
     expect(isModernEra(q('Which club plays at Anfield?'))).toBe(true)
   })
 
+  it('the preEra bank flag catches what no regex can (review B7)', () => {
+    // The residual B7 left open. A question can be about a pre-1950 fact and
+    // contain no year anywhere — "Torino were co-founded by which Swiss
+    // businessman?" is 1906 — so every date rule here reads it as year-less and
+    // lets it into the shared Daily 7. That is not a pattern problem; nothing
+    // in the text distinguishes it from "Which club plays at Anfield?". Only a
+    // human marking the row can, which is what preEra is.
+    const torino = q('Torino were co-founded by which Swiss businessman?')
+    expect(isModernEra(torino), 'year-less and unflagged still passes, by design').toBe(true)
+    expect(isModernEra({ ...torino, preEra: true })).toBe(false)
+    // Only `true` counts — a truthy string or a stray 1 must not silently
+    // remove a question from every future daily.
+    expect(isModernEra({ ...torino, preEra: 'yes' })).toBe(true)
+    expect(isModernEra({ ...torino, preEra: 1 })).toBe(true)
+  })
+
   it('honours the boundary exactly', () => {
     expect(isModernEra(q('x', ['1949']))).toBe(false)
     expect(isModernEra(q('x', ['1950']))).toBe(true)

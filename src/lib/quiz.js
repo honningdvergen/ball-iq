@@ -90,8 +90,21 @@ export function isModernEra(q, minYear = DAILY_MIN_ERA) {
   // read it as modern and it led today's Daily 7 (review 2026-09-06, B7). The
   // stem + the correct option decide; the distractors are a second veto (a
   // 1930s/1870s/1910s/1890s set is pre-era whatever the stem says). A
-  // question with no year anywhere still passes — that class needs a bank
-  // flag, not a regex.
+  // question with no year anywhere is caught only by the `preEra` bank flag
+  // below — no regex can see it.
+  // THE BANK FLAG the comment above asked for. A question can be about a
+  // pre-era fact and contain no year at all — "Torino were co-founded by which
+  // Swiss businessman?" is 1906 and every regex here reads it as year-less,
+  // which is why it led a Daily 7 (review B7). No pattern can catch that class;
+  // only a human marking the question can. `preEra: true` means exactly "this
+  // is older than DAILY_MIN_ERA even though nothing in the text says so".
+  //
+  // ⚠️ IT CANNOT REPAIR THE PAST. The daily log is frozen and append-only by
+  // design (see below) — precisely so a bank edit can never rewrite a day
+  // somebody already played and shared. So flagging a question keeps it out of
+  // FUTURE draws and leaves the days it already led exactly as they were, which
+  // is the correct trade and not a shortfall of this fix.
+  if (q && q.preEra === true) return false;
   const opts = Array.isArray(q.o) ? q.o : [];
   const answer = Number.isInteger(q.a) && opts[q.a] != null ? String(opts[q.a]) : "";
   const core = yearsReferenced(`${q.q || ""} ${answer}`);
