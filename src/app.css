@@ -61,6 +61,13 @@
    while its chunk downloaded — which reads as a dead button, not as loading.
    Reduced-motion is already handled by the global killswitch at the top. */
 @keyframes biqSpin{to{transform:rotate(360deg);}}
+/* The startMode wait (startingQuiz in App.jsx). Delayed 260ms so a warm cache
+   never flashes it: the overlay mounts instantly but paints nothing until the
+   wait is long enough to read as a dead button. Sits above the app and below
+   nothing else — it is the whole screen while it is up. */
+@keyframes biqFadeInLate{from{opacity:0}to{opacity:1}}
+.starting-quiz{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;background:var(--bg);opacity:0;animation:biqFadeInLate 180ms ease 260ms forwards;}
+@media (prefers-reduced-motion: reduce){.starting-quiz{animation-duration:1ms;}}
 
 /* ── DARK THEME (default) ── */
 /* Dark-only app: tell the UA so the system keyboard, form controls,

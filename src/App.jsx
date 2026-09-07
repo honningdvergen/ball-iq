@@ -4829,6 +4829,12 @@ function AppInner() {
     return () => clearTimeout(t);
   }, [screenTitle]);
   const [questions, setQuestions] = useState([]);
+  // Set while startMode is awaiting its questions. The question bank is a lazy
+  // ~2.4 MB chunk and on a cold cache — or a Save-Data connection, where it is
+  // never prefetched — that await is seconds long with NOTHING rendered. Same
+  // defect the lazy game screens had before ScreenLoading: "reads as a dead
+  // button, not as loading", and this is the very first tap of a fresh install.
+  const [startingQuiz, setStartingQuiz] = useState(false);
   const [result, setResult] = useState(null);
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [dailyReviewState, setDailyReviewState] = useState(null);
@@ -6055,6 +6061,7 @@ function AppInner() {
         showToast(`📅 Already done today — ${dailyScore}/7, come back tomorrow`);
         return;
       }
+      setStartingQuiz(true);
       let qs = [];
       // ⚠️ diff:"hard" MEANS THE FULL RANGE, not hard-only (see getQs: it is a
       // ceiling, not a floor). Survival, Legends and Hot Streak used to pass the
@@ -6141,6 +6148,11 @@ function AppInner() {
       try {
         Sentry.captureException(err, { tags: { area: 'startMode', mode: m } });
       } catch {}
+    } finally {
+      // finally, not the happy path: every early return above this point
+      // happens BEFORE the flag is raised, but a throw after it must not
+      // leave the overlay stuck over a Home screen the player can still see.
+      setStartingQuiz(false);
     }
   }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, cat, showToast]);
   startModeRef.current = startMode;
@@ -8025,6 +8037,16 @@ function AppInner() {
             phrase is read rather than the diff. */}
         <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{srScreenMsg}</div>
         <div className="sbar" />
+
+        {/* The first Play tap of a fresh install waits on a ~2.4 MB question
+            chunk. The overlay fades in AFTER 260ms (CSS animation-delay), so a
+            warm cache — the overwhelming majority of taps — never flashes it,
+            and only a wait long enough to read as broken ever shows anything. */}
+        {startingQuiz && (
+          <div className="starting-quiz" role="status" aria-live="polite">
+            <ScreenLoading label="Getting your questions" />
+          </div>
+        )}
 
         {/* ── ONBOARDING — shown to first-time users only. Deep-link boots
             defer it (deferOnboarding) so the shared moment renders first;
