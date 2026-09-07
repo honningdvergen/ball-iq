@@ -240,7 +240,7 @@ export function renderQuizItems(rows, t = {}) {
 // labels here and, via data-i18n, everything the engine writes. English needs
 // no table — it is the engine's built-in default. A language's six generic
 // tiers replace the club's English ones unless the caller passes tiers.
-export function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', slug = '', color = '', play = `${SITE.base}/play`, daily = '', lang = '' }) {
+export function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', slug = '', kind = 'unknown', color = '', play = `${SITE.base}/play`, daily = '', lang = '' }) {
   const t = (lang && BQ_I18N[lang]) || {};
   if (t.tiers && (!tiers || tiers === DEFAULT_TIERS)) tiers = t.tiers;
   const items = renderQuizItems(rows, t);
@@ -262,7 +262,7 @@ export function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', 
         .map((n, i) => `<button type="button" data-n="${n}" aria-pressed="${i === 0 ? 'true' : 'false'}">${esc(n === rows.length ? (t.fullSet || 'Full set') : n === 10 ? (t.quick ? t.quick.replace('{n}', '10') : '10 Quick') : (t.standard ? t.standard.replace('{n}', String(n)) : `${n} Standard`))}</button>`)
         .join('')}</div>`
     : '';
-  return `<section class="bq" id="quiz" data-total="${rows.length}"${daily ? ` data-daily="${daily}"` : ''} data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}" data-slug="${esc(slug)}" data-color="${esc(color)}"${lang && t.question ? ` data-lang="${esc(lang)}" data-i18n="${esc(JSON.stringify(t))}"` : ''}>
+  return `<section class="bq" id="quiz" data-total="${rows.length}"${daily ? ` data-daily="${daily}"` : ''} data-name="${esc(name)}" data-tiers="${esc(tiers.join('|'))}" data-store="${SITE.getApp}" data-play="${play}" data-more="${more}" data-badge="${esc(badge)}" data-slug="${esc(slug)}" data-kind="${esc(kind)}" data-color="${esc(color)}"${lang && t.question ? ` data-lang="${esc(lang)}" data-i18n="${esc(JSON.stringify(t))}"` : ''}>
 <div class="bq-head"><p class="bq-daily" hidden><span class="bq-dot" aria-hidden="true"></span><span class="bq-dtx"></span></p>
 <div class="bq-card">
 <div class="bq-top"><div class="bq-meter" aria-hidden="true"></div><span class="bq-streak" hidden></span></div>

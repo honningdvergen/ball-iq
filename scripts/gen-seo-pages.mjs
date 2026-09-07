@@ -1872,7 +1872,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), slug: catCfg.slug, play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
+  }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), slug: catCfg.slug, kind: 'category', play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
 ${renderCovers(catCfg.name, true, false, deepPlay)}
 ${appCtaBand(catCfg.name)}
 ${adSlot('afterQA')}
@@ -2014,7 +2014,7 @@ function buildClubPageIntl(cfg, siblings = []) {
   const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(c.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(c.tasterH)}</h2>
-${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, badge: clubBadge, slug: cfg.slug, color: CLUB_COLOR[cfg.slug] || '', lang: cfg.lang })}
+${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, badge: clubBadge, slug: cfg.slug, kind: 'club', color: CLUB_COLOR[cfg.slug] || '', lang: cfg.lang })}
 </section>`;
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates })}
@@ -2338,7 +2338,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, slug: cfg.slug, color: CLUB_COLOR[cfg.slug] || '', play: `${SITE.base}/play?club=${cfg.slug}` }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, slug: cfg.slug, kind: 'club', color: CLUB_COLOR[cfg.slug] || '', play: `${SITE.base}/play?club=${cfg.slug}` }))}
 ${adSlot('afterQA')}
 ${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts every
      club page at 13-29% scroll depth while /play reaches 95% and the /lists
@@ -2485,7 +2485,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), slug: cfg.slug }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), slug: cfg.slug, kind: 'player' }))}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
@@ -3456,7 +3456,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), badge: deriveBadge(cfg.name), slug: cfg.slug }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), badge: deriveBadge(cfg.name), slug: cfg.slug, kind: 'nation' }))}
 ${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">

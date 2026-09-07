@@ -230,13 +230,30 @@ var BQ_PK='__BQ_PUBLISHABLE_KEY__';
    volume-only and have no notion of a robot. */
 function logRound(score,rows,rnds){try{
 if(bqSynthetic())return;
-var seg=location.pathname.split('/').filter(Boolean);
-if(seg[0]!=='quiz'||!seg[1])return;
+/* ⚠️ READ WHAT THE PAGE DECLARES, DO NOT PARSE ITS PATH (v2_0, 2026-09-07).
+   The old gate was seg[0]!=='quiz'||!seg[1], and it had two faults at once.
+   It let in five different page classes under one column — the club column was really
+   "page slug", so clubs, players, nations and categories all filed as if they
+   were clubs, and "893 club completions across 66 packs" was every /quiz/ slug
+   rather than the 719 across 53 that are actually clubs.
+   And it silently excluded the whole localised layer: /es/quiz/river-plate/
+   has seg[0]==='es', so it returned before the fetch and no localised club
+   play has EVER reached this table — while bqev tagged the same finish
+   surface:'club-page'. /es/ River Plate is measured at 134 clicks against 8
+   for its English twin.
+   Reading data-slug also excludes the right pages for free: /lists/, the
+   /football-quiz/ hub and the this-week pages render this widget with no slug,
+   so they return here and do not start writing. */
+var r=document.querySelector('[data-slug]');
+var s=r&&r.getAttribute('data-slug');
+if(!s)return;
+var k=r.getAttribute('data-kind')||'unknown';
+var lg=(document.documentElement.getAttribute('lang')||'en').slice(0,2);
 var b={easy:[0,0],medium:[0,0],hard:[0,0]},i,d;
 for(i=0;i<rows.length;i++){d=String(rows[i].el.getAttribute('data-diff')||'medium').toLowerCase();if(!b[d])d='medium';b[d][1]++;if(rows[i].got===1)b[d][0]++}
 fetch(BQ_SB+'/rest/v1/rpc/log_club_quiz',{method:'POST',keepalive:true,
 headers:{'content-type':'application/json','apikey':BQ_PK,'authorization':'Bearer '+BQ_PK},
-body:JSON.stringify({p_club:seg[1],p_total:rows.length,p_correct:score,p_rounds:rnds,
+body:JSON.stringify({p_club:s,p_kind:k,p_lang:lg,p_total:rows.length,p_correct:score,p_rounds:rnds,
 p_easy_c:b.easy[0],p_easy_t:b.easy[1],p_med_c:b.medium[0],p_med_t:b.medium[1],
 p_hard_c:b.hard[0],p_hard_t:b.hard[1]})}).catch(function(){})
 }catch(e){}}
