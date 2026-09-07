@@ -47,7 +47,8 @@ a product decision, not an oversight); extend the gesture gate to `finish()` as 
 caught the 08-29 burst and does not catch CDP-driven Chrome).
 ✅ Closed: `logRound()` and `record_challenge_event` both gated. The 719-vs-589 gap is EXPLAINED (an 8-day birthday
 offset, not a leak) and recorded in `.audit/baselines/2026-09-06-nav-and-activation.md`.
-⬜ **`first-game-started` FIRES ON RENDER, NOT INPUT** — the biggest one. `playing` is true from the boot router alone,
+✅ **`first-game-started` FIRED ON RENDER — FIXED 2026-09-07** (renamed to `first-game-reached`, honest `first-game-played` added, `acct-first-play` split the same way). Old rows keep the old name and stay correct as arrivals.
+⬜ ~~superseded note~~ — the original finding, kept for context: `playing` is true from the boot router alone,
 so `/footle`, `?game=footle` and every share-link landing count as a started game. Its denominator is LANDINGS, not
 plays — which means the "1,045 devices started, 53 finished, 5%" figure the whole 1.8 in-game-leak framing rests on is
 not a rate. Re-derive before any decision cites it again.
@@ -78,14 +79,16 @@ even that needs re-reading. Direction survives, magnitude was overstated.
 ✅ Closed: the consent bar covering BOTH pre-boot onboarding buttons on a cold start (`public/consent.js` now yields to
 `#preboot-onboard` by computed display; ⚠️ `offsetParent` is null for position:fixed and cannot be used for this), and
 the History empty state telling a player who just played to "Play today".
-⬜ **No loading state on the first Play tap.** `src/App.jsx:6044` renders nothing while the question-bank chunk is
+✅ **No loading state on the first Play tap — FIXED 2026-09-07** (`startingQuiz` + `ScreenLoading`, faded in late so a fast load shows nothing).
+⬜ ~~superseded~~ original: `src/App.jsx:6044` renders nothing while the question-bank chunk is
 fetched and parsed, and on a Save-Data / 2G-3G connection that chunk is never prefetched — so the first Play of a fresh
 install is a visually dead tap for seconds, at the exact moment after onboarding.
 (the two below were already listed; the ranked PLAN agent died on the usage limit and was never produced)
 ⬜ **The front door sends Daily 7 into the app shell** — `FrontDoor.jsx:164` uses `/play?game=daily` (512 KB GameRoot +
 a 2.4 MB question chunk) while the SAME page links the same game to `/daily-football-quiz/`, an instant served page that
 writes the identical `biq_daily_<date>` key. Footle, Trail and Mystery all already point at served pages. Unfinished cut.
-⬜ **Onboarding's green "Start playing" does not start playing** — `OnboardingScreen.jsx:132`: unless the optional trivia
+✅ **Onboarding's "Start playing" now starts playing — FIXED 2026-09-07** (`persistAndFinish(true)`, and the preboot replay honours the recorded intent).
+⬜ ~~superseded~~ original: — `OnboardingScreen.jsx:132`: unless the optional trivia
 sample was answered, it dismisses to the menu, identically to "Skip". The label is only ever shown on the code path that
 cannot start a game.
 ⬜ The workflow's ranked plan was never produced — re-run it (`resumeFromRunId`) or write it by hand.
