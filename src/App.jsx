@@ -23,7 +23,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { conflictsWith } from './questionConflicts.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, UserRoundSearch, CircleX, CircleHelp, Pencil, Moon, BrickWall, Flag, Handshake } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, UserRoundSearch, CircleX, CircleHelp, Pencil, Moon, BrickWall, Flag, Handshake, Smartphone } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, mpLookupRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
@@ -8646,72 +8646,73 @@ function AppInner() {
         {/* Never over a live game (review 2026-09-06, A1): the gate waits until
             the player is back on a tab, where the invite is the only thing. */}
         {pendingJoinCode && (!user || isGuest) && !playing && (
-          <div
-            style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1100,display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeIn 0.2s ease"}}
-            onClick={clearPendingJoin}
-          >
+          /* THE HOUSE SHEET, not a hand-rolled box (review C13). This was the
+             last centred modal with its own overlay, its own radius and four
+             stacked buttons of near-equal weight, all in inline styles. The
+             quit confirm and the report sheet already share .modal-overlay /
+             .modal-box / .modal-head / .modal-btns; this is the third. The
+             2026-09-06 status line claimed there was nothing to convert here
+             because the "join modal" was the inline Online-tab field -- that
+             was wrong, this is a real modal and it was never touched. */
+          <div className="modal-overlay" onClick={clearPendingJoin}>
             <div
               ref={joinGateRef}
               tabIndex={-1}
               onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"
-              style={{width:"100%",maxWidth:360,background:"var(--bg)",border:"1px solid var(--border)",borderRadius:18,padding:"26px 22px",textAlign:"center"}}
+              aria-label="Join the game"
+              className="modal-box"
             >
-              {/* Gamepad2 was ALREADY imported in this file while this modal
-                  rendered the emoji version of the same idea. */}
-              <div aria-hidden="true" style={{width:56,height:56,borderRadius:16,margin:"0 auto 12px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
-                <Gamepad2 size={26} strokeWidth={2.25} color="#58CC02" />
+              <div className="modal-grab" aria-hidden="true" />
+              <div className="modal-head">
+                <div aria-hidden="true" style={{width:52,height:52,borderRadius:15,margin:"0 auto 4px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
+                  <Gamepad2 size={24} strokeWidth={2.25} color="#58CC02" />
+                </div>
+                <div className="modal-title">Join the game</div>
+                <div className="modal-body">
+                  Your friend&rsquo;s code <strong style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",color:"var(--accent)"}}>{pendingJoinCode}</strong> is ready. We&rsquo;ll drop you straight into the room.
+                </div>
               </div>
-              <div style={{fontSize:18,fontWeight:900,color:"var(--t1)",marginBottom:6}}>Join the game</div>
-              <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>Your friend's invite code <strong style={{color:"var(--accent)",fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace"}}>{pendingJoinCode}</strong> is ready. We'll drop you straight into the room as soon as you're signed in.</div>
-              {/* Social in-app webviews (Snapchat/IG/Threads) are a separate,
-                  always-logged-out browser AND swallow Universal Links — so
-                  users who ARE logged into the installed app hit this gate
-                  (task #22, Alex repro 2026-07-17). Custom schemes DO escape
-                  those webviews. The scheme URL keeps `balliq.app` as its
-                  hostname because the live binary's appUrlOpen parser
-                  (tryCapture) hostname-checks before extracting the code —
-                  this exact shape deep-links code-intact on build 43+ with
-                  no native change. Silent no-op if the app isn't installed,
-                  so the sign-in path below stays available. */}
-              {IS_IOS_WEB && (
+              <div className="modal-btns">
+                {/* Social in-app webviews (Snapchat/IG/Threads) are a separate,
+                    always-logged-out browser AND swallow Universal Links — so
+                    users who ARE logged into the installed app hit this gate
+                    (task #22, Alex repro 2026-07-17). Custom schemes DO escape
+                    those webviews. The scheme URL keeps `balliq.app` as its
+                    hostname because the live binary's appUrlOpen parser
+                    (tryCapture) hostname-checks before extracting the code.
+                    Silent no-op if the app isn't installed, so the sign-in
+                    path below stays available. The 📲 that led this button is
+                    gone — an emoji standing in for an icon (review C8). */}
+                {IS_IOS_WEB && (
+                  <button type="button" className="btn-3d modal-btn" onClick={() => { try { window.location.href = `app.balliq://balliq.app/join/${pendingJoinCode}`; } catch {} }}>
+                    <Smartphone size={16} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-3px",marginRight:6}} />
+                    Got the app? Open it there
+                  </button>
+                )}
+                {/* v1.6 guest entry — the invite loop's biggest leak was this
+                    modal demanding an account. Anonymous sign-in drops the
+                    friend straight into the room; primary everywhere except
+                    iOS web, where "open the app" keeps top billing (the app
+                    user is already signed in there). */}
                 <button
-                  onClick={() => { try { window.location.href = `app.balliq://balliq.app/join/${pendingJoinCode}`; } catch {} }}
-                  style={{width:"100%",padding:14,background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8}}
+                  type="button"
+                  className={IS_IOS_WEB ? "btn-3d ghost modal-btn" : "btn-3d modal-btn"}
+                  onClick={handleGuestJoin}
+                  disabled={guestJoining}
+                  style={guestJoining ? {opacity:0.6} : undefined}
                 >
-                  📲 Got the app? Open it there
+                  {guestJoining ? "Joining…" : <><Zap size={16} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-3px",marginRight:6}} />Play as guest</>}
                 </button>
-              )}
-              {/* v1.6 guest entry — the invite loop's biggest leak was this
-                  modal demanding an account. Anonymous sign-in drops the
-                  friend straight into the room; primary everywhere except
-                  iOS web, where "open the app" keeps top billing (the app
-                  user is already signed in there). */}
-              <button
-                onClick={handleGuestJoin}
-                disabled={guestJoining}
-                style={IS_IOS_WEB
-                  ? {width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:14,fontWeight:700,cursor:"pointer",marginBottom:8,opacity:guestJoining?0.6:1}
-                  : {width:"100%",padding:14,background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00",marginBottom:8,opacity:guestJoining?0.6:1}}
-              >
-                {guestJoining ? "Joining…" : <><Zap size={16} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-3px",marginRight:6}} />Play as guest</>}
-              </button>
-              {guestJoinError && (
-                <div role="alert" style={{fontSize:12,color:"var(--red)",lineHeight:1.4,marginBottom:8}}>{guestJoinError}</div>
-              )}
-              <button
-                onClick={() => { try { openAuthPrompt?.('online'); } catch {} }}
-                style={{width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:14,fontWeight:600,cursor:"pointer",marginBottom:8}}
-              >
-                Sign up or sign in
-              </button>
-              <button
-                onClick={clearPendingJoin}
-                style={{width:"100%",padding:12,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:14,fontWeight:600,cursor:"pointer"}}
-              >
-                Not now
-              </button>
+                {guestJoinError && (
+                  <div role="alert" style={{fontSize:12,color:"var(--red)",lineHeight:1.4,textAlign:"center",padding:"2px 8px"}}>{guestJoinError}</div>
+                )}
+                <button type="button" className="btn-3d ghost modal-btn" onClick={() => { try { openAuthPrompt?.('online'); } catch {} }}>
+                  Sign up or sign in
+                </button>
+                <button type="button" className="modal-btn modal-quiet" onClick={clearPendingJoin}>Not now</button>
+              </div>
             </div>
           </div>
         )}

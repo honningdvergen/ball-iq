@@ -152,7 +152,15 @@ describe('icons are icons, not emoji', () => {
     // results panel (components/DailyDone.jsx) as a Lucide bell on a real button.
     const dd = readFileSync(`${SRC}/components/DailyDone.jsx`, 'utf8');
     expect(dd, 'the Remind me control needs its bell').toMatch(/<Bell size=\{14\}/);
-    expect(app, 'the join modal needs its gamepad').toMatch(/<Gamepad2 size=\{26\}/);
+    // Pins that it IS an icon, not what size it is. The size changed from 26
+    // to 24 when the modal became the house sheet (review C13) and a pixel
+    // value has nothing to do with the rule this file exists to enforce.
+    expect(app, 'the join modal needs its gamepad').toMatch(/<Gamepad2 size=\{\d+\}/);
+    // And the 📲 that led its iOS-web button is gone the same way. Comments are
+    // stripped first: three of them now DESCRIBE the emoji that was removed,
+    // and a bare source scan reads those as the defect still being present.
+    const appCode = app.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/[^\n]*/g, '$1');
+    expect(appCode, 'no phone emoji standing in for an icon').not.toMatch(/📲/);
     expect(home, 'the Home settings button needs its gear').toMatch(/<Settings size=\{18\}/);
     // The name CTA left Home on 2026-09-06 (header anchor); Profile owns it.
     const profile = readFileSync(`${SRC}/screens/ProfileScreen.jsx`, 'utf8');
