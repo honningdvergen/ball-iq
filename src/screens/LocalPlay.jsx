@@ -4,7 +4,7 @@
 // seam the lazy screens already use; every screen here takes its state as
 // props and reaches into nothing else.
 import { useState, useEffect } from "react";
-import { Timer, Zap, Flame, Handshake, Home, Share, Trophy } from "lucide-react";
+import { Timer, Zap, Flame, Handshake, Home, Share, Trophy, Skull } from "lucide-react";
 import { TopicPickerSheet, topicMeta, CLUB_PACK_TO_QB, CAT_LABELS, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { loadQuestions } from "../questions-loader.js";
@@ -591,19 +591,23 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
   let ranked;
   let headline;
   let subHeadline = null;
-  let iconTop = "🏆";
+  // The other five branches below already resolve to Lucide or a PlayerMark;
+  // these three were the last raw glyphs in an icon slot (review C8).
+  let iconTop = <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
   if (isSurvival) {
     const survivors = players.filter(p => !elimList.includes(p.id));
     const elimRev = [...elimList].reverse().map(id => players.find(p => p.id === id)).filter(Boolean);
 
     if (endReason === "total-wipe" || (survivors.length === 0 && !winnerId)) {
-      iconTop = "💀";
+      iconTop = <Skull size={40} strokeWidth={2} aria-hidden="true" />;
       headline = "Nobody Survives!";
       subHeadline = "All players went out on the same question";
       ranked = elimRev;
     } else if (endReason === "last-standing" || survivors.length === 1) {
       const winner = players.find(p => p.id === winnerId) || survivors[0];
-      iconTop = "🏆";
+      // The winner's own mark, as the Classic and Sprint branches already do —
+      // a generic trophy says less than the face of who won.
+      iconTop = winner ? <PlayerMark p={winner} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
       headline = winner ? `${winner.name} Survives!` : "Nobody Survives!";
       subHeadline = winner ? `${scores[winner.id] || 0} correct · last one standing` : null;
       ranked = winner ? [winner, ...elimRev.filter(p => p.id !== winner.id)] : elimRev;

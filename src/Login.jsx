@@ -92,7 +92,12 @@ const PROMPT_COPY = {
   // Same gate, same flow — it just answers the question that was asked.
   invite:      { title: 'Sign up to invite a friend', sub: 'Create a free account to open a room and send your mate the link — takes seconds.', hardGate: true, back: 'online' },
   friends:     { title: 'Sign up to add friends', sub: 'Create a free account to add friends, compare scores, and challenge them.', hardGate: true, back: 'online' },
-  leaderboard: { title: 'Sign up for leaderboards', sub: 'Create a free account to climb the leaderboard and save your progress across devices.' },
+  // ⚠️ SAY WHICH LEADERBOARD. The only one that exists is the friends
+  // mini-leaderboard on Profile (ProfileScreen.jsx:711), and it appears once
+  // you have an accepted friend — `leaderboard.length > 1`. "Leaderboards",
+  // plural and unqualified, reads as a global ranking the app has never had,
+  // and OnlineHubTab.jsx:72 records that a real one was deliberately deferred.
+  leaderboard: { title: 'Sign up to rank against your friends', sub: 'Create a free account to add friends, see who is top of your table, and keep your progress across devices.' },
   save:        { title: 'Save your progress', sub: 'Create a free account so your XP, stats, and streak follow you to any device — and we can nudge you when tomorrow\u2019s puzzles drop.' },
   // v1.6 guest entry — anonymous (invite-link) players upgrading in place.
   upgrade:     { title: 'Save your progress', sub: 'Add an email and password to keep your stats, XP and games — everything you played as a guest comes with you, and we can nudge you when tomorrow\u2019s puzzles drop.' },
@@ -269,7 +274,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
 
   const isSignup = mode === 'signup'
   const heroTitle = prompt ? prompt.title : 'How good is your Ball IQ?'
-  const heroSub = prompt ? prompt.sub : 'Save your streak, climb the leaderboards and take anyone on in online 1v1.'
+  const heroSub = prompt ? prompt.sub : 'Save your streak, top your friends\u2019 table and take anyone on in online 1v1.'
   const emailBusy = loading || !email || !password
 
   const S = {

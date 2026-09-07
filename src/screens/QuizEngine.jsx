@@ -882,58 +882,69 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
           <div>{q.hint}</div>
         </div>
       )}
-      {answered && onReport && (() => {
-        const rkey = q?._histKey || (q?.id != null ? String(q.id) : q?.q);
-        return (
-          <ReportButton
-            // ⚠️ key is load-bearing. This element keeps its position in the
-            // tree while `q` changes, so without it question 2 would inherit
-            // question 1's "reported" state. The old code needed a keyed Set
-            // for exactly this reason; remounting per question is simpler and
-            // cannot go stale.
-            key={rkey}
-            onReport={onReport}
-            idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" /> Report a problem</>}
-            idleColor="var(--t3)"
-            // A thunk, so picked/correct are read at press time rather than
-            // recomputed on every render of the question.
-            info={() => {
-              const picked = isTF
-                ? (selected === 1 ? "True" : selected === 0 ? "False" : null)
-                : (typeof selected === "number" && Array.isArray(q?.o) ? q.o[selected] : null);
-              const correct = isTF
-                ? ((q?.a === true || q?.a === 1) ? "True" : "False")
-                : (Array.isArray(q?.o) && typeof q?.a === "number" ? q.o[q.a] : (q?.typed_a || null));
-              return { id: q?.id, q: q?.q, picked, correct, mode };
-            }}
-            // Was 12px var(--t3) — our DIMMEST token — borderless, on a screen
-            // that auto-advances. Zero reports were ever filed. A control the
-            // player cannot find is the same as no control, and playtesters have
-            // a far better hit rate on real question defects than any audit we
-            // run, so this is the highest-value thing on the screen after the
-            // answer itself. Now t2 on a bordered chip at 13px, and a 44px min
-            // height so it clears the touch-target floor.
-            // ⚠️ Demoted 2026-08-23. A bordered chip sitting directly beneath
-            // the primary CTA gave a RARE action the second-most prominent
-            // position on the busiest screen in the app, competing with Next
-            // for the same downward glance. It is a safety valve, not a step
-            // in the flow. Now plain text at --t3: still a 44px tap target,
-            // still perfectly findable by someone who wants it, no longer
-            // shouting at everyone who does not.
-            style={{
-              display:"block", margin:"16px auto 0", padding:"12px 14px", minHeight:44,
-              background:"transparent", border:"none", borderRadius:10,
-              fontSize:12.5, fontWeight:600,
-            }}
-          />
-        );
-      })()}
-      {/* Sticky FOOTER, not a sticky button (review 2026-09-06, A3/A4): the
-          pinned button used to sit flat over the last "Why?" box, and "Report a
-          problem" sat under it where mis-taps landed. The footer fades what it
-          covers, and the report link now precedes it in flow. */}
+      {/* THE REPORT LINK LIVES IN THE FOOTER (review A4, 2026-09-07).
+          It used to precede the footer in flow, which read correctly in source
+          and failed on screen: measured at 375x812 on a real Classic question,
+          the link sat at y741-785 while the pinned footer occupied 722-812, so
+          document.elementFromPoint at the link's own centre returned
+          .next-btn-primary. Tapping the visible "Report a problem" advanced the
+          question instead — you lost your place rather than reporting. They
+          were sharing one band, so no z-index or pointer-events change could
+          separate them; only not overlapping does.
+          It is a distinct quiet ROW above the primary now, not a target beneath
+          it, which is what A4 asked for in the first place. */}
       {answered && showNext && (
         <div className="q-sticky-foot">
+        {answered && onReport && (() => {
+          const rkey = q?._histKey || (q?.id != null ? String(q.id) : q?.q);
+          return (
+            <ReportButton
+              // ⚠️ key is load-bearing. This element keeps its position in the
+              // tree while `q` changes, so without it question 2 would inherit
+              // question 1's "reported" state. The old code needed a keyed Set
+              // for exactly this reason; remounting per question is simpler and
+              // cannot go stale.
+              key={rkey}
+              onReport={onReport}
+              idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" /> Report a problem</>}
+              idleColor="var(--t3)"
+              // A thunk, so picked/correct are read at press time rather than
+              // recomputed on every render of the question.
+              info={() => {
+                const picked = isTF
+                  ? (selected === 1 ? "True" : selected === 0 ? "False" : null)
+                  : (typeof selected === "number" && Array.isArray(q?.o) ? q.o[selected] : null);
+                const correct = isTF
+                  ? ((q?.a === true || q?.a === 1) ? "True" : "False")
+                  : (Array.isArray(q?.o) && typeof q?.a === "number" ? q.o[q.a] : (q?.typed_a || null));
+                return { id: q?.id, q: q?.q, picked, correct, mode };
+              }}
+              // Was 12px var(--t3) — our DIMMEST token — borderless, on a screen
+              // that auto-advances. Zero reports were ever filed. A control the
+              // player cannot find is the same as no control, and playtesters have
+              // a far better hit rate on real question defects than any audit we
+              // run, so this is the highest-value thing on the screen after the
+              // answer itself. Now t2 on a bordered chip at 13px, and a 44px min
+              // height so it clears the touch-target floor.
+              // ⚠️ Demoted 2026-08-23. A bordered chip sitting directly beneath
+              // the primary CTA gave a RARE action the second-most prominent
+              // position on the busiest screen in the app, competing with Next
+              // for the same downward glance. It is a safety valve, not a step
+              // in the flow. Now plain text at --t3: still a 44px tap target,
+              // still perfectly findable by someone who wants it, no longer
+              // shouting at everyone who does not.
+              style={{
+                display:"block", margin:"16px auto 0", padding:"12px 14px", minHeight:44,
+                background:"transparent", border:"none", borderRadius:10,
+                fontSize:12.5, fontWeight:600,
+              }}
+            />
+          );
+        })()}
+        {/* Sticky FOOTER, not a sticky button (review 2026-09-06, A3/A4): the
+            pinned button used to sit flat over the last "Why?" box, and "Report a
+            problem" sat under it where mis-taps landed. The footer fades what it
+            covers, and the report link now precedes it in flow. */}
           <button
             className="next-btn-primary"
             onClick={() => doAdvance(showNext.ns, showNext.nb, showNext.correct)}

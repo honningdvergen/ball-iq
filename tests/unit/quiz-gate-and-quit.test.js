@@ -39,10 +39,19 @@ describe('timed quiz start + quit (2026-09-06)', () => {
     expect(CSS).toMatch(/\.next-btn-primary\{position:static/);
     // The flag is a Lucide <Flag/> now (review C: no glyphs as icons); the
     // label text is the stable anchor.
+    // ⚠️ The report link is INSIDE the footer since 2026-09-07, so "report
+    // precedes the footer in source" is no longer the requirement — and it
+    // never was the real one. It read correctly in source while overlapping
+    // the primary on screen: measured at 375x812, the link sat at y741-785
+    // under a footer occupying 722-812, and elementFromPoint at the link's
+    // centre returned .next-btn-primary. What matters is that report comes
+    // BEFORE the primary within the footer, which is what a player taps.
     const report = APP.indexOf('/> Report a problem</>}');
-    const next = APP.indexOf('className="q-sticky-foot"');
+    const primary = APP.indexOf('className="next-btn-primary"');
+    const foot = APP.indexOf('className="q-sticky-foot"');
     expect(report).toBeGreaterThan(-1);
-    expect(report).toBeLessThan(next);
+    expect(report, 'the report link is inside the footer').toBeGreaterThan(foot);
+    expect(report, 'and above the primary within it').toBeLessThan(primary);
   });
   it('no Classic difficulty picker: the tile starts the arc directly', () => {
     const HOME = read('../../src/screens/HomeScreen.jsx');
