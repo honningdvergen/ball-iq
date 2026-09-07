@@ -48,9 +48,8 @@ import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
 import { ResultsCloseBtn } from './components/ResultsCloseBtn.jsx';
 import { WrongAnswersReview } from './components/WrongAnswersReview.jsx';
-import { Results } from './screens/ResultsScreen.jsx';
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
-import { resultVerdict, HotStreakResults, TrueFalseResults } from './screens/ModeResults.jsx';
+import { resultVerdict } from './lib/resultVerdict.js';
 import { QuizEngine, TypedInput } from './screens/QuizEngine.jsx';
 import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
@@ -109,6 +108,26 @@ const Login = withSuspense(React.lazy(() => import('./Login.jsx')), "Loading sig
 // just after paint, in parallel, instead of inside the bytes Home blocks on.
 // Same treatment and same caveat as ProfileScreen above.
 const OnlineHubTab = withSuspense(lazyNamed(() => import('./screens/OnlineHubTab.jsx'), 'OnlineHubTab'), "Loading online");
+// The History tab (DailyTabScreen), 47 KB and the largest screen left in the
+// eager chunk. Same pane pattern and the same caveat as OnlineHubTab: it is
+// DEFERRED, not eliminated. `tab` defaults to "home" (see useState below), so
+// this never blocks the first paint — but its pane does render whenever Home
+// is up, so the chunk still arrives shortly after, in parallel.
+const DailyTabScreen = withSuspense(lazyNamed(() => import('./screens/DailyScreen.jsx'), 'DailyTabScreen'), "Loading history");
+// The three finish screens. ⚠️ These are the ONE place a Suspense fallback
+// would actually hurt — the moment a player finishes is the emotional peak of
+// the session, and a spinner there is worse than the bytes. So they are lazy
+// AND prefetched the instant a game starts (see the effect below): a ten-
+// question quiz is about a minute of warning for a same-origin chunk, so in
+// practice the module is resolved long before anyone can reach it, and the
+// fallback exists only for the pathological case.
+//
+// This became possible by moving resultVerdict — six pure lines — out to
+// lib/resultVerdict.js. It was imported by the canvas share-card painter and
+// by useShare, and those two eager importers were pinning the whole screen.
+const Results = withSuspense(lazyNamed(() => import('./screens/ResultsScreen.jsx'), 'Results'), "Loading results");
+const HotStreakResults = withSuspense(lazyNamed(() => import('./screens/ModeResults.jsx'), 'HotStreakResults'), "Loading results");
+const TrueFalseResults = withSuspense(lazyNamed(() => import('./screens/ModeResults.jsx'), 'TrueFalseResults'), "Loading results");
 const SettingsScreen = withSuspense(lazyNamed(() => import('./screens/SettingsScreen.jsx'), 'SettingsScreen'), "Loading settings");
 const DailyReviewScreen = withSuspense(lazyNamed(() => import('./screens/ReviewScreens.jsx'), 'DailyReviewScreen'), "Loading review");
 const PuzzleReviewScreen = withSuspense(lazyNamed(() => import('./screens/ReviewScreens.jsx'), 'PuzzleReviewScreen'), "Loading review");
@@ -129,7 +148,6 @@ const StadiumGame = React.lazy(() => import('./screens/StadiumGame.jsx'));
 const MysteryPlayer = React.lazy(() => import('./screens/MysteryPlayer.jsx'));
 const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
 const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.MultiplayerLobby })));
-import { DailyTabScreen } from './screens/DailyScreen.jsx';
 import { HomeScreen } from './screens/HomeScreen.jsx';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
@@ -7489,6 +7507,21 @@ function AppInner() {
     markAcctStep(user.id, 'acct-home', loopEvent);
   }, [user?.id, screen]);
 
+
+  // ⚠️ WARM THE FINISH SCREENS THE MOMENT PLAY STARTS. Results/ModeResults are
+  // lazy so Home does not carry them, but the screen they paint is the peak of
+  // the session and must never wait on a network round trip. `playing` covers
+  // every mode (quiz, Footle, Trail, Mystery, Stadiums) from the same predicate
+  // the other play-time effects use, so this fires once, early, and the chunk
+  // is resolved minutes before a finish is possible.
+  //
+  // Failure is deliberately silent: this is an optimisation, and if the
+  // prefetch does not land the Suspense fallback still renders the screen.
+  useEffect(() => {
+    if (!playing) return;
+    import('./screens/ResultsScreen.jsx').catch(() => {});
+    import('./screens/ModeResults.jsx').catch(() => {});
+  }, [playing]);
 
   // first-game-played — the honest counterpart to first-game-reached.
   //

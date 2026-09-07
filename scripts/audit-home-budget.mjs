@@ -16,8 +16,15 @@
 //      ⚠️ Measured 2026-09-06: 831 KB, of which GameRoot (App.jsx in one chunk)
 //      is 561 KB. Supabase, the index, Profile and Online are IDLE PREFETCHES
 //      (dynamic, after paint) — the review's "1.7 MB on Home" counted those.
-//      The ≤600 KB target needs App.jsx split along its services seam (E16);
-//      this budget ratchets DOWN as that lands. Raise it only with a reason.
+//      ✅ The ≤600 KB target was MET on 2026-09-07 at 593 KB, and WITHOUT the
+//      App.jsx services split this comment assumed it would need. It came from
+//      taking play-time weight off the boot path instead: the generated leak
+//      table, the frozen daily log, and four screens nobody sees on arrival.
+//      ⚠️ Several of those are DEFERRED, NOT ELIMINATED — the History and
+//      Online panes still render (hidden) whenever Home is up, so their chunks
+//      arrive shortly after paint. This budget measures what Home BLOCKS on,
+//      which is the number that decides how fast it paints; it is not a claim
+//      about total bytes transferred.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,7 +32,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = resolve(ROOT, 'dist');
 const ASSETS = resolve(DIST, 'assets');
-const BUDGET_KB = 700; // 697 KB measured 2026-09-07 after questionConflicts went lazy (831 -> 772 -> 697). Target is 600.
+const BUDGET_KB = 600; // ⚠️ THIS IS NOW THE REVIEW'S TARGET, NOT A CEILING WITH ROOM. 593 KB measured 2026-09-07 (831 -> 772 -> 697 -> 666 -> 633 -> 608 -> 593). Raising it means giving the target up — say why.
 // ⚠️ questionConflicts JOINED THIS LIST 2026-09-07 — it was the SECOND-LARGEST
 // module in the eager Home chunk (81 KB of generated leak-pair data) and the
 // ban did not catch it purely because the regex did not name it. The lesson is

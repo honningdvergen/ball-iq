@@ -5,6 +5,7 @@ import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { Home, Share } from "lucide-react";
 import { useEffect } from "react";
 import { Confetti, haptic } from "../App.jsx";
+import { resultVerdict } from '../lib/resultVerdict.js';
 
 // Loop instrumentation (opportunity scan 2026-08-10 P0): a named Clarity event
 // at each share invocation and pending-token conversion, so k-factor per loop
@@ -14,13 +15,7 @@ import { Confetti, haptic } from "../App.jsx";
 // band, used by the results screen AND the share text so the most-seen screen
 // and the most-sent sentence carry the same football verdict. No statistical
 // claims (App Store 2.3 — the IQ_LABELS lesson).
-export function resultVerdict(pct) {
-  if (pct === 100) return "Ballon d'Or form";
-  if (pct >= 80) return "Top-corner finish";
-  if (pct >= 60) return "Solid at the back";
-  if (pct >= 40) return "Squad rotation material";
-  return "Sunday league, first half";
-}
+// resultVerdict now lives in ../lib/resultVerdict.js — see that file for why.
 // Per-token once-only guard for challenge measurement rpcs. StrictMode
 // double-invokes effects in dev (both settle sites live in effect/handler
 // paths that mount-fire), and the same token can be restored from

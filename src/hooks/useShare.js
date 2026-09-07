@@ -5,7 +5,7 @@ import { APP_NAME, getLevelInfo } from "../lib/scoring.js";
 import { Share as CapShare } from "@capacitor/share";
 import { avatarColour } from "../lib/avatarColour.js";
 import { firstLetter as firstLetterOf } from "../components/ProfilePic.jsx";
-import { resultVerdict } from "../screens/ModeResults.jsx";
+import { resultVerdict } from "../lib/resultVerdict.js";
 import { loopEvent, shareCard, IS_NATIVE, INVITE_BASE_URL, CLUB_PACKS, LEAGUE_QUIZ_BY_CAT, PACK_TO_CLUB_SLUG, CAT_TO_QUIZ_SLUG } from "../App.jsx";
 
 // Extracted from AppInner on 2026-09-06 (review E16). Everything a share needs
