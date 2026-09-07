@@ -96,7 +96,19 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
      375x812 (measured live 2026-09-05), so every question cost a scroll-hunt on
      the page that holds visitors longest. Pinned to the viewport's foot while
      the card overflows it; in normal flow the moment the card fits. */
-  .bq-next{position:sticky;bottom:10px;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,.35);margin-top:14px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+  /* ⚠️ THE CONSENT BAR SITS WHERE THIS BUTTON SITS. It is position:fixed to
+     the bottom and 191.7px tall on a 320-wide phone, so a bare bottom:10px put
+     Next fully underneath it: elementFromPoint at the button's own centre
+     returned the bar's button wrapper, not this element. Verified in real
+     WebKit at 320x568, 3 of 3 runs, for a first-time EU visitor answering
+     question one.
+     --biq-consent-h is published on documentElement by public/consent.js while
+     the bar is up and REMOVED when it goes (removed, not set to 0 — the var
+     fallback below is what supplies the 0). Footle's CSS already subtracts it
+     the same way; the generated pages load the same consent.js and simply never
+     read it. Reading it here makes the overlap impossible for EVERY trigger,
+     not just the scroll one fixed in consent.js. */
+  .bq-next{position:sticky;bottom:calc(10px + var(--biq-consent-h, 0px));z-index:2;box-shadow:0 8px 24px rgba(0,0,0,.35);margin-top:14px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
   /* ⚠️ AND IT MUST FADE WHAT IT COVERS. The button above is opaque green and
      sits directly after .bq-why in flow. At the moment the answer is revealed
      the scroll-margin below plus the engine's scrollIntoView keep them apart —

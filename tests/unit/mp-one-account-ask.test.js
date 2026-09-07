@@ -12,16 +12,51 @@ import { fileURLToPath } from 'node:url';
  * them as a friend" directly above "Playing as a guest — save your stats".
  */
 const MP = readFileSync(fileURLToPath(new URL('../../src/screens/OnlineMultiplayer.jsx', import.meta.url)), 'utf8');
+import { friendableOpponents } from '../../src/screens/OnlineMultiplayer.jsx';
 
 describe('the multiplayer game-over screen asks for an account once', () => {
-  it('the two asks are mutually exclusive, by a mirrored predicate', () => {
+  it('the two asks are mutually exclusive, by ONE shared predicate', () => {
     // The generic ask renders only when the specific one could not.
     expect(MP).toMatch(/\{isAnonUser && !friendAskShown && \(/);
-    // And the flag mirrors AddFriendRow's own filter, so they cannot drift.
     expect(MP).toMatch(/const friendAskShown = !!\(isAnonUser && myUserId/);
-    expect(MP).toMatch(/players \|\| \[\]\)\.filter\(p => p\.user_id && p\.user_id !== myUserId\)\.length > 0\)/);
-    const rowFilter = MP.match(/\(players \|\| \[\]\)\.filter\(p => p\.user_id && p\.user_id !== myUserId\)/g) || [];
-    expect(rowFilter.length, 'the same filter appears in AddFriendRow and in the flag').toBeGreaterThanOrEqual(2);
+
+    // ⚠️ THIS ASSERTION USED TO REQUIRE THE DUPLICATION IT WAS GUARDING.
+    // It demanded the opponents filter appear at least TWICE — once in
+    // AddFriendRow, once in the flag — because that was how exclusivity was
+    // achieved on 2026-09-07: two copies of one condition 660 lines apart, kept
+    // in agreement by a comment saying they "cannot drift". A comment is not a
+    // mechanism, and a test that pins the copy in place makes removing it look
+    // like a regression. Both callers now call friendableOpponents, so they
+    // cannot disagree rather than being asked not to.
+    const definition = /export function friendableOpponents/;
+    expect(MP, 'the shared predicate must exist').toMatch(definition);
+    const withoutDefinition = MP.replace(/export function friendableOpponents[\s\S]*?\n\}/, '');
+    const inlineCopies = withoutDefinition.match(/filter\(p => p\.user_id && p\.user_id !== myUserId\)/g) || [];
+    expect(inlineCopies.length, 'the filter was re-inlined — both asks must call friendableOpponents').toBe(0);
+    expect(MP).toMatch(/&& friendableOpponents\(players, myUserId\)\.length > 0\)/);
+    expect(MP).toMatch(/\(\) => friendableOpponents\(players, myUserId\)/);
+  });
+
+  // The behaviour that predicate has to get right, since exclusivity is only as
+  // good as the condition both sides read.
+  describe('who counts as someone worth adding as a friend', () => {
+    const me = 'me';
+    const cases = [
+      ['nobody else in the room',       [], false],
+      ['only me',                       [{ user_id: me }], false],
+      ['other players are all guests',  [{ user_id: me }, { user_id: null }, {}], false],
+      ['one real opponent',             [{ user_id: 'a' }], true],
+      ['me plus a real opponent',       [{ user_id: me }, { user_id: 'a' }], true],
+    ];
+    for (const [name, players, expected] of cases) {
+      it(`${name} -> specific ask ${expected ? 'IS' : 'is NOT'} available`, () => {
+        expect(friendableOpponents(players, me).length > 0).toBe(expected);
+      });
+    }
+    it('a missing players array does not throw mid-render', () => {
+      expect(friendableOpponents(undefined, me)).toEqual([]);
+      expect(friendableOpponents(null, me)).toEqual([]);
+    });
   });
 
   it('a guest is never asked twice and never left unasked', () => {

@@ -30,9 +30,12 @@ blocking anything measured — cut that seam when there is a reason beyond the b
 `.bq-next` at `bottom:10px`, opaque green, directly after `.bq-why` (:193) — the exact pre-fix app rule with no fading
 wrapper. At reveal a scroll-margin mitigation keeps them apart; scroll up ~70px to re-read the question and ~50px of
 explanation sits flat under the button. The review graded only the app.
-⬜ **ONLINE MULTIPLAYER HAS TWO STACKED ACCOUNT ASKS** — `OnlineMultiplayer.jsx:1165-1176` sits directly above
-:1902-1911. The exact defect class C11 fixed on the Daily 7 results, and the upper one carries the false
-"climb the leaderboards" copy (B5's class). MP was never played during the review, so it escaped both.
+✅ **CLOSED — it was already fixed (`dd5f7af`), but held together by a comment.** The two asks are mutually
+exclusive, and the "climb the leaderboards" copy is gone from that file. What remained was the mechanism: ONE
+condition written out twice, 660 lines apart, with a note saying they "cannot drift" — and an existing test that
+REQUIRED the duplication (`rowFilter.length >= 2`), so removing it would have read as a regression. Both callers now
+share an exported `friendableOpponents`; the test asserts the shared function and ZERO inline copies, plus a table of
+who counts as friendable.
 ⚠️ Build hygiene: `android/app/src/main/assets/public` is a Sep-4 pre-fix bundle. Gitignored and regenerated, but the
 next AAB MUST be cut after a fresh `cap sync`. iOS is current (build 113 archived 2026-09-07).
 
@@ -107,11 +110,20 @@ the thirteen this file said — `club-alias.mjs` was the one the gate caught, an
 on the limit — the file is still 37 hand-maintained values.
 
 ### H. Found while verifying, 2026-09-07 — not caused by the work, filed not swept
-⬜ **The consent bar covers the WHOLE quiz area on a 320x568 phone.** Measured in real WebKit on the
-`/quiz/arsenal/` page at iPhone SE size: once `#biq-consent` mounts it fully covers both the WHY panel AND the Next
-button. Same class as the pre-boot onboarding cover fixed today (`public/consent.js` yields to `#preboot-onboard`),
-but a different surface — the club pages, which carry the most traffic. The bar has a deferral for deep-linked players
-already; the narrowest real phone needs something equivalent.
+✅ **FIXED 2026-09-07 — and the mechanism was an 0.8-pixel coincidence.** `consent.js` armed on
+`scrollY > 0.9 * innerHeight`; at 320x568 that is 511.2px, and the quiz widget's own reveal scroll after answering
+question one settles at **512px**. So answering summoned the bar, whose fixed 191.7px box then covered `.bq-next`
+entirely — `elementFromPoint` at the button's centre returned the bar's own `.biq-c-btns`. Untappable, for a
+first-time EU visitor, one answer into the highest-traffic surface we have. Reproduced 3/3 in real WebKit.
+⚠️ The file already forbade exactly this ("DO NOT TRIGGER ON TAP — touching it must not summon the bar"). The rule was
+honoured literally and defeated one step removed: the tap scrolls, and the scroll fired.
+Two fixes, at different levels: (1) the trigger tests the REAL condition — the protected block's `bottom <= 0` —
+instead of one viewport of scroll standing in for "they have left the hero" (on a 320 phone the hero is 1344px and the
+widget is INSIDE it); (2) `.bq-next` is `bottom:calc(10px + var(--biq-consent-h, 0px))`, a variable `consent.js`
+already published and Footle already consumed, so the button clears the bar however the bar arrives.
+Re-verified in WebKit: banner no longer appears on answering; with it forced up by two independent routes the button
+hit-tests as itself and advances Q1→Q2; ~10.3px daylight at both sizes; scroll-past arming and the 60s dwell backstop
+both still fire.
 ⬜ **WebKit does not paint `.bq-next::after` outside the stuck state** — a sticky element is not a reliable containing
 block for an absolutely-positioned pseudo. Proved by forcing it red and scanning the full 6722px page: zero red pixels
 in normal flow, a red sliver while stuck. Harmless today (normal flow leaves a real 14px gap) and recorded in the
@@ -135,13 +147,16 @@ silently measured arrivals.
 club-quiz question about Gillespie Road the explanation ends "...decades ahead of its time." and "time." is under the
 footer's gradient. The fade is doing its job — the text is not sharply cut — but the reader still cannot finish the
 sentence without scrolling, and on a short explanation there is nothing to scroll.
-⬜ **On the club/SEO pages** the same shape (A3): `.bq-next` is `position:sticky; bottom:10px` and opaque, so it lifts
-off its natural position and over the preceding `.bq-why`. Measured in the Browser pane at a hand-set scroll position:
-28px of explanation under the button. ⚠️ That number is NOT the natural resting state — `html{scroll-behavior:smooth}`
-plus a tab that reports `document.hidden` even when fronted meant the widget's own reveal scroll never ran, so I could
-not tell a real defect from an artefact of the harness. Sent to the webkit-verifier agent for a real-engine answer
-before any fix is designed. The likely shared fix is bottom padding on the scroll content so the pinned CTA always has
-empty space to occupy, rather than more gradient.
+⚠️ HOLD IT TO THE SAME BAR AS A3, which looked identical and turned out to be nothing. This was seen in a device
+screenshot at one scroll position; before any fix, measure the NATURAL resting state the app itself produces.
+❌ **A3 IS NOT A DEFECT — CLOSED AS NOT-REPRODUCED, do not re-open it.** Real WebKit, both 390x844 and 320x568: in
+the natural resting state `.bq-why` ends **14px above** `.bq-next` and the last line is fully legible. The 28px I
+measured in the Browser pane, and the ~50px the review claimed, are only reachable by scrolling BACKWARD 130-150px
+away from where the widget's own reveal scroll settles — not a state answering a question produces.
+⚠️ My 28px came from a harness that was swallowing every scroll I issued (`html{scroll-behavior:smooth}` plus a pane
+reporting `document.hidden` even when fronted), so several readings were of an unscrolled page. `.bq-next::before`
+also PAINTS correctly in WebKit at both sizes (forced magenta, pixel-scanned) — the note about its `::after` sibling
+does not generalise.
 
 ### I. Question reports — an observation, not yet a diagnosis (2026-09-07)
 ⬜ **The reason sheet is answered on Footle and skipped on the quiz.** Since 2026-08-25: Footle 7 of 10 reports carry a

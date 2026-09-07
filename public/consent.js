@@ -303,7 +303,33 @@
   function armDeferredFallback() {
     var started = false;
     var timer = null;
+    /* ⚠️ THE PROXY BROKE ON NARROW PHONES, AND BROKE THE RULE ABOVE.
+       This fired at scrollY > 0.9 * innerHeight as a stand-in for "they have
+       left the hero". On a 320-wide phone the hero reflows to 1344px — the
+       quiz widget lives INSIDE it — so 0.9 of a 568px viewport is 511.2px,
+       which lands the reader in the middle of question one rather than past
+       anything. And the widget's own reveal scroll after an answer settles at
+       512px: eight tenths of a pixel over the line. So answering the first
+       question summoned the bar, which is exactly what the DO NOT TRIGGER ON
+       TAP note above forbids, reached one step removed — the tap scrolls, and
+       the scroll fires. The bar then covered the Next button completely and it
+       could not be tapped. Verified in real WebKit at 320x568, 3 of 3 runs.
+       So test the condition itself rather than a proxy for it: has the block we
+       are protecting actually gone past? .bq is the quiz widget (the taster);
+       .hero is the block it sits in on pages without one. */
     var onScroll = function () {
+      var el = null;
+      try { el = document.querySelector('.bq') || document.querySelector('.hero'); } catch (e) { el = null; }
+      if (el) {
+        var r = null;
+        try { r = el.getBoundingClientRect(); } catch (e) { r = null; }
+        /* Bottom above the viewport top = genuinely scrolled past it. */
+        if (r && r.bottom <= 0) go();
+        return;
+      }
+      /* No protected block on this page — the original one-viewport rule is a
+         fair proxy there, and the 60s dwell backstop still covers a reader who
+         never scrolls at all. */
       if ((window.scrollY || 0) > (window.innerHeight || 600) * 0.9) go();
     };
     var go = function () {

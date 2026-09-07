@@ -1043,9 +1043,26 @@ function useCountUp(target, { duration = 850, delay = 400 } = {}) {
    having. Existing friends and already-pending requests are filtered out
    BEFORE paint, so nobody is ever offered a button that will fail. */
 
+/**
+ * The opponents a friend request could be sent to: real accounts, not me.
+ *
+ * ⚠️ ONE DEFINITION, TWO READERS, ON PURPOSE. This condition decides which of
+ * the two account asks a guest sees on the game-over screen — the SPECIFIC one
+ * ("add them as a friend") when there is somebody to befriend, the GENERIC one
+ * ("save your stats") when there is not. They were previously two copies of the
+ * same filter 660 lines apart, kept in agreement by a comment asserting they
+ * "cannot drift". A comment is not a mechanism: if they ever disagreed, a guest
+ * would be asked to sign up twice in two idioms for the same action (the defect
+ * C11 fixed on the Daily 7 results) or, in the other direction, never asked at
+ * all. Exported so friend-ask-exclusivity.test.js can hold both callers to it.
+ */
+export function friendableOpponents(players, myUserId) {
+  return (players || []).filter(p => p.user_id && p.user_id !== myUserId);
+}
+
 function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
   const opponents = useMemo(
-    () => (players || []).filter(p => p.user_id && p.user_id !== myUserId),
+    () => friendableOpponents(players, myUserId),
     [players, myUserId],
   );
   const [offerable, setOfferable] = useState([]);
@@ -1266,12 +1283,13 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
   // XP line, no share — and offer the one thing the visitor can actually do.
   const gamePlayed = gameEverStarted(room, players);
   const myUserId = myPlayer?.user_id || null;
-  // Mirrors AddFriendRow's own opponents filter exactly. It decides whether the
-  // SPECIFIC account ask can be made ("add them as a friend"); the generic one
-  // in the action stack renders only when it cannot, so a guest is asked once
-  // and always — never twice, never not at all.
+  // Decides whether the SPECIFIC account ask can be made ("add them as a
+  // friend"); the generic one in the action stack renders only when it cannot,
+  // so a guest is asked once and always — never twice, never not at all.
+  // It calls friendableOpponents, the SAME function AddFriendRow filters with,
+  // so the two cannot disagree rather than merely being asked not to.
   const friendAskShown = !!(isAnonUser && myUserId
-    && (players || []).filter(p => p.user_id && p.user_id !== myUserId).length > 0);
+    && friendableOpponents(players, myUserId).length > 0);
   const myRank = myUserId ? sorted.findIndex(p => p.user_id === myUserId) + 1 : 0;
   const winner = sorted[0];
   const isWinner = !!myUserId && !!winner && winner.user_id === myUserId;
