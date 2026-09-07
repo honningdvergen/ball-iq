@@ -1,0 +1,54 @@
+[
+  {
+    "q": "QPR sold Les Ferdinand for £6m in the summer of 1995. Which club bought him?",
+    "o": [
+      "Newcastle United",
+      "Everton",
+      "Aston Villa",
+      "Tottenham Hotspur"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Kevin Keegan's side paid the fee; Ferdinand only moved on to Tottenham two years later.",
+    "_i": 33
+  },
+  {
+    "q": "QPR played much of the 2014 Championship play-off final with ten men. Which midfielder was sent off in the 60th minute?",
+    "o": [
+      "Joey Barton",
+      "Karl Henry",
+      "Niko Kranjčar",
+      "Gary O'Neil"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "He was dismissed for hauling down Johnny Russell as the Derby forward ran through on goal.",
+    "_i": 35
+  },
+  {
+    "q": "Harry Redknapp took over as QPR manager in November 2012. Which manager did he replace?",
+    "o": [
+      "Mark Hughes",
+      "Neil Warnock",
+      "Ian Holloway",
+      "Chris Ramsey"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "His predecessor had taken just four points from the opening twelve league games of that season.",
+    "_i": 37
+  },
+  {
+    "q": "Which attacking midfielder was named Championship Player of the Year after scoring 19 league goals in QPR's 2010-11 promotion season?",
+    "o": [
+      "Ákos Buzsáky",
+      "Tommy Smith",
+      "Adel Taarabt",
+      "Wayne Routledge"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "The Morocco international had signed permanently from Tottenham the previous August.",
+    "_i": 39
+  }
+]

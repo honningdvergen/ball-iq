@@ -1,0 +1,50 @@
+[
+  {
+    "_i": 30,
+    "verdict": "ok",
+    "check": "index resolution, false premise, self-answering, distractors",
+    "resolved": "2012",
+    "reason": "Pozzo takeover of Watford completed 29 June 2012, from Laurence Bassini. The 2011-12 Championship campaign ended with the play-off final on 19 May 2012, so 'a few weeks after' is accurate (~6 weeks). Distractors 2005/2009/2016 are plausible wrong years, none give it away.",
+    "sources": ["https://en.wikipedia.org/wiki/Laurence_Bassini", "https://gulfnews.com/sport/football/englands-watford-agree-italian-takeover-1.1037843"]
+  },
+  {
+    "_i": 25,
+    "verdict": "ok",
+    "check": "index resolution, distractor plausibility",
+    "resolved": "Tommy Mooney",
+    "reason": "Confirmed: Tommy Mooney scored the only goal in the 14th minute as Watford won 1-0 at Anfield on 14 August 1999, past Sander Westerveld. All three distractors (Helguson, Smart, Hyde) were genuine Watford players around that period (Smart since 1998, Hyde since 1997, Helguson signed 1999) so they are plausible without being obviously wrong-era giveaways.",
+    "sources": ["https://www.watfordfc.com/memorable-matches/liverpool-0-1-watford-1999", "https://www.skysports.com/football/news/11661/10645555/watch-tommy-mooney-nets-the-winner-as-watford-beat-liverpool-in-august-1999", "https://watfordlegends.com/interviews/heidar-helguson/"]
+  },
+  {
+    "_i": 37,
+    "verdict": "ok",
+    "check": "index resolution, false premise",
+    "resolved": "Manchester City",
+    "reason": "Manchester City beat Watford 6-0 in the 2019 FA Cup final. The 6-0 scoreline does equal the record FA Cup final margin of victory, first set by Bury's 6-0 win over Derby County in 1903 -- hint claim checks out. Distractors are plausible top clubs of the era.",
+    "sources": ["general knowledge confirmed consistent with search results on Zola/Pozzo era queries; 2019 FA Cup final result and 1903 Bury 6-0 Derby record are settled historical facts"]
+  },
+  {
+    "_i": 28,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractor plausibility",
+    "resolved": "Manchester United",
+    "reason": "Ben Foster joined Manchester United from Stoke City in July 2005 and was loaned to Watford for both 2005-06 (the promotion season, won via play-offs) and 2006-07. He returned to Watford permanently in 2018, matching the hint. Distractors Stoke City (his actual previous club), West Brom and Birmingham City (clubs he played for later in his career) are genuine but wrong-period, non-giveaway distractors.",
+    "sources": ["https://en.wikipedia.org/wiki/Ben_Foster_(footballer)"]
+  },
+  {
+    "_i": 31,
+    "verdict": "ok",
+    "check": "index resolution, false premise",
+    "resolved": "Udinese",
+    "reason": "Giampaolo Pozzo owned Udinese (since 1986) when the family bought Watford in 2012, and Udinese loaned several players to Watford in 2012-13 including Almen Abdi and Matej Vydra, matching the hint. Distractors (Sampdoria, Bologna, Torino) are Italian clubs never owned by the Pozzos.",
+    "sources": ["https://en.wikipedia.org/wiki/Giampaolo_Pozzo", "https://offthepitch.com/a/meet-pozzos-italians-behind-udinese-and-watford-vying-be-more-just-family-business"]
+  },
+  {
+    "_i": 32,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractor plausibility",
+    "resolved": "Gianfranco Zola",
+    "reason": "Zola was appointed Watford head coach in July 2012, the first appointment of the Pozzo era (after Sean Dyche's dismissal), and led Watford to the 2013 Championship play-off final (lost to Crystal Palace), matching the hint exactly. Distractors (Sanchez Flores, Gracia, Sannino) are all real, later Pozzo-era Watford managers, so they are plausible without giving away the answer.",
+    "sources": ["https://www.planetsport.com/soccer/news/gianfranco-zola-claudio-ranieri-every-watford-manager-under-pozzo-regime", "https://grokipedia.com/page/2012%E2%80%9313_Watford_F.C._season"]
+  }
+]

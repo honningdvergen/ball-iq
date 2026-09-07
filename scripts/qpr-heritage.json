@@ -1,0 +1,142 @@
+[
+  {
+    "q": "QPR won the League Cup in 1967, in the first final of that competition staged at Wembley. Which club did they beat 3-2?",
+    "o": ["West Bromwich Albion", "Leicester City", "West Ham United", "Stoke City"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The Midlands side were the holders, having won the League Cup the previous season. They led 2-0 at Wembley and still lost."
+  },
+  {
+    "q": "Who was QPR's manager when they finished First Division runners-up in 1975-76?",
+    "o": ["Dave Sexton", "Alec Stock", "Gordon Jago", "Terry Venables"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "He arrived at Loftus Road from Chelsea in October 1974 and left for Manchester United in 1977."
+  },
+  {
+    "q": "QPR finished a point behind the champions in the 1975-76 First Division. Which club won the title that season?",
+    "o": ["Liverpool", "Derby County", "Leeds United", "Manchester United"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Bob Paisley's side took the trophy with 60 points to QPR's 59, winning their final game at Wolves."
+  },
+  {
+    "q": "Which QPR player scored the 81st-minute winner in the 1967 League Cup final?",
+    "o": ["Mark Lazarus", "Roger Morgan", "Rodney Marsh", "Les Allen"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "It was a winger who completed the comeback, not either of the two men who had already pulled the goals back."
+  },
+  {
+    "q": "Stan Bowles became QPR's cult No. 10 of the 1970s. Which club did he join them from in September 1972?",
+    "o": ["Carlisle United", "Manchester City", "Crewe Alexandra", "Bury"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "QPR paid £112,000 to the Cumbrian club. Bowles had played for the other three earlier in his travels."
+  },
+  {
+    "q": "Loftus Road, QPR's home since 1917, sits in which part of west London?",
+    "o": ["Shepherd's Bush", "Fulham", "Islington", "Bermondsey"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The ground is a short walk from the White City site, in the W12 postcode."
+  },
+  {
+    "q": "QPR laid an artificial pitch at Loftus Road in 1981. In which year did they dig it up and go back to grass?",
+    "o": ["1988", "1984", "1991", "1994"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The plastic lasted seven seasons before being removed in the April of that year."
+  },
+  {
+    "q": "Phil Parkes left QPR in February 1979 for £565,000, then a world record fee for a goalkeeper. Which club signed him?",
+    "o": ["West Ham United", "Nottingham Forest", "Everton", "Manchester City"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "He moved across London and stayed at his new club for eleven years."
+  },
+  {
+    "q": "QPR reached the FA Cup final for the only time in 1982. Which club beat them after a replay?",
+    "o": ["Tottenham Hotspur", "Arsenal", "Manchester City", "Everton"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The north London side were retaining the trophy, having also won a replayed final the year before."
+  },
+  {
+    "q": "Rodney Marsh left QPR in March 1972 for a then club-record fee. Which club did he join?",
+    "o": ["Manchester City", "Fulham", "Tottenham Hotspur", "Everton"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Malcolm Allison paid £200,000 to take him to Maine Road. He had originally arrived at QPR from Fulham in 1966."
+  },
+  {
+    "q": "QPR finished their 1975-76 league programme top of the table, a point clear of Liverpool, who still had a game to play. At which ground was that title-deciding match played ten days later?",
+    "o": ["Molineux", "Anfield", "Old Trafford", "Filbert Street"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Liverpool's rearranged final fixture was away at Wolves, who needed to win it to stay up."
+  },
+  {
+    "q": "Which division were QPR playing in when they won the 1967 League Cup?",
+    "o": ["The Third Division", "The Second Division", "The Fourth Division", "The First Division"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "They won that same division's title in the same season, so the cup came with a promotion."
+  },
+  {
+    "q": "QPR's 1981 artificial pitch was the first in British professional football, and three other Football League clubs followed in the 1980s. Which of these was one of them?",
+    "o": ["Luton Town", "Watford", "Millwall", "Norwich City"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Kenilworth Road got its plastic in 1985; Oldham and Preston laid theirs the year after."
+  },
+  {
+    "q": "Which QPR midfielder captained England during the mid-1970s?",
+    "o": ["Gerry Francis", "Don Masson", "John Hollins", "Dave Thomas"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "He led England in eight of his twelve caps before a persistent back injury cut his international career short."
+  },
+  {
+    "q": "Who scored QPR's equaliser late in extra time of the 1982 FA Cup final at Wembley?",
+    "o": ["Terry Fenwick", "Tony Currie", "Simon Stainrod", "John Gregory"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "It was a defender who would later win England caps and eventually join the very club that beat him that day."
+  },
+  {
+    "q": "QPR came from behind to win the 1967 League Cup final. What was the score at half-time?",
+    "o": ["2-0 down", "1-0 down", "3-0 down", "3-1 down"],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Clive Clark scored twice for West Bromwich Albion inside the first 36 minutes."
+  },
+  {
+    "q": "Which manager took QPR to the 1982 FA Cup final and then to the Second Division title the following season?",
+    "o": ["Terry Venables", "Jim Smith", "Alan Mullery", "Gordon Jago"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "He took the job in 1980, installed the plastic pitch, and left for Barcelona in 1984."
+  },
+  {
+    "q": "Don Givens, QPR's leading league scorer in the 1975-76 runners-up season, played international football for which country?",
+    "o": ["Republic of Ireland", "Northern Ireland", "Wales", "Scotland"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Born in Limerick, the striker won 56 caps between 1969 and 1982."
+  },
+  {
+    "q": "QPR reached the quarter-finals of the 1976-77 UEFA Cup, where they went out on penalties. Which club knocked them out?",
+    "o": ["AEK Athens", "1. FC Köln", "Slovan Bratislava", "Athletic Bilbao"],
+    "a": 0,
+    "diff": "hard",
+    "hint": "QPR won the home leg 3-0, lost the away leg 3-0 in Greece, and then lost the shootout 7-6."
+  },
+  {
+    "q": "QPR were back at Wembley for the 1986 League Cup final, then sponsored as the Milk Cup. Which club beat them 3-0?",
+    "o": ["Oxford United", "Norwich City", "Aston Villa", "Luton Town"],
+    "a": 0,
+    "diff": "medium",
+    "hint": "It remains the only major trophy won by the Manor Ground club, under manager Maurice Evans."
+  }
+]

@@ -1,0 +1,242 @@
+[
+  {
+    "q": "QPR were founder members of the Premier League. Where did they finish in the inaugural 1992-93 season?",
+    "o": [
+      "Ninth",
+      "Fifth",
+      "Twelfth",
+      "Second"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "They were the highest-placed London club that season, finishing above both Tottenham and Arsenal."
+  },
+  {
+    "q": "The nickname 'the Hoops' comes from the club's shirt. Which two colours are the hoops?",
+    "o": [
+      "Green and white",
+      "Red and white",
+      "Blue and white",
+      "Claret and blue"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Celtic wear the green version of the same design; the Loftus Road version swaps in a cooler colour."
+  },
+  {
+    "q": "In May 2011 an FA commission fined QPR £875,000 over the registration of one of their midfielders, but imposed no points deduction, so the promotion stood. Which midfielder was at the centre of the case?",
+    "o": [
+      "Hogan Ephraim",
+      "Shaun Derry",
+      "Ákos Buzsáky",
+      "Alejandro Faurlín"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "The Argentine had joined from Instituto in 2009, and the charges that were dismissed concerned third-party ownership rules."
+  },
+  {
+    "q": "Who scored the 90th-minute goal that won QPR the 2014 Championship play-off final at Wembley?",
+    "o": [
+      "Charlie Austin",
+      "Junior Hoilett",
+      "Bobby Zamora",
+      "Ravel Morrison"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "The veteran striker struck from the edge of the box with almost the last kick of the game against Derby County."
+  },
+  {
+    "q": "Which manager led QPR to the Championship title and promotion to the Premier League in 2010-11?",
+    "o": [
+      "Neil Warnock",
+      "Ian Holloway",
+      "Mark Hughes",
+      "Harry Redknapp"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "He arrived from Crystal Palace in March 2010, and was sacked in January 2012 during the club's first season back in the top flight."
+  },
+  {
+    "q": "QPR led 2-1 at Manchester City on the final day of 2011-12 before the hosts turned it around in stoppage time. Who scored the goal that had put Rangers in front?",
+    "o": [
+      "Bobby Zamora",
+      "Jamie Mackie",
+      "Djibril Cissé",
+      "Adel Taarabt"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "The Scotland forward headed in Armand Traoré's cross just after the hour, with Rangers already down to ten men."
+  },
+  {
+    "q": "QPR lost the 2003 Division Two play-off final at the Millennium Stadium to an extra-time goal. Which club beat them?",
+    "o": [
+      "Crewe Alexandra",
+      "Cardiff City",
+      "Oldham Athletic",
+      "Bristol City"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Andy Campbell's chip over Chris Day settled it, taking the winners into the second tier for the first time since 1985."
+  },
+  {
+    "q": "QPR were relegated to the third tier at the end of 2000-01, their first drop that low since the 1960s. Which former Rangers midfielder had taken over as manager that February?",
+    "o": [
+      "Gerry Francis",
+      "Terry Venables",
+      "Ray Wilkins",
+      "Ian Holloway"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "He had played for the club in the 1990s before returning to the dugout, and later took them back up as Division Two runners-up in 2004."
+  },
+  {
+    "q": "QPR won the 2014 Championship play-off final at Wembley. Which club did they beat?",
+    "o": [
+      "Derby County",
+      "Brighton & Hove Albion",
+      "Wigan Athletic",
+      "Reading"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The beaten side dominated possession and were managed by Steve McClaren, who called it the cruellest game ever."
+  },
+  {
+    "q": "Which manager was in charge when QPR were relegated from the Premier League at the end of 1995-96?",
+    "o": [
+      "Stewart Houston",
+      "Ian Holloway",
+      "Ray Wilkins",
+      "Gerry Francis"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "The former England midfielder had replaced Gerry Francis in late 1994 and left Loftus Road in September 1996."
+  },
+  {
+    "q": "QPR signed Trevor Sinclair in 1993 for a fee that broke his previous club's record for a sale. Which club did he leave?",
+    "o": [
+      "Blackburn Rovers",
+      "Preston North End",
+      "Bolton Wanderers",
+      "Blackpool"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "The £600,000 move took the winger from the Lancashire coast to west London; he went on to join West Ham in 1998."
+  },
+  {
+    "q": "Trevor Sinclair's overhead kick for QPR won the BBC's Goal of the Season in 1997. Which club were the opponents in that FA Cup fourth-round tie?",
+    "o": [
+      "Oldham Athletic",
+      "Barnsley",
+      "Grimsby Town",
+      "Huddersfield Town"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Rangers won the January tie 3-2 at Loftus Road, and the opponents went up to the Premier League that same season."
+  },
+  {
+    "q": "Which striker scored 24 Premier League goals for QPR in the 1994-95 season?",
+    "o": [
+      "Bradley Allen",
+      "Kevin Gallen",
+      "Danny Dichio",
+      "Les Ferdinand"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "'Sir Les' came through non-league football at Hayes before making his name at Loftus Road."
+  },
+  {
+    "q": "QPR sold Les Ferdinand for £6m in the summer of 1995. Which club bought him?",
+    "o": [
+      "Newcastle United",
+      "Everton",
+      "Aston Villa",
+      "Tottenham Hotspur"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Kevin Keegan's side paid the fee; Ferdinand only moved on to Tottenham two years later."
+  },
+  {
+    "q": "QPR won automatic promotion from Division Two in 2003-04 as runners-up. Which club finished above them as champions?",
+    "o": [
+      "Swindon Town",
+      "Bristol City",
+      "Plymouth Argyle",
+      "Brighton & Hove Albion"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "The Devon club took the title on 90 points, with Bristol City finishing third, a single point behind QPR."
+  },
+  {
+    "q": "QPR played much of the 2014 Championship play-off final with ten men. Which midfielder was sent off in the 60th minute?",
+    "o": [
+      "Joey Barton",
+      "Karl Henry",
+      "Niko Kranjčar",
+      "Gary O'Neil"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "He was dismissed for hauling down Johnny Russell as the Derby forward ran through on goal."
+  },
+  {
+    "q": "What is the name of QPR's home ground in Shepherd's Bush, where the club has played since 1917?",
+    "o": [
+      "Craven Cottage",
+      "Loftus Road",
+      "Griffin Park",
+      "Selhurst Park"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The ground sits off South Africa Road, holds around 18,000, and Fulham groundshared there in the early 2000s."
+  },
+  {
+    "q": "Harry Redknapp took over as QPR manager in November 2012. Which manager did he replace?",
+    "o": [
+      "Mark Hughes",
+      "Neil Warnock",
+      "Ian Holloway",
+      "Chris Ramsey"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "His predecessor had taken just four points from the opening twelve league games of that season."
+  },
+  {
+    "q": "QPR broke their transfer record in January 2013 to sign a defender from Anzhi Makhachkala. Who was he?",
+    "o": [
+      "Nedum Onuoha",
+      "Steven Caulker",
+      "Christopher Samba",
+      "José Bosingwa"
+    ],
+    "a": 2,
+    "diff": "hard",
+    "hint": "The £12.5m fee could not save Rangers, who finished bottom of the table on 25 points that season."
+  },
+  {
+    "q": "Which attacking midfielder was named Championship Player of the Year after scoring 19 league goals in QPR's 2010-11 promotion season?",
+    "o": [
+      "Ákos Buzsáky",
+      "Tommy Smith",
+      "Adel Taarabt",
+      "Wayne Routledge"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "The Morocco international had signed permanently from Tottenham the previous August."
+  }
+]

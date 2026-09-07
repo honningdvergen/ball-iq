@@ -1,0 +1,46 @@
+[
+  {
+    "_i": 33,
+    "verdict": "ok",
+    "check": "premise + distractors",
+    "resolved": "Troy Deeney",
+    "reason": "Confirmed: 12 May 2013, Championship play-off semi-final 2nd leg, Watford 3-1 Leicester (3-2 agg). In the 6th minute of stoppage time Anthony Knockaert's penalty was saved by Manuel Almunia; ~20 seconds later Watford broke away and Troy Deeney scored the winner sending Watford to the final. Deeney did captain Watford to promotion in 2014-15. Distractors Vydra, Forestieri, Abdi were all genuine Watford squad players of that era and none scored that goal — plausible and verifiably wrong.",
+    "sources": [
+      "https://www.starsandstripesfc.com/black-history-month/2022/2/8/22922829/black-history-month-troy-deeney-goal-watford-efl-championship-playoff-leicester-city-redemption",
+      "https://oldwatford.com/2013/05/12/12th-may-2013-championship-playoff-semi-final-second-leg-watford-3-leicester-city-1-watford-won-3-2-on-aggregate/"
+    ]
+  },
+  {
+    "_i": 35,
+    "verdict": "ok",
+    "check": "premise + distractors",
+    "resolved": "Slaviša Jokanović",
+    "reason": "Confirmed: 2014-15 Watford had four managers - Beppe Sannino (to end Aug), Óscar García (2-29 Sep, resigned on health grounds), Billy McKinlay (caretaker, 2 games), Jokanović (from 7 Oct). Jokanović was in charge when automatic promotion was secured with a 2-0 win over Brighton on 25 April 2015, matching 'early October' takeover and 'last of several men in the dugout that season'. All three distractors are real Watford managers from that same season, correctly disqualified by the April 2015 qualifier.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2014%E2%80%9315_Watford_F.C._season",
+      "https://www.planetfootball.com/lists-and-rankings/every-watford-manager-hired-under-pozzos-ranked"
+    ]
+  },
+  {
+    "_i": 36,
+    "verdict": "ok",
+    "check": "premise + distractors",
+    "resolved": "Arsenal",
+    "reason": "Confirmed: 13 March 2016, Arsenal 1-2 Watford at the Emirates, FA Cup quarter-final. Odion Ighalo (5 mins into 2nd half) and Adlène Guédioura (63rd minute, 20-yard strike) scored for Watford; Danny Welbeck's late goal made it 1-2, not enough. Arsenal were the holders. Distractors (Man Utd, Chelsea, Everton) are plausible big-club opponents but did not face Watford in this specific 2016 QF.",
+    "sources": [
+      "https://www.skysports.com/football/news/11670/10203904/arsenal-watford",
+      "https://www.thefa.com/news/2016/mar/13/quarter-final-arsenal-watford-match-report"
+    ]
+  },
+  {
+    "_i": 39,
+    "verdict": "ok",
+    "check": "premise + distractors",
+    "resolved": "Wolverhampton Wanderers",
+    "reason": "Confirmed: 7 April 2019 FA Cup semi-final at Wembley. Wolves led 2-0 (Doherty, Jiménez), Gerard Deulofeu pulled one back, Troy Deeney equalised from the penalty spot in the 90+4th minute (94th minute) forcing extra time, then Deulofeu scored the winner in the 104th minute for a 3-2 Watford win. Distractors Brighton, Crystal Palace, Swansea are plausible period-correct Premier League opponents but not this fixture.",
+    "sources": [
+      "https://www.expressandstar.com/sport/football/wolverhampton-wanderers-fc/2019/04/07/watford-2-wolves-3-aet-fa-cup-semi-final-report/",
+      "https://www.thefa.com/news/2019/apr/07/watford-wolverhampton-wanderers-emirates-fa-cup-semi-final-report-070419"
+    ]
+  }
+]

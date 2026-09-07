@@ -1,0 +1,67 @@
+[
+  {
+    "_i": 34,
+    "verdict": "ok",
+    "check": "all four checks passed",
+    "resolved": "Manuel Almunia",
+    "reason": "Confirmed: in the 2013 Championship play-off semi-final 2nd leg (12 May 2013), with aggregate score 2-2 in stoppage time, Anthony Knockaert's penalty (after a foul on Marco Cassetti) was saved by Watford keeper Manuel Almunia, who then also blocked Knockaert's follow-up chipped effort; Troy Deeney scored the length-of-the-pitch winner ~20 seconds later. Distractors Loach/Gomes/Foster were all real Watford keepers but not in this game (Gomes and Foster joined later). Not self-answering, not Watford, index resolves correctly.",
+    "sources": [
+      "https://www.sporf.com/when-leicester-vs-watford-produced-the-most-insane-ending-to-a-game-ever/",
+      "https://en.wikipedia.org/wiki/2013_Football_League_Championship_play-off_final"
+    ]
+  },
+  {
+    "_i": 24,
+    "verdict": "ok",
+    "check": "all four checks passed",
+    "resolved": "Graham Taylor",
+    "reason": "Graham Taylor returned to Watford in 1996 (having managed England 1990-93 and Wolves 1994-95), led them through Second/First Division promotions to the 1999 First Division play-off final win over Bolton, then managed the club's 1999-2000 Premier League season. Distractors (Boothroyd, Sánchez Flores, Gracia) are genuine later Watford managers, correctly wrong here. Minor stylistic looseness in the hint ('first took up the divisions in the 1980s' - two of his three promotions with Watford were actually in the late 1970s) but this doesn't misstate anything in the stem or the keyed answer, so not disqualifying.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1999_Football_League_First_Division_play-off_final",
+      "https://en.wikipedia.org/wiki/Graham_Taylor"
+    ]
+  },
+  {
+    "_i": 18,
+    "verdict": "ok",
+    "check": "all four checks passed",
+    "resolved": "1987-88",
+    "reason": "Watford were promoted to the First Division in 1982 and relegated at the end of 1987-88 (finished 20th), their sixth top-flight season. Dave Bassett was sacked on 11 January 1988 and successor Steve Harrison could not prevent relegation, matching the hint exactly. Distractor seasons (85-86, 86-87, 88-89) are plausible nearby seasons but verifiably wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1987%E2%80%9388_Watford_F.C._season",
+      "http://that1980ssportsblog.blogspot.com/2018/04/1987-88-dave-bassett-season-to-forget.html"
+    ]
+  },
+  {
+    "_i": 38,
+    "verdict": "ok",
+    "check": "all four checks passed",
+    "resolved": "15",
+    "reason": "Odion Ighalo scored 15 Premier League goals for Watford in 2015-16 (finished 3rd in the PL scoring charts behind Kane and Vardy), consistent with the hint's 17 goals across all competitions that season. Distractors 8/11/21 are plausible but wrong counts.",
+    "sources": [
+      "https://www.skysports.com/football/news/11661/10114503/watfords-odion-ighalo-finishes-top-scorer-in-england-in-2015-ahead-of-tottenhams-harry-kane",
+      "https://en.wikipedia.org/wiki/2015%E2%80%9316_Watford_F.C._season"
+    ]
+  },
+  {
+    "_i": 27,
+    "verdict": "ok",
+    "check": "all four checks passed",
+    "resolved": "2006",
+    "reason": "Aidy Boothroyd led Watford to Premier League promotion in 2006 via the play-offs, beating Leeds United 3-0 in the final at the Millennium Stadium, matching the hint precisely. Distractor years (2003, 2011, 2015) do not correspond to a Boothroyd-led Watford promotion and are verifiably wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2006_Football_League_Championship_play-off_final"
+    ]
+  },
+  {
+    "_i": 23,
+    "verdict": "ok",
+    "check": "all four checks passed",
+    "resolved": "Nick Wright",
+    "reason": "Nick Wright scored Watford's opening goal with an overhead kick just before half-time in the 1999 First Division play-off final win over Bolton (2-0); Allan Smart scored the second goal in the closing minutes, matching the hint ('a different forward added the second goal in the closing minute'). Distractors Ngonge and Mooney were also on the pitch/squad that day but did not score either goal.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1999_Football_League_First_Division_play-off_final",
+      "https://en.wikipedia.org/wiki/Nick_Wright_(footballer,_born_1975)"
+    ]
+  }
+]

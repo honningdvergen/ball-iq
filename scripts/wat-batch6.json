@@ -1,0 +1,54 @@
+[
+  {
+    "q": "Who scored the stoppage-time goal that sent Watford to the 2013 play-off final, seconds after Leicester had a penalty saved at the other end?",
+    "o": [
+      "Troy Deeney",
+      "Matěj Vydra",
+      "Fernando Forestieri",
+      "Almen Abdi"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The striker who finished the counter-attack went on to captain the club to promotion two years later.",
+    "_i": 33
+  },
+  {
+    "q": "Who was Watford's head coach when they won promotion to the Premier League in April 2015?",
+    "o": [
+      "Slaviša Jokanović",
+      "Beppe Sannino",
+      "Óscar García",
+      "Billy McKinlay"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The Serb was the last of several men in the dugout that season, taking over in early October.",
+    "_i": 35
+  },
+  {
+    "q": "Which club did Watford beat 2-1 away in the 2016 FA Cup quarter-finals?",
+    "o": [
+      "Arsenal",
+      "Manchester United",
+      "Chelsea",
+      "Everton"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Odion Ighalo and Adlène Guédioura scored at the Emirates Stadium to knock out the holders.",
+    "_i": 36
+  },
+  {
+    "q": "Watford came from two goals down to win the 2019 FA Cup semi-final 3-2 after extra time. Who were their opponents?",
+    "o": [
+      "Wolverhampton Wanderers",
+      "Brighton & Hove Albion",
+      "Crystal Palace",
+      "Swansea City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Gerard Deulofeu scored twice and Troy Deeney equalised from the penalty spot in the 94th minute.",
+    "_i": 39
+  }
+]

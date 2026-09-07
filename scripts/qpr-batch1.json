@@ -1,0 +1,80 @@
+[
+  {
+    "q": "QPR finished their 1975-76 league programme top of the table, a point clear of Liverpool, who still had a game to play. At which ground was that title-deciding match played ten days later?",
+    "o": [
+      "Molineux",
+      "Anfield",
+      "Old Trafford",
+      "Filbert Street"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Liverpool's rearranged final fixture was away at Wolves, who needed to win it to stay up.",
+    "_i": 10
+  },
+  {
+    "q": "Loftus Road, QPR's home since 1917, sits in which part of west London?",
+    "o": [
+      "Shepherd's Bush",
+      "Fulham",
+      "Hammersmith",
+      "Notting Hill"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The ground is a short walk from the White City site, in the W12 postcode.",
+    "_i": 5
+  },
+  {
+    "q": "QPR laid an artificial pitch at Loftus Road in 1981. In which year did they dig it up and go back to grass?",
+    "o": [
+      "1988",
+      "1984",
+      "1991",
+      "1994"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The plastic lasted seven seasons before being removed in the April of that year.",
+    "_i": 6
+  },
+  {
+    "q": "Who scored QPR's equaliser late in extra time of the 1982 FA Cup final at Wembley?",
+    "o": [
+      "Terry Fenwick",
+      "Tony Currie",
+      "Simon Stainrod",
+      "John Gregory"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "It was a defender who would later win England caps and eventually join the very club that beat him that day.",
+    "_i": 14
+  },
+  {
+    "q": "QPR reached the FA Cup final for the only time in 1982. Which club beat them after a replay?",
+    "o": [
+      "Tottenham Hotspur",
+      "Arsenal",
+      "Manchester City",
+      "Everton"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The north London side were retaining the trophy, having also won a replayed final the year before.",
+    "_i": 8
+  },
+  {
+    "q": "Rodney Marsh left QPR in March 1972 for a then club-record fee. Which club did he join?",
+    "o": [
+      "Manchester City",
+      "Fulham",
+      "Tottenham Hotspur",
+      "Everton"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Malcolm Allison paid £200,000 to take him to Maine Road. He had originally arrived at QPR from Fulham in 1966.",
+    "_i": 9
+  }
+]

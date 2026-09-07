@@ -1,0 +1,80 @@
+[
+  {
+    "q": "Which goalkeeper saved Anthony Knockaert's stoppage-time penalty in Watford's 2013 Championship play-off semi-final against Leicester?",
+    "o": [
+      "Manuel Almunia",
+      "Scott Loach",
+      "Heurelho Gomes",
+      "Ben Foster"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The Spaniard, a former Arsenal number one, had to keep the ball out twice in the same passage of play.",
+    "_i": 34
+  },
+  {
+    "q": "Who managed Watford in the 1999 play-off final and through the Premier League season that followed?",
+    "o": [
+      "Graham Taylor",
+      "Aidy Boothroyd",
+      "Quique Sánchez Flores",
+      "Javi Gracia"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "He had managed England before returning to the club he first took up the divisions in the 1980s.",
+    "_i": 24
+  },
+  {
+    "q": "Watford were relegated from the First Division, ending the top-flight run that began with promotion in 1982, in which season?",
+    "o": [
+      "1985-86",
+      "1986-87",
+      "1987-88",
+      "1988-89"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "It was the season straight after Graham Taylor left. Dave Bassett was sacked in January and Steve Harrison could not save them.",
+    "_i": 18
+  },
+  {
+    "q": "How many Premier League goals did Odion Ighalo score for Watford in the 2015-16 season?",
+    "o": [
+      "15",
+      "8",
+      "11",
+      "21"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "He was comfortably the club's top scorer that season, finishing with 17 across all competitions.",
+    "_i": 38
+  },
+  {
+    "q": "In which year did Aidy Boothroyd lead Watford to promotion to the Premier League?",
+    "o": [
+      "2006",
+      "2003",
+      "2011",
+      "2015"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "They went up via the play-offs, beating Leeds United 3-0 in the final.",
+    "_i": 27
+  },
+  {
+    "q": "Who scored Watford's opening goal in the 1999 play-off final, an overhead kick just before half-time?",
+    "o": [
+      "Nick Wright",
+      "Allan Smart",
+      "Michel Ngonge",
+      "Tommy Mooney"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "A different forward added the second goal in the closing minute, so it was not the man who sealed it.",
+    "_i": 23
+  }
+]

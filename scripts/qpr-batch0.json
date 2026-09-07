@@ -1,0 +1,80 @@
+[
+  {
+    "q": "Which QPR player scored the 81st-minute winner in the 1967 League Cup final?",
+    "o": [
+      "Mark Lazarus",
+      "Roger Morgan",
+      "Rodney Marsh",
+      "Les Allen"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "It was a winger who completed the comeback, not either of the two men who had already pulled the goals back.",
+    "_i": 3
+  },
+  {
+    "q": "QPR won the League Cup in 1967, in the first final of that competition staged at Wembley. Which club did they beat 3-2?",
+    "o": [
+      "West Bromwich Albion",
+      "Leicester City",
+      "West Ham United",
+      "Stoke City"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The Midlands side were the holders, having won the League Cup the previous season. They led 2-0 at Wembley and still lost.",
+    "_i": 0
+  },
+  {
+    "q": "Who was QPR's manager when they finished First Division runners-up in 1975-76?",
+    "o": [
+      "Dave Sexton",
+      "Alec Stock",
+      "Gordon Jago",
+      "Terry Venables"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "He arrived at Loftus Road from Chelsea in October 1974 and left for Manchester United in 1977.",
+    "_i": 1
+  },
+  {
+    "q": "Phil Parkes left QPR in February 1979 for £565,000, then a world record fee for a goalkeeper. Which club signed him?",
+    "o": [
+      "West Ham United",
+      "Nottingham Forest",
+      "Everton",
+      "Manchester City"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "He moved across London and stayed at his new club for eleven years.",
+    "_i": 7
+  },
+  {
+    "q": "QPR finished a point behind the champions in the 1975-76 First Division. Which club won the title that season?",
+    "o": [
+      "Liverpool",
+      "Everton",
+      "Leeds United",
+      "Manchester United"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Bob Paisley's side took the trophy with 60 points to QPR's 59, winning their final game at Wolves.",
+    "_i": 2
+  },
+  {
+    "q": "Stan Bowles became QPR's cult No. 10 of the 1970s. Which club did he join them from in September 1972?",
+    "o": [
+      "Carlisle United",
+      "Manchester City",
+      "Crewe Alexandra",
+      "Bury"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "QPR paid £112,000 to the Cumbrian club. Bowles had played for the other three earlier in his travels.",
+    "_i": 4
+  }
+]

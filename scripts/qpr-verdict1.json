@@ -1,0 +1,71 @@
+[
+  {
+    "_i": 10,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Molineux",
+    "reason": "QPR beat Leeds 2-0 on 24 April 1976 to go top; Liverpool's rearranged final fixture at Wolves (Molineux) was played 4 May 1976, exactly ten days later, and Liverpool won 3-1 to take the title on the final whistle. Distractors (Anfield, Old Trafford, Filbert Street) are all wrong grounds for that fixture and each is a plausible-sounding 1970s First Division venue.",
+    "sources": [
+      "https://www.indyrs.co.uk/2020/04/qpr-2-leeds-united-0-followed-by-ten-days-of-torment-for-the-rangers/",
+      "https://thesefootballtimes.co/2018/03/14/qpr-and-the-great-title-race-of-1975-76-the-10-day-champions/"
+    ]
+  },
+  {
+    "_i": 5,
+    "verdict": "fix",
+    "check": "2 (false premise in the stem)",
+    "resolved": "Shepherd's Bush",
+    "reason": "The answer (Shepherd's Bush) and distractors are all correct/plausible, but the stem's premise 'Loftus Road, QPR's home since 1917' is false as a continuous claim. QPR first moved to Loftus Road in 1917, but left for White City twice afterward (1931-1933, and part of the 1962-63 season) before returning for good in the middle of the 1962-63 season. It has NOT been their uninterrupted home since 1917 -- the correct unbroken-tenure date is 1963.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Loftus_Road",
+      "https://richardfenton001.wordpress.com/2020/01/29/queens-park-rangers-a-brief-history/"
+    ],
+    "fixed": {
+      "q": "Loftus Road, QPR's permanent home since 1963 (after two earlier spells at White City), sits in which part of west London?"
+    }
+  },
+  {
+    "_i": 6,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "1988",
+    "reason": "The Omniturf artificial pitch was installed at Loftus Road in 1981 and remained until 1988, when a natural grass surface was reinstated. Distractors 1984, 1991, 1994 are all wrong years for the removal.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Loftus_Road",
+      "https://thesefootballtimes.co/2015/10/19/they-used-to-play-on-plastic/"
+    ]
+  },
+  {
+    "_i": 14,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Terry Fenwick",
+    "reason": "Terry Fenwick headed QPR's equaliser in extra time of the 1982 FA Cup final (from Simon Stainrod's long throw flicked on by Bob Hazell), after Glenn Hoddle had put Spurs 1-0 up. Hint checks out: Fenwick won 20 England caps and later signed for Tottenham Hotspur in December 1987/January 1988. Distractors Tony Currie (deflected Hoddle's shot in off him), Simon Stainrod (provided the assist) and John Gregory (a QPR midfielder of that era) are each real figures connected to the match/club but did not score the equaliser.",
+    "sources": [
+      "https://hotspurhq.com/2013/05/27/tottenham-defeat-qpr-to-win-1982-fa-cup-final/",
+      "https://superhotspur.com/2022/06/30/my-interview-with-former-spurs-player-terry-fenwick/"
+    ]
+  },
+  {
+    "_i": 8,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Tottenham Hotspur",
+    "reason": "QPR reached the FA Cup final for the only time in their history in 1982, losing 1-0 in a replay to holders Tottenham Hotspur, who were retaining the trophy after also winning a replayed final in 1981 (against Manchester City). 'Only time' is directly corroborated by Wikipedia's club history. Distractors Arsenal, Manchester City, Everton are plausible but did not beat QPR in that final.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Queens_Park_Rangers_F.C.",
+      "https://en.wikipedia.org/wiki/1982_FA_Cup_final"
+    ]
+  },
+  {
+    "_i": 9,
+    "verdict": "ok",
+    "check": "none",
+    "resolved": "Manchester City",
+    "reason": "Rodney Marsh signed for Manchester City from QPR on 8 March 1972 for £200,000, a then club-record fee for City, in a deal done by Malcolm Allison. He had joined QPR from Fulham in 1966. Hint corroborated. Distractors Fulham (his earlier, not later, club), Tottenham Hotspur and Everton did not sign him in 1972.",
+    "sources": [
+      "https://www.mancity.com/mancitylegends/marsh-rodney",
+      "https://en.wikipedia.org/wiki/Rodney_Marsh"
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "_i": 18,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "AEK Athens",
+    "reason": "QPR beat AEK Athens 3-0 at home in the 1976-77 UEFA Cup quarter-final, lost 0-3 in Athens, then lost the penalty shootout 7-6 on 16 March 1977. Hint and score line match. Distractors (1. FC Koln, Slovan Bratislava, Athletic Bilbao) are plausible mid-70s European sides QPR did not face in this tie.",
+    "sources": ["https://en.wikipedia.org/wiki/History_of_Queens_Park_Rangers_F.C.", "http://qprreport.blogspot.com/2007/03/thirty-years-since-qprs-uefa-cup-run.html"]
+  },
+  {
+    "_i": 11,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "The Third Division",
+    "reason": "QPR won the 1966-67 Football League Cup while in the Third Division, becoming the first Third Division side to win a major trophy (they also won the Third Division title that season, so the win came with promotion, matching the hint).",
+    "sources": ["https://en.wikipedia.org/wiki/1967_Football_League_Cup_final", "https://www.fansnetwork.co.uk/football/queensparkrangers/news/58905/the-1967-league-cup-final--history"]
+  },
+  {
+    "_i": 12,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "Luton Town",
+    "reason": "QPR installed the first artificial (OmniTurf) pitch in English professional football for 1981-82. The only three other Football League clubs to follow in the 1980s were Luton Town (Kenilworth Road, 1985), Oldham Athletic (1986) and Preston North End (1986), exactly matching the hint. Watford, Millwall and Norwich City never had artificial pitches in this era, so they are valid (verifiably wrong) distractors.",
+    "sources": ["https://footballbh.net/2023/07/29/plastic-pitches/", "https://premierfootballuk.com/which-teams-played-on-the-first-artificial-football-pitch-in-england/"]
+  },
+  {
+    "_i": 22,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "Alejandro Faurlín",
+    "reason": "On 7 May 2011 an FA commission fined QPR £875,000 (£800,000 for breach of FA Rule E3 + £75,000 for breach of Football Agents Regulations) over the third-party-ownership registration of Alejandro Faurlín, signed from Instituto in 2009, with no points deduction, preserving QPR's Championship-winning promotion. Stem figures and hint check out exactly. Other three names (Ephraim, Derry, Buzsaky) were genuine QPR midfielders of that squad, making them credible but wrong distractors.",
+    "sources": ["http://en.espn.co.uk/espn/sport/story/89309.html", "https://en.wikipedia.org/wiki/Alejandro_Faurl%C3%ADn"]
+  },
+  {
+    "_i": 15,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "2-0 down",
+    "reason": "West Bromwich Albion led 2-0 at half-time (Clive Clark brace inside the first 36 minutes) before QPR scored three second-half goals to win 3-2 in the 1967 League Cup final. Matches hint exactly.",
+    "sources": ["https://en.wikipedia.org/wiki/1967_Football_League_Cup_final", "https://www.11v11.com/matches/queens-park-rangers-v-west-bromwich-albion-04-march-1967-28786/"]
+  },
+  {
+    "_i": 13,
+    "verdict": "ok",
+    "check": "none failed",
+    "resolved": "Gerry Francis",
+    "reason": "Gerry Francis, QPR midfielder, captained England in the mid-1970s (captain in 8 of his 12 caps, 1974-76) before a persistent back injury ended his international career early, matching the hint precisely. Masson, Hollins and Thomas were contemporaries but never captained England.",
+    "sources": ["https://en.wikipedia.org/wiki/Gerry_Francis"]
+  }
+]

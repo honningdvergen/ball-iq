@@ -1,0 +1,67 @@
+[
+  {
+    "_i": 3,
+    "verdict": "ok",
+    "check": "premise+options",
+    "resolved": "Andy Gray",
+    "reason": "Andy Gray scored Everton's controversial second goal in the 1984 FA Cup final, appearing to head the ball out of Steve Sherwood's hands; goal stood, referee John Hunting defended it after the match. Distractors (Graeme Sharp scored the first goal; Adrian Heath and Trevor Steven were genuine Everton squad members of that era) are all plausible and verifiably wrong for this specific goal.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1984_FA_Cup_final",
+      "https://www.fa-cupfinals.co.uk/1984.htm"
+    ]
+  },
+  {
+    "_i": 0,
+    "verdict": "ok",
+    "check": "premise+options",
+    "resolved": "1976",
+    "reason": "Elton John became Watford chairman in 1976, a year before Graham Taylor was appointed manager in June 1977; Watford were in the Fourth Division at the time. Hint is consistent with the keyed answer.",
+    "sources": [
+      "https://bsidemusicstories.com/cards/elton-john-25-watford-fc-chairman",
+      "https://footballbh.net/2022/05/11/rocket-men-how-graham-taylor-and-elton-john-led-watford-from-the-fourth-to-first-division/"
+    ]
+  },
+  {
+    "_i": 2,
+    "verdict": "ok",
+    "check": "premise+options",
+    "resolved": "Lincoln City",
+    "reason": "Graham Taylor was managing Lincoln City (having led them to the 1975-76 Fourth Division title with a then-record 74 points) when Watford appointed him in June 1977. Grimsby Town is correctly flagged in the hint as where he played, not managed, so it remains a fair but wrong distractor; Notts County and Cambridge United are real, unrelated clubs.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Graham_Taylor",
+      "https://footballbh.net/2022/05/11/rocket-men-how-graham-taylor-and-elton-john-led-watford-from-the-fourth-to-first-division/"
+    ]
+  },
+  {
+    "_i": 7,
+    "verdict": "ok",
+    "check": "premise+options",
+    "resolved": "Sparta Prague",
+    "reason": "Watford lost to Sparta Prague 7-2 on aggregate in the third round of the 1983-84 UEFA Cup (Sparta won 3-2 at Vicarage Road, then 4-0 at home on 7 December 1983), having beaten Kaiserslautern and Levski Spartak in earlier rounds -- matching the hint exactly. Levski Spartak is a defensible distractor since Watford had already played and beaten them; Dukla Prague and Red Star Belgrade are real Eastern European clubs of the era, correctly wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1983%E2%80%9384_UEFA_Cup",
+      "https://www.uefa.com/uefaeuropaleague/match/1092--sparta-praha-vs-watford/"
+    ]
+  },
+  {
+    "_i": 1,
+    "verdict": "ok",
+    "check": "premise+options",
+    "resolved": "Everton",
+    "reason": "1984 was indeed Watford's first-ever FA Cup final, lost to Everton (Howard Kendall's side, who went on to win the league title in 1984-85). Southampton, Wimbledon, and Sunderland are all real, plausible top-flight/cup-final-calibre clubs of the era and correctly wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1984_FA_Cup_final"
+    ]
+  },
+  {
+    "_i": 5,
+    "verdict": "ok",
+    "check": "premise+options",
+    "resolved": "2-0",
+    "reason": "Everton beat Watford 2-0 in the 1984 FA Cup final (Sharp before half-time, Gray just after). Confirmed alongside the Q_i=3 verification.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1984_FA_Cup_final",
+      "https://historyofsoccer.info/1984-fa-cup-final"
+    ]
+  }
+]

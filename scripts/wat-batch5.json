@@ -1,0 +1,80 @@
+[
+  {
+    "q": "In which year did the Pozzo family buy Watford?",
+    "o": [
+      "2012",
+      "2005",
+      "2009",
+      "2016"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The takeover was completed in June, a few weeks after that season's Championship campaign ended.",
+    "_i": 30
+  },
+  {
+    "q": "Who scored the only goal as Watford won 1-0 away at Liverpool in August 1999?",
+    "o": [
+      "Tommy Mooney",
+      "Heiðar Helguson",
+      "Allan Smart",
+      "Micah Hyde"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "He struck inside the opening quarter of an hour at Anfield, past goalkeeper Sander Westerveld.",
+    "_i": 25
+  },
+  {
+    "q": "Which club beat Watford 6-0 in the 2019 FA Cup final at Wembley?",
+    "o": [
+      "Manchester City",
+      "Manchester United",
+      "Liverpool",
+      "Chelsea"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The scoreline equalled the record margin of victory in an FA Cup final, first set back in 1903.",
+    "_i": 37
+  },
+  {
+    "q": "Ben Foster spent two loan seasons at Watford in the mid-2000s, including the promotion campaign. Which club did he belong to at the time?",
+    "o": [
+      "Manchester United",
+      "Stoke City",
+      "West Bromwich Albion",
+      "Birmingham City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "He had moved to Old Trafford from Stoke City in 2005, and years later returned to Watford permanently.",
+    "_i": 28
+  },
+  {
+    "q": "Which Italian club did the Pozzo family already own when they bought Watford?",
+    "o": [
+      "Udinese",
+      "Sampdoria",
+      "Bologna",
+      "Torino"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The club from Friuli supplied Watford with a wave of loan signings in 2012-13, including Matěj Vydra and Almen Abdi.",
+    "_i": 31
+  },
+  {
+    "q": "Who was the first head coach appointed by Watford after the Pozzo family takeover in 2012?",
+    "o": [
+      "Gianfranco Zola",
+      "Quique Sánchez Flores",
+      "Javi Gracia",
+      "Beppe Sannino"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "The former Chelsea and Italy forward took them all the way to the 2013 play-off final in his first season.",
+    "_i": 32
+  }
+]

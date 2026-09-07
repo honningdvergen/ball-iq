@@ -1,0 +1,50 @@
+[
+  {
+    "_i": 34,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractors",
+    "resolved": "Plymouth Argyle",
+    "reason": "Plymouth Argyle won the 2003-04 Second Division (old naming, correct for that season) with 90 points; QPR finished 2nd with 83 (automatic promotion, not play-off); Bristol City were 3rd with 82, one point behind QPR, matching the hint exactly. Swindon Town and Brighton did not finish in the top 3 that season; both are plausible lower-tier/era-appropriate distractors that are verifiably wrong.",
+    "sources": ["https://en.wikipedia.org/wiki/2003%E2%80%9304_Plymouth_Argyle_F.C._season", "https://www.footballsite.co.uk/Statistics/Seasons/2003-04/Div22003-04.htm"]
+  },
+  {
+    "_i": 24,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractors",
+    "resolved": "Neil Warnock",
+    "reason": "Warnock took QPR to the 2010-11 Championship title and promotion. Hint checks out: appointed March 2010 from Crystal Palace, sacked January 2012 during QPR's first season back in the top flight. Holloway, Hughes and Redknapp all managed QPR at other times (2001-06, 2012-14, 2012-15 respectively) but not in 2010-11, making them fair distractors.",
+    "sources": ["https://en.wikipedia.org/wiki/2010%E2%80%9311_Queens_Park_Rangers_F.C._season", "https://www.aljazeera.com/sports/2012/1/9/qpr-sack-neil-warnock"]
+  },
+  {
+    "_i": 19,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractors",
+    "resolved": "Oxford United",
+    "reason": "Oxford United beat QPR 3-0 in the 1986 Milk Cup (League Cup) final at Wembley under manager Maurice Evans; it remains Oxford's only major honour, and their home ground at the time was the Manor Ground, matching the stem. Norwich, Aston Villa and Luton Town were not the opponent.",
+    "sources": ["https://en.wikipedia.org/wiki/1986_Football_League_Cup_final", "https://www.oufc.co.uk/news/celebrating-40-years-winning-milk-cup"]
+  },
+  {
+    "_i": 38,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractors",
+    "resolved": "Christopher Samba",
+    "reason": "Samba joined QPR from Anzhi Makhachkala for £12.5m in January 2013, breaking the club's transfer record (just set by Loic Remy weeks earlier). QPR finished bottom of the Premier League on 25 points in 2012-13, matching the hint. Onuoha, Caulker and Bosingwa were all QPR defenders but none arrived from Anzhi in Jan 2013 as the record signing.",
+    "sources": ["https://gulfnews.com/sport/football/samba-joins-qpr-in-10m-move-from-anzhi-1.1140401", "https://footballleagueworld.co.uk/how-qpr-spared-transfer-blushes-with-bizarre-christopher-samba-deal/"]
+  },
+  {
+    "_i": 28,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractors",
+    "resolved": "Derby County",
+    "reason": "QPR beat Derby County 1-0 in the 2014 Championship play-off final at Wembley to return to the Premier League. Derby, managed by Steve McClaren, dominated possession and McClaren did call it a cruel way to lose. Brighton lost to Derby in the semi-final (plausible distractor), Wigan and Reading were Championship sides that season but did not reach the final.",
+    "sources": ["https://www.si.com/soccer/2014/05/24/qpr-derby-county-bobby-zamora", "https://www.skysports.com/football/news/11672/10295732/play-off-finals-from-sky-sports-vault-qpr-1-0-derby-2014"]
+  },
+  {
+    "_i": 23,
+    "verdict": "ok",
+    "check": "index resolution, false premise, distractors",
+    "resolved": "Bobby Zamora",
+    "reason": "Zamora scored a 90th-minute winner from the edge of the box to beat Derby County 1-0 in the 2014 play-off final, confirmed by multiple contemporaneous reports (named Wembley's moment of 2014). Austin, Hoilett and Morrison were QPR players around that period but did not score the winning goal.",
+    "sources": ["https://www.thefa.com/news/2014/dec/31/bobby-zamora-goal-named-wembley-moment-of-2014", "https://www.ibtimes.com/video-qpr-1-0-derby-highlights-zamora-goal-wins-championship-play-final-dramatic-fashion-1589812"]
+  }
+]

@@ -1,0 +1,71 @@
+[
+  {
+    "_i": 11,
+    "verdict": "ok",
+    "check": "premise/facts verified",
+    "resolved": "Wilf Rostron",
+    "reason": "Confirmed: Rostron (Watford's left-back/captain) was sent off at Kenilworth Road on 28 April 1984 by referee Roger Milford after an incident with Luton's Paul Elliott, and missed the 1984 FA Cup final as a result, with Les Taylor captaining the side at Wembley. Distractors (Taylor, Terry, Jackett) are all genuine Watford players of that squad, none is 'Watford'.",
+    "sources": [
+      "https://thesefootballtimes.co/2019/05/17/wilf-rostron-and-the-controversial-ban-that-forced-him-to-miss-watfords-1984-fa-cup-final/",
+      "https://oldwatford.com/1984/04/28/28th-april-1984-division-one-luton-town-1-watford-2/"
+    ]
+  },
+  {
+    "_i": 4,
+    "verdict": "ok",
+    "check": "premise/facts verified",
+    "resolved": "Liverpool",
+    "reason": "Confirmed: newly-promoted Watford finished runners-up to Liverpool in the 1982-83 First Division; it was Bob Paisley's final season as Liverpool manager before retiring. Distractors (Everton, Arsenal, Southampton) are plausible top-flight clubs of that era but did not win the title.",
+    "sources": [
+      "https://thesetpieces.com/latest-posts/second-glance-watford-198283/",
+      "https://en.wikipedia.org/wiki/1982%E2%80%9383_Football_League"
+    ]
+  },
+  {
+    "_i": 6,
+    "verdict": "ok",
+    "check": "premise/facts + hint stats verified",
+    "resolved": "Partick Thistle",
+    "reason": "Confirmed: Mo Johnston moved from Partick Thistle to Watford for a fee (£200k-£210k depending on source) in November 1983, having scored 41 goals in 85 games there (matches hint). His post-move tally of '20 league goals in 29 games' in the remainder of 1983-84 also checks out against a source giving that exact figure for his partial debut season. Distractors (Dundee United, St Mirren, Queen's Park) are all real Scottish clubs, fitting the qualifier while being wrong.",
+    "sources": [
+      "https://partickthistleahistory.wikifoundry.com/player-biographies/johnston-mo-1980-83/",
+      "https://en.wikipedia.org/wiki/Mo_Johnston"
+    ]
+  },
+  {
+    "_i": 15,
+    "verdict": "ok",
+    "check": "premise/facts verified",
+    "resolved": "Manchester United",
+    "reason": "Confirmed: on 4 October 1978, Third Division Watford beat Manchester United 2-1 at Old Trafford in a League Cup third-round tie, trailing 1-0 at half-time before two second-half Luther Blissett headers won it -- their first ever win over United. Distractors (Man City, Nottingham Forest, Aston Villa) are period-plausible top-flight clubs but not the actual opponent.",
+    "sources": [
+      "https://www.watfordfc.com/memorable-matches/manchester-united-1-2-watford-1978",
+      "https://bleacherreport.com/articles/2583669-manchester-utds-most-embarrassing-league-cup-moments"
+    ]
+  },
+  {
+    "_i": 8,
+    "verdict": "ok",
+    "check": "premise/facts verified",
+    "resolved": "The Fourth Division",
+    "reason": "Confirmed: Graham Taylor's first season, 1977-78, ended with Watford as Fourth Division champions on 71 points, 11 points clear of runners-up Southend United, exactly matching the hint. Distractors are the other three tiers of the pyramid, consistent with the stem's qualifier.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1977%E2%80%9378_Watford_F.C._season",
+      "https://footballbh.net/2022/12/27/graham-taylor-elton-john/"
+    ]
+  },
+  {
+    "_i": 9,
+    "verdict": "fix",
+    "check": "false premise (in the hint)",
+    "resolved": "1922",
+    "reason": "The answer itself (Vicarage Road since 1922, moved from Cassio Road) is correct and 1898 is indeed the club's founding year by merger, as the hint claims. However the hint's claim that Watford 'had spent 32 years' at Cassio Road is wrong: Cassio Road was their home from 1898 to 1922, i.e. 24 years, not 32. This is a checkable, false numeric claim in the hint text.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Cassio_Road",
+      "https://www.watfordfc.com/club/history/vicarage-road"
+    ],
+    "fixed": {
+      "hint": "They moved there from Cassio Road, where they had spent 24 years. The other date on this list is the year the club itself was formed by a merger."
+    }
+  }
+]

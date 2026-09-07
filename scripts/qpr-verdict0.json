@@ -1,0 +1,50 @@
+[
+  {
+    "_i": 3,
+    "verdict": "ok",
+    "check": "premise+distractors",
+    "resolved": "Mark Lazarus",
+    "reason": "Confirmed: QPR 3-2 West Brom, 1967 League Cup final. Goals: Roger Morgan 63', Rodney Marsh 75' (both pulling QPR level from 2-0 down), Mark Lazarus 81' (winner). Hint's framing of Morgan/Marsh as the two who 'already pulled goals back' before Lazarus's winner matches this exactly. Les Allen was a genuine QPR forward of that era and did not score in this match - valid distractor. All four options are plausible QPR-era names.",
+    "sources": ["https://en.wikipedia.org/wiki/1967_Football_League_Cup_final"]
+  },
+  {
+    "_i": 0,
+    "verdict": "ok",
+    "check": "premise+distractors",
+    "resolved": "West Bromwich Albion",
+    "reason": "Confirmed: QPR beat West Brom 3-2 on 4 March 1967, the first League Cup final played at Wembley as a single match (previous finals were two-legged, no fixed venue). West Brom had won the 1966 League Cup (beating West Ham 5-3 agg.), so they were holders, matching the hint. Leicester, West Ham, and Stoke were not the 1967 opponent - valid distractors.",
+    "sources": ["https://en.wikipedia.org/wiki/1967_Football_League_Cup_final"]
+  },
+  {
+    "_i": 1,
+    "verdict": "ok",
+    "check": "premise+distractors",
+    "resolved": "Dave Sexton",
+    "reason": "Confirmed: Dave Sexton managed QPR Oct 1974 - Jul 1977, having arrived from Chelsea (sacked there Oct 1974) and later joined Manchester United in 1977 - matches hint exactly. He was QPR manager for the 1975-76 runners-up season. Confirmed manager order: Alec Stock (to 1968), Gordon Jago (Jan 1971-Oct 1974), Dave Sexton (Oct 1974-1977) - so Stock and Jago are valid wrong-era distractors. Terry Venables later managed QPR (1980-84), also a valid distractor not in post at the time.",
+    "sources": ["https://en.wikipedia.org/wiki/1975%E2%80%9376_Queens_Park_Rangers_F.C._season", "web search: QPR managerial history (Alec Stock, Gordon Jago, Dave Sexton succession)"]
+  },
+  {
+    "_i": 7,
+    "verdict": "ok",
+    "check": "premise+distractors",
+    "resolved": "West Ham United",
+    "reason": "Confirmed: Phil Parkes moved from QPR to West Ham United for £565,000 in February 1979, then a world record fee for a goalkeeper, and stayed at West Ham for roughly eleven years (1979 to 1990) - matches hint. Nottingham Forest, Everton, and Manchester City did not sign him - valid distractors.",
+    "sources": ["https://www.whufc.com/news/articles/2018/august/15-august/phil-parkes-catches-tenth-50greatesthammers", "https://en.wikipedia.org/wiki/Phil_Parkes_(footballer,_born_1950)"]
+  },
+  {
+    "_i": 2,
+    "verdict": "ok",
+    "check": "premise+distractors",
+    "resolved": "Liverpool",
+    "reason": "Confirmed: Liverpool won the 1975-76 First Division title under Bob Paisley with 60 points to QPR's 59 (QPR's highest-ever league finish), clinching it on the final day with a 3-1 win at Wolves - matches hint precisely. Everton, Leeds United, and Manchester United did not win that title - valid distractors.",
+    "sources": ["https://en.wikipedia.org/wiki/1975%E2%80%9376_Football_League_First_Division", "https://en.wikipedia.org/wiki/1975%E2%80%9376_Liverpool_F.C._season"]
+  },
+  {
+    "_i": 4,
+    "verdict": "ok",
+    "check": "premise+distractors",
+    "resolved": "Carlisle United",
+    "reason": "Confirmed: Stan Bowles joined QPR from Carlisle United in September 1972 for a fee reported as £110,000-£112,000 (question's £112,000 figure is within the commonly cited range). Bowles's earlier journeyman path was Manchester City -> Bury -> Crewe Alexandra -> Carlisle United -> QPR, so all three distractors are genuine earlier clubs, matching the hint's 'played for the other three earlier in his travels.'",
+    "sources": ["https://footballleagueworld.co.uk/qpr-struck-transfer-gold-with-carlisle-united-stan-bowles-agreement/", "https://en.wikipedia.org/wiki/Stan_Bowles"]
+  }
+]

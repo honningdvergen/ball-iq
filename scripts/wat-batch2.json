@@ -1,0 +1,80 @@
+[
+  {
+    "q": "Who scored the only goal of Watford's 1984 FA Cup semi-final win over Plymouth Argyle?",
+    "o": [
+      "George Reilly",
+      "Luther Blissett",
+      "Mo Johnston",
+      "Nigel Callaghan"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The 6ft 4in centre-forward headed in a John Barnes cross after eleven minutes. Blissett was in Italy for the whole of that season.",
+    "_i": 19
+  },
+  {
+    "q": "John Barnes left Watford in 1987 to join which club?",
+    "o": [
+      "Everton",
+      "Arsenal",
+      "Chelsea",
+      "Liverpool"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "The £900,000 move took him to Anfield, where he won two league titles. He had cost Watford next to nothing from non-league Sudbury Court six years earlier.",
+    "_i": 12
+  },
+  {
+    "q": "Watford reached the 1984 FA Cup final by winning a semi-final at Villa Park against which club?",
+    "o": [
+      "Birmingham City",
+      "Coventry City",
+      "Plymouth Argyle",
+      "Notts County"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Their opponents were a Third Division side, and it remains the only time that club has reached an FA Cup semi-final.",
+    "_i": 10
+  },
+  {
+    "q": "Watford reached the 1999 play-off final by beating Birmingham City on penalties in the semi-final. What was the shootout score?",
+    "o": [
+      "7-6",
+      "4-3",
+      "5-4",
+      "3-2"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The tie finished 1-1 on aggregate after extra time and the shootout ran deep into sudden death.",
+    "_i": 22
+  },
+  {
+    "q": "Luther Blissett was sold in 1983, after topping the First Division scoring charts, to which Italian club?",
+    "o": [
+      "AS Roma",
+      "Inter Milan",
+      "AC Milan",
+      "SSC Napoli"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "The £1 million move followed his 27-goal league season. He managed only five league goals in Italy and was back at Vicarage Road a year later.",
+    "_i": 16
+  },
+  {
+    "q": "Graham Taylor left Watford in May 1987 to manage which club?",
+    "o": [
+      "Leeds United",
+      "Sheffield Wednesday",
+      "Aston Villa",
+      "Nottingham Forest"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "He took his new club straight back to the top flight in 1988-89, then to First Division runners-up in 1989-90, before becoming England manager in 1990.",
+    "_i": 13
+  }
+]

@@ -1,0 +1,73 @@
+[
+  {
+    "_i": 32,
+    "verdict": "ok",
+    "check": "premise + distractors",
+    "resolved": "Les Ferdinand",
+    "reason": "Ferdinand scored 24 PL goals for QPR in 1994-95, second in the league scoring chart. Distractors Bradley Allen (QPR until Mar 1996), Kevin Gallen (10 PL goals that same season, QPR from Aug 1994), and Danny Dichio (QPR 1993-1997) were all genuinely on QPR's books during 1994-95, so each fits the stem's qualifier while being verifiably wrong.",
+    "sources": [
+      "https://www.statmuse.com/fc/ask/les-ferdinand-stats-with-qpr",
+      "https://www.sportsmole.co.uk/football/qpr/1994-95/top-scorers.html",
+      "https://en.wikipedia.org/wiki/Danny_Dichio"
+    ]
+  },
+  {
+    "_i": 25,
+    "verdict": "ok",
+    "check": "premise + distractors + hint",
+    "resolved": "Jamie Mackie",
+    "reason": "Confirmed goal sequence: Zabaleta 39' (City 1-0), Cisse 48' (1-1), Mackie 66' header from Traore cross (QPR 2-1, after Barton's red card), Dzeko 90+2' (2-2), Aguero 90+4' (3-2). Mackie's goal is the one that put QPR 2-1 up, matching the keyed answer and hint (Scotland international, just after the hour, already down to ten men). Zamora and Cisse both started for QPR that day (Cisse actually scored the equalizer, Zamora didn't score) and Taarabt was an unused-until-later substitute, so all three distractors are real squad members who did not score the front-putting goal.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Manchester_City_F.C._3%E2%80%932_Queens_Park_Rangers_F.C.",
+      "https://www.skysports.com/football/man-city-vs-qpr/teams/238249"
+    ]
+  },
+  {
+    "_i": 36,
+    "verdict": "fix",
+    "check": "false premise in stem",
+    "resolved": "Loftus Road",
+    "reason": "Loftus Road is correctly the answer and is in Shepherd's Bush, but 'where the club has played since 1917' overstates continuity. QPR first moved to Loftus Road in 1917, left for White City in 1931-32 (returning 1933-34), and left again for White City in 1962-63 (returning within the season) before settling permanently from 1963 onward. The tenancy was not unbroken from 1917, so the stem asserts something untrue.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Loftus_Road"
+    ],
+    "fixed": {
+      "q": "What is the name of QPR's home ground in Shepherd's Bush, first used by the club in 1917 and their permanent home since 1963?",
+      "o": ["Craven Cottage", "Loftus Road", "Griffin Park", "Selhurst Park"],
+      "a": 1
+    }
+  },
+  {
+    "_i": 27,
+    "verdict": "ok",
+    "check": "premise + distractors + hint",
+    "resolved": "Ian Holloway",
+    "reason": "Holloway was appointed QPR manager 26 Feb 2001, replacing Gerry Francis, with QPR relegated to the third tier (first time since 1967) at the end of 2000-01. Holloway had played for QPR in the 1980s/90s and later took them up as Division Two runners-up in 2004 (2nd behind Plymouth Argyle), matching the hint exactly. Distractors Francis, Venables, and Wilkins are all genuine former QPR managers from adjacent eras, correctly wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2000%E2%80%9301_Queens_Park_Rangers_F.C._season",
+      "https://www.qprhistory.co.uk/season-reviews/season-reviews-2000s/200304"
+    ]
+  },
+  {
+    "_i": 29,
+    "verdict": "ok",
+    "check": "premise + distractors + hint",
+    "resolved": "Ray Wilkins",
+    "reason": "Wilkins became QPR player-manager in Nov 1994 (replacing Gerry Francis, who left for Spurs), was in charge for the 1995-96 relegation (19th place), and left by mutual consent in Sept 1996 -- matching the hint exactly ('replaced Gerry Francis in late 1994... left Loftus Road in September 1996'). Distractors are real QPR managers of other periods, correctly wrong.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Ray_Wilkins",
+      "https://en.wikipedia.org/wiki/1995%E2%80%9396_Queens_Park_Rangers_F.C._season"
+    ]
+  },
+  {
+    "_i": 31,
+    "verdict": "ok",
+    "check": "premise + distractors + hint",
+    "resolved": "Barnsley",
+    "reason": "Trevor Sinclair's overhead kick came in QPR's 3-2 FA Cup fourth-round win over Barnsley at Loftus Road on 25 Jan 1997, and it won BBC Goal of the Season. Barnsley were promoted to the Premier League at the end of that same 1996-97 season (their famous first-ever top-flight promotion), matching the hint. Oldham, Chesterfield, and Huddersfield are plausible period-appropriate lower-league clubs, correctly wrong.",
+    "sources": [
+      "https://www.thefa.com/news/2016/jan/27/greatest-cup-goal-ever-trevor-sinclair-qpr-270116",
+      "https://www.youtube.com/watch?v=r71UJ92A4JY"
+    ]
+  }
+]

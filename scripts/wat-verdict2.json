@@ -1,0 +1,67 @@
+[
+  {
+    "_i": 19,
+    "verdict": "ok",
+    "check": "index resolution, distractor plausibility",
+    "resolved": "George Reilly",
+    "reason": "Confirmed: George Reilly headed in the only goal (John Barnes cross, ~11th minute) as Watford beat Plymouth Argyle 1-0 at Villa Park, 1984 FA Cup semi-final. Blissett was at AC Milan that season (correctly excluded by hint), Johnston and Callaghan did not score; both were plausible Watford players of the era, not giveaway distractors.",
+    "sources": [
+      "https://www.watfordfc.com/magazine (Facebook: #OnThisDay Plymouth Argyle 0-1 Watford, George Reilly)",
+      "https://footballbh.net/2022/04/14/plymouth-fa-cup-semi-final-1984-watford/"
+    ]
+  },
+  {
+    "_i": 12,
+    "verdict": "ok",
+    "check": "false premise / index resolution",
+    "resolved": "Liverpool",
+    "reason": "Confirmed: John Barnes left Watford for Liverpool in June 1987 for a reported £900,000, signed by Kenny Dalglish. Matches hint details exactly. Distractors (Everton, Arsenal, Chelsea) are all real top-flight clubs of the era, none giveaways.",
+    "sources": [
+      "https://www.hitc.com/on-this-day-9th-june-1987-john-barnes-signs-for-liverpool-from-w/",
+      "https://sports.yahoo.com/article/otd-1987-liverpool-hero-john-135100910.html"
+    ]
+  },
+  {
+    "_i": 10,
+    "verdict": "ok",
+    "check": "false premise (hint claims), distractor plausibility",
+    "resolved": "Plymouth Argyle",
+    "reason": "Confirmed: Watford beat Plymouth Argyle at Villa Park in the 1984 FA Cup semi-final. Plymouth were a Third Division side that season (narrowly avoiding relegation) and this remains their only FA Cup semi-final appearance ever — both hint claims verified true. Distractors (Birmingham City, Coventry City, Notts County) are plausible period English clubs, correctly wrong.",
+    "sources": [
+      "https://footballbh.net/2022/04/14/plymouth-fa-cup-semi-final-1984-watford/",
+      "https://www.facebook.com/Argyle/posts/otd-in-1984-argyle-faced-watford-in-the-fa-cup-semi-finals-at-villa-park-/1105507961623508/"
+    ]
+  },
+  {
+    "_i": 22,
+    "verdict": "ok",
+    "check": "index resolution, distractor plausibility",
+    "resolved": "7-6",
+    "reason": "Confirmed: Watford beat Birmingham City 7-6 on penalties at St Andrew's in the 1999 Division One play-off semi-final second leg, after a 1-1 aggregate score, going deep into sudden death as the hint states. Other scorelines (4-3, 5-4, 3-2) are plausible shootout scores, correctly wrong.",
+    "sources": [
+      "https://www.watfordfc.com/magazine/back-in-the-day/on-this-day-play-off-penalty-heroes-in-birmingham",
+      "https://www.youtube.com/watch?v=0JIobEv7ufY"
+    ]
+  },
+  {
+    "_i": 16,
+    "verdict": "ok",
+    "check": "index resolution, distractor plausibility",
+    "resolved": "AC Milan",
+    "reason": "Confirmed: Luther Blissett was sold to AC Milan in summer 1983 for a reported £1 million after topping the First Division scoring charts (27 goals) the prior season; returned to Watford within a year having scored only five league goals. Matches hint exactly. Distractors (Roma, Inter, Napoli) are all real Serie A clubs, correctly wrong.",
+    "sources": [
+      "General knowledge corroborated by search context (George Reilly / Watford 1984 sources referencing Blissett's Italy season); well-established historical fact"
+    ]
+  },
+  {
+    "_i": 13,
+    "verdict": "ok",
+    "check": "false premise (hint claims), distractor plausibility",
+    "resolved": "Aston Villa",
+    "reason": "Confirmed: Graham Taylor left Watford for Aston Villa at the end of the 1986-87 season. He won Second Division promotion at his first attempt (1987-88), returning Villa to the top flight for 1988-89 (survived on the final day), then finished First Division runners-up in 1989-90 before becoming England manager in 1990 -- all hint claims check out. Distractors (Leeds, Sheffield Wednesday, Nottingham Forest) are plausible period clubs, correctly wrong.",
+    "sources": [
+      "https://www.premierleague.com/en/news/304489",
+      "https://en.wikipedia.org/wiki/1987%E2%80%9388_Aston_Villa_F.C._season"
+    ]
+  }
+]

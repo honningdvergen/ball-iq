@@ -1,0 +1,587 @@
+[
+ {
+  "q": "QPR won the League Cup in 1967, in the first final of that competition staged at Wembley. Which club did they beat 3-2?",
+  "o": [
+   "West Bromwich Albion",
+   "Leicester City",
+   "West Ham United",
+   "Stoke City"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The Midlands side were the holders, having won the League Cup the previous season. They led 2-0 at Wembley and still lost.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Who was QPR's manager when they finished First Division runners-up in 1975-76?",
+  "o": [
+   "Dave Sexton",
+   "Alec Stock",
+   "Gordon Jago",
+   "Terry Venables"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "He arrived at Loftus Road from Chelsea in October 1974 and left for Manchester United in 1977.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR finished a point behind the champions in the 1975-76 First Division. Which club won the title that season?",
+  "o": [
+   "Liverpool",
+   "Everton",
+   "Leeds United",
+   "Manchester United"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Bob Paisley's side took the trophy with 60 points to QPR's 59, winning their final game at Wolves.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Which QPR player scored the 81st-minute winner in the 1967 League Cup final?",
+  "o": [
+   "Mark Lazarus",
+   "Roger Morgan",
+   "Rodney Marsh",
+   "Les Allen"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "It was a winger who completed the comeback, not either of the two men who had already pulled the goals back.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Stan Bowles became QPR's cult No. 10 of the 1970s. Which club did he join them from in September 1972?",
+  "o": [
+   "Carlisle United",
+   "Manchester City",
+   "Crewe Alexandra",
+   "Bury"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "QPR paid £112,000 to the Cumbrian club. Bowles had played for the other three earlier in his travels.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Loftus Road, QPR's home since 1917, sits in which part of west London?",
+  "o": [
+   "Shepherd's Bush",
+   "Fulham",
+   "Hammersmith",
+   "Notting Hill"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The ground is a short walk from the White City site, in the W12 postcode.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR laid an artificial pitch at Loftus Road in 1981. In which year did they dig it up and go back to grass?",
+  "o": [
+   "1988",
+   "1984",
+   "1991",
+   "1994"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "The plastic lasted seven seasons before being removed in the April of that year.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "Phil Parkes left QPR in February 1979 for £565,000, then a world record fee for a goalkeeper. Which club signed him?",
+  "o": [
+   "West Ham United",
+   "Nottingham Forest",
+   "Everton",
+   "Manchester City"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "He moved across London and stayed at his new club for eleven years.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR reached the FA Cup final for the only time in 1982. Which club beat them after a replay?",
+  "o": [
+   "Tottenham Hotspur",
+   "Arsenal",
+   "Manchester City",
+   "Everton"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The north London side were retaining the trophy, having also won a replayed final the year before.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Rodney Marsh left QPR in March 1972 for a then club-record fee. Which club did he join?",
+  "o": [
+   "Manchester City",
+   "Fulham",
+   "Tottenham Hotspur",
+   "Everton"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Malcolm Allison paid £200,000 to take him to Maine Road. He had originally arrived at QPR from Fulham in 1966.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR finished their 1975-76 league programme top of the table, a point clear of the side who still had a game to play. At which ground was that title-deciding match played ten days later?",
+  "o": [
+   "Molineux",
+   "Anfield",
+   "Old Trafford",
+   "Filbert Street"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "The champions' rearranged final fixture was away at Wolves, who needed to win it to stay up.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Which division were QPR playing in when they won the 1967 League Cup?",
+  "o": [
+   "The Third Division",
+   "The Second Division",
+   "The Fourth Division",
+   "The First Division"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "They won that same division's title in the same season, so the cup came with a promotion.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR's 1981 artificial pitch was the first in British professional football, and three other Football League clubs followed in the 1980s. Which of these was one of them?",
+  "o": [
+   "Luton Town",
+   "Watford",
+   "Millwall",
+   "Norwich City"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Kenilworth Road got its plastic in 1985; Oldham and Preston laid theirs the year after.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Which QPR midfielder captained England during the mid-1970s?",
+  "o": [
+   "Gerry Francis",
+   "Don Masson",
+   "John Hollins",
+   "Dave Thomas"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "He led England in eight of his twelve caps before a persistent back injury cut his international career short.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Who scored QPR's equaliser late in extra time of the 1982 FA Cup final at Wembley?",
+  "o": [
+   "Terry Fenwick",
+   "Tony Currie",
+   "Simon Stainrod",
+   "John Gregory"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "It was a defender who would later win England caps and eventually join the very club that beat him that day.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR came from behind to win the 1967 League Cup final. What was the score at half-time?",
+  "o": [
+   "2-0 down",
+   "1-0 down",
+   "3-0 down",
+   "3-1 down"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "Clive Clark scored twice for the Midlands side inside the first 36 minutes.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Which manager took QPR to the 1982 FA Cup final and then to the Second Division title the following season?",
+  "o": [
+   "Terry Venables",
+   "Jim Smith",
+   "Alan Mullery",
+   "Gordon Jago"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "He took the job in 1980, installed the plastic pitch, and left for Barcelona in 1984.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "Don Givens, QPR's leading league scorer in the 1975-76 runners-up season, played international football for which country?",
+  "o": [
+   "Republic of Ireland",
+   "Northern Ireland",
+   "Wales",
+   "Scotland"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Born in Limerick, the striker won 56 caps between 1969 and 1981.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR reached the quarter-finals of the 1976-77 UEFA Cup, where they went out on penalties. Which club knocked them out?",
+  "o": [
+   "AEK Athens",
+   "1. FC Köln",
+   "Slovan Bratislava",
+   "Athletic Bilbao"
+  ],
+  "a": 0,
+  "diff": "hard",
+  "hint": "QPR won the home leg 3-0, lost the away leg 3-0 in Greece, and then lost the shootout 7-6.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR were back at Wembley for the 1986 League Cup final, then sponsored as the Milk Cup. Which club beat them 3-0?",
+  "o": [
+   "Oxford United",
+   "Norwich City",
+   "Aston Villa",
+   "Luton Town"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "It remains the only major trophy won by the Manor Ground club, under manager Maurice Evans.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "QPR were founder members of the Premier League. Where did they finish in the inaugural 1992-93 season?",
+  "o": [
+   "Ninth",
+   "Fifth",
+   "Twelfth",
+   "Second"
+  ],
+  "a": 1,
+  "diff": "easy",
+  "hint": "They were the highest-placed London club that season, finishing above both Tottenham and Arsenal.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "The nickname 'the Hoops' comes from the club's shirt. Which two colours are the hoops?",
+  "o": [
+   "Green and white",
+   "Red and white",
+   "Blue and white",
+   "Claret and blue"
+  ],
+  "a": 2,
+  "diff": "easy",
+  "hint": "Celtic wear the green version of the same design; the Loftus Road version swaps in a cooler colour.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "History"
+ },
+ {
+  "q": "In May 2011 an FA commission fined QPR £875,000 over the registration of one of their midfielders, but imposed no points deduction, so the promotion stood. Which midfielder was at the centre of the case?",
+  "o": [
+   "Hogan Ephraim",
+   "Shaun Derry",
+   "Ákos Buzsáky",
+   "Alejandro Faurlín"
+  ],
+  "a": 3,
+  "diff": "hard",
+  "hint": "The Argentine had joined from Instituto in 2009, and the charges that were dismissed concerned third-party ownership rules.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "Who scored the 90th-minute goal that won QPR the 2014 Championship play-off final at Wembley?",
+  "o": [
+   "Charlie Austin",
+   "Junior Hoilett",
+   "Bobby Zamora",
+   "Ravel Morrison"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "The veteran striker struck from the edge of the box with almost the last kick of the game.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "Which manager led QPR to the Championship title and promotion to the Premier League in 2010-11?",
+  "o": [
+   "Neil Warnock",
+   "Ian Holloway",
+   "Mark Hughes",
+   "Harry Redknapp"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "He arrived from Crystal Palace in March 2010, and was sacked in January 2012 during the club's first season back in the top flight.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR led 2-1 away on the final day of 2011-12 before the hosts turned it around in stoppage time. Who scored the goal that had put Rangers in front?",
+  "o": [
+   "Bobby Zamora",
+   "Jamie Mackie",
+   "Djibril Cissé",
+   "Adel Taarabt"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "The Scotland forward headed in Armand Traoré's cross just after the hour, with Rangers already down to ten men.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR lost the 2003 Division Two play-off final at the Millennium Stadium to an extra-time goal. Which club beat them?",
+  "o": [
+   "Crewe Alexandra",
+   "Cardiff City",
+   "Oldham Athletic",
+   "Bristol City"
+  ],
+  "a": 1,
+  "diff": "hard",
+  "hint": "Andy Campbell's chip over Chris Day settled it, taking the winners into the second tier for the first time since 1985.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR were relegated to the third tier at the end of 2000-01, their first drop that low since the 1960s. Which former Rangers midfielder had taken over as manager that February?",
+  "o": [
+   "Gerry Francis",
+   "Terry Venables",
+   "Ray Wilkins",
+   "Ian Holloway"
+  ],
+  "a": 3,
+  "diff": "medium",
+  "hint": "He had played for the club in the 1990s before returning to the dugout, and later took them back up as Division Two runners-up in 2004.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR won the 2014 Championship play-off final at Wembley. Which club did they beat?",
+  "o": [
+   "Derby County",
+   "Brighton & Hove Albion",
+   "Wigan Athletic",
+   "Reading"
+  ],
+  "a": 0,
+  "diff": "easy",
+  "hint": "The beaten side dominated possession and were managed by Steve McClaren, who called it the cruellest game ever.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "Which manager was in charge when QPR were relegated from the Premier League at the end of 1995-96?",
+  "o": [
+   "Stewart Houston",
+   "Ian Holloway",
+   "Ray Wilkins",
+   "Gerry Francis"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "The former England midfielder took over in late 1994 and left Loftus Road in September 1996.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR signed Trevor Sinclair in 1993 for a fee that broke his previous club's record for a sale. Which club did he leave?",
+  "o": [
+   "Burnley",
+   "Preston North End",
+   "Bolton Wanderers",
+   "Blackpool"
+  ],
+  "a": 3,
+  "diff": "hard",
+  "hint": "The £600,000 move took the winger from the Lancashire coast to west London; he went on to join West Ham in 1998.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "Trevor Sinclair's overhead kick for QPR won the BBC's Goal of the Season in 1997. Which club were the opponents in that FA Cup fourth-round tie?",
+  "o": [
+   "Oldham Athletic",
+   "Barnsley",
+   "Chesterfield",
+   "Huddersfield Town"
+  ],
+  "a": 1,
+  "diff": "medium",
+  "hint": "Rangers won the January tie 3-2 at Loftus Road, and the opponents went up to the Premier League that same season.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "Which striker scored 24 Premier League goals for QPR in the 1994-95 season?",
+  "o": [
+   "Bradley Allen",
+   "Kevin Gallen",
+   "Danny Dichio",
+   "Les Ferdinand"
+  ],
+  "a": 3,
+  "diff": "easy",
+  "hint": "'Sir Les' came through non-league football at Hayes before making his name at Loftus Road.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR sold their leading scorer of the previous season for £6m in the summer of 1995. Which club bought him?",
+  "o": [
+   "Newcastle United",
+   "Everton",
+   "Aston Villa",
+   "Tottenham Hotspur"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "Kevin Keegan's side paid the fee; Ferdinand only moved on to Tottenham two years later.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR won automatic promotion from Division Two in 2003-04 as runners-up. Which club finished above them as champions?",
+  "o": [
+   "Swindon Town",
+   "Bristol City",
+   "Plymouth Argyle",
+   "Brighton & Hove Albion"
+  ],
+  "a": 2,
+  "diff": "hard",
+  "hint": "The Devon club took the title on 90 points, with Bristol City finishing third, a single point behind QPR.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR played much of the 2014 Championship play-off final with ten men. Which midfielder was sent off in the 60th minute?",
+  "o": [
+   "Joey Barton",
+   "Karl Henry",
+   "Niko Kranjčar",
+   "Gary O'Neil"
+  ],
+  "a": 3,
+  "diff": "medium",
+  "hint": "He was dismissed for hauling down Johnny Russell as the Derby forward ran through on goal.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "Harry Redknapp took over as QPR manager in November 2012. Which manager did he replace?",
+  "o": [
+   "Mark Hughes",
+   "Neil Warnock",
+   "Ian Holloway",
+   "Chris Ramsey"
+  ],
+  "a": 0,
+  "diff": "medium",
+  "hint": "His predecessor had taken just four points from the opening twelve league games of that season.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "QPR broke their transfer record in January 2013 to sign a defender from Anzhi Makhachkala. Who was he?",
+  "o": [
+   "Nedum Onuoha",
+   "Steven Caulker",
+   "Christopher Samba",
+   "José Bosingwa"
+  ],
+  "a": 2,
+  "diff": "hard",
+  "hint": "The £12.5m fee could not save Rangers, who finished bottom of the table on 25 points that season.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ },
+ {
+  "q": "Which attacking midfielder was named Championship Player of the Year after scoring 19 league goals in QPR's 2010-11 promotion season?",
+  "o": [
+   "Ákos Buzsáky",
+   "Tommy Smith",
+   "Adel Taarabt",
+   "Wayne Routledge"
+  ],
+  "a": 2,
+  "diff": "medium",
+  "hint": "The Morocco international had signed permanently from Tottenham the previous August.",
+  "club": "Queens Park Rangers",
+  "type": "mcq",
+  "cat": "PL"
+ }
+]

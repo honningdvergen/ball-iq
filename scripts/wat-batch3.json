@@ -1,0 +1,80 @@
+[
+  {
+    "q": "How many points did Watford finish with in the 1999-2000 Premier League season?",
+    "o": [
+      "24",
+      "31",
+      "19",
+      "28"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "They won six of their 38 matches and finished bottom of the table.",
+    "_i": 26
+  },
+  {
+    "q": "Watford, the club that plays at Vicarage Road, are known by which nickname?",
+    "o": [
+      "The Hornets",
+      "The Bees",
+      "The Robins",
+      "The Terriers"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The name was adopted alongside the switch to gold and black. Think of the insect those colours belong to.",
+    "_i": 20
+  },
+  {
+    "q": "Watford's supporters chose the nickname 'the Hornets' after the club adopted which kit colours at the end of the 1950s?",
+    "o": [
+      "Red and white",
+      "Gold and black",
+      "Blue and white",
+      "Green and white"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Until then they had been known as 'the Blues'. The new colours were the ones that suggested a stinging insect.",
+    "_i": 14
+  },
+  {
+    "q": "Which Watford defender scored the opening goal in the 2006 Championship play-off final against Leeds United?",
+    "o": [
+      "Jay DeMerit",
+      "Lloyd Doyley",
+      "Malky Mackay",
+      "Clarke Carlisle"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The American centre-back had been playing non-league football in England only a few years before, and was named man of the match.",
+    "_i": 29
+  },
+  {
+    "q": "Which club did Watford beat 2-0 in the 1999 First Division play-off final at Wembley?",
+    "o": [
+      "Bolton Wanderers",
+      "Ipswich Town",
+      "Birmingham City",
+      "Sunderland"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The beaten finalists came through their semi-final on away goals and played their home games at the Reebok Stadium.",
+    "_i": 21
+  },
+  {
+    "q": "Mo Johnston left Watford in October 1984 to join which club?",
+    "o": [
+      "Rangers",
+      "Aberdeen",
+      "Hibernian",
+      "Celtic"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "He returned to Glasgow for around £400,000 and won the Scottish Cup in 1985 and the league in 1986. His notorious move to that club's city rivals came five years later.",
+    "_i": 17
+  }
+]

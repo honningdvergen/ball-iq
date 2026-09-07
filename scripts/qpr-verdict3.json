@@ -1,0 +1,67 @@
+[
+  {
+    "_i": 26,
+    "verdict": "ok",
+    "check": "all four checks pass",
+    "resolved": "Cardiff City",
+    "reason": "Cardiff City beat QPR 1-0 a.e.t. in the 2003 Division Two play-off final at the Millennium Stadium (25 May 2003, att. 66,096); Andy Campbell's extra-time chip over Chris Day sealed it. Hint's claim that this was Cardiff's first promotion to the second tier since 1985 is confirmed. Distractors (Crewe Alexandra, Oldham Athletic, Bristol City) are all plausible lower-league sides but verifiably not the opponent.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/2003_Football_League_Second_Division_play-off_Final",
+      "https://www.cardiffcityfc.co.uk/news/day-play-final-glory-cardiff"
+    ]
+  },
+  {
+    "_i": 20,
+    "verdict": "ok",
+    "check": "all four checks pass",
+    "resolved": "Fifth",
+    "reason": "QPR finished 5th in the inaugural 1992-93 FA Premier League with 63 points. Confirmed above Tottenham (8th, 59 pts) and Arsenal (10th, 56 pts), matching the hint's claim of highest-placed London club. No self-answering, no false premise.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/1992%E2%80%9393_FA_Premier_League",
+      "https://www.sportsmole.co.uk/football/premier-league/1992-93/table.html"
+    ]
+  },
+  {
+    "_i": 16,
+    "verdict": "ok",
+    "check": "all four checks pass",
+    "resolved": "Terry Venables",
+    "reason": "Venables took QPR to the 1982 FA Cup final (lost replay to Tottenham) and won the Second Division title in 1982-83. Hint details (took over 1980, installed the plastic Omniturf pitch, left for Barcelona in 1984) all check out. Distractors Gordon Jago (QPR manager 1971-74), Alan Mullery (1984), and Jim Smith (1985-88) are genuine QPR managers who did not preside over the 1982 Cup run, so they satisfy the stem's qualifier while being wrong.",
+    "sources": [
+      "http://qprreport.blogspot.com/2008/10/qprs-managerial-record.html",
+      "https://en.wikipedia.org/wiki/Alan_Mullery"
+    ]
+  },
+  {
+    "_i": 30,
+    "verdict": "ok",
+    "check": "all four checks pass",
+    "resolved": "Blackpool",
+    "reason": "QPR signed Trevor Sinclair from Blackpool in 1993 for £600,000, a fee that broke Blackpool's club transfer-sale record; he later joined West Ham in 1998, matching the hint. Distractors (Burnley, Preston North End, Bolton Wanderers) are all Lancashire clubs, fitting the stem's regional framing while being verifiably wrong.",
+    "sources": [
+      "https://footballleagueworld.co.uk/qpr-struck-gold-the-trevor-sinclair-masterstroke/",
+      "https://en.wikipedia.org/wiki/Trevor_Sinclair"
+    ]
+  },
+  {
+    "_i": 21,
+    "verdict": "ok",
+    "check": "all four checks pass",
+    "resolved": "Blue and white",
+    "reason": "QPR's 'Hoops' nickname derives from their blue-and-white hooped shirts, the same hoop design worn by Celtic in green and white, matching the hint. Distractors are plausible hoop colour-pairs (used by other hooped clubs, e.g. green/white=Celtic, claret/blue=West Ham/Burnley/Aston Villa-style) but not QPR's.",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Queens_Park_Rangers_F.C."
+    ]
+  },
+  {
+    "_i": 17,
+    "verdict": "ok",
+    "check": "all four checks pass",
+    "resolved": "Republic of Ireland",
+    "reason": "Don Givens was QPR's top league scorer (13 goals) in the 1975-76 season when the club finished First Division runners-up, one point behind Liverpool. He won 56 caps for the Republic of Ireland (1969-1982), matching the hint exactly; born in Limerick per standard football reference sources (not independently re-verified this pass but consistent with well-established biographical record).",
+    "sources": [
+      "http://qprreport.blogspot.com/2010/08/thirty-five-years-ago-today-qprs-1975.html",
+      "https://www.indyrs.co.uk/2013/09/don-givens-qpr-and-irish-international-legend/"
+    ]
+  }
+]

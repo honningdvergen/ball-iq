@@ -1,0 +1,80 @@
+[
+  {
+    "q": "Which Watford player was sent off at Luton Town in April 1984 and suspended, ruling him out of the FA Cup final?",
+    "o": [
+      "Wilf Rostron",
+      "Les Taylor",
+      "Steve Terry",
+      "Kenny Jackett"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "The left-back was dismissed by referee Roger Milford after a tangle with Luton's Paul Elliott. Les Taylor captained the side at Wembley in his absence.",
+    "_i": 11
+  },
+  {
+    "q": "Watford finished runners-up in the First Division in 1982-83. Which club took the title ahead of them?",
+    "o": [
+      "Liverpool",
+      "Everton",
+      "Arsenal",
+      "Southampton"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "The champions that season were managed by Bob Paisley, in what proved to be his final campaign in charge.",
+    "_i": 4
+  },
+  {
+    "q": "Watford signed the young Scottish striker Mo Johnston in November 1983 from which club?",
+    "o": [
+      "Dundee United",
+      "St Mirren",
+      "Partick Thistle",
+      "Queen's Park"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "Graham Taylor went north for a forward who had scored 41 goals in 85 games in Scotland. Johnston then hit 20 league goals in 29 games in his first season at Vicarage Road.",
+    "_i": 6
+  },
+  {
+    "q": "In October 1978, Third Division Watford won a League Cup third-round tie away from home with two Luther Blissett headers. Which club did they knock out?",
+    "o": [
+      "Manchester United",
+      "Manchester City",
+      "Nottingham Forest",
+      "Aston Villa"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "Watford trailed at half-time at Old Trafford before Blissett's two second-half goals turned it around. It was their first ever win over that opponent.",
+    "_i": 15
+  },
+  {
+    "q": "Graham Taylor's first season at Watford, 1977-78, ended with the club winning which division?",
+    "o": [
+      "The Fourth Division",
+      "The Third Division",
+      "The Second Division",
+      "The First Division"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "They were in the bottom tier of the Football League when he arrived, and finished eleven points clear of Southend United.",
+    "_i": 8
+  },
+  {
+    "q": "Watford have played their home matches at Vicarage Road since which year?",
+    "o": [
+      "1898",
+      "1922",
+      "1937",
+      "1959"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "They moved there from Cassio Road, where they had spent 32 years. The other date on this list is the year the club itself was formed by a merger.",
+    "_i": 9
+  }
+]

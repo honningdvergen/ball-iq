@@ -1,0 +1,46 @@
+[
+  {
+    "_i": 33,
+    "verdict": "ok",
+    "check": "index resolution, false premise, self-answering, distractors",
+    "resolved": "Newcastle United",
+    "reason": "Les Ferdinand moved from QPR to Newcastle United for £6m in summer 1995 (Kevin Keegan was Newcastle manager), then to Tottenham in 1997 - two years later, matching the hint. Distractors (Everton, Aston Villa, Tottenham Hotspur) are all plausible top-flight clubs of the era and are verifiably wrong for the 1995 sale. Answer is not QPR/Queens Park Rangers.",
+    "sources": [
+      "https://www.pressreader.com/uk/late-tackle-football-magazine/20190331/282218012150271",
+      "https://www.shieldsgazette.com/sport/football/newcastle-united/i-scored-50-goals-for-newcastle-united-but-leaving-was-a-no-brainer-after-tottenham-hotspur-club-record-bid-4953163"
+    ]
+  },
+  {
+    "_i": 35,
+    "verdict": "ok",
+    "check": "index resolution, false premise, self-answering, distractors",
+    "resolved": "Gary O'Neil",
+    "reason": "Gary O'Neil was sent off in the 60th minute of the 2014 Championship play-off final for a professional foul (hauling down) on Johnny Russell as he ran through on goal; QPR won 1-0 with ten men via a Bobby Zamora goal. Hint matches exactly. Distractors (Joey Barton, Karl Henry, Niko Kranjčar) were all genuine QPR midfielders of that squad/season, plausible but wrong. Answer is not QPR.",
+    "sources": [
+      "https://www.wembleystadium.com/news/2014/may/24/qpr-1-derby-0",
+      "https://www.soccer-blogger.com/2014/05/25/derby-county-vs-qpr-2014-highlights-0-1-championship-playoff-final-zamora-goal-oneil-red-card/"
+    ]
+  },
+  {
+    "_i": 37,
+    "verdict": "ok",
+    "check": "index resolution, false premise, self-answering, distractors",
+    "resolved": "Mark Hughes",
+    "reason": "Harry Redknapp was appointed QPR manager on 24 November 2012, a day after Mark Hughes was sacked; QPR were bottom of the Premier League with four points from 12 games, matching the hint exactly. Distractors (Neil Warnock, Ian Holloway, Chris Ramsey) are all real QPR managers from other periods, plausible but wrong for this specific handover. Answer is not QPR.",
+    "sources": [
+      "https://www.bloomberg.com/news/articles/2012-11-24/winless-qpr-names-harry-redknapp-manager-replacing-fired-hughes",
+      "https://www.aljazeera.com/sports/2012/11/23/qpr-sack-manager-mark-hughes"
+    ]
+  },
+  {
+    "_i": 39,
+    "verdict": "ok",
+    "check": "index resolution, false premise, self-answering, distractors",
+    "resolved": "Adel Taarabt",
+    "reason": "Adel Taarabt was named Championship Player of the Year for 2010-11 after scoring 19 goals as QPR won promotion; he signed permanently from Tottenham in August 2010 (the previous August relative to the 2010-11 season), matching the hint. Distractors (Ákos Buzsáky, Tommy Smith, Wayne Routledge) were genuine QPR squad members that season, plausible but wrong. Answer is not QPR.",
+    "sources": [
+      "https://www.givemesport.com/1652136-adel-taarabt-the-streets-wont-forget-his-incredible-201011-season-at-qpr/",
+      "https://www.goal.com/en-us/lists/streets-wont-forget-adel-taarabt-greatest-player-championship-history/blte48c8733f18da1a8"
+    ]
+  }
+]

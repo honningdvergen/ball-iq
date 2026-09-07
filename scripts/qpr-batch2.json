@@ -1,0 +1,80 @@
+[
+  {
+    "q": "QPR reached the quarter-finals of the 1976-77 UEFA Cup, where they went out on penalties. Which club knocked them out?",
+    "o": [
+      "AEK Athens",
+      "1. FC Köln",
+      "Slovan Bratislava",
+      "Athletic Bilbao"
+    ],
+    "a": 0,
+    "diff": "hard",
+    "hint": "QPR won the home leg 3-0, lost the away leg 3-0 in Greece, and then lost the shootout 7-6.",
+    "_i": 18
+  },
+  {
+    "q": "Which division were QPR playing in when they won the 1967 League Cup?",
+    "o": [
+      "The Third Division",
+      "The Second Division",
+      "The Fourth Division",
+      "The First Division"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "They won that same division's title in the same season, so the cup came with a promotion.",
+    "_i": 11
+  },
+  {
+    "q": "QPR's 1981 artificial pitch was the first in British professional football, and three other Football League clubs followed in the 1980s. Which of these was one of them?",
+    "o": [
+      "Luton Town",
+      "Watford",
+      "Millwall",
+      "Norwich City"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Kenilworth Road got its plastic in 1985; Oldham and Preston laid theirs the year after.",
+    "_i": 12
+  },
+  {
+    "q": "In May 2011 an FA commission fined QPR £875,000 over the registration of one of their midfielders, but imposed no points deduction, so the promotion stood. Which midfielder was at the centre of the case?",
+    "o": [
+      "Hogan Ephraim",
+      "Shaun Derry",
+      "Ákos Buzsáky",
+      "Alejandro Faurlín"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "The Argentine had joined from Instituto in 2009, and the charges that were dismissed concerned third-party ownership rules.",
+    "_i": 22
+  },
+  {
+    "q": "QPR came from behind to win the 1967 League Cup final. What was the score at half-time?",
+    "o": [
+      "2-0 down",
+      "1-0 down",
+      "3-0 down",
+      "3-1 down"
+    ],
+    "a": 0,
+    "diff": "easy",
+    "hint": "Clive Clark scored twice for West Bromwich Albion inside the first 36 minutes.",
+    "_i": 15
+  },
+  {
+    "q": "Which QPR midfielder captained England during the mid-1970s?",
+    "o": [
+      "Gerry Francis",
+      "Don Masson",
+      "John Hollins",
+      "Dave Thomas"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "He led England in eight of his twelve caps before a persistent back injury cut his international career short.",
+    "_i": 13
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "q": "Which striker scored 24 Premier League goals for QPR in the 1994-95 season?",
+    "o": [
+      "Bradley Allen",
+      "Kevin Gallen",
+      "Danny Dichio",
+      "Les Ferdinand"
+    ],
+    "a": 3,
+    "diff": "easy",
+    "hint": "'Sir Les' came through non-league football at Hayes before making his name at Loftus Road.",
+    "_i": 32
+  },
+  {
+    "q": "QPR led 2-1 at Manchester City on the final day of 2011-12 before the hosts turned it around in stoppage time. Who scored the goal that had put Rangers in front?",
+    "o": [
+      "Bobby Zamora",
+      "Jamie Mackie",
+      "Djibril Cissé",
+      "Adel Taarabt"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "The Scotland forward headed in Armand Traoré's cross just after the hour, with Rangers already down to ten men.",
+    "_i": 25
+  },
+  {
+    "q": "What is the name of QPR's home ground in Shepherd's Bush, where the club has played since 1917?",
+    "o": [
+      "Craven Cottage",
+      "Loftus Road",
+      "Griffin Park",
+      "Selhurst Park"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The ground sits off South Africa Road, holds around 18,000, and Fulham groundshared there in the early 2000s.",
+    "_i": 36
+  },
+  {
+    "q": "QPR were relegated to the third tier at the end of 2000-01, their first drop that low since the 1960s. Which former Rangers midfielder had taken over as manager that February?",
+    "o": [
+      "Gerry Francis",
+      "Terry Venables",
+      "Ray Wilkins",
+      "Ian Holloway"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "He had played for the club in the 1990s before returning to the dugout, and later took them back up as Division Two runners-up in 2004.",
+    "_i": 27
+  },
+  {
+    "q": "Which manager was in charge when QPR were relegated from the Premier League at the end of 1995-96?",
+    "o": [
+      "Stewart Houston",
+      "Ian Holloway",
+      "Ray Wilkins",
+      "Gerry Francis"
+    ],
+    "a": 2,
+    "diff": "medium",
+    "hint": "The former England midfielder had replaced Gerry Francis in late 1994 and left Loftus Road in September 1996.",
+    "_i": 29
+  },
+  {
+    "q": "Trevor Sinclair's overhead kick for QPR won the BBC's Goal of the Season in 1997. Which club were the opponents in that FA Cup fourth-round tie?",
+    "o": [
+      "Oldham Athletic",
+      "Barnsley",
+      "Chesterfield",
+      "Huddersfield Town"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Rangers won the January tie 3-2 at Loftus Road, and the opponents went up to the Premier League that same season.",
+    "_i": 31
+  }
+]

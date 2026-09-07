@@ -1,0 +1,50 @@
+[
+  {
+    "_i": 26,
+    "verdict": "ok",
+    "check": "index resolution, distractor plausibility",
+    "resolved": "24",
+    "reason": "Watford finished 1999-2000 Premier League 20th with 6W 6D 26L = 24 points, a Premiership-low at the time, confirming o[0]='24' is correct. Distractors 31/19/28 are plausible nearby point totals; none is Watford's actual total, no format issue.",
+    "sources": ["https://en.wikipedia.org/wiki/1999%E2%80%932000_Watford_F.C._season", "https://en.wikipedia.org/wiki/1999%E2%80%932000_FA_Premier_League"]
+  },
+  {
+    "_i": 20,
+    "verdict": "ok",
+    "check": "index resolution, keyed answer != Watford, distractor plausibility",
+    "resolved": "The Hornets",
+    "reason": "Watford's well-established nickname is The Hornets, matching o[0]. Distractors (Bees=Brentford, Robins=Bristol City/Cheltenham, Terriers=Huddersfield) are real club nicknames, plausible and verifiably wrong for Watford.",
+    "sources": ["https://en.wikipedia.org/wiki/Watford_F.C."]
+  },
+  {
+    "_i": 14,
+    "verdict": "ok",
+    "check": "index resolution, false-premise-in-stem check, distractor plausibility",
+    "resolved": "Gold and black",
+    "reason": "Watford adopted gold and black kit colours in 1959 (end of the 1950s), coinciding with the 'Hornets' nickname replacing their prior identity; matches o[1]. Distractor colour combos are plausible club colour schemes and don't match Watford's actual switch.",
+    "sources": ["https://www.historicalkits.co.uk/Watford/Watford.htm", "https://www.watfordfc.com/club/history/our-crests"]
+  },
+  {
+    "_i": 29,
+    "verdict": "ok",
+    "check": "index resolution, false-premise-in-stem check, distractor plausibility",
+    "resolved": "Jay DeMerit",
+    "reason": "Jay DeMerit, an American centre-back, scored the opening goal (25th minute header) in the 2006 Championship play-off final (Watford 3-0 Leeds United) and was named man of the match, matching o[0] and the hint. Doyley, Mackay and Carlisle were genuine Watford defenders of that era, making them plausible but verifiably wrong distractors.",
+    "sources": ["https://en.wikipedia.org/wiki/2006_Football_League_Championship_play-off_final", "https://the18.com/en/soccer-entertainment/15-years-later-jay-demerits-playoff-final-header-still-biggest-goal-scored-american-europe/85481"]
+  },
+  {
+    "_i": 21,
+    "verdict": "ok",
+    "check": "index resolution, false-premise-in-stem check (hint's away-goals claim), distractor plausibility",
+    "resolved": "Bolton Wanderers",
+    "reason": "Watford beat Bolton Wanderers 2-0 in the 1999 First Division play-off final at Wembley (goals: Wright, Smart), matching o[0]. Verified the hint's claim independently: Bolton beat Ipswich Town 4-4 on away goals in their semi-final, and Bolton do play at the Reebok Stadium -- hint is accurate, not a false premise. Distractors Ipswich (Bolton's semi-final opponent) and Birmingham (Watford's semi-final opponent) and Sunderland (that season's First Division champions) are plausible, verifiably wrong.",
+    "sources": ["https://en.wikipedia.org/wiki/1999_Football_League_First_Division_play-off_final", "https://theblizzard.co.uk/ipswich-town-5-bolton-wanderers-3/featured/"]
+  },
+  {
+    "_i": 17,
+    "verdict": "ok",
+    "check": "index resolution, false-premise-in-stem check, distractor plausibility",
+    "resolved": "Celtic",
+    "reason": "Mo Johnston signed for Celtic on 11 October 1984 for a Scottish record £400,000, matching o[3] and the hint (return to Glasgow, Scottish Cup 1985, league 1986, notorious move to city rivals Rangers in 1989 -- five years later). Rangers/Aberdeen/Hibernian are plausible Scottish-club distractors, verifiably wrong as the October 1984 destination.",
+    "sources": ["https://en.wikipedia.org/wiki/Mo_Johnston", "https://www.thecelticwiki.com/players/all-time-a-to-z-of-celtic-players/j/johnston-maurice/"]
+  }
+]

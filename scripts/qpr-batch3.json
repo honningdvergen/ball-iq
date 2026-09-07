@@ -1,0 +1,80 @@
+[
+  {
+    "q": "QPR lost the 2003 Division Two play-off final at the Millennium Stadium to an extra-time goal. Which club beat them?",
+    "o": [
+      "Crewe Alexandra",
+      "Cardiff City",
+      "Oldham Athletic",
+      "Bristol City"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "Andy Campbell's chip over Chris Day settled it, taking the winners into the second tier for the first time since 1985.",
+    "_i": 26
+  },
+  {
+    "q": "QPR were founder members of the Premier League. Where did they finish in the inaugural 1992-93 season?",
+    "o": [
+      "Ninth",
+      "Fifth",
+      "Twelfth",
+      "Second"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "They were the highest-placed London club that season, finishing above both Tottenham and Arsenal.",
+    "_i": 20
+  },
+  {
+    "q": "Which manager took QPR to the 1982 FA Cup final and then to the Second Division title the following season?",
+    "o": [
+      "Terry Venables",
+      "Jim Smith",
+      "Alan Mullery",
+      "Gordon Jago"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "He took the job in 1980, installed the plastic pitch, and left for Barcelona in 1984.",
+    "_i": 16
+  },
+  {
+    "q": "QPR signed Trevor Sinclair in 1993 for a fee that broke his previous club's record for a sale. Which club did he leave?",
+    "o": [
+      "Burnley",
+      "Preston North End",
+      "Bolton Wanderers",
+      "Blackpool"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "The £600,000 move took the winger from the Lancashire coast to west London; he went on to join West Ham in 1998.",
+    "_i": 30
+  },
+  {
+    "q": "The nickname 'the Hoops' comes from the club's shirt. Which two colours are the hoops?",
+    "o": [
+      "Green and white",
+      "Red and white",
+      "Blue and white",
+      "Claret and blue"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Celtic wear the green version of the same design; the Loftus Road version swaps in a cooler colour.",
+    "_i": 21
+  },
+  {
+    "q": "Don Givens, QPR's leading league scorer in the 1975-76 runners-up season, played international football for which country?",
+    "o": [
+      "Republic of Ireland",
+      "Northern Ireland",
+      "Wales",
+      "Scotland"
+    ],
+    "a": 0,
+    "diff": "medium",
+    "hint": "Born in Limerick, the striker won 56 caps between 1969 and 1982.",
+    "_i": 17
+  }
+]

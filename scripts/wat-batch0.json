@@ -1,0 +1,80 @@
+[
+  {
+    "q": "Everton's second goal in the 1984 FA Cup final was hotly disputed, the scorer appearing to head the ball out of Steve Sherwood's hands. Who scored it?",
+    "o": [
+      "Graeme Sharp",
+      "Andy Gray",
+      "Adrian Heath",
+      "Trevor Steven"
+    ],
+    "a": 1,
+    "diff": "hard",
+    "hint": "A Scotland centre-forward who had joined Everton the previous season. His strike partner had already opened the scoring before half-time.",
+    "_i": 3
+  },
+  {
+    "q": "Elton John became chairman of Watford in which year?",
+    "o": [
+      "1972",
+      "1976",
+      "1980",
+      "1984"
+    ],
+    "a": 1,
+    "diff": "easy",
+    "hint": "The club were still a Fourth Division side at the time. It was the year before Graham Taylor arrived as manager.",
+    "_i": 0
+  },
+  {
+    "q": "Graham Taylor was managing which club when Watford appointed him in 1977?",
+    "o": [
+      "Grimsby Town",
+      "Notts County",
+      "Cambridge United",
+      "Lincoln City"
+    ],
+    "a": 3,
+    "diff": "medium",
+    "hint": "He had become the Football League's youngest manager there in 1972 and won the Fourth Division title with them in 1976. Grimsby was where he played, not where he managed.",
+    "_i": 2
+  },
+  {
+    "q": "Watford's 1983-84 UEFA Cup run ended in the third round, beaten 7-2 on aggregate by which club?",
+    "o": [
+      "Dukla Prague",
+      "Levski Spartak",
+      "Red Star Belgrade",
+      "Sparta Prague"
+    ],
+    "a": 3,
+    "diff": "hard",
+    "hint": "The Czechoslovak side won 3-2 at Vicarage Road and then 4-0 at home in December 1983. Watford had already beaten Kaiserslautern and Levski Spartak to get there.",
+    "_i": 7
+  },
+  {
+    "q": "Watford reached their first FA Cup final in 1984, losing at Wembley to which club?",
+    "o": [
+      "Southampton",
+      "Wimbledon",
+      "Everton",
+      "Sunderland"
+    ],
+    "a": 2,
+    "diff": "easy",
+    "hint": "Howard Kendall's side ended a 14-year wait for a trophy that afternoon, and went on to win the league title the following season.",
+    "_i": 1
+  },
+  {
+    "q": "By what score did Everton beat Watford in the 1984 FA Cup final?",
+    "o": [
+      "1-0",
+      "2-0",
+      "2-1",
+      "3-1"
+    ],
+    "a": 1,
+    "diff": "medium",
+    "hint": "Graeme Sharp scored before half-time and Andy Gray added the contested second just after it. Watford never replied.",
+    "_i": 5
+  }
+]
