@@ -132,9 +132,10 @@ explanation is FLOW, not a bug: Footle's report sits at end-of-game where the pl
 report interrupts someone mid-run who wants to get on with the next question. If that is right, the quiz sheet is
 costing us the reason on the surface that generates half the reports. ⚠️ Filed as an observation with numbers — it has
 NOT been verified by a second route, and my first attempt to explain it (a wiring gap) was wrong.
-⬜ **One false report row is mine**: `66a956ce-0022-4c1e-b6d9-aaf25e15ede7`, `q_3d34d9` (the Oliver Kahn / Valencia 2001
-question), written 2026-09-07 18:17 UTC while blind-tapping fixed coordinates during the device pass. The question is
-fine. Awaiting Alex's go-ahead to delete it rather than deleting from prod unasked.
+✅ **The one false report row is gone** (2026-09-07, on Alex's go-ahead): `66a956ce`, `q_3d34d9` (Oliver Kahn /
+Valencia 2001), written 18:17 UTC while blind-tapping fixed coordinates during the device pass. The question was never
+at fault. Deleted with all three of id + question_id + created_at in the WHERE clause and a RETURNING to prove exactly
+one row went; 114 → 113, no other report has ever been filed against that question.
 
 ### G. Small, real, unfiled
 ⬜ Two vitest tests time out at 5000ms under load (`difficulty-copy`, `lineup-page`) — both import the whole bank. Seen
