@@ -48,10 +48,17 @@ describe('pre-boot replay honours the pressed button', () => {
         + 'so the shell path lands on Home and the Footle handoff never fires.',
     ).toBe(false);
 
-    // It must decide from the recorded act AND whether the sample was answered,
-    // mirroring `next`/`skip` — act:'skip' must not start a game.
+    // It decides from the recorded act, mirroring `next`/`skip` — act:'skip'
+    // must not start a game.
     expect(body).toMatch(/persistAndFinish\([^)]*prebootRef\.current\.act === ['"]start['"]/);
-    expect(body).toMatch(/persistAndFinish\([^)]*sampleAnswered !== null/);
+    // ⚠️ It must NOT also require an answered sample. That condition was here
+    // until 2026-09-07 and it made the shell's own "Start playing" dismiss to
+    // the menu — for the impatient cohort the shell exists to serve, who are
+    // precisely the people who do not stop to answer the sample first.
+    // Comments stripped: the replacement comment DESCRIBES the condition it
+    // removed, and a raw scan reads that as the defect still being present.
+    const bodyCode = body.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/[^\n]*/g, '$1');
+    expect(bodyCode).not.toMatch(/sampleAnswered !== null/);
   });
 
   it('still ends on onDone(startGame === true), which is what makes the argument load-bearing', () => {
@@ -62,7 +69,22 @@ describe('pre-boot replay honours the pressed button', () => {
 
   it('the React path and the replay path agree on what "start the game" means', () => {
     // `next` is the reference implementation; the replay must not drift from it.
-    expect(APP).toMatch(/persistAndFinish\(sampleAnswered !== null\)/);
+    expect(APP, 'the primary starts a game').toMatch(/persistAndFinish\(true\)/);
     expect(APP).toMatch(/persistAndFinish\(false\)/); // skip stays false
+  });
+
+  it('the primary never says "Start playing" on a path that does not', () => {
+    // The defect this replaces: `next` passed `sampleAnswered !== null`, so
+    // when nothing had been answered the button read "Start playing" and did
+    // byte-for-byte what Skip does — dismiss to a fourteen-choice menu. The
+    // label was only ever shown on the code path that could not honour it.
+    //
+    // Declining is expressed by tapping SKIP, not by tapping the big green
+    // button that says Start playing. So the primary always plays and Skip
+    // always does not; the label is then true in both states.
+    expect(APP, 'the primary must not branch on the sample')
+      .not.toMatch(/persistAndFinish\(sampleAnswered/);
+    const skip = APP.match(/const skip = \(\) => \{[\s\S]{0,160}?\};/)?.[0] || '';
+    expect(skip, 'skip still goes to Home').toMatch(/persistAndFinish\(false\)/);
   });
 });

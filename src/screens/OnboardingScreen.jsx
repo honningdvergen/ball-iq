@@ -129,9 +129,22 @@ export function OnboardingScreen({ onDone }) {
   // got there through Footle (62 of 66). Skip still goes to Home untouched —
   // someone who declined to answer has told us they want to look around, and
   // launching a game at them would be the opposite of listening.
+  //
+  // ⚠️ AND THE PRIMARY ALWAYS PLAYS. It passed `sampleAnswered !== null` until
+  // 2026-09-07, which made the button do the opposite of its own label in the
+  // one case where the label is most explicit: unanswered, it reads "Start
+  // playing" and dismissed to the menu, byte-for-byte what Skip does. The two
+  // controls were the same control wearing different words.
+  //
+  // The reasoning above still holds and is untouched — it is about SKIP.
+  // Declining to answer is told to us by tapping Skip, not by tapping the big
+  // green button that says Start playing. Someone who taps the primary without
+  // answering has not declined anything; they have said "get on with it", and
+  // handing them the menu is the momentum death this whole block exists to
+  // stop. Skip still goes to Home, exactly as before.
   const next = () => {
     haptic("soft");
-    persistAndFinish(sampleAnswered !== null);
+    persistAndFinish(true);
   };
   const skip = () => {
     haptic("soft");
@@ -156,11 +169,15 @@ export function OnboardingScreen({ onDone }) {
   // handoff; anyone quick enough to tap the shell (a ~0.9s window on 4G, ~8.6s
   // on Slow 3G — i.e. precisely the impatient cohort the shell was built for)
   // still had their momentum die on a menu. Mirror `next`/`skip` instead:
-  // act 'start' + an answered sample starts the game, 'skip' correctly does not.
+  // act 'start' starts the game, 'skip' correctly does not.
   useEffect(() => {
     if (!prebootRef.current?.act || prebootActReplayed) return;
     prebootActReplayed = true;
-    persistAndFinish(prebootRef.current.act === 'start' && sampleAnswered !== null);
+    // Mirrors `next`/`skip` above: 'start' plays, 'skip' does not. The
+    // `&& sampleAnswered !== null` that used to be here made the shell's own
+    // "Start playing" dismiss to the menu — and the shell is tapped by the
+    // impatient cohort it was built for, who never answer the sample first.
+    persistAndFinish(prebootRef.current.act === 'start');
   }, []);
 
   return (
@@ -219,7 +236,7 @@ export function OnboardingScreen({ onDone }) {
                 a step number — there is no next step to go to. */}
             <div className="onboard-actions">
               <button className="onboard-skip" onClick={skip}>Skip</button>
-              <button className="onboard-btn onboard-btn-inline" onClick={next}>{sampleAnswered === null ? "Start playing" : "Let's play"}</button>
+              <button className="onboard-btn onboard-btn-inline" onClick={next}>{sampleAnswered === null ? "Start playing" : "Let’s play"}</button>
             </div>
           </div>
         </div>

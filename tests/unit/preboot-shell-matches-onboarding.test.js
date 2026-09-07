@@ -96,7 +96,11 @@ describe('the pre-boot shell is the screen it imitates', () => {
     // The answer may be adopted on every mount; this one leaves the screen and
     // writes a funnel event, so a StrictMode remount would double-count it.
     expect(APP).toMatch(/prebootActReplayed/);
-    const eff = APP.slice(APP.indexOf('if (!prebootRef.current?.act'), APP.indexOf('if (!prebootRef.current?.act') + 300);
+    // Bounded by the effect's own closing `}, []);`, not by a character count.
+    // A fixed 300-char slice put persistAndFinish outside the window the moment
+    // a comment was added inside the effect, which reads as "the latch moved".
+    const effStart = APP.indexOf('if (!prebootRef.current?.act');
+    const eff = APP.slice(effStart, APP.indexOf('}, []);', effStart) + 7);
     // ⚠️ This assertion is about ORDERING ONLY — do not re-pin the call's
     // arguments here. It used to end `persistAndFinish\(\);`, matching the bare
     // call literally, and in doing so it froze a real bug in place: the bare
@@ -105,7 +109,12 @@ describe('the pre-boot shell is the screen it imitates', () => {
     // and a gate going red for a CORRECT change is how a fix gets reverted.
     // What the argument must be is pinned by preboot-replay-starts-game.test.js;
     // this one only guards that the latch is set before the side effect.
-    expect(eff, 'latch must be set BEFORE the side effect').toMatch(
+    // Comments are allowed between the latch and the call. The requirement is
+    // ORDER, and a \s*-only pattern made this go red for a comment explaining
+    // the argument — a gate going red for a correct change is how a fix gets
+    // reverted, which the note above already warns about.
+    const effCode = eff.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/[^\n]*/g, '$1');
+    expect(effCode, 'latch must be set BEFORE the side effect').toMatch(
       /prebootActReplayed\) return;\s*prebootActReplayed = true;\s*persistAndFinish\(/,
     );
   });
