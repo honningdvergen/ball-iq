@@ -215,7 +215,21 @@ function tag(k,v){try{if(window.clarity)window.clarity('set',k,String(v))}catch(
    failure-tolerant: any throw and the quiz carries on unaffected. */
 var BQ_SB='__BQ_SUPABASE_URL__';
 var BQ_PK='__BQ_PUBLISHABLE_KEY__';
+/* ⚠️ THE SAME GATE AS bqev(), AND IT WAS MISSING HERE FOR THREE WEEKS.
+   bqSynthetic() sits at :141 and was called from exactly one place, bqev()
+   :162 -- while this function, invoked from the SAME finish() a few lines
+   later, wrote club_quiz_results with no check at all. That table is not
+   decoration: the front door orders its club list by these counts
+   (src/marketing/FrontDoor.jsx), and the thin-pack question trade is argued
+   from them. On 2026-08-29 one visitor put 46 rows on Arsenal in 92 seconds,
+   identical 1/10 each time -- about 6% of that club's month.
+   ⚠️ AND IT IS NOT ENOUGH. bqSynthetic() refuses navigator.webdriver and
+   localhost; a crawler's headless Chrome is neither, so this closes our OWN
+   e2e and dev traffic and nothing more. Do not read this line as "the table
+   is clean now". The server-side caps in v1_5_club_quiz_results.sql are
+   volume-only and have no notion of a robot. */
 function logRound(score,rows,rnds){try{
+if(bqSynthetic())return;
 var seg=location.pathname.split('/').filter(Boolean);
 if(seg[0]!=='quiz'||!seg[1])return;
 var b={easy:[0,0],medium:[0,0],hard:[0,0]},i,d;

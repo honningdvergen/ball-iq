@@ -1980,6 +1980,14 @@ export function playSound(type) {
 // inside the plugin itself, so no extra guard needed for that case.
 export const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
 function challengeEventOnce(kind, ch) {
+  // Robots must not vote here either. All three record_challenge_event writes
+  // go through this helper, so the gate belongs IN it rather than at each call
+  // site -- three guards is three chances for one to be forgotten, which is
+  // exactly how challenge_events came to be the one funnel table with no
+  // synthetic check while isSyntheticTraffic() sat 75 lines below.
+  // (It is a function declaration, so referring to it above its definition is
+  // hoisted and allowed by the no-use-before-define rule's functions:false.)
+  if (isSyntheticTraffic()) return false;
   try {
     const key = `biq_challenge_${kind}_logged`;
     const tokenKey = `${ch.date}.${ch.score}.${ch.name || ""}`;
