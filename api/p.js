@@ -99,7 +99,16 @@ export default function handler(req) {
     if (navigator.webdriver) return;                 // e2e must never pollute prod
     var PK=${JSON.stringify(PK)}, SB=${JSON.stringify(SB)};
     if(!PK) return;
-    var vid;try{vid=localStorage.getItem('bq_vid');if(!vid){vid=crypto.randomUUID();localStorage.setItem('bq_vid',vid);}}catch(e){vid=null;}
+    // ⚠️ THE KEY IS biq_vid, NOT bq_vid. This page shipped with its own
+    // one-character-different key, so a visitor who landed on a shared card and
+    // then entered the app was TWO visitors — which broke the exact join this
+    // page exists to support: did a share landing lead to a play? Every other
+    // writer (App.jsx, marketingEvent.js, dailyResults.js, the generated club
+    // pages) uses biq_vid, and both privacy policies name biq_vid as THE
+    // identifier we store, which made bq_vid an undisclosed second one.
+    // The stale key is removed rather than migrated: any device holding it and
+    // not biq_vid never entered the app, so there is nothing to preserve.
+    var vid;try{localStorage.removeItem('bq_vid');vid=localStorage.getItem('biq_vid');if(!vid){vid=crypto.randomUUID();localStorage.setItem('biq_vid',vid);}}catch(e){vid=null;}
     function ev(n){try{fetch(SB+'/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
       headers:{'content-type':'application/json','apikey':PK,'authorization':'Bearer '+PK},
       body:JSON.stringify({p_event:n,p_meta:{surface:'p-landing'},p_visitor:vid})}).catch(function(){})}catch(e){}}

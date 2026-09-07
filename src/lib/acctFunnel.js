@@ -46,7 +46,13 @@ export const ACCT_STEPS = [
   'acct-session',      // signed in and the app booted
   'acct-username',     // cleared the mandatory username wall
   'acct-home',         // reached Home — the app is usable from here
-  'acct-first-play',   // opened their first game
+  // ⚠️ RENAMED FROM acct-first-play 2026-09-07, for the reason its device-scoped
+  // twin was renamed: it fires on RENDER, off the `playing` predicate, so it
+  // counted arriving at a game screen — a share landing, a ?game= door, a club
+  // hand-off — as opening a game. Renaming keeps the old rows queryable as what
+  // they always were instead of silently redefining them.
+  'acct-game-reached', // arrived at a game screen
+  'acct-game-played',  // actually touched something inside one
   'acct-first-finish', // finished it
 ];
 

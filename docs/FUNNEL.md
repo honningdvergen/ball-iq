@@ -3,7 +3,8 @@
 `public.funnel_events` is the product's first-party instrument. It exists
 because `loopEvent()` used to fire into Microsoft Clarity and nowhere else,
 and Clarity's export API returns only its own auto-detected smart events — so
-`onboard-done-answered`, `first-game-started` and `clubq-play` were
+`onboard-done-answered`, `first-game-started` (since retired — see below)
+and `clubq-play` were
 **write-only**, and every recommendation about those features in scouting
 report #2 was reasoning rather than measurement.
 
@@ -74,10 +75,32 @@ proving nothing) and was verified by disabling the gate and watching it fail.
 ## What writes to it
 
 `loopEvent(name, meta)` in `src/App.jsx` fans out to Clarity **and**
-`record_funnel_event`. Current events include `first-game-started`,
-`onboard-done-answered` / `onboard-done-skipped`, `share-daily`, `share-p`,
-`share-get`, `share-join`, `share-card-*`, `join-token-consumed`,
-`challenge-arrived`, `stadiums-abandon`.
+`record_funnel_event`. Current events include `first-game-reached` /
+`first-game-played`, `onboard-done-answered` / `onboard-done-skipped`,
+`share-daily`, `share-p`, `share-get`, `share-join`, `share-card-*`,
+`join-token-consumed`, `challenge-arrived`, `stadiums-abandon`, and the
+account-scoped `acct-*` steps in `src/lib/acctFunnel.js`.
+
+### ⚠️ `first-game-started` IS RETIRED — and it never meant what it says
+
+Renamed on 2026-09-07, not repointed. It fired on **render**, off a predicate
+derived from `screen`, and the boot router sets `screen` straight from the URL —
+so every `/footle` share landing, every `?game=` door and every club-page
+hand-off counted as "started a game" with nobody touching anything. Its
+denominator was arrivals, not plays, which is why the widely-quoted
+**"1,045 started, 53 finished, 5%" is not a rate** and no decision should cite
+it as one.
+
+Rows written before the rename keep the old name and stay correct as what they
+always were — arrivals. Two events replace it:
+
+| event | fires on | means |
+| --- | --- | --- |
+| `first-game-reached` | render, once per device | arrived at a game screen |
+| `first-game-played` | first pointerdown/keydown inside a game, once per device | actually played |
+
+The account-scoped pair is `acct-game-reached` / `acct-game-played` (renamed
+the same day from `acct-first-play`, which had the identical defect).
 
 The club pages call `bqev(name)` (`clubq-start`, `clubq-play`, `clubq-finish`,
 `list-play-start`, `list-play-giveup`). **Until 2026-08-21 these went only to
@@ -109,7 +132,11 @@ select count(distinct visitor_id) as crossed
 from public.funnel_events
 where created_at > timestamptz '2026-08-21 22:10:00+00'
 group by visitor_id
-having bool_or(meta->>'surface' = 'club-page') and bool_or(event = 'first-game-started');
+-- ⚠️ first-game-played, NOT first-game-reached: "reached" fires on render, so
+-- using it here would count a club-page visitor who merely landed on a game
+-- screen as having crossed. Rows older than 2026-09-07 carry the retired name
+-- first-game-started and have the same arrivals-not-plays caveat.
+having bool_or(meta->>'surface' = 'club-page') and bool_or(event = 'first-game-played');
 ```
 
 Retention: rows are pruned after 180 days by `cleanup_funnel_events()`

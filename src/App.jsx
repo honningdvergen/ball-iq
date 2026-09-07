@@ -7464,7 +7464,7 @@ function AppInner() {
   // signed in means the app is usable — past auth, past the mandatory username
   // wall, past onboarding. Someone who records acct-session but never
   // acct-home was BLOCKED by something; someone who records acct-home and never
-  // acct-first-play looked at the app and did not start. Those are opposite
+  // acct-game-reached looked at the app and did not start. Those are opposite
   // problems with opposite fixes, and right now we cannot tell them apart for
   // any of the 79 accounts that never played.
   useEffect(() => {
@@ -7487,15 +7487,26 @@ function AppInner() {
   // already fired the old event are not excluded from this new series.
   // Gated on isSyntheticTraffic() through loopEvent, which every writer here
   // passes through.
+  //
+  // One gesture, TWO writers: the anonymous device event and the attributable
+  // account step. ⚠️ Their guards are separate on purpose — the device key must
+  // not gate the account step, or a device that already recorded the anonymous
+  // event would never record acct-game-played for a NEW account signing in on
+  // it, which is precisely the person this funnel exists to find.
   useEffect(() => {
     if (!playing) return;
-    try { if (localStorage.getItem("biq_first_game_played")) return; } catch { return; }
+    let deviceDone;
+    try { deviceDone = !!localStorage.getItem("biq_first_game_played"); } catch { return; }
+    if (deviceDone && !user?.id) return;   // nothing left for either writer to say
     const fire = () => {
       try {
-        if (localStorage.getItem("biq_first_game_played")) return;
-        localStorage.setItem("biq_first_game_played", "1");
-        loopEvent("first-game-played", { mode: mode || screen });
+        if (!localStorage.getItem("biq_first_game_played")) {
+          localStorage.setItem("biq_first_game_played", "1");
+          loopEvent("first-game-played", { mode: mode || screen });
+        }
       } catch { /* private mode: no counting, no crashing */ }
+      // Its own per-account, per-device guard lives inside markAcctStep.
+      markAcctStep(user?.id, 'acct-game-played', loopEvent, { mode: mode || screen });
     };
     // { once: true } on each, and capture, so a handler that stops propagation
     // inside a game screen cannot swallow the signal.
@@ -7506,7 +7517,7 @@ function AppInner() {
       window.removeEventListener("pointerdown", fire, true);
       window.removeEventListener("keydown", fire, true);
     };
-  }, [playing, mode, screen]);
+  }, [playing, mode, screen, user?.id]);
 
   // Sprint #64 FF2: toggle body.in-focused-play during quiz / Footle so the
   // web app bar (.fd-appbar, app.css) hides while the user is mid-game. It
@@ -7553,20 +7564,16 @@ function AppInner() {
           // series starts fresh under first-game-played, below.
           loopEvent("first-game-reached", { mode: mode || screen, entry });
         }
-        // ⚠️ acct-first-play IS THE SAME DEFECT, un-fixed on purpose. It rides
-        // the same render-derived `playing` predicate, so it too counts an
-        // arrival as a play — and its stated job, three comments above, is to
-        // separate "was blocked" from "looked and did not start", which is
-        // exactly the distinction it cannot make while it fires on render.
-        // Left alone here because renaming an acct-* step touches the account
-        // funnel's own vocabulary and deserves its own change; filed in
-        // docs/TODO.md rather than repointed quietly.
+        // The attributable twin of the event above: same beat, but the device
+        // event cannot be joined to an account, so it can count first games and
+        // never say whose. Rides the same unified `playing` predicate rather
+        // than a launcher, for the reason given above — launchers multiply.
         //
-        // Same beat, but attributable: the device-scoped event above cannot be
-        // joined to an account, so it can count first games and never say
-        // whose. Rides the same unified `playing` predicate rather than a
-        // launcher, for the reason given above — launchers multiply.
-        markAcctStep(user?.id, 'acct-first-play', loopEvent, { mode });
+        // ⚠️ RENAMED FROM acct-first-play (the change its own comment here said
+        // it deserved). It inherits `playing`'s render-fired defect, so it
+        // counts arrivals; the honest counterpart is acct-game-played, fired
+        // from the gesture listener further down alongside first-game-played.
+        markAcctStep(user?.id, 'acct-game-reached', loopEvent, { mode });
       } catch {}
     }
     // ⚠️ THE OTHER HALF OF first-game-finished. Measured 2026-09-02 over the

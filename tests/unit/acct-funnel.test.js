@@ -59,9 +59,9 @@ describe('the signup to first-play funnel', () => {
     const emit = vi.fn();
     markAcctStep(USER, 'acct-session', emit);
     markAcctStep(USER, 'acct-home', emit);
-    markAcctStep(USER, 'acct-first-play', emit, { mode: 'daily' });
+    markAcctStep(USER, 'acct-game-reached', emit, { mode: 'daily' });
     expect(emit).toHaveBeenCalledTimes(3);
-    expect(acctStepsSeen(USER)).toEqual(['acct-session', 'acct-home', 'acct-first-play']);
+    expect(acctStepsSeen(USER)).toEqual(['acct-session', 'acct-home', 'acct-game-reached']);
   });
 
   it('meta rides along', () => {
@@ -121,7 +121,11 @@ describe('the signup to first-play funnel', () => {
       '\n  Declared but never emitted — the funnel would show a cliff at this\n' +
       '  step that is an instrumentation gap, not player behaviour.\n',
     ).toEqual([]);
-    expect(ACCT_STEPS.length).toBe(5);
+    // A deliberate sentinel: adding a step should be a decision, not a drift.
+    // Went 5 -> 6 on 2026-09-07 when acct-first-play was split into
+    // acct-game-reached (render-fired, counts arrivals) and acct-game-played
+    // (fired by a real gesture inside a game).
+    expect(ACCT_STEPS.length).toBe(6);
   });
 
   it('the steps fire signed in, not signed out', () => {
