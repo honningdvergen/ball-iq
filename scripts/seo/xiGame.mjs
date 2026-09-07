@@ -126,6 +126,17 @@ export const XI_JS = `// ── Guess the XI ───────────�
 // ⚠️ NO innerHTML ANYWHERE IN THIS FILE. Player and match strings come from
 // Wikipedia-derived data; every insertion goes through textContent or
 // createElement so a stray character in a teamsheet can never become markup.
+// ⚠️ THE SYNTHETIC GATE. xi-won / xi-lost go to Clarity ONLY — no funnel_events
+// row, so nothing downstream was filtering robots out of them and every e2e run
+// counted as a finished game. Same shape as gSyn/qSyn/bqSynthetic elsewhere.
+function xiSyn(){
+  try {
+    if (navigator.webdriver === true) return true;
+    var h = location.hostname;
+    return h === 'localhost' || h === '127.0.0.1' || h === '[::1]';
+  } catch (e) { return false; }
+}
+
 var MAX_MISS = 6;
 var norm = function (s) {
   return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -240,7 +251,7 @@ function finish(won) {
   d.appendChild(p);
   d.appendChild(b);
   box.appendChild(d);
-  try { if (window.clarity) window.clarity('event', won ? 'xi-won' : 'xi-lost'); } catch (e) {}
+  try { if (!xiSyn() && window.clarity) window.clarity('event', won ? 'xi-won' : 'xi-lost'); } catch (e) {}
 }
 
 function submit() {

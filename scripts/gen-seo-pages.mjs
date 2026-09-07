@@ -2706,6 +2706,14 @@ function renderSiblingLists(slug) {
 // typing "madrid" earning both Madrids rewards knowledge, it does not cheat.
 // Zero sign-up, zero bundle: this block is the whole engine.
 const LIST_PLAY_JS = `(function(){
+// ⚠️ ITS OWN GATE, because gSyn lives inside GAME_TRACK_JS's IIFE and is not
+// reachable from here. Same shape as gSyn/qSyn/bqSynthetic: robots and local
+// dev never count. These two events went to Clarity ONLY, so nothing else was
+// filtering them and every e2e run inflated list-play-start.
+function lSyn(){try{
+if(navigator.webdriver===true)return true;
+var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
+}catch(e){return false}}
 var data=document.getElementById('lp-data');if(!data)return;
 var D=JSON.parse(data.textContent);
 var bar=document.getElementById('lp-bar'),btn=document.getElementById('lp-start');
@@ -2735,9 +2743,9 @@ function finish(win){playing=false;setHidden(false);inp.disabled=true;give.hidde
   shareB.dataset.text=(win?'I named all '+total+' — '+D.title+' in '+mins+' min 🏆':'I named '+n+' of '+total+' — '+D.title+' 👀')+'\\nTry it: '+location.origin+location.pathname}
 btn.addEventListener('click',function(){playing=true;t0=Date.now();bar.hidden=true;wrap.hidden=false;
   setHidden(true);inp.focus();
-  try{if(window.clarity)window.clarity('event','list-play-start')}catch(e){}});
+  try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-start')}catch(e){}});
 give.addEventListener('click',function(){finish(false);
-  try{if(window.clarity)window.clarity('event','list-play-giveup')}catch(e){}});
+  try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-giveup')}catch(e){}});
 inp.addEventListener('keydown',function(e){if(e.key==='Enter')guess(inp.value)});
 inp.addEventListener('input',function(){if(inp.value.length>=3)guess(inp.value)});
 shareB.addEventListener('click',function(){var t=shareB.dataset.text||'';

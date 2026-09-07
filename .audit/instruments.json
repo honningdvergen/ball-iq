@@ -6,8 +6,8 @@
     "writers": 116,
     "transports": 21,
     "emits": 95,
-    "gates": 8,
-    "ungated": 3
+    "gates": 10,
+    "ungated": 0
   },
   "gates": [
     {
@@ -25,6 +25,13 @@
       "wrapsGate": false
     },
     {
+      "name": "lSyn",
+      "file": "scripts/gen-seo-pages.mjs",
+      "line": 2712,
+      "localhostToo": true,
+      "wrapsGate": false
+    },
+    {
       "name": "bqSynthetic",
       "file": "scripts/seo/club-quiz-engine.js",
       "line": 139,
@@ -35,6 +42,13 @@
       "name": "sSyn",
       "file": "scripts/seo/shell.mjs",
       "line": 102,
+      "localhostToo": true,
+      "wrapsGate": false
+    },
+    {
+      "name": "xiSyn",
+      "file": "scripts/seo/xiGame.mjs",
+      "line": 131,
       "localhostToo": true,
       "wrapsGate": false
     },
@@ -101,14 +115,10 @@
       "writers": 101,
       "transports": 8,
       "firstWrite": "2026-08-11",
-      "ungated": 3
+      "ungated": 0
     }
   ],
-  "ungatedBaseline": [
-    "scripts/gen-seo-pages.mjs:2738 list-play-start -> microsoft-clarity",
-    "scripts/gen-seo-pages.mjs:2740 list-play-giveup -> microsoft-clarity",
-    "scripts/seo/xiGame.mjs:243 dynamic -> microsoft-clarity"
-  ],
+  "ungatedBaseline": [],
   "birthdayRisks": [
     {
       "event": "challenge-arrived",
@@ -481,35 +491,35 @@
       "eventExpr": null,
       "sink": "microsoft-clarity",
       "file": "scripts/gen-seo-pages.mjs",
-      "line": 2738,
-      "gate": "NONE",
+      "line": 2746,
+      "gate": "lSyn",
       "surfaces": "generated static pages (playable boards, /lists/, question tasters)",
-      "firstWrite": "2026-08-11",
+      "firstWrite": "2026-09-07",
       "firstWriteScope": "source",
       "kind": "transport",
       "via": "(top level)",
-      "needle": "try{if(window.clarity)window.clarity('event','list-play-start')}catch(e)"
+      "needle": "try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-start')"
     },
     {
       "event": "list-play-giveup",
       "eventExpr": null,
       "sink": "microsoft-clarity",
       "file": "scripts/gen-seo-pages.mjs",
-      "line": 2740,
-      "gate": "NONE",
+      "line": 2748,
+      "gate": "lSyn",
       "surfaces": "generated static pages (playable boards, /lists/, question tasters)",
-      "firstWrite": "2026-08-11",
+      "firstWrite": "2026-09-07",
       "firstWriteScope": "source",
       "kind": "transport",
       "via": "(top level)",
-      "needle": "try{if(window.clarity)window.clarity('event','list-play-giveup')}catch(e"
+      "needle": "try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-giveup'"
     },
     {
       "event": "list-jump",
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/gen-seo-pages.mjs",
-      "line": 2936,
+      "line": 2944,
       "gate": "qSyn",
       "surfaces": "generated static pages (playable boards, /lists/, question tasters)",
       "firstWrite": "2026-09-02",
@@ -719,14 +729,14 @@
       "eventExpr": "won ? 'xi-won' : 'xi-lost'",
       "sink": "microsoft-clarity",
       "file": "scripts/seo/xiGame.mjs",
-      "line": 243,
-      "gate": "NONE",
+      "line": 254,
+      "gate": "xiSyn",
       "surfaces": "the generated XI game page",
-      "firstWrite": "2026-08-12",
+      "firstWrite": "2026-09-07",
       "firstWriteScope": "source",
       "kind": "transport",
       "via": "finish",
-      "needle": "try { if (window.clarity) window.clarity('event', won ? 'xi-won' : 'xi-l"
+      "needle": "try { if (!xiSyn() && window.clarity) window.clarity('event', won ? 'xi-"
     },
     {
       "event": "dynamic",
