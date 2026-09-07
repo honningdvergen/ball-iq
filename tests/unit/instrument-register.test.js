@@ -126,7 +126,13 @@ describe('the instrument register is real', () => {
     // Every gate a writer claims must actually be one of the listed gates (or
     // the inline check in api/p.js). A typo in the gate column would otherwise
     // read as protection that does not exist.
-    const known = new Set([...names, 'inline navigator.webdriver', 'NONE']);
+    // 'server host check' is the api/ mechanism, added 2026-09-07 when api/c.js
+    // loop-hit was gated. An edge function has no navigator, so the webdriver
+    // rule can never mark it protected and it would have sat on the ungated
+    // list forever after being genuinely fixed — a permanently unfixable entry
+    // is what teaches people to skim the list. It is recognised ONLY under api/
+    // and only via a hostname comparison; it is not the client rule loosened.
+    const known = new Set([...names, 'inline navigator.webdriver', 'server host check', 'NONE']);
     for (const w of manifest.writers) {
       for (const g of w.gate.split(' / ')) {
         expect(known.has(g), `${w.file}:${w.line} claims an unknown gate: ${g}`).toBe(true);

@@ -393,8 +393,25 @@ const enclosingChain = (decls, idx) => decls
  */
 function gateFor(file, idx, gateNames) {
   const { noComments, braceSafe } = views(file);
+  // A SECOND, NARROWER MECHANISM — and only under api/.
+  //
+  // The webdriver rule below is the right definition for anything that runs in
+  // a browser, and it must stay strict so a seventh client gate cannot hide.
+  // But api/*.js are Vercel edge functions: there is no navigator to test, so
+  // by that rule a server-side writer can never be gated, and api/c.js's
+  // loop-hit stayed on the ungated list after it was genuinely fixed. A
+  // permanently unfixable entry is worse than none — it is what teaches people
+  // to skim the list.
+  //
+  // The equivalent a request handler HAS is where it was served from, so a
+  // hostname test against localhost / *.vercel.app counts here, and ONLY here.
+  // This is not the client rule widened: it does not apply outside api/, and it
+  // requires the hostname comparison, not merely the word 'host'.
+  const serverHostGate = /^api\//.test(file)
+    && /hostname[\s\S]{0,200}(localhost|127\.0\.0\.1|vercel\.app)/.test(noComments);
   const hit = (text) => gateNames.find((g) => new RegExp(`\\b${g}\\s*\\(`).test(text))
-    || (/navigator\s*\.\s*webdriver/.test(text) ? 'inline navigator.webdriver' : null);
+    || (/navigator\s*\.\s*webdriver/.test(text) ? 'inline navigator.webdriver' : null)
+    || (serverHostGate && /\bsynthetic\b/.test(text) ? 'server host check' : null);
 
   let depth = 0;
   for (let i = idx - 1, floor = Math.max(0, idx - 4000); i >= floor; i -= 1) {

@@ -6,8 +6,8 @@
     "writers": 116,
     "transports": 21,
     "emits": 95,
-    "gates": 7,
-    "ungated": 5
+    "gates": 8,
+    "ungated": 3
   },
   "gates": [
     {
@@ -28,6 +28,13 @@
       "name": "bqSynthetic",
       "file": "scripts/seo/club-quiz-engine.js",
       "line": 139,
+      "localhostToo": true,
+      "wrapsGate": false
+    },
+    {
+      "name": "sSyn",
+      "file": "scripts/seo/shell.mjs",
+      "line": 102,
       "localhostToo": true,
       "wrapsGate": false
     },
@@ -87,7 +94,7 @@
       "writers": 103,
       "transports": 8,
       "firstWrite": "2026-08-21",
-      "ungated": 2
+      "ungated": 0
     },
     {
       "sink": "microsoft-clarity",
@@ -98,10 +105,8 @@
     }
   ],
   "ungatedBaseline": [
-    "api/c.js:47 loop-hit -> funnel_events",
     "scripts/gen-seo-pages.mjs:2736 list-play-start -> microsoft-clarity",
     "scripts/gen-seo-pages.mjs:2738 list-play-giveup -> microsoft-clarity",
-    "scripts/seo/shell.mjs:101 store-out -> funnel_events",
     "scripts/seo/xiGame.mjs:243 dynamic -> microsoft-clarity"
   ],
   "birthdayRisks": [
@@ -224,8 +229,8 @@
       "eventExpr": null,
       "sink": "funnel_events",
       "file": "api/c.js",
-      "line": 47,
-      "gate": "NONE",
+      "line": 65,
+      "gate": "server host check",
       "surfaces": "the /c/ challenge share landing (Vercel edge function, server-side)",
       "firstWrite": "2026-09-04",
       "firstWriteScope": "source",
@@ -700,8 +705,8 @@
       "eventExpr": null,
       "sink": "funnel_events",
       "file": "scripts/seo/shell.mjs",
-      "line": 101,
-      "gate": "NONE",
+      "line": 114,
+      "gate": "sSyn",
       "surfaces": "every page carrying the site shell — generated pages AND the served answer pages",
       "firstWrite": "2026-09-04",
       "firstWriteScope": "source",

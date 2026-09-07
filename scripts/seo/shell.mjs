@@ -92,6 +92,19 @@ const SB_URL = 'https://blcisypmngimqkwxrrdm.supabase.co';
 const SB_KEY = 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR';
 function storeClickScript() {
   return `<script>(function(){try{
+/* ⚠️ THE GATE THIS SHIPPED WITHOUT. store-out is injected by shellFooter into
+   EVERY page carrying the site shell — every generated page and every served
+   answer page — and it sat beside three gated emitters with no guard of its
+   own, so robots, crawlers and local dev all wrote prod rows. Found by
+   scripts/audit-instruments.mjs, which exists because this class kept
+   recurring: a guard applied to one writer and not its sibling.
+   Same two signals as gSyn/qSyn/bqSynthetic elsewhere, and the same honest
+   limit — it refuses drivers and localhost, not a headless crawler. */
+function sSyn(){try{
+if(navigator.webdriver===true)return true;
+var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
+}catch(e){return false}}
+if(sSyn())return;
 var P=location.pathname,T=P.indexOf('/quiz/')===0?'club':P.indexOf('/lists/')===0?'list':P.indexOf('/football-wordle/')===0?'footle-answer':P.indexOf('/daily-football-quiz/')===0?'daily-answer':P==='/quizzes/'?'directory':P==='/'?'home':'other';
 document.addEventListener('click',function(e){
 var a=e.target&&e.target.closest&&e.target.closest('a[href*="apps.apple.com"],a[href*="play.google.com"]');

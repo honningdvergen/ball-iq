@@ -33,6 +33,24 @@ export default async function handler(req) {
     country: req.headers.get('x-vercel-ip-country') || null,
   };
   console.log(JSON.stringify({ t: 'loop-hit', ...hit }));
+  // ⚠️ THE GATE THIS SHIPPED WITHOUT (2026-09-07, found by the instrument
+  // register). Every OTHER writer in the repo passes a synthetic-traffic
+  // check; this one wrote a prod row from every local run and every e2e that
+  // touched /c/. It cannot use navigator.webdriver — it is an edge function,
+  // there is no navigator — so it gates on the only equivalent it has: where
+  // the request was actually served from.
+  //
+  // NOT gated on `bot`. Bot hits are the point: bot=true is a share landing in
+  // a chat app's unfurler, bot=false is a human click-through, and the ratio
+  // between them is the loop measurement this event exists for. Excluding
+  // crawlers would delete the finding, not the noise.
+  //
+  // Preview deployments are excluded too. A vercel.app host is a branch build,
+  // not production traffic, and mixing the two is how a dashboard starts
+  // counting our own testing as reach.
+  const host = (url.hostname || '').toLowerCase();
+  const synthetic = host === 'localhost' || host === '127.0.0.1' || host.endsWith('.local')
+    || host.endsWith('.vercel.app');
   try {
     // VITE_SUPABASE_URL is a build-time name and is NOT set on Vercel's
     // functions (found the hard way: the first deploy of this wrote nothing).
@@ -42,7 +60,7 @@ export default async function handler(req) {
     // keep the write alive past the response. A share landing can afford
     // the wait; a lost row cannot be recovered.
     const base = process.env.VITE_SUPABASE_URL || 'https://blcisypmngimqkwxrrdm.supabase.co', key = process.env.VITE_SUPABASE_KEY;
-    if (base && key) {
+    if (!synthetic && base && key) {
       await Promise.race([
         fetch(`${base}/rest/v1/rpc/record_funnel_event`, {
           method: 'POST',
