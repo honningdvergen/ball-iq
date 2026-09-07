@@ -62,6 +62,40 @@ filtering an endpoint named `record_funnel_event` more readily than one named
 from a player or category page without joining against the slug lists in
 `scripts/seo/`. Any future query must do that join or it repeats the error above.
 
+## ⚠️ CORRECTIONS, 2026-09-07 — read these before using any number above
+
+The full analytics audit landed after this file was written and changes how
+three of these must be read. The numbers stand; their DIRECTION does not.
+
+**Number 3 (719 web completions) is a CEILING, not a clean figure.** It still
+contains robots — at least 76 known rows across two bursts — it excludes the
+whole localised layer, and it covers English `/quiz/` only. This file originally
+implied it was clean after one burst was removed. It is not.
+
+**The 130-row gap is not a signal. Stop reading it.** The two counters differ on
+two independent axes, both verified in git: `club_quiz_results` first wrote on
+2026-08-14 (`02336c6`), the club-page funnel row on 2026-08-22 (`3a589eb`), and
+they cover different page sets — one English `/quiz/` only, the other every page
+rendering the widget. The offsets over-account for the gap on their own. Both
+candidate causes named earlier are dead: the null-slug bug never touched
+`surface`, so a `meta->>'surface'` query loses zero rows to it.
+
+**RULE: never compare these two tables across a window starting before
+2026-08-23.** That is the first day both instruments exist AND `meta.slug` /
+`meta.lang` exist. Any per-page or per-language funnel read must start there.
+
+**MOST_PLAYED's tail is UNUSABLE, and the front door is ordered by it.**
+`src/marketing/FrontDoor.jsx:61-64` orders its club list by these 30-day counts.
+The top ~6 are safe — a 46-row burst cannot reorder Arsenal at 113. The tail
+(PSG 11, Bayern, Besiktas) cannot survive it: one burst is 4× those values, and
+the entire localised layer is missing from the table. **If a decision turns on
+the tail, it has no support.** Re-derive after the synthetic gate ships (done
+2026-09-07, `b5d1439`) or order the tail editorially.
+
+**Do NOT clean the historical rows.** Not the bursts, not the null-slug rows.
+They are the only record of what the instruments were doing, and every
+correction above is applicable at read time.
+
 ## What a later read must not do
 
 Do not compare a future number against these without applying caveat 1 — the

@@ -27,7 +27,18 @@ explanation sits flat under the button. The review graded only the app.
 ⚠️ Build hygiene: `android/app/src/main/assets/public` is a Sep-4 pre-fix bundle. Gitignored and regenerated, but the
 next AAB MUST be cut after a fresh `cap sync`. iOS is current (build 113 archived 2026-09-07).
 
-### C. Analytics integrity (24 confirmed findings) — 2 closed 2026-09-07
+### C. Analytics integrity (24 confirmed findings) — 2 closed 2026-09-07 · FULL PLAN READ 2026-09-07
+⭐ **THE SINGLE CHEAPEST FIX, and it would have caught every item below on the day each shipped:**
+`scripts/audit-instruments.mjs` — one generated manifest, one test that fails when reality drifts. Greps every write to
+`record_funnel_event` / `log_club_quiz` / `record_challenge_event` / `loopEvent` and emits: event name · file:line ·
+which gate guards it (or NONE) · which pages emit it · **first-write commit date**. The birthday column is the piece
+nothing in the repo has, and it is what turns "two counters disagree" into "two counters have different birthdays".
+⛔ **EXPLICITLY DO NOT:** delete/backfill any historical row (they are the evidence); backfill `kind` to `club` for
+pre-v1_8 rows; "fix" the 719-vs-589 gap (no bug there); widen a synthetic gate to make a test or a dashboard pass;
+repoint `first-game-started` in place (rename it, add a new input-fired event, keep 30 days of landing data meaningful);
+add a per-visitor key to `club_quiz_results` without asking Alex (it reverses that table's stated founding posture —
+a product decision, not an oversight); extend the gesture gate to `finish()` as a robot defence (it would not have
+caught the 08-29 burst and does not catch CDP-driven Chrome).
 ✅ Closed: `logRound()` and `record_challenge_event` both gated. The 719-vs-589 gap is EXPLAINED (an 8-day birthday
 offset, not a leak) and recorded in `.audit/baselines/2026-09-06-nav-and-activation.md`.
 ⬜ **`first-game-started` FIRES ON RENDER, NOT INPUT** — the biggest one. `playing` is true from the boot router alone,
@@ -55,7 +66,14 @@ four have. ⚠️ And no gate in the repo would have stopped the 46-row burst: t
 ⚠️ Its load-bearing evidence was an 11x app-vs-web gap; measured it is 9:1, and the club/non-club conflation above means
 even that needs re-reading. Direction survives, magnitude was overstated.
 
-### E. First-session activation (the 40-48% who never play) — 25 of 28 agents; the ranked PLAN died on the usage limit
+### E. First-session activation (the 40-48% who never play) — FIVE verified blockers, not two; 2 closed 2026-09-07
+✅ Closed: the consent bar covering BOTH pre-boot onboarding buttons on a cold start (`public/consent.js` now yields to
+`#preboot-onboard` by computed display; ⚠️ `offsetParent` is null for position:fixed and cannot be used for this), and
+the History empty state telling a player who just played to "Play today".
+⬜ **No loading state on the first Play tap.** `src/App.jsx:6044` renders nothing while the question-bank chunk is
+fetched and parsed, and on a Save-Data / 2G-3G connection that chunk is never prefetched — so the first Play of a fresh
+install is a visually dead tap for seconds, at the exact moment after onboarding.
+(the two below were already listed; the ranked PLAN agent died on the usage limit and was never produced)
 ⬜ **The front door sends Daily 7 into the app shell** — `FrontDoor.jsx:164` uses `/play?game=daily` (512 KB GameRoot +
 a 2.4 MB question chunk) while the SAME page links the same game to `/daily-football-quiz/`, an instant served page that
 writes the identical `biq_daily_<date>` key. Footle, Trail and Mystery all already point at served pages. Unfinished cut.
