@@ -13,8 +13,14 @@ ReportReasonSheet writes a row (App.jsx:4300/:4312/:4328), by explicit design at
 ⬜ **B7** — the pre-1950 bank flag was never built, and the daily log is frozen-append-only, so adding one later cannot
 clear days already written. Three pre-1950 questions are already frozen into past dailies.
 ⬜ **C8** — emoji still in icon slots: `LocalPlay.jsx:594/600/606` (podium + 2 live Survival branches) and :81.
-⬜ **D14** — ≤600 KB Home target NOT met on any accounting: 771 KB by the instrument, 1,080 KB raw. Needs E16.
-⬜ **E16** — App.jsx extraction unfinished by its own terms; the thing it was meant to buy (the budget) has not been bought.
+✅ **D14 MET 2026-09-07 (`e9d430d`) — Home eager JS 593 KB, under the 600 KB target.**
+831 → 772 → 697 → 666 → 633 → 608 → 593, measured at each step; the budget in `audit-home-budget.mjs` now sits AT 600
+so it cannot drift back. Verified on device: Daily 7, a club draw, the History and Online tabs, the sign-in overlay and
+the finish screen all played on the real built bundle.
+🟡 **E16** — the App.jsx extraction is still unfinished (327 KB, half of GameRoot; `handleComplete` is 359 lines with 41
+inputs). ⚠️ But the assumption it carried is now DISPROVED: both the review and the budget script's own header said ≤600
+was unreachable without it, and it was reached by taking play-time weight off the boot path instead. So E16 is no longer
+blocking anything measured — cut that seam when there is a reason beyond the budget, not because a number demands it.
 
 ### B. What the review NEVER covered (found by the completion audit)
 ⬜ **A3 IS STILL LIVE ON THE CLUB/SEO PAGES** — the highest-traffic surface. `scripts/seo/quiz-widget.mjs:99` pins
@@ -117,6 +123,18 @@ the app that followed it were two visitors, and both privacy policies named `biq
 defect as `first-game-started`.
 ✅ **`docs/FUNNEL.md` corrected** (2026-09-07) — it named two retired events and its club-page → app crossing query
 silently measured arrivals.
+
+### I. Question reports — an observation, not yet a diagnosis (2026-09-07)
+⬜ **The reason sheet is answered on Footle and skipped on the quiz.** Since 2026-08-25: Footle 7 of 10 reports carry a
+reason (70%), Trail 3 of 16 (19%), quiz questions 2 of 26 (8%). The wiring is identical on all three — same
+`ReportButton`, same `onReport`, and the sheet renders as a sibling of the quiz screens, so it is in scope. The likely
+explanation is FLOW, not a bug: Footle's report sits at end-of-game where the player is already done, while a quiz
+report interrupts someone mid-run who wants to get on with the next question. If that is right, the quiz sheet is
+costing us the reason on the surface that generates half the reports. ⚠️ Filed as an observation with numbers — it has
+NOT been verified by a second route, and my first attempt to explain it (a wiring gap) was wrong.
+⬜ **One false report row is mine**: `66a956ce-0022-4c1e-b6d9-aaf25e15ede7`, `q_3d34d9` (the Oliver Kahn / Valencia 2001
+question), written 2026-09-07 18:17 UTC while blind-tapping fixed coordinates during the device pass. The question is
+fine. Awaiting Alex's go-ahead to delete it rather than deleting from prod unasked.
 
 ### G. Small, real, unfiled
 ⬜ Two vitest tests time out at 5000ms under load (`difficulty-copy`, `lineup-page`) — both import the whole bank. Seen
