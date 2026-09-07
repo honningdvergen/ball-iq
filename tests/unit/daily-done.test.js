@@ -115,6 +115,24 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(PROFILE).not.toMatch(/const hasPlayed = \(stats\?\.gamesPlayed \|\| 0\) > 0/);
   });
 
+  it('the panel reports that it was SEEN, once, so the ask has a denominator', () => {
+    // Every other event in DailyDone is a tap. Without a shown event, push
+    // reach cannot be read: "Remind me" taps have no denominator, so nobody can
+    // tell an unseen ask from a refused one.
+    expect(DD).toMatch(/track\("dd-shown"/);
+    expect(DD, 'it carries the state of the ask, not just that the panel rendered')
+      .toMatch(/remind: remind\?\.state \|\| "none"/);
+
+    // TWO panels mount per result (mobile + desktop card) -- asserted in the
+    // first test in this file. The result write next door needed a synchronous
+    // claim for exactly that reason, and a mount event without one would double
+    // every denominator it produces. Pin the claim, not just the event.
+    expect(DD, 'a module-level claim set').toMatch(/const shownClaims = new Set\(\);/);
+    expect(DD, 'claimed before the event fires, synchronously')
+      .toMatch(/if \(shownClaims\.has\(key\)\) return;\s*\n\s*shownClaims\.add\(key\);\s*\n\s*track\("dd-shown"/);
+    expect(DD, 'keyed per game and edition').toMatch(/const key = `\$\{game\}:\$\{edition \?\? "\?"\}`;/);
+  });
+
   it('the migration follows the house rules', () => {
     expect(MIG).toMatch(/enable row level security/);
     expect(MIG).toMatch(/revoke all on table public\.daily_results from anon, authenticated, public/);

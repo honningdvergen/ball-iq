@@ -102,16 +102,14 @@ test('Daily tab — History renders (streak + recent days, no rows)', async ({ p
   await expect(page.locator('.daily-screen').getByText('7 questions · ~3 min')).toHaveCount(0);
   await expect(page.locator('.daily-screen').getByText(/Surname of a footballer/i)).toHaveCount(0);
 
-  const isDesktop = await page.locator('.daily-desktop').isVisible();
-  if (isDesktop) {
-    const streak = page.locator('.daily-desktop .hr-streak');
-    await expect(streak).toBeVisible();
-    await expect(streak.locator('.hr-form-cell')).toHaveCount(14);
-  } else {
-    const form = page.getByRole('group', { name: 'Form — last 14 days' }).filter({ visible: true }).first();
-    await expect(form).toBeVisible();
-    await expect(form.locator('span')).toHaveCount(14);
-  }
+  // NEITHER surface shows a form strip to a player who has played nothing.
+  // Both gate on one hoisted value (hasFormHistory in DailyScreen.jsx), so this
+  // asserts them together rather than per breakpoint -- gating them separately
+  // is precisely how the mobile strip and the desktop card came to disagree.
+  // The "streak still renders once you have history" half is the next test, and
+  // it is the one that would catch a gate stuck permanently closed.
+  await expect(page.locator('.daily-desktop .hr-streak')).toHaveCount(0);
+  await expect(page.getByRole('group', { name: 'Form — last 14 days' })).toHaveCount(0);
 
   // v4 elements that MUST be gone — guard against accidental revival.
   await expect(page.locator('.tactics-card')).toHaveCount(0);
@@ -130,4 +128,51 @@ test('Daily tab — History renders (streak + recent days, no rows)', async ({ p
   await expect(page.locator('.cal-grid')).toHaveCount(0);
   await expect(page.locator('.streak-hero')).toHaveCount(0);
   await expect(page.locator('.daily-zone[aria-label="Today"]')).toHaveCount(0);
+});
+
+test('Daily tab — a player WITH history still gets the streak strip', async ({ page, context }) => {
+  // The negative control for the test above. Gating the strip on
+  // hasFormHistory is only correct if it still opens; a gate stuck shut would
+  // satisfy every "absent" assertion in this file and silently delete the
+  // habit surface for the players who actually have a streak.
+  await seedGuestMode(context);
+  await context.addInitScript(() => {
+    try {
+      const d = (n) => {
+        const t = new Date();
+        t.setDate(t.getDate() - n);
+        return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+      };
+      // Three completed Footle days. The strip reads local puzzle history, so
+      // this is what a real player who has played the last three days has.
+      for (const n of [1, 2, 3]) {
+        localStorage.setItem(`biq_wordle_${d(n)}`, JSON.stringify({ status: 'won', guesses: ['SALAH'], answer: 'SALAH' }));
+      }
+    } catch {}
+  });
+
+  await page.goto('/play?tab=home');
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(500);
+  const dailyNav = page.locator('.fd-appbar-tab, .tab-item, .biq-nav .bn-item')
+    .filter({ hasText: /History|Daily/, visible: true }).first();
+  await dailyNav.click();
+  await page.waitForTimeout(400);
+
+  await expect(page.locator('.daily-screen')).toBeVisible();
+
+  const isDesktop = await page.locator('.daily-desktop').isVisible();
+  if (isDesktop) {
+    const streak = page.locator('.daily-desktop .hr-streak');
+    await expect(streak).toBeVisible();
+    await expect(streak.locator('.hr-form-cell')).toHaveCount(14);
+  } else {
+    const form = page.getByRole('group', { name: 'Form — last 14 days' }).filter({ visible: true }).first();
+    await expect(form).toBeVisible();
+    await expect(form.locator('span')).toHaveCount(14);
+  }
+
+  // And the recent-days table shows real rows instead of its empty state --
+  // today is excluded by name, so these are the three seeded days.
+  await expect(page.getByText(/Play today, then your recent days show up here/i)).toHaveCount(0);
 });

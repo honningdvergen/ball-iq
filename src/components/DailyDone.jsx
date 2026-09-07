@@ -46,6 +46,21 @@ const DEFAULT_ICON = {
   mystery: <UserRoundSearch size={18} strokeWidth={2.2} />,
 };
 
+// One "the panel was seen" event per result, claimed synchronously.
+//
+// Every other event in this file is a TAP, which leaves the denominator
+// missing: we can count who pressed "Remind me" but not how many were offered
+// it, so "the reminder converts badly" has been unfalsifiable. Push reach sits
+// at a fraction of accounts and nobody can say whether the ask is unseen, seen
+// and refused, or granted and then revoked at the OS.
+//
+// The claim is not optional. TWO of these panels mount per result (mobile and
+// the desktop card), and the result write next door had to be given exactly
+// this guard after both of them fired it — a naive mount event here would
+// double every denominator it produces and quietly halve the conversion rate
+// it exists to measure.
+const shownClaims = new Set();
+
 export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], save, stump, GetAppCTA = null, track }) {
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
@@ -56,6 +71,22 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
+
+  // Fires once per (game, edition) per page life, carrying the state of the
+  // ask so the funnel can separate "never offered" from "offered and declined".
+  useEffect(() => {
+    if (!track || !game) return;
+    const key = `${game}:${edition ?? "?"}`;
+    if (shownClaims.has(key)) return;
+    shownClaims.add(key);
+    track("dd-shown", {
+      game,
+      // 'none' means the host passed no remind prop at all — a surface where
+      // the ask cannot appear, which is itself worth being able to count.
+      remind: remind?.state || "none",
+      archive: isArchive ? 1 : 0,
+    });
+  }, [game, edition, remind?.state, isArchive, track]);
 
   // Record once (the lib dedupes per visitor per edition), then read the room.
   useEffect(() => {
