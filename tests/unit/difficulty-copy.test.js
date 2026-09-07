@@ -1,4 +1,11 @@
 import { describe, it, expect } from 'vitest';
+import { vi } from 'vitest';
+// ⚠️ FILE-SCOPED, NOT GLOBAL. This file imports the whole 2.4 MB question bank, and on a loaded machine that
+// has crossed vitest's 5000ms default twice (2026-09-07) — red on the loaded
+// run, green on the clean rerun. A flaky gate trains people to rerun instead of
+// read, which is worse than a slow gate. Raising it HERE keeps every other test
+// on the short leash that catches genuine hangs.
+vi.setConfig({ testTimeout: 20000 });
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';

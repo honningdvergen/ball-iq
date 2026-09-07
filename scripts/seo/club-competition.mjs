@@ -23,6 +23,24 @@
 // leagues.mjs, not inferred. If you add a club page, add it here deliberately
 // or it renders with no competition — which is the correct failure mode.
 
+/**
+ * Competitions that print on a club page but have NO roster in leagues.mjs.
+ *
+ * ⚠️ DECLARING ONE HERE IS THE DELIBERATE ACT. club-division-freshness.test.js
+ * refuses any CLUB_COMPETITION value that is not a leagues.mjs league AND not
+ * in this set — so a typo, a renamed league, or a value that quietly stopped
+ * matching fails the build instead of rendering as text. Each of these was
+ * verified against live sources on 2026-09-06 (see the per-club notes below).
+ * If a roster for one of them is ever added to leagues.mjs, remove it here.
+ */
+export const NO_ROSTER_COMPETITIONS = new Set([
+  'League One',          // Sheffield Wednesday, Leicester City
+  'Ligue 2',             // Saint-Étienne
+  'Super League Greece', // Olympiacos, Panathinaikos
+  'Swiss Super League',  // Basel
+  'Serbian SuperLiga',   // Red Star Belgrade
+]);
+
 /** CLUBS[].club (the pack key) -> the exact `league` string in leagues.mjs. */
 export const CLUB_COMPETITION = {
   // ⚠️ Added 2026-08-13 with the South Coast / second-tier wave. Southampton is

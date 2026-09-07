@@ -93,9 +93,10 @@ the History empty state telling a player who just played to "Play today".
 fetched and parsed, and on a Save-Data / 2G-3G connection that chunk is never prefetched — so the first Play of a fresh
 install is a visually dead tap for seconds, at the exact moment after onboarding.
 (the two below were already listed; the ranked PLAN agent died on the usage limit and was never produced)
-⬜ **The front door sends Daily 7 into the app shell** — `FrontDoor.jsx:164` uses `/play?game=daily` (512 KB GameRoot +
-a 2.4 MB question chunk) while the SAME page links the same game to `/daily-football-quiz/`, an instant served page that
-writes the identical `biq_daily_<date>` key. Footle, Trail and Mystery all already point at served pages. Unfinished cut.
+✅ **The front door's last Daily 7 door into the app shell is cut** (2026-09-07). `FrontDoor.jsx` already pointed at
+`/daily-football-quiz/`; the straggler was `FootleBand.jsx:261`, now the same served page. No `/play?game=daily` is left
+on the marketing site. (The costing in the original note — "512 KB GameRoot" — was already stale: that chunk is 322 KB
+after D14. The cut was still right: a served page beats any chunk.)
 ✅ **Onboarding's "Start playing" now starts playing — FIXED 2026-09-07** (`persistAndFinish(true)`, and the preboot replay honours the recorded intent).
 ⬜ ~~superseded~~ original: — `OnboardingScreen.jsx:132`: unless the optional trivia
 sample was answered, it dismisses to the menu, identically to "Skip". The label is only ever shown on the code path that
@@ -109,8 +110,12 @@ NEITHER found: 20 of 34 answers sat at index 0 (59% vs a 25% baseline) — a pla
 knowing nothing. Rebalanced to 29%; the rule is now a curate-time gate in the wave skill. Twelve wiring points, not
 the thirteen this file said — `club-alias.mjs` was the one the gate caught, and MarketingHome.jsx no longer exists.
 ⚠️ Cost ~1.8M tokens — see `feedback_club_pack_forge_cost`; batch verifiers to 1-2 next time and curate FIRST.
-⬜ Club-division audit: 37/37 verified correct. Only its "how does this stop rotting every August" recommendation died
-on the limit — the file is still 37 hand-maintained values.
+✅ **Club-division rot-proofing** (2026-09-07): `tests/unit/club-division-freshness.test.js`. "Re-audit every August"
+was a comment; it is now a gate that goes RED on 1 August (European) / 1 March (calendar leagues) when the season strings
+in `leagues.mjs` are no longer current, with a message that says re-verify against sources and do NOT just bump the
+strings. It also refuses any competition value that has neither a roster nor a declaration in the new
+`NO_ROSTER_COMPETITIONS` set (the five source-verified hand entries), and fails if a declared roster-less league quietly
+gains a roster. ⚠️ It cannot say a value is WRONG — only a source check can — it can only refuse to stay green.
 
 ### H. Found while verifying, 2026-09-07 — not caused by the work, filed not swept
 ✅ **FIXED 2026-09-07 — and the mechanism was an 0.8-pixel coincidence.** `consent.js` armed on
@@ -175,8 +180,9 @@ at fault. Deleted with all three of id + question_id + created_at in the WHERE c
 one row went; 114 → 113, no other report has ever been filed against that question.
 
 ### G. Small, real, unfiled
-⬜ Two vitest tests time out at 5000ms under load (`difficulty-copy`, `lineup-page`) — both import the whole bank. Seen
-red twice today on a loaded machine, green on a clean rerun. Flaky gates train you to re-run instead of read.
+✅ Two flaky vitest timeouts (2026-09-07): `difficulty-copy` (imports the 2.4 MB bank) and `lineup-page` (spawns
+`node --check`) now carry a FILE-SCOPED `vi.setConfig({ testTimeout: 20000 })` — every other test keeps the 5000ms leash
+that catches real hangs.
 ⬜ Frankfurt's 2 remaining weak leaks (both "Bayern Munich") — accepted: big-club names are documented weak leaks and
 `quiz.js` avoids leaking pairs at draw time.
 🔵 Running in other sessions: the dead `localRun` branch in DailyScreen, and consent-banner e2e failing locally while
