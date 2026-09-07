@@ -7472,6 +7472,41 @@ function AppInner() {
   }, [user?.id, screen]);
 
 
+  // first-game-played — the honest counterpart to first-game-reached.
+  //
+  // "Reached" fires on render and therefore counts arrivals; this one requires
+  // the player to actually DO something inside a game. It listens for the first
+  // pointerdown or keydown while `playing` is true, which is deliberately
+  // mode-agnostic: a tap on a Footle key, a quiz option, a Trail row and a
+  // Stadiums guess are four different code paths and one gesture. Hooking the
+  // launchers instead would mean seven hooks that drift apart — the same reason
+  // the comment above gives for keying off `playing` rather than a launcher.
+  //
+  // Once per device, like its sibling, under its own key so devices that
+  // already fired the old event are not excluded from this new series.
+  // Gated on isSyntheticTraffic() through loopEvent, which every writer here
+  // passes through.
+  useEffect(() => {
+    if (!playing) return;
+    try { if (localStorage.getItem("biq_first_game_played")) return; } catch { return; }
+    const fire = () => {
+      try {
+        if (localStorage.getItem("biq_first_game_played")) return;
+        localStorage.setItem("biq_first_game_played", "1");
+        loopEvent("first-game-played", { mode: mode || screen });
+      } catch { /* private mode: no counting, no crashing */ }
+    };
+    // { once: true } on each, and capture, so a handler that stops propagation
+    // inside a game screen cannot swallow the signal.
+    const opts = { once: true, capture: true, passive: true };
+    window.addEventListener("pointerdown", fire, opts);
+    window.addEventListener("keydown", fire, opts);
+    return () => {
+      window.removeEventListener("pointerdown", fire, true);
+      window.removeEventListener("keydown", fire, true);
+    };
+  }, [playing, mode, screen]);
+
   // Sprint #64 FF2: toggle body.in-focused-play during quiz / Footle so the
   // web app bar (.fd-appbar, app.css) hides while the user is mid-game. It
   // used to hide the desktop landing chrome too; that chrome was deleted from
@@ -7501,8 +7536,31 @@ function AppInner() {
               : (sp.get("join") || /^\/join\//.test(window.location.pathname)) ? "invite"
               : /^\/(footle|c)(\/|$)/.test(window.location.pathname) ? "link" : "app";
           } catch {}
-          loopEvent("first-game-started", { mode: mode || screen, entry });
+          // ⚠️ RENAMED, NOT REPOINTED (2026-09-07). This fires on RENDER: the
+          // predicate above is `playing`, which is derived from `screen`, and
+          // the boot router sets `screen` straight from the URL. So every
+          // /footle share landing, every ?game= door and every club-page
+          // hand-off counted as "started a game" without anybody touching
+          // anything. Its denominator was landings, not plays — which is why
+          // the "1,045 started, 53 finished, 5%" figure is not a rate, and no
+          // decision should cite it as one.
+          //
+          // The name changes rather than the meaning, deliberately. Repointing
+          // `first-game-started` at real input would silently redefine 30 days
+          // of existing rows; renaming leaves them queryable and correct as
+          // what they always were — arrivals at a game screen. The honest
+          // series starts fresh under first-game-played, below.
+          loopEvent("first-game-reached", { mode: mode || screen, entry });
         }
+        // ⚠️ acct-first-play IS THE SAME DEFECT, un-fixed on purpose. It rides
+        // the same render-derived `playing` predicate, so it too counts an
+        // arrival as a play — and its stated job, three comments above, is to
+        // separate "was blocked" from "looked and did not start", which is
+        // exactly the distinction it cannot make while it fires on render.
+        // Left alone here because renaming an acct-* step touches the account
+        // funnel's own vocabulary and deserves its own change; filed in
+        // docs/TODO.md rather than repointed quietly.
+        //
         // Same beat, but attributable: the device-scoped event above cannot be
         // joined to an account, so it can count first games and never say
         // whose. Rides the same unified `playing` predicate rather than a

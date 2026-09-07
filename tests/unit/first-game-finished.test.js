@@ -67,6 +67,14 @@ describe("first-game-finished", () => {
     // acct-first-finish is attributable but has fired once in prod, because
     // first games are played before sign-up. Neither replaces the other.
     expect(APP).toMatch(/'acct-first-finish'/);
-    expect(APP).toMatch(/loopEvent\("first-game-started"(, \{[^)]*\})?\)/);
+    // ⚠️ The device-scoped sibling was RENAMED on 2026-09-07. It fired on
+    // render — `playing` is derived from `screen`, which the boot router sets
+    // from the URL — so it counted arrivals at a game screen, not plays, and
+    // "1,045 started / 53 finished / 5%" was never a rate. It is
+    // first-game-reached now, and a genuinely input-fired first-game-played
+    // runs beside it. Renamed rather than repointed, so 30 days of existing
+    // rows keep meaning what they always meant.
+    expect(APP).toMatch(/loopEvent\("first-game-reached"(, \{[^)]*\})?\)/);
+    expect(APP, 'and the honest one exists too').toMatch(/loopEvent\("first-game-played"/);
   });
 });
