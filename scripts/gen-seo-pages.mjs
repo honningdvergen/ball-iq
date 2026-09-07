@@ -262,6 +262,7 @@ const PAGE_FG = '#F0F1F5';
 const CLUB_BADGE = {
   'leicester-city': 'LEI',
   watford: 'WAT', 'queens-park-rangers': 'QPR',
+  'eintracht-frankfurt': 'SGE',
   'olympiacos': 'OLY',
   'panathinaikos': 'PAO',
   'derby-county': 'DER', 'swansea-city': 'SWA',
@@ -343,7 +344,8 @@ const CLUB_COLOR = {
   'santos': '#0B0B0B', 'real-sociedad': '#0067B1',
   arsenal: '#EF0107', liverpool: '#C8102E', 'manchester-united': '#DA291C',
   barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'manchester-city': '#6CABDD',
-  chelsea: '#034694', 'bayern-munich': '#DC052D', juventus: '#000000',
+  chelsea: '#034694', 'bayern-munich': '#DC052D',
+  'eintracht-frankfurt': '#E1000F', juventus: '#000000',
   'ac-milan': '#FB090B', 'atletico-madrid': '#CB3524', 'borussia-dortmund': '#FDE100',
   psg: '#003170', 'inter-milan': '#010E80', ajax: '#CC0000', tottenham: '#132257',
   newcastle: '#241F20', napoli: '#12A0D7', galatasaray: '#A90432', benfica: '#E32221',
@@ -5189,6 +5191,7 @@ const DIR_ALIAS = {
   'Coventry': 'Coventry City',
   // leagues.mjs stores the short form; the bank and the page use the full name.
   'QPR': 'Queens Park Rangers',
+  'Frankfurt': 'Eintracht Frankfurt',
   'Sheffield Utd': 'Sheffield United',
   'Blackburn': 'Blackburn Rovers',
   'Man United': 'Manchester United',

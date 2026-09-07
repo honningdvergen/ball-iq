@@ -74,7 +74,10 @@ export const CLUB_COMPETITION = {
   'Nottingham Forest': 'Premier League', // "Nott'm Forest"
   'Ipswich Town': 'Premier League', // "Ipswich"
   'Coventry City': 'Premier League', // "Coventry"
-  'Borussia Dortmund': 'Bundesliga', // "Dortmund"
+  'Borussia Dortmund': 'Bundesliga',
+  // leagues.mjs stores the short form 'Frankfurt'; the bank and the page use the
+  // full name, so the name match cannot resolve this one and it needs a hand entry.
+  'Eintracht Frankfurt': 'Bundesliga', // "Dortmund"
   'Bayer Leverkusen': 'Bundesliga', // "Leverkusen" — NOT "Bayern Munich"
   'Schalke 04': 'Bundesliga', // "Schalke"
   'Paris Saint-Germain': 'Ligue 1', // "PSG" — NOT "Paris FC"

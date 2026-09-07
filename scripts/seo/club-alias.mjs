@@ -23,6 +23,9 @@
 // name it needs no alias, and adding one is how the Brighton error happened.
 // Every line below was verified against CLUBS by exact lookup.
 export const CLUB_ALIAS = {
+  // Germany — leagues.mjs carries the short form 'Frankfurt' (code SGE); the
+  // bank and the page both use the full name, and the generator joins on it.
+  'Frankfurt': 'Eintracht Frankfurt',
   // England — long-form pages
   'Sheffield Utd': 'Sheffield United',
   'Blackburn': 'Blackburn Rovers',

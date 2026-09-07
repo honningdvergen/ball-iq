@@ -43,6 +43,31 @@ Most resolve post-1950 (Gento, Busby, Seeler, Weah), but a few land in the
 1880s-1930s with no year in sight. Any "first ever" stem needs a date check
 before it ships.
 
+## Curate-time gate: the ANSWER POSITION (added 2026-09-07)
+
+⚠️ **Measure where the correct option sits before you ship a pack.** Eintracht
+Frankfurt came out of the forge with **20 of 34 answers at index 0 — 59% against
+a 25% baseline.** A player who simply always pressed A would have scored 59% on
+that pack without knowing a thing. Two LLM passes (examiner + adversarial
+skeptic) both approved it, and the format-tell check passed clean: neither looks
+across questions at where the answer LANDS, only at whether an individual
+question gives itself away.
+
+The bank as a whole sits at 37% on index 0, so this is a standing bias the forge
+amplifies — generators tend to write the true option first and then invent
+distractors after it.
+
+**The fix, at curate time:** re-order every question's options and re-key the
+answer. Two rules:
+- **All-numeric (year) option sets get sorted ASCENDING**, not shuffled — that
+  is the bank's own convention (see Watford `q_19b594`) and a jumbled list of
+  years reads as a mistake.
+- Everything else gets a **deterministic** shuffle seeded on the question stem,
+  so a rebuild never re-orders a question a player has already seen.
+
+Then re-check the format tell AFTER re-ordering, since a shuffle can create one.
+Frankfurt went 59% → 29% at index 0 with zero format tells.
+
 ## Curate-time gate: the format tell (added 2026-08-28)
 
 Measured on the live bank: when exactly one option's name format (single word
