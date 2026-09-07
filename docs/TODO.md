@@ -61,11 +61,14 @@ offset, not a leak) and recorded in `.audit/baselines/2026-09-06-nav-and-activat
 so `/footle`, `?game=footle` and every share-link landing count as a started game. Its denominator is LANDINGS, not
 plays — which means the "1,045 devices started, 53 finished, 5%" figure the whole 1.8 in-game-leak framing rests on is
 not a rate. Re-derive before any decision cites it again.
-⬜ **`clubq-finish` with `surface:'club-page'` is not a club-page count** — four non-`/quiz/` surfaces write it
-(listicles, the `/football-quiz/` hub, the "this week" pages). `bqev` stamps the label on everything non-daily while
-`logRound` filters to `/quiz/`, so the two counters over- and under-count in opposite directions.
-⬜ **The `club` column is `location.pathname` segment 1** — five different page classes write into it, no allow-list;
-`log_club_quiz` accepts any string up to 64 chars.
+✅ **`surface:'club-page'` now means a club page** (2026-09-07). `bqev` derives the surface from the widget's
+`data-kind` — the same attribute `logRound` already reads — so the two counters read one source. Prod on the day:
+3,398 rows / 73 slugs under the one label; the cutoff and what the old rows mean are in `docs/FUNNEL.md`. The engine's
+attribution finally has its own test (`club-engine-surface.test.js`).
+🟡 **The `club` column** — mitigated, not allow-listed (2026-09-07). It is attribute-driven now (`data-slug`, not the
+path) and every row carries `kind`, so the five page classes are separable by a column rather than by guessing from the
+slug. A true allow-list needs the page set in the database; for a lowercased ≤64-char column that `kind` already
+classifies, that table is not worth its maintenance. Re-open only if junk slugs actually show up.
 ✅ **Localised club pages reach `club_quiz_results`** (2026-09-07). `logRound` is attribute-driven now — it reads
 `data-slug` / `data-kind` off the page and the `lang` off `<html>`, so `/es/quiz/river-plate/` writes with `lang='es'`
 instead of returning early. The `lang` column had to land FIRST: without it the Spanish rows would have merged into the
@@ -73,8 +76,9 @@ English `river-plate` row, turning a visible absence into an invisible corruptio
 🟡 **`store-out`** — the ungated half is FIXED (`sSyn()` in `shell.mjs`, 2026-09-07). Still open: it fires twice per
 tap on the three daily island pages, and its `page` label files play pages under their answer pages while dropping the
 localised layer.
-⬜ **`tests/unit/seo-funnel-attribution.test.js:7` reads only `gen-seo-pages.mjs`** — commit `07a838b` moved the engine
-into its own file so ESLint could see it, and the refactor moved it out of the only test checking its attribution.
+✅ **Corrected** (2026-09-07): that test never covered the engine — the classifier and `biqSurface()` it asserts on
+genuinely still live in `gen-seo-pages.mjs`, so it was never reading the wrong file. The real gap was that the ENGINE's
+attribution had no test at all, before or after the move. It does now (`club-engine-surface.test.js`).
 🟡 `bqSynthetic()` — `[::1]` added 2026-09-07 (it was writing real rows from local play on the highest-traffic
 surface). Still missing `*.local` that some siblings have. ⚠️ And no gate in the repo would have stopped the 46-row burst: they stop drivers, not headless crawlers.
 

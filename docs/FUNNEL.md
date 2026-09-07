@@ -102,6 +102,22 @@ always were — arrivals. Two events replace it:
 The account-scoped pair is `acct-game-reached` / `acct-game-played` (renamed
 the same day from `acct-first-play`, which had the identical defect).
 
+### ⚠️ `surface:'club-page'` MEANT "any page with the quiz widget" until 2026-09-07
+
+Four other page classes embed the same engine — listicles, the `/football-quiz/`
+hub, the "this week" pages, player and nation pages — and all of them stamped
+`club-page`. Measured on the day it was fixed: **one label across 3,398 rows and
+73 distinct slugs in 30 days** — more slugs than there are club pages. So any
+"club completions" figure taken from this column before the cutoff is the
+WIDGET's completions.
+
+From 2026-09-07 the surface is derived from the widget's `data-kind`:
+`club-page`, `player-page`, `nation-page`, `category-page`, `list-page` (and
+`daily-page` on the daily island). `meta.kind` carries the raw class too.
+`club-page` is now the fallback only for a cached page that predates the
+attribute. The crossing query above is correct as "a genuine club page" going
+forward and over-counts before the cutoff — say which side of it a number is on.
+
 The club pages call `bqev(name)` (`clubq-start`, `clubq-play`, `clubq-finish`,
 `list-play-start`, `list-play-giveup`). **Until 2026-08-21 these went only to
 Clarity** — which stopped being acceptable the moment Clarity became

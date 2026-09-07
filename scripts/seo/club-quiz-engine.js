@@ -168,7 +168,20 @@ function bqev(n){
 if(bqSynthetic())return;
 if(daily)n=n.replace(/^clubq-/,'daily-web-');
 try{if(window.clarity)window.clarity('event',n)}catch(e){}
-var meta={surface:daily?'daily-page':'club-page'};
+/* ⚠️ 'club-page' USED TO MEAN "any page with this widget on it". Four other
+   page classes embed the same engine — listicles, the /football-quiz/ hub,
+   the "this week" pages, player/nation pages — and every one of them stamped
+   club-page. Measured 2026-09-07: ONE label across 3,398 rows and 73 slugs
+   in 30 days, more slugs than there are club pages. So "club completions"
+   was the widget's completions, and the front door's club ordering leaned on
+   it. Every widget carries data-kind since 2026-09-07 (club / player / nation
+   / category / list); the surface is derived from it, and club-page is now
+   the FALLBACK for a cached page that predates the attribute — not the default
+   for everything. Rows before this shipped keep the old meaning; the cutoff
+   is recorded in docs/FUNNEL.md. */
+var kind=(root&&root.getAttribute('data-kind'))||'';
+var meta={surface:daily?'daily-page':((kind&&kind!=='unknown')?kind+'-page':'club-page')};
+if(kind)meta.kind=kind;
 try{
   var r=document.querySelector('[data-slug]');
   var s=r&&r.getAttribute('data-slug');if(s)meta.slug=s;
