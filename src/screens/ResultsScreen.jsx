@@ -89,6 +89,8 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   const dailyCta = dailyOpen && onPlayDaily ? { label: "Play today's Daily 7", onClick: onPlayDaily }
     : footleOpen ? { label: footleCta, onClick: onPlayFootle } : null;
   const retryDemoted = !!dailyCta && !(isSurvival && result.score === 0);
+  // Green is the app's "this went well" signal — earned, not automatic.
+  const rdZero = (isSpeed ? (result.speedScore || 0) : result.score) === 0;
 
   // ── desktop-web-refresh (Results #03): values for the >=1024 card (circular
   //  score badge · per-question dots · stat tiles). Render-always / CSS-revealed
@@ -246,9 +248,15 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
               Every branch below mirrors a decision the mobile hero already
               made: no denominator, the run caption instead of a percentage
               tier, and the personal-best callout. */}
-          <div className="rd-eyebrow">{isSurvival ? "Run over" : "Round complete"}</div>
+          {/* A zero is not a celebration here either (review C10). Mobile drops
+              the green and the glow when the score is 0; this card kept a green
+              eyebrow, a green radial-glow badge and a green tier line, so a
+              Survival first-question death was congratulated on desktop and
+              consoled on mobile. One modifier, so the two cannot diverge again. */}
+          <div className={`rd-eyebrow${rdZero ? " is-zero" : ""}`}>{isSurvival ? "Run over" : "Round complete"}</div>
           <div className="rd-sub">{rdSubtitle}</div>
-          <div className="rd-badge">
+          {rdZero && <div className="rd-soft">{scoreCaption}</div>}
+          <div className={`rd-badge${rdZero ? " is-zero" : ""}`}>
             <div className="rd-badge-score">
               {result.score}
               {!isSurvival && <span className="rd-badge-total">/{result.total}</span>}
@@ -259,7 +267,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
                 mobile's full scoreCaption: this sits inside a circular badge,
                 and the long form wrapped to two lines and pushed against the
                 curve. The number already says how many; this says of what. */}
-            <div className="rd-badge-tier">{isSurvival ? "in a row" : rdTier}</div>
+            <div className={`rd-badge-tier${rdZero ? " is-zero" : ""}`}>{isSurvival ? "in a row" : rdTier}</div>
           </div>
           {/* Dots are a per-question map of a fixed-length round. A survival run
               has no fixed length — a long one would spray dozens of them across
@@ -310,14 +318,17 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             {!isDaily && !dailyOpen && footleOpen && (
               <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>
             )}
-            {!isDaily && <button className={`rd-btn ${(dailyOpen && onPlayDaily) || footleOpen ? "rd-btn-ghost" : "rd-btn-primary"}`} onClick={onRetry}>Play again</button>}
-            <button className="rd-btn rd-btn-ghost" onClick={onHome}>Home</button>
+            {!isDaily && <button className={`rd-btn ${(dailyOpen && onPlayDaily) || footleOpen ? "rd-btn-ghost" : "rd-btn-primary"}`} onClick={onRetry}>{isSurvival ? "Go again" : "Play again"}</button>}
             {!isDaily && <button className="rd-btn rd-btn-ghost" onClick={onShare}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
               Share
             </button>}
-            {stumpQ && !isDaily && <button className="rd-btn rd-btn-ghost" onClick={onStump}>Stump a mate</button>}
+            {/* Stump drops to a text link rather than a fourth equal button —
+                the same demotion mobile makes. Five equal-weight actions asked
+                the player to rank the app's wishes (review C9); this ranks them. */}
           </div>
+          {stumpQ && !isDaily && <button className="rd-link" onClick={onStump}>Stump a mate with a question</button>}
+          <button className="rd-exit" onClick={onHome}>Back to Home</button>
         </div>
         {/* Same review loop as mobile — constrained to the rd-card column. */}
         <div style={{maxWidth:560, margin:"0 auto"}}>

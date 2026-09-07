@@ -2543,6 +2543,16 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .rd-badge-score { font-family:var(--font); font-size: 58px; font-weight: 800; line-height: 0.9; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
   .rd-badge-total { font-size: 30px; color: #6E7180; }
   .rd-badge-tier { font-size: 13px; font-weight: 700; color: #8AE042; margin-top: 8px; }
+  /* A zero earns no green (review C10) — mirrors the mobile hero, which drops
+     the accent colour and the glow when the score is 0. */
+  .rd-eyebrow.is-zero { color: var(--t2); }
+  .rd-badge.is-zero { background: none; border-color: var(--border); }
+  .rd-badge-tier.is-zero { color: var(--t3); }
+  .rd-soft { margin-top: 10px; font-size: 15px; color: var(--t2); }
+  /* The demoted actions: a text link and a quiet way out, matching
+     .results-link / .results-exit on mobile. */
+  .rd-link { display:block; margin: 12px auto 0; background: none; border: 0; padding: 6px 8px; font-family: var(--font); font-size: 14px; font-weight: 700; color: var(--t2); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .rd-exit { display:block; margin: 10px auto 0; background: none; border: 0; padding: 8px 10px; font-family: var(--font); font-size: 14px; font-weight: 600; color: var(--t3); cursor: pointer; }
   .rd-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin-top: 26px; }
   .rd-dot { width: 24px; height: 24px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; }
   .rd-dot.ok { background: rgba(88,204,2,0.16); color: #8AE042; }
