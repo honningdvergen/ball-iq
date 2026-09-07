@@ -1,3 +1,86 @@
+## 2026-09-07 (13:00) — 📋 THE OUTSTANDING LEDGER — everything the audits and workflows found and nobody has closed
+
+Written because Alex asked "what remains apart from these?" and because five workflows produced more findings than any
+chat message survives. Nothing here is done. Items are grouped by the audit that found them, with the file that proves it.
+
+### A. Senior review (`.audit/senior-review-2026-09-06/REVIEW.md`) — 7 of 13 open items closed 2026-09-07
+✅ Closed today: **C12** (Survival capped to easy/medium), **A1+A2** (join gate + web chrome over 4 of 7 game screens),
+**B6** (rating fabricated on friend card, shared PNG, OG unfurl), **C9+C10** (desktop results card), **C13** (join modal → house sheet).
+⬜ **A4** — the report link moved but the sticky footer now covers it on long questions (measured: `elementFromPoint` at its
+centre returns `.next-btn-primary` on a 976px document). Separately there is still NO CANCEL: every exit from
+ReportReasonSheet writes a row (App.jsx:4300/:4312/:4328), by explicit design at :5531.
+⬜ **B5** — `src/Login.jsx:272` still promises leaderboards. Settings itself is clean and the version chain is real.
+⬜ **B7** — the pre-1950 bank flag was never built, and the daily log is frozen-append-only, so adding one later cannot
+clear days already written. Three pre-1950 questions are already frozen into past dailies.
+⬜ **C8** — emoji still in icon slots: `LocalPlay.jsx:594/600/606` (podium + 2 live Survival branches) and :81.
+⬜ **D14** — ≤600 KB Home target NOT met on any accounting: 771 KB by the instrument, 1,080 KB raw. Needs E16.
+⬜ **E16** — App.jsx extraction unfinished by its own terms; the thing it was meant to buy (the budget) has not been bought.
+
+### B. What the review NEVER covered (found by the completion audit)
+⬜ **A3 IS STILL LIVE ON THE CLUB/SEO PAGES** — the highest-traffic surface. `scripts/seo/quiz-widget.mjs:99` pins
+`.bq-next` at `bottom:10px`, opaque green, directly after `.bq-why` (:193) — the exact pre-fix app rule with no fading
+wrapper. At reveal a scroll-margin mitigation keeps them apart; scroll up ~70px to re-read the question and ~50px of
+explanation sits flat under the button. The review graded only the app.
+⬜ **ONLINE MULTIPLAYER HAS TWO STACKED ACCOUNT ASKS** — `OnlineMultiplayer.jsx:1165-1176` sits directly above
+:1902-1911. The exact defect class C11 fixed on the Daily 7 results, and the upper one carries the false
+"climb the leaderboards" copy (B5's class). MP was never played during the review, so it escaped both.
+⚠️ Build hygiene: `android/app/src/main/assets/public` is a Sep-4 pre-fix bundle. Gitignored and regenerated, but the
+next AAB MUST be cut after a fresh `cap sync`. iOS is current (build 113 archived 2026-09-07).
+
+### C. Analytics integrity (24 confirmed findings) — 2 closed 2026-09-07
+✅ Closed: `logRound()` and `record_challenge_event` both gated. The 719-vs-589 gap is EXPLAINED (an 8-day birthday
+offset, not a leak) and recorded in `.audit/baselines/2026-09-06-nav-and-activation.md`.
+⬜ **`first-game-started` FIRES ON RENDER, NOT INPUT** — the biggest one. `playing` is true from the boot router alone,
+so `/footle`, `?game=footle` and every share-link landing count as a started game. Its denominator is LANDINGS, not
+plays — which means the "1,045 devices started, 53 finished, 5%" figure the whole 1.8 in-game-leak framing rests on is
+not a rate. Re-derive before any decision cites it again.
+⬜ **`clubq-finish` with `surface:'club-page'` is not a club-page count** — four non-`/quiz/` surfaces write it
+(listicles, the `/football-quiz/` hub, the "this week" pages). `bqev` stamps the label on everything non-daily while
+`logRound` filters to `/quiz/`, so the two counters over- and under-count in opposite directions.
+⬜ **The `club` column is `location.pathname` segment 1** — five different page classes write into it, no allow-list;
+`log_club_quiz` accepts any string up to 64 chars.
+⬜ **Localised club pages never reach `club_quiz_results`** — `seg[0]!=='quiz'` refuses `/es/quiz/river-plate/`, the
+page measured at 134 clicks against 8 for its English twin.
+⬜ **`store-out`** fires twice per tap on the three daily island pages, is completely ungated (`shell.mjs`, the only
+emitter in the repo with no synthetic gate), and its `page` label files play pages under their answer pages while
+dropping the localised layer.
+⬜ **`tests/unit/seo-funnel-attribution.test.js:7` reads only `gen-seo-pages.mjs`** — commit `07a838b` moved the engine
+into its own file so ESLint could see it, and the refactor moved it out of the only test checking its attribution.
+⬜ `bqSynthetic()` is the weakest of the five synthetic gates in the repo — missing `[::1]` and `*.local` that the other
+four have. ⚠️ And no gate in the repo would have stopped the 46-row burst: they stop drivers, not headless crawlers.
+
+### D. Navigation (judge panel, 3 proposals) — steps 1-3 shipped
+✅ Step 1 (reminder + post-daily routing), Step 2 (baseline frozen), Step 3 (both day-0 defects).
+⬜ **Steps 4-6: the actual slot swap** — Home · Clubs · Online · Profile, History dissolving into Home + Profile.
+⚠️ Its load-bearing evidence was an 11x app-vs-web gap; measured it is 9:1, and the club/non-club conflation above means
+even that needs re-reading. Direction survives, magnitude was overstated.
+
+### E. First-session activation (the 40-48% who never play) — 25 of 28 agents; the ranked PLAN died on the usage limit
+⬜ **The front door sends Daily 7 into the app shell** — `FrontDoor.jsx:164` uses `/play?game=daily` (512 KB GameRoot +
+a 2.4 MB question chunk) while the SAME page links the same game to `/daily-football-quiz/`, an instant served page that
+writes the identical `biq_daily_<date>` key. Footle, Trail and Mystery all already point at served pages. Unfinished cut.
+⬜ **Onboarding's green "Start playing" does not start playing** — `OnboardingScreen.jsx:132`: unless the optional trivia
+sample was answered, it dismisses to the menu, identically to "Skip". The label is only ever shown on the code path that
+cannot start a game.
+⬜ The workflow's ranked plan was never produced — re-run it (`resumeFromRunId`) or write it by hand.
+
+### F. Club packs
+⬜ **Eintracht Frankfurt: CURATED, NOT SHIPPED.** 34 questions, categories remapped to the real bank vocabulary
+(`Europe` is not a category — the bank files European competition under `UCL`). Still needs an EXTERNAL fact-check and
+the 13 wiring points. ⚠️ Cost ~1.8M tokens — see `feedback_club_pack_forge_cost`; batch verifiers to 1-2 next time and
+run the deterministic curate FIRST.
+⬜ Club-division audit: 37/37 verified correct. Only its "how does this stop rotting every August" recommendation died
+on the limit — the file is still 37 hand-maintained values.
+
+### G. Small, real, unfiled
+⬜ Two vitest tests time out at 5000ms under load (`difficulty-copy`, `lineup-page`) — both import the whole bank. Seen
+red twice today on a loaded machine, green on a clean rerun. Flaky gates train you to re-run instead of read.
+⬜ Frankfurt's 2 remaining weak leaks (both "Bayern Munich") — accepted: big-club names are documented weak leaks and
+`quiz.js` avoids leaking pairs at draw time.
+🔵 Running in other sessions: the dead `localRun` branch in DailyScreen, and consent-banner e2e failing locally while
+passing in CI.
+⬜ F7 measurement reads due ~2026-09-13.
+
 ## 2026-09-06 (21:00) — ✅ FOUR DAY-0 DEFECTS FIXED · BASELINE FROZEN (3 of 5 numbers were WRONG) · NAV VERDICT IN — `.audit/baselines/2026-09-06-nav-and-activation.md`
 
 **The reminder was pointing at an empty room.** `onReminderTap` and the post-daily quiz exit both sent players to the Daily
