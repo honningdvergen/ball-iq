@@ -886,6 +886,10 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .local-out-chip{gap:6px;}
 /* Report sheet rows (same sheet chrome as the quit confirm). */
 .modal-btn.modal-quiet{background:none;border:none;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+/* Cancel is subordinate to "Just flag it": same shape, dimmer, so the two
+   quiet buttons read as action-then-exit rather than a choice between equals.
+   It exists because every way out of the report sheet used to file a report. */
+.modal-btn.report-cancel{color:var(--t3);-webkit-text-fill-color:var(--t3);font-weight:700;min-height:44px;}
 .report-reasons{display:flex;flex-direction:column;gap:6px;margin:4px 0 10px;}
 .report-reason{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:8px 12px;background:var(--s2);border:1px solid var(--border);border-radius:14px;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:14px;font-weight:700;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 .report-reason:active{transform:scale(0.985);}

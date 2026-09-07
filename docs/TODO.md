@@ -6,9 +6,12 @@ chat message survives. Nothing here is done. Items are grouped by the audit that
 ### A. Senior review (`.audit/senior-review-2026-09-06/REVIEW.md`) — 7 of 13 open items closed 2026-09-07
 ✅ Closed today: **C12** (Survival capped to easy/medium), **A1+A2** (join gate + web chrome over 4 of 7 game screens),
 **B6** (rating fabricated on friend card, shared PNG, OG unfurl), **C9+C10** (desktop results card), **C13** (join modal → house sheet).
-⬜ **A4** — the report link moved but the sticky footer now covers it on long questions (measured: `elementFromPoint` at its
-centre returns `.next-btn-primary` on a 976px document). Separately there is still NO CANCEL: every exit from
-ReportReasonSheet writes a row (App.jsx:4300/:4312/:4328), by explicit design at :5531.
+✅ **A4 CLOSED 2026-09-07.** Both halves. The report link is a distinct quiet row INSIDE `.q-sticky-foot`, ordered
+above the primary, so the footer can no longer cover it. And the sheet now has a real cancel: Escape and the backdrop
+call `onCancel` (writes nothing, settles the pending promise false so the button returns to idle), while "Just flag it"
+remains the one deliberate reason-less submit. A visible **Cancel** button was added — the way out has to be findable,
+not guessable. Guarded by `tests/unit/report-sheet-cancel.test.js`, which I probed by reintroducing the defect to
+confirm it actually goes red.
 ⬜ **B5** — `src/Login.jsx:272` still promises leaderboards. Settings itself is clean and the version chain is real.
 ⬜ **B7** — the pre-1950 bank flag was never built, and the daily log is frozen-append-only, so adding one later cannot
 clear days already written. Three pre-1950 questions are already frozen into past dailies.

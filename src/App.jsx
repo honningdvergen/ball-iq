@@ -4346,9 +4346,21 @@ const DAILY_SERVICES = { haptic, playSound, Confetti };
 // state optimistically before the sheet opens; dismissing therefore still
 // sends with reason null — the player DID press report, and losing that
 // signal because they declined a second tap would be worse than a blind row.
-function ReportReasonSheet({ onPick, onSkip }) {
+function ReportReasonSheet({ onPick, onSkip, onCancel }) {
   const ref = useRef(null);
-  useModalA11y({ isOpen: true, onClose: onSkip, ref });
+  // ⚠️ onClose IS CANCEL, NOT SKIP. Escape and the backdrop used to call onSkip,
+  // which FILES A REPORT — so there was no way out of this sheet that did not
+  // write a row, and backing out of a sheet you opened by accident was
+  // impossible. I filed one against a perfectly good question that way while
+  // testing on 2026-09-07 (q_3d34d9, since deleted).
+  //
+  // The design note this preserves is real: "a second tap must never be the
+  // price of" reporting. That is what "Just flag it" is for — one deliberate
+  // tap, no reason, row written. What it never justified was treating a
+  // DISMISSAL as a submission. 98 of 114 rows carry no reason, and an unknown
+  // share of them are people who backed out; the channel cannot be read while
+  // its loudest signal is ambiguous.
+  useModalA11y({ isOpen: true, onClose: onCancel, ref });
   const REASONS = [
     ["wrong-answer", CircleX, "The answer is wrong"],
     ["unclear", CircleHelp, "Confusing or unclear"],
@@ -4360,7 +4372,7 @@ function ReportReasonSheet({ onPick, onSkip }) {
   // report feels like the app, not a browser prompt. Rows are the app's row
   // anatomy: icon well, one line, the whole row is the target.
   return (
-    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="What's wrong with this question?" onClick={onSkip}>
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="What's wrong with this question?" onClick={onCancel}>
       <div ref={ref} tabIndex={-1} className="modal-box" onClick={(e) => e.stopPropagation()}>
         <div className="modal-grab" aria-hidden="true" />
         <div className="modal-head">
@@ -4376,7 +4388,11 @@ function ReportReasonSheet({ onPick, onSkip }) {
           ))}
         </div>
         <div className="modal-btns">
+          {/* Three exits, three MEANINGS. Pick a reason (above) is the useful
+              one; "Just flag it" reports without one; "Cancel" writes nothing.
+              Before this, all three did the same thing. */}
           <button type="button" className="modal-btn modal-quiet" onClick={onSkip}>Just flag it</button>
+          <button type="button" className="modal-btn modal-quiet report-cancel" onClick={onCancel}>Cancel</button>
         </div>
       </div>
     </div>
@@ -5597,6 +5613,24 @@ function AppInner() {
       setReportPending(info || {});
     });
   }, []);
+  /**
+   * Back out of the report sheet without filing anything.
+   *
+   * ⚠️ IT MUST STILL SETTLE THE PROMISE. reportQuestion() handed its caller a
+   * promise and ReportButton is sitting on it showing "Sending…"; a cancel that
+   * only closed the sheet would strand that button forever. Settles FALSE, so
+   * the button returns to its idle "Report a problem" state rather than
+   * claiming a success that never happened.
+   *
+   * No toast: a cancel is not an event, and confirming one is noise.
+   */
+  const cancelQuestionReport = useCallback(() => {
+    setReportPending(null);
+    const resolve = reportResolveRef.current;
+    reportResolveRef.current = null;
+    if (resolve) { try { resolve(false); } catch { /* gone */ } }
+  }, []);
+
   const sendQuestionReport = useCallback(async (info, reason) => {
     setReportPending(null);
     // "Too easy" is a compliment wearing a complaint's clothing — an engaged
@@ -8736,6 +8770,7 @@ function AppInner() {
           <ReportReasonSheet
             onPick={(reason) => sendQuestionReport(reportPending, reason)}
             onSkip={() => sendQuestionReport(reportPending, null)}
+            onCancel={cancelQuestionReport}
           />
         )}
 
