@@ -302,11 +302,20 @@ function HomeScreenImpl({
                 greeting, with the date kept underneath it rather than lost. */}
             <div style={{display:"flex", alignItems:"center", gap:10}}>
               <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:2, flex:1, minWidth:0}}>
-                <div className="hg-greet" style={{fontSize:17, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1.15, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>
-                  {homeDisplayName ? `${greeting} ${homeDisplayName}` : todayLabel}
-                </div>
+                {/* THE DATELINE (Alex, 2026-09-07, option D of the five he was
+                    shown): the date is a small tracked label, and "Today" below
+                    is the one real heading. Before this the date was 17px/800
+                    in --t1 and "Today" was 15px/800 in --t1 -- two headings of
+                    near-identical weight and colour, ten pixels apart, saying
+                    the same thing. Demoting one of them was the fix; making the
+                    date the quiet one keeps the word "Today" as the landmark
+                    people scan for, and the date still says WHICH day's puzzles
+                    these are, which is the job it was promoted for. */}
+                <div className="hg-dateline">{todayLabel}</div>
                 {homeDisplayName && (
-                  <div className="hg-date" style={{fontSize:13, color:"var(--t2)", fontWeight:500, lineHeight:1.2}}>{todayLabel}</div>
+                  <div className="hg-greet" style={{fontSize:17, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1.15, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>
+                    {`${greeting} ${homeDisplayName}`}
+                  </div>
                 )}
               </div>
               {loginStreak > 0 && (

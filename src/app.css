@@ -392,7 +392,14 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    on the page edge. The desktop and standalone mirrors below restate this. */
 .daily-zone{background:none;border:0;border-radius:0;padding:0;margin-bottom:18px;contain:layout paint style;}
 .daily-zone-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;padding:0;}
-.daily-zone-eyebrow{font-size:15px;font-weight:800;letter-spacing:-0.01em;text-transform:none;color:var(--t1);font-family:var(--font);}
+/* 19px, up from 15px: with the date demoted to a tracked dateline above it
+   (HomeScreen.jsx, 2026-09-07) this is the only heading in the strip, so it
+   carries the weight the two of them used to split. */
+.daily-zone-eyebrow{font-size:19px;font-weight:800;letter-spacing:-0.015em;text-transform:none;color:var(--t1);font-family:var(--font);}
+/* The dateline. Small, tracked, quiet -- a label that says which day's puzzles
+   these are without competing with the heading under it. --t3 on --bg is
+   ~5.8:1, which clears AA for body text at this size. */
+.hg-dateline{font-size:11.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);line-height:1.2;font-family:var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 /* Now a <button> (it opens the Daily tab), so it has to un-inherit the UA
    button chrome — iOS WebKit in particular paints its own blue text colour on
    <button>, which is how the Online CTA lost its ink. */
@@ -3338,7 +3345,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     padding: 0 !important; margin-bottom: 18px !important;
   }
   .daily-zone-head { margin: 0 0 10px !important; padding: 0 !important; }
-  .daily-zone-eyebrow { font-family:var(--font); font-size: 15px !important; letter-spacing: -0.01em !important; text-transform: none !important; color: var(--t1) !important; }
+  /* Mirrors the mobile value (19px since 2026-09-07). This block exists to keep an installed desktop PWA mobile-identical, so it must move whenever the base rule does — .tab-pill drifted this way once and the fix never reached installed clients. */
+  .daily-zone-eyebrow { font-family:var(--font); font-size: 19px !important; letter-spacing: -0.015em !important; text-transform: none !important; color: var(--t1) !important; }
   .daily-zone-status { font-family:var(--font); font-size: 12.5px !important; color: var(--t3) !important; }
   /* The mirror's !important beat the .is-done rule, so in an installed PWA the
      "all done" state never turned green. Restate it at the same weight. */
