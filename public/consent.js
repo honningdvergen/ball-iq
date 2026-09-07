@@ -199,7 +199,31 @@
    * first-visit EU player. Every bottom sheet in the app carries role="dialog"
    * (the a11y-structure test enforces the hook that goes with it), so the
    * role is the one honest signal — no per-sheet class list to keep in step. */
-  function onboardingUp() { return !!document.querySelector('.onboard-wrap, .biql, [role="dialog"], [aria-modal="true"]'); }
+  function onboardingUp() {
+    /* ⚠️ THE PRE-BOOT SHELL TOO. #preboot-onboard is the static copy of the
+       onboarding first frame in index.html — position:fixed, inset:0,
+       z-index:499 — and it is what a fresh install looks at for the whole
+       cold-start window before React mounts. It carries none of the selectors
+       below, so this returned false, the bar mounted at z-index 2147483000 and
+       covered BOTH of the shell's bottom-pinned buttons ("Skip" and "Start
+       playing"). ~87% of this site's traffic is EEA/UK, i.e. exactly the
+       visitors who get a consent bar, so a first-time European launch could
+       see nothing pressable until React swapped the shell out.
+       It is matched by ID and CHECKED FOR VISIBILITY, not added to the selector
+       list: the shell lives in the DOM from first paint with display:none, so a
+       bare selector match would report onboarding as permanently up and
+       suppress the bar for everyone, forever. */
+    /* ⚠️ NOT offsetParent — it is null for a position:fixed element, which the
+       shell is, so that test can never be true. Computed display is the one
+       that answers the question actually being asked. */
+    var pre = document.getElementById('preboot-onboard');
+    if (pre) {
+      var d = '';
+      try { d = (window.getComputedStyle(pre) || {}).display; } catch (e) { d = pre.style.display; }
+      if (d && d !== 'none') return true;
+    }
+    return !!document.querySelector('.onboard-wrap, .biql, [role="dialog"], [aria-modal="true"]');
+  }
 
   var syncQueued = false;
   function syncVisibility() {
@@ -232,8 +256,11 @@
     syncVisibility();
     if (window.MutationObserver) {
       try {
+        /* attributes:true because #preboot-onboard is REVEALED by setting
+           style.display, not by being inserted — a childList-only observer
+           never sees the moment it appears. */
         new MutationObserver(queueSync)
-          .observe(document.body, { childList: true, subtree: true });
+          .observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
       } catch (e) { /* worst case the banner shows during onboarding */ }
     }
   }

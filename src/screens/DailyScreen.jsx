@@ -827,7 +827,9 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         // path has carried this empty state since it was written; mobile never
         // got it, and mobile is where nearly everyone is.
         <div style={{ borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px", marginTop: 9, marginBottom: 14, fontSize: 12.5, color: "var(--t3)" }}>
-          Play today, then your recent days show up here.
+          {playedCount > 0
+            ? <>Today counts from tomorrow — come back and this fills up.</>
+            : <>Play today, then your recent days show up here.</>}
         </div>
       ) : (
       <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 9, marginBottom: 14 }}>
@@ -952,7 +954,9 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                     </div>
                     {recentDays.length === 0 ? (
                       <div style={{ borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px", fontSize: 12.5, color: "var(--t3)" }}>
-                        Play today, then your recent days show up here.
+                        {playedCount > 0
+            ? <>Today counts from tomorrow — come back and this fills up.</>
+            : <>Play today, then your recent days show up here.</>}
                       </div>
                     ) : (
                       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
