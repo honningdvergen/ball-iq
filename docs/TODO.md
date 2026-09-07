@@ -29,7 +29,7 @@ was unreachable without it, and it was reached by taking play-time weight off th
 blocking anything measured — cut that seam when there is a reason beyond the budget, not because a number demands it.
 
 ### B. What the review NEVER covered (found by the completion audit)
-⬜ **A3 IS STILL LIVE ON THE CLUB/SEO PAGES** — the highest-traffic surface. `scripts/seo/quiz-widget.mjs:99` pins
+❌ **A3 — NOT REPRODUCED in real WebKit (see J), do not re-open.** Original text kept for the record — the highest-traffic surface. `scripts/seo/quiz-widget.mjs:99` pins
 `.bq-next` at `bottom:10px`, opaque green, directly after `.bq-why` (:193) — the exact pre-fix app rule with no fading
 wrapper. At reveal a scroll-margin mitigation keeps them apart; scroll up ~70px to re-read the question and ~50px of
 explanation sits flat under the button. The review graded only the app.
@@ -57,7 +57,7 @@ caught the 08-29 burst and does not catch CDP-driven Chrome).
 ✅ Closed: `logRound()` and `record_challenge_event` both gated. The 719-vs-589 gap is EXPLAINED (an 8-day birthday
 offset, not a leak) and recorded in `.audit/baselines/2026-09-06-nav-and-activation.md`.
 ✅ **`first-game-started` FIRED ON RENDER — FIXED 2026-09-07** (renamed to `first-game-reached`, honest `first-game-played` added, `acct-first-play` split the same way). Old rows keep the old name and stay correct as arrivals.
-⬜ ~~superseded note~~ — the original finding, kept for context: `playing` is true from the boot router alone,
+↳ ~~superseded note~~ — the original finding, kept for context: `playing` is true from the boot router alone,
 so `/footle`, `?game=footle` and every share-link landing count as a started game. Its denominator is LANDINGS, not
 plays — which means the "1,045 devices started, 53 finished, 5%" figure the whole 1.8 in-game-leak framing rests on is
 not a rate. Re-derive before any decision cites it again.
@@ -89,7 +89,7 @@ even that needs re-reading. Direction survives, magnitude was overstated.
 `#preboot-onboard` by computed display; ⚠️ `offsetParent` is null for position:fixed and cannot be used for this), and
 the History empty state telling a player who just played to "Play today".
 ✅ **No loading state on the first Play tap — FIXED 2026-09-07** (`startingQuiz` + `ScreenLoading`, faded in late so a fast load shows nothing).
-⬜ ~~superseded~~ original: `src/App.jsx:6044` renders nothing while the question-bank chunk is
+↳ ~~superseded~~ original: `src/App.jsx:6044` renders nothing while the question-bank chunk is
 fetched and parsed, and on a Save-Data / 2G-3G connection that chunk is never prefetched — so the first Play of a fresh
 install is a visually dead tap for seconds, at the exact moment after onboarding.
 (the two below were already listed; the ranked PLAN agent died on the usage limit and was never produced)
@@ -98,7 +98,7 @@ install is a visually dead tap for seconds, at the exact moment after onboarding
 on the marketing site. (The costing in the original note — "512 KB GameRoot" — was already stale: that chunk is 322 KB
 after D14. The cut was still right: a served page beats any chunk.)
 ✅ **Onboarding's "Start playing" now starts playing — FIXED 2026-09-07** (`persistAndFinish(true)`, and the preboot replay honours the recorded intent).
-⬜ ~~superseded~~ original: — `OnboardingScreen.jsx:132`: unless the optional trivia
+↳ ~~superseded~~ original: — `OnboardingScreen.jsx:132`: unless the optional trivia
 sample was answered, it dismisses to the menu, identically to "Skip". The label is only ever shown on the code path that
 cannot start a game.
 ⬜ The workflow's ranked plan was never produced — re-run it (`resumeFromRunId`) or write it by hand.
@@ -132,11 +132,11 @@ already published and Footle already consumed, so the button clears the bar howe
 Re-verified in WebKit: banner no longer appears on answering; with it forced up by two independent routes the button
 hit-tests as itself and advances Q1→Q2; ~10.3px daylight at both sizes; scroll-past arming and the 60s dwell backstop
 both still fire.
-⬜ **WebKit does not paint `.bq-next::after` outside the stuck state** — a sticky element is not a reliable containing
+📝 **WebKit does not paint `.bq-next::after` outside the stuck state** — a sticky element is not a reliable containing
 block for an absolutely-positioned pseudo. Proved by forcing it red and scanning the full 6722px page: zero red pixels
 in normal flow, a red sliver while stuck. Harmless today (normal flow leaves a real 14px gap) and recorded in the
 source, but it means that pseudo cannot be used to fade anything that matters outside stickiness.
-⬜ **`.bq-next`'s sticky containing block is `.bq-card`, which holds all 66 questions** — so scrolling DOWN through
+📝 **`.bq-next`'s sticky containing block is `.bq-card`, which holds all 66 questions** — so scrolling DOWN through
 later questions never engages stickiness for the current one. Only scrolling UP reproduces the overlap. Worth knowing
 before anyone tries to reproduce a sticky-button report on these pages.
 
