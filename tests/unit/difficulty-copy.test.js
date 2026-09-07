@@ -26,6 +26,30 @@ describe('difficulty copy matches what the bank can actually serve', () => {
   const descs = [...appSrc.matchAll(/\{\s*id:\s*"(easy|medium|hard)"[^}]*?desc:\s*"([^"]*)"/g)]
     .map(([, id, desc]) => ({ id, desc }));
 
+  it('no mode is silently capped below the full range', () => {
+    // `diff` is a CEILING in getQs, not a floor: diff:"hard" means the FULL
+    // range and diff:"medium" filters out every q.diff==="hard" question.
+    //
+    // The difficulty pickers were retired on 2026-09-06 and Classic and Local
+    // were handed "hard" then. Survival, Legends and Hot Streak were missed and
+    // kept passing the `diff` STATE, which defaulted to "medium" -- so from that
+    // day every player had a Survival that could not serve a hard question. The
+    // state had no UI left to change it (SettingsScreen has no difficulty row),
+    // so it was frozen for everyone.
+    for (const mode of ['survival', 'legends', 'hotstreak']) {
+      // The getQs line specifically -- each mode is also named in the setCat
+      // line above it, which carries no diff and would match a looser pattern.
+      const call = appSrc.match(new RegExp(`m === "${mode}"\\) \\{ qs = [^\\n]*`))?.[0] || '';
+      expect(call, `${mode} must have a getQs call`).toContain('getQs');
+      expect(call, `${mode} must ask for the full range`).toMatch(/diff: "hard"/);
+    }
+    // And the state itself is gone, so nothing can start reading it again.
+    expect(appSrc, 'the frozen diff state was removed').not.toMatch(/const \[diff, setDiff\]/);
+    // `await getQs({`, so this cannot match getQs's own parameter
+    // destructuring at its declaration -- which it did on the first run.
+    expect(appSrc, 'no call site passes a bare diff variable').not.toMatch(/await getQs\(\{[^}]*\bdiff,/);
+  });
+
   it('the Classic difficulty sheet is gone (2026-09-06) — Classic is the arc', () => {
     // If difficulty copy ever returns, the typed-answer guard below still
     // sweeps whatever literal it finds.

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { mpLookupRoom } from "../multiplayerRpc.js";
 import { loopEvent, normalizeJoinCode } from "../App.jsx";
 
 // Extracted from AppInner on 2026-09-06 (review E16): the pending join code

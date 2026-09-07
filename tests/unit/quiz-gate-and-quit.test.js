@@ -27,7 +27,13 @@ describe('timed quiz start + quit (2026-09-06)', () => {
     expect(CSS.match(/\n\.modal-confirm\{[^}]*\}/)?.[0] || '').toContain('background:none');
   });
   it('web chrome is hidden during a game; the sticky footer fades; report precedes the primary (review A2-A4)', () => {
-    expect(APP).toMatch(/\{isWebBrowser && !inGame && \(\n\s*<>\n\s*<SiteHeader/);
+    // ⚠️ Pinned `!inGame` until 2026-09-07, which is only the three shared-quiz
+    // screens. On /play?game=footle the site header stayed live -- 57px of
+    // wordmark and plain <a href> nav (Today / Games / Clubs / Quizzes / Lists)
+    // over a running round, a full page navigation out with no confirm. `playing`
+    // covers the four standalone games too, and unmounting the components is
+    // what fixes it; the .fd-appbar CSS rule only ever hid the tab strip.
+    expect(APP).toMatch(/\{isWebBrowser && !playing && \(\n\s*<>\n\s*<SiteHeader/);
     expect(APP).toMatch(/className="q-sticky-foot"/);
     expect(CSS).toMatch(/\.q-sticky-foot\{position:sticky;bottom:0/);
     expect(CSS).toMatch(/\.next-btn-primary\{position:static/);

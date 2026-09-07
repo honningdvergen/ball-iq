@@ -4777,7 +4777,7 @@ function AppInner() {
     return { name:"", avatar:"⚽" };
   });
   const [mode, setMode] = useState(null);
-  const [diff, setDiff] = useState("medium");
+
   const [cat, setCat] = useState("All");
   // ⚠️ THE APP NEVER TOLD ANYONE WHERE THEY WERE. Measured 2026-08-23: zero
   // `document.title` assignments in all of src/, and exactly ONE <h1> in the
@@ -5796,7 +5796,6 @@ function AppInner() {
           // boot does no storage work.
           const missing = Object.keys(SETTINGS_DEFAULTS()).some((k) => !(k in stored));
           if (missing) safeSetItem("biq_settings", JSON.stringify(merged));
-          if (merged.defaultDiff) setDiff(merged.defaultDiff === "med" ? "medium" : merged.defaultDiff);
         }
       }
     } catch {}
@@ -6050,11 +6049,19 @@ function AppInner() {
         return;
       }
       let qs = [];
+      // ⚠️ diff:"hard" MEANS THE FULL RANGE, not hard-only (see getQs: it is a
+      // ceiling, not a floor). Survival, Legends and Hot Streak used to pass the
+      // `diff` state, which defaulted to "medium" -- and "medium" filters OUT
+      // every q.diff==="hard" question. The difficulty pickers were the only UI
+      // that ever wrote that state and they were retired on 2026-09-06; Classic
+      // and Local were handed "hard" at the time and these three were missed.
+      // So every player onboarded since has had a Survival that could not serve
+      // a hard question, which is the exact harm 333d24b said it was removing.
       if (m === "daily") { qs = await getDailyQs(); setActiveDailyDate(new Date()); }
-      else if (m === "survival") { qs = await getQs({ cat: "All", diff, n: 300, includeLegends: true }); }
-      else if (m === "legends") { qs = await getQs({ cat: "Legends", diff, n: 10 }); }
+      else if (m === "survival") { qs = await getQs({ cat: "All", diff: "hard", n: 300, includeLegends: true }); }
+      else if (m === "legends") { qs = await getQs({ cat: "Legends", diff: "hard", n: 10 }); }
       else if (m === "speed") { qs = await getQs({ cat: "All", diff: "medium", n: 5 }); }
-      else if (m === "hotstreak") { qs = ((await getQs({ cat: "All", diff, n: 999 })) || []).filter(q => q.type !== "tf"); }
+      else if (m === "hotstreak") { qs = ((await getQs({ cat: "All", diff: "hard", n: 999 })) || []).filter(q => q.type !== "tf"); }
       else if (m === "truefalse") { qs = await getTrueFalseQs(); }
       else if (TOPICAL_PACK && m === TOPICAL_PACK.key) {
         // includeLegends:true is REQUIRED, not incidental. getQs strips
@@ -6128,7 +6135,7 @@ function AppInner() {
         Sentry.captureException(err, { tags: { area: 'startMode', mode: m } });
       } catch {}
     }
-  }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, diff, cat, showToast]);
+  }, [user, isGuest, showFirstQuizTip, dailyDone, dailyScore, cat, showToast]);
   startModeRef.current = startMode;
 
   // Launch a specific club's quiz directly (used by the picker AND the Home
@@ -7300,8 +7307,6 @@ function AppInner() {
       safeSetItem("biq_settings", JSON.stringify(updated));
       return updated;
     });
-    // Apply defaultDiff immediately
-    if (patch.defaultDiff) setDiff(patch.defaultDiff === "med" ? "medium" : patch.defaultDiff);
   }, []);
 
 
@@ -7410,6 +7415,14 @@ function AppInner() {
   }, []);
 
   const inGame = ["quiz","local-game","local-results"].includes(screen);
+  // EVERY screen where a round is actually running. `inGame` covers only the
+  // three shared-quiz screens; Footle, Trail, Mystery and Stadiums are just as
+  // much "in a game", and every guard that used the narrower value let
+  // something interrupt a live round on them. This expression existed three
+  // times -- twice inline, once inside an effect -- which is exactly how the
+  // join gate and the web chrome came to disagree with the analytics that
+  // already counted all seven. One value, so they cannot drift again.
+  const playing = inGame || ["wordle","trail","mystery","stadiums"].includes(screen);
   // Departure tracking for game-abandon (see the playing effect below).
   const playStartRef = useRef(null);
   const playModeRef = useRef(null);
@@ -7446,7 +7459,6 @@ function AppInner() {
   // index.html on 2026-09-05. Empty deps on unmount cleanup so navigating
   // away always strips the class.
   useEffect(() => {
-    const playing = inGame || screen === "wordle" || screen === "trail" || screen === "mystery" || screen === "stadiums";
     // first_game_started (scouting panel, onboarding): the activation funnel
     // had install → onboard-done → …nothing until a scores row. This is the
     // missing middle beat, fired at the STATE level rather than in any
@@ -7515,7 +7527,7 @@ function AppInner() {
       else document.body.classList.remove("in-focused-play");
     } catch {}
     return () => { try { document.body.classList.remove("in-focused-play"); } catch {} };
-  }, [inGame, screen]);
+  }, [inGame, screen, playing]);
 
   // Belt-and-braces: strip any chaos-tagged item before the TrueFalseEngine
   // sees the questions list. The upstream selection path (getTrueFalseQs)
@@ -7850,7 +7862,7 @@ function AppInner() {
   // renders after a screen transition closed it again in the same tick.
   const closeHowToPlay = useCallback(() => setHowToPlay(null), []);
   useModalA11y({ isOpen: !!howToPlay, onClose: closeHowToPlay, ref: howToPlayRef });
-  useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest) && !inGame), onClose: clearPendingJoin, ref: joinGateRef });
+  useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest) && !playing), onClose: clearPendingJoin, ref: joinGateRef });
   useModalA11y({ isOpen: !!pendingLeaveRoom, onClose: () => setPendingLeaveRoom(null), ref: leaveRoomModalRef });
   // Openers for the HOW_TO_PLAY sheet. Stable identities so the engines can
   // treat them as effect deps (FootballWordle's one-time auto-open does).
@@ -7894,7 +7906,7 @@ function AppInner() {
     hwBackRef.current = () => {
       if (closeTopModal()) return;
       if (screen === "online-stage1-lobby") { handleHomeClick(); return; }
-      if (inGame || screen === "wordle" || screen === "trail" || screen === "mystery" || screen === "stadiums") {
+      if (playing) {
         // dispatchEvent returns false when a listener preventDefault()ed —
         // i.e. the mounted engine claimed the press and owns the quit flow.
         let claimed = false;
@@ -7924,7 +7936,9 @@ function AppInner() {
 
   // The Classic difficulty sheet and its start handler retired 2026-09-06 (Alex:
   // "not sure we should have difficulty at all"). Classic is the easy→hard arc
-  // the engine already builds; the difficulty preference stays in Settings.
+  // the engine already builds. There is no difficulty preference anywhere now:
+  // SettingsScreen has no such row, and the `diff` state the pickers wrote was
+  // removed on 2026-09-07 once it was found to be silently capping three modes.
 
   const playDailyForDate = useCallback(async (date) => {
     let qs;
@@ -8026,7 +8040,6 @@ function AppInner() {
                 if (raw) {
                   const s = JSON.parse(raw);
                   setSettings(prev => ({ ...prev, ...s }));
-                  if (s.defaultDiff) setDiff(s.defaultDiff === "med" ? "medium" : s.defaultDiff);
                 }
               } catch {}
             }}
@@ -8069,12 +8082,12 @@ function AppInner() {
             stayed live over a running quiz on the web — a tap on "Daily" left a
             live round with no confirm, and ~110px of a phone viewport was
             chrome while a clock ran. Native hides its bar in-game; so does this. */}
-        {isWebBrowser && !inGame && (
+        {isWebBrowser && !playing && (
           <>
             <SiteHeader signedIn={!!user && !isGuest} onProfile={() => { setScreen("home"); setTab("profile"); }} />
             <AppBar
               tab={tab}
-              active={inGame || screen === "results" ? null : screen === "settings" ? "settings" : tab}
+              active={playing || screen === "results" ? null : screen === "settings" ? "settings" : tab}
               setTab={setTab}
               setScreen={setScreen}
               dailyDone={dailyDone}
@@ -8625,7 +8638,7 @@ function AppInner() {
             autoJoinRoutedRef effect picks it up after auth completes. */}
         {/* Never over a live game (review 2026-09-06, A1): the gate waits until
             the player is back on a tab, where the invite is the only thing. */}
-        {pendingJoinCode && (!user || isGuest) && !inGame && (
+        {pendingJoinCode && (!user || isGuest) && !playing && (
           <div
             style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1100,display:"flex",alignItems:"center",justifyContent:"center",padding:24,animation:"fadeIn 0.2s ease"}}
             onClick={clearPendingJoin}
@@ -8901,7 +8914,6 @@ function AppInner() {
               key={mode}
               questions={questions}
               mode={mode}
-              diff={diff}
               timerEnabled={settings.timer !== false}
               timerSecondsOverride={activeClub ? 15 : undefined}
               soundEnabled={settings.sound === true}

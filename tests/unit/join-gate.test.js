@@ -18,8 +18,16 @@ describe('join gate', () => {
     expect(guest).toMatch(/No room with that code/);
   });
   it('never opens the gate over a live game, and drops a dead stored code on boot', () => {
-    expect(APP).toMatch(/\{pendingJoinCode && \(!user \|\| isGuest\) && !inGame && \(/);
-    expect(APP).toMatch(/isOpen: !!\(pendingJoinCode && \(!user \|\| isGuest\) && !inGame\)/);
+    // ⚠️ These pinned `!inGame` until 2026-09-07, and `inGame` is only
+    // ["quiz","local-game","local-results"] -- so the assertions codified the
+    // very bug the test is named for: the gate could open over a live Footle,
+    // Trail, Mystery or Stadiums round. `playing` is the value that covers all
+    // seven, and both the render guard and the a11y hook must use it, because
+    // those two had already drifted apart (the hook was widened first).
+    expect(APP).toMatch(/\{pendingJoinCode && \(!user \|\| isGuest\) && !playing && \(/);
+    expect(APP).toMatch(/isOpen: !!\(pendingJoinCode && \(!user \|\| isGuest\) && !playing\)/);
+    expect(APP, 'playing must cover the four standalone games')
+      .toMatch(/const playing = inGame \|\| \["wordle","trail","mystery","stadiums"\]\.includes\(screen\);/);
     expect(APP).toMatch(/loopEvent\("join-token-dead"/);
   });
   it('the RPC is anon-callable and follows the house rules', () => {
