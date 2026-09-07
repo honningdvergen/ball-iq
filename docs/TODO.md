@@ -130,6 +130,19 @@ defect as `first-game-started`.
 ✅ **`docs/FUNNEL.md` corrected** (2026-09-07) — it named two retired events and its club-page → app crossing query
 silently measured arrivals.
 
+### J. The sticky CTA covers the end of the explanation — BOTH surfaces (2026-09-07)
+⬜ **In the app**, photographed on device: the WHY panel's final word sits faded under `.q-sticky-foot`. On the Arsenal
+club-quiz question about Gillespie Road the explanation ends "...decades ahead of its time." and "time." is under the
+footer's gradient. The fade is doing its job — the text is not sharply cut — but the reader still cannot finish the
+sentence without scrolling, and on a short explanation there is nothing to scroll.
+⬜ **On the club/SEO pages** the same shape (A3): `.bq-next` is `position:sticky; bottom:10px` and opaque, so it lifts
+off its natural position and over the preceding `.bq-why`. Measured in the Browser pane at a hand-set scroll position:
+28px of explanation under the button. ⚠️ That number is NOT the natural resting state — `html{scroll-behavior:smooth}`
+plus a tab that reports `document.hidden` even when fronted meant the widget's own reveal scroll never ran, so I could
+not tell a real defect from an artefact of the harness. Sent to the webkit-verifier agent for a real-engine answer
+before any fix is designed. The likely shared fix is bottom padding on the scroll content so the pinned CTA always has
+empty space to occupy, rather than more gradient.
+
 ### I. Question reports — an observation, not yet a diagnosis (2026-09-07)
 ⬜ **The reason sheet is answered on Footle and skipped on the quiz.** Since 2026-08-25: Footle 7 of 10 reports carry a
 reason (70%), Trail 3 of 16 (19%), quiz questions 2 of 26 (8%). The wiring is identical on all three — same
