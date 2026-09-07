@@ -90,6 +90,20 @@ run the deterministic curate FIRST.
 ⬜ Club-division audit: 37/37 verified correct. Only its "how does this stop rotting every August" recommendation died
 on the limit — the file is still 37 hand-maintained values.
 
+### H. Found while verifying, 2026-09-07 — not caused by the work, filed not swept
+⬜ **The consent bar covers the WHOLE quiz area on a 320x568 phone.** Measured in real WebKit on the
+`/quiz/arsenal/` page at iPhone SE size: once `#biq-consent` mounts it fully covers both the WHY panel AND the Next
+button. Same class as the pre-boot onboarding cover fixed today (`public/consent.js` yields to `#preboot-onboard`),
+but a different surface — the club pages, which carry the most traffic. The bar has a deferral for deep-linked players
+already; the narrowest real phone needs something equivalent.
+⬜ **WebKit does not paint `.bq-next::after` outside the stuck state** — a sticky element is not a reliable containing
+block for an absolutely-positioned pseudo. Proved by forcing it red and scanning the full 6722px page: zero red pixels
+in normal flow, a red sliver while stuck. Harmless today (normal flow leaves a real 14px gap) and recorded in the
+source, but it means that pseudo cannot be used to fade anything that matters outside stickiness.
+⬜ **`.bq-next`'s sticky containing block is `.bq-card`, which holds all 66 questions** — so scrolling DOWN through
+later questions never engages stickiness for the current one. Only scrolling UP reproduces the overlap. Worth knowing
+before anyone tries to reproduce a sticky-button report on these pages.
+
 ### G. Small, real, unfiled
 ⬜ Two vitest tests time out at 5000ms under load (`difficulty-copy`, `lineup-page`) — both import the whole bank. Seen
 red twice today on a loaded machine, green on a clean rerun. Flaky gates train you to re-run instead of read.
