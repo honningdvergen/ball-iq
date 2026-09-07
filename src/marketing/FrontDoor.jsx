@@ -45,8 +45,22 @@ import FootleBand from './FootleBand.jsx';
 import { StoreBadge } from '../components/StoreBadge.jsx';
 
 const PLAY = '/play';
-// Footle plays on its own page since 2026-09-05 (the app's component as an
-// island); the other dailies still open in the app until theirs exist.
+// ⚠️ NO DAILY USES door() ANY MORE. All four now open their own served page —
+// Footle, Trail and Mystery as generated static pages, Daily 7 through
+// /daily-football-quiz/ (vercel.json rewrites it to api/daily-play).
+//
+// Daily 7 was the last one still on `door('daily')`, and it was the most-tapped
+// door on this page: the Today strip is the lead block. That route loads the
+// app shell — 512 KB of GameRoot plus a 2.4 MB question chunk — to play seven
+// questions the served page renders in one document with no bundle and no
+// session. It was an unfinished cut, not a decision; the comment that used to
+// sit here said "the other dailies still open in the app until theirs exist",
+// and Daily 7's had existed for days.
+//
+// The swap is state-safe, verified on prod: the served page carries
+// data-daily="<today's YMD>" and writes biq_daily_<that> with {score}, which is
+// exactly the key keyForDate() builds and the shape readState() below reads —
+// so "N of 4 played today" and the per-card done state survive it.
 const door = (game) => `${PLAY}?game=${game}`;
 
 // Leagues with a static page each (scripts/seo/leagues.mjs slugs).
@@ -161,7 +175,7 @@ export default function FrontDoor() {
 
   const dailies = [
     { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Played', href: '/football-wordle/' },
-    { k: 'daily', n: 'Daily 7', no: null, line: 'Seven questions, the same for everyone', st: state.daily, done: state.daily === 'done', doneText: state.dailyScore != null ? `${state.dailyScore} of 7` : 'Played', href: door('daily') },
+    { k: 'daily', n: 'Daily 7', no: null, line: 'Seven questions, the same for everyone', st: state.daily, done: state.daily === 'done', doneText: state.dailyScore != null ? `${state.dailyScore} of 7` : 'Played', href: '/daily-football-quiz/' },
     { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Follow the moves, name the player', st: state.trail, done: state.trail === 'done', doneText: 'Played', href: '/transfer-trail/' },
     ...(MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from career clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: '/mystery-player/' }] : []),
   ];

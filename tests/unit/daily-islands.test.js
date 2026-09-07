@@ -42,6 +42,31 @@ describe('daily screens stay island-safe', () => {
     expect(gen).toContain('id="${cfg.gameParam}-today"');
   });
 
+  it('every daily on the front door opens a SERVED page, never the app shell', () => {
+    // The Today strip is the front door's lead block and its most-tapped set of
+    // links. Daily 7 pointed at door('daily') = /play?game=daily until
+    // 2026-09-07 — the app shell, 512 KB of GameRoot plus a 2.4 MB question
+    // chunk — to play seven questions that /daily-football-quiz/ renders in one
+    // document. The other three had already moved; this was an unfinished cut.
+    //
+    // Pins the DAILIES array specifically. GAMES has always listed the served
+    // page for Daily 7, so a whole-file scan would have passed throughout.
+    const fd = read('src/marketing/FrontDoor.jsx');
+    const arr = fd.match(/const dailies = \[[\s\S]*?\n  \];/)?.[0] || '';
+    expect(arr, 'the dailies array was not found — did it move?').toContain("k: 'daily'");
+    expect(arr, 'no daily may open the app shell').not.toMatch(/href: door\(/);
+    for (const [key, href] of [
+      ['footle', '/football-wordle/'],
+      ['daily', '/daily-football-quiz/'],
+      ['trail', '/transfer-trail/'],
+      ['mystery', '/mystery-player/'],
+    ]) {
+      const row = arr.match(new RegExp(`\\{ k: '${key}'[^\\n]*`))?.[0] || '';
+      if (!row) continue; // mystery is behind MYSTERY_ENABLED
+      expect(row, `${key} must open ${href}`).toContain(`href: '${href}'`);
+    }
+  });
+
   it('the app funnel draws store badges, not platform words or an emoji', () => {
     const fd = read('src/marketing/FrontDoor.jsx');
     expect(fd).toContain('StoreBadge');
