@@ -4,7 +4,7 @@
 // seam the lazy screens already use; every screen here takes its state as
 // props and reaches into nothing else.
 import { useState, useEffect } from "react";
-import { Timer, Zap, Flame, Handshake, Home, Share, Trophy, Skull } from "lucide-react";
+import { Timer, Zap, Flame, Handshake, Home, Share, Trophy, Skull, CircleAlert, Loader, Gamepad2 } from "lucide-react";
 import { TopicPickerSheet, topicMeta, CLUB_PACK_TO_QB, CAT_LABELS, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { loadQuestions } from "../questions-loader.js";
@@ -299,7 +299,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
   if (questions !== null && totalQs === 0) {
     return (
       <div className="screen" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:14,padding:"0 24px",textAlign:"center"}}>
-        <div style={{fontSize:36}}>⚽</div>
+        <CircleAlert size={36} strokeWidth={1.8} color="var(--t3)" aria-hidden="true" />
         <div style={{fontFamily:"'Inter',sans-serif",fontSize:16,fontWeight:700,color:"var(--text)"}}>Couldn't load questions</div>
         <div style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"var(--t2)",lineHeight:1.5}}>Check your connection and try again.</div>
         <button className="btn-3d" style={{marginTop:6,maxWidth:240}} onClick={() => { setQuestions(null); setLoadNonce(n => n + 1); }}>Try Again</button>
@@ -311,7 +311,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
   if (phase === "done" || !currentQ) {
     return (
       <div className="screen" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:14}}>
-        <div style={{fontSize:36}}>⚽</div>
+        <Loader size={36} strokeWidth={1.8} color="var(--t3)" aria-hidden="true" />
         <div style={{fontSize:14,color:"var(--t2)"}}>{questions === null ? "Loading questions…" : "Finishing up…"}</div>
       </div>
     );
@@ -455,7 +455,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
           <span className="q-ctr">{prog}</span>
         </div>
         <div style={{textAlign:"center",padding:"6px 0 8px",fontSize:13,fontWeight:700,color:"var(--accent)"}}>
-          🎮 {currentPlayer?.name}'s turn
+          <Gamepad2 size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{currentPlayer?.name}'s turn
         </div>
         <div className="q-card">
           <div className="q-tag">{CAT_LABELS[currentQ.cat] || currentQ.cat}</div>
@@ -514,7 +514,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
             </div>
             {newEliminatedIds.length > 0 && (
               <div className="local-reveal-eliminate">
-                ❌ {newEliminatedIds.map(id => players.find(p => p.id === id)?.name).filter(Boolean).join(", ")} eliminated
+                <Skull size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{newEliminatedIds.map(id => players.find(p => p.id === id)?.name).filter(Boolean).join(", ")} eliminated
               </div>
             )}
           </>

@@ -12,10 +12,13 @@ call `onCancel` (writes nothing, settles the pending promise false so the button
 remains the one deliberate reason-less submit. A visible **Cancel** button was added — the way out has to be findable,
 not guessable. Guarded by `tests/unit/report-sheet-cancel.test.js`, which I probed by reintroducing the defect to
 confirm it actually goes red.
-⬜ **B5** — `src/Login.jsx:272` still promises leaderboards. Settings itself is clean and the version chain is real.
-⬜ **B7** — the pre-1950 bank flag was never built, and the daily log is frozen-append-only, so adding one later cannot
-clear days already written. Three pre-1950 questions are already frozen into past dailies.
-⬜ **C8** — emoji still in icon slots: `LocalPlay.jsx:594/600/606` (podium + 2 live Survival branches) and :81.
+✅ **B5** — stale by the time it was checked (2026-09-07): the only leaderboard copy left in `Login.jsx` is the honest one — "rank against your friends… see who is top of your table" — with a comment naming the one leaderboard that exists.
+🟡 **B7** — corrected 2026-09-07. The flag IS built: `preEra: true` is honoured by `isModernEra` (`quiz.js:106`). What
+is true: **12** questions failing the era gate (not three) are frozen into past dailies, and they stay there BY DESIGN —
+a logged day must never move. Fresh days cannot draw them. What remains is editorial: `preEra` marks a pre-1950 question
+that mentions NO year (the heuristic cannot see it), and zero questions carry it yet. That is a human read of the bank,
+not a script — it goes with the 27 editorial calls already waiting on Alex.
+✅ **C8** — 2026-09-07: the four emoji in `LocalPlay.jsx` code (⚽ ×2 on the error/loading states, 🎮 turn indicator, ❌ elimination) are Lucide now — `CircleAlert`, `Loader`, `Gamepad2`, and `Skull`, which is already Survival's own icon in that file. The `✓`/`✗` reveal marks are dingbat text glyphs, not icons, and stay. `:81` renders a team's `abbr || icon` from data, which is the club-badge system, not an emoji slot.
 ✅ **D14 MET 2026-09-07 (`e9d430d`) — Home eager JS 593 KB, under the 600 KB target.**
 831 → 772 → 697 → 666 → 633 → 608 → 593, measured at each step; the budget in `audit-home-budget.mjs` now sits AT 600
 so it cannot drift back. Verified on device: Daily 7, a club draw, the History and Online tabs, the sign-in overlay and
