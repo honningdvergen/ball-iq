@@ -25,8 +25,13 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = resolve(ROOT, 'dist');
 const ASSETS = resolve(DIST, 'assets');
-const BUDGET_KB = 800; // measured 768 KB on 2026-09-06 evening after E16 (was 831 before the lazy screens)
-const HEAVY = /^(questions|questions-index|mysteryPool|mysteryCareers)-[A-Za-z0-9_-]+\.js$/;
+const BUDGET_KB = 700; // 697 KB measured 2026-09-07 after questionConflicts went lazy (831 -> 772 -> 697). Target is 600.
+// ⚠️ questionConflicts JOINED THIS LIST 2026-09-07 — it was the SECOND-LARGEST
+// module in the eager Home chunk (81 KB of generated leak-pair data) and the
+// ban did not catch it purely because the regex did not name it. The lesson is
+// that this list is an allow-list of known offenders, not a definition: any
+// generated play-time data table belongs here the day it is created.
+const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers)-[A-Za-z0-9_-]+\.js$/;
 const HOME_CHUNKS = /^(main|GameRoot|HomeScreen)-[A-Za-z0-9_-]+\.js$/;
 
 const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');

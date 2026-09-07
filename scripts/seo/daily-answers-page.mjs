@@ -15,7 +15,7 @@
 // accident; past days are open, with the explanation for each answer — the
 // part of a Ball IQ question people come back for.
 import { QB } from '../../src/questions.js';
-import { pickDailyFromLog } from '../../src/lib/quiz.js';
+import { pickDailyFromLog } from '../../src/lib/dailyDraw.js';
 import DAILY_LOG from '../../src/data/dailyLog.js';
 import { answerDocument, esc, SITE, secondsToUtcMidnight, fmtUtc, MONTH_LONG, MONTH_SHORT } from './answer-shell.mjs';
 

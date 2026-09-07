@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { QB } from "../../src/questions.js";
-import { pickDailyQuestions } from "../../src/lib/quiz.js";
+import { pickDailyQuestions } from '../../src/lib/dailyDraw.js';
 import DAILY_LOG from "../../src/data/dailyLog.js";
 
 // ⚠️ WHAT THIS PROTECTS, AND WHAT IT COST TO LEARN (player report, 2026-08-19).

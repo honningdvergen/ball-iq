@@ -70,9 +70,25 @@ let inFlight = null;
 export function loadQuestions() {
   if (cache) return Promise.resolve(cache);
   if (inFlight) return inFlight;
-  inFlight = import('./questions.js').then((mod) => {
+  // ⚠️ THE LEAK TABLE RIDES WITH THE BANK, and that is the whole point.
+  // questionConflicts.js is 81 KB of generated data (2,745 questions, 3,762
+  // strong leaks) that App.jsx used to import STATICALLY — so it sat in the
+  // eager Home chunk, second-largest module there, to serve three draws that
+  // cannot run until the bank has loaded anyway. Exactly the defect D14 found
+  // with the question index, in a file the static-import ban's regex did not
+  // name.
+  //
+  // Loaded HERE rather than at the three call sites so the guard cannot be
+  // used without it: every caller of pickAvoidingConflicts already awaits this
+  // loader for QB, so taking `conflictsWith` off the same resolved object
+  // makes "I have questions but no leak table" unrepresentable. A sync
+  // accessor that degraded to () => [] until a fetch landed would silently
+  // reinstate the 26.9%-of-sessions answer leak this table exists to prevent —
+  // no error, no log, just easy points.
+  inFlight = Promise.all([import('./questions.js'), import('./questionConflicts.js')]).then(([mod, conflicts]) => {
     const QB = mod.QB;
     const TF_STATEMENTS = mod.TF_STATEMENTS;
+    const conflictsWith = conflicts.conflictsWith;
 
     // Chaos default-difficulty normalization. Previously at App.jsx:77.
     // Mutates QB rows in place — same behavior as before, just deferred.
@@ -86,7 +102,7 @@ export function loadQuestions() {
     // those questions keep their cat and surface via the general pool.)
     const QB_CHAOS  = QB.filter(q => q && (q.cat === "chaos" || q.tag === "chaos"));
 
-    cache = { QB, TF_STATEMENTS, QB_CHAOS };
+    cache = { QB, TF_STATEMENTS, QB_CHAOS, conflictsWith };
     inFlight = null;  // free the promise reference once resolved
     return cache;
   }).catch((err) => {

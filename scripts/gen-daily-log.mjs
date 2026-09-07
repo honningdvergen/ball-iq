@@ -31,7 +31,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { QB } from '../src/questions.js';
-import { pickDailyFresh } from '../src/lib/quiz.js';
+import { pickDailyFresh } from '../src/lib/dailyDraw.js';
 import { dayIndexForDate } from '../src/lib/date.js';
 
 const DAYS = Number(process.argv[2] || 400);

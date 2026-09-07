@@ -6,7 +6,6 @@ import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
 import { useMultiplayerRoom } from './useMultiplayerRoom.js';
-import Login from './Login.jsx';
 import ReportButton from './components/ReportButton.jsx';
 import { useProfilePhotos } from './lib/profilePhotos.js';
 // Lazy: the 523-line review screen is settings-only, never on the cold/first
@@ -20,9 +19,8 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
-import { seededShuffle, pickDailyQuestions, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
+import { seededShuffle, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
-import { conflictsWith } from './questionConflicts.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, UserRoundSearch, CircleX, CircleHelp, Pencil, Moon, BrickWall, Flag, Handshake, Smartphone } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, mpLookupRoom, useMpRetryStatus } from './multiplayerRpc.js';
@@ -51,7 +49,6 @@ import { CountUp } from './components/CountUp.jsx';
 import { ResultsCloseBtn } from './components/ResultsCloseBtn.jsx';
 import { WrongAnswersReview } from './components/WrongAnswersReview.jsx';
 import { Results } from './screens/ResultsScreen.jsx';
-import { OnlineHubTab } from './screens/OnlineHubTab.jsx';
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
 import { resultVerdict, HotStreakResults, TrueFalseResults } from './screens/ModeResults.jsx';
 import { QuizEngine, TypedInput } from './screens/QuizEngine.jsx';
@@ -99,6 +96,19 @@ const withSuspense = (Comp, label = "Loading") => function LazyScreen(props) {
   const exit = () => { try { window.dispatchEvent(new Event("biq:go-home")); } catch { /* no window */ } };
   return <TabErrorBoundary name={label} onExit={exit}><React.Suspense fallback={<ScreenLoading label={label} />}><Comp {...props} /></React.Suspense></TabErrorBoundary>;
 };
+// Login is an ON-DEMAND OVERLAY, never on the boot path — guest-first means
+// AppInner always has a user||guest context and the sign-in screen appears
+// only behind authPromptOpen. It was 34 KB sitting in the eager Home chunk for
+// a screen most sessions never open. Genuinely conditional, so unlike the tab
+// panes below this chunk is not merely deferred: it is never fetched at all
+// unless someone taps a sign-in affordance.
+const Login = withSuspense(React.lazy(() => import('./Login.jsx')), "Loading sign-in");
+// ⚠️ OnlineHubTab is DEFERRED, NOT ELIMINATED, and the difference matters when
+// reading the budget. Its pane renders whenever Home is up (hidden via
+// HIDDEN_STYLE off-tab) to keep tab state alive, so this chunk still loads —
+// just after paint, in parallel, instead of inside the bytes Home blocks on.
+// Same treatment and same caveat as ProfileScreen above.
+const OnlineHubTab = withSuspense(lazyNamed(() => import('./screens/OnlineHubTab.jsx'), 'OnlineHubTab'), "Loading online");
 const SettingsScreen = withSuspense(lazyNamed(() => import('./screens/SettingsScreen.jsx'), 'SettingsScreen'), "Loading settings");
 const DailyReviewScreen = withSuspense(lazyNamed(() => import('./screens/ReviewScreens.jsx'), 'DailyReviewScreen'), "Loading review");
 const PuzzleReviewScreen = withSuspense(lazyNamed(() => import('./screens/ReviewScreens.jsx'), 'PuzzleReviewScreen'), "Loading review");
@@ -462,7 +472,7 @@ export function recordMpQuestionsSeen(questions) {
 
 
 export async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, includeLegends = false, noEasy = false, avoidConflicts = false }) {
-  const { QB } = await loadQuestions();
+  const { QB, conflictsWith } = await loadQuestions();
   // Defensive: strip out any undefined entries that might exist from array holes
   let pool = QB.filter(q => q && typeof q === "object");
   // ⚠️ Retired packs are withheld from EVERY draw. Nulling TOPICAL_PACK removes
@@ -611,7 +621,14 @@ export async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, in
 
 
 async function getDailyQsForDate(date) {
-  const { QB } = await loadQuestions();
+  // The frozen log (33 KB of generated answers) is imported HERE rather than at
+  // the top of the file: it moved to lib/dailyDraw.js so it stops riding into
+  // the eager Home chunk via lib/quiz.js. Both awaits resolve in parallel and
+  // the draw cannot run without QB anyway.
+  const [{ QB }, { pickDailyQuestions }] = await Promise.all([
+    loadQuestions(),
+    import('./lib/dailyDraw.js'),
+  ]);
   // Selection lives in src/lib/quiz.js — pure and tested. It must depend on the
   // date and nothing else (the Daily 7 feeds /c/ challenge links and an OG card),
   // and the reasons why are documented there. We still RECORD into seen-history
@@ -6170,7 +6187,7 @@ function AppInner() {
       const qbName = CLUB_PACK_TO_QB[clubKey];
       if (qbName) {
         try {
-          const { QB } = await loadQuestions();
+          const { QB, conflictsWith } = await loadQuestions();
           // ⚠️ THE CLUB DRAW BYPASSES getQs, so the retired-tag filter there does
           // not reach it — 26 of the summer-2026 rows still carry a `club`.
           // The second implementation of the same rule, applied at the same time.
@@ -6253,7 +6270,7 @@ function AppInner() {
       const lg = LEAGUE_QUIZ_BY_CAT[catKey];
       if (!lg) return;
       haptic("soft");
-      const { QB } = await loadQuestions();
+      const { QB, conflictsWith } = await loadQuestions();
       // Retired packs withheld here too — the league draw bypasses getQs, and
       // the summer-2026 rows carry real cats (Transfers, WorldCup, Managers…).
       const pool = QB.filter(q => q && q.cat === catKey && q.type === "mcq" && Array.isArray(q.o)

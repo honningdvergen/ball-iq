@@ -19,7 +19,7 @@
 // app bundle has carried the entire log since the log existed, so this adds
 // no new exposure — but it is a fact, not an accident.
 import { QB } from '../../src/questions.js';
-import { pickDailyFromLog } from '../../src/lib/quiz.js';
+import { pickDailyFromLog } from '../../src/lib/dailyDraw.js';
 import { answerDocument, esc, SITE, secondsToUtcMidnight, fmtUtc, MONTH_LONG } from './answer-shell.mjs';
 import { todayIndex, isoOf, recentDailyDays } from './daily-answers-page.mjs';
 import { DAILY7_PAGE } from './content.mjs';

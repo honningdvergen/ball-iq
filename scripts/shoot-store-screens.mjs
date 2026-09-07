@@ -31,7 +31,7 @@ import { webkit } from '@playwright/test';
 // came back null, the typing loop was skipped, and the shot shipped an empty
 // board. The screen assertion still passed, because the screen was Footle.
 import { getWordleAnswer, gradeWordleGuess } from '../src/lib/wordle.js';
-import { pickDailyQuestions } from '../src/lib/quiz.js';
+import { pickDailyQuestions } from '../src/lib/dailyDraw.js';
 import { dayIndexForDate } from '../src/lib/date.js';
 import { QB } from '../src/questions.js';
 // Same rule as the Footle answer above: derive in NODE. The Mystery and Trail

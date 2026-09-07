@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { seededShuffle, pickDailyQuestions, DAILY_SEED_MULTIPLIER, isModernEra, pickAvoidingConflicts } from '../../src/lib/quiz.js'
+import { seededShuffle, DAILY_SEED_MULTIPLIER, isModernEra, pickAvoidingConflicts } from '../../src/lib/quiz.js';
+import { pickDailyQuestions } from '../../src/lib/dailyDraw.js'
 
 // A stand-in bank. Deliberately not the real 4k questions — this pins the
 // ALGORITHM, which must hold for any bank.
