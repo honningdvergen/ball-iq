@@ -257,9 +257,18 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       // share card. Legacy emoji avatars still work; anything else falls back.
       e: (/^c\d\d$/.test(String(profile.avatar || "")) ? "⚽" : (profile.avatar || "⚽")),
       iq: String(iq || 0),
-      ov: String(card.overall),
-      ti: card.tier,
-      r: card.ratings.map(x => x.rating).join(","),
+      // The rating fields are OMITTED until the card is rated. They were sent
+      // unconditionally until 2026-09-07, and api/og.js publishes ov at 48px
+      // to everyone who sees the unfurl -- so an unrated player was broadcasting
+      // a number that is mostly prior, to an audience, from the app's most
+      // public surface. api/og.js already falls back to "—" for each of these
+      // (og.js:311 and the cell renderer), so leaving them out renders a card
+      // with dashes rather than an invented rating.
+      ...(card.rated ? {
+        ov: String(card.overall),
+        ti: card.tier,
+        r: card.ratings.map(x => x.rating).join(","),
+      } : {}),
     });
     const avatarUrl = authProfile?.avatar_url;
     if (avatarUrl) params.set("img", avatarUrl);

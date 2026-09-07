@@ -1,3 +1,4 @@
+import { MIN_RATED_ANSWERS } from './scoring.js';
 // Ball IQ player-rating card — driven by per-category accuracy. Six "competition"
 // face stats + a compiled overall + a Prospect / Pro / Elite rating tier.
 // catStats shape (from saveStats): { [cat]: { c: correctCount, a: answeredCount } }.
@@ -85,5 +86,19 @@ export function computeCard(catStats = {}, priorAcc = 0.4) {
     return { abbr: comp.abbr, cat: comp.cat, name: comp.name, icon: comp.icon, color: comp.color, rating: compRating(cs, priorAcc), answered: cs?.a || 0 };
   });
   const overall = Math.round(ratings.reduce((s, r) => s + r.rating, 0) / ratings.length);
-  return { ratings, overall, tier: cardTier(overall) };
+  // `rated` travels WITH the card so every consumer inherits one answer to
+  // "is there enough data to print a number?".
+  //
+  // It exists because four surfaces asked that question four different ways and
+  // three got it wrong: the owner's card used >= MIN_RATED_ANSWERS and was
+  // right; the friend card used `some(c => c.a > 0)`, so ONE answered question
+  // printed "85 · GOLD" at 86px; the shared PNG printed the number
+  // unconditionally; and the OG link published all six ratings to anyone who
+  // saw the unfurl. A Footle-only player could publish 64 · SILVER while their
+  // own card correctly read ANSWER 10 TO GET RATED.
+  //
+  // Five of the six league ratings in that state are pure prior -- the number
+  // is not merely thin, it is mostly invented.
+  const answeredTotal = ratings.reduce((n, r) => n + (r.answered || 0), 0);
+  return { ratings, overall, tier: cardTier(overall), answeredTotal, rated: answeredTotal >= MIN_RATED_ANSWERS };
 }

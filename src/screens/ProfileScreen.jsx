@@ -884,9 +884,13 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
           rating card bolted under it. */}
       {(() => {
         const fCat = friendStats.catStats || {};
-        const played = Object.values(fCat).some((c) => (c?.a || 0) > 0);
         const acc = (totalAnswered > 0 && totalCorrect <= totalAnswered) ? totalCorrect / totalAnswered : 0.4;
         const card = computeCard(fCat, acc);
+        // card.rated is the SAME test the owner's card uses. This asked
+        // `some(c => c.a > 0)` until 2026-09-07, so a friend who had answered a
+        // single question was shown to you as "85 · GOLD" at 86px with five of
+        // the six league ratings pure prior.
+        const played = card.rated;
         const t = tierPalette(card.tier);
         return (
           // ⚠️ THE OWNER'S CARD, NOT A COPY OF IT. Alex, twice: "why does the

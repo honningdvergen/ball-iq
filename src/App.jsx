@@ -3068,7 +3068,13 @@ async function generateShareCard(type, data) {
     // Rating and avatar: same optical size, held as a pair.
     ctx.font = `800 ${px(150)}px "JetBrains Mono", "Courier New", monospace`;
     ctx.fillStyle = t.accent;
-    _trackedText(ctx, String(card?.overall ?? "—"), px(30), px(205), px(-5));
+    // An unrated card prints a dash, never a number. This drew card.overall
+    // unconditionally until 2026-09-07, so a player who had answered fewer than
+    // MIN_RATED_ANSWERS could save and post an image reading "64 · SILVER"
+    // while their own card in the app correctly said ANSWER 10 TO GET RATED.
+    // A shared image is the most public surface the rating has.
+    const _rated = card?.rated !== false;
+    _trackedText(ctx, _rated ? String(card?.overall ?? "—") : "—", px(30), px(205), px(-5));
 
     ctx.font = `900 ${px(11)}px Inter, "Helvetica Neue", Arial, sans-serif`;
     ctx.fillStyle = _tint(t.text, 0.5);
@@ -3076,7 +3082,8 @@ async function generateShareCard(type, data) {
 
     ctx.font = `900 ${px(14)}px Inter, "Helvetica Neue", Arial, sans-serif`;
     ctx.fillStyle = _tint(t.accent, 0.92);
-    ctx.fillText((t.label || "").split("").join(" "), px(40), px(261));
+    ctx.fillText(_rated ? (t.label || "").split("").join(" ")
+                        : `A N S W E R   ${MIN_RATED_ANSWERS}   T O   G E T   R A T E D`, px(40), px(261));
 
     const aR = px(75), aCx = W - px(38) - aR, aCy = px(76) + aR;
     ctx.save();

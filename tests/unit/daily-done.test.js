@@ -115,6 +115,36 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(PROFILE).not.toMatch(/const hasPlayed = \(stats\?\.gamesPlayed \|\| 0\) > 0/);
   });
 
+  it('NO surface prints a rating before there is data — not just the owner\'s card', () => {
+    // The owner's card was gated on 2026-09-06; three other surfaces were not,
+    // and two of them are PUBLIC. computeCard now carries `rated` so all four
+    // inherit one answer instead of asking the question four ways.
+    const CARD = read('../../src/lib/ballIqCard.js');
+    expect(CARD, 'the card reports whether it has enough data')
+      .toMatch(/rated: answeredTotal >= MIN_RATED_ANSWERS/);
+
+    const PROFILE = read('../../src/screens/ProfileScreen.jsx');
+    expect(PROFILE, 'the friend card uses the same test as the owner card')
+      .toMatch(/const played = card\.rated;/);
+    expect(PROFILE, 'one answered question must not count as played')
+      .not.toMatch(/const played = Object\.values\(fCat\)\.some/);
+
+    // The shared PNG — the most public surface the rating has.
+    expect(APP).toMatch(/const _rated = card\?\.rated !== false;/);
+    expect(APP, 'the PNG prints a dash, not a number, when unrated')
+      .toMatch(/_trackedText\(ctx, _rated \? String\(card\?\.overall \?\? "—"\) : "—"/);
+
+    // The OG unfurl — api/og.js publishes ov at 48px to anyone who sees it.
+    const SHARE = read('../../src/hooks/useShare.js');
+    expect(SHARE, 'rating params are omitted until rated').toMatch(/\.\.\.\(card\.rated \? \{/);
+    // The ov/ti/r lines still EXIST -- they just live inside the conditional
+    // now, so a "not.toMatch" on them is a false positive. What matters is
+    // that they sit after the gate, never before it.
+    expect(SHARE.indexOf('ov: String(card.overall)'),
+      'the rating params must be inside the card.rated spread')
+      .toBeGreaterThan(SHARE.indexOf('...(card.rated ? {'));
+  });
+
   it('the panel reports that it was SEEN, once, so the ask has a denominator', () => {
     // Every other event in DailyDone is a tap. Without a shown event, push
     // reach cannot be read: "Remind me" taps have no denominator, so nobody can
