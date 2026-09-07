@@ -83,10 +83,12 @@ cannot start a game.
 ⬜ The workflow's ranked plan was never produced — re-run it (`resumeFromRunId`) or write it by hand.
 
 ### F. Club packs
-⬜ **Eintracht Frankfurt: CURATED, NOT SHIPPED.** 34 questions, categories remapped to the real bank vocabulary
-(`Europe` is not a category — the bank files European competition under `UCL`). Still needs an EXTERNAL fact-check and
-the 13 wiring points. ⚠️ Cost ~1.8M tokens — see `feedback_club_pack_forge_cost`; batch verifiers to 1-2 next time and
-run the deterministic curate FIRST.
+✅ **Eintracht Frankfurt SHIPPED 2026-09-07 (4f0bf92).** 34 questions, bank 7,045 → 7,079, 96 clubs,
+/quiz/eintracht-frankfurt/ live. Two external fact-checks came back clean on all 34 and on the prose. The defect
+NEITHER found: 20 of 34 answers sat at index 0 (59% vs a 25% baseline) — a player pressing A every time scores 59%
+knowing nothing. Rebalanced to 29%; the rule is now a curate-time gate in the wave skill. Twelve wiring points, not
+the thirteen this file said — `club-alias.mjs` was the one the gate caught, and MarketingHome.jsx no longer exists.
+⚠️ Cost ~1.8M tokens — see `feedback_club_pack_forge_cost`; batch verifiers to 1-2 next time and curate FIRST.
 ⬜ Club-division audit: 37/37 verified correct. Only its "how does this stop rotting every August" recommendation died
 on the limit — the file is still 37 hand-maintained values.
 
