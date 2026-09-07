@@ -97,6 +97,42 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
      the page that holds visitors longest. Pinned to the viewport's foot while
      the card overflows it; in normal flow the moment the card fits. */
   .bq-next{position:sticky;bottom:10px;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,.35);margin-top:14px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+  /* ⚠️ AND IT MUST FADE WHAT IT COVERS. The button above is opaque green and
+     sits directly after .bq-why in flow. At the moment the answer is revealed
+     the scroll-margin below plus the engine's scrollIntoView keep them apart —
+     but scroll up ~70px to re-read the question, which is the obvious reason to
+     scroll, and roughly two lines of the explanation sit flat underneath it,
+     chopped rather than covered.
+     The app hit exactly this (review A3) and did not unpin the button: it
+     wrapped it in a fading footer, so what passes behind reads as fading out
+     instead of being cut in half. This is that footer, as a pseudo-element,
+     because the widget's markup is generated and a real wrapper would mean
+     touching every page that embeds it. */
+  .bq-next::before{content:'';position:absolute;left:0;right:0;bottom:100%;height:34px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none}
+  /* ⚠️ AND THE BOTTOM EDGE, which the first version of this fix missed. A WHY
+     box is ~129px tall against a 50px button, so the SAME paragraph passes
+     behind it and its tail re-emerges BELOW — where, with only a ::before,
+     it was still cut by a perfectly sharp edge. Measured in real WebKit at
+     375x812: elementFromPoint just under the button returned .bq-why directly,
+     text exposed edge-to-edge. Fixing one side of a sticky element is fixing
+     half of it.
+     ⚠️ SOLID FOR THE FIRST 16px, THEN FADE — and the reason is the sticky
+     offset, not the gradient. While stuck, the button's bottom edge is always
+     exactly bottom:10px from the viewport foot, so only 10px below it is
+     ever on screen. A plain bg->transparent ramp is still ~70% transparent at
+     10px, which measured in WebKit as a dim but LEGIBLE ghost of the trailing
+     line on a 320x568 SE. The visible strip has to be fully opaque; the fade
+     then happens in the 18px nobody sees while stuck, and does its real job
+     when the button is in normal flow.
+     ⚠️ WEBKIT QUIRK, measured not assumed: this ::after does not PAINT AT ALL
+     once the button settles into normal flow — a sticky element is not a
+     reliable containing block for its absolutely-positioned pseudo outside the
+     stuck state. Proved by forcing it red and scanning the whole 6722px page:
+     zero red pixels in normal flow, a red sliver at the 10px strip while stuck.
+     Harmless here, because in normal flow .bq-why and .bq-next have a real 14px
+     gap and nothing needs covering. Do NOT extend this pseudo to fade anything
+     that matters outside the stuck state; it will silently do nothing. */
+  .bq-next::after{content:'';position:absolute;left:0;right:0;top:100%;height:34px;background:linear-gradient(to bottom,var(--bg) 0,var(--bg) 16px,transparent 34px);pointer-events:none}
   .bq-next:hover{filter:brightness(1.05)}
   .bq-res{text-align:center;padding:6px 2px;position:relative;overflow:hidden}
   .bq-res::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,transparent,var(--club,var(--grn)),transparent)}
