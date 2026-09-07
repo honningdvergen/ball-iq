@@ -10,6 +10,39 @@ The pipeline that took the bank 4,030 → 5,834 and the site to 61 live club pag
 The zero-error bar from [ball-iq-question-bank] governs throughout: verify inline,
 only survivors ship, reject-when-in-doubt.
 
+## Generation-time gate: `preEra` on club-identity questions (added 2026-09-07)
+
+The year-less pre-1950 questions that reach the shared Daily 7 are **not
+scattered — they are produced by this pipeline, by construction.** Every club
+pack asks the same identity slots: *who founded it · what was it originally
+called · where did it first play · where does the name come from.* For any club
+founded before the war, three of those four resolve to a pre-1950 fact, and
+none of them ever needs to print a year — so `isModernEra` (which reads years
+out of the stem and the keyed answer) passes them straight through. That is how
+"Torino was co-founded by which Swiss businessman?" (1906) led a Daily 7, with
+two siblings in the same pack.
+
+A sweep of the 860 year-less History/Legends/Records/Managers questions on
+2026-09-07 found 30 genuine pre-1950 rows and **20 of them were club-origin
+questions from these waves.**
+
+**The rule: when the forge writes a founding / original-name / first-ground /
+name-origin question for a club founded before 1950, it must emit
+`preEra: true`.** The generator already knows the founding year — it does not
+need a regex to infer it, and no regex could. Put it in the generation schema,
+not in curation, so the class is closed rather than triaged.
+
+⚠️ Do NOT try to gate this deterministically on the stem wording. Measured: a
+template regex over club rows with no year matches 12, of which 6 are correctly
+unflagged — "named after Harry Hotspur", "the San Siro honours…", "the Zarra
+award" are about live identities, not pre-1950 events. A hard gate on that
+shape fails good questions. The founding YEAR is the signal; the wording is not.
+
+Second, smaller pattern: the "first player/manager/club ever to do X" shape.
+Most resolve post-1950 (Gento, Busby, Seeler, Weah), but a few land in the
+1880s-1930s with no year in sight. Any "first ever" stem needs a date check
+before it ships.
+
 ## Curate-time gate: the format tell (added 2026-08-28)
 
 Measured on the live bank: when exactly one option's name format (single word
