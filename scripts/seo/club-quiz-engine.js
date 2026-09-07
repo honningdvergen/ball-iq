@@ -140,7 +140,13 @@ function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;
 function bqSynthetic(){try{
 if(navigator.webdriver===true)return true;
 var h=location.hostname;
-return h==='localhost'||h==='127.0.0.1';
+// [::1] is IPv6 localhost, which vite preview and Safari's own localhost
+// resolution both use. It was missing here while the other five gates in the
+// repo had it, so local play on the club pages — the surface carrying the
+// most traffic — was writing real rows.
+// NOTE: no backticks anywhere in this file. It is inlined into a JS template
+// literal, and one backtick takes out three test suites.
+return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
 }catch(e){return false}}
 function bqVid(){try{
 var v=localStorage.getItem('biq_vid');

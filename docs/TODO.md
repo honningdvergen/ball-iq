@@ -50,15 +50,17 @@ not a rate. Re-derive before any decision cites it again.
 `logRound` filters to `/quiz/`, so the two counters over- and under-count in opposite directions.
 ⬜ **The `club` column is `location.pathname` segment 1** — five different page classes write into it, no allow-list;
 `log_club_quiz` accepts any string up to 64 chars.
-⬜ **Localised club pages never reach `club_quiz_results`** — `seg[0]!=='quiz'` refuses `/es/quiz/river-plate/`, the
-page measured at 134 clicks against 8 for its English twin.
-⬜ **`store-out`** fires twice per tap on the three daily island pages, is completely ungated (`shell.mjs`, the only
-emitter in the repo with no synthetic gate), and its `page` label files play pages under their answer pages while
-dropping the localised layer.
+✅ **Localised club pages reach `club_quiz_results`** (2026-09-07). `logRound` is attribute-driven now — it reads
+`data-slug` / `data-kind` off the page and the `lang` off `<html>`, so `/es/quiz/river-plate/` writes with `lang='es'`
+instead of returning early. The `lang` column had to land FIRST: without it the Spanish rows would have merged into the
+English `river-plate` row, turning a visible absence into an invisible corruption.
+🟡 **`store-out`** — the ungated half is FIXED (`sSyn()` in `shell.mjs`, 2026-09-07). Still open: it fires twice per
+tap on the three daily island pages, and its `page` label files play pages under their answer pages while dropping the
+localised layer.
 ⬜ **`tests/unit/seo-funnel-attribution.test.js:7` reads only `gen-seo-pages.mjs`** — commit `07a838b` moved the engine
 into its own file so ESLint could see it, and the refactor moved it out of the only test checking its attribution.
-⬜ `bqSynthetic()` is the weakest of the five synthetic gates in the repo — missing `[::1]` and `*.local` that the other
-four have. ⚠️ And no gate in the repo would have stopped the 46-row burst: they stop drivers, not headless crawlers.
+🟡 `bqSynthetic()` — `[::1]` added 2026-09-07 (it was writing real rows from local play on the highest-traffic
+surface). Still missing `*.local` that some siblings have. ⚠️ And no gate in the repo would have stopped the 46-row burst: they stop drivers, not headless crawlers.
 
 ### D. Navigation (judge panel, 3 proposals) — steps 1-3 shipped
 ✅ Step 1 (reminder + post-daily routing), Step 2 (baseline frozen), Step 3 (both day-0 defects).
@@ -105,6 +107,16 @@ source, but it means that pseudo cannot be used to fade anything that matters ou
 ⬜ **`.bq-next`'s sticky containing block is `.bq-card`, which holds all 66 questions** — so scrolling DOWN through
 later questions never engages stickiness for the current one. Only scrolling UP reproduces the overlap. Worth knowing
 before anyone tries to reproduce a sticky-button report on these pages.
+
+✅ **Every writer in the repo is now gated** (2026-09-07, `dd5b26e`). The last three — `list-play-start`,
+`list-play-giveup`, `xi-won`/`xi-lost` — went to Clarity and nowhere else, so nothing downstream was filtering robots
+out of them. `ungatedBaseline` in `.audit/instruments.json` is empty for the first time.
+✅ **`api/p.js` used its own `bq_vid`** (2026-09-07, `83a6b9d`) — one character off `biq_vid`, so a share landing and
+the app that followed it were two visitors, and both privacy policies named `biq_vid` as the only stored identifier.
+✅ **`acct-first-play` split into `acct-game-reached` / `acct-game-played`** (2026-09-07) — it had the same render-fired
+defect as `first-game-started`.
+✅ **`docs/FUNNEL.md` corrected** (2026-09-07) — it named two retired events and its club-page → app crossing query
+silently measured arrivals.
 
 ### G. Small, real, unfiled
 ⬜ Two vitest tests time out at 5000ms under load (`difficulty-copy`, `lineup-page`) — both import the whole bank. Seen
