@@ -1164,14 +1164,25 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
 
   if (isAnonUser) {
     return (
+      /* THE ONLY ACCOUNT ASK ON THIS SCREEN (review C11's class, 2026-09-07).
+         A second one — "Playing as a guest — save your stats with a free
+         account" — used to render a few lines below this, so an anonymous
+         guest finished a game and was asked to sign up twice, in two idioms,
+         for the same action. That is the defect C11 fixed on the Daily 7
+         results; multiplayer was never played during the review, so it escaped.
+         This one survives because it is the SPECIFIC ask: it names the person
+         you just played. It now carries the stats promise too, and uses the
+         'upgrade' prompt, which is the honest one for an anon guest — the
+         upgrade keeps the same auth.uid(), so this game's score and XP really
+         do carry into the account. */
       <button
         type="button"
-        onClick={openAuthPrompt}
+        onClick={() => { try { openAuthPrompt?.('upgrade'); } catch {} }}
         style={{ width: '100%', marginTop: 14, padding: '12px 14px', borderRadius: 12,
                  background: 'var(--s2)', border: '1px solid var(--border)', color: 'var(--t2)',
                  fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, cursor: 'pointer' }}
       >
-        Save your account to add {opponents.length === 1 ? (opponents[0].name || 'them') : 'these players'} as a friend
+        Save your stats and add {opponents.length === 1 ? (opponents[0].name || 'them') : 'these players'} as a friend
       </button>
     );
   }
@@ -1255,6 +1266,12 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
   // XP line, no share — and offer the one thing the visitor can actually do.
   const gamePlayed = gameEverStarted(room, players);
   const myUserId = myPlayer?.user_id || null;
+  // Mirrors AddFriendRow's own opponents filter exactly. It decides whether the
+  // SPECIFIC account ask can be made ("add them as a friend"); the generic one
+  // in the action stack renders only when it cannot, so a guest is asked once
+  // and always — never twice, never not at all.
+  const friendAskShown = !!(isAnonUser && myUserId
+    && (players || []).filter(p => p.user_id && p.user_id !== myUserId).length > 0);
   const myRank = myUserId ? sorted.findIndex(p => p.user_id === myUserId) + 1 : 0;
   const winner = sorted[0];
   const isWinner = !!myUserId && !!winner && winner.user_id === myUserId;
@@ -1887,6 +1904,11 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
         </div>
         )}
 
+        {/* Exactly one account ask on this screen. AddFriendRow makes the
+            specific one when there is somebody to be friends with; the generic
+            one below fills in when there is not. Mirrors AddFriendRow's own
+            opponents filter, so the two conditions cannot drift into showing
+            both or neither. */}
         {/* Sits ABOVE the action stack on purpose: Rematch and Back to Home
             are both exits, and an offer placed after them is an offer made
             to someone already leaving. */}
@@ -1900,12 +1922,18 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
           {/* v1.6 guest entry — the moment a guest most wants their stats to
               persist is right after seeing them. Upgrading keeps the same
               auth.uid(), so this game's score/XP carry into the account. */}
-          {isAnonUser && (
+          {/* ONLY when AddFriendRow above could not make the ask — an empty
+              room, or a room where nobody else has a user_id. Its predicate is
+              mirrored exactly (OnlineMultiplayer.jsx AddFriendRow: players
+              filtered by p.user_id && p.user_id !== myUserId) so the two can
+              never both appear, and never both be absent. The 💾 that led this
+              button is gone with it: an emoji standing in for an icon. */}
+          {isAnonUser && !friendAskShown && (
             <button
               onClick={() => { try { openAuthPrompt?.('upgrade'); } catch {} }}
               style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 999, background: 'transparent', border: '1.5px solid var(--border)', color: 'var(--text)', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
             >
-              💾 Playing as a guest — save your stats with a free account
+              Playing as a guest — save your stats with a free account
             </button>
           )}
           {/* ── PLAY AGAIN, WITHOUT ANYONE LEAVING ─────────────────────────
