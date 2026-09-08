@@ -107,6 +107,15 @@ function sSyn(){try{
 if(navigator.webdriver===true)return true;
 var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
 }catch(e){return false}}
+/* The shared visitor id, same key and shape as bqVid/gVid. store-out was the ONE
+   web emitter sending p_visitor:null (6 of 6 rows, 14 days), so a store tap
+   could never be joined to the visit that produced it. */
+function sVid(){try{
+var v=localStorage.getItem('biq_vid');
+if(!v){v=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():null;
+if(!v)return null;localStorage.setItem('biq_vid',v)}
+return (v&&v.length===36)?v:null;
+}catch(e){return null}}
 if(sSyn())return;
 var P=location.pathname,T=P==='/quiz/'?'directory':P.indexOf('/quiz/')===0?'club':P.indexOf('/lists/')===0?'list':P.indexOf('/football-wordle/')===0?'footle-answer':P.indexOf('/daily-football-quiz/')===0?'daily-answer':P==='/'?'home':'other';
 document.addEventListener('click',function(e){
@@ -116,7 +125,7 @@ var meta={store:a.href.indexOf('apps.apple.com')>-1?'ios':'android',page:T,
 where:/mini/.test(a.className)?'mini':a.closest('.appband')?'appband':a.closest('.fd-foot,footer')?'footer':'other'};
 fetch('${SB_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
 headers:{'content-type':'application/json','apikey':'${SB_KEY}','authorization':'Bearer ${SB_KEY}'},
-body:JSON.stringify({p_event:'store-out',p_meta:meta,p_visitor:null})}).catch(function(){});
+body:JSON.stringify({p_event:'store-out',p_meta:meta,p_visitor:sVid()})}).catch(function(){});
 },true);}catch(e){}})();</script>`;
 }
 

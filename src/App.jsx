@@ -66,7 +66,6 @@ import {
   getWordleDayIndex, getWordleAnswerForDayIndex, getWordleAnswer,
   gradeWordleGuess, computeFootleStreak, getFootleNumber,
 } from './lib/wordle.js';
-import { FootballWordle } from './games/FootballWordle.jsx';
 import { PlatformStoreBadge } from './components/StoreBadge.jsx';
 import { getFootleXP } from './lib/footleXp.js';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
@@ -113,6 +112,10 @@ const OnlineHubTab = withSuspense(lazyNamed(() => import('./screens/OnlineHubTab
 // this never blocks the first paint — but its pane does render whenever Home
 // is up, so the chunk still arrives shortly after, in parallel.
 const DailyTabScreen = withSuspense(lazyNamed(() => import('./screens/DailyScreen.jsx'), 'DailyTabScreen'), "Loading history");
+// Footle's board (33 KB) was a STATIC import for a screen entered by a tap, so
+// it rode GameRoot's boot path for everyone. The /football-wordle/ island keeps
+// its own direct import; only the app's copy is deferred.
+const FootballWordle = withSuspense(lazyNamed(() => import('./games/FootballWordle.jsx'), 'FootballWordle'), "Loading Footle");
 // The three finish screens. ⚠️ These are the ONE place a Suspense fallback
 // would actually hurt — the moment a player finishes is the emotional peak of
 // the session, and a spinner there is worse than the bytes. So they are lazy
