@@ -12,11 +12,10 @@
 // (scripts/audit-orphan-pages.mjs) would otherwise fail the build, and it
 // would be right to.
 export const DISCOVER = [
-  ['Football quiz', '/football-quiz/'],
-  // ⚠️ THE ANCHOR CARRIES THE HEAD TERM. This label is the 347 site-wide links
-  // into /quiz/, the deliberate "football quiz" target (gen-seo-pages.mjs,
-  // 2026-08-16). As "All quizzes" the phrase reached the page from nowhere.
-  ['Football quizzes', '/quiz/'],
+  // ⚠️ POINTS AT THE TARGET. /football-quiz/ canonicals to /quiz/ (the
+  // 2026-08-16 decision); this link used to hand the exact head-term anchor to
+  // the page that disowns itself. /quiz/ gets the phrase directly now.
+  ['Football quiz', '/quiz/'],
   ['Clubs by league', '/quiz/clubs/'],
   ["Today's Footle answer", '/football-wordle/answer/'],
   ['Daily 7 answers', '/daily-football-quiz/answers/'],
