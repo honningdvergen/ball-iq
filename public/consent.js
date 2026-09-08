@@ -273,8 +273,14 @@
   // eating their first one — it covered option D while the clock ran. Clarity
   // is off until consent either way, so waiting for the app's first natural
   // pause (results screen, or bailing home) collects the same consent without
-  // spending the visitor's first question on it. Static pages never set the
-  // flag; their taster is untimed and the banner still shows on load there.
+  // spending the visitor's first question on it.
+  //
+  // ⚠️ THE GENERATED STATIC PAGES SET THE FLAG TOO — always, since
+  // 2026-09-02. This comment claimed the opposite for five days, and that
+  // claim is what sent tests/e2e/consent-banner.spec.js looking for a banner
+  // on load at /quiz/arsenal/, where there has never been one. Their taster is
+  // untimed, but the bar still covered its answer options, which is reason
+  // enough on the arrival that converts best.
   // ⚠️ A DEFERRED BANNER NEEDS A TRIGGER THAT ACTUALLY FIRES.
   // biq:consent-moment is dispatched only by the /play app (App.jsx). The
   // marketing homepage now defers too, and it never dispatches that event — so

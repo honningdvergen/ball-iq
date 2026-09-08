@@ -105,6 +105,13 @@ describe('a streak label names which streak it is', () => {
     expect(HOME).toContain('Day streak');
     expect(HOME).toMatch(/loginStreak/);
     expect(DAILY).toContain('Day streak');
-    expect(DAILY, 'Daily renders loginStreak via the reconciled `streak` memo').toMatch(/typeof loginStreak === "number"/);
+    // ⚠️ Pin the SOURCE of Daily's streak scalar, not the shape of the memo.
+    // This used to grep for `typeof loginStreak === "number"` — the guard on a
+    // `localRun` fallback that could never run, since loginStreak is a number
+    // on every path (its initialiser returns 0, and all five setLoginStreak
+    // call sites pass numbers). Deleting that dead branch turned this test red
+    // while the fact it exists to protect — Daily shows the SHARED number, not
+    // a local per-mode walk — was never in danger. Assert the fact instead.
+    expect(DAILY, 'Daily renders loginStreak via the `streak` memo').toMatch(/unbeaten:\s*loginStreak\b/);
   });
 });

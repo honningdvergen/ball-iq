@@ -424,83 +424,27 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     return { trailHistory: trail, mysteryHistory: mystery };
   }, [todayYMD]);
 
-  // Sprint #16 Stage 1: run + form derivations. Trimmed in Sprint #24
-  // (v4 tactics card no longer uses per-mode streak chips, so footleRun
-  // and t7Run dropped).
-  // - unbeaten: consecutive days backward from today where AT LEAST ONE
-  //   mode was attempted (Footle 'won' or 'lost' counts as attempt;
-  //   'in-progress' does not — the day isn't decided yet)
-  // - bestUnbeaten: max historical run of the same shape, walking forward
-  //   from the earliest played day
-  const localRun = useMemo(() => {
-    const t7Set = new Set(Object.keys(dailyHistory || {}));
-    const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-    // An "attempt" is a DECIDED day. Footle and the Trail both terminate
-    // (won|lost), so an in-progress board doesn't count — the day isn't over.
-    // Mystery has no lose state (unlimited guesses), so requiring a win there
-    // would mean an honest failed attempt never counted at all; any guess
-    // counts instead.
-    const playedOn = (ymd) => {
-      const f = footleHistory.get(ymd);
-      const footleAttempt = f?.status === "won" || f?.status === "lost";
-      const tr = trailHistory.get(ymd);
-      const trailAttempt = tr?.status === "won" || tr?.status === "lost";
-      const mysteryAttempt = !!mysteryHistory.get(ymd);
-      return t7Set.has(ymd) || footleAttempt || trailAttempt || mysteryAttempt;
-    };
-
-    let unbeaten = 0;
-    for (let i = 0; i < 366; i++) {
-      const d = new Date(todayMid - i * 86400000);
-      if (!playedOn(dateToYMD(d))) break;
-      unbeaten++;
-    }
-
-    let bestUnbeaten = 0;
-    {
-      const dates = new Set(t7Set);
-      for (const [ymd, info] of footleHistory) {
-        if (info?.status === "won" || info?.status === "lost") dates.add(ymd);
-      }
-      for (const [ymd, info] of trailHistory) {
-        if (info?.status === "won" || info?.status === "lost") dates.add(ymd);
-      }
-      for (const ymd of mysteryHistory.keys()) dates.add(ymd);
-      const sorted = Array.from(dates).sort();
-      if (sorted.length > 0) {
-        const first = sorted[0].split("-").map(Number);
-        const firstTime = new Date(first[0], first[1] - 1, first[2]).getTime();
-        let cur = 0;
-        for (let t = firstTime; t <= todayMid; t += 86400000) {
-          const d = new Date(t);
-          if (playedOn(dateToYMD(d))) {
-            cur++;
-            if (cur > bestUnbeaten) bestUnbeaten = cur;
-          } else cur = 0;
-        }
-      }
-    }
-    bestUnbeaten = Math.max(bestUnbeaten, unbeaten);
-    return { unbeaten, bestUnbeaten };
-  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
-
   // ⭐ ONE STREAK, shown identically here and on Home.
   //
   // These two surfaces used to disagree — Home rendered loginStreak (opens),
-  // this screen rendered `localRun` (plays) — and both called it "day streak"
+  // this screen walked local play history — and both called it "day streak"
   // under the same flame. tickLoginStreak now fires on puzzle completion, so
-  // loginStreak IS the play streak and it is the one to render: it is
+  // loginStreak IS the play streak and it is the only one rendered: it is
   // server-authoritative, survives a reinstall, and merges across devices,
   // none of which a localStorage walk can do.
   //
-  // The local derivation stays as the fallback for guests, who have no server
-  // row, and as the source for the 14-day form strip below (which needs
-  // per-day detail the streak scalar doesn't carry).
-  const streak = useMemo(() => (
-    typeof loginStreak === "number"
-      ? { unbeaten: loginStreak, bestUnbeaten: Math.max(bestLoginStreak || 0, loginStreak) }
-      : localRun
-  ), [loginStreak, bestLoginStreak, localRun]);
+  // ⚠️ Guests are covered by this same number — there is no local fallback and
+  // none is wanted. tickLoginStreak's guest branch reimplements the RPC
+  // client-side and writes biq_login_streak, so loginStreak is a real play
+  // streak without an account, and unlike a history walk it honours streak
+  // freezes and same-day repair. The local derivation that used to sit here as
+  // a "guest fallback" was unreachable anyway (loginStreak is a number on every
+  // path) and would have been a downgrade if it ever ran. The 14-day form strip
+  // below derives its own per-day detail and never depended on it.
+  const streak = useMemo(() => ({
+    unbeaten: loginStreak,
+    bestUnbeaten: Math.max(bestLoginStreak || 0, loginStreak),
+  }), [loginStreak, bestLoginStreak]);
 
   // Sprint #16 Stage 4: per-matchday rows for the history list. Walks
   // backward from today to either 30 days or first-played, whichever

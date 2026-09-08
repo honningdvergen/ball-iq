@@ -344,8 +344,18 @@
                  not gameplay, and Clarity stays off until consent — so with
                  this flag consent.js waits for the app to signal the first
                  natural pause (results screen / back to home) and nothing is
-                 collected in the meantime. Static pages never set the flag:
-                 their taster has no timer, so banner-on-load stays right. */
+                 collected in the meantime.
+
+                 ⚠️ THE GENERATED PAGES DEFER TOO, and this comment used to
+                 deny it. gen-seo-pages.mjs has set the same flag on every
+                 club/player/list page since 2026-09-02, for the same reason
+                 one layer down: their fold is a playable taster and the bar
+                 sat across its answer options. The stale claim here is what
+                 made the e2e assert a banner-on-load against /quiz/arsenal/ —
+                 an assertion that only ever passed because the dev server has
+                 no dist/ and served the SPA at that URL instead (2026-09-07).
+                 The gates are executed side by side in
+                 tests/unit/consent-gate-parity.test.js; keep them in step. */
               if (/[?&](club|quiz|c)=/.test(location.search) ||
                   /^\/(c|join)\//.test(location.pathname)) {
                 window.__biqConsentDefer = true;

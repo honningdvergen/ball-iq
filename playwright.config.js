@@ -62,6 +62,24 @@ export default defineConfig({
   // lets a dev keep `npm run dev`-style servers running on 4173 locally;
   // CI always boots a fresh one.
   //
+  // ⚠️ THAT ASYMMETRY MEANS LOCAL AND CI CAN RUN DIFFERENT APPLICATIONS.
+  // CI boots the command below — the vite DEV server, which has no dist/ and
+  // therefore answers every unknown path with the SPA index.html. Locally,
+  // Playwright attaches to WHATEVER already listens on 4173, which in practice
+  // is often a `vite preview` (possibly from another worktree, on another
+  // branch, built days ago) serving the real dist/ — where the generated SEO
+  // pages exist as actual files.
+  //
+  // So a url like '/quiz/arsenal/' is the SPA in CI and a static club page
+  // locally. Those two documents do not behave the same: the club page defers
+  // the consent banner and the SPA does not, which made
+  // consent-banner.spec.js green in CI and red on every developer machine
+  // from d0daa84 (2026-09-02, when the generated pages began deferring) until
+  // it was diagnosed on 2026-09-07. Specs must therefore stick to urls
+  // that resolve to index.html under BOTH servers, or start their own server.
+  // If a spec genuinely needs the generated pages, it needs a build step —
+  // not a url that quietly changes meaning with the port's history.
+  //
   // ⚠️ VITE_SUPABASE_KEY must be present (via .env.local or the env) or the
   // app throws at boot and EVERY interactive test fails on a black screen —
   // this silently broke the whole suite for weeks (CI had no key; git
