@@ -13,7 +13,10 @@
 // would be right to.
 export const DISCOVER = [
   ['Football quiz', '/football-quiz/'],
-  ['All quizzes', '/quiz/'],
+  // ⚠️ THE ANCHOR CARRIES THE HEAD TERM. This label is the 347 site-wide links
+  // into /quiz/, the deliberate "football quiz" target (gen-seo-pages.mjs,
+  // 2026-08-16). As "All quizzes" the phrase reached the page from nowhere.
+  ['Football quizzes', '/quiz/'],
   ['Clubs by league', '/quiz/clubs/'],
   ["Today's Footle answer", '/football-wordle/answer/'],
   ['Daily 7 answers', '/daily-football-quiz/answers/'],

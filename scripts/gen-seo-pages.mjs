@@ -3783,7 +3783,7 @@ ${footer()}`;
 function build404Page() {
   const canonical = `${SITE.base}/404.html`;
   const cards = [
-    ['All quizzes', 'Clubs, leagues and tournaments', `${SITE.base}/quiz/`],
+    ['Football quizzes', 'Clubs, leagues and tournaments', `${SITE.base}/quiz/`],
     ['Lists and records', 'Winners, top scorers, checked and dated', `${SITE.base}/lists/`],
     ['Footle', 'The daily football word game', `${SITE.base}/football-wordle/`],
     ['Every game', 'Daily puzzles and every quiz mode', `${SITE.base}/#games`],
