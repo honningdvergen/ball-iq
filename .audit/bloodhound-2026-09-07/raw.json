@@ -1046,5 +1046,110 @@
    "repro": "",
    "fixSketch": ""
   }
+ ],
+ "handVerified": [
+  {
+   "severity": "block",
+   "title": "Home budget instrument never walked GameRoot static imports (593 -> 901 KB)",
+   "where": "scripts/audit-home-budget.mjs:46",
+   "route": "walked the built chunk graph by hand; script fixed 930108d..; now 880 KB after Footle lazy",
+   "status": "FIXED"
+  },
+  {
+   "severity": "wrong",
+   "title": "Club badge codes drift FCB/ACM vs BAR/MIL",
+   "where": "scripts/gen-seo-pages.mjs:279",
+   "route": "grep both maps; verifier fleet-compared 133 pages",
+   "status": "FIXED 83a497b (derived from app)"
+  },
+  {
+   "severity": "risk",
+   "title": "Dead import { FootleHero }",
+   "where": "src/App.jsx:69",
+   "route": "0 render sites",
+   "status": "FIXED 1099b61"
+  },
+  {
+   "severity": "risk",
+   "title": "lists-staleness runs without --strict",
+   "where": "package.json",
+   "route": "grep + ran both ways: exit 0 both",
+   "status": "FIXED 3481bfa"
+  },
+  {
+   "severity": "risk",
+   "title": "submit_answer in prod lacks the >= 0 timeout guard the repo has",
+   "where": "v1_3_mp_reveal_picks.sql:145 vs prod",
+   "route": "pg_get_functiondef: unconditional insert in prod",
+   "status": "FIXED v2_2 applied to prod 2026-09-08"
+  },
+  {
+   "severity": "risk",
+   "title": "v1_3_user_report_alerting.sql was never applied",
+   "where": "supabase/migrations/v1_3_user_report_alerting.sql",
+   "route": "information_schema: no moderators table",
+   "status": "OPEN — apply or delete is Alex's call"
+  },
+  {
+   "severity": "none",
+   "title": "notifications.type CHECK rejects daily_reminder",
+   "where": "supabase/migrations",
+   "route": "prod CHECK INCLUDES daily_reminder — repo snapshot is stale, not a live bug",
+   "status": "REFUTED as live; note repo drift"
+  },
+  {
+   "severity": "none",
+   "title": "enqueue_web_daily_reminders differs from repo v1_11",
+   "where": "v1_11:81",
+   "route": "prod has coalesce(d.last_seen_at, d.updated_at); repo lacks it — prod is AHEAD",
+   "status": "NOTE: sync repo snapshot"
+  },
+  {
+   "severity": "wrong",
+   "title": "Hub pages ship data-kind=unknown → filed as club pages",
+   "where": "scripts/gen-seo-pages.mjs",
+   "route": "curl 3 hubs: unknown; SQL 24 rows/3 slugs since fix",
+   "status": "FIXED (kind=hub) + v2_3 applied"
+  },
+  {
+   "severity": "wrong",
+   "title": "rival-prompt-shown fires twice per mount",
+   "where": "OnlineMultiplayer.jsx:1141",
+   "route": "SQL 31/56 within 500ms",
+   "status": "FIXED (once per mount)"
+  },
+  {
+   "severity": "wrong",
+   "title": "Daily play page embeds the engine twice",
+   "where": "daily-play-page.mjs:144",
+   "route": "curl: 2 bqev vs 1; SQL half of rows ≤130ms twins",
+   "status": "FIXED"
+  },
+  {
+   "severity": "wrong",
+   "title": "list-out-play twins of taster-out-play",
+   "where": "gen-seo-pages.mjs classifier",
+   "route": "SQL 31/41 twins",
+   "status": "FIXED (.bq links excluded)"
+  },
+  {
+   "severity": "risk",
+   "title": "trail.js + FootballWordle static on the boot path",
+   "where": "HomeScreen.jsx:8, App.jsx:70",
+   "route": "chunk walk + source",
+   "status": "PARTLY FIXED: FootballWordle lazy (902→880 KB); trail data split still open"
+  },
+  {
+   "severity": "risk",
+   "title": "store-out sends p_visitor:null",
+   "where": "shell.mjs:119",
+   "route": "SQL 6/6 null; source",
+   "status": "FIXED (sVid)"
+  }
+ ],
+ "migrationsApplied": [
+  "v2_1_day2_email_elapsed_time",
+  "v2_2_submit_answer_timeout_guard",
+  "v2_3_club_quiz_kind_hub"
  ]
 }

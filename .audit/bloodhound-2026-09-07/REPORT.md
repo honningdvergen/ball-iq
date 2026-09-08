@@ -4,6 +4,8 @@ Ten finders, one per defect class the reviews are structurally blind to; every f
 
 ## Verdict
 
+**SWEEP COMPLETE 2026-09-08.** Every finding is confirmed-and-fixed, confirmed-and-open (two decisions for Alex: apply-or-delete v1_3_user_report_alerting; who owns the reminder hour), genuinely refuted, or corrected as repo-snapshot drift. Three runs of the workflow (≈7.3M tokens) plus hand verification of the last ten.
+
 - **19 confirmed**, **1 refuted**, **12 re-encountered as already-known**, **10 UNVERIFIED** (verifier killed), 1 finder (real WebKit) never completed. Plus 4 confirmed by hand (§1b).
 
 ## 1. CONFIRMED
@@ -397,12 +399,26 @@ npx eslint scripts/seo/club-quiz-engine.js --quiet; echo "EXIT $?"    # 1: 652:1
 ```
 - **Fix sketch:** Make the CI job run the one command Vercel runs — replace the Lint/Build/Generate steps with a single `run: npm run build` (it already chains eslint on src+engine, vitest, the audits, vite build, gen-seo-pages, sw-precache, staleness, serp/orphan/budget), and delete the "mirrors" claim from the header so the file cannot lie again; give that step the same `VITE_SUPABASE_KEY` fallback the e2e step already has, or vitest keeps failing on the runner for the unrelated supabaseKey reason and the whole gate stays red. Add a unit test that parses ci.yml and asserts the build-and-unit job invokes `npm run build` (the existing club-quiz-engine-linted.test.js pattern: assert the wiring, not the string list). What NOT to do: do not hand-copy the 13 audit commands into ci.yml as separate steps — that is a second copy of the pipeline and will drift exactly the way this one did (the repo's own "second-pass fix gets clobbered" lesson); do not "fix" it by widening `npx eslint src` to include the engine and calling it done, which closes one of ten holes; and do not mirror the audits as vitest tests that merely assert package.json contains a script name — club-quiz-engine-linted.test.js shows that shape passes while the defect ships.
 
-## 1b. CONFIRMED BY HAND (2026-09-08)
+## 1c. HAND-VERIFIED (2026-09-08, by a different route, no agent) and STATUS
 
-1. **[block] "Home eager JS 593 KB, target met" is an instrument artefact** — audit-home-budget.mjs never walks GameRoot's static imports; walking them: 18 chunks, 901 KB, incl. supabase 211 KB (static via useAuth/push/webpush/scoreOutbox/profilePhotos), FootballWordle 33 KB (App.jsx:70), trail 23 KB (App.jsx:46, HomeScreen.jsx:7). D14 is NOT met.
-2. **[wrong] Club badge drift** FCB/ACM (App.jsx:956) vs BAR/MIL (gen-seo-pages.mjs:279).
-3. **[risk] Dead `import { FootleHero }`** App.jsx:69 — zero render sites since 539e912.
-4. **[risk] `lists-staleness.mjs` runs twice in the build without `--strict`** — inert gate (clean today).
+| sev | finding | where | route | status |
+|---|---|---|---|---|
+| block | Home budget instrument never walked GameRoot static imports (593 -> 901 KB) | `scripts/audit-home-budget.mjs:46` | walked the built chunk graph by hand; script fixed 930108d..; now 880 KB after Footle lazy | FIXED |
+| wrong | Club badge codes drift FCB/ACM vs BAR/MIL | `scripts/gen-seo-pages.mjs:279` | grep both maps; verifier fleet-compared 133 pages | FIXED 83a497b (derived from app) |
+| risk | Dead import { FootleHero } | `src/App.jsx:69` | 0 render sites | FIXED 1099b61 |
+| risk | lists-staleness runs without --strict | `package.json` | grep + ran both ways: exit 0 both | FIXED 3481bfa |
+| risk | submit_answer in prod lacks the >= 0 timeout guard the repo has | `v1_3_mp_reveal_picks.sql:145 vs prod` | pg_get_functiondef: unconditional insert in prod | FIXED v2_2 applied to prod 2026-09-08 |
+| risk | v1_3_user_report_alerting.sql was never applied | `supabase/migrations/v1_3_user_report_alerting.sql` | information_schema: no moderators table | OPEN — apply or delete is Alex's call |
+| none | notifications.type CHECK rejects daily_reminder | `supabase/migrations` | prod CHECK INCLUDES daily_reminder — repo snapshot is stale, not a live bug | REFUTED as live; note repo drift |
+| none | enqueue_web_daily_reminders differs from repo v1_11 | `v1_11:81` | prod has coalesce(d.last_seen_at, d.updated_at); repo lacks it — prod is AHEAD | NOTE: sync repo snapshot |
+| wrong | Hub pages ship data-kind=unknown → filed as club pages | `scripts/gen-seo-pages.mjs` | curl 3 hubs: unknown; SQL 24 rows/3 slugs since fix | FIXED (kind=hub) + v2_3 applied |
+| wrong | rival-prompt-shown fires twice per mount | `OnlineMultiplayer.jsx:1141` | SQL 31/56 within 500ms | FIXED (once per mount) |
+| wrong | Daily play page embeds the engine twice | `daily-play-page.mjs:144` | curl: 2 bqev vs 1; SQL half of rows ≤130ms twins | FIXED |
+| wrong | list-out-play twins of taster-out-play | `gen-seo-pages.mjs classifier` | SQL 31/41 twins | FIXED (.bq links excluded) |
+| risk | trail.js + FootballWordle static on the boot path | `HomeScreen.jsx:8, App.jsx:70` | chunk walk + source | PARTLY FIXED: FootballWordle lazy (902→880 KB); trail data split still open |
+| risk | store-out sends p_visitor:null | `shell.mjs:119` | SQL 6/6 null; source | FIXED (sVid) |
+
+Prod migrations applied and verified 2026-09-08: v2_1 (day-2 email on elapsed time), v2_2 (submit_answer timeout guard), v2_3 (kind=hub).
 
 ## 2. REFUTED — genuinely, by a verifier (do not re-file)
 
