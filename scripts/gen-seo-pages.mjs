@@ -992,6 +992,9 @@ if(!a)return;var h=a.getAttribute('href')||'';
    test scored every Play Store badge as a web-app click. Store branch first,
    exact host, so a substring can never win again. /get redirects to /play, so
    it belongs with the web app. */
+/* The .bq widget logs its own taster-out-play for links inside it; counting the
+   same tap here as list-out-play made 31 of 41 rows twins (bloodhound 2026-09-08). */
+if(a.closest&&a.closest('.bq'))return;
 var qh=(a.hostname||'');
 if(qh==='play.google.com'||qh==='apps.apple.com')qev('list-out-store');
 /* /get gets its OWN event and is deliberately not folded into either side.

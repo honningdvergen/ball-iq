@@ -141,6 +141,10 @@ ${templates}
     status: 200,
     cacheSeconds: secondsToUtcMidnight(now),
     staleSeconds: 60,
-    html: html.replace('<script>' + DAY_PICK_JS + '</script>', '<script>' + DAY_PICK_JS + '</script>\n<script>' + BQ_JS + '</script>'),
+    // ⚠️ NOT injected here any more. renderQuizSet() already emits the engine
+    // once, so this second copy ran bqev twice — exactly half of every
+    // daily-web-start / daily-web-finish row in prod was a duplicate ≤130 ms
+    // after its twin (bloodhound 2026-09-08). One engine, one row.
+    html,
   };
 }
