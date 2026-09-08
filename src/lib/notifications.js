@@ -87,6 +87,16 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
   try {
     if ((await getNotifPermission()) !== 'granted') return;
     await cancelAllReminders();
+    // Tell the server the hour this device will fire at, and that it fires
+    // LOCALLY — so the push cron pivots on the same hour for web rows and skips
+    // this device rather than sending a second banner for the same evening
+    // (v2_4). Fire-and-forget: a failed sync must not stop the local schedule.
+    try {
+      const { supabase } = await import('../supabase.js');
+      supabase.rpc('set_reminder_hour', { p_hour: getReminderHour(), p_local: true })
+        .then(({ error }) => { if (error) console.warn('[reminders] set_reminder_hour', error.message); })
+        .catch(() => {});
+    } catch { /* no client on this surface */ }
     const notifications = [];
     for (let off = skipToday ? 1 : 0; off < WINDOW_DAYS; off++) {
       const at = atFutureLocal(off);

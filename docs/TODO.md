@@ -5799,7 +5799,7 @@ the ones living in more than one file. 100 sites, 10 cross-file twins.
 ✅ hub pages `kind='hub'` + v2_3 applied · ✅ rival-prompt once per mount · ✅ daily play page one engine · ✅ list-out-play excludes .bq links · ✅ store-out carries biq_vid · ✅ FootballWordle lazy (880 KB)
 ⬜ **app.css ships every lazy screen's CSS with GameRoot** (30.9 KB) — a CSS-splitting refactor; not a one-liner.
 ⬜ **trail.js dataset on the boot path** (HomeScreen reads two scalars from a 47 KB module) — split the schedule helpers from the data, dailyDraw-style.
-⬜ **The reminder hour** — client median vs cron 19:00 — DESIGN: the server should own it. Alex's call.
-⬜ **v1_3_user_report_alerting.sql never applied** (no `moderators` table in prod) — apply the moderation tooling or delete the migration. Alex's call.
+✅ **The reminder hour** (2026-09-09, v2_4): the server owns WHEN, the client tells it what it knows — `set_reminder_hour(hour, local)`; the cron pivots on `coalesce(reminder_hour, 19)` and skips devices that schedule locally (one engine per device). New RPC rather than a 4th param on register_device_token (the v2_0 overload trap).
+✅ **v1_3_user_report_alerting.sql deleted** (2026-09-09): never applied, nothing in src/api/scripts calls it, one moderator. The repo's migrations describe prod again.
 📝 Repo snapshot drift, not bugs: prod `notifications.type` CHECK already includes `daily_reminder`; prod `enqueue_web_daily_reminders` has `coalesce(d.last_seen_at, d.updated_at)` that repo v1_11 lacks (prod is ahead). Sync `prod-snapshot/`.
 

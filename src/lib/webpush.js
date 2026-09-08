@@ -12,6 +12,7 @@
 // Desktop and Android work in an ordinary tab.
 
 import { Capacitor } from '@capacitor/core';
+import { getReminderHour } from './playHour.js';
 import { supabase } from '../supabase.js';
 
 const VAPID_PUBLIC_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY || '';
@@ -69,7 +70,7 @@ async function persist(sub) {
   const { error } = await supabase
     .from('web_push_subscriptions')
     .upsert(
-      { user_id: user.id, subscription: json, endpoint: json.endpoint, tz_offset_minutes: tzOffsetMinutes, last_seen_at: new Date().toISOString() },
+      { user_id: user.id, subscription: json, endpoint: json.endpoint, tz_offset_minutes: tzOffsetMinutes, reminder_hour: getReminderHour(), last_seen_at: new Date().toISOString() },
       { onConflict: 'endpoint' },
     );
   // ⚠️ supabase.rpc/from RESOLVE on error rather than throwing — an unchecked
