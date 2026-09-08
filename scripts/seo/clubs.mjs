@@ -15,8 +15,8 @@ export const CLUBS = [
     "slug": "arsenal",
     "name": "Arsenal",
     "h1": "Arsenal Quiz",
-    "title": "Arsenal Quiz with Answers — Gunners | Ball IQ",
-    "description": "Free Arsenal quiz with explained answers — from the Invincibles and Thierry Henry to the 2025-26 title that ended the 22-year wait. Play in your browser.",
+    "title": "Play the Arsenal Quiz — Free, with Answers | Ball IQ",
+    "description": "Play the Arsenal quiz free, no sign-up: the Invincibles, Henry, Highbury and the 2025-26 title. Every answer explained. Plays in your browser.",
     "intro": [
       "Arsenal were founded by munitions workers in Woolwich in 1886, crossed the river to Highbury in 1913, and have spent the century since turning north London into one of football's great addresses. This free Arsenal quiz covers the whole story — Herbert Chapman's pioneering side of the 1930s, George Graham's famous back four, Arsène Wenger's revolution and the Mikel Arteta team that are the reigning Premier League champions. Few clubs carry an identity this strong: the cannon on the crest, the marble halls, '1-0 to the Arsenal', the insistence on winning with a certain style. If you call it 'The Arsenal', this quiz is for you.",
       "The moments come thick and fast. Michael Thomas surging through at Anfield in 1989 to snatch the title from Liverpool with virtually the last kick of the season. The Invincibles of 2003-04 — Henry, Bergkamp, Vieira and Pires going all 38 league games unbeaten, the heart of a 49-match unbeaten run in the league. Thierry Henry's 228 goals, still the club record, and Ian Wright's celebrations before him. And now a new chapter: Arteta's side ending a 22-year wait by winning the 2025-26 Premier League with a game to spare — the club's 14th top-flight title — days before the heartbreak of losing the Champions League final to Paris Saint-Germain on penalties in Budapest.",
@@ -111,8 +111,8 @@ export const CLUBS = [
     "slug": "manchester-city",
     "name": "Manchester City",
     "h1": "Manchester City Quiz",
-    "title": "Manchester City Quiz with Answers — Man City | Ball IQ",
-    "description": "Free Manchester City quiz with explained answers — from Agüero 93:20 and the Istanbul treble to Pep Guardiola's decade. Test your City knowledge.",
+    "title": "Play the Man City Quiz — Free, with Answers | Ball IQ",
+    "description": "Play the Manchester City quiz free, no sign-up: Agüero 93:20, the Istanbul treble, Pep's decade. Every answer explained. In your browser.",
     "intro": [
       "Manchester City are the club that has lived both extremes of English football. This free Manchester City quiz spans the whole arc — from the Joe Mercer and Malcolm Allison side that won the league in 1968, through the wilderness years that bottomed out in English football's third tier in 1998-99, to the Abu Dhabi takeover of 2008 and the Guardiola dynasty that redefined how the game is played in England. For decades City were Manchester's fallible, much-loved underdogs; now they are one of the defining superpowers of the modern game. The quiz covers both lives, because a real City fan knows Shaun Goater as well as they know Erling Haaland.",
       "The moments quiz themselves. Sergio Agüero's 93:20 goal against QPR on the final day of 2011-12, winning City a first league title in 44 years with virtually the last kick of the season. The Centurions of 2017-18, the first side in English top-flight history to reach 100 points. The 2023 treble, sealed by Rodri's goal against Inter in Istanbul, and the four straight Premier League titles from 2021 to 2024 — something no English top-flight club had ever managed. And bookending it all, Pep Guardiola's farewell in the summer of 2026, walking away after a decade and twenty trophies as the most successful manager in the club's history.",
@@ -271,8 +271,8 @@ export const CLUBS = [
     "slug": "real-madrid",
     "name": "Real Madrid",
     "h1": "Real Madrid Quiz",
-    "title": "Real Madrid Quiz with Answers — Los Blancos | Ball IQ",
-    "description": "Free Real Madrid quiz with explained answers — from Di Stéfano's five straight European Cups to La Décima and the 2024 Wembley final. Test your knowledge.",
+    "title": "Play the Real Madrid Quiz — Free, with Answers | Ball IQ",
+    "description": "Play the Real Madrid quiz free, no sign-up: Di Stéfano's five European Cups, La Décima, Wembley 2024. Every answer explained. In your browser.",
     "intro": [
       "No club in football carries more weight than Real Madrid: a record fifteen European Cups, a record 36 Spanish league titles, and a self-image built on winning the biggest games in white. This free Real Madrid quiz spans the whole story — from the club's founding in 1902 and the presidency of Santiago Bernabéu that turned it into Europe's first superpower, through Alfredo Di Stéfano's 1950s dynasty, all the way to Kylian Mbappé and the modern side. It covers the finals, the Galácticos, the Clásicos and the records that make Madrid the reference point for everyone else. If it happened at the Bernabéu, it's fair game.",
       "The legends come thick and fast. Di Stéfano's side won the first five European Cups from 1956 to 1960, capped by the 7-3 demolition of Eintracht Frankfurt at Hampden Park, where Ferenc Puskás scored four. Zinedine Zidane's left-foot volley won the 2002 final in Glasgow; twelve years later Sergio Ramos headed the 93rd-minute equaliser in Lisbon that rescued La Décima against Atlético Madrid. Zidane returned as manager to win three Champions Leagues in a row from 2016 to 2018, the last sealed by Gareth Bale's overhead kick in Kyiv. And the 2022 run might be the maddest of the lot — Rodrygo's two stoppage-time goals to break Manchester City, Thibaut Courtois defying Liverpool in the Paris final — before the fifteenth arrived at Wembley in 2024 against Borussia Dortmund.",
