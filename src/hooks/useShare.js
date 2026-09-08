@@ -93,7 +93,17 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     if (clean) setProfile(p => ({ ...p, name: clean }));
     performDailyShare(clean);
   }, [setProfile, performDailyShare]);
-  useModalA11y({ isOpen: askShareName, onClose: () => submitShareName(""), ref: shareNameRef });
+  // ⚠️ DISMISSAL IS NOT SUBMISSION. onClose used to call submitShareName(""),
+  // so Escape / the back gesture SHARED (clipboard write + a share-daily-done
+  // row) with an empty name — the exact defect fixed on the report sheet the
+  // day before. "Share without a name" is still one deliberate tap; backing
+  // out now writes nothing. Verified in Chromium and WebKit: all four exits
+  // shared before this change.
+  const cancelShareName = useCallback(() => {
+    askShareNameRef.current = false;
+    setAskShareName(false);
+  }, []);
+  useModalA11y({ isOpen: askShareName, onClose: cancelShareName, ref: shareNameRef });
   const shareScore = useCallback(async (score, total, mode, extras = {}) => {
     // Per-mode plaintext fallback (used only when the image share path
     // fails). Game-result focused — no profile bits.
@@ -287,5 +297,5 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       try { if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); } } catch {}
     }
   }, [xp, stats, profile, loginStreak, showToast, authProfile]);
-  return { shareScore, saveCardImage, shareProfile, shareDaily, performDailyShare, submitShareName, resolveChallengerName, askShareName, askShareNameRef, shareNameDraft, setShareNameDraft, shareNameRef };
+  return { shareScore, saveCardImage, shareProfile, shareDaily, performDailyShare, submitShareName, cancelShareName, resolveChallengerName, askShareName, askShareNameRef, shareNameDraft, setShareNameDraft, shareNameRef };
 }

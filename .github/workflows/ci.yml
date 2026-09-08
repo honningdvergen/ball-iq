@@ -1,8 +1,7 @@
 # Ball IQ CI — first safety net (2026-07-14).
 #
-# Job 1 (build-and-unit) is the hard gate: it mirrors the local
-# `npm run build` pipeline (eslint gate, vite build, SEO page gen) plus the
-# vitest unit suite. No secrets needed — the Sentry vite plugin self-disables
+# Job 1 (build-and-unit) is the hard gate: it RUNS `npm run build` — the same
+# chain as local and Vercel (eslint, vitest, every audit, vite build, SEO gen). No secrets needed — the Sentry vite plugin self-disables
 # when SENTRY_AUTH_TOKEN is unset.
 #
 # Job 2 (e2e) runs the Playwright suite against a local vite server
@@ -49,17 +48,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint (build gate — no-undef + rules-of-hooks are errors)
-        run: npx eslint src --quiet
-
-      - name: Build
-        run: npx vite build
-
-      - name: Generate SEO pages
-        run: node scripts/gen-seo-pages.mjs
-
-      - name: Unit tests
-        run: npx vitest run
+      # ⚠️ THE REAL CHAIN, NOT A FOUR-STEP IMITATION. The header above said this
+      # job "mirrors the local npm run build". It ran eslint, vite build,
+      # gen-seo-pages and vitest — and none of the thirteen audit/gen gates the
+      # local build runs (index-gen, distractor/leak audits, home budget,
+      # instrument register, orphan/serp/no-question-count audits, list
+      # staleness…). Bloodhound 2026-09-08 injected two defects those gates
+      # catch; CI stayed green. One command, the same one Vercel runs.
+      - name: Build (the full gate — same command as local and Vercel)
+        run: npm run build
 
   e2e:
     runs-on: ubuntu-latest

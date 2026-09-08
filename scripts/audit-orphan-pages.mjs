@@ -61,7 +61,15 @@ const indexed = new Set(
 
 const pages = [...walk(ROOT)];
 const inbound = new Map();
-for (const u of pages.map(toUrl)) if (indexed.has(u)) inbound.set(u, new Set());
+// ⚠️ EVERY sitemap URL needs inbound links — not only the ones with a dist/
+// file. 52 of 313 are served by API routes (footle/daily answer pages, the
+// daily play page) and this loop used to skip them silently while printing a
+// green tick. They are now entered here and their linkage is judged the same
+// way; the report below says which are file-backed and which are served.
+const fileBacked = new Set(pages.map(toUrl));
+for (const u of indexed) inbound.set(u, new Set());
+const served = [...indexed].filter((u) => !fileBacked.has(u));
+console.log(`[orphan] ${indexed.size} sitemap URLs: ${indexed.size - served.length} file-backed, ${served.length} API-served (checked for inbound links, not for a file)`);
 
 for (const f of pages) {
   const from = toUrl(f);
@@ -80,7 +88,13 @@ for (const f of pages) {
   }
 }
 
-const orphans = [...inbound].filter(([u, s]) => s.size === 0 && !EXEMPT.has(u)).map(([u]) => u);
+// File-backed pages with no inbound link FAIL. API-served pages cannot be judged
+// from dist/ alone — their hub may itself be served (the daily answer pages are
+// linked from /daily-football-quiz/, which is an api rewrite) — so they are
+// REPORTED with a count rather than silently skipped or falsely failed.
+const orphans = [...inbound].filter(([u, s]) => s.size === 0 && !EXEMPT.has(u) && fileBacked.has(u)).map(([u]) => u);
+const servedUnlinked = [...inbound].filter(([u, s]) => s.size === 0 && !EXEMPT.has(u) && !fileBacked.has(u)).map(([u]) => u);
+if (servedUnlinked.length) console.log(`[orphan] ${servedUnlinked.length} API-served sitemap URL(s) have no inbound link FROM A dist/ PAGE (their hub may be served too — verify on prod, e.g. curl the hub and grep): ${servedUnlinked.slice(0, 3).join(' ')}${servedUnlinked.length > 3 ? ' …' : ''}`);
 
 if (orphans.length) {
   console.error(`\n✗ ORPHANED PAGES — ${orphans.length} page(s) in the sitemap with no inbound internal link\n`);

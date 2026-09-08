@@ -59,16 +59,21 @@ from played;
 -- The drop between two adjacent steps is the thing to act on:
 --   session → username : blocked at the mandatory username wall
 --   username → home    : blocked after it (onboarding, a crash, a dead tap)
---   home → first-play  : NOT blocked — they saw the app and did not start
---   first-play → finish: started and abandoned mid-game
+--   home → game-reached : arrived at a game screen (render-fired; includes deep links)
+--   reached → played    : NOT blocked — they saw the game and did not touch it
+--   played → finish     : started and abandoned mid-game
 -- The first two are bugs. The third is a product problem. The fourth is either.
 with steps as (
-  select unnest(array['acct-session','acct-username','acct-home','acct-first-play','acct-first-finish']) as event,
-         generate_series(1, 5) as ord
+  -- ⚠️ acct-first-play was RENAMED on 2026-09-07 (it fired on render, so it counted
+  -- arrivals): acct-game-reached is that event under an honest name, and
+  -- acct-game-played is the new input-fired step. Rows before the rename keep the
+  -- old name, so the "reached" step unions both spellings.
+  select unnest(array['acct-session','acct-username','acct-home','acct-game-reached','acct-game-played','acct-first-finish']) as event,
+         generate_series(1, 6) as ord
 ), reached as (
   select s.ord, s.event, count(distinct f.user_id) as accounts
   from steps s
-  left join funnel_events f on f.event = s.event and f.user_id is not null
+  left join funnel_events f on (f.event = s.event or (s.event = 'acct-game-reached' and f.event = 'acct-first-play')) and f.user_id is not null
   group by s.ord, s.event
 )
 select '2. where they stop' as section, ord, event, accounts,

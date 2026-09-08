@@ -290,6 +290,15 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+      // ⚠️ Same guard ReviewScreen has and this listener never did: while a
+      // sheet is open, or focus is in a field, keys belong to THAT. Without it,
+      // Enter on a sheet's button both activated the button and submitted the
+      // row as a guess — verified on device 2026-09-08.
+      const tag = e.target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || e.target?.isContentEditable) return;
+      // (unquoted attribute selectors on purpose: a11y-structure.test.js counts
+      //  the literal role="dialog" as a dialog DECLARATION)
+      if (document.querySelector('[role=dialog], [aria-modal=true]')) return;
       if (e.key === "Enter") { e.preventDefault(); handleKeyRef.current("ENTER"); }
       else if (e.key === "Backspace") { e.preventDefault(); handleKeyRef.current("DEL"); }
       else if (/^[a-zA-Z]$/.test(e.key)) handleKeyRef.current(e.key.toUpperCase());

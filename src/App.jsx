@@ -66,7 +66,6 @@ import {
   getWordleDayIndex, getWordleAnswerForDayIndex, getWordleAnswer,
   gradeWordleGuess, computeFootleStreak, getFootleNumber,
 } from './lib/wordle.js';
-import { FootleHero } from './components/FootleHero.jsx';
 import { FootballWordle } from './games/FootballWordle.jsx';
 import { PlatformStoreBadge } from './components/StoreBadge.jsx';
 import { getFootleXP } from './lib/footleXp.js';
@@ -5424,7 +5423,7 @@ function AppInner() {
   // share builders, the card image, and the ask-your-name sheet's state.
   const {
     shareScore, saveCardImage, shareProfile, shareDaily, performDailyShare, submitShareName, resolveChallengerName,
-    askShareName, askShareNameRef, shareNameDraft, setShareNameDraft, shareNameRef,
+    askShareName, askShareNameRef, shareNameDraft, setShareNameDraft, shareNameRef, cancelShareName,
   } = useShare({ user, showToast, profile, setProfile, authProfile, stats, xp, loginStreak, dailyScore });
   const todayKey = useMemo(() => keyForDate(new Date()), []);
   const [activeDailyDate, setActiveDailyDate] = useState(null);
@@ -8018,7 +8017,10 @@ function AppInner() {
   const leaveRoomModalRef = useRef(null);
   const howToPlayRef = useRef(null);
   useModalA11y({ isOpen: showFriendsPicker, onClose: () => setShowFriendsPicker(false), ref: friendsPickerRef });
-  useModalA11y({ isOpen: !!showRatePrompt, onClose: () => setShowRatePrompt(false), ref: ratePromptRef });
+  // Escape and the back gesture close the sheet through here; the backdrop and
+  // "Maybe later" already log rate-prompt-dismissed with their `how`, and this
+  // exit did not — so a third of dismissals were invisible to the funnel.
+  useModalA11y({ isOpen: !!showRatePrompt, onClose: () => { loopEvent("rate-prompt-dismissed", { view: rateView, how: "escape" }); setShowRatePrompt(false); }, ref: ratePromptRef });
   // Dismissing the name sheet (ESC / backdrop / back) must still SHARE — the
   // user asked to share, not to fill in a form. Closing without sharing would
   // turn a growth prompt into a growth blocker.
@@ -8335,7 +8337,7 @@ function AppInner() {
             game starts (see startMode). */}
         {/* Rate prompt */}
         {askShareName && (
-          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => submitShareName("")}>
+          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={cancelShareName}>
             <div ref={shareNameRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Add your name to the challenge" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(40px + env(safe-area-inset-bottom, 34px))",textAlign:"center",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:44,marginBottom:10}}>⚽</div>
               <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Who should we say it&apos;s from?</div>
