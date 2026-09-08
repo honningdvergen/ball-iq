@@ -32,7 +32,12 @@ export const NAV_GROUPS = [
     // that adding it here now lights it up on the homepage too.
   ] },
   { key: 'quizzes', label: 'Quizzes', items: [
-    ['All quizzes', '/quiz/'],
+    // ⚠️ THE ANCHOR CARRIES THE HEAD TERM. /quiz/ is the deliberate target for
+    // "football quiz" (gen-seo-pages.mjs, the 2026-08-16 canonical decision),
+    // and 347 pages link it — but as "All quizzes", "Quizzes", "League Quiz".
+    // The phrase it is meant to rank for reached it from nowhere. Measured
+    // 2026-09-09: bare "football quiz" 51 impressions / 0 clicks in 28 days.
+    ['Football quizzes', '/quiz/'],
     ['Club quizzes', '/quiz/clubs/'],
     ['Premier League', '/quiz/premier-league/'],
     ['Champions League', '/quiz/champions-league/'],
