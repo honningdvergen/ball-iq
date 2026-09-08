@@ -112,7 +112,7 @@ hub, the "this week" pages, player and nation pages — and all of them stamped
 WIDGET's completions.
 
 From 2026-09-07 the surface is derived from the widget's `data-kind`:
-`club-page`, `player-page`, `nation-page`, `category-page`, `list-page` (and
+`club-page`, `player-page`, `nation-page`, `category-page`, `list-page`, `hub-page` (and
 `daily-page` on the daily island). `meta.kind` carries the raw class too.
 `club-page` is now the fallback only for a cached page that predates the
 attribute. The crossing query above is correct as "a genuine club page" going

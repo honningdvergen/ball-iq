@@ -2193,7 +2193,7 @@ function buildLangHub(cfg, clubsInLang, hubLangs) {
   const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(cfg.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(cfg.tasterH)}</h2>
-${renderQuizSet(taster, { name: cfg.h1, tiers: DEFAULT_TIERS, more: 0, badge: '', slug: '', lang: cfg.lang })}
+${renderQuizSet(taster, { name: cfg.h1, tiers: DEFAULT_TIERS, more: 0, badge: '', slug: '', kind: 'hub', lang: cfg.lang })}
 </section>`;
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, lang: cfg.lang, alternates })}
@@ -3162,7 +3162,7 @@ function buildEmbedQuizPage(hints) {
     ld: '',
   }).replace('</head>', '<meta name="robots" content="noindex,follow" />\n</head>')}
 <main style="padding:12px 12px 16px;max-width:760px;margin:0 auto">
-${renderQuizSet(rows, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '' })}
+${renderQuizSet(rows, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '', kind: 'club' })}
 <p style="margin:14px 2px 0;font-size:12px;color:var(--tx3);text-align:center">
 Quiz by <a href="${SITE.base}/?utm_source=embed" target="_blank" rel="noopener" style="color:var(--grn);font-weight:700">Ball IQ</a>
 </p>
@@ -3264,7 +3264,7 @@ function buildPartnersPage(hints) {
 <section class="sec">
 <h2>Try this week's sample</h2>
 <p style="margin:0 0 14px;color:var(--tx2)">This is the real format, playable right here — exactly what your readers would get.</p>
-${renderQuizSet(sample, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '' })}
+${renderQuizSet(sample, { name: 'this week', tiers: DEFAULT_TIERS, more: 0, badge: '', kind: 'hub' })}
 </section>
 <section class="sec">
 <h2>We can do daily games too</h2>

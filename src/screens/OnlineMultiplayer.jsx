@@ -1134,8 +1134,15 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
   // not know whether that is because the prompt is never seen, never tapped, or
   // tapped and failing. Three separate events, so the next read distinguishes
   // them instead of guessing again.
+  // ⚠️ ONCE PER MOUNT. offerable and h2h resolve from two different fetches, so
+  // this effect ran when the first landed and again when the second did — 31 of
+  // 56 rows in prod were within 500 ms of the previous one. The prompt is shown
+  // once; it is counted once. (rivals reflects whatever h2h holds at that
+  // moment; a late h2h can undercount it, which is a smaller lie than doubling.)
+  const shownRef = useRef(false);
   useEffect(() => {
-    if (!offerable.length) return;
+    if (!offerable.length || shownRef.current) return;
+    shownRef.current = true;
     const rivals = offerable.filter(o => (h2h[o.user_id] || 0) >= 2).length;
     loopEvent('rival-prompt-shown', { offerable: offerable.length, rivals });
   }, [offerable, h2h]);
