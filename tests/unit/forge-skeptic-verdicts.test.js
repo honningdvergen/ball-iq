@@ -3,7 +3,12 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const dir = fileURLToPath(new URL('../../scripts/', import.meta.url));
-const forges = readdirSync(dir).filter((f) => /forge\.workflow\.js$/.test(f));
+// ⚠️ SELECT BY CONTENT, NOT FILENAME. The filename filter admitted two forges
+// and missed scripts/wave-o-topup-b1.workflow.js, which carried the exact
+// banned line this file exists to catch. Any runner using the three-verdict
+// schema is a forge for this purpose.
+const forges = readdirSync(dir).filter((f) => /\.(workflow\.js|mjs)$/.test(f)
+  && /['"]keep['"][\s\S]{0,40}['"]reject['"][\s\S]{0,40}['"]fix['"]|['"]keep['"][\s\S]{0,40}['"]fix['"][\s\S]{0,40}['"]reject['"]/.test(readFileSync(dir + f, 'utf8')));
 
 /**
  * 'fix' IS A PASS. THIS LINE COST TEN VERIFIED QUESTIONS.

@@ -318,7 +318,10 @@ var w=q.querySelector('.bq-why');if(w)w.hidden=false;
    scroll when it is already visible: a page that jumps under a finger that
    just tapped is the other failure. */
 if(w){try{var wr=w.getBoundingClientRect();
-if(wr.bottom>window.innerHeight-64){var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* 64px was tuned with no consent bar; the bar is 172-192px tall and .bq-next now
+   rides above it (its bottom reads --biq-consent-h), so the clearance must too. */
+var ch=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--biq-consent-h'))||0;
+if(wr.bottom>window.innerHeight-64-ch){var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 w.scrollIntoView({block:'nearest',behavior:rm?'instant':'smooth'})}}catch(e){}}
 /* Fired once per round, on the first answer. The gap between clubq-start and
    clubq-play is the honest engagement number: started the quiz vs actually

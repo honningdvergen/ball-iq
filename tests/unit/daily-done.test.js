@@ -109,7 +109,12 @@ describe('DailyDone — one panel, four surfaces', () => {
 
   it('a rating needs answered questions, not just a game (no 64 · Silver after one Footle)', () => {
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
-    expect((PROFILE.match(/const hasPlayed = \(stats\?\.totalAnswered \|\| 0\) >= MIN_RATED_ANSWERS;/g) || []).length).toBe(3);
+    // The INVARIANT, not a copy-count: every played flag must derive from the
+    // rating threshold. `toBe(3)` pinned three verbatim duplicates as the
+    // requirement, so collapsing them would have read as a regression.
+    const offenders = PROFILE.match(/const (hasPlayed|played) = (?!.*(MIN_RATED_ANSWERS|hasRatedData|card\.rated)).*/g);
+    expect(offenders, 'a played flag that does not use the rating threshold').toBeNull();
+    expect(PROFILE).toMatch(/const hasPlayed = \(stats\?\.totalAnswered \|\| 0\) >= MIN_RATED_ANSWERS;/);
     expect(read('../../src/lib/scoring.js')).toMatch(/export const MIN_RATED_ANSWERS = 10;/);
     expect(read('../../src/components/BallIqCardFace.jsx')).not.toMatch(/answered > 0/);
     expect(PROFILE).not.toMatch(/const hasPlayed = \(stats\?\.gamesPlayed \|\| 0\) > 0/);

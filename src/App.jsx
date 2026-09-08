@@ -149,6 +149,7 @@ const MysteryPlayer = React.lazy(() => import('./screens/MysteryPlayer.jsx'));
 const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
 const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.MultiplayerLobby })));
 import { HomeScreen } from './screens/HomeScreen.jsx';
+import { isIOSUA, isAndroidUA } from './components/StoreBadge.jsx';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -8382,11 +8383,16 @@ function AppInner() {
                   <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
                   <button className="btn btn-p" style={{marginBottom:10}} onClick={() => {
                     setShowRatePrompt(false);
-                    const ua = navigator.userAgent || "";
-                    if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
+                    // ⚠️ ONE store detector, not a fourth hand-rolled UA regex. The
+                    // old test counted every Mac desktop as an Apple tap because
+                    // 'Macintosh' stood in for 'iPadOS in desktop mode', inflating the
+                    // only conversion number this prompt has. isIOSUA() is the repo's
+                    // answer (Mac counts only with navigator.maxTouchPoints > 1) — do
+                    // NOT delete 'Macintosh' outright; real iPads send that UA.
+                    if (isIOSUA()) {
                       loopEvent("rate-store-tap", { store: "apple" });
                       window.open(`${appStoreUrl()}?action=write-review`, "_blank");
-                    } else if (/Android/i.test(ua)) {
+                    } else if (isAndroidUA()) {
                       loopEvent("rate-store-tap", { store: "play" });
                       window.open(PLAY_STORE_URL, "_blank");
                     } else {

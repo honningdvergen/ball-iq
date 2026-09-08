@@ -361,8 +361,12 @@ const judged = await pipeline(
     { schema: VERDICT, phase: 'Skeptic', label: 'skep:' + item.club + ':' + item.i, effort: 'high' },
   ).then((v) => {
     if (!v) throw new Error('INFRA: skeptic never returned a verdict after retries — NOT a content rejection');
-    if (v.verdict !== 'keep') throw new Error('CONTENT: skeptic rejected — ' + v.reason);
-    return item;
+    // ⚠️ 'fix' IS A PASS — mirror the examiner branch above. `!== 'keep'` binned
+    // every question the skeptic tightened: the ee0c071 defect this runner alone
+    // still carried, because the test guarding it selected forges by filename.
+    if (v.verdict === 'reject') throw new Error('CONTENT: skeptic rejected — ' + v.reason);
+    const q = v.verdict === 'fix' && v.fixed ? { ...item.q, ...v.fixed } : item.q;
+    return { ...item, q };
   }),
 );
 

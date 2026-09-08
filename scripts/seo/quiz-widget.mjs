@@ -90,7 +90,7 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
      hidden — both remove it from the accessibility tree, which is exactly the
      bug this fixes. */
   .bq-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
-  .bq-why{margin-top:13px;border-left:2px solid var(--club,var(--grn));padding:2px 0 2px 14px;font-size:13.5px;color:var(--tx3);line-height:1.55;scroll-margin-bottom:76px}
+  .bq-why{margin-top:13px;border-left:2px solid var(--club,var(--grn));padding:2px 0 2px 14px;font-size:13.5px;color:var(--tx3);line-height:1.55;scroll-margin-bottom:calc(76px + var(--biq-consent-h, 0px))}
   .bq-why b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--club-soft,var(--grn));margin-bottom:5px;font-weight:700}
   /* Sticky: after an answer the button used to land 212px below the fold at
      375x812 (measured live 2026-09-05), so every question cost a scroll-hunt on

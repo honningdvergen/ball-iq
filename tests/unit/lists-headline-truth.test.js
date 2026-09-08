@@ -47,7 +47,12 @@ const TOKEN = String.raw`\d{4}(?:\s*[-–]\s*\d{2})?`;
 function endYear(token) {
   const s = String(token).trim();
   const season = s.match(/^(\d{2})(\d{2})\s*[-–]\s*(\d{2})$/);
-  if (season) return Number(season[1] + season[3]);
+  if (season) {
+    // Century-aware: '1999-00' ends in 2000, not 1900 — the second pair rolling
+    // below the first means the century turned.
+    const y = Number(season[1] + season[3]);
+    return y < Number(season[1] + season[2]) ? y + 100 : y;
+  }
   const plain = s.match(/^(\d{4})$/);
   return plain ? Number(plain[1]) : null;
 }
@@ -75,7 +80,7 @@ describe('/lists headlines tell the truth about the data underneath', () => {
   it('resolves season tokens to their second year', () => {
     expect(endYear('2025-26')).toBe(2026);
     expect(endYear('2025–26')).toBe(2026);
-    expect(endYear('1999-00')).toBe(1900); // documented limitation, no such row exists
+    expect(endYear('1999-00')).toBe(2000); // two live rows cross the century: eredivisie-top-scorers, coupe-de-france-winners
     expect(endYear('2025')).toBe(2025);
   });
 
