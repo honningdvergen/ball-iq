@@ -19,10 +19,11 @@ a logged day must never move. Fresh days cannot draw them. What remains is edito
 that mentions NO year (the heuristic cannot see it), and zero questions carry it yet. That is a human read of the bank,
 not a script — it goes with the 27 editorial calls already waiting on Alex.
 ✅ **C8** — 2026-09-07: the four emoji in `LocalPlay.jsx` code (⚽ ×2 on the error/loading states, 🎮 turn indicator, ❌ elimination) are Lucide now — `CircleAlert`, `Loader`, `Gamepad2`, and `Skull`, which is already Survival's own icon in that file. The `✓`/`✗` reveal marks are dingbat text glyphs, not icons, and stay. `:81` renders a team's `abbr || icon` from data, which is the club-badge system, not an emoji slot.
-✅ **D14 MET 2026-09-07 (`e9d430d`) — Home eager JS 593 KB, under the 600 KB target.**
-831 → 772 → 697 → 666 → 633 → 608 → 593, measured at each step; the budget in `audit-home-budget.mjs` now sits AT 600
-so it cannot drift back. Verified on device: Daily 7, a club draw, the History and Online tabs, the sign-in overlay and
-the finish screen all played on the real built bundle.
+❌ **D14 NOT MET — the "593 KB, met" of 2026-09-07 was an instrument artefact** (bloodhound, confirmed by hand
+2026-09-08). `audit-home-budget.mjs` never followed GameRoot's static import graph; it now does, and reports **902 KB**
+blocking (supabase 211 KB static via useAuth/push/webpush/scoreOutbox/profilePhotos; FootballWordle 33; trail 23). The
+178 KB removed on 09-07 was real. Gate set AT 910 so it cannot regress; target stays 600. The remaining lever is whether
+the Supabase client is boot-critical for a GUEST first visit — a design decision, not a ratchet.
 🟡 **E16** — the App.jsx extraction is still unfinished (327 KB, half of GameRoot; `handleComplete` is 359 lines with 41
 inputs). ⚠️ But the assumption it carried is now DISPROVED: both the review and the budget script's own header said ≤600
 was unreachable without it, and it was reached by taking play-time weight off the boot path instead. So E16 is no longer
