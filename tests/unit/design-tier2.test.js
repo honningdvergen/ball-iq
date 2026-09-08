@@ -59,7 +59,11 @@ describe('design review — tier 2', () => {
     expect(ENGINE).toMatch(/const overshoot = el\.getBoundingClientRect\(\)\.bottom/);
     // The inset is why `nearest`/`end` were wrong: both put the panel back
     // under the CTA that sits on the viewport bottom.
-    expect(ENGINE).toMatch(/const CTA_INSET = 96;/);
+    // The inset must be MEASURED from the footer, not a constant: `96` was tuned
+    // before the report link moved inside .q-sticky-foot and left every 4-line
+    // "Why?" clipped (critique 2026-09-08, F2).
+    expect(ENGINE).toMatch(/const CTA_INSET = \(\(\) => \{[\s\S]{0,400}querySelector\('\.q-sticky-foot'\)[\s\S]{0,300}getBoundingClientRect\(\)\.height/);
+    expect(ENGINE).not.toMatch(/const CTA_INSET = 96/);
     expect(ENGINE, 'no scroll at all when the panel already fits')
       .toMatch(/if \(overshoot > 0\) window\.scrollBy/);
   });

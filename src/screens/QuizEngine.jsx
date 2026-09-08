@@ -360,7 +360,17 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
       // A sticky .q-top was tried first and did not pin on device; rather than
       // ship CSS I could not prove, the scroll itself is the fix.
       try {
-        const CTA_INSET = 96; // sticky Next button + its margin
+        // ⚠️ MEASURED, NOT ASSUMED. This was `96` — "sticky Next button + its margin" —
+// tuned before the report link moved INSIDE .q-sticky-foot (A4, 2026-09-07).
+// The footer is now ~160px on an iPhone 17 Pro (22px pad + report row + 10px
+// gap + 54px Next + safe-area), so the shortest-scroll computation stopped
+// 60-70px short and the last line of every 4-line "Why?" sat under the
+// gradient — on the one element the comment below calls the thing that earns
+// a return visit. Photographed by the 2026-09-08 critique (shots 12/25/27/29).
+const CTA_INSET = (() => {
+  try { const f = document.querySelector('.q-sticky-foot'); return f ? Math.ceil(f.getBoundingClientRect().height) + 8 : 160; }
+  catch { return 160; }
+})();
         const overshoot = el.getBoundingClientRect().bottom
           - (window.innerHeight - CTA_INSET) + 12;
         if (overshoot > 0) window.scrollBy({ top: overshoot, behavior: 'auto' });

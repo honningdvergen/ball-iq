@@ -6607,7 +6607,15 @@ function AppInner() {
       // what lives on this phone only, and the one tap that makes it follow them.
       save: (!user || isGuest) ? {
         onSave: () => { loopEvent("dd-save-tap"); openAuthPrompt?.("save"); },
-        line: ((stats?.gamesPlayed || 0) >= 2 || xp > 0) ? `${getLevelInfo(xp).level.name} · ${xp} XP` : null,
+        // The next rung is the one long-horizon come-back-tomorrow hook a guest
+        // already has, and it lived three screens away on Profile ("192 XP to
+        // go"). It now rides the line the player reads for a minute (critique
+        // 2026-09-08, F1). getLevelInfo already computes it — no new data.
+        line: ((stats?.gamesPlayed || 0) >= 2 || xp > 0) ? (() => {
+          const li = getLevelInfo(xp);
+          const toNext = li.nextLevel ? Math.max(0, (li.nextLevel.xpNeeded || 0) - xp) : 0;
+          return `${li.level.name} · ${xp} XP${li.nextLevel && toNext > 0 ? ` · ${toNext} to ${li.nextLevel.name}` : ''}`;
+        })() : null,
       } : null,
       nextUp,
       track: (n, m) => loopEvent(n, m),
@@ -6689,8 +6697,13 @@ function AppInner() {
     try { base = JSON.parse(localStorage.getItem("biq_stats") || "{}") || {}; } catch {}
     const gamesPlayed = (base.gamesPlayed || 0) + 1;
     const totalCorrect = (base.totalCorrect || 0) + (wasCorrect ? 1 : 0);
-    safeSetItem("biq_stats", JSON.stringify({ ...base, gamesPlayed, totalCorrect }));
-    setStats((prev) => ({ ...prev, gamesPlayed, totalCorrect }));
+    // ⚠️ THE DENOMINATOR TOO. This path bumped totalCorrect on a right answer
+    // and never bumped totalAnswered, so the Profile accuracy tile
+    // (totalCorrect / totalAnswered) read 100% for a guest who had just gone
+    // 6/7 on the Daily 7 — photographed by the 2026-09-08 critique (F5).
+    const totalAnswered = (base.totalAnswered || 0) + 1;
+    safeSetItem("biq_stats", JSON.stringify({ ...base, gamesPlayed, totalCorrect, totalAnswered }));
+    setStats((prev) => ({ ...prev, gamesPlayed, totalCorrect, totalAnswered }));
     if (!user?.id) return;
     (async () => {
       try {

@@ -235,7 +235,7 @@ export function OnboardingScreen({ onDone }) {
             {/* The label is the exit, so it names the destination rather than
                 a step number — there is no next step to go to. */}
             <div className="onboard-actions">
-              <button className="onboard-skip" onClick={skip}>Skip</button>
+              <button className="onboard-skip" onClick={skip}>{sampleAnswered !== null && sampleAnswered !== undefined && sampleAnswered !== false ? 'Look around first' : 'Skip'}</button>
               <button className="onboard-btn onboard-btn-inline" onClick={next}>{sampleAnswered === null ? "Start playing" : "Let’s play"}</button>
             </div>
           </div>
