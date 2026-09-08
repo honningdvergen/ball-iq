@@ -47,6 +47,9 @@ describe('a chosen photo follows the player', () => {
     // HomeScreen's rail hand-rolled a third implementation: a raw <img> whose
     // own error handler hid the element and left a hole.
     expect(HOME).not.toMatch(/<img src=\{authProfile\.avatar_url\}/);
-    expect(HOME).toMatch(/<ProfilePic value=\{authProfile\?\.avatar_id \|\| profile\?\.avatar\} url=\{authProfile\?\.avatar_url\}/);
+        // The id must come from the ONE resolver (lib/currentAvatar.js) — the old
+    // assertion pinned the hand-rolled fallback chain that let two surfaces
+    // disagree on the colour of the same account.
+    expect(HOME).toMatch(/<ProfilePic value=\{currentAvatarId\(authProfile, profile\)\} url=\{authProfile\?\.avatar_url\}/);
   });
 });

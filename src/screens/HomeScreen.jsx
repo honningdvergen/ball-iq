@@ -1,4 +1,5 @@
 import React from "react";
+import { currentAvatarId } from '../lib/currentAvatar.js';
 import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Heart, UserRoundSearch, LandPlot, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
@@ -520,7 +521,7 @@ function HomeScreenImpl({
                   {/* One avatar component, not a hand-rolled <img> beside it. The
                       bespoke branch hid itself on a dead URL and left a hole;
                       ProfilePic now falls back to the person's monogram. */}
-                  <ProfilePic value={authProfile?.avatar_id || profile?.avatar} url={authProfile?.avatar_url} name={railName} />
+                  <ProfilePic value={currentAvatarId(authProfile, profile)} url={authProfile?.avatar_url} name={railName} />
                 </div>
                 <div className="hr-rating-idcol">
                   <div className="hr-rating-name">

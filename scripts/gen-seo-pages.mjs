@@ -61,6 +61,12 @@ function stripCssComments(html) {
 // Wraps every write in this generator — 23 page builders and counting — so a new
 // page type cannot reintroduce the bloat by forgetting to opt in.
 function writeFileSync(path, data, enc) {
+  // ⚠️ BQ_CSS (the .bq quiz-widget stylesheet, ~11 KB of cssText) is interpolated
+  // by head() into EVERY page, and 155 of 352 pages have no widget — every list,
+  // hub, answer and daily-island page paid for 76 rules that match nothing.
+  // head() cannot see the body it precedes, so the strip happens here, at the
+  // one place every page passes through: no widget markup, no widget CSS.
+  if (typeof data === 'string' && data.includes(BQ_CSS) && !data.includes('class="bq')) data = data.replace(BQ_CSS, '');
   if (typeof data === 'string' && data.includes('<style')) data = stripCssComments(data);
   return fsWriteFileSync(path, data, enc);
 }
@@ -92,6 +98,7 @@ import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
+import { CLUB_PACK_ABBR, CLUB_PACK_COLOURS } from '../src/data/clubPackColours.js';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
@@ -366,6 +373,35 @@ const CLUB_COLOR = {
   valencia: '#F18E00', 'bayer-leverkusen': '#E32221', lyon: '#3D74C4',
   parma: '#F5D800', monaco: '#DA291C',
 };
+// ⚠️ THE APP IS THE SOURCE OF TRUTH FOR CODES AND COLOURS. CLUB_BADGE and
+// CLUB_COLOR above were hand-typed twins of CLUB_ABBR / CLUB_PACKS in App.jsx,
+// introduced by a comment promising to "mirror" them. Bloodhound 2026-09-08:
+// two codes disagreed (Barcelona FCB vs BAR, AC Milan ACM vs MIL) and five
+// colours did (Norwich yellow vs green, Derby/Swansea white vs near-black…).
+// gen-club-index.mjs already writes the app's tables to
+// src/data/clubPackColours.js on every build, BEFORE this script runs; the
+// slug->pack and pack->name maps are read from App.jsx the same way it does.
+// Where the app has an opinion it wins; the hand entries remain only for
+// slugs the app has no pack for. club-badge-parity.test.js holds the line.
+{
+  const appSrc = readFileSync(resolve(ROOT, 'src/App.jsx'), 'utf8');
+  const lit = (name) => {
+    const m = appSrc.match(new RegExp(`const ${name} = \\{([\\s\\S]*?)\\n\\};`));
+    if (!m) { console.error(`[gen-seo] ${name} literal not found in src/App.jsx — the shape changed`); process.exit(1); }
+    const out = {};
+    for (const e of m[1].matchAll(/["']?([\w-]+)["']?:\s*"([^"]+)"/g)) out[e[1]] = e[2];
+    return out;
+  };
+  const SLUG_TO_PACK = lit('CLUB_SLUG_TO_PACK'), PACK_TO_NAME = lit('CLUB_PACK_TO_QB');
+  let codes = 0, colours = 0;
+  for (const [slug, pack] of Object.entries(SLUG_TO_PACK)) {
+    if (CLUB_PACK_ABBR[pack]) { CLUB_BADGE[slug] = CLUB_PACK_ABBR[pack]; codes++; }
+    const hex = CLUB_PACK_COLOURS[PACK_TO_NAME[pack]];
+    if (hex) { CLUB_COLOR[slug] = hex; colours++; }
+  }
+  if (codes < 60 || colours < 60) { console.error(`[gen-seo] only ${codes} codes / ${colours} colours derived from the app — the join broke`); process.exit(1); }
+}
+
 // ── badge legibility (WCAG 1.4.3) ────────────────────────────────────────────
 // This used to pick white/black by YIQ brightness with a 0.6 threshold, which
 // is NOT perceptual contrast and got 11 of 61 clubs wrong. Saturated mid-blues

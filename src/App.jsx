@@ -148,6 +148,7 @@ const MysteryPlayer = React.lazy(() => import('./screens/MysteryPlayer.jsx'));
 const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
 const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.MultiplayerLobby })));
 import { HomeScreen } from './screens/HomeScreen.jsx';
+import { currentAvatarId } from './lib/currentAvatar.js';
 import { isIOSUA, isAndroidUA } from './components/StoreBadge.jsx';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
@@ -7837,7 +7838,7 @@ function AppInner() {
     const result = await mpJoinRoom({
       p_code: trimmed,
       p_name: (authProfile?.username || profile?.name || "Player"),
-      p_avatar: (authProfile?.avatar_id || profile?.avatar || ""),
+      p_avatar: (currentAvatarId(authProfile, profile)),
     });
     if (result.error) {
       const msg = result.code === "53300" ? "This room is full"
@@ -8704,7 +8705,7 @@ function AppInner() {
                 return "You";
               })()}
               avatarUrl={authProfile?.avatar_url}
-              avatarId={authProfile?.avatar_id || profile?.avatar || ""}
+              avatarId={currentAvatarId(authProfile, profile)}
             />
             </TabErrorBoundary>
           </div>
@@ -8959,7 +8960,7 @@ function AppInner() {
                 }
               }}
               defaultName={isAnonUser ? getGuestDisplayName() : (authProfile?.username || profile?.name || "")}
-              defaultAvatar={authProfile?.avatar_id || profile?.avatar || ""}
+              defaultAvatar={currentAvatarId(authProfile, profile)}
               autoJoinCode={pendingJoinCode}
               onAutoJoinConsumed={clearPendingJoin}
               autoCreate={onlineAutoCreate}
@@ -8982,7 +8983,7 @@ function AppInner() {
               onPlayDaily={dailyDone ? undefined : () => { setStage1RoomCode(""); playDaily(); }}
               onExit={() => { setStage1RoomCode(""); setScreen("home"); setTab("online"); }}
               defaultName={isAnonUser ? getGuestDisplayName() : (authProfile?.username || profile?.name || "")}
-              defaultAvatar={authProfile?.avatar_id || profile?.avatar || ""}
+              defaultAvatar={currentAvatarId(authProfile, profile)}
               // Rematch used to spin up a room and leave the opponent unaware —
               // you sat alone in a lobby they had no way of knowing existed,
               // and the only route back was manually sharing a link at the

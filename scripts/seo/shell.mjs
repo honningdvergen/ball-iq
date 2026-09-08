@@ -92,7 +92,10 @@ const SB_URL = 'https://blcisypmngimqkwxrrdm.supabase.co';
 const SB_KEY = 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR';
 function storeClickScript() {
   return `<script>(function(){try{
-/* ⚠️ THE GATE THIS SHIPPED WITHOUT. store-out is injected by shellFooter into
+/* ⚠️ page LABEL: the clubs directory is /quiz/ (200). It was classified as
+   '/quizzes/', a path that 404s, so every store-out from the directory filed as
+   a CLUB page (the prefix test caught it). Exact match tested before the prefix.
+   ⚠️ THE GATE THIS SHIPPED WITHOUT. store-out is injected by shellFooter into
    EVERY page carrying the site shell — every generated page and every served
    answer page — and it sat beside three gated emitters with no guard of its
    own, so robots, crawlers and local dev all wrote prod rows. Found by
@@ -105,7 +108,7 @@ if(navigator.webdriver===true)return true;
 var h=location.hostname;return h==='localhost'||h==='127.0.0.1'||h==='[::1]';
 }catch(e){return false}}
 if(sSyn())return;
-var P=location.pathname,T=P.indexOf('/quiz/')===0?'club':P.indexOf('/lists/')===0?'list':P.indexOf('/football-wordle/')===0?'footle-answer':P.indexOf('/daily-football-quiz/')===0?'daily-answer':P==='/quizzes/'?'directory':P==='/'?'home':'other';
+var P=location.pathname,T=P==='/quiz/'?'directory':P.indexOf('/quiz/')===0?'club':P.indexOf('/lists/')===0?'list':P.indexOf('/football-wordle/')===0?'footle-answer':P.indexOf('/daily-football-quiz/')===0?'daily-answer':P==='/'?'home':'other';
 document.addEventListener('click',function(e){
 var a=e.target&&e.target.closest&&e.target.closest('a[href*="apps.apple.com"],a[href*="play.google.com"]');
 if(!a)return;

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, createContext, useContext } from 'react'
+import { defaultAvatarId } from './lib/avatarColour.js'
 import * as Sentry from '@sentry/react'
 import { Capacitor } from '@capacitor/core'
 import { Browser } from '@capacitor/browser'
@@ -330,7 +331,11 @@ export function AuthProvider({ children }) {
     const fallbackProfile = {
       id: userId,
       username: metaUsername || 'Player',
-      avatar_id: '⚽',
+      // ⚠️ Not '⚽'. Every new account used to be seeded with the legacy emoji,
+      // which hashes to ONE colour (c09 forest) — so everyone looked the same until
+      // their row loaded. defaultAvatarId existed for exactly this and was never
+      // called.
+      avatar_id: defaultAvatarId(userId),
       total_score: 0,
       games_played: 0,
       correct_answers: 0,

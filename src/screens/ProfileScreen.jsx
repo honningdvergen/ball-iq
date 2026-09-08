@@ -9,6 +9,7 @@ import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS 
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
+import { currentAvatarId } from '../lib/currentAvatar.js';
 // lift() exists because a dark brand colour at low alpha on a dark card is
 // invisible — written for Juventus black on the Trail ladder, and the Premier
 // League's #3D195B and the Champions League's #123A8F have exactly that
@@ -1373,12 +1374,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const avatarUrl = authProfile?.avatar_url || null;
   // Show the uploaded photo only when it hasn't been overridden by a fresh
   // emoji pick this session. Emoji itself is local-first (the just-picked value
-  // in `profile.avatar`) with the server's avatar_id as the fallback.
+  // ⚠️ SERVER FIRST — this card used to read the local copy first and disagreed
+  // with the Online tab (see lib/currentAvatar.js).
   // Was `!!avatarUrl && !emojiOverridesPhoto` — the override existed so a
   // chosen emoji could beat an uploaded photo. With the emoji set gone there
   // is nothing left to beat it.
   const showPhoto = !!avatarUrl;
-  const displayEmoji = <ProfilePic value={profile?.avatar || authProfile?.avatar_id} url={authProfile?.avatar_url || profile?.photo} name={profile?.name || authProfile?.username} />;
+  const displayEmoji = <ProfilePic value={currentAvatarId(authProfile, profile)} url={authProfile?.avatar_url || profile?.photo} name={profile?.name || authProfile?.username} />;
 
   const openAvatarPicker = () => {
     if (uploading || authLoading) return;
@@ -1925,7 +1927,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           userId={user.id}
           currentUserScore={authProfile?.total_score || 0}
           currentUserName={authProfile?.username || profile?.name || "You"}
-          currentUserAvatar={profile?.avatar || authProfile?.avatar_id}
+          currentUserAvatar={currentAvatarId(authProfile, profile)}
           currentUserPhoto={authProfile?.avatar_url || profile?.photo}
           onChallenge={onChallenge}
           onToast={onToast}
