@@ -115,7 +115,9 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
 - [x] **2b. History pills** — Alex: "the 4 play buttons sit too close"; column
       44 → 54, pills 11pt apart at 375, date column 97pt ("Yesterday" needs 70).
 ### PLAYER QUESTION-REPORTS — READ 2026-09-09, NO ACTION
-116 reports / 88 questions (106 in 30d). Checked every most-reported question:
+116 reports / 88 questions (106 in 30d) — a DIFFERENT queue from the July
+editorial pile, which was closed earlier today (a059d0b).
+Checked every most-reported question:
 the bank held up — correct keys throughout, and most reporters had PICKED THE
 WRONG ANSWER (several picked the RIGHT one and reported anyway). `q_eae9ea`'s
 hint already pre-empts the exact John Terry / PFA confusion the reporters had.
