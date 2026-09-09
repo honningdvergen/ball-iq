@@ -124,8 +124,10 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       row" — both gone (mobile + desktop). "Needs work · Champions League · 46"
       now carries a Play pill in the league's colour that opens that league's
       quiz (`onPlayLeague` = launchLeagueQuiz). Browser-verified at 375.
-- [ ] Share PNG + OG unfurl: lead with the strongest face + the delta; A/B the
-      share copy.
+- [ ] Share text + OG unfurl: lead with the strongest face + today's delta
+      ("Ball IQ 68 · UCL 72 → 78 — can you beat me?"); A/B the copy.
+- [~] Settings: LOOKED (2026-09-09, 375) — section eyebrows, cards, rows,
+      green toggles; already in the row vocabulary. Nothing to do.
 
 ### REACH (the seven-list, #1) — 2026-09-09 afternoon
 Diagnosis: 44 of 308 accounts hold a token. Since the soft-prompt sheet was
