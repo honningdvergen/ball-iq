@@ -458,7 +458,13 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               (step 4), which auto-opens for first-timers. Measured with the "?"
               present: header 44px @375, 56px @320 — at or under the pre-"?"
               baseline at both. Re-measure both if this string grows. */}
-          <div className="wd-sub">{FOOTLE_SHORT}</div>
+          {/* ⚠️ AN ARCHIVE BOARD MUST SAY WHICH DAY IT IS. Trail's header
+              reads "#37" and Mystery's says "archive"; Footle's replay was
+              pixel-identical to today's board, so a player who tapped Play on
+              yesterday in History had no way to tell they were not about to
+              spend today's puzzle. It mattered less while the replay was
+              broken (it reloaded after 5s); now that it works, it matters. */}
+          <div className="wd-sub">{isArchive ? `No. ${getFootleNumber(date)} · archive` : FOOTLE_SHORT}</div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>

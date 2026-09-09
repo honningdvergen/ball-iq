@@ -33,7 +33,7 @@ export const BADGE_DEFS = [
   ["first_blood", Flag,          "First Whistle", "Complete your first game"],
   ["roll5",       Flame,         "On a Roll",     "5-day streak"],
   ["roll30",      CalendarCheck, "Obsessed",      "30-day streak"],
-  ["speed_demon", Zap,           "Speed Demon",   "Score 600+ Speed Round"],
+  ["speed_demon", Zap,           "Speed Demon",   "12 in a Hot Streak"],
   ["big_brain",   Brain,         "Big Brain",     `${APP_NAME} 120+`],
   ["goat",        Star,          "The GOAT",      `${APP_NAME} 140+`],
   ["perfect",     Gem,           "Perfectionist", "Score 10/10"],

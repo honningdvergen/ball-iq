@@ -82,7 +82,15 @@ export function computeBadges(stats, xp, loginStreak) {
   if ((stats.gamesPlayed||0) >= 1)     e.add("first_blood");
   if (loginStreak >= 5)                 e.add("roll5");
   if (loginStreak >= 30)                e.add("roll30");
-  if ((stats.bestSpeedScore||0) >= 600) e.add("speed_demon");
+  // ⚠️ WAS `bestSpeedScore >= 600` — DOUBLY DEAD. Nothing in the app ever
+  // WRITES bestSpeedScore, and "Speed Round" (mode `speed`) has an engine and
+  // a results screen but NO LAUNCHER anywhere: it is not on the More-modes
+  // grid or any other entry point. So the badge advertised a mode a player
+  // cannot start, gated on a stat that is never set. Hot Streak is the
+  // 60-second sprint the name describes and it is live. Bar from the live
+  // distribution (n=60 rounds: p50 6, p90 11, p95 12, max 14) — 12 is the top
+  // ~5% of rounds and provably reachable, not a guess.
+  if ((stats.bestHotStreak||0) >= 12) e.add("speed_demon");
   if ((stats.bestIQ||0) >= 120)         e.add("big_brain");
   if ((stats.bestIQ||0) >= 140)         e.add("goat");
   if ((stats.bestScore||0) >= 10)       e.add("perfect");

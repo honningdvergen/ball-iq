@@ -249,21 +249,16 @@ function HomeScreenImpl({
           if (h < 5) return "Still up";
           if (h < 12) return "Good morning";
           if (h < 18) return "Good afternoon";
-          // Easter egg: ~1 in 5 evenings, swap in the "Good ebening" football-
-          // commentary pun. Seeded on the calendar date so it stays put through
-          // the whole evening (no flicker between renders) but varies day to day.
-          // ⚠️ NEVER UNDER AUTOMATION. The store-screenshot run caught this
-          // egg on a 1-in-5 evening and framed "Good ebening, Alex" as the
-          // headline of the App Store home shot — where a football-commentary
-          // pun stops being a joke and reads as a typo, permanently, to
-          // everyone deciding whether to download. Same navigator.webdriver
-          // gate the analytics suppression uses: a robot does not get the
-          // joke, and captures become deterministic instead of 4-in-5.
-          const automated = (() => {
-            try { return !!navigator.webdriver; } catch { return false; }
-          })();
-          const daySeed = now.getFullYear() * 372 + (now.getMonth() + 1) * 31 + now.getDate();
-          return (!automated && daySeed % 5 === 0) ? "Good ebening" : "Good evening";
+          // ⛔ THE "Good ebening" EGG IS RETIRED (2026-09-09). It ran ~1
+          // evening in 5 and it is the FIRST LINE OF THE APP. It read as a
+          // commentator's pun while the line was "Good ebening, Alex" — the
+          // name gave it the cadence. The greeting lost the name earlier the
+          // same day, and a lone misspelt word is not a joke, it is a typo on
+          // the header of a product with 500+ downloads. This is the same
+          // judgement that already gated it out of the store screenshots
+          // ("reads as a typo, permanently, to everyone deciding whether to
+          // download") — the gate was right and the conclusion generalises.
+          return "Good evening";
         })();
         // THE GREETING CARRIES NO NAME (Alex, 2026-09-09). "Good afternoon, Alex"
         // fit because his name is four letters; the line was nowrap + ellipsis,
@@ -395,6 +390,7 @@ function HomeScreenImpl({
         const trailDone = ["won", "lost"].includes(loadTrailDay()?.status);
         const mysteryRes = loadMysteryResult(new Date());
         const mysteryDone = !!(mysteryRes?.won || mysteryRes?.gaveUp);
+        const mysteryGuesses = mysteryDone ? 0 : (mysteryRes?.guesses?.length || 0);
         const total = 2 + (trailLive ? 1 : 0) + (mysteryLive ? 1 : 0);
         const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0)
           + (trailLive && trailDone ? 1 : 0) + (mysteryLive && mysteryDone ? 1 : 0);
@@ -457,10 +453,21 @@ function HomeScreenImpl({
                 }] : []),
                 ...(mysteryLive ? [{
                   key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", no: mysteryNumber(), accent: MODE_ACCENT.mystery, rgb: MODE_RGB.mystery,
-                  done: mysteryDone,
-                  sub: mysteryDone ? <>Done · guess who</> : <>Guess who from career clues</>,
+                  // ⚠️ AN IN-PROGRESS MYSTERY READ AS UNTOUCHED. Every guess is
+                  // persisted (saveMysteryResult writes on each one), so two
+                  // guesses in you could close the app, come back, and Home
+                  // still said "Play · Guess who from career clues" — the row
+                  // hid work the player had already done. Footle's row has had
+                  // the `open`/"Continue" state since launch; Mystery just
+                  // never set it. Same anatomy, same word.
+                  done: mysteryDone, open: mysteryGuesses > 0,
+                  sub: mysteryDone ? <>Done · guess who</>
+                    : mysteryGuesses > 0 ? <>{mysteryGuesses} {mysteryGuesses === 1 ? "guess" : "guesses"} in · keep hunting</>
+                    : <>Guess who from career clues</>,
                   onTap: () => setScreen("mystery"),
-                  aria: mysteryDone ? "Today's Mystery Player: done — review" : "Play today's Mystery Player",
+                  aria: mysteryDone ? "Today's Mystery Player: done — review"
+                    : mysteryGuesses > 0 ? `Today's Mystery Player: ${mysteryGuesses} ${mysteryGuesses === 1 ? "guess" : "guesses"} in — continue`
+                    : "Play today's Mystery Player",
                 }] : []),
               ];
               return rows.map((r) => (
