@@ -407,6 +407,11 @@ function HomeScreenImpl({
                 <span aria-hidden="true" style={{ marginLeft: 5, opacity: 0.7 }}>›</span>
               </button>
             </div>
+            {/* THE WELL holds the TILES ONLY (2026-09-09, second look). With
+                "Today · 0/4" inside it the box read as a card ABOUT today —
+                every other section on this page keeps its title outside its
+                content (Find a quiz, More modes), so this one does too. */}
+            <div className="daily-well">
             {/* FOUR EQUAL ROWS (Alex, 2026-09-06, after seeing the app home beside the
                 website's Today block): the Footle hero card carried a worked example
                 the returning player has seen a hundred times, Mystery sat in the mode
@@ -472,6 +477,7 @@ function HomeScreenImpl({
                 </button>
               ));
             })()}
+            </div>
           </div>
         );
       })()}

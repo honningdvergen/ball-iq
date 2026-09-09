@@ -405,8 +405,12 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    holds (no gradient, no colour), so the tiles stay the loud thing. Judged
    against A/C/D at true size (artifact "Home Ritual Options"). Pairs with
    .mp-row losing its green well below. */
-.daily-zone{background:rgba(19,21,28,0.72);border:1px solid var(--border);border-radius:18px;padding:12px;margin:0 0 18px;contain:layout paint style;}
-.daily-zone-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 2px 10px;padding:0;}
+.daily-zone{background:none;border:0;border-radius:0;padding:0;margin-bottom:18px;contain:layout paint style;}
+/* The well holds the four tiles ONLY; "Today · 0/4" stays above it like every
+   other section title on the page (second look, 2026-09-09: with the title
+   inside, the box read as a card about Today and the greeting floated). */
+.daily-well{background:rgba(19,21,28,0.72);border:1px solid var(--border);border-radius:18px;padding:10px;}
+.daily-zone-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;padding:0;}
 /* 19px, up from 15px: with the date demoted to a tracked dateline above it
    (HomeScreen.jsx, 2026-09-07) this is the only heading in the strip, so it
    carries the weight the two of them used to split. */
@@ -424,7 +428,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    which now serves as the gap between Footle hero and T7 inside the zone.
    Remove the bottom margin on the final child so the zone bottom-padding
    isn't doubled. */
-.daily-zone > .todays-seven-secondary{margin-bottom:0;}
+.daily-zone .todays-seven-secondary{margin-bottom:0;}
 /* Mobile-only tightening for slim hdr chrome. Sprint #11 Stage 4 dropped
    the .hero-online mobile override — base styles are already compact. */
 @media (max-width: 1023px) {
@@ -2270,9 +2274,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    two buttons, so the body button drops its chrome and the pill is a real
    <button>. Green in the well like the mode colours do. */
 .mp-row{--mode:var(--accent);--mode-rgb:88,204,2;margin:0 0 22px;cursor:default;}
-/* Multiplayer is not a daily: its icon well goes neutral (2026-09-09) so the
-   row stops dressing as the fifth tile under the well above. */
-.mp-row .t7s-icon{background:var(--s2);border-color:var(--border2);color:var(--t2);}
+/* Multiplayer keeps its green icon well (Alex, 2026-09-09: "no colour at all
+   to the multiplayer icon? are you sure?" — he was right; a colourless well
+   reads as DISABLED, the lesson Mystery taught). The daily well above now
+   does the separating; the row stays the list rule: colour on the icon only. */
 .mp-row-open{flex:1;display:flex;align-items:center;gap:12px;min-width:0;background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .mp-row .t7s-cta.is-primary{background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);border:0;}
 .mp-row-invite{cursor:pointer;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:34px;}
@@ -2988,16 +2993,14 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   /* ── Daily zone: neutralise the mobile tinted/purple box at desktop so the
      Footle hero + Daily 7 read as the mock's separate cards. The PWA-standalone
      killswitch restores the mobile zone box. ── */
-  /* Desktop keeps the well (2026-09-09): same block, same edge — the rows
-     inside stay the desktop list treatment (one green Play). */
-  .daily-zone { background: rgba(19,21,28,0.72); border: 1px solid var(--border); border-radius: 18px; padding: 14px; margin-bottom: 20px; }
+  .daily-zone { background: none; border: none; border-radius: 0; padding: 0; margin-bottom: 20px; }
   .daily-zone-head { margin-bottom: 20px; padding: 0; }
   .daily-zone-eyebrow { font-size: 17px; letter-spacing: -0.01em; color: var(--t1); }
   .daily-zone-status { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 12.5px; color: var(--t3); }
-  .daily-zone > .home-footle-inline { margin-bottom: 20px; }
+  .daily-zone .home-footle-inline { margin-bottom: 20px; }
 
   /* ── Daily 7: tamed amber card (mock) instead of the mobile full-orange bar. ── */
-  .daily-zone > .todays-seven-secondary {
+  .daily-zone .todays-seven-secondary {
     background: var(--s1);
     border: 1px solid var(--border);
     border-radius: 18px;
@@ -3007,11 +3010,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     box-shadow: none;
     margin: 0;
   }
-  .daily-zone > .todays-seven-secondary .t7s-icon { width: 48px; height: 48px; border-radius: 13px; background: rgba(var(--mode-rgb),0.14); border: 1px solid rgba(var(--mode-rgb),0.3); color: var(--mode); font-size: 20px; }
-  .daily-zone > .todays-seven-secondary .t7s-title { font-size: 16.5px; color: var(--t1); -webkit-text-fill-color: var(--t1); }
-  .daily-zone > .todays-seven-secondary .t7s-sub { font-size: 13px; color: var(--t3); -webkit-text-fill-color: var(--t3); }
-  .daily-zone > .todays-seven-secondary .t7s-sub strong { color: var(--t1); }
-  .daily-zone > .todays-seven-secondary .t7s-cta { background: var(--accent); border: 0; color: var(--grn-ink); -webkit-text-fill-color: var(--grn-ink); border-radius: 999px; padding: 11px 24px; font-size: 14px; }
+  .daily-zone .todays-seven-secondary .t7s-icon { width: 48px; height: 48px; border-radius: 13px; background: rgba(var(--mode-rgb),0.14); border: 1px solid rgba(var(--mode-rgb),0.3); color: var(--mode); font-size: 20px; }
+  .daily-zone .todays-seven-secondary .t7s-title { font-size: 16.5px; color: var(--t1); -webkit-text-fill-color: var(--t1); }
+  .daily-zone .todays-seven-secondary .t7s-sub { font-size: 13px; color: var(--t3); -webkit-text-fill-color: var(--t3); }
+  .daily-zone .todays-seven-secondary .t7s-sub strong { color: var(--t1); }
+  .daily-zone .todays-seven-secondary .t7s-cta { background: var(--accent); border: 0; color: var(--grn-ink); -webkit-text-fill-color: var(--grn-ink); border-radius: 999px; padding: 11px 24px; font-size: 14px; }
 
   /* ── Greeting: amber flame streak pill (mock) instead of the red gradient. ── */
   .home-col-main .hst-streak {
@@ -3377,11 +3380,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      Daily 7, the amber streak pill and the plain mp-card so an installed
      desktop PWA stays byte-identical to mobile (now the neutral re-skin). */
   .daily-zone {
-    /* the well, byte-identical to mobile (2026-09-09) */
-    background: rgba(19,21,28,0.72) !important; border: 1px solid var(--border) !important; border-radius: 18px !important;
-    padding: 12px !important; margin-bottom: 18px !important;
+    background: none !important; border: 0 !important; border-radius: 0 !important;
+    padding: 0 !important; margin-bottom: 18px !important;
   }
-  .daily-zone-head { margin: 2px 2px 10px !important; padding: 0 !important; }
+  .daily-zone-head { margin: 0 0 10px !important; padding: 0 !important; }
   /* Mirrors the mobile value (19px since 2026-09-07). This block exists to keep an installed desktop PWA mobile-identical, so it must move whenever the base rule does — .tab-pill drifted this way once and the fix never reached installed clients. */
   .daily-zone-eyebrow { font-family:var(--font); font-size: 19px !important; letter-spacing: -0.015em !important; text-transform: none !important; color: var(--t1) !important; }
   .daily-zone-status { font-family:var(--font); font-size: 12.5px !important; color: var(--t3) !important; }
@@ -3668,7 +3670,7 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
 /* Transfer Trail row in the daily zone: amber family like the Daily 7, cooler. */
 /* .trail-row / .mystery-row / .footle-row need no rules of their own: the row
    reads --mode / --mode-rgb set inline from accents.js (2026-09-06). */
-.daily-zone > .todays-seven-secondary + .todays-seven-secondary{margin-top:8px;}
+.daily-zone .todays-seven-secondary + .todays-seven-secondary{margin-top:8px;}
 
 /* ── THE WEB SHELL (2026-09-03) ────────────────────────────────────────────────
    body.biq-web = a browser tab (main.jsx; never native, never an installed

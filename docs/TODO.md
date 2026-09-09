@@ -52,6 +52,11 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       fifth daily. Applied at mobile, desktop (≥1024 override) and the
       installed-PWA block (the two places a top-level rule never reaches).
       Browser-verified at 375 and 1280.
+      SECOND LOOK (Alex: "something looks off"): the TITLE was inside the box,
+      so it read as a card about Today while every other section keeps its
+      title outside — `.daily-well` now wraps the tiles only, "Today · 0/4"
+      stays above. And Multiplayer KEEPS its green icon well (Alex: "no colour
+      at all?"): a colourless well reads as disabled — Mystery's lesson.
 - [x] **1b. SECOND PASS on the card (same day, Alex on build 114: "61 matches
       the 61% accuracy but you should be rewarded more for hard questions —
       seems harsh").** He was right: the evidence weights ranked 80% on easy

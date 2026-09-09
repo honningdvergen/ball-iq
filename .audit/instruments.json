@@ -1404,8 +1404,8 @@
       "line": 75,
       "gate": "isSyntheticTraffic",
       "surfaces": "the React app (web + native shells)",
-      "firstWrite": "(uncommitted)",
-      "firstWriteScope": "working-tree",
+      "firstWrite": "2026-09-09",
+      "firstWriteScope": "source",
       "kind": "emit",
       "via": "loopEvent",
       "needle": "loopEvent(after === 'on' ? 'web-remind-on' : after === 'blocked' ? 'web-"
