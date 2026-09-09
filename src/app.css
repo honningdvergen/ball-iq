@@ -2833,11 +2833,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
   .home-col-below { display: block; grid-area: below; min-width: 0; margin-top: 6px; }
 
-  /* Greeting — larger heading at desktop reading distance (inline styles are
-     20px, so these need !important to win). */
-  /* Two-line greeting at desktop: small label line + bold name line. */
+  /* Greeting at desktop: the column is compact (the "Today" heading is ~15px
+     here), so the 20px inline size steps down to match. Since 2026-09-09 the
+     greeting is one line with no name; the old two-line .hg-name rule is gone. */
   .hg-greet { font-size: 15px !important; }
-  .hg-name { font-size: 28px !important; }
 
   /* Daily 7 companion — tamed amber (not the full hot-orange gradient). Only
      the background changes so dark text stays legible; no light-mode variant
@@ -3360,8 +3359,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .sr-label { font-size: 14px !important; }
   .sr-desc { font-size: 12px !important; }
   .page-title { font-size: 19px !important; font-weight: 700 !important; letter-spacing: -0.4px !important; }
-  .hg-greet { font-size: 13.5px !important; }
-  .hg-name { font-size: 24px !important; }
+  .hg-greet { font-size: 15px !important; }
   /* Home rebuild: restore the mobile Daily zone (tinted box), tamed amber
      Daily 7, the amber streak pill and the plain mp-card so an installed
      desktop PWA stays byte-identical to mobile (now the neutral re-skin). */

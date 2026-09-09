@@ -29,20 +29,25 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       `@media (min-width:1024px)`; `--line` is an UNDEFINED token (hairline is
       `--border`). Refresh the calibration quarterly (memory:
       project_ball_iq_card_calibration).
-- [ ] **2. History** — replay YESTERDAY ONLY (Alex's rule; the 14-day
-      back-catalogue of afe7342 stays off), the cell becomes a labelled control
-      in the mode colour ("Play"), not a ↺ that reads as done; older days show
-      the score or "—".
-- [ ] **3. Multiplayer** — one name everywhere (tab "Online", home "Play with
-      Friends", FAQ "Online Multiplayer" → **Multiplayer**); the card's subline
-      goes live ("N rooms open now" from game_rooms, fallback "Live rooms ·
-      up to 8").
-- [ ] **4. Greeting** — drop the name (it TRUNCATES with an ellipsis today:
-      whiteSpace:nowrap + textOverflow), keep the time-of-day line for everyone
-      including signed-out, gap 2 → 6, 17 → 20px.
+- [x] **2. History — 91cb931, browser-verified at 375 + 1280.** Replay is
+      YESTERDAY ONLY again (the 14-day back-catalogue of afe7342 was streak-safe
+      but made History a control panel; the DayComplete panel was always
+      yesterday-only and the table now agrees). The ↺ circle read as a done
+      mark — it is a "Play" pill in the mode's button colour, Daily 7 catch-up
+      included; older unplayed days print "—". Rows 10 → 12px padding.
+- [x] **3. Multiplayer — e229fe8, browser-verified at 375 + 1280.** One name:
+      tab (mobile bar, web bar, rail), Home row, hub heading, choice sheet, FAQ.
+      Tab id stays `online` (door URLs). NO live count: prod has 4 rooms in
+      7 days and 0 open now — "0 rooms open" reads dead. Subline: "Up to 8
+      players · live rooms or one phone".
+- [x] **4. Greeting — ea31d25 (+ the desktop/PWA CSS that shrank it to
+      13.5–15px for a two-line name design that no longer exists).** No name,
+      shown for everyone incl. signed-out, gap 2 → 6, 20px on the phone, 15px in
+      the compact desktop column. Browser-verified at 375 + 1280.
 - [~] **5. Encapsulate the four dailies** — NO (Alex agreed): "Today · 0/4" is
       the wrapper; a card around cards is border-in-border at 390.
-- [ ] One fresh Xcode build after 2–4 land; the sim look happens per item.
+- [ ] Full gate, then one fresh Xcode build — Alex tests on the device before
+      anything is pushed (every card number moves).
 
 ## 2026-09-07 (13:00) — 📋 THE OUTSTANDING LEDGER — everything the audits and workflows found and nobody has closed
 
