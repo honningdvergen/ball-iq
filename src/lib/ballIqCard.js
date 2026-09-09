@@ -84,6 +84,16 @@ export function faceCatFor(ans) {
   return null;
 }
 
+// A face with fewer than MIN_RATED_ANSWERS but at least this many prints a
+// PROVISIONAL number — muted, never the accented "best" — instead of a bar.
+// Alex, 2026-09-09, seeing La Liga / Bundesliga / Serie A as three bars after
+// they had carried numbers: "where is the rating? in the shadow realms? it
+// can not vanish like this". He is right about the feel: a number that was
+// there and then is not reads as a loss, whatever the gate's statistics. Three
+// answers is where the number stops being pure prior; shrinkage toward the
+// overall (weight 2) keeps it believable until ten.
+export const PROVISIONAL_ANSWERS = 3;
+
 // Prior weight, in answers, for the overall — how many answers the population
 // median "counts as" before the player's own record takes over.
 //
@@ -238,8 +248,10 @@ export function computeCard(catStats = {}, _unusedPriorAcc) {
       abbr: comp.abbr, cat: comp.cat, name: comp.name, icon: comp.icon, color: comp.color,
       rating: compRating(cs, acc),
       answered,
-      // Per-face honesty: a face prints only from its own data.
+      // Per-face honesty: a face prints FULLY only from its own data; from
+      // PROVISIONAL_ANSWERS it prints muted (see the constant).
       rated: answered >= MIN_RATED_ANSWERS,
+      provisional: answered >= PROVISIONAL_ANSWERS && answered < MIN_RATED_ANSWERS,
     };
   });
   // `rated` travels WITH the card so every consumer inherits one answer to

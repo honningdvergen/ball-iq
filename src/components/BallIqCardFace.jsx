@@ -153,6 +153,10 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
       <div style={{ position: "relative", marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: 20 }}>
         {card.ratings.map(r => {
           const has = r.answered >= MIN_RATED_ANSWERS;
+          // Provisional (3–9 answers): the number shows, muted, never accented —
+          // it was a bar until 2026-09-09 and Alex read the bar as the rating
+          // having "vanished". See PROVISIONAL_ANSWERS in ballIqCard.js.
+          const soft = !has && !!r.provisional;
           return (
             <div key={r.abbr} style={{
               display: "flex", alignItems: "center", gap: 9,
@@ -167,6 +171,9 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, letterSpacing: 1, color: t.text, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.abbr}</span>
               {has ? (
                 <span style={{ fontSize: 21, fontWeight: 900, color: r.rating === best ? t.accent : t.text, opacity: r.rating === best ? 1 : 0.92, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
+              ) : soft ? (
+                <span aria-label={`${r.name} ${r.rating}, provisional — ${r.answered} of ${MIN_RATED_ANSWERS} answered`}
+                  style={{ fontSize: 21, fontWeight: 900, color: t.text, opacity: 0.45, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
               ) : (
                 /* A short rule, not an em-dash: at this size a dash beside a
                    label reads as a hyphen. This reads as an empty slot. */

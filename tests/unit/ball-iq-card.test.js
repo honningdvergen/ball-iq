@@ -1,6 +1,6 @@
 // Ball IQ rating card model — tier boundaries and the six-competition face.
 import { describe, it, expect } from "vitest";
-import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette, ratingFromAccuracy } from "../../src/lib/ballIqCard.js";
+import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette, ratingFromAccuracy, PROVISIONAL_ANSWERS } from "../../src/lib/ballIqCard.js";
 
 describe("cardTier boundaries", () => {
   it("bronze below 60, silver 60-74, gold 75+", () => {
@@ -106,5 +106,15 @@ describe("computeCard", () => {
     expect(ucl.answered).toBe(14);
     expect(ucl.rated).toBe(true);
     expect(int.answered).toBe(12);
+  });
+});
+
+describe("provisional faces", () => {
+  it("a face prints muted from 3 answers, fully from 10, never before 3", () => {
+    expect(PROVISIONAL_ANSWERS).toBe(3);
+    const f = (a) => computeCard({ LaLiga: { c: a / 2, a } }).ratings.find(r => r.abbr === "LAL");
+    expect(f(2).provisional).toBe(false); expect(f(2).rated).toBe(false);
+    expect(f(4).provisional).toBe(true);  expect(f(4).rated).toBe(false);
+    expect(f(10).provisional).toBe(false); expect(f(10).rated).toBe(true);
   });
 });
