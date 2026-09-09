@@ -74,6 +74,13 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       with every answer. Test: six rounds of hard UCL rights never lower the
       number and end > +5. Note text: "medium questions now count 10% more,
       hard 20% more".
+- [x] **1e. FACES AND OVERALL ARE ONE ARITHMETIC AGAIN** — Alex on 117: "the
+      ratings went down but the overall went up?" The lifetime top-up sat on a
+      single overall-only key, so the overall carried ~200 answers the faces
+      never saw and sat above every rated league. Now `withLegacyTopUp` spreads
+      it across keys in proportion to their own answers (order kept, gates on
+      OWN answers). His record: 63 · EPL 62 · UCL 57 · INT 62; +10 hard UCL
+      rights → UCL 68, overall 65. Test pins overall ≤ max face + 2.
 - [x] **1c. PROVISIONAL FACES** — Alex: "where is la liga… in the shadow realms?
       it can not vanish like this". From 3 answers a face prints its number muted
       (never the accented best); at 10, fully. On his record: LAL 59 · BUN 50 ·

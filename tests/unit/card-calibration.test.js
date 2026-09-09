@@ -113,7 +113,7 @@ describe("club play feeds the faces", () => {
 });
 
 // ── THE WRITER ────────────────────────────────────────────────────────────────
-import { recordAnswers, LEGACY_KEY, CAT_DECAY } from "../../src/lib/ballIqCard.js";
+import { recordAnswers, CAT_DECAY, withLegacyTopUp } from "../../src/lib/ballIqCard.js";
 describe("recordAnswers", () => {
   const alex = { UCL: { c: 8, a: 20 }, PL: { c: 6, a: 12 }, Transfers: { c: 6, a: 11 }, WorldCup: { c: 6, a: 11 }, ClubQuiz: { c: 5, a: 10 }, Managers: { c: 9, a: 10 }, Records: { c: 3, a: 8 }, Bundesliga: { c: 2, a: 6 }, LaLiga: { c: 2, a: 4 }, SerieA: { c: 3, a: 4 } };
   const life = { c: 305, a: 500 };
@@ -129,8 +129,25 @@ describe("recordAnswers", () => {
       prev = now;
     }
     expect(prev).toBeGreaterThan(before + 5);
-    expect(cs[LEGACY_KEY]).toBeDefined();
-    expect(cs[LEGACY_KEY].n).toBeLessThan(300); // it fades
+    expect(cs._legacy).toBeUndefined(); // spread into the keys, not parked on one
+  });
+
+  it("⚠️ the top-up is spread across the leagues, so the overall sits AMONG the faces, not above them", () => {
+    // Alex on build 117: overall 63, every rated face 46-56 — the overall
+    // carried ~200 lifetime answers the faces never saw.
+    const card = computeCard(alex, 0.61, life);
+    const faces = card.ratings.filter(r => r.rated).map(r => r.rating);
+    expect(Math.max(...faces)).toBeGreaterThanOrEqual(card.overall - 2);
+    // order is preserved: UCL (8/20) stays the weakest rated face
+    const ucl = card.ratings.find(r => r.abbr === "UCL").rating;
+    expect(Math.min(...faces)).toBe(ucl);
+    // gates are on OWN answers: La Liga (4) stays provisional despite the borrowed share
+    const lal = card.ratings.find(r => r.abbr === "LAL");
+    expect(lal.rated).toBe(false); expect(lal.provisional).toBe(true);
+    // and the spread is proportional: every key's n grows by the same factor
+    const spread = withLegacyTopUp(alex, life);
+    const f = (k) => spread[k].n / alex[k].a;
+    expect(f("UCL")).toBeCloseTo(f("PL"), 6);
   });
 
   it("scores (correct ? MULT : 0), counts, keeps c/a and raw per-difficulty d", () => {
@@ -142,7 +159,7 @@ describe("recordAnswers", () => {
     expect(pl.s).toBeCloseTo(1.2 * CAT_DECAY * CAT_DECAY + 0 + 1.1, 6);
     expect(pl.d).toEqual({ h: [1, 1], e: [0, 1], m: [1, 1] });
     expect(pl.a).toBeCloseTo(pl.n, 6);
-    expect(cs[LEGACY_KEY]).toBeUndefined(); // no lifetime → no top-up
+    expect(cs._legacy).toBeUndefined();
   });
 
   it("files a club answer under its league's face", () => {

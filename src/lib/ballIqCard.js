@@ -157,7 +157,6 @@ export const skillOf = scoreOf;
 // the card stays dynamic once new answers arrive. Once any key carries s/n
 // the top-up stops: from there the card is the player's own scored answers.
 export const LIFETIME_TOPUP = 300;
-export const LEGACY_KEY = "_legacy";
 
 /** The lifetime top-up for a legacy record, or null. {s, n} in score units. */
 export function legacyTopUp(catStats = {}, lifetime) {
@@ -167,6 +166,33 @@ export function legacyTopUp(catStats = {}, lifetime) {
   if (lifetime.a <= n) return null;
   const extra = Math.min(LIFETIME_TOPUP, lifetime.a - n);
   return { s: AVG_MULT * (lifetime.c / lifetime.a) * extra, n: extra };
+}
+
+/**
+ * Spread a legacy record's lifetime top-up across its keys IN PROPORTION to
+ * each key's own answers, returning a new map (c/a untouched). Alex, on build
+ * 117: "the ratings on the card went down but the overall went up? the
+ * individual ratings also have to be boosted". The top-up used to live on a
+ * single overall-only key, so the overall carried ~200 answers the faces
+ * never saw and sat ABOVE every rated league — arithmetic no player can
+ * follow. Proportional spreading keeps overall = answers-weighted mean of the
+ * keys, keeps each league's ORDER (the weak league stays weakest), and gates
+ * stay on the key's OWN answers (`a`), so a four-answer league does not become
+ * "rated" by borrowed ones.
+ */
+export function withLegacyTopUp(catStats = {}, lifetime) {
+  const top = legacyTopUp(catStats, lifetime);
+  if (!top) return catStats;
+  let N = 0;
+  for (const cs of Object.values(catStats || {})) N += scoreOf(cs).n;
+  if (!(N > 0)) return catStats;
+  const out = {};
+  for (const [k, cs] of Object.entries(catStats || {})) {
+    const own = scoreOf(cs);
+    const share = own.n / N;
+    out[k] = { ...cs, s: own.s + top.s * share, n: own.n + top.n * share };
+  }
+  return out;
 }
 
 /** True once any key carries per-answer scores (the record is no longer legacy). */
@@ -197,31 +223,31 @@ export function recordAnswers(prevCatStats = {}, answers = [], lifetime) {
   const catStats = { ...(prevCatStats || {}) };
   const list = (answers || []).filter(a => a && a.cat);
   if (!list.length) return catStats;
-  if (!isScored(catStats)) {
-    const top = legacyTopUp(catStats, lifetime);
-    if (top) catStats[LEGACY_KEY] = { c: 0, a: 0, s: top.s, n: top.n };
-  }
+  // ON THE FIRST SCORED WRITE a legacy record's lifetime top-up is spread
+  // into its keys (see withLegacyTopUp) — materialised, so it decays with
+  // every later answer instead of vanishing. As a switch it vanished at the
+  // first scored quiz and ten hard rights LOWERED a card 65 → 63.
+  let base = catStats;
+  if (!isScored(catStats)) base = withLegacyTopUp(catStats, lifetime);
+  const outStats = { ...base };
   for (const ans of list) {
     const key = faceCatFor(ans) || ans.cat;
-    const cur = catStats[key] || { c: 0, a: 0 };
+    const cur = outStats[key] || { c: 0, a: 0 };
     const ok = ans.isCorrect ? 1 : 0;
     const diff = (ans.diff === "easy" || ans.diff === "hard") ? ans.diff : "medium";
     const prev = scoreOf(cur); // a legacy {c,a} converts once, here, then carries s/n
     const d = { ...(cur.d || {}) };
     const dk = diff[0];
     d[dk] = [((d[dk] || [0, 0])[0] || 0) + ok, ((d[dk] || [0, 0])[1] || 0) + 1];
-    catStats[key] = {
+    outStats[key] = {
       c: (cur.c || 0) * CAT_DECAY + ok,
       a: (cur.a || 0) * CAT_DECAY + 1,
       s: prev.s * CAT_DECAY + (ok ? multFor(diff) : 0),
       n: prev.n * CAT_DECAY + 1,
       d,
     };
-    // The materialised top-up fades with every answer, whatever key it lands on.
-    const lg = catStats[LEGACY_KEY];
-    if (lg && key !== LEGACY_KEY) catStats[LEGACY_KEY] = { ...lg, s: (lg.s || 0) * CAT_DECAY, n: (lg.n || 0) * CAT_DECAY };
   }
-  return catStats;
+  return outStats;
 }
 
 /**
@@ -233,11 +259,10 @@ export function overallScore(catStats = {}, lifetime) {
   // ⚠️ The caller decides whether `lifetime` applies (computeCard passes it
   // only while NO raw key carries s/n). It cannot be decided here: computeCard
   // folds aliases first, and the fold writes s/n onto every key.
-  let s = 0, n = 0;
-  for (const cs of Object.values(catStats || {})) { const k = scoreOf(cs); s += k.s; n += k.n; }
-  const top = legacyTopUp(catStats, lifetime);
-  if (top) { s += top.s; n += top.n; }
-  return { mean: (s + BASELINE * PRIOR_WEIGHT) / (n + PRIOR_WEIGHT), answered: n };
+  let s = 0, n = 0, own = 0;
+  for (const cs of Object.values(catStats || {})) { const k = scoreOf(cs); s += k.s; n += k.n; own += (cs?.a || 0); }
+  void lifetime; // spread by computeCard via withLegacyTopUp before this is called
+  return { mean: (s + BASELINE * PRIOR_WEIGHT) / (n + PRIOR_WEIGHT), answered: own };
 }
 
 /** Kept for callers that think in accuracy. */
@@ -314,12 +339,16 @@ export function computeCard(catStats = {}, _priorAcc, lifetime) {
   }
   // Legacy = no raw key carries per-answer scores yet; only then does the
   // lifetime top-up apply (see overallScore).
-  const { mean, answered: answeredTotal } = overallScore(folded, isScored(catStats) ? null : lifetime);
+  // A legacy record (no key scored yet) is rated WITH its lifetime top-up
+  // spread across its keys — the same view recordAnswers will materialise.
+  const rated = isScored(catStats) ? folded : withLegacyTopUp(folded, lifetime);
+  const { mean, answered: answeredTotal } = overallScore(rated);
   const acc = mean / AVG_MULT;
   const overall = ratingFromScore(mean);
   const ratings = CARD_COMPS.map(comp => {
-    const cs = folded[comp.cat];
-    const answered = scoreOf(cs).n;
+    const cs = rated[comp.cat];
+    // Gates count the league's OWN answers (`a`), never borrowed ones.
+    const answered = cs?.a || 0;
     return {
       abbr: comp.abbr, cat: comp.cat, name: comp.name, icon: comp.icon, color: comp.color,
       rating: compRating(cs, acc),
