@@ -58,6 +58,11 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       Simulated: 80% easy 68 · 50% hard 72 · 67% hard 90 gold. Alex's legacy
       61 stays 61 until he answers hard questions. His three dashes = the
       10-answer face gate (his 09-06 rule): BUN 6 / LAL 4 / SEA 4 answers.
+- [x] **1c. PROVISIONAL FACES** — Alex: "where is la liga… in the shadow realms?
+      it can not vanish like this". From 3 answers a face prints its number muted
+      (never the accented best); at 10, fully. On his record: LAL 59 · BUN 50 ·
+      SEA 76 muted. Share link + scouting report keep the full gate.
+      Browser-verified at 375.
 - [x] **2b. History pills** — Alex: "the 4 play buttons sit too close"; column
       44 → 54, pills 11pt apart at 375, date column 97pt ("Yesterday" needs 70).
 - [x] Gate green (6cf70b4); **build 114 = build-44-mttzi2l9 on the sim**
