@@ -225,11 +225,27 @@ export function withLegacyTopUp(catStats = {}, lifetime) {
 export function rawAnswered(cs) {
   if (!cs) return 0;
   const d = cs.d;
+  let fromD = 0;
   if (d && typeof d === "object") {
-    let n = 0; for (const k of ["e", "m", "h"]) n += (Array.isArray(d[k]) ? (d[k][1] || 0) : 0);
-    if (n > 0) return Math.max(n, 0);
+    for (const k of ["e", "m", "h"]) fromD += (Array.isArray(d[k]) ? (d[k][1] || 0) : 0);
   }
-  return cs.a || 0;
+  // ⚠️ THE MAX OF BOTH, NEVER `d` ALONE. `d` counts only answers recorded
+  // since the 2026-09-09 rebuild; `a` is the decayed running count and
+  // carries everything before it. Preferring `d` the moment it existed meant
+  // ONE new answer replaced a whole legacy history with "1" — so a face with
+  // forty answers behind it, printing a rating, went to a DASH the moment its
+  // owner played it. Alex on build 125: "4 of the items on the scorecard are
+  // gone, this was never an issue in 1.7.2." Reproduced exactly: INT 72 → —
+  // after a single CORRECT answer.
+  //
+  // Both terms are needed, which is why this is a max and not a swap back:
+  //   · `a` alone never opens the gate for a NEW player — decay leaves it at
+  //     9.78 after ten answers, so the tenth never rates them (the bug `d`
+  //     was introduced to fix).
+  //   · `d` alone discards every pre-rebuild answer, which is this bug.
+  // max() satisfies both, and it makes the invariant structural: playing a
+  // category can only ever raise its answer count.
+  return Math.max(fromD, cs.a || 0);
 }
 
 /** True once any key carries per-answer scores (the record is no longer legacy). */

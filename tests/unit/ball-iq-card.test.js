@@ -1,6 +1,10 @@
 // Ball IQ rating card model — tier boundaries and the six-competition face.
 import { describe, it, expect } from "vitest";
-import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette, ratingFromAccuracy, PROVISIONAL_ANSWERS } from "../../src/lib/ballIqCard.js";
+import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette, ratingFromAccuracy, PROVISIONAL_ANSWERS, recordAnswers, rawAnswered } from "../../src/lib/ballIqCard.js";
+// MIN_RATED_ANSWERS lives in scoring.js — ballIqCard.js imports it but does not
+// re-export it, so importing it from there yields undefined and silently turns
+// a `for (i < MIN_RATED_ANSWERS)` loop into a no-op that passes nothing.
+import { MIN_RATED_ANSWERS } from "../../src/lib/scoring.js";
 
 describe("cardTier boundaries", () => {
   it("bronze below 60, silver 60-74, gold 75+", () => {
@@ -116,5 +120,64 @@ describe("provisional faces", () => {
     expect(f(2).provisional).toBe(false); expect(f(2).rated).toBe(false);
     expect(f(4).provisional).toBe(true);  expect(f(4).rated).toBe(false);
     expect(f(10).provisional).toBe(false); expect(f(10).rated).toBe(true);
+  });
+});
+
+// ⚠️ PLAYING A CATEGORY MUST NEVER REMOVE ITS RATING.
+// Shipped in 1.7.3 build 125 and caught on Alex's device: "4 of the items on
+// the scorecard are gone, this was never an issue in 1.7.2." rawAnswered
+// preferred the per-difficulty counter `d` the moment it existed, and `d`
+// only counts answers recorded since the 2026-09-09 rebuild — so one new
+// answer replaced a whole legacy history with "1" and the face fell under
+// every gate. A correct answer DELETED a rating.
+//
+// The two clauses pull in opposite directions and both are load-bearing, so
+// each gets its own test: `a` alone never opens the gate for a new player
+// (decay leaves it at 9.78 after ten), and `d` alone discards everything
+// before the rebuild.
+describe("the face gate counts every answer, not just the new ones", () => {
+  const LEGACY = { WorldCup: { c: 26, a: 40 }, PL: { c: 60, a: 95 } };
+  const faceOf = (card, abbr) => card.ratings.find((r) => r.abbr === abbr);
+
+  it("a rated legacy face STAYS rated after a single new answer", () => {
+    const before = faceOf(computeCard(LEGACY, null, { c: 86, a: 135 }), "INT");
+    expect(before.rated).toBe(true);
+    const after = faceOf(
+      computeCard(recordAnswers(LEGACY, [{ cat: "WorldCup", diff: "medium", isCorrect: true }], { c: 86, a: 135 }), null, { c: 87, a: 136 }),
+      "INT",
+    );
+    expect(after.rated).toBe(true);
+    expect(after.rating).toBeGreaterThanOrEqual(before.rating); // a CORRECT answer never lowers it
+  });
+
+  it("answering only ever raises a face's answer count", () => {
+    let stats = LEGACY;
+    let prev = rawAnswered(stats.WorldCup);
+    for (let i = 0; i < 12; i++) {
+      stats = recordAnswers(stats, [{ cat: "WorldCup", diff: "hard", isCorrect: i % 2 === 0 }], { c: 86, a: 135 });
+      const now = rawAnswered(stats.WorldCup);
+      expect(now).toBeGreaterThanOrEqual(prev);
+      prev = now;
+    }
+  });
+
+  it("a brand-new player is still rated at exactly MIN_RATED_ANSWERS", () => {
+    let stats = {};
+    for (let i = 0; i < MIN_RATED_ANSWERS; i++) {
+      stats = recordAnswers(stats, [{ cat: "PL", diff: "medium", isCorrect: i % 3 !== 0 }], { c: 0, a: 0 });
+    }
+    expect(faceOf(computeCard(stats, null, { c: 0, a: 0 }), "EPL").rated).toBe(true);
+  });
+
+  it("a thin legacy face prints a provisional number rather than an empty slot", () => {
+    const thin = { Bundesliga: { c: 4, a: 6 } };
+    const face = faceOf(computeCard(thin, null, { c: 4, a: 6 }), "BUN");
+    expect(face.rated).toBe(false);
+    expect(face.provisional).toBe(true);
+    const after = faceOf(
+      computeCard(recordAnswers(thin, [{ cat: "Bundesliga", diff: "medium", isCorrect: true }], { c: 4, a: 6 }), null, { c: 5, a: 7 }),
+      "BUN",
+    );
+    expect(after.provisional).toBe(true); // still a number, never back to a bar
   });
 });
