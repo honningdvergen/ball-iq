@@ -114,6 +114,19 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       Browser-verified at 375.
 - [x] **2b. History pills** — Alex: "the 4 play buttons sit too close"; column
       44 → 54, pills 11pt apart at 375, date column 97pt ("Yesterday" needs 70).
+### PLAYER QUESTION-REPORTS — READ 2026-09-09, NO ACTION
+116 reports / 88 questions (106 in 30d). Checked every most-reported question:
+the bank held up — correct keys throughout, and most reporters had PICKED THE
+WRONG ANSWER (several picked the RIGHT one and reported anyway). `q_eae9ea`'s
+hint already pre-empts the exact John Terry / PFA confusion the reporters had.
+⚠️ The "players ~100% precision" rule is about BUG reports and does not
+transfer here. The reason sheet (eb050af) is 3 days old, 7 reports — re-read
+with the reach numbers ~09-16, not before.
+- [ ] Mechanical, needs Alex watching: 395 stale `flag:true` in
+      src/questions.js vs 0 pending in prod. publish-review.mjs already clears
+      flags on approval, so a re-run reconciles. No runtime effect; the cost is
+      a future triage re-opening 395 resolved questions.
+
 ### CLUB PAGE ↔ APP (#3) — 2026-09-09 afternoon
 - [x] **The page's IQ is the app's IQ.** "Your Arsenal IQ 73" mapped the
       percentage to six fixed numbers (46…99) that meant nothing in the app.
