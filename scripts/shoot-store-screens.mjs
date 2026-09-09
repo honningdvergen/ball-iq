@@ -43,7 +43,7 @@ import { answerIdForDay, mysteryDayIndex, matchGuess } from '../src/lib/mysteryP
 import MYSTERY_SCHEDULE from '../src/data/mysterySchedule.json' with { type: 'json' };
 import MYSTERY_POOL from '../src/data/mysteryPool.json' with { type: 'json' };
 import MYSTERY_ANSWERS from '../src/data/mysteryAnswers.json' with { type: 'json' };
-import { mkdirSync, readFileSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 const BASE = process.env.BASE || 'http://localhost:4324';
@@ -727,5 +727,55 @@ if (translucent) {
   console.log(`  ${translucent} translucent surface(s) were forced opaque across the set.`);
   console.log('  That is the fix working, not a warning — but OPEN THE PNGs anyway.');
 }
+// ── 10-iq-card: the SHARED card, exported from the app itself ────────────────
+// ⚠️ THIS USED TO BE SAVED BY HAND and then never re-saved. Its raw sat at
+// 26 Aug reading 87 / 92·89·84·88·83·85 while the profile shot beside it in
+// the same gallery moved to 89 / 96·91·81·89·80·83 — the card model was
+// rebuilt, the seed was not. Two screens of "the same player" disagreeing on
+// every number is the exact failure this file's header warns about, and a
+// hand-made asset is guaranteed to drift again. So generate it here, from the
+// same seeded account, through the app's own "Save image" path: whatever the
+// card maths does next, both shots move together.
+//
+// The app hands the PNG over as a Blob through URL.createObjectURL, so hook
+// that, swallow the anchor click (a real download would just land in a temp
+// dir), and read the blob back as a data URL. navigator.share is stubbed out
+// first or shareCard takes the share-sheet branch and never downloads.
+try {
+  const p = await ctx.newPage();
+  await gotoApp(p, '/play?tab=profile');
+  await p.waitForTimeout(1500);
+  await p.evaluate(() => {
+    const slab = document.querySelector('[role="group"][aria-label="Save your progress"]');
+    if (slab) slab.style.display = 'none';
+  });
+  const dataUrl = await p.evaluate(() => new Promise((resolve, reject) => {
+    try { Object.defineProperty(navigator, 'share', { value: undefined, configurable: true }); } catch {}
+    const realCreate = URL.createObjectURL.bind(URL);
+    URL.createObjectURL = (blob) => {
+      try {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = () => reject(new Error('FileReader failed on the card blob'));
+        fr.readAsDataURL(blob);
+      } catch (e) { reject(e); }
+      return realCreate(blob);
+    };
+    HTMLAnchorElement.prototype.click = function () {};
+    const btn = [...document.querySelectorAll('button')].find((b) => /Save image/i.test(b.textContent || ''));
+    if (!btn) { reject(new Error('"Save image" button not found on the profile card')); return; }
+    btn.click();
+    setTimeout(() => reject(new Error('the card blob never arrived')), 20000);
+  }));
+  const b64 = String(dataUrl).split(',')[1];
+  writeFileSync(resolve(RAW, '10-iq-card.png'), Buffer.from(b64, 'base64'));
+  console.log('  \u2713 10-iq-card  (exported through the app\'s own Save image)');
+  await p.close();
+} catch (e) {
+  console.log('  \u2717 10-iq-card NOT regenerated — ' + (e && e.message));
+  console.log('    The raw on disk is stale; do NOT ship it beside 06-profile.');
+}
+
 await b.close();
+
 console.log(`\nraw frames -> ${RAW}`);
