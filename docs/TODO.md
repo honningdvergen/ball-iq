@@ -74,6 +74,17 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       with every answer. Test: six rounds of hard UCL rights never lower the
       number and end > +5. Note text: "medium questions now count 10% more,
       hard 20% more".
+- [x] **1f. PLAYED THE BUILD (Alex: "answer 20 in a row and see if the card
+      calibrates").** Browser, seeded record 63 · UCL 58: two UCL rounds
+      (9/10, 10/10) → UCL 58 → 65 → 72, overall 63 → 65 → 66, record d: hard
+      5/5 · medium 14/15. Sim, ALEX'S REAL ACCOUNT on build 119: one UCL
+      round 10/10 (5 hard, 5 medium) → overall 63 → 65, UCL 56 → 68, Strongest
+      flipped to Champions League; server profile shows the top-up spread
+      (every key's n ≈ 2× its own a) and UCL d {h:[5,5], m:[5,5]}.
+      ⚠️ His "more than 10 in each" of LAL/BUN/SEA is NOT in this account's
+      data: `scores` has 1 Barcelona round (5/10, 07-20), 1 UCL round (3/10,
+      09-02), 10 classic rounds (no category, June–July); per-league counting
+      began with the card; club packs were filed ClubQuiz until today.
 - [x] **1e. FACES AND OVERALL ARE ONE ARITHMETIC AGAIN** — Alex on 117: "the
       ratings went down but the overall went up?" The lifetime top-up sat on a
       single overall-only key, so the overall carried ~200 answers the faces
