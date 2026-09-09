@@ -68,10 +68,11 @@ function buildAlert(rec: Record<string, unknown>) {
       return { ...base, body: `${actor} accepted your friend request`, url: "/play?tab=profile" };
     case "daily_reminder":
       // Collapses onto one tag so a second night's reminder REPLACES an unread
-      // first rather than stacking two nags in the tray.
+      // first rather than stacking two nags in the tray. A visitor row from
+      // the static pages names its own url (the page they play on).
       return { title: "Ball IQ", tag: "balliq-daily",
                body: (p.body as string) || "Today's puzzles are still open — keep your streak going 🔥",
-               url: "/play?tab=daily" };
+               url: (typeof p.url === "string" && p.url.startsWith("/")) ? p.url : "/play?tab=daily" };
     default:
       return { ...base, body: (p.body as string) || "You have a new notification", url: "/play" };
   }
@@ -93,13 +94,15 @@ Deno.serve(async (req) => {
     return new Response("bad request", { status: 400 });
   }
 
+  // Two shapes (v2_5): a notifications row (user_id → every subscription of
+  // that user) or a web_push_outbox row (subscription_id → that one browser,
+  // the signed-out visitor path from the static daily pages).
   const userId = row?.user_id as string | undefined;
-  if (!userId) return new Response("no user_id", { status: 400 });
+  const subscriptionId = row?.subscription_id as string | undefined;
+  if (!userId && !subscriptionId) return new Response("no user_id or subscription_id", { status: 400 });
 
-  const { data: subs, error } = await admin
-    .from("web_push_subscriptions")
-    .select("endpoint, subscription")
-    .eq("user_id", userId);
+  const q = admin.from("web_push_subscriptions").select("endpoint, subscription");
+  const { data: subs, error } = subscriptionId ? await q.eq("id", subscriptionId) : await q.eq("user_id", userId!);
   if (error) {
     console.error("[send-web-push] lookup failed:", error.message);
     return new Response("lookup failed", { status: 500 });

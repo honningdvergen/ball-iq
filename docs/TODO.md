@@ -88,6 +88,34 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       Browser-verified at 375.
 - [x] **2b. History pills** — Alex: "the 4 play buttons sit too close"; column
       44 → 54, pills 11pt apart at 375, date column 97pt ("Yesterday" needs 70).
+### REACH (the seven-list, #1) — 2026-09-09 afternoon
+Diagnosis: 44 of 308 accounts hold a token. Since the soft-prompt sheet was
+retired (09-06) the only ask in the app was a 34px "Remind me" pill on the
+results panel — offered 12 times in 3 days, tapped once — and the results
+panel on the STATIC PAGES (22 of its 42 mounts, all signed out) never offered
+anything: the whole web-push pipeline was keyed by user_id.
+- [x] **Results panel: the ask is a row** under the streak ("Remind me
+      tomorrow at 19:00 · one nudge at your hour, only if you haven't played ·
+      off any time" · Turn on). Permission still on the tap. (commit e407ca8 +
+      test fix)
+- [x] **Web push for VISITORS — v2_5 APPLIED to prod, edge function v5
+      deployed.** `web_push_subscriptions.user_id` nullable + `visitor_id`;
+      anon RPCs `subscribe_web_push` / `unsubscribe_web_push` (shape gates,
+      500/h throttle, revoke-from-public); `web_push_outbox` + the
+      notifications trigger cloned onto it (v1_5's rewrite trick); the cron's
+      visitor branch ("played today" = daily_results.visitor_id, one row per
+      local day); send-web-push accepts `subscription_id` rows and a payload
+      url. Client: `src/lib/webpushVisitor.js` (fetch + anon key, registers
+      /sw.js on the tap, states off/on/blocked/unsupported);
+      `dailyIsland.makeDailyDoneServices` offers it with a live `state`
+      getter + funnel events web-remind-tap/on/denied/failed.
+- [x] Verified end to end on prod (SQL-side): fake visitor subscription via
+      the anon RPC → outbox insert → trigger → send-web-push v5 answered
+      `{"sent":0,"pruned":1}` → dead endpoint pruned, outbox row cascaded.
+- [ ] A REAL browser subscribe on a balliq.app daily page after push (needs a
+      human tap; the browser pane cannot grant push permission).
+- [ ] Web APP signed-out players (resultsRemindState 'unsupported' for
+      guests): route them to the visitor path too.
 - [x] Gate green (6cf70b4); **build 114 = build-44-mttzi2l9 on the sim**
       (1.7.3, HEAD 6cf70b4, pods unchanged). Home verified on the sim: greeting
       without the name, "Multiplayer" fits the bottom bar. NOT PUSHED — Alex

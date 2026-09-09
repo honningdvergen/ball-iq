@@ -35,7 +35,7 @@ function synthetic() {
   } catch { return false; }
 }
 // Same id marketingEvent uses, so one browser is one visitor across both tables.
-function visitorId() {
+export function visitorId() {
   try {
     let v = localStorage.getItem('biq_vid');
     if (!v) {

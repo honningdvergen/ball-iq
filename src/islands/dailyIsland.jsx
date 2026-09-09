@@ -4,6 +4,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { marketingEvent } from '../lib/marketingEvent.js';
+import { enableVisitorPush, visitorRemindState } from '../lib/webpushVisitor.js';
 import { PlatformStoreBadge, isAndroidUA, isIOSUA } from '../components/StoreBadge.jsx';
 
 // Events go through the homepage's sink (literal project URL, the app's
@@ -51,9 +52,9 @@ export function toastHost(id) {
 
 // Mounts the screen and answers the one question these pages did not have:
 // does anyone FINISH the daily on the web.
-// Host services for the return-loop panel on a static page: no reminder (web
-// has no local notifications), links to the other daily pages as "still open
-// today", the page's funnel as the tracker. `game` is filtered out by the panel.
+// Host services for the return-loop panel on a static page: a visitor-keyed
+// web-push reminder (webpushVisitor.js), links to the other daily pages as
+// "still open today", the page's funnel as the tracker. `game` is filtered out by the panel.
 const DAILY_PAGES = [
   { key: 'footle',  name: "Today's Footle",         href: '/football-wordle/' },
   { key: 'daily7',  name: "Today's Daily 7",        href: '/daily-football-quiz/' },
@@ -61,7 +62,21 @@ const DAILY_PAGES = [
   { key: 'mystery', name: "Today's Mystery Player", href: '/mystery-player/' },
 ];
 export function makeDailyDoneServices(funnel) {
-  return { remind: undefined, streak: undefined, save: undefined, nextUp: DAILY_PAGES, track: (n, m) => funnel(n, m) };
+  // THE REMINDER, FOR VISITORS (2026-09-09). Since the results panel shipped,
+  // 22 of its 42 mounts were on these pages — every one signed out, every one
+  // with no ask, because the whole push pipeline was keyed by user id. It is
+  // keyed by visitor now (v2_5). `state` is a getter: the panel re-renders on
+  // its own clock, so the pill flips to the hour after the tap without any
+  // wiring back into the island.
+  const remind = {
+    get state() { return visitorRemindState(); },
+    onRemind: async () => {
+      funnel('web-remind-tap', { before: visitorRemindState() });
+      const after = await enableVisitorPush();
+      funnel(after === 'on' ? 'web-remind-on' : after === 'blocked' ? 'web-remind-denied' : 'web-remind-failed', {});
+    },
+  };
+  return { remind, streak: undefined, save: undefined, nextUp: DAILY_PAGES, track: (n, m) => funnel(n, m) };
 }
 
 export function mountDaily({ hostId, game, funnel, element }) {
