@@ -12,17 +12,17 @@
 // 1320x2868 — pixel-identical to an iPhone 17 Pro Max capture.
 //
 // ⚠️ THE RATING IS COMPUTED, NOT FAKED. The card is driven by
-// computeCard(catStats, accuracy) in src/lib/ballIqCard.js:
+// computeCard(catStats, _prior, lifetime) in src/lib/ballIqCard.js:
 //     rating = 40 + 59 * (correct + 2*prior) / (answered + 2)
-// so the numbers below were solved BACKWARDS from a target overall of 87 and
-// then verified through the real function. Hard-coding "87" into the DOM would
+// so the numbers below were solved BACKWARDS from a target overall and then
+// verified through the real function. Hard-coding a number into the DOM would
 // have produced a card whose six sub-ratings do not average to their own
 // overall — the kind of detail a screenshot makes permanent.
 //
-// ⚠️ 87 MATCHES THE SHARE CARD. The store gallery carries both this profile
+// ⚠️ THE PROFILE AND THE SHARE CARD MUST AGREE. The gallery carries both this
 // shot and the saved Ball IQ card (10-iq-card), and they are the same player:
 // same name, same face, same rating. A gallery that shows Alex on 82 in the app
-// and Alex on 87 on the card he shares tells the viewer the two are unrelated
+// and a different number on the card he shares tells the viewer they are unrelated
 // screens — when the entire pitch is that they are the same object.
 import { webkit } from '@playwright/test';
 // ⚠️ DERIVE THE DAILY ANSWER IN NODE, NOT IN THE PAGE.
@@ -47,6 +47,26 @@ import { mkdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
 const BASE = process.env.BASE || 'http://localhost:4324';
+
+// ⚠️ THE APP CLEANS ITS OWN URL, AND PLAYWRIGHT CALLS THAT AN INTERRUPTION.
+// Every ?game= / ?tab= / ?club= deep link is consumed once and then stripped
+// with history.replaceState (App.jsx ~6433), so a goto waiting for
+// 'networkidle' races the app's own rewrite and throws "interrupted by another
+// navigation to /play". The navigation SUCCEEDED — only the wait lost. Swallow
+// exactly that error, then settle; anything else still throws.
+async function gotoApp(p, path) {
+  try {
+    await p.goto(BASE + path, { waitUntil: 'domcontentloaded' });
+  } catch (e) {
+    if (!/interrupted by another navigation/i.test(e && e.message || '')) throw e;
+  }
+  await p.waitForLoadState('networkidle').catch(() => {});
+  // Re-apply after EVERY navigation: a goto is a fresh document, so a style
+  // injected once at the start is gone the moment a shot deep-links again.
+  // That is what left the site search on the Stadiums shot and swallowed its
+  // typing.
+  await p.addStyleTag({ content: 'header.fd-head{display:none !important}' }).catch(() => {});
+}
 const RAW = resolve('screenshots/raw');
 
 // ⚠️ THE CARD NEEDS A FACE, AND THE HARNESS RUNS AS A GUEST.
@@ -65,10 +85,14 @@ const RAW = resolve('screenshots/raw');
 const AVATAR_DATA_URL = 'data:image/jpeg;base64,' + readFileSync(resolve('screenshots/assets/alex-avatar.jpg')).toString('base64');
 mkdirSync(RAW, { recursive: true });
 
-// Solved for OVERALL 87 (>=75 = GOLD), and for the SIX EXACT sub-ratings the
+// ⚠️ RE-SOLVED 2026-09-09 — the card model was rebuilt that day (difficulty
+// multipliers, shrink to a measured baseline), so this SAME seed now yields
+// OVERALL 89, not 87. The seed was not touched; the maths under it changed.
+// Re-run the node snippet in project_ball_iq_card_calibration if it moves again.
+// OVERALL 89 (GOLD), and the SIX sub-ratings the
 // saved card in 10-iq-card.png already shows. Spread is deliberately uneven —
 // a real player is better at the league they watch.
-//   EPL 92 · UCL 89 · LAL 88 · SEA 85 · INT 84 · BUN 83
+//   EPL 96 · UCL 91 · LAL 89 · SEA 83 · INT 81 · BUN 80
 //
 // The volume (2,510 answered ≈ 251 games) is what an Immortal-level 208k XP
 // player would actually have on the clock. The old seed paired 46 games with
@@ -174,9 +198,19 @@ function footleLadder(answer) {
 }
 
 const SHOTS = [
+  // ⚠️ NAVIGATE BY URL, NOT BY CLICKING HOME. These five used to reach their
+  // screen by clicking a tile or row on the home screen, which made the
+  // harness a hostage of Home's layout: the 2026-09-09 redesign moved Footle,
+  // Transfer Trail and Mystery Player into the Today block and replaced the
+  // Club Quiz tile with a club finder, so all five clicks timed out at once
+  // and shot the wrong screen. ?game= / ?tab= are the front door's own doors
+  // (App.jsx ~6437) — they are real routes, they are covered by the same
+  // deep-link handling the website depends on, and they do not move when
+  // Home does. Only the NAVIGATION changed; every play-through below is as
+  // it was.
   { name: '01-home',           expect: 'More modes',   go: async (p) => {} },
   { name: '03-club-picker',    expect: 'Club Quizzes', go: async (p) => {
-      await p.getByText('Club Quiz', { exact: true }).first().click(); } },
+      await gotoApp(p, '/play?game=clubquiz'); } },
   // ⚠️ HIDE THE GUEST UPSELL. The capture runs as a guest (no way to sign in
   // headlessly), so Profile opens with a full-width "Save your progress /
   // Sign in / Create account" card above the rating — the largest element on
@@ -186,17 +220,21 @@ const SHOTS = [
   // ⚠️ THE EYEBROW IS NOW THE WORDMARK, NOT A DESCRIPTION. The card used to say
   // "BALL IQ RATING" and this asserted on that string; it now reads "BALL IQ" to
   // match the shared PNG, so the screen marker moved to the tier row. `verify`
-  // carries the real proof: the seeded 87 has to be on screen, which is what
+  // carries the real proof: the seeded 89 has to be on screen, which is what
   // catches a card that rendered empty or fell back to a default palette.
   { name: '06-profile',        expect: 'OVERALL', settle: true,
-    verify: async (p) => (await p.evaluate(() => /\b87\b/.test(document.body.innerText)
+    verify: async (p) => (await p.evaluate(() => /\b89\b/.test(document.body.innerText)
       && /GOLD/.test(document.body.innerText)
-      && !/Create a free account/.test(document.body.innerText)
+      // ⚠️ MATCH THE COPY THAT IS ACTUALLY ON SCREEN. This asserted on "Create a
+      // free account"; the slab was reworded to "Saved on this phone only …
+      // Sign in", so the guard passed while the upsell shipped in the shot.
+      // Assert on the CURRENT string and keep the old one for older builds.
+      && !/Create a free account|Saved on this phone only/.test(document.body.innerText)
       // the face has to be a real, decoded image — not the monogram fallback
       && (() => { const im = document.querySelector('.profile-avatar img');
                   return !!im && im.complete && im.naturalWidth > 0; })())),
     go: async (p) => {
-      await p.getByText('Profile', { exact: true }).last().click();
+      await gotoApp(p, '/play?tab=profile');
       await p.waitForTimeout(1200);
       await p.evaluate(() => {
         // ⚠️ MATCH EXACTLY, NOT startsWith. querySelectorAll returns DOCUMENT
@@ -211,9 +249,16 @@ const SHOTS = [
         // marketing panel with "Create a free account" while the card it is
         // supposed to be selling sat below it. Silent, and it shipped once.
         // The `verify` on this shot now fails the run if the banner survives.
-        const title = [...document.querySelectorAll('div')]
-          .find((d) => (d.textContent || '').trim() === 'Save your progress');
-        if (title?.parentElement) title.parentElement.style.display = 'none';
+        // ⚠️ TARGET THE SLAB, NOT ITS TEXT. Two text-matchers have already
+        // broken here (the emoji became an SVG; then "Save your progress"
+        // became "Saved on this phone only"), and the second attempt at
+        // hiding `title.parentElement` hid the WHOLE PROFILE — the card with
+        // it — because the heading's parent is now the row, whose parent is
+        // the screen. The slab carries a stable, semantic hook of its own:
+        // role="group" aria-label="Save your progress" (ProfileScreen ~1758).
+        // Hide exactly that node and nothing above it.
+        const slab = document.querySelector('[role="group"][aria-label="Save your progress"]');
+        if (slab) slab.style.display = 'none';
       });
       // The card's face. Waits for decode: a half-painted avatar in a store
       // screenshot is worse than the monogram it replaces.
@@ -242,7 +287,7 @@ const SHOTS = [
     // grid that shipped before the board assertion existed.
     verify: async (p) => (await p.evaluate(() => /Got it|Solved|Nice/i.test(document.body.innerText))),
     go: async (p) => {
-      await p.getByText('Transfer Trail', { exact: true }).first().click();
+      await gotoApp(p, '/play?game=trail');
       await p.waitForTimeout(1400);
       const t = getTrailAnswer(new Date());
       const answer = t ? t.display.join(' ') : null;
@@ -287,7 +332,7 @@ const SHOTS = [
   { name: '07-mystery-player', expect: 'Mystery Player',
     verify: async (p) => (await p.evaluate(() => /Got it|Solved|rank 1|#1\b/i.test(document.body.innerText))),
     go: async (p) => {
-      await p.getByText('Mystery Player', { exact: true }).first().click();
+      await gotoApp(p, '/play?game=mystery');
       await p.waitForTimeout(1400);
       const id = answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex());
       const ans = MYSTERY_POOL.find((x) => x.id === id);
@@ -327,7 +372,7 @@ const SHOTS = [
       [...document.querySelectorAll('.wd-tile')].filter((t) => (t.textContent || '').trim()).length)) >= 15,
     go: async (p) => {
       const answer = getWordleAnswer();
-      await p.getByText('Play', { exact: true }).first().click();
+      await gotoApp(p, '/play?game=footle');
       await p.waitForTimeout(1800);
       if (answer) {
         const A = answer.toUpperCase();
@@ -344,7 +389,7 @@ const SHOTS = [
   // shuffled per game, so the only reliable way is to answer, check, and move on
   // to the next question if it was wrong.
   { name: '05-quiz-explanation', expect: 'Why?', go: async (p) => {
-      await p.goto(BASE + '/play?club=liverpool', { waitUntil: 'networkidle' });
+      await gotoApp(p, '/play?club=liverpool');
       await p.waitForTimeout(3800);
       for (let attempt = 0; attempt < 10; attempt++) {
         const opts = p.locator('.opt');
@@ -397,7 +442,13 @@ const SHOTS = [
     go: async (p) => {
       const wanted = pickDailyQuestions(QB, dayIndexForDate(new Date()));
       const WRONG_ON = new Set([3, 6]);          // 5 of 7 correct
-      await p.goto(BASE + '/play', { waitUntil: 'networkidle' });
+      // ⚠️ NOT BARE /play. main.jsx redirects a browser visitor on bare /play to
+      // the marketing front door (2026-09-05, "the website is the home"), and
+      // that redirect fires only when there is NO query string. So every capture
+      // must name a tab. Without it the harness silently shot the WEBSITE — the
+      // screen assertions caught it, 3 of 10 wrong-screen, which is exactly what
+      // they are for.
+      await gotoApp(p, '/play?tab=home');
       await p.waitForTimeout(3200);
       await p.getByText('Daily 7', { exact: true }).first().click();
       await p.waitForTimeout(2000);
@@ -441,14 +492,20 @@ const SHOTS = [
         && /Emirates Stadium/i.test(t) && /Villa Park/i.test(t) && /2\s*\/\s*20/.test(t);
     })),
     go: async (p) => {
-      await p.getByText('Stadiums', { exact: true }).first().click();
+      await gotoApp(p, '/play?game=stadiums');
       await p.waitForTimeout(1400);
       await p.getByText('Premier League', { exact: true }).first().click();
       await p.waitForTimeout(1600);
       for (const answer of ['Emirates Stadium', 'Villa Park']) {
-        await p.getByLabel('Type any stadium').fill(answer).catch(async () => {
-          await p.locator('input[type="search"], input').first().fill(answer);
-        });
+        // ⚠️ THE LABEL AND THE PLACEHOLDER ARE DIFFERENT STRINGS. This asked for
+        // getByLabel('Type any stadium') — that is the PLACEHOLDER ("Type any
+        // stadium…"); the aria-label is "Type a stadium name" (StadiumGame.jsx
+        // ~320). So the lookup never matched, fell silently into the generic
+        // `input` fallback, and typed both answers into the SITE HEADER's
+        // search box — the board stayed 0/20 and only the verify caught it.
+        // A fallback that can hit a different element is worse than no
+        // fallback: it turns a loud failure into a plausible wrong shot.
+        await p.getByLabel('Type a stadium name').fill(answer);
         await p.waitForTimeout(900);
       }
       // Blur so the software keyboard is not in the frame and the list is not
@@ -499,7 +556,39 @@ const b = await webkit.launch();
 // number it needs on every run; copy it here if the geometry changes.
 const CAPTURE_H = 874;
 const ctx = await b.newContext({ viewport: { width: 440, height: CAPTURE_H }, deviceScaleFactor: 3 });
+
+// ⚠️ PIN THE CLOCK, OR THE SHOT DEPENDS ON WHEN IT WAS TAKEN. The home
+// greeting is time-of-day, so a re-shoot at 00:30 put "Still up" — the
+// 00:00-05:00 state — at the top of the App Store's FIRST screenshot, beside
+// a device frame that reads 9:41. Fixing only Date.prototype.getHours broke
+// the Trail (its day derivation reads the hour too), so fix the whole
+// timestamp instead: TODAY at 09:41 local. The date is unchanged, so the
+// daily puzzle numbers still match the answers this script derives in node,
+// and the greeting now agrees with the 9:41 in the frame.
+try {
+  const t = new Date(); t.setHours(9, 41, 0, 0);
+  await ctx.clock.setFixedTime(t);
+} catch { /* older Playwright: the greeting is then whatever the clock says */ }
 await ctx.addInitScript((stats) => {
+  // ⚠️ REPORT STANDALONE, OR THE SHOT CARRIES THE WEBSITE'S CHROME. App.jsx
+  // renders SiteHeader + the web AppBar whenever `isWebBrowser` is true, and
+  // that is `!IS_NATIVE && !(display-mode: standalone)`. A plain browser
+  // capture therefore ships a search bar, a hamburger and a horizontal
+  // Play/History/Multiplayer/Profile strip — none of which exist in the app
+  // being sold. Faking the media query is what makes the browser capture look
+  // like the product; it is the same branch an installed PWA takes.
+  try {
+    const mm = window.matchMedia.bind(window);
+    window.matchMedia = (q) => (/display-mode:\s*standalone/.test(q)
+      ? { matches: true, media: q, onchange: null, addListener() {}, removeListener() {},
+          addEventListener() {}, removeEventListener() {}, dispatchEvent() { return false; } }
+      : mm(q));
+  } catch { /* non-fatal: the shot just carries web chrome and the eye catches it */ }
+  // ⚠️ THE ONE-TIME RECALIBRATION NOTE MUST NOT SHIP IN A STORE SHOT. It is a
+  // transitional banner ("Ratings recalibrated 9 Sep 2026…") that is stale
+  // within weeks, and it tells a prospective downloader we moved their numbers
+  // before they have any. Marking it seen is exactly what a real player does.
+  localStorage.setItem('biq_card_recal_2026_09_09', '1');
   localStorage.setItem('biq_onboarded', '1');
   // The green "Welcome to Ball IQ!" tip is a SEPARATE flag from onboarding
   // and reappears on every fresh profile — it covered the greeting in the
@@ -518,7 +607,7 @@ await ctx.addInitScript((stats) => {
   }));
   // ⚠️ MATCHES THE SAVED CARD'S LEVEL LINE. 10-iq-card.png reads "Immortal ·
   // 208,515 XP"; the profile shot sits next to it in the same store gallery, so
-  // a different level under the same name and the same 87 would read as two
+  // a different level under the same name and the same 89 would read as two
   // unrelated screens rather than one player's card in two places.
   localStorage.setItem('biq_xp', '208515');
   // ⚠️ THE CONSENT BANNER WOULD OTHERWISE SHIP IN THE STORE SCREENSHOTS.
@@ -596,7 +685,23 @@ let translucent = 0;
 for (const s of SHOTS) {
   if (ONLY.length && !ONLY.includes(s.name)) continue;
   const p = await ctx.newPage();
-  await p.goto(BASE + '/play', { waitUntil: 'networkidle' });
+  // ⚠️ NOT BARE /play. main.jsx redirects a browser visitor on bare /play to
+  // the marketing front door (2026-09-05, "the website is the home"), and
+  // that redirect fires only when there is NO query string. So every capture
+  // must name a tab. Without it the harness silently shot the WEBSITE — the
+  // screen assertions caught it, 3 of 10 wrong-screen, which is exactly what
+  // they are for.
+  await gotoApp(p, '/play?tab=home');
+  // ⚠️ STRIP THE WEBSITE HEADER. `header.fd-head` (SiteHeader.jsx) is the
+  // marketing chrome — wordmark, section nav, "Find your club or league"
+  // search, hamburger — that App.jsx renders for browser visitors only. It is
+  // not in the native app or an installed PWA, so a store screenshot carrying
+  // it advertises a search bar the downloader will never see, and it stole the
+  // Stadiums shot's typing (the fallback `input` selector filled the SITE
+  // search with "Villa Park" and the board stayed 0/20). Removing it is not
+  // cosmetic licence: it is what the product looks like on the device being
+  // sold.
+  await p.addStyleTag({ content: 'header.fd-head{display:none !important}' }).catch(() => {});
   await p.waitForTimeout(3800);
   try { await s.go(p); } catch (e) { console.log(`  ! ${s.name}: navigation click failed — ${e.message.split('\n')[0]}`); }
   await p.waitForTimeout(2600);

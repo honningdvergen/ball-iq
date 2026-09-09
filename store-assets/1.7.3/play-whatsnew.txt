@@ -1,99 +1,99 @@
 <en-US>
-A fresh look: deeper surfaces, and Footle tiles filled in the game's own green and amber.
+Your Ball IQ card is rebuilt. Every answer counts toward it now, and harder questions count for more — medium 10% more, hard 20%. Ratings were recalibrated once, so your number may have moved.
 
-Your results stay on screen — the sign-in prompt now waits until you leave, and "Continue as guest" is a proper button.
+Yesterday's puzzles are playable from History: Footle, Daily 7, Transfer Trail and Mystery Player.
 
-Find your club straight from Home.
+A fresh look, a club finder on Home, and your results stay on screen with a one-tap reminder for tomorrow.
 
-Sharing a Daily 7 result now sends the challenge link properly. Plus small fixes.
+Plus a long list of fixes.
 </en-US>
 <ar>
-مظهر جديد: أسطح أعمق، ومربعات Footle مملوءة بالأخضر والكهرماني الخاصين باللعبة.
+أُعيد بناء بطاقة Ball IQ الخاصة بك. أصبحت كل إجابة تُحتسب الآن، والأسئلة الأصعب تُحتسب أكثر: المتوسطة بزيادة 10% والصعبة 20%. أُعيدت معايرة التقييمات مرة واحدة، لذا قد يكون رقمك قد تغيّر.
 
-تبقى نتائجك على الشاشة: طلب تسجيل الدخول ينتظر الآن حتى تغادر، و"المتابعة كضيف" أصبح زرًا حقيقيًا.
+يمكن لعب ألغاز الأمس من السجل: Footle وDaily 7 وTransfer Trail وMystery Player.
 
-اعثر على ناديك مباشرة من الصفحة الرئيسية.
+مظهر جديد، وبحث عن ناديك في الصفحة الرئيسية، ونتائجك تبقى على الشاشة مع تذكير للغد بلمسة واحدة.
 
-عند مشاركة نتيجة Daily 7، يُرسَل رابط التحدي الآن بشكل صحيح. بالإضافة إلى إصلاحات صغيرة.
+بالإضافة إلى قائمة طويلة من الإصلاحات.
 </ar>
 <de-DE>
-Ein frischer Look: tiefere Flächen und Footle-Kacheln, gefüllt im Grün und Bernstein des Spiels.
+Deine Ball-IQ-Karte wurde neu gebaut. Jetzt zählt jede Antwort, und schwerere Fragen zählen mehr: mittel 10 % mehr, schwer 20 %. Die Bewertungen wurden einmalig neu kalibriert, deine Zahl kann sich verschoben haben.
 
-Deine Ergebnisse bleiben auf dem Bildschirm – die Anmeldeaufforderung wartet jetzt, bis du gehst, und „Als Gast fortfahren“ ist ein richtiger Button.
+Die Rätsel von gestern lassen sich im Verlauf spielen: Footle, Daily 7, Transfer Trail und Mystery Player.
 
-Finde deinen Verein direkt von der Startseite aus.
+Ein frischer Look, eine Vereinssuche auf der Startseite, und deine Ergebnisse bleiben auf dem Bildschirm – mit einer Erinnerung für morgen.
 
-Beim Teilen eines Daily-7-Ergebnisses wird der Herausforderungslink jetzt richtig gesendet. Dazu kleine Korrekturen.
+Dazu viele Korrekturen.
 </de-DE>
 <es-419>
-Un aspecto renovado: superficies más profundas y las casillas de Footle rellenas con el verde y el ámbar del juego.
+Tu tarjeta Ball IQ se reconstruyó. Ahora cuenta cada respuesta, y las preguntas difíciles cuentan más: las medias un 10 % más y las difíciles un 20 %. Las calificaciones se recalibraron una vez, así que tu número pudo haber cambiado.
 
-Tus resultados se quedan en pantalla: el aviso para iniciar sesión ahora espera a que salgas, y "Continuar como invitado" es un botón de verdad.
+Los retos de ayer se pueden jugar desde el Historial: Footle, Daily 7, Transfer Trail y Mystery Player.
 
-Encuentra tu club directamente desde Inicio.
+Nuevo aspecto, buscador de clubes en Inicio y tus resultados se quedan en pantalla con un recordatorio para mañana.
 
-Al compartir un resultado del Daily 7, el enlace del reto ahora se envía correctamente. Además, pequeñas correcciones.
+Además, muchas correcciones.
 </es-419>
 <es-ES>
-Un aspecto renovado: superficies más profundas y las casillas de Footle rellenas con el verde y el ámbar del juego.
+Tu tarjeta Ball IQ se ha reconstruido. Ahora cuenta cada respuesta, y las preguntas difíciles cuentan más: las medias un 10 % más y las difíciles un 20 %. Las valoraciones se recalibraron una vez, así que tu número puede haber cambiado.
 
-Tus resultados se quedan en pantalla: el aviso para iniciar sesión ahora espera a que salgas, y "Continuar como invitado" es un botón de verdad.
+Los retos de ayer se pueden jugar desde el Historial: Footle, Daily 7, Transfer Trail y Mystery Player.
 
-Encuentra tu club directamente desde Inicio.
+Nuevo aspecto, buscador de clubes en Inicio y tus resultados se quedan en pantalla con un recordatorio para mañana.
 
-Al compartir un resultado del Daily 7, el enlace del reto ahora se envía correctamente. Además, pequeñas correcciones.
+Además, muchas correcciones.
 </es-ES>
 <fr-FR>
-Un nouveau look : des surfaces plus profondes et des cases Footle remplies avec le vert et l'ambre du jeu.
+Votre carte Ball IQ est reconstruite. Chaque réponse compte désormais, et les questions difficiles comptent davantage : moyennes +10 %, difficiles +20 %. Les notes ont été recalibrées une fois, votre chiffre a donc pu changer.
 
-Vos résultats restent à l'écran : l'invitation à se connecter attend maintenant votre départ, et « Continuer en invité » est un vrai bouton.
+Les jeux d'hier sont jouables depuis l'Historique : Footle, Daily 7, Transfer Trail et Mystery Player.
 
-Trouvez votre club directement depuis l'accueil.
+Un nouveau look, une recherche de clubs sur l'accueil, et vos résultats restent à l'écran avec un rappel pour demain.
 
-Le partage d'un résultat du Daily 7 envoie maintenant correctement le lien du défi. Et de petites corrections.
+Et de nombreux correctifs.
 </fr-FR>
 <id>
-Tampilan baru: permukaan yang lebih dalam dan kotak Footle yang terisi dengan hijau dan amber khas gim.
+Kartu Ball IQ kamu dibangun ulang. Kini setiap jawaban dihitung, dan soal yang lebih sulit bernilai lebih: sedang 10% lebih, sulit 20%. Peringkat dikalibrasi ulang sekali, jadi angkamu mungkin berubah.
 
-Hasilmu tetap di layar: ajakan masuk kini menunggu sampai kamu keluar, dan "Lanjutkan sebagai tamu" adalah tombol sungguhan.
+Teka-teki kemarin bisa dimainkan dari Riwayat: Footle, Daily 7, Transfer Trail, dan Mystery Player.
 
-Temukan klubmu langsung dari Beranda.
+Tampilan baru, pencarian klub di Beranda, dan hasilmu tetap di layar dengan pengingat untuk besok dalam satu ketukan.
 
-Saat membagikan hasil Daily 7, tautan tantangan kini terkirim dengan benar. Plus perbaikan kecil.
+Plus daftar panjang perbaikan.
 </id>
 <it-IT>
-Un nuovo look: superfici più profonde e caselle di Footle riempite con il verde e l'ambra del gioco.
+La tua card Ball IQ è stata ricostruita. Ora conta ogni risposta, e le domande difficili contano di più: medie +10%, difficili +20%. I punteggi sono stati ricalibrati una volta, quindi il tuo numero potrebbe essere cambiato.
 
-I tuoi risultati restano sullo schermo: l'invito ad accedere ora aspetta che tu esca, e "Continua come ospite" è un vero pulsante.
+I giochi di ieri si possono giocare dalla Cronologia: Footle, Daily 7, Transfer Trail e Mystery Player.
 
-Trova il tuo club direttamente dalla Home.
+Un nuovo look, un cerca-club nella Home e i tuoi risultati restano sullo schermo, con un promemoria per domani in un tocco.
 
-Condividendo un risultato del Daily 7, il link della sfida ora viene inviato correttamente. E piccole correzioni.
+Più un lungo elenco di correzioni.
 </it-IT>
 <pt-BR>
-Um visual renovado: superfícies mais profundas e as casas do Footle preenchidas com o verde e o âmbar do jogo.
+Seu cartão Ball IQ foi reconstruído. Agora toda resposta conta, e as perguntas difíceis contam mais: médias 10% a mais e difíceis 20%. As notas foram recalibradas uma vez, então seu número pode ter mudado.
 
-Seus resultados ficam na tela: o aviso de login agora espera você sair, e "Continuar como convidado" é um botão de verdade.
+Os desafios de ontem podem ser jogados pelo Histórico: Footle, Daily 7, Transfer Trail e Mystery Player.
 
-Encontre seu clube direto da tela inicial.
+Visual renovado, busca de clubes na tela inicial e seus resultados ficam na tela com um lembrete para amanhã em um toque.
 
-Ao compartilhar um resultado do Daily 7, o link do desafio agora é enviado corretamente. E pequenas correções.
+Além de uma longa lista de correções.
 </pt-BR>
 <pt-PT>
-Um visual renovado: superfícies mais profundas e as casas do Footle preenchidas com o verde e o âmbar do jogo.
+O teu cartão Ball IQ foi reconstruído. Agora todas as respostas contam, e as perguntas difíceis contam mais: médias mais 10% e difíceis mais 20%. As classificações foram recalibradas uma vez, por isso o teu número pode ter mudado.
 
-Os teus resultados ficam no ecrã: o aviso de início de sessão espera agora que saias, e "Continuar como convidado" é um botão a sério.
+Os desafios de ontem podem ser jogados a partir do Histórico: Footle, Daily 7, Transfer Trail e Mystery Player.
 
-Encontra o teu clube diretamente a partir do Início.
+Visual renovado, pesquisa de clubes no Início e os teus resultados ficam no ecrã com um lembrete para amanhã.
 
-Ao partilhar um resultado do Daily 7, a ligação do desafio é agora enviada corretamente. E pequenas correções.
+E ainda muitas correções.
 </pt-PT>
 <tr-TR>
-Yenilenen görünüm: daha derin yüzeyler ve oyunun kendi yeşili ile kehribarıyla dolu Footle kareleri.
+Ball IQ kartın yeniden yapıldı. Artık her cevap sayılıyor ve zor sorular daha çok değerli: orta %10, zor %20 daha fazla. Puanlar bir kez yeniden ayarlandı, bu yüzden sayın değişmiş olabilir.
 
-Sonuçların ekranda kalır: giriş uyarısı artık sen çıkana kadar bekler ve "Misafir olarak devam et" gerçek bir düğme.
+Dünkü bulmacalar Geçmiş'ten oynanabiliyor: Footle, Daily 7, Transfer Trail ve Mystery Player.
 
-Kulübünü doğrudan Ana Sayfa'dan bul.
+Yeni bir görünüm, Ana Sayfa'da kulüp arama ve sonuçların ekranda kalıyor; yarın için tek dokunuşla hatırlatma.
 
-Daily 7 sonucunu paylaşınca meydan okuma bağlantısı artık düzgün gönderiliyor. Ayrıca küçük düzeltmeler.
+Ayrıca uzun bir düzeltme listesi.
 </tr-TR>
