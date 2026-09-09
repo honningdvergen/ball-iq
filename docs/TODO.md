@@ -46,8 +46,10 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       the compact desktop column. Browser-verified at 375 + 1280.
 - [~] **5. Encapsulate the four dailies** — NO (Alex agreed): "Today · 0/4" is
       the wrapper; a card around cards is border-in-border at 390.
-- [ ] Full gate, then one fresh Xcode build — Alex tests on the device before
-      anything is pushed (every card number moves).
+- [x] Gate green (6cf70b4); **build 114 = build-44-mttzi2l9 on the sim**
+      (1.7.3, HEAD 6cf70b4, pods unchanged). Home verified on the sim: greeting
+      without the name, "Multiplayer" fits the bottom bar. NOT PUSHED — Alex
+      tests on the device first; every card number moves.
 
 ## 2026-09-07 (13:00) — 📋 THE OUTSTANDING LEDGER — everything the audits and workflows found and nobody has closed
 
