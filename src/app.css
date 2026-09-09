@@ -397,8 +397,16 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    over from the two-mode era. Now: a head row styled exactly like
    .home-section-title with the X/4 counter as its right-hand meta, and the rows
    on the page edge. The desktop and standalone mirrors below restate this. */
-.daily-zone{background:none;border:0;border-radius:0;padding:0;margin-bottom:18px;contain:layout paint style;}
-.daily-zone-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;padding:0;}
+/* THE WELL (Alex, 2026-09-09: "a slight outline around the daily modes so we
+   see that online is not a part of those 4"). The four dailies are the ritual
+   the whole app exists to bring people back to; the row below them wore the
+   same anatomy one step down and read as a fifth. A flat surface and one
+   hairline hold the four together — deliberately quieter than the tiles it
+   holds (no gradient, no colour), so the tiles stay the loud thing. Judged
+   against A/C/D at true size (artifact "Home Ritual Options"). Pairs with
+   .mp-row losing its green well below. */
+.daily-zone{background:rgba(19,21,28,0.72);border:1px solid var(--border);border-radius:18px;padding:12px;margin:0 0 18px;contain:layout paint style;}
+.daily-zone-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 2px 10px;padding:0;}
 /* 19px, up from 15px: with the date demoted to a tracked dateline above it
    (HomeScreen.jsx, 2026-09-07) this is the only heading in the strip, so it
    carries the weight the two of them used to split. */
@@ -2262,6 +2270,9 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    two buttons, so the body button drops its chrome and the pill is a real
    <button>. Green in the well like the mode colours do. */
 .mp-row{--mode:var(--accent);--mode-rgb:88,204,2;margin:0 0 22px;cursor:default;}
+/* Multiplayer is not a daily: its icon well goes neutral (2026-09-09) so the
+   row stops dressing as the fifth tile under the well above. */
+.mp-row .t7s-icon{background:var(--s2);border-color:var(--border2);color:var(--t2);}
 .mp-row-open{flex:1;display:flex;align-items:center;gap:12px;min-width:0;background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .mp-row .t7s-cta.is-primary{background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);border:0;}
 .mp-row-invite{cursor:pointer;font-family:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:34px;}
