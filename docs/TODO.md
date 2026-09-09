@@ -1,3 +1,64 @@
+## 2026-09-09 (21:40) — 📱 SECOND DEVICE REVIEW (build 123 on Alex's phone)
+
+Alex, playing: "it is a bit laggy I can not lie"; "I got the right answer on the
+footle on the last attempt and the reveal of the letters happened on all six rows
+instead of just the last"; the grey result box has too much read space and could be
+more rewarding; "the play buttons on the bottom do not really pop out at the player";
+and a Daily 7 question whose distractors were all eliminable.
+
+- [x] **FOOTLE SIX-ROW REVEAL — 08c4dba, verified on the iOS simulator (WebKit).**
+      `wd-flip` sat on EVERY completed row unconditionally. Re-mount was ruled out
+      by tagging all 36 tile nodes and watching them survive the winning submit.
+      The real defect: a finished board re-animated every row on every open
+      (measured 30 animated tiles on a fresh load of five played rows), and a
+      completed row kept a DECLARED 3D animation for the life of the screen — so
+      any restyle of the grid, and `.wd-grid--ended` lands exactly when the game
+      ends, could restart all of them. `animRow` now owns the reveal and hands it
+      back when the last tile lands. Measured: fresh load 0, on submit 6 (row 6
+      only), after the reveal 0. Simulator: the solved board opens flat, no flip.
+- [x] **LAG — two idle costs removed, 08c4dba.** ⚠️ NOT reproduced as a
+      measurement: 5s idle on the results screen showed 5 DOM mutations and zero
+      long tasks in a hidden Chromium pane, which is weak evidence. Found by
+      reading instead: Footle's countdown interval ran from mount although the
+      clock only renders once the puzzle is decided (so every second of PLAY
+      re-rendered the board and the 28-key keyboard for a string nothing showed),
+      and DailyDone ticked `now` every second to feed `formatCountdown`, which has
+      MINUTE granularity — the panel under every finished daily re-rendering 60×
+      a minute for a string that changes once. Both gated/slowed.
+- [x] **THE STILL-OPEN ROWS WERE A DEAD RULE, not a styling taste — 08c4dba.**
+      `--dd-rgb`/`--dd-c` were set on the inner `.dd-well` while every
+      `.dd-next-row.is-mode` rule reads them ON THE ROW. An unresolvable `var()`
+      is invalid at computed-value time, so the property INHERITS rather than
+      falling back: measured before the fix, rowBorder `0px none`, rowBg
+      `rgba(0,0,0,0)`, Play `rgb(240,241,245)` white. Vars moved to the row; Play
+      is now the `.t7s-cta` pill the Home rows use. All three rows verified
+      carrying tint, hairline and a mode-coloured pill.
+- [x] **RESULT-CARD DENSITY — 08c4dba + 38ce72c.** The report control was a 40px
+      bordered button with its own 10px margin — the biggest element in the reward
+      panel, spent on its rarest action; now quiet underlined text. The bare
+      "+30 XP" line becomes one green pill carrying "Solved in 6/6", which the
+      panel never showed at all. And two flex siblings each carried a margin ON TOP
+      of `.wd-screen`'s `gap:14px` (the DailyDone wrapper's marginTop:10 and
+      `.wd-grid--ended`'s margin-bottom:14) — 24pt of nothing. Simulator: "Still
+      open today" sits 24pt higher and the first row is on screen at the fold.
+- [x] **TWO ELIMINABLE QUESTIONS FIXED — q_fc449f, q_2442e1 (38ce72c).**
+      "Which South Korea DEFENDER…" against Son Heung-min, Hwang Hee-chan and Lee
+      Seung-woo; "which Rangers RIGHT-BACK…" against Morelos, Aribo and Kent. Both
+      re-keyed with genuine same-position squad-mates.
+- [ ] **⚠️ THE QUALIFIER CLASS IS UNMEASURED — Alex's call.** 978 MCQ stems carry a
+      position qualifier; the audit against `squads.json` could judge **48** of them
+      (current squads only, so historical players are invisible) and found one more
+      hit. Do NOT read that as a clean bank. Gating it needs a name→position map for
+      historical players (Wikidata P413) built over the distinct option names, then
+      a build gate. Not built.
+- [ ] **The remind row's subtitle is the next ~15pt** — "One nudge at your hour,
+      only if you haven't played · off any time" wraps to three lines and is the
+      tallest text block on the panel. It is copy Alex approved for the reach push,
+      so shortening it is his call, not mine.
+- [ ] **Build 123 was never uploaded and is now superseded.** A new build is needed
+      before any store push; uploading remains Alex's explicit call per build.
+- [ ] **Android has not been opened this session.**
+
 ## 2026-09-09 (13:00) — 📱 ALEX'S DEVICE REVIEW (build 113 on his phone) — the five, in order
 
 Alex, from the phone, 01:16: three league stats blank; a friend's overall "kept
