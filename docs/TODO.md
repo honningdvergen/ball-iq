@@ -123,8 +123,11 @@ anything: the whole web-push pipeline was keyed by user_id.
 - [x] Verified end to end on prod (SQL-side): fake visitor subscription via
       the anon RPC → outbox insert → trigger → send-web-push v5 answered
       `{"sent":0,"pruned":1}` → dead endpoint pruned, outbox row cascaded.
-- [ ] A REAL browser subscribe on a balliq.app daily page after push (needs a
-      human tap; the browser pane cannot grant push permission).
+- [x] PUSHED 2026-09-09 12:34Z (ab38edc). Verified live: sha, Home rendered
+      (greeting, Multiplayer, four rows), island imports `webpushVisitor-*.js`.
+- [ ] A REAL browser subscribe on a balliq.app daily page (needs a human tap;
+      the browser pane cannot grant push permission) — Alex, then check
+      `web_push_subscriptions where visitor_id is not null`.
 - [ ] Web APP signed-out players (resultsRemindState 'unsupported' for
       guests): route them to the visitor path too.
 - [x] Gate green (6cf70b4); **build 114 = build-44-mttzi2l9 on the sim**
