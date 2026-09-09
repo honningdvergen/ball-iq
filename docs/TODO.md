@@ -44,8 +44,14 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       13.5–15px for a two-line name design that no longer exists).** No name,
       shown for everyone incl. signed-out, gap 2 → 6, 20px on the phone, 15px in
       the compact desktop column. Browser-verified at 375 + 1280.
-- [~] **5. Encapsulate the four dailies** — NO (Alex agreed): "Today · 0/4" is
-      the wrapper; a card around cards is border-in-border at 390.
+- [x] **5. Encapsulate the four dailies — YES after all, Alex's call (B of
+      four mocked at true size, artifact "Home Ritual Options").** `.daily-zone`
+      is a flat rgba(19,21,28,.72) surface + one hairline, 18px radius, 12px
+      padding, "Today · 0/4" inside — deliberately quieter than the tiles it
+      holds; Multiplayer's icon well goes neutral so it stops dressing as the
+      fifth daily. Applied at mobile, desktop (≥1024 override) and the
+      installed-PWA block (the two places a top-level rule never reaches).
+      Browser-verified at 375 and 1280.
 - [x] **1b. SECOND PASS on the card (same day, Alex on build 114: "61 matches
       the 61% accuracy but you should be rewarded more for hard questions —
       seems harsh").** He was right: the evidence weights ranked 80% on easy
