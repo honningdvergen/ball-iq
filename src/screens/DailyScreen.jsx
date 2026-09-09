@@ -78,10 +78,12 @@ function ModeGlyph({ mode, size = 22 }) {
   return <UserRoundSearch size={size} strokeWidth={2} />;
 }
 
-// Recent-days column width. Four modes have to share the row that two used to
-// have, so 74pt/70pt drops to 44 — enough for "5/7" in a pill, and it leaves
-// ~139pt of the 375pt phone for the date, which "Yesterday" needs.
-const COL_W = 44;
+// Recent-days column width. Four modes share the row that two used to have.
+// 44 held a "5/7" pill, but four "Play" pills at 44 sat 4pt apart and read as
+// one control (Alex, 2026-09-09: "the 4 play buttons sit a bit too close").
+// 54 gives each pill ~11pt of air and still leaves ~97pt of a 375pt phone for
+// the date column, where "Yesterday" needs ~70.
+const COL_W = 54;
 
 const MODE_LABEL = { footle: "Footle", daily7: "Daily 7", trail: "Transfer Trail", mystery: "Mystery Player" };
 

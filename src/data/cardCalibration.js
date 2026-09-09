@@ -10,4 +10,9 @@ export const CALIBRATION = {
   n: 104,
   median: 0.58,
   anchors: [[0,40],[0.4,50],[0.58,65],[0.67,75],[0.72,84],[0.82,93],[1,99]],
+  // Expected score per difficulty, the bank-mix average, and the anchors in
+  // SKILL units (score above expectation). See scripts/calibrate-card.mjs.
+  expected: {"easy":0.8,"medium":0.6,"hard":0.45},
+  pbar: 0.61,
+  skillAnchors: [[-0.61,40],[-0.21,50],[-0.03,65],[0.06,75],[0.11,84],[0.21,93],[0.39,99]],
 };

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { CALIBRATION } from "../../src/data/cardCalibration.js";
-import { computeCard, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT } from "../../src/lib/ballIqCard.js";
+import { computeCard, ratingFromAccuracy, ratingFromSkill, faceCatFor, cardTier, PRIOR_WEIGHT, EXPECTED, PBAR, skillOf } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
 
 // The card's number is only worth having if it means something against other
@@ -95,5 +95,47 @@ describe("club play feeds the faces", () => {
     expect(by.Bundesliga).toBeGreaterThanOrEqual(5);
     expect(by.SerieA).toBeGreaterThanOrEqual(5);
     expect(new Set(Object.values(CLUB_NAME_TO_COMP))).toEqual(new Set(["PL", "LaLiga", "Bundesliga", "SerieA"]));
+  });
+});
+
+// ── SCORE ABOVE EXPECTATION (2026-09-09, later the same day) ─────────────────
+// Alex: "you should be rewarded slightly more for getting hard questions
+// correct". Under the old evidence weights 80% on easy out-rated 50% on hard.
+describe("difficulty is scored against what the population gets right", () => {
+  const played = (n, acc, diff) => {
+    let s = 0; for (let i = 0; i < n; i++) s += ((i / n) < acc ? 1 : 0) - EXPECTED[diff];
+    return { PL: { c: Math.round(n * acc), a: n, s, n } };
+  };
+
+  it("expected scores are ordered easy > medium > hard and PBAR is their bank-mix average", () => {
+    expect(EXPECTED.easy).toBeGreaterThan(EXPECTED.medium);
+    expect(EXPECTED.medium).toBeGreaterThan(EXPECTED.hard);
+    expect(PBAR).toBeCloseTo(0.25 * EXPECTED.easy + 0.48 * EXPECTED.medium + 0.27 * EXPECTED.hard, 2);
+  });
+
+  it("a hard specialist at 50% out-rates an easy farmer at 80%", () => {
+    const farmer = computeCard(played(40, 0.8, "easy")).overall;      // par on easy
+    const specialist = computeCard(played(40, 0.5, "hard")).overall;  // above par on hard
+    expect(specialist).toBeGreaterThan(farmer);
+    // …and the same 67% is gold on hard, the gold LINE on medium.
+    expect(computeCard(played(60, 0.667, "hard")).tier).toBe("gold");
+    expect(computeCard(played(60, 0.667, "medium")).overall).toBeGreaterThanOrEqual(74);
+    expect(computeCard(played(60, 0.667, "medium")).overall).toBeLessThanOrEqual(76);
+  });
+
+  it("a legacy {c,a} record rates exactly as its plain accuracy did (the calibration was measured on those)", () => {
+    for (const [c, a] of [[55, 106], [40, 60], [12, 40], [36, 40]]) {
+      const legacy = computeCard({ PL: { c, a } }).overall;
+      const asSkill = ratingFromSkill((c - PBAR * a + (0.58 - PBAR) * PRIOR_WEIGHT) / (a + PRIOR_WEIGHT));
+      expect(legacy).toBe(asSkill);
+    }
+    expect(skillOf({ c: 61, a: 100 }).s).toBeCloseTo(61 - PBAR * 100, 6);
+    expect(skillOf({ c: 1, a: 1, s: 0.4, n: 1 })).toEqual({ s: 0.4, n: 1 });
+    expect(skillOf(undefined)).toEqual({ s: 0, n: 0 });
+  });
+
+  it("an unplayed card is the median player, 65 — never above it", () => {
+    expect(computeCard({}).overall).toBe(65);
+    expect(ratingFromAccuracy(0.58)).toBe(65);
   });
 });

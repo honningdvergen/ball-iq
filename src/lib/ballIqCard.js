@@ -37,6 +37,14 @@ import { CLUB_NAME_TO_COMP } from '../data/clubPackColours.js';
 //   saveStats writer files each answer under its face when it has one.
 // - A face prints only from its own data (≥ MIN_RATED_ANSWERS); the overall
 //   never derives from the faces.
+// - SCORE ABOVE EXPECTATION, not accuracy (later the same day). Each answer
+//   scores (correct ? 1 : 0) − EXPECTED[difficulty]: a hard right earns 0.55,
+//   an easy right 0.20, an easy miss costs 0.80, a hard miss 0.45. The old
+//   evidence weights ranked 80% on easy above 50% on hard; this ranks them
+//   the way the population does. catStats keys carry {s, n} (decayed skill
+//   sum and count) beside the legacy {c, a}; a record with no s/n converts as
+//   s = c − PBAR·a, which is exact for average difficulty and is what the
+//   calibration was measured on.
 
 // The six face stats. `cat` maps to the question bank's cat field; `abbr` is the
 // 3-letter card label (the competition's short code).
@@ -93,33 +101,76 @@ export function faceCatFor(ans) {
 // the only direction a rating should surprise in. Twenty ≈ two club quizzes.
 export const PRIOR_WEIGHT = 20;
 
-/** Weighted accuracy → 40-99 through the calibrated anchors (linear between). */
-export function ratingFromAccuracy(acc) {
-  const x = Math.max(0, Math.min(1, Number.isFinite(acc) ? acc : CALIBRATION.median));
-  const A = CALIBRATION.anchors;
-  for (let i = 1; i < A.length; i++) {
-    const [x0, y0] = A[i - 1], [x1, y1] = A[i];
+/** Expected score for a difficulty label; unknown labels count as medium. */
+export const EXPECTED = CALIBRATION.expected;
+export const PBAR = CALIBRATION.pbar;
+export function expectedFor(diff) { return EXPECTED[diff] ?? EXPECTED.medium; }
+
+function interpolate(anchors, x) {
+  for (let i = 1; i < anchors.length; i++) {
+    const [x0, y0] = anchors[i - 1], [x1, y1] = anchors[i];
     if (x <= x1) return Math.max(40, Math.min(99, Math.round(y0 + (y1 - y0) * ((x - x0) / (x1 - x0)))));
   }
   return 99;
 }
 
-/** The player's overall accuracy — every category, smoothed toward the population median. */
-export function overallAccuracy(catStats = {}) {
-  let c = 0, a = 0;
-  for (const cs of Object.values(catStats || {})) { c += cs?.c || 0; a += cs?.a || 0; }
-  return { acc: (c + CALIBRATION.median * PRIOR_WEIGHT) / (a + PRIOR_WEIGHT), answered: a };
+/** Skill (mean score above expectation, −1…1) → 40-99 through the calibrated anchors. */
+export function ratingFromSkill(skill) {
+  const A = CALIBRATION.skillAnchors;
+  const x = Math.max(A[0][0], Math.min(A[A.length - 1][0], Number.isFinite(skill) ? skill : A[0][0]));
+  return interpolate(A, x);
 }
 
-// One face. Smoothed toward the player's OVERALL accuracy with weight 2 — the
-// right prior for "how would they do in this league" — but a face is only
-// PRINTED once it has MIN_RATED_ANSWERS of its own, where weight 2 is a nudge.
-// ⚠️ Nothing sums faces to make the overall; see overallAccuracy().
+/** Plain accuracy → rating, for a record of average difficulty (legacy conversion). */
+export function ratingFromAccuracy(acc) {
+  const x = Number.isFinite(acc) ? Math.max(0, Math.min(1, acc)) : CALIBRATION.median;
+  return interpolate(CALIBRATION.anchors, x);
+}
+
+/**
+ * A key's skill record. New writes carry {s, n}; a legacy {c, a} converts as
+ * s = c − PBAR·a (exact for average difficulty). Both may be present after
+ * the upgrade — the writer keeps c/a for the progress bar and the merge.
+ */
+export function skillOf(cs) {
+  if (!cs) return { s: 0, n: 0 };
+  if (Number.isFinite(cs.s) && Number.isFinite(cs.n) && cs.n > 0) return { s: cs.s, n: cs.n };
+  const c = cs.c || 0, a = cs.a || 0;
+  return { s: c - PBAR * a, n: a };
+}
+
+/** The population's median skill — where a card with no evidence sits (65). */
+export const MEDIAN_SKILL = CALIBRATION.median - PBAR;
+
+/**
+ * The player's overall skill — every category, shrunk toward the POPULATION
+ * MEDIAN with PRIOR_WEIGHT answers of weight. Toward the median, not toward
+ * "par at every difficulty" (skill 0): the measured median sits a little
+ * under par (0.58 vs PBAR 0.61), and an unplayed card must read 65 — the
+ * median player — not 68, or the first answers would appear to LOWER it.
+ */
+export function overallSkill(catStats = {}) {
+  let s = 0, n = 0;
+  for (const cs of Object.values(catStats || {})) { const k = skillOf(cs); s += k.s; n += k.n; }
+  return { skill: (s + MEDIAN_SKILL * PRIOR_WEIGHT) / (n + PRIOR_WEIGHT), answered: n };
+}
+
+/** Kept for callers that think in accuracy: the overall as an accuracy-equivalent. */
+export function overallAccuracy(catStats = {}) {
+  const { skill, answered } = overallSkill(catStats);
+  return { acc: skill + PBAR, answered };
+}
+
+// One face. Shrunk toward the player's OVERALL skill with weight 2 — the right
+// prior for "how would they do in this league" — but a face is only PRINTED
+// once it has MIN_RATED_ANSWERS of its own, where weight 2 is a nudge.
+// ⚠️ Nothing sums faces to make the overall; see overallSkill().
 export function compRating(cs, priorAcc = CALIBRATION.median) {
-  const c = cs?.c || 0;
-  const a = cs?.a || 0;
-  const prior = Math.max(0.25, Math.min(0.75, Number.isFinite(priorAcc) ? priorAcc : CALIBRATION.median));
-  return ratingFromAccuracy((c + prior * 2) / (a + 2));
+  const { s, n } = skillOf(cs);
+  const p = Number.isFinite(priorAcc) ? priorAcc : CALIBRATION.median;
+  // Callers pass an accuracy; clamp it to [0.25, 0.75] as before, then to skill.
+  const priorSkill = Math.max(0.25, Math.min(0.75, p)) - PBAR;
+  return ratingFromSkill((s + priorSkill * 2) / (n + 2));
 }
 
 // BRONZE / SILVER / GOLD. Alex, 2026-08-26: "maybe we should have silver cards
@@ -173,14 +224,16 @@ export function computeCard(catStats = {}, _unusedPriorAcc) {
   const folded = {};
   for (const [k, v] of Object.entries(catStats || {})) {
     const key = FACE_ALIAS[k] || k;
-    const cur = folded[key] || { c: 0, a: 0 };
-    folded[key] = { c: cur.c + (v?.c || 0), a: cur.a + (v?.a || 0) };
+    const cur = folded[key] || { s: 0, n: 0, c: 0, a: 0 };
+    const sk = skillOf(v);
+    folded[key] = { s: cur.s + sk.s, n: cur.n + sk.n, c: cur.c + (v?.c || 0), a: cur.a + (v?.a || 0) };
   }
-  const { acc, answered: answeredTotal } = overallAccuracy(folded);
-  const overall = ratingFromAccuracy(acc);
+  const { skill, answered: answeredTotal } = overallSkill(folded);
+  const acc = skill + PBAR;
+  const overall = ratingFromSkill(skill);
   const ratings = CARD_COMPS.map(comp => {
     const cs = folded[comp.cat];
-    const answered = cs?.a || 0;
+    const answered = skillOf(cs).n;
     return {
       abbr: comp.abbr, cat: comp.cat, name: comp.name, icon: comp.icon, color: comp.color,
       rating: compRating(cs, acc),
@@ -197,6 +250,7 @@ export function computeCard(catStats = {}, _unusedPriorAcc) {
     ratings, overall, tier: cardTier(overall), answeredTotal,
     rated: answeredTotal >= MIN_RATED_ANSWERS,
     accuracy: acc,
+    skill,
     calibration: { measured: CALIBRATION.measured, n: CALIBRATION.n },
   };
 }
