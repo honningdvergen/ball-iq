@@ -123,6 +123,8 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       score says "Medium and hard questions count for more — the same maths
       as your Ball IQ card in the app", in all nine languages (`ratedLine`,
       drafted; Alex reviews i18n). First time page and app say one number.
+      PUSHED e6f40a7, live-verified 15:40Z (the Arsenal page renders; the
+      engine on prod carries the multipliers).
 - [ ] Next: the app honours it — a club-page round lands on the player's
       league face when they install (needs the visitor id → account join).
 
