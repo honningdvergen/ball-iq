@@ -124,10 +124,23 @@ hint already pre-empts the exact John Terry / PFA confusion the reporters had.
 ⚠️ The "players ~100% precision" rule is about BUG reports and does not
 transfer here. The reason sheet (eb050af) is 3 days old, 7 reports — re-read
 with the reach numbers ~09-16, not before.
-- [ ] Mechanical, needs Alex watching: 395 stale `flag:true` in
-      src/questions.js vs 0 pending in prod. publish-review.mjs already clears
-      flags on approval, so a re-run reconciles. No runtime effect; the cost is
-      a future triage re-opening 395 resolved questions.
+- [x] **395 stale `flag:true` cleared (2026-09-09, Alex watching).** All 395
+      had an `approved` decision in prod; the file now carries 0. Verified
+      byte-exact: stripping the flag token from the OLD file reproduces the new
+      one exactly — 7,556 lines before and after, QB 7079 / TF 462 unchanged,
+      395 changed lines each removing only a flag. Gate green (730 tests).
+- [ ] ⚠️ **`publish-review.mjs` REFORMATS the bank — do not run it as-is.**
+      A full run rewrote src/questions.js from 7,556 to 21,711 lines
+      (+14,157/−2), which makes its own documented step 3 ("git diff — review
+      the actual changes") impossible and buries the real change. Reverted; the
+      cleanup above was done surgically instead. NOT DIAGNOSED — both the file
+      and `serializeEntry` are one-entry-per-line, so the ~2.9× growth is
+      unexplained. Investigate before the tool is used again.
+- [ ] ⚠️ **One rejected question is still shipping: `q_d28eae`** (Torino /
+      Giorgio Ferrini, 566 apps, "La Diga"). Alex rejected it 2026-06-07 (no
+      note) and the decision was never published, so it has been live for three
+      months. DELIBERATELY NOT DELETED — Alex asked for the flag cleanup, and a
+      question deletion is a separate call. Delete it or re-approve it.
 
 ### CLUB PAGE ↔ APP (#3) — 2026-09-09 afternoon
 - [x] **The page's IQ is the app's IQ.** "Your Arsenal IQ 73" mapped the
