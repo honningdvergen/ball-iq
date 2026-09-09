@@ -277,7 +277,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       ...(card.rated ? {
         ov: String(card.overall),
         ti: card.tier,
-        r: card.ratings.map(x => x.rating).join(","),
+        r: card.ratings.map(x => (x.rated ? x.rating : "")).join(","), // unrated face → og.js prints a dash
       } : {}),
     });
     const avatarUrl = authProfile?.avatar_url;

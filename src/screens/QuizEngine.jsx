@@ -474,6 +474,8 @@ const CTA_INSET = (() => {
         q: q.q,
         type,
         cat: q.cat || null,
+        realCat: q.realCat || null, // club quiz re-tags cat:"ClubQuiz"; this is the bank's — see faceCatFor
+        club: q.club || null,       // routes a club question to its league's card face
         diff: q.diff || 'medium', // rating weight — see saveStats DIFF_CREDIT
         options,
         userIdx: uIdx,

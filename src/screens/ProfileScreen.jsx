@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+const RECAL_KEY = "biq_card_recal_2026_09_09";
+const RECAL_DATE_LABEL = "9 Sep 2026";
 import { createPortal } from "react-dom";
 import { useAuth } from "../useAuth.jsx";
 import { supabase } from "../supabase.js";
@@ -1202,6 +1204,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const { user, profile: authProfile, isGuest, isAnonUser, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
+  // Recalibration note — shown once per device after the 2026-09-09 scale change.
+  const [recalSeen, setRecalSeen] = useState(() => { try { return localStorage.getItem(RECAL_KEY) === "1"; } catch { return true; } });
+  const dismissRecal = useCallback(() => { setRecalSeen(true); try { localStorage.setItem(RECAL_KEY, "1"); } catch { /* storage unavailable: shows again, harmless */ } }, []);
   const [pendingCrop, setPendingCrop] = useState(null); // File awaiting crop
   // 1.0.2: when a user picks an emoji avatar while a previously-uploaded photo
   // (avatar_url) still exists on authProfile, the photo would keep winning the
@@ -1515,6 +1520,17 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   )}
                 </div>
               </div>
+              {/* ONE-TIME NOTE (2026-09-09). The scale was recalibrated to the
+                  measured population (see ballIqCard.js) and most existing
+                  numbers moved — the median player from 74 to 65. A number that
+                  drops with no word is exactly the annoyance the rebuild exists
+                  to end, so the first sight of the new card says why, once. */}
+              {hasPlayed && !recalSeen && (
+                <div className="pd-recal" role="status">
+                  <span>Ratings recalibrated {RECAL_DATE_LABEL}: gold now means the top quarter of players.</span>
+                  <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
+                </div>
+              )}
             </div>
           );
         })()}
@@ -1707,6 +1723,16 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           />
         );
       })()}
+      {/* ONE-TIME NOTE (2026-09-09): the scale was recalibrated to the measured
+          population (ballIqCard.js) and most numbers moved — the median player
+          from 74 to 65. A number that drops with no word is the annoyance the
+          rebuild exists to end, so the first sight of the new card says why. */}
+      {(stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (
+        <div className="pd-recal" role="status" style={{ marginTop: 0, marginBottom: 14 }}>
+          <span>Ratings recalibrated {RECAL_DATE_LABEL}: gold now means the top quarter of players.</span>
+          <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
+        </div>
+      )}
       {/* GUEST-FIRST (2026-09-06): the account ask comes AFTER the player's own
           card, not above it, and names what it does — the tab used to open on a
           glowing "Save your progress" slab over a rating card of dashes. Same

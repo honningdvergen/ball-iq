@@ -1,0 +1,6 @@
+{
+  "measured": "2026-09-09",
+  "source": "public.profiles.stats->catStats, every account with >=10 weighted answers, prod blcisypmngimqkwxrrdm",
+  "n": 104,
+  "percentiles": { "10": 0.40, "25": 0.51, "50": 0.58, "75": 0.67, "90": 0.72, "97": 0.82 }
+}

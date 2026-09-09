@@ -42,7 +42,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, tierPalette } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, tierPalette, faceCatFor } from './lib/ballIqCard.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
@@ -5984,11 +5984,18 @@ function AppInner() {
     const catStats = { ...(stats.catStats || {}) };
     for (const ans of (newResult.allAnswers || [])) {
       if (!ans || !ans.cat) continue;
-      const cur = catStats[ans.cat] || { c: 0, a: 0 };
+      // FILE UNDER THE FACE IT FEEDS (2026-09-09). Club quiz re-tags rows
+      // cat:"ClubQuiz" for the UI; the answer carries realCat + club, and
+      // faceCatFor routes it — an Arsenal question lands on PL, Juventus on
+      // SerieA. No face (theme question, French club) → its real cat, which
+      // still counts toward the overall. Existing "ClubQuiz" history keeps its
+      // key: it counts toward the overall and can never be re-attributed.
+      const key = faceCatFor(ans) || ans.cat;
+      const cur = catStats[key] || { c: 0, a: 0 };
       const w = ans.isCorrect
         ? (DIFF_CREDIT[ans.diff] || 1.0)
         : (DIFF_MISS[ans.diff] || 1.0);
-      catStats[ans.cat] = {
+      catStats[key] = {
         c: (cur.c || 0) * CAT_DECAY + (ans.isCorrect ? w : 0),
         a: (cur.a || 0) * CAT_DECAY + w,
       };
@@ -6301,12 +6308,12 @@ function AppInner() {
             // the 14-day freshness rule still decides what is eligible at all.
             qs = pickAvoidingConflicts(shuffle([...freshPool]), 10, conflictsWith).map(q => {
               const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
-              return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
+              return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), realCat: q.cat, cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
             });
           }
         } catch {}
       }
-      if (!qs) qs = shuffle(pack.questions).slice(0, 10).map(q => ({ ...q, type: "mcq", cat: "ClubQuiz" }));
+      if (!qs) qs = shuffle(pack.questions).slice(0, 10).map(q => ({ ...q, realCat: q.cat, type: "mcq", cat: "ClubQuiz" }));
       if (!qs.length) { showToast("No questions yet for this club"); return; }
       setActiveLeague(null);
       setActiveClub(clubKey);

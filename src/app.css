@@ -3718,3 +3718,7 @@ body.biq-web .toast { left: 50% !important; transform: translateX(-50%); max-wid
    navigation matters again. */
 body.biq-web.in-focused-play .fd-appbar { display: none; }
 
+
+/* ── Ball IQ card: one-time recalibration note (2026-09-09), all breakpoints ── */
+.pd-recal { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--bg2); border: 1px solid var(--border); font-size: 12.5px; line-height: 1.4; color: var(--t2); }
+.pd-recal-x { flex-shrink: 0; width: 28px; height: 28px; margin: -6px -6px -6px 0; border: 0; border-radius: 999px; background: transparent; color: var(--t3); font-size: 13px; cursor: pointer; }
