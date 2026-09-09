@@ -286,7 +286,6 @@ function HomeScreenImpl({
         // open is real information the chip's bare count can't give.
         // Sunday 6 September — the anchor NYT Games opens on. A guest saw
         // "Good evening" with no subject as the first line of the app.
-        const todayLabel = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
         return (
           <div className="hg-block" style={{padding:"6px 0 8px"}}>
             {/* ⚠️ NO LOGO, NO WORDMARK. Alex, 2026-09-06: "why have ball iq app
@@ -313,7 +312,11 @@ function HomeScreenImpl({
                     date the quiet one keeps the word "Today" as the landmark
                     people scan for, and the date still says WHICH day's puzzles
                     these are, which is the job it was promoted for. */}
-                <div className="hg-dateline">{todayLabel}</div>
+                {/* ONE HEADING (Alex, 2026-09-09, on build 121: "remove Today and
+                    put the dateline under the greeting"). Three stacked headings
+                    — date, greeting, Today — became two once the well anchored
+                    the dailies. The greeting is the heading; the date sits under
+                    it as the metadata line, with the 0/4 status on its right. */}
                 <div className="hg-greet" style={{fontSize:20, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1.1, maxWidth:"100%"}}>
                   {greeting}
                 </div>
@@ -399,7 +402,7 @@ function HomeScreenImpl({
         return (
           <div className="daily-zone" role="group" aria-label="Today's puzzles">
             <div className="daily-zone-head">
-              <span className="daily-zone-eyebrow">Today</span>
+              <span className="hg-dateline">{new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}</span>
               <button type="button" className={`daily-zone-status hit44${allDone ? " is-done" : ""}`}
                 onClick={() => setTab("daily")}
                 aria-label={allDone ? `All ${total} of today's puzzles done — open History` : `${doneCount} of ${total} puzzles played today — open History`}>

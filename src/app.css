@@ -419,7 +419,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    other section title on the page (second look, 2026-09-09: with the title
    inside, the box read as a card about Today and the greeting floated). */
 .daily-well{background:rgba(19,21,28,0.72);border:1px solid var(--border);border-radius:18px;padding:10px;}
-.daily-zone-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;padding:0;}
+.daily-zone-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-2px 0 12px;padding:0;}
 /* 19px, up from 15px: with the date demoted to a tracked dateline above it
    (HomeScreen.jsx, 2026-09-07) this is the only heading in the strip, so it
    carries the weight the two of them used to split. */

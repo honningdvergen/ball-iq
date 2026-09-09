@@ -52,6 +52,10 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       fifth daily. Applied at mobile, desktop (≥1024 override) and the
       installed-PWA block (the two places a top-level rule never reaches).
       Browser-verified at 375 and 1280.
+      THIRD LOOK (Alex: "remove Today, put the dateline under the greeting"):
+      three stacked headings became two once the well anchored the dailies.
+      Greeting = the one heading; the dateline sits under it as the metadata
+      line with "0/4 today ›" on its right; the "Today" eyebrow is gone.
       SECOND LOOK (Alex: "something looks off"): the TITLE was inside the box,
       so it read as a card about Today while every other section keeps its
       title outside — `.daily-well` now wraps the tiles only, "Today · 0/4"
