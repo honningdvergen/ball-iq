@@ -3,6 +3,7 @@ import { cancelAllReminders, getNotifPermission, notificationsSupported, request
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 import { registerPush } from "../lib/push.js";
 import { webPushPermission, webPushSupported } from "../lib/webpush.js";
+import { enableVisitorPush, visitorRemindState } from "../lib/webpushVisitor.js";
 import { loopEvent } from "../App.jsx";
 
 // Extracted from AppInner on 2026-09-06 (review E16). Inputs: the user, whether
@@ -52,14 +53,30 @@ export function useLocalNotifications({ user, dailyDone, loginStreak, showToast,
       showToast('Daily reminders off');
     }
   }, [dailyDone, showToast, user?.id, loginStreak]);
+  // SIGNED-OUT WEB PLAYERS GET THE VISITOR PATH (2026-09-09). This read
+  // 'unsupported' for any web guest, so the results panel offered nothing to
+  // the people the static pages send here. webpushVisitor.js keys the
+  // subscription by biq_vid instead of a user (v2_5); `visitorTick` re-renders
+  // the parent after the tap so the row flips to the hour.
+  const [visitorTick, setVisitorTick] = useState(0);
+  void visitorTick;
   const resultsRemindState = notificationsSupported()
     ? (notifEnabled ? 'on' : (notifBlocked ? 'blocked' : 'off'))
-    : (webPushSupported() && user?.id ? (webPushOn ? 'on' : (webPushPermission() === 'denied' ? 'blocked' : 'off')) : 'unsupported');
+    : (webPushSupported() && user?.id
+        ? (webPushOn ? 'on' : (webPushPermission() === 'denied' ? 'blocked' : 'off'))
+        : visitorRemindState());
   const remindFromResults = useCallback(async () => {
-    loopEvent('results-remind-tap', { engine: notificationsSupported() ? 'native' : 'web' });
+    const engine = notificationsSupported() ? 'native' : (user?.id ? 'web' : 'web-visitor');
+    loopEvent('results-remind-tap', { engine });
     if (notificationsSupported()) await handleToggleNotif(true);
-    else await handleToggleWebPush(true);
-  }, [handleToggleNotif, handleToggleWebPush]);
+    else if (user?.id) await handleToggleWebPush(true);
+    else {
+      const after = await enableVisitorPush();
+      loopEvent(after === 'on' ? 'web-remind-on' : after === 'blocked' ? 'web-remind-denied' : 'web-remind-failed', { engine });
+      setVisitorTick((t) => t + 1);
+      if (after === 'on') showToast('Daily reminders on 🔔');
+    }
+  }, [handleToggleNotif, handleToggleWebPush, user?.id, showToast]);
   const maybePromptNotif = useCallback(async () => {
     // Min-gap between soft-prompt asks (first-session audit 2026-08-30: the
     // sheet fired twice within ~3 minutes of one session — the second time
