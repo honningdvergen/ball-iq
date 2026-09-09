@@ -258,6 +258,34 @@ var BQ_PK='__BQ_PUBLISHABLE_KEY__';
    e2e and dev traffic and nothing more. Do not read this line as "the table
    is clean now". The server-side caps in v1_5_club_quiz_results.sql are
    volume-only and have no notion of a robot. */
+/* ── THE ROUND FOLLOWS THEM INTO THE APP (2026-09-09) ──────────────────────
+   The page and the app now compute the same number (see grade), but the app
+   never SAW a club round: an Arsenal fan could play here every day and open
+   /play to an empty Premier League face. This queues the round's answers in
+   the shape the app's own writer takes, on the same origin; the app drains
+   the queue through recordAnswers() on its next boot.
+   ⚠️ ONE WRITER, DELIBERATELY. The engine does NOT compute a rating or touch
+   biq_stats — duplicating recordAnswers here in vanilla JS is exactly the
+   drift this file has been bitten by before. It writes answers; the app
+   scores them. data-face is emitted at build time from the same generated
+   map the app routes with, so the page cannot claim a league the card would
+   not (a club whose league has no face ships no data-face and queues
+   nothing). Capped, and dropped silently on any storage failure. */
+var QKEY='biq_pending_rounds';
+function queueForApp(rows){try{
+var face=root.getAttribute('data-face');if(!face)return;
+var q=[];try{q=JSON.parse(localStorage.getItem(QKEY)||'[]')||[]}catch(e){q=[]}
+if(!q.length&&!Array.isArray(q))q=[];
+for(var i=0;i<rows.length;i++){
+var d=String((rows[i].el&&rows[i].el.getAttribute('data-diff'))||'medium').toLowerCase();
+if(d!=='easy'&&d!=='hard')d='medium';
+q.push({cat:face,diff:d,isCorrect:rows[i].got===1,web:1})}
+/* 400 answers is forty rounds; a queue longer than that is a tab left open,
+   not a player, and the oldest answers are the least worth carrying. */
+if(q.length>400)q=q.slice(q.length-400);
+localStorage.setItem(QKEY,JSON.stringify(q))
+}catch(e){}}
+
 function logRound(score,rows,rnds){try{
 if(bqSynthetic())return;
 /* ⚠️ READ WHAT THE PAGE DECLARES, DO NOT PARSE ITS PATH (v2_0, 2026-09-07).
@@ -374,6 +402,7 @@ bqev('clubq-finish');tag('clubq-rounds',rounds);
 if(daily){dailyCard(sc,run.length,true);return}
 var sday=bumpStreak();tag('clubq-streak',sday);if(sday>=2)bqev('clubq-returned');tag('clubq-score',G.pct>=85?'85+':G.pct>=65?'65-84':G.pct>=45?'45-64':'under-45');
 logRound(sc,run,rounds);
+queueForApp(run);
 /* ⚠️ THE PRIMARY ACTION MUST KEEP THEM ON THIS PAGE — but NOT for the reason
    originally written here, which was wrong.
 

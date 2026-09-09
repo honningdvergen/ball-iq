@@ -125,8 +125,19 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       drafted; Alex reviews i18n). First time page and app say one number.
       PUSHED e6f40a7, live-verified 15:40Z (the Arsenal page renders; the
       engine on prod carries the multipliers).
-- [ ] Next: the app honours it — a club-page round lands on the player's
-      league face when they install (needs the visitor id → account join).
+- [x] **The app honours it.** A finished club round is QUEUED by the page
+      (`biq_pending_rounds`, answers only — the engine does no card maths) and
+      drained on the app's next boot through `recordAnswers()`, the same
+      writer every in-app round uses. `data-face` is emitted at build time
+      from the generated CLUB_NAME_TO_COMP, so a page cannot claim a league
+      the card would not; a club whose league has no face (Marseille, Ligue 1)
+      ships no face and queues nothing. CARD ONLY — no XP, no streak, no
+      gamesPlayed for a website round. Verified on the built pages: a 10/10
+      Arsenal round moved the app's EPL face 65 → 71 with the real difficulty
+      mix (2e/6m/2h) and gamesPlayed unchanged.
+      ⚠️ Same-origin only (web). A NATIVE install has its own storage, so the
+      visitor id → account join is still what carries a web round into the
+      app on a phone.
 
 ### THE CARD AS THE SHARE OBJECT (#2) — 2026-09-09 afternoon
 - [x] **Results card delta.** The results screen was blank where the card had

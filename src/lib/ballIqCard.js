@@ -447,3 +447,33 @@ export function shareLine(card, delta = null, appName = "Ball IQ") {
   const move = moved ? ` — ${moved.abbr} ${moved.before} → ${moved.after} today` : "";
   return `${head}${move}. Can you beat me? ⚽`;
 }
+
+// ── THE WEB QUEUE ─────────────────────────────────────────────────────────────
+// A club page on the same origin queues its finished round's answers here
+// (scripts/seo/club-quiz-engine.js, queueForApp) rather than scoring them —
+// one writer, no duplicated arithmetic. The app drains the queue on boot and
+// feeds it to recordAnswers() like any other round. It counts toward the CARD
+// only: a round played on the website earns no XP, no streak and no
+// gamesPlayed, because none of those happened in the app.
+export const PENDING_KEY = "biq_pending_rounds";
+
+/**
+ * Take everything the web queued, clearing it first so a failure downstream
+ * cannot double-count. Returns validated answers ({cat, diff, isCorrect}).
+ */
+export function drainPendingRounds() {
+  let raw = null;
+  try {
+    raw = localStorage.getItem(PENDING_KEY);
+    if (!raw) return [];
+    localStorage.removeItem(PENDING_KEY); // claim before use
+  } catch { return []; }
+  let list;
+  try { list = JSON.parse(raw); } catch { return []; }
+  if (!Array.isArray(list)) return [];
+  const FACES = new Set(CARD_COMPS.map(c => c.cat));
+  return list
+    .filter(a => a && FACES.has(a.cat) && typeof a.isCorrect === "boolean")
+    .slice(0, 400)
+    .map(a => ({ cat: a.cat, diff: (a.diff === "easy" || a.diff === "hard") ? a.diff : "medium", isCorrect: a.isCorrect }));
+}

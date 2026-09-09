@@ -98,7 +98,7 @@ import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
-import { CLUB_PACK_ABBR, CLUB_PACK_COLOURS } from '../src/data/clubPackColours.js';
+import { CLUB_PACK_ABBR, CLUB_PACK_COLOURS, CLUB_NAME_TO_COMP } from '../src/data/clubPackColours.js';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
@@ -2055,7 +2055,7 @@ function buildClubPageIntl(cfg, siblings = []) {
   const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(c.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(c.tasterH)}</h2>
-${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, badge: clubBadge, slug: cfg.slug, kind: 'club', color: CLUB_COLOR[cfg.slug] || '', lang: cfg.lang })}
+${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, badge: clubBadge, slug: cfg.slug, kind: 'club', face: CLUB_NAME_TO_COMP[cfg.club] || '', color: CLUB_COLOR[cfg.slug] || '', lang: cfg.lang })}
 </section>`;
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates })}
@@ -2379,7 +2379,7 @@ ${heroTwoCol({
       { n: 'Daily', label: 'fresh set' },
     ],
     playHref: '#quiz',
-  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, slug: cfg.slug, kind: 'club', color: CLUB_COLOR[cfg.slug] || '', play: `${SITE.base}/play?club=${cfg.slug}` }))}
+  }, renderQuizSet(quizRows, { name: cfg.name, tiers: tiersFor(cfg.slug), more: Math.max(0, all.length - quizRows.length), badge: clubBadge, slug: cfg.slug, kind: 'club', face: CLUB_NAME_TO_COMP[cfg.club] || '', color: CLUB_COLOR[cfg.slug] || '', play: `${SITE.base}/play?club=${cfg.slug}` }))}
 ${adSlot('afterQA')}
 ${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts every
      club page at 13-29% scroll depth while /play reaches 95% and the /lists

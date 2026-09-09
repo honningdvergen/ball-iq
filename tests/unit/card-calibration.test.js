@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { CALIBRATION } from "../../src/data/cardCalibration.js";
 import { computeCard, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
@@ -211,5 +211,58 @@ describe("shareLine", () => {
     const withMove = shareLine(card, { ratedAfter: true, faces: [{ abbr: "UCL", before: 72, after: 78 }] });
     expect(withMove).toContain("UCL 72 → 78 today");
     expect(shareLine(computeCard({}))).toBe("Can you beat me at Ball IQ? ⚽");
+  });
+});
+
+// ── THE WEB QUEUE ─────────────────────────────────────────────────────────────
+// A club page queues its round's answers; the app scores them with the same
+// writer. The page must never do the arithmetic itself.
+import { drainPendingRounds, PENDING_KEY } from "../../src/lib/ballIqCard.js";
+describe("drainPendingRounds", () => {
+  const store = {};
+  beforeEach(() => {
+    for (const k of Object.keys(store)) delete store[k];
+    globalThis.localStorage = {
+      getItem: (k) => (k in store ? store[k] : null),
+      setItem: (k, v) => { store[k] = String(v); },
+      removeItem: (k) => { delete store[k]; },
+    };
+  });
+
+  it("claims the queue before use, so a later failure cannot double-count", () => {
+    store[PENDING_KEY] = JSON.stringify([{ cat: "PL", diff: "hard", isCorrect: true }]);
+    expect(drainPendingRounds()).toHaveLength(1);
+    expect(store[PENDING_KEY]).toBeUndefined();
+    expect(drainPendingRounds()).toEqual([]);
+  });
+
+  it("only admits real faces and normalises difficulty", () => {
+    store[PENDING_KEY] = JSON.stringify([
+      { cat: "PL", diff: "hard", isCorrect: true },
+      { cat: "ClubQuiz", diff: "hard", isCorrect: true },   // not a face
+      { cat: "Ligue1", diff: "medium", isCorrect: true },   // no face for it
+      { cat: "SerieA", diff: "nonsense", isCorrect: false },
+      { cat: "UCL", isCorrect: "yes" },                     // not a boolean
+    ]);
+    expect(drainPendingRounds()).toEqual([
+      { cat: "PL", diff: "hard", isCorrect: true },
+      { cat: "SerieA", diff: "medium", isCorrect: false },
+    ]);
+  });
+
+  it("survives junk and an absent queue", () => {
+    expect(drainPendingRounds()).toEqual([]);
+    store[PENDING_KEY] = "not json";
+    expect(drainPendingRounds()).toEqual([]);
+    store[PENDING_KEY] = JSON.stringify({ cat: "PL" });
+    expect(drainPendingRounds()).toEqual([]);
+  });
+
+  it("a queued web round moves the face it names, through the app's own writer", () => {
+    const before = computeCard({ PL: { c: 6, a: 12 } });
+    store[PENDING_KEY] = JSON.stringify(Array.from({ length: 10 }, () => ({ cat: "PL", diff: "hard", isCorrect: true })));
+    const after = computeCard(recordAnswers({ PL: { c: 6, a: 12 } }, drainPendingRounds()));
+    expect(after.ratings.find(r => r.abbr === "EPL").rating)
+      .toBeGreaterThan(before.ratings.find(r => r.abbr === "EPL").rating);
   });
 });

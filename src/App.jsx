@@ -42,7 +42,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta, storeCardDelta } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds } from './lib/ballIqCard.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
@@ -4903,6 +4903,20 @@ function AppInner() {
     } catch {}
     return { gamesPlayed: 0, bestScore: 0, bestStreak: 0 };
   });
+  // ── THE WEB'S ROUNDS, ONCE PER BOOT (2026-09-09) ──────────────────────────
+  // A club page on this origin queues the answers of a round it finished; they
+  // reach the card here, through the SAME writer every in-app round uses. Card
+  // only — a website round earns no XP, no streak, no gamesPlayed.
+  useEffect(() => {
+    const pending = drainPendingRounds();
+    if (!pending.length) return;
+    setStats((prev) => {
+      const next = { ...prev, catStats: recordAnswers(prev.catStats || {}, pending, { c: prev.totalCorrect || 0, a: prev.totalAnswered || 0 }) };
+      safeSetItem("biq_stats", JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
   const [settings, setSettings] = useState(() => {
     // ⚠️ sound defaults ON for NATIVE only. The whole audio layer — every
     // correct/wrong tone, the Footle chord, the MP winner beat — shipped
