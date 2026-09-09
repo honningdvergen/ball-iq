@@ -147,17 +147,30 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               : <>New puzzles in <strong className="dd-num">{ko}</strong></>}
           </div>
         </div>
-        {remind && remind.state === "off" && (
-          <button type="button" className="dd-pill" disabled={busy} onClick={doRemind} aria-label="Remind me tomorrow">
-            <Bell size={14} strokeWidth={2.4} aria-hidden="true" /> Remind me
-          </button>
-        )}
         {remind && remind.state === "on" && (
           <span className="dd-pill is-set" aria-label={`Reminder set for ${reminderHourLabel()}`}>
             <Check size={14} strokeWidth={2.6} aria-hidden="true" /> {reminderHourLabel()}
           </span>
         )}
       </div>
+
+      {/* THE ASK IS A ROW, NOT A PILL (2026-09-09). Reach is the retention
+          leak: 44 of 308 accounts hold a token. Since the soft-prompt sheet was
+          retired (09-06) this panel has been the only ask in the app, and it
+          was a 34px pill beside a countdown — offered 12 times in three days,
+          tapped once. A row in the panel's own anatomy says what it does and
+          when, and it sits directly under the stake it protects. It still asks
+          for permission only on the tap (iOS shows its sheet once, ever). */}
+      {remind && remind.state === "off" && !isArchive && (
+        <div className="dd-row" style={{ "--dd-rgb": "88,204,2", "--dd-c": "var(--accent)" }}>
+          <span className="dd-well" aria-hidden="true"><Bell size={20} strokeWidth={2.2} /></span>
+          <div className="dd-body">
+            <div className="dd-title">Remind me tomorrow at {reminderHourLabel()}</div>
+            <div className="dd-sub">One nudge at your hour, only if you haven’t played · off any time</div>
+          </div>
+          <button type="button" className="dd-pill dd-pill-on" disabled={busy} onClick={doRemind} aria-label={`Turn on a daily reminder at ${reminderHourLabel()}`}>Turn on</button>
+        </div>
+      )}
 
       {/* ABOVE SHARE, DELIBERATELY (Alex, 2026-09-06, looking at his own
           finish screen: "we can not really see the modes further down, nobody
