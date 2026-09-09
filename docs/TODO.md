@@ -46,6 +46,20 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       the compact desktop column. Browser-verified at 375 + 1280.
 - [~] **5. Encapsulate the four dailies** — NO (Alex agreed): "Today · 0/4" is
       the wrapper; a card around cards is border-in-border at 390.
+- [x] **1b. SECOND PASS on the card (same day, Alex on build 114: "61 matches
+      the 61% accuracy but you should be rewarded more for hard questions —
+      seems harsh").** He was right: the evidence weights ranked 80% on easy
+      ABOVE 50% on hard (population: ~80% of easy right, ~45% of hard). Now
+      each answer scores (correct − EXPECTED[diff]); rating = mean skill shrunk
+      to the population median; legacy {c,a} converts as c − 0.61·a so the
+      calibration carries over; decay 0.98 → 0.99. EXPECTED (.80/.60/.45) is
+      a BLEND of web rounds + 385 in-app Daily-7 answers — the writer now
+      stores raw per-difficulty counts so the next refresh measures it in-app.
+      Simulated: 80% easy 68 · 50% hard 72 · 67% hard 90 gold. Alex's legacy
+      61 stays 61 until he answers hard questions. His three dashes = the
+      10-answer face gate (his 09-06 rule): BUN 6 / LAL 4 / SEA 4 answers.
+- [x] **2b. History pills** — Alex: "the 4 play buttons sit too close"; column
+      44 → 54, pills 11pt apart at 375, date column 97pt ("Yesterday" needs 70).
 - [x] Gate green (6cf70b4); **build 114 = build-44-mttzi2l9 on the sim**
       (1.7.3, HEAD 6cf70b4, pods unchanged). Home verified on the sim: greeting
       without the name, "Multiplayer" fits the bottom bar. NOT PUSHED — Alex
