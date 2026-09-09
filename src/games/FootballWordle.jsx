@@ -80,6 +80,12 @@ const WORDLE_KB_ROWS = [
   ["Z","X","C","V","B","N","M","DEL"],
 ];
 
+// ⚠️ The report control was a 40px bordered button carrying 10px of its own
+// margin ON TOP of the result card's 8px gap — the biggest element in the
+// reward panel, spent on its rarest action. Alex on device 2026-09-09: the grey
+// box has too much read space. It is now quiet underlined text (the
+// .dd-share-alt idiom), which gives the box back ~34pt and stops a correction
+// competing with the celebration.
 function FootleReportButton({ answer, status, onReport }) {
   const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
   return (
@@ -94,9 +100,11 @@ function FootleReportButton({ answer, status, onReport }) {
         mode: status === "won" ? "footle" : "footle-lost",
       }}
       style={{
-        margin: "10px auto 0", padding: "9px 13px", minHeight: 40, display: "block",
-        background: "none", border: "1px solid var(--border)", borderRadius: 10,
-        fontSize: 12.5, fontWeight: 700,
+        margin: "0 auto", padding: 0, minHeight: 0, display: "block",
+        background: "none", border: 0, color: "var(--t3)",
+        WebkitTextFillColor: "var(--t3)",
+        textDecoration: "underline", textUnderlineOffset: 3,
+        fontSize: 12, fontWeight: 700,
       }}
     />
   );
@@ -126,6 +134,18 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current = [];
   }, []);
+
+  // ⚠️ WHICH ROW IS ALLOWED TO FLIP. `wd-flip` used to sit on EVERY completed
+  // row unconditionally, which is wrong twice over: re-opening a finished
+  // puzzle re-played all six reveals from scratch, and a completed row kept a
+  // live 3D-transform animation (and its compositing layer) forever — so the
+  // board carried up to 36 animated layers on a screen that is not animating.
+  // Reported on device 2026-09-09: "I got the right answer on the last attempt
+  // and the reveal happened on all six rows instead of just the last."
+  // Only the row submitted THIS moment flips, and the class is dropped the
+  // instant the reveal finishes, so no engine can restart an animation that is
+  // no longer declared. -1 = nothing animating, which is the state on mount.
+  const [animRow, setAnimRow] = useState(-1);
 
   const [state, setState] = useState(() => {
     try {
@@ -187,7 +207,15 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   }, [state, storageKey, userId, dateKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Live "new player tomorrow" countdown. Ticks once per second.
+  // ⚠️ ONLY ONCE THE PUZZLE IS DECIDED. The clock is rendered behind
+  // `state.status !== "playing"` (see .wd-countdown below), but the interval
+  // used to run from mount — so all the way through the part of the session
+  // that matters, every second, setCountdown re-rendered the board, all six
+  // rows of tiles and the 28-key keyboard to produce a string nothing showed.
+  // Reported on device 2026-09-09: "it is a bit laggy I can not lie."
+  const ticking = state.status !== "playing";
   useEffect(() => {
+    if (!ticking) return undefined;
     const tick = () => {
       const now = new Date();
       const tomorrow = new Date(now);
@@ -202,7 +230,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [ticking]);
 
   // Detect day rollover while the screen is open — full reload so the new
   // day's answer, storageKey and game state all resync together.
@@ -226,6 +254,15 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     else if (newGuesses.length >= 6) newStatus = "lost";
     setState({ guesses: newGuesses, status: newStatus });
     setCurrent("");
+    // The reveal belongs to this row alone. Cleared after the last tile lands
+    // (delay of the final tile + the 600ms flip) plus a little slack, so the
+    // class never disappears mid-turn.
+    const rowIdx = newGuesses.length - 1;
+    setAnimRow(rowIdx);
+    timeoutsRef.current.push(setTimeout(
+      () => setAnimRow((r) => (r === rowIdx ? -1 : r)),
+      (answer.length - 1) * WORDLE_FLIP_MS + 680,
+    ));
     if (newStatus !== "playing") {
       setRevealed(false);
       timeoutsRef.current.push(setTimeout(() => setRevealed(true), answer.length * WORDLE_FLIP_MS + 200));
@@ -323,8 +360,8 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           {Array.from({ length: answer.length }, (_, i) => (
             <div
               key={i}
-              className={`wd-tile wd-${grades[i]} wd-flip`}
-              style={{ animationDelay: `${i * 280}ms` }}
+              className={`wd-tile wd-${grades[i]}${r === animRow ? " wd-flip" : ""}`}
+              style={r === animRow ? { animationDelay: `${i * WORDLE_FLIP_MS}ms` } : undefined}
               aria-label={`${g[i]}, ${grades[i] === "green" ? "correct" : grades[i] === "yellow" ? "wrong position" : "not in the name"}`}
             >{g[i]}</div>
           ))}
@@ -497,10 +534,13 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               </div>
             );
           })()}
-          {/* Static earned-XP footer, mirroring every other result screen —
-              the daily hero now visibly feeds the same progression economy. */}
-          <div style={{fontSize:13,fontWeight:700,color:"var(--accent)",marginBottom:10}}>
-            +{getFootleXP(state.status === "won", state.guesses.length)} XP
+          {/* One green achievement pill instead of a bare "+30 XP" line with a
+              10px margin under it. It carries the thing worth being proud of —
+              the guess count — which the panel never showed at all, and it
+              costs one line where the old pair cost two plus a margin. */}
+          <div className="wd-result-earn">
+            {state.status === "won" && <span>Solved in {state.guesses.length}/6</span>}
+            <span>+{getFootleXP(state.status === "won", state.guesses.length)} XP</span>
           </div>
           {/* Footle had NO report path. It is the most-played mode in the app and
               its failure mode is the nastiest we ship: an answer that is

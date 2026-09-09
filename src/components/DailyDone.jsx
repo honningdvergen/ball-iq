@@ -67,8 +67,15 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const [busy, setBusy] = useState(false);
   const [shared, setShared] = useState(false);
 
+  // CAREFUL — 30s, NOT 1s. `now` feeds exactly one thing — `ko`, via formatCountdown,
+  // which has MINUTE granularity ("2h 46m") and never prints seconds. At 1s
+  // this re-rendered the whole panel — streak row, every still-open row, share,
+  // the distribution bars, the save row — sixty times a minute to produce the
+  // same string fifty-nine of them. This is the panel that sits under every
+  // finished daily, so it was the app's most-visited idle screen doing the most
+  // pointless work. Reported on device 2026-09-09: "it is a bit laggy."
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
+    const id = setInterval(() => setNow(new Date()), 30000);
     return () => clearInterval(id);
   }, []);
 
@@ -188,8 +195,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             const rgb = MODE_RGB[n.key === "daily" ? "daily7" : n.key] || "88,204,2";
             const c = MODE_ACCENT[n.key === "daily" ? "daily7" : n.key] || "var(--accent)";
             return (
-              <Tag key={n.key} className="dd-next-row is-mode" href={n.href} onClick={() => { track?.("dd-next", { game, to: n.key }); n.onTap?.(); }} {...(n.href ? {} : { type: "button" })}>
-                <span className="dd-well" style={{ "--dd-rgb": rgb, "--dd-c": c }} aria-hidden="true">{n.icon || DEFAULT_ICON[n.key] || null}</span>
+              <Tag key={n.key} className="dd-next-row is-mode" style={{ "--dd-rgb": rgb, "--dd-c": c }} href={n.href} onClick={() => { track?.("dd-next", { game, to: n.key }); n.onTap?.(); }} {...(n.href ? {} : { type: "button" })}>
+                <span className="dd-well" aria-hidden="true">{n.icon || DEFAULT_ICON[n.key] || null}</span>
                 <span className="dd-title">{n.name}</span>
                 <span className="dd-next-go">Play</span>
               </Tag>

@@ -37,8 +37,20 @@
 /* The still-open rows carry their mode colour, like the Home Today tiles —
    this is the same "four games, not four rows" call (app.css .is-mode). */
 .dd-next-row.is-mode{background:linear-gradient(90deg, rgba(var(--dd-rgb),0.10), rgba(var(--dd-rgb),0.03) 62%, transparent);border:1px solid rgba(var(--dd-rgb),0.28);}
-.dd-next-row.is-mode .dd-next-go{color:var(--dd-c);-webkit-text-fill-color:var(--dd-c);}
-.dd-next-go{margin-left:auto;font-size:12.5px;font-weight:800;color:var(--accent);-webkit-text-fill-color:var(--accent);flex-shrink:0;}
+/* ⚠️ --dd-rgb/--dd-c used to be set on the inner .dd-well only, so every rule
+   ABOVE that reads them on the row resolved to an invalid var(). An
+   unresolvable var() is invalid AT COMPUTED-VALUE TIME — the property falls
+   back to inherit/initial, NOT to the earlier declaration — so these rows shipped
+   with background:transparent, border:0 and a white "Play": the tint, the
+   hairline and the green were all silently gone. Measured on the built app
+   2026-09-09: rowBorder "0px none", rowBg "rgba(0,0,0,0)", play rgb(240,241,245).
+   The vars now sit on the row (DailyDone.jsx) and the well inherits them.
+   Same family as the --line undefined-token bug on the profile card. */
+/* Play is a PILL, not text — the .t7s-cta anatomy from the Home rows, mode-
+   tinted on a mode row so each row keeps one colour story. Alex on device:
+   "the play buttons on the bottom do not really pop out at the player". */
+.dd-next-go{margin-left:auto;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;padding:7px 13px;border-radius:999px;border:0;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-size:12px;font-weight:800;letter-spacing:0.01em;}
+.dd-next-row.is-mode .dd-next-go{background:rgba(var(--dd-rgb),0.16);color:var(--dd-c);-webkit-text-fill-color:var(--dd-c);border:1px solid rgba(var(--dd-rgb),0.45);}
 .dd-hr{height:1px;background:var(--border);margin:0 -14px;}
 .dd-getapp{display:flex;justify-content:center;}
 @media (prefers-reduced-motion: reduce){.dd-bar i{transition:none;}.dd-share:active{transform:none;}}

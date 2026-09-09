@@ -68,9 +68,15 @@
   30%,50%,70%{transform:translateX(-8px);}
   40%,60%{transform:translateX(8px);}
 }
-.wd-result{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:8px;animation:wdFadeIn 320ms ease;}
+.wd-result{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:13px 14px;text-align:center;display:flex;flex-direction:column;gap:6px;animation:wdFadeIn 320ms ease;}
 @keyframes wdFadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-.wd-result-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
+.wd-result-title{font-size:21px;font-weight:900;letter-spacing:-0.4px;line-height:1.15;color:var(--text);}
+/* The one line that says what you actually did. The panel used to print a bare
+   "+30 XP" and never showed the guess count at all — the single fact a Footle
+   player is proud of. One pill, one line, where two lines and a margin were. */
+.wd-result-earn{align-self:center;display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;background:rgba(88,204,2,0.12);border:1px solid rgba(88,204,2,0.32);color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums;}
+.wd-result-earn span+span{position:relative;padding-left:9px;margin-left:9px;}
+.wd-result-earn span+span::before{content:"·";position:absolute;left:0;opacity:0.55;}
 .wd-result-sub{font-size:14px;color:var(--t2);}
 .wd-result-sub strong{color:var(--accent);letter-spacing:0.5px;font-weight:800;}
 .wd-result-foot{font-size:11px;color:var(--t3);margin-top:2px;}
