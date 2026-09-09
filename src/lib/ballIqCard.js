@@ -195,6 +195,23 @@ export function withLegacyTopUp(catStats = {}, lifetime) {
   return out;
 }
 
+/**
+ * A key's RAW answer count for the print gates. Since the writer keeps raw
+ * per-difficulty counts in `d`, those are the truth; a legacy record falls
+ * back to its (decayed) `a`. ⚠️ Gates must not read the decayed `a` on scored
+ * records: with decay 0.995 the tenth answer leaves `a` at 9.78 and "10 to
+ * get rated" never reaches zero.
+ */
+export function rawAnswered(cs) {
+  if (!cs) return 0;
+  const d = cs.d;
+  if (d && typeof d === "object") {
+    let n = 0; for (const k of ["e", "m", "h"]) n += (Array.isArray(d[k]) ? (d[k][1] || 0) : 0);
+    if (n > 0) return Math.max(n, 0);
+  }
+  return cs.a || 0;
+}
+
 /** True once any key carries per-answer scores (the record is no longer legacy). */
 export function isScored(catStats = {}) {
   return Object.values(catStats || {}).some(v => Number.isFinite(v?.s) && Number.isFinite(v?.n) && v.n > 0);
@@ -260,7 +277,7 @@ export function overallScore(catStats = {}, lifetime) {
   // only while NO raw key carries s/n). It cannot be decided here: computeCard
   // folds aliases first, and the fold writes s/n onto every key.
   let s = 0, n = 0, own = 0;
-  for (const cs of Object.values(catStats || {})) { const k = scoreOf(cs); s += k.s; n += k.n; own += (cs?.a || 0); }
+  for (const cs of Object.values(catStats || {})) { const k = scoreOf(cs); s += k.s; n += k.n; own += rawAnswered(cs); }
   void lifetime; // spread by computeCard via withLegacyTopUp before this is called
   return { mean: (s + BASELINE * PRIOR_WEIGHT) / (n + PRIOR_WEIGHT), answered: own };
 }
@@ -327,6 +344,16 @@ export function tierPalette(key) {
  * @param _priorAcc accepted for older call sites; unused (the overall is derived here)
  * @param lifetime  {c, a} raw lifetime totals — tops up a legacy record, see overallScore
  */
+function mergeD(a, b) {
+  if (!a && !b) return null;
+  const out = {};
+  for (const k of ["e", "m", "h"]) {
+    const x = Array.isArray(a?.[k]) ? a[k] : [0, 0], y = Array.isArray(b?.[k]) ? b[k] : [0, 0];
+    if (x[1] || y[1]) out[k] = [(x[0] || 0) + (y[0] || 0), (x[1] || 0) + (y[1] || 0)];
+  }
+  return Object.keys(out).length ? out : null;
+}
+
 export function computeCard(catStats = {}, _priorAcc, lifetime) {
   // Fold aliases into their face BEFORE reading, so a profile carrying both
   // `ChampionsLeague` and `UCL` (46 in prod) rates one Champions League.
@@ -335,7 +362,8 @@ export function computeCard(catStats = {}, _priorAcc, lifetime) {
     const key = FACE_ALIAS[k] || k;
     const cur = folded[key] || { s: 0, n: 0, c: 0, a: 0 };
     const sk = scoreOf(v);
-    folded[key] = { s: cur.s + sk.s, n: cur.n + sk.n, c: cur.c + (v?.c || 0), a: cur.a + (v?.a || 0) };
+    const d = mergeD(cur.d, v?.d);
+    folded[key] = { s: cur.s + sk.s, n: cur.n + sk.n, c: cur.c + (v?.c || 0), a: cur.a + (v?.a || 0), ...(d ? { d } : {}) };
   }
   // Legacy = no raw key carries per-answer scores yet; only then does the
   // lifetime top-up apply (see overallScore).
@@ -347,8 +375,8 @@ export function computeCard(catStats = {}, _priorAcc, lifetime) {
   const overall = ratingFromScore(mean);
   const ratings = CARD_COMPS.map(comp => {
     const cs = rated[comp.cat];
-    // Gates count the league's OWN answers (`a`), never borrowed ones.
-    const answered = cs?.a || 0;
+    // Gates count the league's OWN answers (raw), never borrowed ones.
+    const answered = rawAnswered(cs);
     return {
       abbr: comp.abbr, cat: comp.cat, name: comp.name, icon: comp.icon, color: comp.color,
       rating: compRating(cs, acc),
@@ -369,5 +397,24 @@ export function computeCard(catStats = {}, _priorAcc, lifetime) {
     accuracy: acc,
     mean,
     calibration: { measured: CALIBRATION.measured, n: CALIBRATION.n },
+  };
+}
+
+/**
+ * What a round did to the card, for the results screen: overall before/after
+ * and every face that moved. Pure — both sides are computeCard() over the
+ * records the writer had before and after recordAnswers().
+ */
+export function cardDelta(prevCatStats, nextCatStats, prevLifetime, nextLifetime) {
+  const before = computeCard(prevCatStats || {}, undefined, prevLifetime);
+  const after = computeCard(nextCatStats || {}, undefined, nextLifetime);
+  const faces = after.ratings
+    .map((r, i) => ({ abbr: r.abbr, name: r.name, color: r.color, before: before.ratings[i].rating, after: r.rating,
+                       shown: r.rated || r.provisional, wasShown: before.ratings[i].rated || before.ratings[i].provisional }))
+    .filter(f => f.shown && (f.before !== f.after || !f.wasShown));
+  return {
+    before: before.overall, after: after.overall, ratedBefore: before.rated, ratedAfter: after.rated,
+    answered: after.answeredTotal, toRated: Math.max(0, MIN_RATED_ANSWERS - Math.floor(after.answeredTotal)),
+    faces,
   };
 }

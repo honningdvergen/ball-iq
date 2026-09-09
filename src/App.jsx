@@ -42,7 +42,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, tierPalette, recordAnswers } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta } from './lib/ballIqCard.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
@@ -4895,6 +4895,7 @@ function AppInner() {
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [dailyReviewState, setDailyReviewState] = useState(null);
   const [puzzleReviewState, setPuzzleReviewState] = useState(null);
+  const [cardDeltaState, setCardDelta] = useState(null); // what the last round did to the card (results screen)
   const [stats, setStats] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_stats");
@@ -6011,6 +6012,15 @@ function AppInner() {
       bestHotStreak: mode === "hotstreak" ? Math.max(stats.bestHotStreak || 0, newResult.score) : (stats.bestHotStreak || 0),
       bestTrueFalse: mode === "truefalse" ? Math.max(stats.bestTrueFalse || 0, newResult.score) : (stats.bestTrueFalse || 0),
     };
+    // THE CARD DELTA (2026-09-09): the results screen shows what this round
+    // did to the card — "63 → 65 · UCL 56 → 68". Computed here, from the same
+    // two records the writer just had, so the number on the results screen and
+    // the number on the Profile can never disagree.
+    try {
+      setCardDelta(cardDelta(stats.catStats || {}, catStats,
+        { c: stats.totalCorrect || 0, a: stats.totalAnswered || 0 },
+        { c: updated.totalCorrect || 0, a: updated.totalAnswered || 0 }));
+    } catch { setCardDelta(null); }
     setStats(updated);
     safeSetItem("biq_stats", JSON.stringify(updated));
 
@@ -9182,6 +9192,7 @@ function AppInner() {
           <Results
             result={result}
             mode={mode}
+            cardDelta={cardDeltaState}
             onHome={goHome}
             survivalBest={stats.bestStreak}
             wrongAnswers={wrongAnswers}

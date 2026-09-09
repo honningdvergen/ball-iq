@@ -217,6 +217,15 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .btn-3d.share:active,.btn-3d.share.is-pressed{transform:scale(0.97);opacity:0.92;}
 /* Leaving is not an action worth a button. A centred link keeps the exit
    findable without giving it the same weight as sharing. */
+/* The card delta row on results (2026-09-09): one quiet row in the results
+   anatomy — label, then numbers with arrows, faces in their own colour. */
+.results-card-delta{display:flex;align-items:center;gap:12px;margin:14px auto 0;padding:11px 14px;border-radius:14px;background:var(--s1);border:1px solid var(--border);max-width:420px;text-align:left;}
+.results-card-delta .rd-label{font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);flex-shrink:0;}
+.results-card-delta .rd-body{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13.5px;font-weight:700;color:var(--t2);min-width:0;}
+.results-card-delta .rd-num{font-variant-numeric:tabular-nums;font-weight:900;font-size:15px;}
+.results-card-delta .rd-face{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;color:var(--t2);}
+.results-card-delta .rd-abbr{font-weight:800;letter-spacing:0.06em;}
+.results-card-delta .rd-dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
 .results-exit{display:block;margin:4px auto 0;padding:10px 16px;background:none;border:none;
   color:var(--t3);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
   text-decoration:underline;text-underline-offset:3px;}

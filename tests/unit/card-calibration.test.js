@@ -177,3 +177,27 @@ describe("recordAnswers", () => {
     expect(e).toBe(h);
   });
 });
+
+// ── THE RESULTS DELTA ─────────────────────────────────────────────────────────
+import { cardDelta } from "../../src/lib/ballIqCard.js";
+describe("cardDelta", () => {
+  const alex = { UCL: { c: 8, a: 20 }, PL: { c: 6, a: 12 }, WorldCup: { c: 6, a: 11 }, ClubQuiz: { c: 5, a: 10 }, Managers: { c: 9, a: 10 }, LaLiga: { c: 2, a: 4 } };
+  const life = { c: 150, a: 246 };
+  it("reports the overall and the faces that moved after a perfect UCL round", () => {
+    const next = recordAnswers(alex, Array.from({ length: 10 }, (_, i) => ({ cat: "UCL", diff: i < 5 ? "hard" : "medium", isCorrect: true })), life);
+    const d = cardDelta(alex, next, life, { c: 160, a: 256 });
+    expect(d.ratedBefore && d.ratedAfter).toBe(true);
+    expect(d.after).toBeGreaterThan(d.before);
+    const ucl = d.faces.find(f => f.abbr === "UCL");
+    expect(ucl).toBeDefined();
+    expect(ucl.after).toBeGreaterThan(ucl.before);
+  });
+  it("an unrated player is told how many answers are left; the tenth answer announces the number", () => {
+    const d0 = cardDelta({}, recordAnswers({}, [{ cat: "PL", diff: "medium", isCorrect: true }]), null, null);
+    expect(d0.ratedAfter).toBe(false); expect(d0.toRated).toBe(9);
+    const nine = recordAnswers({}, Array.from({ length: 9 }, () => ({ cat: "PL", diff: "medium", isCorrect: true })));
+    const ten = recordAnswers(nine, [{ cat: "PL", diff: "medium", isCorrect: true }]);
+    const d1 = cardDelta(nine, ten, null, null);
+    expect(d1.ratedBefore).toBe(false); expect(d1.ratedAfter).toBe(true); expect(d1.after).toBeGreaterThan(60);
+  });
+});

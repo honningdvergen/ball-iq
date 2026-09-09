@@ -110,6 +110,18 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       Browser-verified at 375.
 - [x] **2b. History pills** — Alex: "the 4 play buttons sit too close"; column
       44 → 54, pills 11pt apart at 375, date column 97pt ("Yesterday" needs 70).
+### THE CARD AS THE SHARE OBJECT (#2) — 2026-09-09 afternoon
+- [x] **Results card delta.** The results screen was blank where the card had
+      just moved. `cardDelta()` (pure, tested) runs in the writer over the two
+      records it just had; Results shows "BALL IQ 66 → 68 · UCL 72 → 78", or
+      "N more answers to get rated", or "Rated 64 — your card is live" on the
+      tenth. Browser-verified on a 10/10 UCL round. Found on the way: the
+      rated gates read the DECAYED answer count, so the tenth answer left a
+      player at 9.78 and "10 to get rated" never reached zero — gates now count
+      raw answers from `d` (`rawAnswered`).
+- [ ] Share PNG + OG unfurl: lead with the strongest face + the delta; A/B the
+      share copy.
+
 ### REACH (the seven-list, #1) — 2026-09-09 afternoon
 Diagnosis: 44 of 308 accounts hold a token. Since the soft-prompt sheet was
 retired (09-06) the only ask in the app was a 34px "Remind me" pill on the

@@ -18,7 +18,53 @@ import { stumpLink, shareStumpText } from "../lib/stump.js";
 
 // TomorrowTeaser (the Daily-7-only return moment) retired 2026-09-06: the
 // return loop is one component for all four dailies — components/DailyDone.jsx.
-export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, dailyDone }) {
+// THE CARD MOVED (2026-09-09). Alex proved the card responds to play — 10
+// Champions League rights took him 63 → 65, UCL 56 → 68 — and the results
+// screen said nothing about it. This is the cheapest bragging surface the app
+// has and it was blank. Three states: unrated (how many more to get rated),
+// just rated (the number arrives), rated (before → after, and each face that
+// moved). Faces print in their own colour; the arrow is the fact.
+function CardDeltaRow({ d }) {
+  if (!d) return null;
+  const Arrow = ({ a, b }) => (
+    <span className="rd-num" style={{ color: b > a ? "var(--grn-soft)" : b < a ? "var(--t3)" : "var(--t2)" }}>
+      {a} <span aria-hidden="true">→</span> {b}
+    </span>
+  );
+  if (!d.ratedAfter) {
+    return (
+      <div className="results-card-delta" role="status">
+        <span className="rd-label">Ball IQ</span>
+        <span className="rd-body">{d.toRated} more {d.toRated === 1 ? "answer" : "answers"} to get rated</span>
+      </div>
+    );
+  }
+  if (!d.ratedBefore) {
+    return (
+      <div className="results-card-delta" role="status">
+        <span className="rd-label">Ball IQ</span>
+        <span className="rd-body">Rated <span className="rd-num" style={{ color: "var(--grn-soft)" }}>{d.after}</span> — your card is live</span>
+      </div>
+    );
+  }
+  const moved = d.faces.slice(0, 2);
+  return (
+    <div className="results-card-delta" role="status" aria-label={`Ball IQ ${d.before} to ${d.after}`}>
+      <span className="rd-label">Ball IQ</span>
+      <span className="rd-body">
+        <Arrow a={d.before} b={d.after} />
+        {moved.map(f => (
+          <span key={f.abbr} className="rd-face">
+            <span className="rd-dot" style={{ background: f.color }} aria-hidden="true" />
+            <span className="rd-abbr">{f.abbr}</span> <Arrow a={f.before} b={f.after} />
+          </span>
+        ))}
+      </span>
+    </div>
+  );
+}
+
+export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, dailyDone, cardDelta }) {
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -212,6 +258,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
         </>
       ) : (
         <>
+          <CardDeltaRow d={cardDelta} />
           {/* One primary, a row of two quiet buttons, a text link, the way out.
               Five stacked buttons in three weights (review C9) asked the player
               to rank the app's wishes; this ranks them for them. */}
