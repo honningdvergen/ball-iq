@@ -1831,8 +1831,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           // rated league now carries a Play pill that opens that league's quiz —
           // the report describes you less and moves you more.
           const rows = [];
-          if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)",
-            action: onPlayLeague ? { label: "Play", color: weakest.color, onTap: () => onPlayLeague(weakest.cat) } : null });
+          // The code, not the name: "Premier League · 63" plus a label plus a
+          // pill wraps twice at 375. The card above spells the codes out.
+          if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.abbr} · ${weakest.rating}`, color: "var(--t1)",
+            action: onPlayLeague ? { label: "Play", color: weakest.color, name: weakest.name, onTap: () => onPlayLeague(weakest.cat) } : null });
           else if (strongest) rows.push({ icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" });
           else rows.push({ Icon: Compass, label: "Next up", value: "Play more to build your card", color: "var(--t2)" });
           // Only show "Top X%" when it's actually a flex — iqPercentile floors
@@ -1854,14 +1856,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                     <div style={{ width: 22, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>
                       {r.Icon ? <r.Icon size={17} strokeWidth={2.2} color={r.color} /> : r.icon}
                     </div>
-                    <div style={{ fontSize: 13, color: "var(--t2)", fontWeight: 600 }}>{r.label}</div>
+                    <div style={{ fontSize: 13, color: "var(--t2)", fontWeight: 600, whiteSpace: "nowrap" }}>{r.label}</div>
                     <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 9 }}>
                       {r.sub ? <span style={{ fontSize: 11.5, color: "var(--t3)", fontWeight: 700 }}>{r.sub}</span> : null}
                       <span style={{ fontSize: 15, fontWeight: 800, color: r.color }}>{r.value}</span>
                       {r.action && (
-                        <button type="button" onClick={r.action.onTap} aria-label={`Play a ${r.value.split(" · ")[0]} quiz`}
-                          style={{ padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 800, fontFamily: "inherit", cursor: "pointer",
-                                   background: `color-mix(in srgb, ${r.action.color} 16%, transparent)`, color: r.action.color, border: `1px solid color-mix(in srgb, ${r.action.color} 45%, transparent)` }}>
+                        <button type="button" onClick={r.action.onTap} aria-label={`Play a ${r.action.name} quiz`}
+                          // Lifted toward white: the PL's #3D195B is invisible on --s1 as-is.
+                          style={{ padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 800, fontFamily: "inherit", cursor: "pointer", flexShrink: 0,
+                                   background: `color-mix(in srgb, ${r.action.color} 22%, transparent)`, color: `color-mix(in srgb, ${r.action.color} 40%, #F0F1F5)`, border: `1px solid color-mix(in srgb, ${r.action.color} 55%, transparent)` }}>
                           {r.action.label}
                         </button>
                       )}
