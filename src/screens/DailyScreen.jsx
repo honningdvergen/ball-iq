@@ -111,9 +111,22 @@ function ScoreCell({ state, text, theme, w = COL_W }) {
   );
 }
 
-// An un-played past cell becomes a replay control — the whole visible table
-// (14 days) is the back-catalogue, now that arc-stamped saves keep archive
-// plays out of streaks and honestly marked in the form strip.
+// YESTERDAY'S un-played cell becomes a replay control. Only yesterday's.
+//
+// HISTORY OF THIS RULE. A2 (2026-08-17) made yesterday replayable. afe7342
+// (2026-08-20) widened it to the whole 14-day table once arc-stamped saves
+// kept archive plays out of streaks. Alex, from his phone, 2026-09-09: "I
+// believe we agreed people were not supposed to replay challenges from
+// previous days" — and he is right about the product even though the streak
+// accounting was sound: fourteen rows of controls made HISTORY look like a
+// control panel, and "come back tomorrow" means something only if yesterday
+// is the one door left open. The DayComplete panel below was always
+// yesterday-only; the table now agrees with it. Older unplayed days print "—".
+//
+// THE CONTROL SAYS "PLAY". The ↺-in-a-circle it replaces read as a DONE mark
+// beside the win pills — Alex: "not really obvious that you can tap". A word
+// in the mode's own button colour is unambiguous, and four letters fit the
+// 44pt column.
 //
 // ⚠️ A replay does NOT tick the streak or pay XP (guarded in each mode's own
 // screen). It fills the board because that IS a true record; letting it move
@@ -123,9 +136,9 @@ function ReplayCell({ w, theme, label, onTap }) {
     <span style={{ width: w, flexShrink: 0, display: "inline-flex", justifyContent: "center" }}>
       <button onClick={onTap} aria-label={label} title={label}
         style={{ display: "inline-flex", alignItems: "center", justifyContent: "center",
-          width: 26, height: 26, borderRadius: 999, background: theme.chipBg,
-          border: theme.resBd, fontSize: 13, fontWeight: 800, color: theme.fg,
-          cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
+          height: 26, padding: "0 8px", borderRadius: 999, background: theme.btnBg,
+          border: theme.btnBd, fontSize: 11.5, fontWeight: 800, color: theme.fg,
+          letterSpacing: 0.1, cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>Play</button>
     </span>
   );
 }
@@ -223,12 +236,10 @@ function rowAria(m) {
 // independently would let the panel and the row directly below it disagree,
 // which is the exact drift this file has already had to fix once.
 //
-// The DayComplete panel stays yesterday-only (the day people actually want
-// back is the one they just missed) — but the Recent-days TABLE now replays
-// any unplayed day it shows. The gate that blocked this is fixed: archive
-// saves carry an `arc` stamp, the streak walks break on it, and form14
-// labels/dims arc-only days, so back-filling can no longer repaint the form
-// strip or extend a streak.
+// The DayComplete panel and the Recent-days table agree again (2026-09-09):
+// YESTERDAY is the one day that replays. The 14-day back-catalogue of
+// 2026-08-20 was streak-safe (arc-stamped saves) and is switched off on
+// product grounds — see ReplayCell.
 function yesterdayOpen(matchdays, today, playArchive, playDailyForDate) {
   const y = matchdays.find(m => m.isYesterday);
   if (!y) return [];
@@ -510,10 +521,8 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       else dateLabel = d.toLocaleDateString(undefined, { weekday: "short" });
       const dateSub = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
       rows.push({
-        // isYesterday still gates the DAILY 7 catch-up (a question SET replay
-        // stays yesterday-only, close enough to live to count as it). The
-        // other three modes now replay from ANY unplayed row via `md` — their
-        // archive saves carry the arc stamp, so back-fill is streak-inert.
+        // isYesterday gates EVERY replay control (2026-09-09 — see ReplayCell):
+        // Daily 7's catch-up launcher and the three archive modes alike.
         ymd, md, dateLabel, dateSub, isToday, isYesterday: i === 1, t7Score, t7Done, fAttempt, fWon, fUsed,
         trAttempt, trWon, trUsed, trLive, myAttempt, myWon, myUsed, myLive,
       });
@@ -776,7 +785,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             : <>Play today, then your recent days show up here.</>}
         </div>
       ) : (
-      <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 9, marginBottom: 14 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 9, marginBottom: 14 }}>
         {/* Today is excluded, as it already is on desktop. It is not a recent
             day, the header does not claim it, and its state is on the streak
             strip above and on Home's Today block. Alex, 2026-09-06: this tab is
@@ -786,7 +795,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           const catchUp = m.isYesterday && !m.t7Done && playDailyForDate;
           return (
             <div key={m.ymd} aria-label={rowAria(m)}
-              style={{ borderRadius: 13, padding: "10px 14px", display: "flex", alignItems: "center",
+              style={{ borderRadius: 13, padding: "12px 14px", display: "flex", alignItems: "center",
                 background: m.isToday ? "rgba(88,204,2,0.05)" : "var(--s1)",
                 border: m.isToday ? "1px solid rgba(88,204,2,0.4)" : "1px solid var(--border)" }}>
               <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 1 }}>
@@ -796,15 +805,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               {cells.map(c => (
                 c.key === "daily7" && catchUp ? (
                   // Comeback hook (opportunity-scan #8): yesterday's missed
-                  // Daily 7 stays playable for one day. A 44pt column can't hold
-                  // the words "Catch up", so it becomes a replay glyph — still a
-                  // real control, and it keeps its label for screen readers.
-                  <span key={c.key} style={{ width: COL_W, flexShrink: 0, display: "inline-flex", justifyContent: "center" }}>
-                    <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
-                      aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
-                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "var(--gold)", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
-                  </span>
-                ) : (!m.isToday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
+                  // Daily 7 stays playable for one day — the same "Play" pill as
+                  // the other three, with its own label for screen readers.
+                  <ReplayCell key={c.key} w={COL_W} theme={c.theme} label="Catch up — play yesterday's Daily 7"
+                    onTap={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))} />
+                ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
                   <ReplayCell key={c.key} w={COL_W} theme={c.theme}
                     label={`Play ${m.dateLabel}'s ${MODE_LABEL[c.key]}`}
                     onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
@@ -916,16 +921,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                               </div>
                               {cells.map(c => (
                                 c.key === "daily7" && catchUp ? (
-                                  // Same catch-up affordance, and the same glyph
-                                  // as mobile: at 62pt the words "Catch up" wrap
-                                  // to two lines and push the row taller than
-                                  // its neighbours.
-                                  <span key={c.key} style={{ width: DCOL_W, flexShrink: 0, display: "inline-flex", justifyContent: "center" }}>
-                                    <button onClick={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))}
-                                      aria-label="Catch up — play yesterday's Daily 7" title="Catch up — play yesterday's Daily 7"
-                                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 26, height: 26, borderRadius: 999, background: "rgba(255,193,7,0.14)", border: "1px solid rgba(255,193,7,0.42)", fontSize: 13, fontWeight: 800, color: "var(--gold)", cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>↺</button>
-                                  </span>
-                                ) : (!m.isToday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
+                                  // Same catch-up affordance and the same pill as
+                                  // mobile.
+                                  <ReplayCell key={c.key} w={DCOL_W} theme={c.theme} label="Catch up — play yesterday's Daily 7"
+                                    onTap={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))} />
+                                ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
                                   <ReplayCell key={c.key} w={DCOL_W} theme={c.theme}
                                     label={`Play ${m.dateLabel}'s ${MODE_LABEL[c.key]}`}
                                     onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
