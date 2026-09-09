@@ -136,11 +136,13 @@ with the reach numbers ~09-16, not before.
       cleanup above was done surgically instead. NOT DIAGNOSED — both the file
       and `serializeEntry` are one-entry-per-line, so the ~2.9× growth is
       unexplained. Investigate before the tool is used again.
-- [ ] ⚠️ **One rejected question is still shipping: `q_d28eae`** (Torino /
-      Giorgio Ferrini, 566 apps, "La Diga"). Alex rejected it 2026-06-07 (no
-      note) and the decision was never published, so it has been live for three
-      months. DELIBERATELY NOT DELETED — Alex asked for the flag cleanup, and a
-      question deletion is a separate call. Delete it or re-approve it.
+- [x] **`q_d28eae` deleted (2026-09-09, Alex's call).** Torino / Giorgio
+      Ferrini, "La Diga", 566 apps — rejected by Alex 2026-06-07, never
+      published, so it had been live three months. No player ever reported it,
+      so the rejection was editorial, not a complaint. Removed surgically: one
+      line, 0 added, QB 7079 → 7078, Torino keeps 39 hint-bearing MCQs against
+      MIN_HINTS 15. Gate green (730 tests). Prod's `rejected` row now matches
+      the bank, so a future publish-review finds nothing to remove.
 
 ### CLUB PAGE ↔ APP (#3) — 2026-09-09 afternoon
 - [x] **The page's IQ is the app's IQ.** "Your Arsenal IQ 73" mapped the
