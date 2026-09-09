@@ -418,3 +418,32 @@ export function cardDelta(prevCatStats, nextCatStats, prevLifetime, nextLifetime
     faces,
   };
 }
+
+// ── THE SHARE LINE ────────────────────────────────────────────────────────────
+// "My Ball IQ is 68. Can you beat me?" led with the one number that means the
+// least to a stranger. The share leads with the strongest league — the thing
+// worth bragging about — and, when the last round moved it today, the move.
+const DELTA_KEY = "biq_last_card_delta";
+const dayKey = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+
+/** Remember what the last round did (the writer calls this); read back the same day only. */
+export function storeCardDelta(delta) {
+  try { if (delta) localStorage.setItem(DELTA_KEY, JSON.stringify({ day: dayKey(), delta })); } catch { /* ignore */ }
+}
+export function readCardDelta() {
+  try {
+    const v = JSON.parse(localStorage.getItem(DELTA_KEY) || "null");
+    return v && v.day === dayKey() ? v.delta : null;
+  } catch { return null; }
+}
+
+/** One line for the share sheet. Unrated cards say so; rated ones lead with the best face. */
+export function shareLine(card, delta = null, appName = "Ball IQ") {
+  if (!card || !card.rated) return `Can you beat me at ${appName}? ⚽`;
+  const faces = card.ratings.filter(r => r.rated).sort((a, b) => b.rating - a.rating);
+  const best = faces[0];
+  const moved = delta && delta.ratedAfter && delta.faces && delta.faces.find(f => f.after > f.before);
+  const head = best ? `${appName} ${card.overall} · ${best.abbr} ${best.rating}` : `${appName} ${card.overall}`;
+  const move = moved ? ` — ${moved.abbr} ${moved.before} → ${moved.after} today` : "";
+  return `${head}${move}. Can you beat me? ⚽`;
+}

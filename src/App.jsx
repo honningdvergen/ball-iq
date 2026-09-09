@@ -42,7 +42,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta, storeCardDelta } from './lib/ballIqCard.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
@@ -6017,9 +6017,11 @@ function AppInner() {
     // two records the writer just had, so the number on the results screen and
     // the number on the Profile can never disagree.
     try {
-      setCardDelta(cardDelta(stats.catStats || {}, catStats,
+      const d = cardDelta(stats.catStats || {}, catStats,
         { c: stats.totalCorrect || 0, a: stats.totalAnswered || 0 },
-        { c: updated.totalCorrect || 0, a: updated.totalAnswered || 0 }));
+        { c: updated.totalCorrect || 0, a: updated.totalAnswered || 0 });
+      setCardDelta(d);
+      storeCardDelta(d); // the share line reads it back the same day
     } catch { setCardDelta(null); }
     setStats(updated);
     safeSetItem("biq_stats", JSON.stringify(updated));

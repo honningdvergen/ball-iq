@@ -124,8 +124,13 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       row" — both gone (mobile + desktop). "Needs work · Champions League · 46"
       now carries a Play pill in the league's colour that opens that league's
       quiz (`onPlayLeague` = launchLeagueQuiz). Browser-verified at 375.
-- [ ] Share text + OG unfurl: lead with the strongest face + today's delta
-      ("Ball IQ 68 · UCL 72 → 78 — can you beat me?"); A/B the copy.
+- [x] **Share text leads with the strongest league + today's move.** "My Ball
+      IQ is 68. Can you beat me?" → "Ball IQ 68 · UCL 78 — UCL 72 → 78 today.
+      Can you beat me? ⚽" (both the PNG fallback and the /p link); unrated
+      cards keep the plain line. The writer stores the day's delta
+      (`storeCardDelta`) and the share reads it back the same day. Tested.
+- [ ] OG unfurl: lead with the strongest face + the delta in the image; A/B
+      the copy once share-p / share-card taps show which line travels.
 - [~] Settings: LOOKED (2026-09-09, 375) — section eyebrows, cards, rows,
       green toggles; already in the row vocabulary. Nothing to do.
 

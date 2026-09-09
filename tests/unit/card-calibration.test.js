@@ -201,3 +201,15 @@ describe("cardDelta", () => {
     expect(d1.ratedBefore).toBe(false); expect(d1.ratedAfter).toBe(true); expect(d1.after).toBeGreaterThan(60);
   });
 });
+
+// ── THE SHARE LINE ────────────────────────────────────────────────────────────
+import { shareLine } from "../../src/lib/ballIqCard.js";
+describe("shareLine", () => {
+  it("leads with the strongest league, adds today's move, and stays honest when unrated", () => {
+    const card = computeCard({ UCL: { c: 20, a: 24, s: 24, n: 24 }, PL: { c: 6, a: 12, s: 6.6, n: 12 } });
+    expect(shareLine(card)).toMatch(/^Ball IQ \d\d · UCL \d\d\. Can you beat me\? ⚽$/);
+    const withMove = shareLine(card, { ratedAfter: true, faces: [{ abbr: "UCL", before: 72, after: 78 }] });
+    expect(withMove).toContain("UCL 72 → 78 today");
+    expect(shareLine(computeCard({}))).toBe("Can you beat me at Ball IQ? ⚽");
+  });
+});

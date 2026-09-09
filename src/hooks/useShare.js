@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { useModalA11y } from "../useModalA11y.js";
-import { computeCard } from "../lib/ballIqCard.js";
+import { computeCard, shareLine, readCardDelta } from "../lib/ballIqCard.js";
 import { APP_NAME, getLevelInfo } from "../lib/scoring.js";
 import { Share as CapShare } from "@capacitor/share";
 import { avatarColour } from "../lib/avatarColour.js";
@@ -230,7 +230,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       initial: firstLetterOf(name),
     }, {
       onToast: showToast,
-      textFallback: `My Ball IQ is ${card.overall}. Can you beat me? ⚽ ${INVITE_BASE_URL}/play`,
+      textFallback: `${shareLine(card, readCardDelta(), APP_NAME)} ${INVITE_BASE_URL}/play`,
     });
   }, [stats, authProfile?.username, authProfile?.avatar_url, profile.name, profile.avatar, user?.id, xp, showToast]);
   const shareProfile = useCallback(async () => {
@@ -284,7 +284,8 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     if (avatarUrl) params.set("img", avatarUrl);
     const url = `https://balliq.app/p?${params.toString()}`;
     loopEvent("share-p");
-    const text = `Can you beat me at ${APP_NAME}? ⚽`;
+    // Lead with the strongest league and today's move, not the overall alone.
+    const text = shareLine(card, readCardDelta(), APP_NAME);
     try {
       if (IS_NATIVE) {
         await CapShare.share({ title: APP_NAME, text, url, dialogTitle: "Share your profile" });
