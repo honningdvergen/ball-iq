@@ -234,12 +234,21 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
 
   // Detect day rollover while the screen is open — full reload so the new
   // day's answer, storageKey and game state all resync together.
+  //
+  // ⚠️ NEVER ON AN ARCHIVE BOARD. `isArchive` IS `dateKey !== today` (line
+  // ~124) — the very condition this watcher reloads on. So every History →
+  // Yesterday → Footle replay hard-reloaded the app five seconds after it
+  // opened, every time, dumping the player on Home mid-guess. The feature
+  // Alex asked for twice was 100% unplayable and no gate could see it: both
+  // halves are individually correct, they just share one predicate with
+  // opposite intent. Found by playing the build in the simulator, 2026-09-09.
   useEffect(() => {
+    if (isArchive) return undefined;
     const id = setInterval(() => {
       if (getWordleDateKey() !== dateKey) window.location.reload();
     }, 5000);
     return () => clearInterval(id);
-  }, [dateKey]);
+  }, [dateKey, isArchive]);
 
   const submitGuess = useCallback(() => {
     if (state.status !== "playing") return;

@@ -1467,7 +1467,10 @@ button.friends-lb-row:hover{background:var(--s3);}
 .badge-tile.locked{opacity:1;}
 .badge-tile.locked .badge-name{color:var(--t3);}
 /* Phase 6a Item 4: inline detail card below the badges grid. */
-.badge-detail-card{display:flex;align-items:center;gap:14px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:12px;}
+/* scroll-margin-bottom clears the fixed tab bar: the detail card is revealed
+   by scrollIntoView on select, and without the margin it lands UNDER the nav.
+   (Tapping a badge rendered its explanation off-screen — simulator 2026-09-09.) */
+.badge-detail-card{display:flex;align-items:center;gap:14px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:12px;scroll-margin-bottom:120px;}
 .bd-icon{display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
 .bd-icon svg{width:32px;height:32px;}
 .bd-body{display:flex;flex-direction:column;gap:3px;min-width:0;}

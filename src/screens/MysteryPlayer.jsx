@@ -359,6 +359,10 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Copied' })); } catch {} }
     } catch { /* dismissed or blocked — nothing to recover */ }
   };
+  // The header row is at its widest exactly when CLOSEST is present: back +
+  // mode well + title + ? + badge. `tight` is that state, and the title block
+  // budgets itself down for it — see the note on the title below.
+  const tight = !embedded && best !== null && !done;
   return (
     <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: embedded ? '2px 0 8px' : '14px 0 6px' }}>
@@ -389,11 +393,22 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             <UserRoundSearch size={19} strokeWidth={2.1} color={MODE_ACCENT.mystery} />
           </div>
         )}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {!embedded && <div style={{ fontSize: 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em' }}>Mystery Player</div>}
-          <div style={{ fontSize: embedded ? 13.5 : 12, color: embedded ? 'var(--t2)' : 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>
+        {/* ⚠️ THIS ROW HOLDS FIVE THINGS AND THE FIFTH ARRIVES LATE. CLOSEST
+            only appears after the first guess, so the header fitted on one
+            clean line right up until you played — then it broke to
+            "Mystery / Player" with the ? squeezed beside it. nowrap alone
+            just trades the wrap for "Mystery Pla…", the mode's own name
+            truncated on its own screen. So the row BUDGETS instead: once
+            CLOSEST is there the title steps down a size and the subtitle
+            drops its tail. "unlimited guesses" is reassurance for someone
+            who has not started; by guess two it is spending 90px to say
+            nothing. Nothing wraps, nothing truncates, nothing disappears.
+            (Simulator, 2026-09-09.) */}
+        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+          {!embedded && <div style={{ fontSize: tight ? 15 : 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Mystery Player</div>}
+          <div style={{ fontSize: embedded ? 13.5 : 12, color: embedded ? 'var(--t2)' : 'var(--t3)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             <span style={{ color: MODE_ACCENT.mystery, fontWeight: 800 }}>No. {mysteryNumber(date)}</span>
-            {' · '}unlimited guesses{isArchive ? ' · archive' : ''}
+            {tight ? '' : ' · unlimited guesses'}{isArchive ? ' · archive' : ''}
           </div>
         </div>
         {/* ⚠️ AVAILABLE FROM THE FIRST SECOND. This used to appear only after a
@@ -406,7 +421,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             style={{ marginRight: 8, color: MODE_ACCENT.mystery, borderColor: modeTint('mystery', 0.35) }}>?</button>
         )}
         {best !== null && !done && (
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 4 }}>
             <div style={{ fontSize: 11, color: 'var(--t3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Closest</div>
             <div style={{ fontSize: 17, fontWeight: 900, color: BAND_STYLE[guesses[0].band].fg }}>{best}</div>
           </div>

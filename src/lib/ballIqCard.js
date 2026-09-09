@@ -87,6 +87,26 @@ export function faceCatFor(ans) {
   return null;
 }
 
+/**
+ * The card face a QUIZ CATEGORY builds, as the abbreviation printed on the
+ * card ("EPL", "INT"), or null when that category feeds no face.
+ *
+ * ⚠️ THE LEAGUE PICKER MUST NOT PROMISE A RATING THAT DOES NOT EXIST. Its
+ * rows printed `Builds your ${abbr} rating` off the PICKER's own abbr for
+ * every row, and the picker carries thirteen entries against the card's six
+ * faces — so seven rows advertised an L1 / TSL / PRI / LEG / MGR / REC
+ * rating that is nowhere in the app, and Euros promised "EUR" when its
+ * answers land on INT. Only five of thirteen rows were true. Deriving the
+ * copy from CARD_COMPS is what makes the picker's claim un-rottable: add a
+ * league without a face and it now says the honest thing by itself.
+ * (Found in the simulator 2026-09-09.)
+ */
+export function faceAbbrForCat(cat) {
+  const face = FACE_CATS.has(cat) ? cat : (FACE_ALIAS[cat] || null);
+  if (!face) return null;
+  return (CARD_COMPS.find(c => c.cat === face) || {}).abbr || null;
+}
+
 // A face with fewer than MIN_RATED_ANSWERS but at least this many prints a
 // PROVISIONAL number — muted, never the accented "best" — instead of a bar.
 // Alex, 2026-09-09, seeing La Liga / Bundesliga / Serie A as three bars after

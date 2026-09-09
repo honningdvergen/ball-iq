@@ -1370,6 +1370,21 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // grid. Tap the same badge again to close. State is local to this
   // screen — no persistence across navigations.
   const [selectedBadgeId, setSelectedBadgeId] = useState(null);
+  // ⚠️ REVEAL IT. The detail card renders BELOW a 12-tile grid at the very
+  // bottom of the longest screen in the app, so tapping a badge painted its
+  // explanation off-screen behind the tab bar — the tap looked inert and only
+  // the selection ring told you anything had happened. Same class as the Trail
+  // keyboard reveal. `nearest` leaves an already-visible card alone; the
+  // clearance for the nav bar is scroll-margin-bottom on .badge-detail-card.
+  const badgeDetailRef = useRef(null);
+  useEffect(() => {
+    if (!selectedBadgeId) return;
+    const el = badgeDetailRef.current;
+    if (!el || typeof el.scrollIntoView !== "function") return;
+    let reduced = false;
+    try { reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { /* no matchMedia */ }
+    el.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
+  }, [selectedBadgeId]);
   // Prefer memoized values from the parent; fall back for any legacy caller.
   const level = levelProp || getLevelInfo(xp).level;
   // Same best-streak rule as AppInner's earnedBadges memo — streak badges never un-earn.
@@ -2023,7 +2038,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const [id, Icon, name, desc] = def;
           const isEarned = earned.has(id);
           return (
-            <div className="badge-detail-card">
+            <div className="badge-detail-card" ref={badgeDetailRef}>
               <div className="bd-icon" aria-hidden="true">
                 <Icon size={26} strokeWidth={2.1} color={isEarned ? "var(--accent)" : "var(--t3)"} />
               </div>

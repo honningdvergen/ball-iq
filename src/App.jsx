@@ -42,7 +42,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds, faceAbbrForCat } from './lib/ballIqCard.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
@@ -3619,7 +3619,7 @@ function LeagueQuizScreen({ onStart, onBack }) {
         <div className="page-title">League Quizzes</div>
       </div>
       <p style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>
-        Pick a competition — every answer builds that league's rating on your player card.
+        Pick a competition — every answer builds your Ball IQ card.
       </p>
       {LEAGUE_QUIZ_SECTIONS.map((section) => (
         <div key={section.label} style={{ marginBottom: 16 }}>
@@ -3643,7 +3643,17 @@ function LeagueQuizScreen({ onStart, onBack }) {
                         the club-page "42 Full set" control was banned. The
                         rating hook is the picker's actual promise, and it
                         cannot rot. */}
-                    <div className="mi-desc">{`Builds your ${it.abbr} rating`}</div>
+                    {/* ⚠️ The face abbr comes from the CARD, not from this
+                        row. Seven of these thirteen rows have no face —
+                        Ligue 1, Süper Lig, Primeira, Legends, Managers,
+                        Records — and Euros feeds INT, not "EUR". Printing
+                        the row's own abbr promised six ratings that do not
+                        exist and named a seventh wrongly. Every answer does
+                        feed the overall (overallScore walks every key), so
+                        that is what the faceless rows honestly say. */}
+                    <div className="mi-desc">{faceAbbrForCat(it.cat)
+                      ? `Builds your ${faceAbbrForCat(it.cat)} rating`
+                      : "Counts toward your overall Ball IQ"}</div>
                   </div>
                   <div className="mi-arrow">→</div>
                 </button>
