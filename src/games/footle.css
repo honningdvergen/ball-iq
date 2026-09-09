@@ -39,7 +39,9 @@
      repo has shipped an unreachable ENTER twice already from exactly that. */
   .wd-grid{--wd-tile-cap:clamp(26px, calc((100dvh - var(--wd-chrome) - var(--biq-consent-h, 0px)) / 6), var(--wd-tile-max));}
 }
-.wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0 0 14px;}
+/* margin:0 — the 14px that used to sit here was ADDED to .wd-screen's own
+   14px flex gap, so the finished board floated 28pt above the result card. */
+.wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0;}
 .wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,100%);}
 .wd-grid.wd-grid--ended .wd-tile{font-size:clamp(16px,5.2vw,24px);}
 .wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),minmax(0,1fr));gap:6px;width:100%;max-width:calc(var(--wd-cols) * var(--wd-tile-cap, 64px) + (var(--wd-cols) - 1) * 6px);margin-left:auto;margin-right:auto;}

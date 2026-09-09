@@ -557,8 +557,13 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           button, WhatsApp link, countdown footer, Daily 7 cross-sell and store
           CTA (2026-09-06). A sibling of .wd-result, not a child — no card in a
           card. */}
+      {/* No margin on the wrapper below. .wd-screen is a flex column with
+          gap:14px, so a marginTop on a sibling is added TO that gap, not
+          instead of it — 24pt of nothing between the result card and the
+          return panel. Alex 2026-09-09: "if we removed some vertical deadspace
+          the next suggested daily modes would be a bit further up." */}
       {state.status !== "playing" && revealed && (
-        <div style={{ marginTop: 10 }}>
+        <div>
           <DailyDone
             game="footle"
             edition={getFootleNumber(date)}
