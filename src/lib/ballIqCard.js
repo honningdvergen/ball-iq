@@ -37,14 +37,17 @@ import { CLUB_NAME_TO_COMP } from '../data/clubPackColours.js';
 //   saveStats writer files each answer under its face when it has one.
 // - A face prints only from its own data (≥ MIN_RATED_ANSWERS); the overall
 //   never derives from the faces.
-// - SCORE ABOVE EXPECTATION, not accuracy (later the same day). Each answer
-//   scores (correct ? 1 : 0) − EXPECTED[difficulty]: a hard right earns 0.55,
-//   an easy right 0.20, an easy miss costs 0.80, a hard miss 0.45. The old
-//   evidence weights ranked 80% on easy above 50% on hard; this ranks them
-//   the way the population does. catStats keys carry {s, n} (decayed skill
-//   sum and count) beside the legacy {c, a}; a record with no s/n converts as
-//   s = c − PBAR·a, which is exact for average difficulty and is what the
-//   calibration was measured on.
+// - THE NUMBER IS DIFFICULTY-WEIGHTED ACCURACY (Alex, later the same day):
+//   a correct answer is worth 1.0 easy / 1.1 medium / 1.2 hard, a miss 0, the
+//   rating is 100 × the mean. 61% on easy = 61, on medium = 67, on hard = 73.
+//   It replaced a percentile-calibrated "score above expectation" model built
+//   two hours earlier: that one was statistically right and could not be
+//   explained on a card, and a number a player can verify beats one they
+//   have to trust. catStats keys carry {s, n} beside the legacy {c, a}; a
+//   record with no s/n converts as s = AVG_MULT·c (exact for average
+//   difficulty). The population percentiles stay in the calibration file as
+//   the reference for where the tiers fall: the measured median player rates
+//   ~64, the 75th percentile ~74, the 90th ~79.
 
 // The six face stats. `cat` maps to the question bank's cat field; `abbr` is the
 // 3-letter card label (the competition's short code).
@@ -111,76 +114,147 @@ export const PROVISIONAL_ANSWERS = 3;
 // the only direction a rating should surprise in. Twenty ≈ two club quizzes.
 export const PRIOR_WEIGHT = 20;
 
-/** Expected score for a difficulty label; unknown labels count as medium. */
-export const EXPECTED = CALIBRATION.expected;
-export const PBAR = CALIBRATION.pbar;
-export function expectedFor(diff) { return EXPECTED[diff] ?? EXPECTED.medium; }
+/** Multiplier a correct answer earns, by difficulty. Unknown labels count as medium. */
+export const MULT = CALIBRATION.mult;
+export const AVG_MULT = CALIBRATION.avgMult;
+/** The measured median player's rating, as a fraction (≈0.64): where a card with no evidence starts. */
+export const BASELINE = CALIBRATION.baseline;
+export function multFor(diff) { return MULT[diff] ?? MULT.medium; }
 
-function interpolate(anchors, x) {
-  for (let i = 1; i < anchors.length; i++) {
-    const [x0, y0] = anchors[i - 1], [x1, y1] = anchors[i];
-    if (x <= x1) return Math.max(40, Math.min(99, Math.round(y0 + (y1 - y0) * ((x - x0) / (x1 - x0)))));
-  }
-  return 99;
+/** Mean score (0…1.2) → 40-99. Linear: 0.61 → 61. Capped at 99 — perfect on hard is 120. */
+export function ratingFromScore(mean) {
+  const x = Number.isFinite(mean) ? mean : BASELINE;
+  return Math.max(40, Math.min(99, Math.round(x * 100)));
 }
 
-/** Skill (mean score above expectation, −1…1) → 40-99 through the calibrated anchors. */
-export function ratingFromSkill(skill) {
-  const A = CALIBRATION.skillAnchors;
-  const x = Math.max(A[0][0], Math.min(A[A.length - 1][0], Number.isFinite(skill) ? skill : A[0][0]));
-  return interpolate(A, x);
-}
-
-/** Plain accuracy → rating, for a record of average difficulty (legacy conversion). */
+/** Kept for the calibration tests and any caller that thinks in accuracy: an average-difficulty record. */
 export function ratingFromAccuracy(acc) {
-  const x = Number.isFinite(acc) ? Math.max(0, Math.min(1, acc)) : CALIBRATION.median;
-  return interpolate(CALIBRATION.anchors, x);
+  return ratingFromScore((Number.isFinite(acc) ? acc : CALIBRATION.median) * AVG_MULT);
 }
 
 /**
- * A key's skill record. New writes carry {s, n}; a legacy {c, a} converts as
- * s = c − PBAR·a (exact for average difficulty). Both may be present after
- * the upgrade — the writer keeps c/a for the progress bar and the merge.
+ * A key's score record. New writes carry {s, n} (decayed score sum and
+ * answer count). A legacy {c, a} converts as s = AVG_MULT·c — exact for a
+ * record of average difficulty; both may be present after the upgrade.
  */
-export function skillOf(cs) {
+export function scoreOf(cs) {
   if (!cs) return { s: 0, n: 0 };
   if (Number.isFinite(cs.s) && Number.isFinite(cs.n) && cs.n > 0) return { s: cs.s, n: cs.n };
   const c = cs.c || 0, a = cs.a || 0;
-  return { s: c - PBAR * a, n: a };
+  return { s: AVG_MULT * c, n: a };
+}
+// The name the writer imported earlier today; same function.
+export const skillOf = scoreOf;
+
+// A LEGACY RECORD IS TOPPED UP FROM THE LIFETIME TOTALS, ONCE. catStats began
+// decaying on 2026-09-01 (0.98 per answer), so by the 9th every account's
+// per-category record was its last ~100 answers — Alex's read 55/106, a 52%
+// window, beside a Scouting Report saying "Accuracy 61%" from the same
+// lifetime totals. Scored under the new model that window printed 58 ·
+// BRONZE. Two true records, one card: until a record carries per-answer
+// scores (s/n), the answers the window has forgotten are counted back in at
+// the lifetime accuracy — as average difficulty, capped at LIFETIME_TOPUP so
+// the card stays dynamic once new answers arrive. Once any key carries s/n
+// the top-up stops: from there the card is the player's own scored answers.
+export const LIFETIME_TOPUP = 300;
+export const LEGACY_KEY = "_legacy";
+
+/** The lifetime top-up for a legacy record, or null. {s, n} in score units. */
+export function legacyTopUp(catStats = {}, lifetime) {
+  if (!lifetime || !(lifetime.a > 0) || !(lifetime.c >= 0) || lifetime.c > lifetime.a) return null;
+  let n = 0;
+  for (const cs of Object.values(catStats || {})) n += scoreOf(cs).n;
+  if (lifetime.a <= n) return null;
+  const extra = Math.min(LIFETIME_TOPUP, lifetime.a - n);
+  return { s: AVG_MULT * (lifetime.c / lifetime.a) * extra, n: extra };
 }
 
-/** The population's median skill — where a card with no evidence sits (65). */
-export const MEDIAN_SKILL = CALIBRATION.median - PBAR;
+/** True once any key carries per-answer scores (the record is no longer legacy). */
+export function isScored(catStats = {}) {
+  return Object.values(catStats || {}).some(v => Number.isFinite(v?.s) && Number.isFinite(v?.n) && v.n > 0);
+}
+
+// Per-answer decay of every key's score record. 0.995: half-life ~140
+// answers — the card reflects "you", moves within a fortnight of daily play.
+export const CAT_DECAY = 0.995;
 
 /**
- * The player's overall skill — every category, shrunk toward the POPULATION
- * MEDIAN with PRIOR_WEIGHT answers of weight. Toward the median, not toward
- * "par at every difficulty" (skill 0): the measured median sits a little
- * under par (0.58 vs PBAR 0.61), and an unplayed card must read 65 — the
- * median player — not 68, or the first answers would appear to LOWER it.
+ * THE WRITER. Folds a finished round's answers into catStats and returns the
+ * new map. Lives here, not in App.jsx, so the arithmetic that decides every
+ * card is unit-tested beside the model that reads it.
+ *
+ * - each answer scores (correct ? MULT[diff] : 0) into its key's {s, n}; {c, a}
+ *   keep being written as plain decayed counts (progress bar, merge, older
+ *   clients); `d` keeps RAW per-difficulty counts for the next calibration.
+ * - a key is filed under the face it feeds (faceCatFor), else its real cat.
+ * - ON THE FIRST SCORED WRITE a legacy record's lifetime top-up (see
+ *   legacyTopUp) is MATERIALISED as the `_legacy` key and thereafter decays
+ *   like every other key. Without this the top-up vanished at the first scored
+ *   quiz and ten hard rights LOWERED a card from 65 to 63 — the exact
+ *   "it goes down the more I play" this whole day was about.
  */
-export function overallSkill(catStats = {}) {
+export function recordAnswers(prevCatStats = {}, answers = [], lifetime) {
+  const catStats = { ...(prevCatStats || {}) };
+  const list = (answers || []).filter(a => a && a.cat);
+  if (!list.length) return catStats;
+  if (!isScored(catStats)) {
+    const top = legacyTopUp(catStats, lifetime);
+    if (top) catStats[LEGACY_KEY] = { c: 0, a: 0, s: top.s, n: top.n };
+  }
+  for (const ans of list) {
+    const key = faceCatFor(ans) || ans.cat;
+    const cur = catStats[key] || { c: 0, a: 0 };
+    const ok = ans.isCorrect ? 1 : 0;
+    const diff = (ans.diff === "easy" || ans.diff === "hard") ? ans.diff : "medium";
+    const prev = scoreOf(cur); // a legacy {c,a} converts once, here, then carries s/n
+    const d = { ...(cur.d || {}) };
+    const dk = diff[0];
+    d[dk] = [((d[dk] || [0, 0])[0] || 0) + ok, ((d[dk] || [0, 0])[1] || 0) + 1];
+    catStats[key] = {
+      c: (cur.c || 0) * CAT_DECAY + ok,
+      a: (cur.a || 0) * CAT_DECAY + 1,
+      s: prev.s * CAT_DECAY + (ok ? multFor(diff) : 0),
+      n: prev.n * CAT_DECAY + 1,
+      d,
+    };
+    // The materialised top-up fades with every answer, whatever key it lands on.
+    const lg = catStats[LEGACY_KEY];
+    if (lg && key !== LEGACY_KEY) catStats[LEGACY_KEY] = { ...lg, s: (lg.s || 0) * CAT_DECAY, n: (lg.n || 0) * CAT_DECAY };
+  }
+  return catStats;
+}
+
+/**
+ * The player's overall — every category, shrunk toward the population
+ * baseline with PRIOR_WEIGHT answers of weight. `lifetime` = {c, a} raw
+ * totals (totalCorrect / totalAnswered), used only to top up a legacy record.
+ */
+export function overallScore(catStats = {}, lifetime) {
+  // ⚠️ The caller decides whether `lifetime` applies (computeCard passes it
+  // only while NO raw key carries s/n). It cannot be decided here: computeCard
+  // folds aliases first, and the fold writes s/n onto every key.
   let s = 0, n = 0;
-  for (const cs of Object.values(catStats || {})) { const k = skillOf(cs); s += k.s; n += k.n; }
-  return { skill: (s + MEDIAN_SKILL * PRIOR_WEIGHT) / (n + PRIOR_WEIGHT), answered: n };
+  for (const cs of Object.values(catStats || {})) { const k = scoreOf(cs); s += k.s; n += k.n; }
+  const top = legacyTopUp(catStats, lifetime);
+  if (top) { s += top.s; n += top.n; }
+  return { mean: (s + BASELINE * PRIOR_WEIGHT) / (n + PRIOR_WEIGHT), answered: n };
 }
 
-/** Kept for callers that think in accuracy: the overall as an accuracy-equivalent. */
+/** Kept for callers that think in accuracy. */
 export function overallAccuracy(catStats = {}) {
-  const { skill, answered } = overallSkill(catStats);
-  return { acc: skill + PBAR, answered };
+  const { mean, answered } = overallScore(catStats);
+  return { acc: mean / AVG_MULT, answered };
 }
 
-// One face. Shrunk toward the player's OVERALL skill with weight 2 — the right
+// One face. Shrunk toward the player's OVERALL mean with weight 2 — the right
 // prior for "how would they do in this league" — but a face is only PRINTED
-// once it has MIN_RATED_ANSWERS of its own, where weight 2 is a nudge.
-// ⚠️ Nothing sums faces to make the overall; see overallSkill().
+// from PROVISIONAL_ANSWERS (muted) and fully from MIN_RATED_ANSWERS.
+// ⚠️ Nothing sums faces to make the overall; see overallScore().
 export function compRating(cs, priorAcc = CALIBRATION.median) {
-  const { s, n } = skillOf(cs);
+  const { s, n } = scoreOf(cs);
   const p = Number.isFinite(priorAcc) ? priorAcc : CALIBRATION.median;
-  // Callers pass an accuracy; clamp it to [0.25, 0.75] as before, then to skill.
-  const priorSkill = Math.max(0.25, Math.min(0.75, p)) - PBAR;
-  return ratingFromSkill((s + priorSkill * 2) / (n + 2));
+  const priorMean = Math.max(0.25, Math.min(0.75, p)) * AVG_MULT;
+  return ratingFromScore((s + priorMean * 2) / (n + 2));
 }
 
 // BRONZE / SILVER / GOLD. Alex, 2026-08-26: "maybe we should have silver cards
@@ -194,8 +268,8 @@ export function compRating(cs, priorAcc = CALIBRATION.median) {
 // is also a ladder every football fan already reads, where "prospect / pro /
 // elite" had to be learned.
 //
-// Since the 2026-09-09 calibration the cuts MEAN something: 75 is the measured
-// 75th percentile (gold = top quarter), 60 falls at roughly the 35th.
+// Against the measured population (2026-09-09): the median player rates ~64
+// (silver), 75 needs ~68% on medium or ~63% on hard — roughly the top fifth.
 export function cardTier(overall) {
   if (overall >= 75) return "gold";
   if (overall >= 60) return "silver";
@@ -224,26 +298,28 @@ export function tierPalette(key) {
 
 /**
  * The full card model.
- * The second parameter is accepted for the eleven call sites that still pass a
- * raw-count accuracy; it is no longer used — the overall is derived here, from
- * the same weighted record every face uses, so no surface can disagree.
+ * @param catStats  per-key records
+ * @param _priorAcc accepted for older call sites; unused (the overall is derived here)
+ * @param lifetime  {c, a} raw lifetime totals — tops up a legacy record, see overallScore
  */
-export function computeCard(catStats = {}, _unusedPriorAcc) {
+export function computeCard(catStats = {}, _priorAcc, lifetime) {
   // Fold aliases into their face BEFORE reading, so a profile carrying both
   // `ChampionsLeague` and `UCL` (46 in prod) rates one Champions League.
   const folded = {};
   for (const [k, v] of Object.entries(catStats || {})) {
     const key = FACE_ALIAS[k] || k;
     const cur = folded[key] || { s: 0, n: 0, c: 0, a: 0 };
-    const sk = skillOf(v);
+    const sk = scoreOf(v);
     folded[key] = { s: cur.s + sk.s, n: cur.n + sk.n, c: cur.c + (v?.c || 0), a: cur.a + (v?.a || 0) };
   }
-  const { skill, answered: answeredTotal } = overallSkill(folded);
-  const acc = skill + PBAR;
-  const overall = ratingFromSkill(skill);
+  // Legacy = no raw key carries per-answer scores yet; only then does the
+  // lifetime top-up apply (see overallScore).
+  const { mean, answered: answeredTotal } = overallScore(folded, isScored(catStats) ? null : lifetime);
+  const acc = mean / AVG_MULT;
+  const overall = ratingFromScore(mean);
   const ratings = CARD_COMPS.map(comp => {
     const cs = folded[comp.cat];
-    const answered = skillOf(cs).n;
+    const answered = scoreOf(cs).n;
     return {
       abbr: comp.abbr, cat: comp.cat, name: comp.name, icon: comp.icon, color: comp.color,
       rating: compRating(cs, acc),
@@ -262,7 +338,7 @@ export function computeCard(catStats = {}, _unusedPriorAcc) {
     ratings, overall, tier: cardTier(overall), answeredTotal,
     rated: answeredTotal >= MIN_RATED_ANSWERS,
     accuracy: acc,
-    skill,
+    mean,
     calibration: { measured: CALIBRATION.measured, n: CALIBRATION.n },
   };
 }

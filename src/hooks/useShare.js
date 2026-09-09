@@ -195,7 +195,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
   const saveCardImage = useCallback(async () => {
     const correct = stats.totalCorrect || 0;
     const answered = stats.totalAnswered || 0;
-    const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4);
+    const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4, { c: correct, a: answered });
     const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
     const u = authProfile?.username;
     const name = (u && !isDef(u)) ? u
@@ -244,7 +244,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     const correct = stats.totalCorrect || 0;
     const answered = stats.totalAnswered || 0;
     const accuracy = (answered === 0 || correct > answered) ? "—" : `${Math.round(100 * correct / answered)}%`;
-    const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4);
+    const card = computeCard(stats.catStats || {}, (answered > 0 && correct <= answered) ? correct / answered : 0.4, { c: correct, a: answered });
     const params = new URLSearchParams({
       n: (() => {
         // Prefer the server username (where the set name actually lives) over the

@@ -888,7 +888,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
       {(() => {
         const fCat = friendStats.catStats || {};
         const acc = (totalAnswered > 0 && totalCorrect <= totalAnswered) ? totalCorrect / totalAnswered : 0.4;
-        const card = computeCard(fCat, acc);
+        const card = computeCard(fCat, acc, { c: friendStats.totalCorrect || 0, a: friendStats.totalAnswered || 0 });
         // card.rated is the SAME test the owner's card uses. This asked
         // `some(c => c.a > 0)` until 2026-09-07, so a friend who had answered a
         // single question was shown to you as "85 · GOLD" at 86px with five of
@@ -1473,7 +1473,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       <div className="pd-left">
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc);
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
           const tierLabel = tierPalette(card.tier).label;
           const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS; // a rating needs DATA: ten answered questions (2026-09-06)
           return (
@@ -1527,7 +1527,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   to end, so the first sight of the new card says why, once. */}
               {hasPlayed && !recalSeen && (
                 <div className="pd-recal" role="status">
-                  <span>Ratings recalibrated {RECAL_DATE_LABEL}: gold now means the top quarter of players.</span>
+                  <span>Ratings recalibrated {RECAL_DATE_LABEL}: medium questions now count 10% more, hard 20% more.</span>
                   <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
                 </div>
               )}
@@ -1536,7 +1536,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         })()}
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc);
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
           const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS; // a rating needs DATA: ten answered questions (2026-09-06)
           // Green-highlight the single strongest PLAYED league (same "strongest"
           // the scouting report names); everything else reads white. Cold-start
@@ -1648,7 +1648,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       })()}
       {(() => {
         const _acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-        const _card = computeCard(stats?.catStats || {}, _acc);
+        const _card = computeCard(stats?.catStats || {}, _acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
         // The single source of truth for "is there anything real to show here".
         // Same expression the empty state and the share/weekly buttons use, so the
         // whole screen agrees with itself — see the rating block below.
@@ -1729,7 +1729,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           rebuild exists to end, so the first sight of the new card says why. */}
       {(stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (
         <div className="pd-recal" role="status" style={{ marginTop: 0, marginBottom: 14 }}>
-          <span>Ratings recalibrated {RECAL_DATE_LABEL}: gold now means the top quarter of players.</span>
+          <span>Ratings recalibrated {RECAL_DATE_LABEL}: medium questions now count 10% more, hard 20% more.</span>
           <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
         </div>
       )}
@@ -1811,7 +1811,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           // player: strongest + weakest competition (from the card data), a
           // skill comparison (percentile), records, and a specialist title.
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc);
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
           // Base the verdict only on competitions the player has actually
           // answered — computeCard prior-seeds unplayed comps from overall
           // accuracy, so ranking the raw six would name "Strongest"/"Needs work"
@@ -1873,7 +1873,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       <div className="profile-col-right">
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc);
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
           const strongest = [...card.ratings].filter(r => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating)[0] || null;
           const accPct = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)
             ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";

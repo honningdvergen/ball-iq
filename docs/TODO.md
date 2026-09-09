@@ -58,6 +58,22 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       Simulated: 80% easy 68 · 50% hard 72 · 67% hard 90 gold. Alex's legacy
       61 stays 61 until he answers hard questions. His three dashes = the
       10-answer face gate (his 09-06 rule): BUN 6 / LAL 4 / SEA 4 answers.
+- [x] **1d. THE FINAL MODEL — Alex's sentence.** "61% on easy equals 61; 61%
+      at medium should be 10% more rewarding, hard 20%." A correct answer is
+      worth 1.0 / 1.1 / 1.2, a miss 0, rating = 100 × the mean, shrunk toward
+      the measured median player (64) with 20 answers of weight; decay 0.995
+      (half-life ~140). It replaced the percentile "score above expectation"
+      model of two hours earlier: right, and unexplainable on a card. The
+      writer moved into `recordAnswers()` in ballIqCard.js (unit-tested).
+      ⚠️ Two cliffs found and pinned by tests: (a) a legacy record is the
+      decayed ~100-answer window (Alex: 55/106 = 52% → 58 BRONZE beside
+      "Accuracy 61%"), so it is TOPPED UP from the lifetime totals (≤300
+      answers, average difficulty) → 65; (b) that top-up switched off at the
+      first scored quiz, so ten hard rights LOWERED him 65 → 63 — now it is
+      materialised as the `_legacy` key on the first scored write and fades
+      with every answer. Test: six rounds of hard UCL rights never lower the
+      number and end > +5. Note text: "medium questions now count 10% more,
+      hard 20% more".
 - [x] **1c. PROVISIONAL FACES** — Alex: "where is la liga… in the shadow realms?
       it can not vanish like this". From 3 answers a face prints its number muted
       (never the accented best); at 10, fully. On his record: LAL 59 · BUN 50 ·

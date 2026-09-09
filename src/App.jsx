@@ -42,7 +42,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, tierPalette, faceCatFor, skillOf, expectedFor } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, tierPalette, recordAnswers } from './lib/ballIqCard.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
@@ -5978,46 +5978,13 @@ function AppInner() {
     // the ratio stays in [0,1] and the 40–99 mapping is untouched. Bank mix
     // (25/48/27) keeps the average weight ≈1, so nobody's rating jumps on
     // upgrade; only the MARGINS change, in the direction players expect.
-    // ⚠️ SUPERSEDED 2026-09-09 — SCORE ABOVE EXPECTATION. Under the weights
-    // above, 80% on easy questions out-rated 50% on hard ones, though the
-    // population gets ~80% of easy right and ~45% of hard: the first is below
-    // par, the second above it. Alex: "you should be rewarded slightly more for
-    // getting hard questions correct" — by more than slightly. Each answer now
-    // scores (correct ? 1 : 0) − EXPECTED[diff] into `s`, with `n` counting
-    // answers; the card rates s/n (ballIqCard.js, calibrated). {c, a} keep
-    // being written — the progress bar, the merge and every older client read
-    // them — as plain decayed counts, weights gone. `d` stores RAW per-
-    // difficulty counts so the next calibration can measure EXPECTED in-app.
-    //
-    // Decay 0.98 → 0.99: half-life 34 → 69 answers. A card that reflects the
-    // last ~35 answers reads as "lately", not "me" — Alex's own 61 was a 52%
-    // recent window against a 61% lifetime.
-    const CAT_DECAY = 0.99;
-    const catStats = { ...(stats.catStats || {}) };
-    for (const ans of (newResult.allAnswers || [])) {
-      if (!ans || !ans.cat) continue;
-      // FILE UNDER THE FACE IT FEEDS (2026-09-09). Club quiz re-tags rows
-      // cat:"ClubQuiz" for the UI; the answer carries realCat + club, and
-      // faceCatFor routes it — an Arsenal question lands on PL, Juventus on
-      // SerieA. No face (theme question, French club) → its real cat, which
-      // still counts toward the overall. Existing "ClubQuiz" history keeps its
-      // key: it counts toward the overall and can never be re-attributed.
-      const key = faceCatFor(ans) || ans.cat;
-      const cur = catStats[key] || { c: 0, a: 0 };
-      const ok = ans.isCorrect ? 1 : 0;
-      const diff = (ans.diff === "easy" || ans.diff === "hard") ? ans.diff : "medium";
-      const prev = skillOf(cur); // legacy {c,a} converts once, here, then carries s/n
-      const d = { ...(cur.d || {}) };
-      const dk = diff[0]; // e / m / h
-      d[dk] = [((d[dk] || [0, 0])[0] || 0) + ok, ((d[dk] || [0, 0])[1] || 0) + 1];
-      catStats[key] = {
-        c: (cur.c || 0) * CAT_DECAY + ok,
-        a: (cur.a || 0) * CAT_DECAY + 1,
-        s: prev.s * CAT_DECAY + (ok - expectedFor(diff)),
-        n: prev.n * CAT_DECAY + 1,
-        d,
-      };
-    }
+    // ⚠️ SUPERSEDED 2026-09-09 — the arithmetic moved to recordAnswers() in
+    // lib/ballIqCard.js, beside the model that reads it, where it is unit-
+    // tested: difficulty-weighted accuracy (Alex: "61% on easy equals 61; 61%
+    // at medium should be 10% more rewarding, hard 20%"), per-answer decay
+    // 0.995, faces fed by club play, and a legacy record's lifetime top-up
+    // materialised on the first scored write. Read that file's header.
+    const catStats = recordAnswers(stats.catStats || {}, newResult.allAnswers || [], { c: stats.totalCorrect || 0, a: stats.totalAnswered || 0 });
     const updated = {
       // Preserve any stats keys not explicitly recomputed below — without this
       // spread, saveStats rebuilds from a hand-maintained allow-list and silently

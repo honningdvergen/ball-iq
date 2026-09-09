@@ -1,76 +1,92 @@
 import { describe, it, expect } from "vitest";
 import { CALIBRATION } from "../../src/data/cardCalibration.js";
-import { computeCard, ratingFromAccuracy, ratingFromSkill, faceCatFor, cardTier, PRIOR_WEIGHT, EXPECTED, PBAR, skillOf } from "../../src/lib/ballIqCard.js";
+import { computeCard, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
 
-// The card's number is only worth having if it means something against other
-// players. These pin the 2026-09-09 calibration and the two behaviours real
-// players complained about.
+// THE MODEL (Alex, 2026-09-09): "61% accuracy on easy equals 61; 61% at medium
+// should be 10% more rewarding, hard 20%." These pin that sentence, the two
+// guardrails around it, and the population reference it is checked against.
 
-describe("calibration table", () => {
-  it("is a measured, strictly increasing, generated table", () => {
-    expect(CALIBRATION.n).toBeGreaterThanOrEqual(50);
-    expect(CALIBRATION.measured).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-    const A = CALIBRATION.anchors;
-    for (let i = 1; i < A.length; i++) { expect(A[i][0]).toBeGreaterThan(A[i - 1][0]); expect(A[i][1]).toBeGreaterThan(A[i - 1][1]); }
-    expect(A[0]).toEqual([0, 40]);
-    expect(A[A.length - 1]).toEqual([1, 99]);
+const played = (n, acc, diff) => {
+  let s = 0; for (let i = 0; i < n; i++) s += ((i / n) < acc ? MULT[diff] : 0);
+  return { PL: { c: Math.round(n * acc), a: n, s, n } };
+};
+
+describe("Alex's sentence", () => {
+  it("61% on easy = 61, on medium = 67, on hard = 73 (once the prior has faded)", () => {
+    const N = 4000; // large so 20 answers of prior are noise
+    expect(computeCard(played(N, 0.61, "easy")).overall).toBe(61);
+    expect(computeCard(played(N, 0.61, "medium")).overall).toBe(67);
+    expect(computeCard(played(N, 0.61, "hard")).overall).toBe(73);
   });
-
-  it("the median player is a mid-silver 65; the 75th percentile is the gold line", () => {
-    expect(ratingFromAccuracy(CALIBRATION.median)).toBe(65);
-    const p75 = CALIBRATION.anchors.find(([, r]) => r === 75)[0];
-    expect(cardTier(ratingFromAccuracy(p75))).toBe("gold");
-    expect(cardTier(ratingFromAccuracy(p75 - 0.02))).toBe("silver");
+  it("the multipliers are exactly 1.0 / 1.1 / 1.2 and AVG_MULT is their bank-mix average", () => {
+    expect(MULT).toEqual({ easy: 1.0, medium: 1.1, hard: 1.2 });
+    expect(AVG_MULT).toBeCloseTo(0.25 * 1.0 + 0.48 * 1.1 + 0.27 * 1.2, 3);
   });
-
-  it("interpolates monotonically and clamps", () => {
-    let prev = -1;
-    for (let x = 0; x <= 1.0001; x += 0.01) { const r = ratingFromAccuracy(x); expect(r).toBeGreaterThanOrEqual(prev); prev = r; }
-    expect(ratingFromAccuracy(-1)).toBe(40);
-    expect(ratingFromAccuracy(2)).toBe(99);
-    expect(ratingFromAccuracy(NaN)).toBe(65);
+  it("a hard specialist at 50% out-rates an easy farmer at 55%; perfect on hard caps at 99", () => {
+    expect(computeCard(played(200, 0.5, "hard")).overall).toBeGreaterThan(computeCard(played(200, 0.55, "easy")).overall);
+    expect(computeCard(played(200, 1.0, "hard")).overall).toBe(99);
+    expect(ratingFromScore(1.2)).toBe(99);
+    expect(ratingFromScore(0)).toBe(40);
   });
 });
 
-describe("the number reflects the player, not their first two answers", () => {
-  // Alex's friend, 2026-09-09: "my overall kept getting lower and it did not
-  // reflect how well I actually answered". Simulate a steady 2-in-3 player.
-  const steady = (n) => { let c = 0, a = 0; for (let i = 0; i < n; i++) { a++; if (i % 3 !== 2) c++; } return { PL: { c, a } }; };
-
-  it("a steady above-median player NEVER falls: the number climbs toward their level", () => {
-    let prev = 0;
-    // Multiples of three: the 2-in-3 pattern is EXACTLY 0.667 only there.
-    for (const n of [9, 21, 30, 60, 99, 201]) {
-      const r = computeCard(steady(n)).overall;
-      expect(r).toBeGreaterThanOrEqual(prev);
-      prev = r;
-    }
-    // …and lands where a 0.67 player belongs: the gold line, not 80+.
-    expect(prev).toBeGreaterThanOrEqual(73);
-    expect(prev).toBeLessThanOrEqual(77);
+describe("the two guardrails", () => {
+  it("an unplayed card is the measured median player (~64), and two lucky rights cannot make gold", () => {
+    expect(computeCard({}).overall).toBe(Math.round(BASELINE * 100));
+    expect(computeCard({}).overall).toBe(64);
+    expect(computeCard({ PL: { c: 2, a: 2 } }).tier).not.toBe("gold");
+    expect(computeCard({ PL: { c: 2, a: 2 } }).rated).toBe(false);
+    expect(PRIOR_WEIGHT).toBe(20);
   });
-
-  it("a lucky start corrects by a few points, never a cliff (the friend's report)", () => {
-    // 8/10, then 65% for thirty more: the first printed number vs the settled one.
+  it("a steady player never falls: the number climbs toward their level", () => {
+    let prev = 0;
+    for (const n of [9, 21, 30, 60, 99, 201]) {
+      const r = computeCard(played(n, 2 / 3, "medium")).overall;
+      expect(r).toBeGreaterThanOrEqual(prev); prev = r;
+    }
+    expect(prev).toBeGreaterThanOrEqual(72); // 2/3 × 1.1 = 73.3; 20 answers of prior still pull a point at 201
+    expect(prev).toBeLessThanOrEqual(73);
+  });
+  it("a lucky 8/10 start corrects by a few points, never a cliff", () => {
     const first = computeCard({ PL: { c: 8, a: 10 } }).overall;
-    const later = computeCard({ PL: { c: 8 + 19.5, a: 40 } }).overall;
+    const later = computeCard({ PL: { c: 27.5, a: 40 } }).overall;
     expect(first - later).toBeLessThanOrEqual(4);
     expect(cardTier(first)).toBe(cardTier(later));
   });
+});
 
-  it("two lucky rights cannot make a gold card", () => {
-    const card = computeCard({ PL: { c: 2, a: 2 } });
-    expect(card.tier).not.toBe("gold");
-    expect(card.rated).toBe(false);
+describe("legacy records and the population reference", () => {
+  it("a legacy record is topped up from the lifetime totals, until any key carries scores", () => {
+    const window = { PL: { c: 55, a: 106 } };                  // Alex's decayed window, 52%
+    const bare = computeCard(window).overall;                  // 58
+    const topped = computeCard(window, 0.61, { c: 305, a: 500 }).overall;
+    expect(topped).toBeGreaterThan(bare);
+    expect(topped).toBeGreaterThanOrEqual(64);
+    // the cap: a 5,000-answer lifetime counts no more than LIFETIME_TOPUP extra
+    expect(computeCard(window, 0.61, { c: 3050, a: 5000 }).overall).toBe(topped);
+    // once a key carries s/n the top-up stops — the card is the player's own scored answers
+    const scored = { ...window, UCL: { c: 1, a: 2, s: 1.1, n: 2 } };
+    expect(computeCard(scored, 0.61, { c: 305, a: 500 }).overall).toBe(computeCard(scored).overall);
+    // garbage lifetime is ignored
+    expect(computeCard(window, 0.61, { c: 900, a: 500 }).overall).toBe(bare);
   });
 
-  it("a genuinely good player rises, a genuinely poor one falls — in both directions from 65", () => {
-    expect(computeCard({ PL: { c: 36, a: 40 } }).overall).toBeGreaterThan(80);
-    expect(computeCard({ PL: { c: 12, a: 40 } }).overall).toBeLessThan(55);
+  it("a legacy {c,a} record is scored as average difficulty", () => {
+    expect(scoreOf({ c: 55, a: 106 })).toEqual({ s: AVG_MULT * 55, n: 106 });
+    expect(scoreOf({ c: 1, a: 1, s: 1.2, n: 1 })).toEqual({ s: 1.2, n: 1 });
+    expect(scoreOf(undefined)).toEqual({ s: 0, n: 0 });
+    expect(ratingFromAccuracy(CALIBRATION.median)).toBe(64);
   });
-
-  it("the prior weight is twenty answers", () => { expect(PRIOR_WEIGHT).toBe(20); });
+  it("the measured population (n≥50, increasing percentiles) puts the median in silver and the 90th in gold", () => {
+    expect(CALIBRATION.n).toBeGreaterThanOrEqual(50);
+    const A = CALIBRATION.anchors;
+    for (let i = 1; i < A.length; i++) expect(A[i][0]).toBeGreaterThan(A[i - 1][0]);
+    const p = (acc) => ratingFromAccuracy(acc);
+    expect(cardTier(p(CALIBRATION.median))).toBe("silver");
+    const p90 = A.find(([, r]) => r === 84)[0];
+    expect(cardTier(p(p90))).toBe("gold");
+  });
 });
 
 describe("club play feeds the faces", () => {
@@ -81,12 +97,10 @@ describe("club play feeds the faces", () => {
     expect(faceCatFor({ cat: "ClubQuiz", realCat: "Legends", club: "Juventus" })).toBe("SerieA");
     expect(faceCatFor({ cat: "ChampionsLeague" })).toBe("UCL");
     expect(faceCatFor({ cat: "Euros" })).toBe("WorldCup");
-    // A theme question with no club, or a club whose league has no face, feeds nothing.
     expect(faceCatFor({ cat: "History" })).toBeNull();
     expect(faceCatFor({ cat: "ClubQuiz", realCat: "History", club: "Marseille" })).toBeNull();
     expect(faceCatFor(null)).toBeNull();
   });
-
   it("the generated route covers every English, Spanish, German and Italian pack", () => {
     const by = {};
     for (const v of Object.values(CLUB_NAME_TO_COMP)) by[v] = (by[v] || 0) + 1;
@@ -98,44 +112,51 @@ describe("club play feeds the faces", () => {
   });
 });
 
-// ── SCORE ABOVE EXPECTATION (2026-09-09, later the same day) ─────────────────
-// Alex: "you should be rewarded slightly more for getting hard questions
-// correct". Under the old evidence weights 80% on easy out-rated 50% on hard.
-describe("difficulty is scored against what the population gets right", () => {
-  const played = (n, acc, diff) => {
-    let s = 0; for (let i = 0; i < n; i++) s += ((i / n) < acc ? 1 : 0) - EXPECTED[diff];
-    return { PL: { c: Math.round(n * acc), a: n, s, n } };
-  };
+// ── THE WRITER ────────────────────────────────────────────────────────────────
+import { recordAnswers, LEGACY_KEY, CAT_DECAY } from "../../src/lib/ballIqCard.js";
+describe("recordAnswers", () => {
+  const alex = { UCL: { c: 8, a: 20 }, PL: { c: 6, a: 12 }, Transfers: { c: 6, a: 11 }, WorldCup: { c: 6, a: 11 }, ClubQuiz: { c: 5, a: 10 }, Managers: { c: 9, a: 10 }, Records: { c: 3, a: 8 }, Bundesliga: { c: 2, a: 6 }, LaLiga: { c: 2, a: 4 }, SerieA: { c: 3, a: 4 } };
+  const life = { c: 305, a: 500 };
+  const hard = (cat, n, ok = true) => Array.from({ length: n }, () => ({ cat, diff: "hard", isCorrect: ok }));
 
-  it("expected scores are ordered easy > medium > hard and PBAR is their bank-mix average", () => {
-    expect(EXPECTED.easy).toBeGreaterThan(EXPECTED.medium);
-    expect(EXPECTED.medium).toBeGreaterThan(EXPECTED.hard);
-    expect(PBAR).toBeCloseTo(0.25 * EXPECTED.easy + 0.48 * EXPECTED.medium + 0.27 * EXPECTED.hard, 2);
-  });
-
-  it("a hard specialist at 50% out-rates an easy farmer at 80%", () => {
-    const farmer = computeCard(played(40, 0.8, "easy")).overall;      // par on easy
-    const specialist = computeCard(played(40, 0.5, "hard")).overall;  // above par on hard
-    expect(specialist).toBeGreaterThan(farmer);
-    // …and the same 67% is gold on hard, the gold LINE on medium.
-    expect(computeCard(played(60, 0.667, "hard")).tier).toBe("gold");
-    expect(computeCard(played(60, 0.667, "medium")).overall).toBeGreaterThanOrEqual(74);
-    expect(computeCard(played(60, 0.667, "medium")).overall).toBeLessThanOrEqual(76);
-  });
-
-  it("a legacy {c,a} record rates exactly as its plain accuracy did (the calibration was measured on those)", () => {
-    for (const [c, a] of [[55, 106], [40, 60], [12, 40], [36, 40]]) {
-      const legacy = computeCard({ PL: { c, a } }).overall;
-      const asSkill = ratingFromSkill((c - PBAR * a + (0.58 - PBAR) * PRIOR_WEIGHT) / (a + PRIOR_WEIGHT));
-      expect(legacy).toBe(asSkill);
+  it("⚠️ right answers never lower the card — the lifetime top-up is materialised, not switched off", () => {
+    const before = computeCard(alex, 0.61, life).overall;
+    let cs = alex, prev = before;
+    for (let round = 0; round < 6; round++) {
+      cs = recordAnswers(cs, hard("UCL", 10), life);
+      const now = computeCard(cs, 0.61, life).overall;
+      expect(now).toBeGreaterThanOrEqual(prev);
+      prev = now;
     }
-    expect(skillOf({ c: 61, a: 100 }).s).toBeCloseTo(61 - PBAR * 100, 6);
-    expect(skillOf({ c: 1, a: 1, s: 0.4, n: 1 })).toEqual({ s: 0.4, n: 1 });
-    expect(skillOf(undefined)).toEqual({ s: 0, n: 0 });
+    expect(prev).toBeGreaterThan(before + 5);
+    expect(cs[LEGACY_KEY]).toBeDefined();
+    expect(cs[LEGACY_KEY].n).toBeLessThan(300); // it fades
   });
 
-  it("an unplayed card is the median player, 65 — never above it", () => {
-    expect(computeCard({}).overall).toBe(65);
-    expect(ratingFromAccuracy(0.58)).toBe(65);
+  it("scores (correct ? MULT : 0), counts, keeps c/a and raw per-difficulty d", () => {
+    const cs = recordAnswers({}, [
+      { cat: "PL", diff: "hard", isCorrect: true }, { cat: "PL", diff: "easy", isCorrect: false }, { cat: "PL", diff: "medium", isCorrect: true },
+    ]);
+    const pl = cs.PL;
+    expect(pl.n).toBeCloseTo(1 * CAT_DECAY * CAT_DECAY + 1 * CAT_DECAY + 1, 6);
+    expect(pl.s).toBeCloseTo(1.2 * CAT_DECAY * CAT_DECAY + 0 + 1.1, 6);
+    expect(pl.d).toEqual({ h: [1, 1], e: [0, 1], m: [1, 1] });
+    expect(pl.a).toBeCloseTo(pl.n, 6);
+    expect(cs[LEGACY_KEY]).toBeUndefined(); // no lifetime → no top-up
+  });
+
+  it("files a club answer under its league's face", () => {
+    const cs = recordAnswers({}, [{ cat: "ClubQuiz", realCat: "History", club: "Juventus", diff: "medium", isCorrect: true }]);
+    expect(cs.SerieA).toBeDefined();
+    expect(cs.ClubQuiz).toBeUndefined();
+  });
+
+  it("wrong answers lower it, and a miss on hard costs the same as a miss on easy", () => {
+    const base = recordAnswers({}, hard("PL", 20));
+    const r0 = computeCard(base).overall;
+    expect(computeCard(recordAnswers(base, hard("PL", 5, false))).overall).toBeLessThan(r0);
+    const e = computeCard(recordAnswers(base, [{ cat: "PL", diff: "easy", isCorrect: false }])).overall;
+    const h = computeCard(recordAnswers(base, [{ cat: "PL", diff: "hard", isCorrect: false }])).overall;
+    expect(e).toBe(h);
   });
 });

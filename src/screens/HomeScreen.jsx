@@ -509,7 +509,7 @@ function HomeScreenImpl({
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats?.totalCorrect || 0) <= stats.totalAnswered)
             ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc);
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
           const tm = tierPalette(card.tier);
           const lvl = getLevelInfo(xp || 0);
           return (
@@ -603,7 +603,7 @@ function HomeScreenImpl({
           const correct = stats?.totalCorrect || 0;
           const acc = answered > 0 && correct <= answered ? correct / answered : 0.4;
           const hasPlayed = answered >= MIN_RATED_ANSWERS;
-          const card = computeCard(stats?.catStats || {}, acc);
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
           const played = (card.ratings || []).filter((r) => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating);
           const strongest = played[0] || null;
           const best = stats?.bestScore || 0;
