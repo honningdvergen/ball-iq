@@ -9,7 +9,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
-import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, Gamepad2, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
+import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
 // lift() exists because a dark brand colour at low alpha on a dark card is
@@ -1195,7 +1195,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, nameEditNonce, isActiveTab = true }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, onPlayLeague, nameEditNonce, isActiveTab = true }) {
   // Declared first: saveName (well above where this used to sit) calls it.
   // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
   // native window.alert dialog if no onToast prop was provided. In
@@ -1825,9 +1825,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             : "Rising Talent";
           const accPct = (stats.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)
             ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";
+          // THE REPORT HANDS YOU A QUIZ (2026-09-09). "Strongest" repeated what the
+          // card's accented face already says, and "Best score 10/10" repeated
+          // "Best run 10 in a row". What the card cannot do is act: the weakest
+          // rated league now carries a Play pill that opens that league's quiz —
+          // the report describes you less and moves you more.
           const rows = [];
-          if (strongest) rows.push({ icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" });
-          if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)" });
+          if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.name} · ${weakest.rating}`, color: "var(--t1)",
+            action: onPlayLeague ? { label: "Play", color: weakest.color, onTap: () => onPlayLeague(weakest.cat) } : null });
+          else if (strongest) rows.push({ icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" });
           else rows.push({ Icon: Compass, label: "Next up", value: "Play more to build your card", color: "var(--t2)" });
           // Only show "Top X%" when it's actually a flex — iqPercentile floors
           // at 15, so a weak player would otherwise read "Top 85%" (sounds great,
@@ -1837,7 +1843,6 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           // the rest of the app hides a zero streak).
           if (loginStreak >= 1) rows.push({ Icon: Flame, label: "Day streak", value: String(loginStreak), color: "var(--gold)" });
           rows.push({ Icon: Medal, label: "Best run", value: `${stats.bestStreak || 0} in a row`, color: "var(--text)" });
-          if (stats.bestScore > 0) rows.push({ Icon: Gamepad2, label: "Best score", value: `${stats.bestScore}/10`, color: "var(--text)" });
           if (stats.bestHotStreak > 0) rows.push({ Icon: Zap, label: "Hot Streak", value: String(stats.bestHotStreak), color: "var(--gold)" });
           if (stats.bestTrueFalse > 0) rows.push({ Icon: CircleCheck, label: "True/False", value: `${stats.bestTrueFalse}/20`, color: "var(--t1)" });
           return (
@@ -1850,9 +1855,16 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                       {r.Icon ? <r.Icon size={17} strokeWidth={2.2} color={r.color} /> : r.icon}
                     </div>
                     <div style={{ fontSize: 13, color: "var(--t2)", fontWeight: 600 }}>{r.label}</div>
-                    <div style={{ marginLeft: "auto", display: "flex", alignItems: "baseline", gap: 7 }}>
+                    <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 9 }}>
                       {r.sub ? <span style={{ fontSize: 11.5, color: "var(--t3)", fontWeight: 700 }}>{r.sub}</span> : null}
                       <span style={{ fontSize: 15, fontWeight: 800, color: r.color }}>{r.value}</span>
+                      {r.action && (
+                        <button type="button" onClick={r.action.onTap} aria-label={`Play a ${r.value.split(" · ")[0]} quiz`}
+                          style={{ padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 800, fontFamily: "inherit", cursor: "pointer",
+                                   background: `color-mix(in srgb, ${r.action.color} 16%, transparent)`, color: r.action.color, border: `1px solid color-mix(in srgb, ${r.action.color} 45%, transparent)` }}>
+                          {r.action.label}
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -1879,11 +1891,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";
           const DASH = "—";
           const rows = [
-            { label: "Strongest", value: strongest ? `${strongest.name} · ${strongest.rating}` : DASH, cls: "is-green" },
             { label: "Accuracy", value: accPct, cls: "is-mono" },
             { label: "Day streak", value: (loginStreak || 0) >= 1 ? `🔥 ${loginStreak}` : DASH, cls: "is-amber" },
             { label: "Best run", value: (stats?.bestStreak || 0) > 0 ? `${stats.bestStreak} in a row` : DASH, cls: "is-mono" },
-            { label: "Best score", value: (stats?.bestScore || 0) > 0 ? `${stats.bestScore} / 10` : DASH, cls: "is-mono" },
           ];
           return (
             <div className="pd-scout">

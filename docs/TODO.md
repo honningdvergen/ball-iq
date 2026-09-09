@@ -119,6 +119,11 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       rated gates read the DECAYED answer count, so the tenth answer left a
       player at 9.78 and "10 to get rated" never reached zero — gates now count
       raw answers from `d` (`rawAnswered`).
+- [x] **Profile Scouting Report hands you a quiz.** "Strongest" repeated the
+      card's accented face and "Best score 10/10" repeated "Best run 10 in a
+      row" — both gone (mobile + desktop). "Needs work · Champions League · 46"
+      now carries a Play pill in the league's colour that opens that league's
+      quiz (`onPlayLeague` = launchLeagueQuiz). Browser-verified at 375.
 - [ ] Share PNG + OG unfurl: lead with the strongest face + the delta; A/B the
       share copy.
 
