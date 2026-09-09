@@ -151,7 +151,7 @@ describe('icons are icons, not emoji', () => {
     // The notification sheet retired 2026-09-06; the ask now lives in the
     // results panel (components/DailyDone.jsx) as a Lucide bell on a real button.
     const dd = readFileSync(`${SRC}/components/DailyDone.jsx`, 'utf8');
-    expect(dd, 'the Remind me control needs its bell').toMatch(/<Bell size=\{14\}/);
+    expect(dd, 'the Remind me control needs its bell').toMatch(/<Bell size=\{20\}/);
     // Pins that it IS an icon, not what size it is. The size changed from 26
     // to 24 when the modal became the house sheet (review C13) and a pixel
     // value has nothing to do with the rule this file exists to enforce.
@@ -172,7 +172,7 @@ describe('icons are icons, not emoji', () => {
     // role at all. Its replacement is a plain <button> with an aria-label in
     // the results panel, and it asks for permission on that tap.
     const dd = readFileSync(`${SRC}/components/DailyDone.jsx`, 'utf8');
-    expect(dd).toMatch(/aria-label="Remind me tomorrow"/);
+    expect(dd).toMatch(/aria-label=\{`Turn on a daily reminder at \$\{reminderHourLabel\(\)\}`\}/);
     expect(dd).toMatch(/onClick=\{doRemind\}/);
     const app = readFileSync(`${SRC}/App.jsx`, 'utf8');
     expect(app, 'nothing opens the retired sheet').not.toMatch(/setNotifPromptOpen\(true\)/);
