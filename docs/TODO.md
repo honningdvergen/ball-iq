@@ -114,6 +114,18 @@ seven-list (reach → card-as-share → club-page↔app → authority → questi
       Browser-verified at 375.
 - [x] **2b. History pills** — Alex: "the 4 play buttons sit too close"; column
       44 → 54, pills 11pt apart at 375, date column 97pt ("Yesterday" needs 70).
+### CLUB PAGE ↔ APP (#3) — 2026-09-09 afternoon
+- [x] **The page's IQ is the app's IQ.** "Your Arsenal IQ 73" mapped the
+      percentage to six fixed numbers (46…99) that meant nothing in the app.
+      grade() now scores the round with the card's multipliers (1.0/1.1/1.2 by
+      data-diff, 100 × mean, 40–99); the six fan tiers stay banded on the plain
+      percentage (localised copy, not the rating). A `.bq-rated` line under the
+      score says "Medium and hard questions count for more — the same maths
+      as your Ball IQ card in the app", in all nine languages (`ratedLine`,
+      drafted; Alex reviews i18n). First time page and app say one number.
+- [ ] Next: the app honours it — a club-page round lands on the player's
+      league face when they install (needs the visitor id → account join).
+
 ### THE CARD AS THE SHARE OBJECT (#2) — 2026-09-09 afternoon
 - [x] **Results card delta.** The results screen was blank where the card had
       just moved. `cardDelta()` (pure, tested) runs in the writer over the two

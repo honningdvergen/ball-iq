@@ -155,6 +155,7 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-note b{color:var(--tx);font-family:var(--mono);font-weight:700}
   .bq-tier{display:inline-block;font-size:15px;font-weight:800;color:var(--club-ink,var(--grn-ink));background:var(--club,var(--grn));padding:5px 13px;border-radius:999px}
   .bq-sub{font-size:13.5px;color:var(--tx4);margin-top:11px}
+  .bq-rated{font-size:12.5px;color:var(--tx4);margin-top:6px;line-height:1.4}
   .bq-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
   .bq-row a,.bq-row button{flex:1 1 140px;text-align:center;padding:12px;border-radius:11px;background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:14px;border:none;cursor:pointer}
   .bq-row a:hover{text-decoration:none;filter:brightness(1.05)}

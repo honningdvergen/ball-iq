@@ -55,8 +55,19 @@ var cslug=root.getAttribute('data-slug')||'',ccol=root.getAttribute('data-color'
 var daily=root.getAttribute('data-daily')||'';
 var bqStoreHref=root.getAttribute('data-store')||'/get';
 var BANDS=[0,25,45,65,85,100];
-function grade(sc,n){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
-if(pct>=100)i=BANDS.length-1;var iq=[46,54,63,74,88,99][i];return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
+/* ⚠️ THE PAGE'S IQ IS THE APP'S IQ (2026-09-09). This mapped the percentage
+   to six fixed numbers (46…99) that meant nothing in the app. The app's card
+   is difficulty-weighted accuracy — a correct answer is worth 1.0 easy /
+   1.1 medium / 1.2 hard, a miss 0, the rating is 100 × the mean — so the
+   page now says the same number for the same round, and the finish card
+   says so. The six fan tiers stay banded on the plain percentage: they are
+   localised copy, not the rating. rows carry data-diff from the build. */
+var MULT={easy:1.0,medium:1.1,hard:1.2};
+function grade(sc,n,rows){var pct=n?Math.round(sc/n*100):0,i=0;for(var g=0;g<BANDS.length;g++){if(pct>=BANDS[g])i=g}
+if(pct>=100)i=BANDS.length-1;var iq;
+if(rows&&rows.length){var s=0,k;for(k=0;k<rows.length;k++){var d=String((rows[k].el&&rows[k].el.getAttribute('data-diff'))||'medium').toLowerCase();s+=rows[k].got===1?(MULT[d]||1.1):0}
+iq=Math.max(40,Math.min(99,Math.round(100*s/rows.length)))}else{iq=[46,54,63,74,88,99][i]}
+return{iq:iq,tier:tiers[i]||'Fan',pct:pct}}
 /* ── TODAY'S SET ──────────────────────────────────────────────────────────
    The page ships every question server-rendered in a fixed difficulty arc, and
    that must not change: it is the crawlable text, and it is what a reader with
@@ -358,7 +369,7 @@ else if(navigator.clipboard){navigator.clipboard.writeText(txt+' '+url).then(fun
 var outs=res.querySelectorAll('a[href]');for(var oi=0;oi<outs.length;oi++)(function(el){el.addEventListener('click',function(){var h=el.getAttribute('href');bqev(h.indexOf('/answers')>=0?'clubq-out-answers':'clubq-out-store')})})(outs[oi]);
 }
 function finish(){
-rounds++;var G=grade(sc,run.length);
+rounds++;var G=grade(sc,run.length,run);
 bqev('clubq-finish');tag('clubq-rounds',rounds);
 if(daily){dailyCard(sc,run.length,true);return}
 var sday=bumpStreak();tag('clubq-streak',sday);if(sday>=2)bqev('clubq-returned');tag('clubq-score',G.pct>=85?'85+':G.pct>=65?'65-84':G.pct>=45?'45-64':'under-45');
@@ -466,6 +477,10 @@ var bqStore=root.getAttribute('data-store')||'/get';
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">'+esc(fmt(T('yourIq','Your {name} IQ'),{name:name}))+'</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+esc(fmt(T('right','{sc} of {n} right · {pct}% · best streak {best}'),{sc:sc,n:run.length,pct:G.pct,best:best}))+'</div>'
+/* THE BRIDGE (2026-09-09): the page and the app now say the same number, and
+   this line says so. It is the first thing on the static surface that the
+   app can honour — the app keeps this as the club's league rating. */
++'<div class="bq-rated">'+esc(T('ratedLine','Medium and hard questions count for more \u2014 the same maths as your Ball IQ card in the app.'))+'</div>'
 +(sday>=2?'<div class="bq-days">'+esc(fmt(T('daysRow','{d} days in a row'),{d:sday}))+'</div>':'')
 +'<div class="bq-row">'+cont+'</div>'+appLink
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
