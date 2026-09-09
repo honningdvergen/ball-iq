@@ -240,12 +240,6 @@ function HomeScreenImpl({
         const isDefaultName = (n) => !n || n === "Player" || /^player_/i.test(n);
         const homeRealUsername = authProfile?.username && !isDefaultName(authProfile.username) ? authProfile.username : null;
         const homeHasUsername = !!homeRealUsername;
-        // Brand-new guest installs (no signed-in user, no local name)
-        // used to flash "Good morning, Guest" before auth resolved. Drop
-        // the placeholder and the trailing comma when no real name is
-        // available — leaves "Good morning" alone until the user sets
-        // a name (CTA below offers the affordance).
-        const homeDisplayName = homeRealUsername || (profile?.name && !isDefaultName(profile.name) ? profile.name : null);
         const homeGreetingBase = (() => {
           const now = new Date();
           const h = now.getHours();
@@ -271,7 +265,14 @@ function HomeScreenImpl({
           const daySeed = now.getFullYear() * 372 + (now.getMonth() + 1) * 31 + now.getDate();
           return (!automated && daySeed % 5 === 0) ? "Good ebening" : "Good evening";
         })();
-        const greeting = homeGreetingBase + ((homeAuthLoading || homeDisplayName) ? "," : "");
+        // THE GREETING CARRIES NO NAME (Alex, 2026-09-09). "Good afternoon, Alex"
+        // fit because his name is four letters; the line was nowrap + ellipsis,
+        // so a longer name printed "Good afternoon, Alexander…" — the worst of
+        // both. The time-of-day line is the charm ("Still up" at 01:16) and it
+        // needs no name; the name is the Profile tab's job. Dropping it also
+        // frees the line from homeDisplayName, so a signed-out player gets the
+        // same header instead of a shorter one.
+        const greeting = homeGreetingBase;
         const ws = readWordleTodayStatus();
         const footleDone = ws.kind === "won" || ws.kind === "lost";
         // Sprint #12: when both daily rituals are complete, omit the
@@ -299,10 +300,10 @@ function HomeScreenImpl({
 
                 What earns the space is what changes: the day (this is a daily
                 app — the date says which puzzles these are), then the streak,
-                then the way out to Settings. A real name still gets the
-                greeting, with the date kept underneath it rather than lost. */}
+                then the way out to Settings. The greeting is the time of day,
+                no name (2026-09-09 — see `greeting`), with the date above it. */}
             <div style={{display:"flex", alignItems:"center", gap:10}}>
-              <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:2, flex:1, minWidth:0}}>
+              <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:6, flex:1, minWidth:0}}>
                 {/* THE DATELINE (Alex, 2026-09-07, option D of the five he was
                     shown): the date is a small tracked label, and "Today" below
                     is the one real heading. Before this the date was 17px/800
@@ -313,11 +314,9 @@ function HomeScreenImpl({
                     people scan for, and the date still says WHICH day's puzzles
                     these are, which is the job it was promoted for. */}
                 <div className="hg-dateline">{todayLabel}</div>
-                {homeDisplayName && (
-                  <div className="hg-greet" style={{fontSize:17, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1.15, maxWidth:"100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>
-                    {`${greeting} ${homeDisplayName}`}
-                  </div>
-                )}
+                <div className="hg-greet" style={{fontSize:20, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1.1, maxWidth:"100%"}}>
+                  {greeting}
+                </div>
               </div>
               {loginStreak > 0 && (
                 <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
