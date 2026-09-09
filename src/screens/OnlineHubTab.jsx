@@ -57,7 +57,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
     <div className="screen tab-content online-hub">
       {/* Title + win-streak pill (no local gear — the global header has one) */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 16px"}}>
-        <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Online</div>
+        <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Multiplayer</div>
         {stats.streak >= 2 && (
           <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 13px",borderRadius:999,background:"rgba(255,193,7,0.08)",border:"1px solid rgba(255,193,7,0.3)"}}>
             <span style={{fontSize:12}}>🔥</span>

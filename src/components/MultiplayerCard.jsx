@@ -27,14 +27,22 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onInvit
 
   return (
     <div className="todays-seven-secondary mp-row" role="group" aria-label="Multiplayer">
-      <button type="button" className="mp-row-open" onClick={handleOpen} aria-label="Open the Online tab">
+      <button type="button" className="mp-row-open" onClick={handleOpen} aria-label="Open the Multiplayer tab">
         <span className="t7s-icon" aria-hidden="true"><Users size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title">Play with Friends</span>
+          {/* ONE NAME (Alex, 2026-09-09: "should we call it online or
+              multiplayer?"). It was three: "Online" on the tab, "Play with
+              Friends" here, "Online Multiplayer" in the FAQ. "Multiplayer" is
+              the word people search for and it names the thing, not the
+              transport; the tab, this row, the hub heading and the FAQ now
+              agree. The tab's id stays `online` — it is in every door URL. */}
+          <span className="t7s-title">Multiplayer</span>
           {/* Capacity, not a question count: Hot Streak and Survival Duel are
               not 10 questions, and "up to 8" is already our claim on the site
-              and the store listing. */}
-          <span className="t7s-sub">Live rooms · up to 8 players</span>
+              and the store listing. NOT a live count: 4 rooms in the last
+              7 days and 0 open at the time of writing — "0 rooms open now"
+              reads dead, which is worse than quiet. */}
+          <span className="t7s-sub">Up to 8 players · live rooms or one phone</span>
         </span>
       </button>
       <button type="button" className="t7s-cta mp-row-invite" onClick={handleInvite} aria-label="Create a room and invite friends">Invite</button>

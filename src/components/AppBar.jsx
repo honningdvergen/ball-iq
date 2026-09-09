@@ -17,7 +17,7 @@ const TABS = [
   // sent people to a page whose own title disagreed with the button they
   // pressed. tests/unit/nav-label-parity.test.js now holds the three in step.
   { id: 'daily', Icon: CalendarDays, label: 'History' },
-  { id: 'online', Icon: Globe, label: 'Online' },
+  { id: 'online', Icon: Globe, label: 'Multiplayer' },
   { id: 'profile', Icon: User, label: 'Profile' },
 ];
 

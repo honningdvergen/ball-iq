@@ -3841,7 +3841,7 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
 const FAQ_ENTRIES = [
   {
     q: "How do I play with friends online?",
-    a: `Tap "Play with Friends" on the home screen and choose Online Multiplayer. The host taps "Create Room" and gets a 6-character room code (like ABC123). Share the code with up to seven friends — they tap "Join with Code", enter it, and land in your lobby. Once at least one friend has joined, the host taps "Start Game" and you all play the same questions in real time. Want a quick local game instead? "Local Multiplayer" still works for pass-and-play on a single device.`,
+    a: `Tap "Multiplayer" on the home screen and choose Online Multiplayer. The host taps "Create Room" and gets a 6-character room code (like ABC123). Share the code with up to seven friends — they tap "Join with Code", enter it, and land in your lobby. Once at least one friend has joined, the host taps "Start Game" and you all play the same questions in real time. Want a quick local game instead? "Local Multiplayer" still works for pass-and-play on a single device.`,
   },
   {
     q: "How do I share a multiplayer invite?",
@@ -4867,7 +4867,7 @@ function AppInner() {
     "online-stage1": "Online multiplayer", "online-stage1-lobby": "Lobby",
     "local-setup": "Pass and play",
   };
-  const TAB_TITLES = { home: "Home", daily: "Daily", online: "Online", profile: "Profile" };
+  const TAB_TITLES = { home: "Home", daily: "History", online: "Multiplayer", profile: "Profile" };
   const screenTitle = useMemo(() => {
     if (screen === "home") return TAB_TITLES[tab] || "Home";
     return SCREEN_TITLES[screen] || "";
@@ -8604,7 +8604,7 @@ function AppInner() {
         {showFriendsPicker && (
           <div className="diff-overlay" onClick={() => setShowFriendsPicker(false)}>
             <div ref={friendsPickerRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
-              <div className="diff-sheet-title">Play with Friends</div>
+              <div className="diff-sheet-title">Multiplayer</div>
               <div className="diff-sheet-sub">Who's joining?</div>
               <div className="diff-options">
                 <button
@@ -9283,7 +9283,7 @@ function AppInner() {
                 winning). Pinned by tests/unit/tab-switch-no-haptic.test.js. */}
             {[
               { id:"home",     Icon: Home,         label:"Home"    },
-              { id:"online",   Icon: Globe,        label:"Online"  },
+              { id:"online",   Icon: Globe,        label:"Multiplayer" },
               { id:"daily",    Icon: CalendarDays, label:"History", badge: false },
               { id:"profile",  Icon: User,         label:"Profile" },
             ].map(({ id, Icon, label, badge }) => (
