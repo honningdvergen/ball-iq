@@ -1845,7 +1845,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const strongest = played[0] || null;
           const weakest = played.length >= 2 ? played[played.length - 1] : null;
           const spread = strongest && weakest ? strongest.rating - weakest.rating : 0;
-          const title = strongest && spread >= 5 ? `${strongest.name} Specialist`
+          // `short`, not `name` — see CARD_COMPS. "Legends & History Specialist"
+          // and "Clubs worldwide Specialist" are what `name` produces here.
+          const title = strongest && spread >= 5 ? `${strongest.short || strongest.name} Specialist`
             : played.length >= 3 ? "Versatile All-Rounder"
             : "Rising Talent";
           const accPct = (stats.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)

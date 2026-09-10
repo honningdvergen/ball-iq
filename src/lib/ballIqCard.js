@@ -83,9 +83,9 @@ export const CARD_COMPS = [
   // the player: a Barcelona fan opened the card and saw EPL and no La Liga.
   // Alex, 2026-09-10: "we ditched the other leagues apart from premier league,
   // i am not sure where the logic in that is."
-  { abbr: "EPL", cat: "PL",       name: "Premier League",     icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
-  { abbr: "UCL", cat: "UCL",      name: "Champions League",   icon: "⭐", color: "#123A8F" },
-  { abbr: "INT", cat: "WorldCup", name: "International",      icon: "🌍", color: "#8A6D1B" },
+  { abbr: "EPL", cat: "PL",       name: "Premier League",     short: "Premier League",   icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
+  { abbr: "UCL", cat: "UCL",      name: "Champions League",   short: "Champions League", icon: "⭐", color: "#123A8F" },
+  { abbr: "INT", cat: "WorldCup", name: "International",      short: "International",    icon: "🌍", color: "#8A6D1B" },
   // ⚠️ DO NOT INVENT ABBREVIATIONS. EPL, UCL and INT are abbreviations football
   // fans already know; CLB, LEG and REC were coined here and nobody has ever
   // seen them — "REC" reads as a record button and "LEG" reads as a leg. Alex,
@@ -99,9 +99,9 @@ export const CARD_COMPS = [
   // shed: true for most, wrong for a real minority. The `cat` stays "Clubs"
   // because it is a STORAGE KEY with rows already written under it; only the
   // label changed.
-  { abbr: "WORLD",   cat: "Clubs",    name: "Clubs worldwide",    icon: "🛡️", color: "#EE8707" },
-  { abbr: "LEGENDS", cat: "Legends",  name: "Legends & History",  icon: "📜", color: "#B03A2E" },
-  { abbr: "RECORDS", cat: "Records",  name: "Records & Managers", icon: "📊", color: "#1B7F79" },
+  { abbr: "WORLD",   cat: "Clubs",    name: "Clubs worldwide",    short: "Club Football",    icon: "🛡️", color: "#EE8707" },
+  { abbr: "LEGENDS", cat: "Legends",  name: "Legends & History",  short: "Legends",          icon: "📜", color: "#B03A2E" },
+  { abbr: "RECORDS", cat: "Records",  name: "Records & Managers", short: "Records",          icon: "📊", color: "#1B7F79" },
 ];
 
 // Bank categories that ARE a face under another name. `ChampionsLeague` is a
@@ -124,6 +124,19 @@ export const FACE_ALIAS = {
   Ligue1: "Clubs", SuperLig: "Clubs", Primeira: "Clubs", ClubQuiz: "Clubs",
   // Legends & History
   History: "Legends",
+  // ⚠️ chaos WAS THE LAST ORPHAN, and an orphan is not a cosmetic gap: the
+  // overall counts every key while the faces can only show six, so a category
+  // with no face silently props up a number nothing on the card explains.
+  // Alex, looking at a friend's card: "the 73 overall does not correspond at
+  // all to the 6 faces of 53, 43, 40, 60, 40, 55 — am I completely mistaken?"
+  // He was not. That player holds 452 chaos answers at 91% (a legacy integer
+  // record from the pre-2026-09-09 writer, one account in 115) and every point
+  // of it landed on no face. Same complaint he made on build 117, through a
+  // different door.
+  // Legends is not an arbitrary home: chaos is quotes and moments, which is
+  // football history. With this the card reconciles — that player keeps his
+  // 73 AND gets a LEGENDS face of 94 that explains where it came from.
+  chaos: "Legends",
   // Records & Managers
   Managers: "Records", Transfers: "Records",
 };
@@ -135,6 +148,10 @@ export const FACE_ALIAS = {
 // makes the label explain itself: a Spaniard reads "LA LIGA", which needs no
 // glossary. Auto-picked from play, never a setting — most people never open
 // settings, and we already know the answer from what they play.
+// `short` is the noun the Profile verdict says out loud ("<short> Specialist").
+// The two thematic faces and the Clubs pool have names built for the card row
+// ("Legends & History"), which read as nonsense in that sentence — "Legends &
+// History Specialist". Three of six broke the moment the faces were re-cut.
 export const LEAGUE_FACES = [
   { abbr: "EPL",        cat: "PL",         name: "Premier League", icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
   { abbr: "LA LIGA",    cat: "LaLiga",     name: "La Liga",        icon: "🇪🇸", color: "#EE8707" },
@@ -310,6 +327,16 @@ export const LIFETIME_TOPUP = 300;
 /** The lifetime top-up for a legacy record, or null. {s, n} in score units. */
 export function legacyTopUp(catStats = {}, lifetime) {
   if (!lifetime || !(lifetime.a > 0) || !(lifetime.c >= 0) || lifetime.c > lifetime.a) return null;
+  // ⚠️ A MISSING totalCorrect IS NOT ZERO CORRECT. 130 of 308 prod profiles
+  // carry `totalAnswered` with `totalCorrect` NULL, and every caller writes
+  // `stats.totalCorrect || 0` — so those cards topped themselves up with a
+  // lifetime record asserting NONE RIGHT out of a thousand answered, and every
+  // rating was dragged toward the floor. Alex, seeing a friend's card: "there
+  // is no way he has all those stats under 50." He was right: that player read
+  // 67 with faces 49/40/40/55/40/51, and 73 with 53/43/40/60/40/55 once this
+  // stopped counting. A lifetime with answers but no correct count is MISSING
+  // DATA — the only honest thing to do is not top up at all.
+  if (lifetime.a >= 1 && !(lifetime.c > 0)) return null;
   let n = 0;
   for (const cs of Object.values(catStats || {})) n += scoreOf(cs).n;
   if (lifetime.a <= n) return null;
@@ -562,7 +589,7 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
     // Gates count the league's OWN answers (raw), never borrowed ones.
     const answered = rawAnswered(cs);
     return {
-      abbr: comp.abbr, cat: comp.cat, name: comp.name, icon: comp.icon, color: comp.color,
+      abbr: comp.abbr, cat: comp.cat, name: comp.name, short: comp.short || comp.name, icon: comp.icon, color: comp.color,
       rating: compRating(cs, acc),
       answered,
       // Per-face honesty: a face prints FULLY only from its own data; from

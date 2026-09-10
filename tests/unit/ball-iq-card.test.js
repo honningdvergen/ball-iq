@@ -1,6 +1,6 @@
 // Ball IQ rating card model — tier boundaries and the six-competition face.
 import { describe, it, expect } from "vitest";
-import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette, ratingFromAccuracy, PROVISIONAL_ANSWERS, recordAnswers, rawAnswered } from "../../src/lib/ballIqCard.js";
+import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette, ratingFromAccuracy, PROVISIONAL_ANSWERS, recordAnswers, rawAnswered, faceCatFor } from "../../src/lib/ballIqCard.js";
 // MIN_RATED_ANSWERS lives in scoring.js — ballIqCard.js imports it but does not
 // re-export it, so importing it from there yields undefined and silently turns
 // a `for (i < MIN_RATED_ANSWERS)` loop into a no-op that passes nothing.
@@ -181,5 +181,44 @@ describe("the face gate counts every answer, not just the new ones", () => {
       "BUNDESLIGA",
     );
     expect(after.provisional).toBe(true); // still a number, never back to a bar
+  });
+});
+
+// ⚠️ AN ORPHAN CATEGORY IS A SILENT CARD BUG, SO IT FAILS THE BUILD.
+// The overall counts EVERY key in catStats; the faces can only show six. A
+// category that reaches no face therefore props up a number that nothing on
+// the card explains — and the card contradicts itself without erroring.
+// This has now been reported twice by the same person about the same symptom,
+// from two different causes: the lifetime top-up on build 117 ("overall 63,
+// every rated face 46-56"), and `chaos` on 2026-09-10 ("the 73 overall does
+// not correspond at all to the 6 faces... am I completely mistaken?"). He was
+// right both times, and both times a human found it rather than a test.
+//
+// The second test is the one with teeth: adding a NEW category to the bank
+// without giving it a face now fails here rather than shipping a card that
+// quietly disagrees with itself.
+import { QB } from "../../src/questions.js";
+describe("no category is orphaned from the card", () => {
+  it("every category in the question bank reaches a face", () => {
+    const orphans = {};
+    for (const q of QB) {
+      if (!faceCatFor({ cat: q.cat })) orphans[q.cat] = (orphans[q.cat] || 0) + 1;
+    }
+    expect(orphans, `these bank categories reach no card face: ${JSON.stringify(orphans)}`).toEqual({});
+  });
+
+  it("the overall never sits above every face, even with a lopsided category", () => {
+    // The shape that broke it: one huge, very strong category beside several
+    // ordinary ones. Before `chaos` had a face this produced overall 73 with a
+    // top face of 60.
+    const lopsided = {
+      PL: { c: 26, a: 58 }, UCL: { c: 18, a: 46 }, WorldCup: { c: 26, a: 73 },
+      Records: { c: 19, a: 48 }, Managers: { c: 26, a: 45 },
+      chaos: { c: 413, a: 452 },
+    };
+    const card = computeCard(lopsided, null, null);
+    const faces = card.ratings.filter((r) => r.rated).map((r) => r.rating);
+    expect(faces.length, "fixture should rate at least one face").toBeGreaterThan(0);
+    expect(Math.max(...faces), "the overall floated above every face").toBeGreaterThanOrEqual(card.overall - 2);
   });
 });
