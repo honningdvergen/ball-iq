@@ -738,7 +738,18 @@ for (const s of SHOTS) {
   console.log(`  ${ok ? '✓' : '✗ WRONG SCREEN —'} ${s.name}  (looked for "${s.expect}")`);
   await p.close();
 }
-if (bad) console.log(`\n  ${bad} shot(s) captured the wrong screen — do not ship these.`);
+// ⚠️ A WARNING IS NOT A GATE. This printed "do not ship these" and exited 0,
+// so a wrong shot could be — and on 2026-09-10 was — committed and pushed
+// without anything objecting: the run reported two wrong screens, the shell
+// saw success, and the bad PNGs went in with a commit message saying they had
+// been re-shot. The capture is also FLAKY (the same two passed on an immediate
+// re-run), which is exactly the condition under which a silent warning is
+// worthless. Same class as [[feedback_and_chain_masks_failures]].
+if (bad) {
+  console.log(`\n  ${bad} shot(s) captured the wrong screen — do not ship these.`);
+  console.log('  The capture is flaky; re-run before deciding anything is broken.');
+  process.exitCode = 1;
+}
 if (translucent) {
   console.log(`  ${translucent} translucent surface(s) were forced opaque across the set.`);
   console.log('  That is the fix working, not a warning — but OPEN THE PNGs anyway.');
