@@ -576,6 +576,26 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           is already looking, and where they cannot be mistaken for part of the
           board. Revealed hints STAY on screen: making someone remember a clue
           they have already spent is its own small cruelty. */}
+      {/* ⚠️ HELP THAT NOBODY KNOWS EXISTS IS NOT HELP. The hint block below is
+          rendered only from `hintsAvailable`, which is gated on three guesses,
+          so a player stuck on guess one saw a search box, a one-line rule and
+          543px of nothing (67% of a 375x812 phone, measured) with no sign that
+          clues exist at all — while Home sells the mode as "guess who from
+          career clues".
+          ⚠️ IT CANNOT NAME THE CLUES. HINTS is derived from `answer`, and
+          `answer` is null until usePlayerPool loads ~700KB on the first focus
+          of the guess box — a deliberate deferral. Rendering labels here would
+          either force that download on open or print clue names for a day
+          whose answer has fewer of them. So this says only the thing that is
+          true every day and needs no data, and it is deliberately one quiet
+          line rather than the sixty-word wall that was removed from this exact
+          spot for being "the first thing a new player saw". */}
+      {!done && !hintsUsed && guesses.length === 0 && (
+        <div style={{ margin: '0 16px 8px', textAlign: 'center', fontSize: 12.5, color: 'var(--t3)' }}>
+          Clues unlock after {HINTS_AFTER} guesses.
+        </div>
+      )}
+
       {!done && (hintsUsed > 0 || hintsAvailable) && (
         <div style={{ margin: '0 16px 8px', display: 'flex', flexDirection: 'column', gap: 6 }}>
           {HINTS.slice(0, hintsUsed).map((h) => (
