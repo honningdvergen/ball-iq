@@ -6095,7 +6095,8 @@ function AppInner() {
     try {
       const d = cardDelta(stats.catStats || {}, catStats,
         { c: stats.totalCorrect || 0, a: stats.totalAnswered || 0 },
-        { c: updated.totalCorrect || 0, a: updated.totalAnswered || 0 });
+        { c: updated.totalCorrect || 0, a: updated.totalAnswered || 0 },
+        stats.cardLeague);
       setCardDelta(d);
       storeCardDelta(d); // the share line reads it back the same day
     } catch { setCardDelta(null); }

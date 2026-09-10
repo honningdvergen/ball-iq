@@ -860,12 +860,37 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, pinnedLeague) {
  * and every face that moved. Pure — both sides are computeCard() over the
  * records the writer had before and after recordAnswers().
  */
-export function cardDelta(prevCatStats, nextCatStats, prevLifetime, nextLifetime) {
-  const before = computeCard(prevCatStats || {}, undefined, prevLifetime);
-  const after = computeCard(nextCatStats || {}, undefined, nextLifetime);
+export function cardDelta(prevCatStats, nextCatStats, prevLifetime, nextLifetime, pinnedLeague) {
+  // ⚠️ BOTH SIDES MUST BE THE PLAYER'S OWN CARD, AND FACES MUST BE MATCHED BY
+  // IDENTITY — NOT BY INDEX. Two bugs lived here, and together they printed a
+  // face going DOWN after a good round, which is the single worst thing this
+  // card can do and the exact complaint the whole rebuild started from.
+  //
+  // 1. The pin was not passed, so the delta rendered a DIFFERENT card from the
+  //    one on the profile.
+  // 2. Slot 0 is the league face and its identity is not fixed — it moves when
+  //    a player pins one, and it also moves on its own when their most-played
+  //    league changes, which a ten-question league quiz can do all by itself.
+  //    Comparing ratings[i] to ratings[i] then reads the OLD slot-0
+  //    competition's rating as this one's "before".
+  //
+  // Seen on device 2026-09-10: a 7/10 La Liga quiz reported "LA LIGA 74 -> 68"
+  // — 74 was the Premier League's rating, wearing La Liga's label, because
+  // La Liga overtook it as most-played DURING that quiz.
+  const before = computeCard(prevCatStats || {}, undefined, prevLifetime, pinnedLeague);
+  const after = computeCard(nextCatStats || {}, undefined, nextLifetime, pinnedLeague);
+  const wasByCat = new Map(before.ratings.map(r => [r.cat, r]));
   const faces = after.ratings
-    .map((r, i) => ({ abbr: r.abbr, name: r.name, color: r.color, before: before.ratings[i].rating, after: r.rating,
-                       shown: r.rated || r.provisional, wasShown: before.ratings[i].rated || before.ratings[i].provisional }))
+    .map(r => {
+      const was = wasByCat.get(r.cat);
+      // A face with no counterpart is one the card did not carry before (the
+      // league slot changed hands). It has no honest "before", so it is only
+      // announced as newly shown, never as a movement.
+      return { abbr: r.abbr, name: r.name, color: r.color, cat: r.cat,
+               before: was ? was.rating : r.rating, after: r.rating,
+               shown: r.rated || r.provisional,
+               wasShown: !!was && (was.rated || was.provisional) };
+    })
     .filter(f => f.shown && (f.before !== f.after || !f.wasShown));
   return {
     before: before.overall, after: after.overall, ratedBefore: before.rated, ratedAfter: after.rated,

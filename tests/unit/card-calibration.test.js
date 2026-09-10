@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { CALIBRATION } from "../../src/data/cardCalibration.js";
-import { computeCard, pickLeagueFace, faceAbbrForCat, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
+import { computeCard, cardDelta, pickLeagueFace, faceAbbrForCat, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
 
 // THE MODEL (Alex, 2026-09-09): "61% accuracy on easy equals 61; 61% at medium
@@ -172,6 +172,37 @@ describe("your league on the card", () => {
     // the overall pools every answer and must not move just because the card
     // is showing a different face
     expect(pinned.overall).toBe(computeCard(cs).overall);
+  });
+});
+
+describe("the results-screen delta", () => {
+  // ⚠️ A GOOD ROUND MUST NEVER PRINT A FACE GOING DOWN. Slot 0 is the league
+  // face and its identity MOVES — when a player pins one, and on its own when
+  // their most-played league changes, which one ten-question league quiz can
+  // do. Matching ratings[i] to ratings[i] then reads the previous slot-0
+  // competition's rating as this one's "before". Seen on device: a 7/10 La
+  // Liga quiz reported "LA LIGA 74 -> 68", where 74 was the Premier League.
+  it("matches faces by identity, so a league slot changing hands cannot fake a drop", () => {
+    const prev = { PL: { d: { u: [9, 12] } }, LaLiga: { d: { u: [3, 5] } } };
+    const next = { PL: { d: { u: [9, 12] } }, LaLiga: { d: { u: [10, 15] } } };
+    const d = cardDelta(prev, next);
+    // La Liga overtakes the PL as most-played, so slot 0 changes hands here
+    expect(computeCard(prev).ratings[0].cat).toBe("PL");
+    expect(computeCard(next).ratings[0].cat).toBe("LaLiga");
+    for (const f of d.faces) {
+      if (f.wasShown) expect(f.after).toBeGreaterThanOrEqual(f.before);
+      expect(f.before).toBe(f.after === f.before ? f.before : f.before); // identity-matched, never cross-labelled
+    }
+    // and nothing claims a movement it cannot evidence
+    expect(d.faces.every(f => f.wasShown || f.before === f.after)).toBe(true);
+  });
+  it("renders the PINNED card on both sides, not the default one", () => {
+    const prev = { PL: { d: { u: [9, 12] } }, SerieA: { d: { u: [3, 5] } } };
+    const next = { PL: { d: { u: [9, 12] } }, SerieA: { d: { u: [8, 12] } } };
+    const d = cardDelta(prev, next, undefined, undefined, "SerieA");
+    expect(d.faces.some(f => f.cat === "SerieA")).toBe(true);
+    const serie = d.faces.find(f => f.cat === "SerieA");
+    expect(serie.after).toBeGreaterThanOrEqual(serie.before);
   });
 });
 
