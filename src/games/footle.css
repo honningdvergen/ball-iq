@@ -41,8 +41,23 @@
 }
 /* margin:0 — the 14px that used to sit here was ADDED to .wd-screen's own
    14px flex gap, so the finished board floated 28pt above the result card. */
-.wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0;}
-.wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,100%);}
+/* ⚠️ A FINISHED BOARD IS CAPPED BY HEIGHT, NOT JUST WIDTH — the tiles are
+   square, so a width-only cap makes the board TALLER the SHORTER the answer.
+   With max-width:310px alone: 8 letters -> 240pt, 7 -> 273, 6 -> 318 and
+   5 -> 381. Measured on a 375x812 phone, an 8-letter day already left the
+   Share button 31px below the fold; a 5-letter day would put it ~110px under.
+   That is the same trap as [[feedback_square_tile_two_axis_constraint]], which
+   shipped an unreachable ENTER twice — a square element capped on one axis is
+   capped on both, and the SHORT answer is the tall case.
+   --wd-ended-chrome is what sits around the grid once the game is over:
+   header + result card + the DailyDone panel down to the share button.
+   MEASURED, not guessed: 587px on a 375x812 phone for the worst case (a new
+   player with all three other dailies still open). 620 leaves the grid a
+   225px budget, i.e. a 32px tile — which is what keeps a FIVE-letter board
+   (the tall one) from pushing Share off screen. Re-measure if the panel
+   grows: the number is a budget, not a constant of nature. */
+.wd-grid.wd-grid--ended{flex:0 0 auto;gap:4px;padding:4px 0;margin:0;--wd-ended-chrome:620px;}
+.wd-grid.wd-grid--ended .wd-row{gap:4px;max-width:min(310px,100%,calc(var(--wd-cols) * clamp(22px, calc((100dvh - var(--wd-ended-chrome) - var(--biq-consent-h, 0px)) / 6), 52px) + (var(--wd-cols) - 1) * 4px));}
 .wd-grid.wd-grid--ended .wd-tile{font-size:clamp(16px,5.2vw,24px);}
 .wd-row{display:grid;grid-template-columns:repeat(var(--wd-cols),minmax(0,1fr));gap:6px;width:100%;max-width:calc(var(--wd-cols) * var(--wd-tile-cap, 64px) + (var(--wd-cols) - 1) * 6px);margin-left:auto;margin-right:auto;}
 .wd-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,6.5vw,30px);font-weight:800;letter-spacing:-0.5px;color:var(--text);background:var(--s2);border:2px solid var(--border);border-radius:8px;text-transform:uppercase;user-select:none;transition:transform 80ms ease;}
