@@ -1048,6 +1048,26 @@ export const CAT_TO_QUIZ_SLUG = Object.fromEntries(Object.entries(QUIZ_SLUG_TO_C
 // Solo single-competition quizzes. Unlike the club quiz (which re-tags rows as
 // cat:"ClubQuiz"), league-quiz questions KEEP their real cat, so every answer
 // feeds the matching competition rating on the Ball IQ card (EPL/UCL/INT/…).
+// ⚠️ STADIUMS IS A QUIZ, AND IT WAS INVISIBLE TO THE CARD.
+// Twenty graded questions per run, already tagged with the league they belong
+// to — and none of it reached catStats, because Stadiums has its own screen
+// and never passes through handleComplete. 340 answers across 12 players, ~28
+// each, contributing nothing to their rating. Alex: "if people think we are
+// ripping them off on the scorecard by not including areas where they are
+// good, that is a good reason to uninstall."
+//
+// ⚠️ THE LINE IS "N GRADED QUESTIONS", NOT "IS IT KNOWLEDGE". Trail, Mystery
+// and Footle stay out and that is deliberate: each is ONE binary outcome per
+// day, after up to five attempts with progressive clue reveals. Scoring that
+// as "one answer" would import the exact defect this whole day was spent
+// removing — a unit that means something different per mode. That is how
+// `score` became 680 "correct answers" and how chaos read 91%. Those modes
+// build the STREAK; graded questions build the RATING.
+const STADIUM_LEAGUE_TO_CAT = {
+  "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
+  "bundesliga": "Bundesliga", "ligue-1": "Ligue1",
+};
+
 const LEAGUE_QUIZ_SECTIONS = [
   { label: "Leagues", items: [
     { cat: "PL",         name: "Premier League",   abbr: "EPL", color: "#3D195B" },
@@ -7057,6 +7077,31 @@ function AppInner() {
     // exactly the signal Mystery was missing for months.
     const onStadiumsDone = (e) => {
       const d = e?.detail || {};
+      // ⚠️ THE RUN FEEDS THE CARD. `solved` of `total` grounds in a named
+      // league is a clean ratio against a known face — the one mode outside
+      // handleComplete that is genuinely rateable. Difficulty is "unknown"
+      // because the stadium list carries no per-question grade; recordAnswers
+      // files those in the `u` bucket at average weight rather than quietly
+      // paying them the medium multiplier.
+      const scat = STADIUM_LEAGUE_TO_CAT[d.league];
+      const stot = Math.max(0, d.total || 0);
+      if (scat && stot > 0) {
+        const got = Math.max(0, Math.min(stot, d.solved || 0));
+        const rows = Array.from({ length: stot }, (_, i) => ({
+          cat: scat, diff: "unknown", isCorrect: i < got,
+        }));
+        // ⚠️ catStats ONLY — recordPlay below already moves the aggregate
+        // counters, and it counts a whole run as ONE answer. Adding the twenty
+        // here as well made a single sweep worth 21 answers and 15 correct.
+        // The card reads catStats (rawAccuracy), so the real per-question
+        // detail lands where it is used, and the coarse legacy counters keep
+        // the convention every other daily mode already follows.
+        setStats((prev) => {
+          const next = { ...prev, catStats: recordAnswers(prev.catStats || {}, rows, { c: prev.totalCorrect || 0, a: prev.totalAnswered || 0 }) };
+          safeSetItem("biq_stats", JSON.stringify(next));
+          return next;
+        });
+      }
       if (!d.gaveUp) {
         const xp = d.hints === 0 ? 80 : d.hints <= 3 ? 60 : d.hints <= 10 ? 40 : 25;
         awardXp(xp);

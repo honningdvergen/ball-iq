@@ -65,7 +65,15 @@ describe('every daily mode counts as a game played', () => {
   it('the stadiums branch records a play even on a give-up', () => {
     const start = APP.indexOf('const onStadiumsDone');
     expect(start).toBeGreaterThan(-1);
-    const block = APP.slice(start, start + 900);
+    // ⚠️ BOUND THE WINDOW BY THE NEXT HANDLER, NOT BY A BYTE COUNT. This read
+    // `start + 900` and broke the moment the handler grew — Stadiums started
+    // feeding the card on 2026-09-10 and recordPlay simply fell out the far
+    // end of the slice, failing a test whose actual claim (recordPlay sits
+    // OUTSIDE the !d.gaveUp guard) was still perfectly true. A test that
+    // measures in bytes fails on edits it does not care about.
+    const end = APP.indexOf('const onStadiumsExit', start);
+    expect(end).toBeGreaterThan(start);
+    const block = APP.slice(start, end);
     // Outside the !d.gaveUp guard — played-and-stopped is still played.
     expect(block).toMatch(/recordPlay\(!d\.gaveUp/);
   });

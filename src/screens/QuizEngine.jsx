@@ -578,6 +578,15 @@ const CTA_INSET = (() => {
           q: tq.q,
           type,
           cat: tq.cat || null,
+          // ⚠️ realCat AND club WERE MISSING FROM THE TIMEOUT RECORD ONLY.
+          // Club quiz re-tags every row cat:"ClubQuiz", and faceCatFor uses
+          // realCat/club to route the answer to the right face — so a question
+          // you ANSWERED reached your Arsenal/EPL rating while the identical
+          // question you TIMED OUT on landed on the generic ClubQuiz key. The
+          // answered branch has carried both since the re-cut; this one never
+          // did, so timeouts were quietly filed somewhere else.
+          realCat: tq.realCat || null,
+          club: tq.club || null,
           diff: tq.diff || 'medium', // rating weight — see saveStats DIFF_CREDIT
           options,
           userIdx: -1,

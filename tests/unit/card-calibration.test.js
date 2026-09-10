@@ -114,6 +114,38 @@ describe("legacy records and the population reference", () => {
   });
 });
 
+describe("what feeds the card", () => {
+  // ⚠️ THE RULE: N GRADED QUESTIONS FEED THE RATING; ONE-SHOT DAILY PUZZLES
+  // FEED THE STREAK. Stadiums asks 20 questions against a named league and was
+  // invisible to the card; Trail/Mystery/Footle are one binary outcome per day
+  // after up to five attempts with clue reveals, and counting that as "an
+  // answer" is the per-mode-unit error that produced 680 "correct answers".
+  it("an ungraded but real answer is worth the average question, not a medium one", () => {
+    const cs = recordAnswers({}, [
+      { cat: "PL", diff: "unknown", isCorrect: true },
+      { cat: "PL", diff: "unknown", isCorrect: false },
+    ]);
+    expect(cs.PL.d).toEqual({ u: [1, 2] });
+    expect(scoreOf(cs.PL)).toEqual({ s: AVG_MULT, n: 2 });
+    // and it must NOT have been paid the medium multiplier
+    expect(scoreOf(cs.PL).s).not.toBe(MULT.medium);
+  });
+  it("a caller that knows the grade is untouched, and a missing one still defaults", () => {
+    expect(recordAnswers({}, [{ cat: "PL", diff: "hard", isCorrect: true }]).PL.d).toEqual({ h: [1, 1] });
+    expect(recordAnswers({}, [{ cat: "PL", isCorrect: true }]).PL.d).toEqual({ m: [1, 1] });
+  });
+  it("a Stadiums sweep lands on its own league face, not a generic bucket", () => {
+    // 14 of 20 Bundesliga grounds
+    const rows = Array.from({ length: 20 }, (_, i) => ({ cat: "Bundesliga", diff: "unknown", isCorrect: i < 14 }));
+    const cs = recordAnswers({}, rows);
+    expect(cs.Bundesliga.d).toEqual({ u: [14, 20] });
+    const card = computeCard(cs, undefined, undefined, "Bundesliga");
+    expect(card.ratings[0].abbr).toBe("BUNDESLIGA");
+    expect(card.ratings[0].rated).toBe(true);
+    expect(card.rawAccuracy).toBeCloseTo(0.7, 6);
+  });
+});
+
 describe("your league on the card", () => {
   it("auto-picks the league you have actually answered most in", () => {
     const cs = { PL: { d: { u: [5, 12] } }, Bundesliga: { d: { u: [20, 40] } } };

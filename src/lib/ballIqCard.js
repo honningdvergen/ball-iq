@@ -677,7 +677,16 @@ export function recordAnswers(prevCatStats = {}, answers = [], lifetime) {
     const key = faceCatFor(ans) || ans.cat;
     const cur = outStats[key] || { c: 0, a: 0 };
     const ok = ans.isCorrect ? 1 : 0;
-    const diff = (ans.diff === "easy" || ans.diff === "hard") ? ans.diff : "medium";
+    // ⚠️ "unknown" IS A REAL GRADE AND MUST NOT SILENTLY BECOME "medium".
+    // Some modes ask real questions that the bank never graded — Stadiums names
+    // twenty grounds with no per-question difficulty. Defaulting those to
+    // medium would quietly pay them the medium multiplier (1.25) on evidence
+    // that says nothing about difficulty. `u` is the bucket that already means
+    // "a real answer, difficulty unknown" and scoreOf weights it at AVG_MULT.
+    // Callers that DO know the grade are unaffected: QuizEngine always sends
+    // one, so this only catches modes that genuinely have none.
+    const diff = (ans.diff === "easy" || ans.diff === "hard" || ans.diff === "medium")
+      ? ans.diff : (ans.diff === "unknown" ? "unknown" : "medium");
     // ⚠️ ONLY `d` IS WRITTEN NOW — raw integer counts, no decay, no derived
     // s/n. The old writer fed scoreOf's output back through CAT_DECAY, which
     // is what produced "26.78 correct": a number that is not a count, cannot
@@ -691,7 +700,7 @@ export function recordAnswers(prevCatStats = {}, answers = [], lifetime) {
     // than deleting them is the same rule as rawAnswered's: never throw away
     // history you cannot reconstruct.
     const d = { ...(cur.d || {}) };
-    const dk = diff[0];
+    const dk = diff === "unknown" ? "u" : diff[0];
     d[dk] = [((d[dk] || [0, 0])[0] || 0) + ok, ((d[dk] || [0, 0])[1] || 0) + 1];
     outStats[key] = { ...cur, d };
   }
