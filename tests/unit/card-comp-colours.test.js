@@ -37,9 +37,16 @@ describe("card competition colours", () => {
     }
   });
 
+  // `Clubs` is a card-only AGGREGATE face (La Liga + Serie A + Bundesliga +
+  // Ligue 1 + Süper Lig + Primeira + every club quiz outside England). The
+  // picker lists competitions you can actually choose, so there is no single
+  // row to pin it to — the leagues it covers each keep their own picker colour.
+  const CARD_ONLY = new Set(["Clubs"]);
+
   it("matches the quiz picker's colour for the same cat", () => {
     const picker = leagueQuizColours();
     for (const c of CARD_COMPS) {
+      if (CARD_ONLY.has(c.cat)) { expect(picker[c.cat]).toBeUndefined(); continue; }
       expect(picker[c.cat], `${c.cat} missing from LEAGUE_QUIZ_SECTIONS`).toBeTruthy();
       expect(c.color.toUpperCase(), `${c.abbr} (${c.cat}) drifted from the quiz picker`)
         .toBe(picker[c.cat]);

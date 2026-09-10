@@ -8,7 +8,7 @@ import { useModalA11y } from "../useModalA11y.js";
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_ANSWERS } from '../lib/scoring.js';
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
-import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
+import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette } from "../lib/ballIqCard.js";
 import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
@@ -1607,11 +1607,14 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         // first-timers this popup exists for, which is why no signed-in
         // account could ever see it. Found live by a guest session 2026-08-28.
         const t = tierPalette("gold");
-        const rows = [
-          { icon: "\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}", abbr: "EPL", v: 88 }, { icon: "\u2B50", abbr: "UCL", v: 91 },
-          { icon: "\u{1F30D}", abbr: "INT", v: 84 }, { icon: "\u{1F1EA}\u{1F1F8}", abbr: "LAL", v: 83 },
-          { icon: "\u{1F1E9}\u{1F1EA}", abbr: "BUN", v: 80 }, { icon: "\u{1F1EE}\u{1F1F9}", abbr: "SEA", v: 84 },
-        ];
+        // ⚠️ DERIVED FROM CARD_COMPS, NOT RETYPED. This teaser hardcoded
+        // EPL/UCL/INT/LAL/BUN/SEA and would have gone on advertising three
+        // faces the card no longer has after the 2026-09-10 re-cut — to
+        // guests and first-timers, who are exactly the people deciding
+        // whether the card is worth having. The sample numbers stay fixed;
+        // only the faces follow the model.
+        const SAMPLE = [88, 91, 84, 83, 80, 84];
+        const rows = CARD_COMPS.map((c, i) => ({ icon: c.icon, abbr: c.abbr, v: SAMPLE[i] }));
         // ⚠️ PORTALLED TO document.body, and it must stay that way.
         // `.tab-pane { contain: content }` (app.css) is a real perf win — it
         // stopped a tab tap relaying out 406 of 454 nodes — but containment

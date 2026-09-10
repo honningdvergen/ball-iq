@@ -1066,9 +1066,14 @@ const LEAGUE_QUIZ_SECTIONS = [
   // 575, Records 519, Managers 425 medium+hard), so these are among the
   // deepest quizzes in the app, not filler.
   { label: "Themes", items: [
-    { cat: "Legends",  name: "Legends",          abbr: "LEG", color: "#A67C00" },
+    // ⚠️ Legends and Records are CARD FACES since the 2026-09-10 re-cut, so their
+    // colours are pinned to CARD_COMPS by card-comp-colours.test.js. Changing
+    // one here without the other is the drift that test exists to catch.
+    // Legends moved off gold because the card already spends gold on INT, and
+    // two gold rows adjacent on a six-row card are unreadable.
+    { cat: "Legends",  name: "Legends",          abbr: "LEG", color: "#B03A2E" },
     { cat: "Managers", name: "Managers",         abbr: "MGR", color: "#37474F" },
-    { cat: "Records",  name: "Records",          abbr: "REC", color: "#6A1B9A" },
+    { cat: "Records",  name: "Records",          abbr: "REC", color: "#1B7F79" },
   ]},
 ];
 export const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));

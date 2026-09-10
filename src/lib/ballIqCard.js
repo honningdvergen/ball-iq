@@ -57,21 +57,60 @@ import { CLUB_NAME_TO_COMP } from '../data/clubPackColours.js';
 // LEAGUE_QUIZ_SECTIONS (App.jsx) uses for the same `cat` — the quiz picker and
 // the rating card naming the same competition in two different colours is the
 // drift this app keeps producing. Pinned by tests/unit/card-comp-colours.test.js.
+// ⚠️ THE FACES MUST BE SHAPED LIKE THE BANK, NOT LIKE A LEAGUE TABLE.
+// Re-cut 2026-09-10 after Alex, a Legend-XP player, opened his card and found
+// two of six filled: "as a player in the legend xp league you mean to tell me
+// only 2 out of 6 items on the card is filled out."
+//
+// He was not an outlier. Measured across all 105 accounts with real history:
+// 67.6% saw ONE fully-rated face or none, and 11.4% saw all six. The cause was
+// not the gate and not decay — lowering the gate from 10 to a reckless 3 still
+// only reached 3.15 of 6, because the answers do not exist. The six faces were
+// leagues; the bank is not. Only 47.3% of questions could EVER reach a face,
+// while History, Legends, Records, Managers and Transfers — 47% of the bank —
+// showed nothing, and the three thin league faces held 14% of it between them.
+//
+// These six cover 99.2% of the bank and 92.1% of all play recorded to date.
+// ⚠️ Deleting the thin leagues outright (the obvious re-cut) measured WORSE on
+// play than it looked on paper — 56.2% — because it drops those leagues AND
+// still misses ClubQuiz, the single biggest bucket in prod at 2,049 answers.
+// Folding them into one Clubs face is what carries club play onto the card.
 export const CARD_COMPS = [
-  { abbr: "EPL", cat: "PL",         name: "Premier League",   icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
-  { abbr: "UCL", cat: "UCL",        name: "Champions League", icon: "⭐", color: "#123A8F" },
-  { abbr: "INT", cat: "WorldCup",   name: "International",     icon: "🌍", color: "#8A6D1B" },
-  { abbr: "LAL", cat: "LaLiga",     name: "La Liga",          icon: "🇪🇸", color: "#EE8707" },
-  { abbr: "BUN", cat: "Bundesliga", name: "Bundesliga",       icon: "🇩🇪", color: "#D20515" },
-  { abbr: "SEA", cat: "SerieA",     name: "Serie A",          icon: "🇮🇹", color: "#0578D3" },
+  { abbr: "EPL", cat: "PL",       name: "Premier League",     icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
+  { abbr: "UCL", cat: "UCL",      name: "Champions League",   icon: "⭐", color: "#123A8F" },
+  { abbr: "INT", cat: "WorldCup", name: "International",      icon: "🌍", color: "#8A6D1B" },
+  { abbr: "CLB", cat: "Clubs",    name: "Clubs & Leagues",    icon: "🛡️", color: "#EE8707" },
+  { abbr: "LEG", cat: "Legends",  name: "Legends & History",  icon: "📜", color: "#B03A2E" },
+  { abbr: "REC", cat: "Records",  name: "Records & Managers", icon: "📊", color: "#1B7F79" },
 ];
 
 // Bank categories that ARE a face under another name. `ChampionsLeague` is a
 // legacy key still present in 46 prod profiles beside `UCL`; `Euros` is
 // international football and belongs with the World Cup on the INT face.
-export const FACE_ALIAS = { ChampionsLeague: "UCL", Euros: "WorldCup" };
+// ⚠️ ALIASES ARE THE MIGRATION. computeCard folds these BEFORE reading, so
+// every stored key keeps counting under its new face with no data migration
+// and nothing lost: a player's LaLiga/Bundesliga/SerieA history becomes their
+// Clubs face, History joins Legends, Managers and Transfers join Records.
+// `ChampionsLeague` is a legacy key still live in 46 prod profiles beside
+// `UCL`; `Euros` is international football and belongs with the World Cup.
+export const FACE_ALIAS = {
+  ChampionsLeague: "UCL",
+  Euros: "WorldCup",
+  // Clubs & Leagues — every club competition that is not the Premier League,
+  // plus the club-quiz bucket itself (the biggest single key in prod).
+  LaLiga: "Clubs", SerieA: "Clubs", Bundesliga: "Clubs",
+  Ligue1: "Clubs", SuperLig: "Clubs", Primeira: "Clubs", ClubQuiz: "Clubs",
+  // Legends & History
+  History: "Legends",
+  // Records & Managers
+  Managers: "Records", Transfers: "Records",
+};
 
 const FACE_CATS = new Set(CARD_COMPS.map(c => c.cat));
+
+// The four faces that name a COMPETITION. `Legends` and `Records` are the two
+// thematic faces and are deliberately absent — see faceCatFor step 1.
+const COMPETITION_FACES = new Set(["PL", "UCL", "WorldCup", "Clubs"]);
 
 /**
  * Which face an answer feeds, or null (overall only).
@@ -81,9 +120,31 @@ const FACE_CATS = new Set(CARD_COMPS.map(c => c.cat));
 export function faceCatFor(ans) {
   if (!ans) return null;
   const cat = ans.realCat || ans.cat;
+  // 1. A COMPETITION the answer names outright. Only competitions short-circuit
+  //    here: a Champions League question inside an Arsenal round is a Champions
+  //    League question, and that has always been the rule. The two THEMATIC
+  //    faces do not, because they cut across every competition — "Legends" says
+  //    nothing about which club's round you were playing, so it must not beat
+  //    the club below. Without this split the rule was arbitrary: History in an
+  //    Arsenal round reached EPL while Legends in a Juventus round reached LEG,
+  //    for no reason except which of the two happened to be a face's canonical
+  //    key and which an alias.
+  if (COMPETITION_FACES.has(cat)) return cat;
+  // 2. ⚠️ THE CLUB BEFORE THE ALIAS, and the order matters now that the thin
+  //    leagues are aliases rather than faces (2026-09-10). "Play your club,
+  //    build your club's league" is an explicit promise — a History question
+  //    inside an Arsenal round is still an Arsenal round, and before the
+  //    re-cut it reached EPL only because History had no face. Aliasing
+  //    History would have silently moved every one of those answers off the
+  //    club's face. The club is the stronger signal whenever we have it.
+  if (ans.club && CLUB_NAME_TO_COMP[ans.club]) {
+    const viaClub = CLUB_NAME_TO_COMP[ans.club];
+    return FACE_CATS.has(viaClub) ? viaClub : (FACE_ALIAS[viaClub] || null);
+  }
+  // 3. Otherwise fold the category onto the face that now carries it — this is
+  //    where a thematic category lands when there is no club to prefer.
   if (FACE_CATS.has(cat)) return cat;
   if (FACE_ALIAS[cat]) return FACE_ALIAS[cat];
-  if (ans.club && CLUB_NAME_TO_COMP[ans.club]) return CLUB_NAME_TO_COMP[ans.club];
   return null;
 }
 
@@ -507,9 +568,16 @@ export function drainPendingRounds() {
   let list;
   try { list = JSON.parse(raw); } catch { return []; }
   if (!Array.isArray(list)) return [];
+  // ⚠️ ACCEPT ALIASES, NOT JUST FACES. A club page's `data-face` is stamped at
+  // BUILD time from CLUB_NAME_TO_COMP, so pages already in the wild carry the
+  // pre-2026-09-10 values ("LaLiga", "SerieA", "Bundesliga"). Filtering on the
+  // face list alone would have silently dropped every queued round from every
+  // page built before the re-cut — the drain would look fine and land nothing.
+  // Normalise here so the queue survives the change in both directions.
   const FACES = new Set(CARD_COMPS.map(c => c.cat));
+  const faceOf = (c) => (FACES.has(c) ? c : (FACE_ALIAS[c] || null));
   return list
-    .filter(a => a && FACES.has(a.cat) && typeof a.isCorrect === "boolean")
+    .filter(a => a && faceOf(a.cat) && typeof a.isCorrect === "boolean")
     .slice(0, 400)
-    .map(a => ({ cat: a.cat, diff: (a.diff === "easy" || a.diff === "hard") ? a.diff : "medium", isCorrect: a.isCorrect }));
+    .map(a => ({ cat: faceOf(a.cat), diff: (a.diff === "easy" || a.diff === "hard") ? a.diff : "medium", isCorrect: a.isCorrect }));
 }

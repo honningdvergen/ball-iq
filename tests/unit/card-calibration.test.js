@@ -94,21 +94,30 @@ describe("club play feeds the faces", () => {
     expect(faceCatFor({ cat: "PL" })).toBe("PL");
     expect(faceCatFor({ cat: "ClubQuiz", realCat: "UCL", club: "Arsenal" })).toBe("UCL");
     expect(faceCatFor({ cat: "ClubQuiz", realCat: "History", club: "Arsenal" })).toBe("PL");
-    expect(faceCatFor({ cat: "ClubQuiz", realCat: "Legends", club: "Juventus" })).toBe("SerieA");
+    expect(faceCatFor({ cat: "ClubQuiz", realCat: "Legends", club: "Juventus" })).toBe("Clubs");
     expect(faceCatFor({ cat: "ChampionsLeague" })).toBe("UCL");
     expect(faceCatFor({ cat: "Euros" })).toBe("WorldCup");
-    expect(faceCatFor({ cat: "History" })).toBeNull();
-    expect(faceCatFor({ cat: "ClubQuiz", realCat: "History", club: "Marseille" })).toBeNull();
+    // Since the 2026-09-10 re-cut these reach a face instead of falling off the
+    // card — that is the whole point of the re-cut.
+    expect(faceCatFor({ cat: "History" })).toBe("Legends");
+    expect(faceCatFor({ cat: "ClubQuiz", realCat: "History", club: "Marseille" })).toBe("Clubs"); // routes since 09-10
+    expect(faceCatFor({ cat: "Managers" })).toBe("Records");
+    expect(faceCatFor({ cat: "Quidditch" })).toBeNull();
     expect(faceCatFor(null)).toBeNull();
   });
-  it("the generated route covers every English, Spanish, German and Italian pack", () => {
+  it("EVERY club pack routes to a face — no fan is left off the card", () => {
+    // ⚠️ This used to assert the four league countries only, which quietly
+    // encoded the bug: a Marseille, Porto, Ajax or Galatasaray fan's club
+    // rounds fed the overall and left every face blank. Since the 2026-09-10
+    // re-cut England keeps its own face and every other country lands on
+    // Clubs, so the real invariant is TOTALITY — assert that instead.
     const by = {};
     for (const v of Object.values(CLUB_NAME_TO_COMP)) by[v] = (by[v] || 0) + 1;
     expect(by.PL).toBeGreaterThanOrEqual(30);
-    expect(by.LaLiga).toBeGreaterThanOrEqual(5);
-    expect(by.Bundesliga).toBeGreaterThanOrEqual(5);
-    expect(by.SerieA).toBeGreaterThanOrEqual(5);
-    expect(new Set(Object.values(CLUB_NAME_TO_COMP))).toEqual(new Set(["PL", "LaLiga", "Bundesliga", "SerieA"]));
+    expect(by.Clubs).toBeGreaterThanOrEqual(40);
+    expect(new Set(Object.values(CLUB_NAME_TO_COMP))).toEqual(new Set(["PL", "Clubs"]));
+    // and the map covers the whole pack list, not a subset of it
+    expect(Object.keys(CLUB_NAME_TO_COMP).length).toBeGreaterThanOrEqual(90);
   });
 });
 
@@ -138,12 +147,17 @@ describe("recordAnswers", () => {
     const card = computeCard(alex, 0.61, life);
     const faces = card.ratings.filter(r => r.rated).map(r => r.rating);
     expect(Math.max(...faces)).toBeGreaterThanOrEqual(card.overall - 2);
-    // order is preserved: UCL (8/20) stays the weakest rated face
+    // order is preserved: UCL (8/20, 40%) is the weakest input and stays the
+    // weakest rated face — the top-up must not reorder anyone.
     const ucl = card.ratings.find(r => r.abbr === "UCL").rating;
     expect(Math.min(...faces)).toBe(ucl);
-    // gates are on OWN answers: La Liga (4) stays provisional despite the borrowed share
-    const lal = card.ratings.find(r => r.abbr === "LAL");
-    expect(lal.rated).toBe(false); expect(lal.provisional).toBe(true);
+    // gates are on OWN answers, never the borrowed share. Records carries
+    // Managers(10)+Records(8) after the 2026-09-10 re-cut and rates; nothing
+    // is rated off the top-up alone.
+    for (const r of card.ratings) {
+      if (r.rated) expect(r.answered).toBeGreaterThanOrEqual(10);
+      if (r.provisional) expect(r.answered).toBeGreaterThanOrEqual(3);
+    }
     // and the spread is proportional: every key's n grows by the same factor
     const spread = withLegacyTopUp(alex, life);
     const f = (k) => spread[k].n / alex[k].a;
@@ -163,9 +177,15 @@ describe("recordAnswers", () => {
   });
 
   it("files a club answer under its league's face", () => {
+    // Juventus -> SerieA -> the Clubs face (2026-09-10 re-cut). The point of
+    // the test is unchanged: a club answer must NOT pile up under "ClubQuiz",
+    // which was the biggest key in prod and fed nothing.
     const cs = recordAnswers({}, [{ cat: "ClubQuiz", realCat: "History", club: "Juventus", diff: "medium", isCorrect: true }]);
-    expect(cs.SerieA).toBeDefined();
+    expect(cs.Clubs).toBeDefined();
     expect(cs.ClubQuiz).toBeUndefined();
+    // an English club still reaches its own face rather than the Clubs bucket
+    const eng = recordAnswers({}, [{ cat: "ClubQuiz", realCat: "History", club: "Arsenal", diff: "medium", isCorrect: true }]);
+    expect(eng.PL).toBeDefined();
   });
 
   it("wrong answers lower it, and a miss on hard costs the same as a miss on easy", () => {
@@ -236,17 +256,23 @@ describe("drainPendingRounds", () => {
     expect(drainPendingRounds()).toEqual([]);
   });
 
-  it("only admits real faces and normalises difficulty", () => {
+  it("admits any face OR alias, normalises the cat, and normalises difficulty", () => {
+    // ⚠️ A club page stamps `data-face` at BUILD time, so pages already live
+    // carry pre-2026-09-10 cats. The drain must accept those and fold them,
+    // or every queued round from an older page is silently dropped.
     store[PENDING_KEY] = JSON.stringify([
       { cat: "PL", diff: "hard", isCorrect: true },
-      { cat: "ClubQuiz", diff: "hard", isCorrect: true },   // not a face
-      { cat: "Ligue1", diff: "medium", isCorrect: true },   // no face for it
-      { cat: "SerieA", diff: "nonsense", isCorrect: false },
+      { cat: "ClubQuiz", diff: "hard", isCorrect: true },   // alias -> Clubs
+      { cat: "Ligue1", diff: "medium", isCorrect: true },   // alias -> Clubs
+      { cat: "SerieA", diff: "nonsense", isCorrect: false },// alias -> Clubs
+      { cat: "Quidditch", diff: "hard", isCorrect: true },  // no face, dropped
       { cat: "UCL", isCorrect: "yes" },                     // not a boolean
     ]);
     expect(drainPendingRounds()).toEqual([
       { cat: "PL", diff: "hard", isCorrect: true },
-      { cat: "SerieA", diff: "medium", isCorrect: false },
+      { cat: "Clubs", diff: "hard", isCorrect: true },
+      { cat: "Clubs", diff: "medium", isCorrect: true },
+      { cat: "Clubs", diff: "medium", isCorrect: false },
     ]);
   });
 
