@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
-const RECAL_KEY = "biq_card_recal_2026_09_09";
-const RECAL_DATE_LABEL = "9 Sep 2026";
+const RECAL_KEY = "biq_card_recal_2026_09_10";
 import { createPortal } from "react-dom";
 import { useAuth } from "../useAuth.jsx";
 import { supabase } from "../supabase.js";
@@ -8,7 +7,21 @@ import { useModalA11y } from "../useModalA11y.js";
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_ANSWERS } from '../lib/scoring.js';
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
-import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette } from "../lib/ballIqCard.js";
+import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, MULT } from "../lib/ballIqCard.js";
+import { CALIBRATION } from "../data/cardCalibration.js";
+
+// ⚠️ THE RECALIBRATION NOTE MUST DERIVE FROM THE CALIBRATION IT DESCRIBES.
+// Both the date and the two percentages were hard-coded, in two places each,
+// and the moment the premium moved to 1.25/1.50 the app was telling every
+// player "medium questions now count 10% more, hard 20% more" — the wrong
+// numbers, under the wrong date. It survived the whole recalibration because
+// nothing can test a sentence against a constant it does not reference. This
+// is the same lesson the card's own unit tests just learned: derive it, or it
+// drifts silently the next time someone tunes the scale.
+const RECAL_DATE_LABEL = new Date(CALIBRATION.measured + "T00:00:00Z")
+  .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+const RECAL_MEDIUM_PCT = Math.round((MULT.medium - 1) * 100);
+const RECAL_HARD_PCT = Math.round((MULT.hard - 1) * 100);
 import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
@@ -1549,7 +1562,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   to end, so the first sight of the new card says why, once. */}
               {hasPlayed && !recalSeen && (
                 <div className="pd-recal" role="status">
-                  <span>Ratings recalibrated {RECAL_DATE_LABEL}: medium questions now count 10% more, hard 20% more.</span>
+                  <span>Ratings recalibrated {RECAL_DATE_LABEL}: medium questions now count {RECAL_MEDIUM_PCT}% more, hard {RECAL_HARD_PCT}% more.</span>
                   <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
                 </div>
               )}
@@ -1754,7 +1767,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           rebuild exists to end, so the first sight of the new card says why. */}
       {(stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (
         <div className="pd-recal" role="status" style={{ marginTop: 0, marginBottom: 14 }}>
-          <span>Ratings recalibrated {RECAL_DATE_LABEL}: medium questions now count 10% more, hard 20% more.</span>
+          <span>Ratings recalibrated {RECAL_DATE_LABEL}: medium questions now count {RECAL_MEDIUM_PCT}% more, hard {RECAL_HARD_PCT}% more.</span>
           <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
         </div>
       )}
