@@ -278,6 +278,9 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
         ov: String(card.overall),
         ti: card.tier,
         r: card.ratings.map(x => (x.rated ? x.rating : "")).join(","), // unrated face → og.js prints a dash
+        // Slot 0 is the sharer's OWN league, and `r` is positional — without
+        // this the unfurl would label their La Liga rating "EPL".
+        lg: card.ratings[0]?.cat || "PL",
       } : {}),
     });
     const avatarUrl = authProfile?.avatar_url;

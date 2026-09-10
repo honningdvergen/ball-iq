@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { CALIBRATION } from "../../src/data/cardCalibration.js";
-import { computeCard, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf } from "../../src/lib/ballIqCard.js";
+import { computeCard, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
 
 // THE MODEL (Alex, 2026-09-09): "61% accuracy on easy equals 61; 61% at medium
@@ -94,13 +94,16 @@ describe("club play feeds the faces", () => {
     expect(faceCatFor({ cat: "PL" })).toBe("PL");
     expect(faceCatFor({ cat: "ClubQuiz", realCat: "UCL", club: "Arsenal" })).toBe("UCL");
     expect(faceCatFor({ cat: "ClubQuiz", realCat: "History", club: "Arsenal" })).toBe("PL");
-    expect(faceCatFor({ cat: "ClubQuiz", realCat: "Legends", club: "Juventus" })).toBe("Clubs");
+    // Stored under its REAL league since 2026-09-10 — the card's league slot is
+    // the player's own most-played league, so pooling at write time would
+    // destroy the signal it reads. computeCard pools at render instead.
+    expect(faceCatFor({ cat: "ClubQuiz", realCat: "Legends", club: "Juventus" })).toBe("SerieA");
     expect(faceCatFor({ cat: "ChampionsLeague" })).toBe("UCL");
     expect(faceCatFor({ cat: "Euros" })).toBe("WorldCup");
     // Since the 2026-09-10 re-cut these reach a face instead of falling off the
     // card — that is the whole point of the re-cut.
     expect(faceCatFor({ cat: "History" })).toBe("Legends");
-    expect(faceCatFor({ cat: "ClubQuiz", realCat: "History", club: "Marseille" })).toBe("Clubs"); // routes since 09-10
+    expect(faceCatFor({ cat: "ClubQuiz", realCat: "History", club: "Marseille" })).toBe("Ligue1"); // routes since 09-10
     expect(faceCatFor({ cat: "Managers" })).toBe("Records");
     expect(faceCatFor({ cat: "Quidditch" })).toBeNull();
     expect(faceCatFor(null)).toBeNull();
@@ -114,8 +117,13 @@ describe("club play feeds the faces", () => {
     const by = {};
     for (const v of Object.values(CLUB_NAME_TO_COMP)) by[v] = (by[v] || 0) + 1;
     expect(by.PL).toBeGreaterThanOrEqual(30);
-    expect(by.Clubs).toBeGreaterThanOrEqual(40);
-    expect(new Set(Object.values(CLUB_NAME_TO_COMP))).toEqual(new Set(["PL", "Clubs"]));
+    // every value is either a real league face or the Clubs catch-all — never
+    // an unrouted club, and never a pooled one where the league is known
+    const LEGAL = new Set([...LEAGUE_CATS, "Clubs"]);
+    for (const v of Object.values(CLUB_NAME_TO_COMP)) expect(LEGAL.has(v), `${v} is not a face`).toBe(true);
+    for (const l of ["LaLiga", "SerieA", "Bundesliga", "Ligue1", "SuperLig", "Primeira"]) {
+      expect(by[l], `${l} has no clubs routed to it`).toBeGreaterThanOrEqual(3);
+    }
     // and the map covers the whole pack list, not a subset of it
     expect(Object.keys(CLUB_NAME_TO_COMP).length).toBeGreaterThanOrEqual(90);
   });
@@ -181,7 +189,8 @@ describe("recordAnswers", () => {
     // the test is unchanged: a club answer must NOT pile up under "ClubQuiz",
     // which was the biggest key in prod and fed nothing.
     const cs = recordAnswers({}, [{ cat: "ClubQuiz", realCat: "History", club: "Juventus", diff: "medium", isCorrect: true }]);
-    expect(cs.Clubs).toBeDefined();
+    expect(cs.SerieA).toBeDefined();   // its own league, not a pool
+    expect(cs.Clubs).toBeUndefined();
     expect(cs.ClubQuiz).toBeUndefined();
     // an English club still reaches its own face rather than the Clubs bucket
     const eng = recordAnswers({}, [{ cat: "ClubQuiz", realCat: "History", club: "Arsenal", diff: "medium", isCorrect: true }]);

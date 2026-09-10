@@ -76,6 +76,13 @@ import { CLUB_NAME_TO_COMP } from '../data/clubPackColours.js';
 // still misses ClubQuiz, the single biggest bucket in prod at 2,049 answers.
 // Folding them into one Clubs face is what carries club play onto the card.
 export const CARD_COMPS = [
+  // ⚠️ SLOT 0 IS THE PLAYER'S OWN LEAGUE, not the Premier League. This entry is
+  // only the DEFAULT — see LEAGUE_FACES / cardCompsFor. Giving the Premier
+  // League a permanent face while La Liga, Serie A and the Bundesliga shared
+  // one was an English bias inherited from our bank's shape, not a fact about
+  // the player: a Barcelona fan opened the card and saw EPL and no La Liga.
+  // Alex, 2026-09-10: "we ditched the other leagues apart from premier league,
+  // i am not sure where the logic in that is."
   { abbr: "EPL", cat: "PL",       name: "Premier League",     icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
   { abbr: "UCL", cat: "UCL",      name: "Champions League",   icon: "⭐", color: "#123A8F" },
   { abbr: "INT", cat: "WorldCup", name: "International",      icon: "🌍", color: "#8A6D1B" },
@@ -104,6 +111,8 @@ export const FACE_ALIAS = {
   Euros: "WorldCup",
   // Clubs & Leagues — every club competition that is not the Premier League,
   // plus the club-quiz bucket itself (the biggest single key in prod).
+  // Leagues are folded by computeCard against the player's own league, not from
+  // this table — these entries are the fallback for any other reader.
   LaLiga: "Clubs", SerieA: "Clubs", Bundesliga: "Clubs",
   Ligue1: "Clubs", SuperLig: "Clubs", Primeira: "Clubs", ClubQuiz: "Clubs",
   // Legends & History
@@ -111,6 +120,49 @@ export const FACE_ALIAS = {
   // Records & Managers
   Managers: "Records", Transfers: "Records",
 };
+
+// Every league that can occupy slot 0. Measured on all 105 accounts: picking
+// the player's own most-played league costs nothing on fill (2.68 vs 2.61 of
+// six rated) and shows La Liga to 17% of players, the Bundesliga to 5% and
+// Serie A to 4% — the quarter of players the fixed card was slighting. It also
+// makes the label explain itself: a Spaniard reads "LA LIGA", which needs no
+// glossary. Auto-picked from play, never a setting — most people never open
+// settings, and we already know the answer from what they play.
+export const LEAGUE_FACES = [
+  { abbr: "EPL",        cat: "PL",         name: "Premier League", icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
+  { abbr: "LA LIGA",    cat: "LaLiga",     name: "La Liga",        icon: "🇪🇸", color: "#EE8707" },
+  { abbr: "SERIE A",    cat: "SerieA",     name: "Serie A",        icon: "🇮🇹", color: "#0578D3" },
+  { abbr: "BUNDESLIGA", cat: "Bundesliga", name: "Bundesliga",     icon: "🇩🇪", color: "#D20515" },
+  { abbr: "LIGUE 1",    cat: "Ligue1",     name: "Ligue 1",        icon: "🇫🇷", color: "#1B2447" },
+  { abbr: "SÜPER LIG",  cat: "SuperLig",   name: "Süper Lig",      icon: "🇹🇷", color: "#E30A17" },
+  { abbr: "PRIMEIRA",   cat: "Primeira",   name: "Primeira Liga",  icon: "🇵🇹", color: "#046A38" },
+];
+export const LEAGUE_CATS = new Set(LEAGUE_FACES.map(l => l.cat));
+
+/**
+ * Which league owns slot 0 for this player: the one they have answered most,
+ * Premier League when nothing separates them (it is the bank's largest league,
+ * so it is the safest default rather than a privileged one).
+ *
+ * ⚠️ STICKY BY MARGIN. A face that swaps every time two leagues trade places
+ * would read as the card losing data — the complaint this whole re-cut came
+ * from. A challenger must beat the incumbent by more than a rounding error.
+ */
+export function pickLeagueFace(catStats = {}, current) {
+  const own = (c) => rawAnswered((catStats || {})[c]);
+  const ranked = LEAGUE_FACES.map(l => ({ l, n: own(l.cat) })).sort((a, b) => b.n - a.n);
+  const top = ranked[0];
+  if (!top || top.n <= 0) return LEAGUE_FACES[0];
+  const held = LEAGUE_FACES.find(l => l.cat === current);
+  if (held && own(held.cat) > 0 && top.n < own(held.cat) * 1.2) return held;
+  return top.l;
+}
+
+/** The six faces for THIS player, in card order. */
+export function cardCompsFor(catStats = {}, current) {
+  const league = pickLeagueFace(catStats, current);
+  return [league, ...CARD_COMPS.slice(1)];
+}
 
 const FACE_CATS = new Set(CARD_COMPS.map(c => c.cat));
 
@@ -136,6 +188,12 @@ export function faceCatFor(ans) {
   //    for no reason except which of the two happened to be a face's canonical
   //    key and which an alias.
   if (COMPETITION_FACES.has(cat)) return cat;
+  // ⚠️ A LEAGUE IS STORED AS ITSELF, NEVER PRE-POOLED. The card's league slot
+  // is the player's own most-played league, so folding La Liga into "Clubs"
+  // here would destroy the signal that slot reads — and it is irreversible:
+  // once two leagues share a key their answers cannot be told apart again.
+  // Pooling belongs at READ time (computeCard), where it can be undone.
+  if (LEAGUE_CATS.has(cat)) return cat;
   // 2. ⚠️ THE CLUB BEFORE THE ALIAS, and the order matters now that the thin
   //    leagues are aliases rather than faces (2026-09-10). "Play your club,
   //    build your club's league" is an explicit promise — a History question
@@ -143,10 +201,7 @@ export function faceCatFor(ans) {
   //    re-cut it reached EPL only because History had no face. Aliasing
   //    History would have silently moved every one of those answers off the
   //    club's face. The club is the stronger signal whenever we have it.
-  if (ans.club && CLUB_NAME_TO_COMP[ans.club]) {
-    const viaClub = CLUB_NAME_TO_COMP[ans.club];
-    return FACE_CATS.has(viaClub) ? viaClub : (FACE_ALIAS[viaClub] || null);
-  }
+  if (ans.club && CLUB_NAME_TO_COMP[ans.club]) return CLUB_NAME_TO_COMP[ans.club];
   // 3. Otherwise fold the category onto the face that now carries it — this is
   //    where a thematic category lands when there is no club to prefer.
   if (FACE_CATS.has(cat)) return cat;
@@ -395,11 +450,26 @@ export function overallAccuracy(catStats = {}) {
 // prior for "how would they do in this league" — but a face is only PRINTED
 // from PROVISIONAL_ANSWERS (muted) and fully from MIN_RATED_ANSWERS.
 // ⚠️ Nothing sums faces to make the overall; see overallScore().
+// ⚠️ A FACE IS DAMPED LESS THAN THE OVERALL, DELIBERATELY — but not by 2.
+// This was a bare `2` while the overall uses PRIOR_WEIGHT (20), which is a
+// tenth of the damping on a tenth of the data: a face printed 99 from eight
+// answers and 40 from three, then drifted. That is the "kept getting lower"
+// shape from Alex's very first device review, and it was visible on a real
+// rendered card (CLUBS 99 off eight PL answers).
+//
+// The two weights differ on purpose. The overall pools every answer, so 20 is
+// a small correction there; a face holds tens of answers, where 20 would
+// dominate — at that weight a perfect 8/8 and a solid 30/40 both read 77 and
+// the card stops saying where you are strong, which is its whole job. 8 puts
+// a face at the 10-answer gate on roughly 55% its own evidence: enough to
+// listen to the player, enough to stop a hot streak printing 99.
+//   8/8 -> 87 (was 99) · 9/10 -> 83 (93) · 3/10 -> 47 (40) · 30/40 -> 79 (82)
+export const FACE_PRIOR_WEIGHT = 8;
 export function compRating(cs, priorAcc = CALIBRATION.median) {
   const { s, n } = scoreOf(cs);
   const p = Number.isFinite(priorAcc) ? priorAcc : CALIBRATION.median;
   const priorMean = Math.max(0.25, Math.min(0.75, p)) * AVG_MULT;
-  return ratingFromScore((s + priorMean * 2) / (n + 2));
+  return ratingFromScore((s + priorMean * FACE_PRIOR_WEIGHT) / (n + FACE_PRIOR_WEIGHT));
 }
 
 // BRONZE / SILVER / GOLD. Alex, 2026-08-26: "maybe we should have silver cards
@@ -457,12 +527,16 @@ function mergeD(a, b) {
   return Object.keys(out).length ? out : null;
 }
 
-export function computeCard(catStats = {}, _priorAcc, lifetime) {
+export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
   // Fold aliases into their face BEFORE reading, so a profile carrying both
   // `ChampionsLeague` and `UCL` (46 in prod) rates one Champions League.
+  // The player's own league keeps its slot; every OTHER league folds into Clubs
+  // for this render only. Nothing is written back, so the fold is reversible
+  // and a league face can change without losing a single answer.
+  const leagueCat = pickLeagueFace(catStats, currentLeague).cat;
   const folded = {};
   for (const [k, v] of Object.entries(catStats || {})) {
-    const key = FACE_ALIAS[k] || k;
+    const key = k === leagueCat ? k : (LEAGUE_CATS.has(k) ? "Clubs" : (FACE_ALIAS[k] || k));
     const cur = folded[key] || { s: 0, n: 0, c: 0, a: 0 };
     const sk = scoreOf(v);
     const d = mergeD(cur.d, v?.d);
@@ -476,7 +550,7 @@ export function computeCard(catStats = {}, _priorAcc, lifetime) {
   const { mean, answered: answeredTotal } = overallScore(rated);
   const acc = mean / AVG_MULT;
   const overall = ratingFromScore(mean);
-  const ratings = CARD_COMPS.map(comp => {
+  const ratings = cardCompsFor(catStats, currentLeague).map(comp => {
     const cs = rated[comp.cat];
     // Gates count the league's OWN answers (raw), never borrowed ones.
     const answered = rawAnswered(cs);

@@ -227,7 +227,7 @@
     {
       "event": "share-p",
       "file": "src/hooks/useShare.js",
-      "line": 286,
+      "line": 289,
       "eventFirstWrite": "2026-08-11",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -1527,7 +1527,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "src/hooks/useShare.js",
-      "line": 286,
+      "line": 289,
       "gate": "isSyntheticTraffic",
       "surfaces": "the React app (web + native shells)",
       "firstWrite": "2026-08-11",

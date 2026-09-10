@@ -100,14 +100,22 @@ if (Object.keys(abbrMap).length < 40) { console.error(`[club-index] only ${Objec
 // 2026-09-09 the most-played mode in the app fed NO face. The route is
 // club -> pack (CLUB_PACK_TO_QB inverted) -> country (CLUB_LEAGUES) -> face.
 //
-// ⚠️ EVERY COUNTRY ROUTES NOW (2026-09-10). It used to be these four only, and
-// a club outside them — Marseille, Porto, Galatasaray, Ajax — fed nothing at
-// all: their fans' club rounds counted toward the overall and left the card
-// blank. The re-cut gave those leagues a home (the Clubs face), so the map is
-// no longer allowed to be partial. England keeps its own face; everything else
-// is a club competition and lands on Clubs. `null` is the deliberate "this
-// pack is not a league club" escape, and there is currently nothing in it.
-const LEAGUE_TO_COMP = new Proxy({ england: 'PL' }, {
+// ⚠️ EVERY COUNTRY ROUTES, AND TO ITS OWN LEAGUE. Two rules in one map:
+//   · nothing may be unrouted. Before 2026-09-10 only these four countries
+//     mapped, so a Marseille, Porto, Ajax or Galatasaray fan's club rounds fed
+//     nothing at all and left every face blank.
+//   · a club answer is STORED under its real league, never pre-pooled. The
+//     card's league slot is now the player's own most-played league, so a
+//     Barcelona fan's club rounds have to land on LaLiga for that to work —
+//     pooling them into "Clubs" at write time would destroy the very signal
+//     the slot reads. Pooling happens at READ time in computeCard, where it
+//     can be undone.
+// Countries whose league has no face of its own fall to Clubs, which is where
+// the read-time fold would put them anyway.
+const LEAGUE_TO_COMP = new Proxy({
+  england: 'PL', spain: 'LaLiga', italy: 'SerieA', germany: 'Bundesliga',
+  france: 'Ligue1', turkiye: 'SuperLig', portugal: 'Primeira',
+}, {
   get: (t, k) => (typeof k === 'string' && k !== 'undefined' ? (t[k] || 'Clubs') : undefined),
   has: (t, k) => typeof k === 'string' && k !== 'undefined',
 });
@@ -135,7 +143,8 @@ export const CLUB_PACK_COLOURS = ${JSON.stringify(packMap, null, 0).replace(/","
 
 export const CLUB_PACK_ABBR = ${JSON.stringify(abbrMap, null, 0).replace(/","/g, '",\n"')};
 
-// CLUB_NAME_TO_COMP: bank club name -> Ball IQ card face cat (PL or Clubs).
+// CLUB_NAME_TO_COMP: bank club name -> its LEAGUE cat (PL/LaLiga/SerieA/…), or
+// Clubs for a country whose league has no face. Folded at read time, not here.
 export const CLUB_NAME_TO_COMP = ${JSON.stringify(nameToComp, null, 0).replace(/","/g, '",\n"')};
 `;
 const coloursBefore = existsSync(COLOURS_OUT) ? readFileSync(COLOURS_OUT, 'utf8') : '';

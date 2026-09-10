@@ -1,5 +1,5 @@
 import { ImageResponse } from '@vercel/og';
-import { CARD_TIERS, CARD_COMPS, tierPalette } from '../src/lib/ballIqCard.js';
+import { CARD_TIERS, CARD_COMPS, LEAGUE_FACES, tierPalette } from '../src/lib/ballIqCard.js';
 
 // Dynamic Open Graph image — renders the player's Ball IQ rating card so a
 // shared balliq.app/p?... link previews as their card (overall + tier + six
@@ -317,6 +317,14 @@ export default function handler(req) {
   // that every already-shared /p link still carries.
   const t = tierPalette(tiKey);
   const ratings = (sp.get('r') || '').slice(0, 64).split(',').slice(0, 6);
+  // ⚠️ SLOT 0 IS THE SHARER'S OWN LEAGUE, so the label has to travel with the
+  // numbers. `r` is POSITIONAL, and without `lg` a La Liga rating would be
+  // published under "EPL" on every unfurl — the same English bias the card
+  // itself just shed, except public. Links shared before 2026-09-10 carry no
+  // `lg` and fall back to the Premier League, which is what they meant.
+  const lg = (sp.get('lg') || '').slice(0, 16);
+  const league = LEAGUE_FACES.find((l) => l.cat === lg) || LEAGUE_FACES[0];
+  const comps = [league, ...CARD_COMPS.slice(1)];
   // `s` = day streak (same param the /p description line uses). ≥2 earns a flame
   // chip — a 0/1 "streak" is noise, not a brag.
   const streak = Math.min(9999, Math.max(0, parseInt((sp.get('s') || '0').slice(0, 5), 10) || 0));
@@ -351,8 +359,8 @@ export default function handler(req) {
   const rows = [];
   for (let i = 0; i < 6; i += 2) {
     rows.push(h('div', { style: { display: 'flex', gap: 26 } },
-      cell(CARD_COMPS[i], ratings[i], i === bestIdx),
-      cell(CARD_COMPS[i + 1], ratings[i + 1], i + 1 === bestIdx)));
+      cell(comps[i], ratings[i], i === bestIdx),
+      cell(comps[i + 1], ratings[i + 1], i + 1 === bestIdx)));
   }
 
   const tree = h('div', {
