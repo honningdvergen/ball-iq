@@ -13,7 +13,7 @@
 //
 // ⚠️ THE RATING IS COMPUTED, NOT FAKED. The card is driven by
 // computeCard(catStats, _prior, lifetime) in src/lib/ballIqCard.js:
-//     rating = 40 + 59 * (correct + 2*prior) / (answered + 2)
+//     rating = 100 x difficulty-weighted mean, shrunk toward BASELINE
 // so the numbers below were solved BACKWARDS from a target overall and then
 // verified through the real function. Hard-coding a number into the DOM would
 // have produced a card whose six sub-ratings do not average to their own
@@ -104,7 +104,16 @@ const SEED_STATS = {
   gamesPlayed: 378,
   bestScore: 10,
   bestStreak: 14,
-  totalCorrect: 3020,
+  // ⚠️ RE-SOLVED 2026-09-10 WHEN THE DIFFICULTY PREMIUM CHANGED (1.25/1.50).
+  // These counts are not decoration — they are the INPUT the card is computed
+  // from, so a change to MULT moves the shot. At the old premium this seed hit
+  // the 88 it was solved for; at the new one the same counts produced an
+  // OVERALL 99 with four faces at 96+, a maxed-out card that reads as fake in
+  // a store listing. Re-solved for 88 by uniform scale, which keeps every
+  // face's share and so keeps the spread that makes the seed read as a person.
+  // If MULT ever moves again, RE-SOLVE THIS — the `verify` below pins 88 and
+  // will fail the run, which is the only reason it was caught.
+  totalCorrect: 2650,
   totalAnswered: 3775,
   // ⚠️ EVERY FACE MUST CARRY DATA. The card was re-cut on 2026-09-10 (EPL/UCL/
   // INT/CLB/LEG/REC) and this seed still only held the six old league keys —
@@ -115,17 +124,17 @@ const SEED_STATS = {
   // a real player: LaLiga+Bundesliga+SerieA -> CLB, Legends+History -> LEG,
   // Records+Managers+Transfers -> REC.
   catStats: {
-    PL:         { c: 821, a: 940 },   // -> EPL
-    UCL:        { c: 395, a: 480 },   // -> UCL
-    WorldCup:   { c: 244, a: 330 },   // -> INT
-    LaLiga:     { c: 242, a: 300 },   // ┐
-    Bundesliga: { c: 152, a: 210 },   // ├ CLB
-    SerieA:     { c: 189, a: 250 },   // ┘
-    Legends:    { c: 288, a: 360 },   // ┐ LEG
-    History:    { c: 196, a: 260 },   // ┘
-    Records:    { c: 231, a: 300 },   // ┐
-    Managers:   { c: 158, a: 205 },   // ├ REC
-    Transfers:  { c: 104, a: 140 },   // ┘
+    PL:         { c: 720, a: 940 },   // -> EPL
+    UCL:        { c: 347, a: 480 },   // -> UCL
+    WorldCup:   { c: 214, a: 330 },   // -> INT
+    LaLiga:     { c: 212, a: 300 },   // ┐
+    Bundesliga: { c: 133, a: 210 },   // ├ CLB
+    SerieA:     { c: 166, a: 250 },   // ┘
+    Legends:    { c: 253, a: 360 },   // ┐ LEG
+    History:    { c: 172, a: 260 },   // ┘
+    Records:    { c: 203, a: 300 },   // ┐
+    Managers:   { c: 139, a: 205 },   // ├ REC
+    Transfers:  { c: 91, a: 140 },   // ┘
   },
 };
 
