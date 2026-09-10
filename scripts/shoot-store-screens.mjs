@@ -87,29 +87,45 @@ mkdirSync(RAW, { recursive: true });
 
 // ⚠️ RE-SOLVED 2026-09-09 — the card model was rebuilt that day (difficulty
 // multipliers, shrink to a measured baseline), so this SAME seed now yields
-// OVERALL 89, not 87. The seed was not touched; the maths under it changed.
+// OVERALL 88 (it read 89 before the 2026-09-10 face re-cut added LEG/REC data).
 // Re-run the node snippet in project_ball_iq_card_calibration if it moves again.
-// OVERALL 89 (GOLD), and the SIX sub-ratings the
+// OVERALL 88 (GOLD), and the SIX sub-ratings the
 // saved card in 10-iq-card.png already shows. Spread is deliberately uneven —
 // a real player is better at the league they watch.
-//   EPL 96 · UCL 91 · LAL 89 · SEA 83 · INT 81 · BUN 80
+//   EPL 96 · UCL 91 · LEG 86 · CLB 85 · REC 84 · INT 81
 //
 // The volume (2,510 answered ≈ 251 games) is what an Immortal-level 208k XP
 // player would actually have on the clock. The old seed paired 46 games with
 // that XP, which the stat grid printed directly beneath the card.
 const SEED_STATS = {
-  gamesPlayed: 251,
+  // Totals are the SUM of catStats below, not a separate guess — the profile
+  // grid prints games/accuracy right under the card, so a lifetime total that
+  // disagrees with the faces is visible in the same screenshot.
+  gamesPlayed: 378,
   bestScore: 10,
   bestStreak: 14,
-  totalCorrect: 2043,
-  totalAnswered: 2510,
+  totalCorrect: 3020,
+  totalAnswered: 3775,
+  // ⚠️ EVERY FACE MUST CARRY DATA. The card was re-cut on 2026-09-10 (EPL/UCL/
+  // INT/CLB/LEG/REC) and this seed still only held the six old league keys —
+  // so the exported store card printed LEG and REC as empty slots. A gallery
+  // whose hero card advertises two blank faces sells the exact complaint the
+  // re-cut existed to fix. Keys are stored under their REAL bank categories,
+  // not the face names, so the aliases do the folding exactly as they do for
+  // a real player: LaLiga+Bundesliga+SerieA -> CLB, Legends+History -> LEG,
+  // Records+Managers+Transfers -> REC.
   catStats: {
-    PL:         { c: 821, a: 940 },
-    UCL:        { c: 395, a: 480 },
-    WorldCup:   { c: 244, a: 330 },
-    LaLiga:     { c: 242, a: 300 },
-    Bundesliga: { c: 152, a: 210 },
-    SerieA:     { c: 189, a: 250 },
+    PL:         { c: 821, a: 940 },   // -> EPL
+    UCL:        { c: 395, a: 480 },   // -> UCL
+    WorldCup:   { c: 244, a: 330 },   // -> INT
+    LaLiga:     { c: 242, a: 300 },   // ┐
+    Bundesliga: { c: 152, a: 210 },   // ├ CLB
+    SerieA:     { c: 189, a: 250 },   // ┘
+    Legends:    { c: 288, a: 360 },   // ┐ LEG
+    History:    { c: 196, a: 260 },   // ┘
+    Records:    { c: 231, a: 300 },   // ┐
+    Managers:   { c: 158, a: 205 },   // ├ REC
+    Transfers:  { c: 104, a: 140 },   // ┘
   },
 };
 
@@ -220,10 +236,10 @@ const SHOTS = [
   // ⚠️ THE EYEBROW IS NOW THE WORDMARK, NOT A DESCRIPTION. The card used to say
   // "BALL IQ RATING" and this asserted on that string; it now reads "BALL IQ" to
   // match the shared PNG, so the screen marker moved to the tier row. `verify`
-  // carries the real proof: the seeded 89 has to be on screen, which is what
+  // carries the real proof: the seeded 88 has to be on screen, which is what
   // catches a card that rendered empty or fell back to a default palette.
   { name: '06-profile',        expect: 'OVERALL', settle: true,
-    verify: async (p) => (await p.evaluate(() => /\b89\b/.test(document.body.innerText)
+    verify: async (p) => (await p.evaluate(() => /\b88\b/.test(document.body.innerText)
       && /GOLD/.test(document.body.innerText)
       // ⚠️ MATCH THE COPY THAT IS ACTUALLY ON SCREEN. This asserted on "Create a
       // free account"; the slab was reworded to "Saved on this phone only …
@@ -607,7 +623,7 @@ await ctx.addInitScript((stats) => {
   }));
   // ⚠️ MATCHES THE SAVED CARD'S LEVEL LINE. 10-iq-card.png reads "Immortal ·
   // 208,515 XP"; the profile shot sits next to it in the same store gallery, so
-  // a different level under the same name and the same 89 would read as two
+  // a different level under the same name and the same 88 would read as two
   // unrelated screens rather than one player's card in two places.
   localStorage.setItem('biq_xp', '208515');
   // ⚠️ THE CONSENT BANNER WOULD OTHERWISE SHIP IN THE STORE SCREENSHOTS.
