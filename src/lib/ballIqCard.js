@@ -92,7 +92,14 @@ export const CARD_COMPS = [
   // on first sight of his own card: "i think if it is not that obvious to me
   // then it might be confusing to the actual users." Where a real abbreviation
   // exists, use it; where one does not, spell the word.
-  { abbr: "CLUBS",   cat: "Clubs",    name: "Clubs & Leagues",    icon: "🛡️", color: "#EE8707" },
+  // ⚠️ "WORLD", not "EUROPE" — and not by taste. This face holds nineteen club
+  // packs and SIX are South American (Boca Juniors, River Plate, Flamengo,
+  // Palmeiras, Corinthians, Santos), so "Europe" would be plainly wrong for
+  // them — the same shape of error as the English bias the league slot just
+  // shed: true for most, wrong for a real minority. The `cat` stays "Clubs"
+  // because it is a STORAGE KEY with rows already written under it; only the
+  // label changed.
+  { abbr: "WORLD",   cat: "Clubs",    name: "Clubs worldwide",    icon: "🛡️", color: "#EE8707" },
   { abbr: "LEGENDS", cat: "Legends",  name: "Legends & History",  icon: "📜", color: "#B03A2E" },
   { abbr: "RECORDS", cat: "Records",  name: "Records & Managers", icon: "📊", color: "#1B7F79" },
 ];
@@ -455,7 +462,7 @@ export function overallAccuracy(catStats = {}) {
 // tenth of the damping on a tenth of the data: a face printed 99 from eight
 // answers and 40 from three, then drifted. That is the "kept getting lower"
 // shape from Alex's very first device review, and it was visible on a real
-// rendered card (CLUBS 99 off eight PL answers).
+// rendered card (the WORLD face printing 99 off eight PL answers).
 //
 // The two weights differ on purpose. The overall pools every answer, so 20 is
 // a small correction there; a face holds tens of answers, where 20 would
