@@ -43,6 +43,7 @@ import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePi
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
 import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds, faceAbbrForCat, faceLabelType } from './lib/ballIqCard.js';
+import { liveStreak, localDayNow, shieldsAvailable } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
@@ -768,8 +769,14 @@ export const CAT_LABELS = {
   WorldCup:"International", Euros:"Euros", UCL:"Champions League",
   PL:"Premier League", LaLiga:"La Liga", Bundesliga:"Bundesliga",
   SerieA:"Serie A", Ligue1:"Ligue 1", SuperLig:"Süper Lig", Primeira:"Primeira Liga",
-  Managers:"Managers", Records:"Records & Icons",
-  Legends:"Legends & History", Transfers:"Transfers",
+  // ⚠️ A CATEGORY LABEL MUST NOT INVENT WORDS THE CARD DOES NOT USE. The chip
+  // read "RECORDS & ICONS" while the card face beside it reads "RECORDS" and
+  // CARD_COMPS calls it "Records & Managers" — three names for one thing, and
+  // "Icons" appears nowhere else in the product. Same for "Legends & History"
+  // against a "LEGENDS" face. The chip now names the category exactly as the
+  // card labels the face it feeds, so a player can connect the two.
+  Managers:"Managers", Records:"Records",
+  Legends:"Legends", History:"History", Transfers:"Transfers",
   // ⚠️ DISPLAY LABEL ONLY — DO NOT RENAME THE `cat` VALUE ITSELF. Club-quiz
   // questions are tagged cat:"ClubQuiz" (see the club-quiz session builder),
   // and .q-tag uppercases whatever it is given, so the chip above every
@@ -5031,12 +5038,21 @@ function AppInner() {
   const [levelUpOverlay, setLevelUpOverlay] = useState(null);
   const levelUpTimerRef = useRef(null);
   const [howToPlay, setHowToPlay] = useState(null);
+  // ⚠️ A STORED STREAK IS NOT AUTOMATICALLY A LIVE ONE — run it through
+  // liveStreak(), which is the single rule for "is this still going today".
+  // Printing the raw stored number would resurrect a streak that died weeks
+  // ago; printing 0 whenever localStorage is empty is the bug this replaces.
+  // See src/lib/streak.js.
   const [loginStreak, setLoginStreak] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_login_streak");
-      if (raw) { const p = JSON.parse(raw); if (p && typeof p.streak === "number") return p.streak; }
-    } catch {}
-    return 0;
+      if (!raw) return 0;
+      const p = JSON.parse(raw);
+      let xpVal = 0, used = 0;
+      try { xpVal = parseInt(localStorage.getItem("biq_xp") || "0", 10) || 0; } catch { /* fresh install */ }
+      try { used = (JSON.parse(localStorage.getItem("biq_stats") || "{}") || {}).shieldsUsed || 0; } catch { /* fresh install */ }
+      return liveStreak(p, localDayNow(), shieldsAvailable(xpVal, used));
+    } catch { return 0; }
   });
   // bestLoginStreak is persisted alongside the current streak under the same
   // biq_login_streak key (extended schema: { streak, lastDay, best }). Older
@@ -7837,9 +7853,36 @@ function AppInner() {
           setDailyScore(detail.dailyScores[todayYMD]);
         }
       }
-      // loginStreak removed from biq:hydrated payload in Phase G —
-      // tick_login_streak RPC is authoritative; AppInner's tickLoginStreak
-      // useEffect updates setLoginStreak / setBestLoginStreak directly.
+      // ⚠️ THE SERVER'S STREAK IS APPLIED HERE — see src/lib/streak.js and the
+      // note in useAuth's hydrate. This block used to say loginStreak was
+      // removed "because AppInner's tickLoginStreak useEffect updates it
+      // directly"; there is no such useEffect, the tick only fires on
+      // daily-puzzle completion, and the result was a signed-in player with a
+      // 58-day best being shown "0 day streak" on any device that had not
+      // already cached it locally.
+      //
+      // ⚠️ READ ONLY. Hydrating must never advance a streak — opening the app
+      // is not playing. liveStreak() only decides whether what the server
+      // already stored is still alive today; the RPC keeps ownership of
+      // ticking it. `best` is taken straight through, since a personal best
+      // does not expire.
+      if (detail.loginStreak && typeof detail.loginStreak === 'object') {
+        const rec = detail.loginStreak;
+        let xpVal = 0, used = 0;
+        try { xpVal = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0; } catch { /* no local xp yet */ }
+        try { used = (JSON.parse(localStorage.getItem('biq_stats') || '{}') || {}).shieldsUsed || 0; } catch { /* no local stats yet */ }
+        const live = liveStreak(rec, localDayNow(), shieldsAvailable(xpVal, used));
+        setLoginStreak(live);
+        setBestLoginStreak(b => Math.max(b || 0, Number(rec.best) || 0, live));
+        // Cache it so the next cold start renders the right number before the
+        // network answers — the gap this whole fix is about.
+        try {
+          localStorage.setItem('biq_login_streak', JSON.stringify({
+            streak: Number(rec.streak) || 0, lastDay: Number(rec.lastDay) || 0,
+            best: Math.max(Number(rec.best) || 0, live),
+          }));
+        } catch { /* storage full or blocked: display still correct this session */ }
+      }
       // wordleState is in the payload for forward-compat; FootballWordle
       // re-reads localStorage on mount, so no AppInner state to refresh.
     };

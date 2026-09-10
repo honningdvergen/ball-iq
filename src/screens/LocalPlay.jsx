@@ -9,6 +9,7 @@ import { TopicPickerSheet, topicMeta, CLUB_PACK_TO_QB, CAT_LABELS, applySeenFilt
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { loadQuestions } from "../questions-loader.js";
 import { RETIRED_TAGS } from "../lib/quiz.js";
+import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 
 // Six players, six marks. A number in a coloured ring — not an emoji avatar
 // (the review's icon rule) — and the colour follows the player through the
@@ -457,8 +458,8 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
         <div style={{textAlign:"center",padding:"6px 0 8px",fontSize:13,fontWeight:700,color:"var(--accent)"}}>
           <Gamepad2 size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{currentPlayer?.name}'s turn
         </div>
-        <div className="q-card">
-          <div className="q-tag">{CAT_LABELS[currentQ.cat] || currentQ.cat}</div>
+        <div className="q-card" style={qCardStyle(currentQ.cat)}>
+          <div className="q-tag" style={qTagStyle(currentQ.cat)}>{CAT_LABELS[currentQ.cat] || currentQ.cat}</div>
           <div className="q-text">{currentQ.q}</div>
         </div>
         <div className="opts">

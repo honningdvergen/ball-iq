@@ -657,11 +657,19 @@ export function AuthProvider({ children }) {
       )).catch(e => console.warn('[hydrate back-sync wordle]', e?.message || e))
     }
 
-    // Login streak removed from hydrate in Phase G (audit finding 2.1) —
-    // tick_login_streak RPC is now the single source of truth for the
-    // login_streak jsonb column. AppInner's tickLoginStreak useEffect
-    // calls the RPC after auth settles; hydrate no longer reads, merges,
-    // or writes login_streak.
+    // ⚠️ THE STREAK IS READ BACK HERE, AND THIS COMMENT USED TO BE A LIE.
+    // Phase G removed login_streak from hydrate "because tick_login_streak is
+    // the single source of truth" and "AppInner's tickLoginStreak useEffect
+    // calls the RPC after auth settles". THAT useEffect DOES NOT EXIST — the
+    // tick fires in exactly one place, on daily-puzzle completion. So nothing
+    // fed the streak display on a device whose localStorage did not already
+    // have it, and a signed-in player with {streak: 1, best: 58} on the server
+    // was shown "0 day streak - play one puzzle to light it", beside a History
+    // strip painting their own green squares. Any reinstall or new phone.
+    //
+    // Hydrate still does not WRITE it — the RPC keeps that job, and opening
+    // the app must never extend a streak. This is a read, passed to the UI to
+    // display through liveStreak(). See src/lib/streak.js.
 
     // Notify AppInner — its xp/stats/dailyHistory useState initializers
     // already ran with the pre-hydration localStorage values, so they need
@@ -673,6 +681,7 @@ export function AuthProvider({ children }) {
           stats: finalStats,
           dailyScores: mergedDailyScores,
           wordleState: mergedWordleState,
+          loginStreak: remoteProfile?.login_streak || null,
         },
       }))
     } catch {}

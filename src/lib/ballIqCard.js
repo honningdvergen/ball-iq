@@ -1,6 +1,7 @@
 import { MIN_RATED_ANSWERS } from './scoring.js';
 import { CALIBRATION } from '../data/cardCalibration.js';
 import { CLUB_NAME_TO_COMP } from '../data/clubPackColours.js';
+import { tint, lift } from './clubColour.js';
 // Ball IQ player-rating card — six "competition" face stats + a compiled overall
 // + a Bronze / Silver / Gold tier.
 //
@@ -168,6 +169,64 @@ export const LEAGUE_CATS = new Set(LEAGUE_FACES.map(l => l.cat));
  * ("where a real abbreviation exists, use it; where one does not, spell the
  * word"), and "BUN" is not a thing anyone calls the Bundesliga.
  */
+/**
+ * The colour a QUIZ CATEGORY is drawn in, anywhere in the app.
+ *
+ * ⚠️ THERE WERE THREE COLOUR LISTS FOR THE SAME COMPETITIONS AND ALL THREE
+ * DISAGREED. CARD_COMPS/LEAGUE_FACES here, LEAGUE_QUIZ_SECTIONS in App.jsx
+ * (pinned equal to this one by card-comp-colours.test.js), and a hand-written
+ * `.cat-* .q-tag` block in app.css that nothing pinned. That third list had La
+ * Liga RED and the Bundesliga ORANGE — the two swapped — so the chip above a
+ * La Liga question was red while the LAL tile at the top of the very same
+ * screen was orange. Serie A, Records, Legends, the Premier League and the
+ * Champions League were all wrong too; the CSS simply predated the palette.
+ *
+ * Deriving it removes the third list rather than correcting it, which is the
+ * only version of this fix that stays fixed — the file header has been warning
+ * that "the quiz picker and the rating card naming the same competition in two
+ * different colours is the drift this app keeps producing" for weeks.
+ *
+ * Falls back to the face a category feeds (FACE_ALIAS), so Managers and
+ * Transfers wear Records' colour, History wears Legends' — which is exactly
+ * what the card shows them as. Returns null for a category with no face.
+ */
+export function catColour(cat) {
+  const league = LEAGUE_FACES.find(l => l.cat === cat);
+  if (league) return league.color;
+  const own = CARD_COMPS.find(c => c.cat === cat);
+  if (own) return own.color;
+  const face = FACE_ALIAS[cat];
+  if (face) {
+    const f = CARD_COMPS.find(c => c.cat === face) || LEAGUE_FACES.find(l => l.cat === face);
+    if (f) return f.color;
+  }
+  return null;
+}
+
+/**
+ * The question card's left accent stripe.
+ *
+ * ⚠️ IT WAS MISSING ENTIRELY ON FIVE CATEGORIES. The stripe was painted by a
+ * hand-written `.cat-X .q-card::before` rule per category, and SuperLig,
+ * Ligue1, Primeira, History and Transfers simply had none — so `::before`
+ * rendered with no background and those questions showed no stripe at all,
+ * while the question after them did. Seen on device: a SÜPER LIG card with a
+ * bare edge, then a RECORDS card with a pink one.
+ *
+ * Deriving it means a category can never again be added without its stripe.
+ */
+export function qCardStyle(cat) {
+  const c = catColour(cat);
+  return c ? { "--q-accent": lift(c) } : undefined;
+}
+
+/** Inline style for a question's category chip — see catColour. */
+export function qTagStyle(cat) {
+  const c = catColour(cat);
+  if (!c) return undefined;   // no face: keep the neutral default
+  return { color: lift(c), background: tint(c, 0.10), borderColor: tint(c, 0.25) };
+}
+
 export function faceLabelType(abbr, base) {
   const n = (abbr || "").length;
   if (n >= 10) return { size: +(base * 0.80).toFixed(2), tracking: 0.2 };

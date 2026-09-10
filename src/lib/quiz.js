@@ -201,3 +201,26 @@ export const TOPICAL_PACK = null;
  * recoverable by removing a string.
  */
 export const RETIRED_TAGS = new Set(["summer2026"]);
+
+/**
+ * How long a question's clock should run, given how much there is to read.
+ *
+ * ⚠️ IT WAS A FLAT 20s FOR EVERY QUESTION. The bank contains 60-character
+ * stems and 230-character ones, and both got the same clock — so on the long
+ * ones half the time was spent reading before you could start thinking.
+ * Watched on device: a seven-line La Liga stem plus four club names is ~270
+ * characters, about 10 of the 20 seconds. The player is not being tested on
+ * reading speed.
+ *
+ * 25 chars/sec is a SKIM pace, deliberately generous: the failure being fixed
+ * is running out of clock, not having spare. Options count — on a "which of
+ * these four clubs" question they are half the reading. Capped at +10s so one
+ * pathological row cannot hand out a minute, and floored at `base` so no
+ * question ever gets LESS time than it does today.
+ */
+export function questionSeconds(row, base = 20) {
+  if (!row) return base;
+  const chars = String(row.q || "").length
+    + (Array.isArray(row.o) ? row.o.reduce((n, o) => n + String(o || "").length, 0) : 0);
+  return base + Math.max(0, Math.min(10, Math.round((chars - 150) / 25)));
+}

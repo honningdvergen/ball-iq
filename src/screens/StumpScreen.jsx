@@ -1,7 +1,7 @@
 // The recipient side of "Stump a mate": one question, then the door to the app.
 // Extracted from App.jsx on 2026-09-06 (review E16).
-import { useState } from "react";
-import { haptic } from "../App.jsx";
+import { useState, useEffect } from "react";
+import { haptic, loopEvent } from "../App.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
 
 export function StumpScreen({ row, onPlayFull, onHome }) {
@@ -9,12 +9,21 @@ export function StumpScreen({ row, onPlayFull, onHome }) {
   const done = picked >= 0;
   const gotIt = done && picked === row.a;
 
+  // ⚠️ THE WHOLE RECIPIENT SIDE WAS UNINSTRUMENTED. This screen is the far end
+  // of the app's k-factor loop — a stranger arriving from a friend's link — and
+  // nothing recorded that they landed, answered, or converted. So a loop that
+  // has fired zero times could not be told apart from one that works and is
+  // simply invisible to us. Three events, matching the three real steps.
+  useEffect(() => { loopEvent("stump-land", { cat: row?.cat || null }); }, [row?.cat]);
+
   const onPick = (i) => {
     if (done) return;
     setPicked(i);
+    loopEvent("stump-answered", { got: i === row.a });
     haptic(i === row.a ? "correct" : "wrong");
   };
   const onPass = () => {
+    loopEvent("stump-pass", { got: gotIt });   // the chain continuing = k > 0
     const text = gotIt
       ? `Got it ✅ your turn 😏 ⚽ ${stumpLink(row)}`
       : `It got me too 🙈 can YOU get it? ⚽ ${stumpLink(row)}`;
@@ -55,7 +64,8 @@ export function StumpScreen({ row, onPlayFull, onHome }) {
           )}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginTop: 20 }}>
             <button className="btn-3d" onClick={onPass}>🥜 Pass it on</button>
-            <button className="btn-3d ghost" onClick={onPlayFull}>Play the full quiz</button>
+            {/* the conversion step — the reason the loop exists */}
+            <button className="btn-3d ghost" onClick={() => { loopEvent("stump-convert", { got: gotIt }); onPlayFull(); }}>Play the full quiz</button>
             <button className="btn-3d ghost" onClick={onHome}>Explore Ball IQ</button>
           </div>
         </>

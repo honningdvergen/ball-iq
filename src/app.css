@@ -219,11 +219,20 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    findable without giving it the same weight as sharing. */
 /* The card delta row on results (2026-09-09): one quiet row in the results
    anatomy — label, then numbers with arrows, faces in their own colour. */
-.results-card-delta{display:flex;align-items:center;gap:12px;margin:14px auto 0;padding:11px 14px;border-radius:14px;background:var(--s1);border:1px solid var(--border);max-width:420px;text-align:left;}
+/* ⚠️ STACKED, NOT A ROW WITH A SIDE LABEL. As a row the numbers wrapped to a
+   second line and ragged around a vertically-centred "BALL IQ", which is what
+   made this read as untidy on device. The eyebrow now sits on its own baseline
+   with the overall opposite it, and moved faces get an even grid below. */
+.results-card-delta{display:flex;flex-direction:column;gap:9px;margin:14px auto 0;padding:12px 14px;border-radius:14px;background:var(--s1);border:1px solid var(--border);max-width:420px;text-align:left;}
+.results-card-delta .rd-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;min-width:0;}
 .results-card-delta .rd-label{font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);flex-shrink:0;}
-.results-card-delta .rd-body{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13.5px;font-weight:700;color:var(--t2);min-width:0;}
+.results-card-delta .rd-body{font-size:13.5px;font-weight:700;color:var(--t2);min-width:0;text-align:right;}
+/* auto-fit so ONE moved face fills the width instead of leaving a hole */
+.results-card-delta .rd-faces{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px 14px;padding-top:8px;border-top:1px solid var(--border);}
+.results-card-delta .rd-flat{color:var(--t2);opacity:0.85;}
 .results-card-delta .rd-num{font-variant-numeric:tabular-nums;font-weight:900;font-size:15px;}
-.results-card-delta .rd-face{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;color:var(--t2);}
+.results-card-delta .rd-face{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--t2);min-width:0;}
+.results-card-delta .rd-face .rd-num{margin-left:auto;font-size:13.5px;}
 .results-card-delta .rd-abbr{font-weight:800;letter-spacing:0.06em;}
 .results-card-delta .rd-dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
 .results-exit{display:block;margin:4px auto 0;padding:10px 16px;background:none;border:none;
@@ -659,7 +668,14 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .q-score-tick{font-size:11px;font-weight:600;}
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
 .q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);}
-/* .q-tag rebases onto .pill tokens; per-category colours below override tint. */
+/* ⚠️ THE PER-CATEGORY .q-tag COLOURS WERE DELETED, NOT CORRECTED (2026-09-10).
+   They were a THIRD hand-kept list of competition colours beside CARD_COMPS /
+   LEAGUE_FACES and LEAGUE_QUIZ_SECTIONS, and nothing pinned them — so they had
+   drifted on every single competition, with La Liga and the Bundesliga swapped
+   outright: a RED "LA LIGA" chip under the ORANGE LAL tile on the same screen.
+   The chip now takes an inline style from qTagStyle()/catColour() in
+   ballIqCard.js, so there is one source and no fourth list can appear here. */
+/* .q-tag rebases onto .pill tokens; the per-category colour arrives inline. */
 /* ⚠️ Tint was 0.15 here while every per-category override at .cat-* uses
    0.10, so the DEFAULT chip rendered louder than the branded ones — an
    inconsistency, not a choice. Observed on device 2026-08-23: on an
@@ -1543,42 +1559,17 @@ button.friends-lb-row:hover{background:var(--s3);}
 .version-banner-later{padding:6px 12px;background:transparent;color:var(--t3);border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;-webkit-appearance:none;appearance:none;}
 .version-banner-later:hover{color:var(--t1);border-color:var(--t3);}
 
-.cat-WorldCup .q-tag{color:#F59E0B;background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);}
-.cat-PL .q-tag{color:var(--accent);background:rgba(88,204,2,0.1);border-color:rgba(88,204,2,0.25);}
-.cat-UCL .q-tag{color:var(--accent);background:rgba(88,204,2,0.1);border-color:rgba(88,204,2,0.25);}
-.cat-Euros .q-tag{color:var(--accent);background:rgba(88,204,2,0.1);border-color:rgba(88,204,2,0.25);}
-.cat-LaLiga .q-tag{color:#EF4444;background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25);}
-.cat-Bundesliga .q-tag{color:#F97316;background:rgba(249,115,22,0.1);border-color:rgba(249,115,22,0.25);}
-.cat-SerieA .q-tag{color:#10B981;background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);}
-.cat-Managers .q-tag{color:var(--accent);background:rgba(88,204,2,0.1);border-color:rgba(88,204,2,0.25);}
-.cat-Records .q-tag{color:#EC4899;background:rgba(236,72,153,0.1);border-color:rgba(236,72,153,0.25);}
-.cat-Legends .q-tag{color:#FBBF24;background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.25);}
 
-/* ── CATEGORY COLOUR ACCENTS ── */
+/* ── CATEGORY COLOUR ACCENTS ──
+   ⚠️ THE PER-CATEGORY STRIPE RULES WERE DELETED, NOT EXTENDED (2026-09-10).
+   There was one hand-written rule per category and FIVE had none — SuperLig,
+   Ligue1, Primeira, History, Transfers — so those questions rendered a bare
+   edge while the next question had a stripe. The ones that did exist carried
+   the same drifted palette as the old .q-tag block (La Liga red, Bundesliga
+   orange: swapped). The colour now arrives inline as --q-accent from
+   qCardStyle()/catColour(), so a new category cannot ship stripe-less. */
 .q-card{position:relative;overflow:hidden;}
-.q-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:18px 0 0 18px;}
-.cat-WorldCup .q-card::before{background:#F59E0B;}
-.cat-PL .q-card::before{background:var(--accent);}
-.cat-UCL .q-card::before{background:var(--accent);}
-.cat-Euros .q-card::before{background:var(--accent);}
-.cat-LaLiga .q-card::before{background:#EF4444;}
-.cat-Bundesliga .q-card::before{background:#F97316;}
-.cat-SerieA .q-card::before{background:#10B981;}
-.cat-Managers .q-card::before{background:var(--accent);}
-.cat-Records .q-card::before{background:#EC4899;}
-.cat-Legends .q-card::before{background:#FBBF24;}
-.cat-ClubQuiz .q-card::before{background:var(--accent);}
-/* Matching q-tag colours */
-.cat-WorldCup .q-tag{color:#F59E0B;}
-.cat-PL .q-tag{color:var(--accent);}
-.cat-UCL .q-tag{color:var(--accent);}
-.cat-Euros .q-tag{color:var(--accent);}
-.cat-LaLiga .q-tag{color:#EF4444;}
-.cat-Bundesliga .q-tag{color:#F97316;}
-.cat-SerieA .q-tag{color:#10B981;}
-.cat-Managers .q-tag{color:var(--accent);}
-.cat-Records .q-tag{color:#EC4899;}
-.cat-Legends .q-tag{color:#FBBF24;}
+.q-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:18px 0 0 18px;background:var(--q-accent,transparent);}
 
 /* ── STAT GRID (used in Profile) ── */
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}

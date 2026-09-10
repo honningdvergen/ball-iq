@@ -15,6 +15,7 @@ import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 import { getXPForResult } from "../lib/scoring.js";
 import { dailyTierCopy, scoreTagline } from "../lib/resultsCopy.js";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
+import { loopEvent } from "../App.jsx";
 
 // TomorrowTeaser (the Daily-7-only return moment) retired 2026-09-06: the
 // return loop is one component for all four dailies — components/DailyDone.jsx.
@@ -31,36 +32,60 @@ function CardDeltaRow({ d }) {
       {a} <span aria-hidden="true">→</span> {b}
     </span>
   );
+  // ⚠️ EYEBROW ABOVE, NOT A LABEL BESIDE. This was a flex ROW — "BALL IQ" as a
+  // fixed left column, with the numbers in a wrapping body beside it — so as
+  // soon as the overall and two faces were present the body wrapped to two
+  // lines and ragged around a vertically-centred label. Alex, on the screen:
+  // "the grey bar above play todays daily 7 looks really untidy... i like how
+  // we see world going up from 58 to 62 though." The information was right and
+  // the container was fighting it. Stacking removes the wrap entirely.
+  const Shell = ({ children, label }) => (
+    <div className="results-card-delta" role="status" aria-label={label}>{children}</div>
+  );
   if (!d.ratedAfter) {
     return (
-      <div className="results-card-delta" role="status">
-        <span className="rd-label">Ball IQ</span>
-        <span className="rd-body">{d.toRated} more {d.toRated === 1 ? "answer" : "answers"} to get rated</span>
-      </div>
+      <Shell>
+        <div className="rd-head">
+          <span className="rd-label">Ball IQ</span>
+          <span className="rd-body">{d.toRated} more {d.toRated === 1 ? "answer" : "answers"} to get rated</span>
+        </div>
+      </Shell>
     );
   }
   if (!d.ratedBefore) {
     return (
-      <div className="results-card-delta" role="status">
-        <span className="rd-label">Ball IQ</span>
-        <span className="rd-body">Rated <span className="rd-num" style={{ color: "var(--grn-soft)" }}>{d.after}</span> — your card is live</span>
-      </div>
+      <Shell>
+        <div className="rd-head">
+          <span className="rd-label">Ball IQ</span>
+          <span className="rd-body">Rated <span className="rd-num" style={{ color: "var(--grn-soft)" }}>{d.after}</span> — your card is live</span>
+        </div>
+      </Shell>
     );
   }
   const moved = d.faces.slice(0, 2);
   return (
-    <div className="results-card-delta" role="status" aria-label={`Ball IQ ${d.before} to ${d.after}`}>
-      <span className="rd-label">Ball IQ</span>
-      <span className="rd-body">
-        <Arrow a={d.before} b={d.after} />
-        {moved.map(f => (
-          <span key={f.abbr} className="rd-face">
-            <span className="rd-dot" style={{ background: f.color }} aria-hidden="true" />
-            <span className="rd-abbr">{f.abbr}</span> <Arrow a={f.before} b={f.after} />
-          </span>
-        ))}
-      </span>
-    </div>
+    <Shell label={`Ball IQ ${d.before} to ${d.after}`}>
+      <div className="rd-head">
+        <span className="rd-label">Ball IQ</span>
+        {/* ⚠️ NO "69 → 69". An arrow between two identical numbers is the panel
+            telling you something happened when nothing did, and it was the
+            loudest thing in the row. When the overall held, print it once. */}
+        {d.after === d.before
+          ? <span className="rd-num rd-flat">{d.after}</span>
+          : <Arrow a={d.before} b={d.after} />}
+      </div>
+      {moved.length > 0 && (
+        <div className="rd-faces">
+          {moved.map(f => (
+            <span key={f.abbr} className="rd-face">
+              <span className="rd-dot" style={{ background: f.color }} aria-hidden="true" />
+              <span className="rd-abbr">{f.abbr}</span>
+              <Arrow a={f.before} b={f.after} />
+            </span>
+          ))}
+        </div>
+      )}
+    </Shell>
   );
 }
 
@@ -112,6 +137,15 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
     const text = stumpWrong.length
       ? `This one got me 🙈 bet you can't get it either ⚽ ${stumpLink(stumpQ)}`
       : `I got this one — bet you can't 😏 ⚽ ${stumpLink(stumpQ)}`;
+    // ⚠️ THIS WAS THE ONLY UNMEASURED SHARE IN THE APP. Stump is the k-factor
+    // lever — sender link, no-login recipient screen, conversion path, all
+    // built — and it had NO instrumentation on this side and none on the
+    // landing side either, so "is it worth keeping?" was unanswerable. It has
+    // fired zero times in funnel_events across the app's whole life; the
+    // honest reading is nobody finds a plain underlined link sitting below two
+    // buttons and a green CTA, but until now we could not tell that from
+    // "nobody presses it".
+    loopEvent("stump-share", { mode, hard: stumpQ.diff === "hard", missed: stumpWrong.length > 0 });
     shareStumpText(text);
   };
   const survivalNewBest = isSurvival && result.score > (survivalBest || 0) && result.score >= 3;

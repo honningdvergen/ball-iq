@@ -4,12 +4,14 @@
 // seam the lazy screens already use.
 import { markBadReviewMoment } from "../lib/review.js";
 import { useModalA11y } from "../useModalA11y.js";
+import { questionSeconds } from "../lib/quiz.js";
 import { Results } from "../screens/ResultsScreen.jsx";
 import * as Sentry from "@sentry/react";
 import { Lightbulb, Flame, Flag } from "lucide-react";
 import ReportButton from "../components/ReportButton.jsx";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CAT_LABELS, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
+import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 
 // ─── HARD RIGHT BURST ────────────────────────────────────────────────────────
 // Lightweight, quick particle burst used when a user gets a HARD question right.
@@ -168,7 +170,29 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   // reset) — only the message lied, which is the worst kind of lie: the score
   // says one thing and the screen says another.
   const [timedOut, setTimedOut] = useState(false);
-  const timerDuration = timerSecondsOverride || 20;
+  // ⚠️ THE CLOCK MUST SCALE WITH HOW MUCH THERE IS TO READ. It was a flat 20s
+  // for every question, so a 60-character stem and a 230-character one got the
+  // same time — and the bank genuinely contains both. Watched on device: a
+  // seven-line La Liga stem ("Which Catalan club shocked Spanish football in
+  // 2023-24 by finishing third and qualifying for the Champions League for the
+  // first time, under manager Míchel — beating Barcelona 4-2 home and away
+  // that season?") plus four club names is ~270 characters; at a phone reading
+  // pace that is 10 seconds of the 20 gone before you can start thinking. The
+  // player is not being tested on reading speed.
+  //
+  // 25 chars/sec is a skim-read pace, not a careful one — deliberately
+  // generous, because the failure mode we are fixing is running out of clock,
+  // not having too much of it. Options count too: they are half the reading on
+  // a "which of these four clubs" question. Capped at +10s so a pathological
+  // row cannot hand out a minute, and the floor is the old 20s so no question
+  // gets LESS time than it does today.
+  // NB: reads questions[idx] directly — `q` is declared much further down and
+  // this has to exist before the timeLeft useState below. The rule itself lives
+  // in lib/quiz.js so it can be pinned by a test.
+  const timerDuration = useMemo(
+    () => questionSeconds(questions?.[idx], timerSecondsOverride || 20),
+    [questions, idx, timerSecondsOverride],
+  );
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
@@ -740,8 +764,15 @@ const CTA_INSET = (() => {
       </div>
       <div className="qd-eyebrow" aria-hidden="true">Question {idx + 1}</div>
 
-      <div key={idx} className="q-card q-fade">
-        <div className="q-tag">{CAT_LABELS[q.cat]||q.cat}</div>
+      <div key={idx} className="q-card q-fade" style={qCardStyle(q.cat)}>
+        {/* ⚠️ COLOUR IS DERIVED, NOT A CSS CLASS. The `.cat-* .q-tag` block
+            that used to colour this was a THIRD hand-kept list of competition
+            colours and it disagreed with the card and the picker on every one
+            of them — La Liga and the Bundesliga were swapped outright, so a
+            red LA LIGA chip sat under an orange LAL tile on the same screen.
+            catColour() resolves the card's own colour; lift() keeps a dark
+            brand hue readable on the dark chip. */}
+        <div className="q-tag" style={qTagStyle(q.cat)}>{CAT_LABELS[q.cat]||q.cat}</div>
         <div className="q-text" style={{fontSize:18}}>{q.q}</div>
       </div>
 
