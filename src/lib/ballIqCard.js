@@ -862,22 +862,27 @@ export function compRating(cs, priorAcc = CALIBRATION.median) {
 // ⚠️ THE NUMBERS BELOW ARE NOT THE ONES HE NAMED — see the note inside the
 // function. They moved on 2026-09-11 when the anchor curve moved the median.
 export function cardTier(overall) {
-  // ⚠️ MOVED WITH THE CURVE (2026-09-11), AND THIS BREAKS A THING ALEX SAID.
-  // He asked for gold at 75 — "just to make it easy, it also follows the fifa
-  // logic which people are already familiar with". Under the anchor curve the
-  // median card is 77, so a 75 line makes 68% of ALL PLAYERS gold and the badge
-  // stops carrying information. He has also said twice that gold should mean
-  // the TOP QUARTER, which is the 82 line (measured: 26%). The two statements
-  // cannot both hold once the median moves, so this takes the one that keeps
-  // the badge meaning something — and it is a deliberate override of an
-  // explicit instruction, not a slip. If he wants 75 back, most cards go gold
-  // and that is a legitimate choice; change it here and nowhere else.
+  // ⚠️ ALEX'S LINE, ASKED FOR THREE TIMES AND OVERRIDDEN ONCE. I moved these to
+  // 72/82 on 2026-09-11 to hold gold at the top quarter, and he reversed it on
+  // sight of a real card: "this should still be silver, 62-74 should be silver,
+  // 75 and up should be gold, under 62 should be bronze". Earlier, same rule:
+  // "all overalls above 74, as it 75 and up should be gold just to make it
+  // easy, it also follows the fifa logic which people are already familiar
+  // with".
   //
-  // Measured across 112 live cards: bronze 16% / silver 58% / gold 26%.
-  // Bronze rises to <72 for the matching reason — under the curve nobody sits
-  // below 65, so the old 60 line would have held nobody at all.
-  if (overall >= 82) return "gold";
-  if (overall >= 72) return "silver";
+  // The FIFA reading is the point and it beats the quantile reading. A player
+  // who has seen a 75-rated card their whole life knows what it means before
+  // the app tells them, and a badge that needs explaining has already failed.
+  // What gold costs in scarcity it buys back in legibility.
+  //
+  // ⚠️ SO GOLD IS NOT THE TOP QUARTER ANY MORE, AND BRONZE IS NEARLY EMPTY.
+  // Measured against all 112 rated cards the same day: GOLD 69%, silver 31%,
+  // BRONZE 0% — the curve floors the population at 65, so no live card reaches
+  // down to the 62 line and bronze is currently unreachable. Both are known
+  // and accepted. Do not "fix" them back toward a
+  // quantile without asking: that is the exact change he has now reversed.
+  if (overall >= 75) return "gold";
+  if (overall >= 62) return "silver";
   return "bronze";
 }
 
@@ -979,9 +984,26 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, pinnedLeague) {
   // when there is nothing to divide, so a caller can tell "no data" from 0%.
   let rc = 0, rn = 0;
   for (const cs of Object.values(rated)) { const r = rawScoreOf(cs); rc += r.c; rn += r.n; }
+  // ⚠️ AN UNRATED CARD IS NEVER GOLD, AND THIS IS NOT COSMETIC.
+  // A card with no answers computes to the population median (77), and from
+  // 2026-09-11 the gold line sits at 75 — so a brand-new player was handed a
+  // GOLD-framed card before answering a single question, and every card they
+  // could ever earn afterwards was that one or a downgrade. That is exactly
+  // the thing Alex flagged at the start of this rebuild, arriving from the
+  // other side: "i think if most people see their cards get downgraded they
+  // will get discouraged you know."
+  //
+  // The tier palette paints the frame, the avatar ring and the name colour
+  // whether or not the NUMBER is printed, so gating the number alone (which
+  // ProfileScreen already does, via hasPlayed) does not gate the gold. It has
+  // to be gated here, once, where every surface reads it — the owner card, the
+  // friend grid, the Home rail and the OG share image.
+  //
+  // Silver is the neutral, not bronze: an unplayed card is unproven, not bad.
+  const isRated = answeredTotal >= MIN_RATED_ANSWERS;
   return {
-    ratings, overall, tier: cardTier(overall), answeredTotal,
-    rated: answeredTotal >= MIN_RATED_ANSWERS,
+    ratings, overall, tier: isRated ? cardTier(overall) : "silver", answeredTotal,
+    rated: isRated,
     accuracy: acc,
     rawAccuracy: rn > 0 ? rc / rn : null,
     rawAnswered: rn,

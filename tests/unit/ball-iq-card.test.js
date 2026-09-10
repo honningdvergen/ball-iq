@@ -7,17 +7,20 @@ import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette,
 import { MIN_RATED_ANSWERS } from "../../src/lib/scoring.js";
 
 describe("cardTier boundaries", () => {
-  it("bronze below 72, silver 72-81, gold 82+", () => {
-    // ⚠️ THESE MOVED WITH THE CURVE, 2026-09-11. Tiers are a share of the
-    // player base, not a fixed accuracy: under the old linear scale 75+ was
-    // the top quarter; under the gentle curve the median card is 77, so the
-    // same numbers would gild two thirds of everyone. The boundaries chase
-    // the distribution — see the note in cardTier.
+  it("bronze below 62, silver 62-74, gold 75+", () => {
+    // ⚠️ THESE ARE ALEX'S NUMBERS AND THEY ARE NOT A QUANTILE. I moved them to
+    // 72/82 on 2026-09-11 to hold gold at the top quarter and he reversed it
+    // on sight of a real 71-rated card. Gold is 69% of the live population by
+    // choice: a 75 means to a football fan what it means in FIFA, and that
+    // legibility was judged worth more than scarcity. If a future change makes
+    // this test fail because gold "should" be rarer, the test is right and the
+    // change is the thing to reconsider.
     expect(cardTier(40)).toBe("bronze");
-    expect(cardTier(71)).toBe("bronze");
-    expect(cardTier(72)).toBe("silver");
-    expect(cardTier(81)).toBe("silver");
-    expect(cardTier(82)).toBe("gold");
+    expect(cardTier(61)).toBe("bronze");
+    expect(cardTier(62)).toBe("silver");
+    expect(cardTier(71)).toBe("silver");   // the card that triggered the reversal
+    expect(cardTier(74)).toBe("silver");
+    expect(cardTier(75)).toBe("gold");
     expect(cardTier(99)).toBe("gold");
   });
 

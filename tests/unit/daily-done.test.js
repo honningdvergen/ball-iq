@@ -125,8 +125,16 @@ describe('DailyDone — one panel, four surfaces', () => {
     // and two of them are PUBLIC. computeCard now carries `rated` so all four
     // inherit one answer instead of asking the question four ways.
     const CARD = read('../../src/lib/ballIqCard.js');
-    expect(CARD, 'the card reports whether it has enough data')
-      .toMatch(/rated: answeredTotal >= MIN_RATED_ANSWERS/);
+    // ⚠️ MATCH THE CLAIM, NOT THE SPELLING. This pinned the literal
+    // `rated: answeredTotal >= MIN_RATED_ANSWERS` and broke on 2026-09-11 when
+    // that expression was hoisted to a named const so the TIER could be gated
+    // on it too — a refactor that strengthened the very property being tested.
+    // A source guard that pins one phrasing fails on edits it does not care
+    // about; pin the threshold and the field instead.
+    expect(CARD, 'the card computes whether it has enough data')
+      .toMatch(/answeredTotal >= MIN_RATED_ANSWERS/);
+    expect(CARD, 'and publishes it on the card as `rated`')
+      .toMatch(/\brated: isRated\b|\brated: answeredTotal >= MIN_RATED_ANSWERS\b/);
 
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
     expect(PROFILE, 'the friend card uses the same test as the owner card')

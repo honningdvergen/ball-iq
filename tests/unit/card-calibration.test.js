@@ -120,13 +120,19 @@ describe("legacy records and the population reference", () => {
     // ceiling — at 1.15/1.25 the best card in the game was 90 of a possible 99.
     expect(ratingFromAccuracy(CALIBRATION.median)).toBe(77);
   });
-  it("the measured population (n≥50, increasing percentiles) puts the median in silver and the 90th in gold", () => {
+  it("the measured population is a real curve, and the tiers are NOT quantiles", () => {
     expect(CALIBRATION.n).toBeGreaterThanOrEqual(50);
     const A = CALIBRATION.anchors;
     for (let i = 1; i < A.length; i++) expect(A[i][0]).toBeGreaterThan(A[i - 1][0]);
     const p = (acc) => ratingFromAccuracy(acc);
-    expect(cardTier(p(CALIBRATION.median))).toBe("silver");
+    // ⚠️ THIS TEST USED TO ASSERT "median in silver, 90th in gold" — a quantile
+    // claim, and Alex has now overruled it twice. The tiers are FIFA-legible
+    // numbers (62/75), not population shares, so the median player IS gold and
+    // that is the intended product, not a regression. What still has to hold is
+    // that the curve orders people and reaches its own ceiling.
+    expect(cardTier(p(CALIBRATION.median))).toBe("gold");
     const p90 = A.find(([, r]) => r === 88)[0];
+    expect(p(p90)).toBeGreaterThan(p(CALIBRATION.median));   // better still rates higher
     expect(cardTier(p(p90))).toBe("gold");
   });
 });
