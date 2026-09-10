@@ -1,0 +1,6 @@
+{
+  "measured": "2026-09-10",
+  "source": "public.user_game_state.daily_all_answers — REAL per-question records (category + right/wrong), every account with >=20 logged answers, prod blcisypmngimqkwxrrdm",
+  "n": 53,
+  "percentiles": { "10": 0.4473, "25": 0.4857, "50": 0.5306, "75": 0.5844, "90": 0.6604, "97": 0.7206 }
+}

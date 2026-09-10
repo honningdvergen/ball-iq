@@ -13,28 +13,30 @@ const played = (n, acc, diff) => {
 };
 
 describe("Alex's sentence", () => {
-  it("61% on easy = 61, on medium = 67, on hard = 73 (once the prior has faded)", () => {
+  it("61% on easy = 61, on medium = 70, on hard = 76 (once the prior has faded)", () => {
     const N = 4000; // large so 20 answers of prior are noise
     expect(computeCard(played(N, 0.61, "easy")).overall).toBe(61);
-    expect(computeCard(played(N, 0.61, "medium")).overall).toBe(67);
-    expect(computeCard(played(N, 0.61, "hard")).overall).toBe(73);
+    expect(computeCard(played(N, 0.61, "medium")).overall).toBe(70);
+    expect(computeCard(played(N, 0.61, "hard")).overall).toBe(76);
   });
-  it("the multipliers are exactly 1.0 / 1.1 / 1.2 and AVG_MULT is their bank-mix average", () => {
-    expect(MULT).toEqual({ easy: 1.0, medium: 1.1, hard: 1.2 });
-    expect(AVG_MULT).toBeCloseTo(0.25 * 1.0 + 0.48 * 1.1 + 0.27 * 1.2, 3);
+  it("the multipliers are exactly 1.0 / 1.15 / 1.25 and AVG_MULT is their bank-mix average", () => {
+    // 1.15/1.25 since 2026-09-10 (Alex). Bank mix re-counted across all 7,078
+    // graded questions: easy 24.9% / medium 48.1% / hard 27.0%.
+    expect(MULT).toEqual({ easy: 1.0, medium: 1.15, hard: 1.25 });
+    expect(AVG_MULT).toBeCloseTo(0.249 * 1.0 + 0.481 * 1.15 + 0.270 * 1.25, 3);
   });
   it("a hard specialist at 50% out-rates an easy farmer at 55%; perfect on hard caps at 99", () => {
     expect(computeCard(played(200, 0.5, "hard")).overall).toBeGreaterThan(computeCard(played(200, 0.55, "easy")).overall);
     expect(computeCard(played(200, 1.0, "hard")).overall).toBe(99);
-    expect(ratingFromScore(1.2)).toBe(99);
+    expect(ratingFromScore(1.25)).toBe(99);
     expect(ratingFromScore(0)).toBe(40);
   });
 });
 
 describe("the two guardrails", () => {
-  it("an unplayed card is the measured median player (~64), and two lucky rights cannot make gold", () => {
+  it("an unplayed card is the measured median player (~60), and two lucky rights cannot make gold", () => {
     expect(computeCard({}).overall).toBe(Math.round(BASELINE * 100));
-    expect(computeCard({}).overall).toBe(64);
+    expect(computeCard({}).overall).toBe(60);
     expect(computeCard({ PL: { c: 2, a: 2 } }).tier).not.toBe("gold");
     expect(computeCard({ PL: { c: 2, a: 2 } }).rated).toBe(false);
     expect(PRIOR_WEIGHT).toBe(20);
@@ -45,8 +47,10 @@ describe("the two guardrails", () => {
       const r = computeCard(played(n, 2 / 3, "medium")).overall;
       expect(r).toBeGreaterThanOrEqual(prev); prev = r;
     }
-    expect(prev).toBeGreaterThanOrEqual(72); // 2/3 × 1.1 = 73.3; 20 answers of prior still pull a point at 201
-    expect(prev).toBeLessThanOrEqual(73);
+    // 2/3 × 1.15 = 76.7 under the 2026-09-10 multipliers; 20 answers of prior
+    // still pull a couple of points at 201 answers.
+    expect(prev).toBeGreaterThanOrEqual(74);
+    expect(prev).toBeLessThanOrEqual(77);
   });
   it("a lucky 8/10 start corrects by a few points, never a cliff", () => {
     const first = computeCard({ PL: { c: 8, a: 10 } }).overall;
@@ -76,7 +80,10 @@ describe("legacy records and the population reference", () => {
     expect(scoreOf({ c: 55, a: 106 })).toEqual({ s: AVG_MULT * 55, n: 106 });
     expect(scoreOf({ c: 1, a: 1, s: 1.2, n: 1 })).toEqual({ s: 1.2, n: 1 });
     expect(scoreOf(undefined)).toEqual({ s: 0, n: 0 });
-    expect(ratingFromAccuracy(CALIBRATION.median)).toBe(64);
+    // The median player reads 60 since the 2026-09-10 recalibration. The old 64
+    // came from DECAYED c/a totals, which overstated the population: against
+    // 4,180 real per-question records the median is 0.5306, not 0.58.
+    expect(ratingFromAccuracy(CALIBRATION.median)).toBe(60);
   });
   it("the measured population (n≥50, increasing percentiles) puts the median in silver and the 90th in gold", () => {
     expect(CALIBRATION.n).toBeGreaterThanOrEqual(50);
@@ -178,7 +185,7 @@ describe("recordAnswers", () => {
     ]);
     const pl = cs.PL;
     expect(pl.n).toBeCloseTo(1 * CAT_DECAY * CAT_DECAY + 1 * CAT_DECAY + 1, 6);
-    expect(pl.s).toBeCloseTo(1.2 * CAT_DECAY * CAT_DECAY + 0 + 1.1, 6);
+    expect(pl.s).toBeCloseTo(1.25 * CAT_DECAY * CAT_DECAY + 0 + 1.15, 6);
     expect(pl.d).toEqual({ h: [1, 1], e: [0, 1], m: [1, 1] });
     expect(pl.a).toBeCloseTo(pl.n, 6);
     expect(cs._legacy).toBeUndefined();

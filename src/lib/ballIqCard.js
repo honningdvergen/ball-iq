@@ -124,19 +124,6 @@ export const FACE_ALIAS = {
   Ligue1: "Clubs", SuperLig: "Clubs", Primeira: "Clubs", ClubQuiz: "Clubs",
   // Legends & History
   History: "Legends",
-  // ⚠️ chaos WAS THE LAST ORPHAN, and an orphan is not a cosmetic gap: the
-  // overall counts every key while the faces can only show six, so a category
-  // with no face silently props up a number nothing on the card explains.
-  // Alex, looking at a friend's card: "the 73 overall does not correspond at
-  // all to the 6 faces of 53, 43, 40, 60, 40, 55 — am I completely mistaken?"
-  // He was not. That player holds 452 chaos answers at 91% (a legacy integer
-  // record from the pre-2026-09-09 writer, one account in 115) and every point
-  // of it landed on no face. Same complaint he made on build 117, through a
-  // different door.
-  // Legends is not an arbitrary home: chaos is quotes and moments, which is
-  // football history. With this the card reconciles — that player keeps his
-  // 73 AND gets a LEGENDS face of 94 that explains where it came from.
-  chaos: "Legends",
   // Records & Managers
   Managers: "Records", Transfers: "Records",
 };
@@ -187,6 +174,26 @@ export function cardCompsFor(catStats = {}, current) {
   const league = pickLeagueFace(catStats, current);
   return [league, ...CARD_COMPS.slice(1)];
 }
+
+// ⚠️ NOT EVERY ANSWER BELONGS ON A KNOWLEDGE CARD. `chaos` is a 59-question
+// pool answered 1,025 times — 17 plays per question — and it is the EASIEST
+// category in the app by a distance (73.4% against a 37-73% range and a 58%
+// median). It measures memory of 59 items, not football knowledge, and it has
+// no honest face: it is quotes and moments, so nothing on the card is "how
+// good you are at chaos".
+//
+// ⚠️ I FOLDED IT INTO Legends FIRST AND THAT WAS WORSE. It made the card
+// arithmetically consistent by making one face lie: a player whose real
+// Legends record is 0/7 and History 29% read LEGENDS 94, because 452 chaos
+// answers were wearing a Legends label. Alex, immediately: "my hunch tells me
+// 94 is way too high for legends... he would look at this card and think this
+// really does not reflect his ability." Making the overall agree with the
+// faces is worthless if the way you do it is to falsify a face.
+//
+// So chaos is dropped before anything is computed — from the faces AND from
+// the overall. Playing it still earns XP and streaks; it just does not claim
+// to measure knowledge.
+export const EXCLUDED_CATS = new Set(["chaos"]);
 
 const FACE_CATS = new Set(CARD_COMPS.map(c => c.cat));
 
@@ -570,6 +577,7 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
   const leagueCat = pickLeagueFace(catStats, currentLeague).cat;
   const folded = {};
   for (const [k, v] of Object.entries(catStats || {})) {
+    if (EXCLUDED_CATS.has(k)) continue;   // see EXCLUDED_CATS — not knowledge
     const key = k === leagueCat ? k : (LEAGUE_CATS.has(k) ? "Clubs" : (FACE_ALIAS[k] || k));
     const cur = folded[key] || { s: 0, n: 0, c: 0, a: 0 };
     const sk = scoreOf(v);
