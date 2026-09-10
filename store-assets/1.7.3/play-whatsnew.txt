@@ -1,99 +1,99 @@
 <en-US>
-Your Ball IQ card is rebuilt. Every answer counts toward it now, and harder questions count for more — medium 10% more, hard 20%. Ratings were recalibrated once, so your number may have moved.
+Your Ball IQ card is rebuilt. The six ratings now match what you actually play: your own league leads, and clubs, legends and records finally count.
 
-Yesterday's puzzles are playable from History: Footle, Daily 7, Transfer Trail and Mystery Player.
+Answering a category can no longer remove its rating, and a hot streak no longer inflates one.
 
-A fresh look, a club finder on Home, and your results stay on screen with a one-tap reminder for tomorrow.
+Yesterday's puzzles are playable from History, and results stay on screen with a reminder for tomorrow.
 
-Plus a long list of fixes.
+Plus a new look and a long list of fixes.
 </en-US>
 <ar>
-أُعيد بناء بطاقة Ball IQ الخاصة بك. أصبحت كل إجابة تُحتسب الآن، والأسئلة الأصعب تُحتسب أكثر: المتوسطة بزيادة 10% والصعبة 20%. أُعيدت معايرة التقييمات مرة واحدة، لذا قد يكون رقمك قد تغيّر.
+أُعيد بناء بطاقة Ball IQ الخاصة بك. التقييمات الستة صارت تعكس ما تلعبه فعلاً: دوريك يتصدر، والأندية والأساطير والأرقام القياسية تُحتسب أخيرًا.
 
-يمكن لعب ألغاز الأمس من السجل: Footle وDaily 7 وTransfer Trail وMystery Player.
+لعب فئة ما لم يعد يزيل تقييمها، والسلسلة الموفقة لم تعد تضخّمه.
 
-مظهر جديد، وبحث عن ناديك في الصفحة الرئيسية، ونتائجك تبقى على الشاشة مع تذكير للغد بلمسة واحدة.
+يمكن لعب ألغاز الأمس من السجل، ونتائجك تبقى على الشاشة مع تذكير للغد.
 
-بالإضافة إلى قائمة طويلة من الإصلاحات.
+بالإضافة إلى مظهر جديد وإصلاحات كثيرة.
 </ar>
 <de-DE>
-Deine Ball-IQ-Karte wurde neu gebaut. Jetzt zählt jede Antwort, und schwerere Fragen zählen mehr: mittel 10 % mehr, schwer 20 %. Die Bewertungen wurden einmalig neu kalibriert, deine Zahl kann sich verschoben haben.
+Deine Ball-IQ-Karte wurde neu gebaut. Die sechs Wertungen passen jetzt zu dem, was du wirklich spielst: deine eigene Liga führt, und Klubs, Legenden und Rekorde zählen endlich.
 
-Die Rätsel von gestern lassen sich im Verlauf spielen: Footle, Daily 7, Transfer Trail und Mystery Player.
+Eine Kategorie zu spielen kann ihre Wertung nicht mehr entfernen, und eine Glückssträhne bläht sie nicht mehr auf.
 
-Ein frischer Look, eine Vereinssuche auf der Startseite, und deine Ergebnisse bleiben auf dem Bildschirm – mit einer Erinnerung für morgen.
+Die Rätsel von gestern lassen sich im Verlauf spielen, und Ergebnisse bleiben mit Erinnerung auf dem Bildschirm.
 
-Dazu viele Korrekturen.
+Dazu ein frischer Look und viele Korrekturen.
 </de-DE>
 <es-419>
-Tu tarjeta Ball IQ se reconstruyó. Ahora cuenta cada respuesta, y las preguntas difíciles cuentan más: las medias un 10 % más y las difíciles un 20 %. Las calificaciones se recalibraron una vez, así que tu número pudo haber cambiado.
+Tu tarjeta Ball IQ se reconstruyó. Las seis calificaciones ya reflejan lo que juegas de verdad: tu propia liga encabeza, y los clubes, las leyendas y los récords por fin cuentan.
 
-Los retos de ayer se pueden jugar desde el Historial: Footle, Daily 7, Transfer Trail y Mystery Player.
+Jugar una categoría ya no puede quitarle su calificación, y una buena racha ya no la infla.
 
-Nuevo aspecto, buscador de clubes en Inicio y tus resultados se quedan en pantalla con un recordatorio para mañana.
+Los retos de ayer se pueden jugar desde el Historial, y tus resultados se quedan en pantalla con un recordatorio.
 
-Además, muchas correcciones.
+Además, nuevo aspecto y muchas correcciones.
 </es-419>
 <es-ES>
-Tu tarjeta Ball IQ se ha reconstruido. Ahora cuenta cada respuesta, y las preguntas difíciles cuentan más: las medias un 10 % más y las difíciles un 20 %. Las valoraciones se recalibraron una vez, así que tu número puede haber cambiado.
+Tu tarjeta Ball IQ se ha reconstruido. Las seis valoraciones ya reflejan lo que juegas de verdad: tu propia liga encabeza, y los clubes, las leyendas y los récords por fin cuentan.
 
-Los retos de ayer se pueden jugar desde el Historial: Footle, Daily 7, Transfer Trail y Mystery Player.
+Jugar una categoría ya no puede quitarle su valoración, y una buena racha ya no la infla.
 
-Nuevo aspecto, buscador de clubes en Inicio y tus resultados se quedan en pantalla con un recordatorio para mañana.
+Los retos de ayer se pueden jugar desde el Historial, y tus resultados se quedan en pantalla con un recordatorio.
 
-Además, muchas correcciones.
+Además, nuevo aspecto y muchas correcciones.
 </es-ES>
 <fr-FR>
-Votre carte Ball IQ est reconstruite. Chaque réponse compte désormais, et les questions difficiles comptent davantage : moyennes +10 %, difficiles +20 %. Les notes ont été recalibrées une fois, votre chiffre a donc pu changer.
+Votre carte Ball IQ est reconstruite. Les six notes correspondent enfin à ce que vous jouez : votre propre championnat en tête, et les clubs, les légendes et les records comptent.
 
-Les jeux d'hier sont jouables depuis l'Historique : Footle, Daily 7, Transfer Trail et Mystery Player.
+Jouer une catégorie ne peut plus lui retirer sa note, et une bonne série ne la gonfle plus.
 
-Un nouveau look, une recherche de clubs sur l'accueil, et vos résultats restent à l'écran avec un rappel pour demain.
+Les jeux d'hier sont jouables depuis l'Historique, et vos résultats restent à l'écran avec un rappel pour demain.
 
-Et de nombreux correctifs.
+Et un nouveau look, plus de nombreux correctifs.
 </fr-FR>
 <id>
-Kartu Ball IQ kamu dibangun ulang. Kini setiap jawaban dihitung, dan soal yang lebih sulit bernilai lebih: sedang 10% lebih, sulit 20%. Peringkat dikalibrasi ulang sekali, jadi angkamu mungkin berubah.
+Kartu Ball IQ kamu dibangun ulang. Enam peringkatnya kini sesuai dengan yang benar-benar kamu mainkan: ligamu sendiri memimpin, dan klub, legenda serta rekor akhirnya dihitung.
 
-Teka-teki kemarin bisa dimainkan dari Riwayat: Footle, Daily 7, Transfer Trail, dan Mystery Player.
+Memainkan sebuah kategori tidak lagi bisa menghapus peringkatnya, dan rentetan bagus tidak lagi menggelembungkannya.
 
-Tampilan baru, pencarian klub di Beranda, dan hasilmu tetap di layar dengan pengingat untuk besok dalam satu ketukan.
+Teka-teki kemarin bisa dimainkan dari Riwayat, dan hasilmu tetap di layar dengan pengingat.
 
-Plus daftar panjang perbaikan.
+Plus tampilan baru dan banyak perbaikan.
 </id>
 <it-IT>
-La tua card Ball IQ è stata ricostruita. Ora conta ogni risposta, e le domande difficili contano di più: medie +10%, difficili +20%. I punteggi sono stati ricalibrati una volta, quindi il tuo numero potrebbe essere cambiato.
+La tua card Ball IQ è stata ricostruita. I sei punteggi ora rispecchiano ciò che giochi davvero: il tuo campionato guida, e club, leggende e record finalmente contano.
 
-I giochi di ieri si possono giocare dalla Cronologia: Footle, Daily 7, Transfer Trail e Mystery Player.
+Giocare una categoria non può più toglierle il punteggio, e una bella serie non lo gonfia più.
 
-Un nuovo look, un cerca-club nella Home e i tuoi risultati restano sullo schermo, con un promemoria per domani in un tocco.
+I giochi di ieri si possono giocare dalla Cronologia e i risultati restano sullo schermo con un promemoria.
 
-Più un lungo elenco di correzioni.
+Più un nuovo look e molte correzioni.
 </it-IT>
 <pt-BR>
-Seu cartão Ball IQ foi reconstruído. Agora toda resposta conta, e as perguntas difíceis contam mais: médias 10% a mais e difíceis 20%. As notas foram recalibradas uma vez, então seu número pode ter mudado.
+Seu cartão Ball IQ foi reconstruído. As seis notas agora refletem o que você realmente joga: sua própria liga lidera, e clubes, lendas e recordes finalmente contam.
 
-Os desafios de ontem podem ser jogados pelo Histórico: Footle, Daily 7, Transfer Trail e Mystery Player.
+Jogar uma categoria não pode mais tirar a nota dela, e uma boa sequência não a infla mais.
 
-Visual renovado, busca de clubes na tela inicial e seus resultados ficam na tela com um lembrete para amanhã em um toque.
+Os desafios de ontem podem ser jogados pelo Histórico, e seus resultados ficam na tela com um lembrete.
 
-Além de uma longa lista de correções.
+Além de um novo visual e muitas correções.
 </pt-BR>
 <pt-PT>
-O teu cartão Ball IQ foi reconstruído. Agora todas as respostas contam, e as perguntas difíceis contam mais: médias mais 10% e difíceis mais 20%. As classificações foram recalibradas uma vez, por isso o teu número pode ter mudado.
+O teu cartão Ball IQ foi reconstruído. As seis classificações refletem agora o que jogas mesmo: a tua própria liga lidera, e clubes, lendas e recordes contam finalmente.
 
-Os desafios de ontem podem ser jogados a partir do Histórico: Footle, Daily 7, Transfer Trail e Mystery Player.
+Jogar uma categoria já não lhe pode retirar a classificação, e uma boa série já não a inflaciona.
 
-Visual renovado, pesquisa de clubes no Início e os teus resultados ficam no ecrã com um lembrete para amanhã.
+Os desafios de ontem podem ser jogados a partir do Histórico, e os resultados ficam no ecrã com um lembrete.
 
-E ainda muitas correções.
+E ainda um novo visual e muitas correções.
 </pt-PT>
 <tr-TR>
-Ball IQ kartın yeniden yapıldı. Artık her cevap sayılıyor ve zor sorular daha çok değerli: orta %10, zor %20 daha fazla. Puanlar bir kez yeniden ayarlandı, bu yüzden sayın değişmiş olabilir.
+Ball IQ kartın yeniden yapıldı. Altı puan artık gerçekten oynadığın şeyi yansıtıyor: kendi ligin başı çekiyor, kulüpler, efsaneler ve rekorlar da sonunda sayılıyor.
 
-Dünkü bulmacalar Geçmiş'ten oynanabiliyor: Footle, Daily 7, Transfer Trail ve Mystery Player.
+Bir kategoriyi oynamak artık puanını silemiyor, iyi bir seri de onu şişirmiyor.
 
-Yeni bir görünüm, Ana Sayfa'da kulüp arama ve sonuçların ekranda kalıyor; yarın için tek dokunuşla hatırlatma.
+Dünkü bulmacalar Geçmiş'ten oynanabiliyor ve sonuçların hatırlatmayla ekranda kalıyor.
 
-Ayrıca uzun bir düzeltme listesi.
+Ayrıca yeni bir görünüm ve çok sayıda düzeltme.
 </tr-TR>
