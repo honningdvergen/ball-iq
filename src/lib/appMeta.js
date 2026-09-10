@@ -9,7 +9,7 @@
 // bug that left it stuck at "1.0.0-beta" through 1.0.1/1.0.2). Keep it roughly
 // current for the web build.
 // Injected from package.json at build time (vite.config.js); never hand-edited here.
-export const APP_VERSION = import.meta.env.VITE_APP_VERSION || "1.7.3";
+export const APP_VERSION = import.meta.env.VITE_APP_VERSION || "1.7.4";
 // Gated reviewer email — only this account sees the Settings → Review entry
 // and can reach the review screen. Server-side RLS on question_review is the
 // real security; this is just UI hiding.
