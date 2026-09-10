@@ -8839,6 +8839,7 @@ function AppInner() {
               startMode={startMode}
               setOnlineAutoCreate={setOnlineAutoCreate}
               onChallenge={challengeFriend}
+              onOpenFriend={openFriendProfile}
               onJoinCode={hubJoinRoom}
               displayName={(() => {
                 const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);

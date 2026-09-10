@@ -973,20 +973,31 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
           />
         );
       })()}
-      {hasAnyStats && (
+      {hasAnyStats && (() => {
+      // ⚠️ ONE CARD, ONE SOURCE FOR BOTH HALVES OF THE RATIO. "680 CORRECT"
+      // sat beside "48% ACCURACY" on a real friend card — 680 at 48% implies
+      // 1,417 answered, while the card counts 648 of 937. My own regression:
+      // Accuracy moved onto real answers and Correct was left on the inflated
+      // lifetime counter (which still carries Mystery points and Footle
+      // guesses). Computed once here so the two tiles cannot drift again.
+      const fCard = computeCard(friendStats.catStats || {}, undefined, { c: friendStats.totalCorrect || 0, a: friendStats.totalAnswered || 0 });
+      const fCorrect = (Number.isFinite(fCard.rawCorrect) && fCard.rawAnswered >= MIN_RATED_ANSWERS)
+        ? Math.round(fCard.rawCorrect) : totalCorrect;
+      return (
         <div className="stat-grid" style={{marginBottom:16}}>
           <div className="stat-tile"><div className="st-val">{gamesPlayed}</div><div className="ds-eyebrow st-key">Games</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{totalCorrect}</div><div className="ds-eyebrow st-key">Correct</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{fCorrect}</div><div className="ds-eyebrow st-key">Correct</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{
-            accuracyLabel(computeCard(friendStats.catStats || {}, undefined, { c: friendStats.totalCorrect || 0, a: friendStats.totalAnswered || 0 }), { totalCorrect, totalAnswered })
+            accuracyLabel(fCard, { totalCorrect, totalAnswered })
           }</div><div className="ds-eyebrow st-key">Accuracy</div></div>
           {friendStats.bestIQ > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{friendStats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
           {friendStats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{friendStats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
           {friendStats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
         </div>
-      )}
+      );
+      })()}
       {(() => {
         const currentIdx = LEVELS.indexOf(level);
         const topIdx = LEVELS.length - 1;

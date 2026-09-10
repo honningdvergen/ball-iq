@@ -13,7 +13,7 @@ import { readMpHistory } from "../App.jsx";
 // Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
 // Rematch. All game entry goes through startMode so auth-gating stays in one
 // place; Create/Rematch use the one-tap auto-create path into a lobby.
-export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarId, onChallenge, needsAccount, userId }) {
+export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarId, onChallenge, onOpenFriend, needsAccount, userId }) {
   // Inline join-with-code — the code row lives ON the tab (no intermediate
   // entry screen). onJoinCode handles auth-gating, the RPC and navigation.
   const [joinCode, setJoinCode] = React.useState("");
@@ -265,15 +265,31 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
           <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>Challenge a friend</div>
           <div className="mp-friend-list" style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
             {friends.slice(0, 4).map((f) => (
-              <div key={f.id} className="todays-seven-secondary mp-row" role="group" aria-label={`Challenge ${f.username}`}>
-                <span className="t7s-icon" aria-hidden="true">
-                  <span style={{width:30,height:30,borderRadius:"50%",overflow:"hidden",display:"inline-flex",alignItems:"center",justifyContent:"center"}}>
-                    <ProfilePic value={f.avatar} url={friendPhotos[f.id]} name={f.username} />
+              // ⚠️ THE NAME AND FACE MUST OPEN THE PROFILE, like every other
+              // person-row in the app. This was a plain <div> whose only
+              // interactive child was Challenge, so tapping a friend here did
+              // nothing — while the SAME friend in the Profile tab's list
+              // opens their card. Alex: "i am unable to tap their profile from
+              // the multiplayer tab, only from my profile tab where my friends
+              // list is." The row anatomy already has the answer one row below
+              // (Local pass & play): mp-row-open wraps the body, the CTA stays
+              // its own button.
+              <div key={f.id} className="todays-seven-secondary mp-row">
+                <button type="button" className="mp-row-open"
+                  // ⚠️ AN OBJECT, NOT AN ID. openFriendProfile does
+                  // `if (!friend?.id) return` — handing it a bare string is a
+                  // SILENT no-op, which is the very bug this row is fixing.
+                  onClick={() => onOpenFriend?.({ id: f.id, username: f.username, avatar: f.avatar })}
+                  aria-label={`View ${f.username}'s profile`}>
+                  <span className="t7s-icon" aria-hidden="true">
+                    <span style={{width:30,height:30,borderRadius:"50%",overflow:"hidden",display:"inline-flex",alignItems:"center",justifyContent:"center"}}>
+                      <ProfilePic value={f.avatar} url={friendPhotos[f.id]} name={f.username} />
+                    </span>
                   </span>
-                </span>
-                <span className="t7s-body">
-                  <span className="t7s-title">{f.username}</span>
-                </span>
+                  <span className="t7s-body">
+                    <span className="t7s-title">{f.username}</span>
+                  </span>
+                </button>
                 <button type="button" className="t7s-cta" onClick={() => onChallenge?.({ id: f.id, username: f.username })}>Challenge</button>
               </div>
             ))}

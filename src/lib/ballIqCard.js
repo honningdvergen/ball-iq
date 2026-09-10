@@ -909,6 +909,13 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, pinnedLeague) {
     accuracy: acc,
     rawAccuracy: rn > 0 ? rc / rn : null,
     rawAnswered: rn,
+    // ⚠️ THE NUMERATOR TRAVELS WITH THE RATIO. A friend's card printed "680
+    // CORRECT" beside "48% ACCURACY" — 680 at 48% implies 1,417 answered, when
+    // the card counts 648 of 937. That gap is MINE: Accuracy moved onto real
+    // answers on 2026-09-10 and the Correct tile was left on the inflated
+    // lifetime counter, so two tiles on one card started contradicting each
+    // other. Whatever prints the ratio must be able to print its parts.
+    rawCorrect: rc,
     mean,
     calibration: { measured: CALIBRATION.measured, n: CALIBRATION.n },
   };
