@@ -86,10 +86,18 @@ export const CARD_COMPS = [
   // i am not sure where the logic in that is."
   { abbr: "EPL", cat: "PL",       name: "Premier League",     short: "Premier League",   icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
   { abbr: "UCL", cat: "UCL",      name: "Champions League",   short: "Champions League", icon: "⭐", color: "#123A8F" },
-  { abbr: "INT", cat: "WorldCup", name: "International",      short: "International",    icon: "🌍", color: "#8A6D1B" },
-  // ⚠️ DO NOT INVENT ABBREVIATIONS. EPL, UCL and INT are abbreviations football
-  // fans already know; CLB, LEG and REC were coined here and nobody has ever
-  // seen them — "REC" reads as a record button and "LEG" reads as a leg. Alex,
+  // ⚠️ "NATIONS", NOT "INT" — AND THE PAIR IS THE POINT. This read INT
+  // (International) directly beside WORLD (Clubs worldwide), and the two words
+  // say the same thing to a reader: a player saw INT 63 · WORLD 62 with no way
+  // to tell what separated them. Alex: "international and world is basically
+  // the same sounding category anyway." NATIONS is unambiguously national-team
+  // football (and echoes the Nations League), CLUBS is unambiguously club
+  // football. Same storage keys, same ratings — only the labels changed.
+  { abbr: "NATIONS", cat: "WorldCup", name: "International",      short: "International",    icon: "🌍", color: "#8A6D1B" },
+  // ⚠️ DO NOT INVENT ABBREVIATIONS. EPL and UCL are abbreviations football fans
+  // already know; NATIONS, CLUBS, LEGENDS and RECORDS are whole words, which
+  // need no decoding at all. CLB, LEG and REC were coined here and nobody has
+  // ever seen them — "REC" reads as a record button, "LEG" reads as a leg. Alex,
   // on first sight of his own card: "i think if it is not that obvious to me
   // then it might be confusing to the actual users." Where a real abbreviation
   // exists, use it; where one does not, spell the word.
@@ -100,7 +108,7 @@ export const CARD_COMPS = [
   // shed: true for most, wrong for a real minority. The `cat` stays "Clubs"
   // because it is a STORAGE KEY with rows already written under it; only the
   // label changed.
-  { abbr: "WORLD",   cat: "Clubs",    name: "Clubs worldwide",    short: "Club Football",    icon: "🛡️", color: "#EE8707" },
+  { abbr: "CLUBS",   cat: "Clubs",    name: "Clubs worldwide",    short: "Club Football",    icon: "🛡️", color: "#EE8707" },
   { abbr: "LEGENDS", cat: "Legends",  name: "Legends & History",  short: "Legends",          icon: "📜", color: "#B03A2E" },
   { abbr: "RECORDS", cat: "Records",  name: "Records & Managers", short: "Records",          icon: "📊", color: "#1B7F79" },
 ];
@@ -423,10 +431,55 @@ export const AVG_MULT = CALIBRATION.avgMult;
 export const BASELINE = CALIBRATION.baseline;
 export function multFor(diff) { return MULT[diff] ?? MULT.medium; }
 
-/** Mean score (0…1.2) → 40-99. Linear: 0.61 → 61. Capped at 99 — perfect on hard is 120. */
+/**
+ * Difficulty-weighted mean → the number on the card, via CALIBRATION.anchors.
+ *
+ * ⚠️ THE ANCHORS WERE GENERATED, DOCUMENTED AND NEVER READ. This was
+ * `round(mean * 100)` — a straight linear map — while the calibration file
+ * carried an anchor curve and a comment claiming this function interpolated it.
+ * So the shape of the whole population fell wherever the multipliers happened
+ * to land it: HALF of all cards below 70, the weakest reading 44, against a
+ * measured accuracy spread of 30%-80%. Alex: "i would like to push the median
+ * of overall card ratings higher up, and most cards between 70 to 90."
+ *
+ * The curve compresses that spread onto 52-99. Re-measured against all 112
+ * rated cards in prod on 2026-09-11: min 65, p25 74, MEDIAN 77, p75 82, max
+ * 93 — 89% of live cards land in 70-90 and nobody sits below 65. Ordering is
+ * untouched: better players still rate higher, and the difficulty premium
+ * still decides where you sit. Only the spacing between players changed.
+ *
+ * ⚠️ AND THIS ENDS THE "YOU CAN CHECK IT WITH A CALCULATOR" PROPERTY, which was
+ * a real one and deliberately given up. The rating used to BE your
+ * difficulty-weighted accuracy x 100, verifiable against the Accuracy tile
+ * beside it on the same card. It is not any more. Copy that says medium
+ * questions "count 25% more" is describing the INPUT, not the printed number.
+ *
+ * ⚠️ FACES GO THROUGH HERE TOO (compRating), so they compress identically. If
+ * they did not, a face and the overall would sit on two different scales and
+ * the card would stop adding up — which is the whole class of bug this rebuild
+ * has been chasing.
+ */
 export function ratingFromScore(mean) {
   const x = Number.isFinite(mean) ? mean : BASELINE;
-  return Math.max(40, Math.min(99, Math.round(x * 100)));
+  // The anchors are keyed on plain accuracy; the mean carries the difficulty
+  // premium, so divide it back out. A hard specialist's mean exceeds AVG_MULT,
+  // lands past the last anchor, and clamps at 99 — which is correct.
+  const acc = x / AVG_MULT;
+  const A = CALIBRATION.anchors;
+  let r;
+  if (acc <= A[0][0]) r = A[0][1];
+  else if (acc >= A[A.length - 1][0]) r = A[A.length - 1][1];
+  else {
+    r = A[A.length - 1][1];
+    for (let i = 1; i < A.length; i++) {
+      if (acc <= A[i][0]) {
+        const [x0, y0] = A[i - 1], [x1, y1] = A[i];
+        r = x1 === x0 ? y1 : y0 + (y1 - y0) * (acc - x0) / (x1 - x0);
+        break;
+      }
+    }
+  }
+  return Math.max(40, Math.min(99, Math.round(r)));
 }
 
 /** Kept for the calibration tests and any caller that thinks in accuracy: an average-difficulty record. */
@@ -806,11 +859,25 @@ export function compRating(cs, priorAcc = CALIBRATION.median) {
 // is also a ladder every football fan already reads, where "prospect / pro /
 // elite" had to be learned.
 //
-// Against the measured population (2026-09-09): the median player rates ~64
-// (silver), 75 needs ~68% on medium or ~63% on hard — roughly the top fifth.
+// ⚠️ THE NUMBERS BELOW ARE NOT THE ONES HE NAMED — see the note inside the
+// function. They moved on 2026-09-11 when the anchor curve moved the median.
 export function cardTier(overall) {
-  if (overall >= 75) return "gold";
-  if (overall >= 60) return "silver";
+  // ⚠️ MOVED WITH THE CURVE (2026-09-11), AND THIS BREAKS A THING ALEX SAID.
+  // He asked for gold at 75 — "just to make it easy, it also follows the fifa
+  // logic which people are already familiar with". Under the anchor curve the
+  // median card is 77, so a 75 line makes 68% of ALL PLAYERS gold and the badge
+  // stops carrying information. He has also said twice that gold should mean
+  // the TOP QUARTER, which is the 82 line (measured: 26%). The two statements
+  // cannot both hold once the median moves, so this takes the one that keeps
+  // the badge meaning something — and it is a deliberate override of an
+  // explicit instruction, not a slip. If he wants 75 back, most cards go gold
+  // and that is a legitimate choice; change it here and nowhere else.
+  //
+  // Measured across 112 live cards: bronze 16% / silver 58% / gold 26%.
+  // Bronze rises to <72 for the matching reason — under the curve nobody sits
+  // below 65, so the old 60 line would have held nobody at all.
+  if (overall >= 82) return "gold";
+  if (overall >= 72) return "silver";
   return "bronze";
 }
 

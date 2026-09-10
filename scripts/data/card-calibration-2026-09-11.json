@@ -1,0 +1,14 @@
+{
+  "measured": "2026-09-11",
+  "source": "profiles.stats.catStats via computeCard().rawAccuracy — the card's OWN counted answers (chaos excluded), every account whose card is rated, prod blcisypmngimqkwxrrdm. ⚠️ NOT daily_all_answers: that sample is Daily 7 only and reads ~4 points lower (median .5306 vs .5750), so a curve built on it would sit the whole population too low.",
+  "n": 112,
+  "percentiles": {
+    "5": 0.3,
+    "10": 0.3957,
+    "25": 0.5014,
+    "50": 0.5746,
+    "75": 0.6539,
+    "90": 0.7204,
+    "95": 0.7981
+  }
+}

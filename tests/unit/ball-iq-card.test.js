@@ -7,12 +7,17 @@ import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette,
 import { MIN_RATED_ANSWERS } from "../../src/lib/scoring.js";
 
 describe("cardTier boundaries", () => {
-  it("bronze below 60, silver 60-74, gold 75+", () => {
+  it("bronze below 72, silver 72-81, gold 82+", () => {
+    // ⚠️ THESE MOVED WITH THE CURVE, 2026-09-11. Tiers are a share of the
+    // player base, not a fixed accuracy: under the old linear scale 75+ was
+    // the top quarter; under the gentle curve the median card is 77, so the
+    // same numbers would gild two thirds of everyone. The boundaries chase
+    // the distribution — see the note in cardTier.
     expect(cardTier(40)).toBe("bronze");
-    expect(cardTier(59)).toBe("bronze");
-    expect(cardTier(60)).toBe("silver");
-    expect(cardTier(74)).toBe("silver");
-    expect(cardTier(75)).toBe("gold");
+    expect(cardTier(71)).toBe("bronze");
+    expect(cardTier(72)).toBe("silver");
+    expect(cardTier(81)).toBe("silver");
+    expect(cardTier(82)).toBe("gold");
     expect(cardTier(99)).toBe("gold");
   });
 
@@ -58,13 +63,13 @@ describe("compRating", () => {
     expect(compRating({ c: 100, a: 100 })).toBeLessThanOrEqual(99);
   });
 
-  it("an unplayed face sits at the population median (67), whatever the caller thinks", () => {
+  it("an unplayed face sits at the population median (77), whatever the caller thinks", () => {
     // Prior weight 2 on zero answers = the prior itself, and the prior is the
     // measured median accuracy → 65 by calibration. A caller's own accuracy is
     // clamped to [0.25, 0.75], so two lucky answers cannot make an unplayed
     // face gold (the 2026-09-01 "99 GOLD off two questions" report).
-    expect(compRating(undefined)).toBe(67);
-    expect(compRating({})).toBe(67);
+    expect(compRating(undefined)).toBe(77);
+    expect(compRating({})).toBe(77);
     // The caller's prior is clamped: a perfect start counts as 0.75, no more.
     expect(compRating(undefined, 1.0)).toBe(compRating(undefined, 0.75));
     expect(compRating(undefined, 0.0)).toBe(compRating(undefined, 0.25));
@@ -77,10 +82,10 @@ describe("compRating", () => {
 });
 
 describe("computeCard", () => {
-  it("empty stats -> median overall (67), SILVER, unrated, every face unrated", () => {
+  it("empty stats -> median overall (77), SILVER, unrated, every face unrated", () => {
     const card = computeCard({});
     expect(card.ratings).toHaveLength(6);
-    expect(card.overall).toBe(67);
+    expect(card.overall).toBe(77);
     expect(card.tier).toBe("silver");
     expect(card.rated).toBe(false);
     for (const r of card.ratings) { expect(r.answered).toBe(0); expect(r.rated).toBe(false); }
@@ -103,10 +108,10 @@ describe("computeCard", () => {
     expect(played.ratings.filter(r => r.rated)).toHaveLength(1);
   });
 
-  it("folds legacy ChampionsLeague into UCL and Euros into INT", () => {
+  it("folds legacy ChampionsLeague into UCL and Euros into NATIONS", () => {
     const card = computeCard({ ChampionsLeague: { c: 6, a: 8 }, UCL: { c: 4, a: 6 }, Euros: { c: 9, a: 12 } });
     const ucl = card.ratings.find(r => r.abbr === "UCL");
-    const int = card.ratings.find(r => r.abbr === "INT");
+    const int = card.ratings.find(r => r.abbr === "NATIONS");
     expect(ucl.answered).toBe(14);
     expect(ucl.rated).toBe(true);
     expect(int.answered).toBe(12);
@@ -142,11 +147,11 @@ describe("the face gate counts every answer, not just the new ones", () => {
   const faceOf = (card, abbr) => card.ratings.find((r) => r.abbr === abbr);
 
   it("a rated legacy face STAYS rated after a single new answer", () => {
-    const before = faceOf(computeCard(LEGACY, null, { c: 86, a: 135 }), "INT");
+    const before = faceOf(computeCard(LEGACY, null, { c: 86, a: 135 }), "NATIONS");
     expect(before.rated).toBe(true);
     const after = faceOf(
       computeCard(recordAnswers(LEGACY, [{ cat: "WorldCup", diff: "medium", isCorrect: true }], { c: 86, a: 135 }), null, { c: 87, a: 136 }),
-      "INT",
+      "NATIONS",
     );
     expect(after.rated).toBe(true);
     expect(after.rating).toBeGreaterThanOrEqual(before.rating); // a CORRECT answer never lowers it

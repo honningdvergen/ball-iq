@@ -3,43 +3,59 @@ import { CALIBRATION } from "../../src/data/cardCalibration.js";
 import { computeCard, cardDelta, pickLeagueFace, faceAbbrForCat, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
 
-// THE MODEL (Alex, 2026-09-09): "61% accuracy on easy equals 61; 61% at medium
-// should be 10% more rewarding, hard 20%." These pin that sentence, the two
-// guardrails around it, and the population reference it is checked against.
+// ⚠️ "61% ON EASY EQUALS 61" WAS THE MODEL, AND IT IS GONE (2026-09-11).
+// The rating WAS the difficulty-weighted mean x 100 — a number a player could
+// reproduce from the Accuracy tile beside it. Alex asked for the population to
+// sit higher ("most cards between 70 to 90"), and against a measured accuracy
+// spread of 30%-80% no multiplier can do that: only a compressive curve can.
+// So ratingFromScore now interpolates CALIBRATION.anchors and the identity is
+// deliberately traded away. What SURVIVES the change is what these tests now
+// pin: ordering, the difficulty premium, the floor and the ceiling. Do not
+// re-add an assertion of the form `100 * acc * MULT === rating`.
 
 const played = (n, acc, diff) => {
   let s = 0; for (let i = 0; i < n; i++) s += ((i / n) < acc ? MULT[diff] : 0);
   return { PL: { c: Math.round(n * acc), a: n, s, n } };
 };
 
-describe("Alex's sentence", () => {
-  it("61% on easy = 61, and the same 61% is worth more on medium and more again on hard", () => {
+describe("the difficulty premium still decides where you sit", () => {
+  it("the same accuracy is worth strictly more on harder questions", () => {
     const N = 4000; // large so 20 answers of prior are noise
-    expect(computeCard(played(N, 0.61, "easy")).overall).toBe(61);
-    expect(computeCard(played(N, 0.61, "medium")).overall).toBe(76);   // 61 × 1.25
-    expect(computeCard(played(N, 0.61, "hard")).overall).toBe(91);     // 61 × 1.50, minus a shade of prior
+    const easy = computeCard(played(N, 0.61, "easy")).overall;
+    const med  = computeCard(played(N, 0.61, "medium")).overall;
+    const hard = computeCard(played(N, 0.61, "hard")).overall;
+    expect(med).toBeGreaterThan(easy);
+    expect(hard).toBeGreaterThan(med);
   });
   it("the multipliers are exactly 1.0 / 1.25 / 1.50 and AVG_MULT is their bank-mix average", () => {
-    // 1.25/1.50 since 2026-09-10 (Alex, second pass). The premium also sets
-    // where the whole population sits — at 1.15/1.25 the median card read 64,
-    // the best card in the game was 90 and the top nine points of the scale
-    // were unreachable. See the note on MULT in scripts/calibrate-card.mjs.
     // Bank mix re-counted across all 7,078 graded questions: 24.9 / 48.1 / 27.0.
     expect(MULT).toEqual({ easy: 1.0, medium: 1.25, hard: 1.50 });
     expect(AVG_MULT).toBeCloseTo(0.249 * 1.0 + 0.481 * 1.25 + 0.270 * 1.50, 3);
   });
-  it("a hard specialist at 50% out-rates an easy farmer at 55%; perfect on hard caps at 99", () => {
+  it("a hard specialist at 50% out-rates an easy farmer at 55%", () => {
     expect(computeCard(played(200, 0.5, "hard")).overall).toBeGreaterThan(computeCard(played(200, 0.55, "easy")).overall);
+  });
+  it("the scale runs 52-99: perfect reaches the top, zero does not reach the floor", () => {
     expect(computeCard(played(200, 1.0, "hard")).overall).toBe(99);
-    expect(ratingFromScore(1.25)).toBe(99);
-    expect(ratingFromScore(0)).toBe(40);
+    expect(ratingFromScore(2)).toBe(99);
+    // ⚠️ 52, NOT 40. The curve's first anchor is 52 — under it nobody is shown
+    // a number that reads as total failure, which is the point of the rescale.
+    // 40 remains only as the hard clamp in ratingFromScore.
+    expect(ratingFromScore(0)).toBe(52);
+  });
+  it("ORDER IS PRESERVED — the curve never reranks two players", () => {
+    const rs = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(a => computeCard(played(500, a, "medium")).overall);
+    for (let i = 1; i < rs.length; i++) expect(rs[i]).toBeGreaterThanOrEqual(rs[i - 1]);
+    expect(rs[rs.length - 1]).toBeGreaterThan(rs[0]);
   });
 });
 
 describe("the two guardrails", () => {
   it("an unplayed card is the measured median player, and two lucky rights cannot make gold", () => {
-    expect(computeCard({}).overall).toBe(Math.round(BASELINE * 100));
-    expect(computeCard({}).overall).toBe(67);
+    // ⚠️ NOT round(BASELINE * 100) any more — BASELINE is a MEAN, and the curve
+    // maps it through the anchors rather than multiplying by 100.
+    expect(computeCard({}).overall).toBe(ratingFromScore(BASELINE));
+    expect(computeCard({}).overall).toBe(77);
     expect(computeCard({ PL: { c: 2, a: 2 } }).tier).not.toBe("gold");
     expect(computeCard({ PL: { c: 2, a: 2 } }).rated).toBe(false);
     expect(PRIOR_WEIGHT).toBe(20);
@@ -56,9 +72,10 @@ describe("the two guardrails", () => {
     // time the multipliers moved, which teaches "retune the number" instead of
     // "check the shape". The target is 2/3 at medium; 20 answers of prior still
     // pull a couple of points even at 201 answers.
-    const target = Math.round(100 * (2 / 3) * MULT.medium);
-    expect(prev).toBeGreaterThanOrEqual(target - 3);
-    expect(prev).toBeLessThanOrEqual(target);
+    // ⚠️ NO LONGER DERIVED FROM MULT — the curve broke that identity. What this
+    // test is about is the SHAPE (never falls, converges), so it pins only that
+    // a steady 2/3 player ends up clearly above the unplayed baseline.
+    expect(prev).toBeGreaterThan(computeCard({}).overall);
   });
   it("a lucky 8/10 start corrects by a few points, never a cliff", () => {
     const first = computeCard({ PL: { c: 8, a: 10 } }).overall;
@@ -101,7 +118,7 @@ describe("legacy records and the population reference", () => {
     // not the 0.58 the decayed c/a totals claimed), and then the difficulty
     // premium was raised to 1.25/1.50 so the scale actually reaches its own
     // ceiling — at 1.15/1.25 the best card in the game was 90 of a possible 99.
-    expect(ratingFromAccuracy(CALIBRATION.median)).toBe(67);
+    expect(ratingFromAccuracy(CALIBRATION.median)).toBe(77);
   });
   it("the measured population (n≥50, increasing percentiles) puts the median in silver and the 90th in gold", () => {
     expect(CALIBRATION.n).toBeGreaterThanOrEqual(50);
@@ -109,7 +126,7 @@ describe("legacy records and the population reference", () => {
     for (let i = 1; i < A.length; i++) expect(A[i][0]).toBeGreaterThan(A[i - 1][0]);
     const p = (acc) => ratingFromAccuracy(acc);
     expect(cardTier(p(CALIBRATION.median))).toBe("silver");
-    const p90 = A.find(([, r]) => r === 84)[0];
+    const p90 = A.find(([, r]) => r === 88)[0];
     expect(cardTier(p(p90))).toBe("gold");
   });
 });
@@ -178,15 +195,15 @@ describe("your league on the card", () => {
   // live cards whose league slot is not EPL, and wrong before pinning existed.
   it("the league picker's promise follows the player's OWN league face", () => {
     const laLiga = { LaLiga: { d: { u: [30, 50] } }, PL: { d: { u: [2, 5] } } };
-    expect(faceAbbrForCat("LaLiga")).toBe("WORLD");          // an EPL player
+    expect(faceAbbrForCat("LaLiga")).toBe("CLUBS");          // an EPL player
     expect(faceAbbrForCat("PL")).toBe("EPL");
     expect(faceAbbrForCat("LaLiga", laLiga)).toBe("LA LIGA"); // a La Liga player
-    expect(faceAbbrForCat("PL", laLiga)).toBe("WORLD");
+    expect(faceAbbrForCat("PL", laLiga)).toBe("CLUBS");
     expect(faceAbbrForCat("LaLiga", {}, "LaLiga")).toBe("LA LIGA"); // pinned
-    expect(faceAbbrForCat("PL", {}, "LaLiga")).toBe("WORLD");
+    expect(faceAbbrForCat("PL", {}, "LaLiga")).toBe("CLUBS");
     // the non-league faces are unaffected by whose card it is
     for (const cs of [undefined, laLiga]) {
-      expect(faceAbbrForCat("Euros", cs)).toBe("INT");
+      expect(faceAbbrForCat("Euros", cs)).toBe("NATIONS");
       expect(faceAbbrForCat("Managers", cs)).toBe("RECORDS");
       expect(faceAbbrForCat("UCL", cs)).toBe("UCL");
       expect(faceAbbrForCat("Quidditch", cs)).toBeNull();

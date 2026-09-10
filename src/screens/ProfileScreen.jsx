@@ -7,7 +7,7 @@ import { useModalA11y } from "../useModalA11y.js";
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_ANSWERS } from '../lib/scoring.js';
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
-import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, MULT, LEAGUE_FACES, pickLeagueFace, rawAnswered } from "../lib/ballIqCard.js";
+import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, LEAGUE_FACES, pickLeagueFace, rawAnswered } from "../lib/ballIqCard.js";
 import { CALIBRATION } from "../data/cardCalibration.js";
 
 // ⚠️ THE RECALIBRATION NOTE MUST DERIVE FROM THE CALIBRATION IT DESCRIBES.
@@ -20,8 +20,13 @@ import { CALIBRATION } from "../data/cardCalibration.js";
 // drifts silently the next time someone tunes the scale.
 const RECAL_DATE_LABEL = new Date(CALIBRATION.measured + "T00:00:00Z")
   .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
-const RECAL_MEDIUM_PCT = Math.round((MULT.medium - 1) * 100);
-const RECAL_HARD_PCT = Math.round((MULT.hard - 1) * 100);
+// ⚠️ THE NOTE NO LONGER QUOTES THE MULTIPLIERS, AND MUST NOT. It read "medium
+// questions now count 25% more, hard 50% more" — true of the INPUT, and until
+// 2026-09-11 also true of the printed number, because the rating was simply
+// the difficulty-weighted mean x 100. The anchor curve broke that link: the
+// premium still decides where you sit against everyone else, but a player can
+// no longer reproduce their rating from those percentages, and a note inviting
+// them to try would be inviting them to find us wrong.
 
 /**
  * The "Accuracy" tile, from the ANSWERS rather than the lifetime counters.
@@ -1615,7 +1620,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   to end, so the first sight of the new card says why, once. */}
               {hasPlayed && !recalSeen && (
                 <div className="pd-recal" role="status">
-                  <span>Ratings recalibrated {RECAL_DATE_LABEL}: medium questions now count {RECAL_MEDIUM_PCT}% more, hard {RECAL_HARD_PCT}% more.</span>
+                  <span>Ratings rescaled {RECAL_DATE_LABEL} — your number has probably moved. Harder questions still count for more.</span>
                   <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
                 </div>
               )}
@@ -1821,7 +1826,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           rebuild exists to end, so the first sight of the new card says why. */}
       {(stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (
         <div className="pd-recal" role="status" style={{ marginTop: 0, marginBottom: 14 }}>
-          <span>Ratings recalibrated {RECAL_DATE_LABEL}: medium questions now count {RECAL_MEDIUM_PCT}% more, hard {RECAL_HARD_PCT}% more.</span>
+          <span>Ratings rescaled {RECAL_DATE_LABEL} — your number has probably moved. Harder questions still count for more.</span>
           <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
         </div>
       )}

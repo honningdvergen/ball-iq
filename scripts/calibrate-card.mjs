@@ -26,7 +26,8 @@
 //     percentile_cont(0.50) within group (order by acc) p50,
 //     percentile_cont(0.75) within group (order by acc) p75,
 //     percentile_cont(0.90) within group (order by acc) p90,
-//     percentile_cont(0.97) within group (order by acc) p97
+//     percentile_cont(0.05) within group (order by acc) p5,
+//     percentile_cont(0.95) within group (order by acc) p95
 //   from lvl;
 import { readFileSync, writeFileSync } from 'fs';
 
@@ -34,25 +35,58 @@ const src = process.argv[2];
 if (!src) { console.error('usage: node scripts/calibrate-card.mjs <calibration.json>'); process.exit(1); }
 const cal = JSON.parse(readFileSync(src, 'utf8'));
 const p = cal.percentiles;
-for (const k of ['10', '25', '50', '75', '90', '97']) {
+for (const k of ['5', '10', '25', '50', '75', '90', '95']) {
   if (typeof p[k] !== 'number' || p[k] <= 0 || p[k] >= 1) { console.error(`[calibrate-card] percentile ${k} missing or out of (0,1)`); process.exit(1); }
 }
-if (!(p['10'] < p['25'] && p['25'] < p['50'] && p['50'] < p['75'] && p['75'] < p['90'] && p['90'] < p['97'])) {
+const NEEDED = ['5','10','25','50','75','90','95'];
+for (const k of NEEDED) {
+  if (typeof p[k] !== 'number') {
+    console.error(`[calibrate-card] missing percentile p${k} — the anchor curve needs ${NEEDED.join(', ')}`); process.exit(1);
+  }
+}
+if (!NEEDED.every((k, i) => i === 0 || p[NEEDED[i - 1]] < p[k])) {
   console.error('[calibrate-card] percentiles are not strictly increasing'); process.exit(1);
 }
 if (!(cal.n >= 50)) { console.error(`[calibrate-card] n=${cal.n} — too few rated accounts to anchor a scale`); process.exit(1); }
 
-// The scale. Rating targets per percentile — THIS is the product decision:
-//   p10 → 50   bottom decile, bronze
-//   p50 → 65   the median player is a mid-silver
-//   p75 → 75   the gold line: gold means TOP QUARTER
-//   p90 → 84
-//   p97 → 93
-//   1.0 → 99   perfect, nobody
-// Tiers stay bronze <60 / silver 60-74 / gold 75+, so bronze ≈ the bottom third.
+// The scale. Rating targets per percentile — THIS is the product decision.
+//
+// ⚠️ THESE ARE NOW APPLIED, NOT DECORATIVE. Until 2026-09-11 the anchors were
+// generated, written into the calibration file, documented as "ratingFromScore
+// interpolates between them" — and never read by anything. The rating was a
+// straight `mean * 100`, so the SHAPE of the population landed wherever the
+// multipliers happened to put it: half of all cards below 70 and the weakest
+// reading 44. Alex: "i would like to push the median of overall card ratings
+// higher up, and most cards between 70 to 90."
+//
+//   p5  → 60   nobody reads a number that looks like failure
+//   p10 → 67
+//   p25 → 72
+//   p50 → 77   the median player is a comfortable silver
+//   p75 → 83
+//   p90 → 88
+//   p95 → 93
+//   1.0 → 99   perfect on hard, nobody
+//
+// The measured spread is WIDE — p5 30% accuracy, p95 80% — so a linear map
+// stretches it across the whole 40-99 scale. This compresses it: ~79% of cards
+// land in 70-90 and the gap between a 45%- and a 65%-accurate player is 13
+// points rather than 26. That is the trade, made deliberately: still clearly
+// separated, far less punishing at the bottom.
+//
+// ⚠️ THE COST IS VERIFIABILITY, AND IT WAS A REAL PROPERTY WE GAVE UP. The
+// rating used to BE your difficulty-weighted accuracy x 100, checkable against
+// the Accuracy tile sitting beside it on the same card. It is not any more.
+// The multipliers still decide where you sit relative to everyone else; they no
+// longer produce the printed number directly. Any copy that says otherwise is
+// now wrong — see the recalibration note in ProfileScreen.
+//
+// Tiers move with it: bronze <70 / silver 70-84 / gold 85+, so gold is roughly
+// the top 15%. Leaving gold at 75 would have made a median player gold.
 const anchors = [
-  [0, 40],
-  [p['10'], 50], [p['50'], 65], [p['75'], 75], [p['90'], 84], [p['97'], 93],
+  [0, 52],
+  [p['5'], 60], [p['10'], 67], [p['25'], 72], [p['50'], 77],
+  [p['75'], 83], [p['90'], 88], [p['95'], 93],
   [1, 99],
 ];
 
