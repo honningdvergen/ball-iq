@@ -570,6 +570,47 @@ export function recordAnswers(prevCatStats = {}, answers = [], lifetime) {
 }
 
 /**
+ * The SAME evidence scoreOf reads, but unweighted: how many questions this
+ * record got right, out of how many it answered.
+ *
+ * This exists so the Profile's "Accuracy" tile can be sourced from the answers
+ * themselves instead of the lifetime counters, which are historically
+ * inflated: `saveStats` added `newResult.score` to `totalCorrect` for EVERY
+ * mode, and in four of them `score` is not a count of correct answers
+ * (mp:race 29,584% of questions, mystery 2,606%, footle 358%, trail 126%).
+ * 26,081 of the 32,769 "correct answers" the app has ever counted came from
+ * those four. The writer is gated now, but every historic total is still
+ * wrong, and a wrong 67% sitting beside an honest card is what made a real
+ * player's card look broken when it was the only truthful number on screen.
+ *
+ * catStats is quiz-only — Footle, Trail, Mystery and multiplayer never write a
+ * category here — so this is the app's one clean accuracy.
+ *
+ * ⚠️ NOT `rating / AVG_MULT`. That is the difficulty-ADJUSTED equivalent and
+ * would print a number no player can check against their own answers. A tile
+ * labelled "Accuracy" has to mean right ÷ answered. The rating sitting ABOVE
+ * it is the point: it is higher because hard questions are worth more.
+ */
+export function rawScoreOf(cs) {
+  if (!cs) return { c: 0, n: 0 };
+  // pre-summed by computeCard's fold, exactly as scoreOf's s/n branch
+  if (Number.isFinite(cs.rc) && Number.isFinite(cs.rn) && cs.rn > 0) return { c: cs.rc, n: cs.rn };
+  let c = 0, n = 0;
+  const d = cs.d;
+  if (d && typeof d === "object") {
+    for (const k of ["e", "m", "h", "u"]) {
+      const b = d[k];
+      if (!Array.isArray(b)) continue;
+      c += (b[0] || 0); n += (b[1] || 0);
+    }
+  }
+  const a = cs.a || 0, cc = cs.c || 0;
+  const extra = a - n;
+  if (extra > 0 && a > 0) { c += (cc / a) * extra; n += extra; }
+  return { c, n };
+}
+
+/**
  * The player's overall — every category, shrunk toward the population
  * baseline with PRIOR_WEIGHT answers of weight. `lifetime` = {c, a} raw
  * totals (totalCorrect / totalAnswered), used only to top up a legacy record.
@@ -687,7 +728,7 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
   for (const [k, v] of Object.entries(catStats || {})) {
     if (EXCLUDED_CATS.has(k)) continue;   // see EXCLUDED_CATS — not knowledge
     const key = k === leagueCat ? k : (LEAGUE_CATS.has(k) ? "Clubs" : (FACE_ALIAS[k] || k));
-    const cur = folded[key] || { s: 0, n: 0, c: 0, a: 0 };
+    const cur = folded[key] || { s: 0, n: 0, rc: 0, rn: 0, c: 0, a: 0 };
     // ⚠️ SCORE EACH MEMBER, THEN SUM — and the sum is the ONLY score the
     // folded record carries. It deliberately keeps `d` and `c`/`a` too, for
     // rawAnswered's gates and the progress bar, which means the record holds
@@ -696,8 +737,10 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
     // the merged `d` (then missing `u`) against a summed `a` and discarded the
     // correct total — a 299-answer card came out at 50 instead of 55.
     const sk = scoreOf(v);
+    const rk = rawScoreOf(v);   // the same members, unweighted — see rawScoreOf
     const d = mergeD(cur.d, v?.d);
-    folded[key] = { s: cur.s + sk.s, n: cur.n + sk.n, c: cur.c + (v?.c || 0), a: cur.a + (v?.a || 0), ...(d ? { d } : {}) };
+    folded[key] = { s: cur.s + sk.s, n: cur.n + sk.n, rc: cur.rc + rk.c, rn: cur.rn + rk.n,
+      c: cur.c + (v?.c || 0), a: cur.a + (v?.a || 0), ...(d ? { d } : {}) };
   }
   // Legacy = no raw key carries per-answer scores yet; only then does the
   // lifetime top-up apply (see overallScore).
@@ -725,10 +768,16 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
   // "is there enough data to print a number?". Four surfaces once asked it four
   // ways and three got it wrong (a friend card printed 85 · GOLD off one
   // answer; the OG unfurl published six invented ratings).
+  // Right / answered over the same records the rating is built from. `null`
+  // when there is nothing to divide, so a caller can tell "no data" from 0%.
+  let rc = 0, rn = 0;
+  for (const cs of Object.values(rated)) { const r = rawScoreOf(cs); rc += r.c; rn += r.n; }
   return {
     ratings, overall, tier: cardTier(overall), answeredTotal,
     rated: answeredTotal >= MIN_RATED_ANSWERS,
     accuracy: acc,
+    rawAccuracy: rn > 0 ? rc / rn : null,
+    rawAnswered: rn,
     mean,
     calibration: { measured: CALIBRATION.measured, n: CALIBRATION.n },
   };

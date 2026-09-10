@@ -22,6 +22,37 @@ const RECAL_DATE_LABEL = new Date(CALIBRATION.measured + "T00:00:00Z")
   .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const RECAL_MEDIUM_PCT = Math.round((MULT.medium - 1) * 100);
 const RECAL_HARD_PCT = Math.round((MULT.hard - 1) * 100);
+
+/**
+ * The "Accuracy" tile, from the ANSWERS rather than the lifetime counters.
+ *
+ * ⚠️ `stats.totalCorrect` IS HISTORICALLY INFLATED AND CANNOT BE TRUSTED.
+ * saveStats added `newResult.score` to it for every mode, and in four of them
+ * `score` is not a count of correct answers — measured across every row in
+ * `scores`, score ÷ questions: mp:race 29,584%, mystery 2,606%, footle 358%,
+ * trail 126%, against 52-68% for every real quiz mode. Those four contributed
+ * 26,081 of the 32,769 "correct answers" the app has ever counted. The writer
+ * is gated as of 2026-09-10, but EVERY EXISTING TOTAL IS STILL WRONG and no
+ * migration can reconstruct them.
+ *
+ * A friend's tile read 67% off 209 Mystery POINTS and 142 Footle GUESSES while
+ * his real accuracy was 50%, and his card — the honest number — was accused of
+ * being broken for disagreeing with it. Alex: "if he has 67% accuracy then the
+ * card does not make sense."
+ *
+ * card.rawAccuracy is right ÷ answered over the very records the rating is
+ * built from, and catStats is quiz-only, so it is the app's one clean
+ * accuracy. The lifetime counters remain only as a cold-start fallback, below
+ * the rating gate, where there is nothing else — and the `c <= a` guard there
+ * still catches the grossest pollution by printing an em-dash.
+ */
+function accuracyLabel(card, stats) {
+  if (card && Number.isFinite(card.rawAccuracy) && card.rawAnswered >= MIN_RATED_ANSWERS) {
+    return `${Math.round(100 * card.rawAccuracy)}%`;
+  }
+  const a = stats?.totalAnswered || 0, c = stats?.totalCorrect || 0;
+  return (a > 0 && c <= a) ? `${Math.round(100 * c / a)}%` : "—";
+}
 import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
@@ -948,10 +979,9 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
           <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{totalCorrect}</div><div className="ds-eyebrow st-key">Correct</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{(() => {
-            if (totalAnswered === 0 || totalCorrect > totalAnswered) return "—";
-            return `${Math.round(100 * totalCorrect / totalAnswered)}%`;
-          })()}</div><div className="ds-eyebrow st-key">Accuracy</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{
+            accuracyLabel(computeCard(friendStats.catStats || {}, undefined, { c: friendStats.totalCorrect || 0, a: friendStats.totalAnswered || 0 }), { totalCorrect, totalAnswered })
+          }</div><div className="ds-eyebrow st-key">Accuracy</div></div>
           {friendStats.bestIQ > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{friendStats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
           {friendStats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{friendStats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
           {friendStats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
@@ -1863,8 +1893,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const title = strongest && spread >= 5 ? `${strongest.short || strongest.name} Specialist`
             : played.length >= 3 ? "Versatile All-Rounder"
             : "Rising Talent";
-          const accPct = (stats.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)
-            ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";
+          const accPct = accuracyLabel(card, stats);
           // THE REPORT HANDS YOU A QUIZ (2026-09-09). "Strongest" repeated what the
           // card's accented face already says, and "Best score 10/10" repeated
           // "Best run 10 in a row". What the card cannot do is act: the weakest
@@ -1930,8 +1959,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
           const strongest = [...card.ratings].filter(r => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating)[0] || null;
-          const accPct = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered)
-            ? `${Math.round(100 * (stats.totalCorrect || 0) / stats.totalAnswered)}%` : "—";
+          const accPct = accuracyLabel(card, stats);
           const DASH = "—";
           const rows = [
             { label: "Accuracy", value: accPct, cls: "is-mono" },
