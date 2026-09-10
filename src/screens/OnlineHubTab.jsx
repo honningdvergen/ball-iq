@@ -263,7 +263,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
       {stats.recent.length === 0 && friends.length > 0 && (
         <>
           <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>Challenge a friend</div>
-          <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
+          <div className="mp-friend-list" style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
             {friends.slice(0, 4).map((f) => (
               <div key={f.id} className="todays-seven-secondary mp-row" role="group" aria-label={`Challenge ${f.username}`}>
                 <span className="t7s-icon" aria-hidden="true">

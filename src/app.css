@@ -2286,6 +2286,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    two buttons, so the body button drops its chrome and the pill is a real
    <button>. Green in the well like the mode colours do. */
 .mp-row{--mode:var(--accent);--mode-rgb:88,204,2;margin:0 0 22px;cursor:default;}
+/* ⚠️ .mp-row's 22px is for the SINGLE row on Home, not for a list. Stacked on
+   the Multiplayer tab's friend rail it landed on top of that container's own
+   flex gap — 30px between rows, which read as three unrelated cards rather
+   than one list. Same doubled-spacing shape as the results card's "24pt of
+   doubled flex margins". In a list the gap owns the rhythm. */
+.mp-friend-list .mp-row{margin:0;}
 /* Multiplayer keeps its green icon well (Alex, 2026-09-09: "no colour at all
    to the multiplayer icon? are you sure?" — he was right; a colourless well
    reads as DISABLED, the lesson Mystery taught). The daily well above now
