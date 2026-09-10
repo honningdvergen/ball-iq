@@ -307,10 +307,27 @@ export function faceCatFor(ans) {
  * league without a face and it now says the honest thing by itself.
  * (Found in the simulator 2026-09-09.)
  */
-export function faceAbbrForCat(cat) {
-  const face = FACE_CATS.has(cat) ? cat : (FACE_ALIAS[cat] || null);
+export function faceAbbrForCat(cat, catStats, pinnedLeague) {
+  // ⚠️ AND IT MUST RESOLVE AGAINST THE PLAYER'S OWN SIX FACES, NOT THE STATIC
+  // ONES. Slot 0 is whichever league the player actually plays (pickLeagueFace)
+  // or has pinned, so a fixed CARD_COMPS lookup gets it exactly backwards for
+  // anyone who is not an EPL player: with La Liga on the card, the league
+  // picker still said "La Liga - Builds your WORLD rating" and "Premier League
+  // - Builds your EPL rating", when it is the other way round. That was already
+  // wrong for the 27% of live cards whose league slot is not EPL, long before
+  // pinning existed. (Found in the simulator 2026-09-10, one screen after
+  // pinning La Liga.)
+  //
+  // The fold below is computeCard's, deliberately identical: the player's own
+  // league keeps its face, every OTHER league folds into Clubs.
+  const comps = cardCompsFor(catStats || {}, pinnedLeague);
+  const leagueCat = comps[0].cat;
+  const face = cat === leagueCat ? cat
+    : LEAGUE_CATS.has(cat) ? "Clubs"
+    : FACE_CATS.has(cat) ? cat
+    : (FACE_ALIAS[cat] || null);
   if (!face) return null;
-  return (CARD_COMPS.find(c => c.cat === face) || {}).abbr || null;
+  return (comps.find(c => c.cat === face) || {}).abbr || null;
 }
 
 // A face with fewer than MIN_RATED_ANSWERS but at least this many prints a

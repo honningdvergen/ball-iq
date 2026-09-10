@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { CALIBRATION } from "../../src/data/cardCalibration.js";
-import { computeCard, pickLeagueFace, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
+import { computeCard, pickLeagueFace, faceAbbrForCat, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
 
 // THE MODEL (Alex, 2026-09-09): "61% accuracy on easy equals 61; 61% at medium
@@ -138,6 +138,27 @@ describe("your league on the card", () => {
     // and the other five faces are NOT changeable — only slot 0 moves
     expect(computeCard(heavyPL, undefined, undefined, "Bundesliga").ratings.slice(1).map(r => r.abbr))
       .toEqual(computeCard(heavyPL).ratings.slice(1).map(r => r.abbr));
+  });
+  // ⚠️ "WHICH RATING DOES THIS BUILD" IS A PER-PLAYER QUESTION. The league
+  // picker resolved it against the STATIC CARD_COMPS, so with La Liga on the
+  // card it told the player "La Liga — Builds your WORLD rating" and "Premier
+  // League — Builds your EPL rating", exactly backwards. Wrong for the 27% of
+  // live cards whose league slot is not EPL, and wrong before pinning existed.
+  it("the league picker's promise follows the player's OWN league face", () => {
+    const laLiga = { LaLiga: { d: { u: [30, 50] } }, PL: { d: { u: [2, 5] } } };
+    expect(faceAbbrForCat("LaLiga")).toBe("WORLD");          // an EPL player
+    expect(faceAbbrForCat("PL")).toBe("EPL");
+    expect(faceAbbrForCat("LaLiga", laLiga)).toBe("LA LIGA"); // a La Liga player
+    expect(faceAbbrForCat("PL", laLiga)).toBe("WORLD");
+    expect(faceAbbrForCat("LaLiga", {}, "LaLiga")).toBe("LA LIGA"); // pinned
+    expect(faceAbbrForCat("PL", {}, "LaLiga")).toBe("WORLD");
+    // the non-league faces are unaffected by whose card it is
+    for (const cs of [undefined, laLiga]) {
+      expect(faceAbbrForCat("Euros", cs)).toBe("INT");
+      expect(faceAbbrForCat("Managers", cs)).toBe("RECORDS");
+      expect(faceAbbrForCat("UCL", cs)).toBe("UCL");
+      expect(faceAbbrForCat("Quidditch", cs)).toBeNull();
+    }
   });
   it("a pin that names no real league is ignored rather than blanking the slot", () => {
     expect(pickLeagueFace({ LaLiga: { d: { u: [8, 10] } } }, "Eredivisie").cat).toBe("LaLiga");

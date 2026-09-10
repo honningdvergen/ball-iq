@@ -3613,7 +3613,7 @@ export const CLUB_SEARCH_NICKNAMES = {
   lilywhites: "Tottenham", potters: "Stoke City", baggies: "West Brom",
 };
 
-function LeagueQuizScreen({ onStart, onBack }) {
+function LeagueQuizScreen({ onStart, onBack, catStats, cardLeague }) {
   React.useEffect(() => {
     // Bank warmed in the background — see the club picker above for why. The
     // per-league count this used to compute was rendered in the rows (disguise
@@ -3659,9 +3659,13 @@ function LeagueQuizScreen({ onStart, onBack }) {
                         exist and named a seventh wrongly. Every answer does
                         feed the overall (overallScore walks every key), so
                         that is what the faceless rows honestly say. */}
-                    <div className="mi-desc">{faceAbbrForCat(it.cat)
-                      ? `Builds your ${faceAbbrForCat(it.cat)} rating`
-                      : "Counts toward your overall Ball IQ"}</div>
+                    {/* ⚠️ PASS THE PLAYER'S OWN RECORD. Slot 0 of the card is
+                        THEIR league, so which face a competition builds is a
+                        per-player question — see faceAbbrForCat. */}
+                    <div className="mi-desc">{(() => {
+                      const ab = faceAbbrForCat(it.cat, catStats, cardLeague);
+                      return ab ? `Builds your ${ab} rating` : "Counts toward your overall Ball IQ";
+                    })()}</div>
                   </div>
                   <div className="mi-arrow">→</div>
                 </button>
@@ -9010,6 +9014,8 @@ function AppInner() {
           <LeagueQuizScreen
             onStart={launchLeagueQuiz}
             onBack={goHome}
+            catStats={stats?.catStats}
+            cardLeague={stats?.cardLeague}
           />
         )}
 
