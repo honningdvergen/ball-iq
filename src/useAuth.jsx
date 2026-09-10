@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, createContext, useContext } from 'react'
 import { defaultAvatarId } from './lib/avatarColour.js'
+import { rawAnswered } from './lib/ballIqCard.js'
 import * as Sentry from '@sentry/react'
 import { Capacitor } from '@capacitor/core'
 import { Browser } from '@capacitor/browser'
@@ -481,18 +482,39 @@ export function AuthProvider({ children }) {
       finalStats[k] = Math.max(localStats[k] || 0, remoteStats[k] || 0)
     }
 
-    // catStats (per-competition {c,a}) powers the Ball IQ card. It's a jsonb map,
-    // not a scalar, so it needs its own merge: pick the fuller record per cat
-    // (more answers) so a fresh install / new device restores it from remote,
-    // while a device with more local play keeps its higher counts. Without this
-    // the card resets to a flat all-baseline on every reinstall.
+    // catStats (per-competition {c,a,d}) powers the Ball IQ card. It's a jsonb
+    // map, not a scalar, so it needs its own merge: pick the fuller record per
+    // cat so a fresh install / new device restores it from remote, while a
+    // device with more local play keeps its higher counts. Without this the
+    // card resets to a flat all-baseline on every reinstall.
+    //
+    // ⚠️ THE TIEBREAK IS rawAnswered, NOT `a` — and this is load-bearing.
+    // `a` used to grow with every answer, so it doubled as "how much does this
+    // record know". It no longer does: since 2026-09-10 new play only ever
+    // writes the raw `d` counts and `a` is a FROZEN legacy value (see
+    // recordAnswers). Comparing `a` would compare two stale numbers and could
+    // hand the merge to whichever device played LESS — silently discarding a
+    // session's worth of answers on the next sync. rawAnswered is max(d, a),
+    // so it tracks total evidence under both schemes.
+    //
+    // `d` buckets are then merged bucket-by-bucket by count. The two devices
+    // hold overlapping views of ONE account's history, so max is right and
+    // adding is not: summing would count the same answer once per device.
     const localCat = (localStats.catStats && typeof localStats.catStats === 'object') ? localStats.catStats : {}
     const remoteCat = (remoteStats.catStats && typeof remoteStats.catStats === 'object') ? remoteStats.catStats : {}
     const mergedCat = {}
     for (const cat of new Set([...Object.keys(localCat), ...Object.keys(remoteCat)])) {
       const l = localCat[cat] || { c: 0, a: 0 }
       const r = remoteCat[cat] || { c: 0, a: 0 }
-      mergedCat[cat] = ((r.a || 0) > (l.a || 0)) ? r : l
+      const base = (rawAnswered(r) > rawAnswered(l)) ? r : l
+      const other = base === r ? l : r
+      const d = { ...(base.d || {}) }
+      for (const [k, ob] of Object.entries(other.d || {})) {
+        if (!Array.isArray(ob)) continue
+        const bb = d[k]
+        if (!Array.isArray(bb) || (ob[1] || 0) > (bb[1] || 0)) d[k] = ob
+      }
+      mergedCat[cat] = Object.keys(d).length ? { ...base, d } : base
     }
     finalStats.catStats = mergedCat
 

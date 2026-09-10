@@ -5964,6 +5964,22 @@ function AppInner() {
   const saveStats = useCallback((newResult) => {
     const newStreak = newResult.bestStreak || 0;
     const isSpecialMode = mode === "hotstreak" || mode === "truefalse";
+    // ⚠️ IN FOUR MODES `score` IS NOT A NUMBER OF CORRECT ANSWERS, and adding
+    // it to totalCorrect is what makes the Profile "Accuracy" tile lie.
+    // Measured across every row in `scores` (2026-09-10), score ÷ questions:
+    //   mp:race 29,584%  ·  mystery 2,606%  ·  footle 358%  ·  trail 126%
+    // against a sane 52-68% for every real quiz mode. Those four contribute
+    // 26,081 of the 32,769 "correct answers" the app has ever counted — 80% of
+    // the total — because they report POINTS, GUESSES and STEPS. One player's
+    // tile read 67% off 209 Mystery points from nine games and 142 Footle
+    // guesses; his real accuracy, from the per-answer log AND his daily rows
+    // independently, is 50%. That tile sits on the same screen as the Ball IQ
+    // card, so the card looked broken while it was the only honest number
+    // there — Alex: "if he has 67% accuracy then the card does not make sense."
+    // hotstreak and truefalse ARE correct-counts (60.7% / real), which is why
+    // this is a different set from isSpecialMode above: that one is about
+    // "score out of 10", this one about "score means answers".
+    const scoreIsCorrectCount = !(mode === "mystery" || mode === "footle" || mode === "trail" || String(mode || "").startsWith("mp:"));
     // Weekly tracking — rotate if new week
     const now = new Date();
     const weekStart = new Date(now);
@@ -6032,11 +6048,14 @@ function AppInner() {
       // Only count standard quiz scores toward bestScore (max 10)
       bestScore: isSpecialMode ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score),
       bestStreak: Math.max(stats.bestStreak || 0, newStreak),
-      totalCorrect: (stats.totalCorrect || 0) + newResult.score,
+      // Both halves of the accuracy ratio move together or not at all — see
+      // scoreIsCorrectCount. Counting one and not the other is how the
+      // numerator ran away from the denominator in the first place.
+      totalCorrect: (stats.totalCorrect || 0) + (scoreIsCorrectCount ? newResult.score : 0),
       // totalAnswered tracks the denominator for the Profile accuracy tile.
       // Older accounts pre-date this field and will see "—" on accuracy
       // until their next game tops it up.
-      totalAnswered: (stats.totalAnswered || 0) + (newResult.total || 0),
+      totalAnswered: (stats.totalAnswered || 0) + (scoreIsCorrectCount ? (newResult.total || 0) : 0),
       bestIQ: stats.bestIQ || null,
       bestHotStreak: mode === "hotstreak" ? Math.max(stats.bestHotStreak || 0, newResult.score) : (stats.bestHotStreak || 0),
       bestTrueFalse: mode === "truefalse" ? Math.max(stats.bestTrueFalse || 0, newResult.score) : (stats.bestTrueFalse || 0),

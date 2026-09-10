@@ -339,6 +339,10 @@ const BUCKET_MULT = { e: MULT.easy, m: MULT.medium, h: MULT.hard, u: AVG_MULT };
  */
 export function scoreOf(cs) {
   if (!cs) return { s: 0, n: 0 };
+  // A PRE-SUMMED record from computeCard's fold, which has already scored each
+  // member and added them up. Only the fold writes s/n (recordAnswers stopped
+  // on 2026-09-10), so this branch never sees a stored record.
+  if (Number.isFinite(cs.s) && Number.isFinite(cs.n) && cs.n > 0) return { s: cs.s, n: cs.n };
   let s = 0, n = 0;
   const d = cs.d;
   if (d && typeof d === "object") {
@@ -349,9 +353,6 @@ export function scoreOf(cs) {
       n += (b[1] || 0);
     }
   }
-  // Pre-rebuild s/n, kept for records written between 2026-09-09 and this
-  // change; they already carry per-answer weighting.
-  if (!n && Number.isFinite(cs.s) && Number.isFinite(cs.n) && cs.n > 0) return { s: cs.s, n: cs.n };
   const a = cs.a || 0, c = cs.c || 0;
   const extra = a - n;
   if (extra > 0 && a > 0) {
@@ -408,6 +409,40 @@ export function legacyTopUp(catStats = {}, lifetime) {
  * stay on the key's OWN answers (`a`), so a four-answer league does not become
  * "rated" by borrowed ones.
  */
+/**
+ * The same spread, MATERIALISED as raw counts instead of a parallel score.
+ *
+ * Used by recordAnswers on the first write to a legacy record. withLegacyTopUp
+ * above is a READ-TIME view: it writes s/n, which is right for computeCard
+ * (transient, thrown away each render) and wrong to store, because since
+ * 2026-09-10 s/n means "pre-summed by the fold" and outranks raw counts — a
+ * stored top-up would win over every answer played afterwards and a perfect
+ * round would LOWER the card. That is the "ten hard rights took me 65 → 63"
+ * bug, and its unit test caught this the moment scoreOf changed.
+ *
+ * A top-up is by definition "this many more answers, at the player's lifetime
+ * accuracy, at average difficulty" — which is precisely what the `u` bucket
+ * says. Storing it there needs no second representation, and ROUNDS: `d` holds
+ * whole questions, and keeping it integral is the point of the whole rebuild.
+ */
+export function materialiseLegacyTopUp(catStats = {}, lifetime) {
+  const topped = withLegacyTopUp(catStats, lifetime);
+  if (topped === catStats) return catStats;
+  const out = {};
+  for (const [k, cs] of Object.entries(topped)) {
+    const own = scoreOf(catStats[k]);
+    const dn = Math.round((cs.n || 0) - own.n);
+    const dc = Math.round(((cs.s || 0) - own.s) / AVG_MULT);
+    const { s: _s, n: _n, ...rest } = cs;
+    if (dn <= 0) { out[k] = rest; continue; }
+    const d = { ...(rest.d || {}) };
+    const cur = Array.isArray(d.u) ? d.u : [0, 0];
+    d.u = [(cur[0] || 0) + Math.max(0, Math.min(dn, dc)), (cur[1] || 0) + dn];
+    out[k] = { ...rest, d };
+  }
+  return out;
+}
+
 export function withLegacyTopUp(catStats = {}, lifetime) {
   const top = legacyTopUp(catStats, lifetime);
   if (!top) return catStats;
@@ -457,8 +492,26 @@ export function rawAnswered(cs) {
 }
 
 /** True once any key carries per-answer scores (the record is no longer legacy). */
+/**
+ * Does this record carry per-category evidence of its own?
+ *
+ * The answer decides whether computeCard spreads the LIFETIME top-up across
+ * the faces (a legacy record, where all we know is one global total) or reads
+ * the record's own numbers. Get it wrong in the "no" direction and every
+ * player's six faces print the same number forever.
+ *
+ * ⚠️ IT MUST TEST BOTH SCHEMES. This asked only about `s`/`n` and became
+ * permanently false the moment recordAnswers stopped deriving them
+ * (2026-09-10) — every card in the app would have fallen back to the top-up
+ * for good, which is the "all six items read 55" shape Alex has already been
+ * shown once. Raw `d` counts are now the primary evidence and s/n the legacy
+ * one; either counts.
+ */
 export function isScored(catStats = {}) {
-  return Object.values(catStats || {}).some(v => Number.isFinite(v?.s) && Number.isFinite(v?.n) && v.n > 0);
+  return Object.values(catStats || {}).some(v =>
+    (Number.isFinite(v?.s) && Number.isFinite(v?.n) && v.n > 0) ||
+    (v?.d && typeof v.d === "object" && ["e", "m", "h", "u"].some(k => Array.isArray(v.d[k]) && (v.d[k][1] || 0) > 0))
+  );
 }
 
 // Per-answer decay of every key's score record. 0.995: half-life ~140
@@ -470,9 +523,9 @@ export const CAT_DECAY = 0.995;
  * new map. Lives here, not in App.jsx, so the arithmetic that decides every
  * card is unit-tested beside the model that reads it.
  *
- * - each answer scores (correct ? MULT[diff] : 0) into its key's {s, n}; {c, a}
- *   keep being written as plain decayed counts (progress bar, merge, older
- *   clients); `d` keeps RAW per-difficulty counts for the next calibration.
+ * - each answer adds 1 to its key's RAW `d` bucket for that difficulty. That
+ *   is the whole write: {s,n} are no longer derived and {c,a} are frozen at
+ *   whatever a legacy record already carried (see the note in the loop).
  * - a key is filed under the face it feeds (faceCatFor), else its real cat.
  * - ON THE FIRST SCORED WRITE a legacy record's lifetime top-up (see
  *   legacyTopUp) is MATERIALISED as the `_legacy` key and thereafter decays
@@ -489,7 +542,7 @@ export function recordAnswers(prevCatStats = {}, answers = [], lifetime) {
   // every later answer instead of vanishing. As a switch it vanished at the
   // first scored quiz and ten hard rights LOWERED a card 65 → 63.
   let base = catStats;
-  if (!isScored(catStats)) base = withLegacyTopUp(catStats, lifetime);
+  if (!isScored(catStats)) base = materialiseLegacyTopUp(catStats, lifetime);
   const outStats = { ...base };
   for (const ans of list) {
     const key = faceCatFor(ans) || ans.cat;
@@ -608,10 +661,15 @@ export function tierPalette(key) {
  * @param _priorAcc accepted for older call sites; unused (the overall is derived here)
  * @param lifetime  {c, a} raw lifetime totals — tops up a legacy record, see overallScore
  */
+// ⚠️ `u` IS IN THIS LIST AND MUST STAY. It holds every answer we have a record
+// of but no difficulty grade for — 4,384 of the 4,825 in the live log, because
+// Daily 7 only began storing `diff` this month. Leaving it out (as this did
+// until 2026-09-10) silently dropped 91% of the evidence on the way to a face:
+// the WORLD and LEGENDS faces on a 299-answer card read as if they had none.
 function mergeD(a, b) {
   if (!a && !b) return null;
   const out = {};
-  for (const k of ["e", "m", "h"]) {
+  for (const k of ["e", "m", "h", "u"]) {
     const x = Array.isArray(a?.[k]) ? a[k] : [0, 0], y = Array.isArray(b?.[k]) ? b[k] : [0, 0];
     if (x[1] || y[1]) out[k] = [(x[0] || 0) + (y[0] || 0), (x[1] || 0) + (y[1] || 0)];
   }
@@ -630,6 +688,13 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
     if (EXCLUDED_CATS.has(k)) continue;   // see EXCLUDED_CATS — not knowledge
     const key = k === leagueCat ? k : (LEAGUE_CATS.has(k) ? "Clubs" : (FACE_ALIAS[k] || k));
     const cur = folded[key] || { s: 0, n: 0, c: 0, a: 0 };
+    // ⚠️ SCORE EACH MEMBER, THEN SUM — and the sum is the ONLY score the
+    // folded record carries. It deliberately keeps `d` and `c`/`a` too, for
+    // rawAnswered's gates and the progress bar, which means the record holds
+    // the same evidence twice over. scoreOf therefore reads s/n FIRST: when
+    // this pre-summed form was scored from its raw halves instead, it counted
+    // the merged `d` (then missing `u`) against a summed `a` and discarded the
+    // correct total — a 299-answer card came out at 50 instead of 55.
     const sk = scoreOf(v);
     const d = mergeD(cur.d, v?.d);
     folded[key] = { s: cur.s + sk.s, n: cur.n + sk.n, c: cur.c + (v?.c || 0), a: cur.a + (v?.a || 0), ...(d ? { d } : {}) };

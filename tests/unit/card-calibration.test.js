@@ -79,6 +79,13 @@ describe("legacy records and the population reference", () => {
   it("a legacy {c,a} record is scored as average difficulty", () => {
     expect(scoreOf({ c: 55, a: 106 })).toEqual({ s: AVG_MULT * 55, n: 106 });
     expect(scoreOf({ c: 1, a: 1, s: 1.2, n: 1 })).toEqual({ s: 1.2, n: 1 });
+    // `u` — a real answer with no difficulty grade — is worth the average
+    // question and MUST reach the score. 91% of the live answer log is `u`.
+    expect(scoreOf({ d: { u: [6, 10] } })).toEqual({ s: AVG_MULT * 6, n: 10 });
+    // raw counts first; the frozen decayed totals carry only the remainder
+    expect(scoreOf({ d: { u: [6, 10] }, c: 10, a: 20 }).n).toBe(20);
+    // and a record whose raw counts have caught up with them carries no estimate
+    expect(scoreOf({ d: { u: [6, 10] }, c: 5, a: 10 })).toEqual({ s: AVG_MULT * 6, n: 10 });
     expect(scoreOf(undefined)).toEqual({ s: 0, n: 0 });
     // The median player reads 60 since the 2026-09-10 recalibration. The old 64
     // came from DECAYED c/a totals, which overstated the population: against
