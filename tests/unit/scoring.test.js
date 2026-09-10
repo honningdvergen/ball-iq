@@ -13,7 +13,9 @@ describe("getLevelInfo", () => {
   it("exact threshold lands ON the new level", () => {
     expect(getLevelInfo(100).level.name).toBe("Non-League");
     expect(getLevelInfo(99).level.name).toBe("Sunday League");
-    expect(getLevelInfo(700).level.name).toBe("Premier League");
+    // Renamed 2026-09-10 — the ladder stopped borrowing the card's
+    // competition names. The THRESHOLD is what this test guards; it is frozen.
+    expect(getLevelInfo(700).level.name).toBe("Top Flight");
   });
 
   it("mid-band progress is the rounded percentage", () => {

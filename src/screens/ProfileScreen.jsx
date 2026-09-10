@@ -40,8 +40,15 @@ export const BADGE_DEFS = [
   ["survivor",    Heart,         "Survivor",      "20+ in Survival"],
   ["scholar",     GraduationCap, "Scholar",       "500 correct answers"],
   ["faithful",    Repeat,        "Faithful",      "Play 50 games"],
-  ["legend_xp",   Crown,         "Legend",        "Reach 3000 XP"],
-  ["world_class", Globe,         "World Class",   "100 International Qs"]
+  // ⚠️ RENAMED, NOT RETIRED (2026-09-10). "Legend" restated the rank directly
+  // above it — same word, same 3,000 XP — and "World Class" now sits beside a
+  // WORLD face that means club football, which is a different thing entirely.
+  // I wanted to retire the first outright; scoring.js sets the rule that
+  // decides it: "Taking away a rank someone earned is a worse harm than a
+  // short ladder." 19 players hold this badge. The criteria are UNCHANGED, so
+  // nobody loses one — only the words that clashed.
+  ["legend_xp",   Crown,         "Veteran",       "Reach 3000 XP"],
+  ["world_class", Globe,         "Globetrotter",  "100 International Qs"]
 ];
 
 // ── Profile picture ─────────────────────────────────────────────────────────

@@ -54,9 +54,18 @@ export const LEVELS = [
   { name:"Sunday League",   xpNeeded:0,     icon:"⚽",  Icon:Footprints },
   { name:"Non-League",      xpNeeded:100,   icon:"🌱",  Icon:Sprout },
   { name:"Championship",    xpNeeded:300,   icon:"📈",  Icon:TrendingUp },
-  { name:"Premier League",  xpNeeded:700,   icon:"🏟️",  Icon:Shield },
-  { name:"Champions League",xpNeeded:1500,  icon:"⭐",  Icon:Sparkles },
-  { name:"Legend",          xpNeeded:3000,  icon:"🐐",  Icon:Award },
+  // ⚠️ THE LADDER MUST NOT BORROW THE CARD'S VOCABULARY (renamed 2026-09-10).
+  // These three read "Premier League", "Champions League" and "Legend" — the
+  // same words as the EPL, UCL and LEGENDS faces on the Ball IQ card, which
+  // sits on the same screen. 46 of 308 players (15%) were sitting at a rank
+  // named after a competition whose face carried an unrelated number, and
+  // "Legend" collided twice over: the face AND the badge. The ladder is about
+  // TIME INVESTED, the card about knowledge; sharing words made them read as
+  // one system. Thresholds are untouched, so nobody moved a rung — only the
+  // labels changed.
+  { name:"Top Flight",      xpNeeded:700,   icon:"🏟️",  Icon:Shield },
+  { name:"Continental",     xpNeeded:1500,  icon:"⭐",  Icon:Sparkles },
+  { name:"Cult Hero",       xpNeeded:3000,  icon:"🐐",  Icon:Award },
   { name:"Icon",            xpNeeded:8000,  icon:"👑",  Icon:Medal },
   { name:"Immortal",        xpNeeded:20000, icon:"🏆",  Icon:Trophy },
 ];
