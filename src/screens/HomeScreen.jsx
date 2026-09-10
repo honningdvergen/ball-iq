@@ -656,6 +656,29 @@ function HomeScreenImpl({
         onPickClub={(key) => { if (launchClubQuiz) launchClubQuiz(key); else startMode("clubquiz"); }}
         onAllClubs={() => startMode("clubquiz")}
       />
+      {/* ⚠️ THE LEAGUE DOOR BELONGS WITH THE CLUB DOOR. The grid below states
+          the rule itself — "No Club Quiz tile: the finder above this grid is
+          the club entry. Two doors to one room read as a longer list" — and
+          League Quiz was breaking it from the other side: the league entry sat
+          among the game MODES while the club entry sat here. They are the same
+          kind of thing (pick a competition, get a quiz), they are what "Find a
+          quiz" means, and League Quiz is the most-played mode in the grid over
+          the last fortnight (44 plays / 9 players). Moving it also leaves the
+          grid an even six, so the odd empty cell goes with it.
+          Row anatomy, not a tile: mode colour on the well, one action. */}
+      <button
+        type="button"
+        className="todays-seven-secondary mp-row"
+        onClick={() => startMode("leaguequiz")}
+        aria-label="League Quiz — pick a competition"
+      >
+        <span className="t7s-icon" aria-hidden="true"><Trophy size={22} strokeWidth={2} /></span>
+        <span className="t7s-body">
+          <span className="t7s-title">League Quiz</span>
+          <span className="t7s-sub">Pick a competition · 10 questions</span>
+        </span>
+        <span className="t7s-cta">Play</span>
+      </button>
       {/* ── MORE MODES ── */}
       {/* Lucide icons replace emoji glyphs (2026-05-03). Stroke 2.25
           for a slightly bolder line that holds at the 20px size in
@@ -688,7 +711,6 @@ function HomeScreenImpl({
           // quiz — name every ground in the league. No live-gate needed:
           // the dataset is season-pinned and always playable.
           { key:"stadiums", Icon: LandPlot, name: "Stadiums", desc: "Name every ground", onTap: () => setScreen("stadiums") },
-          { key:"leaguequiz", Icon: Trophy,     name: "League Quiz", desc: "Pick a league",    onTap: () => startMode("leaguequiz") },
           { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, easy to hard" },
           // ⚠️ iconColor deliberately REMOVED. Survival was the only tile using the
           // opt-out, so after the grid went neutral it was the single remaining
