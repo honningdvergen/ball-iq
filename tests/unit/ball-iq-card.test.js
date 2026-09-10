@@ -58,13 +58,13 @@ describe("compRating", () => {
     expect(compRating({ c: 100, a: 100 })).toBeLessThanOrEqual(99);
   });
 
-  it("an unplayed face sits at the population median (60), whatever the caller thinks", () => {
+  it("an unplayed face sits at the population median (67), whatever the caller thinks", () => {
     // Prior weight 2 on zero answers = the prior itself, and the prior is the
     // measured median accuracy → 65 by calibration. A caller's own accuracy is
     // clamped to [0.25, 0.75], so two lucky answers cannot make an unplayed
     // face gold (the 2026-09-01 "99 GOLD off two questions" report).
-    expect(compRating(undefined)).toBe(60);
-    expect(compRating({})).toBe(60);
+    expect(compRating(undefined)).toBe(67);
+    expect(compRating({})).toBe(67);
     // The caller's prior is clamped: a perfect start counts as 0.75, no more.
     expect(compRating(undefined, 1.0)).toBe(compRating(undefined, 0.75));
     expect(compRating(undefined, 0.0)).toBe(compRating(undefined, 0.25));
@@ -77,10 +77,10 @@ describe("compRating", () => {
 });
 
 describe("computeCard", () => {
-  it("empty stats -> median overall (60), SILVER, unrated, every face unrated", () => {
+  it("empty stats -> median overall (67), SILVER, unrated, every face unrated", () => {
     const card = computeCard({});
     expect(card.ratings).toHaveLength(6);
-    expect(card.overall).toBe(60);
+    expect(card.overall).toBe(67);
     expect(card.tier).toBe("silver");
     expect(card.rated).toBe(false);
     for (const r of card.ratings) { expect(r.answered).toBe(0); expect(r.rated).toBe(false); }

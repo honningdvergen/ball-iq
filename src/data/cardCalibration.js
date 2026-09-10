@@ -13,7 +13,7 @@ export const CALIBRATION = {
   // The model (Alex, 2026-09-09): rating = 100 × mean(correct ? MULT[diff] : 0),
   // shrunk toward BASELINE. The anchors above are the measured population in
   // plain accuracy, kept for reference and for the calibration tests.
-  mult: {"easy":1,"medium":1.15,"hard":1.25},
-  avgMult: 1.1397,
-  baseline: 0.6047,
+  mult: {"easy":1,"medium":1.25,"hard":1.5},
+  avgMult: 1.2552,
+  baseline: 0.666,
 };

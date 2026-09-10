@@ -13,17 +13,20 @@ const played = (n, acc, diff) => {
 };
 
 describe("Alex's sentence", () => {
-  it("61% on easy = 61, on medium = 70, on hard = 76 (once the prior has faded)", () => {
+  it("61% on easy = 61, and the same 61% is worth more on medium and more again on hard", () => {
     const N = 4000; // large so 20 answers of prior are noise
     expect(computeCard(played(N, 0.61, "easy")).overall).toBe(61);
-    expect(computeCard(played(N, 0.61, "medium")).overall).toBe(70);
-    expect(computeCard(played(N, 0.61, "hard")).overall).toBe(76);
+    expect(computeCard(played(N, 0.61, "medium")).overall).toBe(76);   // 61 × 1.25
+    expect(computeCard(played(N, 0.61, "hard")).overall).toBe(91);     // 61 × 1.50, minus a shade of prior
   });
-  it("the multipliers are exactly 1.0 / 1.15 / 1.25 and AVG_MULT is their bank-mix average", () => {
-    // 1.15/1.25 since 2026-09-10 (Alex). Bank mix re-counted across all 7,078
-    // graded questions: easy 24.9% / medium 48.1% / hard 27.0%.
-    expect(MULT).toEqual({ easy: 1.0, medium: 1.15, hard: 1.25 });
-    expect(AVG_MULT).toBeCloseTo(0.249 * 1.0 + 0.481 * 1.15 + 0.270 * 1.25, 3);
+  it("the multipliers are exactly 1.0 / 1.25 / 1.50 and AVG_MULT is their bank-mix average", () => {
+    // 1.25/1.50 since 2026-09-10 (Alex, second pass). The premium also sets
+    // where the whole population sits — at 1.15/1.25 the median card read 64,
+    // the best card in the game was 90 and the top nine points of the scale
+    // were unreachable. See the note on MULT in scripts/calibrate-card.mjs.
+    // Bank mix re-counted across all 7,078 graded questions: 24.9 / 48.1 / 27.0.
+    expect(MULT).toEqual({ easy: 1.0, medium: 1.25, hard: 1.50 });
+    expect(AVG_MULT).toBeCloseTo(0.249 * 1.0 + 0.481 * 1.25 + 0.270 * 1.50, 3);
   });
   it("a hard specialist at 50% out-rates an easy farmer at 55%; perfect on hard caps at 99", () => {
     expect(computeCard(played(200, 0.5, "hard")).overall).toBeGreaterThan(computeCard(played(200, 0.55, "easy")).overall);
@@ -34,9 +37,9 @@ describe("Alex's sentence", () => {
 });
 
 describe("the two guardrails", () => {
-  it("an unplayed card is the measured median player (~60), and two lucky rights cannot make gold", () => {
+  it("an unplayed card is the measured median player, and two lucky rights cannot make gold", () => {
     expect(computeCard({}).overall).toBe(Math.round(BASELINE * 100));
-    expect(computeCard({}).overall).toBe(60);
+    expect(computeCard({}).overall).toBe(67);
     expect(computeCard({ PL: { c: 2, a: 2 } }).tier).not.toBe("gold");
     expect(computeCard({ PL: { c: 2, a: 2 } }).rated).toBe(false);
     expect(PRIOR_WEIGHT).toBe(20);
@@ -47,10 +50,15 @@ describe("the two guardrails", () => {
       const r = computeCard(played(n, 2 / 3, "medium")).overall;
       expect(r).toBeGreaterThanOrEqual(prev); prev = r;
     }
-    // 2/3 × 1.15 = 76.7 under the 2026-09-10 multipliers; 20 answers of prior
-    // still pull a couple of points at 201 answers.
-    expect(prev).toBeGreaterThanOrEqual(74);
-    expect(prev).toBeLessThanOrEqual(77);
+    // ⚠️ DERIVED, NOT PINNED. What this test is about is the SHAPE — never
+    // falls, converges on the player's own level — and that is true at any
+    // premium. Pinning the literal made it fail (with seven others) the first
+    // time the multipliers moved, which teaches "retune the number" instead of
+    // "check the shape". The target is 2/3 at medium; 20 answers of prior still
+    // pull a couple of points even at 201 answers.
+    const target = Math.round(100 * (2 / 3) * MULT.medium);
+    expect(prev).toBeGreaterThanOrEqual(target - 3);
+    expect(prev).toBeLessThanOrEqual(target);
   });
   it("a lucky 8/10 start corrects by a few points, never a cliff", () => {
     const first = computeCard({ PL: { c: 8, a: 10 } }).overall;
@@ -77,7 +85,8 @@ describe("legacy records and the population reference", () => {
   });
 
   it("a legacy {c,a} record is scored as average difficulty", () => {
-    expect(scoreOf({ c: 55, a: 106 })).toEqual({ s: AVG_MULT * 55, n: 106 });
+    expect(scoreOf({ c: 55, a: 106 }).s).toBeCloseTo(AVG_MULT * 55, 10);
+    expect(scoreOf({ c: 55, a: 106 }).n).toBe(106);
     expect(scoreOf({ c: 1, a: 1, s: 1.2, n: 1 })).toEqual({ s: 1.2, n: 1 });
     // `u` — a real answer with no difficulty grade — is worth the average
     // question and MUST reach the score. 91% of the live answer log is `u`.
@@ -87,10 +96,12 @@ describe("legacy records and the population reference", () => {
     // and a record whose raw counts have caught up with them carries no estimate
     expect(scoreOf({ d: { u: [6, 10] }, c: 5, a: 10 })).toEqual({ s: AVG_MULT * 6, n: 10 });
     expect(scoreOf(undefined)).toEqual({ s: 0, n: 0 });
-    // The median player reads 60 since the 2026-09-10 recalibration. The old 64
-    // came from DECAYED c/a totals, which overstated the population: against
-    // 4,180 real per-question records the median is 0.5306, not 0.58.
-    expect(ratingFromAccuracy(CALIBRATION.median)).toBe(60);
+    // The median player reads 67. Two moves got here on 2026-09-10: the
+    // population was re-measured from REAL per-question records (median 0.5306,
+    // not the 0.58 the decayed c/a totals claimed), and then the difficulty
+    // premium was raised to 1.25/1.50 so the scale actually reaches its own
+    // ceiling — at 1.15/1.25 the best card in the game was 90 of a possible 99.
+    expect(ratingFromAccuracy(CALIBRATION.median)).toBe(67);
   });
   it("the measured population (n≥50, increasing percentiles) puts the median in silver and the 90th in gold", () => {
     expect(CALIBRATION.n).toBeGreaterThanOrEqual(50);
@@ -198,7 +209,7 @@ describe("recordAnswers", () => {
     expect(pl.s).toBeUndefined();
     expect(pl.n).toBeUndefined();
     // and scoreOf weights each bucket by its OWN difficulty
-    expect(scoreOf(pl)).toEqual({ s: 1.25 + 1.15, n: 3 });
+    expect(scoreOf(pl)).toEqual({ s: MULT.hard + MULT.medium, n: 3 });
     expect(cs._legacy).toBeUndefined();
   });
 

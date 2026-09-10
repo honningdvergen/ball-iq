@@ -67,7 +67,39 @@ const anchors = [
 // sure is right, maybe it should be 15% and 25%". Every one of the 7,078 bank
 // questions carries a difficulty grade — zero ungraded — so the weight is
 // applied from the ANSWER's own difficulty, not guessed.
-const MULT = { easy: 1.0, medium: 1.15, hard: 1.25 };
+// ⚠️ THE PREMIUM ALSO SETS WHERE THE WHOLE POPULATION SITS, and that is the
+// reason it is 1.25/1.50 rather than something milder. Every rating is
+// 100 x (s + BASELINE*W)/(n + W) and BASELINE is itself p50 x AVG_MULT, so
+// raising these scales the ENTIRE scale by one factor: nobody's ranking moves,
+// only the level everyone reads.
+//
+// Measured on all 112 rated cards at 1.15/1.25: median 64, best card in the
+// game 90, gold (75+) reached by 13%. Three things were wrong with that.
+// The top NINE POINTS OF THE SCALE WERE UNREACHABLE — a ceiling no player can
+// touch reads as harsh grading, not as headroom. Alex had specified gold to
+// mean the top quarter and it had drifted to an eighth. And a card needs 10
+// answers to rate at all, so those 112 are the COMMITTED CORE: every casual
+// player is invisible in that measurement and lands below it, which means the
+// real median is lower still than the number being calibrated against.
+//
+// At 1.25/1.50: median 70, p90 84, gold 33%, bronze 30% -> 14%. That is a
+// FIFA-shaped distribution, which is the model the card already invokes — in
+// FUT gold is 75+ and gold is COMMON, the tier any decent player wears, not a
+// rare prize. Alex, 2026-09-10: "75 and up should be gold just to make it
+// easy, it also follows the fifa logic which people are already familiar with."
+//
+// ⚠️ A HARD QUESTION AT 1.50 IS A CLAIM ABOUT DIFFICULTY, NOT A FUDGE FACTOR.
+// The alternative way to move the population — a presentation curve mapping
+// percentiles onto a nicer range — buys the same distribution by making the
+// printed number mean nothing. This keeps it exactly what it says: your
+// difficulty-weighted accuracy, times 100, checkable against your own answers.
+// If the premium ever stops being defensible as difficulty, move the TIERS
+// instead; do not stretch these further.
+//
+// Known and accepted: at 1.50 the strongest card in the game lands ON 99. The
+// ceiling is reachable on purpose. Re-measure quarterly (that is what this
+// script is for) and expect the top to need separating as the game grows.
+const MULT = { easy: 1.0, medium: 1.25, hard: 1.50 };
 // Bank mix, re-counted 2026-09-10 across all 7,078 questions: easy 24.9% /
 // medium 48.1% / hard 27.0%. This is the multiplier of an average question and
 // the ONLY weight a record without per-answer difficulty can be given.
