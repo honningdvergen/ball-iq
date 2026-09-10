@@ -7,7 +7,7 @@ import { useModalA11y } from "../useModalA11y.js";
 import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_ANSWERS } from '../lib/scoring.js';
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
-import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, MULT } from "../lib/ballIqCard.js";
+import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, MULT, LEAGUE_FACES, pickLeagueFace, rawAnswered } from "../lib/ballIqCard.js";
 import { CALIBRATION } from "../data/cardCalibration.js";
 
 // ⚠️ THE RECALIBRATION NOTE MUST DERIVE FROM THE CALIBRATION IT DESCRIBES.
@@ -1245,7 +1245,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, onPlayLeague, nameEditNonce, isActiveTab = true }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, onPlayLeague, onSetCardLeague, nameEditNonce, isActiveTab = true }) {
   // Declared first: saveName (well above where this used to sit) calls it.
   // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
   // native window.alert dialog if no onToast prop was provided. In
@@ -1256,6 +1256,18 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const [uploading, setUploading] = useState(false);
   // Recalibration note — shown once per device after the 2026-09-09 scale change.
   const [recalSeen, setRecalSeen] = useState(() => { try { return localStorage.getItem(RECAL_KEY) === "1"; } catch { return true; } });
+  // THE LEAGUE SLOT IS THE ONLY CHANGEABLE FACE — see pickLeagueFace. Auto by
+  // default (it already serves 27% of players a non-EPL league); this is for
+  // the ones it cannot reach, above all the 7% who have answered no league
+  // question at all and get the Premier League by pure fallback.
+  const [leaguePickerOpen, setLeaguePickerOpen] = useState(false);
+  const leaguePickerRef = useRef(null);
+  useModalA11y({ isOpen: leaguePickerOpen, onClose: () => setLeaguePickerOpen(false), ref: leaguePickerRef });
+  const pinnedLeague = stats?.cardLeague;
+  const chooseLeague = useCallback((cat) => {
+    setLeaguePickerOpen(false);
+    if (onSetCardLeague) onSetCardLeague(cat);
+  }, [onSetCardLeague]);
   const dismissRecal = useCallback(() => { setRecalSeen(true); try { localStorage.setItem(RECAL_KEY, "1"); } catch { /* storage unavailable: shows again, harmless */ } }, []);
   const [pendingCrop, setPendingCrop] = useState(null); // File awaiting crop
   // 1.0.2: when a user picks an emoji avatar while a previously-uploaded photo
@@ -1538,7 +1550,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       <div className="pd-left">
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 }, pinnedLeague);
           const tierLabel = tierPalette(card.tier).label;
           const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS; // a rating needs DATA: ten answered questions (2026-09-06)
           return (
@@ -1601,7 +1613,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         })()}
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 }, pinnedLeague);
           const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS; // a rating needs DATA: ten answered questions (2026-09-06)
           // Green-highlight the single strongest PLAYED league (same "strongest"
           // the scouting report names); everything else reads white. Cold-start
@@ -1716,7 +1728,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       })()}
       {(() => {
         const _acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-        const _card = computeCard(stats?.catStats || {}, _acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
+        const _card = computeCard(stats?.catStats || {}, _acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 }, pinnedLeague);
         // The single source of truth for "is there anything real to show here".
         // Same expression the empty state and the share/weekly buttons use, so the
         // whole screen agrees with itself — see the rating block below.
@@ -1737,6 +1749,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             card={_card}
             played={hasPlayed}
             answered={stats?.totalAnswered || 0}
+            onPickLeague={onSetCardLeague ? () => setLeaguePickerOpen(true) : undefined}
             style={{ marginBottom: 14 }}
             avatar={
                 <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
@@ -1879,7 +1892,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           // player: strongest + weakest competition (from the card data), a
           // skill comparison (percentile), records, and a specialist title.
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 }, pinnedLeague);
           // Base the verdict only on competitions the player has actually
           // answered — computeCard prior-seeds unplayed comps from overall
           // accuracy, so ranking the raw six would name "Strongest"/"Needs work"
@@ -1957,7 +1970,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       <div className="profile-col-right">
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
-          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 });
+          const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 }, pinnedLeague);
           const strongest = [...card.ratings].filter(r => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating)[0] || null;
           const accPct = accuracyLabel(card, stats);
           const DASH = "—";
@@ -2138,6 +2151,59 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             handleCropCancel();
           }}
         />
+      )}
+
+      {/* ── YOUR LEAGUE ──────────────────────────────────────────────────────
+          The first row of the card is the only face a player can change: the
+          other five are fixed competitions, that one is THEIR league.
+
+          Auto-pick already serves most people — 27% of live cards show a
+          non-EPL league — so this is deliberately not a setup step and not a
+          Settings row nobody would find. It is the row itself, where the
+          confusion actually happens. Alex chose that over a preference screen.
+
+          "Automatic" stays first and stays the default, and it names the
+          league it would choose, so choosing it is not a leap of faith. */}
+      {leaguePickerOpen && (
+        <div
+          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:1000,display:"flex",alignItems:"flex-end"}}
+          onClick={() => setLeaguePickerOpen(false)}
+        >
+          <div
+            ref={leaguePickerRef}
+            tabIndex={-1}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Choose your league"
+            style={{width:"100%",maxHeight:"80vh",overflowY:"auto",background:"var(--bg)",borderRadius:"16px 16px 0 0",padding:"14px 12px calc(20px + env(safe-area-inset-bottom, 20px))"}}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="ds-eyebrow" style={{padding:"2px 6px 10px",color:"var(--t3)"}}>YOUR LEAGUE ON THE CARD</div>
+            {(() => {
+              const auto = pickLeagueFace(stats?.catStats || {});
+              const rows = [{ cat: null, name: "Automatic", icon: "✨", sub: `Follows what you play · now ${auto.abbr}` },
+                ...LEAGUE_FACES.map(l => ({ cat: l.cat, name: l.name, icon: l.icon,
+                  sub: rawAnswered((stats?.catStats || {})[l.cat]) >= 1
+                    ? `${Math.round(rawAnswered((stats?.catStats || {})[l.cat]))} answered` : "Not played yet" }))];
+              return rows.map(row => {
+                const on = (row.cat || null) === (pinnedLeague || null);
+                return (
+                  <button key={row.cat || "auto"} type="button" onClick={() => chooseLeague(row.cat)}
+                    style={{display:"flex",alignItems:"center",gap:12,width:"100%",padding:"13px 12px",marginBottom:4,
+                      background: on ? "var(--s2)" : "transparent", border: on ? "1px solid var(--border)" : "1px solid transparent",
+                      borderRadius:12, color:"var(--t1)", font:"inherit", textAlign:"left", cursor:"pointer"}}>
+                    <span aria-hidden="true" style={{fontSize:20,flexShrink:0}}>{row.icon}</span>
+                    <span style={{flex:1,minWidth:0}}>
+                      <span style={{display:"block",fontSize:15,fontWeight:700}}>{row.name}</span>
+                      <span style={{display:"block",fontSize:12,color:"var(--t3)",marginTop:1}}>{row.sub}</span>
+                    </span>
+                    {on ? <CircleCheck size={19} strokeWidth={2.5} aria-label="Selected" style={{color:"var(--accent)",flexShrink:0}} /> : null}
+                  </button>
+                );
+              });
+            })()}
+          </div>
+        </div>
       )}
     </div>
   );

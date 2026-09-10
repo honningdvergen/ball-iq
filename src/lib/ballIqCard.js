@@ -159,19 +159,47 @@ export const LEAGUE_CATS = new Set(LEAGUE_FACES.map(l => l.cat));
  * would read as the card losing data — the complaint this whole re-cut came
  * from. A challenger must beat the incumbent by more than a rounding error.
  */
-export function pickLeagueFace(catStats = {}, current) {
+export function pickLeagueFace(catStats = {}, pinned) {
+  // ⚠️ AN EXPLICIT CHOICE IS ABSOLUTE, AND IS NOT REQUIRED TO HAVE EVIDENCE.
+  // The whole reason the picker exists is the player the auto-pick CANNOT
+  // serve: measured across the 112 rated cards, 8 (7%) have not answered a
+  // single league-category question, so their slot falls back to the Premier
+  // League by pure default — a German who watches the Bundesliga, wearing an
+  // English badge because Daily 7 and club packs are all they have played.
+  // Alex: "there might be germans people that mostly watch bundesliga or
+  // spanish people that mostly watch la liga you know."
+  //
+  // So a pin does NOT feed the ranking and is NOT overridable by play. If you
+  // choose the Bundesliga, twenty Premier League answers must not take it off
+  // your card. An unrated pinned face simply prints no number, which is honest
+  // and is the state the card already knows how to show.
+  const chosen = pinned ? LEAGUE_FACES.find(l => l.cat === pinned) : null;
+  if (chosen) return chosen;
+
+  // Unpinned: the league you have actually answered most in. This already
+  // works for 27% of players (La Liga 18%, Serie A 4%, Bundesliga 4%), and
+  // club play feeds it — a Bayern fan playing the Bayern pack accumulates
+  // Bundesliga through faceCatFor.
+  //
+  // ⚠️ A 20% STICKINESS RULE USED TO LIVE HERE AND WAS DEAD CODE. It took a
+  // `current` argument to stop the slot changing hands when two leagues sit
+  // close together — and NO CALLER EVER PASSED IT, so it never once ran. It is
+  // gone rather than wired, because it needs state this function does not have
+  // (the previously-shown league, persisted) and because pinning solves the
+  // same problem outright for anyone who cares. 25 of 112 cards have their top
+  // two leagues within 20% of each other; for those the slot still changes as
+  // they play, which is CORRECT — it reflects what they answer — and they can
+  // pin it if they would rather it did not.
   const own = (c) => rawAnswered((catStats || {})[c]);
   const ranked = LEAGUE_FACES.map(l => ({ l, n: own(l.cat) })).sort((a, b) => b.n - a.n);
   const top = ranked[0];
   if (!top || top.n <= 0) return LEAGUE_FACES[0];
-  const held = LEAGUE_FACES.find(l => l.cat === current);
-  if (held && own(held.cat) > 0 && top.n < own(held.cat) * 1.2) return held;
   return top.l;
 }
 
 /** The six faces for THIS player, in card order. */
-export function cardCompsFor(catStats = {}, current) {
-  const league = pickLeagueFace(catStats, current);
+export function cardCompsFor(catStats = {}, pinned) {
+  const league = pickLeagueFace(catStats, pinned);
   return [league, ...CARD_COMPS.slice(1)];
 }
 
@@ -701,6 +729,8 @@ export function tierPalette(key) {
  * @param catStats  per-key records
  * @param _priorAcc accepted for older call sites; unused (the overall is derived here)
  * @param lifetime  {c, a} raw lifetime totals — tops up a legacy record, see overallScore
+ * @param pinnedLeague  the player's CHOSEN league face (a LEAGUE_FACES cat), or
+ *                      undefined to let the card pick their most-played one
  */
 // ⚠️ `u` IS IN THIS LIST AND MUST STAY. It holds every answer we have a record
 // of but no difficulty grade for — 4,384 of the 4,825 in the live log, because
@@ -717,13 +747,13 @@ function mergeD(a, b) {
   return Object.keys(out).length ? out : null;
 }
 
-export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
+export function computeCard(catStats = {}, _priorAcc, lifetime, pinnedLeague) {
   // Fold aliases into their face BEFORE reading, so a profile carrying both
   // `ChampionsLeague` and `UCL` (46 in prod) rates one Champions League.
   // The player's own league keeps its slot; every OTHER league folds into Clubs
   // for this render only. Nothing is written back, so the fold is reversible
   // and a league face can change without losing a single answer.
-  const leagueCat = pickLeagueFace(catStats, currentLeague).cat;
+  const leagueCat = pickLeagueFace(catStats, pinnedLeague).cat;
   const folded = {};
   for (const [k, v] of Object.entries(catStats || {})) {
     if (EXCLUDED_CATS.has(k)) continue;   // see EXCLUDED_CATS — not knowledge
@@ -750,7 +780,7 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, currentLeague) {
   const { mean, answered: answeredTotal } = overallScore(rated);
   const acc = mean / AVG_MULT;
   const overall = ratingFromScore(mean);
-  const ratings = cardCompsFor(catStats, currentLeague).map(comp => {
+  const ratings = cardCompsFor(catStats, pinnedLeague).map(comp => {
     const cs = rated[comp.cat];
     // Gates count the league's OWN answers (raw), never borrowed ones.
     const answered = rawAnswered(cs);

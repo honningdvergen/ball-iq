@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { CALIBRATION } from "../../src/data/cardCalibration.js";
-import { computeCard, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
+import { computeCard, pickLeagueFace, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
 
 // THE MODEL (Alex, 2026-09-09): "61% accuracy on easy equals 61; 61% at medium
@@ -111,6 +111,46 @@ describe("legacy records and the population reference", () => {
     expect(cardTier(p(CALIBRATION.median))).toBe("silver");
     const p90 = A.find(([, r]) => r === 84)[0];
     expect(cardTier(p(p90))).toBe("gold");
+  });
+});
+
+describe("your league on the card", () => {
+  it("auto-picks the league you have actually answered most in", () => {
+    const cs = { PL: { d: { u: [5, 12] } }, Bundesliga: { d: { u: [20, 40] } } };
+    expect(pickLeagueFace(cs).cat).toBe("Bundesliga");
+    expect(computeCard(cs).ratings[0].abbr).toBe("BUNDESLIGA");
+  });
+  it("falls back to the Premier League only when NOTHING has been answered", () => {
+    expect(pickLeagueFace({}).cat).toBe("PL");
+    expect(pickLeagueFace({ WorldCup: { d: { u: [9, 10] } } }).cat).toBe("PL");
+  });
+  // ⚠️ THE WHOLE POINT OF THE PICKER. 8 of 112 rated cards have answered no
+  // league question at all and wear the Premier League by pure fallback — the
+  // German who watches the Bundesliga but only plays Daily 7. A pin must
+  // therefore work with ZERO evidence behind it, and must not be overridable
+  // by play: if twenty PL answers could take it back, the choice is a
+  // suggestion, not a setting.
+  it("an explicit pin is absolute — no evidence needed, and play cannot undo it", () => {
+    expect(pickLeagueFace({}, "Bundesliga").cat).toBe("Bundesliga");
+    const heavyPL = { PL: { d: { u: [200, 400] } }, Bundesliga: { d: { u: [1, 2] } } };
+    expect(pickLeagueFace(heavyPL, "Bundesliga").cat).toBe("Bundesliga");
+    expect(computeCard(heavyPL, undefined, undefined, "Bundesliga").ratings[0].abbr).toBe("BUNDESLIGA");
+    // and the other five faces are NOT changeable — only slot 0 moves
+    expect(computeCard(heavyPL, undefined, undefined, "Bundesliga").ratings.slice(1).map(r => r.abbr))
+      .toEqual(computeCard(heavyPL).ratings.slice(1).map(r => r.abbr));
+  });
+  it("a pin that names no real league is ignored rather than blanking the slot", () => {
+    expect(pickLeagueFace({ LaLiga: { d: { u: [8, 10] } } }, "Eredivisie").cat).toBe("LaLiga");
+    expect(pickLeagueFace({}, "").cat).toBe("PL");
+  });
+  it("pinning a league you have played keeps its real rating, not a blank", () => {
+    const cs = { PL: { d: { u: [30, 50] } }, SerieA: { d: { u: [18, 20] } } };
+    const pinned = computeCard(cs, undefined, undefined, "SerieA");
+    expect(pinned.ratings[0].abbr).toBe("SERIE A");
+    expect(pinned.ratings[0].rated).toBe(true);
+    // the overall pools every answer and must not move just because the card
+    // is showing a different face
+    expect(pinned.overall).toBe(computeCard(cs).overall);
   });
 });
 

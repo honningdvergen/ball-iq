@@ -39,8 +39,11 @@ import { tint, lift } from "../lib/clubColour.js";
  * @param {ReactNode} avatar   the face, ringed by the caller (96px)
  * @param {ReactNode} name     display name — a button for the owner, text for a friend
  * @param {ReactNode} [subline] level badge, XP, IQ line…
+ * @param {function}  [onPickLeague] owner only — makes the FIRST row (the
+ *   league face) a button that opens the league picker. Omitted on a friend's
+ *   card and in the canvas share render, which are read-only.
  */
-export default function BallIqCardFace({ card, played, answered = 0, avatar, name, subline, style }) {
+export default function BallIqCardFace({ card, played, answered = 0, avatar, name, subline, style, onPickLeague }) {
   const t = tierPalette(card.tier);
 
   // The best of the six PLAYED competitions takes the tier accent, so the eye
@@ -151,14 +154,29 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
           Played is signalled by the number being there, and the best of the six
           carrying the tier accent. */}
       <div style={{ position: "relative", marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: 20 }}>
-        {card.ratings.map(r => {
+        {card.ratings.map((r, i) => {
           const has = r.answered >= MIN_RATED_ANSWERS;
           // Provisional (3–9 answers): the number shows, muted, never accented —
           // it was a bar until 2026-09-09 and Alex read the bar as the rating
           // having "vanished". See PROVISIONAL_ANSWERS in ballIqCard.js.
           const soft = !has && !!r.provisional;
+          // ⚠️ ROW 0 IS THE LEAGUE FACE AND IS THE ONLY CHANGEABLE ONE — it is
+          // the player's own league (pickLeagueFace), the other five are fixed.
+          const pickable = i === 0 && !!onPickLeague;
+          // ⚠️ THE AFFORDANCE LIVES INSIDE THE LABEL, NOT BESIDE THE NUMBER.
+          // This card's geometry is mirrored pixel-for-pixel by the canvas
+          // share render in App.jsx (generateShareCard, type "iq") — a saved
+          // PNG cannot be React, so the two are hand-synced and the file header
+          // says a geometry change here MUST be made there too. A chevron in
+          // its own flex child would shift every rating on row 0 left and
+          // silently desync the two. Inside the label span, which is already
+          // `flex: 1` with ellipsis, it costs no layout at all.
+          const Row = pickable ? "button" : "div";
           return (
-            <div key={r.abbr} style={{
+            <Row key={r.abbr} type={pickable ? "button" : undefined}
+              onClick={pickable ? onPickLeague : undefined}
+              aria-label={pickable ? `${r.name} — change your league` : undefined}
+              style={{
               display: "flex", alignItems: "center", gap: 9,
               /* Fixed height for the reason the old chips had one: nothing in
                  the row may decide its own line box. iOS gives some emoji
@@ -166,9 +184,17 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
                  shorter on device and identical in Chrome. */
               height: 42, boxSizing: "border-box", minWidth: 0,
               borderTop: `1px solid ${tint(t.text, 0.10)}`,
+              ...(pickable ? {
+                /* a button re-introduces UA styling the div never had */
+                background: "none", border: 0, borderTop: `1px solid ${tint(t.text, 0.10)}`,
+                padding: 0, margin: 0, font: "inherit", textAlign: "left",
+                width: "100%", cursor: "pointer", WebkitTapHighlightColor: "transparent",
+              } : null),
             }}>
               <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, background: lift(r.color) }} />
-              <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, letterSpacing: 1, color: t.text, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.abbr}</span>
+              <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, letterSpacing: 1, color: t.text, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {r.abbr}{pickable ? <span aria-hidden="true" style={{ opacity: 0.55, marginLeft: 5, fontWeight: 900 }}>›</span> : null}
+              </span>
               {has ? (
                 <span style={{ fontSize: 21, fontWeight: 900, color: r.rating === best ? t.accent : t.text, opacity: r.rating === best ? 1 : 0.92, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
               ) : soft ? (
@@ -179,7 +205,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
                    label reads as a hyphen. This reads as an empty slot. */
                 <span aria-label={`${r.name} — not rated yet`} style={{ width: 20, height: 3, borderRadius: 2, background: t.text, opacity: 0.3, flexShrink: 0 }} />
               )}
-            </div>
+            </Row>
           );
         })}
       </div>

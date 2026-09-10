@@ -4932,6 +4932,27 @@ function AppInner() {
     });
   }, []);
 
+  // ── YOUR LEAGUE ON THE CARD ───────────────────────────────────────────────
+  // The card's first face is the player's own league. pickLeagueFace works it
+  // out from what they answer and gets it right for most people, but it cannot
+  // help the 7% of rated cards with NO league-category answers at all: they
+  // wear the Premier League by pure fallback. Alex: "there might be germans
+  // people that mostly watch bundesliga or spanish people that mostly watch la
+  // liga you know."
+  //
+  // Stored on `stats` rather than `settings` because it belongs to the card,
+  // and because stats is what syncs to the profile — a choice made on a phone
+  // should survive a reinstall, which is the whole complaint that produced the
+  // catStats merge in useAuth. `null` clears it back to automatic.
+  const setCardLeague = useCallback((cat) => {
+    setStats((prev) => {
+      const next = { ...prev };
+      if (cat) next.cardLeague = cat; else delete next.cardLeague;
+      safeSetItem("biq_stats", JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
   const [settings, setSettings] = useState(() => {
     // ⚠️ sound defaults ON for NATIVE only. The whole audio layer — every
     // correct/wrong tone, the Footle chord, the MP winner beat — shipped
@@ -8787,7 +8808,7 @@ function AppInner() {
             <TabErrorBoundary name="profile">
             <React.Suspense fallback={<ScreenLoading label="Loading profile" />}>
               <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onSaveCard={saveCardImage} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} onPlayLeague={launchLeagueQuiz}
-            onPlayDaily={playDaily} nameEditNonce={nameEditNonce} isActiveTab={tab === "profile"} />
+            onPlayDaily={playDaily} onSetCardLeague={setCardLeague} nameEditNonce={nameEditNonce} isActiveTab={tab === "profile"} />
             </React.Suspense>
             </TabErrorBoundary>
           </div>
