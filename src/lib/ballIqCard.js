@@ -79,9 +79,15 @@ export const CARD_COMPS = [
   { abbr: "EPL", cat: "PL",       name: "Premier League",     icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#3D195B" },
   { abbr: "UCL", cat: "UCL",      name: "Champions League",   icon: "⭐", color: "#123A8F" },
   { abbr: "INT", cat: "WorldCup", name: "International",      icon: "🌍", color: "#8A6D1B" },
-  { abbr: "CLB", cat: "Clubs",    name: "Clubs & Leagues",    icon: "🛡️", color: "#EE8707" },
-  { abbr: "LEG", cat: "Legends",  name: "Legends & History",  icon: "📜", color: "#B03A2E" },
-  { abbr: "REC", cat: "Records",  name: "Records & Managers", icon: "📊", color: "#1B7F79" },
+  // ⚠️ DO NOT INVENT ABBREVIATIONS. EPL, UCL and INT are abbreviations football
+  // fans already know; CLB, LEG and REC were coined here and nobody has ever
+  // seen them — "REC" reads as a record button and "LEG" reads as a leg. Alex,
+  // on first sight of his own card: "i think if it is not that obvious to me
+  // then it might be confusing to the actual users." Where a real abbreviation
+  // exists, use it; where one does not, spell the word.
+  { abbr: "CLUBS",   cat: "Clubs",    name: "Clubs & Leagues",    icon: "🛡️", color: "#EE8707" },
+  { abbr: "LEGENDS", cat: "Legends",  name: "Legends & History",  icon: "📜", color: "#B03A2E" },
+  { abbr: "RECORDS", cat: "Records",  name: "Records & Managers", icon: "📊", color: "#1B7F79" },
 ];
 
 // Bank categories that ARE a face under another name. `ChampionsLeague` is a

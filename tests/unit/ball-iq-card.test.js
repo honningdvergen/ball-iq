@@ -48,7 +48,7 @@ describe("CARD_COMPS", () => {
     expect(CARD_COMPS).toHaveLength(6);
     expect(new Set(CARD_COMPS.map((c) => c.abbr)).size).toBe(6);
     expect(new Set(CARD_COMPS.map((c) => c.cat)).size).toBe(6);
-    for (const c of CARD_COMPS) expect(c.abbr).toMatch(/^[A-Z]{3}$/);
+    for (const c of CARD_COMPS) expect(c.abbr).toMatch(/^[A-Z]{3,8}$/) // 3 for a real abbreviation (EPL/UCL/INT), a whole word where none exists;
   });
 });
 
@@ -117,7 +117,7 @@ describe("provisional faces", () => {
   it("a face prints muted from 3 answers, fully from 10, never before 3", () => {
     expect(PROVISIONAL_ANSWERS).toBe(3);
     // LaLiga is a stored legacy key that now folds onto the Clubs face (2026-09-10).
-    const f = (a) => computeCard({ LaLiga: { c: a / 2, a } }).ratings.find(r => r.abbr === "CLB");
+    const f = (a) => computeCard({ LaLiga: { c: a / 2, a } }).ratings.find(r => r.abbr === "CLUBS");
     expect(f(2).provisional).toBe(false); expect(f(2).rated).toBe(false);
     expect(f(4).provisional).toBe(true);  expect(f(4).rated).toBe(false);
     expect(f(10).provisional).toBe(false); expect(f(10).rated).toBe(true);
@@ -172,12 +172,12 @@ describe("the face gate counts every answer, not just the new ones", () => {
 
   it("a thin legacy face prints a provisional number rather than an empty slot", () => {
     const thin = { Bundesliga: { c: 4, a: 6 } }; // legacy key -> Clubs face
-    const face = faceOf(computeCard(thin, null, { c: 4, a: 6 }), "CLB");
+    const face = faceOf(computeCard(thin, null, { c: 4, a: 6 }), "CLUBS");
     expect(face.rated).toBe(false);
     expect(face.provisional).toBe(true);
     const after = faceOf(
       computeCard(recordAnswers(thin, [{ cat: "Bundesliga", diff: "medium", isCorrect: true }], { c: 4, a: 6 }), null, { c: 5, a: 7 }),
-      "CLB",
+      "CLUBS",
     );
     expect(after.provisional).toBe(true); // still a number, never back to a bar
   });
