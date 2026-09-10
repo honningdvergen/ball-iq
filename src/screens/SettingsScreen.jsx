@@ -209,7 +209,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           <div className="settings-row">
             <div className="sr-left">
               <div className="sr-label">Timer</div>
-              <div className="sr-desc">Per-question clock in Classic and club and league quizzes</div>
+              <div className="sr-desc">Per-question clock in Classic, club and league quizzes</div>
             </div>
             <div className="sr-right">
               <SettingsToggle label="Timer" val={settings.timer} onChange={v => onUpdate({timer:v})} />
