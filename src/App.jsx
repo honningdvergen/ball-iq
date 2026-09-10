@@ -42,7 +42,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds, faceAbbrForCat } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, tierPalette, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds, faceAbbrForCat, faceLabelType } from './lib/ballIqCard.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
@@ -3184,7 +3184,10 @@ async function generateShareCard(type, data) {
       ctx.fill();
       // ⚠️ 16px, not 14. At 14 the label sat at half the value's height and read
       // as a caption, so the numbers floated and the row lost its subject.
-      ctx.font = `800 ${px(16)}px Inter, "Helvetica Neue", Arial, sans-serif`;
+      // ⚠️ SAME LENGTH RULE AS THE REACT CARD — faceLabelType, base 16 here to
+      // its 13. There is no overflow handling on a canvas: an unshrunk
+      // "BUNDESLIGA" runs straight under the rating in the saved PNG.
+      ctx.font = `800 ${px(faceLabelType(r.abbr, 16).size)}px Inter, "Helvetica Neue", Arial, sans-serif`;
       ctx.fillStyle = _tint(t.text, 0.72);
       ctx.fillText(r.abbr, x + px(22), y + px(34));
       ctx.textAlign = "right";

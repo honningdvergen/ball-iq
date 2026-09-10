@@ -1,4 +1,4 @@
-import { tierPalette } from "../lib/ballIqCard.js";
+import { tierPalette, faceLabelType } from "../lib/ballIqCard.js";
 import { MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { tint, lift } from "../lib/clubColour.js";
 
@@ -163,6 +163,8 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
           // ⚠️ ROW 0 IS THE LEAGUE FACE AND IS THE ONLY CHANGEABLE ONE — it is
           // the player's own league (pickLeagueFace), the other five are fixed.
           const pickable = i === 0 && !!onPickLeague;
+          // long names ("BUNDESLIGA") are set smaller rather than truncated
+          const lab = faceLabelType(r.abbr, 13);
           // ⚠️ THE AFFORDANCE LIVES INSIDE THE LABEL, NOT BESIDE THE NUMBER.
           // This card's geometry is mirrored pixel-for-pixel by the canvas
           // share render in App.jsx (generateShareCard, type "iq") — a saved
@@ -192,7 +194,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               } : null),
             }}>
               <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, background: lift(r.color) }} />
-              <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, letterSpacing: 1, color: t.text, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <span style={{ flex: 1, minWidth: 0, fontSize: lab.size, fontWeight: 800, letterSpacing: lab.tracking, color: t.text, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {r.abbr}{pickable ? <span aria-hidden="true" style={{ opacity: 0.55, marginLeft: 5, fontWeight: 900 }}>›</span> : null}
               </span>
               {has ? (

@@ -151,6 +151,31 @@ export const LEAGUE_FACES = [
 export const LEAGUE_CATS = new Set(LEAGUE_FACES.map(l => l.cat));
 
 /**
+ * How big a face's label may be set, given how long it is.
+ *
+ * ⚠️ THE ROW IS HALF A CARD WIDE AND THE LABELS ARE NOT ONE LENGTH. Six of the
+ * nine possible faces are 5-7 characters and fit at full size; "BUNDESLIGA" is
+ * ten, "SÜPER LIG" nine, and the league slot also carries a chevron when it is
+ * tappable. Left alone the two surfaces fail DIFFERENTLY, which is how this
+ * kind of thing survives review: the React card ellipsises ("BUNDESLI…", seen
+ * on device the moment a Bundesliga pin was tried) while the canvas share
+ * render, which has no overflow handling at all, would run the label straight
+ * under the rating.
+ *
+ * So the rule lives here and both surfaces read it — the React card at base 13,
+ * the canvas at base 16. Shrinking the long ones is right rather than
+ * abbreviating them: CARD_COMPS already forbids inventing abbreviations
+ * ("where a real abbreviation exists, use it; where one does not, spell the
+ * word"), and "BUN" is not a thing anyone calls the Bundesliga.
+ */
+export function faceLabelType(abbr, base) {
+  const n = (abbr || "").length;
+  if (n >= 10) return { size: +(base * 0.80).toFixed(2), tracking: 0.2 };
+  if (n >= 8)  return { size: +(base * 0.88).toFixed(2), tracking: 0.4 };
+  return { size: base, tracking: 1 };
+}
+
+/**
  * Which league owns slot 0 for this player: the one they have answered most,
  * Premier League when nothing separates them (it is the bank's largest league,
  * so it is the safest default rather than a privileged one).

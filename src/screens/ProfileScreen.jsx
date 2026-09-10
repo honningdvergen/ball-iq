@@ -2164,9 +2164,16 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
 
           "Automatic" stays first and stays the default, and it names the
           league it would choose, so choosing it is not a leap of faith. */}
-      {leaguePickerOpen && (
+      {/* ⚠️ PORTALLED, LIKE THE SAMPLE-CARD MODAL ABOVE AND FOR THE SAME REASON.
+          The Profile pane carries containment, which makes it the containing
+          block for FIXED descendants — so `position:fixed; inset:0` resolves
+          against the PANE, not the viewport, and a bottom sheet lands under the
+          tab bar. The dimmed backdrop still paints, which is what makes it look
+          like the sheet simply failed to open. Caught on the simulator; the
+          note explaining it was already three lines up in this file. */}
+      {leaguePickerOpen && createPortal((
         <div
-          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:1000,display:"flex",alignItems:"flex-end"}}
+          style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.55)",zIndex:2000,display:"flex",alignItems:"flex-end"}}
           onClick={() => setLeaguePickerOpen(false)}
         >
           <div
@@ -2204,7 +2211,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             })()}
           </div>
         </div>
-      )}
+      ), document.body)}
     </div>
   );
 }
