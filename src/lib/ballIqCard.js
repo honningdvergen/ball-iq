@@ -310,11 +310,56 @@ export function ratingFromAccuracy(acc) {
  * answer count). A legacy {c, a} converts as s = AVG_MULT·c — exact for a
  * record of average difficulty; both may be present after the upgrade.
  */
+// Which raw bucket carries which weight. `u` is UNKNOWN difficulty — answers we
+// have a real record of but no grade for, because Daily 7 only started storing
+// `diff` on 2026-09-01. They are worth the average question, which is the
+// honest thing to say about an answer whose difficulty we cannot look up.
+const BUCKET_MULT = { e: MULT.easy, m: MULT.medium, h: MULT.hard, u: AVG_MULT };
+
+/**
+ * Raw, verifiable counts from `d` FIRST, with the decayed totals carrying only
+ * whatever they claim beyond them.
+ *
+ * ⚠️ THE DECAYED TOTALS ARE NOT COUNTS AND CANNOT BE SHOWN TO ANYONE. `c` and
+ * `a` are exponentially-weighted sums (CAT_DECAY per answer): `a` SATURATES AT
+ * 200 no matter how much you play, and `c` comes out as 26.78. Alex, on a real
+ * card: "how do you answer 26.78 questions right with decimals? ... this is all
+ * really confusing and just looks wrong." He was right, and it was not only a
+ * presentation problem — for one player the decayed totals said 46% at Premier
+ * League while his 38 LOGGED Daily 7 answers said 61%. A scale built on a
+ * number nobody can check will quietly disagree with the record.
+ *
+ * ⚠️ AND `d` ALONE IS NOT THE ANSWER EITHER — that is the same mistake as
+ * rawAnswered's, which deleted a rating the moment someone played. `d` only
+ * holds answers recorded since the rebuild, so it is a SUBSET of what c/a
+ * claim. Both are used: the exact part from `d`, and the remainder the decayed
+ * totals still assert, weighted as average difficulty and clearly the weaker
+ * evidence. As real counts accumulate the remainder shrinks to nothing and the
+ * whole rating becomes verifiable.
+ */
 export function scoreOf(cs) {
   if (!cs) return { s: 0, n: 0 };
-  if (Number.isFinite(cs.s) && Number.isFinite(cs.n) && cs.n > 0) return { s: cs.s, n: cs.n };
-  const c = cs.c || 0, a = cs.a || 0;
-  return { s: AVG_MULT * c, n: a };
+  let s = 0, n = 0;
+  const d = cs.d;
+  if (d && typeof d === "object") {
+    for (const k of ["e", "m", "h", "u"]) {
+      const b = d[k];
+      if (!Array.isArray(b)) continue;
+      s += BUCKET_MULT[k] * (b[0] || 0);
+      n += (b[1] || 0);
+    }
+  }
+  // Pre-rebuild s/n, kept for records written between 2026-09-09 and this
+  // change; they already carry per-answer weighting.
+  if (!n && Number.isFinite(cs.s) && Number.isFinite(cs.n) && cs.n > 0) return { s: cs.s, n: cs.n };
+  const a = cs.a || 0, c = cs.c || 0;
+  const extra = a - n;
+  if (extra > 0 && a > 0) {
+    // Same accuracy the decayed record claims, at average difficulty.
+    s += AVG_MULT * (c / a) * extra;
+    n += extra;
+  }
+  return { s, n };
 }
 // The name the writer imported earlier today; same function.
 export const skillOf = scoreOf;
@@ -390,7 +435,7 @@ export function rawAnswered(cs) {
   const d = cs.d;
   let fromD = 0;
   if (d && typeof d === "object") {
-    for (const k of ["e", "m", "h"]) fromD += (Array.isArray(d[k]) ? (d[k][1] || 0) : 0);
+    for (const k of ["e", "m", "h", "u"]) fromD += (Array.isArray(d[k]) ? (d[k][1] || 0) : 0);
   }
   // ⚠️ THE MAX OF BOTH, NEVER `d` ALONE. `d` counts only answers recorded
   // since the 2026-09-09 rebuild; `a` is the decayed running count and
@@ -451,17 +496,22 @@ export function recordAnswers(prevCatStats = {}, answers = [], lifetime) {
     const cur = outStats[key] || { c: 0, a: 0 };
     const ok = ans.isCorrect ? 1 : 0;
     const diff = (ans.diff === "easy" || ans.diff === "hard") ? ans.diff : "medium";
-    const prev = scoreOf(cur); // a legacy {c,a} converts once, here, then carries s/n
+    // ⚠️ ONLY `d` IS WRITTEN NOW — raw integer counts, no decay, no derived
+    // s/n. The old writer fed scoreOf's output back through CAT_DECAY, which
+    // is what produced "26.78 correct": a number that is not a count, cannot
+    // be shown to a player, and SATURATES at 200 answers however much they
+    // play. Alex: "how do you answer 26.78 questions right with decimals?"
+    //
+    // Existing c/a are left EXACTLY as they are. scoreOf reads the exact part
+    // from `d` and lets the frozen decayed totals carry only whatever they
+    // still claim beyond it, so the estimated share shrinks with every answer
+    // and a card becomes fully verifiable on its own. Freezing them rather
+    // than deleting them is the same rule as rawAnswered's: never throw away
+    // history you cannot reconstruct.
     const d = { ...(cur.d || {}) };
     const dk = diff[0];
     d[dk] = [((d[dk] || [0, 0])[0] || 0) + ok, ((d[dk] || [0, 0])[1] || 0) + 1];
-    outStats[key] = {
-      c: (cur.c || 0) * CAT_DECAY + ok,
-      a: (cur.a || 0) * CAT_DECAY + 1,
-      s: prev.s * CAT_DECAY + (ok ? multFor(diff) : 0),
-      n: prev.n * CAT_DECAY + 1,
-      d,
-    };
+    outStats[key] = { ...cur, d };
   }
   return outStats;
 }

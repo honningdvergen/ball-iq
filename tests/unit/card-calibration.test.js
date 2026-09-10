@@ -184,10 +184,14 @@ describe("recordAnswers", () => {
       { cat: "PL", diff: "hard", isCorrect: true }, { cat: "PL", diff: "easy", isCorrect: false }, { cat: "PL", diff: "medium", isCorrect: true },
     ]);
     const pl = cs.PL;
-    expect(pl.n).toBeCloseTo(1 * CAT_DECAY * CAT_DECAY + 1 * CAT_DECAY + 1, 6);
-    expect(pl.s).toBeCloseTo(1.25 * CAT_DECAY * CAT_DECAY + 0 + 1.15, 6);
+    // ⚠️ RAW COUNTS, NOT DECAYED SUMS (2026-09-10). The writer no longer
+    // derives s/n through CAT_DECAY — that is what produced "26.78 correct",
+    // a number nobody can check that also saturates at 200 answers.
     expect(pl.d).toEqual({ h: [1, 1], e: [0, 1], m: [1, 1] });
-    expect(pl.a).toBeCloseTo(pl.n, 6);
+    expect(pl.s).toBeUndefined();
+    expect(pl.n).toBeUndefined();
+    // and scoreOf weights each bucket by its OWN difficulty
+    expect(scoreOf(pl)).toEqual({ s: 1.25 + 1.15, n: 3 });
     expect(cs._legacy).toBeUndefined();
   });
 
