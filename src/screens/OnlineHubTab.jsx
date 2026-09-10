@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import { Gamepad2, KeyRound, Users, Zap } from "lucide-react";
 import { ProfilePic } from "../components/ProfilePic.jsx";
 import { useProfilePhotos } from "../lib/profilePhotos.js";
+import { useAcceptedFriends } from "../lib/acceptedFriends.js";
 import { readMpHistory } from "../App.jsx";
 
 // ─── ONLINE TAB (hub) ─────────────────────────────────────────────────────────
@@ -12,7 +13,7 @@ import { readMpHistory } from "../App.jsx";
 // Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
 // Rematch. All game entry goes through startMode so auth-gating stays in one
 // place; Create/Rematch use the one-tap auto-create path into a lobby.
-export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarId, onChallenge, needsAccount }) {
+export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarId, onChallenge, needsAccount, userId }) {
   // Inline join-with-code — the code row lives ON the tab (no intermediate
   // entry screen). onJoinCode handles auth-gating, the RPC and navigation.
   const [joinCode, setJoinCode] = React.useState("");
@@ -52,6 +53,9 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
   // the lobby and podium; the Online hub — the VS card and Recent opponents —
   // kept showing monograms, which is what he reported twice.
   const oppPhotos = useProfilePhotos(useMemo(() => stats.recent.map(r => r.id), [stats.recent]));
+  // Only loaded when there is nobody to rematch — see the block below.
+  const { friends } = useAcceptedFriends(stats.recent.length === 0 ? userId : null);
+  const friendPhotos = useProfilePhotos(useMemo(() => friends.map(f => f.id), [friends]));
   const createRoom = () => { setOnlineAutoCreate?.(true); startMode("online"); };
   return (
     <div className="screen tab-content online-hub">
@@ -238,6 +242,39 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
                     not aligned"). Bottom-anchoring is wrap-count-independent,
                     which a fixed height or a nowrap score would not be. */}
                 <button onClick={() => (o.id && onChallenge) ? onChallenge({ id: o.id, username: o.name }) : createRoom()} style={{marginTop:"auto",border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>Rematch</button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── CHALLENGE A FRIEND ──────────────────────────────────────────────
+          ⚠️ THE ONE TAB ABOUT PLAYING PEOPLE SHOWED NONE OF YOUR PEOPLE. The
+          recent-opponents rail above only appears once you have finished a
+          live game, so a player with friends and no match history saw a "?"
+          rival card and ~400pt of empty space — while their friends sat behind
+          two taps on Profile, under a 1,000pt XP ladder, each with a Challenge
+          button. 24% of signups come from room invites, so this is the
+          k-factor's own surface.
+          Shown only when the rail above is empty: once you have opponents,
+          rematching them is the stronger offer and two lists of people would
+          be noise. Same row anatomy as everything else — mode colour on the
+          well, one green action. */}
+      {stats.recent.length === 0 && friends.length > 0 && (
+        <>
+          <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>Challenge a friend</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
+            {friends.slice(0, 4).map((f) => (
+              <div key={f.id} className="todays-seven-secondary mp-row" role="group" aria-label={`Challenge ${f.username}`}>
+                <span className="t7s-icon" aria-hidden="true">
+                  <span style={{width:30,height:30,borderRadius:"50%",overflow:"hidden",display:"inline-flex",alignItems:"center",justifyContent:"center"}}>
+                    <ProfilePic value={f.avatar} url={friendPhotos[f.id]} name={f.username} />
+                  </span>
+                </span>
+                <span className="t7s-body">
+                  <span className="t7s-title">{f.username}</span>
+                </span>
+                <button type="button" className="t7s-cta" onClick={() => onChallenge?.({ id: f.id, username: f.username })}>Challenge</button>
               </div>
             ))}
           </div>

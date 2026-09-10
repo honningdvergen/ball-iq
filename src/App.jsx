@@ -8742,6 +8742,9 @@ function AppInner() {
             <TabErrorBoundary name="online">
             <OnlineHubTab
               needsAccount={!user || isGuest}
+              // Signed-in id only: a guest has no friendships to read, and
+              // passing one would fire a query that can only come back empty.
+              userId={(user && !isGuest) ? user.id : null}
               startMode={startMode}
               setOnlineAutoCreate={setOnlineAutoCreate}
               onChallenge={challengeFriend}
