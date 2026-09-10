@@ -6163,7 +6163,7 @@ function AppInner() {
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
       if (m === "leaguequiz") { setScreen("league-quiz"); return; }
       // Reset category for special modes that ignore it
-      if (m === "daily" || m === "survival" || m === "legends" || m === "speed" || m === "hotstreak" || m === "truefalse" || m === "chaos") setCat("All");
+      if (m === "daily" || m === "survival" || m === "legends" || m === "hotstreak" || m === "truefalse" || m === "chaos") setCat("All");
       if (m === "daily" && dailyDone) {
         showToast(`📅 Already done today — ${dailyScore}/7, come back tomorrow`);
         return;
@@ -6181,7 +6181,6 @@ function AppInner() {
       if (m === "daily") { qs = await getDailyQs(); setActiveDailyDate(new Date()); }
       else if (m === "survival") { qs = await getQs({ cat: "All", diff: "hard", n: 300, includeLegends: true }); }
       else if (m === "legends") { qs = await getQs({ cat: "Legends", diff: "hard", n: 10 }); }
-      else if (m === "speed") { qs = await getQs({ cat: "All", diff: "medium", n: 5 }); }
       else if (m === "hotstreak") { qs = ((await getQs({ cat: "All", diff: "hard", n: 999 })) || []).filter(q => q.type !== "tf"); }
       else if (m === "truefalse") { qs = await getTrueFalseQs(); }
       else if (TOPICAL_PACK && m === TOPICAL_PACK.key) {
@@ -7289,7 +7288,7 @@ function AppInner() {
       // and leave the once-flag unset so the nudge takes the next peak.
       // (Note: in the normal path the flag is set at SCHEDULE time, 2s
       // before the sheet is actually displayed.)
-      const nudgeEarned = getXPForResult(res.score, res.total, mode === "speed" ? "classic" : mode);
+      const nudgeEarned = getXPForResult(res.score, res.total, mode);
       const willLevelUp = nudgeEarned > 0 && getLevelInfo(xp).level.name !== getLevelInfo(xp + nudgeEarned).level.name;
       // Challenge-settlement guard (caught by the #9 e2e drive): a challenged
       // guest finishing the Daily gets the "Send it back" modal at +1800ms —
@@ -7317,7 +7316,7 @@ function AppInner() {
     } catch { /* nudge is never load-bearing */ }
 
     // Award XP
-    const earned = getXPForResult(res.score, res.total, mode === "speed" ? "classic" : mode);
+    const earned = getXPForResult(res.score, res.total, mode);
     awardXp(earned);
 
 

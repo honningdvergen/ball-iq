@@ -168,8 +168,7 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   // reset) — only the message lied, which is the worst kind of lie: the score
   // says one thing and the screen says another.
   const [timedOut, setTimedOut] = useState(false);
-  const isSpeed = mode === "speed";
-  const timerDuration = isSpeed ? 8 : (timerSecondsOverride || 20);
+  const timerDuration = timerSecondsOverride || 20;
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
@@ -182,7 +181,6 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   const streakBeatTimeoutRef = useRef(null);
   useEffect(() => () => clearTimeout(streakBeatTimeoutRef.current), []);
   const [timeLeft, setTimeLeft] = useState(timerDuration);
-  const [speedScore, setSpeedScore] = useState(0);
   const [done, setDone] = useState(false);
   const timerRef = useRef(null);
   // The per-question auto-advance timeout must be cancellable the moment an
@@ -202,11 +200,8 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   // registerAnswer, whose deps deliberately exclude timeLeft to avoid recreating
   // the callback every tick) reads the REAL remaining time, not a stale closure.
   const timeLeftRef = useRef(timerDuration);
-  // speedScoreRef mirrors speedScore so doAdvance (deps exclude speedScore) emits
   // the final question's just-added bonus rather than a pre-bonus stale value.
-  const speedScoreRef = useRef(0);
   useEffect(() => { prevTimeLeftRef.current = timeLeft; timeLeftRef.current = timeLeft; }, [timeLeft]);
-  useEffect(() => { speedScoreRef.current = speedScore; }, [speedScore]);
   const [showQuit, setShowQuit] = useState(false);
   // Focus trap + Escape + back-gesture for the quit sheet. The App-wide
   // dialog/hook count masked this sheet having none until the engine got its
@@ -403,7 +398,7 @@ const CTA_INSET = (() => {
     }
     if (idx + 1 >= total) {
       Sentry.addBreadcrumb({ category: 'game', message: 'quiz ended', level: 'info', data: { mode, score: ns, total } });
-      setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current, speedScore: speedScoreRef.current }); return;
+      setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current }); return;
     }
     setIdx(i => i + 1); setSelected(null); setTypedResult(null); setTimedOut(false); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
@@ -488,7 +483,6 @@ const CTA_INSET = (() => {
     }
     // A timeout is recorded by the timer effect's own capture path, not here.
     if (correct !== "timeout") setMarks(m => [...m, correct === true]);
-    if (isSpeed && correct === true) { setSpeedScore(prev => prev + 100 + timeLeftRef.current * 10); }
     advance(ns, nb, correct);
   }, [score, streak, bestStreak, advance, mode]);
 

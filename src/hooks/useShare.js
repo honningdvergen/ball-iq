@@ -124,7 +124,6 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
         const medal = pct === 100 ? '🏆' : pct >= 80 ? '🔥' : pct >= 60 ? '⚽' : '😅';
         return `${medal} ${APP_NAME} — Classic Quiz\n${resultVerdict(pct)}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
       })(),
-      speed:     `⚡ ${APP_NAME} — Speed Round\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
       survival:  `🔥 ${APP_NAME} — Survival\n${score} in a row before missing one\n${beat}\n${url}`,
       hotstreak: `⚡🔥 ${APP_NAME} — Hot Streak\n${score} correct in 60 seconds (${total} answered)\n${beat}\n${url}`,
       truefalse: `✅ ${APP_NAME} — True or False\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
@@ -165,7 +164,6 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       survival: "Survival",
       hotstreak: "Hot Streak",
       truefalse: "True or False",
-      speed: "Speed Round",
       legends: "Legends & History",
       local: "Local Multiplayer",
       chaos: "Chaos Quiz",

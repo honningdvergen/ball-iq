@@ -69,7 +69,6 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
   const isSurvival = mode === "survival";
-  const isSpeed = mode === "speed";
   const isDaily = mode === "daily";
 
 
@@ -119,10 +118,8 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   const isNewPersonalBest = isNewBest || survivalNewBest;
 
   // Huge-score display + caption per mode
-  const hugeScore = isSpeed ? (result.speedScore || 0) : result.score;
-  const scoreCaption = isSpeed
-    ? `${result.score} correct out of ${result.total} · speed bonus included`
-    : isSurvival
+  const hugeScore = result.score;
+  const scoreCaption = isSurvival
     ? (result.score === 0 ? "Out on the first question — it happens to everyone" : `${result.score} in a row before missing one`)
     : `${result.score} correct out of ${result.total}`;
   // Best run rides the caption (review C: the amber pill was a third accent on
@@ -136,13 +133,13 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
     : footleOpen ? { label: footleCta, onClick: onPlayFootle } : null;
   const retryDemoted = !!dailyCta && !(isSurvival && result.score === 0);
   // Green is the app's "this went well" signal — earned, not automatic.
-  const rdZero = (isSpeed ? (result.speedScore || 0) : result.score) === 0;
+  const rdZero = result.score === 0;
 
   // ── desktop-web-refresh (Results #03): values for the >=1024 card (circular
   //  score badge · per-question dots · stat tiles). Render-always / CSS-revealed
   //  via the .rd-desktop wrapper; the mobile results is wrapped in .rd-mobile
   //  (display:contents→none at desktop) so it stays byte-identical. ──
-  const RD_MODE_LABEL = { classic:"Classic", speed:"Speed Round", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos" };
+  const RD_MODE_LABEL = { classic:"Classic", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos" };
   const rdSubtitle = [RD_MODE_LABEL[mode] || "Quiz", label].filter(Boolean).join(" · ");
   const rdDots = (() => {
     const arr = Array.isArray(result.allAnswers) ? result.allAnswers.map(a => a.isCorrect === true) : [];
