@@ -485,10 +485,6 @@ served=off+run.length;var hasMore=total>served;
    .bq-row so it inherits none of the row's button paint. The click still
    lands on clubq-out-daily (destination match below), so the number is
    comparable with the zero it replaces. */
-var fbTiles='';for(var fi=0;fi<14;fi++)fbTiles+='<i'+(fi===0?' class="cur"':'')+'></i>';
-var appLink='<a class="bq-footle" href="/football-wordle/"><span class="bq-fb" aria-hidden="true">'+fbTiles+'</span>'
-+'<span class="bq-ft"><b>'+esc(T('footleTitle','Today\u2019s Footle'))+'</b><span>'+esc(T('footleLine','Guess the footballer in six. A new name at midnight, the same for everyone.'))+'</span></span>'
-+'<span class="bq-fgo">'+esc(T('play','Play →'))+'</span></a>';
 /* 2026-09-05: ONE primary. The row used to carry "Keep going" (green) AND a
    club-coloured "Play the full <club> quiz" that navigated to /play?club=…,
    and on the last batch the /play link WAS the primary. Two problems the
@@ -503,6 +499,28 @@ var cont=(hasMore
 ?'<a class="bq-go bq-wide" href="#quiz" data-more="1">'+esc(fmt(T('keepGoing','Keep going — {more} more →'),{more:total-served+more}))+'</a>'
 :'<button class="bq-go bq-wide" data-again="1">'+esc(T('playAgain','Play again'))+'</button>');
 var bqStore=root.getAttribute('data-store')||'/get';
+/* ── THE APP DOOR (2026-09-11) ─────────────────────────────────────────────
+   MEASURED, THEN MOVED. This slot held the daily-Footle offer and took ZERO
+   clicks from 488 finishers across TWO treatments — a grey link (0/262) and
+   then a full card (0/228) — while a quiet store line at the FOOT of the card
+   took 17 of 228, 7.5%. The slot was never the problem; the offer was.
+   Meanwhile club-page → app fell 15.4% → 9.2% (z≈2.1, p≈0.04) when the /play
+   door was retired on 09-04, while on-page replay rose 2.3% → 14.0%. Alex's
+   call, 2026-09-11: a finisher is worth more as an install than as a replay,
+   because a replay returns nobody — club-page readers are anonymous visitors
+   no notification can reach, and this door is the only path from the page to
+   a player who comes back.
+   ⚠️ STILL NOT GREEN AND STILL OUTSIDE .bq-row. The single primary
+   (2026-09-05) is "Keep going"/"Play again"; this is a card BELOW it, never a
+   second button beside it — that pairing is the exact thing 09-05 fixed.
+   ⚠️ THE COPY MUST NOT PROMISE THE RATING TRANSFERS. queueForApp() writes
+   biq_pending_rounds to localStorage ON THE SAME ORIGIN, so a round follows a
+   reader into the WEB app and cannot follow one into a freshly installed
+   native app. Offer what is true of the app itself, not of this round. */
+var faceTiles='';for(var fi=0;fi<6;fi++)faceTiles+='<i'+(fi===0?' class="cur"':'')+'></i>';
+var appDoor='<a class="bq-door" href="'+bqStore+'?src=clubq-finish"><span class="bq-dfaces" aria-hidden="true">'+faceTiles+'</span>'
++'<span class="bq-dt"><b>'+esc(T('doorTitle','Your full Ball IQ card'))+'</b><span>'+esc(T('doorLine','All six competitions, daily puzzles, streaks and live 1v1.'))+'</span>'
++'<span class="bq-dgo">'+esc(T('doorGo','Get the app →'))+'</span></span></a>';
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">'+esc(fmt(T('yourIq','Your {name} IQ'),{name:name}))+'</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+esc(fmt(T('right','{sc} of {n} right · {pct}% · best streak {best}'),{sc:sc,n:run.length,pct:G.pct,best:best}))+'</div>'
@@ -511,14 +529,13 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
    app can honour — the app keeps this as the club's league rating. */
 +'<div class="bq-rated">'+esc(T('ratedLine','Medium and hard questions count for more \u2014 the same maths as your Ball IQ card in the app.'))+'</div>'
 +(sday>=2?'<div class="bq-days">'+esc(fmt(T('daysRow','{d} days in a row'),{d:sday}))+'</div>':'')
-+'<div class="bq-row">'+cont+'</div>'+appLink
++'<div class="bq-row">'+cont+'</div>'+appDoor
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
    is still the primary action (that decision came from the 94.6% single-page
    measurement); share is the authority lever and gets full width and the club's
    colour, but it does not outrank staying. */
 +'<button class="bq-share" data-share="1">'+esc(fmt(T('share','Share your {name} IQ'),{name:name}))+'</button>'
-+(!hasMore?'<p class="bq-note">'+esc(fmt(T('allDone','That is every {name} question we have here \u2014 a fresh order tomorrow.'),{name:name}))+'</p>':'')
-+'<a class="bq-app" href="'+bqStore+'?src=clubq-finish">'+esc(T('appLine','Also in the app \u2014 streaks, reminders and live 1v1 \u2192'))+'</a>';
++(!hasMore?'<p class="bq-note">'+esc(fmt(T('allDone','That is every {name} question we have here \u2014 a fresh order tomorrow.'),{name:name}))+'</p>':'');
 /* Remember today's result so a reload does not erase it. The critique's
    returning player finished, refreshed, and met question 1 with the score
    gone and the streak kept — the one number they came back for was the one

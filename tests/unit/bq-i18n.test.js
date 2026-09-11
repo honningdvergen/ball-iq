@@ -32,7 +32,7 @@ describe('bq widget i18n', () => {
   it('the engine reads data-i18n once and routes its labels through T()', () => {
     expect(ENGINE).not.toContain('`');
     expect(ENGINE).toContain("JSON.parse(root.getAttribute('data-i18n')||'{}')");
-    for (const k of ['question', 'next', 'seeResult', 'srCorrect', 'srWrong', 'keepGoing', 'playAgain', 'share', 'allDone', 'appLine', 'shareTxt', 'yourStreak', 'youPlayed', 'namePrompt']) {
+    for (const k of ['question', 'next', 'seeResult', 'srCorrect', 'srWrong', 'keepGoing', 'playAgain', 'share', 'allDone', 'doorTitle', 'doorLine', 'doorGo', 'shareTxt', 'yourStreak', 'youPlayed', 'namePrompt']) {
       expect(ENGINE, k).toContain(`T('${k}',`);
     }
     // Declared BEFORE its first reader. The first cut declared I18N forty lines

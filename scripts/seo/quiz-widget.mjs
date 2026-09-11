@@ -162,27 +162,50 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row .ghost{background:transparent;border:1px solid var(--bd2);color:var(--tx3)}
   /* One primary on the results card since 2026-09-05. The club-coloured
      "Play the full quiz" crossing (.bq-cross) went with the web /play game
-     routes; green has exactly one job here — continue where you already are —
-     and the app is a quiet line at the foot (.bq-app), a destination rather
-     than a competitor. */
+     routes; green has exactly one job here — continue where you already are.
+     ⚠️ THE SECOND HALF OF THIS NOTE EXPIRED ON 2026-09-11. It read "and the
+     app is a quiet line at the foot (.bq-app), a destination rather than a
+     competitor" — true, and measured at 9.2% against 15.4% before the /play
+     door was retired. The app now gets a real card (.bq-door) above share.
+     Still not green, still not inside .bq-row: one primary holds. */
   /* Full-width primary: the action that keeps the reader where they already
      are. It is first in the DOM and now first in the eye. */
   .bq-row .bq-wide{flex:1 1 100%}
   .bq-app{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:10px;font-size:13px;color:var(--tx3);text-decoration:none}
   .bq-app:hover{color:var(--tx);text-decoration:none}
-  /* The daily door as a card (fourth treatment — see finish() in the engine):
-     a board picture, a name, one line, a green "Play". Outside .bq-row on
-     purpose, so none of the row's button paint reaches it. */
-  .bq-footle{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin-top:10px;padding:12px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--bd);color:var(--tx);text-align:left}
-  .bq-footle:hover{text-decoration:none;border-color:var(--bd2)}
-  .bq-fb{display:grid;grid-template-columns:repeat(7,14px);gap:3px}
-  .bq-fb i{display:block;width:14px;height:14px;border-radius:4px;background:var(--bd);border:1px solid rgba(255,255,255,.07)}
-  .bq-fb i.cur{border-color:rgba(88,204,2,.7);box-shadow:inset 0 0 0 1px rgba(88,204,2,.35)}
-  .bq-ft{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .bq-ft b{font-size:15px;font-weight:700;color:var(--tx)}
-  .bq-ft span{font-size:12.5px;line-height:1.4;color:var(--tx3)}
-  .bq-fgo{font-size:13.5px;font-weight:800;color:var(--grn);white-space:nowrap}
-  .bq-footle:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
+  /* THE APP DOOR (2026-09-11), in the slot the daily door held. The daily
+     offer took 0 clicks from 488 finishers across two treatments while a
+     quiet store line lower down took 7.5% — the slot works, that offer did
+     not. Same card geometry, deliberately: mark | text | go.
+     ⚠️ NEUTRAL BORDER, ON PURPOSE. .bq-share directly below is the one
+     club-coloured full-width element; giving this a club border too would
+     put two outlined blocks in a row competing for the same eye. The club
+     colour appears here only on the small mark.
+     ⚠️ NOT GREEN AND NOT IN .bq-row — .bq-row keeps the single primary
+     (2026-09-05). This is a card below it, not a button beside it.
+     .bq-app is NOT dead: the DAILY widget still uses it (engine ~line 387). */
+  /* ⚠️ TWO COLUMNS, NOT THREE. A nowrap CTA in a third column left the text
+     ~230px at 375px: the title broke mid-phrase ("Your full Ball IQ / card")
+     and the body ran to four lines. The CTA is a line inside the text block
+     instead — the whole card is the tap target anyway. Measured at 375px. */
+  .bq-door{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:14px;margin-top:10px;padding:12px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--bd);color:var(--tx);text-align:left}
+  .bq-door:hover{text-decoration:none;border-color:var(--bd2)}
+  /* Six tiles for the card's six competitions, one lit — the club quiz the
+     reader just finished is one of them. 3x2 so it reads as a card, not a
+     Footle row. */
+  .bq-dfaces{display:grid;grid-template-columns:repeat(3,13px);gap:3px}
+  .bq-dfaces i{display:block;width:13px;height:13px;border-radius:4px;background:var(--bd);border:1px solid rgba(255,255,255,.07)}
+  .bq-dfaces i.cur{background:var(--club,var(--grn));border-color:var(--club,var(--grn))}
+  .bq-dt{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .bq-dt b{font-size:15px;font-weight:700;color:var(--tx)}
+  .bq-dt span{font-size:12.5px;line-height:1.4;color:var(--tx3)}
+  /* ⚠️ .bq-dt .bq-dgo, NOT .bq-dgo. Moving the CTA inside the text block put it
+     under the .bq-dt span rule — (0,1,1) beats a lone class (0,1,0) — so it silently
+     took the body's grey AND its 12.5px. Measured: rgb(155,160,184)/12.5px
+     where green/13.5px was declared. A CTA that loses its colour still looks
+     like a finished card, which is why this needs the note. */
+  .bq-dt .bq-dgo{display:block;margin-top:5px;font-size:13.5px;font-weight:800;color:var(--grn)}
+  .bq-door:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-days{display:inline-block;margin-top:9px;padding:4px 11px;border-radius:999px;

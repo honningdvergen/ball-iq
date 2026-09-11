@@ -13,13 +13,19 @@
 // `tiers` are the six generic fan tiers (the club-specific English ones such as
 // "Boot Room" or "Aguerooo" are culture-bound and stay English-only).
 //
+// ⚠️ doorTitle / doorLine / doorGo WERE ADDED 2026-09-11 AND ARE NOT IN THAT
+// REVIEW. `reviewed: true` is a per-LANGUAGE flag, so three new strings
+// inherited an approval Alex gave to different text. They replaced
+// footleTitle/footleLine/play/appLine when the club finish screen swapped its
+// dead daily door for an app door. Worth his eye on es/de/nl/pt.
+//
 // ⚠️ DRAFTED 2026-09-05 FOR ALEX'S REVIEW (es/de/nl/pt especially) before the
 // 46 localised pages switch from the old taster to this widget. Reviewed
 // languages get a `reviewed: true` flag; the switch waits for it.
 export const BQ_I18N_KEYS = [
   'question', 'of', 'next', 'seeResult', 'srCorrect', 'srWrong', 'ariaCorrect', 'ariaWrong', 'why', 'streakWord',
-  'yourIq', 'right', 'daysRow', 'keepGoing', 'playAgain', 'share', 'allDone', 'appLine', 'ratedLine',
-  'footleTitle', 'footleLine', 'play', 'namePrompt', 'copied', 'copyPrompt', 'shareTxt', 'quizTitle',
+  'yourIq', 'right', 'daysRow', 'keepGoing', 'playAgain', 'share', 'allDone', 'ratedLine',
+  'doorTitle', 'doorLine', 'doorGo', 'namePrompt', 'copied', 'copyPrompt', 'shareTxt', 'quizTitle',
   'lenLabel', 'fullSet', 'quick', 'standard', 'todaySet', 'freshOrder', 'yourStreak', 'dayOk', 'dayKeep', 'youPlayed', 'earlier',
   'diff_easy', 'diff_medium', 'diff_hard', 'tiers',
 ];
@@ -30,9 +36,9 @@ export const BQ_I18N = {
     srCorrect: 'Correcto. ', srWrong: 'Incorrecto. La respuesta es ', ariaCorrect: 'Respuesta correcta: ', ariaWrong: 'Tu respuesta, incorrecta: ',
     why: 'Por qué', streakWord: 'seguidas', yourIq: 'Tu Ball IQ de {name}', right: '{sc} de {n} correctas · {pct}% · mejor racha {best}',
     daysRow: '{d} días seguidos', keepGoing: 'Seguir — {more} más →', playAgain: 'Jugar otra vez', share: 'Compartir tu Ball IQ de {name}',
-    allDone: 'Esas son todas las preguntas de {name} que tenemos aquí — mañana, en otro orden.', appLine: 'También en la app — rachas, recordatorios y 1v1 en directo →',
+    allDone: 'Esas son todas las preguntas de {name} que tenemos aquí — mañana, en otro orden.',
     ratedLine: 'Las preguntas medias y difíciles cuentan más — las mismas cuentas que tu tarjeta Ball IQ en la app.',
-    footleTitle: 'El Footle de hoy', footleLine: 'Adivina el futbolista en seis. Un nombre nuevo a medianoche, el mismo para todos.', play: 'Jugar →',
+    doorTitle: 'Tu Ball IQ completo', doorLine: 'Las seis competiciones, retos diarios, rachas y 1v1 en directo.', doorGo: 'Descargar la app →',
     namePrompt: '¿Añadir tu nombre a la tarjeta de puntuación? (opcional)', copied: 'Copiado ✓', copyPrompt: 'Copia tu puntuación',
     shareTxt: 'Mi Ball IQ de {name} es {iq} — {tier} ({sc}/{n}). Supéralo.', quizTitle: 'Quiz de {name}',
     lenLabel: 'Cambiar la longitud', fullSet: 'Todas', quick: '{n} rápidas', standard: '{n} estándar',
@@ -46,9 +52,9 @@ export const BQ_I18N = {
     srCorrect: 'Richtig. ', srWrong: 'Falsch. Die Antwort ist ', ariaCorrect: 'Richtige Antwort: ', ariaWrong: 'Deine Antwort, falsch: ',
     why: 'Warum', streakWord: 'in Folge', yourIq: 'Dein {name}-Ball IQ', right: '{sc} von {n} richtig · {pct}% · beste Serie {best}',
     daysRow: '{d} Tage in Folge', keepGoing: 'Weitermachen — noch {more} →', playAgain: 'Nochmal spielen', share: 'Deinen {name}-Ball IQ teilen',
-    allDone: 'Das waren alle {name}-Fragen, die wir hier haben — morgen in neuer Reihenfolge.', appLine: 'Auch in der App — Serien, Erinnerungen und Live-1v1 →',
+    allDone: 'Das waren alle {name}-Fragen, die wir hier haben — morgen in neuer Reihenfolge.',
     ratedLine: 'Mittlere und schwere Fragen zählen mehr — dieselbe Rechnung wie deine Ball-IQ-Karte in der App.',
-    footleTitle: 'Das Footle von heute', footleLine: 'Errate den Fußballer in sechs Versuchen. Um Mitternacht ein neuer Name, für alle derselbe.', play: 'Spielen →',
+    doorTitle: 'Deine komplette Ball-IQ-Karte', doorLine: 'Alle sechs Wettbewerbe, tägliche Rätsel, Serien und Live-1v1.', doorGo: 'App holen →',
     namePrompt: 'Vornamen auf die Ergebniskarte setzen? (optional)', copied: 'Kopiert ✓', copyPrompt: 'Kopiere dein Ergebnis',
     shareTxt: 'Mein {name}-Ball IQ ist {iq} — {tier} ({sc}/{n}). Schlag das.', quizTitle: '{name}-Quiz',
     lenLabel: 'Länge ändern', fullSet: 'Alle', quick: '{n} kurz', standard: '{n} standard',
@@ -62,9 +68,9 @@ export const BQ_I18N = {
     srCorrect: 'Goed. ', srWrong: 'Fout. Het antwoord is ', ariaCorrect: 'Juiste antwoord: ', ariaWrong: 'Jouw antwoord, fout: ',
     why: 'Waarom', streakWord: 'op rij', yourIq: 'Jouw {name} Ball IQ', right: '{sc} van {n} goed · {pct}% · beste reeks {best}',
     daysRow: '{d} dagen op rij', keepGoing: 'Doorgaan — nog {more} →', playAgain: 'Nog een keer', share: 'Deel je {name} Ball IQ',
-    allDone: 'Dat waren alle {name}-vragen die we hier hebben — morgen in een nieuwe volgorde.', appLine: 'Ook in de app — reeksen, herinneringen en live 1v1 →',
+    allDone: 'Dat waren alle {name}-vragen die we hier hebben — morgen in een nieuwe volgorde.',
     ratedLine: 'Gemiddelde en moeilijke vragen tellen zwaarder — dezelfde rekensom als je Ball IQ-kaart in de app.',
-    footleTitle: 'De Footle van vandaag', footleLine: 'Raad de voetballer in zes beurten. Om middernacht een nieuwe naam, dezelfde voor iedereen.', play: 'Spelen →',
+    doorTitle: 'Je volledige Ball IQ-kaart', doorLine: 'Alle zes competities, dagelijkse puzzels, reeksen en live 1v1.', doorGo: 'App downloaden →',
     namePrompt: 'Je voornaam op de scorekaart? (optioneel)', copied: 'Gekopieerd ✓', copyPrompt: 'Kopieer je score',
     shareTxt: 'Mijn {name} Ball IQ is {iq} — {tier} ({sc}/{n}). Doe beter.', quizTitle: '{name}-quiz',
     lenLabel: 'Lengte aanpassen', fullSet: 'Alles', quick: '{n} snel', standard: '{n} standaard',
@@ -78,9 +84,9 @@ export const BQ_I18N = {
     srCorrect: 'Correct. ', srWrong: 'Faux. La réponse est ', ariaCorrect: 'Bonne réponse : ', ariaWrong: 'Ta réponse, fausse : ',
     why: 'Pourquoi', streakWord: 'd’affilée', yourIq: 'Ton Ball IQ {name}', right: '{sc} sur {n} bonnes · {pct}% · meilleure série {best}',
     daysRow: '{d} jours d’affilée', keepGoing: 'Continuer — encore {more} →', playAgain: 'Rejouer', share: 'Partager ton Ball IQ {name}',
-    allDone: 'C’étaient toutes les questions {name} que nous avons ici — un nouvel ordre demain.', appLine: 'Aussi dans l’appli — séries, rappels et 1v1 en direct →',
+    allDone: 'C’étaient toutes les questions {name} que nous avons ici — un nouvel ordre demain.',
     ratedLine: 'Les questions moyennes et difficiles comptent plus — le même calcul que ta carte Ball IQ dans l’app.',
-    footleTitle: 'Le Footle du jour', footleLine: 'Devine le footballeur en six essais. Un nouveau nom à minuit, le même pour tous.', play: 'Jouer →',
+    doorTitle: 'Ta carte Ball IQ complète', doorLine: 'Les six compétitions, énigmes quotidiennes, séries et 1v1 en direct.', doorGo: 'Télécharger l’appli →',
     namePrompt: 'Ajouter ton prénom sur la carte de score ? (facultatif)', copied: 'Copié ✓', copyPrompt: 'Copie ton score',
     shareTxt: 'Mon Ball IQ {name} est de {iq} — {tier} ({sc}/{n}). Fais mieux.', quizTitle: 'Quiz {name}',
     lenLabel: 'Changer la longueur', fullSet: 'Toutes', quick: '{n} rapides', standard: '{n} standard',
@@ -94,9 +100,9 @@ export const BQ_I18N = {
     srCorrect: 'Giusto. ', srWrong: 'Sbagliato. La risposta è ', ariaCorrect: 'Risposta giusta: ', ariaWrong: 'La tua risposta, sbagliata: ',
     why: 'Perché', streakWord: 'di fila', yourIq: 'Il tuo Ball IQ {name}', right: '{sc} su {n} giuste · {pct}% · miglior serie {best}',
     daysRow: '{d} giorni di fila', keepGoing: 'Continua — altre {more} →', playAgain: 'Gioca ancora', share: 'Condividi il tuo Ball IQ {name}',
-    allDone: 'Erano tutte le domande su {name} che abbiamo qui — domani in un nuovo ordine.', appLine: 'Anche nell’app — serie, promemoria e 1v1 dal vivo →',
+    allDone: 'Erano tutte le domande su {name} che abbiamo qui — domani in un nuovo ordine.',
     ratedLine: 'Le domande medie e difficili valgono di più — lo stesso calcolo della tua carta Ball IQ nell’app.',
-    footleTitle: 'Il Footle di oggi', footleLine: 'Indovina il calciatore in sei tentativi. Un nome nuovo a mezzanotte, lo stesso per tutti.', play: 'Gioca →',
+    doorTitle: 'La tua carta Ball IQ completa', doorLine: 'Tutte e sei le competizioni, enigmi quotidiani, serie e 1v1 dal vivo.', doorGo: 'Scarica l’app →',
     namePrompt: 'Aggiungere il tuo nome alla card del punteggio? (facoltativo)', copied: 'Copiato ✓', copyPrompt: 'Copia il tuo punteggio',
     shareTxt: 'Il mio Ball IQ {name} è {iq} — {tier} ({sc}/{n}). Battilo.', quizTitle: 'Quiz {name}',
     lenLabel: 'Cambia la lunghezza', fullSet: 'Tutte', quick: '{n} veloci', standard: '{n} standard',
@@ -110,9 +116,9 @@ export const BQ_I18N = {
     srCorrect: 'Certo. ', srWrong: 'Errado. A resposta é ', ariaCorrect: 'Resposta certa: ', ariaWrong: 'Sua resposta, errada: ',
     why: 'Por quê', streakWord: 'seguidas', yourIq: 'Seu Ball IQ do {name}', right: '{sc} de {n} certas · {pct}% · melhor sequência {best}',
     daysRow: '{d} dias seguidos', keepGoing: 'Continuar — mais {more} →', playAgain: 'Jogar de novo', share: 'Compartilhar seu Ball IQ do {name}',
-    allDone: 'Essas são todas as perguntas do {name} que temos aqui — amanhã, em outra ordem.', appLine: 'Também no app — sequências, lembretes e 1v1 ao vivo →',
+    allDone: 'Essas são todas as perguntas do {name} que temos aqui — amanhã, em outra ordem.',
     ratedLine: 'Perguntas médias e difíceis contam mais — a mesma conta do teu cartão Ball IQ na app.',
-    footleTitle: 'O Footle de hoje', footleLine: 'Adivinhe o jogador em seis tentativas. Um nome novo à meia-noite, o mesmo para todos.', play: 'Jogar →',
+    doorTitle: 'O teu cartão Ball IQ completo', doorLine: 'As seis competições, desafios diários, sequências e 1v1 ao vivo.', doorGo: 'Obter a app →',
     namePrompt: 'Adicionar seu nome ao cartão de pontuação? (opcional)', copied: 'Copiado ✓', copyPrompt: 'Copie sua pontuação',
     shareTxt: 'Meu Ball IQ do {name} é {iq} — {tier} ({sc}/{n}). Supera essa.', quizTitle: 'Quiz do {name}',
     lenLabel: 'Mudar a quantidade', fullSet: 'Todas', quick: '{n} rápidas', standard: '{n} padrão',
@@ -126,9 +132,9 @@ export const BQ_I18N = {
     srCorrect: 'Doğru. ', srWrong: 'Yanlış. Cevap: ', ariaCorrect: 'Doğru cevap: ', ariaWrong: 'Senin cevabın, yanlış: ',
     why: 'Neden', streakWord: 'seri', yourIq: '{name} Ball IQ’n', right: '{n} sorudan {sc} doğru · %{pct} · en iyi seri {best}',
     daysRow: '{d} gün üst üste', keepGoing: 'Devam et — {more} soru daha →', playAgain: 'Tekrar oyna', share: '{name} Ball IQ’ni paylaş',
-    allDone: 'Buradaki tüm {name} soruları bunlardı — yarın yeni bir sırayla.', appLine: 'Uygulamada da — seriler, hatırlatmalar ve canlı 1v1 →',
+    allDone: 'Buradaki tüm {name} soruları bunlardı — yarın yeni bir sırayla.',
     ratedLine: 'Orta ve zor sorular daha çok sayılır — uygulamadaki Ball IQ kartınla aynı hesap.',
-    footleTitle: 'Bugünün Footle’ı', footleLine: 'Futbolcuyu altı denemede tahmin et. Gece yarısı yeni bir isim, herkes için aynı.', play: 'Oyna →',
+    doorTitle: 'Tam Ball IQ kartın', doorLine: 'Altı turnuvanın hepsi, günlük bulmacalar, seriler ve canlı 1v1.', doorGo: 'Uygulamayı indir →',
     namePrompt: 'Skor kartına adını ekleyelim mi? (isteğe bağlı)', copied: 'Kopyalandı ✓', copyPrompt: 'Skorunu kopyala',
     shareTxt: '{name} Ball IQ’m {iq} — {tier} ({sc}/{n}). Geç bakalım.', quizTitle: '{name} quizi',
     lenLabel: 'Uzunluğu değiştir', fullSet: 'Hepsi', quick: '{n} hızlı', standard: '{n} standart',
@@ -142,9 +148,9 @@ export const BQ_I18N = {
     srCorrect: 'Benar. ', srWrong: 'Salah. Jawabannya adalah ', ariaCorrect: 'Jawaban benar: ', ariaWrong: 'Jawabanmu, salah: ',
     why: 'Kenapa', streakWord: 'berturut-turut', yourIq: 'Ball IQ {name} kamu', right: '{sc} dari {n} benar · {pct}% · rentetan terbaik {best}',
     daysRow: '{d} hari berturut-turut', keepGoing: 'Lanjut — {more} lagi →', playAgain: 'Main lagi', share: 'Bagikan Ball IQ {name} kamu',
-    allDone: 'Itu semua pertanyaan {name} yang kami punya di sini — besok dengan urutan baru.', appLine: 'Juga di aplikasi — rentetan, pengingat, dan 1v1 langsung →',
+    allDone: 'Itu semua pertanyaan {name} yang kami punya di sini — besok dengan urutan baru.',
     ratedLine: 'Soal sedang dan sulit dihitung lebih besar — hitungan yang sama dengan kartu Ball IQ-mu di aplikasi.',
-    footleTitle: 'Footle hari ini', footleLine: 'Tebak pesepakbolanya dalam enam percobaan. Nama baru tiap tengah malam, sama untuk semua.', play: 'Main →',
+    doorTitle: 'Kartu Ball IQ lengkapmu', doorLine: 'Keenam kompetisi, teka-teki harian, rentetan, dan 1v1 langsung.', doorGo: 'Dapatkan aplikasinya →',
     namePrompt: 'Tambahkan namamu ke kartu skor? (opsional)', copied: 'Tersalin ✓', copyPrompt: 'Salin skormu',
     shareTxt: 'Ball IQ {name} saya {iq} — {tier} ({sc}/{n}). Kalahkan itu.', quizTitle: 'Kuis {name}',
     lenLabel: 'Ubah jumlah soal', fullSet: 'Semua', quick: '{n} cepat', standard: '{n} standar',
