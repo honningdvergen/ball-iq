@@ -13,6 +13,22 @@
       Grey link 0/262, then a full card in the same slot 0/228, while a quiet
       store line LOWER on the card took 7.5%. The slot works; that offer does
       not. Do not propose a third Footle treatment there.
+- [x] **A PLAYER AND THEIR FRIENDS SAW DIFFERENT CARDS (b1ee047).** Alex spotted
+      69 on his phone vs 71 in the sim for the same friend. Two causes, both at
+      the friend call sites: `stats.totalCorrect` inside the jsonb is ALWAYS
+      null (all 152 accounts — the sync writes it to the `correct_answers`
+      COLUMN), so `|| 0` told computeCard "1028 answered, 0 correct"; and the
+      pin was not passed, hiding the league picker from everyone but its owner.
+      Reproduced exactly off the real row: 69 vs a true 74, all six faces low.
+      Only bites the 33 accounts with no `d` buckets, which is why it shipped.
+- [ ] **⚠️ LEGACY c/a STILL DECAY AS YOU PLAY on any build < 1.7.4** — every
+      build shipped before this morning. That is the 71 → 69 drift in three
+      hours while games went 207 → 210. Ends as players update; their history
+      stays depressed.
+- [ ] **A `d` BACKFILL FOR THE 33 LEGACY ACCOUNTS — Alex's call.** Would make
+      their cards counted rather than estimated, and immune to the decay above.
+      All 33 are recoverable from `correct_answers`. Prod migration: needs an
+      explicit go-ahead.
 - [ ] **⏳ READ clubq-out-store ~2026-09-25**, against the 15.4% pre-09-04
       baseline and the 9.2% it replaces. It is now the ONLY store link inside
       .bq-res, so the rate is directly readable. Not yet deployed — Alex's call.
