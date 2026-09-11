@@ -23,7 +23,12 @@ import { buildPool } from './build-grid-pool.mjs';
 
 const OUT = fileURLToPath(new URL('../src/data/gridClubs.json', import.meta.url));
 const FLOOR = Number(process.env.MIN_ANSWERS ?? 8);   // matches gen-grid-schedule
-const CLUB_POOL = Number(process.env.CLUB_POOL ?? 120);
+// ⚠️ 160, MEASURED. At 120 only 67 of 96 club PAGES could show a grid. 160
+// takes that to 76 and costs nothing — the extra clubs either clear the bar or
+// are reported below it. Going on to 220 adds partner lists but not pages:
+// the marginal clubs are genuinely isolated in our harvest (Brentford reaches
+// ONE partner at 220), so this is where the curve flattens.
+const CLUB_POOL = Number(process.env.CLUB_POOL ?? 160);
 const NEED = 5;                                        // 2 more rows + 3 columns
 
 const P = buildPool();

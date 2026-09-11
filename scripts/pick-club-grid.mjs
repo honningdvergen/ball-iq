@@ -37,7 +37,17 @@ const MIN_ANSWERS = 8;   // matches gen-grid-schedule and gen-grid-clubs
  * because a silently growing exclusion list is how a feature quietly stops
  * covering the site.
  */
-const NO_GRID = new Set(['Olympiacos F.C.', 'Feyenoord Rotterdam', 'Spartak Moscow']);
+const NO_GRID = new Set([
+  'Olympiacos F.C.',      // 180/180 short — partners clear the anchor, not each other
+  'Feyenoord Rotterdam',  // fills 75 of 180
+  'Spartak Moscow',       // 180/180 short
+  // ⚠️ ADDED 2026-09-11 WHEN THE POOL WIDENED 120 -> 160, and the gate caught it
+  // rather than me. Verified structurally before adding, as the gate's own
+  // message demands: Sparta has 5 partners but ZERO of them clear 8 against two
+  // other header clubs — its neighbours are Czech and Central European sides
+  // that are isolated in our harvest. Not a picker regression.
+  'AC Sparta Prague',
+]);
 
 const P = buildPool();
 const CLUBS = JSON.parse(readFileSync(fileURLToPath(new URL('../src/data/gridClubs.json', import.meta.url)), 'utf8'));
