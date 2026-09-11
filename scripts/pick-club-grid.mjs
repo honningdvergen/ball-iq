@@ -92,6 +92,14 @@ export function pickClubGrid(clubName, day) {
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────────
+// ⚠️ GUARDED. Without this the audit — 117 clubs x 180 days — ran on IMPORT,
+// so any script wanting pickClubGrid() got 21,000 iterations of console output
+// mixed into its own stdout. build-grid-pool.mjs already guards its CLI the
+// same way; a module that does work merely by being imported is a trap.
+const IS_CLI = process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop());
+if (IS_CLI) main();
+
+function main() {
 const arg = process.argv[2];
 const names = Object.keys(CLUBS.clubs);
 
@@ -138,4 +146,6 @@ if (arg) {
   }
   console.log(`    excluded by design: ${[...NO_GRID].join(', ')}`);
   console.log('  ✓ every club fills every day\n');
+}
+
 }
