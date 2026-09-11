@@ -55,7 +55,12 @@ for (const [c, ps] of candidates) {
 // "floor" and "clubs" had lost their partners. The gate firing on my own bug is
 // the gate working; a freeze check that reads the wrong object would have waved
 // through exactly the silent re-dating it exists to stop.
-const prevFile = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;
+// ⚠️ --refreeze DISCARDS THE FREEZE ON PURPOSE. Legitimate only while nothing
+// has been published from this data: the freeze protects a PUBLIC archive, and
+// until a club page ships a grid there is no archive to protect. Once one has,
+// this flag re-dates history and must not be used.
+const REFREEZE = process.argv.includes('--refreeze');
+const prevFile = !REFREEZE && existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;
 const prev = prevFile?.clubs ?? null;
 const counts = Object.values(clubs).map((v) => v.length).sort((a, b) => a - b);
 const q = (x) => counts[Math.floor(x * (counts.length - 1))];

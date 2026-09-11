@@ -83,16 +83,39 @@ function buildDay(seed) {
   return { rows, cols, min };
 }
 
-const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;
+// ⚠️ --refreeze DISCARDS THE FREEZE ON PURPOSE. Legitimate only while nothing
+// has been published from this schedule. Once a grid has faced a user, this
+// flag re-dates a public archive and must not be used.
+const REFREEZE = process.argv.includes('--refreeze');
+const prev = !REFREEZE && existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;
 const days = [];
 let attempts = 0;
 for (let d = 0; d < DAYS; d++) {
   // ⚠️ Re-running must not re-roll a day that already shipped.
-  if (prev?.days?.[d]) { days.push(prev.days[d]); continue; }
+  if (prev?.days?.[d]) { days.push(prev.days[d]); continue; }   // frozen — re-verified below
   let day = null;
   for (let k = 0; k < 400 && !day; k++) { attempts++; day = buildDay((d + 1) * 2654435761 + k); }
   if (!day) { console.error(`  ✗ could not build a fair grid for day ${d + 1}`); process.exit(1); }
   days.push({ r: day.rows.map(nameOf), c: day.cols.map(nameOf), min: day.min });
+}
+
+// ⚠️ A FROZEN DAY MUST STILL BE FAIR. Reusing a published day verbatim is the
+// whole point of the freeze, but the POOL underneath it can change — and it did:
+// dropping yearless spells shrank every club. A day frozen when its tightest
+// cell held 8 answers might hold 5 now, and nothing would have said so. Re-score
+// every frozen day against the CURRENT pool and fail loudly rather than serve a
+// puzzle that quietly stopped being solvable.
+const byName = new Map(P.clubs.map((n, i) => [n, i]));
+const stale = [];
+for (let i = 0; i < days.length; i++) {
+  const d = days[i];
+  let min = Infinity;
+  for (const r of d.r) for (const c of d.c) {
+    const ri = byName.get(r), ci = byName.get(c);
+    if (ri == null || ci == null) { min = 0; break; }
+    min = Math.min(min, cell(ri, ci));
+  }
+  if (min < MIN_ANSWERS) stale.push([i + 1, min]);
 }
 
 const mins = days.map((d) => d.min).sort((a, b) => a - b);
@@ -105,6 +128,7 @@ console.log(`    grid #1          ${days[0].r.join(' / ')}  ×  ${days[0].c.join
 
 // Gates — the schedule is worthless if any day is unfair or repeats itself.
 const fail = [];
+if (stale.length) fail.push(`${stale.length} frozen day(s) fell below ${MIN_ANSWERS} answers under the current pool (worst: #${stale[0][0]} at ${stale[0][1]})`);
 if (mins[0] < MIN_ANSWERS) fail.push(`a day has a cell with only ${mins[0]} answers (min ${MIN_ANSWERS})`);
 const sigs = new Set(days.map((d) => [...d.r].sort().join('|') + '::' + [...d.c].sort().join('|')));
 if (sigs.size !== days.length) fail.push(`${days.length - sigs.size} duplicate grid(s) in the schedule`);

@@ -72,7 +72,14 @@ for (const [pid, spells] of Object.entries(SPELLS)) {
   const meta = byId.get(pid);
   if (!meta) { droppedUnknown++; continue; }
   if (meta.nat && WOMENS.test(meta.nat)) { droppedWomens++; continue; }
-  const cs = [...new Set(spells.map((s) => s[0]).filter((c) => keptClubIdx.has(c)))]
+  // ⚠️ A SPELL WITH NO START YEAR IS AN ACADEMY OR TRIAL ENTRY, and it is the
+  // one class that produces FALSE POSITIVES — a cell accepting a player who
+  // never played a senior game for the club named. Faiq Bolkiah carries
+  // Chelsea, Arsenal, Leicester and Southampton with no years on any of them;
+  // unfiltered he answers an Arsenal x Chelsea cell. 1,907 of 49,656 spells
+  // (3.8%) are yearless. Under the zero-error bar a false positive is worse
+  // than a false negative: the player never learns they were told wrong.
+  const cs = [...new Set(spells.filter((s) => s[1] != null).map((s) => s[0]).filter((c) => keptClubIdx.has(c)))]
     .map((c) => keptClubIdx.get(c));
   // A grid needs INTERSECTIONS, so a one-club player can never fill a cell.
   if (cs.length < 2) { droppedNoClub++; continue; }
