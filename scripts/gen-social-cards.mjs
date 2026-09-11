@@ -92,7 +92,10 @@ const shell = (inner) => `<!doctype html><meta charset="utf-8">
         border-radius:18px;padding:24px 30px;font-size:40px;font-weight:600}
   .club i{width:14px;height:14px;border-radius:50%;background:${T.bd2};flex:none;font-style:normal}
   .club.last i{background:${T.grn}}
-  .end .endmid{display:flex;flex-direction:column;gap:44px}
+  .end .endmid{display:flex;flex-direction:column;gap:34px}
+  .appname{font-size:104px;font-weight:800;letter-spacing:-.035em;line-height:.95}
+  .appname span{color:${T.grn}}
+  .sub{font-size:34px;font-weight:600;color:${T.tx3};line-height:1.3;max-width:16ch}
   .ico{width:188px;height:188px;border-radius:42px;display:block}
   .stores{display:flex;flex-direction:column;gap:26px;align-items:flex-start}
   .badges{display:flex;gap:16px}
@@ -155,21 +158,42 @@ function trailCard(key) {
  * The Footle board does that work better than a slogan — two failed guesses over
  * a solve says "bet you can't" without asking.
  */
-function endCard() {
+function endCard(variant) {
   const icon = readFileSync(fileURLToPath(new URL('../public/icon-1024.png', import.meta.url))).toString('base64');
-  return shell(`<div class="card end">
-    <div class="brand">Ball <b>IQ</b></div>
-    <div class="endmid">
-      <img class="ico" src="data:image/png;base64,${icon}" alt="">
-      <div class="head">Play free in your<br><span>browser</span></div>
-    </div>
-    <div class="stores">
-      <div class="pill">${FOOTLE_URL}</div>
-      <div class="badges">
+  const img = `<img class="ico" src="data:image/png;base64,${icon}" alt="">`;
+  const badges = `<div class="badges">
         <span>${glyph(APPLE_GLYPH_PATH)}App&nbsp;Store</span>
         <span>${glyph(PLAY_GLYPH_PATH)}Google&nbsp;Play</span>
-      </div>
-    </div>
+      </div>`;
+
+  // A — BROWSER FIRST. The lowest-friction path leads; the stores are a
+  // footnote. What the measured funnel argues for.
+  if (variant === 'browser') return shell(`<div class="card end">
+    <div class="brand">Ball <b>IQ</b></div>
+    <div class="endmid">${img}
+      <div class="head">Play free in your<br><span>browser</span></div></div>
+    <div class="stores"><div class="pill">${FOOTLE_URL}</div>${badges}</div>
+  </div>`);
+
+  // B — NAME FIRST. ⚠️ Built for the DOWNLOAD goal, and the name is the hero
+  // for a reason: a carousel slide cannot be tapped, so the only route to a
+  // download is remembering a name well enough to type it into a store search.
+  // A benefit line nobody can act on is worth less here than a name they can.
+  if (variant === 'name') return shell(`<div class="card end">
+    <div class="brand">Free · no sign-up</div>
+    <div class="endmid">${img}
+      <div class="appname">Ball <span>IQ</span></div>
+      <div class="sub">The football quiz that explains every answer</div></div>
+    <div class="stores">${badges}<div class="pill">${FOOTLE_URL}</div></div>
+  </div>`);
+
+  // C — SEARCH INSTRUCTION. The same logic as B, made explicit: it tells a
+  // reader the exact string to type. Blunter, and the least like a designed ad.
+  return shell(`<div class="card end">
+    <div class="brand">Ball <b>IQ</b></div>
+    <div class="endmid">${img}
+      <div class="head">Search <span>Ball IQ</span><br>in your app store</div></div>
+    <div class="stores">${badges}<div class="pill">${FOOTLE_URL}</div></div>
   </div>`);
 }
 
@@ -180,7 +204,9 @@ const CARDS = [
   ['footle-rooney', footleCard({ answer: 'ROONEY', guesses: ['BIELSA', 'ROBSON', 'ROONEY'] })],
   ['trail-hakimi', trailCard('HAKIMI')],
   ['trail-dybala', trailCard('DYBALA')],
-  ['end-where-to-play', endCard()],
+  ['end-a-browser', endCard('browser')],
+  ['end-b-name', endCard('name')],
+  ['end-c-search', endCard('search')],
 ];
 
 mkdirSync(OUT, { recursive: true });
