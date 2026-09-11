@@ -26,6 +26,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+export function buildPool({ headerMin = Number(process.env.HEADER_MIN ?? 12) } = {}) {
 const R = (p) => JSON.parse(readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8'));
 const careers = R('../src/data/mysteryCareers.json');
 const pool = R('../src/data/mysteryPool.json');
@@ -53,7 +54,7 @@ const seniorClub = (name) => !NOT_SENIOR.test(name);
 // knowledge. What must not be obscure is the HEADERS — the clubs and nations
 // that form the rows and columns. So the bar moved there (HEADER_MIN below),
 // which is where it actually changes what a player sees.
-const HEADER_MIN = Number(process.env.HEADER_MIN ?? 12);
+const HEADER_MIN = headerMin;
 
 const keptClubIdx = new Map();   // old index -> new index
 const keptClubs = [];
@@ -119,23 +120,45 @@ const clubHeaders = ranked.filter(([, s]) => s.size >= HEADER_MIN).map(([c]) => 
 const natHeaders = [...natPlayersPre.entries()].filter(([, s]) => s.size >= HEADER_MIN).map(([n]) => n);
 
 const pct = (n, d) => (d ? Math.round((100 * n) / d) : 0);
-console.log(`\n  grid pool (header minimum ${HEADER_MIN} players)`);
-console.log(`    players      ${Object.keys(players).length}  (from ${Object.keys(SPELLS).length})`);
-console.log(`    senior clubs ${keptClubs.length}  (from ${CLUBS.length}, dropped ${CLUBS.length - keptClubs.length} youth/B/reserve)`);
-console.log(`    dropped: <2 senior clubs ${droppedNoClub} · women's ${droppedWomens} · no metadata ${droppedUnknown}`);
-console.log(`    club x club cells usable (top 40): ${usable}/${pairs} (${pct(usable, pairs)}%)`);
-console.log(`    biggest nationality share: ${topNat[0]?.[0]} ${pct(topNat[0]?.[1].size ?? 0, Object.keys(players).length)}%`);
-console.log(`    eligible headers: ${clubHeaders.length} clubs · ${natHeaders.length} nations (>=${HEADER_MIN} players)`);
-console.log(`    top clubs: ${ranked.slice(0, 6).map(([c, s]) => `${keptClubs[c].replace(/ (F\.?C\.?|Club de Fútbol)$/, '')} ${s.size}`).join(' · ')}`);
 
-// ── Gates. A pool that cannot fill a grid must not be written. ─────────────
-const fail = [];
-if (Object.keys(players).length < 1200) fail.push(`only ${Object.keys(players).length} players survive (need 1200+)`);
-if (clubHeaders.length < 60) fail.push(`only ${clubHeaders.length} clubs qualify as headers (need 60+)`);
-if (pct(usable, pairs) < 55) fail.push(`only ${pct(usable, pairs)}% of top-40 club pairs are usable (need 55%+)`);
-// ⚠️ The Japan skew is the reason this gate exists. If one nationality still
-// dominates after curation, the grid will feel wrong however good the totals look.
-if (biggestNatShare > 0.18) fail.push(`${topNat[0][0]} is ${pct(topNat[0][1].size, Object.keys(players).length)}% of the pool (max 18%)`);
+  // ── Gates. A pool that cannot fill a grid must not be used. ─────────────
+  const fail = [];
+  if (Object.keys(players).length < 1200) fail.push(`only ${Object.keys(players).length} players survive (need 1200+)`);
+  if (clubHeaders.length < 60) fail.push(`only ${clubHeaders.length} clubs qualify as headers (need 60+)`);
+  if (pct(usable, pairs) < 55) fail.push(`only ${pct(usable, pairs)}% of top-40 club pairs are usable (need 55%+)`);
+  // ⚠️ The Japan skew is the reason this gate exists. If one nationality still
+  // dominates after curation, the grid will feel wrong however good the totals look.
+  if (biggestNatShare > 0.18) fail.push(`${topNat[0][0]} is ${pct(topNat[0][1].size, Object.keys(players).length)}% of the pool (max 18%)`);
+
+  return {
+    clubs: keptClubs, players, nations, clubPlayers, natPlayers,
+    headers: { clubs: clubHeaders, nations: natHeaders },
+    stats: {
+      players: Object.keys(players).length, sourcePlayers: Object.keys(SPELLS).length,
+      clubs: keptClubs.length, sourceClubs: CLUBS.length,
+      droppedNoClub, droppedWomens, droppedUnknown,
+      usable, pairs, usablePct: pct(usable, pairs),
+      topNat: topNat.slice(0, 6).map(([n, s]) => [n, s.size]),
+      biggestNatPct: pct(topNat[0]?.[1].size ?? 0, Object.keys(players).length),
+      ranked: ranked.slice(0, 6).map(([c, s]) => [keptClubs[c], s.size]),
+    },
+    fail,
+  };
+}
+
+// ── CLI ────────────────────────────────────────────────────────────────────
+if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop())) {
+const P = buildPool();
+const { stats: st, fail, headers } = P;
+const pct = (n, d) => (d ? Math.round((100 * n) / d) : 0);
+console.log(`\n  grid pool (header minimum ${process.env.HEADER_MIN ?? 12} players)`);
+console.log(`    players      ${st.players}  (from ${st.sourcePlayers})`);
+console.log(`    senior clubs ${st.clubs}  (from ${st.sourceClubs}, dropped ${st.sourceClubs - st.clubs} youth/B/reserve)`);
+console.log(`    dropped: <2 senior clubs ${st.droppedNoClub} · women's ${st.droppedWomens} · no metadata ${st.droppedUnknown}`);
+console.log(`    club x club cells usable (top 40): ${st.usable}/${st.pairs} (${st.usablePct}%)`);
+console.log(`    biggest nationality share: ${st.topNat[0]?.[0]} ${st.biggestNatPct}%`);
+console.log(`    eligible headers: ${headers.clubs.length} clubs · ${headers.nations.length} nations`);
+console.log(`    top clubs: ${st.ranked.map(([n, c]) => `${n.replace(/ (F\.?C\.?|Club de Fútbol)$/, '')} ${c}`).join(' · ')}`);
 
 if (fail.length) {
   console.error(`\n  ✗ NOT WRITTEN — ${fail.length} gate(s) failed:`);
@@ -146,8 +169,9 @@ console.log('  ✓ all gates pass');
 
 if (process.argv.includes('--write')) {
   const out = fileURLToPath(new URL('../src/data/gridPool.json', import.meta.url));
-  writeFileSync(out, JSON.stringify({ c: keptClubs, p: players, n: nations, headers: { clubs: clubHeaders, nations: natHeaders } }));
+  writeFileSync(out, JSON.stringify({ c: P.clubs, p: P.players, n: P.nations, headers }));
   console.log(`  → wrote ${out}`);
 } else {
   console.log('  (report only — pass --write to emit src/data/gridPool.json)\n');
+}
 }
