@@ -50,7 +50,11 @@ import { TRAIL_PLAYERS } from '../src/lib/trail.js';
 import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../src/lib/storeGlyphs.js';
 
 const OUT = fileURLToPath(new URL('../marketing/social', import.meta.url));
-const SIZE = 1080;
+// ⚠️ PORTRAIT 4:5, NOT SQUARE. A 2026-07-18 note locked these to 1:1; Alex
+// corrected that on 2026-09-11 — "it is the portrait aspect ratio on instagram
+// i use". Portrait is the taller feed slot and gives the grid room to breathe,
+// which is what the square version lacked. His current usage beats the old note.
+const W = 1080, H = 1350;
 /**
  * The quiet "here's how you get it" foot. Alex asked for it ON the game cards
  * 2026-09-11, having seen the standalone end slide.
@@ -65,19 +69,28 @@ const SIZE = 1080;
  */
 const getIt = (url) => `<div class="stores">
       <div class="pill">${url}</div>
-      <div class="alsoon">
-        <span>${glyph(APPLE_GLYPH_PATH, 26, 'currentColor')}App&nbsp;Store</span>
-        <span>${glyph(PLAY_GLYPH_PATH, 26, 'currentColor')}Google&nbsp;Play</span>
+      <div class="badges">
+        <span>${glyph(APPLE_GLYPH_PATH, 30)}App&nbsp;Store</span>
+        <span>${glyph(PLAY_GLYPH_PATH, 30)}Google&nbsp;Play</span>
       </div>
     </div>`;
 
 const glyph = (d, size = 30, fill = '#fff') => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${fill}" aria-hidden="true"><path d="${d}"/></svg>`;
 
+// ⚠️ THE TAGLINE IS ALEX'S CALL, MADE TWICE. I argued against it — a question
+// can be ignored where a claim demands rebuttal, and quiz-show framing is a
+// brand-account tell. He asked again on 2026-09-11 ("where is the how well do
+// you know ball"), so it ships. These are END FRAMES for his carousels, not
+// cold feed posts, which is the case that makes it defensible: the reader has
+// already swiped through his football content and this is the "what is this"
+// slide. Do not re-litigate it.
+const TAGLINE = ['How well do you', 'know ball?'];
+
 const FOOTLE_URL = 'balliq.app/footle';
 const TRAIL_URL = 'balliq.app/transfer-trail';
 
 const T = {
-  tx4: '#8A8E99',
+  tx4: '#8A8E99', bd3: '#3E4150',
   bg: '#0B0C10', card: '#13151C', card2: '#1B1E27', bd: '#242730', bd2: '#2F3240',
   grn: '#58CC02', grnInk: '#06230C', amber: '#FFC107', tx: '#F0F1F5', tx3: '#9BA0B8',
 };
@@ -93,24 +106,35 @@ const shell = (inner) => `<!doctype html><meta charset="utf-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&display=swap">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{width:${SIZE}px;height:${SIZE}px;background:${T.bg};color:${T.tx};
+  body{width:${W}px;height:${H}px;background:${T.bg};color:${T.tx};
        font-family:Archivo,"Helvetica Neue",Arial,sans-serif;display:flex}
+  /* ⚠️ TWO BLOCKS, NOT THREE. space-between across brand / demo / CTA left two
+     large voids and the middle floated — Alex: "those are quite bad". Grouping
+     the tagline WITH the demo it introduces makes the card read top-weighted
+     with the CTA anchored, and the whitespace lands in one place instead of
+     two. */
   .card{flex:1;display:flex;flex-direction:column;justify-content:space-between;
-        padding:88px 84px 76px}
+        padding:80px 78px 72px}
+  .lead{display:flex;flex-direction:column;gap:30px}
+  .tag{font-size:78px;font-weight:800;letter-spacing:-.03em;line-height:1.0}
+  .tag span{color:${T.grn}}
+  .demo{display:flex;flex-direction:column;gap:22px;margin-top:26px}
+  .label{font-size:25px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+         color:${T.tx3}}
   .brand{font-size:26px;font-weight:800;letter-spacing:.22em;color:${T.tx3};text-transform:uppercase}
   .brand b{color:${T.grn}}
   .head{font-size:62px;font-weight:800;letter-spacing:-.02em;line-height:1.06}
   .head span{color:${T.grn}}
-  .pill{align-self:flex-start;background:${T.grn};color:${T.grnInk};font-size:30px;font-weight:800;
-        padding:16px 30px;border-radius:999px;letter-spacing:.01em}
+  .pill{align-self:flex-start;background:${T.grn};color:${T.grnInk};font-size:38px;font-weight:800;
+        padding:22px 38px;border-radius:999px;letter-spacing:-.005em}
   .rows{display:flex;flex-direction:column;gap:14px}
   .row{display:flex;gap:14px}
-  .t{width:104px;height:104px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  .t{width:108px;height:108px;border-radius:14px;display:flex;align-items:center;justify-content:center;
      font-size:48px;font-weight:800;background:${T.card2};border:2px solid ${T.bd2};color:${T.tx}}
   .t.g{background:${T.grn};border-color:${T.grn};color:${T.grnInk}}
   .t.y{background:${T.amber};border-color:${T.amber};color:#231A00}
   .club{display:flex;align-items:center;gap:22px;background:${T.card};border:2px solid ${T.bd};
-        border-radius:18px;padding:24px 30px;font-size:40px;font-weight:600}
+        border-radius:18px;padding:26px 32px;font-size:42px;font-weight:600}
   .club i{width:14px;height:14px;border-radius:50%;background:${T.bd2};flex:none;font-style:normal}
   .club.last i{background:${T.grn}}
   .end .endmid{display:flex;flex-direction:column;gap:34px}
@@ -119,13 +143,11 @@ const shell = (inner) => `<!doctype html><meta charset="utf-8">
   .sub{font-size:34px;font-weight:600;color:${T.tx3};line-height:1.3;max-width:16ch}
   .ico{width:188px;height:188px;border-radius:42px;display:block}
   .stores{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
-  .alsoon{display:flex;gap:34px;color:${T.tx4 || '#8A8E99'}}
-  .alsoon span{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:600;
-               color:#8A8E99}
+
   .badges{display:flex;gap:16px}
-  .badges span{display:flex;align-items:center;gap:12px;background:#000;
-               border:2px solid ${T.bd2};color:#fff;border-radius:14px;
-               padding:16px 26px;font-size:26px;font-weight:700}
+  .badges span{display:flex;align-items:center;gap:13px;background:#000;
+               border:2px solid ${T.bd3};color:#fff;border-radius:15px;
+               padding:19px 30px;font-size:29px;font-weight:700}
   .club em{font-style:normal;color:${T.tx3};font-size:26px;font-weight:600;margin-left:auto;letter-spacing:.1em}
 </style>${inner}`;
 
@@ -138,9 +160,14 @@ function footleCard({ answer, guesses }) {
       `<div class="t ${marks[i] === 'green' ? 'g' : marks[i] === 'yellow' ? 'y' : ''}">${ch}</div>`).join('')}</div>`;
   }).join('');
   return shell(`<div class="card">
-    <div class="brand">Ball <b>IQ</b></div>
-    <div class="head">Footle <span>No. ${n}</span></div>
-    <div class="rows">${rows}</div>
+    <div class="lead">
+      <div class="brand">Ball <b>IQ</b></div>
+      <div class="tag">${TAGLINE[0]}<br><span>${TAGLINE[1]}</span></div>
+      <div class="demo">
+        <div class="label">Footle &middot; No. ${n}</div>
+        <div class="rows">${rows}</div>
+      </div>
+    </div>
     ${getIt(FOOTLE_URL)}
   </div>`);
 }
@@ -157,9 +184,14 @@ function trailCard(key) {
   // for, and a printed asset cannot be corrected after it is posted.
   const rows = p.clubs.map((c) => `<div class="club"><i></i>${c}</div>`).join('');
   return shell(`<div class="card">
-    <div class="brand">Ball <b>IQ</b></div>
-    <div class="head">Name him from<br><span>his clubs</span></div>
-    <div class="rows">${rows}</div>
+    <div class="lead">
+      <div class="brand">Ball <b>IQ</b></div>
+      <div class="tag">${TAGLINE[0]}<br><span>${TAGLINE[1]}</span></div>
+      <div class="demo">
+        <div class="label">Transfer Trail</div>
+        <div class="rows">${rows}</div>
+      </div>
+    </div>
     ${getIt(TRAIL_URL)}
   </div>`);
 }
@@ -235,11 +267,11 @@ const CARDS = [
 
 mkdirSync(OUT, { recursive: true });
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: SIZE, height: SIZE }, deviceScaleFactor: 1 });
+const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
 for (const [name, html] of CARDS) {
   await page.setContent(html, { waitUntil: 'networkidle' });
   await page.screenshot({ path: `${OUT}/${name}.png` });
   console.log(`  ✓ ${name}.png`);
 }
 await browser.close();
-console.log(`\n  ${CARDS.length} cards → ${OUT}  (${SIZE}x${SIZE})\n`);
+console.log(`\n  ${CARDS.length} cards → ${OUT}  (${W}x${H})\n`);
