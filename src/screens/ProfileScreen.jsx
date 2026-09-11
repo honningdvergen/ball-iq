@@ -900,6 +900,22 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
   const { level } = getLevelInfo(friendXp);
   const friendStats = (data.stats && typeof data.stats === 'object') ? data.stats : {};
   const totalCorrect = data.correct_answers || 0;
+  // ⚠️ THE LIFETIME THE CARD NEEDS IS `totalCorrect` ABOVE — the column —
+  // NEVER the same-named field inside the stats blob. Measured 2026-09-11: ALL 152 accounts
+  // carrying catStats have a NULL `totalCorrect` inside the stats blob — the
+  // sync writes it to the `correct_answers` COLUMN and never into the jsonb.
+  // So reading it off the blob handed computeCard "1028 answered, 0
+  // correct", and because the legacy top-up only applies to records with no
+  // `d` buckets, that lie drove the whole card for the 33 accounts still on
+  // legacy data. Johannes read 69 to his friends and 74 to himself — every
+  // face lower, verified against his real row. The two names differ by one
+  // qualifier and the wrong one was in scope, which is the whole bug.
+  // ⚠️ AND THE PIN TRAVELS WITH IT. A friend card computed without
+  // stats.cardLeague shows the viewer's idea of the player's league, not the
+  // player's own choice — the league picker shipped 2026-09-10 was invisible
+  // to everyone but its owner.
+  const friendLifetime = { c: totalCorrect, a: friendStats.totalAnswered || 0 };
+  const friendPin = friendStats.cardLeague;
   const totalAnswered = friendStats.totalAnswered || 0;
   const gamesPlayed = data.games_played || 0;
   const avatar = <ProfilePic value={data.avatar_id} url={data.avatar_url} name={data.username} />;
@@ -944,7 +960,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
       {(() => {
         const fCat = friendStats.catStats || {};
         const acc = (totalAnswered > 0 && totalCorrect <= totalAnswered) ? totalCorrect / totalAnswered : 0.4;
-        const card = computeCard(fCat, acc, { c: friendStats.totalCorrect || 0, a: friendStats.totalAnswered || 0 });
+        const card = computeCard(fCat, acc, friendLifetime, friendPin);
         // card.rated is the SAME test the owner's card uses. This asked
         // `some(c => c.a > 0)` until 2026-09-07, so a friend who had answered a
         // single question was shown to you as "85 · GOLD" at 86px with five of
@@ -985,7 +1001,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
       // Accuracy moved onto real answers and Correct was left on the inflated
       // lifetime counter (which still carries Mystery points and Footle
       // guesses). Computed once here so the two tiles cannot drift again.
-      const fCard = computeCard(friendStats.catStats || {}, undefined, { c: friendStats.totalCorrect || 0, a: friendStats.totalAnswered || 0 });
+      const fCard = computeCard(friendStats.catStats || {}, undefined, friendLifetime, friendPin);
       const fCorrect = (Number.isFinite(fCard.rawCorrect) && fCard.rawAnswered >= MIN_RATED_ANSWERS)
         ? Math.round(fCard.rawCorrect) : totalCorrect;
       return (

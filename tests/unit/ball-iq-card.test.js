@@ -1,5 +1,7 @@
 // Ball IQ rating card model — tier boundaries and the six-competition face.
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { CARD_COMPS, CARD_TIERS, compRating, cardTier, computeCard, tierPalette, ratingFromAccuracy, PROVISIONAL_ANSWERS, recordAnswers, rawAnswered, faceCatFor, EXCLUDED_CATS } from "../../src/lib/ballIqCard.js";
 // MIN_RATED_ANSWERS lives in scoring.js — ballIqCard.js imports it but does not
 // re-export it, so importing it from there yields undefined and silently turns
@@ -231,5 +233,85 @@ describe("no category is orphaned from the card", () => {
     const faces = card.ratings.filter((r) => r.rated).map((r) => r.rating);
     expect(faces.length, "fixture should rate at least one face").toBeGreaterThan(0);
     expect(Math.max(...faces), "the overall floated above every face").toBeGreaterThanOrEqual(card.overall - 2);
+  });
+});
+
+
+/**
+ * ⭐ THE PLAYER AND THEIR FRIENDS MUST SEE THE SAME CARD.
+ *
+ * Alex, 2026-09-11, holding his phone next to the simulator: "i just think it
+ * is important that everyone sees the same card you know, the player and their
+ * friends."
+ *
+ * He was right, and it was not a stale read. Johannes read 69 to his friends
+ * and 74 to himself, every face lower. Two causes, both at the friend call
+ * sites in ProfileScreen:
+ *
+ *  1. `friendStats.totalCorrect` is ALWAYS null. Measured on prod: all 152
+ *     accounts carrying catStats have a null `totalCorrect` inside the stats
+ *     jsonb, because the sync writes that number to the `correct_answers`
+ *     COLUMN instead. `|| 0` then told computeCard the player answered 1028
+ *     questions and got NONE right.
+ *  2. The pin was not passed, so a league the player chose was invisible to
+ *     everyone but the player.
+ *
+ * ⚠️ WHY IT ONLY SHOWED ON SOME CARDS: the lifetime top-up applies ONLY to a
+ * record with no `d` buckets (isScored false). 119 of 152 accounts have `d`
+ * and ignored the lie entirely; the 33 still on legacy data had their whole
+ * card driven by it. A bug that is invisible on four fifths of the data is
+ * exactly the kind that ships.
+ */
+describe("a friend's card equals the player's own card", () => {
+  // Johannes's real shape, trimmed: legacy c/a only, NO `d` anywhere.
+  const LEGACY = {
+    PL: { a: 57.97, c: 26.24 }, UCL: { a: 45.93, c: 17.88 },
+    WorldCup: { a: 73.17, c: 26.14 }, Records: { a: 48.01, c: 19.44 },
+    Legends: { a: 7, c: 0 }, Bundesliga: { a: 23.54, c: 11.78 },
+  };
+  const LIFETIME = { c: 684, a: 1028 };
+
+  it("the lifetime top-up is load-bearing for a legacy record — so it must be REAL", () => {
+    const withTruth = computeCard(LEGACY, 684 / 1028, LIFETIME);
+    const withZero  = computeCard(LEGACY, 684 / 1028, { c: 0, a: 1028 });
+    // If these were equal the bug would have been harmless. They are not:
+    // measured 74 vs 69 on the real row.
+    expect(withZero.overall).toBeLessThan(withTruth.overall);
+    for (const r of withZero.ratings) {
+      const truth = withTruth.ratings.find((x) => x.cat === r.cat);
+      expect(r.rating).toBeLessThanOrEqual(truth.rating);
+    }
+  });
+
+  it("same data + same pin ⇒ byte-identical card, whoever is looking", () => {
+    for (const pin of [undefined, "PL", "Bundesliga"]) {
+      const owner  = computeCard(LEGACY, 684 / 1028, LIFETIME, pin);
+      const friend = computeCard(LEGACY, 684 / 1028, LIFETIME, pin);
+      expect(friend.overall).toBe(owner.overall);
+      expect(friend.tier).toBe(owner.tier);
+      expect(friend.ratings.map((r) => `${r.abbr}:${r.rating}`))
+        .toEqual(owner.ratings.map((r) => `${r.abbr}:${r.rating}`));
+    }
+  });
+
+  it("a pin the player chose changes the card — so dropping it changes what a friend sees", () => {
+    const unpinned = computeCard(LEGACY, 684 / 1028, LIFETIME);
+    const pinned   = computeCard(LEGACY, 684 / 1028, LIFETIME, "Bundesliga");
+    // Not a cosmetic relabel: the pinned league keeps its own slot and every
+    // OTHER league folds into Clubs, so the Clubs face moves too.
+    expect(pinned.ratings[0].abbr).toBe("BUNDESLIGA");
+    expect(unpinned.ratings[0].abbr).not.toBe("BUNDESLIGA");
+  });
+
+  // ⚠️ SOURCE-LEVEL, deliberately. The defect was not a wrong value, it was
+  // reading a field that is always null while the right one sat two lines up
+  // under a name differing by one qualifier. No value-level test can see that.
+  it("ProfileScreen never feeds the friend card the always-null blob field", () => {
+    const SRC = readFileSync(fileURLToPath(new URL("../../src/screens/ProfileScreen.jsx", import.meta.url)), "utf8");
+    expect(SRC).not.toMatch(/friendStats\.totalCorrect/);
+    expect(SRC).toMatch(/const friendLifetime = \{ c: totalCorrect,/);
+    expect(SRC).toMatch(/const friendPin = friendStats\.cardLeague/);
+    // both friend surfaces take the shared pair
+    expect((SRC.match(/computeCard\([^)]*friendLifetime, friendPin\)/g) || []).length).toBe(2);
   });
 });
