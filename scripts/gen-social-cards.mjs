@@ -13,10 +13,22 @@
 // travels uncropped — fills the IG feed and carousel, fine on Threads/X, works
 // in a story with padding. Portrait letterboxes; landscape chops.
 //
-// ⚠️ THE CARD CARRIES THE URL BECAUSE IG CAPTIONS CANNOT LINK. It uses
-// balliq.app/ig — the attributed 307 that lands on /footle?utm_source=instagram.
-// Not the raw query form: that renders TRUNCATED on a profile and reads as a
-// malformed URL on the one element you want tapped.
+// ⚠️ THE CARD CARRIES A SEARCHABLE URL, NOT THE SHORT ATTRIBUTED ONE.
+// This first shipped as balliq.app/ig and Alex caught it: a printed URL cannot
+// be tapped, so the ONLY path it has is read-then-search — and nobody types a
+// URL into an address bar any more. Googling "balliq.app/ig" returns
+// @balliqmedia (7.4K, NBA/NFL satire) and @ball_iq44 — who sell football trivia
+// — because /ig is a bare 307 with no page to index and the string collides
+// with other "ball iq" accounts. The card was pointing readers at a competitor.
+//
+// The short links (/ig, /t, /tt, /x) exist to stop a URL rendering TRUNCATED in
+// a PROFILE LINK FIELD. That is a tappable-surface problem and they are still
+// right there. Applying them to a printed image was the wrong tool: an image
+// needs a URL a human can remember and a search engine can find. Verified:
+// searching our content surfaces balliq.app/footle directly.
+//
+// So attribution moves to the BIO link, where it is tapped rather than typed,
+// and the card gets the memorable address of the game it is actually showing.
 //
 // ⚠️ EVERY FACT HERE IS FROZEN REPO DATA, NOT RECALL. Footle answers come from
 // WORDLE_ANSWER_LOG (the frozen schedule, so the puzzle numbers are the real
@@ -33,7 +45,8 @@ import { TRAIL_PLAYERS } from '../src/lib/trail.js';
 
 const OUT = fileURLToPath(new URL('../marketing/social', import.meta.url));
 const SIZE = 1080;
-const URL_PILL = 'balliq.app/ig';
+const FOOTLE_URL = 'balliq.app/footle';
+const TRAIL_URL = 'balliq.app/transfer-trail';
 
 const T = {
   bg: '#0B0C10', card: '#13151C', card2: '#1B1E27', bd: '#242730', bd2: '#2F3240',
@@ -86,7 +99,7 @@ function footleCard({ answer, guesses }) {
     <div class="brand">Ball <b>IQ</b></div>
     <div class="head">Footle <span>No. ${n}</span></div>
     <div class="rows">${rows}</div>
-    <div class="pill">${URL_PILL}</div>
+    <div class="pill">${FOOTLE_URL}</div>
   </div>`);
 }
 
@@ -105,7 +118,7 @@ function trailCard(key) {
     <div class="brand">Ball <b>IQ</b></div>
     <div class="head">Name him from<br><span>his clubs</span></div>
     <div class="rows">${rows}</div>
-    <div class="pill">${URL_PILL}</div>
+    <div class="pill">${TRAIL_URL}</div>
   </div>`);
 }
 
