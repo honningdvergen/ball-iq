@@ -67,6 +67,9 @@ function writeFileSync(path, data, enc) {
   // head() cannot see the body it precedes, so the strip happens here, at the
   // one place every page passes through: no widget markup, no widget CSS.
   if (typeof data === 'string' && data.includes(BQ_CSS) && !data.includes('class="bq')) data = data.replace(BQ_CSS, '');
+  // Same rule for the Football Grid: 76 of 352 pages carry it, the rest paid
+  // for rules that match nothing.
+  if (typeof data === 'string' && data.includes(FG_CSS) && !data.includes('class="fg-')) data = data.replace(FG_CSS, '');
   if (typeof data === 'string' && data.includes('<style')) data = stripCssComments(data);
   return fsWriteFileSync(path, data, enc);
 }
@@ -98,6 +101,7 @@ import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
+import { makeGridBuilder, FG_CSS } from './seo/grid-section.mjs';
 import { CLUB_PACK_ABBR, CLUB_PACK_COLOURS, CLUB_NAME_TO_COMP } from '../src/data/clubPackColours.js';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
@@ -1373,6 +1377,16 @@ function softenAccent(hex) {
   return `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 }
 
+// ⚠️ LAZY AND SHARED. buildPool() reads the whole career harvest; doing that
+// per club page would run it 96 times. One builder, created on the first page
+// that asks for a grid.
+// ⚠️ ONE DAY INDEX FOR THE WHOLE BUILD. Reading the clock per page could
+// straddle midnight mid-run and ship two different days across the site.
+const GRID_ANCHOR = Date.UTC(2026, 8, 12);
+const gridDayIndex = () => Math.max(0, Math.floor((Date.now() - GRID_ANCHOR) / 86400000));
+let _gridBuilder = null;
+const gridBuilder = () => (_gridBuilder ||= makeGridBuilder());
+
 function head({ title, description, canonical, ld, ads = false, ogImage = SITE.ogImage, lang = 'en', alternates = [], accent = null, extraHead = '' }) {
   return `<!DOCTYPE html>
 <html lang="${lang}" style="background-color:${PAGE_BG}">
@@ -1753,6 +1767,7 @@ ${OPTION_CSS('.qa-opts .to')}
   .qa-why::before{content:"✓ ";color:var(--grn-soft);font-weight:800}
   .cta-row--stores{margin-top:14px}
 ${BQ_CSS}
+${FG_CSS}
   /* Fixed columns, never flex-wrap: a fourth item in a narrow column dropped
      onto its own full-width row and read as a layout bug. */
   .hero-facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);margin:16px 0 0}
@@ -2293,6 +2308,9 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
   const quizRows = arcPick(hints, hints.length);
   const sample = quizRows; // the eduQuiz flashcard nodes anchor to what is rendered
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
+  // ⚠️ null when this club has no FAIR grid — 76 of 96 pages qualify. A page
+  // with a thin or mismatched grid is worse than a page without one.
+  const grid = gridBuilder().sectionFor(cfg.club, cfg.slug, gridDayIndex());
 
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -2399,6 +2417,7 @@ ${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts eve
      ⚠️ Do NOT move adSlot('afterQA') below this — the placement policy at
      the top of this file requires ad slots to sit below appCtaBand(). */''}
 ${appCtaBand(cfg.name)}
+${grid ? grid.html : ''}
 <section class="sec">
 <h2>More quizzes to try</h2>
 ${renderTiles(related)}
@@ -2433,6 +2452,7 @@ ${footer()}`;
 
   const dir = resolve(DIST, 'quiz', cfg.slug);
   mkdirSync(dir, { recursive: true });
+  if (grid) writeFileSync(resolve(dir, 'grid.json'), grid.json, 'utf8');
   writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
   return { slug: cfg.slug, name: `${cfg.name} quiz`, count: all.length, canonical };
 }

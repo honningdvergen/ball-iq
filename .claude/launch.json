@@ -1,51 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    {
-      "name": "ball-iq-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "dev"
-      ],
-      "port": 5173
-    },
-    {
-      "name": "ball-iq-dev-worktree",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "dev",
-        "--",
-        "--port",
-        "5199",
-        "--strictPort"
-      ],
-      "port": 5199
-    },
-    {
-      "name": "ball-iq-static",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": [
-        "vite",
-        "preview",
-        "--port",
-        "4173",
-        "--strictPort"
-      ],
-      "port": 4173
-    },
-    {
-      "name": "perf-lab",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": [
-        "-m",
-        "http.server",
-        "4399",
-        "-d",
-        "/tmp/perflab"
-      ],
-      "port": 4399
-    }
+    { "name": "dist", "runtimeExecutable": "npx", "runtimeArgs": ["--yes", "serve", "dist", "-l", "4177"], "port": 4177 }
   ]
 }
