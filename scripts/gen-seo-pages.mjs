@@ -2986,6 +2986,25 @@ ${renderQA(taster)}
 ${cfg.intro.length > 1 ? `<section class="sec narrow">
 ${cfg.intro.slice(1).map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
 </section>` : ''}
+${/* ── THE SECOND CUT (2026-09-11) ───────────────────────────────────────────
+     WHY THIS EXISTS. AdSense rejected balliq.app on 2026-08-10 for "low value
+     content", and the diagnosis was templated pages that do not deliver
+     distinct value. Measured: FIFTEEN competitions carried TWO /lists pages
+     built from ONE dataset with ONE template — a season-by-season winners list
+     AND a "most titles" ranking. That is the duplication signature, and row
+     count was a red herring (most-premier-league-titles has 7 rows because
+     only 7 clubs have ever won it, and it carries real prose).
+     So the ranking now lives ON the winners page as a second table, and the
+     old URL 301s here. Fewer, better — nothing is deleted, one page gets
+     richer, and the pattern Google flagged is gone. */''}
+${cfg.also ? `<section class="sec narrow">
+<h2>${esc(cfg.also.h2)}</h2>
+${(cfg.also.intro || []).map((p) => `<p style="margin:0 0 14px;color:var(--tx2)">${esc(p)}</p>`).join('\n')}
+<div class="ltable-wrap"><table class="ltable">
+<thead><tr>${cfg.also.columns.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead>
+<tbody>${cfg.also.rows.map((r) => `<tr>${r.map((cell) => `<td>${esc(String(cell))}</td>`).join('')}</tr>`).join('\n')}</tbody>
+</table></div>
+</section>` : ''}
 ${adSlot('afterQA')}
 ${appCtaBand(cfg.ctaName || 'football')}
 ${renderSiblingLists(cfg.slug)}

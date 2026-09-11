@@ -69,6 +69,136 @@
       "source": "/mystery/",
       "destination": "/mystery-player/",
       "permanent": false
+    },
+    {
+      "source": "/lists/most-premier-league-titles",
+      "destination": "/lists/premier-league-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-premier-league-titles/",
+      "destination": "/lists/premier-league-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-world-cups",
+      "destination": "/lists/world-cup-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-world-cups/",
+      "destination": "/lists/world-cup-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-la-liga-titles",
+      "destination": "/lists/la-liga-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-la-liga-titles/",
+      "destination": "/lists/la-liga-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-euros-wins",
+      "destination": "/lists/euro-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-euros-wins/",
+      "destination": "/lists/euro-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-bundesliga-titles",
+      "destination": "/lists/bundesliga-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-bundesliga-titles/",
+      "destination": "/lists/bundesliga-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-afcon-titles",
+      "destination": "/lists/afcon-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-afcon-titles/",
+      "destination": "/lists/afcon-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-serie-a-titles",
+      "destination": "/lists/serie-a-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-serie-a-titles/",
+      "destination": "/lists/serie-a-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-ligue-1-titles",
+      "destination": "/lists/ligue-1-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-ligue-1-titles/",
+      "destination": "/lists/ligue-1-champions/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-copa-america-titles",
+      "destination": "/lists/copa-america-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-copa-america-titles/",
+      "destination": "/lists/copa-america-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-copa-libertadores",
+      "destination": "/lists/copa-libertadores-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-copa-libertadores/",
+      "destination": "/lists/copa-libertadores-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-europa-league-titles",
+      "destination": "/lists/europa-league-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-europa-league-titles/",
+      "destination": "/lists/europa-league-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-champions-league-titles",
+      "destination": "/lists/champions-league-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-champions-league-titles/",
+      "destination": "/lists/champions-league-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-fa-cups",
+      "destination": "/lists/fa-cup-winners/",
+      "permanent": true
+    },
+    {
+      "source": "/lists/most-fa-cups/",
+      "destination": "/lists/fa-cup-winners/",
+      "permanent": true
     }
   ],
   "rewrites": [

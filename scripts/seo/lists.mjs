@@ -941,10 +941,181 @@ export const LISTS = [
       {
         "q": "How many Champions League finals have been decided by a penalty shootout?",
         "a": "Eleven, starting with Liverpool's win over Roma in 1984. The most recent was Real Madrid beating Atlético Madrid on penalties in 2016."
+      },
+      {
+        "q": "Which club has won the most Champions League titles?",
+        "a": "Real Madrid have won the most, with 15 European Cup / Champions League titles — comfortably a record. They won the first five editions from 1956 to 1960 and have led the all-time count ever since."
+      },
+      {
+        "q": "Which club has won the second-most Champions League titles?",
+        "a": "AC Milan are second on the all-time list with seven, ahead of Bayern Munich and Liverpool, who are level on six each."
+      },
+      {
+        "q": "Is this a complete list of Champions League winners?",
+        "a": "This page ranks clubs by number of titles. For the full season-by-season list of every final, winner, runner-up and score, see our Champions League winners list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "the Champions League"
+    "ctaName": "the Champions League",
+    "also": {
+      "h2": "Clubs With the Most Champions League Titles",
+      "intro": [
+        "The European Cup, rebranded the UEFA Champions League in 1992, is the most prestigious prize in club football — and a handful of clubs have made it their own. This page ranks every club to have won it, by number of titles, from Real Madrid's record haul down to the one-time winners.",
+        "Real Madrid stand far clear at the top: they won the first five editions in a row from 1956 and have kept adding to the tally ever since, more than doubling the count of their nearest rivals. AC Milan are the most successful of the chasing pack, ahead of the modern powerhouses of Bayern Munich and Liverpool."
+      ],
+      "columns": [
+        "Rank",
+        "Team",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Real Madrid",
+          "15",
+          "1955, 1956, 1957, 1958, 1959, 1965, 1997, 1999, 2001, 2013, 2015, 2016, 2017, 2021, 2023"
+        ],
+        [
+          "2",
+          "AC Milan",
+          "7",
+          "1962, 1968, 1988, 1989, 1993, 2002, 2006"
+        ],
+        [
+          "3",
+          "Bayern Munich",
+          "6",
+          "1973, 1974, 1975, 2000, 2012, 2019"
+        ],
+        [
+          "3",
+          "Liverpool",
+          "6",
+          "1976, 1977, 1980, 1983, 2004, 2018"
+        ],
+        [
+          "5",
+          "Barcelona",
+          "5",
+          "1991, 2005, 2008, 2010, 2014"
+        ],
+        [
+          "6",
+          "Ajax",
+          "4",
+          "1970, 1971, 1972, 1994"
+        ],
+        [
+          "7",
+          "Inter Milan",
+          "3",
+          "1963, 1964, 2009"
+        ],
+        [
+          "7",
+          "Manchester United",
+          "3",
+          "1967, 1998, 2007"
+        ],
+        [
+          "9",
+          "Benfica",
+          "2",
+          "1960, 1961"
+        ],
+        [
+          "9",
+          "Chelsea",
+          "2",
+          "2011, 2020"
+        ],
+        [
+          "9",
+          "Juventus",
+          "2",
+          "1984, 1995"
+        ],
+        [
+          "9",
+          "Nottingham Forest",
+          "2",
+          "1978, 1979"
+        ],
+        [
+          "9",
+          "Paris Saint-Germain",
+          "2",
+          "2024, 2025"
+        ],
+        [
+          "9",
+          "Porto",
+          "2",
+          "1986, 2003"
+        ],
+        [
+          "15",
+          "Aston Villa",
+          "1",
+          "1981"
+        ],
+        [
+          "15",
+          "Borussia Dortmund",
+          "1",
+          "1996"
+        ],
+        [
+          "15",
+          "Celtic",
+          "1",
+          "1966"
+        ],
+        [
+          "15",
+          "Feyenoord",
+          "1",
+          "1969"
+        ],
+        [
+          "15",
+          "Hamburger SV",
+          "1",
+          "1982"
+        ],
+        [
+          "15",
+          "Manchester City",
+          "1",
+          "2022"
+        ],
+        [
+          "15",
+          "Marseille",
+          "1",
+          "1992"
+        ],
+        [
+          "15",
+          "PSV Eindhoven",
+          "1",
+          "1987"
+        ],
+        [
+          "15",
+          "Red Star Belgrade",
+          "1",
+          "1990"
+        ],
+        [
+          "15",
+          "Steaua București",
+          "1",
+          "1985"
+        ]
+      ]
+    }
   },
   {
     "slug": "premier-league-top-scorers",
@@ -1385,10 +1556,81 @@ export const LISTS = [
       {
         "q": "Why were there no World Cups in 1942 and 1946?",
         "a": "The tournaments scheduled for 1942 and 1946 were not held because of World War II. The competition resumed in 1950 in Brazil, when Uruguay won their second title."
+      },
+      {
+        "q": "How many World Cups have Germany won?",
+        "a": "Four — in 1954, 1974 and 1990 as West Germany, and in 2014 as a reunified Germany. That puts them level with Italy on four, behind Brazil."
+      },
+      {
+        "q": "Is this every World Cup winner?",
+        "a": "This page ranks countries by titles. For the full year-by-year list of every final, winner, runner-up, score and host, see our World Cup winners list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "World Cup history"
+    "ctaName": "World Cup history",
+    "also": {
+      "h2": "Countries With the Most World Cup Wins",
+      "intro": [
+        "Only eight nations have ever won the FIFA World Cup since it began in 1930. This page ranks them by number of titles, from Brazil's record five down to England's single triumph in 1966.",
+        "Brazil are the benchmark with five, the only side to have played at every finals. Italy and Germany follow on four apiece — Germany's tally combining their three wins as West Germany with the 2014 title won as a reunified nation."
+      ],
+      "columns": [
+        "Rank",
+        "Country",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Brazil",
+          "5",
+          "1958, 1962, 1970, 1994, 2002"
+        ],
+        [
+          "2",
+          "Germany",
+          "4",
+          "1954, 1974, 1990, 2014"
+        ],
+        [
+          "2",
+          "Italy",
+          "4",
+          "1934, 1938, 1982, 2006"
+        ],
+        [
+          "4",
+          "Argentina",
+          "3",
+          "1978, 1986, 2022"
+        ],
+        [
+          "5",
+          "France",
+          "2",
+          "1998, 2018"
+        ],
+        [
+          "5",
+          "Spain",
+          "2",
+          "2010, 2026"
+        ],
+        [
+          "5",
+          "Uruguay",
+          "2",
+          "1930, 1950"
+        ],
+        [
+          "8",
+          "England",
+          "1",
+          "1966"
+        ]
+      ]
+    }
   },
   {
     "slug": "euro-winners",
@@ -1544,10 +1786,93 @@ export const LISTS = [
       {
         "q": "Has England ever won the Euros?",
         "a": "No. England has reached two Euros finals, losing to Italy on penalties in 2020 (played 2021) and to Spain 2-1 in 2024, but has never won the tournament."
+      },
+      {
+        "q": "How many Euros have Germany won?",
+        "a": "Three — in 1972 and 1980 as West Germany, and in 1996 as a reunified Germany. That puts them second behind Spain."
+      },
+      {
+        "q": "Is this every Euros winner?",
+        "a": "This page ranks countries by titles. For the full year-by-year list of every final, winner, runner-up, score and host, see our European Championship winners list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "the Euros"
+    "ctaName": "the Euros",
+    "also": {
+      "h2": "Countries With the Most European Championship Wins",
+      "intro": [
+        "The UEFA European Championship has been held every four years since 1960, and only a handful of nations have ever conquered the continent. This page ranks every Euros winner by number of titles.",
+        "Spain stand alone at the top with 4, having pulled clear with their 2024 triumph. Germany follow with three (two as West Germany, one after reunification), while Italy and France are the only other multiple winners."
+      ],
+      "columns": [
+        "Rank",
+        "Country",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Spain",
+          "4",
+          "1964, 2008, 2012, 2024"
+        ],
+        [
+          "2",
+          "Germany",
+          "3",
+          "1972, 1980, 1996"
+        ],
+        [
+          "3",
+          "France",
+          "2",
+          "1984, 2000"
+        ],
+        [
+          "3",
+          "Italy",
+          "2",
+          "1968, 2020"
+        ],
+        [
+          "5",
+          "Czechoslovakia",
+          "1",
+          "1976"
+        ],
+        [
+          "5",
+          "Denmark",
+          "1",
+          "1992"
+        ],
+        [
+          "5",
+          "Greece",
+          "1",
+          "2004"
+        ],
+        [
+          "5",
+          "Netherlands",
+          "1",
+          "1988"
+        ],
+        [
+          "5",
+          "Portugal",
+          "1",
+          "2016"
+        ],
+        [
+          "5",
+          "Soviet Union",
+          "1",
+          "1960"
+        ]
+      ]
+    }
   },
   {
     "slug": "la-liga-champions",
@@ -2057,10 +2382,87 @@ export const LISTS = [
       {
         "q": "Has any club outside Real Madrid and Barcelona won La Liga recently?",
         "a": "Yes. Atletico Madrid are the most recent club to break the duopoly, winning the title in 2020-21. Before that, Atletico also won in 2013-14, the last time either Madrid or Barcelona did not finish top."
+      },
+      {
+        "q": "Which clubs have won La Liga besides Real Madrid and Barcelona?",
+        "a": "Nine clubs in total have won La Liga. Beyond Real Madrid and Barcelona, Atlético Madrid, Athletic Bilbao, Valencia, Real Sociedad, Deportivo La Coruña, Sevilla and Real Betis have all been champions of Spain."
+      },
+      {
+        "q": "Is this every La Liga champion?",
+        "a": "This page ranks clubs by number of titles. For the full season-by-season list of every La Liga champion and runner-up, see our La Liga champions list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "La Liga"
+    "ctaName": "La Liga",
+    "also": {
+      "h2": "Clubs With the Most La Liga Titles",
+      "intro": [
+        "Spain's top flight has been dominated by two clubs since it began in 1929, but the full roll of honour runs deeper. This page ranks every La Liga champion by number of titles, from Real Madrid's record haul down to the one-off winners.",
+        "Real Madrid lead the way with 36 titles, ahead of great rivals Barcelona on 29. Atlético Madrid are comfortably the third force, while Athletic Bilbao and Valencia head the chasing pack of clubs who have broken the duopoly over the decades."
+      ],
+      "columns": [
+        "Rank",
+        "Club",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Real Madrid",
+          "36",
+          "1931, 1932, 1953, 1954, 1956, 1957, 1960, 1961, 1962, 1963, 1964, 1966, 1967, 1968, 1971, 1974, 1975, 1977, 1978, 1979, 1985, 1986, 1987, 1988, 1989, 1994, 1996, 2000, 2002, 2006, 2007, 2011, 2016, 2019, 2021, 2023"
+        ],
+        [
+          "2",
+          "Barcelona",
+          "29",
+          "1928, 1944, 1947, 1948, 1951, 1952, 1958, 1959, 1973, 1984, 1990, 1991, 1992, 1993, 1997, 1998, 2004, 2005, 2008, 2009, 2010, 2012, 2014, 2015, 2017, 2018, 2022, 2024, 2025"
+        ],
+        [
+          "3",
+          "Atletico Madrid",
+          "11",
+          "1939, 1940, 1949, 1950, 1965, 1969, 1972, 1976, 1995, 2013, 2020"
+        ],
+        [
+          "4",
+          "Athletic Bilbao",
+          "8",
+          "1929, 1930, 1933, 1935, 1942, 1955, 1982, 1983"
+        ],
+        [
+          "5",
+          "Valencia",
+          "6",
+          "1941, 1943, 1946, 1970, 2001, 2003"
+        ],
+        [
+          "6",
+          "Real Sociedad",
+          "2",
+          "1980, 1981"
+        ],
+        [
+          "7",
+          "Deportivo La Coruna",
+          "1",
+          "1999"
+        ],
+        [
+          "7",
+          "Real Betis",
+          "1",
+          "1934"
+        ],
+        [
+          "7",
+          "Sevilla",
+          "1",
+          "1945"
+        ]
+      ]
+    }
   },
   {
     "slug": "serie-a-champions",
@@ -2570,10 +2972,134 @@ export const LISTS = [
       {
         "q": "How many Serie A titles has Napoli won?",
         "a": "Napoli have won four Serie A titles: 1986-87 and 1989-90 during the Diego Maradona era, then 2022-23 and 2024-25 in the modern era."
+      },
+      {
+        "q": "What happened to Juventus's 2004-05 and 2005-06 titles?",
+        "a": "Following the 2006 Calciopoli refereeing scandal, the FIGC revoked both. The 2004-05 Scudetto was cancelled and left unassigned, so no club holds it. The 2005-06 title was stripped from Juventus and awarded to Inter. Juventus won both on the pitch and still claim the 2004-05 crown, but neither counts toward their recognised total of 36 — hence the difference between Juventus's own tally and the federation's figure used here."
+      },
+      {
+        "q": "Who won the most recent Serie A title?",
+        "a": "Inter won the 2025-26 Scudetto, their 21st, finishing clear of Napoli. Before that, Napoli took the 2024-25 title (their fourth) and Inter won 2023-24 (their 20th)."
+      },
+      {
+        "q": "Why does Inter's total include the Ambrosiana-Inter era?",
+        "a": "Under Italy's Fascist regime, Inter were forced to merge and play as Ambrosiana (later Ambrosiana-Inter) from 1928 to 1945, winning titles in 1929–30 and the late 1930s under that name. The club is legally continuous, so those Scudetti count toward Inter's all-time total of 21."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "Serie A"
+    "ctaName": "Serie A",
+    "also": {
+      "h2": "Clubs With the Most Serie A Titles (Scudetti)",
+      "intro": [
+        "Italy's league champions wear the Scudetto, the small tricolour shield sewn onto the following season's shirt, and only sixteen clubs have earned the right to do so since the national championship began in 1898. The competition took its modern round-robin \"Serie A\" form in 1929, but the honours roll is counted continuously from those earliest pioneer-era titles, which is why clubs like Genoa and Pro Vercelli sit high on the all-time list despite not having won in a century.",
+        "Three clubs tower over the rest. Juventus lead the way, followed by the two Milan giants, Internazionale and AC Milan — Inter's total stretching back to their 1908 founding and the Ambrosiana-Inter years of the 1930s. Below them, a cluster of historic names from the game's formative decades (Torino, Bologna, Pro Vercelli) share seven apiece, while a modern chasing pack led by Napoli reflects how the balance of power keeps shifting.",
+        "One stretch of the record book carries an asterisk. The 2006 Calciopoli scandal saw Juventus stripped of their 2004-05 title, which was left unassigned, and their 2005-06 title, which was reassigned to Inter. Both clubs dispute aspects of the outcome to this day, so the figures below use the counts officially recognised by the FIGC, the Italian federation, with the controversy explained in full."
+      ],
+      "columns": [
+        "Rank",
+        "Club",
+        "Titles",
+        "Notable years"
+      ],
+      "rows": [
+        [
+          "1",
+          "Juventus",
+          "36",
+          "First title 1905; five straight 1930–31 to 1934–35; a record nine in a row from 2011–12 to 2019–20. Two further titles (2004–05, 2005–06) were revoked in Calciopoli."
+        ],
+        [
+          "2",
+          "Internazionale (Inter)",
+          "21",
+          "1909–10; the Grande Inter era 1962–66; Ambrosiana-Inter titles of the 1930s; awarded 2005–06; plus 2020–21, 2023–24 and 2025–26."
+        ],
+        [
+          "3",
+          "AC Milan",
+          "19",
+          "1901; the Sacchi–Capello dynasty of the late 1980s and 1990s; 2003–04; 2010–11; most recently 2021–22."
+        ],
+        [
+          "4",
+          "Genoa",
+          "9",
+          "Won six of the first seven Italian championships (1898–1904); last crowned in 1923–24."
+        ],
+        [
+          "5",
+          "Torino",
+          "7",
+          "Il Grande Torino claimed five Scudetti in the 1940s; last title in 1975–76."
+        ],
+        [
+          "5",
+          "Bologna",
+          "7",
+          "A power of the pre-war game, winning from 1924–25 through 1940–41; last in 1963–64."
+        ],
+        [
+          "5",
+          "Pro Vercelli",
+          "7",
+          "Seven titles between 1908 and 1922, one of the sport's original Italian dynasties."
+        ],
+        [
+          "8",
+          "Napoli",
+          "4",
+          "1986–87 and 1989–90 with Diego Maradona; then 2022–23 and 2024–25."
+        ],
+        [
+          "9",
+          "Roma",
+          "3",
+          "1941–42; 1982–83; 2000–01."
+        ],
+        [
+          "10",
+          "Fiorentina",
+          "2",
+          "1955–56 and 1968–69."
+        ],
+        [
+          "10",
+          "Lazio",
+          "2",
+          "1973–74 and 1999–2000."
+        ],
+        [
+          "12",
+          "Cagliari",
+          "1",
+          "1969–70, inspired by Gigi Riva."
+        ],
+        [
+          "12",
+          "Casale",
+          "1",
+          "1913–14."
+        ],
+        [
+          "12",
+          "Hellas Verona",
+          "1",
+          "1984–85, one of the great Serie A upsets."
+        ],
+        [
+          "12",
+          "Novese",
+          "1",
+          "1921–22."
+        ],
+        [
+          "12",
+          "Sampdoria",
+          "1",
+          "1990–91."
+        ]
+      ]
+    }
   },
   {
     "slug": "bundesliga-champions",
@@ -2923,10 +3449,111 @@ export const LISTS = [
       {
         "q": "Who won the 2024-25 Bundesliga?",
         "a": "Bayern Munich won the 2024-25 Bundesliga, reclaiming the title from Bayer Leverkusen, who finished as runners-up. It was Bayern's record-extending title of the Bundesliga era, sealed with two games to spare."
+      },
+      {
+        "q": "Who has won the Bundesliga besides Bayern Munich?",
+        "a": "Borussia Mönchengladbach and Borussia Dortmund are next with five each, followed by Werder Bremen, Hamburger SV, VfB Stuttgart and others. Bayer Leverkusen won their first title in 2023-24."
+      },
+      {
+        "q": "Is this every Bundesliga champion?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list since 1963-64, see our Bundesliga champions list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "the Bundesliga"
+    "ctaName": "the Bundesliga",
+    "also": {
+      "h2": "Clubs With the Most Bundesliga Titles",
+      "intro": [
+        "Germany's Bundesliga was founded in 1963, and while one club has towered over it, the title has still travelled widely across the country. This page ranks every Bundesliga champion by number of titles.",
+        "Bayern Munich's dominance is without parallel in Europe's big leagues: they hold 34 Bundesliga titles, many times more than anyone else. Behind them, Borussia Mönchengladbach and Borussia Dortmund lead a competitive chasing group that also includes Werder Bremen, Hamburg and Stuttgart."
+      ],
+      "columns": [
+        "Rank",
+        "Club",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Bayern Munich",
+          "34",
+          "1968, 1971, 1972, 1973, 1979, 1980, 1984, 1985, 1986, 1988, 1989, 1993, 1996, 1998, 1999, 2000, 2002, 2004, 2005, 2007, 2009, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025"
+        ],
+        [
+          "2",
+          "Borussia Dortmund",
+          "5",
+          "1994, 1995, 2001, 2010, 2011"
+        ],
+        [
+          "2",
+          "Borussia Monchengladbach",
+          "5",
+          "1969, 1970, 1974, 1975, 1976"
+        ],
+        [
+          "4",
+          "Werder Bremen",
+          "4",
+          "1964, 1987, 1992, 2003"
+        ],
+        [
+          "5",
+          "Hamburger SV",
+          "3",
+          "1978, 1981, 1982"
+        ],
+        [
+          "5",
+          "VfB Stuttgart",
+          "3",
+          "1983, 1991, 2006"
+        ],
+        [
+          "7",
+          "1. FC Kaiserslautern",
+          "2",
+          "1990, 1997"
+        ],
+        [
+          "7",
+          "1. FC Koln",
+          "2",
+          "1963, 1977"
+        ],
+        [
+          "9",
+          "1. FC Nurnberg",
+          "1",
+          "1967"
+        ],
+        [
+          "9",
+          "Bayer Leverkusen",
+          "1",
+          "2023"
+        ],
+        [
+          "9",
+          "Eintracht Braunschweig",
+          "1",
+          "1966"
+        ],
+        [
+          "9",
+          "TSV 1860 Munich",
+          "1",
+          "1965"
+        ],
+        [
+          "9",
+          "VfL Wolfsburg",
+          "1",
+          "2008"
+        ]
+      ]
+    }
   },
   {
     "slug": "super-lig-champions",
@@ -3509,10 +4136,75 @@ export const LISTS = [
       {
         "q": "Who won the 2024-25 Premier League?",
         "a": "Liverpool won the 2024-25 Premier League, their second title of the Premier League era, in Arne Slot's first season as manager. Arsenal finished as runners-up for the third season in a row."
+      },
+      {
+        "q": "Which clubs have won the Premier League only once?",
+        "a": "Blackburn Rovers (1994-95) and Leicester City (2015-16) are the only clubs to have won the Premier League exactly once — Leicester's 5000-1 title is regarded as the greatest shock in the competition's history."
+      },
+      {
+        "q": "Is this every Premier League champion?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list of every champion and runner-up since 1992-93, see our Premier League champions list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "the Premier League"
+    "ctaName": "the Premier League",
+    "also": {
+      "h2": "Clubs With the Most Premier League Titles",
+      "intro": [
+        "Since the Premier League began in 1992-93, only seven clubs have won it. This page ranks them by number of titles, from Manchester United's early dominance to Manchester City's modern dynasty.",
+        "Manchester United set the pace with 13 titles, all under Sir Alex Ferguson. Manchester City have closed fast since 2011-12, while Blackburn Rovers and Leicester City remain the only one-off winners to have crashed the established order."
+      ],
+      "columns": [
+        "Rank",
+        "Club",
+        "Titles",
+        "Seasons won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Manchester United",
+          "13",
+          "1992, 1993, 1995, 1996, 1998, 1999, 2000, 2002, 2006, 2007, 2008, 2010, 2012"
+        ],
+        [
+          "2",
+          "Manchester City",
+          "8",
+          "2011, 2013, 2017, 2018, 2020, 2021, 2022, 2023"
+        ],
+        [
+          "3",
+          "Chelsea",
+          "5",
+          "2004, 2005, 2009, 2014, 2016"
+        ],
+        [
+          "4",
+          "Arsenal",
+          "4",
+          "1997, 2001, 2003, 2025"
+        ],
+        [
+          "5",
+          "Liverpool",
+          "2",
+          "2019, 2024"
+        ],
+        [
+          "6",
+          "Blackburn Rovers",
+          "1",
+          "1994"
+        ],
+        [
+          "6",
+          "Leicester City",
+          "1",
+          "2015"
+        ]
+      ]
+    }
   },
   {
     "slug": "ligue-1-champions",
@@ -3992,10 +4684,147 @@ export const LISTS = [
       {
         "q": "Which clubs have broken PSG's title run since 2013?",
         "a": "Only three sides have interrupted PSG since their dynasty began. Monaco won in 2016-17 and Lille in 2020-21, while Montpellier's shock 2011-12 triumph came just before the Qatari-era dominance fully took hold."
+      },
+      {
+        "q": "Why is the 1992-93 Ligue 1 title not counted?",
+        "a": "Marseille finished top in 1992-93 but were stripped of the title following a match-fixing scandal, and it was not reassigned. It is the only season with no official champion."
+      },
+      {
+        "q": "Is this every Ligue 1 champion?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list, see our Ligue 1 champions list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "Ligue 1"
+    "ctaName": "Ligue 1",
+    "also": {
+      "h2": "Clubs With the Most Ligue 1 Titles",
+      "intro": [
+        "French football's top flight has crowned champions since 1932, and its history splits neatly into two eras: a long spell where the title moved freely between the country's great clubs, and the recent age of Paris Saint-Germain dominance. This page ranks every Ligue 1 champion by number of titles.",
+        "PSG now lead the all-time list with 14, having pulled clear during the Qatari-ownership era. Saint-Étienne's 10 titles, most from a golden 1960s and 70s, keep them second, just ahead of Marseille. Note that Marseille were stripped of the 1992-93 title amid a match-fixing scandal, so it does not count toward their total."
+      ],
+      "columns": [
+        "Rank",
+        "Club",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Paris Saint-Germain",
+          "14",
+          "1985, 1993, 2012, 2013, 2014, 2015, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025"
+        ],
+        [
+          "2",
+          "Saint-Étienne",
+          "10",
+          "1956, 1963, 1966, 1967, 1968, 1969, 1973, 1974, 1975, 1980"
+        ],
+        [
+          "3",
+          "Marseille",
+          "9",
+          "1936, 1947, 1970, 1971, 1988, 1989, 1990, 1991, 2009"
+        ],
+        [
+          "4",
+          "Monaco",
+          "8",
+          "1960, 1962, 1977, 1981, 1987, 1996, 1999, 2016"
+        ],
+        [
+          "4",
+          "Nantes",
+          "8",
+          "1964, 1965, 1972, 1976, 1979, 1982, 1994, 2000"
+        ],
+        [
+          "6",
+          "Lyon",
+          "7",
+          "2001, 2002, 2003, 2004, 2005, 2006, 2007"
+        ],
+        [
+          "7",
+          "Bordeaux",
+          "6",
+          "1949, 1983, 1984, 1986, 1998, 2008"
+        ],
+        [
+          "7",
+          "Reims",
+          "6",
+          "1948, 1952, 1954, 1957, 1959, 1961"
+        ],
+        [
+          "9",
+          "Lille",
+          "4",
+          "1945, 1953, 2010, 2020"
+        ],
+        [
+          "9",
+          "Nice",
+          "4",
+          "1950, 1951, 1955, 1958"
+        ],
+        [
+          "11",
+          "Sète",
+          "2",
+          "1933, 1938"
+        ],
+        [
+          "11",
+          "Sochaux",
+          "2",
+          "1934, 1937"
+        ],
+        [
+          "13",
+          "Auxerre",
+          "1",
+          "1995"
+        ],
+        [
+          "13",
+          "Lens",
+          "1",
+          "1997"
+        ],
+        [
+          "13",
+          "Montpellier",
+          "1",
+          "2011"
+        ],
+        [
+          "13",
+          "Olympique Lillois",
+          "1",
+          "1932"
+        ],
+        [
+          "13",
+          "RC Paris",
+          "1",
+          "1935"
+        ],
+        [
+          "13",
+          "Roubaix-Tourcoing",
+          "1",
+          "1946"
+        ],
+        [
+          "13",
+          "Strasbourg",
+          "1",
+          "1978"
+        ]
+      ]
+    }
   },
   {
     "slug": "eredivisie-champions",
@@ -5062,184 +5891,6 @@ export const LISTS = [
     "ctaName": "Scottish football"
   },
   {
-    "slug": "most-champions-league-titles",
-    "h1": "Clubs With the Most Champions League Titles",
-    "title": "Most Champions League Titles: Real Madrid, 15 | Ball IQ",
-    "description": "Which clubs have won the most European Cup / Champions League titles? Real Madrid lead the all-time ranking — every winner, ranked by titles.",
-    "intro": [
-      "The European Cup, rebranded the UEFA Champions League in 1992, is the most prestigious prize in club football — and a handful of clubs have made it their own. This page ranks every club to have won it, by number of titles, from Real Madrid's record haul down to the one-time winners.",
-      "Real Madrid stand far clear at the top: they won the first five editions in a row from 1956 and have kept adding to the tally ever since, more than doubling the count of their nearest rivals. AC Milan are the most successful of the chasing pack, ahead of the modern powerhouses of Bayern Munich and Liverpool."
-    ],
-    "columns": [
-      "Rank",
-      "Team",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Real Madrid",
-        "15",
-        "1955, 1956, 1957, 1958, 1959, 1965, 1997, 1999, 2001, 2013, 2015, 2016, 2017, 2021, 2023"
-      ],
-      [
-        "2",
-        "AC Milan",
-        "7",
-        "1962, 1968, 1988, 1989, 1993, 2002, 2006"
-      ],
-      [
-        "3",
-        "Bayern Munich",
-        "6",
-        "1973, 1974, 1975, 2000, 2012, 2019"
-      ],
-      [
-        "3",
-        "Liverpool",
-        "6",
-        "1976, 1977, 1980, 1983, 2004, 2018"
-      ],
-      [
-        "5",
-        "Barcelona",
-        "5",
-        "1991, 2005, 2008, 2010, 2014"
-      ],
-      [
-        "6",
-        "Ajax",
-        "4",
-        "1970, 1971, 1972, 1994"
-      ],
-      [
-        "7",
-        "Inter Milan",
-        "3",
-        "1963, 1964, 2009"
-      ],
-      [
-        "7",
-        "Manchester United",
-        "3",
-        "1967, 1998, 2007"
-      ],
-      [
-        "9",
-        "Benfica",
-        "2",
-        "1960, 1961"
-      ],
-      [
-        "9",
-        "Chelsea",
-        "2",
-        "2011, 2020"
-      ],
-      [
-        "9",
-        "Juventus",
-        "2",
-        "1984, 1995"
-      ],
-      [
-        "9",
-        "Nottingham Forest",
-        "2",
-        "1978, 1979"
-      ],
-      [
-        "9",
-        "Paris Saint-Germain",
-        "2",
-        "2024, 2025"
-      ],
-      [
-        "9",
-        "Porto",
-        "2",
-        "1986, 2003"
-      ],
-      [
-        "15",
-        "Aston Villa",
-        "1",
-        "1981"
-      ],
-      [
-        "15",
-        "Borussia Dortmund",
-        "1",
-        "1996"
-      ],
-      [
-        "15",
-        "Celtic",
-        "1",
-        "1966"
-      ],
-      [
-        "15",
-        "Feyenoord",
-        "1",
-        "1969"
-      ],
-      [
-        "15",
-        "Hamburger SV",
-        "1",
-        "1982"
-      ],
-      [
-        "15",
-        "Manchester City",
-        "1",
-        "2022"
-      ],
-      [
-        "15",
-        "Marseille",
-        "1",
-        "1992"
-      ],
-      [
-        "15",
-        "PSV Eindhoven",
-        "1",
-        "1987"
-      ],
-      [
-        "15",
-        "Red Star Belgrade",
-        "1",
-        "1990"
-      ],
-      [
-        "15",
-        "Steaua București",
-        "1",
-        "1985"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most Champions League titles?",
-        "a": "Real Madrid have won the most, with 15 European Cup / Champions League titles — comfortably a record. They won the first five editions from 1956 to 1960 and have led the all-time count ever since."
-      },
-      {
-        "q": "Which club has won the second-most Champions League titles?",
-        "a": "AC Milan are second on the all-time list with seven, ahead of Bayern Munich and Liverpool, who are level on six each."
-      },
-      {
-        "q": "Is this a complete list of Champions League winners?",
-        "a": "This page ranks clubs by number of titles. For the full season-by-season list of every final, winner, runner-up and score, see our Champions League winners list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the Champions League"
-  },
-  {
     "slug": "most-ballon-dors",
     "h1": "Players With the Most Ballon d'Or Awards",
     "title": "Most Ballon d'Ors: Every Multiple Winner, by Year | Ball IQ",
@@ -5332,164 +5983,6 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "the Ballon d'Or"
-  },
-  {
-    "slug": "most-world-cups",
-    "h1": "Countries With the Most World Cup Wins",
-    "title": "Most World Cup Wins: Brazil, 5 | Ball IQ",
-    "description": "Which country has won the most World Cups? Brazil lead with five. Every nation to win the FIFA World Cup, ranked by titles, with the years.",
-    "intro": [
-      "Only eight nations have ever won the FIFA World Cup since it began in 1930. This page ranks them by number of titles, from Brazil's record five down to England's single triumph in 1966.",
-      "Brazil are the benchmark with five, the only side to have played at every finals. Italy and Germany follow on four apiece — Germany's tally combining their three wins as West Germany with the 2014 title won as a reunified nation."
-    ],
-    "columns": [
-      "Rank",
-      "Country",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Brazil",
-        "5",
-        "1958, 1962, 1970, 1994, 2002"
-      ],
-      [
-        "2",
-        "Germany",
-        "4",
-        "1954, 1974, 1990, 2014"
-      ],
-      [
-        "2",
-        "Italy",
-        "4",
-        "1934, 1938, 1982, 2006"
-      ],
-      [
-        "4",
-        "Argentina",
-        "3",
-        "1978, 1986, 2022"
-      ],
-      [
-        "5",
-        "France",
-        "2",
-        "1998, 2018"
-      ],
-      [
-        "5",
-        "Spain",
-        "2",
-        "2010, 2026"
-      ],
-      [
-        "5",
-        "Uruguay",
-        "2",
-        "1930, 1950"
-      ],
-      [
-        "8",
-        "England",
-        "1",
-        "1966"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which country has won the most World Cups?",
-        "a": "Brazil have won the most, with five titles (1958, 1962, 1970, 1994 and 2002). They are also the only nation to have appeared at every World Cup finals."
-      },
-      {
-        "q": "How many World Cups have Germany won?",
-        "a": "Four — in 1954, 1974 and 1990 as West Germany, and in 2014 as a reunified Germany. That puts them level with Italy on four, behind Brazil."
-      },
-      {
-        "q": "Is this every World Cup winner?",
-        "a": "This page ranks countries by titles. For the full year-by-year list of every final, winner, runner-up, score and host, see our World Cup winners list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the World Cup"
-  },
-  {
-    "slug": "most-premier-league-titles",
-    "h1": "Clubs With the Most Premier League Titles",
-    "title": "Most Premier League Titles: Manchester United, 13 | Ball IQ",
-    "description": "Which club has won the most Premier League titles? Manchester United lead with 13. Every Premier League winner since 1992, ranked by titles.",
-    "intro": [
-      "Since the Premier League began in 1992-93, only seven clubs have won it. This page ranks them by number of titles, from Manchester United's early dominance to Manchester City's modern dynasty.",
-      "Manchester United set the pace with 13 titles, all under Sir Alex Ferguson. Manchester City have closed fast since 2011-12, while Blackburn Rovers and Leicester City remain the only one-off winners to have crashed the established order."
-    ],
-    "columns": [
-      "Rank",
-      "Club",
-      "Titles",
-      "Seasons won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Manchester United",
-        "13",
-        "1992, 1993, 1995, 1996, 1998, 1999, 2000, 2002, 2006, 2007, 2008, 2010, 2012"
-      ],
-      [
-        "2",
-        "Manchester City",
-        "8",
-        "2011, 2013, 2017, 2018, 2020, 2021, 2022, 2023"
-      ],
-      [
-        "3",
-        "Chelsea",
-        "5",
-        "2004, 2005, 2009, 2014, 2016"
-      ],
-      [
-        "4",
-        "Arsenal",
-        "4",
-        "1997, 2001, 2003, 2025"
-      ],
-      [
-        "5",
-        "Liverpool",
-        "2",
-        "2019, 2024"
-      ],
-      [
-        "6",
-        "Blackburn Rovers",
-        "1",
-        "1994"
-      ],
-      [
-        "6",
-        "Leicester City",
-        "1",
-        "2015"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most Premier League titles?",
-        "a": "Manchester United have won the most, with 13 — all under Sir Alex Ferguson between 1993 and 2013. Manchester City are second and closing."
-      },
-      {
-        "q": "Which clubs have won the Premier League only once?",
-        "a": "Blackburn Rovers (1994-95) and Leicester City (2015-16) are the only clubs to have won the Premier League exactly once — Leicester's 5000-1 title is regarded as the greatest shock in the competition's history."
-      },
-      {
-        "q": "Is this every Premier League champion?",
-        "a": "This page ranks clubs by titles. For the full season-by-season list of every champion and runner-up since 1992-93, see our Premier League champions list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the Premier League"
   },
   {
     "slug": "la-liga-top-scorers",
@@ -8522,10 +9015,223 @@ export const LISTS = [
       {
         "q": "Why were early UEFA Cup finals played over two legs?",
         "a": "From 1971-72 until 1996-97 the final was contested across two matches, one at each finalist's home ground, with the winner decided on aggregate score (and away goals or penalties if level). The single-match neutral-venue final was introduced in 1997-98."
+      },
+      {
+        "q": "Which club has won the most Europa League titles?",
+        "a": "Sevilla have won the most, with 7 — all since 2006. No other club has more than three UEFA Cup / Europa League titles."
+      },
+      {
+        "q": "What was the Europa League called before?",
+        "a": "It was the UEFA Cup from its start in 1971-72 until 2008-09, when it was rebranded as the UEFA Europa League and absorbed the old competition's history."
+      },
+      {
+        "q": "Is this every Europa League winner?",
+        "a": "This page ranks clubs by titles. For the full season-by-season list of every final, see our Europa League winners list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "the Europa League"
+    "ctaName": "the Europa League",
+    "also": {
+      "h2": "Clubs With the Most Europa League Titles",
+      "intro": [
+        "Europe's second-tier club competition — the UEFA Cup until 2009, the Europa League since — has been won by clubs from across the continent since 1972. This page ranks every winner by number of titles.",
+        "One club stands far above the rest: Sevilla have made the competition their own with 7 triumphs, all since 2006, a record no one else comes close to. Behind them, a cluster of clubs including Juventus, Inter, Liverpool, Atlético Madrid and Tottenham share three apiece."
+      ],
+      "columns": [
+        "Rank",
+        "Club",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Sevilla",
+          "7",
+          "2005, 2006, 2013, 2014, 2015, 2019, 2022"
+        ],
+        [
+          "2",
+          "Atletico Madrid",
+          "3",
+          "2009, 2011, 2017"
+        ],
+        [
+          "2",
+          "Inter Milan",
+          "3",
+          "1990, 1993, 1997"
+        ],
+        [
+          "2",
+          "Juventus",
+          "3",
+          "1976, 1989, 1992"
+        ],
+        [
+          "2",
+          "Liverpool",
+          "3",
+          "1972, 1975, 2000"
+        ],
+        [
+          "2",
+          "Tottenham Hotspur",
+          "3",
+          "1971, 1983, 2024"
+        ],
+        [
+          "7",
+          "Borussia Monchengladbach",
+          "2",
+          "1974, 1978"
+        ],
+        [
+          "7",
+          "Chelsea",
+          "2",
+          "2012, 2018"
+        ],
+        [
+          "7",
+          "Eintracht Frankfurt",
+          "2",
+          "1979, 2021"
+        ],
+        [
+          "7",
+          "Feyenoord",
+          "2",
+          "1973, 2001"
+        ],
+        [
+          "7",
+          "IFK Goteborg",
+          "2",
+          "1981, 1986"
+        ],
+        [
+          "7",
+          "Parma",
+          "2",
+          "1994, 1998"
+        ],
+        [
+          "7",
+          "Porto",
+          "2",
+          "2002, 2010"
+        ],
+        [
+          "7",
+          "Real Madrid",
+          "2",
+          "1984, 1985"
+        ],
+        [
+          "15",
+          "Ajax",
+          "1",
+          "1991"
+        ],
+        [
+          "15",
+          "Anderlecht",
+          "1",
+          "1982"
+        ],
+        [
+          "15",
+          "Aston Villa",
+          "1",
+          "2025"
+        ],
+        [
+          "15",
+          "Atalanta",
+          "1",
+          "2023"
+        ],
+        [
+          "15",
+          "Bayer Leverkusen",
+          "1",
+          "1987"
+        ],
+        [
+          "15",
+          "Bayern Munich",
+          "1",
+          "1995"
+        ],
+        [
+          "15",
+          "CSKA Moscow",
+          "1",
+          "2004"
+        ],
+        [
+          "15",
+          "Galatasaray",
+          "1",
+          "1999"
+        ],
+        [
+          "15",
+          "Ipswich Town",
+          "1",
+          "1980"
+        ],
+        [
+          "15",
+          "Manchester United",
+          "1",
+          "2016"
+        ],
+        [
+          "15",
+          "Napoli",
+          "1",
+          "1988"
+        ],
+        [
+          "15",
+          "PSV Eindhoven",
+          "1",
+          "1977"
+        ],
+        [
+          "15",
+          "Schalke 04",
+          "1",
+          "1996"
+        ],
+        [
+          "15",
+          "Shakhtar Donetsk",
+          "1",
+          "2008"
+        ],
+        [
+          "15",
+          "Valencia",
+          "1",
+          "2003"
+        ],
+        [
+          "15",
+          "Villarreal",
+          "1",
+          "2020"
+        ],
+        [
+          "15",
+          "Zenit St Petersburg",
+          "1",
+          "2007"
+        ]
+      ]
+    }
   },
   {
     "slug": "afcon-winners",
@@ -8771,10 +9477,133 @@ export const LISTS = [
       {
         "q": "Which countries have hosted the Africa Cup of Nations more than once?",
         "a": "Egypt and Ghana are among the most frequent hosts, having staged the tournament several times each. Ethiopia hosted three of the early editions, while more recent host nations include Angola (2010), Gabon (2017), Cameroon (2021), Ivory Coast (2023) and Morocco (2025)."
+      },
+      {
+        "q": "Which country has won the most AFCON titles?",
+        "a": "Egypt have won the most Africa Cup of Nations titles, with 7 — a record. Cameroon are second with 5 and Ghana third with 4."
+      },
+      {
+        "q": "Who won the most recent AFCON?",
+        "a": "Morocco won the most recent Africa Cup of Nations, held on home soil, beating Senegal in the final."
+      },
+      {
+        "q": "Is this every AFCON winner?",
+        "a": "This page ranks countries by titles. For the full tournament-by-tournament list of every winner, runner-up and host, see our AFCON winners list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "the Africa Cup of Nations"
+    "ctaName": "the Africa Cup of Nations",
+    "also": {
+      "h2": "Countries With the Most AFCON Titles",
+      "intro": [
+        "The Africa Cup of Nations has crowned the continent's champions since 1957. This page ranks every winner by number of titles — a list headed, emphatically, by one nation.",
+        "Egypt are the kings of African football with 7 titles, more than any other country. Cameroon follow on 5 and Ghana on 4, while a broad group of nations from across the continent have all had their moment lifting the trophy."
+      ],
+      "columns": [
+        "Rank",
+        "Country",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Egypt",
+          "7",
+          "1957, 1959, 1986, 1998, 2006, 2008, 2010"
+        ],
+        [
+          "2",
+          "Cameroon",
+          "5",
+          "1984, 1988, 2000, 2002, 2017"
+        ],
+        [
+          "3",
+          "Ghana",
+          "4",
+          "1963, 1965, 1978, 1982"
+        ],
+        [
+          "4",
+          "Ivory Coast",
+          "3",
+          "1992, 2015, 2023"
+        ],
+        [
+          "4",
+          "Nigeria",
+          "3",
+          "1980, 1994, 2013"
+        ],
+        [
+          "6",
+          "Algeria",
+          "2",
+          "1990, 2019"
+        ],
+        [
+          "6",
+          "Morocco",
+          "2",
+          "1976, 2025"
+        ],
+        [
+          "8",
+          "Congo",
+          "1",
+          "1972"
+        ],
+        [
+          "8",
+          "DR Congo",
+          "1",
+          "1968"
+        ],
+        [
+          "8",
+          "Ethiopia",
+          "1",
+          "1962"
+        ],
+        [
+          "8",
+          "Senegal",
+          "1",
+          "2021"
+        ],
+        [
+          "8",
+          "South Africa",
+          "1",
+          "1996"
+        ],
+        [
+          "8",
+          "Sudan",
+          "1",
+          "1970"
+        ],
+        [
+          "8",
+          "Tunisia",
+          "1",
+          "2004"
+        ],
+        [
+          "8",
+          "Zaire",
+          "1",
+          "1974"
+        ],
+        [
+          "8",
+          "Zambia",
+          "1",
+          "2012"
+        ]
+      ]
+    }
   },
   {
     "slug": "copa-america-winners",
@@ -9098,739 +9927,7 @@ export const LISTS = [
       {
         "q": "Has a non-South American country ever won the Copa América?",
         "a": "No. Although guest nations such as Mexico, the United States, Japan and Qatar have taken part, only CONMEBOL members have won the trophy. Mexico came closest, finishing runner-up in 1993 and 2001."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "Copa América"
-  },
-  {
-    "slug": "most-la-liga-titles",
-    "h1": "Clubs With the Most La Liga Titles",
-    "title": "Most La Liga Titles: Real Madrid, 36 | Ball IQ",
-    "description": "Which club has won the most La Liga titles? Real Madrid lead the all-time ranking. Every Spanish league champion since 1929, ranked by titles.",
-    "intro": [
-      "Spain's top flight has been dominated by two clubs since it began in 1929, but the full roll of honour runs deeper. This page ranks every La Liga champion by number of titles, from Real Madrid's record haul down to the one-off winners.",
-      "Real Madrid lead the way with 36 titles, ahead of great rivals Barcelona on 29. Atlético Madrid are comfortably the third force, while Athletic Bilbao and Valencia head the chasing pack of clubs who have broken the duopoly over the decades."
-    ],
-    "columns": [
-      "Rank",
-      "Club",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Real Madrid",
-        "36",
-        "1931, 1932, 1953, 1954, 1956, 1957, 1960, 1961, 1962, 1963, 1964, 1966, 1967, 1968, 1971, 1974, 1975, 1977, 1978, 1979, 1985, 1986, 1987, 1988, 1989, 1994, 1996, 2000, 2002, 2006, 2007, 2011, 2016, 2019, 2021, 2023"
-      ],
-      [
-        "2",
-        "Barcelona",
-        "29",
-        "1928, 1944, 1947, 1948, 1951, 1952, 1958, 1959, 1973, 1984, 1990, 1991, 1992, 1993, 1997, 1998, 2004, 2005, 2008, 2009, 2010, 2012, 2014, 2015, 2017, 2018, 2022, 2024, 2025"
-      ],
-      [
-        "3",
-        "Atletico Madrid",
-        "11",
-        "1939, 1940, 1949, 1950, 1965, 1969, 1972, 1976, 1995, 2013, 2020"
-      ],
-      [
-        "4",
-        "Athletic Bilbao",
-        "8",
-        "1929, 1930, 1933, 1935, 1942, 1955, 1982, 1983"
-      ],
-      [
-        "5",
-        "Valencia",
-        "6",
-        "1941, 1943, 1946, 1970, 2001, 2003"
-      ],
-      [
-        "6",
-        "Real Sociedad",
-        "2",
-        "1980, 1981"
-      ],
-      [
-        "7",
-        "Deportivo La Coruna",
-        "1",
-        "1999"
-      ],
-      [
-        "7",
-        "Real Betis",
-        "1",
-        "1934"
-      ],
-      [
-        "7",
-        "Sevilla",
-        "1",
-        "1945"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most La Liga titles?",
-        "a": "Real Madrid have won the most La Liga titles, with 36. Barcelona are second with 29, and Atlético Madrid third with 11."
       },
-      {
-        "q": "Which clubs have won La Liga besides Real Madrid and Barcelona?",
-        "a": "Nine clubs in total have won La Liga. Beyond Real Madrid and Barcelona, Atlético Madrid, Athletic Bilbao, Valencia, Real Sociedad, Deportivo La Coruña, Sevilla and Real Betis have all been champions of Spain."
-      },
-      {
-        "q": "Is this every La Liga champion?",
-        "a": "This page ranks clubs by number of titles. For the full season-by-season list of every La Liga champion and runner-up, see our La Liga champions list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "La Liga"
-  },
-  {
-    "slug": "most-bundesliga-titles",
-    "h1": "Clubs With the Most Bundesliga Titles",
-    "title": "Most Bundesliga Titles: Bayern Munich, 34 | Ball IQ",
-    "description": "Which club has won the most Bundesliga titles? Bayern Munich dominate the all-time ranking. Every German champion since 1963, ranked by titles.",
-    "intro": [
-      "Germany's Bundesliga was founded in 1963, and while one club has towered over it, the title has still travelled widely across the country. This page ranks every Bundesliga champion by number of titles.",
-      "Bayern Munich's dominance is without parallel in Europe's big leagues: they hold 34 Bundesliga titles, many times more than anyone else. Behind them, Borussia Mönchengladbach and Borussia Dortmund lead a competitive chasing group that also includes Werder Bremen, Hamburg and Stuttgart."
-    ],
-    "columns": [
-      "Rank",
-      "Club",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Bayern Munich",
-        "34",
-        "1968, 1971, 1972, 1973, 1979, 1980, 1984, 1985, 1986, 1988, 1989, 1993, 1996, 1998, 1999, 2000, 2002, 2004, 2005, 2007, 2009, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025"
-      ],
-      [
-        "2",
-        "Borussia Dortmund",
-        "5",
-        "1994, 1995, 2001, 2010, 2011"
-      ],
-      [
-        "2",
-        "Borussia Monchengladbach",
-        "5",
-        "1969, 1970, 1974, 1975, 1976"
-      ],
-      [
-        "4",
-        "Werder Bremen",
-        "4",
-        "1964, 1987, 1992, 2003"
-      ],
-      [
-        "5",
-        "Hamburger SV",
-        "3",
-        "1978, 1981, 1982"
-      ],
-      [
-        "5",
-        "VfB Stuttgart",
-        "3",
-        "1983, 1991, 2006"
-      ],
-      [
-        "7",
-        "1. FC Kaiserslautern",
-        "2",
-        "1990, 1997"
-      ],
-      [
-        "7",
-        "1. FC Koln",
-        "2",
-        "1963, 1977"
-      ],
-      [
-        "9",
-        "1. FC Nurnberg",
-        "1",
-        "1967"
-      ],
-      [
-        "9",
-        "Bayer Leverkusen",
-        "1",
-        "2023"
-      ],
-      [
-        "9",
-        "Eintracht Braunschweig",
-        "1",
-        "1966"
-      ],
-      [
-        "9",
-        "TSV 1860 Munich",
-        "1",
-        "1965"
-      ],
-      [
-        "9",
-        "VfL Wolfsburg",
-        "1",
-        "2008"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most Bundesliga titles?",
-        "a": "Bayern Munich have won the most Bundesliga titles by a huge margin, with 34. No other club has more than five."
-      },
-      {
-        "q": "Who has won the Bundesliga besides Bayern Munich?",
-        "a": "Borussia Mönchengladbach and Borussia Dortmund are next with five each, followed by Werder Bremen, Hamburger SV, VfB Stuttgart and others. Bayer Leverkusen won their first title in 2023-24."
-      },
-      {
-        "q": "Is this every Bundesliga champion?",
-        "a": "This page ranks clubs by titles. For the full season-by-season list since 1963-64, see our Bundesliga champions list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the Bundesliga"
-  },
-  {
-    "slug": "most-euros-wins",
-    "h1": "Countries With the Most European Championship Wins",
-    "title": "Most Euros Wins: Spain, 4 | Ball IQ",
-    "description": "Which country has won the most European Championships? Spain lead with four. Every nation to win the Euros, ranked by titles, with the years.",
-    "intro": [
-      "The UEFA European Championship has been held every four years since 1960, and only a handful of nations have ever conquered the continent. This page ranks every Euros winner by number of titles.",
-      "Spain stand alone at the top with 4, having pulled clear with their 2024 triumph. Germany follow with three (two as West Germany, one after reunification), while Italy and France are the only other multiple winners."
-    ],
-    "columns": [
-      "Rank",
-      "Country",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Spain",
-        "4",
-        "1964, 2008, 2012, 2024"
-      ],
-      [
-        "2",
-        "Germany",
-        "3",
-        "1972, 1980, 1996"
-      ],
-      [
-        "3",
-        "France",
-        "2",
-        "1984, 2000"
-      ],
-      [
-        "3",
-        "Italy",
-        "2",
-        "1968, 2020"
-      ],
-      [
-        "5",
-        "Czechoslovakia",
-        "1",
-        "1976"
-      ],
-      [
-        "5",
-        "Denmark",
-        "1",
-        "1992"
-      ],
-      [
-        "5",
-        "Greece",
-        "1",
-        "2004"
-      ],
-      [
-        "5",
-        "Netherlands",
-        "1",
-        "1988"
-      ],
-      [
-        "5",
-        "Portugal",
-        "1",
-        "2016"
-      ],
-      [
-        "5",
-        "Soviet Union",
-        "1",
-        "1960"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which country has won the most Euros?",
-        "a": "Spain have won the most European Championships, with 4 (1964, 2008, 2012 and 2024). Germany are second with three."
-      },
-      {
-        "q": "How many Euros have Germany won?",
-        "a": "Three — in 1972 and 1980 as West Germany, and in 1996 as a reunified Germany. That puts them second behind Spain."
-      },
-      {
-        "q": "Is this every Euros winner?",
-        "a": "This page ranks countries by titles. For the full year-by-year list of every final, winner, runner-up, score and host, see our European Championship winners list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the Euros"
-  },
-  {
-    "slug": "most-ligue-1-titles",
-    "h1": "Clubs With the Most Ligue 1 Titles",
-    "title": "Most Ligue 1 Titles: Paris Saint-Germain, 14 | Ball IQ",
-    "description": "Which club has won the most Ligue 1 titles? Paris Saint-Germain lead the all-time ranking. Every French champion since 1932, ranked by titles.",
-    "intro": [
-      "French football's top flight has crowned champions since 1932, and its history splits neatly into two eras: a long spell where the title moved freely between the country's great clubs, and the recent age of Paris Saint-Germain dominance. This page ranks every Ligue 1 champion by number of titles.",
-      "PSG now lead the all-time list with 14, having pulled clear during the Qatari-ownership era. Saint-Étienne's 10 titles, most from a golden 1960s and 70s, keep them second, just ahead of Marseille. Note that Marseille were stripped of the 1992-93 title amid a match-fixing scandal, so it does not count toward their total."
-    ],
-    "columns": [
-      "Rank",
-      "Club",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Paris Saint-Germain",
-        "14",
-        "1985, 1993, 2012, 2013, 2014, 2015, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025"
-      ],
-      [
-        "2",
-        "Saint-Étienne",
-        "10",
-        "1956, 1963, 1966, 1967, 1968, 1969, 1973, 1974, 1975, 1980"
-      ],
-      [
-        "3",
-        "Marseille",
-        "9",
-        "1936, 1947, 1970, 1971, 1988, 1989, 1990, 1991, 2009"
-      ],
-      [
-        "4",
-        "Monaco",
-        "8",
-        "1960, 1962, 1977, 1981, 1987, 1996, 1999, 2016"
-      ],
-      [
-        "4",
-        "Nantes",
-        "8",
-        "1964, 1965, 1972, 1976, 1979, 1982, 1994, 2000"
-      ],
-      [
-        "6",
-        "Lyon",
-        "7",
-        "2001, 2002, 2003, 2004, 2005, 2006, 2007"
-      ],
-      [
-        "7",
-        "Bordeaux",
-        "6",
-        "1949, 1983, 1984, 1986, 1998, 2008"
-      ],
-      [
-        "7",
-        "Reims",
-        "6",
-        "1948, 1952, 1954, 1957, 1959, 1961"
-      ],
-      [
-        "9",
-        "Lille",
-        "4",
-        "1945, 1953, 2010, 2020"
-      ],
-      [
-        "9",
-        "Nice",
-        "4",
-        "1950, 1951, 1955, 1958"
-      ],
-      [
-        "11",
-        "Sète",
-        "2",
-        "1933, 1938"
-      ],
-      [
-        "11",
-        "Sochaux",
-        "2",
-        "1934, 1937"
-      ],
-      [
-        "13",
-        "Auxerre",
-        "1",
-        "1995"
-      ],
-      [
-        "13",
-        "Lens",
-        "1",
-        "1997"
-      ],
-      [
-        "13",
-        "Montpellier",
-        "1",
-        "2011"
-      ],
-      [
-        "13",
-        "Olympique Lillois",
-        "1",
-        "1932"
-      ],
-      [
-        "13",
-        "RC Paris",
-        "1",
-        "1935"
-      ],
-      [
-        "13",
-        "Roubaix-Tourcoing",
-        "1",
-        "1946"
-      ],
-      [
-        "13",
-        "Strasbourg",
-        "1",
-        "1978"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most Ligue 1 titles?",
-        "a": "Paris Saint-Germain have won the most, with 14. Saint-Étienne are second with 10, and Marseille third."
-      },
-      {
-        "q": "Why is the 1992-93 Ligue 1 title not counted?",
-        "a": "Marseille finished top in 1992-93 but were stripped of the title following a match-fixing scandal, and it was not reassigned. It is the only season with no official champion."
-      },
-      {
-        "q": "Is this every Ligue 1 champion?",
-        "a": "This page ranks clubs by titles. For the full season-by-season list, see our Ligue 1 champions list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "Ligue 1"
-  },
-  {
-    "slug": "most-europa-league-titles",
-    "h1": "Clubs With the Most Europa League Titles",
-    "title": "Most Europa League Titles: Sevilla, 7 | Ball IQ",
-    "description": "Which club has won the most Europa League / UEFA Cup titles? Sevilla lead by a distance. Every winner ranked, with the years they lifted it.",
-    "intro": [
-      "Europe's second-tier club competition — the UEFA Cup until 2009, the Europa League since — has been won by clubs from across the continent since 1972. This page ranks every winner by number of titles.",
-      "One club stands far above the rest: Sevilla have made the competition their own with 7 triumphs, all since 2006, a record no one else comes close to. Behind them, a cluster of clubs including Juventus, Inter, Liverpool, Atlético Madrid and Tottenham share three apiece."
-    ],
-    "columns": [
-      "Rank",
-      "Club",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Sevilla",
-        "7",
-        "2005, 2006, 2013, 2014, 2015, 2019, 2022"
-      ],
-      [
-        "2",
-        "Atletico Madrid",
-        "3",
-        "2009, 2011, 2017"
-      ],
-      [
-        "2",
-        "Inter Milan",
-        "3",
-        "1990, 1993, 1997"
-      ],
-      [
-        "2",
-        "Juventus",
-        "3",
-        "1976, 1989, 1992"
-      ],
-      [
-        "2",
-        "Liverpool",
-        "3",
-        "1972, 1975, 2000"
-      ],
-      [
-        "2",
-        "Tottenham Hotspur",
-        "3",
-        "1971, 1983, 2024"
-      ],
-      [
-        "7",
-        "Borussia Monchengladbach",
-        "2",
-        "1974, 1978"
-      ],
-      [
-        "7",
-        "Chelsea",
-        "2",
-        "2012, 2018"
-      ],
-      [
-        "7",
-        "Eintracht Frankfurt",
-        "2",
-        "1979, 2021"
-      ],
-      [
-        "7",
-        "Feyenoord",
-        "2",
-        "1973, 2001"
-      ],
-      [
-        "7",
-        "IFK Goteborg",
-        "2",
-        "1981, 1986"
-      ],
-      [
-        "7",
-        "Parma",
-        "2",
-        "1994, 1998"
-      ],
-      [
-        "7",
-        "Porto",
-        "2",
-        "2002, 2010"
-      ],
-      [
-        "7",
-        "Real Madrid",
-        "2",
-        "1984, 1985"
-      ],
-      [
-        "15",
-        "Ajax",
-        "1",
-        "1991"
-      ],
-      [
-        "15",
-        "Anderlecht",
-        "1",
-        "1982"
-      ],
-      [
-        "15",
-        "Aston Villa",
-        "1",
-        "2025"
-      ],
-      [
-        "15",
-        "Atalanta",
-        "1",
-        "2023"
-      ],
-      [
-        "15",
-        "Bayer Leverkusen",
-        "1",
-        "1987"
-      ],
-      [
-        "15",
-        "Bayern Munich",
-        "1",
-        "1995"
-      ],
-      [
-        "15",
-        "CSKA Moscow",
-        "1",
-        "2004"
-      ],
-      [
-        "15",
-        "Galatasaray",
-        "1",
-        "1999"
-      ],
-      [
-        "15",
-        "Ipswich Town",
-        "1",
-        "1980"
-      ],
-      [
-        "15",
-        "Manchester United",
-        "1",
-        "2016"
-      ],
-      [
-        "15",
-        "Napoli",
-        "1",
-        "1988"
-      ],
-      [
-        "15",
-        "PSV Eindhoven",
-        "1",
-        "1977"
-      ],
-      [
-        "15",
-        "Schalke 04",
-        "1",
-        "1996"
-      ],
-      [
-        "15",
-        "Shakhtar Donetsk",
-        "1",
-        "2008"
-      ],
-      [
-        "15",
-        "Valencia",
-        "1",
-        "2003"
-      ],
-      [
-        "15",
-        "Villarreal",
-        "1",
-        "2020"
-      ],
-      [
-        "15",
-        "Zenit St Petersburg",
-        "1",
-        "2007"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most Europa League titles?",
-        "a": "Sevilla have won the most, with 7 — all since 2006. No other club has more than three UEFA Cup / Europa League titles."
-      },
-      {
-        "q": "What was the Europa League called before?",
-        "a": "It was the UEFA Cup from its start in 1971-72 until 2008-09, when it was rebranded as the UEFA Europa League and absorbed the old competition's history."
-      },
-      {
-        "q": "Is this every Europa League winner?",
-        "a": "This page ranks clubs by titles. For the full season-by-season list of every final, see our Europa League winners list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the Europa League"
-  },
-  {
-    "slug": "most-copa-america-titles",
-    "h1": "Countries With the Most Copa América Titles",
-    "title": "Most Copa América Titles: Argentina, 16 | Ball IQ",
-    "description": "Which country has won the most Copa América titles? Argentina and Uruguay lead the oldest international tournament. Every winner ranked by titles.",
-    "intro": [
-      "The Copa América, first held in 1916, is the oldest international football tournament in the world. This page ranks every winner by number of titles — a race led, as ever, by South America's two grand old rivals.",
-      "Argentina lead the all-time count with 16, having edged clear of Uruguay (15) with their 2021 and 2024 triumphs. Brazil are third with 9, and only a handful of other nations — Peru, Paraguay, Chile, Bolivia and Colombia — have ever lifted the trophy."
-    ],
-    "columns": [
-      "Rank",
-      "Country",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Argentina",
-        "16",
-        "1921, 1925, 1927, 1929, 1937, 1941, 1945, 1946, 1947, 1955, 1957, 1959, 1991, 1993, 2021, 2024"
-      ],
-      [
-        "2",
-        "Uruguay",
-        "15",
-        "1916, 1917, 1920, 1923, 1924, 1926, 1935, 1942, 1956, 1959, 1967, 1983, 1987, 1995, 2011"
-      ],
-      [
-        "3",
-        "Brazil",
-        "9",
-        "1919, 1922, 1949, 1989, 1997, 1999, 2004, 2007, 2019"
-      ],
-      [
-        "4",
-        "Chile",
-        "2",
-        "2015, 2016"
-      ],
-      [
-        "4",
-        "Paraguay",
-        "2",
-        "1953, 1979"
-      ],
-      [
-        "4",
-        "Peru",
-        "2",
-        "1939, 1975"
-      ],
-      [
-        "7",
-        "Bolivia",
-        "1",
-        "1963"
-      ],
-      [
-        "7",
-        "Colombia",
-        "1",
-        "2001"
-      ]
-    ],
-    "faq": [
       {
         "q": "Which country has won the most Copa América titles?",
         "a": "Argentina have won the most, with 16, just ahead of Uruguay on 15. Brazil are third with 9."
@@ -9845,137 +9942,70 @@ export const LISTS = [
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "Copa América"
-  },
-  {
-    "slug": "most-afcon-titles",
-    "h1": "Countries With the Most AFCON Titles",
-    "title": "Most AFCON Titles: Egypt, 7 | Ball IQ",
-    "description": "Which country has won the most Africa Cup of Nations titles? Egypt lead with a record haul. Every AFCON winner ranked by titles, with the years.",
-    "intro": [
-      "The Africa Cup of Nations has crowned the continent's champions since 1957. This page ranks every winner by number of titles — a list headed, emphatically, by one nation.",
-      "Egypt are the kings of African football with 7 titles, more than any other country. Cameroon follow on 5 and Ghana on 4, while a broad group of nations from across the continent have all had their moment lifting the trophy."
-    ],
-    "columns": [
-      "Rank",
-      "Country",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Egypt",
-        "7",
-        "1957, 1959, 1986, 1998, 2006, 2008, 2010"
+    "ctaName": "Copa América",
+    "also": {
+      "h2": "Countries With the Most Copa América Titles",
+      "intro": [
+        "The Copa América, first held in 1916, is the oldest international football tournament in the world. This page ranks every winner by number of titles — a race led, as ever, by South America's two grand old rivals.",
+        "Argentina lead the all-time count with 16, having edged clear of Uruguay (15) with their 2021 and 2024 triumphs. Brazil are third with 9, and only a handful of other nations — Peru, Paraguay, Chile, Bolivia and Colombia — have ever lifted the trophy."
       ],
-      [
-        "2",
-        "Cameroon",
-        "5",
-        "1984, 1988, 2000, 2002, 2017"
+      "columns": [
+        "Rank",
+        "Country",
+        "Titles",
+        "Years won"
       ],
-      [
-        "3",
-        "Ghana",
-        "4",
-        "1963, 1965, 1978, 1982"
-      ],
-      [
-        "4",
-        "Ivory Coast",
-        "3",
-        "1992, 2015, 2023"
-      ],
-      [
-        "4",
-        "Nigeria",
-        "3",
-        "1980, 1994, 2013"
-      ],
-      [
-        "6",
-        "Algeria",
-        "2",
-        "1990, 2019"
-      ],
-      [
-        "6",
-        "Morocco",
-        "2",
-        "1976, 2025"
-      ],
-      [
-        "8",
-        "Congo",
-        "1",
-        "1972"
-      ],
-      [
-        "8",
-        "DR Congo",
-        "1",
-        "1968"
-      ],
-      [
-        "8",
-        "Ethiopia",
-        "1",
-        "1962"
-      ],
-      [
-        "8",
-        "Senegal",
-        "1",
-        "2021"
-      ],
-      [
-        "8",
-        "South Africa",
-        "1",
-        "1996"
-      ],
-      [
-        "8",
-        "Sudan",
-        "1",
-        "1970"
-      ],
-      [
-        "8",
-        "Tunisia",
-        "1",
-        "2004"
-      ],
-      [
-        "8",
-        "Zaire",
-        "1",
-        "1974"
-      ],
-      [
-        "8",
-        "Zambia",
-        "1",
-        "2012"
+      "rows": [
+        [
+          "1",
+          "Argentina",
+          "16",
+          "1921, 1925, 1927, 1929, 1937, 1941, 1945, 1946, 1947, 1955, 1957, 1959, 1991, 1993, 2021, 2024"
+        ],
+        [
+          "2",
+          "Uruguay",
+          "15",
+          "1916, 1917, 1920, 1923, 1924, 1926, 1935, 1942, 1956, 1959, 1967, 1983, 1987, 1995, 2011"
+        ],
+        [
+          "3",
+          "Brazil",
+          "9",
+          "1919, 1922, 1949, 1989, 1997, 1999, 2004, 2007, 2019"
+        ],
+        [
+          "4",
+          "Chile",
+          "2",
+          "2015, 2016"
+        ],
+        [
+          "4",
+          "Paraguay",
+          "2",
+          "1953, 1979"
+        ],
+        [
+          "4",
+          "Peru",
+          "2",
+          "1939, 1975"
+        ],
+        [
+          "7",
+          "Bolivia",
+          "1",
+          "1963"
+        ],
+        [
+          "7",
+          "Colombia",
+          "1",
+          "2001"
+        ]
       ]
-    ],
-    "faq": [
-      {
-        "q": "Which country has won the most AFCON titles?",
-        "a": "Egypt have won the most Africa Cup of Nations titles, with 7 — a record. Cameroon are second with 5 and Ghana third with 4."
-      },
-      {
-        "q": "Who won the most recent AFCON?",
-        "a": "Morocco won the most recent Africa Cup of Nations, held on home soil, beating Senegal in the final."
-      },
-      {
-        "q": "Is this every AFCON winner?",
-        "a": "This page ranks countries by titles. For the full tournament-by-tournament list of every winner, runner-up and host, see our AFCON winners list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the Africa Cup of Nations"
+    }
   },
   {
     "slug": "fa-cup-winners",
@@ -10881,10 +10911,303 @@ export const LISTS = [
       {
         "q": "When was the last FA Cup final replay?",
         "a": "The last final decided by a replay was in 1993, when Arsenal beat Sheffield Wednesday 2-1 after extra time in the replay. Finals level after extra time have since been settled by a penalty shoot-out, as in 2005, 2006 and 2022."
+      },
+      {
+        "q": "How old is the FA Cup?",
+        "a": "The FA Cup is the oldest national football competition in the world, first played in the 1871-72 season — 16 years before the Football League existed."
+      },
+      {
+        "q": "Is this every FA Cup winner?",
+        "a": "This page ranks clubs by number of wins. For the full season-by-season list of every final, winner, runner-up and score, see our FA Cup winners list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "the FA Cup"
+    "ctaName": "the FA Cup",
+    "also": {
+      "h2": "Clubs With the Most FA Cups",
+      "intro": [
+        "The FA Cup, first contested in 1871-72, is the oldest football competition in the world — and over 150 years it has been lifted by dozens of clubs. This page ranks them all by number of wins.",
+        "Arsenal lead the way with 14 FA Cups, narrowly ahead of Manchester United on 13. A cluster of historic names — Tottenham, Liverpool, Aston Villa, Chelsea and Manchester City among them — fill out the top of a roll of honour that stretches back to Victorian amateur sides."
+      ],
+      "columns": [
+        "Rank",
+        "Club",
+        "FA Cups",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Arsenal",
+          "14",
+          "1929, 1935, 1949, 1970, 1978, 1992, 1997, 2001, 2002, 2004, 2013, 2014, 2016, 2019"
+        ],
+        [
+          "2",
+          "Manchester United",
+          "13",
+          "1908, 1947, 1962, 1976, 1982, 1984, 1989, 1993, 1995, 1998, 2003, 2015, 2023"
+        ],
+        [
+          "3",
+          "Chelsea",
+          "8",
+          "1969, 1996, 1999, 2006, 2008, 2009, 2011, 2017"
+        ],
+        [
+          "3",
+          "Liverpool",
+          "8",
+          "1964, 1973, 1985, 1988, 1991, 2000, 2005, 2021"
+        ],
+        [
+          "3",
+          "Manchester City",
+          "8",
+          "1903, 1933, 1955, 1968, 2010, 2018, 2022, 2025"
+        ],
+        [
+          "3",
+          "Tottenham Hotspur",
+          "8",
+          "1900, 1920, 1960, 1961, 1966, 1980, 1981, 1990"
+        ],
+        [
+          "7",
+          "Aston Villa",
+          "7",
+          "1886, 1894, 1896, 1904, 1912, 1919, 1956"
+        ],
+        [
+          "8",
+          "Blackburn Rovers",
+          "6",
+          "1883, 1884, 1885, 1889, 1890, 1927"
+        ],
+        [
+          "8",
+          "Newcastle United",
+          "6",
+          "1909, 1923, 1931, 1950, 1951, 1954"
+        ],
+        [
+          "10",
+          "Everton",
+          "5",
+          "1905, 1932, 1965, 1983, 1994"
+        ],
+        [
+          "10",
+          "Wanderers",
+          "5",
+          "1871, 1872, 1875, 1876, 1877"
+        ],
+        [
+          "10",
+          "West Bromwich Albion",
+          "5",
+          "1887, 1891, 1930, 1953, 1967"
+        ],
+        [
+          "13",
+          "Bolton Wanderers",
+          "4",
+          "1922, 1925, 1928, 1957"
+        ],
+        [
+          "13",
+          "Sheffield United",
+          "4",
+          "1898, 1901, 1914, 1924"
+        ],
+        [
+          "13",
+          "Wolverhampton Wanderers",
+          "4",
+          "1892, 1907, 1948, 1959"
+        ],
+        [
+          "16",
+          "Sheffield Wednesday",
+          "3",
+          "1895, 1906, 1934"
+        ],
+        [
+          "16",
+          "West Ham United",
+          "3",
+          "1963, 1974, 1979"
+        ],
+        [
+          "18",
+          "Bury",
+          "2",
+          "1899, 1902"
+        ],
+        [
+          "18",
+          "Nottingham Forest",
+          "2",
+          "1897, 1958"
+        ],
+        [
+          "18",
+          "Old Etonians",
+          "2",
+          "1878, 1881"
+        ],
+        [
+          "18",
+          "Portsmouth",
+          "2",
+          "1938, 2007"
+        ],
+        [
+          "18",
+          "Preston North End",
+          "2",
+          "1888, 1937"
+        ],
+        [
+          "18",
+          "Sunderland",
+          "2",
+          "1936, 1972"
+        ],
+        [
+          "24",
+          "Barnsley",
+          "1",
+          "1911"
+        ],
+        [
+          "24",
+          "Blackburn Olympic",
+          "1",
+          "1882"
+        ],
+        [
+          "24",
+          "Blackpool",
+          "1",
+          "1952"
+        ],
+        [
+          "24",
+          "Bradford City",
+          "1",
+          "1910"
+        ],
+        [
+          "24",
+          "Burnley",
+          "1",
+          "1913"
+        ],
+        [
+          "24",
+          "Cardiff City",
+          "1",
+          "1926"
+        ],
+        [
+          "24",
+          "Charlton Athletic",
+          "1",
+          "1946"
+        ],
+        [
+          "24",
+          "Clapham Rovers",
+          "1",
+          "1879"
+        ],
+        [
+          "24",
+          "Coventry City",
+          "1",
+          "1986"
+        ],
+        [
+          "24",
+          "Crystal Palace",
+          "1",
+          "2024"
+        ],
+        [
+          "24",
+          "Derby County",
+          "1",
+          "1945"
+        ],
+        [
+          "24",
+          "Huddersfield Town",
+          "1",
+          "1921"
+        ],
+        [
+          "24",
+          "Ipswich Town",
+          "1",
+          "1977"
+        ],
+        [
+          "24",
+          "Leeds United",
+          "1",
+          "1971"
+        ],
+        [
+          "24",
+          "Leicester City",
+          "1",
+          "2020"
+        ],
+        [
+          "24",
+          "Notts County",
+          "1",
+          "1893"
+        ],
+        [
+          "24",
+          "Old Carthusians",
+          "1",
+          "1880"
+        ],
+        [
+          "24",
+          "Oxford University",
+          "1",
+          "1873"
+        ],
+        [
+          "24",
+          "Royal Engineers",
+          "1",
+          "1874"
+        ],
+        [
+          "24",
+          "Southampton",
+          "1",
+          "1975"
+        ],
+        [
+          "24",
+          "Wigan Athletic",
+          "1",
+          "2012"
+        ],
+        [
+          "24",
+          "Wimbledon",
+          "1",
+          "1987"
+        ]
+      ]
+    }
   },
   {
     "slug": "efl-cup-winners",
@@ -13584,10 +13907,195 @@ export const LISTS = [
       {
         "q": "Has a club ever won the Copa Libertadores three years in a row?",
         "a": "No. Independiente's four straight titles from 1972 to 1975 is the longest winning streak. Several clubs have gone back-to-back, including Peñarol, Estudiantes, Boca Juniors and, most recently, Palmeiras in 2020 and 2021, but no side has taken three consecutive editions."
+      },
+      {
+        "q": "What is the Copa Libertadores?",
+        "a": "It is South America's top club competition, played since 1960 — the continental championship whose winner represents CONMEBOL, comparable to the UEFA Champions League in Europe."
+      },
+      {
+        "q": "Is this every Copa Libertadores winner?",
+        "a": "This page ranks clubs by titles. For the full year-by-year list, see our Copa Libertadores winners list."
       }
     ],
     "updated": "2026-07-20",
-    "ctaName": "the Copa Libertadores"
+    "ctaName": "the Copa Libertadores",
+    "also": {
+      "h2": "Clubs With the Most Copa Libertadores Titles",
+      "intro": [
+        "The Copa Libertadores is South America's premier club competition, the continent's equivalent of the Champions League, contested since 1960. This page ranks every winner by number of titles.",
+        "Independiente of Argentina set the benchmark with 7, the most in the tournament's history. Fellow Argentine giants Boca Juniors and Uruguay's Peñarol lead the chase, ahead of the great Brazilian clubs who have dominated the modern era."
+      ],
+      "columns": [
+        "Rank",
+        "Club",
+        "Titles",
+        "Years won"
+      ],
+      "rows": [
+        [
+          "1",
+          "Independiente",
+          "7",
+          "1964, 1965, 1972, 1973, 1974, 1975, 1984"
+        ],
+        [
+          "2",
+          "Boca Juniors",
+          "6",
+          "1977, 1978, 2000, 2001, 2003, 2007"
+        ],
+        [
+          "3",
+          "Peñarol",
+          "5",
+          "1960, 1961, 1966, 1982, 1987"
+        ],
+        [
+          "4",
+          "Estudiantes",
+          "4",
+          "1968, 1969, 1970, 2009"
+        ],
+        [
+          "4",
+          "Flamengo",
+          "4",
+          "1981, 2019, 2022, 2025"
+        ],
+        [
+          "4",
+          "River Plate",
+          "4",
+          "1986, 1996, 2015, 2018"
+        ],
+        [
+          "7",
+          "Grêmio",
+          "3",
+          "1983, 1995, 2017"
+        ],
+        [
+          "7",
+          "Nacional",
+          "3",
+          "1971, 1980, 1988"
+        ],
+        [
+          "7",
+          "Olimpia",
+          "3",
+          "1979, 1990, 2002"
+        ],
+        [
+          "7",
+          "Palmeiras",
+          "3",
+          "1999, 2020, 2021"
+        ],
+        [
+          "7",
+          "Santos",
+          "3",
+          "1962, 1963, 2011"
+        ],
+        [
+          "7",
+          "São Paulo",
+          "3",
+          "1992, 1993, 2005"
+        ],
+        [
+          "13",
+          "Atlético Nacional",
+          "2",
+          "1989, 2016"
+        ],
+        [
+          "13",
+          "Cruzeiro",
+          "2",
+          "1976, 1997"
+        ],
+        [
+          "13",
+          "Internacional",
+          "2",
+          "2006, 2010"
+        ],
+        [
+          "16",
+          "Argentinos Juniors",
+          "1",
+          "1985"
+        ],
+        [
+          "16",
+          "Atlético Mineiro",
+          "1",
+          "2013"
+        ],
+        [
+          "16",
+          "Botafogo",
+          "1",
+          "2024"
+        ],
+        [
+          "16",
+          "Colo-Colo",
+          "1",
+          "1991"
+        ],
+        [
+          "16",
+          "Corinthians",
+          "1",
+          "2012"
+        ],
+        [
+          "16",
+          "Fluminense",
+          "1",
+          "2023"
+        ],
+        [
+          "16",
+          "LDU Quito",
+          "1",
+          "2008"
+        ],
+        [
+          "16",
+          "Once Caldas",
+          "1",
+          "2004"
+        ],
+        [
+          "16",
+          "Racing",
+          "1",
+          "1967"
+        ],
+        [
+          "16",
+          "San Lorenzo",
+          "1",
+          "2014"
+        ],
+        [
+          "16",
+          "Vasco da Gama",
+          "1",
+          "1998"
+        ],
+        [
+          "16",
+          "Vélez Sarsfield",
+          "1",
+          "1994"
+        ]
+      ]
+    }
   },
   {
     "slug": "club-world-cup-winners",
@@ -16297,641 +16805,6 @@ export const LISTS = [
     ],
     "updated": "2026-07-20",
     "ctaName": "the Gold Cup"
-  },
-  {
-    "slug": "most-serie-a-titles",
-    "h1": "Clubs With the Most Serie A Titles (Scudetti)",
-    "title": "Most Serie A Titles: Juventus, 36 | Ball IQ",
-    "description": "The clubs with the most Serie A titles, ranked by official FIGC-recognised Scudetti — from Juventus and Inter down to every one-time Italian champion.",
-    "intro": [
-      "Italy's league champions wear the Scudetto, the small tricolour shield sewn onto the following season's shirt, and only sixteen clubs have earned the right to do so since the national championship began in 1898. The competition took its modern round-robin \"Serie A\" form in 1929, but the honours roll is counted continuously from those earliest pioneer-era titles, which is why clubs like Genoa and Pro Vercelli sit high on the all-time list despite not having won in a century.",
-      "Three clubs tower over the rest. Juventus lead the way, followed by the two Milan giants, Internazionale and AC Milan — Inter's total stretching back to their 1908 founding and the Ambrosiana-Inter years of the 1930s. Below them, a cluster of historic names from the game's formative decades (Torino, Bologna, Pro Vercelli) share seven apiece, while a modern chasing pack led by Napoli reflects how the balance of power keeps shifting.",
-      "One stretch of the record book carries an asterisk. The 2006 Calciopoli scandal saw Juventus stripped of their 2004-05 title, which was left unassigned, and their 2005-06 title, which was reassigned to Inter. Both clubs dispute aspects of the outcome to this day, so the figures below use the counts officially recognised by the FIGC, the Italian federation, with the controversy explained in full."
-    ],
-    "columns": [
-      "Rank",
-      "Club",
-      "Titles",
-      "Notable years"
-    ],
-    "rows": [
-      [
-        "1",
-        "Juventus",
-        "36",
-        "First title 1905; five straight 1930–31 to 1934–35; a record nine in a row from 2011–12 to 2019–20. Two further titles (2004–05, 2005–06) were revoked in Calciopoli."
-      ],
-      [
-        "2",
-        "Internazionale (Inter)",
-        "21",
-        "1909–10; the Grande Inter era 1962–66; Ambrosiana-Inter titles of the 1930s; awarded 2005–06; plus 2020–21, 2023–24 and 2025–26."
-      ],
-      [
-        "3",
-        "AC Milan",
-        "19",
-        "1901; the Sacchi–Capello dynasty of the late 1980s and 1990s; 2003–04; 2010–11; most recently 2021–22."
-      ],
-      [
-        "4",
-        "Genoa",
-        "9",
-        "Won six of the first seven Italian championships (1898–1904); last crowned in 1923–24."
-      ],
-      [
-        "5",
-        "Torino",
-        "7",
-        "Il Grande Torino claimed five Scudetti in the 1940s; last title in 1975–76."
-      ],
-      [
-        "5",
-        "Bologna",
-        "7",
-        "A power of the pre-war game, winning from 1924–25 through 1940–41; last in 1963–64."
-      ],
-      [
-        "5",
-        "Pro Vercelli",
-        "7",
-        "Seven titles between 1908 and 1922, one of the sport's original Italian dynasties."
-      ],
-      [
-        "8",
-        "Napoli",
-        "4",
-        "1986–87 and 1989–90 with Diego Maradona; then 2022–23 and 2024–25."
-      ],
-      [
-        "9",
-        "Roma",
-        "3",
-        "1941–42; 1982–83; 2000–01."
-      ],
-      [
-        "10",
-        "Fiorentina",
-        "2",
-        "1955–56 and 1968–69."
-      ],
-      [
-        "10",
-        "Lazio",
-        "2",
-        "1973–74 and 1999–2000."
-      ],
-      [
-        "12",
-        "Cagliari",
-        "1",
-        "1969–70, inspired by Gigi Riva."
-      ],
-      [
-        "12",
-        "Casale",
-        "1",
-        "1913–14."
-      ],
-      [
-        "12",
-        "Hellas Verona",
-        "1",
-        "1984–85, one of the great Serie A upsets."
-      ],
-      [
-        "12",
-        "Novese",
-        "1",
-        "1921–22."
-      ],
-      [
-        "12",
-        "Sampdoria",
-        "1",
-        "1990–91."
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most Serie A titles?",
-        "a": "Juventus, with 36 Scudetti officially recognised by the FIGC — comfortably ahead of Internazionale on 21 and AC Milan on 19. Juventus also hold the record for the longest winning streak, nine consecutive titles from 2011–12 to 2019–20."
-      },
-      {
-        "q": "What happened to Juventus's 2004-05 and 2005-06 titles?",
-        "a": "Following the 2006 Calciopoli refereeing scandal, the FIGC revoked both. The 2004-05 Scudetto was cancelled and left unassigned, so no club holds it. The 2005-06 title was stripped from Juventus and awarded to Inter. Juventus won both on the pitch and still claim the 2004-05 crown, but neither counts toward their recognised total of 36 — hence the difference between Juventus's own tally and the federation's figure used here."
-      },
-      {
-        "q": "Who won the most recent Serie A title?",
-        "a": "Inter won the 2025-26 Scudetto, their 21st, finishing clear of Napoli. Before that, Napoli took the 2024-25 title (their fourth) and Inter won 2023-24 (their 20th)."
-      },
-      {
-        "q": "Why does Inter's total include the Ambrosiana-Inter era?",
-        "a": "Under Italy's Fascist regime, Inter were forced to merge and play as Ambrosiana (later Ambrosiana-Inter) from 1928 to 1945, winning titles in 1929–30 and the late 1930s under that name. The club is legally continuous, so those Scudetti count toward Inter's all-time total of 21."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "Serie A"
-  },
-  {
-    "slug": "most-fa-cups",
-    "h1": "Clubs With the Most FA Cups",
-    "title": "Most FA Cups: Arsenal, 14 | Ball IQ",
-    "description": "Which club has won the most FA Cups? The full ranking of every FA Cup winner by number of titles, from the record holders down.",
-    "intro": [
-      "The FA Cup, first contested in 1871-72, is the oldest football competition in the world — and over 150 years it has been lifted by dozens of clubs. This page ranks them all by number of wins.",
-      "Arsenal lead the way with 14 FA Cups, narrowly ahead of Manchester United on 13. A cluster of historic names — Tottenham, Liverpool, Aston Villa, Chelsea and Manchester City among them — fill out the top of a roll of honour that stretches back to Victorian amateur sides."
-    ],
-    "columns": [
-      "Rank",
-      "Club",
-      "FA Cups",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Arsenal",
-        "14",
-        "1929, 1935, 1949, 1970, 1978, 1992, 1997, 2001, 2002, 2004, 2013, 2014, 2016, 2019"
-      ],
-      [
-        "2",
-        "Manchester United",
-        "13",
-        "1908, 1947, 1962, 1976, 1982, 1984, 1989, 1993, 1995, 1998, 2003, 2015, 2023"
-      ],
-      [
-        "3",
-        "Chelsea",
-        "8",
-        "1969, 1996, 1999, 2006, 2008, 2009, 2011, 2017"
-      ],
-      [
-        "3",
-        "Liverpool",
-        "8",
-        "1964, 1973, 1985, 1988, 1991, 2000, 2005, 2021"
-      ],
-      [
-        "3",
-        "Manchester City",
-        "8",
-        "1903, 1933, 1955, 1968, 2010, 2018, 2022, 2025"
-      ],
-      [
-        "3",
-        "Tottenham Hotspur",
-        "8",
-        "1900, 1920, 1960, 1961, 1966, 1980, 1981, 1990"
-      ],
-      [
-        "7",
-        "Aston Villa",
-        "7",
-        "1886, 1894, 1896, 1904, 1912, 1919, 1956"
-      ],
-      [
-        "8",
-        "Blackburn Rovers",
-        "6",
-        "1883, 1884, 1885, 1889, 1890, 1927"
-      ],
-      [
-        "8",
-        "Newcastle United",
-        "6",
-        "1909, 1923, 1931, 1950, 1951, 1954"
-      ],
-      [
-        "10",
-        "Everton",
-        "5",
-        "1905, 1932, 1965, 1983, 1994"
-      ],
-      [
-        "10",
-        "Wanderers",
-        "5",
-        "1871, 1872, 1875, 1876, 1877"
-      ],
-      [
-        "10",
-        "West Bromwich Albion",
-        "5",
-        "1887, 1891, 1930, 1953, 1967"
-      ],
-      [
-        "13",
-        "Bolton Wanderers",
-        "4",
-        "1922, 1925, 1928, 1957"
-      ],
-      [
-        "13",
-        "Sheffield United",
-        "4",
-        "1898, 1901, 1914, 1924"
-      ],
-      [
-        "13",
-        "Wolverhampton Wanderers",
-        "4",
-        "1892, 1907, 1948, 1959"
-      ],
-      [
-        "16",
-        "Sheffield Wednesday",
-        "3",
-        "1895, 1906, 1934"
-      ],
-      [
-        "16",
-        "West Ham United",
-        "3",
-        "1963, 1974, 1979"
-      ],
-      [
-        "18",
-        "Bury",
-        "2",
-        "1899, 1902"
-      ],
-      [
-        "18",
-        "Nottingham Forest",
-        "2",
-        "1897, 1958"
-      ],
-      [
-        "18",
-        "Old Etonians",
-        "2",
-        "1878, 1881"
-      ],
-      [
-        "18",
-        "Portsmouth",
-        "2",
-        "1938, 2007"
-      ],
-      [
-        "18",
-        "Preston North End",
-        "2",
-        "1888, 1937"
-      ],
-      [
-        "18",
-        "Sunderland",
-        "2",
-        "1936, 1972"
-      ],
-      [
-        "24",
-        "Barnsley",
-        "1",
-        "1911"
-      ],
-      [
-        "24",
-        "Blackburn Olympic",
-        "1",
-        "1882"
-      ],
-      [
-        "24",
-        "Blackpool",
-        "1",
-        "1952"
-      ],
-      [
-        "24",
-        "Bradford City",
-        "1",
-        "1910"
-      ],
-      [
-        "24",
-        "Burnley",
-        "1",
-        "1913"
-      ],
-      [
-        "24",
-        "Cardiff City",
-        "1",
-        "1926"
-      ],
-      [
-        "24",
-        "Charlton Athletic",
-        "1",
-        "1946"
-      ],
-      [
-        "24",
-        "Clapham Rovers",
-        "1",
-        "1879"
-      ],
-      [
-        "24",
-        "Coventry City",
-        "1",
-        "1986"
-      ],
-      [
-        "24",
-        "Crystal Palace",
-        "1",
-        "2024"
-      ],
-      [
-        "24",
-        "Derby County",
-        "1",
-        "1945"
-      ],
-      [
-        "24",
-        "Huddersfield Town",
-        "1",
-        "1921"
-      ],
-      [
-        "24",
-        "Ipswich Town",
-        "1",
-        "1977"
-      ],
-      [
-        "24",
-        "Leeds United",
-        "1",
-        "1971"
-      ],
-      [
-        "24",
-        "Leicester City",
-        "1",
-        "2020"
-      ],
-      [
-        "24",
-        "Notts County",
-        "1",
-        "1893"
-      ],
-      [
-        "24",
-        "Old Carthusians",
-        "1",
-        "1880"
-      ],
-      [
-        "24",
-        "Oxford University",
-        "1",
-        "1873"
-      ],
-      [
-        "24",
-        "Royal Engineers",
-        "1",
-        "1874"
-      ],
-      [
-        "24",
-        "Southampton",
-        "1",
-        "1975"
-      ],
-      [
-        "24",
-        "Wigan Athletic",
-        "1",
-        "2012"
-      ],
-      [
-        "24",
-        "Wimbledon",
-        "1",
-        "1987"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most FA Cups?",
-        "a": "Arsenal have won the most FA Cups, with 14, just ahead of Manchester United on 13."
-      },
-      {
-        "q": "How old is the FA Cup?",
-        "a": "The FA Cup is the oldest national football competition in the world, first played in the 1871-72 season — 16 years before the Football League existed."
-      },
-      {
-        "q": "Is this every FA Cup winner?",
-        "a": "This page ranks clubs by number of wins. For the full season-by-season list of every final, winner, runner-up and score, see our FA Cup winners list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the FA Cup"
-  },
-  {
-    "slug": "most-copa-libertadores",
-    "h1": "Clubs With the Most Copa Libertadores Titles",
-    "title": "Most Copa Libertadores Titles: Independiente, 7 | Ball IQ",
-    "description": "Which club has won the most Copa Libertadores titles? The full ranking of South America's greatest clubs by continental crowns.",
-    "intro": [
-      "The Copa Libertadores is South America's premier club competition, the continent's equivalent of the Champions League, contested since 1960. This page ranks every winner by number of titles.",
-      "Independiente of Argentina set the benchmark with 7, the most in the tournament's history. Fellow Argentine giants Boca Juniors and Uruguay's Peñarol lead the chase, ahead of the great Brazilian clubs who have dominated the modern era."
-    ],
-    "columns": [
-      "Rank",
-      "Club",
-      "Titles",
-      "Years won"
-    ],
-    "rows": [
-      [
-        "1",
-        "Independiente",
-        "7",
-        "1964, 1965, 1972, 1973, 1974, 1975, 1984"
-      ],
-      [
-        "2",
-        "Boca Juniors",
-        "6",
-        "1977, 1978, 2000, 2001, 2003, 2007"
-      ],
-      [
-        "3",
-        "Peñarol",
-        "5",
-        "1960, 1961, 1966, 1982, 1987"
-      ],
-      [
-        "4",
-        "Estudiantes",
-        "4",
-        "1968, 1969, 1970, 2009"
-      ],
-      [
-        "4",
-        "Flamengo",
-        "4",
-        "1981, 2019, 2022, 2025"
-      ],
-      [
-        "4",
-        "River Plate",
-        "4",
-        "1986, 1996, 2015, 2018"
-      ],
-      [
-        "7",
-        "Grêmio",
-        "3",
-        "1983, 1995, 2017"
-      ],
-      [
-        "7",
-        "Nacional",
-        "3",
-        "1971, 1980, 1988"
-      ],
-      [
-        "7",
-        "Olimpia",
-        "3",
-        "1979, 1990, 2002"
-      ],
-      [
-        "7",
-        "Palmeiras",
-        "3",
-        "1999, 2020, 2021"
-      ],
-      [
-        "7",
-        "Santos",
-        "3",
-        "1962, 1963, 2011"
-      ],
-      [
-        "7",
-        "São Paulo",
-        "3",
-        "1992, 1993, 2005"
-      ],
-      [
-        "13",
-        "Atlético Nacional",
-        "2",
-        "1989, 2016"
-      ],
-      [
-        "13",
-        "Cruzeiro",
-        "2",
-        "1976, 1997"
-      ],
-      [
-        "13",
-        "Internacional",
-        "2",
-        "2006, 2010"
-      ],
-      [
-        "16",
-        "Argentinos Juniors",
-        "1",
-        "1985"
-      ],
-      [
-        "16",
-        "Atlético Mineiro",
-        "1",
-        "2013"
-      ],
-      [
-        "16",
-        "Botafogo",
-        "1",
-        "2024"
-      ],
-      [
-        "16",
-        "Colo-Colo",
-        "1",
-        "1991"
-      ],
-      [
-        "16",
-        "Corinthians",
-        "1",
-        "2012"
-      ],
-      [
-        "16",
-        "Fluminense",
-        "1",
-        "2023"
-      ],
-      [
-        "16",
-        "LDU Quito",
-        "1",
-        "2008"
-      ],
-      [
-        "16",
-        "Once Caldas",
-        "1",
-        "2004"
-      ],
-      [
-        "16",
-        "Racing",
-        "1",
-        "1967"
-      ],
-      [
-        "16",
-        "San Lorenzo",
-        "1",
-        "2014"
-      ],
-      [
-        "16",
-        "Vasco da Gama",
-        "1",
-        "1998"
-      ],
-      [
-        "16",
-        "Vélez Sarsfield",
-        "1",
-        "1994"
-      ]
-    ],
-    "faq": [
-      {
-        "q": "Which club has won the most Copa Libertadores titles?",
-        "a": "Independiente have won the most, with 7 Copa Libertadores titles."
-      },
-      {
-        "q": "What is the Copa Libertadores?",
-        "a": "It is South America's top club competition, played since 1960 — the continental championship whose winner represents CONMEBOL, comparable to the UEFA Champions League in Europe."
-      },
-      {
-        "q": "Is this every Copa Libertadores winner?",
-        "a": "This page ranks clubs by titles. For the full year-by-year list, see our Copa Libertadores winners list."
-      }
-    ],
-    "updated": "2026-07-20",
-    "ctaName": "the Copa Libertadores"
   },
   {
     "slug": "most-coupe-de-france-titles",
