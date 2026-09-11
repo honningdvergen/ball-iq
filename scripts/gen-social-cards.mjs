@@ -51,12 +51,33 @@ import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../src/lib/storeGlyphs.js';
 
 const OUT = fileURLToPath(new URL('../marketing/social', import.meta.url));
 const SIZE = 1080;
-const glyph = (d) => `<svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${d}"/></svg>`;
+/**
+ * The quiet "here's how you get it" foot. Alex asked for it ON the game cards
+ * 2026-09-11, having seen the standalone end slide.
+ *
+ * ⚠️ THIS ADDS AN ELEMENT TO THE LOCKED DENSITY, KNOWINGLY. The 2026-07-18 rule
+ * is brand line + one headline + one grid + one URL pill, "no badges/subcopy".
+ * He asked for this anyway and said SUBTLE, which is the right instinct and the
+ * whole constraint here: the green pill stays the only loud thing, the stores
+ * sit under it in muted grey at half its weight, and the grid still owns the
+ * card. If a future card starts competing with its own puzzle, this is the line
+ * that crept — cut it back before cutting the grid.
+ */
+const getIt = (url) => `<div class="stores">
+      <div class="pill">${url}</div>
+      <div class="alsoon">
+        <span>${glyph(APPLE_GLYPH_PATH, 26, 'currentColor')}App&nbsp;Store</span>
+        <span>${glyph(PLAY_GLYPH_PATH, 26, 'currentColor')}Google&nbsp;Play</span>
+      </div>
+    </div>`;
+
+const glyph = (d, size = 30, fill = '#fff') => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${fill}" aria-hidden="true"><path d="${d}"/></svg>`;
 
 const FOOTLE_URL = 'balliq.app/footle';
 const TRAIL_URL = 'balliq.app/transfer-trail';
 
 const T = {
+  tx4: '#8A8E99',
   bg: '#0B0C10', card: '#13151C', card2: '#1B1E27', bd: '#242730', bd2: '#2F3240',
   grn: '#58CC02', grnInk: '#06230C', amber: '#FFC107', tx: '#F0F1F5', tx3: '#9BA0B8',
 };
@@ -97,7 +118,10 @@ const shell = (inner) => `<!doctype html><meta charset="utf-8">
   .appname span{color:${T.grn}}
   .sub{font-size:34px;font-weight:600;color:${T.tx3};line-height:1.3;max-width:16ch}
   .ico{width:188px;height:188px;border-radius:42px;display:block}
-  .stores{display:flex;flex-direction:column;gap:26px;align-items:flex-start}
+  .stores{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+  .alsoon{display:flex;gap:34px;color:${T.tx4 || '#8A8E99'}}
+  .alsoon span{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:600;
+               color:#8A8E99}
   .badges{display:flex;gap:16px}
   .badges span{display:flex;align-items:center;gap:12px;background:#000;
                border:2px solid ${T.bd2};color:#fff;border-radius:14px;
@@ -117,7 +141,7 @@ function footleCard({ answer, guesses }) {
     <div class="brand">Ball <b>IQ</b></div>
     <div class="head">Footle <span>No. ${n}</span></div>
     <div class="rows">${rows}</div>
-    <div class="pill">${FOOTLE_URL}</div>
+    ${getIt(FOOTLE_URL)}
   </div>`);
 }
 
@@ -136,7 +160,7 @@ function trailCard(key) {
     <div class="brand">Ball <b>IQ</b></div>
     <div class="head">Name him from<br><span>his clubs</span></div>
     <div class="rows">${rows}</div>
-    <div class="pill">${TRAIL_URL}</div>
+    ${getIt(TRAIL_URL)}
   </div>`);
 }
 
