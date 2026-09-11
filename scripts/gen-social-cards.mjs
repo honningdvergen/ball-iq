@@ -37,14 +37,22 @@
 // TRAIL_PLAYERS verbatim. The zero-error bar covers marketing too — 25.3K
 // football obsessives read this account and its whole credibility is knowing
 // football.
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 import { WORDLE_ANSWER_LOG, gradeWordleGuess } from '../src/lib/wordle.js';
 import { TRAIL_PLAYERS } from '../src/lib/trail.js';
+// ⚠️ IMPORTED, NOT COPIED. The site draws its own store badges from these exact
+// glyphs (src/components/StoreBadge.jsx), so importing keeps one house
+// treatment and makes drift impossible. Note neither is Apple's or Google's
+// OFFICIAL badge artwork — that is the site's existing choice, inherited here
+// on purpose rather than a third style invented for social.
+import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../src/lib/storeGlyphs.js';
 
 const OUT = fileURLToPath(new URL('../marketing/social', import.meta.url));
 const SIZE = 1080;
+const glyph = (d) => `<svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${d}"/></svg>`;
+
 const FOOTLE_URL = 'balliq.app/footle';
 const TRAIL_URL = 'balliq.app/transfer-trail';
 
@@ -84,6 +92,13 @@ const shell = (inner) => `<!doctype html><meta charset="utf-8">
         border-radius:18px;padding:24px 30px;font-size:40px;font-weight:600}
   .club i{width:14px;height:14px;border-radius:50%;background:${T.bd2};flex:none;font-style:normal}
   .club.last i{background:${T.grn}}
+  .end .endmid{display:flex;flex-direction:column;gap:44px}
+  .ico{width:188px;height:188px;border-radius:42px;display:block}
+  .stores{display:flex;flex-direction:column;gap:26px;align-items:flex-start}
+  .badges{display:flex;gap:16px}
+  .badges span{display:flex;align-items:center;gap:12px;background:#000;
+               border:2px solid ${T.bd2};color:#fff;border-radius:14px;
+               padding:16px 26px;font-size:26px;font-weight:700}
   .club em{font-style:normal;color:${T.tx3};font-size:26px;font-weight:600;margin-left:auto;letter-spacing:.1em}
 </style>${inner}`;
 
@@ -122,6 +137,42 @@ function trailCard(key) {
   </div>`);
 }
 
+/**
+ * The carousel's LAST slide, and the only one that names the stores.
+ *
+ * ⚠️ THE STORES DO NOT GO ON A GAME CARD. Alex locked the density on
+ * 2026-07-18 — brand line, one headline, one grid, one URL pill, no badges or
+ * decoration — and the measured funnel says the same thing louder: the bio that
+ * pointed at the App Store drew 20 link taps from 16,700,000 views in 30 days.
+ * Web Footle plays in three seconds and needs nothing; the app is the upsell for
+ * people who already like it, never the front door. So the badges live on their
+ * own end slide, where they answer "where do I get this" for someone already
+ * sold, and cost the game cards nothing.
+ *
+ * ⚠️ NO TAGLINE. "How well do you know ball?" was asked for and is the one shape
+ * we have already ruled out: a question can be ignored, a quiz-show frame is the
+ * most recognisable brand-account tell, and a second headline breaks the recipe.
+ * The Footle board does that work better than a slogan — two failed guesses over
+ * a solve says "bet you can't" without asking.
+ */
+function endCard() {
+  const icon = readFileSync(fileURLToPath(new URL('../public/icon-1024.png', import.meta.url))).toString('base64');
+  return shell(`<div class="card end">
+    <div class="brand">Ball <b>IQ</b></div>
+    <div class="endmid">
+      <img class="ico" src="data:image/png;base64,${icon}" alt="">
+      <div class="head">Play free in your<br><span>browser</span></div>
+    </div>
+    <div class="stores">
+      <div class="pill">${FOOTLE_URL}</div>
+      <div class="badges">
+        <span>${glyph(APPLE_GLYPH_PATH)}App&nbsp;Store</span>
+        <span>${glyph(PLAY_GLYPH_PATH)}Google&nbsp;Play</span>
+      </div>
+    </div>
+  </div>`);
+}
+
 const CARDS = [
   // Guesses are themselves real Footle answers, so every word on every card is
   // a footballer's surname the game itself uses.
@@ -129,6 +180,7 @@ const CARDS = [
   ['footle-rooney', footleCard({ answer: 'ROONEY', guesses: ['BIELSA', 'ROBSON', 'ROONEY'] })],
   ['trail-hakimi', trailCard('HAKIMI')],
   ['trail-dybala', trailCard('DYBALA')],
+  ['end-where-to-play', endCard()],
 ];
 
 mkdirSync(OUT, { recursive: true });
