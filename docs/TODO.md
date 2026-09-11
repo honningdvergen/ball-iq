@@ -1,3 +1,35 @@
+## 2026-09-11 — 📈 THE 09-04 EXPERIMENTS CAME DUE, AND ONE REVERSED A DECISION
+
+- [x] **CLUB PAGE → APP FELL 15.4% → 9.2% (5bc073e).** The 09-04 finish-screen
+      rebuild retired the /play door. Measured over 488 finishers, split at the
+      ship date: app conversion 15.4% → 9.2% (z≈2.1, p≈0.04), while on-page
+      replay rose 2.3% → 14.0% and "Keep going" held at ~27%. The redesign did
+      exactly what it set out to — the trade is what's wrong. 637 starts → 262
+      finishes → ~40 into the app → **10 returned another day**; a replay
+      returns nobody, and these visitors are anonymous, so no notification can
+      reach them. Alex's call: a finisher is worth more as an install. The app
+      now has a real card above share; still one green primary.
+- [x] **THE DAILY DOOR IS SETTLED — 0 clicks from 488 finishers, two designs.**
+      Grey link 0/262, then a full card in the same slot 0/228, while a quiet
+      store line LOWER on the card took 7.5%. The slot works; that offer does
+      not. Do not propose a third Footle treatment there.
+- [ ] **⏳ READ clubq-out-store ~2026-09-25**, against the 15.4% pre-09-04
+      baseline and the 9.2% it replaces. It is now the ONLY store link inside
+      .bq-res, so the rate is directly readable. Not yet deployed — Alex's call.
+- [ ] **⚠️ doorTitle/doorLine/doorGo are UNREVIEWED translations** in all eight
+      languages. `reviewed: true` is a per-LANGUAGE flag, so three new strings
+      inherited an approval Alex gave to different text. es/de/nl/pt worth his eye.
+- [ ] **AdSense reapplication — agreed, not started.** Rejected 2026-08-10 for
+      "low value content"; since then: answer pages per Footle day and per Daily
+      7 day, 61 club pages, 50 lists. Verify the native ad-guard still holds
+      before applying, so the store "no ads" declarations stay true.
+- [ ] **Instrumentation audit — agreed, not started.** Today's regression sat
+      unread for a week behind a tripwire the code calls "the guardrail on the
+      whole rebuild", and a counter that has never fired in its life is
+      indistinguishable from a broken one. Which numbers do we quote that rest
+      on dead instruments? (Precedents: the "13 notifications" figure, 50.7%
+      activation.)
+
 ## 2026-09-09 (21:40) — 📱 SECOND DEVICE REVIEW (build 123 on Alex's phone)
 
 Alex, playing: "it is a bit laggy I can not lie"; "I got the right answer on the
