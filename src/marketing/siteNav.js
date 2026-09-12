@@ -39,6 +39,7 @@ export const GAMES_NAV = [
   { key: 'daily', name: 'Daily 7', href: '/daily-football-quiz/', line: 'Seven questions, the same for everyone', daily: true },
   { key: 'trail', name: 'Transfer Trail', href: '/transfer-trail/', line: 'Follow the moves, name the player', daily: true },
   { key: 'mystery', name: 'Mystery Player', href: '/mystery-player/', line: 'Guess who from career clues', daily: true },
+  { key: 'grid', name: 'Football Grid', href: '/football-grid/', line: 'Nine cells, one player each', daily: true },
   { key: 'xi', name: 'Guess the XI', href: '/xi/', line: 'Name the line-up from a famous match' },
   { key: 'clubquiz', name: 'Club Quiz', href: '/quiz/clubs/', line: 'Pick your club, ten on them' },
   { key: 'leaguequiz', name: 'League Quiz', href: '/quiz/', line: 'One competition, its history' },

@@ -139,7 +139,7 @@ export function makeGridBuilder() {
      * @param dayOffset days since GRID day 0 for the grid rendered into the HTML
      * @returns {{html:string, json:string, headers:string[]}|null}
      */
-    sectionFor(pageClub, slug, dayOffset, absDay) {
+    sectionFor(pageClub, slug, dayOffset, absDay, opts = {}) {
       const career = careerNameFor(pageClub, P.clubs);
       if (!career) return null;
 
@@ -189,8 +189,8 @@ export function makeGridBuilder() {
       });
 
       const html = `<section class="sec narrow fg-sec" id="grid" aria-labelledby="fg-h">
-<h2 id="fg-h">Football Grid</h2>
-<p class="fg-sub">Name a player who turned out for both clubs. Nine guesses.</p>
+<h2 id="fg-h">${esc(opts.heading || 'Football Grid')}</h2>
+<p class="fg-sub">${esc(opts.sub || 'Name a player who turned out for both clubs. Nine guesses. Some people call it tiki-taka-toe.')}</p>
 <div class="fg-board" id="fg-board" data-src="/quiz/${slug}/grid.json" data-slug="${esc(slug)}">${board}</div>
 <div class="fg-bar">Guesses left <b id="fg-left">9</b> · filled <b id="fg-got">0</b>/9</div>
 <div class="fg-ask" id="fg-ask" hidden>
@@ -262,6 +262,12 @@ export const FG_CSS = `
     background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
   .fg-done-go:hover{filter:brightness(1.06)}
   .fg-next{margin-top:11px;font-size:13px;color:var(--tx3)}
+  /* The hub's club list. A plain wrapped list of links, not 76 cards — the
+     point is the anchor text, and cards would bury it in chrome. */
+  .fg-clubs{display:flex;flex-wrap:wrap;gap:8px}
+  .fg-club{border:1px solid var(--bd);border-radius:999px;padding:7px 13px;font-size:13px;
+    font-weight:600;color:var(--tx2);text-decoration:none;background:var(--card)}
+  .fg-club:hover{border-color:var(--bd2);color:var(--tx)}
   .fg-bar b{color:var(--tx);font-variant-numeric:tabular-nums}
   .fg-ask{margin-top:12px;background:var(--card2);border:1px solid var(--bd);border-radius:12px;
     padding:13px;display:flex;flex-direction:column;gap:9px}
@@ -304,6 +310,20 @@ export const FG_JS = `
   function gev(n,x){try{if(window.__bqev)window.__bqev(n,x)}catch(e){}}
   var gOpened=false, gAnswered=false, gDone=false;
   var $=function(id){return document.getElementById(id)};
+  /* ⚠️ THE SUGGESTIONS RENDER BELOW THE INPUT. A phone keyboard takes roughly
+     the bottom 40% of the screen, so an input near the middle puts every option
+     you could pick behind it — you type and cannot see what you are choosing.
+     Only scrolls when the panel is actually sitting low, so tapping a top-row
+     cell does not jump the page for no reason. */
+  function reveal(){
+    try{
+      var ask=$('fg-ask'), t=ask.getBoundingClientRect().top;
+      if(t < window.innerHeight*0.42) return;
+      var h=document.querySelector('header');
+      var off=(h&&getComputedStyle(h).position==='sticky'?h.getBoundingClientRect().height:0)+10;
+      window.scrollTo({top:ask.getBoundingClientRect().top+window.scrollY-off,behavior:'smooth'});
+    }catch(e){}
+  }
   function sixName(i){return D.clubs[D.today[i]]}
   function strip(s){return String(s).replace(/\\s*(F\\.?C\\.?|A\\.?F\\.?C\\.?|C\\.?F\\.?|Club de F\\u00fatbol)\\s*$/i,'').trim()}
   function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z ]/g,' ').replace(/\\s+/g,' ').trim()}
@@ -339,13 +359,22 @@ export const FG_JS = `
       cells[j].setAttribute('aria-label','Name a player for '+strip(names[r])+' and '+strip(names[3+cc]));
     }
   }
+  /* ⚠️ A SECOND TAP WHILE LOADING USED TO BE SWALLOWED. The loading guard
+     dropped the callback on the floor, so tapping cell A then quickly cell B
+     left the active cell unset or pointing at A — you would type a name and fill the
+     wrong cell, or nothing. Callbacks queue now and run in order, so the last
+     cell tapped is the one that ends up active. */
+  var waiters=[];
   function load(cb){
     if(D) return cb();
+    waiters.push(cb);
     if(loading) return; loading=true;
     fetch(board.getAttribute('data-src')).then(function(r){return r.json()}).then(function(j){
       D=j; D.index=j.players.map(function(p){return {p:p,w:norm(p.n).split(' ')}});
-      applyDay(); loading=false; cb();
-    }).catch(function(){ loading=false; var m=$('fg-msg'); if(m){m.className='fg-msg no';m.textContent='Could not load the grid. Reload the page?'} });
+      applyDay(); loading=false;
+      var w=waiters; waiters=[]; for(var i=0;i<w.length;i++) w[i]();
+    }).catch(function(){ loading=false; waiters=[];
+      var m=$('fg-msg'); if(m){m.className='fg-msg no';m.textContent='Could not load the grid. Reload the page?'} });
   }
   /* ⚠️ PREFIX MATCHING ALONE REJECTS A TYPO, AND A TYPO IS THE NORMAL CASE.
      "schmechel" for Schmeichel matched NOTHING, which reads as "we don't have
@@ -400,12 +429,20 @@ export const FG_JS = `
     var r=+el.getAttribute('data-r'), c=+el.getAttribute('data-c');
     if(state[r+','+c]||left<=0) return;
     if(!gOpened){gOpened=true;gev('grid-open')}
+    /* ⚠️ FOCUS HAS TO HAPPEN IN THIS TICK. iOS opens the keyboard only for a
+       focus() inside the user gesture, and load() awaits a fetch on the FIRST
+       tap of a session — so the first cell showed an input with no keyboard and
+       needed a second tap to type in. Everything that does not need the payload
+       happens now; the question text fills in when it arrives. Invisible on
+       desktop, where focus() works whenever it is called. */
+    $('fg-ask').hidden=false;
+    $('fg-msg').textContent=''; $('fg-msg').className='fg-msg';
+    $('fg-list').innerHTML=''; $('fg-i').value=''; $('fg-q').textContent='';
+    $('fg-i').focus();
+    reveal();
     load(function(){
       active=[r,c];
-      $('fg-ask').hidden=false;
       $('fg-q').innerHTML='Played for <b>'+strip(sixName(r))+'</b> and <b>'+strip(sixName(3+c))+'</b>';
-      $('fg-msg').textContent=''; $('fg-msg').className='fg-msg';
-      $('fg-list').innerHTML=''; $('fg-i').value=''; $('fg-i').focus();
     });
   });
   document.addEventListener('input',function(e){

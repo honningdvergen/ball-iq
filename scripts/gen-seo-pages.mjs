@@ -4256,6 +4256,101 @@ el.textContent=done?'Played today \\u2713':'In progress';if(done)el.classList.ad
 var c=document.getElementById('gm-countdown');if(c){var t=new Date(d);t.setHours(24,0,0,0);var ms=t-d,h=Math.floor(ms/3.6e6),m=Math.floor(ms%3.6e6/6e4);c.textContent=(h?h+'h ':'')+m+'m'}
 }catch(e){}})();`;
 
+// ⚠️ THE GRID HAD NO FRONT DOOR. It shipped onto 76 club pages and then:
+// zero page titles contained the word "grid", zero H1s did, /football-grid/ was
+// a 404, and it had no sitemap entry. It lived as an <h2> inside pages called
+// "Arsenal Quiz". Nobody searching for a football grid could find ours — which
+// matters more than usual here, because every competitor in the category is
+// LEAGUE-scoped (GridSport 9 leagues, RenderFoot 5, PlayFutbol 7) and a
+// per-club grid appears to be ours alone. An advantage nobody can see is not
+// an advantage.
+//
+// ⚠️ ONE HUB, NOT 76 STANDALONE GRID PAGES. A /football-grid/<club>/ for every
+// club would be a near-duplicate of /quiz/<club>/ — and DUPLICATION, not
+// thinness, is what the AdSense rejection actually named. The club pages keep
+// the grids; this page gives the format a name, a door and an internal link
+// into all of them.
+//
+// ⚠️ "TIKI-TAKA-TOE" YES, "IMMACULATE GRID" NO. The first is a format name used
+// independently by at least four unrelated sites and is what people type. The
+// second is Sports Reference's own product brand, and putting a competitor's
+// brand in our copy to catch their traffic is trading on it, not describing
+// ourselves.
+const GRID_PAGE = {
+  slug: 'football-grid',
+  title: 'Football Grid — Daily Tiki-Taka-Toe Puzzle',
+  description: 'A new football grid every day. Nine cells, name a player for each pair of clubs. Free, no sign-up, and a different grid on every club page.',
+  h1: 'Football Grid',
+  faq: [
+    { q: 'Is this the same as tiki-taka-toe?',
+      a: 'Yes — it is the same format. Three clubs down the side, three across the top, and you name a player who turned out for both clubs in each cell. Ours is built from a verified career database, so a cell is only ever set when we can confirm the overlap.' },
+    { q: 'How often does the grid change?',
+      a: 'Every day, and the same grid is served to everyone. Each club page carries its own grid, so there is a different puzzle on Arsenal than on Liverpool on the same day.' },
+    { q: 'What happens if I name someone you do not have?',
+      a: 'It says we cannot confirm them, not that you are wrong. Our records are a subset of football, so a player we cannot place at both clubs may still have played for both. We will never tell you a right answer is wrong.' },
+    { q: 'Do I need an account?',
+      a: 'No. There is nothing to sign up for and nothing to install — it plays in the browser.' },
+  ],
+};
+
+function buildFootballGridPage() {
+  const cfg = GRID_PAGE;
+  const canonical = `${SITE.base}/${cfg.slug}/`;
+  // Every club page that actually carries a grid, so the links here are real.
+  const withGrid = CLUBS.filter((c) => gridBuilder().sectionFor(c.club, c.slug, gridDayIndex(), gridAbsDay()));
+  if (!withGrid.length) return;
+  // The featured grid rotates, so the hub is a different puzzle each day rather
+  // than a permanent advert for one club.
+  const feat = withGrid[gridDayIndex() % withGrid.length];
+  const grid = gridBuilder().sectionFor(feat.club, feat.slug, gridDayIndex(), gridAbsDay(), {
+    heading: `Today's grid — ${feat.name}`,
+    sub: 'Name a player who turned out for both clubs. Nine guesses, and a new grid tomorrow.',
+  });
+
+  const ld = jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+        { '@type': 'ListItem', position: 2, name: 'Football Grid', item: canonical },
+      ] },
+      { '@type': 'Game', name: 'Football Grid', description: cfg.description, url: canonical,
+        gamePlatform: ['Web browser'], isAccessibleForFree: true,
+        publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` } },
+      { '@type': 'FAQPage', mainEntity: cfg.faq.map((f) => ({
+        '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+    ],
+  });
+
+  const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
+${NAV}
+<main>
+<section class="sec narrow">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Football Grid</span></nav>
+<h1>${esc(cfg.h1)}</h1>
+<p class="hero-sub" style="margin:8px 0 0;color:var(--tx2);font-size:16px;max-width:60ch">Three clubs down, three across. Name a player who turned out for both — nine cells, nine guesses. A new grid every day, and a different one on every club page.</p>
+</section>
+${grid.html}
+<section class="sec narrow">
+<h2>A grid on every club</h2>
+<p style="margin:0 0 14px;color:var(--tx2);max-width:62ch">Most football grids give you one puzzle a day for a whole league. Every club below has its own, built from that club's real career overlaps.</p>
+<div class="fg-clubs">
+${withGrid.map((c) => `<a class="fg-club" href="${SITE.base}/quiz/${c.slug}/#grid">${esc(c.name)} grid</a>`).join('\n')}
+</div>
+</section>
+${appCtaBand('the grid')}
+<section class="sec narrow">
+<h2>Football Grid — FAQ</h2>
+${renderFaq(cfg.faq)}
+</section>
+</main>
+${footer()}`;
+  const dir = resolve(DIST, cfg.slug);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(resolve(dir, 'index.html'), html, 'utf8');
+  console.log(`  ✓ /${cfg.slug}/ — hub + ${withGrid.length} club grids linked (featured: ${feat.name})`);
+}
+
 function buildGamesPage() {
   const cfg = GAMES_PAGE;
   const canonical = `${SITE.base}/${cfg.slug}/`;
@@ -5794,6 +5889,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/daily-football-quiz/answers/`, freq: 'daily', pri: '0.7' },
     ...recentDailyDays(30).map((d) => ({ loc: d.url, freq: 'yearly', pri: '0.5' })),
     { loc: `${SITE.base}/${GAMES_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
+    { loc: `${SITE.base}/${GRID_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${TRAIL_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
     { loc: `${SITE.base}/${DAILY7_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
@@ -6000,6 +6096,7 @@ async function main() {
   buildHubPage(livePages, clubPages, playerPages);
   buildFootlePage(FOOTLE_PAGE);
   buildGamesPage();
+  buildFootballGridPage();
   buildFunFactsPage();
   buildXiPage();
   buildQuotesPage();
