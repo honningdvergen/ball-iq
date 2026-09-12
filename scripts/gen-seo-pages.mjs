@@ -101,7 +101,7 @@ import { CLUBS } from './seo/clubs.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
-import { makeGridBuilder, FG_CSS } from './seo/grid-section.mjs';
+import { makeGridBuilder, FG_CSS, unusedColourKeys } from './seo/grid-section.mjs';
 import { CLUB_PACK_ABBR, CLUB_PACK_COLOURS, CLUB_NAME_TO_COMP } from '../src/data/clubPackColours.js';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
@@ -5972,6 +5972,20 @@ async function main() {
   buildListsHubPage(LISTS, clubPages, livePages);
   buildPartnersPage(QB.filter((q) => q.type === 'mcq' && q.hint && Array.isArray(q.o) && q.o.length === 4));
   if (wireLineupFooter()) console.log('  ✓ /lineup/ — site footer wired in (noindex kept)');
+  // ⚠️ GATE, NOT A REPORT. A colour key that matches no club is a typo that
+  // presents as a club quietly having no colour — indistinguishable from one we
+  // hold no colour for, which is exactly how 136 headers went uncoloured
+  // unnoticed in the first place. Only meaningful once the grid has run, so it
+  // sits here rather than in a unit test that would have to rebuild the pool.
+  if (_gridBuilder) {
+    const dead = unusedColourKeys();
+    if (dead.length) {
+      console.error(`\n  ✗ ${dead.length} key(s) in grid-club-colours.mjs matched no club:`);
+      for (const k of dead) console.error(`      · ${JSON.stringify(k)}`);
+      console.error('    Check the spelling against the career-dictionary name, or remove it.');
+      process.exit(1);
+    }
+  }
   buildEmbedQuizPage(QB.filter((q) => q.type === 'mcq' && q.hint && Array.isArray(q.o) && q.o.length === 4));
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);

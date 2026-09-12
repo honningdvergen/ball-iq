@@ -14,6 +14,7 @@ import { buildPool } from '../build-grid-pool.mjs';
 import { pickClubGrid } from '../pick-club-grid.mjs';
 import { careerNameFor } from './grid-club-alias.mjs';
 import { CLUB_PACK_COLOURS } from '../../src/data/clubPackColours.js';
+import { GRID_CLUB_COLOURS } from './grid-club-colours.mjs';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -56,7 +57,25 @@ const coreTokens = (s) => new Set(String(s).toLowerCase().normalize('NFD').repla
 const KEY_TOKENS = colourKeys.map((k) => [k, coreTokens(k)]);
 const sameSet = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));
 
+// ⚠️ A KEY THAT MATCHES NOTHING IS A SILENT TYPO. Seven of the 28 missed on
+// the first build because the map was keyed on the name the page DISPLAYS
+// ("Villarreal", "Reading") while colourFor is handed the career-dictionary
+// name ("Villarreal CF", "Reading F.C."). Coverage went to 97% and looked like
+// success. Every key is now recorded when it fires, and gen-seo-pages fails the
+// build on any that never did — so the next stale or misspelled key is a red
+// build, not a quietly uncoloured club.
+const usedColourKeys = new Set();
+export const unusedColourKeys = () =>
+  Object.keys(GRID_CLUB_COLOURS).filter((k) => !usedColourKeys.has(k));
+
 function colourFor(careerName) {
+  // ⚠️ FIRST, AND BY EXACT NAME — tried against the raw career name AND the
+  // shortened display form, because the map is written the way a person says
+  // the club. Each of these 28 was verified against a fetched source, so a hit
+  // here is the most certain answer available.
+  const direct = GRID_CLUB_COLOURS[careerName] ? careerName
+    : (GRID_CLUB_COLOURS[short(careerName)] ? short(careerName) : null);
+  if (direct) { usedColourKeys.add(direct); return GRID_CLUB_COLOURS[direct]; }
   const k = COLOUR_ALIAS[norm(careerName)] || colourKeys.find((x) => norm(x) === norm(careerName));
   if (k) return CLUB_PACK_COLOURS[k];
 
