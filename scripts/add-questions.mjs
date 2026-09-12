@@ -72,7 +72,12 @@ const qbBody = before.slice(0, closeIdx);
 const tail = before.slice(closeIdx);
 const newSrc = qbBody + entries.join('\n') + '\n' + tail + after;
 
-console.log(`Adding ${entries.length} question(s) to cat=${defCat} (${skipped} skipped).`);
+// ⚠️ REPORT WHAT WAS WRITTEN, NOT WHAT THE FLAG DEFAULTS TO. Per-question `cat`
+// wins over --cat (see `it.cat || defCat` above), so printing defCat announced
+// "cat=Ligue1" while writing 35 History rows — a log that sends you to check a
+// problem that is not there.
+const catsWritten = [...new Set(entries.map((e) => (e.cat || defCat)))];
+console.log(`Adding ${entries.length} question(s) to cat=${catsWritten.join(', ')} (${skipped} skipped).`);
 if (dry) { console.log('\n--- DRY RUN, preview ---\n' + entries.join('\n')); process.exit(0); }
 fs.writeFileSync(QFILE, newSrc);
 console.log('Written. Run the build (eslint gate) to confirm the file still parses.');

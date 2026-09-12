@@ -11,6 +11,24 @@
 
 export const CLUBS = [
   {
+    club: "Racing Club", slug: "racing-club", name: "Racing Club",
+    h1: "Racing Club Quiz",
+    title: "Racing Club Quiz with Answers — La Academia | Ball IQ",
+    description: "Free Racing Club quiz with explained answers — the 1967 world title, El Cilindro, the Avellaneda derby and the 2024 Copa Sudamericana.",
+    intro: [
+      "In November 1967 Racing Club were champions of the world, and this free Racing quiz is built around how they got there. Nacional of Montevideo beaten in a Copa Libertadores final that needed a third match in Santiago. Then Celtic, the reigning European champions, taken to a play-off at the Estadio Centenario — the night Argentine football remembers as the Battle of Montevideo, settled by one Juan Carlos Cárdenas strike from distance. Racing were the first Argentine club to win the Intercontinental Cup; Estudiantes followed them a year later against Manchester United.",
+      "There is far more to be tested on than 1967. The seven championships in a row from 1913 to 1919 that turned Racing into La Academia, the finishing school of Argentine football. Guillermo Stábile's run of 1949, 1950 and 1951 — the first three-in-a-row by any Argentine professional club. El Cilindro, inaugurated in 1950 as the Estadio Presidente Perón and named after the drum shape that gave it its nickname, a few hundred metres from Independiente across Avenida Mitre. And then the long punishment: relegation in 1983, a court declaring the club bankrupt in 1999, and the folklore of seven black cats buried under the ground in 1967, six of them eventually dug up.",
+      "The modern half of the quiz is the recovery. Reinaldo 'Mostaza' Merlo's paso a paso Apertura in 2001, clinched with a 1-1 draw at Vélez on 27 December and a Gabriel Loeschbor header, ending a 35-year wait. Diego Cocca's 2014 title with Diego Milito home from Inter at 35. Eduardo Coudet's 2018-19 Superliga with Lisandro López as captain and top scorer. The shootout at the Maracanã that put out holders Flamengo in 2020. And Gustavo Costas, a Racing captain in 1988, lifting the 2024 Copa Sudamericana in Asunción — the club's first international trophy in 36 years. The transfer questions run alongside all of it: Claudio López, Roberto Perfumo, Luciano Vietto, Rodrigo De Paul, Claudio Yacob and Lautaro Martínez.",
+      "Every answer comes with a written explanation, so a wrong guess still teaches you something about how Racing actually won what they won. Free to play, no sign-up, nothing to install — and the Boca Juniors and River Plate quizzes are waiting when you're done.",
+    ],
+    faq: [
+      { q: "Why are Racing Club called La Academia?", a: "The nickname — 'The Academy' — stuck during their dominance in the 1910s, when Racing were seen as the finishing school of Argentine football. They won their first Argentine championship in 1913 and then took seven titles in a row, through to 1919, succeeding Alumni as the country's dominant side." },
+      { q: "Did Racing Club win the Intercontinental Cup?", a: "Yes, in 1967, against Celtic — the first Argentine club to win it. Celtic took the first leg 1-0 at Hampden, Racing won 2-1 at El Cilindro, and the play-off at the Estadio Centenario in Montevideo on 4 November 1967 was decided by a long-range Juan Carlos 'Chango' Cárdenas goal. Racing had won the Copa Libertadores earlier that year under Juan José Pizzuti." },
+      { q: "What is El Cilindro?", a: "Racing's stadium in Avellaneda, inaugurated on 3 September 1950 with a 1-0 win over Vélez Sarsfield and officially named the Estadio Presidente Perón after Juan Domingo Perón. Its drum-like shape gave it the nickname El Cilindro. Independiente's ground sits only a few hundred metres away, on the other side of Avenida Mitre — the two clubs share the same streets, and the Avellaneda derby is one of the most bitter rivalries in Argentina." },
+      { q: "Is this Racing Club quiz free?", a: "Yes. It plays in your browser with no sign-up and no download, and every answer carries a written explanation." },
+    ],
+  },
+  {
     "club": "Arsenal",
     "slug": "arsenal",
     "name": "Arsenal",
