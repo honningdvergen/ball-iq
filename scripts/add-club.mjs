@@ -77,7 +77,13 @@ edit(A, `${pack}: "${league}"`, (s) => s.replace(/(export const CLUB_LEAGUES = \
   const line = (src.match(/export const CLUB_ORDER = .*/) || [''])[0];
   if (line.includes(`"${pack}"`)) edits.push('  · CLUB_ORDER — already wired');
   else {
-    const next = src.replace(new RegExp(`("${league}": \\[)`), `$1"${pack}", `);
+    // ⚠️ APPEND, DO NOT PREPEND. CLUB_ORDER is a PROMINENCE ordering — England
+    // runs Arsenal, ManUtd, Liverpool, ManCity — so putting each newly added
+    // club at the head of its section is actively wrong. Prepending pushed Boca
+    // and River, Argentina's two biggest clubs, below two sides added the same
+    // afternoon. A new club goes after the established ones; promote it by hand
+    // if it deserves promoting.
+    const next = src.replace(new RegExp(`("${league}": \\[[^\\]]*)\\]`), `$1, "${pack}"]`);
     if (next === src) { console.error(`✗ CLUB_ORDER: no "${league}" bucket in the map — add the section first`); process.exit(1); }
     if (!DRY) writeFileSync(F(A), next, 'utf8');
     edits.push('  ✓ CLUB_ORDER');
