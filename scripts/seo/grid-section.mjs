@@ -17,7 +17,11 @@ import { CLUB_PACK_COLOURS } from '../../src/data/clubPackColours.js';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-const STRIP = /\s*(F\.?C\.?|A\.?F\.?C\.?|C\.?F\.?|S\.?C\.?|Club de Fútbol|\(Football\))\s*$/ig;
+// ⚠️ THE SPACE BEFORE THE AFFIX IS NOT OPTIONAL. With \s* here, "S.?C.?$"
+// matched the tail of "Hertha BSC" and "F.?C.?$" the tail of "Genoa CFC", so
+// the grid printed "Hertha B" and "Genoa C" at players — a club-type
+// abbreviation is only an abbreviation when it is its own word.
+const STRIP = /\s+(F\.?C\.?|A\.?F\.?C\.?|C\.?F\.?|S\.?C\.?|Club de Fútbol|\(Football\))\s*$/ig;
 const short = (s) => String(s).replace(STRIP, '').trim();
 const norm = (s) => short(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
   .replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -31,9 +35,42 @@ const COLOUR_ALIAS = {
   'west ham united': 'West Ham', 'west bromwich albion': 'West Brom',
 };
 const colourKeys = Object.keys(CLUB_PACK_COLOURS);
+
+// ⚠️ NAME MATCHING ON THE NORMALISED STRING ALONE COVERED 70% OF HEADERS AND
+// LOOKED FINE, because it covered ENGLISH clubs. English clubs write the type
+// last ("Arsenal F.C.") and STRIP removes it; continental clubs write it FIRST
+// ("FC Barcelona", "AS Roma", "SSC Napoli", "SV Werder Bremen") or use an affix
+// STRIP never listed ("Atalanta BC", "Bayer 04 Leverkusen"). 136 of 456 headers
+// on the live site had no colour at all — Barcelona, Roma, Bayern and Napoli
+// among them — and the page still looked deliberate, because a missing colour
+// is indistinguishable from a club we simply have no colour for.
+//
+// So the last resort compares CONTENT tokens: the words left after dropping
+// club-type abbreviations and bare numbers from anywhere in the name.
+const TYPE_TOKEN = new Set(['fc','afc','ac','as','ss','ssc','sl','sv','sc','cf','cd','ca','rc','uc',
+  'us','bc','ec','kv','sk','jk','gnk','hnk','fk','cr','se','fbpa','vfb','vfl','bsc','tsg','tsv',
+  'club','clube','calcio','balompie','regatas','sociedade','esportiva','de','do','da','del','e']);
+const coreTokens = (s) => new Set(String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
+  .filter((t) => t && !TYPE_TOKEN.has(t) && !/^\d+$/.test(t)));
+const KEY_TOKENS = colourKeys.map((k) => [k, coreTokens(k)]);
+const sameSet = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));
+
 function colourFor(careerName) {
   const k = COLOUR_ALIAS[norm(careerName)] || colourKeys.find((x) => norm(x) === norm(careerName));
-  return k ? CLUB_PACK_COLOURS[k] : null;
+  if (k) return CLUB_PACK_COLOURS[k];
+
+  const t = coreTokens(careerName);
+  if (!t.size) return null;
+  // ⚠️ EXACTLY ONE, OR NOTHING. A subset match is how "Inter Milan" could take
+  // "AC Milan"'s colour — {milan} is a subset of {inter, milan}. Two candidates
+  // means we cannot tell which club this is, and the wrong club's colour is
+  // worse than none: the neutral edge reads as "no colour on file", a wrong one
+  // reads as a fact. Same rule careerNameFor() uses for the answer key.
+  const exact = KEY_TOKENS.filter(([, kt]) => sameSet(kt, t));
+  const hit = exact.length === 1 ? exact
+    : KEY_TOKENS.filter(([, kt]) => kt.size && [...kt].every((x) => t.has(x)));
+  return hit.length === 1 ? CLUB_PACK_COLOURS[hit[0][0]] : null;
 }
 
 // ⚠️ A CLUB COLOUR THAT LOSES TO THE GROUND IS NOT A COLOUR. Our card is
