@@ -1795,7 +1795,7 @@ ${FG_CSS}
   .trust-note{font-size:14.5px;color:var(--tx3);line-height:1.65;border-left:2px solid var(--bd2);padding-left:14px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
-<script type="application/ld+json">${ld}</script>
+${ld ? `<script type="application/ld+json">${ld}</script>` : '' /* an empty ld+json block is an error, not an omission — /embed/quiz/ shipped one */}
 ${extraHead}
 </head>`;
 }

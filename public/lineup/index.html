@@ -443,7 +443,7 @@ function fillDisc(disc, p, size){
   // ⚠️ NO crossOrigin ON PAGE IMAGES. Only the canvas needs CORS, and the
   // export loads its own copies. Setting it here breaks the Special:FilePath
   // fallback outright — that redirect chain drops the CORS header, so a
-  // cross-origin <img> fails where a plain one succeeds. Belt-and-braces cost
+  // cross-origin <img alt=""> fails where a plain one succeeds. Belt-and-braces cost
   // us the braces.
   img.src = commons(p, w);
   img.addEventListener('load', function(){
