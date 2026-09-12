@@ -142,8 +142,16 @@ const leakNote = leaks.length
   ? `\n\nANSWER LEAKS FOUND DETERMINISTICALLY — in each pair the second question's answer appears verbatim in the first's stem. Reword the STEM to strip the incidental mention (that preserves the fact); do not simply reject: ${JSON.stringify(leaks)}`
   : '';
 
-const half = Math.ceil(qs.length / 2);
-const batches = [qs.slice(0, half), qs.slice(half)].filter((b) => b.length);
+// ⚠️ ONE AGENT OVER THE WHOLE PACK, NOT TWO OVER HALF EACH — measured, not
+// guessed. The first run split each stage in two and both halves returned ZERO
+// rejections across 70 verdicts. An independent verifier then read the same 35
+// questions in a SINGLE pass, spent 110k tokens and 43 searches, and found a
+// defect both halves had missed (a hint dating Pizzuti's appointment to 1966;
+// he took charge on 19 September 1965). One context sees the whole set, keeps
+// one standard across it, and can spot a claim repeated between questions —
+// two half-contexts each grade 17 in isolation and both drift permissive.
+const batches = [qs];
+const half = 0;
 const show = (b, off) => b.map((q, n) => `#${off + n}  ${JSON.stringify(q)}\n     resolved answer: ${JSON.stringify(q.o[q.a])}`).join('\n\n');
 
 phase('Examine');
@@ -170,12 +178,12 @@ for (const r of examined.filter(Boolean)) {
 log(`${afterExam.length} survived the examiner`);
 
 phase('Skeptic');
-const sHalf = Math.ceil(afterExam.length / 2);
-const sBatches = [afterExam.slice(0, sHalf), afterExam.slice(sHalf)].filter((b) => b.length);
+const sHalf = 0;
+const sBatches = [afterExam];
 const skepticated = await parallel(sBatches.map((b, bi) => () => {
   const off = bi * sHalf;
   return agent(
-    `You are the SKEPTIC. Every question below about ${club} has already passed one fact-check. Assume the examiner missed something and go looking for it. There are ${b.length}; return one verdict for EACH by its # index.\n\n`
+    `You are the SKEPTIC. Every question below about ${club} has already passed one fact-check that returned ZERO rejections — which is not what this bank's history looks like, so treat the examiner as having been permissive and go looking for what it let through. Do not defer to it. The defect this stage exists to catch is small and specific: a date, a number or a name inside a HINT, where the question and its keyed answer are both sound. Check every date and figure in every hint against a source, not against your own recall. There are ${b.length}; return one verdict for EACH by its # index.\n\n`
     + b.map((x, n) => `#${off + n}  ${JSON.stringify(x.q)}\n     resolved answer: ${JSON.stringify(x.q.o[x.q.a])}\n     examiner said: ${x.why}`).join('\n\n')
     + `\n\n${BAR}
 The examiner's most likely miss is a FALSE PREMISE IN THE STEM with a correct key — two thirds of real defects are that. Attack the stem's assertions, not just the answer. Also check whether a SECOND option could be defended as correct.
