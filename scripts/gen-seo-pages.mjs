@@ -1382,8 +1382,17 @@ function softenAccent(hex) {
 // that asks for a grid.
 // ⚠️ ONE DAY INDEX FOR THE WHOLE BUILD. Reading the clock per page could
 // straddle midnight mid-run and ship two different days across the site.
+// ⚠️ TWO NUMBERS, AND THEY ARE NOT THE SAME THING. `gridDayIndex()` is the
+// offset into the frozen schedule that pickClubGrid() seeds from, and stays
+// small and stable. `gridAbsDay()` is the absolute day number — days since the
+// epoch for a calendar date — which is what the BROWSER can compute about
+// itself, and the only value the two sides can compare. Every other daily on
+// this site anchors the same way.
+const DAY_MS = 86400000;
 const GRID_ANCHOR = Date.UTC(2026, 8, 12);
-const gridDayIndex = () => Math.max(0, Math.floor((Date.now() - GRID_ANCHOR) / 86400000));
+const gridDayIndex = () => Math.max(0, Math.floor((Date.now() - GRID_ANCHOR) / DAY_MS));
+const gridAbsDay = () => { const d = new Date();
+  return Math.floor(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) / DAY_MS); };
 let _gridBuilder = null;
 const gridBuilder = () => (_gridBuilder ||= makeGridBuilder());
 
@@ -2317,7 +2326,7 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   // ⚠️ null when this club has no FAIR grid — 76 of 96 pages qualify. A page
   // with a thin or mismatched grid is worse than a page without one.
-  const grid = gridBuilder().sectionFor(cfg.club, cfg.slug, gridDayIndex());
+  const grid = gridBuilder().sectionFor(cfg.club, cfg.slug, gridDayIndex(), gridAbsDay());
 
   const ld = jsonLd({
     '@context': 'https://schema.org',

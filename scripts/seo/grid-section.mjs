@@ -135,43 +135,63 @@ export function makeGridBuilder() {
     /**
      * @returns {{html:string, json:string, headers:string[]}|null}
      */
-    sectionFor(pageClub, slug, dayIndex) {
+    /**
+     * @param dayOffset days since GRID day 0 for the grid rendered into the HTML
+     * @returns {{html:string, json:string, headers:string[]}|null}
+     */
+    sectionFor(pageClub, slug, dayOffset, absDay) {
       const career = careerNameFor(pageClub, P.clubs);
       if (!career) return null;
-      const g = pickClubGrid(career, dayIndex);
-      if (!g) return null;
 
-      const six = [...g.rows, ...g.cols];
+      // ⚠️ SEVEN DAYS, NOT ONE — because the day index used to be baked in at
+      // BUILD time and there is no daily rebuild, so the "daily" grid only
+      // changed when we deployed. Every other daily on this site (Footle,
+      // Trail, Mystery) resolves its day in the BROWSER against a frozen
+      // schedule, and this now does the same.
+      //
+      // Seven is measured, not guessed: over the last 90 days the longest gap
+      // between commit days was 3, median 1, so a week is more than double the
+      // worst observed case. It costs about 33KB more on a file that is fetched
+      // ONLY when somebody taps a cell — never on page load.
+      const days = [];
+      for (let k = 0; k < 7; k++) {
+        const g = pickClubGrid(career, dayOffset + k);
+        if (!g) break;                       // a club that cannot fill a day stops here
+        days.push([...g.rows, ...g.cols]);
+      }
+      if (!days.length) return null;
+
+      // One club table shared by every day, so the players below can be stored
+      // once with indices rather than repeated per day.
+      const clubs = [...new Set(days.flat())];
       const setOf = (n) => P.clubPlayers.get(idx.get(n)) || new Set();
       const players = {};
-      for (const h of six) for (const pid of setOf(h)) {
-        (players[pid] ||= { n: nameOf.get(pid), c: [] }).c.push(six.indexOf(h));
+      for (let ci = 0; ci < clubs.length; ci++) {
+        for (const pid of setOf(clubs[ci])) (players[pid] ||= { n: nameOf.get(pid), c: [] }).c.push(ci);
       }
       const list = Object.values(players).filter((p) => p.n);
 
-      const hd = (n) => {
+      const six = days[0];
+      const rows = six.slice(0, 3), cols = six.slice(3);
+      const hd = (n, isRow) => {
         const c = edgeColour(colourFor(n));
-        return `<div class="fg-hd"${c ? ` style="--fgc:${c}"` : ''}>${esc(short(n))}</div>`;
-      };
-      const rowHd = (n) => {
-        const c = edgeColour(colourFor(n));
-        return `<div class="fg-hd fg-row"${c ? ` style="--fgc:${c}"` : ''}>${esc(short(n))}</div>`;
+        return `<div class="fg-hd${isRow ? ' fg-row' : ''}"${c ? ` style="--fgc:${c}"` : ''}>${esc(short(n))}</div>`;
       };
 
       // ⚠️ The board is built row by row so the six club names sit in the markup
       // in reading order — this is the indexable content, not decoration.
-      let board = `<div class="fg-hd fg-corner"></div>${g.cols.map(hd).join('')}`;
-      g.rows.forEach((r, ri) => {
-        board += rowHd(r);
-        g.cols.forEach((_, ci) => {
-          board += `<button class="fg-cell" type="button" data-r="${ri}" data-c="${ci}" aria-label="Name a player for ${esc(short(r))} and ${esc(short(g.cols[ci]))}"></button>`;
+      let board = `<div class="fg-hd fg-corner"></div>${cols.map((n) => hd(n, false)).join('')}`;
+      rows.forEach((r, ri) => {
+        board += hd(r, true);
+        cols.forEach((_, ci) => {
+          board += `<button class="fg-cell" type="button" data-r="${ri}" data-c="${ci}" aria-label="Name a player for ${esc(short(r))} and ${esc(short(cols[ci]))}"></button>`;
         });
       });
 
       const html = `<section class="sec narrow fg-sec" id="grid" aria-labelledby="fg-h">
 <h2 id="fg-h">Football Grid</h2>
 <p class="fg-sub">Name a player who turned out for both clubs. Nine guesses.</p>
-<div class="fg-board" id="fg-board" data-src="/quiz/${slug}/grid.json">${board}</div>
+<div class="fg-board" id="fg-board" data-src="/quiz/${slug}/grid.json" data-slug="${esc(slug)}">${board}</div>
 <div class="fg-bar">Guesses left <b id="fg-left">9</b> · filled <b id="fg-got">0</b>/9</div>
 <div class="fg-ask" id="fg-ask" hidden>
   <div class="fg-q" id="fg-q"></div>
@@ -179,13 +199,27 @@ export function makeGridBuilder() {
   <div class="fg-list" id="fg-list"></div>
   <div class="fg-msg" id="fg-msg"></div>
 </div>
+<div class="fg-done" id="fg-done" hidden></div>
 <script>${FG_JS}</script>
 </section>`;
 
       return {
         html,
         headers: six,
-        json: JSON.stringify({ rows: g.rows, cols: g.cols, six, players: list }),
+        // `a` is the absolute day number (days since epoch for a calendar date)
+        // that days[0] belongs to, so the browser can subtract its OWN local day
+        // index and land on the right entry. Same shape of anchor Footle, Trail
+        // and Mystery all use.
+        json: JSON.stringify({
+          a: absDay,
+          clubs,
+          // Edge colours ride along, one per club in the table above, so a day
+          // swap in the browser can repaint the headers instead of leaving
+          // yesterday's colours beside today's clubs.
+          colours: clubs.map((n) => edgeColour(colourFor(n))),
+          days: days.map((d) => d.map((n) => clubs.indexOf(n))),
+          players: list,
+        }),
       };
     },
   };
@@ -215,6 +249,19 @@ export const FG_CSS = `
     font-weight:700;font-size:11.5px}
   .fg-cell .fg-tick{display:block;color:var(--grn);font-size:14px;font-weight:800}
   .fg-bar{margin-top:10px;font-size:13px;color:var(--tx3)}
+  /* The ending. Deliberately the same anatomy as the club quiz's own finish
+     panel — score, a thing to do, one line about coming back — so a player who
+     has met one recognises the other. */
+  .fg-done{margin-top:16px;padding:16px;border:1px solid var(--bd);border-radius:12px;
+    background:var(--card);text-align:center}
+  .fg-done-h{font-family:var(--mono);font-size:30px;font-weight:800;color:var(--grn-soft);line-height:1}
+  .fg-done-s{margin:6px 0 12px;font-size:14px;color:var(--tx3)}
+  .fg-sq{margin:0 0 14px;font-size:19px;line-height:1.18;letter-spacing:2px;
+    font-family:var(--mono);color:var(--tx)}
+  .fg-done-go{display:block;width:100%;padding:13px 18px;border:none;border-radius:999px;
+    background:var(--grn);color:var(--grn-ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer}
+  .fg-done-go:hover{filter:brightness(1.06)}
+  .fg-next{margin-top:11px;font-size:13px;color:var(--tx3)}
   .fg-bar b{color:var(--tx);font-variant-numeric:tabular-nums}
   .fg-ask{margin-top:12px;background:var(--card2);border:1px solid var(--bd);border-radius:12px;
     padding:13px;display:flex;flex-direction:column;gap:9px}
@@ -257,13 +304,47 @@ export const FG_JS = `
   function gev(n,x){try{if(window.__bqev)window.__bqev(n,x)}catch(e){}}
   var gOpened=false, gAnswered=false, gDone=false;
   var $=function(id){return document.getElementById(id)};
+  function sixName(i){return D.clubs[D.today[i]]}
   function strip(s){return String(s).replace(/\\s*(F\\.?C\\.?|A\\.?F\\.?C\\.?|C\\.?F\\.?|Club de F\\u00fatbol)\\s*$/i,'').trim()}
   function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z ]/g,' ').replace(/\\s+/g,' ').trim()}
+  /* ⚠️ THE USER'S LOCAL CALENDAR DATE, NEVER Date.now()/DAY_MS. Taking the UTC
+     day index rolls the puzzle at UTC midnight while every stored key on this
+     site uses the local date; wordle.js documents the two real bugs that came
+     of the mismatch (Tokyo got the same player twice, New York got tomorrow's
+     under today's key). Same expression the other three dailies use. */
+  var DAY_MS=86400000;
+  function localDay(){var d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/DAY_MS)}
+  function fmtDay(){var d=new Date();return d.toLocaleDateString(undefined,{day:'numeric',month:'long'})}
+
+  /* The board is server-rendered for day 0 so a crawler and a JS-less visitor
+     both see a real grid. If the browser's day is further along, swap the six
+     headers to today's before anybody can tap one. Falls back to what was
+     rendered if today is outside the shipped window. */
+  function applyDay(){
+    var k=localDay()-D.a;
+    if(!(k>0 && k<D.days.length)) { D.today=D.days[0]; return; }
+    D.today=D.days[k];
+    var names=D.today.map(function(i){return D.clubs[i]});
+    var hds=board.querySelectorAll('.fg-hd:not(.fg-corner)');
+    /* markup order is cols first, then rows — see how the board is built */
+    var order=[names[3],names[4],names[5],names[0],names[1],names[2]];
+    for(var i=0;i<hds.length&&i<6;i++){
+      hds[i].textContent=strip(order[i]);
+      var c=D.colours&&D.colours[D.today[i<3?i+3:i-3]];  /* cols first in markup */
+      if(c)hds[i].style.setProperty('--fgc',c); else hds[i].style.removeProperty('--fgc');
+    }
+    var cells=board.querySelectorAll('.fg-cell');
+    for(var j=0;j<cells.length;j++){
+      var r=+cells[j].getAttribute('data-r'), cc=+cells[j].getAttribute('data-c');
+      cells[j].setAttribute('aria-label','Name a player for '+strip(names[r])+' and '+strip(names[3+cc]));
+    }
+  }
   function load(cb){
     if(D) return cb();
     if(loading) return; loading=true;
     fetch(board.getAttribute('data-src')).then(function(r){return r.json()}).then(function(j){
-      D=j; D.index=j.players.map(function(p){return {p:p,w:norm(p.n).split(' ')}}); loading=false; cb();
+      D=j; D.index=j.players.map(function(p){return {p:p,w:norm(p.n).split(' ')}});
+      applyDay(); loading=false; cb();
     }).catch(function(){ loading=false; var m=$('fg-msg'); if(m){m.className='fg-msg no';m.textContent='Could not load the grid. Reload the page?'} });
   }
   /* ⚠️ PREFIX MATCHING ALONE REJECTS A TYPO, AND A TYPO IS THE NORMAL CASE.
@@ -322,7 +403,7 @@ export const FG_JS = `
     load(function(){
       active=[r,c];
       $('fg-ask').hidden=false;
-      $('fg-q').innerHTML='Played for <b>'+strip(D.rows[r])+'</b> and <b>'+strip(D.cols[c])+'</b>';
+      $('fg-q').innerHTML='Played for <b>'+strip(sixName(r))+'</b> and <b>'+strip(sixName(3+c))+'</b>';
       $('fg-msg').textContent=''; $('fg-msg').className='fg-msg';
       $('fg-list').innerHTML=''; $('fg-i').value=''; $('fg-i').focus();
     });
@@ -341,7 +422,9 @@ export const FG_JS = `
     if(!active) return;
     var r=active[0], c=active[1], m=$('fg-msg');
     left--;
-    var a=D.six.indexOf(D.rows[r]), b=D.six.indexOf(D.cols[c]);
+    /* club indices come straight from today's row — no name round-trip, so a
+       renamed or duplicated club cannot shift which cell an answer satisfies. */
+    var a=D.today[r], b=D.today[3+c];
     if(p.c.indexOf(a)>=0 && p.c.indexOf(b)>=0){
       state[r+','+c]=p.n; got++;
       m.className='fg-msg ok'; m.textContent=p.n+' \\u2014 both. \\u2713';
@@ -352,13 +435,47 @@ export const FG_JS = `
          place at both clubs may still be right, and saying otherwise is how this
          mode starts telling people they are wrong. */
       m.className='fg-msg maybe';
-      m.textContent="We can't confirm "+p.n+' for both '+strip(D.rows[r])+' and '+strip(D.cols[c])+'.';
+      m.textContent="We can't confirm "+p.n+' for both '+strip(sixName(r))+' and '+strip(sixName(3+c))+'.';
       $('fg-i').value=''; $('fg-list').innerHTML=''; $('fg-i').focus();
     }
     /* One finish row whichever way the round ends, so "solved it" and "ran out
        of guesses" are the same question answered by the got count, rather than
        two events that have to be reconciled later. */
-    if(!gDone && (got>=9 || left<=0)){gDone=true;gev('grid-finish',{got:got,solved:got>=9})}
+    if(!gDone && (got>=9 || left<=0)){gDone=true;gev('grid-finish',{got:got,solved:got>=9});finish()}
     paint();
   }
+
+  /* ⚠️ THE ROUND USED TO END IN NOTHING. You spent your ninth guess and the bar
+     read "Guesses left 0" and the page just stopped — no score, no date, no
+     reason to come back. A daily with no tomorrow in it is a toy. */
+  function shareGrid(){
+    var out=[];
+    for(var r=0;r<3;r++){ var row='';
+      for(var c=0;c<3;c++) row += state[r+','+c] ? '\\u{1F7E9}' : '\\u2B1C';
+      out.push(row); }
+    return out.join('\\n');
+  }
+  function finish(){
+    var el=$('fg-done'); if(!el) return;
+    var club=strip(sixName(0));
+    var line=club+' · '+fmtDay()+' · '+got+'/9';
+    /* A share that BRAGS rather than sells: a score and a picture of it, with a
+       plain URL. Nothing to detect, nothing that reads as an advert. */
+    var text='Ball IQ \\u2014 Football Grid\\n'+line+'\\n\\n'+shareGrid()+'\\n\\nballiq.app/quiz/'+(board.getAttribute('data-slug')||'')+'/';
+    el.innerHTML='<div class="fg-done-h">'+got+' / 9</div>'
+      +'<div class="fg-done-s">'+esc(club)+' · '+esc(fmtDay())+'</div>'
+      +'<pre class="fg-sq">'+shareGrid()+'</pre>'
+      +'<button class="fg-done-go" type="button" id="fg-share">Share your grid</button>'
+      +'<div class="fg-next">A new grid here every day.</div>';
+    el.hidden=false;
+    $('fg-share').onclick=function(){
+      gev('grid-share');
+      if(navigator.share){navigator.share({text:text}).catch(function(){});return}
+      try{navigator.clipboard.writeText(text).then(function(){
+        var b=$('fg-share'); b.textContent='Copied'; setTimeout(function(){b.textContent='Share your grid'},1600);
+      })}catch(e){}
+    };
+    try{el.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}
+  }
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 })();`;
