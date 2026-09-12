@@ -3425,8 +3425,8 @@ ${footlePracticeSection()}
         loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
 <section class="sec">
 <h2>Who is behind it</h2>
-<p style="margin:0 0 12px;color:var(--tx2)">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
-<p style="margin:0 0 12px;color:var(--tx2)">Interested, or want a sample built for your audience before you decide? Email <a href="mailto:hello@balliq.app" style="color:var(--grn)">hello@balliq.app</a> and we will send the first one with no commitment.</p>
+<p style="margin:0 0 12px;color:var(--tx2);max-width:62ch">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
+<p style="margin:0 0 12px;color:var(--tx2);max-width:62ch">Interested, or want a sample built for your audience before you decide? Email <a href="mailto:hello@balliq.app" style="color:var(--grn)">hello@balliq.app</a> and we will send the first one with no commitment.</p>
 </section>
 </main>
 ${footer()}`;
