@@ -168,6 +168,15 @@ const BRIDGES = [
     proof2: ['src/islands/dailyIsland.jsx', 'track: (n, m) => funnel(n, m)'],
   },
   {
+    // The site finder and the shell's store-click tracker are separate <script>
+    // blocks in shell.mjs, so the finder reaches the guarded writer through a
+    // global. `fev` forwards to window.__biqShellEv, which is biqShellEv.
+    alias: 'fev',
+    files: ['scripts/seo/shell.mjs'],
+    emitter: 'biqShellEv',
+    proof: ['scripts/seo/shell.mjs', 'window.__biqShellEv=biqShellEv;'],
+  },
+  {
     // The Football Grid does not own a writer. It borrows the club-quiz
     // engine's — every one of the 76 pages carrying a grid also carries that
     // engine, so `gev` forwards to window.__bqev and inherits bqSynthetic(),

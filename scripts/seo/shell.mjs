@@ -46,7 +46,36 @@ const finderScript = (base) => {
 function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');}
 function hits(q){q=norm(q.trim());if(!q)return[];var o=[];for(var k=0;k<D.length;k++){var m=norm(D[k][0]);var rk=m.indexOf(q)===0?0:m.indexOf(q)>=0?1:-1;if(rk>=0)o.push([rk,D[k]]);}o.sort(function(a,c){return a[0]-c[0]||a[1][0].localeCompare(c[1][0]);});return o.slice(0,8).map(function(x){return x[1];});}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-function render(){var h=hits(i.value);if(!i.value.trim()){r.hidden=true;r.innerHTML='';return;}r.hidden=false;r.innerHTML=h.length?h.map(function(x){return'<a role="option" class="fd-find-row" href="'+esc(x[2])+'"><span class="fd-find-n">'+esc(x[0])+'</span><span class="fd-find-sub">'+esc(x[1])+'</span><span class="fd-find-go">Play</span></a>';}).join(''):'<div class="fd-find-empty">Nothing on file called \\u201c'+esc(i.value.trim())+'\\u201d yet. <a href="${base}/#clubs">See every club</a></div>';}
+/* ⚠️ THE BOX RECORDED NOTHING, on a site with 84 named funnel events. Every
+   query that comes back empty is a club somebody wanted and we do not have —
+   the only direct "demand we do not serve" signal this site can produce, and
+   we were throwing all of it away. Club packs were being picked from country
+   totals and judgement instead.
+   Recorded: the settled query and whether it matched. Nothing is sent while
+   the user is still typing — the timer restarts on every keystroke, so
+   "a", "ar", "ars" never reach the wire, only "arsenal".
+   ⚠️ IT IS A FREE TEXT BOX, so treat the value as untrusted: letters, digits,
+   spaces and hyphens only, capped at 48 characters, and never sent at all
+   under 3. That keeps an address, an email or a pasted URL out of the funnel
+   table by construction rather than by hoping. */
+var fTimer=null,fSent={};
+/* Looked up on each call, not captured: the shell's script and this one are
+   separate <script> blocks and their order is not guaranteed. */
+function fev(n,m){try{if(window.__biqShellEv)window.__biqShellEv(n,m)}catch(e){}}
+function fRecord(){
+  try{
+    var q=String(i.value||'').trim().toLowerCase().normalize('NFD')
+      .replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 -]/g,' ').replace(/\\s+/g,' ').trim().slice(0,48);
+    if(q.length<3||fSent[q])return;
+    fSent[q]=1;
+    var n=hits(i.value).length;
+    /* Two literal calls, not a ternary: the instrument register can only name
+       an event it can read as a string, and a ternary logged both of these as
+       "dynamic" — a row you cannot query by name is a row you do not have. */
+    if(n)fev('find-hit',{q:q,n:n});else fev('find-miss',{q:q});
+  }catch(e){}
+}
+function render(){if(fTimer)clearTimeout(fTimer);fTimer=setTimeout(fRecord,1100);var h=hits(i.value);if(!i.value.trim()){r.hidden=true;r.innerHTML='';return;}r.hidden=false;r.innerHTML=h.length?h.map(function(x){return'<a role="option" class="fd-find-row" href="'+esc(x[2])+'"><span class="fd-find-n">'+esc(x[0])+'</span><span class="fd-find-sub">'+esc(x[1])+'</span><span class="fd-find-go">Play</span></a>';}).join(''):'<div class="fd-find-empty">Nothing on file called \\u201c'+esc(i.value.trim())+'\\u201d yet. <a href="${base}/#clubs">See every club</a></div>';}
 i.addEventListener('input',render);i.addEventListener('focus',render);i.addEventListener('blur',function(){setTimeout(function(){r.hidden=true;},150);});
 i.addEventListener('keydown',function(e){if(e.key==='Enter'){var h=hits(i.value);if(h[0])location.href=h[0][2];}if(e.key==='Escape'){i.value='';r.hidden=true;}});
 if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('is-open');b.setAttribute('aria-expanded',o?'true':'false');});}
@@ -117,6 +146,18 @@ if(!v)return null;localStorage.setItem('biq_vid',v)}
 return (v&&v.length===36)?v:null;
 }catch(e){return null}}
 if(sSyn())return;
+/* ⚠️ SHARED, so the finder does not grow a writer with its own guard. Same
+   reason the Football Grid borrows the quiz engine's: defect class (a) in the
+   instrument register is a guard applied to one writer and not its sibling,
+   and store-out itself was that defect once — it sat beside three gated
+   emitters with none of its own and wrote prod rows from robots and localhost
+   for fourteen days. One writer, one guard. */
+function biqShellEv(n,m){try{
+if(sSyn())return;
+fetch('${SB_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
+headers:{'content-type':'application/json','apikey':'${SB_KEY}','authorization':'Bearer ${SB_KEY}'},
+body:JSON.stringify({p_event:n,p_meta:m||{},p_visitor:sVid()})}).catch(function(){})}catch(e){}}
+window.__biqShellEv=biqShellEv;
 var P=location.pathname,T=P==='/quiz/'?'directory':P.indexOf('/quiz/')===0?'club':P.indexOf('/lists/')===0?'list':P.indexOf('/football-wordle/')===0?'footle-answer':P.indexOf('/daily-football-quiz/')===0?'daily-answer':P==='/'?'home':'other';
 document.addEventListener('click',function(e){
 var a=e.target&&e.target.closest&&e.target.closest('a[href*="apps.apple.com"],a[href*="play.google.com"]');

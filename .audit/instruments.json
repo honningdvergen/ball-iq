@@ -3,9 +3,9 @@
   "schema": 1,
   "note": "Generated. Do not hand-edit — re-run the script. tests/unit/instrument-register.test.js fails when this file is stale.",
   "counts": {
-    "writers": 129,
-    "transports": 21,
-    "emits": 108,
+    "writers": 132,
+    "transports": 22,
+    "emits": 110,
     "gates": 10,
     "ungated": 0
   },
@@ -41,7 +41,7 @@
     {
       "name": "sSyn",
       "file": "scripts/seo/shell.mjs",
-      "line": 105,
+      "line": 134,
       "localhostToo": true,
       "wrapsGate": false
     },
@@ -105,8 +105,8 @@
     },
     {
       "sink": "funnel_events",
-      "writers": 116,
-      "transports": 8,
+      "writers": 119,
+      "transports": 9,
       "firstWrite": "2026-08-21",
       "ungated": 0
     },
@@ -767,11 +767,53 @@
       "needle": "gev('grid-share'"
     },
     {
+      "event": "find-hit",
+      "eventExpr": null,
+      "sink": "funnel_events",
+      "file": "scripts/seo/shell.mjs",
+      "line": 75,
+      "gate": "sSyn",
+      "surfaces": "every page carrying the site shell — generated pages AND the served answer pages",
+      "firstWrite": "(uncommitted)",
+      "firstWriteScope": "working-tree",
+      "kind": "emit",
+      "via": "fev -> biqShellEv",
+      "needle": "fev('find-hit'"
+    },
+    {
+      "event": "find-miss",
+      "eventExpr": null,
+      "sink": "funnel_events",
+      "file": "scripts/seo/shell.mjs",
+      "line": 75,
+      "gate": "sSyn",
+      "surfaces": "every page carrying the site shell — generated pages AND the served answer pages",
+      "firstWrite": "(uncommitted)",
+      "firstWriteScope": "working-tree",
+      "kind": "emit",
+      "via": "fev -> biqShellEv",
+      "needle": "fev('find-miss'"
+    },
+    {
+      "event": "dynamic",
+      "eventExpr": "n",
+      "sink": "funnel_events",
+      "file": "scripts/seo/shell.mjs",
+      "line": 157,
+      "gate": "sSyn",
+      "surfaces": "every page carrying the site shell — generated pages AND the served answer pages",
+      "firstWrite": "2026-09-04",
+      "firstWriteScope": "source",
+      "kind": "transport",
+      "via": "biqShellEv",
+      "needle": "fetch('${SB_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepali"
+    },
+    {
       "event": "store-out",
       "eventExpr": null,
       "sink": "funnel_events",
       "file": "scripts/seo/shell.mjs",
-      "line": 126,
+      "line": 167,
       "gate": "sSyn",
       "surfaces": "every page carrying the site shell — generated pages AND the served answer pages",
       "firstWrite": "2026-09-04",

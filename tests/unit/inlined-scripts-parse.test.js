@@ -18,6 +18,8 @@ import { describe, it, expect } from 'vitest';
 import vm from 'node:vm';
 import { FG_JS } from '../../scripts/seo/grid-section.mjs';
 import { BQ_JS } from '../../scripts/seo/quiz-widget.mjs';
+import { shellHeader, shellFooter } from '../../scripts/seo/shell.mjs';
+const SITE = { base: 'https://balliq.app', appStore: 'https://apps.apple.com/x', playStore: 'https://play.google.com/x' };
 
 const parses = (src) => {
   // new vm.Script() runs the real parser without executing anything.
@@ -38,5 +40,30 @@ describe('scripts inlined into generated pages actually parse', () => {
     // line break in the middle of a string. Proof the check can see it.
     const broken = "var x = 'a\nb';";
     expect(parses(broken)).not.toBe(null);
+  });
+});
+
+/**
+ * ⚠️ PARSING IS NOT ENOUGH — THIS CLASS PRODUCES VALID, WRONG JAVASCRIPT.
+ *
+ * A template literal eats the backslash on any escape it does not recognise, so
+ * `\s` written inside one arrives in the browser as a bare `s`. The regex
+ * `/\s+/g` shipped as `/s+/g` — a perfectly valid expression that replaces runs
+ * of the letter S. The site search recorded "arsenal" as "ar enal" and
+ * "Beşiktaş" as "be ikta", and every gate in the repo was green, because the
+ * script parsed fine. It was only visible by reading the recorded values.
+ *
+ * Escapes inside these literals must be DOUBLED: \\s, \\d, \\n, \\u2014.
+ */
+const DE_ESCAPED = [/\/s\+/, /\/d\+/, /\/w\+/, /\[\^a-z0-9 \]\/g/];
+describe('escapes survived the template literal', () => {
+  const cases = { FG_JS, BQ_JS, 'shell finder': shellHeader(SITE, ''), 'shell footer': shellFooter(SITE) };
+  for (const [name, src] of Object.entries(cases)) {
+    it(`${name} carries no de-escaped regex`, () => {
+      for (const re of DE_ESCAPED) expect(src, `${name} matches ${re}`).not.toMatch(re);
+    });
+  }
+  it('catches the exact corruption this was written for', () => {
+    expect("x.replace(/s+/g,' ')").toMatch(DE_ESCAPED[0]);
   });
 });
