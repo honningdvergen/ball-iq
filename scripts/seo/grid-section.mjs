@@ -228,6 +228,15 @@ export const FG_JS = `
 (function(){
   var board=document.getElementById('fg-board'); if(!board) return;
   var D=null, state={}, left=9, got=0, active=null, loading=false;
+  /* ⚠️ BORROWED, NOT REBUILT. club-quiz-engine.js exposes its guarded writer as
+     window.__bqev, and every one of the 76 grid pages carries that engine, so
+     this inherits its synthetic-traffic gate, its visitor id and its
+     slug/lang/surface meta. Writing our own would mean a second gate to keep in
+     step with the first — the exact drift the instrument register exists to
+     catch, and how club_quiz_results wrote ungated for three weeks. If the
+     engine is ever absent the grid goes unmeasured rather than throwing. */
+  function gev(n,x){try{if(window.__bqev)window.__bqev(n,x)}catch(e){}}
+  var gOpened=false, gAnswered=false, gDone=false;
   var $=function(id){return document.getElementById(id)};
   function strip(s){return String(s).replace(/\\s*(F\\.?C\\.?|A\\.?F\\.?C\\.?|C\\.?F\\.?|Club de F\\u00fatbol)\\s*$/i,'').trim()}
   function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z ]/g,' ').replace(/\\s+/g,' ').trim()}
@@ -290,6 +299,7 @@ export const FG_JS = `
     var el=e.target.closest('.fg-cell'); if(!el) return;
     var r=+el.getAttribute('data-r'), c=+el.getAttribute('data-c');
     if(state[r+','+c]||left<=0) return;
+    if(!gOpened){gOpened=true;gev('grid-open')}
     load(function(){
       active=[r,c];
       $('fg-ask').hidden=false;
@@ -317,6 +327,7 @@ export const FG_JS = `
       state[r+','+c]=p.n; got++;
       m.className='fg-msg ok'; m.textContent=p.n+' \\u2014 both. \\u2713';
       $('fg-ask').hidden=true; active=null;
+      if(!gAnswered){gAnswered=true;gev('grid-answer')}
     } else {
       /* ⚠️ NEVER "wrong". Our records are a subset of football; a name we cannot
          place at both clubs may still be right, and saying otherwise is how this
@@ -325,6 +336,10 @@ export const FG_JS = `
       m.textContent="We can't confirm "+p.n+' for both '+strip(D.rows[r])+' and '+strip(D.cols[c])+'.';
       $('fg-i').value=''; $('fg-list').innerHTML=''; $('fg-i').focus();
     }
+    /* One finish row whichever way the round ends, so "solved it" and "ran out
+       of guesses" are the same question answered by the got count, rather than
+       two events that have to be reconciled later. */
+    if(!gDone && (got>=9 || left<=0)){gDone=true;gev('grid-finish',{got:got,solved:got>=9})}
     paint();
   }
 })();`;

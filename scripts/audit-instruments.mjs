@@ -168,6 +168,18 @@ const BRIDGES = [
     proof2: ['src/islands/dailyIsland.jsx', 'track: (n, m) => funnel(n, m)'],
   },
   {
+    // The Football Grid does not own a writer. It borrows the club-quiz
+    // engine's — every one of the 76 pages carrying a grid also carries that
+    // engine, so `gev` forwards to window.__bqev and inherits bqSynthetic(),
+    // bqVid() and the slug/lang/surface meta. The binding is a global
+    // assignment across two files, which is precisely the shape a regex cannot
+    // follow, so it is written down here instead of guessed at.
+    alias: 'gev',
+    files: ['scripts/seo/grid-section.mjs'],
+    emitter: 'bqev',
+    proof: ['scripts/seo/club-quiz-engine.js', 'window.__bqev=bqev;'],
+  },
+  {
     // The mandatory-username wall reports through an onEvent prop, bound to
     // loopEvent at the single render site.
     alias: 'emit',

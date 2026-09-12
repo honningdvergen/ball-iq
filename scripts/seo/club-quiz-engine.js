@@ -175,7 +175,7 @@ return (v&&v.length===36)?v:null;
    River Plate is measured at 134 clicks against 8 for its English twin.
    Every page-level question about this surface was unanswerable by
    construction, and the answer was one line away the whole time. */
-function bqev(n){
+function bqev(n,x){
 if(bqSynthetic())return;
 if(daily)n=n.replace(/^clubq-/,'daily-web-');
 try{if(window.clarity)window.clarity('event',n)}catch(e){}
@@ -200,9 +200,20 @@ try{
      the English pages are lang="en", the 42 localised ones carry their own. */
   var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
 }catch(e){}
+if(x)for(var xk in x){if(Object.prototype.hasOwnProperty.call(x,xk))meta[xk]=x[xk]}
 try{fetch(BQ_SB+'/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
 headers:{'content-type':'application/json','apikey':BQ_PK,'authorization':'Bearer '+BQ_PK},
 body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:bqVid()})}).catch(function(){})}catch(e){}}
+/* SHARED ON PURPOSE, so the Football Grid does not grow a writer of its own.
+   The grid ships on 76 club pages and every one of them already carries this
+   engine (verified at build: 76 of 76), so it can borrow this function and
+   inherit bqSynthetic(), bqVid() and the slug/lang/surface meta rather than
+   restate them. That matters because defect class (a) in the instrument
+   register is exactly this: a guard applied to one writer and not its sibling
+   in the same surface, which is how club_quiz_results wrote ungated for three
+   weeks while bqev() beside it was clean. Two writers can drift; one cannot.
+   NOTE: no backticks in this file -- it is inlined into a template literal. */
+window.__bqev=bqev;
 function tag(k,v){try{if(window.clarity)window.clarity('set',k,String(v))}catch(e){}}
 /* ── OWNING THE MEASUREMENT ──────────────────────────────────────────────────
    Clarity RECORDS these rounds but will not report them by name: custom API
