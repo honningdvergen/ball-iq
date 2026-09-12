@@ -43,6 +43,7 @@ export const NO_ROSTER_COMPETITIONS = new Set([
 
 /** CLUBS[].club (the pack key) -> the exact `league` string in leagues.mjs. */
 export const CLUB_COMPETITION = {
+  "Independiente": "Primera División",
   "Racing Club": "Primera División",
   // ⚠️ Added 2026-08-13 with the South Coast / second-tier wave. Southampton is
   // the one people assume is top-flight and is not.

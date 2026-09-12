@@ -76,7 +76,10 @@ const newSrc = qbBody + entries.join('\n') + '\n' + tail + after;
 // wins over --cat (see `it.cat || defCat` above), so printing defCat announced
 // "cat=Ligue1" while writing 35 History rows — a log that sends you to check a
 // problem that is not there.
-const catsWritten = [...new Set(entries.map((e) => (e.cat || defCat)))];
+// ⚠️ `entries` holds formatted SOURCE LINES, not the input objects — reading
+// e.cat off a string gives undefined and falls back to the flag default, which
+// is the very thing this line exists to stop reporting. Parse it back out.
+const catsWritten = [...new Set(entries.map((e) => (e.match(/cat:"([^"]+)"/) || [, defCat])[1]))];
 console.log(`Adding ${entries.length} question(s) to cat=${catsWritten.join(', ')} (${skipped} skipped).`);
 if (dry) { console.log('\n--- DRY RUN, preview ---\n' + entries.join('\n')); process.exit(0); }
 fs.writeFileSync(QFILE, newSrc);
