@@ -29,6 +29,11 @@ export const LANG_LABEL = {
   fr: 'Français',
   de: 'Deutsch',
   tr: 'Türkçe',
+  // ⚠️ MISSING UNTIL 2026-09-12 and it PRINTED: Italian is the second-biggest
+  // localised group (8 club pages) and every one of them rendered the raw code
+  // — "Quiz Atalanta — it". The fallback `LANG_LABEL[lang] || lang` is what hid
+  // it: it degrades to something that looks deliberate instead of failing.
+  it: 'Italiano',
   id: 'Bahasa Indonesia',
   nl: 'Nederlands',
 };

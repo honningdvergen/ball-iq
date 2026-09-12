@@ -1763,8 +1763,15 @@ ${OPTION_CSS('.qa-opts .to')}
     font-weight:800;font-size:15.5px;text-decoration:none}
   .qa-done-go:hover{filter:brightness(1.06)}
   .qa-done-alt{display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:var(--tx3);text-decoration:underline}
-  .qa-why{border-top:1px dashed var(--bd);padding-top:12px;margin-top:12px;color:var(--tx3);font-size:14px;line-height:1.55}
-  .qa-why::before{content:"✓ ";color:var(--grn-soft);font-weight:800}
+  /* ⚠️ SCOPED TO .qa-list ON PURPOSE. These two rules describe the FLASHCARD
+     "why" — a <p> under the options, with a dashed rule above it and a green
+     tick in front. The printable Q&A page reuses the same class name for an
+     INLINE <span> inside the answer line, and unscoped they wrecked it: a
+     border-top on an inline box paints on every wrapped line FRAGMENT, so three
+     dashed lines ran through three lines of answer text, and every hint on a
+     sheet meant for printing got a ✓ it had not earned. */
+  .qa-list .qa-why{border-top:1px dashed var(--bd);padding-top:12px;margin-top:12px;color:var(--tx3);font-size:14px;line-height:1.55}
+  .qa-list .qa-why::before{content:"✓ ";color:var(--grn-soft);font-weight:800}
   .cta-row--stores{margin-top:14px}
 ${BQ_CSS}
 ${FG_CSS}
@@ -2437,7 +2444,18 @@ ${/* ⚠️ THE LOCALISED LAYER WAS ORPHANED — the SAME defect as the note dir
      This is the cheapest link in the whole mesh — it comes off an ESTABLISHED
      English page onto a topically identical target. Galatasaray's English page
      alone drew 776 impressions in 90 days while /tr/ drew 11. */''}
-${twins.length ? `<p style="margin:10px 2px 0;color:var(--tx2);font-size:14.5px">Prefer another language? ${twins.map((t) => `<a href="${SITE.base}/${t.lang}/quiz/${cfg.slug}/" hreflang="${t.lang}" style="color:var(--grn);font-weight:700">${esc(t.h1)} — ${esc(LANG_LABEL[t.lang] || t.lang)}</a>`).join(' · ')}</p>` : ''}
+${/* ⚠️ THE WORDING IS A STATEMENT, NOT AN OFFER. It read "Prefer another
+     language? Kuis Arsenal — Bahasa Indonesia", and Alex found it confusing on
+     2026-09-12. He was right, and the reason is worth keeping: every club page
+     has exactly ONE twin, so an English reader on an English club gets asked
+     whether they would rather read Indonesian — which is a non-sequitur unless
+     you already speak it. Leading with the LANGUAGE lets the line filter
+     itself: an English reader sees a language that is not theirs and moves on,
+     an Indonesian speaker sees their own first. The localised h1 stays inside
+     the anchor because anchor text is the whole point of this link — it exists
+     to pass authority to a layer that was orphaned, and a bare language name
+     would carry none of the club keyword. */''}
+${twins.length ? `<p style="margin:10px 2px 0;color:var(--tx3);font-size:13.5px">Other languages: ${twins.map((t) => `<a href="${SITE.base}/${t.lang}/quiz/${cfg.slug}/" hreflang="${t.lang}" style="color:var(--grn);font-weight:600">${esc(LANG_LABEL[t.lang] || t.lang)} — ${esc(t.h1)}</a>`).join(' · ')}</p>` : ''}
 ${renderListLinks(cfg.name)}
 </section>
 ${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
@@ -3132,7 +3150,16 @@ ${as}
   .qa-toc{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
   .qa-toc a{border:1px solid var(--bd);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--tx2);text-decoration:none;background:var(--card)}
   .qa-round{border-top:1px solid var(--bd);padding-top:18px}
+  /* ⚠️ THE GLOBAL RESET ZEROES EVERY MARGIN AND PADDING, so an <ol> here has no
+     padding-inline-start and list-style-position stays "outside" — the markers
+     draw in a box to the LEFT of the content, off the edge of the page, where
+     body{overflow-x:hidden} silently clips them. On a phone "10." lost its 1
+     and read as "0.". Every list on a generated page has to ask for this back;
+     there is no global list style to inherit. 2.1em fits a two-digit marker at
+     this font size with the text still aligned under itself. */
+  .qa-qs,.qa-as{padding-left:2.1em}
   .qa-qs li,.qa-as li{margin:0 0 10px;line-height:1.55;color:var(--tx2)}
+  .qa-qs li::marker,.qa-as li::marker{color:var(--tx3);font-weight:700}
   .qa-as li{color:var(--tx)}
   .qa-why{color:var(--tx3);font-weight:400}
   .qa-ans{margin:14px 0 0;border:1px solid var(--bd);border-radius:12px;background:var(--card);padding:12px 16px}
