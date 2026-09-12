@@ -3267,6 +3267,39 @@ Quiz by <a href="${SITE.base}/?utm_source=embed" target="_blank" rel="noopener" 
 // in an outreach email, and that works whether or not Google indexes it. If a
 // partnership lands, /partners/<outlet>/ hubs DO belong in the sitemap — a
 // partner's inbound link should point at an indexable page.
+/**
+ * Give /lineup/ a way back into the site.
+ *
+ * The page is a hand-written static file in public/, not a generated one, and
+ * it carries exactly ONE internal link: the logo, pointing home. No search, no
+ * menu, no footer. That matters because the tool has a "Copy share link"
+ * button — it asks to be passed around, so its visitors arrive from outside
+ * and have nowhere to go but back.
+ *
+ * ⚠️ THE TOKENS ARE SCOPED TO .fd-foot, NOT :root. The page defines 13 CSS
+ * variables of its own and none of the ones the shell footer uses; dropping
+ * rootCss() into :root here would both fix the footer AND silently repaint a
+ * page nobody asked me to change. Setting them on the footer element means the
+ * footer's descendants inherit them and nothing above it can be touched.
+ * Without them every var() in the footer resolves to nothing and INHERITS
+ * rather than falling back — which is how you ship an invisible footer.
+ *
+ * The noindex stays. It was a deliberate post-AdSense decision and is
+ * documented in the file; being reachable and being indexed are separate
+ * questions, and only one of them was ever decided here.
+ */
+function wireLineupFooter() {
+  const f = resolve(DIST, 'lineup', 'index.html');
+  if (!existsSync(f)) return false;
+  let html = readFileSync(f, 'utf8');
+  if (html.includes('fd-foot')) return false;            // already wired
+  const vars = rootCss().replace(/^[^{]*\{/, '').replace(/\}\s*$/, '');
+  const block = `<style>.fd-foot{${vars}}\n${SHELL_CSS}</style>\n${shellFooter(SITE)}\n`;
+  html = html.replace('</body>', `${block}</body>`);
+  writeFileSync(f, html, 'utf8');
+  return true;
+}
+
 function buildPartnersPage(hints) {
   const canonical = `${SITE.base}/partners/`;
   // A real, playable sample — a publisher should be able to try the thing they
@@ -3298,6 +3331,13 @@ function buildPartnersPage(hints) {
     description: 'We build a branded football quiz for your site every week, ready to publish. Free, no work at your end. See a live sample.',
     canonical, ld,
   })}
+${/* ⚠️ THE ONE BUILDER OF 22 THAT NEVER EMITTED NAV. The sitemap and footer
+     omissions argued above are deliberate; this was not. It is what made the
+     page look intentionally bare — it still shipped a breadcrumb and the full
+     45-link footer, just no header. A publisher arriving from an outreach
+     email could read the pitch and then had no search, no menu, and no way to
+     go and look at the thing being offered. */''}
+${NAV}
 <main>
 <section class="sec">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Partners</span></nav>
@@ -5931,6 +5971,7 @@ async function main() {
   const builtLists = LISTS.map((l) => buildListPage(l, clubPages, playerPages, livePages, listTasterIds));
   buildListsHubPage(LISTS, clubPages, livePages);
   buildPartnersPage(QB.filter((q) => q.type === 'mcq' && q.hint && Array.isArray(q.o) && q.o.length === 4));
+  if (wireLineupFooter()) console.log('  ✓ /lineup/ — site footer wired in (noindex kept)');
   buildEmbedQuizPage(QB.filter((q) => q.type === 'mcq' && q.hint && Array.isArray(q.o) && q.o.length === 4));
   buildClubsDirectoryPage(livePages);
   buildHubPage(livePages, clubPages, playerPages);
