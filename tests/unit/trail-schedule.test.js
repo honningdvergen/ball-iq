@@ -108,6 +108,21 @@ describe("Trail schedule is frozen", () => {
     "OZIL",               // #38 · 2026-09-09 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "ROBBEN",             // #39 · 2026-09-10 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "MESSI",              // #40 · 2026-09-11 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ALVAREZ",            // #41 · 2026-09-12 — verified against getTrailAnswerForDayIndex
+    "SHIBASAKI",          // #42 · 2026-09-13 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "LEWANDOWSKI",        // #43 · 2026-09-14 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "DUFF",               // #44 · 2026-09-15 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BECKER",             // #45 · 2026-09-16 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "LLORIS",             // #46 · 2026-09-17 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "GOTZE",              // #47 · 2026-09-18 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "OSAKO",              // #48 · 2026-09-19 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "OLISE",              // #49 · 2026-09-20 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "GAKPO",              // #50 · 2026-09-21 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "PAVARD",             // #51 · 2026-09-22 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "FIGO",               // #52 · 2026-09-23 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "COLE_A",             // #53 · 2026-09-24 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "DEPAY",              // #54 · 2026-09-25 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BUFFON",             // #55 · 2026-09-26 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
   ];
 
   it("no already-published day ever moves", () => {
