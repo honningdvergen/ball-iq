@@ -91,9 +91,21 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       // 'none' means the host passed no remind prop at all — a surface where
       // the ask cannot appear, which is itself worth being able to count.
       remind: remind?.state || "none",
-      archive: isArchive ? 1 : 0,
+      // NOTE — THE SAME REASONING AS `remind`, NEVER APPLIED TO THE OTHER TWO
+      // ROWS. (No emoji in this file: the panel is drawn, not decorated, and a
+      // test enforces it across the whole source, comments included.)
+      // dd-save has not fired ONCE in 208 panel views, and nothing recorded
+      // whether the save row was ever RENDERED — so a lever that never shows
+      // and a lever nobody wants produce an identical zero. That row is the
+      // reach ask shipped 2026-09-09, and it only renders for guests with a
+      // streak, which may be almost nobody. Counting it is the difference
+      // between "declined" and "never offered", which is the whole point of
+      // the line above. Computed from the props, not from `streakN`, which is
+      // declared below this effect.
+      save: (save && save.onSave && ((streak?.count || 0) >= 2 || save.line)) ? 1 : 0,
+      stump: stump ? 1 : 0,
     });
-  }, [game, edition, remind?.state, isArchive, track]);
+  }, [game, edition, remind?.state, isArchive, track, save, stump, streak?.count]);
 
   // Record once (the lib dedupes per visitor per edition), then read the room.
   useEffect(() => {
