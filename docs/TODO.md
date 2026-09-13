@@ -32,14 +32,37 @@
 - [ ] **⏳ READ clubq-out-store ~2026-09-25**, against the 15.4% pre-09-04
       baseline and the 9.2% it replaces. It is now the ONLY store link inside
       .bq-res, so the rate is directly readable. Not yet deployed — Alex's call.
-- [ ] **⚠️ doorTitle/doorLine/doorGo are UNREVIEWED translations** in all eight
-      languages. `reviewed: true` is a per-LANGUAGE flag, so three new strings
-      inherited an approval Alex gave to different text. es/de/nl/pt worth his eye.
-- [ ] **AdSense reapplication — agreed, not started.** Rejected 2026-08-10 for
+- [x] **doorTitle/doorLine/doorGo REVIEWED 2026-09-13 — one fixed, two are Alex's call.**
+      All eight compared against the English ("Your full Ball IQ card"). de/nl/fr/it/tr/id
+      read correctly and keep the informal register.
+      · FIXED: **es** said "Tu Ball IQ completo" — "your complete Ball IQ", the RATING —
+        while English and the other seven name the artefact (card/carta/Karte/kaart/
+        cartão/kartın/Kartu). The door shows a card; the Spanish promised a number.
+        Now "Tu tarjeta Ball IQ completa". A meaning fix, not a register choice.
+      · ALEX'S CALL: **es is Spain-Spanish** ("en directo") while the layer is MIXED —
+        Boca and River sit in it, /es/ River Plate is our best-measured localised page
+        (134 clicks vs 8 English), and Argentina is a top-7 country for us while Spain
+        is not top-12. Latin America says "en vivo".
+      · ALEX'S CALL: **pt is European** ("O teu", "Obter a app") while 4 of the 7 /pt/
+        clubs are Brazilian (Flamengo, Palmeiras, Corinthians, Santos). Brazil would
+        say "O seu cartão" and "Baixar o app".
+- [x] **AdSense reapplication — RE-REVIEW REQUESTED 2026-09-11.** The cause was
+      DUPLICATION, not thinness: 13 /lists pairs merged, 50 → 37 pages. ADS_ACTIVE=false
+      still gates everything, so the store "no ads" declarations stay true. Awaiting a
+      verdict — if rejected again, do NOT immediately re-request.
+      (original note kept below)
+- [x] **AdSense reapplication — agreed, not started.** Rejected 2026-08-10 for
       "low value content"; since then: answer pages per Footle day and per Daily
       7 day, 61 club pages, 50 lists. Verify the native ad-guard still holds
       before applying, so the store "no ads" declarations stay true.
-- [ ] **Instrumentation audit — agreed, not started.** Today's regression sat
+- [x] **Instrumentation audit — DONE 2026-09-13 (cf16ddf).** All 84 registered events
+      cross-referenced against funnel_events: 23 have never fired. Most are failure paths
+      where zero is correct, or shipped yesterday. ONE real blind spot: dd-save/dd-save-tap,
+      0 in 208 panel views, on the save ask that turns a guest into an account — and nothing
+      recorded whether that row ever RENDERED. dd-shown now carries it, so next week's zero
+      will mean something. STILL OPEN: the stump funnel has 4 dead counters and one share.
+      (original note kept below)
+- [x] **Instrumentation audit — agreed, not started.** Today's regression sat
       unread for a week behind a tripwire the code calls "the guardrail on the
       whole rebuild", and a counter that has never fired in its life is
       indistinguishable from a broken one. Which numbers do we quote that rest
@@ -103,9 +126,14 @@ and a Daily 7 question whose distractors were all eliminable.
       only if you haven't played · off any time" wraps to three lines and is the
       tallest text block on the panel. It is copy Alex approved for the reach push,
       so shortening it is his call, not mine.
-- [ ] **Build 123 was never uploaded and is now superseded.** A new build is needed
+- [x] **Build 123 superseded — 1.7.5 / iOS build 137 / Android vc51 CUT 2026-09-13.**
+      Friend-card fix + Racing, Independiente and San Lorenzo (105 questions). Synced,
+      pruned, verified on the simulator. AAB built. NOT uploaded — Alex's call, per build.
+      (original note kept below)
+- [x] **Build 123 was never uploaded and is now superseded.** A new build is needed
       before any store push; uploading remains Alex's explicit call per build.
-- [ ] **Android has not been opened this session.**
+- [x] **Android synced and bundled 2026-09-13** — versionCode 51, AAB 7.78 MB.
+- [x] **Android has not been opened this session.**
 
 ## 2026-09-09 (13:00) — 📱 ALEX'S DEVICE REVIEW (build 113 on his phone) — the five, in order
 

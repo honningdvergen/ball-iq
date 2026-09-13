@@ -15,6 +15,12 @@
 //
 // ⚠️ doorTitle / doorLine / doorGo WERE ADDED 2026-09-11 AND ARE NOT IN THAT
 // REVIEW. `reviewed: true` is a per-LANGUAGE flag, so three new strings
+// ⚠️ es doorTitle FIXED 2026-09-13: it read "Tu Ball IQ completo" — "your
+// complete Ball IQ", the RATING — while the English and the other seven
+// languages all name the artefact ("card", "carta", "Karte", "kaart",
+// "cartão", "kartın", "Kartu"). The door shows a card; the Spanish promised a
+// number. Now "Tu tarjeta Ball IQ completa". That is a meaning fix, not a
+// register choice, so it did not wait for review.
 // inherited an approval Alex gave to different text. They replaced
 // footleTitle/footleLine/play/appLine when the club finish screen swapped its
 // dead daily door for an app door. Worth his eye on es/de/nl/pt.
@@ -38,7 +44,7 @@ export const BQ_I18N = {
     daysRow: '{d} días seguidos', keepGoing: 'Seguir — {more} más →', playAgain: 'Jugar otra vez', share: 'Compartir tu Ball IQ de {name}',
     allDone: 'Esas son todas las preguntas de {name} que tenemos aquí — mañana, en otro orden.',
     ratedLine: 'Las preguntas medias y difíciles cuentan más — las mismas cuentas que tu tarjeta Ball IQ en la app.',
-    doorTitle: 'Tu Ball IQ completo', doorLine: 'Las seis competiciones, retos diarios, rachas y 1v1 en directo.', doorGo: 'Descargar la app →',
+    doorTitle: 'Tu tarjeta Ball IQ completa', doorLine: 'Las seis competiciones, retos diarios, rachas y 1v1 en directo.', doorGo: 'Descargar la app →',
     namePrompt: '¿Añadir tu nombre a la tarjeta de puntuación? (opcional)', copied: 'Copiado ✓', copyPrompt: 'Copia tu puntuación',
     shareTxt: 'Mi Ball IQ de {name} es {iq} — {tier} ({sc}/{n}). Supéralo.', quizTitle: 'Quiz de {name}',
     lenLabel: 'Cambiar la longitud', fullSet: 'Todas', quick: '{n} rápidas', standard: '{n} estándar',
