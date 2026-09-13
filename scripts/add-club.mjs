@@ -43,7 +43,24 @@ if (missing.length) {
   console.error('  None of them may be defaulted. Supply them or do not run.');
   process.exit(1);
 }
-for (const p of cfg.prose.intro) if (!p) { console.error('✗ refusing: empty intro paragraph'); process.exit(1); }
+// ⚠️ COUNT THE PARAGRAPHS, NOT JUST THEIR EMPTINESS. The prose agent returned a
+// FIFTH intro element for San Lorenzo whose entire content was the literal
+// string "faq_placeholder_removed" — a scrap of the model's own scaffolding.
+// It is not empty, so the emptiness check waved it through, and it reached
+// clubs.mjs before the build gate caught it. A generator's output is untrusted
+// input like any other.
+if (!Array.isArray(cfg.prose.intro) || cfg.prose.intro.length !== 4) {
+  console.error(`✗ refusing: intro is ${cfg.prose.intro?.length} paragraphs, the gate requires exactly 4`);
+  process.exit(1);
+}
+if (!Array.isArray(cfg.prose.faq) || cfg.prose.faq.length !== 4) {
+  console.error(`✗ refusing: faq is ${cfg.prose.faq?.length} items, the gate requires exactly 4`);
+  process.exit(1);
+}
+for (const p of cfg.prose.intro) {
+  if (!p || p.length < 80) { console.error(`✗ refusing: intro paragraph is ${p?.length ?? 0} chars — that is scaffolding, not prose: ${JSON.stringify(String(p).slice(0, 60))}`); process.exit(1); }
+}
+for (const f of cfg.prose.faq) if (!f?.q || !f?.a) { console.error('✗ refusing: faq item missing q or a'); process.exit(1); }
 if (cfg.prose.title.length > 60) { console.error(`✗ refusing: title is ${cfg.prose.title.length} chars, the gate allows 60`); process.exit(1); }
 if (cfg.prose.description.length > 155) { console.error(`✗ refusing: description is ${cfg.prose.description.length} chars, the gate allows 155`); process.exit(1); }
 
