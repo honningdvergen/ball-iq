@@ -162,6 +162,14 @@ const esc = (s) =>
 
 // JSON-LD must not allow a `</script>` breakout; escape `<`.
 const jsonLd = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
+// ⚠️ COUNTED, NEVER TYPED. "spanning 72 clubs" was hardcoded and printed on 149
+// club pages while the bank had grown to 99 — we spent months understating
+// ourselves by 27 clubs to every reader, and the same 72 sat on /partners/,
+// which is the page that pitches our catalogue to publishers. A number a human
+// types is a number that stops being true the next time the thing it counts
+// changes.
+const BANK_CLUB_COUNT = new Set(QB.map((q) => q.club).filter(Boolean)).size;
+
 
 // Education Q&A ("flashcard") Quiz node — the ONE quiz structured-data rich
 // result Google still supports in 2026: Practice-problems Quiz died Jan 2026
@@ -1280,7 +1288,7 @@ ${/* ⚠️ NEVER PRINT THE EXACT QUESTION COUNT — binding product rule.
       said 6,409. An editor auditing the site found both within one click.
       "Thousands" says the same thing, cannot go stale, and cannot disagree
       with another page. */ ''}
-<p class="editorial">This is one set from a bank of thousands of questions spanning 72 clubs, every major league and eight decades of football.</p>
+<p class="editorial">This is one set from a bank of thousands of questions spanning ${BANK_CLUB_COUNT} clubs, every major league and eight decades of football.</p>
 </section>`;
 }
 
@@ -3360,7 +3368,7 @@ ${NAV}
 </div>
 <div style="display:flex;flex-wrap:wrap;gap:10px;margin:0 0 26px">
 <div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1">Checked</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">every question, before it ships</div></div>
-<div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1">72</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">club quizzes</div></div>
+<div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1">${CLUBS.length}</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">club quizzes</div></div>
 <div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1">Daily</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">games, live now</div></div>
 <div style="border:1px solid var(--bd);border-radius:10px;padding:10px 16px;background:var(--card)"><div style="font-size:22px;font-weight:900;color:var(--grn);line-height:1">Free</div><div style="font-size:12px;color:var(--tx3);margin-top:2px">and stays free</div></div>
 </div>
@@ -3434,7 +3442,7 @@ ${footlePracticeSection()}
         loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
 <section class="sec">
 <h2>Who is behind it</h2>
-<p style="margin:0 0 12px;color:var(--tx2);max-width:62ch">Ball IQ is a football quiz app on iOS and Android with ${'72'} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
+<p style="margin:0 0 12px;color:var(--tx2);max-width:62ch">Ball IQ is a football quiz app on iOS and Android. The site carries ${CLUBS.length} club quizzes, plus two daily games — Footle, a football word game, and the Daily 7, a seven-question run that resets every morning. Most questions carry a short explanation, so readers learn something when they get one wrong.</p>
 <p style="margin:0 0 12px;color:var(--tx2);max-width:62ch">Interested, or want a sample built for your audience before you decide? Email <a href="mailto:hello@balliq.app" style="color:var(--grn)">hello@balliq.app</a> and we will send the first one with no commitment.</p>
 </section>
 </main>
