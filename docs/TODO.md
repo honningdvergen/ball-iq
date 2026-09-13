@@ -22,13 +22,30 @@
       Reproduced exactly off the real row: 69 vs a true 74, all six faces low.
       Only bites the 33 accounts with no `d` buckets, which is why it shipped.
 - [ ] **⚠️ LEGACY c/a STILL DECAY AS YOU PLAY on any build < 1.7.4** — every
-      build shipped before this morning. That is the 71 → 69 drift in three
+      build shipped before this morning. CONFIRMED IN THE DATA 2026-09-13: the
+      decay's fingerprint is FRACTIONAL `c` values — a "correct answers" count of
+      0.8 or 48.33 — and they appear in EVERY category (UCL, LaLiga, Managers,
+      History, Records, WorldCup, PL, Bundesliga, Transfers, SerieA, Euros,
+      ClubQuiz, SuperLig, chaos, Ligue1, Primeira, Legends), on 32 of 154
+      accounts. Not one mode writing a score: a decay applied across the board.
+      1.7.5 (build 137) carries the fix and is cut but not uploaded. That is the 71 → 69 drift in three
       hours while games went 207 → 210. Ends as players update; their history
       stays depressed.
-- [ ] **A `d` BACKFILL FOR THE 33 LEGACY ACCOUNTS — Alex's call.** Would make
-      their cards counted rather than estimated, and immune to the decay above.
-      All 33 are recoverable from `correct_answers`. Prod migration: needs an
-      explicit go-ahead.
+- [x] **A `d` BACKFILL — DECIDED AGAINST 2026-09-13, measured on prod.** The item
+      said "all 33 are recoverable from `correct_answers`". They are not, and the
+      column is the wrong source:
+      · 30 legacy accounts remain, not 33 — three migrated by simply playing,
+        which is the decay item above resolving itself as predicted.
+      · `correct_answers` is IMPOSSIBLE on 6 of those 30: more correct answers
+        than questions ever answered, the worst by +13. Across all 154 accounts
+        with catStats, 30 are impossible, one by +90.
+      · It implies **89.2% accuracy** on the legacy accounts. The category stats
+        imply **~57%**, which is the plausible figure. The column counts things
+        that are not per-question correct answers.
+      Backfilling `d` from it would fabricate per-difficulty buckets out of a
+      number that cannot be true. No prod migration. If these cards are ever to
+      be counted rather than estimated, the source has to be `scores`, not this
+      column — and that was separately measured to DOWNGRADE 12 of 31 players.
 - [ ] **⏳ READ clubq-out-store ~2026-09-25**, against the 15.4% pre-09-04
       baseline and the 9.2% it replaces. It is now the ONLY store link inside
       .bq-res, so the rate is directly readable. Not yet deployed — Alex's call.
