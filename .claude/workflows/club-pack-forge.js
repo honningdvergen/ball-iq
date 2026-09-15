@@ -62,19 +62,30 @@ BALL IQ ZERO ERROR BAR — these are ship gates, not style preferences.
    keying the club itself is a free point for anyone who read the button they
    pressed. Ask for the OTHER club in the story.
 9. ANYTHING AFTER JANUARY 2026 NEEDS TWO SOURCES OR IT IS FABRICATION.
+10. SET preEra: true WHEN THE FACT BEING TESTED HAPPENED BEFORE 1950 — above all
+   founding, original name, first ground, name origin and "first ever" questions
+   for clubs founded before 1950. This matters most when NO YEAR appears in the
+   stem or the keyed answer: "Who co-founded Torino?" is a 1906 fact that no
+   filter can see, and it led a shared Daily 7. The Daily 7 excludes preEra
+   questions; the club page keeps them. Set false for anything from 1950 on.
 `;
 
 const GEN = {
   type: 'object', required: ['questions'],
   properties: { questions: { type: 'array', items: {
-    type: 'object', required: ['q', 'o', 'a', 'diff', 'hint'],
+    type: 'object',
     properties: {
       q: { type: 'string', description: 'The stem. Every factual claim inside it must be true.' },
       o: { type: 'array', minItems: 4, maxItems: 4, items: { type: 'string' } },
       a: { type: 'integer', minimum: 0, maximum: 3, description: 'INDEX into o of the correct option — not the answer text.' },
       diff: { type: 'string', enum: ['easy', 'medium', 'hard'] },
       hint: { type: 'string', description: 'One or two sentences of explanation shown after answering. Required.' },
-    } } } },
+      // ⚠️ REQUIRED, and it was missing from this forge until 2026-09-15 —
+      // src/lib/quiz.js reads it and not one forged row had ever carried it, so
+      // every year-less founding question from these waves was eligible for the
+      // shared Daily 7. The generator knows the founding year; a regex cannot.
+      preEra: { type: 'boolean', description: 'true if the fact this question tests happened before 1950 (founding, original name, first ground, name origin, a pre-1950 first-ever). false otherwise.' },
+    }, required: ['q', 'o', 'a', 'diff', 'hint', 'preEra'] } } },
 };
 
 // Per-question verdicts, so a batch is still N independent judgements.
@@ -88,7 +99,7 @@ const BATCH = {
       reason: { type: 'string', description: 'One sentence. For reject, name the false claim.' },
       fixed: { type: 'object', properties: {
         q: { type: 'string' }, o: { type: 'array', items: { type: 'string' } },
-        a: { type: 'integer' }, hint: { type: 'string' } } },
+        a: { type: 'integer' }, hint: { type: 'string' }, preEra: { type: 'boolean' } } },
     } } } },
 };
 
@@ -159,7 +170,7 @@ const examined = await parallel(batches.map((b, bi) => () => {
   const off = bi * half;
   return agent(
     `You are the EXAMINER. Fact-check every question below about ${club}. There are ${b.length}; return one verdict for EACH, using the # index shown.\n\n${show(b, off)}\n\n${BAR}
-For each question check, in order: (a) is the resolved answer factually correct; (b) is EVERY claim in the stem true; (c) is it self-answering; (d) does every distractor satisfy the stem's qualifier while being verifiably wrong; (e) is the hint true.
+For each question check, in order: (a) is the resolved answer factually correct; (b) is EVERY claim in the stem true; (c) is it self-answering; (d) does every distractor satisfy the stem's qualifier while being verifiably wrong; (e) is the hint true; (f) is preEra right — true when the tested fact predates 1950 (return it in "fixed" if it is wrong).
 Also: if exactly one option's NAME FORMAT differs from the others (a single word among full names, or the reverse) and that odd one is the keyed answer, reword one distractor to match the answer's shape — measured on the live bank, that tell hands away 29% of such questions.${leakNote}
 Verify facts you are not certain of. Do not spend a search on a fact you know cold — spend them where the stem makes a superlative or temporal claim.
 Return "keep" to ship as-is, "fix" with a corrected version for a specific wording or option, "reject" if the underlying fact is wrong, contested, unverifiable, or the question answers itself.`,

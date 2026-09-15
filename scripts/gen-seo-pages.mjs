@@ -5513,6 +5513,13 @@ const MORE_META = {
   'leicester-city': { code: 'LEI', color: '#003090', name: 'Leicester City' },
   'olympiacos': { code: 'OLY', color: '#DA020E', name: 'Olympiacos' },
   'panathinaikos': { code: 'PAO', color: '#00614E', name: 'Panathinaikos' },
+  // Liga MX has no roster in leagues.mjs, so like the clubs above there is no
+  // league row for DIR_ALIAS to map from. Colours sourced 2026-09-15 from each
+  // club's own assets: América's site token --color-secondary-60 and the crest
+  // disc agree on #FFEB00; Guadalajara's site token --secondary is #CD1731, with
+  // the crest's stripe red #CE0E2D alongside it.
+  'club-america': { code: 'AME', color: '#FFEB00', name: 'Club América' },
+  'chivas': { code: 'GDL', color: '#CD1731', name: 'Chivas' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {

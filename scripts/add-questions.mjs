@@ -53,6 +53,12 @@ for (const it of items) {
   ];
   if (it.hint) parts.push(`hint:${JSON.stringify(it.hint)}`);
   if (it.club) parts.push(`club:${JSON.stringify(it.club)}`);
+  // ⚠️ preEra WAS SILENTLY DROPPED HERE until 2026-09-15. This field list is
+  // fixed, and the flag src/lib/quiz.js reads to keep year-less pre-1950 facts
+  // ("Who co-founded Torino?") out of the shared Daily 7 was not on it — so
+  // even once the forge started emitting it, no inserted row could carry it.
+  // Written only when true, matching the hand-flagged rows already in the bank.
+  if (it.preEra === true) parts.push('preEra:true');
   parts.push('v:1');
   entries.push('  { ' + parts.join(', ') + ' },');
 }

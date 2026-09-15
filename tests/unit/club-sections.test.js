@@ -84,7 +84,7 @@ describe('club picker sections', () => {
     expect(m, 'CLUB_ORDER not found').toBeTruthy();
     let idx = 0;
     for (const key of m[1].matchAll(/"(\w+)"/g)) {
-      if (!/^(england|spain|italy|germany|france|portugal|netherlands|turkiye|scotland|belgium|croatia|brazil|argentina|other)$/.test(key[1])) {
+      if (!/^(england|spain|italy|germany|france|portugal|netherlands|turkiye|scotland|belgium|croatia|brazil|argentina|mexico|other)$/.test(key[1])) {
         order[key[1]] = idx += 1;
       }
     }

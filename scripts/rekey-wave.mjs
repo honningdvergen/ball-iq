@@ -47,17 +47,39 @@ for (const file of readdirSync(dir).filter((f) => /^p-.*\.json$/.test(f)).sort()
   const before = [0, 0, 0, 0];
   qs.forEach((r) => { if (typeof r.a === 'number') before[r.a]++; });
 
+  // ⚠️ ALL-NUMERIC OPTION SETS ARE SORTED ASCENDING, NEVER SWAPPED. "5 / 6 / 7 /
+  // 8 titles" or "1959 / 1962 / 1967 / 1971" read as a mistake when jumbled, and
+  // ascending is the bank's own convention. Until 2026-09-15 this script swapped
+  // them like everything else. They keep the index ascending order gives them and
+  // sit out the round-robin; the rest of the pack still spreads evenly.
+  const NUM = /^\d{1,4}(?:\s*[–-]\s*\d{2,4})?$/;
+  const isNum = (r) => Array.isArray(r.o) && r.o.length === 4 && r.o.every((o) => NUM.test(String(o).trim()));
+  let sortedNum = 0;
+  qs.forEach((r, i) => {
+    if (!isNum(r)) return;
+    const correct = r.o[r.a];
+    const lead = (o) => parseInt(String(o), 10);
+    const next = [...r.o].sort((x, y) => lead(x) - lead(y));
+    if (next.join('|') !== r.o.join('|')) sortedNum++;
+    r.o = next;
+    r.a = next.indexOf(correct);
+    if (r.o[r.a] !== correct) throw new Error(`${file} #${i + 1}: sort lost the answer`);
+  });
+
   // round-robin slots, order shuffled deterministically per pack
   const rnd = seed(qs.map((r) => r.q).join('|'));
-  const slots = qs.map((_, i) => i % 4);
-  for (let i = slots.length - 1; i > 0; i--) {
+  const swappable = qs.map((r, i) => (isNum(r) ? -1 : i)).filter((i) => i >= 0);
+  const slots = new Array(qs.length).fill(null);
+  const pool = swappable.map((_, k) => k % 4);
+  for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(rnd() * (i + 1));
-    [slots[i], slots[j]] = [slots[j], slots[i]];
+    [pool[i], pool[j]] = [pool[j], pool[i]];
   }
+  swappable.forEach((qi, k) => { slots[qi] = pool[k]; });
 
   let moved = 0;
   qs.forEach((r, i) => {
-    if (!Array.isArray(r.o) || r.o.length !== 4 || typeof r.a !== 'number') return;
+    if (!Array.isArray(r.o) || r.o.length !== 4 || typeof r.a !== 'number' || slots[i] === null) return;
     const correct = r.o[r.a];             // resolve BEFORE touching anything
     const want = slots[i];
     if (want === r.a) return;
@@ -69,7 +91,7 @@ for (const file of readdirSync(dir).filter((f) => /^p-.*\.json$/.test(f)).sort()
 
   const after = [0, 0, 0, 0];
   qs.forEach((r) => { if (typeof r.a === 'number') after[r.a]++; });
-  console.log(`${file.padEnd(20)} ${before.join('/')}  ->  ${after.join('/')}   (${moved} moved)`);
+  console.log(`${file.padEnd(20)} ${before.join('/')}  ->  ${after.join('/')}   (${moved} moved, ${sortedNum} numeric set(s) re-sorted ascending)`);
 
   if (WRITE) writeFileSync(path, JSON.stringify(raw, null, 2) + '\n');
 }

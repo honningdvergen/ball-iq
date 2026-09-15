@@ -11,6 +11,42 @@
 
 export const CLUBS = [
   {
+    club: "Guadalajara", slug: "chivas", name: "Chivas",
+    h1: "Chivas Guadalajara Quiz",
+    title: "Chivas Guadalajara Quiz with Answers | Ball IQ",
+    description: "Play a Chivas Guadalajara quiz with answers: the Campeonísimo, the Clásico Tapatío, the 2010 Libertadores final, Chicharito, Almeyda and more.",
+    intro: [
+      "Chivas were founded in Guadalajara in 1906 by Edgar Everaert, who came from Belgium. The club started out as Club Unión and took the city's name in 1908. Its first great era was the Campeonísimo: seven league titles in nine seasons, from 1956–57 to 1964–65. Only two titles got away in that run, 1957–58 and 1962–63. The second went to Club Oro, Chivas's neighbours in Guadalajara, and it was the only Primera División title Oro ever won. In the same era Chivas won the first CONCACAF Champions' Cup, in 1962. The defender José 'Jamaicón' Villegas gave Mexico the 'síndrome del Jamaicón', its word for a footballer who gets homesick abroad. Tomás Balcázar played for Chivas and scored against France at the 1954 World Cup. He is also Chicharito's grandfather.",
+      "Chivas play Atlas in the Clásico Tapatío, Guadalajara's city derby. They lost the 1983–84 league final to América, a match known as the 'Final del Siglo', and that defeat added fuel to the Clásico Nacional. Under Ricardo Ferretti, Chivas won the Verano 1997 title by beating Toros Neza 6–1 in the second leg of the final. They lost the Clausura 2004 final to Pumas UNAM after a penalty shootout. Two years later José Manuel 'Chepo' de la Torre led them to the Apertura 2006 title. After a 1-1 first leg at the Estadio Jalisco, Adolfo 'Bofo' Bautista scored the winner at Toluca. Chivas took the final 3-2 on aggregate for their 11th league title.",
+      "In 2010, José Luis 'Güero' Real took Chivas to the Copa Libertadores final, where Internacional of Porto Alegre beat them in both legs. That July the club moved into a new home in Zapopan. The Estadio Omnilife, now the Estadio Akron, opened with a friendly against Manchester United. Under Matías Almeyda, Chivas beat Tigres UANL in the Clausura 2017 final. In 2018 they won the CONCACAF Champions League, beating Toronto FC on penalties at the Estadio Akron. At the 2018 Club World Cup in the UAE they lost their first match 3-2 to Kashima Antlers. Veljko Paunović reached the Clausura 2023 final in his first season, but Tigres won it 3-2 in extra time of the second leg.",
+      "Chivas players have gone on to careers abroad. Carlos Vela came through the youth system and signed for Arsenal in 2005. Carlos Salcido joined PSV Eindhoven after the 2006 World Cup. Omar Bravo left for Deportivo La Coruña in 2008, and Marco Fabián was sold to Eintracht Frankfurt in December 2015. Javier 'Chicharito' Hernández came back to his boyhood club in January 2024 after four years at LA Galaxy. The quiz also covers Chivas USA, which played in MLS from 2005 to 2014, and Johan Cruyff's time as an adviser to the club in 2012. See how much you know.",
+    ],
+    faq: [
+      { q: "When and how was Chivas Guadalajara founded?", a: "Edgar Everaert, who came from Belgium, founded Chivas in Guadalajara in 1906. The club was first called Club Unión and took the city's name in 1908." },
+      { q: "What was Chivas's Campeonísimo era?", a: "Between 1956–57 and 1964–65, Chivas won seven league titles in nine seasons. The only titles they missed were 1957–58 and 1962–63, and Guadalajara neighbours Club Oro won in 1962–63." },
+      { q: "Who are Chivas's biggest rivals?", a: "Chivas play Atlas in the Clásico Tapatío, Guadalajara's city derby. Their rivalry with América, the Clásico Nacional, grew stronger after América beat them in the 1983–84 league final, known as the 'Final del Siglo'." },
+      { q: "Where do Chivas play their home games?", a: "Chivas have played at the Estadio Akron in Zapopan since 2010. It opened in July 2010 as the Estadio Omnilife, with a friendly against Manchester United. Before the move, Chivas played home games at the Estadio Jalisco." },
+    ],
+  },
+  {
+    club: "Club América", slug: "club-america", name: "Club América",
+    h1: "Club América Quiz",
+    title: "Club América Quiz with Answers | Ball IQ",
+    description: "Test your Club América knowledge: the Azteca's opening night, Clásico Nacional finals, three titles in a row and a goalkeeper's header. Play free.",
+    intro: [
+      "Club América was founded in Mexico City on 12 October 1916, and the club took its name from that date. It was Columbus Day, celebrated in Mexico as Día de la Raza. In 1959 the club was bought by Emilio Azcárraga Milmo. His family's broadcaster, Telesistema Mexicano, merged into Televisa in 1973, and América was run as part of that empire for decades. The quiz starts there and moves through the finals, the nights at the Azteca and the players who came and went.",
+      "The Estadio Azteca opened on 29 May 1966 with a 2-2 draw between América and Torino. América won back-to-back league titles by beating Clásico Nacional rivals Guadalajara in the 1983-84 final, then Pumas UNAM in 1984-85. That second final took two draws and a deciding third match. In the Verano 2002 final, Hugo Norberto Castillo's golden goal against Necaxa ended a 13-year wait for the title, with Manuel Lapuente in charge. In Clausura 2005 América beat Tecos 6-3 at the Azteca. In the Clausura 2013 final, goalkeeper Moisés Muñoz went up for a late corner and headed the goal that forced extra time, and América won on penalties. Beating Monterrey in the Apertura 2024 final made América the first club of Liga MX's short-tournament era to win three titles in a row.",
+      "Away from the league, América beat Toluca in the 2006 CONCACAF Champions' Cup final. They beat the Montreal Impact to win the 2014-15 CONCACAF Champions League, taking the second leg in Montreal. Plenty of big nights went the other way. Barcelona beat América 4-0 in the 2006 FIFA Club World Cup semi-final, and Real Madrid won their 2016 semi-final 2-0. Arsenal de Sarandí beat América on away goals in the 2007 Copa Sudamericana final. LDU Quito knocked them out of the 2008 Copa Libertadores semi-finals. León won the Apertura 2013 final 5-1 on aggregate. In May 2025, LAFC beat América 2-1 after extra time in a play-off for a place at the 2025 FIFA Club World Cup.",
+      "Then there are the people. Cuauhtémoc Blanco went on loan to Real Valladolid in 2000. Iván Zamorano arrived from Inter Milan in 2001, and Salvador Cabañas came from Jaguares de Chiapas in 2006. Zambia captain Kalusha Bwalya joined from PSV in 1994 and became a cult figure. Academy goalkeeper Guillermo Ochoa left for AC Ajaccio in 2011, and Edson Álvarez joined Ajax in 2019. Oribe Peralta's move to Chivas that same summer was one of the most argued-about transfers of the era. Miguel Herrera won the league with América in both 2013 and 2018, and André Jardine arrived from Atlético San Luis in 2023. Pick your answers, then read why each one is right.",
+    ],
+    faq: [
+      { q: "When was Club América founded, and where does the name come from?", a: "Club América was founded in Mexico City on 12 October 1916. That was Columbus Day, which Mexico celebrates as Día de la Raza, and the name 'América' comes from it." },
+      { q: "Who did Club América play in the first match at the Estadio Azteca?", a: "Torino of Italy. The Azteca opened on 29 May 1966, and the match finished 2-2." },
+      { q: "Who are Club América's biggest rivals?", a: "Guadalajara (Chivas), their opponents in the Clásico Nacional, and Cruz Azul, their opponents in the Clásico Joven. América beat Chivas in the 1983-84 final and Cruz Azul in the Apertura 2018 and Clausura 2024 finals." },
+      { q: "Has Club América won three league titles in a row?", a: "Yes. América beat Tigres in the Apertura 2023 final, Cruz Azul in Clausura 2024 and Monterrey (3-2 on aggregate) in Apertura 2024. That made them the first club of Liga MX's short-tournament era to win three titles in a row." },
+    ],
+  },
+  {
     club: "San Lorenzo", slug: "san-lorenzo", name: "San Lorenzo",
     h1: "San Lorenzo Quiz",
     title: "San Lorenzo Quiz With Answers | Ball IQ",

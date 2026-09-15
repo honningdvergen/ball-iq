@@ -100,7 +100,12 @@ edit(A, `${pack}: "${league}"`, (s) => s.replace(/(export const CLUB_LEAGUES = \
     // and River, Argentina's two biggest clubs, below two sides added the same
     // afternoon. A new club goes after the established ones; promote it by hand
     // if it deserves promoting.
-    const next = src.replace(new RegExp(`("${league}": \\[[^\\]]*)\\]`), `$1, "${pack}"]`);
+    // ⚠️ AN EMPTY BUCKET MUST NOT GET A LEADING COMMA. Appending `, "Pack"` to
+    // `"mexico": []` wrote `[, "ClubAmerica"]` — an array hole, the same class the
+    // clubs.mjs note below warns about. .flat() happens to skip holes, so it would
+    // have worked by accident, which is worse than failing.
+    const next = src.replace(new RegExp(`("${league}": \\[)([^\\]]*)\\]`),
+      (m, open, body) => `${open}${body.trim() ? `${body}, ` : ''}"${pack}"]`);
     if (next === src) { console.error(`✗ CLUB_ORDER: no "${league}" bucket in the map — add the section first`); process.exit(1); }
     if (!DRY) writeFileSync(F(A), next, 'utf8');
     edits.push('  ✓ CLUB_ORDER');

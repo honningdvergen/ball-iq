@@ -801,6 +801,8 @@ const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA"
 // have >=10 for that club — auto-upgrading each club as content is generated —
 // and falls back to the pack's starter questions otherwise.
 export const CLUB_PACK_TO_QB = {
+  Guadalajara: "Guadalajara",
+  ClubAmerica: "Club América",
   SanLorenzo: "San Lorenzo",
   Independiente: "Independiente",
   Racing: "Racing Club",
@@ -860,6 +862,8 @@ export const CLUB_PACK_TO_QB = {
 // the ones anyone came looking for. Ordered by who a fan opening this screen
 // is most likely to want; adding a club appends rather than displaces.
 export const CLUB_LEAGUES = {
+  Guadalajara: "mexico",
+  ClubAmerica: "mexico",
   SanLorenzo: "argentina",
   Independiente: "argentina",
   Racing: "argentina",
@@ -902,7 +906,7 @@ export const CLUB_LEAGUES = {
 };
 // Position within a country, from the order above. Unknown keys sort last so a
 // club added to CLUB_PACKS but not here still renders instead of vanishing.
-export const CLUB_ORDER = Object.fromEntries(Object.values({"england": ["Arsenal", "ManUtd", "Liverpool", "ManCity", "Chelsea", "Tottenham", "Newcastle", "Everton", "Villa", "WestHam", "Forest", "Leeds", "Palace", "Fulham", "Brighton", "Bournemouth", "Brentford", "Sunderland", "Ipswich", "Wolves", "Burnley", "Southampton", "Leicester", "Norwich", "Derby", "Stoke", "Birmingham", "SheffWed", "Coventry", "HullCity", "Portsmouth", "Cardiff", "Swansea", "Wrexham", "Middlesbrough", "WestBrom", "SheffUtd", "Blackburn", "Watford", "QPR"], "spain": ["RealMadrid", "Barcelona", "Atletico", "Sevilla", "Valencia", "Athletic", "Betis", "RealSociedad"], "italy": ["Juventus", "AcMilan", "InterMilan", "Napoli", "Roma", "Lazio", "Atalanta", "Fiorentina", "Torino", "Parma"], "germany": ["BayernMunich", "Dortmund", "Leverkusen", "Leipzig", "Frankfurt", "Schalke", "Hamburg"], "france": ["PSG", "Marseille", "Lyon", "Monaco", "SaintEtienne"], "portugal": ["Benfica", "Porto", "Sporting"], "netherlands": ["Ajax", "PSV", "Feyenoord"], "turkiye": ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"], "scotland": ["Celtic", "Rangers"], "belgium": ["Anderlecht", "ClubBrugge"], "croatia": ["DinamoZagreb", "Hajduk"], "brazil": ["Flamengo", "Palmeiras", "Corinthians", "Santos"], "argentina": ["Boca", "River", "Racing", "Independiente", "SanLorenzo"], "other": ["RedStar", "Basel", "Olympiacos", "Panathinaikos"]}).flat().map((k, i) => [k, i]));
+export const CLUB_ORDER = Object.fromEntries(Object.values({"england": ["Arsenal", "ManUtd", "Liverpool", "ManCity", "Chelsea", "Tottenham", "Newcastle", "Everton", "Villa", "WestHam", "Forest", "Leeds", "Palace", "Fulham", "Brighton", "Bournemouth", "Brentford", "Sunderland", "Ipswich", "Wolves", "Burnley", "Southampton", "Leicester", "Norwich", "Derby", "Stoke", "Birmingham", "SheffWed", "Coventry", "HullCity", "Portsmouth", "Cardiff", "Swansea", "Wrexham", "Middlesbrough", "WestBrom", "SheffUtd", "Blackburn", "Watford", "QPR"], "spain": ["RealMadrid", "Barcelona", "Atletico", "Sevilla", "Valencia", "Athletic", "Betis", "RealSociedad"], "italy": ["Juventus", "AcMilan", "InterMilan", "Napoli", "Roma", "Lazio", "Atalanta", "Fiorentina", "Torino", "Parma"], "germany": ["BayernMunich", "Dortmund", "Leverkusen", "Leipzig", "Frankfurt", "Schalke", "Hamburg"], "france": ["PSG", "Marseille", "Lyon", "Monaco", "SaintEtienne"], "portugal": ["Benfica", "Porto", "Sporting"], "netherlands": ["Ajax", "PSV", "Feyenoord"], "turkiye": ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"], "scotland": ["Celtic", "Rangers"], "belgium": ["Anderlecht", "ClubBrugge"], "croatia": ["DinamoZagreb", "Hajduk"], "brazil": ["Flamengo", "Palmeiras", "Corinthians", "Santos"], "argentina": ["Boca", "River", "Racing", "Independiente", "SanLorenzo"], "mexico": ["ClubAmerica", "Guadalajara"], "other": ["RedStar", "Basel", "Olympiacos", "Panathinaikos"]}).flat().map((k, i) => [k, i]));
 export const CLUB_LEAGUE_SECTIONS = [
   // ── SECTIONS ARE COUNTRIES, NOT LEAGUES ────────────────────────────────────
   // Alex, 2026-08-23, on seeing Birmingham and Cardiff heading the Premier
@@ -937,6 +941,7 @@ export const CLUB_LEAGUE_SECTIONS = [
   { key: "croatia", label: "Croatia" },
   { key: "brazil", label: "Brazil" },
   { key: "argentina", label: "Argentina" },
+  { key: "mexico", label: "Mexico" },
   // Same 2+ rule the old list used: a country gets a section once it has two
   // clubs. Red Star (Serbia) and Basel (Switzerland) are still singletons.
   { key: "other", label: "More clubs" },
@@ -961,6 +966,8 @@ export function clubReadableText(hex) {
 // Broadcast/club-recognised short codes for the row swatches (MUN, FCB, BVB, …),
 // not raw initials. Falls back to clubInitials() for any unmapped key.
 export const CLUB_ABBR = {
+  Guadalajara: "GDL",
+  ClubAmerica: "AME",
   SanLorenzo: "SLO",
   Independiente: "IND",
   Racing: "RAC",
@@ -998,6 +1005,8 @@ export const CLUB_ABBR = {
 // searcher IN the quiz they Googled (the club/league landing pages' CTAs emit
 // these — see scripts/gen-seo-pages.mjs ctaBlock). Slugs match scripts/seo.
 const CLUB_SLUG_TO_PACK = {
+  "chivas": "Guadalajara",
+  "club-america": "ClubAmerica",
   "san-lorenzo": "SanLorenzo",
   "independiente": "Independiente",
   "racing-club": "Racing",
@@ -1118,6 +1127,14 @@ const LEAGUE_QUIZ_SECTIONS = [
 export const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
 export const CLUB_PACKS = {
+  Guadalajara: {
+    name: "Chivas", icon: "🔴", color: "#CD1731",
+    questions: [],
+  },
+  ClubAmerica: {
+    name: "Club América", icon: "🟡", color: "#FFEB00",
+    questions: [],
+  },
   SanLorenzo: {
     name: "San Lorenzo", icon: "🔵", color: "#3D63C9",
     questions: [],
