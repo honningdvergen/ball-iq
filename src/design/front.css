@@ -196,6 +196,18 @@
 .fd-foot-line{margin-top:26px;font-size:12.5px;color:var(--t3)}
 
 /* responsive */
+/* ⚠️ SAME BREAKPOINT AS scripts/seo/shell.mjs — see the measured table there. On "/"
+   the shell header paints first and this React header replaces it on mount, so a
+   different width here would swap a menu button for a full nav in front of the
+   reader. The nav here says "Games" and fits from 838px; it folds at 1020px anyway,
+   for that reason. tests/unit/shell-i18n.test.js holds the two files together. */
+@media (min-width:721px) and (max-width:1020px){
+  .fd-nav{display:none}
+  .fd-nav.is-open{display:flex;position:absolute;left:0;right:0;top:60px;flex-direction:column;gap:0;padding:8px;background:var(--s1);border-bottom:1px solid var(--bd)}
+  .fd-nav.is-open a{min-height:44px;display:flex;align-items:center;font-size:16px}
+  .fd-nav.is-open .fd-nav-signin{display:none}
+  .fd-burger{display:grid;place-items:center}
+}
 @media (max-width:1000px){
   .fd-games{grid-template-columns:repeat(2,minmax(0,1fr))}
   .fd-clubs{grid-template-columns:repeat(3,minmax(0,1fr))}

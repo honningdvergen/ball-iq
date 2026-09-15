@@ -102,13 +102,21 @@ describe('no page claims the questions are hand-written or never automated', () 
   }
 });
 
-describe('a translated nav folds into the menu before its labels can wrap', () => {
-  it('localised headers carry the modifier; English does not', () => {
-    expect(shellHeader(SITE, '', 'tr')).toContain('class="fd-head fd-head--intl"');
-    expect(shellHeader(SITE, '')).toContain('<header class="fd-head">');
-  });
-  it('the mid-width rule exists and hides the inline nav for localised headers only', async () => {
+describe('the nav folds into the menu before any language can wrap it', () => {
+  // Measured widths are in the comment above the rule in shell.mjs. The worst
+  // language (Turkish) fits from 969px; the rule folds below 1020px.
+  const FOLD = /@media ?\(min-width:721px\) and \(max-width:1020px\) ?\{\s*\.fd-nav\{display:none\}/;
+  it('the shell folds every header at the measured breakpoint', async () => {
     const { SHELL_CSS } = await import('../../scripts/seo/shell.mjs');
-    expect(SHELL_CSS).toMatch(/@media\(min-width:721px\) and \(max-width:1100px\)\{\s*\.fd-head--intl \.fd-nav\{display:none\}/);
+    expect(SHELL_CSS).toMatch(FOLD);
+  });
+  it('the front door folds at the SAME breakpoint, so the static-to-React header swap never changes shape', () => {
+    const front = readFileSync(resolve(__dirname, '../../src/design/front.css'), 'utf8');
+    expect(front).toMatch(FOLD);
+  });
+  it('inside the open menu at those widths, Sign in is not repeated', async () => {
+    const { SHELL_CSS } = await import('../../scripts/seo/shell.mjs');
+    const front = readFileSync(resolve(__dirname, '../../src/design/front.css'), 'utf8');
+    for (const css of [SHELL_CSS, front]) expect(css).toContain('.fd-nav.is-open .fd-nav-signin{display:none}');
   });
 });

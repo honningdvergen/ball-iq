@@ -104,7 +104,7 @@ export function shellHeader(site, active = '', lang = 'en', opts = {}) {
   const quizzesHref = opts.quizzesHref || `${b}/football-quiz/`;
   const a = (k) => (active === k ? ' class="is-active" aria-current="page"' : '');
   return `<a class="fd-skip" href="#main">${h(t.skipToContent)}</a>
-<header class="fd-head${lang !== 'en' ? ' fd-head--intl' : ''}"><div class="fd-w fd-head-in">
+<header class="fd-head"><div class="fd-w fd-head-in">
 <a class="fd-mark" href="${b}/" aria-label="${h(t.homeLabel)}"><img src="/marketing/ball.png" alt="" width="26" height="26"><span>Ball IQ</span></a>
 <nav class="fd-nav" id="fd-nav" aria-label="${h(t.sectionsLabel)}"><a href="${b}/#today">${h(t.navToday)}</a><a href="${b}/football-games/"${a('games')}>${h(t.navGames)}</a><a href="${b}/#clubs"${a('clubs')}>${h(t.navClubs)}</a><a href="${quizzesHref}"${a('quizzes')}>${h(t.navQuizzes)}</a><a href="${b}/lists/"${a('lists')}>${h(t.navLists)}</a><a class="fd-nav-signin" href="${b}/play?tab=profile">${h(t.signIn)}</a></nav>
 <div class="fd-find" role="search"><span class="fd-find-ic">${SEARCH_ICON}</span><input type="search" class="fd-find-in" id="fd-find" placeholder="${h(t.findPlaceholder)}" aria-label="${h(t.findPlaceholder)}" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" autocomplete="off"><div class="fd-find-res" id="fd-find-res" role="listbox" aria-label="${h(t.findResultsLabel)}" hidden></div></div>
@@ -252,24 +252,26 @@ export const SHELL_CSS = `
   .fd-foot-badge:hover{border-color:var(--bd3);text-decoration:none}
   .fd-foot-line{margin-top:26px;font-size:12.5px;line-height:1.6;color:var(--tx4);max-width:90ch}
   @media(max-width:1000px){.fd-foot-in{grid-template-columns:repeat(3,minmax(0,1fr))}}
-  /* ⚠️ A TRANSLATED NAV NEEDS MORE ROOM, and wrapped labels read as broken.
-   Measured 2026-09-15 as logo + unwrapped nav + a 240px search box + sign-in +
-   gaps + 44px padding a side: English needs ~1006px, Turkish and French ~1062px
-   (Turkish is the longest of the nine by characters). Between 721px and those
-   widths a label breaks onto two lines — "Futbol / oyunları", "Jeux de / foot"
-   — so localised headers fold the nav into the menu below 1100px instead, with
-   the menu dropping from the 60px header rather than the phone's 56px. Sign in
-   stays in the bar at these widths, so its copy inside the menu is hidden.
-   ⚠️ ENGLISH IS NOT COVERED HERE AND ALSO WRAPS, between 721px and ~1006px
-   ("Football games", "Sign in"). That predates localisation and the same header
-   is rendered by the front door from src/design/front.css, so it needs fixing in
-   both places at once — not in this block. */
-@media(min-width:721px) and (max-width:1100px){
-    .fd-head--intl .fd-nav{display:none}
-    .fd-head--intl .fd-nav.is-open{display:flex;position:absolute;left:0;right:0;top:60px;flex-direction:column;gap:0;padding:8px;background:var(--card);border-bottom:1px solid var(--bd);z-index:110}
-    .fd-head--intl .fd-nav.is-open a{min-height:44px;display:flex;align-items:center;font-size:16px}
-    .fd-head--intl .fd-nav.is-open .fd-nav-signin{display:none}
-    .fd-head--intl .fd-burger{display:grid;place-items:center}
+  /* ⚠️ BETWEEN 721px AND ~970px THE NAV DID NOT FIT, AND ITS LABELS BROKE ONTO TWO
+   LINES — "Football games", "Sign in", "Futbol / oyunları" — in EVERY language,
+   English included. Measured 2026-09-15 on the served build as logo + unwrapped nav +
+   a 240px search box + sign-in + gaps; the header's own padding is clamp(20px,4vw,
+   44px), so a header fits from content / 0.92. It fits from:
+     id 866 · de 895 · it 907 · en 922 · es 931 · pt 935 · fr 954 · nl 968 · tr 969
+   (the React front door, whose nav says "Games", from 838). Below 1020px the nav
+   folds into the menu on every header: the worst case plus ~5% for font rendering
+   between browsers, and a 1024px tablet in landscape keeps the full nav.
+   ⚠️ src/design/front.css MUST USE THE SAME BREAKPOINT. On "/" this shell header
+   paints first and the React header replaces it on mount; different breakpoints
+   would swap a menu button for a full nav in front of the reader. A test holds the
+   two together. Sign in stays in the bar at these widths, so its copy inside the
+   menu is hidden. */
+@media(min-width:721px) and (max-width:1020px){
+    .fd-nav{display:none}
+    .fd-nav.is-open{display:flex;position:absolute;left:0;right:0;top:60px;flex-direction:column;gap:0;padding:8px;background:var(--card);border-bottom:1px solid var(--bd);z-index:110}
+    .fd-nav.is-open a{min-height:44px;display:flex;align-items:center;font-size:16px}
+    .fd-nav.is-open .fd-nav-signin{display:none}
+    .fd-burger{display:grid;place-items:center}
   }
   @media(max-width:720px){
     .fd-head-in{gap:10px;height:56px}

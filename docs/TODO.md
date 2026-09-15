@@ -15,14 +15,19 @@
       first Spanish page was the template every later locale copied. Now says
       "researched against sources and verified". GATED in tests/unit/shell-i18n.test.js
       in all nine languages, or the next locale copies it back.
-- [x] **Translated navs wrapped between 721px and ~1062px** ("Futbol / oyunları").
-      Localised headers fold the nav into the menu below 1100px. Measured, not guessed:
-      English needs ~1006px, Turkish/French ~1062px.
+- [x] ~~Translated navs wrapped; localised headers fold below 1100px~~ — superseded
+      the same day by the measured, universal 1020px fold below.
 - [x] **Every desktop page showed "Sign in" TWICE** — `.fd-nav a` outranked
       `.fd-nav-signin{display:none}`. Fixed in shell.mjs AND front.css.
-- [ ] **ENGLISH ALSO WRAPS its nav between 721px and ~1006px** ("Football games",
-      "Sign in" onto two lines). Predates localisation; the same header is drawn by the
-      React front door from src/design/front.css, so fix both together. Not done here.
+- [x] **THE NAV WRAPPED IN EVERY LANGUAGE between 721px and ~970px** — English
+      included ("Football games", "Sign in"). Re-measured after the duplicate Sign in
+      was removed (which had inflated the first numbers): fits from id 866 · de 895 ·
+      it 907 · en 922 · es 931 · pt 935 · fr 954 · nl 968 · tr 969, front door 838.
+      Every header now folds the nav into the menu below 1020px, in shell.mjs AND
+      front.css at the SAME breakpoint — on "/" the shell header paints first and the
+      React one replaces it, so a mismatch would swap menu-for-nav on load. A test holds
+      the two files together. Verified at 800/1019/1021/1280 (en), 1021 (tr), and
+      900 + 375 with the menu opened on the front door.
 - [ ] pt: the retained second FAQ sentence uses "checagens" (Brazilian-only); Portugal
       says "verificações". Minor, register call alongside the open pt question below.
 
