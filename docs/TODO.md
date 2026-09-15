@@ -1,3 +1,31 @@
+## 2026-09-15 — 🌍 THE LOCALISED PAGES WORE AN ENGLISH SHELL, AND EVERY LANGUAGE MADE A FALSE CLAIM
+
+- [x] **Shell chrome translated for all 8 locales (49 pages).** Nav, search box,
+      finder dropdown, footer headings and disclaimer were English on every
+      /es/ /pt/ /it/ /de/ /fr/ /nl/ /tr/ /id/ page — shellHeader/shellFooter took
+      no locale and gen-seo precomputed ONE header. Now scripts/seo/shell-i18n.mjs,
+      one translator + one adversarial checker per locale. English output proven
+      byte-identical by direct render comparison. "Quizzes" on a localised page now
+      goes to that language's own hub instead of /football-quiz/.
+- [x] **"Written by hand / by fans, never auto-generated" — REMOVED EVERYWHERE.**
+      False: the packs are drafted by a research pipeline, then verified twice. It
+      was on 149 English trust sections, category pages, /quiz/ ("written by fans
+      in each language — not machine-translated"), the games hub, the data study's
+      methodology note, and 30+ places across all 8 locales' FAQs and hubs — the
+      first Spanish page was the template every later locale copied. Now says
+      "researched against sources and verified". GATED in tests/unit/shell-i18n.test.js
+      in all nine languages, or the next locale copies it back.
+- [x] **Translated navs wrapped between 721px and ~1062px** ("Futbol / oyunları").
+      Localised headers fold the nav into the menu below 1100px. Measured, not guessed:
+      English needs ~1006px, Turkish/French ~1062px.
+- [x] **Every desktop page showed "Sign in" TWICE** — `.fd-nav a` outranked
+      `.fd-nav-signin{display:none}`. Fixed in shell.mjs AND front.css.
+- [ ] **ENGLISH ALSO WRAPS its nav between 721px and ~1006px** ("Football games",
+      "Sign in" onto two lines). Predates localisation; the same header is drawn by the
+      React front door from src/design/front.css, so fix both together. Not done here.
+- [ ] pt: the retained second FAQ sentence uses "checagens" (Brazilian-only); Portugal
+      says "verificações". Minor, register call alongside the open pt question below.
+
 ## 2026-09-11 — 📈 THE 09-04 EXPERIMENTS CAME DUE, AND ONE REVERSED A DECISION
 
 - [x] **CLUB PAGE → APP FELL 15.4% → 9.2% (5bc073e).** The 09-04 finish-screen

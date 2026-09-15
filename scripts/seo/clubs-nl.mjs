@@ -53,7 +53,7 @@ export const CLUBS_NL = [
     faq: [
       { q: 'Is de Ajax-quiz gratis?', a: 'Ja. De quiz draait direct in je browser, zonder account en zonder download. Alle vragen op deze pagina zijn gratis.' },
       { q: 'Welke onderwerpen komen aan bod?', a: 'De oprichting en de Griekse held achter de naam, Cruijff, Michels en het totaalvoetbal, de drie Europa Cups van 1971-1973, Van Basten, Bergkamp en de academie, Van Gaal en Wenen 1995, de Champions League-run van 2019, de recordverkopen van De Jong en Antony, en de landstitels. Het begint makkelijk en wordt echt moeilijk.' },
-      { q: 'Waar komen de vragen vandaan?', a: 'Ze worden met de hand geschreven en met de hand gecontroleerd, nooit automatisch gegenereerd. Elke bewering gaat vóór publicatie door twee onafhankelijke controles; wat niet te bewijzen valt, verschijnt niet.' },
+      { q: 'Waar komen de vragen vandaan?', a: 'Ze worden aan de hand van bronnen uitgezocht en één voor één gecontroleerd. Elke bewering gaat vóór publicatie door twee onafhankelijke controles; wat niet te bewijzen valt, verschijnt niet.' },
       { q: 'Is de Ball IQ-app er ook in het Nederlands?', a: 'Nog niet: deze pagina is Nederlands, de app is Engels. We meten eerst de belangstelling voordat we vertalen — wie tot hier heeft gelezen, helpt ons precies bij die beslissing.' },
     ],
     taster: [
@@ -119,7 +119,7 @@ export const CLUBS_NL = [
     faq: [
       { q: 'Is de PSV-quiz gratis?', a: 'Ja. De quiz draait direct in je browser, zonder account en zonder download. Alle vragen op deze pagina zijn gratis.' },
       { q: 'Welke onderwerpen komen aan bod?', a: 'De Philips-oorsprong en de bijnaam Boeren, de treble van 1987-88 met Hiddink, Kieft en Van Breukelen, de verkopen van Gullit, Romário en Ronaldo, Van Nistelrooy en Robben, de Champions League-run van 2005 met Park Ji-sung, en de moderne lichting met Gakpo. Het begint makkelijk en wordt echt moeilijk.' },
-      { q: 'Waar komen de vragen vandaan?', a: 'Ze worden met de hand geschreven en met de hand gecontroleerd, nooit automatisch gegenereerd. Elke bewering gaat vóór publicatie door twee onafhankelijke controles; wat niet te bewijzen valt, verschijnt niet.' },
+      { q: 'Waar komen de vragen vandaan?', a: 'Ze worden aan de hand van bronnen uitgezocht en één voor één gecontroleerd. Elke bewering gaat vóór publicatie door twee onafhankelijke controles; wat niet te bewijzen valt, verschijnt niet.' },
       { q: 'Is de Ball IQ-app er ook in het Nederlands?', a: 'Nog niet: deze pagina is Nederlands, de app is Engels. We meten eerst de belangstelling voordat we vertalen — wie tot hier heeft gelezen, helpt ons precies bij die beslissing.' },
     ],
     taster: [
@@ -185,7 +185,7 @@ export const CLUBS_NL = [
     faq: [
       { q: 'Is de Feyenoord-quiz gratis?', a: 'Ja. De quiz draait direct in je browser, zonder account en zonder download. Alle vragen op deze pagina zijn gratis.' },
       { q: 'Welke onderwerpen komen aan bod?', a: 'De wijk Feijenoord en De Kuip, de Europa Cup van 1970 met Happel en Kindvall, Van Hanegem en Moulijn, de UEFA Cup-finales van 1974 en 2002, Van Persie en Kuyt, de titel van 2017 na achttien jaar droogte, en Slots kampioensjaar 2023. Het begint makkelijk en wordt echt moeilijk.' },
-      { q: 'Waar komen de vragen vandaan?', a: 'Ze worden met de hand geschreven en met de hand gecontroleerd, nooit automatisch gegenereerd. Elke bewering gaat vóór publicatie door twee onafhankelijke controles; wat niet te bewijzen valt, verschijnt niet.' },
+      { q: 'Waar komen de vragen vandaan?', a: 'Ze worden aan de hand van bronnen uitgezocht en één voor één gecontroleerd. Elke bewering gaat vóór publicatie door twee onafhankelijke controles; wat niet te bewijzen valt, verschijnt niet.' },
       { q: 'Is de Ball IQ-app er ook in het Nederlands?', a: 'Nog niet: deze pagina is Nederlands, de app is Engels. We meten eerst de belangstelling voordat we vertalen — wie tot hier heeft gelezen, helpt ons precies bij die beslissing.' },
     ],
     taster: [

@@ -64,7 +64,7 @@ export const CLUBS_ES = [
       },
       {
         q: '¿De dónde salen las preguntas?',
-        a: 'Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale.',
+        a: 'Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale.',
       },
       {
         // The honest disclosure. It is also the single most useful thing this
@@ -152,7 +152,7 @@ export const CLUBS_ES = [
       },
       {
         q: '¿De dónde salen las preguntas?',
-        a: 'Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale.',
+        a: 'Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale.',
       },
       {
         q: '¿La aplicación Ball IQ está en español?',
@@ -914,7 +914,7 @@ export const CLUBS_ES = [
       },
       {
         "q": "¿De dónde salen las preguntas?",
-        "a": "Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
       },
       {
         "q": "¿La aplicación Ball IQ está en español?",
@@ -1584,7 +1584,7 @@ export const CLUBS_ES = [
       },
       {
         "q": "¿De dónde salen las preguntas?",
-        "a": "Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
       },
       {
         "q": "¿La aplicación Ball IQ está en español?",
@@ -1926,7 +1926,7 @@ export const CLUBS_ES = [
       },
       {
         "q": "¿De dónde salen las preguntas?",
-        "a": "Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
       },
       {
         "q": "¿La aplicación Ball IQ está en español?",
@@ -2267,7 +2267,7 @@ export const CLUBS_ES = [
       },
       {
         "q": "¿De dónde salen las preguntas?",
-        "a": "Están escritas y verificadas a mano, nunca generadas automáticamente. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
       },
       {
         "q": "¿La aplicación Ball IQ está en español?",
@@ -2967,7 +2967,7 @@ export const CLUBS_ES = [
       },
       {
         "q": "¿De dónde salen las preguntas?",
-        "a": "Se investigan contra fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale. Si un partido o una fecha están en discusión, la dejamos afuera antes que elegir una versión."
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale. Si un partido o una fecha están en discusión, la dejamos afuera antes que elegir una versión."
       },
       {
         "q": "¿La aplicación Ball IQ está en español?",
@@ -3309,7 +3309,7 @@ export const CLUBS_ES = [
       },
       {
         "q": "¿De dónde salen las preguntas?",
-        "a": "Se investigan contra fuentes y se verifican una por una. Cada dato pasa por dos controles distintos antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos controles distintos antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
       },
       {
         "q": "¿La aplicación Ball IQ está en español?",
@@ -3651,7 +3651,7 @@ export const CLUBS_ES = [
       },
       {
         "q": "¿De dónde salen las preguntas?",
-        "a": "Se investigan contra fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
       },
       {
         "q": "¿La aplicación Ball IQ está en español?",

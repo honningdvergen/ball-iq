@@ -65,7 +65,7 @@ export const CLUBS_PT = [
       },
       {
         q: 'De onde vêm as perguntas?',
-        a: 'São escritas e verificadas à mão, nunca geradas automaticamente. Cada informação passa por duas checagens independentes antes de ser publicada, e quando algo não dá para confirmar, a pergunta não sai.',
+        a: 'São pesquisadas em fontes e verificadas uma a uma. Cada informação passa por duas checagens independentes antes de ser publicada, e quando algo não dá para confirmar, a pergunta não sai.',
       },
       {
         // The honest disclosure, and the single most useful thing this pilot
@@ -140,7 +140,7 @@ export const CLUBS_PT = [
     faq: [
       { q: 'O quiz do Corinthians é gratuito?', a: 'É. Dá para jogar aqui mesmo no navegador, sem cadastro e sem baixar nada. Todas as perguntas desta página são gratuitas.' },
       { q: 'Quais temas o quiz cobre?', a: 'História do clube, o Mundial de 2000 e o de 2012, a Libertadores de 2012, a Democracia Corintiana, Sócrates, Marcelinho Carioca, Ronaldo, Tite, Cássio, o rebaixamento de 2007 e o Derby Paulista. Vai do fácil ao realmente difícil.' },
-      { q: 'De onde vêm as perguntas?', a: 'São escritas e verificadas à mão, nunca geradas automaticamente. Cada informação passa por duas checagens independentes antes de ser publicada, e quando algo não dá para confirmar, a pergunta não sai.' },
+      { q: 'De onde vêm as perguntas?', a: 'São pesquisadas em fontes e verificadas uma a uma. Cada informação passa por duas checagens independentes antes de ser publicada, e quando algo não dá para confirmar, a pergunta não sai.' },
       { q: 'O aplicativo Ball IQ está em português?', a: 'Ainda não: esta página está em português, mas o aplicativo está em inglês. Estamos medindo o interesse antes de traduzir — se você chegou até aqui, já está ajudando a decidir.' },
     ],
     taster: [
@@ -206,7 +206,7 @@ export const CLUBS_PT = [
     faq: [
       { q: 'O quiz do Palmeiras é gratuito?', a: 'É. Dá para jogar aqui mesmo no navegador, sem cadastro e sem baixar nada. Todas as perguntas desta página são gratuitas.' },
       { q: 'Quais temas o quiz cobre?', a: 'História do clube e a fundação italiana, as Libertadores de 1999, 2020 e 2021, a era Abel Ferreira, Scolari, Marcos, Ademir da Guia, Rivaldo, Roberto Carlos, Gabriel Jesus, Endrick e o Derby Paulista. Vai do fácil ao realmente difícil.' },
-      { q: 'De onde vêm as perguntas?', a: 'São escritas e verificadas à mão, nunca geradas automaticamente. Cada informação passa por duas checagens independentes antes de ser publicada, e quando algo não dá para confirmar, a pergunta não sai.' },
+      { q: 'De onde vêm as perguntas?', a: 'São pesquisadas em fontes e verificadas uma a uma. Cada informação passa por duas checagens independentes antes de ser publicada, e quando algo não dá para confirmar, a pergunta não sai.' },
       { q: 'O aplicativo Ball IQ está em português?', a: 'Ainda não: esta página está em português, mas o aplicativo está em inglês. Estamos medindo o interesse antes de traduzir — se você chegou até aqui, já está ajudando a decidir.' },
     ],
     taster: [

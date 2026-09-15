@@ -73,7 +73,7 @@ export const CLUBS_ID = [
       },
       {
         q: 'Dari mana soal-soal ini berasal?',
-        a: 'Semuanya ditulis dan diperiksa manual, tidak pernah dibuat otomatis. Setiap fakta melewati dua pemeriksaan independen sebelum diterbitkan, dan kalau ada yang tidak bisa dipastikan, soalnya tidak kami terbitkan.',
+        a: 'Pertanyaan-pertanyaan ini diriset berdasarkan sumber dan diverifikasi satu per satu. Setiap fakta melewati dua pemeriksaan independen sebelum diterbitkan, dan kalau ada yang tidak bisa dipastikan, soalnya tidak kami terbitkan.',
       },
       {
         // The honest disclosure, same as every other localised page.
@@ -163,7 +163,7 @@ export const CLUBS_ID = [
     faq: [
       { q: 'Apakah kuis Arsenal ini gratis?', a: 'Gratis. Bisa langsung dimainkan di browser, tanpa daftar dan tanpa mengunduh apa pun. Semua soal di halaman ini bebas diakses.' },
       { q: 'Apa saja yang dibahas dalam kuis ini?', a: 'Sejarah klub sejak 1886, era Wenger, Henry, Bergkamp, Vieira dan lini belakang 1990-an, final-final Piala FA, transfer besar, sampai era Saka dan gelar Liga Primer. Tingkat kesulitannya naik dari mudah sampai benar-benar sulit.' },
-      { q: 'Dari mana soal-soal ini berasal?', a: 'Semuanya ditulis dan diperiksa manual, tidak pernah dibuat otomatis. Setiap fakta melewati dua pemeriksaan independen sebelum diterbitkan, dan kalau ada yang tidak bisa dipastikan, soalnya tidak kami terbitkan.' },
+      { q: 'Dari mana soal-soal ini berasal?', a: 'Pertanyaan-pertanyaan ini diriset berdasarkan sumber dan diverifikasi satu per satu. Setiap fakta melewati dua pemeriksaan independen sebelum diterbitkan, dan kalau ada yang tidak bisa dipastikan, soalnya tidak kami terbitkan.' },
       { q: 'Apakah aplikasi Ball IQ tersedia dalam bahasa Indonesia?', a: 'Belum: halaman ini berbahasa Indonesia, tetapi aplikasinya masih berbahasa Inggris. Kami sedang mengukur minat sebelum menerjemahkannya — kalau kamu sampai di sini, kamu sudah membantu kami memutuskan.' },
     ],
     taster: [

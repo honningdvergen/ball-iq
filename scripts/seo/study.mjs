@@ -49,7 +49,7 @@ export const STUDY = {
 
   body: [
     ['The finding', [
-      'Every question in our bank is written and checked by hand. That means we can do something a scraped database cannot: count what football trivia is actually *about*.',
+      'Every question in our bank is researched and checked before it goes live. That means we can do something a scraped database cannot: count what football trivia is actually *about*.',
       'We tagged every question by the years it references. The distribution is not a gentle slope away from the present. It is a cliff.',
       // {{tokens}} are substituted from studyStats() at build time. Do not
       // replace them with literals — that is how the first draft went stale.
@@ -74,5 +74,5 @@ export const STUDY = {
 
   // The credibility paragraph. All measured, none rounded up.
   method:
-    'Ball IQ is an independent football quiz. Every question is written and checked by football fans, never auto-generated; new questions pass a three-stage review before they reach players. On 28 July 2026 we applied 329 corrections in a single pass after auditing the bank. Where an answer has a story behind it, we explain it — {{explained}} of our questions carry a written explanation.',
+    'Ball IQ is an independent football quiz. Every question is researched against sources, and new questions pass a three-stage review before they reach players. On 28 July 2026 we applied 329 corrections in a single pass after auditing the bank. Where an answer has a story behind it, we explain it — {{explained}} of our questions carry a written explanation.',
 };

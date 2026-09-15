@@ -15,6 +15,8 @@ import { LISTS_INDEX } from '../../src/marketing/listsIndex.js';
 import { GAMES_NAV, DISCOVER, MORE } from '../../src/marketing/siteNav.js';
 import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../../src/lib/storeGlyphs.js';
 
+import { shellStrings } from './shell-i18n.mjs';
+
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const LEAGUES = [
@@ -34,13 +36,19 @@ const BURGER_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"
 
 // The club/league finder, inline: 89 names and slugs (~3.5KB) and a few lines
 // of script. Static pages have no bundle, and search must work on first paint.
-const finderScript = (base) => {
+// Text baked into a single-quoted JS string inside the emitted script. HTML-
+// escaped first (it lands in innerHTML), then made safe for the JS quote. For
+// English neither step changes a character, which keeps English pages
+// byte-identical; for French it turns "n'" into "n\'" instead of a syntax error.
+const jsq = (s) => esc(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
+const finderScript = (base, t) => {
   const data = JSON.stringify([
     // A club hit goes to the club's own page, not the app (2026-09-05): the
     // page IS the club quiz on the web, and the critique found the finder was
     // the last place sending the same club to a second product.
     ...CLUB_INDEX.map((c) => [c.n, c.c, `${base}/quiz/${c.s}/`]),
-    ...LEAGUES.map(([s, n]) => [n, 'League quiz', `${base}/quiz/${s}/`]),
+    ...LEAGUES.map(([s, n]) => [n, t.findLeagueSub, `${base}/quiz/${s}/`]),
   ]);
   return `<script>(function(){var D=${data};var i=document.getElementById('fd-find'),r=document.getElementById('fd-find-res'),n=document.getElementById('fd-nav'),b=document.querySelector('.fd-burger');if(!i||!r)return;
 function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');}
@@ -75,7 +83,7 @@ function fRecord(){
     if(n)fev('find-hit',{q:q,n:n});else fev('find-miss',{q:q});
   }catch(e){}
 }
-function render(){if(fTimer)clearTimeout(fTimer);fTimer=setTimeout(fRecord,1100);var h=hits(i.value);if(!i.value.trim()){r.hidden=true;r.innerHTML='';return;}r.hidden=false;r.innerHTML=h.length?h.map(function(x){return'<a role="option" class="fd-find-row" href="'+esc(x[2])+'"><span class="fd-find-n">'+esc(x[0])+'</span><span class="fd-find-sub">'+esc(x[1])+'</span><span class="fd-find-go">Play</span></a>';}).join(''):'<div class="fd-find-empty">Nothing on file called \\u201c'+esc(i.value.trim())+'\\u201d yet. <a href="${base}/#clubs">See every club</a></div>';}
+function render(){if(fTimer)clearTimeout(fTimer);fTimer=setTimeout(fRecord,1100);var h=hits(i.value);if(!i.value.trim()){r.hidden=true;r.innerHTML='';return;}r.hidden=false;r.innerHTML=h.length?h.map(function(x){return'<a role="option" class="fd-find-row" href="'+esc(x[2])+'"><span class="fd-find-n">'+esc(x[0])+'</span><span class="fd-find-sub">'+esc(x[1])+'</span><span class="fd-find-go">${jsq(t.findPlay)}</span></a>';}).join(''):'<div class="fd-find-empty">${jsq(t.findEmptyPre)} \\u201c'+esc(i.value.trim())+'\\u201d ${jsq(t.findEmptyPost)} <a href="${base}/#clubs">${jsq(t.findSeeAll)}</a></div>';}
 i.addEventListener('input',render);i.addEventListener('focus',render);i.addEventListener('blur',function(){setTimeout(function(){r.hidden=true;},150);});
 i.addEventListener('keydown',function(e){if(e.key==='Enter'){var h=hits(i.value);if(h[0])location.href=h[0][2];}if(e.key==='Escape'){i.value='';r.hidden=true;}});
 if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('is-open');b.setAttribute('aria-expanded',o?'true':'false');});}
@@ -86,18 +94,24 @@ if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('is-open
  * @param {{base:string}} site  SITE from gen-seo-pages
  * @param {string} active       'games' | 'clubs' | 'quizzes' | 'lists' | '' — which section link is current
  */
-export function shellHeader(site, active = '') {
+export function shellHeader(site, active = '', lang = 'en', opts = {}) {
   const b = site.base;
+  const t = shellStrings(lang);
+  const h = (x) => esc(x);
+  // A localised page's "Quizzes" goes to its own language's hub when one
+  // exists — sending a Spanish reader from a Spanish page to the English
+  // /football-quiz/ was the one nav link that actively left their language.
+  const quizzesHref = opts.quizzesHref || `${b}/football-quiz/`;
   const a = (k) => (active === k ? ' class="is-active" aria-current="page"' : '');
-  return `<a class="fd-skip" href="#main">Skip to content</a>
-<header class="fd-head"><div class="fd-w fd-head-in">
-<a class="fd-mark" href="${b}/" aria-label="Ball IQ home"><img src="/marketing/ball.png" alt="" width="26" height="26"><span>Ball IQ</span></a>
-<nav class="fd-nav" id="fd-nav" aria-label="Sections"><a href="${b}/#today">Today</a><a href="${b}/football-games/"${a('games')}>Football games</a><a href="${b}/#clubs"${a('clubs')}>Clubs</a><a href="${b}/football-quiz/"${a('quizzes')}>Quizzes</a><a href="${b}/lists/"${a('lists')}>Lists</a><a class="fd-nav-signin" href="${b}/play?tab=profile">Sign in</a></nav>
-<div class="fd-find" role="search"><span class="fd-find-ic">${SEARCH_ICON}</span><input type="search" class="fd-find-in" id="fd-find" placeholder="Find your club or league" aria-label="Find your club or league" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" autocomplete="off"><div class="fd-find-res" id="fd-find-res" role="listbox" aria-label="Clubs and leagues" hidden></div></div>
-<a class="fd-signin" href="${b}/play?tab=profile">Sign in</a>
-<button type="button" class="fd-burger" aria-expanded="false" aria-controls="fd-nav" aria-label="Menu">${BURGER_ICON}</button>
+  return `<a class="fd-skip" href="#main">${h(t.skipToContent)}</a>
+<header class="fd-head${lang !== 'en' ? ' fd-head--intl' : ''}"><div class="fd-w fd-head-in">
+<a class="fd-mark" href="${b}/" aria-label="${h(t.homeLabel)}"><img src="/marketing/ball.png" alt="" width="26" height="26"><span>Ball IQ</span></a>
+<nav class="fd-nav" id="fd-nav" aria-label="${h(t.sectionsLabel)}"><a href="${b}/#today">${h(t.navToday)}</a><a href="${b}/football-games/"${a('games')}>${h(t.navGames)}</a><a href="${b}/#clubs"${a('clubs')}>${h(t.navClubs)}</a><a href="${quizzesHref}"${a('quizzes')}>${h(t.navQuizzes)}</a><a href="${b}/lists/"${a('lists')}>${h(t.navLists)}</a><a class="fd-nav-signin" href="${b}/play?tab=profile">${h(t.signIn)}</a></nav>
+<div class="fd-find" role="search"><span class="fd-find-ic">${SEARCH_ICON}</span><input type="search" class="fd-find-in" id="fd-find" placeholder="${h(t.findPlaceholder)}" aria-label="${h(t.findPlaceholder)}" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" autocomplete="off"><div class="fd-find-res" id="fd-find-res" role="listbox" aria-label="${h(t.findResultsLabel)}" hidden></div></div>
+<a class="fd-signin" href="${b}/play?tab=profile">${h(t.signIn)}</a>
+<button type="button" class="fd-burger" aria-expanded="false" aria-controls="fd-nav" aria-label="${h(t.menuLabel)}">${BURGER_ICON}</button>
 </div></header>
-${finderScript(b)}`;
+${finderScript(b, t)}`;
 }
 
 /** The sitemap footer: games, four leagues of clubs, lists, discover, the company. */
@@ -170,8 +184,9 @@ body:JSON.stringify({p_event:'store-out',p_meta:meta,p_visitor:sVid()})}).catch(
 },true);}catch(e){}})();</script>`;
 }
 
-export function shellFooter(site) {
+export function shellFooter(site, lang = 'en') {
   const b = site.base;
+  const t = shellStrings(lang);
   const col = (title, links) => `<div class="fd-foot-col"><h3>${esc(title)}</h3>${links.map(([n, h]) => `<a href="${h}">${esc(n)}</a>`).join('')}</div>`;
   // Four columns, not eight (critique 2026-09-05: eight columns of 13px text
   // at 1440, three at 390). Games · Quizzes (the leagues, the club directory,
@@ -179,12 +194,12 @@ export function shellFooter(site) {
   // · Ball IQ. The store links are badges, not the words "iOS" and "Android".
   const badge = (store) => `<a class="fd-foot-badge" href="${store === 'ios' ? site.appStore : site.playStore}" rel="noopener" target="_blank" data-store="${store}" aria-label="${store === 'ios' ? 'Download on the App Store' : 'Get it on Google Play'}"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${store === 'ios' ? APPLE_GLYPH_PATH : PLAY_GLYPH_PATH}"/></svg>${store === 'ios' ? 'App Store' : 'Google Play'}</a>`;
   return `<footer class="fd-foot"><div class="fd-w fd-foot-in">
-${col('Games', GAMES.map(([n, h]) => [n, b + h]))}
-${col('Quizzes', [...LEAGUES.map(([slug, name]) => [name, `${b}/quiz/${slug}/`]), ['Clubs by league', `${b}/quiz/clubs/`], ['Football quiz', `${b}/football-quiz/`]])}
-${col('Discover', [...DISCOVER.filter(([, h]) => h !== '/lists/').map(([n, h]) => [n, b + h]), ...LISTS_INDEX.slice(0, 4).map((l) => [l.h.replace(/^Every /, ''), `${b}/lists/${l.s}/`]), ['All lists', `${b}/lists/`]])}
-<div class="fd-foot-col"><h3>Ball IQ</h3><a href="${b}/about/">About</a><a href="${b}/contact/">Contact</a>${MORE.map(([n, h]) => `<a href="${b + h}">${esc(n)}</a>`).join('')}<a href="${b}/privacy.html">Privacy</a><a href="${b}/terms/">Terms</a><span class="fd-foot-app">${badge('ios')}${badge('android')}</span></div>
+${col(t.colGames, GAMES.map(([n, h]) => [n, b + h]))}
+${col(t.navQuizzes, [...LEAGUES.map(([slug, name]) => [name, `${b}/quiz/${slug}/`]), ['Clubs by league', `${b}/quiz/clubs/`], ['Football quiz', `${b}/football-quiz/`]])}
+${col(t.colDiscover, [...DISCOVER.filter(([, h]) => h !== '/lists/').map(([n, h]) => [n, b + h]), ...LISTS_INDEX.slice(0, 4).map((l) => [l.h.replace(/^Every /, ''), `${b}/lists/${l.s}/`]), ['All lists', `${b}/lists/`]])}
+<div class="fd-foot-col"><h3>Ball IQ</h3><a href="${b}/about/">${esc(t.about)}</a><a href="${b}/contact/">${esc(t.contact)}</a>${MORE.map(([n, h]) => `<a href="${b + h}">${esc(n)}</a>`).join('')}<a href="${b}/privacy.html">${esc(t.privacy)}</a><a href="${b}/terms/">${esc(t.terms)}</a><span class="fd-foot-app">${badge('ios')}${badge('android')}</span></div>
 </div>
-<div class="fd-w fd-foot-line">An independent football quiz, made by one person. Not affiliated with, endorsed by, or associated with FIFA, UEFA, the Premier League, La Liga, Serie A, the Bundesliga, or any club; names are used to identify the quizzes' subjects.</div>
+<div class="fd-w fd-foot-line">${esc(t.disclaimer)}</div>
 </footer>${storeClickScript()}`;
 }
 
@@ -220,7 +235,11 @@ export const SHELL_CSS = `
   .fd-find-empty a{color:var(--tx);text-decoration:underline;text-underline-offset:3px}
   .fd-signin{flex:0 0 auto;display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:600;color:var(--tx3);padding:0 10px}
   .fd-signin:hover{color:var(--tx);text-decoration:none}
-  .fd-nav-signin{display:none}
+  /* ⚠️ ".fd-nav a{display:inline-flex}" (0,1,1) OUTRANKED a bare ".fd-nav-signin{display:none}" (0,1,0),
+   so every desktop page showed Sign in TWICE — once ending the nav, once at the far right. Found
+   2026-09-15 by counting visible links, not by reading the rule. Scoped to 0,2,0 so it wins at
+   desktop while the phone menu's ".fd-nav.is-open a{display:flex}" (0,2,1) still shows it. */
+.fd-nav .fd-nav-signin{display:none}
   .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--tx);cursor:pointer;border-radius:8px}
   .fd-foot{border-top:1px solid var(--bd);background:var(--bg2);padding:36px 0 28px;margin-top:36px}
   .fd-foot-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}
@@ -233,6 +252,25 @@ export const SHELL_CSS = `
   .fd-foot-badge:hover{border-color:var(--bd3);text-decoration:none}
   .fd-foot-line{margin-top:26px;font-size:12.5px;line-height:1.6;color:var(--tx4);max-width:90ch}
   @media(max-width:1000px){.fd-foot-in{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  /* ⚠️ A TRANSLATED NAV NEEDS MORE ROOM, and wrapped labels read as broken.
+   Measured 2026-09-15 as logo + unwrapped nav + a 240px search box + sign-in +
+   gaps + 44px padding a side: English needs ~1006px, Turkish and French ~1062px
+   (Turkish is the longest of the nine by characters). Between 721px and those
+   widths a label breaks onto two lines — "Futbol / oyunları", "Jeux de / foot"
+   — so localised headers fold the nav into the menu below 1100px instead, with
+   the menu dropping from the 60px header rather than the phone's 56px. Sign in
+   stays in the bar at these widths, so its copy inside the menu is hidden.
+   ⚠️ ENGLISH IS NOT COVERED HERE AND ALSO WRAPS, between 721px and ~1006px
+   ("Football games", "Sign in"). That predates localisation and the same header
+   is rendered by the front door from src/design/front.css, so it needs fixing in
+   both places at once — not in this block. */
+@media(min-width:721px) and (max-width:1100px){
+    .fd-head--intl .fd-nav{display:none}
+    .fd-head--intl .fd-nav.is-open{display:flex;position:absolute;left:0;right:0;top:60px;flex-direction:column;gap:0;padding:8px;background:var(--card);border-bottom:1px solid var(--bd);z-index:110}
+    .fd-head--intl .fd-nav.is-open a{min-height:44px;display:flex;align-items:center;font-size:16px}
+    .fd-head--intl .fd-nav.is-open .fd-nav-signin{display:none}
+    .fd-head--intl .fd-burger{display:grid;place-items:center}
+  }
   @media(max-width:720px){
     .fd-head-in{gap:10px;height:56px}
     .fd-mark span{display:none}

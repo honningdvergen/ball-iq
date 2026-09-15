@@ -73,7 +73,7 @@ export const CLUBS_IT = [
       },
       {
         q: 'Da dove vengono le domande?',
-        a: 'Sono scritte e verificate a mano, mai generate automaticamente. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.',
+        a: 'Nascono da ricerche sulle fonti e sono verificate una per una. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.',
       },
       {
         q: 'L’app Ball IQ è in italiano?',
@@ -152,7 +152,7 @@ export const CLUBS_IT = [
       },
       {
         q: 'Da dove vengono le domande?',
-        a: 'Sono scritte e verificate a mano, mai generate automaticamente. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.',
+        a: 'Nascono da ricerche sulle fonti e sono verificate una per una. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.',
       },
       {
         q: 'L’app Ball IQ è in italiano?',
@@ -232,7 +232,7 @@ export const CLUBS_IT = [
       },
       {
         q: 'Da dove vengono le domande?',
-        a: 'Sono scritte e verificate a mano, mai generate automaticamente. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.',
+        a: 'Nascono da ricerche sulle fonti e sono verificate una per una. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.',
       },
       {
         q: 'L’app Ball IQ è in italiano?',
@@ -304,7 +304,7 @@ export const CLUBS_IT = [
     faq: [
       { q: 'Il quiz sul Napoli è gratuito?', a: 'Sì. Si gioca direttamente nel browser, senza registrarsi e senza scaricare nulla. Tutte le domande di questa pagina sono gratuite.' },
       { q: 'Quali argomenti copre il quiz?', a: 'La fondazione del 1926, gli anni di Maradona e i primi due Scudetti, la Coppa UEFA 1989, il fallimento del 2004 e la risalita dalla Serie C1, Mazzarri e Benítez, il Sarriball, Higuaín e Mertens, gli Scudetti del 2023 e del 2025. Si parte dal facile e si arriva a domande davvero toste.' },
-      { q: 'Da dove vengono le domande?', a: 'Sono scritte e verificate a mano, mai generate automaticamente. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
+      { q: 'Da dove vengono le domande?', a: 'Nascono da ricerche sulle fonti e sono verificate una per una. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
       { q: 'L’app Ball IQ è in italiano?', a: 'Non ancora: questa pagina è in italiano, ma l’app è in inglese. Stiamo misurando l’interesse prima di tradurla — se sei arrivato fin qui, ci stai già aiutando a decidere.' },
     ],
     taster: [
@@ -372,7 +372,7 @@ export const CLUBS_IT = [
     faq: [
       { q: 'Il quiz sulla Roma è gratuito?', a: 'Sì. Si gioca direttamente nel browser, senza registrarsi e senza scaricare nulla. Tutte le domande di questa pagina sono gratuite.' },
       { q: 'Quali argomenti copre il quiz?', a: 'Il primo Scudetto del 1941-42 e Amadei, la Coppa delle Fiere 1961, l’era Liedholm con Falcão, Conti e Pruzzo, la finale del 1984, lo Scudetto 2001 di Capello, Totti e De Rossi, la rimonta sul Barcellona del 2018 e la Conference League 2022 con Mourinho. Si parte dal facile e si arriva a domande davvero toste.' },
-      { q: 'Da dove vengono le domande?', a: 'Sono scritte e verificate a mano, mai generate automaticamente. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
+      { q: 'Da dove vengono le domande?', a: 'Nascono da ricerche sulle fonti e sono verificate una per una. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
       { q: 'L’app Ball IQ è in italiano?', a: 'Non ancora: questa pagina è in italiano, ma l’app è in inglese. Stiamo misurando l’interesse prima di tradurla — se sei arrivato fin qui, ci stai già aiutando a decidere.' },
     ],
     taster: [
@@ -440,7 +440,7 @@ export const CLUBS_IT = [
     faq: [
       { q: 'Il quiz sulla Lazio è gratuito?', a: 'Sì. Si gioca direttamente nel browser, senza registrarsi e senza scaricare nulla. Tutte le domande di questa pagina sono gratuite.' },
       { q: 'Quali argomenti copre il quiz?', a: 'La fondazione del 1900, i colori e i simboli, il rifiuto della fusione del 1927, la Coppa Italia 1958, l’era Cragnotti, la Coppa delle Coppe 1999 e la Supercoppa UEFA, lo Scudetto 2000, Nedvěd, Salas, Simone Inzaghi e il Derby della Capitale. Si parte dal facile e si arriva a domande davvero toste.' },
-      { q: 'Da dove vengono le domande?', a: 'Sono scritte e verificate a mano, mai generate automaticamente. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
+      { q: 'Da dove vengono le domande?', a: 'Nascono da ricerche sulle fonti e sono verificate una per una. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
       { q: 'L’app Ball IQ è in italiano?', a: 'Non ancora: questa pagina è in italiano, ma l’app è in inglese. Stiamo misurando l’interesse prima di tradurla — se sei arrivato fin qui, ci stai già aiutando a decidere.' },
     ],
     taster: [
@@ -508,7 +508,7 @@ export const CLUBS_IT = [
     faq: [
       { q: 'Il quiz sulla Fiorentina è gratuito?', a: 'Sì. Si gioca direttamente nel browser, senza registrarsi e senza scaricare nulla. Tutte le domande di questa pagina sono gratuite.' },
       { q: 'Quali argomenti copre il quiz?', a: 'La fondazione del 1926 e la fusione, l’origine del viola e il Giglio, lo stadio di Nervi, gli Scudetti del 1956 e del 1969, la Mitropa Cup, Antognoni e Hamrin, Batistuta e la Serie B, Rui Costa, la cessione di Baggio alla Juventus e Davide Astori. Si parte dal facile e si arriva a domande davvero toste.' },
-      { q: 'Da dove vengono le domande?', a: 'Sono scritte e verificate a mano, mai generate automaticamente. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
+      { q: 'Da dove vengono le domande?', a: 'Nascono da ricerche sulle fonti e sono verificate una per una. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
       { q: 'L’app Ball IQ è in italiano?', a: 'Non ancora: questa pagina è in italiano, ma l’app è in inglese. Stiamo misurando l’interesse prima di tradurla — se sei arrivato fin qui, ci stai già aiutando a decidere.' },
     ],
     taster: [
@@ -576,7 +576,7 @@ export const CLUBS_IT = [
     faq: [
       { q: 'Il quiz sull’Atalanta è gratuito?', a: 'Sì. Si gioca direttamente nel browser, senza registrarsi e senza scaricare nulla. Tutte le domande di questa pagina sono gratuite.' },
       { q: 'Quali argomenti copre il quiz?', a: 'La fondazione del 1907, il nome e lo stemma della Dea, la Coppa Italia 1963, la cavalcata europea del 1987-88 dalla Serie B, i Percassi e Zingonia, l’era Gasperini, la prima Champions League, Iličić e Papu Gómez, e le grandi cessioni da Vieri a Højlund. Si parte dal facile e si arriva a domande davvero toste.' },
-      { q: 'Da dove vengono le domande?', a: 'Sono scritte e verificate a mano, mai generate automaticamente. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
+      { q: 'Da dove vengono le domande?', a: 'Nascono da ricerche sulle fonti e sono verificate una per una. Ogni informazione passa due controlli indipendenti prima di essere pubblicata; se un dato non si riesce a verificare, la domanda non esce.' },
       { q: 'L’app Ball IQ è in italiano?', a: 'Non ancora: questa pagina è in italiano, ma l’app è in inglese. Stiamo misurando l’interesse prima di tradurla — se sei arrivato fin qui, ci stai già aiutando a decidere.' },
     ],
     taster: [

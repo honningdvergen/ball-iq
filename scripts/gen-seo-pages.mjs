@@ -541,7 +541,14 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){h.classList
 // one-row header the front door renders in React: wordmark, section links, the
 // club/league finder, Sign in. No marketing button, no dropdown groups. The
 // older markup above (navGroupHtml, NAV_JS) is kept only for reference.
-const navHtml = (active = '') => shellHeader(SITE, active);
+const navHtml = (active = '', lang = 'en', opts = {}) => shellHeader(SITE, active, lang, opts);
+// ⚠️ LOCALISED PAGES MUST NOT USE `NAV`. It is computed once, in English, and
+// every /es/ /pt/ /it/ … page wrapped translated content in it until 2026-09-15.
+// Use localNav(lang) there; `NAV` is for English pages only.
+const localNav = (lang) => {
+  const hub = HUBS_INTL.find((h) => h.lang === lang);
+  return navHtml('', lang, hub ? { quizzesHref: `${SITE.base}/${lang}/quiz/` } : {});
+};
 const NAV = navHtml();
 
 function crumbs(items) {
@@ -1276,7 +1283,7 @@ ${/* One visible use of "soccer" per page, in the shared covers subtitle so a
       rather than a rewrite: "football" stays the primary term for the UK
       majority (50 sessions vs 17 US), and rewriting ~180 pages into US English
       would trade a converting audience for a non-converting one. */ ''}
-<p class="sub">Every question is written and checked by football fans — soccer, if you're reading this in the US — across the topics that decide a real ${esc(name)} expert:</p>
+<p class="sub">Every football question here is researched and fact-checked — soccer, if you're reading this in the US — across the topics that decide a real ${esc(name)} expert:</p>
 <div class="covers">${cards}</div>
 ${/* E-E-A-T. We do the work — a three-stage forge for new questions, a
       distractor audit, 329 corrections applied in a single day — and none of
@@ -1821,9 +1828,9 @@ ${extraHead}
 // it in AND focus its first option. Lives in the footer so every page gets it.
 const CTA_JS = `(function(){var a=document.querySelector('a[data-scrollto]');if(!a)return;a.addEventListener('click',function(e){var t=document.querySelector(a.getAttribute('href'));if(!t)return;e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});var o=t.querySelector('.to');if(o)setTimeout(function(){o.focus({preventScroll:true})},420)})})();`;
 
-function footer() {
+function footer(lang = 'en') {
   return `<script>${CTA_JS}</script>
-${shellFooter(SITE)}
+${shellFooter(SITE, lang)}
 ${storefrontScript()}
 </body></html>`;
 }
@@ -2107,7 +2114,7 @@ ${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, bad
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates })}
 <body>
-${NAV}
+${localNav(cfg.lang)}
 <main id="main">
 ${heroTwoCol({
     // ⚠️ BREADCRUMB TO THE LOCALISED HUB, NOT THE ENGLISH ONE.
@@ -2166,7 +2173,7 @@ ${/* ⚠️ statsLine USED TO TAKE (n, easy, medium, hard) AND PRINT THEM.
 </section>
 ${adSlot('afterFaq')}
 </main>
-${footer()}`;
+${footer(cfg.lang)}`;
 
   const dir = resolve(DIST, cfg.lang, 'quiz', cfg.slug);
   mkdirSync(dir, { recursive: true });
@@ -2248,7 +2255,7 @@ ${renderQuizSet(taster, { name: cfg.h1, tiers: DEFAULT_TIERS, more: 0, badge: ''
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, lang: cfg.lang, alternates })}
 <body>
-${NAV}
+${localNav(cfg.lang)}
 <main id="main">
 ${heroTwoCol({
     crumbItems: [
@@ -2291,7 +2298,7 @@ ${storeBadges()}
 <p class="sub"><a href="${enHref}" hreflang="en">${esc(cfg.h1)} — English</a></p>
 </section>
 </main>
-${footer()}`;
+${footer(cfg.lang)}`;
 
   const dir = resolve(DIST, cfg.lang, 'quiz');
   mkdirSync(dir, { recursive: true });
@@ -3826,7 +3833,7 @@ ${(() => {
     const langs = HUBS_INTL.filter((h) => CLUBS_INTL.some((c) => c.lang === h.lang));
     return langs.length ? `<section class="sec narrow">
 <h2>In your language</h2>
-<p class="sub">The same quizzes, written by fans in each language — not machine-translated.</p>
+<p class="sub">The same quizzes in each language, every answer checked against the English original.</p>
 <p>${langs.map((h) => `<a href="${SITE.base}/${h.lang}/quiz/" hreflang="${h.lang}" style="color:var(--grn);font-weight:700">${esc(h.h1)} — ${esc(LANG_LABEL[h.lang] || h.lang)}</a>`).join(' · ')}</p>
 </section>` : '';
   })()}
@@ -4628,7 +4635,7 @@ ${style}
 ${hasTaster ? renderQuizSet(tasterRows, { name: 'football', tiers: DEFAULT_TIERS, more: 0, badge: '' }) : ''}
 
 <section class="sec narrow">
-<p style="margin:0;color:var(--tx2);font-size:16.5px;max-width:62ch">Pick a club and play, or take one of the <a href="${SITE.base}/football-games/">daily games</a>. Every question is written and fact-checked by hand rather than scraped, and every answer comes with the reason it is the answer — the part most football quizzes leave out.</p>
+<p style="margin:0;color:var(--tx2);font-size:16.5px;max-width:62ch">Pick a club and play, or take one of the <a href="${SITE.base}/football-games/">daily games</a>. Every question is researched and fact-checked rather than scraped, and every answer comes with the reason it is the answer — the part most football quizzes leave out.</p>
 <ul class="fq-trust"><li>FREE</li><li>NO SIGN-UP</li><li>ANSWERS EXPLAINED</li><li>${clubCount} CLUBS</li></ul>
 </section>
 
@@ -4815,7 +4822,7 @@ ${adSlot('afterQA')}
 ${appCtaBand('football')}
 <section class="sec narrow">
 <h2>Where these come from</h2>
-<p style="margin:0 0 14px;color:var(--tx2)">Ball IQ is a football quiz built on a hand-written question bank. Most answers carry a short explanation — the season it happened, who else was involved, what made it matter — and those explanations are where these facts come from. They go through a generation pass, an examiner pass and an adversarial fact-check before they ship, and anything contested gets dropped rather than guessed.</p>
+<p style="margin:0 0 14px;color:var(--tx2)">Ball IQ is a football quiz built on a researched, fact-checked question bank. Most answers carry a short explanation — the season it happened, who else was involved, what made it matter — and those explanations are where these facts come from. They go through a generation pass, an examiner pass and an adversarial fact-check before they ship, and anything contested gets dropped rather than guessed.</p>
 <p style="margin:0;color:var(--tx2)">Think you knew them? <a href="${SITE.base}/quiz/">Pick a quiz</a> and find out — or try the <a href="${SITE.base}/football-wordle/">daily football word game</a>, <a href="${SITE.base}/transfer-trail/">Transfer Trail</a> and <a href="${SITE.base}/mystery-player/">Mystery Player</a>.</p>
 </section>
 <section class="sec narrow">

@@ -49,7 +49,7 @@ export const CLUBS_FR = [
     faq: [
       { q: 'Le quiz PSG est-il gratuit ?', a: 'Oui. Il se joue directement dans le navigateur, sans inscription et sans rien télécharger. Toutes les questions de cette page sont gratuites.' },
       { q: 'Quels sujets couvre le quiz ?', a: 'La fusion fondatrice de 1970, le maillot Hechter, Weah, Okocha et Ronaldinho, la Coupe des coupes 1996, le rachat par QSI, Ibrahimović, Cavani et Verratti, la Remontada, Neymar, Messi et Mbappé, puis les titres européens. On commence facile et on finit très difficile.' },
-      { q: 'D’où viennent les questions ?', a: 'Elles sont écrites et vérifiées à la main, jamais générées automatiquement. Chaque information passe deux contrôles indépendants avant publication ; ce qui ne se vérifie pas ne sort pas.' },
+      { q: 'D’où viennent les questions ?', a: 'Elles sont construites à partir de sources, puis vérifiées une par une. Chaque information passe deux contrôles indépendants avant publication ; ce qui ne se vérifie pas ne sort pas.' },
       { q: 'L’application Ball IQ est-elle en français ?', a: 'Pas encore : cette page est en français, mais l’application est en anglais. Nous mesurons l’intérêt avant de traduire — être arrivé jusqu’ici nous aide déjà à trancher.' },
     ],
     taster: [
@@ -117,7 +117,7 @@ export const CLUBS_FR = [
     faq: [
       { q: 'Le quiz OM est-il gratuit ?', a: 'Oui. Il se joue directement dans le navigateur, sans inscription et sans rien télécharger. Toutes les questions de cette page sont gratuites.' },
       { q: 'Quels sujets couvre le quiz ?', a: 'La fondation de 1899, le Vélodrome et les Phocéens, Gunnar Andersson et Josip Skoblar, l’ère Bernard Tapie, la finale de 1991, le sacre européen de 1993, Papin et son Ballon d’Or, Waddle, Cantona, Deschamps entraîneur, Drogba, Ribéry et Mandanda, et Le Classique. On commence facile et on finit très difficile.' },
-      { q: 'D’où viennent les questions ?', a: 'Elles sont écrites et vérifiées à la main, jamais générées automatiquement. Chaque information passe deux contrôles indépendants avant publication ; ce qui ne se vérifie pas ne sort pas.' },
+      { q: 'D’où viennent les questions ?', a: 'Elles sont construites à partir de sources, puis vérifiées une par une. Chaque information passe deux contrôles indépendants avant publication ; ce qui ne se vérifie pas ne sort pas.' },
       { q: 'L’application Ball IQ est-elle en français ?', a: 'Pas encore : cette page est en français, mais l’application est en anglais. Nous mesurons l’intérêt avant de traduire — être arrivé jusqu’ici nous aide déjà à trancher.' },
     ],
     taster: [
@@ -182,7 +182,7 @@ export const CLUBS_FR = [
     faq: [
       { q: 'Le quiz OL est-il gratuit ?', a: 'Oui. Il se joue directement dans le navigateur, sans inscription et sans rien télécharger. Toutes les questions de cette page sont gratuites.' },
       { q: 'Quels sujets couvre le quiz ?', a: 'Le surnom des Gones, le Groupama Stadium, l’ère Aulas, les sept titres consécutifs et leurs entraîneurs, Juninho Pernambucano, Grégory Coupet et Hugo Lloris, Benzema, Malouda, Abidal et Lacazette, les parcours européens de 2010 et 2020, le derby contre Saint-Étienne et les titres européens de l’équipe féminine. On commence facile et on finit très difficile.' },
-      { q: 'D’où viennent les questions ?', a: 'Elles sont écrites et vérifiées à la main, jamais générées automatiquement. Chaque information passe deux contrôles indépendants avant publication ; ce qui ne se vérifie pas ne sort pas.' },
+      { q: 'D’où viennent les questions ?', a: 'Elles sont construites à partir de sources, puis vérifiées une par une. Chaque information passe deux contrôles indépendants avant publication ; ce qui ne se vérifie pas ne sort pas.' },
       { q: 'L’application Ball IQ est-elle en français ?', a: 'Pas encore : cette page est en français, mais l’application est en anglais. Nous mesurons l’intérêt avant de traduire — être arrivé jusqu’ici nous aide déjà à trancher.' },
     ],
     taster: [
@@ -249,7 +249,7 @@ export const CLUBS_FR = [
     faq: [
       { q: 'Le quiz Monaco est-il gratuit ?', a: 'Oui. Il se joue directement dans le navigateur, sans inscription et sans rien télécharger. Toutes les questions de cette page sont gratuites.' },
       { q: 'Quels sujets couvre le quiz ?', a: 'Le statut particulier du club dans le championnat français, le Stade Louis II, le maillot en diagonale, Jean-Luc Ettori, Arsène Wenger et George Weah, les champions de Jean Tigana, le parcours européen de 2004 avec Morientes et Deschamps, la relégation de 2011 et le rachat par Rybolovlev, Ranieri, Falcao, Mbappé et le titre 2017. On commence facile et on finit très difficile.' },
-      { q: 'D’où viennent les questions ?', a: 'Elles sont écrites et vérifiées à la main, jamais générées automatiquement. Chaque information passe deux contrôles indépendants avant publication ; ce qui ne se vérifie pas ne sort pas.' },
+      { q: 'D’où viennent les questions ?', a: 'Elles sont construites à partir de sources, puis vérifiées une par une. Chaque information passe deux contrôles indépendants avant publication ; ce qui ne se vérifie pas ne sort pas.' },
       { q: 'L’application Ball IQ est-elle en français ?', a: 'Pas encore : cette page est en français, mais l’application est en anglais. Nous mesurons l’intérêt avant de traduire — être arrivé jusqu’ici nous aide déjà à trancher.' },
     ],
     taster: [

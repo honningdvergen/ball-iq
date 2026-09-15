@@ -74,7 +74,7 @@ export const CLUBS_TR = [
       },
       {
         q: 'Sorular nereden geliyor?',
-        a: 'Hepsi elle yazılıyor ve elle doğrulanıyor, hiçbiri otomatik üretilmiyor. Her bilgi yayınlanmadan önce iki bağımsız kontrolden geçiyor; doğrulanamayan bir şey varsa o soru yayınlanmıyor.',
+        a: 'Hepsi kaynaklara dayanılarak araştırılıyor ve tek tek doğrulanıyor. Her bilgi yayınlanmadan önce iki bağımsız kontrolden geçiyor; doğrulanamayan bir şey varsa o soru yayınlanmıyor.',
       },
       {
         // The honest disclosure — and the single most useful thing this pilot

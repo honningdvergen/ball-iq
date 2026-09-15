@@ -42,11 +42,11 @@ export const HUBS_INTL = [
   {
     lang: 'es',
     title: 'Quiz de Fútbol — Pon a prueba lo que sabes | Ball IQ',
-    description: 'Quiz de fútbol escrito y verificado por aficionados. Elige tu club, responde y descubre cuánto sabes de verdad. Gratis y sin registro.',
+    description: 'Quiz de fútbol contrastado con fuentes y verificado pregunta a pregunta. Elige tu club, responde y descubre cuánto sabes de verdad. Gratis y sin registro.',
     h1: 'Quiz de Fútbol',
     kind: 'Quiz de fútbol',
     intro: [
-      'Un quiz de fútbol para quien ve fútbol de verdad. Cada pregunta está escrita y contrastada por aficionados: nunca copiada, nunca generada automáticamente.',
+      'Un quiz de fútbol para quien ve fútbol de verdad. Las preguntas se contrastan con fuentes y se verifican una por una: ninguna está copiada de otro quiz.',
       'Elige el club al que animas y responde diez preguntas. La mayoría trae una explicación breve, así que terminas sabiendo algo que no sabías al empezar.',
     ],
     tasterEyebrow: 'Prueba gratis · Sin registro',
@@ -63,11 +63,11 @@ export const HUBS_INTL = [
   {
     lang: 'pt',
     title: 'Quiz de Futebol — Teste o que você sabe | Ball IQ',
-    description: 'Quiz de futebol escrito e conferido por torcedores. Escolha seu clube, responda e descubra o quanto você realmente sabe. Grátis, sem cadastro.',
+    description: 'Quiz de futebol com perguntas apuradas em fontes e checadas uma a uma. Escolha seu clube, responda e descubra o quanto você sabe. Grátis, sem cadastro.',
     h1: 'Quiz de Futebol',
     kind: 'Quiz de futebol',
     intro: [
-      'Um quiz de futebol para quem assiste futebol de verdade. Cada pergunta é escrita e conferida por torcedores: nunca copiada, nunca gerada automaticamente.',
+      'Um quiz de futebol para quem assiste futebol de verdade. Cada pergunta é apurada em fontes e checada antes de ir ao ar, nunca copiada de outros sites de quiz.',
       'Escolha o clube que você torce e responda dez perguntas. A maioria vem com uma explicação curta, então você termina sabendo algo que não sabia.',
     ],
     tasterEyebrow: 'Teste grátis · Sem cadastro',
@@ -84,11 +84,11 @@ export const HUBS_INTL = [
   {
     lang: 'tr',
     title: 'Futbol Quiz — Bilgini test et | Ball IQ',
-    description: 'Futbolseverlerin yazdığı ve doğruladığı futbol quizi. Kulübünü seç, soruları yanıtla ve gerçekte ne kadar bildiğini gör. Ücretsiz, kayıt yok.',
+    description: 'Soruları kaynaklardan araştırılıp tek tek doğrulanan futbol quizi. Kulübünü seç, soruları yanıtla ve gerçekte ne kadar bildiğini gör. Ücretsiz, kayıt yok.',
     h1: 'Futbol Quiz',
     kind: 'Futbol quizi',
     intro: [
-      'Gerçekten futbol izleyenler için bir futbol quizi. Buradaki her soru futbolseverler tarafından yazılır ve doğrulanır: hiçbiri kopyalanmaz, hiçbiri otomatik üretilmez.',
+      'Gerçekten futbol izleyenler için bir futbol quizi. Buradaki her soru kaynaklardan araştırılır ve yayına girmeden önce tek tek doğrulanır: hiçbiri başka quiz sitelerinden kopyalanmaz.',
       'Tuttuğun kulübü seç ve on soruyu yanıtla. Cevapların çoğunda kısa bir açıklama var; başladığında bilmediğin bir şeyi öğrenerek bitiriyorsun.',
     ],
     tasterEyebrow: 'Ücretsiz deneme · Kayıt yok',
@@ -105,11 +105,11 @@ export const HUBS_INTL = [
   {
     lang: 'it',
     title: 'Quiz di Calcio — Metti alla prova quello che sai | Ball IQ',
-    description: 'Quiz di calcio scritto e verificato da tifosi. Scegli la tua squadra, rispondi e scopri quanto sai davvero. Gratis, senza registrazione.',
+    description: 'Quiz di calcio con domande basate sulle fonti e verificate una per una. Scegli la tua squadra e scopri quanto sai davvero. Gratis, senza registrazione.',
     h1: 'Quiz di Calcio',
     kind: 'Quiz di calcio',
     intro: [
-      'Un quiz di calcio per chi il calcio lo guarda davvero. Ogni domanda è scritta e verificata da tifosi: mai copiata, mai generata automaticamente.',
+      'Un quiz di calcio per chi il calcio lo guarda davvero. Ogni domanda nasce da una ricerca sulle fonti e viene verificata prima di andare online: nessuna è copiata da altri quiz.',
       'Scegli la squadra per cui tifi e rispondi a dieci domande. Quasi tutte hanno una spiegazione breve, così alla fine sai qualcosa che non sapevi quando hai iniziato.',
     ],
     tasterEyebrow: 'Prova gratis · Senza registrazione',
@@ -129,11 +129,11 @@ export const HUBS_INTL = [
     // ⚠️ 163 chars on the first attempt, over the 160 limit — German compounds
     // run long and the gate measures by code point. Shortened at source, never
     // truncated, per the audit's own instruction.
-    description: 'Fußball-Quiz, geschrieben und geprüft von Fans. Wähle deinen Verein und finde heraus, wie viel du wirklich weißt. Kostenlos, ohne Anmeldung.',
+    description: 'Fußball-Quiz mit recherchierten, einzeln geprüften Fragen. Wähle deinen Verein und finde heraus, wie viel du wirklich weißt. Kostenlos, ohne Anmeldung.',
     h1: 'Fußball Quiz',
     kind: 'Fußball-Quiz',
     intro: [
-      'Ein Fußball-Quiz für alle, die wirklich Fußball schauen. Jede Frage wird von Fans geschrieben und geprüft: nie abgeschrieben, nie automatisch erzeugt.',
+      'Ein Fußball-Quiz für alle, die wirklich Fußball schauen. Jede Frage wird anhand von Quellen recherchiert und einzeln geprüft, bevor sie erscheint. Keine ist von anderen Quiz-Seiten abgeschrieben.',
       'Wähle den Verein, dem du die Daumen drückst, und beantworte zehn Fragen. Zu den meisten gibt es eine kurze Erklärung — du hörst also mit etwas auf, das du vorher nicht wusstest.',
     ],
     tasterEyebrow: 'Kostenlos testen · Ohne Anmeldung',
@@ -150,11 +150,11 @@ export const HUBS_INTL = [
   {
     lang: 'nl',
     title: 'Voetbalquiz — Test wat je écht weet | Ball IQ',
-    description: 'Voetbalquiz, geschreven en gecontroleerd door fans. Kies je club, beantwoord de vragen en ontdek hoeveel je echt weet. Gratis en zonder account.',
+    description: 'Voetbalquiz met vragen die in bronnen zijn uitgezocht en één voor één gecontroleerd. Kies je club en ontdek hoeveel je echt weet. Gratis, zonder account.',
     h1: 'Voetbalquiz',
     kind: 'Voetbalquiz',
     intro: [
-      'Een voetbalquiz voor wie echt voetbal kijkt. Elke vraag wordt door fans geschreven en gecontroleerd: nooit overgeschreven, nooit automatisch gegenereerd.',
+      'Een voetbalquiz voor wie echt voetbal kijkt. Elke vraag wordt aan de hand van bronnen uitgezocht en apart gecontroleerd, en nooit van een andere quizsite overgenomen.',
       'Kies de club die jij aanmoedigt en beantwoord tien vragen. Bij de meeste hoort een korte uitleg — je eindigt dus met iets dat je aan het begin nog niet wist.',
     ],
     tasterEyebrow: 'Gratis proberen · Zonder account',
@@ -171,11 +171,11 @@ export const HUBS_INTL = [
   {
     lang: 'fr',
     title: 'Quiz Football — Teste ce que tu sais | Ball IQ',
-    description: 'Quiz football écrit et vérifié par des passionnés. Choisis ton club, réponds et découvre ce que tu sais vraiment. Gratuit, sans inscription.',
+    description: 'Quiz football aux questions sourcées, vérifiées une par une. Choisis ton club, réponds et découvre ce que tu sais vraiment. Gratuit, sans inscription.',
     h1: 'Quiz Football',
     kind: 'Quiz football',
     intro: [
-      'Un quiz football pour ceux qui regardent vraiment le football. Chaque question est écrite et vérifiée par des passionnés : jamais copiée, jamais générée automatiquement.',
+      'Un quiz football pour ceux qui regardent vraiment le football. Les questions s’appuient sur des sources et sont vérifiées une par une avant d’être mises en ligne. Aucune n’est copiée d’un autre quiz.',
       'Choisis le club que tu soutiens et réponds à dix questions. La plupart sont accompagnées d’une courte explication : tu termines en sachant quelque chose que tu ignorais.',
     ],
     tasterEyebrow: 'Essai gratuit · Sans inscription',
@@ -192,11 +192,11 @@ export const HUBS_INTL = [
   {
     lang: 'id',
     title: 'Kuis Sepak Bola — Uji pengetahuanmu | Ball IQ',
-    description: 'Kuis sepak bola yang ditulis dan diperiksa oleh penggemar. Pilih klubmu, jawab pertanyaannya, dan lihat seberapa banyak yang kamu tahu. Gratis, tanpa daftar.',
+    description: 'Kuis sepak bola yang diriset dari berbagai sumber dan diperiksa satu per satu. Pilih klubmu dan lihat seberapa banyak yang kamu tahu. Gratis, tanpa daftar.',
     h1: 'Kuis Sepak Bola',
     kind: 'Kuis sepak bola',
     intro: [
-      'Kuis sepak bola untuk orang yang benar-benar menonton sepak bola. Setiap pertanyaan ditulis dan diperiksa oleh penggemar: tidak pernah disalin, tidak pernah dibuat otomatis.',
+      'Kuis sepak bola untuk orang yang benar-benar menonton sepak bola. Setiap pertanyaan diriset dari berbagai sumber dan diperiksa satu per satu, tidak disalin dari situs kuis lain.',
       'Pilih klub yang kamu dukung dan jawab sepuluh pertanyaan. Sebagian besar jawaban disertai penjelasan singkat, jadi kamu selesai dengan tahu sesuatu yang baru.',
     ],
     tasterEyebrow: 'Coba gratis · Tanpa daftar',

@@ -59,7 +59,11 @@
 .fd-find-empty a{color:var(--t1);text-decoration:underline;text-underline-offset:3px}
 .fd-signin{flex:0 0 auto;display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:600;color:var(--t2);padding:0 10px}
 .fd-signin:hover{color:var(--t1)}
-.fd-nav-signin{display:none}
+/* ⚠️ ".fd-nav a{display:inline-flex}" (0,1,1) OUTRANKED a bare ".fd-nav-signin{display:none}" (0,1,0),
+   so every desktop page showed Sign in TWICE — once ending the nav, once at the far right. Found
+   2026-09-15 by counting visible links, not by reading the rule. Scoped to 0,2,0 so it wins at
+   desktop while the phone menu's ".fd-nav.is-open a{display:flex}" (0,2,1) still shows it. */
+.fd-nav .fd-nav-signin{display:none}
 .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--t1);cursor:pointer;border-radius:8px}
 
 /* date line */

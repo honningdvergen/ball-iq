@@ -60,7 +60,7 @@ export const CLUBS_DE = [
     faq: [
       { q: 'Ist das Bayern-Quiz kostenlos?', a: 'Ja. Es läuft direkt im Browser, ohne Anmeldung und ohne Download. Alle Fragen auf dieser Seite sind kostenlos.' },
       { q: 'Welche Themen deckt das Quiz ab?', a: 'Die Gründung und der verpasste Bundesliga-Start, Beckenbauer, Gerd Müller und Sepp Maier, die drei Landesmeisterpokale in Folge, FC Hollywood, das Finale 1999, Kahn und das Triple 2001, Robbery, das Triple 2013 und 2020, Lewandowski, Kane und die elf Meisterschaften in Folge. Es beginnt leicht und wird richtig schwer.' },
-      { q: 'Woher kommen die Fragen?', a: 'Sie werden von Hand geschrieben und von Hand geprüft, nie automatisch erzeugt. Jede Angabe durchläuft vor der Veröffentlichung zwei unabhängige Kontrollen; was sich nicht belegen lässt, erscheint nicht.' },
+      { q: 'Woher kommen die Fragen?', a: 'Sie werden anhand von Quellen recherchiert und Frage für Frage geprüft. Jede Angabe durchläuft vor der Veröffentlichung zwei unabhängige Kontrollen; was sich nicht belegen lässt, erscheint nicht.' },
       { q: 'Gibt es die Ball-IQ-App auf Deutsch?', a: 'Noch nicht: Diese Seite ist auf Deutsch, die App ist auf Englisch. Wir messen erst das Interesse, bevor wir übersetzen — wer bis hierher gelesen hat, hilft uns bei genau dieser Entscheidung.' },
     ],
     taster: [
@@ -127,7 +127,7 @@ export const CLUBS_DE = [
     faq: [
       { q: 'Ist das BVB-Quiz kostenlos?', a: 'Ja. Es läuft direkt im Browser, ohne Anmeldung und ohne Download. Alle Fragen auf dieser Seite sind kostenlos.' },
       { q: 'Welche Themen deckt das Quiz ab?', a: 'Die Gründung 1909 am Borsigplatz, die drei Alfredos, der Europapokalsieg 1966, das Westfalenstadion und die Gelbe Wand, Hitzfeld und das Finale 1997, die Finanzkrise, Klopp und Gegenpressing, Lewandowski, Götze, Sancho und Haaland, der Anschlag auf den Mannschaftsbus 2017 und Wembley 2024. Es beginnt leicht und wird richtig schwer.' },
-      { q: 'Woher kommen die Fragen?', a: 'Sie werden von Hand geschrieben und von Hand geprüft, nie automatisch erzeugt. Jede Angabe durchläuft vor der Veröffentlichung zwei unabhängige Kontrollen; was sich nicht belegen lässt, erscheint nicht.' },
+      { q: 'Woher kommen die Fragen?', a: 'Sie werden anhand von Quellen recherchiert und Frage für Frage geprüft. Jede Angabe durchläuft vor der Veröffentlichung zwei unabhängige Kontrollen; was sich nicht belegen lässt, erscheint nicht.' },
       { q: 'Gibt es die Ball-IQ-App auf Deutsch?', a: 'Noch nicht: Diese Seite ist auf Deutsch, die App ist auf Englisch. Wir messen erst das Interesse, bevor wir übersetzen — wer bis hierher gelesen hat, hilft uns bei genau dieser Entscheidung.' },
     ],
     taster: [
@@ -195,7 +195,7 @@ export const CLUBS_DE = [
     faq: [
       { q: 'Ist das Leverkusen-Quiz kostenlos?', a: 'Ja. Es läuft direkt im Browser, ohne Anmeldung und ohne Download. Alle Fragen auf dieser Seite sind kostenlos.' },
       { q: 'Welche Themen deckt das Quiz ab?', a: 'Die Gründung durch Bayer-Werksangehörige, der UEFA-Cup 1988, Ulf Kirsten und Michael Ballack, die Saison 2001/02 mit drei zweiten Plätzen, das Finale gegen Real Madrid, Berbatov, Son und Havertz, Xabi Alonso, die ungeschlagene Meistersaison und das Double 2024. Es beginnt leicht und wird richtig schwer.' },
-      { q: 'Woher kommen die Fragen?', a: 'Sie werden von Hand geschrieben und von Hand geprüft, nie automatisch erzeugt. Jede Angabe durchläuft vor der Veröffentlichung zwei unabhängige Kontrollen; was sich nicht belegen lässt, erscheint nicht.' },
+      { q: 'Woher kommen die Fragen?', a: 'Sie werden anhand von Quellen recherchiert und Frage für Frage geprüft. Jede Angabe durchläuft vor der Veröffentlichung zwei unabhängige Kontrollen; was sich nicht belegen lässt, erscheint nicht.' },
       { q: 'Gibt es die Ball-IQ-App auf Deutsch?', a: 'Noch nicht: Diese Seite ist auf Deutsch, die App ist auf Englisch. Wir messen erst das Interesse, bevor wir übersetzen — wer bis hierher gelesen hat, hilft uns bei genau dieser Entscheidung.' },
     ],
     taster: [

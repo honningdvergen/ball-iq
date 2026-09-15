@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { TOKENS } from '../../src/design/tokens.js';
+import { shellFooter } from '../../scripts/seo/shell.mjs';
 
 const read = (rel) => readFileSync(fileURLToPath(new URL(`../../${rel}`, import.meta.url)), 'utf8');
 const lum = (h) => { const c = [0, 2, 4].map((i) => parseInt(h.slice(1 + i, 3 + i), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
@@ -23,7 +24,11 @@ describe('P2 quick wins stay fixed', () => {
     const shell = read('scripts/seo/shell.mjs');
     expect(shell).not.toContain('Also on <a');
     expect(shell).toContain("${badge('ios')}${badge('android')}");
-    expect(shell).toContain("col('Quizzes'");
+    // Asserted on the RENDERED footer, not the source: the column titles moved
+    // into scripts/seo/shell-i18n.mjs on 2026-09-15 so localised pages get their
+    // own, and a grep for the literal col('Quizzes' could only ever fail there.
+    const heads = [...shellFooter({ base: '', appStore: '', playStore: '' }).matchAll(/<h3>([^<]*)<\/h3>/g)].map((m) => m[1]);
+    expect(heads).toEqual(['Games', 'Quizzes', 'Discover', 'Ball IQ']);
     expect(read('src/marketing/FrontDoor.jsx')).not.toContain('byLeague');
   });
   it('/lists pages put the table before the five-question taster', () => {
