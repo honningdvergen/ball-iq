@@ -39,15 +39,17 @@ export const NO_ROSTER_COMPETITIONS = new Set([
   'Super League Greece', // Olympiacos, Panathinaikos
   'Swiss Super League',  // Basel
   'Serbian SuperLiga',   // Red Star Belgrade
-  // Club América, Guadalajara (2026-09-15). Both have played every top-flight
-  // season since Mexico's professional league began — they are the two clubs
-  // famously never relegated — and promotion/relegation was suspended from 2020.
-  // Still re-check at the August audit like every other entry here.
+  // Club América, Guadalajara, Cruz Azul (2026-09-15/16). América and Guadalajara
+  // have played every top-flight season since Mexico's professional league began —
+  // the two clubs famously never relegated — and Cruz Azul every season since its
+  // promotion in 1964. Promotion/relegation was also suspended from 2020. Still
+  // re-check at the August audit like every other entry here.
   'Liga MX',
 ]);
 
 /** CLUBS[].club (the pack key) -> the exact `league` string in leagues.mjs. */
 export const CLUB_COMPETITION = {
+  "Cruz Azul": "Liga MX",
   "Guadalajara": "Liga MX",
   "Club América": "Liga MX",
   "San Lorenzo": "Primera División",

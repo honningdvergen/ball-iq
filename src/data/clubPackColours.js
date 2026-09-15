@@ -18,6 +18,7 @@ export const CLUB_PACK_COLOURS = {"Premier League":"#3D195B",
 "Legends":"#B03A2E",
 "Managers":"#37474F",
 "Records":"#1B7F79",
+"Cruz Azul":"#212452",
 "Chivas":"#CD1731",
 "Club América":"#FFEB00",
 "San Lorenzo":"#3D63C9",
@@ -120,7 +121,8 @@ export const CLUB_PACK_COLOURS = {"Premier League":"#3D195B",
 "Swansea City":"#121212",
 "Wrexham":"#DA291C"};
 
-export const CLUB_PACK_ABBR = {"Guadalajara":"GDL",
+export const CLUB_PACK_ABBR = {"CruzAzul":"CAZ",
+"Guadalajara":"GDL",
 "ClubAmerica":"AME",
 "SanLorenzo":"SLO",
 "Independiente":"IND",
@@ -214,7 +216,8 @@ export const CLUB_PACK_ABBR = {"Guadalajara":"GDL",
 
 // CLUB_NAME_TO_COMP: bank club name -> its LEAGUE cat (PL/LaLiga/SerieA/…), or
 // Clubs for a country whose league has no face. Folded at read time, not here.
-export const CLUB_NAME_TO_COMP = {"Guadalajara":"Clubs",
+export const CLUB_NAME_TO_COMP = {"Cruz Azul":"Clubs",
+"Guadalajara":"Clubs",
 "Club América":"Clubs",
 "San Lorenzo":"Clubs",
 "Independiente":"Clubs",

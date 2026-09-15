@@ -5520,6 +5520,12 @@ const MORE_META = {
   // the crest's stripe red #CE0E2D alongside it.
   'club-america': { code: 'AME', color: '#FFEB00', name: 'Club América' },
   'chivas': { code: 'GDL', color: '#CD1731', name: 'Chivas' },
+  // Cruz Azul: #212452 is the crest blue in logo_oficial/logocolor.svg, the file
+  // cfcruzazul.com serves on its own homepage (fetched 2026-09-16; its only other
+  // fill is the red cross, #ce0e2d). A resumed research pass returned #06357A — the
+  // PRE-2022 crest — with evidence that was Club América's site tokens, so it was
+  // discarded. Very dark, like Juventus and Corinthians; kept true, not lightened.
+  'cruz-azul': { code: 'CAZ', color: '#212452', name: 'Cruz Azul' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {

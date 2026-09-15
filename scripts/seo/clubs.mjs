@@ -11,6 +11,24 @@
 
 export const CLUBS = [
   {
+    club: "Cruz Azul", slug: "cruz-azul", name: "Cruz Azul",
+    h1: "Cruz Azul Quiz",
+    title: "Cruz Azul Quiz with Answers | Ball IQ",
+    description: "Cruz Azul quiz with answers: the 1927 cement-cooperative founding, 1970s titles, Hermosillo, the 2001 Libertadores final and Guardianes 2021.",
+    intro: [
+      "Cruz Azul was born on 22 May 1927 in Jasso, Hidalgo. Workers of a cement cooperative founded it in the town now called Ciudad Cooperativa Cruz Azul. Guillermo Álvarez Macías became general manager of the cooperative in December 1953 and put money into its sporting life. The club turned professional in 1961 and reached the top flight in 1964. It played at the Estadio 10 de Diciembre in Jasso until it moved to the Estadio Azteca in Mexico City in 1971.",
+      "Raúl Cárdenas coached the club to its first league title in 1968-69 and won five between then and 1973-74. Three of those came in a row, from 1971-72 to 1973-74. Argentine goalkeeper Miguel Marín, signed from Vélez Sarsfield, and Chilean centre-back Alberto 'El Mariscal' Quintano both played in that side. Cruz Azul beat América 4-1 in the single-match 1971-72 final on 9 July 1972, a game widely seen as the start of the Clásico Joven rivalry. Ignacio 'Nacho' Trelles then won the last two titles of the decade, the second in 1979-80.",
+      "After 1979-80 the club waited 17 years for another league title. Carlos Hermosillo was the Mexican league's top scorer three seasons running, from 1993-94 to 1995-96. On 24 August 1997 he scored twice as Cruz Azul came back from 2-0 down to beat LA Galaxy 5-3 in the CONCACAF Champions' Cup final in Washington, D.C. In December he ended the wait with a golden-goal penalty against León in the Invierno 1997 final, with Luis Fernando Tena as coach. In 2001 Cruz Azul became the first Mexican club to reach a Copa Libertadores final. Francisco Palencia's goal at La Bombonera levelled the tie with Boca Juniors, but Boca won the shootout 3-1.",
+      "America beat Cruz Azul in three finals: Clausura 2013, when goalkeeper Moisés Muñoz headed a stoppage-time equaliser, Apertura 2018 and Clausura 2024. Cruz Azul also won trophies in these years. Tena won the 2014 CONCACAF Champions League against Toluca. Juan Reynoso, who won the Invierno 1997 title as a player, coached the club to the Guardianes 2021 title, its ninth, with a 2-1 aggregate win over Santos Laguna. In 2025 Cruz Azul beat Vancouver Whitecaps 5-0 to win the CONCACAF Champions Cup.",
+    ],
+    faq: [
+      { q: "When and where was Cruz Azul founded?", a: "Cruz Azul was founded on 22 May 1927 in Jasso, Hidalgo, by workers of a cement cooperative. The town is now called Ciudad Cooperativa Cruz Azul." },
+      { q: "Which coaches have won the league title with Cruz Azul?", a: "Raúl Cárdenas won the first in 1968-69 and five in total up to 1973-74. Ignacio Trelles won two to close the 1970s, the second in 1979-80. Luis Fernando Tena won Invierno 1997, and Juan Reynoso won Guardianes 2021, the club's ninth league title." },
+      { q: "Have Cruz Azul ever reached the Copa Libertadores final?", a: "Yes. In 2001 Cruz Azul became the first Mexican club to reach a Copa Libertadores final. Boca Juniors won 1-0 at the Azteca and Cruz Azul won 1-0 at La Bombonera through Francisco Palencia. Boca won the shootout 3-1." },
+      { q: "Which stadiums have Cruz Azul called home?", a: "Cruz Azul played at the Estadio 10 de Diciembre in Jasso until 1971 and at the Estadio Azteca from 1971 to 1996. From 1996 to 2018 they played at the Estadio Azul, next to the Plaza México bullring. They then went back to the Azteca, where they won the Guardianes 2021 title." },
+    ],
+  },
+  {
     club: "Guadalajara", slug: "chivas", name: "Chivas",
     h1: "Chivas Guadalajara Quiz",
     title: "Chivas Guadalajara Quiz with Answers | Ball IQ",
