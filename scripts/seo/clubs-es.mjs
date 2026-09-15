@@ -2922,5 +2922,1047 @@ export const CLUBS_ES = [
       "alsoLink": "Real Sociedad quiz (English)",
       "statsLine": "Ligas, Copas y cantera: de Atotxa al Reale Arena"
     }
+  },
+
+  // ── ARGENTINA WAVE, 2026-09-15 ───────────────────────────────────────────
+  // Racing, Independiente and San Lorenzo. Their English packs shipped last
+  // week; this layer asserts no new football facts — every entry carries the
+  // `id` of the English question it came from and `en`, the English answer as
+  // the bank spells it TODAY, so a later bank correction fails the build by
+  // name instead of leaving this page quoting a fact that has since changed.
+  //
+  // ⚠️ RIOPLATENSE, like Boca and River above and unlike the eight Spanish
+  // clubs below them: voseo, arquero/técnico/hinchada, and NO definite article
+  // ("de Racing", never "del Racing"). Assembled by build-es-entries-ar.mjs,
+  // which checks the register and the answer indices rather than trusting them.
+  //
+  // Chosen on measurement, not coverage: /es/ River Plate pulls 134 impressions
+  // to the English page's 8, Boca 38 to 0, and Argentina is a top-7 country for
+  // us while Spain is not top-12.
+  {
+    "club": "Racing Club",
+    "slug": "racing-club",
+    "lang": "es",
+    "name": "Racing Club",
+    "h1": "Quiz de Racing Club",
+    "title": "Quiz de Racing Club con respuestas — La Academia | Ball IQ",
+    "description": "Quiz gratis de Racing con respuestas explicadas: La Academia, el Equipo de José, la Intercontinental del 67 y la Sudamericana 2024.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas de Racing con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "Racing es La Academia, y el apodo no es marketing: salió de los años en que el club ganó siete campeonatos seguidos, de 1913 a 1919, y quedó como la escuela donde el fútbol argentino aprendía a jugar. Este quiz gratuito arranca ahí, el 25 de marzo de 1903, en el pueblo que todavía se llamaba Barracas al Sud y que después sería Avellaneda, y sigue por el tricampeonato de 1949, 1950 y 1951 con Guillermo Stábile en el banco — el primero de un club argentino en la era profesional — hasta El Cilindro, inaugurado como Estadio Presidente Perón el 3 de septiembre de 1950 con un 1-0 a Vélez Sarsfield.",
+      "Después viene el año que ningún hincha de Racing deja pasar. El equipo de Juan José Pizzuti, el que quedó en la memoria como El Equipo de José, fue campeón argentino en 1966, ganó la Copa Libertadores de 1967 ante Nacional de Montevideo en un desempate jugado en Santiago y en noviembre se quedó con la Intercontinental frente al Celtic, en el Centenario, con el remate de lejos de Juan Carlos «Chango» Cárdenas. De ese mismo año sale la historia de los gatos negros enterrados en la cancha para hacerle daño al club: seis aparecieron con el tiempo, el último tardó décadas.",
+      "Acá tampoco se esquiva la parte fea, porque Racing no la esquivó. Está el descenso de diciembre de 1983 y los dos años en el ascenso antes de volver a fines de 1985; está la quiebra declarada por la justicia en marzo de 1999, el gerenciamiento privado que se hizo cargo del fútbol a fines de 2000 y que terminó cayéndose en 2008; y está el 27 de diciembre de 2001, cuando un empate 1-1 en cancha de Vélez Sarsfield, con gol del central Gabriel Loeschbor, cortó una sequía larguísima sin campeonato y dejó el «paso a paso» de Reinaldo «Mostaza» Merlo convertido en el lema de la campaña.",
+      "Y después está todo lo reciente, que para muchos hinchas es lo que más duele acertar o errar: el Torneo de Transición 2014 con Diego Cocca y con Diego Milito de vuelta en casa después de dejar el Inter; la Superliga 2018-19 de Eduardo «Chacho» Coudet, sellada en cancha de Tigre con Lisandro López de capitán y goleador del torneo; la noche del Maracaná en diciembre de 2020, cuando Racing dejó afuera por penales al Flamengo campeón; y la Copa Sudamericana 2024, el 3-1 a Cruzeiro en Asunción con Gustavo Costas en el banco. Cada respuesta viene con su explicación escrita, así que errarle también enseña algo."
+    ],
+    "faq": [
+      {
+        "q": "¿El quiz de Racing es gratis?",
+        "a": "Sí. Se juega acá mismo en el navegador, sin registro y sin descargar nada. Todas las preguntas de esta página son gratuitas, y el quiz completo tiene muchas más."
+      },
+      {
+        "q": "¿Qué temas cubre?",
+        "a": "Historia del club desde 1903, los siete campeonatos seguidos del amateurismo, el tricampeonato de Stábile, El Equipo de José y la Intercontinental del 67 ante el Celtic, el clásico de Avellaneda con Independiente, la Supercopa del 88 con Alfio Basile, el Apertura 2001, el descenso y la quiebra, el título de 2014, la Superliga 2018-19 y la Copa Sudamericana 2024. También las ventas: Lautaro Martínez, Rodrigo De Paul, Luciano Vietto, Claudio «Piojo» López y Claudio Yacob. Va de fácil a realmente difícil."
+      },
+      {
+        "q": "¿De dónde salen las preguntas?",
+        "a": "Se investigan contra fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale. Si un partido o una fecha están en discusión, la dejamos afuera antes que elegir una versión."
+      },
+      {
+        "q": "¿La aplicación Ball IQ está en español?",
+        "a": "Todavía no: esta página está en español, pero la app está en inglés. Estamos midiendo el interés antes de traducirla — si llegaste hasta acá, ya nos estás ayudando a decidirlo."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_71c1e8",
+        "q": "¿Con qué apodo se conoce a Racing Club de Avellaneda en todo el fútbol argentino?",
+        "o": [
+          "La Academia",
+          "El Ciclón",
+          "El Rojo",
+          "El Fortín"
+        ],
+        "a": 0,
+        "hint": "La Academia quedó pegado durante el dominio de la década del 10, cuando a Racing se lo veía como la escuela donde se aprendía el fútbol argentino. El Ciclón es San Lorenzo, El Rojo es Independiente y El Fortín es Vélez Sarsfield.",
+        "en": "La Academia"
+      },
+      {
+        "id": "q_d6c69b",
+        "q": "¿En qué año se fundó Racing Club?",
+        "o": [
+          "1901",
+          "1903",
+          "1905",
+          "1911"
+        ],
+        "a": 1,
+        "hint": "Racing se fundó el 25 de marzo de 1903 en el pueblo que entonces se llamaba Barracas al Sud, después rebautizado Avellaneda. Independiente, el vecino, llegó en 1905.",
+        "en": "1903"
+      },
+      {
+        "id": "q_df3110",
+        "q": "Racing ganó la Copa Intercontinental de 1967 venciendo al campeón europeo vigente. ¿Qué club era?",
+        "o": [
+          "Manchester United",
+          "Celtic",
+          "Internazionale",
+          "Real Madrid"
+        ],
+        "a": 1,
+        "hint": "Celtic había ganado la Copa de Europa en Lisboa en mayo de 1967, y la serie con Racing se terminó definiendo en un partido de desempate. Manchester United fue campeón de Europa en 1968, Inter en 1964 y 1965, y Real Madrid en 1966.",
+        "en": "Celtic"
+      },
+      {
+        "id": "q_197a95",
+        "q": "Racing juega el clásico de Avellaneda, una de las rivalidades más bravas de Argentina, ¿contra qué club?",
+        "o": [
+          "Independiente",
+          "San Lorenzo",
+          "Banfield",
+          "Lanús"
+        ],
+        "a": 0,
+        "hint": "La cancha de Independiente está a apenas unos cientos de metros de El Cilindro, del otro lado de la avenida Mitre: los dos clubes comparten las mismas calles de Avellaneda.",
+        "en": "Independiente"
+      },
+      {
+        "id": "q_b49c2b",
+        "q": "¿Qué técnico, recordado por su lema «paso a paso», llevó a Racing al título del Apertura 2001?",
+        "o": [
+          "Carlos Bianchi",
+          "Reinaldo Merlo",
+          "Américo Gallego",
+          "Manuel Pellegrini"
+        ],
+        "a": 1,
+        "hint": "El «paso a paso» repetido de Reinaldo «Mostaza» Merlo se convirtió en el lema de la campaña. Bianchi, en ese mismo período, ganaba Libertadores en Boca.",
+        "en": "Reinaldo Merlo"
+      },
+      {
+        "id": "q_3e0a39",
+        "q": "¿Qué jugador de Racing fue vendido a un club de la Serie A en julio de 2018?",
+        "o": [
+          "Gustavo Bou",
+          "Lautaro Martínez",
+          "Matías Zaracho",
+          "Iván Pillud"
+        ],
+        "a": 1,
+        "hint": "Lautaro Martínez pasó a Inter, la venta más grande de la historia moderna de Racing. Zaracho se fue a Atlético Mineiro dos años después.",
+        "en": "Lautaro Martínez"
+      },
+      {
+        "id": "q_401cf0",
+        "q": "Racing ganó la Copa Sudamericana 2024 con un 3-1 en la final jugada en Asunción. ¿A qué club brasileño le ganó?",
+        "o": [
+          "Corinthians",
+          "Fluminense",
+          "Vasco da Gama",
+          "Cruzeiro"
+        ],
+        "a": 3,
+        "hint": "Cruzeiro cayó 3-1 el 23 de noviembre de 2024 con goles de Martirena, Adrián Martínez y un tanto de Roger Martínez sobre el final. Corinthians había quedado eliminado por Racing en semifinales.",
+        "en": "Cruzeiro"
+      },
+      {
+        "id": "q_df97f3",
+        "q": "Cuando se inauguró en 1950, El Cilindro, el estadio de Racing, llevó oficialmente el nombre de un presidente argentino. ¿Cuál?",
+        "o": [
+          "Hipólito Yrigoyen",
+          "Juan Domingo Perón",
+          "Bartolomé Mitre",
+          "Domingo Faustino Sarmiento"
+        ],
+        "a": 1,
+        "hint": "El Estadio Presidente Perón se inauguró el 3 de septiembre de 1950 con un triunfo 1-0 sobre Vélez Sarsfield; el gobierno de Perón había ayudado a conseguir el financiamiento. Su forma de tambor le dio el apodo de El Cilindro.",
+        "en": "Juan Domingo Perón"
+      },
+      {
+        "id": "q_93dfc8",
+        "q": "Racing ganó su primer campeonato argentino en 1913 y después se adueñó de la era amateur. ¿Cuántos títulos de liga ganó al hilo?",
+        "o": [
+          "Cuatro",
+          "Cinco",
+          "Siete",
+          "Nueve"
+        ],
+        "a": 2,
+        "hint": "Siete campeonatos seguidos, de 1913 a 1919: la racha que lo convirtió en La Academia y en heredero de Alumni como el equipo dominante de Argentina.",
+        "en": "Seven"
+      },
+      {
+        "id": "q_0add2d",
+        "q": "Al Racing campeón de 1966 se lo recuerda como «El Equipo de José», por el técnico que lo armó. ¿Quién era?",
+        "o": [
+          "Osvaldo Zubeldía",
+          "Ángel Labruna",
+          "Juan José Pizzuti",
+          "Victorio Spinetto"
+        ],
+        "a": 2,
+        "hint": "Juan José Pizzuti se hizo cargo en 1965 y el equipo quedó bautizado con su segundo nombre. Después del título de liga llegaron la Copa Libertadores y la Copa Intercontinental en 1967.",
+        "en": "Juan José Pizzuti"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_b99f98",
+        "q": "Racing ganó la Copa Libertadores 1967 después de una final que necesitó un tercer partido. ¿A qué club le ganó?",
+        "o": [
+          "Peñarol",
+          "Nacional de Montevideo",
+          "Palmeiras",
+          "Universitario de Deportes"
+        ],
+        "a": 1,
+        "hint": "Los dos partidos contra Nacional terminaron 0-0 —uno en Avellaneda y otro en el Centenario— antes de que Racing ganara el desempate 2-1 en Santiago, en agosto de 1967.",
+        "en": "Nacional of Montevideo"
+      },
+      {
+        "id": "q_1aa4d8",
+        "q": "¿En qué año se fue Racing al descenso por primera vez en su historia?",
+        "o": [
+          "1977",
+          "1983",
+          "1989",
+          "1994"
+        ],
+        "a": 1,
+        "hint": "Racing descendió en diciembre de 1983 por los promedios. Pasó dos temporadas en el ascenso y volvió a subir a fines de 1985.",
+        "en": "1983"
+      },
+      {
+        "id": "q_661d58",
+        "q": "¿Qué trofeo ganó Racing en 1988 —su primer título internacional desde 1967— con Alfio Basile como técnico?",
+        "o": [
+          "Copa Libertadores",
+          "Supercopa Sudamericana",
+          "Recopa Sudamericana",
+          "Copa Intercontinental"
+        ],
+        "a": 1,
+        "hint": "Racing ganó la primera Supercopa (entonces llamada Supercopa Libertadores), venciendo a Cruzeiro 3-2 en el global entre Avellaneda y el Mineirão. Unos meses después llegó a la primera Recopa y la perdió con Nacional.",
+        "en": "Supercopa Sudamericana"
+      },
+      {
+        "id": "q_6c1e77",
+        "q": "Claudio «Piojo» López se hizo un nombre en Racing antes de irse a Europa en 1996. ¿Qué club lo compró?",
+        "o": [
+          "Atlético Madrid",
+          "Valencia",
+          "Lazio",
+          "Real Betis"
+        ],
+        "a": 1,
+        "hint": "Valencia pagó alrededor de cuatro millones de dólares por él en el pase de mediados de 1996, y se convirtió en ídolo en Mestalla antes de pasar a Lazio en 2000.",
+        "en": "Valencia"
+      },
+      {
+        "id": "q_5b9938",
+        "q": "El folclore de Avellaneda cuenta que hinchas rivales enterraron gatos negros en El Cilindro en 1967 para embrujar a Racing. ¿Cuántos gatos dice la leyenda?",
+        "o": [
+          "Tres",
+          "Cinco",
+          "Siete",
+          "Trece"
+        ],
+        "a": 2,
+        "hint": "Siete, según la historia. Con los años se desenterraron seis, y la búsqueda del último se estiró durante décadas: se rompió hormigón colocado desde 1967 para revisar la tierra de abajo.",
+        "en": "Seven"
+      },
+      {
+        "id": "q_9cbabd",
+        "q": "Racing salió campeón argentino en 1966 y después pasó décadas sin ganar un título de liga local. ¿En qué año volvió a ganar uno?",
+        "o": [
+          "1988",
+          "1995",
+          "2001",
+          "2004"
+        ],
+        "a": 2,
+        "hint": "El Apertura 2001, gritado campeón el 27 de diciembre con Reinaldo «Mostaza» Merlo, cortó una espera de 35 años sin campeonatos de liga.",
+        "en": "2001"
+      },
+      {
+        "id": "q_2981ff",
+        "q": "Racing selló el Apertura 2001 en la última fecha con un 1-1 de visitante. ¿Contra qué club empató?",
+        "o": [
+          "River Plate",
+          "San Lorenzo",
+          "Independiente",
+          "Vélez Sarsfield"
+        ],
+        "a": 3,
+        "hint": "El 1-1 en la cancha de Vélez Sarsfield, el 27 de diciembre de 2001, alcanzó para dar la vuelta, en plena crisis económica y política de Argentina.",
+        "en": "Vélez Sarsfield"
+      },
+      {
+        "id": "q_c7470c",
+        "q": "Un juzgado argentino declaró la quiebra de Racing, el fallo que dejó el fútbol del club en manos de una gerenciadora privada. ¿En qué año?",
+        "o": [
+          "1993",
+          "1996",
+          "1999",
+          "2004"
+        ],
+        "a": 2,
+        "hint": "La quiebra se declaró en marzo de 1999. Blanquiceleste S.A. se hizo cargo del fútbol de Racing a fines de 2000 y el acuerdo se cayó en 2008.",
+        "en": "1999"
+      },
+      {
+        "id": "q_cd078a",
+        "q": "El siguiente título de liga de Racing después de 2001 llegó en el Torneo de Transición 2014. ¿Quién era el técnico?",
+        "o": [
+          "Miguel Ángel Russo",
+          "Juan Antonio Pizzi",
+          "Diego Cocca",
+          "Gustavo Costas"
+        ],
+        "a": 2,
+        "hint": "Diego Cocca cortó una espera de 13 años, con Racing terminando el torneo con 41 puntos. Costas le daría a Racing la Copa Sudamericana 2024 una década después.",
+        "en": "Diego Cocca"
+      },
+      {
+        "id": "q_3f29f3",
+        "q": "Diego Milito volvió a Racing en junio de 2014, a los 35 años, y salió campeón en su primera temporada de regreso. ¿De qué club se fue para volver a casa?",
+        "o": [
+          "Genoa",
+          "Real Zaragoza",
+          "Sampdoria",
+          "Inter de Milán"
+        ],
+        "a": 3,
+        "hint": "Milito volvió desde el Inter, donde había hecho los dos goles de la final de la Champions League de 2010. Genoa y Zaragoza fueron escalas anteriores de su década en Europa.",
+        "en": "Inter Milan"
+      },
+      {
+        "id": "q_159111",
+        "q": "Racing ganó la Superliga 2018-19 con una fecha de anticipación. ¿Quién era el técnico?",
+        "o": [
+          "Eduardo Coudet",
+          "Sebastián Beccacece",
+          "Ricardo Zielinski",
+          "Diego Cocca"
+        ],
+        "a": 0,
+        "hint": "El equipo de Eduardo «Chacho» Coudet lo selló con un empate en cancha de Tigre el 31 de marzo de 2019, terminando con el mejor ataque y la mejor defensa. Beccacece lo sucedió en Racing más adelante.",
+        "en": "Eduardo Coudet"
+      },
+      {
+        "id": "q_bb625d",
+        "q": "¿Quién usó la cinta de capitán cuando Racing ganó la Superliga 2018-19?",
+        "o": [
+          "Marcelo Díaz",
+          "Leonardo Sigali",
+          "Lisandro López",
+          "Iván Pillud"
+        ],
+        "a": 2,
+        "hint": "Lisandro López fue el capitán del equipo y además terminó como goleador del torneo, con 17 goles, y también fue elegido su MVP.",
+        "en": "Lisandro López"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabés de Racing?",
+      "tasterPh": "Unas preguntas rápidas para medir tu Ball IQ de Racing.",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Jugá el quiz de Racing",
+      "playSub": "Tocá una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "faqH": "Quiz de Racing Club — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz de Racing Club",
+      "bandH": "¿Te creés que sabés de Racing? Demostralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz de Racing. La original, en inglés, está acá:",
+      "alsoLink": "Racing Club quiz (English)",
+      "statsLine": "Gratis · Preguntas de Racing con respuestas explicadas · sin registro"
+    }
+  },
+  {
+    "club": "Independiente",
+    "slug": "independiente",
+    "lang": "es",
+    "name": "Independiente",
+    "h1": "Quiz de Independiente",
+    "title": "Quiz de Independiente con respuestas — El Rojo | Ball IQ",
+    "description": "Quiz gratis de Independiente con respuestas explicadas: Bochini, Tokio 84 ante Liverpool, el Rey de Copas y el clásico de Avellaneda.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas de Independiente con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "Independiente nació el 1 de enero de 1905, cuando un grupo de empleados de la tienda porteña «A la Ciudad de Londres» se cansó de no tener lugar en el club que ya existía puertas adentro del negocio y salió a fundar el suyo. De Avellaneda viene todo lo demás: el Estadio Libertadores de América, levantado en el mismo terreno donde estuvo La Doble Visera desde 1928 hasta que cerró en 2006, y un vecino a menos de trescientos metros, El Cilindro, que hace que el clásico de Avellaneda sea, antes que nada, un asunto de barrio.",
+      "El apodo El Rey de Copas no es marketing: es una cuenta. En 1964, con la final ganada a Nacional de Montevideo, Independiente fue el primer club argentino en levantar la Copa Libertadores, y entre 1972 y 1975 la ganó cuatro veces seguidas: Universitario de Deportes, Colo-Colo, São Paulo y Unión Española cayeron una atrás de la otra. En 1973, en Roma, un gol de Ricardo Bochini le ganó la Intercontinental a Juventus con Roberto Ferreiro en el banco, y en 1984 llegó la séptima Libertadores, ante Grêmio.",
+      "La noche más contada sigue siendo Tokio, diciembre de 1984: José Percudani definió antes de los diez minutos, asistido por Claudio Marangoni, y Liverpool, campeón de Europa, se volvió sin la Intercontinental. El técnico era José Omar Pastoriza. En aquel once había un pibe de 22 años, Jorge Burruchaga, que dos años más tarde haría el gol de la final del Mundial 86; el molde ya venía de antes, porque Daniel Bertoni, titular en la final del 73, convirtió en la del 78 ante Holanda. Y arriba de todos, Bochini, del 72 al 91 en el club, el ídolo de infancia de Diego Maradona.",
+      "Después están las Supercopas del 94 y el 95, la Recopa ganada en Tokio a Vélez Sársfield, el Apertura 2002 de Américo Gallego con Andrés Silvera goleador del torneo, la Sudamericana de Antonio Mohamed ante Goiás en 2010 y la de Ariel Holan en el Maracaná ante Flamengo en 2017, y también el descenso de 2013 y la vuelta a Primera al año siguiente. Todo eso entra acá. Las preguntas van de fáciles a bravas de verdad, cada respuesta trae su explicación escrita y se juega en el navegador, sin registro: lo que hay en esta página es una muestra, el quiz completo tiene muchas más. Si te creés que sabés de Independiente, demostralo acá."
+    ],
+    "faq": [
+      {
+        "q": "¿El quiz de Independiente es gratis?",
+        "a": "Sí. Se juega acá mismo en el navegador, sin registro y sin descargar nada. Todo lo que hay en esta página es gratuito."
+      },
+      {
+        "q": "¿Qué temas cubre?",
+        "a": "Historia de Independiente de punta a punta: la fundación de 1905, la Libertadores de 1964, la seguidilla de 1972 a 1975, la Intercontinental de Roma y la de Tokio ante Liverpool, Bochini, Bertoni y Burruchaga, el Apertura 2002, las Sudamericanas de 2010 y 2017, el clásico de Avellaneda y las ventas de Forlán, Agüero, Tagliafico y Barco. Va de fácil a realmente difícil."
+      },
+      {
+        "q": "¿De dónde salen las preguntas?",
+        "a": "Se investigan contra fuentes y se verifican una por una. Cada dato pasa por dos controles distintos antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+      },
+      {
+        "q": "¿La aplicación Ball IQ está en español?",
+        "a": "Todavía no: esta página está en español, pero la app está en inglés. Estamos midiendo el interés antes de traducirla — si llegaste hasta acá, ya nos estás ayudando a decidirlo."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_aff656",
+        "q": "¿Contra qué club juega Independiente el clásico de Avellaneda, con una cancha a unos cientos de metros de la suya?",
+        "o": [
+          "San Lorenzo",
+          "Huracán",
+          "Racing Club",
+          "Vélez Sársfield"
+        ],
+        "a": 2,
+        "hint": "Racing Club es la otra mitad de Avellaneda. El primer enfrentamiento entre los dos fue allá por 1907.",
+        "en": "Racing Club"
+      },
+      {
+        "id": "q_a1d8cf",
+        "q": "¿A qué club inglés le ganó Independiente la Copa Intercontinental 1984 en Tokio?",
+        "o": [
+          "Nottingham Forest",
+          "Liverpool",
+          "Everton",
+          "Aston Villa"
+        ],
+        "a": 1,
+        "hint": "Liverpool, campeón de Europa vigente, cayó 1-0 en Tokio en diciembre de 1984.",
+        "en": "Liverpool"
+      },
+      {
+        "id": "q_c0132d",
+        "q": "El gran número 10 de Independiente pasó prácticamente toda su carrera en el club, de 1972 a 1991. ¿Qué crack argentino lo señaló como su ídolo de la infancia?",
+        "o": [
+          "Mario Kempes",
+          "Diego Maradona",
+          "Daniel Passarella",
+          "Ubaldo Fillol"
+        ],
+        "a": 1,
+        "hint": "Maradona creció idolatrando al enganche de Independiente y terminó jugando a su lado cuando el veterano entró desde el banco en la semifinal del Mundial 1986.",
+        "en": "Diego Maradona"
+      },
+      {
+        "id": "q_8f7ee6",
+        "q": "Hasta 2025, ¿en qué torneo consiguió Independiente su último título de liga argentina?",
+        "o": [
+          "Clausura 1994",
+          "Apertura 2002",
+          "Clausura 2005",
+          "Apertura 2011"
+        ],
+        "a": 1,
+        "hint": "El Apertura 2002 seguía siendo el último campeonato local 23 años después: la sequía de liga más larga en la historia del club.",
+        "en": "2002 Apertura"
+      },
+      {
+        "id": "q_125692",
+        "q": "¿A qué club le ganó Independiente la final de la Copa Sudamericana 2017?",
+        "o": [
+          "Chapecoense",
+          "Flamengo",
+          "Fluminense",
+          "Atlético Paranaense"
+        ],
+        "a": 1,
+        "hint": "Independiente ganó 2-1 en Avellaneda y empató 1-1 en el Maracaná para llevárselo 3-2 en el global.",
+        "en": "Flamengo"
+      },
+      {
+        "id": "q_7a5ae4",
+        "q": "¿Qué club le compró Sergio Agüero a Independiente en 2006, en una operación estimada en unos 23 millones de euros?",
+        "o": [
+          "Valencia",
+          "Sevilla",
+          "Atlético Madrid",
+          "Villarreal"
+        ],
+        "a": 2,
+        "hint": "Agüero llegó al Atlético Madrid a los 18 y pasó cinco temporadas ahí antes del Manchester City.",
+        "en": "Atlético Madrid"
+      },
+      {
+        "id": "q_0fed3e",
+        "q": "Independiente fue fundado el 1 de enero de 1905 por un grupo de empleados de «A la Ciudad de Londres». ¿Qué tipo de negocio era?",
+        "o": [
+          "Una empresa ferroviaria de capitales británicos",
+          "Una gran tienda por departamentos de Buenos Aires",
+          "Un frigorífico de Avellaneda",
+          "Una empresa naviera del Riachuelo"
+        ],
+        "a": 1,
+        "hint": "«A la Ciudad de Londres» era una tienda de moda y artículos varios en el centro de Buenos Aires. Sus empleados más jóvenes, dejados afuera del club que ya tenía la tienda, se separaron para fundar el suyo el día de Año Nuevo de 1905.",
+        "en": "A Buenos Aires department store"
+      },
+      {
+        "id": "q_b3ac79",
+        "q": "La cancha de Independiente está a menos de 300 metros de la de sus rivales del clásico de Avellaneda. ¿Con qué apodo se conoce al estadio de esos rivales?",
+        "o": [
+          "El Cilindro",
+          "La Bombonera",
+          "El Monumental",
+          "El Fortín"
+        ],
+        "a": 0,
+        "hint": "El Estadio Presidente Perón de los vecinos, inaugurado en 1950, se conoce como El Cilindro. La Bombonera es de Boca, El Monumental es de River y El Fortín es de Vélez.",
+        "en": "El Cilindro"
+      },
+      {
+        "id": "q_ac4e0b",
+        "q": "En 1964 Independiente se convirtió en el primer club argentino en ganar la Copa Libertadores. ¿A qué club venció en la final?",
+        "o": [
+          "Peñarol",
+          "Santos",
+          "Nacional",
+          "Olimpia"
+        ],
+        "a": 2,
+        "hint": "Independiente empató 0-0 de visitante ante Nacional de Montevideo y ganó la revancha 1-0 en Avellaneda. Peñarol y Santos se habían repartido las primeras cuatro ediciones entre ellos.",
+        "en": "Nacional"
+      },
+      {
+        "id": "q_31821e",
+        "q": "Independiente ganó su séptima Copa Libertadores en 1984. ¿A qué club brasileño venció en la final, a doble partido?",
+        "o": [
+          "Flamengo",
+          "Santos",
+          "Palmeiras",
+          "Grêmio"
+        ],
+        "a": 3,
+        "hint": "Independiente le ganó a Grêmio la final de 1984 para su séptima Copa Libertadores: la cosecha detrás del apodo El Rey de Copas.",
+        "en": "Grêmio"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_2365ec",
+        "q": "¿Ante qué club europeo perdió Independiente la Copa Intercontinental 1972, a doble partido?",
+        "o": [
+          "Benfica",
+          "Ajax",
+          "Bayern Múnich",
+          "Feyenoord"
+        ],
+        "a": 1,
+        "hint": "Ajax empató 1-1 en Avellaneda y ganó 3-0 en Ámsterdam. Un año después se bajó del torneo y la Juventus ocupó su lugar, otra vez frente a Independiente.",
+        "en": "Ajax"
+      },
+      {
+        "id": "q_f7fbd5",
+        "q": "Independiente le ganó 1-0 a la Juventus en la Copa Intercontinental 1973, en un partido único jugado en Roma. ¿Quién hizo el gol?",
+        "o": [
+          "Agustín Balbuena",
+          "Ricardo Pavoni",
+          "Ricardo Bochini",
+          "Daniel Bertoni"
+        ],
+        "a": 2,
+        "hint": "Bochini la clavó sobre el final en el Stadio Olimpico. La serie fue un solo partido en Italia porque esa fue la condición con la que la Juventus aceptó jugar.",
+        "en": "Ricardo Bochini"
+      },
+      {
+        "id": "q_205ec3",
+        "q": "¿Qué integrante del once de Independiente campeón de la Copa Intercontinental 1984 terminó haciendo el gol del triunfo en la final del Mundial 1986?",
+        "o": [
+          "Ricardo Giusti",
+          "Néstor Clausen",
+          "Claudio Marangoni",
+          "Jorge Burruchaga"
+        ],
+        "a": 3,
+        "hint": "Burruchaga tenía 22 años en aquella final de Tokio. Dos años después hizo el gol que venció a Alemania Federal en la final del Mundial.",
+        "en": "Jorge Burruchaga"
+      },
+      {
+        "id": "q_e875f6",
+        "q": "Daniel Bertoni fue titular en Independiente en la final de la Copa Intercontinental 1973. Cinco años más tarde marcó en una final del Mundial con Argentina. ¿Quién era el rival ese día?",
+        "o": [
+          "Holanda",
+          "Alemania Federal",
+          "Brasil",
+          "Italia"
+        ],
+        "a": 0,
+        "hint": "Bertoni ganó tres Copas Libertadores en Independiente y después marcó el tercero de Argentina en el alargue, en el 3-1 sobre Holanda en la final de 1978.",
+        "en": "Netherlands"
+      },
+      {
+        "id": "q_aa3819",
+        "q": "Independiente ganó la Supercopa Libertadores en 1994. ¿A qué otro club argentino venció en la final?",
+        "o": [
+          "River Plate",
+          "Racing Club",
+          "Boca Juniors",
+          "Vélez Sársfield"
+        ],
+        "a": 2,
+        "hint": "Independiente empató 1-1 en La Bombonera y ganó la revancha 1-0 con gol de Sebastián Rambert, y después retuvo la Supercopa en 1995 ante Flamengo.",
+        "en": "Boca Juniors"
+      },
+      {
+        "id": "q_7e34b0",
+        "q": "¿Quién era el técnico de Independiente cuando ganó el título de liga argentina en diciembre de 2002?",
+        "o": [
+          "Carlos Bianchi",
+          "Alfio Basile",
+          "Américo Gallego",
+          "Miguel Ángel Russo"
+        ],
+        "a": 2,
+        "hint": "Américo Rubén Gallego, «El Tolo», dirigía al equipo de Silvera, Milito, Montenegro e Insúa que lo selló con un 3-0 en cancha de San Lorenzo el 1 de diciembre de 2002.",
+        "en": "Américo Gallego"
+      },
+      {
+        "id": "q_bb0109",
+        "q": "¿Ante qué club brasileño ganó Independiente por penales la final de la Copa Sudamericana 2010?",
+        "o": [
+          "Internacional",
+          "São Paulo",
+          "Goiás",
+          "Vasco da Gama"
+        ],
+        "a": 2,
+        "hint": "Goiás ganó la ida en el Serra Dourada; Independiente se quedó con la vuelta en Avellaneda y con la definición por penales 5-3 para su primera Sudamericana.",
+        "en": "Goiás"
+      },
+      {
+        "id": "q_3360c1",
+        "q": "¿Quién era el técnico de Independiente en la consagración en la Copa Sudamericana 2010?",
+        "o": [
+          "Américo Gallego",
+          "Jorge Burruchaga",
+          "Miguel Ángel Brindisi",
+          "Antonio Mohamed"
+        ],
+        "a": 3,
+        "hint": "Antonio «El Turco» Mohamed estaba a cargo en la remontada de diciembre de 2010 ante Goiás.",
+        "en": "Antonio Mohamed"
+      },
+      {
+        "id": "q_87fb5b",
+        "q": "¿Qué técnico dirigió a Independiente en el título de la Copa Sudamericana 2017?",
+        "o": [
+          "Ariel Holan",
+          "Sebastián Beccacece",
+          "Lucas Pusineri",
+          "Gabriel Milito"
+        ],
+        "a": 0,
+        "hint": "El equipo de Ariel Holan cerró la serie en el Maracaná el 13 de diciembre de 2017; los otros tres también dirigieron al club en otras etapas.",
+        "en": "Ariel Holan"
+      },
+      {
+        "id": "q_474f86",
+        "q": "El debut de Agüero en Independiente, en julio de 2003 y con 15 años, ¿a quién le rompió el récord de jugador más joven en jugar en la primera división argentina?",
+        "o": [
+          "Javier Saviola",
+          "Diego Maradona",
+          "Ariel Ortega",
+          "Carlos Tevez"
+        ],
+        "a": 1,
+        "hint": "El debut de Maradona en Argentinos Juniors en 1976, con 15 años y 11 meses, se había mantenido durante 27 años.",
+        "en": "Diego Maradona"
+      },
+      {
+        "id": "q_06b51b",
+        "q": "¿Qué club inglés se llevó a Diego Forlán desde Independiente en enero de 2002?",
+        "o": [
+          "Middlesbrough",
+          "Sunderland",
+          "Manchester United",
+          "Leeds United"
+        ],
+        "a": 2,
+        "hint": "El United pagó alrededor de 7 millones de libras. Middlesbrough había arreglado un monto primero, pero quería pagarlo en cuotas e Independiente lo quería de una sola vez.",
+        "en": "Manchester United"
+      },
+      {
+        "id": "q_d7cf00",
+        "q": "¿A qué club se fue Nicolás Tagliafico, capitán de Independiente, pocas semanas después de la final de la Copa Sudamericana 2017?",
+        "o": [
+          "PSV Eindhoven",
+          "Feyenoord",
+          "AZ Alkmaar",
+          "Ajax"
+        ],
+        "a": 3,
+        "hint": "El lateral izquierdo llegó a Ajax en enero de 2018 y después fue parte del recorrido hasta las semifinales de la Champions League 2019.",
+        "en": "Ajax"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabés de Independiente?",
+      "tasterPh": "Unas preguntas rápidas para medir tu Ball IQ rojo — tocá una opción y arrancá.",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Jugá el quiz de Independiente",
+      "playSub": "Tocá una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "faqH": "Quiz de Independiente — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz de Independiente",
+      "bandH": "¿Te creés que sabés de Independiente? Demostralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz de Independiente. La original, en inglés, está acá:",
+      "alsoLink": "Independiente quiz (English)",
+      "statsLine": "Gratis · Preguntas de Independiente con respuestas explicadas · sin registro"
+    }
+  },
+  {
+    "club": "San Lorenzo",
+    "slug": "san-lorenzo",
+    "lang": "es",
+    "name": "San Lorenzo",
+    "h1": "Quiz de San Lorenzo",
+    "title": "Quiz de San Lorenzo con respuestas — El Ciclón | Ball IQ",
+    "description": "Quiz gratis de San Lorenzo con respuestas explicadas: el Gasómetro, Los Matadores, los goles de Scotta y la Libertadores 2014 de Bauza.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas de San Lorenzo con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "San Lorenzo no nació en una cancha: nació en el patio de una parroquia de Almagro. El cura Lorenzo Massa vio cómo un tranvía casi se lleva puesto a uno de los pibes que jugaban en la calle México y les ofreció el patio salesiano para que patearan tranquilos. El 1 de abril de 1908 esos mismos pibes, que hasta entonces andaban por la calle bajo el nombre de Los Forzosos de Almagro, fundaron el club. Querían ponerle el nombre del cura; Massa aceptó solamente cuando se entendió que San Lorenzo honraba al mártir romano y al Combate de San Lorenzo de 1813, el de los granaderos de San Martín. De ahí también salió lo de Cuervos: cuervo es como se le dice al cura por la sotana negra, y lo que empezó como cargada de las tribunas rivales terminó siendo bandera propia. Si te creés que sabés de San Lorenzo, el quiz arranca justo ahí.",
+      "Almagro quedó en el nombre, pero el alma se mudó unas cuadras al sur, a Boedo. Ahí estuvo el viejo Gasómetro de Avenida La Plata, bautizado así porque el bulto de sus tribunas de madera parecía los tanques del gas que había al lado. El último partido que se jugó ahí fue un 0-0 con Boca en diciembre de 1979, con Gatti atajando un penal, y después no quedó nada: durante décadas el terreno de Boedo lo ocupó un hipermercado de Carrefour. Sin cancha propia, en agosto de 1981 San Lorenzo perdió 1-0 con Argentinos Juniors — en cancha de Ferro — y se convirtió en el primero de los cinco grandes en irse al descenso. Volvió en una sola temporada, campeón de la Primera B en noviembre de 1982 y rompiendo récords de público en el ascenso.",
+      "Catorce años sin estadio propio terminaron en diciembre de 1993, cuando se inauguró el Nuevo Gasómetro en el Bajo Flores — el Pedro Bidegain, por aquel presidente de los años veinte y treinta — con un 2-1 ante Universidad Católica de Chile y unas cuarenta mil personas adentro. Lo de adentro de la cancha ya venía de antes: el Terceto de Oro con René Pontoni en la gira europea de 1947 que incluyó el 6-1 a España en Madrid, José Sanfilippo goleador del campeonato cuatro años seguidos entre 1958 y 1961, Los Matadores del Metropolitano 1968 que pasaron el torneo invictos y le ganaron la final 2-1 a Estudiantes en tiempo suplementario, y los 60 goles que el Gringo Scotta metió en 1975, marca que en el fútbol argentino nadie igualó en cincuenta años.",
+      "Después llegaron el Clausura 1995 del Bambino Veira, que cortó veintiún años sin vuelta olímpica, el doblete de Manuel Pellegrini en 2001 con el Clausura y la Copa Mercosur ante Flamengo por penales, la primera Copa Sudamericana de la historia en 2002 con el 4-0 a Atlético Nacional en Medellín y el Clausura 2007 de Ramón Díaz. Y llegó lo más grande: dos años después de salvarse en la promoción con Instituto, San Lorenzo levantó la Copa Libertadores 2014 con Edgardo Bauza, penal de Néstor Ortigoza y todo, y jugó la final del Mundial de Clubes en Marruecos. De ese Boedo salieron también Lavezzi, Zabaleta, Ángel Correa, Senesi y Gaich. Cada respuesta viene con la explicación escrita, así que si errás una igual te llevás algo: jugá, fijate dónde te caés y volvé a intentarlo."
+    ],
+    "faq": [
+      {
+        "q": "¿El quiz de San Lorenzo es gratis?",
+        "a": "Sí. Se juega acá mismo en el navegador, sin registro y sin descargar nada. Todas las preguntas de esta página son gratuitas."
+      },
+      {
+        "q": "¿Qué temas cubre?",
+        "a": "La fundación de 1908 y el patio de Massa, Boedo y los dos Gasómetros, el descenso del 81 y la vuelta del 82, Los Matadores del 68, Sanfilippo y Scotta, el Mercosur y la Sudamericana, la Libertadores 2014 con Bauza y el Mundial de Clubes, el clásico con Huracán y los jugadores que se fueron a Europa. Va de fácil a realmente difícil."
+      },
+      {
+        "q": "¿De dónde salen las preguntas?",
+        "a": "Se investigan contra fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+      },
+      {
+        "q": "¿La aplicación Ball IQ está en español?",
+        "a": "Todavía no: esta página está en español, pero la app está en inglés. Estamos midiendo el interés antes de traducirla — si llegaste hasta acá, ya nos estás ayudando a decidirlo."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_47249c",
+        "q": "La historia de San Lorenzo arranca con un cura, Lorenzo Massa, que les ofreció a unos pibes la seguridad del patio de su parroquia en Almagro. ¿Qué acababa de ver que casi atropella a uno de ellos en la calle?",
+        "o": [
+          "Un carro de pan",
+          "Un tranvía",
+          "Un tren a vapor",
+          "Un caballo desbocado"
+        ],
+        "a": 1,
+        "hint": "Un tranvía casi atropella a uno de los chicos que jugaban en la esquina de calle México. Massa les abrió el patio de la parroquia salesiana y el club se fundó el 1 de abril de 1908.",
+        "en": "A tram"
+      },
+      {
+        "id": "q_c90293",
+        "q": "El viejo Gasómetro estaba en la avenida La Plata, en el barrio con el que el club quedó identificado desde entonces. ¿Cuál?",
+        "o": [
+          "Núñez",
+          "La Boca",
+          "Parque Patricios",
+          "Boedo"
+        ],
+        "a": 3,
+        "hint": "Boedo. El nombre del club dice Almagro, pero la cancha y el alma del club se asentaron unas cuadras más al sur, en Boedo.",
+        "en": "Boedo"
+      },
+      {
+        "id": "q_03f495",
+        "q": "El clásico más picante de San Lorenzo, presentado muchas veces como el clásico de barrio más grande del mundo, es contra un club apodado El Globo. ¿Cuál?",
+        "o": [
+          "Vélez Sarsfield",
+          "Nueva Chicago",
+          "Ferro Carril Oeste",
+          "Huracán"
+        ],
+        "a": 3,
+        "hint": "Huracán, del vecino Parque Patricios. El globo contra el ciclón: El Globo versus El Ciclón.",
+        "en": "Huracan"
+      },
+      {
+        "id": "q_a491c1",
+        "q": "¿En qué año inauguró por fin San Lorenzo el Nuevo Gasómetro, y terminó con 14 años sin cancha propia?",
+        "o": [
+          "1986",
+          "1989",
+          "1993",
+          "1997"
+        ],
+        "a": 2,
+        "hint": "Diciembre de 1993. El Estadio Pedro Bidegain, bautizado en honor a un presidente del club de los años 20 y 30, se levantó en el Bajo Flores, bien lejos de Boedo.",
+        "en": "1993"
+      },
+      {
+        "id": "q_1e814f",
+        "q": "San Lorenzo ganó su primera Copa Libertadores en 2014 al vencer a un club paraguayo en una final a dos partidos. ¿Cuál?",
+        "o": [
+          "Olimpia",
+          "Cerro Porteño",
+          "Nacional",
+          "Libertad"
+        ],
+        "a": 2,
+        "hint": "Nacional de Asunción, en la única final de Libertadores que San Lorenzo jugó en su historia. Terminó 1-1 en Asunción y 1-0 en Buenos Aires.",
+        "en": "Nacional"
+      },
+      {
+        "id": "q_8bb6a3",
+        "q": "San Lorenzo llegó a la final del Mundial de Clubes de la FIFA 2014 en Marruecos. ¿Qué club europeo le ganó 2-0 y se quedó con el título?",
+        "o": [
+          "Real Madrid",
+          "Barcelona",
+          "Bayern Múnich",
+          "Atlético Madrid"
+        ],
+        "a": 0,
+        "hint": "Real Madrid, con goles de Sergio Ramos y Gareth Bale en Marrakech.",
+        "en": "Real Madrid"
+      },
+      {
+        "id": "q_6336b3",
+        "q": "¿Qué club italiano le compró Ezequiel Lavezzi a San Lorenzo en 2007?",
+        "o": [
+          "Palermo",
+          "Udinese",
+          "Napoli",
+          "Fiorentina"
+        ],
+        "a": 2,
+        "hint": "Napoli pagó una cifra informada de 5,6 millones de euros y Lavezzi se volvió ídolo ahí durante cinco temporadas, antes de pasar al Paris Saint-Germain.",
+        "en": "Napoli"
+      },
+      {
+        "id": "q_1081dc",
+        "q": "El padre Massa aceptó el nombre San Lorenzo con la condición de que honrara al mártir romano San Lorenzo y a una cosa más. ¿Cuál?",
+        "o": [
+          "Un combate librado en 1813 por los Granaderos a Caballo de San Martín",
+          "El pueblo italiano del que venía la familia del cura",
+          "Una escuela salesiana de Turín",
+          "La esquina donde jugaban los pibes"
+        ],
+        "a": 0,
+        "hint": "Los chicos querían ponerle el nombre del propio cura. Él aceptó recién cuando quedó entendido que honraba al santo y al Combate de San Lorenzo de 1813, librado en la provincia de Santa Fe por los granaderos de San Martín.",
+        "en": "A battle fought in 1813 by San Martin's mounted grenadiers"
+      },
+      {
+        "id": "q_23fe39",
+        "q": "¿Por qué a la vieja cancha de la avenida La Plata le decían El Gasómetro?",
+        "o": [
+          "Una compañía de gas pagó para ponerle su nombre",
+          "Su mole se parecía a los tanques gasómetros de la usina de gas vecina",
+          "Sus reflectores funcionaban a gas",
+          "Se construyó en el terreno de una explosión de gas"
+        ],
+        "a": 1,
+        "hint": "Las enormes tribunas de madera parecían los tanques de almacenamiento de gas que había al lado, así que la hinchada la bautizó el Gasómetro.",
+        "en": "Its bulk resembled the gas-holder tanks of the neighbouring gasworks"
+      },
+      {
+        "id": "q_9acd14",
+        "q": "San Lorenzo perdió el viejo Gasómetro en 1979 y, durante décadas, el terreno de Boedo quedó ocupado por un hipermercado. ¿De qué cadena?",
+        "o": [
+          "Coto",
+          "Jumbo",
+          "Walmart",
+          "Carrefour"
+        ],
+        "a": 3,
+        "hint": "Un hipermercado de Carrefour ocupó el terreno durante décadas. El club recuperó el predio mucho después, tras una larga campaña por la vuelta a Boedo.",
+        "en": "Carrefour"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_3e1f52",
+        "q": "¿De dónde viene el apodo Los Cuervos?",
+        "o": [
+          "De un cuervo pintado en el primer escudo del club",
+          "De una camiseta blanquinegra usada en los años 30",
+          "De las sotanas negras de los curas que estuvieron detrás de la fundación del club",
+          "De un tango escrito en Boedo sobre un cuervo"
+        ],
+        "a": 2,
+        "hint": "Cuervo es, en el habla argentina, una manera de decirle cura, por la sotana negra. Las hinchadas rivales lo usaban para burlarse del origen clerical del club, y los hinchas de San Lorenzo lo hicieron propio.",
+        "en": "The black cassocks of the priests behind the club's founding"
+      },
+      {
+        "id": "q_eebf4b",
+        "q": "San Lorenzo ganó el Metropolitano 1968 al vencer 2-1 en el alargue en la final. ¿A qué equipo?",
+        "o": [
+          "Racing Club",
+          "Estudiantes de La Plata",
+          "Rosario Central",
+          "Vélez Sarsfield"
+        ],
+        "a": 1,
+        "hint": "Estudiantes de La Plata se puso en ventaja en la cancha de River hasta que Veglio empató y Fischer lo ganó en el tiempo suplementario. Ese equipo pasó todo el torneo invicto y se lo recuerda como Los Matadores.",
+        "en": "Estudiantes de La Plata"
+      },
+      {
+        "id": "q_506e07",
+        "q": "¿Cuánto tiempo pasó realmente San Lorenzo en el ascenso después del descenso de 1981?",
+        "o": [
+          "Una temporada",
+          "Dos temporadas",
+          "Cuatro temporadas",
+          "Seis temporadas"
+        ],
+        "a": 0,
+        "hint": "Una temporada. Llenó canchas por todo Buenos Aires, rompió récords de público en la categoría y selló el ascenso como campeón de la Primera B en noviembre de 1982.",
+        "en": "One season"
+      },
+      {
+        "id": "q_ddba8c",
+        "q": "En 1975 Héctor «Gringo» Scotta convirtió una cantidad extraordinaria de goles en el año calendario, una marca que sigue sin igualar en el fútbol argentino cincuenta años después. ¿Cuántos?",
+        "o": [
+          "44",
+          "51",
+          "60",
+          "72"
+        ],
+        "a": 2,
+        "hint": "60: treinta y dos en el Metropolitano y veintiocho en el Nacional, superando la marca de 47 que Arsenio Erico había puesto en 1937. Adidas le mandó una bota de oro por eso.",
+        "en": "60"
+      },
+      {
+        "id": "q_54dfe2",
+        "q": "El Clausura 1995 cortó una espera de 21 años sin título de liga en San Lorenzo. ¿Qué técnico lo consiguió?",
+        "o": [
+          "Alfio Basile",
+          "Héctor 'Bambino' Veira",
+          "Carlos Bianchi",
+          "Miguel Ángel Russo"
+        ],
+        "a": 1,
+        "hint": "Héctor «Bambino» Veira, él mismo jugador de San Lorenzo en los años 60. Fue el primer campeonato del club desde el Nacional 1974, sellado en junio de 1995.",
+        "en": "Hector 'Bambino' Veira"
+      },
+      {
+        "id": "q_7244e4",
+        "q": "¿Quién convirtió el penal que definió la revancha de la final de la Copa Libertadores 2014 en el Nuevo Gasómetro?",
+        "o": [
+          "Mauro Matos",
+          "Néstor Ortigoza",
+          "Ángel Correa",
+          "Leandro Romagnoli"
+        ],
+        "a": 1,
+        "hint": "Néstor Ortigoza lo cambió por gol desde los doce pasos a los 35 minutos, tras una mano, y ese único gol ganó la serie. Mauro Matos había marcado en la ida en Asunción.",
+        "en": "Néstor Ortigoza"
+      },
+      {
+        "id": "q_4affb3",
+        "q": "¿Qué DT dirigía a San Lorenzo cuando el club ganó la Copa Libertadores en 2014?",
+        "o": [
+          "Juan Antonio Pizzi",
+          "Diego Simeone",
+          "Leonardo Madelón",
+          "Edgardo Bauza"
+        ],
+        "a": 3,
+        "hint": "Edgardo Bauza asumió a comienzos de 2014 y levantó el trofeo en ocho meses. Pizzi había ganado el título de liga que los clasificó, pero se fue a España antes de que arrancara la campaña.",
+        "en": "Edgardo Bauza"
+      },
+      {
+        "id": "q_73c4bd",
+        "q": "¿A qué club le ganó San Lorenzo en la semifinal del Mundial de Clubes 2014?",
+        "o": [
+          "Cruz Azul",
+          "ES Sétif",
+          "Auckland City",
+          "Western Sydney Wanderers"
+        ],
+        "a": 2,
+        "hint": "Auckland City, el campeón de Oceanía, que llevó a San Lorenzo al alargue antes de caer 2-1 con goles de Pablo Barrientos y Mauro Matos.",
+        "en": "Auckland City"
+      },
+      {
+        "id": "q_686ac9",
+        "q": "San Lorenzo ganó la Copa Mercosur 2001, su primer título en un torneo de la CONMEBOL. ¿A qué club brasileño venció en la final?",
+        "o": [
+          "Flamengo",
+          "Vasco da Gama",
+          "Palmeiras",
+          "Corinthians"
+        ],
+        "a": 0,
+        "hint": "Flamengo. Fue 0-0 en el Maracanã y 1-1 en Buenos Aires, y San Lorenzo ganó 4-3 por penales, con el arquero Sebastián Saja atajando dos y convirtiendo uno.",
+        "en": "Flamengo"
+      },
+      {
+        "id": "q_d2754b",
+        "q": "San Lorenzo ganó la primera edición de la Copa Sudamericana en 2002. ¿A qué club colombiano goleó 4-0 en el global en la final?",
+        "o": [
+          "América de Cali",
+          "Atlético Nacional",
+          "Millonarios",
+          "Deportivo Cali"
+        ],
+        "a": 1,
+        "hint": "Atlético Nacional. San Lorenzo ganó 4-0 de visitante en Medellín y después empató 0-0 la revancha de local.",
+        "en": "Atlético Nacional"
+      },
+      {
+        "id": "q_32fc90",
+        "q": "¿Qué técnico ganó el Clausura 2007 con San Lorenzo, el primer título de liga del club en seis años?",
+        "o": [
+          "Héctor Veira",
+          "Gustavo Alfaro",
+          "Miguel Ángel Russo",
+          "Ramón Díaz"
+        ],
+        "a": 3,
+        "hint": "Ramón Díaz, en el primero de sus dos ciclos en el club. El título de liga anterior había llegado con Pellegrini en el Clausura 2001.",
+        "en": "Ramón Díaz"
+      },
+      {
+        "id": "q_b87419",
+        "q": "¿A qué club le vendió San Lorenzo en 2014 al delantero de 19 años Ángel Correa, por una cifra estimada en unos 7 millones de euros?",
+        "o": [
+          "Benfica",
+          "Sevilla",
+          "Porto",
+          "Atlético Madrid"
+        ],
+        "a": 3,
+        "hint": "Atlético Madrid. El pase se acordó en mayo de 2014, pero Correa siguió siendo jugador de San Lorenzo hasta diciembre: una operación para extirparle un tumor en el corazón, en junio de ese año, lo dejó afuera seis meses y su debut en el Atlético recién llegó en agosto de 2015.",
+        "en": "Atlético Madrid"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabés de San Lorenzo?",
+      "tasterPh": "Preguntas rápidas para medir tu Ball IQ cuervo — el quiz completo tiene muchas más.",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Jugá el quiz de San Lorenzo",
+      "playSub": "Tocá una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "faqH": "Quiz de San Lorenzo — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz de San Lorenzo",
+      "bandH": "¿Te creés que sabés de San Lorenzo? Demostralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz de San Lorenzo. La original, en inglés, está acá:",
+      "alsoLink": "San Lorenzo quiz (English)",
+      "statsLine": "Gratis · Preguntas de San Lorenzo con respuestas explicadas · sin registro"
+    }
   }
 ];
