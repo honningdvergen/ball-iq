@@ -2933,7 +2933,7 @@ export const CLUBS_ES = [
   //
   // ⚠️ RIOPLATENSE, like Boca and River above and unlike the eight Spanish
   // clubs below them: voseo, arquero/técnico/hinchada, and NO definite article
-  // ("de Racing", never "del Racing"). Assembled by build-es-entries-ar.mjs,
+  // ("de Racing", never "del Racing"). Assembled by build-es-entries-latam.mjs,
   // which checks the register and the answer indices rather than trusting them.
   //
   // Chosen on measurement, not coverage: /es/ River Plate pulls 134 impressions
@@ -3963,6 +3963,1048 @@ export const CLUBS_ES = [
       "alsoP": "Esta página es la versión en español de nuestro quiz de San Lorenzo. La original, en inglés, está acá:",
       "alsoLink": "San Lorenzo quiz (English)",
       "statsLine": "Gratis · Preguntas de San Lorenzo con respuestas explicadas · sin registro"
+    }
+  },
+
+  // ── MEXICO WAVE, 2026-09-16 ──────────────────────────────────────────────
+  // Club América, Chivas, Cruz Azul. Their English packs went live the same
+  // week; every entry carries the English question's id and its `en` answer, so
+  // this layer asserts no new football facts.
+  //
+  // ⚠️ MEXICAN REGISTER — the third on this page, after peninsular and
+  // Rioplatense. Tuteo ("¿Cuánto sabes…?", "Juega"), portero/técnico/afición,
+  // "futbol" without the accent, "en vivo", and the article where the club takes
+  // one: "del América" — "de América" reads as the continent. Assembled by
+  // build-es-entries-latam.mjs, which checks the register rather than trusting it.
+  //
+  // The review stage found and removed, before this shipped: an invented origin
+  // for Cruz Azul's "La Máquina" nickname, "Fuera de México" attached to finals
+  // played in Mexico, "radio" added to a TV business, and a goalkeeper placed in
+  // a final the source never puts him in.
+  {
+    "club": "Club América",
+    "slug": "club-america",
+    "lang": "es",
+    "name": "Club América",
+    "h1": "Quiz del Club América",
+    "title": "Quiz del América con respuestas — Las Águilas | Ball IQ",
+    "description": "Quiz gratis del América con respuestas: el gol de oro de 2002, el cabezazo de Moisés Muñoz, el tricampeonato, el Azteca, Zamorano y el Clásico Nacional.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas del América con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "El América nació en la Ciudad de México el 12 de octubre de 1916, y el nombre no fue casualidad: esa fecha, la de la llegada de Colón a América, se celebra en México como Día de la Raza, y de ahí salió «América». En 1959 compró el club Emilio Azcárraga Milmo, cuya familia tenía el negocio de televisión Telesistema Mexicano, que en 1973 se fusionó en Televisa; durante décadas el club se manejó como parte de ese imperio. Siete años después de aquella compra se inauguró el Estadio Azteca, el 29 de mayo de 1966, con un empate 2-2 entre el América y el Torino de Italia. Este quiz empieza ahí y no se detiene.",
+      "La vitrina se cuenta final por final. En la 1983-84 el América le ganó la final al Guadalajara, uno de los capítulos más recordados del Clásico Nacional, y al año siguiente repitió ante Pumas UNAM después de dos empates y un partido de desempate. En el Verano 2002, con Manuel Lapuente como técnico, Hugo Norberto Castillo metió de cabeza el gol de oro contra Necaxa y cortó una espera de trece años. En el Clausura 2005 llegó el 6-3 a Tecos en el Azteca. En el Clausura 2013 el portero Moisés Muñoz subió a un tiro de esquina en tiempo de compensación, su cabezazo mandó la final a tiempo extra y el título se ganó en penales con el Piojo Herrera, que en su segunda etapa también levantó el Apertura 2018 ante el Cruz Azul en el Clásico Joven. Y con el 3-2 global a Monterrey en el Apertura 2024, el América fue el primer club de la era de torneos cortos en ganar tres títulos seguidos.",
+      "No todo es festejo, y el quiz tampoco lo esconde. En la final del Apertura 2013, el León de Gustavo Matosas ganó 2-0 en casa y 3-1 en el Estadio Azteca. En la liguilla del Clausura 2023, Chivas le dio la vuelta a un 1-0 de la ida y ganó 3-1 en el Azteca la semifinal del Clásico Nacional. Pero también está la remontada del Apertura 2014: tras perder la ida 1-0, el América de Antonio Mohamed le metió 3-0 a Tigres en la vuelta, con tres expulsados en el rival. En torneos internacionales llegaron la Copa de Campeones de la CONCACAF 2006 ante Toluca y la Liga de Campeones 2014-15 ante el Montreal Impact, pero también la final de la Copa Sudamericana 2007 perdida por gol de visitante con Arsenal de Sarandí, las semifinales del Mundial de Clubes ante el Barcelona en 2006 y el Real Madrid en 2016, y el repechaje de mayo de 2025 que LAFC ganó 2-1 en tiempo extra.",
+      "Y luego están los nombres. Kalusha Bwalya llegó del PSV en 1994 y se volvió figura de culto; era capitán de Zambia y había sido Futbolista Africano del Año en 1988. Cuauhtémoc Blanco se fue a préstamo al Real Valladolid en 2000, pero una lesión de rodilla con la Selección Mexicana ante Trinidad y Tobago, ese mismo octubre, le recortó la aventura. Iván Zamorano llegó del Inter en 2001, Salvador Cabañas venía de hacer goles en Jaguares de Chiapas cuando firmó en 2006, y Guillermo Ochoa, surgido de la cantera, se fue en 2011 al AC Ajaccio de Córcega. En 2019 Edson Álvarez se fue al Ajax y Oribe Peralta cruzó a Chivas tras cinco años en el club, una de las transferencias más discutidas de la época. ¿Cuánto sabes de verdad del América? Juega y demuéstralo."
+    ],
+    "faq": [
+      {
+        "q": "¿El quiz del América es gratis?",
+        "a": "Sí. Se juega aquí mismo en el navegador, sin registro y sin descargar nada. Eliges una respuesta y cada pregunta trae su explicación, aciertes o no, así que hasta un error te deja algo."
+      },
+      {
+        "q": "¿Qué temas cubre?",
+        "a": "La fundación de 1916 y el origen del nombre, la llegada de Azcárraga y Televisa, la inauguración del Estadio Azteca, las finales de liga desde la 1983-84 hasta el tricampeonato del Apertura 2024, el gol de oro de 2002, el cabezazo de Moisés Muñoz, el Clásico Nacional con Chivas y el Clásico Joven con el Cruz Azul, la CONCACAF, la Sudamericana, la Libertadores y el Mundial de Clubes, y jugadores como Bwalya, Blanco, Zamorano, Cabañas, Ochoa, Edson Álvarez y Oribe Peralta."
+      },
+      {
+        "q": "¿De dónde salen las preguntas?",
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+      },
+      {
+        "q": "¿Qué tan difícil es?",
+        "a": "Va de fácil a realmente difícil. Cualquier aficionado del América sabe quién dirigió los títulos de 2013 y 2018, pero pocos recuerdan contra quién se inauguró el Azteca o quién eliminó a las Águilas en las semifinales de la Libertadores 2008. Lo que ves en esta página es solo una muestra: el quiz completo tiene muchas más."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_1b339c",
+        "q": "En 1959 el Club América fue comprado por Emilio Azcárraga Milmo. ¿En qué empresa de medios se convirtió después el negocio de televisión de su familia?",
+        "o": [
+          "TV Azteca",
+          "Multimedios",
+          "Televisa",
+          "Grupo Imagen"
+        ],
+        "a": 2,
+        "hint": "El Telesistema Mexicano de la familia Azcárraga se fusionó en Televisa en 1973, y el club se manejó durante décadas como parte de ese imperio.",
+        "en": "Televisa"
+      },
+      {
+        "id": "q_652c94",
+        "q": "Kalusha Bwalya se volvió un ídolo de culto en el América tras llegar del PSV en 1994. ¿De qué selección fue capitán?",
+        "o": [
+          "Nigeria",
+          "Camerún",
+          "Ghana",
+          "Zambia"
+        ],
+        "a": 3,
+        "hint": "Bwalya es uno de los mejores futbolistas en la historia de Zambia y fue nombrado Futbolista Africano del Año en 1988.",
+        "en": "Zambia"
+      },
+      {
+        "id": "q_ffb630",
+        "q": "¿Qué director técnico llevó al América a los títulos de liga del Clausura 2013 y del Apertura 2018?",
+        "o": [
+          "Miguel Herrera",
+          "Antonio Mohamed",
+          "Ricardo La Volpe",
+          "Ignacio Ambriz"
+        ],
+        "a": 0,
+        "hint": "El «Piojo» Herrera fue campeón en 2013, se fue a dirigir a la Selección Mexicana y volvió a ganar el título en su segunda etapa en el club.",
+        "en": "Miguel Herrera"
+      },
+      {
+        "id": "q_62f84d",
+        "q": "En 2019, Edson Álvarez dejó el América. ¿A qué club holandés se fue?",
+        "o": [
+          "Ajax",
+          "PSV Eindhoven",
+          "Feyenoord",
+          "AZ Alkmaar"
+        ],
+        "a": 0,
+        "hint": "El Ajax lo fichó en julio de 2019 con un contrato por cinco años, y más tarde pasó al West Ham en 2023.",
+        "en": "Ajax"
+      },
+      {
+        "id": "q_a341c4",
+        "q": "En junio de 2019, el delantero Oribe Peralta dejó el América. ¿A qué club de la Liga MX se fue?",
+        "o": [
+          "Guadalajara",
+          "Santos Laguna",
+          "Cruz Azul",
+          "Toluca"
+        ],
+        "a": 0,
+        "hint": "Su pase a Chivas, el rival más acérrimo del América, después de cinco años y dos títulos de liga en el club, lo convirtió en uno de los traspasos más polémicos de la época.",
+        "en": "Guadalajara"
+      },
+      {
+        "id": "q_b5d977",
+        "q": "El Club América se fundó en la Ciudad de México en 1916, y su nombre se eligió por la fecha de su fundación. ¿Qué día fue?",
+        "o": [
+          "Día de la Raza",
+          "Día de la Independencia",
+          "Día de la Revolución",
+          "Cinco de Mayo"
+        ],
+        "a": 0,
+        "hint": "El club se fundó el 12 de octubre de 1916, el día que recuerda la llegada de Colón a América y que en México se celebra como Día de la Raza; de ahí viene el nombre «América».",
+        "en": "Columbus Day (Día de la Raza)"
+      },
+      {
+        "id": "q_e13fd1",
+        "q": "El Club América ganó el título de liga de la temporada 1983-84. ¿A qué club venció en la final?",
+        "o": [
+          "Toluca",
+          "Pumas UNAM",
+          "Cruz Azul",
+          "Guadalajara"
+        ],
+        "a": 3,
+        "hint": "El América venció a Chivas, su rival del Clásico Nacional, en la final de 1983-84, una de las finales más famosas en la historia de esa rivalidad.",
+        "en": "Guadalajara"
+      },
+      {
+        "id": "q_6edd39",
+        "q": "El Club América ganó la Liga de Campeones de la CONCACAF 2014-15. ¿A qué club venció en la final?",
+        "o": [
+          "Real Salt Lake",
+          "Tigres UANL",
+          "Montreal Impact",
+          "LA Galaxy"
+        ],
+        "a": 2,
+        "hint": "El América venció al Montreal Impact en la final y ganó el partido de vuelta en Montreal.",
+        "en": "Montreal Impact"
+      },
+      {
+        "id": "q_8d1512",
+        "q": "En el Mundial de Clubes de la FIFA 2006 en Japón, ¿qué club eliminó al América en la semifinal?",
+        "o": [
+          "Internacional",
+          "Al Ahly",
+          "Barcelona",
+          "Real Madrid"
+        ],
+        "a": 2,
+        "hint": "El Barcelona le ganó 4-0 al América en la semifinal. Después, el América perdió el partido por el tercer lugar contra el Al Ahly.",
+        "en": "Barcelona"
+      },
+      {
+        "id": "q_ed3bc8",
+        "q": "¿Qué portero anotó de cabeza en tiempo de compensación para el América en la final del Clausura 2013, forzando los tiempos extra antes de que el América ganara en penales?",
+        "o": [
+          "Jesús Corona",
+          "Moisés Muñoz",
+          "Guillermo Ochoa",
+          "Oswaldo Sánchez"
+        ],
+        "a": 1,
+        "hint": "Moisés Muñoz subió a rematar un tiro de esquina al final y su cabezazo forzó los tiempos extra. El América terminó ganando el título en penales.",
+        "en": "Moisés Muñoz"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_8ed040",
+        "q": "El Club América ganó el título de liga del Apertura 2018. ¿A qué club venció en la final?",
+        "o": [
+          "Santos Laguna",
+          "Monterrey",
+          "Tigres UANL",
+          "Cruz Azul"
+        ],
+        "a": 3,
+        "hint": "El América venció 2-0 en el global al Cruz Azul en la final del Clásico Joven del Apertura 2018.",
+        "en": "Cruz Azul"
+      },
+      {
+        "id": "q_c911f6",
+        "q": "A principios de los 2000, Cuauhtémoc Blanco salió del América cedido a préstamo a España. ¿En qué club jugó?",
+        "o": [
+          "Real Betis",
+          "Real Valladolid",
+          "Celta de Vigo",
+          "Espanyol"
+        ],
+        "a": 1,
+        "hint": "Blanco fue cedido al Real Valladolid en 2000, pero una grave lesión de rodilla que sufrió jugando con México contra Trinidad y Tobago en octubre de ese año limitó su etapa allá.",
+        "en": "Real Valladolid"
+      },
+      {
+        "id": "q_570f98",
+        "q": "Iván Zamorano llegó al América en 2001. ¿De qué club venía?",
+        "o": [
+          "Real Madrid",
+          "Inter de Milán",
+          "Colo-Colo",
+          "Sevilla"
+        ],
+        "a": 1,
+        "hint": "Zamorano llegó a México procedente del Inter de Milán. Antes había jugado en el Sevilla y el Real Madrid, y terminó su carrera en el Colo-Colo tras salir del América.",
+        "en": "Inter Milan"
+      },
+      {
+        "id": "q_356717",
+        "q": "Con un gol de oro de Hugo Norberto Castillo, el América ganó el título del Verano 2002. ¿Contra qué club fue la final?",
+        "o": [
+          "Morelia",
+          "Toluca",
+          "Necaxa",
+          "Pachuca"
+        ],
+        "a": 2,
+        "hint": "Castillo marcó de cabeza el gol de oro en tiempos extra contra el Necaxa, y así terminó la espera de 13 años del América por un título de liga.",
+        "en": "Necaxa"
+      },
+      {
+        "id": "q_6596b6",
+        "q": "¿Qué club le ganó 5-1 en el global al América en la final del Apertura 2013?",
+        "o": [
+          "Tigres",
+          "León",
+          "Santos Laguna",
+          "Toluca"
+        ],
+        "a": 1,
+        "hint": "El León de Gustavo Matosas ganó 2-0 en casa y luego 3-1 en el Estadio Azteca.",
+        "en": "León"
+      },
+      {
+        "id": "q_27f99e",
+        "q": "El América ganó la final del Apertura 2014. ¿Contra qué club, que se quedó con tres jugadores expulsados en el partido de vuelta?",
+        "o": [
+          "Monterrey",
+          "Pachuca",
+          "Tigres",
+          "Cruz Azul"
+        ],
+        "a": 2,
+        "hint": "El América perdió 1-0 la ida y luego le ganó 3-0 a Tigres en el Azteca para imponerse 3-1 en el global con Antonio Mohamed.",
+        "en": "Tigres"
+      },
+      {
+        "id": "q_30dcff",
+        "q": "¿Qué club ganó 3-1 en el Estadio Azteca para eliminar al América en las semifinales del Clausura 2023?",
+        "o": [
+          "Tigres",
+          "Monterrey",
+          "Guadalajara",
+          "Toluca"
+        ],
+        "a": 2,
+        "hint": "Chivas le dio la vuelta a una derrota de 1-0 en la ida para ganar la semifinal del Clásico Nacional, y después perdió la final ante Tigres.",
+        "en": "Guadalajara"
+      },
+      {
+        "id": "q_e47825",
+        "q": "¿A qué club venció el América en la final del Apertura 2024 para convertirse en el primer club de la era de torneos cortos de la Liga MX en ganar tres títulos seguidos?",
+        "o": [
+          "Cruz Azul",
+          "Monterrey",
+          "Toluca",
+          "Tigres"
+        ],
+        "a": 1,
+        "hint": "El América venció al Monterrey 3-2 en el global. Ese título llegó después de los que ganó ante Tigres en el Apertura 2023 y ante el Cruz Azul en el Clausura 2024.",
+        "en": "Monterrey"
+      },
+      {
+        "id": "q_ad240a",
+        "q": "¿De qué club de la Liga MX era director técnico André Jardine antes de llegar al América en 2023?",
+        "o": [
+          "Tijuana",
+          "Atlético San Luis",
+          "Querétaro",
+          "Santos Laguna"
+        ],
+        "a": 1,
+        "hint": "El América llegó a un acuerdo con el Atlético San Luis por el brasileño, que había ganado la medalla de oro olímpica con Brasil en Tokio 2020.",
+        "en": "Atlético San Luis"
+      },
+      {
+        "id": "q_0c1f26",
+        "q": "¿Qué club le ganó 2-0 al América en las semifinales del Mundial de Clubes de la FIFA 2016?",
+        "o": [
+          "Mamelodi Sundowns",
+          "Kashima Antlers",
+          "Atlético Nacional",
+          "Real Madrid"
+        ],
+        "a": 3,
+        "hint": "El Real Madrid venció al América en la semifinal y terminó ganando el torneo. Después, el América perdió el partido por el tercer lugar ante el Atlético Nacional en penales.",
+        "en": "Real Madrid"
+      },
+      {
+        "id": "q_91d95d",
+        "q": "¿Ante qué club de la MLS perdió el América, en mayo de 2025, un repechaje a partido único por un lugar en el Mundial de Clubes de la FIFA 2025?",
+        "o": [
+          "Los Angeles FC",
+          "Inter Miami",
+          "Columbus Crew",
+          "Seattle Sounders"
+        ],
+        "a": 0,
+        "hint": "LAFC ganó 2-1 en tiempo extra en el BMO Stadium, con el gol del triunfo de Denis Bouanga.",
+        "en": "Los Angeles FC"
+      },
+      {
+        "id": "q_7cac65",
+        "q": "¿Contra qué club europeo empató 2-2 el Club América en la inauguración del Estadio Azteca, el 29 de mayo de 1966?",
+        "o": [
+          "Torino",
+          "Real Madrid",
+          "Benfica",
+          "Valencia"
+        ],
+        "a": 0,
+        "hint": "El Torino de Italia fue el visitante en el partido inaugural del Azteca, que terminó 2-2.",
+        "en": "Torino"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabes del América?",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Juega el quiz del América",
+      "playSub": "Toca una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "bandH": "¿Crees que sabes del América? Demuéstralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz del América. La original, en inglés, está aquí:",
+      "alsoLink": "Club América quiz (English)",
+      "tasterPh": "Toca una opción y demuestra cuánto sabes del América",
+      "faqH": "Quiz del América — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz del América",
+      "statsLine": "Gratis · Preguntas del América con respuestas explicadas · sin registro"
+    }
+  },
+  {
+    "club": "Guadalajara",
+    "slug": "chivas",
+    "lang": "es",
+    "name": "Chivas",
+    "h1": "Quiz de Chivas: ¿cuánto sabes del Rebaño Sagrado?",
+    "title": "Quiz de Chivas con respuestas — El Rebaño Sagrado | Ball IQ",
+    "description": "Quiz de Chivas con respuestas: el Campeonísimo, el Clásico Tapatío, la final de la Libertadores 2010 y el Clausura 2017. Juega gratis, sin registro.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas de Chivas con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "Hay aficionados que se saben la alineación de memoria y hay aficionados que se saben la historia. Este quiz de Chivas es para los segundos. El Rebaño Sagrado nació en Guadalajara en 1906 como Club Unión, fundado por el belga Edgar Everaert, y dos años después tomó el nombre de su ciudad. Luego vino el Campeonísimo: siete títulos de liga en nueve temporadas, entre la 1956-57 y la 1964-65. Solo se escaparon dos, y una de ellas, la 1962-63, se la quedó el Oro, el vecino tapatío que ganó ahí su único título de Primera División. En esa misma época Chivas ganó la primera Copa de Campeones de la CONCACAF, en 1962, y un defensa, José «Jamaicón» Villegas, le dio nombre al síndrome del Jamaicón, la forma en que el futbol mexicano llama a la nostalgia del jugador que extraña su casa en el extranjero.",
+      "Las preguntas recorren las finales que la afición de Chivas no olvida. Está la Final del Siglo de 1983-84, perdida contra el América y convertida en más leña para el Clásico Nacional. Está el Verano 1997 de Ricardo Ferretti, cerrado con un 6-1 al Toros Neza en la vuelta. Está el Clausura 2004, con los dos partidos empatados y los penales 5-4 para Pumas en la Ciudad de México. Y está el Apertura 2006 de José Manuel «Chepo» de la Torre: 1-1 en la ida en el Estadio Jalisco y 2-1 en la cancha del Toluca, con el gol de Adolfo «Bofo» Bautista, para el título de liga número 11. Después llegaron el Clausura 2017 ante Tigres con Matías Almeyda y la herida del Clausura 2023, cuando el equipo de Veljko Paunović llegó a ir 2-0 arriba en el Estadio Akron y Tigres se llevó el título con un gol de Guido Pizarro en tiempo extra.",
+      "En el plano internacional, el Rebaño también tiene su archivo. En la Copa Libertadores 2010, con José Luis «Güero» Real en la banca, Chivas dejó en el camino a Vélez Sarsfield, Libertad y Universidad de Chile y llegó a la final, donde el Internacional de Porto Alegre le ganó los dos partidos; la ida se jugó en Zapopan, en el estadio que abrió como Estadio Omnilife y hoy es el Estadio Akron. Ahí mismo, en 2018, el equipo de Almeyda levantó la Liga de Campeones de la CONCACAF en penales contra Toronto FC. Ese año, en el Mundial de Clubes de Emiratos Árabes Unidos, Kashima Antlers le remontó para ganar 3-2, y el partido por el quinto lugar se fue en penales ante Espérance. También hay preguntas sobre Chivas USA, el club hermano que fundó el dueño Jorge Vergara y que jugó en la MLS de 2005 a 2014.",
+      "Y luego está la gente. Tomás Balcázar, jugador de Chivas y abuelo materno de Javier «Chicharito» Hernández, le anotó a Francia en el Mundial de 1954. Su nieto jugó con los dos equipos la noche en que se inauguró el Estadio Omnilife, en julio de 2010, contra el Manchester United, y en enero de 2024 volvió a su club de toda la vida después de cuatro años en el LA Galaxy. De la cantera salió Carlos Vela rumbo al Arsenal en 2005; Carlos Salcido se fue al PSV después del Mundial 2006, Omar Bravo al Deportivo La Coruña en 2008 y Marco Fabián al Eintracht Frankfurt en 2015. Hasta Johan Cruyff pasó por el club como asesor y recomendó a John van 't Schip como técnico. Cada respuesta trae su explicación, así que aunque falles te llevas algo. Juega gratis, sin registro, y demuestra cuánto sabes del Rebaño."
+    ],
+    "faq": [
+      {
+        "q": "¿Contra quién juega Chivas el Clásico Tapatío?",
+        "a": "Contra el Atlas. El Clásico Tapatío es el clásico de la ciudad de Guadalajara entre Chivas y Atlas. El otro gran clásico de Chivas es el Clásico Nacional contra el América, que ganó la Final del Siglo de 1983-84 y le echó todavía más leña a esa rivalidad."
+      },
+      {
+        "q": "¿Dónde juega Chivas de local?",
+        "a": "En el Estadio Akron, en Zapopan, desde 2010. Se inauguró en julio de ese año como Estadio Omnilife, con un amistoso contra el Manchester United. Antes de mudarse a Zapopan, Chivas jugaba sus partidos de local en el Estadio Jalisco, donde se disputó la ida de la final del Apertura 2006."
+      },
+      {
+        "q": "¿Qué tan difícil es el quiz de Chivas?",
+        "a": "Hay de todo. Algunas preguntas son para cualquier aficionado, como el rival del Clásico Tapatío o el título de la Liga de Campeones de la CONCACAF 2018, y otras van al fondo del archivo, como el nombre con el que se fundó el club en 1906. Aquí ves una muestra; el quiz completo tiene muchas más. Es gratis y no necesitas registrarte."
+      },
+      {
+        "q": "¿De dónde salen las preguntas y cómo se revisan?",
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_f700ee",
+        "q": "¿Contra quién juega Chivas el Clásico Tapatío?",
+        "o": [
+          "Tecos",
+          "Atlas",
+          "Leones Negros",
+          "Oro"
+        ],
+        "a": 1,
+        "hint": "El Clásico Tapatío es el clásico de la ciudad de Guadalajara entre Chivas y el Atlas.",
+        "en": "Atlas"
+      },
+      {
+        "id": "q_bf9a1b",
+        "q": "¿Contra qué club brasileño perdió Chivas la final de la Copa Libertadores 2010?",
+        "o": [
+          "São Paulo",
+          "Santos",
+          "Cruzeiro",
+          "Internacional"
+        ],
+        "a": 3,
+        "hint": "El Internacional de Porto Alegre le ganó a Chivas tanto en la ida como en la vuelta de la final de 2010.",
+        "en": "Internacional"
+      },
+      {
+        "id": "q_64a640",
+        "q": "¿Contra qué club de la MLS ganó Chivas en penales la Liga de Campeones de la CONCACAF 2018?",
+        "o": [
+          "Toronto FC",
+          "Seattle Sounders",
+          "LA Galaxy",
+          "New York Red Bulls"
+        ],
+        "a": 0,
+        "hint": "La final contra el Toronto FC se definió en tanda de penales en el Estadio Akron, y Chivas la ganó.",
+        "en": "Toronto FC"
+      },
+      {
+        "id": "q_303bf5",
+        "q": "¿En qué liga jugó de 2005 a 2014 Chivas USA, el club hermano fundado por Jorge Vergara, dueño de Chivas?",
+        "o": [
+          "USL First Division",
+          "NASL",
+          "Major League Soccer",
+          "USL Second Division"
+        ],
+        "a": 2,
+        "hint": "Chivas USA jugó en la MLS desde 2005 hasta que el club desapareció tras la temporada 2014.",
+        "en": "Major League Soccer"
+      },
+      {
+        "id": "q_aca7ef",
+        "q": "¿Qué técnico llevó a Chivas tanto al título de liga del Clausura 2017 como a la Liga de Campeones de la CONCACAF 2018?",
+        "o": [
+          "Matías Almeyda",
+          "Tomás Boy",
+          "José Cardozo",
+          "Luis Fernando Tena"
+        ],
+        "a": 0,
+        "hint": "Matías Almeyda ganó ambos y luego dejó Chivas en 2018. Cardozo, Boy y Tena dirigieron al club después de él.",
+        "en": "Matías Almeyda"
+      },
+      {
+        "id": "q_27198b",
+        "q": "¿Cuántos títulos de liga ganó Chivas en la racha del Campeonísimo, de 1956–57 a 1964–65?",
+        "o": [
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "a": 2,
+        "hint": "Siete títulos en nueve temporadas. Solo se le escaparon 1957–58 y 1962–63.",
+        "en": "7"
+      },
+      {
+        "id": "q_ea693b",
+        "q": "¿En qué jugador de Chivas de la época del Campeonísimo se inspira el «síndrome del Jamaicón», la expresión mexicana para la nostalgia de un futbolista en el extranjero?",
+        "o": [
+          "Salvador Reyes",
+          "Guillermo Sepúlveda",
+          "Jaime Gómez",
+          "José Villegas"
+        ],
+        "a": 3,
+        "hint": "El defensa José «Jamaicón» Villegas sufrió famosamente de nostalgia por su tierra en un viaje a Europa.",
+        "en": "José Villegas"
+      },
+      {
+        "id": "q_3d8e6f",
+        "q": "¿En qué año ganó Chivas la primera Copa de Campeones de la CONCACAF de la historia?",
+        "o": [
+          "1959",
+          "1962",
+          "1967",
+          "1971"
+        ],
+        "a": 1,
+        "hint": "Chivas ganó la primera edición de la Copa de Campeones de la CONCACAF en 1962.",
+        "en": "1962"
+      },
+      {
+        "id": "q_6cbef3",
+        "q": "¿Contra qué club perdió Chivas la final de liga 1983–84, apodada la «Final del Siglo»?",
+        "o": [
+          "América",
+          "Cruz Azul",
+          "Atlas",
+          "Pumas UNAM"
+        ],
+        "a": 0,
+        "hint": "El América le ganó a Chivas esa final, que le echó más leña al Clásico Nacional.",
+        "en": "América"
+      },
+      {
+        "id": "q_732563",
+        "q": "¿A qué club le ganó la final el Guadalajara de Ricardo Ferretti para conquistar el título del Verano 1997?",
+        "o": [
+          "Toluca",
+          "Cruz Azul",
+          "Toros Neza",
+          "Santos Laguna"
+        ],
+        "a": 2,
+        "hint": "Chivas goleó 6–1 a Toros Neza en el partido de vuelta para ganar el título del Verano 1997.",
+        "en": "Toros Neza"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_02e446",
+        "q": "¿Quién dirigió a Chivas al título de liga del Apertura 2006?",
+        "o": [
+          "Ricardo Ferretti",
+          "Efraín Flores",
+          "José Manuel de la Torre",
+          "Matías Almeyda"
+        ],
+        "a": 2,
+        "hint": "José Manuel «Chepo» de la Torre llevó a Chivas al título del Apertura 2006 y después fue técnico de la Selección Mexicana.",
+        "en": "José Manuel de la Torre"
+      },
+      {
+        "id": "q_ffc0a3",
+        "q": "¿A qué club venció Chivas en la final para ganar el título del Clausura 2017?",
+        "o": [
+          "Monterrey",
+          "Tigres UANL",
+          "Santos Laguna",
+          "América"
+        ],
+        "a": 1,
+        "hint": "Chivas le ganó a Tigres en la serie de ida y vuelta para ganar el título del Clausura 2017.",
+        "en": "Tigres UANL"
+      },
+      {
+        "id": "q_f05564",
+        "q": "¿Contra qué club europeo se inauguró en julio de 2010 el nuevo Estadio Omnilife de Chivas, con un partido amistoso?",
+        "o": [
+          "Real Madrid",
+          "Chelsea",
+          "Barcelona",
+          "Manchester United"
+        ],
+        "a": 3,
+        "hint": "El Manchester United fue el rival de la inauguración. Chicharito, que acababa de llegar al United, jugó con los dos equipos esa noche.",
+        "en": "Manchester United"
+      },
+      {
+        "id": "q_0a58c9",
+        "q": "¿Qué club europeo fichó en 2005 a Carlos Vela, surgido de las fuerzas básicas de Chivas?",
+        "o": [
+          "Real Madrid",
+          "Barcelona",
+          "Arsenal",
+          "Manchester United"
+        ],
+        "a": 2,
+        "hint": "El Arsenal fichó a Vela en 2005, el año en que ganó el Mundial Sub-17 con México.",
+        "en": "Arsenal"
+      },
+      {
+        "id": "q_e512d4",
+        "q": "¿En qué club se le terminó el contrato a Javier «Chicharito» Hernández antes de volver a Chivas en enero de 2024?",
+        "o": [
+          "Sevilla",
+          "Inter Miami",
+          "West Ham United",
+          "LA Galaxy"
+        ],
+        "a": 3,
+        "hint": "Volvió al club de su infancia después de cuatro años en el LA Galaxy. Antes había jugado en el Sevilla y el West Ham.",
+        "en": "LA Galaxy"
+      },
+      {
+        "id": "q_fbeb41",
+        "q": "¿En qué estadio fue local Chivas en la final de ida del Apertura 2006?",
+        "o": [
+          "Estadio Jalisco",
+          "Estadio Azteca",
+          "Estadio 3 de Marzo",
+          "Estadio Nemesio Díez"
+        ],
+        "a": 0,
+        "hint": "Antes de mudarse a Zapopan en 2010, Chivas jugaba de local en el Estadio Jalisco. La ida ahí terminó 1-1.",
+        "en": "Estadio Jalisco"
+      },
+      {
+        "id": "q_f87c49",
+        "q": "¿Contra quién jugó Chivas la final del Apertura 2006, que ganó 3-2 en el global con el gol del triunfo de Adolfo «Bofo» Bautista como visitante?",
+        "o": [
+          "Pachuca",
+          "América",
+          "Toluca",
+          "Monterrey"
+        ],
+        "a": 2,
+        "hint": "Chivas ganó 2-1 en la cancha del Toluca tras el 1-1 del partido de ida, y así conquistó su título de liga número 11.",
+        "en": "Toluca"
+      },
+      {
+        "id": "q_e918d3",
+        "q": "¿Contra qué club perdió Chivas en penales la final del Clausura 2004?",
+        "o": [
+          "Pachuca",
+          "Monterrey",
+          "Pumas UNAM",
+          "UAG Tecos"
+        ],
+        "a": 2,
+        "hint": "Los dos partidos terminaron empatados y Pumas ganó la tanda 5-4 en la Ciudad de México. Fue el primero de sus dos títulos seguidos de 2004.",
+        "en": "Pumas UNAM"
+      },
+      {
+        "id": "q_8d34d2",
+        "q": "¿Contra qué club perdió Chivas 3-2 en su primer partido del Mundial de Clubes de la FIFA 2018, en los Emiratos Árabes Unidos?",
+        "o": [
+          "Espérance de Tunis",
+          "Al Ain",
+          "River Plate",
+          "Kashima Antlers"
+        ],
+        "a": 3,
+        "hint": "Kashima Antlers remontó después de ir abajo por un gol y ganó 3-2. Luego, Chivas perdió en penales el partido por el quinto lugar ante el Espérance.",
+        "en": "Kashima Antlers"
+      },
+      {
+        "id": "q_a33685",
+        "q": "¿Quién era el técnico de Chivas en la final del Clausura 2023, que Tigres ganó 3-2 en el tiempo extra del partido de vuelta?",
+        "o": [
+          "Ricardo Cadena",
+          "Veljko Paunović",
+          "Víctor Manuel Vucetich",
+          "Fernando Gago"
+        ],
+        "a": 1,
+        "hint": "Veljko Paunović llevó a Chivas a la final en su primera temporada. Iban ganando 2-0 en el Estadio Akron, pero perdieron con un gol de Guido Pizarro en el tiempo extra.",
+        "en": "Veljko Paunović"
+      },
+      {
+        "id": "q_953ca1",
+        "q": "¿Qué club fue a dirigir Fernando Gago cuando dejó Chivas durante el Apertura 2024?",
+        "o": [
+          "River Plate",
+          "Boca Juniors",
+          "Racing Club",
+          "Independiente"
+        ],
+        "a": 1,
+        "hint": "Gago regresó a Boca Juniors, el club donde empezó como jugador, y tomó el cargo en octubre de 2024.",
+        "en": "Boca Juniors"
+      },
+      {
+        "id": "q_52ebc6",
+        "q": "¿Qué club holandés fichó al defensa de Chivas Carlos Salcido después del Mundial de 2006?",
+        "o": [
+          "PSV",
+          "Feyenoord",
+          "Ajax",
+          "AZ"
+        ],
+        "a": 0,
+        "hint": "Salcido llegó al PSV Eindhoven en julio de 2006 y ganó dos títulos de la Eredivisie antes de pasar al Fulham en 2010.",
+        "en": "PSV"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabes de Chivas?",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Juega el quiz de Chivas",
+      "playSub": "Toca una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "bandH": "¿Crees que sabes de Chivas? Demuéstralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz de Chivas. La original, en inglés, está aquí:",
+      "alsoLink": "Chivas quiz (English)",
+      "tasterPh": "Preguntas rápidas para medir tu Ball IQ del Rebaño.",
+      "faqH": "Quiz de Chivas — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz de Chivas",
+      "statsLine": "Gratis · Preguntas de Chivas con respuestas explicadas · sin registro"
+    }
+  },
+  {
+    "club": "Cruz Azul",
+    "slug": "cruz-azul",
+    "lang": "es",
+    "name": "Cruz Azul",
+    "h1": "Quiz del Cruz Azul",
+    "title": "Quiz del Cruz Azul con respuestas — La Máquina | Ball IQ",
+    "description": "Quiz gratis del Cruz Azul con respuestas explicadas: La Máquina de los 70, la final de Libertadores 2001, el Invierno 97 y el Guardianes 2021.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas del Cruz Azul con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "Raúl Cárdenas le dio al Cruz Azul su primer título de liga en la temporada 1968-69 y después armó La Máquina de los años setenta. Pero este quiz gratuito empieza mucho antes, el 22 de mayo de 1927, cuando trabajadores de una cooperativa cementera fundaron el club en Jasso, Hidalgo, el pueblo que hoy se llama Ciudad Cooperativa Cruz Azul. Ahí jugaba de local, en el Estadio 10 de Diciembre, y ahí aparece Guillermo Álvarez Macías, trabajador de la cooperativa desde niño y su gerente general desde diciembre de 1953, que apostó por la vida deportiva del club: el Cruz Azul se hizo profesional en 1961 y llegó a la máxima categoría en 1964.",
+      "En 1971 el equipo dejó Jasso por el Estadio Azteca. Con Cárdenas como técnico, el club sumó cinco títulos de liga entre 1968-69 y 1973-74, y ganó tres seguidos de 1971-72 a 1973-74, con el chileno Alberto «El Mariscal» Quintano en la defensa y bajo los tres palos Miguel Marín, el portero argentino conocido como «Superman», que había llegado de Vélez Sarsfield apodado «El Gato». La final a partido único de 1971-72, el 4-1 al América del 9 de julio de 1972, se considera el arranque del Clásico Joven. Ignacio «Nacho» Trelles cerró la época dorada con dos títulos seguidos, y el de 1979-80 abrió una espera de 17 años. También hay preguntas de casa: el Azteca fue su estadio de 1971 a 1996, luego llegó el Estadio Azul, en Ciudad de los Deportes y junto a la Plaza México, la plaza de toros más grande del mundo, y en 2018 el equipo regresó al Azteca.",
+      "Los noventa son de Carlos Hermosillo, campeón de goleo tres temporadas seguidas, de 1993-94 a 1995-96. En agosto de 1997 metió dos goles en la remontada de 2-0 abajo a 5-3 ante el LA Galaxy, en la final de la Copa de Campeones de la CONCACAF jugada en el RFK Stadium de Washington, y el 7 de diciembre, ensangrentado, anotó de penal el gol de oro en tiempo extra ante el León, en el Nou Camp, para ganar el Invierno 1997 con Luis Fernando Tena como técnico y Juan Reynoso en la cancha. Óscar «Conejo» Pérez, campeón de ese Invierno 1997 y en el club de 1993 a 2008, estuvo en la portería en 2001, cuando el Cruz Azul se convirtió en el primer club mexicano en llegar a una final de Copa Libertadores: Boca Juniors ganó 1-0 en el Azteca, Paco Palencia devolvió el 1-0 en La Bombonera y Boca se llevó los penales 3-1. El quiz tampoco esquiva lo que duele, como el Clausura 2013: un 2-0 global que el América empató en los últimos minutos, con un cabezazo de Aquivaldo Mosquera y otro del portero Moisés Muñoz en tiempo de compensación, antes de ganar la tanda 4-2.",
+      "Lo reciente se contesta con el corazón en la mano. En 2014, otra vez con Tena, el Cruz Azul ganó la Liga de Campeones de la CONCACAF ante el Toluca por gol de visitante: 0-0 en el Estadio Azul y 1-1 en el Nemesio Díez, con gol de Mariano Pavone. Después vinieron los golpes, como la final del Apertura 2018 de Pedro Caixinha, perdida 2-0 en la vuelta con dos goles de Edson Álvarez para el América, o la semifinal del Guardianes 2020, un 4-0 en la ida que los Pumas remontaron con otro 4-0 para avanzar por posición en la tabla. Con Juan Reynoso, que llegó en lugar del uruguayo Robert Dante Siboldi, la espera terminó en el Guardianes 2021: 1-0 en Torreón con gol de Luis Romo al minuto 71 y 1-1 en el Azteca ante Santos Laguna, la novena liga del club. Luego, la final del Clausura 2024 de Martín Anselmi, decidida por el penal de Henry Martín para el América al minuto 78, y el 5-0 al Vancouver Whitecaps en la final de la Copa de Campeones de la CONCACAF 2025, en el Estadio Olímpico Universitario, con doblete de Ángel Sepúlveda. Cada respuesta trae su explicación, así que fallar también enseña algo."
+    ],
+    "faq": [
+      {
+        "q": "¿El quiz del Cruz Azul es gratis?",
+        "a": "Sí. Se juega aquí mismo en el navegador, sin registro y sin descargar nada. Todas las preguntas de esta página son gratuitas, y el quiz completo tiene muchas más."
+      },
+      {
+        "q": "¿Qué temas cubre?",
+        "a": "La fundación en Jasso en 1927 y la cooperativa cementera, Guillermo Álvarez Macías, La Máquina de Raúl Cárdenas y los títulos de Ignacio Trelles, el 4-1 al América considerado el arranque del Clásico Joven, el Azteca y el Estadio Azul, los goles de Carlos Hermosillo, el Invierno 1997, la final de Copa Libertadores 2001 ante Boca Juniors, las finales perdidas del Clausura 2013, el Apertura 2018 y el Clausura 2024, el Guardianes 2021 y los títulos de la CONCACAF de 1997, 2014 y 2025. También los fichajes y las salidas: César «Chelito» Delgado al Lyon, Santiago Giménez al Feyenoord, Martín Anselmi al Porto y Giorgos Giakoumakis desde Atlanta United."
+      },
+      {
+        "q": "¿De dónde salen las preguntas?",
+        "a": "Se contrastan con fuentes y se verifican una por una. Cada dato pasa por dos revisiones independientes antes de publicarse, y cuando algo no se puede verificar, la pregunta no sale."
+      },
+      {
+        "q": "¿Qué tan difícil es?",
+        "a": "Va de fácil a realmente difícil. Las primeras preguntas son para cualquier aficionado del Cruz Azul que recuerde el Guardianes 2021 o la final de Libertadores; las más duras piden datos como el estadio de Jasso o de qué club llegó Miguel Marín. Cada respuesta viene con su explicación, así que aunque falles, sales sabiendo más del Cruz Azul."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_f53efb",
+        "q": "En 2001, el Cruz Azul se convirtió en el primer club mexicano en llegar a una final de Copa Libertadores. ¿Ante qué club la perdió en penales?",
+        "o": [
+          "River Plate",
+          "Boca Juniors",
+          "Palmeiras",
+          "São Caetano"
+        ],
+        "a": 1,
+        "hint": "Boca Juniors ganó 1-0 en el Azteca, el Cruz Azul ganó 1-0 en La Bombonera y Boca se llevó la tanda de penales 3-1.",
+        "en": "Boca Juniors"
+      },
+      {
+        "id": "q_58896c",
+        "q": "¿Qué portero, apodado «El Conejo», jugó en el Cruz Azul de 1993 a 2008 y defendió la portería en la final de la Copa Libertadores 2001?",
+        "o": [
+          "Jorge Campos",
+          "Óscar Pérez",
+          "Oswaldo Sánchez",
+          "Adolfo Ríos"
+        ],
+        "a": 1,
+        "hint": "Óscar «Conejo» Pérez se formó en el Cruz Azul, ganó el Invierno 1997 con el club y después jugó dos Mundiales con México.",
+        "en": "Óscar Pérez"
+      },
+      {
+        "id": "q_0fe072",
+        "q": "El Cruz Azul terminó con su larga espera por un título de liga en la final del Guardianes 2021. ¿A qué club venció 2-1 en el marcador global?",
+        "o": [
+          "Santos Laguna",
+          "Puebla",
+          "León",
+          "Pumas UNAM"
+        ],
+        "a": 0,
+        "hint": "El Cruz Azul ganó 1-0 en Torreón y empató 1-1 en el Estadio Azteca ante Santos Laguna.",
+        "en": "Santos Laguna"
+      },
+      {
+        "id": "q_223724",
+        "q": "En la final del Clausura 2013, el Cruz Azul ganaba 2-0 en el global al entrar a los últimos minutos del partido de vuelta. El rival anotó dos goles, el segundo de su portero en tiempo de compensación, y ganó en penales. ¿Qué club fue?",
+        "o": [
+          "Toluca",
+          "Monterrey",
+          "Tigres UANL",
+          "América"
+        ],
+        "a": 3,
+        "hint": "Aquivaldo Mosquera, del América, anotó de cabeza en los minutos finales, y luego el portero Moisés Muñoz marcó de cabeza en tiempo de compensación. El América ganó la tanda de penales 4-2.",
+        "en": "América"
+      },
+      {
+        "id": "q_0cc32f",
+        "q": "En las semifinales del Guardianes 2020, el Cruz Azul ganó la ida 4-0, luego perdió la vuelta 4-0 y quedó eliminado por posición en la tabla. ¿Qué club lo eliminó?",
+        "o": [
+          "León",
+          "Pumas UNAM",
+          "América",
+          "Tigres UANL"
+        ],
+        "a": 1,
+        "hint": "Pumas remontó con dos goles de Juan Ignacio Dinenno más los de Carlos González y Juan Pablo Vigón, y después perdió la final ante el León.",
+        "en": "Pumas UNAM"
+      },
+      {
+        "id": "q_1d4536",
+        "q": "El Cruz Azul ganó 5-0 la final de la Copa de Campeones de la CONCACAF 2025 en el Estadio Olímpico Universitario. ¿A qué club venció?",
+        "o": [
+          "LAFC",
+          "Vancouver Whitecaps",
+          "Inter Miami",
+          "Tigres UANL"
+        ],
+        "a": 1,
+        "hint": "El Cruz Azul se fue al medio tiempo ganándole 4-0 al Vancouver, y Ángel Sepúlveda anotó dos goles en la final del 1 de junio de 2025.",
+        "en": "Vancouver Whitecaps"
+      },
+      {
+        "id": "q_c623d0",
+        "q": "Christian «Chaco» Giménez, padre de Santiago Giménez, también jugó en el Cruz Azul. ¿A qué club holandés se fue Santiago desde el Cruz Azul en 2022?",
+        "o": [
+          "Feyenoord",
+          "Ajax",
+          "AZ Alkmaar",
+          "PSV Eindhoven"
+        ],
+        "a": 0,
+        "hint": "El Feyenoord cerró un acuerdo con el Cruz Azul en julio de 2022, y Giménez llegó a Róterdam a finales de ese mes.",
+        "en": "Feyenoord"
+      },
+      {
+        "id": "q_bfbf1f",
+        "q": "¿En qué estado de México está Jasso, donde trabajadores de una cooperativa cementera fundaron el Cruz Azul en 1927?",
+        "o": [
+          "Puebla",
+          "Tlaxcala",
+          "Querétaro",
+          "Hidalgo"
+        ],
+        "a": 3,
+        "hint": "El club nació el 22 de mayo de 1927 en Jasso, Hidalgo, el pueblo que hoy se llama Ciudad Cooperativa Cruz Azul.",
+        "en": "Hidalgo"
+      },
+      {
+        "id": "q_2a6884",
+        "q": "¿Qué técnico llevó al Cruz Azul a su primer título de liga, en 1968-69?",
+        "o": [
+          "Ignacio Trelles",
+          "Javier de la Torre",
+          "Raúl Cárdenas",
+          "José Antonio Roca"
+        ],
+        "a": 2,
+        "hint": "Raúl Cárdenas ganó el título de 1968-69 y después armó al equipo de «La Máquina» de los años setenta.",
+        "en": "Raúl Cárdenas"
+      },
+      {
+        "id": "q_b96078",
+        "q": "¿Qué técnico llevó al Cruz Azul a ganar dos títulos de liga consecutivos para cerrar los años setenta?",
+        "o": [
+          "Raúl Cárdenas",
+          "Ignacio Trelles",
+          "Carlos Miloc",
+          "José Antonio Roca"
+        ],
+        "a": 1,
+        "hint": "Ignacio «Nacho» Trelles consiguió los dos últimos títulos de la década dorada del Cruz Azul; Raúl Cárdenas había ganado cinco entre 1968-69 y 1973-74.",
+        "en": "Ignacio Trelles"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_c90378",
+        "q": "¿De qué país fue seleccionado el defensa Alberto Quintano, pilar del Cruz Azul que ganó tres títulos seguidos de 1971-72 a 1973-74?",
+        "o": [
+          "Chile",
+          "Uruguay",
+          "Paraguay",
+          "Perú"
+        ],
+        "a": 0,
+        "hint": "Alberto «El Mariscal» Quintano fue un defensa central chileno que jugó en el Cruz Azul de 1971 a 1977.",
+        "en": "Chile"
+      },
+      {
+        "id": "q_c766f1",
+        "q": "El Cruz Azul ganó 4-1 la final de liga 1971-72, disputada a partido único. ¿Quién fue su rival?",
+        "o": [
+          "Toluca",
+          "Guadalajara",
+          "Pumas UNAM",
+          "América"
+        ],
+        "a": 3,
+        "hint": "El Cruz Azul goleó 4-1 al América el 9 de julio de 1972, en una final que muchos consideran el inicio de la rivalidad del Clásico Joven.",
+        "en": "América"
+      },
+      {
+        "id": "q_f1125d",
+        "q": "¿Justo al lado de qué famoso recinto de la Ciudad de México está el Estadio Azul, casa del Cruz Azul de 1996 a 2018?",
+        "o": [
+          "Plaza de toros México",
+          "Estadio Azteca",
+          "Palacio de los Deportes",
+          "Arena México"
+        ],
+        "a": 0,
+        "hint": "El Estadio Azul, en la Ciudad de los Deportes, está al lado de la Plaza México, la plaza de toros más grande del mundo.",
+        "en": "Plaza México bullring"
+      },
+      {
+        "id": "q_0ce14a",
+        "q": "El Cruz Azul ganó el título del Invierno 1997 con un penal de gol de oro en tiempos extra. ¿Quién fue su rival en esa final?",
+        "o": [
+          "León",
+          "Necaxa",
+          "Toros Neza",
+          "Atlante"
+        ],
+        "a": 0,
+        "hint": "El Cruz Azul venció al León el 7 de diciembre de 1997; un ensangrentado Carlos Hermosillo anotó el penal de gol de oro en el Nou Camp de León.",
+        "en": "León"
+      },
+      {
+        "id": "q_59ce63",
+        "q": "¿Qué técnico llevó al Cruz Azul a ganar tanto el título del Invierno 1997 como la Liga de Campeones de la CONCACAF 2014?",
+        "o": [
+          "Enrique Meza",
+          "José Luis Trejo",
+          "Luis Fernando Tena",
+          "Víctor Manuel Vucetich"
+        ],
+        "a": 2,
+        "hint": "Luis Fernando Tena ganó la final del Invierno 1997 ante el León y la Liga de Campeones de la CONCACAF 2014 ante el Toluca.",
+        "en": "Luis Fernando Tena"
+      },
+      {
+        "id": "q_f3f3cf",
+        "q": "El Cruz Azul remontó un 2-0 en contra para ganar 5-3 la final de la Copa de Campeones de la CONCACAF 1997 en Washington, D.C. ¿A quién venció?",
+        "o": [
+          "D.C. United",
+          "LA Galaxy",
+          "Alajuelense",
+          "Saprissa"
+        ],
+        "a": 1,
+        "hint": "El 24 de agosto de 1997, en el RFK Stadium, el Cruz Azul venció 5-3 al LA Galaxy, con dos goles de Carlos Hermosillo.",
+        "en": "LA Galaxy"
+      },
+      {
+        "id": "q_6e550f",
+        "q": "¿Qué delantero del Cruz Azul fue campeón de goleo de la liga mexicana en tres temporadas consecutivas, de 1993-94 a 1995-96?",
+        "o": [
+          "Cuauhtémoc Blanco",
+          "Jared Borgetti",
+          "Luis Hernández",
+          "Carlos Hermosillo"
+        ],
+        "a": 3,
+        "hint": "Carlos Hermosillo ganó tres títulos de goleo seguidos con el Cruz Azul a mediados de los noventa, antes de su gol del triunfo en el Invierno 1997.",
+        "en": "Carlos Hermosillo"
+      },
+      {
+        "id": "q_d9ab9c",
+        "q": "¿A quién venció el Cruz Azul en la final de la Liga de Campeones de la CONCACAF 2014, que ganó por goles de visitante tras empates 0-0 y 1-1?",
+        "o": [
+          "Monterrey",
+          "Pachuca",
+          "Toluca",
+          "Tijuana"
+        ],
+        "a": 2,
+        "hint": "El Cruz Azul empató 0-0 con el Toluca en el Estadio Azul y luego 1-1 en el Nemesio Díez, donde anotó Mariano Pavone.",
+        "en": "Toluca"
+      },
+      {
+        "id": "q_c82885",
+        "q": "¿Quién anotó el único gol de la final de ida del Guardianes 2021, que le dio al Cruz Azul un triunfo 1-0 en Torreón?",
+        "o": [
+          "Julio César Domínguez",
+          "Jonathan Rodríguez",
+          "Roberto Alvarado",
+          "Luis Romo"
+        ],
+        "a": 3,
+        "hint": "Luis Romo anotó al minuto 71 en Torreón. Jonathan Rodríguez hizo el gol del Cruz Azul en el 1-1 de la vuelta.",
+        "en": "Luis Romo"
+      },
+      {
+        "id": "q_be15fa",
+        "q": "¿A qué país representó a nivel internacional Juan Reynoso, campeón con el Cruz Azul del Invierno 1997 como jugador y del Guardianes 2021 como técnico?",
+        "o": [
+          "Uruguay",
+          "Argentina",
+          "Perú",
+          "Chile"
+        ],
+        "a": 2,
+        "hint": "Reynoso es peruano. Relevó al técnico uruguayo Robert Dante Siboldi antes del Guardianes 2021.",
+        "en": "Peru"
+      },
+      {
+        "id": "q_db8652",
+        "q": "¿Quién anotó el penal al minuto 78 que decidió la final de vuelta del Clausura 2024 y les dio a los rivales del Cruz Azul un triunfo 1-0 y la victoria 2-1 en el global?",
+        "o": [
+          "Henry Martín",
+          "Diego Valdés",
+          "Julián Quiñones",
+          "Alejandro Zendejas"
+        ],
+        "a": 0,
+        "hint": "Henry Martín, del América, anotó desde el punto penal después de que Carlos Rotondi le cometiera falta a Israel Reyes.",
+        "en": "Henry Martín"
+      },
+      {
+        "id": "q_a25904",
+        "q": "¿A qué estadio se mudó el Cruz Azul para jugar como local cuando dejó el Estadio Azul en 2018?",
+        "o": [
+          "Estadio Azteca",
+          "Estadio Nemesio Díez",
+          "Estadio Hidalgo",
+          "Estadio Olímpico Universitario"
+        ],
+        "a": 0,
+        "hint": "El Cruz Azul volvió al Estadio Azteca, su casa de 1971 a 1996, y ahí ganó su noveno título de liga en 2021.",
+        "en": "Estadio Azteca"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabes del Cruz Azul?",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Juega el quiz del Cruz Azul",
+      "playSub": "Toca una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "bandH": "¿Crees que sabes del Cruz Azul? Demuéstralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz del Cruz Azul. La original, en inglés, está aquí:",
+      "alsoLink": "Cruz Azul quiz (English)",
+      "tasterPh": "Preguntas rápidas para medir tu Ball IQ del Cruz Azul.",
+      "faqH": "Quiz del Cruz Azul — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz del Cruz Azul",
+      "statsLine": "Gratis · Preguntas del Cruz Azul con respuestas explicadas · sin registro"
     }
   }
 ];
