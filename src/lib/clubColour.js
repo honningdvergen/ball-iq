@@ -198,6 +198,27 @@ const EXTRA = {
   "Al-Arabi": "#C8102E",
   "Al Duhail": "#C8102E",
   "Al-Duhail": "#C8102E",
+
+  // ── grid harvest, added 2026-09-15 ───────────────────────────────────────
+  // Six clubs that rendered with NO colour on the football-grid headers. They
+  // live here rather than in grid-club-colours.mjs on purpose: that map is
+  // gated by a build check that fails on any key which matched no club, and the
+  // grid's club set rotates DAILY — five of these six were in the window on
+  // 09-13 and none of the six was in it on 09-15, so a correct key there goes
+  // red on the wrong day. These are ordinary club colours anyway, so the app's
+  // shared table is the right home and Transfer Trail gets them too.
+  //
+  // Keyed on the exact career-dictionary spelling: "Portuguesa" alone would
+  // subset-match Associação Atlética Portuguesa and Portuguesa FC as well, and
+  // colouring three different clubs from one entry is the wrong-colour failure
+  // the grid's exactly-one rule exists to prevent.
+  // Each settled by two independent passes, each citing a page it fetched.
+  "AC ChievoVerona": "#FFF500",                    // crest yellow; it.wikipedia colori "Giallo, blu"
+  "Clube Atlético Mineiro": "#1F1A17",             // crest black, atletico.com.br SVG; gold is a crest accent
+  "Fluminense F.C.": "#6E182C",                    // grená; club declares theme-color #6e182c over the green
+  "Vicenza Calcio": "#E30613",                     // the club's own .rosso; red is the identifying stripe
+  "Coritiba F.C.": "#015842",                      // crest green; --primary in the club's own theme document
+  "Associação Portuguesa de Desportos": "#E31E27", // crest red; "Rubro-Verde" names red first
 };
 
 const key = (s) =>

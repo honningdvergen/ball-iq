@@ -15,6 +15,7 @@ import { pickClubGrid } from '../pick-club-grid.mjs';
 import { careerNameFor } from './grid-club-alias.mjs';
 import { CLUB_PACK_COLOURS } from '../../src/data/clubPackColours.js';
 import { GRID_CLUB_COLOURS } from './grid-club-colours.mjs';
+import { CLUB_COLOUR_EXTRA } from '../../src/lib/clubColour.js';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -54,7 +55,33 @@ const TYPE_TOKEN = new Set(['fc','afc','ac','as','ss','ssc','sl','sv','sc','cf',
 const coreTokens = (s) => new Set(String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   .replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
   .filter((t) => t && !TYPE_TOKEN.has(t) && !/^\d+$/.test(t)));
+// ⚠️ THE APP ALREADY KNEW SIX OF THESE CLUBS AND THE GRID NEVER ASKED.
+// CLUB_COLOUR_EXTRA (src/lib/clubColour.js) is the map Transfer Trail and the
+// Stadium game colour their ladders from, and six clubs sat in it while the grid
+// rendered them with no colour at all — same site, same day. clubColour() could
+// not be reused directly because it matches by exact/alias/accent and never
+// strips a club-type affix, so "Udinese Calcio" misses "Udinese", which is
+// exactly what the token machinery below is for.
+//
+// ⚠️ THE TWO TABLES ARE SEARCHED SEPARATELY AND PACK ALWAYS WINS. Merging them
+// into one candidate list looked tidier and was a REGRESSION: 15 clubs carry a
+// different hex in each table (Ajax #CC0000 vs #D2122E, Galatasaray #A90432 vs
+// #E1362C, Norwich #00A650 vs #FFF200 …), so a merged search saw two candidates
+// that disagreed, called it ambiguous, and returned NO colour for clubs that had
+// been coloured correctly for months. Measured on the emitted grid.json: 77
+// uncoloured slots where there had been far fewer, with Ajax and Leverkusen
+// among them. CLUB_PACK_COLOURS is the app's canonical club colour; EXTRA is
+// consulted only when the pack table cannot answer.
 const KEY_TOKENS = colourKeys.map((k) => [k, coreTokens(k)]);
+const EXTRA_TOKENS = Object.entries(CLUB_COLOUR_EXTRA).map(([k, hex]) => [k, coreTokens(k), hex]);
+
+/** Exactly one candidate, or nothing — the rule both tables are searched under. */
+const soleMatch = (table, t) => {
+  const exact = table.filter(([, kt]) => sameSet(kt, t));
+  const hit = exact.length === 1 ? exact
+    : table.filter(([, kt]) => kt.size && [...kt].every((x) => t.has(x)));
+  return hit.length === 1 ? hit[0] : null;
+};
 const sameSet = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));
 
 // ⚠️ A KEY THAT MATCHES NOTHING IS A SILENT TYPO. Seven of the 28 missed on
@@ -81,16 +108,32 @@ function colourFor(careerName) {
 
   const t = coreTokens(careerName);
   if (!t.size) return null;
+
   // ⚠️ EXACTLY ONE, OR NOTHING. A subset match is how "Inter Milan" could take
   // "AC Milan"'s colour — {milan} is a subset of {inter, milan}. Two candidates
   // means we cannot tell which club this is, and the wrong club's colour is
   // worse than none: the neutral edge reads as "no colour on file", a wrong one
   // reads as a fact. Same rule careerNameFor() uses for the answer key.
-  const exact = KEY_TOKENS.filter(([, kt]) => sameSet(kt, t));
-  const hit = exact.length === 1 ? exact
-    : KEY_TOKENS.filter(([, kt]) => kt.size && [...kt].every((x) => t.has(x)));
-  return hit.length === 1 ? CLUB_PACK_COLOURS[hit[0][0]] : null;
+  const packHit = soleMatch(KEY_TOKENS, t);
+  if (packHit) return CLUB_PACK_COLOURS[packHit[0]];
+
+  // ⚠️ THE SHARED TABLE IS A FALLBACK AND MUST STAY BEHIND EVERY PACK LOOKUP,
+  // INCLUDING THE FUZZY ONE. 15 clubs hold a different hex in each table, so an
+  // EXTRA hit that jumps the queue silently restyles a club the app already
+  // colours elsewhere — "Santos FC" would take EXTRA's #111111 over the pack's
+  // #0B0B0B purely because short() strips the affix before the token pass runs.
+  // Exact name first here for the same reason it is used above: entries keyed on
+  // a full career spelling ("Associação Portuguesa de Desportos") must resolve by
+  // that name, because the bare token "Portuguesa" subset-matches three
+  // different clubs and one entry colouring all three is the wrong-colour
+  // failure the exactly-one rule exists to prevent.
+  const exact = CLUB_COLOUR_EXTRA[careerName] || CLUB_COLOUR_EXTRA[short(careerName)];
+  if (exact) return exact;
+
+  const extraHit = soleMatch(EXTRA_TOKENS, t);
+  return extraHit ? extraHit[2] : null;
 }
+
 
 // ⚠️ A CLUB COLOUR THAT LOSES TO THE GROUND IS NOT A COLOUR. Our card is
 // #13151C and 14 of the 109 club colours sit within 1.4:1 of it — Juventus and

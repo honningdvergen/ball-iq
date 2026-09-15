@@ -1110,10 +1110,18 @@ function pct100(rows) {
 // The verification section. Competitors publish theirs and we run a stricter
 // process, so this is pure upside — but the coverage sentence comes from pct100()
 // so it stays silent wherever coverage is not actually 100%.
+//
+// ⚠️ DO NOT CLAIM THE QUESTIONS ARE WRITTEN BY HAND. This line read "written by
+// hand and verified" on 149 live pages until 2026-09-15, and it was false: the
+// club waves are drafted by a research pipeline, then examined and attacked by
+// independent verifiers before anything ships. The VERIFICATION claim below is
+// true and is the stronger half anyway — two checks, one against the claim the
+// question makes and one against the wrong answers beside it, with anything
+// unconfirmed dropped rather than guessed. Say that; never say "by hand".
 function trustSection(name, rows) {
   return `<section class="sec narrow" id="how">
 <h2>How the ${esc(name)} quiz is checked</h2>
-<p class="sub">Every question above was written by hand and verified before it went live.</p>
+<p class="sub">Every question above was researched against sources and verified before it went live.</p>
 <p class="trust-note">Every ${esc(name)} question here was checked twice before publication — once against the claim the question makes, and once against the wrong answers offered beside it. A question whose wrong options can be dismissed without knowing any football is not really a question, so those get rewritten or dropped rather than padded out. Anything that could not be confirmed was removed rather than guessed, which is why some sets are smaller than others. ${pct100(rows)} Spot something wrong and <a href="${SITE.base}/contact/">tell us</a> — corrections from players are how the bank stays accurate.</p>
 </section>`;
 }
@@ -4447,7 +4455,7 @@ ${dailies.map(card).join('\n')}
 </section>
 <section class="sec gm-sec" id="modes" aria-labelledby="gm-modes-h">
 <h2 class="gm-h" id="gm-modes-h">Quiz modes</h2>
-<p class="gm-sub">Pick a pace. Every question written and fact-checked by hand, every answer explained.</p>
+<p class="gm-sub">Pick a pace. Every question fact-checked before it goes live, every answer explained.</p>
 <div class="gm-grid">
 ${modes.map(card).join('\n')}
 </div>
