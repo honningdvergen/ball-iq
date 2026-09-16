@@ -120,3 +120,21 @@ describe('the nav folds into the menu before any language can wrap it', () => {
     for (const css of [SHELL_CSS, front]) expect(css).toContain('.fd-nav.is-open .fd-nav-signin{display:none}');
   });
 });
+
+describe('the Spanish layer says "en vivo", not "en directo"', () => {
+  // ⚠️ IT WAS NEVER A DIALECT CHOICE — IT WAS A CONTRADICTION. Every /es/ page
+  // said BOTH: "1v1 en vivo" in the club band (17 places in clubs-es.mjs) and
+  // "1v1 en directo" in the finish-screen door and the hub band. "en vivo" is
+  // standard across Latin America — where the measured traffic is, /es/ River
+  // Plate pulling 134 impressions to the English page's 8 — and reads correctly
+  // in Spain too, while "en directo" reads foreign to every Latin American
+  // reader. Portuguese already says "ao vivo" everywhere and needs no such rule.
+  const ES_FILES = ['scripts/seo/bq-i18n.mjs', 'scripts/seo/hubs-intl.mjs', 'scripts/seo/clubs-es.mjs'];
+  for (const f of ES_FILES) {
+    it(`${f.split('/').pop()} contains no "en directo"`, () => {
+      const src = readFileSync(resolve(__dirname, '../../', f), 'utf8');
+      // Other locales live in the same two shared files; only flag the Spanish phrase.
+      expect(src.match(/en directo/g) || []).toEqual([]);
+    });
+  }
+});

@@ -57,7 +57,7 @@ export const HUBS_INTL = [
     clubsH: 'Elige tu club',
     clubsSub: 'Un quiz propio y verificado para cada uno.',
     bandH: '¿Crees que sabes de fútbol? Demuéstralo.',
-    bandP: 'Rachas, 1v1 en directo y una puntuación sobre 99. La aplicación está en inglés.',
+    bandP: 'Rachas, 1v1 en vivo y una puntuación sobre 99. La aplicación está en inglés.',
     alsoH: 'La misma página en inglés',
   },
   {
