@@ -176,14 +176,41 @@ describe('a club can override its layer\'s register for the door', () => {
   // written in European Portuguese. Without the override those three read
   // "O seu cartão … Baixar o app" — the same mismatch the Brazilian pages had
   // before, pointed the other way.
-  it('the three European pt clubs override the door, the four Brazilian ones do not', async () => {
+  it('the three European pt clubs override, the four Brazilian ones do not', async () => {
     const { CLUBS_PT } = await import('../../scripts/seo/clubs-pt.mjs');
     const withOverride = CLUBS_PT.filter((c) => c.i18n).map((c) => c.slug).sort();
     expect(withOverride).toEqual(['benfica', 'porto', 'sporting-cp']);
     for (const c of CLUBS_PT.filter((x) => x.i18n)) {
       expect(c.i18n.doorTitle).toContain('teu');
       expect(c.i18n.doorGo).toContain('Obter');
+      expect(c.i18n.youPlayed).toBe('Jogaste');
     }
+  });
+
+  // ⚠️ AN OVERRIDE IS A STRING THE ENGINE STILL SUBSTITUTES INTO. A dropped
+  // {name} ships a sentence with a hole in it, and ariaWrong and freshOrder are
+  // concatenated with other text, so their edge spaces are part of the value.
+  // Checked against the Brazilian table the override replaces, key by key.
+  it('every pt override keeps its placeholders, edge whitespace and shape', async () => {
+    const { CLUBS_PT } = await import('../../scripts/seo/clubs-pt.mjs');
+    const { BQ_I18N } = await import('../../scripts/seo/bq-i18n.mjs');
+    const br = BQ_I18N.pt;
+    const over = CLUBS_PT.find((c) => c.slug === 'benfica').i18n;
+    const ph = (s) => (String(s).match(/\{[a-z]+\}/g) || []).sort();
+    const problems = [];
+    for (const [k, v] of Object.entries(over)) {
+      if (!(k in br)) { problems.push(`${k}: not a key in BQ_I18N.pt`); continue; }
+      if (Array.isArray(br[k])) {
+        if (!Array.isArray(v) || v.length !== 6) problems.push(`${k}: must be 6 tiers`);
+        continue;
+      }
+      if (v === br[k]) problems.push(`${k}: identical to Brazilian — drop it rather than restate it`);
+      if (ph(v).join() !== ph(br[k]).join()) problems.push(`${k}: placeholders ${ph(br[k])} -> ${ph(v)}`);
+      if (v.startsWith(' ') !== br[k].startsWith(' ') || v.endsWith(' ') !== br[k].endsWith(' ')) {
+        problems.push(`${k}: edge whitespace changed`);
+      }
+    }
+    expect(problems).toEqual([]);
   });
   it('renderQuizSet merges an override over the language table, key by key', async () => {
     const { renderQuizSet } = await import('../../scripts/seo/quiz-widget.mjs');

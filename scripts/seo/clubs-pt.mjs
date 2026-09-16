@@ -36,6 +36,44 @@
 // written in European Portuguese would read as foreign to every reader it is
 // meant to reach.
 
+// ⚠️ EUROPEAN PORTUGUESE, FOR THE THREE PAGES WRITTEN THAT WAY.
+// scripts/seo/bq-i18n.mjs is Brazilian because 4 of the 7 /pt/ clubs are (Alex,
+// 2026-09-16). Benfica, Porto and Sporting are written in European Portuguese —
+// "Quanto sabes sobre o Benfica?", "equipa", "registo", "numa só aplicação" — and
+// the engine around that prose was saying "Compartilhar", "Você jogou", "Por quê".
+// These are the keys that differ; the other 23 are identical in Portugal and stay
+// with the shared table, so this list reads as the differences and nothing else.
+//
+// ⚠️ PLACEHOLDERS AND EDGE WHITESPACE ARE PART OF THE STRING. {name} {sc} {n}
+// {pct} {iq} {tier} {date} are substituted by the engine, and ariaWrong and
+// freshOrder are concatenated with other text, so their spaces matter.
+// tests/unit/shell-i18n.test.js checks both against the Brazilian table.
+//
+// Notable choices, all from the reviewer: tiers use "adepto", not the Brazilian
+// "torcedor", and tier 3 is "Sócio do clube" because "Sócio-torcedor" is the name
+// of a Brazilian membership scheme. todaySet is NOT "o conjunto do {name}" — in
+// European football prose that reads as the SIDE, i.e. today's line-up.
+const PT_PT = {
+  seeResult: "Ver o teu resultado →",
+  ariaWrong: "A tua resposta, errada: ",
+  why: "Porquê",
+  yourIq: "O teu Ball IQ do {name}",
+  share: "Partilhar o teu Ball IQ do {name}",
+  allDone: "Estas são todas as perguntas do {name} que temos aqui — amanhã, noutra ordem.",
+  ratedLine: "Perguntas médias e difíceis contam mais — a mesma conta do teu cartão Ball IQ na aplicação.",
+  doorTitle: "O teu cartão Ball IQ completo",
+  doorGo: "Obter a aplicação →",
+  namePrompt: "Adicionar o teu nome ao cartão de pontuação? (opcional)",
+  copyPrompt: "Copia a tua pontuação",
+  shareTxt: "O meu Ball IQ do {name} é {iq} — {tier} ({sc}/{n}). Supera isto.",
+  todaySet: "As perguntas de hoje do {name}",
+  freshOrder: " · {date} — uma ordem nova todos os dias",
+  yourStreak: "A tua sequência",
+  dayKeep: "dia {n} — não percas",
+  youPlayed: "Jogaste",
+  tiers: ["De passagem", "Adepto casual", "Sócio do clube", "Em casa e fora", "Historiador do clube", "Lenda do clube"],
+};
+
 export const CLUBS_PT = [
   {
     club: 'Flamengo',              // must match the `club` field in src/questions.js
@@ -271,11 +309,7 @@ export const CLUBS_PT = [
     // The prose here is European by decision (guarda-redes, relvado, "A aplicação");
     // bq-i18n.mjs is Brazilian because 4 of the 7 /pt/ clubs are. These three keys are
     // the ones that read wrong to a Portuguese reader, so this page states them itself.
-    i18n: {
-      doorTitle: 'O teu cartão Ball IQ completo',
-      doorGo: 'Obter a app →',
-      ratedLine: 'Perguntas médias e difíceis contam mais — a mesma conta do teu cartão Ball IQ na app.',
-    },
+    i18n: PT_PT,
     lang: 'pt',
     name: 'Benfica',
     h1: 'Quiz do Benfica',
@@ -357,11 +391,7 @@ export const CLUBS_PT = [
     // The prose here is European by decision (guarda-redes, relvado, "A aplicação");
     // bq-i18n.mjs is Brazilian because 4 of the 7 /pt/ clubs are. These three keys are
     // the ones that read wrong to a Portuguese reader, so this page states them itself.
-    i18n: {
-      doorTitle: 'O teu cartão Ball IQ completo',
-      doorGo: 'Obter a app →',
-      ratedLine: 'Perguntas médias e difíceis contam mais — a mesma conta do teu cartão Ball IQ na app.',
-    },
+    i18n: PT_PT,
     lang: 'pt',
     name: 'Sporting CP',
     h1: 'Quiz do Sporting',
@@ -431,11 +461,7 @@ export const CLUBS_PT = [
     // The prose here is European by decision (guarda-redes, relvado, "A aplicação");
     // bq-i18n.mjs is Brazilian because 4 of the 7 /pt/ clubs are. These three keys are
     // the ones that read wrong to a Portuguese reader, so this page states them itself.
-    i18n: {
-      doorTitle: 'O teu cartão Ball IQ completo',
-      doorGo: 'Obter a app →',
-      ratedLine: 'Perguntas médias e difíceis contam mais — a mesma conta do teu cartão Ball IQ na app.',
-    },
+    i18n: PT_PT,
     lang: 'pt',
     name: 'FC Porto',
     h1: 'Quiz do FC Porto',
