@@ -27,7 +27,15 @@ describe('bq widget i18n', () => {
   it('every language is approved and both localised builders render the widget with lang', () => {
     expect([...BQ_I18N_REVIEWED].sort()).toEqual(Object.keys(BQ_I18N).sort());
     const gen = readFileSync(fileURLToPath(new URL('../../scripts/gen-seo-pages.mjs', import.meta.url)), 'utf8');
-    expect((gen.match(/lang: cfg\.lang \}\)/g) || []).length).toBe(2);
+    // ⚠️ COUNT THE renderQuizSet CALLS, NOT THE STRING. This asserted the literal
+    // `lang: cfg.lang })`, which broke when the club-page builder also began
+    // passing `i18n: cfg.i18n` (2026-09-16) so a club can override its layer's
+    // register — a rewording read as the builder having stopped localising.
+    // A bare /lang: cfg\.lang/ is too loose the other way: head() passes it too,
+    // and matches 5. The intent is that BOTH localised widget builders pass a
+    // language; a builder that drops it takes this count from 2 to 1.
+    const widgetCalls = gen.match(/renderQuizSet\((?:[^()]|\([^()]*\))*lang: cfg\.lang\b/g) || [];
+    expect(widgetCalls.length).toBe(2);
   });
   it('the engine reads data-i18n once and routes its labels through T()', () => {
     expect(ENGINE).not.toContain('`');

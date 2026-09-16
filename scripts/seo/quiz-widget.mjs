@@ -276,8 +276,14 @@ export function renderQuizItems(rows, t = {}) {
 // labels here and, via data-i18n, everything the engine writes. English needs
 // no table — it is the engine's built-in default. A language's six generic
 // tiers replace the club's English ones unless the caller passes tiers.
-export function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', slug = '', kind = 'unknown', color = '', face = '', play = `${SITE.base}/play`, daily = '', lang = '' }) {
-  const t = (lang && BQ_I18N[lang]) || {};
+// `i18n` overrides individual strings on top of the language table, for a page
+// whose club does not share its layer's majority register. /pt/ is 4/7 Brazilian,
+// so the shared strings are Brazilian — but Benfica, Porto and Sporting are
+// written in European Portuguese, and a European page reading "O seu cartão …
+// Baixar o app" is the same mismatch pointed the other way. A club states only
+// the keys that differ; everything else still comes from bq-i18n.mjs.
+export function renderQuizSet(rows, { name, tiers, store, more = 0, badge = '', slug = '', kind = 'unknown', color = '', face = '', play = `${SITE.base}/play`, daily = '', lang = '', i18n = null }) {
+  const t = { ...((lang && BQ_I18N[lang]) || {}), ...(i18n || {}) };
   if (t.tiers && (!tiers || tiers === DEFAULT_TIERS)) tiers = t.tiers;
   const items = renderQuizItems(rows, t);
   const lens = daily ? [] : [10, 20, rows.length].filter((n, i, a) => n <= rows.length && a.indexOf(n) === i);

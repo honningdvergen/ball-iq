@@ -267,6 +267,15 @@ export const CLUBS_PT = [
   {
     club: 'Benfica',
     slug: 'benfica',
+    // ⚠️ EUROPEAN PORTUGUESE PAGE ON A LAYER WHOSE SHARED STRINGS ARE BRAZILIAN.
+    // The prose here is European by decision (guarda-redes, relvado, "A aplicação");
+    // bq-i18n.mjs is Brazilian because 4 of the 7 /pt/ clubs are. These three keys are
+    // the ones that read wrong to a Portuguese reader, so this page states them itself.
+    i18n: {
+      doorTitle: 'O teu cartão Ball IQ completo',
+      doorGo: 'Obter a app →',
+      ratedLine: 'Perguntas médias e difíceis contam mais — a mesma conta do teu cartão Ball IQ na app.',
+    },
     lang: 'pt',
     name: 'Benfica',
     h1: 'Quiz do Benfica',
@@ -344,6 +353,15 @@ export const CLUBS_PT = [
   {
     club: 'Sporting CP',
     slug: 'sporting-cp',
+    // ⚠️ EUROPEAN PORTUGUESE PAGE ON A LAYER WHOSE SHARED STRINGS ARE BRAZILIAN.
+    // The prose here is European by decision (guarda-redes, relvado, "A aplicação");
+    // bq-i18n.mjs is Brazilian because 4 of the 7 /pt/ clubs are. These three keys are
+    // the ones that read wrong to a Portuguese reader, so this page states them itself.
+    i18n: {
+      doorTitle: 'O teu cartão Ball IQ completo',
+      doorGo: 'Obter a app →',
+      ratedLine: 'Perguntas médias e difíceis contam mais — a mesma conta do teu cartão Ball IQ na app.',
+    },
     lang: 'pt',
     name: 'Sporting CP',
     h1: 'Quiz do Sporting',
@@ -409,6 +427,15 @@ export const CLUBS_PT = [
   {
     club: 'Porto',
     slug: 'porto',
+    // ⚠️ EUROPEAN PORTUGUESE PAGE ON A LAYER WHOSE SHARED STRINGS ARE BRAZILIAN.
+    // The prose here is European by decision (guarda-redes, relvado, "A aplicação");
+    // bq-i18n.mjs is Brazilian because 4 of the 7 /pt/ clubs are. These three keys are
+    // the ones that read wrong to a Portuguese reader, so this page states them itself.
+    i18n: {
+      doorTitle: 'O teu cartão Ball IQ completo',
+      doorGo: 'Obter a app →',
+      ratedLine: 'Perguntas médias e difíceis contam mais — a mesma conta do teu cartão Ball IQ na app.',
+    },
     lang: 'pt',
     name: 'FC Porto',
     h1: 'Quiz do FC Porto',

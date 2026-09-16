@@ -2109,7 +2109,7 @@ function buildClubPageIntl(cfg, siblings = []) {
   const tasterHtml = `<section class="taster" id="taster" aria-labelledby="taster-h">
 <div class="eyebrow">${esc(c.tasterEyebrow)}</div>
 <h2 id="taster-h">${esc(c.tasterH)}</h2>
-${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, badge: clubBadge, slug: cfg.slug, kind: 'club', face: CLUB_NAME_TO_COMP[cfg.club] || '', color: CLUB_COLOR[cfg.slug] || '', lang: cfg.lang })}
+${renderQuizSet(cfg.taster, { name: cfg.name, tiers: DEFAULT_TIERS, more: 0, badge: clubBadge, slug: cfg.slug, kind: 'club', face: CLUB_NAME_TO_COMP[cfg.club] || '', color: CLUB_COLOR[cfg.slug] || '', lang: cfg.lang, i18n: cfg.i18n || null })}
 </section>`;
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld, ads: true, ogImage, lang: cfg.lang, alternates })}
