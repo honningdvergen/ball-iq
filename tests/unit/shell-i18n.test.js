@@ -138,3 +138,34 @@ describe('the Spanish layer says "en vivo", not "en directo"', () => {
     });
   }
 });
+
+describe('the shared Portuguese strings are Brazilian', () => {
+  // ⚠️ THE LAYER IS 4/7 BRAZILIAN (Flamengo, Corinthians, Palmeiras, Santos) and
+  // the shared strings serve all seven pages, so they follow the majority — Alex's
+  // call, 2026-09-16. The hub was already Brazilian; the finish-screen door added
+  // on 09-11 was not ("O teu cartão", "Obter a app"), so every Brazilian page
+  // carried a European door.
+  //
+  // ⚠️ THIS DOES NOT APPLY TO clubs-pt.mjs. Benfica, Porto and Sporting are
+  // deliberately written in EUROPEAN Portuguese (guarda-redes, relvado, "A
+  // aplicação"), matched to the readers those pages are for. Only the strings
+  // shared across all seven are gated here.
+  const ptBlock = (src, start, end) => src.slice(src.indexOf(start), src.indexOf(end, src.indexOf(start)));
+  const EUROPEAN = [
+    [/\b(teu|tua|teus|tuas)\b/i, 'teu/tua — Brazilian uses seu/sua'],
+    [/\b(a|na) app\b/i, '"a app" — Brazilian says "o app"'],
+    [/\baplicação\b/i, 'aplicação — Brazilian says aplicativo'],
+    [/\bObter\b/, '"Obter" — Brazilian says "Baixar"'],
+  ];
+  const FILES = [
+    ['scripts/seo/bq-i18n.mjs', '\n  pt: {', '\n  tr: {'],
+    ['scripts/seo/hubs-intl.mjs', "lang: 'pt'", "lang: 'tr'"],
+  ];
+  for (const [f, start, end] of FILES) {
+    it(`${f.split('/').pop()} pt block has no European-only forms`, () => {
+      const block = ptBlock(readFileSync(resolve(__dirname, '../../', f), 'utf8'), start, end);
+      expect(block.length).toBeGreaterThan(200);
+      expect(EUROPEAN.filter(([re]) => re.test(block)).map(([, why]) => why)).toEqual([]);
+    });
+  }
+});
