@@ -34,10 +34,43 @@
 // terms follow Argentine usage — "arquero" not "portero", "técnico" not
 // "entrenador" — because the audience this page is for says it that way.
 
+// ⚠️ THE ENGINE STRINGS ARE PENINSULAR; THESE FIVE PAGES ARE NOT.
+// scripts/seo/bq-i18n.mjs is peninsular Spanish because 8 of the 16 /es/ clubs are
+// Spanish. Boca, River, Racing, Independiente and San Lorenzo are written in
+// Rioplatense — "¿Cuánto sabés de Racing?", "Jugá", "Demostralo", "acá" — so the
+// engine around that prose was saying "Copia tu puntuación" and "Supéralo".
+// Only the keys that differ; the rest are identical in every Spanish register
+// ("tu" is the possessive in all of them, and "Ya jugaste" is shared by vos and tú).
+//
+// ⚠️ MOST BUTTONS ARE INFINITIVES (Siguiente, Ver, Compartir, Descargar, Seguir)
+// and infinitive buttons are normal in Argentina — turning them into "Jugá"/"Seguí"
+// would be a design change, not a register fix. The only two true tú-imperatives in
+// the set are the ones flipped here. "no la pierdas" (dayKeep) is already correct:
+// negative commands with vos take the tú-subjunctive.
+const ES_AR = {
+  allDone: "Esas son todas las preguntas de {name} que tenemos acá — mañana, en otro orden.",
+  doorLine: "Las seis competiciones, desafíos diarios, rachas y 1v1 en vivo.",
+  namePrompt: "¿Agregar tu nombre a la tarjeta de puntaje? (opcional)",
+  copyPrompt: "Copiá tu puntaje",
+  shareTxt: "Mi Ball IQ de {name} es {iq} — {tier} ({sc}/{n}). Superalo.",
+  tiers: ["De paso", "Hincha", "Socio", "Local y visitante", "Historiador del club", "Leyenda del club"],
+};
+
+// ⚠️ SAME MECHANISM, MEXICAN REGISTER, for Club América, Chivas and Cruz Azul.
+// Far fewer differences than Rioplatense: Mexican Spanish shares tuteo and "aquí"
+// with Spain, so only the vocabulary moves. Every imperative in the set was checked
+// one by one and none needed changing.
+const ES_MX = {
+  namePrompt: "¿Agregar tu nombre a la tarjeta de puntuación? (opcional)",
+  earlier: "hoy más temprano {sc} de {n}, IQ {iq}",
+  tiers: ["De paso", "Aficionado", "De la porra", "De local y de visita", "Historiador del club", "Leyenda del club"],
+};
+
 export const CLUBS_ES = [
   {
     club: 'Boca Juniors',          // must match the `club` field in src/questions.js
     slug: 'boca-juniors',          // shared with the English page: /quiz/boca-juniors/
+    i18n: ES_AR,
     lang: 'es',
     name: 'Boca Juniors',
     h1: 'Quiz de Boca Juniors',
@@ -127,6 +160,7 @@ export const CLUBS_ES = [
   {
     club: 'River Plate',
     slug: 'river-plate',
+    i18n: ES_AR,
     lang: 'es',
     name: 'River Plate',
     h1: 'Quiz de River Plate',
@@ -2942,6 +2976,7 @@ export const CLUBS_ES = [
   {
     "club": "Racing Club",
     "slug": "racing-club",
+    i18n: ES_AR,
     "lang": "es",
     "name": "Racing Club",
     "h1": "Quiz de Racing Club",
@@ -3284,6 +3319,7 @@ export const CLUBS_ES = [
   {
     "club": "Independiente",
     "slug": "independiente",
+    i18n: ES_AR,
     "lang": "es",
     "name": "Independiente",
     "h1": "Quiz de Independiente",
@@ -3626,6 +3662,7 @@ export const CLUBS_ES = [
   {
     "club": "San Lorenzo",
     "slug": "san-lorenzo",
+    i18n: ES_AR,
     "lang": "es",
     "name": "San Lorenzo",
     "h1": "Quiz de San Lorenzo",
@@ -3984,6 +4021,7 @@ export const CLUBS_ES = [
   {
     "club": "Club América",
     "slug": "club-america",
+    i18n: ES_MX,
     "lang": "es",
     "name": "Club América",
     "h1": "Quiz del Club América",
@@ -4326,6 +4364,7 @@ export const CLUBS_ES = [
   {
     "club": "Guadalajara",
     "slug": "chivas",
+    i18n: ES_MX,
     "lang": "es",
     "name": "Chivas",
     "h1": "Quiz de Chivas: ¿cuánto sabes del Rebaño Sagrado?",
@@ -4668,6 +4707,7 @@ export const CLUBS_ES = [
   {
     "club": "Cruz Azul",
     "slug": "cruz-azul",
+    i18n: ES_MX,
     "lang": "es",
     "name": "Cruz Azul",
     "h1": "Quiz del Cruz Azul",

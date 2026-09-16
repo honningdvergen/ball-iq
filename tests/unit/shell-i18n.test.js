@@ -190,29 +190,56 @@ describe('a club can override its layer\'s register for the door', () => {
   // ⚠️ AN OVERRIDE IS A STRING THE ENGINE STILL SUBSTITUTES INTO. A dropped
   // {name} ships a sentence with a hole in it, and ariaWrong and freshOrder are
   // concatenated with other text, so their edge spaces are part of the value.
-  // Checked against the Brazilian table the override replaces, key by key.
-  it('every pt override keeps its placeholders, edge whitespace and shape', async () => {
-    const { CLUBS_PT } = await import('../../scripts/seo/clubs-pt.mjs');
+  // Checked against the table each override replaces, key by key, for EVERY
+  // locale that carries more than one register.
+  it('every override keeps its placeholders, edge whitespace and shape', async () => {
     const { BQ_I18N } = await import('../../scripts/seo/bq-i18n.mjs');
-    const br = BQ_I18N.pt;
-    const over = CLUBS_PT.find((c) => c.slug === 'benfica').i18n;
+    const { CLUBS_PT } = await import('../../scripts/seo/clubs-pt.mjs');
+    const { CLUBS_ES } = await import('../../scripts/seo/clubs-es.mjs');
     const ph = (s) => (String(s).match(/\{[a-z]+\}/g) || []).sort();
     const problems = [];
-    for (const [k, v] of Object.entries(over)) {
-      if (!(k in br)) { problems.push(`${k}: not a key in BQ_I18N.pt`); continue; }
-      if (Array.isArray(br[k])) {
-        if (!Array.isArray(v) || v.length !== 6) problems.push(`${k}: must be 6 tiers`);
-        continue;
-      }
-      if (v === br[k]) problems.push(`${k}: identical to Brazilian — drop it rather than restate it`);
-      if (ph(v).join() !== ph(br[k]).join()) problems.push(`${k}: placeholders ${ph(br[k])} -> ${ph(v)}`);
-      if (v.startsWith(' ') !== br[k].startsWith(' ') || v.endsWith(' ') !== br[k].endsWith(' ')) {
-        problems.push(`${k}: edge whitespace changed`);
+    const sets = [...CLUBS_PT, ...CLUBS_ES].filter((c) => c.i18n);
+    expect(sets.length).toBe(11); // 3 European pt + 5 Rioplatense + 3 Mexican
+    for (const c of sets) {
+      const br = BQ_I18N[c.lang];
+      for (const [k, v] of Object.entries(c.i18n)) {
+        const where = `${c.lang}/${c.slug}.${k}`;
+        if (!(k in br)) { problems.push(`${where}: not a key in BQ_I18N.${c.lang}`); continue; }
+        if (Array.isArray(br[k])) {
+          if (!Array.isArray(v) || v.length !== 6) problems.push(`${where}: must be 6 tiers`);
+          continue;
+        }
+        if (v === br[k]) problems.push(`${where}: identical to the shared value — drop it rather than restate it`);
+        if (ph(v).join() !== ph(br[k]).join()) problems.push(`${where}: placeholders ${ph(br[k])} -> ${ph(v)}`);
+        if (v.startsWith(' ') !== br[k].startsWith(' ') || v.endsWith(' ') !== br[k].endsWith(' ')) {
+          problems.push(`${where}: edge whitespace changed`);
+        }
       }
     }
     expect(problems).toEqual([]);
   });
-  it('renderQuizSet merges an override over the language table, key by key', async () => {
+
+  // ⚠️ THE /es/ LAYER HOLDS THREE REGISTERS AND THE SHARED TABLE IS PENINSULAR.
+  // The eight Spanish clubs take it as-is; the five Argentine and three Mexican
+  // ones override. A club landing in the wrong group reads as another country's
+  // Spanish, which is the whole defect this guards.
+  it('the es clubs carry the register their prose is written in', async () => {
+    const { CLUBS_ES } = await import('../../scripts/seo/clubs-es.mjs');
+    const group = (c) => (!c.i18n ? 'es-ES' : c.i18n.copyPrompt ? 'ar' : 'mx');
+    const by = { 'es-ES': [], ar: [], mx: [] };
+    for (const c of CLUBS_ES) by[group(c)].push(c.slug);
+    expect(by.ar.sort()).toEqual(['boca-juniors', 'independiente', 'racing-club', 'river-plate', 'san-lorenzo']);
+    expect(by.mx.sort()).toEqual(['chivas', 'club-america', 'cruz-azul']);
+    expect(by['es-ES'].length).toBe(8);
+    // the markers each register is actually judged on
+    const ar = CLUBS_ES.find((c) => c.slug === 'racing-club').i18n;
+    expect(ar.copyPrompt).toBe('Copiá tu puntaje');
+    expect(ar.allDone).toContain('acá');
+    expect(ar.tiers[1]).toBe('Hincha');
+    const mx = CLUBS_ES.find((c) => c.slug === 'club-america').i18n;
+    expect(mx.namePrompt).toContain('Agregar');
+    expect(mx.tiers[3]).toBe('De local y de visita');
+  });  it('renderQuizSet merges an override over the language table, key by key', async () => {
     const { renderQuizSet } = await import('../../scripts/seo/quiz-widget.mjs');
     const rows = [{ id: 'q_x', q: 'P?', o: ['a', 'b', 'c', 'd'], a: 0, hint: 'h' }];
     const base = renderQuizSet(rows, { name: 'X', lang: 'pt' });
