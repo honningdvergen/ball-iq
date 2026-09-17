@@ -1,3 +1,67 @@
+## 2026-09-17 — 📏 THE 09-16 MEASUREMENT READ: one clear win, and THREE INSTRUMENTS WE KILLED OURSELVES
+
+Windows: baseline 14d 08-19→09-02 (as frozen), post 14d 09-03→09-17. The
+2026-08-21 e2e burst (867 rows / 867 "visitors" in one day) excluded from the
+post window. **Site-wide distinct visitors 801 → 1,236, +54%** — that is the
+growth rate every verdict below has to beat to mean anything.
+
+### ✅ MOVED — the club CTA scoped to `?club=` is the cleanest result we have
+Distinct visitors: clubq-play 370 → 699 (**+89%**), clubq-finish 235 → 456
+(**+94%**), both well clear of the +54% traffic growth. So the **rate** improved,
+not just the volume: start→play 63.7% → **76.6%**, start→finish 40.4% → **49.9%**.
+This is precisely the "destination quality, not click count" the plan's honest
+null pointed at, and it is the only change here with real n (913 distinct
+visitors reached clubq-start). The club-page funnel is both the biggest surface
+we have and the one that got better.
+
+### 🤷 IN LINE WITH GROWTH — consent deferral
+clubq-start distinct visitors 581 → 913 (+57%) against +54% site-wide: not
+separable from ordinary growth. `list-answered` dv 16 → 41 (+156%) IS above the
+line — but 42 of those 45 rows are `surface='localised'`, i.e. the localised
+pages, not the English /lists pages the change targeted. Small n either way.
+
+### ⚰️ THREE WATCHED METRICS DIED BEFORE THEY COULD REPORT — and we killed all three
+This is the finding that matters more than any number above.
+
+| watched metric | killed by | when | gap |
+|---|---|---|---|
+| `sr-verdict-footle` / `-store` / `-play` | `28f7b941` "the two rejected homepages are gone" | 09-03 | **~24h after shipping** |
+| `sr-taster-1` / `sr-taster-done` | same commit | 09-03 | ~18h of data (3 and 2 rows, ever) |
+| `taster-start` / `taster-out-play` | `ace2618e` "the English taster is retired" | 09-05 | event names retired into `clubq-*` |
+
+A fourth, `first-game-started`, was **renamed** by `e385541e` (09-07) into
+`first-game-reached` + `first-game-played`. Its 1,126 → 134 "collapse" is that
+rename, not a regression — the new names ramp up exactly as the old one decays.
+
+⚠️ **The verdict CTA → Footle decision is therefore UNJUDGED, not falsified.** The
+plan said WATCH D3 RETURN, NOT INSTALLS; there is no cohort to watch, because the
+homepage carrying the CTA was deleted the next day in the "AI slop" clear-out. It
+is not a null result — the instrument never got to run. If we still want that
+answer we have to re-ship the CTA somewhere that exists.
+
+### ✅ HONEST ZERO — `list-jump`
+Genuine zero, confirmed by two routes: the `qev('list-jump')` call is live in
+`gen-seo-pages.mjs`, and the taster it sits under fired **once in 13 days** on
+English /lists pages. The pre-written null already covered this ("fixing the page
+does not fix the rank ratio"). Also: the 09-05 "table first" reorder put the full
+table above the jump link, which may have made it redundant for the few who land.
+
+### Who can actually see each change (14d, distinct visitors)
+club pages 913 · Footle web 112 · `/football-quiz/` taster ~21 · English /lists
+taster ~1 · verdict CTA + homepage taster 3–4 total, ever · store badges on the
+current homepage 2. **Four of the six changes reached single digits to low tens of
+people.** That is not a failed detector; that is what those changes are worth.
+
+- [ ] ⚠️ **THE FROZEN BASELINE'S `first-game-started` ROW IS ROBOT-CONTAMINATED.**
+      The 08-21 e2e burst (867 rows) falls INSIDE the 08-19→09-02 baseline window,
+      so the recorded 1,126 / dv 1,021 is inflated; the real figure is ~259 / ~154.
+      Every other baseline row predates or avoids that day. Do not compare against
+      that row without subtracting it.
+- [ ] **Re-ship the verdict CTA on a surface that still exists**, or formally drop
+      the question. It is currently neither answered nor asked.
+- [ ] **Instrument mortality check before freezing any future plan** — name the
+      commit that could delete the surface, not just the event.
+
 ## 2026-09-15 — 🌍 THE LOCALISED PAGES WORE AN ENGLISH SHELL, AND EVERY LANGUAGE MADE A FALSE CLAIM
 
 - [x] **Shell chrome translated for all 8 locales (49 pages).** Nav, search box,
