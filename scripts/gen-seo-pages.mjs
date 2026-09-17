@@ -294,6 +294,8 @@ const CLUB_BADGE = {
   'hajduk-split': 'HAJ',
   'boca-juniors': 'BOC', 'river-plate': 'RIV', 'flamengo': 'FLA', 'palmeiras': 'PAL', 'corinthians': 'COR',
   'santos': 'SAN', 'real-sociedad': 'RSO',
+  // SCI not INT: Inter Milan holds INT and the abbreviation map has no duplicates.
+  'sao-paulo': 'SAO', 'gremio': 'GRE', 'internacional': 'SCI', 'cruzeiro': 'CRU',
   'manchester-united': 'MUN', arsenal: 'ARS', 'manchester-city': 'MCI', liverpool: 'LIV',
   chelsea: 'CHE', tottenham: 'TOT', newcastle: 'NEW', barcelona: 'BAR', 'real-madrid': 'RMA',
   'atletico-madrid': 'ATM', juventus: 'JUV', 'inter-milan': 'INT', 'ac-milan': 'MIL',
@@ -361,6 +363,10 @@ const CLUB_COLOR = {
   'hajduk-split': '#0E4C92',
   'boca-juniors': '#0A2B72', 'river-plate': '#E1122E', 'flamengo': '#C52613', 'palmeiras': '#006437', 'corinthians': '#111111',
   'santos': '#0B0B0B', 'real-sociedad': '#0067B1',
+  // Verified against live sources 2026-09-17. Internacional's is the repo's
+  // existing value: the club publishes no numeric colour spec at all, and both
+  // circulating hexes are uncited aggregator entries. See docs/TODO.md.
+  'sao-paulo': '#FE0000', 'gremio': '#0D80BF', 'internacional': '#E5050F', 'cruzeiro': '#2F529E',
   arsenal: '#EF0107', liverpool: '#C8102E', 'manchester-united': '#DA291C',
   barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'manchester-city': '#6CABDD',
   chelsea: '#034694', 'bayern-munich': '#DC052D',

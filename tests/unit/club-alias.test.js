@@ -35,6 +35,13 @@ describe('club alias map', () => {
     // decides which of the two errors it is: a missing alias, or a coincidence.
     const REVIEWED = new Set([
       'Angers', // ≠ Rangers. France vs Scotland. Genuinely uncovered.
+      // ≠ Internacional. CD Nacional of Madeira, Primeira Liga, against SC
+      // Internacional of Porto Alegre, Brasileirão — two clubs, two continents,
+      // one substring. Surfaced 2026-09-17 the moment the Internacional page
+      // shipped. Aliasing them would point Nacional's league row at
+      // Internacional's quiz, which is the Athletic Bilbao -> Athletico-PR
+      // failure in club-competition.mjs. Nacional is genuinely uncovered.
+      'Nacional',
     ]);
 
     const unreviewed = suspectedMissingAliases(LEAGUES, paged).filter(

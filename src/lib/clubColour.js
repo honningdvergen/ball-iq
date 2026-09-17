@@ -77,6 +77,8 @@ const EXTRA = {
   "Celta Vigo": "#8AC3EE",
   "Independiente": "#D62027",
   "Gremio": "#0D80BF",
+  "São Paulo": "#FE0000",
+  "Cruzeiro": "#2F529E",
   "Botafogo": "#111111",
   "Panathinaikos": "#00614E",
   "Galatasaray": "#E1362C",
