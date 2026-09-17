@@ -28,8 +28,24 @@
       React one replaces it, so a mismatch would swap menu-for-nav on load. A test holds
       the two files together. Verified at 800/1019/1021/1280 (en), 1021 (tr), and
       900 + 375 with the menu opened on the front door.
-- [ ] pt: the retained second FAQ sentence uses "checagens" (Brazilian-only); Portugal
-      says "verificações". Minor, register call alongside the open pt question below.
+- [x] ~~pt: the retained second FAQ sentence uses "checagens"~~ — **FALSE ALARM, closed
+      2026-09-17, and "fixing" it would have CAUSED the bug.** "checagens" appears three
+      times in `clubs-pt.mjs`, on flamengo, corinthians and palmeiras — all Brazilian,
+      where it is the correct word. Benfica/Porto/Sporting never carry that FAQ at all:
+      their fourth slot is club-specific (the Guttmann curse, the academy, the European
+      trophies), and their prose is European throughout — registo, adepto, golo, equipa,
+      treinador, relvado, camisola, época. Swapping in "verificações" would have put a
+      European word on three Brazilian pages.
+      **Verified by a per-club vocabulary sweep**, 20 Brazilian-only and 17 European-only
+      markers, word-boundary matched, each block classified by register. Two blocks
+      flagged — palmeiras carrying "adeptos/golo/equipa/treinador/guarda-redes" and porto
+      carrying "técnico/time" — and **both hits were inside the comments that document
+      the fork**, not in any rendered string. Same false-positive class as the residue
+      sweep that matched reviewers' quotes ([[feedback_verify_detector_output]]); this
+      time the detector that cried wolf was my own TODO entry.
+      The `/pt/` HUB is Brazilian ("checadas", "cadastro", "você") and stays that way —
+      one hub serves the whole locale, so like the shared engine strings it has to pick
+      the majority register (4 of 7). That is the decision, not a leak.
 
 ## 2026-09-11 — 📈 THE 09-04 EXPERIMENTS CAME DUE, AND ONE REVERSED A DECISION
 
