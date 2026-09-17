@@ -1555,6 +1555,11 @@ with no push at all**.
 
 ## 📏 MEASUREMENT PLAN — read 2026-09-09 and 2026-09-16 (baseline frozen 2026-09-02)
 
+⚠️ **GSC READS NEED +3 DAYS — Search Console runs ~3 days behind** (verified 2026-09-17:
+latest complete day was 09-14). A read scheduled at ship-date+window silently compares a
+short window against a full one. Schedule GSC reads at **ship date + window + 3**.
+Supabase `funnel_events` has no such lag; this applies to GSC only.
+
 ⚠️ **The null result is written here BEFORE the read.** Thirteen items closed in
 48 hours once moved zero numbers; the rule from the strategy report is that a
 change with no metric is not shipped, it is just deployed.
