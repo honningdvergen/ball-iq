@@ -1,3 +1,57 @@
+## 2026-09-17 — 🇧🇷 BRASILEIRÃO WAVE: facts verified against live sources BEFORE the forge
+
+Four clubs, all currently packless (bank 7,443). Divisions and colours checked
+against live sources 2026-09-17, not recalled — the division prints on the page
+and that column has rotted twice.
+
+| club | 2026 division | founded | original name | primary hex |
+|---|---|---|---|---|
+| São Paulo FC | **Série A** (12th) | 25 Jan 1930 | — (merger; 1935 refoundation nuance) | `#FE0000` ✅ two sources agree |
+| Grêmio | **Série A** (16th) | 15 Sep 1903 | — | `#0D80BF` ✅ agree |
+| Internacional | **Série A** (18th ⚠️) | 4 Apr 1909 | — | `#E5050F` 🚩 see below |
+| Cruzeiro | **Série A** (6th) | 2 Jan 1921 | **Sociedade Sportiva Palestra Itália** → renamed 7 Oct 1942 | `#2F529E` ✅ agree |
+
+All four resolve in `leagues.mjs` under Brasileirão by exact name match, so
+**none needs a `CLUB_COMPETITION` hand entry** — the gate that hard-failed the
+build on two previous waves is already satisfied here.
+
+⚠️ **ALL FOUR WERE FOUNDED BEFORE 1950**, so every founding / original-name /
+first-ground / name-origin question must carry `preEra: true` or it becomes
+eligible for the shared Daily 7 with no year in the stem for any filter to see.
+Cruzeiro's 1942 rename is the sharpest case — and the best question seed in the
+wave: as Palestra Itália the kit was dark GREEN, and blue-and-white was adopted
+at the rename, readable both as the Brazilian flag and as Italy's *azzurri*.
+
+⚠️ **São Paulo's 1935 refoundation.** The football department was disbanded in
+May 1935 and the club reconstituted later that year; the club itself uses **1930**
+and treats 1935 as a refoundation. Do not write a question that keys 1935 as
+right-or-wrong without handling that nuance.
+
+### 🚩 Internacional's colour: UNCONFIRMABLE, and that closes the flag
+The repo holds `#E5050F` (`src/lib/clubColour.js:170`). The two circulating
+values are `#E5050F` (teamcolorcodes) and `#ED1C24` (brandcolorcode); **neither
+cites a source.** Internacional's own official colours page carries a historical
+narrative about the crest's lettering and **no hex, Pantone, CMYK or RGB at all**;
+no club-issued brand manual is publicly retrievable. Both are saturated
+pillar-box reds differing by a perceptual hair.
+**Decision: keep `#E5050F`, and stop treating this as an open discrepancy** — it
+is not resolvable, it is cosmetic, and the repo already holds the more widely
+syndicated of the two. ⚠️ A prior research round's claim that "#E5050F is indeed
+the official red" was a SEARCH-ENGINE SYNTHESIS, not a quote from any page. It
+was never a citation. Same class as [[feedback_traceable_is_not_true]].
+
+⚠️ Strictly, **none** of the four hexes traces to a club brand manual; three
+merely have two aggregators agreeing. Treat club hexes as convention, not fact.
+
+- [ ] **⏳ RE-CHECK THESE FOUR DIVISIONS AFTER 2026-12-02**, when the 2026 Série A
+      season ends. **Internacional sits 18th — inside the four-team relegation
+      zone — and Grêmio 16th**, both on 28 points with 11 rounds left. The Série A
+      text is correct today and has a real chance of being wrong in December.
+      This is the August-audit rule firing early because we already know the risk.
+- [ ] Add `São Paulo` and `Cruzeiro` to `src/lib/clubColour.js` for Transfer Trail
+      coverage. `Grêmio` and `Internacional` are already there and the lookup
+      strips diacritics, so `Grêmio` → `Gremio` resolves (verified, not assumed).
+
 ## 2026-09-17 — 📏 THE 09-16 MEASUREMENT READ: one clear win, and THREE INSTRUMENTS WE KILLED OURSELVES
 
 Windows: baseline 14d 08-19→09-02 (as frozen), post 14d 09-03→09-17. The
