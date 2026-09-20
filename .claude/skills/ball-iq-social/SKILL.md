@@ -117,6 +117,7 @@ The old CTA asked someone who just laughed at a football joke to: leave the plat
 | `balliq.app/ig` | `/footle?utm_source=instagram` | Instagram |
 | `balliq.app/tt` | `/footle?utm_source=tiktok` | TikTok |
 | `balliq.app/x` | `/footle?utm_source=x` | X |
+| `balliq.app/yt` | `/footle?utm_source=youtube` | YouTube |
 
 Added in `vercel.json` (`redirects`, commit `d4535fb`, 2026-07-15) because **`balliq.app/footle?utm_source=threads` renders TRUNCATED on a Threads profile** — it displays as `balliq.app/footle?utm_source`, which reads as a malformed URL on the one element you want tapped. Alex spotted it; his earlier "we probably want a relatively short link" instinct was right, just for a display reason rather than the save-failure we were debugging at the time.
 
