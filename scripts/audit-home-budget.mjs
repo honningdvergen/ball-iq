@@ -35,16 +35,21 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = resolve(ROOT, 'dist');
 const ASSETS = resolve(DIST, 'assets');
-// ⚠️ CI IS ~7 KB HEAVIER THAN YOUR MAC. 2026-09-21: every production deploy had
-// failed for FOUR DAYS (since 5303b4b0, the Brasileirão wave) on
-// "911 KB > budget 910 KB" while `npm run build` passed locally at 904. The
-// Sentry vite plugin stamps a debug-ID snippet into each eager chunk on Vercel
-// only; those bytes ARE served, so 911 is the honest production number and the
-// old 910 was calibrated against the wrong machine. A failed deploy is silent —
-// the previous build keeps serving and four club pages were simply 404.
-// 915 = the real CI figure + 4 KB. TEMPORARY: take the generated clubPackColours
-// table (12 KB, grows every club wave) off the eager path, then ratchet DOWN.
-const BUDGET_KB = 915; // was 910 — ⚠️ 901 KB measured 2026-09-08 once the instrument followed GameRoot's static imports. The earlier '593, target met' was an artefact of NOT following them. Target is still 600; the gap is Supabase (211 KB static) and is a design question, not a ratchet.
+// ⚠️ CI IS ~7 KB HEAVIER THAN YOUR MAC — CALIBRATE AGAINST CI, NOT LOCAL.
+// 2026-09-21: every production deploy had failed for FOUR DAYS (since 5303b4b0,
+// the Brasileirão wave) on "911 KB > budget 910 KB" while `npm run build` passed
+// locally at 904. The Sentry vite plugin stamps a debug-ID snippet into each
+// eager chunk on Vercel only (~0.4 KB x 18 chunks); those bytes ARE served, so
+// the Vercel number is the honest one and the old 910 was calibrated against
+// the wrong machine. A failed deploy is silent — the previous build keeps
+// serving and four new club pages were simply 404.
+//   The cause was the GENERATED clubPackColours table on the eager path via one
+// import in ballIqCard.js. It is off (see lib/clubFaceRoute.js) and banned
+// below. Measured after: 898 KB local = ~905 KB on Vercel.
+//   909 = the CI-equivalent figure (local + 7) + 4 KB of headroom. When this
+// trips, read the LOCAL number as (printed + 7) before deciding how close you
+// are, and look for a new generated table before raising it.
+const BUDGET_KB = 909; // Target is still 600; the gap is Supabase (211 KB static) and is a design question, not a ratchet. History: 901 measured 2026-09-08 once the instrument followed GameRoot's static imports (the earlier '593, target met' was an artefact of NOT following them); 910 -> 915 as a stop-gap 2026-09-21; 909 the same day once the table came off.
 // ⚠️ questionConflicts JOINED THIS LIST 2026-09-07 — it was the SECOND-LARGEST
 // module in the eager Home chunk (81 KB of generated leak-pair data) and the
 // ban did not catch it purely because the regex did not name it. The lesson is
