@@ -50,7 +50,10 @@ const BUDGET_KB = 915; // was 910 — ⚠️ 901 KB measured 2026-09-08 once the
 // ban did not catch it purely because the regex did not name it. The lesson is
 // that this list is an allow-list of known offenders, not a definition: any
 // generated play-time data table belongs here the day it is created.
-const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers)-[A-Za-z0-9_-]+\.js$/;
+// ⚠️ clubPackColours JOINED 2026-09-21 — same lesson, third time: a GENERATED
+// table that grows with every club wave was on the eager path through one
+// import in ballIqCard.js, and it is what tipped the budget.
+const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours)-[A-Za-z0-9_-]+\.js$/;
 const HOME_CHUNKS = /^(main|GameRoot|HomeScreen)-[A-Za-z0-9_-]+\.js$/;
 
 const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');
@@ -85,6 +88,11 @@ for (const f of files) {
     if (HEAVY.test(dep)) { console.error(`✗ ${f} imports ${dep} STATICALLY — Home must not carry play-time data`); bad++; }
   }
 }
+// ⚠️ AND NOWHERE IN THE EAGER GRAPH, not just one hop from a Home chunk. The
+// ban above reads only the direct imports of main/GameRoot/HomeScreen; the
+// colours table arrived two hops down (GameRoot -> a shared lib chunk -> it) and
+// would have walked straight past it.
+for (const f of eager) if (HEAVY.test(f)) { console.error(`✗ ${f} is in Home's EAGER graph — a play-time data table must load on demand`); bad++; }
 let total = 0;
 const rows = [];
 for (const f of eager) { const b = statSync(resolve(ASSETS, f)).size; total += b; rows.push([f, b]); }

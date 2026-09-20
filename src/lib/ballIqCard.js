@@ -1,6 +1,5 @@
 import { MIN_RATED_ANSWERS } from './scoring.js';
 import { CALIBRATION } from '../data/cardCalibration.js';
-import { CLUB_NAME_TO_COMP } from '../data/clubPackColours.js';
 import { tint, lift } from './clubColour.js';
 // Ball IQ player-rating card — six "competition" face stats + a compiled overall
 // + a Bronze / Silver / Gold tier.
@@ -321,6 +320,18 @@ const FACE_CATS = new Set(CARD_COMPS.map(c => c.cat));
 // thematic faces and are deliberately absent — see faceCatFor step 1.
 const COMPETITION_FACES = new Set(["PL", "UCL", "WorldCup", "Clubs"]);
 
+// ── THE CLUB ROUTES ARE HANDED IN, NOT IMPORTED (2026-09-21) ────────────────
+// club name -> league face. This module used to import the GENERATED table, and
+// that single import put a 12 KB chunk that grows with every club wave on
+// Home's blocking path — it tipped the budget and failed four days of deploys.
+// App.jsx now builds the same map at module load from tables it already
+// carries (lib/clubFaceRoute.js) and registers it here, synchronously, long
+// before any answer can exist. Tests register the generated table instead.
+// ⚠️ NOT a lazy import(): recordAnswers is synchronous, and a club answer filed
+// before the map arrived would be stored on the wrong face irreversibly.
+let CLUB_ROUTES = {};
+export function setClubRoutes(routes) { CLUB_ROUTES = routes || {}; }
+
 /**
  * Which face an answer feeds, or null (overall only).
  * Order: the answer's real category (club quiz carries it as `realCat` beside
@@ -352,7 +363,7 @@ export function faceCatFor(ans) {
   //    re-cut it reached EPL only because History had no face. Aliasing
   //    History would have silently moved every one of those answers off the
   //    club's face. The club is the stronger signal whenever we have it.
-  if (ans.club && CLUB_NAME_TO_COMP[ans.club]) return CLUB_NAME_TO_COMP[ans.club];
+  if (ans.club && CLUB_ROUTES[ans.club]) return CLUB_ROUTES[ans.club];
   // 3. Otherwise fold the category onto the face that now carries it — this is
   //    where a thematic category lands when there is no club to prefer.
   if (FACE_CATS.has(cat)) return cat;

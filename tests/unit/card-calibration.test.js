@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { CALIBRATION } from "../../src/data/cardCalibration.js";
-import { computeCard, cardDelta, pickLeagueFace, faceAbbrForCat, ratingFromScore, ratingFromAccuracy, faceCatFor, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
+import { computeCard, cardDelta, pickLeagueFace, faceAbbrForCat, ratingFromScore, ratingFromAccuracy, faceCatFor, setClubRoutes, cardTier, PRIOR_WEIGHT, MULT, AVG_MULT, BASELINE, scoreOf, LEAGUE_CATS } from "../../src/lib/ballIqCard.js";
 import { CLUB_NAME_TO_COMP } from "../../src/data/clubPackColours.js";
+// The app registers these routes from App.jsx at module load (it does not import
+// the generated table — see lib/clubFaceRoute.js); club-routes-registered.test.js
+// proves the two are the same map, so registering the generated one here is fair.
+setClubRoutes(CLUB_NAME_TO_COMP);
 
 // ⚠️ "61% ON EASY EQUALS 61" WAS THE MODEL, AND IT IS GONE (2026-09-11).
 // The rating WAS the difficulty-weighted mean x 100 — a number a player could
