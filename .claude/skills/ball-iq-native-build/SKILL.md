@@ -16,6 +16,12 @@ node scripts/prune-native-web-assets.mjs              # re-run after EVERY cap s
 
 `rm -rf dist` is not optional. **`cap sync` serves a stale `dist/` otherwise** — CSS/JS edits silently never reach the installed app, and you debug a fix that was never in the binary.
 
+⚠️ **`cap sync ios` needs a UTF-8 locale.** A non-interactive shell has `LANG`
+unset, and CocoaPods then dies inside `pod install` with *"Unicode Normalization
+not appropriate for ASCII-8BIT"* — `cap sync` exits 1 AFTER copying the web
+assets, so the bundle looks synced while the Pods are not. Prefix with
+`export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` (hit on 1.7.5 / 138, 2026-09-21).
+
 Android additionally needs both on PATH (a non-interactive shell has neither):
 ```
 export PATH="/Users/alexanderbrynolsen/.nvm/versions/node/v25.9.0/bin:$PATH"
