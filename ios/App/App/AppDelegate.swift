@@ -57,6 +57,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             backdrop.isUserInteractionEnabled = false
             backdrop.backgroundColor = bg
             rootView.insertSubview(backdrop, at: 0)
+            #if DEBUG
+            NSLog("%@", "SceneDelegate backdrop attached to root view")
+            #endif
+        } else {
+            #if DEBUG
+            NSLog("%@", "SceneDelegate backdrop NOT attached: window=\(window != nil) root=\(window?.rootViewController != nil)")
+            #endif
         }
         // Drag-to-dismiss the keyboard, the way every native iOS list works.
         // Alex, device-testing 2026-08-23: "when people search for xabi alonso
