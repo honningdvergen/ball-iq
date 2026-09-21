@@ -1,3 +1,59 @@
+## 2026-09-21 — 🚨 FOUR DAYS OF SILENTLY FAILED DEPLOYS: the cause is fixed, the silence is not
+
+Every production deploy from 5303b4b0 (09-17, the Brasileirão wave) to 09-21
+failed on the LAST build gate — `✗ Home eager JS 911 KB > budget 910 KB` — while
+`npm run build` passed locally at 904. Nothing announced it: Vercel keeps serving
+the previous build, so the site looked healthy and four new club pages were
+simply 404. Found by accident, not by any instrument.
+
+- [x] **The cause.** `ballIqCard.js` imported `CLUB_NAME_TO_COMP` from the
+      GENERATED `clubPackColours.js`, putting a table that grows with every club
+      wave on Home's blocking path. App.jsx now builds the same map at module load
+      from `CLUB_PACK_TO_QB` + `CLUB_LEAGUES` via `src/lib/clubFaceRoute.js`
+      (shared with the generator; generated output byte-identical) and registers
+      it with `setClubRoutes()`. ⚠️ Deliberately NOT a lazy `import()`:
+      `recordAnswers` is synchronous and a club answer filed before the map
+      arrived would sit on the wrong face for good. Played on the local build: all
+      10 answers of an Arsenal round landed on `PL`, none on Legends/Records.
+- [x] **The budget.** 915 (stop-gap) → **909**. Local 898 KB = ~905 on Vercel;
+      ⚠️ CI reads ~7 KB HEAVIER than a Mac (the Sentry plugin stamps a debug-ID
+      snippet into each eager chunk on Vercel only), so calibrate against
+      local + 7. The saving was 6 KB, not the 12 the chunk's size suggested — the
+      old chunk also carried `lib/clubColour.js`, which Home genuinely needs.
+- [x] **The regression guards.** `audit-home-budget.mjs` now bans the table
+      ANYWHERE in the eager graph (the old ban looked one hop deep; this was two).
+      `tests/unit/club-routes-registered.test.js` pins the registration line, the
+      runtime map's parity with the generated one, and that no boot-path module
+      imports the table again.
+- [x] Prod verified 09-20 22:53 UTC: commit status `success`; `/quiz/arsenal/`,
+      `/quiz/sao-paulo/` and `/quiz/gremio/` all 200; prod GameRoot has no static
+      import of the table.
+
+- [ ] **⚠️ A PUSH TO `main` IS NOT DONE UNTIL THE COMMIT STATUS SAYS `success`.**
+      After EVERY push to main, poll until it settles, and treat `failure` /
+      `error` as stop-everything — the site will look fine, because the old build
+      is still serving:
+
+          gh api repos/honningdvergen/ball-iq/commits/<sha>/status --jq .state
+
+      `pending` → wait (a build is ~2 min); `success` → THEN curl a page the
+      change touched and confirm it rendered
+      ([[feedback_deploy_verified_means_rendered]]). This is a habit, not a gate:
+      it costs two minutes and would have caught this on the first failed deploy
+      instead of the fifth day. Tick this once it is written into the release
+      step everyone actually follows (the `ball-iq-seo-wave` and
+      `ball-iq-native-build` skills both end in a push). If it is ever skipped
+      again, the next step up is a scheduled check that alerts when main's HEAD
+      status is not `success` — not built, deliberately: try the habit first.
+- [ ] **`src/lib/clubColour.js` is eager in full (5.8 KB) for two small helpers.**
+      Home needs `tint` / `lift` (and App.jsx `CLUB_COLOUR_ALIASES`); the 180-line
+      `EXTRA` colour table is used only by the lazy Trail and Stadium screens, but
+      Rollup never splits a module across chunks, so Home pays for all of it.
+      Splitting the file (helpers + aliases / `EXTRA` + `clubColour()`, with
+      re-exports so scripts and tests keep their imports) is worth ~3.5 KB of
+      headroom. Not urgent at 905 vs 909 — do it BEFORE the next club wave needs
+      the room, not after a deploy fails.
+
 ## 2026-09-17 — 🇧🇷 BRASILEIRÃO WAVE: facts verified against live sources BEFORE the forge
 
 Four clubs, all currently packless (bank 7,443). Divisions and colours checked
