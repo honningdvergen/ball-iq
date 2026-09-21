@@ -29,6 +29,10 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 - **Device-test before submitting.** Permission prompts, splash behaviour and push cannot be mocked. A green build proves compilation, not behaviour.
 - **One version through App Store review at a time.**
 - **Uploading is the user's call**, every time. Building locally is free; publishing is not. Never upload without an explicit go-ahead for that specific build.
+- **A version bump pushed to `main` is a web deploy too.** Wait for the
+  `Production deploy check` action (`.github/workflows/deploy-check.yml`) to go
+  green after the push — a failed Vercel deploy leaves the old site serving and
+  looks exactly like success.
 - **Prod status is unknowable from the repo.** `pbxproj` shows what's *cut*. Whether it's live is in App Store Connect — ask, or read it in the user's paired Chrome.
 
 ## The web/native boundary — the trap that keeps recurring

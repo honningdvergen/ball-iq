@@ -1,0 +1,128 @@
+# Production deploy check — fails loudly when a push to main does not reach
+# production, so GitHub notifies instead of nobody.
+#
+# WHY THIS EXISTS. From 2026-09-17 to 09-21 every production deploy failed on
+# the last build gate (Home eager JS 911 KB > 910) and nothing said so. Vercel
+# keeps serving the previous build when a deploy fails, so the site looked
+# healthy while four new club pages were 404 and every later push was dropped.
+# The failure WAS reported — Vercel posted `failure` on each commit's status —
+# but a commit status notifies no one.
+#
+# CI (ci.yml) could not have caught it: CI builds without SENTRY_AUTH_TOKEN,
+# the Sentry plugin self-disables, and the eager chunks come out ~7 KB lighter
+# than on Vercel. CI measured 904 and passed. Only Vercel's own verdict knows.
+#
+# WHAT IT CHECKS, in order — both must hold:
+#   1. Vercel's status on the pushed commit settles to `success`.
+#      `failure` / `error` fails this job at once, with a link to the build log.
+#   2. https://balliq.app/version.json (served no-cache, see vite.config.js)
+#      reports that commit — or a newer one on top of it. This is the real
+#      condition: what production SERVES, not what Vercel says it built.
+#
+# ⚠️ ONLY THE TIP OF A PUSH IS CHECKED, and that is deliberate. Vercel builds the
+# last commit of each push; the commits beneath it get NO status at all
+# (ab907e4d, 09-21, pushed as one of three, still reads `pending` with zero
+# statuses). Waiting on those would be a false alarm on every batched push.
+#
+# ⚠️ A FALSE ALARM IS A REAL COST. ci.yml's header says it: a gate that is red
+# for no reason teaches everyone to ignore it. So an unreadable version.json
+# (e.g. Vercel's bot checkpoint answering the runner) is a WARNING, never a
+# failure, when Vercel itself reported success. Only a failed deploy, a stuck
+# one, or production provably serving an OLDER commit fails the job.
+
+name: Production deploy check
+
+on:
+  push:
+    branches: [main]
+  # Backstop for pushes that produce no run at all — GitHub dropped two pushes
+  # to main entirely on 2026-08-06/07 (see ci.yml). Every 6 hours re-checks
+  # main's current tip, so a missed push is caught within a quarter of a day.
+  schedule:
+    - cron: '17 */6 * * *'
+  # By hand, against any commit — also how this check was proven: it must
+  # FAIL on 5303b4b0 (a real failed deploy) and PASS on a good tip.
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Commit to check (defaults to the current tip of main)
+        required: false
+
+# Only the newest check matters. Vercel cancels a build that a newer push
+# supersedes, and a cancelled build must not raise an alarm.
+concurrency:
+  group: prod-deploy-check
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  statuses: read
+
+jobs:
+  deployed:
+    runs-on: ubuntu-latest
+    # A normal deploy settles in ~2 min. 30 covers a slow build with room to
+    # spare; anything longer is itself the thing to be told about.
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SHA: ${{ inputs.sha || github.sha }}
+      SITE: https://balliq.app
+    steps:
+      - name: Wait for Vercel's verdict
+        run: |
+          set -u
+          echo "Checking ${SHA:0:7} on ${GITHUB_REPOSITORY}"
+          deadline=$(( $(date +%s) + 25 * 60 ))
+          while :; do
+            # Newest first; take Vercel's latest status on this exact commit.
+            row=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${SHA}/statuses" \
+                    --jq '[.[] | select(.context == "Vercel")][0] | "\(.state) \(.target_url // "")"' 2>/dev/null || true)
+            state=${row%% *}
+            url=${row#* }
+            case "$state" in
+              success)
+                echo "Vercel reported success: $url"
+                break ;;
+              failure|error)
+                echo "::error title=Production deploy FAILED::Vercel reported '$state' for ${SHA:0:7}. Production is still serving the PREVIOUS build, so the site will look fine. Build log: $url"
+                exit 1 ;;
+              *)
+                # empty (no status posted yet) or pending
+                if [ "$(date +%s)" -ge "$deadline" ]; then
+                  echo "::error title=Production deploy never finished::No success from Vercel for ${SHA:0:7} after 25 minutes (last state: '${state:-none}'). Either the build is stuck or Vercel never started one."
+                  exit 1
+                fi
+                sleep 30 ;;
+            esac
+          done
+
+      - name: Confirm production serves it
+        run: |
+          set -u
+          UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36 ball-iq-deploy-check'
+          want=${SHA:0:7}
+          served=""
+          # A success status can land a few seconds before the new build is
+          # aliased to the production domain; give it up to ~3 minutes.
+          for i in $(seq 1 12); do
+            served=$(curl -fsS -A "$UA" "${SITE}/version.json?check=${GITHUB_RUN_ID}-${i}" 2>/dev/null | jq -r '.sha // empty' 2>/dev/null || true)
+            [ "$served" = "$want" ] && { echo "Production serves ${want}. Deploy verified."; exit 0; }
+            sleep 15
+          done
+
+          if [ -z "$served" ]; then
+            echo "::warning title=Could not read version.json::Vercel reported success, but ${SITE}/version.json was unreadable from the runner (possibly Vercel's bot checkpoint). Not failing on this alone."
+            exit 0
+          fi
+
+          # Serving something else. Fine if it is NEWER — a later push landed on
+          # top of this one. Failing only if production is BEHIND this commit.
+          rel=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${SHA}...${served}" --jq '.status' 2>/dev/null || echo unknown)
+          case "$rel" in
+            ahead|identical)
+              echo "Production serves ${served}, which already includes ${want}. Superseded by a newer deploy — fine." ;;
+            *)
+              echo "::error title=Production is not serving this deploy::Vercel reported success for ${want}, but ${SITE}/version.json still reports ${served} (relationship: ${rel}). Production is behind main."
+              exit 1 ;;
+          esac

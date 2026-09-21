@@ -199,6 +199,13 @@ club pages once. Third-party scripts follow the native-guard rule from
    lenses that ask for heritage WILL produce these.
 2. One commit for the wave; push main → Vercel deploy regenerates the sitemap and
    **pings IndexNow automatically** (prod builds only). No manual index step.
+   ⚠️ **THEN WAIT FOR THE `Production deploy check` ACTION TO GO GREEN** before
+   saying anything is live (`gh run watch` on the newest run of
+   `deploy-check.yml`). The Brasileirão wave passed every local gate at 904 KB
+   and failed on Vercel at 911 — CI builds are ~7 KB heavier (Sentry) — so the
+   four pages were 404 for four days while the site looked healthy. A green
+   local build proves nothing about the deploy. Never end a turn on a
+   background poll: that output can be lost, and it was.
 3. **Verify live by static `<title>`, not HTTP 200** — the SPA catch-all answers
    200 for any path, so 200 proves nothing. `curl | grep '<title>'` must show the
    club title, not "Ball IQ — The Ultimate Football Quiz". Deploys flip in ~1-3

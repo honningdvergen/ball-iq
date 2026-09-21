@@ -29,7 +29,20 @@ simply 404. Found by accident, not by any instrument.
       `/quiz/sao-paulo/` and `/quiz/gremio/` all 200; prod GameRoot has no static
       import of the table.
 
-- [ ] **⚠️ A PUSH TO `main` IS NOT DONE UNTIL THE COMMIT STATUS SAYS `success`.**
+- [x] **⚠️ A PUSH TO `main` IS NOT DONE UNTIL THE COMMIT STATUS SAYS `success`.**
+      ✅ **AUTOMATED 2026-09-21 — `.github/workflows/deploy-check.yml`.** The habit
+      below was already skipped once (the 09-17 wave, where the live check was a
+      background poll whose output was lost), which met this item's own trigger
+      for the "next step up", and Alex asked for the alarm outright. On every push
+      to main — plus every 6 h as a backstop for pushes GitHub drops — it waits for
+      Vercel's status on the tip, fails at once on `failure`/`error` with a link to
+      the build log, then confirms `/version.json` serves that commit or a newer
+      one. A failed run = a GitHub notification. **Proven before it shipped**,
+      against real commits: FAILS on 5303b4b0 (the real failed deploy), PASSES
+      on the tip, PASSES on superseded b6aa32f, and the compare API returns
+      `behind` for a stale production. Only the tip of a push is checked —
+      Vercel posts NO status on the commits beneath it (ab907e4d).
+      The original habit note, kept for the manual command:
       After EVERY push to main, poll until it settles, and treat `failure` /
       `error` as stop-everything — the site will look fine, because the old build
       is still serving:
