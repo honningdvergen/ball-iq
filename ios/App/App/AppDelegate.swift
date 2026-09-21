@@ -7,13 +7,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Window set-up lives in SceneDelegate now (configureWindow below): under the
+        // scene life cycle there is no window yet when this method runs.
+        return true
+    }
+
+
+    // Everything that used to run against self.window in didFinishLaunching.
+    // Called by SceneDelegate once UIKit has built the window from Main.storyboard.
+    static func configureWindow(_ window: UIWindow?) {
         // Paint the native UIWindow + rootViewController.view to the app canvas so
         // the safe-area bands above the status bar and below the home indicator don't
         // show iOS's default-black .systemBackground bleeding through the WebView.
         // 2026-07 re-skin: #09131C (bluish) -> #0A0A0A (neutral) to match the new palette.
         let bg = UIColor(red: 10.0/255.0, green: 10.0/255.0, blue: 10.0/255.0, alpha: 1.0)
-        self.window?.backgroundColor = bg
-        self.window?.rootViewController?.view.backgroundColor = bg
+        window?.backgroundColor = bg
+        window?.rootViewController?.view.backgroundColor = bg
 
         // ⚠️ ~1.0 SECOND OF PURE BLACK MID-LAUNCH. Scouting report #4 reproduced
         // it three times on a simulator against build 75: the launch storyboard
@@ -38,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //
         // Same asset and same contentMode as LaunchScreen.storyboard, so the
         // handoff is invisible rather than a second, different splash.
-        if let rootView = self.window?.rootViewController?.view,
+        if let rootView = window?.rootViewController?.view,
            let splash = UIImage(named: "Splash") {
             let backdrop = UIImageView(image: splash)
             backdrop.contentMode = .scaleAspectFill
@@ -70,10 +79,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //
         // Android + PWA get the web-side fallback in useKeyboardAwareInput.js,
         // which is now disabled on native so the two cannot race.
-        if let bridgeVC = self.window?.rootViewController as? CAPBridgeViewController {
+        if let bridgeVC = window?.rootViewController as? CAPBridgeViewController {
             bridgeVC.webView?.scrollView.keyboardDismissMode = .onDrag
         }
-        return true
+    }
+
+    // ⚠️ UIScene LIFE CYCLE — REQUIRED, NOT OPTIONAL (2026-09-21). An app built with
+    // the iOS 27 SDK (Xcode 27) that has not adopted scenes is KILLED AT LAUNCH on
+    // iOS 27: "UIScene life cycle is required for apps built with this SDK". On
+    // iOS 26 the same binary only logs a warning — which is how build 138 passed a
+    // 26.5 simulator and Alex's phone, then crashed on a TestFlight tester's iOS 27
+    // device within hours. Capacitor ships this officially in 8.5 (SceneDelegateProxy);
+    // we are on 6.x, so the scene delegate below forwards to ApplicationDelegateProxy
+    // by hand. When Capacitor is upgraded past 8.5, replace it with theirs.
+    func application(_ application: UIApplication,
+                     configurationForConnecting connectingSceneSession: UISceneSession,
+                     options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let config = UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        config.delegateClass = SceneDelegate.self
+        config.storyboard = UIStoryboard(name: "Main", bundle: nil)
+        return config
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -121,4 +146,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
     }
 
+}
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+
+    // UIKit builds this from Main.storyboard (see the scene manifest in Info.plist)
+    // and assigns it BEFORE scene(_:willConnectTo:options:) is called.
+    var window: UIWindow?
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        // The splash-screen plugin (and anything else written for the old life cycle)
+        // looks for the window on the app delegate first. Keep the two in step.
+        (UIApplication.shared.delegate as? AppDelegate)?.window = window
+
+        // ORDER MATTERS. configureWindow touches rootViewController.view, which forces
+        // the Capacitor bridge and its plugins to load — so the App plugin's URL
+        // observers exist BEFORE a cold-launch link is forwarded below. Under the old
+        // life cycle the same guarantee came from didFinishLaunching running first.
+        AppDelegate.configureWindow(window)
+
+        // Cold launch from a link. Under scenes these arrive HERE, never through the
+        // app delegate's open-url / continue-activity methods — without this block a
+        // /join/ or /c/ link that launches the app would open Home and drop the link.
+        for context in connectionOptions.urlContexts {
+            #if DEBUG
+            // Debug only: sign-in callbacks arrive on this path with a login code in the URL.
+            NSLog("%@ %@", "SceneDelegate cold-launch url ->", context.url.absoluteString)
+            #endif
+            _ = ApplicationDelegateProxy.shared.application(UIApplication.shared, open: context.url, options: [:])
+        }
+        for activity in connectionOptions.userActivities {
+            #if DEBUG
+            // Debug only: sign-in callbacks arrive on this path with a login code in the URL.
+            NSLog("%@ %@", "SceneDelegate cold-launch activity ->", activity.webpageURL?.absoluteString ?? activity.activityType)
+            #endif
+            _ = ApplicationDelegateProxy.shared.application(UIApplication.shared, continue: activity, restorationHandler: { _ in })
+        }
+    }
+
+    // Warm opens: custom-scheme URLs (OAuth callbacks included).
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        for context in URLContexts {
+            #if DEBUG
+            // Debug only: sign-in callbacks arrive on this path with a login code in the URL.
+            NSLog("%@ %@", "SceneDelegate warm url ->", context.url.absoluteString)
+            #endif
+            _ = ApplicationDelegateProxy.shared.application(UIApplication.shared, open: context.url, options: [:])
+        }
+    }
+
+    // Warm opens: universal links (/join/ and /c/).
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        #if DEBUG
+        // Debug only: sign-in callbacks arrive on this path with a login code in the URL.
+        NSLog("%@ %@", "SceneDelegate warm activity ->", userActivity.webpageURL?.absoluteString ?? userActivity.activityType)
+        #endif
+        _ = ApplicationDelegateProxy.shared.application(UIApplication.shared, continue: userActivity, restorationHandler: { _ in })
+    }
 }
