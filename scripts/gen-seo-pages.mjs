@@ -1139,6 +1139,52 @@ function trustSection(name, rows) {
 </section>`;
 }
 
+// ── AdSense fix 2 (2026-09-23): a club page SHOWS its own writing ─────────────
+//
+// ⚠️ WHY. AdSense rejected the site twice for "low value content". Measured on
+// /quiz/cruzeiro/ at 390px, a visitor who taps nothing could read 460 words, and
+// the page's own substance sat behind taps: the club write-up folded as the last
+// FAQ item 7.5 screens down, and every question and explanation shipped in the
+// HTML but paced one at a time by the quiz. Meanwhile the /questions/ Q&A twin
+// canonicals to THIS page, so the page Google indexes was the one showing the
+// least text. Alex judged the A/B (artifact, 2026-09-23) and kept all four:
+//   1. the write-up renders OPEN, as its own section, not an FAQ fold
+//   2. every question is listed with its answer folded until tapped
+//   3. 12 tiles show instead of 24 (the fold stays; see the club call site)
+//   4. the per-club "covers" + "how it is checked" blurbs, word-for-word the
+//      same on every club page, become one line linking to /about/
+//
+// ⚠️ NO NUMBERING on the answer list. A 1..N list ending at N prints the
+// question count, which is a binding product rule (audit-no-question-count).
+function renderClubAbout(name, intro) {
+  return `<section class="sec narrow" id="about-club">
+<h2>About ${esc(name)}</h2>
+<div class="prose">
+${intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
+</div>
+</section>`;
+}
+
+function renderAnswerList(name, rows) {
+  const items = rows.map((r) => `<li><p class="ans-q">${esc(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(r.o[r.a])}.</b> ${esc(r.hint)}</p></details></li>`);
+  return `<section class="sec narrow" id="answers">
+<h2>${esc(name)} quiz answers, explained</h2>
+<p class="sub">Every question from the quiz above. Play it first; each answer stays folded until you open it.</p>
+<ol class="ans-list">
+${items.join('\n')}
+</ol>
+</section>`;
+}
+
+// The one line that replaces renderCovers() + trustSection() on club pages.
+// Keeps the site's single visible "soccer" (US searchers, see renderCovers) and
+// the corrections link; the method itself is written up once, on /about/.
+function clubCheckLine() {
+  return `<section class="sec narrow">
+<p class="check-line">Every football question here, soccer if you're reading in the US, is researched against sources and checked before it goes live. <a href="${SITE.base}/about/">How Ball IQ checks its questions →</a> Spot something wrong? <a href="${SITE.base}/contact/">Tell us</a>.</p>
+</section>`;
+}
+
 // Difficulty arc for the on-page quiz set.
 //
 // curate() and tasterPick() both exclude `easy` by construction ("never easy"),
@@ -1780,6 +1826,18 @@ ${SHELL_CSS}
   /* prose */
   .prose p{color:#CDD3DE;font-size:16px;line-height:1.7;margin-bottom:14px;max-width:68ch}
   .prose p a{color:var(--grn-soft)}
+  /* club answer list (AdSense fix 2) */
+  .ans-list{list-style:none;padding:0;margin:0}
+  .ans-list li{border-top:1px solid #1A1D27;padding:16px 2px}
+  .ans-list li:last-child{border-bottom:1px solid #1A1D27}
+  .ans-q{margin:0 0 10px;color:#fff;font-size:16px;line-height:1.5;font-weight:600;max-width:68ch}
+  .ans-show summary{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--bd2);border-radius:10px;color:var(--tx3);font-size:14px;font-weight:700;cursor:pointer;list-style:none}
+  .ans-show summary::-webkit-details-marker{display:none}
+  .ans-show[open] summary{color:var(--grn);border-color:rgba(88,204,2,.4)}
+  .ans-a{margin:10px 0 0;color:#CDD3DE;font-size:15.5px;line-height:1.65;max-width:68ch}
+  .ans-a b{color:#fff}
+  .check-line{margin:0;color:var(--tx3);font-size:15px;line-height:1.65;max-width:68ch}
+  .check-line a{color:var(--grn);font-weight:700}
   .stats{display:inline-block;font-size:13px;font-variant-numeric:tabular-nums;color:var(--tx3);background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-top:6px}
   /* sample Q&A */
   .qa-list{list-style:none;counter-reset:qa;padding:0;margin:0}
@@ -2465,7 +2523,9 @@ ${appCtaBand(cfg.name)}
 ${grid ? grid.html : ''}
 <section class="sec">
 <h2>More quizzes to try</h2>
-${renderTiles(related)}
+${/* 12 visible, not 24 (AdSense fix 2). The tail stays FOLDED, never cut:
+     it is the site's internal-link mesh and crawlers walk the closed fold. */''}
+${renderTiles(related, { collapseAfter: 12 })}
 ${/* Link to this club's TEXT Q&A page. Without this the /questions layer
      ships ORPHANED — 71 pages in the sitemap with zero inbound internal
      links, which is precisely the defect the 2026-07-28 ranking diagnosis
@@ -2496,11 +2556,15 @@ ${/* ⚠️ THE WORDING IS A STATEMENT, NOT AN OFFER. It read "Prefer another
 ${twins.length ? `<p style="margin:10px 2px 0;color:var(--tx3);font-size:13.5px">Other languages: ${twins.map((t) => `<a href="${SITE.base}/${t.lang}/quiz/${cfg.slug}/" hreflang="${t.lang}" style="color:var(--grn);font-weight:600">${esc(LANG_LABEL[t.lang] || t.lang)} — ${esc(t.h1)}</a>`).join(' · ')}</p>` : ''}
 ${renderListLinks(cfg.name)}
 </section>
-${renderCovers(cfg.name, false, false, `${SITE.base}/play?club=${cfg.slug}`)}
+${/* Prose AFTER the band + mesh, per the ACTION BEFORE PROSE note above: the
+     write-up is now open and on the page, which is what the reviewer needed;
+     it does not need to push the install band and the mesh below the cliff. */''}
+${renderClubAbout(cfg.name, cfg.intro)}
+${renderAnswerList(cfg.name, quizRows)}
+${clubCheckLine()}
 <section class="sec narrow">
-${trustSection(cfg.name, all)}
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
-${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">The ${esc(cfg.name)} set runs the full range — easy starters, a medium core, and hard questions a devoted fan has to think about.</p>` })}
+${renderFaq(cfg.faq)}
 </section>
 ${adSlot('afterFaq')}
 </main>
