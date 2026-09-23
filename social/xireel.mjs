@@ -2,7 +2,10 @@
 // what Facebook's ranking rewards (09-23 research): ORIGINAL content (our own graphic, not a caption on a
 // viral clip), watched to the END (names reveal one by one after the countdown), no tag/comment-bait text.
 //
-//   node social/xireel.mjs --id 2005-uefa-champions-league-final-1 [--out name] [--track polka]
+//   node social/xireel.mjs --id 2005-uefa-champions-league-final-1 [--out name] [--track polka] [--plain]
+//
+// When social/.fmxi/<id>.json exists (made by fmxi.mjs) the reel uses FotMob's lineup-builder pitch at full
+// width — Alex's call 09-23: ours read "bland and narrow". --plain forces the old drawn pitch.
 //
 // Line-ups come from src/data/xiPool.json (the Ball IQ XI game's data) — never retyped.
 
@@ -36,10 +39,15 @@ const d = {
   end: 'How many did you get?',
 };
 const TOTAL = THINK + order.length * STEP + TAIL;
+const FMJ = path.join(HERE, '.fmxi', xi.id + '.json');
+const FM = !process.argv.includes('--plain') && fs.existsSync(FMJ) ? JSON.parse(fs.readFileSync(FMJ, 'utf8')) : null;
+if (FM) Object.assign(d, { width: FM.width, height: FM.height, hidden: `.fmxi/${xi.id}-hidden.png`, shown: `.fmxi/${xi.id}-shown.png`,
+  players: FM.players.map((p) => ({ ...p, no: xi.players[p.poolIdx].no })) });
 
 const b = await chromium.launch(); const page = await b.newPage({ viewport: { width: 1080, height: 1920 } });
-await page.goto('file://' + path.join(HERE, 'xireel.html')); await page.waitForFunction(() => window.ready);
+await page.goto('file://' + path.join(HERE, FM ? 'xireel-fm.html' : 'xireel.html')); await page.waitForFunction(() => window.ready);
 await page.evaluate((x) => window.setup(x), d);
+if (FM) await page.waitForFunction(() => document.getElementById('hid').complete && document.getElementById('hid').naturalWidth > 0);
 const FR = path.join(HERE, '.frames-xi'); fs.rmSync(FR, { recursive: true, force: true }); fs.mkdirSync(FR, { recursive: true });
 const n = Math.round(TOTAL * FPS);
 for (let i = 0; i < n; i++) { await page.evaluate((t) => window.at(t), i / FPS); await page.screenshot({ path: path.join(FR, String(i).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 90 }); }

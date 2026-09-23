@@ -1,0 +1,67 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  /* 1080x1920 "Guess the XI" on a FotMob lineup-builder pitch (captured by fmxi.mjs). Full width. */
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { width:1080px; height:1920px; overflow:hidden; background:#101010; color:#fff; font-family:-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif; }
+  #head { position:absolute; left:50px; right:50px; top:215px; text-align:center; }
+  #kick { font-size:40px; font-weight:900; letter-spacing:.06em; color:#ffd84d; text-transform:uppercase; }
+  #title { font-size:84px; font-weight:900; line-height:1.02; margin-top:8px; letter-spacing:-.01em; }
+  #sub { font-size:38px; font-weight:700; color:rgba(255,255,255,.72); margin-top:10px; }
+  #pitch { position:absolute; left:0; top:445px; width:1080px; }
+  #pitch > img { display:block; width:1080px; }
+  .no { position:absolute; display:flex; align-items:center; justify-content:center; border-radius:50%;
+    color:#101010; font-weight:900; font-variant-numeric:tabular-nums; }
+  .rv { position:absolute; opacity:0; transform:scale(.6); background-repeat:no-repeat; }
+  .rv.on { opacity:1; transform:scale(1); }
+  #clock { position:absolute; left:0; right:0; text-align:center; font-size:100px; font-weight:900; font-variant-numeric:tabular-nums; }
+  #clock.hot { color:#ff4d4d; }
+  #end { position:absolute; left:40px; right:40px; text-align:center; font-size:66px; font-weight:900; display:none; }
+</style></head>
+<body>
+<div id="head"><div id="kick"></div><div id="title"></div><div id="sub"></div></div>
+<div id="pitch"><img id="hid"></div>
+<div id="clock"></div>
+<div id="end"></div>
+<script>
+const $ = (id) => document.getElementById(id);
+window.setup = (d) => {
+  $('kick').textContent = d.kick; $('title').textContent = d.title; $('sub').textContent = d.sub;
+  $('hid').src = d.hidden;
+  const pitch = $('pitch');
+  d.players.forEach((p, i) => {
+    const f = p.face;
+    const no = document.createElement('div'); no.className = 'no'; no.id = 'no' + i;
+    Object.assign(no.style, { left: f.x + 'px', top: f.y + 'px', width: f.w + 'px', height: f.h + 'px', fontSize: Math.round(f.h * 0.46) + 'px' });
+    no.textContent = p.no ?? '';
+    pitch.appendChild(no);
+    // the revealed player = the same box cut from FotMob's "shown" capture, a little padded
+    const a = p.all, pad = 6, x = a.x - pad, y = Math.min(f.y, a.y) - pad, w = a.w + pad * 2, h = (a.y + a.h) - y + pad;
+    const rv = document.createElement('div'); rv.className = 'rv'; rv.id = 'rv' + i;
+    Object.assign(rv.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px',
+      backgroundImage: `url(${d.shown})`, backgroundSize: `${d.width}px ${d.height}px`, backgroundPosition: `${-x}px ${-y}px` });
+    pitch.appendChild(rv);
+  });
+  const below = 445 + d.height;
+  $('clock').style.top = (below + 22) + 'px'; $('end').style.top = (below + 30) + 'px';
+  window.D = d;
+};
+window.at = (t) => {
+  const d = window.D;
+  const left = Math.ceil(d.think - t);
+  $('clock').style.display = t < d.think ? 'block' : 'none';
+  $('clock').textContent = left > 0 ? left : '';
+  $('clock').className = left <= 3 ? 'hot' : '';
+  d.order.forEach((i, k) => {
+    const dt = t - (d.think + k * d.step), on = dt >= 0, e = Math.min(1, Math.max(0, dt / 0.18));
+    const rv = $('rv' + i);
+    rv.style.opacity = on ? e : 0;
+    rv.style.transform = `scale(${on ? 0.7 + 0.3 * e + (e < 1 ? 0 : 0) : 0.6})`;
+    $('no' + i).style.opacity = on ? 1 - e : 1;
+  });
+  $('end').style.display = t >= d.think + d.order.length * d.step ? 'block' : 'none';
+  $('end').textContent = d.end;
+};
+window.ready = true;
+</script>
+</body></html>
