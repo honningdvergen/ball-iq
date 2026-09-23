@@ -181,10 +181,16 @@ function upcomingPage(n, now) {
     status: 200,
     cacheSeconds: secondsToUtcMidnight(now),
     staleSeconds: 60,
-    html: answerDocument({ title, description, canonical, ogTitle: `Footle No. ${n} Hints & Answer`, ld: breadcrumbLd([{ name: 'Answers', item: HUB }, { name: `No. ${n}`, item: canonical }]), body }),
+    html: answerDocument({ title, description, canonical, robots: 'noindex, follow', ogTitle: `Footle No. ${n} Hints & Answer`, ld: breadcrumbLd([{ name: 'Answers', item: HUB }, { name: `No. ${n}`, item: canonical }]), body }),
   };
 }
 
+// ⚠️ NOINDEX, FOLLOW (2026-09-23, AdSense 'low value content'). Over 3 months the
+// per-day answer pages earned 0 clicks from 45 impressions combined, while the
+// landing page earned 18. ~180 near-identical auto-generated pages were the
+// largest single share of what a reviewer samples, and they shipped a week
+// before the re-review that was rejected. The landing page stays indexable;
+// these stay live and linked, and 'follow' keeps the links counting.
 function pastPage(n, todayN) {
   const di = dayIndexOfFootle(n);
   const surname = getWordleAnswerForDayIndex(di);
@@ -222,6 +228,7 @@ function pastPage(n, todayN) {
     cacheSeconds: 30 * 24 * 60 * 60,
     staleSeconds: 24 * 60 * 60,
     html: answerDocument({
+      robots: 'noindex, follow',  // see note above pastPage
       title,
       description,
       canonical,

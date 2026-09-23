@@ -85,6 +85,12 @@ function recentBlock(now, exceptDi = null) {
 <ul class="days">${days.map((d) => `<li><a href="${d.url}"><b>${esc(fmtUtc(dateOf(d.di), { weekday: 'short' }))}</b> ${esc(fmtUtc(dateOf(d.di), MONTH_LONG))}</a></li>`).join('')}</ul></section>`;
 }
 
+// ⚠️ NOINDEX, FOLLOW (2026-09-23, AdSense 'low value content'). Over 3 months the
+// per-day answer pages earned 0 clicks from 45 impressions combined, while the
+// landing page earned 18. ~180 near-identical auto-generated pages were the
+// largest single share of what a reviewer samples, and they shipped a week
+// before the re-review that was rejected. The landing page stays indexable;
+// these stay live and linked, and 'follow' keeps the links counting.
 function dayPage(di, now) {
   const today = todayIndex(now);
   const isToday = di === today;
@@ -127,6 +133,7 @@ ${recentBlock(now, di)}`;
     cacheSeconds: isToday ? secondsToUtcMidnight(now) : 30 * 24 * 60 * 60,
     staleSeconds: isToday ? 60 : 24 * 60 * 60,
     html: answerDocument({
+      robots: isToday ? undefined : 'noindex, follow',  // see note above dayPage
       title,
       description,
       canonical,

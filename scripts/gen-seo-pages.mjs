@@ -5925,13 +5925,14 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/club-nicknames/`, freq: 'monthly', pri: '0.7' },
     { loc: `${SITE.base}/xi/`, freq: 'daily', pri: '0.8' },
     { loc: `${SITE.base}/football-wordle/answer/`, freq: 'daily', pri: '0.7' },
-    // One page per finished puzzle / day, served by api/footle.js and
+    // ⚠️ The per-day answer pages are NOT submitted (2026-09-23): they are
+    // noindex — 0 clicks in 3 months, and the bulk of the auto-generated pages an
+    // AdSense reviewer samples. Only the two landing pages are listed.
+    // Previously: one page per finished puzzle / day, served by api/footle.js and
     // api/daily-answers.js. Only the last 30 are submitted, because only the
     // last 30 are linked from the landing pages below — the orphan gate is
     // right that a sitemap entry nobody links to is a liability, not an asset.
-    ...recentFootleAnswers(30).map((a) => ({ loc: a.url, freq: 'yearly', pri: '0.5' })),
     { loc: `${SITE.base}/daily-football-quiz/answers/`, freq: 'daily', pri: '0.7' },
-    ...recentDailyDays(30).map((d) => ({ loc: d.url, freq: 'yearly', pri: '0.5' })),
     { loc: `${SITE.base}/${GAMES_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
     { loc: `${SITE.base}/${GRID_PAGE.slug}/`, freq: 'daily', pri: '0.9' },
     { loc: `${SITE.base}/${MYSTERY_PAGE.slug}/`, freq: 'weekly', pri: '0.8' },
