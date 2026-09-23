@@ -162,13 +162,6 @@ const esc = (s) =>
 
 // JSON-LD must not allow a `</script>` breakout; escape `<`.
 const jsonLd = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
-// ⚠️ COUNTED, NEVER TYPED. "spanning 72 clubs" was hardcoded and printed on 149
-// club pages while the bank had grown to 99 — we spent months understating
-// ourselves by 27 clubs to every reader, and the same 72 sat on /partners/,
-// which is the page that pitches our catalogue to publishers. A number a human
-// types is a number that stops being true the next time the thing it counts
-// changes.
-const BANK_CLUB_COUNT = new Set(QB.map((q) => q.club).filter(Boolean)).size;
 
 
 // Education Q&A ("flashcard") Quiz node — the ONE quiz structured-data rich
@@ -1123,25 +1116,6 @@ function pct100(rows) {
   return 'Every one of them carries a written explanation.';
 }
 
-// The verification section. Competitors publish theirs and we run a stricter
-// process, so this is pure upside — but the coverage sentence comes from pct100()
-// so it stays silent wherever coverage is not actually 100%.
-//
-// ⚠️ DO NOT CLAIM THE QUESTIONS ARE WRITTEN BY HAND. This line read "written by
-// hand and verified" on 149 live pages until 2026-09-15, and it was false: the
-// club waves are drafted by a research pipeline, then examined and attacked by
-// independent verifiers before anything ships. The VERIFICATION claim below is
-// true and is the stronger half anyway — two checks, one against the claim the
-// question makes and one against the wrong answers beside it, with anything
-// unconfirmed dropped rather than guessed. Say that; never say "by hand".
-function trustSection(name, rows) {
-  return `<section class="sec narrow" id="how">
-<h2>How the ${esc(name)} quiz is checked</h2>
-<p class="sub">Every question above was researched against sources and verified before it went live.</p>
-<p class="trust-note">Every ${esc(name)} question here was checked twice before publication — once against the claim the question makes, and once against the wrong answers offered beside it. A question whose wrong options can be dismissed without knowing any football is not really a question, so those get rewritten or dropped rather than padded out. Anything that could not be confirmed was removed rather than guessed, which is why some sets are smaller than others. ${pct100(rows)} Spot something wrong and <a href="${SITE.base}/contact/">tell us</a> — corrections from players are how the bank stays accurate.</p>
-</section>`;
-}
-
 // ── AdSense fix 2 (2026-09-23): a club page SHOWS its own writing ─────────────
 //
 // ⚠️ WHY. AdSense rejected the site twice for "low value content". Measured on
@@ -1159,29 +1133,44 @@ function trustSection(name, rows) {
 //
 // ⚠️ NO NUMBERING on the answer list. A 1..N list ending at N prints the
 // question count, which is a binding product rule (audit-no-question-count).
-function renderClubAbout(name, intro) {
+function renderClubAbout(name, intro, heading = `About ${name}`) {
   return `<section class="sec narrow" id="about-club">
-<h2>About ${esc(name)}</h2>
+<h2>${esc(heading)}</h2>
 <div class="prose">
 ${intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
 </div>
 </section>`;
 }
 
-function renderAnswerList(name, rows) {
-  const items = rows.map((r) => `<li><p class="ans-q">${esc(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(r.o[r.a])}.</b> ${esc(r.hint)}</p></details></li>`);
+// `spread`: list at most that many, sampled evenly across the arc (so easy,
+// medium and hard all appear) instead of every row. Category pages carry
+// every question in their category, hundreds on the big ones, and a wall that
+// long reads as a dump, not an answer key. The sub line then says "a
+// selection", never a number (audit-no-question-count).
+function renderAnswerList(name, rows, { spread = 0 } = {}) {
+  const step = spread && rows.length > spread ? rows.length / spread : 1;
+  const picked = step > 1 ? Array.from({ length: spread }, (_, i) => rows[Math.floor(i * step)]) : rows;
+  const sub = step > 1
+    ? 'A selection from the quiz above, spread from the easiest to the hardest. Play it first; each answer stays folded until you open it.'
+    : 'Every question from the quiz above. Play it first; each answer stays folded until you open it.';
+  const items = picked.map((r) => `<li><p class="ans-q">${esc(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(r.o[r.a])}.</b> ${esc(r.hint)}</p></details></li>`);
   return `<section class="sec narrow" id="answers">
 <h2>${esc(name)} quiz answers, explained</h2>
-<p class="sub">Every question from the quiz above. Play it first; each answer stays folded until you open it.</p>
+<p class="sub">${sub}</p>
 <ol class="ans-list">
 ${items.join('\n')}
 </ol>
 </section>`;
 }
 
-// The one line that replaces renderCovers() + trustSection() on club pages.
-// Keeps the site's single visible "soccer" (US searchers, see renderCovers) and
-// the corrections link; the method itself is written up once, on /about/.
+// The one line that replaced the per-page "What the X quiz covers" grid and the
+// "How the X quiz is checked" section on club, category, player and nation
+// pages (both removed 2026-09-23; see git history). Keeps the site's single
+// visible "soccer" (US searchers: football stays the primary term for the UK
+// majority) and the corrections link; the method is written up once, on /about/.
+// ⚠️ NEVER CLAIM THE QUESTIONS ARE WRITTEN BY HAND. The old section said so on
+// 149 pages until 2026-09-15 and it was false: waves are drafted by a research
+// pipeline, then examined and attacked by independent verifiers.
 function clubCheckLine() {
   return `<section class="sec narrow">
 <p class="check-line">Every football question here, soccer if you're reading in the US, is researched against sources and checked before it goes live. <a href="${SITE.base}/about/">How Ball IQ checks its questions →</a> Spot something wrong? <a href="${SITE.base}/contact/">Tell us</a>.</p>
@@ -1271,96 +1260,6 @@ function arcPick(rows, n) {
 // :9142 only tidies the DISPLAYED url via replaceState AFTER the value is
 // consumed — it does not discard it. UTM params are deliberately preserved.
 // (moved to ./seo/quiz-widget.mjs on 2026-09-05)
-
-// ── "What the <topic> quiz covers" topic grid (Claude Design handoff) ─────────
-// Six generic-but-on-topic cards. Reassures the searcher what's inside + adds
-// crawlable keyword coverage (history, players, managers, trophies, records).
-const CLUB_COVERS = (n) => [
-  ['Club history', `Founding, golden eras and the moments that shaped ${n}.`],
-  ['Players & legends', 'Cult heroes and record-breakers, past and present.'],
-  ['Managers', 'The bosses in the dugout and the trophies they won.'],
-  ['Trophies & honours', 'Every title, cup and big European night that counts.'],
-  ['Records & stats', 'Appearances, goals, transfers and all-time bests.'],
-  ['Iconic moments', 'Famous games, comebacks and unforgettable goals.'],
-];
-const LEAGUE_COVERS = (n) => [
-  ['Champions & title races', 'Every winner and the races that went down to the wire.'],
-  ['Players & legends', `The stars and record-breakers who defined the ${n}.`],
-  ['Managers', 'The great bosses and the dynasties they built.'],
-  ['Trophies & records', 'Top scorers, appearances, transfers and all-time bests.'],
-  ['Famous matches', 'Iconic games, comebacks and unforgettable goals.'],
-  ['History & eras', 'Founding stories, golden eras and how it all evolved.'],
-];
-const PLAYER_COVERS = (n) => [
-  ['Career & clubs', `Every club ${n} played for and the moves in between.`],
-  ['Trophies & honours', 'Leagues, cups and the biggest nights of the career.'],
-  ['Goals & records', 'The milestones, the tallies and the records set.'],
-  ['International', 'The national-team story — tournaments, caps and glory.'],
-  ['Iconic moments', 'The goals and games fans will never forget.'],
-  ['Awards', "Ballon d'Ors, Golden Boots and individual honours."],
-];
-// These were plain <div>s, and Clarity session recordings show people TAPPING
-// them — one visitor answered correctly for six minutes, then hit
-// "Players & legends" twice, "Iconic moments" and "Records & stats" in four
-// seconds and left. That is the engaged cohort asking "what else have you got?"
-// and finding a wall, at the precise moment of peak intent. They are now links
-// to the full quiz: same reassurance for a scanner, a real destination for
-// anyone who taps.
-// ⚠️ THESE ARE DESCRIPTIONS, NOT DOORS — and `href` is now ignored on purpose.
-// Six tiles labelled Club history / Players & legends / Managers / Trophies &
-// honours / Records & stats / Iconic moments each linked to the IDENTICAL pool.
-// A reader who tapped "Managers" and got a random Henry question learned the
-// labels were decoration, which is precisely the impression the hand-checked
-// voice exists to avoid. That is the CTA-parity bug class: a control whose
-// label does not match what pressing it does.
-//
-// ⚠️ AND A REAL TOPIC FILTER IS NOT POSSIBLE ON THIS BANK. Both audit reports
-// offered "wire them to a topic filter" as the better fix. Measured 2026-09-02
-// against the four tiles that map onto a real `cat` (History, Legends,
-// Managers, Records), across all 89 clubs carrying club-tagged questions:
-//   • only 4 clubs support 4 topics at >=5 questions — Dortmund, Athletic
-//     Bilbao, Fiorentina, Sunderland. Not the clubs anyone searches for.
-//   • Arsenal, the biggest club page, has TWO History questions.
-//   • 26-32 clubs have ZERO questions in each given topic.
-// Wiring the filter would ship six doors into two-question or empty rooms —
-// worse than one honest door. So they become plain, non-clickable descriptions
-// of what the quiz covers, which is true today and reads as useful copy.
-// Revisit only if a wave ever gives the big clubs real per-topic depth.
-function renderCovers(name, isLeague, isPlayer, _href) {
-  const set = isPlayer ? PLAYER_COVERS(name) : isLeague ? LEAGUE_COVERS(name) : CLUB_COVERS(name);
-  const cards = set
-    .map(([t, d]) => `<div class="cov"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`)
-    .join('\n');
-  return `<section class="sec">
-<h2 id="covers">What the ${esc(name)} quiz covers</h2>
-${/* One visible use of "soccer" per page, in the shared covers subtitle so a
-      single edit reaches all ~120 club/league/player pages. Kept as an aside
-      rather than a rewrite: "football" stays the primary term for the UK
-      majority (50 sessions vs 17 US), and rewriting ~180 pages into US English
-      would trade a converting audience for a non-converting one. */ ''}
-<p class="sub">Every football question here is researched and fact-checked — soccer, if you're reading this in the US — across the topics that decide a real ${esc(name)} expert:</p>
-<div class="covers">${cards}</div>
-${/* E-E-A-T. We do the work — a three-stage forge for new questions, a
-      distractor audit, 329 corrections applied in a single day — and none of
-      it was visible anywhere on the site. For a facts-based publisher that is
-      the cheapest trust signal there is, and we had simply never claimed it.
-
-      Every number here is MEASURED and must stay that way:
-        5,834  questions in the bank
-        4,394  carry a written explanation (75.3%) — deliberately NOT all of
-               them; some answers need none, which is why this says "where
-               there is more to say" and not "every answer". The store copy
-               currently overclaims exactly this and is logged as task #63.
-      Regenerate from src/questions.js before editing these figures. */ ''}
-${/* ⚠️ NEVER PRINT THE EXACT QUESTION COUNT — binding product rule.
-      This line used to interpolate QB.length and shipped "a bank of 6,405
-      questions" onto every club page, while the hand-written homepage block
-      said 6,409. An editor auditing the site found both within one click.
-      "Thousands" says the same thing, cannot go stale, and cannot disagree
-      with another page. */ ''}
-<p class="editorial">This is one set from a bank of thousands of questions spanning ${BANK_CLUB_COUNT} clubs, every major league and eight decades of football.</p>
-</section>`;
-}
 
 // ── shared <head> + inline CSS ────────────────────────────────────────────────
 // Inter (UI) + JetBrains Mono (numbers/tags) loaded NON-render-blocking, same as
@@ -2002,7 +1901,6 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
   const medium = all.filter((x) => x.diff === 'medium').length;
   const hard = all.filter((x) => x.diff === 'hard').length;
 
-  const deepPlay = QUIZ_DEEPLINK_SLUGS.has(catCfg.slug) ? `${SITE.base}/play?quiz=${catCfg.slug}` : `${SITE.base}/`;
   const related = [
     ...resolveLeagueClubs(catCfg.slug, clubPages),
     ...livePages.filter((p) => p.slug !== catCfg.slug),
@@ -2035,18 +1933,23 @@ ${heroTwoCol({
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), slug: catCfg.slug, kind: 'category', play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
-${renderCovers(catCfg.name, true, false, deepPlay)}
 ${appCtaBand(catCfg.name)}
 ${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
-${renderTiles(related)}
+${renderTiles(related, { collapseAfter: 12 })}
 ${renderListLinks(catCfg.name)}
 </section>
+${/* AdSense fix 2 (2026-09-23), same as the club page: the write-up renders
+     open instead of as the last FAQ fold, and the covers + how-it-is-checked
+     blurbs, word-for-word the same on every page of this type, become one
+     line to /about/. Prose sits after the band and the mesh. */''}
+${renderClubAbout(catCfg.name, catCfg.intro, `About the ${catCfg.name} quiz`)}
+${renderAnswerList(catCfg.name, quizRows, { spread: 40 })}
+${clubCheckLine()}
 <section class="sec narrow">
-${trustSection(catCfg.name, all)}
 <h2 id="faq">${esc(catCfg.name)} quiz — FAQ</h2>
-${renderFaq(catCfg.faq, { q: `About the ${catCfg.name} quiz`, html: `${catCfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}\n<p class="stats">The ${esc(catCfg.name)} set runs the full range — easy starters, a medium core, and hard questions a devoted fan has to think about.</p>` })}
+${renderFaq(catCfg.faq)}
 </section>
 ${adSlot('afterFaq')}
 </main>
@@ -2692,7 +2595,6 @@ ${heroTwoCol({
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), slug: cfg.slug, kind: 'player' }))}
-${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
@@ -2705,10 +2607,15 @@ ${adSlot('afterQA')}
 ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
+${/* AdSense fix 2 (2026-09-23), same as the club page: the write-up renders
+     open instead of as the last FAQ fold, and the covers + how-it-is-checked
+     blurbs, word-for-word the same on every page of this type, become one
+     line to /about/. Prose sits after the band and the mesh. */''}
+${renderClubAbout(cfg.name, cfg.intro, `About the ${cfg.name} quiz`)}
+${clubCheckLine()}
 <section class="sec narrow">
-${trustSection(cfg.name, poolAll)}
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
-${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
+${renderFaq(cfg.faq)}
 </section>
 ${adSlot('afterFaq')}
 </main>
@@ -3740,7 +3647,6 @@ ${heroTwoCol({
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), badge: deriveBadge(cfg.name), slug: cfg.slug, kind: 'nation' }))}
-${renderCovers(cfg.name, false, true, `${SITE.base}/play`)}
 ${appCtaBand(cfg.name)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
@@ -3753,10 +3659,15 @@ ${adSlot('afterQA')}
 ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
+${/* AdSense fix 2 (2026-09-23), same as the club page: the write-up renders
+     open instead of as the last FAQ fold, and the covers + how-it-is-checked
+     blurbs, word-for-word the same on every page of this type, become one
+     line to /about/. Prose sits after the band and the mesh. */''}
+${renderClubAbout(cfg.name, cfg.intro, `About the ${cfg.name} quiz`)}
+${clubCheckLine()}
 <section class="sec narrow">
-${trustSection(cfg.name, poolAll)}
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
-${renderFaq(cfg.faq, { q: `About the ${cfg.name} quiz`, html: `${cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}` })}
+${renderFaq(cfg.faq)}
 </section>
 ${adSlot('afterFaq')}
 </main>

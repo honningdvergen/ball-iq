@@ -29,8 +29,9 @@ describe('catalogue counts are derived, not typed', () => {
   });
 
   it('the two that actually shipped wrong are derived', () => {
-    expect(gen, 'the club-page editorial line must count the bank')
-      .toContain('spanning ${BANK_CLUB_COUNT} clubs');
+    // The club-page "spanning N clubs" editorial line was the other one. It was
+    // removed with the covers grid on 2026-09-23 (AdSense fix 2), so there is
+    // nothing left to assert; the literal-count scan above still guards prose.
     expect(gen, '/partners/ must count the catalogue, not quote July')
       .toContain('carries ${CLUBS.length} club quizzes');
   });
