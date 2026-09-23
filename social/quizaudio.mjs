@@ -82,9 +82,16 @@ export function questionEvents(qStart, thinkStart, thinkEnd, reveal) {
 
 /** Mux music bed + effects under a silent video. Returns the credit line to put in the caption/description. */
 export function mixQuizAudio({ video, out, total, events, track = 'monkeys', musicVol = 0.28, skip = 2 }) {
-  const [file] = TRACKS[track] || TRACKS.monkeys;
   const tmp = path.join(os.tmpdir(), `sfx-${process.pid}-${Date.now()}.wav`);
   sfxTrack(total, events, tmp);
+  // track 'none': ticks + chime only (Alex 09-23 on the polka bed under Guess the XI: "shockingly bad")
+  if (track === 'none') {
+    execFileSync(FFMPEG, ['-y', '-i', video, '-i', tmp, '-filter_complex', '[1:a]alimiter=limit=0.95,loudnorm=I=-16:TP=-1.5:LRA=11[a]',
+      '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', out], { stdio: ['ignore', 'ignore', 'pipe'] });
+    fs.rmSync(tmp, { force: true });
+    return '';
+  }
+  const [file] = TRACKS[track] || TRACKS.monkeys;
   const fadeOut = Math.max(0, total - 1.2).toFixed(2);
   execFileSync(FFMPEG, ['-y', '-i', video,
     '-stream_loop', '-1', '-ss', String(skip), '-i', path.join(MUSIC_DIR, file),

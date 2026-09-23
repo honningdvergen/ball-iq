@@ -61,7 +61,7 @@ const events = [];
 for (let s = 0; s < THINK; s++) events.push({ t: s + 0.02, type: THINK - s <= 3 ? 'tickHot' : 'tick' });
 order.forEach((_, k) => events.push({ t: THINK + k * STEP, type: 'tick' }));
 events.push({ t: THINK + order.length * STEP, type: 'chime' });
-const credit = mixQuizAudio({ video: silent, out, total: TOTAL, events, track: arg('track', 'polka'), musicVol: 0.3, skip: 5 });
+const credit = mixQuizAudio({ video: silent, out, total: TOTAL, events, track: arg('track', 'none'), musicVol: 0.3, skip: 5 });
 fs.writeFileSync(path.join(HERE, 'out', name + '.json'), JSON.stringify({ id: xi.id, club: xi.club, match: xi.match, credit,
   caption: `${xi.club}, ${xi.match.replace(/,.*/, '')}. How many can you name before the reveal? 🧠`, players: xi.players.map((p) => p.name) }, null, 2));
 console.log(`✅ ${out}  ${TOTAL.toFixed(1)}s  ${xi.club} — ${xi.match}`);
