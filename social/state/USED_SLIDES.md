@@ -51,3 +51,4 @@
 # seen, NOT used: midnite DdjRUIHIUle = OUR Beyoncé 6 v 5 joke (they posted it too)
 2026-09-23 | RESERVED for next carousel (Alex asked) | x:2102666506203205636 | UTDTrey — Lisandro 'prime Sergio Ramos after playing like Phil Jones for us' (QT FrankEra_)
 2026-09-23 | r7_onana TikTok+YouTube 10:20Z, IG+FB = Alex native | ig:DdoEFMXMmhA thatguysjokes | Onana fire cupping, 'two years of Old Trafford out of his back' (AllFootball source)
+2026-09-23 | overlay_rodri READY (Alex to post natively IG+FB) | x:2102403195284697593 29Kaaiii La Liga rage-bait over Rodri (Q20994118, CC BY-SA 4.0 Bryan Berlin) | NOTE: this tweet was NOT posted in car_B (slide dropped at the 10-slide cap) despite the car_B takes line above

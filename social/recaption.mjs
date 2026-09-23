@@ -130,7 +130,7 @@ const plateHtml = (txt, h) => `<!DOCTYPE html><meta charset="utf-8"><style>
   html,body{width:${W}px;height:${h}px;background:#fff}
   #w{width:100%;height:100%;display:flex;flex-direction:column;
      justify-content:flex-end;align-items:flex-start;padding:0 ${SAFE_X}px 34px}
-  #t{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:${TWEET ? 500 : 700};white-space:pre-line;
+  #t{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:400;white-space:pre-line;
      font-size:${fontPx}px;line-height:1.16;letter-spacing:-.015em;color:#0a0a0a;max-width:100%;text-wrap:${TWEET ? "wrap" : "balance"}}
   #m{margin-top:22px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
      font-size:21px;font-weight:800;letter-spacing:.34em;color:#b4bcc6;text-transform:uppercase}

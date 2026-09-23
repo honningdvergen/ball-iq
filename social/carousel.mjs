@@ -86,7 +86,7 @@ const shell = body => `<!DOCTYPE html><meta charset="utf-8"><style>
   .q .qt{display:flex;align-items:center;gap:14px;font-size:36px;margin-bottom:10px}
   .q .qa{width:52px;height:52px;border-radius:50%;object-fit:cover}
   .q b{font-weight:800;color:#0f1419} .q span{color:#536471}
-  .q .qx{font-size:38px;line-height:1.3;color:#0f1419;white-space:pre-wrap}
+  .q .qx{font-size:37px;line-height:1.3;color:#0f1419;white-space:pre-wrap}
 </style>${body}`;
 
 const browser = await chromium.launch();
@@ -99,6 +99,9 @@ for (const [i, s] of data.slides.entries()) {
   // text is big when the tweet is text-only, like a real phone screenshot
   const take = DRAW_TAKES ? (s.take || '').trim() : '';
   let fs_ = imgs.length ? (len > 160 ? 40 : 46) : (len > 240 ? 46 : len > 120 ? 54 : 62);
+  // Quote-tweets: the quoting text sits only a notch above the quoted text, like the real app
+  // (Alex 09-23: ours had the outer text "way bigger" than the quoted one).
+  if (s.quote) fs_ = len > 120 ? 40 : 44;
   let imgMax = s.imgMax ? s.imgMax : s.quote ? 560 : (len > 120 ? 700 : 820);
   if (take) { fs_ = Math.round(fs_ * 0.84); if (!s.imgMax) imgMax -= (take.length > 45 ? 250 : 190); }
   const cols = imgs.length >= 2 ? 2 : 1;
@@ -114,8 +117,14 @@ for (const [i, s] of data.slides.entries()) {
     ${s.quote ? `<div class="q"><div class="qt"><img class="qa" src="${uri(s.quote.avatar)}">
         <b>${esc(s.quote.name)}</b><span>@${esc(s.quote.handle)}</span></div>
         <div class="qx">${esc(s.quote.text)}</div>
-        ${(s.quote.images || []).length ? `<div class="imgs" style="margin-top:18px;grid-template-columns:repeat(${s.quote.images.length >= 2 ? 2 : 1},1fr);max-height:${s.quote.images.length >= 2 ? 300 : 420}px">
-          ${s.quote.images.map(p => `<img src="${uri(p)}" style="max-height:${s.quote.images.length >= 2 ? 300 : 420}px">`).join('')}</div>` : ''}</div>` : ''}
+        ${(() => {
+          // Quoted photos: portrait-height when the quoting tweet has no photos of its own (the
+          // 300px strip cut Lisandro's face off, 09-23); framed above centre so faces survive.
+          const q = s.quote.images || []; if (!q.length) return '';
+          const h = imgs.length ? (q.length >= 2 ? 300 : 420) : (q.length >= 2 ? 560 : 640);
+          return `<div class="imgs" style="margin-top:18px;grid-template-columns:repeat(${q.length >= 2 ? 2 : 1},1fr);height:${h}px">
+          ${q.map(p => `<img src="${uri(p)}" style="height:${h}px;object-position:center 30%">`).join('')}</div>`;
+        })()}</div>` : ''}
   </div>`;
   await page.setContent(shell(body));
   await page.waitForLoadState('networkidle');
