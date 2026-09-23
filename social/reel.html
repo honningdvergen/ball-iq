@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+  :root{
+    --bg:#080b10; --ink:#ffffff; --dim:#7d8896;
+    --green:#00d26a; --red:#ff3b47; --line:#1c2430; --optBg:#0e151e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bg)}
+  body{
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+
+  /* pitch-glow backdrop */
+  #glow{
+    position:absolute;inset:0;
+    background:radial-gradient(120% 70% at 50% 18%, #13361f 0%, #0a1119 45%, #080b10 100%);
+  }
+  #grain{position:absolute;inset:0;opacity:.05;
+    background-image:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px);}
+
+  /* ---- header ---- */
+  #brand{
+    position:absolute;top:70px;left:0;right:0;text-align:center;
+    font-size:30px;font-weight:800;letter-spacing:.42em;
+    color:var(--dim);text-transform:uppercase;
+  }
+  #dots{position:absolute;top:140px;left:0;right:0;display:flex;
+    gap:16px;justify-content:center;align-items:center}
+  .dot{width:56px;height:7px;border-radius:4px;background:#1e2733}
+  .dot.on{background:var(--green)}
+
+  /* ---- hook card ---- */
+  #hook{
+    position:absolute;top:0;left:0;width:1080px;height:1920px;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:0 90px;
+  }
+  #hookTop{font-size:46px;font-weight:800;letter-spacing:.2em;
+    color:var(--green);text-transform:uppercase;margin-bottom:38px}
+  #hookBig{font-size:128px;line-height:.98;font-weight:900;
+    letter-spacing:-.035em;color:var(--ink);text-transform:uppercase}
+  #hookSub{margin-top:46px;font-size:44px;font-weight:600;color:var(--dim);line-height:1.34}
+
+  /* ---- question ---- */
+  #qwrap{position:absolute;top:0;left:0;width:1080px;height:1920px;
+    display:flex;flex-direction:column;justify-content:center;padding:0 80px}
+  #era{font-size:40px;font-weight:800;letter-spacing:.3em;color:var(--green);
+    text-transform:uppercase;margin-bottom:34px}
+  #q{font-size:76px;line-height:1.1;font-weight:800;letter-spacing:-.02em;
+    color:var(--ink);margin-bottom:72px}
+  .opt{
+    display:flex;align-items:center;gap:32px;
+    background:var(--optBg);border:3px solid var(--line);border-radius:22px;
+    padding:34px 40px;margin-bottom:24px;
+  }
+  .opt .lab{
+    flex:0 0 66px;height:66px;border-radius:14px;background:#1a2432;
+    display:flex;align-items:center;justify-content:center;
+    font-size:36px;font-weight:900;color:var(--dim);
+  }
+  .opt .txt{font-size:52px;font-weight:700;color:#e8edf3;letter-spacing:-.01em}
+  .opt.correct{background:#052e1b;border-color:var(--green)}
+  .opt.correct .lab{background:var(--green);color:#04120a}
+  .opt.correct .txt{color:#ffffff}
+  .opt.fade{opacity:.26}
+
+  /* timer */
+  #timerTrack{position:absolute;left:80px;right:80px;bottom:190px;
+    height:12px;border-radius:8px;background:#141c26;overflow:hidden}
+  #timerFill{height:100%;width:100%;background:var(--green);border-radius:8px}
+
+  #fact{position:absolute;left:80px;right:80px;bottom:132px;
+    font-size:34px;font-weight:600;color:var(--dim);text-align:center;line-height:1.35}
+
+  /* ---- outro ---- */
+  #outro{position:absolute;top:0;left:0;width:1080px;height:1920px;
+    display:flex;flex-direction:column;justify-content:center;
+    align-items:center;text-align:center;padding:0 90px}
+  #outroBig{font-size:112px;line-height:1;font-weight:900;letter-spacing:-.035em;
+    color:var(--ink);text-transform:uppercase}
+  #outroSub{margin-top:44px;font-size:48px;font-weight:600;color:var(--green)}
+
+  /* source mark — a wordmark, deliberately NOT a URL or a CTA.
+     A link on screen trips promo classifiers; a brand name reads as a credit. */
+  #srcmark{position:absolute;bottom:64px;left:0;right:0;text-align:center;
+    font-size:26px;font-weight:800;letter-spacing:.38em;color:#55606e;
+    text-transform:uppercase}
+</style></head>
+<body>
+<div id="stage">
+  <div id="glow"></div><div id="grain"></div>
+  <div id="brand">SHITHOUSERY HQ</div>
+  <div id="dots"><div class="dot" id="d0"></div><div class="dot" id="d1"></div><div class="dot" id="d2"></div></div>
+
+  <div id="hook">
+    <div id="hookTop">Premier League</div>
+    <div id="hookBig">Nobody<br>remembers<br>the third<br>one.</div>
+    <div id="hookSub">They get older as they go.</div>
+  </div>
+
+  <div id="qwrap" style="display:none">
+    <div id="era"></div>
+    <div id="q"></div>
+    <div id="opts"></div>
+  </div>
+
+  <div id="timerTrack" style="display:none"><div id="timerFill"></div></div>
+  <div id="fact" style="display:none"></div>
+
+  <div id="outro" style="display:none">
+    <div id="outroBig">Got the<br>last one?</div>
+    <div id="outroSub">Course you did.</div>
+  </div>
+
+  <div id="srcmark">Ball IQ</div>
+</div>
+
+<script>
+// ---- content injected by the renderer ----
+window.DATA = window.DATA || {questions:[]};
+
+const HOOK_T   = 2.6;    // hook card duration
+const Q_T      = 12.0;   // per-question duration
+const OUTRO_T  = 2.8;
+const IN_T     = 0.45;   // question text in
+const OPT_STAG = 0.16;   // stagger between options
+const THINK_END= 8.6;    // countdown ends
+const REVEAL   = 8.6;    // reveal moment
+
+const $ = id => document.getElementById(id);
+const easeOut = x => 1 - Math.pow(1 - x, 3);
+const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+
+window.TOTAL = HOOK_T + window.DATA.questions.length * Q_T + OUTRO_T;
+
+// Theme is applied once after load. Palette + hook copy + outro all vary per
+// theme, so two reels never share a look OR an editorial frame.
+window.applyTheme = function(){
+  const th = window.DATA.theme;
+  if (!th) return;
+  const r = document.documentElement.style;
+  r.setProperty('--green',  th.palette.accent);
+  r.setProperty('--line',   th.palette.optBorder);
+  r.setProperty('--optBg',  th.palette.optBg);
+  $('glow').style.background =
+    `radial-gradient(120% 70% at 50% 18%, ${th.palette.g1} 0%, ${th.palette.g2} 45%, #080b10 100%)`;
+  $('hookTop').textContent = th.hook.top;
+  $('hookBig').replaceChildren(...th.hook.big.flatMap((l, i) =>
+    i === 0 ? [document.createTextNode(l)]
+            : [document.createElement('br'), document.createTextNode(l)]));
+  $('hookSub').textContent = th.hook.sub;
+  if (th.outro) {
+    $('outroBig').replaceChildren(...th.outro.big.flatMap((l, i) =>
+      i === 0 ? [document.createTextNode(l)]
+              : [document.createElement('br'), document.createTextNode(l)]));
+    $('outroSub').textContent = th.outro.sub;
+  }
+  if (th.dotCount) {
+    const wrap = $('dots');
+    wrap.replaceChildren(...Array.from({length: th.dotCount}, (_, i) => {
+      const d = document.createElement('div'); d.className = 'dot'; d.id = 'd' + i; return d;
+    }));
+  }
+  // YouTube has no end-screens on Shorts and no "follow" word — a persistent
+  // watermark is the only always-on subscribe prompt, and it must say
+  // "Subscribe" ONLY on the YouTube render (IG/TikTok/Threads use "follow").
+  if (window.DATA.yt) $('brand').textContent = 'SHITHOUSERY HQ · SUBSCRIBE';
+};
+
+window.renderAt = function(t){
+  const qs = window.DATA.questions;
+  const hook=$('hook'), qwrap=$('qwrap'), outro=$('outro');
+  const track=$('timerTrack'), fact=$('fact');
+  hook.style.display='none'; qwrap.style.display='none'; outro.style.display='none';
+  track.style.display='none'; fact.style.display='none';
+
+  // ---------- HOOK ----------
+  if (t < HOOK_T){
+    hook.style.display='flex';
+    const p = clamp(t/0.6,0,1), e=easeOut(p);
+    $('hookTop').style.opacity = clamp((t-0.05)/0.4,0,1);
+    $('hookBig').style.opacity = e;
+    $('hookBig').style.transform = `translateY(${(1-e)*46}px)`;
+    $('hookSub').style.opacity = clamp((t-0.7)/0.5,0,1);
+    document.querySelectorAll('.dot').forEach(d=>d.classList.remove('on'));
+    return;
+  }
+
+  // ---------- OUTRO ----------
+  const afterQ = HOOK_T + qs.length*Q_T;
+  if (t >= afterQ){
+    outro.style.display='flex';
+    const lt = t - afterQ, e = easeOut(clamp(lt/0.55,0,1));
+    $('outroBig').style.opacity=e;
+    $('outroBig').style.transform=`scale(${0.94+0.06*e})`;
+    $('outroSub').style.opacity=clamp((lt-0.45)/0.5,0,1);
+    document.querySelectorAll('.dot').forEach(d=>d.classList.add('on'));
+    return;
+  }
+
+  // ---------- QUESTIONS ----------
+  const idx = Math.floor((t - HOOK_T)/Q_T);
+  const lt  = (t - HOOK_T) - idx*Q_T;
+  const Q   = qs[idx];
+  qwrap.style.display='flex'; track.style.display='block';
+
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on', i<=idx));
+
+  $('era').textContent = Q.era;
+  $('era').style.opacity = clamp(lt/0.3,0,1);
+  const qe = easeOut(clamp(lt/IN_T,0,1));
+  $('q').textContent = Q.q;
+  $('q').style.opacity = qe;
+  $('q').style.transform = `translateY(${(1-qe)*34}px)`;
+
+  // options
+  const box=$('opts'); box.innerHTML='';
+  const revealed = lt >= REVEAL;
+  Q.o.forEach((text,i)=>{
+    const el=document.createElement('div');
+    el.className='opt';
+    const start = IN_T + 0.12 + i*OPT_STAG;
+    const oe = easeOut(clamp((lt-start)/0.34,0,1));
+    el.style.opacity = oe;
+    el.style.transform = `translateX(${(1-oe)*-26}px)`;
+    if (revealed){
+      if (i===Q.a) el.classList.add('correct');
+      else el.classList.add('fade');
+    }
+    el.innerHTML = `<div class="lab">${'ABCD'[i]}</div><div class="txt"></div>`;
+    el.querySelector('.txt').textContent = text;
+    box.appendChild(el);
+  });
+
+  // timer bar drains during thinking, hides at reveal
+  const tStart = IN_T + 0.12 + Q.o.length*OPT_STAG + 0.2;
+  if (lt < REVEAL){
+    const p = clamp((lt - tStart)/(THINK_END - tStart),0,1);
+    $('timerFill').style.width = ((1-p)*100)+'%';
+    $('timerFill').style.background = p>0.75 ? 'var(--red)' : 'var(--green)';
+    track.style.opacity = clamp((lt-tStart+0.2)/0.3,0,1);
+  } else {
+    track.style.display='none';
+    fact.style.display='block';
+    fact.textContent = Q.fact;
+    fact.style.opacity = clamp((lt-REVEAL-0.25)/0.4,0,1);
+  }
+};
+</script>
+</body></html>

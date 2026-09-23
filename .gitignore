@@ -71,3 +71,9 @@ assets/lineup-cutouts/
 # and Threads posts. Product images, not source — they are made from the app,
 # not used by it, and 2.3 MB of PNGs would only grow.
 assets/social/
+
+# social: big media stays local (fingerprints + ledger are tracked)
+social/state/media/
+social/out/
+social/state/postiz_calls.log
+social/.frames/
