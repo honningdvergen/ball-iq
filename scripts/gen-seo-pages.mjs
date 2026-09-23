@@ -825,7 +825,9 @@ function renderTiles(pages, { collapseAfter = 24 } = {}) {
 // the taster (reuses its .to button styles). Progressive enhancement — options
 // render as real buttons; QA_JS wires tap-to-check. Falls back to plain buttons
 // if JS is off (the answer/hint still ship in the DOM for crawlers).
-function renderQA(rows) {
+// `scripts: false` for all but the LAST list on a page: QA_JS queries the
+// cards that exist when it runs, so it must come after every list it wires.
+function renderQA(rows, { scripts = true } = {}) {
   const items = rows
     .map((row) => {
       const r = shuffleOptions(row);
@@ -839,7 +841,8 @@ function renderQA(rows) {
 </li>`;
     })
     .join('\n');
-  return `<ol class="qa-list">\n${items}\n</ol>\n<script>${QA_TRACK_JS}</script>\n<script>${QA_JS}</script>`;
+  const list = `<ol class="qa-list">\n${items}\n</ol>`;
+  return scripts ? `${list}\n<script>${QA_TRACK_JS}</script>\n<script>${QA_JS}</script>` : list;
 }
 
 // Wires every .qa card independently: first tap locks the card, marks the picked
@@ -2210,11 +2213,7 @@ ${heroTwoCol({
 <section class="sec narrow" id="play">
 <h2>${esc(c.playSection)}</h2>
 <p class="sub">${esc(c.playSub)}</p>
-${/* AdSense fix 2, translated pages (2026-09-23). The hero quiz paces its
-     questions one at a time, so they were unreadable without playing; they
-     join the sample block here, which already shows each stem and reveals its
-     explanation on tap, in the language's approved strings. No new copy. */''}
-${renderQA([...cfg.sample, ...cfg.taster.filter((t) => !cfg.sample.some((x) => x.id === t.id))])}
+${renderQA(cfg.sample, { scripts: false })}
 </section>
 ${adSlot('afterQA')}
 <section class="sec"><div class="appband">
@@ -2232,6 +2231,18 @@ ${/* The write-up renders OPEN after the app band (was the last FAQ fold, ~7.6
 <div class="prose">
 ${introHtml}${c.statsLine ? `\n<p class="stats">${esc(c.statsLine)}</p>` : ''}
 </div>
+</section>
+${/* AdSense fix 2, translated pages (2026-09-23). The hero quiz paces its
+     questions one at a time, so they were unreadable without playing. They
+     render here as a second practice block, AFTER the app band and the
+     write-up so neither moves down, under strings each language already
+     approved: the hero's own heading and the sample block's instruction.
+     (tasterPh is NOT used: it spells out the count, "Diez preguntas".) This
+     block carries the QA scripts, so it must stay the last .qa list. */''}
+<section class="sec narrow" id="quiz-questions">
+<h2>${esc(c.tasterH)}</h2>
+<p class="sub">${esc(c.playSub)}</p>
+${renderQA(cfg.taster.filter((t) => !cfg.sample.some((x) => x.id === t.id)))}
 </section>
 <section class="sec narrow">
 <h2>${esc(c.alsoH)}</h2>
