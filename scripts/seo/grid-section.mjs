@@ -92,8 +92,15 @@ const sameSet = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));
 // build on any that never did — so the next stale or misspelled key is a red
 // build, not a quietly uncoloured club.
 const usedColourKeys = new Set();
+// ⚠️ FIRING IS DATE-DEPENDENT; EXISTING IS NOT. Each build renders only the next
+// seven days of grids, so a correctly spelled club that is simply not drawn this
+// week never fires. On 2026-09-23 "1. FC Köln" did exactly that and failed a
+// clean local build — the next production deploy would have died the same way,
+// whatever it contained. The gate exists to catch TYPOS, so a key now fails only
+// if it never fired AND its name is not in the career dictionary at all.
+const knownCareerNames = new Set();
 export const unusedColourKeys = () =>
-  Object.keys(GRID_CLUB_COLOURS).filter((k) => !usedColourKeys.has(k));
+  Object.keys(GRID_CLUB_COLOURS).filter((k) => !usedColourKeys.has(k) && !knownCareerNames.has(k));
 
 function colourFor(careerName) {
   // ⚠️ FIRST, AND BY EXACT NAME — tried against the raw career name AND the
@@ -168,6 +175,7 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 /** Build the pool ONCE; the caller reuses this across every page. */
 export function makeGridBuilder() {
   const P = buildPool();
+  for (const n of P.clubs) { knownCareerNames.add(n); knownCareerNames.add(short(n)); }
   const idx = new Map(P.clubs.map((n, i) => [n, i]));
   // Names live in mysteryPool, not in the curated pool — load once, here, so a
   // caller cannot pass a different lookup and silently change what a grid says.

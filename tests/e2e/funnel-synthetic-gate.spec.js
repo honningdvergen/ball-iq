@@ -96,7 +96,11 @@ test('automated traffic never reaches club_quiz_results', async ({ page }) => {
   // A STATIC page from dist, not the SPA — this engine ships only on generated
   // pages. If the base URL ever points at the dev server the catch-all serves
   // the app instead, and the assertion below about .bq-o catches that.
-  await page.goto('/quiz/arsenal/');
+  // Absolute URL, never baseURL: baseURL is the vite dev server, where this
+  // path is the SPA. CI serves dist on 4177 (ci.yml); locally that is the
+  // `dist` config in .claude/launch.json. Override with BALLIQ_STATIC_URL.
+  const STATIC = process.env.BALLIQ_STATIC_URL || 'http://localhost:4177';
+  await page.goto(`${STATIC}/quiz/arsenal/`);
   await page.waitForLoadState('networkidle');
 
   expect(

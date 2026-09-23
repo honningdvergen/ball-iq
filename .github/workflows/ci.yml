@@ -56,6 +56,15 @@ jobs:
       # staleness…). Bloodhound 2026-09-08 injected two defects those gates
       # catch; CI stayed green. One command, the same one Vercel runs.
       - name: Build (the full gate — same command as local and Vercel)
+        # ⚠️ The unit tests run inside this step, and since 09-07 one of them
+        # (mp-one-account-ask) imports a module that creates the Supabase
+        # client at import time — "supabaseKey is required" without this.
+        # CI was red on every push from 09-07 to 09-23 because only the e2e
+        # step below had the key, and 16 days of red emails made the new
+        # deploy-check alert indistinguishable from noise. Same publishable
+        # key as e2e: it is public, shipped in every browser bundle.
+        env:
+          VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY || 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR' }}
         run: npm run build
 
   e2e:
@@ -93,6 +102,22 @@ jobs:
       # ones (playwright device descriptors pick the engine per project).
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
+
+      # ⚠️ STATIC PAGES FOR THE ONE SPEC THAT NEEDS THEM. The webServer in
+      # playwright.config.js is the vite DEV server, where /quiz/arsenal/ is
+      # the SPA — the generated club pages exist only in dist/. The synthetic
+      # gate on club_quiz_results must play a real static club page to reach
+      # finish(), so from the day it was written (09-09) it failed here on
+      # every run while passing locally beside a `serve dist`. Build once and
+      # serve dist on 4177 — the same port as .claude/launch.json locally.
+      - name: Build and serve the static site (for funnel-synthetic-gate)
+        env:
+          VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY || 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR' }}
+        run: |
+          npm run build
+          nohup npx --yes serve dist -l 4177 > /tmp/serve-dist.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://localhost:4177/quiz/arsenal/ >/dev/null && break; sleep 1; done
+          curl -fsS http://localhost:4177/quiz/arsenal/ | grep -q 'class="bq-q' || { echo "static club page not served"; cat /tmp/serve-dist.log; exit 1; }
 
       # ⚠️ The app throws "supabaseKey is required" at module scope when this
       # env var is missing, which black-screens EVERY route and made all
