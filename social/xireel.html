@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  /* 1080x1920 "Guess the XI" reel. Safe zone y 260–1480 (Shorts/Reels UI). */
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { width:1080px; height:1920px; overflow:hidden; background:#0b0f0c; color:#fff; font-family:-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif; }
+  #head { position:absolute; left:60px; right:60px; top:250px; text-align:center; }
+  #kick { font-size:40px; font-weight:900; letter-spacing:.06em; color:#ffd84d; text-transform:uppercase; }
+  #title { font-size:78px; font-weight:900; line-height:1.02; margin-top:10px; letter-spacing:-.01em; }
+  #sub { font-size:38px; font-weight:700; color:rgba(255,255,255,.75); margin-top:12px; }
+  #pitch { position:absolute; left:70px; right:70px; top:520px; height:880px; border-radius:26px;
+    background:repeating-linear-gradient(0deg,#1f7a3a 0 88px,#1b6f35 88px 176px); border:5px solid rgba(255,255,255,.55); overflow:hidden; }
+  .line { position:absolute; background:rgba(255,255,255,.5); }
+  .p { position:absolute; width:190px; margin-left:-95px; text-align:center; }
+  .shirt { width:92px; height:92px; margin:0 auto; border-radius:50%; background:#fff; color:#111; font-size:46px; font-weight:900;
+    display:flex; align-items:center; justify-content:center; border:5px solid var(--accent,#e3372b); box-shadow:0 4px 14px rgba(0,0,0,.35); }
+  .nm { margin-top:8px; font-size:30px; font-weight:900; line-height:1.05; text-shadow:0 2px 6px rgba(0,0,0,.8); min-height:34px; }
+  .nm.hide { color:transparent; text-shadow:none; }
+  #clock { position:absolute; left:0; right:0; top:1420px; text-align:center; font-size:96px; font-weight:900; font-variant-numeric:tabular-nums; }
+  #clock.hot { color:#ff4d4d; }
+  #end { position:absolute; left:60px; right:60px; top:1415px; text-align:center; font-size:64px; font-weight:900; display:none; }
+</style></head>
+<body>
+<div id="head"><div id="kick"></div><div id="title"></div><div id="sub"></div></div>
+<div id="pitch">
+  <div class="line" style="left:0;right:0;top:50%;height:4px"></div>
+  <div class="line" style="left:50%;top:50%;width:200px;height:200px;margin:-100px 0 0 -100px;border:4px solid rgba(255,255,255,.5);background:none;border-radius:50%"></div>
+  <div class="line" style="left:30%;right:30%;bottom:0;height:150px;border:4px solid rgba(255,255,255,.5);border-bottom:none;background:none"></div>
+  <div class="line" style="left:30%;right:30%;top:0;height:150px;border:4px solid rgba(255,255,255,.5);border-top:none;background:none"></div>
+</div>
+<div id="clock"></div>
+<div id="end"></div>
+<script>
+const $ = (id) => document.getElementById(id);
+// rows bottom→top; within a row, left-sided players on the left of the screen
+const ROW = { GK:0, RB:1, CB:1, LB:1, RWB:1, LWB:1, DM:2, RM:3, CM:3, LM:3, AM:4, SS:4, RW:4, LW:4, RF:4, LF:4, CF:5 };
+const SIDE = (pos) => /^L/.test(pos) ? 0 : /^R/.test(pos) ? 2 : 1;
+window.setup = (d) => {
+  document.documentElement.style.setProperty('--accent', d.accent || '#e3372b');
+  $('kick').textContent = d.kick; $('title').textContent = d.title; $('sub').textContent = d.sub;
+  const rows = {};
+  d.players.forEach((p, i) => { const r = ROW[p.pos] ?? 3; (rows[r] = rows[r] || []).push({ ...p, i }); });
+  const used = Object.keys(rows).map(Number).sort((a, b) => a - b);
+  const pitch = $('pitch'); const H = 880, W = 940;
+  used.forEach((r, k) => {
+    const list = rows[r].sort((a, b) => SIDE(a.pos) - SIDE(b.pos) || a.i - b.i);
+    const y = (H - 95) - k * ((H - 205) / Math.max(1, used.length - 1));   // GK row near the bottom line, strikers ~110px from the top
+    list.forEach((p, j) => {
+      const x = W * (j + 1) / (list.length + 1);
+      const el = document.createElement('div'); el.className = 'p'; el.style.left = x + 'px'; el.style.top = (y - 50) + 'px';
+      el.innerHTML = `<div class="shirt">${p.no ?? ''}</div><div class="nm hide" id="n${p.i}"></div>`;
+      el.querySelector('.nm').textContent = p.short; pitch.appendChild(el);
+    });
+  });
+  window.D = d;
+};
+// t: 0..think countdown; then names reveal one every `step` seconds in `order`; then end line
+window.at = (t) => {
+  const d = window.D;
+  const left = Math.ceil(d.think - t);
+  $('clock').style.display = t < d.think ? 'block' : 'none';
+  $('clock').textContent = left > 0 ? left : '';
+  $('clock').className = left <= 3 ? 'hot' : '';
+  d.order.forEach((i, k) => { $('n' + i).className = 'nm' + (t >= d.think + k * d.step ? '' : ' hide'); });
+  $('end').style.display = t >= d.think + d.order.length * d.step ? 'block' : 'none';
+  $('end').textContent = d.end;
+};
+window.ready = true;
+</script>
+</body></html>
