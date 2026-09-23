@@ -15,7 +15,6 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { yearOf } from './themes.mjs';
 import { mixQuizAudio, questionEvents } from './quizaudio.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -40,7 +39,13 @@ const pool = QB.filter((q) => q.type === 'mcq' && !q.flag && q.hint && Array.isA
   && new Set(q.o.map((x) => String(x).trim().toLowerCase())).size === 4);
 // Era 1990+ (the audience is 70% aged 35+: their football is the 90s/00s — feedback_question_era_targeting).
 // A question with no year in it is kept (most are timeless: "which club did X join").
-const cands = T.pick(pool).filter((q) => { const y = yearOf(q); return y == null || y >= 1990; });
+// themes.yearOf only sees 1950–2029, so the first cut let 1919/1933/1935 questions through (09-23 fact-check).
+// Read EVERY year 1800–2029 in question + hint; drop the question if even its latest year is pre-1990.
+// Rule: every year in the QUESTION must be 1990+ ("still the record in 2025" in a 1935 question doesn't make it
+// 90s content); a question with no year in it is judged by the latest year in its hint.
+const years = (txt) => [...String(txt).matchAll(/\b(18\d\d|19\d\d|20[0-2]\d)s?\b/g)].map((m) => Number(m[1]));
+const inEra = (q) => { const ys = years(q.q); if (ys.length) return Math.min(...ys) >= 1990; const hs = years(q.hint); return !hs.length || Math.max(...hs) >= 1990; };
+const cands = T.pick(pool).filter(inEra);
 // 4 rounds of N/4 (09-23 viral research: top football quiz long-forms ramp Easy → Medium → Hard → Impossible,
 // ~10 min, 10s per question). Round 1 easy, round 2 medium, rounds 3–4 hard.
 const per = Math.floor(N / 4), want = { easy: per, medium: per, hard: N - 2 * per };
@@ -87,7 +92,6 @@ Qs.forEach((q, i) => {
   const r = roundOf(i);
   if (i === 0 || roundOf(i - 1) !== r) {
     chapters.push([t, `${ROUNDS[r][0]}: ${ROUNDS[r][1]}`]);
-    events.push({ t, type: 'whoosh' });
     const rn = Math.min(perRound, n - r * perRound);
     push('round', { kick: `${ROUNDS[r][0].toUpperCase()} · ${rn} QUESTIONS`, big: [ROUNDS[r][1] + '.'], sub: `${ROUNDS[r][2]} ${Math.round(rn * 0.8)}+/${rn} = real fan.` }, ROUND);
   }

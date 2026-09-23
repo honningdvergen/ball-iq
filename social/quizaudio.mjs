@@ -4,11 +4,11 @@
 // ("quiet and not fit for tiktok at all", 09-23). Every quiz video now gets:
 //   • a music bed — Kevin MacLeod, CC BY 4.0 (credit line returned for the caption/description)
 //   • a clock tick on every countdown second (higher + louder for the last 3)
-//   • a two-note chime on the reveal, a soft whoosh on each new question
+//   • a two-note chime on the reveal (no sound between questions: Alex found the whoosh bad, 09-23)
 // The effects are synthesised here (no third-party samples = nothing to license or get claimed).
 //
 //   import { mixQuizAudio } from './quizaudio.mjs';
-//   const credit = mixQuizAudio({ video, out, total, events: [{ t: 3.1, type: 'whoosh' }, ...] });
+//   const credit = mixQuizAudio({ video, out, total, events: questionEvents(...) });
 
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -71,9 +71,10 @@ export function sfxTrack(total, events, file) {
   writeWav(file, buf);
 }
 
-/** Standard countdown pattern: whoosh at q start, ticks each second of thinking, hot ticks for the last 3, chime at reveal. */
+/** Standard countdown pattern: ticks each second of thinking, hot ticks for the last 3, chime at reveal.
+ *  No transition sound between questions — Alex 09-23: "the sound when switching … is bad". */
 export function questionEvents(qStart, thinkStart, thinkEnd, reveal) {
-  const ev = [{ t: qStart, type: 'whoosh' }];
+  const ev = [];
   for (let t = thinkStart; t < thinkEnd - 0.01; t += 1) ev.push({ t, type: thinkEnd - t <= 3.01 ? 'tickHot' : 'tick' });
   ev.push({ t: reveal, type: 'chime' });
   return ev;
