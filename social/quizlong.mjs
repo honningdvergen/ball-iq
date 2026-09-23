@@ -140,7 +140,7 @@ const credit = mixQuizAudio({ video: silent, out, total: TOTAL, events, track: T
 const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 const title = T.fans === 'football fans'
   ? `${n} ${T.name} Questions Only Real Football Fans Get Right (Score Yourself)`
-  : `${n} ${T.name} Questions Only Real ${T.fans} Get Right (Score Yourself)`;
+  : `${n} ${T.name} Questions Only Real ${T.fans.replace(/\b\w/g, (c) => c.toUpperCase())} Get Right (Score Yourself)`;
 const description = [
   `How many can you get? Comment your score 👇 ${Math.round(n * 0.83)}+ is legend territory.`,
   '',
