@@ -54,9 +54,20 @@
     ]
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/session-start.mjs\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
-        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|mcp__plugin_serena_serena__(replace_content|create_text_file|replace_symbol_body|insert_after_symbol|insert_before_symbol|replace_in_files)|mcp__plugin_desktop-commander_desktop-commander__(write_file|edit_block)",
         "hooks": [
           {
             "type": "command",
@@ -66,12 +77,28 @@
         ]
       },
       {
-        "matcher": "Bash",
+        "matcher": "Bash|mcp__plugin_serena_serena__execute_shell_command|mcp__plugin_desktop-commander_desktop-commander__start_process|mcp__terminal__run_in_terminal",
         "hooks": [
           {
             "type": "command",
             "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/postiz-guard.mjs\"",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/bash-gates.mjs\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/stop-deploy-verified.mjs\"",
+            "timeout": 20
           }
         ]
       }

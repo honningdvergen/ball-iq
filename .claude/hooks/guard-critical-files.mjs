@@ -24,12 +24,22 @@
 let raw = '';
 process.stdin.on('data', (c) => { raw += c; });
 process.stdin.on('end', () => {
-  let file = '';
+  // ⚠️ EVERY TOOL THAT CAN WRITE, NOT JUST Edit/Write (2026-09-23). A setup
+  // audit found this guard watched only the built-in editors, so Serena
+  // (relative_path), desktop-commander (path / file_path) and Serena's
+  // project-wide replace_in_files walked straight past it. Each field name is
+  // checked; a replace_in_files with no path scope touches the whole project,
+  // questions.js included, so it is treated as touching the bank.
+  let files = [];
+  let wholeProject = false;
   try {
     const j = JSON.parse(raw || '{}');
-    file = j?.tool_input?.file_path || j?.tool_input?.notebook_path || '';
+    const t = j?.tool_input || {};
+    files = [t.file_path, t.notebook_path, t.relative_path, t.path, t.paths_include_glob].filter(Boolean).map(String);
+    wholeProject = /replace_in_files$/.test(j?.tool_name || '') && !t.relative_path && !t.paths_include_glob;
   } catch { /* unparseable payload: stay out of the way */ }
-  if (!file) return void process.exit(0);
+  if (wholeProject) files.push('src/questions.js');
+  if (!files.length) return void process.exit(0);
 
   const say = (decision, reason) => {
     process.stdout.write(JSON.stringify({
@@ -42,16 +52,20 @@ process.stdin.on('end', () => {
     process.exit(0);
   };
 
-  const base = file.split('/').pop() || '';
-
-  if (/^\.env($|\.)/.test(base)) {
-    say('deny', `${base} holds live credentials (Supabase, PageSpeed). Agents do not edit secrets — ask Alex to change it by hand.`);
+  for (const file of files) {
+    const base = file.split('/').pop() || '';
+    if (/^\.env($|\.)/.test(base)) {
+      say('deny', `${base} holds live credentials (Supabase, PageSpeed). Agents do not edit secrets — ask Alex to change it by hand.`);
+    }
   }
-  if (file.endsWith('src/questions.js')) {
-    say('ask', 'src/questions.js is the question bank — 2.4MB under a ZERO ERROR bar, and wrong answers ship to the App Store. Confirm this edit is verified content, not a bulk rewrite.');
-  }
-  if (/src\/lib\/wordle\.js$/.test(file)) {
-    say('ask', 'src/lib/wordle.js carries WORDLE_ANSWER_LOG — a FROZEN schedule. Appending to the player list has retroactively rewritten every past and future Footle answer before. Confirm the log is being extended deliberately.');
+  for (const file of files) {
+    // a glob like src/**/*.js reaches questions.js too
+    if (/(^|\/)questions\.js$/.test(file) || /(^|\/)src\/(\*\*\/)?\*\.js$/.test(file)) {
+      say('ask', 'src/questions.js is the question bank — 2.4MB under a ZERO ERROR bar, and wrong answers ship to the App Store. Confirm this edit is verified content, not a bulk rewrite.');
+    }
+    if (/(^|\/)src\/lib\/wordle\.js$/.test(file)) {
+      say('ask', 'src/lib/wordle.js carries WORDLE_ANSWER_LOG — a FROZEN schedule. Appending to the player list has retroactively rewritten every past and future Footle answer before. Confirm the log is being extended deliberately.');
+    }
   }
   process.exit(0);
 });
