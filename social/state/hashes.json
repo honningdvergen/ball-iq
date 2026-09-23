@@ -4990,5 +4990,71 @@
   "fp": [
    "00088182e0c4c4c4"
   ]
+ },
+ {
+  "platform": "source",
+  "post": "recaption:A_template.mp4",
+  "date": "2026-09-23T12:16",
+  "file": "/private/tmp/tt/bank/nickyoung.mp4",
+  "fp": [
+   "6869ad8d8d684ece",
+   "f7f3d3d2d78f0f0f",
+   "f7f3d3d2d78f0f0f"
+  ]
+ },
+ {
+  "platform": "source",
+  "post": "recaption:D_heavy.mp4",
+  "date": "2026-09-23T12:17",
+  "file": "/private/tmp/tt/tiktok_test/composite.mp4",
+  "fp": [
+   "1a0b1b1b006c6c7c",
+   "1a0f2b1a7c765e66",
+   "1a0b2b170c7c687b"
+  ]
+ },
+ {
+  "platform": "source",
+  "post": "recaption:A_template.mp4",
+  "date": "2026-09-23T12:17",
+  "file": "/private/tmp/tt/tiktok_test/nickyoung_nowm.mp4",
+  "fp": [
+   "3674b283c7463646",
+   "f9d9e9696d498387",
+   "f9d9e9696d498387"
+  ]
+ },
+ {
+  "platform": "tiktok",
+  "post": "cmue2k73i02oent0y30ncn228",
+  "date": "2026-09-23T12:18",
+  "file": "/private/tmp/tt/tiktok_test/A_template.mp4",
+  "fp": [
+   "0084b9e9ed830000",
+   "0084b9e9ed830000",
+   "0084b4b346560000"
+  ]
+ },
+ {
+  "platform": "tiktok",
+  "post": "cmue2k8tc02stkr0y7rm69bmb",
+  "date": "2026-09-23T12:18",
+  "file": "/private/tmp/tt/tiktok_test/B_owngraphic.mp4",
+  "fp": [
+   "0000102080c00000",
+   "0000102080e00000",
+   "0000102080e00000"
+  ]
+ },
+ {
+  "platform": "tiktok",
+  "post": "cmue2kawo02sukr0y29hhn8l8",
+  "date": "2026-09-23T12:18",
+  "file": "/private/tmp/tt/tiktok_test/D_heavy.mp4",
+  "fp": [
+   "00c08a9a90ecfc00",
+   "00c08a9abcdcf400",
+   "00c08a8a9cfcfa00"
+  ]
  }
 ]

@@ -52,3 +52,6 @@
 2026-09-23 | RESERVED for next carousel (Alex asked) | x:2102666506203205636 | UTDTrey — Lisandro 'prime Sergio Ramos after playing like Phil Jones for us' (QT FrankEra_)
 2026-09-23 | r7_onana TikTok+YouTube 10:20Z, IG+FB = Alex native | ig:DdoEFMXMmhA thatguysjokes | Onana fire cupping, 'two years of Old Trafford out of his back' (AllFootball source)
 2026-09-23 | overlay_rodri READY (Alex to post natively IG+FB) | x:2102403195284697593 29Kaaiii La Liga rage-bait over Rodri (Q20994118, CC BY-SA 4.0 Bryan Berlin) | NOTE: this tweet was NOT posted in car_B (slide dropped at the 10-slide cap) despite the car_B takes line above
+2026-09-23 | TikTok test A | bank nickyoung (template, wm cropped) | Messi/Yamal six Ballon dOrs
+2026-09-23 | TikTok test B | own card_brobbey114 video | Brobbey 114
+2026-09-24 | TikTok test D | ig:Dde9kruMRAK thatguysjokes Goldbridge + bank pedro_clean | Brighton 3-0 Arsenal split screen
