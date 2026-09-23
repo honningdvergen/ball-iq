@@ -1621,16 +1621,6 @@ ${SHELL_CSS}
     .hero-head .kicker{margin-bottom:10px}
     .hero .hero-head h1{font-size:34px;line-height:.95}  /* .hero h1 is defined LATER at equal specificity — this must out-specify it, not just follow it */
   }
-  /* "What the <club> quiz covers" topic grid */
-  .covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;margin-top:6px}
-  /* .cov is now an <a> (people were tapping these as divs). display:block +
-     colour reset stop it rendering as an underlined default-blue link; the
-     hover/focus state gives it the affordance it always lacked. */
-  .cov{display:block;color:inherit;text-decoration:none;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 18px 16px;transition:border-color .15s,background .15s,transform .15s}
-  a.cov:hover{border-color:var(--grn);background:var(--card2);transform:translateY(-2px)}
-  a.cov:focus-visible{outline:2px solid var(--grn);outline-offset:2px}
-  .cov h3{font-size:15.5px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.01em}
-  .cov p{font-size:13.5px;color:var(--tx3);line-height:1.5;margin:0}
   .crumbs{font-size:13px;color:var(--tx4);margin-bottom:22px}
   /* 12px type gave a 16px-tall tap target. Padding lifts it over WCAG 2.2
      2.5.8's 24px floor without changing how the trail looks — the box grows,
@@ -1647,8 +1637,6 @@ ${SHELL_CSS}
   /* clubs/players/nations -> /lists/. See listsMentioning(): every list page
      had exactly ONE inbound internal link before this, against 163 for a club
      page, so we were signalling the whole reference surface as unimportant. */
-  .editorial{margin:18px 0 0;padding:14px 16px;background:var(--card);border:1px solid var(--bd);border-left:3px solid var(--club,var(--grn));border-radius:0 12px 12px 0;font-size:13.5px;line-height:1.6;color:var(--tx3)}
-  .editorial a{color:var(--grn-soft)}
   .llinks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
   .llinks li{background:var(--card);border:1px solid var(--bd);border-radius:12px}
   .llinks a{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 15px;color:var(--tx);text-decoration:none;font-weight:700;font-size:15px}
@@ -1781,7 +1769,6 @@ ${FG_CSS}
   .hero-facts .hf b{display:block;font-size:19px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;color:#fff;line-height:1}
   .hero-facts .hf span{display:block;font-size:11.5px;color:var(--tx4);margin-top:5px}
   .hero-free{margin:14px 0 0;font-size:13px;color:var(--tx4)}
-  .trust-note{font-size:14.5px;color:var(--tx3);line-height:1.65;border-left:2px solid var(--bd2);padding-left:14px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 ${ld ? `<script type="application/ld+json">${ld}</script>` : '' /* an empty ld+json block is an error, not an omission — /embed/quiz/ shipped one */}
