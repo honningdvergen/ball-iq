@@ -18,15 +18,21 @@ import path from 'node:path';
 
 const arg = (n) => { const i = process.argv.indexOf('--' + n); return i > -1 ? process.argv[i + 1] : null; };
 const TW = arg('tweet'), BG = arg('bg'), OUT = arg('out');
+// --own "text": OUR account's post on the photo (Alex 09-23, Football Planet "Players with ZERO haters"
+// format, "just put my account there"). Needs --bg (a Commons photo from mysteryPhotos.json).
+const OWN = arg('own');
 const CARD = arg('card') || 'dark', FOCUS = arg('focus') || 'center 25%', Y = arg('y') || 'bottom';
-if (!TW || !OUT) { console.error('usage: overlay.mjs --tweet t.json --bg photo.jpg --out post.png [--card dark|light] [--focus "center 25%"] [--y bottom|top]'); process.exit(1); }
+if ((!TW && !OWN) || !OUT) { console.error('usage: overlay.mjs --tweet t.json --bg photo.jpg --out post.png [--card dark|light] [--focus "center 25%"] [--y bottom|top]'); process.exit(1); }
 
-const t = JSON.parse(fs.readFileSync(TW, 'utf8'));
+const t = OWN
+  ? { id_str: 'own', text: OWN.replace(/\\n/g, '\n'), user: { name: 'Shithousery HQ', screen_name: 'shithouseryhq', verified: true } }
+  : JSON.parse(fs.readFileSync(TW, 'utf8'));
 if (!t.id_str || !t.user?.screen_name) { console.error('REFUSING: not a real tweet (no id_str/user)'); process.exit(1); }
-const dir = path.dirname(TW);
-const avatar = path.join(dir, `${t.id_str}_av.jpg`);
+const dir = TW ? path.dirname(TW) : '';
+const avatar = OWN ? (arg('avatar') || '/private/tmp/tt/own/shq_avatar.jpg') : path.join(dir, `${t.id_str}_av.jpg`);
 if (!fs.existsSync(avatar)) { console.error(`REFUSING: no avatar file ${avatar} (run dl.mjs)`); process.exit(1); }
 const bg = BG || path.join(dir, `${t.id_str}_0.jpg`);
+if (OWN && !BG) { console.error('REFUSING: --own needs --bg (a licensed Commons photo)'); process.exit(1); }
 if (!fs.existsSync(bg)) { console.error(`REFUSING: no background photo (${bg})`); process.exit(1); }
 
 const W = 1080, H = 1350;
@@ -56,7 +62,8 @@ body{font-family:-apple-system,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sa
 <img class="bg" src="${uri(bg)}">
 <div class="card"><div class="top"><img class="av" src="${uri(avatar)}">
 <div><div class="nm">${esc(t.user.name)}${verified ? BADGE : ''}</div><div class="hd">@${esc(t.user.screen_name)}</div></div></div>
-<div class="tx">${esc(text)}</div></div>`;
+<div class="tx">${esc(text)}</div></div>
+${arg('credit') ? `<div style="position:absolute;right:40px;bottom:26px;font-size:19px;color:rgba(255,255,255,.75);text-shadow:0 1px 3px rgba(0,0,0,.9)">${esc(arg('credit'))}</div>` : ''}`;
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: W, height: H } });
@@ -66,4 +73,4 @@ const box = await page.evaluate(() => document.querySelector('.card').getBoundin
 if (box.top < 40 || box.bottom > 1350 - 20) { console.error(`card overflows (${Math.round(box.top)}–${Math.round(box.bottom)}) — shorten or use --y top`); process.exit(1); }
 await page.screenshot({ path: OUT });
 await browser.close();
-console.log(`✅ ${OUT}  (card ${Math.round(box.top)}–${Math.round(box.bottom)}px)  source: https://x.com/${t.user.screen_name}/status/${t.id_str}`);
+console.log(`✅ ${OUT}  (card ${Math.round(box.top)}–${Math.round(box.bottom)}px)  ${OWN ? 'own post' : `source: https://x.com/${t.user.screen_name}/status/${t.id_str}`}`);
