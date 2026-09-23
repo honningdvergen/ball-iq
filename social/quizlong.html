@@ -1,0 +1,125 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  :root { --accent:#00d26a; --g1:#13361f; --g2:#0a1119; --opt:#101722; --line:#1f2a38; --ok:#063b22; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { width:1920px; height:1080px; overflow:hidden; background:#080b10; color:#fff;
+         font-family:-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif; }
+  #bg { position:absolute; inset:0; background:radial-gradient(120% 90% at 25% 10%, var(--g1) 0%, var(--g2) 50%, #07090d 100%); }
+  .screen { position:absolute; inset:0; display:none; }
+  .on { display:block; }
+  .brand { position:absolute; top:48px; left:80px; font-size:26px; letter-spacing:.32em; font-weight:700; color:rgba(255,255,255,.55); }
+  .brand b { color:var(--accent); }
+  .meta { position:absolute; top:44px; right:80px; font-size:30px; font-weight:700; color:rgba(255,255,255,.7); text-align:right; }
+  .meta small { display:block; font-size:22px; letter-spacing:.2em; color:var(--accent); margin-top:6px; }
+  /* question */
+  #qtext { position:absolute; left:80px; top:170px; width:1280px; font-size:62px; line-height:1.14; font-weight:800; letter-spacing:-.01em; }
+  #opts { position:absolute; left:80px; top:520px; width:1280px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  .opt { background:var(--opt); border:3px solid var(--line); border-radius:22px; padding:30px 34px; font-size:44px; font-weight:700; display:flex; align-items:center; gap:24px; min-height:128px; }
+  .opt i { font-style:normal; width:62px; height:62px; flex:none; border-radius:14px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; font-size:32px; color:rgba(255,255,255,.7); }
+  .opt.right { background:#0b3d22; border-color:#22c55e; }   /* correct is ALWAYS green: a red 'right answer' reads as wrong */
+  .opt.right i { background:#22c55e; color:#000; }
+  .opt.dim { opacity:.35; }
+  /* countdown */
+  #clock { position:absolute; right:150px; top:330px; width:340px; height:340px; }
+  #clock svg { position:absolute; inset:0; transform:rotate(-90deg); }
+  #num { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:150px; font-weight:900; font-variant-numeric:tabular-nums; }
+  #num.hot { color:#ff4d4d; }
+  #tick { position:absolute; right:150px; top:330px; width:340px; height:340px; display:none; align-items:center; justify-content:center; font-size:170px; color:#22c55e; font-weight:900; }
+  #fact { position:absolute; left:80px; bottom:96px; width:1760px; font-size:36px; line-height:1.3; color:rgba(255,255,255,.85); font-weight:500; }
+  #fact b { color:#22c55e; }
+  .foot { position:absolute; left:80px; bottom:40px; font-size:22px; color:rgba(255,255,255,.4); letter-spacing:.08em; }
+  /* cards */
+  .card { position:absolute; left:80px; top:0; bottom:0; width:1600px; display:flex; flex-direction:column; justify-content:center; }
+  .kick { font-size:34px; letter-spacing:.24em; font-weight:800; color:var(--accent); margin-bottom:26px; }
+  .big { font-size:128px; line-height:1.0; font-weight:900; letter-spacing:-.02em; }
+  .sub { font-size:46px; color:rgba(255,255,255,.72); margin-top:34px; font-weight:600; line-height:1.3; }
+  .rows { margin-top:40px; font-size:44px; line-height:1.55; font-weight:700; }
+  .rows span { color:var(--accent); display:inline-block; min-width:230px; }
+  .pill { display:inline-block; margin-top:46px; background:var(--accent); color:#000; font-weight:900; font-size:44px; padding:18px 36px; border-radius:18px; }
+</style></head>
+<body>
+<div id="bg"></div>
+
+<div class="screen" id="intro">
+  <div class="brand">SHITHOUSERY <b>HQ</b></div>
+  <div class="card">
+    <div class="kick" id="iKick"></div>
+    <div class="big" id="iBig"></div>
+    <div class="sub" id="iSub"></div>
+  </div>
+</div>
+
+<div class="screen" id="round">
+  <div class="brand">SHITHOUSERY <b>HQ</b></div>
+  <div class="card">
+    <div class="kick" id="rKick"></div>
+    <div class="big" id="rBig"></div>
+    <div class="sub" id="rSub"></div>
+  </div>
+</div>
+
+<div class="screen" id="q">
+  <div class="brand">SHITHOUSERY <b>HQ</b></div>
+  <div class="meta"><span id="qNo"></span><small id="qRound"></small></div>
+  <div id="qtext"></div>
+  <div id="opts"></div>
+  <div id="clock">
+    <svg viewBox="0 0 340 340"><circle cx="170" cy="170" r="150" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="22"/>
+      <circle id="ring" cx="170" cy="170" r="150" fill="none" stroke="var(--accent)" stroke-width="22" stroke-linecap="round" stroke-dasharray="942.5" stroke-dashoffset="0"/></svg>
+    <div id="num"></div>
+  </div>
+  <div id="tick">✓</div>
+  <div id="fact"></div>
+  <div class="foot" id="foot">Score yourself — one point each</div>
+</div>
+
+<div class="screen" id="outro">
+  <div class="brand">SHITHOUSERY <b>HQ</b></div>
+  <div class="card">
+    <div class="kick">FULL TIME</div>
+    <div class="big" id="oBig"></div>
+    <div class="rows" id="oRows"></div>
+    <div><span class="pill" id="oPill"></span></div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const L = ['A', 'B', 'C', 'D'];
+const lines = (el, arr) => el.replaceChildren(...arr.flatMap((l, i) => i ? [document.createElement('br'), document.createTextNode(l)] : [document.createTextNode(l)]));
+window.theme = (p) => { const r = document.documentElement.style; for (const [k, v] of Object.entries(p)) r.setProperty('--' + k, v); };
+const show = (id) => document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('on', s.id === id));
+
+window.intro = (d) => { show('intro'); $('iKick').textContent = d.kick; lines($('iBig'), d.big); $('iSub').textContent = d.sub; };
+window.round = (d) => { show('round'); $('rKick').textContent = d.kick; lines($('rBig'), d.big); $('rSub').textContent = d.sub; };
+window.outro = (d) => { show('outro'); lines($('oBig'), d.big);
+  $('oRows').replaceChildren(...d.rows.map(([a, b]) => { const div = document.createElement('div'); const s = document.createElement('span'); s.textContent = a; div.append(s, document.createTextNode(b)); return div; }));
+  $('oPill').textContent = d.pill; };
+
+// state: { q, o, a, n, total, roundName, count (10..1) | null, reveal:bool, fact }
+window.question = (d) => {
+  show('q');
+  $('qNo').textContent = `Q${d.n} / ${d.total}`;
+  $('qRound').textContent = d.roundName.toUpperCase();
+  $('qtext').textContent = d.q;
+  $('opts').replaceChildren(...d.o.map((t, i) => {
+    const div = document.createElement('div');
+    div.className = 'opt' + (d.reveal ? (i === d.a ? ' right' : ' dim') : '');
+    const tag = document.createElement('i'); tag.textContent = L[i];
+    div.append(tag, document.createTextNode(t)); return div;
+  }));
+  // shrink long question text so it never collides with the options
+  const qt = $('qtext'); qt.style.fontSize = '62px';
+  for (let fs = 62; qt.getBoundingClientRect().bottom > 490 && fs > 40; fs -= 2) qt.style.fontSize = fs + 'px';
+  document.querySelectorAll('.opt').forEach((el) => { el.style.fontSize = '44px'; for (let fs = 44; el.scrollHeight > 140 && fs > 30; fs -= 2) el.style.fontSize = fs + 'px'; });
+  const clock = $('clock'), tick = $('tick');
+  if (d.reveal) { clock.style.display = 'none'; tick.style.display = 'flex'; $('fact').innerHTML = ''; const b = document.createElement('b'); b.textContent = 'Answer: ' + d.o[d.a] + '. '; $('fact').append(b, document.createTextNode(d.fact || '')); }
+  else { clock.style.display = 'block'; tick.style.display = 'none'; $('fact').textContent = '';
+    $('num').textContent = d.count; $('num').className = d.count <= 3 ? 'hot' : '';
+    $('ring').setAttribute('stroke-dashoffset', String(942.5 * (1 - d.count / d.countFrom)));
+    $('ring').setAttribute('stroke', d.count <= 3 ? '#ff4d4d' : 'var(--accent)'); }
+};
+window.ready = true;
+</script>
+</body></html>

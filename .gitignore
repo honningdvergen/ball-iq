@@ -78,3 +78,5 @@ social/out/
 social/state/postiz_calls.log
 social/.frames/
 social/state/insights/
+social/.frames-long/
+social/.frames-short/

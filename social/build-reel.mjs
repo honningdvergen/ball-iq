@@ -12,6 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { THEMES, eraLabel } from './themes.mjs';
+import { mixQuizAudio, questionEvents } from './quizaudio.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const LEDGER = path.join(HERE, 'used-questions.json');
@@ -91,11 +92,17 @@ await browser.close();
 // ---- encode ----
 const out = path.join(HERE, 'out', outName + '.mp4');
 fs.mkdirSync(path.dirname(out), { recursive: true });
+const silent = path.join(FRAMES, 'silent.mp4');
 execFileSync(FFMPEG, ['-y', '-framerate', String(FPS), '-i', path.join(FRAMES, '%05d.jpg'),
-  '-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=44100',
   '-c:v', 'libx264', '-preset', 'slow', '-crf', '19', '-pix_fmt', 'yuv420p',
-  '-profile:v', 'high', '-level', '4.1', '-movflags', '+faststart',
-  '-c:a', 'aac', '-b:a', '128k', '-shortest', out], { stdio: ['ignore', 'ignore', 'ignore'] });
+  '-profile:v', 'high', '-level', '4.1', '-movflags', '+faststart', silent], { stdio: ['ignore', 'ignore', 'ignore'] });
+// Sound (09-23): the silent version got deleted off TikTok. Timings mirror reel.html:
+// hook 2.6s, 12s per question, countdown from ~1.6s to the 8.6s reveal.
+const HOOK_T = 2.6, Q_T = 12, events = [];
+questions.forEach((_, i) => { const s = HOOK_T + i * Q_T; events.push(...questionEvents(s, s + 1.6, s + 8.6, s + 8.6)); });
+const track = process.env.TRACK || 'monkeys';
+const credit = mixQuizAudio({ video: silent, out, total, events, track });
+fs.writeFileSync(out.replace(/\.mp4$/, '.credit.txt'), credit + '\n');
 
 // only mark questions used once the file actually exists
 if (!fs.existsSync(out)) { console.error('encode failed'); process.exit(1); }

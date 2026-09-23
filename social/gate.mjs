@@ -72,8 +72,8 @@ const ham = (a, b) => { let x = BigInt('0x' + a) ^ BigInt('0x' + b), n = 0; whil
 // dHash (1024 bits) before calling it a repeat.
 const pop = (h) => { let x = BigInt('0x' + h), n = 0; while (x) { n += Number(x & 1n); x >>= 1n; } return n; };
 const LOW = 16;
-function fine(file) {
-  const px = execFileSync(FFMPEG, ['-v', 'error', '-i', file, '-frames:v', '1', '-vf', 'scale=33:32:flags=area,format=gray', '-f', 'rawvideo', '-'], { maxBuffer: 1 << 20 });
+function fine(file, ss) {
+  const px = execFileSync(FFMPEG, ['-v', 'error', ...(ss != null ? ['-ss', String(ss)] : []), '-i', file, '-frames:v', '1', '-vf', 'scale=33:32:flags=area,format=gray', '-f', 'rawvideo', '-'], { maxBuffer: 1 << 20 });
   let s = '';
   for (let y = 0; y < 32; y++) for (let x = 0; x < 32; x++) s += px[y * 33 + x] > px[y * 33 + x + 1] ? '1' : '0';
   return s;
@@ -81,14 +81,24 @@ function fine(file) {
 const fineSame = (a, b) => { let d = 0; for (let i = 0; i < a.length; i++) d += a[i] !== b[i]; return d <= a.length * 0.04; };
 function findRepeat(fp, platform, db, file) {
   const need = fp.length === 1 ? 1 : 2;   // video: 2 of 3 frames must match
-  let mine;
+  // Same for VIDEO: dark text-only quiz reels collide frame-for-frame (09-23: transfers vs city).
+  // Low-detail frames that match coarsely are re-checked at the same relative time with the fine hash.
+  const P = [0.25, 0.5, 0.75], mine = {};
+  const at = (f, i) => (fp.length === 1 ? null : (duration(f) * P[i]).toFixed(2));
   return db.find((e) => {
     if (e.platform !== platform || e.fp.length !== fp.length) return false;
-    if (fp.filter((h, i) => ham(h, e.fp[i]) <= MATCH).length < need) return false;
-    if (fp.length > 1 || pop(fp[0]) >= LOW || !file) return true;
-    if (!fs.existsSync(e.file)) return false;   // can't confirm a low-detail card: let it through
-    mine ??= fine(file);
-    return fineSame(mine, fine(e.file));
+    const hits = fp.map((h, i) => i).filter((i) => ham(fp[i], e.fp[i]) <= MATCH);
+    if (hits.length < need) return false;
+    if (!file) return true;
+    let ok = 0;
+    for (const i of hits) {
+      // Templated formats (quiz reels, tweet cards) share a layout, so a coarse match is only a
+      // candidate: confirm it with the fine hash whenever the old file is still on disk.
+      if (!fs.existsSync(e.file)) { if (pop(fp[i]) >= LOW) ok++; continue; }
+      mine[i] ??= fine(file, at(file, i));
+      if (fineSame(mine[i], fine(e.file, at(e.file, i)))) ok++;
+    }
+    return ok >= need;
   });
 }
 // ffmpeg prints volumedetect to STDERR (the first version read stdout, got NaN, and let a silent
