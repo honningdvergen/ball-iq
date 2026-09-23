@@ -351,7 +351,14 @@
     timer = setTimeout(go, 60000);
   }
 
-  if (window.__biqConsentDefer && !window.__biqConsentMomentFired) {
+  if (window.__biqConsentDefer === 'game' && !window.__biqConsentMomentFired) {
+    /* A game in progress: ONLY the game's own end (or leaving it) may summon the
+       bar. No scroll trigger, no 60s dwell — Footle takes longer than a minute,
+       and the bar reserving 172px mid-game shrinks the board while it is being
+       played. A player who never finishes is never asked: fails safe for
+       privacy, and Clarity stays off for them either way. */
+    window.addEventListener('biq:consent-moment', function () { start(); }, { once: true });
+  } else if (window.__biqConsentDefer && !window.__biqConsentMomentFired) {
     armDeferredFallback();
   } else {
     start();

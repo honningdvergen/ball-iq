@@ -32,6 +32,12 @@
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
 .wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1 1 auto;padding:8px 8px;margin-inline:-20px;}
 .wd-grid{--wd-tile-max:64px;--wd-chrome:505px;}
+/* ⚠️ The WEBSITE's focused Footle measures 371px of chrome, not 505 (390x740,
+   2026-09-23): no site header, no tab bar. 505 left ~100px dead under ENTER and
+   a 39px tile where 47 fits. 455 keeps ENTER clear of the 42px safe-area pad
+   with margin; verified at 360x640, 375x667, 390x740, 390x844 and 430x932.
+   Native keeps 505 — its chrome includes the notch/home-indicator insets. */
+body.biq-web.in-focused-play .wd-grid{--wd-chrome:455px;}
 @supports (height:100dvh){
   /* Subtract the consent bar here too. A tile is SQUARE, so capping it on one
      axis caps it on both — shrinking .wd-screen alone leaves the tiles at
@@ -103,7 +109,13 @@
 .wd-share--wa:active{opacity:0.85;}
 .wd-back{padding:10px 22px;background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:opacity 120ms ease;-webkit-text-fill-color:var(--accent);}
 .wd-back:active{opacity:0.85;}
-.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-top:auto;margin-inline:-20px;}
+/* ⚠️ -14px, NOT -20px (2026-09-23, Alex in the Instagram in-app browser: "the
+   ratios and cropping here seems bad"). d78e13bb (07-21) set -14px and wrote
+   "past -14px the curved screen edges clip Q/P"; 3d6c9c21 (07-28) went to -20px
+   anyway for ~1.2px more per key, which put Q at x=0, P at x=390 and ENTER's
+   pill ends flush against a curved display. 6px of gutter each side is the
+   stated physical limit, not a taste call. Keys at 390px: 33.6 -> 32.4px. */
+.wd-keyboard{display:flex;flex-direction:column;gap:6px;padding:2px 0 4px;margin-top:auto;margin-inline:-14px;}
 .wd-keyboard{--kb-gap:6px;--kb-key:calc((100% - 9 * var(--kb-gap)) / 10);}
 .wd-kb-row{display:flex;justify-content:center;gap:var(--kb-gap);}
 .wd-key{position:relative;flex:0 0 var(--kb-key,auto);min-width:0;height:56px;display:flex;align-items:center;justify-content:center;background:var(--s3);color:var(--text);border:none;border-radius:6px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-transform:uppercase;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background 0.12s,transform 0.05s;padding:0;}
@@ -156,4 +168,8 @@ html.biq-cb .wd-tile--next{border-color:rgba(245,121,58,0.55);box-shadow:inset 0
 @media (min-width: 421px) and (max-width: 1023px) {
   .wd-screen { margin-left: auto !important; margin-right: auto !important; }
 }
-@media (max-width: 720px) { body.biq-web .wd-grid, body.biq-web .wd-keyboard { margin-inline: calc(-1 * clamp(16px, 4vw, 44px)); } }
+/* The web page gutter is clamp(16px, 4vw, 44px); the grid bleeds exactly that.
+   The KEYBOARD bleeds 6px less, for the same curved-edge reason as the -14px
+   rule above: bleeding the full gutter put Q at x=0 and P at x=390 on the site
+   too (seen in Instagram's in-app browser, 2026-09-23). */
+@media (max-width: 720px) { body.biq-web .wd-grid { margin-inline: calc(-1 * clamp(16px, 4vw, 44px)); } body.biq-web .wd-keyboard { margin-inline: calc(6px - clamp(16px, 4vw, 44px)); } }

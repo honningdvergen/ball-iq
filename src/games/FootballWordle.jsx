@@ -177,6 +177,17 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // mounted. Distinguishes a fresh solve (fire confetti once) from re-opening
   // a solved puzzle later in the day (no confetti on every revisit).
   const wasFinishedAtMount = useRef(state.status !== "playing");
+  // The game's end is the "natural pause" the deferred consent bar waits for on
+  // Footle arrivals (index.html sets __biqConsentDefer = 'game' for /footle).
+  // Without this the bar would wait until the player left the screen; with a
+  // timer it would land mid-game and shrink the board (2026-09-23).
+  useEffect(() => {
+    if (state.status === "playing") return;
+    try {
+      window.__biqConsentMomentFired = true;
+      window.dispatchEvent(new Event("biq:consent-moment"));
+    } catch { /* consent is a nicety here, never a reason to break the game */ }
+  }, [state.status]);
 
   // The rules sheet used to auto-open here, once, for a first-time player.
   // Alex, 2026-07-29: "do we really need the explainer first time someone opens
