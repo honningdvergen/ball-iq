@@ -111,7 +111,19 @@ async function instagram() {
     }
     if (url) { url = j.paging?.next || null; params = {}; }
   }
-  return { followers: acct.followers_count, media: acct.media_count, posts };
+  // Account level, per day: follows vs unfollows (09-23 first read: +355 / −157 over 8 days — the
+  // leak matters as much as the tap). Meta fills the last ~2 days late, so they read 0 at first.
+  const daily = [];
+  for (let i = 8; i >= 1; i--) {
+    const since = Math.floor(new Date(TODAY).getTime() / 1000) - i * 86400;
+    try {
+      const j = await get(`${FB}/${IG}/insights`, { metric: 'follows_and_unfollows', period: 'day', metric_type: 'total_value', breakdown: 'follow_type', since, until: since + 86400, access_token: PAGE_TOKEN });
+      const r = j.data[0]?.total_value?.breakdowns?.[0]?.results || [];
+      const v = (k) => r.find((x) => x.dimension_values[0] === k)?.value ?? 0;
+      daily.push({ day: new Date(since * 1000).toISOString().slice(0, 10), follows: v('FOLLOWER'), unfollows: v('NON_FOLLOWER') });
+    } catch (e) { daily.push({ day: new Date(since * 1000).toISOString().slice(0, 10), error: e.message.slice(0, 60) }); }
+  }
+  return { followers: acct.followers_count, media: acct.media_count, posts, daily };
 }
 
 async function facebook() {
@@ -156,6 +168,11 @@ function report(d, delta) {
   L.push('## Followers', `- Threads: ${d.threads.followers ?? '?'} (${sign(delta.threads)})`,
     `- Instagram: ${d.instagram.followers ?? '?'} (${sign(delta.instagram)})`, `- Facebook Page: ${d.facebook.followers ?? '?'} (${sign(delta.facebook)})`, '');
 
+  if (d.instagram.daily) {
+    L.push('## Instagram — follows vs unfollows per day', '', '| day | follows | unfollows | net |', '|---|---|---|---|');
+    for (const x of d.instagram.daily) L.push(x.error ? `| ${x.day} | — | — | ${x.error} |` : `| ${x.day} | ${x.follows} | ${x.unfollows} | ${x.follows - x.unfollows} |`);
+    L.push('', '_Last ~2 days fill in late (Meta). Unfollows are the leak: watch them against posting volume._', '');
+  }
   const ig = (d.instagram.posts || []).map((p) => ({ ...p, f1k: per1k(p.follows, p.views), s1k: per1k((p.saved || 0) + (p.shares || 0), p.views) }));
   L.push('## Instagram — ranked by follows per 1k views (photos/carousels), then saves+shares per 1k', '',
     '| when | type | views | reach | follows | f/1k | profile visits | saves+shares/1k | post |', '|---|---|---|---|---|---|---|---|---|');
