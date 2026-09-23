@@ -103,8 +103,13 @@ export const seenAs = (file, platform) => findRepeat(fingerprint(file), platform
 
 export function check({ platform, caption = '', settings = {}, media = [], unmapped = 0 }) {
   const block = [], warn = [];
-  if (platform === 'facebook' && process.env.PZ_ALLOW_FB !== '1')
-    block.push('Facebook: FB reach only comes from Alex posting in the IG app with Share to Facebook ON. Claude does not schedule FB (09-23 route test: Postiz/MBS FB posts got 0–33 views). Override: PZ_ALLOW_FB=1.');
+  // Facebook (Alex 09-23): reels only. Postiz FB reels hit ~1 in 30 (the 56K Chelsea/Brentford tag-bait reel was
+  // Postiz) — cheap extra tickets, max 2/day, and never a reel Alex also posts on IG (his IG reels auto-share to FB,
+  // so it would go out twice). Picture posts via Postiz got 0–17 reach: still blocked.
+  if (platform === 'facebook' && process.env.PZ_ALLOW_FB !== '1' && !(media.length === 1 && VIDEO.test(media[0])))
+    block.push('Facebook via Postiz: REELS ONLY (one video). Picture/carousel posts reach 0–17 here; FB photos come from Alex\'s IG app. Override: PZ_ALLOW_FB=1.');
+  if (platform === 'facebook' && media.some((f) => VIDEO.test(f)))
+    warn.push('FB reel via Postiz: max 2/day, a fanbase line people TAG mates in, and NOT a reel Alex is posting on IG (auto-share would double it).');
   if (platform === 'instagram' && media.length + unmapped > 10)
     block.push(`Instagram carousel has ${media.length + unmapped} items — the API maximum is 10.`);
   const bannedText = [caption, ...media.map((f) => path.basename(f))].find((t) => BANNED.test(t));
