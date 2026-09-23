@@ -2583,6 +2583,14 @@ ${heroTwoCol({
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), slug: cfg.slug, kind: 'player' }))}
 ${appCtaBand(cfg.name)}
+${/* AdSense fix 2 (2026-09-23): the write-up renders open instead of as the
+     last FAQ fold, and the covers + how-it-is-checked blurbs (identical on
+     every page of this type) became the one /about/ line further down.
+     ⚠️ HERE, not after the mesh as on club pages: the practice block below
+     lists every question (373 cards on /quiz/england/, 168 screens), so
+     "after the mesh" meant the very bottom of the page, and the mesh is far
+     below the scroll cliff on these pages either way. */''}
+${renderClubAbout(cfg.name, cfg.intro, `About the ${cfg.name} quiz`)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
 <p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
@@ -2594,11 +2602,6 @@ ${adSlot('afterQA')}
 ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
-${/* AdSense fix 2 (2026-09-23), same as the club page: the write-up renders
-     open instead of as the last FAQ fold, and the covers + how-it-is-checked
-     blurbs, word-for-word the same on every page of this type, become one
-     line to /about/. Prose sits after the band and the mesh. */''}
-${renderClubAbout(cfg.name, cfg.intro, `About the ${cfg.name} quiz`)}
 ${clubCheckLine()}
 <section class="sec narrow">
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
@@ -3635,6 +3638,14 @@ ${heroTwoCol({
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: cfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, hints.length - quizRows.length), badge: deriveBadge(cfg.name), slug: cfg.slug, kind: 'nation' }))}
 ${appCtaBand(cfg.name)}
+${/* AdSense fix 2 (2026-09-23): the write-up renders open instead of as the
+     last FAQ fold, and the covers + how-it-is-checked blurbs (identical on
+     every page of this type) became the one /about/ line further down.
+     ⚠️ HERE, not after the mesh as on club pages: the practice block below
+     lists every question (373 cards on /quiz/england/, 168 screens), so
+     "after the mesh" meant the very bottom of the page, and the mesh is far
+     below the scroll cliff on these pages either way. */''}
+${renderClubAbout(cfg.name, cfg.intro, `About the ${cfg.name} quiz`)}
 <section class="sec narrow">
 <h2>${esc(cfg.name)} sample questions &amp; answers</h2>
 <p class="sub">Tap an answer to check it — instant right/wrong and the story behind it.</p>
@@ -3646,11 +3657,6 @@ ${adSlot('afterQA')}
 ${renderTiles(related)}
 ${renderListLinks(cfg.name)}
 </section>
-${/* AdSense fix 2 (2026-09-23), same as the club page: the write-up renders
-     open instead of as the last FAQ fold, and the covers + how-it-is-checked
-     blurbs, word-for-word the same on every page of this type, become one
-     line to /about/. Prose sits after the band and the mesh. */''}
-${renderClubAbout(cfg.name, cfg.intro, `About the ${cfg.name} quiz`)}
 ${clubCheckLine()}
 <section class="sec narrow">
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
