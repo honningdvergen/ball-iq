@@ -2595,7 +2595,8 @@ ${heroTwoCol({
     h1: cfg.h1,
     lead: cfg.description,
     chips: [
-      { n: hints.length, label: 'questions' },
+      // No count chip: the exact question count is never printed (binding rule —
+      // this chip shipped on every player and nation page until 2026-09-23).
       // pct100(hints) would be a tautology — `hints` IS the explained rows.
       // Measure the unfiltered pool or the claim means nothing.
       ...(pct100(poolAll) ? [{ n: '100%', label: 'explained' }] : []),
@@ -3010,7 +3011,7 @@ ${style}
 <section class="sec narrow">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <a href="${SITE.base}/lists/">Football lists</a> › <span>${esc(cfg.h1)}</span></nav>
 <h1 style="font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em;color:#fff;line-height:1.1;margin:10px 0 6px">${esc(cfg.h1)}</h1>
-<p class="sub" style="color:var(--tx3);margin:0 0 18px">${rows.length} entries${asOf} · free · hand-checked by Ball IQ</p>
+<p class="sub" style="color:var(--tx3);margin:0 0 18px">${rows.length} entries${asOf} · free · checked by Ball IQ</p>
 ${/* Only the FIRST intro paragraph sits above the taster. The full intro ran
       ~990px, which pushed the taster to 15.1% of the page against a ~14%
       average scroll — technically reachable, practically not. The remaining
@@ -3642,7 +3643,8 @@ ${heroTwoCol({
     h1: cfg.h1,
     lead: cfg.description,
     chips: [
-      { n: hints.length, label: 'questions' },
+      // No count chip: the exact question count is never printed (binding rule —
+      // this chip shipped on every player and nation page until 2026-09-23).
       // pct100(hints) would be a tautology — `hints` IS the explained rows.
       // Measure the unfiltered pool or the claim means nothing.
       ...(pct100(poolAll) ? [{ n: '100%', label: 'explained' }] : []),

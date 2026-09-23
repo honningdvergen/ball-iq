@@ -54,6 +54,15 @@ const PATTERNS = [
   /\b(?!(?:19|20)\d{2}\b)\d{3,4}\+?\s+(?:[\p{L}'’-]+\s+){0,3}questions\b/giu,
   /\bbank of\s+\d{1,3},?\d{3}\b/gi,
   /\b\d{1,3},\d{3}\s+questions\s+in\s+the\s+bank\b/gi,
+  // ⚠️ THE TENTH WAY IT SHIPPED (found 2026-09-23 by an AdSense review, not by
+  // this gate): a hero STAT CHIP, <b>25</b><span>questions</span>, on every
+  // player and nation page (Haaland 25, Messi 61, England 373). It beat every
+  // pattern above twice over: the number and the noun sit in SEPARATE ELEMENTS,
+  // so no text pattern ever saw them together, and 25 is two digits, under the
+  // three-digit floor that exists for game-format counts. A number alone in one
+  // element followed straight by an element that says "questions" is a count
+  // label and nothing else, whatever its size.
+  /<(b|strong|span|div)[^>]*>\s*\d[\d,.\s]*\+?\s*<\/\1>\s*<(span|small|div|p)[^>]*>\s*(?:quiz\s+)?questions?\s*<\/\2>/gi,
   /\bquestions?\s*:\s*\d{1,3},\d{3}\b/gi,
   /\bscanned all\s+\d{1,3},\d{3}\b/gi,
   // ⚠️ THE FOURTH WAY IT SHIPPED (2026-08-06): the club-page length picker
