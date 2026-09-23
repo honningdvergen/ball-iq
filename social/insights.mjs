@@ -12,8 +12,10 @@
 // expose it); Threads and the Page give per-post / per-day reach and engagement. Rank by what grows.
 //
 // READ-ONLY BY CONSTRUCTION. Tokens live in the macOS Keychain (set up 09-23 via the SHQ Insights
-// Meta app); every request goes through get(), which only ever issues GET. The Threads token carries
-// publish scopes because Meta's generator ignored the unticked boxes — this file must never POST.
+// Meta app, and the "shq-insights" Google Cloud project for YouTube); every Meta/Threads request goes
+// through get(), which only ever issues GET. The Threads token carries publish scopes because Meta's
+// generator ignored the unticked boxes — so nothing here may POST to Meta. The single POST is Google's
+// OAuth refresh-token exchange (read-only YouTube scopes).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -137,6 +139,35 @@ async function facebook() {
   return { followers: acct.followers_count, days };
 }
 
+// YouTube (Google Cloud project "shq-insights", OAuth client in Keychain, consent by the Alex Olsen
+// login that owns the channel, 09-23). Read-only scopes: yt-analytics.readonly + youtube.readonly.
+// The one non-GET request in this file: exchanging the refresh token for an access token (OAuth).
+async function youtube() {
+  const [cid, cs, rt] = ['shq-google-client-id', 'shq-google-client-secret', 'shq-google-refresh-token'].map(key);
+  if (!rt) return { error: 'no Google refresh token in Keychain (shq-google-refresh-token)' };
+  const tok = await (await fetch('https://oauth2.googleapis.com/token', { method: 'POST',
+    body: new URLSearchParams({ client_id: cid, client_secret: cs, refresh_token: rt, grant_type: 'refresh_token' }) })).json();
+  if (!tok.access_token) return { error: 'google token refresh failed: ' + (tok.error_description || tok.error) };
+  const yt = async (url, params) => {
+    const u = new URL(url); for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
+    const j = await (await fetch(u, { headers: { Authorization: `Bearer ${tok.access_token}` } })).json();
+    if (j.error) throw new Error(j.error.message); return j;
+  };
+  const ch = (await yt('https://www.googleapis.com/youtube/v3/channels', { part: 'statistics', mine: 'true' })).items[0];
+  const end = TODAY, start = new Date(Date.now() - 28 * 86400e3).toISOString().slice(0, 10);
+  const rows = (j) => (j.rows || []).map((r) => Object.fromEntries(j.columnHeaders.map((h, i) => [h.name, r[i]])));
+  const daily = rows(await yt('https://youtubeanalytics.googleapis.com/v2/reports', { ids: 'channel==MINE', startDate: new Date(Date.now() - 10 * 86400e3).toISOString().slice(0, 10), endDate: end,
+    metrics: 'views,engagedViews,subscribersGained,subscribersLost', dimensions: 'day', sort: 'day' }));
+  const vids = rows(await yt('https://youtubeanalytics.googleapis.com/v2/reports', { ids: 'channel==MINE', startDate: start, endDate: end,
+    metrics: 'views,engagedViews,subscribersGained,averageViewPercentage,likes,shares', dimensions: 'video', sort: '-views', maxResults: 15 }));
+  if (vids.length) {
+    const meta = await yt('https://www.googleapis.com/youtube/v3/videos', { part: 'snippet', id: vids.map((v) => v.video).join(',') });
+    const title = Object.fromEntries(meta.items.map((m) => [m.id, [m.snippet.title, m.snippet.publishedAt]]));
+    for (const v of vids) [v.title, v.at] = title[v.video] || ['?', ''];
+  }
+  return { followers: Number(ch.statistics.subscriberCount), views_total: Number(ch.statistics.viewCount), daily, videos: vids };
+}
+
 async function rivals() {
   const out = [];
   for (const u of RIVALS) {
@@ -166,7 +197,7 @@ function report(d, delta) {
   const L = [`# SHQ insights — ${TODAY} (posts from the last ${HOURS}h)`, ''];
   const sign = (x) => (x == null ? 'first reading' : (x >= 0 ? '+' : '') + x + ' since last run');
   L.push('## Followers', `- Threads: ${d.threads.followers ?? '?'} (${sign(delta.threads)})`,
-    `- Instagram: ${d.instagram.followers ?? '?'} (${sign(delta.instagram)})`, `- Facebook Page: ${d.facebook.followers ?? '?'} (${sign(delta.facebook)})`, '');
+    `- Instagram: ${d.instagram.followers ?? '?'} (${sign(delta.instagram)})`, `- Facebook Page: ${d.facebook.followers ?? '?'} (${sign(delta.facebook)})`, `- YouTube: ${d.youtube?.followers ?? '?'} subscribers (${sign(delta.youtube)})`, '');
 
   if (d.instagram.daily) {
     L.push('## Instagram — follows vs unfollows per day', '', '| day | follows | unfollows | net |', '|---|---|---|---|');
@@ -191,6 +222,13 @@ function report(d, delta) {
     L.push(`| ${day} | ${v.page_media_view ?? ''} | ${v.page_total_media_view_unique ?? ''} | ${v.page_daily_follows_unique ?? ''} | ${v.page_post_engagements ?? ''} | ${v.page_video_views ?? ''} |`);
   L.push('', '_Meta labels each day by its END time — a row is mostly the previous day (Postiz trap, same source)._', '');
 
+  if (d.youtube && !d.youtube.error) {
+    L.push('## YouTube — daily (analytics lag ~2–3 days)', '', '| day | views | engaged views | subs gained | subs lost |', '|---|---|---|---|---|');
+    for (const x of d.youtube.daily) L.push(`| ${x.day} | ${x.views} | ${x.engagedViews} | ${x.subscribersGained} | ${x.subscribersLost} |`);
+    L.push('', '## YouTube — top videos, last 28 days', '', '| published | views | engaged | subs gained | avg % watched | shares | title |', '|---|---|---|---|---|---|---|');
+    for (const v of d.youtube.videos) L.push(`| ${(v.at || '').slice(5, 10)} | ${v.views} | ${v.engagedViews} | ${v.subscribersGained} | ${Math.round(v.averageViewPercentage)}% | ${v.shares} | [${short(v.title)}](https://youtube.com/shorts/${v.video}) |`);
+    L.push('');
+  } else if (d.youtube?.error) L.push(`## YouTube\n\n⚠️ ${d.youtube.error}\n`);
   if (d.rivals) {
     L.push('## Reference accounts (Business Discovery)', '', '| account | followers | posts in window | best post (likes / views) |', '|---|---|---|---|');
     for (const r of d.rivals) L.push(r.error ? `| @${r.user} | — | — | not visible (${r.error.slice(0, 50)}) |`
@@ -201,11 +239,11 @@ function report(d, delta) {
 
 await refreshThreads();
 const safe = async (f) => { try { return await f(); } catch (e) { return { error: e.message.slice(0, 160) }; } };
-const data = { at: new Date().toISOString(), hours: HOURS, threads: await safe(threads), instagram: await safe(instagram), facebook: await safe(facebook) };
+const data = { at: new Date().toISOString(), hours: HOURS, threads: await safe(threads), instagram: await safe(instagram), facebook: await safe(facebook), youtube: await safe(youtube) };
 if (!process.argv.includes('--no-rivals')) data.rivals = await safe(rivals);
-const delta = logFollowers([['threads', data.threads.followers], ['instagram', data.instagram.followers], ['facebook', data.facebook.followers]]);
+const delta = logFollowers([['threads', data.threads.followers], ['instagram', data.instagram.followers], ['facebook', data.facebook.followers], ['youtube', data.youtube.followers]]);
 fs.writeFileSync(path.join(OUT, `${TODAY}.json`), JSON.stringify(data, null, 1));
 const md = report(data, delta);
 fs.writeFileSync(path.join(OUT, `${TODAY}.md`), md);
-for (const k of ['threads', 'instagram', 'facebook', 'rivals']) if (data[k]?.error) console.error(`⚠️ ${k}: ${data[k].error}`);
+for (const k of ['threads', 'instagram', 'facebook', 'youtube', 'rivals']) if (data[k]?.error) console.error(`⚠️ ${k}: ${data[k].error}`);
 process.stdout.write(md);
