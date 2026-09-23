@@ -136,6 +136,11 @@ async function facebook() {
     period: 'day', access_token: PAGE_TOKEN });
   const days = {};
   for (const m of j.data) for (const v of m.values) (days[v.end_time.slice(0, 10)] ||= {})[m.name] = v.value;
+  // Earnings must be asked for on its own — combined with the other metrics Meta returns error 2.
+  try {
+    const e = await get(`${FB}/${PAGE}/insights`, { metric: 'monetization_approximate_earnings', period: 'day', access_token: PAGE_TOKEN });
+    for (const m of e.data) for (const v of m.values) (days[v.end_time.slice(0, 10)] ||= {})[m.name] = v.value;
+  } catch (e) { /* earnings are admin-only extras; the rest of the report stands */ }
   return { followers: acct.followers_count, days };
 }
 
@@ -217,9 +222,9 @@ function report(d, delta) {
     L.push(`| ${p.at.slice(5, 16)} | ${p.views ?? ''} | ${p.likes ?? ''} | ${p.replies ?? ''} | ${(p.reposts || 0) + (p.quotes || 0)} | ${p.shares ?? ''} | ${p.e1k ?? ''} | [${p.text || '(media)'}](${p.url}) |`);
   L.push('');
 
-  L.push('## Facebook Page — daily', '', '| day | content views | unique viewers | new follows | engagements | video views |', '|---|---|---|---|---|---|');
+  L.push('## Facebook Page — daily', '', '| day | content views | unique viewers | new follows | engagements | video views | earnings $ | $ per 1k views |', '|---|---|---|---|---|---|---|---|');
   for (const [day, v] of Object.entries(d.facebook.days || {}).sort())
-    L.push(`| ${day} | ${v.page_media_view ?? ''} | ${v.page_total_media_view_unique ?? ''} | ${v.page_daily_follows_unique ?? ''} | ${v.page_post_engagements ?? ''} | ${v.page_video_views ?? ''} |`);
+    L.push(`| ${day} | ${v.page_media_view ?? ''} | ${v.page_total_media_view_unique ?? ''} | ${v.page_daily_follows_unique ?? ''} | ${v.page_post_engagements ?? ''} | ${v.page_video_views ?? ''} | ${v.monetization_approximate_earnings != null ? '$' + Number(v.monetization_approximate_earnings).toFixed(2) : ''} | ${v.monetization_approximate_earnings != null && v.page_media_view ? '$' + (1000 * v.monetization_approximate_earnings / v.page_media_view).toFixed(4) : ''} |`);
   L.push('', '_Meta labels each day by its END time — a row is mostly the previous day (Postiz trap, same source)._', '');
 
   if (d.youtube && !d.youtube.error) {

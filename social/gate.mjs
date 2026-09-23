@@ -20,12 +20,14 @@
 //   · Double audio      → BLOCK. An IG `audio` track on a clip that already has sound plays both
 //                         (the 7-points reel, 09-22).
 //   · Empty caption     → BLOCK on Instagram/TikTok/YouTube.
+//   · Silent video      → BLOCK on TikTok/Instagram/YouTube (mean ≤ −40 dB, no IG track): Alex deleted
+//                         the quiet quiz reel from TikTok, 09-23 — "not fit for tiktok at all".
 //
 // State lives in social/state/ (in the repo, not /tmp — a reboot must not wipe "never twice").
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -69,11 +71,12 @@ function findRepeat(fp, platform, db) {
   return db.find((e) => e.platform === platform && e.fp.length === fp.length &&
     fp.filter((h, i) => ham(h, e.fp[i]) <= MATCH).length >= need);
 }
+// ffmpeg prints volumedetect to STDERR (the first version read stdout, got NaN, and let a silent
+// clip PASS — caught by the 09-23 test). No audio stream at all counts as silent.
 const meanVolume = (f) => {
-  try {
-    const out = execFileSync(FFMPEG, ['-i', f, '-af', 'volumedetect', '-vn', '-f', 'null', '-'], { stdio: ['ignore', 'pipe', 'pipe'] });
-    return Number((out.toString().match(/mean_volume: (-?[\d.]+)/) || [])[1]);
-  } catch (e) { const m = String(e.stderr || '').match(/mean_volume: (-?[\d.]+)/); return m ? Number(m[1]) : -Infinity; }
+  const r = spawnSync(FFMPEG, ['-i', f, '-af', 'volumedetect', '-vn', '-f', 'null', '-'], { encoding: 'utf8' });
+  const m = String(r.stderr || '').match(/mean_volume: (-?[\d.]+)/);
+  return m ? Number(m[1]) : -Infinity;
 };
 
 export const seenAs = (file, platform) => findRepeat(fingerprint(file), platform, load());
@@ -101,7 +104,10 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
     const vol = meanVolume(vid);
     if (platform === 'instagram' && settings.audio && vol > -50)
       block.push(`Double audio: the clip already has sound (${vol} dB) and an IG track is set. Remove "audio" or use a silent file.`);
-    if (vol <= -50 && !settings.audio) warn.push(`Clip is silent (${vol} dB) and has no track — Alex called silent reels "bland".`);
+    if (vol <= -40 && !settings.audio) {
+      const msg = `Clip is silent/near-silent (${vol} dB) with no track — Alex deleted the quiet quiz reel from TikTok ("horrible… not fit for tiktok at all", 09-23).`;
+      if (['tiktok', 'instagram', 'youtube'].includes(platform)) block.push(msg); else warn.push(msg);
+    }
   }
   if (unmapped) warn.push(`${unmapped} media URL(s) not uploaded through social/pz — not fingerprinted, repeat check skipped for them.`);
   return { block, warn };
