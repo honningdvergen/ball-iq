@@ -73,7 +73,15 @@ for (const d of ['easy', 'medium', 'hard']) {
 }
 for (const q of cands) { if (chosen.length >= N) break; if (!chosen.includes(q) && !clash(q)) chosen.push(q); }
 if (chosen.length < Math.min(12, N)) { console.error(`only ${chosen.length} unused questions for ${key}`); process.exit(1); }
-const Qs = chosen.slice(0, N).map((e) => {
+// --ids <verified.json>: render EXACTLY the questions a fact-check passed (minus --skip), in that order — so
+// dropping a same-match duplicate never pulls in an unverified replacement.
+const IDS = arg('ids');
+if (IDS) {
+  const byId = new Map(QB.map((q) => [q.id, q]));
+  chosen.length = 0;
+  for (const { id } of JSON.parse(fs.readFileSync(path.resolve(IDS), 'utf8')).questions) if (!SKIP.has(id) && byId.get(id)) chosen.push(byId.get(id));
+}
+const Qs = chosen.slice(0, IDS ? chosen.length : N).map((e) => {
   if (e.flag) throw new Error('refusing flagged question ' + e.id);
   const answer = e.o[e.a];
   if (typeof e.a !== 'number' || answer == null) throw new Error('bad answer index ' + e.id);
