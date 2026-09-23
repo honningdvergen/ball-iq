@@ -155,10 +155,21 @@ if (data.cta && data.cta.image) {
   // as a post, not an ad. The designed "Follow for football every single day" card is the
   // ad-looking version; he asked for stronger on 09-22. Black letterbox like a phone screenshot.
   const c = data.cta;
+  // The photo's CC credit goes ON the slide (small, in the letterbox), never in the caption:
+  // Alex 09-23 found the caption line "roboty and redundant". Read from cta_bank/LICENCES.md.
+  let credit = c.credit;
+  if (credit === undefined) {
+    const lic = path.join(path.dirname(c.image), 'LICENCES.md');
+    const row = fs.existsSync(lic) && fs.readFileSync(lic, 'utf8').split('\n').find(l => l.startsWith(path.basename(c.image).replace(/^s_/, '') + ' |'));
+    if (row) { const col = row.split(' | '); credit = `📷 ${col[2].replace(/\s*\(.*?\)\s*/g, ' ').trim()} / ${col[3].match(/CC BY(-SA)? [\d.]+/)?.[0] || col[3]}`; }
+  }
   await page.setContent(shell(`<div style="position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center">
-    <img src="${uri(c.image)}" style="width:100%;height:auto;max-height:100%;object-fit:contain">
+    ${credit ? `<div style="position:absolute;bottom:22px;right:28px;font-size:19px;color:rgba(255,255,255,.6);font-weight:400;text-shadow:0 1px 3px rgba(0,0,0,.8)">${esc(credit)}</div>` : ''}
+    ${c.fit === 'cover'   // portrait photos fill the frame instead of being pillarboxed
+      ? `<img src="${uri(c.image)}" style="width:100%;height:100%;object-fit:cover;object-position:${c.pos || 'center 25%'}">`
+      : `<img src="${uri(c.image)}" style="width:100%;height:auto;max-height:100%;object-fit:contain">`}
     <div style="position:absolute;left:50%;top:${c.stickerY || 50}%;transform:translate(-50%,-50%) rotate(${c.tilt || -2}deg);background:#fff;color:#000;
-      font-size:${c.stickerSize || 54}px;font-weight:800;padding:18px 34px;border-radius:22px;white-space:nowrap;box-shadow:0 6px 24px rgba(0,0,0,.35)">${esc(c.sticker || 'Follow us (it\'s free) ;)')}</div></div>`));
+      font-size:${c.stickerSize || 54}px;font-weight:800;padding:18px 34px;border-radius:22px;white-space:${String(c.sticker).includes('\n') ? 'pre-line' : 'nowrap'};text-align:center;line-height:1.15;width:max-content;max-width:940px;box-shadow:0 6px 24px rgba(0,0,0,.35)">${esc(c.sticker || 'Follow us (it\'s free) ;)')}</div></div>`));
   const f = path.join(OUT, String(data.slides.length + 1).padStart(2, '0') + '.png');
   await page.screenshot({ path: f }); files.push(f);
 } else if (data.cta) {

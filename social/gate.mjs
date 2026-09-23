@@ -66,10 +66,30 @@ export function fingerprint(file) {
   return [0.25, 0.5, 0.75].map((p) => dhashAt(file, (d * p).toFixed(2)));
 }
 const ham = (a, b) => { let x = BigInt('0x' + a) ^ BigInt('0x' + b), n = 0; while (x) { n += Number(x & 1n); x >>= 1n; } return n; };
-function findRepeat(fp, platform, db) {
+// A text-on-white card (our maths cards, tweet screenshots) has almost no gradient at 9x8, so
+// its 64-bit dHash is nearly all zeros and EVERY such card "matches" every other (09-23: the
+// Yamal and Brobbey maths cards collided at distance 4). For those, confirm with a 33x32
+// dHash (1024 bits) before calling it a repeat.
+const pop = (h) => { let x = BigInt('0x' + h), n = 0; while (x) { n += Number(x & 1n); x >>= 1n; } return n; };
+const LOW = 16;
+function fine(file) {
+  const px = execFileSync(FFMPEG, ['-v', 'error', '-i', file, '-frames:v', '1', '-vf', 'scale=33:32:flags=area,format=gray', '-f', 'rawvideo', '-'], { maxBuffer: 1 << 20 });
+  let s = '';
+  for (let y = 0; y < 32; y++) for (let x = 0; x < 32; x++) s += px[y * 33 + x] > px[y * 33 + x + 1] ? '1' : '0';
+  return s;
+}
+const fineSame = (a, b) => { let d = 0; for (let i = 0; i < a.length; i++) d += a[i] !== b[i]; return d <= a.length * 0.04; };
+function findRepeat(fp, platform, db, file) {
   const need = fp.length === 1 ? 1 : 2;   // video: 2 of 3 frames must match
-  return db.find((e) => e.platform === platform && e.fp.length === fp.length &&
-    fp.filter((h, i) => ham(h, e.fp[i]) <= MATCH).length >= need);
+  let mine;
+  return db.find((e) => {
+    if (e.platform !== platform || e.fp.length !== fp.length) return false;
+    if (fp.filter((h, i) => ham(h, e.fp[i]) <= MATCH).length < need) return false;
+    if (fp.length > 1 || pop(fp[0]) >= LOW || !file) return true;
+    if (!fs.existsSync(e.file)) return false;   // can't confirm a low-detail card: let it through
+    mine ??= fine(file);
+    return fineSame(mine, fine(e.file));
+  });
 }
 // ffmpeg prints volumedetect to STDERR (the first version read stdout, got NaN, and let a silent
 // clip PASS — caught by the 09-23 test). No audio stream at all counts as silent.
@@ -79,7 +99,7 @@ const meanVolume = (f) => {
   return m ? Number(m[1]) : -Infinity;
 };
 
-export const seenAs = (file, platform) => findRepeat(fingerprint(file), platform, load());
+export const seenAs = (file, platform) => findRepeat(fingerprint(file), platform, load(), file);
 
 export function check({ platform, caption = '', settings = {}, media = [], unmapped = 0 }) {
   const block = [], warn = [];
@@ -96,7 +116,7 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
   media.forEach((f, i) => {
     if (!fs.existsSync(f)) { warn.push(`media not found locally, not fingerprinted: ${f}`); return; }
     if (isCarousel && i === media.length - 1) return;   // the Follow CTA slide is reused on purpose
-    const hit = findRepeat(fingerprint(f), platform, db);
+    const hit = findRepeat(fingerprint(f), platform, db, f);
     if (hit) block.push(`REPEAT on ${platform}: ${path.basename(f)} matches ${hit.file} (posted ${hit.date}${hit.post ? ', post ' + hit.post : ''}).`);
   });
   const vid = media.find((f) => VIDEO.test(f) && fs.existsSync(f));
