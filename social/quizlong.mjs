@@ -45,19 +45,25 @@ const pool = QB.filter((q) => q.type === 'mcq' && !q.flag && q.hint && Array.isA
 // 90s content); a question with no year in it is judged by the latest year in its hint.
 const years = (txt) => [...String(txt).matchAll(/\b(18\d\d|19\d\d|20[0-2]\d)s?\b/g)].map((m) => Number(m[1]));
 const inEra = (q) => { const ys = years(q.q); if (ys.length) return Math.min(...ys) >= 1990; const hs = years(q.hint); return !hs.length || Math.max(...hs) >= 1990; };
-const cands = T.pick(pool).filter(inEra);
+const SKIP = new Set(String(arg('skip', '')).split(',').filter(Boolean));   // hand-excluded ids (same-moment overlaps the filter can't see)
+const cands = T.pick(pool).filter(inEra).filter((q) => !SKIP.has(q.id));
 // 4 rounds of N/4 (09-23 viral research: top football quiz long-forms ramp Easy → Medium → Hard → Impossible,
 // ~10 min, 10s per question). Round 1 easy, round 2 medium, rounds 3–4 hard.
 const per = Math.floor(N / 4), want = { easy: per, medium: per, hard: N - 2 * per };
 // No two questions in one video may share an answer, or be about the same thing (09-23 first render had
 // Wenger twice, Vieira twice, and "The Invincibles" + "2003-04" back to back): unique answer, and no
 // question may contain another chosen question's answer (strong same-topic signal).
-const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]/g, ' ').trim();
+// æ/ø/å/ß aren't combining marks, so NFD alone left "Solskjær" ≠ "Solskjaer" (09-23 United draft had THREE
+// Solskjær-1999 questions). Transliterate first.
+const norm = (x) => String(x).toLowerCase().replace(/æ/g, 'ae').replace(/ø/g, 'o').replace(/å/g, 'a').replace(/ß/g, 'ss').replace(/[łđ]/g, (c) => ({ 'ł': 'l', 'đ': 'd' }[c])).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]/g, ' ').trim();
 const surname = (x) => norm(x).split(/\s+/).pop();
 const chosen = [];
 const clash = (q) => chosen.some((c) => {
   const a1 = norm(q.o[q.a]), a2 = norm(c.o[c.a]);
   if (a1 === a2 || (a1.length > 3 && surname(q.o[q.a]) === surname(c.o[c.a]) && isNaN(Number(a1)))) return true;
+  // same subject: a question whose STEM names another chosen answer's surname is about the same moment
+  const s1 = surname(q.o[q.a]), s2 = surname(c.o[c.a]);
+  if ((s2.length > 4 && isNaN(Number(s2)) && norm(q.q).split(/\s+/).includes(s2)) || (s1.length > 4 && isNaN(Number(s1)) && norm(c.q).split(/\s+/).includes(s1))) return true;
   const qt = norm(q.q + ' ' + q.hint), ct = norm(c.q + ' ' + c.hint);
   return (isNaN(Number(a2)) && a2.length > 3 && qt.includes(a2)) || (isNaN(Number(a1)) && a1.length > 3 && ct.includes(a1));
 });
