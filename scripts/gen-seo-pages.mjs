@@ -2210,7 +2210,11 @@ ${heroTwoCol({
 <section class="sec narrow" id="play">
 <h2>${esc(c.playSection)}</h2>
 <p class="sub">${esc(c.playSub)}</p>
-${renderQA(cfg.sample)}
+${/* AdSense fix 2, translated pages (2026-09-23). The hero quiz paces its
+     questions one at a time, so they were unreadable without playing; they
+     join the sample block here, which already shows each stem and reveals its
+     explanation on tap, in the language's approved strings. No new copy. */''}
+${renderQA([...cfg.sample, ...cfg.taster.filter((t) => !cfg.sample.some((x) => x.id === t.id))])}
 </section>
 ${adSlot('afterQA')}
 <section class="sec"><div class="appband">
@@ -2220,6 +2224,15 @@ ${adSlot('afterQA')}
 ${storeBadges()}
 </div>
 </div></section>
+${/* The write-up renders OPEN after the app band (was the last FAQ fold, ~7.6
+     screens down). Same reasoning and placement as the English club page;
+     the heading is the already-translated aboutQ string. */''}
+<section class="sec narrow" id="about-club">
+<h2>${esc(c.aboutQ)}</h2>
+<div class="prose">
+${introHtml}${c.statsLine ? `\n<p class="stats">${esc(c.statsLine)}</p>` : ''}
+</div>
+</section>
 <section class="sec narrow">
 <h2>${esc(c.alsoH)}</h2>
 <p class="sub">${esc(c.alsoP)} <a href="${enHref}" hreflang="en">${esc(c.alsoLink)}</a></p>
@@ -2233,7 +2246,7 @@ ${/* ⚠️ statsLine USED TO TAKE (n, easy, medium, hard) AND PRINT THEM.
       shipped and the first that was COMPUTED rather than typed, so no grep for
       a digit-next-to-a-noun could ever have found it in source.
       It is now a plain string. A function taking a count invites printing it. */
-  ''}${renderFaq(cfg.faq, { q: c.aboutQ, html: `${introHtml}${c.statsLine ? `\n<p class="stats">${esc(c.statsLine)}</p>` : ''}` })}
+  ''}${renderFaq(cfg.faq)}
 </section>
 ${adSlot('afterFaq')}
 </main>
