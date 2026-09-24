@@ -1147,10 +1147,20 @@ ${intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
 // every question in their category, hundreds on the big ones, and a wall that
 // long reads as a dump, not an answer key. The sub line then says "a
 // selection", never a number (audit-no-question-count).
+// At most `n` rows, sampled evenly across an arcPick()ed list so easy, medium
+// and hard all appear. Deterministic (no randomness): a rebuild picks the same.
+function spreadPick(rows, n) {
+  if (!n || rows.length <= n) return rows;
+  const step = rows.length / n;
+  return Array.from({ length: n }, (_, i) => rows[Math.floor(i * step)]);
+}
+// How many a visible list shows when a page carries more. The full set still
+// rides in the paced quiz widget above, so nothing leaves the page's HTML.
+const SHOWN_CAP = 40;
+
 function renderAnswerList(name, rows, { spread = 0 } = {}) {
-  const step = spread && rows.length > spread ? rows.length / spread : 1;
-  const picked = step > 1 ? Array.from({ length: spread }, (_, i) => rows[Math.floor(i * step)]) : rows;
-  const sub = step > 1
+  const picked = spreadPick(rows, spread);
+  const sub = picked.length < rows.length
     ? 'A selection from the quiz above, spread from the easiest to the hardest. Play it first; each answer stays folded until you open it.'
     : 'Every question from the quiz above. Play it first; each answer stays folded until you open it.';
   const items = picked.map((r) => `<li><p class="ans-q">${esc(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(r.o[r.a])}.</b> ${esc(r.hint)}</p></details></li>`);
@@ -1932,7 +1942,7 @@ ${/* AdSense fix 2 (2026-09-23), same as the club page: the write-up renders
      blurbs, word-for-word the same on every page of this type, become one
      line to /about/. Prose sits after the band and the mesh. */''}
 ${renderClubAbout(catCfg.name, catCfg.intro, `About the ${catCfg.name} quiz`)}
-${renderAnswerList(catCfg.name, quizRows, { spread: 40 })}
+${renderAnswerList(catCfg.name, quizRows, { spread: SHOWN_CAP })}
 ${clubCheckLine()}
 <section class="sec narrow">
 <h2 id="faq">${esc(catCfg.name)} quiz — FAQ</h2>
@@ -2540,7 +2550,12 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   // so every question rides in crawlable server-rendered HTML without moving
   // the fold. There is no longer a number here to be wrong.
   const quizRows = arcPick(hints, hints.length);
-  const sample = quizRows;
+  // ⚠️ CAPPED 2026-09-23 (Alex). The practice block below showed EVERY row:
+  // 373 cards and 168 screens on /quiz/england/, a wall that reads as scaled
+  // content to an AdSense reviewer. It now shows an even spread; the quiz
+  // widget still carries every row. eduQuizLd anchors to what is rendered,
+  // so it takes the same capped set.
+  const sample = spreadPick(quizRows, SHOWN_CAP);
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
@@ -3576,7 +3591,12 @@ function buildNationPage(cfg, catPages, nationPages) {
   // so every question rides in crawlable server-rendered HTML without moving
   // the fold. There is no longer a number here to be wrong.
   const quizRows = arcPick(hints, hints.length);
-  const sample = quizRows;
+  // ⚠️ CAPPED 2026-09-23 (Alex). The practice block below showed EVERY row:
+  // 373 cards and 168 screens on /quiz/england/, a wall that reads as scaled
+  // content to an AdSense reviewer. It now shows an even spread; the quiz
+  // widget still carries every row. eduQuizLd anchors to what is rendered,
+  // so it takes the same capped set.
+  const sample = spreadPick(quizRows, SHOWN_CAP);
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const ld = jsonLd({
     '@context': 'https://schema.org',
