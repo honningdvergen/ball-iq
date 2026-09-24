@@ -76,9 +76,11 @@ assets/social/
 social/state/media/
 social/out/
 social/state/postiz_calls.log
+social/state/.sweep-seen.json
 social/.frames/
 social/state/insights/
 social/.frames-long/
 social/.frames-short/
 social/.frames-xi/
 social/.fmxi/
+social/.bsky-upload.jpg
