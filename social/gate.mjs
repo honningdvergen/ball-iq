@@ -46,6 +46,7 @@ export const PLATFORMS = {
   cmu9lzcgv0exbmi0yhat4pawy: 'youtube',
   cmu9lyiaj0esbs40yo64ksyd8: 'tiktok',
   cmu9lpgvs0eots40yy00fpn8s: 'x',   // @ShithouseryHQ, connected 2026-09-24
+  cmufe24yc03pbof0y5xezcvmk: 'bluesky',   // @shithouseryhq.bsky.social, connected 2026-09-24
 };
 
 const load = () => { try { return JSON.parse(fs.readFileSync(HASHES, 'utf8')); } catch { return []; } };

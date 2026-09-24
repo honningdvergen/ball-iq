@@ -41,6 +41,11 @@
       "permanent": false
     },
     {
+      "source": "/bs",
+      "destination": "/footle?utm_source=bluesky",
+      "permanent": false
+    },
+    {
       "source": "/yt",
       "destination": "/footle?utm_source=youtube",
       "permanent": false
