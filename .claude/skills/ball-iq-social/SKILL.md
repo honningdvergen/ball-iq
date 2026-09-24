@@ -5,6 +5,13 @@ description: Use when drafting/posting to Ball IQ's socials (Threads/Instagram @
 
 # Ball IQ: social, conversion, and the funnel
 
+> ## ⚠️ READ FIRST — this skill is PARTLY STALE (written 2026-07, updated banner 2026-09-24)
+> The current strategy lives in memory: **`playbook_winning_formulas.md`** (winning formulas per platform, volume targets, payout goals). Where this file disagrees, the playbook wins. Superseded here:
+> - **X is NOT off-limits**: Alex brought @ShithouseryHQ (45K, Premium, in X Original Content Rewards since 09-24) into the operation; Claude drafts, Alex approves every X post. Formula: the image carries the joke + 2–8 word caption, satire quotes, taunts and agendas, absurd maths, live match posts.
+> - Platforms now: IG, Threads, X, Facebook Page, TikTok, YouTube, Bluesky, all via `social/pz` (Postiz), except FB distribution, which comes from Alex's IG app cross-posts.
+> - The follower and view numbers below are July 2026; run `social/insights.mjs` for current ones.
+> - Tools: `whisper-cli -m ~/.cache/whisper/ggml-small.bin` transcribes clip audio (verify quotes, subtitles). Metricool connector for cross-platform analytics (once Alex links the networks).
+
 ## The account
 
 **@shithouseryhq** — a football banter *brand*, not Alex's personal voice. Bio: "Football News • Commentary • Banter."
