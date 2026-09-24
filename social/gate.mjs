@@ -49,8 +49,15 @@ export const PLATFORMS = {
   cmufe24yc03pbof0y5xezcvmk: 'bluesky',   // @shithouseryhq.bsky.social, connected 2026-09-24
 };
 
-const load = () => { try { return JSON.parse(fs.readFileSync(HASHES, 'utf8')); } catch { return []; } };
-const save = (db) => { fs.mkdirSync(STATE, { recursive: true }); fs.writeFileSync(HASHES, JSON.stringify(db, null, 1)); };
+// A missing file is a fresh start; an unreadable one must THROW. Returning [] on a parse error let the
+// next save() overwrite 482 entries with 27 (09-24, two sessions writing at once).
+const load = () => {
+  if (!fs.existsSync(HASHES)) return [];
+  const raw = fs.readFileSync(HASHES, 'utf8');
+  try { return JSON.parse(raw); } catch (e) { throw new Error(`hashes.json unreadable, refusing to continue (would wipe the repeat db): ${e.message}`); }
+};
+// Write to a temp file then rename: rename is atomic, so a concurrent reader never sees half a file.
+const save = (db) => { fs.mkdirSync(STATE, { recursive: true }); const tmp = `${HASHES}.${process.pid}.tmp`; fs.writeFileSync(tmp, JSON.stringify(db, null, 1)); fs.renameSync(tmp, HASHES); };
 
 function dhashAt(file, ss) {
   const args = ['-v', 'error', ...(ss != null ? ['-ss', String(ss)] : []), '-i', file, '-frames:v', '1',
