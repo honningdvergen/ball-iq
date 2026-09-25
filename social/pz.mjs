@@ -91,7 +91,7 @@ if (sub === 'posts:create') {
   const { code, out } = call(args);
   process.stdout.write(out);
   const postId = (out.match(/postId"?:\s*"([^"]+)"/) || [])[1];
-  if (code === 0 && postId) for (const [, platform] of perPlatform) record({ platform, post: postId, media });
+  if (code === 0 && postId) for (const [, platform] of perPlatform) record({ platform, post: postId, media, caption });
   process.exit(code);
 }
 

@@ -95,7 +95,7 @@ function findRepeat(fp, platform, db, file) {
   const P = [0.25, 0.5, 0.75], mine = {};
   const at = (f, i) => (fp.length === 1 ? null : (duration(f) * P[i]).toFixed(2));
   return db.find((e) => {
-    if (e.platform !== platform || e.fp.length !== fp.length) return false;
+    if (e.platform !== platform || !e.fp || e.fp.length !== fp.length) return false;
     const hits = fp.map((h, i) => i).filter((i) => ham(fp[i], e.fp[i]) <= MATCH);
     if (hits.length < need) return false;
     if (!file) return true;
@@ -136,6 +136,12 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
   if (['instagram', 'tiktok', 'youtube'].includes(platform) && !caption.trim()) block.push('Empty caption.');
 
   const db = load();
+  // Same text twice on one platform reads as spam (Bluesky posted "VAR:" and "1000 goals" twice, 09-24).
+  const t = normText(caption);
+  if (t.length >= 8) {
+    const dup = db.find((e) => e.platform === platform && e.text === t);
+    if (dup) block.push(`REPEAT TEXT on ${platform}: this caption was already posted ${dup.date}${dup.post ? ', post ' + dup.post : ''}.`);
+  }
   const isCarousel = media.length >= 3 && !media.some((f) => VIDEO.test(f));
   media.forEach((f, i) => {
     if (!fs.existsSync(f)) { warn.push(`media not found locally, not fingerprinted: ${f}`); return; }
@@ -157,8 +163,11 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
   return { block, warn };
 }
 
-export function record({ platform, post = '', media = [] }) {
+const normText = (c) => String(c || '').toLowerCase().replace(/https?:\/\/\S+|#\w+/g, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+
+export function record({ platform, post = '', media = [], caption = '' }) {
   const db = load(); const date = new Date().toISOString().slice(0, 16);
+  if (normText(caption).length >= 8) db.push({ platform, post, date, text: normText(caption) });
   const isCarousel = media.length >= 3 && !media.some((f) => VIDEO.test(f));
   media.forEach((f, i) => {
     if (!fs.existsSync(f) || (isCarousel && i === media.length - 1)) return;
