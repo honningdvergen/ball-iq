@@ -48,6 +48,10 @@ const SFX = {
     let s = 7, lp = 0;
     return tone(0.35, (t) => { s = (s * 16807) % 2147483647; const w = s / 2147483647 * 2 - 1; lp += (w - lp) * (0.05 + 0.4 * t / 0.35); return 0.5 * lp * Math.sin(Math.PI * t / 0.35); });
   })(),
+  swipe: (() => {            // SOFT page-turn for carousel reels (Alex 09-26: whoosh "loud and harsh", then "even smoother") — very dark, slow swell, ~1/8 the whoosh
+    let s = 11, lp = 0, lp2 = 0;
+    return tone(0.32, (t) => { s = (s * 16807) % 2147483647; const w = s / 2147483647 * 2 - 1; lp += (w - lp) * 0.03; lp2 += (lp - lp2) * 0.08; return 0.22 * lp2 * Math.sin(Math.PI * t / 0.32) ** 3; });
+  })(),
 };
 
 function writeWav(file, buf) {

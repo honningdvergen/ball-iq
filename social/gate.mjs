@@ -128,7 +128,7 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
   if (platform === 'facebook' && process.env.PZ_ALLOW_FB !== '1' && !(media.length === 1 && VIDEO.test(media[0])))
     block.push('Facebook via Postiz: REELS ONLY (one video). Picture/carousel posts reach 0–17 here; FB photos come from Alex\'s IG app. Override: PZ_ALLOW_FB=1.');
   if (platform === 'facebook' && media.some((f) => VIDEO.test(f)))
-    warn.push('FB reel via Postiz: max 2/day, a fanbase line people TAG mates in, and NOT a reel Alex is posting on IG (auto-share would double it).');
+    warn.push('FB reel via Postiz: max 4/day (Alex 09-26: Postiz works on FB — Goldbridge + carousel reels), a fanbase line people TAG mates in, and NOT a reel Alex is posting on IG (auto-share would double it).');
   if (platform === 'instagram' && media.length + unmapped > 10)
     block.push(`Instagram carousel has ${media.length + unmapped} items — the API maximum is 10.`);
   const bannedText = [caption, ...media.map((f) => path.basename(f))].find((t) => BANNED.test(t));

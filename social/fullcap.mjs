@@ -3,7 +3,7 @@
 // (channel study 09-25: judeslander 118K median, streamer-clip channels 18K) — nobody uses our old
 // white caption band, where the clip filled ~40% of the screen.
 //
-//   node social/fullcap.mjs --in clip.mp4 --text "caption" --out out.mp4 [--ss 0] [--to 12] [--fit cover|width] [--zoom 1.05]
+//   node social/fullcap.mjs --in clip.mp4 --text "caption" --out out.mp4 [--ss 0] [--to 12] [--fit cover|width] [--zoom 1.05] [--top 1180]
 //
 // --fit cover (default): crop the clip to fill 1080x1920 (talking heads, fan clips).
 // --fit width: landscape match footage at full width over a blurred copy of itself (keeps the whole pitch).
@@ -26,7 +26,7 @@ const SS = Number(arg('ss') || 0), TO = Number(arg('to') || srcDur), dur = TO - 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const logo = `data:image/jpeg;base64,${fs.readFileSync(path.join(HERE, 'assets/shq_logo.jpg')).toString('base64')}`;
 const html = `<!doctype html><meta charset=utf-8><style>*{margin:0}html,body{width:${W}px;height:${H}px;background:transparent}
-.c{position:absolute;left:70px;right:70px;top:1180px;text-align:center;font:800 58px/1.18 -apple-system,"SF Pro Display",Helvetica,Arial;color:#fff;
+.c{position:absolute;left:70px;right:70px;top:${arg("top")||1180}px;text-align:center;font:800 58px/1.18 -apple-system,"SF Pro Display",Helvetica,Arial;color:#fff;
 -webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:0 4px 14px rgba(0,0,0,.6)}
 .l{position:absolute;right:40px;top:250px;width:96px;height:96px;border-radius:50%;opacity:.85;box-shadow:0 2px 10px rgba(0,0,0,.4)}</style>
 <div class=c>${esc(TEXT)}</div><img class=l src="${logo}">`;
