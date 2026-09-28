@@ -29,6 +29,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { hasPass } from './review.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const STATE = path.join(HERE, 'state');
@@ -129,6 +130,10 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
     block.push('Facebook via Postiz: REELS ONLY (one video). Picture/carousel posts reach 0–17 here; FB photos come from Alex\'s IG app. Override: PZ_ALLOW_FB=1.');
   if (platform === 'facebook' && media.some((f) => VIDEO.test(f)))
     warn.push('FB reel via Postiz: max 4/day (Alex 09-26: Postiz works on FB — Goldbridge + carousel reels), a fanbase line people TAG mates in, and NOT a reel Alex is posting on IG (auto-share would double it).');
+  // Quality (Alex 09-28, "standards are dropping every day"): every caption needs an independent
+  // banger-critic PASS (≥8/10) on its exact words — social/review.mjs. No PASS, no post.
+  if (!hasPass(caption, platform))
+    block.push(`NO BANGER-CRITIC PASS for this ${platform} caption. Run: node social/review.mjs draft --platform ${platform} --text "…" --media …, then the banger-critic agent must PASS it (≥8/10).`);
   if (platform === 'instagram' && media.length + unmapped > 10)
     block.push(`Instagram carousel has ${media.length + unmapped} items — the API maximum is 10.`);
   const bannedText = [caption, ...media.map((f) => path.basename(f))].find((t) => BANNED.test(t));
