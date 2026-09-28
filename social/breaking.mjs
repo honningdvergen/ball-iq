@@ -10,7 +10,7 @@
 import fs from 'node:fs';
 
 const arg = (n, d) => { const i = process.argv.indexOf('--' + n); return i > -1 ? process.argv[i + 1] : d; };
-const EVERY = Number(arg('every', 600)) * 1000, MAX = Number(arg('max', 10800)) * 1000, MIN = Number(arg('min', 5));
+const EVERY = Number(arg('every', 600)) * 1000, MAX = Number(arg('max', 10800)) * 1000, MIN = Number(arg('min', 6));
 const SEEN_FILE = new URL('./state/breaking_seen.json', import.meta.url);
 const seen = new Set(fs.existsSync(SEEN_FILE) ? JSON.parse(fs.readFileSync(SEEN_FILE)) : []);
 const gn = q => `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-GB&gl=GB&ceid=GB:en`;
