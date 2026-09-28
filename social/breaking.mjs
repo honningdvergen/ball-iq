@@ -10,7 +10,7 @@
 import fs from 'node:fs';
 
 const arg = (n, d) => { const i = process.argv.indexOf('--' + n); return i > -1 ? process.argv[i + 1] : d; };
-const EVERY = Number(arg('every', 600)) * 1000, MAX = Number(arg('max', 10800)) * 1000, MIN = Number(arg('min', 3));
+const EVERY = Number(arg('every', 600)) * 1000, MAX = Number(arg('max', 10800)) * 1000, MIN = Number(arg('min', 5));
 const SEEN_FILE = new URL('./state/breaking_seen.json', import.meta.url);
 const seen = new Set(fs.existsSync(SEEN_FILE) ? JSON.parse(fs.readFileSync(SEEN_FILE)) : []);
 const gn = q => `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-GB&gl=GB&ceid=GB:en`;
@@ -25,7 +25,7 @@ const FEEDS = [
 ];
 const ESPN = ['eng.1', 'uefa.champions', 'esp.1'].map(l => `https://site.api.espn.com/apis/site/v2/sports/soccer/${l}/news?limit=15`);
 
-const VERBS = /here we go|sacked|\bsack\b|appointed|agreed|\bsigns?\b|signed|confirmed|official|banned|sanction|points? deduction|relegat|charged|verdict|resign|walk(s|ed)? out|bid\b|record fee|stripped|appeal/i;
+const VERBS = /here we go|sacked|\bsack\b|appointed|agreed|\bsigns?\b|signed|confirmed|official|banned|sanction|points? deduction|relegat|charged|verdict|resign|walk(s|ed)? out|bid\b|record fee|stripped|appeal|breaks? silence|hits? back|slams|admits|double contract|11[45] charges/i;
 const NAMES = /man(chester)? city|man(chester)? utd|manchester united|arsenal|liverpool|chelsea|tottenham|spurs|real madrid|barcelona|bayern|psg|haaland|salah|mbapp|ronaldo|messi|kane|guardiola|\bpep\b|carrick|klopp|arteta|slot|mourinho|yamal|bellingham|rodri|palmer|saka/gi;
 const SKIP = /died|death|dies|tragedy|funeral|cancer|betting|odds|nfl|darts|cricket|rugby|tennis|f1\b/i;
 
