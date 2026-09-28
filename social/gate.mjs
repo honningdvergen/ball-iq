@@ -48,7 +48,7 @@ export const PLATFORMS = {
   cmu9lyiaj0esbs40yo64ksyd8: 'tiktok',
   cmu9lpgvs0eots40yy00fpn8s: 'x',   // @ShithouseryHQ, connected 2026-09-24
   cmufe24yc03pbof0y5xezcvmk: 'bluesky',   // @shithouseryhq.bsky.social, connected 2026-09-24
-  cmulfu6480bvirt0ytmwmg3j7: 'telegram',  // t.me/shithouseryHQfootball channel, connected 2026-09-28 (bot @postiz_news_bot, post/edit/delete rights only)
+  cmulfu6480bvirt0ytmwmg3j7: 'telegram',  // t.me/shithouseryhq channel, connected 2026-09-28 (bot @postiz_news_bot, post/edit/delete rights only)
 };
 
 // A missing file is a fresh start; an unreadable one must THROW. Returning [] on a parse error let the

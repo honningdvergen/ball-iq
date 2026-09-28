@@ -74,6 +74,22 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 - **Lever:** 3 named originals/day + **15 replies/day** under the big football accounts, plus getting into football **starter packs and custom feeds** (ask the curators via reply/DM).
 - **Owner:** Claude (Chrome + Postiz).
 
+## WhatsApp Channel: 0 (new 09-28) → grow via links
+- **What:** one-way broadcast, emoji reactions + polls, NO algorithmic discovery — every follower comes from a link (bios, under hits). Link: whatsapp.com/channel/0029Vb91qGBFnSzGtD2ziB0q (balliq.app/wa once the site deploys).
+- **Cadence:** 3/day (~12:00, 17:00, 21:30): the day's best gated reel + best image + a poll; match nights ≤5. Too many = muted.
+- **Owner:** Claude (WhatsApp Web, Channels section only — it's Alex's personal WhatsApp).
+
+## Telegram: 0 (new 09-28) → t.me/shithouseryhq
+- **What:** broadcast channel; muting is common, unfollowing less so → higher volume tolerated. Postiz integration `cmulfu6480bvirt0ytmwmg3j7` — add it to every gated Postiz post (zero extra effort).
+- **Cadence:** 4–8/day (every gated post). Monetization: Telegram shares 50% of ad revenue (Toncoin) with public channels ≥1,000 subscribers; Stars paid posts/subscriptions later.
+- **Owner:** Claude (Postiz).
+
+## Snapchat: 0 (new 09-28) → shithouseryhq public profile
+- **What:** Spotlight = TikTok-style discovery (each Snap judged alone), Public Stories = followers. Web uploader profile.snapchat.com: photo or video 5 s–5 min, Spotlight / Public Story / Save, **Schedule for Later**.
+- **Cadence:** every gated reel → Spotlight + Public Story (3–6/day, more on match days). Snap every day (monetization needs 25+ posts/month on 10 of 28 days).
+- **Monetization bar:** 50K followers + 25 posts/month + 10/28 active days + view-time thresholds. Levers: volume of gated reels, Spotlight hits, Snapcode/link in our other bios.
+- **Owner:** Claude (web uploader).
+
 ## Daily scorecard (the PM ticks it)
 | platform | posts | replies | hit-shots | target net | owner |
 |---|---|---|---|---|---|
