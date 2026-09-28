@@ -20,6 +20,7 @@ import path from 'node:path';
 import { spawnSync, execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { check, record, PLATFORMS } from './gate.mjs';
+import { logPost } from './postlog.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const STATE = path.join(HERE, 'state');
@@ -91,7 +92,7 @@ if (sub === 'posts:create') {
   const { code, out } = call(args);
   process.stdout.write(out);
   const postId = (out.match(/postId"?:\s*"([^"]+)"/) || [])[1];
-  if (code === 0 && postId) for (const [, platform] of perPlatform) record({ platform, post: postId, media, caption });
+  if (code === 0 && postId) for (const [, platform] of perPlatform) { record({ platform, post: postId, media, caption }); logPost({ platform, text: caption, id: postId, via: 'postiz', scheduledFor: flag(['-s', '--date'])[0] || '' }); }
   process.exit(code);
 }
 

@@ -123,6 +123,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "mcp__a2599811-eb4d-4563-9088-4f4b919c3233__createScheduledPost",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/postlog-metricool.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }

@@ -40,4 +40,4 @@ Allowed: contested football opinions, mocking a fanbase's behaviour, sarcasm ("t
 Matchwatch (`node social/matchwatch.mjs <ESPN ids>`) wakes you on goal/red/pen/HT/FT → open the kit's scenario lines → pick the photo that's circulating (face mid-reaction) → 1 X post ≤5 min → FT: stat-sheet roast ≤10 min, then the reel and the Highlights Short. Before posting, search X for the same joke in the last hour (`<keywords> within_time:1h`); if it's already out, change the angle.
 
 ## 5. Hand-off (mandatory)
-`node social/review.mjs draft --platform <p> [--platforms a,b] --text-file cap.txt --media <file> --story "<what + when it broke>" --broke HH:MM` → LOOK at the mock-up → banger-critic → only PASS drafts are queued, with the exact reviewed text.
+`node social/review.mjs draft --platform <p> --format <family> [--platforms a,b] --text-file cap.txt --media <file> --story "<what + when it broke>" --broke HH:MM` → LOOK at the mock-up → banger-critic → only PASS drafts are queued, with the exact reviewed text. Postiz and Metricool posts log themselves to social/state/posts_log.jsonl; Chrome posts: `node social/postlog.mjs add --platform x --via chrome --url … --text "…"`.

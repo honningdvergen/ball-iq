@@ -2,7 +2,7 @@
 // Alex 09-28: "we do all this banger research and it all counts for nothing… our standards are
 // dropping every day." Rules in memory get skimmed; this makes the bar a door.
 //
-//   node social/review.mjs draft   --platform x --text "line" [--media a.jpg,b.mp4] [--story "what it rides"] [--broke 11:20]
+//   node social/review.mjs draft   --platform x --format <family> --text "line" [--media a.jpg,b.mp4] [--story "what it rides"] [--broke 11:20]
 //        → saves the draft, renders a MOCK-UP (what a scroller actually sees) and prints its id + path.
 //   node social/review.mjs verdict <id> --score 8.5 --verdict PASS|FAIL --why "…" [--fix "…"]   (the banger-critic agent)
 //   node social/review.mjs check   --platform x --text "caption"      → exit 0 only if a PASS ≤36h old covers this caption
@@ -81,7 +81,7 @@ if (cmd === 'draft') {
   const media = (arg('media') || '').split(',').filter(Boolean).map((f) => path.resolve(f));
   const d = { id: new Date().toISOString().slice(5, 16).replace(/[-:T]/g, '') + '_' + keyOf(text).slice(0, 5), key: keyOf(text),
     platform: arg('platform').toLowerCase(), platforms: (arg('platforms') || arg('platform')).toLowerCase().split(','),
-    text, media, story: arg('story') || '', broke: arg('broke') || '', at: new Date().toISOString() };
+    text, media, format: arg('format') || '', story: arg('story') || '', broke: arg('broke') || '', at: new Date().toISOString() };
   d.mock = await mock(d);
   fs.writeFileSync(path.join(DRAFTS, d.id + '.json'), JSON.stringify(d, null, 1));
   console.log(`draft ${d.id}\nmock  ${d.mock}\nnext: banger-critic agent reviews it → node social/review.mjs verdict ${d.id} --score N --verdict PASS|FAIL --why "…"`);
