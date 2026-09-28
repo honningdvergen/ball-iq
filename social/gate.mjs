@@ -139,6 +139,13 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
   const bannedText = [caption, ...media.map((f) => path.basename(f))].find((t) => BANNED.test(t));
   if (bannedText) block.push(`Kalshi/Stake/betting mention ("${bannedText.match(BANNED)[0]}") — not partners, never post it (Alex 09-23).`);
   if (['instagram', 'tiktok', 'youtube'].includes(platform) && !caption.trim()) block.push('Empty caption.');
+  // Ragebait with a hard floor (tool review 09-28): tragedy is never banter; injuries, minors, court
+  // cases and sanctions need a conscious OK (PZ_SENSITIVE_OK=1) because they're one word from a strike.
+  const TRAGEDY = /\b(died|dies|death|dead|funeral|passed away|cancer|suicide|tragedy|killed|murder|stabbed|disaster victims?)\b/i;
+  const SENSITIVE = /\b(injur(y|ed|ies)|acl|knee|ligament|hamstring|stretcher|concussion|minor|child|kid|teen(ager)?|court|arrest(ed)?|police|charged with|trial|sanction(s|ed)?|relegated for|points? deduction)\b/i;
+  if (TRAGEDY.test(caption)) block.push(`Tragedy word ("${caption.match(TRAGEDY)[0]}") — never banter.`);
+  if (SENSITIVE.test(caption) && process.env.PZ_SENSITIVE_OK !== '1')
+    block.push(`Sensitive word ("${caption.match(SENSITIVE)[0]}"): injuries/minors/legal/sanctions. Re-check it's a joke about behaviour, not harm or an unproven fact, then re-run with PZ_SENSITIVE_OK=1.`);
 
   const db = load();
   // Same text twice on one platform reads as spam (Bluesky posted "VAR:" and "1000 goals" twice, 09-24).
