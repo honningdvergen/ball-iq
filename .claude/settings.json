@@ -90,6 +90,16 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "matcher": "mcp__a2599811-eb4d-4563-9088-4f4b919c3233__(createScheduledPost|updateScheduledPost)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/review-guard.mjs\"",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
