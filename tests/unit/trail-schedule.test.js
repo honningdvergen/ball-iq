@@ -123,6 +123,35 @@ describe("Trail schedule is frozen", () => {
     "COLE_A",             // #53 · 2026-09-24 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "DEPAY",              // #54 · 2026-09-25 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "BUFFON",             // #55 · 2026-09-26 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "HAVERTZ",            // #56 · 2026-09-27 — verified against getTrailAnswerForDayIndex
+    "NEYMAR",             // #57 · 2026-09-28 — verified against getTrailAnswerForDayIndex
+    "MAGUIRE",            // #58 · 2026-09-29 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "FIRMINO",            // #59 · 2026-09-30 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "VERTONGHEN",         // #60 · 2026-10-01 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "VZQUEZ",             // #61 · 2026-10-02 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "MODRI",              // #62 · 2026-10-03 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "KOMPANY",            // #63 · 2026-10-04 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "DE_BRUYNE",          // #64 · 2026-10-05 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SZCZSNY",            // #65 · 2026-10-06 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "FABREGAS",           // #66 · 2026-10-07 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "REUS",               // #67 · 2026-10-08 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "MUTO",               // #68 · 2026-10-09 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "VAN_DIJK",           // #69 · 2026-10-10 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "OWEN",               // #70 · 2026-10-11 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "STEGEN",             // #71 · 2026-10-12 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ALDERWEIRELD",       // #72 · 2026-10-13 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "VIEIRA",             // #73 · 2026-10-14 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "GEA",                // #74 · 2026-10-15 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "OSIMHEN",            // #75 · 2026-10-16 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SAKAI_HIR",          // #76 · 2026-10-17 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "FATI",               // #77 · 2026-10-18 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "MARTIAL",            // #78 · 2026-10-19 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BELLINGHAM",         // #79 · 2026-10-20 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "STONES",             // #80 · 2026-10-21 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ISCO",               // #81 · 2026-10-22 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "HAKIMI",             // #82 · 2026-10-23 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SEEDORF",            // #83 · 2026-10-24 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "KANE",               // #84 · 2026-10-25 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
   ];
 
   it("no already-published day ever moves", () => {
