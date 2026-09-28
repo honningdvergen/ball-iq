@@ -2745,17 +2745,20 @@ Full report: the panel artifact (16 areas, each with its path to 8+).
       hidden h1 covers the accessibility tree; this is the tidier end state).
 - [ ] `/questions/` pages: 0 of 76 instrumented (no taster, no `.qa` block),
       plus 14 `/lists/` pages with no `.qa` block.
-- [ ] Trail roster: a 102nd verified player to replace the duplicate Son entry;
-      Joaquín Sánchez missing from `mysteryPool` (days 89/177/249/363).
+- [x] ~~Trail roster: a 102nd verified player to replace the duplicate Son entry~~
+      **DONE 2026-09-28** — PARK (Park Ji-sung) in HEUNGMIN's 4 unserved days.
+      (Joaquín half: stale, see below.)
 
 ### Roster follow-up (needs verified data, not a code change)
 
-- [ ] **Son Heung-min is in `TRAIL_PLAYERS` twice** (`HEUNGMIN` + `SON`). Left
+- [x] **DONE 2026-09-28:** HEUNGMIN → PARK (Park Ji-sung, bank-verifier PASS),
+      log days #85/#161/#285/#339, none served; allowlist now empty.
+      ~~**Son Heung-min is in `TRAIL_PLAYERS` twice** (`HEUNGMIN` + `SON`). Left
       deliberately: the log gives all 102 keys exactly 4 days each, so merging
       hands him 8 of 408 — twice inside a fortnight at days 145/160 and
       284/303. Correct fix is a **102nd distinct player** in HEUNGMIN's slot
       with forge-verified career data. Allowlisted in the duplicate test, which
-      must SHRINK to zero.
+      must SHRINK to zero.~~
 - [x] ~~**Joaquín Sánchez is not in `mysteryPool`** — days 89/177/249/363~~
       **STALE — verified fixed 2026-08-24.** Checked all 400 scheduled days
       against the pool: **0 unresolved**, and no Joaquín is scheduled at ALL.

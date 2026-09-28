@@ -119,12 +119,10 @@ describe('Trail accepts every natural form of an answer', () => {
     // cycle, and it is how the Son entries drifted into opposite orders in the
     // first place — nothing was comparing them.
     //
-    // ⚠️ This allowlist must SHRINK, never grow. HEUNGMIN/SON is a real
-    // duplicate left in place deliberately: TRAIL_ANSWER_LOG is frozen and
-    // gives all 102 keys exactly 4 days each, so merging would hand Son 8 of
-    // 408 days. The fix is a 102nd distinct player with verified career data
-    // in HEUNGMIN's slot — tracked in docs/TODO.md.
-    const KNOWN = [['HEUNGMIN', 'SON']];
+    // ⚠️ This allowlist must SHRINK, never grow. It reached zero 2026-09-28
+    // when HEUNGMIN (a second key for Son Heung-min) was replaced by PARK in
+    // its unserved log days. Keep it empty.
+    const KNOWN = [];
     const allowed = new Set(KNOWN.map((g) => [...g].sort().join('+')));
 
     const byHuman = new Map();
