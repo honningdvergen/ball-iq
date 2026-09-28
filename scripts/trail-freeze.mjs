@@ -41,6 +41,7 @@
  *   node scripts/trail-freeze.mjs                 # report only
  *   node scripts/trail-freeze.mjs --apply         # append through today+14
  *   node scripts/trail-freeze.mjs --horizon=30    # widen the horizon
+ *   node scripts/trail-freeze.mjs --min-margin=7  # alarm: exit 1 if <7 days frozen ahead
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -97,6 +98,34 @@ for (let i = 0; i < published.length; i++) {
   }
 }
 console.log(`✓ the ${published.length} frozen day(s) still match the live log.`);
+
+// ── --min-margin=N: the early-warning alarm (.github/workflows/trail-horizon.yml).
+//    The build gate fails the MOMENT an unfrozen day is served — at midnight,
+//    when nobody is watching — and the in-test console.warn is read by nobody.
+//    It lapsed that way on 2026-09-27 and blocked every prod deploy. This mode
+//    changes nothing; it only fails while fewer than N future days are frozen,
+//    from a daily scheduled run that is NOT part of the build, so the alarm
+//    goes red a week early without ever making a deploy depend on today.
+const minMarginArg = process.argv.find((a) => a.startsWith('--min-margin='));
+if (minMarginArg) {
+  const minMargin = Number(minMarginArg.split('=')[1]);
+  if (!Number.isInteger(minMargin) || minMargin < 0) {
+    console.error(`✗ --min-margin must be a non-negative integer, got ${minMarginArg}`);
+    process.exit(2);
+  }
+  const margin = published.length - Math.min(servedSoFar, TRAIL_ANSWER_LOG.length);
+  if (published.length < TRAIL_ANSWER_LOG.length && margin < minMargin) {
+    const lapse = new Date((TRAIL_ANCHOR_DAY + published.length) * 86400000).toISOString().slice(0, 10);
+    console.error(
+      `::error title=Trail freeze horizon low::${Math.max(margin, 0)} future day(s) frozen ` +
+      `(alarm below ${minMargin}). Every build fails from ${lapse} (UTC). ` +
+      `Fix: npm run trail:freeze -- --horizon=30, verify the new days' careers, commit.`,
+    );
+    process.exit(1);
+  }
+  console.log(`✓ ${margin} future day(s) frozen — at or above the ${minMargin}-day alarm.`);
+  process.exit(0);
+}
 
 if (published.length >= target) {
   const margin = published.length - Math.min(servedSoFar, TRAIL_ANSWER_LOG.length);
