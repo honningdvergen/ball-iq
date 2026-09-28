@@ -30,7 +30,7 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 - **Hit shots/day:** 2.
 - **Kill:** <100 views after 12h → delete.
 - **Owner:** Claude (Postiz).
-- **TEST 09-29→10-01 (Alex's idea): X-tweet screenshot singles.** One genuinely funny viral X tweet (humour lane, never betting/tragedy, never one already used in a carousel) as an image + OUR one-line take above it that adds a take/argument. 2/day, through the gate. Judge vs our Threads median views + replies.
+- **TEST 09-29→10-01 (Alex, upgraded 09-28 20:30): HOURLY X-tweet screenshot singles on Threads.** One viral humour tweet screenshot + OUR one-line take per post, every hour 10:00–23:00 (~14/day), scheduled in Postiz each morning from a batch of 14–16 candidates (sweep-account carousel slides + our own), ONE batch critic run; FAILs dropped (fewer posts, never filler). Never betting/tragedy/already-used tweets. Measure daily: median views/post vs our Threads median, net follows/day vs baseline, and whether our OTHER Threads posts lose reach. Kill → back to 2–3/day if median views < 50% of baseline or follows don't beat baseline.
 
 
 ## Instagram: 32.6K, −5/day → target +300/day. SURGERY
