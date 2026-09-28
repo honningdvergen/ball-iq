@@ -1,5 +1,136 @@
 # Clarity findings
 
+## 📅 2026-09-28 — WEEKLY READ (7 days, 09-21→09-28, bot-excluded)
+
+First weekly run since the 07-28 baseline. ⚠️ **Two caveats frame every number
+below.** (1) Clarity has been **consent-gated in Europe since 08-21**. It sees
+only non-EU visitors plus EU visitors who tapped Allow. Norway now shows **2
+sessions**, so our own testing no longer inflates anything. The flip side is
+that the sample leans non-EU. (2) Clarity **starts a new session on the club
+page → /play hop** (TODO 08-14). "Sessions" are not journeys.
+
+### The number that matters
+
+| | This week | Last week (09-14→21) | Baseline 07-28 |
+|---|---|---|---|
+| Sessions | **406** | 553 | 111 (3 days) |
+| Sessions with `Play` smart event | **54 → 13.3%** | 84 → 15.2% | 6 → 5.4% |
+| Clarity `SignUp` event | **0** | 1 | 2 |
+| **Real sign-ups (auth.users, non-anon)** | **~11** | ~13 | — |
+| Login event | 4 | 2 | — |
+| Pages / session | 1.68 | — | 1.05 |
+| Returning | **6.9%** | — | 2.7% |
+| Active time / scroll | 124s / 30.7% | — | 1.6 min / 50% |
+
+- **Play rate is flat week on week.** 13.3% vs 15.2% is inside the noise at
+  this n. It is still ~2.5× the 5.4% baseline. **Sign-ups are flat at ~11–13 a
+  week** (Supabase, weeks of 09-07, 09-14 and 09-21).
+- ⚠️ **Clarity's `SignUp` event is blind.** It saw 0 this week while the database
+  took ~11. Never quote sign-up rate from Clarity. Read `auth.users` (or the
+  funnel-analyst agent) instead.
+- ⚠️ **The `Play` event does not measure club-page play.** 34 of the 54 Play
+  sessions entered on `/`, and 8 more on `/play`. Recordings show Google
+  visitors on club pages playing full 10-question rounds through to "See your
+  result →" with no Play event. The club taster is the real play for most
+  visitors (07-28 finding), and this metric cannot see it. Treat 13.3% as the
+  **homepage/app play rate**, not a site play rate.
+- Returning users rose from 2.7% to 6.9%. That is small but real, and the first
+  retention signal Clarity has shown.
+
+### What's broken — nothing new. The top dead clicks are all ARTEFACTS (tested)
+
+Dead-click sessions fell from **25.2% to 10.3%** (42 of 406). Rage clicks:
+**0.7%** (3 sessions). The top dead-clicked texts were each tested on prod at
+**390×844** (viewport verified), using **coordinate clicks with a capture-phase
+listener**. The listener confirmed each tap hit the real element:
+
+| Dead-clicked text | Page | Tested | Verdict |
+|---|---|---|---|
+| `Next question →` / `Siguiente →` | /quiz/real-madrid/, /eintracht-frankfurt/, /es/quiz/independiente/ | tap hit `BUTTON`, Q1→Q2 | ✅ **works.** Recordings list it as a plain *Click*, not a *Dead click* |
+| `⌫`, `A`, `O`, `R` (keyboard) | /football-wordle/ | A, R typed, ⌫ deleted | ✅ **works.** The tile row changes far from the key, so Clarity sees "no response" |
+| `" "` (empty text) | /mystery-player/, /play | tap focused the search input, typing showed suggestions | ✅ **works.** Taps into an empty input have no text and no DOM change |
+
+⚠️ The "Top dead-clicked text" query returns **inflated totals** (500 on Real
+Madrid). The per-page cut gives **17 dead clicks in 5 sessions** on the same
+page. The first query multiplies clicks by dead-flags. Use per-page session
+counts.
+
+⚠️ **Method trap, new this run.** The browser pane's screenshot frame briefly
+reported 800×600 while emulating 390×844. Coordinates were stretched
+non-uniformly, and the first "Next" click landed at (73,461) on a streak
+counter, not the button. It looked exactly like a dead button. **Log `e.target`
+with a capture-phase listener before you believe any "it didn't respond".**
+
+The only JS error was 1 session of `ResizeObserver loop limit exceeded`
+(/quiz/celtic/), which is benign. Perf score 88. p75 **LCP 1.28s, INP 160ms
+(was 220), CLS 0.019**: all green.
+
+### What's leaking
+
+| Page | Entries | Exits | Active | Scroll |
+|---|---|---|---|---|
+| `/` | 86 | **71** | **7.2s** (page-level) | 43% |
+| `/mystery-player/` | 17 | **28** | 184s | 35% |
+| `/quiz/real-madrid/` | 24 | 26 | 103s | **12%** |
+| `/play` | 25 | 24 | 108s | 94% |
+| `/quiz/` hub | 13 | 11 | **4.8s** | 27% |
+| `/quiz/barcelona/`, `/quiz/manchester-city/` | 17 / 9 | 17 / 9 | 64s / 71s | **12% / 10%** |
+
+- **Mystery Player exits more than it enters (28 vs 17).** It is the last stop
+  for people arriving from elsewhere on the site. Its 184s active time says
+  that is satisfaction, not rejection. There is no next step after the daily
+  guess.
+- **Club pages: 10–20% scroll with 60–160s active.** People play the taster
+  and never see what sits below it. This is the 07-28 "bimodal" pattern and
+  is unchanged.
+- **`/quiz/` hub: 4.8s active.** Thirteen people entered on the index and left
+  almost at once. Small n, but it is the worst page by far.
+- **Homepage by source:** Google-mobile entries play (7 of 13) and browse (3.3
+  pages). The 7.2s figure is page-level: it averages every return-to-home, so
+  it is not a bounce time.
+
+### Audience and sources
+
+- Devices: ~61% mobile/tablet, 39% PC. In-app webviews (GoogleApp 15) ≈ 4%
+  (was ~10%).
+- Top countries: UK mobile 55 (153s), UK PC 40, US mobile 37 (**120s**, was
+  12.7s), Argentina 29, Italy, India, Egypt 9 (**91s**, was 5.7s). **The US and
+  Egypt "leave in 5–13 seconds" finding from July no longer holds.**
+- Sources: Google dominates. Italy's Google traffic reads 148s. **ChatGPT
+  referrals are steady**: 11 homepage entries, 105s on mobile. Bing,
+  DuckDuckGo and Ecosia are small. `utm_source=listdle` averages 8.5s. One
+  recording shows it landing on `/play` (Footle) with **LCP 5.6s**, then an
+  immediate "←".
+
+### What to ignore
+
+- The dead-click texts above: tested and working (see table).
+- The 500 / 297 / 277 "dead clicks" in the top-text query: a join artefact.
+- CLS 0.64 on one /quiz/bundesliga/ recording and 0.12 on one Liverpool
+  recording: single sessions. p75 CLS is 0.019.
+- Two back-to-back 24–27 min, **zero-click** sessions on /lists/serie-a-champions/
+  (same user id `s3iwdl`): abandoned tabs, per the 07-28 caveat.
+- "Mohamed Salah · Trabzonspor" in the Mystery Player search looks wrong but
+  is **correct**: he signed a two-year deal on 2026-08-06 (ESPN, Guardian).
+
+### The opportunity — one change
+
+**Give Mystery Player (and Footle) an "after you've solved it" next step.**
+Evidence: Mystery Player is the #2 exit page (28), exits exceed entries by
+65%, and people spend 184s there, so they finish and then have nowhere to go.
+Daily games are also the only surface with a built-in reason to come back
+tomorrow, and returning users just moved (2.7% → 6.9%). The ask should be a
+**tomorrow hook** ("New player at midnight — get a reminder" / sign in to keep
+your streak), not a link to another page. That targets sign-ups and retention
+at the moment of proven engagement. ⚠️ This needs checking against what the
+Mystery Player end state already shows (orientation skill) before building.
+
+Runner-up: an instrument fix. A Clarity smart-event definition for the
+club-page result screen, **or** read `clubq-finish` from our own store. Until
+then the headline "play rate" misses the surface where most play happens.
+
+---
+
 ## 📊 2026-07-28 (dashboard API, 3-day window) — THE PAGE-TYPE READ
 
 Pulled by entry URL, channel/source, and country/device. Four cuts, ~130
