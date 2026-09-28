@@ -55,6 +55,9 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 - **Lever:** 3–4 reels/day (carousel reels, Goldbridge, stacked reels). IG→FB native shares bring the follows.
 - **Follow ad:** kr 50/day. It optimises for visits, not follows. Judge Wed 30 Sep: cost/follow > kr 3 → replace with an Engagement → Page-likes ad (Follow button inside the ad). It does NOT grow IG.
 - **Kill:** none on posts with comments. Max 4–5 reels/day.
+- **FB pages study 09-28 (LIBRARY_fbpages.md):** live humour Pages post 4.5–19×/day and are PHOTO-FIRST (Football Funnys 100% single photos; one 4:5 image with the joke inside, caption ≤10 words; FT = "FULL TIME: X 3-0 Y" over the villain image; fake-official/receipt assets on villain day get the shares; one name-answer question/day gets the comments; AI edits win). Pages that went quiet died.
+- **TEST 09-29→10-02: FB single-image posts via METRICOOL** (not Postiz — Postiz photo posts reached 0–17 in the 09-22 test; Metricool's route is untested). 3/day: the best IG carousel slide, the FT scoreline meme, one name-answer question. Through the gate. Judge vs reels on reach + follows.
+
 - **Later (not now):** own Facebook group "Shithousery HQ – Football Memes" linked to the Page — launch when the Page reaches ~5–10K or reels regularly hit 40K+ (seed it from Page followers; an empty group shrinks the brand; group members ≠ Page followers). Decided 09-28 with Alex.
 
 - **Owner:** Claude (Postiz + Metricool).

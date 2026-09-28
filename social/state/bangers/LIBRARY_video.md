@@ -383,7 +383,7 @@ International-results recaps. **Why they convert nothing:** no fanbase mocked, n
 - **The lesson from all three:** footage and news bring views when you ARE the source (a club, a journalist, a broadcaster's clip). For us they bring views with ~0 follows or shares (NL-3: 40–52K views, 1–2 follows). If a post has no joke, it isn't ours.
 
 ## GAPS / what this library does NOT yet cover
-- **FB references from other Pages:** none pulled (no FB outlier tool; Chrome was off-limits). The FB section is our own Page only. Next: ODDSbible/Football Planet FB reels via Bright Data.
+- **FB references from other Pages:** now in `LIBRARY_fbpages.md` (28 Sep: 16 Pages checked, 12 best posts, craft rules + what our Page isn't doing yet).
 - **YT Shorts frames:** thumbnails only (yt-dlp is bot-blocked); sounds unknown.
 - **@midnitefootball top reel** (DdyoPr-IoM4, 790K): download failed.
 - **IG carousels from reference accounts** (oddsbible 70.7K likes, ftblmemeshub 29.7K likes): no slide download path without login.
