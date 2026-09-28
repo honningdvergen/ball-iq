@@ -88,7 +88,9 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 - **What:** Spotlight = TikTok-style discovery (each Snap judged alone), Public Stories = followers. Web uploader profile.snapchat.com: photo or video 5 s–5 min, Spotlight / Public Story / Save, **Schedule for Later**.
 - **Cadence:** every gated reel → Spotlight + Public Story (3–6/day, more on match days). Snap every day (monetization needs 25+ posts/month on 10 of 28 days).
 - **Monetization bar:** 50K followers + 25 posts/month + 10/28 active days + view-time thresholds. Levers: volume of gated reels, Spotlight hits, Snapcode/link in our other bios.
-- **Owner:** Claude (web uploader).
+- **Owner:** Claude (OneUp — web uploader is blocked by the US-locked business org).
+- **SPRINT 29 Sep–5 Oct (Alex: "50K in a week, life or death"; honest expectation 2–10K, 50K needs a mega-viral Spotlight):** 5–8 Spotlights/day via OneUp (every gated reel + cleaned back catalogue: FB bees 44K, Goldbridge donation 42K, maths reel 42K first; no foreign logos; subtitles when audio carries the joke); daily Story; match reel ≤1 h after FT; cross-promo = Snapchat link/Snapcode in IG/Threads/X/TikTok bios (Alex OK needed) + one jokey "we're on Snapchat" post per platform; day 3–4 Promote Your Profile test kr 50/day × 3 days (cost/follower); PM reads Spotlight views every morning.
+
 
 ## Daily scorecard (the PM ticks it)
 | platform | posts | replies | hit-shots | target net | owner |
