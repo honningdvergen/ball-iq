@@ -59,11 +59,13 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 
 - **Owner:** Claude (Postiz + Metricool).
 
-## YouTube: 30 subs, +0 → target +20/day
-- **Lever:** ONLY format A "[H] x y [A] | Highlights" meme Short ≤3h after FT, and format B "[Club] fans after/when…". 1–2/day.
-- **Kill rule** stays: 5 Shorts under 300 views at 48h → rethink.
-- **Read:** subs ~13 Oct. Lowest follower priority; don't starve the others for it.
-- **Owner:** Claude.
+## YouTube: 30 subs, +0 → target +20/day  (rewritten 09-28 from LIBRARY_youtube.md: 887 Shorts ranked)
+- **Diagnosis:** our Shorts are barely SERVED in the Shorts feed (feed views 1,142/1,628 on the two hit days, then 6–26/day); the two tested loopers held >100%. Mixing 6 formats at 7–12/day likely shrank each Short's test.
+- **Template:** `social/hlcard.mjs` — Google-style FULL-TIME SCORE CARD on top + meme clip with the CRESTS ON THE CHARACTERS, ≥60% of the frame picture, 5–10 s, loops (no end card). Not the white plate, not fullcap.
+- **Two formats only:** A "[H] x y [A] | Highlights" ≤60 min after FT (result jokes die by next day: 48K–681K same night vs 93–400 next day); B "[Club] fans …" fanbase-state jokes (1–3 day window).
+- **Volume:** max 2 Shorts/day. Description line 1 = searchable result ("belgium vs france 1-2 highlights").
+- **Measure Mon 5 Oct:** feed views per Short, averageViewPercentage ≥110%, subs.
+- **Owner:** Claude (Metricool).
 
 ## Bluesky: 1,328, −1/day → target +30/day
 - **Lever:** 3 named originals/day + **15 replies/day** under the big football accounts, plus getting into football **starter packs and custom feeds** (ask the curators via reply/DM).

@@ -248,6 +248,8 @@ Times are Oslo. The Ornstein City 114/115 story broke ≈16:00 Oslo on Fri 25 Se
 
 ## YT SHORTS — references (thumbnails only)
 
+> **Superseded 28 Sep by [LIBRARY_youtube.md](LIBRARY_youtube.md)**: 17 API-ranked outliers (YT-08…24), our own Analytics (feed traffic, retention) and the YT craft rules. The entries below still stand.
+
 ### YT-01 The Bonkus Donkus (456 subs) · Fri 25 Sep 17:08 · 192K (102×) · 15 s
 ![](yt/01_bonkus_citysfans_seeing.jpg)
 - **Hook:** bold white "Man City after being charged:" on black + a Simpsons courtroom/crowd scene with a PL lion and a City crest. **Title:** "Man City Fans Seeing the 115 Charges News 💀😂". **Timing:** ≈1 h after the story. **Steal this:** cartoon + crests + a "[Club] after [news]:" title, posted within the first 1–2 hours.
