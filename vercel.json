@@ -46,6 +46,11 @@
       "permanent": false
     },
     {
+      "source": "/wa",
+      "destination": "https://whatsapp.com/channel/0029Vb91qGBFnSzGtD2ziB0q",
+      "permanent": false
+    },
+    {
       "source": "/yt",
       "destination": "/footle?utm_source=youtube",
       "permanent": false
