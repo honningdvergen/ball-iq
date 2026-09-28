@@ -30,6 +30,8 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 - **Hit shots/day:** 2.
 - **Kill:** <100 views after 12h → delete.
 - **Owner:** Claude (Postiz).
+- **TEST 09-29→10-01 (Alex's idea): X-tweet screenshot singles.** One genuinely funny viral X tweet (humour lane, never betting/tragedy, never one already used in a carousel) as an image + OUR one-line take above it that adds a take/argument. 2/day, through the gate. Judge vs our Threads median views + replies.
+
 
 ## Instagram: 32.6K, −5/day → target +300/day. SURGERY
 - **Diagnosis:** 8.25M views/30d and a 0.01% follow rate. Carousels get views but no follows.
@@ -53,6 +55,8 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 - **Lever:** 3–4 reels/day (carousel reels, Goldbridge, stacked reels). IG→FB native shares bring the follows.
 - **Follow ad:** kr 50/day. It optimises for visits, not follows. Judge Wed 30 Sep: cost/follow > kr 3 → replace with an Engagement → Page-likes ad (Follow button inside the ad). It does NOT grow IG.
 - **Kill:** none on posts with comments. Max 4–5 reels/day.
+- **Later (not now):** own Facebook group "Shithousery HQ – Football Memes" linked to the Page — launch when the Page reaches ~5–10K or reels regularly hit 40K+ (seed it from Page followers; an empty group shrinks the brand; group members ≠ Page followers). Decided 09-28 with Alex.
+
 - **Owner:** Claude (Postiz + Metricool).
 
 ## YouTube: 30 subs, +0 → target +20/day
