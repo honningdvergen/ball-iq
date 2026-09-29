@@ -601,10 +601,10 @@ export const WORDLE_ANSWER_LOG = [
   "MARTINEZ","CARRA","BECKHAM","RIQUELME","YAMAL","PALMER","HEIGHWAY","VARDY",
   "HUTTON","JORGINHO","NESTA","BARTON","MARADONA","ADAMS","HAKIMI","MILBURN",
   "VILLA","MAHREZ","MUSIALA","BAILEY","ROBBEN","GHIGGIA","BIERHOFF","PETERS",
-  "ENDRICK","JONES","MATIP","ASENSIO","VIDIC","KANTE","FLOWERS","BISSAKA",
+  "ENDRICK","JONES","MATIP","ASENSIO","VIDIC","KANTE","FLOWERS","KOMPANY",
   "WALSH","GERRARD","FOFANA","WIRTZ","NEDVED","CAMPBELL","BRADY","TAYLOR",
   "VINICIUS","PIRLO","PEARCE","CHARLTON","PIRES","CAVANI","ZANETTI","GIGGS",
-  "MILNER","ROSICKY","CHIESA","PERSIE","INSIGNE","DEROSSI","HODDLE","WALCOTT",
+  "MILNER","ROSICKY","CHIESA","AGUERO","INSIGNE","KOVACIC","HODDLE","WALCOTT",
   "BAGGIO","NEYMAR","HERRERA","VOELLER","TUDOR","TOSHACK","ROBSON","MOYES",
   "LAMPARD","BROOKING","MUSAH","SEAMAN","TROSSARD","KEOWN","PETROV","GREALISH",
   "VIERI","PARKER","BERGKAMP","DIXON","FALCAO","BENATIA","MESSI","DYBALA",
@@ -614,12 +614,12 @@ export const WORDLE_ANSWER_LOG = [
   "LAUREN","CLEMENCE","KEANE","GALLAS","ADRIANO","SALAH","ICARDI","DOWNING",
   "BOWEN","KOEMAN","LANZINI","EUSEBIO","WRIGHT","RIVALDO","IAQUINTA","MODRIC",
   "MERTENS","BARRY","BRAVO","KENNEDY","ELANGA","COUTO","SCHOLES","DENILSON",
-  "DAVID","VALDES","MENDIETA","MARIA","GERSON","CASEMIRO","PIQUE","WERNER",
-  "REDKNAPP","IRWIN","CRESPO","VALDANO","HENRY","KOUNDE","VANDIJK","DESAILLY",
+  "DAVID","VALDES","MENDIETA","KLOSE","GERSON","CASEMIRO","PIQUE","WERNER",
+  "REDKNAPP","IRWIN","CRESPO","VALDANO","HENRY","KOUNDE","MAGUIRE","DESAILLY",
   "DAVIDS","MUNTARI","NUNEZ","VIEIRA","BARELLA","MARSCH","BUFFON","HIGUAIN",
   "LINDELOF","VERON","BALLACK","SILVA","HEALY","FIRMINO","BENAYOUN","OLISE",
   "VLASIC","WILSHERE","FODEN","ANELKA","VALVERDE","RAMOS","KONATE","MATTHAUS",
-  "BRUCE","ARTETA","PIZARRO","TERRY","THIAGO","VANGAAL","BAILLY","BARESI",
+  "BRUCE","ARTETA","PIZARRO","TERRY","THIAGO","MALDINI","BAILLY","BARESI",
   "KOLAROV","PODOLSKI","HUGHES","BELOTTI","SMITH","ZIDANE","RAFINHA","TUCHEL",
 ];
 
@@ -656,8 +656,22 @@ export const WORDLE_MANAGERS = ['MOURINHO', 'WENGER', 'SARRI', 'RANGNICK', 'BIEL
 // archive. WORDLE_ANSWER_LOG is consulted before this pool, so the frozen day
 // keeps its answer; this list only governs days the log doesn't cover, plus the
 // tail of the log, which was re-keyed off these seven in the same change.
+// ⚠️ NOT THE SURNAME (Alex, 2026-09-29, on Footle #149 = VANGAAL: "there is
+// actually a space between van and gaal"). The grid is one unbroken word, so
+// a two-word surname has to be glued (VANGAAL, VANDIJK, DEROSSI) and nothing
+// on the board says so — the player is hunting for a surname that, as written,
+// does not exist. The other half of the same defect is a PART of a surname
+// (PERSIE for van Persie, MARIA for Di María, BISSAKA for Wan-Bissaka).
+// Rule: an answer is the player's whole surname, one word as written
+// (accents and apostrophes dropped: MULLER, ETOO). Brand names that ARE the
+// name players use (PELE, KAKA, GAZZA) are unaffected.
+// These stay valid GUESSES. Days already served (#12 BISSAKA, #15 DEROSSI,
+// #149 VANGAAL) keep their answers — they are public record; the six later
+// log slots were re-keyed in the same change (see wordle-schedule.test.js).
+export const WORDLE_NOT_ANSWERS = ['VANGAAL', 'VANDIJK', 'DEROSSI', 'PERSIE', 'MARIA', 'BISSAKA'];
+
 export const WORDLE_ANSWER_POOL = WORDLE_PLAYERS.filter(
-  (w) => w.length >= 5 && w.length <= 8 && !WORDLE_MANAGERS.includes(w)
+  (w) => w.length >= 5 && w.length <= 8 && !WORDLE_MANAGERS.includes(w) && !WORDLE_NOT_ANSWERS.includes(w)
 );
 
 export function getWordleAnswerForDayIndex(dayIndex) {

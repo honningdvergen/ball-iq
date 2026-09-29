@@ -15,6 +15,7 @@ import {
   getWordleDayIndex,
   WORDLE_ANSWER_POOL,
   WORDLE_MANAGERS,
+  WORDLE_NOT_ANSWERS,
 } from "../../src/lib/wordle.js";
 
 // The pool size the log was generated from. If WORDLE_PLAYERS grows, the
@@ -37,6 +38,20 @@ function strideFormula(dayIndex, pool) {
 }
 
 describe("WORDLE_ANSWER_LOG freeze", () => {
+  it("no unplayed day is a two-word or partial surname (VANGAAL, #149)", () => {
+    // #149 = index 148 was the last day served when this rule landed
+    // (2026-09-29). Earlier days keep their published answers; every later
+    // day must be a whole one-word surname. See WORDLE_NOT_ANSWERS.
+    const FIRST_UNPLAYED_IDX = 149;
+    WORDLE_ANSWER_LOG.slice(FIRST_UNPLAYED_IDX).forEach((answer, k) => {
+      expect(WORDLE_NOT_ANSWERS, `Footle #${FIRST_UNPLAYED_IDX + k + 1} = ${answer}`).not.toContain(answer);
+    });
+    for (const w of WORDLE_NOT_ANSWERS) {
+      expect(WORDLE_ANSWER_POOL).not.toContain(w); // the fallback beyond #400 too
+      expect(WORDLE_PLAYERS).toContain(w); // still accepted as a guess
+    }
+  });
+
   it("covers #1..#400 with real pool entries of valid Footle lengths", () => {
     expect(WORDLE_ANSWER_LOG).toHaveLength(400);
     const pool = new Set(WORDLE_PLAYERS);
