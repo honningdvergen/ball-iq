@@ -1,0 +1,41 @@
+# Trail freeze horizon — goes red a WEEK before the Trail schedule gate lapses.
+#
+# WHY THIS EXISTS. tests/unit/trail-schedule.test.js fails the build the moment
+# a Trail day is served that PUBLISHED does not freeze yet. That moment is
+# midnight UTC, and the only earlier signal was a console.warn inside the test
+# output that nobody reads. On 2026-09-27 it lapsed (57 served, 55 frozen) and
+# every production deploy failed until someone noticed the red Vercel status.
+#
+# ⚠️ DELIBERATELY NOT PART OF THE BUILD. A build gate must never depend on
+# today's date (see the 09-23 grid colour-key incident) — this job changes
+# nothing and blocks nothing. It only fails, and so emails, while fewer than
+# 7 future days are frozen. Seven days is one ordinary week of slack: enough
+# that a red run here is a chore for this week, never an outage tonight.
+#
+# FIX WHEN RED:  npm run trail:freeze -- --horizon=30
+#   then verify the new days' careers (scripts/verify-trail-careers.mjs, and
+#   the bank-verifier for anything after the model's cutoff) and commit.
+#   Never edit PUBLISHED by hand to silence it.
+
+name: Trail horizon
+
+on:
+  schedule:
+    - cron: '23 7 * * *' # 07:23 UTC daily — lands in the Oslo morning
+  workflow_dispatch:
+
+jobs:
+  horizon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # No npm ci: trail-freeze.mjs only imports src/lib/trail.js (pure data +
+      # date helpers). Report-only mode — it cannot write without --apply.
+      - name: At least 7 future Trail days frozen
+        run: node scripts/trail-freeze.mjs --min-margin=7

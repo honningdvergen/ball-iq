@@ -93,9 +93,14 @@ export const TRAIL_PLAYERS = [
   { key: "REUS", display: ["Marco","Reus"], nat: "Germany",
     clubs: ["Rot Weiss Ahlen","Borussia M.gladbach","Borussia Dortmund","LA Galaxy"],
     loans: [false,false,false,false] },
-  { key: "HEUNGMIN", display: ["Son","Heung-min"], nat: "South Korea",
-    clubs: ["Hamburger SV","Leverkusen","Tottenham","LAFC"],
-    loans: [false,false,false,false] },
+  // PARK replaced HEUNGMIN 2026-09-28 — HEUNGMIN was a second key for Son
+  // Heung-min (see SON below). Only unserved days changed (#85/#161/#285/#339).
+  // Verified by the bank-verifier: Kyoto→PSV 2003 was a permanent transfer,
+  // the 2013–14 PSV spell a loan from QPR; "Kyoto Purple Sanga" is the club's
+  // name in his era (renamed 2010); retired May 2014, so this cannot rot.
+  { key: "PARK", display: ["Park","Ji-sung"], nat: "South Korea",
+    clubs: ["Kyoto Purple Sanga","PSV","Man Utd","QPR","PSV"],
+    loans: [false,false,false,false,true] },
   { key: "BELLINGHAM", display: ["Jude","Bellingham"], nat: "England",
     clubs: ["Birmingham City","Borussia Dortmund","Real Madrid"],
     loans: [false,false,false] },
@@ -423,18 +428,16 @@ export const TRAIL_PLAYERS = [
   { key: "DE_BRUYNE", display: ["Kevin","De Bruyne"], nat: "Belgium",
     clubs: ["Genk","Chelsea","Werder Bremen","Wolfsburg","Man City","Napoli"],
     loans: [false, false, true, false, false, false] },
-  // ⚠️ Same human as HEUNGMIN above, stored twice under two keys — and this
+  // ⚠️ Was the same human as HEUNGMIN, stored twice under two keys — and this
   // one had the name REVERSED, which broke every SON day outright (reported
   // live on day 20, 2026-08-23). `mysteryPool.json` — the pool the in-game
   // autocomplete offers from — stores the canonical "Son Heung-min", so
   // tapping the app's own first suggestion spent an attempt and revealed a
   // free club. Both entries now carry the same Korean name order.
   //
-  // The duplicate itself is deliberately LEFT for now: TRAIL_ANSWER_LOG is
-  // frozen and gives all 102 keys exactly 4 days each, so merging would hand
-  // Son 8 of 408 days (twice inside a fortnight, at 145/160 and 284/303).
-  // The correct end state is a 102nd distinct player in HEUNGMIN's slot, which
-  // needs verified career data — tracked in docs/TODO.md, not faked here.
+  // RESOLVED 2026-09-28: HEUNGMIN's four log days (#85/#161/#285/#339, none
+  // yet served) now go to PARK, a 102nd distinct, verified career — so Son no
+  // longer gets 8 of 408 days (twice inside a fortnight at #146/#161).
   { key: "SON", display: ["Son","Heung-min"], nat: "South Korea",
     clubs: ["Hamburg","Bayer Leverkusen","Tottenham","LAFC"],
     loans: [false, false, false, false] },
@@ -546,7 +549,7 @@ export const TRAIL_ANSWER_LOG = [
   "HAKIMI",
   "SEEDORF",
   "KANE",
-  "HEUNGMIN",
+  "PARK",
   "SAN",
   "DONNARUMMA",
   "DYBALA",
@@ -622,7 +625,7 @@ export const TRAIL_ANSWER_LOG = [
   "VERRATTI",
   "REUS",
   "FATI",
-  "HEUNGMIN",
+  "PARK",
   "OWEN",
   "STONES",
   "GOTZE",
@@ -746,7 +749,7 @@ export const TRAIL_ANSWER_LOG = [
   "KONNO",
   "DYBALA",
   "GILBERTO_SILVA",
-  "HEUNGMIN",
+  "PARK",
   "AFELLAY",
   "DONNARUMMA",
   "MODRI",
@@ -800,7 +803,7 @@ export const TRAIL_ANSWER_LOG = [
   "YOSHIDA",
   "VAN_PERSIE",
   "OZIL",
-  "HEUNGMIN",
+  "PARK",
   "CAN",
   "KANTE",
   "ISAK",
@@ -912,11 +915,12 @@ export const TRAIL_ALIASES = {
   // stored in native order, "Son Heung-min" has the family name FIRST, so the
   // derived forms are "Heung-min" (the given name) and the full name — and
   // "Son", the one thing every commentator actually says, was refused on all
-  // eight of his scheduled days. Alias both keys rather than reordering the
-  // display, because the display order is correct and the derivation is what
-  // does not generalise. Western order is aliased too; people type both.
-  HEUNGMIN:       ["Son", "Heung-min Son"],
+  // eight of his scheduled days. Alias rather than reordering the display,
+  // because the display order is correct and the derivation is what does not
+  // generalise. Western order is aliased too; people type both. Park Ji-sung
+  // (stored "Park Ji-sung") has the identical shape.
   SON:            ["Son", "Heung-min Son"],
+  PARK:           ["Park", "Ji-sung Park"],
 };
 
 // Revealed as a hint after the third miss. Nationality already lives on the
@@ -936,7 +940,7 @@ export const TRAIL_POSITIONS = {
   "GEA": "Goalkeeper",
   "DYBALA": "Forward",
   "REUS": "Midfielder",
-  "HEUNGMIN": "Forward",
+  "PARK": "Midfielder",
   "BELLINGHAM": "Midfielder",
   "BECKER": "Goalkeeper",
   "HAKIMI": "Defender",
