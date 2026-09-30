@@ -19,3 +19,7 @@ Why: TikTok flagged clip re-uploads as unoriginal (0 of 43 videos >14K since 09-
 |---|---|---|---|---|---|---|---|
 | 1 | United hero, 09-29 17:30 | | | | | | |
 KEEP if ≥2 of 7 videos pass 5K views AND ≥+60 followers over the week, or median shares/views ≥1%. Otherwise TikTok goes mirror-only on 10-06. The auto-post control (1/day via Metricool, plain caption, no hashtag stacks) keeps running for comparison.
+
+---
+## STOPPED 2026-09-30 (Alex, after the audit)
+The 7-day native-sound TikTok test (Alex posting 1 video/day) is cancelled: audit estimated ~3.6% chance of passing, day 1 never happened, and it cost ~15 Alex-minutes a day. TikTok itself is NOT dropped: one automatic full-frame mirror per day stays (kill/decision 10-13 with the other mirrors). The daily hand-posted Instagram-app reels are also stopped.

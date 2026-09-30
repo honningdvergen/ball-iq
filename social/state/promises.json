@@ -5,8 +5,10 @@
   "text": "12:30 reel (FB/IG/TikTok/YT via Postiz) actually published",
   "check": "verify-slots-published",
   "owner": "claude",
-  "status": "open",
-  "made": "2026-09-30T10:10:42.323Z"
+  "status": "done",
+  "made": "2026-09-30T10:10:42.323Z",
+  "result": "auto: 2 slot(s) checked, all published",
+  "closed": "2026-09-30T10:56:25.341Z"
  },
  {
   "id": "P002",
@@ -23,8 +25,10 @@
   "text": "An Instagram carousel is published today (afternoon carousel lane)",
   "check": "ig-carousel-today",
   "owner": "claude",
-  "status": "open",
-  "made": "2026-09-30T10:10:42.379Z"
+  "status": "dropped",
+  "made": "2026-09-30T10:10:42.379Z",
+  "result": "superseded by P014 (same check, tied to the real slot)",
+  "closed": "2026-09-30T12:17:27.268Z"
  },
  {
   "id": "P004",
@@ -34,5 +38,119 @@
   "owner": "claude",
   "status": "open",
   "made": "2026-09-30T10:10:42.407Z"
+ },
+ {
+  "id": "P005",
+  "due": "2026-09-30T14:00",
+  "text": "Alex presses Start on @shq_poster_bot in Telegram, then Claude runs: node social/watch.mjs --link-chat (phone push for missed posts / overdue promises)",
+  "check": "telegram-linked",
+  "owner": "alex+claude",
+  "status": "done",
+  "made": "2026-09-30T10:20:06.985Z",
+  "result": "Linked 12:28 Oslo; test push delivered",
+  "closed": "2026-09-30T10:32:47.044Z"
+ },
+ {
+  "id": "P006",
+  "due": "2026-10-01T12:00",
+  "text": "Numbers session (Alex ~10 min): IG earnings by post type screenshot, X analytics screenshot, Facebook ad cost-per-result screenshot; also answer: was a reel deleted around 09-03/04?",
+  "check": "manual",
+  "owner": "alex",
+  "status": "dropped",
+  "made": "2026-09-30T10:20:07.020Z",
+  "result": "Alex 09-30: IG earnings simply follow post performance (no screenshot by post type needed); FB ad numbers given in chat; X analytics unchanged. Deleted-reel question dropped.",
+  "closed": "2026-09-30T10:28:32.914Z"
+ },
+ {
+  "id": "P007",
+  "due": "2026-10-03T09:00",
+  "text": "CANCEL OneUp (Snapchat) before the trial bills ~10-05 — Alex approved 09-30. Claude does it in the logged-in Chrome if a session is open, else Alex (2 min). Drop Snapchat posting the same day.",
+  "check": "manual",
+  "owner": "claude+alex",
+  "status": "done",
+  "made": "2026-09-30T10:20:07.047Z",
+  "result": "OneUp subscription cancelled 09-30 12:4x Oslo via Chrome: 'Cancellation confirmed. You won't be billed again.' Trial access may end sooner than 10-05: check the Snapchat queue; Snapchat posting dropped anyway.",
+  "closed": "2026-09-30T10:32:07.511Z"
+ },
+ {
+  "id": "P008",
+  "due": "2026-10-06T09:00",
+  "text": "Reliability exit review (core slots published, alarm reaches phone, promises kept, Alex load) — NOT a growth verdict",
+  "check": "manual",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T10:20:07.075Z"
+ },
+ {
+  "id": "P009",
+  "due": "2026-10-10T09:00",
+  "text": "League restart: start the matched IG volume test (8-12 gated posts/day) + YouTube highlights test 10-10..10-13; X payout read 10-09",
+  "check": "manual",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T10:20:07.105Z"
+ },
+ {
+  "id": "P010",
+  "due": "2026-10-28T09:00",
+  "text": "Decide Postiz renewal (paid to 10-30; only working door for X/TikTok posting) — do not let it lapse by accident",
+  "check": "manual",
+  "owner": "claude+alex",
+  "status": "open",
+  "made": "2026-09-30T10:20:07.133Z"
+ },
+ {
+  "id": "P011",
+  "due": "2026-09-30T18:30",
+  "text": "FB test ad (2026 Saka video, UK 18-44) has a payment method and is delivering? If not, Alex adds card/PayPal in Business Suite, then Claude publishes and pauses the old Mourinho-banner ad",
+  "check": "manual",
+  "owner": "alex+claude",
+  "status": "open",
+  "made": "2026-09-30T11:15:07.463Z"
+ },
+ {
+  "id": "P012",
+  "due": "2026-10-01T14:00",
+  "text": "24h read of FB test ad: cost per follow (cap kr 2.5), audience age mix vs old ad, reach; pause old ad if new one delivers; screenshot from Business Suite Ad Center",
+  "check": "manual",
+  "owner": "claude+alex",
+  "status": "open",
+  "made": "2026-09-30T11:15:07.504Z"
+ },
+ {
+  "id": "P013",
+  "due": "2026-10-03T12:00",
+  "text": "FB test ad ended (kr 150): verdict — keep 18-44 setup / change creative / stop. Decide next ad budget with Alex.",
+  "check": "manual",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T11:15:07.536Z"
+ },
+ {
+  "id": "P014",
+  "due": "2026-09-30T15:50",
+  "text": "Day-2 City sweep carousel (8 slides, critic PASS 7, Alex approved) published on Instagram at 15:30 Oslo",
+  "check": "ig-carousel-today",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T12:17:27.311Z"
+ },
+ {
+  "id": "P015",
+  "due": "2026-09-30T16:30",
+  "text": "Read the 60-min numbers of the City carousel (views, sends, likes) and send Alex the result; log it in the format registry as sweep-carousel-real-tweets",
+  "check": "manual",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T12:17:27.344Z"
+ },
+ {
+  "id": "P016",
+  "due": "2026-10-01T18:00",
+  "text": "Build the nightly outcome fill: posts_log rows get views/likes at +24h/+72h from the Graph/Threads APIs (script + launchd), so critic calibration (bracket/p50k vs outcome) runs on real data",
+  "check": "manual",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T12:22:56.882Z"
  }
 ]

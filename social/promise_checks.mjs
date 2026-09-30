@@ -9,6 +9,7 @@ const j = async (u) => { try { return await (await fetch(u, { signal: AbortSigna
 const oslo = (t) => new Date(t).toLocaleString('sv-SE', { timeZone: 'Europe/Oslo' }).replace(' ', 'T');
 import { findMissed } from './verify.mjs';
 export const CHECKS = {
+  'telegram-linked': async () => ({ ok: fs.existsSync(path.join(HERE, 'state/alert_chat.json')), detail: 'Alex has not pressed Start on @shq_poster_bot yet (or --link-chat was not run)' }),
   // scheduled IG/FB/Threads slots in the last 4h: at least one was due AND nothing missed AND platforms readable
   'verify-slots-published': async () => { const m = await findMissed(); if (m.unreadable.length) return { ok: false, detail: 'verifier BLIND: ' + m.unreadable.join(',') }; if (m.length) return { ok: false, detail: m.length + ' slot(s) never published: ' + m.map((x) => x.platform + ' ' + x.slot).join('; ') }; return { ok: m.checked >= 1, detail: m.checked + ' slot(s) checked, all published' }; },
   manual: async () => ({ ok: false, detail: 'manual item: nobody marked it done' }),

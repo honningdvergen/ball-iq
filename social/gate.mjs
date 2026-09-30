@@ -157,7 +157,7 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
   }
   const isCarousel = media.length >= 3 && !media.some((f) => VIDEO.test(f));
   media.forEach((f, i) => {
-    if (!fs.existsSync(f)) { warn.push(`media not found locally, not fingerprinted: ${f}`); return; }
+    if (!fs.existsSync(f)) { (process.env.PZ_ALLOW_UNMAPPED === '1' ? warn : block).push(`media not found locally, cannot be fingerprinted for the repeat check: ${f} (override: PZ_ALLOW_UNMAPPED=1)`); return; }
     if (isCarousel && i === media.length - 1) return;   // the Follow CTA slide is reused on purpose
     const hit = findRepeat(fingerprint(f), platform, db, f);
     if (hit) block.push(`REPEAT on ${platform}: ${path.basename(f)} matches ${hit.file} (posted ${hit.date}${hit.post ? ', post ' + hit.post : ''}).`);
@@ -172,7 +172,14 @@ export function check({ platform, caption = '', settings = {}, media = [], unmap
       if (['tiktok', 'instagram', 'youtube'].includes(platform)) block.push(msg); else warn.push(msg);
     }
   }
-  if (unmapped) warn.push(`${unmapped} media URL(s) not uploaded through social/pz — not fingerprinted, repeat check skipped for them.`);
+  // 09-30 audit (fail closed): a media URL we cannot map to a local file cannot be checked for repeats, brands or cards, so it does not go out.
+  if (unmapped) (process.env.PZ_ALLOW_UNMAPPED === '1' ? warn : block).push(`${unmapped} media URL(s) not uploaded through social/pz — cannot be fingerprinted, so the repeat/card checks cannot run on them. Upload with social/pz upload first (override: PZ_ALLOW_UNMAPPED=1).`);
+  // 09-30: rules that lived only in prose or in the optional pre-flight are enforced here, in the door every post goes through.
+  const listed = String(caption).split('\n').filter((l) => /^\s*\d{1,2}[.)]\s+\S/.test(l)).length;
+  if (listed >= 3 || /\b(in one swipe|swipe through|slide \d)\b/i.test(caption))
+    block.push('Caption lists or explains the slides (numbered list / "in one swipe"). Alex cut this pattern 09-28 — one hook line, one line of context, one reason to send.');
+  if (platform === 'x') for (const f of media) if (fs.existsSync(f + '.card'))
+    block.push(`X image ${path.basename(f)} is a tweet CARD (our own tweet drawn on the photo). On X the tweet text is the line — use the bare photo. Cards are for Instagram/Threads only (Alex 09-29).`);
   return { block, warn };
 }
 

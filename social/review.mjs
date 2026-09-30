@@ -93,7 +93,7 @@ if (cmd === 'draft') {
   // 09-29: threshold lowered 8 → 7 after the blind backtest (social/state/review/backtest_2026-09-29/RESULT.md: the ≥8 gate passed
   // only 3 of 12 known hits) and Alex's "recalibrate the critic" (09-28/29). Matches the 'HOW TO DECIDE PASS' block in banger-critic.md.
   if (verdict === 'PASS' && score < 7) { console.error('A PASS needs score ≥ 7. Below that it is a FAIL.'); process.exit(1); }
-  const v = { id, key: d.key, platform: d.platform, platforms: d.platforms, verdict, score, why: arg('why') || '', fix: arg('fix') || '', at: new Date().toISOString(), text: d.text };
+  const v = { id, key: d.key, platform: d.platform, platforms: d.platforms, verdict, score, why: arg('why') || '', fix: arg('fix') || '', bracket: arg('bracket') || '', p50k: arg('p50k') != null ? Number(arg('p50k')) : null, hunch: arg('hunch') || '', at: new Date().toISOString(), text: d.text };   // 09-30: structured fields so critic calibration can be measured against outcomes (bracket 1-5K|5-50K|50K+, p50k 0-100, Alex's hunch yes/no)
   fs.appendFileSync(VERDICTS, JSON.stringify(v) + '\n');
   Object.assign(d, { verdict, score, why: v.why, fix: v.fix }); fs.writeFileSync(f, JSON.stringify(d, null, 1));
   console.log(`${verdict} ${score}/10 recorded for ${id}`);

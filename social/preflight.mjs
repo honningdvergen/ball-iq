@@ -35,16 +35,10 @@ const gate = await import('./gate.mjs');
 const g = gate.check({ platform, caption, media });
 g.block.forEach((b) => block.push(b)); g.warn.forEach((w) => warn.push(w));
 
-// 2. X: never our own tweet card as the image (overlay.mjs writes a .card marker next to every tweet-card render)
-if (platform === 'x') {
-  for (const f of media) if (fs.existsSync(f + '.card')) block.push(`X image ${path.basename(f)} is a tweet CARD (our own tweet drawn on the photo). On X the tweet text is the line — use the bare photo. Cards are for Instagram/Threads only.`);
-  if (media.length > 1 && !media.some((f) => VIDEO.test(f))) warn.push('X: one picture per post is the winning shape; multi-image only if the set is the joke.');
-}
+// 2. (own-tweet card on X, caption-lists-slides and unmapped media are enforced in gate.check above)
+if (platform === 'x' && media.length > 1 && !media.some((f) => VIDEO.test(f))) warn.push('X: one picture per post is the winning shape; multi-image only if the set is the joke.');
 
 // 3. caption shape
-const lines = caption.split('\n');
-const numbered = lines.filter((l) => /^\s*\d{1,2}[.)]\s+\S/.test(l)).length;
-if (numbered >= 3 || /\b(in one swipe|swipe through|slide \d)\b/i.test(caption)) block.push('Caption lists/explains the slides (numbered list or "in one swipe"). Alex cut this on 09-28 — one line of context, then the question or follow line.');
 if (['x', 'threads'].includes(platform) && /#[A-Za-z]/.test(caption)) block.push('Hashtag on X/Threads — banned (A_GRADE_PLAN).');
 if (platform === 'instagram' && caption.length > 2200) block.push('Instagram caption over 2,200 characters.');
 if ((caption.match(/😭/g) || []).length > 1) warn.push('More than one 😭 in the caption; the 😭 quota is ≤1 of 3 posts.');

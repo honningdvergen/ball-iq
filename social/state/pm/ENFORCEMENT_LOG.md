@@ -2276,3 +2276,175 @@ Tottenham spent £300m+ thi"
 - [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
 - [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
 - [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 12:27 Oslo — 10 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [Facebook video only] Facebook album post 2026-09-29T13:11:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170694702730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 12:37 Oslo — 10 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [Facebook video only] Facebook album post 2026-09-29T13:11:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170694702730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 12:47 Oslo — 10 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [Facebook video only] Facebook album post 2026-09-29T13:11:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170694702730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 12:57 Oslo — 10 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [Facebook video only] Facebook album post 2026-09-29T13:11:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170694702730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 13:07 Oslo — 10 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [Facebook video only] Facebook album post 2026-09-29T13:11:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170694702730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 13:18 Oslo — 9 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 13:28 Oslo — 10 open violation(s), 1 new
+- **NEW** [Facebook video only] Facebook photo post 2026-09-30T13:19:18 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170781360730482
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 13:29 Oslo — 10 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-30T13:19:18 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170781360730482
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 13:39 Oslo — 11 open violation(s), 1 new
+- [Facebook video only] Facebook photo post 2026-09-30T13:19:18 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170781360730482
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- **NEW** [Threads ≤2 posts/hour] Threads: 3 posts in the hour up to 2026-09-30T13:31:33 Oslo (≥4/hour cuts median views ~45%)
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 13:39 Oslo — 11 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-30T13:19:18 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170781360730482
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [Threads ≤2 posts/hour] Threads: 3 posts in the hour up to 2026-09-30T13:31:33 Oslo (≥4/hour cuts median views ~45%)
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 13:49 Oslo — 11 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-30T13:19:18 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170781360730482
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [Threads ≤2 posts/hour] Threads: 3 posts in the hour up to 2026-09-30T13:31:33 Oslo (≥4/hour cuts median views ~45%)
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 13:59 Oslo — 11 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-30T13:19:18 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170781360730482
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [Threads ≤2 posts/hour] Threads: 3 posts in the hour up to 2026-09-30T13:31:33 Oslo (≥4/hour cuts median views ~45%)
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 14:09 Oslo — 11 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-30T13:19:18 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170781360730482
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [Threads ≤2 posts/hour] Threads: 3 posts in the hour up to 2026-09-30T13:31:33 Oslo (≥4/hour cuts median views ~45%)
+- [😭 on ≤1 of 3] 😭 on 5 of the last 12 IG/TikTok/FB captions
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
+
+## 2026-09-30 14:19 Oslo — 10 open violation(s), 0 new
+- [Facebook video only] Facebook photo post 2026-09-30T13:19:18 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170781360730482
+- [Facebook video only] Facebook photo post 2026-09-29T14:53:08 Oslo (photo/album median 21–27 views, 3% of Page views) https://www.facebook.com/122170649378730482/posts/122170702520730482
+- [No overnight IG reels] IG reel published 2026-09-29T08:03:00 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd3EeUujL1Y/
+- [No overnight IG reels] IG reel published 2026-09-29T06:31:57 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd26BkBE_vQ/
+- [No overnight IG reels] IG reel published 2026-09-29T05:02:42 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2v2DSis-0/
+- [No overnight IG reels] IG reel published 2026-09-29T03:31:32 Oslo (00:30–09:00 banned) https://www.instagram.com/reel/Dd2lajiEqLz/
+- [Threads window 08:00–22:00 Oslo (to 24:00 on big-event days)] Threads post at 2026-09-30T02:13:26 Oslo, outside the window (unless a live match) https://www.threads.com/@shithouseryhq/post/Dd5BU_ciCtx
+- [Threads ≤2 posts/hour] Threads: 3 posts in the hour up to 2026-09-30T13:31:33 Oslo (≥4/hour cuts median views ~45%)
+- [tiktok soft ceiling] tiktok: 4 posts today (plan: 1 native + 1 auto; soft ceiling 3) — fine if every one is 10/10, otherwise trim
+- [youtube soft ceiling] youtube: 4 posts today (plan: 1–2 mirror; soft ceiling 2) — fine if every one is 10/10, otherwise trim
