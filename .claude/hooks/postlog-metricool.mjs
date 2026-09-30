@@ -19,6 +19,15 @@ process.stdin.on('end', async () => {
     const uuid = (resp.match(/"uuid"\s*:\s*"([^"]+)"/) || [])[1] || '';
     const root = process.env.CLAUDE_PROJECT_DIR || path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
     const { logPost } = await import(path.join(root, 'social/postlog.mjs'));
+    // 09-29: record the slides in the shared repeat database too — Metricool posts were never fingerprinted, so a slide
+    // posted only via Metricool could be reused later without the gate noticing.
+    try {
+      const fs = await import('node:fs');
+      const gate = await import(path.join(root, 'social/gate.mjs'));
+      const map = new Map((fs.existsSync(path.join(root, 'social/state/uploads.tsv')) ? fs.readFileSync(path.join(root, 'social/state/uploads.tsv'), 'utf8').split('\n') : []).filter(Boolean).map((l) => l.split('\t')));
+      const media = (info.media || []).map((u) => map.get(u)).filter(Boolean);
+      if (media.length) for (const p of info.providers || []) gate.record({ platform: (String(p.network).toLowerCase() === 'twitter' ? 'x' : String(p.network).toLowerCase()), post: uuid, media, caption: info.text || '' });
+    } catch { /* never break logging */ }
     for (const p of info.providers || []) logPost({ platform: String(p.network).toLowerCase(), text: info.text || '', id: uuid, via: 'metricool', scheduledFor: info.publicationDate?.dateTime || '' });
   } catch { /* logging must never break publishing */ }
 });

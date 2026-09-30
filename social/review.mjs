@@ -90,7 +90,9 @@ if (cmd === 'draft') {
   if (!fs.existsSync(f)) { console.error('no draft ' + id); process.exit(1); }
   const d = JSON.parse(fs.readFileSync(f)), verdict = (arg('verdict') || '').toUpperCase(), score = Number(arg('score'));
   if (!['PASS', 'FAIL'].includes(verdict) || !(score >= 0)) { console.error('need --verdict PASS|FAIL and --score'); process.exit(1); }
-  if (verdict === 'PASS' && score < 8) { console.error('A PASS needs score ≥ 8. Below that it is a FAIL.'); process.exit(1); }
+  // 09-29: threshold lowered 8 → 7 after the blind backtest (social/state/review/backtest_2026-09-29/RESULT.md: the ≥8 gate passed
+  // only 3 of 12 known hits) and Alex's "recalibrate the critic" (09-28/29). Matches the 'HOW TO DECIDE PASS' block in banger-critic.md.
+  if (verdict === 'PASS' && score < 7) { console.error('A PASS needs score ≥ 7. Below that it is a FAIL.'); process.exit(1); }
   const v = { id, key: d.key, platform: d.platform, platforms: d.platforms, verdict, score, why: arg('why') || '', fix: arg('fix') || '', at: new Date().toISOString(), text: d.text };
   fs.appendFileSync(VERDICTS, JSON.stringify(v) + '\n');
   Object.assign(d, { verdict, score, why: v.why, fix: v.fix }); fs.writeFileSync(f, JSON.stringify(d, null, 1));

@@ -33,6 +33,9 @@
 // VIDEO is centred and the caption sits directly above it, type is tweet-sized.
 // Kept from v3: full-width footage, push-in, second beat, tall-clip fitting.
 //
+// 09-28: NO handle under the caption by default (library: thatguysjokes' plate has nothing else on
+// screen; Alex: no logo). --handle brings it back.
+//
 // Caption text is rendered in a headless browser rather than with ffmpeg's
 // drawtext: real line-breaking, real kerning, no manual \n escaping.
 
@@ -134,7 +137,7 @@ const plateHtml = (txt, h) => `<!DOCTYPE html><meta charset="utf-8"><style>
      font-size:${fontPx}px;line-height:1.16;letter-spacing:-.015em;color:#0a0a0a;max-width:100%;text-wrap:${TWEET ? "wrap" : "balance"}}
   #m{margin-top:22px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
      font-size:21px;font-weight:800;letter-spacing:.34em;color:#b4bcc6;text-transform:uppercase}
-</style><div id="w"><div id="t"></div><div id="m">${YT ? 'Shithousery HQ · Subscribe' : 'Shithousery HQ'}</div></div>
+</style><div id="w"><div id="t"></div><div id="m"${process.argv.includes('--handle') ? '' : ' style="display:none"'}>${YT ? 'Shithousery HQ · Subscribe' : 'Shithousery HQ'}</div></div>
 <script>document.getElementById('t').textContent=${JSON.stringify(txt)}</script>`;
 
 const tmp = fs.mkdtempSync('/tmp/recap-');

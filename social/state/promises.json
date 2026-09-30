@@ -1,0 +1,38 @@
+[
+ {
+  "id": "P001",
+  "due": "2026-09-30T12:45",
+  "text": "12:30 reel (FB/IG/TikTok/YT via Postiz) actually published",
+  "check": "verify-slots-published",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T10:10:42.323Z"
+ },
+ {
+  "id": "P002",
+  "due": "2026-09-30T15:10",
+  "text": "TEST of the alert path: this row fails on purpose; Alex should get a Mac notification (and a phone push once linked)",
+  "check": "always-fail",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T10:10:42.350Z"
+ },
+ {
+  "id": "P003",
+  "due": "2026-09-30T18:00",
+  "text": "An Instagram carousel is published today (afternoon carousel lane)",
+  "check": "ig-carousel-today",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T10:10:42.379Z"
+ },
+ {
+  "id": "P004",
+  "due": "2026-09-30T22:30",
+  "text": "Tomorrow's core slate (carousel + Threads receipts) is built and queued through Postiz, hard stop 22:30",
+  "check": "manual",
+  "owner": "claude",
+  "status": "open",
+  "made": "2026-09-30T10:10:42.407Z"
+ }
+]

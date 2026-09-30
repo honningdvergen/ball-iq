@@ -522,3 +522,8 @@ These got their numbers by being the source, not through craft we can copy. Scre
 - Most external bangers come from Troll Football, Footy Humour, Hater Central, UTDTrey and single-fan accounts (MarockX, XolidCity, bobby_role, CFC_Janty). X search from Alex's Chrome stalls whenever the tab is in the background, so the sweep covers 18–28 Sep well and 14–17 Sep only thinly.
 - Videos were judged from the poster frame plus the caption. I did not watch them.
 - For other accounts' Threads football banter I could only find small accounts (T-10). The Threads section is mostly ours, ranked by API views.
+
+### ALEX-PICK 09-28 23:14 — "the most pro clubs thing I've ever seen" (thefootballfeeduk IG carousel slide 1, @AJDeniro tweet on the photo)
+Photo: a Netherlands #19 captain in a garish orange/teal kit, bulky, stiff mid-run next to a Brazil #9 — looks like a video-game create-a-player. Tweet: "Fam😭😭😭 this the most pro clubs thing I've ever seen".
+**Why it bangs (Alex):** "really funny and shocking, highly sharable, there are MULTIPLE things about that photo that would make people react — some will comment it is fake, some will post laughing emojis, others will share it with their mates." → The IMAGE is absurd on its own (looks fake) and the line names the one reference every football gamer shares (Pro Clubs). Several reaction routes at once = comments ("fake?"), emojis, sends.
+**Rule:** pick photos that make people DOUBT THEIR EYES (looks fake/AI/video-game, wrong proportions, absurd kit, impossible moment); the label names a shared reference (FIFA/Pro Clubs, Sunday league, a meme) in ≤10 words.

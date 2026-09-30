@@ -1,0 +1,7 @@
+- 2026-09-28 12:15 X 2104511110082855130 'two contracts. zero concerns' — Postiz dropped the quoted BBC link, post had no context; replaced by a real Chrome quote-post
+- 2026-09-28 15:45 Postiz bluesky cmukzwqle02l4ms0yj4rp7suj (Anguilla/Zidane hairdresser, 4th use of story, stale) — pulled before publish, pre-gate queue
+- 2026-09-28 15:47 Postiz facebook cmuhihxou0aufpr0yzg1illji (Goldbridge "cards out", evergreen filler, media not reviewable) — pulled before publish
+- 2026-09-28 16:00 Postiz facebook cmukbiewg062vpr0ylz3s3guc (Goldbridge/Gerrard, critic FAIL 4/10: serious monologue, burned-in third-party box, 3-day-old story) — pulled before publish
+- 2026-09-28 16:00 Postiz threads cmuka2ssv05kmpr0ywau4zqec (legends pint, critic FAIL 3/10: evergreen dad-joke, no take) — pulled before publish
+- 2026-09-29 ~14:30 Oslo — X: "🚨 THE DAILY NUMBER #1 … City 114 points / 114 charges" deleted BY ALEX on X. Why: stale-news premise (verdict was 4 days old at post time, "reportedly found guilty" phrasing read as behind the news, 🚨 tells news). Threads copy still up (1,483 views / 3 likes at +1h) — flop; Threads API refuses deletes (no delete permission) so Alex deletes by hand if wanted; Bluesky + Telegram copies also still up. Lesson → critic STALE-NEWS TEST.
+- 2026-09-30 00:10 Oslo — X Postiz cmun514r40dxemt0y28yoa92n (Yamal hero, image was our own tweet card on X): deleted at Alex's request, reposted with the bare photo

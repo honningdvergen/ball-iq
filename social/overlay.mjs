@@ -72,5 +72,6 @@ await page.waitForLoadState('networkidle');
 const box = await page.evaluate(() => document.querySelector('.card').getBoundingClientRect().toJSON());
 if (box.top < 40 || box.bottom > 1350 - 20) { console.error(`card overflows (${Math.round(box.top)}–${Math.round(box.bottom)}) — shorten or use --y top`); process.exit(1); }
 await page.screenshot({ path: OUT });
+fs.writeFileSync(OUT + '.card', 'tweet-card render: Instagram/Threads only, never X (preflight.mjs blocks it)\n');   // 09-29: our own tweet card must not go to X
 await browser.close();
 console.log(`✅ ${OUT}  (card ${Math.round(box.top)}–${Math.round(box.bottom)}px)  ${OWN ? 'own post' : `source: https://x.com/${t.user.screen_name}/status/${t.id_str}`}`);

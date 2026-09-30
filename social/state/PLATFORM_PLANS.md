@@ -81,7 +81,7 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 
 ## Telegram: 0 (new 09-28) → t.me/shithouseryhq
 - **What:** broadcast channel; muting is common, unfollowing less so → higher volume tolerated. Postiz integration `cmulfu6480bvirt0ytmwmg3j7` — add it to every gated Postiz post (zero extra effort).
-- **Cadence:** 4–8/day (every gated post). Monetization: Telegram shares 50% of ad revenue (Toncoin) with public channels ≥1,000 subscribers; Stars paid posts/subscriptions later.
+- **Cadence (upgraded 09-28 21:00, Alex: "10 a day like Troll Football"):** 10–15/day = every gated Postiz post + the hourly Threads screenshot singles (10:00–23:00) cross-posted + match-night moments. Broadcast channels tolerate volume (mute ≠ leave); judge by views/post and leaves/day in the channel stats, cut back if leaves > joins. Monetization: Telegram shares 50% of ad revenue (Toncoin) with public channels ≥1,000 subscribers; Stars paid posts/subscriptions later.
 - **Owner:** Claude (Postiz).
 
 ## Snapchat: 0 (new 09-28) → shithouseryhq public profile
@@ -89,8 +89,11 @@ The PM (07:45) grades every platform against its OWN targets below each morning.
 - **Cadence:** every gated reel → Spotlight + Public Story (3–6/day, more on match days). Snap every day (monetization needs 25+ posts/month on 10 of 28 days).
 - **Monetization bar:** 50K followers + 25 posts/month + 10/28 active days + view-time thresholds. Levers: volume of gated reels, Spotlight hits, Snapcode/link in our other bios.
 - **Owner:** Claude (OneUp — web uploader is blocked by the US-locked business org).
+- **ONEUP FULL-USE WEEK (Alex 09-28 21:20: "use oneup to its fullest, we only have it for 7 days"; trial ends ~5 Oct):** (1) EVERY gated reel from any platform also goes to Snapchat Spotlight+Story via OneUp the same day; (2) every gated IMAGE post (X banger card, maths card, carousel slide 1) also goes to the Snapchat Public Story as a photo (Stories take images; Spotlight needs video); (3) back catalogue re-edits: 684 card Tue 12:00, Goldbridge Tue 18:00, Pep/Manuel Wed 18:00 are scheduled; (4) record Spotlight views per Snap daily so on ~4 Oct we can decide keep ($25/mo) vs drop on real numbers. Critic 09-28: raw back catalogue failed 8/8; only re-edited clips pass, so volume must come from new daily reels.
 - **SPRINT 29 Sep–5 Oct (Alex: "50K in a week, life or death"; honest expectation 2–10K, 50K needs a mega-viral Spotlight):** 5–8 Spotlights/day via OneUp (every gated reel + cleaned back catalogue: FB bees 44K, Goldbridge donation 42K, maths reel 42K first; no foreign logos; subtitles when audio carries the joke); daily Story; match reel ≤1 h after FT; cross-promo = Snapchat link/Snapcode in IG/Threads/X/TikTok bios (Alex OK needed) + one jokey "we're on Snapchat" post per platform; day 3–4 Promote Your Profile test kr 50/day × 3 days (cost/follower); PM reads Spotlight views every morning.
 
+
+**Cross-promo links (09-28 21:50, Alex OK):** X bio = Snapchat + t.me/shithouseryhq + balliq.app/wa (clickable); Threads links = balliq.app/t, App Store, Play Store, Telegram, WhatsApp Channel (5/5, Snapchat in bio text — Threads rejects snapchat.com). Instagram: Alex adds Telegram + balliq.app/wa as extra links in the IG app (web edits blocked). Measure: Telegram subs (2 at 21:30) and WhatsApp followers (0 at 21:30) daily.
 
 ## Daily scorecard (the PM ticks it)
 | platform | posts | replies | hit-shots | target net | owner |

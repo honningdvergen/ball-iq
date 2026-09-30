@@ -31,6 +31,8 @@ Write 3 candidates in 2+ different families, pick the best, and write down WHY a
 - **IG/FB reels**: `social/recaption.mjs` white plate, one line naming a concrete consequence, clip ACTS OUT the line, 6–18 s, keep iconic audio. FB: funny with zero football knowledge wins.
 - **TikTok**: 6–8 s, native-style text, sound is part of the joke (silent copy + sound name for Alex if needed).
 - **YT Shorts**: "[H] x y [A] | Highlights" meme ≤3 h after FT or "[Club] fans …" title; first frame = the thumbnail.
+- **Hashtags (rules review 09-29):** none on X/Threads. IG/TikTok/YT Shorts/Snapchat: up to 3 topic tags are allowed (no measured effect either way — don't spend time on them). Club/player NAMES belong in the caption text (IG search reads keywords).
+- **Caption sameness:** no 😭 suffix on more than 1 of every 3 posts; vary the "[Fanbase] fans …" template (79% of TikTok captions since 09-20 used it). A recurring named series beats a new template every day.
 - **Captions**: one line + at most 1–2 short sentences. Never a numbered slide list. Never reuse a caption question within 7 days.
 
 ## 3. Ragebait — allowed, with a floor
@@ -38,6 +40,11 @@ Allowed: contested football opinions, mocking a fanbase's behaviour, sarcasm ("t
 
 ## 4. Live-match mode
 Matchwatch (`node social/matchwatch.mjs <ESPN ids>`) wakes you on goal/red/pen/HT/FT → open the kit's scenario lines → pick the photo that's circulating (face mid-reaction) → 1 X post ≤5 min → FT: stat-sheet roast ≤10 min, then the reel and the Highlights Short. Before posting, search X for the same joke in the last hour (`<keywords> within_time:1h`); if it's already out, change the angle.
+
+Also log any shithousery moment to `social/state/sotw/<ISO-week>.md` for the weekly award (social/state/series_shithouse_of_the_week.md).
+
+## 4b. Hit conversion (rules review 09-29, KEEP + ENFORCE)
+Views don't convert (0.4–4 follows per 10K views). Any post >5× its platform median → within 60 minutes: pin it (or self-reply a one-line reason to follow), put a matching line in the bio, and log it in social/state/board.md. Every IG carousel ends on a follow CTA slide. Judge posts on follows per 10K views, not views.
 
 ## 5. Hand-off (mandatory)
 `node social/review.mjs draft --platform <p> --format <family> [--platforms a,b] --text-file cap.txt --media <file> --story "<what + when it broke>" --broke HH:MM` → LOOK at the mock-up → banger-critic → only PASS drafts are queued, with the exact reviewed text. Postiz and Metricool posts log themselves to social/state/posts_log.jsonl; Chrome posts: `node social/postlog.mjs add --platform x --via chrome --url … --text "…"`.

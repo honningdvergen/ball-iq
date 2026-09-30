@@ -1,0 +1,10 @@
+# Full-time carousel playbook (tonight; reusable) — IG post-match carousel ≤25 min after the whistle, FB slideshow ≤30 min later
+Bottleneck now = finding the funniest real tweets fast, because we no longer scrape x.com. So: **Alex sends 2–3 tweet links (share → copy link) of the best takes at FT** (he's on the timeline anyway); I fetch each via the public syndication JSON (dl step) and build.
+## Slide order (own-first; ONE own maths card; never all-our-name)
+1. HERO (ig_hero_format_study.md §spec): ONE hot-take/attack tweet ≤25 words on a mega name, over a full-bleed FACE photo whose expression/trophy contradicts or confirms it. `node social/overlay.mjs --tweet <syndication.json> --bg <photo> --out 01.png` (photo pool: /private/tmp/tt/hero_pool, index in social/state/media/hero_pool_INDEX.md; England: Kane #4/#1, Bellingham #1, Saka #1/#5, Tuchel #1–3, Pickford #2, Rice #3; Croatia/Spain: Modrić #3/#4, Gvardiol #1, Yamal #4/#5/#2, Rodri #3 (trophy), Pedri #3, De la Fuente #3/#4).
+2–3. Two more real tweets as slides (carousel.mjs, `take` ≤90 chars leads each slide).
+4. ONE own maths/receipt card from the match numbers (owncard.mjs / cards.mjs) — verified numbers only.
+5. CTA: prebuilt /private/tmp/tt/ft0929/cta_bellingham.png ("Jude Bellingham cost €103m. Following us costs nothing." — [VERIFY fee before use]) or a new one with `node social/state/media/own/cta.mjs <photo> "<line>" out.png 80 -2`.
+## Gates (in order)
+fact-check every number/line (social-fact-checker) → `node social/review.mjs draft --platform instagram --platforms instagram,facebook --format own-first-carousel --text "<caption>" --media 01.png,…` → banger-critic PASS ≥7 + stale-news test → post to IG via Metricool (POST, carousel; Alex adds audio by editing) → FB reel: `node social/carousel2fb.mjs --caption cap.txt 01.png … ` → critic → upload → Metricool FB REEL. Threads: hero slide as an image post (≤2/h, before 22:00 unless live). Log everything.
+## Timing target: FT+0–10 min tweets in; +10–20 build/gates; ≤ +25 posted.

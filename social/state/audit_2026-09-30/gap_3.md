@@ -1,0 +1,38 @@
+# GAP 3: Alex-time budget (2026-09-30 ~12:00 Oslo). Read-only; estimates are labelled, measurements are sourced.
+
+## 1. The instrument that did not exist (B7): built from the transcript
+Script: audit_2026-09-30/alex_time_proxy.py on session 71fad5c5...jsonl (647 human messages, 09-20 10:41 to 09-30 11:21 Oslo).
+Chat-active minutes/day (1 min per message + gaps <=5 min): 09-21..29 mean 126, median 109; range 34 (09-22) to 195 (09-28). Gap<=10 min: mean 212. 
+Messages/day 22-110 (mean ~61). 99 of 647 messages (15%) land 23:00-07:00 Oslo. 
+Caveat: this is presence in chat, not effort, and includes time Alex waits on Claude. It excludes phone work (X hand-posts, TikTok native, IG app). It is a lower bound on supervision and the only measured one. Track it daily; target chat-active <=40 min/day, messages <=15/day.
+
+## 2. What the current plan asks of Alex (A_GRADE_PLAN.md lines 10-14, 21-26; tiktok_native_test_brief.md)
+Hand actions/day: X 4-6 originals (8-10 match nights) + 20 hand replies + 1 TikTok native = 25-27 (matches XTSTG-11 "26+"). Plus metric pastes 12:00/18:00/22:55, weekly IG collab, IG-app native-audio reels (reels <=2/day).
+Minute costs are ESTIMATES (nothing logged them): X post 3 min, reply 1 min, TikTok native 15, metric paste 2 each, native-audio IG reel 5 each.
+ X originals 12-18 + replies 20 + TikTok 15 + pastes 6 + native reels ~10 = ~63-69 min/day (match night +15-18) vs 20 budget = 3.2x. Excludes the 126 chat min above.
+Completion evidence: 11 match-night X lines sent 20:49-22:28 on 09-29, no reply before 22:20, only in-game X post came via Postiz +32 min (x_tt_snap_tg_rerun); Alex said he cannot do 4-6/day; ledger cannot count hand-posts (unlogged). Migration cost anchor (measured): Telegram bot setup ~11 Alex messages in 19 min, ~20 min (ops.md).
+Return per Alex-minute is weak where measured: X ordinary posts ~1K views even at +4-5 min (XTSTG-03 HOLDS, 89% of 5.3M impressions from 11 posts); IG reels earn $0 (Alex fact 1) and sit at 0.064x follower reach; Snapchat = 2 followers, 293 views/28d, 0 follows (Alex fact 6).
+
+## 3. Does not fit in 20 min/day (cut or default-off)
+- X 4-6 hand-posts/day and 20 hand replies/day (~32-38 min): cut. X kept only on mega-story days, <=3 drafts, <=9 min, ~2-3 days/week.
+- TikTok native 1/day (~15 min): cut to nothing daily; keep the mirror. Native test (needs Alex) only if A2 says yes, re-scoped to 4 posts.
+- IG-app native-audio reels (~10 min/day): cut. IG pays on posts/carousels only, ~$30 per 1M qualified views; reels pay $0.
+- Snapchat screenshots/Spotlights: already known (2 followers); do not ask again. Default cancel OneUp before ~10-05 renewal (~$25).
+- Metric pastes 3/day: replaced by one weekly session.
+- WhatsApp: parked (Alex).
+- B6 sponsor outreach (~10 min per application, 15 listed = ~150 min): does not fit as a daily item. Only one 30-min block fits (3 pitches). Push-back: outreach doc says "no public record of any brand paying a football meme account"; IG website taps were 3 in 30 days on 8.0M views, so affiliate links earn ~$0; only a direct post sponsor (rate card $75-450) could pay, and $150-250 is 2-3 months of IG income, hence one capped test, not a workstream.
+
+## 4. The six actions (ceiling 5-7). Every one has owner, minutes, trigger, pass/fail.
+1. Commitments ledger on the launchd watcher. Owner Claude. Alex 1 min (confirm phone ping). Trigger: com.shq.watch runs every 600 s (verified: heartbeat 11:45 Oslo, launchd loaded, independent of sessions). Build by 15:00 today: social/state/commitments.json {id,text,due,owner,evidence_cmd}; watch.mjs pings Alex's phone (existing Telegram bot, DM not channel) when a due item has no evidence; ban CronCreate for promises (5 session crons, none demonstrably fired: 07:21, 08:02, 20:38; the 23:40 check ran 00:03 by accident). Pass: a dummy item due 15:10 produces a phone ping by 15:20 with no Claude session doing it. Fail: no ping -> nothing else in this list counts as scheduled. Caveat: launchd does not run while the Mac sleeps; watcher must flag heartbeat gaps. Also today: every one of the 13 open commitments (saydo_v2 s7) not in the ledger by 18:00 is declared dropped in one line to Alex.
+2. One decision message, default-on-silence. Owner Alex, 3 min, once, sent 13:00 today, defaults apply 18:00 today if silent. Items: (a) X hand-work cut to hit-days only (default yes); (b) drop IG-app native reels and daily TikTok native (default yes); (c) OneUp default cancel by 10-03 (default yes; Alex does the cancel, ~3 min, Claude cannot); (d) E3 caption-arm test (needs approval; default NO, since it overrides his caption rules and 60-120 word captions risk the slide-listing ban). Pass: PLAN.md carries a time ledger summing to <=20 min/day steady state, PM grades against it. Fail: any Alex-only item without an entry in that ledger.
+3. Hit-day trigger plus X batch. Owner Claude builds, Alex posts. Alex <=9 min per hit day, ~4 min/day averaged. Trigger: breaking.mjs on launchd every 10 min (today it is not running and its scorer rates real verdict headlines 1-3 vs threshold 6; S1/S3: story broke 17:51-18:09, team clock said 21:30). Build+calibrate against the 09-29 verdict headline by Thu 10-01 18:00. On a hit: pre-critic'd file of <=3 X drafts to chat within 15 min, phone ping. Pass: replay of the City verdict fires a ping <=10 min after first headline in a dry run; live: draft file <=15 min after ping. Fail: the dry run misses -> X stays Postiz-mirror only.
+4. Numbers session. Owner Alex. Thu 10-01 12:00: 10 min (X Analytics top 10 for 7 d + followers, TikTok analytics 7 d). Then Fridays 12:00: 5 min (IG Bonus screen + X Analytics). Nothing for Snapchat (known). X payout read 10-09 = 2 min inside the Friday slot after that date. Trigger: ledger ping at 12:00. Pass: screenshots in chat by 14:00 same day; Claude writes the read within 30 min. Fail: none by 14:00 -> item logged UNREAD, defaults apply (Snap drop, X judged on impressions only), no chasing.
+5. Sponsor block. Owner Alex, 30 min once, Sun 10-04 (weekend, outside the 20-min weekday budget). Claude pre-writes 3 pitches (Huel/Club Huel, OddBalls, Fantasy Football Hub from outreach/brands_2026-09-23.md) into one file by Sat 10-03 18:00. Trigger: ledger ping Sun 10-04 11:00. Pass: 3 sent, Alex replies "sent". Fail: not sent by 10-05 -> B6 closed, not carried forward.
+6. IG carousel lane health. Owner Claude, 0 Alex min. IG carousels are the only IG money (~$81/month, ~$0.03 per 1K qualified views) and Metricool is BLOCKED (scheduler_status.json, since 09-29 21:27Z); no new paid plans, so route via existing Postiz ($39). Trigger: watch.mjs already checks scheduled vs published each 10 min. Pass: one real IG carousel published via the chosen route by 18:00 today, verified by verify.mjs platform read (not "scheduled"). Fail: not verified by 18:00 -> ledger pings Alex and IG carousels go out by Alex's IG app that day.
+
+## 5. Alex-minute budget after the plan
+Today (09-30): 1 + 3 = 4 min. Thu 10-01: +10. Sun 10-04: +30. Steady state: hit-day X ~4/day avg + weekly numbers ~1/day + decision replies/approvals reserve 10 = ~15 min/day. Fits 20 with ~5 spare.
+The 20 min holds only if supervision chat falls from ~126 to <=40 chat-active min/day. If it does not by 10-07, the plan has failed regardless of platform results. Check: alex_time_proxy.py weekly Friday, run by the ledger, not by memory.
+
+## 6. Rejected as "check later" (no trigger)
+"PM grades daily", "floor manager hourly" (hung since 22:18, SD2), "trend sweep 08:30/18:30", session crons f1f078de (13:07) and all CronCreate promises, "read results at +24 h" without a ledger entry. Either become ledger entries with a due time and evidence command or are dropped.
