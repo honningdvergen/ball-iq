@@ -108,7 +108,16 @@
     'transition:background .15s ease,border-color .15s ease}',
     '#biq-consent button:hover{background:#2A2A2A;border-color:#4A4A4A}',
     '#biq-consent button:focus-visible{outline:2px solid #58CC02;outline-offset:2px}',
-    '@media (max-width:520px){#biq-consent .biq-c-btns{flex:1 1 100%}',
+    /* ⚠️ COMPACT ON PHONES (Alex, 2026-10-02). At 393px the bar was 172px — a
+       quarter of Instagram's ~700px webview — and since 09-23 it arrives at the
+       END of a Footle game, i.e. over the result and the Share button. Only
+       the air goes: padding 16/20 -> 10/16, gap 14 -> 8, text 13/1.55 ->
+       12.5/1.4. The WORDING is untouched (it is the disclosure) and so are the
+       buttons: still equal weight, still 44px tall, Decline still first. */
+    '@media (max-width:520px){#biq-consent{gap:8px;',
+    'padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}',
+    '#biq-consent .biq-c-txt{flex-basis:100%;font-size:12.5px;line-height:1.4}',
+    '#biq-consent .biq-c-btns{flex:1 1 100%}',
     '#biq-consent button{flex:1}}',
     '@media (prefers-reduced-motion:reduce){#biq-consent{transition:none}}',
   ].join('');
