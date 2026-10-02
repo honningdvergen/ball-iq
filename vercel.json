@@ -61,6 +61,26 @@
       "permanent": false
     },
     {
+      "source": "/igs",
+      "destination": "/footle?utm_source=instagram_story",
+      "permanent": false
+    },
+    {
+      "source": "/tgf",
+      "destination": "/footle?utm_source=telegram",
+      "permanent": false
+    },
+    {
+      "source": "/d7",
+      "destination": "/play?game=daily&utm_source=telegram",
+      "permanent": false
+    },
+    {
+      "source": "/d7s",
+      "destination": "/play?game=daily&utm_source=instagram_story",
+      "permanent": false
+    },
+    {
       "source": "/privacy",
       "destination": "/privacy.html",
       "permanent": true
