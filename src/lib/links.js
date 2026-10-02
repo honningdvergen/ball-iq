@@ -35,7 +35,7 @@ export function appStoreUrl({ campaign = true } = {}) {
 // The provider token is Alex's App Store Connect provider id (Analytics →
 // Campaigns → "Generate a campaign link" shows it as pt=). Empty = no
 // campaign params, i.e. exactly the old link.
-export const APP_STORE_PROVIDER_TOKEN = "";
+export const APP_STORE_PROVIDER_TOKEN = "128975980";
 function appStoreCampaign() {
   if (!APP_STORE_PROVIDER_TOKEN) return '';
   const ct = storeSource();
