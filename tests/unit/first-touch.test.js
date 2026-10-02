@@ -57,9 +57,10 @@ describe("first-touch attribution", () => {
     );
   });
 
-  it("leaves the App Store link untouched until a provider token exists", () => {
+  it("tags the App Store link with the campaign token and first-touch source, and only then", () => {
+    expect(appStoreUrl()).not.toContain("?");
     captureFirstTouch(loc("https://balliq.app/footle?utm_source=threads"), "");
-    expect(appStoreUrl()).not.toContain("ct=");
+    expect(appStoreUrl()).toMatch(/\?pt=\d+&ct=threads&mt=8$/);
     expect(appStoreUrl({ campaign: false })).not.toContain("?");
   });
 
