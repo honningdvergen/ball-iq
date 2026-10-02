@@ -87,6 +87,7 @@ export const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
           <li style={privacyLi}><strong>Game results</strong> — Daily 7 scores, Footle history, total games played, total XP, best streaks, and the questions you got wrong (for the review screen).</li>
           <li style={privacyLi}><strong>Friendships</strong> — friend requests sent + accepted, so your friends list works across devices.</li>
           <li style={privacyLi}><strong>Onboarded flag</strong> — a single timestamp so we don't replay onboarding on every device.</li>
+          <li style={privacyLi}><strong>Where you first found us</strong> — if you create your account on the website, we keep the campaign tag and referring site of your first visit (for example <code>utm_source=instagram</code> or <code>google.com</code>) and the page you landed on, so we can tell which channels bring players. Only the site’s name, never the full address you came from. It is not visible to anyone, including you, and accounts created in the app don’t have it.</li>
         </ul>
         <p style={privacyP}>That's the full list. We do not collect your real name, location, device fingerprint, or any contact list. We never sell or share this data with third parties for marketing.</p>
 

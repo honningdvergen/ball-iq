@@ -18,7 +18,7 @@ const PAGES = [
 const PROMISES_BROWSER = /browser|nothing to install|no download|play here/i;
 
 // Hrefs that leave for a store, directly or via the redirect.
-const GOES_TO_STORE = /GET_APP|['"]\/get['"]|apps\.apple\.com|play\.google\.com|appStoreUrl|PLAY_STORE_URL/;
+const GOES_TO_STORE = /GET_APP|['"]\/get['"]|apps\.apple\.com|play\.google\.com|appStoreUrl|PLAY_STORE_URL|playStoreUrl/;
 
 describe("a CTA that promises the browser must not send phones to a store", () => {
   for (const file of PAGES) {

@@ -7,6 +7,7 @@ import { Browser } from '@capacitor/browser'
 import { App as CapApp } from '@capacitor/app'
 import { SignInWithApple } from '@capacitor-community/apple-sign-in'
 import { supabase, readStoredSession } from './supabase.js'
+import { recordSignupAttribution } from './lib/firstTouch.js'
 import { safeSetItem } from './safeStorage.js'
 import { perfMark } from './lib/perf.js'
 import { isProfaneUsername } from './lib/profanity.js'
@@ -258,6 +259,9 @@ export function AuthProvider({ children }) {
               const isFreshAccount = createdAtMs > 0 && (Date.now() - createdAtMs) < 120000
               const explicitSignup = localStorage.getItem('biq_signup_pending_clear') === '1'
               const isNewSignup = explicitSignup || isFreshAccount
+              // First-touch source for the new account (web only, insert-once).
+              // Fire-and-forget: attribution must never block or break sign-in.
+              if (isNewSignup) recordSignupAttribution(supabase, session.user.id)
               if (!isNewSignup) {
                 // Preserve a few keys across the existing-account wipe:
                 //   • biq_pending_join — an invite-link guest still lands in

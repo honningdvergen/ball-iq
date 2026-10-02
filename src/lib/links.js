@@ -1,6 +1,7 @@
 // Store links — single source of truth for every store CTA in src/.
 // (Static HTML — index.html and scripts/gen-seo-pages.mjs — can't import
 // this module and keeps its own copies; keep those in sync by hand.)
+import { storeSource } from './firstTouch.js';
 
 // Apple App Store numeric ID (App Store Connect → App Information → Apple ID).
 // Drives the About "Rate" + "Share" deep links.
@@ -18,13 +19,28 @@ export const APP_STORE_ID = "6775975961";
 // Now resolved per visitor. Falls back to /us/ when the region is unreadable,
 // which is the old behaviour, so this can only improve on what was there.
 const APPLE_STOREFRONTS = new Set(['us','gb','no','de','es','fr','it','br','tr','id','nl','se','dk','fi','ie','pt','pl','ca','au','mx','ar','in','za','be','at','ch','cz','gr','hu','ro','sa','ae']);
-export function appStoreUrl() {
+export function appStoreUrl({ campaign = true } = {}) {
   let cc = 'us';
   try {
     const region = (new Intl.Locale(navigator.language).region || '').toLowerCase();
     if (APPLE_STOREFRONTS.has(region)) cc = region;
   } catch { /* older engines, or no navigator — keep us */ }
-  return `https://apps.apple.com/${cc}/app/id${APP_STORE_ID}`;
+  return `https://apps.apple.com/${cc}/app/id${APP_STORE_ID}${campaign ? appStoreCampaign() : ''}`;
+}
+// App Store Connect campaign link: ?pt=<provider token>&ct=<campaign>&mt=8
+// makes App Store Connect → Analytics → Acquisition → Campaigns count
+// impressions and downloads per channel. ct is the visitor's first-touch
+// source (instagram, threads, x, google.com…), so "which platform sends
+// installs" becomes readable without any SDK in the app.
+// The provider token is Alex's App Store Connect provider id (Analytics →
+// Campaigns → "Generate a campaign link" shows it as pt=). Empty = no
+// campaign params, i.e. exactly the old link.
+export const APP_STORE_PROVIDER_TOKEN = "";
+function appStoreCampaign() {
+  if (!APP_STORE_PROVIDER_TOKEN) return '';
+  const ct = storeSource();
+  if (!ct) return '';
+  return `?pt=${APP_STORE_PROVIDER_TOKEN}&ct=${encodeURIComponent(ct)}&mt=8`;
 }
 // Kept for module-scope consumers that cannot call a function (JSON-LD,
 // structured data, anything evaluated once at import time).
@@ -42,3 +58,13 @@ export const APP_STORE_URL = `https://apps.apple.com/app/id${APP_STORE_ID}`;
 // Play package id is app.balliq (build.gradle applicationId) — NOT com.balliq.app;
 // the reversed form 404s. Listing goes live when the closed test graduates.
 export const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=app.balliq";
+// Visitor-facing Play link carrying the first-touch source as an install
+// referrer. Play Console → Statistics / User acquisition reads utm_source and
+// utm_medium from it, so installs split per channel. Rate/review links keep
+// the bare PLAY_STORE_URL (an existing player, not an acquisition).
+export function playStoreUrl() {
+  const src = storeSource();
+  if (!src) return PLAY_STORE_URL;
+  const ref = `utm_source=${encodeURIComponent(src)}&utm_medium=web`;
+  return `${PLAY_STORE_URL}&referrer=${encodeURIComponent(ref)}`;
+}
