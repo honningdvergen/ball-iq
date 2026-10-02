@@ -226,3 +226,12 @@ the name or inline a header first.
 Verified before scheduling: header_has_auth = true, bearer_wellformed = true,
 and two test sends (test_to, no ledger write) returned Resend 200 for both
 creatives.
+
+## 20260805230000_signup_attribution — APPLIED 2026-10-02 (Alex: yes to the funnel tracking)
+Written 2026-08-05 and committed 2026-09-23, but never applied: prod had no
+`signup_attribution` table until today. Applied verbatim via the Supabase MCP
+connector. Verified after: anon holds no grants; authenticated holds INSERT
+only; RLS on with the single insert-own-row policy. The client writer
+(src/lib/firstTouch.js, called from useAuth on a new web signup) ships in the
+same PR as this note. Read it as postgres/service_role over SQL; there is
+deliberately no select policy.

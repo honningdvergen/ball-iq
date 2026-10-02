@@ -72,6 +72,7 @@ import { PlatformStoreBadge } from './components/StoreBadge.jsx';
 import { getFootleXP } from './lib/footleXp.js';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 import { APP_STORE_ID, APP_STORE_URL, PLAY_STORE_URL, appStoreUrl } from './lib/links.js';
+import { captureFirstTouch } from './lib/firstTouch.js';
 import { MultiplayerCard } from './components/MultiplayerCard.jsx';
 import { UsernameSetupModal } from './components/UsernameSetupModal.jsx';
 // Sprint #88 DDD2: ProfileScreen module (~72 kB raw / ~18 kB gzip) is too heavy
@@ -6568,6 +6569,9 @@ function AppInner() {
   useEffect(() => {
     if (seoLaunchRef.current) return;
     seoLaunchRef.current = true;
+    // First-touch store (lib/firstTouch.js): kept for signup attribution and
+    // for tagging store links. No-op on native and after the first visit.
+    captureFirstTouch();
     // utm-landing — the only place a social short link's tag is recorded.
     // Until 2026-10-02 /t /ig /tt /x /yt /bs and every story sticker carried
     // utm_source all the way into the URL and nothing wrote it down, so "does
@@ -8679,7 +8683,7 @@ function AppInner() {
                     // NOT delete 'Macintosh' outright; real iPads send that UA.
                     if (isIOSUA()) {
                       loopEvent("rate-store-tap", { store: "apple" });
-                      window.open(`${appStoreUrl()}?action=write-review`, "_blank");
+                      window.open(`${appStoreUrl({ campaign: false })}?action=write-review`, "_blank");
                     } else if (isAndroidUA()) {
                       loopEvent("rate-store-tap", { store: "play" });
                       window.open(PLAY_STORE_URL, "_blank");

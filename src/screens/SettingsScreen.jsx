@@ -67,7 +67,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       return;
     }
     if (!APP_STORE_ID) { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Store rating opens once we’re live 🙌' })); return; }
-    try { window.open(`${appStoreUrl()}?action=write-review`, '_blank'); } catch {}
+    try { window.open(`${appStoreUrl({ campaign: false })}?action=write-review`, '_blank'); } catch {}
   };
   // Sprint #71 MM1: replace native confirm() for Sign Out with an in-app
   // modal matching the existing Reset-stats / Delete-account design. Native

@@ -16,7 +16,7 @@ import { QB_TAG_COUNTS } from "../questions-index-meta.js";
 import { getFootleNumber } from "../lib/footleNumber.js";
 import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
-import { PLAY_STORE_URL, appStoreUrl } from "../lib/links.js";
+import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
 
 // ── CLUB FINDER (front door, 2026-09-03) ─────────────────────────────────────
@@ -790,7 +790,7 @@ function HomeScreenImpl({
               <span className="hab-store-nm">App Store</span>
             </span>
           </a>
-          <a className="hab-store" href={PLAY_STORE_URL} target="_blank" rel="noopener" aria-label="Get it on Google Play">
+          <a className="hab-store" href={playStoreUrl()} target="_blank" rel="noopener" aria-label="Get it on Google Play">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
               <path fill="currentColor" d="M4 3.5 20 12 4 20.5z" />
             </svg>

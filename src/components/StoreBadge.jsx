@@ -8,7 +8,7 @@
 // the site stylesheet's .store-badge rules are not loaded.
 import React from 'react';
 import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../lib/storeGlyphs.js';
-import { PLAY_STORE_URL, appStoreUrl } from '../lib/links.js';
+import { playStoreUrl, appStoreUrl } from '../lib/links.js';
 
 const UA = () => (typeof navigator !== 'undefined' && navigator.userAgent) || '';
 export const isAndroidUA = () => /Android/i.test(UA()) && !/Windows Phone/i.test(UA());
@@ -32,7 +32,7 @@ export function StoreBadge({ store, href, onClick, style, className }) {
   return (
     <a
       className={className}
-      href={href || (android ? PLAY_STORE_URL : appStoreUrl())}
+      href={href || (android ? playStoreUrl() : appStoreUrl())}
       rel="noopener noreferrer"
       target="_blank"
       onClick={onClick}
