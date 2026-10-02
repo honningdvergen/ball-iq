@@ -71,6 +71,16 @@
       "permanent": false
     },
     {
+      "source": "/trt",
+      "destination": "/transfer-trail/?utm_source=telegram",
+      "permanent": false
+    },
+    {
+      "source": "/trs",
+      "destination": "/transfer-trail/?utm_source=instagram_story",
+      "permanent": false
+    },
+    {
       "source": "/d7",
       "destination": "/play?game=daily&utm_source=telegram",
       "permanent": false
