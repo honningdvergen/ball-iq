@@ -51,6 +51,11 @@
       "permanent": false
     },
     {
+      "source": "/tg",
+      "destination": "https://t.me/shithouseryhq",
+      "permanent": false
+    },
+    {
       "source": "/yt",
       "destination": "/footle?utm_source=youtube",
       "permanent": false

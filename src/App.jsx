@@ -6568,6 +6568,28 @@ function AppInner() {
   useEffect(() => {
     if (seoLaunchRef.current) return;
     seoLaunchRef.current = true;
+    // utm-landing — the only place a social short link's tag is recorded.
+    // Until 2026-10-02 /t /ig /tt /x /yt /bs and every story sticker carried
+    // utm_source all the way into the URL and nothing wrote it down, so "does
+    // social send anyone?" had no answer (audit_2026-09-30/business.md §1.1).
+    // One row per tagged landing; join to first-game-played on visitor_id to
+    // read "tapped, then actually played". Values are clipped to a short
+    // slug charset so a hand-edited URL cannot stuff free text into meta.
+    try {
+      const up = new URLSearchParams(window.location.search);
+      const clean = (v) => (v || "").toLowerCase().replace(/[^a-z0-9_.-]/g, "").slice(0, 40);
+      const src = clean(up.get("utm_source"));
+      if (src) {
+        const meta = { utm_source: src, path: (window.location.pathname || "").toLowerCase().slice(0, 40) };
+        const content = clean(up.get("utm_content"));
+        const medium = clean(up.get("utm_medium"));
+        const campaign = clean(up.get("utm_campaign"));
+        if (content) meta.utm_content = content;
+        if (medium) meta.utm_medium = medium;
+        if (campaign) meta.utm_campaign = campaign;
+        loopEvent("utm-landing", meta);
+      }
+    } catch {}
     try {
       // Short share alias: balliq.app/footle → today's puzzle. Share texts use
       // this path because it linkifies reliably even scheme-less in WhatsApp /
