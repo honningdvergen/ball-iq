@@ -5563,6 +5563,12 @@ const MORE_META = {
   // PRE-2022 crest — with evidence that was Club América's site tokens, so it was
   // discarded. Very dark, like Juventus and Corinthians; kept true, not lightened.
   'cruz-azul': { code: 'CAZ', color: '#212452', name: 'Cruz Azul' },
+  // Pumas, Monterrey, Tigres (2026-10-04). Monterrey's navy is the one already in
+  // src/lib/clubColour.js; Pumas' crest navy #132347 and Tigres' crest gold #FBAF35
+  // agree across two independent crest palettes (footylogos, colorcodeguide).
+  'pumas-unam': { code: 'PUM', color: '#132347', name: 'Pumas UNAM' },
+  'monterrey': { code: 'MTY', color: '#0B2341', name: 'Monterrey' },
+  'tigres-uanl': { code: 'TIG', color: '#FBAF35', name: 'Tigres UANL' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {

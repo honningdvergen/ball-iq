@@ -45,6 +45,9 @@ const META = {
   'club-america':  { register: 'mx', club: 'Club América',  name: 'Club América',  of: 'del América' },
   chivas:          { register: 'mx', club: 'Guadalajara',   name: 'Chivas',        of: 'de Chivas' },
   'cruz-azul':     { register: 'mx', club: 'Cruz Azul',     name: 'Cruz Azul',     of: 'del Cruz Azul' },
+  'pumas-unam':    { register: 'mx', club: 'Pumas UNAM',    name: 'Pumas UNAM',    of: 'de Pumas' },
+  monterrey:       { register: 'mx', club: 'Monterrey',     name: 'Monterrey',     of: 'del Monterrey' },
+  'tigres-uanl':   { register: 'mx', club: 'Tigres UANL',   name: 'Tigres UANL',   of: 'de Tigres' },
 };
 
 // ⚠️ A FORBIDDEN FORM MUST BE A TELL, NOT A WORD. The first version of this list

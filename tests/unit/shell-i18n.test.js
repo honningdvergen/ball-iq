@@ -198,7 +198,7 @@ describe('a club can override its layer\'s register for the door', () => {
     const ph = (s) => (String(s).match(/\{[a-z]+\}/g) || []).sort();
     const problems = [];
     const sets = [...CLUBS_PT, ...CLUBS_ES].filter((c) => c.i18n);
-    expect(sets.length).toBe(11); // 3 European pt + 5 Rioplatense + 3 Mexican
+    expect(sets.length).toBe(14); // 3 European pt + 5 Rioplatense + 6 Mexican
     for (const c of sets) {
       const br = BQ_I18N[c.lang];
       for (const [k, v] of Object.entries(c.i18n)) {
@@ -219,7 +219,7 @@ describe('a club can override its layer\'s register for the door', () => {
   });
 
   // ⚠️ THE /es/ LAYER HOLDS THREE REGISTERS AND THE SHARED TABLE IS PENINSULAR.
-  // The eight Spanish clubs take it as-is; the five Argentine and three Mexican
+  // The eight Spanish clubs take it as-is; the five Argentine and six Mexican
   // ones override. A club landing in the wrong group reads as another country's
   // Spanish, which is the whole defect this guards.
   it('the es clubs carry the register their prose is written in', async () => {
@@ -228,7 +228,7 @@ describe('a club can override its layer\'s register for the door', () => {
     const by = { 'es-ES': [], ar: [], mx: [] };
     for (const c of CLUBS_ES) by[group(c)].push(c.slug);
     expect(by.ar.sort()).toEqual(['boca-juniors', 'independiente', 'racing-club', 'river-plate', 'san-lorenzo']);
-    expect(by.mx.sort()).toEqual(['chivas', 'club-america', 'cruz-azul']);
+    expect(by.mx.sort()).toEqual(['chivas', 'club-america', 'cruz-azul', 'monterrey', 'pumas-unam', 'tigres-uanl']);
     expect(by['es-ES'].length).toBe(8);
     // the markers each register is actually judged on
     const ar = CLUBS_ES.find((c) => c.slug === 'racing-club').i18n;

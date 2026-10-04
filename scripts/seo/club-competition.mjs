@@ -44,6 +44,8 @@ export const NO_ROSTER_COMPETITIONS = new Set([
   // the two clubs famously never relegated — and Cruz Azul every season since its
   // promotion in 1964. Promotion/relegation was also suspended from 2020. Still
   // re-check at the August audit like every other entry here.
+  // Pumas UNAM, Monterrey, Tigres UANL (2026-10-04): top flight every season since
+  // 1962, 1960 and 1997 respectively, under the same suspension.
   'Liga MX',
 ]);
 
@@ -53,6 +55,9 @@ export const CLUB_COMPETITION = {
   "Botafogo": "Brasileirão",
   "Vasco da Gama": "Brasileirão",
   "Atlético Mineiro": "Brasileirão",
+  "Tigres UANL": "Liga MX",
+  "Monterrey": "Liga MX",
+  "Pumas UNAM": "Liga MX",
   "Preston North End": "Championship",
   "Millwall": "Championship",
   "Cruz Azul": "Liga MX",

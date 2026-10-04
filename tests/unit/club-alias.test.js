@@ -42,6 +42,9 @@ describe('club alias map', () => {
       // Internacional's quiz, which is the Athletic Bilbao -> Athletico-PR
       // failure in club-competition.mjs. Nacional is genuinely uncovered.
       'Nacional',
+      // ≠ Tigres UANL. CA Tigre of Buenos Aires against Tigres of Nuevo León —
+      // surfaced 2026-10-04 when the Tigres page shipped. Tigre is uncovered.
+      'Tigre',
     ]);
 
     const unreviewed = suspectedMissingAliases(LEAGUES, paged).filter(
