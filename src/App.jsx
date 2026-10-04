@@ -4282,6 +4282,7 @@ class TabErrorBoundary extends React.Component {
     return { hasError: true };
   }
   componentDidCatch(error, info) {
+    if (window.__biqReloading) return; // stale chunk; main.jsx is reloading
     console.error(`[boundary:${this.props.name || "tab"}]`, error?.message || "Unknown error");
     // A crash the player SAW is the worst possible prelude to a rating ask.
     try { markBadReviewMoment(); } catch {}

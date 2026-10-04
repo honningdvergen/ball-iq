@@ -126,15 +126,22 @@ try {
     const RELOAD_FLAG = 'biq_chunk_reload'
     const isChunkError = (msg) =>
       /ChunkLoadError|Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(String(msg || ''))
-    const heal = (msg) => {
-      if (!isChunkError(msg)) return
+    const heal = (msg, isLoadFailure = false) => {
+      if (!isLoadFailure && !isChunkError(msg)) return
       try {
         if (sessionStorage.getItem(RELOAD_FLAG)) return // one auto-reload per session
         sessionStorage.setItem(RELOAD_FLAG, '1')
       } catch {}
+      // Boundaries read this to stay quiet while the page is going away.
+      window.__biqReloading = true
       window.location.reload()
     }
-    window.addEventListener('vite:preloadError', (e) => { try { e.preventDefault() } catch {} heal(e?.payload?.message || 'vite:preloadError') })
+    // ⚠️ NEVER preventDefault() here. Vite's preload helper treats a prevented
+    // event as "handled" and RESOLVES the failed import() with undefined, so
+    // React.lazy then crashes on `undefined.default` (BALL-IQ-4, 37 users) —
+    // and when the one-reload guard was already spent, that crash was all the
+    // player ever saw. Letting it throw gives the boundaries a real chunk error.
+    window.addEventListener('vite:preloadError', (e) => heal(e?.payload?.message, true))
     window.addEventListener('unhandledrejection', (e) => heal(e?.reason?.message || e?.reason))
   }
 } catch {}
