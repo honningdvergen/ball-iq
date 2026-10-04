@@ -123,12 +123,15 @@ const pr = cfg.prose;
 // a re-run appended a SECOND prose object for the same club — the blind-append
 // failure clubs.mjs is explicitly documented against, and the one that produces
 // array holes that crash iteration.
-edit('scripts/seo/clubs.mjs', `slug: ${q(slug)}`, (s) => s.replace(/(export const CLUBS = \[\n)/,
-  `$1  {\n    club: ${q(qbClub)}, slug: ${q(slug)}, name: ${q(name)},\n    h1: ${q(pr.h1)},\n    title: ${q(pr.title)},\n    description: ${q(pr.description)},\n    intro: [\n${pr.intro.map((p) => `      ${q(p)},`).join('\n')}\n    ],\n    faq: [\n${pr.faq.map((f) => `      { q: ${q(f.q)}, a: ${q(f.a)} },`).join('\n')}\n    ],\n  },\n`), 'clubs.mjs prose');
+// ⚠️ A FUNCTION REPLACER, NOT A STRING. With a replacement string, prose like
+// "a reported $10 million" is read as back-reference $1 followed by "0", and the
+// anchor line got spliced into the middle of Tigres' intro.
+edit('scripts/seo/clubs.mjs', `slug: ${q(slug)}`, (s) => s.replace(/(export const CLUBS = \[\n)/, (m0, open) =>
+  `${open}  {\n    club: ${q(qbClub)}, slug: ${q(slug)}, name: ${q(name)},\n    h1: ${q(pr.h1)},\n    title: ${q(pr.title)},\n    description: ${q(pr.description)},\n    intro: [\n${pr.intro.map((p) => `      ${q(p)},`).join('\n')}\n    ],\n    faq: [\n${pr.faq.map((f) => `      { q: ${q(f.q)}, a: ${q(f.a)} },`).join('\n')}\n    ],\n  },\n`), 'clubs.mjs prose');
 
 // ── 8: the competition column ────────────────────────────────────────────────
 edit('scripts/seo/club-competition.mjs', `${q(qbClub)}:`, (s) => s.replace(/(export const CLUB_COMPETITION = \{\n)/,
-  `$1  ${q(qbClub)}: ${q(cfg.competition)},\n`), 'club-competition');
+  (m0, open) => `${open}  ${q(qbClub)}: ${q(cfg.competition)},\n`), 'club-competition');
 
 console.log(`\n  ${name} (${slug})`);
 console.log(edits.join('\n'));
