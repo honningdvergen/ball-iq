@@ -53,6 +53,8 @@ export const CLUB_COMPETITION = {
   "Botafogo": "Brasileirão",
   "Vasco da Gama": "Brasileirão",
   "Atlético Mineiro": "Brasileirão",
+  "Preston North End": "Championship",
+  "Millwall": "Championship",
   "Cruz Azul": "Liga MX",
   "Guadalajara": "Liga MX",
   "Club América": "Liga MX",
