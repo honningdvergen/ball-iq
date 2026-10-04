@@ -6,6 +6,7 @@
 
 import { Capacitor } from '@capacitor/core';
 import { InAppReview } from '@capacitor-community/in-app-review';
+import { appStoreUrl, PLAY_STORE_URL } from './links.js';
 
 const KEY_LAST = 'biq_review_asked_at';
 const KEY_COUNT = 'biq_review_asked_count';
@@ -154,4 +155,37 @@ export function markWebRatePromptShown() {
     localStorage.setItem(KEY_WEB_COUNT, String(webShowCount() + 1));
     localStorage.setItem(KEY_WEB_LAST, String(Date.now()));
   } catch {}
+}
+
+// ── Rate links a player taps ──────────────────────────────────────────────
+// The native sheet above is Apple's lottery: ~3 renders a year, no signal back.
+// A link the player taps themselves is not part of that budget, and both stores
+// allow it (what they forbid is a custom pop-up that asks for stars). So the
+// store page is one tap away wherever a happy player already looks, and the
+// lottery stays reserved for the moments it was built for.
+//
+// Store-specific on purpose: an Android player sent to the App Store cannot
+// leave a review at all (the bug SettingsScreen's rateApp once had).
+export function ratingStore() {
+  try {
+    const p = Capacitor.getPlatform?.();
+    if (p === 'android') return 'play';
+    if (p === 'ios') return 'app-store';
+  } catch {}
+  const ua = typeof navigator !== 'undefined' ? (navigator.userAgent || '') : '';
+  return /Android/i.test(ua) && !/Windows Phone/i.test(ua) ? 'play' : 'app-store';
+}
+
+export function openStoreRating() {
+  const store = ratingStore();
+  const url = store === 'play' ? PLAY_STORE_URL : `${appStoreUrl({ campaign: false })}?action=write-review`;
+  try { window.open(url, '_blank'); } catch {}
+  return store;
+}
+
+// Only someone with the app installed can rate it, so web players (most of
+// the base) never see an in-page rate link: on the web it would be a request
+// they cannot fulfil.
+export function canRateInStore() {
+  try { return Capacitor.isNativePlatform(); } catch { return false; }
 }

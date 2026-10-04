@@ -31,7 +31,8 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { QB } from '../src/questions.js';
-import { pickDailyFresh } from '../src/lib/dailyDraw.js';
+import { pickDailyFresh, warmUpFirst } from '../src/lib/dailyDraw.js';
+import { seededShuffle, DAILY_SEED_MULTIPLIER, isModernEra } from '../src/lib/quiz.js';
 import { dayIndexForDate } from '../src/lib/date.js';
 
 const DAYS = Number(process.argv[2] || 400);
@@ -80,6 +81,25 @@ if (process.argv.includes('--regen-future') && days.length) {
     console.log(`[daily-log] --regen-future: keeping ${keep} served day(s), rebuilding ${days.length - keep}`);
     days.length = keep;
   }
+}
+
+// Medium warm-up Q1 (2026-10-04) on every day that cannot have been served
+// yet. Only slot 0 of a day with a hard opener moves; Q2 to Q7 stay byte-for-
+// byte, so a /c/ link or an already-built native log disagrees on one question
+// at most. Idempotent: a day that already opens on a medium is untouched.
+{
+  const byId = new Map(QB.map((q) => [q.id, q]));
+  const firstUnserved = (anchor - logAnchor) + 2;     // same guard as above
+  let moved = 0;
+  for (let i = firstUnserved; i < days.length; i++) {
+    const picked = days[i].map((id) => byId.get(id));
+    if (picked.some((q) => !q)) continue;              // unresolvable: leave to the top-up path
+    const warmed = warmUpFirst(picked, seededShuffle(
+      QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && q.diff !== "easy" && isModernEra(q)),
+      (logAnchor + i) * DAILY_SEED_MULTIPLIER));
+    if (warmed[0].id !== days[i][0]) { days[i] = warmed.map((q) => q.id); moved++; }
+  }
+  if (moved) console.log(`[daily-log] warm-up: ${moved} unserved day(s) now open on a medium question`);
 }
 
 for (let i = days.length; i < (anchor - logAnchor) + DAYS; i++) {
