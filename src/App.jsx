@@ -1328,223 +1328,65 @@ export const CLUB_PACKS = {
   },
   Arsenal: {
     name: "Arsenal", icon: "🔴", color: "#EF0107",
-    questions: [
-      { q:"In which year did Arsenal move from Highbury to the Emirates Stadium?", o:["2004","2005","2006","2007"], a:2, diff:"easy" },
-      { q:"Who scored Arsenal's famous last-minute title-winning goal against Liverpool in 1989?", o:["Alan Smith","Paul Merson","Michael Thomas","Steve Bould"], a:2, diff:"medium" },
-      { q:"Which Arsenal player scored 30 goals in a single Premier League season in 2004-05?", o:["Bergkamp","Pires","Henry","Ljungberg"], a:2, diff:"easy" },
-      { q:"Who was Arsenal's goalkeeper during the Invincibles season of 2003-04?", o:["David Seaman","Jens Lehmann","Stuart Taylor","Manuel Almunia"], a:1, diff:"medium" },
-      { q:"How many league titles did Arsène Wenger win with Arsenal?", o:["1","2","3","4"], a:2, diff:"medium" },
-      { q:"Which club did Arsenal sign Cesc Fàbregas from as a youth player?", o:["Real Madrid","Valencia","Villarreal","Barcelona"], a:3, diff:"hard" },
-      { q:"What year did Arsenal last win the FA Cup before their 2014 victory?", o:["1993","2002","2003","2005"], a:3, diff:"hard" },
-      { q:"Which Arsenal legend scored a hat-trick in the 2003 FA Cup final?", o:["Bergkamp","Ljungberg","Henry","Pires"], a:2, diff:"hard" },
-      { q:"Who is Arsenal's all-time leading scorer in the Premier League?", o:["Ian Wright","Dennis Bergkamp","Henry","Robin van Persie"], a:2, diff:"easy" },
-      { q:"Which manager preceded Arsène Wenger at Arsenal?", o:["Terry Neill","Don Howe","George Graham","Bruce Rioch"], a:3, diff:"medium" },
-    ]
+    questions: [],
   },
   Liverpool: {
     name: "Liverpool", icon: "🔴", color: "#C8102E",
-    questions: [
-      { q:"How many times have Liverpool won the European Cup / Champions League?", o:["4","5","6","7"], a:2, diff:"easy" },
-      { q:"Who scored Liverpool's famous solo goal against Manchester United in the 1996 FA Cup final?", o:["Collymore","McManaman","Barnes","Fowler"], a:1, diff:"hard" },
-      { q:"In which year did Liverpool win their first ever Premier League title?", o:["2018","2019","2020","2021"], a:2, diff:"easy" },
-      { q:"What is the name of Liverpool's famous home end?", o:["The Stretford End","The Kop","The Holte End","The Gwladys Street"], a:1, diff:"easy" },
-      { q:"Which Liverpool player scored 32 Premier League goals in the 2013-14 season?", o:["Gerrard","Suárez","Sterling","Sturridge"], a:1, diff:"medium" },
-      { q:"Who was Liverpool's top scorer in the 2019-20 title-winning season?", o:["Firmino","Mané","Salah","Henderson"], a:2, diff:"medium" },
-      { q:"In which year did Liverpool win their first ever First Division title?", o:["1901","1906","1922","1947"], a:1, diff:"hard" },
-      { q:"Which Liverpool manager won back-to-back league titles in 1976 and 1977?", o:["Bill Shankly","Bob Paisley","Joe Fagan","Kenny Dalglish"], a:1, diff:"medium" },
-      { q:"Who scored the winning penalty for Liverpool in the 2022 FA Cup final shootout vs Chelsea?", o:["Salah","Van Dijk","Kelleher","Milner"], a:2, diff:"hard" },
-    ]
+    questions: [],
   },
   ManUtd: {
     name: "Man United", icon: "🔴", color: "#DA291C",
-    questions: [
-      { q:"How many Premier League titles did Sir Alex Ferguson win with Manchester United?", o:["10","11","12","13"], a:3, diff:"medium" },
-      { q:"Who scored United's second injury-time goal in the 1999 Champions League final?", o:["Sheringham","Cole","Solskjær","Scholes"], a:2, diff:"medium" },
-      { q:"Which player did Manchester United sell to Real Madrid in 2009?", o:["Rooney","Ronaldo","Tevez","Berbatov"], a:1, diff:"easy" },
-      { q:"In which year did Manchester United complete their historic treble?", o:["1997","1998","1999","2000"], a:2, diff:"easy" },
-      { q:"Who is Manchester United's all-time record goalscorer?", o:["Bobby Charlton","Denis Law","Rooney","Giggs"], a:2, diff:"easy" },
-      { q:"Which manager took over from David Moyes at Manchester United in 2014?", o:["Louis van Gaal","José Mourinho","Giggs","Phil Neville"], a:0, diff:"medium" },
-      { q:"What is the capacity of Old Trafford approximately?", o:["65,000","72,000","74,000","76,000"], a:2, diff:"medium" },
-      { q:"Who scored a hat-trick for United vs Porto in the 2009 Champions League?", o:["Tevez","Ronaldo","Rooney","Berbatov"], a:1, diff:"hard" },
-      { q:"Which year did Eric Cantona join Manchester United?", o:["1991","1992","1993","1994"], a:1, diff:"medium" },
-      { q:"Who captained Manchester United to FA Cup glory in 2016?", o:["Rooney","Carrick","Smalling","Blind"], a:0, diff:"hard" },
-    ]
+    questions: [],
   },
   Barcelona: {
     name: "Barcelona", icon: "🔵", color: "#A50044",
-    questions: [
-      { q:"How many trebles has Barcelona won in their history?", o:["1","2","3","4"], a:2, diff:"medium" },
-      { q:"Which Barcelona player won the 2010 and 2014 World Cup?", o:["Xavi","Iniesta","Puyol","Busquets"], a:1, diff:"easy" },
-      { q:"In which year did Barcelona complete the first of their three trebles under Pep Guardiola?", o:["2008","2009","2010","2011"], a:1, diff:"medium" },
-      { q:"Who scored Barcelona's crucial away goal vs Chelsea in the 2012 UCL semi-final?", o:["Messi","Busquets","Puyol","Iniesta"], a:0, diff:"hard" },
-      { q:"Which club did Neymar leave to join Barcelona in 2013?", o:["Flamengo","Santos","Corinthians","Grêmio"], a:1, diff:"easy" },
-      { q:"Who is Barcelona's all-time top scorer?", o:["Ronaldo","Kubala","César","Messi"], a:3, diff:"easy" },
-      { q:"In which year did Johan Cruyff join Barcelona as a player?", o:["1971","1973","1975","1977"], a:1, diff:"hard" },
-      { q:"What is the name of Barcelona's stadium?", o:["Bernabéu","Wanda Metropolitano","Camp Nou","Spotify Camp Nou"], a:3, diff:"easy" },
-      { q:"Who managed Barcelona immediately before Pep Guardiola in 2008?", o:["Rijkaard","Van Gaal","Tito Vilanova","Luis Enrique"], a:0, diff:"medium" },
-    ]
+    questions: [],
   },
   RealMadrid: {
     name: "Real Madrid", icon: "⚪", color: "#FFFFFF",
-    questions: [
-      { q:"How many Champions League titles has Real Madrid won in total?", o:["13","14","15","16"], a:2, diff:"easy" },
-      { q:"Who scored Real Madrid's winning goal in the 2014 Champions League final vs Atletico?", o:["Benzema","Bale","Ramos","Modric"], a:2, diff:"medium" },
-      { q:"Which year did Ronaldo join Real Madrid from Manchester United?", o:["2007","2008","2009","2010"], a:2, diff:"easy" },
-      { q:"Who managed Real Madrid to three consecutive Champions League titles?", o:["Ancelotti","Mourinho","Benitez","Zidane"], a:3, diff:"easy" },
-      { q:"What is Real Madrid's home stadium now officially called after renovation?", o:["Bernabéu Arena","Santiago Bernabéu","Estadio Real","Florentino Pérez Arena"], a:1, diff:"easy" },
-      { q:"Which player scored for Real Madrid in five consecutive Champions League finals?", o:["Benzema","Bale","Ronaldo","Modric"], a:2, diff:"hard" },
-      { q:"Who was Real Madrid's first Galáctico signing in 2000?", o:["Figo","Zidane","Ronaldo","Beckham"], a:0, diff:"medium" },
-      { q:"How many La Liga titles did Zidane win as Real Madrid manager?", o:["1","2","3","0"], a:0, diff:"medium" },
-      { q:"Which Real Madrid player was known as 'El Halcón' (The Falcon)?", o:["Ronaldo","Raúl","Morientes","Hierro"], a:1, diff:"hard" },
-    ]
+    questions: [],
   },
 
   ManCity: {
     name: "Man City", icon: "🔵", color: "#6CABDD",
-    questions: [
-      { q:"In which year did Man City win their first Premier League title?", o:["2010","2011","2012","2013"], a:2, diff:"easy" },
-      { q:"Who scored the famous 93:20 goal to win the 2012 Premier League title?", o:["Tevez","Balotelli","Silva","Agüero"], a:3, diff:"easy" },
-      { q:"Which manager led Man City to their first Champions League title in 2023?", o:["Mancini","Pellegrini","Guardiola","Hughes"], a:2, diff:"easy" },
-      { q:"How many Premier League titles did Man City win between 2011 and 2024?", o:["5","6","7","8"], a:3, diff:"medium" },
-      { q:"Which player left Man City to join Barcelona in 2025 after breaking all scoring records?", o:["De Bruyne","Foden","Haaland","B. Silva"], a:2, diff:"medium" },
-      { q:"Man City's Etihad Stadium is in which area of Manchester?", o:["Salford","Stretford","Eastlands","Old Trafford"], a:2, diff:"medium" },
-      { q:"Which Man City player won the PFA Players' Player of the Year four times?", o:["Silva","Agüero","De Bruyne","Kompany"], a:2, diff:"hard" },
-      { q:"Who was Man City's top scorer in the 2022-23 Champions League winning campaign?", o:["Foden","Gündoğan","De Bruyne","Haaland"], a:3, diff:"hard" },
-      { q:"Man City completed an unprecedented domestic treble in which season?", o:["2018-19","2020-21","2022-23","2023-24"], a:2, diff:"medium" },
-      { q:"Which Abu Dhabi group took over Man City in 2008?", o:["ADNOC","Mubadala","Abu Dhabi United Group","UAE Investment Fund"], a:2, diff:"hard" },
-    ]
+    questions: [],
   },
   Chelsea: {
     name: "Chelsea", icon: "🔵", color: "#034694",
-    questions: [
-      { q:"Which Russian billionaire bought Chelsea in 2003?", o:["Abramovich","Prokhorov","Deripaska","Potanin"], a:0, diff:"easy" },
-      { q:"Chelsea won their first Champions League in 2012 — who scored the winning penalty in the shootout?", o:["Lampard","Drogba","Torres","Mata"], a:0, diff:"medium" },
-      { q:"Which manager led Chelsea to their first Premier League title in 2004-05?", o:["Ranieri","Mourinho","Ancelotti","Hiddink"], a:1, diff:"easy" },
-      { q:"Didier Drogba scored how many Premier League goals for Chelsea?", o:["100","104","108","115"], a:2, diff:"hard" },
-      { q:"Chelsea won the Champions League for a second time in 2021 — who managed them?", o:["Lampard","Sarri","Tuchel","Ancelotti"], a:2, diff:"easy" },
-      { q:"Which Chelsea player won the PFA Young Player of the Year in 2022?", o:["Mount","Pulisic","Reece James","Mason Mount"], a:2, diff:"medium" },
-      { q:"Chelsea's Stamford Bridge is in which part of London?", o:["East London","South London","West London","North London"], a:2, diff:"easy" },
-      { q:"Who scored a famous last-minute goal for Chelsea vs Arsenal in the 1998 League Cup final?", o:["Zola","Vialli","Di Matteo","Wise"], a:1, diff:"hard" },
-      { q:"Chelsea set a then-record of how many points in the 2004-05 Premier League season?", o:["91","93","95","97"], a:2, diff:"hard" },
-      { q:"Which consortium took over Chelsea from Abramovich in 2022?", o:["Qatar Sports Investments","INEOS","BlueCo","PCP Capital Partners"], a:2, diff:"medium" },
-    ]
+    questions: [],
   },
   BayernMunich: {
     name: "Bayern Munich", icon: "🔴", color: "#DC052D",
-    questions: [
-      { q:"How many Bundesliga titles have Bayern Munich won — the most in German football?", o:["28","30","32","34"], a:2, diff:"medium" },
-      { q:"Bayern Munich won the Champions League in 2020 without losing a single game — who managed them?", o:["Kovač","Guardiola","Heynckes","Flick"], a:3, diff:"easy" },
-      { q:"Which legendary striker scored 365 Bundesliga goals — an all-time record?", o:["Müller","Lewandowski","Rummenigge","Gerd Müller"], a:3, diff:"easy" },
-      { q:"Bayern's famous treble season of 2012-13 was won under which manager?", o:["Guardiola","Flick","Heynckes","Ancelotti"], a:2, diff:"medium" },
-      { q:"Bayern Munich's Allianz Arena opened in which year?", o:["2004","2005","2006","2007"], a:1, diff:"medium" },
-      { q:"Who was Bayern Munich's captain when they won the 2013 Champions League final?", o:["Neuer","Lahm","Schweinsteiger","Robben"], a:1, diff:"medium" },
-      { q:"Robert Lewandowski scored 41 Bundesliga goals in 2020-21 — whose record of 40 did he break?", o:["Rummenigge","Gerd Müller","Müller T","Klinsmann"], a:1, diff:"medium" },
-      { q:"Bayern Munich were the first team in the 2019-20 UCL to beat Barcelona — what was the score?", o:["6-1","7-2","8-2","5-0"], a:2, diff:"easy" },
-      { q:"Which player has won the most Bundesliga titles as a Bayern player?", o:["Lahm","Müller T","Neuer","Kahn"], a:1, diff:"hard" },
-    ]
+    questions: [],
   },
   Juventus: {
     name: "Juventus", icon: "⚫", color: "#000000",
-    questions: [
-      { q:"How many consecutive Serie A titles did Juventus win from 2012 to 2020?", o:["7","8","9","10"], a:2, diff:"easy" },
-      { q:"Which player scored the decisive penalty for Juventus in the 1996 Champions League final?", o:["Del Piero","Baggio","Vialli","Jugović"], a:3, diff:"hard" },
-      { q:"Juventus's stadium is named after which sponsor?", o:["Pirelli","Allianz","Juventus Arena","Fiat"], a:1, diff:"easy" },
-      { q:"Which manager won Juventus's historic nine consecutive Serie A titles?", o:["Lippi","Allegri then Conte","Conte then Allegri","Sarri"], a:2, diff:"medium" },
-      { q:"Juventus's nickname 'La Vecchia Signora' means what?", o:["The Black and Whites","The Old Lady","The Turin Giants","The Zebras"], a:1, diff:"easy" },
-      { q:"Alessandro Del Piero spent how many years at Juventus?", o:["17","18","19","20"], a:0, diff:"hard" },
-      { q:"Juventus were stripped of two Serie A titles in 2006 due to which scandal?", o:["Doping","Calciopoli match-fixing","Financial irregularities","Fan violence"], a:1, diff:"medium" },
-      { q:"Gianluigi Buffon made how many appearances for Juventus — a club record?", o:["576","626","676","726"], a:2, diff:"medium" },
-      { q:"Juventus reached the Champions League final in 2015 and 2017 — who beat them both times?", o:["Real Madrid","Barcelona","Bayern Munich","Real Madrid in 2015, Madrid in 2017"], a:0, diff:"medium" },
-    ]
+    questions: [],
   },
   AcMilan: {
     name: "AC Milan", icon: "🔴", color: "#FB090B",
-    questions: [
-      { q:"AC Milan was founded in 1899 by businessmen from which English city?", o:["London","Liverpool","Manchester","Nottingham"], a:3, diff:"hard" },
-      { q:"Which legendary sweeper was AC Milan's captain for most of the 1980s and 1990s?", o:["Maldini","Costacurta","Baresi","Albertini"], a:2, diff:"medium" },
-      { q:"AC Milan won back-to-back European Cups in which years under Arrigo Sacchi?", o:["1988 and 1989","1989 and 1990","1990 and 1991","1991 and 1992"], a:1, diff:"medium" },
-      { q:"Paolo Maldini holds the record for most AC Milan appearances — approximately how many?", o:["802","868","902","952"], a:1, diff:"hard" },
-      { q:"AC Milan's famous red and black kit — what do the colours officially represent?", o:["Fire and night","Red hell and black fear of opponents","The city's colours","Historical tradition"], a:1, diff:"hard" },
-      { q:"AC Milan won the Champions League in 2007 — who did they beat in the final?", o:["Arsenal","Barcelona","Man Utd","Liverpool"], a:3, diff:"medium" },
-      { q:"What is the name of the stadium shared by AC Milan and Inter Milan?", o:["Olimpico","Meazza / San Siro","Delle Alpi","Tardini"], a:1, diff:"easy" },
-      { q:"AC Milan won the Serie A title in 2021-22 — ending an 11-year drought. Who was their standout forward?", o:["Ibrahimović","Giroud","Leão","Rebić"], a:2, diff:"medium" },
-      { q:"Which two AC Milan managers each won two European Cups with the club — Nereo Rocco in the 1960s and which other legend decades later?", o:["Fabio Capello","Arrigo Sacchi","Carlo Ancelotti","Both Sacchi and Ancelotti"], a:3, cat:"UCL", diff:"hard", type:"mcq", hint:"Sacchi won in 1989 and 1990 with the Dutch trio; Ancelotti won in 2003 and 2007 with Kaká and Maldini.", v:1 },
-    ]
+    questions: [],
   },
   Atletico: {
     name: "Atletico Madrid", icon: "🔴", color: "#CB3524",
-    questions: [
-      { q:"Who has managed Atletico Madrid since December 2011?", o:["Quique Flores","Rudi García","Diego Simeone","Emery"], a:2, diff:"easy" },
-      { q:"Atletico Madrid won La Liga in 2013-14 — their first title in how many years?", o:["14","16","18","20"], a:2, diff:"medium" },
-      { q:"Atletico Madrid's red and white striped kit was inspired by which English club?", o:["Arsenal","Liverpool","Sunderland","Southampton"], a:2, diff:"medium" },
-      { q:"Which Atletico Madrid striker scored 274 La Liga goals — a club record?", o:["Forlan","Griezmann","Torres","Luis García"], a:1, diff:"hard" },
-      { q:"Atletico Madrid reached the Champions League final in 2014 and 2016 — who beat them both times?", o:["Barcelona","Real Madrid","Bayern","PSG"], a:1, diff:"easy" },
-      { q:"What is the name of Atletico Madrid's current stadium?", o:["Vicente Calderón","Bernabéu","Cívitas Metropolitano","Riazor"], a:2, diff:"medium" },
-      { q:"Atletico Madrid won the Europa League in 2012, 2018 and which other year?", o:["2010","2016","2022","2024"], a:1, diff:"medium" },
-      { q:"Fernando Torres left Atletico for Liverpool in 2007 — for a fee of how much?", o:["£20m","£25m","£30m","£35m"], a:1, diff:"hard" },
-      { q:"Which Atletico player famously headed in a last-minute goal to take the 2014 UCL final to extra time?", o:["Diego Costa","Arda Turan","Godin","Filipe Luís"], a:2, diff:"medium" },
-      { q:"Atletico's nickname is 'Los Colchoneros' — what does this mean in English?", o:["The Warriors","The Red and Whites","The Mattress Makers","The Defenders"], a:2, diff:"hard" },
-    ]
+    questions: [],
   },
   Frankfurt:   { name: "Eintracht Frankfurt",  icon: "🦅", color: "#E1000F", questions: [] },
   Dortmund: {
     name: "Borussia Dortmund", icon: "🟡", color: "#FDE100",
-    questions: [
-      { q:"What are Borussia Dortmund's official club colours?", o:["Red and black","Yellow and black","Yellow and white","Black and white"], a:1, diff:"easy" },
-      { q:"The famous Yellow Wall at Signal Iduna Park holds approximately how many standing fans?", o:["20,000","25,000","27,000","30,000"], a:2, diff:"medium" },
-      { q:"Who managed Dortmund to back-to-back Bundesliga titles in 2011 and 2012?", o:["Favre","Tuchel","Klopp","Hitzfeld"], a:2, diff:"easy" },
-      { q:"Dortmund reached the Champions League final in 2013 — who beat them in the all-German final?", o:["Schalke","Bayern Munich","Hamburg","Leverkusen"], a:1, diff:"easy" },
-      { q:"Which player scored 23 Champions League goals for Dortmund before joining Man City in 2022?", o:["Reus","Götze","Lewandowski","Haaland"], a:3, diff:"easy" },
-      { q:"Mario Götze left Dortmund for Bayern Munich in 2013 — how much did Bayern pay?", o:["£25m","£31m","£37m","£44m"], a:2, diff:"hard" },
-      { q:"Dortmund's worst ever Bundesliga defeat was 0-12 — to which club in 1978?", o:["Bayern Munich","Hamburg","Schalke","Borussia Mönchengladbach"], a:3, diff:"hard" },
-      { q:"Which Dortmund player scored the winning goal in the 2012 DFB-Pokal final vs Bayern?", o:["Reus","Lewandowski","Götze","Gündoğan"], a:2, diff:"hard" },
-      { q:"Borussia Dortmund were founded in which year?", o:["1901","1905","1909","1912"], a:2, diff:"medium" },
-      { q:"Dortmund reached the UCL final in 2024 — who beat them in Wembley?", o:["PSG","Man City","Bayern","Real Madrid"], a:3, diff:"easy" },
-    ]
+    questions: [],
   },
   PSG: {
     name: "Paris Saint-Germain", icon: "🔵", color: "#003170",
-    questions: [
-      { q:"PSG were taken over by which country's investment group in 2011?", o:["UAE","Saudi Arabia","China","Qatar"], a:3, diff:"easy" },
-      { q:"Which player became the world's most expensive transfer ever when PSG signed him in 2017?", o:["Neymar","Mbappé","Verratti","Cavani"], a:0, diff:"easy" },
-      { q:"PSG won the 2024-25 Champions League — who did they beat in the final?", o:["Arsenal","Inter","Barcelona","Real Madrid"], a:1, diff:"easy" },
-      { q:"Kylian Mbappé left PSG to join which club in 2024?", o:["Man City","Arsenal","Bayern Munich","Real Madrid"], a:3, diff:"easy" },
-      { q:"PSG's Parc des Princes stadium is in which area of Paris?", o:["Montmartre","Marais","16th arrondissement","Boulogne"], a:2, diff:"medium" },
-      { q:"Edinson Cavani scored how many goals for PSG — a club record?", o:["198","211","220","240"], a:2, diff:"hard" },
-      { q:"PSG beat Barcelona 4-0 in the 2016-17 UCL group stage — who scored twice that night?", o:["Cavani","Di María","Verratti","Lucas Moura"], a:0, diff:"hard" },
-      { q:"PSG won how many consecutive Ligue 1 titles between 2013 and 2023?", o:["7","8","9","10"], a:2, diff:"medium" },
-      { q:"Who managed PSG when they won their first Champions League in 2024-25?", o:["Pochettino","Galtier","Enrique","Campos"], a:2, diff:"medium" },
-    ]
+    questions: [],
   },
   InterMilan: {
     name: "Inter Milan", icon: "⚫", color: "#010E80",
-    questions: [
-      { q:"Inter Milan was founded in 1908 — why did they split from AC Milan?", o:["Financial reasons","They wanted more foreign players","A dispute over colours","The manager left"], a:1, diff:"medium" },
-      { q:"Inter won the Champions League in 2010 as part of a treble — who managed them?", o:["Mancini","Lippi","Mourinho","Spalletti"], a:2, diff:"easy" },
-      { q:"Which Inter player holds the record for most consecutive appearances in Serie A?", o:["Maldini","Zanetti","Facchetti","Baresi"], a:1, diff:"hard" },
-      { q:"Inter's nickname 'La Beneamata' translates roughly to what?", o:["The Black and Blues","The Beloved One","The Great Inter","The Milan Giants"], a:1, diff:"medium" },
-      { q:"Inter won the Serie A title in 2020-21 — ending Juventus's nine-year run. Who managed them?", o:["Mancini","Spalletti","Simone Inzaghi","Conte"], a:3, diff:"medium" },
-      { q:"Inter reached the Champions League final in 2023 — who beat them?", o:["PSG","Bayern Munich","Real Madrid","Man City"], a:3, diff:"easy" },
-      { q:"Which legendary player was Inter captain for nearly his entire career — 19 seasons?", o:["Facchetti","Mazzola","Zanetti","Cordoba"], a:2, diff:"hard" },
-      { q:"Inter Milan and AC Milan share the San Siro stadium — what is its official name?", o:["Stadio Inter","Stadio Meazza","Stadio San Siro","Stadio di Milano"], a:1, diff:"medium" },
-      { q:"Inter's 2023-24 Serie A title win — how many points did they finish with?", o:["86","89","92","94"], a:2, diff:"hard" },
-      { q:"Which striker scored 30 Serie A goals for Inter in 2022-23?", o:["Džeko","L. Martínez","Lukaku","Sanchez"], a:1, diff:"medium" },
-    ]
+    questions: [],
   },
   Ajax: {
     name: "Ajax", icon: "🔴", color: "#CC0000",
-    questions: [
-      { q:"Ajax won the Champions League in 1995 with a famous young squad — who managed them?", o:["Cruyff","Michels","Van Gaal","Koeman"], a:2, diff:"medium" },
-      { q:"Which Ajax player became the world's most expensive teenager when he joined Juventus in 2019?", o:["Frenkie de Jong","Matthijs de Ligt","Hakim Ziyech","Donny van de Beek"], a:1, diff:"easy" },
-      { q:"Ajax's ground is called the Johan Cruyff Arena — what was it called before 2018?", o:["Ajax Arena","Olympic Stadium","Amsterdam Arena","De Kuip"], a:2, diff:"medium" },
-      { q:"Ajax knocked out Real Madrid in the 2018-19 Champions League — what was the score in the Bernabéu?", o:["2-1","3-1","4-1","3-2"], a:2, diff:"hard" },
-      { q:"Johan Cruyff — Ajax's greatest ever player — won the European Cup with Ajax how many times as a player?", o:["2","3","4","5"], a:1, diff:"medium" },
-      { q:"Ajax have produced players for many top clubs — which country provides most of their academy players?", o:["Suriname","Morocco","Netherlands","Ghana"], a:2, diff:"medium" },
-      { q:"Ajax won four consecutive Dutch league titles from 2019 to 2022 — true or false?", o:["True","False — they only won three","False — they won two","False — another club won in 2021"], a:3, diff:"hard" },
-      { q:"Which Ajax striker scored a hat-trick on his debut aged 17 in 2019?", o:["Brobbey","Bergwijn","Neres","Brian Brobbey"], a:3, diff:"hard" },
-      { q:"Ajax's famous 3-4-3 system was developed by which legendary Dutch coach?", o:["Michels","Cruyff","Van Gaal","Kovacs"], a:0, diff:"medium" },
-      { q:"How many times have Ajax won the European Cup or Champions League?", o:["3","4","5","6"], a:2, diff:"medium" },
-    ]
+    questions: [],
   },
   Tottenham: {
     name: "Tottenham", icon: "⚪", color: "#132257",
@@ -6170,7 +6012,13 @@ function AppInner() {
           }
         } catch {}
       }
-      if (!qs) qs = shuffle(pack.questions).slice(0, 10).map(q => ({ ...q, realCat: q.cat, type: "mcq", cat: "ClubQuiz" }));
+      // Legacy inline fallback, loaded only on this path so its ~20 KB stays
+      // off the eager GameRoot chunk (see src/data/legacyClubQuestions.js).
+      if (!qs) {
+        let legacy = [];
+        try { legacy = (await import("./data/legacyClubQuestions.js")).LEGACY_CLUB_QUESTIONS[clubKey] || []; } catch {}
+        qs = shuffle(legacy).slice(0, 10).map(q => ({ ...q, realCat: q.cat, type: "mcq", cat: "ClubQuiz" }));
+      }
       if (!qs.length) { showToast("No questions yet for this club"); return; }
       setActiveLeague(null);
       setActiveClub(clubKey);
