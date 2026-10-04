@@ -734,7 +734,7 @@ export function computeFootleStreak(today) {
 
 // ── THE FOOTLE CLUE ──────────────────────────────────────────────────────────
 // Footle is the most-played mode and the one most often lost: 230 of 764 plays
-// (30%) in the 30 days to 2026-10-04 ended X/6, and 45% of solves needed a
+// (30%) in the 30 days to 2026-10-04 ended X/6, and 65% of solves (346 of 534) needed a
 // fifth or sixth guess (daily_results). Every other daily in the hub gives a
 // stuck player somewhere to go — Trail adds clubs, Mystery adds career rows —
 // and Footle gave nothing but more letters to guess.
