@@ -54,6 +54,8 @@ export const CLUB_COMPETITION = {
   "Tigres UANL": "Liga MX",
   "Monterrey": "Liga MX",
   "Pumas UNAM": "Liga MX",
+  "Preston North End": "Championship",
+  "Millwall": "Championship",
   "Cruz Azul": "Liga MX",
   "Guadalajara": "Liga MX",
   "Club América": "Liga MX",
