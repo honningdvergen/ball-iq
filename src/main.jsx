@@ -28,7 +28,15 @@ import { normalizeSupabaseError } from './lib/sentryNormalize.js'
 // Sentry from the very first paint. DSN is environment-gated: prod builds
 // ship with VITE_SENTRY_DSN set (Vercel env var); dev/preview builds run
 // without it and Sentry no-ops silently.
-if (import.meta.env.VITE_SENTRY_DSN) {
+// A production build served from a dev machine (`vite preview`, the e2e
+// server on :4177) still carries the prod DSN. Those sessions reported 2k+
+// events as production (BALL-IQ-X: Vercel's /_vercel/speed-insights script
+// 404s locally and comes back as index.html). Native is exempt: Android's
+// Capacitor origin is https://localhost.
+const _isLocalPreview = typeof window !== 'undefined' &&
+  !window.Capacitor?.isNativePlatform?.() &&
+  /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(window.location.hostname)
+if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
   // Native-gate performance tracing: the privacy policy states the *app* runs
   // no analytics, but browserTracingIntegration sampling records navigation/
   // pageload transactions (a usage measure). Keep crash reporting everywhere;
