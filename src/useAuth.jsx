@@ -6,12 +6,32 @@ import { Capacitor } from '@capacitor/core'
 import { Browser } from '@capacitor/browser'
 import { App as CapApp } from '@capacitor/app'
 import { SignInWithApple } from '@capacitor-community/apple-sign-in'
+
 import { supabase, readStoredSession } from './supabase.js'
 import { recordSignupAttribution } from './lib/firstTouch.js'
 import { safeSetItem } from './safeStorage.js'
 import { perfMark } from './lib/perf.js'
 import { isProfaneUsername } from './lib/profanity.js'
 import { unregisterPush } from './lib/push.js'
+
+// PostHog identity (web only). public/ph.js is consent-gated and never loads
+// in the native app, so window.posthog only exists where it may be used. The
+// uid is also parked on window so ph.js can identify a player who signed in
+// BEFORE they allowed analytics. Account id only — never email or username.
+function phIdentify(uid) {
+  try {
+    if (Capacitor.isNativePlatform?.()) return
+    const prev = window.__biqUid || null
+    window.__biqUid = uid || null
+    const ph = window.posthog
+    if (!ph || typeof ph.identify !== 'function') return
+    if (uid) ph.identify(uid)
+    // Only a real sign-out resets; the listener also reports "no session"
+    // for every guest boot, and resetting then would mint a new anonymous id
+    // per page load.
+    else if (prev) ph.reset()
+  } catch { /* analytics must never affect auth */ }
+}
 
 // Sprint #94 III3: native OAuth uses a custom URL scheme registered in
 // ios/App/App/Info.plist (CFBundleURLTypes). Supabase redirects the auth
@@ -136,6 +156,7 @@ export function AuthProvider({ children }) {
         // entirely — without this, a restored user renders with guest chrome.
         setIsGuest(false)
         try { Sentry.setUser({ id: session.user.id, segment: 'authenticated' }) } catch {}
+        phIdentify(session.user.id)
       } else {
         // Sprint #100 guest-first: no stored session → land in the app as a
         // guest instead of showing a login wall. The Login screen is now an
@@ -220,6 +241,7 @@ export function AuthProvider({ children }) {
           // beforeSend already strips email + username so this stays
           // PII-safe — id only.
           try { Sentry.setUser({ id: session.user.id, segment: 'authenticated' }) } catch {}
+          phIdentify(session.user.id)
           // Sprint #100 guest→account convergence. Guarded by the
           // biq_auth_attempt sentinel (set at the start of every USER-
           // INITIATED sign-in/up) so this runs exactly once per real
@@ -299,6 +321,7 @@ export function AuthProvider({ children }) {
           } catch {}
         } else {
           try { Sentry.setUser(null) } catch {}
+          phIdentify(null)
           // Sprint #100 guest-first: after sign-out or session expiry, drop
           // the user back into the app as a guest (not a login wall).
           setIsGuest(true)

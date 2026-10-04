@@ -252,6 +252,7 @@ function finish(won) {
   d.appendChild(b);
   box.appendChild(d);
   try { if (!xiSyn() && window.clarity) window.clarity('event', won ? 'xi-won' : 'xi-lost'); } catch (e) {}
+  try { if (!xiSyn() && window.biqTrack) window.biqTrack(won ? 'xi-won' : 'xi-lost'); } catch (e) {}
 }
 
 function submit() {
