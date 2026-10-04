@@ -1,6 +1,7 @@
 {
   "permissions": {
     "allow": [
+      "WebFetch", "WebSearch", "Bash", "Read", "Edit", "Write", "Glob", "Grep",
       "WebFetch(domain:www.aoshearman.com)",
       "WebFetch(domain:www.apple.com)",
       "WebFetch(domain:www.inta.org)",
