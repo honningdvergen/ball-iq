@@ -13,12 +13,11 @@
 // ENGLISH page drew 776 impressions to /tr/'s 11). German is worth building
 // because the query is explicitly German-language, not because Germany is big.
 //
-// THREE CLUBS, NOT FOUR. Bayern, Dortmund and Leverkusen carry Der Klassiker and
+// THREE CLUBS, THEN FOUR. Bayern, Dortmund and Leverkusen carry Der Klassiker and
 // the side that ended Bayern's eleven-year streak, so the cluster tells a story.
-// ⚠️ RB LEIPZIG IS DELIBERATELY HELD: only 20 verified questions in the bank,
-// below the 22 a full page needs (10 taster + 12 sample). Shipping it would mean
-// either a thin page or padding with unverified content, and a thin page on a
-// contested term is the /lists mistake. Forge a top-up first, then add it.
+// RB Leipzig was held at first: only 20 verified questions in the bank, below the
+// 22 a full page needs (10 taster + 12 sample), and padding was not an option.
+// The top-up was forged and fact-checked twice on 2026-10-04, so it is added below.
 //
 // ── THE QUESTIONS ARE TRANSLATIONS, NOT NEW WRITING ──────────────────────────
 //
@@ -239,6 +238,73 @@ export const CLUBS_DE = [
       alsoP: 'Das ist die deutsche Fassung unseres Leverkusen-Quiz. Alle Fragen im Original:',
       alsoLink: 'Bayer Leverkusen quiz (English)',
       statsLine: 'Die Leverkusen-Fragen bei Ball IQ verteilen sich auf drei Schwierigkeitsgrade — leicht, mittel und schwer — alle mit Erklärung.',
+    },
+  },
+  // ── RB LEIPZIG ─────────────────────────────────────────────────────────────
+  {
+    club: 'RB Leipzig',
+    slug: 'rb-leipzig',
+    lang: 'de',
+    name: 'RB Leipzig',
+    h1: 'RB Leipzig Quiz',
+    title: 'RB Leipzig Quiz — Die Roten Bullen | Ball IQ',
+    description:
+      'Kostenloses Leipzig-Quiz mit erklärten Antworten: Markranstädt, RasenBallsport, vier Aufstiege, das Halbfinale 2020 und die DFB-Pokalsiege 2022 und 2023.',
+    kind: 'Vereinsquiz',
+    statLine: 'Kostenlos · Leipzig-Fragen mit erklärten Antworten · ohne Anmeldung',
+    playLabel: 'Quiz starten',
+    intro: [
+      'Gegründet am 19. Mai 2009, mit vier Aufstiegen in sieben Jahren von der fünften Liga in die Bundesliga — und der Verein, über den der deutsche Fußball streitet. Dieses kostenlose Quiz umfasst die ganze Geschichte der Roten Bullen: das Spielrecht des SSV Markranstädt und der Name RasenBallsport, der Pokalcoup gegen Wolfsburg 2011, Zorniger und Rangnick, Platz zwei in der ersten Bundesliga-Saison unter Hasenhüttl, Timo Werner, Nagelsmann und das Champions-League-Halbfinale 2020 — und schließlich die DFB-Pokalsiege 2022 und 2023.',
+      'Die Fragen werden wirklich schwer. Gerade bei einem Verein, über dessen Entstehung so viel gestritten wird, gilt: Wo die Geschichte umstritten ist, veröffentlichen wir die Frage lieber gar nicht, als Partei zu ergreifen. Online geht nur, was sich belegen lässt.',
+      'Jede Antwort im Leipzig-Set hat eine geschriebene Erklärung: Auch wer falsch tippt, lernt etwas über den Verein — vom Stadion am Bad bis zur Red Bull Arena.',
+    ],
+    faq: [
+      { q: 'Ist das Leipzig-Quiz kostenlos?', a: 'Ja. Es läuft direkt im Browser, ohne Anmeldung und ohne Download. Alle Fragen auf dieser Seite sind kostenlos.' },
+      { q: 'Welche Themen deckt das Quiz ab?', a: 'Die Gründung 2009 über das Spielrecht des SSV Markranstädt, der Name RasenBallsport, die vier Aufstiege von der Oberliga in die Bundesliga, Zorniger, Rangnick und Hasenhüttl, Timo Werner, Nagelsmann und das Champions-League-Halbfinale 2020, die DFB-Pokalsiege 2022 und 2023 sowie Spieler wie Kimmich, Poulsen, Szoboszlai und Gvardiol. Es beginnt leicht und wird richtig schwer.' },
+      { q: 'Woher kommen die Fragen?', a: 'Sie werden anhand von Quellen recherchiert und Frage für Frage geprüft. Jede Angabe durchläuft vor der Veröffentlichung zwei unabhängige Kontrollen; was sich nicht belegen lässt, erscheint nicht.' },
+      { q: 'Gibt es die Ball-IQ-App auf Deutsch?', a: 'Noch nicht: Diese Seite ist auf Deutsch, die App ist auf Englisch. Wir messen erst das Interesse, bevor wir übersetzen — wer bis hierher gelesen hat, hilft uns bei genau dieser Entscheidung.' },
+    ],
+    taster: [
+      { id: 'q_c45eb2', en: 'The fifth tier', q: 'In welcher Spielklasse des deutschen Fußballs trat RB Leipzig an, als der Verein 2009 den Spielbetrieb aufnahm?', o: ['In der zweiten Liga', 'In der dritten Liga', 'In der vierten Liga', 'In der fünften Liga'], a: 3, hint: 'Leipzig begann in der fünftklassigen NOFV-Oberliga Süd und wurde dort auf Anhieb Meister — der erste von vier Aufstiegen in sieben Jahren.' },
+      { id: 'q_b0eecd', q: 'RB Leipzig entstand 2009, als Red Bull das Spielrecht welches bestehenden Vereins kaufte?', o: ['1. FC Lokomotive Leipzig', 'SSV Markranstädt', 'BSG Chemie Leipzig', 'FC Sachsen Leipzig'], a: 1, hint: 'Red Bull zahlte Berichten zufolge 350.000 Euro für die Lizenz des SSV Markranstädt, eines kleinen Vereins aus einer Stadt direkt westlich von Leipzig, und baute darum einen neuen Verein auf.' },
+      { id: 'q_494c21', q: 'Timo Werner kam 2016 nach Leipzig, rechtzeitig zur ersten Bundesliga-Saison des Vereins. Von welchem Verein wechselte er?', o: ['Bayer Leverkusen', 'Werder Bremen', 'VfB Stuttgart', 'Borussia Mönchengladbach'], a: 2, hint: 'Werner kam von seinem Jugendverein VfB Stuttgart, der gerade abgestiegen war, und erzielte in seiner ersten Saison in Leipzig prompt 21 Bundesliga-Tore.' },
+      { id: 'q_a58710', q: 'In welcher Saison bestritt RB Leipzig sein erstes Bundesliga-Spiel?', o: ['2010-11', '2013-14', '2016-17', '2019-20'], a: 2, hint: 'Der Aufstieg aus der 2. Bundesliga im Mai 2016 brachte den Verein für 2016/17 in die Bundesliga, wo er auf Anhieb Zweiter wurde.' },
+      { id: 'q_0bcf7b', en: 'The DFB-Pokal', q: 'RB Leipzig gewann 2022 seinen ersten großen Titel. In welchem Wettbewerb?', o: ['Bundesliga', 'DFB-Pokal', 'Europa League', 'DFL-Supercup'], a: 1, hint: 'Der DFB-Pokal 2022 war der erste Titel von echtem Gewicht für den Verein, und in der Saison darauf verteidigte Leipzig ihn.' },
+      { id: 'q_4f6263', q: 'Leipzigs Heimstadion, ein Spielort der WM 2006, wurde 2010 in Red Bull Arena umbenannt. Wie hieß es vorher?', o: ['Olympiastadion', 'Waldstadion', 'Zentralstadion', 'Volksparkstadion'], a: 2, hint: 'Red Bull kaufte die Namensrechte, und am 1. Juli 2010, als RB Leipzig einzog, wurde aus dem Zentralstadion die Red Bull Arena.' },
+      { id: 'q_148eba', q: 'Von welchem Verein kam Julian Nagelsmann 2019 nach Leipzig?', o: ['1899 Hoffenheim', 'Mainz 05', 'FC Augsburg', 'Bayer Leverkusen'], a: 0, hint: 'Nagelsmann machte sich in Hoffenheim einen Namen, wo er 2016 als Neuling übernahm und die Champions League erreichte; der Wechsel nach Leipzig wurde ein Jahr im Voraus vereinbart.' },
+      { id: 'q_05c5f2', q: 'Timo Werner verließ Leipzig 2020 für eine Ablöse von angeblich rund 50 Millionen Euro. Welcher Verein verpflichtete ihn?', o: ['Chelsea', 'Liverpool', 'Bayern München', 'Manchester United'], a: 0, hint: 'Werner wechselte 2020 zu Chelsea und gewann in seiner ersten Saison dort die Champions League, bevor er 2022 nach Leipzig zurückkehrte.' },
+      { id: 'q_ed77f2', en: 'Hungary', q: 'Für welches Land spielte Péter Gulácsi, von 2015 bis 2026 Torwart bei RB Leipzig, international?', o: ['Österreich', 'Slowakei', 'Tschechien', 'Ungarn'], a: 3, hint: 'Gulácsi kam 2015 von Red Bull Salzburg, bestritt 58 Länderspiele für Ungarn und fuhr zu den Europameisterschaften 2016, 2020 und 2024.' },
+      { id: 'q_b31750', q: 'RB Leipzig erreichte 2020 das Halbfinale der Champions League. Wer warf den Verein raus?', o: ['Bayern München', 'Atlético Madrid', 'Olympique Lyonnais', 'Paris Saint-Germain'], a: 3, hint: 'PSG gewann das einzige Halbfinalspiel in Lissabon 3:0; Bayern schlug in der anderen Hälfte des Tableaus Lyon und holte am Ende den Titel.' },
+    ],
+    sample: [
+      { id: 'q_8ee803', q: 'In seinem ersten DFB-Pokalspiel überhaupt, 2011, warf Viertligist RB Leipzig einen Bundesligisten mit 3:2 raus. Welchen?', o: ['Hamburger SV', 'VfL Wolfsburg', 'Werder Bremen', 'VfB Stuttgart'], a: 1, hint: 'Daniel Frahn erzielte vor 31.212 Zuschauern in der Red Bull Arena einen Hattrick in der ersten Halbzeit — die erste echte Schlagzeile des jungen Vereins.' },
+      { id: 'q_ca5e7b', q: 'Welcher Spieler stand 2013 in der dritten Liga im Leipziger Kader und gehörte beim Lauf ins Champions-League-Halbfinale 2020 weiterhin zum Verein?', o: ['Emil Forsberg', 'Yussuf Poulsen', 'Péter Gulácsi', 'Willi Orban'], a: 1, hint: 'Poulsen kam 2013 von Lyngby, als Leipzig in der 3. Liga spielte, und ging den ganzen Weg nach oben mit; Forsberg, Gulácsi und Orban kamen alle 2015, als der Verein schon in der 2. Bundesliga spielte.' },
+      { id: 'q_cc1118', q: 'Welcher deutsche Nationalspieler spielte für RB Leipzig in der dritten und zweiten Liga, bevor ihn Bayern München 2015 verpflichtete?', o: ['Leon Goretzka', 'Emre Can', 'Niklas Süle', 'Joshua Kimmich'], a: 3, hint: 'Kimmich verbrachte ab 2013 zwei Spielzeiten in Leipzig, und Bayern einigte sich im Januar 2015 auf seine Verpflichtung — bevor Leipzig je ein Bundesliga-Spiel bestritten hatte.' },
+      { id: 'q_8ae68f', q: 'Wer erzielte 2020 in Lissabon das Siegtor beim 2:1 gegen Atlético Madrid im Viertelfinale der Champions League?', o: ['Marcel Sabitzer', 'Emil Forsberg', 'Tyler Adams', 'Yussuf Poulsen'], a: 2, hint: 'Der abgefälschte Schuss des US-amerikanischen Mittelfeldspielers kurz vor Schluss brachte Leipzig erstmals in ein europäisches Halbfinale, nachdem João Félix per Elfmeter ausgeglichen hatte.' },
+      { id: 'q_301ce4', q: 'Wer trainierte RB Leipzig von 2012 bis Anfang 2015 und stieg mit dem Verein aus der Regionalliga und danach aus der 3. Liga auf?', o: ['Ralf Rangnick', 'Peter Pacult', 'Alexander Zorniger', 'Ralph Hasenhüttl'], a: 2, hint: 'Zornigers Mannschaft mit ihrem hohen Pressing stieg 2013 und 2014 auf; er ging Anfang 2015 und übernahm im Sommer einen anderen Bundesligisten.' },
+      { id: 'q_908db9', en: 'German football\'s rules did not allow a company name in a club\'s name', q: 'Der volle Name von RB Leipzig lautet RasenBallsport Leipzig, nicht Red Bull Leipzig. Warum?', o: ['Ein anderer deutscher Verein besaß bereits die Rechte am Namen «Red Bull Leipzig»', 'Die Regeln des deutschen Fußballs erlaubten keinen Firmennamen im Vereinsnamen', 'Red Bull wollte den Verein unabhängig wirken lassen, um öffentliche Gelder zu erhalten', 'Die Stadt Leipzig bestimmt, wie sich jeder Verein nennen darf, der ihr Stadion nutzt'], a: 1, hint: 'Das Kunstwort «RasenBallsport» existiert nur, damit die Initialen RB bleiben konnten — der Verein musste eine Einschränkung umgehen, was ein offizieller Vereinsname enthalten darf.' },
+      { id: 'q_0191bd', q: 'Wer war Sportdirektor und Trainer in Personalunion, als RB Leipzig 2015/16 in die Bundesliga aufstieg?', o: ['Ralf Rangnick', 'Roger Schmidt', 'Alexander Zorniger', 'Julian Nagelsmann'], a: 0, hint: 'Rangnick leitete seit 2012 den sportlichen Bereich und stellte sich für die Aufstiegssaison selbst an die Seitenlinie, übergab die Mannschaft danach und kehrte in die Vereinsführung zurück.' },
+      { id: 'q_03665f', q: 'Welchen Premier-League-Klub schaltete RB Leipzig im Achtelfinale der Champions League 2019/20 mit insgesamt 4:0 aus?', o: ['Chelsea', 'Tottenham Hotspur', 'Liverpool', 'Manchester City'], a: 1, hint: 'Nagelsmanns Mannschaft gewann 1:0 bei den Spurs durch einen Elfmeter von Timo Werner und dann 3:0 in Leipzig — ein Duell, das als junger Trainer gegen José Mourinho angekündigt wurde.' },
+      { id: 'q_f74eb9', q: 'RB Leipzig gewann 2022 in Berlin seinen ersten DFB-Pokal im Elfmeterschießen nach einem 1:1. Wer war der Gegner?', o: ['Eintracht Frankfurt', 'SC Freiburg', 'Union Berlin', 'Hamburger SV'], a: 1, hint: 'Ein Ausgleich in der 76. Minute gegen Freiburg erzwang die Verlängerung, und Domenico Tedescos Mannschaft gewann das Elfmeterschießen 4:2.' },
+      { id: 'q_ce7c9d', q: 'Wer erzielte einen Hattrick, als RB Leipzig Bayern München in München 3:0 schlug und den DFL-Supercup 2023 gewann?', o: ['Loïs Openda', 'Timo Werner', 'Xavi Simons', 'Dani Olmo'], a: 3, hint: 'Dani Olmo traf nach drei Minuten, erneut vor der Pause und dann per Elfmeter — Leipzigs erster Supercup.' },
+      { id: 'q_dcf9a0', q: 'An welchen Verein verkaufte RB Leipzig 2023 Dominik Szoboszlai?', o: ['Liverpool', 'Arsenal', 'Napoli', 'Bayern München'], a: 0, hint: 'Liverpool zog die Ausstiegsklausel des Ungarn — derselbe Weg von Salzburg über Leipzig nach Anfield, den Naby Keïta Jahre zuvor gegangen war.' },
+      { id: 'q_a019aa', q: 'Wer war Trainer von RB Leipzig, als der Verein in seiner ersten Bundesliga-Saison Zweiter wurde?', o: ['Julian Nagelsmann', 'Ralph Hasenhüttl', 'Jesse Marsch', 'Ralf Rangnick'], a: 1, hint: 'Der Österreicher kam 2016, nachdem er gerade den Aufsteiger Ingolstadt in der Bundesliga gehalten hatte, und führte Leipzig sofort in die Champions League.' },
+    ],
+    copy: {
+      tasterEyebrow: 'Kostenlos testen · Ohne Anmeldung',
+      tasterH: 'Wie gut kennst du die Roten Bullen wirklich?',
+      tasterPh: 'Zehn schnelle Fragen, um deinen Leipzig-Ball-IQ zu messen.',
+      tasterNote: 'Beispielfragen — im vollständigen Quiz warten viel mehr.',
+      playSection: 'Das Leipzig-Quiz spielen',
+      playSub: 'Tippe auf eine Antwort — sofortige Auflösung und die Geschichte dahinter.',
+      faqH: 'RB Leipzig Quiz — Häufige Fragen',
+      aboutQ: 'Über das Leipzig-Quiz',
+      bandH: 'Du denkst, du kennst die Roten Bullen? Beweise es in der App.',
+      bandP: 'Siegesserien, 1-gegen-1 in Echtzeit und eine Wertung von 99 — alle Quizze in einer App. Die App ist auf Englisch.',
+      alsoH: 'Dieselbe Seite auf Englisch',
+      alsoP: 'Das ist die deutsche Fassung unseres Leipzig-Quiz. Alle Fragen im Original:',
+      alsoLink: 'RB Leipzig quiz (English)',
+      statsLine: 'Die Leipzig-Fragen bei Ball IQ verteilen sich auf drei Schwierigkeitsgrade — leicht, mittel und schwer — alle mit Erklärung.',
     },
   },
 ];

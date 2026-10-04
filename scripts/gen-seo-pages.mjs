@@ -290,6 +290,8 @@ const CLUB_BADGE = {
   'santos': 'SAN', 'real-sociedad': 'RSO',
   // SCI not INT: Inter Milan holds INT and the abbreviation map has no duplicates.
   'sao-paulo': 'SAO', 'gremio': 'GRE', 'internacional': 'SCI', 'cruzeiro': 'CRU',
+  'atletico-mineiro': 'CAM', 'vasco-da-gama': 'VAS', 'botafogo': 'BOT', 'fluminense': 'FLU',
+  'al-hilal': 'HIL', 'al-nassr': 'NAS',
   'manchester-united': 'MUN', arsenal: 'ARS', 'manchester-city': 'MCI', liverpool: 'LIV',
   chelsea: 'CHE', tottenham: 'TOT', newcastle: 'NEW', barcelona: 'BAR', 'real-madrid': 'RMA',
   'atletico-madrid': 'ATM', juventus: 'JUV', 'inter-milan': 'INT', 'ac-milan': 'MIL',
@@ -361,6 +363,14 @@ const CLUB_COLOR = {
   // existing value: the club publishes no numeric colour spec at all, and both
   // circulating hexes are uncited aggregator entries. See docs/TODO.md.
   'sao-paulo': '#FE0000', 'gremio': '#0D80BF', 'internacional': '#E5050F', 'cruzeiro': '#2F529E',
+  // 2026-10-04. Botafogo's black is from the club's own brand manual; Atlético's
+  // and Vasco's crest black and Fluminense's grená #92062A agree across two crest
+  // palettes (footylogos, colorcodeguide). Three near-black pages, like Corinthians
+  // and Santos, kept true rather than lightened.
+  'atletico-mineiro': '#000000', 'vasco-da-gama': '#000000', 'botafogo': '#000000', 'fluminense': '#92062A',
+  // 2026-10-04. Al Hilal's Power Blue #0028F0 is from the club's own brand
+  // guideline; Al Nassr's yellow #FEDC00 is the club site's brand colour.
+  'al-hilal': '#0028F0', 'al-nassr': '#FEDC00',
   arsenal: '#EF0107', liverpool: '#C8102E', 'manchester-united': '#DA291C',
   barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'manchester-city': '#6CABDD',
   chelsea: '#034694', 'bayern-munich': '#DC052D',
@@ -5557,6 +5567,17 @@ const MORE_META = {
   // PRE-2022 crest — with evidence that was Club América's site tokens, so it was
   // discarded. Very dark, like Juventus and Corinthians; kept true, not lightened.
   'cruz-azul': { code: 'CAZ', color: '#212452', name: 'Cruz Azul' },
+  // Pumas, Monterrey, Tigres (2026-10-04). Monterrey's navy is the one already in
+  // src/lib/clubColour.js; Pumas' crest navy #132347 and Tigres' crest gold #FBAF35
+  // agree across two independent crest palettes (footylogos, colorcodeguide).
+  'pumas-unam': { code: 'PUM', color: '#132347', name: 'Pumas UNAM' },
+  'monterrey': { code: 'MTY', color: '#0B2341', name: 'Monterrey' },
+  'tigres-uanl': { code: 'TIG', color: '#FBAF35', name: 'Tigres UANL' },
+  // Egypt has no roster in leagues.mjs either. Al Ahly's red #D5001A is RGB
+  // 213/0/26 from the club's own logo guideline; Zamalek's crest red #D41D27 is the
+  // footylogos crest palette (2026-10-04).
+  'al-ahly': { code: 'AHL', color: '#D5001A', name: 'Al Ahly' },
+  'zamalek': { code: 'ZAM', color: '#D41D27', name: 'Zamalek' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {
