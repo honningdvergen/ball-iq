@@ -22,6 +22,7 @@ import { initAds } from './lib/ads.js'
 // would equally hide a misconfigured prod deploy, so the boundary must live
 // HERE, above the lazy roots, in the statically-imported entry chunk.
 import { ErrorBoundary } from './components/ErrorBoundary.jsx'
+import { normalizeSupabaseError } from './lib/sentryNormalize.js'
 
 // Sentry initialization — runs before app mount so render errors land in
 // Sentry from the very first paint. DSN is environment-gated: prod builds
@@ -51,7 +52,9 @@ if (import.meta.env.VITE_SENTRY_DSN) {
     tracesSampleRate: isNative ? 0 : 0.1,
     // PII scrub: strip user email + Supabase tokens from breadcrumbs, URLs and
     // event metadata. defaultPII is false; this hardens further.
-    beforeSend(event) {
+    beforeSend(event, hint) {
+      event = normalizeSupabaseError(event, hint)
+      if (!event) return null
       if (event.user) {
         delete event.user.email
         delete event.user.username
