@@ -12,6 +12,8 @@ import { fileURLToPath } from 'node:url';
  */
 const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8');
 const APP = read('../../src/App.jsx');
+// The share-card canvas moved to lib/shareCardRender.js on 2026-10-04 (weight).
+const SHARE_RENDER = read('../../src/lib/shareCardRender.js');
 // The Daily 7 host is the Results screen, extracted from App.jsx on 2026-09-06 (E16).
 const RESULTS = read('../../src/screens/ResultsScreen.jsx');
 const HUB = read('../../src/screens/OnlineHubTab.jsx'); // the Online tab, extracted the same day
@@ -143,8 +145,8 @@ describe('DailyDone — one panel, four surfaces', () => {
       .not.toMatch(/const played = Object\.values\(fCat\)\.some/);
 
     // The shared PNG — the most public surface the rating has.
-    expect(APP).toMatch(/const _rated = card\?\.rated !== false;/);
-    expect(APP, 'the PNG prints a dash, not a number, when unrated')
+    expect(SHARE_RENDER).toMatch(/const _rated = card\?\.rated !== false;/);
+    expect(SHARE_RENDER, 'the PNG prints a dash, not a number, when unrated')
       .toMatch(/_trackedText\(ctx, _rated \? String\(card\?\.overall \?\? "—"\) : "—"/);
 
     // The OG unfurl — api/og.js publishes ov at 48px to anyone who sees it.
