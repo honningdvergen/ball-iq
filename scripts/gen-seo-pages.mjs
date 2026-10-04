@@ -289,6 +289,7 @@ const CLUB_BADGE = {
   'santos': 'SAN', 'real-sociedad': 'RSO',
   // SCI not INT: Inter Milan holds INT and the abbreviation map has no duplicates.
   'sao-paulo': 'SAO', 'gremio': 'GRE', 'internacional': 'SCI', 'cruzeiro': 'CRU',
+  'atletico-mineiro': 'CAM', 'vasco-da-gama': 'VAS', 'botafogo': 'BOT', 'fluminense': 'FLU',
   'manchester-united': 'MUN', arsenal: 'ARS', 'manchester-city': 'MCI', liverpool: 'LIV',
   chelsea: 'CHE', tottenham: 'TOT', newcastle: 'NEW', barcelona: 'BAR', 'real-madrid': 'RMA',
   'atletico-madrid': 'ATM', juventus: 'JUV', 'inter-milan': 'INT', 'ac-milan': 'MIL',
@@ -360,6 +361,11 @@ const CLUB_COLOR = {
   // existing value: the club publishes no numeric colour spec at all, and both
   // circulating hexes are uncited aggregator entries. See docs/TODO.md.
   'sao-paulo': '#FE0000', 'gremio': '#0D80BF', 'internacional': '#E5050F', 'cruzeiro': '#2F529E',
+  // 2026-10-04. Botafogo's black is from the club's own brand manual; Atlético's
+  // and Vasco's crest black and Fluminense's grená #92062A agree across two crest
+  // palettes (footylogos, colorcodeguide). Three near-black pages, like Corinthians
+  // and Santos, kept true rather than lightened.
+  'atletico-mineiro': '#000000', 'vasco-da-gama': '#000000', 'botafogo': '#000000', 'fluminense': '#92062A',
   arsenal: '#EF0107', liverpool: '#C8102E', 'manchester-united': '#DA291C',
   barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'manchester-city': '#6CABDD',
   chelsea: '#034694', 'bayern-munich': '#DC052D',

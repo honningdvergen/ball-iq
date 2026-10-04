@@ -49,6 +49,10 @@ export const NO_ROSTER_COMPETITIONS = new Set([
 
 /** CLUBS[].club (the pack key) -> the exact `league` string in leagues.mjs. */
 export const CLUB_COMPETITION = {
+  "Fluminense": "Brasileirão",
+  "Botafogo": "Brasileirão",
+  "Vasco da Gama": "Brasileirão",
+  "Atlético Mineiro": "Brasileirão",
   "Cruz Azul": "Liga MX",
   "Guadalajara": "Liga MX",
   "Club América": "Liga MX",
