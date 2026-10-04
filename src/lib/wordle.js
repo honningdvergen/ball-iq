@@ -731,3 +731,35 @@ export function computeFootleStreak(today) {
   }
   return streak;
 }
+
+// ── THE FOOTLE CLUE ──────────────────────────────────────────────────────────
+// Footle is the most-played mode and the one most often lost: 230 of 764 plays
+// (30%) in the 30 days to 2026-10-04 ended X/6, and 45% of solves needed a
+// fifth or sixth guess (daily_results). Every other daily in the hub gives a
+// stuck player somewhere to go — Trail adds clubs, Mystery adds career rows —
+// and Footle gave nothing but more letters to guess.
+//
+// So after three misses the player may take ONE clue, built only from
+// WORDLE_FULL_NAMES. That table is already the verified source the reveal line
+// prints ("The answer was Ray Wilkins"), so the clue cannot be wrong unless the
+// reveal is, and it needs no new data per answer. It never contains the
+// surname. A test runs it over every pool and log answer.
+export const FOOTLE_CLUE_AFTER = 3;
+
+export function footleClue(answer) {
+  const [prefix] = WORDLE_FULL_NAMES[answer] || [""];
+  const first = String(prefix || "").trim();
+  if (!first) return "Goes by a single name";
+  // Accents folded to the keyboard's letters: Édouard Mendy reads "E".
+  const initial = first[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+  return `First name starts with ${initial}`;
+}
+
+// The first line of every Footle share. Three builders print it (the game, the
+// Home hero, the review screen) and they must agree, so it lives here. A solve
+// that used the clue says so with 💡 — the grid is compared between strangers,
+// and a clued 3/6 is not the same result as a clean one.
+export function footleShareHead(appName, num, won, guessCount, clue) {
+  const tag = num > 0 ? ` #${num}` : "";
+  return `⚽ ${appName} Footle${tag} ${won ? guessCount : "X"}/6${clue ? " 💡" : ""}`;
+}
