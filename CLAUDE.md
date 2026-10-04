@@ -24,4 +24,6 @@ Never need to bump for normal feature work — the HTTP layer is the foundation;
 
 Project threads run in auto mode, which ignores the bare `"Bash"` allow rule. The narrow `Bash(...)` rules in `.claude/settings.json` are what let routine commands (tests, lint, build, `node scripts/*.mjs` audits and generators, git on the working branch, PR creation) run without a prompt. When a thread starts using a new routine command, add a narrow rule for it rather than a broad one. Force pushes, pushes to `main`, discarding checkouts and PR merges stay behind `ask` rules on purpose.
 
-Committing and pushing to the session's own `claude/*` branch and opening a draft PR are the expected end of every code task in this repo.
+Cloud project threads end a code task by committing and pushing to their own `claude/*` branch and opening a draft PR.
+
+**The local chat on Alex's Mac ("Website critique") works differently, by Alex's choice (2026-10-04):** it commits straight to `main` and pushes, one logical change per commit, never `git add -A` (a social session writes under `social/` in the same checkout), never `--amend` (other sessions commit to `main` too). Every push is followed by checking the production deploy status on that commit and that the changed page actually rendered; a red or pending deploy is not "shipped". Run `npm run build` before pushing: its last step is the Home JS budget gate, and a build that fails it leaves production silently on the previous deploy.

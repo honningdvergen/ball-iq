@@ -1,3 +1,220 @@
+## 2026-10-05 — ⭐ BALL IQ 2.0: the audit, graded, and the master list
+
+Alex's mandate (2026-10-04): make Ball IQ 2.0, the best football app and the
+best football website there is, brick by brick; 300+ club packs; a new icon;
+real money before the year ends. Eight audits ran on 4 to 5 Oct. The full
+reports are on Alex's Mac in `~/ball-iq-audit/2026-10-04/` (numbers, seo,
+clarity, market, aso, product, engineering, content) and are deliberately NOT
+committed: this repo is public and they hold competitor notes and pricing.
+The file names below (`seo.md` §7 and so on) refer to that folder. This
+section is the list that came out of them.
+Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
+
+### The grades
+
+| Area | Grade | The one fact behind it |
+|---|---|---|
+| Audience size | D+ | 35 signed-in weekly players, flat for 8 weeks; about 500 web visitors a week |
+| Search acquisition | C− | Club pages rank 6 to 7; "football quiz" sits at 11.7 |
+| Activation | B− | A stranger reaches a question in zero taps on a club page |
+| Retention | D | Club-page landers come back 2.6% of the time; daily-game landers about 10% |
+| Web to app | D | 1.4% of visitors tap a store badge |
+| Measurement | C | No pageview, session, country or referrer instrument of our own |
+| SEO technical | B+ | Fast, clean, indexable; fake `lastmod`, duplicate no-slash URLs |
+| SEO authority | D | Almost no editorial links |
+| AdSense readiness | D+ | Sameness across club pages; no named publisher; site is 5 months old |
+| Store listings | D+ | 14 ratings in total; outside the top 200 of every category chart |
+| Product | see `product.md` | Footle result screen is the strongest loop; Daily 7 finish is a dead end |
+| Engineering | B− / C | Gates work (they caught 3 bad deploys on 4 Oct); `App.jsx` is 9,277 lines |
+| Native release readiness | C | Nothing from the 20 PRs of 4 Oct is device-tested |
+| Content: coverage | C | 119 of 371 roster clubs |
+| Content: quality | B+ | Every repo audit passes; the fact-check below found no wrong answer key |
+| Market position | B / D+ | Differentiated product; the name "Ball IQ" is shared by six other products |
+
+### 0. Shipped on 5 Oct (this session)
+
+- [x] **Fact-check of all 13 new club packs** (14 independent verifiers, every
+      question). No wrong answer key. 53 stems or hints corrected, 4 questions
+      removed (`q_7deca0`, `q_827c1f`, `q_0110da`, `q_55727f`). The same
+      corrections carried into the Spanish and Portuguese copies (23 strings).
+      Verdict files: `~/ball-iq-audit/2026-10-04/verify/` (and `apply.mjs`,
+      the script that applied them).
+- [x] **Question-health PR #3's findings** applied: Bojan joined Stoke in 2014,
+      Toshack won three promotions, and "Klose is the all-time World Cup top
+      scorer" is now keyed FALSE (Messi passed him at the 2026 World Cup).
+- [x] **"undefined" printed as an explanation** on the Daily 7 page and on the
+      eight translated `/xx/quiz/` hubs when a question had no hint. Three
+      renderers now print nothing instead. (Found by the product walkthrough.)
+- [x] **Search snippet control on every `/quiz/` page**: the app band, the
+      "how we check" line, quiz-about-the-quiz FAQs and quiz-about-the-quiz
+      sentences are `data-nosnippet`; the closing paragraph shared by 32 club
+      write-ups no longer renders. READ ON 22 OCT: CTR at flat position for
+      Liverpool, Arsenal, Real Madrid, Barcelona, 14 days against 14.
+- [x] **Daily 7 explanations.** 280 scheduled questions had none (251 of the
+      next 371 days had at least one). Seven verifier agents wrote sourced
+      explanations; they also caught 13 loose or stale stems (Ronaldo's
+      seizure was on the day of the 1998 final, not the day before; England
+      v France 2022 had no shootout; "Ruhrderby" was a second correct option).
+      Method and outputs: `~/ball-iq-audit/2026-10-04/hints/`.
+- [x] **Home budget gate double-counted Sentry on this Mac** (845 KB measured,
+      reported as 917 > 909). It now detects the SDK in the built chunks.
+- [x] **Footle answer hub title** no longer carries a puzzle number or date
+      (Google showed a stale one).
+- [x] **`/quiz/clubs/` said "350+ Football Clubs"** with a third of that live.
+      Title and sub line now count the quizzes that exist.
+- [x] **Footle #212 and #218** were SHEVA and CARRA (terrace nicknames, not
+      surnames). Re-keyed to SUKER and WHITE; both stay valid guesses.
+- [x] `club-alias.mjs` knows QPR (the coverage map listed a live club as missing).
+
+### 1. This week, before the 1.7.6 cut
+
+- [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
+      questions that had none are done (section 0), but about one MCQ in
+      seven across the bank still has no explanation, mostly World Cup, UCL,
+      Records and Managers. Same method: verifier agents, 40 per batch,
+      `apply-hints.mjs`. Until then the pages print no "Why" for those.
+- [ ] **Merge #33** (instrument register stops conflicting), then **finish and
+      merge #27** (reminder offer at the club-quiz finish). #27 needs three
+      fixes first: `.bq-remind[hidden]{display:none}`, the VAPID-mismatch
+      branch from `webpushVisitor.js:62`, and the three strings in es/pt/tr/de.
+      Close #3 (its findings are applied).
+- [ ] **Daily 7 finish is a dead end**: add the "Still open today" rows that
+      the Footle and Trail results already have. Same on the club-quiz finish
+      (one row to today's Footle). This is change 2 in `numbers.md`.
+- [ ] **Consent banner covers Share on the Footle result** (it mounts exactly
+      when the result appears). Either mount it earlier (first interaction) or
+      lift the result's action row above it.
+- [ ] **Mystery Player dead clicks** (12.6% of sessions): the "cold" label and
+      the "unlimited guesses" line get tapped. Make "cold/warm/hot" explain
+      itself on tap, and say what the rank number means.
+- [ ] Transfer Trail how-to says "the first club and nothing else"; the game
+      opens with two clubs. Fix the copy.
+- [ ] `/play` first visit: "Start building mine" on the example-card modal
+      starts a 7-question game with no warning, and the modal blocks Sign in.
+- [ ] Translated club pages: the Spanish finish says "that is all we have"
+      after 10 questions; the footer link farm is English. Decide per language
+      whether to translate the footer or cut it to the localised pages.
+- [ ] Three engineering fixes for local gates: longer timeout on the two
+      bank-import tests, drop the dead `spike-nightly` schedule, stop tracking
+      `footlePractice.js` or make it stable per commit.
+
+### 2. Native 1.7.6: live on both stores by 14 Oct (hard deadline 19 Oct)
+
+Daily 7 Q1 diverges for old builds on 19 Oct; Trail #85 on 26 Oct.
+
+- [ ] Tue 6 Oct: release commit. Trail freeze, version fields to 1.7.6 in
+      `package.json`, `src/lib/appMeta.js`, iOS build 140, Android versionCode 53.
+- [ ] Tue 6 Oct: build from a CLEAN CLONE (the shared checkout is dirty with
+      the social session's files), iOS 27 simulator sweep of every screen.
+- [ ] Store text, in the SAME submission: remove "written by hand" and "never
+      auto-generated" (false: waves are researched by a pipeline and verified);
+      replace "No ads" with "Free to play" everywhere (39 places, list in
+      `aso.md` §9) so the ad decision is not blocked by our own listing.
+- [ ] Draft fixes in `aso.md` §7.4: UK subtitle, UK keywords, repeated words in
+      ko/nb/sv/nl, the four privacy URLs. One field at a time. **(Alex saves)**
+- [ ] Wed 7 Oct: TestFlight and Play Internal testing on real phones. **(Alex)**
+      The Android emulator was deleted on 1 Oct; a real Android phone is needed.
+- [ ] Fri 9 Oct: submit iOS, promote Android. **(Alex)**
+- [ ] After release: upload native source maps to Sentry; read crashes by release.
+
+### 3. Stores: ratings and the listing
+
+- [ ] **Ratings from 14 to 25+ by 1 Nov.** Ask after a win, not on a timer;
+      send existing players the direct review link once. The top 10 for
+      "football quiz" in the UK have 24 to 3,616 UK ratings; we have 3 there.
+- [ ] **New icon** (Alex's ask): flat, bold, legible at 29 px, not the
+      brain-ball. Three candidates, Alex picks, then a Play listing experiment.
+- [ ] New first three screenshots for both stores (Play still shows 8 stale ones).
+- [ ] A real Norwegian Play listing (the current one is machine-translated). **(Alex reads)**
+- [ ] One concentrated install week in the UK or Norway around the release.
+
+### 4. Search
+
+- [ ] **GSC API key** so reads are query by page by day (`scripts/gsc.mjs` is
+      ready; setup steps in its header). **(Alex creates the key)**
+- [ ] Read the overdue club-title test properly; revert the three if it holds.
+- [ ] Recovery read: club football resumes 10 Oct. Read the four big club
+      pages for 12 to 18 Oct (complete in GSC about 21 Oct).
+- [ ] `/quiz/` should be playable and fresh at the top (it targets "football quiz").
+- [ ] Technical batch on a preview deploy first: real `lastmod` per page, 308
+      for no-slash URLs, the 34,000 hidden words on the Premier League page,
+      drop or merge the three zero-click pages.
+- [ ] **Ten editorial referring domains in 60 days**: a data story from real
+      answers, an embeddable club daily, outreach to "games like Wordle" lists.
+- [ ] **Name the publisher** on About and Contact, plus an editorial and
+      corrections policy. Store names stay as they are (Touchline Studios on
+      Play, Alexander Olsen on the App Store). **(Alex approves the wording)**
+
+### 5. Clubs: 119 to 300+
+
+The collision to rule on **(Alex)**: the market and SEO audits both say more
+templated club pages is not the growth lever and is what the ad review named;
+the mandate says 300+. The plan that satisfies both:
+
+- [ ] **Packs go into the APP at full speed** (no page needed): they are
+      content for players we already have.
+- [ ] **Web pages are paced**: 8 to 10 a week, one league per wave, at most 30
+      new pages before the AdSense review, none in the three weeks before it.
+      Each page needs a 350-word club-only write-up, four club FAQs, a records
+      block, under 30% shared text.
+- [ ] Wave 1 (12 Oct): rest of the Championship (4), Villarreal, Werder Bremen,
+      Stuttgart, Gladbach, Aberdeen. Wave 2 (19 Oct): Hearts, Hibs, Bologna,
+      Genoa, Lille, Lens, Köln, Espanyol. Then freeze to the review. Full
+      26-wave table in `content.md` §2.
+- [ ] Before wave 4: move the club tables to a lazy generated module (235
+      bytes per club on Home's eager path; headroom runs out near wave 13).
+- [ ] Before wave 8: split the bank chunk by league.
+- [ ] Forge gates to add: era cap (two pre-1950 identity questions per club),
+      category spread (a wave filed all 400 non-English questions under
+      History), an independent verifier pass on every wave before it ships.
+- [ ] Top up the 12 thin packs (nine sit at the build floor).
+- [ ] About 15 to 20 roster clubs (San Diego FC, NEOM) may not have 15 honest
+      questions: mini-pack class or leave as coming soon. **(Alex)**
+
+### 6. Daily games runway
+
+- [ ] Mystery Player repeats from 5 Nov, Transfer Trail from 13 Nov, Footle
+      from 21 Nov. Extend all three pools before mid-November (Footle needs
+      about 200 more whole surnames of 5 to 8 letters).
+- [ ] Grid log ends 10 March 2027.
+- [ ] Ballon d'Or list on 26 Oct; calendar editions for El Clásico (25 Oct),
+      Ballon d'Or week, deadline day (1 Feb).
+- [ ] Start logging right and wrong per question id; re-rate difficulty from it.
+
+### 7. Measurement
+
+- [ ] A first-party pageview + session + referrer + country event (or confirm
+      PostHog has real visitor events and read it there).
+- [ ] `signup_attribution` has 0 rows: verify with a real tagged tap.
+- [ ] Sentry: resolve the fixed issues, filter extension CSP noise, look at
+      BALL-IQ-2K (iOS build 139 Settings crash).
+- [ ] Two-week reads, 19 Oct: club-lander return (2.6% now, target 5%), store
+      tappers (1.4% now, target 3%), Footle web loss rate (39% now).
+
+### 8. Money (before the year ends)
+
+Order, from `market.md` §5: today's audience earns about $10 a month from ads.
+
+- [ ] A named sponsor for one daily game (est. £250 to 750 a month). Pitch deck
+      from real numbers once the pageview instrument exists.
+- [ ] Supporter tier at about £1.99 a month (no ads ever, a badge, early packs).
+- [ ] AdSense resubmission mid to late November, only when the reviewer
+      checklist in `seo.md` §7 reads "confident". A third rejection can lock the button.
+- [ ] Rewarded video plus a £2.99 remove-ads purchase in Q1 2027. No banners
+      in the app until past 100 ratings.
+- [ ] ENK registration and a PO box before trader status on the stores. **(Alex)**
+
+### 9. Engineering health (after the 1.7.6 cut)
+
+- [ ] Protect `main` on GitHub (no force push, no delete). **(Alex decides;
+      this local chat pushes straight to main, so required reviews stay off.)**
+- [ ] Win back budget: Sentry SDK after first paint (about 66 KB), daily-game
+      logs off Home (about 58 KB). Home sits at 852 of 909 KB.
+- [ ] `App.jsx` is 9,277 lines; 129 lint warnings are hidden by `--quiet`.
+      Turn `exhaustive-deps` into errors one area at a time.
+- [ ] Finish moving `social/` to its own repo (agreed 2 Oct).
+- [ ] Capacitor 8.
+
 ## 2026-09-21 — 🚨 FOUR DAYS OF SILENTLY FAILED DEPLOYS: the cause is fixed, the silence is not
 
 Every production deploy from 5303b4b0 (09-17, the Brasileirão wave) to 09-21
