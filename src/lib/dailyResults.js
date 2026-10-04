@@ -88,6 +88,8 @@ export function hasRecorded(game, edition) {
 export async function recordDailyResult({ game, edition, bucket, won = true }) {
   if (!DAILY_GAMES.includes(game) || !Number.isInteger(edition) || edition < 0) return false;
   if (!Number.isInteger(bucket) || bucket < 0 || bucket > 30) return false;
+  // A Daily 7 score above 7 is another game's result leaking in (2026-10-04).
+  if (game === 'daily7' && bucket > 7) return false;
   if (hasRecorded(game, edition)) return true;
   if (synthetic() || !URL_ || !KEY_) return false;
   // ⚠️ NO IDENTIFIER FROM NATIVE. The store listing promises no analytics on the
