@@ -4,7 +4,7 @@ import { dateToYMD } from "../lib/date.js";
 import { Home, Share, Flame } from "lucide-react";
 import { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
-import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, gradeWordleGuess } from "../lib/wordle.js";
+import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, gradeWordleGuess, footleShareHead } from "../lib/wordle.js";
 import { CB_MODE, DailyHeroCountdown, FootleGetAppCTA, IS_NATIVE, InstallBanner, ReviewQuestionCard, TIMINGS, shareCard } from "../App.jsx";
 
 export function Mini7Strip({ history, today }) {
@@ -157,7 +157,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
 // share path (shareCard + the canonical FootballWordle shareText
 // template). Wordle streak isn't tracked separately yet — no streak
 // line until that's its own state.
-export function PuzzleReviewScreen({ date, guesses, status, onBack }) {
+export function PuzzleReviewScreen({ date, guesses, status, clue = false, onBack }) {
   // J1/J2 fix: was using `WORDLE_PLAYERS[dayIndex % length]` here, which
   // disagrees with the stride formula used by the active game and the home
   // FootleHero. Result: Review re-graded the user's guesses against the
@@ -204,25 +204,23 @@ export function PuzzleReviewScreen({ date, guesses, status, onBack }) {
       const grades = gradeWordleGuess(g, answer);
       return grades.map(c => c === "green" ? (CB_MODE() ? "🟧" : "🟩") : c === "yellow" ? (CB_MODE() ? "🟦" : "🟨") : "⬛").join("");
     }).join("\n");
-    const num = getFootleNumber(date);
-    const tag = num > 0 ? ` #${num}` : "";
     const streak = won ? computeFootleStreak(date) : 0;
     // Wordle-convention first line ("Footle #64 3/6") — the number + compact
     // score is what makes grids comparable between strangers in a feed. The
     // grid right below disambiguates "3/6" (the Sprint #99 concern), so the
     // explicit "guesses" wording lives only on the PNG card headline.
-    const head = `⚽ ${APP_NAME} Footle${tag} ${won ? guesses.length : "X"}/6`;
+    const head = footleShareHead(APP_NAME, getFootleNumber(date), won, guesses.length, clue);
     const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
-  }, [guesses, answer, won, lost, hasData, date]);
+  }, [guesses, answer, won, lost, hasData, date, clue]);
 
   const onShare = useCallback(async () => {
     if (!shareText) return;
     const grades = guesses.map(g => gradeWordleGuess(g, answer));
     await shareCard("wordle", {
-      score: guesses.length, total: 6, grades, dateLabel, failed: lost, num: getFootleNumber(date),
+      score: guesses.length, total: 6, grades, dateLabel, failed: lost, num: getFootleNumber(date), clue,
     }, { onToast: () => {}, textFallback: shareText });
-  }, [shareText, guesses, answer, dateLabel, lost, date]);
+  }, [shareText, guesses, answer, dateLabel, lost, date, clue]);
 
   // Read-only grid. Phase 5z polish: drop empty rows on won state —
   // show only the rows the user actually used. Lost state keeps all 6

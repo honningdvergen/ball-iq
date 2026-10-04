@@ -2234,6 +2234,11 @@ export function loopEvent(name, meta) {
   try {
     if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
   } catch {}
+  // PostHog mirror (web only, consent-gated: biqTrack exists only once
+  // public/ph.js has been allowed to load).
+  try {
+    if (!IS_NATIVE && typeof window !== "undefined" && typeof window.biqTrack === "function") window.biqTrack(name, meta);
+  } catch {}
   try {
     // ⚠️ NATIVE IS COUNTED, BUT NEVER IDENTIFIED — and the privacy policy says
     // so in those words. Decision recorded 2026-08-23 (Alex, from three
@@ -3100,7 +3105,9 @@ async function generateShareCard(type, data) {
     const grades = Array.isArray(data?.grades) ? data.grades : [];
     const score = data?.score ?? 0;
     const total = data?.total ?? 6;
-    const dateLabel = data?.dateLabel || "";
+    // A clued solve is marked on the card as in the text (lib/wordle.js
+    // footleShareHead) — the card is compared between strangers too.
+    const dateLabel = (data?.dateLabel || "") + (data?.clue ? " · with a clue" : "");
     const headline = data?.failed ? "Didn't solve today" : `Solved in ${score} ${score === 1 ? "guess" : "guesses"}`;
     const colorMap = { green: "#58CC02", yellow: "#FFC107", grey: "#3A3F55" };
 
@@ -4280,6 +4287,7 @@ class TabErrorBoundary extends React.Component {
     return { hasError: true };
   }
   componentDidCatch(error, info) {
+    if (window.__biqReloading) return; // stale chunk; main.jsx is reloading
     console.error(`[boundary:${this.props.name || "tab"}]`, error?.message || "Unknown error");
     // A crash the player SAW is the worst possible prelude to a rating ask.
     try { markBadReviewMoment(); } catch {}
@@ -8454,15 +8462,17 @@ function AppInner() {
     const ymd = dateToYMD(date);
     let guesses = [];
     let status = ws.kind;
+    let clue = false;
     try {
       const raw = localStorage.getItem(`biq_wordle_${ymd}`);
       if (raw) {
         const p = JSON.parse(raw);
         if (Array.isArray(p?.guesses)) guesses = p.guesses;
         if (typeof p?.status === "string") status = p.status;
+        clue = !!p?.clue;
       }
     } catch {}
-    setPuzzleReviewState({ date, guesses, status });
+    setPuzzleReviewState({ date, guesses, status, clue });
     setScreen("puzzle-review");
   }, []);
 
@@ -9058,6 +9068,7 @@ function AppInner() {
             date={puzzleReviewState.date}
             guesses={puzzleReviewState.guesses}
             status={puzzleReviewState.status}
+            clue={puzzleReviewState.clue}
             onBack={() => setScreen("home")}
           />
         )}
@@ -9698,6 +9709,9 @@ export default function App() {
   // and the script fails to load on every launch, producing a console
   // error + a wasted network attempt. Web/PWA path unchanged.
   const isNative = Capacitor.isNativePlatform?.();
+  // The /_vercel/* script only exists on Vercel; a local preview gets
+  // index.html back and throws "Unexpected token '<'" (BALL-IQ-X).
+  const onVercel = !isNative && typeof location !== 'undefined' && !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname);
   return (
     <>
       {/* Pre-review audit: VersionBanner compares BUILT_SHA against a
@@ -9706,7 +9720,7 @@ export default function App() {
           so no update-nag UI can ever render inside the native app. */}
       {!isNative && <VersionBanner />}
       <ErrorBoundary><AppGate /></ErrorBoundary>
-      {!isNative && <SpeedInsights />}
+      {onVercel && <SpeedInsights />}
     </>
   );
 }

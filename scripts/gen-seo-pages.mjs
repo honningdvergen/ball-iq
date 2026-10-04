@@ -940,6 +940,7 @@ if(x)for(var xk in x){if(Object.prototype.hasOwnProperty.call(x,xk))meta[xk]=x[x
 try{
 var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
 }catch(e){}
+try{if(window.biqTrack)window.biqTrack(n,meta)}catch(e){}
 try{fetch('${BQ_SUPABASE_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
 headers:{'content-type':'application/json','apikey':'${BQ_PUBLISHABLE_KEY}','authorization':'Bearer ${BQ_PUBLISHABLE_KEY}'},
 body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:gVid()})}).catch(function(){})}catch(e){}}
@@ -993,6 +994,7 @@ var seg=location.pathname.split('/').filter(Boolean);
 if(seg[1])meta.slug=seg[1];
 var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
 }catch(e){}
+try{if(window.biqTrack)window.biqTrack(n,meta)}catch(e){}
 try{fetch('${BQ_SUPABASE_URL}/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
 headers:{'content-type':'application/json','apikey':'${BQ_PUBLISHABLE_KEY}','authorization':'Bearer ${BQ_PUBLISHABLE_KEY}'},
 body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:qVid()})}).catch(function(){})}catch(e){}}
@@ -1421,6 +1423,11 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
     c.async = true;
     c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
     document.head.appendChild(c);
+    /* PostHog rides the same decision — see public/ph.js. */
+    var ph = document.createElement('script');
+    ph.async = true;
+    ph.src = '/ph.js';
+    document.head.appendChild(ph);
   } else if (choice !== 'denied') {
     /* ⚠️ DEFER THE BAR ON PAGES WHOSE POINT IS A PLAYABLE QUESTION.
        index.html sets this flag for deep links and the homepage; the static
@@ -2859,9 +2866,11 @@ function finish(win){playing=false;setHidden(false);inp.disabled=true;give.hidde
   shareB.dataset.text=(win?'I named all '+total+' — '+D.title+' in '+mins+' min 🏆':'I named '+n+' of '+total+' — '+D.title+' 👀')+'\\nTry it: '+location.origin+location.pathname}
 btn.addEventListener('click',function(){playing=true;t0=Date.now();bar.hidden=true;wrap.hidden=false;
   setHidden(true);inp.focus();
-  try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-start')}catch(e){}});
+  try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-start')}catch(e){}
+  try{if(!lSyn()&&window.biqTrack)window.biqTrack('list-play-start')}catch(e){}});
 give.addEventListener('click',function(){finish(false);
-  try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-giveup')}catch(e){}});
+  try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-giveup')}catch(e){}
+  try{if(!lSyn()&&window.biqTrack)window.biqTrack('list-play-giveup')}catch(e){}});
 inp.addEventListener('keydown',function(e){if(e.key==='Enter')guess(inp.value)});
 inp.addEventListener('input',function(){if(inp.value.length>=3)guess(inp.value)});
 shareB.addEventListener('click',function(){var t=shareB.dataset.text||'';

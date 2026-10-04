@@ -19,6 +19,9 @@ export class ErrorBoundary extends React.Component {
     return { hasError: true, error };
   }
   componentDidCatch(error, info) {
+    // A stale chunk failed and main.jsx is already reloading the page: the
+    // error is expected and the fallback would only flash before navigation.
+    if (window.__biqReloading) return;
     console.error("[boundary]", error?.message || "Unknown error");
     // ⚠️ A WHITE SCREEN IS THE WORST MOMENT IN THE PRODUCT, and it was the one
     // moment the rating engine did not know about. TabErrorBoundary marked it;
@@ -50,6 +53,7 @@ export class ErrorBoundary extends React.Component {
     } catch {}
   }
   render() {
+    if (this.state.hasError && window.__biqReloading) return null;
     if (this.state.hasError) {
       return (
         <div style={{

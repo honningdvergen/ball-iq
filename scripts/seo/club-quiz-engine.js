@@ -201,6 +201,7 @@ try{
   var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
 }catch(e){}
 if(x)for(var xk in x){if(Object.prototype.hasOwnProperty.call(x,xk))meta[xk]=x[xk]}
+try{if(window.biqTrack)window.biqTrack(n,meta)}catch(e){}
 try{fetch(BQ_SB+'/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
 headers:{'content-type':'application/json','apikey':BQ_PK,'authorization':'Bearer '+BQ_PK},
 body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:bqVid()})}).catch(function(){})}catch(e){}}
@@ -528,10 +529,15 @@ var bqStore=root.getAttribute('data-store')||'/get';
    biq_pending_rounds to localStorage ON THE SAME ORIGIN, so a round follows a
    reader into the WEB app and cannot follow one into a freshly installed
    native app. Offer what is true of the app itself, not of this round. */
-var faceTiles='';for(var fi=0;fi<6;fi++)faceTiles+='<i'+(fi===0?' class="cur"':'')+'></i>';
-var appDoor='<a class="bq-door" href="'+bqStore+'?src=clubq-finish"><span class="bq-dfaces" aria-hidden="true">'+faceTiles+'</span>'
-+'<span class="bq-dt"><b>'+esc(T('doorTitle','Your full Ball IQ card'))+'</b><span>'+esc(T('doorLine','All six competitions, daily puzzles, streaks and live 1v1.'))+'</span>'
-+'<span class="bq-dgo">'+esc(T('doorGo','Get the app →'))+'</span></span></a>';
+/* ── THE APP LINE IS BACK (2026-10-04) ─────────────────────────────────────
+   The card above replaced a quiet line at the foot of this result, and the
+   line won. Measured on clubq-out-store per distinct finisher: the quiet line
+   (09-05 → 09-11) 16 of 191 = 8.4%; the card (09-11 → 10-04) 15 of 714 =
+   2.1%. Four times fewer installs taps, every week since, while the card was
+   meant to raise them. A boxed promo under a result reads as an ad; a line
+   of text at the foot reads as part of the result. Same href, same src, so
+   the series stays comparable. */
+var appLine='<a class="bq-app" href="'+bqStore+'?src=clubq-finish">'+esc(T('appLine','Also in the app \u2014 streaks, reminders and live 1v1 \u2192'))+'</a>';
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">'+esc(fmt(T('yourIq','Your {name} IQ'),{name:name}))+'</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
 +'<div class="bq-sub">'+esc(fmt(T('right','{sc} of {n} right · {pct}% · best streak {best}'),{sc:sc,n:run.length,pct:G.pct,best:best}))+'</div>'
@@ -540,13 +546,14 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
    app can honour — the app keeps this as the club's league rating. */
 +'<div class="bq-rated">'+esc(T('ratedLine','Medium and hard questions count for more \u2014 the same maths as your Ball IQ card in the app.'))+'</div>'
 +(sday>=2?'<div class="bq-days">'+esc(fmt(T('daysRow','{d} days in a row'),{d:sday}))+'</div>':'')
-+'<div class="bq-row">'+cont+'</div>'+appDoor
++'<div class="bq-row">'+cont+'</div>'
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
    is still the primary action (that decision came from the 94.6% single-page
    measurement); share is the authority lever and gets full width and the club's
    colour, but it does not outrank staying. */
 +'<button class="bq-share" data-share="1">'+esc(fmt(T('share','Share your {name} IQ'),{name:name}))+'</button>'
-+(!hasMore?'<p class="bq-note">'+esc(fmt(T('allDone','That is every {name} question we have here \u2014 a fresh order tomorrow.'),{name:name}))+'</p>':'');
++(!hasMore?'<p class="bq-note">'+esc(fmt(T('allDone','That is every {name} question we have here \u2014 a fresh order tomorrow.'),{name:name}))+'</p>':'')
++appLine;
 /* Remember today's result so a reload does not erase it. The critique's
    returning player finished, refreshed, and met question 1 with the score
    gone and the streak kept — the one number they came back for was the one

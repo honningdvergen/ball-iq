@@ -53,6 +53,7 @@ function visitorId() {
 export function marketingEvent(name, meta) {
   if (synthetic() || !URL_ || !KEY_) return;
   try { if (typeof window !== 'undefined' && typeof window.clarity === 'function') window.clarity('event', name); } catch { /* Clarity is optional and consent-gated */ }
+  try { if (typeof window !== 'undefined' && typeof window.biqTrack === 'function') window.biqTrack(name, { surface: 'scouting-report', ...(meta || {}) }); } catch { /* PostHog is optional and consent-gated */ }
   try {
     // keepalive: the whole point of these events is that they fire on a click
     // that NAVIGATES AWAY. Without it the request is cancelled on unload and

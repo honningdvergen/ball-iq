@@ -10,7 +10,7 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v11'; // v11: /consent.js exempted from cache-first (SW logic changed)
+const CACHE_VERSION = 'balliq-v12'; // v12: /ph.js + /ingest/* (PostHog) exempted from cache-first
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 const DOC_CACHE = `${CACHE_VERSION}-docs`;
@@ -201,6 +201,12 @@ self.addEventListener('fetch', (event) => {
   // never the reverse.
   if (url.origin === self.location.origin && url.pathname === '/consent.js') {
     return; // fall through to the network
+  }
+  // PostHog: /ph.js carries the consent-gated config and /ingest/static/* is
+  // PostHog's own SDK behind our proxy. Pinning either cache-first would
+  // freeze an analytics config (or an SDK) on installed PWAs indefinitely.
+  if (url.origin === self.location.origin && (url.pathname === '/ph.js' || url.pathname.startsWith('/ingest/'))) {
+    return;
   }
 
   // Same-origin static asset → cache-first.
