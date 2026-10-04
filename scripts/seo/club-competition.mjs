@@ -47,6 +47,9 @@ export const NO_ROSTER_COMPETITIONS = new Set([
   // Pumas UNAM, Monterrey, Tigres UANL (2026-10-04): top flight every season since
   // 1962, 1960 and 1997 respectively, under the same suspension.
   'Liga MX',
+  // Al Ahly and Zamalek (2026-10-04). Neither has ever been relegated from the
+  // Egyptian top flight. Re-check at the August audit like every other entry.
+  'Egyptian Premier League',
 ]);
 
 /** CLUBS[].club (the pack key) -> the exact `league` string in leagues.mjs. */
@@ -58,6 +61,10 @@ export const CLUB_COMPETITION = {
   "Tigres UANL": "Liga MX",
   "Monterrey": "Liga MX",
   "Pumas UNAM": "Liga MX",
+  "Zamalek": "Egyptian Premier League",
+  "Al Ahly": "Egyptian Premier League",
+  "Al Nassr": "Saudi Pro League",
+  "Al Hilal": "Saudi Pro League",
   "Preston North End": "Championship",
   "Millwall": "Championship",
   "Cruz Azul": "Liga MX",
