@@ -27,6 +27,15 @@
 .wd-legend-chip{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
 .wd-legend-chip.is-green{background:var(--accent);}
 .wd-legend-chip.is-amber{background:var(--gold);}
+/* The clue (lib/wordle.js footleClue) — in the legend's slot, so the board's
+   height budget is unchanged. Offer = quiet outline control; shown = the
+   answer to it, in amber (the system's "near" colour, never a call to act). */
+.wd-clue{display:flex;align-items:center;justify-content:center;gap:7px;margin:0 auto 4px;min-height:34px;padding:0 14px;border-radius:999px;font:inherit;font-size:13px;font-weight:700;line-height:1;}
+.wd-clue--offer{position:relative;background:var(--s1);border:1px solid var(--border);color:var(--t2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.wd-clue--offer::after{content:"";position:absolute;inset:-5px -4px;}
+.wd-clue--offer:active{background:var(--s2);}
+.wd-clue--offer:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.wd-clue--shown{background:color-mix(in srgb,var(--gold) 12%,transparent);border:1px solid color-mix(in srgb,var(--gold) 35%,transparent);color:var(--gold);}
 .wd-countdown{flex-shrink:0;text-align:right;padding:6px 10px;background:var(--s1);border:1px solid var(--border);border-radius:10px;}
 .wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}

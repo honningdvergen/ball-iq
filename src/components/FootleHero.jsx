@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
-import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStreak, getFootleNumber } from "../lib/wordle.js";
+import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStreak, getFootleNumber, footleShareHead } from "../lib/wordle.js";
 import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
 
 // FootleHero — Home tab daily-zone card. Morning state shows an empty
@@ -92,6 +92,11 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     const gr = gs.map(g => gradeWordleGuess(g, answer));
     return { guesses: gs, grades: gr };
   }, [isDone, inProgress, dateKey, answer]);
+  // Whether today's solve used the Footle clue — the share head marks it.
+  const clue = useMemo(() => {
+    if (!isDone) return false;
+    try { return !!JSON.parse(localStorage.getItem(`biq_wordle_${dateKey}`) || "null")?.clue; } catch { return false; }
+  }, [isDone, dateKey]);
 
   const onShare = useCallback(async () => {
     if (!isDone || !shareCard) return;
@@ -99,18 +104,16 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
       row.map(c => c === "green" ? "🟩" : c === "yellow" ? "🟨" : "⬛").join("")
     ).join("\n");
     const num = getFootleNumber();
-    const tag = num > 0 ? ` #${num}` : "";
-    // Same Wordle-convention format as the other two share builders (review
-    // screen + FootballWordle in App.jsx) — the three MUST stay in sync: the
-    // #N token is what makes grids comparable between strangers in a feed.
-    const head = `⚽ ${APP_NAME} Footle${tag} ${isWon ? guesses.length : "X"}/6`;
+    // One head for all three share builders (lib/wordle.js footleShareHead):
+    // the #N token is what makes grids comparable between strangers in a feed.
+    const head = footleShareHead(APP_NAME, num, isWon, guesses.length, clue);
     const streakLine = isWon && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     const textFallback = `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
     const dateLabel = today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
     await shareCard("wordle", {
-      score: guesses.length, total: 6, grades, dateLabel, failed: isLost, num,
+      score: guesses.length, total: 6, grades, dateLabel, failed: isLost, num, clue,
     }, { onToast: () => {}, textFallback });
-  }, [isDone, isWon, isLost, guesses, grades, streak, today, shareCard]);
+  }, [isDone, isWon, isLost, guesses, grades, clue, streak, today, shareCard]);
 
   // I2: morning grid is a fixed-width Wordle-style teaser (identity over
   // accuracy — the actual answer length leaks in the subtitle anyway).
