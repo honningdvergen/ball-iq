@@ -84,3 +84,9 @@ social/.frames-short/
 social/.frames-xi/
 social/.fmxi/
 social/.bsky-upload.jpg
+
+# Generated instrument register: carries file:line for every analytics writer,
+# so committing it put every open PR in conflict after each merge. Regenerate
+# with `node scripts/audit-instruments.mjs`; the committed source of truth is
+# .audit/instrument-birthdays.tsv.
+.audit/instruments.json
