@@ -140,7 +140,9 @@ console.log(edits.join('\n'));
 // ⚠️ Delegated, not reimplemented — add-questions.mjs owns the stable id scheme
 // and the dedupe, and a second implementation of either would drift.
 const qs = JSON.parse(readFileSync(resolve(cfg.questions), 'utf8'))
-  .map((x) => ({ ...x, cat: cfg.cat, club: qbClub, type: x.type || 'mcq' }));
+  // A per-question cat from the forge (Legends, Managers, Transfers…) wins over
+  // the pack default, so a pack is not flattened into one category.
+  .map((x) => ({ ...x, cat: x.cat || cfg.cat, club: qbClub, type: x.type || 'mcq' }));
 const tmp = resolve(ROOT, '.add-club-questions.json');
 writeFileSync(tmp, JSON.stringify(qs, null, 1), 'utf8');
 if (DRY) { console.log(`  (dry) ${qs.length} questions prepared, not inserted`); process.exit(0); }

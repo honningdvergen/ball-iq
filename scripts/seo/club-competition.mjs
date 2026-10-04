@@ -56,6 +56,8 @@ export const CLUB_COMPETITION = {
   "Al Ahly": "Egyptian Premier League",
   "Al Nassr": "Saudi Pro League",
   "Al Hilal": "Saudi Pro League",
+  "Preston North End": "Championship",
+  "Millwall": "Championship",
   "Cruz Azul": "Liga MX",
   "Guadalajara": "Liga MX",
   "Club América": "Liga MX",
