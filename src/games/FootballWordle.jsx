@@ -492,7 +492,12 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               yesterday in History had no way to tell they were not about to
               spend today's puzzle. It mattered less while the replay was
               broken (it reloaded after 5s); now that it works, it matters. */}
-          <div className="wd-sub">{isArchive ? `No. ${getFootleNumber(date)} · archive` : FOOTLE_SHORT}</div>
+          {/* Once the board is over, the rule has nothing left to teach and the
+              "Next" countdown takes 70px of this row: the rule wrapped to two
+              lines at 360-390px and three at 320 (measured 2026-10-04, header
+              44px -> 54/69px). The puzzle number is what a finished player
+              shares and compares, and it fits on one line at every width. */}
+          <div className="wd-sub">{isArchive ? `No. ${getFootleNumber(date)} · archive` : state.status !== "playing" ? `No. ${getFootleNumber(date)}` : FOOTLE_SHORT}</div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>

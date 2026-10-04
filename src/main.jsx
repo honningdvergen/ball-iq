@@ -54,9 +54,9 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
     dsn: import.meta.env.VITE_SENTRY_DSN,
     environment: import.meta.env.MODE,
     release: import.meta.env.VITE_GIT_SHA,
-    integrations: [
-      Sentry.browserTracingIntegration(),
-    ],
+    // Tracing is added after first paint (below), not here: it is ~40 KB of
+    // Home's eager JS. Crash reporting stays eager.
+    integrations: [],
     tracesSampleRate: isNative ? 0 : 0.1,
     // PII scrub: strip user email + Supabase tokens from breadcrumbs, URLs and
     // event metadata. defaultPII is false; this hardens further.
@@ -84,6 +84,17 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
       return event
     },
   })
+  if (!isNative) {
+    const loadTracing = () => {
+      import('./lib/sentryTracing.js').then((m) => m.enableTracing()).catch(() => {})
+    }
+    const schedule = () => {
+      if ('requestIdleCallback' in window) window.requestIdleCallback(loadTracing, { timeout: 5000 })
+      else setTimeout(loadTracing, 2000)
+    }
+    if (document.readyState === 'complete') schedule()
+    else window.addEventListener('load', schedule, { once: true })
+  }
 }
 
 // Sprint #62 fix 4: request persistent storage so the browser (and
