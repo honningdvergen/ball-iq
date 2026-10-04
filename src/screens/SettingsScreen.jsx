@@ -5,7 +5,7 @@ import Login from "../Login.jsx";
 import { InstallCard } from "../components/InstallCard.jsx";
 import { APP_VERSION, REVIEWER_EMAIL, ABOUT_ACTION_STYLE } from "../lib/appMeta.js";
 import { useInstallPrompt } from "../installPrompt.js";
-import { appStoreUrl, PLAY_STORE_URL, APP_STORE_ID } from "../lib/links.js";
+import { openStoreRating, ratingStore } from "../lib/review.js";
 import { APP_NAME } from "../lib/scoring.js";
 import { supabase } from "../supabase.js";
 import { clearAllUserLocalStorage, useAuth } from "../useAuth.jsx";
@@ -57,17 +57,12 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Link copied' })); } catch {}
   };
-  // Rating is inherently store-specific — send each platform to its OWN store's
-  // review flow. Android used to be sent to the App Store, where it could not
-  // leave a review at all.
+  // Rating is inherently store-specific — openStoreRating sends each platform
+  // to its OWN store's review flow (Android used to be sent to the App Store,
+  // where it could not leave a review at all).
   const rateApp = () => {
-    const ua = typeof navigator !== 'undefined' ? (navigator.userAgent || '') : '';
-    if (/Android/i.test(ua) && !/Windows Phone/i.test(ua)) {
-      try { window.open(PLAY_STORE_URL, '_blank'); } catch {}
-      return;
-    }
-    if (!APP_STORE_ID) { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Store rating opens once we’re live 🙌' })); return; }
-    try { window.open(`${appStoreUrl({ campaign: false })}?action=write-review`, '_blank'); } catch {}
+    const store = openStoreRating();
+    loopEvent("rate-link-tap", { surface: "settings", store });
   };
   // Sprint #71 MM1: replace native confirm() for Sign Out with an in-app
   // modal matching the existing Reset-stats / Delete-account design. Native
@@ -396,7 +391,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           {/* 1.1: three high-value actions — Rate (reviews drive ranking),
               Share (referral growth), Feedback. Equal ghost buttons. */}
           <div style={{display:"flex",gap:8,marginTop:18}}>
-            <button onClick={rateApp} style={ABOUT_ACTION_STYLE} aria-label="Rate Ball IQ on the App Store">
+            <button onClick={rateApp} style={ABOUT_ACTION_STYLE} aria-label={ratingStore() === "play" ? "Rate Ball IQ on Google Play" : "Rate Ball IQ on the App Store"}>
               <Star size={17} strokeWidth={2.25} aria-hidden="true" />
               <span>Rate</span>
             </button>

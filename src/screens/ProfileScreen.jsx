@@ -129,6 +129,8 @@ const BALL_SRC = "/marketing/ball.png";
 // the moment the component moved out — invisible to no-undef, and caught only
 // by react/jsx-no-undef, which was enabled minutes earlier for exactly this.
 import { ProfilePic } from '../components/ProfilePic.jsx';
+import { canRateInStore, openStoreRating, ratingStore } from '../lib/review.js';
+import { loopEvent } from '../App.jsx';
 import BallIqCardFace from '../components/BallIqCardFace.jsx';
 export { ProfilePic };
 
@@ -1902,6 +1904,21 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           </div>
           {onShowWeekly && (
             <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>Weekly Summary</button>
+          )}
+          {/* ⭐ Rate link (ASO deep-dive, 2026-10-04). The native sheet is
+              Apple's ~3-a-year lottery; a link the player taps is outside that
+              budget and allowed by both stores. App only (a web player has
+              nothing installed to rate), and only after five games, so the
+              ask has a basis — same idea as the Footle prior-solve gate. */}
+          {canRateInStore() && (stats.gamesPlayed || 0) >= 5 && (
+            <button
+              className="share-profile-btn"
+              style={{marginBottom:0, display:"inline-flex", alignItems:"center", justifyContent:"center", gap:6}}
+              onClick={() => { const store = openStoreRating(); loopEvent("rate-link-tap", { surface: "profile", store }); }}
+            >
+              <Star size={15} strokeWidth={2.4} aria-hidden="true" />
+              {ratingStore() === "play" ? "Rate Ball IQ on Google Play" : "Rate Ball IQ on the App Store"}
+            </button>
           )}
         </div>
       )}
