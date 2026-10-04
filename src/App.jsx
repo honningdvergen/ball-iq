@@ -3084,17 +3084,20 @@ async function generateShareCard(type, data) {
   ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "right";
-  ctx.fillText("balliq.app", W - padX, headerY);
+  // The Footle card prints its address once, at the foot, with the path.
+  if (type !== "wordle") ctx.fillText("balliq.app", W - padX, headerY);
 
   // Divider
   ctx.fillStyle = "#2F3240";
   ctx.fillRect(padX, 56, W - padX * 2, 1);
 
-  // Centered footer URL
+  // Centered footer URL (the Footle card draws its own foot, with the path)
+  if (type !== "wordle") {
   ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "center";
   ctx.fillText("balliq.app", W / 2, H - 24);
+  }
   }
 
   // Per-variant content. All variants set textAlign = "center" by default.
@@ -3102,55 +3105,75 @@ async function generateShareCard(type, data) {
   const cx = W / 2;
 
   if (type === "wordle") {
+    // ── THE FOOTLE CARD (redrawn 2026-10-04) ────────────────────────────────
+    // The old card led with "TODAY'S PUZZLE", carried no puzzle number, drew
+    // 36px tiles in the top half and left ~250px of empty black above a second
+    // "balliq.app". The number is the one thing that makes two grids
+    // comparable between strangers (it is in every share line), so it now
+    // heads the card; the grid is sized to the space it has and centred in
+    // it; and the foot is one invitation to play the same puzzle instead of a
+    // repeated URL.
     const grades = Array.isArray(data?.grades) ? data.grades : [];
     const score = data?.score ?? 0;
-    const total = data?.total ?? 6;
-    // A clued solve is marked on the card as in the text (lib/wordle.js
-    // footleShareHead) — the card is compared between strangers too.
-    const dateLabel = (data?.dateLabel || "") + (data?.clue ? " · with a clue" : "");
-    const headline = data?.failed ? "Didn't solve today" : `Solved in ${score} ${score === 1 ? "guess" : "guesses"}`;
-    const colorMap = { green: "#58CC02", yellow: "#FFC107", grey: "#3A3F55" };
+    const num = data?.num > 0 ? data.num : 0;
+    const streak = data?.failed ? 0 : (Number(data?.streak) || 0);
+    const colorMap = { green: "#58CC02", yellow: "#FFC107", grey: "#2A2E3B" };
 
-    // Mode label
-    ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#9BA0B8";
-    ctx.fillText("TODAY'S PUZZLE", cx, 110);
-
-    // Date
-    ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#9BA0B8";
-    ctx.fillText(dateLabel, cx, 130);
-
-    // Result headline — explicit "guesses" framing rather than a "N/6"
-    // fraction. In Footle fewer guesses is better, so "3/6" read like a
-    // quiz score (3-of-6 correct) and undersold a good result. Sprint #99.
-    ctx.font = '800 34px Inter, "Helvetica Neue", Arial, sans-serif';
+    // Eyebrow: mode + number, in the accent. Then the date, quiet.
+    ctx.font = '800 14px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#58CC02";
-    ctx.fillText(headline, cx, 212);
+    const eyebrow = num ? `FOOTLE  No. ${num}` : "FOOTLE";
+    const ew = _trackedWidth(ctx, eyebrow, 1.4);
+    ctx.textAlign = "left";
+    _trackedText(ctx, eyebrow, cx - ew / 2, 98, 1.4);
+    ctx.textAlign = "center";
+    ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText((data?.dateLabel || "") + (data?.clue ? " · with a clue" : ""), cx, 120);
 
-    // Emoji-tile grid. 36×36 tiles, 4px gap, rows centered horizontally.
-    const tile = 36;
-    const tileGap = 4;
-    const rowGap = 4;
+    // Headline: guesses, not a fraction ("3/6" read like a quiz score).
+    ctx.font = '800 32px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(data?.failed ? "Not today" : score === 1 ? "First guess" : `Solved in ${score} guesses`, cx, 168);
+
+    // Grid: as large as fits in the band between the headline and the foot,
+    // capped at 44px, centred vertically in that band.
     const cols = grades[0]?.length || 5;
-    const rowW = cols * tile + (cols - 1) * tileGap;
-    const startX = cx - rowW / 2;
-    let gy = 250;
+    const rows = Math.max(1, grades.length);
+    const gap = 5;
+    const bandTop = 196, bandBottom = H - 150;
+    const tile = Math.floor(Math.min(44, (W - 64 - (cols - 1) * gap) / cols, (bandBottom - bandTop - (rows - 1) * gap) / rows));
+    const gridW = cols * tile + (cols - 1) * gap;
+    const gridH = rows * tile + (rows - 1) * gap;
+    const startX = cx - gridW / 2;
+    let gy = bandTop + Math.max(0, (bandBottom - bandTop - gridH) / 2);
     for (const row of grades) {
       for (let i = 0; i < row.length; i++) {
-        const color = colorMap[row[i]] || "#3A3F55";
-        const tx = startX + i * (tile + tileGap);
-        ctx.fillStyle = color;
-        _roundRectPath(ctx, tx, gy, tile, tile, 4);
+        ctx.fillStyle = colorMap[row[i]] || colorMap.grey;
+        _roundRectPath(ctx, startX + i * (tile + gap), gy, tile, tile, Math.round(tile * 0.18));
         ctx.fill();
       }
-      gy += tile + rowGap;
+      gy += tile + gap;
     }
 
-    // Subtitle
-    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText("Can you beat me? ⚽", cx, Math.min(gy + 28, H - 60));
+    // Streak, when there is one worth showing.
+    if (streak >= 2) {
+      ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFC107";
+      ctx.fillText(`🔥 ${streak}-day Footle streak`, cx, H - 118);
+    }
+
+    // Foot: the invitation, as a pill, then where to go.
+    const pillW = 236, pillH = 44, pillY = H - 96;
+    ctx.fillStyle = "#58CC02";
+    _roundRectPath(ctx, cx - pillW / 2, pillY, pillW, pillH, pillH / 2);
+    ctx.fill();
+    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#06230C";
+    ctx.fillText(data?.failed ? "Can you get it?" : "Can you beat me?", cx, pillY + 28);
+    ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("balliq.app/footle", cx, H - 24);
   } else if (type === "hotstreak") {
     const score = data?.score ?? 0;
 
@@ -3445,9 +3468,11 @@ export async function shareCard(type, data, opts = {}) {
         // types keep the homepage `link` above.
         const wLink = "⚽ https://balliq.app/footle";
         const n = data.num > 0 ? ` #${data.num}` : "";
-        if (data.failed) return `Footle${n} got me — can you do better? ${wLink}`;
+        // A clued result says so here as on the card (lib/wordle.js).
+        const cl = data.clue ? " (with a clue 💡)" : "";
+        if (data.failed) return `Footle${n} got me${cl} — can you do better? ${wLink}`;
         if (data.score === 1) return `Got Footle${n} on my FIRST guess 🎯 ${wLink}`;
-        return `Got Footle${n} in ${data.score} guesses — can you beat me? ${wLink}`;
+        return `Got Footle${n} in ${data.score} guesses${cl} — can you beat me? ${wLink}`;
       }
       if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
       if (data?.modeLabel && data?.score != null && data?.total != null) {
