@@ -272,7 +272,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           dailies (components/DailyDone.jsx); the edition is the day index. */}
       {isDaily && dailyDone && (
         <div style={{marginTop:18}}>
-          <DailyDone game="daily7" edition={dayIndexForDate(new Date())} won bucket={result.score}
+          <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
             streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp}
             save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} />
         </div>
@@ -384,7 +384,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           </div>
           {isDaily && dailyDone && (
             <div style={{margin:"18px 0"}}>
-              <DailyDone game="daily7" edition={dayIndexForDate(new Date())} won bucket={result.score}
+              <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
                 streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp}
                 save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} />
             </div>
