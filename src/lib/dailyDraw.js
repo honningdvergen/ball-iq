@@ -82,7 +82,25 @@ export function pickDailyFresh(QB, dayIndex) {
   // hard questions remain eligible = 610 days of unique sets, so the pool is
   // not the constraint.
   const mcqOnly = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && q.diff !== "easy" && isModernEra(q));
-  return seededShuffle(mcqOnly, dayIndex * DAILY_SEED_MULTIPLIER).slice(0, 7);
+  const shuffled = seededShuffle(mcqOnly, dayIndex * DAILY_SEED_MULTIPLIER);
+  return warmUpFirst(shuffled.slice(0, 7), shuffled);
+}
+
+// ⚠️ Q1 IS ALWAYS MEDIUM (Alex, 2026-10-04, choosing "Medium warm-up Q1").
+// Measured from 30 days of Daily 7 answers: Q1 is answered right 57% of the
+// time when it is medium and 39% when it is hard, and the set averaged 3.45/7.
+// Opening on a likely miss is the worst first impression the mode can make.
+// Still medium, never easy, so the 2026-08-19 "no free point" rule holds.
+//
+// Only Q1 changes: a hard opener is REPLACED by the first unused medium in
+// `candidates` (the day's own shuffle), and Q2 to Q7 keep their slots. A plain
+// reorder was rejected because it moves no score: a question is as hard in
+// slot 5 as in slot 1.
+export function warmUpFirst(picked, candidates) {
+  if (!picked.length || picked[0].diff === "medium") return picked;
+  const taken = new Set(picked.map((q) => q.id));
+  const opener = candidates.find((q) => q.diff === "medium" && !taken.has(q.id));
+  return opener ? [opener, ...picked.slice(1)] : picked;
 }
 
 export function pickDailyQuestions(QB, dayIndex) {
