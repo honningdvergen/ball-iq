@@ -141,6 +141,14 @@ function preloadGameRootPlugin() {
       ])
       const staticHead =
         `<style id="biq-static-head-css">${rootCss()}${SHELL_CSS}` +
+        // FIXED, not in flow (2026-10-04). In flow it pushed #root down 57px
+        // until SiteHeader removed it, and the lazy FrontDoor/GameRoot chunk
+        // means React commits an empty Suspense frame first: #root then jumped
+        // 57px -> 0 on the swap. Lighthouse scored that as CLS 0.069 on / and
+        // /play (field CLS is 0 only because most visits are warm). As an
+        // overlay the React header lands on exactly the same pixels and
+        // nothing below it moves.
+        '#biq-static-head{position:fixed;top:0;left:0;right:0;z-index:100}' +
         '#biq-static-head .fd-head{font-family:var(--font);color:var(--tx)}' +
         '#biq-static-head a{color:inherit;text-decoration:none}' +
         'html.native-app #biq-static-head{display:none}' +

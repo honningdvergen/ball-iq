@@ -174,15 +174,14 @@ describe('a club can override its layer\'s register for the door', () => {
   // ⚠️ THE MECHANISM EXISTS BECAUSE ONE LAYER HOLDS TWO REGISTERS. /pt/ shared
   // strings are Brazilian (4 of 7 clubs), while Benfica, Porto and Sporting are
   // written in European Portuguese. Without the override those three read
-  // "O seu cartão … Baixar o app" — the same mismatch the Brazilian pages had
+  // "Também no app" — the same mismatch the Brazilian pages had
   // before, pointed the other way.
   it('the three European pt clubs override, the four Brazilian ones do not', async () => {
     const { CLUBS_PT } = await import('../../scripts/seo/clubs-pt.mjs');
     const withOverride = CLUBS_PT.filter((c) => c.i18n).map((c) => c.slug).sort();
     expect(withOverride).toEqual(['benfica', 'porto', 'sporting-cp']);
     for (const c of CLUBS_PT.filter((x) => x.i18n)) {
-      expect(c.i18n.doorTitle).toContain('teu');
-      expect(c.i18n.doorGo).toContain('Obter');
+      expect(c.i18n.appLine).toContain('na aplicação');
       expect(c.i18n.youPlayed).toBe('Jogaste');
     }
   });
@@ -243,9 +242,9 @@ describe('a club can override its layer\'s register for the door', () => {
     const { renderQuizSet } = await import('../../scripts/seo/quiz-widget.mjs');
     const rows = [{ id: 'q_x', q: 'P?', o: ['a', 'b', 'c', 'd'], a: 0, hint: 'h' }];
     const base = renderQuizSet(rows, { name: 'X', lang: 'pt' });
-    const over = renderQuizSet(rows, { name: 'X', lang: 'pt', i18n: { doorTitle: 'O teu cartão Ball IQ completo' } });
-    expect(base).toContain('O seu cartão Ball IQ completo');
-    expect(over).toContain('O teu cartão Ball IQ completo');
+    const over = renderQuizSet(rows, { name: 'X', lang: 'pt', i18n: { appLine: 'Também na aplicação — sequências, lembretes e 1v1 ao vivo →' } });
+    expect(base).toContain('Também no app');
+    expect(over).toContain('Também na aplicação');
     // untouched keys still come from the language table
     expect(over).toContain('ao vivo');
   });

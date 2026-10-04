@@ -3105,7 +3105,9 @@ async function generateShareCard(type, data) {
     const grades = Array.isArray(data?.grades) ? data.grades : [];
     const score = data?.score ?? 0;
     const total = data?.total ?? 6;
-    const dateLabel = data?.dateLabel || "";
+    // A clued solve is marked on the card as in the text (lib/wordle.js
+    // footleShareHead) — the card is compared between strangers too.
+    const dateLabel = (data?.dateLabel || "") + (data?.clue ? " · with a clue" : "");
     const headline = data?.failed ? "Didn't solve today" : `Solved in ${score} ${score === 1 ? "guess" : "guesses"}`;
     const colorMap = { green: "#58CC02", yellow: "#FFC107", grey: "#3A3F55" };
 
@@ -8451,15 +8453,17 @@ function AppInner() {
     const ymd = dateToYMD(date);
     let guesses = [];
     let status = ws.kind;
+    let clue = false;
     try {
       const raw = localStorage.getItem(`biq_wordle_${ymd}`);
       if (raw) {
         const p = JSON.parse(raw);
         if (Array.isArray(p?.guesses)) guesses = p.guesses;
         if (typeof p?.status === "string") status = p.status;
+        clue = !!p?.clue;
       }
     } catch {}
-    setPuzzleReviewState({ date, guesses, status });
+    setPuzzleReviewState({ date, guesses, status, clue });
     setScreen("puzzle-review");
   }, []);
 
@@ -9055,6 +9059,7 @@ function AppInner() {
             date={puzzleReviewState.date}
             guesses={puzzleReviewState.guesses}
             status={puzzleReviewState.status}
+            clue={puzzleReviewState.clue}
             onBack={() => setScreen("home")}
           />
         )}
