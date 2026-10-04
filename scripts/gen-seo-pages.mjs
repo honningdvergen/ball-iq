@@ -690,8 +690,12 @@ function heroTwoCol(props, rightHtml) {
 // and the band's only job is to say what the app adds, once, quietly. `name`
 // rides along as data for the store-out instrument (shell.mjs), so a click can
 // be read per band.
+// data-nosnippet (2026-10-05): the band is word-for-word the same on every
+// page, and after the write-up opened on 23 Sep Google began stitching club
+// snippets out of shared page text instead of the meta description (audit
+// 2026-10-04, seo.md §2). Sitewide furniture is never snippet material.
 function appCtaBand(name) {
-  return `<section class="sec" data-band="${esc(name)}"><div class="appband">
+  return `<section class="sec" data-band="${esc(name)}" data-nosnippet><div class="appband">
 <div class="appband-in">
 <h2>Also on your phone.</h2>
 <p>Streaks, reminders and live 1v1 against a mate — every quiz here, in the app. Free, like here.</p>
@@ -705,11 +709,18 @@ ${storeBadges()}
 // to tuck the long-form "About the <team>" prose into a collapsed FAQ item:
 // crawlable SEO depth that stays out of the play-first flow (a wall of prose up
 // top reads like a Wikipedia page; here it's one tap away for anyone who wants it).
+//
+// A question ABOUT THE QUIZ ("Is the X quiz free to play?", "How hard is the X
+// quiz?") reads the same on some hundred pages. It stays for the reader but is
+// wrapped data-nosnippet, so Google quotes the club FAQs, not the shared ones.
+// (data-nosnippet is honoured on span, div and section only, hence the wrapper;
+// the .faq rules are descendant selectors, so the wrapper changes no styling.)
+const isQuizMetaFaq = (q) => /\bquiz\b/i.test(q) || /^how hard are the questions/i.test(q);
 function renderFaq(faq, extra) {
-  const items = faq.map(
-    (f) =>
-      `<details><summary>${esc(f.q)}<span class="ind" aria-hidden="true">+</span></summary><div class="ans">${esc(f.a)}</div></details>`,
-  );
+  const items = faq.map((f) => {
+    const item = `<details><summary>${esc(f.q)}<span class="ind" aria-hidden="true">+</span></summary><div class="ans">${esc(f.a)}</div></details>`;
+    return isQuizMetaFaq(f.q) ? `<div data-nosnippet>${item}</div>` : item;
+  });
   if (extra && extra.q && extra.html) {
     items.push(
       `<details><summary>${esc(extra.q)}<span class="ind" aria-hidden="true">+</span></summary><div class="ans prose">${extra.html}</div></details>`,
@@ -841,8 +852,7 @@ function renderQA(rows, { scripts = true } = {}) {
       return `<li class="qa" data-a="${r.a}">
 <p class="q">${esc(r.q)}</p>
 <div class="qa-opts">${opts}</div>
-<p class="qa-why">${esc(r.hint)}</p>
-</li>`;
+${r.hint ? `<p class="qa-why">${esc(r.hint)}</p>\n` : ''}</li>`;
     })
     .join('\n');
   const list = `<ol class="qa-list">\n${items}\n</ol>`;
@@ -1146,11 +1156,39 @@ function pct100(rows) {
 //
 // ⚠️ NO NUMBERING on the answer list. A 1..N list ending at N prints the
 // question count, which is a binding product rule (audit-no-question-count).
+//
+// ⚠️ SHARED PARAGRAPHS NEVER RENDER (2026-10-05). 32 club write-ups ended on
+// one identical paragraph ("Every question comes with a short explained
+// answer… Play the sample set below…"), and that paragraph is what Google
+// lifted into the Real Madrid snippet once the write-up opened. It also told
+// the reader the quiz was "below" a section that now sits under it. Any
+// paragraph that, with the page's own name masked, appears in more than one
+// club write-up is dropped here, so a future wave that repeats a closing line
+// across clubs is caught by construction rather than by review.
+const maskName = (p, name) => p.split(name).join('\u0000');
+const SHARED_CLUB_PARAS = (() => {
+  const seen = new Map();
+  for (const c of CLUBS) for (const p of c.intro) {
+    const k = maskName(p, c.name);
+    seen.set(k, (seen.get(k) || 0) + 1);
+  }
+  return new Set([...seen].filter(([, n]) => n > 1).map(([k]) => k));
+})();
+// A sentence about the quiz itself ("This free X quiz spans…") is true and
+// stays readable, but it is the same sentence in different clothes on every
+// page. Wrapped data-nosnippet so the quotable text is the club's own story.
+const QUIZ_META_SENTENCE = /\bquiz\b|\bBall IQ\b|\bsample (set|questions)\b|\bsign-up\b/i;
+function proseParagraph(p) {
+  const parts = p.match(/[^.!?]+[.!?]+(?:["”’)]+)?\s*|[^.!?]+$/g) || [p];
+  if (parts.join('') !== p) return esc(p); // never lose a character to the split
+  return parts.map((t) => (QUIZ_META_SENTENCE.test(t) ? `<span data-nosnippet>${esc(t)}</span>` : esc(t))).join('');
+}
 function renderClubAbout(name, intro, heading = `About ${name}`) {
+  const own = intro.filter((p) => !SHARED_CLUB_PARAS.has(maskName(p, name)));
   return `<section class="sec narrow" id="about-club">
 <h2>${esc(heading)}</h2>
 <div class="prose">
-${intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
+${own.map((p) => `<p>${proseParagraph(p)}</p>`).join('\n')}
 </div>
 </section>`;
 }
@@ -1176,7 +1214,7 @@ function renderAnswerList(name, rows, { spread = 0 } = {}) {
   const sub = picked.length < rows.length
     ? 'A selection from the quiz above, spread from the easiest to the hardest. Play it first; each answer stays folded until you open it.'
     : 'Every question from the quiz above. Play it first; each answer stays folded until you open it.';
-  const items = picked.map((r) => `<li><p class="ans-q">${esc(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(r.o[r.a])}.</b> ${esc(r.hint)}</p></details></li>`);
+  const items = picked.map((r) => `<li><p class="ans-q">${esc(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></details></li>`);
   return `<section class="sec narrow" id="answers">
 <h2>${esc(name)} quiz answers, explained</h2>
 <p class="sub">${sub}</p>
@@ -1195,7 +1233,7 @@ ${items.join('\n')}
 // 149 pages until 2026-09-15 and it was false: waves are drafted by a research
 // pipeline, then examined and attacked by independent verifiers.
 function clubCheckLine() {
-  return `<section class="sec narrow">
+  return `<section class="sec narrow" data-nosnippet>
 <p class="check-line">Every football question here, soccer if you're reading in the US, is researched against sources and checked before it goes live. <a href="${SITE.base}/about/">How Ball IQ checks its questions →</a> Spot something wrong? <a href="${SITE.base}/contact/">Tell us</a>.</p>
 </section>`;
 }
@@ -5775,7 +5813,6 @@ function buildClubsDirectoryPage(catPages) {
   const moreClubs = CLUBS.filter((c) => !matched.has(c.slug) && MORE_META[c.slug]);
 
   const total = LEAGUES.reduce((n, L) => n + L.clubs.length, 0);
-  const totalLabel = `${Math.floor(total / 10) * 10}+`;
   const builtCount = matched.size + moreClubs.length;
 
   const card = (c) => {
@@ -5899,7 +5936,11 @@ q.addEventListener('input',function(){
 })();</script>`;
 
   const html = `${head({
-    title: `Club Quizzes by League — ${totalLabel} Football Clubs | Ball IQ`,
+    // The title counts the quizzes that EXIST. It read "350+ Football Clubs"
+    // (the directory's roster, coming-soon tiles included) while about a third
+    // of that had a quiz: a claim the page itself contradicts one scroll down
+    // (audit 2026-10-04). The roster figure stays out of every heading.
+    title: `Club Quizzes by League — ${builtCount} Football Clubs | Ball IQ`,
     // Was 192 chars and truncated. "every answer explained" STAYS — unlike the
     // league pages, all 72 club packs measure 100% hint coverage (the generator's
     // own MIN_HINTS gate enforces it), so here the strong claim is true.
@@ -5913,7 +5954,7 @@ ${style}
 <section class="sec">
 ${crumbs([{ name: 'Home', url: `${SITE.base}/` }, { name: 'Quizzes', url: `${SITE.base}/quiz/` }, { name: 'Clubs' }])}
 <h1 class="cd-h1">Club quizzes</h1>
-<p class="cd-sub">${totalLabel} clubs across ${LEAGUES.length} leagues — every quiz free, every answer explained.</p>
+<p class="cd-sub">${builtCount} club quizzes live, more added every week. Every quiz free, every answer explained.</p>
 <div class="cd-wrap">
 <aside class="cd-rail">
 <div class="cd-rail-t">Leagues</div>
@@ -5921,7 +5962,7 @@ ${rail}
 <p class="cd-note">Coming soon: Segunda, 2. Bundesliga, Serie B, Ligue 2…</p>
 </aside>
 <div class="cd-main">
-<div class="cd-search">${searchIcon}<input id="cdq" type="search" placeholder="Type to filter ${totalLabel} clubs — name, code or league…" aria-label="Filter clubs" autocomplete="off" /></div>
+<div class="cd-search">${searchIcon}<input id="cdq" type="search" placeholder="Type to filter clubs: name, code or league…" aria-label="Filter clubs" autocomplete="off" /></div>
 <div class="cd-pop"><span class="cd-pop-t">🔥 Popular</span>
 ${pills}
 </div>

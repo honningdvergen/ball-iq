@@ -229,8 +229,7 @@ export function renderQuizItems(rows, t = {}) {
 <p class="bq-qx">${esc(r.q)}</p>
 <div class="bq-os">${opts}</div>
 <p class="bq-sr" role="status" aria-live="polite"></p>
-<div class="bq-why"><b>${esc(t.why || 'Why')}</b>${esc(r.hint)}</div>
-<button class="bq-next" type="button" hidden>${esc(t.next || 'Next question →')}</button>
+${r.hint ? `<div class="bq-why"><b>${esc(t.why || 'Why')}</b>${esc(r.hint)}</div>\n` : ''}<button class="bq-next" type="button" hidden>${esc(t.next || 'Next question →')}</button>
 </li>`;
     })
     .join('\n');

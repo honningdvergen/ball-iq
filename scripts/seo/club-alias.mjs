@@ -37,6 +37,7 @@ export const CLUB_ALIAS = {
   'Tottenham': 'Tottenham Hotspur',
   'Ipswich': 'Ipswich Town',
   'Coventry': 'Coventry City',
+  'QPR': 'Queens Park Rangers',
   // NOTE: Brighton, West Ham, Wolves and Bournemouth are NOT aliased —
   // clubs.mjs uses the short form for all four.
 
