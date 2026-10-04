@@ -274,6 +274,7 @@ const PAGE_FG = '#F0F1F5';
 const CLUB_BADGE = {
   'leicester-city': 'LEI',
   watford: 'WAT', 'queens-park-rangers': 'QPR',
+  millwall: 'MIL', 'preston-north-end': 'PNE',
   'eintracht-frankfurt': 'SGE',
   'olympiacos': 'OLY',
   'panathinaikos': 'PAO',
@@ -5503,6 +5504,7 @@ const DIR_ALIAS = {
   'Frankfurt': 'Eintracht Frankfurt',
   'Sheffield Utd': 'Sheffield United',
   'Blackburn': 'Blackburn Rovers',
+  'Preston': 'Preston North End',
   'Man United': 'Manchester United',
   'Man City': 'Manchester City',
   "Nott'm Forest": 'Nottingham Forest',
