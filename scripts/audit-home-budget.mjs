@@ -103,7 +103,19 @@ const rows = [];
 for (const f of eager) { const b = statSync(resolve(ASSETS, f)).size; total += b; rows.push([f, b]); }
 rows.sort((a, b) => b[1] - a[1]);
 for (const [f, b] of rows) console.log(`  ${String(Math.round(b / 1024)).padStart(5)} KB  ${f}`);
-const kb = Math.round(total / 1024);
+// ⚠️ MEASURE WHAT PRODUCTION SHIPS (2026-10-04). Production builds with
+// VITE_SENTRY_DSN set, so main.jsx bundles and initialises the Sentry SDK. A
+// build without it (local, CI, previews) tree-shakes the SDK away, and this
+// gate passed at 803 KB while Vercel failed the identical tree at 910 KB. Every
+// production deploy was rejected from a232a2f on, silently, because the
+// previous build kept serving. The gap was measured on that commit: main 22 KB
+// locally vs 124 KB on Vercel, plus about 5 KB of debug IDs and rounding. So a
+// build without the DSN is charged that 107 KB here, and fails where
+// production fails. Re-measure if the Sentry setup in main.jsx changes.
+const SENTRY_EAGER_KB = 107;
+const withSentry = !!process.env.VITE_SENTRY_DSN;
+const kb = Math.round(total / 1024) + (withSentry ? 0 : SENTRY_EAGER_KB);
+if (!withSentry) console.log(`  ${String(SENTRY_EAGER_KB).padStart(5)} KB  Sentry SDK + debug IDs, absent from this build but shipped by production (VITE_SENTRY_DSN unset here)`);
 if (kb > BUDGET_KB) { console.error(`✗ Home eager JS ${kb} KB > budget ${BUDGET_KB} KB`); bad++; }
 else console.log(`✓ Home eager JS ${kb} KB ≤ ${BUDGET_KB} KB budget; no static heavy imports in ${files.filter((f) => HOME_CHUNKS.test(f)).length} Home chunk(s)${bad ? '' : ''}`);
 process.exit(bad ? 1 : 0);
