@@ -45,10 +45,17 @@ export const NO_ROSTER_COMPETITIONS = new Set([
   // promotion in 1964. Promotion/relegation was also suspended from 2020. Still
   // re-check at the August audit like every other entry here.
   'Liga MX',
+  // Al Ahly and Zamalek (2026-10-04). Neither has ever been relegated from the
+  // Egyptian top flight. Re-check at the August audit like every other entry.
+  'Egyptian Premier League',
 ]);
 
 /** CLUBS[].club (the pack key) -> the exact `league` string in leagues.mjs. */
 export const CLUB_COMPETITION = {
+  "Zamalek": "Egyptian Premier League",
+  "Al Ahly": "Egyptian Premier League",
+  "Al Nassr": "Saudi Pro League",
+  "Al Hilal": "Saudi Pro League",
   "Cruz Azul": "Liga MX",
   "Guadalajara": "Liga MX",
   "Club América": "Liga MX",

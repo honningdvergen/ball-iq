@@ -289,6 +289,7 @@ const CLUB_BADGE = {
   'santos': 'SAN', 'real-sociedad': 'RSO',
   // SCI not INT: Inter Milan holds INT and the abbreviation map has no duplicates.
   'sao-paulo': 'SAO', 'gremio': 'GRE', 'internacional': 'SCI', 'cruzeiro': 'CRU',
+  'al-hilal': 'HIL', 'al-nassr': 'NAS',
   'manchester-united': 'MUN', arsenal: 'ARS', 'manchester-city': 'MCI', liverpool: 'LIV',
   chelsea: 'CHE', tottenham: 'TOT', newcastle: 'NEW', barcelona: 'BAR', 'real-madrid': 'RMA',
   'atletico-madrid': 'ATM', juventus: 'JUV', 'inter-milan': 'INT', 'ac-milan': 'MIL',
@@ -360,6 +361,9 @@ const CLUB_COLOR = {
   // existing value: the club publishes no numeric colour spec at all, and both
   // circulating hexes are uncited aggregator entries. See docs/TODO.md.
   'sao-paulo': '#FE0000', 'gremio': '#0D80BF', 'internacional': '#E5050F', 'cruzeiro': '#2F529E',
+  // 2026-10-04. Al Hilal's Power Blue #0028F0 is from the club's own brand
+  // guideline; Al Nassr's yellow #FEDC00 is the club site's brand colour.
+  'al-hilal': '#0028F0', 'al-nassr': '#FEDC00',
   arsenal: '#EF0107', liverpool: '#C8102E', 'manchester-united': '#DA291C',
   barcelona: '#A50044', 'real-madrid': '#FFFFFF', 'manchester-city': '#6CABDD',
   chelsea: '#034694', 'bayern-munich': '#DC052D',
@@ -5555,6 +5559,11 @@ const MORE_META = {
   // PRE-2022 crest — with evidence that was Club América's site tokens, so it was
   // discarded. Very dark, like Juventus and Corinthians; kept true, not lightened.
   'cruz-azul': { code: 'CAZ', color: '#212452', name: 'Cruz Azul' },
+  // Egypt has no roster in leagues.mjs either. Al Ahly's red #D5001A is RGB
+  // 213/0/26 from the club's own logo guideline; Zamalek's crest red #D41D27 is the
+  // footylogos crest palette (2026-10-04).
+  'al-ahly': { code: 'AHL', color: '#D5001A', name: 'Al Ahly' },
+  'zamalek': { code: 'ZAM', color: '#D41D27', name: 'Zamalek' },
 };
 // League → existing league-quiz page slug (only rendered when that page is live).
 const LEAGUE_PAGE_SLUGS = {
