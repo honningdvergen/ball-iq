@@ -82,6 +82,7 @@ function runGate(source, { tz = 'Europe/Oslo', choice = null, pathname = '/', se
   const srcs = appended.map((el) => el.src || '');
   return {
     clarity: srcs.some((s) => s.includes('clarity.ms')),
+    posthog: srcs.some((s) => s === '/ph.js'),
     banner: srcs.some((s) => s.includes('/consent.js')),
     deferred: win.__biqConsentDefer === true,
   };
@@ -224,4 +225,20 @@ describe('a deferred banner has a trigger that actually fires', () => {
   it('…and to a dwell backstop, so a reader who never scrolls is still asked', () => {
     expect(CONSENT_JS).toMatch(/setTimeout\(\s*go\s*,\s*\d+\s*\)/);
   });
+});
+
+describe('PostHog rides the Clarity decision exactly', () => {
+  const cases = [];
+  for (const tz of [...IN_SCOPE, ...OUT_OF_SCOPE]) for (const choice of [null, 'granted', 'denied']) for (const native of [false, true]) cases.push({ tz, choice, native });
+  for (const [name, gate, route] of [
+    ['index.html', APP_GATE, { pathname: '/play', search: '?tab=daily' }],
+    ['gen-seo-pages.mjs', SEO_GATE, { pathname: '/quiz/arsenal/', search: '' }],
+  ]) {
+    it(`${name}: loads /ph.js if and only if it loads Clarity`, () => {
+      for (const c of cases) {
+        const r = runGate(gate, { ...route, ...c });
+        expect(r.posthog, `${label(c.tz)} choice=${c.choice} native=${c.native}`).toBe(r.clarity);
+      }
+    });
+  }
 });

@@ -332,6 +332,11 @@
               c.async = true;
               c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
               document.head.appendChild(c);
+              /* PostHog rides the same decision — see public/ph.js. */
+              var ph = document.createElement('script');
+              ph.async = true;
+              ph.src = '/ph.js';
+              document.head.appendChild(ph);
             } else if (choice !== 'denied') {
               /* Undecided, and in scope: ask. The banner is a separate file so
                  that the ~87% of loads which never show it do not carry it.
