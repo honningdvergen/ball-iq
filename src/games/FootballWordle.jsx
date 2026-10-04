@@ -14,7 +14,9 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   WORDLE_FULL_NAMES, getWordleAnswer, gradeWordleGuess, computeFootleStreak, getFootleNumber,
+  footleClue, footleShareHead, FOOTLE_CLUE_AFTER,
 } from '../lib/wordle.js';
+import { Lightbulb } from 'lucide-react';
 import { getWordleDateKey } from '../lib/wordleStatus.js';
 import { safeSetItem } from '../safeStorage.js';
 import { APP_NAME } from '../lib/scoring.js';
@@ -204,6 +206,20 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // The first guess someone plays now happens without anything on top of it.
   const showLegend = state.status === "playing" && state.guesses.length === 0;
 
+  // The clue takes the legend's slot inside the board: the legend retires on
+  // the first guess and the clue cannot appear before the third, so the two
+  // never compete, and the keyboard geometry (footle-keyboard-geometry gate)
+  // is untouched. Offered, never forced — a player chasing a clean grid just
+  // keeps typing. Once taken it stays on the board for the rest of the day.
+  const clueOffer = state.status === "playing" && !state.clue && state.guesses.length >= FOOTLE_CLUE_AFTER;
+  const clueShown = !!state.clue && state.status === "playing";
+  const takeClue = useCallback(() => {
+    if (state.status !== "playing" || state.clue) return;
+    setState((s) => ({ ...s, clue: 1 }));
+    try { haptic("select"); } catch {}
+    try { dailyDone?.track?.("footle-clue", { guesses: state.guesses.length, len: answer.length }); } catch {}
+  }, [state.status, state.clue, state.guesses.length, answer.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Persist on every change to the game state.
   useEffect(() => {
     // Archive plays are stamped so history readers can tell a live day from
@@ -272,7 +288,8 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     let newStatus = "playing";
     if (current === answer) newStatus = "won";
     else if (newGuesses.length >= 6) newStatus = "lost";
-    setState({ guesses: newGuesses, status: newStatus });
+    // Spread, not a fresh object: `clue` rides in the same record.
+    setState({ ...state, guesses: newGuesses, status: newStatus });
     setCurrent("");
     // The reveal belongs to this row alone. Cleared after the last tile lands
     // (delay of the final tile + the 600ms flip) plus a little slack, so the
@@ -308,7 +325,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       // — see the guards in TransferTrail/MysteryPlayer for why a farmable
       // streak is worse than no archive.
       if (!isArchive) {
-        try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won", game: 'footle', won: newStatus === "won", guesses: newGuesses.length } })); } catch {}
+        try { window.dispatchEvent(new CustomEvent('biq:daily-completed', { detail: { positive: newStatus === "won", game: 'footle', won: newStatus === "won", guesses: newGuesses.length, clue: !!state.clue } })); } catch {}
       } else {
         // Streak repair listens for this: finishing YESTERDAY's puzzle from
         // the back-catalogue is the one act that can relight a streak that
@@ -427,12 +444,10 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       const grades = gradeWordleGuess(g, answer);
       return grades.map((c) => (c === "green" ? (CB_MODE() ? "🟧" : "🟩") : c === "yellow" ? (CB_MODE() ? "🟦" : "🟨") : "⬛")).join("");
     }).join("\n");
-    const num = getFootleNumber();
-    const tag = num > 0 ? ` #${num}` : "";
     const streak = won ? computeFootleStreak(new Date()) : 0;
-    // Same Wordle-convention format as the review screen's builder — the two
-    // MUST stay in sync (one puzzle, one share format).
-    const head = `⚽ ${APP_NAME} Footle${tag} ${won ? state.guesses.length : "X"}/6`;
+    // One head for all three share builders (lib/wordle.js) — one puzzle,
+    // one share format, and a clued solve says so.
+    const head = footleShareHead(APP_NAME, getFootleNumber(), won, state.guesses.length, !!state.clue);
     const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [state, answer]);
@@ -449,11 +464,12 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       dateLabel,
       failed: state.status === "lost",
       num: getFootleNumber(),
+      clue: !!state.clue,
     }, {
       onToast: (msg) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(msg) })); } catch {} },
       textFallback: shareText,
     });
-  }, [shareText, state.guesses, state.status, answer, dateLabel]);
+  }, [shareText, state.guesses, state.status, state.clue, answer, dateLabel]);
 
   return (
     <div className="wd-screen">
@@ -515,6 +531,18 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           <div className="wd-legend" aria-hidden="true">
             <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
             <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
+          </div>
+        )}
+        {clueOffer && (
+          <button type="button" className="wd-clue wd-clue--offer" onClick={takeClue}>
+            <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
+            Stuck? Take a clue
+          </button>
+        )}
+        {clueShown && (
+          <div className="wd-clue wd-clue--shown" role="status">
+            <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
+            {footleClue(answer)}
           </div>
         )}
         {rows}
