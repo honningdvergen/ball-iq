@@ -4287,6 +4287,7 @@ class TabErrorBoundary extends React.Component {
     return { hasError: true };
   }
   componentDidCatch(error, info) {
+    if (window.__biqReloading) return; // stale chunk; main.jsx is reloading
     console.error(`[boundary:${this.props.name || "tab"}]`, error?.message || "Unknown error");
     // A crash the player SAW is the worst possible prelude to a rating ask.
     try { markBadReviewMoment(); } catch {}
@@ -9700,6 +9701,9 @@ export default function App() {
   // and the script fails to load on every launch, producing a console
   // error + a wasted network attempt. Web/PWA path unchanged.
   const isNative = Capacitor.isNativePlatform?.();
+  // The /_vercel/* script only exists on Vercel; a local preview gets
+  // index.html back and throws "Unexpected token '<'" (BALL-IQ-X).
+  const onVercel = !isNative && typeof location !== 'undefined' && !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname);
   return (
     <>
       {/* Pre-review audit: VersionBanner compares BUILT_SHA against a
@@ -9708,7 +9712,7 @@ export default function App() {
           so no update-nag UI can ever render inside the native app. */}
       {!isNative && <VersionBanner />}
       <ErrorBoundary><AppGate /></ErrorBoundary>
-      {!isNative && <SpeedInsights />}
+      {onVercel && <SpeedInsights />}
     </>
   );
 }
