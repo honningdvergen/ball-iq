@@ -131,7 +131,7 @@
     {
       "event": "clubq-again",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 557,
+      "line": 563,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -147,7 +147,7 @@
     {
       "event": "clubq-more",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 556,
+      "line": 562,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -179,7 +179,7 @@
     {
       "event": "clubq-share",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 572,
+      "line": 578,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -187,7 +187,7 @@
     {
       "event": "clubq-start",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 643,
+      "line": 649,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -645,7 +645,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 556,
+      "line": 562,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -659,7 +659,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 557,
+      "line": 563,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -673,7 +673,7 @@
       "eventExpr": "h.indexOf('/footle'",
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 571,
+      "line": 577,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-31",
@@ -687,7 +687,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 572,
+      "line": 578,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -701,7 +701,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 643,
+      "line": 649,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
