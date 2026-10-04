@@ -111,7 +111,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     const textFallback = `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
     const dateLabel = today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
     await shareCard("wordle", {
-      score: guesses.length, total: 6, grades, dateLabel, failed: isLost, num, clue,
+      score: guesses.length, total: 6, grades, dateLabel, failed: isLost, num, clue, streak,
     }, { onToast: () => {}, textFallback });
   }, [isDone, isWon, isLost, guesses, grades, clue, streak, today, shareCard]);
 

@@ -465,11 +465,12 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       failed: state.status === "lost",
       num: getFootleNumber(),
       clue: !!state.clue,
+      streak: state.status === "won" ? computeFootleStreak(date) : 0,
     }, {
       onToast: (msg) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(msg) })); } catch {} },
       textFallback: shareText,
     });
-  }, [shareText, state.guesses, state.status, state.clue, answer, dateLabel]);
+  }, [shareText, state.guesses, state.status, state.clue, answer, dateLabel, date]);
 
   return (
     <div className="wd-screen">
