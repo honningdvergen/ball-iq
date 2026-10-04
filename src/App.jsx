@@ -7681,7 +7681,15 @@ function AppInner() {
       const shown = (questions || []).slice(0, Math.max(0, shownCount));
       recordSeenQuestions(shown);
     } catch {}
-    setResult(res);
+    // ⚠️ The result carries its OWN mode and daily edition. startMode() sets
+    // the new mode before it awaits the next question set, so the results
+    // screen re-rendered for a moment with mode "daily" and the PREVIOUS
+    // game's result. DailyDone then recorded that score as today's Daily 7:
+    // daily_results held buckets of 8 and 10 out of 7 (2026-09-22 to 10-03).
+    // Archive replays also recorded into today's edition, since the date was
+    // cleared before the results screen read it.
+    const dailyDay = mode === "daily" ? dayIndexForDate(activeDailyDate || new Date()) : null;
+    setResult({ ...res, mode, ...(dailyDay != null ? { dailyEdition: dailyDay, dailyArchive: dailyDay !== dayIndexForDate(new Date()) } : {}) });
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
   }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions, pendingChallenge, clearChallenge, awardXp, isGuest, openAuthPrompt, xp, markFirstGameFinished]);
@@ -9505,7 +9513,7 @@ function AppInner() {
         {screen === "results" && result && mode !== "hotstreak" && mode !== "truefalse" && (
           <Results
             result={result}
-            mode={mode}
+            mode={result.mode || mode}
             cardDelta={cardDeltaState}
             onHome={goHome}
             survivalBest={stats.bestStreak}
