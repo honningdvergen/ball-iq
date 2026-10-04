@@ -112,7 +112,10 @@ for (const [f, b] of rows) console.log(`  ${String(Math.round(b / 1024)).padStar
 // locally vs 124 KB on Vercel, plus about 5 KB of debug IDs and rounding. So a
 // build without the DSN is charged that 107 KB here, and fails where
 // production fails. Re-measure if the Sentry setup in main.jsx changes.
-const SENTRY_EAGER_KB = 107;
+// Re-measured 2026-10-04 after tracing moved to a lazy chunk
+// (src/lib/sentryTracing.js): with a dummy DSN 861 KB, without 795 KB, so
+// 66 KB of SDK plus the same ~6 KB of debug IDs Vercel adds = 72 KB.
+const SENTRY_EAGER_KB = 72;
 const withSentry = !!process.env.VITE_SENTRY_DSN;
 const kb = Math.round(total / 1024) + (withSentry ? 0 : SENTRY_EAGER_KB);
 if (!withSentry) console.log(`  ${String(SENTRY_EAGER_KB).padStart(5)} KB  Sentry SDK + debug IDs, absent from this build but shipped by production (VITE_SENTRY_DSN unset here)`);
