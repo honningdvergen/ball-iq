@@ -22,12 +22,21 @@ import { initAds } from './lib/ads.js'
 // would equally hide a misconfigured prod deploy, so the boundary must live
 // HERE, above the lazy roots, in the statically-imported entry chunk.
 import { ErrorBoundary } from './components/ErrorBoundary.jsx'
+import { normalizeSupabaseError } from './lib/sentryNormalize.js'
 
 // Sentry initialization — runs before app mount so render errors land in
 // Sentry from the very first paint. DSN is environment-gated: prod builds
 // ship with VITE_SENTRY_DSN set (Vercel env var); dev/preview builds run
 // without it and Sentry no-ops silently.
-if (import.meta.env.VITE_SENTRY_DSN) {
+// A production build served from a dev machine (`vite preview`, the e2e
+// server on :4177) still carries the prod DSN. Those sessions reported 2k+
+// events as production (BALL-IQ-X: Vercel's /_vercel/speed-insights script
+// 404s locally and comes back as index.html). Native is exempt: Android's
+// Capacitor origin is https://localhost.
+const _isLocalPreview = typeof window !== 'undefined' &&
+  !window.Capacitor?.isNativePlatform?.() &&
+  /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(window.location.hostname)
+if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
   // Native-gate performance tracing: the privacy policy states the *app* runs
   // no analytics, but browserTracingIntegration sampling records navigation/
   // pageload transactions (a usage measure). Keep crash reporting everywhere;
@@ -51,7 +60,9 @@ if (import.meta.env.VITE_SENTRY_DSN) {
     tracesSampleRate: isNative ? 0 : 0.1,
     // PII scrub: strip user email + Supabase tokens from breadcrumbs, URLs and
     // event metadata. defaultPII is false; this hardens further.
-    beforeSend(event) {
+    beforeSend(event, hint) {
+      event = normalizeSupabaseError(event, hint)
+      if (!event) return null
       if (event.user) {
         delete event.user.email
         delete event.user.username
@@ -123,15 +134,22 @@ try {
     const RELOAD_FLAG = 'biq_chunk_reload'
     const isChunkError = (msg) =>
       /ChunkLoadError|Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(String(msg || ''))
-    const heal = (msg) => {
-      if (!isChunkError(msg)) return
+    const heal = (msg, isLoadFailure = false) => {
+      if (!isLoadFailure && !isChunkError(msg)) return
       try {
         if (sessionStorage.getItem(RELOAD_FLAG)) return // one auto-reload per session
         sessionStorage.setItem(RELOAD_FLAG, '1')
       } catch {}
+      // Boundaries read this to stay quiet while the page is going away.
+      window.__biqReloading = true
       window.location.reload()
     }
-    window.addEventListener('vite:preloadError', (e) => { try { e.preventDefault() } catch {} heal(e?.payload?.message || 'vite:preloadError') })
+    // ⚠️ NEVER preventDefault() here. Vite's preload helper treats a prevented
+    // event as "handled" and RESOLVES the failed import() with undefined, so
+    // React.lazy then crashes on `undefined.default` (BALL-IQ-4, 37 users) —
+    // and when the one-reload guard was already spent, that crash was all the
+    // player ever saw. Letting it throw gives the boundaries a real chunk error.
+    window.addEventListener('vite:preloadError', (e) => heal(e?.payload?.message, true))
     window.addEventListener('unhandledrejection', (e) => heal(e?.reason?.message || e?.reason))
   }
 } catch {}

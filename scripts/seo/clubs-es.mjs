@@ -49,7 +49,6 @@
 // negative commands with vos take the tú-subjunctive.
 const ES_AR = {
   allDone: "Esas son todas las preguntas de {name} que tenemos acá — mañana, en otro orden.",
-  doorLine: "Las seis competiciones, desafíos diarios, rachas y 1v1 en vivo.",
   namePrompt: "¿Agregar tu nombre a la tarjeta de puntaje? (opcional)",
   copyPrompt: "Copiá tu puntaje",
   shareTxt: "Mi Ball IQ de {name} es {iq} — {tier} ({sc}/{n}). Superalo.",

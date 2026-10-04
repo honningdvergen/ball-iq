@@ -933,8 +933,11 @@ export function AuthProvider({ children }) {
   async function signInWithApple() {
     Sentry.addBreadcrumb({ category: 'auth', message: 'apple sign-in attempted', level: 'info' })
     try { localStorage.setItem('biq_auth_attempt', String(Date.now())) } catch {}
-    const isNative = Capacitor.isNativePlatform?.()
-    if (!isNative) return signInWithOAuth('apple')
+    // The system sheet is iOS-only: on Android the plugin has no
+    // implementation, so every Android tap threw, logged a "fallback" to
+    // Sentry and only then opened the browser (BALL-IQ-V, mostly Play
+    // pre-launch bots). Android goes straight to the browser flow.
+    if (Capacitor.getPlatform?.() !== 'ios') return signInWithOAuth('apple')
     try {
       return await signInWithAppleNative()
     } catch (e) {
@@ -956,11 +959,26 @@ export function AuthProvider({ children }) {
         Sentry.captureMessage('Native Apple sign-in fallback to browser', {
           level: 'warning',
           tags: { feature: 'auth-apple-fallback' },
-          extra: { error: msg, code },
+          // Sentry's server-side scrubber replaced `error` with [Filtered]
+          // (the messages mention tokens/nonces), hiding every cause. Send a
+          // coarse, scrub-safe reason alongside it.
+          extra: { error: msg, code, reason: appleFailureReason(msg, code) },
         })
       } catch {}
       return signInWithOAuth('apple')
     }
+  }
+
+  function appleFailureReason(msg, code) {
+    const m = String(msg || '').toLowerCase()
+    if (m.includes('no identity token')) return 'no-id-token'
+    if (m.includes('not implemented') || m.includes('unimplemented')) return 'plugin-missing'
+    if (m.includes('nonce')) return 'nonce-mismatch'
+    if (m.includes('audience')) return 'audience-mismatch'
+    if (/load failed|network|offline|timed out/.test(m)) return 'network'
+    if (String(code) === '1000' || m.includes('1000')) return 'apple-unknown-1000'
+    if (m.includes('provider is not enabled') || m.includes('unsupported provider')) return 'supabase-provider'
+    return 'other'
   }
 
   // Sprint #96 Track 1: native Apple via ASAuthorizationController.
