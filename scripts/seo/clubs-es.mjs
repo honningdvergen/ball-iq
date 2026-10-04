@@ -5116,7 +5116,7 @@ export const CLUBS_ES = [
       },
       {
         "id": "q_416121",
-        "q": "¿Con qué apodo se conocía a Claudio Suárez, surgido de la cantera de Pumas y con 177 partidos con México?",
+        "q": "¿Con qué apodo se conocía a Claudio Suárez, defensa de Pumas que jugó casi 180 partidos con México?",
         "o": [
           "El Káiser",
           "El General",
@@ -5155,7 +5155,7 @@ export const CLUBS_ES = [
       },
       {
         "id": "q_1e98e5",
-        "q": "¿A qué familiar le rendía homenaje Hugo Sánchez con la maroma con la que festejaba sus goles?",
+        "q": "¿De qué familiar aprendió Hugo Sánchez la maroma con la que festejaba sus goles?",
         "o": [
           "Su hermano, acróbata de circo",
           "Su padre, entrenador de clavados",
@@ -5163,7 +5163,7 @@ export const CLUBS_ES = [
           "Su madre, maestra de ballet"
         ],
         "a": 2,
-        "hint": "Su hermana Herlinda Sánchez compitió en gimnasia en los Juegos Olímpicos de Montreal 1976, y él le atribuía sus habilidades acrobáticas.",
+        "hint": "Su hermana, gimnasta mexicana inscrita en los Juegos Olímpicos de Montreal 1976, le enseñó la maroma con la que después festejó sus goles.",
         "en": "His sister, an Olympic gymnast"
       },
       {
@@ -5256,7 +5256,7 @@ export const CLUBS_ES = [
           "América"
         ],
         "a": 1,
-        "hint": "Suárez llegó a Guadalajara para el Apertura 1996 y ganó la liga con ellos en el Verano 1997. Después pasó a Tigres.",
+        "hint": "Suárez llegó a Guadalajara para la temporada 1996-97 (Invierno 1996) y ganó la liga con ellos en el Verano 1997. Después pasó a Tigres.",
         "en": "Guadalajara"
       },
       {
@@ -5321,7 +5321,7 @@ export const CLUBS_ES = [
           "Aarón Padilla"
         ],
         "a": 0,
-        "hint": "Enrique Borja amenazó con dejar de jugar por la venta, pero lo convencieron de ir y se volvió ídolo del América.",
+        "hint": "Enrique Borja se resistió a la venta, pero firmó con el América en julio de 1969 y se volvió uno de los ídolos del club.",
         "en": "Enrique Borja"
       },
       {
@@ -5472,7 +5472,7 @@ export const CLUBS_ES = [
       },
       {
         "id": "q_895788",
-        "q": "¿Qué delantero superó a Humberto Suazo como máximo goleador histórico del Monterrey durante su etapa en el club de 2015 a 2023?",
+        "q": "¿Qué delantero, en el Monterrey de 2015 a enero de 2024, superó a Humberto Suazo como máximo goleador histórico del club?",
         "o": [
           "Dorlan Pabón",
           "Mario de Souza",
@@ -5480,7 +5480,7 @@ export const CLUBS_ES = [
           "Rogelio Funes Mori"
         ],
         "a": 3,
-        "hint": "Funes Mori anotó 160 goles en todas las competencias entre 2015 y 2023 y superó los 121 de Suazo.",
+        "hint": "Funes Mori anotó 160 goles en todas las competencias entre 2015 y enero de 2024 y superó los 121 de Suazo.",
         "en": "Rogelio Funes Mori"
       },
       {
@@ -5506,7 +5506,7 @@ export const CLUBS_ES = [
           "Estadio Jalisco"
         ],
         "a": 1,
-        "hint": "El Monterrey jugó en el Estadio Tecnológico de 1950 a 2015, salvo una etapa de 1973 a 1980 en el Estadio Universitario. La demolición del viejo estadio empezó en julio de 2017.",
+        "hint": "El Monterrey jugó en el Estadio Tecnológico de 1952 a 2015, salvo una etapa de 1973 a 1980 en el Estadio Universitario. La demolición del viejo estadio empezó en julio de 2017.",
         "en": "Estadio Tecnológico"
       },
       {
@@ -5664,7 +5664,7 @@ export const CLUBS_ES = [
           "Su plantel fue sancionado por amaño de partidos"
         ],
         "a": 0,
-        "hint": "En septiembre de 1945 el autobús del equipo se incendió en San Juan de los Lagos, camino a un partido. Varios jugadores resultaron gravemente heridos y el costarricense Enrique Lizano murió después. El club terminó último y se retiró en 1946.",
+        "hint": "El 14 de septiembre de 1945 el autobús del equipo se incendió en San Juan de los Lagos, camino a Guadalajara. Varios jugadores sufrieron quemaduras graves y dos, entre ellos el costarricense Enrique Lizano, murieron después. El club terminó último y se retiró en 1946.",
         "en": "The team bus caught fire on a road trip"
       },
       {
