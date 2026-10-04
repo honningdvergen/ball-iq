@@ -2238,6 +2238,40 @@ function isSyntheticTraffic() {
   } catch { return false; }
 }
 
+// ⭐ The ONE exception to "native sends the name and nothing else" (below):
+// the rating funnel, and only a fixed set of low-cardinality words.
+//
+// ASO deep-dive, 2026-10-04: native logged 103 rate-prompt-shown against 668
+// rate-prompt-skipped in five weeks, skips rising every week — and every one of
+// those rows reads {native, anon}, so nobody can say whether the cooldown, a
+// bad moment or a screen change eats 87% of the happy moments. Ratings are
+// also per STORE, and the rows could not even tell iOS from Android.
+//
+// Why this still keeps the promise in privacy §4 ("no identifier of any
+// kind… nothing links one count to another"): every value here is one word
+// from a short closed list (cooldown, footle, ios…). There is no id, no club
+// slug, no surface path, no number — nothing that varies per person, so no
+// combination of these fields can single anyone out or join two rows. Keys
+// outside the list, and values that are not a short lowercase word, are
+// dropped rather than trusted, so a future call site cannot widen it by
+// accident.
+const NATIVE_RATE_EVENT = /^rate-(prompt|link)-/;
+const NATIVE_RATE_KEYS = ["reason", "trigger", "engine", "store", "surface"];
+const NATIVE_RATE_WORD = /^[a-z][a-z-]{0,23}$/;
+function nativeRateMeta(name, meta) {
+  const out = { native: true, anon: true };
+  if (!NATIVE_RATE_EVENT.test(name)) return out;
+  try {
+    const p = Capacitor.getPlatform?.();
+    if (p === "ios" || p === "android") out.platform = p;
+    if (meta) for (const k of NATIVE_RATE_KEYS) {
+      const v = meta[k];
+      if (typeof v === "string" && NATIVE_RATE_WORD.test(v)) out[k] = v;
+    }
+  } catch {}
+  return out;
+}
+
 // Exported so lazy screens can report into the SAME funnel rather than growing
 // their own. OnlineMultiplayer needs it for the rivalry prompt; scouting report
 // #4's item 5 was "instrument the rating funnel — it has ZERO loopEvents", and
@@ -2268,7 +2302,9 @@ export function loopEvent(name, meta) {
     // rows precisely because no shipped build has ever had this code, so the
     // contradiction only appears once it is too late to stop.
     //
-    // So native sends the event NAME and nothing else: no biq_vid, no meta.
+    // So native sends the event NAME and nothing else: no biq_vid, no meta
+    // (the rating funnel's closed word list in nativeRateMeta is the only
+    // exception, and it carries no identifier either).
     // We learn which modes get used and where people stop; we cannot follow a
     // person, because there is no key to follow them by. Dropping meta as well
     // as the id is deliberate — meta carries club slugs and surfaces, and a
@@ -2277,7 +2313,7 @@ export function loopEvent(name, meta) {
     supabase.rpc("record_funnel_event", {
       p_event: name,
       p_meta: anon
-        ? { native: true, anon: true }
+        ? nativeRateMeta(name, meta)
         : (meta ? { ...meta, native: false } : { native: false }),
       p_visitor: anon ? null : visitorId(),
       // ⚠️ Belt AND braces, and the braces are the load-bearing half. Passing
