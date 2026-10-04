@@ -219,8 +219,9 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, onBack
     const grades = guesses.map(g => gradeWordleGuess(g, answer));
     await shareCard("wordle", {
       score: guesses.length, total: 6, grades, dateLabel, failed: lost, num: getFootleNumber(date), clue,
+      streak: won ? computeFootleStreak(date) : 0,
     }, { onToast: () => {}, textFallback: shareText });
-  }, [shareText, guesses, answer, dateLabel, lost, date, clue]);
+  }, [shareText, guesses, answer, dateLabel, lost, won, date, clue]);
 
   // Read-only grid. Phase 5z polish: drop empty rows on won state —
   // show only the rows the user actually used. Lost state keeps all 6
