@@ -8,7 +8,7 @@
  * banner is ~4KB of markup and CSS that most page loads must not pay for.
  *
  * What it gates: Microsoft Clarity (project xqwevk9brq), which records session
- * replays. Nothing else on the site sets a non-essential cookie — AdSense is
+ * replays, and PostHog product analytics (public/ph.js, no replay). Nothing else on the site sets a non-essential cookie — AdSense is
  * commented out, and funnel_events is first-party and consent-exempt, so
  * declining costs replays and heatmaps but leaves every number intact.
  *
@@ -39,6 +39,14 @@
   }
 
   function loadClarity() {
+    // PostHog (public/ph.js) is covered by the same Allow; it guards itself
+    // against loading twice.
+    if (!document.querySelector('script[src="/ph.js"]')) {
+      var p = document.createElement('script');
+      p.async = true;
+      p.src = '/ph.js';
+      document.head.appendChild(p);
+    }
     if (document.querySelector('script[src="' + CLARITY_TAG + '"]')) return;
     window.clarity = window.clarity || function () {
       (window.clarity.q = window.clarity.q || []).push(arguments);
@@ -136,9 +144,9 @@
   var text = document.createElement('p');
   text.className = 'biq-c-txt';
   text.appendChild(document.createTextNode(
-    'We’d like to use Microsoft Clarity to see how people move through ' +
-    'Ball IQ, so we can fix what’s confusing. It records anonymous ' +
-    'session replays. No ads, and nothing is sold. '
+    'We’d like to use Microsoft Clarity and PostHog to see how people ' +
+    'move through Ball IQ, so we can fix what’s confusing. Clarity records ' +
+    'anonymous session replays. No ads, and nothing is sold. '
   ));
   var policy = document.createElement('a');
   policy.href = '/privacy';

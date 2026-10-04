@@ -2234,6 +2234,11 @@ export function loopEvent(name, meta) {
   try {
     if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
   } catch {}
+  // PostHog mirror (web only, consent-gated: biqTrack exists only once
+  // public/ph.js has been allowed to load).
+  try {
+    if (!IS_NATIVE && typeof window !== "undefined" && typeof window.biqTrack === "function") window.biqTrack(name, meta);
+  } catch {}
   try {
     // ⚠️ NATIVE IS COUNTED, BUT NEVER IDENTIFIED — and the privacy policy says
     // so in those words. Decision recorded 2026-08-23 (Alex, from three

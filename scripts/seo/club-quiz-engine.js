@@ -201,6 +201,7 @@ try{
   var lg=document.documentElement.getAttribute('lang');if(lg)meta.lang=lg;
 }catch(e){}
 if(x)for(var xk in x){if(Object.prototype.hasOwnProperty.call(x,xk))meta[xk]=x[xk]}
+try{if(window.biqTrack)window.biqTrack(n,meta)}catch(e){}
 try{fetch(BQ_SB+'/rest/v1/rpc/record_funnel_event',{method:'POST',keepalive:true,
 headers:{'content-type':'application/json','apikey':BQ_PK,'authorization':'Bearer '+BQ_PK},
 body:JSON.stringify({p_event:n,p_meta:meta,p_visitor:bqVid()})}).catch(function(){})}catch(e){}}
