@@ -19,3 +19,9 @@ Every deploy goes through Vercel. The cache pipeline has two layers:
 - **Emergency cache-bust** (something is silently broken on PWA installs and you suspect stale caches): bump CACHE_VERSION to force a hard eviction across all installed clients.
 
 Never need to bump for normal feature work — the HTTP layer is the foundation; SW versioning is the escape hatch.
+
+## Agent permissions
+
+Project threads run in auto mode, which ignores the bare `"Bash"` allow rule. The narrow `Bash(...)` rules in `.claude/settings.json` are what let routine commands (tests, lint, build, `node scripts/*.mjs` audits and generators, git on the working branch, PR creation) run without a prompt. When a thread starts using a new routine command, add a narrow rule for it rather than a broad one. Force pushes, pushes to `main`, discarding checkouts and PR merges stay behind `ask` rules on purpose.
+
+Committing and pushing to the session's own `claude/*` branch and opening a draft PR are the expected end of every code task in this repo.
