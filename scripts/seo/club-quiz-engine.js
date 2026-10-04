@@ -257,6 +257,9 @@ function tag(k,v){try{if(window.clarity)window.clarity('set',k,String(v))}catch(
    failure-tolerant: any throw and the quiz carries on unaffected. */
 var BQ_SB='__BQ_SUPABASE_URL__';
 var BQ_PK='__BQ_PUBLISHABLE_KEY__';
+/* The web-push public key. Empty on a local build (.env.local has none), so
+   the reminder offer below stays inert there and appears only on Vercel. */
+var BQ_VK='__BQ_VAPID_PUBLIC_KEY__';
 /* ⚠️ THE SAME GATE AS bqev(), AND IT WAS MISSING HERE FOR THREE WEEKS.
    bqSynthetic() sits at :141 and was called from exactly one place, bqev()
    :162 -- while this function, invoked from the SAME finish() a few lines
@@ -537,6 +540,43 @@ var bqStore=root.getAttribute('data-store')||'/get';
    meant to raise them. A boxed promo under a result reads as an ad; a line
    of text at the foot reads as part of the result. Same href, same src, so
    the series stays comparable. */
+/* ── THE REMINDER LINE (2026-10-04) ────────────────────────────────────────
+   Club pages carry most first visits and the worst return rate on the site:
+   of 1,257 visitors whose first page since 09-07 was a club page, 2.5% ever
+   came back, against 6-20% for visitors who started on a daily puzzle page.
+   A club-page reader has no account, so the only thing that can bring them
+   back tomorrow is a notification, and this screen never offered one. The
+   7pm Footle reminder for signed-out browsers already exists (v2_5,
+   subscribe_web_push + web_push_outbox); this line is a second door into it.
+   Quiet, below the result like the app line, because a boxed promo here was
+   measured to lose (see above). Shown only where push can work: never in an
+   iOS Safari tab (no PushManager), never after a denial, never twice. */
+function remindOk(){try{
+return BQ_VK.length>40&&BQ_VK.indexOf('__')<0&&('Notification' in window)&&('serviceWorker' in navigator)
+&&('PushManager' in window)&&Notification.permission!=='denied'&&!localStorage.getItem('biq_web_remind_endpoint')&&!!bqVid();
+}catch(e){return false}}
+function b64key(k){var pad='===='.slice((k.length%4)||4);var raw=atob((k+pad).replace(/-/g,'+').replace(/_/g,'/'));
+var out=new Uint8Array(raw.length);for(var i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
+function remindLine(){return remindOk()?'<button class="bq-app bq-remind" type="button" data-remind="1">'+esc(T('remind','Remind me tomorrow evening when the new puzzles are out'))+'</button>':''}
+function wireRemind(box){var btn=box.querySelector('[data-remind]');if(!btn)return;
+btn.addEventListener('click',function(){
+bqev('clubq-remind-tap');btn.disabled=true;
+function done(t){btn.textContent=t}
+function fail(why){bqev('clubq-remind-fail',{reason:String(why).slice(0,60)});btn.disabled=false;done(T('remindFail','That did not work. Tap to try again'))}
+var reg;
+Notification.requestPermission().then(function(p){
+if(p!=='granted'){bqev(p==='denied'?'clubq-remind-denied':'clubq-remind-dismissed');if(p==='denied')btn.hidden=true;else btn.disabled=false;throw 'skip'}
+return navigator.serviceWorker.getRegistration('/')}).then(function(r){return r||navigator.serviceWorker.register('/sw.js')})
+.then(function(r){reg=r;return navigator.serviceWorker.ready}).then(function(){return reg.pushManager.getSubscription()})
+.then(function(sub){return sub||reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64key(BQ_VK)})})
+.then(function(sub){var j=sub.toJSON();
+return fetch(BQ_SB+'/rest/v1/rpc/subscribe_web_push',{method:'POST',
+headers:{'content-type':'application/json','apikey':BQ_PK,'authorization':'Bearer '+BQ_PK},
+body:JSON.stringify({p_visitor:bqVid(),p_subscription:j,p_endpoint:j.endpoint,p_tz:-new Date().getTimezoneOffset(),p_hour:19})})
+.then(function(rr){if(!rr.ok)throw 'rpc-'+rr.status;
+try{localStorage.setItem('biq_web_remind_endpoint',j.endpoint)}catch(e){}
+bqev('clubq-remind-on');done(T('remindOn','Done. See you tomorrow evening'))})})
+['catch'](function(e){if(e==='skip')return;fail((e&&(e.name||e.message))||e)})})}
 var appLine='<a class="bq-app" href="'+bqStore+'?src=clubq-finish">'+esc(T('appLine','Also in the app \u2014 streaks, reminders and live 1v1 \u2192'))+'</a>';
 res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div class="bq-rank">'+esc(fmt(T('yourIq','Your {name} IQ'),{name:name}))+'</div><div class="bq-big">'+G.iq+'</div>'
 +'<span class="bq-tier">'+esc(G.tier)+'</span>'
@@ -553,13 +593,14 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
    colour, but it does not outrank staying. */
 +'<button class="bq-share" data-share="1">'+esc(fmt(T('share','Share your {name} IQ'),{name:name}))+'</button>'
 +(!hasMore?'<p class="bq-note">'+esc(fmt(T('allDone','That is every {name} question we have here \u2014 a fresh order tomorrow.'),{name:name}))+'</p>':'')
-+appLine;
++remindLine()+appLine;
 /* Remember today's result so a reload does not erase it. The critique's
    returning player finished, refreshed, and met question 1 with the score
    gone and the streak kept — the one number they came back for was the one
    thing not saved. Read at load (see the ribbon below); never blocks. */
 try{localStorage.setItem('biq.quiz.last.'+(root.getAttribute('data-slug')||name),JSON.stringify({d:bqday(),sc:sc,n:run.length,iq:G.iq}))}catch(e){}
 res.hidden=false;if(head)head.hidden=true;
+wireRemind(res);
 var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();bqev('clubq-more');start(len,served)});
 var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){bqev('clubq-again');start(len,off)});
 /* The two ways OFF the page. Tracked so that choosing to optimise for staying

@@ -173,6 +173,8 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row .bq-wide{flex:1 1 100%}
   .bq-app{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:10px;font-size:13px;color:var(--tx3);text-decoration:none}
   .bq-app:hover{color:var(--tx);text-decoration:none}
+  .bq-remind{width:100%;background:none;border:0;font:inherit;font-size:13px;cursor:pointer;padding:0 8px}
+  .bq-remind:disabled{cursor:default;opacity:.8}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-days{display:inline-block;margin-top:9px;padding:4px 11px;border-radius:999px;
@@ -214,7 +216,10 @@ export const BQ_JS = (() => {
   return file
     .slice(nl + 1)
     .replaceAll('__BQ_SUPABASE_URL__', BQ_SUPABASE_URL)
-    .replaceAll('__BQ_PUBLISHABLE_KEY__', BQ_PUBLISHABLE_KEY);
+    .replaceAll('__BQ_PUBLISHABLE_KEY__', BQ_PUBLISHABLE_KEY)
+    // Public by design (it ships in the app bundle too). Vercel's build has it;
+    // a local build does not, and the engine then hides the reminder line.
+    .replaceAll('__BQ_VAPID_PUBLIC_KEY__', (process.env.VITE_VAPID_PUBLIC_KEY || '').trim());
 })();
 
 export function renderQuizItems(rows, t = {}) {

@@ -4,7 +4,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { marketingEvent } from '../lib/marketingEvent.js';
-import { enableVisitorPush, visitorRemindState } from '../lib/webpushVisitor.js';
+import { enableVisitorPush, visitorRemindState, visitorRemindEvent, lastVisitorPushReason } from '../lib/webpushVisitor.js';
 import { PlatformStoreBadge, isAndroidUA, isIOSUA } from '../components/StoreBadge.jsx';
 
 // Events go through the homepage's sink (literal project URL, the app's
@@ -73,7 +73,7 @@ export function makeDailyDoneServices(funnel) {
     onRemind: async () => {
       funnel('web-remind-tap', { before: visitorRemindState() });
       const after = await enableVisitorPush();
-      funnel(after === 'on' ? 'web-remind-on' : after === 'blocked' ? 'web-remind-denied' : 'web-remind-failed', {});
+      funnel(visitorRemindEvent(after), { reason: lastVisitorPushReason() });
     },
   };
   return { remind, streak: undefined, save: undefined, nextUp: DAILY_PAGES, track: (n, m) => funnel(n, m) };

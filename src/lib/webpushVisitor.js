@@ -17,6 +17,22 @@ const KEY_ = (import.meta.env.VITE_SUPABASE_KEY || '').trim();
 const VAPID_PUBLIC_KEY = (import.meta.env.VITE_VAPID_PUBLIC_KEY || '').trim();
 const ON_KEY = 'biq_web_remind_endpoint';
 
+// Why the last enableVisitorPush() did not turn on (2026-10-04). Callers used to
+// log every non-'on' result as web-remind-failed, so a dismissed permission
+// prompt and an unsupported browser read as errors. Now they can tell apart
+// 'dismissed', 'unsupported', 'rpc-<status>' and 'error'.
+let lastReason = null;
+export function lastVisitorPushReason() { return lastReason; }
+
+/** The funnel event name for an enableVisitorPush() result. */
+export function visitorRemindEvent(after) {
+  if (after === 'on') return 'web-remind-on';
+  if (after === 'blocked') return 'web-remind-denied';
+  if (lastReason === 'dismissed') return 'web-remind-dismissed';
+  if (lastReason === 'unsupported') return 'web-remind-unsupported';
+  return 'web-remind-failed';
+}
+
 function urlBase64ToUint8Array(b64) {
   const pad = '='.repeat((4 - (b64.length % 4)) % 4);
   const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
@@ -45,15 +61,19 @@ async function rpc(name, body) {
     headers: { 'content-type': 'application/json', apikey: KEY_, authorization: `Bearer ${KEY_}` },
     body: JSON.stringify(body),
   });
-  return r.ok;
+  return r.ok ? 0 : r.status;
 }
 
 /** Ask, subscribe, persist. Resolves to the new state. Call from a user gesture. */
 export async function enableVisitorPush() {
-  if (!visitorPushSupported()) return 'unsupported';
+  lastReason = null;
+  if (!visitorPushSupported()) { lastReason = 'unsupported'; return 'unsupported'; }
   try {
     const permission = await Notification.requestPermission();
-    if (permission !== 'granted') return permission === 'denied' ? 'blocked' : 'off';
+    if (permission !== 'granted') {
+      lastReason = permission === 'denied' ? 'denied' : 'dismissed';
+      return permission === 'denied' ? 'blocked' : 'off';
+    }
     const reg = (await navigator.serviceWorker.getRegistration('/')) || (await navigator.serviceWorker.register('/sw.js'));
     await navigator.serviceWorker.ready;
     const appKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY);
@@ -65,15 +85,16 @@ export async function enableVisitorPush() {
     }
     if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: appKey });
     const json = sub.toJSON();
-    const ok = await rpc('subscribe_web_push', {
+    const status = await rpc('subscribe_web_push', {
       p_visitor: visitorId(), p_subscription: json, p_endpoint: json.endpoint,
       p_tz: -new Date().getTimezoneOffset(), p_hour: getReminderHour(),
     });
-    if (!ok) return 'off';
+    if (status) { lastReason = `rpc-${status}`; return 'off'; }
     try { localStorage.setItem(ON_KEY, json.endpoint); } catch { /* ignore */ }
     return 'on';
   } catch (e) {
     console.warn('[webpush-visitor] enable failed:', e?.message || e);
+    lastReason = 'error';
     return 'off';
   }
 }

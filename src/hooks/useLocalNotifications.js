@@ -3,7 +3,7 @@ import { cancelAllReminders, getNotifPermission, notificationsSupported, request
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 import { registerPush } from "../lib/push.js";
 import { webPushPermission, webPushSupported } from "../lib/webpush.js";
-import { enableVisitorPush, visitorRemindState } from "../lib/webpushVisitor.js";
+import { enableVisitorPush, visitorRemindState, visitorRemindEvent, lastVisitorPushReason } from "../lib/webpushVisitor.js";
 import { loopEvent } from "../App.jsx";
 
 // Extracted from AppInner on 2026-09-06 (review E16). Inputs: the user, whether
@@ -72,7 +72,7 @@ export function useLocalNotifications({ user, dailyDone, loginStreak, showToast,
     else if (user?.id) await handleToggleWebPush(true);
     else {
       const after = await enableVisitorPush();
-      loopEvent(after === 'on' ? 'web-remind-on' : after === 'blocked' ? 'web-remind-denied' : 'web-remind-failed', { engine });
+      loopEvent(visitorRemindEvent(after), { engine, reason: lastVisitorPushReason() });
       setVisitorTick((t) => t + 1);
       if (after === 'on') showToast('Daily reminders on 🔔');
     }
