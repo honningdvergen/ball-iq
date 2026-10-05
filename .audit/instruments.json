@@ -3,9 +3,9 @@
   "schema": 1,
   "note": "Generated. Do not hand-edit — re-run the script. tests/unit/instrument-register.test.js fails when this file is stale.",
   "counts": {
-    "writers": 135,
+    "writers": 136,
     "transports": 22,
-    "emits": 113,
+    "emits": 114,
     "gates": 11,
     "ungated": 0
   },
@@ -112,14 +112,14 @@
     },
     {
       "sink": "funnel_events",
-      "writers": 122,
+      "writers": 123,
       "transports": 9,
       "firstWrite": "2026-08-21",
       "ungated": 0
     },
     {
       "sink": "microsoft-clarity",
-      "writers": 117,
+      "writers": 118,
       "transports": 8,
       "firstWrite": "2026-08-11",
       "ungated": 0
@@ -138,7 +138,7 @@
     {
       "event": "clubq-again",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 564,
+      "line": 591,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -146,7 +146,7 @@
     {
       "event": "clubq-finish",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 413,
+      "line": 439,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -154,7 +154,7 @@
     {
       "event": "clubq-more",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 563,
+      "line": 590,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -170,7 +170,7 @@
     {
       "event": "clubq-returned",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 415,
+      "line": 441,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -178,7 +178,7 @@
     {
       "event": "clubq-share",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 405,
+      "line": 431,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -186,7 +186,7 @@
     {
       "event": "clubq-share",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 579,
+      "line": 606,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -194,7 +194,7 @@
     {
       "event": "clubq-start",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 650,
+      "line": 677,
       "eventFirstWrite": "2026-08-13",
       "sink": "funnel_events",
       "sinkFirstWrite": "2026-08-21"
@@ -592,11 +592,25 @@
       "needle": "bqev('clubq-play'"
     },
     {
+      "event": "clubq-open-next",
+      "eventExpr": null,
+      "sink": "funnel_events + microsoft-clarity",
+      "file": "scripts/seo/club-quiz-engine.js",
+      "line": 409,
+      "gate": "bqSynthetic",
+      "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
+      "firstWrite": "(uncommitted)",
+      "firstWriteScope": "working-tree",
+      "kind": "emit",
+      "via": "bqev",
+      "needle": "bqev('clubq-open-next'"
+    },
+    {
       "event": "clubq-share",
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 405,
+      "line": 431,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -610,7 +624,7 @@
       "eventExpr": "h.indexOf('/answers'",
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 409,
+      "line": 435,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-09-05",
@@ -624,7 +638,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 413,
+      "line": 439,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -638,7 +652,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 415,
+      "line": 441,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -652,7 +666,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 563,
+      "line": 590,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -666,7 +680,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 564,
+      "line": 591,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -680,7 +694,7 @@
       "eventExpr": "h.indexOf('/footle'",
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 578,
+      "line": 605,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-31",
@@ -694,7 +708,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 579,
+      "line": 606,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
@@ -708,7 +722,7 @@
       "eventExpr": null,
       "sink": "funnel_events + microsoft-clarity",
       "file": "scripts/seo/club-quiz-engine.js",
-      "line": 650,
+      "line": 677,
       "gate": "bqSynthetic",
       "surfaces": "generated /quiz/ pages and the served /daily-football-quiz/ page",
       "firstWrite": "2026-08-13",
