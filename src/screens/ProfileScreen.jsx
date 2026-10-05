@@ -1343,6 +1343,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // catStats, which only MCQ answers write — Footle writes wordle_state and
   // would move nothing. Routing the retention engine here would be the better
   // growth bet and the worse honesty bet; the copy decides it.
+  //
+  // 2026-10-05: the label now SAYS that. "Start building mine" read as "close
+  // this and show me my card", and a first-time visitor who pressed it was
+  // dropped into a seven-question round with no warning (product walkthrough,
+  // shots j6-04, j6-05). The behaviour above stays; the button names it. The
+  // close target also grew from 32 to 44px, the size every other close has.
   const startBuildingCard = useCallback(() => {
     dismissSample();
     onPlayDaily?.();
@@ -1729,7 +1735,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                 <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2, color: t.accent, border: `1px solid ${t.accent}66`, borderRadius: 999, padding: "3px 9px" }}>EXAMPLE</span>
                 <button type="button" onClick={dismissSample} aria-label="Close"
-                        style={{ width: 32, height: 32, borderRadius: 999, border: "none", background: "rgba(255,255,255,0.10)", color: t.text, fontSize: 16, fontWeight: 800, cursor: "pointer", lineHeight: 1, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>&#10005;</button>
+                        style={{ width: 44, height: 44, margin: "-6px -8px -6px 0", borderRadius: 999, border: "none", background: "rgba(255,255,255,0.10)", color: t.text, fontSize: 16, fontWeight: 800, cursor: "pointer", lineHeight: 1, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>&#10005;</button>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -1753,7 +1759,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
               </div>
               <button type="button" onClick={startBuildingCard}
                       style={{ width: "100%", marginTop: 16, padding: 13, borderRadius: 13, border: "none", background: t.accent, color: "#241B00", fontSize: 15, fontWeight: 800, fontFamily: "inherit", cursor: "pointer" }}>
-                Start building mine
+                Play today&rsquo;s 7 to start mine
               </button>
             </div>
           </div>,
