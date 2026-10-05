@@ -1,7 +1,7 @@
 // build-trail-candidates.mjs — propose new Transfer Trail careers from the
 // source that actually carries the facts the editorial rules need.
 //
-//   node scripts/build-trail-candidates.mjs [limit]   → scripts/_trail-candidates.json
+//   node scripts/build-trail-candidates.mjs [limit] [fameCut]   → scripts/_trail-candidates.json
 //
 // ⚠️ WIKIDATA CANNOT DO THIS JOB, AND THAT IS THE WHOLE REASON THIS EXISTS.
 // The locked Trail rules are: loans in and MARKED · youth out · a return to a
@@ -32,8 +32,29 @@ const have = new Set(TRAIL_PLAYERS.map((p) => p.display.join(' ').toLowerCase())
 // cheapest honest filter. Without one the batch offered Joao Grimaldo — a trail
 // nobody can solve is worse than no trail, and the whole point of expanding the
 // pool is to stop regulars seeing repeats, not to make the game unwinnable.
-const FAME_CUT = 400;
-const targets = pool.slice(0, FAME_CUT)
+// 2026-10-05: the cut is now the second argument (default unchanged). The first
+// 102 careers used up the top 400, and 102 careers over a year meant a player
+// could return after 16 days. Going deeper trades a little recognisability for
+// far fewer repeats; every proposal is still read by a verifier before merge.
+const FAME_CUT = parseInt(process.argv[3] || '400', 10);
+// ⚠️ --from-mystery (2026-10-05): lineup.json's order stops tracking fame well
+// before 400 (Nejc Pečnik sits at 398), so going deeper there proposes trails
+// nobody can solve. The Mystery Player answer set is the better list: about
+// 650 players curated as "known first as a footballer, with a real career",
+// each with a fame score. With the flag, targets are that set, most famous
+// first, minus the coaching and not-a-footballer exclusions.
+const fromMystery = process.argv.includes('--from-mystery');
+const mysteryTargets = () => {
+  const rd = (f) => JSON.parse(readFileSync(f, 'utf8'));
+  const answers = new Set(rd('src/data/mysteryAnswers.json'));
+  const ex = rd('src/data/mysteryExclusions.json');
+  const out = new Set([...(ex.managers || []), ...(ex.notFootballers || []), ...(ex.rationed || [])]);
+  return rd('src/data/mysteryPool.json')
+    .filter((p) => answers.has(p.id) && !out.has(p.name) && p.fame >= 58)
+    .sort((a, b) => b.fame - a.fame)
+    .map((p) => ({ n: p.name, t: p.nat }));
+};
+const targets = (fromMystery ? mysteryTargets() : pool.slice(0, FAME_CUT))
   .filter((p) => p.n && p.n.includes(' ') && !have.has(p.n.toLowerCase()));
 const out = [];
 const skipped = [];

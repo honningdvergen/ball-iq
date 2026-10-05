@@ -1,33 +1,119 @@
 [
  {
-  "key": "MESSI",
+  "key": "ZIDANE",
   "display": [
-   "Lionel",
-   "Messi"
+   "Zinedine",
+   "Zidane"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Cannes",
+   "Bordeaux",
+   "Juventus",
+   "Real Madrid"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Zinedine_Zidane"
+ },
+ {
+  "key": "BECKHAM",
+  "display": [
+   "David",
+   "Beckham"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Manchester United",
+   "Preston North End",
+   "Real Madrid",
+   "LA Galaxy",
+   "AC Milan",
+   "Paris Saint-Germain"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/David_Beckham"
+ },
+ {
+  "key": "BECKENBAUER",
+  "display": [
+   "Franz",
+   "Beckenbauer"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Bayern Munich",
+   "New York Cosmos",
+   "Hamburger SV",
+   "New York Cosmos"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Franz_Beckenbauer"
+ },
+ {
+  "key": "INIESTA",
+  "display": [
+   "Andrés",
+   "Iniesta"
   ],
   "nat": "Spain",
   "clubs": [
    "Barcelona",
-   "Paris Saint-Germain",
-   "Inter Miami"
+   "Vissel Kobe",
+   "Emirates"
   ],
   "loans": [
    false,
    false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Lionel_Messi"
+  "_source": "https://en.wikipedia.org/wiki/Andr%C3%A9s_Iniesta"
  },
  {
-  "key": "MBAPP",
+  "key": "PLATINI",
   "display": [
-   "Kylian",
-   "Mbappé"
+   "Michel",
+   "Platini"
   ],
   "nat": "France",
   "clubs": [
-   "Monaco",
-   "Paris Saint-Germain",
+   "Nancy",
+   "Saint-Étienne",
+   "Juventus"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Michel_Platini"
+ },
+ {
+  "key": "HAZARD",
+  "display": [
+   "Eden",
+   "Hazard"
+  ],
+  "nat": "Belgium",
+  "clubs": [
+   "Lille",
+   "Chelsea",
    "Real Madrid"
   ],
   "loans": [
@@ -35,131 +121,1488 @@
    false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Kylian_Mbapp%C3%A9"
+  "_source": "https://en.wikipedia.org/wiki/Eden_Hazard"
  },
  {
-  "key": "MODRI",
+  "key": "PIQUE",
   "display": [
-   "Luka",
-   "Modrić"
+   "Gerard",
+   "Piqué"
   ],
-  "nat": "Croatia",
-  "clubs": [
-   "Dinamo Zagreb",
-   "Zrinjski Mostar",
-   "Inter Zaprešić",
-   "Tottenham Hotspur",
-   "Real Madrid",
-   "AC Milan"
-  ],
-  "loans": [
-   false,
-   true,
-   true,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Luka_Modri%C4%87"
- },
- {
-  "key": "BENZEMA",
-  "display": [
-   "Karim",
-   "Benzema"
-  ],
-  "nat": "France",
-  "clubs": [
-   "Lyon",
-   "Real Madrid",
-   "Al-Ittihad",
-   "Al-Hilal"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Karim_Benzema"
- },
- {
-  "key": "KANE",
-  "display": [
-   "Harry",
-   "Kane"
-  ],
-  "nat": "United Kingdom",
-  "clubs": [
-   "Tottenham Hotspur",
-   "Leyton Orient",
-   "Millwall",
-   "Norwich City",
-   "Leicester City",
-   "Bayern Munich"
-  ],
-  "loans": [
-   false,
-   true,
-   true,
-   true,
-   true,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Harry_Kane"
- },
- {
-  "key": "RASHFORD",
-  "display": [
-   "Marcus",
-   "Rashford"
-  ],
-  "nat": "United Kingdom",
+  "nat": "Spain",
   "clubs": [
    "Manchester United",
-   "Aston Villa",
+   "Zaragoza",
    "Barcelona"
   ],
   "loans": [
    false,
    true,
-   true
+   false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Marcus_Rashford"
+  "_source": "https://en.wikipedia.org/wiki/Gerard_Piqu%C3%A9"
  },
  {
-  "key": "DEMBL",
+  "key": "MULLER",
   "display": [
-   "Ousmane",
-   "Dembélé"
+   "Gerd",
+   "Müller"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "1861 Nördlingen",
+   "Bayern Munich",
+   "Fort Lauderdale Strikers"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Gerd_M%C3%BCller"
+ },
+ {
+  "key": "STEFANO",
+  "display": [
+   "Alfredo Di",
+   "Stéfano"
+  ],
+  "nat": "Spain",
+  "clubs": [
+   "River Plate",
+   "Huracán",
+   "Millonarios",
+   "Real Madrid",
+   "Espanyol"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Alfredo_Di_St%C3%A9fano"
+ },
+ {
+  "key": "LINEKER",
+  "display": [
+   "Gary",
+   "Lineker"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Leicester City",
+   "Everton",
+   "Barcelona",
+   "Tottenham Hotspur",
+   "Nagoya Grampus"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Gary_Lineker"
+ },
+ {
+  "key": "SHEVCHENKO",
+  "display": [
+   "Andriy",
+   "Shevchenko"
+  ],
+  "nat": "Ukraine",
+  "clubs": [
+   "Dynamo Kyiv",
+   "AC Milan",
+   "Chelsea",
+   "AC Milan",
+   "Dynamo Kyiv"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Andriy_Shevchenko"
+ },
+ {
+  "key": "PIERO",
+  "display": [
+   "Alessandro Del",
+   "Piero"
+  ],
+  "nat": "Italy",
+  "clubs": [
+   "Padova",
+   "Juventus",
+   "Sydney FC",
+   "Delhi Dynamos"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Alessandro_Del_Piero"
+ },
+ {
+  "key": "CHARLTON",
+  "display": [
+   "Bobby",
+   "Charlton"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Manchester United",
+   "Preston North End",
+   "Waterford",
+   "Newcastle KB United",
+   "Perth Azzurri",
+   "Blacktown City"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Bobby_Charlton"
+ },
+ {
+  "key": "MARCELO",
+  "display": [
+   "",
+   "Marcelo"
+  ],
+  "nat": "Brazil",
+  "clubs": [
+   "Fluminense",
+   "Real Madrid",
+   "Olympiacos",
+   "Fluminense"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Marcelo_Vieira"
+ },
+ {
+  "key": "TERRY",
+  "display": [
+   "John",
+   "Terry"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Chelsea",
+   "Nottingham Forest",
+   "Aston Villa"
+  ],
+  "loans": [
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/John_Terry"
+ },
+ {
+  "key": "VARANE",
+  "display": [
+   "Raphaël",
+   "Varane"
   ],
   "nat": "France",
   "clubs": [
-   "Rennes",
+   "Lens",
+   "Real Madrid",
+   "Manchester United",
+   "Como"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Rapha%C3%ABl_Varane"
+ },
+ {
+  "key": "VIDIC",
+  "display": [
+   "Nemanja",
+   "Vidić"
+  ],
+  "nat": "Serbia",
+  "clubs": [
+   "Red Star Belgrade",
+   "Spartak Subotica",
+   "Spartak Moscow",
+   "Manchester United",
+   "Inter Milan"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Nemanja_Vidi%C4%87"
+ },
+ {
+  "key": "BERGKAMP",
+  "display": [
+   "Dennis",
+   "Bergkamp"
+  ],
+  "nat": "Netherlands",
+  "clubs": [
+   "Ajax",
+   "Inter Milan",
+   "Arsenal"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Dennis_Bergkamp"
+ },
+ {
+  "key": "SAR",
+  "display": [
+   "Edwin van der",
+   "Sar"
+  ],
+  "nat": "Netherlands",
+  "clubs": [
+   "Ajax",
+   "Juventus",
+   "Fulham",
+   "Manchester United",
+   "Noordwijk"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Edwin_van_der_Sar"
+ },
+ {
+  "key": "SCHWEINSTEIGER",
+  "display": [
+   "Bastian",
+   "Schweinsteiger"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Bayern Munich",
+   "Manchester United",
+   "Chicago Fire"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Bastian_Schweinsteiger ; https://www.transfermarkt.com/x/transfers/spieler/2514"
+ },
+ {
+  "key": "SILVA",
+  "display": [
+   "David",
+   "Silva"
+  ],
+  "nat": "Spain",
+  "clubs": [
+   "Valencia",
+   "Eibar",
+   "Celta",
+   "Manchester City",
+   "Real Sociedad"
+  ],
+  "loans": [
+   false,
+   true,
+   true,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/David_Silva ; https://www.transfermarkt.com/x/transfers/spieler/35518"
+ },
+ {
+  "key": "KHEDIRA",
+  "display": [
+   "Sami",
+   "Khedira"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "VfB Stuttgart",
+   "Real Madrid",
+   "Juventus",
+   "Hertha BSC"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Sami_Khedira ; https://www.transfermarkt.com/x/transfers/spieler/29401"
+ },
+ {
+  "key": "HUMMELS",
+  "display": [
+   "Mats",
+   "Hummels"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Bayern Munich",
    "Borussia Dortmund",
+   "Bayern Munich",
+   "Borussia Dortmund",
+   "Roma"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Mats_Hummels ; https://www.transfermarkt.com/x/transfers/spieler/39728"
+ },
+ {
+  "key": "SHEARER",
+  "display": [
+   "Alan",
+   "Shearer"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Southampton",
+   "Blackburn Rovers",
+   "Newcastle United"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Alan_Shearer ; https://www.transfermarkt.com/x/transfers/spieler/3110"
+ },
+ {
+  "key": "VALDES",
+  "display": [
+   "Víctor",
+   "Valdés"
+  ],
+  "nat": "Spain",
+  "clubs": [
    "Barcelona",
+   "Manchester United",
+   "Standard Liège",
+   "Middlesbrough"
+  ],
+  "loans": [
+   false,
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/V%C3%ADctor_Vald%C3%A9s ; https://www.transfermarkt.com/x/transfers/spieler/7589"
+ },
+ {
+  "key": "THURAM",
+  "display": [
+   "Lilian",
+   "Thuram"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Monaco",
+   "Parma",
+   "Juventus",
+   "Barcelona"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Lilian_Thuram ; https://www.transfermarkt.com/x/transfers/spieler/3521"
+ },
+ {
+  "key": "FERDINAND",
+  "display": [
+   "Rio",
+   "Ferdinand"
+  ],
+  "nat": "England",
+  "clubs": [
+   "West Ham United",
+   "AFC Bournemouth",
+   "Leeds United",
+   "Manchester United",
+   "Queens Park Rangers"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Rio_Ferdinand ; https://www.transfermarkt.com/x/transfers/spieler/3235"
+ },
+ {
+  "key": "GOMEZ",
+  "display": [
+   "Mario",
+   "Gómez"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "VfB Stuttgart",
+   "Bayern Munich",
+   "Fiorentina",
+   "Beşiktaş",
+   "VfL Wolfsburg",
+   "VfB Stuttgart"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   true,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Mario_G%C3%B3mez ; https://www.transfermarkt.com/x/transfers/spieler/6288"
+ },
+ {
+  "key": "KEEGAN",
+  "display": [
+   "Kevin",
+   "Keegan"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Scunthorpe United",
+   "Liverpool",
+   "Hamburger SV",
+   "Southampton",
+   "Newcastle United",
+   "Blacktown City"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Kevin_Keegan ; https://www.transfermarkt.com/x/transfers/spieler/85458"
+ },
+ {
+  "key": "ARSHAVIN",
+  "display": [
+   "Andrey",
+   "Arshavin"
+  ],
+  "nat": "Russia",
+  "clubs": [
+   "Zenit Saint Petersburg",
+   "Arsenal",
+   "Zenit Saint Petersburg",
+   "Kuban Krasnodar",
+   "Kairat"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Andrey_Arshavin ; https://www.transfermarkt.com/x/transfers/spieler/15378"
+ },
+ {
+  "key": "ZANETTI",
+  "display": [
+   "Javier",
+   "Zanetti"
+  ],
+  "nat": "Argentina",
+  "clubs": [
+   "Talleres",
+   "Banfield",
+   "Inter Milan"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Javier_Zanetti ; https://www.transfermarkt.com/x/transfers/spieler/1161"
+ },
+ {
+  "key": "JOTA",
+  "display": [
+   "Diogo",
+   "Jota"
+  ],
+  "nat": "Portugal",
+  "clubs": [
+   "Paços de Ferreira",
+   "Atlético Madrid",
+   "Porto",
+   "Wolverhampton Wanderers",
+   "Liverpool"
+  ],
+  "loans": [
+   false,
+   false,
+   true,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Diogo_Jota ; https://www.transfermarkt.com/x/transfers/spieler/340950"
+ },
+ {
+  "key": "TURAN",
+  "display": [
+   "Arda",
+   "Turan"
+  ],
+  "nat": "Turkey",
+  "clubs": [
+   "Galatasaray",
+   "Manisaspor",
+   "Atlético Madrid",
+   "Barcelona",
+   "Başakşehir",
+   "Galatasaray"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Arda_Turan ; https://www.transfermarkt.com/x/transfers/spieler/21369"
+ },
+ {
+  "key": "ARBELOA",
+  "display": [
+   "Álvaro",
+   "Arbeloa"
+  ],
+  "nat": "Spain",
+  "clubs": [
+   "Real Madrid",
+   "Deportivo La Coruña",
+   "Liverpool",
+   "Real Madrid",
+   "West Ham United"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/%C3%81lvaro_Arbeloa ; https://www.transfermarkt.com/x/transfers/spieler/28260"
+ },
+ {
+  "key": "RIJKAARD",
+  "display": [
+   "Frank",
+   "Rijkaard"
+  ],
+  "nat": "Netherlands",
+  "clubs": [
+   "Ajax",
+   "Sporting CP",
+   "Real Zaragoza",
+   "AC Milan",
+   "Ajax"
+  ],
+  "loans": [
+   false,
+   false,
+   true,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Frank_Rijkaard ; https://www.transfermarkt.com/x/transfers/spieler/70667"
+ },
+ {
+  "key": "CARRICK",
+  "display": [
+   "Michael",
+   "Carrick"
+  ],
+  "nat": "England",
+  "clubs": [
+   "West Ham United",
+   "Swindon Town",
+   "Birmingham City",
+   "Tottenham Hotspur",
+   "Manchester United"
+  ],
+  "loans": [
+   false,
+   true,
+   true,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Michael_Carrick ; https://www.transfermarkt.com/x/transfers/spieler/3878"
+ },
+ {
+  "key": "ZOFF",
+  "display": [
+   "Dino",
+   "Zoff"
+  ],
+  "nat": "Italy",
+  "clubs": [
+   "Udinese",
+   "Mantova",
+   "Napoli",
+   "Juventus"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Dino_Zoff ; https://www.transfermarkt.com/x/transfers/spieler/89229"
+ },
+ {
+  "key": "ALBIOL",
+  "display": [
+   "Raúl",
+   "Albiol"
+  ],
+  "nat": "Spain",
+  "clubs": [
+   "Valencia",
+   "Getafe",
+   "Real Madrid",
+   "Napoli",
+   "Villarreal",
+   "Pisa"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Ra%C3%BAl_Albiol ; https://www.transfermarkt.com/x/transfers/spieler/15452"
+ },
+ {
+  "key": "UMTITI",
+  "display": [
+   "Samuel",
+   "Umtiti"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Lyon",
+   "Barcelona",
+   "Lecce",
+   "Lille"
+  ],
+  "loans": [
+   false,
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Samuel_Umtiti ; https://www.transfermarkt.com/x/transfers/spieler/126540"
+ },
+ {
+  "key": "KUYT",
+  "display": [
+   "Dirk",
+   "Kuyt"
+  ],
+  "nat": "Netherlands",
+  "clubs": [
+   "Utrecht",
+   "Feyenoord",
+   "Liverpool",
+   "Fenerbahçe",
+   "Feyenoord"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Dirk_Kuyt ; https://www.transfermarkt.com/x/transfers/spieler/4010"
+ },
+ {
+  "key": "SCHILLACI",
+  "display": [
+   "Salvatore",
+   "Schillaci"
+  ],
+  "nat": "Italy",
+  "clubs": [
+   "Messina",
+   "Juventus",
+   "Inter Milan",
+   "Júbilo Iwata"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Salvatore_Schillaci ; https://www.transfermarkt.com/x/transfers/spieler/90513"
+ },
+ {
+  "key": "WALCOTT",
+  "display": [
+   "Theo",
+   "Walcott"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Southampton",
+   "Arsenal",
+   "Everton",
+   "Southampton"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Theo_Walcott"
+ },
+ {
+  "key": "ALABA",
+  "display": [
+   "David",
+   "Alaba"
+  ],
+  "nat": "Austria",
+  "clubs": [
+   "Bayern Munich",
+   "TSG Hoffenheim",
+   "Real Madrid",
+   "Udinese"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/David_Alaba"
+ },
+ {
+  "key": "VARDY",
+  "display": [
+   "Jamie",
+   "Vardy"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Stocksbridge Park Steels",
+   "FC Halifax Town",
+   "Fleetwood Town",
+   "Leicester City",
+   "Cremonese",
+   "Burnley"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Jamie_Vardy"
+ },
+ {
+  "key": "MERTESACKER",
+  "display": [
+   "Per",
+   "Mertesacker"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Hannover 96",
+   "Werder Bremen",
+   "Arsenal"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Per_Mertesacker"
+ },
+ {
+  "key": "AZPILICUETA",
+  "display": [
+   "César",
+   "Azpilicueta"
+  ],
+  "nat": "Spain",
+  "clubs": [
+   "Osasuna",
+   "Marseille",
+   "Chelsea",
+   "Atlético Madrid",
+   "Sevilla"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/C%C3%A9sar_Azpilicueta"
+ },
+ {
+  "key": "LEHMANN",
+  "display": [
+   "Jens",
+   "Lehmann"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Schalke 04",
+   "AC Milan",
+   "Borussia Dortmund",
+   "Arsenal",
+   "VfB Stuttgart",
+   "Arsenal"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Jens_Lehmann"
+ },
+ {
+  "key": "SOLSKJR",
+  "display": [
+   "Ole Gunnar",
+   "Solskjær"
+  ],
+  "nat": "Norway",
+  "clubs": [
+   "Clausenengen",
+   "Molde",
+   "Manchester United"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Ole_Gunnar_Solskj%C3%A6r"
+ },
+ {
+  "key": "NAVAS",
+  "display": [
+   "Jesús",
+   "Navas"
+  ],
+  "nat": "Spain",
+  "clubs": [
+   "Sevilla",
+   "Manchester City",
+   "Sevilla"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Jes%C3%BAs_Navas"
+ },
+ {
+  "key": "GATTUSO",
+  "display": [
+   "Gennaro",
+   "Gattuso"
+  ],
+  "nat": "Italy",
+  "clubs": [
+   "Perugia",
+   "Rangers",
+   "Salernitana",
+   "AC Milan",
+   "Sion"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Gennaro_Gattuso"
+ },
+ {
+  "key": "RUMMENIGGE",
+  "display": [
+   "Karl-Heinz",
+   "Rummenigge"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Bayern Munich",
+   "Inter Milan",
+   "Servette"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Karl-Heinz_Rummenigge"
+ },
+ {
+  "key": "NEDVED",
+  "display": [
+   "Pavel",
+   "Nedvěd"
+  ],
+  "nat": "Czechia",
+  "clubs": [
+   "Dukla Prague",
+   "Sparta Prague",
+   "Lazio",
+   "Juventus"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Pavel_Nedv%C4%9Bd ; https://cs.wikipedia.org/wiki/Pavel_Nedv%C4%9Bd"
+ },
+ {
+  "key": "IVANOVIC",
+  "display": [
+   "Branislav",
+   "Ivanović"
+  ],
+  "nat": "Serbia",
+  "clubs": [
+   "Srem",
+   "OFK Beograd",
+   "Lokomotiv Moscow",
+   "Chelsea",
+   "Zenit Saint Petersburg",
+   "West Bromwich Albion"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Branislav_Ivanovi%C4%87"
+ },
+ {
+  "key": "ENDO",
+  "display": [
+   "Wataru",
+   "Endō"
+  ],
+  "nat": "Japan",
+  "clubs": [
+   "Shonan Bellmare",
+   "Urawa Red Diamonds",
+   "Sint-Truiden",
+   "VfB Stuttgart",
+   "Liverpool"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Wataru_End%C5%8D"
+ },
+ {
+  "key": "ALCANTARA",
+  "display": [
+   "Thiago",
+   "Alcântara"
+  ],
+  "nat": "Spain",
+  "clubs": [
+   "Barcelona",
+   "Bayern Munich",
+   "Liverpool"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Thiago_Alc%C3%A2ntara"
+ },
+ {
+  "key": "ORIGI",
+  "display": [
+   "Divock",
+   "Origi"
+  ],
+  "nat": "Belgium",
+  "clubs": [
+   "Lille",
+   "Liverpool",
+   "Lille",
+   "VfL Wolfsburg",
+   "AC Milan",
+   "Nottingham Forest"
+  ],
+  "loans": [
+   false,
+   false,
+   true,
+   true,
+   false,
+   true
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Divock_Origi"
+ },
+ {
+  "key": "BLASZCZYKOWSKI",
+  "display": [
+   "Jakub",
+   "Błaszczykowski"
+  ],
+  "nat": "Poland",
+  "clubs": [
+   "KS Częstochowa",
+   "Wisła Kraków",
+   "Borussia Dortmund",
+   "Fiorentina",
+   "VfL Wolfsburg",
+   "Wisła Kraków"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   true,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Jakub_B%C5%82aszczykowski"
+ },
+ {
+  "key": "VERMAELEN",
+  "display": [
+   "Thomas",
+   "Vermaelen"
+  ],
+  "nat": "Belgium",
+  "clubs": [
+   "Ajax",
+   "RKC Waalwijk",
+   "Arsenal",
+   "Barcelona",
+   "Roma",
+   "Vissel Kobe"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Thomas_Vermaelen"
+ },
+ {
+  "key": "MUSTAFI",
+  "display": [
+   "Shkodran",
+   "Mustafi"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Everton",
+   "Sampdoria",
+   "Valencia",
+   "Arsenal",
+   "Schalke 04",
+   "Levante"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Shkodran_Mustafi"
+ },
+ {
+  "key": "SAGNA",
+  "display": [
+   "Bacary",
+   "Sagna"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Auxerre",
+   "Arsenal",
+   "Manchester City",
+   "Benevento",
+   "Montreal Impact"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Bacary_Sagna"
+ },
+ {
+  "key": "KEANE",
+  "display": [
+   "Roy",
+   "Keane"
+  ],
+  "nat": "Republic of Ireland",
+  "clubs": [
+   "Cobh Ramblers",
+   "Nottingham Forest",
+   "Manchester United",
+   "Celtic"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Roy_Keane"
+ },
+ {
+  "key": "DESAILLY",
+  "display": [
+   "Marcel",
+   "Desailly"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Nantes",
+   "Marseille",
+   "AC Milan",
+   "Chelsea",
+   "Al-Gharafa",
+   "Qatar SC"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Marcel_Desailly ; https://www.transfermarkt.com/marcel-desailly/profil/spieler/3154"
+ },
+ {
+  "key": "BREITNER",
+  "display": [
+   "Paul",
+   "Breitner"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Bayern Munich",
+   "Real Madrid",
+   "Eintracht Braunschweig",
+   "Bayern Munich"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Paul_Breitner ; https://www.transfermarkt.com/paul-breitner/profil/spieler/13766"
+ },
+ {
+  "key": "BARTHEZ",
+  "display": [
+   "Fabien",
+   "Barthez"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Toulouse",
+   "Marseille",
+   "Monaco",
+   "Manchester United",
+   "Marseille",
+   "Nantes"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Fabien_Barthez ; https://www.transfermarkt.com/fabien-barthez/profil/spieler/3289"
+ },
+ {
+  "key": "MILITO",
+  "display": [
+   "Diego",
+   "Milito"
+  ],
+  "nat": "Argentina",
+  "clubs": [
+   "Racing Club",
+   "Genoa",
+   "Zaragoza",
+   "Genoa",
+   "Inter Milan",
+   "Racing Club"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Diego_Milito ; https://www.transfermarkt.com/diego-milito/profil/spieler/22202"
+ },
+ {
+  "key": "FELLAINI",
+  "display": [
+   "Marouane",
+   "Fellaini"
+  ],
+  "nat": "Belgium",
+  "clubs": [
+   "Standard Liège",
+   "Everton",
+   "Manchester United",
+   "Shandong Taishan"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Marouane_Fellaini ; https://www.transfermarkt.com/marouane-fellaini/profil/spieler/39679"
+ },
+ {
+  "key": "BRAVO",
+  "display": [
+   "Claudio",
+   "Bravo"
+  ],
+  "nat": "Chile",
+  "clubs": [
+   "Colo-Colo",
+   "Real Sociedad",
+   "Barcelona",
+   "Manchester City",
+   "Betis"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Claudio_Bravo ; https://www.transfermarkt.com/claudio-bravo/profil/spieler/40423"
+ },
+ {
+  "key": "WILSHERE",
+  "display": [
+   "Jack",
+   "Wilshere"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Arsenal",
+   "Bolton Wanderers",
+   "AFC Bournemouth",
+   "West Ham United",
+   "AFC Bournemouth",
+   "AGF"
+  ],
+  "loans": [
+   false,
+   true,
+   true,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Jack_Wilshere ; https://www.transfermarkt.com/jack-wilshere/profil/spieler/74223"
+ },
+ {
+  "key": "MOTTA",
+  "display": [
+   "Thiago",
+   "Motta"
+  ],
+  "nat": "Italy",
+  "clubs": [
+   "Barcelona",
+   "Atlético Madrid",
+   "Genoa",
+   "Inter Milan",
    "Paris Saint-Germain"
   ],
   "loans": [
    false,
    false,
    false,
+   false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Ousmane_Demb%C3%A9l%C3%A9"
+  "_source": "https://en.wikipedia.org/wiki/Thiago_Motta ; https://www.transfermarkt.com/thiago-motta/profil/spieler/7602"
  },
  {
-  "key": "LLORIS",
+  "key": "FONTAINE",
   "display": [
-   "Hugo",
-   "Lloris"
+   "Just",
+   "Fontaine"
   ],
   "nat": "France",
   "clubs": [
+   "US Marocaine",
    "Nice",
-   "Lyon",
-   "Tottenham Hotspur",
-   "Los Angeles FC"
+   "Reims"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Just_Fontaine ; https://www.transfermarkt.com/just-fontaine/profil/spieler/151245"
+ },
+ {
+  "key": "TOURE",
+  "display": [
+   "Kolo",
+   "Touré"
+  ],
+  "nat": "Ivory Coast",
+  "clubs": [
+   "ASEC Mimosas",
+   "Arsenal",
+   "Manchester City",
+   "Liverpool",
+   "Celtic"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Kolo_Tour%C3%A9 ; https://www.transfermarkt.com/kolo-toure/profil/spieler/3202"
+ },
+ {
+  "key": "NATALE",
+  "display": [
+   "Antonio Di",
+   "Natale"
+  ],
+  "nat": "Italy",
+  "clubs": [
+   "Empoli",
+   "Iperzola",
+   "Varese",
+   "Viareggio",
+   "Udinese"
+  ],
+  "loans": [
+   false,
+   true,
+   true,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Antonio_Di_Natale ; https://it.wikipedia.org/wiki/Antonio_Di_Natale"
+ },
+ {
+  "key": "NESTA",
+  "display": [
+   "Alessandro",
+   "Nesta"
+  ],
+  "nat": "Italy",
+  "clubs": [
+   "Lazio",
+   "AC Milan",
+   "Montreal Impact",
+   "Chennaiyin"
   ],
   "loans": [
    false,
@@ -167,58 +1610,525 @@
    false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Hugo_Lloris"
+  "_source": "https://en.wikipedia.org/wiki/Alessandro_Nesta ; https://www.transfermarkt.com/alessandro-nesta/profil/spieler/4171"
  },
  {
-  "key": "GRIMALDO",
+  "key": "SMALLING",
   "display": [
-   "Joao",
-   "Grimaldo"
+   "Chris",
+   "Smalling"
   ],
-  "nat": "Peru",
+  "nat": "England",
   "clubs": [
-   "Sporting Cristal",
-   "Partizan",
-   "Riga",
+   "Maidstone United",
+   "Fulham",
+   "Manchester United",
+   "Roma",
+   "Al-Fayha",
+   "Porto"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Chris_Smalling ; https://www.transfermarkt.com/chris-smalling/profil/spieler/103427"
+ },
+ {
+  "key": "VOLLER",
+  "display": [
+   "Rudi",
+   "Völler"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Kickers Offenbach",
+   "1860 Munich",
+   "Werder Bremen",
+   "Roma",
+   "Marseille",
+   "Bayer Leverkusen"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Rudi_V%C3%B6ller ; https://www.transfermarkt.com/rudi-voller/profil/spieler/13775"
+ },
+ {
+  "key": "SRNA",
+  "display": [
+   "Darijo",
+   "Srna"
+  ],
+  "nat": "Croatia",
+  "clubs": [
+   "Hajduk Split",
+   "Shakhtar Donetsk",
+   "Cagliari"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Darijo_Srna ; https://www.transfermarkt.com/darijo-srna/profil/spieler/14942"
+ },
+ {
+  "key": "MARCHISIO",
+  "display": [
+   "Claudio",
+   "Marchisio"
+  ],
+  "nat": "Italy",
+  "clubs": [
+   "Juventus",
+   "Empoli",
+   "Zenit Saint Petersburg"
+  ],
+  "loans": [
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Claudio_Marchisio ; https://www.transfermarkt.com/claudio-marchisio/profil/spieler/44716"
+ },
+ {
+  "key": "ROSICKY",
+  "display": [
+   "Tomáš",
+   "Rosický"
+  ],
+  "nat": "Czechia",
+  "clubs": [
+   "Sparta Prague",
+   "Borussia Dortmund",
+   "Arsenal",
    "Sparta Prague"
   ],
   "loans": [
    false,
    false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Tom%C3%A1%C5%A1_Rosick%C3%BD ; https://www.transfermarkt.com/tomas-rosicky/profil/spieler/132"
+ },
+ {
+  "key": "RIQUELME",
+  "display": [
+   "Juan Román",
+   "Riquelme"
+  ],
+  "nat": "Argentina",
+  "clubs": [
+   "Boca Juniors",
+   "Barcelona",
+   "Villarreal",
+   "Boca Juniors",
+   "Argentinos Juniors"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Juan_Rom%C3%A1n_Riquelme ; https://www.transfermarkt.com/juan-roman-riquelme/profil/spieler/3854"
+ },
+ {
+  "key": "BOMMEL",
+  "display": [
+   "Mark van",
+   "Bommel"
+  ],
+  "nat": "Netherlands",
+  "clubs": [
+   "Fortuna Sittard",
+   "PSV",
+   "Barcelona",
+   "Bayern Munich",
+   "Milan",
+   "PSV"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Mark_van_Bommel ; https://www.transfermarkt.com/mark-van-bommel/profil/spieler/3515"
+ },
+ {
+  "key": "BRONCKHORST",
+  "display": [
+   "Giovanni van",
+   "Bronckhorst"
+  ],
+  "nat": "Netherlands",
+  "clubs": [
+   "Feyenoord",
+   "RKC Waalwijk",
+   "Rangers",
+   "Arsenal",
+   "Barcelona",
+   "Feyenoord"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Giovanni_van_Bronckhorst ; https://www.transfermarkt.com/giovanni-van-bronckhorst/profil/spieler/3191"
+ },
+ {
+  "key": "STOJKOVIC",
+  "display": [
+   "Dragan",
+   "Stojković"
+  ],
+  "nat": "Yugoslavia",
+  "clubs": [
+   "Radnički Niš",
+   "Red Star Belgrade",
+   "Marseille",
+   "Verona",
+   "Nagoya Grampus Eight"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
    true,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Joao_Grimaldo"
+  "_source": "https://en.wikipedia.org/wiki/Dragan_Stojkovi%C4%87 ; https://www.transfermarkt.com/dragan-stojkovic/profil/spieler/102704"
  },
  {
-  "key": "GEA",
+  "key": "PATRICIO",
   "display": [
-   "David de",
-   "Gea"
+   "Rui",
+   "Patrício"
+  ],
+  "nat": "Portugal",
+  "clubs": [
+   "Sporting CP",
+   "Wolverhampton Wanderers",
+   "Roma",
+   "Atalanta",
+   "Al Ain"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Rui_Patr%C3%ADcio"
+ },
+ {
+  "key": "CORLUKA",
+  "display": [
+   "Vedran",
+   "Ćorluka"
+  ],
+  "nat": "Croatia",
+  "clubs": [
+   "Dinamo Zagreb",
+   "Inter Zaprešić",
+   "Manchester City",
+   "Tottenham Hotspur",
+   "Bayer Leverkusen",
+   "Lokomotiv Moscow"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Vedran_%C4%86orluka"
+ },
+ {
+  "key": "HOWEDES",
+  "display": [
+   "Benedikt",
+   "Höwedes"
+  ],
+  "nat": "Germany",
+  "clubs": [
+   "Schalke 04",
+   "Juventus",
+   "Lokomotiv Moscow"
+  ],
+  "loans": [
+   false,
+   true,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Benedikt_H%C3%B6wedes"
+ },
+ {
+  "key": "MEIRELES",
+  "display": [
+   "Raul",
+   "Meireles"
+  ],
+  "nat": "Portugal",
+  "clubs": [
+   "Boavista",
+   "Aves",
+   "Porto",
+   "Liverpool",
+   "Chelsea",
+   "Fenerbahçe"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Raul_Meireles"
+ },
+ {
+  "key": "LIZARAZU",
+  "display": [
+   "Bixente",
+   "Lizarazu"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Bordeaux",
+   "Athletic Bilbao",
+   "Bayern Munich",
+   "Marseille",
+   "Bayern Munich"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Bixente_Lizarazu"
+ },
+ {
+  "key": "COMAN",
+  "display": [
+   "Kingsley",
+   "Coman"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Paris Saint-Germain",
+   "Juventus",
+   "Bayern Munich",
+   "Al-Nassr"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Kingsley_Coman"
+ },
+ {
+  "key": "OLMO",
+  "display": [
+   "Dani",
+   "Olmo"
   ],
   "nat": "Spain",
   "clubs": [
-   "Atlético Madrid",
-   "Manchester United",
-   "Fiorentina"
+   "Dinamo Zagreb",
+   "RB Leipzig",
+   "Barcelona"
   ],
   "loans": [
    false,
    false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/David_de_Gea"
+  "_source": "https://en.wikipedia.org/wiki/Dani_Olmo"
  },
  {
-  "key": "DYBALA",
+  "key": "JESUS",
   "display": [
-   "Paulo",
-   "Dybala"
+   "Gabriel",
+   "Jesus"
+  ],
+  "nat": "Brazil",
+  "clubs": [
+   "Palmeiras",
+   "Manchester City",
+   "Arsenal",
+   "Barcelona"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Gabriel_Jesus"
+ },
+ {
+  "key": "PULISIC",
+  "display": [
+   "Christian",
+   "Pulisic"
+  ],
+  "nat": "United States",
+  "clubs": [
+   "Borussia Dortmund",
+   "Chelsea",
+   "AC Milan"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Christian_Pulisic"
+ },
+ {
+  "key": "CHIESA",
+  "display": [
+   "Federico",
+   "Chiesa"
   ],
   "nat": "Italy",
   "clubs": [
-   "Instituto",
-   "Palermo",
+   "Fiorentina",
+   "Juventus",
+   "Liverpool"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Federico_Chiesa"
+ },
+ {
+  "key": "FERNANDEZ",
+  "display": [
+   "Enzo",
+   "Fernández"
+  ],
+  "nat": "Argentina",
+  "clubs": [
+   "River Plate",
+   "Defensa y Justicia",
+   "Benfica",
+   "Chelsea",
+   "Manchester City"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Enzo_Fern%C3%A1ndez"
+ },
+ {
+  "key": "LEAO",
+  "display": [
+   "Rafael",
+   "Leão"
+  ],
+  "nat": "Portugal",
+  "clubs": [
+   "Sporting CP",
+   "Lille",
+   "AC Milan",
+   "Galatasaray"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Rafael_Le%C3%A3o"
+ },
+ {
+  "key": "COSTA",
+  "display": [
+   "Rui",
+   "Costa"
+  ],
+  "nat": "Portugal",
+  "clubs": [
+   "Benfica",
+   "Fafe",
+   "Fiorentina",
+   "AC Milan",
+   "Benfica"
+  ],
+  "loans": [
+   false,
+   true,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Rui_Costa"
+ },
+ {
+  "key": "BARRY",
+  "display": [
+   "Gareth",
+   "Barry"
+  ],
+  "nat": "England",
+  "clubs": [
+   "Aston Villa",
+   "Manchester City",
+   "Everton",
+   "West Bromwich Albion"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Gareth_Barry"
+ },
+ {
+  "key": "BONIEK",
+  "display": [
+   "Zbigniew",
+   "Boniek"
+  ],
+  "nat": "Poland",
+  "clubs": [
+   "Zawisza Bydgoszcz",
+   "Widzew Łódź",
    "Juventus",
    "Roma"
   ],
@@ -228,963 +2138,85 @@
    false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Paulo_Dybala"
+  "_source": "https://en.wikipedia.org/wiki/Zbigniew_Boniek"
  },
  {
-  "key": "REUS",
+  "key": "GNABRY",
   "display": [
-   "Marco",
-   "Reus"
+   "Serge",
+   "Gnabry"
   ],
   "nat": "Germany",
-  "clubs": [
-   "Rot Weiss Ahlen",
-   "Borussia Mönchengladbach",
-   "Borussia Dortmund",
-   "LA Galaxy"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Marco_Reus"
- },
- {
-  "key": "HEUNGMIN",
-  "display": [
-   "Son",
-   "Heung-min"
-  ],
-  "nat": "South Korea",
-  "clubs": [
-   "Hamburger SV",
-   "Bayer Leverkusen",
-   "Tottenham Hotspur",
-   "Los Angeles FC"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Son_Heung-min"
- },
- {
-  "key": "BELLINGHAM",
-  "display": [
-   "Jude",
-   "Bellingham"
-  ],
-  "nat": "United Kingdom",
-  "clubs": [
-   "Birmingham City",
-   "Borussia Dortmund",
-   "Real Madrid"
-  ],
-  "loans": [
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Jude_Bellingham"
- },
- {
-  "key": "BECKER",
-  "display": [
-   "Alisson",
-   "Becker"
-  ],
-  "nat": "Brazil",
-  "clubs": [
-   "Internacional",
-   "Roma",
-   "Liverpool"
-  ],
-  "loans": [
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Alisson_Becker"
- },
- {
-  "key": "HAKIMI",
-  "display": [
-   "Achraf",
-   "Hakimi"
-  ],
-  "nat": "Spain",
-  "clubs": [
-   "Real Madrid",
-   "Borussia Dortmund",
-   "Inter Milan",
-   "Paris Saint-Germain"
-  ],
-  "loans": [
-   false,
-   true,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Achraf_Hakimi"
- },
- {
-  "key": "FIRMINO",
-  "display": [
-   "Roberto",
-   "Firmino"
-  ],
-  "nat": "Brazil",
-  "clubs": [
-   "Figueirense",
-   "TSG Hoffenheim",
-   "Liverpool",
-   "Al-Ahli",
-   "Al Sadd"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Roberto_Firmino"
- },
- {
-  "key": "SZCZSNY",
-  "display": [
-   "Wojciech",
-   "Szczęsny"
-  ],
-  "nat": "Poland",
   "clubs": [
    "Arsenal",
-   "Brentford",
-   "Roma",
-   "Juventus",
-   "Barcelona"
-  ],
-  "loans": [
-   false,
-   true,
-   true,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Wojciech_Szcz%C4%99sny"
- },
- {
-  "key": "MAGUIRE",
-  "display": [
-   "Harry",
-   "Maguire"
-  ],
-  "nat": "United Kingdom",
-  "clubs": [
-   "Sheffield United",
-   "Hull City",
-   "Wigan Athletic",
-   "Leicester City",
-   "Manchester United"
-  ],
-  "loans": [
-   false,
-   false,
-   true,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Harry_Maguire"
- },
- {
-  "key": "STEGEN",
-  "display": [
-   "Marc-André ter",
-   "Stegen"
-  ],
-  "nat": "Germany",
-  "clubs": [
-   "Borussia Mönchengladbach",
-   "Barcelona",
-   "Girona",
-   "Ajax"
-  ],
-  "loans": [
-   false,
-   false,
-   true,
-   true
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Marc-Andr%C3%A9_ter_Stegen"
- },
- {
-  "key": "ERIKSEN",
-  "display": [
-   "Christian",
-   "Eriksen"
-  ],
-  "nat": "Kingdom of Denmark",
-  "clubs": [
-   "Ajax",
-   "Tottenham Hotspur",
-   "Inter Milan",
-   "Brentford",
-   "Manchester United",
-   "VfL Wolfsburg"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Christian_Eriksen"
- },
- {
-  "key": "DEPAY",
-  "display": [
-   "Memphis",
-   "Depay"
-  ],
-  "nat": "Ghana",
-  "clubs": [
-   "PSV Eindhoven",
-   "Manchester United",
-   "Lyon",
-   "Barcelona",
-   "Atlético Madrid",
-   "Corinthians"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Memphis_Depay"
- },
- {
-  "key": "NAGATOMO",
-  "display": [
-   "Yūto",
-   "Nagatomo"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "FC Tokyo",
-   "Cesena",
-   "Inter Milan",
-   "Galatasaray",
-   "Marseille",
-   "FC Tokyo"
-  ],
-  "loans": [
-   false,
-   true,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Y%C5%ABto_Nagatomo"
- },
- {
-  "key": "FERNANDES",
-  "display": [
-   "Bruno",
-   "Fernandes"
-  ],
-  "nat": "Portugal",
-  "clubs": [
-   "Novara",
-   "Udinese",
-   "Sampdoria",
-   "Sporting CP",
-   "Manchester United"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Bruno_Fernandes"
- },
- {
-  "key": "DRAXLER",
-  "display": [
-   "Julian",
-   "Draxler"
-  ],
-  "nat": "Germany",
-  "clubs": [
-   "Schalke 04",
-   "VfL Wolfsburg",
-   "Paris Saint-Germain",
-   "Benfica",
-   "Al Ahli"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   true,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Julian_Draxler"
- },
- {
-  "key": "MINAMINO",
-  "display": [
-   "Takumi",
-   "Minamino"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "Cerezo Osaka",
-   "Red Bull Salzburg",
-   "Liverpool",
-   "Southampton",
-   "Monaco"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   true,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Takumi_Minamino"
- },
- {
-  "key": "RDIGER",
-  "display": [
-   "Antonio",
-   "Rüdiger"
-  ],
-  "nat": "Germany",
-  "clubs": [
-   "VfB Stuttgart",
-   "Roma",
-   "Chelsea",
-   "Real Madrid"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Antonio_R%C3%BCdiger"
- },
- {
-  "key": "VALVERDE",
-  "display": [
-   "Federico",
-   "Valverde"
-  ],
-  "nat": "Uruguay",
-  "clubs": [
-   "Peñarol",
-   "Real Madrid",
-   "Deportivo La Coruña"
-  ],
-  "loans": [
-   false,
-   false,
-   true
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Federico_Valverde"
- },
- {
-  "key": "GNDOAN",
-  "display": [
-   "İlkay",
-   "Gündoğan"
-  ],
-  "nat": "Germany",
-  "clubs": [
-   "1. FC Nürnberg",
-   "Borussia Dortmund",
-   "Manchester City",
-   "Barcelona",
-   "Manchester City",
-   "Galatasaray"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/%C4%B0lkay_G%C3%BCndo%C4%9Fan"
- },
- {
-  "key": "HAVERTZ",
-  "display": [
-   "Kai",
-   "Havertz"
-  ],
-  "nat": "Germany",
-  "clubs": [
-   "Bayer Leverkusen",
-   "Chelsea",
-   "Arsenal"
-  ],
-  "loans": [
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Kai_Havertz"
- },
- {
-  "key": "TORRES",
-  "display": [
-   "Ferran",
-   "Torres"
-  ],
-  "nat": "Spain",
-  "clubs": [
-   "Valencia",
-   "Manchester City",
-   "Barcelona"
-  ],
-  "loans": [
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Ferran_Torres"
- },
- {
-  "key": "OSAKO",
-  "display": [
-   "Yuya",
-   "Osako"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "Kashima Antlers",
-   "1860 Munich",
-   "1. FC Köln",
+   "West Bromwich Albion",
    "Werder Bremen",
-   "Vissel Kobe"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Yuya_Osako"
- },
- {
-  "key": "FATI",
-  "display": [
-   "Ansu",
-   "Fati"
-  ],
-  "nat": "Spain",
-  "clubs": [
-   "Barcelona",
-   "Brighton & Hove Albion",
-   "Monaco"
+   "Bayern Munich",
+   "TSG Hoffenheim"
   ],
   "loans": [
    false,
    true,
-   false
+   false,
+   false,
+   true
   ],
-  "_source": "https://en.wikipedia.org/wiki/Ansu_Fati"
+  "_source": "https://en.wikipedia.org/wiki/Serge_Gnabry"
  },
  {
-  "key": "DONNARUMMA",
+  "key": "ROBERTO",
   "display": [
-   "Gianluigi",
-   "Donnarumma"
+   "Sergi",
+   "Roberto"
   ],
-  "nat": "Italy",
+  "nat": "Spain",
   "clubs": [
-   "AC Milan",
-   "Paris Saint-Germain",
-   "Manchester City"
-  ],
-  "loans": [
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Gianluigi_Donnarumma"
- },
- {
-  "key": "KOVAI",
-  "display": [
-   "Mateo",
-   "Kovačić"
-  ],
-  "nat": "Croatia",
-  "clubs": [
-   "Dinamo Zagreb",
-   "Inter Milan",
-   "Real Madrid",
-   "Chelsea",
-   "Manchester City"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Mateo_Kova%C4%8Di%C4%87"
- },
- {
-  "key": "YOSHIDA",
-  "display": [
-   "Maya",
-   "Yoshida"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "Nagoya Grampus",
-   "VVV-Venlo",
-   "Southampton",
-   "Sampdoria",
-   "Schalke 04",
+   "Barcelona",
+   "Como",
    "LA Galaxy"
   ],
   "loans": [
    false,
    false,
-   false,
-   false,
-   false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Maya_Yoshida"
+  "_source": "https://en.wikipedia.org/wiki/Sergi_Roberto"
  },
  {
-  "key": "UCHIDA",
+  "key": "CALHANOGLU",
   "display": [
-   "Atsuto",
-   "Uchida"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "Kashima Antlers",
-   "Schalke 04",
-   "Union Berlin",
-   "Kashima Antlers"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Atsuto_Uchida"
- },
- {
-  "key": "SILVA",
-  "display": [
-   "Bernardo",
-   "Silva"
-  ],
-  "nat": "Portugal",
-  "clubs": [
-   "Benfica",
-   "Monaco",
-   "Manchester City",
-   "Real Madrid"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Bernardo_Silva"
- },
- {
-  "key": "SAN",
-  "display": [
-   "Leroy",
-   "Sané"
-  ],
-  "nat": "Germany",
-  "clubs": [
-   "Schalke 04",
-   "Manchester City",
-   "Bayern Munich",
-   "Galatasaray"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Leroy_San%C3%A9"
- },
- {
-  "key": "WERNER",
-  "display": [
-   "Timo",
-   "Werner"
-  ],
-  "nat": "Germany",
-  "clubs": [
-   "VfB Stuttgart",
-   "RB Leipzig",
-   "Chelsea",
-   "RB Leipzig",
-   "Tottenham Hotspur",
-   "San Jose Earthquakes"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   true,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Timo_Werner"
- },
- {
-  "key": "PAVARD",
-  "display": [
-   "Benjamin",
-   "Pavard"
-  ],
-  "nat": "France",
-  "clubs": [
-   "Lille",
-   "VfB Stuttgart",
-   "Bayern Munich",
-   "Inter Milan",
-   "Marseille"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   true
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Benjamin_Pavard"
- },
- {
-  "key": "SHIBASAKI",
-  "display": [
-   "Gaku",
-   "Shibasaki"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "Kashima Antlers",
-   "Tenerife",
-   "Getafe",
-   "Deportivo La Coruña",
-   "Leganés",
-   "Kashima Antlers"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Gaku_Shibasaki"
- },
- {
-  "key": "SAKAI",
-  "display": [
-   "Gōtoku",
-   "Sakai"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "Albirex Niigata",
-   "VfB Stuttgart",
-   "Hamburger SV",
-   "Vissel Kobe"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/G%C5%8Dtoku_Sakai"
- },
- {
-  "key": "ALVAREZ",
-  "display": [
-   "Julián",
-   "Alvarez"
-  ],
-  "nat": "Argentina",
-  "clubs": [
-   "River Plate",
-   "Manchester City",
-   "River Plate",
-   "Atlético Madrid"
-  ],
-  "loans": [
-   false,
-   false,
-   true,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Juli%C3%A1n_Alvarez"
- },
- {
-  "key": "VZQUEZ",
-  "display": [
-   "Lucas",
-   "Vázquez"
-  ],
-  "nat": "Spain",
-  "clubs": [
-   "Espanyol",
-   "Real Madrid",
-   "Bayer Leverkusen"
-  ],
-  "loans": [
-   true,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Lucas_V%C3%A1zquez"
- },
- {
-  "key": "MUTO",
-  "display": [
-   "Yoshinori",
-   "Muto"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "FC Tokyo",
-   "Mainz 05",
-   "Newcastle United",
-   "Eibar",
-   "Vissel Kobe"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   true,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Yoshinori_Muto"
- },
- {
-  "key": "GAKPO",
-  "display": [
-   "Cody",
-   "Gakpo"
-  ],
-  "nat": "Kingdom of the Netherlands",
-  "clubs": [
-   "Jong PSV",
-   "PSV",
-   "Liverpool"
-  ],
-  "loans": [
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Cody_Gakpo"
- },
- {
-  "key": "CAN",
-  "display": [
-   "Emre",
-   "Can"
+   "Hakan",
+   "Çalhanoğlu"
   ],
   "nat": "Turkey",
   "clubs": [
-   "Bayern Munich",
+   "Karlsruher",
+   "Hamburger SV",
    "Bayer Leverkusen",
-   "Liverpool",
-   "Juventus",
-   "Borussia Dortmund"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Emre_Can"
- },
- {
-  "key": "XHAKA",
-  "display": [
-   "Granit",
-   "Xhaka"
-  ],
-  "nat": "Switzerland",
-  "clubs": [
-   "Basel",
-   "Borussia Mönchengladbach",
-   "Arsenal",
-   "Bayer Leverkusen",
-   "Sunderland"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Granit_Xhaka"
- },
- {
-  "key": "SAKAI",
-  "display": [
-   "Hiroki",
-   "Sakai"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "Kashiwa Reysol",
-   "Hannover 96",
-   "Marseille",
-   "Urawa Red Diamonds",
-   "Auckland FC"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Hiroki_Sakai"
- },
- {
-  "key": "RABIOT",
-  "display": [
-   "Adrien",
-   "Rabiot"
-  ],
-  "nat": "France",
-  "clubs": [
-   "Paris Saint-Germain",
-   "Toulouse",
-   "Juventus",
-   "Marseille",
-   "AC Milan"
-  ],
-  "loans": [
-   false,
-   true,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Adrien_Rabiot"
- },
- {
-  "key": "JONG",
-  "display": [
-   "Frenkie de",
-   "Jong"
-  ],
-  "nat": "Kingdom of the Netherlands",
-  "clubs": [
-   "Jong Ajax",
-   "Ajax",
-   "Barcelona"
-  ],
-  "loans": [
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Frenkie_de_Jong"
- },
- {
-  "key": "AFELLAY",
-  "display": [
-   "Ibrahim",
-   "Afellay"
-  ],
-  "nat": "Kingdom of the Netherlands",
-  "clubs": [
-   "PSV Eindhoven |caps1 = 159 |goals1 = 35",
-   "Barcelona |caps2 = 21 |goals2 = 2",
-   "Schalke 04 |caps3 = 10 |goals3 = 2",
-   "Olympiacos |caps4 = 19 |goals4 = 4",
-   "Stoke City |caps5 = 49 |goals5 = 2",
-   "PSV Eindhoven |caps6 = 3 |goals6 = 0"
-  ],
-  "loans": [
-   false,
-   false,
-   true,
-   true,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Ibrahim_Afellay"
- },
- {
-  "key": "STONES",
-  "display": [
-   "John",
-   "Stones"
-  ],
-  "nat": "United Kingdom",
-  "clubs": [
-   "Barnsley",
-   "Everton",
-   "Manchester City",
+   "AC Milan",
    "Inter Milan"
   ],
   "loans": [
    false,
    false,
    false,
+   false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/John_Stones"
+  "_source": "https://en.wikipedia.org/wiki/Hakan_%C3%87alhano%C4%9Flu"
  },
  {
-  "key": "VERRATTI",
+  "key": "DIER",
   "display": [
-   "Marco",
-   "Verratti"
+   "Eric",
+   "Dier"
   ],
-  "nat": "Spain",
+  "nat": "England",
   "clubs": [
-   "Pescara",
-   "Paris Saint-Germain",
-   "Al-Arabi",
-   "Al Duhail"
+   "Sporting CP",
+   "Tottenham Hotspur",
+   "Bayern Munich",
+   "Monaco"
   ],
   "loans": [
    false,
@@ -1192,119 +2224,109 @@
    false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Marco_Verratti"
+  "_source": "https://en.wikipedia.org/wiki/Eric_Dier"
  },
  {
-  "key": "OLISE",
+  "key": "GALLAS",
   "display": [
-   "Michael",
-   "Olise"
+   "William",
+   "Gallas"
   ],
   "nat": "France",
   "clubs": [
-   "Reading",
-   "Crystal Palace",
-   "Bayern Munich"
-  ],
-  "loans": [
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Michael_Olise"
- },
- {
-  "key": "OSIMHEN",
-  "display": [
-   "Victor",
-   "Osimhen"
-  ],
-  "nat": "Nigeria",
-  "clubs": [
-   "VfL Wolfsburg",
-   "Charleroi",
-   "Lille",
-   "Napoli",
-   "Galatasaray"
+   "Caen",
+   "Marseille",
+   "Chelsea",
+   "Arsenal",
+   "Tottenham Hotspur",
+   "Perth Glory"
   ],
   "loans": [
    false,
    false,
    false,
    false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Victor_Osimhen"
- },
- {
-  "key": "KONNO",
-  "display": [
-   "Yasuyuki",
-   "Konno"
-  ],
-  "nat": "Japan",
-  "clubs": [
-   "Consadole Sapporo",
-   "FC Tokyo",
-   "Gamba Osaka",
-   "Júbilo Iwata",
-   "Nankatsu SC"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
    false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Yasuyuki_Konno"
+  "_source": "https://en.wikipedia.org/wiki/William_Gallas"
  },
  {
-  "key": "ISAK",
+  "key": "HERNANDEZ",
   "display": [
-   "Alexander",
-   "Isak"
-  ],
-  "nat": "Sweden",
-  "clubs": [
-   "AIK",
-   "Borussia Dortmund",
-   "Real Sociedad",
-   "Newcastle United",
-   "Liverpool"
-  ],
-  "loans": [
-   false,
-   false,
-   false,
-   false,
-   false
-  ],
-  "_source": "https://en.wikipedia.org/wiki/Alexander_Isak"
- },
- {
-  "key": "MARTIAL",
-  "display": [
-   "Anthony",
-   "Martial"
+   "Lucas",
+   "Hernandez"
   ],
   "nat": "France",
   "clubs": [
-   "Lyon",
+   "Atlético Madrid",
+   "Bayern Munich",
+   "Paris Saint-Germain"
+  ],
+  "loans": [
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Lucas_Hernandez"
+ },
+ {
+  "key": "VLAHOVIC",
+  "display": [
+   "Dušan",
+   "Vlahović"
+  ],
+  "nat": "Serbia",
+  "clubs": [
+   "Partizan",
+   "Fiorentina",
+   "Juventus",
+   "Beşiktaş"
+  ],
+  "loans": [
+   false,
+   false,
+   false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Du%C5%A1an_Vlahovi%C4%87"
+ },
+ {
+  "key": "TCHOUAMENI",
+  "display": [
+   "Aurélien",
+   "Tchouaméni"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Bordeaux",
    "Monaco",
-   "Manchester United",
-   "Sevilla",
-   "AEK Athens",
-   "Monterrey"
+   "Real Madrid"
   ],
   "loans": [
    false,
    false,
+   false
+  ],
+  "_source": "https://en.wikipedia.org/wiki/Aur%C3%A9lien_Tchouam%C3%A9ni"
+ },
+ {
+  "key": "KOUNDE",
+  "display": [
+   "Jules",
+   "Koundé"
+  ],
+  "nat": "France",
+  "clubs": [
+   "Bordeaux",
+   "Sevilla",
+   "Barcelona"
+  ],
+  "loans": [
    false,
-   true,
    false,
    false
   ],
-  "_source": "https://en.wikipedia.org/wiki/Anthony_Martial"
+  "_source": "https://en.wikipedia.org/wiki/Jules_Kound%C3%A9"
  }
 ]

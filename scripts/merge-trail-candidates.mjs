@@ -18,9 +18,16 @@ import { readFileSync, writeFileSync } from 'fs';
 import { TRAIL_PLAYERS, TRAIL_ANSWER_LOG } from '../src/lib/trail.js';
 
 const write = process.argv.includes('--write');
-const PLAYED = 10;          // puzzles 1..10 are spent — index 0..9
+// 2026-10-05: 87, not today's number. tests/unit/trail-schedule.test.js freezes
+// every answer through #87 (the published horizon), so those are copied through
+// untouched and only #88 on (29 Oct 2026) is re-planned.
+const PLAYED = 87;
 const SEED = 20260812;
-const MIN_GAP = 14;         // no career repeats inside a fortnight
+// 2026-10-05: 120, was 14. With 102 careers a player could come back after 16
+// days; Alex's line is that a repeat many months on is harmless and a quick one
+// is not. The roster roughly doubled, so each career now appears at most twice
+// in the log and never inside four months.
+const MIN_GAP = 120;
 
 // ⚠️ HOUSE STYLE, NOT WIKIPEDIA STYLE. The existing 44 read "Man Utd",
 // "Tottenham", "Atletico Madrid" — short, unaccented, how a fan says it out
@@ -36,6 +43,11 @@ const NAME = {
   'Olympique Lyonnais': 'Lyon', 'Olympique de Marseille': 'Marseille',
   'Sheffield United': 'Sheffield Utd', 'Deportivo La Coruña': 'Deportivo',
   'Bayern Munich': 'Bayern Munich', 'FC Bayern Munich': 'Bayern Munich',
+  'Milan': 'AC Milan', 'Real Zaragoza': 'Zaragoza', 'Betis': 'Real Betis',
+  'Celta': 'Celta Vigo', 'Karlsruher': 'Karlsruher SC', 'Zenit Saint Petersburg': 'Zenit',
+  'West Bromwich Albion': 'West Brom', 'Wolverhampton Wanderers': 'Wolves', 'West Ham United': 'West Ham',
+  'Queens Park Rangers': 'QPR', 'AFC Bournemouth': 'Bournemouth', 'Nagoya Grampus Eight': 'Nagoya Grampus',
+  'Emirates': 'Emirates Club',
 };
 const house = (c) => NAME[c] || c.replace(/\s+(F\.?C\.?|C\.?F\.?|S\.?K\.?|A\.?F\.?C\.?)$/i, '').trim();
 

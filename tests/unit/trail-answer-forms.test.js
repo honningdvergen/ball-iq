@@ -38,8 +38,12 @@ import POOL from '../../src/data/mysteryPool.json';
  * being marked wrong is the worst failure this mode has.
  */
 
+// Letters that do not decompose under NFD are folded first, exactly as the app
+// does (LETTER_FOLD in trail.js). Without this the helper cut "Solskjær" into
+// "solskj" + "r" and then asked whether "r" was an accepted answer.
 const norm = (s) => String(s || '')
-  .toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+  .toLowerCase().replace(/[øæœßłđ]/g, (c) => ({ ø: 'o', æ: 'ae', œ: 'oe', ß: 'ss', ł: 'l', đ: 'd' }[c]))
+  .normalize('NFD').replace(/[̀-ͯ]/g, '')
   .replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim();
 
 /** Names are the same human regardless of the order the parts are stored in. */
