@@ -183,12 +183,25 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // Footle arrivals (index.html sets __biqConsentDefer = 'game' for /footle).
   // Without this the bar would wait until the player left the screen; with a
   // timer it would land mid-game and shrink the board (2026-09-23).
+  //
+  // ⚠️ NOT THE INSTANT THE GAME ENDS (2026-10-05). Fired on the status change,
+  // the bar (143px on a phone) rose over the result as it appeared: at 393x852
+  // it covered Share, the WhatsApp link and the third "still open" row, and at
+  // 700px tall all three rows (product walkthrough, shots j2-04, j6-12). The
+  // one moment a first-time player might share was the moment we covered the
+  // button. So a fresh finish gets nine seconds with the whole result first
+  // (about two of them are the tile flip); reopening a finished puzzle gets
+  // three. A player who leaves inside that window is not asked on this visit,
+  // which fails safe: Clarity and PostHog stay off for them.
   useEffect(() => {
     if (state.status === "playing") return;
-    try {
-      window.__biqConsentMomentFired = true;
-      window.dispatchEvent(new Event("biq:consent-moment"));
-    } catch { /* consent is a nicety here, never a reason to break the game */ }
+    const t = setTimeout(() => {
+      try {
+        window.__biqConsentMomentFired = true;
+        window.dispatchEvent(new Event("biq:consent-moment"));
+      } catch { /* consent is a nicety here, never a reason to break the game */ }
+    }, wasFinishedAtMount.current ? 3000 : 9000);
+    return () => clearTimeout(t);
   }, [state.status]);
 
   // The rules sheet used to auto-open here, once, for a first-time player.

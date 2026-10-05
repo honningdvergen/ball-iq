@@ -174,6 +174,16 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-app{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:10px;font-size:13px;color:var(--tx3);text-decoration:none}
   .bq-app:hover{color:var(--tx);text-decoration:none}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
+  /* Still open today: the day's other games on a finish card. Rows are full
+     width and 52px tall (a thumb target), quiet until tapped. */
+  .bq-open{margin-top:16px;text-align:left}
+  .bq-open-t{font-family:var(--mono);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--tx4);margin-bottom:8px}
+  .bq-open-r{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:8px 12px 8px 14px;margin-top:6px;border:1px solid var(--bd);border-radius:12px;text-decoration:none;color:var(--tx)}
+  .bq-open-r:active{background:rgba(255,255,255,.04)}
+  .bq-open-n{display:flex;flex-direction:column;min-width:0}
+  .bq-open-n b{font-size:14.5px;font-weight:700}
+  .bq-open-n i{font-style:normal;font-size:12.5px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bq-open-r em{flex:0 0 auto;font-style:normal;font-size:13px;font-weight:800;color:var(--grn-ink);background:var(--grn);border-radius:999px;padding:6px 14px}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-days{display:inline-block;margin-top:9px;padding:4px 11px;border-radius:999px;
     background:rgba(240,169,59,.14);border:1px solid rgba(240,169,59,.4);
@@ -229,8 +239,7 @@ export function renderQuizItems(rows, t = {}) {
 <p class="bq-qx">${esc(r.q)}</p>
 <div class="bq-os">${opts}</div>
 <p class="bq-sr" role="status" aria-live="polite"></p>
-<div class="bq-why"><b>${esc(t.why || 'Why')}</b>${esc(r.hint)}</div>
-<button class="bq-next" type="button" hidden>${esc(t.next || 'Next question →')}</button>
+${r.hint ? `<div class="bq-why"><b>${esc(t.why || 'Why')}</b>${esc(r.hint)}</div>\n` : ''}<button class="bq-next" type="button" hidden>${esc(t.next || 'Next question →')}</button>
 </li>`;
     })
     .join('\n');

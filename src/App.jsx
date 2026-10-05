@@ -4995,17 +4995,21 @@ function AppInner() {
     // read from localStorage rather than stats state so deps stay [user?.id]
     // — depending on stats would re-run the mount tick on every stats change
     // (same constraint as the shield read above).
-    if (result.ticked && [7, 30, 100].includes(result.streak)) {
+    // Day 3 joined 2026-10-04: it is the first day a run reads as a habit
+    // rather than a coincidence, and before this the first celebration was a
+    // week away. Toast and haptic only; confetti stays for 7/30/100.
+    if (result.ticked && [3, 7, 30, 100].includes(result.streak)) {
       let persisted = {};
       try { persisted = JSON.parse(localStorage.getItem('biq_stats') || '{}') || {}; } catch {}
       const flag = `streak${result.streak}Celebrated`;
       if (!persisted[flag]) {
-        const msg = result.streak === 7 ? "🔥 7-day streak — you're building a habit"
+        const msg = result.streak === 3 ? "🔥 3 days in a row — that's how a streak starts"
+          : result.streak === 7 ? "🔥 7-day streak — you're building a habit"
           : result.streak === 30 ? "🏆 30-day streak — incredible dedication"
           : "💎 100-day streak — you are a legend";
         // 1200ms so it lands after the regular streak toast/pulse — same
         // delay handleComplete's copy uses.
-        celebrationTimeoutsRef.current.push(setTimeout(() => { showToast(msg); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
+        celebrationTimeoutsRef.current.push(setTimeout(() => { showToast(msg); haptic("heavy"); playSound("streak"); if (result.streak !== 3) setMilestoneConfetti(true); }, 1200));
         setStats(p => {
           const updated = { ...p, [flag]: true };
           // Persist directly (setStats alone doesn't write storage) so a
@@ -6921,7 +6925,10 @@ function AppInner() {
     }
 
     // Streak milestones (independent of game count)
-    if (loginStreak === 7 && !stats.streak7Celebrated) {
+    if (loginStreak === 3 && !stats.streak3Celebrated) {
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 3 days in a row — that's how a streak starts"); haptic("heavy"); playSound("streak"); }, 1200));
+      setStats(p => ({...p, streak3Celebrated: true}));
+    } else if (loginStreak === 7 && !stats.streak7Celebrated) {
       celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak7Celebrated: true}));
     } else if (loginStreak === 30 && !stats.streak30Celebrated) {

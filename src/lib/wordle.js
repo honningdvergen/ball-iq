@@ -597,8 +597,8 @@ export const WORDLE_ANSWER_LOG = [
   "BUTCHER","RAMOS","KOVAC","BENZEMA","GUNDOGAN","MIKEL","ALBERT","VLAHOVIC",
   "JAMES","TRAORE","COURTOIS","TOTTI","BAINES","DALGLISH","HURST","DAVIES",
   "BERGOMI","GAZZA","DROGBA","BENNETT","PIATEK","RIBERY","ANTONIO","BENRAHMA",
-  "YASHIN","DEMBELE","MOUNT","SHEVA","MILITAO","SAGNOL","LEIVA","SHILTON",
-  "MARTINEZ","CARRA","BECKHAM","RIQUELME","YAMAL","PALMER","HEIGHWAY","VARDY",
+  "YASHIN","DEMBELE","MOUNT","SUKER","MILITAO","SAGNOL","LEIVA","SHILTON",
+  "MARTINEZ","WHITE","BECKHAM","RIQUELME","YAMAL","PALMER","HEIGHWAY","VARDY",
   "HUTTON","JORGINHO","NESTA","BARTON","MARADONA","ADAMS","HAKIMI","MILBURN",
   "VILLA","MAHREZ","MUSIALA","BAILEY","ROBBEN","GHIGGIA","BIERHOFF","PETERS",
   "ENDRICK","JONES","MATIP","ASENSIO","VIDIC","KANTE","FLOWERS","KOMPANY",
@@ -668,7 +668,12 @@ export const WORDLE_MANAGERS = ['MOURINHO', 'WENGER', 'SARRI', 'RANGNICK', 'BIEL
 // These stay valid GUESSES. Days already served (#12 BISSAKA, #15 DEROSSI,
 // #149 VANGAAL) keep their answers — they are public record; the six later
 // log slots were re-keyed in the same change (see wordle-schedule.test.js).
-export const WORDLE_NOT_ANSWERS = ['VANGAAL', 'VANDIJK', 'DEROSSI', 'PERSIE', 'MARIA', 'BISSAKA'];
+// 2026-10-05: SHEVA and CARRA joined. They are terrace shortenings of a
+// surname (Shevchenko, Carragher), not a name either man was ever listed
+// under, so a player hunting a five-letter surname cannot reach them by
+// knowing football. Their two unplayed days (#212, #218) were re-keyed to
+// SUKER and WHITE. GAZZA stays: it is the name itself, like PELE and KAKA.
+export const WORDLE_NOT_ANSWERS = ['VANGAAL', 'VANDIJK', 'DEROSSI', 'PERSIE', 'MARIA', 'BISSAKA', 'SHEVA', 'CARRA'];
 
 export const WORDLE_ANSWER_POOL = WORDLE_PLAYERS.filter(
   (w) => w.length >= 5 && w.length <= 8 && !WORDLE_MANAGERS.includes(w) && !WORDLE_NOT_ANSWERS.includes(w)

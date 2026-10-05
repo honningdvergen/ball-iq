@@ -115,10 +115,22 @@ for (const [f, b] of rows) console.log(`  ${String(Math.round(b / 1024)).padStar
 // Re-measured 2026-10-04 after tracing moved to a lazy chunk
 // (src/lib/sentryTracing.js): with a dummy DSN 861 KB, without 795 KB, so
 // 66 KB of SDK plus the same ~6 KB of debug IDs Vercel adds = 72 KB.
+// ⚠️ LOOK IN THE BUILD, NOT AT THE ENVIRONMENT (2026-10-05). The charge used to
+// hang on process.env.VITE_SENTRY_DSN alone. A Mac with the DSN in .env.local
+// has it in Vite's import.meta.env (so the SDK IS bundled) but not in this
+// script's process.env, and was charged the 72 KB a second time: 845 KB
+// measured + 72 = "917 KB > 909", a failure production (852 KB for the same
+// tree) never had. Three cases, told apart by what was actually built:
+//   DSN in process.env (Vercel)        SDK and debug IDs are in the bytes: +0
+//   SDK in the eager chunks (.env.local) only Vercel's debug IDs are missing: +6
+//   no SDK anywhere (CI, previews)      charge the whole 72
 const SENTRY_EAGER_KB = 72;
-const withSentry = !!process.env.VITE_SENTRY_DSN;
-const kb = Math.round(total / 1024) + (withSentry ? 0 : SENTRY_EAGER_KB);
-if (!withSentry) console.log(`  ${String(SENTRY_EAGER_KB).padStart(5)} KB  Sentry SDK + debug IDs, absent from this build but shipped by production (VITE_SENTRY_DSN unset here)`);
+const SENTRY_DEBUG_ID_KB = 6;
+const sdkInBuild = [...eager].some((f) => /ingest(\.[a-z]+)?\.sentry\.io/.test(readFileSync(resolve(ASSETS, f), 'utf8')));
+const charge = process.env.VITE_SENTRY_DSN ? 0 : sdkInBuild ? SENTRY_DEBUG_ID_KB : SENTRY_EAGER_KB;
+const kb = Math.round(total / 1024) + charge;
+if (charge === SENTRY_EAGER_KB) console.log(`  ${String(charge).padStart(5)} KB  Sentry SDK + debug IDs, absent from this build but shipped by production (no DSN in this build)`);
+else if (charge) console.log(`  ${String(charge).padStart(5)} KB  Sentry debug IDs, added by Vercel's build only (the SDK itself is in this build)`);
 if (kb > BUDGET_KB) { console.error(`✗ Home eager JS ${kb} KB > budget ${BUDGET_KB} KB`); bad++; }
 else console.log(`✓ Home eager JS ${kb} KB ≤ ${BUDGET_KB} KB budget; no static heavy imports in ${files.filter((f) => HOME_CHUNKS.test(f)).length} Home chunk(s)${bad ? '' : ''}`);
 process.exit(bad ? 1 : 0);
