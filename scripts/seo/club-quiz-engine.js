@@ -588,7 +588,7 @@ var out=new Uint8Array(raw.length);for(var i=0;i<raw.length;i++)out[i]=raw.charC
    promise one thing and deliver another. Open it per language when the push
    copy is translated (docs/TODO.md). */
 function remindLang(){return /^en/.test(root.getAttribute('data-lang')||'en')}
-function remindLine(){return remindLang()&&remindOk()?'<button class="bq-app bq-remind" type="button" data-remind="1">'+esc(T('remind','Remind me tomorrow evening when the new puzzles are out'))+'</button>':''}
+function remindLine(){return remindLang()&&remindOk()?'<button class="bq-app bq-remind" type="button" data-remind="1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>'+esc(T('remind','Remind me to play tomorrow at 7pm'))+'</span></button>':''}
 function wireRemind(box){var btn=box.querySelector('[data-remind]');if(!btn)return;
 btn.addEventListener('click',function(){
 bqev('clubq-remind-tap');btn.disabled=true;

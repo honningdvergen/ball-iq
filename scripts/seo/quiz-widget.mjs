@@ -173,7 +173,11 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row .bq-wide{flex:1 1 100%}
   .bq-app{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:10px;font-size:13px;color:var(--tx3);text-decoration:none}
   .bq-app:hover{color:var(--tx);text-decoration:none}
-  .bq-remind{width:100%;background:none;border:0;font:inherit;font-size:13px;cursor:pointer;padding:0 8px}
+  /* Looked at on a phone 2026-10-05: as plain grey text on two lines it read as
+     a caption, not a control. A bell, one line, and a step brighter than the
+     app line under it, which stays the quieter of the two. */
+  .bq-remind{width:100%;background:none;border:0;font:inherit;font-size:13.5px;cursor:pointer;padding:0 8px;gap:8px;color:var(--tx2)}
+  .bq-remind svg{flex:0 0 auto;color:var(--grn)}
   .bq-remind:disabled{cursor:default;opacity:.8}
   /* .bq-app is display:flex, and an author display rule beats the browser's
      own [hidden] rule: without this a blocked reminder stays on screen. */
