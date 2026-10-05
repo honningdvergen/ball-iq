@@ -22,8 +22,12 @@ import { TRAIL_PLAYERS } from '../src/lib/trail.js';
 import { careerFor, sleep } from './lib/wiki-career.mjs';
 
 const LIMIT = parseInt(process.argv[2] || '60', 10);
-const MAX_RUNGS = 6;
-const MIN_RUNGS = 3;
+// The shipped rule is 3 to 6 rungs. Alex approved 8 on 2026-10-05, but the game
+// reveals at most 6 clubs until its opening rule changes, so longer careers are
+// gathered to a SEPARATE file (TRAIL_OUT) and merged only with that change.
+const MAX_RUNGS = parseInt(process.env.TRAIL_MAX_RUNGS || '6', 10);
+const MIN_RUNGS = parseInt(process.env.TRAIL_MIN_RUNGS || '3', 10);
+const OUT_FILE = process.env.TRAIL_OUT || 'scripts/_trail-candidates.json';
 
 const pool = JSON.parse(readFileSync('public/data/lineup.json', 'utf8')).players;
 const have = new Set(TRAIL_PLAYERS.map((p) => p.display.join(' ').toLowerCase()));
@@ -81,8 +85,8 @@ for (const p of targets) {
   });
 }
 
-writeFileSync('scripts/_trail-candidates.json', `${JSON.stringify(out, null, 1)}\n`);
-console.log(`proposed ${out.length} careers -> scripts/_trail-candidates.json`);
+writeFileSync(OUT_FILE, `${JSON.stringify(out, null, 1)}\n`);
+console.log(`proposed ${out.length} careers -> ${OUT_FILE}`);
 console.log(`skipped ${skipped.length}`);
 skipped.slice(0, 12).forEach((s) => console.log(`   ${s}`));
 console.log('\n⚠️ PROPOSALS ONLY. Read every one before it goes into src/lib/trail.js.');
