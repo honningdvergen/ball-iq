@@ -155,6 +155,13 @@ describe("Trail schedule is frozen", () => {
     "PARK",               // #85 · 2026-10-26 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "SAN",                // #86 · 2026-10-27 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "DONNARUMMA",         // #87 · 2026-10-28 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ALCANTARA",          // #88 · 2026-10-29 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BREITNER",           // #89 · 2026-10-30 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "OLMO",               // #90 · 2026-10-31 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "VALDES",             // #91 · 2026-11-01 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "VERMAELEN",          // #92 · 2026-11-02 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "MARCELO",            // #93 · 2026-11-03 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "DYBALA",             // #94 · 2026-11-04 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
   ];
 
   it("no already-published day ever moves", () => {
