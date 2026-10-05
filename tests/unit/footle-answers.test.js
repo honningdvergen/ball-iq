@@ -12,6 +12,7 @@ const ANCHOR = dayIndex(2026, 4, 4) // Footle #1
 const INTENTIONAL_MISMATCHES = new Set([
   'GAZZA', 'CARRA', 'SHEVA',        // nicknames — you guess the nickname
   'VOELLER',                        // standard oe transliteration of Völler
+  'ODEGAARD',                       // ø is written o in English (the shirt and the league both do)
   'VANDIJK', 'VANGAAL', 'DEROSSI',  // key keeps the particle
 ])
 
