@@ -18,6 +18,11 @@
  *      appear, but must stay at or under 5% of the schedule.
  *   3. Every scheduled id must resolve to a pool entry.
  *   4. No back-to-back repeats.
+ *   5. From NO_REPEAT_FROM on, no day repeats an answer already in the log
+ *      (Alex, 2026-10-05: a repeat a year on is harmless, one two months on is
+ *      not). The 99 repeats the first log carried were replaced by
+ *      scripts/rekey-mystery-repeats.mjs; this keeps them out. Earlier days
+ *      are public record and keep whatever they served.
  */
 import { readFileSync } from 'node:fs';
 
@@ -27,6 +32,7 @@ const POOL = read('../src/data/mysteryPool.json');
 const EX = read('../src/data/mysteryExclusions.json');
 
 const RATION_MAX = 0.05;
+const NO_REPEAT_FROM = 66; // Mystery Player No. 67, 8 Oct 2026: the first day the re-key could touch
 const byId = new Map(POOL.map((p) => [p.id, p]));
 const banned = new Set([...(EX.managers || []), ...(EX.notFootballers || [])]);
 const rationed = new Set(EX.rationed || []);
@@ -41,6 +47,7 @@ SCHEDULE.forEach((id, day) => {
   if (banned.has(p.name)) problems.push(`day ${day}: ${p.name} is on the hard-ban list`);
   if (rationed.has(p.name)) rationCount++;
   if (day > 0 && SCHEDULE[day - 1] === id) problems.push(`day ${day}: back-to-back repeat of ${p.name}`);
+  if (day >= NO_REPEAT_FROM && SCHEDULE.indexOf(id) < day) problems.push(`day ${day}: ${p.name} repeats day ${SCHEDULE.indexOf(id)}`);
 });
 
 const rationPct = SCHEDULE.length ? rationCount / SCHEDULE.length : 0;
@@ -55,7 +62,7 @@ if (all.length) {
   console.error('❌ Mystery schedule violates the editorial ruling:');
   for (const p of all.slice(0, 20)) console.error(`    ${p}`);
   if (all.length > 20) console.error(`    …and ${all.length - 20} more`);
-  console.error('    Fix: node scripts/gen-mystery-schedule.mjs');
+  console.error('    Fix a repeat with: node scripts/rekey-mystery-repeats.mjs   (never re-run the generator: it rewrites played days)');
   process.exit(1);
 }
 
