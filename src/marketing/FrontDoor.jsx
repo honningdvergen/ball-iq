@@ -144,6 +144,33 @@ function readToday() {
   return out;
 }
 
+// ── A RETURNING PLAYER'S STREAK (2026-10-05) ────────────────────────────────
+// The homepage a player saw on day two was identical to the one a stranger
+// sees: the streak existed in storage and showed only inside a result or the
+// profile tab (product walkthrough, shots j7-01, j7-04). Retention is the
+// site's weakest number, and the cheapest reason to play today is "you played
+// yesterday". So: consecutive days, ending yesterday or today, on which ANY of
+// the four dailies was finished on this device. A day counts the way
+// readToday() counts it, so the two never disagree. A first-time visitor has
+// no such days and sees nothing new. Local dates, like the games themselves.
+function finishedOn(date) {
+  try {
+    const w = JSON.parse(localStorage.getItem(`biq_wordle_${getWordleDateKey(date)}`) || 'null');
+    if (w && (w.status === 'won' || w.status === 'lost')) return true;
+  } catch {}
+  try { if (localStorage.getItem(keyForDate(date))) return true; } catch {}
+  try { const t = loadTrailDay?.(date); if (t && ['won', 'lost'].includes(t.status)) return true; } catch {}
+  try { const m = loadMysteryResult?.(date); if (m && (m.won || m.gaveUp)) return true; } catch {}
+  return false;
+}
+function readStreak(today) {
+  const day = (back) => { const d = new Date(today); d.setDate(d.getDate() - back); return d; };
+  const playedToday = finishedOn(day(0));
+  let before = 0;
+  while (before < 400 && finishedOn(day(before + 1))) before += 1;
+  return { days: before + (playedToday ? 1 : 0), playedToday, before };
+}
+
 // The lead card's board is the player's REAL board — the same guesses the game
 // stores under biq_wordle_<date>, graded the same way. A newcomer sees six
 // empty rows and a ringed first tile; a returning player sees their colours.
@@ -162,6 +189,7 @@ export default function FrontDoor() {
   const today = useMemo(() => new Date(), []);
   const [state, setState] = useState(() => readToday());
   useEffect(() => { setState(readToday()); }, [today]);
+  const streak = useMemo(() => readStreak(today), [today, state]);
   // The practice board (an archive puzzle, nothing about today's given away)
   // used to be its own section under Today — a second Footle door on one
   // page. It now opens from the lead card, on request.
@@ -207,6 +235,16 @@ export default function FrontDoor() {
             <h2 id="fd-today-h">Today</h2>
             <span className="fd-progress"><b>{playedCount} of {dailies.length}</b> played · new ones in <span className="fd-tnum">{countdown}</span></span>
           </div>
+          {streak.days >= 1 && (
+            <p className="fd-streak" role="status">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z" /></svg>
+              {streak.playedToday
+                ? (streak.days === 1
+                  ? <span><b>Day 1 of a streak.</b> Tomorrow makes it 2.</span>
+                  : <span><b>{streak.days} days in a row.</b> Safe for today.</span>)
+                : <span><b>{streak.before} {streak.before === 1 ? 'day' : 'days'} in a row.</b> Play one today to make it {streak.before + 1}.</span>}
+            </p>
+          )}
           <div className="fd-today">
             {/* ⚠️ FOUR EQUAL ROWS, BY DECISION. This morning's A/B chose B — Footle
                 as a lead card with a live board. By evening Alex had seen it on
