@@ -473,18 +473,18 @@ export const TRAIL_PAGE = {
   lede: 'A career path, revealed one club at a time. Name the player before it runs out.',
   statLine: 'Free · no sign-up · new career every day',
   how: [
-    ['Start with one club', "You get the first club of a footballer's career and nothing else. Sometimes that is enough."],
+    ['Start with two clubs', "You get the first two clubs of a footballer's career and nothing else. Sometimes that is enough."],
     ['Guess or reveal', 'Name the player, or reveal the next club on the trail. Every reveal makes it easier and costs you points.'],
     ['Fewer clubs, more points', 'Getting it from two clubs is worth far more than getting it from six. The scoring rewards the early call.'],
     ['One trail a day', 'The same career for everyone, every day. Share your result and compare how few clubs you needed.'],
   ],
   body: [
-    `Transfer Trail is a daily football guessing game built on career paths. You are shown the clubs a footballer played for, in order, starting with just the first one — and your job is to name him before the trail gives it away. Every club you reveal makes the answer more obvious and your score smaller.`,
+    `Transfer Trail is a daily football guessing game built on career paths. You are shown the clubs a footballer played for, in order, starting with just the first two — and your job is to name him before the trail gives it away. Every club you reveal makes the answer more obvious and your score smaller.`,
     `It rewards the kind of knowledge that quizzes usually miss. Plenty of people can name a Ballon d'Or winner; far fewer can look at a first club in the Belgian league and know where that career went next. Loan spells are marked as loans, and a return to a former club appears as its own step, because that is how a career actually reads.`,
     `One trail a day, the same for everyone, so scores are worth comparing. Free, no account, plays in the browser — and in the Ball IQ app it sits alongside Footle, Mystery Player and the daily quiz, with your streak tracked across all of them.`,
   ],
   faq: [
-    { q: 'What is Transfer Trail?', a: "A daily football game where you name a player from his career path. You start with only his first club and can reveal the rest one at a time — the fewer you need, the higher you score." },
+    { q: 'What is Transfer Trail?', a: "A daily football game where you name a player from his career path. You start with only his first two clubs and the rest are revealed one at a time — the fewer you need, the higher you score." },
     { q: 'How does the scoring work?', a: 'You score most for naming the player from as few clubs as possible. Every club you reveal reduces the points available, so an early correct call beats a safe late one.' },
     { q: 'Are loan spells included?', a: 'Yes, and they are marked as loans rather than hidden — a loan is part of the career. A player returning to a club he had already played for appears as its own step on the trail.' },
     { q: 'Is it free? Do I need an account?', a: 'Free, no account, straight in the browser. The free Ball IQ app keeps your streak and adds Footle, Mystery Player and the daily quiz.' },
