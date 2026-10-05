@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { QB } from "../../src/questions.js";
-import { pickDailyQuestions } from '../../src/lib/dailyDraw.js';
+import { pickDailyQuestions, warmUpFirst } from '../../src/lib/dailyDraw.js';
 import DAILY_LOG from "../../src/data/dailyLog.js";
 
 // ⚠️ WHAT THIS PROTECTS, AND WHAT IT COST TO LEARN (player report, 2026-08-19).
@@ -82,5 +82,33 @@ describe("Daily 7 is frozen against bank changes", () => {
     ) / 86400000);
     expect(today).toBeGreaterThanOrEqual(DAILY_LOG.anchor);
     expect(DAILY_LOG.anchor + DAILY_LOG.days.length).toBeGreaterThan(today);
+  });
+});
+
+// Alex, 2026-10-04: "Medium warm-up Q1". Q1 was right 57% of the time when
+// medium and 39% when hard (30 days of Daily 7 answers). Days already served
+// when the rule landed (through 2026-10-05, log index 47) are exempt.
+describe("Daily 7 opens on a medium question", () => {
+  const WARMUP_FROM = 48;
+  it("every unserved logged day opens on a medium question", () => {
+    const byId = new Map(QB.map((q) => [q.id, q]));
+    const offenders = DAILY_LOG.days.slice(WARMUP_FROM)
+      .map((day, i) => ({ day: i + WARMUP_FROM, diff: byId.get(day[0])?.diff }))
+      .filter((r) => r.diff !== "medium");
+    expect(offenders.slice(0, 5)).toEqual([]);
+  });
+
+  it("a fresh draw opens on a medium question", () => {
+    for (const offset of [500, 750, 1000, 1001, 1002]) {
+      expect(pickDailyQuestions(QB, DAILY_LOG.anchor + offset)[0].diff, `day +${offset}`).toBe("medium");
+    }
+  });
+
+  it("only Q1 moves: a hard opener is replaced, Q2 to Q7 keep their slots", () => {
+    const q = (id, diff) => ({ id, diff });
+    const day = [q("h1", "hard"), q("m2", "medium"), q("h3", "hard"), q("h4", "hard"), q("h5", "hard"), q("h6", "hard"), q("h7", "hard")];
+    const out = warmUpFirst(day, [...day, q("m8", "medium")]);
+    expect(out.map((x) => x.id)).toEqual(["m8", "m2", "h3", "h4", "h5", "h6", "h7"]);
+    expect(warmUpFirst(out, [])).toBe(out);
   });
 });

@@ -22,6 +22,8 @@
 .wd-header-text{flex:1;min-width:0;}
 .wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
 .wd-sub{font-size:13px;font-weight:600;color:var(--t2);margin-top:3px;letter-spacing:0;}
+/* 320px phones: 13px wrapped "Surname of a footballer" to two lines (header 44 -> 54px). 12px fits with 7px to spare in Chromium; nowrap keeps a wider font (SF on iOS) to one line. */
+@media (max-width:340px){.wd-sub{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}}
 .wd-legend{display:flex;justify-content:center;gap:18px;margin:0 0 4px;font-size:12px;font-weight:600;color:var(--t2);}
 .wd-legend-item{display:inline-flex;align-items:center;gap:6px;}
 .wd-legend-chip{width:11px;height:11px;border-radius:3px;flex-shrink:0;}

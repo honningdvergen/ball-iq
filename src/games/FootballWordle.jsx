@@ -183,12 +183,25 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // Footle arrivals (index.html sets __biqConsentDefer = 'game' for /footle).
   // Without this the bar would wait until the player left the screen; with a
   // timer it would land mid-game and shrink the board (2026-09-23).
+  //
+  // ⚠️ NOT THE INSTANT THE GAME ENDS (2026-10-05). Fired on the status change,
+  // the bar (143px on a phone) rose over the result as it appeared: at 393x852
+  // it covered Share, the WhatsApp link and the third "still open" row, and at
+  // 700px tall all three rows (product walkthrough, shots j2-04, j6-12). The
+  // one moment a first-time player might share was the moment we covered the
+  // button. So a fresh finish gets nine seconds with the whole result first
+  // (about two of them are the tile flip); reopening a finished puzzle gets
+  // three. A player who leaves inside that window is not asked on this visit,
+  // which fails safe: Clarity and PostHog stay off for them.
   useEffect(() => {
     if (state.status === "playing") return;
-    try {
-      window.__biqConsentMomentFired = true;
-      window.dispatchEvent(new Event("biq:consent-moment"));
-    } catch { /* consent is a nicety here, never a reason to break the game */ }
+    const t = setTimeout(() => {
+      try {
+        window.__biqConsentMomentFired = true;
+        window.dispatchEvent(new Event("biq:consent-moment"));
+      } catch { /* consent is a nicety here, never a reason to break the game */ }
+    }, wasFinishedAtMount.current ? 3000 : 9000);
+    return () => clearTimeout(t);
   }, [state.status]);
 
   // The rules sheet used to auto-open here, once, for a first-time player.
@@ -492,7 +505,12 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               yesterday in History had no way to tell they were not about to
               spend today's puzzle. It mattered less while the replay was
               broken (it reloaded after 5s); now that it works, it matters. */}
-          <div className="wd-sub">{isArchive ? `No. ${getFootleNumber(date)} · archive` : FOOTLE_SHORT}</div>
+          {/* Once the board is over, the rule has nothing left to teach and the
+              "Next" countdown takes 70px of this row: the rule wrapped to two
+              lines at 360-390px and three at 320 (measured 2026-10-04, header
+              44px -> 54/69px). The puzzle number is what a finished player
+              shares and compares, and it fits on one line at every width. */}
+          <div className="wd-sub">{isArchive ? `No. ${getFootleNumber(date)} · archive` : state.status !== "playing" ? `No. ${getFootleNumber(date)}` : FOOTLE_SHORT}</div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>

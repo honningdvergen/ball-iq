@@ -119,8 +119,13 @@ function hubPage(now) {
     .map((a) => `<tr><td class="an"><a href="${a.url}">No. ${a.n}</a></td><td class="ad">${esc(a.date)}</td><td class="aa">${esc(a.full)} <span class="asr">(${esc(a.surname)})</span></td></tr>`)
     .join('\n');
 
-  const title = `Footle Answer Today — Hints for No. ${num} | Ball IQ`; // date lives in the description; 60 chars is the SERP cut
-  const description = `Hints for today's Footle, No. ${num} (${todayLabel}), with the answer hidden until you tap — and every past Football Wordle answer, one page per puzzle.`;
+  // ⚠️ NO PUZZLE NUMBER OR DATE in the hub's title or description (2026-10-05).
+  // Google recrawls this URL every few days, not nightly, so a number in the
+  // title was a stale number in the listing (seen in the 4 Oct SERP: an old
+  // "No. N" under a "today" promise). The number and date stay on the page,
+  // which is rendered fresh at each request; the numbered pages keep theirs.
+  const title = 'Footle Answer Today: Hints First, Then the Answer | Ball IQ';
+  const description = "Hints for today's Footle, from gentle to specific, with the answer hidden until you tap. Plus every past Football Wordle answer, one page per puzzle.";
 
   const body = `<section class="hero narrow">${crumbs('Answer')}
 <div class="kicker"><span class="eyebrow">Updated daily · answer hidden until you tap</span></div>
@@ -151,7 +156,7 @@ ${nextIsOpen(now) ? `<p class="prose" style="margin-top:14px">Already past midni
       title,
       description,
       canonical: HUB,
-      ogTitle: `Footle Answer Today — No. ${num} Hints`,
+      ogTitle: 'Footle Answer Today: Hints First',
       ld: breadcrumbLd([{ name: 'Answer', item: HUB }]),
       body,
     }),

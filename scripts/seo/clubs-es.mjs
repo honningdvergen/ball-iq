@@ -5045,5 +5045,1039 @@ export const CLUBS_ES = [
       "aboutQ": "Sobre el quiz del Cruz Azul",
       "statsLine": "Gratis · Preguntas del Cruz Azul con respuestas explicadas · sin registro"
     }
+  },
+
+  // ── MEXICO WAVE 2, 2026-10-04 ────────────────────────────────────────────
+  // Pumas UNAM, Monterrey, Tigres UANL, in the same Mexican register as the first
+  // wave and assembled by build-es-entries-latam.mjs. Every entry carries the
+  // English question's id and its `en` answer, so this layer asserts no new facts.
+  {
+    "club": "Pumas UNAM",
+    "slug": "pumas-unam",
+    i18n: ES_MX,
+    "lang": "es",
+    "name": "Pumas UNAM",
+    "h1": "Quiz de Pumas",
+    "title": "Quiz de Pumas con respuestas — Auriazules | Ball IQ",
+    "description": "Quiz gratis de Pumas con respuestas explicadas: Hugo Sánchez dentista, el tiro libre del Tuca al América, el bicampeonato de 2004 y Campos de delantero.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas de Pumas con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "El Club Universidad se fundó el 2 de agosto de 1954 para representar a la Universidad Nacional Autónoma de México, y en septiembre de ese año jugó su primer partido profesional, de visita en Monterrey, en la Segunda División. El ascenso llegó con el título de segunda en la 1961-62, y la primera temporada en Primera División, la 1962-63, casi termina en descenso inmediato: Renato Cesarini tomó a un equipo en último lugar, lo salvó y después armó el sistema integral de fuerzas básicas que se conoció como la cantera. El nombre Pumas viene de Roberto «Tapatío» Méndez, técnico de la universidad de 1946 a 1964, que en sus charlas comparaba a sus jugadores con el felino; el azul y oro fue un homenaje a Notre Dame. La casa es el Estadio Olímpico Universitario, en Ciudad Universitaria, estadio principal de los Juegos Olímpicos de 1968, donde Bob Beamon dio su salto de longitud, con el mural de Diego Rivera en sus taludes exteriores, inconcluso a su muerte. Y en cada partido de local se escucha el grito de «¡Goya!», que la tradición remonta a los estudiantes de la Preparatoria de los años cuarenta que lo gritaban al irse de pinta al cercano Cine Goya.",
+      "La rivalidad con el América se afiló pronto. Enrique Borja, ídolo de Pumas, fue vendido al otro lado de la ciudad para la 1969-70 después de decir públicamente que no quería irse; amenazó con dejar de jugar, lo convencieron y terminó siendo ídolo del América. Bora Milutinović llegó en 1972 como mediocampista, jugó 93 partidos de liga hasta 1976 y dirigió al club desde 1977. Hugo Sánchez surgió en esos mismos años, terminó en la UNAM la carrera de odontología mientras jugaba en el primer equipo y festejaba sus goles con maromas en honor a su hermana Herlinda, gimnasta en los Juegos Olímpicos de Montreal 1976. Su último partido con el club fue la final de la 1980-81 ante el campeón vigente, el Cruz Azul: 1-0 en contra de visita, 4-1 en Ciudad Universitaria, 4-2 en el global, y después se fue al Atlético de Madrid. Ese mismo año, la Copa Interamericana ante Nacional de Uruguay se fue a un tercer partido después de que cada uno ganara 3-1 en casa, y Pumas se llevó el desempate 2-1 en el Memorial Coliseum de Los Ángeles en mayo de 1981.",
+      "Miguel Mejía Barón, producto de la primera cantera, dirigió al siguiente gran equipo de 1988 a 1991. Pumas pasó invicto la Copa de Campeones de la CONCACAF 1989 y ganó la final 3-1 en casa ante el Pinar del Río de Cuba, 4-2 en el global. Jorge Campos debutó en el primer equipo en 1988 con Adolfo Ríos por delante en la portería, así que pidió jugar de delantero y metió 14 goles de liga en su primera temporada completa; desde la 1990-91 ganó cinco Guantes de Oro seguidos como portero, todos con Pumas. Claudio Suárez, «El Emperador», que después jugó 177 partidos con México, estuvo en el club de 1988 hasta que se fue a Guadalajara en 1996. Luis García metió 26 goles de liga en la 1990-91 y los dos de México en el 2-1 a la República de Irlanda en el Mundial de 1994. Esa temporada terminó con la final que todo aficionado de Pumas conoce: el América ganó la ida 3-2, con goles de visitante de García y David Patiño, y el tiro libre de Ricardo «Tuca» Ferretti ganó la vuelta 1-0 en Ciudad Universitaria. Pumas fue campeón por gol de visitante, y fue el último partido de Ferretti como jugador.",
+      "La espera por el siguiente título duró hasta 2004, cuando Hugo Sánchez volvió como técnico y ganó el Clausura y el Apertura, primer bicampeón de la era de torneos cortos, además del Campeón de Campeones. Bruno Marioni, a préstamo del Tenerife, metió 16 goles en el Clausura, y la final del Apertura ante Monterrey arrancó con un 2-1 en casa. El defensa Joaquín Beltrán, titular desde 1996, ganó ambos antes de irse al Necaxa en 2006. En 2005, su primera Copa Sudamericana, Pumas le ganó 3-0 al Corinthians en la vuelta de cuartos de final y 4-0 al Vélez Sarsfield en la semifinal, y luego perdió la final en penales ante Boca Juniors. El sexto título llegó en el Clausura 2009 con Ferretti, cuando Pablo Barrera se quitó dos barridas y anotó al minuto 107 ante el Pachuca para el 3-2 global. El séptimo vino en el Clausura 2011, con Guillermo Vázquez, ascendido de auxiliar, ganándole 2-1 en casa al Morelia tras el 1-1 de la ida, con gol de Javier Cortés, surgido de la cantera. En el Guard1anes 2020, Andrés Lillini pasó de interino de emergencia, nombrado tras la renuncia de Míchel días antes del torneo, a una final que se perdió ante el León. Cada respuesta trae su explicación."
+    ],
+    "faq": [
+      {
+        "q": "¿Por qué a Pumas UNAM les dicen los Pumas?",
+        "a": "El apodo viene de Roberto «Tapatío» Méndez, técnico en la universidad de 1946 a 1964, que en sus charlas motivacionales comparaba a sus jugadores con pumas. Se quedó, y todos los equipos de la universidad se conocen como Pumas. Los colores azul y oro se eligieron como homenaje a la Universidad de Notre Dame, de ahí el otro apodo: los Auriazules."
+      },
+      {
+        "q": "¿Cuántos títulos de liga ha ganado Pumas UNAM?",
+        "a": "Siete, al cierre de la temporada 2025-26: 1976-77, 1980-81, 1990-91, Clausura 2004, Apertura 2004, Clausura 2009 y Clausura 2011. El par de 2004 con Hugo Sánchez hizo de Pumas el primer bicampeón de la era de torneos cortos. En lo internacional ganó tres veces la Copa de Campeones de la CONCACAF, en 1980, 1982 y 1989, y la Copa Interamericana en 1981."
+      },
+      {
+        "q": "¿Dónde juega Pumas UNAM de local?",
+        "a": "En el Estadio Olímpico Universitario, en el campus de Ciudad Universitaria, en la Ciudad de México. Fue el estadio principal de los Juegos Olímpicos de 1968, con las ceremonias de inauguración y clausura y el atletismo, incluido el salto de longitud de Bob Beamon. En sus taludes exteriores está el mural de Diego Rivera «La universidad, la familia y el deporte en México», que quedó inconcluso a su muerte."
+      },
+      {
+        "q": "¿Cuáles son los máximos rivales de Pumas UNAM?",
+        "a": "El América, en el Clásico Capitalino. La rivalidad se encendió cuando el América compró al ídolo de Pumas Enrique Borja para la 1969-70 en contra de lo que él había dicho públicamente, y el título más celebrado de Pumas llegó ante ellos en la final de la 1990-91, ganada por gol de visitante después de que el tiro libre de Ricardo «Tuca» Ferretti decidiera la vuelta 1-0. También hay rivalidad de ciudad con el Cruz Azul, al que Pumas venció en la final de la 1980-81."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_1f5cff",
+        "q": "¿De qué Juegos Olímpicos de verano fue estadio principal el Estadio Olímpico Universitario, la casa de Pumas?",
+        "o": [
+          "1964",
+          "1968",
+          "1972",
+          "1976"
+        ],
+        "a": 1,
+        "hint": "El estadio de Ciudad Universitaria recibió las ceremonias de inauguración y clausura y el atletismo de los Juegos de México 1968, incluido el salto de longitud de Bob Beamon.",
+        "en": "1968"
+      },
+      {
+        "id": "q_724f63",
+        "q": "¿Qué técnico llevó a Pumas al bicampeonato en el Clausura 2004 y el Apertura 2004?",
+        "o": [
+          "Ricardo Ferretti",
+          "Miguel España",
+          "Hugo Sánchez",
+          "Guillermo Vázquez"
+        ],
+        "a": 2,
+        "hint": "Los Pumas de Hugo Sánchez fueron los primeros bicampeones de la era de torneos cortos y también ganaron el Campeón de Campeones 2004.",
+        "en": "Hugo Sánchez"
+      },
+      {
+        "id": "q_416121",
+        "q": "¿Con qué apodo se conocía a Claudio Suárez, defensa de Pumas que jugó casi 180 partidos con México?",
+        "o": [
+          "El Káiser",
+          "El General",
+          "El Mariscal",
+          "El Emperador"
+        ],
+        "a": 3,
+        "hint": "«El Emperador» ganó el título de la 1990-91 con Pumas y estuvo en el club de 1988 a 1996.",
+        "en": "El Emperador"
+      },
+      {
+        "id": "q_150010",
+        "q": "¿Ante qué selección metió Manuel Negrete, mediocampista de Pumas, su famoso gol de chilena en el Mundial de 1986?",
+        "o": [
+          "Bulgaria",
+          "Paraguay",
+          "Bélgica",
+          "Irak"
+        ],
+        "a": 0,
+        "hint": "Negrete la empalmó de volea tras una pared con Javier Aguirre en el 2-0 a Bulgaria en octavos de final. Los aficionados lo eligieron como el mejor gol de la historia de los Mundiales en una votación de la FIFA en 2018.",
+        "en": "Bulgaria"
+      },
+      {
+        "id": "q_ea671a",
+        "q": "¿De dónde toma su nombre, según la tradición, el grito de «Goya» que se escucha en cada partido de Pumas en casa?",
+        "o": [
+          "Un cuadro en la oficina del rector",
+          "El apodo de un portero de los años cincuenta",
+          "Una calle junto a Ciudad Universitaria",
+          "Un cine cerca de la antigua Preparatoria"
+        ],
+        "a": 3,
+        "hint": "En los años cuarenta, los estudiantes de la Escuela Nacional Preparatoria, en el centro de la Ciudad de México, gritaban «¡Goya!» cuando se iban de pinta al cercano Cine Goya. El grito se volvió la porra de la universidad.",
+        "en": "A cinema near the old Preparatoria"
+      },
+      {
+        "id": "q_1e98e5",
+        "q": "¿De qué familiar aprendió Hugo Sánchez la maroma con la que festejaba sus goles?",
+        "o": [
+          "Su hermano, acróbata de circo",
+          "Su padre, entrenador de clavados",
+          "Su hermana, gimnasta olímpica",
+          "Su madre, maestra de ballet"
+        ],
+        "a": 2,
+        "hint": "Su hermana, gimnasta mexicana inscrita en los Juegos Olímpicos de Montreal 1976, le enseñó la maroma con la que después festejó sus goles.",
+        "en": "His sister, an Olympic gymnast"
+      },
+      {
+        "id": "q_9b0382",
+        "q": "¿Qué carrera terminó Hugo Sánchez en la UNAM mientras jugaba en Pumas?",
+        "o": [
+          "Odontología",
+          "Arquitectura",
+          "Medicina",
+          "Derecho"
+        ],
+        "a": 0,
+        "hint": "Sánchez obtuvo el título de cirujano dentista en la UNAM mientras estaba en el primer equipo, aunque nunca ejerció como dentista.",
+        "en": "Dentistry"
+      },
+      {
+        "id": "q_31be55",
+        "q": "¿A qué club llegó Hugo Sánchez cuando dejó Pumas para irse a España en 1981?",
+        "o": [
+          "Atlético de Madrid",
+          "Real Madrid",
+          "Rayo Vallecano",
+          "Sevilla"
+        ],
+        "a": 0,
+        "hint": "Llegó al Atlético de Madrid después del título de la 1980-81 y ahí ganó su primer Pichichi, antes de cruzar la ciudad hacia el Real Madrid en 1985.",
+        "en": "Atlético Madrid"
+      },
+      {
+        "id": "q_3d7d7f",
+        "q": "Pumas completó su bicampeonato de 2004 en la final del Apertura 2004. ¿A qué club venció?",
+        "o": [
+          "Guadalajara",
+          "Pachuca",
+          "Monterrey",
+          "Tigres UANL"
+        ],
+        "a": 2,
+        "hint": "Pumas ganó la ida 2-1 en Ciudad Universitaria y terminó venciendo al Monterrey para su quinto título de liga.",
+        "en": "Monterrey"
+      },
+      {
+        "id": "q_10853d",
+        "q": "¿Qué delantero argentino llegó a Pumas a préstamo a principios de 2004 y terminó como campeón de goleo del Clausura 2004, con 16 goles, en el torneo que ganaron?",
+        "o": [
+          "Christian Giménez",
+          "Guillermo Franco",
+          "Bruno Marioni",
+          "Emanuel Villa"
+        ],
+        "a": 2,
+        "hint": "Bruno Marioni llegó del Tenerife. Pumas después compró su carta, y también fue campeón de goleo de la Copa Sudamericana 2005.",
+        "en": "Bruno Marioni"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_2ffad9",
+        "q": "¿Cómo había llegado Bora Milutinović a Pumas en 1972, antes de ser su técnico en 1977?",
+        "o": [
+          "Como auxiliar de Ángel Zubieta",
+          "Como director de fuerzas básicas",
+          "Como visor de jugadores extranjeros",
+          "Como mediocampista del primer equipo"
+        ],
+        "a": 3,
+        "hint": "Bora jugó 93 partidos de liga en el mediocampo con la UNAM entre 1972 y 1976, luego la dirigió desde 1977 y después llevó a México a los cuartos de final del Mundial de 1986.",
+        "en": "As a first-team midfielder"
+      },
+      {
+        "id": "q_185121",
+        "q": "Los Pumas de Bora Milutinović ganaron el título de liga de la 1980-81 en la final. ¿A qué campeón vigente vencieron?",
+        "o": [
+          "Tigres UANL",
+          "América",
+          "Tecos UAG",
+          "Cruz Azul"
+        ],
+        "a": 3,
+        "hint": "Pumas perdió la ida 1-0 y ganó la vuelta 4-1 en Ciudad Universitaria (4-2 en el global). Fue el último partido de Hugo Sánchez con el club antes de irse a España.",
+        "en": "Cruz Azul"
+      },
+      {
+        "id": "q_9692da",
+        "q": "Claudio Suárez dejó Pumas en 1996. ¿A qué club se fue, con el que ganó el título del Verano 1997?",
+        "o": [
+          "Tigres UANL",
+          "Guadalajara",
+          "Toluca",
+          "América"
+        ],
+        "a": 1,
+        "hint": "Suárez llegó a Guadalajara para la temporada 1996-97 (Invierno 1996) y ganó la liga con ellos en el Verano 1997. Después pasó a Tigres.",
+        "en": "Guadalajara"
+      },
+      {
+        "id": "q_247757",
+        "q": "Luis García, goleador de Pumas en la temporada del título 1990-91, metió los dos goles de México en una victoria del Mundial de 1994. ¿Ante qué selección?",
+        "o": [
+          "Italia",
+          "Noruega",
+          "República de Irlanda",
+          "Bulgaria"
+        ],
+        "a": 2,
+        "hint": "México le ganó 2-1 a la República de Irlanda en Orlando, con los dos goles de García. En la 1990-91 había metido 26 goles de liga.",
+        "en": "Republic of Ireland"
+      },
+      {
+        "id": "q_6b957c",
+        "q": "Pumas le ganó al América por gol de visitante en la final de la 1990-91. ¿De quién fue el tiro libre que ganó la vuelta en Ciudad Universitaria?",
+        "o": [
+          "Luis García",
+          "Jorge Campos",
+          "David Patiño",
+          "Ricardo Ferretti"
+        ],
+        "a": 3,
+        "hint": "El América ganó la ida 3-2. El tiro libre de Ricardo «Tuca» Ferretti ganó la vuelta 1-0, y fue su último partido como jugador.",
+        "en": "Ricardo Ferretti"
+      },
+      {
+        "id": "q_caeea6",
+        "q": "Guillermo Vázquez, ascendido de auxiliar en 2010, llevó a Pumas al título del Clausura 2011. ¿A qué club le ganó la final?",
+        "o": [
+          "Monterrey",
+          "Morelia",
+          "Guadalajara",
+          "Santos Laguna"
+        ],
+        "a": 1,
+        "hint": "Tras el 1-1 de la ida, Pumas ganó 2-1 en casa, con gol de Javier Cortés, surgido de la cantera, para su séptimo título de liga.",
+        "en": "Morelia"
+      },
+      {
+        "id": "q_300c81",
+        "q": "¿Quién llevó a Pumas a la final del Guard1anes 2020 después de que Míchel renunciara días antes de que empezara el torneo?",
+        "o": [
+          "David Patiño",
+          "Bruno Marioni",
+          "Andrés Lillini",
+          "Antonio Mohamed"
+        ],
+        "a": 2,
+        "hint": "Andrés Lillini fue nombrado técnico interino, lo confirmaron tras un buen arranque y llevó a Pumas a la final, que perdió ante el León.",
+        "en": "Andrés Lillini"
+      },
+      {
+        "id": "q_d6ff73",
+        "q": "¿Qué ídolo de Pumas encendió el Clásico Capitalino con su traspaso al América para la temporada 1969-70, después de decir públicamente que no quería irse?",
+        "o": [
+          "Enrique Borja",
+          "Luis Regueiro",
+          "Miguel Mejía Barón",
+          "Aarón Padilla"
+        ],
+        "a": 0,
+        "hint": "Enrique Borja se resistió a la venta, pero firmó con el América en julio de 1969 y se volvió uno de los ídolos del club.",
+        "en": "Enrique Borja"
+      },
+      {
+        "id": "q_844792",
+        "q": "¿Qué técnico llevó a Pumas a la Copa de Campeones de la CONCACAF 1989 y al título de liga de la 1990-91?",
+        "o": [
+          "Bora Milutinović",
+          "Miguel Mejía Barón",
+          "Mario Velarde",
+          "Héctor Sanabria"
+        ],
+        "a": 1,
+        "hint": "Miguel Mejía Barón, producto de la primera cantera del club, dirigió a Pumas de 1988 a 1991 y después fue técnico de México.",
+        "en": "Miguel Mejía Barón"
+      },
+      {
+        "id": "q_9736d3",
+        "q": "En los taludes del Estadio Olímpico Universitario está el mural inconcluso «La universidad, la familia y el deporte en México». ¿Qué artista lo encabezó?",
+        "o": [
+          "David Alfaro Siqueiros",
+          "Diego Rivera",
+          "José Clemente Orozco",
+          "Rufino Tamayo"
+        ],
+        "a": 1,
+        "hint": "Diego Rivera encabezó la obra en los taludes exteriores del estadio, y quedó inconclusa cuando murió.",
+        "en": "Diego Rivera"
+      },
+      {
+        "id": "q_70c8a2",
+        "q": "¿Qué técnico, que llegó durante la primera temporada de Pumas en Primera División (1962-63) para salvarlo del descenso, es considerado el impulsor de la famosa cantera del club?",
+        "o": [
+          "Árpád Fekete",
+          "Renato Cesarini",
+          "Walter Ormeño",
+          "Ángel Zubieta"
+        ],
+        "a": 1,
+        "hint": "Renato Cesarini tomó a un equipo en último lugar y lo mantuvo en Primera. Después armó el sistema integral de fuerzas básicas que se conoció como la cantera.",
+        "en": "Renato Cesarini"
+      },
+      {
+        "id": "q_1947a3",
+        "q": "En su primera Copa Sudamericana, en 2005, Pumas consiguió un 4-0 en semifinales. ¿Ante qué equipo argentino?",
+        "o": [
+          "Vélez Sarsfield",
+          "Estudiantes",
+          "River Plate",
+          "Independiente"
+        ],
+        "a": 0,
+        "hint": "Después de un 3-0 al Corinthians en cuartos de final, Pumas le ganó 4-0 al Vélez Sarsfield en semifinales. Luego perdió la final en penales ante Boca Juniors.",
+        "en": "Vélez Sarsfield"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabes de Pumas?",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Juega el quiz de Pumas",
+      "playSub": "Toca una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "bandH": "¿Crees que sabes de Pumas? Demuéstralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz de Pumas. La original, en inglés, está aquí:",
+      "alsoLink": "Pumas UNAM quiz (English)",
+      "tasterPh": "Preguntas rápidas para medir tu Ball IQ de Pumas.",
+      "faqH": "Quiz de Pumas — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz de Pumas",
+      "statsLine": "Gratis · Preguntas de Pumas con respuestas explicadas · sin registro"
+    }
+  },
+  {
+    "club": "Monterrey",
+    "slug": "monterrey",
+    i18n: ES_MX,
+    "lang": "es",
+    "name": "Monterrey",
+    "h1": "Quiz del Monterrey",
+    "title": "Quiz del Monterrey con respuestas — Rayados | Ball IQ",
+    "description": "Quiz gratis del Monterrey con respuestas explicadas: el incendio del autobús de 1945, la despedida del Abuelo, el Clásico del Descenso y el triplete.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas del Monterrey con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "El Club de Futbol Monterrey se fundó el 28 de junio de 1945 por un grupo de empresarios locales, y su primera temporada casi acaba con él. En septiembre de 1945 el autobús del equipo se incendió en San Juan de los Lagos, camino a un partido; varios jugadores resultaron gravemente heridos y el costarricense Enrique Lizano murió después. El Monterrey terminó último y se retiró de la liga en 1946. Volvió en la Segunda División en 1952 y logró el ascenso definitivo en 1960. La camiseta blanca con franjas verticales azul marino que le dio al club el nombre de Rayados llegó todavía después: se adoptó en 1965, tomada del Tampico Madero. Veintiún años más tarde, el Tampico Madero fue el rival cuando las franjas por fin ganaron un título de liga. En el torneo México 86, el equipo de Francisco Avilán eliminó al Atlante y al Guadalajara y luego le ganó la final al Tampico Madero 3-2 en el global, con el gol del triunfo en tiempo extra de Francisco Javier Cruz, «El Abuelo».",
+      "Su casa durante la mayor parte de ese tiempo fue el Estadio Tecnológico, usado de 1950 a 2015 salvo una etapa de 1973 a 1980 en el Estadio Universitario. Fue en el Universitario, para entonces el estadio de los Tigres, donde el clásico de la ciudad vivió su tarde más cruel. El 24 de marzo de 1996, en lo que se conoció como el Clásico del Descenso, el Monterrey ganó 2-1 y mandó a los Tigres a la segunda división por primera vez en su historia. Tres años después, el que estaba al borde era el Monterrey. El 9 de mayo de 1999 necesitaba un empate en casa ante el Puebla para salvarse, y lo consiguió, 1-1, con Cruz poniendo el pase del gol de Sergio Pérez el día de su retiro. En junio de 1999 el club pasó a manos de FEMSA, el grupo regiomontano de bebidas y comercio. El equipo de Daniel Passarella terminó con 17 años de espera por un título de liga en el Clausura 2003: le ganó 5-3 en el global a los Tigres en semifinales, el primer cruce de Liguilla entre los rivales, y 3-1 al Morelia en la final.",
+      "Después llegó Víctor Manuel Vucetich, el técnico al que la prensa y la afición mexicanas llaman «El Rey Midas» porque todo lo que toca parece convertirse en oro. Su primer título fue el Apertura 2009, ganado 6-4 en el global ante el Cruz Azul después de que el Monterrey remontara un 3-1 en contra para ganar la ida 4-3 en el Tecnológico. Humberto Suazo, fichado del Colo-Colo en 2007 por una cifra reportada de 5 millones de dólares tras tres títulos chilenos seguidos, estuvo en el centro de todo. Anotó dos goles en el 3-0 de la vuelta ante Santos Laguna que le dio la vuelta a una derrota de 3-2 para ganar la final del Apertura 2010, y su gol en Utah venció 1-0 al Real Salt Lake para la primera Liga de Campeones de la CONCACAF del club, en 2010-11. Un año después el Monterrey remontó un 2-0 en contra para ganarle 4-2 al Santos Laguna en la vuelta, con doblete de Aldo de Nigris, para el tercer título continental seguido. El Mundial de Clubes trajo una derrota en penales ante el Kashiwa Reysol en 2011 y un 3-1 ante el Chelsea en Yokohama en 2012, seguido de un 2-0 al Al Ahly por el tercer lugar.",
+      "En 2015 el club se mudó al Estadio BBVA, «El Gigante de Acero», construido por FEMSA por unos 200 millones de dólares en Guadalupe, con el Cerro de la Silla a la vista. Su primera final se perdió: Dorlan Pabón empató la del Clausura 2016 antes de que el cabezazo de Víctor Guzmán al minuto 93 le diera el título al Pachuca. La primera final de liga ante los Tigres, la del Apertura 2017, terminó igual, con goles de Eduardo Vargas y Francisco Meza en el 2-1 de la vuelta para los visitantes. La respuesta llegó en 2019. Nicolás Sánchez anotó en los dos partidos y el equipo de Diego Alonso le ganó a los Tigres 2-1 en el global la final de la Liga de Campeones de la CONCACAF; Alonso ya no estaba en otoño, y Antonio Mohamed volvió en octubre y ganó el Apertura 2019 desde el octavo lugar, con triunfo en penales ante el América tras un 3-3 global. En Qatar, Rogelio Funes Mori empató el gol inicial de Naby Keïta antes de que Roberto Firmino ganara la semifinal del Mundial de Clubes para el Liverpool al minuto 91, y la Copa MX 2019-20, ganada ante Tijuana en noviembre de 2020, completó el triplete. Funes Mori llegó a 160 goles entre 2015 y 2023 y superó los 121 de Suazo. Cada respuesta trae su explicación."
+    ],
+    "faq": [
+      {
+        "q": "¿Por qué al Monterrey le dicen Rayados?",
+        "a": "Por la camiseta blanca con franjas verticales azul marino del club. El Monterrey adoptó las franjas en 1965, inspirado en el Tampico Madero, el mismo equipo al que después le ganó la final de México 86 para su primer título de liga."
+      },
+      {
+        "q": "¿Cuál fue el triplete del Monterrey?",
+        "a": "El Monterrey ganó la Liga de Campeones de la CONCACAF 2019 al vencer 2-1 en el global a los Tigres, después el título del Apertura 2019 de la Liga MX en penales ante el América y, por último, la Copa MX 2019-20 ante Tijuana. Esa final de copa se retrasó por la pandemia hasta noviembre de 2020."
+      },
+      {
+        "q": "¿Dónde juega de local el Monterrey?",
+        "a": "El Monterrey juega en el Estadio BBVA, apodado «El Gigante de Acero», desde 2015. Está en Guadalupe, al oriente de Monterrey, con vista al Cerro de la Silla. Antes, la casa del club fue el Estadio Tecnológico, usado de 1950 a 2015 salvo una etapa de 1973 a 1980 en el Estadio Universitario."
+      },
+      {
+        "q": "¿Cuál es el máximo rival del Monterrey?",
+        "a": "Los Tigres UANL, su rival de la ciudad en el Clásico Regiomontano. El triunfo 2-1 del Monterrey en el «Clásico del Descenso» de la temporada 1995-96 mandó a los Tigres a segunda división, los Tigres ganaron la primera final de liga entre ambos en el Apertura 2017, y el Monterrey les ganó la final de la Liga de Campeones de la CONCACAF 2019."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_89f2dc",
+        "q": "En el «Clásico del Descenso» de la temporada 1995-96, el Monterrey ganó 2-1. ¿A qué club mandó a la segunda división?",
+        "o": [
+          "Puebla",
+          "Tigres UANL",
+          "Toros Neza",
+          "Atlante"
+        ],
+        "a": 1,
+        "hint": "El 24 de marzo de 1996 el Monterrey ganó 2-1 en el Estadio Universitario. El resultado mandó al descenso a los Tigres, su rival de la ciudad, por única vez en su historia.",
+        "en": "Tigres UANL"
+      },
+      {
+        "id": "q_8e8363",
+        "q": "El Monterrey ganó el título del Apertura 2019 de la Liga MX en penales después de terminar apenas octavo en la tabla. ¿A quién le ganó la final?",
+        "o": [
+          "América",
+          "León",
+          "Tigres UANL",
+          "Cruz Azul"
+        ],
+        "a": 0,
+        "hint": "La final terminó 3-3 en el global y el Monterrey ganó la tanda 4-2 para su quinto título de liga.",
+        "en": "América"
+      },
+      {
+        "id": "q_cf85fa",
+        "q": "¿Quién anotó el gol del triunfo del Liverpool en tiempo de compensación ante el Monterrey en la semifinal del Mundial de Clubes 2019?",
+        "o": [
+          "Mohamed Salah",
+          "Naby Keïta",
+          "Roberto Firmino",
+          "Sadio Mané"
+        ],
+        "a": 2,
+        "hint": "Funes Mori empató el gol inicial de Naby Keïta, pero Firmino anotó al minuto 91 para el 2-1 del Liverpool en Qatar.",
+        "en": "Roberto Firmino"
+      },
+      {
+        "id": "q_895788",
+        "q": "¿Qué delantero, en el Monterrey de 2015 a enero de 2024, superó a Humberto Suazo como máximo goleador histórico del club?",
+        "o": [
+          "Dorlan Pabón",
+          "Mario de Souza",
+          "Aldo de Nigris",
+          "Rogelio Funes Mori"
+        ],
+        "a": 3,
+        "hint": "Funes Mori anotó 160 goles en todas las competencias entre 2015 y enero de 2024 y superó los 121 de Suazo.",
+        "en": "Rogelio Funes Mori"
+      },
+      {
+        "id": "q_2961e3",
+        "q": "¿En qué año se fundó el Club de Futbol Monterrey?",
+        "o": [
+          "1945",
+          "1950",
+          "1952",
+          "1960"
+        ],
+        "a": 0,
+        "hint": "El Monterrey se fundó el 28 de junio de 1945 por un grupo de empresarios locales. Se retiró tras una temporada, volvió en la Segunda División en 1952 y logró el ascenso definitivo en 1960.",
+        "en": "1945"
+      },
+      {
+        "id": "q_0e60b3",
+        "q": "Antes de mudarse al Estadio BBVA en 2015, ¿qué estadio fue la casa del Monterrey la mayor parte del tiempo desde principios de los años cincuenta?",
+        "o": [
+          "Estadio Universitario",
+          "Estadio Tecnológico",
+          "Estadio Tamaulipas",
+          "Estadio Jalisco"
+        ],
+        "a": 1,
+        "hint": "El Monterrey jugó en el Estadio Tecnológico de 1952 a 2015, salvo una etapa de 1973 a 1980 en el Estadio Universitario. La demolición del viejo estadio empezó en julio de 2017.",
+        "en": "Estadio Tecnológico"
+      },
+      {
+        "id": "q_534f30",
+        "q": "El Monterrey perdió su primera final en el Estadio BBVA, la del Clausura 2016, con un cabezazo al minuto 93. ¿Quién fue el rival?",
+        "o": [
+          "Tigres UANL",
+          "Pachuca",
+          "Santos Laguna",
+          "América"
+        ],
+        "a": 1,
+        "hint": "El Monterrey empató la serie con gol de Dorlan Pabón, pero el cabezazo de Víctor Guzmán en tiempo de compensación le dio al Pachuca el título del Clausura 2016.",
+        "en": "Pachuca"
+      },
+      {
+        "id": "q_27c91c",
+        "q": "¿Qué técnico llevó al Monterrey al título de la Liga de Campeones de la CONCACAF 2019?",
+        "o": [
+          "Antonio Mohamed",
+          "Javier Aguirre",
+          "Diego Alonso",
+          "Víctor Manuel Vucetich"
+        ],
+        "a": 2,
+        "hint": "El uruguayo Diego Alonso, nombrado en 2018, le ganó a los Tigres la final de 2019 para el cuarto título de la CONCACAF del club. Fue destituido en el otoño de 2019.",
+        "en": "Diego Alonso"
+      },
+      {
+        "id": "q_812935",
+        "q": "¿Qué técnico volvió al Monterrey en octubre de 2019 y ganó el título del Apertura 2019 ese diciembre?",
+        "o": [
+          "Diego Alonso",
+          "Javier Aguirre",
+          "Antonio Mohamed",
+          "Miguel Herrera"
+        ],
+        "a": 2,
+        "hint": "«El Turco» Mohamed, que había dirigido al club de 2015 a 2018 y jugó en él de 1998 a 2000, fue nombrado de nuevo en octubre de 2019 y ganó el título ese diciembre.",
+        "en": "Antonio Mohamed"
+      },
+      {
+        "id": "q_63f3f6",
+        "q": "¿Qué club le ganó 3-1 al Monterrey en la semifinal del Mundial de Clubes 2012 en Yokohama?",
+        "o": [
+          "Chelsea",
+          "Corinthians",
+          "Barcelona",
+          "Bayern Múnich"
+        ],
+        "a": 0,
+        "hint": "Mata, Torres y un autogol pusieron al Chelsea 3-0 arriba antes de que De Nigris descontara. Después el Monterrey le ganó 2-0 al Al Ahly y terminó tercero.",
+        "en": "Chelsea"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_98c5ff",
+        "q": "El Monterrey ganó el título del Apertura 2009, el primero de Víctor Manuel Vucetich con el club, con un 6-4 global en la final. ¿A qué club le ganó?",
+        "o": [
+          "Santos Laguna",
+          "Toluca",
+          "Cruz Azul",
+          "América"
+        ],
+        "a": 2,
+        "hint": "El Monterrey remontó un 3-1 en contra para ganar la ida 4-3 en el Tecnológico y después ganó 2-1 en el Estadio Azul.",
+        "en": "Cruz Azul"
+      },
+      {
+        "id": "q_56339c",
+        "q": "El Monterrey ganó su primera Liga de Campeones de la CONCACAF en 2010-11. ¿A qué club le ganó la final?",
+        "o": [
+          "Seattle Sounders",
+          "LA Galaxy",
+          "Santos Laguna",
+          "Real Salt Lake"
+        ],
+        "a": 3,
+        "hint": "Tras el 2-2 de la ida en el Tecnológico, el gol de Humberto Suazo le dio el 1-0 en la vuelta en Utah y el 3-2 global.",
+        "en": "Real Salt Lake"
+      },
+      {
+        "id": "q_9949a8",
+        "q": "¿De qué club chileno fichó el Monterrey a Humberto Suazo en 2007?",
+        "o": [
+          "Audax Italiano",
+          "Universidad Católica",
+          "Colo-Colo",
+          "Universidad de Chile"
+        ],
+        "a": 2,
+        "hint": "Suazo había ganado tres títulos de liga seguidos con el Colo-Colo antes de que el Monterrey pagara una cifra reportada de 5 millones de dólares por él en 2007.",
+        "en": "Colo-Colo"
+      },
+      {
+        "id": "q_f592e6",
+        "q": "¿Qué técnico llevó al Monterrey al título de la Liga de Campeones de la CONCACAF 2021, ganado 1-0 en la final en el Estadio BBVA?",
+        "o": [
+          "Antonio Mohamed",
+          "Javier Aguirre",
+          "Víctor Manuel Vucetich",
+          "Diego Alonso"
+        ],
+        "a": 1,
+        "hint": "«El Vasco» Aguirre llegó antes del Clausura 2021. Un gol temprano decidió la final y le dio al club su quinto título de la CONCACAF.",
+        "en": "Javier Aguirre"
+      },
+      {
+        "id": "q_dc9def",
+        "q": "¿Qué técnico llevó al Monterrey al título del Clausura 2003, la primera liga del club en 17 años?",
+        "o": [
+          "Ricardo La Volpe",
+          "Antonio Mohamed",
+          "Daniel Passarella",
+          "Miguel Herrera"
+        ],
+        "a": 2,
+        "hint": "El equipo del argentino Daniel Passarella le ganó 5-3 en el global a los Tigres en semifinales, el primer cruce de Liguilla entre los rivales, y después al Morelia 3-1 en el global en la final.",
+        "en": "Daniel Passarella"
+      },
+      {
+        "id": "q_34ec63",
+        "q": "¿Qué apodo tiene Víctor Manuel Vucetich, que llevó al Monterrey a tres títulos seguidos de la Liga de Campeones de la CONCACAF?",
+        "o": [
+          "El Piojo",
+          "El Turco",
+          "El Vasco",
+          "El Rey Midas"
+        ],
+        "a": 3,
+        "hint": "La prensa y la afición mexicanas le dicen «El Rey Midas» a Vucetich porque todo lo que toca parece convertirse en oro.",
+        "en": "El Rey Midas"
+      },
+      {
+        "id": "q_f7475a",
+        "q": "¿Qué empresa tomó el control del CF Monterrey en 1999 y rescató al club de la intervención de la autoridad fiscal de México?",
+        "o": [
+          "Grupo Protexa",
+          "FEMSA",
+          "CEMEX",
+          "Televisa"
+        ],
+        "a": 1,
+        "hint": "En junio de 1999 la autoridad fiscal de México, que había intervenido al club endeudado, se lo entregó a FEMSA, el grupo regiomontano de bebidas y comercio. FEMSA formalizó después la compra y construyó el Estadio BBVA con un costo de unos 200 millones de dólares.",
+        "en": "FEMSA"
+      },
+      {
+        "id": "q_0704c8",
+        "q": "¿Qué tragedia sufrió el Monterrey en su temporada de debut, la 1945-46, y llevó al club a retirarse de la liga en 1946?",
+        "o": [
+          "El autobús del equipo se incendió durante un viaje",
+          "Sus dueños fueron encarcelados por fraude",
+          "Una inundación destruyó su estadio",
+          "Su plantel fue sancionado por amaño de partidos"
+        ],
+        "a": 0,
+        "hint": "El 14 de septiembre de 1945 el autobús del equipo se incendió en San Juan de los Lagos, camino a Guadalajara. Varios jugadores sufrieron quemaduras graves y dos, entre ellos el costarricense Enrique Lizano, murieron después. El club terminó último y se retiró en 1946.",
+        "en": "The team bus caught fire on a road trip"
+      },
+      {
+        "id": "q_9daa2d",
+        "q": "El Monterrey ganó su primer título de liga de Primera División en el torneo México 86. ¿A qué club le ganó la final?",
+        "o": [
+          "Tampico Madero",
+          "Atlante",
+          "Guadalajara",
+          "Cruz Azul"
+        ],
+        "a": 0,
+        "hint": "Con Francisco Avilán como técnico, el Monterrey eliminó al Atlante y al Guadalajara, y luego le ganó la final al Tampico Madero 3-2 en el global.",
+        "en": "Tampico Madero"
+      },
+      {
+        "id": "q_ef618c",
+        "q": "En mayo de 1999 el Monterrey empató 1-1 en casa ante el Puebla para evitar el descenso. ¿Qué héroe del título de 1986 puso el pase del gol en su partido de despedida?",
+        "o": [
+          "Reynaldo Güeldini",
+          "Mario de Souza",
+          "Héctor Becerra",
+          "Francisco Javier Cruz"
+        ],
+        "a": 3,
+        "hint": "«El Abuelo» Cruz, autor del gol del triunfo en tiempo extra en la final de 1986, le puso el pase a Sergio Pérez para el gol ante el Puebla el 9 de mayo de 1999, el día de su retiro.",
+        "en": "Francisco Javier Cruz"
+      },
+      {
+        "id": "q_696576",
+        "q": "¿En qué municipio de la zona metropolitana de Monterrey está el Estadio BBVA?",
+        "o": [
+          "San Nicolás de los Garza",
+          "Guadalupe",
+          "San Pedro Garza García",
+          "Apodaca"
+        ],
+        "a": 1,
+        "hint": "El Estadio BBVA, apodado «El Gigante de Acero», está en Guadalupe, al oriente de Monterrey, con vista al Cerro de la Silla.",
+        "en": "Guadalupe"
+      },
+      {
+        "id": "q_b7cc6c",
+        "q": "La final del Apertura 2017 fue la primera final de liga entre Monterrey y Tigres. Los Tigres ganaron la vuelta 2-1 en el Estadio BBVA. Francisco Meza anotó un gol; ¿quién anotó el otro?",
+        "o": [
+          "André-Pierre Gignac",
+          "Eduardo Vargas",
+          "Enner Valencia",
+          "Javier Aquino"
+        ],
+        "a": 1,
+        "hint": "Tras el 1-1 de la ida, los goles de Eduardo Vargas y Francisco Meza le dieron a los Tigres el 2-1 en la vuelta y su sexto título de liga.",
+        "en": "Eduardo Vargas"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabes del Monterrey?",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Juega el quiz del Monterrey",
+      "playSub": "Toca una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "bandH": "¿Crees que sabes del Monterrey? Demuéstralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz del Monterrey. La original, en inglés, está aquí:",
+      "alsoLink": "Monterrey quiz (English)",
+      "tasterPh": "Preguntas rápidas para medir tu Ball IQ del Monterrey.",
+      "faqH": "Quiz del Monterrey — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz del Monterrey",
+      "statsLine": "Gratis · Preguntas del Monterrey con respuestas explicadas · sin registro"
+    }
+  },
+  {
+    "club": "Tigres UANL",
+    "slug": "tigres-uanl",
+    i18n: ES_MX,
+    "lang": "es",
+    "name": "Tigres UANL",
+    "h1": "Quiz de Tigres",
+    "title": "Quiz de Tigres con respuestas — Los Auriazules | Ball IQ",
+    "description": "Quiz gratis de Tigres con respuestas explicadas: El Volcán, el Clásico del Descenso de 1996, los cinco títulos de Ferretti y el 2020 de Gignac.",
+    "kind": "Quiz de club",
+    "statLine": "Gratis · Preguntas de Tigres con respuestas explicadas · sin registro",
+    "playLabel": "Jugar el quiz",
+    "intro": [
+      "Tigres nació el 7 de marzo de 1960 como Club Deportivo Universitario de Nuevo León, el equipo de futbol de la Universidad Autónoma de Nuevo León, y adoptó su nombre actual en 1967, el año en que se inauguró el Estadio Universitario en el campus de la UANL, en San Nicolás de los Garza. La afición le dice El Volcán, y en 1986 fue sede de cinco partidos del Mundial. El primer gran trofeo llegó con la Copa México 1975-76, un 3-2 en el global ante el América que convirtió a Tigres en el primer club de Nuevo León en ganar un título nacional oficial. Después vino la liga. Con el técnico uruguayo Carlos Miloc, y con Tomás Boy y Gerónimo Barbadillo en el equipo, Tigres eliminó al Cruz Azul en las semifinales de 1977-78 y venció a UNAM en la final, 2-0 y 1-1. Miloc lo repitió en 1981-82: Guadalajara en cuartos de final, América en semifinales y Atlante en una final que terminó 2-2 en el global tras una derrota 1-0 en el Estadio Azteca; Tigres se llevó la tanda de penales 3-1.",
+      "Luego llegó la temporada más extraña de la historia del club. En 1995-96 Tigres venció 2-1 en el global al Atlas para ganar su segunda Copa México, y el 24 de marzo de 1996, pocas semanas después, perdió 2-1 ante Monterrey en el partido que lo mandó a la Primera División A. Ese juego todavía se conoce como el Clásico del Descenso. Uno de los porteros de aquel plantel, Robert Dante Siboldi, se quedó y ayudó a conseguir el ascenso en menos de un año. El largo camino de regreso a un título de liga pasó por Ricardo Ferretti, contratado por tercera vez en 2010 con el club peleando por no descender. Su ataque fue el de los Cuatro Fantásticos: Damián Álvarez, Danilinho, el delantero chileno Héctor Mancilla y el capitán Lucas Lobos, un armador argentino que llegó del Cádiz en diciembre de 2007 y ganó el Balón de Oro de la liga en el Clausura 2011 y en el Apertura 2011. En la final del Apertura 2011, Álvarez le dio el 1-0 en la ida en Torreón, y el 11 de diciembre de 2011 Mancilla, Danilinho y Alan Pulido anotaron en el 3-1 en casa ante Santos Laguna, que terminó con 29 años sin título.",
+      "El verano de 2015 cambió al club. André-Pierre Gignac llegó el 18 de junio, libre tras terminar su contrato con el Marsella después de 21 goles en la Ligue 1 en su última temporada, y Jürgen Damm llegó del Pachuca por unos 10 millones de dólares, según se publicó. El primer gol de Gignac con Tigres abrió el 3-1 ante el Internacional en la vuelta de la semifinal de la Copa Libertadores, que mandó a Tigres a la final contra River Plate. Ese diciembre Tigres ganó la final del Apertura 2015 después de casi dejarla ir: con un 3-0 de la ida, perdió 4-1 ante UNAM en tiempo extra y ganó la tanda de penales 4-2. Un año después, Nahuel Guzmán atajó los tres penales del América y Tigres ganó la tanda del Apertura 2016 3-0 el día de Navidad. Eduardo Vargas llegó del Hoffenheim en enero de 2017 y Enner Valencia del West Ham en julio, mientras Guido Pizarro pasaba la temporada 2017-18 en el Sevilla y se perdía lo que vino: la primera final de liga entre Tigres y Monterrey. Tras el 1-1 en El Volcán, Dorlan Pabón anotó temprano en el Estadio BBVA, Vargas empató desde fuera del área y Francisco Meza marcó de cabeza el gol del triunfo tras un tiro de esquina. Después, el gol de Gignac en el 1-0 en casa ante el León, seguido de un 0-0 de visita, le dio a Tigres el Clausura 2019, el quinto título de liga de Ferretti con el club.",
+      "Gignac superó los 80 goles de Walter Gaitán en 2018, y el 4 de agosto de 2019 su gol 105, ante Pumas, lo puso por encima de Tomás Boy como máximo goleador histórico del club en todas las competencias. La Liga de Campeones de la CONCACAF 2020 casi termina en octavos de final, hasta que Guzmán subió a un tiro libre en el cuarto minuto de compensación ante Alianza y metió a Tigres de cabeza. En la final a partido único en Orlando, el 22 de diciembre de 2020, Diego Rossi adelantó a LAFC, Hugo Ayala empató al minuto 72 y Gignac lo ganó a seis minutos del final: la primera Liga de Campeones de la CONCACAF del club. En el Mundial de Clubes de Qatar, Gignac anotó dos goles ante el Ulsan Hyundai y un penal para vencer 1-0 a Palmeiras, campeón vigente de la Copa Libertadores, y Tigres se convirtió en el primer club de la CONCACAF en llegar a la final, que perdió 1-0 ante el Bayern Múnich. Anotó todos los goles de Tigres en el torneo, fue el goleador y ganó el Balón de Plata. La era Ferretti terminó en mayo de 2021, Florian Thauvin llegó y se fue al Udinese en enero de 2023, y ese abril Siboldi, el portero de 1996, asumió con tres partidos por jugar. Sebastián Córdova anotó los dos goles para eliminar al Monterrey en semifinales y cinco en seis partidos de Liguilla, y Tigres ganó el Clausura 2023. Cada respuesta viene con su explicación."
+    ],
+    "faq": [
+      {
+        "q": "¿Por qué a Tigres le dicen Los Auriazules?",
+        "a": "Auriazules hace referencia a los colores tradicionales del club, el oro y el azul. Tigres nació el 7 de marzo de 1960 como Club Deportivo Universitario de Nuevo León, el club de la Universidad Autónoma de Nuevo León (UANL), y adoptó el nombre de Tigres en 1967. Otros apodos son La U de Nuevo León y Los Tigres de México."
+      },
+      {
+        "q": "¿Cuál es el trofeo más importante de Tigres?",
+        "a": "La Liga de Campeones de la CONCACAF 2020, ganada 2-1 ante LAFC en una final a partido único en Orlando el 22 de diciembre de 2020, con el empate de Hugo Ayala y el gol del triunfo de André-Pierre Gignac. Con ella Tigres fue al Mundial de Clubes de la FIFA 2020 en Qatar, donde venció 1-0 a Palmeiras en la semifinal para ser el primer club de la CONCACAF en llegar a la final, que perdió 1-0 ante el Bayern Múnich."
+      },
+      {
+        "q": "¿Por qué al Estadio Universitario le dicen El Volcán?",
+        "a": "El Volcán es el apodo del Estadio Universitario, la casa de Tigres desde su inauguración el 30 de mayo de 1967 en el campus de la UANL, en San Nicolás de los Garza. Fue sede de cinco partidos del Mundial de 1986 y escenario del 3-1 ante Santos Laguna del 11 de diciembre de 2011, que terminó con 29 años de espera de Tigres por un título de liga."
+      },
+      {
+        "q": "¿Cuál es el máximo rival de Tigres?",
+        "a": "Monterrey, el otro gran club de Nuevo León, en el Clásico Regiomontano. El triunfo 2-1 de Monterrey en 1995-96 mandó a Tigres al descenso y se recuerda como el Clásico del Descenso. Tigres le ganó la primera final de liga entre ambos, la del Apertura 2017, con un 2-1 en el Estadio BBVA tras el 1-1 de la ida, y lo eliminó en las semifinales del Clausura 2023 rumbo al título."
+      }
+    ],
+    "taster": [
+      {
+        "id": "q_73da12",
+        "q": "¿Cuál es el apodo del estadio de Tigres, el Estadio Universitario de San Nicolás de los Garza?",
+        "o": [
+          "La Caldera",
+          "El Volcán",
+          "El Infierno",
+          "La Olla"
+        ],
+        "a": 1,
+        "hint": "El estadio en el campus de la UANL es conocido como El Volcán. Se inauguró en 1967 y fue sede de cinco partidos del Mundial de 1986.",
+        "en": "El Volcán"
+      },
+      {
+        "id": "q_1f5bf2",
+        "q": "¿A qué club venció Tigres en la final para ganar la Liga de Campeones de la CONCACAF 2020?",
+        "o": [
+          "Seattle Sounders",
+          "New York City FC",
+          "Toronto FC",
+          "Los Angeles FC"
+        ],
+        "a": 3,
+        "hint": "Tigres venció 2-1 a LAFC en una final a partido único en Orlando el 22 de diciembre de 2020, el primer título de Liga de Campeones de la CONCACAF del club.",
+        "en": "Los Angeles FC"
+      },
+      {
+        "id": "q_1ef45b",
+        "q": "André-Pierre Gignac llegó a Tigres en junio de 2015, al terminar su contrato. ¿Con qué club?",
+        "o": [
+          "Marseille",
+          "Lorient",
+          "Lyon",
+          "Toulouse"
+        ],
+        "a": 0,
+        "hint": "Gignac firmó con Tigres el 18 de junio de 2015 después de cinco temporadas en el Marsella, donde anotó 21 goles de liga en su última campaña.",
+        "en": "Marseille"
+      },
+      {
+        "id": "q_bb4adf",
+        "q": "¿A qué club venció Tigres en la final del Apertura 2017?",
+        "o": [
+          "León",
+          "América",
+          "Monterrey",
+          "Guadalajara"
+        ],
+        "a": 2,
+        "hint": "Fue la primera final de liga entre Tigres y Monterrey. Tigres empató 1-1 en casa y ganó 2-1 en el Estadio BBVA.",
+        "en": "Monterrey"
+      },
+      {
+        "id": "q_b45164",
+        "q": "¿A qué club venció Tigres en la final de 1977-78 para ganar su primer título de liga?",
+        "o": [
+          "Cruz Azul",
+          "UNAM",
+          "Atlante",
+          "América"
+        ],
+        "a": 1,
+        "hint": "Tigres eliminó al Cruz Azul en semifinales y después venció a UNAM 2-0 y empató 1-1 para ganar la final 3-1 en el global.",
+        "en": "UNAM"
+      },
+      {
+        "id": "q_4c9fa3",
+        "q": "Tigres ganó su segundo título de liga en 1981-82 en penales. ¿A quién venció en esa final?",
+        "o": [
+          "Guadalajara",
+          "América",
+          "Atlante",
+          "Cruz Azul"
+        ],
+        "a": 2,
+        "hint": "Atlante y Tigres terminaron 2-2 en el global tras el partido de vuelta en el Estadio Azteca, y Tigres ganó la tanda de penales 3-1.",
+        "en": "Atlante"
+      },
+      {
+        "id": "q_c2fa76",
+        "q": "En agosto de 2019, André-Pierre Gignac se convirtió en el máximo goleador histórico de Tigres en todas las competencias. ¿A quién superó?",
+        "o": [
+          "Walter Gaitán",
+          "Tomás Boy",
+          "Gerónimo Barbadillo",
+          "Lucas Lobos"
+        ],
+        "a": 1,
+        "hint": "El gol de Gignac ante Pumas el 4 de agosto de 2019 fue su gol 105 con el club y le permitió superar a Tomás Boy. Ya había superado los 80 goles de Walter Gaitán en 2018.",
+        "en": "Tomás Boy"
+      },
+      {
+        "id": "q_2dc0fa",
+        "q": "Tigres descendió al final de la temporada 1995-96. ¿Qué club le ganó 2-1 en el partido que lo sentenció?",
+        "o": [
+          "Necaxa",
+          "Atlas",
+          "Puebla",
+          "Monterrey"
+        ],
+        "a": 3,
+        "hint": "La derrota 2-1 ante su rival de ciudad, Monterrey, mandó a Tigres a la división de ascenso, y el partido quedó como el «Clásico del Descenso».",
+        "en": "Monterrey"
+      },
+      {
+        "id": "q_56fe52",
+        "q": "¿Qué portero del plantel de Tigres que descendió en 1996 llevó después al club al título del Clausura 2023 como técnico?",
+        "o": [
+          "Robert Dante Siboldi",
+          "Marco Antonio Ruiz",
+          "Diego Cocca",
+          "Miguel Herrera"
+        ],
+        "a": 0,
+        "hint": "Siboldi se quedó tras el descenso de 1996 y ayudó a conseguir el ascenso en menos de un año. Asumió como técnico el 10 de abril de 2023 y ganó el título en mayo.",
+        "en": "Robert Dante Siboldi"
+      },
+      {
+        "id": "q_db552d",
+        "q": "Tigres terminó con una espera de 29 años por un título de liga en el Apertura 2011. ¿A quién venció en la final?",
+        "o": [
+          "Pachuca",
+          "Querétaro",
+          "Santos Laguna",
+          "Monterrey"
+        ],
+        "a": 2,
+        "hint": "Tigres ganó 1-0 en Torreón y 3-1 en casa el 11 de diciembre de 2011.",
+        "en": "Santos Laguna"
+      }
+    ],
+    "sample": [
+      {
+        "id": "q_27b0ad",
+        "q": "¿Cuántos títulos de liga ganó Ricardo «Tuca» Ferretti como técnico de Tigres en su etapa de 2010 a 2021?",
+        "o": [
+          "Tres",
+          "Cuatro",
+          "Seis",
+          "Cinco"
+        ],
+        "a": 3,
+        "hint": "Ferretti ganó el Apertura 2011, el Apertura 2015, el Apertura 2016, el Apertura 2017 y el Clausura 2019 con Tigres, además de la Liga de Campeones de la CONCACAF 2020.",
+        "en": "Five"
+      },
+      {
+        "id": "q_f89104",
+        "q": "Tigres se convirtió en el primer club de la CONCACAF en llegar a una final del Mundial de Clubes. ¿A qué club venció en la semifinal de 2020?",
+        "o": [
+          "Flamengo",
+          "Palmeiras",
+          "River Plate",
+          "Boca Juniors"
+        ],
+        "a": 1,
+        "hint": "André-Pierre Gignac anotó de penal en el triunfo 1-0 ante Palmeiras, campeón vigente de la Copa Libertadores, en Qatar. Después Tigres perdió la final 1-0 ante el Bayern Múnich.",
+        "en": "Palmeiras"
+      },
+      {
+        "id": "q_8891e7",
+        "q": "André-Pierre Gignac anotó todos los goles de Tigres en el Mundial de Clubes de la FIFA 2020. ¿Cuántos fueron?",
+        "o": [
+          "Tres",
+          "Dos",
+          "Cuatro",
+          "Cinco"
+        ],
+        "a": 0,
+        "hint": "Anotó dos ante el Ulsan Hyundai y uno en la semifinal, terminó como goleador del torneo y ganó el Balón de Plata.",
+        "en": "Three"
+      },
+      {
+        "id": "q_ccbd8c",
+        "q": "El primer gol de Gignac con Tigres llegó en la vuelta de la semifinal de la Copa Libertadores 2015. ¿Quién era el rival?",
+        "o": [
+          "Internacional",
+          "Grêmio",
+          "São Paulo",
+          "Palmeiras"
+        ],
+        "a": 0,
+        "hint": "Abrió el marcador en el triunfo 3-1 en casa ante el Internacional que metió a Tigres a la final contra River Plate.",
+        "en": "Internacional"
+      },
+      {
+        "id": "q_857ef7",
+        "q": "Tigres ganó la final del Apertura 2015 en penales tras un 4-4 en el global. ¿Quién fue su rival?",
+        "o": [
+          "UNAM",
+          "América",
+          "Toluca",
+          "Chiapas"
+        ],
+        "a": 0,
+        "hint": "Tigres ganó la ida 3-0, Pumas ganó la vuelta 4-1 en tiempo extra y Tigres se llevó la tanda de penales 4-2.",
+        "en": "UNAM"
+      },
+      {
+        "id": "q_c735b3",
+        "q": "En la tanda de penales de la final del Apertura 2016 ante el América, ¿cuántos penales atajó el portero de Tigres?",
+        "o": [
+          "Uno",
+          "Dos",
+          "Cuatro",
+          "Tres"
+        ],
+        "a": 3,
+        "hint": "El portero argentino de Tigres atajó todos los penales del América y Tigres ganó la tanda 3-0 el 25 de diciembre de 2016.",
+        "en": "Three"
+      },
+      {
+        "id": "q_96153f",
+        "q": "Jürgen Damm, parte de cuatro planteles de Tigres campeones de la Liga MX, llegó al club en junio de 2015. ¿De qué equipo venía?",
+        "o": [
+          "Atlas",
+          "Tecos",
+          "Pachuca",
+          "Guadalajara"
+        ],
+        "a": 2,
+        "hint": "Tigres habría pagado unos 10 millones de dólares por el veloz extremo del Pachuca. Ganó los títulos del Apertura 2015, 2016 y 2017 y del Clausura 2019.",
+        "en": "Pachuca"
+      },
+      {
+        "id": "q_6d29d7",
+        "q": "Guido Pizarro se perdió el título del Apertura 2017 con Tigres porque pasó la temporada 2017-18 en otro club. ¿En cuál?",
+        "o": [
+          "Lanús",
+          "Sevilla",
+          "Valencia",
+          "Villarreal"
+        ],
+        "a": 1,
+        "hint": "Pizarro se fue al Sevilla en julio de 2017 y volvió a Tigres en junio de 2018. Ganó cuatro títulos de liga con Tigres, pero no el Apertura 2017.",
+        "en": "Sevilla"
+      },
+      {
+        "id": "q_743273",
+        "q": "¿De qué club llegó Eduardo Vargas a Tigres en enero de 2017?",
+        "o": [
+          "Napoli",
+          "Hoffenheim",
+          "Queens Park Rangers",
+          "Valencia"
+        ],
+        "a": 1,
+        "hint": "El delantero chileno llegó del Hoffenheim y anotó en la final del Apertura 2017 ante Monterrey.",
+        "en": "Hoffenheim"
+      },
+      {
+        "id": "q_963d71",
+        "q": "Florian Thauvin llegó a Tigres en 2021. ¿A qué club de la Serie A se fue en enero de 2023?",
+        "o": [
+          "Torino",
+          "Bologna",
+          "Genoa",
+          "Udinese"
+        ],
+        "a": 3,
+        "hint": "Tigres rescindió el contrato de Thauvin el 23 de enero de 2023, y ocho días después firmó con el Udinese.",
+        "en": "Udinese"
+      },
+      {
+        "id": "q_bc1b94",
+        "q": "¿A qué club venció Tigres en la final para ganar el título del Clausura 2019?",
+        "o": [
+          "Monterrey",
+          "Pachuca",
+          "América",
+          "León"
+        ],
+        "a": 3,
+        "hint": "André-Pierre Gignac anotó el único gol del partido en casa ante el León, y un 0-0 de visita le dio a Tigres su séptimo título de liga.",
+        "en": "León"
+      },
+      {
+        "id": "q_9a545a",
+        "q": "¿Qué técnico llevó a Tigres a su primer título de liga en la temporada 1977-78?",
+        "o": [
+          "Carlos Miloc",
+          "José Gómez",
+          "Árpád Fekete",
+          "Claudio Lostaunau"
+        ],
+        "a": 0,
+        "hint": "El uruguayo Carlos Miloc también ganó el título de 1981-82 con Tigres.",
+        "en": "Carlos Miloc"
+      }
+    ],
+    "copy": {
+      "tasterEyebrow": "Muestra gratis · Sin registro",
+      "tasterH": "¿Cuánto sabes de Tigres?",
+      "tasterNote": "Preguntas de muestra — el quiz completo tiene muchas más.",
+      "playSection": "Juega el quiz de Tigres",
+      "playSub": "Toca una respuesta para comprobarla — correcto o incorrecto al instante, y la historia detrás.",
+      "bandH": "¿Crees que sabes de Tigres? Demuéstralo en la app.",
+      "bandP": "Rachas, 1v1 en vivo, un rating sobre 99 — y todos los quizzes en una sola app. La app está en inglés.",
+      "alsoH": "La misma página en inglés",
+      "alsoP": "Esta página es la versión en español de nuestro quiz de Tigres. La original, en inglés, está aquí:",
+      "alsoLink": "Tigres UANL quiz (English)",
+      "tasterPh": "Preguntas rápidas para medir tu Ball IQ de Tigres.",
+      "faqH": "Quiz de Tigres — Preguntas frecuentes",
+      "aboutQ": "Sobre el quiz de Tigres",
+      "statsLine": "Gratis · Preguntas de Tigres con respuestas explicadas · sin registro"
+    }
   }
 ];

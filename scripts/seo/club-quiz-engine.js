@@ -385,6 +385,31 @@ if(k===a){sc++;streak++;if(streak>best)best=streak;rec.got=1}else{streak=0;rec.g
 if(sbadge)sbadge.hidden=streak<2,sbadge.textContent='▲ '+streak+' '+T('streakWord','streak');
 paintMeter();
 var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=run.length)?T('seeResult','See your result →'):T('next','Next question →')}}
+/* ── STILL OPEN TODAY (2026-10-05) ──────────────────────────────────────────
+   The Footle and Trail results list the day's other games; this finish did
+   not. Measured 4 Oct: a club-page lander comes back 2.6% of the time, a
+   daily-game lander about 10%, and the Daily 7 finish offered no route to any
+   other game at all (product walkthrough, shot j4a-05). So a finisher is now
+   shown the dailies they have NOT played today. Done-state is read the way
+   the front door reads it (FrontDoor.jsx): Footle and Trail by status, Mystery
+   by a won or given-up record, Daily 7 by its key. Local date, like the games.
+   skip lists what never to offer: the game just finished, and Daily 7 on a
+   translated page (its questions are English; the other three are names).
+   max caps the rows: two on a club card, so the app line under it stays
+   near the result (that line's position is a measured 4x on store taps). */
+function openToday(skip,max){
+var d=new Date(),k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+function rd(key){try{var r=localStorage.getItem(key+k);return r?JSON.parse(r):null}catch(e){return null}}
+function fin(p){return !!(p&&(p.status==='won'||p.status==='lost'))}
+var m=rd('biq_mystery_');
+var all=[['footle','Footle',T('openFootle','Guess the footballer in six'),'/footle',fin(rd('biq_wordle_'))],
+['daily','Daily 7','Today\u2019s seven questions','/daily-football-quiz/',!!rd('biq_daily_')],
+['trail','Transfer Trail',T('openTrail','Name the player from his clubs'),'/transfer-trail/',fin(rd('biq_trail_'))],
+['mystery','Mystery Player',T('openMystery','Find the secret footballer'),'/mystery-player/',!!(m&&(m.won||m.gaveUp))]];
+var rows='',n=0;for(var i=0;i<all.length;i++){var g=all[i];if(g[4]||skip.indexOf(g[0])>=0||n>=max)continue;n++;
+rows+='<a class="bq-open-r" href="'+g[3]+'" data-open="'+g[0]+'"><span class="bq-open-n"><b>'+g[1]+'</b><i>'+esc(g[2])+'</i></span><em>'+esc(T('openPlay','Play'))+'</em></a>'}
+return rows?'<div class="bq-open"><div class="bq-open-t">'+esc(T('openTitle','Still open today'))+'</div>'+rows+'</div>':''}
+function wireOpen(){var os=res.querySelectorAll('[data-open]');for(var i=0;i<os.length;i++)(function(el){el.addEventListener('click',function(){bqev('clubq-open-next',{to:el.getAttribute('data-open')})})})(os[i])}
 function dailyLabel(){var p=daily.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}
 /* The Daily 7 result. One primary (share: a score everyone can compare is
    the whole point of the same seven), the explained answers one tap away,
@@ -398,9 +423,10 @@ res.innerHTML='<div class="bq-rank">'+(fresh?'Your Daily 7':'You played today\u2
 +'<div class="bq-sub">'+esc(dailyLabel())+' \u00b7 the same seven for everyone</div>'
 +'<div class="bq-row"><button class="bq-go bq-wide" type="button" data-share="1">Share your score</button></div>'
 +'<a class="bq-share" href="/daily-football-quiz/answers/">Why each answer is right \u2192</a>'
++openToday(['daily'],3)
 +'<p class="bq-note">A new seven at midnight \u2014 in <b class="bq-cd"></b>.</p>'
 +'<a class="bq-app" href="'+bqStoreHref+'?src=daily-finish">Also in the app \u2014 streaks, reminders and live 1v1 \u2192</a>';
-res.hidden=false;if(head)head.hidden=true;if(lenwrap)lenwrap.hidden=true;
+res.hidden=false;if(head)head.hidden=true;if(lenwrap)lenwrap.hidden=true;wireOpen();
 var cd=res.querySelector('.bq-cd');
 function tick(){var now=new Date(),t=new Date(now);t.setDate(t.getDate()+1);t.setHours(0,0,0,0);var ms=t-now,h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),sec=Math.floor(ms%60000/1000);
 if(cd)cd.textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec}
@@ -557,7 +583,12 @@ return BQ_VK.length>40&&BQ_VK.indexOf('__')<0&&('Notification' in window)&&('ser
 }catch(e){return false}}
 function b64key(k){var pad='===='.slice((k.length%4)||4);var raw=atob((k+pad).replace(/-/g,'+').replace(/_/g,'/'));
 var out=new Uint8Array(raw.length);for(var i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
-function remindLine(){return remindOk()?'<button class="bq-app bq-remind" type="button" data-remind="1">'+esc(T('remind','Remind me tomorrow evening when the new puzzles are out'))+'</button>':''}
+/* English pages only, for now: the reminder that arrives is written in English
+   and names English games, so offering it under a Spanish or Turkish quiz would
+   promise one thing and deliver another. Open it per language when the push
+   copy is translated (docs/TODO.md). */
+function remindLang(){return /^en/.test(root.getAttribute('data-lang')||'en')}
+function remindLine(){return remindLang()&&remindOk()?'<button class="bq-app bq-remind" type="button" data-remind="1">'+esc(T('remind','Remind me tomorrow evening when the new puzzles are out'))+'</button>':''}
 function wireRemind(box){var btn=box.querySelector('[data-remind]');if(!btn)return;
 btn.addEventListener('click',function(){
 bqev('clubq-remind-tap');btn.disabled=true;
@@ -568,6 +599,12 @@ Notification.requestPermission().then(function(p){
 if(p!=='granted'){bqev(p==='denied'?'clubq-remind-denied':'clubq-remind-dismissed');if(p==='denied')btn.hidden=true;else btn.disabled=false;throw 'skip'}
 return navigator.serviceWorker.getRegistration('/')}).then(function(r){return r||navigator.serviceWorker.register('/sw.js')})
 .then(function(r){reg=r;return navigator.serviceWorker.ready}).then(function(){return reg.pushManager.getSubscription()})
+/* A subscription made under a DIFFERENT VAPID key cannot be pushed to by this
+   server; reusing it would report success and never deliver. Same rule as
+   enableVisitorPush() in src/lib/webpushVisitor.js: drop it and subscribe afresh. */
+.then(function(sub){if(!sub)return null;var k=sub.options&&sub.options.applicationServerKey,want=b64key(BQ_VK),same=!!k;
+if(k){var u=new Uint8Array(k);if(u.length!==want.length)same=false;else for(var i=0;i<u.length;i++){if(u[i]!==want[i]){same=false;break}}}
+return same?sub:sub.unsubscribe().then(function(){return null})})
 .then(function(sub){return sub||reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64key(BQ_VK)})})
 .then(function(sub){var j=sub.toJSON();
 return fetch(BQ_SB+'/rest/v1/rpc/subscribe_web_push',{method:'POST',
@@ -593,7 +630,8 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
    colour, but it does not outrank staying. */
 +'<button class="bq-share" data-share="1">'+esc(fmt(T('share','Share your {name} IQ'),{name:name}))+'</button>'
 +(!hasMore?'<p class="bq-note">'+esc(fmt(T('allDone','That is every {name} question we have here \u2014 a fresh order tomorrow.'),{name:name}))+'</p>':'')
-+remindLine()+appLine;
++openToday(/^en/.test(root.getAttribute('data-lang')||'en')?[]:['daily'],2)
++remindLine()+appLine;wireOpen();
 /* Remember today's result so a reload does not erase it. The critique's
    returning player finished, refreshed, and met question 1 with the score
    gone and the streak kept — the one number they came back for was the one

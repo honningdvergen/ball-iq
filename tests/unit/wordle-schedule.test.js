@@ -52,6 +52,17 @@ describe("WORDLE_ANSWER_LOG freeze", () => {
     }
   });
 
+  it("no day from #202 on repeats an earlier answer", () => {
+    // #202 (index 201, 21 Nov 2026) was the first unplayed repeat when the
+    // pool was extended on 2026-10-05. Everything before it is as published.
+    const FIRST_NO_REPEAT_IDX = 201;
+    const seen = new Set(WORDLE_ANSWER_LOG.slice(0, FIRST_NO_REPEAT_IDX));
+    WORDLE_ANSWER_LOG.slice(FIRST_NO_REPEAT_IDX).forEach((answer, k) => {
+      expect(seen.has(answer), `Footle #${FIRST_NO_REPEAT_IDX + k + 1} = ${answer} repeats an earlier day`).toBe(false);
+      seen.add(answer);
+    });
+  });
+
   it("covers #1..#400 with real pool entries of valid Footle lengths", () => {
     expect(WORDLE_ANSWER_LOG).toHaveLength(400);
     const pool = new Set(WORDLE_PLAYERS);
