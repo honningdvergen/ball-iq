@@ -66,6 +66,37 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       surnames). Re-keyed to SUKER and WHITE; both stay valid guesses.
 - [x] `club-alias.mjs` knows QPR (the coverage map listed a live club as missing).
 
+### 0b. Shipped on 5 Oct, daytime
+
+- [x] **Finish screens show the day's other games** (Daily 7 card: up to three
+      rows; club card: two rows, in eight languages). Event `clubq-open-next`.
+      READ ON 19 OCT: share of club finishers who start a daily game the same
+      visit, and club-lander return (2.6% before).
+- [x] **Reminder offer on the club quiz finish** (#27 merged): a bell and
+      "Remind me to play tomorrow at 7pm". English pages only until the push
+      copy is translated. READ ON 19 OCT: `clubq-remind-tap`, `-on`, and rows in
+      `web_push_subscriptions` (1 before).
+- [x] **Consent bar waits nine seconds after a Footle finish**, so Share is
+      not covered at the moment of the result.
+- [x] **No repeats left in Footle or Mystery Player.** Footle: 109 new
+      surnames, 400 different answers in 400 days. Mystery: 99 repeat days
+      replaced from the curated set, 400 different players. Gates keep it so.
+- [x] **Transfer Trail: 102 to 208 careers.** No player back within 121 days
+      (was 16). Re-planned from No. 88 only. 13 verified careers are held back
+      (free agents: Sterling, Icardi, Alli; and names too obscure for the game).
+- [x] #33 merged (the instrument register no longer blocks parallel work);
+      #3 and #34 closed with their findings applied (six stale or wrong items).
+- [ ] ⚠️ Home eager JS rose from 855 to 873 KB of 909: the Trail's careers ride
+      on Home's path. Moving the daily-game data off Home (section 9, about
+      58 KB then, more now) is no longer optional before the next Trail growth.
+- [ ] Trail cap of six clubs excludes Salah, Zlatan, Haaland, Maradona and
+      about 200 other famous careers. Raising it to eight is an editorial call
+      **(Alex)**; it would take the Trail past 300 careers.
+- [ ] New game idea from Alex's friend: a daily DRAFT (the "38-0" format: spin
+      a club and season, pick one player from that squad per position, get a
+      season record to boast about). We hold the squads and careers already.
+      About a week of work; step two, after the release.
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
@@ -73,21 +104,21 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       seven across the bank still has no explanation, mostly World Cup, UCL,
       Records and Managers. Same method: verifier agents, 40 per batch,
       `apply-hints.mjs`. Until then the pages print no "Why" for those.
-- [ ] **Merge #33** (instrument register stops conflicting), then **finish and
+- [x] **Merge #33** (instrument register stops conflicting), then **finish and
       merge #27** (reminder offer at the club-quiz finish). #27 needs three
       fixes first: `.bq-remind[hidden]{display:none}`, the VAPID-mismatch
       branch from `webpushVisitor.js:62`, and the three strings in es/pt/tr/de.
       Close #3 (its findings are applied).
-- [ ] **Daily 7 finish is a dead end**: add the "Still open today" rows that
+- [x] **Daily 7 finish is a dead end**: add the "Still open today" rows that
       the Footle and Trail results already have. Same on the club-quiz finish
       (one row to today's Footle). This is change 2 in `numbers.md`.
-- [ ] **Consent banner covers Share on the Footle result** (it mounts exactly
+- [x] **Consent banner covers Share on the Footle result** (it mounts exactly
       when the result appears). Either mount it earlier (first interaction) or
       lift the result's action row above it.
 - [ ] **Mystery Player dead clicks** (12.6% of sessions): the "cold" label and
       the "unlimited guesses" line get tapped. Make "cold/warm/hot" explain
       itself on tap, and say what the rank number means.
-- [ ] Transfer Trail how-to says "the first club and nothing else"; the game
+- [x] Transfer Trail how-to says "the first club and nothing else"; the game
       opens with two clubs. Fix the copy.
 - [ ] `/play` first visit: "Start building mine" on the example-card modal
       starts a 7-question game with no warning, and the modal blocks Sign in.
@@ -173,7 +204,7 @@ the mandate says 300+. The plan that satisfies both:
 
 ### 6. Daily games runway
 
-- [ ] Mystery Player repeats from 5 Nov, Transfer Trail from 13 Nov, Footle
+- [x] Mystery Player repeats from 5 Nov, Transfer Trail from 13 Nov, Footle
       from 21 Nov. Extend all three pools before mid-November (Footle needs
       about 200 more whole surnames of 5 to 8 letters).
 - [ ] Grid log ends 10 March 2027.
