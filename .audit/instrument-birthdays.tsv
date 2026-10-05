@@ -6,6 +6,9 @@
 2026-08-13	source	bqev('clubq-more'
 2026-10-05	source	bqev('clubq-open-next'
 2026-08-13	source	bqev('clubq-play'
+2026-10-04	source	bqev('clubq-remind-fail'
+2026-10-04	source	bqev('clubq-remind-on'
+2026-10-04	source	bqev('clubq-remind-tap'
 2026-08-13	source	bqev('clubq-returned'
 2026-08-13	source	bqev('clubq-share'
 2026-08-13	source	bqev('clubq-start'
@@ -28,7 +31,7 @@
 2026-09-09	source	funnel('web-remind-tap'
 2026-09-05	source	funnel(`${game}-web-finish`, { won: d.won === true, attempts: d.attempts
 2026-09-05	source	funnel(`${game}-web-view`, {});
-2026-09-09	source	funnel(after === 'on' ? 'web-remind-on' : after === 'blocked' ? 'web-rem
+2026-10-04	source	funnel(visitorRemindEvent(after), { reason: lastVisitorPushReason() });
 2026-08-31	source	gev('game-finish'
 2026-08-31	source	gev('game-out-get'
 2026-08-31	source	gev('game-out-play'
@@ -39,6 +42,7 @@
 2026-09-12	source	gev('grid-open'
 2026-09-12	source	gev('grid-share'
 2026-08-11	source	if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity
+2026-10-04	source	if(p!=='granted'){bqev(p==='denied'?'clubq-remind-denied':'clubq-remind-
 2026-08-24	source	loopEvent("bad-moment"
 2026-08-11	source	loopEvent("challenge-arrived"
 2026-09-06	source	loopEvent("dd-save-tap"
@@ -85,9 +89,9 @@
 2026-08-26	source	loopEvent('rival-prompt-shown'
 2026-08-24	source	loopEvent('score-outbox-flushed'
 2026-08-21	source	loopEvent('stadiums-abandon'
-2026-09-09	source	loopEvent(after === 'on' ? 'web-remind-on' : after === 'blocked' ? 'web-
 2026-08-22	source	loopEvent(granted ? "notif-permission-granted" : "notif-permission-denie
 2026-08-20	source	loopEvent(sampleAnswered !== null ? "onboard-done-answered" : "onboard-d
+2026-10-04	source	loopEvent(visitorRemindEvent(after), { engine, reason: lastVisitorPushRe
 2026-09-03	source	marketingEvent('fd-view'
 2026-08-23	source	qev('list-answered'
 2026-08-26	source	qev('list-finished'

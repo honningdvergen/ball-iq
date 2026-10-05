@@ -173,6 +173,15 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-row .bq-wide{flex:1 1 100%}
   .bq-app{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:10px;font-size:13px;color:var(--tx3);text-decoration:none}
   .bq-app:hover{color:var(--tx);text-decoration:none}
+  /* Looked at on a phone 2026-10-05: as plain grey text on two lines it read as
+     a caption, not a control. A bell, one line, and a step brighter than the
+     app line under it, which stays the quieter of the two. */
+  .bq-remind{width:100%;background:none;border:0;font:inherit;font-size:13.5px;cursor:pointer;padding:0 8px;gap:8px;color:var(--tx2)}
+  .bq-remind svg{flex:0 0 auto;color:var(--grn)}
+  .bq-remind:disabled{cursor:default;opacity:.8}
+  /* .bq-app is display:flex, and an author display rule beats the browser's
+     own [hidden] rule: without this a blocked reminder stays on screen. */
+  .bq-remind[hidden]{display:none}
   .bq-note{margin:12px 0 0;font-size:12.5px;color:var(--tx4)}
   /* Still open today: the day's other games on a finish card. Rows are full
      width and 52px tall (a thumb target), quiet until tapped. */
@@ -224,7 +233,10 @@ export const BQ_JS = (() => {
   return file
     .slice(nl + 1)
     .replaceAll('__BQ_SUPABASE_URL__', BQ_SUPABASE_URL)
-    .replaceAll('__BQ_PUBLISHABLE_KEY__', BQ_PUBLISHABLE_KEY);
+    .replaceAll('__BQ_PUBLISHABLE_KEY__', BQ_PUBLISHABLE_KEY)
+    // Public by design (it ships in the app bundle too). Vercel's build has it;
+    // a local build does not, and the engine then hides the reminder line.
+    .replaceAll('__BQ_VAPID_PUBLIC_KEY__', (process.env.VITE_VAPID_PUBLIC_KEY || '').trim());
 })();
 
 export function renderQuizItems(rows, t = {}) {
