@@ -38,24 +38,41 @@
  * was born. The 130-row phantom is exactly a disagreement between those two
  * dates, so the summary flags every event older than the sink it now writes to.
  *
+ * WHAT IS COMMITTED, AND WHAT IS NOT.
+ * The full register (.audit/instruments.json) is GENERATED AND GIT-IGNORED.
+ * It carries a file:line for every writer, so any edit above a writer in
+ * src/App.jsx rewrote it, and every merge to main put every other open PR in
+ * conflict on it (2026-10-04: #17, #24, #27, #28 and #30, one after another).
+ * Line numbers are derivable from the tree in seconds, so they do not belong
+ * in git.
+ *
+ * The one fact git cannot cheaply re-derive is the BIRTHDAY: `git log -S`
+ * needs full history, which Vercel and CI shallow clones do not have. So the
+ * birthdays alone are committed, in .audit/instrument-birthdays.tsv: one
+ * independent line per needle, sorted, no line numbers, merged with
+ * `merge=union` (.gitattributes). Two PRs that add two different writers add
+ * two different lines, and a line shuffle in App.jsx touches nothing at all.
+ *
  * USAGE
  *   node scripts/audit-instruments.mjs              regenerate .audit/instruments.json
+ *                                                   and .audit/instrument-birthdays.tsv
  *   node scripts/audit-instruments.mjs --quiet      manifest + failures only
  *   node scripts/audit-instruments.mjs --refresh-dates
  *       recompute every firstWrite from git rather than reusing the cached
  *       ones. Dates are immutable history, so the normal run reuses them and
  *       only asks git about needles it has never seen. A cold run is under a
  *       minute (the git lookups run eight at a time); a warm one is ~10s.
- *   node scripts/audit-instruments.mjs --out <path>
- *       write elsewhere — how the unit test regenerates without dirtying the
- *       tracked manifest.
+ *   node scripts/audit-instruments.mjs --out <path> --offline
+ *       write the register elsewhere and never ask git for a date — how the
+ *       unit test scans. It leaves the birthday ledger untouched, and a writer
+ *       the ledger has never seen comes back undated so the test can say so
+ *       (a shallow clone would otherwise invent a birthday for it).
  *
  * EXIT CODE. Non-zero if any writer has `gate: NONE`, listing them. That is
  * the loud signal and it is deliberately not softened. It is why this script is
  * NOT in the `npm run build` chain: tests/unit/instrument-register.test.js is
- * the build gate, and it ratchets — a KNOWN ungated writer recorded in the
- * manifest's `ungatedBaseline` is tolerated, a NEW one fails the suite.
- * The baseline may shrink. It must never grow.
+ * the build gate. The ungated baseline reached zero on 2026-09-07, so the
+ * ratchet is now simply "no writer is ungated".
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
@@ -64,15 +81,14 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, relative } from 'node:path';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const COMMITTED = join(ROOT, '.audit', 'instruments.json');
-// ⚠️ --out lets the unit test regenerate into a temp file instead of over the
-// committed one. A test that rewrites a tracked file to check it is current
-// leaves the working tree dirty on every `npm run build`, and the next person
-// to run `git status` cannot tell a real change from the test's own footprint.
-// The cache is always read from the COMMITTED file, so the temp run still
-// reuses the birthdays rather than spending 2.5 minutes in git.
+const REGISTER = join(ROOT, '.audit', 'instruments.json');
+const LEDGER = join(ROOT, '.audit', 'instrument-birthdays.tsv');
+// --out sends the register to a temp file. The ledger is only ever written by
+// a plain run, so the test can scan without touching a tracked file.
 const outFlag = process.argv.indexOf('--out');
-const OUT = outFlag > -1 && process.argv[outFlag + 1] ? process.argv[outFlag + 1] : COMMITTED;
+const OUT = outFlag > -1 && process.argv[outFlag + 1] ? process.argv[outFlag + 1] : REGISTER;
+const OFFLINE = process.argv.includes('--offline');
+const WRITE_LEDGER = outFlag === -1 && !OFFLINE;
 
 // ─── what to scan ───────────────────────────────────────────────────────────
 // Tracked source only. Everything under ios/ and android/ is a Capacitor COPY
@@ -870,13 +886,19 @@ const emitSites = findEmitSites(files, emitters);
 // ⚠️ Cached by the NEEDLE, not by file:line. A writer that moves down a file
 // keeps its birthday — which is the whole point of the column — and a line
 // shuffle above it does not send the script back to git for 124 lookups.
-const cache = existsSync(COMMITTED) ? JSON.parse(readFileSync(COMMITTED, 'utf8')) : { writers: [] };
+// Ledger line: `<date>\t<scope>\t<needle>`. `#` lines are comments. A union
+// merge can leave a duplicate line; the Map makes that harmless.
 // `(uncommitted)` is deliberately NOT cached: it is a statement about HEAD, not
 // about the writer, and caching it would freeze a writer as undated forever
 // once the commit that gives it a birthday lands.
-const cached = new Map((cache.writers || [])
-  .filter((w) => w.firstWrite && w.firstWrite !== '(uncommitted)')
-  .map((w) => [w.needle || `${w.file}:${w.line}:${w.event}`, w]));
+const cached = new Map();
+if (existsSync(LEDGER)) {
+  for (const line of readFileSync(LEDGER, 'utf8').split('\n')) {
+    if (!line || line.startsWith('#')) continue;
+    const [date, scope, ...rest] = line.split('\t');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date) && rest.length) cached.set(rest.join('\t'), { date, scope });
+  }
+}
 
 const writers = [];
 for (const t of transports) {
@@ -926,7 +948,7 @@ unique.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line || a.event
 for (const w of unique) {
   if (!w.needle) w.needle = (views(w.file).raw.split('\n')[w.line - 1] || '').trim().slice(0, 72);
 }
-const wanted = [...new Set(unique
+const wanted = OFFLINE ? [] : [...new Set(unique
   .filter((w) => REFRESH || !cached.has(w.needle))
   .map((w) => w.needle))];
 const dated = wanted.length ? await firstWriteAll(wanted) : new Map();
@@ -1018,7 +1040,7 @@ const usedGates = new Set(unique.flatMap((w) => w.gate.split(' / ')));
 const manifest = {
   generatedBy: 'scripts/audit-instruments.mjs',
   schema: 1,
-  note: 'Generated. Do not hand-edit — re-run the script. tests/unit/instrument-register.test.js fails when this file is stale.',
+  note: 'Generated and git-ignored. Re-run the script to refresh it. Birthdays are committed in .audit/instrument-birthdays.tsv.',
   counts: {
     writers: unique.length,
     transports: unique.filter((w) => w.kind !== 'emit').length,
@@ -1031,7 +1053,7 @@ const manifest = {
     .map((g) => ({ name: g.name, file: g.file, line: g.line, localhostToo: !!g.localhost, wrapsGate: !!g.wrapsGate }))
     .sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line),
   sinks: Object.values(sinkRows).sort((a, b) => a.sink.localeCompare(b.sink)),
-  ungatedBaseline: ungated.map((w) => `${w.file}:${w.line} ${w.event} -> ${w.sink}`).sort(),
+  ungated: ungated.map((w) => `${w.file}:${w.line} ${w.event} -> ${w.sink}`).sort(),
   birthdayRisks,
   writers: unique.map((w) => ({
     event: w.event, eventExpr: w.eventExpr, sink: w.sink, file: w.file, line: w.line,
@@ -1042,6 +1064,19 @@ const manifest = {
 
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, `${JSON.stringify(manifest, null, 2)}\n`);
+
+// The ledger holds today's needles only, sorted, so a PR's regeneration
+// changes exactly the lines for the writers it added or removed.
+if (WRITE_LEDGER) {
+  const rows = new Map();
+  for (const w of unique) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(w.firstWrite)) rows.set(w.needle, `${w.firstWrite}\t${w.firstWriteScope}\t${w.needle}`);
+  }
+  const body = [...rows.keys()].sort().map((k) => rows.get(k)).join('\n');
+  writeFileSync(LEDGER, '# Generated by scripts/audit-instruments.mjs. One writer birthday per line: date, scope, needle.\n'
+    + '# Re-run the script instead of editing by hand. Merged with merge=union (.gitattributes).\n'
+    + `${body}\n`);
+}
 
 // ─── human summary ──────────────────────────────────────────────────────────
 if (!QUIET) {

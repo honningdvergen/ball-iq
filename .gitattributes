@@ -1,0 +1,3 @@
+# One independent line per writer birthday, so a union merge is always correct:
+# two PRs adding two writers keep both lines. See scripts/audit-instruments.mjs.
+.audit/instrument-birthdays.tsv merge=union

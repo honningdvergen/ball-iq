@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { readFileSync, existsSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -28,8 +28,15 @@ import { dirname, join } from 'node:path';
  *     analysis time. `firstWrite` is the column that makes that mistake
  *     impossible to make twice.
  *
- * ⚠️ THIS IS A SOURCE-TEXT TEST, NOT A RENDER TEST. It reads the committed
- * manifest, re-runs the scanner, and compares. There is nothing to mount.
+ * ⚠️ THIS IS A SOURCE-TEXT TEST, NOT A RENDER TEST. It runs the scanner over
+ * the tree and asserts on what it finds. There is nothing to mount.
+ *
+ * ⚠️ THE REGISTER IS NOT COMMITTED. .audit/instruments.json carries a
+ * file:line per writer, so committing it put every open PR in conflict after
+ * each merge to main. It is git-ignored and rebuilt here on every run, which
+ * also means it can never be stale. The one committed input is
+ * .audit/instrument-birthdays.tsv, the dates `git log -S` cannot recompute in a
+ * shallow clone.
  *
  * ⚠️ A ZERO HERE WOULD BE THE MOST SUSPICIOUS RESULT AVAILABLE. A scanner that
  * silently matched nothing would make every assertion below pass vacuously —
@@ -39,10 +46,8 @@ import { dirname, join } from 'node:path';
  */
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const MANIFEST_PATH = join(ROOT, '.audit', 'instruments.json');
+const LEDGER_PATH = join(ROOT, '.audit', 'instrument-birthdays.tsv');
 const SCRIPT = 'scripts/audit-instruments.mjs';
-
-const manifest = existsSync(MANIFEST_PATH) ? JSON.parse(readFileSync(MANIFEST_PATH, 'utf8')) : null;
 
 /**
  * Re-run the scan in a child process and read back what it would write.
@@ -55,14 +60,13 @@ const manifest = existsSync(MANIFEST_PATH) ? JSON.parse(readFileSync(MANIFEST_PA
  * exit code and Vercel refused the push.
  */
 function rescan() {
-  // --out keeps the fresh scan OUT of the tracked file. A test that rewrites
-  // .audit/instruments.json to prove it is current would leave the working tree
-  // dirty on every build, and nobody could then tell the test's footprint from
-  // a real change.
+  // --out writes to a temp file and leaves the ledger alone; --offline never
+  // asks git for a date, because a shallow clone (Vercel, CI) would answer
+  // with the clone boundary and hide a writer the ledger has never seen.
   const tmp = join(tmpdir(), `biq-instruments-${process.pid}.json`);
   let status = 0;
   try {
-    execFileSync('node', [SCRIPT, '--quiet', '--out', tmp], { cwd: ROOT, encoding: 'utf8', stdio: 'pipe' });
+    execFileSync('node', [SCRIPT, '--quiet', '--offline', '--out', tmp], { cwd: ROOT, encoding: 'utf8', stdio: 'pipe' });
   } catch (e) {
     status = e.status ?? 1;
   }
@@ -71,9 +75,18 @@ function rescan() {
   return { status, manifest: fresh };
 }
 
+let manifest;
+let scanStatus;
+// The scan re-reads the whole tree. A 5s default would fail on a machine that
+// is merely busy, and a flaky gate gets deleted rather than fixed.
+beforeAll(() => {
+  ({ status: scanStatus, manifest } = rescan());
+}, 180000);
+
 describe('the instrument register is real', () => {
-  it('is committed', () => {
-    expect(manifest, `.audit/instruments.json is missing — run: node ${SCRIPT}`).not.toBeNull();
+  it('scans cleanly from a committed birthday ledger', () => {
+    expect(existsSync(LEDGER_PATH), `.audit/instrument-birthdays.tsv is missing — run: node ${SCRIPT}`).toBe(true);
+    expect(scanStatus, `${SCRIPT} self-check failed (exit 2) — the scan cannot be trusted`).not.toBe(2);
     expect(manifest.writers.length).toBeGreaterThan(0);
   });
 
@@ -142,47 +155,22 @@ describe('the instrument register is real', () => {
 });
 
 describe('the register is current', () => {
-  // The rescan re-reads the whole tree; the cached birthdays keep it near 20s
-  // but a cold cache asks git 100+ times. A 5s default would fail on a machine
-  // that is merely busy, and a flaky gate gets deleted rather than fixed.
-  it('matches a fresh scan of the tree', { timeout: 180000 }, () => {
-    // ⚠️ THE WHOLE POINT. A register that drifts is worse than none, because it
-    // is consulted with confidence. Re-running the scanner and diffing is the
-    // only assertion that cannot be satisfied by a stale file.
-    //
-    // firstWrite is compared too, but it is CACHED by needle inside the
-    // manifest rather than recomputed here: a `git log -S` per writer is ~60s,
-    // and the dates are immutable history. A NEW writer has no cached date,
-    // so it fails the "every writer has a firstWrite" test below instead —
-    // which is the same failure, reached faster.
-    const { status, manifest: fresh } = rescan();
-    expect(status, `${SCRIPT} self-check failed (exit 2) — the scan cannot be trusted`).not.toBe(2);
-
-    const shape = (m) => m.writers.map((w) => `${w.file}:${w.line} ${w.event} ${w.sink} ${w.gate} ${w.via}`);
-    const before = shape(manifest);
-    const after = shape(fresh);
-    const added = after.filter((r) => !before.includes(r));
-    const removed = before.filter((r) => !after.includes(r));
-
-    expect(
-      { added, removed },
-      `.audit/instruments.json is STALE. Re-run it and commit the result:\n\n    node ${SCRIPT}\n\n`
-      + 'If a writer appeared, decide its gate before committing — do not widen an existing guard to cover it.\n',
-    ).toEqual({ added: [], removed: [] });
-  });
-
   it('every writer has a birthday', () => {
     // ⚠️ THE COLUMN THE 130-ROW PHANTOM NEEDED. An undated counter is one that
     // will be compared against a dated one sooner or later.
     //
+    // A committed writer with no date is a writer the ledger has never seen:
+    // run the script (it asks git once) and commit the new ledger line.
+    //
     // `(uncommitted)` is the one permitted non-date, and it is a fact rather
     // than a gap: the writer is not in HEAD, so history genuinely has no date
     // for it. It becomes a real date on the commit that lands the writer — at
-    // which point the manifest should be regenerated in the same commit.
+    // which point the ledger should be regenerated in the same commit.
     // Anything else empty means git could not date a writer that IS committed,
     // which is the real anomaly.
     const undated = manifest.writers.filter((w) => !w.firstWrite);
-    expect(undated.map((w) => `${w.file}:${w.line} ${w.event}`), `run: node ${SCRIPT}`).toEqual([]);
+    expect(undated.map((w) => `${w.file}:${w.line} ${w.event}`),
+      `run: node ${SCRIPT}  and commit .audit/instrument-birthdays.tsv`).toEqual([]);
     for (const w of manifest.writers) {
       expect(w.firstWrite, `${w.file}:${w.line} has a malformed date`)
         .toMatch(/^(\d{4}-\d{2}-\d{2}|\(uncommitted\))$/);
@@ -197,47 +185,27 @@ describe('the register is current', () => {
 
 describe('no writer reaches production ungated', () => {
   /**
-   * ⚠️ THIS IS A RATCHET, AND THE ONLY HONEST WAY TO SHIP IT.
+   * ⚠️ THIS WAS A RATCHET, AND IT REACHED ZERO.
    *
-   * The brief's rule is "no writer has gate: NONE". The tree does not satisfy
-   * that today — the scan found real ungated writers, and they are REPORTED
-   * rather than hidden, gated by a widened guard, or excluded from the scan.
-   * Every one of them is listed by file and line in the manifest's
-   * `ungatedBaseline`, and `node scripts/audit-instruments.mjs` exits non-zero
-   * naming them, every run.
+   * The original rule was "no writer has gate: NONE", shipped as a baseline
+   * that could shrink and never grow because real ungated writers existed.
+   * The baseline emptied on 2026-09-07, so the ratchet is now the rule itself.
    *
-   * So the assertion is: the set of ungated writers may SHRINK, never grow. A
-   * new ungated writer fails this suite on the commit that adds it, which is
-   * the day-it-shipped catch the register exists to provide. Closing one means
-   * deleting its line from the baseline — a deliberate, reviewable edit.
-   *
-   * Never add a line here to make a build green. That is the failure this whole
+   * Never weaken this to make a build green. That is the failure this whole
    * file is arguing against.
    */
-  it('the ungated set has not grown', () => {
-    const baseline = manifest.ungatedBaseline;
+  it('no writer is ungated', () => {
     const live = manifest.writers
       .filter((w) => w.gate === 'NONE')
       .map((w) => `${w.file}:${w.line} ${w.event} -> ${w.sink}`);
-    const isNew = live.filter((r) => !baseline.includes(r));
     expect(
-      isNew,
+      live,
       'A NEW UNGATED ANALYTICS WRITER.\n'
       + 'It will record robots, crawlers and local dev straight into production.\n'
       + 'On 2026-08-21 that put 767 synthetic rows into funnel_events in three hours\n'
       + 'against a real DAU of 13-17. Gate it at its own call site — do not widen\n'
-      + 'another writer\'s guard, and do not add it to ungatedBaseline.\n',
+      + 'another writer\'s guard.\n',
     ).toEqual([]);
-  });
-
-  it('the baseline holds no writer that is now gated', () => {
-    // Stale entries are the other direction of drift: a fixed writer left in
-    // the baseline silently re-permits itself if the fix is ever reverted.
-    const live = new Set(manifest.writers
-      .filter((w) => w.gate === 'NONE')
-      .map((w) => `${w.file}:${w.line} ${w.event} -> ${w.sink}`));
-    const stale = manifest.ungatedBaseline.filter((r) => !live.has(r));
-    expect(stale, `these are gated now — remove them from ungatedBaseline (node ${SCRIPT} does it)`).toEqual([]);
   });
 
   it('the club engine gates BOTH of its writers', () => {
