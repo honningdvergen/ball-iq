@@ -86,6 +86,22 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       (free agents: Sterling, Icardi, Alli; and names too obscure for the game).
 - [x] #33 merged (the instrument register no longer blocks parallel work);
       #3 and #34 closed with their findings applied (six stale or wrong items).
+- [x] **Homepage streak for a returning player** (one line under Today; a
+      stranger sees nothing new). READ ON 19 OCT with the other retention reads.
+- [x] Profile example card: the button now says "Play today's 7 to start
+      mine" (it always launched Daily 7), and the close target is 44px.
+- [x] **Alex ruled (5 Oct): YES to pacing** club web pages (section 5), and
+      **YES to raising the Trail cap to eight clubs.**
+- [ ] **Trail at eight clubs needs its opening rule changed first.** The game
+      opens with 2 clubs and adds one per miss over 5 guesses, so it shows at
+      most 6: Salah's Liverpool would never appear. Rule to build: opening
+      clubs = max(2, career length minus 4). Touches `cluesShown`, the screen,
+      the static board, the page copy, two tests. Ships in the release AFTER
+      1.7.6, looked at on a phone. The careers are ready: 83 long careers were
+      fetched and verified (59 pass, 10 corrected, 14 dropped) in
+      `~/ball-iq-audit/2026-10-05/trail/long-out-*.json`. Four of the
+      corrected ones fit the current cap already (Haaland, Abidal, Ødegaard,
+      Tim Howard) and can go in with the next merge.
 - [ ] ⚠️ Home eager JS rose from 855 to 873 KB of 909: the Trail's careers ride
       on Home's path. Moving the daily-game data off Home (section 9, about
       58 KB then, more now) is no longer optional before the next Trail growth.
