@@ -154,6 +154,56 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       Tools (free rival link data), DataForSEO pay-per-call for backlinks when
       outreach starts.
 
+### 0d. 7 Oct: build 140 is in TestFlight; two studies; the next round of work
+
+- [x] **1.7.6 (140) uploaded to TestFlight** with our own key and verified
+      VALID at Apple (`node scripts/asc.mjs builds`). Android bundle (53) is
+      built. Still Alex's call: device test, store text, submit for review.
+- [x] Search Console and App Store Connect keys exist (`scripts/gsc.mjs`,
+      `scripts/asc.mjs`). Club title test closed and reverted (section 4).
+- [ ] **Design round 1, from the 7 Oct critique**
+      (`~/ball-iq-audit/2026-10-07/design-critique.md`; grades: consistency
+      D plus, motion C minus, typography C, app UI B). In order:
+      1. Footle page on a phone: the keyboard is cut off (board starts at 434
+         px, ENTER ends at 948). One 44 px row above the board.
+      2. Footle flip leaks the result: tiles show their final colour 47 ms
+         after ENTER, before they turn. Hold the unrevealed face for the first
+         half of the keyframe; shorten the row from 2.28 s to about 1.6 s.
+      3. Static quiz finish card: scroll to it, pad it 24 by 20, animate the score.
+      4. "Why" box takes the club colour (reads as an error on red clubs) and
+         its last line sits under the Next button's fade. Neutral bordered box.
+      5. Quiz hub: quizzes start 925 px down; "Pick a quiz" first, one store block.
+      6. Emoji used as icons on static pages: swap for the line icons.
+      7. One type scale of seven sizes; nothing under 12 px (the Arsenal page
+         has 18 sizes and 122 text nodes at 10 px).
+      8. Homepage: press states, 44 px targets, one tile style.
+      9. One way to draw a club (the three-letter tile, with an inner edge so
+         dark colours do not vanish).
+      10. One daily-game row, one Play button, one store badge everywhere.
+      11. `/play` on the web: one 56 px bar instead of 104 px of stacked headers.
+      12. App result: a glowing green "0" for 2 of 10; one streak sentence.
+      Motion, all CSS, three timings only (press 90 ms, state 180 ms, entrance
+      260 ms): press scale, correct pop, wrong shake, "Why" fade-in, meter
+      fill, next-question slide, finish-card rise with a counting score, menu
+      drop with a scrim, tab underline. Remove the 5 s hero glow loop and the
+      endless Footle next-tile pulse; add reduced-motion rules on the static
+      Footle page.
+- [ ] **The honest path up the Trivia chart**
+      (`~/ball-iq-audit/2026-10-07/top10-path.md`; estimates, within a factor
+      of two). Installs a day to hold a rank, iPhone free Trivia: UK top 200
+      needs 8 to 20, top 100 20 to 45, top 50 45 to 90, top 10 200 to 500;
+      Norway top 10 needs 40 to 80; US top 10 needs 1,000 to 2,000. Top 10
+      worldwide on both stores is 5,000 to 15,000 a day: not reachable without
+      a viral event or a six-figure monthly ad budget. Stages: (1) UK and
+      Norway top 200 in two to six weeks, (2) top 100 in one to three months,
+      (3) UK top 50 in three to six, (4) Norway top 10 or UK top 25 in six to
+      nine, (5) top 10 arrives as an event. Next 30 days: make the game the
+      content on the social accounts (two or three posts a week where the
+      follower plays first, story link the same day, tracked); 50 ratings by
+      6 Nov (ask after the third win; ask existing players once by hand);
+      build the Transfer Trail share card ("got it in 2, you?") and file an
+      Apple featuring nomination for the January window, named "Deadline Day".
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
