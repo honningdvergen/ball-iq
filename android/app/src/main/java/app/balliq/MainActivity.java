@@ -11,5 +11,10 @@ public class MainActivity extends BridgeActivity {
         // super.onCreate, per Capacitor's custom-plugin contract).
         registerPlugin(WidgetBridgePlugin.class);
         super.onCreate(savedInstanceState);
+        // No scroll bar, the same as iOS (AppDelegate.swift, 2026-10-08).
+        if (getBridge() != null && getBridge().getWebView() != null) {
+            getBridge().getWebView().setVerticalScrollBarEnabled(false);
+            getBridge().getWebView().setHorizontalScrollBarEnabled(false);
+        }
     }
 }

@@ -576,6 +576,11 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .cta-icon{font-size:20px;}
 /* ── Quick Play row ── */
 .quick-play{margin-top:14px;}
+/* Native apps show no scroll bar anywhere (2026-10-08). The page-level one is
+   switched off in the shells (AppDelegate.swift, MainActivity.java); this
+   covers every inner scroller, and the page too where the engine honours it. */
+html.native-app,html.native-app *{scrollbar-width:none;}
+html.native-app ::-webkit-scrollbar{display:none;}
 .quick-play-scroll{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;margin:0 -20px;padding:0 20px 4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 .quick-play-scroll::-webkit-scrollbar{display:none;}
 .qp-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;flex-shrink:0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all 0.18s cubic-bezier(0.22,1,0.36,1);text-align:left;scroll-snap-align:start;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;min-width:118px;color:var(--t1);font-family:inherit;}

@@ -88,6 +88,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // which is now disabled on native so the two cannot race.
         if let bridgeVC = window?.rootViewController as? CAPBridgeViewController {
             bridgeVC.webView?.scrollView.keyboardDismissMode = .onDrag
+            // No scroll bar (Alex, 2026-10-08, from a screenshot of his phone:
+            // "do we need the vertical bar scroller at all?"). The page is the
+            // web view's own scroll view, so CSS cannot reach this indicator;
+            // it has to be switched off here. The floating tab bar and the
+            // cards cut by the fold already say there is more below.
+            bridgeVC.webView?.scrollView.showsVerticalScrollIndicator = false
+            bridgeVC.webView?.scrollView.showsHorizontalScrollIndicator = false
         }
     }
 
