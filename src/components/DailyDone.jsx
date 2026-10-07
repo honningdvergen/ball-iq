@@ -3,6 +3,9 @@ import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch } from
 import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N } from "../lib/dailyResults.js";
+
+// Results in a day before the panel shows headcounts instead of shares.
+const SHOW_COUNTS_FROM = 300;
 import { reminderHourLabel } from "../lib/playHour.js";
 import "./dailyDone.css";
 
@@ -124,6 +127,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   }, [game, edition, bucket, won, isArchive]);
 
   const summary = useMemo(() => summariseDistribution(dist, { game, mine: bucket, won }), [dist, game, bucket, won]);
+  const showCounts = !!summary && summary.n >= SHOW_COUNTS_FROM;
+  const barValue = (r) => (showCounts ? r.c : `${summary.n ? Math.round((r.c / summary.n) * 100) : 0}%`);
   const ko = formatCountdown(msToNextLocalMidnight(now));
   const streakN = streak?.count || 0;
 
@@ -233,18 +238,23 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
+      {/* ⚠️ SHARES, NOT HEADCOUNTS, WHILE THE CROWD IS SMALL (Alex, 2026-10-07).
+          "27 played" and a bar reading "13" tell a newcomer how few people are
+          here, and a small room is a reason to leave. Below SHOW_COUNTS_FROM
+          results the panel speaks only in percentages (which are just as true);
+          above it the real numbers come back, because then they are an asset. */}
       {summary && (
-        <div className="dd-dist" aria-label={`How everyone did, ${summary.n} results`}>
+        <div className="dd-dist" aria-label={showCounts ? `How everyone did, ${summary.n} results` : "How everyone did"}>
           <div className="dd-dist-head">
             <div className="dd-title">How everyone did</div>
-            <div className="dd-dist-cap dd-num">{summary.n.toLocaleString()} played</div>
+            {showCounts && <div className="dd-dist-cap dd-num">{summary.n.toLocaleString()} played</div>}
           </div>
           <div className="dd-bars">
             {bars.map((r) => (
               <React.Fragment key={r.k}>
                 <span className={`dd-bar-k${r.mine ? " is-mine" : ""}`}>{r.label}</span>
-                <span className={`dd-bar${r.mine ? " is-mine" : ""}`} role="img" aria-label={`${r.label}: ${r.c}`}><i style={{ width: `${r.pct}%` }} /></span>
-                <span className={`dd-bar-v${r.mine ? " is-mine" : ""}`}>{r.c}</span>
+                <span className={`dd-bar${r.mine ? " is-mine" : ""}`} role="img" aria-label={`${r.label}: ${barValue(r)}`}><i style={{ width: `${r.pct}%` }} /></span>
+                <span className={`dd-bar-v${r.mine ? " is-mine" : ""}`}>{barValue(r)}</span>
               </React.Fragment>
             ))}
           </div>
