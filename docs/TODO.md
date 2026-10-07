@@ -213,9 +213,17 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       pages answer with motion (press, pop, shake, "Why" rises in, the IQ
       counts up); the app's wrong pick shakes too. Alex approved the
       before-and-after study the same evening.
-- [ ] **Build 140 predates all of the above.** The TestFlight build was cut
-      at `7e1c012a`. The Footle flip fix and the app shake reach a phone only
-      with a new build. Alex's call: cut 141 for 1.7.6, or leave it for 1.7.7.
+- [x] **1.7.6 build 141 is in TestFlight** (8 Oct, 00:47 Oslo; Alex said
+      "cut 141"). Cut at `a19bb7f7` from the clean clone, preflight green,
+      VALID at Apple, in the "1.7 test" group. It carries the Footle flip fix,
+      the answer motion, the Trail reveal, the earned-green result and the
+      level-up that waits for the score. Android bundle (versionCode 53) was
+      rebuilt from the same commit; not uploaded. Still Alex's call: device
+      test, store text, submit. NOT in 141: the link drawn between clubs on
+      the Trail (shipped to the web after the cut).
+- [ ] The iOS 27 simulator froze this Mac a third time on 7 Oct (load 89,
+      a two-minute build ran past ten). Do not boot it while anything else
+      is building; the sweep waits for 9 to 11 Oct.
 - [ ] Still open in design round 1: items 3 (padding and scroll; the score
       now counts), 4 to 12, and the rest of the motion list (meter fill,
       next-question slide, menu drop, tab underline, the two loops to remove).
