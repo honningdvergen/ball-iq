@@ -39,6 +39,9 @@ import { CLUB_PACK_COLOURS, CLUB_PACK_ABBR } from "../data/clubPackColours.js";
    2026-09-05 (see usePlayerPool) so the static page pays for it only when
    someone actually starts typing. */
 import { usePlayerPool } from "../lib/usePlayerPool.js";
+
+// Space between two clubs on the trail, and the length of the link drawn in it.
+const TRAIL_GAP = 12;
 import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight } from "../lib/useKeyboardAwareInput.js";
 import ReportButton from "../components/ReportButton.jsx";
@@ -262,17 +265,31 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
         )}
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 7, padding: "6px 2px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: TRAIL_GAP, padding: "6px 2px" }}>
         {career.slice(0, shown).map((club, i) => {
           const col = clubColour(club, packColours);
+          const prevCol = i > 0 ? clubColour(career[i - 1], packColours) : null;
           return (
             <div key={i} className="tt-club" style={{
               animationDelay: `${Math.max(0, i - prevShown.current) * 70}ms`,
+              position: "relative",
               display: "flex", alignItems: "center", gap: 11,
               background: col ? `linear-gradient(90deg, ${tint(lift(col), 0.3)} 0%, ${tint(lift(col), 0.05)} 100%)` : "var(--s1)",
               border: `1px solid ${col ? tint(lift(col), 0.45) : "var(--border)"}`,
               borderRadius: 12, padding: "12px 14px",
             }}>
+              {/* THE TRAIL ITSELF (2026-10-08). The game is called a trail and
+                  drew none: the clubs were stacked boxes with nothing joining
+                  them. A short link now runs from the club above to this one,
+                  under the two crests, shading from that club's colour into
+                  this one's. It is a child of the row, so it arrives with it. */}
+              {i > 0 && (
+                <span aria-hidden="true" style={{
+                  position: "absolute", left: 51, top: -(TRAIL_GAP + 1), width: 2, height: TRAIL_GAP,
+                  borderRadius: 1,
+                  background: `linear-gradient(${prevCol ? lift(prevCol) : "var(--border2)"}, ${col ? lift(col) : "var(--border2)"})`,
+                }} />
+              )}
               <span style={{ fontSize: 11, fontWeight: 700, color: "var(--t3)", width: 12, flexShrink: 0 }}>{i + 1}</span>
               <span aria-hidden="true" style={{
                 width: 30, height: 30, flexShrink: 0, borderRadius: 9,
