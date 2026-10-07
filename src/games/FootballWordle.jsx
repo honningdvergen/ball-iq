@@ -27,7 +27,7 @@ import { DailyDone } from '../components/DailyDone.jsx';
 import './footle.css';
 
 // Per-tile flip duration; the reveal waits for the whole row to turn.
-export const WORDLE_FLIP_MS = 280;
+export const WORDLE_FLIP_MS = 180;
 
 // Colour-blind palette state, read where share strings are built so the
 // emoji squares match the tiles the player actually saw (🟧🟦 vs 🟩🟨).
@@ -305,13 +305,13 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     setState({ ...state, guesses: newGuesses, status: newStatus });
     setCurrent("");
     // The reveal belongs to this row alone. Cleared after the last tile lands
-    // (delay of the final tile + the 600ms flip) plus a little slack, so the
+    // (delay of the final tile + the 500ms flip) plus a little slack, so the
     // class never disappears mid-turn.
     const rowIdx = newGuesses.length - 1;
     setAnimRow(rowIdx);
     timeoutsRef.current.push(setTimeout(
       () => setAnimRow((r) => (r === rowIdx ? -1 : r)),
-      (answer.length - 1) * WORDLE_FLIP_MS + 680,
+      (answer.length - 1) * WORDLE_FLIP_MS + 580,
     ));
     if (newStatus !== "playing") {
       setRevealed(false);

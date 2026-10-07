@@ -94,15 +94,32 @@ body.biq-web.in-focused-play .wd-grid{--wd-chrome:455px;}
 @media (prefers-reduced-motion: no-preference) {
   .wd-tile--next{animation:wdNextPulse 1.9s ease-in-out infinite;}
 }
-.wd-tile.wd-green{background:var(--accent);border-color:var(--accent);color:var(--bg);}
-.wd-tile.wd-yellow{background:var(--gold);border-color:var(--gold);color:var(--bg);}
-.wd-tile.wd-grey{background:#2E323E;border-color:#2E323E;color:var(--text);}
-.wd-flip{animation:wdFlip 600ms ease forwards;animation-fill-mode:both;}
+.wd-tile.wd-green{background:var(--accent);border-color:var(--accent);color:var(--bg);--wd-face:var(--accent);--wd-ink:var(--bg);}
+.wd-tile.wd-yellow{background:var(--gold);border-color:var(--gold);color:var(--bg);--wd-face:var(--gold);--wd-ink:var(--bg);}
+.wd-tile.wd-grey{background:#2E323E;border-color:#2E323E;color:var(--text);--wd-face:#2E323E;--wd-ink:var(--text);}
+/* ⚠️ THE FLIP MUST NOT GIVE THE ROW AWAY (2026-10-07). A graded tile carries its
+   final colour class from the moment ENTER is pressed and then waits its turn
+   (animation-delay). With fill-mode `both` the waiting tile shows the 0%
+   keyframe, and that keyframe only set the rotation, so every tile in the row
+   was already green, yellow or grey 47 ms after ENTER: the whole answer was
+   readable before a single tile turned (design critique, measured). The first
+   half of the turn now paints the UNREVEALED face, and the real colour appears
+   only at 90 degrees, when the tile is edge-on. Each grade hands its colour in
+   through --wd-face / --wd-ink so one keyframe serves all three.
+   500 ms a tile with a 180 ms stagger (WORDLE_FLIP_MS): a seven-letter row
+   resolves in 1.6 s, was 2.3 s. */
+.wd-flip{animation:wdFlip 500ms ease forwards;animation-fill-mode:both;}
 @keyframes wdFlip{
-  0%{transform:rotateX(0deg);}
-  45%{transform:rotateX(90deg);background:transparent;border-color:var(--border);color:var(--text);}
-  55%{transform:rotateX(90deg);}
-  100%{transform:rotateX(0deg);}
+  0%{transform:rotateX(0deg);background:var(--s2);border-color:var(--wd-edge);color:var(--text);}
+  49%{transform:rotateX(90deg);background:var(--s2);border-color:var(--wd-edge);color:var(--text);}
+  51%{transform:rotateX(90deg);background:var(--wd-face);border-color:var(--wd-face);color:var(--wd-ink);}
+  100%{transform:rotateX(0deg);background:var(--wd-face);border-color:var(--wd-face);color:var(--wd-ink);}
+}
+/* Reduced motion: no turning, and no early colour either. The tile simply
+   takes its colour when its turn comes. */
+@media (prefers-reduced-motion: reduce){
+  .wd-flip{animation-name:wdReveal;animation-duration:1ms;}
+  @keyframes wdReveal{0%{background:var(--s2);border-color:var(--wd-edge);color:var(--text);}100%{background:var(--wd-face);border-color:var(--wd-face);color:var(--wd-ink);}}
 }
 .wd-shake{animation:wdShake 420ms cubic-bezier(.36,.07,.19,.97);}
 @keyframes wdShake{
