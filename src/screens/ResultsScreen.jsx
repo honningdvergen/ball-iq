@@ -153,6 +153,10 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
 
   // Huge-score display + caption per mode
   const hugeScore = result.score;
+  // Green and the glow are for a score that went well: half or more right, or
+  // a Survival run of three. Before 2026-10-07 any score above zero got them,
+  // so 1 of 7 arrived glowing green over the line "Everyone starts somewhere".
+  const scoreEarned = isSurvival ? result.score >= 3 : (result.total > 0 && result.score / result.total >= 0.5);
   const scoreCaption = isSurvival
     ? (result.score === 0 ? "Out on the first question — it happens to everyone" : `${result.score} in a row before missing one`)
     : `${result.score} correct out of ${result.total}`;
@@ -201,10 +205,10 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             // Green is the app's "this went well" signal — earned, not automatic.
             // A zero (Survival's first-question death, a blank round) reads in
             // the quiet text colour with no glow (review C10).
-            color: hugeScore > 0 ? "var(--accent)" : "var(--t2)",
+            color: scoreEarned ? "var(--accent)" : hugeScore > 0 ? "var(--text)" : "var(--t2)",
             letterSpacing:"-0.03em",
             lineHeight:1,
-            textShadow: hugeScore > 0 ? "0 8px 32px rgba(88,204,2,0.35)" : "none",
+            textShadow: scoreEarned ? "0 8px 32px rgba(88,204,2,0.35)" : "none",
           }}
         >
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
