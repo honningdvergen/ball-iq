@@ -238,7 +238,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
-      {/* ⚠️ SHARES, NOT HEADCOUNTS, WHILE THE CROWD IS SMALL (Alex, 2026-10-07).
+      {/* SHARES, NOT HEADCOUNTS, WHILE THE CROWD IS SMALL (Alex, 2026-10-07).
           "27 played" and a bar reading "13" tell a newcomer how few people are
           here, and a small room is a reason to leave. Below SHOW_COUNTS_FROM
           results the panel speaks only in percentages (which are just as true);
