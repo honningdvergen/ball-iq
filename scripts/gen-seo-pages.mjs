@@ -5153,6 +5153,27 @@ const FW_TODAY_CSS = `
   .fw-fold>summary::before{content:"+ ";color:var(--grn-soft)}
   .fw-fold[open]>summary::before{content:"− "}
   .fw-fold .fw-wrap{margin-top:0;padding-top:0}
+  /* ⚠️ ON A PHONE THE GAME MUST FIT ON ONE SCREEN (2026-10-07). The hero spent
+     434px before the board began (breadcrumb, a "Daily game" label, a two-line
+     40px title, two lines of lead, a masthead line), so on Footle the keyboard's
+     ENTER ended at 948px on an 812px screen: a visitor from search had to
+     scroll to type a first letter (design critique, measured). On a narrow
+     screen the page now leads with a one-line title and a quiet lead, and the
+     board starts at about 200px. The breadcrumb stays in the structured data;
+     the masthead repeated the number and countdown the game's own header shows. */
+  @media (max-width:520px){
+    .hero{padding:10px 0 4px}
+    .hero .crumbs,.hero .kicker{display:none}
+    .hero .hero-head h1{font-size:22px;line-height:1.15;letter-spacing:-.2px;margin-bottom:4px}  /* out-specifies the site's 34px phone title */
+    .hero-lead{font-size:13px;line-height:1.35;color:var(--tx3)}
+    .fw-mast{display:none}
+    /* Short phones (and Safari with its bars showing): the app's own rule that
+       shrinks tiles to fit does not reach this embedded board, so at 667px
+       tall the tiles stayed 44px and ENTER ended 61px below the screen. 478px
+       is what sits around the six rows here (page header, title, the game's
+       header and legend, the keyboard). At 812px it changes nothing. */
+    .fw-host .wd-grid{--wd-tile-cap:clamp(28px,calc((100dvh - 478px) / 6),64px)}
+  }
 `;
 
 // Trail and Mystery mount the app's own screens (src/islands/trail.jsx,
