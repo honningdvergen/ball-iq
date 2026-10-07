@@ -75,8 +75,9 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-qn{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx4);margin-bottom:7px}
   .bq-qx{font-size:19px;font-weight:700;color:var(--tx);line-height:1.3;letter-spacing:-.015em;margin:0 0 15px;text-wrap:balance}
   .bq-os{display:grid;gap:8px}
-  .bq-o{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;text-align:left;padding:12px 13px;border-radius:11px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+  .bq-o{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;text-align:left;padding:12px 13px;border-radius:11px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:transform .09s ease-out,border-color .18s,background .18s;-webkit-user-select:none;user-select:none;touch-action:manipulation}
   .bq-o:active{border-color:var(--tx2)}
+  .bq-o:active:not(:disabled){transform:scale(.985)}
   .bq-o:hover:not(:disabled){border-color:var(--bd3);background:var(--card2)}
   .bq-o:disabled{cursor:default}
   .bq-o .k{flex:0 0 auto;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;background:#1B2029;color:var(--tx4)}
@@ -86,6 +87,22 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-o.no{border-color:var(--wrong);background:rgba(255,71,71,.09);color:#FF8A82}
   .bq-o.no .k{background:var(--wrong);color:#fff}
   .bq-o.dim{opacity:.45}
+  /* MOTION (2026-10-07). An answer used to resolve in one frame: colour, tick,
+     explanation and score all at once, so nothing told the eye where to look.
+     Three speeds only, the same three everywhere: 90ms for a press, 180ms for a
+     change of state, 260ms for something arriving. The right answer pops, a
+     wrong pick shakes and the right one follows it 120ms later, then the
+     explanation rises in. Transform and opacity only, so nothing reflows and
+     the scroll-into-view maths in the engine still measures the real box. */
+  @keyframes bqPop{0%{transform:scale(1)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+  @keyframes bqShake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+  @keyframes bqRise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .bq-live .bq-o.ok{animation:bqPop .18s cubic-bezier(.34,1.56,.64,1)}
+  .bq-live .bq-os:has(.no) .bq-o.ok{animation-delay:.12s}
+  .bq-live .bq-o.no{animation:bqShake .26s cubic-bezier(.36,.07,.19,.97)}
+  .bq-live .bq-why{animation:bqRise .26s ease-out .14s both}
+  .bq-live .bq-res{animation:bqRise .26s ease-out both}
+  .bq-big{font-variant-numeric:tabular-nums}
   /* Screen-reader-only announcement of the outcome. Not display:none and not
      hidden — both remove it from the accessibility tree, which is exactly the
      bug this fixes. */
@@ -216,7 +233,7 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-dot{width:7px;height:7px;border-radius:50%;background:#F0A93B;flex:none;box-shadow:0 0 8px rgba(240,169,59,.7)}
   .bq-dtx{font-size:13px;color:var(--tx3);line-height:1.35}
   .bq-dtx b{color:#F0A93B;font-weight:700}
-  @media (prefers-reduced-motion:reduce){.bq-meter i,.bq-o{transition:none}}`;
+  @media (prefers-reduced-motion:reduce){.bq-meter i,.bq-o{transition:none}.bq-live .bq-o,.bq-live .bq-why,.bq-live .bq-res{animation:none}}`;
 
 // The engine, read from its own file with the two build-time values
 // substituted. Ship the ENGINE, not the file's documentation.

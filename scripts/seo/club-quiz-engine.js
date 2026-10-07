@@ -638,6 +638,17 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
    thing not saved. Read at load (see the ribbon below); never blocks. */
 try{localStorage.setItem('biq.quiz.last.'+(root.getAttribute('data-slug')||name),JSON.stringify({d:bqday(),sc:sc,n:run.length,iq:G.iq}))}catch(e){}
 res.hidden=false;if(head)head.hidden=true;
+/* The IQ counts up instead of appearing. It is the one number the round was
+   played for, so it arrives last, after the card has risen in. Skipped for
+   reduced motion, and the final text is always the real number: the tween only
+   ever writes values on the way to it. */
+(function(){var bg=res.querySelector('.bq-big'),to=+G.iq;
+if(!bg||!(to>0)||!window.requestAnimationFrame)return;
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var t0=0;bg.textContent='0';
+function tick(ts){if(!t0)t0=ts;var p=(ts-t0-260)/520;if(p<0)p=0;if(p>1)p=1;
+bg.textContent=String(Math.round(to*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(tick)}
+requestAnimationFrame(tick)})();
 wireRemind(res);
 var m=res.querySelector('[data-more]');if(m)m.addEventListener('click',function(e){e.preventDefault();bqev('clubq-more');start(len,served)});
 var ag=res.querySelector('[data-again]');if(ag)ag.addEventListener('click',function(){bqev('clubq-again');start(len,off)});
