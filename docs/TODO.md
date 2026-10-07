@@ -204,6 +204,37 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       build the Transfer Trail share card ("got it in 2, you?") and file an
       Apple featuring nomination for the January window, named "Deadline Day".
 
+### 0e. 7 Oct, evening: design round 1 under way, the rivals teardown, Alex's rulings
+
+- [x] **Shipped from design round 1** (each looked at on a phone-size screen
+      before the push): item 1, Footle page fits a phone (board at 212 px,
+      ENTER at 792); item 2, the flip holds its secret and the row takes 1.6 s;
+      results show shares instead of headcounts until 300 have played; quiz
+      pages answer with motion (press, pop, shake, "Why" rises in, the IQ
+      counts up); the app's wrong pick shakes too. Alex approved the
+      before-and-after study the same evening.
+- [ ] **Build 140 predates all of the above.** The TestFlight build was cut
+      at `7e1c012a`. The Footle flip fix and the app shake reach a phone only
+      with a new build. Alex's call: cut 141 for 1.7.6, or leave it for 1.7.7.
+- [ ] Still open in design round 1: items 3 (padding and scroll; the score
+      now counts), 4 to 12, and the rest of the motion list (meter fill,
+      next-question slide, menu drop, tab underline, the two loops to remove).
+- [x] **Rivals teardown** (`~/ball-iq-audit/2026-10-07/rivals-teardown.md`).
+      Alex's rulings on it and on the two studies:
+      - Build now: design fixes; new first three store screenshots for 1.7.6;
+        Transfer Trail share card with a picture and its own link; a Top 10
+        list game (daily first, then an archive and club lists; three lives;
+        every list dated "as of"); make-your-own Trail; private leagues
+        among friends.
+      - On hold: fanbase table, weekly leagues, public leaderboards and crowd
+        numbers (they would show how small the crowd is today).
+      - Probably not: a live Sunday quiz.
+      - Money: **no ads in the app**; a supporter pass instead, later. "No
+        ads" stays in the listings (`release-1.7.6-store-text.md`, 1b).
+      - Trail cap goes to eight clubs with the opening rule
+        `max(2, length - 4)`, after 1.7.6. Club web pages paced at 8 to 10 a
+        week; packs go into the app at full speed.
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
