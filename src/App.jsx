@@ -6545,7 +6545,11 @@ function AppInner() {
         levelUpTimerRef.current = setTimeout(() => {
           setLevelUpOverlay({ name: newInfo.level.name, Icon: newInfo.level.Icon }); haptic("levelup"); playSound("levelup");
           levelUpTimerRef.current = setTimeout(() => setLevelUpOverlay(null), TIMINGS.STREAK_TOAST);
-        }, 400);
+        // 1600, not 400 (2026-10-07): at 400 the overlay covered the result
+        // while its score was still counting up (200ms delay + 900ms), so the
+        // player never saw the number land. The score finishes first, then the
+        // level-up takes the screen.
+        }, 1600);
       }
       return newXp;
     });
