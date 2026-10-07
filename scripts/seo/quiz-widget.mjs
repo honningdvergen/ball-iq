@@ -102,6 +102,10 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-live .bq-o.no{animation:bqShake .26s cubic-bezier(.36,.07,.19,.97)}
   .bq-live .bq-why{animation:bqRise .26s ease-out .14s both}
   .bq-live .bq-res{animation:bqRise .26s ease-out both}
+  /* Every question after the first rises in. Not the first: it is on screen at
+     load and is usually the largest paint, and starting it at opacity 0 would
+     cost the page 260ms of LCP for nothing. */
+  .bq-live .bq-q ~ .bq-q{animation:bqRise .26s ease-out both}
   .bq-big{font-variant-numeric:tabular-nums}
   /* Screen-reader-only announcement of the outcome. Not display:none and not
      hidden — both remove it from the accessibility tree, which is exactly the
@@ -233,7 +237,7 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-dot{width:7px;height:7px;border-radius:50%;background:#F0A93B;flex:none;box-shadow:0 0 8px rgba(240,169,59,.7)}
   .bq-dtx{font-size:13px;color:var(--tx3);line-height:1.35}
   .bq-dtx b{color:#F0A93B;font-weight:700}
-  @media (prefers-reduced-motion:reduce){.bq-meter i,.bq-o{transition:none}.bq-live .bq-o,.bq-live .bq-why,.bq-live .bq-res{animation:none}}`;
+  @media (prefers-reduced-motion:reduce){.bq-meter i,.bq-o{transition:none}.bq-live .bq-o,.bq-live .bq-why,.bq-live .bq-res,.bq-live .bq-q ~ .bq-q{animation:none}}`;
 
 // The engine, read from its own file with the two build-time values
 // substituted. Ship the ENGINE, not the file's documentation.
