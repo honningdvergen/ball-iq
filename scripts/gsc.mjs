@@ -116,9 +116,10 @@ if (!r.ok) {
 }
 const rows = j.rows || [];
 if (flag('json')) {
-  console.log(JSON.stringify({ start, end, mode, filters, rows }, null, 2));
-  process.exit(0);
-}
+  // No process.exit() here: exiting straight after a large write cut the output
+  // at the 64 KB pipe buffer (seen with --limit 1000 on the first real read).
+  process.stdout.write(JSON.stringify({ start, end, mode, filters, rows }, null, 2) + '\n');
+} else {
 
 const tot = rows.reduce((a, x) => ({ c: a.c + x.clicks, i: a.i + x.impressions }), { c: 0, i: 0 });
 console.log(`balliq.app · ${mode} · ${start} → ${end}${filters.length ? ' · ' + filters.map((f) => `${f.dimension} ${f.operator} "${f.expression}"`).join(', ') : ''}`);
@@ -128,4 +129,5 @@ console.log(`${'key'.padEnd(w)}  ${'clicks'.padStart(6)}  ${'impr'.padStart(7)} 
 for (const x of rows) {
   const k = x.keys[0].replace(SITE, '/');
   console.log(`${(k.length > w ? k.slice(0, w - 1) + '…' : k).padEnd(w)}  ${String(x.clicks).padStart(6)}  ${String(x.impressions).padStart(7)}  ${(x.ctr * 100).toFixed(1).padStart(5)}%  ${x.position.toFixed(1).padStart(5)}`);
+}
 }
