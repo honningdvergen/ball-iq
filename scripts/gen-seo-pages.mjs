@@ -1636,9 +1636,10 @@ ${SHELL_CSS}
      the glow clipped without creating a scroll container. */
   .hero{padding:46px 0 40px;position:relative;overflow:clip}
   .hero-in{position:relative;z-index:2}
-  .hero-glow{position:absolute;top:16%;left:72%;width:min(560px,86vw);height:min(560px,86vw);background:radial-gradient(circle,rgba(var(--club-glow, 88, 204, 2),.16) 0%,rgba(var(--club-glow, 88, 204, 2),.05) 42%,transparent 66%);transform:translate(-50%,-50%);animation:glowPulse 5s ease-in-out infinite;pointer-events:none;z-index:0}
-  @keyframes glowPulse{0%,100%{opacity:.4}50%{opacity:.72}}
-  @media(prefers-reduced-motion:reduce){.hero-glow{animation:none}}
+  .hero-glow{position:absolute;top:16%;left:72%;width:min(560px,86vw);height:min(560px,86vw);background:radial-gradient(circle,rgba(var(--club-glow, 88, 204, 2),.16) 0%,rgba(var(--club-glow, 88, 204, 2),.05) 42%,transparent 66%);transform:translate(-50%,-50%);opacity:.56;pointer-events:none;z-index:0}
+  /* The glow used to breathe on a 5s loop for as long as the page was open
+     (2026-10-08). Motion that never ends and means nothing reads as dated and
+     keeps the eye off the quiz; it now sits still at the loop's midpoint. */
   /* two-column quiz hero: intro/CTA left, playable taster right */
   .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,0.98fr);gap:clamp(28px,4vw,52px);align-items:center}
   .hero-left,.hero-right{min-width:0}
