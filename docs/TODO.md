@@ -220,7 +220,24 @@ Daily 7 Q1 diverges for old builds on 19 Oct; Trail #85 on 26 Oct.
 
 - [ ] **GSC API key** so reads are query by page by day (`scripts/gsc.mjs` is
       ready; setup steps in its header). **(Alex creates the key)**
-- [ ] Read the overdue club-title test properly; revert the three if it holds.
+- [x] **Club title test read and closed (7 Oct, first read with our own
+      Search Console key).** "Play the X Quiz — Free, with Answers" (Arsenal,
+      Real Madrid, Man City, since 9 Sep) did not beat "X Quiz with Answers —
+      Nickname". 26 Aug to 8 Sep against 9 to 22 Sep, CTR at page level:
+      controls Liverpool 5.5 to 6.3%, Barcelona 4.4 to 5.5%, Chelsea 5.1 to
+      7.2%; test pages Arsenal 3.8 to 3.9%, Man City 4.6 to 3.4%, Real Madrid
+      2.6 to 4.2% (its position also improved from 7.0 to 6.3). People type
+      "with answers" ("liverpool quiz with answers": 15.3% CTR at 3.1). All
+      three reverted to the old title and description.
+- [ ] **First-read baseline, 7 Sep to 4 Oct** (`node scripts/gsc.mjs`): weekly
+      clicks 683, 700, 559, 501; "football quiz" 346 impressions at 11.3;
+      "premier league quiz" 200 at 13.6; "manchester united quiz" 123 at 9.6
+      (our biggest club, bottom of page one); "footle" 2,468 impressions at
+      1.5% CTR; the USA shows us as often as Britain (17.8K impressions) but
+      clicks 1.3% against 5.1%; several list pages sit at 10 to 40 with no
+      clicks (coppa italia winners, club world cup winners, bundesliga top
+      scorers, copa america winners). READ AGAIN 22 OCT for the snippet fix
+      and the reverted titles.
 - [ ] Recovery read: club football resumes 10 Oct. Read the four big club
       pages for 12 to 18 Oct (complete in GSC about 21 Oct).
 - [ ] `/quiz/` should be playable and fresh at the top (it targets "football quiz").
