@@ -75,6 +75,12 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
 
   const shown = done ? career.length : cluesShown(misses, career.length);
   const clubsUsed = won ? cluesShown(misses, career.length) : career.length;
+  // How many clubs were on screen at the last commit. A club beyond that is
+  // arriving now, so it rises in, and when several arrive together (the full
+  // career at the end) they follow each other 70ms apart instead of landing
+  // as one block.
+  const prevShown = useRef(shown);
+  useEffect(() => { prevShown.current = shown; }, [shown]);
   const hint = done ? null : hintFor(player, misses);
   const left = Math.max(0, TRAIL_MAX_ATTEMPTS - misses);
   const isArchive = ymd !== dateToYMD(new Date());
@@ -260,7 +266,8 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
         {career.slice(0, shown).map((club, i) => {
           const col = clubColour(club, packColours);
           return (
-            <div key={i} style={{
+            <div key={i} className="tt-club" style={{
+              animationDelay: `${Math.max(0, i - prevShown.current) * 70}ms`,
               display: "flex", alignItems: "center", gap: 11,
               background: col ? `linear-gradient(90deg, ${tint(lift(col), 0.3)} 0%, ${tint(lift(col), 0.05)} 100%)` : "var(--s1)",
               border: `1px solid ${col ? tint(lift(col), 0.45) : "var(--border)"}`,

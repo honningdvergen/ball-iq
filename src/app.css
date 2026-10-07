@@ -1725,6 +1725,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .btn-spin{display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;opacity:0.85;vertical-align:-3px;}
 @keyframes qFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .q-fade{animation:qFadeIn 0.26s cubic-bezier(0.22,1,0.36,1);}
+/* Transfer Trail: a club arriving is the game's one reveal, and it used to
+   appear in a single frame (2026-10-07). Same 260ms entrance as a question. */
+@keyframes ttClubIn{from{opacity:0;transform:translateY(8px) scale(0.98)}to{opacity:1;transform:none}}
+.tt-club{animation:ttClubIn 0.26s cubic-bezier(0.22,1,0.36,1) both;}
 /* The dialog reads as a sheet of the app's own material, not a grey slab:
    the lifted card surface, one hairline, and a scrim that blurs what is
    behind it so the dialog is clearly ON TOP rather than beside. */
