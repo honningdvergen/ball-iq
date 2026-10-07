@@ -113,6 +113,47 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       season record to boast about). We hold the squads and careers already.
       About a week of work; step two, after the release.
 
+### 0c. 6 Oct: release state, and what two research runs found
+
+- [x] Release commit: package 1.7.6, iOS build 140, Android versionCode 53,
+      Trail frozen through No. 94. Store text to paste is in
+      `release-1.7.6-store-text.md` (repo root, untracked).
+- [ ] ⚠️ **The upload build must be made and preflighted on the SAME DAY.**
+      `src/marketing/footlePractice.js` is generated from today's date, so a
+      build made before midnight does not match one made after, and the
+      regenerated file dirties the tree. On release day: run
+      `node scripts/gen-footle-practice.mjs`, commit it, then build from a
+      clean clone. Lasting fix (after the release): stop tracking that file, or
+      derive it at run time.
+- [x] **Measurement is better than the audit said.** Vercel Web Analytics has
+      been recording pageviews, referrers and countries all along; the Vercel
+      connector reads it (`aggregate_pageviews`, `projectId: "ball-iq"` only).
+      28 Sep to 5 Oct: 1,640 pageviews, about 115 visitors a day, Google 515,
+      direct 432, GB 300, US 107, IT 56. Still missing: sessions and return
+      rate. The "first-party pageview event" item in section 7 is closed.
+- [ ] **Outreach targets from Similarweb** (trial, Jun to Aug 2026; report in
+      `~/ball-iq-audit/2026-10-06/similarweb.md`). All public posting in
+      Alex's name, so each kind needs his yes:
+      - Club fan forums: nine sent one rival about 153K visits in three
+        months (redcafe.net, theanfieldnoise.com, spurscommunity.co.uk,
+        theevertonforum.co.uk, newcastle-online.org, foxestalk.co.uk and
+        others). One thread per forum with that club's quiz; read the forum's
+        link rules first.
+      - Daily-game hub sites that list rivals and not us: 7a0.com.br, ed0.it,
+        dles.aukspot.com, bored.com, kontra.games, legames.link, formudle.com
+        and seven more.
+      - Search terms rivals win and we can serve: "football quiz", "guess the
+        football player", "soccer wordle", "footdle", a "top 10" page.
+      - YouTube is about 90% of rivals' social traffic; Instagram 1 to 2%.
+      - The draft format fell from 12.2M visits in June to 3.6M in August:
+        if we build it, it is a DAILY game.
+- [ ] **Tools worth adding** (Alex installs or creates keys; details in
+      memory `reference_tooling_review_2026_10_06`): own Search Console key
+      (free, first), the `asc` App Store Connect CLI, Google's Android CLI to
+      get an emulator back, `gplay preflight` for the AAB, Bing Webmaster
+      Tools (free rival link data), DataForSEO pay-per-call for backlinks when
+      outreach starts.
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
