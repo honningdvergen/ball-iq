@@ -186,7 +186,16 @@
       "Bash(stat *)",
       "Bash(which *)",
       "Bash(pwd)",
-      "Bash(date *)"
+      "Bash(date *)",
+      "Bash(~/ball-iq-release/sim-build-at.sh *)",
+      "Bash(~/ball-iq-release/sim-build-wip.sh)",
+      "Bash(~/ball-iq-release/sim-probe.sh)",
+      "Bash(~/ball-iq-release/sim-probe.sh *)",
+      "Bash(~/ball-iq-release/sim-mode.sh *)",
+      "Bash(~/ball-iq-release/sim-rec.sh *)",
+      "Bash(xcrun simctl *)",
+      "Bash(ffmpeg *)",
+      "Bash(ffprobe *)"
     ],
     "ask": [
       "Bash(git push --force*)",
