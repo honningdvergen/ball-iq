@@ -221,6 +221,16 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       rebuilt from the same commit; not uploaded. Still Alex's call: device
       test, store text, submit. NOT in 141: the link drawn between clubs on
       the Trail (shipped to the web after the cut).
+- [x] **1.7.6 build 142 is in TestFlight** (8 Oct, 15:52 Oslo; Alex asked
+      for the newest code). Cut at `a03c02a9`, preflight green, VALID at
+      Apple. Adds to 141: no scroll bar in the native shells, the link drawn
+      between clubs on the Trail. Android bundle (53) rebuilt from the same
+      commit, not uploaded. Before submitting: Alex's check on his phone, the
+      store text in `release-1.7.6-store-text.md` (the "written by hand" line
+      and the four privacy URLs block a clean submission), and his "submit".
+- [ ] New first three store screenshots: not started as of 8 Oct. They can
+      only change with a version submission, so they ride with 1.7.6 or wait
+      for 1.7.7.
 - [ ] The iOS 27 simulator froze this Mac a third time on 7 Oct (load 89,
       a two-minute build ran past ten). Do not boot it while anything else
       is building; the sweep waits for 9 to 11 Oct.
