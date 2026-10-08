@@ -1,6 +1,30 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "dist", "runtimeExecutable": "npx", "runtimeArgs": ["--yes", "serve", "dist", "-l", "4177"], "port": 4177 }
+    {
+      "name": "dist",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "serve",
+        "dist",
+        "-l",
+        "4177"
+      ],
+      "port": 4177
+    },
+    {
+      "name": "dist-spa",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "serve",
+        "dist",
+        "-s",
+        "-l",
+        "4178"
+      ],
+      "port": 4178
+    }
   ]
 }
