@@ -254,6 +254,19 @@ export function clubColour(club, packMap = {}) {
 // Liverpool as "L" and Chelsea as "C". The codes existed; the lookup did not.
 const squash = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
 
+// Clubs with no pack of their own whose derived letters collide with a bigger
+// club's. Keyed by the squashed name.
+const ABBR_FIXED = {
+  borussiamgladbach: "BMG",
+  borussiamonchengladbach: "BMG",
+  monchengladbach: "BMG",
+  // Pairs that sat in the SAME Transfer Trail career with the same letters.
+  spartaksubotica: "SUB",
+  chemnitzerfc: "CHM",
+  jongpsv: "JPS",
+  jongajax: "JAJ",
+};
+
 /**
  * A 3-letter badge for a club. Prefers the curated CLUB_ABBR code, then the
  * alias, then a derived form — never a single letter.
@@ -263,11 +276,25 @@ const squash = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[�
 export function clubAbbr(club, abbrMap = {}) {
   if (!club) return "--";
   const want = squash(club);
+  // Explicit letters win: some of these names are aliased to a parent club for
+  // COLOUR (Jong PSV wears PSV red), and would take the parent's letters too.
+  if (ABBR_FIXED[want]) return ABBR_FIXED[want];
   for (const [k, v] of Object.entries(abbrMap)) if (squash(k) === want) return v;
 
   const aliased = ALIASES[key(club)];
   if (aliased) {
     const a = squash(aliased);
+    for (const [k, v] of Object.entries(abbrMap)) if (squash(k) === a) return v;
+  }
+
+  // The other direction (2026-10-08). The packs key Dortmund as "Dortmund"
+  // (BVB) but a career names it "Borussia Dortmund", and the alias table only
+  // runs short -> formal, so the formal name fell through to the derived
+  // letters. In the simulator one Transfer Trail showed "Borussia M.gladbach"
+  // and "Borussia Dortmund" one above the other, both as "BOR".
+  for (const [alias, formal] of Object.entries(ALIASES)) {
+    if (squash(formal) !== want) continue;
+    const a = squash(alias);
     for (const [k, v] of Object.entries(abbrMap)) if (squash(k) === a) return v;
   }
 
