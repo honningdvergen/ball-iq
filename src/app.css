@@ -691,7 +691,12 @@ html.native-app ::-webkit-scrollbar{display:none;}
 .q-text{font-size:20px;font-weight:800;line-height:1.6;letter-spacing:-0.3px;color:var(--text);}
 .opts{display:flex;flex-direction:column;gap:9px;}
 .opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px;font-family:var(--font);font-size:15px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s,transform 0.1s;display:flex;align-items:center;gap:12px;width:100%;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+/* Hover is for a mouse only (2026-10-08). On a phone the hover state sticks to
+   whatever sits under the last tap, so the option that slid into that spot on
+   the next question looked brighter and nudged right before anyone touched it. */
+@media (hover: hover) and (pointer: fine){
 .opt:hover:not(:disabled):not([aria-disabled="true"]){border-color:var(--border2);background:var(--s2);transform:translateX(2px);}
+}
 /* ⚠️ THE MOST-TAPPED CONTROL IN THE APP HAD NO PRESS STATE, while 46 other
    elements in this stylesheet depress under a thumb. Scouting report #4:
    "Nobody writes 'missing :active state' in a review. They write 'feels a bit
