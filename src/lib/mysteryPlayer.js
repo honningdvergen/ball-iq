@@ -247,15 +247,26 @@ export function rankPool(pool, answer, careers = null) {
 // support. Anything else returns null and the caller prints nothing: the
 // reveal panel already runs on "thin and true beats rich and wrong".
 //
-// ⚠️ This does NOT correct the ranking fields. Changing `slot` or `position`
-// moves every guess's rank on that answer's day, which is an editorial call
-// (build-mystery-pool-v2.mjs files Messi and Maradona under FW on purpose).
+// ⚠️ THE RANKING FOLLOWS THE SAME LIST. A clue that says "midfielder" on a day
+// the ranking rewards defenders is confusing in a way a player cannot see
+// through, so scripts/apply-mystery-roles.mjs writes each checked role back to
+// the pool's `slot` and `position`, and audit-mystery-schedule.mjs fails the
+// build if they drift apart again (a pool rebuild would do it silently).
+// Where a source names two roles for a number ten ("attacking midfielder or
+// forward"), the checked role is the one in the line the pool already ranked
+// him in: build-mystery-pool-v2.mjs files Messi, Totti and Maradona under FW
+// on purpose, and the clue should not argue with it.
 const POSITION_LINE = {
   goalkeeper: 'GK',
   defender: 'DF', 'centre-back': 'DF', 'full-back': 'DF',
   midfielder: 'MF', 'defensive midfielder': 'MF', 'central midfielder': 'MF', 'attacking midfielder': 'MF',
   forward: 'FW', winger: 'FW', striker: 'FW', 'centre-forward': 'FW', 'second striker': 'FW',
 };
+
+/** GK / DF / MF / FW for a checked role. The one real wing half was a half-back. */
+export function roleLine(role) {
+  return role === 'wing half' ? 'MF' : POSITION_LINE[role] || null;
+}
 
 /**
  * @param {object} player  pool record

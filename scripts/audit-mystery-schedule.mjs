@@ -34,9 +34,14 @@
  *      source-checked line in src/data/mysteryRoles.json, never a pool edit:
  *      `slot` and `position` feed the ranking. A null there is allowed and
  *      means the sources disagree, so that day runs without a position clue.
+ *   7. Where a role has been checked, the pool RANKS the player in that line.
+ *      Otherwise the clue says "midfielder" on a day every defender guessed
+ *      is scored a band closer, which a player cannot see through (Alex,
+ *      2026-10-08: it should not be confusing to players). A pool rebuild
+ *      reverts the fields silently, so this is the check that notices.
  */
 import { readFileSync } from 'node:fs';
-import { hintPosition } from '../src/lib/mysteryPlayer.js';
+import { hintPosition, roleLine } from '../src/lib/mysteryPlayer.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const SCHEDULE = read('../src/data/mysterySchedule.json');
@@ -63,6 +68,11 @@ SCHEDULE.forEach((id, day) => {
   if (day >= NO_REPEAT_FROM && SCHEDULE.indexOf(id) < day) problems.push(`day ${day}: ${p.name} repeats day ${SCHEDULE.indexOf(id)}`);
   if (!hintPosition(p, ROLES) && ROLES[id] !== null) problems.push(`day ${day}: ${p.name} has no verified position (pool says ${p.slot} / "${p.position}"): add one to src/data/mysteryRoles.json`);
 });
+
+const offLine = Object.entries(ROLES).filter(([id, role]) => role && byId.get(id) && byId.get(id).slot !== roleLine(role));
+if (offLine.length) {
+  problems.push(`${offLine.length} answer(s) are ranked in a different line from their checked role: run node scripts/apply-mystery-roles.mjs`);
+}
 
 const rationPct = SCHEDULE.length ? rationCount / SCHEDULE.length : 0;
 if (rationPct > RATION_MAX) {

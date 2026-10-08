@@ -9,7 +9,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   similarity, rankPool, bandFor, matchGuess, normaliseName,
-  answerIdForDay, MYSTERY_ANCHOR_DAY, hintPosition, withArticle,
+  answerIdForDay, MYSTERY_ANCHOR_DAY, hintPosition, withArticle, roleLine,
 } from '../../src/lib/mysteryPlayer.js';
 import { clubLabel, suggestionSubtitle } from '../../src/lib/playerSearch.js';
 import roles from '../../src/data/mysteryRoles.json';
@@ -258,6 +258,18 @@ describe('the position a clue may print', () => {
       expect(ids.has(id), `${id} is not in the pool`).toBe(true);
       expect(role === null || SAYABLE.has(role), `${id}: "${role}"`).toBe(true);
     }
+  });
+
+  it('ranks every checked answer in the line its clue names', () => {
+    // The clue and the ranking read the same list. If they part, the clue says
+    // "midfielder" while defenders rank a whole band closer.
+    const byId = new Map(pool.map((p) => [p.id, p]));
+    const split = Object.entries(roles)
+      .filter(([id, role]) => role && byId.get(id).slot !== roleLine(role))
+      .map(([id, role]) => `${byId.get(id).name}: clue "${role}", ranked ${byId.get(id).slot}`);
+    expect(split).toEqual([]);
+    expect(roleLine('wing half')).toBe('MF');
+    expect(roleLine('full-back')).toBe('DF');
   });
 
   it('picks the article by sound', () => {
