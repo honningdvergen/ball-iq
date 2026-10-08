@@ -27,6 +27,36 @@ export const NAME_OVERRIDES = {
   // Vandalised label, live as of 2026-08-05. Real name: Jude Victor William
   // Bellingham. Real Madrid, England, b. 2003-06-29.
   Q66241169: 'Jude Bellingham',
+
+  // Found 2026-10-08 by comparing every pool name with the title of the
+  // player's Wikipedia article in six languages, which a label edit does not
+  // touch. Each English label below was live on Wikidata that day and every
+  // title agreed on the name restored here.
+  //
+  // Zero for the letter o. Portugal, b. 1986. A SCHEDULED answer: "Moutinho"
+  // resolved to nobody, so that day could not have been solved by typing it.
+  Q222151: 'João Moutinho',
+  // Label was "elpisha" (El Pisha is his nickname). Real Betis, b. 1981.
+  Q294204: 'Joaquín',
+  // Label was "nisola gaitani". Boca Juniors, Benfica, Atlético Madrid, b. 1988.
+  Q372605: 'Nicolás Gaitán',
+  // Label was "don panini": his overhead kick is the figure on the Panini
+  // sticker packets. Juventus, b. 1921.
+  Q1042372: 'Carlo Parola',
+  // Zero for the letter o. Ecuador centre-back, b. 1991.
+  Q22082660: 'Robert Arboleda',
+  // Label was "Cristian Gamboa", ANOTHER Costa Rica international who is in
+  // the pool under his own id (Q577471), so the name pointed at two rows.
+  // This row is the winger who played for F.C. Copenhagen, b. 1984.
+  Q361694: 'Christian Bolaños',
+  // Label was "Alfredito Olivas", a Mexican singer. Toluca goalkeeper, b. 1982.
+  Q2118086: 'Alfredo Talavera',
+  // Label was "Zergio Roquet". Uruguay goalkeeper, b. 1993.
+  Q17086753: 'Sergio Rochet',
+  // Label was "Kehriba nene". Egypt forward, Zamalek and Al Ahly, b. 1994.
+  Q10557534: 'Mahmoud Kahraba',
+  // Label was "Miguel Gordillo". Cameroon forward from Barcelona B, b. 1995.
+  Q17490: 'Jean Marie Dongou',
 };
 
 // Players Wikidata places in a squad they have never been part of, or who are
