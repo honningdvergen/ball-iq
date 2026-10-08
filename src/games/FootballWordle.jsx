@@ -546,8 +546,12 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           footle-keyboard-geometry gate requires — that centring is what stops
           slack pooling as a single hole (233px below ENTER, once). */}
       <div className={`wd-grid${state.status !== "playing" ? " wd-grid--ended" : ""}`} style={{ "--wd-cols": answer.length }}>
-        {showLegend && (
-          <div className="wd-legend" aria-hidden="true">
+        {/* The key stays in the layout for the whole game and only goes
+            invisible after the first guess (2026-10-08). It used to be removed,
+            and because the grid is centred the whole board hopped up about
+            30px the moment the first row landed (seen in the simulator). */}
+        {state.status === "playing" && (
+          <div className="wd-legend" aria-hidden="true" style={showLegend ? undefined : { visibility: "hidden" }}>
             <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
             <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
           </div>
