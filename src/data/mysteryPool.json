@@ -5572,20 +5572,6 @@
     "dob": "1960-04-13"
   },
   {
-    "id": "Q44473",
-    "name": "O. J. Simpson",
-    "fame": 61,
-    "born": 1947,
-    "nat": "United States",
-    "slot": "DF",
-    "position": "running back",
-    "club": "Buffalo Bills",
-    "clubId": "Q221626",
-    "country": "United States",
-    "clubCount": 3,
-    "dob": "1947-07-09"
-  },
-  {
     "id": "Q215522",
     "name": "Guillermo Ochoa",
     "fame": 61,
@@ -69793,20 +69779,6 @@
     "country": "Greece",
     "clubCount": 5,
     "dob": "1986-02-12"
-  },
-  {
-    "id": "Q3499591",
-    "name": "Nora Mørk",
-    "fame": 32,
-    "born": 1991,
-    "nat": "Norway",
-    "slot": "DF",
-    "position": "back",
-    "club": "Larvik HK",
-    "clubId": "Q1092908",
-    "country": "Norway",
-    "clubCount": 5,
-    "dob": "1991-04-05"
   },
   {
     "id": "Q3559484",

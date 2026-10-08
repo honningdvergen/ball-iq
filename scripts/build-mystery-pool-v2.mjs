@@ -44,6 +44,16 @@ async function sparql(query, label) {
 const CORE = JSON.parse(readFileSync('scripts/_mystery-core.json', 'utf8'));
 const CAREERS = JSON.parse(readFileSync('scripts/_mystery-careers.json', 'utf8'));
 
+// ⚠️ PEOPLE WHO NEVER PLAYED THIS SPORT, REMOVED BY ID. The career filter below
+// stops Camus (no clubs) but not someone whose clubs are real teams in another
+// sport: O. J. Simpson has three, and "running back" passes SLOT() on \bback\b,
+// so he was a guessable DF at the Buffalo Bills. Wikidata still tags him an
+// association football player, so the core fetch brings him back every time.
+// The ids and the evidence live in mysteryExclusions.json (`removedFromPool`);
+// audit-mystery-pool.mjs fails the build if one of them is in the shipped pool.
+const NOT_IN_POOL = new Set(Object.keys(
+  JSON.parse(readFileSync('src/data/mysteryExclusions.json', 'utf8')).removedFromPool || {}));
+
 // P413 labels are granular ("centre-back", "attacking midfielder", "sweeper").
 // The game compares BOTH: `slot` sets the band, `position` refines within it.
 const SLOT = (poss) => {
@@ -213,7 +223,7 @@ if (leaked.size) {
   console.log(`   after sweep: ${still.size} national-looking team(s) remain`);
 }
 
-const withCareer = CORE.filter((p) => (CAREERS[p.id] || []).length > 0);
+const withCareer = CORE.filter((p) => !NOT_IN_POOL.has(p.id) && (CAREERS[p.id] || []).length > 0);
 const clubsNeeded = [...new Set(withCareer.map((p) => latestClub(CAREERS[p.id]).id))];
 console.log(`players with a career: ${withCareer.length} · distinct latest clubs: ${clubsNeeded.length}`);
 

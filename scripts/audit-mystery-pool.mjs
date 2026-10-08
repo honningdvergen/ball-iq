@@ -40,7 +40,8 @@ const coreRaw = JSON.parse(readFileSync('scripts/_mystery-core.json', 'utf8'));
 const core = Array.isArray(coreRaw) ? coreRaw : (coreRaw.players || Object.values(coreRaw).find(Array.isArray));
 const excl = existsSync('src/data/mysteryExclusions.json')
   ? JSON.parse(readFileSync('src/data/mysteryExclusions.json', 'utf8')) : {};
-const excluded = new Set([...(excl.managers || []), ...(excl.nonPlayers || [])]);
+const excluded = new Set([...(excl.managers || []), ...(excl.notFootballers || [])]);
+const removed = excl.removedFromPool || {};
 
 // ── 1. nobody famous may go missing ─────────────────────────────────────────
 const inPool = new Set(pool.map((p) => p.id));
@@ -58,7 +59,7 @@ const careers = existsSync('scripts/_mystery-careers.json')
 const clubCount = (id) => (careers[id] || []).length;
 
 const missing = core
-  .filter((p) => p.fame >= FAME_FLOOR && !inPool.has(p.id) && !excluded.has(p.name))
+  .filter((p) => p.fame >= FAME_FLOOR && !inPool.has(p.id) && !excluded.has(p.name) && !(p.id in removed))
   .filter((p) => (p.poss || []).length > 0)
   .filter((p) => clubCount(p.id) >= 2);
 
@@ -142,7 +143,46 @@ if (noDob > pool.length * 0.05) {
   ok(`dob present on ${pool.length - noDob}/${pool.length} players (age tie-breaker live)`);
 }
 
-// ── 5. report the residual so it stays visible rather than forgotten ────────
+// ── 5. nobody from another sport may be guessable ───────────────────────────
+/* ⚠️ THE POOL IS WHAT A PLAYER SEARCHES, NOT ONLY WHAT CAN BE THE ANSWER.
+   mysteryExclusions.json kept O. J. Simpson off the schedule from 2026-08-14,
+   and until 2026-10-08 typing "Simpson" still offered him: a defender at the
+   Buffalo Bills. Nora Mørk, a handball back, sat beside him. The career filter
+   cannot see either, because their clubs are real teams, just not in this
+   sport, so they are removed by Wikidata id and this checks all three shipped
+   files, since a rebuild from the cached core fetch would bring them back. */
+const answers = JSON.parse(readFileSync('src/data/mysteryAnswers.json', 'utf8'));
+const shippedCareers = JSON.parse(readFileSync('src/data/mysteryCareers.json', 'utf8')).p || {};
+const back = Object.keys(removed).filter((id) => inPool.has(id) || answers.includes(id) || id in shippedCareers);
+if (back.length) {
+  fail(`${back.length} removed non-footballer(s) are back in the shipped Mystery data:`);
+  back.forEach((id) => console.error(`     ${id}  ${removed[id]}`));
+  console.error('   → build-mystery-pool-v2.mjs filters these ids; a hand edit or an older build re-added them.');
+} else {
+  ok(`none of the ${Object.keys(removed).length} removed non-footballers is in the pool, answers or careers`);
+}
+/* The words in `position` are Wikidata's, and two of the ones that got through
+   belong to other sports ("running back", and a bare "back", which is handball).
+   A word this list has not seen fails the build until someone has looked at who
+   carries it; that look is the whole point, so do not add a word unread. */
+const FOOTBALL_POSITIONS = new Set([
+  'goalkeeper', 'defender', 'centre-back', 'full-back', 'left back', 'right-back', 'wing-back',
+  'sweeper', 'stopper', 'centerhalf', 'midfielder', 'defensive midfielder', 'central midfielder',
+  'attacking midfielder', 'left midfielder', 'wide midfielder', 'playmaker', 'wing half', 'winger',
+  'left winger', 'right winger', 'inverted winger', 'inside forward', 'second striker', 'forward',
+  'centre-forward', 'attacker', 'coach',
+]);
+const oddPosition = pool.filter((p) => !FOOTBALL_POSITIONS.has(p.position));
+if (oddPosition.length) {
+  fail(`${oddPosition.length} pool player(s) carry a position this audit has not seen in football:`);
+  oddPosition.slice(0, 15).forEach((p) => console.error(`     ${p.id}  ${p.name}  "${p.position}"  ${p.club}`));
+  console.error('   → check the person is an association footballer. If not, add the id to');
+  console.error('     removedFromPool in src/data/mysteryExclusions.json; if so, add the word above.');
+} else {
+  ok('every position in the pool is a football position');
+}
+
+// ── 6. report the residual so it stays visible rather than forgotten ────────
 const uk = pool.filter((p) => p.nat === 'United Kingdom').length;
 if (uk) console.log(`ℹ️  ${uk} players still read "United Kingdom" — uncapped, so no caps to derive from. Known residual.`);
 

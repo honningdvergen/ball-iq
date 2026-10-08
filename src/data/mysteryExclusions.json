@@ -54,5 +54,10 @@
     "Julio Iglesias",
     "O. J. Simpson"
   ],
-  "_notFootballers_note": "O. J. Simpson was in the CURATED ANSWER SET at fame 61 with club 'Buffalo Bills'. American football. He would have been served as a daily football puzzle. Not an editorial judgement — a data error, and the reason this file also carries a hard sport check. Julio Iglesias was caught the same way, during the manager sweep: a Real Madrid youth goalkeeper before a car crash ended it, in the answer set at fame level with club 'Real Madrid Club de Fútbol'. Famous-for-something-else is its own failure mode, separate from managers, and neither fame nor club can detect it."
+  "_notFootballers_note": "O. J. Simpson was in the CURATED ANSWER SET at fame 61 with club 'Buffalo Bills'. American football. He would have been served as a daily football puzzle. Not an editorial judgement — a data error, and the reason this file also carries a hard sport check. Julio Iglesias was caught the same way, during the manager sweep: a Real Madrid youth goalkeeper before a car crash ended it, in the answer set at fame level with club 'Real Madrid Club de Fútbol'. Famous-for-something-else is its own failure mode, separate from managers, and neither fame nor club can detect it.",
+  "removedFromPool": {
+    "Q44473": "O. J. Simpson. American football: USC Trojans, Buffalo Bills, San Francisco 49ers. Never played association football; Wikidata tags him an association football player anyway. Position on the row was \"running back\".",
+    "Q3499591": "Nora Mørk. Handball: Bækkelaget, Larvik HK, Győri ETO, Norway. Position on the row was \"back\", a handball back, which the slot mapper read as a defender."
+  },
+  "_removedFromPool_note": "Keyed by Wikidata id, because a name can be shared with a real footballer. The lists above only stop someone being scheduled as the ANSWER; everyone in mysteryPool.json can still be typed and offered as a guess. These people are not association footballers at all, so they are out of the pool, the answer set and the shipped careers (2026-10-08). build-mystery-pool-v2.mjs filters the ids and audit-mystery-pool.mjs fails the build if one comes back. A real footballer who is merely famous for something else (Julio Iglesias kept goal in Real Madrid's youth sides) does NOT belong here: he stays guessable and is kept off the schedule by notFootballers."
 }
