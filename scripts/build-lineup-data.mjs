@@ -133,6 +133,13 @@ for (const p of CORE) {
 const BORN_FROM = 1980;
 for (const [id, p] of [...players]) if (p.born && p.born < BORN_FROM) players.delete(id);
 
+// People from another sport whom Wikidata tags as footballers (Nora Mørk, a
+// handball back, was pickable here as a defender at Larvik HK). Same id list
+// the Mystery pool build filters on; it has to be applied here as well because
+// the core remainder above would re-add anyone the pool drops.
+for (const id of Object.keys(JSON.parse(readFileSync('src/data/mysteryExclusions.json', 'utf8')).removedFromPool || {}))
+  players.delete(id);
+
 // Active = in a current squad, or holding an open club spell begun 2015+.
 // ⚠️ Known limit: a player with no P54 at all (Yoro) cannot be proven active
 // and sorts with the retired until the squad refresh picks him up. Search
