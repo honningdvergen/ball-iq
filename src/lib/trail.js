@@ -14,6 +14,7 @@
 // as a wrong answer key). Editorial rules are LOCKED in the spec: loans
 // included + marked, youth excluded, return spells = separate rungs, max 6.
 import { dateToYMD } from "./date.js";
+import { foldLetters, foldDigraphs } from "./letterFold.js";
 
 export const TRAIL_MAX_ATTEMPTS = 5;
 
@@ -1455,31 +1456,23 @@ export const TRAIL_POSITIONS = {
 //
 // Note what is NOT here: é č ö ü å ñ ş all DO decompose, so the mark-strip below
 // already handles them. Only the non-decomposing ones need spelling out.
-const LETTER_FOLD = {
-  ø: "o", æ: "ae", œ: "oe", ß: "ss", ł: "l", đ: "d", ð: "d", þ: "th",
-  ı: "i", ŧ: "t", ħ: "h", ŋ: "n", ĸ: "k",
-};
+// The table itself lives in lib/letterFold.js since 2026-10-09, so the name
+// search folds the same letters the grader does.
 
 /** Fold a typed guess to its comparable form: accent-free, lowercase, a-z only. */
 export function normaliseGuess(s) {
-  return String(s || "")
-    .toLowerCase()
-    .replace(/[øæœßłđðþıŧħŋĸ]/g, (c) => LETTER_FOLD[c] || c)
+  return foldLetters(s)
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z]/g, "");
 }
 
-// German and Nordic spelling admits TWO correct plain-ascii forms: Müller is
-// written "Muller" or "Mueller", Ødegaard as "Odegaard" or "Oedegaard", and
-// both are things a real person types. One fold cannot satisfy both, so a name
-// folds to a SET and a guess matches if the sets overlap.
-const DIGRAPH_FOLD = { "ü": "ue", "ö": "oe", "ä": "ae", "ø": "oe", "å": "aa" };
+// German and Nordic spelling admits TWO correct plain-ascii forms (Muller or
+// Mueller, Odegaard or Oedegaard), so a name folds to a SET and a guess matches
+// if the sets overlap.
 
 /** Every plain-ascii spelling this string could reasonably be typed as. */
 export function normaliseVariants(s) {
-  const raw = String(s || "").toLowerCase();
-  const digraph = raw.replace(/[üöäøå]/g, (c) => DIGRAPH_FOLD[c] || c);
-  return [...new Set([normaliseGuess(raw), normaliseGuess(digraph)].filter(Boolean))];
+  return [...new Set([normaliseGuess(s), normaliseGuess(foldDigraphs(s))].filter(Boolean))];
 }
 
 /** Every string that counts as naming this player. */
