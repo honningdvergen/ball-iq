@@ -242,6 +242,7 @@
       "Bash(~/ball-iq-release/sim-probe.sh *)",
       "Bash(~/ball-iq-release/sim-mode.sh *)",
       "Bash(~/ball-iq-release/sim-rec.sh *)",
+      "Bash(~/ball-iq-release/sim-web-swap.sh)",
       "Bash(xcrun simctl *)",
       "Bash(ffmpeg *)",
       "Bash(ffprobe *)"
