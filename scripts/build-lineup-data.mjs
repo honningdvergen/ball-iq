@@ -55,6 +55,8 @@ const POOL = JSON.parse(readFileSync('src/data/mysteryPool.json', 'utf8'));
 const CORE = JSON.parse(readFileSync('scripts/_mystery-core.json', 'utf8'));
 const PHOTOS = JSON.parse(readFileSync('src/data/mysteryPhotos.json', 'utf8'));
 const P18 = JSON.parse(readFileSync('scripts/_mystery-p18.json', 'utf8'));
+let DEPARTED = [];
+try { DEPARTED = JSON.parse(readFileSync('scripts/_squads-departed.json', 'utf8')); } catch {}
 const CAREERS = JSON.parse(readFileSync('scripts/_mystery-careers.json', 'utf8'));
 let FACES = {};
 try { FACES = JSON.parse(readFileSync('src/data/playerFaces.json', 'utf8')); } catch {}
@@ -94,7 +96,7 @@ function slotOf(poss) {
 
 // ── assemble the population ────────────────────────────────────────────────
 const players = new Map();
-const src = { squads: 0, pool: 0, core: 0 };
+const src = { squads: 0, pool: 0, departed: 0, core: 0 };
 
 // Squads first: truest current club, most specific position, and the reserves
 // and academy players the fame pool floors out of.
@@ -113,6 +115,18 @@ for (const p of POOL) {
   players.set(p.id, { id: p.id, name: p.name, slot: p.slot || null,
     club: tidyClub(p.club), born: p.born || null,
     nat: p.nat || p.country || null, squad: 0 });
+}
+
+// Players who have left a squad since the file was first built. They are real
+// footballers at another club, and before the 2026-10-09 refresh 545 of them
+// were searchable ONLY through the stale squad row that put them at the wrong
+// one. apply-squads-wiki.mjs keeps them here with the club their own page
+// names now; null when it names none.
+for (const p of DEPARTED) {
+  if (players.has(p.id)) continue;
+  src.departed++;
+  players.set(p.id, { id: p.id, name: p.name, slot: p.slot || null,
+    club: p.now ? tidyClub(p.now) : null, born: p.born || null, nat: p.nat || null, squad: 0 });
 }
 
 // Core remainder: the players Mystery's gates reject — no career recorded
@@ -275,7 +289,7 @@ const active = rows.filter((r) => r.v).length;
 const noDob = rows.filter((r) => !r.b).length;
 const repicked = rows.filter((r) => REPICK[r.i] && REPICK[r.i].file).length;
 console.log(`wrote ${OUT} — ${rows.length} players, ${(bytes / 1024).toFixed(0)}kB`);
-console.log(`  sources: squads ${src.squads} · mystery pool +${src.pool} · core-only +${src.core} (before the born cut)`);
+console.log(`  sources: squads ${src.squads} · mystery pool +${src.pool} · departed +${src.departed} · core-only +${src.core} (before the born cut)`);
 console.log(`  born ${BORN_FROM}+ · kept ${noDob} with no recorded birth year`);
 console.log(`  active ${active} · retired/unrecorded ${rows.length - active} (selectable, ranked below)`);
 console.log(`  with a photo ${withPhoto} · initials cards ${rows.length - withPhoto} · face-cropped ${withCrop} · re-picked ${repicked}`);
