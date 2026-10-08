@@ -21,7 +21,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 // on the same Daily 7. See tests/unit/quiz.test.js.
 import { seededShuffle, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
-import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, UserRoundSearch, CircleX, CircleHelp, Pencil, Moon, BrickWall, Flag, Handshake, Smartphone } from 'lucide-react';
+import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, ListOrdered, UserRoundSearch, CircleX, CircleHelp, Pencil, Moon, BrickWall, Flag, Handshake, Smartphone } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, mpLookupRoom, useMpRetryStatus } from './multiplayerRpc.js';
 import { useModalA11y, closeTopModal } from './useModalA11y.js';
@@ -46,6 +46,7 @@ import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drai
 import { buildClubRoutes } from './lib/clubFaceRoute.js';
 import { liveStreak, localDayNow, shieldsAvailable } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
+import { isTop10Live, loadTop10Day } from './lib/top10.js';
 import { DailyDone } from './components/DailyDone.jsx';
 import { CountUp } from './components/CountUp.jsx';
 import { ResultsCloseBtn } from './components/ResultsCloseBtn.jsx';
@@ -4648,8 +4649,12 @@ function AppInner() {
         const m = JSON.parse(localStorage.getItem(`biq_mystery_${ymd}`) || "null");
         mysteryDone = !!(m && (m.won || m.gaveUp));
       } catch {}
-      const done = (dailyDone ? 1 : 0) + (footleDone ? 1 : 0) + (trailDone ? 1 : 0) + (mysteryDone ? 1 : 0);
-      syncWidget({ date: ymd, done, total: 4, streak: loginStreak || 0 });
+      // Top 10 joins the count only on a day it has a list, so the widget
+      // never shows a fifth puzzle that cannot be played.
+      const top10Live = isTop10Live();
+      const top10Done = top10Live && loadTop10Day(ymd)?.status === "done";
+      const done = (dailyDone ? 1 : 0) + (footleDone ? 1 : 0) + (trailDone ? 1 : 0) + (mysteryDone ? 1 : 0) + (top10Done ? 1 : 0);
+      syncWidget({ date: ymd, done, total: 4 + (top10Live ? 1 : 0), streak: loginStreak || 0 });
     } catch { /* widget is decoration */ }
   }, [dailyDone, loginStreak]);
   useEffect(() => { syncDailyWidget(); }, [syncDailyWidget]);
@@ -6174,6 +6179,11 @@ function AppInner() {
       }
     } catch {}
     try {
+      if (isTop10Live() && loadTop10Day(dateToYMD(new Date()))?.status !== "done") {
+        nextUp.push({ key: "top10", name: "Today's Top 10", icon: <ListOrdered size={18} strokeWidth={2.2} />, onTap: () => setScreen("top10") });
+      }
+    } catch {}
+    try {
       if (MYSTERY_ENABLED) {
         const m = JSON.parse(localStorage.getItem(`biq_mystery_${dateToYMD(new Date())}`) || "null");
         if (!(m && (m.won || m.gaveUp))) nextUp.push({ key: "mystery", name: "Today's Mystery Player", icon: <UserRoundSearch size={18} strokeWidth={2.2} />, onTap: () => setScreen("mystery") });
@@ -6409,7 +6419,10 @@ function AppInner() {
       // sound, Trail/Mystery's hardCorrect pulse — then the chord arrives as
       // the closing beat instead of clashing with them.
       const dailyGame = e?.detail?.game;
-      if ((dailyGame === 'footle' || dailyGame === 'trail' || dailyGame === 'mystery') && e.detail.won === true) {
+      // Top 10 has no "solved": a round that found at least half the list is
+      // the good day there (its dispatch says so in `positive`).
+      const sealed = dailyGame === 'top10' ? e.detail.positive === true : e.detail.won === true;
+      if ((dailyGame === 'footle' || dailyGame === 'trail' || dailyGame === 'mystery' || dailyGame === 'top10') && sealed) {
         celebrationTimeoutsRef.current.push(setTimeout(() => { haptic('heavy'); playSound('daily_complete'); }, 600));
       }
       // ⭐ The 5-star ask, re-homed here from inside the Footle screen.
@@ -6535,6 +6548,24 @@ function AppInner() {
             score: mysteryWon ? tries : 0,
             correct_answers: mysteryWon ? 1 : 0,
             total_questions: 1,
+          });
+        }
+      }
+      // Top 10. Every finish is a completion (it ticked the streak above, like
+      // a lost Footle), and the XP follows the score: four a name, fifteen more
+      // for all ten. The scores row has a quiz round's shape, names found out of
+      // ten, so "what do people play, and how well" reads it without a special
+      // case. Wired on the day the mode was built, per the Trail's lesson.
+      if (e?.detail?.game === 'top10') {
+        const found = Math.max(0, Math.min(10, e.detail.score || 0));
+        awardXp(found * 4 + (e.detail.won === true ? 15 : 0));
+        recordPlay(e.detail.positive === true);
+        if (user?.id) {
+          saveScore(user?.id, {
+            game_mode: 'top10',
+            score: found,
+            correct_answers: found,
+            total_questions: 10,
           });
         }
       }

@@ -24,10 +24,11 @@ const NOTIF = readFileSync(fileURLToPath(new URL('../../src/hooks/useLocalNotifi
  */
 describe('every daily mode counts as a game played', () => {
   it('pairs recordPlay with awardXp in every mode that finishes a game', () => {
-    // Four dailies — footle, trail, mystery, stadiums — plus online
-    // multiplayer, which was the fifth branch to be missing it.
+    // Five dailies — footle, trail, mystery, top 10, stadiums — plus online
+    // multiplayer, which was the fifth branch to be missing it. Top 10 was
+    // wired on the day it was built (2026-10-09).
     const calls = APP.match(/recordPlay\(/g) || [];
-    expect(calls.length).toBe(5);
+    expect(calls.length).toBe(6);
   });
 
   it('online multiplayer records a play, without inventing correct answers', () => {
