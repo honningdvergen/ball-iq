@@ -372,6 +372,57 @@ which are scheduled on the server.
       (`19f4ba9e`); the audit folder is an additional directory in the local
       settings. An every-site rule exists and is Alex's call, not an agent's.
 
+### 0g. 9 Oct, 00:30 to 01:00: Alex's rulings on the review page, and the first simulator pass
+
+Rulings (his words are in memory `project_top10_draft_icon_round_2026_10_09`):
+
+- **The release is 1.8.0**, not 1.7.6. Rename everywhere, including the App
+  Store Connect version record that holds the store text entered on 8 Oct,
+  and rewrite What's New for a release this size.
+- **Top 10 replaces Mystery Player as the fourth daily.** Mystery moves to
+  "More modes", still playable, history kept.
+- **A Top 10 list is ten different things ranked by a number.** "The last ten
+  different winners" is not that: he read the Champions League list, saw
+  2025-26 followed by 2023-24, and took the gap for a mistake. Those twenty
+  lists stay out of the daily; they served to build and test the game.
+- **Icons: all rejected.** New round from new ideas, not the amber IQ family,
+  with an independent critic; he wants something graded near ten.
+- **Jerseys instead of letters: yes**, if they are unmistakable. More detail.
+- **The `daily_results` migration: yes.** Applied and verified the same night
+  (`6f07c976`, v2_6).
+- **TestFlight:** upload the build that carries Top 10 once it is finished and
+  checked in the simulator, and tell him. Not a go-ahead to submit for review
+  or to upload to Google Play.
+- **Draft game:** he wants it, done exceptionally well. It is the data project
+  described in 0f.
+
+- [x] **First simulator pass of Top 10** (iPhone 17, iOS 27, in the Claude
+      panel with Alex watching). Three faults found and fixed (`04408003`): the
+      fifth board row sat under the keyboard, a tapped suggestion dropped the
+      keyboard, "liv" offered Livorno above Liverpool. Rechecked in the
+      simulator after the fix.
+- [x] `~/ball-iq-release/sim-web-swap.sh`: puts new web code into the app
+      already installed in the booted simulator with no Xcode build. Use it
+      for every web-only change from now on; `sim-build-wip.sh` only when the
+      native shell changes. Taps in the simulator are sometimes dropped on
+      this Mac while the panel is streaming: tap, wait, look, tap again.
+- [ ] **Next, in this order.**
+      1. Ranked lists for Top 10: a generated and fact-checked batch (all-time
+         scorers and appearances by league and club, record transfers,
+         stadium capacities, caps and international goals). Each with the
+         number beside the rank, a source, `checked` and `until`.
+      2. Mystery Player out of the daily set and into More modes; Top 10 in
+         its place on Home, in History, in the next-up rows and the widget.
+      3. The Top 10 web page and island, nav links, sitemap.
+      4. Version 1.8.0 everywhere; schedule and launch day for Top 10; a full
+         simulator walk; cut the build; TestFlight; tell Alex.
+      5. Jerseys, round two, then onto Transfer Trail.
+      6. Icon, round two.
+      7. The draft dataset, then the game.
+- [ ] The club pool for the guess box (578 names) needs one read-through for
+      the same club under two names before a clubs list is ever scheduled;
+      one pair was found by accident tonight.
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
