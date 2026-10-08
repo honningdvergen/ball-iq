@@ -1,5 +1,14 @@
 // Snapshot current club squads from Wikidata -> src/data/squads.json
 //
+// ⚠️ NO LONGER THE WAY squads.json IS REFRESHED (2026-10-08). Wikidata's open
+// spells are mostly spells nobody closed: checked against Wikipedia, 820 of the
+// 1,541 players this wrote had left the club. The refresh is now
+//   node scripts/fetch-squads-wiki.mjs && node scripts/build-squads.mjs --write
+// which takes the first team from Wikipedia and keeps a reserve or academy row
+// from the existing file only where Wikipedia still shows the player there.
+// Running THIS file overwrites squads.json with the stale picture again; do it
+// only to look for academy players, into a copy, never into the shipped file.
+//
 // This is the foundation for BOTH "Mystery Player" and the lineup builder.
 // Neither is blocked on an algorithm; both were blocked on this data.
 //

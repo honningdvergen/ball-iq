@@ -1,0 +1,6354 @@
+[
+ {
+  "id": "Q20807778",
+  "name": "Aaron Hayden",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Hednesford Town F.C."
+ },
+ {
+  "id": "Q27967807",
+  "name": "Aaron Ramsdale",
+  "slot": "GK",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": "Southampton F.C."
+ },
+ {
+  "id": "Q2821368",
+  "name": "Abdoulay Diaby",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1991,
+  "club": "Al Batin FC"
+ },
+ {
+  "id": "Q317389",
+  "name": "Abdul Rahman Baba",
+  "slot": "DF",
+  "nat": "Ghana",
+  "born": 1994,
+  "club": "PAOK FC"
+ },
+ {
+  "id": "Q5654878",
+  "name": "Abel Casquete",
+  "slot": "MF",
+  "nat": "Ecuador",
+  "born": 1997,
+  "club": "FC Cajamarca"
+ },
+ {
+  "id": "Q117288501",
+  "name": "Adam Aznou",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 2006,
+  "club": "Málaga"
+ },
+ {
+  "id": "Q84361156",
+  "name": "Adam Lewis",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1999,
+  "club": null
+ },
+ {
+  "id": "Q4679961",
+  "name": "Adam Webster",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q4680083",
+  "name": "Adama Diomande",
+  "slot": "FW",
+  "nat": "Norway",
+  "born": 1990,
+  "club": "Forte Virtus FC"
+ },
+ {
+  "id": "Q18198954",
+  "name": "Adama Traoré",
+  "slot": "MF",
+  "nat": "Mali",
+  "born": 1995,
+  "club": "Amed S.F.K."
+ },
+ {
+  "id": "Q14558450",
+  "name": "Adnan Januzaj",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q58174944",
+  "name": "Adrià Pedrosa",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1998,
+  "club": "Rayo Vallecano"
+ },
+ {
+  "id": "Q56705037",
+  "name": "Adrian Fein",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1999,
+  "club": "SSV Jahn Regensburg"
+ },
+ {
+  "id": "Q21587485",
+  "name": "Ahmet Arslan",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q21171693",
+  "name": "Aidan Nesbitt",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q99438616",
+  "name": "Aïmen Moueffek",
+  "slot": "DF",
+  "nat": "France",
+  "born": 2001,
+  "club": "Cádiz CF"
+ },
+ {
+  "id": "Q121364134",
+  "name": "Aingeru Olabarrieta",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 2005,
+  "club": "CD Eldense"
+ },
+ {
+  "id": "Q415373",
+  "name": "Akaki Gogia",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q16727312",
+  "name": "Al-Musrati",
+  "slot": "MF",
+  "nat": "Libya",
+  "born": 1996,
+  "club": "Al Ahli SC (Tripoli)"
+ },
+ {
+  "id": "Q923402",
+  "name": "Alan Patrick",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": "SC Internacional"
+ },
+ {
+  "id": "Q3329570",
+  "name": "Alan Ruiz",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q27691",
+  "name": "Alberto Bueno",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1988,
+  "club": "CD Leganés"
+ },
+ {
+  "id": "Q18637410",
+  "name": "Alberto Grassi",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q20666609",
+  "name": "Alec Georgen",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1998,
+  "club": "FC Lorient"
+ },
+ {
+  "id": "Q666748",
+  "name": "Aleksandar Dragović",
+  "slot": "MF",
+  "nat": "Austria",
+  "born": 1991,
+  "club": "FK Austria Wien"
+ },
+ {
+  "id": "Q108616460",
+  "name": "Alessandro Zanoli",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 2000,
+  "club": "Udinese"
+ },
+ {
+  "id": "Q795017",
+  "name": "Alessio Romagnoli",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 1995,
+  "club": "Al Sadd SC"
+ },
+ {
+  "id": "Q19559931",
+  "name": "Álex Alegría",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 1992,
+  "club": "CD Badajoz"
+ },
+ {
+  "id": "Q75179071",
+  "name": "Alex Cochrane",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 2000,
+  "club": "Birmingham City F.C."
+ },
+ {
+  "id": "Q21012270",
+  "name": "Alex Gilliead",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q19561048",
+  "name": "Alex Kiwomya",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": "Emley A.F.C."
+ },
+ {
+  "id": "Q887695",
+  "name": "Alex McCarthy",
+  "slot": "GK",
+  "nat": "United Kingdom",
+  "born": 1989,
+  "club": "Leicester City F.C."
+ },
+ {
+  "id": "Q15401973",
+  "name": "Alex Muralha",
+  "slot": "GK",
+  "nat": "Brazil",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q120868357",
+  "name": "Alex Murphy",
+  "slot": "DF",
+  "nat": "Ireland",
+  "born": 2004,
+  "club": "1. FC Kaiserslautern"
+ },
+ {
+  "id": "Q21061718",
+  "name": "Alex Pike",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q515938",
+  "name": "Alex Teixeira",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1990,
+  "club": "Panserraikos F.C."
+ },
+ {
+  "id": "Q372709",
+  "name": "Alexander Büttner",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1989,
+  "club": "SBV Vitesse"
+ },
+ {
+  "id": "Q180553",
+  "name": "Alexis Sánchez",
+  "slot": "MF",
+  "nat": "Chile",
+  "born": 1988,
+  "club": "CF Montréal"
+ },
+ {
+  "id": "Q136289790",
+  "name": "Ali Pağda",
+  "slot": null,
+  "nat": "Turkey",
+  "born": 2008,
+  "club": null
+ },
+ {
+  "id": "Q2470512",
+  "name": "Allan",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": "Botafogo FR"
+ },
+ {
+  "id": "Q57415806",
+  "name": "Altay Bayındır",
+  "slot": "GK",
+  "nat": "Turkey",
+  "born": 1998,
+  "club": "RC Celta de Vigo"
+ },
+ {
+  "id": "Q20859426",
+  "name": "Amadou Diawara",
+  "slot": "MF",
+  "nat": "Guinea",
+  "born": 1997,
+  "club": "CD Leganés"
+ },
+ {
+  "id": "Q16466011",
+  "name": "Amer Gojak",
+  "slot": "MF",
+  "nat": "Bosnia and Herzegovina",
+  "born": 1997,
+  "club": "HNK Rijeka"
+ },
+ {
+  "id": "Q471403",
+  "name": "Amin Younes",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q22833412",
+  "name": "Amir Hadžiahmetović",
+  "slot": "MF",
+  "nat": "Bosnia and Herzegovina",
+  "born": 1997,
+  "club": "PFC Ludogorets Razgrad"
+ },
+ {
+  "id": "Q65131685",
+  "name": "Anass Salah-Eddine",
+  "slot": "DF",
+  "nat": "Morocco",
+  "born": 2002,
+  "club": "Panathinaikos F.C."
+ },
+ {
+  "id": "Q40958022",
+  "name": "Andoni Gorosabel",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1996,
+  "club": "RCD Espanyol"
+ },
+ {
+  "id": "Q23887764",
+  "name": "Andre Dozzell",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1999,
+  "club": "D.C. United"
+ },
+ {
+  "id": "Q518525",
+  "name": "André Felipe",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q4754788",
+  "name": "Andre Gray",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q23766069",
+  "name": "Andre Green",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": "Kerala Blasters FC"
+ },
+ {
+  "id": "Q1408340",
+  "name": "Andrea Bertolacci",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q22673201",
+  "name": "Andrea Favilli",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1997,
+  "club": "US Avellino 1912"
+ },
+ {
+  "id": "Q22162741",
+  "name": "Andrea Pinton",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q20752754",
+  "name": "Andreas Hirzel",
+  "slot": "GK",
+  "nat": "Switzerland",
+  "born": 1993,
+  "club": "FC Aarau"
+ },
+ {
+  "id": "Q20831432",
+  "name": "Andrej Modić",
+  "slot": "MF",
+  "nat": "Bosnia and Herzegovina",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q123186203",
+  "name": "Andrés Cuenca",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 2007,
+  "club": "Sporting de Gijón"
+ },
+ {
+  "id": "Q4756777",
+  "name": "Andrew Dawber",
+  "slot": "GK",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q96249912",
+  "name": "Andrija Radulović",
+  "slot": "MF",
+  "nat": null,
+  "born": 2002,
+  "club": "TSV Hartberg"
+ },
+ {
+  "id": "Q59064",
+  "name": "Andros Townsend",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": "PT Prachuap F.C."
+ },
+ {
+  "id": "Q4760757",
+  "name": "Andy Halliday",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q3616560",
+  "name": "Andy Rose",
+  "slot": "MF",
+  "nat": "Australia",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q1112164",
+  "name": "Ángelo Henríquez",
+  "slot": "FW",
+  "nat": "Chile",
+  "born": 1994,
+  "club": "Deportes La Serena"
+ },
+ {
+  "id": "Q108000686",
+  "name": "Anssi Suhonen",
+  "slot": "MF",
+  "nat": "Finland",
+  "born": 2001,
+  "club": "Odense Boldklub"
+ },
+ {
+  "id": "Q19538974",
+  "name": "Anthony Kalik",
+  "slot": "MF",
+  "nat": "Australia",
+  "born": 1997,
+  "club": "FK Kauno Žalgiris"
+ },
+ {
+  "id": "Q326365",
+  "name": "Anthony Knockaert",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q3510583",
+  "name": "Anthony Nwakaeme",
+  "slot": "FW",
+  "nat": "Nigeria",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q22279825",
+  "name": "Antoine Rabillard",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1995,
+  "club": "Le Mans"
+ },
+ {
+  "id": "Q21293144",
+  "name": "Antonín Barák",
+  "slot": "MF",
+  "nat": "Czech Republic",
+  "born": 1994,
+  "club": "APOEL FC"
+ },
+ {
+  "id": "Q10856523",
+  "name": "Antonio Sanabria",
+  "slot": "FW",
+  "nat": "Paraguay",
+  "born": 1996,
+  "club": "SC Internacional"
+ },
+ {
+  "id": "Q17465944",
+  "name": "Anwar El Ghazi",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1995,
+  "club": "Al-Sailiya SC"
+ },
+ {
+  "id": "Q17403395",
+  "name": "Arash Rezavand",
+  "slot": "MF",
+  "nat": "Iran",
+  "born": 1993,
+  "club": "Sepahan S.C."
+ },
+ {
+  "id": "Q136089826",
+  "name": "Arda Öztürk",
+  "slot": null,
+  "nat": "Turkey",
+  "born": 2007,
+  "club": null
+ },
+ {
+  "id": "Q114288689",
+  "name": "Arijon Ibrahimović",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 2005,
+  "club": "FC Augsburg"
+ },
+ {
+  "id": "Q4791073",
+  "name": "Aristote Nsiala",
+  "slot": "DF",
+  "nat": "Democratic Republic of the Congo",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q21901354",
+  "name": "Arthur Henrique",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q39667548",
+  "name": "Arthur Melo",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1996,
+  "club": "Santos FC"
+ },
+ {
+  "id": "Q136289791",
+  "name": "Asım Efe Işık",
+  "slot": null,
+  "nat": "Turkey",
+  "born": 2007,
+  "club": null
+ },
+ {
+  "id": "Q42685751",
+  "name": "Augusto Aguirre",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1999,
+  "club": null
+ },
+ {
+  "id": "Q27019988",
+  "name": "Axel Tuanzebe",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "AJ Auxerre"
+ },
+ {
+  "id": "Q62085431",
+  "name": "Ayase Ueda",
+  "slot": "FW",
+  "nat": "Japan",
+  "born": 1998,
+  "club": "Lille OSC"
+ },
+ {
+  "id": "Q130459793",
+  "name": "Ayodele Thomas",
+  "slot": "FW",
+  "nat": null,
+  "born": 2007,
+  "club": "NEC Nijmegen"
+ },
+ {
+  "id": "Q793318",
+  "name": "Aytaç Kara",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 1993,
+  "club": "Sarıyer S.K."
+ },
+ {
+  "id": "Q31997",
+  "name": "Ažbe Jug",
+  "slot": "GK",
+  "nat": "Slovenia",
+  "born": 1992,
+  "club": "NK Maribor"
+ },
+ {
+  "id": "Q16727828",
+  "name": "Baily Cargill",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Mansfield Town F.C."
+ },
+ {
+  "id": "Q401771",
+  "name": "Bakary Sako",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1988,
+  "club": "LB Châteauroux"
+ },
+ {
+  "id": "Q118876868",
+  "name": "Bastien Meupiyou",
+  "slot": "DF",
+  "nat": "France",
+  "born": 2006,
+  "club": "F.C. Alverca"
+ },
+ {
+  "id": "Q4873341",
+  "name": "Batuhan Altıntaş",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 1996,
+  "club": "Güzide Gebzespor"
+ },
+ {
+  "id": "Q61906182",
+  "name": "Ben Johnson",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": "Stoke City F.C."
+ },
+ {
+  "id": "Q4886312",
+  "name": "Ben Pringle",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q27919507",
+  "name": "Ben Woodburn",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1999,
+  "club": "Salford City F.C."
+ },
+ {
+  "id": "Q276208",
+  "name": "Benik Afobe",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "Al-Arabi SC (UAE)"
+ },
+ {
+  "id": "Q19538793",
+  "name": "Benjamin Karamoko",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1995,
+  "club": "FC Lokomotiv Gorna Oryahovitsa"
+ },
+ {
+  "id": "Q18618525",
+  "name": "Benjamín Kuscevic",
+  "slot": "DF",
+  "nat": "Chile",
+  "born": 1996,
+  "club": "Toronto FC"
+ },
+ {
+  "id": "Q245922",
+  "name": "Benjamin Stambouli",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q3638841",
+  "name": "Bernie Ibini-Isei",
+  "slot": "MF",
+  "nat": "Australia",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q18639945",
+  "name": "Bilal Boutobba",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1998,
+  "club": "Al-Najma SC (Saudi Arabia)"
+ },
+ {
+  "id": "Q78828929",
+  "name": "Billy Koumetio",
+  "slot": "DF",
+  "nat": "France",
+  "born": 2002,
+  "club": "Charlton Athletic F.C."
+ },
+ {
+  "id": "Q108413744",
+  "name": "Bjorn Meijer",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 2003,
+  "club": "UC Sampdoria"
+ },
+ {
+  "id": "Q65500461",
+  "name": "Bobby Adekanye",
+  "slot": "FW",
+  "nat": "Nigeria",
+  "born": 1999,
+  "club": "Lion City Sailors FC"
+ },
+ {
+  "id": "Q113632482",
+  "name": "Bobby Clark",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2005,
+  "club": "Derby County F.C."
+ },
+ {
+  "id": "Q506849",
+  "name": "Bobby Wood",
+  "slot": "FW",
+  "nat": "United States",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q19977298",
+  "name": "Bohdan Mykhaylichenko",
+  "slot": "DF",
+  "nat": "Ukraine",
+  "born": 1997,
+  "club": "FC Polissya Zhytomyr"
+ },
+ {
+  "id": "Q20767912",
+  "name": "Borna Barišić",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q20093885",
+  "name": "Borna Sosa",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 1998,
+  "club": "1. FC Köln"
+ },
+ {
+  "id": "Q96116141",
+  "name": "Brandon Aguilera",
+  "slot": "FW",
+  "nat": "Costa Rica",
+  "born": 2003,
+  "club": null
+ },
+ {
+  "id": "Q28113071",
+  "name": "Brandon Mason",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Farnham Town F.C."
+ },
+ {
+  "id": "Q135919564",
+  "name": "Branimir Mlačić",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 2007,
+  "club": "Watford F.C."
+ },
+ {
+  "id": "Q140288733",
+  "name": "Brent Jonkers",
+  "slot": "DF",
+  "nat": "Belgium",
+  "born": 2008,
+  "club": null
+ },
+ {
+  "id": "Q1061323",
+  "name": "Brett Pitman",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1988,
+  "club": "Midhurst & Easebourne F.C."
+ },
+ {
+  "id": "Q21005744",
+  "name": "Bright Enobakhare",
+  "slot": "FW",
+  "nat": "Nigeria",
+  "born": 1998,
+  "club": "Diamond Harbour FC"
+ },
+ {
+  "id": "Q113586545",
+  "name": "Brooklyn Genesini",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 2001,
+  "club": "Weymouth F.C."
+ },
+ {
+  "id": "Q1185419",
+  "name": "Bruma",
+  "slot": "FW",
+  "nat": "Portugal",
+  "born": 1994,
+  "club": "Aris Thessaloniki F.C."
+ },
+ {
+  "id": "Q713719",
+  "name": "Bruno César",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q126965724",
+  "name": "Bruno Durdov",
+  "slot": "FW",
+  "nat": "Croatia",
+  "born": 2007,
+  "club": "Górnik Zabrze"
+ },
+ {
+  "id": "Q18707866",
+  "name": "Bruno Paulista",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q14951576",
+  "name": "Bruno Petković",
+  "slot": "FW",
+  "nat": "Croatia",
+  "born": 1994,
+  "club": "Kocaelispor"
+ },
+ {
+  "id": "Q4979425",
+  "name": "Bruno Varela",
+  "slot": "GK",
+  "nat": "Portugal",
+  "born": 1994,
+  "club": "Al-Hazem FC"
+ },
+ {
+  "id": "Q3645977",
+  "name": "Bruno Zuculini",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1993,
+  "club": "Club Nacional de Football"
+ },
+ {
+  "id": "Q108110645",
+  "name": "Bryan Nokoue",
+  "slot": "DF",
+  "nat": null,
+  "born": 2002,
+  "club": "Dubai City FC"
+ },
+ {
+  "id": "Q23585898",
+  "name": "Callum Connolly",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Bradford City A.F.C."
+ },
+ {
+  "id": "Q28849190",
+  "name": "Calvin Stengs",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1998,
+  "club": "AZ Alkmaar"
+ },
+ {
+  "id": "Q21403420",
+  "name": "Cameron Borthwick-Jackson",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q26271407",
+  "name": "Carel Eiting",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q5041170",
+  "name": "Carles Gil",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1992,
+  "club": "New England Revolution"
+ },
+ {
+  "id": "Q26838147",
+  "name": "Carlos Cuesta",
+  "slot": "DF",
+  "nat": "Colombia",
+  "born": 1999,
+  "club": "CR Vasco da Gama"
+ },
+ {
+  "id": "Q106766554",
+  "name": "Castello Lukeba",
+  "slot": "DF",
+  "nat": "France",
+  "born": 2002,
+  "club": "RB Leipzig"
+ },
+ {
+  "id": "Q22280398",
+  "name": "Ćazim Suljić",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1996,
+  "club": "Amiens SC"
+ },
+ {
+  "id": "Q932982",
+  "name": "Cédric Bakambu",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1991,
+  "club": "San Diego FC"
+ },
+ {
+  "id": "Q108254720",
+  "name": "Célestino Iala",
+  "slot": null,
+  "nat": "Guinea-Bissau",
+  "born": null,
+  "club": null
+ },
+ {
+  "id": "Q182308",
+  "name": "Celso Ortiz",
+  "slot": "MF",
+  "nat": "Paraguay",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q19613570",
+  "name": "Cengiz Ünder",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 1997,
+  "club": "Çorum F.K."
+ },
+ {
+  "id": "Q1053402",
+  "name": "Cenk Gönen",
+  "slot": "GK",
+  "nat": "Turkey",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q17305765",
+  "name": "César Martins",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q3196721",
+  "name": "Chancel Mbemba",
+  "slot": "DF",
+  "nat": "Democratic Republic of the Congo",
+  "born": 1994,
+  "club": "Diriyah Club"
+ },
+ {
+  "id": "Q85751626",
+  "name": "Charlie Brown",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1999,
+  "club": "Accrington Stanley F.C."
+ },
+ {
+  "id": "Q5085599",
+  "name": "Charlie Taylor",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "Derby County F.C."
+ },
+ {
+  "id": "Q36489082",
+  "name": "Charlie Wakefield",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": null
+ },
+ {
+  "id": "Q17517342",
+  "name": "Chico Ramos",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1994,
+  "club": "F.C. Paços de Ferreira"
+ },
+ {
+  "id": "Q22958457",
+  "name": "Chidozie Awaziem",
+  "slot": "MF",
+  "nat": "Nigeria",
+  "born": 1997,
+  "club": "Konyaspor"
+ },
+ {
+  "id": "Q5483970",
+  "name": "Chiquinho",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q65969931",
+  "name": "Christian Conteh",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1999,
+  "club": "1. FC Heidenheim"
+ },
+ {
+  "id": "Q17521997",
+  "name": "Christian Mathenia",
+  "slot": "GK",
+  "nat": "Germany",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q21622759",
+  "name": "Christian Scales",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q5112654",
+  "name": "Christopher Jullien",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1993,
+  "club": "FCV Dender EH"
+ },
+ {
+  "id": "Q21693199",
+  "name": "Christopher Nkunku",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1997,
+  "club": "RB Leipzig"
+ },
+ {
+  "id": "Q22162714",
+  "name": "Cian Harries",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q944277",
+  "name": "Claudemir",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q23771470",
+  "name": "Claudinho",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1997,
+  "club": "Al Sadd SC"
+ },
+ {
+  "id": "Q116725515",
+  "name": "Cole Campbell",
+  "slot": "FW",
+  "nat": "United States",
+  "born": 2006,
+  "club": "SV Elversberg"
+ },
+ {
+  "id": "Q20877185",
+  "name": "Connor McManus",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q19281904",
+  "name": "Connor Randall",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Ross County F.C."
+ },
+ {
+  "id": "Q126422",
+  "name": "Connor Wickham",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q19577795",
+  "name": "Courtney Senior",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Braintree Town F.C."
+ },
+ {
+  "id": "Q21620945",
+  "name": "Cristian Bunino",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1996,
+  "club": "SEF Torres 1903"
+ },
+ {
+  "id": "Q10553667",
+  "name": "Cristian Ponde",
+  "slot": "FW",
+  "nat": "Portugal",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q54055",
+  "name": "Cristian Tello",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q5186308",
+  "name": "Cristiano Piccini",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q60664537",
+  "name": "Crysencio Summerville",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 2001,
+  "club": "Al Hilal SFC"
+ },
+ {
+  "id": "Q136547032",
+  "name": "Cumali Gürsel",
+  "slot": null,
+  "nat": "Turkey",
+  "born": 2007,
+  "club": null
+ },
+ {
+  "id": "Q22003827",
+  "name": "Curro Sánchez",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q16935084",
+  "name": "Cyle Larin",
+  "slot": "FW",
+  "nat": "Canada",
+  "born": 1995,
+  "club": "Southampton F.C."
+ },
+ {
+  "id": "Q5201080",
+  "name": "Cyrus Christie",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1992,
+  "club": "Hanoi FC"
+ },
+ {
+  "id": "Q76742859",
+  "name": "D'Mani Mellor",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": "Forest Green Rovers F.C."
+ },
+ {
+  "id": "Q16014629",
+  "name": "Daley Sinkgraven",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q17386140",
+  "name": "Damian Kądzior",
+  "slot": "MF",
+  "nat": "Poland",
+  "born": 1992,
+  "club": "GKS Tychy"
+ },
+ {
+  "id": "Q5212606",
+  "name": "Damir Šovšić",
+  "slot": "MF",
+  "nat": "Croatia",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q102362241",
+  "name": "Dane Scarlett",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 2004,
+  "club": "Leyton Orient F.C."
+ },
+ {
+  "id": "Q40493824",
+  "name": "Dani Martín",
+  "slot": "GK",
+  "nat": "Spain",
+  "born": 1998,
+  "club": "CD Tenerife"
+ },
+ {
+  "id": "Q23883938",
+  "name": "Daniel Barlaser",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Milton Keynes Dons F.C."
+ },
+ {
+  "id": "Q84247209",
+  "name": "Daniel Maldini",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 2001,
+  "club": "Cagliari"
+ },
+ {
+  "id": "Q100272666",
+  "name": "Daniel Peretz",
+  "slot": "GK",
+  "nat": "Israel",
+  "born": 2000,
+  "club": "Southampton F.C."
+ },
+ {
+  "id": "Q16234913",
+  "name": "Daniel Pinillos",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q481570",
+  "name": "Danny da Costa",
+  "slot": "DF",
+  "nat": "Germany",
+  "born": 1993,
+  "club": "1. FSV Mainz 05"
+ },
+ {
+  "id": "Q267207",
+  "name": "Danny Wilson",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": "Sporting Club Jacksonville"
+ },
+ {
+  "id": "Q12481043",
+  "name": "David Henen",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 1996,
+  "club": "Cong An Hanoi FC"
+ },
+ {
+  "id": "Q85525678",
+  "name": "David Miculescu",
+  "slot": "FW",
+  "nat": "Romania",
+  "born": 2001,
+  "club": "FCSB"
+ },
+ {
+  "id": "Q28973641",
+  "name": "David Okereke",
+  "slot": "FW",
+  "nat": "Nigeria",
+  "born": 1997,
+  "club": "Benevento Calcio"
+ },
+ {
+  "id": "Q889289",
+  "name": "Davy Pröpper",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q6381120",
+  "name": "DeAndre Yedlin",
+  "slot": "DF",
+  "nat": "United States",
+  "born": 1993,
+  "club": "Real Salt Lake"
+ },
+ {
+  "id": "Q378526",
+  "name": "Dedé",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q15975839",
+  "name": "Deimantas Petravičius",
+  "slot": "MF",
+  "nat": "Lithuania",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q21620919",
+  "name": "Denis Bouanga",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1994,
+  "club": "Los Angeles FC"
+ },
+ {
+  "id": "Q40126643",
+  "name": "Denis Drăguș",
+  "slot": "FW",
+  "nat": "Romania",
+  "born": 1999,
+  "club": "FCSB"
+ },
+ {
+  "id": "Q97379196",
+  "name": "Denis Franchi",
+  "slot": "GK",
+  "nat": "Italy",
+  "born": 2002,
+  "club": "Potenza Calcio"
+ },
+ {
+  "id": "Q137435615",
+  "name": "Deniz Ofli",
+  "slot": "DF",
+  "nat": "Turkey",
+  "born": 2007,
+  "club": "Karlsruher SC"
+ },
+ {
+  "id": "Q136289792",
+  "name": "Devrim Şahin",
+  "slot": "FW",
+  "nat": "Turkey",
+  "born": 2007,
+  "club": "Bodrum F.K."
+ },
+ {
+  "id": "Q583274",
+  "name": "Diego Demme",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q22004593",
+  "name": "Diego González",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q18426129",
+  "name": "Dion Cools",
+  "slot": "DF",
+  "nat": "Belgium",
+  "born": 1996,
+  "club": "Cerezo Osaka"
+ },
+ {
+  "id": "Q134128969",
+  "name": "Djomar Giersthove",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 2005,
+  "club": null
+ },
+ {
+  "id": "Q18977729",
+  "name": "Dominic Ball",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Cambridge United F.C."
+ },
+ {
+  "id": "Q3713834",
+  "name": "Doneil Henry",
+  "slot": "DF",
+  "nat": "Canada",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q673450",
+  "name": "Douglas",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q60733820",
+  "name": "Dru Yearwood",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": "G.D. Chaves"
+ },
+ {
+  "id": "Q16239878",
+  "name": "Dušan Živković",
+  "slot": "DF",
+  "nat": "Serbia",
+  "born": 1996,
+  "club": "GFK Dubočica"
+ },
+ {
+  "id": "Q22280180",
+  "name": "Dylan Saint-Louis",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1995,
+  "club": "IR Tangier"
+ },
+ {
+  "id": "Q132462781",
+  "name": "Eder García",
+  "slot": "MF",
+  "nat": null,
+  "born": 2004,
+  "club": "Córdoba CF"
+ },
+ {
+  "id": "Q83256324",
+  "name": "Edmilson Correia",
+  "slot": "MF",
+  "nat": "Guinea-Bissau",
+  "born": 2000,
+  "club": null
+ },
+ {
+  "id": "Q5339568",
+  "name": "Edmund Hottor",
+  "slot": "MF",
+  "nat": "Ghana",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q21055382",
+  "name": "Edoardo Soleri",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q105421960",
+  "name": "Édouard Michut",
+  "slot": "MF",
+  "nat": "France",
+  "born": 2003,
+  "club": "Fortuna Sittard"
+ },
+ {
+  "id": "Q4290247",
+  "name": "Eduard Sobol",
+  "slot": "DF",
+  "nat": "Ukraine",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q123182232",
+  "name": "Efe Akman",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 2006,
+  "club": "FC Andorra"
+ },
+ {
+  "id": "Q3050480",
+  "name": "Elbio Álvarez",
+  "slot": "MF",
+  "nat": "Uruguay",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q52424788",
+  "name": "Elliot Embleton",
+  "slot": "MF",
+  "nat": null,
+  "born": 1999,
+  "club": null
+ },
+ {
+  "id": "Q60842119",
+  "name": "Emerson Espinoza",
+  "slot": "MF",
+  "nat": "Ecuador",
+  "born": 2001,
+  "club": null
+ },
+ {
+  "id": "Q5371332",
+  "name": "Emil Krafth",
+  "slot": "DF",
+  "nat": "Sweden",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q26007180",
+  "name": "Emmanuel Dennis",
+  "slot": "FW",
+  "nat": "Nigeria",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q445507",
+  "name": "Emre Güral",
+  "slot": "FW",
+  "nat": "Turkey",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q948512",
+  "name": "Enzo Roco",
+  "slot": "DF",
+  "nat": "Chile",
+  "born": 1992,
+  "club": "Club Deportivo Palestino"
+ },
+ {
+  "id": "Q18246631",
+  "name": "Erik",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1994,
+  "club": "Vissel Kobe"
+ },
+ {
+  "id": "Q16887738",
+  "name": "Erik Palmer-Brown",
+  "slot": "DF",
+  "nat": "United States",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q972265",
+  "name": "Erik Sviatchenko",
+  "slot": "DF",
+  "nat": "Kingdom of Denmark",
+  "born": 1991,
+  "club": "Port F.C."
+ },
+ {
+  "id": "Q21622379",
+  "name": "Erin Pinheiro",
+  "slot": "MF",
+  "nat": "Cape Verde",
+  "born": 1997,
+  "club": "Atlético Clube de Portugal"
+ },
+ {
+  "id": "Q152791",
+  "name": "Esteban Alvarado",
+  "slot": "GK",
+  "nat": "Costa Rica",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q67165839",
+  "name": "Ethan Galbraith",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2001,
+  "club": "Stoke City F.C."
+ },
+ {
+  "id": "Q19958114",
+  "name": "Ethan Horvath",
+  "slot": "GK",
+  "nat": "Hungary",
+  "born": 1995,
+  "club": "New York Red Bulls"
+ },
+ {
+  "id": "Q76700931",
+  "name": "Ethan Laird",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 2001,
+  "club": "Birmingham City F.C."
+ },
+ {
+  "id": "Q110995393",
+  "name": "Ethan Mbappé",
+  "slot": "MF",
+  "nat": "France",
+  "born": 2006,
+  "club": "Lille OSC"
+ },
+ {
+  "id": "Q15830995",
+  "name": "Everton Sena",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q29117304",
+  "name": "Ewerton",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q510596",
+  "name": "Ezequiel Schelotto",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1989,
+  "club": "FC Paradiso"
+ },
+ {
+  "id": "Q16297591",
+  "name": "Fabián Balbuena",
+  "slot": "DF",
+  "nat": "Paraguay",
+  "born": 1991,
+  "club": "Grêmio FBPA"
+ },
+ {
+  "id": "Q16731378",
+  "name": "Fabiano Leismann",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": "Aris Thessaloniki F.C."
+ },
+ {
+  "id": "Q5511325",
+  "name": "Fábio Cardoso",
+  "slot": "DF",
+  "nat": "Portugal",
+  "born": 1994,
+  "club": "Sevilla FC"
+ },
+ {
+  "id": "Q55081487",
+  "name": "Fabio Maistro",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1998,
+  "club": "SS Juve Stabia"
+ },
+ {
+  "id": "Q73633914",
+  "name": "Federico Gattoni",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1999,
+  "club": "Ascoli Calcio 1898 FC"
+ },
+ {
+  "id": "Q2077454",
+  "name": "Federico Mancuello",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1989,
+  "club": "Argentinos Juniors"
+ },
+ {
+  "id": "Q337639",
+  "name": "Felipe Mattioni",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q30916190",
+  "name": "Félix Torres",
+  "slot": "DF",
+  "nat": "Ecuador",
+  "born": 1997,
+  "club": "SC Internacional"
+ },
+ {
+  "id": "Q15991578",
+  "name": "Fernando Marçal",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q110070377",
+  "name": "Ferran Jutglà",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 1999,
+  "club": "RC Celta de Vigo"
+ },
+ {
+  "id": "Q41445080",
+  "name": "Fiete Arp",
+  "slot": "FW",
+  "nat": "Germany",
+  "born": 2000,
+  "club": null
+ },
+ {
+  "id": "Q98929151",
+  "name": "Filip Stanković",
+  "slot": "GK",
+  "nat": "Italy",
+  "born": 2002,
+  "club": "Venezia"
+ },
+ {
+  "id": "Q35124488",
+  "name": "Fodé Ballo-Touré",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q19843224",
+  "name": "Fran Tudor",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 1995,
+  "club": "Raków Częstochowa"
+ },
+ {
+  "id": "Q98998042",
+  "name": "Fran Vieites",
+  "slot": "GK",
+  "nat": "Spain",
+  "born": 1999,
+  "club": "C.S. Marítimo"
+ },
+ {
+  "id": "Q531302",
+  "name": "Francesco Acerbi",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q46696898",
+  "name": "Francis Amuzu",
+  "slot": "FW",
+  "nat": "Belgium",
+  "born": 1999,
+  "club": "Grêmio FBPA"
+ },
+ {
+  "id": "Q10557449",
+  "name": "Francisco Geraldes",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1995,
+  "club": "Chungbuk Cheongju FC"
+ },
+ {
+  "id": "Q530499",
+  "name": "Franck Ohandza",
+  "slot": "FW",
+  "nat": "Cameroon",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q60594",
+  "name": "Franck Tabanou",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q139979298",
+  "name": "Franco Jaroszewicz",
+  "slot": "GK",
+  "nat": "Italy",
+  "born": null,
+  "club": null
+ },
+ {
+  "id": "Q20990947",
+  "name": "Franco López",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q73789862",
+  "name": "Franco Tongya",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 2002,
+  "club": "Gençlerbirliği S.K."
+ },
+ {
+  "id": "Q116952830",
+  "name": "François Mughe",
+  "slot": "FW",
+  "nat": "Cameroon",
+  "born": 2004,
+  "club": "AEL Limassol"
+ },
+ {
+  "id": "Q23771503",
+  "name": "Frane Vojković",
+  "slot": "MF",
+  "nat": "Croatia",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q121535913",
+  "name": "Franjo Ivanović",
+  "slot": "FW",
+  "nat": "Austria",
+  "born": 2003,
+  "club": "RC Lens"
+ },
+ {
+  "id": "Q5496755",
+  "name": "Freddie Ladapo",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q3379641",
+  "name": "Fredrik Midtsjø",
+  "slot": "MF",
+  "nat": "Norway",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q961889",
+  "name": "Gabriel",
+  "slot": "GK",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q14921884",
+  "name": "Gabriel",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": "Red Bull Bragantino"
+ },
+ {
+  "id": "Q135692995",
+  "name": "Gabriel Biladi",
+  "slot": "FW",
+  "nat": "Belgium",
+  "born": 2009,
+  "club": null
+ },
+ {
+  "id": "Q61460651",
+  "name": "Gabriel Martinelli",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 2001,
+  "club": "Al Hilal SFC"
+ },
+ {
+  "id": "Q75059692",
+  "name": "Gabriel Veron",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 2002,
+  "club": null
+ },
+ {
+  "id": "Q110611871",
+  "name": "Gabriel Vidović",
+  "slot": "FW",
+  "nat": "Croatia",
+  "born": 2003,
+  "club": "SC Paderborn 07"
+ },
+ {
+  "id": "Q128889",
+  "name": "Gaëtan Bong",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q23762797",
+  "name": "Gaëtan Perrin",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1996,
+  "club": "Lille OSC"
+ },
+ {
+  "id": "Q921060",
+  "name": "Gary Gardner",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q5525513",
+  "name": "Gary Mackay-Steven",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1990,
+  "club": "Partick Thistle F.C."
+ },
+ {
+  "id": "Q20676721",
+  "name": "Gelson Dala",
+  "slot": "MF",
+  "nat": "Angola",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q133273246",
+  "name": "Genesis Antwi",
+  "slot": "DF",
+  "nat": "Sweden",
+  "born": 2007,
+  "club": "RC Strasbourg Alsace"
+ },
+ {
+  "id": "Q21005715",
+  "name": "George Edmundson",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Middlesbrough F.C."
+ },
+ {
+  "id": "Q19873684",
+  "name": "George Green",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q15084554",
+  "name": "Georges-Kévin Nkoudou",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1995,
+  "club": "Abha Club"
+ },
+ {
+  "id": "Q3761173",
+  "name": "Germán Pezzella",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1991,
+  "club": "Peñarol"
+ },
+ {
+  "id": "Q19851178",
+  "name": "Gian Filippo Felicioli",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1997,
+  "club": "Aurora Pro Patria 1919"
+ },
+ {
+  "id": "Q101579946",
+  "name": "Gino Infantino",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 2003,
+  "club": "Argentinos Juniors"
+ },
+ {
+  "id": "Q11860513",
+  "name": "Glen Kamara",
+  "slot": "MF",
+  "nat": "Finland",
+  "born": 1995,
+  "club": "Queens Park Rangers F.C."
+ },
+ {
+  "id": "Q55500500",
+  "name": "Glenn Middleton",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": "Rochdale A.F.C."
+ },
+ {
+  "id": "Q16236424",
+  "name": "Gonçalo Paciência",
+  "slot": "FW",
+  "nat": "Portugal",
+  "born": 1994,
+  "club": "C.D. Santa Clara"
+ },
+ {
+  "id": "Q16233597",
+  "name": "Greg Stewart",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q16302370",
+  "name": "Guido Vadalá",
+  "slot": "FW",
+  "nat": "Argentina",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q554402",
+  "name": "Guilherme",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q1279052",
+  "name": "Guilherme Andrade",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q1562026",
+  "name": "Güray Vural",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 1988,
+  "club": "Antalyaspor"
+ },
+ {
+  "id": "Q18011169",
+  "name": "Gustaf Nilsson",
+  "slot": "FW",
+  "nat": "Sweden",
+  "born": 1997,
+  "club": "Hertha BSC"
+ },
+ {
+  "id": "Q119454285",
+  "name": "Gwendal Degorce",
+  "slot": "DF",
+  "nat": "France",
+  "born": 2004,
+  "club": null
+ },
+ {
+  "id": "Q53252754",
+  "name": "Halil Dervişoğlu",
+  "slot": "FW",
+  "nat": "Turkey",
+  "born": 1999,
+  "club": "Gaziantep F.K."
+ },
+ {
+  "id": "Q119960944",
+  "name": "Hamza Igamane",
+  "slot": "FW",
+  "nat": "Morocco",
+  "born": 2002,
+  "club": "Lille OSC"
+ },
+ {
+  "id": "Q56011432",
+  "name": "Hannes Delcroix",
+  "slot": "DF",
+  "nat": "Belgium",
+  "born": 1999,
+  "club": "FC Lugano"
+ },
+ {
+  "id": "Q2359801",
+  "name": "Harry Forrester",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q313936",
+  "name": "Håvard Nordtveit",
+  "slot": "DF",
+  "nat": "Norway",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q118876190",
+  "name": "Héctor Fort",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 2006,
+  "club": "Real Sociedad"
+ },
+ {
+  "id": "Q5964146",
+  "name": "Hélder Costa",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1994,
+  "club": "Atlético Petróleos de Luanda"
+ },
+ {
+  "id": "Q32091",
+  "name": "Henri Saivet",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1990,
+  "club": "Stade Malherbe Caen"
+ },
+ {
+  "id": "Q14757828",
+  "name": "Henrique",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1994,
+  "club": "Turan Tovuz"
+ },
+ {
+  "id": "Q64736308",
+  "name": "Héritier Deyonge",
+  "slot": "DF",
+  "nat": "Belgium",
+  "born": 2002,
+  "club": null
+ },
+ {
+  "id": "Q1632576",
+  "name": "Hrvoje Milić",
+  "slot": "MF",
+  "nat": "Croatia",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q30346426",
+  "name": "Hugo Guillamón",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 2000,
+  "club": "Sporting de Gijón"
+ },
+ {
+  "id": "Q55500738",
+  "name": "Hugo Quintana",
+  "slot": "MF",
+  "nat": "Paraguay",
+  "born": 2001,
+  "club": null
+ },
+ {
+  "id": "Q22280143",
+  "name": "Hugo Roussey",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1997,
+  "club": "FC Espaly"
+ },
+ {
+  "id": "Q14320553",
+  "name": "Hwang Ui-jo",
+  "slot": "FW",
+  "nat": "South Korea",
+  "born": 1992,
+  "club": "Alanyaspor"
+ },
+ {
+  "id": "Q46679",
+  "name": "Idrissa Gueye",
+  "slot": "MF",
+  "nat": "Senegal",
+  "born": 1989,
+  "club": "Diriyah Club"
+ },
+ {
+  "id": "Q6447402",
+  "name": "Ignacio Fernández",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1990,
+  "club": "Club de Gimnasia y Esgrima La Plata"
+ },
+ {
+  "id": "Q121361554",
+  "name": "İlhami Siraçhan Nas",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 2002,
+  "club": "Adana 01 FK"
+ },
+ {
+  "id": "Q18921648",
+  "name": "Ismael Díaz",
+  "slot": "MF",
+  "nat": "Panama",
+  "born": 1997,
+  "club": "Club León"
+ },
+ {
+  "id": "Q111009946",
+  "name": "Ismaël Koné",
+  "slot": "MF",
+  "nat": "Canada",
+  "born": 2002,
+  "club": "US Sassuolo"
+ },
+ {
+  "id": "Q6096043",
+  "name": "Ivan Cavaleiro",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1993,
+  "club": "Atlético Petróleos de Luanda"
+ },
+ {
+  "id": "Q17123759",
+  "name": "Ivan Lučić",
+  "slot": "GK",
+  "nat": "Austria",
+  "born": 1995,
+  "club": "Miedź Legnica"
+ },
+ {
+  "id": "Q27680",
+  "name": "Ivan Obradović",
+  "slot": "DF",
+  "nat": "Serbia",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q16236986",
+  "name": "Ivo Rodrigues",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1995,
+  "club": "Motor Lublin"
+ },
+ {
+  "id": "Q24074205",
+  "name": "Jack Aitchison",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": "Bristol Rovers F.C."
+ },
+ {
+  "id": "Q6111125",
+  "name": "Jack Baldwin",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "Hornchurch F.C."
+ },
+ {
+  "id": "Q21130217",
+  "name": "Jack Byrne",
+  "slot": "MF",
+  "nat": "Ireland",
+  "born": 1996,
+  "club": "Shamrock Rovers F.C."
+ },
+ {
+  "id": "Q126466",
+  "name": "Jack Colback",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q18719380",
+  "name": "Jack Dunn",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": "Marine A.F.C."
+ },
+ {
+  "id": "Q22087109",
+  "name": "Jack Harrison",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": "New England Revolution"
+ },
+ {
+  "id": "Q6115352",
+  "name": "Jack Stephens",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": "Southampton F.C."
+ },
+ {
+  "id": "Q110624351",
+  "name": "Jacopo Fazzini",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 2003,
+  "club": "Cagliari"
+ },
+ {
+  "id": "Q123184220",
+  "name": "Jaden Heskey",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2005,
+  "club": "Sheffield Wednesday F.C."
+ },
+ {
+  "id": "Q20048080",
+  "name": "Jajá",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1995,
+  "club": "Madura United F.C."
+ },
+ {
+  "id": "Q93666",
+  "name": "James Tavernier",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": "Maccabi Tel Aviv F.C."
+ },
+ {
+  "id": "Q20128138",
+  "name": "James Tilley",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": "AFC Wimbledon"
+ },
+ {
+  "id": "Q2643777",
+  "name": "James Ward-Prowse",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": "Southampton F.C."
+ },
+ {
+  "id": "Q22969585",
+  "name": "James Weir",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q16766365",
+  "name": "James Wilson",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q1756699",
+  "name": "Jamie Murphy",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1989,
+  "club": "Ayr United F.C."
+ },
+ {
+  "id": "Q134470771",
+  "name": "Jan Plug",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 2005,
+  "club": "Excelsior Rotterdam"
+ },
+ {
+  "id": "Q649334",
+  "name": "Jan-Arie van der Heijden",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q68327658",
+  "name": "Janderson",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1999,
+  "club": null
+ },
+ {
+  "id": "Q17477924",
+  "name": "Jarlan Barrera",
+  "slot": "MF",
+  "nat": "Colombia",
+  "born": 1999,
+  "club": "Real Cartagena"
+ },
+ {
+  "id": "Q22162719",
+  "name": "Jarosław Jach",
+  "slot": "DF",
+  "nat": "Poland",
+  "born": 1994,
+  "club": "Znicz Pruszków"
+ },
+ {
+  "id": "Q6162724",
+  "name": "Jason Holt",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "St Johnstone F.C."
+ },
+ {
+  "id": "Q56440679",
+  "name": "Javairô Dilrosun",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q3163157",
+  "name": "Javier Manquillo",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q60583",
+  "name": "Jean-Christophe Bahebeck",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q56223972",
+  "name": "Jean-Clair Todibo",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1999,
+  "club": "RC Lens"
+ },
+ {
+  "id": "Q27736740",
+  "name": "Jean-Eudes Aholou",
+  "slot": "MF",
+  "nat": "Togo",
+  "born": 1994,
+  "club": "Umm Salal SC"
+ },
+ {
+  "id": "Q6172641",
+  "name": "Jed Wallace",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "Bristol City F.C."
+ },
+ {
+  "id": "Q20676408",
+  "name": "Jefferson",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q254521",
+  "name": "Jeison Murillo",
+  "slot": "DF",
+  "nat": "Colombia",
+  "born": 1992,
+  "club": "Al-Shamal SC"
+ },
+ {
+  "id": "Q557965",
+  "name": "Jelle Vossen",
+  "slot": "FW",
+  "nat": "Belgium",
+  "born": 1989,
+  "club": "K Beerschot VA"
+ },
+ {
+  "id": "Q15831045",
+  "name": "Jemerson",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q6320136",
+  "name": "Jérémy Hélan",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q607790",
+  "name": "Jesús Manuel Corona",
+  "slot": "MF",
+  "nat": "Mexico",
+  "born": 1993,
+  "club": "C.F. Monterrey"
+ },
+ {
+  "id": "Q128809546",
+  "name": "Jesús Rodríguez",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 2005,
+  "club": "Como"
+ },
+ {
+  "id": "Q18223720",
+  "name": "Jhonder Cádiz",
+  "slot": "FW",
+  "nat": "Venezuela",
+  "born": 1995,
+  "club": "Wuhan Three Towns F.C."
+ },
+ {
+  "id": "Q104835054",
+  "name": "Jimer Fory",
+  "slot": "DF",
+  "nat": "Colombia",
+  "born": 2002,
+  "club": "Portland Timbers"
+ },
+ {
+  "id": "Q17712747",
+  "name": "Joan Jordán",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1994,
+  "club": "C.F. Estrela da Amadora"
+ },
+ {
+  "id": "Q6298271",
+  "name": "João Mário",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1993,
+  "club": "AEK Athens F.C."
+ },
+ {
+  "id": "Q2626107",
+  "name": "João Pedro",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1992,
+  "club": "Atlético San Luis"
+ },
+ {
+  "id": "Q66678529",
+  "name": "João Victor",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1998,
+  "club": "PFC CSKA Moscow"
+ },
+ {
+  "id": "Q17477978",
+  "name": "Joaquín Correa",
+  "slot": "FW",
+  "nat": "Argentina",
+  "born": 1994,
+  "club": "Estudiantes de La Plata"
+ },
+ {
+  "id": "Q19666801",
+  "name": "Jodi Jones",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Bromley F.C."
+ },
+ {
+  "id": "Q27469960",
+  "name": "Joe Aribo",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q615786",
+  "name": "Joe Mason",
+  "slot": "MF",
+  "nat": "Ireland",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q21622431",
+  "name": "Joe Quigley",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": "Bristol Rovers F.C."
+ },
+ {
+  "id": "Q22937276",
+  "name": "Joe Riley",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": "Warrington Rylands 1906 F.C."
+ },
+ {
+  "id": "Q20868257",
+  "name": "Joe Thomson",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q22087181",
+  "name": "Joe Worrall",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Wrexham A.F.C."
+ },
+ {
+  "id": "Q19996370",
+  "name": "Joel Castro Pereira",
+  "slot": "GK",
+  "nat": "Portugal",
+  "born": 1996,
+  "club": "Reading F.C."
+ },
+ {
+  "id": "Q547296",
+  "name": "Joel Robles",
+  "slot": "GK",
+  "nat": "Spain",
+  "born": 1990,
+  "club": "G.D. Estoril Praia"
+ },
+ {
+  "id": "Q96401757",
+  "name": "Joelson Fernandes",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 2003,
+  "club": null
+ },
+ {
+  "id": "Q170038",
+  "name": "Jóhann Berg Guðmundsson",
+  "slot": "MF",
+  "nat": "Iceland",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q16860684",
+  "name": "John Swift",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q26678338",
+  "name": "Jon Nolan",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q19968638",
+  "name": "Jonas",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q55947285",
+  "name": "Jonas David",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 2000,
+  "club": null
+ },
+ {
+  "id": "Q2106995",
+  "name": "Jonas Knudsen",
+  "slot": "DF",
+  "nat": "Kingdom of Denmark",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q1670298",
+  "name": "Jonas Lössl",
+  "slot": "GK",
+  "nat": "Kingdom of Denmark",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q2412107",
+  "name": "Jonas Martin",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1990,
+  "club": "US Boulogne"
+ },
+ {
+  "id": "Q369551",
+  "name": "Jonathan Biabiany",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q115205149",
+  "name": "Jonathan Foss",
+  "slot": "DF",
+  "nat": "Kingdom of Denmark",
+  "born": 2004,
+  "club": null
+ },
+ {
+  "id": "Q16880180",
+  "name": "Jony Rodríguez",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q14851962",
+  "name": "Jordan Botaka",
+  "slot": "MF",
+  "nat": "Democratic Republic of the Congo",
+  "born": 1993,
+  "club": "Royale Union Saint-Gilloise"
+ },
+ {
+  "id": "Q20807057",
+  "name": "Jordan Brown",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q15378711",
+  "name": "Jordan Graham",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q22006420",
+  "name": "Jordan Lyden",
+  "slot": "MF",
+  "nat": "Australia",
+  "born": 1996,
+  "club": "Bromsgrove Sporting F.C."
+ },
+ {
+  "id": "Q35783856",
+  "name": "Jordan Ponticelli",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": "Tamworth F.C."
+ },
+ {
+  "id": "Q18121587",
+  "name": "Jordan Rossiter",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Sporting Club Jacksonville"
+ },
+ {
+  "id": "Q21540474",
+  "name": "Jordan Thompson",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Preston North End F.C."
+ },
+ {
+  "id": "Q6277135",
+  "name": "Jordan Willis",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q30938528",
+  "name": "Jordi Mboula",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1999,
+  "club": "A.E. Kifisia F.C."
+ },
+ {
+  "id": "Q582549",
+  "name": "Jordon Mutch",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q27038269",
+  "name": "Jordy Gaspar",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1997,
+  "club": "FC Rouen"
+ },
+ {
+  "id": "Q3810082",
+  "name": "Jorge Moreira",
+  "slot": "DF",
+  "nat": "Paraguay",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q15975282",
+  "name": "Jorge Recalde",
+  "slot": "MF",
+  "nat": "Paraguay",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q22277955",
+  "name": "Joris Gnagnon",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q79634899",
+  "name": "José Andrés Martínez",
+  "slot": "MF",
+  "nat": "Venezuela",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q21621620",
+  "name": "José Arnaiz",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q54512527",
+  "name": "José Luis Rodríguez",
+  "slot": "MF",
+  "nat": "Panama",
+  "born": 1998,
+  "club": "FC Juárez"
+ },
+ {
+  "id": "Q21482821",
+  "name": "José Machín",
+  "slot": "MF",
+  "nat": "Equatorial Guinea",
+  "born": 1996,
+  "club": "US Sambenedettese"
+ },
+ {
+  "id": "Q86322500",
+  "name": "Jose Martinez Lopez",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 2001,
+  "club": null
+ },
+ {
+  "id": "Q15715173",
+  "name": "José Mauri",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q554882",
+  "name": "José Rodríguez",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1994,
+  "club": "Flamurtari FC"
+ },
+ {
+  "id": "Q44745885",
+  "name": "Josef Bursik",
+  "slot": "GK",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": "AFC Wimbledon"
+ },
+ {
+  "id": "Q16205692",
+  "name": "Josh Brownhill",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Al Shabab Club"
+ },
+ {
+  "id": "Q20807452",
+  "name": "Josh Emmanuel",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Walton & Hersham F.C."
+ },
+ {
+  "id": "Q18043944",
+  "name": "Josh Ginnelly",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q30006173",
+  "name": "Josh Harrop",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q310404",
+  "name": "Josh McEachran",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q18809182",
+  "name": "Josh Onomah",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q23762015",
+  "name": "Josh Tymon",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1999,
+  "club": "Swansea City A.F.C."
+ },
+ {
+  "id": "Q50384596",
+  "name": "Josha Vagnoman",
+  "slot": "DF",
+  "nat": "Germany",
+  "born": 2000,
+  "club": "VfB Stuttgart"
+ },
+ {
+  "id": "Q105945662",
+  "name": "Jota Silva",
+  "slot": "FW",
+  "nat": "Portugal",
+  "born": 1999,
+  "club": "Olympiacos F.C."
+ },
+ {
+  "id": "Q10555721",
+  "name": "Jozo Šimunović",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q2092409",
+  "name": "Juan Fernando Quintero",
+  "slot": "MF",
+  "nat": "Colombia",
+  "born": 1993,
+  "club": "Independiente Medellín"
+ },
+ {
+  "id": "Q454910",
+  "name": "Juan Jesus",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": "Venezia"
+ },
+ {
+  "id": "Q649788",
+  "name": "Juanmi",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 1993,
+  "club": "Getafe"
+ },
+ {
+  "id": "Q106637226",
+  "name": "Julen Agirrezabala",
+  "slot": "GK",
+  "nat": "Spain",
+  "born": 2000,
+  "club": "Racing de Santander"
+ },
+ {
+  "id": "Q697255",
+  "name": "Julian Baumgartlinger",
+  "slot": "MF",
+  "nat": "Austria",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q15241424",
+  "name": "Julian Green",
+  "slot": "MF",
+  "nat": "United States",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q2477893",
+  "name": "Julián Velázquez",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1990,
+  "club": "Chacarita Juniors"
+ },
+ {
+  "id": "Q50841898",
+  "name": "Juninho",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1996,
+  "club": "Pumas UNAM"
+ },
+ {
+  "id": "Q5957357",
+  "name": "Jürgen Damm",
+  "slot": "MF",
+  "nat": "Mexico",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q1885",
+  "name": "Jürgen Locadia",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1993,
+  "club": "Tampa Bay Rowdies"
+ },
+ {
+  "id": "Q116046046",
+  "name": "Justin Hubner",
+  "slot": "DF",
+  "nat": "Indonesia",
+  "born": 2003,
+  "club": "Fortuna Sittard"
+ },
+ {
+  "id": "Q28925148",
+  "name": "Justin Lonwijk",
+  "slot": "MF",
+  "nat": "Suriname",
+  "born": 1999,
+  "club": "FC Dynamo Kyiv"
+ },
+ {
+  "id": "Q56876908",
+  "name": "Kaio Jorge",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 2002,
+  "club": "Cruzeiro EC"
+ },
+ {
+  "id": "Q20641319",
+  "name": "Kalvin Phillips",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Sheffield United F.C."
+ },
+ {
+  "id": "Q594733",
+  "name": "Kara Mbodji",
+  "slot": "MF",
+  "nat": "Senegal",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q1523509",
+  "name": "Karim Rekik",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q136547033",
+  "name": "Kartal Cengizer",
+  "slot": null,
+  "nat": "Turkey",
+  "born": 2007,
+  "club": null
+ },
+ {
+  "id": "Q26251109",
+  "name": "Kayden Jackson",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": "Bradford City A.F.C."
+ },
+ {
+  "id": "Q58801738",
+  "name": "Kays Ruiz-Atil",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 2002,
+  "club": "RFC Liège"
+ },
+ {
+  "id": "Q57582122",
+  "name": "Keanan Bennetts",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1999,
+  "club": "FC Ingolstadt 04"
+ },
+ {
+  "id": "Q15506789",
+  "name": "Kelechi Iheanacho",
+  "slot": "FW",
+  "nat": "Nigeria",
+  "born": 1996,
+  "club": "Bursaspor"
+ },
+ {
+  "id": "Q6386855",
+  "name": "Kemar Roofe",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q14755604",
+  "name": "Kenedy",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1996,
+  "club": "C.F. Pachuca"
+ },
+ {
+  "id": "Q16235815",
+  "name": "Kenny Saief",
+  "slot": "MF",
+  "nat": "United States",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q21061530",
+  "name": "Keshi Anderson",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Portsmouth F.C."
+ },
+ {
+  "id": "Q65953178",
+  "name": "Kevin Agudelo",
+  "slot": "MF",
+  "nat": "Colombia",
+  "born": 1998,
+  "club": "Al-Nasr SC (Dubai)"
+ },
+ {
+  "id": "Q1740190",
+  "name": "Kevin Kampl",
+  "slot": "MF",
+  "nat": "Slovenia",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q6453717",
+  "name": "Kévin Malcuit",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q2605135",
+  "name": "Kévin Théophile-Catherine",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1989,
+  "club": "GNK Dinamo Zagreb"
+ },
+ {
+  "id": "Q65038822",
+  "name": "Kim Hyun-woo",
+  "slot": "DF",
+  "nat": "South Korea",
+  "born": 1999,
+  "club": "Gimcheon Sangmu FC"
+ },
+ {
+  "id": "Q20038711",
+  "name": "Kō Itakura",
+  "slot": "DF",
+  "nat": "Japan",
+  "born": 1997,
+  "club": "Borussia Mönchengladbach"
+ },
+ {
+  "id": "Q62456204",
+  "name": "Konrad de la Fuente",
+  "slot": "FW",
+  "nat": "United States",
+  "born": 2001,
+  "club": "Sporting de Gijón"
+ },
+ {
+  "id": "Q20639314",
+  "name": "Konstantin Kerschbaumer",
+  "slot": "MF",
+  "nat": "Austria",
+  "born": 1992,
+  "club": "Wiener Sport-Club"
+ },
+ {
+  "id": "Q29168109",
+  "name": "Krépin Diatta",
+  "slot": "MF",
+  "nat": "Senegal",
+  "born": 1999,
+  "club": "Watford F.C."
+ },
+ {
+  "id": "Q24083864",
+  "name": "Kristian Dimitrov",
+  "slot": "DF",
+  "nat": "Bulgaria",
+  "born": 1997,
+  "club": "PFC Levski Sofia"
+ },
+ {
+  "id": "Q59166026",
+  "name": "Kristoffer Klaesson",
+  "slot": "GK",
+  "nat": "Norway",
+  "born": 2000,
+  "club": null
+ },
+ {
+  "id": "Q31186641",
+  "name": "Kundai Benyu",
+  "slot": "MF",
+  "nat": "Zimbabwe",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q6450341",
+  "name": "Kwesi Appiah",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q2011106",
+  "name": "Lamine Koné",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q20676495",
+  "name": "Laros Duarte",
+  "slot": "MF",
+  "nat": "Cape Verde",
+  "born": 1997,
+  "club": "Puskás Akadémia FC"
+ },
+ {
+  "id": "Q47015355",
+  "name": "Lassina Traoré",
+  "slot": "FW",
+  "nat": "Burkina Faso",
+  "born": 2001,
+  "club": "FC Shakhtar Donetsk"
+ },
+ {
+  "id": "Q21130262",
+  "name": "Lautaro Arellano",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q15831068",
+  "name": "Leandro Pereira",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q17619665",
+  "name": "Leandro Rodríguez",
+  "slot": "FW",
+  "nat": "Uruguay",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q16589831",
+  "name": "Leandro Vega",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q17411153",
+  "name": "Lee Erwin",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": "Mohun Bagan Super Giant"
+ },
+ {
+  "id": "Q67076381",
+  "name": "Lee O'Connor",
+  "slot": "MF",
+  "nat": "Ireland",
+  "born": 2000,
+  "club": "Tranmere Rovers F.C."
+ },
+ {
+  "id": "Q61020870",
+  "name": "Lennart Grill",
+  "slot": "GK",
+  "nat": "Germany",
+  "born": 1999,
+  "club": null
+ },
+ {
+  "id": "Q45940576",
+  "name": "Lenny Pintor",
+  "slot": "FW",
+  "nat": "France",
+  "born": 2000,
+  "club": "Eyüpspor"
+ },
+ {
+  "id": "Q19841320",
+  "name": "Léo Bonatini",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q20890178",
+  "name": "Leon Bailey",
+  "slot": "MF",
+  "nat": "Jamaica",
+  "born": 1997,
+  "club": "Olympiacos F.C."
+ },
+ {
+  "id": "Q126041528",
+  "name": "Leon Jakirović",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 2008,
+  "club": "Inter Milan Under-23"
+ },
+ {
+  "id": "Q30899761",
+  "name": "Leonardo Campana",
+  "slot": "FW",
+  "nat": "Ecuador",
+  "born": 2000,
+  "club": "New England Revolution"
+ },
+ {
+  "id": "Q10555584",
+  "name": "Leonardo Pavoletti",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q108690643",
+  "name": "Lewis Dobbin",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2003,
+  "club": "Southampton F.C."
+ },
+ {
+  "id": "Q5406522",
+  "name": "Lewis Grabban",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q311246",
+  "name": "Lewis Holtby",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q6536837",
+  "name": "Lewis Macleod",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q2080923",
+  "name": "Liam Bridcutt",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q23007650",
+  "name": "Liam Burt",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1999,
+  "club": null
+ },
+ {
+  "id": "Q58008555",
+  "name": "Liam McCarron",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2001,
+  "club": "Wythenshawe F.C."
+ },
+ {
+  "id": "Q106096041",
+  "name": "Liel Abada",
+  "slot": "FW",
+  "nat": "Israel",
+  "born": 2001,
+  "club": "Charlotte FC"
+ },
+ {
+  "id": "Q19822751",
+  "name": "Lincoln",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1998,
+  "club": "F.C. Alverca"
+ },
+ {
+  "id": "Q3241831",
+  "name": "Lionel Carole",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1991,
+  "club": "Stade Malherbe Caen"
+ },
+ {
+  "id": "Q20666393",
+  "name": "Lorenzo Callegari",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q22046804",
+  "name": "Lorenzo Di Livio",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1997,
+  "club": "US Triestina Calcio 1918"
+ },
+ {
+  "id": "Q1651703",
+  "name": "Lorenzo Tonelli",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q20727747",
+  "name": "Louis Nganioni",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1995,
+  "club": "CA Pontarlier"
+ },
+ {
+  "id": "Q10512869",
+  "name": "Lovre Kalinić",
+  "slot": "GK",
+  "nat": "Croatia",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q121829403",
+  "name": "Luc de Fougerolles",
+  "slot": "DF",
+  "nat": "Canada",
+  "born": 2005,
+  "club": "Real Salt Lake"
+ },
+ {
+  "id": "Q60676025",
+  "name": "Luca Connell",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2001,
+  "club": "Barnsley F.C."
+ },
+ {
+  "id": "Q78069297",
+  "name": "Lucas Esteves",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 2000,
+  "club": "Atlético San Luis"
+ },
+ {
+  "id": "Q104192876",
+  "name": "Lucas Lissens",
+  "slot": "DF",
+  "nat": "Belgium",
+  "born": 2001,
+  "club": "Randers FC"
+ },
+ {
+  "id": "Q3838361",
+  "name": "Lucas Mugni",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1992,
+  "club": "Ceará Sporting Club"
+ },
+ {
+  "id": "Q126903",
+  "name": "Lucas Piazon",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1994,
+  "club": "Wieczysta Kraków"
+ },
+ {
+  "id": "Q6696318",
+  "name": "Lucas Silva",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q20641574",
+  "name": "Lucas Tousart",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1997,
+  "club": "Stade Brestois 29"
+ },
+ {
+  "id": "Q10552199",
+  "name": "Lucca",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1990,
+  "club": "Guarani FC"
+ },
+ {
+  "id": "Q335026",
+  "name": "Luciano Vietto",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q41779982",
+  "name": "Ludovit Reis",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 2000,
+  "club": "SV Werder Bremen"
+ },
+ {
+  "id": "Q930764",
+  "name": "Luis Ibáñez",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1988,
+  "club": "NK Jarun Zagreb"
+ },
+ {
+  "id": "Q19338860",
+  "name": "Luis Olivera",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q105588793",
+  "name": "Luis Vázquez",
+  "slot": "FW",
+  "nat": "Argentina",
+  "born": 2001,
+  "club": "Birmingham City F.C."
+ },
+ {
+  "id": "Q17279171",
+  "name": "Luka Belić",
+  "slot": "MF",
+  "nat": "Serbia",
+  "born": 1996,
+  "club": "Anagennisi Giannitsa F.C."
+ },
+ {
+  "id": "Q96335553",
+  "name": "Luka Romero",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 2004,
+  "club": "Cruz Azul"
+ },
+ {
+  "id": "Q14405845",
+  "name": "Lukas Spalvis",
+  "slot": "FW",
+  "nat": "Lithuania",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q63791594",
+  "name": "Luke Dreher",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q723614",
+  "name": "Luke Garbutt",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "Salford City F.C."
+ },
+ {
+  "id": "Q313911",
+  "name": "Luuk de Jong",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q42725482",
+  "name": "Lyle Foster",
+  "slot": "FW",
+  "nat": "South Africa",
+  "born": 2000,
+  "club": "Houston Dynamo FC"
+ },
+ {
+  "id": "Q20895094",
+  "name": "Lynden Gooch",
+  "slot": "MF",
+  "nat": "United States",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q37810302",
+  "name": "Majeed Ashimeru",
+  "slot": "MF",
+  "nat": "Ghana",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q18599504",
+  "name": "Majid Hosseini",
+  "slot": "DF",
+  "nat": "Iran",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q4083051",
+  "name": "Maksym Bilyi",
+  "slot": "DF",
+  "nat": "Ukraine",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q62063258",
+  "name": "Manny Perez",
+  "slot": "DF",
+  "nat": "United States",
+  "born": 1999,
+  "club": "Louisville City FC"
+ },
+ {
+  "id": "Q129816",
+  "name": "Manolo Gabbiadini",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q3180341",
+  "name": "Manuel Arteaga",
+  "slot": "FW",
+  "nat": "Venezuela",
+  "born": 1994,
+  "club": "Las Vegas Lights FC"
+ },
+ {
+  "id": "Q16740288",
+  "name": "Manuel Benson",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q1524928",
+  "name": "Manuel Lanzini",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1993,
+  "club": "Club Atlético Vélez Sarsfield"
+ },
+ {
+  "id": "Q438796",
+  "name": "Mapou Yanga-Mbiwa",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q37282560",
+  "name": "Marash Kumbulla",
+  "slot": "DF",
+  "nat": "Albania",
+  "born": 2000,
+  "club": "Rayo Vallecano"
+ },
+ {
+  "id": "Q21033389",
+  "name": "Marc Brašnić",
+  "slot": "FW",
+  "nat": "Germany",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q114085673",
+  "name": "Marc Casadó",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 2003,
+  "club": "Deportivo de A Coruña"
+ },
+ {
+  "id": "Q118472572",
+  "name": "Marc Guiu",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 2006,
+  "club": "RB Leipzig"
+ },
+ {
+  "id": "Q6756532",
+  "name": "Marcelo Cirino",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q84314202",
+  "name": "Marcelo Pitaluga",
+  "slot": "GK",
+  "nat": "Brazil",
+  "born": 2002,
+  "club": null
+ },
+ {
+  "id": "Q20994301",
+  "name": "Marcelo Saracchi",
+  "slot": "DF",
+  "nat": "Uruguay",
+  "born": 1998,
+  "club": "Houston Dynamo FC"
+ },
+ {
+  "id": "Q1796351",
+  "name": "Marco Djuricin",
+  "slot": "FW",
+  "nat": "Austria",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q64010759",
+  "name": "Marco Tilio",
+  "slot": "FW",
+  "nat": "Australia",
+  "born": 2001,
+  "club": "SK Rapid Wien"
+ },
+ {
+  "id": "Q648671",
+  "name": "Marco van Ginkel",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q3869209",
+  "name": "Marinho",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1990,
+  "club": "Esporte Clube Vitória"
+ },
+ {
+  "id": "Q73400559",
+  "name": "Mario Vušković",
+  "slot": "DF",
+  "nat": null,
+  "born": 2001,
+  "club": null
+ },
+ {
+  "id": "Q60792119",
+  "name": "Marko Đira",
+  "slot": "MF",
+  "nat": "Croatia",
+  "born": 1999,
+  "club": "HNK Cibalia"
+ },
+ {
+  "id": "Q18356479",
+  "name": "Marko Maroši",
+  "slot": "GK",
+  "nat": "Slovakia",
+  "born": 1993,
+  "club": "Port Vale F.C."
+ },
+ {
+  "id": "Q19663494",
+  "name": "Marko Pejić",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q18201931",
+  "name": "Marko Rog",
+  "slot": "MF",
+  "nat": "Croatia",
+  "born": 1995,
+  "club": "forca kochi"
+ },
+ {
+  "id": "Q349331",
+  "name": "Marko Vejinović",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q66432192",
+  "name": "Marley Aké",
+  "slot": "MF",
+  "nat": "France",
+  "born": 2001,
+  "club": "SV Zulte Waregem"
+ },
+ {
+  "id": "Q21709278",
+  "name": "Marlon Frey",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1996,
+  "club": "1. FC Bocholt"
+ },
+ {
+  "id": "Q6273829",
+  "name": "Marlone",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q107584170",
+  "name": "Marquinhos",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 2003,
+  "club": "Cruzeiro EC"
+ },
+ {
+  "id": "Q3849814",
+  "name": "Marquinhos Gabriel",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q3431011",
+  "name": "Martin Linnes",
+  "slot": "MF",
+  "nat": "Norway",
+  "born": 1991,
+  "club": "Molde FK"
+ },
+ {
+  "id": "Q252596",
+  "name": "Martín Montoya",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q20730207",
+  "name": "Martin Samuelsen",
+  "slot": "MF",
+  "nat": "Norway",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q2548166",
+  "name": "Martyn Waghorn",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q17492941",
+  "name": "Marvelous Nakamba",
+  "slot": "MF",
+  "nat": "Zimbabwe",
+  "born": 1994,
+  "club": "Panetolikos F.C."
+ },
+ {
+  "id": "Q7001945",
+  "name": "Matej Mitrović",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q29919582",
+  "name": "Matheus Jesus",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q22006724",
+  "name": "Matheus Sales",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q3559484",
+  "name": "Matías Kranevitter",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1993,
+  "club": "Racing Club de Avellaneda"
+ },
+ {
+  "id": "Q28663925",
+  "name": "Matías Viña",
+  "slot": "DF",
+  "nat": "Uruguay",
+  "born": 1997,
+  "club": "Cruzeiro EC"
+ },
+ {
+  "id": "Q128941",
+  "name": "Mats Rits",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 1993,
+  "club": "K Beerschot VA"
+ },
+ {
+  "id": "Q22958673",
+  "name": "Matt Butcher",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q10557783",
+  "name": "Matt Ingram",
+  "slot": "GK",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "West Bromwich Albion F.C."
+ },
+ {
+  "id": "Q731869",
+  "name": "Matt Lowton",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q24663885",
+  "name": "Matt Turner",
+  "slot": "GK",
+  "nat": "United States",
+  "born": 1994,
+  "club": "New England Revolution"
+ },
+ {
+  "id": "Q66311593",
+  "name": "Matty Longstaff",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": "CF Montréal"
+ },
+ {
+  "id": "Q24005423",
+  "name": "Max Clark",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q60418",
+  "name": "Maxime Colin",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q14250217",
+  "name": "Maxime Dupé",
+  "slot": "GK",
+  "nat": "France",
+  "born": 1993,
+  "club": "FC Nantes"
+ },
+ {
+  "id": "Q1362594",
+  "name": "Maxime Lestienne",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q127607065",
+  "name": "Maximilian Ibrahimović",
+  "slot": "FW",
+  "nat": "Sweden",
+  "born": 2006,
+  "club": "Jong AZ"
+ },
+ {
+  "id": "Q16320332",
+  "name": "Maximilian Philipp",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q22958501",
+  "name": "Maycon",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q16234012",
+  "name": "Mbaye Diagne",
+  "slot": "FW",
+  "nat": "Senegal",
+  "born": 1991,
+  "club": "Amed S.F.K."
+ },
+ {
+  "id": "Q3303586",
+  "name": "Mbwana Samatta",
+  "slot": "FW",
+  "nat": "Tanzania",
+  "born": 1992,
+  "club": "Le Havre"
+ },
+ {
+  "id": "Q552347",
+  "name": "Mehdi Carcela",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q43387229",
+  "name": "Mert Çetin",
+  "slot": "DF",
+  "nat": "Turkey",
+  "born": 1997,
+  "club": "Boluspor"
+ },
+ {
+  "id": "Q40352866",
+  "name": "Michaël Cuisance",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1999,
+  "club": "RC Lens"
+ },
+ {
+  "id": "Q18217681",
+  "name": "Michael Duffy",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": "Derry City F.C."
+ },
+ {
+  "id": "Q10514868",
+  "name": "Michael Hector",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q10520024",
+  "name": "Michael O'Halloran",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": "Greenock Morton F.C."
+ },
+ {
+  "id": "Q1966430",
+  "name": "Michail Antonio",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1990,
+  "club": "Watford F.C."
+ },
+ {
+  "id": "Q73247293",
+  "name": "Michał Karbownik",
+  "slot": "MF",
+  "nat": "Poland",
+  "born": 2001,
+  "club": "İstanbul Başakşehir F.K."
+ },
+ {
+  "id": "Q777363",
+  "name": "Michiel Kramer",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1988,
+  "club": "RKC Waalwijk"
+ },
+ {
+  "id": "Q4094820",
+  "name": "Miguel Borja",
+  "slot": "FW",
+  "nat": "Colombia",
+  "born": 1993,
+  "club": "Club América"
+ },
+ {
+  "id": "Q10329962",
+  "name": "Mikel Agu",
+  "slot": "MF",
+  "nat": "Nigeria",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q6860582",
+  "name": "Miloš Cvetković",
+  "slot": "DF",
+  "nat": "Serbia",
+  "born": 1990,
+  "club": "FK Mladost Lučani"
+ },
+ {
+  "id": "Q14309492",
+  "name": "Miloš Degenek",
+  "slot": "DF",
+  "nat": "Australia",
+  "born": 1994,
+  "club": "APOEL FC"
+ },
+ {
+  "id": "Q129097",
+  "name": "Mitchell Dijks",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1993,
+  "club": "Thep Xanh Nam Dinh F.C."
+ },
+ {
+  "id": "Q795450",
+  "name": "Mitchell Donald",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q65504236",
+  "name": "Mohamed Bouchouari",
+  "slot": "DF",
+  "nat": "Belgium",
+  "born": 2000,
+  "club": "NAC Breda"
+ },
+ {
+  "id": "Q18719399",
+  "name": "Mohamed Farès",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q50042926",
+  "name": "Mohammed Dauda",
+  "slot": "FW",
+  "nat": "Ghana",
+  "born": 1998,
+  "club": "CD Lugo"
+ },
+ {
+  "id": "Q27889974",
+  "name": "Moise Kean",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 2000,
+  "club": "Como"
+ },
+ {
+  "id": "Q10331545",
+  "name": "Moisés",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q20994240",
+  "name": "Monty Patterson",
+  "slot": "FW",
+  "nat": "New Zealand",
+  "born": 1996,
+  "club": "Birkenhead United AFC"
+ },
+ {
+  "id": "Q19754212",
+  "name": "Moussa Marega",
+  "slot": "FW",
+  "nat": "Mali",
+  "born": 1991,
+  "club": "Palm City FC"
+ },
+ {
+  "id": "Q64433049",
+  "name": "Moussa N'Diaye",
+  "slot": "DF",
+  "nat": "Senegal",
+  "born": 2002,
+  "club": "SV Werder Bremen"
+ },
+ {
+  "id": "Q22003375",
+  "name": "Muhammet Beşir",
+  "slot": "FW",
+  "nat": "Turkey",
+  "born": 1997,
+  "club": "Çorluspor"
+ },
+ {
+  "id": "Q946426",
+  "name": "Muhammet Demir",
+  "slot": "FW",
+  "nat": "Turkey",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q27671274",
+  "name": "Mustapha Bundu",
+  "slot": "FW",
+  "nat": "Sierra Leone",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q6943428",
+  "name": "Mustapha Carayol",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q21061755",
+  "name": "Myles Kenlock",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": "Barnet F.C."
+ },
+ {
+  "id": "Q23703394",
+  "name": "Nacho Monsalve",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1994,
+  "club": "East Bengal FC"
+ },
+ {
+  "id": "Q3909869",
+  "name": "Naldo",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q136558732",
+  "name": "Naoufal Bohamdi-Kamoni",
+  "slot": "FW",
+  "nat": "Belgium",
+  "born": 2007,
+  "club": null
+ },
+ {
+  "id": "Q6968947",
+  "name": "Nathan Byrne",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q107745867",
+  "name": "Neil El Aynaoui",
+  "slot": "MF",
+  "nat": "France",
+  "born": 2001,
+  "club": "RB Leipzig"
+ },
+ {
+  "id": "Q644989",
+  "name": "Nemanja Gudelj",
+  "slot": "MF",
+  "nat": "Serbia",
+  "born": 1991,
+  "club": "Getafe"
+ },
+ {
+  "id": "Q16935131",
+  "name": "Nemanja Milunović",
+  "slot": "DF",
+  "nat": "Serbia",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q23771922",
+  "name": "Nemanja Radonjić",
+  "slot": "MF",
+  "nat": "Serbia",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q98276222",
+  "name": "Nemanja Stojić",
+  "slot": "DF",
+  "nat": "Serbia",
+  "born": 1998,
+  "club": "PFC Sochi"
+ },
+ {
+  "id": "Q321082",
+  "name": "Nick Powell",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": "Bradford City A.F.C."
+ },
+ {
+  "id": "Q326159",
+  "name": "Niclas Füllkrug",
+  "slot": "FW",
+  "nat": "Germany",
+  "born": 1993,
+  "club": "SV Werder Bremen"
+ },
+ {
+  "id": "Q1350685",
+  "name": "Nico Schulz",
+  "slot": "DF",
+  "nat": "Germany",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q924796",
+  "name": "Nicolai Jørgensen",
+  "slot": "FW",
+  "nat": "Kingdom of Denmark",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q34640157",
+  "name": "Nicolás Franco",
+  "slot": "FW",
+  "nat": "Argentina",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q50365620",
+  "name": "Nicolás Ibáñez",
+  "slot": "FW",
+  "nat": "Mexico",
+  "born": 1994,
+  "club": "Cruz Azul"
+ },
+ {
+  "id": "Q116487",
+  "name": "Nicolas Isimat-Mirin",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q17462459",
+  "name": "Nicolás Schiappacasse",
+  "slot": "FW",
+  "nat": "Uruguay",
+  "born": 1999,
+  "club": "Miramar Misiones"
+ },
+ {
+  "id": "Q106768944",
+  "name": "Nicolás Valentini",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 2001,
+  "club": "Deportivo Alavés"
+ },
+ {
+  "id": "Q6042606",
+  "name": "Nicolás Vélez",
+  "slot": "FW",
+  "nat": "Argentina",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q28974273",
+  "name": "Nicolò Zaniolo",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1999,
+  "club": "Udinese"
+ },
+ {
+  "id": "Q24449743",
+  "name": "Niklas Dorsch",
+  "slot": "MF",
+  "nat": "Germany",
+  "born": 1998,
+  "club": "Toronto FC"
+ },
+ {
+  "id": "Q19665947",
+  "name": "Nikolai Laursen",
+  "slot": "MF",
+  "nat": "Kingdom of Denmark",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q105047331",
+  "name": "Noah Mbamba",
+  "slot": "DF",
+  "nat": "Belgium",
+  "born": 2005,
+  "club": "FC Lorient"
+ },
+ {
+  "id": "Q3808761",
+  "name": "Norbert Gyömbér",
+  "slot": "DF",
+  "nat": "Slovakia",
+  "born": 1992,
+  "club": "Levadiakos F.C."
+ },
+ {
+  "id": "Q22084562",
+  "name": "Ntumba Massanka",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q3373985",
+  "name": "Ole Selnæs",
+  "slot": "MF",
+  "nat": "Norway",
+  "born": 1994,
+  "club": "Rosenborg BK"
+ },
+ {
+  "id": "Q19636859",
+  "name": "Oleksandr Zinchenko",
+  "slot": "FW",
+  "nat": "Ukraine",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q23770357",
+  "name": "Olivier Kemen",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1996,
+  "club": "İstanbul Başakşehir F.K."
+ },
+ {
+  "id": "Q20925459",
+  "name": "Olivier Ntcham",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q24053865",
+  "name": "Omri Glazer",
+  "slot": "GK",
+  "nat": "Israel",
+  "born": 1996,
+  "club": "Maccabi Haifa F.C."
+ },
+ {
+  "id": "Q3637067",
+  "name": "Oumar Niasse",
+  "slot": "MF",
+  "nat": "Senegal",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q3375006",
+  "name": "Oussama Tannane",
+  "slot": "FW",
+  "nat": "Morocco",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q26953157",
+  "name": "Ovie Ejaria",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q78238428",
+  "name": "Owen Otasowie",
+  "slot": "MF",
+  "nat": "United States",
+  "born": 2001,
+  "club": null
+ },
+ {
+  "id": "Q17987381",
+  "name": "Pablo Carreras",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1995,
+  "club": "Enosis Neon Paralimni FC"
+ },
+ {
+  "id": "Q46645",
+  "name": "Pape Souaré",
+  "slot": "DF",
+  "nat": "Senegal",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q1914940",
+  "name": "Patric",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1993,
+  "club": "Al-Ittifaq FC (UAE)"
+ },
+ {
+  "id": "Q41200266",
+  "name": "Paudie O'Connor",
+  "slot": "DF",
+  "nat": "Ireland",
+  "born": 1997,
+  "club": "Reading F.C."
+ },
+ {
+  "id": "Q44739",
+  "name": "Paul Baysse",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q10522919",
+  "name": "Paul Digby",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Colchester United F.C."
+ },
+ {
+  "id": "Q22098174",
+  "name": "Paul McKay",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q20877189",
+  "name": "Paul McMullan",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": "Raith Rovers F.C."
+ },
+ {
+  "id": "Q129027",
+  "name": "Paul Pogba",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q73916000",
+  "name": "Pedro Mendes",
+  "slot": "FW",
+  "nat": "Portugal",
+  "born": 1999,
+  "club": "Gençlerbirliği S.K."
+ },
+ {
+  "id": "Q2066714",
+  "name": "Pedro Obiang",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q27527436",
+  "name": "Percy Tau",
+  "slot": "FW",
+  "nat": "South Africa",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q27881565",
+  "name": "Perr Schuurs",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1999,
+  "club": "NEC Nijmegen"
+ },
+ {
+  "id": "Q21932428",
+  "name": "Petar Milić",
+  "slot": "FW",
+  "nat": "Serbia",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q15718710",
+  "name": "Petar Orlandić",
+  "slot": "FW",
+  "nat": "Montenegro",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q16854449",
+  "name": "Peter Žulj",
+  "slot": "MF",
+  "nat": "Austria",
+  "born": 1993,
+  "club": "Buriram United F.C."
+ },
+ {
+  "id": "Q16727516",
+  "name": "Philip Billing",
+  "slot": "MF",
+  "nat": "Kingdom of Denmark",
+  "born": 1996,
+  "club": "FC Midtjylland"
+ },
+ {
+  "id": "Q89371",
+  "name": "Philipp Hofmann",
+  "slot": "FW",
+  "nat": "Germany",
+  "born": 1993,
+  "club": "VfL Bochum"
+ },
+ {
+  "id": "Q15980720",
+  "name": "Philipp Max",
+  "slot": "DF",
+  "nat": "Germany",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q26266373",
+  "name": "Philippe Sandler",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1997,
+  "club": "NEC Nijmegen"
+ },
+ {
+  "id": "Q2088059",
+  "name": "Phillipp Steinhart",
+  "slot": "DF",
+  "nat": "Germany",
+  "born": 1992,
+  "club": "FC 08 Homburg"
+ },
+ {
+  "id": "Q113572844",
+  "name": "Quilindschy Hartman",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 2001,
+  "club": "RCD Espanyol"
+ },
+ {
+  "id": "Q21540971",
+  "name": "Rafa Mir",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 1997,
+  "club": "Aris Thessaloniki F.C."
+ },
+ {
+  "id": "Q189184",
+  "name": "Rafael",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q3928947",
+  "name": "Rafael Galhardo",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q2662455",
+  "name": "Raffaele Maiello",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1991,
+  "club": "Casarano Calcio"
+ },
+ {
+  "id": "Q15241347",
+  "name": "Ramiro",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1993,
+  "club": "FC Dallas"
+ },
+ {
+  "id": "Q401554",
+  "name": "Ramiro Funes Mori",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q21711800",
+  "name": "Raphaël Diarra",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1995,
+  "club": "FC Atert Bissen"
+ },
+ {
+  "id": "Q2991830",
+  "name": "Raphael Spiegel",
+  "slot": "GK",
+  "nat": "Switzerland",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q97573236",
+  "name": "Raúl Moro",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 2002,
+  "club": "CA Osasuna"
+ },
+ {
+  "id": "Q642785",
+  "name": "Ravel Morrison",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "Arabian Falcons FC"
+ },
+ {
+  "id": "Q20641277",
+  "name": "Reece Oxford",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q17037521",
+  "name": "Régis",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q716134",
+  "name": "Rémy Cabella",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1990,
+  "club": "Volos F.C."
+ },
+ {
+  "id": "Q130545775",
+  "name": "Renato Marin",
+  "slot": "GK",
+  "nat": "Italy",
+  "born": 2006,
+  "club": "C.D. Nacional"
+ },
+ {
+  "id": "Q5478192",
+  "name": "Renato Tapia",
+  "slot": "DF",
+  "nat": "Peru",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q6105612",
+  "name": "Renzo Saravia",
+  "slot": "DF",
+  "nat": "Argentina",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q794914",
+  "name": "Ricardo Esgaio",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1993,
+  "club": "Gil Vicente F.C."
+ },
+ {
+  "id": "Q81003636",
+  "name": "Ricardo Mangas",
+  "slot": "DF",
+  "nat": "Portugal",
+  "born": 1998,
+  "club": "AC Monza"
+ },
+ {
+  "id": "Q22004439",
+  "name": "Riccardo Gaiola",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1996,
+  "club": "Forlì FC"
+ },
+ {
+  "id": "Q58174760",
+  "name": "Riccardo Sottil",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1999,
+  "club": null
+ },
+ {
+  "id": "Q1449179",
+  "name": "Richairo Živković",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1996,
+  "club": "Bangkok United F.C."
+ },
+ {
+  "id": "Q117322318",
+  "name": "Richard Ríos",
+  "slot": "MF",
+  "nat": "Colombia",
+  "born": 2000,
+  "club": "Al-Ittihad Club (Jeddah)"
+ },
+ {
+  "id": "Q4461488",
+  "name": "Richie Towell",
+  "slot": "MF",
+  "nat": "Ireland",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q22001769",
+  "name": "Rick van Drongelen",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1998,
+  "club": "Panathinaikos F.C."
+ },
+ {
+  "id": "Q10295275",
+  "name": "Rildo",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q50315237",
+  "name": "Riqui Puig",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1999,
+  "club": "LA Galaxy"
+ },
+ {
+  "id": "Q13543997",
+  "name": "Riza Durmisi",
+  "slot": "DF",
+  "nat": "Kingdom of Denmark",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q21061767",
+  "name": "Rob Holding",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Colorado Rapids"
+ },
+ {
+  "id": "Q367879",
+  "name": "Rob Kiernan",
+  "slot": "DF",
+  "nat": "Ireland",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q3612407",
+  "name": "Robert Berić",
+  "slot": "FW",
+  "nat": "Slovenia",
+  "born": 1991,
+  "club": "FC Koper"
+ },
+ {
+  "id": "Q55819815",
+  "name": "Róbert Boženík",
+  "slot": "FW",
+  "nat": "Slovakia",
+  "born": 1999,
+  "club": "Stoke City F.C."
+ },
+ {
+  "id": "Q56043276",
+  "name": "Robert Sánchez",
+  "slot": "GK",
+  "nat": "Spain",
+  "born": 1997,
+  "club": "Como"
+ },
+ {
+  "id": "Q93504",
+  "name": "Roberto Pereyra",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q20048828",
+  "name": "Rodinei",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1992,
+  "club": "Santos FC"
+ },
+ {
+  "id": "Q55655668",
+  "name": "Rodrigo Becão",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1996,
+  "club": "FC Rodina Moscow"
+ },
+ {
+  "id": "Q3438450",
+  "name": "Rodrigo Caio",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q78213451",
+  "name": "Rodrigo Fernandes",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 2001,
+  "club": "Sabah FK (Azerbaijan)"
+ },
+ {
+  "id": "Q3940035",
+  "name": "Rodriguinho",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q55363875",
+  "name": "Roger Ibañez",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1998,
+  "club": "Al-Ahli Saudi FC"
+ },
+ {
+  "id": "Q6111102",
+  "name": "Rohan Ince",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1992,
+  "club": "Hampton & Richmond Borough F.C."
+ },
+ {
+  "id": "Q16724213",
+  "name": "Roman Yaremchuk",
+  "slot": "FW",
+  "nat": "Ukraine",
+  "born": 1995,
+  "club": "Olympiacos F.C."
+ },
+ {
+  "id": "Q21622376",
+  "name": "Ronaël Pierre-Gabriel",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1998,
+  "club": "Volos F.C."
+ },
+ {
+  "id": "Q16232770",
+  "name": "Roque Mesa",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1989,
+  "club": "Ratchaburi F.C."
+ },
+ {
+  "id": "Q19968716",
+  "name": "Rúben Lameiras",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1994,
+  "club": "Al-Markhiya SC"
+ },
+ {
+  "id": "Q520909",
+  "name": "Rudy Gestede",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1988,
+  "club": "Blackburn Rovers F.C."
+ },
+ {
+  "id": "Q19594152",
+  "name": "Rushian Hepburn-Murphy",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": "Milton Keynes Dons F.C."
+ },
+ {
+  "id": "Q7384073",
+  "name": "Ryan Fredericks",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q21062024",
+  "name": "Ryan Kent",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q4459692",
+  "name": "Ryan Mason",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q1392925",
+  "name": "Ryan Mendes",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1990,
+  "club": "RS Berkane"
+ },
+ {
+  "id": "Q16235980",
+  "name": "Ryan Woods",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "Solihull Moors F.C."
+ },
+ {
+  "id": "Q19956204",
+  "name": "Sabit Bilali",
+  "slot": "MF",
+  "nat": "North Macedonia",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q18977950",
+  "name": "Sadiq El Fitouri",
+  "slot": "DF",
+  "nat": "Libya",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q15082662",
+  "name": "Saïd Benrahma",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1995,
+  "club": "Neom SC"
+ },
+ {
+  "id": "Q494659",
+  "name": "Said Husejinović",
+  "slot": "MF",
+  "nat": "Bosnia and Herzegovina",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q17619317",
+  "name": "Saidy Janko",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 1995,
+  "club": "BSC Young Boys"
+ },
+ {
+  "id": "Q2331126",
+  "name": "Sakari Mattila",
+  "slot": "MF",
+  "nat": "Finland",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q5591335",
+  "name": "Sam Byram",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1993,
+  "club": "Middlesbrough F.C."
+ },
+ {
+  "id": "Q7411126",
+  "name": "Sam Clucas",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q13539266",
+  "name": "Sam Hendriks",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q23727527",
+  "name": "Sam Westley",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q16632974",
+  "name": "Saman Ghoddos",
+  "slot": "MF",
+  "nat": "Sweden",
+  "born": 1993,
+  "club": "Kalba FC"
+ },
+ {
+  "id": "Q639606",
+  "name": "Samba Sow",
+  "slot": "MF",
+  "nat": "Mali",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q16237035",
+  "name": "Sammie Szmodics",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Derby County F.C."
+ },
+ {
+  "id": "Q18759062",
+  "name": "Samuel Eduok",
+  "slot": "MF",
+  "nat": "Nigeria",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q128460374",
+  "name": "Santiago Lencina",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 2005,
+  "club": "Burgos CF"
+ },
+ {
+  "id": "Q2481829",
+  "name": "Scott Allan",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q3952812",
+  "name": "Scott Arfield",
+  "slot": "MF",
+  "nat": "Canada",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q20026825",
+  "name": "Sebastián Gamarra",
+  "slot": "MF",
+  "nat": "Bolivia",
+  "born": 1997,
+  "club": null
+ },
+ {
+  "id": "Q2634722",
+  "name": "Sebastián Ribas",
+  "slot": "FW",
+  "nat": "Uruguay",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q19851177",
+  "name": "Sebastiano Luperto",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q2162547",
+  "name": "Sébastien Bruzzese",
+  "slot": "GK",
+  "nat": "Belgium",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q97205258",
+  "name": "Seol Young-woo",
+  "slot": "DF",
+  "nat": "South Korea",
+  "born": 1998,
+  "club": "FC Augsburg"
+ },
+ {
+  "id": "Q20379049",
+  "name": "Serge Atakayi",
+  "slot": "FW",
+  "nat": "Finland",
+  "born": 1999,
+  "club": "Mikkelin Palloilijat"
+ },
+ {
+  "id": "Q14623217",
+  "name": "Sergi Samper",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1995,
+  "club": "Debreceni VSC"
+ },
+ {
+  "id": "Q21694015",
+  "name": "Sergio Buenacasa",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q2071136",
+  "name": "Sérgio Oliveira",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1992,
+  "club": null
+ },
+ {
+  "id": "Q16236719",
+  "name": "Sessi D'Almeida",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1995,
+  "club": "Neftçi PFK"
+ },
+ {
+  "id": "Q125167664",
+  "name": "Shandre Campbell",
+  "slot": "FW",
+  "nat": "South Africa",
+  "born": 2005,
+  "club": "KV Kortrijk"
+ },
+ {
+  "id": "Q132797313",
+  "name": "Shea Pita",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2009,
+  "club": null
+ },
+ {
+  "id": "Q129692",
+  "name": "Siebe Schrijvers",
+  "slot": "FW",
+  "nat": "Belgium",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q21066014",
+  "name": "Silvester Shkalla",
+  "slot": "DF",
+  "nat": "Albania",
+  "born": 1995,
+  "club": null
+ },
+ {
+  "id": "Q23887828",
+  "name": "Simon Banza",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1996,
+  "club": "PAOK FC"
+ },
+ {
+  "id": "Q9135889",
+  "name": "Simon Gustafson",
+  "slot": "MF",
+  "nat": "Sweden",
+  "born": 1995,
+  "club": "Korona Kielce"
+ },
+ {
+  "id": "Q56810113",
+  "name": "Simone Muratore",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q15707405",
+  "name": "Simone Scuffet",
+  "slot": "GK",
+  "nat": "Italy",
+  "born": 1996,
+  "club": "Pisa SC"
+ },
+ {
+  "id": "Q4202251",
+  "name": "Simone Verdi",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1992,
+  "club": "Benevento Calcio"
+ },
+ {
+  "id": "Q98829626",
+  "name": "Sinaly Diomandé",
+  "slot": "DF",
+  "nat": "Ivory Coast",
+  "born": 2001,
+  "club": "AJ Auxerre"
+ },
+ {
+  "id": "Q4438843",
+  "name": "Slavoljub Srnić",
+  "slot": "MF",
+  "nat": "Serbia",
+  "born": 1992,
+  "club": "RFK Grafičar Beograd"
+ },
+ {
+  "id": "Q56033749",
+  "name": "Sofiane Diop",
+  "slot": "MF",
+  "nat": "France",
+  "born": 2000,
+  "club": "OGC Nice"
+ },
+ {
+  "id": "Q134704268",
+  "name": "Sonny Yvars",
+  "slot": null,
+  "nat": "France",
+  "born": 2008,
+  "club": null
+ },
+ {
+  "id": "Q7564054",
+  "name": "Soualiho Meïté",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1994,
+  "club": "PAOK FC"
+ },
+ {
+  "id": "Q17580390",
+  "name": "Srđan Plavšić",
+  "slot": "MF",
+  "nat": "Serbia",
+  "born": 1995,
+  "club": "FK Železničar Pančevo"
+ },
+ {
+  "id": "Q60050183",
+  "name": "Stefan Bajić",
+  "slot": "GK",
+  "nat": "France",
+  "born": 2001,
+  "club": "Alemannia Aachen"
+ },
+ {
+  "id": "Q129061",
+  "name": "Stefano Denswil",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1993,
+  "club": "AEL Limassol"
+ },
+ {
+  "id": "Q342228",
+  "name": "Stefano Okaka",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q21055388",
+  "name": "Stefano Sensi",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1995,
+  "club": "PFC CSKA Sofia"
+ },
+ {
+  "id": "Q2395878",
+  "name": "Stéphane Badji",
+  "slot": "MF",
+  "nat": "Senegal",
+  "born": 1990,
+  "club": "Omonia Aradippou"
+ },
+ {
+  "id": "Q7609462",
+  "name": "Stephen Hendrie",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Hamilton Academical F.C."
+ },
+ {
+  "id": "Q67200400",
+  "name": "Stephen Welsh",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 2000,
+  "club": "Swansea City A.F.C."
+ },
+ {
+  "id": "Q28861495",
+  "name": "Steven Alzate",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": "Atlanta United FC"
+ },
+ {
+  "id": "Q26192",
+  "name": "Steven Caulker",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q74684256",
+  "name": "Steven van der Sloot",
+  "slot": "DF",
+  "nat": "Cameroon",
+  "born": 2002,
+  "club": "Fortuna Düsseldorf"
+ },
+ {
+  "id": "Q81187581",
+  "name": "Strahinja Eraković",
+  "slot": "DF",
+  "nat": "Serbia",
+  "born": 2001,
+  "club": "Samsunspor"
+ },
+ {
+  "id": "Q3976225",
+  "name": "Stuart Dallas",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q16466956",
+  "name": "Suently Alberto",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1996,
+  "club": "FC Skillz"
+ },
+ {
+  "id": "Q211691",
+  "name": "Suk Hyun-jun",
+  "slot": "FW",
+  "nat": "South Korea",
+  "born": 1991,
+  "club": "Yongin FC"
+ },
+ {
+  "id": "Q366682",
+  "name": "Tabaré Viudez",
+  "slot": "MF",
+  "nat": "Uruguay",
+  "born": 1989,
+  "club": "Montevideo Wanderers F.C."
+ },
+ {
+  "id": "Q67070943",
+  "name": "Tanguy Nianzou",
+  "slot": "DF",
+  "nat": "France",
+  "born": 2002,
+  "club": "Lille OSC"
+ },
+ {
+  "id": "Q2397796",
+  "name": "Taylan Antalyalı",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 1995,
+  "club": "Çaykur Rizespor"
+ },
+ {
+  "id": "Q30193978",
+  "name": "Tayyip Talha Sanuç",
+  "slot": "DF",
+  "nat": "Turkey",
+  "born": 1999,
+  "club": "Çaykur Rizespor"
+ },
+ {
+  "id": "Q7699573",
+  "name": "Tendayi Darikwa",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": "Lincoln City F.C."
+ },
+ {
+  "id": "Q131450234",
+  "name": "Terry Van De Ven",
+  "slot": "FW",
+  "nat": "Belgium",
+  "born": 2008,
+  "club": null
+ },
+ {
+  "id": "Q18764011",
+  "name": "Thallyson",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": "Agremiação Sportiva Arapiraquense"
+ },
+ {
+  "id": "Q113516868",
+  "name": "Théo Leoni",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 2000,
+  "club": "Stade de Reims"
+ },
+ {
+  "id": "Q21030271",
+  "name": "Thiago Santos",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q961878",
+  "name": "Thomas Delaney",
+  "slot": "MF",
+  "nat": "Kingdom of Denmark",
+  "born": 1991,
+  "club": "F.C. Copenhagen"
+ },
+ {
+  "id": "Q7800063",
+  "name": "Tiago Ilori",
+  "slot": "DF",
+  "nat": "Portugal",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q39500352",
+  "name": "Tijjani Reijnders",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1998,
+  "club": "Al Qadsiah FC"
+ },
+ {
+  "id": "Q74047936",
+  "name": "Timothée Pembélé",
+  "slot": "DF",
+  "nat": "France",
+  "born": 2002,
+  "club": "Le Havre"
+ },
+ {
+  "id": "Q22969552",
+  "name": "Timothy Fosu-Mensah",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q20981290",
+  "name": "Tino Kadewere",
+  "slot": "FW",
+  "nat": "Zimbabwe",
+  "born": 1996,
+  "club": "Aris Thessaloniki F.C."
+ },
+ {
+  "id": "Q7811626",
+  "name": "Tobias Figueiredo",
+  "slot": "DF",
+  "nat": "Portugal",
+  "born": 1994,
+  "club": "Jeju SK FC"
+ },
+ {
+  "id": "Q335413",
+  "name": "Tolgay Arslan",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q23844124",
+  "name": "Tom Davies",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1998,
+  "club": null
+ },
+ {
+  "id": "Q7862292",
+  "name": "Tomané",
+  "slot": "FW",
+  "nat": "Portugal",
+  "born": 1992,
+  "club": "C.D. Tondela"
+ },
+ {
+  "id": "Q20897612",
+  "name": "Tomás Andrade",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1996,
+  "club": "Al-Quwa Al-Jawiya"
+ },
+ {
+  "id": "Q122878833",
+  "name": "Tommy Watson",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 2006,
+  "club": "Leicester City F.C."
+ },
+ {
+  "id": "Q23005609",
+  "name": "Tomoki Iwata",
+  "slot": "MF",
+  "nat": "Japan",
+  "born": 1997,
+  "club": "Birmingham City F.C."
+ },
+ {
+  "id": "Q128214524",
+  "name": "Toni Fernández",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 2008,
+  "club": "Venezia"
+ },
+ {
+  "id": "Q36696865",
+  "name": "Trevoh Chalobah",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1999,
+  "club": "Como"
+ },
+ {
+  "id": "Q111103404",
+  "name": "Tudor Mendel-Idowu",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 2005,
+  "club": "Luton Town F.C."
+ },
+ {
+  "id": "Q136547035",
+  "name": "Tuna Baran Demir",
+  "slot": null,
+  "nat": "Turkey",
+  "born": 2008,
+  "club": null
+ },
+ {
+  "id": "Q26704873",
+  "name": "Tyler Denton",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "club": "Scunthorpe United F.C."
+ },
+ {
+  "id": "Q2478788",
+  "name": "Umut Gündoğan",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 1990,
+  "club": "Olympic Charleroi"
+ },
+ {
+  "id": "Q85290934",
+  "name": "Unai Vencedor",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 2000,
+  "club": "Burgos CF"
+ },
+ {
+  "id": "Q7901084",
+  "name": "Uroš Spajić",
+  "slot": "DF",
+  "nat": "Serbia",
+  "born": 1993,
+  "club": "Beijing Guoan F.C."
+ },
+ {
+  "id": "Q26837875",
+  "name": "Utku Yuvakuran",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 1997,
+  "club": "Pendikspor"
+ },
+ {
+  "id": "Q721628",
+  "name": "Vadis Odjidja-Ofoe",
+  "slot": "MF",
+  "nat": "Belgium",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q16940984",
+  "name": "Vagner",
+  "slot": "GK",
+  "nat": "Brazil",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q3018683",
+  "name": "Valentin Eysseric",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1992,
+  "club": "FC UNA Strassen"
+ },
+ {
+  "id": "Q30317774",
+  "name": "Valentin Rosier",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1996,
+  "club": "CA Osasuna"
+ },
+ {
+  "id": "Q4008879",
+  "name": "Vasco Regini",
+  "slot": "DF",
+  "nat": "Italy",
+  "born": 1990,
+  "club": null
+ },
+ {
+  "id": "Q366594",
+  "name": "Víctor Ruiz",
+  "slot": "DF",
+  "nat": "Spain",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q127273307",
+  "name": "Vince Osuji",
+  "slot": "DF",
+  "nat": "Nigeria",
+  "born": 2006,
+  "club": "Tromsø IL"
+ },
+ {
+  "id": "Q14856634",
+  "name": "Vincent Janssen",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1994,
+  "club": "Portland Timbers"
+ },
+ {
+  "id": "Q7944670",
+  "name": "Vitolo",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1989,
+  "club": null
+ },
+ {
+  "id": "Q18891568",
+  "name": "Vitor Hugo",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": null
+ },
+ {
+  "id": "Q15690382",
+  "name": "Wallace",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q16236318",
+  "name": "Wallyson Mallmann",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1994,
+  "club": null
+ },
+ {
+  "id": "Q13033770",
+  "name": "Warner Hahn",
+  "slot": "GK",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1992,
+  "club": "Hammarby Fotboll"
+ },
+ {
+  "id": "Q7983684",
+  "name": "Wes Foderingham",
+  "slot": "GK",
+  "nat": "United Kingdom",
+  "born": 1991,
+  "club": "Aris Limassol FC"
+ },
+ {
+  "id": "Q15303013",
+  "name": "Wesley Hoedt",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1994,
+  "club": "AZ Alkmaar"
+ },
+ {
+  "id": "Q9096005",
+  "name": "Wilker Ángel",
+  "slot": "DF",
+  "nat": "Venezuela",
+  "born": 1993,
+  "club": null
+ },
+ {
+  "id": "Q16847970",
+  "name": "Will Randall",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1997,
+  "club": "Eastleigh F.C."
+ },
+ {
+  "id": "Q2525331",
+  "name": "William Vainqueur",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1988,
+  "club": null
+ },
+ {
+  "id": "Q2469796",
+  "name": "Willian José",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1991,
+  "club": "Esporte Clube Bahia"
+ },
+ {
+  "id": "Q22162798",
+  "name": "Yao Eloge Koffi",
+  "slot": "DF",
+  "nat": "Ivory Coast",
+  "born": 1996,
+  "club": null
+ },
+ {
+  "id": "Q136289793",
+  "name": "Yiğit Yasin Yüksel",
+  "slot": null,
+  "nat": "Turkey",
+  "born": 2007,
+  "club": null
+ },
+ {
+  "id": "Q19894177",
+  "name": "Yoann Barbet",
+  "slot": "DF",
+  "nat": "France",
+  "born": 1993,
+  "club": "Al-Riyadh SC"
+ },
+ {
+  "id": "Q21620694",
+  "name": "Youssef Aït Bennasser",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1996,
+  "club": "RS Berkane"
+ },
+ {
+  "id": "Q29637727",
+  "name": "Zain Westbrooke",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1996,
+  "club": "Yeovil Town F.C."
+ },
+ {
+  "id": "Q30300993",
+  "name": "Zaydou Youssouf",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1999,
+  "club": "Al Fateh SC"
+ },
+ {
+  "id": "Q131139641",
+  "name": "Zépiqueno Redmond",
+  "slot": "FW",
+  "nat": "Kingdom of the Netherlands",
+  "born": 2006,
+  "club": "FC Annecy"
+ },
+ {
+  "id": "Q19968773",
+  "name": "Zinédine Machach",
+  "slot": "MF",
+  "nat": "France",
+  "born": 1996,
+  "club": "RS Berkane"
+ }
+]
