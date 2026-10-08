@@ -1,0 +1,12289 @@
+{
+ "checked": "2026-10-08",
+ "moves": {
+  "Q483837": {
+   "name": "Luka Modrić",
+   "was": null,
+   "now": "AC Milan",
+   "source": "Luka Modrić",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q107365": {
+   "name": "Manuel Neuer",
+   "was": null,
+   "now": "Bayern Munich",
+   "source": "Manuel Neuer",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q129027": {
+   "name": "Paul Pogba",
+   "was": "AS Monaco",
+   "now": null,
+   "source": "Paul Pogba",
+   "close": [
+    [
+     "AS Monaco FC",
+     2025,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q313316": {
+   "name": "Romelu Lukaku",
+   "was": "Napoli",
+   "now": "Fenerbahçe",
+   "source": "Romelu Lukaku",
+   "close": [
+    [
+     "SSC Napoli",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Fenerbahçe Istanbul",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q73360": {
+   "name": "Thibaut Courtois",
+   "was": null,
+   "now": "Real Madrid",
+   "source": "Thibaut Courtois",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22951255": {
+   "name": "Marcus Rashford",
+   "was": "Barcelona",
+   "now": "Manchester United",
+   "source": "Marcus Rashford",
+   "close": [
+    [
+     "FC Barcelona",
+     2025,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16665941": {
+   "name": "N'Golo Kanté",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "N'Golo Kanté",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20994118": {
+   "name": "Rodri",
+   "was": "Manchester City",
+   "now": "Barcelona",
+   "source": "Rodri",
+   "close": [
+    [
+     "Manchester City F.C.",
+     2019,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "FC Barcelona",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q180553": {
+   "name": "Alexis Sánchez",
+   "was": "Sevilla",
+   "now": null,
+   "source": "Alexis Sánchez",
+   "close": [
+    [
+     "Sevilla FC",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "CF Montréal",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q252190": {
+   "name": "Xherdan Shaqiri",
+   "was": null,
+   "now": "Basel",
+   "source": "Xherdan Shaqiri",
+   "close": [],
+   "add": [
+    [
+     "FC Basel",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q153786": {
+   "name": "Edin Džeko",
+   "was": null,
+   "now": "Schalke 04",
+   "source": "Edin Džeko",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6147586": {
+   "name": "Jamie Vardy",
+   "was": null,
+   "now": "Burnley",
+   "source": "Jamie Vardy",
+   "close": [],
+   "add": [
+    [
+     "Burnley F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q93563": {
+   "name": "Luke Shaw",
+   "was": null,
+   "now": "Manchester United",
+   "source": "Luke Shaw",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q96755": {
+   "name": "Antonio Rüdiger",
+   "was": null,
+   "now": "Real Madrid",
+   "source": "Antonio Rüdiger",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q10526787": {
+   "name": "Wataru Endō",
+   "was": null,
+   "now": "Liverpool",
+   "source": "Wataru Endo",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q44297797": {
+   "name": "Ferran Torres",
+   "was": "Barcelona",
+   "now": "Paris Saint-Germain",
+   "source": "Ferran Torres",
+   "close": [
+    [
+     "FC Barcelona",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Paris Saint-Germain FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q276091": {
+   "name": "Koke",
+   "was": null,
+   "now": "Atlético Madrid",
+   "source": "Koke (footballer, born 1992)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3275904": {
+   "name": "Emiliano Martínez",
+   "was": "Aston Villa",
+   "now": "Chelsea",
+   "source": "Emiliano Martínez",
+   "close": [
+    [
+     "Aston Villa F.C.",
+     2020,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Chelsea F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q29491": {
+   "name": "Chris Smalling",
+   "was": null,
+   "now": "Porto",
+   "source": "Chris Smalling",
+   "close": [],
+   "add": [
+    [
+     "FC Porto",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16148978": {
+   "name": "Marco Asensio",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Marco Asensio",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2843080": {
+   "name": "Enner Valencia",
+   "was": null,
+   "now": "Boca Juniors",
+   "source": "Enner Valencia",
+   "close": [],
+   "add": [
+    [
+     "Boca Juniors",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16056053": {
+   "name": "Jack Grealish",
+   "was": "Manchester City",
+   "now": "Everton",
+   "source": "Jack Grealish",
+   "close": [],
+   "add": [],
+   "reopen": [
+    [
+     "Everton F.C.",
+     2025,
+     2026
+    ]
+   ],
+   "unresolved": []
+  },
+  "Q19708656": {
+   "name": "Gabriel Jesus",
+   "was": null,
+   "now": "Barcelona",
+   "source": "Gabriel Jesus",
+   "close": [
+    [
+     "Arsenal F.C.",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "FC Barcelona",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26704703": {
+   "name": "Federico Chiesa",
+   "was": null,
+   "now": "Liverpool",
+   "source": "Federico Chiesa",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q62960177": {
+   "name": "Eduardo Camavinga",
+   "was": null,
+   "now": "Real Madrid",
+   "source": "Eduardo Camavinga",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q96105248": {
+   "name": "Enzo Fernández",
+   "was": "Chelsea",
+   "now": "Manchester City",
+   "source": "Enzo Fernández",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Manchester City F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q30055335": {
+   "name": "Rafael Leão",
+   "was": "AC Milan",
+   "now": "Galatasaray",
+   "source": "Rafael Leão",
+   "close": [
+    [
+     "AC Milan",
+     2019,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q59490": {
+   "name": "Serge Gnabry",
+   "was": null,
+   "now": "Bayern Munich",
+   "source": "Serge Gnabry",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2058682": {
+   "name": "Jan Oblak",
+   "was": null,
+   "now": "Atlético Madrid",
+   "source": "Jan Oblak",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q23762815": {
+   "name": "Dušan Vlahović",
+   "was": null,
+   "now": "Beşiktaş",
+   "source": "Dušan Vlahović",
+   "close": [],
+   "add": [
+    [
+     "Beşiktaş J.K. (Football)",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q46951844": {
+   "name": "Aurélien Tchouaméni",
+   "was": null,
+   "now": "Real Madrid",
+   "source": "Aurélien Tchouaméni",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q520721": {
+   "name": "Leon Goretzka",
+   "was": null,
+   "now": "Aston Villa",
+   "source": "Leon Goretzka",
+   "close": [],
+   "add": [
+    [
+     "Aston Villa F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q39230": {
+   "name": "Marquinhos",
+   "was": null,
+   "now": "Paris Saint-Germain",
+   "source": "Marquinhos",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q630170": {
+   "name": "Leandro Paredes",
+   "was": null,
+   "now": "Boca Juniors",
+   "source": "Leandro Paredes",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q641425": {
+   "name": "Fabinho",
+   "was": null,
+   "now": "Trabzonspor",
+   "source": "Fabinho (footballer, born 1993)",
+   "close": [
+    [
+     "Al Ittihad FC",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Trabzonspor",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16235823": {
+   "name": "Nélson Semedo",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Nélson Semedo",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17074511": {
+   "name": "Ederson",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Ederson (footballer, born 1993)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q62657": {
+   "name": "Neto",
+   "was": null,
+   "now": "Juventus",
+   "source": "Neto (footballer, born 1989)",
+   "close": [
+    [
+     "Botafogo F.R.",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Juventus FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q61460651": {
+   "name": "Gabriel Martinelli",
+   "was": "Arsenal",
+   "now": null,
+   "source": "Gabriel Martinelli",
+   "close": [
+    [
+     "Arsenal F.C.",
+     2019,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Al Hilal SFC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q189184": {
+   "name": "Rafael Pereira da Silva",
+   "was": "Olympique Lyonnais",
+   "now": null,
+   "source": "Rafael (footballer, born 1990)",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     2015,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Fluminense F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q313911": {
+   "name": "Luuk de Jong",
+   "was": "Porto",
+   "now": null,
+   "source": "Luuk de Jong",
+   "close": [
+    [
+     "FC Porto",
+     2025,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q666506": {
+   "name": "Ricardo Rodriguez",
+   "was": "Real Betis",
+   "now": "Torino",
+   "source": "Ricardo Rodriguez (footballer)",
+   "close": [
+    [
+     "Real Betis Balompié",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Torino FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19636859": {
+   "name": "Oleksandr Zinchenko",
+   "was": "Ajax",
+   "now": null,
+   "source": "Oleksandr Zinchenko (footballer)",
+   "close": [
+    [
+     "AFC Ajax",
+     2026,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q326159": {
+   "name": "Niclas Füllkrug",
+   "was": "AC Milan",
+   "now": null,
+   "source": "Niclas Füllkrug",
+   "close": [
+    [
+     "AC Milan",
+     2026,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "SV Werder Bremen",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21621029": {
+   "name": "Ben Chilwell",
+   "was": null,
+   "now": "Crystal Palace",
+   "source": "Ben Chilwell",
+   "close": [
+    [
+     "RC Strasbourg Alsace",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56332606": {
+   "name": "Ronald Araújo",
+   "was": "Barcelona",
+   "now": "Liverpool",
+   "source": "Ronald Araújo",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q62085431": {
+   "name": "Ayase Ueda",
+   "was": "Feyenoord",
+   "now": null,
+   "source": "Ayase Ueda",
+   "close": [
+    [
+     "Feyenoord Rotterdam",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Lille OSC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6509762": {
+   "name": "Leandro Trossard",
+   "was": "Arsenal",
+   "now": "Beşiktaş",
+   "source": "Leandro Trossard",
+   "close": [
+    [
+     "K.R.C. Genk",
+     2011,
+     2019
+    ],
+    [
+     "Arsenal F.C.",
+     2023,
+     2026
+    ],
+    [
+     "Oud-Heverlee Leuven",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Beşiktaş J.K. (Football)",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16972254": {
+   "name": "Dani Ceballos",
+   "was": null,
+   "now": "Real Betis",
+   "source": "Dani Ceballos",
+   "close": [],
+   "add": [
+    [
+     "Real Betis Balompié",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27990906": {
+   "name": "Daizen Maeda",
+   "was": "Celtic",
+   "now": "Ipswich Town",
+   "source": "Daizen Maeda",
+   "close": [],
+   "add": [
+    [
+     "Ipswich Town F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q46679": {
+   "name": "Idrissa Gueye",
+   "was": "Everton",
+   "now": null,
+   "source": "Idrissa Gueye",
+   "close": [],
+   "add": [
+    [
+     "Al-Diriyah Club",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q339252": {
+   "name": "Loris Karius",
+   "was": null,
+   "now": "Schalke 04",
+   "source": "Loris Karius",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18428483": {
+   "name": "Sofyan Amrabat",
+   "was": null,
+   "now": "Ajax",
+   "source": "Sofyan Amrabat",
+   "close": [
+    [
+     "Real Betis Balompié",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "AFC Ajax",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q39667548": {
+   "name": "Arthur Melo",
+   "was": "Juventus",
+   "now": null,
+   "source": "Arthur Melo",
+   "close": [
+    [
+     "Juventus FC",
+     2020,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Santos F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1755683": {
+   "name": "Nathan Aké",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Nathan Aké",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q14309492": {
+   "name": "Miloš Degenek",
+   "was": "Red Star Belgrade",
+   "now": null,
+   "source": "Miloš Degenek",
+   "close": [
+    [
+     "FK Crvena zvezda",
+     2023,
+     2024
+    ],
+    [
+     "FK TSC",
+     null,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"VfB Stuttgart\": not in the infobox's senior career"
+   ]
+  },
+  "Q20038711": {
+   "name": "Kō Itakura",
+   "was": "Ajax",
+   "now": null,
+   "source": "Kō Itakura",
+   "close": [
+    [
+     "AFC Ajax",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Borussia Mönchengladbach",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21693199": {
+   "name": "Christopher Nkunku",
+   "was": "AC Milan",
+   "now": null,
+   "source": "Christopher Nkunku",
+   "close": [],
+   "add": [
+    [
+     "RB Leipzig",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26255506": {
+   "name": "Diogo Dalot",
+   "was": null,
+   "now": "Manchester United",
+   "source": "Diogo Dalot",
+   "close": [
+    [
+     "AC Milan",
+     null,
+     2021
+    ],
+    [
+     "FC Porto",
+     null,
+     2018
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26934107": {
+   "name": "Justin Kluivert",
+   "was": null,
+   "now": "Bournemouth",
+   "source": "Justin Kluivert",
+   "close": [
+    [
+     "RB Leipzig",
+     null,
+     2021
+    ],
+    [
+     "Jong Ajax",
+     2016,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "AFC Bournemouth",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"A.S. Roma\": not in the infobox's senior career"
+   ]
+  },
+  "Q27889974": {
+   "name": "Moise Kean",
+   "was": "Fiorentina",
+   "now": null,
+   "source": "Moise Kean",
+   "close": [],
+   "add": [
+    [
+     "Como 1907",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15506789": {
+   "name": "Kelechi Iheanacho",
+   "was": "Manchester City",
+   "now": null,
+   "source": "Kelechi Iheanacho",
+   "close": [
+    [
+     "Leicester City F.C.",
+     null,
+     2024
+    ],
+    [
+     "Manchester City F.C.",
+     2015,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Bursaspor",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15644548": {
+   "name": "Robin Gosens",
+   "was": null,
+   "now": "Schalke 04",
+   "source": "Robin Gosens",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17501875": {
+   "name": "Nikola Vlašić",
+   "was": null,
+   "now": "Torino",
+   "source": "Nikola Vlašić",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19345715": {
+   "name": "Exequiel Palacios",
+   "was": null,
+   "now": "Ipswich Town",
+   "source": "Exequiel Palacios",
+   "close": [
+    [
+     "Bayer 04 Leverkusen",
+     2020,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Ipswich Town F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20737387": {
+   "name": "Dávinson Sánchez",
+   "was": null,
+   "now": "Galatasaray",
+   "source": "Davinson Sánchez",
+   "close": [
+    [
+     "Tottenham Hotspur F.C.",
+     null,
+     2023
+    ],
+    [
+     "Atlético Nacional",
+     2013,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q61986758": {
+   "name": "Mason Greenwood",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Mason Greenwood",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q795017": {
+   "name": "Alessio Romagnoli",
+   "was": "Lazio",
+   "now": null,
+   "source": "Alessio Romagnoli",
+   "close": [
+    [
+     "SS Lazio",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Al Sadd Sports Club",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2092409": {
+   "name": "Juan Fernando Quintero",
+   "was": "River Plate",
+   "now": null,
+   "source": "Juan Fernando Quintero",
+   "close": [],
+   "add": [
+    [
+     "Deportivo Independiente Medellín",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q5879014": {
+   "name": "Gerónimo Rulli",
+   "was": "Marseille",
+   "now": "Manchester City",
+   "source": "Gerónimo Rulli",
+   "close": [
+    [
+     "Olympique de Marseille",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Manchester City F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6298271": {
+   "name": "João Mário",
+   "was": "Beşiktaş",
+   "now": null,
+   "source": "João Mário (footballer, born January 1993)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18207229": {
+   "name": "Dominik Livaković",
+   "was": "Dinamo Zagreb",
+   "now": "Barcelona",
+   "source": "Dominik Livaković",
+   "close": [
+    [
+     "Fenerbahçe Istanbul",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "FC Barcelona",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27663808": {
+   "name": "Mattéo Guendouzi",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Mattéo Guendouzi",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15396247": {
+   "name": "José Luis Gayà",
+   "was": null,
+   "now": "Valencia",
+   "source": "José Gayà",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q99670930": {
+   "name": "Bradley Barcola",
+   "was": "Paris Saint-Germain",
+   "now": "Liverpool",
+   "source": "Bradley Barcola",
+   "close": [
+    [
+     "Paris Saint-Germain FC",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Liverpool F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q110644260": {
+   "name": "Endrick",
+   "was": "Olympique Lyonnais",
+   "now": "Real Madrid",
+   "source": "Endrick",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     2025,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q93555": {
+   "name": "Ben Davies",
+   "was": null,
+   "now": "Tottenham Hotspur",
+   "source": "Ben Davies (footballer, born 1993)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q891520": {
+   "name": "Milan Škriniar",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Milan Škriniar",
+   "close": [],
+   "add": [],
+   "reopen": [
+    [
+     "Fenerbahçe Istanbul",
+     2025,
+     2025
+    ]
+   ],
+   "unresolved": []
+  },
+  "Q14558450": {
+   "name": "Adnan Januzaj",
+   "was": "Sevilla",
+   "now": null,
+   "source": "Adnan Januzaj",
+   "close": [
+    [
+     "Sevilla FC",
+     2022,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22082590": {
+   "name": "Nahuel Molina",
+   "was": "Atlético Madrid",
+   "now": "Roma",
+   "source": "Nahuel Molina",
+   "close": [
+    [
+     "Atlético Madrid",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "AS Roma",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26924482": {
+   "name": "Ismaïla Sarr",
+   "was": null,
+   "now": "Crystal Palace",
+   "source": "Ismaïla Sarr",
+   "close": [
+    [
+     "Watford F.C.",
+     2019,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27967807": {
+   "name": "Aaron Ramsdale",
+   "was": "Newcastle United",
+   "now": null,
+   "source": "Aaron Ramsdale",
+   "close": [
+    [
+     "Newcastle United F.C.",
+     2025,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28058687": {
+   "name": "Cristian Romero",
+   "was": "Tottenham Hotspur",
+   "now": "Atlético Madrid",
+   "source": "Cristian Romero",
+   "close": [
+    [
+     "Tottenham Hotspur F.C.",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Atlético Madrid",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q58494476": {
+   "name": "Mykhailo Mudryk",
+   "was": "Chelsea",
+   "now": "Tottenham Hotspur",
+   "source": "Mykhailo Mudryk",
+   "close": [],
+   "add": [
+    [
+     "Tottenham Hotspur F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q313089": {
+   "name": "Jack Butland",
+   "was": null,
+   "now": "Hull City",
+   "source": "Jack Butland",
+   "close": [],
+   "add": [
+    [
+     "Hull City A.F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Clevedon United F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q80712": {
+   "name": "Michael Keane",
+   "was": null,
+   "now": "Everton",
+   "source": "Michael Keane (footballer, born 1993)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20641319": {
+   "name": "Kalvin Phillips",
+   "was": "Manchester City",
+   "now": null,
+   "source": "Kalvin Phillips",
+   "close": [],
+   "add": [],
+   "reopen": [
+    [
+     "Sheffield United F.C.",
+     2026,
+     2026
+    ]
+   ],
+   "unresolved": []
+  },
+  "Q28065104": {
+   "name": "Omar Marmoush",
+   "was": "Manchester City",
+   "now": "Tottenham Hotspur",
+   "source": "Omar Marmoush",
+   "close": [],
+   "add": [
+    [
+     "Tottenham Hotspur F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q45819496": {
+   "name": "Keito Nakamura",
+   "was": null,
+   "now": "Olympique Lyonnais",
+   "source": "Keito Nakamura",
+   "close": [
+    [
+     "Gamba Osaka",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Olympique Lyonnais",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q72603655": {
+   "name": "Amad Diallo",
+   "was": null,
+   "now": "Manchester United",
+   "source": "Amad Diallo",
+   "close": [
+    [
+     "Sunderland A.F.C.",
+     2022,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q252596": {
+   "name": "Martín Montoya",
+   "was": "Brighton",
+   "now": null,
+   "source": "Martín Montoya",
+   "close": [
+    [
+     "Brighton & Hove Albion F.C.",
+     2018,
+     2020
+    ],
+    [
+     "Real Betis Balompié",
+     2016,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q357912": {
+   "name": "Tom Heaton",
+   "was": null,
+   "now": "Manchester United",
+   "source": "Tom Heaton",
+   "close": [],
+   "add": [
+    [
+     "Manchester United F.C.",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q454910": {
+   "name": "Juan Jesus",
+   "was": "Roma",
+   "now": null,
+   "source": "Juan Jesus",
+   "close": [
+    [
+     "AS Roma",
+     2016,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Venezia F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q961878": {
+   "name": "Thomas Delaney",
+   "was": "Anderlecht",
+   "now": null,
+   "source": "Thomas Delaney",
+   "close": [
+    [
+     "R.S.C. Anderlecht",
+     2023,
+     2024
+    ],
+    [
+     "Sevilla FC",
+     2021,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "F.C. Copenhagen",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q4241246": {
+   "name": "Bryan Cristante",
+   "was": null,
+   "now": "Roma",
+   "source": "Bryan Cristante",
+   "close": [
+    [
+     "Palermo F.C.",
+     2016,
+     2016
+    ],
+    [
+     "Delfino Pescara 1936",
+     null,
+     2017
+    ],
+    [
+     "Atalanta BC",
+     null,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19888012": {
+   "name": "Kieran Tierney",
+   "was": null,
+   "now": "Celtic",
+   "source": "Kieran Tierney",
+   "close": [
+    [
+     "Real Sociedad",
+     2023,
+     2024
+    ],
+    [
+     "Arsenal F.C.",
+     2019,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Celtic F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q24050378": {
+   "name": "Tammy Abraham",
+   "was": null,
+   "now": "Aston Villa",
+   "source": "Tammy Abraham",
+   "close": [
+    [
+     "AC Milan",
+     2024,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Aston Villa F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27859514": {
+   "name": "Edson Álvarez",
+   "was": null,
+   "now": "West Ham",
+   "source": "Edson Álvarez",
+   "close": [
+    [
+     "Fenerbahçe Istanbul",
+     2025,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q60340": {
+   "name": "Sven Ulreich",
+   "was": null,
+   "now": "Bayern Munich",
+   "source": "Sven Ulreich",
+   "close": [],
+   "add": [],
+   "reopen": [
+    [
+     "FC Bayern Munich",
+     2021,
+     2025
+    ]
+   ],
+   "unresolved": []
+  },
+  "Q317389": {
+   "name": "Baba Rahman",
+   "was": "Chelsea",
+   "now": null,
+   "source": "Abdul Rahman Baba",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2015,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17462635": {
+   "name": "Marcos Acuña",
+   "was": null,
+   "now": "River Plate",
+   "source": "Marcos Acuña",
+   "close": [
+    [
+     "Racing Club",
+     2014,
+     2017
+    ],
+    [
+     "Sporting CP",
+     null,
+     2020
+    ],
+    [
+     "Sevilla FC",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Club Atlético River Plate",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Boca Juniors\": not in the infobox's senior career"
+   ]
+  },
+  "Q23005609": {
+   "name": "Tomoki Iwata",
+   "was": "Celtic",
+   "now": null,
+   "source": "Tomoki Iwata",
+   "close": [
+    [
+     "Celtic F.C.",
+     2023,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Birmingham City F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q50137347": {
+   "name": "Aaron Wan-Bissaka",
+   "was": "West Ham",
+   "now": "Aston Villa",
+   "source": "Aaron Wan-Bissaka",
+   "close": [],
+   "add": [
+    [
+     "Aston Villa F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56043276": {
+   "name": "Robert Sánchez",
+   "was": "Chelsea",
+   "now": null,
+   "source": "Robert Sánchez",
+   "close": [],
+   "add": [
+    [
+     "Como 1907",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56085180": {
+   "name": "Jonathan David",
+   "was": "Juventus",
+   "now": "Atlético Madrid",
+   "source": "Jonathan David",
+   "close": [],
+   "add": [
+    [
+     "Atlético Madrid",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56752774": {
+   "name": "Harvey Elliott",
+   "was": "Liverpool",
+   "now": "Valencia",
+   "source": "Harvey Elliott",
+   "close": [],
+   "add": [
+    [
+     "Valencia CF",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18637339": {
+   "name": "Nico Elvedi",
+   "was": null,
+   "now": "Leeds United",
+   "source": "Nico Elvedi",
+   "close": [
+    [
+     "Borussia Mönchengladbach",
+     2015,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18817905": {
+   "name": "Yuta Nakayama",
+   "was": null,
+   "now": "Red Star Belgrade",
+   "source": "Yūta Nakayama",
+   "close": [
+    [
+     "Huddersfield Town A.F.C.",
+     2022,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "FK Crvena zvezda",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18551518": {
+   "name": "Hwang Hee-chan",
+   "was": "Wolves",
+   "now": "Schalke 04",
+   "source": "Hwang Hee-chan",
+   "close": [],
+   "add": [
+    [
+     "Schalke 04",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q113184832": {
+   "name": "Kenan Yıldız",
+   "was": null,
+   "now": "Juventus",
+   "source": "Kenan Yıldız",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q254521": {
+   "name": "Jeison Murillo",
+   "was": "Inter Milan",
+   "now": null,
+   "source": "Jeison Murillo",
+   "close": [
+    [
+     "Inter Milan",
+     2015,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Al-Shamal Sports Club",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Deportivo Cali\": not in the infobox's senior career"
+   ]
+  },
+  "Q93504": {
+   "name": "Roberto Pereyra",
+   "was": "Juventus",
+   "now": null,
+   "source": "Roberto Pereyra",
+   "close": [
+    [
+     "Watford F.C.",
+     null,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Inter Milan\": not in the infobox's senior career"
+   ]
+  },
+  "Q129077": {
+   "name": "Joël Veltman",
+   "was": "Brighton",
+   "now": "West Ham",
+   "source": "Joël Veltman",
+   "close": [
+    [
+     "Brighton & Hove Albion F.C.",
+     2020,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "West Ham United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q591443": {
+   "name": "Marko Livaja",
+   "was": null,
+   "now": "Hajduk Split",
+   "source": "Marko Livaja",
+   "close": [
+    [
+     "Empoli FC",
+     2015,
+     2016
+    ],
+    [
+     "UD Las Palmas",
+     null,
+     2018
+    ],
+    [
+     "AEK Athens F.C.",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "HNK Hajduk Split",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q666748": {
+   "name": "Aleksandar Dragović",
+   "was": "Bayer Leverkusen",
+   "now": null,
+   "source": "Aleksandar Dragović",
+   "close": [
+    [
+     "Bayer 04 Leverkusen",
+     2016,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "FK Austria Wien",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q794628": {
+   "name": "Felipe Anderson",
+   "was": "Lazio",
+   "now": "Palmeiras",
+   "source": "Felipe Anderson",
+   "close": [
+    [
+     "West Ham United F.C.",
+     null,
+     2021
+    ],
+    [
+     "SS Lazio",
+     2021,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Sociedade Esportiva Palmeiras",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q13382434": {
+   "name": "Diego Llorente",
+   "was": "Leeds United",
+   "now": "Real Betis",
+   "source": "Diego Llorente",
+   "close": [
+    [
+     "Leeds United F.C.",
+     2020,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Real Betis Balompié",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q14951576": {
+   "name": "Bruno Petković",
+   "was": "Dinamo Zagreb",
+   "now": null,
+   "source": "Bruno Petković",
+   "close": [
+    [
+     "GNK Dinamo Zagreb",
+     2018,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Kocaelispor",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20730338": {
+   "name": "Ola Aina",
+   "was": null,
+   "now": "Nottingham Forest",
+   "source": "Ola Aina",
+   "close": [
+    [
+     "Hull City A.F.C.",
+     null,
+     2018
+    ],
+    [
+     "Torino FC",
+     null,
+     2023
+    ],
+    [
+     "Chelsea F.C.",
+     null,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q30933054": {
+   "name": "Hiroki Itō",
+   "was": null,
+   "now": "Bayern Munich",
+   "source": "Hiroki Itō (footballer, born 1999)",
+   "close": [
+    [
+     "VfB Stuttgart",
+     null,
+     2024
+    ],
+    [
+     "Nagoya Grampus",
+     null,
+     2019
+    ],
+    [
+     "Júbilo Iwata",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "FC Bayern Munich",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q39500352": {
+   "name": "Tijjani Reijnders",
+   "was": "Manchester City",
+   "now": null,
+   "source": "Tijjani Reijnders",
+   "close": [
+    [
+     "Manchester City F.C.",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Al Qadsiah FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q54055": {
+   "name": "Cristian Tello",
+   "was": "Fiorentina",
+   "now": null,
+   "source": "Cristian Tello",
+   "close": [
+    [
+     "Real Betis Balompié",
+     null,
+     2022
+    ],
+    [
+     "ACF Fiorentina",
+     2016,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"RCD Espanyol de Barcelona\": not in the infobox's senior career"
+   ]
+  },
+  "Q170038": {
+   "name": "Jóhann Berg Guðmundsson",
+   "was": "Burnley",
+   "now": null,
+   "source": "Jóhann Berg Guðmundsson",
+   "close": [
+    [
+     "Burnley F.C.",
+     2016,
+     2024
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Fulham F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q531302": {
+   "name": "Francesco Acerbi",
+   "was": "Inter Milan",
+   "now": null,
+   "source": "Francesco Acerbi",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q577481": {
+   "name": "Duván Zapata",
+   "was": null,
+   "now": "Torino",
+   "source": "Duván Zapata",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q828627": {
+   "name": "Bertrand Traoré",
+   "was": "Aston Villa",
+   "now": "Wolves",
+   "source": "Bertrand Traoré",
+   "close": [
+    [
+     "Aston Villa F.C.",
+     2020,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Wolverhampton Wanderers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q13422031": {
+   "name": "Guillermo Varela",
+   "was": null,
+   "now": "Flamengo",
+   "source": "Guillermo Varela",
+   "close": [
+    [
+     "FC Dinamo Moscow",
+     null,
+     2023
+    ],
+    [
+     "F.C. Copenhagen",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Clube de Regatas do Flamengo",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Real Madrid Club de Fútbol\": not in the infobox's senior career"
+   ]
+  },
+  "Q16235643": {
+   "name": "Tyrone Mings",
+   "was": null,
+   "now": "Aston Villa",
+   "source": "Tyrone Mings",
+   "close": [],
+   "add": [],
+   "reopen": [
+    [
+     "Aston Villa F.C.",
+     2019,
+     2019
+    ]
+   ],
+   "unresolved": []
+  },
+  "Q16935084": {
+   "name": "Cyle Larin",
+   "was": "Beşiktaş",
+   "now": null,
+   "source": "Cyle Larin",
+   "close": [
+    [
+     "Beşiktaş J.K. (Football)",
+     2018,
+     2022
+    ],
+    [
+     "RCD Mallorca",
+     null,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Southampton F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19958843": {
+   "name": "Robert Andrich",
+   "was": null,
+   "now": "Bayer Leverkusen",
+   "source": "Robert Andrich",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20823439": {
+   "name": "Thilo Kehrer",
+   "was": "AS Monaco",
+   "now": "Ajax",
+   "source": "Thilo Kehrer",
+   "close": [
+    [
+     "West Ham United F.C.",
+     2022,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "AFC Ajax",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21061767": {
+   "name": "Rob Holding",
+   "was": "Crystal Palace",
+   "now": null,
+   "source": "Rob Holding",
+   "close": [
+    [
+     "Crystal Palace F.C.",
+     2023,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Colorado Rapids",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26964668": {
+   "name": "Jean-Philippe Mateta",
+   "was": null,
+   "now": "Crystal Palace",
+   "source": "Jean-Philippe Mateta",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q33129609": {
+   "name": "Brenden Aaronson",
+   "was": null,
+   "now": "Leeds United",
+   "source": "Brenden Aaronson",
+   "close": [
+    [
+     "Philadelphia Union",
+     2019,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q50315237": {
+   "name": "Riqui Puig",
+   "was": "Barcelona",
+   "now": null,
+   "source": "Riqui Puig",
+   "close": [
+    [
+     "FC Barcelona",
+     2018,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "LA Galaxy",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q55286732": {
+   "name": "Noah Okafor",
+   "was": null,
+   "now": "Leeds United",
+   "source": "Noah Okafor",
+   "close": [
+    [
+     "FC Basel",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56282611": {
+   "name": "Youssouf Fofana",
+   "was": "AC Milan",
+   "now": "Sevilla",
+   "source": "Youssouf Fofana (footballer, born 1999)",
+   "close": [],
+   "add": [
+    [
+     "Sevilla FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q57415806": {
+   "name": "Altay Bayındır",
+   "was": "Manchester United",
+   "now": null,
+   "source": "Altay Bayındır",
+   "close": [],
+   "add": [
+    [
+     "RC Celta de Vigo",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q335026": {
+   "name": "Luciano Vietto",
+   "was": "Atlético Madrid",
+   "now": null,
+   "source": "Luciano Vietto",
+   "close": [
+    [
+     "Fulham F.C.",
+     null,
+     2019
+    ],
+    [
+     "Sevilla FC",
+     null,
+     2017
+    ],
+    [
+     "Atlético Madrid",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q327227": {
+   "name": "Sam Johnstone",
+   "was": null,
+   "now": "Celtic",
+   "source": "Sam Johnstone",
+   "close": [
+    [
+     "Crystal Palace F.C.",
+     2022,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Celtic F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q932982": {
+   "name": "Cédric Bakambu",
+   "was": "Marseille",
+   "now": null,
+   "source": "Cédric Bakambu",
+   "close": [
+    [
+     "Olympique de Marseille",
+     2022,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "San Diego FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1033783": {
+   "name": "Gustavo Gómez",
+   "was": null,
+   "now": "Palmeiras",
+   "source": "Gustavo Gómez",
+   "close": [
+    [
+     "AC Milan",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Sociedade Esportiva Palmeiras",
+     2018,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Boca Juniors\": not in the infobox's senior career"
+   ]
+  },
+  "Q1524928": {
+   "name": "Manuel Lanzini",
+   "was": "River Plate",
+   "now": null,
+   "source": "Manuel Lanzini",
+   "close": [
+    [
+     "Club Atlético River Plate",
+     2023,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Club Atlético Vélez Sarsfield",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2470512": {
+   "name": "Allan",
+   "was": "Everton",
+   "now": null,
+   "source": "Allan (footballer, born 1991)",
+   "close": [
+    [
+     "Everton F.C.",
+     2020,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Botafogo F.R.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3761173": {
+   "name": "Germán Pezzella",
+   "was": "Real Betis",
+   "now": null,
+   "source": "Germán Pezzella",
+   "close": [
+    [
+     "ACF Fiorentina",
+     null,
+     2021
+    ],
+    [
+     "Real Betis Balompié",
+     2015,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Club Atlético Peñarol",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6439494": {
+   "name": "Giovanni Simeone",
+   "was": null,
+   "now": "Torino",
+   "source": "Giovanni Simeone",
+   "close": [
+    [
+     "Club Atlético Banfield",
+     2015,
+     2016
+    ],
+    [
+     "SSC Napoli",
+     null,
+     2026
+    ],
+    [
+     "ACF Fiorentina",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Torino FC",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15241424": {
+   "name": "Julian Green",
+   "was": "Bayern Munich",
+   "now": null,
+   "source": "Julian Green",
+   "close": [
+    [
+     "FC Bayern Munich II",
+     2013,
+     2016
+    ],
+    [
+     "FC Bayern Munich",
+     2013,
+     2016
+    ],
+    [
+     "VfB Stuttgart",
+     null,
+     2018
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16724213": {
+   "name": "Roman Yaremchuk",
+   "was": "Olympique Lyonnais",
+   "now": null,
+   "source": "Roman Yaremchuk",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     2026,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19603924": {
+   "name": "Hwang In-beom",
+   "was": "Red Star Belgrade",
+   "now": "Porto",
+   "source": "Hwang In-beom",
+   "close": [
+    [
+     "Feyenoord Rotterdam",
+     null,
+     2026
+    ],
+    [
+     "FK Crvena zvezda",
+     2023,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "FC Porto",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19613570": {
+   "name": "Cengiz Ünder",
+   "was": "Beşiktaş",
+   "now": null,
+   "source": "Cengiz Ünder",
+   "close": [
+    [
+     "Fenerbahçe Istanbul",
+     2023,
+     2026
+    ],
+    [
+     "Beşiktaş J.K. (Football)",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Çorum FK",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q42328360": {
+   "name": "Lutsharel Geertruida",
+   "was": "Sunderland",
+   "now": "PSV",
+   "source": "Lutsharel Geertruida",
+   "close": [
+    [
+     "Sunderland A.F.C.",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "PSV Eindhoven",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q55820249": {
+   "name": "Emile Smith Rowe",
+   "was": null,
+   "now": "Fulham",
+   "source": "Emile Smith Rowe",
+   "close": [
+    [
+     "Arsenal F.C.",
+     2017,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Fulham F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56223972": {
+   "name": "Jean-Clair Todibo",
+   "was": "West Ham",
+   "now": null,
+   "source": "Jean-Clair Todibo",
+   "close": [],
+   "add": [
+    [
+     "R.C. Lens",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q716134": {
+   "name": "Rémy Cabella",
+   "was": "Marseille",
+   "now": null,
+   "source": "Rémy Cabella",
+   "close": [
+    [
+     "AS Saint-Étienne",
+     null,
+     2019
+    ],
+    [
+     "FC Krasnodar",
+     null,
+     2022
+    ],
+    [
+     "Olympique de Marseille",
+     2015,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Volos N.F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q10512869": {
+   "name": "Lovre Kalinić",
+   "was": "Hajduk Split",
+   "now": null,
+   "source": "Lovre Kalinić",
+   "close": [
+    [
+     "HNK Hajduk Split",
+     2022,
+     2025
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q285684": {
+   "name": "Marten de Roon",
+   "was": null,
+   "now": "Roma",
+   "source": "Marten de Roon",
+   "close": [],
+   "add": [
+    [
+     "AS Roma",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2043015": {
+   "name": "Ozan Tufan",
+   "was": "Hull City",
+   "now": "Trabzonspor",
+   "source": "Ozan Tufan",
+   "close": [
+    [
+     "Fenerbahçe Istanbul",
+     2015,
+     2022
+    ],
+    [
+     "Hull City A.F.C.",
+     2022,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Trabzonspor",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2643777": {
+   "name": "James Ward-Prowse",
+   "was": "Nottingham Forest",
+   "now": null,
+   "source": "James Ward-Prowse",
+   "close": [
+    [
+     "Nottingham Forest F.C.",
+     2024,
+     2025
+    ],
+    [
+     "West Ham United F.C.",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Southampton F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q5022998": {
+   "name": "Callum Wilson",
+   "was": null,
+   "now": "Brentford",
+   "source": "Callum Wilson",
+   "close": [],
+   "add": [
+    [
+     "Brentford F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q14852383": {
+   "name": "Leander Dendoncker",
+   "was": null,
+   "now": "Hajduk Split",
+   "source": "Leander Dendoncker",
+   "close": [
+    [
+     "Real Oviedo",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "HNK Hajduk Split",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17477978": {
+   "name": "Joaquín Correa",
+   "was": "Inter Milan",
+   "now": null,
+   "source": "Joaquín Correa",
+   "close": [
+    [
+     "Inter Milan",
+     2021,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Estudiantes de La Plata",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Juventus FC\": not in the infobox's senior career"
+   ]
+  },
+  "Q21621180": {
+   "name": "Issa Diop",
+   "was": null,
+   "now": "Ipswich Town",
+   "source": "Issa Diop (footballer)",
+   "close": [
+    [
+     "Fulham F.C.",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Ipswich Town F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q23887767": {
+   "name": "Axel Disasi",
+   "was": "West Ham",
+   "now": "Crystal Palace",
+   "source": "Axel Disasi",
+   "close": [
+    [
+     "West Ham United F.C.",
+     2026,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26250297": {
+   "name": "Ryan Sessegnon",
+   "was": "Tottenham Hotspur",
+   "now": "Fulham",
+   "source": "Ryan Sessegnon",
+   "close": [
+    [
+     "Tottenham Hotspur F.C.",
+     2019,
+     2024
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27063854": {
+   "name": "Ezri Konsa",
+   "was": "Aston Villa",
+   "now": "Arsenal",
+   "source": "Ezri Konsa",
+   "close": [
+    [
+     "Aston Villa F.C.",
+     2019,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Arsenal F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q36696865": {
+   "name": "Trevoh Chalobah",
+   "was": "Chelsea",
+   "now": null,
+   "source": "Trevoh Chalobah",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2018,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Como 1907",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q724147": {
+   "name": "Geoffrey Kondogbia",
+   "was": null,
+   "now": "Marseille",
+   "source": "Geoffrey Kondogbia",
+   "close": [],
+   "add": [
+    [
+     "Olympique de Marseille",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18224850": {
+   "name": "Guido Rodríguez",
+   "was": null,
+   "now": "Valencia",
+   "source": "Guido Rodríguez",
+   "close": [
+    [
+     "Club Tijuana",
+     null,
+     2017
+    ],
+    [
+     "Club América",
+     null,
+     2020
+    ],
+    [
+     "Defensa y Justicia",
+     2016,
+     2016
+    ],
+    [
+     "Real Betis Balompié",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Valencia CF",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18614641": {
+   "name": "Ainsley Maitland-Niles",
+   "was": "Olympique Lyonnais",
+   "now": "Everton",
+   "source": "Ainsley Maitland-Niles",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Everton F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q59913917": {
+   "name": "Curtis Jones",
+   "was": "Liverpool",
+   "now": "Inter Milan",
+   "source": "Curtis Jones (footballer, born 2001)",
+   "close": [
+    [
+     "Liverpool F.C.",
+     2018,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Inter Milan",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q59064": {
+   "name": "Andros Townsend",
+   "was": "Newcastle United",
+   "now": null,
+   "source": "Andros Townsend",
+   "close": [
+    [
+     "Newcastle United F.C.",
+     2016,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Prachuap F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q128721": {
+   "name": "Steven Berghuis",
+   "was": null,
+   "now": "Ajax",
+   "source": "Steven Berghuis",
+   "close": [
+    [
+     "Watford F.C.",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "AFC Ajax",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17484446": {
+   "name": "Ramy Bensebaini",
+   "was": null,
+   "now": "Borussia Dortmund",
+   "source": "Ramy Bensebaini",
+   "close": [
+    [
+     "Borussia Mönchengladbach",
+     2019,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Borussia Dortmund",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21055388": {
+   "name": "Stefano Sensi",
+   "was": "Coventry City",
+   "now": null,
+   "source": "Stefano Sensi",
+   "close": [
+    [
+     "AC Cesena",
+     2016,
+     2016
+    ],
+    [
+     "US Sassuolo Calcio",
+     2016,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "PFC CSKA Sofia",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Coventry City F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q27019988": {
+   "name": "Axel Tuanzebe",
+   "was": "Manchester United",
+   "now": null,
+   "source": "Axel Tuanzebe",
+   "close": [
+    [
+     "Manchester United F.C.",
+     2015,
+     2023
+    ],
+    [
+     "Aston Villa F.C.",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "AJ Auxerre",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Casoria\": not in the infobox's senior career"
+   ]
+  },
+  "Q30045780": {
+   "name": "Amine Gouiri",
+   "was": null,
+   "now": "Marseille",
+   "source": "Amine Gouiri",
+   "close": [
+    [
+     "OGC Nice",
+     2020,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Olympique de Marseille",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q30689579": {
+   "name": "Daniel James",
+   "was": null,
+   "now": "Leeds United",
+   "source": "Daniel James (footballer)",
+   "close": [
+    [
+     "Manchester United F.C.",
+     2019,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q33296979": {
+   "name": "Santiago Giménez",
+   "was": "AC Milan",
+   "now": "Porto",
+   "source": "Santiago Giménez",
+   "close": [],
+   "add": [
+    [
+     "FC Porto",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q35039261": {
+   "name": "Reiss Nelson",
+   "was": null,
+   "now": "Feyenoord",
+   "source": "Reiss Nelson",
+   "close": [
+    [
+     "Arsenal F.C.",
+     2017,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Feyenoord Rotterdam",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q57456997": {
+   "name": "Brian Brobbey",
+   "was": null,
+   "now": "Sunderland",
+   "source": "Brian Brobbey",
+   "close": [],
+   "add": [
+    [
+     "Sunderland A.F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"FC Barcelona Atlètic\": not in the infobox's senior career",
+    "open spell at \"Bayer 04 Leverkusen\": not in the infobox's senior career"
+   ]
+  },
+  "Q60889488": {
+   "name": "Felix Nmecha",
+   "was": null,
+   "now": "Borussia Dortmund",
+   "source": "Felix Nmecha",
+   "close": [
+    [
+     "Manchester City F.C.",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Borussia Dortmund",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q106625792": {
+   "name": "Nicolás González Iglesias",
+   "was": "Manchester City",
+   "now": "Newcastle United",
+   "source": "Nico González (footballer, born 2002)",
+   "close": [
+    [
+     "Manchester City F.C.",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Newcastle United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q106099213": {
+   "name": "Andreas Schjelderup",
+   "was": null,
+   "now": "Benfica",
+   "source": "Andreas Schjelderup",
+   "close": [
+    [
+     "FC Nordsjælland",
+     2021,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "S.L. Benfica",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q65029821": {
+   "name": "Wesley Fofana",
+   "was": null,
+   "now": "Chelsea",
+   "source": "Wesley Fofana (footballer)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q85872272": {
+   "name": "Julio César Enciso",
+   "was": null,
+   "now": "Ipswich Town",
+   "source": "Julio Enciso (footballer, born 2004)",
+   "close": [
+    [
+     "RC Strasbourg Alsace",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Ipswich Town F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q311246": {
+   "name": "Lewis Holtby",
+   "was": "Hamburger SV",
+   "now": null,
+   "source": "Lewis Holtby",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q401554": {
+   "name": "Ramiro Funes Mori",
+   "was": "Everton",
+   "now": null,
+   "source": "Ramiro Funes Mori",
+   "close": [
+    [
+     "Everton F.C.",
+     2015,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Estudiantes de La Plata",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q126903": {
+   "name": "Lucas Piazón",
+   "was": "Chelsea",
+   "now": null,
+   "source": "Lucas Piazon",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2016,
+     2021
+    ],
+    [
+     "Fulham F.C.",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Wieczysta Kraków",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q547296": {
+   "name": "Joel Robles",
+   "was": "Real Betis",
+   "now": null,
+   "source": "Joel Robles",
+   "close": [
+    [
+     "Real Betis Balompié",
+     2018,
+     2022
+    ],
+    [
+     "Wigan Athletic F.C.",
+     null,
+     2013
+    ]
+   ],
+   "add": [
+    [
+     "G.D. Estoril Praia",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q607790": {
+   "name": "Jesús Manuel Corona",
+   "was": "Porto",
+   "now": null,
+   "source": "Jesús Manuel Corona",
+   "close": [
+    [
+     "FC Porto",
+     2015,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Club de Fútbol Monterrey",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q644989": {
+   "name": "Nemanja Gudelj",
+   "was": "Ajax",
+   "now": null,
+   "source": "Nemanja Gudelj",
+   "close": [
+    [
+     "AFC Ajax",
+     2015,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Getafe CF",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q648671": {
+   "name": "Marco van Ginkel",
+   "was": "PSV",
+   "now": null,
+   "source": "Marco van Ginkel",
+   "close": [
+    [
+     "PSV Eindhoven",
+     2016,
+     2018
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1740190": {
+   "name": "Kevin Kampl",
+   "was": "Bayer Leverkusen",
+   "now": null,
+   "source": "Kevin Kampl",
+   "close": [
+    [
+     "Bayer 04 Leverkusen",
+     2015,
+     2017
+    ],
+    [
+     "RB Leipzig",
+     null,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1966430": {
+   "name": "Michail Antonio",
+   "was": "West Ham",
+   "now": null,
+   "source": "Michail Antonio",
+   "close": [
+    [
+     "West Ham United F.C.",
+     2015,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Watford F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2476368": {
+   "name": "Harry Wilson",
+   "was": "Liverpool",
+   "now": "Leeds United",
+   "source": "Harry Wilson (footballer, born 1997)",
+   "close": [
+    [
+     "Liverpool F.C.",
+     2015,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6294052": {
+   "name": "José Sá",
+   "was": null,
+   "now": "Wolves",
+   "source": "José Sá",
+   "close": [],
+   "add": [
+    [
+     "Wolverhampton Wanderers F.C.",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6536506": {
+   "name": "Lewis Dunk",
+   "was": null,
+   "now": "Brighton",
+   "source": "Lewis Dunk",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q14755604": {
+   "name": "Kenedy",
+   "was": "Chelsea",
+   "now": null,
+   "source": "Kenedy (footballer)",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2015,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "CF Pachuca",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3191617": {
+   "name": "Kaan Ayhan",
+   "was": null,
+   "now": "Galatasaray",
+   "source": "Kaan Ayhan",
+   "close": [
+    [
+     "Eintracht Frankfurt",
+     2016,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17517223": {
+   "name": "Vanja Milinković-Savić",
+   "was": null,
+   "now": "Napoli",
+   "source": "Vanja Milinković-Savić",
+   "close": [
+    [
+     "Standard Liège",
+     2019,
+     2020
+    ],
+    [
+     "SPAL",
+     null,
+     2019
+    ],
+    [
+     "KS Lechia Gdańsk",
+     2016,
+     2017
+    ],
+    [
+     "Torino FC",
+     null,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "SSC Napoli",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18142105": {
+   "name": "Paddy McNair",
+   "was": null,
+   "now": "Hull City",
+   "source": "Paddy McNair",
+   "close": [
+    [
+     "West Bromwich Albion F.C.",
+     null,
+     2024
+    ],
+    [
+     "Sunderland A.F.C.",
+     null,
+     2018
+    ],
+    [
+     "San Diego FC",
+     null,
+     2025
+    ],
+    [
+     "Middlesbrough F.C.",
+     null,
+     2024
+    ],
+    [
+     "Manchester United F.C.",
+     2014,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Hull City A.F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20932574": {
+   "name": "Taiwo Awoniyi",
+   "was": null,
+   "now": "Coventry City",
+   "source": "Taiwo Awoniyi",
+   "close": [
+    [
+     "Nottingham Forest F.C.",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Coventry City F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q23559699": {
+   "name": "Waldemar Anton",
+   "was": null,
+   "now": "Borussia Dortmund",
+   "source": "Waldemar Anton",
+   "close": [
+    [
+     "Hannover 96",
+     2016,
+     2020
+    ],
+    [
+     "VfB Stuttgart",
+     2020,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Borussia Dortmund",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28868192": {
+   "name": "Kevin Danso",
+   "was": null,
+   "now": "Sunderland",
+   "source": "Kevin Danso",
+   "close": [],
+   "add": [
+    [
+     "Sunderland A.F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Reading F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q28974273": {
+   "name": "Nicolò Zaniolo",
+   "was": "Fiorentina",
+   "now": null,
+   "source": "Nicolò Zaniolo",
+   "close": [
+    [
+     "ACF Fiorentina",
+     2025,
+     2025
+    ],
+    [
+     "Inter Milan",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Udinese Calcio",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q45034698": {
+   "name": "Mikkel Damsgaard",
+   "was": null,
+   "now": "Brentford",
+   "source": "Mikkel Damsgaard",
+   "close": [
+    [
+     "FC Nordsjælland",
+     null,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56257819": {
+   "name": "Zakaria Aboukhlal",
+   "was": null,
+   "now": "Torino",
+   "source": "Zakaria Aboukhlal",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q65950201": {
+   "name": "Josip Stanišić",
+   "was": null,
+   "now": "Bayern Munich",
+   "source": "Josip Stanišić",
+   "close": [
+    [
+     "FC Bayern Munich II",
+     null,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q67070943": {
+   "name": "Tanguy Nianzou",
+   "was": "Paris Saint-Germain",
+   "now": null,
+   "source": "Tanguy Nianzou",
+   "close": [
+    [
+     "Paris Saint-Germain FC",
+     2019,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Lille OSC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q84158344": {
+   "name": "Nick Woltemade",
+   "was": "Newcastle United",
+   "now": "Juventus",
+   "source": "Nick Woltemade",
+   "close": [],
+   "add": [
+    [
+     "Juventus FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q114027518": {
+   "name": "Ethan Nwaneri",
+   "was": null,
+   "now": "Borussia Dortmund",
+   "source": "Ethan Nwaneri",
+   "close": [],
+   "add": [
+    [
+     "Borussia Dortmund",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q312152": {
+   "name": "Ben Amos",
+   "was": null,
+   "now": "Burnley",
+   "source": "Ben Amos",
+   "close": [],
+   "add": [
+    [
+     "Burnley F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q372709": {
+   "name": "Alexander Büttner",
+   "was": "Anderlecht",
+   "now": null,
+   "source": "Alexander Büttner",
+   "close": [
+    [
+     "R.S.C. Anderlecht",
+     2016,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "SBV Vitesse",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"AFC Ajax\": not in the infobox's senior career"
+   ]
+  },
+  "Q697255": {
+   "name": "Julian Baumgartlinger",
+   "was": "Bayer Leverkusen",
+   "now": null,
+   "source": "Julian Baumgartlinger",
+   "close": [
+    [
+     "Bayer 04 Leverkusen",
+     2016,
+     2022
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q5109980": {
+   "name": "Christian Nørgaard",
+   "was": null,
+   "now": "Everton",
+   "source": "Christian Nørgaard",
+   "close": [
+    [
+     "Brøndby IF",
+     2013,
+     2018
+    ],
+    [
+     "ACF Fiorentina",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Everton F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q5478192": {
+   "name": "Renato Tapia",
+   "was": "Barcelona",
+   "now": null,
+   "source": "Renato Tapia",
+   "close": [],
+   "add": [
+    [
+     "Al Wasl FC",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6144020": {
+   "name": "James Tarkowski",
+   "was": "Burnley",
+   "now": "Everton",
+   "source": "James Tarkowski",
+   "close": [
+    [
+     "Burnley F.C.",
+     2016,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Everton F.C.",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q14623217": {
+   "name": "Sergi Samper",
+   "was": "Barcelona",
+   "now": null,
+   "source": "Sergi Samper",
+   "close": [
+    [
+     "FC Barcelona",
+     2015,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Debreceni VSC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15943423": {
+   "name": "Joachim Andersen",
+   "was": null,
+   "now": "Fulham",
+   "source": "Joachim Andersen (footballer)",
+   "close": [
+    [
+     "U.C. Sampdoria",
+     null,
+     2019
+    ],
+    [
+     "FC Twente",
+     2014,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Fulham F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16234878": {
+   "name": "Mislav Oršić",
+   "was": null,
+   "now": "Dinamo Zagreb",
+   "source": "Mislav Oršić",
+   "close": [
+    [
+     "Jeonnam Dragons FC",
+     2016,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "GNK Dinamo Zagreb",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16236952": {
+   "name": "João Palhinha",
+   "was": "Bayern Munich",
+   "now": "Benfica",
+   "source": "João Palhinha",
+   "close": [
+    [
+     "FC Bayern Munich",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "S.L. Benfica",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1112164": {
+   "name": "Ángelo Henríquez",
+   "was": "Dinamo Zagreb",
+   "now": null,
+   "source": "Ángelo Henríquez",
+   "close": [
+    [
+     "GNK Dinamo Zagreb",
+     2015,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Club Deportes La Serena",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3196721": {
+   "name": "Chancel Mbemba",
+   "was": "Newcastle United",
+   "now": null,
+   "source": "Chancel Mbemba",
+   "close": [
+    [
+     "Newcastle United F.C.",
+     2015,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Al-Diriyah Club",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18635274": {
+   "name": "Seko Fofana",
+   "was": null,
+   "now": "Porto",
+   "source": "Seko Fofana",
+   "close": [
+    [
+     "SC Bastia",
+     2015,
+     2016
+    ],
+    [
+     "Udinese Calcio",
+     2016,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "FC Porto",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18637343": {
+   "name": "Emiliano Buendía",
+   "was": null,
+   "now": "Aston Villa",
+   "source": "Emiliano Buendía",
+   "close": [
+    [
+     "Getafe CF",
+     2014,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Aston Villa F.C.",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20719582": {
+   "name": "Mario Hermoso Canseco",
+   "was": "Atlético Madrid",
+   "now": "Roma",
+   "source": "Mario Hermoso",
+   "close": [
+    [
+     "Real Valladolid",
+     2015,
+     2016
+    ],
+    [
+     "Atlético Madrid",
+     2019,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "AS Roma",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20810726": {
+   "name": "Patson Daka",
+   "was": null,
+   "now": "Hamburger SV",
+   "source": "Patson Daka",
+   "close": [
+    [
+     "Nchanga Rangers F.C.",
+     null,
+     2015
+    ],
+    [
+     "Leicester City F.C.",
+     2021,
+     2026
+    ],
+    [
+     "Power Dynamos F.C.",
+     2016,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Hamburger SV",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20890178": {
+   "name": "Leon Bailey",
+   "was": "Aston Villa",
+   "now": null,
+   "source": "Leon Bailey",
+   "close": [
+    [
+     "Aston Villa F.C.",
+     2021,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Olympiacos F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q30346426": {
+   "name": "Hugo Guillamón",
+   "was": "Hajduk Split",
+   "now": null,
+   "source": "Hugo Guillamón",
+   "close": [
+    [
+     "HNK Hajduk Split",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Sporting de Gijón",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q55366763": {
+   "name": "Davide Frattesi",
+   "was": null,
+   "now": "Lazio",
+   "source": "Davide Frattesi",
+   "close": [
+    [
+     "Ascoli Calcio 1898 FC",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "SS Lazio",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56183407": {
+   "name": "Loïs Openda",
+   "was": null,
+   "now": "Olympique Lyonnais",
+   "source": "Loïs Openda",
+   "close": [
+    [
+     "SBV Vitesse",
+     2020,
+     2022
+    ],
+    [
+     "R.C. Lens",
+     null,
+     2023
+    ],
+    [
+     "Club Brugge K.V.",
+     2018,
+     2022
+    ],
+    [
+     "RB Leipzig",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Olympique Lyonnais",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56641599": {
+   "name": "Max Aarons",
+   "was": null,
+   "now": "Bournemouth",
+   "source": "Max Aarons",
+   "close": [
+    [
+     "Norwich City F.C.",
+     null,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "AFC Bournemouth",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q61968862": {
+   "name": "Victor Boniface",
+   "was": null,
+   "now": "Bayer Leverkusen",
+   "source": "Victor Boniface",
+   "close": [
+    [
+     "SV Werder Bremen",
+     2025,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q107985608": {
+   "name": "James Trafford",
+   "was": "Manchester City",
+   "now": "Leeds United",
+   "source": "James Trafford",
+   "close": [],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q112813857": {
+   "name": "Jarell Quansah",
+   "was": null,
+   "now": "Bayer Leverkusen",
+   "source": "Jarell Quansah",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q23771922": {
+   "name": "Nemanja Radonjić",
+   "was": "Red Star Belgrade",
+   "now": null,
+   "source": "Nemanja Radonjić",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q24663885": {
+   "name": "Matt Turner",
+   "was": "Nottingham Forest",
+   "now": null,
+   "source": "Matt Turner (soccer)",
+   "close": [
+    [
+     "Nottingham Forest F.C.",
+     2023,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Olympique Lyonnais",
+     2025,
+     null
+    ],
+    [
+     "New England Revolution",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q99584177": {
+   "name": "Liam Delap",
+   "was": "Chelsea",
+   "now": "Nottingham Forest",
+   "source": "Liam Delap",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Nottingham Forest F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Manchester City F.C. Reserves and Academy\": not in the infobox's senior career"
+   ]
+  },
+  "Q105426667": {
+   "name": "Ahmadou Bamba Dieng",
+   "was": null,
+   "now": "Red Star Belgrade",
+   "source": "Bamba Dieng",
+   "close": [
+    [
+     "Olympique de Marseille",
+     null,
+     2023
+    ],
+    [
+     "Diambars FC",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "FK Crvena zvezda",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q122971833": {
+   "name": "Ayyoub Bouaddi",
+   "was": null,
+   "now": "Manchester City",
+   "source": "Ayyoub Bouaddi",
+   "close": [],
+   "add": [
+    [
+     "Manchester City F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q313936": {
+   "name": "Håvard Nordtveit",
+   "was": "West Ham",
+   "now": null,
+   "source": "Håvard Nordtveit",
+   "close": [
+    [
+     "West Ham United F.C.",
+     2016,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6381120": {
+   "name": "DeAndre Yedlin",
+   "was": "Sunderland",
+   "now": null,
+   "source": "DeAndre Yedlin",
+   "close": [
+    [
+     "Sunderland A.F.C.",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Real Salt Lake",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Akron Zips men's soccer\": not in the infobox's senior career"
+   ]
+  },
+  "Q14856634": {
+   "name": "Vincent Janssen",
+   "was": "Tottenham Hotspur",
+   "now": null,
+   "source": "Vincent Janssen",
+   "close": [
+    [
+     "Club de Fútbol Monterrey",
+     null,
+     2022
+    ],
+    [
+     "Fenerbahçe Istanbul",
+     null,
+     2018
+    ],
+    [
+     "Tottenham Hotspur F.C.",
+     2016,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Portland Timbers",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Aston Villa F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q924796": {
+   "name": "Nicolai Jørgensen",
+   "was": "Feyenoord",
+   "now": null,
+   "source": "Nicolai Jørgensen",
+   "close": [
+    [
+     "Feyenoord Rotterdam",
+     2016,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17708749": {
+   "name": "İrfan Kahveci",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "İrfan Can Kahveci",
+   "close": [
+    [
+     "Gençlerbirliği S.K.",
+     2013,
+     2016
+    ],
+    [
+     "İstanbul Başakşehir F.K.",
+     2017,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26034345": {
+   "name": "Amine Harit",
+   "was": null,
+   "now": "Marseille",
+   "source": "Amine Harit",
+   "close": [
+    [
+     "FC Nantes",
+     null,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Olympique de Marseille",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26267167": {
+   "name": "Viktor Tsyhankov",
+   "was": null,
+   "now": "Ajax",
+   "source": "Viktor Tsyhankov",
+   "close": [
+    [
+     "Girona FC",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "AFC Ajax",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18157457": {
+   "name": "Kristoffer Ajer",
+   "was": "Celtic",
+   "now": "Brentford",
+   "source": "Kristoffer Ajer",
+   "close": [
+    [
+     "Celtic F.C.",
+     2016,
+     2021
+    ],
+    [
+     "Kilmarnock F.C.",
+     null,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Brentford F.C.",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20093885": {
+   "name": "Borna Sosa",
+   "was": "Crystal Palace",
+   "now": null,
+   "source": "Borna Sosa",
+   "close": [],
+   "add": [
+    [
+     "1. FC Köln",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21027331": {
+   "name": "Pablo Fornals",
+   "was": null,
+   "now": "Real Betis",
+   "source": "Pablo Fornals",
+   "close": [
+    [
+     "West Ham United F.C.",
+     null,
+     2024
+    ],
+    [
+     "Villarreal CF",
+     null,
+     2019
+    ],
+    [
+     "Málaga CF",
+     2015,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Real Betis Balompié",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21281344": {
+   "name": "Dodi Lukebakio",
+   "was": null,
+   "now": "Benfica",
+   "source": "Dodi Lukébakio",
+   "close": [
+    [
+     "Watford F.C.",
+     2018,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22001795": {
+   "name": "Arnaut Danjuma",
+   "was": null,
+   "now": "Valencia",
+   "source": "Arnaut Danjuma",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q23679804": {
+   "name": "Mathías Olivera",
+   "was": null,
+   "now": "Napoli",
+   "source": "Mathías Olivera",
+   "close": [
+    [
+     "Getafe CF",
+     2017,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "SSC Napoli",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28933132": {
+   "name": "Jørgen Strand Larsen",
+   "was": "Wolves",
+   "now": "Crystal Palace",
+   "source": "Jørgen Strand Larsen",
+   "close": [
+    [
+     "RC Celta de Vigo",
+     2022,
+     2025
+    ],
+    [
+     "Wolverhampton Wanderers F.C.",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q29168109": {
+   "name": "Krepin Diatta",
+   "was": "AS Monaco",
+   "now": null,
+   "source": "Krépin Diatta",
+   "close": [
+    [
+     "AS Monaco FC",
+     2021,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Watford F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q30123152": {
+   "name": "Emerson Royal",
+   "was": "AC Milan",
+   "now": "Flamengo",
+   "source": "Emerson Royal",
+   "close": [
+    [
+     "AC Milan",
+     2024,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Clube de Regatas do Flamengo",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q53394040": {
+   "name": "Mert Müldür",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Mert Müldür",
+   "close": [
+    [
+     "US Sassuolo Calcio",
+     2019,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Fenerbahçe Istanbul",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q53996595": {
+   "name": "Quinten Timber",
+   "was": "Marseille",
+   "now": "Crystal Palace",
+   "source": "Quinten Timber",
+   "close": [
+    [
+     "Jong Ajax",
+     null,
+     2021
+    ],
+    [
+     "Olympique de Marseille",
+     2026,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56222532": {
+   "name": "Djed Spence",
+   "was": "Tottenham Hotspur",
+   "now": "Inter Milan",
+   "source": "Djed Spence",
+   "close": [
+    [
+     "Tottenham Hotspur F.C.",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Inter Milan",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q107742783": {
+   "name": "Simon Adingra",
+   "was": "Sunderland",
+   "now": "Ajax",
+   "source": "Simon Adingra",
+   "close": [],
+   "add": [
+    [
+     "AFC Ajax",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q114085673": {
+   "name": "Marc Casadó",
+   "was": "Barcelona",
+   "now": null,
+   "source": "Marc Casadó",
+   "close": [],
+   "add": [
+    [
+     "Deportivo de A Coruña",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q24052364": {
+   "name": "Eray Cömert",
+   "was": null,
+   "now": "Torino",
+   "source": "Eray Cömert",
+   "close": [
+    [
+     "FC Basel",
+     2015,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Torino FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q51855361": {
+   "name": "Moussa Diaby",
+   "was": null,
+   "now": "Bayer Leverkusen",
+   "source": "Moussa Diaby",
+   "close": [
+    [
+     "Al Ittihad FC",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Bayer 04 Leverkusen",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q104784711": {
+   "name": "Fábio Carvalho",
+   "was": null,
+   "now": "Brentford",
+   "source": "Fábio Carvalho (footballer, born 2002)",
+   "close": [
+    [
+     "Liverpool F.C.",
+     2022,
+     2024
+    ],
+    [
+     "Hull City A.F.C.",
+     2024,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Brentford F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q105956269": {
+   "name": "Iliman Ndiaye",
+   "was": "Marseille",
+   "now": "Manchester City",
+   "source": "Iliman Ndiaye",
+   "close": [
+    [
+     "Olympique de Marseille",
+     2023,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Manchester City F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q97725322": {
+   "name": "Kerem Aktürkoğlu",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Kerem Aktürkoğlu",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q129088593": {
+   "name": "Ibrahim Mbaye",
+   "was": "Paris Saint-Germain",
+   "now": "Aston Villa",
+   "source": "Ibrahim Mbaye",
+   "close": [
+    [
+     "Paris Saint-Germain FC",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Aston Villa F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q218937": {
+   "name": "Marco Bizot",
+   "was": null,
+   "now": "Aston Villa",
+   "source": "Marco Bizot",
+   "close": [
+    [
+     "K.R.C. Genk",
+     2014,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Aston Villa F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q245922": {
+   "name": "Benjamin Stambouli",
+   "was": "Paris Saint-Germain",
+   "now": null,
+   "source": "Benjamin Stambouli",
+   "close": [
+    [
+     "Paris Saint-Germain FC",
+     2015,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q471403": {
+   "name": "Amin Younes",
+   "was": "Napoli",
+   "now": null,
+   "source": "Amin Younes",
+   "close": [
+    [
+     "SSC Napoli",
+     2018,
+     2022
+    ],
+    [
+     "Jong Ajax",
+     2015,
+     2018
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q438796": {
+   "name": "Mapou Yanga-Mbiwa",
+   "was": "Olympique Lyonnais",
+   "now": null,
+   "source": "Mapou Yanga-Mbiwa",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     2015,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q126466": {
+   "name": "Jack Colback",
+   "was": "Nottingham Forest",
+   "now": null,
+   "source": "Jack Colback",
+   "close": [
+    [
+     "Newcastle United F.C.",
+     2014,
+     2020
+    ],
+    [
+     "Nottingham Forest F.C.",
+     2018,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q129816": {
+   "name": "Manolo Gabbiadini",
+   "was": "Napoli",
+   "now": null,
+   "source": "Manolo Gabbiadini",
+   "close": [
+    [
+     "SSC Napoli",
+     2015,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1392925": {
+   "name": "Ryan Mendes",
+   "was": "Nottingham Forest",
+   "now": null,
+   "source": "Ryan Mendes",
+   "close": [
+    [
+     "Nottingham Forest F.C.",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "RS Berkane",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1401328": {
+   "name": "Mert Günok",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Mert Günok",
+   "close": [],
+   "add": [
+    [
+     "Fenerbahçe Istanbul",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1670298": {
+   "name": "Jonas Lössl",
+   "was": "Everton",
+   "now": null,
+   "source": "Jonas Lössl",
+   "close": [
+    [
+     "Everton F.C.",
+     2019,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q4459692": {
+   "name": "Ryan Mason",
+   "was": "Bournemouth",
+   "now": null,
+   "source": "Ryan Mason",
+   "close": [
+    [
+     "Hull City A.F.C.",
+     null,
+     2018
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"AFC Bournemouth\": not in the infobox's senior career"
+   ]
+  },
+  "Q4708679": {
+   "name": "Alassane Pléa",
+   "was": null,
+   "now": "PSV",
+   "source": "Alassane Pléa",
+   "close": [
+    [
+     "Borussia Mönchengladbach",
+     2018,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "PSV Eindhoven",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q7901084": {
+   "name": "Uroš Spajić",
+   "was": "Red Star Belgrade",
+   "now": null,
+   "source": "Uroš Spajić",
+   "close": [],
+   "add": [
+    [
+     "Beijing Guoan F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q7944670": {
+   "name": "Vitolo",
+   "was": "Atlético Madrid",
+   "now": null,
+   "source": "Vitolo (footballer, born 1989)",
+   "close": [
+    [
+     "Atlético Madrid",
+     2018,
+     2024
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q13444905": {
+   "name": "Brandon Mechele",
+   "was": null,
+   "now": "Club Brugge",
+   "source": "Brandon Mechele",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q13467456": {
+   "name": "Chuba Akpom",
+   "was": null,
+   "now": "Ipswich Town",
+   "source": "Chuba Akpom",
+   "close": [
+    [
+     "Middlesbrough F.C.",
+     2020,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Ipswich Town F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15082662": {
+   "name": "Saïd Benrahma",
+   "was": "West Ham",
+   "now": null,
+   "source": "Saïd Benrahma",
+   "close": [
+    [
+     "Angers SCO",
+     2016,
+     2016
+    ],
+    [
+     "West Ham United F.C.",
+     2020,
+     2024
+    ],
+    [
+     "Gazélec Ajaccio",
+     2017,
+     2017
+    ],
+    [
+     "Brentford F.C.",
+     2018,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Neom Club",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15980720": {
+   "name": "Philipp Max",
+   "was": "PSV",
+   "now": null,
+   "source": "Philipp Max",
+   "close": [
+    [
+     "PSV Eindhoven",
+     2020,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16297591": {
+   "name": "Fabián Balbuena",
+   "was": "Corinthians",
+   "now": null,
+   "source": "Fabián Balbuena",
+   "close": [
+    [
+     "West Ham United F.C.",
+     null,
+     2021
+    ],
+    [
+     "S.C. Corinthians Paulista",
+     2016,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Grêmio FBPA",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q889289": {
+   "name": "Davy Pröpper",
+   "was": "PSV",
+   "now": null,
+   "source": "Davy Pröpper",
+   "close": [
+    [
+     "PSV Eindhoven",
+     2015,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q10856523": {
+   "name": "Antonio Sanabria",
+   "was": "Real Betis",
+   "now": null,
+   "source": "Antonio Sanabria",
+   "close": [
+    [
+     "Real Betis Balompié",
+     2016,
+     2021
+    ],
+    [
+     "Sporting de Gijón",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "S.C. Internacional",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"FC Barcelona\": not in the infobox's senior career"
+   ]
+  },
+  "Q18201931": {
+   "name": "Marko Rog",
+   "was": "Dinamo Zagreb",
+   "now": null,
+   "source": "Marko Rog",
+   "close": [
+    [
+     "Cagliari Calcio",
+     2020,
+     2025
+    ],
+    [
+     "GNK Dinamo Zagreb",
+     2024,
+     2025
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20669464": {
+   "name": "Lucas Martínez Quarta",
+   "was": null,
+   "now": "River Plate",
+   "source": "Lucas Martínez Quarta",
+   "close": [
+    [
+     "ACF Fiorentina",
+     null,
+     2025
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21171299": {
+   "name": "Albert Guðmundsson",
+   "was": "Fiorentina",
+   "now": "Lazio",
+   "source": "Albert Guðmundsson (footballer, born 1997)",
+   "close": [],
+   "add": [
+    [
+     "SS Lazio",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21584736": {
+   "name": "Sadiq Umar",
+   "was": null,
+   "now": "Valencia",
+   "source": "Umar Sadiq",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21620666": {
+   "name": "Tosin Adarabioyo",
+   "was": "Chelsea",
+   "now": "Tottenham Hotspur",
+   "source": "Tosin Adarabioyo",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Tottenham Hotspur F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22683033": {
+   "name": "Yves Bissouma",
+   "was": null,
+   "now": "Ajax",
+   "source": "Yves Bissouma",
+   "close": [],
+   "add": [
+    [
+     "AFC Ajax",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28056787": {
+   "name": "Facundo Medina",
+   "was": "Marseille",
+   "now": "Bayer Leverkusen",
+   "source": "Facundo Medina",
+   "close": [
+    [
+     "R.C. Lens",
+     2020,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Bayer 04 Leverkusen",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28663925": {
+   "name": "Matías Viña",
+   "was": "Flamengo",
+   "now": null,
+   "source": "Matías Viña",
+   "close": [],
+   "add": [
+    [
+     "Cruzeiro E.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28971436": {
+   "name": "Evan Ndicka",
+   "was": null,
+   "now": "Roma",
+   "source": "Evan Ndicka",
+   "close": [
+    [
+     "Eintracht Frankfurt",
+     null,
+     2023
+    ],
+    [
+     "AJ Auxerre",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "AS Roma",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56441182": {
+   "name": "Kamil Grabara",
+   "was": null,
+   "now": "Juventus",
+   "source": "Kamil Grabara",
+   "close": [
+    [
+     "Huddersfield Town A.F.C.",
+     2019,
+     2020
+    ],
+    [
+     "F.C. Copenhagen",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Juventus FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Liverpool F.C. Reserves and Academy\": not in the infobox's senior career"
+   ]
+  },
+  "Q56703599": {
+   "name": "Daniel Muñoz",
+   "was": "Crystal Palace",
+   "now": "Nottingham Forest",
+   "source": "Daniel Muñoz (footballer)",
+   "close": [
+    [
+     "Crystal Palace F.C.",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Nottingham Forest F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q57704058": {
+   "name": "Benoît Badiashile",
+   "was": null,
+   "now": "Napoli",
+   "source": "Benoît Badiashile",
+   "close": [],
+   "add": [
+    [
+     "SSC Napoli",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q60664537": {
+   "name": "Crysencio Summerville",
+   "was": "West Ham",
+   "now": null,
+   "source": "Crysencio Summerville",
+   "close": [
+    [
+     "FC Dordrecht",
+     null,
+     2019
+    ],
+    [
+     "West Ham United F.C.",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Al Hilal SFC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q60842120": {
+   "name": "Gonzalo Plata",
+   "was": null,
+   "now": "Flamengo",
+   "source": "Gonzalo Plata",
+   "close": [
+    [
+     "Sporting CP",
+     null,
+     2022
+    ],
+    [
+     "Independiente del Valle",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Clube de Regatas do Flamengo",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q66108160": {
+   "name": "Brennan Johnson",
+   "was": "Crystal Palace",
+   "now": "Everton",
+   "source": "Brennan Johnson",
+   "close": [
+    [
+     "Crystal Palace F.C.",
+     2026,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Everton F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q67498669": {
+   "name": "Zion Suzuki",
+   "was": null,
+   "now": "Aston Villa",
+   "source": "Zion Suzuki",
+   "close": [
+    [
+     "Urawa Red Diamonds",
+     2019,
+     2024
+    ],
+    [
+     "Sint-Truidense V.V.",
+     2023,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Aston Villa F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q24451748": {
+   "name": "Reinildo Mandava",
+   "was": null,
+   "now": "Sunderland",
+   "source": "Reinildo Mandava",
+   "close": [
+    [
+     "AD Fafe",
+     null,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Sunderland A.F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q104784108": {
+   "name": "Chadi Riad",
+   "was": "Real Betis",
+   "now": "Crystal Palace",
+   "source": "Chadi Riad",
+   "close": [
+    [
+     "Real Betis Balompié",
+     2023,
+     2024
+    ],
+    [
+     "FC Barcelona",
+     2022,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q247312": {
+   "name": "John Ruddy",
+   "was": null,
+   "now": "Wolves",
+   "source": "John Ruddy",
+   "close": [],
+   "add": [
+    [
+     "Wolverhampton Wanderers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q321082": {
+   "name": "Nick Powell",
+   "was": "Hull City",
+   "now": null,
+   "source": "Nick Powell",
+   "close": [
+    [
+     "Hull City A.F.C.",
+     2016,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Bradford City A.F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q649788": {
+   "name": "Juanmi Jiménez",
+   "was": "Real Betis",
+   "now": null,
+   "source": "Juanmi (footballer, born 1993)",
+   "close": [
+    [
+     "Real Betis Balompié",
+     2019,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Getafe CF",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2106995": {
+   "name": "Jonas Knudsen",
+   "was": "Ipswich Town",
+   "now": null,
+   "source": "Jonas Knudsen",
+   "close": [
+    [
+     "Ipswich Town F.C.",
+     2015,
+     2019
+    ],
+    [
+     "Malmö FF",
+     null,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q5371332": {
+   "name": "Emil Krafth",
+   "was": "Newcastle United",
+   "now": null,
+   "source": "Emil Krafth",
+   "close": [
+    [
+     "Newcastle United F.C.",
+     2019,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15081929": {
+   "name": "Maxwel Cornet",
+   "was": null,
+   "now": "West Ham",
+   "source": "Maxwel Cornet",
+   "close": [
+    [
+     "Genoa CFC",
+     2025,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15830968": {
+   "name": "Diego Carlos",
+   "was": null,
+   "now": "Parma",
+   "source": "Diego Carlos (footballer, born 1993)",
+   "close": [],
+   "add": [
+    [
+     "Parma Calcio 1913",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16236537": {
+   "name": "Rui Silva",
+   "was": null,
+   "now": "Sporting CP",
+   "source": "Rui Silva (footballer, born 1994)",
+   "close": [],
+   "add": [
+    [
+     "Sporting CP",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16236700": {
+   "name": "Ryan Christie",
+   "was": "Celtic",
+   "now": "Bournemouth",
+   "source": "Ryan Christie",
+   "close": [
+    [
+     "Celtic F.C.",
+     2015,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "AFC Bournemouth",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16632974": {
+   "name": "Saman Ghoddos",
+   "was": "Brentford",
+   "now": null,
+   "source": "Saman Ghoddos",
+   "close": [
+    [
+     "Brentford F.C.",
+     2021,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Kalba FC",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1185419": {
+   "name": "Bruma",
+   "was": "Benfica",
+   "now": null,
+   "source": "Bruma (footballer)",
+   "close": [
+    [
+     "S.L. Benfica",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Aris Thessaloniki F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3163157": {
+   "name": "Javier Manquillo",
+   "was": "Newcastle United",
+   "now": null,
+   "source": "Javier Manquillo",
+   "close": [
+    [
+     "Newcastle United F.C.",
+     2017,
+     2024
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21293144": {
+   "name": "Antonín Barák",
+   "was": "Fiorentina",
+   "now": null,
+   "source": "Antonín Barák",
+   "close": [
+    [
+     "ACF Fiorentina",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "APOEL F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22969552": {
+   "name": "Timothy Fosu-Mensah",
+   "was": "Bayer Leverkusen",
+   "now": null,
+   "source": "Timothy Fosu-Mensah",
+   "close": [
+    [
+     "Bayer 04 Leverkusen",
+     2021,
+     2024
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q29427316": {
+   "name": "Marin Pongračić",
+   "was": null,
+   "now": "Fiorentina",
+   "source": "Marin Pongračić",
+   "close": [],
+   "add": [
+    [
+     "ACF Fiorentina",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"FC Bayern Munich\": not in the infobox's senior career"
+   ]
+  },
+  "Q29962926": {
+   "name": "Boubacar Kamara",
+   "was": null,
+   "now": "Aston Villa",
+   "source": "Boubacar Kamara",
+   "close": [
+    [
+     "Olympique de Marseille",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Aston Villa F.C.",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q65948595": {
+   "name": "Amar Dedić",
+   "was": "Benfica",
+   "now": "Newcastle United",
+   "source": "Amar Dedić",
+   "close": [
+    [
+     "S.L. Benfica",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Newcastle United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q84247209": {
+   "name": "Daniel Maldini",
+   "was": "AC Milan",
+   "now": null,
+   "source": "Daniel Maldini",
+   "close": [
+    [
+     "AC Milan",
+     2020,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Atalanta BC",
+     2025,
+     null
+    ],
+    [
+     "Cagliari Calcio",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q96755704": {
+   "name": "Hannibal Mejbri",
+   "was": null,
+   "now": "Burnley",
+   "source": "Hannibal Mejbri",
+   "close": [
+    [
+     "Manchester United F.C.",
+     2021,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Burnley F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1885": {
+   "name": "Jürgen Locadia",
+   "was": "Brighton",
+   "now": null,
+   "source": "Jürgen Locadia",
+   "close": [
+    [
+     "Persepolis F.C.",
+     null,
+     2022
+    ],
+    [
+     "Brighton & Hove Albion F.C.",
+     2018,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Tampa Bay Rowdies",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26192": {
+   "name": "Steven Caulker",
+   "was": "Liverpool",
+   "now": null,
+   "source": "Steven Caulker",
+   "close": [
+    [
+     "Queens Park Rangers F.C.",
+     2014,
+     2017
+    ],
+    [
+     "Liverpool F.C.",
+     2016,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27680": {
+   "name": "Ivan Obradović",
+   "was": "Anderlecht",
+   "now": null,
+   "source": "Ivan Obradović",
+   "close": [
+    [
+     "R.S.C. Anderlecht",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q51159914": {
+   "name": "Dominik Kotarski",
+   "was": null,
+   "now": "Dinamo Zagreb",
+   "source": "Dominik Kotarski",
+   "close": [
+    [
+     "AFC Ajax",
+     null,
+     2022
+    ],
+    [
+     "HNK Gorica",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "GNK Dinamo Zagreb",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q52044004": {
+   "name": "Jakub Moder",
+   "was": null,
+   "now": "Feyenoord",
+   "source": "Jakub Moder",
+   "close": [
+    [
+     "Lech Poznań",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Feyenoord Rotterdam",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q118472572": {
+   "name": "Marc Guiu Paz",
+   "was": "Chelsea",
+   "now": null,
+   "source": "Marc Guiu",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2024,
+     2026
+    ],
+    [
+     "FC Barcelona Atlètic",
+     2023,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "RB Leipzig",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q276208": {
+   "name": "Benik Afobe",
+   "was": "Bournemouth",
+   "now": null,
+   "source": "Benik Afobe",
+   "close": [
+    [
+     "AFC Bournemouth",
+     2016,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Al-Arabi",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q126422": {
+   "name": "Connor Wickham",
+   "was": "Crystal Palace",
+   "now": null,
+   "source": "Connor Wickham",
+   "close": [
+    [
+     "Crystal Palace F.C.",
+     2015,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Reading F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q16056060": {
+   "name": "Callum McGregor",
+   "was": null,
+   "now": "Celtic",
+   "source": "Callum McGregor",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16320332": {
+   "name": "Maximilian Philipp",
+   "was": "Borussia Dortmund",
+   "now": null,
+   "source": "Maximilian Philipp",
+   "close": [
+    [
+     "Borussia Dortmund",
+     2017,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16766365": {
+   "name": "James Wilson",
+   "was": "Brighton",
+   "now": null,
+   "source": "James Wilson (footballer, born 1995)",
+   "close": [
+    [
+     "Manchester United F.C.",
+     2014,
+     2019
+    ],
+    [
+     "Brighton & Hove Albion F.C.",
+     2015,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18637804": {
+   "name": "Moussa Niakhaté",
+   "was": null,
+   "now": "Olympique Lyonnais",
+   "source": "Moussa Niakhaté",
+   "close": [
+    [
+     "FC Metz",
+     2017,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Olympique Lyonnais",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18683792": {
+   "name": "Ché Adams",
+   "was": null,
+   "now": "Torino",
+   "source": "Ché Adams",
+   "close": [
+    [
+     "Birmingham City F.C.",
+     2016,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Torino FC",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20090180": {
+   "name": "Fredrik Aursnes",
+   "was": null,
+   "now": "Benfica",
+   "source": "Fredrik Aursnes",
+   "close": [
+    [
+     "Molde FK",
+     2016,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "S.L. Benfica",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20767912": {
+   "name": "Borna Barišić",
+   "was": "Rangers",
+   "now": null,
+   "source": "Borna Barišić",
+   "close": [
+    [
+     "Rangers F.C.",
+     2018,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Osijek",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20878221": {
+   "name": "Connor Roberts",
+   "was": null,
+   "now": "Burnley",
+   "source": "Connor Roberts (footballer, born 1995)",
+   "close": [
+    [
+     "Yeovil Town F.C.",
+     2015,
+     2016
+    ],
+    [
+     "Swansea City A.F.C.",
+     2014,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Burnley F.C.",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q583274": {
+   "name": "Diego Demme",
+   "was": "Napoli",
+   "now": null,
+   "source": "Diego Demme",
+   "close": [
+    [
+     "SSC Napoli",
+     2020,
+     2024
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21403420": {
+   "name": "Cameron Borthwick-Jackson",
+   "was": "Manchester United",
+   "now": null,
+   "source": "Cameron Borthwick-Jackson",
+   "close": [
+    [
+     "Manchester United F.C.",
+     2015,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Macclesfield F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22951388": {
+   "name": "Maximilian Wöber",
+   "was": null,
+   "now": "Schalke 04",
+   "source": "Maximilian Wöber",
+   "close": [
+    [
+     "SK Rapid Wien",
+     2015,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Schalke 04",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26221634": {
+   "name": "Jacob Bruun Larsen",
+   "was": null,
+   "now": "Burnley",
+   "source": "Jacob Bruun Larsen",
+   "close": [
+    [
+     "VfB Stuttgart",
+     null,
+     2025
+    ],
+    [
+     "Borussia Dortmund",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Burnley F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27037962": {
+   "name": "Cucho Hernández",
+   "was": null,
+   "now": "Real Betis",
+   "source": "Cucho Hernández",
+   "close": [
+    [
+     "Watford F.C.",
+     2017,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Real Betis Balompié",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27518278": {
+   "name": "Joey Veerman",
+   "was": "PSV",
+   "now": "Borussia Dortmund",
+   "source": "Joey Veerman",
+   "close": [
+    [
+     "PSV Eindhoven",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Borussia Dortmund",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28736721": {
+   "name": "Luis Suárez",
+   "was": null,
+   "now": "Sporting CP",
+   "source": "Luis Suárez (Colombian footballer)",
+   "close": [
+    [
+     "Watford F.C.",
+     2017,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Sporting CP",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q725747": {
+   "name": "Ashley Barnes",
+   "was": null,
+   "now": "Burnley",
+   "source": "Ashley Barnes",
+   "close": [
+    [
+     "Paulton Rovers F.C.",
+     null,
+     2007
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q41445080": {
+   "name": "Fiete Arp",
+   "was": "Hamburger SV",
+   "now": null,
+   "source": "Fiete Arp",
+   "close": [
+    [
+     "Hamburger SV",
+     2017,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Odense Boldklub",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q41800131": {
+   "name": "Omar Alderete",
+   "was": null,
+   "now": "Sunderland",
+   "source": "Omar Alderete",
+   "close": [
+    [
+     "Club de Gimnasia y Esgrima La Plata",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Sunderland A.F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q42725482": {
+   "name": "Lyle Foster",
+   "was": "Burnley",
+   "now": null,
+   "source": "Lyle Foster",
+   "close": [],
+   "add": [
+    [
+     "Houston Dynamo FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q48568974": {
+   "name": "Junior Firpo",
+   "was": null,
+   "now": "Real Betis",
+   "source": "Junior Firpo",
+   "close": [
+    [
+     "FC Barcelona",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Real Betis Balompié",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q50825738": {
+   "name": "Rayan Aït-Nouri",
+   "was": null,
+   "now": "Manchester City",
+   "source": "Rayan Aït-Nouri",
+   "close": [
+    [
+     "Wolverhampton Wanderers F.C.",
+     2019,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Manchester City F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q55363875": {
+   "name": "Roger Ibañez",
+   "was": "Lazio",
+   "now": null,
+   "source": "Roger Ibañez",
+   "close": [
+    [
+     "Atalanta BC",
+     2018,
+     2021
+    ],
+    [
+     "Club Sportivo Sergipe",
+     2017,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Al Ahli FC",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"SS Lazio\": not in the infobox's senior career"
+   ]
+  },
+  "Q56043430": {
+   "name": "Yunus Akgün",
+   "was": null,
+   "now": "Galatasaray",
+   "source": "Yunus Akgün",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2066714": {
+   "name": "Pedro Obiang",
+   "was": "West Ham",
+   "now": null,
+   "source": "Pedro Obiang",
+   "close": [
+    [
+     "West Ham United F.C.",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Atlético Madrid\": not in the infobox's senior career"
+   ]
+  },
+  "Q35124488": {
+   "name": "Fodé Ballo-Touré",
+   "was": "AS Monaco",
+   "now": null,
+   "source": "Fodé Ballo-Touré",
+   "close": [
+    [
+     "AS Monaco FC",
+     2019,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q37282560": {
+   "name": "Marash Kumbulla",
+   "was": "Roma",
+   "now": null,
+   "source": "Marash Kumbulla",
+   "close": [],
+   "add": [
+    [
+     "Rayo Vallecano",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [
+    [
+     "AS Roma",
+     2020,
+     2021
+    ]
+   ],
+   "unresolved": []
+  },
+  "Q38245742": {
+   "name": "Mile Svilar",
+   "was": "Benfica",
+   "now": "Roma",
+   "source": "Mile Svilar",
+   "close": [
+    [
+     "S.L. Benfica",
+     2017,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "AS Roma",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3559484": {
+   "name": "Matías Kranevitter",
+   "was": "Atlético Madrid",
+   "now": null,
+   "source": "Matías Kranevitter",
+   "close": [
+    [
+     "Atlético Madrid",
+     2016,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Racing Club",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6696318": {
+   "name": "Lucas Silva",
+   "was": "Marseille",
+   "now": null,
+   "source": "Lucas Silva (footballer, born 1993)",
+   "close": [
+    [
+     "Olympique de Marseille",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Cruzeiro E.C.",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q59065": {
+   "name": "Adam Smith",
+   "was": null,
+   "now": "Bournemouth",
+   "source": "Adam Smith (footballer, born 1991)",
+   "close": [],
+   "add": [
+    [
+     "AFC Bournemouth",
+     2014,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q110486192": {
+   "name": "Nestor Irankunda",
+   "was": null,
+   "now": "Sporting CP",
+   "source": "Nestory Irankunda",
+   "close": [],
+   "add": [
+    [
+     "Sporting CP",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q14495103": {
+   "name": "Kenny Tete",
+   "was": null,
+   "now": "Fulham",
+   "source": "Kenny Tete",
+   "close": [
+    [
+     "AFC Ajax",
+     2014,
+     2017
+    ],
+    [
+     "Olympique Lyonnais",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Fulham F.C.",
+     2020,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q115937989": {
+   "name": "Rayan",
+   "was": null,
+   "now": "Bournemouth",
+   "source": "Rayan (footballer, born 2006)",
+   "close": [
+    [
+     "CR Vasco da Gama",
+     null,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "AFC Bournemouth",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q310404": {
+   "name": "Josh McEachran",
+   "was": "Brentford",
+   "now": null,
+   "source": "Josh McEachran",
+   "close": [
+    [
+     "Brentford F.C.",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15715173": {
+   "name": "José Mauri",
+   "was": "AC Milan",
+   "now": null,
+   "source": "José Mauri",
+   "close": [
+    [
+     "AC Milan",
+     2015,
+     2019
+    ],
+    [
+     "Empoli FC",
+     null,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18402294": {
+   "name": "Rolando Mandragora",
+   "was": "Juventus",
+   "now": "Torino",
+   "source": "Rolando Mandragora",
+   "close": [
+    [
+     "Juventus FC",
+     2016,
+     2018
+    ],
+    [
+     "Udinese Calcio",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Torino FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18599504": {
+   "name": "Majid Hosseini",
+   "was": "Trabzonspor",
+   "now": null,
+   "source": "Majid Hosseini",
+   "close": [
+    [
+     "Rah Ahan F.C.",
+     2015,
+     2016
+    ],
+    [
+     "Trabzonspor",
+     2018,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19610875": {
+   "name": "Uğurcan Çakır",
+   "was": null,
+   "now": "Galatasaray",
+   "source": "Uğurcan Çakır",
+   "close": [
+    [
+     "1461 Trabzon",
+     2016,
+     2016
+    ],
+    [
+     "Trabzonspor",
+     2015,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q594733": {
+   "name": "Kara Mbodji",
+   "was": "Anderlecht",
+   "now": null,
+   "source": "Kara Mbodji",
+   "close": [
+    [
+     "R.S.C. Anderlecht",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21540971": {
+   "name": "Rafa Mir",
+   "was": "Sevilla",
+   "now": null,
+   "source": "Rafa Mir",
+   "close": [
+    [
+     "Valencia CF Mestalla",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Aris Thessaloniki F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Real Murcia\": not in the infobox's senior career",
+    "open spell at \"FC Barcelona\": not in the infobox's senior career"
+   ]
+  },
+  "Q23844124": {
+   "name": "Tom Davies",
+   "was": "Everton",
+   "now": null,
+   "source": "Tom Davies (footballer, born 1998)",
+   "close": [
+    [
+     "Everton F.C.",
+     2016,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q24084667": {
+   "name": "Scott McKenna",
+   "was": null,
+   "now": "Dinamo Zagreb",
+   "source": "Scott McKenna",
+   "close": [
+    [
+     "Ayr United F.C.",
+     null,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "GNK Dinamo Zagreb",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27832634": {
+   "name": "Ibrahim Sangaré",
+   "was": null,
+   "now": "Nottingham Forest",
+   "source": "Ibrahim Sangaré (Ivorian footballer)",
+   "close": [
+    [
+     "Toulouse FC",
+     null,
+     2020
+    ],
+    [
+     "PSV Eindhoven",
+     null,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Nottingham Forest F.C.",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"AS Denguélé\": not in the infobox's senior career"
+   ]
+  },
+  "Q27909737": {
+   "name": "David Brooks",
+   "was": null,
+   "now": "Bournemouth",
+   "source": "David Brooks (footballer)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27957334": {
+   "name": "Nikola Katić",
+   "was": null,
+   "now": "Schalke 04",
+   "source": "Nikola Katić",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28325065": {
+   "name": "Luka Ivanušec",
+   "was": null,
+   "now": "Dinamo Zagreb",
+   "source": "Luka Ivanušec",
+   "close": [
+    [
+     "NK Lokomotiva",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "GNK Dinamo Zagreb",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1101455": {
+   "name": "Neal Maupay",
+   "was": null,
+   "now": "Marseille",
+   "source": "Neal Maupay",
+   "close": [],
+   "add": [
+    [
+     "Olympique de Marseille",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q66586702": {
+   "name": "Amine Adli",
+   "was": "Bayer Leverkusen",
+   "now": "Bournemouth",
+   "source": "Amine Adli",
+   "close": [
+    [
+     "Bayer 04 Leverkusen",
+     2021,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "AFC Bournemouth",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2469796": {
+   "name": "Willian José",
+   "was": "Real Betis",
+   "now": null,
+   "source": "Willian José",
+   "close": [
+    [
+     "Real Betis Balompié",
+     2021,
+     2024
+    ],
+    [
+     "Real Sociedad",
+     2016,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Esporte Clube Bahia",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q30128591": {
+   "name": "Kyle Walker-Peters",
+   "was": null,
+   "now": "West Ham",
+   "source": "Kyle Walker-Peters",
+   "close": [
+    [
+     "Tottenham Hotspur F.C.",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "West Ham United F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q40352866": {
+   "name": "Michaël Cuisance",
+   "was": "Bayern Munich",
+   "now": null,
+   "source": "Michaël Cuisance",
+   "close": [
+    [
+     "FC Bayern Munich",
+     2019,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "R.C. Lens",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q29988852": {
+   "name": "Angel Gomes",
+   "was": null,
+   "now": "Marseille",
+   "source": "Angel Gomes",
+   "close": [
+    [
+     "Lille OSC",
+     2020,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Olympique de Marseille",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q824938": {
+   "name": "Cristiano Biraghi",
+   "was": null,
+   "now": "Torino",
+   "source": "Cristiano Biraghi",
+   "close": [
+    [
+     "Granada CF",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Torino FC",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1408340": {
+   "name": "Andrea Bertolacci",
+   "was": "AC Milan",
+   "now": null,
+   "source": "Andrea Bertolacci",
+   "close": [
+    [
+     "AC Milan",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1350685": {
+   "name": "Nico Schulz",
+   "was": "Borussia Dortmund",
+   "now": null,
+   "source": "Nico Schulz",
+   "close": [
+    [
+     "Borussia Dortmund",
+     2019,
+     2023
+    ],
+    [
+     "TSG 1899 Hoffenheim",
+     null,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q74178822": {
+   "name": "Ismail Jakobs",
+   "was": null,
+   "now": "Galatasaray",
+   "source": "Ismail Jakobs",
+   "close": [
+    [
+     "AS Monaco FC",
+     null,
+     2025
+    ],
+    [
+     "1. FC Köln",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q78255759": {
+   "name": "Wilfried Singo",
+   "was": null,
+   "now": "Galatasaray",
+   "source": "Wilfried Singo",
+   "close": [
+    [
+     "AS Monaco FC",
+     null,
+     2025
+    ],
+    [
+     "Torino FC",
+     null,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q81741599": {
+   "name": "Loïc Bade",
+   "was": null,
+   "now": "Bayer Leverkusen",
+   "source": "Loïc Badé",
+   "close": [
+    [
+     "Stade Rennais F.C.",
+     2021,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Bayer 04 Leverkusen",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q83264648": {
+   "name": "Nathan Patterson",
+   "was": null,
+   "now": "Torino",
+   "source": "Nathan Patterson (footballer)",
+   "close": [
+    [
+     "Rangers F.C.",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Torino FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3808761": {
+   "name": "Norbert Gyömbér",
+   "was": "Roma",
+   "now": null,
+   "source": "Norbert Gyömbér",
+   "close": [
+    [
+     "AS Roma",
+     2015,
+     2018
+    ],
+    [
+     "A.C. Perugia Calcio",
+     null,
+     2020
+    ],
+    [
+     "Delfino Pescara 1936",
+     null,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Levadiakos F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q32091": {
+   "name": "Henri Saivet",
+   "was": "Newcastle United",
+   "now": null,
+   "source": "Henri Saivet",
+   "close": [
+    [
+     "Newcastle United F.C.",
+     2016,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Stade Malherbe Caen",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q105812639": {
+   "name": "Abdul Fatawu Issahak",
+   "was": null,
+   "now": "Ipswich Town",
+   "source": "Abdul Fatawu",
+   "close": [
+    [
+     "Leicester City F.C.",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Ipswich Town F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q110739094": {
+   "name": "Ben Gannon-Doak",
+   "was": null,
+   "now": "Bournemouth",
+   "source": "Ben Gannon-Doak",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q11860513": {
+   "name": "Glen Kamara",
+   "was": "Rangers",
+   "now": null,
+   "source": "Glen Kamara",
+   "close": [
+    [
+     "Rangers F.C.",
+     2019,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Stade Rennais F.C.",
+     2024,
+     null
+    ],
+    [
+     "Queens Park Rangers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q7800063": {
+   "name": "Tiago Ilori",
+   "was": "Liverpool",
+   "now": null,
+   "source": "Tiago Ilori",
+   "close": [
+    [
+     "Liverpool F.C.",
+     2016,
+     2017
+    ],
+    [
+     "Reading F.C.",
+     null,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15831045": {
+   "name": "Jemerson",
+   "was": "AS Monaco",
+   "now": null,
+   "source": "Jemerson",
+   "close": [
+    [
+     "AS Monaco FC",
+     2016,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16023869": {
+   "name": "Adam Armstrong",
+   "was": null,
+   "now": "Wolves",
+   "source": "Adam Armstrong (footballer)",
+   "close": [],
+   "add": [
+    [
+     "Wolverhampton Wanderers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16236424": {
+   "name": "Gonçalo Paciência",
+   "was": "Porto",
+   "now": null,
+   "source": "Gonçalo Paciência",
+   "close": [
+    [
+     "FC Porto B",
+     2013,
+     2015
+    ]
+   ],
+   "add": [
+    [
+     "C.D. Santa Clara",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17465944": {
+   "name": "Anwar El Ghazi",
+   "was": "Aston Villa",
+   "now": null,
+   "source": "Anwar El Ghazi",
+   "close": [
+    [
+     "Aston Villa F.C.",
+     2019,
+     2022
+    ],
+    [
+     "AFC Ajax",
+     2014,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Al-Sailiya Sports Club",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q17712747": {
+   "name": "Joan Jordan",
+   "was": "Sevilla",
+   "now": null,
+   "source": "Joan Jordán",
+   "close": [
+    [
+     "Sevilla FC",
+     2017,
+     2026
+    ],
+    [
+     "SD Eibar",
+     null,
+     2019
+    ],
+    [
+     "Real Valladolid",
+     null,
+     2017
+    ],
+    [
+     "RCD Espanyol de Barcelona",
+     2014,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "C.F. Estrela da Amadora",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18921648": {
+   "name": "Ismael Díaz",
+   "was": "Porto",
+   "now": null,
+   "source": "Ismael Díaz (footballer, born 1997)",
+   "close": [
+    [
+     "FC Porto B",
+     2015,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Club León",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Deportivo de A Coruña\": not in the infobox's senior career",
+    "open spell at \"FC Porto\": not in the infobox's senior career"
+   ]
+  },
+  "Q515938": {
+   "name": "Alex Teixeira",
+   "was": "Inter Milan",
+   "now": null,
+   "source": "Alex Teixeira",
+   "close": [],
+   "add": [
+    [
+     "Panserraikos F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Inter Milan\": not in the infobox's senior career",
+    "open spell at \"Liverpool F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q211691": {
+   "name": "Suk Hyun-jun",
+   "was": "Porto",
+   "now": null,
+   "source": "Suk Hyun-jun",
+   "close": [
+    [
+     "FC Porto",
+     2016,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Yongin FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20859426": {
+   "name": "Amadou Diawara",
+   "was": "Roma",
+   "now": null,
+   "source": "Amadou Diawara",
+   "close": [
+    [
+     "AS Roma",
+     2019,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "CD Leganés",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26251403": {
+   "name": "James Justin",
+   "was": null,
+   "now": "Leeds United",
+   "source": "James Justin",
+   "close": [
+    [
+     "Leicester City F.C.",
+     2019,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26897360": {
+   "name": "Mouctar Diakhaby",
+   "was": null,
+   "now": "Valencia",
+   "source": "Mouctar Diakhaby",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Valencia CF",
+     2018,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q29158696": {
+   "name": "Ghislain Konan",
+   "was": null,
+   "now": "Wolves",
+   "source": "Ghislain Konan",
+   "close": [
+    [
+     "ASEC Mimosas",
+     null,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Wolverhampton Wanderers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Guimarães\": not in the infobox's senior career"
+   ]
+  },
+  "Q630350": {
+   "name": "James Forrest",
+   "was": null,
+   "now": "Celtic",
+   "source": "James Forrest (footballer, born 1991)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q961889": {
+   "name": "Gabriel",
+   "was": "Napoli",
+   "now": null,
+   "source": "Gabriel (footballer, born September 1992)",
+   "close": [
+    [
+     "Cagliari Calcio",
+     null,
+     2017
+    ],
+    [
+     "SSC Napoli",
+     2015,
+     2016
+    ],
+    [
+     "Empoli FC",
+     null,
+     2018
+    ],
+    [
+     "A.C. Perugia Calcio",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "E.C. Vitória",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q44083681": {
+   "name": "Guglielmo Vicario",
+   "was": "Tottenham Hotspur",
+   "now": "Juventus",
+   "source": "Guglielmo Vicario",
+   "close": [],
+   "add": [
+    [
+     "Juventus FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q47491410": {
+   "name": "Pedro Guilherme Abreu dos Santos",
+   "was": null,
+   "now": "Flamengo",
+   "source": "Pedro (footballer, born 1997)",
+   "close": [
+    [
+     "Fluminense F.C.",
+     null,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q53652291": {
+   "name": "Dwight McNeil",
+   "was": null,
+   "now": "Crystal Palace",
+   "source": "Dwight McNeil",
+   "close": [
+    [
+     "Everton F.C.",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q58011167": {
+   "name": "Maximiliano Araújo",
+   "was": null,
+   "now": "Sporting CP",
+   "source": "Maximiliano Araújo",
+   "close": [
+    [
+     "Montevideo Wanderers Fútbol Club",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Sporting CP",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q60677561": {
+   "name": "Benjamin Nygren",
+   "was": null,
+   "now": "Celtic",
+   "source": "Benjamin Nygren",
+   "close": [
+    [
+     "FC Nordsjælland",
+     null,
+     2025
+    ],
+    [
+     "IFK Göteborg",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Celtic F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q64010525": {
+   "name": "Aaron Hickey",
+   "was": null,
+   "now": "Brentford",
+   "source": "Aaron Hickey",
+   "close": [
+    [
+     "Heart of Midlothian F.C.",
+     2019,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Brentford F.C.",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q66738004": {
+   "name": "Fábio Silva",
+   "was": null,
+   "now": "Borussia Dortmund",
+   "source": "Fábio Silva (footballer, born 2002)",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q68650133": {
+   "name": "Evan Ferguson",
+   "was": null,
+   "now": "Brighton",
+   "source": "Evan Ferguson",
+   "close": [
+    [
+     "Bohemian F.C.",
+     null,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q96335553": {
+   "name": "Luka Romero",
+   "was": "AC Milan",
+   "now": null,
+   "source": "Luka Romero",
+   "close": [
+    [
+     "AC Milan",
+     2023,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Cruz Azul",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3438450": {
+   "name": "Rodrigo Caio",
+   "was": "Flamengo",
+   "now": null,
+   "source": "Rodrigo Caio",
+   "close": [
+    [
+     "Clube de Regatas do Flamengo",
+     2018,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3637067": {
+   "name": "Oumar Niasse",
+   "was": "Everton",
+   "now": null,
+   "source": "Oumar Niasse",
+   "close": [
+    [
+     "Everton F.C.",
+     2016,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q4094820": {
+   "name": "Miguel Borja",
+   "was": "Palmeiras",
+   "now": null,
+   "source": "Miguel Borja",
+   "close": [
+    [
+     "Sociedade Esportiva Palmeiras",
+     2017,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Club América",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q4679961": {
+   "name": "Adam Webster",
+   "was": "Brighton",
+   "now": null,
+   "source": "Adam Webster (footballer, born 1995)",
+   "close": [
+    [
+     "Brighton & Hove Albion F.C.",
+     2019,
+     2026
+    ],
+    [
+     "Portsmouth F.C.",
+     2012,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q60583": {
+   "name": "Jean-Christophe Bahebeck",
+   "was": "Saint-Étienne",
+   "now": null,
+   "source": "Jean-Christophe Bahebeck",
+   "close": [
+    [
+     "AS Saint-Étienne",
+     2015,
+     2016
+    ],
+    [
+     "Delfino Pescara 1936",
+     null,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q101095985": {
+   "name": "David Møller Wolfe",
+   "was": null,
+   "now": "Hamburger SV",
+   "source": "David Møller Wolfe",
+   "close": [
+    [
+     "Åsane Fotball",
+     2020,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Hamburger SV",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q106766554": {
+   "name": "Castello Lukeba",
+   "was": "Olympique Lyonnais",
+   "now": null,
+   "source": "Castello Lukeba",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     2021,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "RB Leipzig",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q107745867": {
+   "name": "Neil El Aynaoui",
+   "was": "Roma",
+   "now": null,
+   "source": "Neil El Aynaoui",
+   "close": [],
+   "add": [
+    [
+     "RB Leipzig",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q108000402": {
+   "name": "Dango Ouattara",
+   "was": null,
+   "now": "Brentford",
+   "source": "Dango Ouattara",
+   "close": [
+    [
+     "AFC Bournemouth",
+     null,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Brentford F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q116753805": {
+   "name": "Ousmane Diomande",
+   "was": "Sporting CP",
+   "now": "Nottingham Forest",
+   "source": "Ousmane Diomande",
+   "close": [
+    [
+     "Sporting CP",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Nottingham Forest F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q318069": {
+   "name": "Abdülkerim Bardakçı",
+   "was": null,
+   "now": "Galatasaray",
+   "source": "Abdülkerim Bardakcı",
+   "close": [
+    [
+     "Konyaspor",
+     2011,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q128889": {
+   "name": "Gaëtan Bong",
+   "was": "Brighton",
+   "now": null,
+   "source": "Gaëtan Bong",
+   "close": [
+    [
+     "Brighton & Hove Albion F.C.",
+     2015,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q369551": {
+   "name": "Jonathan Biabiany",
+   "was": "Inter Milan",
+   "now": null,
+   "source": "Jonathan Biabiany",
+   "close": [
+    [
+     "Inter Milan",
+     2015,
+     2018
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"AC Milan\": not in the infobox's senior career"
+   ]
+  },
+  "Q16727516": {
+   "name": "Philip Billing",
+   "was": "Bournemouth",
+   "now": null,
+   "source": "Philip Billing",
+   "close": [
+    [
+     "AFC Bournemouth",
+     2019,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "FC Midtjylland",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18046760": {
+   "name": "Derrick Luckassen",
+   "was": "Anderlecht",
+   "now": "Red Star Belgrade",
+   "source": "Derrick Luckassen",
+   "close": [
+    [
+     "AZ Alkmaar",
+     2014,
+     2017
+    ],
+    [
+     "R.S.C. Anderlecht",
+     2019,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "FK Crvena zvezda",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18165034": {
+   "name": "Ivica Ivušić",
+   "was": null,
+   "now": "Hajduk Split",
+   "source": "Ivica Ivušić",
+   "close": [
+    [
+     "NK Istra 1961",
+     2015,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "HNK Hajduk Split",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q552347": {
+   "name": "Mehdi Carcela-González",
+   "was": "Benfica",
+   "now": null,
+   "source": "Mehdi Carcela",
+   "close": [
+    [
+     "S.L. Benfica",
+     2015,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19588392": {
+   "name": "Václav Černý",
+   "was": "Ajax",
+   "now": "Beşiktaş",
+   "source": "Václav Černý (footballer)",
+   "close": [
+    [
+     "AFC Ajax",
+     2015,
+     2019
+    ],
+    [
+     "Jong Ajax",
+     2015,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Beşiktaş J.K. (Football)",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19958114": {
+   "name": "Ethan Horvath",
+   "was": "Club Brugge",
+   "now": null,
+   "source": "Ethan Horvath",
+   "close": [
+    [
+     "Club Brugge K.V.",
+     2017,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Red Bull New York",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20641574": {
+   "name": "Lucas Tousart",
+   "was": "Olympique Lyonnais",
+   "now": null,
+   "source": "Lucas Tousart",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     2015,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Stade Brestois 29",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21573188": {
+   "name": "Jhon Lucumí",
+   "was": null,
+   "now": "Juventus",
+   "source": "Jhon Lucumí",
+   "close": [
+    [
+     "Deportivo Cali",
+     2016,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Juventus FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22694710": {
+   "name": "Pablo Maffeo",
+   "was": null,
+   "now": "Valencia",
+   "source": "Pablo Maffeo",
+   "close": [
+    [
+     "RCD Mallorca",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Valencia CF",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26708753": {
+   "name": "Marc Roca Junqué",
+   "was": "Bayern Munich",
+   "now": "Real Betis",
+   "source": "Marc Roca",
+   "close": [
+    [
+     "FC Bayern Munich",
+     2020,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Real Betis Balompié",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q29318963": {
+   "name": "Gabriel Gudmundsson",
+   "was": null,
+   "now": "Leeds United",
+   "source": "Gabriel Gudmundsson",
+   "close": [
+    [
+     "Halmstads BK",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q50398907": {
+   "name": "Sepp van den Berg",
+   "was": null,
+   "now": "Brentford",
+   "source": "Sepp van den Berg",
+   "close": [
+    [
+     "Liverpool F.C.",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Brentford F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56289593": {
+   "name": "Pedro António Pereira Gonçalves",
+   "was": null,
+   "now": "Fiorentina",
+   "source": "Pedro Gonçalves",
+   "close": [],
+   "add": [
+    [
+     "ACF Fiorentina",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Valencia CF\": not in the infobox's senior career"
+   ]
+  },
+  "Q56754409": {
+   "name": "Luca Pellegrini",
+   "was": null,
+   "now": "Lazio",
+   "source": "Luca Pellegrini (footballer, born 1999)",
+   "close": [
+    [
+     "AS Roma",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "SS Lazio",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q61908191": {
+   "name": "James Garner",
+   "was": "Manchester United",
+   "now": "Everton",
+   "source": "James Garner (footballer, born 2001)",
+   "close": [
+    [
+     "Manchester United F.C.",
+     2018,
+     2022
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q63032399": {
+   "name": "Fábio Vieira",
+   "was": "Porto",
+   "now": "Hamburger SV",
+   "source": "Fábio Vieira (footballer, born 2000)",
+   "close": [
+    [
+     "FC Porto",
+     2024,
+     2025
+    ],
+    [
+     "Arsenal F.C.",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Hamburger SV",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q69656941": {
+   "name": "Andrea Cambiaso",
+   "was": null,
+   "now": "Juventus",
+   "source": "Andrea Cambiaso",
+   "close": [
+    [
+     "US Alessandria Calcio 1912",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Juventus FC",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2071136": {
+   "name": "Sérgio Oliveira",
+   "was": "Galatasaray",
+   "now": null,
+   "source": "Sérgio Oliveira",
+   "close": [
+    [
+     "Galatasaray S.K.",
+     2022,
+     2024
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q30916190": {
+   "name": "Félix Torres",
+   "was": "Corinthians",
+   "now": null,
+   "source": "Félix Torres (footballer, born 1997)",
+   "close": [
+    [
+     "Santos Laguna",
+     2019,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "S.C. Internacional",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q39082413": {
+   "name": "Lukas Nmecha",
+   "was": "Anderlecht",
+   "now": "Leeds United",
+   "source": "Lukas Nmecha",
+   "close": [
+    [
+     "Preston North End F.C.",
+     null,
+     2019
+    ],
+    [
+     "R.S.C. Anderlecht",
+     2020,
+     2021
+    ],
+    [
+     "Manchester City F.C.",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Leeds United F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q731869": {
+   "name": "Matthew Lowton",
+   "was": "Burnley",
+   "now": null,
+   "source": "Matt Lowton",
+   "close": [
+    [
+     "Burnley F.C.",
+     2015,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q96182871": {
+   "name": "Christos Tzolis",
+   "was": null,
+   "now": "Arsenal",
+   "source": "Christos Tzolis",
+   "close": [
+    [
+     "PAOK FC",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Arsenal F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q98431212": {
+   "name": "Đorđe Petrović",
+   "was": null,
+   "now": "Bournemouth",
+   "source": "Đorđe Petrović (footballer)",
+   "close": [
+    [
+     "FK Čukarički",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "AFC Bournemouth",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1523509": {
+   "name": "Karim Rekik",
+   "was": "Marseille",
+   "now": null,
+   "source": "Karim Rekik",
+   "close": [
+    [
+     "Olympique de Marseille",
+     2015,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3952812": {
+   "name": "Scott Arfield",
+   "was": "Rangers",
+   "now": null,
+   "source": "Scott Arfield",
+   "close": [
+    [
+     "Rangers F.C.",
+     2018,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3976225": {
+   "name": "Stuart Dallas",
+   "was": "Leeds United",
+   "now": null,
+   "source": "Stuart Dallas",
+   "close": [
+    [
+     "Leeds United F.C.",
+     2015,
+     2024
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q5201080": {
+   "name": "Cyrus Christie",
+   "was": "Hull City",
+   "now": null,
+   "source": "Cyrus Christie",
+   "close": [
+    [
+     "Hull City A.F.C.",
+     2022,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Hanoi FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q99485542": {
+   "name": "Savinho",
+   "was": "Manchester City",
+   "now": "Tottenham Hotspur",
+   "source": "Sávio (footballer, born 2004)",
+   "close": [
+    [
+     "Manchester City F.C.",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Tottenham Hotspur F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q14320553": {
+   "name": "Hwang Ui-jo",
+   "was": "Nottingham Forest",
+   "now": null,
+   "source": "Hwang Ui-jo",
+   "close": [
+    [
+     "Olympiacos F.C.",
+     2022,
+     2023
+    ],
+    [
+     "Nottingham Forest F.C.",
+     2022,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Alanyaspor",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15084554": {
+   "name": "Georges-Kévin Nkoudou",
+   "was": "Tottenham Hotspur",
+   "now": null,
+   "source": "Georges-Kévin Nkoudou",
+   "close": [
+    [
+     "Tottenham Hotspur F.C.",
+     2016,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Al-Diriyah Club",
+     2025,
+     null
+    ],
+    [
+     "Abha",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15620192": {
+   "name": "Vedat Muriqi",
+   "was": null,
+   "now": "Fenerbahçe",
+   "source": "Vedat Muriqi",
+   "close": [],
+   "add": [
+    [
+     "Fenerbahçe Istanbul",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q113510254": {
+   "name": "Chemsdine Talbi",
+   "was": "Club Brugge",
+   "now": "Sunderland",
+   "source": "Chemsdine Talbi",
+   "close": [
+    [
+     "Club Brugge K.V.",
+     2023,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Sunderland A.F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q113515002": {
+   "name": "Mike Penders",
+   "was": null,
+   "now": "Chelsea",
+   "source": "Mike Penders",
+   "close": [
+    [
+     "K.R.C. Genk",
+     2024,
+     2025
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q117041294": {
+   "name": "Matias Fernandez-Pardo",
+   "was": null,
+   "now": "Newcastle United",
+   "source": "Matias Fernandez-Pardo",
+   "close": [
+    [
+     "Lille OSC",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Newcastle United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q117322318": {
+   "name": "Richard Ríos",
+   "was": "Benfica",
+   "now": null,
+   "source": "Richard Ríos",
+   "close": [],
+   "add": [
+    [
+     "Al Ittihad FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q93666": {
+   "name": "James Tavernier",
+   "was": "Rangers",
+   "now": null,
+   "source": "James Tavernier",
+   "close": [
+    [
+     "Rangers F.C.",
+     2015,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Maccabi Tel Aviv F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Leeds United F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q366594": {
+   "name": "Víctor Ruiz",
+   "was": "Beşiktaş",
+   "now": null,
+   "source": "Víctor Ruiz (footballer, born 1989)",
+   "close": [
+    [
+     "Beşiktaş J.K. (Football)",
+     2019,
+     2020
+    ],
+    [
+     "Villarreal CF",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q337639": {
+   "name": "Felipe Mattioni",
+   "was": "Everton",
+   "now": null,
+   "source": "Felipe Mattioni",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q10555584": {
+   "name": "Leonardo Pavoletti",
+   "was": "Napoli",
+   "now": null,
+   "source": "Leonardo Pavoletti",
+   "close": [
+    [
+     "Cagliari Calcio",
+     null,
+     2026
+    ],
+    [
+     "SSC Napoli",
+     2017,
+     2018
+    ],
+    [
+     "Genoa CFC",
+     2015,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15901932": {
+   "name": "Kenan Karaman",
+   "was": null,
+   "now": "Schalke 04",
+   "source": "Kenan Karaman",
+   "close": [],
+   "add": [
+    [
+     "Schalke 04",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16200385": {
+   "name": "Marcus Bettinelli",
+   "was": null,
+   "now": "Manchester City",
+   "source": "Marcus Bettinelli",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2021,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Manchester City F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19871936": {
+   "name": "Alfonso Pedraza",
+   "was": null,
+   "now": "Lazio",
+   "source": "Alfonso Pedraza",
+   "close": [
+    [
+     "Villarreal CF",
+     2015,
+     2026
+    ],
+    [
+     "Villarreal CF B",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "SS Lazio",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22342690": {
+   "name": "Jonas Omlin",
+   "was": null,
+   "now": "Basel",
+   "source": "Jonas Omlin",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"FC Sarnen\": not in the infobox's senior career"
+   ]
+  },
+  "Q26007180": {
+   "name": "Emmanuel Dennis",
+   "was": "Club Brugge",
+   "now": null,
+   "source": "Emmanuel Dennis",
+   "close": [
+    [
+     "Nottingham Forest F.C.",
+     null,
+     2025
+    ],
+    [
+     "Club Brugge K.V.",
+     2017,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Brøndby IF",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3303586": {
+   "name": "Mbwana Samatta",
+   "was": "Aston Villa",
+   "now": null,
+   "source": "Mbwana Samatta",
+   "close": [
+    [
+     "Aston Villa F.C.",
+     2020,
+     2020
+    ],
+    [
+     "K.R.C. Genk",
+     2016,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Le Havre AC",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3973800": {
+   "name": "Stole Dimitrievski",
+   "was": null,
+   "now": "Valencia",
+   "source": "Stole Dimitrievski",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q26251607": {
+   "name": "Jean-Ricner Bellegarde",
+   "was": null,
+   "now": "Wolves",
+   "source": "Jean-Ricner Bellegarde",
+   "close": [
+    [
+     "RC Strasbourg Alsace",
+     2019,
+     2023
+    ],
+    [
+     "R.C. Lens",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Wolverhampton Wanderers F.C.",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27919507": {
+   "name": "Ben Woodburn",
+   "was": "Liverpool",
+   "now": null,
+   "source": "Ben Woodburn",
+   "close": [
+    [
+     "Liverpool F.C.",
+     2016,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Salford City F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27978968": {
+   "name": "Martin Terrier",
+   "was": null,
+   "now": "Bayer Leverkusen",
+   "source": "Martin Terrier",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     null,
+     2020
+    ],
+    [
+     "Lille OSC",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Bayer 04 Leverkusen",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28051511": {
+   "name": "Pietro Pellegri",
+   "was": "AS Monaco",
+   "now": "Torino",
+   "source": "Pietro Pellegri",
+   "close": [
+    [
+     "AS Monaco FC",
+     2018,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Torino FC",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28968069": {
+   "name": "Manor Solomon",
+   "was": "Tottenham Hotspur",
+   "now": "West Ham",
+   "source": "Manor Solomon",
+   "close": [
+    [
+     "Leeds United F.C.",
+     null,
+     2025
+    ],
+    [
+     "Tottenham Hotspur F.C.",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "West Ham United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q43769705": {
+   "name": "Yann Aurel Bisseck",
+   "was": null,
+   "now": "Inter Milan",
+   "source": "Yann Aurel Bisseck",
+   "close": [
+    [
+     "1. FC Köln",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Inter Milan",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Vitória S.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q56249966": {
+   "name": "Illan Meslier",
+   "was": null,
+   "now": "Arsenal",
+   "source": "Illan Meslier",
+   "close": [],
+   "add": [
+    [
+     "Arsenal F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56810114": {
+   "name": "Nicolò Fagioli",
+   "was": null,
+   "now": "Fiorentina",
+   "source": "Nicolò Fagioli",
+   "close": [
+    [
+     "Juventus FC",
+     null,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "ACF Fiorentina",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q57242266": {
+   "name": "Julián Araujo",
+   "was": null,
+   "now": "Bournemouth",
+   "source": "Julián Araujo",
+   "close": [
+    [
+     "LA Galaxy",
+     2020,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "AFC Bournemouth",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q58484930": {
+   "name": "Wilson Isidor",
+   "was": "AS Monaco",
+   "now": "Sunderland",
+   "source": "Wilson Isidor",
+   "close": [
+    [
+     "AS Monaco FC",
+     2018,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Sunderland A.F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q60676459": {
+   "name": "Nuno Tavares",
+   "was": null,
+   "now": "Lazio",
+   "source": "Nuno Tavares",
+   "close": [
+    [
+     "Arsenal F.C.",
+     2021,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "SS Lazio",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q65718498": {
+   "name": "Maurício",
+   "was": null,
+   "now": "Palmeiras",
+   "source": "Maurício (footballer, born 2001)",
+   "close": [
+    [
+     "Cruzeiro E.C.",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Sociedade Esportiva Palmeiras",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q65948590": {
+   "name": "David Affengruber",
+   "was": null,
+   "now": "Fulham",
+   "source": "David Affengruber (footballer, born 2001)",
+   "close": [
+    [
+     "FC Liefering",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Fulham F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q887695": {
+   "name": "Alex McCarthy",
+   "was": "Crystal Palace",
+   "now": null,
+   "source": "Alex McCarthy",
+   "close": [
+    [
+     "Crystal Palace F.C.",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Leicester City F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Wimbledon F.C.\": not in the infobox's senior career",
+    "open spell at \"Wycombe Wanderers F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q112988067": {
+   "name": "Promise David",
+   "was": null,
+   "now": "Brighton",
+   "source": "Promise David",
+   "close": [],
+   "add": [
+    [
+     "Brighton & Hove Albion F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q106366721": {
+   "name": "Lesley Ugochukwu",
+   "was": "Chelsea",
+   "now": "Galatasaray",
+   "source": "Lesley Ugochukwu",
+   "close": [
+    [
+     "Chelsea F.C.",
+     2023,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q110995393": {
+   "name": "Ethan Mbappé",
+   "was": "Paris Saint-Germain",
+   "now": null,
+   "source": "Ethan Mbappé",
+   "close": [
+    [
+     "Paris Saint-Germain FC",
+     2021,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Lille OSC",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q111009946": {
+   "name": "Ismaël Koné",
+   "was": "Marseille",
+   "now": null,
+   "source": "Ismaël Koné",
+   "close": [
+    [
+     "Olympique de Marseille",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "US Sassuolo Calcio",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q326365": {
+   "name": "Anthony Knockaert",
+   "was": "Brighton",
+   "now": null,
+   "source": "Anthony Knockaert",
+   "close": [
+    [
+     "Brighton & Hove Albion F.C.",
+     2016,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q133920": {
+   "name": "Will Hughes",
+   "was": null,
+   "now": "Crystal Palace",
+   "source": "Will Hughes",
+   "close": [
+    [
+     "Derby County F.C.",
+     2011,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q152791": {
+   "name": "Esteban Alvarado",
+   "was": "Trabzonspor",
+   "now": null,
+   "source": "Esteban Alvarado",
+   "close": [
+    [
+     "Trabzonspor",
+     2015,
+     2018
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q342228": {
+   "name": "Stefano Okaka",
+   "was": "Anderlecht",
+   "now": null,
+   "source": "Stefano Okaka",
+   "close": [
+    [
+     "R.S.C. Anderlecht",
+     2015,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q11640549": {
+   "name": "Sebastián Driussi",
+   "was": null,
+   "now": "River Plate",
+   "source": "Sebastián Driussi",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q14584722": {
+   "name": "Victor Vinícius Coelho dos Santos",
+   "was": "Flamengo",
+   "now": "Corinthians",
+   "source": "Vitinho (footballer, born October 1993)",
+   "close": [
+    [
+     "Clube de Regatas do Flamengo",
+     2015,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "S.C. Corinthians Paulista",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15303013": {
+   "name": "Wesley Hoedt",
+   "was": "Lazio",
+   "now": null,
+   "source": "Wesley Hoedt",
+   "close": [
+    [
+     "SS Lazio",
+     2015,
+     2017
+    ],
+    [
+     "Southampton F.C.",
+     null,
+     2021
+    ],
+    [
+     "RC Celta de Vigo",
+     null,
+     2019
+    ],
+    [
+     "R.S.C. Anderlecht",
+     null,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "AZ Alkmaar",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16234793": {
+   "name": "Adam Marušić",
+   "was": null,
+   "now": "Lazio",
+   "source": "Adam Marušić",
+   "close": [
+    [
+     "K.V. Kortrijk",
+     2014,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16911636": {
+   "name": "Erick Pulgar",
+   "was": null,
+   "now": "Flamengo",
+   "source": "Erick Pulgar",
+   "close": [
+    [
+     "Bologna F.C. 1909",
+     2015,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Clube de Regatas do Flamengo",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18199184": {
+   "name": "Léo Pereira",
+   "was": null,
+   "now": "Flamengo",
+   "source": "Léo Pereira (footballer, born 1996)",
+   "close": [],
+   "add": [
+    [
+     "Clube de Regatas do Flamengo",
+     2020,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18331623": {
+   "name": "Lawrence Shankland",
+   "was": null,
+   "now": "Rangers",
+   "source": "Lawrence Shankland",
+   "close": [
+    [
+     "St. Mirren F.C.",
+     2015,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "Rangers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19362872": {
+   "name": "Jorge Carrascal",
+   "was": null,
+   "now": "Flamengo",
+   "source": "Jorge Carrascal",
+   "close": [
+    [
+     "Club Atlético River Plate",
+     null,
+     2022
+    ],
+    [
+     "FC Dinamo Moscow",
+     null,
+     2025
+    ],
+    [
+     "FC Karpaty Lviv",
+     null,
+     2019
+    ],
+    [
+     "Sevilla Atlético",
+     null,
+     2018
+    ],
+    [
+     "PFC CSKA Moscow",
+     null,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Clube de Regatas do Flamengo",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Sevilla FC\": not in the infobox's senior career"
+   ]
+  },
+  "Q510596": {
+   "name": "Ezequiel Schelotto",
+   "was": "Sporting CP",
+   "now": null,
+   "source": "Ezequiel Schelotto",
+   "close": [
+    [
+     "Sporting CP",
+     2015,
+     2017
+    ]
+   ],
+   "add": [
+    [
+     "FC Paradiso",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q642785": {
+   "name": "Ravel Morrison",
+   "was": "Lazio",
+   "now": null,
+   "source": "Ravel Morrison",
+   "close": [
+    [
+     "SS Lazio",
+     2015,
+     2019
+    ],
+    [
+     "Östersunds FK",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Arabian Falcons FC",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19956526": {
+   "name": "Bruno Henrique",
+   "was": null,
+   "now": "Flamengo",
+   "source": "Bruno Henrique (footballer, born 1990)",
+   "close": [
+    [
+     "VfL Wolfsburg",
+     2016,
+     2017
+    ],
+    [
+     "Cruzeiro E.C.",
+     null,
+     2013
+    ]
+   ],
+   "add": [
+    [
+     "Clube de Regatas do Flamengo",
+     2019,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20925459": {
+   "name": "Olivier Ntcham",
+   "was": "Celtic",
+   "now": null,
+   "source": "Olivier Ntcham",
+   "close": [
+    [
+     "Celtic F.C.",
+     2017,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20981290": {
+   "name": "Tino Kadewere",
+   "was": "Olympique Lyonnais",
+   "now": null,
+   "source": "Tino Kadewere",
+   "close": [
+    [
+     "Olympique Lyonnais",
+     2020,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Aris Thessaloniki F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21062024": {
+   "name": "Ryan Kent",
+   "was": "Liverpool",
+   "now": null,
+   "source": "Ryan Kent",
+   "close": [
+    [
+     "Liverpool F.C.",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21620694": {
+   "name": "Youssef Aït Bennasser",
+   "was": "AS Monaco",
+   "now": null,
+   "source": "Youssef Aït Bennasser",
+   "close": [
+    [
+     "AS Monaco FC",
+     2016,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "RS Berkane",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q21620981": {
+   "name": "Cameron Carter-Vickers",
+   "was": "Tottenham Hotspur",
+   "now": "Celtic",
+   "source": "Cameron Carter-Vickers",
+   "close": [
+    [
+     "Tottenham Hotspur F.C.",
+     2015,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Celtic F.C.",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3645977": {
+   "name": "Bruno Zuculini",
+   "was": "River Plate",
+   "now": null,
+   "source": "Bruno Zuculini",
+   "close": [
+    [
+     "Club Atlético River Plate",
+     2018,
+     2024
+    ],
+    [
+     "Hellas Verona FC",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "Club Nacional de Football",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q5041170": {
+   "name": "Carles Gil",
+   "was": "Aston Villa",
+   "now": null,
+   "source": "Carles Gil",
+   "close": [
+    [
+     "Aston Villa F.C.",
+     2015,
+     2018
+    ],
+    [
+     "Deportivo de A Coruña",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "New England Revolution",
+     2019,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q6096043": {
+   "name": "Ivan Cavaleiro",
+   "was": "Fulham",
+   "now": null,
+   "source": "Ivan Cavaleiro",
+   "close": [
+    [
+     "Fulham F.C.",
+     2019,
+     2023
+    ],
+    [
+     "Wolverhampton Wanderers F.C.",
+     2016,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Atlético Petróleos Luanda",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27654739": {
+   "name": "Dennis Hadžikadunić",
+   "was": null,
+   "now": "Hajduk Split",
+   "source": "Dennis Hadžikadunić",
+   "close": [
+    [
+     "FC Rostov",
+     2018,
+     2026
+    ],
+    [
+     "U.C. Sampdoria",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "HNK Hajduk Split",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q40126643": {
+   "name": "Denis Drăguș",
+   "was": "Trabzonspor",
+   "now": null,
+   "source": "Denis Drăguș",
+   "close": [
+    [
+     "Trabzonspor",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "FCSB",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q47015355": {
+   "name": "Lassina Traoré",
+   "was": "Ajax",
+   "now": null,
+   "source": "Lassina Traoré",
+   "close": [
+    [
+     "AFC Ajax",
+     2019,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "FC Shakhtar Donetsk",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q54512527": {
+   "name": "José Luis Rodríguez",
+   "was": "Red Star Belgrade",
+   "now": null,
+   "source": "José Luis Rodríguez (footballer, born 1998)",
+   "close": [
+    [
+     "FK Crvena zvezda",
+     2024,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "FC Juárez",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q55541843": {
+   "name": "Reo Hatate",
+   "was": null,
+   "now": "Burnley",
+   "source": "Reo Hatate",
+   "close": [
+    [
+     "Kawasaki Frontale",
+     null,
+     2021
+    ],
+    [
+     "Celtic F.C.",
+     null,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Burnley F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q55806994": {
+   "name": "Sebastiaan Bornauw",
+   "was": null,
+   "now": "Hamburger SV",
+   "source": "Sebastiaan Bornauw",
+   "close": [
+    [
+     "R.S.C. Anderlecht",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Hamburger SV",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q63067287": {
+   "name": "Nathan Collins",
+   "was": null,
+   "now": "Brentford",
+   "source": "Nathan Collins",
+   "close": [
+    [
+     "Burnley F.C.",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Brentford F.C.",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q65131685": {
+   "name": "Anass Salah-Eddine",
+   "was": "Roma",
+   "now": null,
+   "source": "Anass Salah-Eddine",
+   "close": [
+    [
+     "AFC Ajax",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Panathinaikos F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q65229910": {
+   "name": "Mads Hermansen",
+   "was": null,
+   "now": "West Ham",
+   "source": "Mads Hermansen",
+   "close": [
+    [
+     "Brøndby IF",
+     2019,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "West Ham United F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Næsby BK\": not in the infobox's senior career"
+   ]
+  },
+  "Q66651898": {
+   "name": "Abner Vinícius",
+   "was": null,
+   "now": "Olympique Lyonnais",
+   "source": "Abner Vinícius",
+   "close": [
+    [
+     "Club Athletico Paranaense",
+     null,
+     2023
+    ],
+    [
+     "Associação Atlética Ponte Preta",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Olympique Lyonnais",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q51128205": {
+   "name": "Oliver Christensen",
+   "was": null,
+   "now": "Fiorentina",
+   "source": "Oliver Christensen",
+   "close": [
+    [
+     "Hertha BSC",
+     null,
+     2023
+    ],
+    [
+     "Odense Boldklub",
+     null,
+     2021
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q50233588": {
+   "name": "Leonardo Balerdi",
+   "was": "Marseille",
+   "now": "Roma",
+   "source": "Leonardo Balerdi",
+   "close": [],
+   "add": [
+    [
+     "AS Roma",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q73235453": {
+   "name": "Jakub Kamiński",
+   "was": null,
+   "now": "Benfica",
+   "source": "Jakub Kamiński",
+   "close": [
+    [
+     "Lech Poznań",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "S.L. Benfica",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q46645": {
+   "name": "Pape Souaré",
+   "was": "Crystal Palace",
+   "now": null,
+   "source": "Pape Souaré",
+   "close": [
+    [
+     "Crystal Palace F.C.",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q16239659": {
+   "name": "Oli McBurnie",
+   "was": null,
+   "now": "Hull City",
+   "source": "Oli McBurnie",
+   "close": [
+    [
+     "Swansea City A.F.C.",
+     2015,
+     2019
+    ],
+    [
+     "Sheffield United F.C.",
+     null,
+     2024
+    ],
+    [
+     "Bristol Rovers F.C.",
+     2016,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Hull City A.F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q2070900": {
+   "name": "Benjamin Lecomte",
+   "was": "AS Monaco",
+   "now": "Fulham",
+   "source": "Benjamin Lecomte",
+   "close": [
+    [
+     "AS Monaco FC",
+     2019,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Fulham F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3238952": {
+   "name": "John Souttar",
+   "was": null,
+   "now": "Rangers",
+   "source": "John Souttar",
+   "close": [
+    [
+     "Heart of Midlothian F.C.",
+     2016,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Rangers F.C.",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20829745": {
+   "name": "Ben Godfrey",
+   "was": "Ipswich Town",
+   "now": "Rangers",
+   "source": "Ben Godfrey",
+   "close": [
+    [
+     "Ipswich Town F.C.",
+     2025,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Rangers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q20925240": {
+   "name": "Jérémie Boga",
+   "was": null,
+   "now": "Juventus",
+   "source": "Jérémie Boga",
+   "close": [
+    [
+     "US Sassuolo Calcio",
+     2018,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Juventus FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22833412": {
+   "name": "Amir Hadžiahmetović",
+   "was": "Hull City",
+   "now": null,
+   "source": "Amir Hadžiahmetović",
+   "close": [
+    [
+     "Beşiktaş J.K. (Football)",
+     2023,
+     2026
+    ],
+    [
+     "Hull City A.F.C.",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "PFC Ludogorets 1945",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q22958457": {
+   "name": "Chidozie Awaziem",
+   "was": "Porto",
+   "now": null,
+   "source": "Chidozie Awaziem",
+   "close": [
+    [
+     "FC Porto",
+     2016,
+     2021
+    ],
+    [
+     "FC Porto B",
+     2015,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Konyaspor",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q4202251": {
+   "name": "Simone Verdi",
+   "was": "AC Milan",
+   "now": null,
+   "source": "Simone Verdi",
+   "close": [
+    [
+     "AC Milan",
+     2015,
+     2016
+    ],
+    [
+     "SSC Napoli",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Benevento Calcio",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q4754788": {
+   "name": "Andre Gray",
+   "was": "Burnley",
+   "now": null,
+   "source": "Andre Gray",
+   "close": [
+    [
+     "Burnley F.C.",
+     2015,
+     2017
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q28753836": {
+   "name": "Owen Wijndal",
+   "was": null,
+   "now": "Ajax",
+   "source": "Owen Wijndal",
+   "close": [
+    [
+     "AZ Alkmaar",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "AFC Ajax",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q39079181": {
+   "name": "Paulinho",
+   "was": "Bayer Leverkusen",
+   "now": "Palmeiras",
+   "source": "Paulinho (footballer, born July 2000)",
+   "close": [
+    [
+     "CR Vasco da Gama",
+     null,
+     2018
+    ],
+    [
+     "Bayer 04 Leverkusen",
+     2018,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Sociedade Esportiva Palmeiras",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q42303600": {
+   "name": "Edon Zhegrova",
+   "was": null,
+   "now": "Juventus",
+   "source": "Edon Zhegrova",
+   "close": [
+    [
+     "K.R.C. Genk",
+     2017,
+     2019
+    ],
+    [
+     "FC Basel",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Juventus FC",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q53252754": {
+   "name": "Halil Dervişoğlu",
+   "was": "Brentford",
+   "now": null,
+   "source": "Halil Dervişoğlu",
+   "close": [
+    [
+     "Brentford F.C.",
+     2020,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Galatasaray S.K.",
+     2023,
+     null
+    ],
+    [
+     "Gaziantep F.K.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q55819815": {
+   "name": "Róbert Boženík",
+   "was": "Feyenoord",
+   "now": null,
+   "source": "Róbert Boženík",
+   "close": [
+    [
+     "Feyenoord Rotterdam",
+     2020,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Stoke City F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56292818": {
+   "name": "Frank Onyeka",
+   "was": null,
+   "now": "Coventry City",
+   "source": "Frank Onyeka",
+   "close": [
+    [
+     "FC Midtjylland",
+     null,
+     2021
+    ],
+    [
+     "Brentford F.C.",
+     null,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Coventry City F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q56809124": {
+   "name": "Adrián Bernabé",
+   "was": "Manchester City",
+   "now": "Parma",
+   "source": "Adrián Bernabé",
+   "close": [],
+   "add": [
+    [
+     "Parma Calcio 1913",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": [
+    "open spell at \"Manchester City F.C.\": not in the infobox's senior career"
+   ]
+  },
+  "Q58303188": {
+   "name": "Haissem Hassan",
+   "was": null,
+   "now": "Celtic",
+   "source": "Haissem Hassan",
+   "close": [
+    [
+     "Real Oviedo",
+     2024,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Celtic F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q60842159": {
+   "name": "Rodrigo Zalazar",
+   "was": null,
+   "now": "Sporting CP",
+   "source": "Rodrigo Zalazar",
+   "close": [
+    [
+     "Korona Kielce",
+     2019,
+     2020
+    ],
+    [
+     "Eintracht Frankfurt",
+     2019,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Sporting CP",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q67243168": {
+   "name": "Troy Parrott",
+   "was": null,
+   "now": "Real Betis",
+   "source": "Troy Parrott",
+   "close": [
+    [
+     "Tottenham Hotspur F.C.",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Real Betis Balompié",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q47490408": {
+   "name": "Cheick Doucouré",
+   "was": null,
+   "now": "Crystal Palace",
+   "source": "Cheick Doucouré",
+   "close": [
+    [
+     "R.C. Lens",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Crystal Palace F.C.",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q88130791": {
+   "name": "Carlos Alcaraz",
+   "was": null,
+   "now": "Everton",
+   "source": "Charly Alcaraz",
+   "close": [
+    [
+     "Racing Club",
+     null,
+     2023
+    ],
+    [
+     "Juventus FC",
+     null,
+     2024
+    ],
+    [
+     "Southampton F.C.",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Everton F.C.",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q113472432": {
+   "name": "Carlos Baleba",
+   "was": "Brighton",
+   "now": "Manchester United",
+   "source": "Carlos Baleba",
+   "close": [
+    [
+     "Brighton & Hove Albion F.C.",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Manchester United F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q96464733": {
+   "name": "Nathan Tella",
+   "was": null,
+   "now": "Bayer Leverkusen",
+   "source": "Nathan Tella",
+   "close": [
+    [
+     "Southampton F.C.",
+     null,
+     2023
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q98092491": {
+   "name": "Álvaro Fidalgo",
+   "was": null,
+   "now": "Real Betis",
+   "source": "Álvaro Fidalgo",
+   "close": [
+    [
+     "Real Madrid Castilla",
+     null,
+     2020
+    ],
+    [
+     "CF Rayo Majadahonda",
+     null,
+     2017
+    ],
+    [
+     "CD Castellón",
+     null,
+     2021
+    ],
+    [
+     "Club América",
+     null,
+     2026
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q106778770": {
+   "name": "Obed Vargas",
+   "was": null,
+   "now": "Atlético Madrid",
+   "source": "Obed Vargas",
+   "close": [
+    [
+     "Seattle Sounders FC",
+     2022,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Atlético Madrid",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q108156269": {
+   "name": "Zakaria El Ouahdi",
+   "was": null,
+   "now": "Hamburger SV",
+   "source": "Zakaria El Ouahdi",
+   "close": [
+    [
+     "K.R.C. Genk",
+     2023,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Hamburger SV",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q112081015": {
+   "name": "Cesare Casadei",
+   "was": null,
+   "now": "Torino",
+   "source": "Cesare Casadei",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q130337999": {
+   "name": "Caleb Yirenkyi",
+   "was": null,
+   "now": "Coventry City",
+   "source": "Caleb Yirenkyi",
+   "close": [
+    [
+     "FC Nordsjælland",
+     null,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Coventry City F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q335413": {
+   "name": "Tolgay Arslan",
+   "was": "Beşiktaş",
+   "now": null,
+   "source": "Tolgay Arslan",
+   "close": [
+    [
+     "Beşiktaş J.K. (Football)",
+     2015,
+     2018
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q401771": {
+   "name": "Bakary Sako",
+   "was": "Crystal Palace",
+   "now": null,
+   "source": "Bakary Sako",
+   "close": [
+    [
+     "Crystal Palace F.C.",
+     2015,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "LB Châteauroux",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q1362594": {
+   "name": "Maxime Lestienne",
+   "was": "PSV",
+   "now": null,
+   "source": "Maxime Lestienne",
+   "close": [
+    [
+     "Málaga CF",
+     null,
+     2018
+    ],
+    [
+     "PSV Eindhoven",
+     2015,
+     2016
+    ],
+    [
+     "Rubin Kazan",
+     null,
+     2018
+    ],
+    [
+     "Al-Arabi SC",
+     2014,
+     2016
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15707405": {
+   "name": "Simone Scuffet",
+   "was": "Napoli",
+   "now": null,
+   "source": "Simone Scuffet",
+   "close": [
+    [
+     "SSC Napoli",
+     2025,
+     2025
+    ],
+    [
+     "Como 1907",
+     2015,
+     2016
+    ],
+    [
+     "Cagliari Calcio",
+     2023,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "Pisa SC",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q15401973": {
+   "name": "Alex Muralha",
+   "was": "Flamengo",
+   "now": null,
+   "source": "Alex Muralha",
+   "close": [
+    [
+     "Clube de Regatas do Flamengo",
+     2016,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Mirassol Futebol Clube",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19754212": {
+   "name": "Moussa Marega",
+   "was": "Porto",
+   "now": null,
+   "source": "Moussa Marega",
+   "close": [
+    [
+     "FC Porto",
+     2016,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Palm City FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q18809182": {
+   "name": "Josh Onomah",
+   "was": "Tottenham Hotspur",
+   "now": null,
+   "source": "Josh Onomah",
+   "close": [
+    [
+     "Aston Villa F.C.",
+     null,
+     2018
+    ],
+    [
+     "Tottenham Hotspur F.C.",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q554882": {
+   "name": "José Rodríguez Martínez",
+   "was": "Galatasaray",
+   "now": null,
+   "source": "José Rodríguez (footballer, born 1994)",
+   "close": [
+    [
+     "Galatasaray S.K.",
+     2015,
+     2016
+    ]
+   ],
+   "add": [
+    [
+     "Flamurtari Vlorë",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q19996370": {
+   "name": "Joel Pereira",
+   "was": "Manchester United",
+   "now": null,
+   "source": "Joel Castro Pereira",
+   "close": [
+    [
+     "Manchester United F.C.",
+     2015,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Reading F.C.",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q23927885": {
+   "name": "Santiago Ascacíbar",
+   "was": null,
+   "now": "Boca Juniors",
+   "source": "Santiago Ascacíbar",
+   "close": [
+    [
+     "Hertha BSC",
+     2020,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Boca Juniors",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q3431011": {
+   "name": "Martin Linnes",
+   "was": "Galatasaray",
+   "now": null,
+   "source": "Martin Linnes",
+   "close": [
+    [
+     "Galatasaray S.K.",
+     2016,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "Molde FK",
+     2021,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q4290247": {
+   "name": "Eduard Sobol",
+   "was": "Club Brugge",
+   "now": null,
+   "source": "Eduard Sobol",
+   "close": [
+    [
+     "FC Metalist Kharkiv",
+     2015,
+     2016
+    ],
+    [
+     "RC Strasbourg Alsace",
+     null,
+     2026
+    ],
+    [
+     "Club Brugge K.V.",
+     2019,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "FK Jablonec",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27514541": {
+   "name": "Armando Obispo",
+   "was": null,
+   "now": "PSV",
+   "source": "Armando Obispo",
+   "close": [
+    [
+     "SBV Vitesse",
+     2019,
+     2020
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27881565": {
+   "name": "Perr Schuurs",
+   "was": "Ajax",
+   "now": null,
+   "source": "Perr Schuurs",
+   "close": [
+    [
+     "Fortuna Sittard",
+     null,
+     2018
+    ],
+    [
+     "AFC Ajax",
+     2018,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "N.E.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q29419531": {
+   "name": "Nicolás Domínguez",
+   "was": null,
+   "now": "Nottingham Forest",
+   "source": "Nicolás Domínguez",
+   "close": [
+    [
+     "Club Atlético Vélez Sarsfield",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Nottingham Forest F.C.",
+     2023,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q29558961": {
+   "name": "Manuel Lazzari",
+   "was": null,
+   "now": "Lazio",
+   "source": "Manuel Lazzari",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q33131174": {
+   "name": "Dejan Ljubičić",
+   "was": null,
+   "now": "Schalke 04",
+   "source": "Dejan Ljubičić",
+   "close": [],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q55102261": {
+   "name": "Zuriko Davitashvili",
+   "was": null,
+   "now": "Saint-Étienne",
+   "source": "Zuriko Davitashvili",
+   "close": [
+    [
+     "FC Dinamo Tbilisi",
+     null,
+     2018
+    ],
+    [
+     "Rubin Kazan",
+     null,
+     2021
+    ]
+   ],
+   "add": [
+    [
+     "AS Saint-Étienne",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q57017726": {
+   "name": "Cameron Devlin",
+   "was": null,
+   "now": "Rangers",
+   "source": "Cammy Devlin",
+   "close": [
+    [
+     "Sydney FC",
+     null,
+     2019
+    ]
+   ],
+   "add": [
+    [
+     "Rangers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q58754676": {
+   "name": "Nehuén Pérez",
+   "was": null,
+   "now": "Porto",
+   "source": "Nehuén Pérez",
+   "close": [
+    [
+     "Atlético Madrid",
+     null,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "FC Porto",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q62456204": {
+   "name": "Konrad de la Fuente",
+   "was": "Marseille",
+   "now": null,
+   "source": "Konrad de la Fuente",
+   "close": [
+    [
+     "Olympique de Marseille",
+     2021,
+     2024
+    ],
+    [
+     "Olympiacos F.C.",
+     null,
+     2023
+    ],
+    [
+     "SD Eibar",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "Sporting de Gijón",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q64028217": {
+   "name": "Maximilian Kilman",
+   "was": null,
+   "now": "West Ham",
+   "source": "Maximilian Kilman",
+   "close": [
+    [
+     "Maidenhead United F.C.",
+     null,
+     2018
+    ]
+   ],
+   "add": [
+    [
+     "West Ham United F.C.",
+     2024,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q67085348": {
+   "name": "Rodrigo Riquelme",
+   "was": null,
+   "now": "Real Betis",
+   "source": "Rodrigo Riquelme (footballer, born 2000)",
+   "close": [
+    [
+     "Atlético Madrid B",
+     null,
+     2020
+    ]
+   ],
+   "add": [
+    [
+     "Real Betis Balompié",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q81187581": {
+   "name": "Strahinja Eraković",
+   "was": "Red Star Belgrade",
+   "now": null,
+   "source": "Strahinja Eraković",
+   "close": [],
+   "add": [
+    [
+     "Samsunspor FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q84462730": {
+   "name": "Ivor Pandur",
+   "was": null,
+   "now": "Rangers",
+   "source": "Ivor Pandur",
+   "close": [
+    [
+     "Hellas Verona FC",
+     2020,
+     2023
+    ]
+   ],
+   "add": [
+    [
+     "Rangers F.C.",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q86218147": {
+   "name": "Gabriel Slonina",
+   "was": null,
+   "now": "Chelsea",
+   "source": "Gabriel Slonina",
+   "close": [
+    [
+     "Chicago Fire FC",
+     2019,
+     2022
+    ]
+   ],
+   "add": [
+    [
+     "Chelsea F.C.",
+     2022,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q97303836": {
+   "name": "Giorgi Kochorashvili",
+   "was": "Sporting CP",
+   "now": "Sevilla",
+   "source": "Giorgi Kochorashvili",
+   "close": [
+    [
+     "Sporting CP",
+     2025,
+     2026
+    ]
+   ],
+   "add": [
+    [
+     "Sevilla FC",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q98534760": {
+   "name": "Marcos Leonardo",
+   "was": null,
+   "now": "Ajax",
+   "source": "Marcos Leonardo",
+   "close": [
+    [
+     "Santos F.C.",
+     null,
+     2024
+    ]
+   ],
+   "add": [
+    [
+     "AFC Ajax",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q111588237": {
+   "name": "Oscar Gloukh",
+   "was": null,
+   "now": "Ajax",
+   "source": "Oscar Gloukh",
+   "close": [
+    [
+     "FC Red Bull Salzburg",
+     2023,
+     2025
+    ]
+   ],
+   "add": [
+    [
+     "AFC Ajax",
+     2025,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q121829403": {
+   "name": "Luc de Fougerolles",
+   "was": "Fulham",
+   "now": null,
+   "source": "Luc de Fougerolles",
+   "close": [],
+   "add": [
+    [
+     "Real Salt Lake",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q27691": {
+   "name": "Alberto Bueno",
+   "was": "Porto",
+   "now": null,
+   "source": "Alberto Bueno",
+   "close": [
+    [
+     "FC Porto",
+     2015,
+     2019
+    ]
+   ],
+   "add": [],
+   "reopen": [],
+   "unresolved": []
+  },
+  "Q134513932": {
+   "name": "Hamza Abdelmoneem",
+   "was": null,
+   "now": "Barcelona",
+   "source": "Hamza Abdelkarim",
+   "close": [],
+   "add": [
+    [
+     "FC Barcelona",
+     2026,
+     null
+    ]
+   ],
+   "reopen": [],
+   "unresolved": []
+  }
+ }
+}

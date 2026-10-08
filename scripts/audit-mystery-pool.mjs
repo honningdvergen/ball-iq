@@ -248,7 +248,52 @@ if (falseRows.length) {
   ok('no known false row in squads.json or lineup.json');
 }
 
-// ── 8. report the residual so it stays visible rather than forgotten ────────
+// ── 8. the squad refresh must be IN the pool ────────────────────────────────
+/* ⚠️ THE SIXTH SECOND-PASS. The pool builder labels anyone in squads.json with
+   that squad, so the two files are one fact stored twice. Until 2026-10-08
+   squads.json had not been refreshed since August and 284 pool rows carried a
+   squad the player had left (Marcus Rashford at Barcelona, Rodri at Manchester
+   City). build-squads.mjs now refreshes the squads from Wikipedia, and
+   apply-squad-moves.mjs carries the result into the pool: the label, and the
+   open spell in the careers that put the player in the squad to begin with.
+   A squads refresh without that pass, or a pool rebuild after it, leaves the
+   two files disagreeing, and this is what says so. */
+const squadOfPlayer = new Map();
+const inTwo = [];
+for (const [club, squad] of Object.entries(squads)) for (const p of squad) {
+  if (squadOfPlayer.has(p.id)) inTwo.push(`${p.name}: ${squadOfPlayer.get(p.id)} and ${club}`);
+  squadOfPlayer.set(p.id, club);
+}
+if (inTwo.length) {
+  fail(`${inTwo.length} player(s) are in two squads at once:`);
+  inTwo.slice(0, 15).forEach((m) => console.error(`     ${m}`));
+} else ok('nobody is in two squads');
+const mislabelled = pool.filter((p) => squadOfPlayer.has(p.id) && !CLUB_FIXES[p.id] && p.club !== squadOfPlayer.get(p.id));
+const moves = existsSync('scripts/_squad-moves.json') ? JSON.parse(readFileSync('scripts/_squad-moves.json', 'utf8')).moves : {};
+const unapplied = [];
+for (const [id, m] of Object.entries(moves)) {
+  if (!byId.has(id) || CLUB_FIXES[id]) continue;
+  const spells = spellsOf(id);
+  const has = (name, a, b) => spells.some((sp) => sp[0] === name && sp[1] === a && sp[2] === b);
+  for (const [name, a, b] of m.close || []) if (!has(name, a, b)) unapplied.push(`${m.name}: "${name}" from ${a} is not closed in ${b}`);
+  for (const [name, a] of [...(m.add || []), ...(m.reopen || [])]) if (!has(name, a, null)) unapplied.push(`${m.name}: no open "${name}" spell from ${a}`);
+}
+if (mislabelled.length || unapplied.length) {
+  if (mislabelled.length) {
+    fail(`${mislabelled.length} pool player(s) are in a squad the pool does not label them with:`);
+    mislabelled.slice(0, 15).forEach((p) => console.error(`     ${p.name}: labelled "${p.club}", in the ${squadOfPlayer.get(p.id)} squad`));
+  }
+  if (unapplied.length) {
+    fail(`${unapplied.length} career correction(s) from the squad refresh are not in the shipped careers:`);
+    unapplied.slice(0, 15).forEach((m) => console.error(`     ${m}`));
+  }
+  console.error('   → run: node scripts/derive-squad-moves.mjs   (only after a squads refresh)');
+  console.error('          node scripts/apply-squad-moves.mjs --write   then fix-pool-names.mjs, which stays last');
+} else {
+  ok(`every pool player in a squad is labelled with it, and all ${Object.keys(moves).length} recorded squad moves are in the careers`);
+}
+
+// ── 9. report the residual so it stays visible rather than forgotten ────────
 const uk = pool.filter((p) => p.nat === 'United Kingdom').length;
 if (uk) console.log(`ℹ️  ${uk} players still read "United Kingdom" — uncapped, so no caps to derive from. Known residual.`);
 

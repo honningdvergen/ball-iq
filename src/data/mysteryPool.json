@@ -259,7 +259,7 @@
     "nat": "Croatia",
     "slot": "MF",
     "position": "central midfielder",
-    "club": "Real Madrid",
+    "club": "AC Milan",
     "clubId": "Q8682",
     "country": "Spain",
     "clubCount": 6,
@@ -679,7 +679,7 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "AS Monaco",
+    "club": "Juventus",
     "clubId": "Q1422",
     "country": "Italy",
     "clubCount": 3,
@@ -945,10 +945,10 @@
     "nat": "Belgium",
     "slot": "FW",
     "position": "forward",
-    "club": "Napoli",
+    "club": "Fenerbahçe",
     "clubId": "Q9616",
     "country": "United Kingdom",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1993-05-13"
   },
   {
@@ -1113,7 +1113,7 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Barcelona",
+    "club": "Manchester United",
     "clubId": "Q18656",
     "country": "United Kingdom",
     "clubCount": 3,
@@ -1183,7 +1183,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 9,
@@ -1869,7 +1869,7 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Chelsea",
+    "club": "Fenerbahçe",
     "clubId": "Q9616",
     "country": "United Kingdom",
     "clubCount": 6,
@@ -2331,10 +2331,10 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "defensive midfielder",
-    "club": "Manchester City",
+    "club": "Barcelona",
     "clubId": "Q50602",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1996-06-22"
   },
   {
@@ -2373,10 +2373,10 @@
     "nat": "Chile",
     "slot": "FW",
     "position": "wing half",
-    "club": "Sevilla",
+    "club": "Udinese Calcio",
     "clubId": "Q2798",
     "country": "Italy",
-    "clubCount": 10,
+    "clubCount": 11,
     "dob": "1988-12-19"
   },
   {
@@ -2681,10 +2681,10 @@
     "nat": "Switzerland",
     "slot": "FW",
     "position": "winger",
-    "club": "Liverpool",
+    "club": "Basel",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1991-10-10"
   },
   {
@@ -2891,7 +2891,7 @@
     "nat": "Bosnia and Herzegovina",
     "slot": "FW",
     "position": "forward",
-    "club": "Manchester City",
+    "club": "Schalke 04",
     "clubId": "Q50602",
     "country": "United Kingdom",
     "clubCount": 10,
@@ -2989,7 +2989,7 @@
     "nat": "Argentina",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 10,
@@ -3479,10 +3479,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Leicester City F.C.",
+    "club": "Burnley",
     "clubId": "Q19481",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1987-01-11"
   },
   {
@@ -3605,7 +3605,7 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Chelsea",
+    "club": "Real Madrid",
     "clubId": "Q9616",
     "country": "United Kingdom",
     "clubCount": 5,
@@ -3969,7 +3969,7 @@
     "nat": "Japan",
     "slot": "MF",
     "position": "defensive midfielder",
-    "club": "Shonan Bellmare",
+    "club": "Liverpool",
     "clubId": "Q692856",
     "country": "Japan",
     "clubCount": 5,
@@ -4123,10 +4123,10 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Barcelona",
+    "club": "Paris Saint-Germain",
     "clubId": "Q7156",
     "country": "Spain",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2000-02-29"
   },
   {
@@ -5187,10 +5187,10 @@
     "nat": "Argentina",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Aston Villa",
+    "club": "Chelsea",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1992-09-01"
   },
   {
@@ -5551,10 +5551,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Manchester United",
+    "club": "Porto",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1989-11-22"
   },
   {
@@ -6167,7 +6167,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Real Madrid",
+    "club": "Fenerbahçe",
     "clubId": "Q8682",
     "country": "Spain",
     "clubCount": 8,
@@ -6713,10 +6713,10 @@
     "nat": "Ecuador",
     "slot": "FW",
     "position": "forward",
-    "club": "Fenerbahçe Istanbul",
+    "club": "Boca Juniors",
     "clubId": "Q6601875",
     "country": "Turkey",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1989-11-04"
   },
   {
@@ -6783,7 +6783,7 @@
     "nat": "England",
     "slot": "FW",
     "position": "winger",
-    "club": "Manchester City",
+    "club": "Everton",
     "clubId": "Q18711",
     "country": "United Kingdom",
     "clubCount": 4,
@@ -6825,10 +6825,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Manchester City",
+    "club": "Barcelona",
     "clubId": "Q50602",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-04-03"
   },
   {
@@ -6867,7 +6867,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "wing half",
-    "club": "ACF Fiorentina",
+    "club": "Liverpool",
     "clubId": "Q2052",
     "country": "Italy",
     "clubCount": 3,
@@ -6895,10 +6895,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Chelsea",
+    "club": "Manchester City",
     "clubId": "Q9616",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2001-01-17"
   },
   {
@@ -6937,10 +6937,10 @@
     "nat": "Portugal",
     "slot": "FW",
     "position": "winger",
-    "club": "AC Milan",
+    "club": "Galatasaray",
     "clubId": "Q1543",
     "country": "Italy",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-06-10"
   },
   {
@@ -7511,10 +7511,10 @@
     "nat": "Serbia",
     "slot": "FW",
     "position": "forward",
-    "club": "Juventus",
+    "club": "Beşiktaş",
     "clubId": "Q1422",
     "country": "Italy",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-01-28"
   },
   {
@@ -8085,10 +8085,10 @@
     "nat": "Germany",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Bayern Munich",
+    "club": "Aston Villa",
     "clubId": "Q15789",
     "country": "Germany",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-02-06"
   },
   {
@@ -8547,7 +8547,7 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 6,
@@ -9709,7 +9709,7 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Paris Saint-Germain",
+    "club": "Boca Juniors",
     "clubId": "Q483020",
     "country": "France",
     "clubCount": 7,
@@ -9723,10 +9723,10 @@
     "nat": "Brazil",
     "slot": "MF",
     "position": "defensive midfielder",
-    "club": "Liverpool",
+    "club": "Trabzonspor",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1993-10-23"
   },
   {
@@ -10031,7 +10031,7 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 8,
@@ -11179,7 +11179,7 @@
     "nat": "Portugal",
     "slot": "DF",
     "position": "full-back",
-    "club": "Wolverhampton Wanderers F.C.",
+    "club": "Fenerbahçe",
     "clubId": "Q19500",
     "country": "United Kingdom",
     "clubCount": 6,
@@ -11207,7 +11207,7 @@
     "nat": "Brazil",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Manchester City",
+    "club": "Fenerbahçe",
     "clubId": "Q50602",
     "country": "United Kingdom",
     "clubCount": 6,
@@ -11403,10 +11403,10 @@
     "nat": "Brazil",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "ACF Fiorentina",
+    "club": "Juventus",
     "clubId": "Q2052",
     "country": "Italy",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1989-07-19"
   },
   {
@@ -11420,7 +11420,7 @@
     "club": "Arsenal",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-06-18"
   },
   {
@@ -11445,7 +11445,7 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -11473,7 +11473,7 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "wing half",
-    "club": "Olympique Lyonnais",
+    "club": "Manchester United",
     "clubId": "Q704",
     "country": "France",
     "clubCount": 3,
@@ -11487,7 +11487,7 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 8,
@@ -11767,7 +11767,7 @@
     "nat": "Netherlands",
     "slot": "FW",
     "position": "forward",
-    "club": "Porto",
+    "club": "PSV Eindhoven",
     "clubId": "Q11938",
     "country": "Netherlands",
     "clubCount": 8,
@@ -12145,10 +12145,10 @@
     "nat": "Switzerland",
     "slot": "DF",
     "position": "full-back",
-    "club": "Real Betis",
+    "club": "Torino",
     "clubId": "Q101859",
     "country": "Germany",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1992-08-25"
   },
   {
@@ -12816,7 +12816,7 @@
     "nat": "Ukraine",
     "slot": "FW",
     "position": "right winger",
-    "club": "Ajax",
+    "club": "Manchester City",
     "clubId": "Q50602",
     "country": "United Kingdom",
     "clubCount": 8,
@@ -13306,10 +13306,10 @@
     "nat": "Germany",
     "slot": "FW",
     "position": "forward",
-    "club": "AC Milan",
+    "club": "SV Werder Bremen",
     "clubId": "Q51976",
     "country": "Germany",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1993-02-09"
   },
   {
@@ -14286,7 +14286,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 8,
@@ -14622,10 +14622,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "full-back",
-    "club": "Chelsea",
+    "club": "Crystal Palace",
     "clubId": "Q9616",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1996-12-21"
   },
   {
@@ -14832,7 +14832,7 @@
     "nat": "Uruguay",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Barcelona",
+    "club": "Liverpool",
     "clubId": "Q7156",
     "country": "Spain",
     "clubCount": 5,
@@ -14874,7 +14874,7 @@
     "nat": "Poland",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 9,
@@ -14930,10 +14930,10 @@
     "nat": "Japan",
     "slot": "FW",
     "position": "attacker",
-    "club": "Feyenoord",
+    "club": "Feyenoord Rotterdam",
     "clubId": "Q134241",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1998-08-28"
   },
   {
@@ -16050,10 +16050,10 @@
     "nat": "Belgium",
     "slot": "FW",
     "position": "forward",
-    "club": "Arsenal",
+    "club": "Beşiktaş",
     "clubId": "Q216032",
     "country": "Belgium",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1994-12-04"
   },
   {
@@ -16148,10 +16148,10 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "central midfielder",
-    "club": "Real Madrid",
+    "club": "Real Betis",
     "clubId": "Q8682",
     "country": "Spain",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1996-08-07"
   },
   {
@@ -16218,10 +16218,10 @@
     "nat": "Japan",
     "slot": "FW",
     "position": "forward",
-    "club": "Celtic",
+    "club": "Ipswich Town",
     "clubId": "Q1145693",
     "country": "Japan",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-10-20"
   },
   {
@@ -16330,7 +16330,7 @@
     "nat": "Germany",
     "slot": "FW",
     "position": "forward",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 4,
@@ -16344,10 +16344,10 @@
     "nat": "Senegal",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Everton",
+    "club": "Lille OSC",
     "clubId": "Q19516",
     "country": "France",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1989-09-26"
   },
   {
@@ -16708,7 +16708,7 @@
     "nat": "Germany",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Liverpool",
+    "club": "Schalke 04",
     "clubId": "Q1130849",
     "country": "United Kingdom",
     "clubCount": 8,
@@ -18066,7 +18066,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 8,
@@ -18164,10 +18164,10 @@
     "nat": "Morocco",
     "slot": "MF",
     "position": "midfielder",
-    "club": "ACF Fiorentina",
+    "club": "Ajax",
     "clubId": "Q2052",
     "country": "Italy",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1996-08-21"
   },
   {
@@ -18405,7 +18405,7 @@
     "club": "Juventus",
     "clubId": "Q1422",
     "country": "Italy",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1996-08-12"
   },
   {
@@ -18738,7 +18738,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 9,
@@ -19480,7 +19480,7 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "defender",
-    "club": "Manchester City",
+    "club": "Fenerbahçe",
     "clubId": "Q50602",
     "country": "United Kingdom",
     "clubCount": 6,
@@ -20614,7 +20614,7 @@
     "nat": "Serbia",
     "slot": "DF",
     "position": "defender",
-    "club": "Red Star Belgrade",
+    "club": "TSV 1860 München",
     "clubId": "Q173009",
     "country": "Serbia",
     "clubCount": 9,
@@ -20628,10 +20628,10 @@
     "nat": "Japan",
     "slot": "DF",
     "position": "defender",
-    "club": "Ajax",
+    "club": "Borussia Mönchengladbach",
     "clubId": "Q101959",
     "country": "Germany",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1997-01-27"
   },
   {
@@ -20642,10 +20642,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "AC Milan",
+    "club": "RB Leipzig",
     "clubId": "Q702455",
     "country": "Germany",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-11-14"
   },
   {
@@ -20684,10 +20684,10 @@
     "nat": "Netherlands",
     "slot": "FW",
     "position": "winger",
-    "club": "Jong Ajax",
+    "club": "Bournemouth",
     "clubId": "Q1770361",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-05-05"
   },
   {
@@ -20698,10 +20698,10 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Fiorentina",
+    "club": "Everton",
     "clubId": "Q5794",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2000-02-28"
   },
   {
@@ -20827,7 +20827,7 @@
     "club": "Manchester City",
     "clubId": "Q50602",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1996-10-03"
   },
   {
@@ -20838,7 +20838,7 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "full-back",
-    "club": "Atalanta BC",
+    "club": "Schalke 04",
     "clubId": "Q1886",
     "country": "Italy",
     "clubCount": 8,
@@ -21384,7 +21384,7 @@
     "nat": "Algeria",
     "slot": "FW",
     "position": "wing half",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -21860,7 +21860,7 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "central midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 6,
@@ -22616,7 +22616,7 @@
     "nat": "Croatia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 5,
@@ -22630,10 +22630,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Bayer 04 Leverkusen",
+    "club": "Ipswich Town",
     "clubId": "Q104761",
     "country": "Germany",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1998-10-05"
   },
   {
@@ -22658,10 +22658,10 @@
     "nat": "Colombia",
     "slot": "DF",
     "position": "defender",
-    "club": "Atlético Nacional",
+    "club": "Galatasaray",
     "clubId": "Q332605",
     "country": "Colombia",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-06-12"
   },
   {
@@ -22896,7 +22896,7 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Manchester United",
+    "club": "Fenerbahçe",
     "clubId": "Q18656",
     "country": "United Kingdom",
     "clubCount": 4,
@@ -23666,7 +23666,7 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "full-back",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 7,
@@ -23736,7 +23736,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "wing half",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 12,
@@ -23890,10 +23890,10 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Lazio",
+    "club": "AS Roma",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-01-12"
   },
   {
@@ -23946,10 +23946,10 @@
     "nat": "Colombia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "River Plate",
+    "club": "Porto",
     "clubId": "Q128446",
     "country": "Portugal",
-    "clubCount": 11,
+    "clubCount": 12,
     "dob": "1993-01-18"
   },
   {
@@ -24142,7 +24142,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 10,
@@ -24156,10 +24156,10 @@
     "nat": "Argentina",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Marseille",
+    "club": "Manchester City",
     "clubId": "Q10315",
     "country": "Spain",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1992-05-20"
   },
   {
@@ -24170,7 +24170,7 @@
     "nat": "Portugal",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Beşiktaş",
+    "club": "Inter Milan",
     "clubId": "Q631",
     "country": "Italy",
     "clubCount": 9,
@@ -24282,10 +24282,10 @@
     "nat": "Croatia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Dinamo Zagreb",
+    "club": "Barcelona",
     "clubId": "Q172803",
     "country": "Croatia",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-01-09"
   },
   {
@@ -24324,7 +24324,7 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 4,
@@ -24338,7 +24338,7 @@
     "nat": "France",
     "slot": "MF",
     "position": "central midfielder",
-    "club": "Arsenal",
+    "club": "Fenerbahçe",
     "clubId": "Q9617",
     "country": "United Kingdom",
     "clubCount": 6,
@@ -24422,7 +24422,7 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "full-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 2,
@@ -24534,10 +24534,10 @@
     "nat": "France",
     "slot": "FW",
     "position": "forward",
-    "club": "Paris Saint-Germain",
+    "club": "Liverpool",
     "clubId": "Q483020",
     "country": "France",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2002-09-02"
   },
   {
@@ -24548,7 +24548,7 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Olympique Lyonnais",
+    "club": "Real Madrid",
     "clubId": "Q8682",
     "country": "Spain",
     "clubCount": 3,
@@ -25542,7 +25542,7 @@
     "nat": "Spain",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -25850,7 +25850,7 @@
     "nat": "Slovakia",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Inter Milan",
+    "club": "Fenerbahçe",
     "clubId": "Q631",
     "country": "Italy",
     "clubCount": 6,
@@ -26228,7 +26228,7 @@
     "nat": "Belgium",
     "slot": "FW",
     "position": "wing half",
-    "club": "Sevilla",
+    "club": "Real Sociedad",
     "clubId": "Q10315",
     "country": "Spain",
     "clubCount": 7,
@@ -26298,10 +26298,10 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "defender",
-    "club": "Atlético Madrid",
+    "club": "Roma",
     "clubId": "Q8701",
     "country": "Spain",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1998-04-06"
   },
   {
@@ -26340,10 +26340,10 @@
     "nat": "Senegal",
     "slot": "FW",
     "position": "forward",
-    "club": "Watford F.C.",
+    "club": "Crystal Palace",
     "clubId": "Q2714",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1998-02-25"
   },
   {
@@ -26368,7 +26368,7 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Newcastle United",
+    "club": "Arsenal",
     "clubId": "Q9617",
     "country": "United Kingdom",
     "clubCount": 8,
@@ -26382,10 +26382,10 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "defender",
-    "club": "Tottenham Hotspur",
+    "club": "Atlético Madrid",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1998-04-27"
   },
   {
@@ -26424,7 +26424,7 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 6,
@@ -26480,10 +26480,10 @@
     "nat": "Ukraine",
     "slot": "FW",
     "position": "winger",
-    "club": "Chelsea",
+    "club": "Tottenham Hotspur",
     "clubId": "Q172969",
     "country": "Ukraine",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2001-01-05"
   },
   {
@@ -27222,10 +27222,10 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Stoke City F.C.",
+    "club": "Hull City",
     "clubId": "Q18736",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1993-03-10"
   },
   {
@@ -27978,7 +27978,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 2,
@@ -28258,7 +28258,7 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Manchester City",
+    "club": "Leeds United",
     "clubId": "Q1128631",
     "country": "United Kingdom",
     "clubCount": 5,
@@ -28286,10 +28286,10 @@
     "nat": "Egypt",
     "slot": "FW",
     "position": "forward",
-    "club": "Manchester City",
+    "club": "Tottenham Hotspur",
     "clubId": "Q101859",
     "country": "Germany",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1999-02-07"
   },
   {
@@ -28482,10 +28482,10 @@
     "nat": "Japan",
     "slot": "FW",
     "position": "forward",
-    "club": "Gamba Osaka",
+    "club": "Olympique Lyonnais",
     "clubId": "Q738423",
     "country": "Japan",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-07-28"
   },
   {
@@ -29154,7 +29154,7 @@
     "nat": "Catalonia",
     "slot": "DF",
     "position": "full-back",
-    "club": "Brighton",
+    "club": "Barcelona",
     "clubId": "Q8723",
     "country": "Spain",
     "clubCount": 6,
@@ -29672,10 +29672,10 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Burnley",
+    "club": "Manchester United",
     "clubId": "Q19458",
     "country": "United Kingdom",
-    "clubCount": 10,
+    "clubCount": 11,
     "dob": "1986-04-15"
   },
   {
@@ -29812,10 +29812,10 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Roma",
+    "club": "AS Roma",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1991-06-10"
   },
   {
@@ -30134,10 +30134,10 @@
     "nat": "Denmark",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Anderlecht",
+    "club": "F.C. Copenhagen",
     "clubId": "Q188430",
     "country": "Denmark",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1991-09-03"
   },
   {
@@ -30302,7 +30302,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Palermo F.C.",
+    "club": "Roma",
     "clubId": "Q2674",
     "country": "Italy",
     "clubCount": 6,
@@ -30456,10 +30456,10 @@
     "nat": "Scotland",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Arsenal",
+    "club": "Celtic",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-06-05"
   },
   {
@@ -30498,10 +30498,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Boca Juniors",
+    "club": "Aston Villa",
     "clubId": "Q170703",
     "country": "Argentina",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-10-02"
   },
   {
@@ -30764,7 +30764,7 @@
     "nat": "Mexico",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Ajax",
+    "club": "West Ham",
     "clubId": "Q81888",
     "country": "Netherlands",
     "clubCount": 4,
@@ -31002,7 +31002,7 @@
     "nat": "Germany",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "VfB Stuttgart",
+    "club": "Bayern Munich",
     "clubId": "Q4512",
     "country": "Germany",
     "clubCount": 4,
@@ -31324,7 +31324,7 @@
     "nat": "France",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 5,
@@ -31940,7 +31940,7 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 3,
@@ -32654,10 +32654,10 @@
     "nat": "Argentina",
     "slot": "FW",
     "position": "wing half",
-    "club": "Racing Club",
+    "club": "River Plate",
     "clubId": "Q276533",
     "country": "Argentina",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1991-10-28"
   },
   {
@@ -32794,10 +32794,10 @@
     "nat": "Japan",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Celtic",
+    "club": "Oita Trinita",
     "clubId": "Q385074",
     "country": "Japan",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-04-07"
   },
   {
@@ -32920,10 +32920,10 @@
     "nat": "DR Congo",
     "slot": "DF",
     "position": "full-back",
-    "club": "West Ham",
+    "club": "Aston Villa",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-11-26"
   },
   {
@@ -32934,10 +32934,10 @@
     "nat": "Spain",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Chelsea",
+    "club": "Brighton & Hove Albion F.C.",
     "clubId": "Q19453",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1997-11-18"
   },
   {
@@ -32948,10 +32948,10 @@
     "nat": "Canada",
     "slot": "FW",
     "position": "forward",
-    "club": "Juventus",
+    "club": "Atlético Madrid",
     "clubId": "Q19516",
     "country": "France",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-01-14"
   },
   {
@@ -32976,10 +32976,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "attacking midfielder",
-    "club": "Liverpool",
+    "club": "Valencia",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2003-04-04"
   },
   {
@@ -33102,10 +33102,10 @@
     "nat": "Switzerland",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Borussia Mönchengladbach",
+    "club": "Leeds United",
     "clubId": "Q101959",
     "country": "Germany",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-09-30"
   },
   {
@@ -33116,10 +33116,10 @@
     "nat": "Japan",
     "slot": "DF",
     "position": "defender",
-    "club": "Huddersfield Town A.F.C.",
+    "club": "Red Star Belgrade",
     "clubId": "Q19473",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-02-16"
   },
   {
@@ -33130,10 +33130,10 @@
     "nat": "South Korea",
     "slot": "FW",
     "position": "forward",
-    "club": "Wolves",
+    "club": "Schalke 04",
     "clubId": "Q994811",
     "country": "Austria",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1996-01-26"
   },
   {
@@ -33662,10 +33662,10 @@
     "nat": "Colombia",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Inter Milan",
+    "club": "Granada CF",
     "clubId": "Q631",
     "country": "Italy",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1992-05-27"
   },
   {
@@ -33816,7 +33816,7 @@
     "nat": "Argentina",
     "slot": "FW",
     "position": "wing half",
-    "club": "Juventus",
+    "club": "Udinese Calcio",
     "clubId": "Q2798",
     "country": "Italy",
     "clubCount": 5,
@@ -33858,10 +33858,10 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Brighton",
+    "club": "West Ham",
     "clubId": "Q81888",
     "country": "Netherlands",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1992-01-15"
   },
   {
@@ -34194,7 +34194,7 @@
     "nat": "Austria",
     "slot": "FW",
     "position": "forward",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 7,
@@ -34474,10 +34474,10 @@
     "nat": "Croatia",
     "slot": "FW",
     "position": "forward",
-    "club": "Empoli FC",
+    "club": "Hajduk Split",
     "clubId": "Q6703",
     "country": "Italy",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1993-08-26"
   },
   {
@@ -34502,10 +34502,10 @@
     "nat": "Austria",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Bayer Leverkusen",
+    "club": "Bayer 04 Leverkusen",
     "clubId": "Q104761",
     "country": "Germany",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1991-03-06"
   },
   {
@@ -34516,10 +34516,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "midfielder",
-    "club": "Lazio",
+    "club": "Palmeiras",
     "clubId": "Q2609",
     "country": "Italy",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1993-04-15"
   },
   {
@@ -34754,10 +34754,10 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "defender",
-    "club": "Leeds United",
+    "club": "Real Betis",
     "clubId": "Q1128631",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1993-08-16"
   },
   {
@@ -34782,10 +34782,10 @@
     "nat": "Croatia",
     "slot": "FW",
     "position": "forward",
-    "club": "Dinamo Zagreb",
+    "club": "GNK Dinamo Zagreb",
     "clubId": "Q172803",
     "country": "Croatia",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1994-09-16"
   },
   {
@@ -34894,7 +34894,7 @@
     "nat": "Nigeria",
     "slot": "DF",
     "position": "defender",
-    "club": "Hull City A.F.C.",
+    "club": "Nottingham Forest",
     "clubId": "Q19477",
     "country": "United Kingdom",
     "clubCount": 4,
@@ -35020,10 +35020,10 @@
     "nat": "Japan",
     "slot": "DF",
     "position": "defender",
-    "club": "VfB Stuttgart",
+    "club": "Bayern Munich",
     "clubId": "Q4512",
     "country": "Germany",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-05-12"
   },
   {
@@ -35062,10 +35062,10 @@
     "nat": "Netherlands",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Manchester City",
+    "club": "AZ Alkmaar",
     "clubId": "Q191264",
     "country": "Netherlands",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1998-07-29"
   },
   {
@@ -35454,7 +35454,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "wing half",
-    "club": "Fiorentina",
+    "club": "Barcelona",
     "clubId": "Q2052",
     "country": "Italy",
     "clubCount": 6,
@@ -35720,7 +35720,7 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 5,
@@ -36686,7 +36686,7 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Inter Milan",
+    "club": "SS Lazio",
     "clubId": "Q2609",
     "country": "Italy",
     "clubCount": 11,
@@ -36742,7 +36742,7 @@
     "nat": "Colombia",
     "slot": "FW",
     "position": "forward",
-    "club": "América de Cali",
+    "club": "Torino",
     "clubId": "Q391987",
     "country": "Colombia",
     "clubCount": 7,
@@ -36798,10 +36798,10 @@
     "nat": "Burkina Faso",
     "slot": "FW",
     "position": "forward",
-    "club": "Aston Villa",
+    "club": "Wolves",
     "clubId": "Q18711",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-09-06"
   },
   {
@@ -37162,10 +37162,10 @@
     "nat": "Uruguay",
     "slot": "DF",
     "position": "full-back",
-    "club": "Club Atlético Peñarol",
+    "club": "Flamengo",
     "clubId": "Q16320",
     "country": "Uruguay",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1993-03-24"
   },
   {
@@ -37190,7 +37190,7 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Bournemouth",
+    "club": "Aston Villa",
     "clubId": "Q19568",
     "country": "United Kingdom",
     "clubCount": 5,
@@ -37204,10 +37204,10 @@
     "nat": "Canada",
     "slot": "FW",
     "position": "forward",
-    "club": "Beşiktaş",
+    "club": "Beşiktaş J.K. (Football)",
     "clubId": "Q172567",
     "country": "Turkey",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-04-17"
   },
   {
@@ -37246,7 +37246,7 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Bayer 04 Leverkusen",
+    "club": "Bayer Leverkusen",
     "clubId": "Q104761",
     "country": "Germany",
     "clubCount": 6,
@@ -37274,10 +37274,10 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "defender",
-    "club": "AS Monaco",
+    "club": "Ajax",
     "clubId": "Q18747",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1996-09-21"
   },
   {
@@ -37302,10 +37302,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Crystal Palace",
+    "club": "Arsenal",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-09-20"
   },
   {
@@ -37414,10 +37414,10 @@
     "nat": "United States",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Philadelphia Union",
+    "club": "Leeds United",
     "clubId": "Q689874",
     "country": "United States",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-10-22"
   },
   {
@@ -37456,10 +37456,10 @@
     "nat": "Catalonia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Barcelona",
+    "club": "UFB Jàbac i Terrassa",
     "clubId": "Q7156",
     "country": "Spain",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-08-13"
   },
   {
@@ -37470,10 +37470,10 @@
     "nat": "Switzerland",
     "slot": "FW",
     "position": "forward",
-    "club": "FC Basel",
+    "club": "Leeds United",
     "clubId": "Q189671",
     "country": "Switzerland",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-05-24"
   },
   {
@@ -37484,10 +37484,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "AC Milan",
+    "club": "Sevilla",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1999-01-10"
   },
   {
@@ -37652,10 +37652,10 @@
     "nat": "Turkey",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Manchester United",
+    "club": "Fenerbahçe Istanbul",
     "clubId": "Q6601875",
     "country": "Turkey",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1998-04-14"
   },
   {
@@ -38268,7 +38268,7 @@
     "nat": "France",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 6,
@@ -38800,10 +38800,10 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Manchester United",
+    "club": "Celtic",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 10,
+    "clubCount": 11,
     "dob": "1993-03-25"
   },
   {
@@ -39178,10 +39178,10 @@
     "nat": "DR Congo",
     "slot": "FW",
     "position": "forward",
-    "club": "Marseille",
+    "club": "Beijing Guoan F.C.",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1991-04-11"
   },
   {
@@ -39206,10 +39206,10 @@
     "nat": "Paraguay",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Boca Juniors",
+    "club": "Palmeiras",
     "clubId": "Q170703",
     "country": "Argentina",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1993-05-06"
   },
   {
@@ -39262,10 +39262,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "River Plate",
+    "club": "Club Atlético River Plate",
     "clubId": "Q15799",
     "country": "Argentina",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1993-02-15"
   },
   {
@@ -39304,10 +39304,10 @@
     "nat": "Brazil",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Everton",
+    "club": "SSC Napoli",
     "clubId": "Q5794",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1991-01-08"
   },
   {
@@ -39402,10 +39402,10 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Real Betis",
+    "club": "Club Atlético River Plate",
     "clubId": "Q8723",
     "country": "Spain",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1991-06-27"
   },
   {
@@ -39514,10 +39514,10 @@
     "nat": "Argentina",
     "slot": "FW",
     "position": "forward",
-    "club": "Club Atlético Banfield",
+    "club": "Torino",
     "clubId": "Q692646",
     "country": "Argentina",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-07-05"
   },
   {
@@ -39626,7 +39626,7 @@
     "nat": "Germany",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Bayern Munich",
+    "club": "FC Bayern Munich II",
     "clubId": "Q994701",
     "country": "Germany",
     "clubCount": 5,
@@ -39724,7 +39724,7 @@
     "nat": "Ukraine",
     "slot": "FW",
     "position": "forward",
-    "club": "Olympique Lyonnais",
+    "club": "FC Dynamo Kyiv",
     "clubId": "Q179075",
     "country": "Ukraine",
     "clubCount": 9,
@@ -39780,10 +39780,10 @@
     "nat": "South Korea",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Red Star Belgrade",
+    "club": "Porto",
     "clubId": "Q173009",
     "country": "Serbia",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1996-09-20"
   },
   {
@@ -39794,10 +39794,10 @@
     "nat": "Turkey",
     "slot": "FW",
     "position": "wing half",
-    "club": "Beşiktaş",
+    "club": "AS Roma",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1997-07-14"
   },
   {
@@ -39962,10 +39962,10 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "defender",
-    "club": "Sunderland",
+    "club": "PSV",
     "clubId": "Q134241",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-07-18"
   },
   {
@@ -40004,10 +40004,10 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Arsenal",
+    "club": "Fulham",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-07-28"
   },
   {
@@ -40018,10 +40018,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "centre-back",
-    "club": "West Ham",
+    "club": "West Ham United F.C.",
     "clubId": "Q18747",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1999-12-30"
   },
   {
@@ -40074,10 +40074,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "attacking midfielder",
-    "club": "Marseille",
+    "club": "Montpellier Hérault Sport Club",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1990-03-08"
   },
   {
@@ -40116,7 +40116,7 @@
     "nat": "Croatia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Hajduk Split",
+    "club": "HNK Hajduk Split",
     "clubId": "Q181216",
     "country": "Croatia",
     "clubCount": 7,
@@ -40312,7 +40312,7 @@
     "nat": "Spain",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -40760,7 +40760,7 @@
     "nat": "Brazil",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 5,
@@ -41026,10 +41026,10 @@
     "nat": "Netherlands",
     "slot": "MF",
     "position": "midfielder",
-    "club": "SC Heerenveen",
+    "club": "Roma",
     "clubId": "Q200321",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1991-03-29"
   },
   {
@@ -41096,7 +41096,7 @@
     "nat": "Portugal",
     "slot": "DF",
     "position": "defender",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 3,
@@ -41418,7 +41418,7 @@
     "nat": "Portugal",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -41530,7 +41530,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 2,
@@ -41908,10 +41908,10 @@
     "nat": "Turkey",
     "slot": "DF",
     "position": "midfielder",
-    "club": "Hull City",
+    "club": "Trabzonspor",
     "clubId": "Q6601875",
     "country": "Turkey",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1995-03-23"
   },
   {
@@ -41950,10 +41950,10 @@
     "nat": "England",
     "slot": "MF",
     "position": "central midfielder",
-    "club": "Nottingham Forest",
+    "club": "Southampton F.C.",
     "clubId": "Q18732",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1994-11-01"
   },
   {
@@ -42104,10 +42104,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Bournemouth",
+    "club": "Brentford",
     "clubId": "Q19568",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1992-02-27"
   },
   {
@@ -42272,10 +42272,10 @@
     "nat": "Belgium",
     "slot": "MF",
     "position": "midfielder",
-    "club": "R.S.C. Anderlecht",
+    "club": "Hajduk Split",
     "clubId": "Q187528",
     "country": "Belgium",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-04-15"
   },
   {
@@ -42373,7 +42373,7 @@
     "club": "Inter Milan",
     "clubId": "Q631",
     "country": "Italy",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1994-08-13"
   },
   {
@@ -42468,10 +42468,10 @@
     "nat": "Morocco",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Fulham",
+    "club": "Ipswich Town",
     "clubId": "Q18708",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1997-01-09"
   },
   {
@@ -42552,10 +42552,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "defender",
-    "club": "West Ham",
+    "club": "Crystal Palace",
     "clubId": "Q208228",
     "country": "France",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1998-03-11"
   },
   {
@@ -42580,7 +42580,7 @@
     "nat": "England",
     "slot": "DF",
     "position": "full-back",
-    "club": "Tottenham Hotspur",
+    "club": "Fulham",
     "clubId": "Q18741",
     "country": "United Kingdom",
     "clubCount": 2,
@@ -42608,10 +42608,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Aston Villa",
+    "club": "Arsenal",
     "clubId": "Q18711",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-10-23"
   },
   {
@@ -42667,7 +42667,7 @@
     "club": "Chelsea",
     "clubId": "Q9616",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1999-07-05"
   },
   {
@@ -42720,10 +42720,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Inter Milan",
+    "club": "Marseille",
     "clubId": "Q631",
     "country": "Italy",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1993-02-15"
   },
   {
@@ -42818,10 +42818,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Defensa y Justicia",
+    "club": "Valencia",
     "clubId": "Q1024338",
     "country": "Argentina",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1994-04-12"
   },
   {
@@ -42832,10 +42832,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "central midfielder",
-    "club": "Olympique Lyonnais",
+    "club": "Everton",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1997-08-29"
   },
   {
@@ -42944,10 +42944,10 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Liverpool",
+    "club": "Inter Milan",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-01-30"
   },
   {
@@ -43028,10 +43028,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "wing half",
-    "club": "Newcastle United",
+    "club": "Tottenham Hotspur",
     "clubId": "Q18716",
     "country": "United Kingdom",
-    "clubCount": 11,
+    "clubCount": 12,
     "dob": "1991-07-16"
   },
   {
@@ -43126,7 +43126,7 @@
     "nat": "Venezuela",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 6,
@@ -43868,7 +43868,7 @@
     "nat": "Switzerland",
     "slot": "FW",
     "position": "forward",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 5,
@@ -43924,10 +43924,10 @@
     "nat": "Netherlands",
     "slot": "FW",
     "position": "wing half",
-    "club": "Watford F.C.",
+    "club": "Ajax",
     "clubId": "Q2714",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1991-12-19"
   },
   {
@@ -44302,7 +44302,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 6,
@@ -45156,10 +45156,10 @@
     "nat": "Algeria",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Borussia Mönchengladbach",
+    "club": "Borussia Dortmund",
     "clubId": "Q101959",
     "country": "Germany",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1995-04-16"
   },
   {
@@ -45184,7 +45184,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -45229,7 +45229,7 @@
     "club": "Coventry City",
     "clubId": "Q6664",
     "country": "Italy",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-08-05"
   },
   {
@@ -45383,7 +45383,7 @@
     "club": "Manchester United",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-11-14"
   },
   {
@@ -45520,10 +45520,10 @@
     "nat": "France",
     "slot": "FW",
     "position": "forward",
-    "club": "OGC Nice",
+    "club": "Marseille",
     "clubId": "Q185163",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-02-16"
   },
   {
@@ -45548,10 +45548,10 @@
     "nat": "Wales",
     "slot": "FW",
     "position": "wing half",
-    "club": "Manchester United",
+    "club": "Leeds United",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-11-10"
   },
   {
@@ -45562,10 +45562,10 @@
     "nat": "Mexico",
     "slot": "FW",
     "position": "forward",
-    "club": "AC Milan",
+    "club": "Porto",
     "clubId": "Q845859",
     "country": "Mexico",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2001-04-18"
   },
   {
@@ -45590,10 +45590,10 @@
     "nat": "United Kingdom",
     "slot": "FW",
     "position": "wing half",
-    "club": "Arsenal",
+    "club": "Feyenoord",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-12-10"
   },
   {
@@ -45897,10 +45897,10 @@
     "nat": "Netherlands",
     "slot": "FW",
     "position": "forward",
-    "club": "FC Barcelona Atlètic",
+    "club": "Sunderland",
     "clubId": "Q10467",
     "country": "Spain",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2002-02-01"
   },
   {
@@ -45939,10 +45939,10 @@
     "nat": "Germany",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Manchester City",
+    "club": "Borussia Dortmund",
     "clubId": "Q50602",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-10-10"
   },
   {
@@ -45981,10 +45981,10 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Manchester City",
+    "club": "Newcastle United",
     "clubId": "Q2423029",
     "country": "Spain",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "2002-01-03"
   },
   {
@@ -46037,10 +46037,10 @@
     "nat": "Norway",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Nordsjælland",
+    "club": "Benfica",
     "clubId": "Q210025",
     "country": "Denmark",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2004-06-01"
   },
   {
@@ -46205,10 +46205,10 @@
     "nat": "Paraguay",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Brighton & Hove Albion F.C.",
+    "club": "Ipswich Town",
     "clubId": "Q19453",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2004-01-23"
   },
   {
@@ -46303,7 +46303,7 @@
     "nat": "Germany",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Hamburger SV",
+    "club": "Schalke 04",
     "clubId": "Q32494",
     "country": "Germany",
     "clubCount": 7,
@@ -47073,7 +47073,7 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "full-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 3,
@@ -47227,10 +47227,10 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "defender",
-    "club": "Everton",
+    "club": "Club Atlético River Plate",
     "clubId": "Q5794",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1991-03-05"
   },
   {
@@ -47874,7 +47874,7 @@
     "club": "Chelsea",
     "clubId": "Q9616",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1994-01-20"
   },
   {
@@ -47913,10 +47913,10 @@
     "nat": "Spain",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Real Betis",
+    "club": "Everton",
     "clubId": "Q8723",
     "country": "Spain",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1990-06-17"
   },
   {
@@ -47944,7 +47944,7 @@
     "club": "Porto",
     "clubId": "Q128446",
     "country": "Portugal",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1993-01-06"
   },
   {
@@ -47983,10 +47983,10 @@
     "nat": "Serbia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Ajax",
+    "club": "NAC Breda",
     "clubId": "Q81888",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1991-11-16"
   },
   {
@@ -47997,7 +47997,7 @@
     "nat": "Netherlands",
     "slot": "MF",
     "position": "midfielder",
-    "club": "PSV",
+    "club": "SBV Vitesse",
     "clubId": "Q11938",
     "country": "Netherlands",
     "clubCount": 5,
@@ -48109,7 +48109,7 @@
     "nat": "Czechia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 10,
@@ -48137,7 +48137,7 @@
     "nat": "Slovenia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Bayer Leverkusen",
+    "club": "FC Red Bull Salzburg",
     "clubId": "Q104761",
     "country": "Germany",
     "clubCount": 8,
@@ -48151,10 +48151,10 @@
     "nat": "United Kingdom",
     "slot": "FW",
     "position": "wing half",
-    "club": "West Ham",
+    "club": "West Ham United F.C.",
     "clubId": "Q18747",
     "country": "United Kingdom",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1990-03-28"
   },
   {
@@ -48207,10 +48207,10 @@
     "nat": "Wales",
     "slot": "FW",
     "position": "wing half",
-    "club": "Liverpool",
+    "club": "Leeds United",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-03-22"
   },
   {
@@ -48333,10 +48333,10 @@
     "nat": "Portugal",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "C.S. Marítimo B",
+    "club": "Wolves",
     "clubId": "Q5006215",
     "country": "Portugal",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1993-01-17"
   },
   {
@@ -48361,7 +48361,7 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Brighton & Hove Albion F.C.",
+    "club": "Brighton",
     "clubId": "Q19453",
     "country": "United Kingdom",
     "clubCount": 3,
@@ -48574,7 +48574,7 @@
     "club": "Chelsea",
     "clubId": "Q9616",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1996-02-08"
   },
   {
@@ -48767,10 +48767,10 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Eintracht Frankfurt",
+    "club": "Galatasaray",
     "clubId": "Q38245",
     "country": "Germany",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1994-11-10"
   },
   {
@@ -48921,10 +48921,10 @@
     "nat": "Serbia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "KS Lechia Gdańsk",
+    "club": "Napoli",
     "clubId": "Q734785",
     "country": "Poland",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1997-02-20"
   },
   {
@@ -49005,10 +49005,10 @@
     "nat": "Northern Ireland",
     "slot": "DF",
     "position": "midfielder",
-    "club": "Manchester United",
+    "club": "Hull City",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1995-04-27"
   },
   {
@@ -49061,10 +49061,10 @@
     "nat": "Nigeria",
     "slot": "FW",
     "position": "forward",
-    "club": "Liverpool",
+    "club": "Coventry City",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1997-08-12"
   },
   {
@@ -49075,7 +49075,7 @@
     "nat": "Uruguay",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 3,
@@ -49117,10 +49117,10 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "defender",
-    "club": "Hannover 96",
+    "club": "Borussia Dortmund",
     "clubId": "Q33748",
     "country": "Germany",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-07-20"
   },
   {
@@ -49229,10 +49229,10 @@
     "nat": "Austria",
     "slot": "DF",
     "position": "midfielder",
-    "club": "Reading F.C.",
+    "club": "Sunderland",
     "clubId": "Q18729",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1998-09-19"
   },
   {
@@ -49257,10 +49257,10 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "midfielder",
-    "club": "Fiorentina",
+    "club": "Udinese Calcio",
     "clubId": "Q2052",
     "country": "Italy",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-07-02"
   },
   {
@@ -49383,7 +49383,7 @@
     "nat": "Denmark",
     "slot": "FW",
     "position": "midfielder",
-    "club": "FC Nordsjælland",
+    "club": "Brentford",
     "clubId": "Q210025",
     "country": "Denmark",
     "clubCount": 2,
@@ -49508,7 +49508,7 @@
     "nat": "Morocco",
     "slot": "FW",
     "position": "forward",
-    "club": "Toulouse FC",
+    "club": "Torino",
     "clubId": "Q19518",
     "country": "France",
     "clubCount": 4,
@@ -49581,7 +49581,7 @@
     "club": "Paris Saint-Germain",
     "clubId": "Q483020",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2002-06-07"
   },
   {
@@ -49620,10 +49620,10 @@
     "nat": "Germany",
     "slot": "FW",
     "position": "forward",
-    "club": "Newcastle United",
+    "club": "Juventus",
     "clubId": "Q51976",
     "country": "Germany",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2002-02-14"
   },
   {
@@ -49760,10 +49760,10 @@
     "nat": "United Kingdom",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Arsenal",
+    "club": "Borussia Dortmund",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2007-03-21"
   },
   {
@@ -50110,10 +50110,10 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Manchester United",
+    "club": "Burnley",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1990-04-10"
   },
   {
@@ -50558,7 +50558,7 @@
     "nat": "Galicia",
     "slot": "DF",
     "position": "full-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -50838,10 +50838,10 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "full-back",
-    "club": "Anderlecht",
+    "club": "SBV Vitesse",
     "clubId": "Q187528",
     "country": "Belgium",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1989-02-11"
   },
   {
@@ -51104,7 +51104,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 8,
@@ -51174,7 +51174,7 @@
     "nat": "Yugoslavia",
     "slot": "DF",
     "position": "defender",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 5,
@@ -51524,7 +51524,7 @@
     "nat": "Albania",
     "slot": "DF",
     "position": "defender",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 2,
@@ -51552,7 +51552,7 @@
     "nat": "Austria",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Bayer Leverkusen",
+    "club": "Bayer 04 Leverkusen",
     "clubId": "Q104761",
     "country": "Germany",
     "clubCount": 5,
@@ -51832,10 +51832,10 @@
     "nat": "Denmark",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Brøndby IF",
+    "club": "Everton",
     "clubId": "Q211906",
     "country": "Denmark",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1994-03-10"
   },
   {
@@ -51849,7 +51849,7 @@
     "club": "Barcelona",
     "clubId": "Q7156",
     "country": "Spain",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-07-28"
   },
   {
@@ -51874,10 +51874,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "defender",
-    "club": "Burnley",
+    "club": "Everton",
     "clubId": "Q19458",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1992-11-19"
   },
   {
@@ -52017,7 +52017,7 @@
     "club": "Barcelona",
     "clubId": "Q7156",
     "country": "Spain",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1995-01-20"
   },
   {
@@ -52070,10 +52070,10 @@
     "nat": "Denmark",
     "slot": "DF",
     "position": "defender",
-    "club": "FC Twente",
+    "club": "Fulham",
     "clubId": "Q19603",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1996-05-31"
   },
   {
@@ -52098,10 +52098,10 @@
     "nat": "Croatia",
     "slot": "FW",
     "position": "wing half",
-    "club": "Jeonnam Dragons FC",
+    "club": "Dinamo Zagreb",
     "clubId": "Q482566",
     "country": "South Korea",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1992-12-29"
   },
   {
@@ -52126,10 +52126,10 @@
     "nat": "Portugal",
     "slot": "MF",
     "position": "defensive midfielder",
-    "club": "Bayern Munich",
+    "club": "Benfica",
     "clubId": "Q75729",
     "country": "Portugal",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1995-07-09"
   },
   {
@@ -52252,10 +52252,10 @@
     "nat": "Chile",
     "slot": "FW",
     "position": "forward",
-    "club": "Dinamo Zagreb",
+    "club": "Manchester United",
     "clubId": "Q172803",
     "country": "Croatia",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1994-04-13"
   },
   {
@@ -52325,7 +52325,7 @@
     "club": "Newcastle United",
     "clubId": "Q18716",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1994-08-08"
   },
   {
@@ -52546,10 +52546,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "SC Bastia",
+    "club": "Porto",
     "clubId": "Q208399",
     "country": "France",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-05-07"
   },
   {
@@ -52560,10 +52560,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "attacking midfielder",
-    "club": "Getafe CF",
+    "club": "Aston Villa",
     "clubId": "Q8806",
     "country": "Spain",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-12-25"
   },
   {
@@ -52616,10 +52616,10 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "defender",
-    "club": "Atlético Madrid",
+    "club": "Roma",
     "clubId": "Q10319",
     "country": "Spain",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1995-06-18"
   },
   {
@@ -52630,10 +52630,10 @@
     "nat": "Zambia",
     "slot": "FW",
     "position": "forward",
-    "club": "Power Dynamos F.C.",
+    "club": "Hamburger SV",
     "clubId": "Q546889",
     "country": "Zambia",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1998-10-09"
   },
   {
@@ -52647,7 +52647,7 @@
     "club": "Aston Villa",
     "clubId": "Q18711",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1997-08-09"
   },
   {
@@ -52770,10 +52770,10 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Hajduk Split",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-01-31"
   },
   {
@@ -52878,10 +52878,10 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Ascoli Calcio 1898 FC",
+    "club": "Lazio",
     "clubId": "Q6630",
     "country": "Italy",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-09-22"
   },
   {
@@ -52892,10 +52892,10 @@
     "nat": "Belgium",
     "slot": "FW",
     "position": "forward",
-    "club": "Club Brugge K.V.",
+    "club": "Olympique Lyonnais",
     "clubId": "Q190916",
     "country": "Belgium",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2000-02-16"
   },
   {
@@ -52920,10 +52920,10 @@
     "nat": "United Kingdom",
     "slot": "DF",
     "position": "full-back",
-    "club": "Norwich City F.C.",
+    "club": "Bournemouth",
     "clubId": "Q18721",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-01-04"
   },
   {
@@ -52934,7 +52934,7 @@
     "nat": "Nigeria",
     "slot": "FW",
     "position": "forward",
-    "club": "Bayer 04 Leverkusen",
+    "club": "Bayer Leverkusen",
     "clubId": "Q104761",
     "country": "Germany",
     "clubCount": 4,
@@ -53144,10 +53144,10 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Manchester City",
+    "club": "Leeds United",
     "clubId": "Q50602",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2002-10-10"
   },
   {
@@ -53172,7 +53172,7 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Liverpool",
+    "club": "Bayer Leverkusen",
     "clubId": "Q1130849",
     "country": "United Kingdom",
     "clubCount": 3,
@@ -53186,7 +53186,7 @@
     "nat": "Serbia",
     "slot": "FW",
     "position": "wing half",
-    "club": "Red Star Belgrade",
+    "club": "Olympique de Marseille",
     "clubId": "Q132885",
     "country": "France",
     "clubCount": 8,
@@ -53200,10 +53200,10 @@
     "nat": "United States",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Nottingham Forest",
+    "club": "New England Revolution",
     "clubId": "Q309095",
     "country": "United States",
-    "clubCount": 5,
+    "clubCount": 7,
     "dob": "1994-06-24"
   },
   {
@@ -53228,10 +53228,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Chelsea",
+    "club": "Nottingham Forest",
     "clubId": "Q50602",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "2003-02-08"
   },
   {
@@ -53242,10 +53242,10 @@
     "nat": "Senegal",
     "slot": "FW",
     "position": "forward",
-    "club": "Olympique de Marseille",
+    "club": "Red Star Belgrade",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-09-01"
   },
   {
@@ -53326,10 +53326,10 @@
     "nat": "Morocco",
     "slot": "MF",
     "position": "midfielder",
-    "club": "AFC Creil",
+    "club": "Manchester City",
     "clubId": "Q2867528",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2007-10-02"
   },
   {
@@ -53760,7 +53760,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "wing half",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 3,
@@ -54124,7 +54124,7 @@
     "nat": "Norway",
     "slot": "DF",
     "position": "full-back",
-    "club": "West Ham",
+    "club": "Borussia Mönchengladbach",
     "clubId": "Q18747",
     "country": "United Kingdom",
     "clubCount": 7,
@@ -54208,7 +54208,7 @@
     "nat": "Argentina",
     "slot": "FW",
     "position": "wing half",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 6,
@@ -54236,7 +54236,7 @@
     "nat": "Switzerland",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 7,
@@ -55902,10 +55902,10 @@
     "nat": "United States men's",
     "slot": "DF",
     "position": "full-back",
-    "club": "Sunderland",
+    "club": "Seattle Sounders",
     "clubId": "Q18739",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1993-07-09"
   },
   {
@@ -55975,7 +55975,7 @@
     "club": "Tottenham Hotspur",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1994-06-15"
   },
   {
@@ -56112,7 +56112,7 @@
     "nat": "Denmark",
     "slot": "FW",
     "position": "forward",
-    "club": "Feyenoord",
+    "club": "Feyenoord Rotterdam",
     "clubId": "Q134241",
     "country": "Netherlands",
     "clubCount": 5,
@@ -56195,7 +56195,7 @@
     "nat": "Turkey",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Gençlerbirliği S.K.",
+    "club": "Fenerbahçe",
     "clubId": "Q641373",
     "country": "Turkey",
     "clubCount": 4,
@@ -56237,10 +56237,10 @@
     "nat": "Morocco",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Nantes",
+    "club": "Marseille",
     "clubId": "Q192071",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1997-06-18"
   },
   {
@@ -56251,10 +56251,10 @@
     "nat": "Ukraine",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Dynamo Kyiv",
+    "club": "Ajax",
     "clubId": "Q179075",
     "country": "Ukraine",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1997-11-15"
   },
   {
@@ -56307,10 +56307,10 @@
     "nat": "Norway",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Celtic",
+    "club": "Brentford",
     "clubId": "Q19593",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1998-04-17"
   },
   {
@@ -56419,10 +56419,10 @@
     "nat": "Croatia",
     "slot": "DF",
     "position": "full-back",
-    "club": "Crystal Palace",
+    "club": "VfB Stuttgart",
     "clubId": "Q4512",
     "country": "Germany",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1998-01-21"
   },
   {
@@ -56489,10 +56489,10 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Málaga CF",
+    "club": "Real Betis",
     "clubId": "Q8857",
     "country": "Spain",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1996-02-22"
   },
   {
@@ -56503,7 +56503,7 @@
     "nat": "Belgium",
     "slot": "FW",
     "position": "wing half",
-    "club": "Watford F.C.",
+    "club": "Benfica",
     "clubId": "Q2714",
     "country": "United Kingdom",
     "clubCount": 6,
@@ -56517,7 +56517,7 @@
     "nat": "Netherlands",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Villarreal CF",
+    "club": "Valencia",
     "clubId": "Q12297",
     "country": "Spain",
     "clubCount": 9,
@@ -56559,10 +56559,10 @@
     "nat": "Uruguay",
     "slot": "DF",
     "position": "defender",
-    "club": "Getafe CF",
+    "club": "Napoli",
     "clubId": "Q8806",
     "country": "Spain",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1997-10-31"
   },
   {
@@ -56601,10 +56601,10 @@
     "nat": "Norway",
     "slot": "FW",
     "position": "forward",
-    "club": "Wolves",
+    "club": "Crystal Palace",
     "clubId": "Q8749",
     "country": "Spain",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-02-06"
   },
   {
@@ -56618,7 +56618,7 @@
     "club": "AS Monaco",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-02-25"
   },
   {
@@ -56629,10 +56629,10 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "full-back",
-    "club": "AC Milan",
+    "club": "Flamengo",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1999-01-14"
   },
   {
@@ -56698,10 +56698,10 @@
     "nat": "Austria",
     "slot": "DF",
     "position": "defender",
-    "club": "US Sassuolo Calcio",
+    "club": "Fenerbahçe",
     "clubId": "Q8603",
     "country": "Italy",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-04-03"
   },
   {
@@ -56712,10 +56712,10 @@
     "nat": "Netherlands",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Marseille",
+    "club": "Crystal Palace",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-06-17"
   },
   {
@@ -56726,10 +56726,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "full-back",
-    "club": "Tottenham Hotspur",
+    "club": "Inter Milan",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2000-08-09"
   },
   {
@@ -56936,10 +56936,10 @@
     "nat": "Ivory Coast",
     "slot": "FW",
     "position": "forward",
-    "club": "Sunderland",
+    "club": "Ajax",
     "clubId": "Q19453",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2002-01-01"
   },
   {
@@ -56981,7 +56981,7 @@
     "club": "Barcelona",
     "clubId": "Q7156",
     "country": "Spain",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2003-09-14"
   },
   {
@@ -57020,10 +57020,10 @@
     "nat": "Switzerland",
     "slot": "DF",
     "position": "defender",
-    "club": "FC Basel",
+    "club": "Torino",
     "clubId": "Q189671",
     "country": "Switzerland",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1998-02-04"
   },
   {
@@ -57034,10 +57034,10 @@
     "nat": "France",
     "slot": "FW",
     "position": "wing half",
-    "club": "Bayer 04 Leverkusen",
+    "club": "Bayer Leverkusen",
     "clubId": "Q104761",
     "country": "Germany",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1999-07-07"
   },
   {
@@ -57090,10 +57090,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "wing half",
-    "club": "Liverpool",
+    "club": "Brentford",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2002-08-30"
   },
   {
@@ -57104,10 +57104,10 @@
     "nat": "Senegal",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Marseille",
+    "club": "Manchester City",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-03-06"
   },
   {
@@ -57132,7 +57132,7 @@
     "nat": "Turkey",
     "slot": "FW",
     "position": "winger",
-    "club": "Galatasaray S.K.",
+    "club": "Fenerbahçe",
     "clubId": "Q495299",
     "country": "Turkey",
     "clubCount": 7,
@@ -57146,10 +57146,10 @@
     "nat": "France",
     "slot": "FW",
     "position": "forward",
-    "club": "Paris Saint-Germain",
+    "club": "Aston Villa",
     "clubId": "Q483020",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2008-01-24"
   },
   {
@@ -57426,10 +57426,10 @@
     "nat": "Netherlands",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "K.R.C. Genk",
+    "club": "Aston Villa",
     "clubId": "Q216032",
     "country": "Belgium",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1991-03-10"
   },
   {
@@ -57454,7 +57454,7 @@
     "nat": "France",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Paris Saint-Germain",
+    "club": "Montpellier Hérault Sport Club",
     "clubId": "Q483020",
     "country": "France",
     "clubCount": 3,
@@ -57622,7 +57622,7 @@
     "nat": "Bulgaria",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 6,
@@ -58210,7 +58210,7 @@
     "nat": "Germany",
     "slot": "FW",
     "position": "wing half",
-    "club": "Napoli",
+    "club": "SSC Napoli",
     "clubId": "Q1770361",
     "country": "Netherlands",
     "clubCount": 5,
@@ -58392,7 +58392,7 @@
     "nat": "France",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Olympique Lyonnais",
+    "club": "Montpellier Hérault Sport Club",
     "clubId": "Q704",
     "country": "France",
     "clubCount": 4,
@@ -58798,7 +58798,7 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Nottingham Forest",
+    "club": "Newcastle United",
     "clubId": "Q18716",
     "country": "United Kingdom",
     "clubCount": 4,
@@ -58826,7 +58826,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Napoli",
+    "club": "Atalanta BC",
     "clubId": "Q2641",
     "country": "Italy",
     "clubCount": 6,
@@ -59022,7 +59022,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 2,
@@ -59092,7 +59092,7 @@
     "nat": "Sweden",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 4,
@@ -59106,10 +59106,10 @@
     "nat": "Cape Verde",
     "slot": "FW",
     "position": "wing half",
-    "club": "Nottingham Forest",
+    "club": "Le Havre AC",
     "clubId": "Q19490",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1990-01-08"
   },
   {
@@ -59134,10 +59134,10 @@
     "nat": "Turkey",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Fenerbahçe Istanbul",
+    "club": "Fenerbahçe",
     "clubId": "Q6601875",
     "country": "Turkey",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1989-03-01"
   },
   {
@@ -59148,7 +59148,7 @@
     "nat": "Denmark",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Everton",
+    "club": "FC Midtjylland",
     "clubId": "Q5794",
     "country": "United Kingdom",
     "clubCount": 5,
@@ -59414,10 +59414,10 @@
     "nat": "France",
     "slot": "FW",
     "position": "forward",
-    "club": "Borussia Mönchengladbach",
+    "club": "PSV",
     "clubId": "Q101959",
     "country": "Germany",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1993-03-10"
   },
   {
@@ -59582,10 +59582,10 @@
     "nat": "Serbia",
     "slot": "DF",
     "position": "defender",
-    "club": "Red Star Belgrade",
+    "club": "FC Krasnodar",
     "clubId": "Q220854",
     "country": "Russia",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1993-02-13"
   },
   {
@@ -59680,7 +59680,7 @@
     "nat": "Belgium",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Club Brugge K.V.",
+    "club": "Club Brugge",
     "clubId": "Q190916",
     "country": "Belgium",
     "clubCount": 1,
@@ -59694,10 +59694,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "centre-forward",
-    "club": "Middlesbrough F.C.",
+    "club": "Ipswich Town",
     "clubId": "Q18661",
     "country": "United Kingdom",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1995-10-09"
   },
   {
@@ -59708,10 +59708,10 @@
     "nat": "Algeria",
     "slot": "FW",
     "position": "forward",
-    "club": "West Ham",
+    "club": "OGC Nice",
     "clubId": "Q845137",
     "country": "France",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1995-08-10"
   },
   {
@@ -59722,7 +59722,7 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "defender",
-    "club": "PSV",
+    "club": "FC Augsburg",
     "clubId": "Q11938",
     "country": "Netherlands",
     "clubCount": 5,
@@ -59806,10 +59806,10 @@
     "nat": "Paraguay",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Corinthians",
+    "club": "S.C. Corinthians Paulista",
     "clubId": "Q35933",
     "country": "Brazil",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1991-08-23"
   },
   {
@@ -59904,7 +59904,7 @@
     "nat": "Netherlands",
     "slot": "MF",
     "position": "central midfielder",
-    "club": "PSV",
+    "club": "SBV Vitesse",
     "clubId": "Q11938",
     "country": "Netherlands",
     "clubCount": 2,
@@ -59988,10 +59988,10 @@
     "nat": "Paraguay",
     "slot": "FW",
     "position": "forward",
-    "club": "Real Betis",
+    "club": "Real Betis Balompié",
     "clubId": "Q12278",
     "country": "Spain",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1996-03-04"
   },
   {
@@ -60100,7 +60100,7 @@
     "nat": "Croatia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Dinamo Zagreb",
+    "club": "Cagliari Calcio",
     "clubId": "Q1900",
     "country": "Italy",
     "clubCount": 6,
@@ -60184,7 +60184,7 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "midfielder",
-    "club": "ACF Fiorentina",
+    "club": "River Plate",
     "clubId": "Q2052",
     "country": "Italy",
     "clubCount": 2,
@@ -60254,10 +60254,10 @@
     "nat": "Iceland",
     "slot": "MF",
     "position": "attacking midfielder",
-    "club": "Fiorentina",
+    "club": "Lazio",
     "clubId": "Q191264",
     "country": "Netherlands",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-06-15"
   },
   {
@@ -60268,7 +60268,7 @@
     "nat": "Nigeria",
     "slot": "FW",
     "position": "forward",
-    "club": "AS Roma",
+    "club": "Valencia",
     "clubId": "Q2739",
     "country": "Italy",
     "clubCount": 11,
@@ -60296,10 +60296,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Chelsea",
+    "club": "Tottenham Hotspur",
     "clubId": "Q18708",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-09-24"
   },
   {
@@ -60310,10 +60310,10 @@
     "nat": "Mali",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Tottenham Hotspur",
+    "club": "Ajax",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1996-08-30"
   },
   {
@@ -60352,10 +60352,10 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "defender",
-    "club": "Marseille",
+    "club": "Bayer Leverkusen",
     "clubId": "Q191843",
     "country": "France",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-05-28"
   },
   {
@@ -60380,10 +60380,10 @@
     "nat": "Uruguay",
     "slot": "DF",
     "position": "defender",
-    "club": "Flamengo",
+    "club": "AS Roma",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1997-11-09"
   },
   {
@@ -60408,10 +60408,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "defender",
-    "club": "Eintracht Frankfurt",
+    "club": "Roma",
     "clubId": "Q38245",
     "country": "Germany",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-08-20"
   },
   {
@@ -60562,10 +60562,10 @@
     "nat": "Poland",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Liverpool F.C. Reserves and Academy",
+    "club": "Juventus",
     "clubId": "Q2380229",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1999-01-08"
   },
   {
@@ -60576,10 +60576,10 @@
     "nat": "Colombia",
     "slot": "DF",
     "position": "defender",
-    "club": "Crystal Palace",
+    "club": "Nottingham Forest",
     "clubId": "Q216032",
     "country": "Belgium",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1996-05-25"
   },
   {
@@ -60590,10 +60590,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "centre-back",
-    "club": "AS Monaco",
+    "club": "Napoli",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-03-26"
   },
   {
@@ -60618,10 +60618,10 @@
     "nat": "Netherlands",
     "slot": "FW",
     "position": "forward",
-    "club": "West Ham",
+    "club": "West Ham United F.C.",
     "clubId": "Q18747",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-10-30"
   },
   {
@@ -60646,10 +60646,10 @@
     "nat": "Ecuador",
     "slot": "FW",
     "position": "midfielder",
-    "club": "Sporting CP",
+    "club": "Flamengo",
     "clubId": "Q75729",
     "country": "Portugal",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-11-01"
   },
   {
@@ -60702,10 +60702,10 @@
     "nat": "Wales",
     "slot": "FW",
     "position": "forward",
-    "club": "Crystal Palace",
+    "club": "Everton",
     "clubId": "Q19490",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2001-05-23"
   },
   {
@@ -60716,10 +60716,10 @@
     "nat": "Japan",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Urawa Red Diamonds",
+    "club": "Aston Villa",
     "clubId": "Q218883",
     "country": "Japan",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2002-08-21"
   },
   {
@@ -60982,10 +60982,10 @@
     "nat": "Mozambique",
     "slot": "DF",
     "position": "full-back",
-    "club": "AD Fafe",
+    "club": "Sunderland",
     "clubId": "Q290860",
     "country": "Portugal",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1994-01-21"
   },
   {
@@ -61010,10 +61010,10 @@
     "nat": "Morocco",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Real Betis",
+    "club": "Crystal Palace",
     "clubId": "Q7156",
     "country": "Spain",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2003-06-17"
   },
   {
@@ -61318,10 +61318,10 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Norwich City F.C.",
+    "club": "Wolves",
     "clubId": "Q18721",
     "country": "United Kingdom",
-    "clubCount": 14,
+    "clubCount": 15,
     "dob": "1986-10-24"
   },
   {
@@ -61500,7 +61500,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 12,
@@ -61556,10 +61556,10 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Hull City",
+    "club": "Manchester United",
     "clubId": "Q19477",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1994-03-23"
   },
   {
@@ -62214,7 +62214,7 @@
     "nat": "Serbia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 4,
@@ -63208,7 +63208,7 @@
     "nat": "Switzerland",
     "slot": "DF",
     "position": "full-back",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 5,
@@ -63488,10 +63488,10 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Real Betis",
+    "club": "Real Betis Balompié",
     "clubId": "Q8723",
     "country": "Spain",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1993-05-20"
   },
   {
@@ -63824,7 +63824,7 @@
     "nat": "Denmark",
     "slot": "DF",
     "position": "defender",
-    "club": "Ipswich Town",
+    "club": "Esbjerg fB",
     "clubId": "Q9653",
     "country": "United Kingdom",
     "clubCount": 3,
@@ -64230,7 +64230,7 @@
     "nat": "Ivory Coast",
     "slot": "FW",
     "position": "forward",
-    "club": "Olympique Lyonnais",
+    "club": "West Ham",
     "clubId": "Q704",
     "country": "France",
     "clubCount": 5,
@@ -64272,10 +64272,10 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "defender",
-    "club": "Aston Villa",
+    "club": "Parma",
     "clubId": "Q18711",
     "country": "United Kingdom",
-    "clubCount": 10,
+    "clubCount": 11,
     "dob": "1993-03-15"
   },
   {
@@ -64314,7 +64314,7 @@
     "nat": "Switzerland",
     "slot": "FW",
     "position": "wing half",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 4,
@@ -64356,10 +64356,10 @@
     "nat": "Portugal",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "C.D. Nacional",
+    "club": "Sporting CP",
     "clubId": "Q216459",
     "country": "Portugal",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1994-02-07"
   },
   {
@@ -64370,10 +64370,10 @@
     "nat": "Scotland",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Celtic",
+    "club": "Bournemouth",
     "clubId": "Q19593",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-02-22"
   },
   {
@@ -64387,7 +64387,7 @@
     "club": "Brentford",
     "clubId": "Q19571",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1993-09-06"
   },
   {
@@ -64552,10 +64552,10 @@
     "nat": "Portugal",
     "slot": "FW",
     "position": "winger",
-    "club": "Benfica",
+    "club": "PSV Eindhoven",
     "clubId": "Q11938",
     "country": "Netherlands",
-    "clubCount": 11,
+    "clubCount": 12,
     "dob": "1994-10-24"
   },
   {
@@ -64874,10 +64874,10 @@
     "nat": "Czechia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Fiorentina",
+    "club": "Udinese Calcio",
     "clubId": "Q2798",
     "country": "Italy",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1994-12-03"
   },
   {
@@ -64930,7 +64930,7 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "defender",
-    "club": "Bayer Leverkusen",
+    "club": "Manchester United",
     "clubId": "Q104761",
     "country": "Germany",
     "clubCount": 4,
@@ -64986,10 +64986,10 @@
     "nat": "Croatia",
     "slot": "DF",
     "position": "defender",
-    "club": "Bayern Munich",
+    "club": "Fiorentina",
     "clubId": "Q15789",
     "country": "Germany",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1997-09-11"
   },
   {
@@ -65000,10 +65000,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "defender",
-    "club": "Olympique de Marseille",
+    "club": "Aston Villa",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-11-23"
   },
   {
@@ -65210,10 +65210,10 @@
     "nat": "Bosnia and Herzegovina",
     "slot": "DF",
     "position": "full-back",
-    "club": "Benfica",
+    "club": "Newcastle United",
     "clubId": "Q994811",
     "country": "Austria",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2002-08-18"
   },
   {
@@ -65297,7 +65297,7 @@
     "club": "AC Milan",
     "clubId": "Q1543",
     "country": "Italy",
-    "clubCount": 1,
+    "clubCount": 3,
     "dob": "2001-10-11"
   },
   {
@@ -65322,10 +65322,10 @@
     "nat": "Tunisia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Manchester United",
+    "club": "Burnley",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2003-01-21"
   },
   {
@@ -65336,10 +65336,10 @@
     "nat": "Curaçao",
     "slot": "FW",
     "position": "forward",
-    "club": "Brighton",
+    "club": "Jong PSV",
     "clubId": "Q19453",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1993-11-07"
   },
   {
@@ -65392,7 +65392,7 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Liverpool",
+    "club": "Tottenham Hotspur",
     "clubId": "Q18723",
     "country": "United Kingdom",
     "clubCount": 8,
@@ -65406,7 +65406,7 @@
     "nat": "Serbia",
     "slot": "DF",
     "position": "full-back",
-    "club": "Anderlecht",
+    "club": "R.S.C. Anderlecht",
     "clubId": "Q187528",
     "country": "Belgium",
     "clubCount": 5,
@@ -65714,10 +65714,10 @@
     "nat": "Croatia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Ajax",
+    "club": "Dinamo Zagreb",
     "clubId": "Q81888",
     "country": "Netherlands",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-02-10"
   },
   {
@@ -65728,10 +65728,10 @@
     "nat": "Poland",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Lech Poznań",
+    "club": "Feyenoord",
     "clubId": "Q52942",
     "country": "Poland",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-04-07"
   },
   {
@@ -65787,7 +65787,7 @@
     "club": "Chelsea",
     "clubId": "Q10467",
     "country": "Spain",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2006-01-04"
   },
   {
@@ -65994,7 +65994,7 @@
     "nat": "Switzerland",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 2,
@@ -66036,10 +66036,10 @@
     "nat": "DR Congo",
     "slot": "FW",
     "position": "forward",
-    "club": "Bournemouth",
+    "club": "Arsenal",
     "clubId": "Q19568",
     "country": "United Kingdom",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1993-02-12"
   },
   {
@@ -66638,7 +66638,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 5,
@@ -67520,7 +67520,7 @@
     "nat": "Albania",
     "slot": "DF",
     "position": "defender",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 8,
@@ -67534,7 +67534,7 @@
     "nat": "Germany",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Borussia Dortmund",
+    "club": "SC Freiburg",
     "clubId": "Q41420",
     "country": "Germany",
     "clubCount": 3,
@@ -67576,7 +67576,7 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Brighton",
+    "club": "Manchester United",
     "clubId": "Q18656",
     "country": "United Kingdom",
     "clubCount": 2,
@@ -67688,10 +67688,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "defender",
-    "club": "FC Metz",
+    "club": "Olympique Lyonnais",
     "clubId": "Q221525",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-03-08"
   },
   {
@@ -67702,10 +67702,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Birmingham City F.C.",
+    "club": "Torino",
     "clubId": "Q19444",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1996-07-13"
   },
   {
@@ -68276,10 +68276,10 @@
     "nat": "Norway",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Molde FK",
+    "club": "Benfica",
     "clubId": "Q208552",
     "country": "Norway",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-12-10"
   },
   {
@@ -68293,7 +68293,7 @@
     "club": "Rangers",
     "clubId": "Q19597",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1992-11-10"
   },
   {
@@ -68304,10 +68304,10 @@
     "nat": "Wales",
     "slot": "DF",
     "position": "defender",
-    "club": "Swansea City A.F.C.",
+    "club": "Burnley",
     "clubId": "Q18659",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-09-23"
   },
   {
@@ -68360,7 +68360,7 @@
     "nat": "Germany",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Napoli",
+    "club": "RB Leipzig",
     "clubId": "Q2641",
     "country": "Italy",
     "clubCount": 4,
@@ -68528,7 +68528,7 @@
     "nat": "France",
     "slot": "DF",
     "position": "full-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 8,
@@ -68615,7 +68615,7 @@
     "club": "Manchester United",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1997-02-02"
   },
   {
@@ -68640,10 +68640,10 @@
     "nat": "Austria",
     "slot": "DF",
     "position": "defender",
-    "club": "SK Rapid Wien",
+    "club": "Schalke 04",
     "clubId": "Q131215",
     "country": "Austria",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1998-02-04"
   },
   {
@@ -68696,10 +68696,10 @@
     "nat": "Denmark",
     "slot": "FW",
     "position": "winger",
-    "club": "VfB Stuttgart",
+    "club": "Burnley",
     "clubId": "Q4512",
     "country": "Germany",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1998-09-19"
   },
   {
@@ -68724,10 +68724,10 @@
     "nat": "Colombia",
     "slot": "FW",
     "position": "wing half",
-    "club": "Watford F.C.",
+    "club": "Real Betis",
     "clubId": "Q2714",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1999-04-22"
   },
   {
@@ -68766,10 +68766,10 @@
     "nat": "Netherlands",
     "slot": "MF",
     "position": "midfielder",
-    "club": "PSV",
+    "club": "Borussia Dortmund",
     "clubId": "Q11938",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1998-11-19"
   },
   {
@@ -68808,10 +68808,10 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Watford F.C.",
+    "club": "Sporting CP",
     "clubId": "Q2714",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1997-12-02"
   },
   {
@@ -68850,7 +68850,7 @@
     "nat": "Switzerland",
     "slot": "DF",
     "position": "defender",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 3,
@@ -69035,7 +69035,7 @@
     "club": "Hamburger SV",
     "clubId": "Q51974",
     "country": "Germany",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-01-06"
   },
   {
@@ -69046,10 +69046,10 @@
     "nat": "Paraguay",
     "slot": "DF",
     "position": "defender",
-    "club": "Club de Gimnasia y Esgrima La Plata",
+    "club": "Sunderland",
     "clubId": "Q18640",
     "country": "Argentina",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1996-12-26"
   },
   {
@@ -69091,7 +69091,7 @@
     "club": "Burnley",
     "clubId": "Q19458",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "2000-09-04"
   },
   {
@@ -69102,10 +69102,10 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "defender",
-    "club": "Barcelona",
+    "club": "Real Betis",
     "clubId": "Q7156",
     "country": "Spain",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1996-08-22"
   },
   {
@@ -69116,10 +69116,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "full-back",
-    "club": "Wolverhampton Wanderers F.C.",
+    "club": "Manchester City",
     "clubId": "Q19500",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-06-06"
   },
   {
@@ -69144,10 +69144,10 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Lazio",
+    "club": "SS Lazio",
     "clubId": "Q2280399",
     "country": "Brazil",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1998-11-23"
   },
   {
@@ -69186,7 +69186,7 @@
     "nat": "Turkey",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Galatasaray S.K.",
+    "club": "Galatasaray",
     "clubId": "Q495299",
     "country": "Turkey",
     "clubCount": 3,
@@ -69354,7 +69354,7 @@
     "nat": "Equatorial Guinea",
     "slot": "MF",
     "position": "midfielder",
-    "club": "West Ham",
+    "club": "U.C. Sampdoria",
     "clubId": "Q18747",
     "country": "United Kingdom",
     "clubCount": 3,
@@ -69564,10 +69564,10 @@
     "nat": "Albania",
     "slot": "DF",
     "position": "defender",
-    "club": "Roma",
+    "club": "AS Roma",
     "clubId": "Q8639",
     "country": "Italy",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2000-02-08"
   },
   {
@@ -69578,10 +69578,10 @@
     "nat": "Belgium",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Benfica",
+    "club": "Roma",
     "clubId": "Q131499",
     "country": "Portugal",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-08-27"
   },
   {
@@ -69788,10 +69788,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Atlético Madrid",
+    "club": "Club Atlético River Plate",
     "clubId": "Q8701",
     "country": "Spain",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1993-05-21"
   },
   {
@@ -69886,10 +69886,10 @@
     "nat": "Brazil",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Marseille",
+    "club": "Cruzeiro E.C.",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1993-02-16"
   },
   {
@@ -70026,10 +70026,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "defender",
-    "club": "Tottenham Hotspur",
+    "club": "Bournemouth",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1991-04-29"
   },
   {
@@ -70124,10 +70124,10 @@
     "nat": "Australia",
     "slot": "FW",
     "position": "forward",
-    "club": "Bayern Munich",
+    "club": "Sporting CP",
     "clubId": "Q15789",
     "country": "Germany",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2006-02-09"
   },
   {
@@ -70180,10 +70180,10 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "full-back",
-    "club": "Ajax",
+    "club": "Fulham",
     "clubId": "Q81888",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1995-10-09"
   },
   {
@@ -70264,10 +70264,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "CR Vasco da Gama",
+    "club": "Bournemouth",
     "clubId": "Q5014111",
     "country": "Brazil",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2006-08-03"
   },
   {
@@ -70390,7 +70390,7 @@
     "nat": "Brazil",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 3,
@@ -70656,7 +70656,7 @@
     "nat": "England",
     "slot": "FW",
     "position": "wing half",
-    "club": "Brentford",
+    "club": "Chelsea",
     "clubId": "Q19571",
     "country": "United Kingdom",
     "clubCount": 7,
@@ -71538,7 +71538,7 @@
     "nat": "Australia",
     "slot": "FW",
     "position": "wing half",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 2,
@@ -71622,7 +71622,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 5,
@@ -72224,7 +72224,7 @@
     "nat": "Senegal",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 4,
@@ -72350,10 +72350,10 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Juventus",
+    "club": "Torino",
     "clubId": "Q1422",
     "country": "Italy",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1997-06-29"
   },
   {
@@ -72364,7 +72364,7 @@
     "nat": "Iran",
     "slot": "DF",
     "position": "defender",
-    "club": "Trabzonspor",
+    "club": "Esteghlal F.C.",
     "clubId": "Q864754",
     "country": "Iran",
     "clubCount": 4,
@@ -73106,10 +73106,10 @@
     "nat": "Turkey",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Trabzonspor",
+    "club": "Galatasaray",
     "clubId": "Q192641",
     "country": "Turkey",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-04-05"
   },
   {
@@ -73148,7 +73148,7 @@
     "nat": "Senegal",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Anderlecht",
+    "club": "R.S.C. Anderlecht",
     "clubId": "Q187528",
     "country": "Belgium",
     "clubCount": 4,
@@ -73400,7 +73400,7 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "full-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 8,
@@ -73585,7 +73585,7 @@
     "club": "Sevilla",
     "clubId": "Q10329",
     "country": "Spain",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1997-06-18"
   },
   {
@@ -73666,10 +73666,10 @@
     "nat": "Scotland",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Ayr United F.C.",
+    "club": "Dinamo Zagreb",
     "clubId": "Q793241",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1996-11-12"
   },
   {
@@ -73736,10 +73736,10 @@
     "nat": "Ivory Coast",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Toulouse FC",
+    "club": "Nottingham Forest",
     "clubId": "Q19518",
     "country": "France",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-12-02"
   },
   {
@@ -73764,7 +73764,7 @@
     "nat": "Croatia",
     "slot": "DF",
     "position": "defender",
-    "club": "Rangers",
+    "club": "Schalke 04",
     "clubId": "Q19597",
     "country": "United Kingdom",
     "clubCount": 7,
@@ -73778,10 +73778,10 @@
     "nat": "Croatia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "NK Lokomotiva",
+    "club": "Dinamo Zagreb",
     "clubId": "Q959086",
     "country": "Croatia",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1998-11-26"
   },
   {
@@ -73834,7 +73834,7 @@
     "nat": "Albania",
     "slot": "DF",
     "position": "centre-back",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 11,
@@ -74170,10 +74170,10 @@
     "nat": "France",
     "slot": "FW",
     "position": "wing half",
-    "club": "OGC Nice",
+    "club": "Marseille",
     "clubId": "Q185163",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-08-14"
   },
   {
@@ -74421,10 +74421,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Bayer Leverkusen",
+    "club": "Bournemouth",
     "clubId": "Q104761",
     "country": "Germany",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-05-10"
   },
   {
@@ -74561,7 +74561,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 6,
@@ -74589,10 +74589,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Real Betis",
+    "club": "Real Sociedad",
     "clubId": "Q10315",
     "country": "Spain",
-    "clubCount": 12,
+    "clubCount": 13,
     "dob": "1991-11-23"
   },
   {
@@ -74659,10 +74659,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "defender",
-    "club": "Tottenham Hotspur",
+    "club": "West Ham",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1997-04-13"
   },
   {
@@ -74676,7 +74676,7 @@
     "club": "Bayern Munich",
     "clubId": "Q15789",
     "country": "Germany",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-08-16"
   },
   {
@@ -74701,10 +74701,10 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Lille OSC",
+    "club": "Marseille",
     "clubId": "Q19516",
     "country": "France",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-08-31"
   },
   {
@@ -74743,10 +74743,10 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "full-back",
-    "club": "Granada CF",
+    "club": "Torino",
     "clubId": "Q8812",
     "country": "Spain",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1992-09-01"
   },
   {
@@ -74855,10 +74855,10 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "full-back",
-    "club": "AS Monaco",
+    "club": "Galatasaray",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-08-17"
   },
   {
@@ -74869,10 +74869,10 @@
     "nat": "Ivory Coast",
     "slot": "DF",
     "position": "defender",
-    "club": "AS Monaco",
+    "club": "Galatasaray",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-12-25"
   },
   {
@@ -74883,10 +74883,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "defender",
-    "club": "Stade Rennais F.C.",
+    "club": "Bayer Leverkusen",
     "clubId": "Q19509",
     "country": "France",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-04-11"
   },
   {
@@ -74897,10 +74897,10 @@
     "nat": "United Kingdom",
     "slot": "DF",
     "position": "defender",
-    "club": "Rangers",
+    "club": "Torino",
     "clubId": "Q19597",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-10-16"
   },
   {
@@ -74939,7 +74939,7 @@
     "nat": "Egypt",
     "slot": "DF",
     "position": "midfielder",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 4,
@@ -75093,10 +75093,10 @@
     "nat": "Slovakia",
     "slot": "DF",
     "position": "defender",
-    "club": "Roma",
+    "club": "AS Roma",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1992-07-03"
   },
   {
@@ -75121,7 +75121,7 @@
     "nat": "Slovenia",
     "slot": "FW",
     "position": "forward",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 5,
@@ -75275,10 +75275,10 @@
     "nat": "Senegal",
     "slot": "FW",
     "position": "forward",
-    "club": "Newcastle United",
+    "club": "FC Girondins de Bordeaux",
     "clubId": "Q18716",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1990-10-26"
   },
   {
@@ -75359,10 +75359,10 @@
     "nat": "Ghana A'",
     "slot": "FW",
     "position": "forward",
-    "club": "Leicester City F.C.",
+    "club": "Ipswich Town",
     "clubId": "Q19481",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2004-03-08"
   },
   {
@@ -75415,7 +75415,7 @@
     "nat": "Scotland",
     "slot": "FW",
     "position": "forward",
-    "club": "Liverpool",
+    "club": "Bournemouth",
     "clubId": "Q1130849",
     "country": "United Kingdom",
     "clubCount": 4,
@@ -75586,7 +75586,7 @@
     "club": "Rangers",
     "clubId": "Q19597",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 7,
     "dob": "1995-10-28"
   },
   {
@@ -75597,7 +75597,7 @@
     "nat": "Portugal",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Liverpool",
+    "club": "Sporting CP",
     "clubId": "Q1130849",
     "country": "United Kingdom",
     "clubCount": 7,
@@ -77067,7 +77067,7 @@
     "nat": "Romania",
     "slot": "FW",
     "position": "wing half",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -77627,10 +77627,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Newcastle United",
+    "club": "Wolves",
     "clubId": "Q18716",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1997-02-10"
   },
   {
@@ -77669,10 +77669,10 @@
     "nat": "Portugal",
     "slot": "FW",
     "position": "forward",
-    "club": "Porto",
+    "club": "FC Porto B",
     "clubId": "Q5423714",
     "country": "Portugal",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1994-08-01"
   },
   {
@@ -77756,7 +77756,7 @@
     "club": "Aston Villa",
     "clubId": "Q81888",
     "country": "Netherlands",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-05-03"
   },
   {
@@ -77770,7 +77770,7 @@
     "club": "Sevilla",
     "clubId": "Q8780",
     "country": "Spain",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1994-07-06"
   },
   {
@@ -77882,7 +77882,7 @@
     "club": "Porto",
     "clubId": "Q5423714",
     "country": "Portugal",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1997-05-12"
   },
   {
@@ -77896,7 +77896,7 @@
     "club": "Inter Milan",
     "clubId": "Q631",
     "country": "Italy",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1990-01-06"
   },
   {
@@ -78330,7 +78330,7 @@
     "club": "Porto",
     "clubId": "Q128446",
     "country": "Portugal",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1991-06-29"
   },
   {
@@ -78705,10 +78705,10 @@
     "nat": "Guinea",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Roma",
+    "club": "AS Roma",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-07-17"
   },
   {
@@ -79209,10 +79209,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "defender",
-    "club": "Leicester City F.C.",
+    "club": "Leeds United",
     "clubId": "Q19481",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1998-02-23"
   },
   {
@@ -79237,10 +79237,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "defender",
-    "club": "Olympique Lyonnais",
+    "club": "Valencia",
     "clubId": "Q704",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1996-12-19"
   },
   {
@@ -79377,10 +79377,10 @@
     "nat": "Ivory Coast",
     "slot": "DF",
     "position": "defender",
-    "club": "ASEC Mimosas",
+    "club": "Wolves",
     "clubId": "Q852266",
     "country": "Ivory Coast",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-12-27"
   },
   {
@@ -79839,10 +79839,10 @@
     "nat": "Brazil",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Napoli",
+    "club": "AC Milan",
     "clubId": "Q2641",
     "country": "Italy",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1992-09-27"
   },
   {
@@ -80063,10 +80063,10 @@
     "nat": "Italy",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Tottenham Hotspur",
+    "club": "Juventus",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1996-10-07"
   },
   {
@@ -80091,7 +80091,7 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Fluminense F.C.",
+    "club": "Flamengo",
     "clubId": "Q80987",
     "country": "Brazil",
     "clubCount": 2,
@@ -80147,10 +80147,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "winger",
-    "club": "Everton",
+    "club": "Crystal Palace",
     "clubId": "Q5794",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-11-22"
   },
   {
@@ -80189,10 +80189,10 @@
     "nat": "Uruguay",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Montevideo Wanderers Fútbol Club",
+    "club": "Sporting CP",
     "clubId": "Q872702",
     "country": "Uruguay",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-02-15"
   },
   {
@@ -80245,10 +80245,10 @@
     "nat": "Sweden",
     "slot": "FW",
     "position": "forward",
-    "club": "FC Nordsjælland",
+    "club": "Celtic",
     "clubId": "Q210025",
     "country": "Denmark",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-07-08"
   },
   {
@@ -80273,10 +80273,10 @@
     "nat": "United Kingdom",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Heart of Midlothian F.C.",
+    "club": "Brentford",
     "clubId": "Q202093",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2002-06-10"
   },
   {
@@ -80357,7 +80357,7 @@
     "nat": "Portugal",
     "slot": "FW",
     "position": "forward",
-    "club": "Wolverhampton Wanderers F.C.",
+    "club": "Borussia Dortmund",
     "clubId": "Q19500",
     "country": "United Kingdom",
     "clubCount": 7,
@@ -80371,7 +80371,7 @@
     "nat": "Ireland",
     "slot": "FW",
     "position": "forward",
-    "club": "Bohemian F.C.",
+    "club": "Brighton",
     "clubId": "Q212708",
     "country": "Ireland",
     "clubCount": 2,
@@ -81060,7 +81060,7 @@
     "club": "AC Milan",
     "clubId": "Q1543",
     "country": "Italy",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "2004-11-18"
   },
   {
@@ -81239,7 +81239,7 @@
     "nat": "Uruguay",
     "slot": "DF",
     "position": "defender",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 2,
@@ -81295,7 +81295,7 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "stopper",
-    "club": "Flamengo",
+    "club": "São Paulo FC",
     "clubId": "Q17479",
     "country": "Brazil",
     "clubCount": 2,
@@ -81351,7 +81351,7 @@
     "nat": "Senegal",
     "slot": "FW",
     "position": "wing half",
-    "club": "Everton",
+    "club": "US Ouakam",
     "clubId": "Q5794",
     "country": "United Kingdom",
     "clubCount": 7,
@@ -81407,10 +81407,10 @@
     "nat": "Colombia",
     "slot": "FW",
     "position": "centre-forward",
-    "club": "Palmeiras",
+    "club": "Sociedade Esportiva Palmeiras",
     "clubId": "Q80964",
     "country": "Brazil",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1993-01-26"
   },
   {
@@ -81421,7 +81421,7 @@
     "nat": "England",
     "slot": "DF",
     "position": "defender",
-    "club": "Brighton",
+    "club": "Brighton & Hove Albion F.C.",
     "clubId": "Q19604",
     "country": "United Kingdom",
     "clubCount": 3,
@@ -81575,7 +81575,7 @@
     "nat": "France",
     "slot": "FW",
     "position": "forward",
-    "club": "Saint-Étienne",
+    "club": "Paris Saint-Germain",
     "clubId": "Q19521",
     "country": "France",
     "clubCount": 5,
@@ -81631,10 +81631,10 @@
     "nat": "Norway",
     "slot": "DF",
     "position": "full-back",
-    "club": "Åsane Fotball",
+    "club": "Hamburger SV",
     "clubId": "Q217607",
     "country": "Norway",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2002-04-23"
   },
   {
@@ -81645,10 +81645,10 @@
     "nat": "France",
     "slot": "DF",
     "position": "defender",
-    "club": "Olympique Lyonnais",
+    "club": "RB Leipzig",
     "clubId": "Q704",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2002-12-17"
   },
   {
@@ -81659,10 +81659,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Roma",
+    "club": "AS Roma",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-07-02"
   },
   {
@@ -81687,10 +81687,10 @@
     "nat": "Burkina Faso",
     "slot": "FW",
     "position": "forward",
-    "club": "Bournemouth",
+    "club": "Brentford",
     "clubId": "Q19568",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2002-02-11"
   },
   {
@@ -81757,7 +81757,7 @@
     "nat": "Belgium",
     "slot": "FW",
     "position": "wing half",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 5,
@@ -81869,7 +81869,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 3,
@@ -81911,10 +81911,10 @@
     "nat": "Ivory Coast",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Sporting CP",
+    "club": "Nottingham Forest",
     "clubId": "Q75729",
     "country": "Portugal",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2003-12-04"
   },
   {
@@ -81953,7 +81953,7 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "full-back",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 6,
@@ -82261,7 +82261,7 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "full-back",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 10,
@@ -82751,10 +82751,10 @@
     "nat": "Turkey",
     "slot": "DF",
     "position": "defender",
-    "club": "Konyaspor",
+    "club": "Galatasaray",
     "clubId": "Q513840",
     "country": "Turkey",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1994-09-07"
   },
   {
@@ -82919,7 +82919,7 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "defender",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -83199,7 +83199,7 @@
     "nat": "Cameroon",
     "slot": "DF",
     "position": "defender",
-    "club": "Brighton",
+    "club": "Brighton & Hove Albion F.C.",
     "clubId": "Q19453",
     "country": "United Kingdom",
     "clubCount": 6,
@@ -83563,7 +83563,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 3,
@@ -83605,7 +83605,7 @@
     "nat": "France",
     "slot": "FW",
     "position": "forward",
-    "club": "Inter Milan",
+    "club": "Parma Calcio 1913",
     "clubId": "Q631",
     "country": "Italy",
     "clubCount": 6,
@@ -84014,7 +84014,7 @@
     "club": "Bournemouth",
     "clubId": "Q19568",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-06-11"
   },
   {
@@ -84109,10 +84109,10 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "defender",
-    "club": "Anderlecht",
+    "club": "Red Star Belgrade",
     "clubId": "Q191264",
     "country": "Netherlands",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-07-03"
   },
   {
@@ -84123,10 +84123,10 @@
     "nat": "Croatia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "NK Istra 1961",
+    "club": "Hajduk Split",
     "clubId": "Q725916",
     "country": "Croatia",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1995-02-01"
   },
   {
@@ -84417,7 +84417,7 @@
     "nat": "Morocco",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Benfica",
+    "club": "Standard Liège",
     "clubId": "Q131499",
     "country": "Portugal",
     "clubCount": 3,
@@ -85215,10 +85215,10 @@
     "nat": "Czech Republic",
     "slot": "FW",
     "position": "wing half",
-    "club": "Ajax",
+    "club": "Beşiktaş",
     "clubId": "Q81888",
     "country": "Netherlands",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1997-10-17"
   },
   {
@@ -85257,10 +85257,10 @@
     "nat": "United States men's",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Club Brugge",
+    "club": "Club Brugge K.V.",
     "clubId": "Q190916",
     "country": "Belgium",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1995-06-09"
   },
   {
@@ -85330,7 +85330,7 @@
     "club": "Olympique Lyonnais",
     "clubId": "Q704",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1997-04-29"
   },
   {
@@ -85607,7 +85607,7 @@
     "nat": "Sweden",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 9,
@@ -85803,10 +85803,10 @@
     "nat": "Colombia",
     "slot": "DF",
     "position": "defender",
-    "club": "Deportivo Cali",
+    "club": "Juventus",
     "clubId": "Q663400",
     "country": "Colombia",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1998-06-26"
   },
   {
@@ -85873,10 +85873,10 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "defender",
-    "club": "RCD Mallorca",
+    "club": "Valencia",
     "clubId": "Q8835",
     "country": "Spain",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1997-07-12"
   },
   {
@@ -85999,10 +85999,10 @@
     "nat": "Catalonia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Bayern Munich",
+    "club": "Real Betis",
     "clubId": "Q15789",
     "country": "Germany",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1996-11-26"
   },
   {
@@ -86125,10 +86125,10 @@
     "nat": "Sweden",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Halmstads BK",
+    "club": "Leeds United",
     "clubId": "Q584858",
     "country": "Sweden",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-04-29"
   },
   {
@@ -86545,7 +86545,7 @@
     "nat": "Italy",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 12,
@@ -86587,7 +86587,7 @@
     "nat": "Italy",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 6,
@@ -86937,10 +86937,10 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "defender",
-    "club": "Liverpool",
+    "club": "Brentford",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-12-20"
   },
   {
@@ -86993,10 +86993,10 @@
     "nat": "Portugal",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Fiorentina",
     "clubId": "Q10333",
     "country": "Spain",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1998-06-28"
   },
   {
@@ -87007,10 +87007,10 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "full-back",
-    "club": "AS Roma",
+    "club": "Lazio",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-03-07"
   },
   {
@@ -87077,7 +87077,7 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Manchester United",
+    "club": "Everton",
     "clubId": "Q18656",
     "country": "United Kingdom",
     "clubCount": 2,
@@ -87091,10 +87091,10 @@
     "nat": "Portugal",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Porto",
+    "club": "Hamburger SV",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2000-05-30"
   },
   {
@@ -87161,10 +87161,10 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "US Alessandria Calcio 1912",
+    "club": "Juventus",
     "clubId": "Q16348",
     "country": "Italy",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-02-20"
   },
   {
@@ -87329,7 +87329,7 @@
     "nat": "Portugal",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Galatasaray",
+    "club": "Galatasaray S.K.",
     "clubId": "Q495299",
     "country": "Turkey",
     "clubCount": 7,
@@ -87679,10 +87679,10 @@
     "nat": "Ecuador",
     "slot": "DF",
     "position": "defender",
-    "club": "Corinthians",
+    "club": "Santos Laguna",
     "clubId": "Q745246",
     "country": "Mexico",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-01-11"
   },
   {
@@ -87707,10 +87707,10 @@
     "nat": "England",
     "slot": "FW",
     "position": "forward",
-    "club": "Anderlecht",
+    "club": "Leeds United",
     "clubId": "Q187528",
     "country": "Belgium",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1998-12-14"
   },
   {
@@ -87875,7 +87875,7 @@
     "nat": "Serbia",
     "slot": "DF",
     "position": "defender",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 6,
@@ -87945,10 +87945,10 @@
     "nat": "Greece",
     "slot": "FW",
     "position": "forward",
-    "club": "PAOK FC",
+    "club": "Arsenal",
     "clubId": "Q204888",
     "country": "Greece",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2002-01-30"
   },
   {
@@ -87959,10 +87959,10 @@
     "nat": "Serbia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "FK Čukarički",
+    "club": "Bournemouth",
     "clubId": "Q213161",
     "country": "Serbia",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-10-08"
   },
   {
@@ -88029,7 +88029,7 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Marseille",
+    "club": "Manchester City",
     "clubId": "Q132885",
     "country": "France",
     "clubCount": 5,
@@ -88295,10 +88295,10 @@
     "nat": "Republic of Ireland",
     "slot": "DF",
     "position": "defender",
-    "club": "Hull City",
+    "club": "Fulham",
     "clubId": "Q19477",
     "country": "United Kingdom",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1992-09-30"
   },
   {
@@ -88673,10 +88673,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Manchester City",
+    "club": "Tottenham Hotspur",
     "clubId": "Q50602",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "2004-04-10"
   },
   {
@@ -88799,10 +88799,10 @@
     "nat": "South Korea",
     "slot": "FW",
     "position": "forward",
-    "club": "Nottingham Forest",
+    "club": "Seongnam FC",
     "clubId": "Q19628",
     "country": "Greece",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1992-08-28"
   },
   {
@@ -88830,7 +88830,7 @@
     "club": "Tottenham Hotspur",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 7,
     "dob": "1995-02-13"
   },
   {
@@ -88855,10 +88855,10 @@
     "nat": "Kosovo",
     "slot": "FW",
     "position": "forward",
-    "club": "RCD Mallorca",
+    "club": "Fenerbahçe",
     "clubId": "Q8835",
     "country": "Spain",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1994-04-24"
   },
   {
@@ -88925,10 +88925,10 @@
     "nat": "Morocco",
     "slot": "FW",
     "position": "forward",
-    "club": "Club Brugge",
+    "club": "Sunderland",
     "clubId": "Q190916",
     "country": "Belgium",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2005-05-09"
   },
   {
@@ -88939,7 +88939,7 @@
     "nat": "Belgium",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "K.R.C. Genk",
+    "club": "Chelsea",
     "clubId": "Q216032",
     "country": "Belgium",
     "clubCount": 4,
@@ -88967,10 +88967,10 @@
     "nat": "Belgium",
     "slot": "FW",
     "position": "forward",
-    "club": "Lille OSC",
+    "club": "Newcastle United",
     "clubId": "Q19516",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2005-02-03"
   },
   {
@@ -88981,10 +88981,10 @@
     "nat": "Colombia",
     "slot": "MF",
     "position": "central midfielder",
-    "club": "Benfica",
+    "club": "Sociedade Esportiva Palmeiras",
     "clubId": "Q80964",
     "country": "Brazil",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2000-06-02"
   },
   {
@@ -89387,7 +89387,7 @@
     "nat": "Italy",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 10,
@@ -90608,7 +90608,7 @@
     "club": "Rangers",
     "clubId": "Q19597",
     "country": "United Kingdom",
-    "clubCount": 11,
+    "clubCount": 12,
     "dob": "1991-10-31"
   },
   {
@@ -90815,7 +90815,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 4,
@@ -91081,7 +91081,7 @@
     "nat": "Argentina",
     "slot": "FW",
     "position": "wing half",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 13,
@@ -91095,7 +91095,7 @@
     "nat": "Catalonia",
     "slot": "DF",
     "position": "defender",
-    "club": "Beşiktaş",
+    "club": "Villarreal CF",
     "clubId": "Q12297",
     "country": "Spain",
     "clubCount": 6,
@@ -91263,7 +91263,7 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "full-back",
-    "club": "Everton",
+    "club": "RCD Espanyol de Barcelona",
     "clubId": "Q8780",
     "country": "Spain",
     "clubCount": 6,
@@ -92187,7 +92187,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Napoli",
+    "club": "US Sassuolo Calcio",
     "clubId": "Q2074",
     "country": "Italy",
     "clubCount": 11,
@@ -92481,10 +92481,10 @@
     "nat": "Turkey",
     "slot": "FW",
     "position": "forward",
-    "club": "Hannover 96",
+    "club": "Schalke 04",
     "clubId": "Q33748",
     "country": "Germany",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1994-03-05"
   },
   {
@@ -92509,10 +92509,10 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Fulham",
+    "club": "Manchester City",
     "clubId": "Q18708",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1992-05-24"
   },
   {
@@ -92579,7 +92579,7 @@
     "nat": "Argentina",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 10,
@@ -92803,7 +92803,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 7,
@@ -94119,10 +94119,10 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Villarreal CF",
+    "club": "Lazio",
     "clubId": "Q12297",
     "country": "Spain",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1996-04-09"
   },
   {
@@ -94203,7 +94203,7 @@
     "nat": "Switzerland",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 5,
@@ -94259,10 +94259,10 @@
     "nat": "Nigeria",
     "slot": "FW",
     "position": "forward",
-    "club": "Club Brugge",
+    "club": "Club Brugge K.V.",
     "clubId": "Q190916",
     "country": "Belgium",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-11-15"
   },
   {
@@ -94273,10 +94273,10 @@
     "nat": "Tanzania",
     "slot": "FW",
     "position": "forward",
-    "club": "Aston Villa",
+    "club": "TP Mazembe",
     "clubId": "Q216032",
     "country": "Belgium",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1992-12-23"
   },
   {
@@ -94315,7 +94315,7 @@
     "nat": "North Macedonia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Club Recreativo Granada",
+    "club": "Valencia",
     "clubId": "Q8964927",
     "country": "Spain",
     "clubCount": 7,
@@ -94539,10 +94539,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "RC Strasbourg Alsace",
+    "club": "Wolves",
     "clubId": "Q126334",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1998-06-27"
   },
   {
@@ -94654,7 +94654,7 @@
     "club": "Liverpool",
     "clubId": "Q1130849",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-10-15"
   },
   {
@@ -94665,10 +94665,10 @@
     "nat": "France",
     "slot": "FW",
     "position": "forward",
-    "club": "Olympique Lyonnais",
+    "club": "Bayer Leverkusen",
     "clubId": "Q704",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1997-03-04"
   },
   {
@@ -94693,10 +94693,10 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "AS Monaco",
+    "club": "Torino",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-03-17"
   },
   {
@@ -94735,10 +94735,10 @@
     "nat": "Israel",
     "slot": "DF",
     "position": "midfielder",
-    "club": "Tottenham Hotspur",
+    "club": "West Ham",
     "clubId": "Q172969",
     "country": "Ukraine",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1999-07-24"
   },
   {
@@ -94973,10 +94973,10 @@
     "nat": "Germany",
     "slot": "DF",
     "position": "defender",
-    "club": "1. FC Köln",
+    "club": "Inter Milan",
     "clubId": "Q104770",
     "country": "Germany",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-11-29"
   },
   {
@@ -95169,7 +95169,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 5,
@@ -95211,10 +95211,10 @@
     "nat": "France",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Leeds United",
+    "club": "Arsenal",
     "clubId": "Q1128631",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-03-02"
   },
   {
@@ -95225,10 +95225,10 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Juventus",
+    "club": "Fiorentina",
     "clubId": "Q1422",
     "country": "Italy",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-02-12"
   },
   {
@@ -95239,10 +95239,10 @@
     "nat": "United States men's",
     "slot": "DF",
     "position": "defender",
-    "club": "LA Galaxy",
+    "club": "Bournemouth",
     "clubId": "Q204357",
     "country": "United States",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-08-13"
   },
   {
@@ -95267,10 +95267,10 @@
     "nat": "Haiti",
     "slot": "FW",
     "position": "forward",
-    "club": "AS Monaco",
+    "club": "Sunderland",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-08-27"
   },
   {
@@ -95309,10 +95309,10 @@
     "nat": "Portugal",
     "slot": "DF",
     "position": "full-back",
-    "club": "Arsenal",
+    "club": "Lazio",
     "clubId": "Q9617",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-01-26"
   },
   {
@@ -95351,10 +95351,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Cruzeiro E.C.",
+    "club": "Palmeiras",
     "clubId": "Q188277",
     "country": "Brazil",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-06-22"
   },
   {
@@ -95365,10 +95365,10 @@
     "nat": "Austria",
     "slot": "DF",
     "position": "defender",
-    "club": "FC Liefering",
+    "club": "Fulham",
     "clubId": "Q1387293",
     "country": "Austria",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-03-19"
   },
   {
@@ -95547,10 +95547,10 @@
     "nat": "England",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Crystal Palace",
+    "club": "Reading F.C.",
     "clubId": "Q19467",
     "country": "United Kingdom",
-    "clubCount": 13,
+    "clubCount": 14,
     "dob": "1989-12-03"
   },
   {
@@ -96037,10 +96037,10 @@
     "nat": "Canada",
     "slot": "FW",
     "position": "forward",
-    "club": "Royale Union Saint-Gilloise",
+    "club": "Brighton",
     "clubId": "Q196160",
     "country": "Belgium",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-07-03"
   },
   {
@@ -96107,10 +96107,10 @@
     "nat": "France",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Chelsea",
+    "club": "Galatasaray",
     "clubId": "Q9616",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2004-03-26"
   },
   {
@@ -96180,7 +96180,7 @@
     "club": "Paris Saint-Germain",
     "clubId": "Q483020",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2006-12-29"
   },
   {
@@ -96191,10 +96191,10 @@
     "nat": "Canada",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Marseille",
+    "club": "Olympique de Marseille",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2002-06-16"
   },
   {
@@ -96555,7 +96555,7 @@
     "nat": "France",
     "slot": "FW",
     "position": "wing half",
-    "club": "Brighton",
+    "club": "Brighton & Hove Albion F.C.",
     "clubId": "Q19453",
     "country": "United Kingdom",
     "clubCount": 4,
@@ -97647,10 +97647,10 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Derby County F.C.",
+    "club": "Crystal Palace",
     "clubId": "Q19470",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1995-04-17"
   },
   {
@@ -97689,7 +97689,7 @@
     "nat": "Costa Rica",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Trabzonspor",
+    "club": "AZ Alkmaar",
     "clubId": "Q192641",
     "country": "Turkey",
     "clubCount": 3,
@@ -97871,7 +97871,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 4,
@@ -98109,7 +98109,7 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "full-back",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 8,
@@ -98207,7 +98207,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "forward",
-    "club": "Anderlecht",
+    "club": "AS Roma",
     "clubId": "Q187528",
     "country": "Belgium",
     "clubCount": 9,
@@ -98263,7 +98263,7 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 5,
@@ -99523,7 +99523,7 @@
     "nat": "Argentina",
     "slot": "FW",
     "position": "forward",
-    "club": "Club Atlético River Plate",
+    "club": "River Plate",
     "clubId": "Q15799",
     "country": "Argentina",
     "clubCount": 1,
@@ -99565,10 +99565,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Flamengo",
+    "club": "Corinthians",
     "clubId": "Q17479",
     "country": "Brazil",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1993-10-09"
   },
   {
@@ -99621,7 +99621,7 @@
     "nat": "Portugal",
     "slot": "DF",
     "position": "defender",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 2,
@@ -99649,10 +99649,10 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "defender",
-    "club": "Lazio",
+    "club": "SS Lazio",
     "clubId": "Q2609",
     "country": "Italy",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1994-03-06"
   },
   {
@@ -99803,7 +99803,7 @@
     "nat": "Montenegro",
     "slot": "FW",
     "position": "forward",
-    "club": "K.V. Kortrijk",
+    "club": "Lazio",
     "clubId": "Q618620",
     "country": "Belgium",
     "clubCount": 3,
@@ -99887,10 +99887,10 @@
     "nat": "Chile",
     "slot": "DF",
     "position": "defender",
-    "club": "Bologna F.C. 1909",
+    "club": "Flamengo",
     "clubId": "Q1893",
     "country": "Italy",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1994-01-15"
   },
   {
@@ -99999,10 +99999,10 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "defender",
-    "club": "Club Athletico Paranaense",
+    "club": "Flamengo",
     "clubId": "Q506832",
     "country": "Brazil",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-01-31"
   },
   {
@@ -100013,10 +100013,10 @@
     "nat": "Scotland",
     "slot": "FW",
     "position": "forward",
-    "club": "St. Mirren F.C.",
+    "club": "Rangers",
     "clubId": "Q319136",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1995-08-10"
   },
   {
@@ -100461,10 +100461,10 @@
     "nat": "Colombia",
     "slot": "FW",
     "position": "wing half",
-    "club": "Club Atlético River Plate",
+    "club": "Flamengo",
     "clubId": "Q15799",
     "country": "Argentina",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1998-05-25"
   },
   {
@@ -100503,10 +100503,10 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Sporting CP",
+    "club": "Atalanta BC",
     "clubId": "Q75729",
     "country": "Portugal",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1989-05-23"
   },
   {
@@ -100615,7 +100615,7 @@
     "nat": "Venezuela",
     "slot": "FW",
     "position": "forward",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 5,
@@ -101399,7 +101399,7 @@
     "nat": "Ghana",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 6,
@@ -101497,10 +101497,10 @@
     "nat": "England",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Lazio",
+    "club": "SS Lazio",
     "clubId": "Q2609",
     "country": "Italy",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1993-02-02"
   },
   {
@@ -101637,10 +101637,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "VfL Wolfsburg",
+    "club": "Flamengo",
     "clubId": "Q101859",
     "country": "Germany",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1990-12-30"
   },
   {
@@ -101738,7 +101738,7 @@
     "club": "Olympique Lyonnais",
     "clubId": "Q704",
     "country": "France",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1996-01-05"
   },
   {
@@ -101808,7 +101808,7 @@
     "club": "AS Monaco",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1996-07-07"
   },
   {
@@ -101819,10 +101819,10 @@
     "nat": "United States men's",
     "slot": "DF",
     "position": "defender",
-    "club": "Tottenham Hotspur",
+    "club": "Celtic",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1997-12-31"
   },
   {
@@ -101875,7 +101875,7 @@
     "nat": "Serbia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 4,
@@ -101959,10 +101959,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "River Plate",
+    "club": "Club Atlético River Plate",
     "clubId": "Q15799",
     "country": "Argentina",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1993-04-02"
   },
   {
@@ -102057,10 +102057,10 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "wing half",
-    "club": "Aston Villa",
+    "club": "New England Revolution",
     "clubId": "Q18711",
     "country": "United Kingdom",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1992-11-22"
   },
   {
@@ -102466,7 +102466,7 @@
     "club": "Fulham",
     "clubId": "Q19500",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1993-10-18"
   },
   {
@@ -102533,10 +102533,10 @@
     "nat": "Bosnia and Herzegovina",
     "slot": "DF",
     "position": "defender",
-    "club": "FC Rostov",
+    "club": "Hajduk Split",
     "clubId": "Q182930",
     "country": "Russia",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1998-07-09"
   },
   {
@@ -102701,10 +102701,10 @@
     "nat": "Romania",
     "slot": "FW",
     "position": "forward",
-    "club": "Trabzonspor",
+    "club": "Standard Liège",
     "clubId": "Q190561",
     "country": "Belgium",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1999-07-06"
   },
   {
@@ -102757,10 +102757,10 @@
     "nat": "Burkina Faso",
     "slot": "FW",
     "position": "forward",
-    "club": "Ajax",
+    "club": "FC Shakhtar Donetsk",
     "clubId": "Q81888",
     "country": "Netherlands",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-01-12"
   },
   {
@@ -102995,10 +102995,10 @@
     "nat": "Panama",
     "slot": "FW",
     "position": "wing half",
-    "club": "Red Star Belgrade",
+    "club": "FC Juárez",
     "clubId": "Q173009",
     "country": "Serbia",
-    "clubCount": 9,
+    "clubCount": 10,
     "dob": "1998-06-19"
   },
   {
@@ -103009,10 +103009,10 @@
     "nat": "Japan",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Kawasaki Frontale",
+    "club": "Burnley",
     "clubId": "Q874016",
     "country": "Japan",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1997-11-21"
   },
   {
@@ -103023,10 +103023,10 @@
     "nat": "Belgium",
     "slot": "DF",
     "position": "defender",
-    "club": "R.S.C. Anderlecht",
+    "club": "Hamburger SV",
     "clubId": "Q187528",
     "country": "Belgium",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-03-22"
   },
   {
@@ -103121,10 +103121,10 @@
     "nat": "Republic of Ireland",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Burnley",
+    "club": "Brentford",
     "clubId": "Q19458",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2001-04-30"
   },
   {
@@ -103191,10 +103191,10 @@
     "nat": "Morocco",
     "slot": "DF",
     "position": "defender",
-    "club": "Roma",
+    "club": "AS Roma",
     "clubId": "Q2739",
     "country": "Italy",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2002-01-18"
   },
   {
@@ -103219,10 +103219,10 @@
     "nat": "Denmark",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Brøndby IF",
+    "club": "West Ham",
     "clubId": "Q211906",
     "country": "Denmark",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-07-11"
   },
   {
@@ -103261,10 +103261,10 @@
     "nat": "Brazil",
     "slot": "DF",
     "position": "defender",
-    "club": "Club Athletico Paranaense",
+    "club": "Olympique Lyonnais",
     "clubId": "Q506832",
     "country": "Brazil",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-05-27"
   },
   {
@@ -103667,7 +103667,7 @@
     "nat": "Denmark",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Hertha BSC",
+    "club": "Fiorentina",
     "clubId": "Q102720",
     "country": "Germany",
     "clubCount": 3,
@@ -103723,10 +103723,10 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "defender",
-    "club": "Marseille",
+    "club": "Roma",
     "clubId": "Q41420",
     "country": "Germany",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1999-01-26"
   },
   {
@@ -103793,10 +103793,10 @@
     "nat": "Poland",
     "slot": "FW",
     "position": "midfielder",
-    "club": "Lech Poznań",
+    "club": "Benfica",
     "clubId": "Q52942",
     "country": "Poland",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2002-06-05"
   },
   {
@@ -104157,7 +104157,7 @@
     "nat": "Senegal",
     "slot": "DF",
     "position": "full-back",
-    "club": "Crystal Palace",
+    "club": "Lille OSC",
     "clubId": "Q19467",
     "country": "United Kingdom",
     "clubCount": 4,
@@ -108525,10 +108525,10 @@
     "nat": "Scotland",
     "slot": "FW",
     "position": "forward",
-    "club": "Swansea City A.F.C.",
+    "club": "Hull City",
     "clubId": "Q18659",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1996-06-04"
   },
   {
@@ -108707,7 +108707,7 @@
     "nat": "Brazil",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 4,
@@ -109015,10 +109015,10 @@
     "nat": "France",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "AS Monaco",
+    "club": "Fulham",
     "clubId": "Q180305",
     "country": "Monaco",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1991-04-26"
   },
   {
@@ -109197,7 +109197,7 @@
     "nat": "Spain",
     "slot": "DF",
     "position": "defender",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 5,
@@ -109323,7 +109323,7 @@
     "nat": "Italy",
     "slot": "FW",
     "position": "wing half",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 3,
@@ -109617,7 +109617,7 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 2,
@@ -110471,10 +110471,10 @@
     "nat": "Scotland",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Heart of Midlothian F.C.",
+    "club": "Rangers",
     "clubId": "Q202093",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-09-25"
   },
   {
@@ -110891,10 +110891,10 @@
     "nat": "England",
     "slot": "DF",
     "position": "centre-back",
-    "club": "Ipswich Town",
+    "club": "Rangers",
     "clubId": "Q5794",
     "country": "United Kingdom",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1998-01-15"
   },
   {
@@ -110905,10 +110905,10 @@
     "nat": "Ivory Coast",
     "slot": "MF",
     "position": "midfielder",
-    "club": "US Sassuolo Calcio",
+    "club": "Juventus",
     "clubId": "Q8603",
     "country": "Italy",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-01-03"
   },
   {
@@ -111017,10 +111017,10 @@
     "nat": "Bosnia and Herzegovina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Hull City",
+    "club": "Konyaspor",
     "clubId": "Q513840",
     "country": "Turkey",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "1997-03-08"
   },
   {
@@ -111034,7 +111034,7 @@
     "club": "Porto",
     "clubId": "Q5423714",
     "country": "Portugal",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1997-01-01"
   },
   {
@@ -111045,7 +111045,7 @@
     "nat": "Switzerland",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Basel",
+    "club": "Basel",
     "clubId": "Q189671",
     "country": "Switzerland",
     "clubCount": 3,
@@ -111339,10 +111339,10 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "AC Milan",
+    "club": "Torino",
     "clubId": "Q1543",
     "country": "Italy",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1992-07-12"
   },
   {
@@ -111913,10 +111913,10 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "defender",
-    "club": "AZ Alkmaar",
+    "club": "Ajax",
     "clubId": "Q191264",
     "country": "Netherlands",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1999-11-28"
   },
   {
@@ -112053,10 +112053,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Bayer Leverkusen",
+    "club": "Palmeiras",
     "clubId": "Q104761",
     "country": "Germany",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-07-15"
   },
   {
@@ -112067,10 +112067,10 @@
     "nat": "Kosovo",
     "slot": "FW",
     "position": "winger",
-    "club": "K.R.C. Genk",
+    "club": "Juventus",
     "clubId": "Q216032",
     "country": "Belgium",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-03-31"
   },
   {
@@ -112431,10 +112431,10 @@
     "nat": "Turkey",
     "slot": "FW",
     "position": "forward",
-    "club": "Brentford",
+    "club": "Sparta Rotterdam",
     "clubId": "Q209895",
     "country": "Netherlands",
-    "clubCount": 3,
+    "clubCount": 5,
     "dob": "1999-12-08"
   },
   {
@@ -112473,10 +112473,10 @@
     "nat": "Slovakia",
     "slot": "FW",
     "position": "forward",
-    "club": "Feyenoord",
+    "club": "Feyenoord Rotterdam",
     "clubId": "Q134241",
     "country": "Netherlands",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-11-18"
   },
   {
@@ -112543,10 +112543,10 @@
     "nat": "Nigeria",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Midtjylland",
+    "club": "Coventry City",
     "clubId": "Q618520",
     "country": "Denmark",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1998-01-01"
   },
   {
@@ -112571,10 +112571,10 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Manchester City",
+    "club": "Parma",
     "clubId": "Q50602",
     "country": "United Kingdom",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2001-05-26"
   },
   {
@@ -112599,10 +112599,10 @@
     "nat": "Egypt",
     "slot": "FW",
     "position": "forward",
-    "club": "Villarreal CF B",
+    "club": "Celtic",
     "clubId": "Q1094113",
     "country": "Spain",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2002-02-08"
   },
   {
@@ -112613,10 +112613,10 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Korona Kielce",
+    "club": "Sporting CP",
     "clubId": "Q730219",
     "country": "Poland",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-08-12"
   },
   {
@@ -112683,10 +112683,10 @@
     "nat": "Republic of Ireland",
     "slot": "FW",
     "position": "forward",
-    "club": "Tottenham Hotspur",
+    "club": "Real Betis",
     "clubId": "Q18741",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2002-02-04"
   },
   {
@@ -113481,10 +113481,10 @@
     "nat": "Mali",
     "slot": "MF",
     "position": "midfielder",
-    "club": "R.C. Lens",
+    "club": "Crystal Palace",
     "clubId": "Q191843",
     "country": "France",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-01-08"
   },
   {
@@ -113607,10 +113607,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Racing Club",
+    "club": "Everton",
     "clubId": "Q276533",
     "country": "Argentina",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2002-11-30"
   },
   {
@@ -113747,10 +113747,10 @@
     "nat": "Cameroon",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Brighton",
+    "club": "Manchester United",
     "clubId": "Q19453",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2004-01-03"
   },
   {
@@ -113761,7 +113761,7 @@
     "nat": "United Kingdom",
     "slot": "FW",
     "position": "midfielder",
-    "club": "Southampton F.C.",
+    "club": "Bayer Leverkusen",
     "clubId": "Q18732",
     "country": "United Kingdom",
     "clubCount": 2,
@@ -113775,7 +113775,7 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Real Madrid Castilla",
+    "club": "Real Betis",
     "clubId": "Q12217",
     "country": "Spain",
     "clubCount": 5,
@@ -113831,10 +113831,10 @@
     "nat": "United States",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Seattle Sounders FC",
+    "club": "Atlético Madrid",
     "clubId": "Q632511",
     "country": "United States",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2005-08-05"
   },
   {
@@ -113845,10 +113845,10 @@
     "nat": "Morocco",
     "slot": "FW",
     "position": "forward",
-    "club": "K.R.C. Genk",
+    "club": "Hamburger SV",
     "clubId": "Q216032",
     "country": "Belgium",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-12-31"
   },
   {
@@ -113873,7 +113873,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 1,
@@ -114237,10 +114237,10 @@
     "nat": "Ghana",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Nordsjælland",
+    "club": "Coventry City",
     "clubId": "Q210025",
     "country": "Denmark",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2006-01-15"
   },
   {
@@ -114573,7 +114573,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 5,
@@ -116183,7 +116183,7 @@
     "nat": "Turkey",
     "slot": "FW",
     "position": "wing half",
-    "club": "Beşiktaş",
+    "club": "Hamburger SV",
     "clubId": "Q172567",
     "country": "Turkey",
     "clubCount": 3,
@@ -116550,7 +116550,7 @@
     "club": "Crystal Palace",
     "clubId": "Q19467",
     "country": "United Kingdom",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1988-04-26"
   },
   {
@@ -116939,7 +116939,7 @@
     "nat": "Belgium",
     "slot": "MF",
     "position": "midfielder",
-    "club": "PSV",
+    "club": "Club Brugge K.V.",
     "clubId": "Q283760",
     "country": "Qatar",
     "clubCount": 7,
@@ -118437,7 +118437,7 @@
     "nat": "Italy",
     "slot": "DF",
     "position": "defender",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 6,
@@ -119529,10 +119529,10 @@
     "nat": "Italy",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Napoli",
+    "club": "Udinese Calcio",
     "clubId": "Q1120838",
     "country": "Italy",
-    "clubCount": 8,
+    "clubCount": 9,
     "dob": "1996-05-31"
   },
   {
@@ -119571,10 +119571,10 @@
     "nat": "Brazil",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Flamengo",
+    "club": "Clube de Regatas do Flamengo",
     "clubId": "Q17479",
     "country": "Brazil",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1989-11-10"
   },
   {
@@ -119686,7 +119686,7 @@
     "club": "Porto",
     "clubId": "Q128446",
     "country": "Portugal",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1991-04-14"
   },
   {
@@ -120495,7 +120495,7 @@
     "nat": "Italy",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 9,
@@ -120901,10 +120901,10 @@
     "nat": "Spain",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Galatasaray",
+    "club": "Real Madrid",
     "clubId": "Q495299",
     "country": "Turkey",
-    "clubCount": 4,
+    "clubCount": 5,
     "dob": "1994-12-16"
   },
   {
@@ -122147,7 +122147,7 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "forward",
-    "club": "Valencia CF",
+    "club": "Valencia",
     "clubId": "Q10333",
     "country": "Spain",
     "clubCount": 10,
@@ -122192,7 +122192,7 @@
     "club": "Manchester United",
     "clubId": "Q18656",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1996-06-28"
   },
   {
@@ -122399,10 +122399,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Hertha BSC",
+    "club": "Boca Juniors",
     "clubId": "Q102720",
     "country": "Germany",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1997-02-25"
   },
   {
@@ -122623,10 +122623,10 @@
     "nat": "Norway",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Galatasaray",
+    "club": "Molde FK",
     "clubId": "Q495299",
     "country": "Turkey",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "1991-09-20"
   },
   {
@@ -122819,10 +122819,10 @@
     "nat": "Ukraine",
     "slot": "DF",
     "position": "full-back",
-    "club": "Club Brugge",
+    "club": "Club Brugge K.V.",
     "clubId": "Q207462",
     "country": "Ukraine",
-    "clubCount": 7,
+    "clubCount": 8,
     "dob": "1995-04-20"
   },
   {
@@ -123449,7 +123449,7 @@
     "nat": "Netherlands",
     "slot": "DF",
     "position": "centre-back",
-    "club": "SBV Vitesse",
+    "club": "PSV",
     "clubId": "Q219233",
     "country": "Netherlands",
     "clubCount": 2,
@@ -123466,7 +123466,7 @@
     "club": "Ajax",
     "clubId": "Q81888",
     "country": "Netherlands",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "1999-11-26"
   },
   {
@@ -123561,10 +123561,10 @@
     "nat": "Argentina",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Club Atlético Vélez Sarsfield",
+    "club": "Nottingham Forest",
     "clubId": "Q215163",
     "country": "Argentina",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1998-06-28"
   },
   {
@@ -123575,7 +123575,7 @@
     "nat": "Italy",
     "slot": "MF",
     "position": "midfielder",
-    "club": "SS Lazio",
+    "club": "Lazio",
     "clubId": "Q2609",
     "country": "Italy",
     "clubCount": 1,
@@ -123603,7 +123603,7 @@
     "nat": "Austria",
     "slot": "MF",
     "position": "midfielder",
-    "club": "1. FC Köln",
+    "club": "Schalke 04",
     "clubId": "Q104770",
     "country": "Germany",
     "clubCount": 5,
@@ -123869,7 +123869,7 @@
     "nat": "Italy",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Torino FC",
+    "club": "Torino",
     "clubId": "Q2768",
     "country": "Italy",
     "clubCount": 4,
@@ -124261,10 +124261,10 @@
     "nat": "Georgia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "FC Dinamo Tbilisi",
+    "club": "Saint-Étienne",
     "clubId": "Q201006",
     "country": "Georgia",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2001-02-15"
   },
   {
@@ -124317,10 +124317,10 @@
     "nat": "Australia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Sydney FC",
+    "club": "Rangers",
     "clubId": "Q330143",
     "country": "Australia",
-    "clubCount": 1
+    "clubCount": 2
   },
   {
     "id": "Q58489967",
@@ -124344,10 +124344,10 @@
     "nat": "Argentina",
     "slot": "DF",
     "position": "defender",
-    "club": "Atlético Madrid",
+    "club": "Porto",
     "clubId": "Q8701",
     "country": "Spain",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-06-24"
   },
   {
@@ -124400,10 +124400,10 @@
     "nat": "United States men's",
     "slot": "FW",
     "position": "forward",
-    "club": "Marseille",
+    "club": "Olympique de Marseille",
     "clubId": "Q132885",
     "country": "France",
-    "clubCount": 5,
+    "clubCount": 6,
     "dob": "2001-07-16"
   },
   {
@@ -124470,10 +124470,10 @@
     "nat": "United Kingdom",
     "slot": "DF",
     "position": "defender",
-    "club": "Maidenhead United F.C.",
+    "club": "West Ham",
     "clubId": "Q1131109",
     "country": "United Kingdom",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "1997-05-23"
   },
   {
@@ -124540,10 +124540,10 @@
     "nat": "Spain",
     "slot": "FW",
     "position": "wing half",
-    "club": "Atlético Madrid B",
+    "club": "Real Betis",
     "clubId": "Q780539",
     "country": "Spain",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2000-04-02"
   },
   {
@@ -125506,10 +125506,10 @@
     "nat": "Serbia",
     "slot": "DF",
     "position": "defender",
-    "club": "Red Star Belgrade",
+    "club": "FC Zenit Saint Petersburg",
     "clubId": "Q29108",
     "country": "Russia",
-    "clubCount": 3,
+    "clubCount": 4,
     "dob": "2001-01-22"
   },
   {
@@ -125520,10 +125520,10 @@
     "nat": "Croatia",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Hellas Verona FC",
+    "club": "Rangers",
     "clubId": "Q8639",
     "country": "Italy",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2000-03-25"
   },
   {
@@ -125534,10 +125534,10 @@
     "nat": "United States",
     "slot": "GK",
     "position": "goalkeeper",
-    "club": "Chicago Fire FC",
+    "club": "Chelsea",
     "clubId": "Q308683",
     "country": "United States",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2004-05-15"
   },
   {
@@ -126094,10 +126094,10 @@
     "nat": "Georgia",
     "slot": "MF",
     "position": "midfielder",
-    "club": "Sporting CP",
+    "club": "Sevilla",
     "clubId": "Q8823",
     "country": "Spain",
-    "clubCount": 6,
+    "clubCount": 7,
     "dob": "1999-06-29"
   },
   {
@@ -126122,10 +126122,10 @@
     "nat": "Brazil",
     "slot": "FW",
     "position": "forward",
-    "club": "Santos F.C.",
+    "club": "Ajax",
     "clubId": "Q80955",
     "country": "Brazil",
-    "clubCount": 1,
+    "clubCount": 2,
     "dob": "2003-05-02"
   },
   {
@@ -126164,10 +126164,10 @@
     "nat": "Israel",
     "slot": "FW",
     "position": "midfielder",
-    "club": "FC Red Bull Salzburg",
+    "club": "Ajax",
     "clubId": "Q994811",
     "country": "Austria",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2004-04-01"
   },
   {
@@ -126209,7 +126209,7 @@
     "club": "Fulham",
     "clubId": "Q18708",
     "country": "United Kingdom",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2005-10-12"
   },
   {
@@ -126402,10 +126402,10 @@
     "nat": "Egypt",
     "slot": "FW",
     "position": "forward",
-    "club": "Al Ahly SC",
+    "club": "Barcelona",
     "clubId": "Q223566",
     "country": "Egypt",
-    "clubCount": 2,
+    "clubCount": 3,
     "dob": "2008-01-01"
   }
 ]

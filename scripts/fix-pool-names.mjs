@@ -3,7 +3,8 @@
 //
 // ⚠️ RUN ORDER — LAST in the pipeline, because every earlier step rewrites the
 // pool from Wikidata and would undo it:
-//   fetch-squads -> build-mystery-pool -> fetch-careers -> derive-pool-nationality -> THIS
+//   build-squads -> build-mystery-pool -> fetch-careers -> derive-pool-nationality
+//     -> apply-squad-moves -> THIS
 //
 // Three jobs, all defences against upstream data we do not control:
 //   1. Restore names that have been vandalised or mangled on Wikidata.
