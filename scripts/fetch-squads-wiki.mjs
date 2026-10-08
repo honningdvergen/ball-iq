@@ -75,10 +75,16 @@ for (let i = 0; i < packQids.length; i += 50) {
 console.log(`clubs in the run: ${clubIds.length} (packs ${packQids.length} + league coverage ${clubIds.length - packQids.length})`);
 
 // ── 2. per club: wikitext -> first-team section -> squad templates ─────────
-const INCLUDE = /first.?team squad|current squad|^squad$/i;
+// "First team" and "First-team" alone are headings too (Red Star Belgrade, Real
+// Betis). Both came back empty until 2026-10-09 and nothing flagged it.
+const INCLUDE = /first.?team squad|^first.?team$|current squad|^squad$/i;
 // frauen/féminin matter: several clubs (Basel, Lyon) carry their women's side
 // on the SAME article, with an identically-titled "Current squad" subsection.
 const EXCLUDE = /loan|reserve|academy|youth|under-\d|u\d\d|women|frauen|f[ée]minin|femenino|former|notable|retired|staff|management/i;
+// An ANCESTOR is held to a narrower list. Corinthians files its squad under
+// "Players and staff"; with "staff" on the ancestor test the whole first team
+// was thrown away.
+const EXCLUDE_ANCESTOR = /loan|reserve|academy|youth|under-\d|u\d\d|women|frauen|f[ée]minin|femenino|former|notable|retired/i;
 
 // ⚠️ ANCESTOR-AWARE. Measured on FC Basel: the article contains TWO "Current
 // squad" sections (28 + 31 templates) — the second belongs to another team
@@ -96,7 +102,7 @@ function squadSections(wikitext) {
   for (let i = 0; i < heads.length; i++) {
     const h = heads[i];
     while (stack.length && stack[stack.length - 1].lvl >= h.lvl) stack.pop();
-    const ancestorExcluded = stack.some((a) => EXCLUDE.test(a.title));
+    const ancestorExcluded = stack.some((a) => EXCLUDE_ANCESTOR.test(a.title));
     const body = wikitext.slice(h.at, heads[i + 1] ? heads[i + 1].at : undefined);
     if (!ancestorExcluded && INCLUDE.test(h.title) && !EXCLUDE.test(h.title)) {
       parts.push(body);
@@ -112,7 +118,13 @@ function parsePlayers(sectionText) {
   const out = [];
   for (const m of sectionText.matchAll(/\{\{\s*(?:football squad player|fs player)[^\S\n]*\d?\s*\|([^}]*)\}\}/gi)) {
     const fields = {};
-    for (const f of m[1].split('|')) {
+    // ⚠️ A PIPED LINK HAS A PIPE IN IT. "name=[[Ben White (footballer)|Ben White]]"
+    // split on every "|" lost the link, so 270 of 1,823 first-team players in
+    // the 65 pack clubs (15%) had no article and therefore no Wikidata id: Ben
+    // White, Koke, Kim Min-jae, Nick Pope. Pipes inside [[ ]] are parked first.
+    const body = m[1].replace(/\[\[[^\]]*\]\]/g, (l) => l.replace(/\|/g, '\u0001'));
+    for (const raw of body.split('|')) {
+      const f = raw.replace(/\u0001/g, '|');
       const eq = f.indexOf('=');
       if (eq > -1) fields[f.slice(0, eq).trim().toLowerCase()] = f.slice(eq + 1).trim();
     }
