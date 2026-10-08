@@ -419,6 +419,28 @@ Rulings (his words are in memory `project_top10_draft_icon_round_2026_10_09`):
       5. Jerseys, round two, then onto Transfer Trail.
       6. Icon, round two.
       7. The draft dataset, then the game.
+- [ ] **Top 10 lists: prefer the ones that hold** (Alex, 9 Oct, 01:00: "the
+      more robust top 10 lists are probably better... things we don't have
+      to fact check again after the weekend"; his examples: clubs with the
+      biggest stadiums in England, all of England and club grounds only, so
+      not Wembley; the same for Germany; top assisters in Champions League,
+      Premier League or La Liga history). Three kinds, and each list says
+      which it is:
+      - CLOSED: cannot change (a finished season's top scorers, a finished
+        tournament, a past decade). Checked once.
+      - SLOW: changes on a known date at most (stadium capacities, record
+        transfers, title counts). `until` is that date.
+      - LIVE: an active player could change it this weekend. Use only with a
+        safe gap between tenth and the nearest active chaser, and never
+        scheduled more than a week ahead.
+- [ ] **The Sunday check** (his idea): every Sunday re-verify the seven lists
+      scheduled for the coming week, not the library. The size of that job
+      does not grow with the number of lists. Needs his yes before it is set
+      up as a scheduled task.
+- [ ] **Serve the lists from the server, not from the build.** A list that
+      Sunday's check corrects must reach installed apps the same day. Fetch
+      the day's list from balliq.app with the bundled copy as the fallback.
+      Do this before Top 10 first ships in a store build.
 - [ ] The club pool for the guess box (578 names) needs one read-through for
       the same club under two names before a clubs list is ever scheduled;
       one pair was found by accident tonight.
