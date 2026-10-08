@@ -225,6 +225,57 @@ export function rankPool(pool, answer, careers = null) {
   return ranks;
 }
 
+// ── The position a clue or a reveal may PRINT ───────────────────────────────
+// ⚠️ `position` AND `slot` ARE RANKING TOKENS, NOT FACTS. Both come from
+// Wikidata P413 and both feed similarity() above, where a wrong one costs a
+// few places. Printed as "The answer is a midfielder." a wrong one is a false
+// statement about a real player, and that is what a screen recording caught on
+// 2026-10-08: Hiroki Sakai, a right-back, was three days from being clued as a
+// midfielder. Measured that day across the 400 scheduled answers:
+//   · 32 where `position` contradicts `slot` (Messi, Pelé, Totti, Cruyff and
+//     Maradona all "midfielder"; Stoichkov "coach")
+//   · 15 "wing half", Wikidata's label for a modern winger. The real wing half
+//     was a 1930s half-back, so of those fifteen the word is true of exactly
+//     one, Bill Shankly, whom `slot` then files as a forward
+//   · and agreement proves nothing either: Ezequiel Garay read "full-back" and
+//     Nacho Monreal "centre-back", each the other's job.
+//
+// So printing goes through here and nowhere else. A verified role
+// (src/data/mysteryRoles.json, each checked against a source) wins. Without
+// one, the pool's word is printed only if it is a word we recognise AND it sits
+// in the line `slot` says, which is the weakest claim the data can still
+// support. Anything else returns null and the caller prints nothing: the
+// reveal panel already runs on "thin and true beats rich and wrong".
+//
+// ⚠️ This does NOT correct the ranking fields. Changing `slot` or `position`
+// moves every guess's rank on that answer's day, which is an editorial call
+// (build-mystery-pool-v2.mjs files Messi and Maradona under FW on purpose).
+const POSITION_LINE = {
+  goalkeeper: 'GK',
+  defender: 'DF', 'centre-back': 'DF', 'full-back': 'DF',
+  midfielder: 'MF', 'defensive midfielder': 'MF', 'central midfielder': 'MF', 'attacking midfielder': 'MF',
+  forward: 'FW', winger: 'FW', striker: 'FW', 'centre-forward': 'FW', 'second striker': 'FW',
+};
+
+/**
+ * @param {object} player  pool record
+ * @param {object} [roles] id -> verified position word, or null to withhold (mysteryRoles.json)
+ * @returns {string|null}  lower-case position, or null when nothing is safe to print
+ */
+export function hintPosition(player, roles = null) {
+  if (!player) return null;
+  // An explicit null is a decision, not a gap: the sources disagree about this
+  // player, so the clue is withheld rather than guessed.
+  if (roles && Object.hasOwn(roles, player.id)) return roles[player.id] || null;
+  const word = String(player.position || '').toLowerCase();
+  return POSITION_LINE[word] && POSITION_LINE[word] === player.slot ? word : null;
+}
+
+/** "a winger", "an attacking midfielder" — the clue used to print "a attacking". */
+export function withArticle(phrase) {
+  return `${/^[aeiou]/i.test(phrase) ? 'an' : 'a'} ${phrase}`;
+}
+
 /** Bands drive the colour of a guess row. Contexto's green/amber/grey. */
 export function bandFor(rank, poolSize) {
   if (rank === 1) return 'win';

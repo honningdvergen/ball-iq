@@ -9,8 +9,10 @@
 import { describe, it, expect } from 'vitest';
 import {
   similarity, rankPool, bandFor, matchGuess, normaliseName,
-  answerIdForDay, MYSTERY_ANCHOR_DAY,
+  answerIdForDay, MYSTERY_ANCHOR_DAY, hintPosition, withArticle,
 } from '../../src/lib/mysteryPlayer.js';
+import roles from '../../src/data/mysteryRoles.json';
+import schedule from '../../src/data/mysterySchedule.json';
 import pool from '../../src/data/mysteryPool.json';
 import answers from '../../src/data/mysteryAnswers.json';
 
@@ -205,5 +207,60 @@ describe('daily schedule', () => {
     // player list grew. Null means the card hides; a wrong answer would not.
     expect(answerIdForDay(['a'], MYSTERY_ANCHOR_DAY + 5)).toBeNull();
     expect(answerIdForDay(['a'], MYSTERY_ANCHOR_DAY - 1)).toBeNull();
+  });
+});
+
+describe('the position a clue may print', () => {
+  // `position` and `slot` are ranking tokens from Wikidata. Printed, they are
+  // claims about a real player, and 47 of the 400 scheduled answers carried a
+  // false or meaningless one (2026-10-08).
+  it('prints a verified role over whatever the pool says', () => {
+    const p = { id: 'Qx', slot: 'DF', position: 'midfielder' };
+    expect(hintPosition(p, { Qx: 'full-back' })).toBe('full-back');
+  });
+
+  it('prints the pool word only when it sits in the line the slot says', () => {
+    expect(hintPosition({ id: 'a', slot: 'DF', position: 'centre-back' })).toBe('centre-back');
+    expect(hintPosition({ id: 'b', slot: 'GK', position: 'goalkeeper' })).toBe('goalkeeper');
+    expect(hintPosition({ id: 'c', slot: 'FW', position: 'midfielder' })).toBeNull();
+    expect(hintPosition({ id: 'd', slot: 'DF', position: 'forward' })).toBeNull();
+  });
+
+  it('never prints a word it does not recognise', () => {
+    // "wing half" is Wikidata's label for a modern winger; "coach" was
+    // Stoichkov's, and "running back" is not a football position at all.
+    for (const position of ['wing half', 'coach', 'running back', '', undefined]) {
+      expect(hintPosition({ id: 'e', slot: 'FW', position })).toBeNull();
+    }
+    expect(hintPosition(null)).toBeNull();
+  });
+
+  it('withholds the clue when the role is recorded as contested', () => {
+    // null is a decision: the sources disagree, so nothing is printed even
+    // though the pool's own word would have passed the line check.
+    expect(hintPosition({ id: 'Qx', slot: 'FW', position: 'forward' }, { Qx: null })).toBeNull();
+  });
+
+  it('has a printable position for every scheduled answer, or a recorded reason for none', () => {
+    const byId = new Map(pool.map((p) => [p.id, p]));
+    const silent = schedule.filter((id) => !hintPosition(byId.get(id), roles) && roles[id] !== null);
+    expect(silent.map((id) => byId.get(id)?.name)).toEqual([]);
+  });
+
+  it('only holds verified roles for players who exist, in words the clue can say', () => {
+    const SAYABLE = new Set([
+      'goalkeeper', 'defender', 'centre-back', 'full-back', 'midfielder', 'defensive midfielder',
+      'attacking midfielder', 'winger', 'forward', 'striker', 'wing half',
+    ]);
+    const ids = new Set(pool.map((p) => p.id));
+    for (const [id, role] of Object.entries(roles)) {
+      expect(ids.has(id), `${id} is not in the pool`).toBe(true);
+      expect(role === null || SAYABLE.has(role), `${id}: "${role}"`).toBe(true);
+    }
+  });
+
+  it('picks the article by sound', () => {
+    expect(withArticle('winger')).toBe('a winger');
+    expect(withArticle('attacking midfielder')).toBe('an attacking midfielder');
   });
 });

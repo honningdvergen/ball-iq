@@ -11,7 +11,7 @@ import { DailyDone } from '../components/DailyDone.jsx';
 import {
   rankPool, bandFor, matchGuess, normaliseName,
   answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
-  saveMysteryResult, loadMysteryResult, computeMysteryStreak,
+  saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition, withArticle,
 } from '../lib/mysteryPlayer.js';
 import { usePlayerPool } from '../lib/usePlayerPool.js';
 import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
@@ -19,6 +19,7 @@ import { MODE_ACCENT, modeTint } from '../lib/accents.js';
 import { dateToYMD } from '../lib/date.js';
 import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
 import SCHEDULE from '../data/mysterySchedule.json';
+import ROLES from '../data/mysteryRoles.json';
 
 /* ⚠️ `nat` IS NOT RELIABLY NATIONALITY — do not surface it without checking.
    Measured 2026-08-15 against the live pool:
@@ -185,14 +186,17 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   const HINTS = useMemo(() => {
     if (!answer) return [];
     const out = [];
-    const pos = answer.position || answer.slot;
-    if (pos) out.push({ label: 'Position', text: `The answer is a ${String(pos).toLowerCase()}.` });
+    // Never `answer.position` directly: see hintPosition. On a day it cannot
+    // vouch for a word the clue is skipped and the player gets the other two.
+    const pos = hintPosition(answer, ROLES);
+    if (pos) out.push({ label: 'Position', text: `The answer is ${withArticle(pos)}.` });
     if (answer.born) out.push({ label: 'Era', text: `Born in the ${Math.floor(answer.born / 10) * 10}s.` });
     if (answer.clubCount > 0) {
       out.push({ label: 'Clubs', text: `Played for ${answer.clubCount} clubs.` });
     }
     return out;
   }, [answer]);
+  const revealPos = hintPosition(answer, ROLES);
   // Unlocks BEFORE the give-up option (5). A player who is stuck should meet
   // help first and surrender second, not the other way round.
   const HINTS_AFTER = 3;
@@ -477,7 +481,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         <div style={{ margin: '4px 0 14px', padding: '14px 16px', borderRadius: 14, background: 'rgba(88,204,2,0.12)', border: '1px solid rgba(88,204,2,0.4)' }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--grn-soft)' }}>Got it — {answer.name}</div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
-            {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
+            {revealPos ? `${revealPos} · ` : ''}{answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
           </div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
             Solved in <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}{hintsUsed > 0 ? ` · ${hintsUsed} ${hintsUsed === 1 ? 'hint' : 'hints'}` : ''}.
@@ -500,7 +504,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         <div style={{ margin: '4px 0 14px', padding: '14px 16px', borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)' }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--t1)' }}>It was {answer.name}</div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 4 }}>
-            {answer.position || answer.slot} · {answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
+            {revealPos ? `${revealPos} · ` : ''}{answer.clubCount > 0 ? `${answer.clubCount} clubs · ` : ''}born {answer.born}
           </div>
           <div style={{ fontSize: 13, color: 'var(--t2)', marginTop: 6 }}>
             Gave up after <strong style={{ color: 'var(--t1)' }}>{guesses.length}</strong> {guesses.length === 1 ? 'guess' : 'guesses'}{hintsUsed > 0 ? ` · ${hintsUsed} ${hintsUsed === 1 ? 'hint' : 'hints'}` : ''}. Back tomorrow.
