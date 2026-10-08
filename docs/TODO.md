@@ -323,15 +323,21 @@ which are scheduled on the server.
       nobody in Trail and Mystery, because ø ł ı ß were deleted rather than
       folded. One table now (`src/lib/letterFold.js`); a test types every
       pool name.
-- [ ] **The draft game.** Research is in
+- [ ] **The draft game needs a dataset first.** Research is in
       `~/ball-iq-audit/2026-10-08/research/game-formats.md`: the reference
       ("38-0") is eleven spins of a club and season, one player per spin,
-      then a simulated season record. Plan for ours: one seeded board a day
-      (same spins for everyone), fixed formation, one re-spin, the same
-      eleven always gives the same record. Club-season squads can be derived
-      from `mysteryCareers.json` (tested: Arsenal 2003-04 gives 27 players).
-      Open: what scores a player. We hold no ratings; `fame` is Wikipedia
-      notability. Bring Alex a worked example before building. The
+      then a simulated season record. A worked example on our own data
+      (9 Oct) said do not build on it: squads derived from
+      `mysteryCareers.json` have holes (Arsenal 2003-04 comes out without
+      Thierry Henry; rows with no start year leak an eleven-year-old Cenk
+      Tosun into Everton 2002-03), and `fame` is Wikipedia notability, not
+      quality (Beckham 137, Keane 63, Stam 47; Solskjær rates above Keane).
+      What it needs: real squads with appearances and goals per player for
+      every English top-flight season since 1992-93, about 17,000 player
+      seasons, from public season pages, verified like the bank. Then: one
+      seeded board a day (same eleven spins for everyone), fixed formation,
+      one re-spin, the same eleven always gives the same record. One to two
+      weeks. **Alex to confirm he wants the data project.** The
       `daily_results` bucket tops out at 30, so a 38-game record needs its
       own encoding.
 - [x] **Real club emblems: no.** Report in
