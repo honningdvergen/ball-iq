@@ -7329,10 +7329,15 @@ function AppInner() {
   useEffect(() => {
     document.body.classList.remove("light");
     document.documentElement.classList.remove("light");
-    // "Light" style = light glyphs, for our dark background.
+    // ⚠️ Style.Dark, NOT Style.Light. Capacitor names the style after the
+    // BACKGROUND it is for: Dark = light glyphs on a dark app. This line said
+    // Light under a comment that read it the other way round, so the clock and
+    // signal icons were dark on a dark screen on every screen of the iPhone app
+    // (seen in the simulator and in Alex's own screenshots, 2026-10-08), and it
+    // overrode capacitor.config.json, which has had "DARK" right all along.
     try {
       if (Capacitor.isNativePlatform?.()) {
-        StatusBar.setStyle({ style: StatusBarStyle.Light }).catch(() => {});
+        StatusBar.setStyle({ style: StatusBarStyle.Dark }).catch(() => {});
       }
     } catch {}
   }, []);
