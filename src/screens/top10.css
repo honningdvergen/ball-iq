@@ -1,0 +1,154 @@
+/* Top 10: the daily list game (screens/Top10.jsx).
+   Motion uses the three house timings only: press 90ms, state 180ms, entrance
+   260ms. Transform and opacity, nothing that lays the board out again. */
+
+.t10 {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.t10-head { display: flex; align-items: center; gap: 10px; padding: 12px 4px; }
+.t10-head.is-embedded { padding: 2px 4px 8px; }
+.t10-head-title { font-size: 20px; font-weight: 800; color: var(--t1); }
+.t10-head-sub { font-size: 12.5px; color: var(--t2); }
+.t10-mast { flex: 1; min-width: 0; font-size: 13.5px; color: var(--t2); font-variant-numeric: tabular-nums; }
+.t10-mast b { color: var(--t1); font-weight: 800; }
+
+/* Lives. A lost heart shrinks and dims in place, so the row never shifts. */
+.t10-lives { display: flex; gap: 4px; flex-shrink: 0; }
+.t10-heart { color: var(--t10); transition: transform 180ms ease-out, opacity 180ms ease-out; }
+.t10-heart.is-lost { color: var(--t3); opacity: 0.45; transform: scale(0.8); }
+
+/* The question. */
+.t10-q {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(var(--t10-rgb), 0.08);
+  border: 1px solid rgba(var(--t10-rgb), 0.28);
+}
+.t10-q-title { margin: 0; font-size: 19px; line-height: 1.2; font-weight: 800; color: var(--t1); text-wrap: balance; }
+.t10-q-meta {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin-top: 8px; font-size: 12.5px; color: var(--t2);
+}
+.t10-q-count { flex-shrink: 0; font-weight: 800; color: var(--t10); font-variant-numeric: tabular-nums; }
+
+/* The guess box. */
+.t10-entry { position: relative; margin-top: 12px; }
+.t10-entry.is-shake { animation: t10Shake 260ms cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+.t10-input {
+  width: 100%; box-sizing: border-box;
+  background: var(--s1); border: 1px solid var(--border); border-radius: 12px;
+  padding: 13px 15px; color: var(--t1); font-size: 16px; font-family: inherit; outline: none;
+  transition: border-color 180ms;
+}
+.t10-input:focus { border-color: rgba(var(--t10-rgb), 0.7); }
+/* The app's focus ring is the brand green; inside this game it takes the
+   game's own colour, so the box does not wear two rings at once. */
+.t10 .t10-input:focus-visible { outline: 2px solid rgba(var(--t10-rgb), 0.55); outline-offset: 2px; }
+.t10-drop {
+  position: absolute; left: 0; right: 0; top: 100%; z-index: 20; margin-top: 6px;
+  background: var(--s2); border: 1px solid var(--border); border-radius: 14px;
+  overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.t10-opt {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+  width: 100%; min-height: 44px; padding: 8px 14px;
+  background: none; border: none; border-bottom: 1px solid var(--border);
+  color: var(--t1); cursor: pointer; font-family: inherit; text-align: left;
+  transition: background 90ms;
+}
+.t10-opt:last-child { border-bottom: none; }
+.t10-opt:active { background: rgba(var(--t10-rgb), 0.12); }
+.t10-opt-name { font-size: 14.5px; font-weight: 700; }
+.t10-opt-sub {
+  font-size: 11.5px; color: var(--t3); font-weight: 600; max-width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* What the last pick was. One line, always the same height, so the board
+   below it never moves. */
+.t10-say { min-height: 20px; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--t2); }
+.t10-say.is-hit { color: var(--t10); }
+.t10-say.is-near { color: var(--gold); }
+.t10-say.is-miss { color: var(--red); }
+.t10-say > span { display: inline-block; animation: t10Rise 260ms ease-out both; }
+
+/* The board: ranks one to five down the left, six to ten down the right, so
+   all ten stay on screen above a phone keyboard. */
+.t10-board {
+  display: grid;
+  grid-template-rows: repeat(5, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 6px 8px;
+  margin-top: 6px;
+}
+.t10-cell {
+  display: flex; align-items: center; gap: 9px;
+  min-height: 50px; padding: 7px 10px; box-sizing: border-box;
+  border-radius: 12px; background: var(--s1); border: 1px solid var(--border);
+}
+.t10-rank {
+  flex: none; width: 20px; text-align: center;
+  font-size: 13px; font-weight: 800; color: var(--t3); font-variant-numeric: tabular-nums;
+}
+.t10-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.t10-name { font-size: 13.5px; line-height: 1.15; font-weight: 800; color: var(--t1); overflow-wrap: anywhere; }
+.t10-clue { font-size: 11.5px; font-weight: 700; color: var(--t3); font-variant-numeric: tabular-nums; }
+.t10-cell.is-open .t10-clue { font-size: 13px; color: var(--t2); }
+
+.t10-cell.is-found { background: rgba(var(--t10-rgb), 0.12); border-color: rgba(var(--t10-rgb), 0.5); }
+.t10-cell.is-found .t10-rank,
+.t10-cell.is-found .t10-clue { color: var(--t10); }
+.t10-cell.is-new { animation: t10Pop 180ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* The ones that got away, shown once the game is over. They arrive one after
+   another down the list rather than as a block. */
+.t10-cell.is-missed { background: transparent; border-style: dashed; }
+.t10-cell.is-missed .t10-name { color: var(--t2); font-weight: 700; }
+.t10-cell.is-missed .t10-body { animation: t10Rise 260ms ease-out both; animation-delay: var(--t10-d, 0ms); }
+
+/* Wrong picks so far. */
+.t10-wrong { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.t10-chip {
+  font-size: 12.5px; color: var(--t3); background: var(--s2);
+  border-radius: 8px; padding: 4px 9px;
+}
+.t10-chip s { text-decoration-thickness: 1px; }
+.t10-chip em { font-style: normal; color: var(--gold); font-weight: 700; }
+.t10-chip.is-close { color: var(--t2); }
+
+.t10-ghost {
+  margin-top: 10px; width: 100%; min-height: 44px; padding: 10px;
+  background: transparent; border: 1px solid var(--border); border-radius: 11px;
+  color: var(--t2); font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer;
+  transition: transform 90ms ease-out, border-color 180ms, color 180ms;
+}
+.t10-ghost:active { transform: scale(0.985); }
+.t10-ghost.is-armed { border-color: var(--red); color: var(--red); }
+
+/* The result. */
+.t10-result { margin-top: 16px; text-align: center; animation: t10Rise 260ms ease-out both; }
+.t10-score { font-size: 40px; line-height: 1; font-weight: 900; color: var(--t1); font-variant-numeric: tabular-nums; }
+.t10-score.is-earned { color: var(--t10); }
+.t10-score small { font-size: 20px; font-weight: 800; color: var(--t3); }
+.t10-verdict { margin-top: 6px; font-size: 13.5px; color: var(--t2); }
+.t10-foot { margin-top: 10px; font-size: 11.5px; color: var(--t3); text-align: center; }
+
+/* Loading: ten quiet cells, the same size as the real ones. */
+.t10-cell.is-skeleton { opacity: 0.5; }
+
+@keyframes t10Pop { 0% { transform: scale(1); } 60% { transform: scale(1.035); } 100% { transform: scale(1); } }
+@keyframes t10Shake { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+@keyframes t10Rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .t10 *, .t10 { animation: none !important; transition: none !important; }
+}

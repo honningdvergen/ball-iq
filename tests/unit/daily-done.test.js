@@ -27,12 +27,14 @@ const HOSTS = {
   footle: read('../../src/games/FootballWordle.jsx'),
   trail: read('../../src/screens/TransferTrail.jsx'),
   mystery: read('../../src/screens/MysteryPlayer.jsx'),
+  top10: read('../../src/screens/Top10.jsx'),
 };
 
 describe('DailyDone — one panel, four surfaces', () => {
   it('every daily host renders the shared panel with its game key', () => {
     expect(HOSTS.footle).toMatch(/<DailyDone[\s\S]*?game="footle"/);
     expect(HOSTS.trail).toMatch(/<DailyDone[\s\S]*?game="trail"/);
+    expect(HOSTS.top10).toMatch(/<DailyDone[\s\S]*?game="top10"/);
     expect(HOSTS.mystery.match(/<DailyDone[\s\S]*?game="mystery"/g) || []).toHaveLength(2); // won + gave up
     expect(RESULTS.match(/<DailyDone game="daily7"/g) || []).toHaveLength(2);             // mobile + desktop card
   });
@@ -196,9 +198,10 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(DAILY, 'result strings carry no glyphs').not.toMatch(/`[✓✗] /);
   });
 
-  it('App passes the live services to all three game screens and the results screen', () => {
+  it('App passes the live services to all four game screens and the results screen', () => {
     expect(APP).toMatch(/services=\{footleServices\}/);
-    expect((APP.match(/services=\{dailyScreenServices\}/g) || []).length).toBe(2);
+    // Transfer Trail, Mystery Player and Top 10.
+    expect((APP.match(/services=\{dailyScreenServices\}/g) || []).length).toBe(3);
     expect(APP).toMatch(/dailyDone=\{dailyDoneServices\}/);
     // The TDZ rule: the memo must not reference a const declared below it.
     expect(APP.indexOf('const dailyDoneServices')).toBeGreaterThan(APP.indexOf('const startMode'));

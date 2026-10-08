@@ -58,7 +58,9 @@ const BUDGET_KB = 909; // Target is still 600; the gap is Supabase (211 KB stati
 // ⚠️ clubPackColours JOINED 2026-09-21 — same lesson, third time: a GENERATED
 // table that grows with every club wave was on the eager path through one
 // import in ballIqCard.js, and it is what tipped the budget.
-const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours)-[A-Za-z0-9_-]+\.js$/;
+// top10Lists joined 2026-10-09, the day it was created: the Top 10 screen
+// import()s it and nothing on Home may.
+const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours|top10Lists)-[A-Za-z0-9_-]+\.js$/;
 const HOME_CHUNKS = /^(main|GameRoot|HomeScreen)-[A-Za-z0-9_-]+\.js$/;
 
 const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');

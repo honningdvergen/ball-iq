@@ -27,6 +27,7 @@
  * Every value is checked against --s1 (#13151C), the surface these render on:
  *   footle  #8AE042  10.4:1      trail    #7CC3F0  8.9:1
  *   daily7  #FFC107  11.6:1      mystery  #B9A5FF  8.9:1
+ *   top10   #FF9B7A   8.6:1
  */
 
 /** Ink — the readable foreground on a dark surface. */
@@ -35,6 +36,7 @@ export const MODE_ACCENT = {
   daily7:  '#FFC107',
   trail:   '#7CC3F0',
   mystery: '#B9A5FF',
+  top10:   '#FF9B7A',
 };
 
 /**
@@ -48,6 +50,7 @@ export const MODE_RGB = {
   daily7:  '255,170,0',
   trail:   '78,168,222',
   mystery: '139,108,240',
+  top10:   '255,138,101',
 };
 
 /** Convenience for the one-off tints outside the Daily cards. */
