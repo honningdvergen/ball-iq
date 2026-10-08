@@ -14,7 +14,7 @@ import {
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition, withArticle,
 } from '../lib/mysteryPlayer.js';
 import { usePlayerPool } from '../lib/usePlayerPool.js';
-import { rankPlayerSuggestions, suggestionSubtitle, clubLabel } from '../lib/playerSearch.js';
+import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
 import { MODE_ACCENT, modeTint } from '../lib/accents.js';
 import { dateToYMD } from '../lib/date.js';
 import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
@@ -638,9 +638,12 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             <div key={g.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 14px', borderRadius: 12, background: st.bg, border: `1px solid ${st.bd}` }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 14.5, fontWeight: 800, color: 'var(--t1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.name}</div>
-                {/* g.club was saved with the guess, so boards from before the
-                    senior-club test still hold "Antiguoko": filter on the way out. */}
-                {clubLabel(g) && <div style={{ fontSize: 11.5, color: 'var(--t3)' }}>{clubLabel(g)}</div>}
+                {/* No club under the name (2026-10-08). `club` is the longest single
+                    spell in Wikidata, so it means "current club" for one player,
+                    "first club" for the next and nothing true for a third: Buffon
+                    read Parma because his Juventus years are missing upstream.
+                    The search list keeps it, behind clubLabel, because there it
+                    does a job, telling two namesakes apart. Here it only asserted. */}
                 {/* The magnitude the number alone could not carry. */}
                 <div style={{ marginTop: 6, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.07)', overflow: 'hidden' }} aria-hidden="true">
                   <div style={{ width: `${Math.round(closeness(g.rank, POOL.length) * 100)}%`, height: '100%', borderRadius: 2, background: st.fg }} />
