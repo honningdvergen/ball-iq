@@ -25,6 +25,8 @@
 //   src/data/squads.json        current squads incl. reserves and academy —
 //                               the truest "is there now" and best positions
 //   src/data/mysteryPool.json   fame-ranked players with club + position
+//   scripts/_squads-departed.json  players a squad refresh removed, with the
+//                               club Wikipedia says they went to
 //   scripts/_mystery-core.json  every fame>=25 footballer, careers or not
 //
 // ⚠️ PHOTOLESS PLAYERS ARE INCLUDED and render as initials cards. Jamie Gittens
@@ -94,7 +96,7 @@ function slotOf(poss) {
 
 // ── assemble the population ────────────────────────────────────────────────
 const players = new Map();
-const src = { squads: 0, pool: 0, core: 0 };
+const src = { squads: 0, pool: 0, departed: 0, core: 0 };
 
 // Squads first: truest current club, most specific position, and the reserves
 // and academy players the fame pool floors out of.
@@ -113,6 +115,22 @@ for (const p of POOL) {
   players.set(p.id, { id: p.id, name: p.name, slot: p.slot || null,
     club: tidyClub(p.club), born: p.born || null,
     nat: p.nat || p.country || null, squad: 0 });
+}
+
+// Players a squad refresh took out of squads.json and nothing above carries.
+// Where Wikipedia names the club he went to, that is his club and he is active.
+let DEPARTED = [];
+try { DEPARTED = JSON.parse(readFileSync('scripts/_squads-departed.json', 'utf8')); } catch {}
+for (const p of DEPARTED) {
+  // Someone the fame pool carries too: its club is the one he is KNOWN for
+  // (Gabriel Martinelli, Arsenal). Here the club he plays for now is the
+  // better answer, so a named destination replaces it.
+  const known = players.get(p.id);
+  if (known) { if (p.club && !known.squad) Object.assign(known, { club: tidyClub(p.club), current: 1 }); continue; }
+  src.departed++;
+  players.set(p.id, { id: p.id, name: p.name, slot: p.slot || null,
+    club: p.club ? tidyClub(p.club) : null, born: p.born || null, nat: p.nat || null,
+    squad: 0, current: p.club ? 1 : 0 });
 }
 
 // Core remainder: the players Mystery's gates reject — no career recorded
@@ -222,7 +240,7 @@ const fame = new Map(POOL.map((p) => [p.id, p.fame || 0]));
 for (const p of CORE) if (!fame.has(p.id)) fame.set(p.id, p.fame || 0);
 
 const rows = [...players.values()]
-  .map((p) => ({ ...p, active: isActive(p.id, p.squad), photo: photoOf(p.id) }))
+  .map((p) => ({ ...p, active: isActive(p.id, p.squad || p.current), photo: photoOf(p.id) }))
   // Active before retired (Alex: "we first and foremost want ACTIVE players"),
   // photographed before initials cards, then fame, then name.
   .sort((a, b) => (b.active - a.active)
@@ -275,7 +293,7 @@ const active = rows.filter((r) => r.v).length;
 const noDob = rows.filter((r) => !r.b).length;
 const repicked = rows.filter((r) => REPICK[r.i] && REPICK[r.i].file).length;
 console.log(`wrote ${OUT} — ${rows.length} players, ${(bytes / 1024).toFixed(0)}kB`);
-console.log(`  sources: squads ${src.squads} · mystery pool +${src.pool} · core-only +${src.core} (before the born cut)`);
+console.log(`  sources: squads ${src.squads} · mystery pool +${src.pool} · left a squad +${src.departed} · core-only +${src.core} (before the born cut)`);
 console.log(`  born ${BORN_FROM}+ · kept ${noDob} with no recorded birth year`);
 console.log(`  active ${active} · retired/unrecorded ${rows.length - active} (selectable, ranked below)`);
 console.log(`  with a photo ${withPhoto} · initials cards ${rows.length - withPhoto} · face-cropped ${withCrop} · re-picked ${repicked}`);

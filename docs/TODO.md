@@ -1,3 +1,56 @@
+## 2026-10-09 — Squads refreshed from Wikipedia, and how to do it again
+
+`src/data/squads.json` had not been refreshed since 11 August and 820 of its
+1,541 players had left the club it listed them at. It is now built from each
+club article's first-team section: 72 clubs, 1,967 players.
+
+**The refresh, in order (each step prints what it would change before `--write`):**
+
+1. `node scripts/fetch-squads-wiki.mjs` reads first-team, loan and reserve
+   sections into `scripts/_squads-wiki.json` and `_squads-wiki-other.json`.
+2. `node scripts/build-squads.mjs --write` writes `squads.json`. The first-team
+   section decides the first team; a reserve or academy row the file already
+   holds stays only where Wikipedia still shows the player at the club. Players
+   who leave go to `scripts/_squads-departed.json` so the lineup builder can
+   still find them.
+3. `node scripts/derive-squad-moves.mjs` then `node scripts/apply-squad-moves.mjs --write`
+   carry it into the Mystery pool: the `club` label, and the spell years in
+   `mysteryCareers.json`, read from each player's infobox. Then
+   `node scripts/fix-pool-names.mjs`, which stays last. Never re-run
+   `gen-mystery-schedule.mjs` for this.
+4. `node scripts/fetch-mystery-photos.mjs --all --core`,
+   `node scripts/build-player-faces.mjs`, `node scripts/build-lineup-data.mjs`.
+5. `npm run build`. `audit-mystery-pool.mjs` fails if step 3 was skipped.
+
+Do it after each transfer window closes (early February, early September).
+
+**Left open:**
+
+- [ ] **Cutouts for the new players.** 578 squad players have no photo at all
+      and show an initials card; the ones with a photo show a face crop, not a
+      cutout. `squad-cutout-wave.mjs` per club, then the bucket upload, which
+      needs its temporary storage policy opened. **(Alex)** for the policy.
+- [ ] **12 clubs cannot pre-fill an XI** because too few of the real squad have
+      a free photo: Trabzonspor, Dinamo Zagreb, Sporting CP, Saint-Étienne,
+      Parma, Boca Juniors, River Plate, Flamengo, Hajduk Split, Basel, Sevilla,
+      Valencia. Four of them pre-filled before, from players who had left.
+- [ ] **46 open spells the infobox does not list** stay open in the careers
+      (`unresolved` in `scripts/_squad-moves.json`). Most are Wikidata links to
+      a club the player was never at (Stefano Sensi at Coventry City, Roger
+      Ibañez at Lazio). Each needs a look before it is dropped; candidates for
+      `CLUB_FIXES`.
+- [ ] **Careers of scheduled answers with older gaps**, found by the verifiers
+      and not caused by this refresh: Paul Pogba (Juventus 2012 to 2016 and
+      Manchester United 2016 to 2022 missing, so his label is not his longest
+      spell), Edin Džeko (Roma ends 2016, should be 2021), Wataru Endō
+      (Stuttgart ends 2020, should be 2023), Xherdan Shaqiri, Ezequiel Garay,
+      Enner Valencia, Romelu Lukaku, Antonio Rüdiger.
+- [ ] **49 first-team players have no Wikipedia article**, so no id and no row.
+- [ ] **The pool's club names are only half canonical.** `canonClub` joins
+      "Valencia CF" to "Valencia" but not "AS Roma" to "Roma" or "Feyenoord
+      Rotterdam" to "Feyenoord". Matching on the club's Wikidata id would fix
+      it; it moves ranks, so it is its own change.
+
 ## 2026-10-05 — ⭐ BALL IQ 2.0: the audit, graded, and the master list
 
 Alex's mandate (2026-10-04): make Ball IQ 2.0, the best football app and the
