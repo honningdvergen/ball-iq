@@ -11,6 +11,7 @@ import {
   similarity, rankPool, bandFor, matchGuess, normaliseName,
   answerIdForDay, MYSTERY_ANCHOR_DAY, hintPosition, withArticle,
 } from '../../src/lib/mysteryPlayer.js';
+import { clubLabel, suggestionSubtitle } from '../../src/lib/playerSearch.js';
 import roles from '../../src/data/mysteryRoles.json';
 import schedule from '../../src/data/mysterySchedule.json';
 import pool from '../../src/data/mysteryPool.json';
@@ -262,5 +263,44 @@ describe('the position a clue may print', () => {
   it('picks the article by sound', () => {
     expect(withArticle('winger')).toBe('a winger');
     expect(withArticle('attacking midfielder')).toBe('an attacking midfielder');
+  });
+});
+
+describe('the club printed under a name', () => {
+  it('hides youth, reserve and college sides', () => {
+    for (const club of [
+      'Antiguoko', 'Real Madrid Castilla', 'Real Sociedad B', 'FC Bayern Munich II',
+      'FC Barcelona Atlètic', 'Liverpool F.C. Reserves and Academy',
+      "California Golden Bears women's soccer",
+    ]) expect(clubLabel({ id: 'x', club }), club).toBe('');
+  });
+
+  it('keeps senior clubs whose names only look like reserve sides', () => {
+    // The answer-eligibility regex in the scripts blanks all of these.
+    for (const club of [
+      'Willem II', 'Associação Académica de Coimbra – O.A.F.', 'Académico de Viseu FC',
+      'Atalanta BC', 'Athletic Club', 'Atlético Madrid', 'Boca Juniors', 'BSC Young Boys',
+      'Chelsea F.C. Women', 'Real Madrid',
+    ]) expect(clubLabel({ id: 'x', club }), club).toBe(club);
+  });
+
+  it('hides a senior club from the one player who was only ever a boy there', () => {
+    // Ruud Gullit left AFC DWS at sixteen; the label is fine on anyone else.
+    const gullit = pool.find((p) => p.name === 'Ruud Gullit');
+    expect(clubLabel(gullit)).toBe('');
+    expect(clubLabel({ id: 'someone-else', club: gullit.club })).toBe(gullit.club);
+    // A guess row saved before the fix holds only { id, name, club, rank, band }.
+    expect(clubLabel({ id: gullit.id, name: gullit.name, club: gullit.club, rank: 40, band: 'warm' })).toBe('');
+  });
+
+  it('leaves the birth year to tell namesakes apart when the club is hidden', () => {
+    expect(suggestionSubtitle({ id: 'x', born: 1981, club: 'Antiguoko' })).toBe('1981');
+    expect(suggestionSubtitle({ id: 'x', born: 1987, club: 'Barcelona' })).toBe('1987 · Barcelona');
+  });
+
+  it('shows no youth or reserve side anywhere in the pool', () => {
+    const NAMED_LIKE_ONE = /(castilla|atlètic$| b$| ii$|reserves|antiguoko|women's soccer)/i;
+    const leaked = pool.filter((p) => NAMED_LIKE_ONE.test(clubLabel(p)) && clubLabel(p) !== 'Willem II');
+    expect(leaked.map((p) => `${p.name}: ${p.club}`)).toEqual([]);
   });
 });

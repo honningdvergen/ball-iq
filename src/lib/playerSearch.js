@@ -72,5 +72,71 @@ export function rankPlayerSuggestions(pool, text, opts = {}) {
  * (1976 / 1985 / 1965) without asserting anything false.
  */
 export function suggestionSubtitle(p) {
-  return [p.born, p.club].filter(Boolean).join(' · ');
+  return [p.born, clubLabel(p)].filter(Boolean).join(' · ');
+}
+
+/**
+ * The club to print under a player's name, or '' when the pool's `club` is not
+ * a senior side he played for.
+ *
+ * ⚠️ `club` IS "THE LONGEST SINGLE SPELL", AND BOYHOOD IS LONG. The pool
+ * builder's latestClub() picks by tenure so that an active player is not
+ * labelled with a club he left (see isActive in mysteryPlayer.js). The cost is
+ * that nine years in a youth system outlasts five in a first team: Xabi Alonso
+ * and Aritz Aduriz both read "Antiguoko", a boys' club in San Sebastián; Álvaro
+ * Morata read "Real Madrid Castilla"; Unai Emery "Real Sociedad B". Found from a
+ * screen recording of the iPhone app, 2026-10-08.
+ *
+ * Hidden, not replaced. "The club he is best known for" is an opinion (Alonso:
+ * Liverpool, Real Madrid or Real Sociedad?) and the career data cannot settle
+ * it, because it has holes of its own: Buffon's seventeen years at Juventus are
+ * missing, which is why he reads Parma. Birth year still separates namesakes.
+ *
+ * ⚠️ NOT THE SCRIPTS' `NON_SENIOR` REGEX. That one decides who may be an ANSWER
+ * and errs wide on purpose; printed here it would also blank Willem II (King
+ * William II, an Eredivisie club), Académica de Coimbra and Académico de Viseu,
+ * and it misses "FC Barcelona Atlètic" altogether.
+ *
+ * Takes anything with { id, club }: a pool record, or a saved guess row.
+ */
+const NOT_A_SENIOR_SIDE = [
+  /\sCastilla$/,                 // Real Madrid Castilla
+  /\sAtlètic$/,                  // FC Barcelona Atlètic
+  /\s(B|C|II|III)$/,             // Villarreal CF B, FC Bayern Munich II
+  /Reserves and Academy$/,       // Liverpool F.C. Reserves and Academy
+  /\b(Youth|Juvenil|Primavera)\b/i,
+  /\b(U|Under)-?\d\d\b/i,
+  /(^|\s)(wo)?men's soccer$/i,   // US college teams
+  /^(Antiguoko|Rayo Cantabria)$/,  // a boys' club; Racing Santander's reserves
+  /^no tiene club actual$/,      // a Wikidata value, not a club
+];
+const SENIOR_DESPITE_THE_NAME = new Set(['Willem II']);
+
+/* Senior-sounding clubs the player only ever represented as a boy. Each pair
+   was checked against a source on 2026-10-08; ids, because a guess row saved
+   yesterday carries the id and the old label but nothing else. */
+const YOUTH_ONLY_AT = new Map([
+  ['Q173972', 'AFC DWS'],                          // Ruud Gullit: senior from Haarlem, 1979
+  ['Q187125', 'FC Maritsa Plovdiv'],               // Hristo Stoichkov
+  ['Q250901', 'Real Zaragoza'],                    // Álvaro Arbeloa: never their first team
+  ['Q294951', 'Middelfart Boldklub'],              // Christian Eriksen: left at thirteen
+  ['Q4254043', 'K.R.C. Genk'],                     // Divock Origi: senior from Lille
+  ['Q192913', 'FC Baník Prievidza'],               // Martin Škrtel
+  ['Q57152', 'Bayern Munich'],                     // Thomas Hitzlsperger: juniors only
+  ['Q193024', 'FC Sion'],                          // Alexander Frei: in no career list but Wikidata's
+  ['Q311372', 'Barcelona'],                        // Albert Luque: youth and the C team
+  ['Q2586675', 'Victoria CF'],                     // Lucas Pérez
+  ['Q218982', 'CD Banyoles'],                      // Andreu Fontàs
+  ['Q10556299', 'FK Hajduk Veljko'],               // Predrag Rajković
+  ['Q122971833', 'AFC Creil'],                     // Ayyoub Bouaddi
+  ['Q296467', 'HNK Hajduk Split'],                 // Dado Pršo: released at seventeen
+  ['Q313143', 'Central University of Venezuela'],  // Juan Arango
+]);
+
+export function clubLabel(p) {
+  const club = p?.club || '';
+  if (!club) return '';
+  if (YOUTH_ONLY_AT.get(p.id) === club) return '';
+  if (SENIOR_DESPITE_THE_NAME.has(club)) return club;
+  return NOT_A_SENIOR_SIDE.some((re) => re.test(club)) ? '' : club;
 }
