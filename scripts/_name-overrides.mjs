@@ -183,18 +183,38 @@ export const CLUB_FIXES = {
       ['Sporting Kansas City', 2020, 2024], ['C.D. Guadalajara', 2025, 2026]] },
 };
 
-
-// Players Wikidata places in a squad they have never been part of, or who are
-// not footballers at all. fetch-squads' filters cannot catch these because the
-// underlying statement is simply false rather than malformed.
+// People in a club's FOOTBALL squad who play another sport for the same club.
+// A multi-sport club is one Wikidata item (FC Bayern Munich, FC Barcelona,
+// Real Madrid CF), so a basketball or rink hockey player linked to it passes
+// fetch-squads' men's-only and football-class filters: the statement is not
+// malformed, it is about a different section of the club.
 //
-// ⚠️ NEVER remove a QID that appears in src/data/mysterySchedule.json — the
+// Used twice. fetch-squads.mjs drops these ids from every squad, and
+// fix-pool-names.mjs deletes them from the Mystery pool if a rebuild lets one
+// in. Found 2026-10-08 by asking Wikidata for the occupation of all 1,545
+// squad members; these three are the only ones with no football occupation.
+//
+// ⚠️ NEVER add a QID that appears in src/data/mysterySchedule.json — the
 // schedule is frozen and a removed answer makes that day unplayable. The script
 // refuses rather than letting it through.
+// ⚠️ NOT FOR A REAL FOOTBALLER IN THE WRONG SQUAD. That is NEVER_AT_CLUB below;
+// listing him here would delete him from the pool.
 export const NOT_IN_SQUAD = {
-  // Basketball player. Wikidata gives him a P54 membership of Real Madrid CF
-  // (the football club) rather than Real Madrid Baloncesto, so the men's-only
-  // and football-class filters both pass him. His other teams are Valencia BC,
-  // CB Prat, Joventut Badalona and Spain's national BASKETBALL team.
+  // Basketball. His other teams are Valencia BC, CB Prat, Joventut Badalona
+  // and Spain's national BASKETBALL team. Was pickable as a Real Madrid forward.
   Q19845456: 'Alberto Abalde — basketball player, mis-linked to Real Madrid CF',
+  // Basketball, b. 2006; position on the row was "shooting guard".
+  Q131748678: 'Ivan Volf — basketball player, mis-linked to FC Bayern Munich',
+  // Rink hockey: CP Vic, Reus Deportiu, then FC Barcelona's hockey section.
+  Q19301771: 'Romà Bancells — rink hockey player, mis-linked to FC Barcelona',
+};
+
+// Real footballers with an open-ended membership of a club they were never at.
+// fetch-squads.mjs drops the row from that one squad; the player stays in the
+// Mystery pool and in the lineup builder under his real club.
+export const NEVER_AT_CLUB = {
+  // Mexican forward. Tigres, Levadiakos, Olympiacos, Guadalajara, Sporting
+  // Kansas City; never signed for Real Madrid. His pool row is corrected by
+  // CLUB_FIXES above.
+  Q2617208: { squad: 'Real Madrid', why: 'Alan Pulido — never played for Real Madrid' },
 };

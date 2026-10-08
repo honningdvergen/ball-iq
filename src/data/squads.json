@@ -1793,26 +1793,6 @@
   ],
   "Real Madrid": [
     {
-      "id": "Q2617208",
-      "name": "Alan Pulido",
-      "position": "forward",
-      "slot": "FW",
-      "nat": "Mexico",
-      "born": 1991,
-      "dob": "1991-03-08",
-      "started": "2023-01-01"
-    },
-    {
-      "id": "Q19845456",
-      "name": "Alberto Abalde",
-      "position": "small forward",
-      "slot": "FW",
-      "nat": "Spain",
-      "born": 1995,
-      "dob": "1995-12-15",
-      "started": "2020-01-01"
-    },
-    {
       "id": "Q110001765",
       "name": "Álvaro Fernández",
       "position": "full-back",
@@ -2395,16 +2375,6 @@
       "born": 1995,
       "dob": "1995-03-23",
       "started": "2015-01-01"
-    },
-    {
-      "id": "Q131748678",
-      "name": "Ivan Volf",
-      "position": "shooting guard",
-      "slot": null,
-      "nat": "Germany",
-      "born": 2006,
-      "dob": "2006-07-20",
-      "started": "2024-01-01"
     },
     {
       "id": "Q96072055",
@@ -15507,16 +15477,6 @@
       "born": 1999,
       "dob": "1999-08-13",
       "started": "2018-01-01"
-    },
-    {
-      "id": "Q19301771",
-      "name": "Romà Bancells i Chavales",
-      "position": null,
-      "slot": null,
-      "nat": "Spain",
-      "born": 1990,
-      "dob": "1990-10-28",
-      "started": "2021-01-01"
     },
     {
       "id": "Q56332606",

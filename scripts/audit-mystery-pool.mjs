@@ -29,7 +29,7 @@
  *   node scripts/audit-mystery-pool.mjs
  */
 import { readFileSync, existsSync } from 'fs';
-import { NAME_OVERRIDES, CLUB_FIXES } from './_name-overrides.mjs';
+import { NAME_OVERRIDES, CLUB_FIXES, NOT_IN_SQUAD, NEVER_AT_CLUB } from './_name-overrides.mjs';
 
 const FAME_FLOOR = 70;      // above this, absence is a defect, not a judgement call
 let bad = 0;
@@ -224,7 +224,31 @@ if (undone.length) {
   ok(`all ${Object.keys(NAME_OVERRIDES).length} name and ${Object.keys(CLUB_FIXES).length} club corrections are in the shipped files`);
 }
 
-// ── 7. report the residual so it stays visible rather than forgotten ────────
+// ── 7. no known false row in the squads the pool and the lineup builder read ──
+/* squads.json decides the current-club label in the pool build and is the whole
+   of the lineup builder's squad lists, and lineup.json is what the builder
+   fetches. A basketball player sat in Real Madrid's squad in both from August
+   to 2026-10-08, pickable as a forward. fetch-squads.mjs drops the ids listed
+   in _name-overrides.mjs; this checks the two shipped files, because a refresh
+   run from an older checkout would put them back. */
+const squads = JSON.parse(readFileSync('src/data/squads.json', 'utf8'));
+const lineup = JSON.parse(readFileSync('public/data/lineup.json', 'utf8'));
+const falseRows = [];
+for (const [club, squad] of Object.entries(squads)) for (const p of squad)
+  if (NOT_IN_SQUAD[p.id] || NEVER_AT_CLUB[p.id]?.squad === club) falseRows.push(`squads.json  ${club}: ${p.name}`);
+for (const p of lineup.players) if (NOT_IN_SQUAD[p.i]) falseRows.push(`lineup.json  player: ${p.n}`);
+for (const [club, slots] of Object.entries(lineup.teams || {})) for (const id of new Set(Object.values(slots).flat()))
+  if (NOT_IN_SQUAD[id] || NEVER_AT_CLUB[id]?.squad === club) falseRows.push(`lineup.json  ${club} squad: ${id}`);
+if (falseRows.length) {
+  fail(`${falseRows.length} known false squad row(s) are in the shipped files:`);
+  falseRows.forEach((m) => console.error(`     ${m}`));
+  console.error('   → they are listed in scripts/_name-overrides.mjs (NOT_IN_SQUAD, NEVER_AT_CLUB);');
+  console.error('     fetch-squads.mjs filters them, then rebuild public/data/lineup.json.');
+} else {
+  ok('no known false row in squads.json or lineup.json');
+}
+
+// ── 8. report the residual so it stays visible rather than forgotten ────────
 const uk = pool.filter((p) => p.nat === 'United Kingdom').length;
 if (uk) console.log(`ℹ️  ${uk} players still read "United Kingdom" — uncapped, so no caps to derive from. Known residual.`);
 

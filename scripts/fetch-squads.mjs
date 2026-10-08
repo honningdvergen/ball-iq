@@ -44,6 +44,7 @@
 
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
+import { NOT_IN_SQUAD, NEVER_AT_CLUB } from './_name-overrides.mjs';
 
 const ENDPOINT = 'https://query.wikidata.org/sparql';
 const UA = 'BallIQ-squads/1.0 (https://balliq.app)';
@@ -378,6 +379,18 @@ if (lossRate > 0.15) {
   console.error(`\n✗ ABORTED — ${(100 * lossRate).toFixed(1)}% of players ended up at no club, over the 15% ceiling.`);
   console.error(`  squads.json left untouched. Check the supersede rule before re-running.`);
   process.exit(1);
+}
+
+// Rows that are false rather than stale: someone from another section of a
+// multi-sport club, or a footballer with a membership that never happened.
+// No rule above can see them, so they are listed by id in _name-overrides.mjs
+// (a basketball player was pickable in Real Madrid's XI for two months).
+for (const [club, squad] of Object.entries(raw)) {
+  raw[club] = squad.filter((p) => {
+    const why = NOT_IN_SQUAD[p.id] || (NEVER_AT_CLUB[p.id]?.squad === club && NEVER_AT_CLUB[p.id].why);
+    if (why) console.log(`  ✗ ${club}: dropped ${p.name} — ${why}`);
+    return !why;
+  });
 }
 
 // ⚠️ The sanity gate runs AFTER pruning, not before. Pruning shrinks squads,
