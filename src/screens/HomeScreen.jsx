@@ -1,11 +1,12 @@
 import React from "react";
 import { currentAvatarId } from '../lib/currentAvatar.js';
-import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, Heart, UserRoundSearch, LandPlot, Newspaper, Settings, Pencil, Search } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, LandPlot, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { getTrailAnswer, loadTrailDay, getTrailNumber } from "../lib/trail.js";
+import { isTop10Live, getTop10Number, loadTop10Day } from "../lib/top10.js";
 import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD } from "../lib/date.js";
@@ -198,6 +199,9 @@ function HomeScreenImpl({
   // Whether Trail has a puzzle today. Read once here rather than inside the
   // daily-zone IIFE, because the entry point now lives in the More-modes grid.
   const trailLive = (() => { try { return !!getTrailAnswer(); } catch { return false; } })();
+  // Top 10 has a list today when the day falls inside its schedule. The lists
+  // themselves stay in the lazy screen chunk; this reads one number.
+  const top10Live = (() => { try { return isTop10Live(); } catch { return false; } })();
   // Cheap enough to compute inline: an array lookup against the frozen log,
   // no ranking work. The heavy pool/ranking import stays inside the lazy
   // screen chunk so the home screen never pays for it.
@@ -391,9 +395,13 @@ function HomeScreenImpl({
         const mysteryRes = loadMysteryResult(new Date());
         const mysteryDone = !!(mysteryRes?.won || mysteryRes?.gaveUp);
         const mysteryGuesses = mysteryDone ? 0 : (mysteryRes?.guesses?.length || 0);
-        const total = 2 + (trailLive ? 1 : 0) + (mysteryLive ? 1 : 0);
+        const top10Day = top10Live ? loadTop10Day(dateToYMD(new Date())) : null;
+        const top10Done = top10Day?.status === "done";
+        const top10Found = top10Day?.score || 0;
+        const top10Open = !top10Done && (top10Day?.picks?.length || 0) > 0;
+        const total = 2 + (trailLive ? 1 : 0) + (top10Live ? 1 : 0) + (mysteryLive ? 1 : 0);
         const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0)
-          + (trailLive && trailDone ? 1 : 0) + (mysteryLive && mysteryDone ? 1 : 0);
+          + (trailLive && trailDone ? 1 : 0) + (top10Live && top10Done ? 1 : 0) + (mysteryLive && mysteryDone ? 1 : 0);
         const allDone = doneCount === total;
         return (
           <div className="daily-zone" role="group" aria-label="Today's puzzles">
@@ -450,6 +458,17 @@ function HomeScreenImpl({
                   sub: trailDone ? <>Done · today's player</> : <>Follow the moves · name the player</>,
                   onTap: () => setScreen("trail"),
                   aria: trailDone ? "Today's Transfer Trail: done — review" : "Play today's Transfer Trail",
+                }] : []),
+                ...(top10Live ? [{
+                  key: "top10", name: "Top 10", no: getTop10Number(), Icon: ListOrdered, accent: MODE_ACCENT.top10, rgb: MODE_RGB.top10,
+                  done: top10Done, open: top10Open,
+                  sub: top10Done ? <>Done · <strong>{top10Found}/10</strong></>
+                    : top10Open ? <><strong>{top10Found}</strong> of 10 found · keep going</>
+                    : <>Name all ten · three lives</>,
+                  onTap: () => setScreen("top10"),
+                  aria: top10Done ? `Today's Top 10: done, ${top10Found} out of 10 — review`
+                    : top10Open ? `Today's Top 10: ${top10Found} of 10 found — continue`
+                    : "Play today's Top 10",
                 }] : []),
                 ...(mysteryLive ? [{
                   key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", no: mysteryNumber(), accent: MODE_ACCENT.mystery, rgb: MODE_RGB.mystery,

@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import {
-  TOP10_LIVES, TOP10_ANCHOR_DAY, getTop10Number, getTop10Id,
+  TOP10_LIVES, TOP10_ANCHOR_DAY, getTop10Number, getTop10Id, isTop10Live,
   gradeTop10, outcomeOf, rankListSuggestions, buildTop10ShareText, formatAsOf,
 } from '../../src/lib/top10.js';
 import { normaliseName } from '../../src/lib/mysteryPlayer.js';
@@ -89,6 +89,15 @@ describe('the schedule', () => {
     expect(TOP10_ANCHOR_DAY).toBe(20738);
     expect(getTop10Number(new Date(2026, 9, 12))).toBe(1);
     expect(getTop10Number(new Date(2026, 9, 13))).toBe(2);
+  });
+
+  it('Home shows the row only on a day the schedule covers', () => {
+    expect(isTop10Live(new Date(2026, 9, 11), 3)).toBe(false);
+    expect(isTop10Live(new Date(2026, 9, 12), 3)).toBe(true);
+    expect(isTop10Live(new Date(2026, 9, 14), 3)).toBe(true);
+    expect(isTop10Live(new Date(2026, 9, 15), 3)).toBe(false);
+    // Nothing scheduled, nothing shown: how the game ships before launch.
+    expect(isTop10Live(new Date(2026, 9, 12), 0)).toBe(false);
   });
 
   it('serves nothing before launch or past the end of the log', () => {

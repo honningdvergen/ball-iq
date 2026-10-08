@@ -20,17 +20,27 @@
 // folded name for a club or a nation.
 import { dayIndexForDate, dateToYMD } from './date.js';
 import { normaliseName } from './mysteryPlayer.js';
+import { TOP10_ANCHOR_DAY, TOP10_DAYS } from '../data/top10Meta.js';
 
 export const TOP10_LIVES = 3;
 export const TOP10_SIZE = 10;
 
-// Days since epoch of Top 10 #1. ⚠️ Set once, on the day the game first ships,
-// and never moved: every share text and every recorded result carries the
-// number that falls out of it.
-export const TOP10_ANCHOR_DAY = 20738; // provisional: 12 Oct 2026
+// The anchor (the day of Top 10 #1) and the schedule's length are set in
+// scripts/top10/specs.mjs and arrive through the generated top10Meta.js.
+export { TOP10_ANCHOR_DAY };
 
 export function getTop10Number(date = new Date()) {
   return dayIndexForDate(date) - TOP10_ANCHOR_DAY + 1;
+}
+
+/**
+ * Is there a list to play on this date? Home asks this before it draws the row,
+ * from the schedule's LENGTH alone, so it never loads the lists to find out.
+ * False before launch day and past the end of the schedule a build carries.
+ */
+export function isTop10Live(date = new Date(), days = TOP10_DAYS) {
+  const n = getTop10Number(date);
+  return n >= 1 && n <= days;
 }
 
 /** The list id scheduled for a date, or null before launch / past the log. */

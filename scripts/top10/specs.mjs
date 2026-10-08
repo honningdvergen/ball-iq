@@ -126,6 +126,12 @@ export const TOP10_SPECS = [
     derive: { list: 'ligue-1-top-scorers', cols: ['Player'], mode: 'last-different' } },
 ];
 
+// Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
+// UTC day number, lib/date.js). ⚠️ Set once, on the day the game first ships,
+// and never moved: every share text and every recorded result carries the
+// number that falls out of it. PROVISIONAL until launch: 12 Oct 2026.
+export const TOP10_ANCHOR_DAY = 20738;
+
 // The schedule: TOP10_LOG[n] is Top 10 #(n + 1). ⚠️ APPEND ONLY once the game
 // is live. A released native build carries this file; reordering it would have
 // two players on the same day arguing about different lists.
