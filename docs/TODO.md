@@ -228,6 +228,30 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       commit, not uploaded. Before submitting: Alex's check on his phone, the
       store text in `release-1.7.6-store-text.md` (the "written by hand" line
       and the four privacy URLs block a clean submission), and his "submit".
+- [x] **1.7.6 build 143 is in TestFlight** (8 Oct, 22:49 Oslo; Alex: "we
+      need to get a new native build before the 11th of October"). Cut at
+      `2176243c`, preflight green, VALID at Apple. Adds to 142 the Mystery
+      Player corrections, which ship inside the binary and reach no phone
+      without a build: the position clue prints a source-checked role
+      (`src/data/mysteryRoles.json`, 64 answers, 3 withheld) instead of the
+      Wikidata token, the ranking files those answers in the same line
+      (`scripts/apply-mystery-roles.mjs`, 54 pool rows, 15 of them moved
+      line), youth and reserve sides are gone from the search list (84
+      labels) and guess rows print no club. Android bundle (53) rebuilt from
+      the same commit, not uploaded. 142 is superseded.
+      ⚠️ TestFlight is not the App Store. The public apps are 1.7.5 on both
+      stores and carry the old pool, so on 11 Oct (Mystery Player No. 70)
+      they still clue a right-back as "a midfielder" unless 1.7.6 is through
+      review and installed by then. Not submitted: Alex's ruling the same
+      evening was no rush on 1.7.6 until it is device-checked.
+- [ ] Mystery Player, left open on 8 Oct: three answers run without a
+      position clue because sources disagree on what they played (all three
+      better known as managers); the checked roles rest on Wikipedia alone
+      (Transfermarkt is not reachable from the verifier); about 320
+      scheduled answers whose two position fields agree were read through
+      but not source-checked one by one; the 537 wingers labelled "wing
+      half" still do not match the 65 labelled "winger" on the 50-point
+      position term.
 - [ ] New first three store screenshots: not started as of 8 Oct. They can
       only change with a version submission, so they ride with 1.7.6 or wait
       for 1.7.7.
