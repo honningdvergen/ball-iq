@@ -20,6 +20,13 @@ import { CALIBRATION } from "../data/cardCalibration.js";
 // drifts silently the next time someone tunes the scale.
 const RECAL_DATE_LABEL = new Date(CALIBRATION.measured + "T00:00:00Z")
   .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+// The note explains a one-off change, so it has a shelf life. It was still on
+// Alex's phone on 8 Oct, four weeks after the rescale, to someone who had seen
+// it many times and never pressed the small cross. Three weeks, then it goes
+// for everyone, dismissed or not.
+const RECAL_NOTE_DAYS = 21;
+const RECAL_NOTE_EXPIRED =
+  Date.now() - new Date(CALIBRATION.measured + "T00:00:00Z").getTime() > RECAL_NOTE_DAYS * 86400000;
 // ⚠️ THE NOTE NO LONGER QUOTES THE MULTIPLIERS, AND MUST NOT. It read "medium
 // questions now count 25% more, hard 50% more" — true of the INPUT, and until
 // 2026-09-11 also true of the printed number, because the rating was simply
@@ -1289,7 +1296,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
   // Recalibration note — shown once per device after the 2026-09-09 scale change.
-  const [recalSeen, setRecalSeen] = useState(() => { try { return localStorage.getItem(RECAL_KEY) === "1"; } catch { return true; } });
+  const [recalSeen, setRecalSeen] = useState(() => { if (RECAL_NOTE_EXPIRED) return true; try { return localStorage.getItem(RECAL_KEY) === "1"; } catch { return true; } });
   // THE LEAGUE SLOT IS THE ONLY CHANGEABLE FACE — see pickLeagueFace. Auto by
   // default (it already serves 27% of players a non-EPL league); this is for
   // the ones it cannot reach, above all the 7% who have answered no league
