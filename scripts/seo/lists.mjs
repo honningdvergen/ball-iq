@@ -8076,8 +8076,8 @@ export const LISTS = [
       ],
       [
         "2011–12",
-        "Olivier Giroud / Nenê",
-        "Montpellier / Paris Saint-Germain",
+        "Olivier Giroud",
+        "Montpellier",
         "21"
       ],
       [
