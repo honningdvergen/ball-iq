@@ -29,6 +29,7 @@
  *   node scripts/audit-mystery-pool.mjs
  */
 import { readFileSync, existsSync } from 'fs';
+import { NAME_OVERRIDES, CLUB_FIXES } from './_name-overrides.mjs';
 
 const FAME_FLOOR = 70;      // above this, absence is a defect, not a judgement call
 let bad = 0;
@@ -152,7 +153,9 @@ if (noDob > pool.length * 0.05) {
    sport, so they are removed by Wikidata id and this checks all three shipped
    files, since a rebuild from the cached core fetch would bring them back. */
 const answers = JSON.parse(readFileSync('src/data/mysteryAnswers.json', 'utf8'));
-const shippedCareers = JSON.parse(readFileSync('src/data/mysteryCareers.json', 'utf8')).p || {};
+const shippedCareersFile = JSON.parse(readFileSync('src/data/mysteryCareers.json', 'utf8'));
+const shippedCareers = shippedCareersFile.p || {};
+const shippedCareersTable = shippedCareersFile.c || [];
 const back = Object.keys(removed).filter((id) => inPool.has(id) || answers.includes(id) || id in shippedCareers);
 if (back.length) {
   fail(`${back.length} removed non-footballer(s) are back in the shipped Mystery data:`);
@@ -182,7 +185,46 @@ if (oddPosition.length) {
   ok('every position in the pool is a football position');
 }
 
-// ── 6. report the residual so it stays visible rather than forgotten ────────
+// ── 6. the curated corrections must be IN the shipped files ─────────────────
+/* ⚠️ THE FIFTH SECOND-PASS, AND IT WAS ALREADY BEING SKIPPED. fix-pool-names.mjs
+   runs last because every rebuild rewrites the pool from Wikidata, which is
+   where the wrong names and the wrong clubs come from. Nothing checked that it
+   had run. On 2026-10-08 the pool held ten vandalised names, one of them a
+   scheduled answer ("João Moutinh0": typing Moutinho found nobody), and fifteen
+   players under a club they never played for, Edwin van der Sar at Barcelona
+   among them. This compares the shipped rows with scripts/_name-overrides.mjs. */
+const byId = new Map(pool.map((p) => [p.id, p]));
+const spellsOf = (id) => (shippedCareers[id] || []).map(([i, a, b]) => [shippedCareersTable[i], a, b]);
+const undone = [];
+for (const [id, name] of Object.entries(NAME_OVERRIDES)) {
+  const p = byId.get(id);
+  if (p && p.name !== name) undone.push(`${id}  name is "${p.name}", should be "${name}"`);
+}
+for (const [id, fix] of Object.entries(CLUB_FIXES)) {
+  const p = byId.get(id);
+  if (!p) continue;
+  const spells = spellsOf(id);
+  const has = (name) => spells.some((sp) => sp[0] === name);
+  const why = [];
+  if (p.club !== fix.club) why.push(`club is "${p.club}", should be "${fix.club}"`);
+  if (fix.slot && p.slot !== fix.slot) why.push(`slot is ${p.slot}, should be ${fix.slot}`);
+  for (const name of [...(fix.drop || []), ...Object.keys(fix.rename || {})])
+    if (has(name)) why.push(`career still holds "${name}"`);
+  for (const [name, [a, b]] of Object.entries(fix.years || {}))
+    if (!spells.some((sp) => sp[0] === name && sp[1] === a && sp[2] === b)) why.push(`"${name}" is not ${a}-${b ?? ''}`);
+  for (const [name, a, b] of fix.add || [])
+    if (!spells.some((sp) => sp[0] === name && sp[1] === a && sp[2] === b)) why.push(`career lacks "${name}" ${a}-${b ?? ''}`);
+  if (why.length) undone.push(`${id}  ${p.name}: ${why.join('; ')}`);
+}
+if (undone.length) {
+  fail(`${undone.length} curated correction(s) are not in the shipped pool or careers:`);
+  undone.slice(0, 15).forEach((m) => console.error(`     ${m}`));
+  console.error('   → run: node scripts/fix-pool-names.mjs   (LAST in the pipeline; a rebuild undoes it)');
+} else {
+  ok(`all ${Object.keys(NAME_OVERRIDES).length} name and ${Object.keys(CLUB_FIXES).length} club corrections are in the shipped files`);
+}
+
+// ── 7. report the residual so it stays visible rather than forgotten ────────
 const uk = pool.filter((p) => p.nat === 'United Kingdom').length;
 if (uk) console.log(`ℹ️  ${uk} players still read "United Kingdom" — uncapped, so no caps to derive from. Known residual.`);
 

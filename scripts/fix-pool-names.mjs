@@ -5,15 +5,18 @@
 // pool from Wikidata and would undo it:
 //   fetch-squads -> build-mystery-pool -> fetch-careers -> derive-pool-nationality -> THIS
 //
-// Two jobs, both defences against upstream data we do not control:
+// Three jobs, all defences against upstream data we do not control:
 //   1. Restore names that have been vandalised or mangled on Wikidata.
 //   2. Drop entries Wikidata places in a squad they were never in.
+//   3. Correct careers whose spells are linked to something that is not the
+//      club (a city, a country, another sport), and the club label with them.
+//      This one also rewrites src/data/mysteryCareers.json.
 //
 // Both report no-ops loudly. An override that no longer matches means either
 // Wikidata was fixed (delete the entry) or the QID moved (investigate) — and
 // either way silence would be the wrong answer.
 import { readFileSync, writeFileSync } from 'fs';
-import { NAME_OVERRIDES, NOT_IN_SQUAD } from './_name-overrides.mjs';
+import { NAME_OVERRIDES, NOT_IN_SQUAD, CLUB_FIXES } from './_name-overrides.mjs';
 
 const pool = JSON.parse(readFileSync('src/data/mysteryPool.json', 'utf8'));
 const schedule = new Set(JSON.parse(readFileSync('src/data/mysterySchedule.json', 'utf8')));
@@ -47,9 +50,45 @@ for (const p of pool) {
   removed++;
 }
 
+// ── 3. careers and club labels ──────────────────────────────────────────────
+// The careers file interns club names: `c` is the table, `p[id]` a list of
+// [index into c, start, end]. Indices are positions, so a name is only ever
+// APPENDED to the table, never removed or reordered.
+const careers = JSON.parse(readFileSync('src/data/mysteryCareers.json', 'utf8'));
+const clubIndex = new Map(careers.c.map((n, i) => [n, i]));
+const idx = (name) => {
+  if (!clubIndex.has(name)) { clubIndex.set(name, careers.c.length); careers.c.push(name); }
+  return clubIndex.get(name);
+};
+let fixed = 0, settled = 0;
+for (const [qid, fix] of Object.entries(CLUB_FIXES)) {
+  const p = keep.find((x) => x.id === qid);
+  if (!p) { console.log(`  ⚠️  ${qid}: not in the pool at all — stale club fix?`); stale++; continue; }
+  const before = JSON.stringify([p, careers.p[qid]]);
+  let spells = (careers.p[qid] || []).map(([i, a, b]) => [careers.c[i], a, b]);
+  for (const name of fix.drop || []) spells = spells.filter((sp) => sp[0] !== name);
+  for (const [was, now] of Object.entries(fix.rename || {})) for (const sp of spells) if (sp[0] === was) sp[0] = now;
+  for (const [name, [a, b]] of Object.entries(fix.years || {})) {
+    const at = spells.filter((sp) => sp[0] === name);
+    if (at.length !== 1) { console.error(`\n✗ ${p.name} (${qid}): expected one "${name}" spell to re-date, found ${at.length}`); process.exit(1); }
+    at[0][1] = a; at[0][2] = b;
+  }
+  for (const [name, a, b] of fix.add || [])
+    if (!spells.some((sp) => sp[0] === name && sp[1] === a && sp[2] === b)) spells.push([name, a, b]);
+  careers.p[qid] = spells.map(([name, a, b]) => [idx(name), a, b]);
+  Object.assign(p, { club: fix.club, clubId: fix.clubId, country: fix.country, clubCount: spells.length });
+  if (fix.slot) p.slot = fix.slot;
+  if (fix.position) p.position = fix.position;
+  if (JSON.stringify([p, careers.p[qid]]) === before) { settled++; continue; }
+  console.log(`  ✎ ${p.name}: ${p.club} · ${spells.map(([n, a, b]) => `${n} ${a ?? '?'}-${b ?? ''}`).join(' | ')}`);
+  fixed++;
+}
+writeFileSync('src/data/mysteryCareers.json', JSON.stringify(careers));
+
 writeFileSync('src/data/mysteryPool.json', JSON.stringify(keep, null, 2));
 
 console.log(`\nrenamed ${renamed} · removed ${removed} · no-op overrides ${stale}`);
+console.log(`club fixes applied ${fixed} · already in place ${settled}`);
 console.log(`pool: ${pool.length} -> ${keep.length}`);
 const unresolved = [...schedule].filter((id) => !keep.some((p) => p.id === id));
 console.log(`scheduled answers still resolvable: ${schedule.size - unresolved.length}/${schedule.size}`);
