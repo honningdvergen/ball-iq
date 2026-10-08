@@ -330,6 +330,95 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
         `max(2, length - 4)`, after 1.7.6. Club web pages paced at 8 to 10 a
         week; packs go into the app at full speed.
 
+### 0f. 8 to 9 Oct, night: two new games ordered, a design round, the Top 10 built
+
+Alex's asks, late on 8 Oct: build the Top 10 game AND the draft game before
+anything is submitted to the stores; put a design team on the app icon and
+the store screenshots; find out whether Transfer Trail can show real club
+emblems; keep playing in the app until look, feel and motion are right. He
+also said the simulator does not have to be shut down for the social posts,
+which are scheduled on the server.
+
+- [x] **Top 10, the game** (`d5aa6b74`, not switched on). `src/screens/Top10.jsx`,
+      `src/lib/top10.js`, builder `scripts/gen-top10.mjs`, lists and schedule
+      in `scripts/top10/specs.mjs`. Three lives, pick from suggestions only, a
+      near miss (11th to 13th) is free. Look at it on a dev server with
+      `node scripts/gen-top10.mjs --all` and `/play?game=top10&list=<id>`;
+      run the builder again WITHOUT `--all` before committing, or the build's
+      `--check` fails on purpose.
+- [x] **Twenty lists fact-checked on 9 Oct** against the web by four verifier
+      agents; each carries `checked` and `until` (the next final or ceremony
+      that can change it). Held, with the reason in the specs file: AFCON
+      (the 2025 title is before the Court of Arbitration for Sport, heard
+      8 Oct, no award yet), the Club World Cup (FIFA calls the Intercontinental
+      Cup its continuation, so the answer can be argued), Ligue 1 top scorers.
+- [ ] ⚠️ **Our Ligue 1 top-scorers table is inconsistent** (`scripts/seo/lists.mjs`,
+      2011-12 row reads "Olivier Giroud / Nenê"). The league names one top
+      scorer when players finish level (fewer penalty goals) and our table
+      follows that for 2019-20 and 2024-25. Fix the row and the live page.
+- [ ] **Top 10, to switch it on.** In order: (1) the Home row and the done
+      state, with `TOP10_DAYS` in a tiny generated module so Home never loads
+      the lists; (2) History: a fifth column, or Top 10 takes Mystery's place
+      (Alex leans to moving Mystery out of the daily set; see 0e data); (3)
+      App.jsx: XP, `recordPlay`, `saveScore`, the chord gate, next-up rows, the
+      widget's `total: 4`; (4) a migration adding `top10` to the
+      `daily_results` game check and to `record_daily_result` (**production
+      data: needs Alex's yes**; until then the game plays and nothing is
+      counted); (5) the island, the web page, nav links, sitemap; (6) set
+      `TOP10_ANCHOR_DAY` to launch day (it is provisional: 12 Oct) and fill
+      `TOP10_LOG`, soonest-expiring lists first (Ballon d'Or before 26 Oct,
+      Copa Libertadores before 28 Nov).
+- [ ] **Top 10 needs the crowd-pleasers.** Every list so far is "the last ten
+      different winners". All-time top scorers, most appearances, record
+      transfers, biggest stadiums need a new fact-checked batch (generate,
+      verify, date). Alex's own examples were of this kind.
+- [x] **Name search fix** (`1eb365e1`): "odegaard", "hojbjerg", "yildiz" found
+      nobody in Trail and Mystery, because ø ł ı ß were deleted rather than
+      folded. One table now (`src/lib/letterFold.js`); a test types every
+      pool name.
+- [ ] **The draft game.** Research is in
+      `~/ball-iq-audit/2026-10-08/research/game-formats.md`: the reference
+      ("38-0") is eleven spins of a club and season, one player per spin,
+      then a simulated season record. Plan for ours: one seeded board a day
+      (same spins for everyone), fixed formation, one re-spin, the same
+      eleven always gives the same record. Club-season squads can be derived
+      from `mysteryCareers.json` (tested: Arsenal 2003-04 gives 27 players).
+      Open: what scores a player. We hold no ratings; `fame` is Wikipedia
+      notability. Bring Alex a worked example before building. The
+      `daily_results` bucket tops out at 30, so a 38-game record needs its
+      own encoding.
+- [x] **Real club emblems: no.** Report in
+      `~/ball-iq-audit/2026-10-08/research/emblems.md`. FAPL v Panini (2003)
+      held unofficial stickers infringed copyright in club badges; no licence
+      route exists for an indie; Apple rejects updates over it. Recommended
+      and sketched: mini shirts from each club's colours and pattern
+      (`~/ball-iq-audit/2026-10-08/kits/`). Seventeen unused badge drawings
+      were removed from App.jsx (`d0b92256`).
+- [ ] **Mini shirts on Transfer Trail**: pattern data per club (stripes, hoops,
+      halves, sash, plain, sleeves), one SVG component, then the same on the
+      club picker. Not started beyond the sketch.
+- [ ] **Icon.** Two designers, 25 concepts, in `~/ball-iq-audit/2026-10-08/icon/`.
+      Verdict on Alex's "IQ" idea from both: about 7 of 10, keep it but fix
+      the capital I (it reads as a bar). Shortlist: slab-serif IQ on amber,
+      lowercase i with the ball as the Q, lowercase "iq" with the ball as the
+      dot, a ball with one lit panel. Next round: redraw the top three at
+      final quality, compare with the rivals' real icons (nobody has looked
+      at them as pictures yet, and "Golazo" at No. 5 in UK Sports games was
+      not in the teardown), then a Play listing experiment. Alex decides.
+- [ ] **Store screenshots.** Script and three directions in
+      `~/ball-iq-audit/2026-10-08/screens/` (`compose.mjs`, `manifest.json`).
+      Direction C won: one amber ground, poster type, the game moment pulled
+      out of the phone. First three: "Guess the player", "Six tries. One
+      name.", "No ads. Every answer checked." Needs fresh simulator captures
+      (list in `notes.md`), a frame-three question that does not say "World
+      Cup", and the two new games.
+- [x] Review page for Alex with all of the above as pictures:
+      https://claude.ai/artifact/W66Z4KMV8KxjHGyH9N6aGj
+- [x] Permission prompts: auto mode ignores the bare `WebFetch` rule, so each
+      new site asked once. A fixed list of reference sites is approved
+      (`19f4ba9e`); the audit folder is an additional directory in the local
+      settings. An every-site rule exists and is Alex's call, not an agent's.
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7

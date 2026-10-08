@@ -81,7 +81,7 @@ describe('lazy screens are inside an error boundary', () => {
     // Named explicitly so a future refactor that drops one is loud rather than
     // quietly reducing coverage back toward the four tabs.
     for (const name of [
-      'trail', 'mystery', 'stadiums', 'review',
+      'trail', 'top10', 'mystery', 'stadiums', 'review',
       'blocked-users', 'friend-profile', 'online-entry', 'mp-lobby',
     ]) {
       expect(src, `no TabErrorBoundary named "${name}"`)

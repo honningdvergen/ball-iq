@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch } from "lucide-react";
+import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered } from "lucide-react";
 import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
-import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N } from "../lib/dailyResults.js";
+import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
 
 // Results in a day before the panel shows headcounts instead of shares.
 const SHOW_COUNTS_FROM = 300;
@@ -47,6 +47,7 @@ const DEFAULT_ICON = {
   daily7: <ClipboardList size={18} strokeWidth={2.2} />,
   trail: <Route size={18} strokeWidth={2.2} />,
   mystery: <UserRoundSearch size={18} strokeWidth={2.2} />,
+  top10: <ListOrdered size={18} strokeWidth={2.2} />,
 };
 
 // One "the panel was seen" event per result, claimed synchronously.
@@ -135,12 +136,13 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const bars = useMemo(() => {
     if (!summary) return [];
     const b = dist.buckets;
-    const keys = game === "daily7"
-      ? [0, 1, 2, 3, 4, 5, 6, 7]
+    const outOf = SCORE_GAMES[game];
+    const keys = outOf != null
+      ? Array.from({ length: outOf + 1 }, (_, i) => i)
       : game === "footle" ? [1, 2, 3, 4, 5, 6, 0]
       : (() => { const ks = Object.keys(b).map(Number).filter((k) => k > 0); const max = Math.max(4, ...ks, won ? bucket : 0); return [...Array.from({ length: Math.min(max, 10) }, (_, i) => i + 1), 0]; })();
     const top = Math.max(1, ...keys.map((k) => b[k] || 0));
-    return keys.map((k) => ({ k, label: k === 0 && game !== "daily7" ? "X" : String(k), c: b[k] || 0, pct: Math.round(((b[k] || 0) / top) * 100), mine: game === "daily7" ? k === bucket : (won ? k === bucket : k === 0) }));
+    return keys.map((k) => ({ k, label: k === 0 && outOf == null ? "X" : String(k), c: b[k] || 0, pct: Math.round(((b[k] || 0) / top) * 100), mine: outOf != null ? k === bucket : (won ? k === bucket : k === 0) }));
   }, [summary, dist, game, bucket, won]);
 
   const doShare = async () => {
@@ -259,8 +261,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             ))}
           </div>
           <div className="dd-sub">
-            {game === "daily7"
-              ? <>Average <strong className="dd-num">{summary.avg.toFixed(1)}/7</strong>{summary.beatPct > 0 ? <> · you beat <strong className="dd-num">{summary.beatPct}%</strong></> : null}</>
+            {summary.outOf != null
+              ? <>Average <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong>{summary.beatPct > 0 ? <> · you beat <strong className="dd-num">{summary.beatPct}%</strong></> : null}</>
               : <><strong className="dd-num">{summary.solvedPct}%</strong> solved{won && summary.beatPct > 0 ? <> · you beat <strong className="dd-num">{summary.beatPct}%</strong></> : null}</>}
           </div>
         </div>

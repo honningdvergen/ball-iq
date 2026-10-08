@@ -15,7 +15,11 @@ const URL_ = 'https://blcisypmngimqkwxrrdm.supabase.co';
 const KEY_ = (import.meta.env.VITE_SUPABASE_KEY || '').trim();
 import { noteCompletionHour } from './playHour.js';
 export const MIN_N = 20;
-export const DAILY_GAMES = ['footle', 'daily7', 'trail', 'mystery'];
+export const DAILY_GAMES = ['footle', 'daily7', 'trail', 'mystery', 'top10'];
+// Games whose bucket is a SCORE out of a fixed total, where higher is better.
+// Every other game's bucket is guesses used when solved and 0 when not, where
+// fewer is better. The value is the top score.
+export const SCORE_GAMES = { daily7: 7, top10: 10 };
 
 // Native shells serve from capacitor://localhost (iOS) / https://localhost
 // (Android), so the plain hostname guard would treat every phone as a dev box.
@@ -89,7 +93,8 @@ export async function recordDailyResult({ game, edition, bucket, won = true }) {
   if (!DAILY_GAMES.includes(game) || !Number.isInteger(edition) || edition < 0) return false;
   if (!Number.isInteger(bucket) || bucket < 0 || bucket > 30) return false;
   // A Daily 7 score above 7 is another game's result leaking in (2026-10-04).
-  if (game === 'daily7' && bucket > 7) return false;
+  // The same holds for any game scored out of a fixed total.
+  if (SCORE_GAMES[game] != null && bucket > SCORE_GAMES[game]) return false;
   if (hasRecorded(game, edition)) return true;
   if (synthetic() || !URL_ || !KEY_) return false;
   // ⚠️ NO IDENTIFIER FROM NATIVE. The store listing promises no analytics on the
@@ -131,18 +136,19 @@ export function summariseDistribution(dist, { game, mine, won }) {
   if (!dist || dist.n < MIN_N) return null;
   const entries = Object.entries(dist.buckets).map(([b, c]) => [Number(b), c]);
   const total = entries.reduce((s, [, c]) => s + c, 0) || 1;
+  const outOf = SCORE_GAMES[game] ?? null;
   let beaten = 0;
-  if (game === 'daily7') {
+  if (outOf != null) {
     for (const [b, c] of entries) if (b < mine) beaten += c;
   } else if (won) {
     for (const [b, c] of entries) if (b === 0 || b > mine) beaten += c;
   } else {
     beaten = 0;
   }
-  const solvedPct = game === 'daily7' ? null : Math.round((dist.won / total) * 100);
+  const solvedPct = outOf != null ? null : Math.round((dist.won / total) * 100);
   const beatPct = Math.round((beaten / total) * 100);
-  const avg = game === 'daily7'
+  const avg = outOf != null
     ? (entries.reduce((s, [b, c]) => s + b * c, 0) / total)
     : null;
-  return { n: dist.n, total, solvedPct, beatPct, avg };
+  return { n: dist.n, total, solvedPct, beatPct, avg, outOf };
 }

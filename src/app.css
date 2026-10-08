@@ -1444,7 +1444,6 @@ html.is-android .tab-bar{ bottom:56px; }
 .journey-badge.next{background:rgba(88,204,2,0.15);color:var(--green-ink);}
 .journey-badge.goal{background:rgba(255,193,7,0.15);color:var(--gold);}
 
-.club-crest svg{width:100%;height:100%;display:block;}
 
 .badges-section{margin-bottom:14px;}
 .badges-title{font-family:var(--font);font-size:10px;color:var(--t3);letter-spacing:0.2px;margin-bottom:12px;}

@@ -46,6 +46,8 @@
 
    Percentages of the ~1000 max: shared clubs 35 · era 15 · nationality 15 ·
    position 15 (slot 10 + specific 5) · age 10 · current club 10. */
+import { foldLetters } from './letterFold.js';
+
 const W = {
   club: 100, // same CURRENT club — kept, but no longer dominant
   /* A shared club splits into two parts, and that split is the whole point.
@@ -411,8 +413,10 @@ export function answerIdForDay(log, dayIndex) {
 
 /** Accepts a guess by name, case- and accent-insensitively. */
 export function normaliseName(s) {
-  return String(s || '')
-    .toLowerCase()
+  // foldLetters first: ø ł ı ß and friends do not decompose, so without it the
+  // mark-strip below turned Ødegaard into "degaard" and no plain spelling of
+  // about 150 players could find them (lib/letterFold.js).
+  return foldLetters(s)
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9 ]/g, ' ')

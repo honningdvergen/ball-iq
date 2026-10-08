@@ -116,6 +116,11 @@
       "permanent": false
     },
     {
+      "source": "/top10",
+      "destination": "/play?game=top10",
+      "permanent": false
+    },
+    {
       "source": "/mystery/",
       "destination": "/mystery-player/",
       "permanent": false

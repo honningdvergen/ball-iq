@@ -22,18 +22,38 @@
 // never above it. An earlier attempt used +1000 surname vs +250 first-name — a
 // gap fame (max 211) can never close — and it buried James Rodríguez.
 import { normaliseName } from './mysteryPlayer.js';
+import { foldDigraphs } from './letterFold.js';
+
+// A name's searchable spellings, worked out once per record instead of on every
+// keystroke: the plain fold ("muller", "odegaard") and, where it differs, the
+// written-out one ("mueller", "oedegaard"). Both are things a real person
+// types, and the Trail's grader has accepted both since July; the suggestions
+// list only learned them on 2026-10-09.
+const SPELLINGS = new WeakMap();
+function spellingsOf(p) {
+  let v = SPELLINGS.get(p);
+  if (!v) {
+    const plain = normaliseName(p.name);
+    const long = normaliseName(foldDigraphs(p.name));
+    v = long === plain ? [plain] : [plain, long];
+    SPELLINGS.set(p, v);
+  }
+  return v;
+}
 
 export function scorePlayerMatch(p, q) {
-  const full = normaliseName(p.name);
-  const parts = full.split(' ').filter(Boolean);
   let s = 0;
-  // 60, not 250: a mononym's full name IS a partial query. At 250, typing
-  // "ronaldo" put R9 (fame 124) above Cristiano (fame 211), which is not who
-  // anyone means.
-  if (full === q) s = 60;
-  else if (parts.some((w) => w === q)) s = 45;        // Saka · Reece James · James Milner
-  else if (parts.some((w) => w.startsWith(q))) s = 25; // Sakai · Shawcross
-  // else buried mid-word (Hosaka, Earnshaw) — fame alone
+  for (const full of spellingsOf(p)) {
+    const parts = full.split(' ').filter(Boolean);
+    // 60, not 250: a mononym's full name IS a partial query. At 250, typing
+    // "ronaldo" put R9 (fame 124) above Cristiano (fame 211), which is not who
+    // anyone means.
+    const m = full === q ? 60
+      : parts.some((w) => w === q) ? 45          // Saka · Reece James · James Milner
+      : parts.some((w) => w.startsWith(q)) ? 25  // Sakai · Shawcross
+      : 0;                                       // buried mid-word (Hosaka, Earnshaw): fame alone
+    if (m > s) s = m;
+  }
   s += p.fame || 0;
   // Recency nudge, smaller still: settles same-surname pile-ups (35 players
   // match "santos" and the 1950s Brazilians outrank the current ones on fame)
@@ -56,7 +76,7 @@ export function rankPlayerSuggestions(pool, text, opts = {}) {
   if (q.length < 2) return [];
   const { exclude, limit = 8 } = opts;
   return pool
-    .filter((p) => (!exclude || !exclude.has(p.id)) && normaliseName(p.name).includes(q))
+    .filter((p) => (!exclude || !exclude.has(p.id)) && spellingsOf(p).some((n) => n.includes(q)))
     .map((p) => ({ p, s: scorePlayerMatch(p, q) }))
     .sort((a, b) => b.s - a.s)
     .slice(0, limit)
