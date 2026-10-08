@@ -205,6 +205,22 @@ const MODE_COLS = [
 // A matchday row → its four cells, plus the sentence a screen reader gets.
 // Derived in one place so the mobile table and the desktop table can never
 // disagree about what a given day means.
+// A run of days with nothing played folds into ONE quiet line (2026-10-08).
+// On Alex's phone the tab was "Yesterday" and then twelve identical rows of
+// four dashes: a wall that says "you were not here" twelve times and pushes the
+// days that do hold a result off the screen. Yesterday never folds, because it
+// carries the Play buttons.
+function foldUnplayed(days) {
+  const out = [];
+  for (const m of days) {
+    const empty = !m.isYesterday && rowCells(m).every(c => c.state === "none" || c.state === "off");
+    const last = out[out.length - 1];
+    if (empty && last && last.gap) last.days.push(m);
+    else if (empty) out.push({ gap: true, days: [m] });
+    else out.push(m);
+  }
+  return out;
+}
 function rowCells(m) {
   return [
     { key: "footle", theme: MODE_THEME.footle, text: String(m.fUsed),
@@ -792,7 +808,19 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             day, the header does not claim it, and its state is on the streak
             strip above and on Home's Today block. Alex, 2026-09-06: this tab is
             "HISTORY, not a second Today". */}
-        {matchdays.filter(m => !m.isToday).map(m => {
+        {foldUnplayed(matchdays.filter(m => !m.isToday)).map(m => {
+          if (m.gap) {
+            const newest = m.days[0], oldest = m.days[m.days.length - 1];
+            const text = m.days.length === 1
+              ? `${newest.dateLabel} ${newest.dateSub} · not played`
+              : `${oldest.dateSub} to ${newest.dateSub} · ${m.days.length} days not played`;
+            return (
+              <div key={`gap-${newest.ymd}`} aria-label={text}
+                style={{ borderRadius: 11, padding: "8px 14px", border: "1px dashed var(--border)", textAlign: "center", fontSize: 11.5, color: "var(--t3)" }}>
+                {text}
+              </div>
+            );
+          }
           const cells = rowCells(m);
           const catchUp = m.isYesterday && !m.t7Done && playDailyForDate;
           return (
