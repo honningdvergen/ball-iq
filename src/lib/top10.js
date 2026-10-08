@@ -135,7 +135,10 @@ export function rankListSuggestions(pool, text, { limit = 6, exclude } = {}) {
     if (best) scored.push({ e, s: best });
   }
   return scored
-    .sort((a, b) => b.s - a.s || a.e.name.length - b.e.name.length || a.e.name.localeCompare(b.e.name))
+    // Equal matches go to the bigger name first: `w` counts how often an entry
+    // appears among winners and finalists in our tables, so "liv" offers
+    // Liverpool before Livorno and "real" Real Madrid before Real Unión.
+    .sort((a, b) => b.s - a.s || (b.e.w || 0) - (a.e.w || 0) || a.e.name.length - b.e.name.length || a.e.name.localeCompare(b.e.name))
     .slice(0, limit)
     .map((x) => x.e);
 }

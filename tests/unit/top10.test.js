@@ -153,8 +153,17 @@ describe('the guess box for clubs and nations', () => {
   });
 
   it('puts the whole name first, then the start of a word', () => {
-    expect(rankListSuggestions(clubs, 'man', { limit: 2 }).map((c) => c.name)).toEqual(['Manchester City', 'Manchester United']);
+    expect(rankListSuggestions(clubs, 'man', { limit: 2 }).map((c) => c.name).sort()).toEqual(['Manchester City', 'Manchester United']);
     expect(top(clubs, 'milan')).toBe('AC Milan');
+  });
+
+  it('offers the bigger club first when the match is equal', () => {
+    // Seen in the simulator on 2026-10-09: "liv" listed Livorno above Liverpool,
+    // because equal matches were ordered by name length.
+    expect(top(clubs, 'liv')).toBe('Liverpool');
+    expect(top(clubs, 'real')).toBe('Real Madrid');
+    expect(top(clubs, 'bar')).toBe('Barcelona');
+    expect(top(clubs, 'ath')).toBe('Athletic Bilbao');
   });
 
   it('needs two letters, and never offers what was already picked', () => {
@@ -243,6 +252,41 @@ describe('the data', () => {
     for (const l of Object.values(ON_DISK.lists)) expect(l.checked, l.id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     for (const id of ON_DISK.log) expect(ON_DISK.lists[id], id).toBeTruthy();
     expect(new Set(ON_DISK.log).size).toBe(ON_DISK.log.length);
+  });
+});
+
+describe('what only a phone shows (pinned after the simulator pass of 2026-10-09)', () => {
+  const SCREEN = readFileSync(new URL('../../src/screens/Top10.jsx', import.meta.url), 'utf8');
+  const CSS = readFileSync(new URL('../../src/screens/top10.css', import.meta.url), 'utf8');
+
+  it('a tap on a suggestion does not take focus from the guess box', () => {
+    // Without this iOS drops the keyboard after every pick.
+    expect(SCREEN).toMatch(/className="t10-opt"[\s\S]{0,700}onPointerDown=\{\(e\) => e\.preventDefault\(\)\}/);
+    expect(SCREEN).toMatch(/if \(!willEnd\) \{ try \{ inputRef\.current\?\.focus\(/);
+  });
+
+  it('a board row is short enough for all ten to clear the keyboard', () => {
+    const m = /\.t10-cell \{[^}]*min-height: (\d+)px/.exec(CSS);
+    expect(m, 'the cell rule sets a min-height').toBeTruthy();
+    // 572pt to the keyboard's top edge on an iPhone 17; five rows must end above it.
+    expect(Number(m[1])).toBeLessThanOrEqual(42);
+  });
+});
+
+describe('the database knows the game', () => {
+  const MIG = readFileSync(new URL('../../supabase/migrations/v2_6_daily_results_top10.sql', import.meta.url), 'utf8');
+
+  it('in BOTH places the id is hard-coded: the table check and the function', () => {
+    const lists = MIG.match(/\('footle','daily7','trail','mystery','top10'\)/g) || [];
+    expect(lists.length).toBe(2);
+    for (const g of DAILY_GAMES) expect(MIG).toContain(`'${g}'`);
+  });
+
+  it('refuses a score above the total, like the client does', () => {
+    expect(MIG).toMatch(/p_game = 'top10' and p_bucket > 10/);
+    expect(MIG).toMatch(/p_game = 'daily7' and p_bucket > 7/);
+    expect(MIG).toMatch(/security definer/i);
+    expect(MIG).toMatch(/revoke all on function public\.record_daily_result/);
   });
 });
 

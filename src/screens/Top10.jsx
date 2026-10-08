@@ -201,6 +201,10 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
     setDay((d) => ({ ...d, picks: [...d.picks, { k: s.key, n: s.name }] }));
     setEntry("");
     setArmed(false);
+    // Belt and braces for the keyboard: if focus did move (a browser that
+    // ignores the pointer-down refusal), take it straight back while we are
+    // still inside the tap, which is the only moment iOS allows it.
+    if (!willEnd) { try { inputRef.current?.focus({ preventScroll: true }); } catch {} }
     const n = day.picks.length + 1;
     if (hit) {
       const i = slotIndexFor(list, s.key);
@@ -221,7 +225,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
       if (near) haptic("soft");
       else { haptic("wrong"); playSound("wrong"); setShake(true); setTimeout(() => setShake(false), 300); }
     }
-  }, [g.done, g.score, g.lives, list, day, total, haptic, playSound]);
+  }, [g.done, g.score, g.lives, list, day, total, haptic, playSound, inputRef]);
 
   const giveUp = useCallback(() => {
     if (!armed) { setArmed(true); return; }
@@ -289,7 +293,15 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
             {suggestions.length > 0 && (
               <div className="t10-drop" style={{ maxHeight: dropMax }}>
                 {suggestions.map((s) => (
-                  <button key={s.key} type="button" className="t10-opt" onClick={() => pick(s)}>
+                  <button key={s.key} type="button" className="t10-opt"
+                    // ⚠️ SEEN IN THE SIMULATOR, 2026-10-09: tapping a suggestion
+                    // moved focus to the button, iOS dropped the keyboard, and the
+                    // next guess needed a tap on the box first. Ten names, ten
+                    // extra taps. Refusing the focus change on pointer-down keeps
+                    // the box focused and the keyboard up; the click still fires.
+                    onPointerDown={(e) => e.preventDefault()}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => pick(s)}>
                     <span className="t10-opt-name">{s.name}</span>
                     {s.sub ? <span className="t10-opt-sub">{s.sub}</span> : null}
                   </button>

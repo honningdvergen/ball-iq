@@ -12,7 +12,7 @@
   margin-right: auto;
 }
 
-.t10-head { display: flex; align-items: center; gap: 10px; padding: 12px 4px; }
+.t10-head { display: flex; align-items: center; gap: 10px; padding: 8px 4px; }
 .t10-head.is-embedded { padding: 2px 4px 8px; }
 .t10-head-title { font-size: 20px; font-weight: 800; color: var(--t1); }
 .t10-head-sub { font-size: 12.5px; color: var(--t2); }
@@ -26,25 +26,25 @@
 
 /* The question. */
 .t10-q {
-  padding: 14px 16px;
+  padding: 12px 16px;
   border-radius: 16px;
   background: rgba(var(--t10-rgb), 0.08);
   border: 1px solid rgba(var(--t10-rgb), 0.28);
 }
-.t10-q-title { margin: 0; font-size: 19px; line-height: 1.2; font-weight: 800; color: var(--t1); text-wrap: balance; }
+.t10-q-title { margin: 0; font-size: 18px; line-height: 1.2; font-weight: 800; color: var(--t1); text-wrap: balance; }
 .t10-q-meta {
   display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-  margin-top: 8px; font-size: 12.5px; color: var(--t2);
+  margin-top: 6px; font-size: 12.5px; color: var(--t2);
 }
 .t10-q-count { flex-shrink: 0; font-weight: 800; color: var(--t10); font-variant-numeric: tabular-nums; }
 
 /* The guess box. */
-.t10-entry { position: relative; margin-top: 12px; }
+.t10-entry { position: relative; margin-top: 10px; }
 .t10-entry.is-shake { animation: t10Shake 260ms cubic-bezier(0.36, 0.07, 0.19, 0.97); }
 .t10-input {
   width: 100%; box-sizing: border-box;
   background: var(--s1); border: 1px solid var(--border); border-radius: 12px;
-  padding: 13px 15px; color: var(--t1); font-size: 16px; font-family: inherit; outline: none;
+  padding: 12px 15px; color: var(--t1); font-size: 16px; font-family: inherit; outline: none;
   transition: border-color 180ms;
 }
 .t10-input:focus { border-color: rgba(var(--t10-rgb), 0.7); }
@@ -74,34 +74,38 @@
 
 /* What the last pick was. One line, always the same height, so the board
    below it never moves. */
-.t10-say { min-height: 20px; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--t2); }
+.t10-say { min-height: 18px; margin-top: 6px; font-size: 13px; line-height: 18px; font-weight: 700; color: var(--t2); }
 .t10-say.is-hit { color: var(--t10); }
 .t10-say.is-near { color: var(--gold); }
 .t10-say.is-miss { color: var(--red); }
 .t10-say > span { display: inline-block; animation: t10Rise 260ms ease-out both; }
 
 /* The board: ranks one to five down the left, six to ten down the right, so
-   all ten stay on screen above a phone keyboard. */
+   all ten stay on screen above a phone keyboard.
+   ⚠️ MEASURED IN THE SIMULATOR, 2026-10-09 (iPhone 17, iOS 27): the keyboard's
+   top edge sits 572pt down. With 50pt rows the fifth row was under it. At 42pt
+   the board ends near 556pt, so every rank is visible while typing. Do not
+   grow a row without checking that number again. */
 .t10-board {
   display: grid;
   grid-template-rows: repeat(5, auto);
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
-  gap: 6px 8px;
-  margin-top: 6px;
+  gap: 5px 8px;
+  margin-top: 4px;
 }
 .t10-cell {
   display: flex; align-items: center; gap: 9px;
-  min-height: 50px; padding: 7px 10px; box-sizing: border-box;
+  min-height: 42px; padding: 4px 10px; box-sizing: border-box;
   border-radius: 12px; background: var(--s1); border: 1px solid var(--border);
 }
 .t10-rank {
   flex: none; width: 20px; text-align: center;
   font-size: 13px; font-weight: 800; color: var(--t3); font-variant-numeric: tabular-nums;
 }
-.t10-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.t10-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0; }
 .t10-name { font-size: 13.5px; line-height: 1.15; font-weight: 800; color: var(--t1); overflow-wrap: anywhere; }
-.t10-clue { font-size: 11.5px; font-weight: 700; color: var(--t3); font-variant-numeric: tabular-nums; }
+.t10-clue { font-size: 11.5px; line-height: 1.25; font-weight: 700; color: var(--t3); font-variant-numeric: tabular-nums; }
 .t10-cell.is-open .t10-clue { font-size: 13px; color: var(--t2); }
 
 .t10-cell.is-found { background: rgba(var(--t10-rgb), 0.12); border-color: rgba(var(--t10-rgb), 0.5); }

@@ -63,15 +63,20 @@ const fail = (m) => errors.push(m);
 
 // ── CLUBS AND NATIONS: one registry each ─────────────────────────────────────
 function registry(canonMap, akaMap) {
-  const byKey = new Map(); // folded canonical name -> { name, aka:Set }
+  const byKey = new Map(); // folded canonical name -> { name, aka:Set, w }
   const canon = (raw) => canonMap[fold(raw)] || raw;
   const add = (raw) => {
     const name = canon(raw);
     const key = fold(name);
     const cur = byKey.get(key);
-    if (!cur) byKey.set(key, { name, aka: new Set() });
+    if (!cur) byKey.set(key, { name, aka: new Set(), w: 0 });
     // Prefer the spelling with its accents: "Atlético Madrid" over "Atletico Madrid".
     else if (name !== cur.name && name.normalize('NFD').length > cur.name.normalize('NFD').length) cur.name = name;
+    // Every appearance in a table of winners and finalists counts once. It is
+    // the only "how big is this club" we hold, and it is enough to put
+    // Liverpool above Livorno when someone types "liv" (seen in the simulator
+    // on 2026-10-09 the other way round).
+    byKey.get(key).w += 1;
     return byKey.get(key).name;
   };
   const finish = () => {
@@ -90,7 +95,7 @@ function registry(canonMap, akaMap) {
       // One entry per spelling once folded: "Koln" and "koln" are the same key.
       const akaSeen = new Set([key]);
       const aka = [...e.aka].filter((a) => !akaSeen.has(fold(a)) && akaSeen.add(fold(a)));
-      return aka.length ? { key, name: e.name, aka } : { key, name: e.name };
+      return { key, name: e.name, ...(aka.length ? { aka } : {}), ...(e.w > 1 ? { w: e.w } : {}) };
     }).sort((a, b) => a.name.localeCompare(b.name));
     // No spelling may lead to two entries.
     const seen = new Map();

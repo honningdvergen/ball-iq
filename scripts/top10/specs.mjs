@@ -193,6 +193,7 @@ export const CLUB_CANON = {
   'deportivo': 'Deportivo La Coruña',
   'argentinos jrs': 'Argentinos Juniors',
   'racing': 'Racing Club',
+  'athletico pr': 'Athletico Paranaense',
   'ny red bulls': 'New York Red Bulls',
   'ne revolution': 'New England Revolution',
   'sporting kc': 'Sporting Kansas City',
