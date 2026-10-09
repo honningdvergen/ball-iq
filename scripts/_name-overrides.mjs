@@ -237,6 +237,119 @@ export const BIRTH_FIXES = {
   // fetched on 12-15 August. An eligible answer: the reveal prints the year and
   // the era hint said "born in the 1970s". Found 2026-10-09.
   Q128829: { dob: '1979-12-14' },
+
+  // Found 2026-10-09 by scripts/audit-pool-birthdates.mjs, run over all 9,030
+  // rows. Unless an entry says otherwise, its date is the one in the English
+  // infobox, the English opening sentence and every German, French, Spanish,
+  // Italian and Portuguese article that gives a date, at least four of the five
+  // each time. "Wikidata lists both" means the right date is there as a second
+  // statement and the fetch took the first.
+  //
+  // THE YEAR THE GAME PRINTS WAS WRONG.
+  // Agustín Marchesín. Pool printed 1945 (16 March 1945). Wikidata still has the old date.
+  Q2479934: { dob: '1988-03-16' },
+  // Eusebio Di Francesco. Pool printed 1968, with the day 8 September 1969 beside it. Wikidata lists both.
+  Q396154: { dob: '1969-09-08' },
+  // Guélor Kanga. Pool printed 1985, with the day 1 September 1990 beside it. Wikidata lists both.
+  Q4704631: { dob: '1990-09-01' },
+  // Majed Abdullah. Pool printed 1958, with the day 1 November 1959 beside it.
+  // Arabic, English, German, Spanish and Italian give 11 January 1959. French
+  // and Portuguese have the day and month the other way round, in two years.
+  Q446181: { dob: '1959-01-11' },
+  // Makoto Atsuta. Pool printed 1967, the last two digits swapped, with the day
+  // 16 September 1976 beside it. Japanese, English, German and French give 1976.
+  Q1254800: { dob: '1976-09-16' },
+  // Toyoji Takahashi. Pool printed 1913 and held no day. Japanese Wikipedia
+  // cites a 1963 memorial book for 24 September 1915; German and Italian agree,
+  // and it is the preferred statement on Wikidata.
+  Q3082564: { dob: '1915-09-24' },
+  // Rudi Vata. Pool printed 1970, with the day 13 February 1969 beside it.
+  // English, French, Spanish, Italian and Portuguese give 1969; German 1970.
+  Q733564: { dob: '1969-02-13' },
+  // Pietro Arcari. Pool printed 1908, with the day 2 December 1909 beside it.
+  // English, German, French, Spanish and Italian give 1909.
+  Q616767: { dob: '1909-12-02' },
+
+  // THE ROW TOLD TWO STORIES: the printed year was right and the day beside it
+  // belonged to another year, which is what the ranking measured age from.
+  // Carlos Bilardo. The day beside 1938 was 16 March 1939. Wikidata lists both.
+  Q360765: { dob: '1938-03-16' },
+  // Yazan Abu Arab. The day beside 1996 was 8 September 1995. Wikidata lists both.
+  Q47105682: { dob: '1996-01-31' },
+  // Yasser Ibrahim. The day beside 1993 was 8 May 1989.
+  Q17386078: { dob: '1993-02-10' },
+  // Júnior Moraes. The day beside 1987 was 6 September 1997.
+  Q2529972: { dob: '1987-04-04' },
+  // Zhang Linpeng. The day beside 1989 was 9 May 2000. Wikidata lists both.
+  Q704545: { dob: '1989-05-09' },
+  // Gabriel Torres. The day beside 1988 was 31 October 1977. Wikidata lists both.
+  Q5515888: { dob: '1988-10-31' },
+  // Béla Guttmann. The day beside 1899 was 13 March 1900. English, German,
+  // Spanish, Italian and Portuguese give 27 January 1899; French keeps 1900.
+  Q361027: { dob: '1899-01-27' },
+  // Ángel Romano. The day beside 1893 was 2 August 1894. English, German,
+  // Spanish and Italian give 1893; French and Portuguese 1894.
+  Q251881: { dob: '1893-08-02' },
+
+  // RIGHT YEAR, WRONG DAY. Nothing a player sees; the ranking's age term only.
+  // Lev Yashin. Pool said 21 October 1929. Wikidata lists both.
+  Q167828: { dob: '1929-10-22' },
+  // Emiliano Martínez. Pool said 1 September 1992. Wikidata lists both.
+  Q3275904: { dob: '1992-09-02' },
+  // Erik ten Hag. Pool said 3 February 1970. Wikidata still has the old date.
+  Q2844569: { dob: '1970-02-02' },
+  // Leônidas. Pool said 6 November 1913. Wikidata lists both.
+  Q311739: { dob: '1913-09-06' },
+  // Roy Makaay. Pool said 24 February 1975. Wikidata still has the old date.
+  Q152725: { dob: '1975-03-09' },
+  // Fábio Júnior. Pool said 22 November 1977. Wikidata lists both.
+  Q726192: { dob: '1977-11-20' },
+  // Ahmadou Bamba Dieng. Pool said 1 September 2000. Wikidata lists both.
+  Q105426667: { dob: '2000-03-23' },
+  // Fellipe Bertoldo. Pool said 15 January 1991. Wikidata lists both.
+  Q18921427: { dob: '1991-01-05' },
+  // Noureddine Naybet. Pool said 13 November 1970. Wikidata lists both.
+  Q137899: { dob: '1970-02-10' },
+  // Lyle Foster. Pool said 4 September 2000. Wikidata lists both.
+  Q42725482: { dob: '2000-09-03' },
+  // Juan Arango. Pool said 17 May 1980. Wikidata lists both.
+  Q313143: { dob: '1980-05-16' },
+  // Karim Ziani. Pool said 17 April 1982. Wikidata lists both.
+  Q313159: { dob: '1982-08-17' },
+  // Hamari Traoré. Pool said 31 July 1992. Wikidata lists both.
+  Q15906939: { dob: '1992-01-27' },
+  // Cata Díaz. Pool said 13 March 1979. Wikidata lists both.
+  Q350270: { dob: '1979-07-13' },
+  // Revaz Dzodzuashvili. Pool said 10 April 1945. Wikidata lists both.
+  Q2535166: { dob: '1945-04-15' },
+  // Michael Johnson. Pool said 3 March 1988.
+  Q29456: { dob: '1988-02-24' },
+  // Konstantinos Tsiklitiras. Pool said 11 November 1888. Wikidata lists both.
+  Q360872: { dob: '1888-10-30' },
+  // Juan José Nogués. Pool said 28 April 1909. Wikidata lists both.
+  Q429464: { dob: '1909-03-28' },
+  // Farouk Ben Mustapha. Pool said 3 June 1989. Wikidata lists both.
+  Q2759083: { dob: '1989-07-01' },
+  // Jonny Magallón. Pool said 21 October 1981. Wikidata lists both.
+  Q442969: { dob: '1981-11-21' },
+  // Godfrey Oboabona. Pool said 16 September 1990. Wikidata lists both.
+  Q3177363: { dob: '1990-08-16' },
+  // Mouhamadou Diallo. Pool said 15 June 1995. Wikidata lists both.
+  Q22004047: { dob: '1995-06-18' },
+  // Carlo Ceresoli. Pool said 14 May 1910. Wikidata lists both.
+  Q1042039: { dob: '1910-06-14' },
+};
+
+// Rows where `born` and the year of `dob` differ and the sources do not settle
+// which is right. audit-mystery-pool.mjs fails the build on any other row that
+// disagrees with itself, because that is how a date changing on Wikidata
+// between our two fetches shows up. Each of these was read on 2026-10-09; the
+// row is left as it was, not guessed.
+export const BIRTH_DISPUTED = {
+  Q2307763: 'Hugo Sotil. Prints 1949 (English Wikipedia); the day is 18 May 1946 (Spanish, Portuguese, German, French).',
+  Q166844: "Thomas N'Kono. Prints 1956 (English, Spanish, Wikidata today); the day is 20 July 1955 (French, German, Italian, Portuguese).",
+  Q535429: 'Edílson. Prints 1970 (Portuguese, French, Italian, Wikidata today); the day is 17 September 1971 (English, Spanish, German).',
+  Q609626: 'Larbi Benbarek. Prints 1914 (French, Arabic, German, Spanish, Portuguese); the day is 16 June 1917 (English, Italian).',
 };
 
 // People in a club's FOOTBALL squad who play another sport for the same club.

@@ -56,13 +56,19 @@ for (const batch of chunk(todo, 50)) {
   } catch (e) { console.log(`  fetch failed: ${e.message}`); await sleep(10000); continue; }
 
   for (const [id, ent] of Object.entries(json.entities || {})) {
-    const claim = ent?.claims?.P569?.[0]?.mainsnak?.datavalue?.value;
+    // ⚠️ A PLAYER CAN CARRY SEVERAL BIRTH STATEMENTS. This used to read the
+    // first one listed, whatever its rank. Of the 134 pool dates that disagreed
+    // with Wikipedia on 2026-10-09, 64 had the Wikipedia date on Wikidata as
+    // well, as another statement. Take the preferred statement if there is
+    // one, never a deprecated one, and only then the first.
+    const stated = (ent?.claims?.P569 || []).filter((c) => c.rank !== 'deprecated' && c.mainsnak?.datavalue?.value?.precision >= 11);
+    const claim = (stated.find((c) => c.rank === 'preferred') || stated[0])?.mainsnak.datavalue.value;
     // ⚠️ PRECISION MATTERS. Wikidata records precision 9 = year only, 10 =
     // month, 11 = day. Storing a year-precision value as "1987-01-01" would
     // invent a birthday and cluster everyone born that year onto one date —
     // recreating the exact tie problem this script exists to fix. Only
     // day-precision dates are kept; the rest stay null and fall back to `born`.
-    const ok = claim && claim.precision >= 11 && typeof claim.time === 'string';
+    const ok = claim && typeof claim.time === 'string';
     dobs[id] = ok ? claim.time.replace(/^\+/, '').slice(0, 10) : null;
   }
   done += batch.length;
