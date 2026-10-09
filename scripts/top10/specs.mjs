@@ -490,13 +490,38 @@ export const TOP10_SPECS = [
 // Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
 // UTC day number, lib/date.js). ⚠️ Set once, on the day the game first ships,
 // and never moved: every share text and every recorded result carries the
-// number that falls out of it. PROVISIONAL until launch: 12 Oct 2026.
+// number that falls out of it. Monday 12 October 2026, by Alex's word on
+// 9 Oct. From the first second of that day this number is fixed for good.
 export const TOP10_ANCHOR_DAY = 20738;
 
 // The schedule: TOP10_LOG[n] is Top 10 #(n + 1). ⚠️ APPEND ONLY once the game
 // is live. A released native build carries this file; reordering it would have
 // two players on the same day arguing about different lists.
-export const TOP10_LOG = [];
+//
+// The first thirteen days, 12 to 24 October 2026. The opening list is the one
+// most players can finish (ten famous names), because the first day decides
+// whether anyone comes back for the second; the lists with pre-war names in
+// their last slots are spaced out, and clubs, players and nations alternate.
+// ⚠️ THIRTEEN DAYS IS ALL THERE IS. On the day after the last entry the game
+// goes quiet and Mystery Player returns to Today by itself. More lists must be
+// appended before 24 October, and a native build must not ship to the stores
+// on this schedule alone: it would run dry days after release. The lists have
+// to reach the app from the server first (see docs/TODO.md).
+export const TOP10_LOG = [
+  'premier-league-goals',            // Mon 12 Oct  #1
+  'english-league-titles',           // Tue 13
+  'england-caps',                    // Wed 14
+  'world-cup-matches-won',           // Thu 15
+  'liverpool-top-scorers',           // Fri 16
+  'premier-league-appearances',      // Sat 17
+  'manchester-united-top-scorers',   // Sun 18
+  'premier-league-points',           // Mon 19
+  'arsenal-top-scorers',             // Tue 20
+  'premier-league-clean-sheets',     // Wed 21
+  'chelsea-top-scorers',             // Thu 22
+  'english-top-flight-seasons',      // Fri 23
+  'tottenham-top-scorers',           // Sat 24
+];
 
 // One name per club. Keys are folded spellings found in the tables and in
 // scripts/seo/leagues.mjs; the value is the name the player sees and picks.

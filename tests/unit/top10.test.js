@@ -91,6 +91,32 @@ describe('the schedule', () => {
     expect(getTop10Number(new Date(2026, 9, 13))).toBe(2);
   });
 
+  // Launched Monday 12 October 2026 (Alex's word, 9 Oct). A released native
+  // build carries the schedule, so the days already written may never be
+  // reordered or replaced: two players on the same day would be arguing about
+  // different lists, and yesterday's shared scores would point at another one.
+  it('the first thirteen days are frozen: the schedule is append only', () => {
+    expect(ON_DISK.log.slice(0, 13)).toEqual([
+      'premier-league-goals', 'english-league-titles', 'england-caps', 'world-cup-matches-won',
+      'liverpool-top-scorers', 'premier-league-appearances', 'manchester-united-top-scorers',
+      'premier-league-points', 'arsenal-top-scorers', 'premier-league-clean-sheets',
+      'chelsea-top-scorers', 'english-top-flight-seasons', 'tottenham-top-scorers',
+    ]);
+    expect(new Date(2026, 9, 12).getDay()).toBe(1);
+    expect(isTop10Live(new Date(2026, 9, 11))).toBe(false);
+    expect(isTop10Live(new Date(2026, 9, 12))).toBe(true);
+    expect(getTop10Id(new Date(2026, 9, 12), ON_DISK.log)).toBe('premier-league-goals');
+  });
+
+  it('every scheduled day is a ranked list, never a "last ten different winners" one', () => {
+    for (const id of ON_DISK.log) {
+      const l = ON_DISK.lists[id];
+      expect(l, id).toBeTruthy();
+      expect(String(l.source).startsWith('lists:'), `${id} is derived from a winners table`).toBe(false);
+      expect(l.note, `${id} says what counts`).toBeTruthy();
+    }
+  });
+
   it('Home shows the row only on a day the schedule covers', () => {
     expect(isTop10Live(new Date(2026, 9, 11), 3)).toBe(false);
     expect(isTop10Live(new Date(2026, 9, 12), 3)).toBe(true);
