@@ -288,6 +288,44 @@ describe('what only a phone shows (pinned after the simulator pass of 2026-10-09
   });
 });
 
+describe('Top 10 takes Mystery Player\'s place as the fourth daily (Alex, 9 Oct 2026)', () => {
+  const read = (rel) => readFileSync(new URL(`../../${rel}`, import.meta.url), 'utf8');
+  const HOME = read('src/screens/HomeScreen.jsx');
+  const APP = read('src/App.jsx');
+  const HISTORY = read('src/screens/DailyScreen.jsx');
+  const DOOR = read('src/marketing/FrontDoor.jsx');
+
+  it('Home lists Mystery in Today only on a day Top 10 has no list, and never drops it', () => {
+    expect(HOME).toMatch(/const mysteryDaily = mysteryLive && !top10Live;/);
+    // The Today row and the day's count both follow mysteryDaily...
+    expect(HOME).toMatch(/\.\.\.\(mysteryDaily \? \[\{\s*key:"mystery"/);
+    expect(HOME).toMatch(/\+ \(mysteryDaily \? 1 : 0\);/);
+    expect(HOME).toMatch(/\(mysteryDaily && mysteryDone \? 1 : 0\)/);
+    // ...and on a Top 10 day the game is still one tap away, under More modes.
+    expect(HOME).toMatch(/\{mysteryLive && !mysteryDaily && \(\(\) => \{/);
+  });
+
+  it('the widget and the next-up rows count four dailies, not five', () => {
+    expect(APP).toMatch(/const fourthDone = top10Live \? loadTop10Day\(ymd\)\?\.status === "done" : mysteryDone;/);
+    expect(APP).toMatch(/syncWidget\(\{ date: ymd, done, total: 4, streak/);
+    expect(APP).toMatch(/if \(MYSTERY_ENABLED && !isTop10Live\(\)\) \{/);
+  });
+
+  it('History decides the fourth game per day, so an old Mystery result is still shown', () => {
+    expect(HISTORY).toMatch(/const myLive = !t10Live && mysteryLiveOn\(dNoon\);/);
+    expect(HISTORY).toMatch(/m\.t10Live\s*\? \{ key: "top10"/);
+    // A list opened by name (biq_top10_list_<id>) is not a day and must not become a row.
+    expect(HISTORY).toMatch(/k\.startsWith\(XP\) && \/\^\\d\{4\}-\\d\{2\}-\\d\{2\}\$\/\.test\(k\.slice\(XP\.length\)\)/);
+    // A cell that is not the game its column is headed by says which game it is.
+    expect(HISTORY).toMatch(/glyph=\{headKeys\.has\(c\.key\) \? null : c\.key\}/);
+  });
+
+  it('the web front door makes the same swap', () => {
+    expect(DOOR).toMatch(/daily: !top10Live \}/);
+    expect(DOOR).toMatch(/\.\.\.\(top10Live\s*\? \[\{ k: 'top10'/);
+  });
+});
+
 describe('the database knows the game', () => {
   const MIG = readFileSync(new URL('../../supabase/migrations/v2_6_daily_results_top10.sql', import.meta.url), 'utf8');
 

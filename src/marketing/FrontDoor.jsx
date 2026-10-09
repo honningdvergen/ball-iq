@@ -36,10 +36,11 @@ import { LISTS_INDEX } from './listsIndex.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
 import { getTrailNumber, loadTrailDay } from '../lib/trail.js';
 import { mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from '../lib/mysteryPlayer.js';
+import { isTop10Live, getTop10Number, loadTop10Day } from '../lib/top10.js';
 import { readWordleTodayStatus, getWordleDateKey } from '../lib/wordleStatus.js';
 import { MODE_ACCENT } from '../lib/accents.js';
 import { FP_NUMBER } from './footlePractice.js';
-import { keyForDate, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
+import { keyForDate, dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
 import FootleBand from './FootleBand.jsx';
 import { StoreBadge } from '../components/StoreBadge.jsx';
@@ -77,12 +78,19 @@ export const LEAGUES = [
 const MOST_PLAYED = ['arsenal', 'liverpool', 'barcelona', 'chelsea', 'manchester-city', 'real-madrid', 'everton',
   'tottenham', 'celtic', 'leeds-united', 'rangers', 'besiktas', 'newcastle', 'manchester-united', 'psg', 'bayern-munich'];
 
+// Top 10 has no static page yet; /top10 redirects into the game (vercel.json).
+const TOP10_HREF = '/top10';
+
 // Every mode as a card. `line` is one line, never a sentence about us.
-const GAMES = [
+// The fourth daily is Top 10 on a day it has a list and Mystery Player
+// otherwise (Top 10 took its place, 9 Oct 2026). Mystery keeps its card either
+// way; it only loses the Daily tag.
+const gamesFor = (top10Live) => [
   { k: 'footle', n: 'Footle', line: 'Guess the surname in six', href: '/football-wordle/', daily: true },
   { k: 'daily', n: 'Daily 7', line: 'Seven questions, the same for everyone', href: '/daily-football-quiz/', daily: true },
   { k: 'trail', n: 'Transfer Trail', line: 'Follow the moves, name the player', href: '/transfer-trail/', daily: true },
-  { k: 'mystery', n: 'Mystery Player', line: 'Guess who from career clues', href: '/mystery-player/', daily: true },
+  ...(top10Live ? [{ k: 'top10', n: 'Top 10', line: 'Name all ten on the list', href: TOP10_HREF, daily: true }] : []),
+  { k: 'mystery', n: 'Mystery Player', line: 'Guess who from career clues', href: '/mystery-player/', daily: !top10Live },
   { k: 'clubquiz', n: 'Club Quiz', line: 'Pick your club, ten on them', href: door('clubquiz') },
   { k: 'leaguequiz', n: 'League Quiz', line: 'One competition, its history', href: door('leaguequiz') },
   { k: 'classic', n: 'Classic', line: 'Ten questions, twenty seconds each', href: door('classic') },
@@ -102,6 +110,7 @@ const Icon = ({ k }) => {
     case 'footle': return <svg {...p}><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>;
     case 'daily': return <svg {...p}><rect x="3" y="4" width="18" height="17" rx="2" /><path d="M8 2v4M16 2v4M3 10h18" /></svg>;
     case 'trail': return <svg {...p}><circle cx="5" cy="6" r="2" /><circle cx="19" cy="18" r="2" /><path d="M7 6h6a4 4 0 0 1 0 8h-2a4 4 0 0 0 0 8h6" /></svg>;
+    case 'top10': return <svg {...p}><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" /></svg>;
     case 'mystery': return <svg {...p}><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /><path d="M17 3l1.5 1.5" /></svg>;
     case 'clubquiz': return <svg {...p}><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" /></svg>;
     case 'leaguequiz': return <svg {...p}><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0z" /><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3" /></svg>;
@@ -141,6 +150,11 @@ function readToday() {
   } catch {}
   try { const t = loadTrailDay?.(); if (t && ['won', 'lost'].includes(t.status)) out.trail = 'done'; else if (t && t.status) out.trail = 'open'; } catch {}
   try { if (loadMysteryResult?.(new Date())?.won) out.mystery = 'done'; } catch {}
+  try {
+    const t = loadTop10Day(dateToYMD(new Date()));
+    out.top10 = t?.status === 'done' ? 'done' : t?.picks?.length ? 'open' : 'new';
+    out.top10Score = t?.status === 'done' ? (t.score || 0) : null;
+  } catch { out.top10 = 'new'; }
   return out;
 }
 
@@ -189,6 +203,8 @@ export default function FrontDoor() {
   const today = useMemo(() => new Date(), []);
   const [state, setState] = useState(() => readToday());
   useEffect(() => { setState(readToday()); }, [today]);
+  const top10Live = useMemo(() => { try { return isTop10Live(today); } catch { return false; } }, [today]);
+  const GAMES = useMemo(() => gamesFor(top10Live), [top10Live]);
   const streak = useMemo(() => readStreak(today), [today, state]);
   // The practice board (an archive puzzle, nothing about today's given away)
   // used to be its own section under Today — a second Footle door on one
@@ -205,7 +221,9 @@ export default function FrontDoor() {
     { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Played', href: '/football-wordle/' },
     { k: 'daily', n: 'Daily 7', no: null, line: 'Seven questions, the same for everyone', st: state.daily, done: state.daily === 'done', doneText: state.dailyScore != null ? `${state.dailyScore} of 7` : 'Played', href: '/daily-football-quiz/' },
     { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Follow the moves, name the player', st: state.trail, done: state.trail === 'done', doneText: 'Played', href: '/transfer-trail/' },
-    ...(MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from career clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: '/mystery-player/' }] : []),
+    ...(top10Live
+      ? [{ k: 'top10', n: 'Top 10', no: getTop10Number(today), line: 'Name all ten on the list', st: state.top10, done: state.top10 === 'done', doneText: state.top10Score != null ? `${state.top10Score} of 10` : 'Played', href: TOP10_HREF }]
+      : MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from career clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: '/mystery-player/' }] : []),
   ];
   const playedCount = dailies.filter((d) => d.done).length;
 
@@ -222,7 +240,7 @@ export default function FrontDoor() {
         {/* 1 · the date line: the page proves it changes every day */}
         <div className="fd-date" id="today">
           <span className="fd-date-d">{fmtDate(today)}</span>
-          <span className="fd-date-eds">Footle No. {getFootleNumber(today)} · Transfer Trail No. {getTrailNumber(today)}{MYSTERY_ENABLED ? ` · Mystery Player No. ${mysteryNumber(today)}` : ''}</span>
+          <span className="fd-date-eds">Footle No. {getFootleNumber(today)} · Transfer Trail No. {getTrailNumber(today)}{top10Live ? ` · Top 10 No. ${getTop10Number(today)}` : MYSTERY_ENABLED ? ` · Mystery Player No. ${mysteryNumber(today)}` : ''}</span>
         </div>
 
         {/* 2 · today's four, as a strip with progress */}
@@ -355,7 +373,7 @@ export default function FrontDoor() {
           <h2 id="fd-how-h">How it works</h2>
           <dl className="fd-faq">
             <div><dt>Is it free?</dt><dd>Yes. Every game and every quiz plays in the browser with no account. An account keeps your streaks and rating across devices.</dd></div>
-            <div><dt>What resets each day?</dt><dd>Footle, the Daily 7, Transfer Trail and Mystery Player. Everyone in the world gets the same ones, at local midnight.</dd></div>
+            <div><dt>What resets each day?</dt><dd>Footle, the Daily 7, Transfer Trail and {top10Live ? 'Top 10' : 'Mystery Player'}. Everyone in the world gets the same ones, at local midnight.</dd></div>
             <div><dt>Where do the questions come from?</dt><dd>Written and fact-checked by hand, not scraped. Most answers come with the reason they are the answer.</dd></div>
             <div><dt>Can I play with friends?</dt><dd>Yes. Live rooms for up to eight online, or pass one phone around.</dd></div>
           </dl>

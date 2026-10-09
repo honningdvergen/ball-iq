@@ -212,6 +212,14 @@ function HomeScreenImpl({
     try { return !!answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex()); } catch { return false; }
   })();
 
+  // Top 10 took Mystery Player's place as the fourth daily (Alex, 9 Oct 2026:
+  // "We fully replace Mystery Player with top 10"). On a day Top 10 has a list,
+  // Mystery is a side mode: one card at the top of More modes, not a row in
+  // Today and not counted in the day's set. Before Top 10's first day, and on
+  // any day its schedule has run dry, Mystery is the fourth daily as before,
+  // so the Today block never drops to three.
+  const mysteryDaily = mysteryLive && !top10Live;
+
   // Same discipline as trailLive/mysteryLive: never advertise a mode that
   // cannot be played. Counted against the per-tag COUNTS (a few bytes), not the
   // index (562 KB) and never the bank (2.3 MB): Home decides, it does not play.
@@ -399,9 +407,9 @@ function HomeScreenImpl({
         const top10Done = top10Day?.status === "done";
         const top10Found = top10Day?.score || 0;
         const top10Open = !top10Done && (top10Day?.picks?.length || 0) > 0;
-        const total = 2 + (trailLive ? 1 : 0) + (top10Live ? 1 : 0) + (mysteryLive ? 1 : 0);
+        const total = 2 + (trailLive ? 1 : 0) + (top10Live ? 1 : 0) + (mysteryDaily ? 1 : 0);
         const doneCount = (footleDone ? 1 : 0) + (dailyDone ? 1 : 0)
-          + (trailLive && trailDone ? 1 : 0) + (top10Live && top10Done ? 1 : 0) + (mysteryLive && mysteryDone ? 1 : 0);
+          + (trailLive && trailDone ? 1 : 0) + (top10Live && top10Done ? 1 : 0) + (mysteryDaily && mysteryDone ? 1 : 0);
         const allDone = doneCount === total;
         return (
           <div className="daily-zone" role="group" aria-label="Today's puzzles">
@@ -470,7 +478,7 @@ function HomeScreenImpl({
                     : top10Open ? `Today's Top 10: ${top10Found} of 10 found — continue`
                     : "Play today's Top 10",
                 }] : []),
-                ...(mysteryLive ? [{
+                ...(mysteryDaily ? [{
                   key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", no: mysteryNumber(), accent: MODE_ACCENT.mystery, rgb: MODE_RGB.mystery,
                   // ⚠️ AN IN-PROGRESS MYSTERY READ AS UNTOUCHED. Every guess is
                   // persisted (saveMysteryResult writes on each one), so two
@@ -708,6 +716,35 @@ function HomeScreenImpl({
           Cup now appears as the 7th tile in this grid with full-row
           span + EVENT badge + gold "Nd" countdown chip. */}
       <div className="home-section-title">More modes</div>
+      {/* Mystery Player, once Top 10 has its place in Today. A row and not a
+          seventh tile, for two reasons: it is still one puzzle a day with a
+          number and a state worth showing (five in six regulars play it), and
+          a seventh tile would leave one tile alone on the last line. */}
+      {mysteryLive && !mysteryDaily && (() => {
+        const res = loadMysteryResult(new Date());
+        const done = !!(res?.won || res?.gaveUp);
+        const guesses = done ? 0 : (res?.guesses?.length || 0);
+        return (
+          <button
+            type="button"
+            className="todays-seven-secondary mp-row"
+            style={{ "--mode": MODE_ACCENT.mystery, "--mode-rgb": MODE_RGB.mystery, marginBottom: 10 }}
+            onClick={() => setScreen("mystery")}
+            aria-label={done ? "Today's Mystery Player: done — review"
+              : guesses > 0 ? `Today's Mystery Player: ${guesses} ${guesses === 1 ? "guess" : "guesses"} in — continue`
+              : "Play today's Mystery Player"}
+          >
+            <span className="t7s-icon" aria-hidden="true"><UserRoundSearch size={22} strokeWidth={2} /></span>
+            <span className="t7s-body">
+              <span className="t7s-title">Mystery Player <span style={{ fontWeight: 600, color: "var(--t3)", fontSize: "0.82em" }}>No. {mysteryNumber()}</span></span>
+              <span className="t7s-sub">{done ? "Done · guess who"
+                : guesses > 0 ? `${guesses} ${guesses === 1 ? "guess" : "guesses"} in · keep hunting`
+                : "Guess who from career clues"}</span>
+            </span>
+            <span className="t7s-cta">{done ? "Review" : guesses > 0 ? "Continue" : "Play"}</span>
+          </button>
+        );
+      })()}
       <div className="play-grid">
         {[
           // No Club Quiz tile: the finder above this grid is the club entry

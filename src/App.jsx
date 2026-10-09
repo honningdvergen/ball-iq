@@ -4649,12 +4649,13 @@ function AppInner() {
         const m = JSON.parse(localStorage.getItem(`biq_mystery_${ymd}`) || "null");
         mysteryDone = !!(m && (m.won || m.gaveUp));
       } catch {}
-      // Top 10 joins the count only on a day it has a list, so the widget
-      // never shows a fifth puzzle that cannot be played.
+      // The fourth daily is Top 10 on a day it has a list and Mystery Player
+      // otherwise (Top 10 took its place, 9 Oct 2026), so the widget's total
+      // stays four and never counts a puzzle Home does not list in Today.
       const top10Live = isTop10Live();
-      const top10Done = top10Live && loadTop10Day(ymd)?.status === "done";
-      const done = (dailyDone ? 1 : 0) + (footleDone ? 1 : 0) + (trailDone ? 1 : 0) + (mysteryDone ? 1 : 0) + (top10Done ? 1 : 0);
-      syncWidget({ date: ymd, done, total: 4 + (top10Live ? 1 : 0), streak: loginStreak || 0 });
+      const fourthDone = top10Live ? loadTop10Day(ymd)?.status === "done" : mysteryDone;
+      const done = (dailyDone ? 1 : 0) + (footleDone ? 1 : 0) + (trailDone ? 1 : 0) + (fourthDone ? 1 : 0);
+      syncWidget({ date: ymd, done, total: 4, streak: loginStreak || 0 });
     } catch { /* widget is decoration */ }
   }, [dailyDone, loginStreak]);
   useEffect(() => { syncDailyWidget(); }, [syncDailyWidget]);
@@ -6184,7 +6185,8 @@ function AppInner() {
       }
     } catch {}
     try {
-      if (MYSTERY_ENABLED) {
+      // Not a daily on a day Top 10 has a list, so it is not "still open today".
+      if (MYSTERY_ENABLED && !isTop10Live()) {
         const m = JSON.parse(localStorage.getItem(`biq_mystery_${dateToYMD(new Date())}`) || "null");
         if (!(m && (m.won || m.gaveUp))) nextUp.push({ key: "mystery", name: "Today's Mystery Player", icon: <UserRoundSearch size={18} strokeWidth={2.2} />, onTap: () => setScreen("mystery") });
       }

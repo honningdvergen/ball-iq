@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { ClipboardList, Route, UserRoundSearch, Flame, X } from "lucide-react";
+import { ClipboardList, Route, UserRoundSearch, ListOrdered, Flame, X } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { Confetti, haptic } from "../App.jsx";
 import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
@@ -7,6 +7,7 @@ import { getWordleAnswer } from "../lib/wordle.js";
 import { getTrailAnswer } from "../lib/trail.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
+import { isTop10Live } from "../lib/top10.js";
 import { FOOTLE_SHORT } from "../lib/modeCopy.js";
 import { MODE_ACCENT, MODE_RGB } from '../lib/accents.js';
 
@@ -59,6 +60,14 @@ function mysteryLiveOn(d) {
   if (!MYSTERY_ENABLED) return false;
   try { return !!answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex(d)); } catch { return false; }
 }
+// THE FOURTH DAILY CHANGES BY DAY. Top 10 took Mystery Player's place (Alex,
+// 9 Oct 2026). On a day Top 10 has a list it is the fourth game here and
+// Mystery is a side mode; on every day before that, Mystery was. Each row
+// therefore asks this about ITS OWN day, so a week-old row still shows the
+// Mystery result the player earned, under the column Top 10 now heads.
+function top10LiveOn(d) {
+  try { return isTop10Live(d); } catch { return false; }
+}
 function noon(t) {
   const d = new Date(t);
   return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0, 0);
@@ -72,6 +81,7 @@ function ModeGlyph({ mode, size = 22 }) {
   }
   if (mode === "daily7") return <ClipboardList size={size} strokeWidth={2} />;
   if (mode === "trail") return <Route size={size} strokeWidth={2} />;
+  if (mode === "top10") return <ListOrdered size={size} strokeWidth={2} />;
   // ⚠️ Must match Home's More Modes grid. `Search` was both this glyph AND
   // the icon inside Mystery's own search field, so the mode was identified
   // by the same mark as one of its controls.
@@ -85,7 +95,7 @@ function ModeGlyph({ mode, size = 22 }) {
 // the date column, where "Yesterday" needs ~70.
 const COL_W = 54;
 
-const MODE_LABEL = { footle: "Footle", daily7: "Daily 7", trail: "Transfer Trail", mystery: "Mystery Player" };
+const MODE_LABEL = { footle: "Footle", daily7: "Daily 7", trail: "Transfer Trail", mystery: "Mystery Player", top10: "Top 10" };
 
 // Local yesterday, at NOON — the same guard the availability checks use, so a
 // UTC-offset device cannot land on the wrong side of a date boundary.
@@ -97,13 +107,17 @@ function yesterday() {
 // One Recent-days cell. Five states, not two — a mode that did not EXIST that
 // day must not render the same "—" as a day the user skipped, and Mystery has
 // no lose state so an abandoned board is "open", never a red ✗.
-function ScoreCell({ state, text, theme, w = COL_W }) {
+//
+// `glyph` names the game when the cell is NOT the game its column is headed by:
+// a Mystery result from before Top 10 took the fourth column. Without the mark
+// a violet "4" under "TOP 10" reads as a Top 10 score.
+function ScoreCell({ state, text, theme, w = COL_W, glyph = null }) {
   const base = { width: w, display: "inline-flex", justifyContent: "center", flexShrink: 0 };
   if (state === "off") return <span style={base} aria-hidden="true" />;
   return (
     <span style={base} aria-hidden="true">
       {state === "win"
-        ? <span style={{ display: "inline-flex", padding: "3px 8px", borderRadius: 999, background: theme.chipBg, fontFamily: MONO, fontSize: 11.5, fontWeight: 800, color: theme.fg, fontVariantNumeric: "tabular-nums" }}>{text}</span>
+        ? <span style={{ display: "inline-flex", alignItems: "center", gap: 3, padding: "3px 8px", borderRadius: 999, background: theme.chipBg, fontFamily: MONO, fontSize: 11.5, fontWeight: 800, color: theme.fg, fontVariantNumeric: "tabular-nums" }}>{glyph ? <ModeGlyph mode={glyph} size={11} /> : null}{text}</span>
         : state === "miss"
         ? <span style={{ display: "inline-flex", color: "#FF6B6B" }} aria-label="missed"><X size={14} strokeWidth={2.6} /></span>
         : state === "open"
@@ -192,14 +206,26 @@ const MODE_THEME = {
     btnBg: "rgba(139,108,240,0.16)", btnBd: "1px solid rgba(139,108,240,0.44)",
     chipBg: "rgba(139,108,240,0.11)", resBd: "1.5px solid rgba(139,108,240,0.5)",
   },
+  // Coral, the colour the game wears on Home and on its own screen.
+  top10: {
+    fg: MODE_ACCENT.top10, head: MODE_ACCENT.top10,
+    card: `linear-gradient(120deg,rgba(${MODE_RGB.top10},0.13),rgba(${MODE_RGB.top10},0.03) 55%,var(--s1))`,
+    bd: `1px solid rgba(${MODE_RGB.top10},0.24)`,
+    iconBg: `rgba(${MODE_RGB.top10},0.15)`, iconBd: `1px solid rgba(${MODE_RGB.top10},0.32)`,
+    btnBg: `rgba(${MODE_RGB.top10},0.16)`, btnBd: `1px solid rgba(${MODE_RGB.top10},0.44)`,
+    chipBg: `rgba(${MODE_RGB.top10},0.11)`, resBd: `1.5px solid rgba(${MODE_RGB.top10},0.5)`,
+  },
 };
 
-// Recent-days columns, left to right. Same order as the Today cards.
-const MODE_COLS = [
+// Recent-days columns, left to right. Same order as the Today cards. The
+// fourth is headed by whichever game is the fourth daily TODAY.
+const modeCols = (top10Today) => [
   { key: "footle", label: "FOOTLE", theme: MODE_THEME.footle },
   { key: "daily7", label: "DAILY 7", theme: MODE_THEME.daily7 },
   { key: "trail", label: "TRAIL", theme: MODE_THEME.trail },
-  { key: "mystery", label: "MYSTERY", theme: MODE_THEME.mystery },
+  top10Today
+    ? { key: "top10", label: "TOP 10", theme: MODE_THEME.top10 }
+    : { key: "mystery", label: "MYSTERY", theme: MODE_THEME.mystery },
 ];
 
 // A matchday row → its four cells, plus the sentence a screen reader gets.
@@ -232,16 +258,23 @@ function rowCells(m) {
     { key: "trail", theme: MODE_THEME.trail, text: String(m.trUsed),
       state: !m.trLive ? "off" : m.trWon ? "win" : m.trAttempt ? "miss" : "none",
       aria: !m.trLive ? "" : m.trWon ? `Transfer Trail solved in ${m.trUsed}` : m.trAttempt ? "Transfer Trail not solved" : "Transfer Trail not played" },
-    // Mystery cannot be lost, so an unfinished board is "open", never a miss.
-    { key: "mystery", theme: MODE_THEME.mystery, text: String(m.myUsed),
-      state: !m.myLive ? "off" : m.myWon ? "win" : m.myAttempt ? "open" : "none",
-      aria: !m.myLive ? "" : m.myWon ? `Mystery Player solved in ${m.myUsed}` : m.myAttempt ? "Mystery Player still open" : "Mystery Player not played" },
+    // The fourth game is the one that was the fourth daily on THIS row's day.
+    // A finished Top 10 is a score like Daily 7's, never a miss: running out
+    // of lives at six found is still six found.
+    m.t10Live
+      ? { key: "top10", theme: MODE_THEME.top10, text: `${m.t10Score}/10`,
+          state: m.t10Done ? "win" : m.t10Attempt ? "open" : "none",
+          aria: m.t10Done ? `Top 10 ${m.t10Score} of 10` : m.t10Attempt ? "Top 10 still open" : "Top 10 not played" }
+      // Mystery cannot be lost, so an unfinished board is "open", never a miss.
+      : { key: "mystery", theme: MODE_THEME.mystery, text: String(m.myUsed),
+          state: !m.myLive ? "off" : m.myWon ? "win" : m.myAttempt ? "open" : "none",
+          aria: !m.myLive ? "" : m.myWon ? `Mystery Player solved in ${m.myUsed}` : m.myAttempt ? "Mystery Player still open" : "Mystery Player not played" },
   ];
 }
 // Which screen a given column replays into. Daily 7 keeps its own launcher
 // (it replays a QUESTION SET, not a single puzzle, so it has always taken a
 // different path); the other three go through playArchive.
-const REPLAY_SCREEN = { footle: "wordle", trail: "trail", mystery: "mystery" };
+const REPLAY_SCREEN = { footle: "wordle", trail: "trail", mystery: "mystery", top10: "top10" };
 
 function rowAria(m) {
   return `${m.dateLabel} ${m.dateSub} — ${rowCells(m).map(c => c.aria).filter(Boolean).join(", ")}`;
@@ -424,11 +457,15 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   //   biq_trail_<ymd>   → { status: won|lost|playing, attempts: [...] }
   //   biq_mystery_<ymd> → { won: bool, guesses: [...] }        (no lose state —
   //                        Mystery is unlimited guesses, so "lost" cannot occur)
-  const { trailHistory, mysteryHistory } = useMemo(() => {
+  //   biq_top10_<ymd>   → { status: done|playing, score, picks: [...] }
+  //   (biq_top10_list_<id> is a list opened by name, not a day: skipped)
+  const { trailHistory, mysteryHistory, top10History } = useMemo(() => {
     const trail = new Map();
     const mystery = new Map();
+    const top10 = new Map();
     const TP = "biq_trail_";
     const MP = "biq_mystery_";
+    const XP = "biq_top10_";
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
@@ -447,10 +484,17 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             if (p?.won) mystery.set(k.slice(MP.length), { status: "won", used, arc: !!p.arc });
             else if (used > 0) mystery.set(k.slice(MP.length), { status: "in-progress", used, arc: !!p.arc });
           } catch {}
+        } else if (k.startsWith(XP) && /^\d{4}-\d{2}-\d{2}$/.test(k.slice(XP.length))) {
+          try {
+            const p = JSON.parse(localStorage.getItem(k));
+            const score = Number.isFinite(p?.score) ? p.score : 0;
+            if (p?.status === "done") top10.set(k.slice(XP.length), { status: "done", score, arc: !!p.arc });
+            else if (Array.isArray(p?.picks) && p.picks.length > 0) top10.set(k.slice(XP.length), { status: "in-progress", score, arc: !!p.arc });
+          } catch {}
         }
       }
     } catch {}
-    return { trailHistory: trail, mysteryHistory: mystery };
+    return { trailHistory: trail, mysteryHistory: mystery, top10History: top10 };
   }, [todayYMD]);
 
   // ⭐ ONE STREAK, shown identically here and on Home.
@@ -503,6 +547,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     widenFirstTime(footleHistory, true);
     widenFirstTime(trailHistory, true);
     widenFirstTime(mysteryHistory, false);
+    widenFirstTime(top10History, true);
     const totalMatchdays = Math.floor((todayMid - firstTime) / 86400000) + 1;
     const showCount = Math.min(30, totalMatchdays);
     const rows = [];
@@ -531,7 +576,12 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       // dash the user could read as a missed day.
       const dNoon = noon(t);
       const trLive = trailLiveOn(dNoon);
-      const myLive = mysteryLiveOn(dNoon);
+      const t10Live = top10LiveOn(dNoon);
+      const myLive = !t10Live && mysteryLiveOn(dNoon);
+      const t10Info = t10Live ? top10History.get(ymd) : null;
+      const t10Done = t10Info?.status === "done";
+      const t10Attempt = !!t10Info;
+      const t10Score = t10Info?.score || 0;
       const isToday = i === 0;
       let dateLabel;
       if (isToday) dateLabel = "Today";
@@ -543,10 +593,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         // Daily 7's catch-up launcher and the three archive modes alike.
         ymd, md, dateLabel, dateSub, isToday, isYesterday: i === 1, t7Score, t7Done, fAttempt, fWon, fUsed,
         trAttempt, trWon, trUsed, trLive, myAttempt, myWon, myUsed, myLive,
+        t10Live, t10Done, t10Attempt, t10Score,
       });
     }
     return rows;
-  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
+  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory, top10History]);
 
   const form14 = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
@@ -573,6 +624,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     widenFirstTime(footleHistory, true);
     widenFirstTime(trailHistory, true);
     widenFirstTime(mysteryHistory, false);
+    widenFirstTime(top10History, true);
     const out = [];
     for (let i = 13; i >= 0; i--) {
       const d = new Date(todayMid - i * 86400000);
@@ -583,12 +635,17 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       const fAttempt = fInfo?.status === "won" || fInfo?.status === "lost";
       const trInfo = trailHistory.get(ymd);
       const trAttempt = trInfo?.status === "won" || trInfo?.status === "lost";
-      const myAttempt = !!mysteryHistory.get(ymd);
+      // The fourth daily that day: Top 10 once it has a list, Mystery before.
+      // A Mystery board played as a side mode is not part of the day's form.
+      const t10Day = top10LiveOn(noon(d.getTime()));
+      const t10Info = t10Day ? top10History.get(ymd) : null;
+      const t10Attempt = t10Info?.status === "done";
+      const myAttempt = !t10Day && !!mysteryHistory.get(ymd);
       // Four modes now, so W/D can't mean "both" any more: W = a properly
       // full day (2+ modes), D = exactly one. The squares themselves only
       // render played-vs-not, so this distinction is carried by the label.
       const done = [
-        t7 && "Daily 7", fAttempt && "Footle", trAttempt && "Trail", myAttempt && "Mystery",
+        t7 && "Daily 7", fAttempt && "Footle", trAttempt && "Trail", myAttempt && "Mystery", t10Attempt && "Top 10",
       ].filter(Boolean);
       // A day whose every play carries the arc stamp was CAUGHT UP later, not
       // played on the day — it still fills the strip (a true record of the
@@ -601,6 +658,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         fAttempt && !fInfo?.arc && "Footle",
         trAttempt && !trInfo?.arc && "Trail",
         myAttempt && !mysteryHistory.get(ymd)?.arc && "Mystery",
+        t10Attempt && !t10Info?.arc && "Top 10",
       ].filter(Boolean);
       const arcOnly = done.length > 0 && liveDone.length === 0;
       let cls, label;
@@ -612,7 +670,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       out.push({ ymd, cls, isToday, arcOnly, aria: `${ymd}: ${label}` });
     }
     return out;
-  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory]);
+  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory, top10History]);
 
   // Has the player completed any of those 14 days? Both streak surfaces gate on
   // this ONE value -- the mobile strip and the desktop rail card -- because the
@@ -673,7 +731,22 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         onTap: () => setScreen?.("trail"),
       });
     }
-    if (mysteryLiveOn(nowNoon)) {
+    if (top10LiveOn(nowNoon)) {
+      const t10 = top10History.get(todayYMD);
+      list.push({
+        key: "top10", name: "Top 10", theme: MODE_THEME.top10,
+        sub: "Name all ten · three lives",
+        subLong: "A ranked list of ten · name them all · three lives",
+        // Done when the board is closed, whatever the score: all ten, out of
+        // lives, or "show me the list".
+        done: t10?.status === "done",
+        won: true,
+        result: `${t10?.score || 0}/10`,
+        cta: t10 ? "Continue" : "Play",
+        replay: true,
+        onTap: () => setScreen?.("top10"),
+      });
+    } else if (mysteryLiveOn(nowNoon)) {
       list.push({
         key: "mystery", name: "Mystery Player", theme: MODE_THEME.mystery,
         // Short enough to stay on ONE line beside a 46pt icon and a Play
@@ -692,7 +765,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       });
     }
     return list;
-  }, [today, todayYMD, footleHistory, trailHistory, mysteryHistory, dailyDone, dailyScore, setScreen, startMode]);
+  }, [today, todayYMD, footleHistory, trailHistory, mysteryHistory, top10History, dailyDone, dailyScore, setScreen, startMode]);
+
+  // The Recent-days header: the fourth column is named for today's fourth daily.
+  const cols = useMemo(() => modeCols(top10LiveOn(noon(today.getTime()))), [today]);
+  const headKeys = useMemo(() => new Set(cols.map(c => c.key)), [cols]);
 
   const playedCount = todayModes.filter(m => m.done).length;
 
@@ -787,7 +864,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           which have the same padding (the two-column version was 14px out). */}
       <div style={{ display: "flex", alignItems: "baseline", marginTop: 18, padding: "0 14px" }}>
         <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)", flex: 1 }}>Recent days</span>
-        {MODE_COLS.map(c => (
+        {cols.map(c => (
           <span key={c.key} style={{ width: COL_W, flexShrink: 0, textAlign: "center", fontSize: 8.5, fontWeight: 800, letterSpacing: "0.02em", color: c.theme.head }}>{c.label}</span>
         ))}
       </div>
@@ -843,7 +920,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   <ReplayCell key={c.key} w={COL_W} theme={c.theme}
                     label={`Play ${m.dateLabel}'s ${MODE_LABEL[c.key]}`}
                     onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
-                ) : <ScoreCell key={c.key} state={c.state} text={c.text} theme={c.theme} />
+                ) : <ScoreCell key={c.key} state={c.state} text={c.text} theme={c.theme} glyph={headKeys.has(c.key) ? null : c.key} />
               ))}
             </div>
           );
@@ -900,7 +977,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           const rowCard = { display: "flex", alignItems: "center", gap: 16, borderRadius: 16, padding: "18px 20px" };
           const iconBox = { width: 46, height: 46, flex: "0 0 auto", borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center" };
           // Desktop has the room mobile doesn't, so its columns stay wider than
-          // COL_W — but they're still driven by the same MODE_COLS/rowCells.
+          // COL_W — but they're still driven by the same cols/rowCells.
           const DCOL_W = 62;
           const colHead = { width: DCOL_W, flexShrink: 0, textAlign: "center", fontSize: 9.5, fontWeight: 800, letterSpacing: "0.06em" };
           return (
@@ -926,7 +1003,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                       <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--t3)" }}>Recent days</span>
                       <span style={{ display: "flex", paddingRight: 16 }}>
-                        {MODE_COLS.map(c => (
+                        {cols.map(c => (
                           <span key={c.key} style={{ ...colHead, color: c.theme.head }}>{c.label}</span>
                         ))}
                       </span>
@@ -959,7 +1036,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                                   <ReplayCell key={c.key} w={DCOL_W} theme={c.theme}
                                     label={`Play ${m.dateLabel}'s ${MODE_LABEL[c.key]}`}
                                     onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
-                                ) : <ScoreCell key={c.key} w={DCOL_W} state={c.state} text={c.text} theme={c.theme} />
+                                ) : <ScoreCell key={c.key} w={DCOL_W} state={c.state} text={c.text} theme={c.theme} glyph={headKeys.has(c.key) ? null : c.key} />
                               ))}
                             </div>
                           );
