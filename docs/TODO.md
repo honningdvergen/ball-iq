@@ -445,6 +445,102 @@ Rulings (his words are in memory `project_top10_draft_icon_round_2026_10_09`):
       the same club under two names before a clubs list is ever scheduled;
       one pair was found by accident tonight.
 
+### 0h. 9 Oct, 01:15 to midday: the splash, the Top 10 look, jerseys round four, and a tour of every screen
+
+Alex at 01:15 (his words are in memory `project_top10_draft_icon_round_2026_10_09`):
+jerseys "way more realistic", with "sponsors or anything else" that makes them
+recognisable; "a nice look to the top 10 mode"; which four to six modes are the
+main ones for retention; are we "absolutely certain" real crests and jerseys
+are out; had every screen been toured with eyes rather than measurements; and
+he hates both the icon and the lettering on the splash.
+
+- [x] **Launch screen** (`e0268d50`, live on the web; the native files ride the
+      next store build). The name alone in the app's own lettering, no icon.
+      `node scripts/gen-splash.mjs` redraws all 37 native files from one
+      definition. The flaming ball is still on the sign-in screen and in
+      Settings, About; the Privacy Policy uses a ball emoji as a logo. Those
+      change with the new icon, not before.
+- [x] **Top 10 look** (`b8066a12`): unboxed headline, ten-step meter, rank
+      chips with gold, silver and bronze, a 380ms held beat before the reveal.
+      Not yet seen on a phone with the keyboard up: do that before pushing.
+- [x] **Jerseys, round four** (a picture only, nothing in the app):
+      `~/ball-iq-audit/2026-10-09/kits/kits-round4.png`. The three spots a real
+      shirt is read from, filled with marks that are ours: a ring where the
+      maker sits, a two-tone shield where the crest sits, the club's own
+      three-letter code set like a sponsor. Awaiting his reaction.
+- [ ] **Jerseys, if he says yes: the data is the work.** A kit record per club
+      (pattern, colours, sleeves, collar, cuffs, neck, code), checked club by
+      club, because a wrong shirt is worse than a letter tile. Then one
+      component, used in club rows, Transfer Trail steps, Stadiums rows and
+      found Top 10 cells. Flags do the same job for nations.
+- [x] **Crests and real shirts: the answer stands.** Names are free to use.
+      A crest is the club's copyright and trade mark; a real shirt adds the
+      maker's and the sponsor's marks. Certain on the law, not certain anyone
+      would enforce it against a small app, and that risk grows with the app.
+      Actual certainty costs a written yes from a rights holder or an hour of
+      a lawyer. Research: `~/ball-iq-audit/2026-10-08/research/emblems.md`.
+
+**The tour.** iPhone 17 simulator, every tab and every mode opened, 47 saved
+screens in `~/ball-iq-audit/2026-10-09/tour/`. Not seen: first launch on a
+fresh install, an online room (needs two accounts), a pass-and-play game in
+progress. What it found, worst first:
+
+- [ ] **Every game wears a different header.** Footle, Daily 7, Transfer
+      Trail, Mystery, Top 10, club quiz, Classic, Survival, Hot Streak and
+      Chaos each place the back arrow, title, progress and timer differently.
+      One header, used by all.
+- [ ] **After an answer the question page scrolls and the header leaves the
+      screen** (Daily 7, Classic, club and league quizzes). Back, progress and
+      score are gone exactly when the player looks for them. Pin the header.
+- [ ] **Timed modes start the clock before the player has read anything.**
+      Hot Streak had 52 of its 60 seconds left by the time the first question
+      could be read; a club chip on Home drops straight into a timed question.
+      A ready beat, or start the clock on first paint of the question.
+- [ ] **Survival opens on a hard question.** Question one was a 2005 Brazilian
+      second-division decider. One wrong answer ends the run, so the mode is
+      over before it starts. Easy first, then climb.
+- [ ] **Home forgets where you were.** Back from Club Quizzes or League
+      Quizzes lands at the top, not at "Find a quiz".
+- [ ] **"More modes" is the weakest part of Home**: six grey tiles with grey
+      icons, no colour, nothing that says what each one is like.
+- [ ] **Chaos does not do what it says.** "Quotes, moments and madness", then
+      an ordinary transfer question.
+- [ ] **The "Why?" box shows the hint, which is written to avoid the answer.**
+      After answering it reads as coy ("the first came at the end of the
+      1990s"). An explanation shown after the answer should name things.
+- [ ] **Emoji as icons**: Profile card (trophy, flags, star, globe), the empty
+      stats ball, the medal on badges, Hot Streak's lightning and fire, Chaos's
+      masks, the dice on pass-and-play, the ball on the error screen and the
+      Privacy Policy.
+- [ ] **League Quizzes speak in internal codes**: "Builds your CLUBS rating",
+      "Builds your EPL rating", and tiles lettered SEA, BUN, PRI, TSL.
+- [ ] **Half-empty screens**: History, Multiplayer, Transfer Trail, Mystery
+      Player, the Stadiums picker.
+- [ ] **Smaller.** Daily 7 left half-way shows "Play" on Home, not "Continue".
+      "Correct!" repeats what the green option already says. Sign-up says
+      "real-time 1v1" where the tab says up to eight. A score of 0 is offered
+      for sharing. A Championship record is filed under Premier League.
+      Number options are not in order (4, 3, 1, 2).
+- [x] Checked and cleared: the right answer seemed to land on D far too often.
+      It was my tapping. Options are shuffled per question with a fair
+      Fisher-Yates (`App.jsx`, `shuffle`).
+- [ ] **The app's typeface comes from Google at every launch.** Inter is
+      loaded from fonts.googleapis.com with `display=optional`, so a cold or
+      offline start draws the whole app in the system face, and the native
+      app makes a third-party request it does not need to. Host it in the app.
+
+**The main modes** (funnel read of 60 and 14 days, in the same memory file):
+the product is the daily set. Four dailies are nine in ten plays by the
+regulars; regulars play about three a day; a newcomer who plays two modes on
+day one comes back far more often than one who plays one. So: Footle, Daily 7,
+Transfer Trail, Top 10, and the draft game when it exists. Club quizzes are
+the front door and must hand people to the dailies (the result screen already
+does: "Play today's Daily 7"). Multiplayer is how players bring friends, not
+a main mode. Classic, Survival, Hot Streak, Legends, Chaos and Stadiums are
+one-offs today: fold them, fix them or leave them, but do not polish them
+before the dailies.
+
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
