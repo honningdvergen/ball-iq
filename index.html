@@ -454,7 +454,10 @@
            center lands the mark + bar at ~47% of viewport height. */
         padding-bottom: 4vh;
       }
-      .biq-splash-mark { font-size: 32px; }
+      /* The name as the native launch screen draws it (scripts/gen-splash.mjs):
+         Inter 900, tight. On a phone the launch picture covers this until the
+         app is ready; the two are kept alike so web and app open the same way. */
+      .biq-splash-mark { font-size: 44px; font-weight: 900; letter-spacing: -0.035em; line-height: 1; }
       .biq-splash-mark em { color: var(--accent); font-style: normal; }
       .biq-splash-dot {
         width: 28px; height: 4px; border-radius: 2px; overflow: hidden;
