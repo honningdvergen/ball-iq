@@ -669,7 +669,27 @@ we want this to be an upgrade that is properly felt."
       `~/ball-iq-audit/tg_desk_balliq.json`. Post a first message when it
       exists.
 - [ ] **Draft game**: decision made by me, open to his veto: the wheel starts
-      at 1995-96 and ships only club-seasons that verify. Scripts not started.
+      at 1995-96 and ships only club-seasons that verify.
+- [x] **Draft: first dataset and the season model** (prototype, outside the
+      repo: `~/ball-iq-audit/2026-10-09/draft/model/`, read its README). 333
+      verified club-seasons, 9,065 player-seasons, 637 KB. The model has no
+      opinion ratings: a pick brings his real goals, a share of his club's
+      goals and his club's goals against for the games he played that year,
+      and a relegated side's stand-in for the games he missed. Measured: a
+      club's own first eleven lands within 4.2 points of its real season
+      (Arsenal 2003-04: 87 against 90). Match luck is fixed by the date, so
+      a stronger eleven never does worse than a weaker one on the same day.
+- [ ] **Draft, next:** (1) shape the daily board: eleven squads drawn evenly
+      are mostly mid-table and a perfect day is 85 points; (2) Manchester
+      City has four squads and no title side in the set: read their table
+      layouts, and accept total-only tables with a second check against each
+      player's own career table; (3) build it to play, then Alex decides
+      whether the numbers show while picking or only after.
+- [ ] **Top 10, third batch** (started 9 Oct, 22:15): twelve candidates out
+      with two researchers, Alex's three ideas among them; brief and reports
+      in `~/ball-iq-audit/2026-10-09/top10-ranked/` (`brief-3.md`,
+      `research-3a.md`, `research-3b.md`). Each passing list still needs the
+      independent checker before it is written into `specs.mjs`.
 
 
 ### 1. This week, before the 1.7.6 cut
