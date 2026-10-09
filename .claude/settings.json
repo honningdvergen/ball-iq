@@ -166,6 +166,8 @@
       "Bash(node scripts/gen-footle-practice.mjs *)",
       "Bash(node scripts/gen-top10.mjs)",
       "Bash(node scripts/gen-top10.mjs *)",
+      "Bash(node scripts/gen-splash.mjs)",
+      "Bash(node scripts/gen-splash.mjs *)",
       "Bash(node /Users/alexanderbrynolsen/ball-iq-audit/*)",
       "Bash(node scripts/gen-grid-clubs.mjs *)",
       "Bash(node scripts/gen-grid-schedule.mjs *)",
@@ -243,6 +245,7 @@
       "Bash(~/ball-iq-release/sim-mode.sh *)",
       "Bash(~/ball-iq-release/sim-rec.sh *)",
       "Bash(~/ball-iq-release/sim-web-swap.sh)",
+      "Bash(~/ball-iq-release/sim-shot.sh *)",
       "Bash(xcrun simctl *)",
       "Bash(ffmpeg *)",
       "Bash(ffprobe *)"
