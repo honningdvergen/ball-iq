@@ -15,8 +15,8 @@ import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { getReminderHour } from './playHour.js';
 
-// The hour is no longer a constant (2026-09-06): getReminderHour() is the median
-// of the player's own recent completion hours, default 19, clamped 8–22.
+// The hour is getReminderHour(): 19:00, or later (to 22:00) for a player who
+// habitually finishes later. Never before seven: see lib/playHour.js for why.
 const WINDOW_DAYS = 7;      // schedule a rolling week ahead
 // Win-back tail: after the daily week goes quiet, a decaying set of nudges so
 // a lapsed user is still reachable (previously the app went permanently silent

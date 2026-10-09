@@ -66,7 +66,21 @@ describe('the phone says its hour again once the token has landed', () => {
   });
 });
 
-describe('the learned hour is a habit, not a week', () => {
+describe('the server waits until seven too', () => {
+  const MIG = read('supabase/migrations/v2_9_reminder_never_before_seven.sql');
+
+  it('reads every reported hour as "no earlier than 19:00", for phones and for browsers', () => {
+    expect(MIG).toMatch(/'= greatest\(coalesce\(b\.reminder_hour, 19\), 19\)'/);
+    expect(MIG).toMatch(/'= greatest\(coalesce\(w\.reminder_hour, 19\), 19\)'/);
+  });
+
+  it('changes the deployed function only if each line is there exactly once, and closes it again', () => {
+    expect(MIG).toMatch(/if v_hits <> 1 then\s*raise exception/);
+    expect(MIG.trim().endsWith('revoke execute on function public.enqueue_web_daily_reminders() from public, anon, authenticated;')).toBe(true);
+  });
+});
+
+describe('the reminder is in the evening (Alex, 9 Oct 2026)', () => {
   beforeEach(() => {
     const store = new Map();
     globalThis.localStorage = {
@@ -77,24 +91,30 @@ describe('the learned hour is a habit, not a week', () => {
   });
   const at = (h) => new Date(2026, 9, 1, h, 5, 0);
 
-  it('defaults to the evening with nothing to go on', () => {
-    expect(getReminderHour()).toBe(DEFAULT_REMINDER_HOUR);
+  it('is seven o\'clock with nothing to go on', () => {
+    expect(DEFAULT_REMINDER_HOUR).toBe(19);
+    expect(getReminderHour()).toBe(19);
   });
 
-  it('four lunchtime games do not move an evening player (they did, with a window of seven)', () => {
+  it('never moves earlier than seven, however early someone plays', () => {
+    for (let i = 0; i < 14; i++) noteCompletionHour(at(8));
+    expect(getReminderHour()).toBe(19);
+    for (let i = 0; i < 14; i++) noteCompletionHour(at(13));
+    expect(getReminderHour()).toBe(19);
+  });
+
+  it('moves later for someone who habitually plays later, and stops at ten', () => {
+    for (let i = 0; i < 14; i++) noteCompletionHour(at(21));
+    expect(getReminderHour()).toBe(21);
+    for (let i = 0; i < 14; i++) noteCompletionHour(at(1));
+    expect(getReminderHour()).toBe(19); // 01:00 is an early hour, not a late one: back to seven
+    for (let i = 0; i < 14; i++) noteCompletionHour(at(23));
+    expect(getReminderHour()).toBe(22);
+  });
+
+  it('one unusual week does not rewrite a habit', () => {
     for (let i = 0; i < 10; i++) noteCompletionHour(at(21));
     for (let i = 0; i < 4; i++) noteCompletionHour(at(13));
     expect(getReminderHour()).toBe(21);
-  });
-
-  it('a real change of habit still moves it', () => {
-    for (let i = 0; i < 6; i++) noteCompletionHour(at(21));
-    for (let i = 0; i < 9; i++) noteCompletionHour(at(8));
-    expect(getReminderHour()).toBe(8);
-  });
-
-  it('stays inside 08:00 to 22:00', () => {
-    for (let i = 0; i < 14; i++) noteCompletionHour(at(2));
-    expect(getReminderHour()).toBe(8);
   });
 });
