@@ -28,9 +28,10 @@
 //      with a Wikidata id is in; players out on loan are not in it and so are
 //      not in the squad.
 //   2. A row from the OLD file that is not in that section survives only if
-//      the player's own Wikipedia page still names this club, or its reserve
-//      side, as his current club. That keeps the academy and reserve depth the
-//      lineup builder wants without keeping anyone who has gone.
+//      the player's own Wikipedia page still names this club as his current
+//      club and he is 21 or under, or names its reserve side. That keeps the
+//      academy and reserve depth the lineup builder wants without keeping
+//      anyone who has gone, a coach, or a senior player left out of the squad.
 //   3. An old row with no Wikipedia page cannot be checked. It survives only if
 //      the spell we hold began in the last two years (an academy registration),
 //      never on an older open spell.
@@ -91,7 +92,15 @@ for (const [club, squad] of Object.entries(OLD)) for (const p of squad) oldRow.s
 const falseRow = (id, club) => NOT_IN_SQUAD[id] || NEVER_AT_CLUB[id]?.squad === club;
 
 // ── 1. first team, from the staging file ────────────────────────────────────
-const first = new Map(clubs.map((c) => [c, (WIKI[c] || []).filter((p) => p.qid && !falseRow(p.qid, c))]));
+// ⚠️ "OUT ON LOAN" IS NOT ALWAYS ITS OWN SECTION. English club pages keep a
+// loaned-out player in the first-team table and say so in the note beside his
+// name: "on loan to Stevenage until 30 June 2027", "at Everton until 30 June
+// 2027". The first run read the heading alone and kept 14 of them (Harvey
+// Elliott at Liverpool, Kalvin Phillips at Manchester City). "on loan FROM" is
+// the opposite case, a player who is here, and stays.
+const LOANED_OUT = /^(?:on loan (?:to|at)\b|at\s+\S)/i;
+const first = new Map(clubs.map((c) => [c, (WIKI[c] || []).filter((p) => p.qid && !falseRow(p.qid, c) && !LOANED_OUT.test(p.other || ''))]));
+const loanedOut = clubs.flatMap((c) => (WIKI[c] || []).filter((p) => LOANED_OUT.test(p.other || '')).map((p) => `${c}: ${p.display} (${p.other})`));
 const unlinked = clubs.flatMap((c) => (WIKI[c] || []).filter((p) => !p.qid).map((p) => `${c}: ${p.display}`));
 const empty = clubs.filter((c) => !(WIKI[c] || []).length);
 
@@ -111,14 +120,16 @@ for (const b of batches(doubtful, 50)) {
   await sleep(250);
 }
 const current = {};                 // enwiki title -> raw `currentclub` value, '' when blank
+const edited = {};                  // enwiki title -> date of the page's last edit
 for (const b of batches([...new Set(Object.values(article).filter(Boolean))], 40)) {
-  const j = await getJSON('https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&rvslots=main&rvsection=0&format=json&formatversion=2&titles=' + encodeURIComponent(b.join('|')), 'infobox');
+  const j = await getJSON('https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content|timestamp&rvslots=main&rvsection=0&format=json&formatversion=2&titles=' + encodeURIComponent(b.join('|')), 'infobox');
   const requested = {};
   for (const n of j.query?.normalized || []) requested[n.to] = n.from;
   for (const pg of j.query?.pages || []) {
     const wt = pg.revisions?.[0]?.slots?.main?.content || '';
     const m = wt.match(/\|[^\S\n]*currentclub[^\S\n]*=[^\S\n]*([^\n]*)/i);
     current[requested[pg.title] || pg.title] = m ? m[1].trim() : '';
+    edited[requested[pg.title] || pg.title] = (pg.revisions?.[0]?.timestamp || '').slice(0, 10);
   }
   await sleep(350);
 }
@@ -138,21 +149,31 @@ for (const b of batches(Object.values(clubQid).filter(Boolean), 50)) {
   const j = await getJSON('https://www.wikidata.org/w/api.php?action=wbgetentities&props=sitelinks&sitefilter=enwiki&format=json&ids=' + b.join('|'), 'club titles');
   for (const c of clubs) { const t = j.entities?.[clubQid[c]]?.sitelinks?.enwiki?.title; if (t) clubTitle[c] = t; }
 }
-// "Real Madrid Castilla", "Jong Ajax", "FC Bayern Munich II", "Arsenal F.C.
-// Under-21s and Academy": a reserve side carries every distinctive word of the
-// senior club's title. Legal-form tokens and short words are not distinctive.
+// A reserve side carries every distinctive word of the senior club's title AND
+// says it is a reserve side: "Real Madrid Castilla", "Jong Ajax", "FC Bayern
+// Munich II", "Arsenal F.C. Under-21s and Academy".
+// ⚠️ THE SECOND HALF IS NOT OPTIONAL. Without it "Rangers" matched Queens Park
+// Rangers and Cove Rangers, and Glen Kamara and Greg Stewart were kept in the
+// Rangers squad. The same test would pass Sporting de Gijón for Sporting CP
+// and Everton de Viña del Mar for Everton.
 const distinctive = (t) => t.replace(/\b(F\.?C\.?|A\.?F\.?C\.?|C\.?F\.?|S\.?C\.?|A\.?C\.?|S\.?S\.?C?\.?|A\.?S\.?|R\.?S\.?C\.?|S\.?L\.?|J\.?K\.?|S\.?K\.?|K\.?V\.?|\d{4})\b/g, ' ')
   .replace(/[^\p{L} ]/gu, ' ').split(/\s+/).filter((w) => w.length > 3).map((w) => w.toLowerCase());
+// A lone letter only counts at the very end ("Villarreal CF B"): tested anywhere,
+// the C of "Queens Park Rangers F.C." made QPR a reserve side of Rangers.
+const RESERVE_SIDE = /\s(B|C|II|III)$|\b(U-?\d\d|Under-\d\d\w*|Reserves?|Academy|Youth|Castilla|Atl[eè]tic|Next Gen|Futures|Jong|Amateure|Juvenil|Primavera|Development|Promesas|Mestalla)\b/;
+// A coach's page names the club too: "Juventus (youth team collaborator)",
+// "Feyenoord Academy (coach)", "Flamengo (assistant)". He is not in the squad.
+const NOT_PLAYING = /\b(coach|assistant|manager|collaborator|director|scout|staff|analyst|ambassador)\b/i;
 const stillAt = (id, club) => {
   const t = article[id];
   if (!t) return 'no-page';
   const v = current[t];
   const link = linkOf(v);
-  if (!link) return 'no-club';                      // retired, released, or the field is blank
+  if (!link || NOT_PLAYING.test(v)) return 'no-club';   // retired, released, coaching, or the field is blank
   const L = linked[link] || { qid: null, title: link };
   if (L.qid && L.qid === clubQid[club]) return 'here';
   const words = distinctive(clubTitle[club] || club);
-  if (words.length && words.every((w) => L.title.toLowerCase().includes(w))) return 'reserves';
+  if (words.length && RESERVE_SIDE.test(L.title) && words.every((w) => L.title.toLowerCase().includes(w))) return 'reserves';
   return 'elsewhere';
 };
 
@@ -165,19 +186,29 @@ const rowFor = (p, club) => {
   const pool = POOL.get(p.qid);
   const core = CORE.get(p.qid);
   const slot = WORD[p.pos] ? p.pos : (had?.row.slot || pool?.slot || null);
-  if (had) return { ...had.row, slot, started: had.club === club ? had.row.started : null };
-  if (pool) return { id: p.qid, name: pool.name, position: pool.position || WORD[slot] || null, slot, nat: pool.nat || null, born: pool.born || null, dob: pool.dob || null, started: null };
-  if (core) return { id: p.qid, name: core.name, position: (core.poss || [])[0] || WORD[slot] || null, slot, nat: (core.nats || [])[0] || null, born: core.born || null, dob: null, started: null };
+  // ⚠️ THE NAME IS WIKIPEDIA'S, EVEN FOR A PLAYER WE ALREADY HOLD. Every other
+  // name in our files is a Wikidata label, which anyone can edit: the first run
+  // carried "Αrda Güler" (a Greek capital alpha, so typing "Arda" found nobody),
+  // "Marc Hagit Cucurella" and "Andrcu Onana" straight into the squads. The
+  // squad list's own link text is the name the club's page prints.
+  const name = /[\[\]{}|]/.test(p.display || '') || !p.display ? tidyName(p.article) : tidyName(p.display);
+  if (had) return { ...had.row, name, slot, started: had.club === club ? had.row.started : null };
+  if (pool) return { id: p.qid, name, position: pool.position || WORD[slot] || null, slot, nat: pool.nat || null, born: pool.born || null, dob: pool.dob || null, started: null };
+  if (core) return { id: p.qid, name, position: (core.poss || [])[0] || WORD[slot] || null, slot, nat: (core.nats || [])[0] || null, born: core.born || null, dob: null, started: null };
   fresh.push(p.qid);
-  return { id: p.qid, name: tidyName(p.display || p.article), position: WORD[slot] || null, slot, nat: null, born: null, dob: null, started: null };
+  return { id: p.qid, name, position: WORD[slot] || null, slot, nat: null, born: null, dob: null, started: null };
 };
 
 const out = {};
 const report = [];
-const counts = { first: 0, keptHere: 0, keptReserves: 0, keptRecent: 0, droppedElsewhere: 0, droppedNoClub: 0, droppedOldNoPage: 0, twiceResolved: 0, twiceDropped: 0 };
+const counts = { first: 0, droppedSenior: 0, keptHere: 0, keptReserves: 0, keptRecent: 0, droppedElsewhere: 0, droppedNoClub: 0, droppedOldNoPage: 0, twiceResolved: 0, twiceDropped: 0 };
 const dropped = [];
 const gone = [];                    // rows leaving the file, kept for the lineup builder
-const nowAt = (id) => { const t = article[id]; const l = t ? linkOf(current[t]) : null; return l ? (linked[l]?.title || l) : null; };
+// ⚠️ A DESTINATION IS ONLY AS FRESH AS THE PAGE. Jonathan Marlone's page said
+// Chapecoense and had not been edited for thirteen months; he had moved again.
+// A club is only printed from a page edited since the summer window opened.
+const WINDOW = `${TODAY.slice(5) >= '07-01' ? TODAY.slice(0, 4) : Number(TODAY.slice(0, 4)) - 1}-07-01`;
+const nowAt = (id) => { const t = article[id]; const l = t ? linkOf(current[t]) : null; return l && edited[t] >= WINDOW && !NOT_PLAYING.test(current[t]) ? (linked[l]?.title || l) : null; };
 for (const club of clubs) {
   const rows = new Map();
   for (const p of first.get(club)) {
@@ -193,13 +224,19 @@ for (const club of clubs) {
   for (const p of OLD[club]) {
     if (rows.has(p.id) || falseRow(p.id, club)) continue;
     const at = stillAt(p.id, club);
-    if (at === 'here') { rows.set(p.id, p); counts.keptHere++; }
-    else if (at === 'reserves') { rows.set(p.id, p); counts.keptReserves++; }
+    const kept = article[p.id] ? { ...p, name: tidyName(article[p.id]) } : p;
+    // His own page naming the club is enough for an academy player, who has no
+    // other listing. A SENIOR player the club's page leaves out of its first
+    // team is under contract and out of the squad (Mohamed Farès at Lazio sits
+    // under "other players under contract"); he stays searchable, not in the squad.
+    if (at === 'here' && (p.born || 0) >= Number(TODAY.slice(0, 4)) - 21) { rows.set(p.id, kept); counts.keptHere++; }
+    else if (at === 'here') { counts.droppedSenior++; dropped.push(`${club}: ${p.name} (his page names the club, the club's first team does not list him)`); gone.push({ ...kept, started: null, was: club, now: nowAt(p.id) }); }
+    else if (at === 'reserves') { rows.set(p.id, kept); counts.keptReserves++; }
     else if (at === 'no-page' && p.started && p.started >= RECENT) { rows.set(p.id, p); counts.keptRecent++; }
     else {
       counts[at === 'elsewhere' ? 'droppedElsewhere' : at === 'no-club' ? 'droppedNoClub' : 'droppedOldNoPage']++;
-      dropped.push(`${club}: ${p.name} (${at === 'elsewhere' ? 'now ' + (nowAt(p.id) || '?') : at})`);
-      gone.push({ ...p, started: null, was: club, now: at === 'elsewhere' ? nowAt(p.id) : null });
+      dropped.push(`${club}: ${p.name} (${at === 'elsewhere' ? 'now ' + (nowAt(p.id) || 'elsewhere, page not edited since ' + WINDOW) : at})`);
+      gone.push({ ...p, name: article[p.id] ? tidyName(article[p.id]) : p.name, started: null, was: club, now: at === 'elsewhere' ? nowAt(p.id) : null });
     }
   }
   const squad = [...rows.values()].sort((a, b) => a.name.localeCompare(b.name));
@@ -210,10 +247,20 @@ for (const club of clubs) {
   out[club] = squad;
 }
 
+// A player the first-team table marks as out on loan is in no squad, and if he
+// was never in the old file nothing else would hold him. He goes with the
+// departed, under the club the note names ("at Valencia until 30 June 2027").
+const placed = new Set(Object.values(out).flat().map((p) => p.id));
+for (const club of clubs) for (const p of WIKI[club] || []) {
+  if (!p.qid || !LOANED_OUT.test(p.other || '') || placed.has(p.qid) || gone.some((g) => g.id === p.qid) || falseRow(p.qid, club)) continue;
+  const at = p.other.replace(/^(?:on loan (?:to|at)|at)\s+/i, '').replace(/\s+until\b.*$/i, '').trim();
+  gone.push({ ...rowFor(p, club), started: null, was: club, now: at || null });
+}
+
 // ── 4. birth date and nationality wherever a row lacks one ──────────────────
 // Wikidata is good at these two; it is only current membership it cannot tell.
 // Citizenship first, as the rest of the file has it, then "country for sport".
-const thin = [...new Set(Object.values(out).flat().filter((p) => !p.dob || !p.nat).map((p) => p.id))];
+const thin = [...new Set([...Object.values(out).flat(), ...gone].filter((p) => !p.dob || !p.nat).map((p) => p.id))];
 if (thin.length) {
   const facts = {};
   for (const b of batches(thin, 200)) {
@@ -231,7 +278,7 @@ if (thin.length) {
     }
     await sleep(600);
   }
-  for (const squad of Object.values(out)) for (const p of squad) {
+  for (const p of [...Object.values(out).flat(), ...gone]) {
     const f = facts[p.id];
     if (!f) continue;
     if (!p.dob && f.dob && (!p.born || p.born === Number(f.dob.slice(0, 4)))) { p.dob = f.dob; p.born = Number(f.dob.slice(0, 4)); }
@@ -245,8 +292,9 @@ console.log(report.join('\n'));
 console.log(`\n${before} -> ${after} players across ${clubs.length} clubs`);
 console.log(`  in a Wikipedia first team: ${counts.first}   (${fresh.length} of them new to every file we hold)`);
 console.log(`  kept from the old file: ${counts.keptHere} whose page names the club, ${counts.keptReserves} its reserve side, ${counts.keptRecent} with no page but a spell begun since ${RECENT}`);
-console.log(`  dropped from the old file: ${counts.droppedElsewhere} now elsewhere, ${counts.droppedNoClub} with no current club, ${counts.droppedOldNoPage} with no page and an old spell`);
+console.log(`  dropped from the old file: ${counts.droppedElsewhere} now elsewhere, ${counts.droppedNoClub} with no current club, ${counts.droppedOldNoPage} with no page and an old spell, ${counts.droppedSenior} senior players the club's first team does not list`);
 console.log(`  listed in two first teams: ${counts.twiceResolved} settled by the player's page, ${counts.twiceDropped} left out of the club his page does not name`);
+if (loanedOut.length) console.log(`  in a first-team table but noted as out on loan (not written): ${loanedOut.length}`);
 if (unlinked.length) console.log(`  first-team players with no Wikipedia page, so no id (not written): ${unlinked.length}`);
 const twoClubs = Object.values(out).flat().map((p) => p.id).filter((id, i, a) => a.indexOf(id) !== i);
 if (twoClubs.length) { console.error(`\n✗ ${twoClubs.length} player(s) ended up in two squads: ${twoClubs.join(', ')}. Nothing written.`); process.exit(1); }

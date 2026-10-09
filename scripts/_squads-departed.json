@@ -36,6 +36,18 @@
   "now": "Al Batin FC"
  },
  {
+  "id": "Q317389",
+  "name": "Abdul Rahman Baba",
+  "position": "centre-back",
+  "slot": "DF",
+  "nat": "Ghana",
+  "born": 1994,
+  "dob": "1994-07-02",
+  "started": null,
+  "was": "Chelsea",
+  "now": "PAOK FC"
+ },
+ {
   "id": "Q5654878",
   "name": "Abel Casquete",
   "position": "midfielder",
@@ -69,7 +81,7 @@
   "dob": "1999-11-08",
   "started": null,
   "was": "Liverpool",
-  "now": "AFC Fylde"
+  "now": null
  },
  {
   "id": "Q4679961",
@@ -141,7 +153,7 @@
   "dob": "2001-05-26",
   "started": null,
   "was": "Manchester City",
-  "now": "Parma Calcio 1913"
+  "now": null
  },
  {
   "id": "Q56705037",
@@ -177,7 +189,7 @@
   "dob": "1997-02-05",
   "started": null,
   "was": "Celtic",
-  "now": "Arbroath F.C."
+  "now": null
  },
  {
   "id": "Q99438616",
@@ -216,6 +228,18 @@
   "now": null
  },
  {
+  "id": "Q16727312",
+  "name": "Al-Musrati",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Libya",
+  "born": 1996,
+  "dob": "1996-04-06",
+  "started": null,
+  "was": "AS Monaco",
+  "now": "Al Ahli SC (Tripoli)"
+ },
+ {
   "id": "Q923402",
   "name": "Alan Patrick",
   "position": "midfielder",
@@ -237,7 +261,7 @@
   "dob": "1993-08-19",
   "started": null,
   "was": "Sporting CP",
-  "now": "Club Atlético Nueva Chicago"
+  "now": null
  },
  {
   "id": "Q27691",
@@ -261,7 +285,7 @@
   "dob": "1995-03-07",
   "started": null,
   "was": "Napoli",
-  "now": "US Cremonese"
+  "now": null
  },
  {
   "id": "Q20666609",
@@ -310,6 +334,18 @@
   "started": null,
   "was": "Lazio",
   "now": "Al Sadd SC"
+ },
+ {
+  "id": "Q19559931",
+  "name": "Álex Alegría",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "Spain",
+  "born": 1992,
+  "dob": "1992-10-10",
+  "started": null,
+  "was": "Real Betis",
+  "now": "CD Badajoz"
  },
  {
   "id": "Q75179071",
@@ -369,7 +405,7 @@
   "dob": "1989-11-10",
   "started": null,
   "was": "Flamengo",
-  "now": "Mirassol Futebol Clube"
+  "now": null
  },
  {
   "id": "Q120868357",
@@ -406,18 +442,6 @@
   "started": null,
   "was": "Inter Milan",
   "now": "Panserraikos F.C."
- },
- {
-  "id": "Q19559931",
-  "name": "Alexander Alegría",
-  "position": "forward",
-  "slot": "FW",
-  "nat": "Spain",
-  "born": 1992,
-  "dob": "1992-10-10",
-  "started": null,
-  "was": "Real Betis",
-  "now": "CD Badajoz"
  },
  {
   "id": "Q372709",
@@ -466,18 +490,6 @@
   "started": null,
   "was": "Everton",
   "now": "Botafogo FR"
- },
- {
-  "id": "Q16727312",
-  "name": "Almoatasembellah Mohamed",
-  "position": "midfielder",
-  "slot": "MF",
-  "nat": "Libya",
-  "born": 1996,
-  "dob": "1996-04-06",
-  "started": null,
-  "was": "AS Monaco",
-  "now": "Al Ahli SC (Tripoli)"
  },
  {
   "id": "Q57415806",
@@ -645,7 +657,7 @@
   "dob": "1996-04-28",
   "started": null,
   "was": "Inter Milan",
-  "now": "US Offanenghese 1933"
+  "now": null
  },
  {
   "id": "Q20752754",
@@ -700,7 +712,7 @@
   "name": "Andrija Radulović",
   "position": "wing half",
   "slot": "MF",
-  "nat": null,
+  "nat": "Montenegro",
   "born": 2002,
   "dob": "2002-07-03",
   "started": null,
@@ -741,7 +753,7 @@
   "dob": "1990-02-13",
   "started": null,
   "was": "Coventry City",
-  "now": "Seattle Sounders FC"
+  "now": null
  },
  {
   "id": "Q1112164",
@@ -885,7 +897,19 @@
   "dob": "1992-03-25",
   "started": null,
   "was": "Ipswich Town",
-  "now": "Bury F.C."
+  "now": null
+ },
+ {
+  "id": "Q131721965",
+  "name": "Ármin Pécsi",
+  "position": "goalkeeper",
+  "slot": "GK",
+  "nat": "Hungary",
+  "born": 2005,
+  "dob": "2005-02-24",
+  "started": null,
+  "was": "Liverpool",
+  "now": "TSV Hartberg"
  },
  {
   "id": "Q21901354",
@@ -897,7 +921,7 @@
   "dob": "1994-05-17",
   "started": null,
   "was": "Flamengo",
-  "now": "São Bernardo FC"
+  "now": null
  },
  {
   "id": "Q39667548",
@@ -921,7 +945,7 @@
   "dob": "1999-08-02",
   "started": null,
   "was": "River Plate",
-  "now": "Deportes Limache"
+  "now": null
  },
  {
   "id": "Q27019988",
@@ -952,7 +976,7 @@
   "name": "Ayodele Thomas",
   "position": "left winger",
   "slot": "FW",
-  "nat": null,
+  "nat": "Netherlands",
   "born": 2007,
   "dob": "2007-07-23",
   "started": null,
@@ -982,18 +1006,6 @@
   "started": null,
   "was": "Sporting CP",
   "now": "NK Maribor"
- },
- {
-  "id": "Q317389",
-  "name": "Baba Rahman",
-  "position": "centre-back",
-  "slot": "DF",
-  "nat": "Ghana",
-  "born": 1994,
-  "dob": "1994-07-02",
-  "started": null,
-  "was": "Chelsea",
-  "now": "PAOK FC"
  },
  {
   "id": "Q16727828",
@@ -1213,7 +1225,7 @@
  },
  {
   "id": "Q19977298",
-  "name": "Bohdan Mykhaylychenko",
+  "name": "Bohdan Mykhaylichenko",
   "position": "defender",
   "slot": "DF",
   "nat": "Ukraine",
@@ -1257,7 +1269,7 @@
   "dob": "2003-06-28",
   "started": null,
   "was": "Nottingham Forest",
-  "now": "Rio Ave F.C."
+  "now": null
  },
  {
   "id": "Q28113071",
@@ -1341,7 +1353,7 @@
   "dob": "1988-11-03",
   "started": null,
   "was": "Corinthians",
-  "now": "Esporte Clube XV de Novembro (Piracicaba)"
+  "now": null
  },
  {
   "id": "Q126965724",
@@ -1357,7 +1369,7 @@
  },
  {
   "id": "Q18707866",
-  "name": "Bruno Jacinto da Silva",
+  "name": "Bruno Paulista",
   "position": "stopper",
   "slot": "DF",
   "nat": "Brazil",
@@ -1428,6 +1440,18 @@
   "now": "Bradford City A.F.C."
  },
  {
+  "id": "Q94696146",
+  "name": "Calvin Ramsay",
+  "position": "defender",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 2003,
+  "dob": "2003-07-31",
+  "started": null,
+  "was": "Liverpool",
+  "now": "St Mirren"
+ },
+ {
   "id": "Q28849190",
   "name": "Calvin Stengs",
   "position": "midfielder",
@@ -1449,7 +1473,7 @@
   "dob": "1997-02-02",
   "started": null,
   "was": "Manchester United",
-  "now": "Macclesfield F.C."
+  "now": null
  },
  {
   "id": "Q26271407",
@@ -1461,7 +1485,7 @@
   "dob": "1998-02-11",
   "started": null,
   "was": "Ajax",
-  "now": "AC Omonia"
+  "now": null
  },
  {
   "id": "Q5041170",
@@ -1545,7 +1569,7 @@
   "dob": "1989-01-26",
   "started": null,
   "was": "Real Madrid",
-  "now": "Club Nacional"
+  "now": null
  },
  {
   "id": "Q19613570",
@@ -1573,7 +1597,7 @@
  },
  {
   "id": "Q17305765",
-  "name": "César Henrique Martins",
+  "name": "César Martins",
   "position": "centre-back",
   "slot": "DF",
   "nat": "Brazil",
@@ -1581,7 +1605,7 @@
   "dob": "1992-12-28",
   "started": null,
   "was": "Flamengo",
-  "now": "Criciúma Esporte Clube"
+  "now": null
  },
  {
   "id": "Q3196721",
@@ -1629,7 +1653,19 @@
   "dob": "2000-05-23",
   "started": null,
   "was": "Coventry City",
-  "now": "Shepshed Dynamo F.C."
+  "now": null
+ },
+ {
+  "id": "Q17517342",
+  "name": "Chico Ramos",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Portugal",
+  "born": 1994,
+  "dob": "1994-04-10",
+  "started": null,
+  "was": "Porto",
+  "now": "F.C. Paços de Ferreira"
  },
  {
   "id": "Q22958457",
@@ -1642,6 +1678,18 @@
   "started": null,
   "was": "Porto",
   "now": "Konyaspor"
+ },
+ {
+  "id": "Q5483970",
+  "name": "Chiquinho",
+  "position": "full-back",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1989,
+  "dob": "1989-07-27",
+  "started": null,
+  "was": "Flamengo",
+  "now": null
  },
  {
   "id": "Q65969931",
@@ -1665,7 +1713,7 @@
   "dob": "1992-03-31",
   "started": null,
   "was": "Hamburger SV",
-  "now": "1. FC Nürnberg"
+  "now": null
  },
  {
   "id": "Q21622759",
@@ -1713,11 +1761,11 @@
   "dob": "1997-04-01",
   "started": null,
   "was": "Coventry City",
-  "now": "Forest Green Rovers F.C."
+  "now": null
  },
  {
   "id": "Q944277",
-  "name": "Claudemir de Souza",
+  "name": "Claudemir",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Brazil",
@@ -1725,11 +1773,11 @@
   "dob": "1988-03-27",
   "started": null,
   "was": "Club Brugge",
-  "now": "Comercial Futebol Clube (Ribeirão Preto)"
+  "now": null
  },
  {
   "id": "Q23771470",
-  "name": "Cláudio Luiz Rodrigues Parise Leonel",
+  "name": "Claudinho",
   "position": "forward",
   "slot": "FW",
   "nat": "Brazil",
@@ -1860,6 +1908,18 @@
   "now": "Al Hilal SFC"
  },
  {
+  "id": "Q22003827",
+  "name": "Curro Sánchez",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 1996,
+  "dob": "1996-01-03",
+  "started": null,
+  "was": "Sevilla",
+  "now": null
+ },
+ {
   "id": "Q16935084",
   "name": "Cyle Larin",
   "position": "forward",
@@ -1929,7 +1989,7 @@
   "dob": "1990-02-05",
   "started": null,
   "was": "Dinamo Zagreb",
-  "now": "FK Radnik Surdulica"
+  "now": null
  },
  {
   "id": "Q102362241",
@@ -1942,6 +2002,18 @@
   "started": null,
   "was": "Ipswich Town",
   "now": "Leyton Orient F.C."
+ },
+ {
+  "id": "Q40493824",
+  "name": "Dani Martín",
+  "position": "goalkeeper",
+  "slot": "GK",
+  "nat": "Spain",
+  "born": 1998,
+  "dob": "1998-07-08",
+  "started": null,
+  "was": "Real Betis",
+  "now": "CD Tenerife"
  },
  {
   "id": "Q23883938",
@@ -1966,18 +2038,6 @@
   "started": null,
   "was": "AC Milan",
   "now": "Cagliari Calcio"
- },
- {
-  "id": "Q40493824",
-  "name": "Daniel Martín Fernández",
-  "position": "goalkeeper",
-  "slot": "GK",
-  "nat": "Spain",
-  "born": 1998,
-  "dob": "1998-07-08",
-  "started": null,
-  "was": "Real Betis",
-  "now": "CD Tenerife"
  },
  {
   "id": "Q100272666",
@@ -2026,18 +2086,6 @@
   "started": null,
   "was": "Rangers",
   "now": "Sporting Club Jacksonville"
- },
- {
-  "id": "Q50042926",
-  "name": "Dauda Mohammed",
-  "position": "forward",
-  "slot": "FW",
-  "nat": "Ghana",
-  "born": 1998,
-  "dob": "1998-02-20",
-  "started": null,
-  "was": "Anderlecht",
-  "now": "CD Lugo"
  },
  {
   "id": "Q12481043",
@@ -2161,7 +2209,7 @@
  },
  {
   "id": "Q137435615",
-  "name": "Deniz Emre Ofli",
+  "name": "Deniz Ofli",
   "position": "full-back",
   "slot": "DF",
   "nat": "Turkey",
@@ -2197,7 +2245,7 @@
  },
  {
   "id": "Q22004593",
-  "name": "Diego González Polanco",
+  "name": "Diego González",
   "position": "defender",
   "slot": "DF",
   "nat": "Spain",
@@ -2245,7 +2293,7 @@
  },
  {
   "id": "Q673450",
-  "name": "Douglas Franco Teixeira",
+  "name": "Douglas",
   "position": "centre-back",
   "slot": "DF",
   "nat": "Brazil",
@@ -2325,7 +2373,7 @@
   "dob": "1993-05-06",
   "started": null,
   "was": "Inter Milan",
-  "now": "St Ives Town F.C."
+  "now": null
  },
  {
   "id": "Q21055382",
@@ -2361,7 +2409,7 @@
   "dob": "1995-04-20",
   "started": null,
   "was": "Club Brugge",
-  "now": "FK Jablonec"
+  "now": null
  },
  {
   "id": "Q123182232",
@@ -2397,19 +2445,7 @@
   "dob": "1999-04-02",
   "started": null,
   "was": "Sunderland",
-  "now": "Carlisle United F.C."
- },
- {
-  "id": "Q22162798",
-  "name": "Eloge Koffi Yao",
-  "position": "centre-back",
-  "slot": "DF",
-  "nat": "Ivory Coast",
-  "born": 1996,
-  "dob": "1996-01-20",
-  "started": null,
-  "was": "Inter Milan",
-  "now": "Virtus Verona"
+  "now": null
  },
  {
   "id": "Q132130428",
@@ -2422,18 +2458,6 @@
   "started": null,
   "was": "Anderlecht",
   "now": "RSCA Futures"
- },
- {
-  "id": "Q18759062",
-  "name": "Emem Eduok",
-  "position": "wing half",
-  "slot": "MF",
-  "nat": "Nigeria",
-  "born": 1994,
-  "dob": "1994-01-31",
-  "started": null,
-  "was": "Hajduk Split",
-  "now": null
  },
  {
   "id": "Q60842119",
@@ -2469,7 +2493,7 @@
   "dob": "1997-11-15",
   "started": null,
   "was": "Club Brugge",
-  "now": "Brøndby IF"
+  "now": null
  },
  {
   "id": "Q445507",
@@ -2497,7 +2521,7 @@
  },
  {
   "id": "Q18246631",
-  "name": "Erik Lima",
+  "name": "Erik",
   "position": "forward",
   "slot": "FW",
   "nat": "Brazil",
@@ -2517,7 +2541,7 @@
   "dob": "1997-04-24",
   "started": null,
   "was": "Porto",
-  "now": "Panathinaikos F.C."
+  "now": null
  },
  {
   "id": "Q972265",
@@ -2613,11 +2637,11 @@
   "dob": "1991-06-14",
   "started": null,
   "was": "Palmeiras",
-  "now": "América Futebol Clube (RN)"
+  "now": null
  },
  {
   "id": "Q29117304",
-  "name": "Ewerton da Silva Pereira",
+  "name": "Ewerton",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Brazil",
@@ -2625,7 +2649,7 @@
   "dob": "1992-12-01",
   "started": null,
   "was": "Porto",
-  "now": "Kanchanaburi Power F.C."
+  "now": null
  },
  {
   "id": "Q510596",
@@ -2745,7 +2769,7 @@
   "dob": "1989-02-19",
   "started": null,
   "was": "Wolves",
-  "now": "Botafogo FR"
+  "now": null
  },
  {
   "id": "Q110070377",
@@ -2757,7 +2781,7 @@
   "dob": "1999-02-01",
   "started": null,
   "was": "Club Brugge",
-  "now": "RC Celta de Vigo"
+  "now": null
  },
  {
   "id": "Q41445080",
@@ -2769,7 +2793,7 @@
   "dob": "2000-01-06",
   "started": null,
   "was": "Hamburger SV",
-  "now": "Odense Boldklub"
+  "now": null
  },
  {
   "id": "Q98929151",
@@ -2844,18 +2868,6 @@
   "now": "Grêmio FBPA"
  },
  {
-  "id": "Q17517342",
-  "name": "Francisco Augusto Neto Ramos",
-  "position": "midfielder",
-  "slot": "MF",
-  "nat": "Portugal",
-  "born": 1994,
-  "dob": "1994-04-10",
-  "started": null,
-  "was": "Porto",
-  "now": "F.C. Paços de Ferreira"
- },
- {
   "id": "Q10557449",
   "name": "Francisco Geraldes",
   "position": "midfielder",
@@ -2866,30 +2878,6 @@
   "started": null,
   "was": "Sporting CP",
   "now": "Chungbuk Cheongju FC"
- },
- {
-  "id": "Q22003827",
-  "name": "Francisco José Sánchez Rodríguez",
-  "position": "midfielder",
-  "slot": "MF",
-  "nat": "Spain",
-  "born": 1996,
-  "dob": "1996-01-03",
-  "started": null,
-  "was": "Sevilla",
-  "now": "Burgos CF"
- },
- {
-  "id": "Q5483970",
-  "name": "Francisco Sousa dos Santos",
-  "position": "full-back",
-  "slot": "DF",
-  "nat": "Brazil",
-  "born": 1989,
-  "dob": "1989-07-27",
-  "started": null,
-  "was": "Flamengo",
-  "now": "Santa Cruz Futebol Clube"
  },
  {
   "id": "Q530499",
@@ -2925,7 +2913,7 @@
   "dob": "1998-04-01",
   "started": null,
   "was": "River Plate",
-  "now": "Cañuelas Fútbol Club"
+  "now": null
  },
  {
   "id": "Q73789862",
@@ -2941,7 +2929,7 @@
  },
  {
   "id": "Q116952830",
-  "name": "François Régis Mughe",
+  "name": "François Mughe",
   "position": "winger",
   "slot": "FW",
   "nat": "Cameroon",
@@ -2985,7 +2973,7 @@
   "dob": "1993-02-01",
   "started": null,
   "was": "Crystal Palace",
-  "now": "Chesterfield F.C."
+  "now": null
  },
  {
   "id": "Q3379641",
@@ -3009,11 +2997,11 @@
   "dob": "1992-09-27",
   "started": null,
   "was": "Napoli",
-  "now": "Esporte Clube Vitória"
+  "now": null
  },
  {
   "id": "Q14921884",
-  "name": "Gabriel Girotto Franco",
+  "name": "Gabriel",
   "position": "stopper",
   "slot": "DF",
   "nat": "Brazil",
@@ -3034,6 +3022,18 @@
   "started": null,
   "was": "Arsenal",
   "now": "Al Hilal SFC"
+ },
+ {
+  "id": "Q75059692",
+  "name": "Gabriel Veron",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 2002,
+  "dob": "2002-09-03",
+  "started": null,
+  "was": "Porto",
+  "now": "FC Porto"
  },
  {
   "id": "Q110611871",
@@ -3141,7 +3141,7 @@
   "dob": "1996-01-02",
   "started": null,
   "was": "Burnley",
-  "now": "Thackley A.F.C."
+  "now": null
  },
  {
   "id": "Q15084554",
@@ -3192,6 +3192,18 @@
   "now": "Argentinos Juniors"
  },
  {
+  "id": "Q11860513",
+  "name": "Glen Kamara",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Finland",
+  "born": 1995,
+  "dob": "1995-10-28",
+  "started": null,
+  "was": "Rangers",
+  "now": "Queens Park Rangers F.C."
+ },
+ {
   "id": "Q55500500",
   "name": "Glenn Middleton",
   "position": "wing half",
@@ -3216,8 +3228,20 @@
   "now": "C.D. Santa Clara"
  },
  {
+  "id": "Q16233597",
+  "name": "Greg Stewart",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 1990,
+  "dob": "1990-03-17",
+  "started": null,
+  "was": "Rangers",
+  "now": null
+ },
+ {
   "id": "Q16302370",
-  "name": "Guido nahuel Vadalá",
+  "name": "Guido Vadalá",
   "position": "forward",
   "slot": "FW",
   "nat": "Argentina",
@@ -3225,7 +3249,19 @@
   "dob": "1997-02-08",
   "started": null,
   "was": "Juventus",
-  "now": "Coquimbo Unido"
+  "now": null
+ },
+ {
+  "id": "Q554402",
+  "name": "Guilherme",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1988,
+  "dob": "1988-10-22",
+  "started": null,
+  "was": "Corinthians",
+  "now": null
  },
  {
   "id": "Q1279052",
@@ -3235,18 +3271,6 @@
   "nat": "Brazil",
   "born": 1989,
   "dob": "1989-01-31",
-  "started": null,
-  "was": "Corinthians",
-  "now": "Barretos Esporte Clube"
- },
- {
-  "id": "Q554402",
-  "name": "Guilherme Milhomem Gusmão",
-  "position": "forward",
-  "slot": "FW",
-  "nat": "Brazil",
-  "born": 1988,
-  "dob": "1988-10-22",
   "started": null,
   "was": "Corinthians",
   "now": null
@@ -3336,6 +3360,18 @@
   "now": null
  },
  {
+  "id": "Q56752774",
+  "name": "Harvey Elliott",
+  "position": "attacking midfielder",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2003,
+  "dob": "2003-04-04",
+  "started": null,
+  "was": "Liverpool",
+  "now": "Valencia CF"
+ },
+ {
   "id": "Q313936",
   "name": "Håvard Nordtveit",
   "position": "full-back",
@@ -3385,7 +3421,7 @@
  },
  {
   "id": "Q14757828",
-  "name": "Henrique Silva Milagres",
+  "name": "Henrique",
   "position": "defender",
   "slot": "DF",
   "nat": "Brazil",
@@ -3420,18 +3456,6 @@
   "now": null
  },
  {
-  "id": "Q20048080",
-  "name": "Hugo Gomes dos Santos Silva",
-  "position": "midfielder",
-  "slot": "MF",
-  "nat": "Brazil",
-  "born": 1995,
-  "dob": "1995-03-18",
-  "started": null,
-  "was": "Flamengo",
-  "now": "Madura United F.C."
- },
- {
   "id": "Q30346426",
   "name": "Hugo Guillamón",
   "position": "centre-back",
@@ -3453,7 +3477,7 @@
   "dob": "2001-11-10",
   "started": null,
   "was": "Palmeiras",
-  "now": "Club Olimpia"
+  "now": null
  },
  {
   "id": "Q22280143",
@@ -3504,6 +3528,18 @@
   "now": "Diriyah Club"
  },
  {
+  "id": "Q135583601",
+  "name": "Ifeanyi Ndukwe",
+  "position": "defender",
+  "slot": "DF",
+  "nat": "Austria",
+  "born": 2008,
+  "dob": "2008-03-03",
+  "started": null,
+  "was": "Liverpool",
+  "now": "Levante"
+ },
+ {
   "id": "Q6447402",
   "name": "Ignacio Fernández",
   "position": "midfielder",
@@ -3514,6 +3550,18 @@
   "started": null,
   "was": "River Plate",
   "now": "Club de Gimnasia y Esgrima La Plata"
+ },
+ {
+  "id": "Q121361554",
+  "name": "İlhami Siraçhan Nas",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Turkey",
+  "born": 2002,
+  "dob": "2002-06-20",
+  "started": null,
+  "was": "Galatasaray",
+  "now": "Adana 01 FK"
  },
  {
   "id": "Q18921648",
@@ -3553,7 +3601,7 @@
  },
  {
   "id": "Q17123759",
-  "name": "Ivan Lucic",
+  "name": "Ivan Lučić",
   "position": "goalkeeper",
   "slot": "GK",
   "nat": "Austria",
@@ -3696,6 +3744,18 @@
   "now": "Sheffield Wednesday F.C."
  },
  {
+  "id": "Q20048080",
+  "name": "Jajá",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1995,
+  "dob": "1995-03-18",
+  "started": null,
+  "was": "Flamengo",
+  "now": "Madura United F.C."
+ },
+ {
   "id": "Q93666",
   "name": "James Tavernier",
   "position": "defender",
@@ -3793,7 +3853,7 @@
  },
  {
   "id": "Q68327658",
-  "name": "Janderson Santos de Souza",
+  "name": "Janderson",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Brazil",
@@ -3801,7 +3861,7 @@
   "dob": "1999-02-26",
   "started": null,
   "was": "Corinthians",
-  "now": "Vila Nova Futebol Clube"
+  "now": null
  },
  {
   "id": "Q17477924",
@@ -3849,6 +3909,18 @@
   "dob": "1998-06-22",
   "started": null,
   "was": "Feyenoord",
+  "now": null
+ },
+ {
+  "id": "Q109380452",
+  "name": "Javi Serrano",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Spain",
+  "born": 2003,
+  "dob": "2003-01-16",
+  "started": null,
+  "was": "Atlético Madrid",
   "now": null
  },
  {
@@ -3913,7 +3985,7 @@
  },
  {
   "id": "Q20676408",
-  "name": "Jefferson de Jesus Santos",
+  "name": "Jefferson",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Brazil",
@@ -3921,7 +3993,7 @@
   "dob": "1993-04-14",
   "started": null,
   "was": "Hajduk Split",
-  "now": "Marsaxlokk F.C."
+  "now": null
  },
  {
   "id": "Q254521",
@@ -3972,6 +4044,18 @@
   "now": null
  },
  {
+  "id": "Q133832511",
+  "name": "Jeremy Monga",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 2009,
+  "dob": "2009-07-10",
+  "started": null,
+  "was": "Manchester City",
+  "now": "Swansea City"
+ },
+ {
   "id": "Q607790",
   "name": "Jesús Manuel Corona",
   "position": "wing half",
@@ -3985,7 +4069,7 @@
  },
  {
   "id": "Q128809546",
-  "name": "Jesús Rodríguez Caraballo",
+  "name": "Jesús Rodríguez",
   "position": null,
   "slot": null,
   "nat": "Spain",
@@ -4021,7 +4105,7 @@
  },
  {
   "id": "Q17712747",
-  "name": "Joan Jordan",
+  "name": "Joan Jordán",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Spain",
@@ -4045,7 +4129,7 @@
  },
  {
   "id": "Q2626107",
-  "name": "João Pedro Galvao",
+  "name": "João Pedro",
   "position": "forward",
   "slot": "FW",
   "nat": "Italy",
@@ -4149,7 +4233,7 @@
   "dob": "1997-01-14",
   "started": null,
   "was": "Celtic",
-  "now": "Glentoran F.C."
+  "now": null
  },
  {
   "id": "Q22087181",
@@ -4165,7 +4249,7 @@
  },
  {
   "id": "Q19996370",
-  "name": "Joel Pereira",
+  "name": "Joel Castro Pereira",
   "position": "goalkeeper",
   "slot": "GK",
   "nat": "Portugal",
@@ -4197,7 +4281,7 @@
   "dob": "2003-02-28",
   "started": null,
   "was": "Sporting CP",
-  "now": "Gil Vicente F.C."
+  "now": null
  },
  {
   "id": "Q170038",
@@ -4221,7 +4305,7 @@
   "dob": "1995-06-23",
   "started": null,
   "was": "Brentford",
-  "now": "Portsmouth F.C."
+  "now": null
  },
  {
   "id": "Q26678338",
@@ -4236,6 +4320,18 @@
   "now": null
  },
  {
+  "id": "Q19968638",
+  "name": "Jonas",
+  "position": "stopper",
+  "slot": "DF",
+  "nat": "Brazil",
+  "born": 1991,
+  "dob": "1991-10-03",
+  "started": null,
+  "was": "Flamengo",
+  "now": null
+ },
+ {
   "id": "Q55947285",
   "name": "Jonas David",
   "position": "midfielder",
@@ -4245,19 +4341,7 @@
   "dob": "2000-03-08",
   "started": null,
   "was": "Hamburger SV",
-  "now": "SSV Ulm 1846"
- },
- {
-  "id": "Q19968638",
-  "name": "Jonas Gomes de Sousa",
-  "position": "stopper",
-  "slot": "DF",
-  "nat": "Brazil",
-  "born": 1991,
-  "dob": "1991-10-03",
-  "started": null,
-  "was": "Flamengo",
-  "now": "Retrô Futebol Clube Brasil"
+  "now": null
  },
  {
   "id": "Q2106995",
@@ -4320,20 +4404,8 @@
   "now": null
  },
  {
-  "id": "Q6273829",
-  "name": "Jonathan Marlone",
-  "position": "midfielder",
-  "slot": "MF",
-  "nat": "Brazil",
-  "born": 1992,
-  "dob": "1992-04-02",
-  "started": null,
-  "was": "Corinthians",
-  "now": "Associação Chapecoense de Futebol"
- },
- {
   "id": "Q16880180",
-  "name": "Jonathan Rodríguez Menéndez",
+  "name": "Jony Rodríguez",
   "position": "wing half",
   "slot": "MF",
   "nat": "Spain",
@@ -4365,7 +4437,7 @@
   "dob": "1996-11-10",
   "started": null,
   "was": "West Ham",
-  "now": "Burnham F.C."
+  "now": null
  },
  {
   "id": "Q15378711",
@@ -4437,7 +4509,7 @@
   "dob": "1994-08-24",
   "started": null,
   "was": "Sunderland",
-  "now": "Northampton Town F.C."
+  "now": null
  },
  {
   "id": "Q30938528",
@@ -4461,7 +4533,7 @@
   "dob": "1991-12-02",
   "started": null,
   "was": "Crystal Palace",
-  "now": "Gold Coast Knights F.C."
+  "now": null
  },
  {
   "id": "Q27038269",
@@ -4476,18 +4548,6 @@
   "now": "FC Rouen"
  },
  {
-  "id": "Q15975282",
-  "name": "Jorge Eduardo Recalde",
-  "position": "wing half",
-  "slot": "MF",
-  "nat": "Paraguay",
-  "born": 1992,
-  "dob": "1992-05-08",
-  "started": null,
-  "was": "Palmeiras",
-  "now": "Club Libertad"
- },
- {
   "id": "Q3810082",
   "name": "Jorge Moreira",
   "position": "full-back",
@@ -4497,6 +4557,18 @@
   "dob": "1990-02-01",
   "started": null,
   "was": "River Plate",
+  "now": null
+ },
+ {
+  "id": "Q15975282",
+  "name": "Jorge Recalde",
+  "position": "wing half",
+  "slot": "MF",
+  "nat": "Paraguay",
+  "born": 1992,
+  "dob": "1992-05-08",
+  "started": null,
+  "was": "Palmeiras",
   "now": null
  },
  {
@@ -4533,7 +4605,7 @@
   "dob": "1995-04-15",
   "started": null,
   "was": "Barcelona",
-  "now": "Granada CF"
+  "now": null
  },
  {
   "id": "Q54512527",
@@ -4585,7 +4657,7 @@
  },
  {
   "id": "Q554882",
-  "name": "José Rodríguez Martínez",
+  "name": "José Rodríguez",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Spain",
@@ -4753,7 +4825,7 @@
  },
  {
   "id": "Q649788",
-  "name": "Juanmi Jiménez",
+  "name": "Juanmi",
   "position": "forward",
   "slot": "FW",
   "nat": "Spain",
@@ -4810,6 +4882,18 @@
   "started": null,
   "was": "Hajduk Split",
   "now": "Chacarita Juniors"
+ },
+ {
+  "id": "Q50841898",
+  "name": "Juninho",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "Brazil",
+  "born": 1996,
+  "dob": "1996-11-21",
+  "started": null,
+  "was": "Flamengo",
+  "now": "Pumas UNAM"
  },
  {
   "id": "Q5957357",
@@ -4870,6 +4954,18 @@
   "started": null,
   "was": "Juventus",
   "now": "Cruzeiro EC"
+ },
+ {
+  "id": "Q20641319",
+  "name": "Kalvin Phillips",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "United Kingdom",
+  "born": 1995,
+  "dob": "1995-12-02",
+  "started": null,
+  "was": "Manchester City",
+  "now": "Sheffield United F.C."
  },
  {
   "id": "Q594733",
@@ -4977,7 +5073,7 @@
   "dob": "1993-12-17",
   "started": null,
   "was": "Anderlecht",
-  "now": "Maccabi Haifa F.C."
+  "now": null
  },
  {
   "id": "Q21061530",
@@ -5088,8 +5184,20 @@
   "now": "Wiener Sport-Club"
  },
  {
+  "id": "Q111113892",
+  "name": "Kōta Takai",
+  "position": "defender",
+  "slot": "DF",
+  "nat": "Japan",
+  "born": 2004,
+  "dob": "2004-09-04",
+  "started": null,
+  "was": "Tottenham Hotspur",
+  "now": "Sint-Truidense"
+ },
+ {
   "id": "Q29168109",
-  "name": "Krepin Diatta",
+  "name": "Krépin Diatta",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Senegal",
@@ -5133,7 +5241,7 @@
   "dob": "1997-12-12",
   "started": null,
   "was": "Celtic",
-  "now": "CAPS United F.C."
+  "now": null
  },
  {
   "id": "Q6450341",
@@ -5145,7 +5253,7 @@
   "dob": "1990-08-12",
   "started": null,
   "was": "Crystal Palace",
-  "now": "Ebbsfleet United F.C."
+  "now": null
  },
  {
   "id": "Q2011106",
@@ -5184,16 +5292,16 @@
   "now": "FC Shakhtar Donetsk"
  },
  {
-  "id": "Q17619665",
-  "name": "Leandro Joaquín Rodríguez",
-  "position": "forward",
-  "slot": "FW",
-  "nat": "Uruguay",
-  "born": 1992,
-  "dob": "1992-11-19",
+  "id": "Q21130262",
+  "name": "Lautaro Arellano",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Argentina",
+  "born": 1997,
+  "dob": "1997-04-17",
   "started": null,
-  "was": "Everton",
-  "now": "C.A. Bella Vista"
+  "was": "River Plate",
+  "now": null
  },
  {
   "id": "Q15831068",
@@ -5205,7 +5313,19 @@
   "dob": "1991-07-03",
   "started": null,
   "was": "Club Brugge",
-  "now": "Botafogo Futebol Clube (SP)"
+  "now": null
+ },
+ {
+  "id": "Q17619665",
+  "name": "Leandro Rodríguez",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "Uruguay",
+  "born": 1992,
+  "dob": "1992-11-19",
+  "started": null,
+  "was": "Everton",
+  "now": null
  },
  {
   "id": "Q16589831",
@@ -5253,7 +5373,7 @@
   "dob": "1999-01-25",
   "started": null,
   "was": "Bayer Leverkusen",
-  "now": "Dynamo Dresden"
+  "now": null
  },
  {
   "id": "Q45940576",
@@ -5373,7 +5493,7 @@
   "dob": "1994-06-16",
   "started": null,
   "was": "Brentford",
-  "now": "Rangers F.C."
+  "now": null
  },
  {
   "id": "Q2080923",
@@ -5385,7 +5505,7 @@
   "dob": "1989-05-08",
   "started": null,
   "was": "Leeds United",
-  "now": "Gateshead F.C."
+  "now": null
  },
  {
   "id": "Q23007650",
@@ -5397,7 +5517,7 @@
   "dob": "1999-02-01",
   "started": null,
   "was": "Rangers",
-  "now": "Glentoran F.C."
+  "now": null
  },
  {
   "id": "Q58008555",
@@ -5425,7 +5545,7 @@
  },
  {
   "id": "Q19822751",
-  "name": "Lincoln Henrique",
+  "name": "Lincoln",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Brazil",
@@ -5457,7 +5577,7 @@
   "dob": "1998-02-27",
   "started": null,
   "was": "Paris Saint-Germain",
-  "now": "HFX Wanderers FC"
+  "now": null
  },
  {
   "id": "Q22046804",
@@ -5569,7 +5689,7 @@
  },
  {
   "id": "Q126903",
-  "name": "Lucas Piazón",
+  "name": "Lucas Piazon",
   "position": "forward",
   "slot": "FW",
   "nat": "Italy",
@@ -5589,7 +5709,7 @@
   "dob": "1993-02-16",
   "started": null,
   "was": "Marseille",
-  "now": "Cruzeiro EC"
+  "now": null
  },
  {
   "id": "Q20641574",
@@ -5605,7 +5725,7 @@
  },
  {
   "id": "Q10552199",
-  "name": "Lucca Borges de Brito",
+  "name": "Lucca",
   "position": "wing half",
   "slot": "MF",
   "nat": "Brazil",
@@ -5661,7 +5781,7 @@
   "dob": "1998-10-24",
   "started": null,
   "was": "River Plate",
-  "now": "Defensores Unidos"
+  "now": null
  },
  {
   "id": "Q105588793",
@@ -5721,7 +5841,7 @@
   "dob": "1998-11-27",
   "started": null,
   "was": "Crystal Palace",
-  "now": "AFC Croydon Athletic"
+  "now": null
  },
  {
   "id": "Q723614",
@@ -5748,6 +5868,18 @@
   "now": null
  },
  {
+  "id": "Q42725482",
+  "name": "Lyle Foster",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "South Africa",
+  "born": 2000,
+  "dob": "2000-09-03",
+  "started": null,
+  "was": "Burnley",
+  "now": "Houston Dynamo FC"
+ },
+ {
   "id": "Q20895094",
   "name": "Lynden Gooch",
   "position": "midfielder",
@@ -5757,7 +5889,7 @@
   "dob": "1995-12-24",
   "started": null,
   "was": "Sunderland",
-  "now": "Huddersfield Town A.F.C."
+  "now": null
  },
  {
   "id": "Q37810302",
@@ -5793,7 +5925,7 @@
   "dob": "1990-06-21",
   "started": null,
   "was": "Hajduk Split",
-  "now": "FC Oleksandriya"
+  "now": null
  },
  {
   "id": "Q62063258",
@@ -5889,7 +6021,7 @@
   "dob": "1996-10-21",
   "started": null,
   "was": "Bayer Leverkusen",
-  "now": "Bonner SC"
+  "now": null
  },
  {
   "id": "Q114085673",
@@ -5905,7 +6037,7 @@
  },
  {
   "id": "Q118472572",
-  "name": "Marc Guiu Paz",
+  "name": "Marc Guiu",
   "position": "centre-forward",
   "slot": "FW",
   "nat": "Spain",
@@ -5937,7 +6069,7 @@
   "dob": "2002-12-20",
   "started": null,
   "was": "Liverpool",
-  "now": "Fluminense FC"
+  "now": null
  },
  {
   "id": "Q20994301",
@@ -5989,7 +6121,7 @@
  },
  {
   "id": "Q3869209",
-  "name": "Mário Sérgio Santos Costa",
+  "name": "Marinho",
   "position": "wing half",
   "slot": "MF",
   "nat": "Brazil",
@@ -5998,6 +6130,18 @@
   "started": null,
   "was": "Flamengo",
   "now": "Esporte Clube Vitória"
+ },
+ {
+  "id": "Q73400559",
+  "name": "Mario Vušković",
+  "position": "defender",
+  "slot": "DF",
+  "nat": "Croatia",
+  "born": 2001,
+  "dob": "2001-11-16",
+  "started": null,
+  "was": "Hamburger SV",
+  "now": null
  },
  {
   "id": "Q60792119",
@@ -6048,6 +6192,18 @@
   "now": null
  },
  {
+  "id": "Q349331",
+  "name": "Marko Vejinović",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 1990,
+  "dob": "1990-02-03",
+  "started": null,
+  "was": "Feyenoord",
+  "now": null
+ },
+ {
   "id": "Q66432192",
   "name": "Marley Aké",
   "position": "midfielder",
@@ -6072,6 +6228,18 @@
   "now": "1. FC Bocholt"
  },
  {
+  "id": "Q6273829",
+  "name": "Marlone",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1992,
+  "dob": "1992-04-02",
+  "started": null,
+  "was": "Corinthians",
+  "now": null
+ },
+ {
   "id": "Q107584170",
   "name": "Marquinhos",
   "position": "forward",
@@ -6093,7 +6261,7 @@
   "dob": "1990-07-21",
   "started": null,
   "was": "Corinthians",
-  "now": "Vila Nova Futebol Clube"
+  "now": null
  },
  {
   "id": "Q3431011",
@@ -6129,7 +6297,7 @@
   "dob": "1997-04-17",
   "started": null,
   "was": "West Ham",
-  "now": "FK Haugesund"
+  "now": null
  },
  {
   "id": "Q2548166",
@@ -6141,7 +6309,7 @@
   "dob": "1990-01-23",
   "started": null,
   "was": "Rangers",
-  "now": "Anstey Nomads F.C."
+  "now": null
  },
  {
   "id": "Q17492941",
@@ -6165,7 +6333,7 @@
   "dob": "1993-02-04",
   "started": null,
   "was": "Club Brugge",
-  "now": "Al Ahli SC (Doha)"
+  "now": null
  },
  {
   "id": "Q29919582",
@@ -6177,7 +6345,7 @@
   "dob": "1997-04-10",
   "started": null,
   "was": "Corinthians",
-  "now": "V-Varen Nagasaki"
+  "now": null
  },
  {
   "id": "Q22006724",
@@ -6189,7 +6357,7 @@
   "dob": "1995-05-13",
   "started": null,
   "was": "Palmeiras",
-  "now": "Botafogo Futebol Clube (SP)"
+  "now": null
  },
  {
   "id": "Q3559484",
@@ -6237,7 +6405,7 @@
   "dob": "1997-05-14",
   "started": null,
   "was": "Bournemouth",
-  "now": "Salford City F.C."
+  "now": null
  },
  {
   "id": "Q10557783",
@@ -6252,6 +6420,18 @@
   "now": "West Bromwich Albion F.C."
  },
  {
+  "id": "Q731869",
+  "name": "Matt Lowton",
+  "position": "full-back",
+  "slot": "DF",
+  "nat": "United Kingdom",
+  "born": 1989,
+  "dob": "1989-06-09",
+  "started": null,
+  "was": "Burnley",
+  "now": null
+ },
+ {
   "id": "Q24663885",
   "name": "Matt Turner",
   "position": "goalkeeper",
@@ -6262,18 +6442,6 @@
   "started": null,
   "was": "Nottingham Forest",
   "now": "New England Revolution"
- },
- {
-  "id": "Q731869",
-  "name": "Matthew Lowton",
-  "position": "full-back",
-  "slot": "DF",
-  "nat": "United Kingdom",
-  "born": 1989,
-  "dob": "1989-06-09",
-  "started": null,
-  "was": "Burnley",
-  "now": null
  },
  {
   "id": "Q66311593",
@@ -6309,7 +6477,7 @@
   "dob": "1991-11-15",
   "started": null,
   "was": "Brentford",
-  "now": "FC Metz"
+  "now": null
  },
  {
   "id": "Q14250217",
@@ -6361,7 +6529,7 @@
  },
  {
   "id": "Q22958501",
-  "name": "Maycon de Andrade Barberan",
+  "name": "Maycon",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Brazil",
@@ -6369,7 +6537,7 @@
   "dob": "1997-07-15",
   "started": null,
   "was": "Corinthians",
-  "now": "Clube Atlético Mineiro"
+  "now": null
  },
  {
   "id": "Q16234012",
@@ -6397,7 +6565,7 @@
  },
  {
   "id": "Q552347",
-  "name": "Mehdi Carcela-González",
+  "name": "Mehdi Carcela",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Belgium",
@@ -6588,6 +6756,30 @@
   "now": "NAC Breda"
  },
  {
+  "id": "Q18719399",
+  "name": "Mohamed Farès",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "France",
+  "born": 1996,
+  "dob": "1996-02-15",
+  "started": null,
+  "was": "Lazio",
+  "now": "SS Lazio"
+ },
+ {
+  "id": "Q50042926",
+  "name": "Mohammed Dauda",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "Ghana",
+  "born": 1998,
+  "dob": "1998-02-20",
+  "started": null,
+  "was": "Anderlecht",
+  "now": "CD Lugo"
+ },
+ {
   "id": "Q27889974",
   "name": "Moise Kean",
   "position": "forward",
@@ -6601,7 +6793,7 @@
  },
  {
   "id": "Q10331545",
-  "name": "Moisés Lima Magalhães",
+  "name": "Moisés",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Brazil",
@@ -6669,7 +6861,7 @@
   "dob": "1992-01-10",
   "started": null,
   "was": "Trabzonspor",
-  "now": "Konyaspor"
+  "now": null
  },
  {
   "id": "Q27671274",
@@ -6681,7 +6873,7 @@
   "dob": "1997-02-27",
   "started": null,
   "was": "Anderlecht",
-  "now": "Hannover 96"
+  "now": null
  },
  {
   "id": "Q6943428",
@@ -6693,7 +6885,7 @@
   "dob": "1988-09-04",
   "started": null,
   "was": "Leeds United",
-  "now": "Peterborough Sports F.C."
+  "now": null
  },
  {
   "id": "Q21061755",
@@ -6741,7 +6933,7 @@
   "dob": "1992-06-05",
   "started": null,
   "was": "Wolves",
-  "now": "Charlotte FC"
+  "now": null
  },
  {
   "id": "Q107745867",
@@ -6777,7 +6969,7 @@
   "dob": "1989-05-31",
   "started": null,
   "was": "Red Star Belgrade",
-  "now": "FK Spartak Subotica"
+  "now": null
  },
  {
   "id": "Q23771922",
@@ -6861,7 +7053,7 @@
   "dob": "1996-04-29",
   "started": null,
   "was": "River Plate",
-  "now": "Club y Biblioteca Ramón Santamarina"
+  "now": null
  },
  {
   "id": "Q50365620",
@@ -6993,23 +7185,11 @@
   "dob": "1996-11-30",
   "started": null,
   "was": "Burnley",
-  "now": "Daisy Hill F.C."
- },
- {
-  "id": "Q50841898",
-  "name": "Olávio Vieira dos Santos Júnior",
-  "position": "forward",
-  "slot": "FW",
-  "nat": "Brazil",
-  "born": 1996,
-  "dob": "1996-11-21",
-  "started": null,
-  "was": "Flamengo",
-  "now": "Pumas UNAM"
+  "now": null
  },
  {
   "id": "Q3373985",
-  "name": "Ole Kristian Selnæs",
+  "name": "Ole Selnæs",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Norway",
@@ -7054,6 +7234,18 @@
   "started": null,
   "was": "Celtic",
   "now": null
+ },
+ {
+  "id": "Q112112780",
+  "name": "Oluwaseun Adewumi",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "Austria",
+  "born": 2005,
+  "dob": "2005-02-23",
+  "started": null,
+  "was": "Burnley",
+  "now": "Hertha BSC"
  },
  {
   "id": "Q24053865",
@@ -7141,7 +7333,7 @@
  },
  {
   "id": "Q1914940",
-  "name": "Patricio Gabarrón",
+  "name": "Patric",
   "position": "defender",
   "slot": "DF",
   "nat": "Spain",
@@ -7197,7 +7389,7 @@
   "dob": "1996-11-19",
   "started": null,
   "was": "Leeds United",
-  "now": "Jersey Bulls F.C."
+  "now": null
  },
  {
   "id": "Q20877189",
@@ -7245,7 +7437,7 @@
   "dob": "1992-03-27",
   "started": null,
   "was": "West Ham",
-  "now": "AC Monza"
+  "now": null
  },
  {
   "id": "Q27527436",
@@ -7293,7 +7485,7 @@
   "dob": "1990-08-06",
   "started": null,
   "was": "Red Star Belgrade",
-  "now": "FK Jezero"
+  "now": null
  },
  {
   "id": "Q16854449",
@@ -7368,6 +7560,18 @@
   "now": "FC 08 Homburg"
  },
  {
+  "id": "Q125253530",
+  "name": "Pierce Charles",
+  "position": "goalkeeper",
+  "slot": "GK",
+  "nat": "United Kingdom",
+  "born": 2005,
+  "dob": "2005-07-21",
+  "started": null,
+  "was": "Manchester City",
+  "now": "Queens Park Rangers"
+ },
+ {
   "id": "Q28051511",
   "name": "Pietro Pellegri",
   "position": "forward",
@@ -7378,6 +7582,18 @@
   "started": null,
   "was": "AS Monaco",
   "now": "Torino FC"
+ },
+ {
+  "id": "Q113572844",
+  "name": "Quilindschy Hartman",
+  "position": "full-back",
+  "slot": "DF",
+  "nat": "Kingdom of the Netherlands",
+  "born": 2001,
+  "dob": "2001-11-14",
+  "started": null,
+  "was": "Burnley",
+  "now": "RCD Espanyol"
  },
  {
   "id": "Q21540971",
@@ -7392,6 +7608,18 @@
   "now": "Aris Thessaloniki F.C."
  },
  {
+  "id": "Q189184",
+  "name": "Rafael",
+  "position": "wing half",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1990,
+  "dob": "1990-07-09",
+  "started": null,
+  "was": "Olympique Lyonnais",
+  "now": null
+ },
+ {
   "id": "Q3928947",
   "name": "Rafael Galhardo",
   "position": "full-back",
@@ -7401,18 +7629,6 @@
   "dob": "1991-10-30",
   "started": null,
   "was": "Anderlecht",
-  "now": "Rayong F.C."
- },
- {
-  "id": "Q189184",
-  "name": "Rafael Pereira da Silva",
-  "position": "wing half",
-  "slot": "MF",
-  "nat": "Brazil",
-  "born": 1990,
-  "dob": "1990-07-09",
-  "started": null,
-  "was": "Olympique Lyonnais",
   "now": null
  },
  {
@@ -7429,7 +7645,7 @@
  },
  {
   "id": "Q15241347",
-  "name": "Ramiro Benetti",
+  "name": "Ramiro",
   "position": "midfielder",
   "slot": "MF",
   "nat": "Italy",
@@ -7449,7 +7665,7 @@
   "dob": "1991-03-05",
   "started": null,
   "was": "Everton",
-  "now": "Estudiantes de La Plata"
+  "now": null
  },
  {
   "id": "Q21711800",
@@ -7473,7 +7689,7 @@
   "dob": "1992-12-19",
   "started": null,
   "was": "West Ham",
-  "now": "Oakland Roots SC"
+  "now": null
  },
  {
   "id": "Q97573236",
@@ -7485,7 +7701,7 @@
   "dob": "2002-12-05",
   "started": null,
   "was": "Ajax",
-  "now": "CA Osasuna"
+  "now": null
  },
  {
   "id": "Q642785",
@@ -7513,7 +7729,7 @@
  },
  {
   "id": "Q17037521",
-  "name": "Régis Augusto Salmazzo",
+  "name": "Régis",
   "position": "wing half",
   "slot": "MF",
   "nat": "Brazil",
@@ -7557,7 +7773,7 @@
   "dob": "1995-07-28",
   "started": null,
   "was": "Barcelona",
-  "now": "Al Wasl F.C."
+  "now": null
  },
  {
   "id": "Q6105612",
@@ -7620,8 +7836,20 @@
   "now": "Forlì FC"
  },
  {
+  "id": "Q58174760",
+  "name": "Riccardo Sottil",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "Italy",
+  "born": 1999,
+  "dob": "1999-06-03",
+  "started": null,
+  "was": "Fiorentina",
+  "now": "ACF Fiorentina"
+ },
+ {
   "id": "Q1449179",
-  "name": "Richairo Zivkovic",
+  "name": "Richairo Živković",
   "position": "forward",
   "slot": "FW",
   "nat": "Kingdom of the Netherlands",
@@ -7669,7 +7897,7 @@
  },
  {
   "id": "Q10295275",
-  "name": "Rildo de Andrade Felicissimo",
+  "name": "Rildo",
   "position": "forward",
   "slot": "FW",
   "nat": "Brazil",
@@ -7800,15 +8028,15 @@
   "now": "FC Rodina Moscow"
  },
  {
-  "id": "Q3940035",
-  "name": "Rodrigo Eduardo Costa Marinho",
-  "position": "midfielder",
-  "slot": "MF",
+  "id": "Q3438450",
+  "name": "Rodrigo Caio",
+  "position": "stopper",
+  "slot": "DF",
   "nat": "Brazil",
-  "born": 1988,
-  "dob": "1988-03-27",
+  "born": 1993,
+  "dob": "1993-08-17",
   "started": null,
-  "was": "Corinthians",
+  "was": "Flamengo",
   "now": null
  },
  {
@@ -7822,6 +8050,18 @@
   "started": null,
   "was": "Sporting CP",
   "now": "Sabah FK (Azerbaijan)"
+ },
+ {
+  "id": "Q3940035",
+  "name": "Rodriguinho",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Brazil",
+  "born": 1988,
+  "dob": "1988-03-27",
+  "started": null,
+  "was": "Corinthians",
+  "now": null
  },
  {
   "id": "Q55363875",
@@ -7885,7 +8125,7 @@
  },
  {
   "id": "Q21622376",
-  "name": "Ronael Pierre-Gabriel",
+  "name": "Ronaël Pierre-Gabriel",
   "position": "defender",
   "slot": "DF",
   "nat": "France",
@@ -8049,7 +8289,7 @@
   "dob": "1988-05-13",
   "started": null,
   "was": "Dinamo Zagreb",
-  "now": "FK Sloboda Tuzla"
+  "now": null
  },
  {
   "id": "Q17619317",
@@ -8160,6 +8400,18 @@
   "now": "Derby County F.C."
  },
  {
+  "id": "Q18759062",
+  "name": "Samuel Eduok",
+  "position": "wing half",
+  "slot": "MF",
+  "nat": "Nigeria",
+  "born": 1994,
+  "dob": "1994-01-31",
+  "started": null,
+  "was": "Hajduk Split",
+  "now": null
+ },
+ {
   "id": "Q128460374",
   "name": "Santiago Lencina",
   "position": "midfielder",
@@ -8181,7 +8433,7 @@
   "dob": "1991-11-28",
   "started": null,
   "was": "Celtic",
-  "now": "East Kilbride F.C."
+  "now": null
  },
  {
   "id": "Q3952812",
@@ -8209,7 +8461,7 @@
  },
  {
   "id": "Q2634722",
-  "name": "Sebastián Rivas",
+  "name": "Sebastián Ribas",
   "position": "forward",
   "slot": "FW",
   "nat": "Uruguay",
@@ -8229,7 +8481,7 @@
   "dob": "1996-09-06",
   "started": null,
   "was": "Napoli",
-  "now": "US Cremonese"
+  "now": null
  },
  {
   "id": "Q2162547",
@@ -8337,7 +8589,7 @@
   "dob": "1996-07-18",
   "started": null,
   "was": "Club Brugge",
-  "now": "Oud-Heverlee Leuven"
+  "now": null
  },
  {
   "id": "Q21066014",
@@ -8376,6 +8628,18 @@
   "now": "Korona Kielce"
  },
  {
+  "id": "Q56810113",
+  "name": "Simone Muratore",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Italy",
+  "born": 1998,
+  "dob": "1998-05-30",
+  "started": null,
+  "was": "Juventus",
+  "now": null
+ },
+ {
   "id": "Q15707405",
   "name": "Simone Scuffet",
   "position": "goalkeeper",
@@ -8410,18 +8674,6 @@
   "started": null,
   "was": "Olympique Lyonnais",
   "now": "AJ Auxerre"
- },
- {
-  "id": "Q121361554",
-  "name": "Siraçhan Nas",
-  "position": "midfielder",
-  "slot": "MF",
-  "nat": "Turkey",
-  "born": 2002,
-  "dob": "2002-06-20",
-  "started": null,
-  "was": "Galatasaray",
-  "now": "Adana 01 FK"
  },
  {
   "id": "Q4438843",
@@ -8485,7 +8737,7 @@
  },
  {
   "id": "Q60050183",
-  "name": "Stefan Bajic",
+  "name": "Stefan Bajić",
   "position": "goalkeeper",
   "slot": "GK",
   "nat": "France",
@@ -8589,7 +8841,7 @@
   "dob": "1991-12-29",
   "started": null,
   "was": "Liverpool",
-  "now": "Konyaspor"
+  "now": null
  },
  {
   "id": "Q74684256",
@@ -8650,6 +8902,18 @@
   "started": null,
   "was": "Porto",
   "now": "Yongin FC"
+ },
+ {
+  "id": "Q115106256",
+  "name": "Sverre Nypan",
+  "position": "midfielder",
+  "slot": "MF",
+  "nat": "Norway",
+  "born": 2006,
+  "dob": "2006-12-19",
+  "started": null,
+  "was": "Manchester City",
+  "now": "Lommel"
  },
  {
   "id": "Q366682",
@@ -8749,7 +9013,7 @@
  },
  {
   "id": "Q21030271",
-  "name": "Thiago dos Santos",
+  "name": "Thiago Santos",
   "position": "stopper",
   "slot": "DF",
   "nat": "Brazil",
@@ -8757,7 +9021,7 @@
   "dob": "1989-09-05",
   "started": null,
   "was": "Palmeiras",
-  "now": "Coritiba Foot Ball Club"
+  "now": null
  },
  {
   "id": "Q961878",
@@ -8868,20 +9132,8 @@
   "now": null
  },
  {
-  "id": "Q122878833",
-  "name": "Tom Watson",
-  "position": "winger",
-  "slot": "FW",
-  "nat": "United Kingdom",
-  "born": 2006,
-  "dob": "2006-04-18",
-  "started": null,
-  "was": "Sunderland",
-  "now": "Leicester City F.C."
- },
- {
   "id": "Q7862292",
-  "name": "Tómané",
+  "name": "Tomané",
   "position": "forward",
   "slot": "FW",
   "nat": "Portugal",
@@ -8902,6 +9154,30 @@
   "started": null,
   "was": "Bournemouth",
   "now": "Al-Quwa Al-Jawiya"
+ },
+ {
+  "id": "Q123512560",
+  "name": "Tommy Setford",
+  "position": "goalkeeper",
+  "slot": "GK",
+  "nat": "United Kingdom",
+  "born": 2006,
+  "dob": "2006-03-13",
+  "started": null,
+  "was": "Arsenal",
+  "now": "Stevenage"
+ },
+ {
+  "id": "Q122878833",
+  "name": "Tommy Watson",
+  "position": "winger",
+  "slot": "FW",
+  "nat": "United Kingdom",
+  "born": 2006,
+  "dob": "2006-04-18",
+  "started": null,
+  "was": "Sunderland",
+  "now": "Leicester City F.C."
  },
  {
   "id": "Q23005609",
@@ -9025,7 +9301,7 @@
  },
  {
   "id": "Q16940984",
-  "name": "Vagner Antônio Brandalise",
+  "name": "Vagner",
   "position": "goalkeeper",
   "slot": "GK",
   "nat": "Brazil",
@@ -9033,7 +9309,7 @@
   "dob": "1989-08-24",
   "started": null,
   "was": "Palmeiras",
-  "now": "Clube Náutico Capibaribe"
+  "now": null
  },
  {
   "id": "Q3018683",
@@ -9069,7 +9345,7 @@
   "dob": "1990-09-09",
   "started": null,
   "was": "Napoli",
-  "now": "Sorrento Calcio 1945"
+  "now": null
  },
  {
   "id": "Q366594",
@@ -9121,7 +9397,7 @@
  },
  {
   "id": "Q18891568",
-  "name": "Vitor Hugo Franchescoli de Souza",
+  "name": "Vitor Hugo",
   "position": "defender",
   "slot": "DF",
   "nat": "Brazil",
@@ -9129,11 +9405,11 @@
   "dob": "1991-05-20",
   "started": null,
   "was": "Palmeiras",
-  "now": "Clube Atlético Mineiro"
+  "now": null
  },
  {
   "id": "Q15690382",
-  "name": "Wallace Fortuna dos Santos",
+  "name": "Wallace",
   "position": "centre-back",
   "slot": "DF",
   "nat": "Brazil",
@@ -9141,7 +9417,7 @@
   "dob": "1994-10-14",
   "started": null,
   "was": "Lazio",
-  "now": "Atlético Clube Goianiense"
+  "now": null
  },
  {
   "id": "Q16236318",
@@ -9238,6 +9514,30 @@
   "started": null,
   "was": "Real Betis",
   "now": "Esporte Clube Bahia"
+ },
+ {
+  "id": "Q126684328",
+  "name": "Yang Min-hyeok",
+  "position": "forward",
+  "slot": "FW",
+  "nat": "South Korea",
+  "born": 2006,
+  "dob": "2006-04-16",
+  "started": null,
+  "was": "Tottenham Hotspur",
+  "now": "KVC Westerlo"
+ },
+ {
+  "id": "Q22162798",
+  "name": "Yao Eloge Koffi",
+  "position": "centre-back",
+  "slot": "DF",
+  "nat": "Ivory Coast",
+  "born": 1996,
+  "dob": "1996-01-20",
+  "started": null,
+  "was": "Inter Milan",
+  "now": null
  },
  {
   "id": "Q19894177",
