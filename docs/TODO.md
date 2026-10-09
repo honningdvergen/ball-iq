@@ -628,6 +628,50 @@ we want this to be an upgrade that is properly felt."
       needs a better idea than colour.
 
 
+### 0j. 9 Oct, evening: Top 10 launches Monday, thirteen lists, build 144, and what Alex ruled
+
+- [x] **Top 10 launches Monday 12 October** (Alex's choice; `1aa2b2f9`).
+      Thirteen ranked lists are scheduled, 12 to 24 Oct, all confirmed by a
+      second checker. Rehearsed on the built site with the clock set to
+      Monday.
+- [ ] **⚠️ The schedule runs dry after 24 October.** Append more lists before
+      then (Alex's ideas first: most World Cup appearances by a player;
+      goalkeepers with the most appearances; biggest club grounds in
+      Germany). And before ANY store build: serve the lists from the server,
+      or a released app will run out days after it ships.
+- [x] **Release named 1.8.0; iOS build 144** (`e46c6c7a`), for TestFlight.
+      Not for the App Store as it stands, for the reason above. The App Store
+      Connect version record still says 1.7.6 and What's New is not written.
+- [x] **Reminders: evening only** (Alex: "it just feels right to get the
+      notification at the end of the day"). 19:00, later for late players,
+      never earlier; server v2_9 applied; `b34ccb03`.
+- [x] **A loading spinner is no longer a dead end** (`5eb4f450`). Alex finished
+      Daily 7 offline on a flight and sat on "Loading results…" for good.
+      Every loading screen offers Home after eight seconds.
+- [ ] **Which app was that in?** In the native app the results code is in the
+      binary and this should be impossible. If it was the TestFlight build,
+      there is a second cause to find. Asked Alex.
+- [ ] **An unhandled "Importing a module script failed"** showed in the test
+      where the network drops mid-quiz (service worker blocked). Some other
+      lazy import fails loudly offline. Find which.
+- [x] **Icons: all three rounds rejected** (Alex: "I hate the app logo
+      suggestions"). The flaming ball stays. No fourth round of the same
+      kind; a professional designer is his call.
+- [ ] **Obscure answers are only suggestable because they are answers.**
+      Thirty-one pre-war names are added to the guess box by the builder; an
+      unknown name appearing as you type is a hint. The cure is a pool that
+      holds the old players for their own sake.
+- [ ] **The static site does not know Top 10**: no page of its own, not in
+      the site header's list of games. The front door links to /top10, which
+      redirects into the game.
+- [ ] **Ball IQ Desk on Telegram**: `scripts/desk-notify.mjs` is ready and
+      send-only; the social session creates the group and writes the ids to
+      `~/ball-iq-audit/tg_desk_balliq.json`. Post a first message when it
+      exists.
+- [ ] **Draft game**: decision made by me, open to his veto: the wheel starts
+      at 1995-96 and ships only club-seasons that verify. Scripts not started.
+
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
