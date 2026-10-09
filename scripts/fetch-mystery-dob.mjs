@@ -22,7 +22,14 @@
 //
 // P569 is the Wikidata birth-date property. Batched 50 ids per call, serial,
 // polite delay — the same shape as fetch-source-dims.mjs.
+//
+// ⚠️ THE CACHE IS STICKY. Only ids missing from it are asked for, so a date
+// that was vandalised on the day of the fetch is kept for good: Michael Owen
+// read 1976 here for two months, six weeks of them after Wikidata had been put
+// right. Corrections live in BIRTH_FIXES (scripts/_name-overrides.mjs) and are
+// applied on write, over the cache, with `born` set to match.
 import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { BIRTH_FIXES } from './_name-overrides.mjs';
 
 const UA = 'BallIQ/1.0 (https://balliq.app; hello@balliq.app) mystery-dob';
 const CACHE = 'scripts/_mystery-dob.json';
@@ -69,7 +76,13 @@ console.log(`day-precision birth dates: ${have} of ${pool.length} (${((100 * hav
 
 if (write) {
   let added = 0;
-  for (const p of pool) if (dobs[p.id]) { p.dob = dobs[p.id]; added += 1; }
+  let corrected = 0;
+  for (const p of pool) {
+    const fix = BIRTH_FIXES[p.id];
+    if (fix) { p.dob = fix.dob; p.born = Number(fix.dob.slice(0, 4)); added += 1; corrected += 1; }
+    else if (dobs[p.id]) { p.dob = dobs[p.id]; added += 1; }
+  }
+  console.log(`corrections from BIRTH_FIXES applied over the cache: ${corrected}`);
   writeFileSync('src/data/mysteryPool.json', `${JSON.stringify(pool)}\n`);
   console.log(`wrote src/data/mysteryPool.json — dob on ${added} players`);
 } else {
