@@ -460,9 +460,31 @@ he hates both the icon and the lettering on the splash.
       definition. The flaming ball is still on the sign-in screen and in
       Settings, About; the Privacy Policy uses a ball emoji as a logo. Those
       change with the new icon, not before.
-- [x] **Top 10 look** (`b8066a12`): unboxed headline, ten-step meter, rank
-      chips with gold, silver and bronze, a 380ms held beat before the reveal.
-      Not yet seen on a phone with the keyboard up: do that before pushing.
+- [x] **Top 10 look** (`b8066a12`, live, still dark): unboxed headline,
+      ten-step meter, rank chips with gold, silver and bronze, a 380ms held
+      beat before the reveal. Seen in the simulator: all ten ranks clear the
+      keyboard with a two-line title, and a pick lands at its rank.
+- [ ] **One Top 10 check still open: does the keyboard stay up after a pick
+      now that the pick is held for a beat?** In the one pick made in the
+      simulator on 9 Oct the keyboard was down afterwards. The Mac was out of
+      memory at that moment (swap 6.7 GB, load 154, taps being dropped, the
+      Claude app crashed a minute later), so that reading proves nothing
+      either way. The code path at the tap is unchanged and WebKit keeps
+      focus through the beat, but only a calm simulator or a phone settles it.
+- [ ] **Launch: is there a black beat before the name appears?** In the
+      simulator the first seconds of every launch were plain black, then the
+      new launch picture. The old picture sat in the same slot at the same
+      size, so this is very likely not new, but it was not compared against
+      the old build. Check on a real phone with the next TestFlight build. If
+      it is there, the cure is a launch storyboard with a background colour
+      and a small centred image instead of one 2732-pixel picture.
+- [ ] **The simulator and this Mac.** Before booting it: stop the dev server
+      and any headless browser, and look at swap. It took the Claude app down
+      on 9 Oct with Chrome, a dev server and a build all running.
+- [ ] **First launch sends a new player into Footle.** One warm-up question,
+      then "Let's play" opens Footle. In the funnel read, people whose first
+      mode was Daily 7 came back most (11 of 14, a small sample). Worth a
+      deliberate choice rather than a default.
 - [x] **Jerseys, round four** (a picture only, nothing in the app):
       `~/ball-iq-audit/2026-10-09/kits/kits-round4.png`. The three spots a real
       shirt is read from, filled with marks that are ours: a ring where the
