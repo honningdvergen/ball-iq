@@ -634,11 +634,10 @@ we want this to be an upgrade that is properly felt."
       Thirteen ranked lists are scheduled, 12 to 24 Oct, all confirmed by a
       second checker. Rehearsed on the built site with the clock set to
       Monday.
-- [ ] **⚠️ The schedule runs dry after 24 October.** Append more lists before
-      then (Alex's ideas first: most World Cup appearances by a player;
-      goalkeepers with the most appearances; biggest club grounds in
-      Germany). And before ANY store build: serve the lists from the server,
-      or a released app will run out days after it ships.
+- [x] **The schedule ran dry after 24 October**: six more lists added the
+      same evening, see below. Still true before ANY store build: serve the
+      lists from the server, or a released app will run out days after it
+      ships.
 - [x] **Release named 1.8.0; iOS build 144** (`e46c6c7a`), for TestFlight.
       Not for the App Store as it stands, for the reason above. The App Store
       Connect version record still says 1.7.6 and What's New is not written.
@@ -685,11 +684,24 @@ we want this to be an upgrade that is properly felt."
       layouts, and accept total-only tables with a second check against each
       player's own career table; (3) build it to play, then Alex decides
       whether the numbers show while picking or only after.
-- [ ] **Top 10, third batch** (started 9 Oct, 22:15): twelve candidates out
-      with two researchers, Alex's three ideas among them; brief and reports
-      in `~/ball-iq-audit/2026-10-09/top10-ranked/` (`brief-3.md`,
-      `research-3a.md`, `research-3b.md`). Each passing list still needs the
-      independent checker before it is written into `specs.mjs`.
+- [x] **Top 10, third batch: six of twelve passed both checks and are
+      scheduled, 25 to 30 October** (Champions League goals, Premier League
+      assists, Spain caps, Real Madrid scorers, Premier League games in goal,
+      La Liga goals). Reports in `~/ball-iq-audit/2026-10-09/top10-ranked/`
+      (`brief-3.md`, `research-3a/b.md`, `verify-3a/b.md`); every one of the
+      75 names typed into the built game and found
+      (`../top10-batch3/reach.mjs`). Rejected for a tie at the cut or a
+      tenth place that depends on the source: World Cup matches played (six
+      men on 21) and German club grounds (Nürnberg and Köln both 50,000),
+      both Alex's ideas; Champions League appearances (three on 142); German
+      titles; Barcelona and Bayern scorers.
+- [ ] **⚠️ The schedule now runs dry after 30 October**, and TestFlight
+      build 144 still carries only the first thirteen days: from 25 October
+      it shows Mystery Player while the website shows Top 10. Either a build
+      145 before then or, better, the lists from the server.
+- [ ] **⚠️ The keepers' list (29 Oct) has a one-game cut that closes on
+      5 December** (Pickford). It must never be moved later; `until` and a
+      test hold it.
 
 
 ### 1. This week, before the 1.7.6 cut
