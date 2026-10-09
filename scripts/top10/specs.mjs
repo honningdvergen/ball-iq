@@ -358,6 +358,133 @@ export const TOP10_SPECS = [
       { name: 'Tommy Baldwin', note: '92 goals, 16 short' },
       { name: 'Jimmy Floyd Hasselbaink', note: '87 goals, 21 short' },
     ] },
+  // Greaves is 266 on the club's count (League 220, FA Cup 32, League Cup 5,
+  // Europe 9). The 268 seen elsewhere adds two Charity Shield goals the club
+  // does not count; counting them would move no place and not the cut. Five
+  // of the lower numbers rest on the club's ledger alone.
+  { id: 'tottenham-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Tottenham’s top scorers',
+    note: 'The club’s own count, Charity Shield not included, to the end of 2025-26.',
+    asOf: '2026-10-09',
+    source: 'tottenhamhotspur.com all-time top goalscorers and player pages; Wikipedia records page (2 Oct 2026)',
+    slots: [
+      { name: 'Harry Kane', clue: '280 goals' },
+      { name: 'Jimmy Greaves', clue: '266 goals' },
+      { name: 'Bobby Smith', clue: '208 goals' },
+      { name: 'Martin Chivers', clue: '174 goals' },
+      { name: 'Son Heung-min', clue: '173 goals' },
+      { name: 'Cliff Jones', clue: '159 goals' },
+      { name: 'Jermain Defoe', clue: '143 goals' },
+      { name: 'George Hunt', clue: '138 goals' },
+      { name: 'Len Duquemin', clue: '134 goals' },
+      { name: 'Alan Gilzean', clue: '133 goals' },
+    ],
+    near: [
+      { name: 'Teddy Sheringham', note: '124 goals, 9 short' },
+      { name: 'Robbie Keane', note: '122 goals, 11 short' },
+      { name: 'Les Bennett', note: '117 goals, 16 short' },
+    ] },
+  // ⚠️ Short `until`, for the same reason as english-league-titles: the
+  // sanction in the Manchester City case is undecided and could take points
+  // from past seasons. The ten could not change (City would need to lose more
+  // than 858, and earned 714 in the seasons charged), but City's number and
+  // the order of places 6 to 10 could.
+  { id: 'premier-league-points', checked: '2026-10-09', until: '2026-11-30', kind: 'club',
+    title: 'Most Premier League points ever',
+    note: 'Every Premier League season from 1992-93 to 2025-26, added up.',
+    asOf: '2026-10-09',
+    source: 'The 34 final tables on premierleague.com, summed; Wikipedia season pages, 686 club-seasons, no mismatch',
+    slots: [
+      { name: 'Manchester United', clue: '2,614 points' },
+      { name: 'Arsenal', clue: '2,473 points' },
+      { name: 'Liverpool', clue: '2,402 points' },
+      { name: 'Chelsea', clue: '2,366 points' },
+      { name: 'Tottenham Hotspur', clue: '1,992 points' },
+      { name: 'Manchester City', clue: '1,958 points' },
+      { name: 'Everton', clue: '1,747 points' },
+      { name: 'Newcastle United', clue: '1,656 points' },
+      { name: 'Aston Villa', clue: '1,618 points' },
+      { name: 'West Ham United', clue: '1,432 points' },
+    ],
+    near: [
+      { name: 'Southampton', note: '1,100 points, 332 short' },
+      { name: 'Blackburn Rovers', note: '970 points, 462 short' },
+      { name: 'Leeds United', note: '867 points, 565 short' },
+    ] },
+  // "Completed" matters: one page counts the abandoned 1939-40 season for
+  // Sunderland alone (88). Counted for nobody, as every club's own season list
+  // has it, Sunderland are on 87. No body owns this number; it was counted.
+  { id: 'english-top-flight-seasons', checked: '2026-10-09', until: '2027-06-01', kind: 'club',
+    title: 'Most English top-flight seasons',
+    note: 'Completed top-flight seasons, 1888-89 to 2025-26. Level clubs by who started there first.',
+    asOf: '2026-10-09',
+    source: 'Counted club by club over all 127 completed seasons; MyFootballFacts (5 Oct 2026)',
+    slots: [
+      { name: 'Everton', clue: '123 seasons' },
+      { name: 'Aston Villa', clue: '112 seasons' },
+      { name: 'Liverpool', clue: '111 seasons' },
+      { name: 'Arsenal', clue: '109 seasons' },
+      { name: 'Manchester United', clue: '101 seasons' },
+      { name: 'Manchester City', clue: '97 seasons' },
+      { name: 'Newcastle United', clue: '94 seasons' },
+      { name: 'Chelsea', clue: '91 seasons' },
+      { name: 'Tottenham Hotspur', clue: '91 seasons' },
+      { name: 'Sunderland', clue: '87 seasons' },
+    ],
+    near: [
+      { name: 'West Bromwich Albion', note: '81 seasons, 6 short' },
+      { name: 'Bolton Wanderers', note: '73 seasons, 14 short' },
+      { name: 'Blackburn Rovers', note: '72 seasons, 15 short' },
+    ] },
+  // Cannot change before the 2030 tournament opens on 8 June 2030. Sweden is
+  // 21 in one table that counts a 1938 walkover; it is outside the ten either
+  // way. Germany includes West Germany.
+  { id: 'world-cup-matches-won', checked: '2026-10-09', until: '2030-06-08', kind: 'nation',
+    title: 'Most World Cup matches won',
+    note: 'World Cup matches won, 1930 to 2026. A shoot-out is a draw. Level nations by all-time points.',
+    asOf: '2026-10-09',
+    source: 'Wikipedia World Cup records, overall team records (6 Oct 2026); Transfermarkt all-time table; all 104 matches of 2026 tallied',
+    slots: [
+      { name: 'Brazil', clue: '79 wins' },
+      { name: 'Germany', clue: '70 wins' },
+      { name: 'Argentina', clue: '54 wins' },
+      { name: 'Italy', clue: '45 wins' },
+      { name: 'France', clue: '45 wins' },
+      { name: 'England', clue: '38 wins' },
+      { name: 'Spain', clue: '38 wins' },
+      { name: 'Netherlands', clue: '32 wins' },
+      { name: 'Uruguay', clue: '25 wins' },
+      { name: 'Belgium', clue: '24 wins' },
+    ],
+    near: [
+      { name: 'Mexico', note: '21 wins, 3 short' },
+      { name: 'Sweden', note: '20 wins, 4 short' },
+    ] },
+  // Schwarzer 151 and Seaman 140: an older feed of the league's says 152 and
+  // 141, each one match too many in 2001-02 (all 38 games of both clubs that
+  // season were gone through). The league's website and Opta have it right.
+  { id: 'premier-league-clean-sheets', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Most Premier League clean sheets',
+    note: 'Goalkeepers, Premier League only, to the end of 2025-26. Level keepers by fewer games.',
+    asOf: '2026-10-09',
+    source: 'premierleague.com clean sheets, goalkeepers (read 9 Oct 2026); Opta Analyst, 7 Aug 2026',
+    slots: [
+      { name: 'Petr Čech', clue: '202 clean sheets' },
+      { name: 'David James', clue: '169 clean sheets' },
+      { name: 'Mark Schwarzer', clue: '151 clean sheets' },
+      { name: 'David de Gea', clue: '147 clean sheets' },
+      { name: 'David Seaman', clue: '140 clean sheets' },
+      { name: 'Nigel Martyn', clue: '137 clean sheets' },
+      { name: 'Pepe Reina', clue: '136 clean sheets' },
+      { name: 'Edwin van der Sar', clue: '132 clean sheets' },
+      { name: 'Tim Howard', clue: '132 clean sheets' },
+      { name: 'Brad Friedel', clue: '132 clean sheets' },
+    ],
+    near: [
+      { name: 'Peter Schmeichel', note: '128 clean sheets, 4 short' },
+      { name: 'Joe Hart', note: '127 clean sheets, 5 short' },
+      { name: 'Hugo Lloris', note: '127 clean sheets, 5 short' },
+    ] },
 ];
 
 // Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
