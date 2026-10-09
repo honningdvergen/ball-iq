@@ -3,4 +3,4 @@
 // Top 10 #1 falls on, and how many days are scheduled. The lists themselves
 // are in top10Lists.json, which only the game screen loads.
 export const TOP10_ANCHOR_DAY = 20738;
-export const TOP10_DAYS = 13;
+export const TOP10_DAYS = 19;

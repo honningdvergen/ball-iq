@@ -485,6 +485,180 @@ export const TOP10_SPECS = [
       { name: 'Joe Hart', note: '127 clean sheets, 5 short' },
       { name: 'Hugo Lloris', note: '127 clean sheets, 5 short' },
     ] },
+
+  // THIRD BATCH (9 Oct 2026, evening). Twelve candidates went out; six were
+  // rejected by the first researcher for a tie at the cut or a tenth place
+  // that depends on the source (World Cup matches played, Champions League
+  // appearances, German grounds, German titles, Barcelona and Bayern scorers).
+  // Reports: ~/ball-iq-audit/2026-10-09/top10-ranked/research-3a.md, -3b.md,
+  // verify-3a.md, verify-3b.md.
+
+  // UEFA's own statistics feed, read directly, with qualifying left out. With
+  // qualifiers in, Shevchenko (59) joins and Kane and Salah tie on 54: the
+  // note is what makes this ten the ten. Fixed at the season's end because
+  // Mbappé, Haaland and Kane are all still scoring (71, 59 and 55 on 9 Oct).
+  // No third near miss: thirteenth is Ibrahimović and Shevchenko level on 48.
+  { id: 'champions-league-goals', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Most Champions League goals',
+    note: 'UEFA’s count, qualifying left out, to the end of 2025-26. Level players by fewer games.',
+    asOf: '2026-10-09',
+    source: 'UEFA statistics feed, tournament phase (read 9 Oct 2026); uefa.com all-time top scorers, 10 Sep 2026; RSSSF, 18 Jun 2026',
+    slots: [
+      { name: 'Cristiano Ronaldo', clue: '140 goals' },
+      { name: 'Lionel Messi', clue: '129 goals' },
+      { name: 'Robert Lewandowski', clue: '109 goals' },
+      { name: 'Karim Benzema', clue: '90 goals' },
+      { name: 'Raúl', clue: '71 goals' },
+      { name: 'Kylian Mbappé', clue: '70 goals' },
+      { name: 'Erling Haaland', clue: '57 goals' },
+      { name: 'Thomas Müller', clue: '57 goals' },
+      { name: 'Ruud van Nistelrooy', clue: '56 goals' },
+      { name: 'Harry Kane', clue: '54 goals' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Thierry Henry', note: '50 goals, 4 short' },
+      { name: 'Mohamed Salah', note: '50 goals, 4 short' },
+    ] },
+  // The CLUB's figures, all ten re-read from realmadrid.com. Six of them
+  // differ by one to three elsewhere (Ronaldo 450 on the databases: a goal at
+  // Real Sociedad in September 2010 that the league gave to Pepe). ⚠️ Never
+  // mix sets: English Wikipedia has Pirri 171 and Butragueño 170, and taking
+  // one from each ties them. The order is the same on every single source.
+  // Two near misses only: thirteenth is Vinícius or Hierro depending on source.
+  { id: 'real-madrid-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Real Madrid’s all-time top scorers',
+    note: 'Official matches to the end of 2025-26, by the club’s own count.',
+    asOf: '2026-10-09',
+    source: 'realmadrid.com, each player’s own page (read 9 Oct 2026); Spanish Wikipedia record table; BDFutbol',
+    slots: [
+      { name: 'Cristiano Ronaldo', clue: '451 goals' },
+      { name: 'Karim Benzema', clue: '354 goals' },
+      { name: 'Raúl', clue: '323 goals' },
+      { name: 'Alfredo Di Stéfano', clue: '308 goals' },
+      { name: 'Santillana', clue: '290 goals' },
+      { name: 'Ferenc Puskás', clue: '242 goals' },
+      { name: 'Hugo Sánchez', clue: '208 goals' },
+      { name: 'Paco Gento', clue: '182 goals' },
+      { name: 'Pirri', clue: '172 goals' },
+      { name: 'Emilio Butragueño', clue: '171 goals' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Amancio Amaro', note: '155 goals, 16 short' },
+      { name: 'Míchel', pin: 'Q558689', note: '130 goals, 41 short' },
+    ] },
+  // BDFutbol's numbers, which Atlético de Madrid's own site prints for the
+  // same ten in the same order. Zarra is 251 (La Liga's site agrees; 254 is
+  // Transfermarkt alone), Quini 217 (219 elsewhere), Pahiño 212 (213, 214).
+  // No variant changes the order or the cut. English Wikipedia's table mixes
+  // sets, so it is not the source. Griezmann left for Orlando City in July
+  // 2026 on 205; the nearest man still in the league is Iago Aspas on 171.
+  { id: 'la-liga-goals', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Most La Liga goals',
+    note: 'Spanish top division only, to the end of 2025-26, by BDFutbol’s count.',
+    asOf: '2026-10-09',
+    source: 'BDFutbol all-time scorers (read 9 Oct 2026); atleticodemadrid.com; laliga.com for Zarra',
+    slots: [
+      { name: 'Lionel Messi', clue: '474 goals' },
+      { name: 'Cristiano Ronaldo', clue: '311 goals' },
+      { name: 'Telmo Zarra', clue: '251 goals' },
+      { name: 'Karim Benzema', clue: '238 goals' },
+      { name: 'Hugo Sánchez', clue: '234 goals' },
+      { name: 'Raúl', clue: '228 goals' },
+      { name: 'Alfredo Di Stéfano', clue: '227 goals' },
+      { name: 'César Rodríguez', clue: '221 goals' },
+      { name: 'Quini', clue: '217 goals' },
+      { name: 'Pahiño', clue: '212 goals' },
+    ],
+    near: [
+      { name: 'Antoine Griezmann', note: '205 goals, 7 short' },
+      { name: 'Mundo', note: '196 goals, 16 short' },
+      { name: 'Santillana', note: '186 goals, 26 short' },
+    ] },
+  // Alex's idea. ⚠️ THE CUT IS ONE GAME, and it closes this season: Jordan
+  // Pickford ended 2025-26 on 362, is on 367, draws level with tenth at
+  // Everton's match on 5 Dec 2026 and passes it on the 12th if he plays them
+  // all. Hence the early `until`. The league's older statistics feed has
+  // Given 450 and Robinson 374, each one game short in 2009-10; the league's
+  // own line-ups, its website and Soccerbase game by game say 451 and 375.
+  { id: 'premier-league-goalkeeper-appearances', checked: '2026-10-09', until: '2026-12-05', kind: 'player',
+    title: 'Most Premier League games in goal',
+    note: 'Goalkeepers, Premier League only, to the end of 2025-26.',
+    asOf: '2026-10-09',
+    source: 'premierleague.com appearances, goalkeepers (read 9 Oct 2026); Soccerbase game by game; Transfermarkt',
+    slots: [
+      { name: 'David James', clue: '572 games' },
+      { name: 'Mark Schwarzer', clue: '514 games' },
+      { name: 'Shay Given', clue: '451 games' },
+      { name: 'Brad Friedel', clue: '450 games' },
+      { name: 'Petr Čech', clue: '443 games' },
+      { name: 'Jussi Jääskeläinen', clue: '436 games' },
+      { name: 'David de Gea', clue: '415 games' },
+      { name: 'Tim Howard', clue: '399 games' },
+      { name: 'Ben Foster', clue: '390 games' },
+      { name: 'Łukasz Fabiański', clue: '376 games' },
+    ],
+    near: [
+      { name: 'Paul Robinson', pin: 'Q215824', note: '375 games, 1 short' },
+      { name: 'Nigel Martyn', note: '372 games, 4 short' },
+      { name: 'Thomas Sørensen', note: '364 games, 12 short' },
+    ] },
+  // The league's count, which Opta shares; Transfermarkt differs on almost
+  // every number (Giggs 169, Milner 87), so the note names the league. No
+  // source orders Bergkamp and Salah; fewer games puts Bergkamp first (315 v
+  // 328), and so does "got there first". Two near misses only: Sheringham is
+  // thirteenth on 75 or 76 depending on the feed. De Bruyne (Napoli) and
+  // Salah (Trabzonspor) have left the league; Bruno Fernandes, 73, is the
+  // nearest man still in it.
+  { id: 'premier-league-assists', checked: '2026-10-09', until: '2027-03-01', kind: 'player',
+    title: 'Most Premier League assists',
+    note: 'On the Premier League’s own count, to the end of 2025-26. Level players by fewer games.',
+    asOf: '2026-10-09',
+    source: 'premierleague.com all-time assists (read 9 Oct 2026); Opta Analyst, 24 May 2026',
+    slots: [
+      { name: 'Ryan Giggs', clue: '162 assists' },
+      { name: 'Kevin De Bruyne', clue: '119 assists' },
+      { name: 'Cesc Fàbregas', clue: '111 assists' },
+      { name: 'Wayne Rooney', clue: '103 assists' },
+      { name: 'Frank Lampard', clue: '102 assists' },
+      { name: 'Dennis Bergkamp', clue: '94 assists' },
+      { name: 'Mohamed Salah', clue: '94 assists' },
+      { name: 'David Silva', clue: '93 assists' },
+      { name: 'Steven Gerrard', clue: '92 assists' },
+      { name: 'James Milner', clue: '90 assists' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'David Beckham', note: '80 assists, 10 short' },
+      { name: 'Christian Eriksen', note: '78 assists, 12 short' },
+    ] },
+  // The same ten at the end of the 2026 World Cup and on 9 Oct 2026: nobody
+  // in it still plays for Spain (nearest: Morata 87, Rodri 74). Torres got to
+  // 110 on 23 Jun 2014, Fàbregas on 27 Jun 2016; Raúl to 102 in 2006, Piqué
+  // in 2018 (federation pages). Busquets's 143 is on the federation's site.
+  { id: 'spain-caps', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Most Spain caps (men)',
+    note: 'Spain men’s caps at the end of the 2026 World Cup. Level players in the order they got there.',
+    asOf: '2026-10-09',
+    source: 'RFEF player pages; RSSSF, 14 Mar 2026; Transfermarkt (read 9 Oct 2026)',
+    slots: [
+      { name: 'Sergio Ramos', clue: '180 caps' },
+      { name: 'Iker Casillas', clue: '167 caps' },
+      { name: 'Sergio Busquets', clue: '143 caps' },
+      { name: 'Xavi Hernández', clue: '133 caps' },
+      { name: 'Andrés Iniesta', clue: '131 caps' },
+      { name: 'Andoni Zubizarreta', clue: '126 caps' },
+      { name: 'David Silva', clue: '125 caps' },
+      { name: 'Xabi Alonso', clue: '114 caps' },
+      { name: 'Fernando Torres', clue: '110 caps' },
+      { name: 'Cesc Fàbregas', clue: '110 caps' },
+    ],
+    near: [
+      { name: 'Raúl', note: '102 caps, 8 short' },
+      { name: 'Gerard Piqué', note: '102 caps, 8 short' },
+      { name: 'Carles Puyol', note: '100 caps, 10 short' },
+    ] },
 ];
 
 // Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
@@ -498,13 +672,13 @@ export const TOP10_ANCHOR_DAY = 20738;
 // is live. A released native build carries this file; reordering it would have
 // two players on the same day arguing about different lists.
 //
-// The first thirteen days, 12 to 24 October 2026. The opening list is the one
+// The first nineteen days, 12 to 30 October 2026. The opening list is the one
 // most players can finish (ten famous names), because the first day decides
 // whether anyone comes back for the second; the lists with pre-war names in
 // their last slots are spaced out, and clubs, players and nations alternate.
-// ⚠️ THIRTEEN DAYS IS ALL THERE IS. On the day after the last entry the game
+// ⚠️ NINETEEN DAYS IS ALL THERE IS. On the day after the last entry the game
 // goes quiet and Mystery Player returns to Today by itself. More lists must be
-// appended before 24 October, and a native build must not ship to the stores
+// appended before 30 October, and a native build must not ship to the stores
 // on this schedule alone: it would run dry days after release. The lists have
 // to reach the app from the server first (see docs/TODO.md).
 export const TOP10_LOG = [
@@ -521,6 +695,15 @@ export const TOP10_LOG = [
   'chelsea-top-scorers',             // Thu 22
   'english-top-flight-seasons',      // Fri 23
   'tottenham-top-scorers',           // Sat 24
+  // Third batch, added 9 Oct. Lists that share answers are kept apart: the
+  // three with Ronaldo, Benzema and Raúl in them are on separate days, and
+  // the keepers come eight days after the clean sheets.
+  'champions-league-goals',          // Sun 25
+  'premier-league-assists',          // Mon 26
+  'spain-caps',                      // Tue 27
+  'real-madrid-top-scorers',         // Wed 28
+  'premier-league-goalkeeper-appearances', // Thu 29  (must run before 5 Dec)
+  'la-liga-goals',                   // Fri 30
 ];
 
 // One name per club. Keys are folded spellings found in the tables and in

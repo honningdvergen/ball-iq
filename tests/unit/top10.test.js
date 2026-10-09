@@ -108,6 +108,18 @@ describe('the schedule', () => {
     expect(getTop10Id(new Date(2026, 9, 12), ON_DISK.log)).toBe('premier-league-goals');
   });
 
+  // The third batch, 25 to 30 October. The keepers' list has a one-game cut
+  // that Jordan Pickford closes on 5 December, so it may never slide later.
+  it('days fourteen to nineteen follow, and the keepers run before December', () => {
+    expect(ON_DISK.log.slice(13, 19)).toEqual([
+      'champions-league-goals', 'premier-league-assists', 'spain-caps',
+      'real-madrid-top-scorers', 'premier-league-goalkeeper-appearances', 'la-liga-goals',
+    ]);
+    expect(getTop10Id(new Date(2026, 9, 25), ON_DISK.log)).toBe('champions-league-goals');
+    expect(getTop10Id(new Date(2026, 9, 29), ON_DISK.log)).toBe('premier-league-goalkeeper-appearances');
+    expect(ON_DISK.lists['premier-league-goalkeeper-appearances'].near[0].note).toBe('375 games, 1 short');
+  });
+
   it('every scheduled day is a ranked list, never a "last ten different winners" one', () => {
     for (const id of ON_DISK.log) {
       const l = ON_DISK.lists[id];
