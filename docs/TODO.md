@@ -568,6 +568,66 @@ one-offs today: fold them, fix them or leave them, but do not polish them
 before the dailies.
 
 
+### 0i. 9 Oct, afternoon: Top 10 gets its place and its first real lists, reminders fixed, the draft measured
+
+Alex, at the Mac: "We need draft and top 10 mode perfectly done", "I want
+everything on TestFlight later when you have had some time to implement the
+changes", and "keep investigating in the sim or on web as long as you want...
+we want this to be an upgrade that is properly felt."
+
+- [x] **Top 10 is the fourth daily from its first day** (`aa308481`): Home,
+      History, widget, next-up rows, web front door. Mystery Player moves to
+      the top of More modes. Nothing changes until a list is scheduled.
+- [x] **Ranked lists, the first two** (`57c24f35`): most English league titles,
+      most Premier League appearances. The builder refuses a ranked list with
+      numbers out of order or a tie between tenth and eleventh.
+- [ ] **Eleven more lists passed a first researcher** and are with two
+      independent checkers (`~/ball-iq-audit/2026-10-09/top10-ranked/`,
+      `research-2.md`, `verify-2a.md`, `verify-2b.md`). Add each that is
+      confirmed. Failed so far: Manchester City's scorers (tie at the cut),
+      World Cup scorers (three tied on 11), biggest club grounds in England
+      (this season only: Villa Park's closed stand).
+- [ ] **Alex's list ideas to research next:** players with the most World Cup
+      appearances; goalkeepers with the most appearances (say which
+      competition); biggest club grounds in Germany.
+- [ ] **English league titles holds only to 30 Nov.** The sanction in the
+      Manchester City case could change City's number. Re-check before every
+      scheduling of that list.
+- [x] **Reminders: one a day, not two** (`b13bc0ba`; v2_7 and v2_8 applied to
+      production with Alex's yes). The server kept forgetting that a phone
+      reminds itself.
+- [ ] **The server's own reminder texts still say "tonight"** and go out at
+      any hour from 8 to 22. One more production change; needs his yes.
+- [ ] **Reminder hour: let the player choose.** It is learned from when they
+      finish (now from fourteen finishes, not seven). A setting to pin it is
+      the honest answer to "what is ideal".
+- [ ] **Top 10 still to do before launch:** lists served from the server so a
+      correction reaches installed apps the same day; its own web page (the
+      front door links to /top10, which redirects into the game); the open
+      keyboard check from 0h; launch day and schedule; release 1.8.0; build;
+      TestFlight.
+- [ ] **The draft game: the data is feasible, and it is a real project.**
+      Probe in `~/ball-iq-audit/2026-10-09/draft/data-probe.md`. 686 top-flight
+      club-seasons since 1992-93, all with a Wikipedia season article; 88%
+      carry a per-player table a script can read; 51% pass every arithmetic
+      check untouched; 84 have no table (56 before 2000; half of 1992 to 1995
+      missing). About 3 to 4 days of scripts and 5 to 6 of review for some 600
+      club-seasons; the early 1990s by hand are 5 to 8 days more.
+      Recommended: the wheel starts at 1995-96, only verified club-seasons
+      ship, 1992 to 1995 follow. 2,525 of the 4,716 players are not in the
+      player pool yet. A credits line for Wikipedia is required.
+- [ ] **Icon, round two:** started; work in `~/ball-iq-audit/2026-10-09/icon2/`.
+      Needs an independent critic and a look before Alex sees it.
+- [ ] **A Telegram desk for Ball IQ** (Alex: "a ball iq news bot channel like
+      SHQ"): asked the social session for the recipe; proposed topics Shipped,
+      Needs you, Builds, Numbers, alerts in General.
+- [ ] **Found in passing:** the web front door says questions are "written and
+      fact-checked by hand", which the standing rule forbids claiming; the old
+      flaming ball is also the logo in the web header; "More modes" was made
+      grey on purpose after an all-green grid was rejected, so recolouring it
+      needs a better idea than colour.
+
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
