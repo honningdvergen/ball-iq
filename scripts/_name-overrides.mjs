@@ -57,6 +57,37 @@ export const NAME_OVERRIDES = {
   Q10557534: 'Mahmoud Kahraba',
   // Label was "Miguel Gordillo". Cameroon forward from Barcelona B, b. 1995.
   Q17490: 'Jean Marie Dongou',
+
+  // Found 2026-10-09 by a stricter pass: a name is suspect if it mixes
+  // alphabets, glues an initial to a surname, or holds a word that is a
+  // near-miss of a word in the article title. The first pass only caught names
+  // sharing NO word with the title, so every one of these got through it.
+  //
+  // The first letter was a Greek capital alpha, which looks identical and
+  // matches nothing: typing "Arda" found nobody. Real Madrid, b. 2005.
+  Q108159340: 'Arda Güler',
+  // Label was "Marc Hagit Cucurella". Spain left-back, b. 1998.
+  Q22082505: 'Marc Cucurella',
+  // Label was "Andrcu Onana". Cameroon goalkeeper, b. 1996.
+  Q19116103: 'André Onana',
+  // Label was "Yan D.Diomande". Ivory Coast forward, b. 2006.
+  Q133698867: 'Yan Diomande',
+  // Label was "Sven Norman Botman". Newcastle United centre-back, b. 2000.
+  Q56183905: 'Sven Botman',
+  // Label was "Nestor Irankunda". Australia winger, b. 2006.
+  Q110486192: 'Nestory Irankunda',
+  // Label was "Boško Balaman". Croatia striker, b. 1978.
+  Q378297: 'Boško Balaban',
+  // Label was "Brian RodríguezF". Uruguay winger, b. 2000.
+  Q60736591: 'Brian Rodríguez',
+  // Label was "Elseid Hisaj": "Hysaj" found nobody. Albania full-back, b. 1994.
+  Q5367516: 'Elseid Hysaj',
+  // Label was "Anthony Lopez". Portugal goalkeeper, long at Lyon, b. 1990.
+  Q1392235: 'Anthony Lopes',
+  // Label was "Johan Vázquez". Mexico centre-back, b. 1998.
+  Q39161128: 'Johan Vásquez',
+  // Label was "Hamary Traoré". Mali right-back, b. 1992.
+  Q15906939: 'Hamari Traoré',
 };
 
 // Rows where the club under the name is not a club the player played for.
