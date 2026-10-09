@@ -136,6 +136,10 @@ function parsePlayers(sectionText) {
       no: fields.no ? parseInt(fields.no, 10) || null : null,
       pos: (fields.pos || '').toUpperCase() || null, // GK/DF/MF/FW — Wikipedia's own vocabulary
       nat: fields.nat || null,
+      // The note beside the name. English club pages keep a loaned-out player
+      // in the first-team table and say so here ("on loan to Rangers", "at
+      // Everton until 30 June 2027"); apply-squads-wiki.mjs reads it.
+      other: fields.other ? fields.other.replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, '$1').replace(/<[^>]*>|\{\{[^}]*\}?\}?/g, '').trim() || null : null,
     });
   }
   return out;
