@@ -29,7 +29,7 @@
  *   node scripts/audit-mystery-pool.mjs
  */
 import { readFileSync, existsSync } from 'fs';
-import { NAME_OVERRIDES, CLUB_FIXES, NOT_IN_SQUAD, NEVER_AT_CLUB } from './_name-overrides.mjs';
+import { NAME_OVERRIDES, CLUB_FIXES, BIRTH_FIXES, NOT_IN_SQUAD, NEVER_AT_CLUB } from './_name-overrides.mjs';
 
 const FAME_FLOOR = 70;      // above this, absence is a defect, not a judgement call
 let bad = 0;
@@ -192,7 +192,12 @@ if (oddPosition.length) {
    had run. On 2026-10-08 the pool held ten vandalised names, one of them a
    scheduled answer ("João Moutinh0": typing Moutinho found nobody), and fifteen
    players under a club they never played for, Edwin van der Sar at Barcelona
-   among them. This compares the shipped rows with scripts/_name-overrides.mjs. */
+   among them. This compares the shipped rows with scripts/_name-overrides.mjs.
+
+   Birth dates joined on 2026-10-09. They are the correction a rebuild is surest
+   to undo: `born` is rewritten from one cache and `dob` from another, and both
+   caches still hold the date that was wrong on the day they were fetched.
+   Michael Owen read 1976 in the search list for two months. */
 const byId = new Map(pool.map((p) => [p.id, p]));
 const spellsOf = (id) => (shippedCareers[id] || []).map(([i, a, b]) => [shippedCareersTable[i], a, b]);
 const undone = [];
@@ -216,12 +221,19 @@ for (const [id, fix] of Object.entries(CLUB_FIXES)) {
     if (!spells.some((sp) => sp[0] === name && sp[1] === a && sp[2] === b)) why.push(`career lacks "${name}" ${a}-${b ?? ''}`);
   if (why.length) undone.push(`${id}  ${p.name}: ${why.join('; ')}`);
 }
+for (const [id, fix] of Object.entries(BIRTH_FIXES)) {
+  const p = byId.get(id);
+  if (!p) continue;
+  const born = Number(fix.dob.slice(0, 4));
+  if (p.dob !== fix.dob || p.born !== born)
+    undone.push(`${id}  ${p.name}: born ${p.born}, dob ${p.dob}; should be ${born}, ${fix.dob}`);
+}
 if (undone.length) {
   fail(`${undone.length} curated correction(s) are not in the shipped pool or careers:`);
   undone.slice(0, 15).forEach((m) => console.error(`     ${m}`));
   console.error('   → run: node scripts/fix-pool-names.mjs   (LAST in the pipeline; a rebuild undoes it)');
 } else {
-  ok(`all ${Object.keys(NAME_OVERRIDES).length} name and ${Object.keys(CLUB_FIXES).length} club corrections are in the shipped files`);
+  ok(`all ${Object.keys(NAME_OVERRIDES).length} name, ${Object.keys(CLUB_FIXES).length} club and ${Object.keys(BIRTH_FIXES).length} birth date corrections are in the shipped files`);
 }
 
 // ── 7. no known false row in the squads the pool and the lineup builder read ──

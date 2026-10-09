@@ -214,6 +214,31 @@ export const CLUB_FIXES = {
       ['Sporting Kansas City', 2020, 2024], ['C.D. Guadalajara', 2025, 2026]] },
 };
 
+// Birth dates that are wrong in the pool, keyed by QID.
+//
+// ⚠️ WHY THIS EXISTS. `born` comes from scripts/_mystery-core.json and `dob`
+// from scripts/_mystery-dob.json, and both are SNAPSHOTS of Wikidata. The
+// date cache only ever asks for ids it has not seen, so a date that was
+// vandalised on the day of the fetch stays in our files after Wikidata is
+// repaired, and a rebuild puts it straight back into the pool. Wikidata being
+// right today is therefore no reason to delete an entry here: the caches are
+// what a rebuild reads.
+//
+// Each date below is the one typed into the player's English Wikipedia
+// infobox and opening sentence, confirmed by the article in at least one
+// other language. scripts/audit-pool-birthdates.mjs finds candidates;
+// fix-pool-names.mjs and fetch-mystery-dob.mjs both apply this map, and
+// audit-mystery-pool.mjs fails the build if a row does not carry it.
+//
+//   dob    'YYYY-MM-DD'; `born` is set to its year
+export const BIRTH_FIXES = {
+  // Michael Owen. Pool said 14 December 1976. An anonymous edit put that on
+  // Wikidata on 24 July 2026 and it stood until 27 August; our caches were
+  // fetched on 12-15 August. An eligible answer: the reveal prints the year and
+  // the era hint said "born in the 1970s". Found 2026-10-09.
+  Q128829: { dob: '1979-12-14' },
+};
+
 // People in a club's FOOTBALL squad who play another sport for the same club.
 // A multi-sport club is one Wikidata item (FC Bayern Munich, FC Barcelona,
 // Real Madrid CF), so a basketball or rink hockey player linked to it passes
