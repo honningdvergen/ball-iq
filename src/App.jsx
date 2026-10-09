@@ -3597,7 +3597,28 @@ export { ErrorBoundary };
 // A visible, branded frame does not make the download faster. It makes the
 // difference between "the button is broken" and "it's coming", which is the
 // part the player actually experiences.
+// How long a screen may show its spinner before it owns up. A screen's code is
+// in the app on a phone and in the service worker's cache on the web, so it
+// normally arrives in well under a second.
+const SCREEN_SLOW_MS = 8000;
+
 function ScreenLoading({ label = "Loading" }) {
+  // ⚠️ A SPINNER WITH NO WAY OUT (Alex, 9 Oct 2026: he finished Daily 7 on a
+  // flight and the app sat on "Loading results…" for good). When a screen's
+  // code is neither on the device nor reachable, the request does not always
+  // fail: on in-flight or hotel Wi-Fi it simply never answers, so nothing
+  // throws, no boundary catches anything, and the spinner turns for ever with
+  // the back gesture as the only exit. After a few seconds this says so and
+  // offers Home. The load itself is left running: if the connection comes
+  // back, the screen appears by itself.
+  const [slow, setSlow] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setSlow(true), SCREEN_SLOW_MS);
+    return () => clearTimeout(t);
+  }, []);
+  // handleComplete stores a finished quiz before it asks for the results
+  // screen, so for that screen this can be said, and Home will show the score.
+  const savedNote = /results/i.test(label) ? " Your score is saved." : "";
   return (
     <div className="screen" style={{
       minHeight:"60dvh", display:"flex", flexDirection:"column",
@@ -3611,6 +3632,22 @@ function ScreenLoading({ label = "Loading" }) {
       <div style={{fontSize:13.5, fontWeight:700, color:"var(--t2)", letterSpacing:"-0.2px"}}>
         {label}…
       </div>
+      {slow && (
+        <div role="status" style={{display:"flex", flexDirection:"column", alignItems:"center", gap:14, padding:"6px 28px 0", textAlign:"center"}}>
+          <div style={{fontSize:13.5, lineHeight:1.55, color:"var(--t2)", maxWidth:290}}>
+            This is taking longer than it should. It may need a connection.{savedNote}
+          </div>
+          <button
+            type="button"
+            onClick={() => { try { window.dispatchEvent(new Event("biq:go-home")); } catch { /* no window */ } }}
+            style={{
+              minHeight:44, padding:"11px 24px", background:"var(--accent)", border:"none", borderRadius:999,
+              color:"var(--grn-ink)", fontFamily:"inherit", fontSize:14.5, fontWeight:800, cursor:"pointer",
+            }}>
+            Back to Home
+          </button>
+        </div>
+      )}
     </div>
   );
 }
