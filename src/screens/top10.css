@@ -1,6 +1,10 @@
 /* Top 10: the daily list game (screens/Top10.jsx).
-   Motion uses the three house timings only: press 90ms, state 180ms, entrance
-   260ms. Transform and opacity, nothing that lays the board out again. */
+   Motion uses the three house timings: press 90ms, state 180ms, entrance
+   260ms. Transform and opacity, nothing that lays the board out again.
+   One thing runs longer on purpose: the reveal. A pick is held for 380ms
+   (BEAT_MS in the screen) while the open ranks ripple, then its cell turns
+   over in 260ms and a ring fades off it over 520ms. That held moment is the
+   game; do not trim it to match the rest. */
 
 .t10 {
   display: flex;
@@ -25,18 +29,24 @@
 .t10-heart.is-lost { color: var(--t3); opacity: 0.45; transform: scale(0.8); }
 
 /* The question. */
-.t10-q {
-  padding: 12px 16px;
-  border-radius: 16px;
-  background: rgba(var(--t10-rgb), 0.08);
-  border: 1px solid rgba(var(--t10-rgb), 0.28);
+/* The question is the headline of the screen, so it is set as one: no box
+   round it. The colour it used to carry now sits in the meter under it. */
+.t10-q { padding: 2px 4px 0; }
+.t10-q-title {
+  margin: 0; font-size: 21px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em;
+  color: var(--t1); text-wrap: balance;
 }
-.t10-q-title { margin: 0; font-size: 18px; line-height: 1.2; font-weight: 800; color: var(--t1); text-wrap: balance; }
 .t10-q-meta {
   display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-  margin-top: 6px; font-size: 12.5px; color: var(--t2);
+  margin-top: 5px; font-size: 12.5px; color: var(--t2);
 }
-.t10-q-count { flex-shrink: 0; font-weight: 800; color: var(--t10); font-variant-numeric: tabular-nums; }
+.t10-q-count {
+  flex-shrink: 0; font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 700;
+  color: var(--t10); font-variant-numeric: tabular-nums;
+}
+.t10-meter { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 8px; }
+.t10-meter i { height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.09); transition: background 180ms ease-out; }
+.t10-meter i.is-on { background: var(--t10); }
 
 /* The guess box. */
 .t10-entry { position: relative; margin-top: 10px; }
@@ -79,6 +89,13 @@
 .t10-say.is-near { color: var(--gold); }
 .t10-say.is-miss { color: var(--red); }
 .t10-say > span { display: inline-block; animation: t10Rise 260ms ease-out both; }
+/* The held pick: its name and three dots, in plain white, saying nothing yet. */
+.t10-say.is-wait { color: var(--t1); }
+.t10-say.is-wait > span { animation: none; }
+.t10-dots { display: inline-flex; gap: 3px; margin-left: 7px; vertical-align: 2px; }
+.t10-dots i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.25; animation: t10Dot 380ms ease-in-out infinite; }
+.t10-dots i:nth-child(2) { animation-delay: 90ms; }
+.t10-dots i:nth-child(3) { animation-delay: 180ms; }
 
 /* The board: ranks one to five down the left, six to ten down the right, so
    all ten stay on screen above a phone keyboard.
@@ -95,23 +112,47 @@
   margin-top: 4px;
 }
 .t10-cell {
+  position: relative;
   display: flex; align-items: center; gap: 9px;
-  min-height: 42px; padding: 4px 10px; box-sizing: border-box;
+  min-height: 42px; padding: 4px 8px; box-sizing: border-box;
   border-radius: 12px; background: var(--s1); border: 1px solid var(--border);
 }
+/* The rank is a chip, not a bare numeral: it is what lights up when the rank
+   is found, and the top three wear gold, silver and bronze. */
 .t10-rank {
-  flex: none; width: 20px; text-align: center;
-  font-size: 13px; font-weight: 800; color: var(--t3); font-variant-numeric: tabular-nums;
+  flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12.5px; font-weight: 700;
+  color: var(--t3); font-variant-numeric: tabular-nums;
 }
+.t10-rank.is-p1 { --t10-medal: #F5C542; --t10-medal-ink: #2B1F00; }
+.t10-rank.is-p2 { --t10-medal: #C9CED9; --t10-medal-ink: #1A1D24; }
+.t10-rank.is-p3 { --t10-medal: #D08B5B; --t10-medal-ink: #27130A; }
+.t10-cell.is-open .t10-rank[class*="is-p"] { color: var(--t10-medal); }
 .t10-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0; }
 .t10-name { font-size: 13.5px; line-height: 1.15; font-weight: 800; color: var(--t1); overflow-wrap: anywhere; }
 .t10-clue { font-size: 11.5px; line-height: 1.25; font-weight: 700; color: var(--t3); font-variant-numeric: tabular-nums; }
-.t10-cell.is-open .t10-clue { font-size: 13px; color: var(--t2); }
+/* An open rank is quiet, so the found ones are what the eye lands on. */
+.t10-cell.is-open .t10-clue { font-size: 12.5px; font-weight: 600; color: var(--t3); }
 
-.t10-cell.is-found { background: rgba(var(--t10-rgb), 0.12); border-color: rgba(var(--t10-rgb), 0.5); }
-.t10-cell.is-found .t10-rank,
+/* A found rank is a lighter card with the game's colour on its edge and chip.
+   Tinting the dark surface with coral instead turns it brown (tried, looked at). */
+.t10-cell.is-found {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.055));
+  border-color: rgba(var(--t10-rgb), 0.6);
+}
+.t10-cell.is-found .t10-rank { background: var(--t10-medal, var(--t10)); color: var(--t10-medal-ink, #2A1009); }
 .t10-cell.is-found .t10-clue { color: var(--t10); }
-.t10-cell.is-new { animation: t10Pop 180ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* The reveal. While a pick is held the open ranks ripple in order, as if the
+   board were looking for it; then the one it belongs to turns over. */
+.t10-board.is-wait .t10-cell.is-open { animation: t10Wait 380ms ease-in-out both; animation-delay: calc(var(--t10-i, 0) * 20ms); }
+.t10-cell.is-new { animation: t10Flip 260ms cubic-bezier(0.2, 0.9, 0.3, 1.15) both; }
+.t10-cell.is-new::after {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+  box-shadow: 0 0 0 1.5px rgba(var(--t10-rgb), 0.95), 0 0 20px rgba(var(--t10-rgb), 0.55);
+  opacity: 0; animation: t10Glow 520ms ease-out both;
+}
 
 /* The ones that got away, shown once the game is over. They arrive one after
    another down the list rather than as a block. */
@@ -129,14 +170,17 @@
 .t10-chip em { font-style: normal; color: var(--gold); font-weight: 700; }
 .t10-chip.is-close { color: var(--t2); }
 
+/* Giving up is a way out, not the next step, so it is a quiet line of text
+   and not a button the width of the screen. Still a 44pt target. */
 .t10-ghost {
-  margin-top: 10px; width: 100%; min-height: 44px; padding: 10px;
-  background: transparent; border: 1px solid var(--border); border-radius: 11px;
-  color: var(--t2); font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer;
-  transition: transform 90ms ease-out, border-color 180ms, color 180ms;
+  align-self: center; margin-top: 8px; min-height: 44px; padding: 10px 16px;
+  background: transparent; border: none; border-radius: 11px;
+  color: var(--t3); font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer;
+  text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.2); text-underline-offset: 3px;
+  transition: transform 90ms ease-out, color 180ms;
 }
 .t10-ghost:active { transform: scale(0.985); }
-.t10-ghost.is-armed { border-color: var(--red); color: var(--red); }
+.t10-ghost.is-armed { color: var(--red); text-decoration-color: currentColor; }
 
 /* The result. */
 .t10-result { margin-top: 16px; text-align: center; animation: t10Rise 260ms ease-out both; }
@@ -149,7 +193,10 @@
 /* Loading: ten quiet cells, the same size as the real ones. */
 .t10-cell.is-skeleton { opacity: 0.5; }
 
-@keyframes t10Pop { 0% { transform: scale(1); } 60% { transform: scale(1.035); } 100% { transform: scale(1); } }
+@keyframes t10Flip { from { transform: perspective(520px) rotateX(-78deg); opacity: 0.25; } to { transform: none; opacity: 1; } }
+@keyframes t10Glow { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes t10Wait { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes t10Dot { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
 @keyframes t10Shake { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
 @keyframes t10Rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 

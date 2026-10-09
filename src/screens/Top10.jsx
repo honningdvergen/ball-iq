@@ -41,6 +41,14 @@ import "./top10.css";
 const ORDINAL = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"];
 const PLACEHOLDER = { player: "Type a player’s name…", club: "Type a club…", nation: "Type a country…" };
 const SKIN = { "--t10": MODE_ACCENT.top10, "--t10-rgb": MODE_RGB.top10 };
+// How long a pick is held before the board answers. Alex, 9 Oct: "the relief
+// you get when you see, oh thank God that Chad was at number seven". Relief
+// needs a moment of not knowing first; long enough to feel, short enough that
+// ten picks do not drag.
+const BEAT_MS = 380;
+const isCalm = () => {
+  try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; }
+};
 
 function useTop10Data() {
   const [state, setState] = useState({ data: null, failed: false });
@@ -138,6 +146,11 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
   const [said, setSaid] = useState(null);     // { n, tone, text } — the last pick, in words
   const [fresh, setFresh] = useState(-1);     // the slot that was just filled
   const [armed, setArmed] = useState(false);  // "give up" needs a second tap
+  const [judging, setJudging] = useState(null); // the pick being held for its beat: { name }
+  const beat = useRef(0);
+  // A pick still in the air when the screen closes is dropped: the player never
+  // saw its answer, so it must not be recorded.
+  useEffect(() => () => clearTimeout(beat.current), []);
 
   const g = useMemo(() => gradeTop10(list, day), [list, day]);
   const total = list.slots.length;
@@ -190,15 +203,12 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
   useEffect(() => (g.done ? undefined : keepInputVisible()), [g.score, g.wrong.length, g.close.length, g.done, keepInputVisible]);
 
   const pick = useCallback((s) => {
-    if (g.done || !s) return;
+    if (g.done || !s || judging) return;
     const outcome = outcomeOf(list, day, s.key);
     if (outcome === "repeat") return;
     const hit = outcome === "hit";
-    // Blur BEFORE the state update that unmounts a focused input, or iOS leaves
-    // the keyboard up and the page scroll-locked (see TransferTrail.jsx).
-    const willEnd = hit ? g.score + 1 >= total : g.lives <= 1;
-    if (willEnd) { try { document.activeElement?.blur?.(); } catch {} }
-    setDay((d) => ({ ...d, picks: [...d.picks, { k: s.key, n: s.name }] }));
+    // A near miss costs no life, so it can never be the pick that ends a game.
+    const willEnd = hit ? g.score + 1 >= total : outcome === "miss" && g.lives <= 1;
     setEntry("");
     setArmed(false);
     // Belt and braces for the keyboard: if focus did move (a browser that
@@ -206,26 +216,38 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
     // still inside the tap, which is the only moment iOS allows it.
     if (!willEnd) { try { inputRef.current?.focus({ preventScroll: true }); } catch {} }
     const n = day.picks.length + 1;
-    if (hit) {
-      const i = slotIndexFor(list, s.key);
-      setFresh(i);
-      // A list can accept a second name for a slot (Russia for the Soviet
-      // Union). Say so, or the board appears to have filled in a name the
-      // player never picked.
-      const shown = list.slots[i].name;
-      const who = shown === s.name ? s.name : `${s.name} counts as ${shown}`;
-      setSaid({ n, tone: "hit", text: `${who}: ${ORDINAL[i] || `${i + 1}th`}` });
-      haptic("hardCorrect"); playSound("correct");
-    } else {
-      const near = nearFor(list, s.key);
-      setFresh(-1);
-      setSaid(near
-        ? { n, tone: "near", text: `${s.name}: so close, ${near.note}. No life lost.` }
-        : { n, tone: "miss", text: `${s.name}: not in the ten` });
-      if (near) haptic("soft");
-      else { haptic("wrong"); playSound("wrong"); setShake(true); setTimeout(() => setShake(false), 300); }
-    }
-  }, [g.done, g.score, g.lives, list, day, total, haptic, playSound, inputRef]);
+    const settle = () => {
+      // Blur BEFORE the state update that unmounts a focused input, or iOS
+      // leaves the keyboard up and the page scroll-locked (see TransferTrail.jsx).
+      if (willEnd) { try { document.activeElement?.blur?.(); } catch {} }
+      setJudging(null);
+      setDay((d) => ({ ...d, picks: [...d.picks, { k: s.key, n: s.name }] }));
+      if (hit) {
+        const i = slotIndexFor(list, s.key);
+        setFresh(i);
+        // A list can accept a second name for a slot (Russia for the Soviet
+        // Union). Say so, or the board appears to have filled in a name the
+        // player never picked.
+        const shown = list.slots[i].name;
+        const who = shown === s.name ? s.name : `${s.name} counts as ${shown}`;
+        setSaid({ n, tone: "hit", text: `${who}: ${ORDINAL[i] || `${i + 1}th`}` });
+        haptic("hardCorrect"); playSound("correct");
+      } else {
+        const near = nearFor(list, s.key);
+        setFresh(-1);
+        setSaid(near
+          ? { n, tone: "near", text: `${s.name}: so close, ${near.note}. No life lost.` }
+          : { n, tone: "miss", text: `${s.name}: not in the ten` });
+        if (near) haptic("soft");
+        else { haptic("wrong"); playSound("wrong"); setShake(true); setTimeout(() => setShake(false), 300); }
+      }
+    };
+    if (isCalm()) { settle(); return; }
+    setSaid(null);
+    setJudging({ name: s.name });
+    haptic("soft");
+    beat.current = setTimeout(settle, BEAT_MS);
+  }, [g.done, g.score, g.lives, judging, list, day, total, haptic, playSound, inputRef]);
 
   const giveUp = useCallback(() => {
     if (!armed) { setArmed(true); return; }
@@ -273,6 +295,11 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
           <span>As of {formatAsOf(list.asOf)}{list.clueLabel ? ` · clue: ${list.clueLabel.toLowerCase()}` : ""}</span>
           <span className="t10-q-count">{g.score}/{total}</span>
         </div>
+        {/* One step per rank, lit where that rank is found: which gaps are
+            left, at a glance, without reading the board. */}
+        <div className="t10-meter" aria-hidden="true">
+          {list.slots.map((s, i) => <i key={s.key} className={g.found[i] ? "is-on" : undefined} />)}
+        </div>
       </div>
 
       {!g.done && (
@@ -309,13 +336,15 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
               </div>
             )}
           </div>
-          <div className={`t10-say${said ? ` is-${said.tone}` : ""}`} aria-live="polite">
-            {said ? <span key={said.n}>{said.text}</span> : null}
+          <div className={`t10-say${judging ? " is-wait" : said ? ` is-${said.tone}` : ""}`} aria-live="polite">
+            {judging
+              ? <span key="wait">{judging.name}<b className="t10-dots" aria-hidden="true"><i /><i /><i /></b></span>
+              : said ? <span key={said.n}>{said.text}</span> : null}
           </div>
         </>
       )}
 
-      <div className="t10-board" role="list" aria-label="The ten">
+      <div className={`t10-board${judging ? " is-wait" : ""}`} role="list" aria-label="The ten">
         {list.slots.map((s, i) => {
           const found = g.found[i];
           const missed = g.done && !found;
@@ -323,8 +352,8 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
           return (
             <div key={s.key} role="listitem"
               className={`t10-cell ${found ? "is-found" : missed ? "is-missed" : "is-open"}${i === fresh && found ? " is-new" : ""}`}
-              style={missed ? { "--t10-d": `${delay}ms` } : undefined}>
-              <span className="t10-rank">{i + 1}</span>
+              style={missed ? { "--t10-d": `${delay}ms` } : { "--t10-i": i }}>
+              <span className={`t10-rank${i < 3 ? ` is-p${i + 1}` : ""}`}>{i + 1}</span>
               <span className="t10-body">
                 {(found || missed) && <span className="t10-name">{s.name}</span>}
                 {s.clue ? <span className="t10-clue">{s.clue}</span> : null}

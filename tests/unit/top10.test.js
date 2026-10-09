@@ -265,6 +265,21 @@ describe('what only a phone shows (pinned after the simulator pass of 2026-10-09
     expect(SCREEN).toMatch(/if \(!willEnd\) \{ try \{ inputRef\.current\?\.focus\(/);
   });
 
+  it('a pick is held for a beat, one at a time, and never outlives the screen', () => {
+    // The held moment is the game (Alex, 9 Oct: the relief of seeing a name
+    // land). Three things keep it honest: a second pick cannot stack on a held
+    // one, a pick still in the air when the screen closes is dropped rather
+    // than recorded unseen, and reduced motion skips the wait entirely.
+    expect(SCREEN).toMatch(/if \(g\.done \|\| !s \|\| judging\) return;/);
+    expect(SCREEN).toMatch(/useEffect\(\(\) => \(\) => clearTimeout\(beat\.current\), \[\]\)/);
+    expect(SCREEN).toMatch(/if \(isCalm\(\)\) \{ settle\(\); return; \}/);
+    // The pick is written only when it settles, never at the tap.
+    const settle = /const settle = \(\) => \{([\s\S]*?)\n    \};/.exec(SCREEN);
+    expect(settle, 'settle() exists').toBeTruthy();
+    expect(settle[1]).toMatch(/setDay\(/);
+    expect(SCREEN.replace(settle[0], '')).not.toMatch(/picks: \[\.\.\.d\.picks/);
+  });
+
   it('a board row is short enough for all ten to clear the keyboard', () => {
     const m = /\.t10-cell \{[^}]*min-height: (\d+)px/.exec(CSS);
     expect(m, 'the cell rule sets a min-height').toBeTruthy();
