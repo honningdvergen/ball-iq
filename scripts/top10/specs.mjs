@@ -204,6 +204,160 @@ export const TOP10_SPECS = [
       { name: 'Steven Gerrard', note: '504 games, one short' },
       { name: 'Sol Campbell', note: '503 games, two short' },
     ] },
+  // ── FIXED AT A PAST BOUNDARY ───────────────────────────────────────────────
+  // Each of these is worded "to the end of 2025-26" (or of the 2026 World Cup),
+  // so nothing an active player does can change it: the owner's preference for
+  // lists that hold. `until` is the end of next season all the same, when the
+  // wording would start to read as stale and a fresh list should replace it.
+  // One outside source has Defoe on 163; the league, Opta and Wikipedia say 162.
+  // Nobody in the ten played in the Premier League after May 2026 (Salah left).
+  { id: 'premier-league-goals', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Most Premier League goals',
+    note: 'Premier League goals only, to the end of 2025-26, on the league’s own count.',
+    asOf: '2026-10-09',
+    source: 'premierleague.com all-time goals (read 9 Oct 2026); Opta Analyst, 18 May 2026',
+    slots: [
+      { name: 'Alan Shearer', clue: '260 goals' },
+      { name: 'Harry Kane', clue: '213 goals' },
+      { name: 'Wayne Rooney', clue: '208 goals' },
+      { name: 'Mohamed Salah', clue: '193 goals' },
+      { name: 'Andy Cole', clue: '187 goals' },
+      { name: 'Sergio Agüero', clue: '184 goals' },
+      { name: 'Frank Lampard', clue: '177 goals' },
+      { name: 'Thierry Henry', clue: '175 goals' },
+      { name: 'Robbie Fowler', clue: '163 goals' },
+      { name: 'Jermain Defoe', clue: '162 goals' },
+    ],
+    near: [
+      { name: 'Michael Owen', note: '150 goals, 12 short' },
+      { name: 'Les Ferdinand', note: '149 goals, 13 short' },
+      { name: 'Teddy Sheringham', note: '146 goals, 16 short' },
+    ] },
+  // Fixed at the World Cup on purpose. Kane has won four caps since and drew
+  // level with Shilton on 125 on 6 Oct 2026; a list "as of today" would expire
+  // at England's next match (12 Nov). He did not play the third-place match,
+  // which is why he ended the tournament on 121.
+  { id: 'england-caps', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Most England caps (men)',
+    note: 'England men’s caps at the end of the 2026 World Cup. Level players in the order they got there.',
+    asOf: '2026-10-09',
+    source: 'Englandstats.com, every cap numbered; the FA, 6 Oct 2026; RSSSF',
+    slots: [
+      { name: 'Peter Shilton', clue: '125 caps' },
+      { name: 'Harry Kane', clue: '121 caps' },
+      { name: 'Wayne Rooney', clue: '120 caps' },
+      { name: 'David Beckham', clue: '115 caps' },
+      { name: 'Steven Gerrard', clue: '114 caps' },
+      { name: 'Bobby Moore', clue: '108 caps' },
+      { name: 'Ashley Cole', clue: '107 caps' },
+      { name: 'Bobby Charlton', clue: '106 caps' },
+      { name: 'Frank Lampard', clue: '106 caps' },
+      { name: 'Billy Wright', clue: '105 caps' },
+    ],
+    nearMax: 4,
+    near: [
+      { name: 'Kyle Walker', note: '96 caps, 9 short' },
+      { name: 'John Stones', note: '94 caps, 11 short' },
+      { name: 'Jordan Pickford', note: '91 caps, 14 short' },
+      { name: 'Jordan Henderson', note: '91 caps, 14 short' },
+    ] },
+  // The boundary is needed: Rashford is back at United on 138. Giggs is level
+  // with Spence only because one Charity Shield goal counts (all competitions).
+  { id: 'manchester-united-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Manchester United’s top scorers',
+    note: 'All competitions, to the end of 2025-26. Level players in the order they got there.',
+    asOf: '2026-10-09',
+    source: 'MUFCinfo all players, all goals; Wikipedia records page (26 Aug 2026)',
+    slots: [
+      { name: 'Wayne Rooney', clue: '253 goals' },
+      { name: 'Bobby Charlton', clue: '249 goals' },
+      { name: 'Denis Law', clue: '237 goals' },
+      { name: 'Jack Rowley', clue: '211 goals' },
+      { name: 'Dennis Viollet', clue: '179 goals' },
+      { name: 'George Best', clue: '179 goals' },
+      { name: 'Joe Spence', clue: '168 goals' },
+      { name: 'Ryan Giggs', clue: '168 goals' },
+      { name: 'Mark Hughes', clue: '163 goals' },
+      { name: 'Paul Scholes', clue: '155 goals' },
+    ],
+    nearMax: 4,
+    near: [
+      { name: 'Ruud van Nistelrooy', note: '150 goals, 5 short' },
+      { name: 'Stan Pearson', note: '148 goals, 7 short' },
+      { name: 'David Herd', note: '145 goals, 10 short' },
+      { name: 'Cristiano Ronaldo', note: '145 goals, 10 short' },
+    ] },
+  // Salah left in the summer of 2026 on 257.
+  { id: 'liverpool-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Liverpool’s top scorers',
+    note: 'All competitions, to the end of 2025-26.',
+    asOf: '2026-10-09',
+    source: 'liverpoolfc.com and LFChistory.net, which agree on the top 25',
+    slots: [
+      { name: 'Ian Rush', clue: '346 goals' },
+      { name: 'Roger Hunt', clue: '285 goals' },
+      { name: 'Mohamed Salah', clue: '257 goals' },
+      { name: 'Gordon Hodgson', clue: '241 goals' },
+      { name: 'Billy Liddell', clue: '228 goals' },
+      { name: 'Steven Gerrard', clue: '186 goals' },
+      { name: 'Robbie Fowler', clue: '183 goals' },
+      { name: 'Kenny Dalglish', clue: '172 goals' },
+      { name: 'Michael Owen', clue: '158 goals' },
+      { name: 'Harry Chambers', clue: '151 goals' },
+    ],
+    near: [
+      { name: 'Sam Raybould', note: '130 goals, 21 short' },
+      { name: 'Jack Parkinson', note: '128 goals, 23 short' },
+      { name: 'Dick Forshaw', note: '124 goals, 27 short' },
+    ] },
+  // Brain and Drake are level on 139. "Got there first" puts Brain first, as
+  // the club prints it; a fewer-games rule would put Drake first.
+  { id: 'arsenal-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Arsenal’s top scorers',
+    note: 'All competitions, to the end of 2025-26. Level players in the order they got there.',
+    asOf: '2026-10-09',
+    source: 'arsenal.com goalscorers; Wikipedia records page (4 Sep 2026)',
+    slots: [
+      { name: 'Thierry Henry', clue: '228 goals' },
+      { name: 'Ian Wright', clue: '185 goals' },
+      { name: 'Cliff Bastin', clue: '178 goals' },
+      { name: 'John Radford', clue: '149 goals' },
+      { name: 'Jimmy Brain', clue: '139 goals' },
+      { name: 'Ted Drake', clue: '139 goals' },
+      { name: 'Doug Lishman', clue: '137 goals' },
+      { name: 'Robin van Persie', clue: '132 goals' },
+      { name: 'Joe Hulme', clue: '125 goals' },
+      { name: 'David Jack', clue: '124 goals' },
+    ],
+    near: [
+      { name: 'Dennis Bergkamp', note: '120 goals, 4 short' },
+      { name: 'Reg Lewis', note: '118 goals, 6 short' },
+      { name: 'Alan Smith', pin: 'Q703932', note: '115 goals, 9 short' }, // Arsenal's, born 1962; not the one born 1980
+    ] },
+  // Bentley is level with Osgood only because the club counts one Charity
+  // Shield goal for him.
+  { id: 'chelsea-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
+    title: 'Chelsea’s top scorers',
+    note: 'All competitions, to the end of 2025-26. Level players in the order they got there.',
+    asOf: '2026-10-09',
+    source: 'chelseafc.com all-time record goalscorers (11 May 2026); Wikipedia records page',
+    slots: [
+      { name: 'Frank Lampard', clue: '211 goals' },
+      { name: 'Bobby Tambling', clue: '202 goals' },
+      { name: 'Kerry Dixon', clue: '193 goals' },
+      { name: 'Didier Drogba', clue: '164 goals' },
+      { name: 'Roy Bentley', clue: '150 goals' },
+      { name: 'Peter Osgood', clue: '150 goals' },
+      { name: 'Jimmy Greaves', clue: '132 goals' },
+      { name: 'George Mills', clue: '125 goals' },
+      { name: 'Eden Hazard', clue: '110 goals' },
+      { name: 'George Hilsdon', clue: '108 goals' },
+    ],
+    near: [
+      { name: 'Barry Bridges', note: '93 goals, 15 short' },
+      { name: 'Tommy Baldwin', note: '92 goals, 16 short' },
+      { name: 'Jimmy Floyd Hasselbaink', note: '87 goals, 21 short' },
+    ] },
 ];
 
 // Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
