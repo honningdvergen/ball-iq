@@ -44,6 +44,7 @@
   flex-shrink: 0; font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 700;
   color: var(--t10); font-variant-numeric: tabular-nums;
 }
+.t10-q-note { margin: 4px 0 0; font-size: 12px; line-height: 1.35; color: var(--t3); text-wrap: pretty; }
 .t10-meter { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 8px; }
 .t10-meter i { height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.09); transition: background 180ms ease-out; }
 .t10-meter i.is-on { background: var(--t10); }

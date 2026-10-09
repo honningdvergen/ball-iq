@@ -236,10 +236,32 @@ for (const spec of TOP10_SPECS) {
     });
   }
   if (spec.checked && !/^\d{4}-\d{2}-\d{2}$/.test(spec.until || '')) fail(`${spec.id}: a checked list needs an until date`);
+  // The board must stay above a phone keyboard (see the note on `note` in
+  // specs.mjs). Character counts are a stand-in for lines at the screen's type
+  // sizes: 34 is one line of title, 64 two; 96 is two lines of note.
+  if (spec.note && spec.title.length > 34) fail(`${spec.id}: a list with a note needs a title of 34 characters or fewer (${spec.title.length})`);
+  if (!spec.note && spec.title.length > 64) fail(`${spec.id}: title is ${spec.title.length} characters, over two lines on a phone`);
+  if (spec.note && spec.note.length > 96) fail(`${spec.id}: note is ${spec.note.length} characters, over two lines on a phone`);
+  // A RANKED list (every clue opens with its number) is checked as one: the
+  // numbers never rise down the ten, and everything just outside is strictly
+  // below the tenth. That second rule is the clean cut: if eleventh equals
+  // tenth, which ten are "the ten" is an opinion, and the list does not ship.
+  const num = (t) => { const m = /^(\d[\d,.]*)/.exec(String(t || '')); return m ? Number(m[1].replace(/,/g, '')) : null; };
+  const nums = body.slots.map((s) => num(s.clue));
+  if (!spec.derive && nums.every((n) => n !== null)) {
+    for (let i = 1; i < nums.length; i++) if (nums[i] > nums[i - 1]) fail(`${spec.id}: rank ${i + 1} (${nums[i]}) is above rank ${i} (${nums[i - 1]})`);
+    if (!body.near.length) fail(`${spec.id}: a ranked list must record who is just outside it, with their numbers`);
+    for (const n of body.near) {
+      const v = num(n.note);
+      if (v === null) fail(`${spec.id}: the note for ${n.name} must open with their number`);
+      else if (v >= nums[9]) fail(`${spec.id}: ${n.name} (${v}) is level with or above tenth place (${nums[9]}): no clean cut`);
+    }
+  }
   lists[spec.id] = {
     id: spec.id, kind: spec.kind, title: spec.title, clueLabel: spec.clueLabel || '',
     asOf: body.asOf, source: body.source, checked: spec.checked || null,
     slots: body.slots, ...(body.near.length ? { near: body.near } : {}),
+    ...(spec.note ? { note: spec.note } : {}),
   };
   untilOf[spec.id] = spec.until || null;
 }

@@ -189,10 +189,36 @@ describe('the data', () => {
     expect(['player', 'club', 'nation']).toContain(l.kind);
     expect(l.title.length).toBeLessThanOrEqual(64);
     for (const s of l.slots) expect(String(s.clue).length).toBeGreaterThan(0);
+    // A list derived from a winners table says where the name stands ("11th,
+    // last in 2007-08"); a ranked list says the number that kept it out.
+    const derived = String(l.source).startsWith('lists:');
     for (const n of l.near || []) {
       expect(l.slots.some((s) => s.key === n.key)).toBe(false);
-      expect(n.note).toMatch(/^1[1-3]th/);
+      expect(n.note).toMatch(derived ? /^1[1-3]th/ : /^\d/);
     }
+  });
+
+  // Alex, 9 Oct 2026: "the list is called top 10, so it should, like,
+  // mathematically be something that is top 10."
+  const num = (t) => Number(/^(\d[\d,.]*)/.exec(String(t))[1].replace(/,/g, ''));
+  const ranked = lists.filter((l) => !String(l.source).startsWith('lists:'));
+  it('there are ranked lists, and each is ranked by its number with a clean cut at ten', () => {
+    expect(ranked.length).toBeGreaterThan(0);
+    for (const l of ranked) {
+      const nums = l.slots.map((s) => num(s.clue));
+      for (let i = 1; i < 10; i++) expect(nums[i], `${l.id} rank ${i + 1}`).toBeLessThanOrEqual(nums[i - 1]);
+      expect((l.near || []).length, `${l.id} records who is just outside`).toBeGreaterThan(0);
+      for (const n of l.near) expect(num(n.note), `${l.id}: ${n.name} against tenth`).toBeLessThan(nums[9]);
+      // What counts and how level entries are ordered is said on the screen.
+      expect(l.note, `${l.id} says what counts`).toBeTruthy();
+      expect(l.title.length).toBeLessThanOrEqual(34);
+    }
+  });
+
+  it('the builder refuses a ranked list with a tie at the cut', () => {
+    const GEN = readFileSync(new URL('../../scripts/gen-top10.mjs', import.meta.url), 'utf8');
+    expect(GEN).toMatch(/else if \(v >= nums\[9\]\) fail\(/);
+    expect(GEN).toMatch(/if \(nums\[i\] > nums\[i - 1\]\) fail\(/);
   });
 
   it('every answer can be picked from the guess box, under exactly one entry', () => {

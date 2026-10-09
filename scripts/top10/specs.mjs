@@ -33,6 +33,24 @@
 //              answer to this list only (Russia for the Soviet Union)
 //   cluePrefix text put before every clue ("Euro " makes "Euro 2020")
 //   nearMax    how many "just outside" names to keep (default 3)
+//   note       one line shown under the question: what counts, and how level
+//              entries are ordered. A ranked list needs it whenever a fan
+//              could fairly ask "since when?" or "why is he above him?"
+//              ⚠️ A list with a note needs a SHORT title (one line on a phone).
+//              The screen is "Top 10", so the title is only the thing ranked:
+//              "Most English league titles", not "The 10 clubs with the most
+//              English league titles". Two lines of title plus a note pushed
+//              the fifth row of the board under the keyboard (measured 9 Oct:
+//              the board ended 496pt down against a limit near 470). The
+//              builder enforces the lengths.
+//
+// RANKED LISTS (from 9 Oct 2026). Alex's rule: a Top 10 is ten different
+// things ranked by a number, and the number is shown beside the rank. A ranked
+// list is written out here (explicit) with the number as each slot's clue, and
+// ships only if the cut is clean: the tenth and the eleventh must differ, or
+// "the ten" is a matter of opinion. Each was researched from live sources and
+// then re-derived by a second, independent checker told to break it; both
+// reports are kept outside the repo (~/ball-iq-audit/2026-10-09/top10-ranked/).
 
 export const TOP10_SPECS = [
   { id: 'ballon-dor-last-ten', checked: '2026-10-09', until: '2026-10-26', kind: 'player', clueLabel: 'Last won',
@@ -124,6 +142,68 @@ export const TOP10_SPECS = [
   { id: 'ligue-1-top-scorer-last-ten', kind: 'player', clueLabel: 'Last won',
     title: 'The last 10 different Ligue 1 top scorers',
     derive: { list: 'ligue-1-top-scorers', cols: ['Player'], mode: 'last-different' } },
+
+  // ── RANKED ─────────────────────────────────────────────────────────────────
+  // Arsenal's 2025-26 title is their 14th. Counted season by season in three
+  // lists that agree on all 127 titles (RSSSF, Wikipedia, Transfermarkt).
+  // ⚠️ `until` is short on purpose. On 29 Sep 2026 the Premier League said an
+  // independent commission had upheld its charges against Manchester City for
+  // 2009-10 to 2017-18; City appealed on 1 Oct and the sanction is not yet
+  // decided. Three of City's ten titles fall in those seasons. Nothing has
+  // been taken away, the same ten clubs would remain either way, but City's
+  // number could change. Re-check before every scheduling of this list.
+  { id: 'english-league-titles', checked: '2026-10-09', until: '2026-11-30', kind: 'club',
+    title: 'Most English league titles',
+    note: 'Top-flight titles, 1888 to 2026. Clubs level on titles are in the order they got there.',
+    asOf: '2026-10-09',
+    source: 'RSSSF England champions (14 Jun 2026); Premier League, 19 May 2026; counted season by season',
+    slots: [
+      { name: 'Manchester United', clue: '20 titles' },
+      { name: 'Liverpool', clue: '20 titles' },
+      { name: 'Arsenal', clue: '14 titles' },
+      { name: 'Manchester City', clue: '10 titles' },
+      { name: 'Everton', clue: '9 titles' },
+      { name: 'Aston Villa', clue: '7 titles' },
+      { name: 'Sunderland', clue: '6 titles' },
+      { name: 'Chelsea', clue: '6 titles' },
+      { name: 'Newcastle United', clue: '4 titles' },
+      { name: 'Sheffield Wednesday', clue: '4 titles' },
+    ],
+    nearMax: 4,
+    near: [
+      { name: 'Blackburn Rovers', note: '3 titles, one short' },
+      { name: 'Huddersfield Town', note: '3 titles, one short' },
+      { name: 'Wolverhampton Wanderers', note: '3 titles, one short' },
+      { name: 'Leeds United', note: '3 titles, one short' },
+    ] },
+  // The league's own count, which is the authority on its own record: both of
+  // its data feeds, Opta and NBC agree on all thirteen. Transfermarkt alone has
+  // Phil Neville on 504; the league's nineteen season figures for him sum to
+  // 505 (Manchester United 263, Everton 242). Milner retired on 1 June 2026,
+  // so nobody in the ten is active. The nearest active player is Jordan
+  // Henderson on 464, who cannot reach 505 before 2027-28.
+  { id: 'premier-league-appearances', checked: '2026-10-09', until: '2027-08-01', kind: 'player',
+    title: 'Most Premier League appearances',
+    note: 'Premier League games only, 1992 to today, on the league’s own count.',
+    asOf: '2026-10-09',
+    source: 'premierleague.com all-time appearances (read 9 Oct 2026); Opta Analyst, 1 Jun 2026',
+    slots: [
+      { name: 'James Milner', clue: '658 games' },
+      { name: 'Gareth Barry', clue: '653 games' },
+      { name: 'Ryan Giggs', clue: '632 games' },
+      { name: 'Frank Lampard', clue: '609 games' },
+      { name: 'David James', clue: '572 games' },
+      { name: 'Gary Speed', clue: '535 games' },
+      { name: 'Emile Heskey', clue: '516 games' },
+      { name: 'Mark Schwarzer', clue: '514 games' },
+      { name: 'Jamie Carragher', clue: '508 games' },
+      { name: 'Phil Neville', clue: '505 games' },
+    ],
+    near: [
+      { name: 'Rio Ferdinand', note: '504 games, one short' },
+      { name: 'Steven Gerrard', note: '504 games, one short' },
+      { name: 'Sol Campbell', note: '503 games, two short' },
+    ] },
 ];
 
 // Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
@@ -208,6 +288,7 @@ export const CLUB_CANON = {
 // `pins`. gen-top10 stops on any shared name that is not listed here.
 export const PLAYER_PINS = {
   'luis suarez': 'Q26517', // the Uruguayan, born 1987
+  'frank lampard': 'Q41533', // the son, born 1978; his father (born 1948) is in the pool too
 };
 
 // Extra spellings a player might type for a club, beyond its own name.

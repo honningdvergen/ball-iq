@@ -236,7 +236,10 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
         const near = nearFor(list, s.key);
         setFresh(-1);
         setSaid(near
-          ? { n, tone: "near", text: `${s.name}: so close, ${near.note}. No life lost.` }
+          // No name in it: the player has just typed the name, and a long one
+          // ("Wolverhampton Wanderers") wrapped this line and pushed the board
+          // down a row while the keyboard was up.
+          ? { n, tone: "near", text: `So close: ${near.note}. No life lost.` }
           : { n, tone: "miss", text: `${s.name}: not in the ten` });
         if (near) haptic("soft");
         else { haptic("wrong"); playSound("wrong"); setShake(true); setTimeout(() => setShake(false), 300); }
@@ -295,6 +298,10 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
           <span>As of {formatAsOf(list.asOf)}{list.clueLabel ? ` · clue: ${list.clueLabel.toLowerCase()}` : ""}</span>
           <span className="t10-q-count">{g.score}/{total}</span>
         </div>
+        {/* What counts, and how level entries are ordered. A ranked list is
+            unfair without it: "since when?" and "why is he above him?" are
+            the two things a fan will ask of the answer. */}
+        {list.note ? <p className="t10-q-note">{list.note}</p> : null}
         {/* One step per rank, lit where that rank is found: which gaps are
             left, at a glance, without reading the board. */}
         <div className="t10-meter" aria-hidden="true">
