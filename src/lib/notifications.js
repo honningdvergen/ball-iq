@@ -70,15 +70,38 @@ function atFutureLocal(offsetDays) {
 // Daily-window copy rotates by weekday so a week of reminders never reads as
 // the same string seven times (all streak-agnostic — a notification scheduled
 // days ahead can't know the live count).
+// No "tonight": the hour is the player's own and runs from 08:00 to 22:00, so
+// a reminder can land at one in the afternoon (it did, on Alex's phone).
 const DAILY_BODIES = [
   "Today's Footle & Daily 7 are still open — keep your streak going 🔥",
   "Two minutes, seven questions — today's Daily 7 is waiting ⚽",
-  "Tonight's Footle is still unsolved. One good guess could do it 🧠",
+  "Today's Footle is still unsolved. One good guess could do it 🧠",
   "Don't lose the streak — today's puzzles close at midnight 🔥",
   "Quick one before the day ends? Footle & the Daily 7 are open ⚽",
-  "Your daily fix: Footle and the 7. Still time tonight 🎯",
+  "Your daily fix: Footle and the 7. Still time today 🎯",
   "Streak check — today's games are still open 🔥",
 ];
+
+// ⚠️ THE SERVER FORGOT THIS ON EVERY APP OPEN (found 9 Oct 2026, from two
+// banners on Alex's phone at 13:00). The push token is registered a moment
+// after launch, and register_device_token replaces the device's row, which
+// dropped the hour and the "fires locally" flag sent just before it. The cron
+// then pushed the phone a reminder on top of the one it had scheduled for
+// itself. v2_7 makes the server keep them; resyncReminderHour() is the same
+// repair from this side, called by lib/push.js once the token has landed, so
+// the order the two calls arrive in no longer matters.
+let _localWindowOn = false;
+async function syncReminderHour() {
+  try {
+    const { supabase } = await import('../supabase.js');
+    supabase.rpc('set_reminder_hour', { p_hour: getReminderHour(), p_local: true })
+      .then(({ error }) => { if (error) console.warn('[reminders] set_reminder_hour', error.message); })
+      .catch(() => {});
+  } catch { /* no client on this surface */ }
+}
+export function resyncReminderHour() {
+  if (_localWindowOn) syncReminderHour();
+}
 
 // (Re)schedule the rolling window. skipToday omits offset 0 — pass true when
 // the user has already completed today's daily so we don't nag them tonight.
@@ -91,12 +114,8 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
     // LOCALLY — so the push cron pivots on the same hour for web rows and skips
     // this device rather than sending a second banner for the same evening
     // (v2_4). Fire-and-forget: a failed sync must not stop the local schedule.
-    try {
-      const { supabase } = await import('../supabase.js');
-      supabase.rpc('set_reminder_hour', { p_hour: getReminderHour(), p_local: true })
-        .then(({ error }) => { if (error) console.warn('[reminders] set_reminder_hour', error.message); })
-        .catch(() => {});
-    } catch { /* no client on this surface */ }
+    _localWindowOn = true;
+    syncReminderHour();
     const notifications = [];
     for (let off = skipToday ? 1 : 0; off < WINDOW_DAYS; off++) {
       const at = atFutureLocal(off);

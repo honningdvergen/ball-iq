@@ -70,6 +70,11 @@ async function saveToken(token) {
     if (error) {
       console.warn('[push] register_device_token', error.message);
       Sentry.captureException(error, { tags: { area: 'push-token' } });
+    } else {
+      // The row was just replaced. Say again which hour this device reminds
+      // itself at, or the server may push it a second banner (see the note on
+      // resyncReminderHour in lib/notifications.js).
+      import('./notifications.js').then((m) => m.resyncReminderHour?.()).catch(() => {});
     }
   } catch (e) {
     console.warn('[push] register_device_token threw', e?.message || e);

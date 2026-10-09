@@ -1,10 +1,14 @@
 // When does THIS player play? The reminder fires at the hour they habitually
 // finish a daily, not at an arbitrary 7pm (Duolingo's model). We keep the local
-// hour of the last 7 completions and take the median, clamped to 8–22 so a
+// hour of the last 14 completions and take the median, clamped to 8–22 so a
 // midnight player is nudged at 22:00 rather than at 00:00.
+//
+// Fourteen, not seven (9 Oct 2026): with seven, four lunchtime games in one
+// week moved Alex's reminder from 21:00 to 13:00. A habit is what someone does
+// most days over a fortnight; a busy week should not rewrite it.
 const KEY = 'biq_play_hours';
 export const DEFAULT_REMINDER_HOUR = 19;
-const MIN_H = 8, MAX_H = 22, KEEP = 7;
+const MIN_H = 8, MAX_H = 22, KEEP = 14;
 
 function read() {
   try { const a = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(a) ? a.filter((h) => Number.isInteger(h) && h >= 0 && h < 24) : []; }
