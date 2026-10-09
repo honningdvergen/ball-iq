@@ -492,6 +492,11 @@ progress. What it found, worst first:
 - [ ] **After an answer the question page scrolls and the header leaves the
       screen** (Daily 7, Classic, club and league quizzes). Back, progress and
       score are gone exactly when the player looks for them. Pin the header.
+      History: the scroll is deliberate (it lifts the "Why?" box clear of the
+      sticky Next button), and a sticky `.q-top` was tried in September and
+      "did not pin on device" (`QuizEngine.jsx`, the comment near line 379).
+      So the next attempt starts by finding out why it did not pin (most
+      likely an ancestor that scrolls or clips), in the simulator.
 - [ ] **Timed modes start the clock before the player has read anything.**
       Hot Streak had 52 of its 60 seconds left by the time the first question
       could be read; a club chip on Home drops straight into a timed question.
