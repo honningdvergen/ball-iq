@@ -4057,6 +4057,34 @@ function AppInner() {
   const [screen, setScreen] = useState("home");
   // One Top 10 list opened by name (?game=top10&list=<id>). Null is today's.
   const [top10ListId, setTop10ListId] = useState(null);
+  // An installed app carries the Top 10 schedule it was built with. The site
+  // serves the current one, and this fetches it a moment after start and
+  // whenever the app comes back to the front (lib/top10Remote.js: checked
+  // before it is kept, asked for at most every three hours, the bundled copy
+  // always the fallback). The website never asks: its own bundle is the newest.
+  // The tick is handed to Home so its row appears as soon as a longer schedule
+  // has been kept; Home is memoised and would not otherwise draw again.
+  const [top10Tick, setTop10Tick] = useState(0);
+  useEffect(() => {
+    if (!IS_NATIVE) return undefined;
+    let live = true, told = false;
+    const bump = () => { if (live) setTop10Tick((n) => n + 1); };
+    const go = () => import('./lib/top10Remote.js')
+      .then((m) => m.refreshTop10())
+      .then((r) => {
+        if (r === 'updated') bump();
+        // A build that can no longer read the site's file has gone dry and
+        // nobody would know. Say so once a session.
+        if (r === 'rejected' && !told) { told = true; try { Sentry.captureMessage('top10: the site\'s lists were rejected by this build', 'warning'); } catch {} }
+      })
+      .catch(() => {});
+    const t = setTimeout(go, 2500);
+    const onVis = () => { if (document.visibilityState === 'visible') go(); };
+    document.addEventListener('visibilitychange', onVis);
+    // The Top 10 screen fetches for itself when it has no list for the day.
+    window.addEventListener('biq:top10-updated', bump);
+    return () => { live = false; clearTimeout(t); document.removeEventListener('visibilitychange', onVis); window.removeEventListener('biq:top10-updated', bump); };
+  }, []);
   // The first natural pause, for the deferred consent banner (see index.html
   // and public/consent.js). Deep-linked players start mid-question; the banner
   // waits for this. Two races matter here: the app boots on screen === "home"
@@ -4696,7 +4724,9 @@ function AppInner() {
       const done = (dailyDone ? 1 : 0) + (footleDone ? 1 : 0) + (trailDone ? 1 : 0) + (fourthDone ? 1 : 0);
       syncWidget({ date: ymd, done, total: 4, streak: loginStreak || 0 });
     } catch { /* widget is decoration */ }
-  }, [dailyDone, loginStreak]);
+    // top10Tick: which game is fourth can change when a longer schedule arrives
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dailyDone, loginStreak, top10Tick]);
   useEffect(() => { syncDailyWidget(); }, [syncDailyWidget]);
 
   const tickLoginStreak = useCallback(async () => {
@@ -6255,7 +6285,9 @@ function AppInner() {
     };
     // `screen` is a deliberate dep: the open/closed set changes when a game ends.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.gamesPlayed, xp]);
+    // top10Tick: the "still open today" rows name Top 10 or Mystery, whichever is today's fourth
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.gamesPlayed, xp, top10Tick]);
   const footleServices = useMemo(() => ({ ...FOOTLE_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
   const dailyScreenServices = useMemo(() => ({ ...DAILY_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
 
@@ -8373,6 +8405,7 @@ function AppInner() {
           <div className="tab-pane" style={tab === "home" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="home">
             <HomeScreen
+              top10Tick={top10Tick}
               showSettings={!isWebBrowser}
               profile={profile}
               loginStreak={loginStreak}
@@ -8416,6 +8449,7 @@ function AppInner() {
                 moved: tickLoginStreak now fires from `biq:daily-completed`, so
                 loginStreak IS the play streak and one number feeds both. */}
             <DailyTabScreen
+              key={`daily-${top10Tick}` /* its history columns follow the schedule the device holds */}
               loginStreak={loginStreak}
               bestLoginStreak={bestLoginStreak}
               streakRepair={streakRepair}

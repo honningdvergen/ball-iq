@@ -50,14 +50,41 @@ const isCalm = () => {
   try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; }
 };
 
-function useTop10Data() {
+// The lists: the build's own copy, or a newer one fetched from the site and
+// kept (lib/top10Remote.js), whichever is good. An installed app that holds no
+// list for the day asked for goes and fetches before saying there is none: the
+// first open after its bundled schedule has run out.
+function useTop10Data(date, listId) {
   const [state, setState] = useState({ data: null, failed: false });
   useEffect(() => {
     let live = true;
-    import("../data/top10Lists.json")
-      .then((m) => { if (live) setState({ data: m.default || m, failed: false }); })
-      .catch(() => { if (live) setState({ data: null, failed: true }); });
+    (async () => {
+      // ⚠️ THE WEBSITE NEVER LOADS THE FETCHING CODE. Its own bundle is the
+      // newest there is, so it has nothing to gain, and something to lose: a
+      // lazy chunk that fails to load (a flaky connection, a content blocker)
+      // makes the page reload itself once (main.jsx, vite:preloadError), and
+      // that reload would have happened on the way INTO Top 10. On the web
+      // this hook is the one import it always was.
+      let native = false;
+      try { native = !!window.Capacitor?.isNativePlatform?.(); } catch { /* not an app */ }
+      const [bundled, remote] = await Promise.all([
+        import("../data/top10Lists.json").then((m) => m.default || m),
+        native ? import("../lib/top10Remote.js").catch(() => null) : null,
+      ]);
+      let data = remote ? remote.pickTop10Data(bundled, remote.cachedTop10()) : bundled;
+      const missing = listId ? !Object.hasOwn(data.lists, listId) : getTop10Number(date) > data.log.length;
+      if (remote && missing) {
+        const got = await remote.refreshTop10({ force: true });
+        data = remote.pickTop10Data(bundled, remote.cachedTop10());
+        // Home was drawn before this fetch: tell the app, so its row follows.
+        if (got === "updated") { try { window.dispatchEvent(new Event("biq:top10-updated")); } catch { /* fine */ } }
+      }
+      if (live) setState({ data, failed: false });
+    })().catch(() => { if (live) setState({ data: null, failed: true }); });
     return () => { live = false; };
+    // The day asked for when the screen opened decides whether to fetch; a
+    // clock that passes midnight with the screen open does not fetch again.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return state;
 }
@@ -90,11 +117,13 @@ function Head({ number, sub, lives, onBack, embedded }) {
 }
 
 export default function Top10({ date = new Date(), listId, onBack, onReport, services, embedded = false }) {
-  const { data, failed } = useTop10Data();
+  const { data, failed } = useTop10Data(date, listId);
   // `listId` plays one list by name instead of the day's: the door the archive
   // and the club lists will use. It has no number and never counts as a daily.
   const number = listId ? 0 : getTop10Number(date);
-  const list = data ? data.lists[listId || getTop10Id(date, data.log)] : null;
+  // hasOwn: `?list=constructor` must be "no such list", not Object's own constructor
+  const wanted = data ? (listId || getTop10Id(date, data.log)) : null;
+  const list = wanted && Object.hasOwn(data.lists, wanted) ? data.lists[wanted] : null;
 
   if (!data && !failed) {
     return (
@@ -181,12 +210,18 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
 
   // ── The guess box ──────────────────────────────────────────────────────────
   const { pool, ensure: ensurePool } = usePlayerPool();
-  const playerPool = useMemo(
-    () => (list.kind === "player"
-      ? [...pool, ...(data.extras || []).map((e) => ({ id: e.key, name: e.name, fame: 0 }))]
-      : []),
-    [list.kind, pool, data.extras],
-  );
+  const playerPool = useMemo(() => {
+    if (list.kind !== "player") return [];
+    const all = [...pool, ...(data.extras || []).map((e) => ({ id: e.key, name: e.name, fame: 0 }))];
+    // A list fetched from the site can name a player this build's own pool
+    // does not hold yet (the pool grows between builds). Every answer must be
+    // typeable, so once the pool is in, anyone on this list it lacks is added.
+    if (pool.length) {
+      const have = new Set(all.map((p) => p.id));
+      for (const e of [...list.slots, ...(list.near || [])]) if (!have.has(e.key)) { have.add(e.key); all.push({ id: e.key, name: e.name, fame: 0 }); }
+    }
+    return all;
+  }, [list, pool, data.extras]);
   const suggestions = useMemo(() => {
     if (g.done) return [];
     if (list.kind === "player") {

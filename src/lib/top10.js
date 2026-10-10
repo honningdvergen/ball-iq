@@ -20,7 +20,7 @@
 // folded name for a club or a nation.
 import { dayIndexForDate, dateToYMD } from './date.js';
 import { normaliseName } from './mysteryPlayer.js';
-import { TOP10_ANCHOR_DAY, TOP10_DAYS } from '../data/top10Meta.js';
+import { TOP10_ANCHOR_DAY, TOP10_DAYS, TOP10_LOG_HASH } from '../data/top10Meta.js';
 
 export const TOP10_LIVES = 3;
 export const TOP10_SIZE = 10;
@@ -33,12 +33,27 @@ export function getTop10Number(date = new Date()) {
   return dayIndexForDate(date) - TOP10_ANCHOR_DAY + 1;
 }
 
+// How many days of lists this device holds: the build's own, or more once a
+// longer schedule has been fetched from the site and kept (top10Remote.js,
+// which writes this note only after the file passed every check). The note is
+// believed only if it was written against THIS build's schedule, so one left
+// behind by an older build is ignored after an update.
+export const TOP10_DAYS_KEY = 'biq_top10_days';
+export function top10Days() {
+  try {
+    const n = JSON.parse(localStorage.getItem(TOP10_DAYS_KEY) || 'null');
+    if (n && n.n === TOP10_DAYS && n.h === TOP10_LOG_HASH && n.a === TOP10_ANCHOR_DAY
+      && Number.isInteger(n.d) && n.d > TOP10_DAYS && n.d <= TOP10_DAYS + 1000) return n.d;
+  } catch { /* no storage, or not ours */ }
+  return TOP10_DAYS;
+}
+
 /**
  * Is there a list to play on this date? Home asks this before it draws the row,
  * from the schedule's LENGTH alone, so it never loads the lists to find out.
- * False before launch day and past the end of the schedule a build carries.
+ * False before launch day and past the end of the schedule this device holds.
  */
-export function isTop10Live(date = new Date(), days = TOP10_DAYS) {
+export function isTop10Live(date = new Date(), days = top10Days()) {
   const n = getTop10Number(date);
   return n >= 1 && n <= days;
 }
