@@ -60,7 +60,9 @@ const BUDGET_KB = 909; // Target is still 600; the gap is Supabase (211 KB stati
 // import in ballIqCard.js, and it is what tipped the budget.
 // top10Lists joined 2026-10-09, the day it was created: the Top 10 screen
 // import()s it and nothing on Home may.
-const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours|top10Lists)-[A-Za-z0-9_-]+\.js$/;
+// draftSquads joined 2026-10-10, the day it was created: the Draft screen
+// import()s it (335 KB) and nothing on Home may.
+const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours|top10Lists|draftSquads)-[A-Za-z0-9_-]+\.js$/;
 const HOME_CHUNKS = /^(main|GameRoot|HomeScreen)-[A-Za-z0-9_-]+\.js$/;
 
 const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');

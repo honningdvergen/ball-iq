@@ -26,8 +26,8 @@ describe('join gate', () => {
     // those two had already drifted apart (the hook was widened first).
     expect(APP).toMatch(/\{pendingJoinCode && \(!user \|\| isGuest\) && !playing && \(/);
     expect(APP).toMatch(/isOpen: !!\(pendingJoinCode && \(!user \|\| isGuest\) && !playing\)/);
-    expect(APP, 'playing must cover the five standalone games')
-      .toMatch(/const playing = inGame \|\| \["wordle","trail","top10","mystery","stadiums"\]\.includes\(screen\);/);
+    expect(APP, 'playing must cover the six standalone games')
+      .toMatch(/const playing = inGame \|\| \["wordle","trail","top10","draft","mystery","stadiums"\]\.includes\(screen\);/);
     expect(APP).toMatch(/loopEvent\("join-token-dead"/);
   });
   it('the RPC is anon-callable and follows the house rules', () => {
