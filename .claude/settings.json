@@ -168,6 +168,8 @@
       "Bash(node scripts/gen-top10.mjs *)",
       "Bash(node scripts/gen-splash.mjs)",
       "Bash(node scripts/gen-splash.mjs *)",
+      "Bash(node scripts/gen-draft.mjs)",
+      "Bash(node scripts/gen-draft.mjs *)",
       "Bash(node scripts/desk-notify.mjs *)",
       "Bash(node /Users/alexanderbrynolsen/ball-iq-audit/*)",
       "Bash(node scripts/gen-grid-clubs.mjs *)",

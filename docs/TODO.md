@@ -704,6 +704,71 @@ we want this to be an upgrade that is properly felt."
       test hold it.
 
 
+### 0k. 10 Oct: the Draft plays, on the web, by address only
+
+Alex, mid-session: "it is most important that we look over everything we
+implement into the app and are confident we will succeed". So the game was
+held back until two independent checks had reported and every finding was
+dealt with.
+
+- [x] **The Draft is playable at `/play?game=draft`** (not on Home, not a
+      daily, no streak). Eleven spins, a 4-3-3, one re-spin, 38 matches
+      against the real finishing places 2 to 20, the result held against
+      every real table since 1995 ("83 points wins the league in 8 of the 31
+      seasons"). A switch hides the numbers. Model in `src/lib/draftModel.js`
+      (pure, 43 tests), screen in `src/screens/Draft.jsx`, data built by
+      `scripts/gen-draft.mjs` into `src/data/draftSquads.json` (385 KB, its
+      own chunk, on the budget gate's ban list; Home unchanged at 869 KB).
+- [x] **392 club-seasons since 1995-96.** 333 verified by arithmetic alone;
+      59 more through a second reading of each player's own career table
+      (`07-second-check.mjs`, `08-accept.mjs` in the data folder; 32 rows
+      corrected by it, each correction made the starts add up). Manchester
+      City: 13 seasons in, title sides among them.
+- [x] **Data checked against other sources**: 97 player rows (twelve famous
+      squads plus a fixed-rule sample) and all 342 table lines then in the
+      file, against the Premier League's match sheets and Transfermarkt. No
+      error in the file. Report:
+      `~/ball-iq-audit/2026-10-10/draft/data-spot-check.md`.
+- [x] **Code review before commit** found a certain crash (Reduce Motion on,
+      tap Spin: the screen read a result that did not exist), a second route
+      to the same crash on restore, and a board that reshuffled for the whole
+      year whenever a squad was added. All fixed and pinned by tests; the
+      rules moved out of the screen into the model so they can be tested.
+      Replayed in WebKit at phone size, including Reduce Motion and garbage
+      in storage. Pictures: `~/ball-iq-audit/2026-10-10/draft/`.
+- [ ] **⚠️ Before it is a daily:**
+      1. The squads, or the day's board, must come from the server. A new
+         squad lands on about one board in thirty, so two data versions deal
+         different boards on most days; a native build holds the data it was
+         built with. Same root problem as the Top 10 schedule.
+      2. Thirteen squads (Manchester City's, Chelsea 2013-14 and 2020-21
+         among them) give one appearance total per man, not starts and
+         substitute appearances. The game shares out the squad's known ten
+         outfield starts a game in proportion, which is fair on average and
+         wrong for individuals (Bernardo Silva 2017-18: 35 games, really 15
+         starts). Get the split from a second source before launch.
+      3. The pipeline lives outside the repo
+         (`~/ball-iq-audit/2026-10-09/draft/`). Move it in, with each
+         article's revision pinned, and list the source articles for the
+         CC BY-SA credit.
+      4. Not seen on a phone or in the simulator yet. WebKit at phone size
+         only.
+      5. Alex to rule: numbers shown or hidden by default; the pink; the
+         name "Draft"; whether "stand-in from a relegated side" reads right.
+- [ ] **Draft, known and left for now:** 181 club-seasons since 1995 are
+      still out (92 because too few of their players have a career table to
+      read a second time, 78 where the two readings disagree on a man by one
+      game; the list with reasons is `review.txt` in the data folder). The
+      league's own match sheets settled every one-game dispute in the spot
+      check, so they are the third reading to use. A reload lands on Home,
+      because the address is cleared on entry like every other game.
+- [ ] **Draft, tuning seen in play:** the first pick of a bot that takes
+      "most games" is often a mid-table midfielder, and a casual board lands
+      around 68 to 70 points; a goals-first board 83. No unbeaten season has
+      come up. Decide after Alex has played whether the top end needs to be
+      reachable more often.
+
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
