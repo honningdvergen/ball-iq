@@ -29,7 +29,7 @@
  *   node scripts/audit-mystery-pool.mjs
  */
 import { readFileSync, existsSync } from 'fs';
-import { NAME_OVERRIDES, CLUB_FIXES, BIRTH_FIXES, NOT_IN_SQUAD, NEVER_AT_CLUB } from './_name-overrides.mjs';
+import { NAME_OVERRIDES, CLUB_FIXES, BIRTH_FIXES, BIRTH_DISPUTED, NOT_IN_SQUAD, NEVER_AT_CLUB } from './_name-overrides.mjs';
 
 const FAME_FLOOR = 70;      // above this, absence is a defect, not a judgement call
 let bad = 0;
@@ -142,6 +142,23 @@ if (noDob > pool.length * 0.05) {
   console.error('   → run: node scripts/fetch-mystery-dob.mjs --write   (a pool rebuild strips it)');
 } else {
   ok(`dob present on ${pool.length - noDob}/${pool.length} players (age tie-breaker live)`);
+}
+
+/* ⚠️ `born` AND `dob` ARE TWO FETCHES. The year comes from _mystery-core.json
+   and the day from _mystery-dob.json, taken days apart, and nothing compared
+   them. On 2026-10-09 eighteen rows printed one year and ranked on another:
+   Zhang Linpeng born 1989 beside 9 May 2000, Júnior Moraes 1987 beside 1997.
+   A row that disagrees with itself means the date changed on Wikidata between
+   the two fetches, so one of the two is somebody's edit. It costs nothing to
+   check and needs no network. */
+const twoStories = pool.filter((p) => p.dob && Number(p.dob.slice(0, 4)) !== p.born && !BIRTH_DISPUTED[p.id]);
+if (twoStories.length) {
+  fail(`${twoStories.length} player(s) print one birth year and carry a day from another:`);
+  twoStories.slice(0, 15).forEach((p) => console.error(`     ${p.id}  ${p.name}: born ${p.born}, dob ${p.dob}`));
+  console.error('   → node scripts/audit-pool-birthdates.mjs --all   reads Wikipedia for each. A confirmed date');
+  console.error('     goes in BIRTH_FIXES, an unsettled one in BIRTH_DISPUTED (scripts/_name-overrides.mjs).');
+} else {
+  ok(`every birth year matches its day (${Object.keys(BIRTH_DISPUTED).length} disputed births listed and left alone)`);
 }
 
 // ── 5. nobody from another sport may be guessable ───────────────────────────

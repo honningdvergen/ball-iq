@@ -96,7 +96,7 @@ for (const [qid, fix] of Object.entries(BIRTH_FIXES)) {
   if (!p) { console.log(`  ⚠️  ${qid}: not in the pool at all — stale birth fix?`); stale++; continue; }
   const born = Number(fix.dob.slice(0, 4));
   if (p.dob === fix.dob && p.born === born) { datedAlready++; continue; }
-  console.log(`  ✎ ${p.name}: born ${p.dob || p.born} -> ${fix.dob}`);
+  console.log(`  ✎ ${p.name}: born ${p.born}, ${p.dob || 'no day'} -> ${fix.dob}`);
   p.dob = fix.dob; p.born = born;
   dated++;
 }
