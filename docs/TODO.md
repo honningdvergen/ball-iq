@@ -769,6 +769,44 @@ dealt with.
       reachable more often.
 
 
+### 0l. 10 Oct, evening: Top 10 lists reach an installed app from the site
+
+- [x] **The site serves the lists and an installed app fetches them**
+      (`src/lib/top10Remote.js`, `public/data/top10.json`). The same generator
+      run writes the bundled copy and the served one. The app asks 2.5 s after
+      start and whenever it returns to the front, at most every three hours,
+      and keeps the file only if it has the same anchor day, begins with the
+      build's own schedule (hash in `top10Meta.js`), and every field the
+      screen draws is of the right type. Otherwise it stays on its bundled
+      copy. A file kept by an older build is not used after an update until
+      the new build has asked the site itself.
+- [x] **The website does not change**: it never loads the fetching code and
+      never asks for the file (rehearsed for Monday 12 Oct in WebKit: Top 10
+      #1 on Home, the list plays, zero requests for either).
+- [x] **Reviewed before commit.** Found: the web would have loaded a chunk it
+      did not need and could reload the page if it failed; a stale note after
+      an app update; a file that passed the checks but crashed the board
+      (`constructor` as a list id, a clue that is not text); `--all` broken.
+      All fixed, 34 tests. Also fixed on the web: `?list=constructor` now says
+      "no such list" instead of crashing.
+- [x] **The served schedule only grows**: the generator refuses to write a
+      schedule that does not begin with the days already served, unless
+      `--reschedule` is passed.
+- [ ] **⚠️ Build 144 has none of this** and still runs dry on 25 October.
+      Build 145 carries it. Uploading it is Alex's call.
+- [ ] **Not yet seen in a real app.** Rehearsed in WebKit with the Android
+      bridge faked (31 Oct, two days past the bundled schedule: Home gains the
+      row, #20 plays; fetch fails: unchanged). The reviewer read the native
+      configs and found nothing that blocks the request (no in-app CSP, no ATS
+      exception needed, plain CORS GET). First real proof is build 145 in the
+      simulator with the clock set forward.
+- [ ] **When a build that fetches is in the stores:** freeze a copy of its
+      `acceptRemote` in the tests, so a later format change that old builds
+      would reject fails here first. A format change must bump `v`.
+- [ ] **The Draft needs the same door** before it is a daily (squads or the
+      day's board from the site).
+
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
