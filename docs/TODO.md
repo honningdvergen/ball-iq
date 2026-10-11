@@ -807,6 +807,29 @@ dealt with.
       day's board from the site).
 
 
+### 0m. 11 Oct: the day before Top 10 goes live
+
+- [x] **The front door no longer says the questions are written by hand.**
+      It said "Written and fact-checked by hand, not scraped" under "Where do
+      the questions come from?". Now "Researched against sources and
+      fact-checked, not scraped." A test reads every page a player can see
+      (the front door's components and the generated pages) for an authorship
+      claim.
+- [ ] **Alex to rule: "hand-picked".** Three generated pages call their sets
+      "a hand-picked set of ... questions" (hardest trivia, World Cup). That
+      is a claim about choosing the set, not about who wrote the questions,
+      and the test lets it through. Keep it, or say "a chosen set"?
+- [ ] **Top 10, fourth batch** is out with two researchers (club appearance
+      records for five clubs, Newcastle and Everton scorers, France and Italy
+      caps, France and Germany goals, Spanish grounds): `brief-4.md`,
+      `research-4a.md`, `research-4b.md` in the top10-ranked folder.
+- [ ] **Build 145 is not cut.** A build has to be made and preflighted on the
+      day it is uploaded (the Footle practice file turns over daily), so it is
+      cut when Alex says upload. The simulator proof of the list fetching
+      cannot use a clock set forward (the simulator runs on the Mac's clock);
+      what it can show is the fetched file landing in the app's storage.
+
+
 ### 1. This week, before the 1.7.6 cut
 
 - [ ] **Explanations for the rest of the bank.** The 280 scheduled Daily 7
