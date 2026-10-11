@@ -374,7 +374,7 @@ export default function FrontDoor() {
           <dl className="fd-faq">
             <div><dt>Is it free?</dt><dd>Yes. Every game and every quiz plays in the browser with no account. An account keeps your streaks and rating across devices.</dd></div>
             <div><dt>What resets each day?</dt><dd>Footle, the Daily 7, Transfer Trail and {top10Live ? 'Top 10' : 'Mystery Player'}. Everyone in the world gets the same ones, at local midnight.</dd></div>
-            <div><dt>Where do the questions come from?</dt><dd>Written and fact-checked by hand, not scraped. Most answers come with the reason they are the answer.</dd></div>
+            <div><dt>Where do the questions come from?</dt><dd>Researched against sources and fact-checked, not scraped. Most answers come with the reason they are the answer.</dd></div>
             <div><dt>Can I play with friends?</dt><dd>Yes. Live rooms for up to eight online, or pass one phone around.</dd></div>
           </dl>
         </section>
