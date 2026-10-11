@@ -120,6 +120,53 @@ describe('the schedule', () => {
     expect(ON_DISK.lists['premier-league-goalkeeper-appearances'].near[0].note).toBe('375 games, 1 short');
   });
 
+  // The fourth batch, 31 October to 7 November.
+  it('days twenty to twenty-seven follow', () => {
+    expect(ON_DISK.log.slice(19, 27)).toEqual([
+      'manchester-united-appearances', 'france-top-scorers', 'liverpool-appearances', 'germany-top-scorers',
+      'arsenal-appearances', 'italy-caps', 'chelsea-appearances', 'france-caps',
+    ]);
+    expect(getTop10Id(new Date(2026, 9, 31), ON_DISK.log)).toBe('manchester-united-appearances');
+    expect(getTop10Id(new Date(2026, 10, 7), ON_DISK.log)).toBe('france-caps');
+  });
+
+  // ⚠️ A NAME THAT IS IN THE POOL ONCE IS NOT THEREBY THE RIGHT MAN. Liverpool's
+  // Tommy Smith (born 1945) is not in the player pool; a New Zealand defender
+  // of the same name (born 1990) is, and the list was first built with him in
+  // eighth place. The slot now says which Tommy Smith, he is his own entry in
+  // the guess box, and the namesake is accepted too, since the box cannot show
+  // a player which is which.
+  it('Liverpool’s Tommy Smith is the one born in 1945, and his namesake in the pool still counts', () => {
+    const l = ON_DISK.lists['liverpool-appearances'], slot = l.slots[7];
+    const pool = JSON.parse(readFileSync(new URL('../../src/data/mysteryPool.json', import.meta.url), 'utf8'));
+    const namesake = pool.filter((p) => p.name === 'Tommy Smith');
+    expect(namesake.map((p) => p.born)).toEqual([1990]);
+    expect(slot).toMatchObject({ name: 'Tommy Smith', key: 'x:tommy smith:1945', clue: '638 games' });
+    expect(slot.also).toEqual([namesake[0].id]);
+    expect(ON_DISK.extras.find((e) => e.key === slot.key)).toEqual({ key: slot.key, name: 'Tommy Smith' });
+    const day = { picks: [{ k: namesake[0].id, n: 'Tommy Smith' }], gaveUp: false };
+    expect(gradeTop10(l, day).found[7]).toBeTruthy();
+    expect(gradeTop10(l, { picks: [{ k: slot.key, n: 'Tommy Smith' }], gaveUp: false }).found[7]).toBeTruthy();
+  });
+
+  // Nobody on a scheduled list was a child, or unborn, in the last year the
+  // list covers, and nobody on a list of a club's or a country's all-time
+  // records was born after 2010. A crude net for the same mistake: it would
+  // not have caught Tommy Smith (a 1990 birth is plausible for Liverpool), but
+  // it catches a father for a son and a namesake two generations out.
+  it('no scheduled list holds a player too young to have done it', () => {
+    const born = new Map(JSON.parse(readFileSync(new URL('../../src/data/mysteryPool.json', import.meta.url), 'utf8')).map((p) => [p.id, p.born]));
+    for (const id of ON_DISK.log) {
+      const l = ON_DISK.lists[id];
+      if (l.kind !== 'player') continue;
+      const year = +l.asOf.slice(0, 4);
+      for (const e of [...l.slots, ...(l.near || [])]) {
+        const b = born.get(e.key);
+        if (b) expect(year - b, `${id}: ${e.name}, born ${b}`).toBeGreaterThanOrEqual(17);
+      }
+    }
+  });
+
   it('every scheduled day is a ranked list, never a "last ten different winners" one', () => {
     for (const id of ON_DISK.log) {
       const l = ON_DISK.lists[id];

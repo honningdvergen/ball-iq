@@ -17,7 +17,11 @@
 //              its newest row and keeps each name the first time it appears;
 //              mode 'all-winners' is every distinct name, newest win first, and
 //              must come to exactly ten
-//   slots      explicit lists: [{ name, clue }] in rank order, exactly ten
+//   slots      explicit lists: [{ name, clue }] in rank order, exactly ten.
+//              A slot may carry `pin` (a pool id) or `born` (a birth year) to
+//              say WHICH man of that name. ⚠️ Read the birth years in
+//              `--print` for every new list: a name that is in the pool once
+//              can still be the wrong man (see `player` in gen-top10.mjs).
 //   near       explicit lists: [{ name, note }] the names just outside
 //   asOf       explicit lists: the ISO date the ten were checked
 //   source     explicit lists: where they were checked
@@ -659,6 +663,227 @@ export const TOP10_SPECS = [
       { name: 'Gerard Piqué', note: '102 caps, 8 short' },
       { name: 'Carles Puyol', note: '100 caps, 10 short' },
     ] },
+
+  // FOURTH BATCH (11 Oct 2026). Twelve candidates; reports research-4a/4b.md
+  // and verify-4a/4b.md beside the others. Rejected or held: Everton's scorers
+  // (the club prints five, the sources disagree on tenth), Spanish grounds
+  // (ninety seats at the cut, three grounds rebuilt or borrowed: the third
+  // country where a grounds list failed, so no more of those), Tottenham's
+  // appearances (Kane three short of tenth, club and Wikipedia disagree on the
+  // ten), Newcastle's scorers (the club gives Macdonald two totals).
+
+  // Fixed at the World Cup. Mbappé is ninth on 106 there and drew level with
+  // Vieira on 107 on 25 Sep 2026; France next play on 12 Nov. Giroud got to 137
+  // on 9 Jul 2024, Griezmann on 9 Sep 2024. The three on 97 are in the order
+  // they got there (Blanc 2000, Lizarazu 2004, Benzema 2022).
+  { id: 'france-caps', checked: '2026-10-11', until: '2027-06-01', kind: 'player',
+    title: 'Most France caps (men)',
+    note: 'France men’s caps at the end of the 2026 World Cup. Level players in the order they got there.',
+    asOf: '2026-10-11',
+    source: 'FFF statistics page of 18 Sep 2026; RSSSF; Transfermarkt (read 11 Oct 2026)',
+    slots: [
+      { name: 'Hugo Lloris', clue: '145 caps' },
+      { name: 'Lilian Thuram', clue: '142 caps' },
+      { name: 'Olivier Giroud', clue: '137 caps' },
+      { name: 'Antoine Griezmann', clue: '137 caps' },
+      { name: 'Thierry Henry', clue: '123 caps' },
+      { name: 'Marcel Desailly', clue: '116 caps' },
+      { name: 'Zinedine Zidane', clue: '108 caps' },
+      { name: 'Patrick Vieira', clue: '107 caps' },
+      { name: 'Kylian Mbappé', clue: '106 caps' },
+      { name: 'Didier Deschamps', clue: '103 caps' },
+    ],
+    near: [
+      { name: 'Laurent Blanc', note: '97 caps, 6 short' },
+      { name: 'Bixente Lizarazu', note: '97 caps, 6 short' },
+      { name: 'Karim Benzema', note: '97 caps, 6 short' },
+    ] },
+  // Fixed at the World Cup: Mbappé had 66 there and has 67 now. Fontaine got
+  // to 30 on 16 Mar 1960 (in 21 caps), Papin on 13 Dec 1994. One near miss:
+  // the federation prints only its top ten, and twelfth is not settled.
+  { id: 'france-top-scorers', checked: '2026-10-11', until: '2027-06-01', kind: 'player',
+    title: 'France’s top scorers (men)',
+    note: 'Goals for France at the end of the 2026 World Cup. Level players in the order they got there.',
+    asOf: '2026-10-11',
+    source: 'FFF statistics page of 18 Sep 2026; RSSSF; Transfermarkt (read 11 Oct 2026)',
+    slots: [
+      { name: 'Kylian Mbappé', clue: '66 goals' },
+      { name: 'Olivier Giroud', clue: '57 goals' },
+      { name: 'Thierry Henry', clue: '51 goals' },
+      { name: 'Antoine Griezmann', clue: '44 goals' },
+      { name: 'Michel Platini', clue: '41 goals' },
+      { name: 'Karim Benzema', clue: '37 goals' },
+      { name: 'David Trezeguet', clue: '34 goals' },
+      { name: 'Zinedine Zidane', clue: '31 goals' },
+      { name: 'Just Fontaine', clue: '30 goals' },
+      { name: 'Jean-Pierre Papin', clue: '30 goals' },
+    ],
+    nearMax: 1,
+    near: [
+      { name: 'Youri Djorkaeff', note: '28 goals, 2 short' },
+    ] },
+  // The DFB's own table: pre-war Germany, West Germany, and Germany since 1990.
+  // East Germany is another team with another record (Joachim Streich would be
+  // third on a count of both), so the note says which Germany. Völler got to
+  // 47 in 1994, Klinsmann in 1998; Rummenigge to 45 in 1986, Müller in 2023.
+  // Two near misses: thirteenth is Gómez and Lehner level on 31. Nobody active
+  // is close (Gnabry 26, Havertz 25).
+  { id: 'germany-top-scorers', checked: '2026-10-11', until: '2027-06-01', kind: 'player',
+    title: 'Germany’s top scorers (men)',
+    note: 'Germany and West Germany, not East, to 11 Oct 2026. Level players in the order they got there.',
+    asOf: '2026-10-11',
+    source: 'DFB record scorers, stamped 11 Oct 2026; RSSSF; Transfermarkt',
+    slots: [
+      { name: 'Miroslav Klose', clue: '71 goals' },
+      { name: 'Gerd Müller', clue: '68 goals' },
+      { name: 'Lukas Podolski', clue: '49 goals' },
+      { name: 'Rudi Völler', clue: '47 goals' },
+      { name: 'Jürgen Klinsmann', clue: '47 goals' },
+      { name: 'Karl-Heinz Rummenigge', clue: '45 goals' },
+      { name: 'Thomas Müller', clue: '45 goals' },
+      { name: 'Uwe Seeler', clue: '43 goals' },
+      { name: 'Michael Ballack', clue: '42 goals' },
+      { name: 'Oliver Bierhoff', clue: '37 goals' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Fritz Walter', note: '33 goals, 4 short' },
+      { name: 'Klaus Fischer', note: '32 goals, 5 short' },
+    ] },
+  // Italy were not at the 2026 World Cup, so this one is dated, not pinned to
+  // it. Facchetti's 94 is the federation's count (it includes a 1976 match in
+  // the United States that some other federations do not count; without it he
+  // has 93 and is still tenth). De Rossi got to 117 in 2017, Chiellini in 2022.
+  // ⚠️ ONE near miss on purpose. Twelfth is Donnarumma, who is still playing
+  // (87 today, and every match would make his number here wrong); he cannot
+  // reach Del Piero's 91 before late March 2027 or the ten before late
+  // September 2027.
+  { id: 'italy-caps', checked: '2026-10-11', until: '2027-03-01', kind: 'player',
+    title: 'Most Italy caps (men)',
+    note: 'Italy men’s caps as of 11 October 2026. Level players in the order they got there.',
+    asOf: '2026-10-11',
+    source: 'FIGC records and match list; RSSSF; Transfermarkt (read 11 Oct 2026)',
+    slots: [
+      { name: 'Gianluigi Buffon', clue: '176 caps' },
+      { name: 'Fabio Cannavaro', clue: '136 caps' },
+      { name: 'Paolo Maldini', clue: '126 caps' },
+      { name: 'Leonardo Bonucci', clue: '121 caps' },
+      { name: 'Daniele De Rossi', clue: '117 caps' },
+      { name: 'Giorgio Chiellini', clue: '117 caps' },
+      { name: 'Andrea Pirlo', clue: '116 caps' },
+      { name: 'Dino Zoff', clue: '112 caps' },
+      { name: 'Gianluca Zambrotta', clue: '98 caps' },
+      { name: 'Giacinto Facchetti', clue: '94 caps' },
+    ],
+    nearMax: 1,
+    near: [
+      { name: 'Alessandro Del Piero', note: '91 caps, 3 short' },
+    ] },
+  // The club's count (MUFCinfo, which the club and Wikipedia both use). Do NOT
+  // read manutd.com's November 2023 "Hall of Fame" page: it has Stepney 535 and
+  // de Gea 511. Nobody at the club can reach the ten this season: Rashford is
+  // on 433 and tops out near 492.
+  { id: 'manchester-united-appearances', checked: '2026-10-11', until: '2027-08-01', kind: 'player',
+    title: 'Most Manchester United appearances',
+    note: 'All competitions, to the end of 2025-26, on the club’s own count.',
+    asOf: '2026-10-11',
+    source: 'MUFCinfo all-players table (read 11 Oct 2026); manutd.com, 3 Jan and 8 Jul 2023; Wikipedia records table',
+    slots: [
+      { name: 'Ryan Giggs', clue: '963 games' },
+      { name: 'Bobby Charlton', clue: '758 games' },
+      { name: 'Paul Scholes', clue: '718 games' },
+      { name: 'Bill Foulkes', clue: '688 games' },
+      { name: 'Gary Neville', clue: '602 games' },
+      { name: 'Wayne Rooney', clue: '559 games' },
+      { name: 'David de Gea', clue: '545 games' },
+      { name: 'Alex Stepney', clue: '539 games' },
+      { name: 'Tony Dunne', clue: '535 games' },
+      { name: 'Denis Irwin', clue: '529 games' },
+    ],
+    near: [
+      { name: 'Joe Spence', note: '510 games, 19 short' },
+      { name: 'Arthur Albiston', note: '485 games, 44 short' },
+      { name: 'Roy Keane', note: '480 games, 49 short' },
+    ] },
+  // liverpoolfc.com and LFChistory print the same 25 names and numbers. Hughes
+  // and Clemence are level on 665: Hughes got there on 4 Apr 1979, in his last
+  // match, Clemence on 27 May 1981 (the club prints "=4", Clemence first).
+  // Salah left in 2026 on 442; van Dijk is on 380.
+  { id: 'liverpool-appearances', checked: '2026-10-11', until: '2027-08-01', kind: 'player',
+    title: 'Most Liverpool appearances',
+    note: 'All competitions to the end of 2025-26, the club’s count. Level players by who got there first.',
+    asOf: '2026-10-11',
+    source: 'liverpoolfc.com all-time appearances (read 11 Oct 2026); LFChistory.net',
+    slots: [
+      { name: 'Ian Callaghan', clue: '857 games' },
+      { name: 'Jamie Carragher', clue: '737 games' },
+      { name: 'Steven Gerrard', clue: '710 games' },
+      { name: 'Emlyn Hughes', clue: '665 games' },
+      { name: 'Ray Clemence', clue: '665 games' },
+      { name: 'Ian Rush', clue: '660 games' },
+      { name: 'Phil Neal', clue: '650 games' },
+      { name: 'Tommy Smith', born: 1945, clue: '638 games' }, // not the pool's Tommy Smith (born 1990)
+      { name: 'Bruce Grobbelaar', clue: '628 games' },
+      { name: 'Alan Hansen', clue: '620 games' },
+    ],
+    near: [
+      { name: 'Chris Lawler', note: '549 games, 71 short' },
+      { name: 'Billy Liddell', note: '534 games, 86 short' },
+      { name: 'Kenny Dalglish', note: '515 games, 105 short' },
+    ] },
+  // The club's records page and its own player pages ("477 appearances for
+  // Arsenal, the 10th highest of all time" on Simpson's). One near miss:
+  // twelfth is Ray Parlour on 466, 465 or about 470 depending on who counts.
+  // Saka is on 320.
+  { id: 'arsenal-appearances', checked: '2026-10-11', until: '2027-08-01', kind: 'player',
+    title: 'Most Arsenal appearances',
+    note: 'All competitions, to the end of 2025-26, on the club’s own count.',
+    asOf: '2026-10-11',
+    source: 'arsenal.com records and player pages (read 11 Oct 2026); Wikipedia records table, 4 Sep 2026',
+    slots: [
+      { name: 'David O\'Leary', clue: '722 games' },
+      { name: 'Tony Adams', clue: '669 games' },
+      { name: 'George Armstrong', clue: '621 games' },
+      { name: 'Lee Dixon', clue: '619 games' },
+      { name: 'Nigel Winterburn', clue: '584 games' },
+      { name: 'David Seaman', clue: '564 games' },
+      { name: 'Pat Rice', clue: '528 games' },
+      { name: 'Peter Storey', clue: '501 games' },
+      { name: 'John Radford', clue: '481 games' },
+      { name: 'Peter Simpson', clue: '477 games' },
+    ],
+    nearMax: 1,
+    near: [
+      { name: 'Bob John', note: '470 games, 7 short' },
+    ] },
+  // ⚠️ "CHELSEA'S OWN COUNT" IS THE LIST. The club counts the Full Members' Cup
+  // and the 1988 play-offs, and Kerry Dixon is tenth because of them: on league
+  // and major cups alone he has 396 and McCreadie (410), Clarke and Ken
+  // Armstrong are all ahead of him. The club's own "400 club" article has his
+  // 400th game on Boxing Day 1991, so this is how Chelsea itself counts, and
+  // the note says so in as many words. Without those words this list is wrong.
+  { id: 'chelsea-appearances', checked: '2026-10-11', until: '2027-08-01', kind: 'player',
+    title: 'Most Chelsea appearances',
+    note: 'Chelsea’s own count, which includes the Full Members’ Cup and play-offs. To the end of 2025-26.',
+    asOf: '2026-10-11',
+    source: 'chelseafc.com, all-time record appearance-makers (read 11 Oct 2026); Bounder database; Wikipedia, 18 Sep 2026',
+    slots: [
+      { name: 'Ron Harris', clue: '795 games' },
+      { name: 'Peter Bonetti', clue: '729 games' },
+      { name: 'John Terry', clue: '717 games' },
+      { name: 'Frank Lampard', clue: '648 games' },
+      { name: 'John Hollins', clue: '592 games' },
+      { name: 'César Azpilicueta', clue: '508 games' },
+      { name: 'Petr Čech', clue: '494 games' },
+      { name: 'Dennis Wise', clue: '445 games' },
+      { name: 'Steve Clarke', clue: '421 games' },
+      { name: 'Kerry Dixon', clue: '420 games' },
+    ],
+    near: [
+      { name: 'Eddie McCreadie', note: '410 games, 10 short' },
+      { name: 'John Bumstead', note: '409 games, 11 short' },
+      { name: 'Ken Armstrong', note: '402 games, 18 short' },
+    ] },
 ];
 
 // Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
@@ -672,13 +897,13 @@ export const TOP10_ANCHOR_DAY = 20738;
 // is live. A released native build carries this file; reordering it would have
 // two players on the same day arguing about different lists.
 //
-// The first nineteen days, 12 to 30 October 2026. The opening list is the one
+// The first twenty-seven days, 12 October to 7 November 2026. The opening list is the one
 // most players can finish (ten famous names), because the first day decides
 // whether anyone comes back for the second; the lists with pre-war names in
 // their last slots are spaced out, and clubs, players and nations alternate.
-// ⚠️ NINETEEN DAYS IS ALL THERE IS. On the day after the last entry the game
+// ⚠️ TWENTY-SEVEN DAYS IS ALL THERE IS. On the day after the last entry the game
 // goes quiet and Mystery Player returns to Today by itself. More lists must be
-// appended before 30 October, and a native build must not ship to the stores
+// appended before 7 November, and a native build must not ship to the stores
 // on this schedule alone: it would run dry days after release. The lists have
 // to reach the app from the server first (see docs/TODO.md).
 export const TOP10_LOG = [
@@ -704,6 +929,16 @@ export const TOP10_LOG = [
   'real-madrid-top-scorers',         // Wed 28
   'premier-league-goalkeeper-appearances', // Thu 29  (must run before 5 Dec)
   'la-liga-goals',                   // Fri 30
+  // Fourth batch, added 11 Oct. Clubs and countries in turn; the two France
+  // lists (Mbappé, Giroud, Henry, Griezmann, Zidane in both) five days apart.
+  'manchester-united-appearances',   // Sat 31
+  'france-top-scorers',              // Sun 1 Nov
+  'liverpool-appearances',           // Mon 2
+  'germany-top-scorers',             // Tue 3
+  'arsenal-appearances',             // Wed 4
+  'italy-caps',                      // Thu 5
+  'chelsea-appearances',             // Fri 6
+  'france-caps',                     // Sat 7
 ];
 
 // One name per club. Keys are folded spellings found in the tables and in

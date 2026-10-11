@@ -135,10 +135,27 @@ for (const p of pool) {
   poolByKey.get(k).push(p);
 }
 const extras = new Map(); // key -> { key, name }
-function player(raw, ownPin) {
+// `born` (a birth year on the slot) is for a name that more than one footballer
+// has carried. ⚠️ A NAME THAT IS IN THE POOL ONCE IS NOT THEREBY THE RIGHT MAN.
+// Liverpool's Tommy Smith (born 1945) is not in the pool; a New Zealand
+// defender of the same name (born 1990) is, and the list of Liverpool's record
+// appearance makers was built with him in eighth place (caught by reading the
+// birth years, 11 Oct 2026). With `born`, a pool player counts only if he was
+// born that year; otherwise the man is added as his own entry, and his
+// namesakes in the pool are accepted for that place too, because the guess box
+// cannot show the player which Tommy Smith is which.
+function player(raw, ownPin, born) {
   const k = fold(raw);
   const pin = ownPin || PLAYER_PINS[k];
   const hits = poolByKey.get(k) || [];
+  if (born != null && !pin) {
+    const same = hits.filter((h) => h.born === born);
+    if (same.length === 1) return { key: same[0].id, name: same[0].name };
+    if (same.length > 1) { fail(`"${raw}" born ${born} is ${same.length} players in the pool: add a pin`); return { key: same[0].id, name: same[0].name }; }
+    const key = `x:${k}:${born}`;
+    if (!extras.has(key)) extras.set(key, { key, name: raw });
+    return { key, name: raw, also: hits.map((h) => h.id) };
+  }
   if (pin) {
     const p = pool.find((x) => x.id === pin);
     if (!p) fail(`pin ${pin} for "${raw}" is not in the pool`);
@@ -203,7 +220,7 @@ function derive(spec) {
 
 function explicit(spec) {
   const name = (s) => {
-    if (spec.kind === 'player') return player(s.name, s.pin);
+    if (spec.kind === 'player') return player(s.name, s.pin, s.born);
     const reg = spec.kind === 'nation' ? nations : clubs;
     const n = reg.add(s.name);
     return { key: fold(n), name: n };
@@ -211,7 +228,13 @@ function explicit(spec) {
   if (!spec.asOf || !spec.source) fail(`${spec.id}: an explicit list needs asOf and source`);
   return {
     slots: (spec.slots || []).map((s) => ({ ...name(s), clue: String(s.clue ?? '') })),
-    near: (spec.near || []).map((s) => ({ ...name(s), note: s.note })),
+    near: (spec.near || []).map((s) => {
+      const e = name(s);
+      // A near miss has no second accepted name, so a namesake in the pool
+      // would cost the player a life for the right answer.
+      if (e.also?.length) fail(`${spec.id}: near miss "${s.name}" has a namesake in the pool; it cannot be told apart in the guess box`);
+      return { key: e.key, name: e.name, note: s.note };
+    }),
     asOf: spec.asOf,
     source: spec.source,
   };
@@ -228,16 +251,20 @@ for (const spec of TOP10_SPECS) {
   const keys = body.slots.map((s) => s.key);
   if (new Set(keys).size !== keys.length) fail(`${spec.id}: a name appears twice`);
   for (const n of body.near) if (keys.includes(n.key)) fail(`${spec.id}: ${n.name} is both in the ten and just outside it`);
+  for (const sl of body.slots) {
+    if (sl.also && !sl.also.length) delete sl.also;
+    for (const a of sl.also || []) if (keys.includes(a) || body.near.some((n) => n.key === a)) fail(`${spec.id}: a namesake of ${sl.name} is on the list in his own right`);
+  }
   // Names that are a fair answer to this list only (see slotIndexFor).
   for (const [name, others] of Object.entries(spec.also || {})) {
     const reg = spec.kind === 'nation' ? nations : clubs;
     const slot = body.slots.find((s) => s.name === (spec.kind === 'player' ? name : reg.canon(name)));
     if (!slot) { fail(`${spec.id}: also names "${name}", which is not one of the ten`); continue; }
-    slot.also = others.map((o) => {
+    slot.also = [...(slot.also || []), ...others.map((o) => {
       const e = spec.kind === 'player' ? player(o) : { key: fold(reg.add(o)) };
       if (keys.includes(e.key) || body.near.some((n) => n.key === e.key)) fail(`${spec.id}: "${o}" is already on the list in its own right`);
       return e.key;
-    });
+    })];
   }
   if (spec.checked && !/^\d{4}-\d{2}-\d{2}$/.test(spec.until || '')) fail(`${spec.id}: a checked list needs an until date`);
   // The board must stay above a phone keyboard (see the note on `note` in
@@ -295,8 +322,9 @@ const data = {
 if (args.has('--print')) {
   for (const l of Object.values(lists)) {
     console.log(`\n${l.id}  [${l.kind}]  as of ${l.asOf}  ${l.checked ? `checked ${l.checked}` : 'NOT CHECKED'}\n  ${l.title}`);
-    l.slots.forEach((s, i) => console.log(`  ${String(i + 1).padStart(2)}. ${s.name}  (${s.clue})${s.key.startsWith('x:') ? '  [not in pool]' : ''}`));
-    for (const n of l.near || []) console.log(`   · ${n.name}  (${n.note})`);
+    const who = (e) => { const p = l.kind === 'player' ? pool.find((x) => x.id === e.key) : null; return l.kind !== 'player' ? '' : p ? `  [b.${p.born}${p.club ? `, ${p.club}` : ''}]` : '  [not in pool]'; };
+    l.slots.forEach((s, i) => console.log(`  ${String(i + 1).padStart(2)}. ${s.name}  (${s.clue})${who(s)}${s.also ? `  also accepts ${s.also.join(', ')}` : ''}`));
+    for (const n of l.near || []) console.log(`   · ${n.name}  (${n.note})${who(n)}`);
   }
 }
 
