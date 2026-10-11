@@ -819,10 +819,18 @@ dealt with.
       "a hand-picked set of ... questions" (hardest trivia, World Cup). That
       is a claim about choosing the set, not about who wrote the questions,
       and the test lets it through. Keep it, or say "a chosen set"?
-- [ ] **Top 10, fourth batch** is out with two researchers (club appearance
-      records for five clubs, Newcastle and Everton scorers, France and Italy
-      caps, France and Germany goals, Spanish grounds): `brief-4.md`,
-      `research-4a.md`, `research-4b.md` in the top10-ranked folder.
+- [x] **Top 10, fourth batch: eight of twelve passed both checks and are
+      scheduled, 31 October to 7 November** (appearance records for Manchester
+      United, Liverpool, Arsenal and Chelsea; France caps and goals; Germany
+      goals; Italy caps). Reports `research-4a/b.md`, `verify-4a/b.md`. Out:
+      Everton scorers, Spanish grounds (the third grounds list to fail: no
+      more of those), Tottenham appearances, Newcastle scorers.
+- [x] **A wrong man caught by reading birth years.** Liverpool's Tommy Smith
+      (born 1945) is not in the player pool; a namesake born in 1990 is, and
+      the builder took him. A slot can now say `born`, the man becomes his
+      own entry, his namesake is accepted too, and `--print` shows the birth
+      year and club of every match. All 27 scheduled lists were read that way.
+- [ ] **The schedule now ends on Saturday 7 November.**
 - [ ] **Build 145 is not cut.** A build has to be made and preflighted on the
       day it is uploaded (the Footle practice file turns over daily), so it is
       cut when Alex says upload. The simulator proof of the list fetching
