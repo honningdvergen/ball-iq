@@ -1112,6 +1112,33 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] A project hook refused a code-review brief as "a social brief" because
       of its wording. It guards the wrong thing; look at its matcher.
 
+**Daily 7 difficulty (Alex, 12 Oct, late: "make it easier ... get the average up to 4 correct")**
+- [ ] The Daily 7 averages 3.2 of 7 over three weeks (about 500 results; 2.7
+      on 12 Oct, n=23; guessing gets 1.75), and a third of results are 2 or
+      less. Two sources agree (`daily_results`, and `scores` game_mode
+      'daily'). Cause: `pickDailyFresh` (src/lib/dailyDraw.js) has drawn from
+      medium and hard only since 19 Aug, with no quota (about 2 in 3 medium),
+      and "medium" is answered right about 40% of the time. Among 35 signed-in
+      regulars a low score does not lower next-day return (66% after 0 to 2,
+      65% after 5 to 7); for newcomers nobody knows, results carry no identity.
+      **Ruling: aim for an average of 4, gentle first two, hardest last.** Not
+      by letting everything tagged easy back in: Alex pulled a format in
+      September for being insultingly easy.
+      Before building: (1) the draw is frozen in src/data/dailyLog.js so every
+      phone gets the same seven; a new picker must keep the site and installed
+      builds in step (the Top 10 remote-list problem again). (2) Difficulty
+      tags are judgement. Measuring it means recording right and wrong per
+      question, which is a production data change and needs Alex's word.
+- [ ] Daily 7 on a tall phone (his recording, iPhone 17 Pro Max): the answers
+      end 60% of the way down and the rest is empty; the category chip is
+      near-unreadable (dark blue on navy); the progress pips and "1 ✓ 3/7" are
+      tiny beside a large back button; "Correct!" / "Incorrect" is a banner
+      shaped like a fifth answer; "Report a problem" hangs alone between the
+      explanation and Next; the "Hard, nailed it" badge lands on the question;
+      the results screen closes with an X top right where every other screen
+      goes back top left, says the score twice, and shows "✓ 19:00" with no
+      word saying it is the reminder.
+
 **Blocks build 145**
 - [ ] 🔴 Launch screen. The fix is WRITTEN AND UNCOMMITTED in the working tree
       (`ios/App/App/Base.lproj/LaunchScreen.storyboard`, new
