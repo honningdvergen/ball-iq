@@ -24,13 +24,21 @@
 .wd-sub{font-size:13px;font-weight:600;color:var(--t2);margin-top:3px;letter-spacing:0;}
 /* 320px phones: 13px wrapped "Surname of a footballer" to two lines (header 44 -> 54px). 12px fits with 7px to spare in Chromium; nowrap keeps a wider font (SF on iOS) to one line. */
 @media (max-width:340px){.wd-sub{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}}
+/* ⚠️ THE SLOT IS PAID FOR. It is 34px (the clue pill's height) plus a 4px
+   margin, 19px more than the legend alone took, and every --wd-chrome below
+   was raised by 19 on 12 Oct 2026 for it (524, 474, 411, 588; the static
+   page's own budget is in gen-seo-pages.mjs). Unpaid, ENTER sat 19 to 23px
+   lower for the whole game and into the home-indicator strip on a 375x812
+   phone (review, measured). Change one, change all. */
+.wd-slot{display:flex;align-items:center;justify-content:center;min-height:34px;margin:0 0 4px;}
+.wd-slot .wd-legend,.wd-slot .wd-clue{margin:0;}
 .wd-legend{display:flex;justify-content:center;gap:18px;margin:0 0 4px;font-size:12px;font-weight:600;color:var(--t2);}
 .wd-legend-item{display:inline-flex;align-items:center;gap:6px;}
 .wd-legend-chip{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
 .wd-legend-chip.is-green{background:var(--accent);}
 .wd-legend-chip.is-amber{background:var(--gold);}
-/* The clue (lib/wordle.js footleClue) — in the legend's slot, so the board's
-   height budget is unchanged. Offer = quiet outline control; shown = the
+/* The clue (lib/wordle.js footleClue) — it takes its turn in .wd-slot with the
+   key, so nothing moves when it arrives. Offer = quiet outline control; shown = the
    answer to it, in amber (the system's "near" colour, never a call to act). */
 .wd-clue{display:flex;align-items:center;justify-content:center;gap:7px;margin:0 auto 4px;min-height:34px;padding:0 14px;border-radius:999px;font:inherit;font-size:13px;font-weight:700;line-height:1;}
 .wd-clue--offer{position:relative;background:var(--s1);border:1px solid var(--border);color:var(--t2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
@@ -42,13 +50,13 @@
 .wd-countdown-label{font-size:9px;font-weight:700;letter-spacing:0.16em;color:var(--t3);text-transform:uppercase;}
 .wd-countdown-time{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);margin-top:1px;}
 .wd-grid{display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;flex:1 1 auto;padding:8px 8px;margin-inline:-20px;}
-.wd-grid{--wd-tile-max:64px;--wd-chrome:505px;}
+.wd-grid{--wd-tile-max:64px;--wd-chrome:524px;}
 /* ⚠️ The WEBSITE's focused Footle measures 371px of chrome, not 505 (390x740,
    2026-09-23): no site header, no tab bar. 505 left ~100px dead under ENTER and
    a 39px tile where 47 fits. 455 keeps ENTER clear of the 42px safe-area pad
    with margin; verified at 360x640, 375x667, 390x740, 390x844 and 430x932.
    Native keeps 505 — its chrome includes the notch/home-indicator insets. */
-body.biq-web.in-focused-play .wd-grid{--wd-chrome:455px;}
+body.biq-web.in-focused-play .wd-grid{--wd-chrome:474px;}
 @supports (height:100dvh){
   /* Subtract the consent bar here too. A tile is SQUARE, so capping it on one
      axis caps it on both — shrinking .wd-screen alone leaves the tiles at
@@ -68,6 +76,9 @@ body.biq-web.in-focused-play .wd-grid{--wd-chrome:455px;}
    capped on both, and the SHORT answer is the tall case.
    --wd-ended-chrome is what sits around the grid once the game is over:
    header + result card + the DailyDone panel down to the share button.
+   (Since 12 Oct 2026 Share is the panel's second row, not its last, so this
+   620 is now generous: ended tiles could be larger. Left alone until the
+   shared finish screen is built; re-measure then.)
    MEASURED, not guessed: 587px on a 375x812 phone for the worst case (a new
    player with all three other dailies still open). 620 leaves the grid a
    225px budget, i.e. a 32px tile — which is what keeps a FIVE-letter board
@@ -176,7 +187,7 @@ body.biq-web.in-focused-play .wd-grid{--wd-chrome:455px;}
      slack — variant A still measures 94px of clearance below ENTER there. */
   .wd-legend{margin:0 0 6px;font-size:11px;}
   .wd-grid{gap:4px;padding:2px 0;}
-  .wd-grid{--wd-tile-max:46px;--wd-chrome:392px;}
+  .wd-grid{--wd-tile-max:46px;--wd-chrome:411px;}
   .wd-row{gap:4px;max-width:calc(var(--wd-cols) * var(--wd-tile-cap, 46px) + (var(--wd-cols) - 1) * 4px);}
   .wd-keyboard{gap:4px;padding:0 0 2px;}
   .wd-key{height:46px;}
@@ -186,7 +197,7 @@ body.biq-web.in-focused-play .wd-grid{--wd-chrome:455px;}
   .wd-key-enter{height:46px;margin-top:10px;}
 }
 @media (min-height: 850px) and (max-width: 1023px) {
-  .wd-grid{--wd-chrome:569px;}
+  .wd-grid{--wd-chrome:588px;}
   .wd-key{height:62px;}
   .wd-key-enter{height:56px;}
 }

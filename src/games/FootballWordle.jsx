@@ -429,6 +429,12 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
         </div>
       );
     } else {
+      // A finished board is a result, not an input: the rows never used are
+      // dropped when the result appears (`revealed`, about a tenth of a second
+      // before the last tile stops turning; the used rows do not move, the
+      // ended board is anchored at the top). A solve in one left five empty
+      // rows, a third of the screen, above "Brilliant!".
+      if (state.status !== "playing" && revealed) continue;
       rows.push(
         <div className="wd-row wd-row--future" key={r}>
           {Array.from({ length: answer.length }, (_, i) => (
@@ -550,22 +556,30 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             invisible after the first guess (2026-10-08). It used to be removed,
             and because the grid is centred the whole board hopped up about
             30px the moment the first row landed (seen in the simulator). */}
+        {/* ONE SLOT, ONE HEIGHT, FOR THE WHOLE GAME. The key, the clue offer and
+            the clue itself take turns in it and are never on screen together.
+            They used to be three separate blocks: when "Stuck? Take a clue"
+            arrived after the third guess it pushed the board AND the keyboard
+            about 40pt down, under the player's thumbs (Alex's own recording on
+            an iPhone 17 Pro Max, 12 Oct 2026). */}
         {state.status === "playing" && (
-          <div className="wd-legend" aria-hidden="true" style={showLegend ? undefined : { visibility: "hidden" }}>
-            <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
-            <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
-          </div>
-        )}
-        {clueOffer && (
-          <button type="button" className="wd-clue wd-clue--offer" onClick={takeClue}>
-            <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
-            Stuck? Take a clue
-          </button>
-        )}
-        {clueShown && (
-          <div className="wd-clue wd-clue--shown" role="status">
-            <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
-            {footleClue(answer)}
+          <div className="wd-slot">
+            {clueOffer ? (
+              <button type="button" className="wd-clue wd-clue--offer" onClick={takeClue}>
+                <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
+                Stuck? Take a clue
+              </button>
+            ) : clueShown ? (
+              <div className="wd-clue wd-clue--shown" role="status">
+                <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
+                {footleClue(answer)}
+              </div>
+            ) : (
+              <div className="wd-legend" aria-hidden="true" style={showLegend ? undefined : { visibility: "hidden" }}>
+                <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
+                <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
+              </div>
+            )}
           </div>
         )}
         {rows}

@@ -180,6 +180,33 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         )}
       </div>
 
+      {/* SHARE COMES SECOND, RIGHT UNDER THE STREAK (Alex, 12 Oct 2026, from a
+          recording of his own Footle: "the share button was placed below the
+          screen, so you had to scroll down to see it"). It sat under the
+          reminder and the still-open list, by a decision of 6 Sept that put
+          the next daily first. THE PRICE, MEASURED: Share and its link add
+          about 81px above the still-open list (the reminder row another 64 on
+          native). A Footle solved in four or fewer gives that back in dropped
+          rows; on a loss or a five or six guess solve the list's last row
+          goes under the fold on a 375x812 phone. Share on screen was the
+          instruction; the list is one short scroll. */}
+      <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label="Share your result">
+        {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
+      </button>
+      {(waText || stump) && (
+        <div className="dd-share-alts">
+          {waText && (
+            <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>Send on WhatsApp</a>
+          )}
+          {/* The k-factor lever lives under Share, where sharing is. It was a
+              third full-width button below the panel. */}
+          {stump && (
+            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stump", { game }); stump(); }}>Stump a mate</button>
+          )}
+        </div>
+      )}
+
+
       {/* THE ASK IS A ROW, NOT A PILL (2026-09-09). Reach is the retention
           leak: 44 of 308 accounts hold a token. Since the soft-prompt sheet was
           retired (09-06) this panel has been the only ask in the app, and it
@@ -201,7 +228,9 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
-      {/* ABOVE SHARE, DELIBERATELY (Alex, 2026-09-06, looking at his own
+      {/* (No longer above Share: see the note on the Share button, 12 Oct
+          2026. What follows is why this list sits high in the panel at all.)
+          ABOVE SHARE, DELIBERATELY, AS IT WAS THEN (Alex, 2026-09-06, looking at his own
           finish screen: "we can not really see the modes further down, nobody
           will scroll down here"). He is right, and the ranking is not close.
           Sharing depends on another person and k-factor measured 0.23 — the
@@ -224,22 +253,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               </Tag>
             );
           })}
-        </div>
-      )}
-
-      <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label="Share your result">
-        {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
-      </button>
-      {(waText || stump) && (
-        <div className="dd-share-alts">
-          {waText && (
-            <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>Send on WhatsApp</a>
-          )}
-          {/* The k-factor lever lives under Share, where sharing is. It was a
-              third full-width button below the panel. */}
-          {stump && (
-            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stump", { game }); stump(); }}>Stump a mate</button>
-          )}
         </div>
       )}
 

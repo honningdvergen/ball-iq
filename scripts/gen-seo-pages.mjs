@@ -5170,10 +5170,17 @@ const FW_TODAY_CSS = `
     .fw-mast{display:none}
     /* Short phones (and Safari with its bars showing): the app's own rule that
        shrinks tiles to fit does not reach this embedded board, so at 667px
-       tall the tiles stayed 44px and ENTER ended 61px below the screen. 478px
-       is what sits around the six rows here (page header, title, the game's
-       header and legend, the keyboard). At 812px it changes nothing. */
-    .fw-host .wd-grid{--wd-tile-cap:clamp(28px,calc((100dvh - 478px) / 6),64px)}
+       tall the tiles stayed 44px and ENTER ended 61px below the screen. 497px
+       is what sits around the six rows here at 700px tall or less (page
+       header, title, the game's header and key-or-clue slot, the keyboard). */
+    .fw-host .wd-grid{--wd-tile-cap:clamp(28px,calc((100dvh - 497px) / 6),64px)}
+    /* ⚠️ "At 812px it changes nothing" was wrong. Above 700px tall the keys are
+       56px, not 46, and what sits around the six rows is about 549px: with a
+       five-letter answer ENTER ended 71px below the fold at 375x812 and
+       390x844 (review, 12 Oct 2026, measured on the live build; eight-letter
+       answers fitted, which is how it was missed). Both numbers include the
+       19px the key-and-clue slot costs (games/footle.css, .wd-slot). */
+    @media (min-height:701px){.fw-host .wd-grid{--wd-tile-cap:clamp(28px,calc((100dvh - 568px) / 6),64px)}}
   }
 `;
 
