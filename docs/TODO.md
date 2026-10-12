@@ -1061,6 +1061,83 @@ found, and what a pair of independent reviews found in the fixes:
       audit is the one check that lays anything out, and it is not in CI.
 
 
+### 0o. 12 Oct, evening: FIX ALL OF IT (Alex: "nothing is too small", "we will not neglect, we will fix all of it and not stop until we are happy with every single one")
+
+Alex left the open rulings to the session. They went this way:
+- [x] **The three shortened Today lines stay** ("Seven questions a day", "Whose
+      career is this?", "Guess who from the clues").
+- [x] **"Hand-picked" is gone**: the three generated pages say "curated", and
+      the authorship test now fails on "hand-picked" (it found a third one).
+- [x] **Draft:** numbers are shown by default and hiding them stays the opt-in
+      hard mode (a new player needs the numbers to learn what the game pays
+      for); the pink stays (the one accent no other mode uses); the name stays.
+
+Done the same evening:
+- [x] The weekly question check's three findings: `q_5461f9` asked in the
+      present tense about a record that has since been broken (now "In 2023,
+      who became..."); `q_c00ab2` said Rooney's overhead kick "broke the
+      deadlock" at 1-1; `q_be16bb` dated Ronaldo's second spell 2021-22.
+- [x] Daily review printed the raw category ("WORLDCUP"): it uses the label the
+      question screen uses. The Draft's spent re-spin says "Re-spin used".
+      "Day 1 of a daily streak" on both finish screens. Transfer Trail says
+      "Borussia Mönchengladbach", not "M.gladbach".
+
+**Blocks build 145**
+- [ ] 🔴 Launch screen. The fix is WRITTEN AND UNCOMMITTED in the working tree
+      (`ios/App/App/Base.lproj/LaunchScreen.storyboard`, new
+      `Assets.xcassets/SplashMark.imageset`) and it compiles. Not seen: after a
+      fresh install the simulator never brought its screen up. Commit only
+      with a video that shows the wordmark from the first frame.
+- [ ] Android: nothing from 12 Oct seen on a device, the keyboard line least of
+      all. No emulator on this Mac (8 GB free).
+- [ ] Footle keys: one fast burst lost four of five letters in the simulator.
+      Confirm on a real phone, then fix.
+- [ ] App Store record says 1.7.6; What's New unwritten; screenshots show
+      neither Top 10 nor Draft.
+- [ ] (Alex) Was the stuck offline results screen in the app or on the site?
+
+**A player would notice**
+- [ ] The clock starts before a timed question can be read (19 of 20 on sight).
+- [ ] The page jumps after every answer; the "Correct!" banner is what forces it.
+- [ ] A half-played Daily 7 says "Play", not "Continue".
+- [ ] History shows nothing of today.
+- [ ] Footle solved early leaves empty rows above the result.
+- [ ] Confetti replays on every review of a solved Trail.
+- [ ] Transfer Trail holds yesterday's state past midnight (no key by day).
+- [ ] Top 10: the loading skeleton has 42pt rows, the board 60 (a 100pt jump);
+      a drag that dismisses the keyboard may regrow the board under the finger.
+
+**Design and wording**
+- [ ] ONE finish screen and ONE game header (today: three and four), with one
+      wording for the report link. Removes a class of the small faults.
+- [ ] Home once all four are done: fold the dailies to a line, lift Draft up.
+- [ ] Onboarding ends in Footle, not Home; its heading uses an emoji; the top
+      third is empty.
+- [ ] Profile: 83 overall with every category blank; a rating request on day
+      one; "Set your name" shown as the name.
+- [ ] Multiplayer says 8 players, 6 players and "1v1" in three places.
+- [ ] Mystery Player: its own header, a narrower search box, two thirds empty.
+- [ ] Top 10's finish shows the score three times.
+- [ ] Inter is fetched from Google at launch; ship it in the app.
+
+**Draft, before it is a daily**
+- [ ] "Everyone gets the same board" holds only for one data version.
+- [ ] Thirteen squads use estimated playing time.
+- [ ] Draws run low: 7 to 9 a season against a real 9.5.
+- [ ] The pipeline lives outside the repo.
+
+**Top 10**
+- [ ] The lists run out on 7 Nov.
+- [ ] No page of its own on the site, no entry in the site header.
+
+**Safety nets**
+- [ ] No test lays a screen out; `npm run audit:top10-board` is not in CI.
+- [ ] deploy-check goes red when Vercel does not report (12 Oct, twice, during
+      a Vercel outage, with production fine). It should fall back to
+      `/version.json` before failing.
+- [ ] `scores` rows for `trail` before 12 Oct count reviews as finishes.
+- [ ] The worktree `nervous-hopper-18a0dc` holds 9 uncommitted files (Alex).
+
 ## 2026-09-21 — 🚨 FOUR DAYS OF SILENTLY FAILED DEPLOYS: the cause is fixed, the silence is not
 
 Every production deploy from 5303b4b0 (09-17, the Brasileirão wave) to 09-21
