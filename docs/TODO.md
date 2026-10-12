@@ -1155,6 +1155,24 @@ Pro Max (build 144), reviewed before it went out:
       shows "✓ 19:00" with no word saying it is the reminder; "Stump a mate"
       is a small link under Share.
 
+**Transfer Trail, from Alex's third recording (12 Oct, 23:27)**
+- [x] The keyboard dropped after every guess and came back about a second and
+      a half later. Suggestion rows, Guess and Skip now refuse the focus
+      change on pointer-down, as Top 10 has since 9 Oct (proven there in the
+      real app). In WebKit the box keeps focus after all three at three
+      sizes. ⚠️ Playwright's emulated touch `tap()` does not fire a click on
+      such a button (it fails on Top 10 too, which works on a real phone):
+      drive these with `click()`.
+- [x] Guesses left are five pips and "3 guesses left", not a bare number over
+      a 9px "LEFT". Missed names are readable. Skip says what it costs.
+      Confetti no longer replays on a review. Share is on screen at the
+      finish at all three sizes measured.
+- [ ] A typed name that is no player ("zzz") still costs a guess when sent
+      with the Guess button. Top 10 does not allow that. Decide.
+- [ ] The Guess button is nearly redundant: every real guess goes through a
+      suggestion. Consider dropping it for a wider box.
+- [ ] Mystery Player has the same keyboard drop (no focus guard on its rows).
+
 **Blocks build 145**
 - [ ] 🔴 Launch screen. The fix is WRITTEN AND UNCOMMITTED in the working tree
       (`ios/App/App/Base.lproj/LaunchScreen.storyboard`, new
