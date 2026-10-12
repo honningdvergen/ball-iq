@@ -1594,3 +1594,13 @@ export function buildTrailShareText({ number, won, clubsUsed, streak } = {}) {
   return `${head}\n${line}${streakLine}\n\nballiq.app/trail`;
 }
 
+// ── Has this day's finish been credited? ─────────────────────────────────────
+// The screen announces a finish once (XP, the streak, a scores row). A new
+// mount must not announce it again, and the memory that survives a mount is
+// the saved day. One exception: a puzzle finished on the static /transfer-trail/
+// page has nobody listening, so it is saved as `owed` and credited the first
+// time the app opens it.
+export const finishedBefore = (status) => status === 'won' || status === 'lost' || status === 'done';
+export const startsAnnounced = (saved) => finishedBefore(saved?.status) && !saved?.owed;
+export const owesCredit = (embedded, savedAtMount, done) =>
+  !!embedded && (!!savedAtMount?.owed || (!!done && !finishedBefore(savedAtMount?.status)));

@@ -642,6 +642,15 @@ html.native-app ::-webkit-scrollbar{display:none;}
    end is harmless. The standalone mirror and the ≥1024px reflow both override only
    max-width/margin here, so this base rule reaches native too. */
 .quiz-wrap{padding-top:20px;padding-bottom:calc(16px + max(env(safe-area-inset-bottom,34px),34px));min-height:calc(100vh - 40px);}
+/* THE SAME CLEARANCE FOR THE FOOT OF A FINISH SCREEN. Seen in the simulator on
+   12 Oct 2026 (iPhone 17): Daily 7's "Back to Home" sat 11pt from the bottom
+   of the glass, on top of the home indicator, and the way out of Transfer
+   Trail and Top 10 ended 22pt up, inside the same strip. .screen has no bottom
+   padding of its own, so a page that ends in a control ended wherever its last
+   margin did. One number, the one .quiz-wrap already uses, so a finish screen
+   and a question screen clear the indicator (and Android's nav buttons) alike. */
+:root{--foot-clear:calc(16px + max(env(safe-area-inset-bottom,34px),34px));}
+.screen.foot-clear{padding-bottom:var(--foot-clear);}
 .q-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .prog-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
 .prog-bar{height:100%;background:var(--accent);border-radius:1px;transition:width 0.45s cubic-bezier(0.22,1,0.36,1);}

@@ -7272,7 +7272,12 @@ function AppInner() {
     window.addEventListener('biq:daily-completed', onDone);
     window.addEventListener('biq:stadiums-completed', onDone);
     window.addEventListener('biq:draft-completed', onDone);
+    // A finished Trail or Top 10 opened again to look at it. Those screens no
+    // longer re-announce the finish (that paid the XP twice), so they say this
+    // instead: no XP, no scores row, only "this visit is not an abandonment".
+    window.addEventListener('biq:daily-reviewed', onDone);
     return () => {
+      window.removeEventListener('biq:daily-reviewed', onDone);
       window.removeEventListener('biq:daily-completed', onDone);
       window.removeEventListener('biq:stadiums-completed', onDone);
       window.removeEventListener('biq:draft-completed', onDone);

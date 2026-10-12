@@ -20,6 +20,8 @@ import {
   hintFor,
   computeTrailStreak,
   buildTrailShareText,
+  startsAnnounced,
+  owesCredit,
 } from "../lib/trail.js";
 // ⚠️ NO IMPORT FROM App.jsx. This screen also mounts as an island on the static
 // /transfer-trail/ page (src/islands/trail.jsx), and an island that imported
@@ -67,7 +69,11 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   // Attempts are the raw submissions — { text, skipped } — and everything else
   // derives. Same store-inputs-not-derived-state rule as Footle, so a mid-game
   // reload rebuilds the exact board rather than trusting a cached verdict.
-  const [attempts, setAttempts] = useState(() => loadDay(ymd)?.attempts || []);
+  // The day as it was saved when this screen opened, read before anything here
+  // has written to it: what tells a finish made now from one made earlier.
+  const savedAtMount = useRef(null);
+  if (savedAtMount.current === null) savedAtMount.current = loadDay(ymd) || {};
+  const [attempts, setAttempts] = useState(() => savedAtMount.current.attempts || []);
   const [entry, setEntry] = useState("");
   const [shake, setShake] = useState(false);
 
@@ -91,15 +97,34 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   useEffect(() => {
     // arc: archive plays are visible history but never streak fuel — the
     // walks in lib/trail.js break on it (same stamp as Footle and Mystery).
-    saveDay(ymd, { status: won ? "won" : lost ? "lost" : "playing", attempts, ...(isArchive ? { arc: 1 } : {}) });
+    saveDay(ymd, {
+      status: won ? "won" : lost ? "lost" : "playing", attempts, ...(isArchive ? { arc: 1 } : {}),
+      ...(owesCredit(embedded, savedAtMount.current, won || lost) ? { owed: 1 } : {}),
+    });
   }, [ymd, attempts, won, lost]);
 
   // Fire the shared daily-completed event exactly once. App.jsx listens and
   // cancels the evening reminder, awards XP and writes the `scores` row — a mode
   // that stays silent here is invisible in the only table anyone queries, which
-  // is how Footle went months looking unplayed. Ref-guarded because the screen
-  // re-mounts whenever you navigate back into a finished puzzle.
-  const announced = useRef(false);
+  // is how Footle went months looking unplayed.
+  //
+  // ⚠️ A DAY ALREADY FINISHED WHEN THE SCREEN OPENS IS NOT ANNOUNCED AGAIN. The
+  // guard was a ref that started false, "because the screen re-mounts whenever
+  // you navigate back into a finished puzzle" — but a new mount gets a new ref,
+  // so every Review of a finished Trail paid its 40 XP again, wrote another
+  // `scores` row and replayed the chord (seen in the simulator, 12 Oct 2026:
+  // 172 XP to 212 on reopening). The saved status is the memory that survives
+  // a mount, and it is read here, before this mount has saved anything. Read
+  // from storage and not from `done`, which is false until the player loads.
+  // A finish on the static page, where nothing listens, is saved as owed and
+  // credited on the first open in the app (lib/trail.js, owesCredit).
+  const announced = useRef(startsAnnounced(savedAtMount.current));
+  // Opened to look at, not to play: tell the app so the visit is not logged as
+  // an abandoned game. No XP and no scores row ride on this.
+  useEffect(() => {
+    if (!announced.current || embedded) return;
+    try { window.dispatchEvent(new CustomEvent("biq:daily-reviewed", { detail: { game: "trail" } })); } catch { /* best effort */ }
+  }, []);
   // ⚠️ ARCHIVE PLAYS DO NOT COUNT. The Trail already accepted a `date`, but it
   // announced completion whichever day it was — so replaying an old puzzle
   // would have ticked today's streak and paid XP. That turns the archive into
@@ -234,7 +259,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   const packColours = CLUB_PACK_COLOURS;
 
   return (
-    <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: 20 + kbInset, maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
+    <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)", maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
       {won && Confetti ? <Confetti /> : null}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "12px 4px" }}>
@@ -472,7 +497,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
             <button onClick={onBack}
               style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
                        border: "1px solid var(--border)", background: "transparent", color: "var(--t2)",
-                       fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back home</button>
+                       fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back to Home</button>
           )}
         </div>
       )}

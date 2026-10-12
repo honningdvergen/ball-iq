@@ -34,7 +34,7 @@ export function HotStreakResults({ result, onRetry, onHome, onShare, prevBest })
   const xpEarned = score * 8;
   useEffect(() => { if (isNewBest && !isFirstRun && score >= 5) haptic("levelup"); }, [isNewBest, isFirstRun, score]);
   return (
-    <div className="screen" style={{paddingTop:8, position:"relative"}}>
+    <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
       {score >= 15 && <Confetti />}
       <ResultsCloseBtn onClose={onHome} />
       <div style={{textAlign:"center",padding:"8px 0 4px"}}>
@@ -86,7 +86,7 @@ export function TrueFalseResults({ result, onRetry, onHome, onShare }) {
   const title = resultVerdict(pct);
   const xpEarned = score * 8;
   return (
-    <div className="screen" style={{paddingTop:8, position:"relative"}}>
+    <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
       {pct >= 80 && <Confetti />}
       <ResultsCloseBtn onClose={onHome} />
       <div style={{textAlign:"center",padding:"8px 0 4px"}}>

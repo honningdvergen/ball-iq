@@ -191,8 +191,11 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         <div className="dd-row" style={{ "--dd-rgb": "88,204,2", "--dd-c": "var(--accent)" }}>
           <span className="dd-well" aria-hidden="true"><Bell size={20} strokeWidth={2.2} /></span>
           <div className="dd-body">
-            <div className="dd-title">Remind me tomorrow at {reminderHourLabel()}</div>
-            <div className="dd-sub">One nudge at your hour, only if you haven’t played · off any time</div>
+            {/* Short enough for one line beside the button at 402pt: "Remind me
+                tomorrow at 19:00" broke before the hour and the line under it
+                ran to three with "time" alone on the last (simulator, 12 Oct). */}
+            <div className="dd-title">Remind me at {reminderHourLabel()}</div>
+            <div className="dd-sub dd-sub-even">One nudge a day, only if you haven’t played. Off any time.</div>
           </div>
           <button type="button" className="dd-pill dd-pill-on" disabled={busy} onClick={doRemind} aria-label={`Turn on a daily reminder at ${reminderHourLabel()}`}>Turn on</button>
         </div>

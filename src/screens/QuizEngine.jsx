@@ -398,6 +398,16 @@ const CTA_INSET = (() => {
     return () => cancelAnimationFrame(id);
   }, [answered, idx]);
 
+  // A NEW QUESTION STARTS AT THE TOP. The scroll above moves the page to show
+  // the explanation, and nothing moved it back: the next question is shorter,
+  // so the browser only clamped the scroll, and from question two on the back
+  // button and the progress pips sat half under the status bar (seen on all of
+  // questions 2 to 7 of a Daily 7 in the simulator, 12 Oct 2026).
+  useEffect(() => {
+    try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
+    catch { try { window.scrollTo(0, 0); } catch { /* no window */ } }
+  }, [idx]);
+
   // ── desktop-web-refresh (Quiz #02): derived values for the >=1024 desktop
   // chrome (top bar + thin progress + circular timer ring). Every element that
   // consumes these is render-always / CSS-revealed (base display:none), so this

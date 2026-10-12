@@ -9,9 +9,11 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import {
   TOP10_LIVES, TOP10_ANCHOR_DAY, getTop10Number, getTop10Id, isTop10Live,
-  gradeTop10, outcomeOf, rankListSuggestions, buildTop10ShareText, formatAsOf,
+  gradeTop10, outcomeOf, rankListSuggestions, buildTop10ShareText, formatAsOf, fitTop10Board, hasLongWord,
 } from '../../src/lib/top10.js';
 import { normaliseName } from '../../src/lib/mysteryPlayer.js';
+import { keyboardLine } from '../../src/lib/useKeyboardAwareInput.js';
+import { startsAnnounced, owesCredit } from '../../src/lib/trail.js';
 import { DAILY_GAMES, SCORE_GAMES, summariseDistribution } from '../../src/lib/dailyResults.js';
 import { MODE_ACCENT, MODE_RGB } from '../../src/lib/accents.js';
 
@@ -81,6 +83,46 @@ describe('gradeTop10', () => {
     expect(outcomeOf(LIST, day(), 'a')).toBe('hit');
     expect(outcomeOf(LIST, day(), 'k')).toBe('near');
     expect(outcomeOf(LIST, day(), 'x')).toBe('miss');
+  });
+});
+
+// Alex, in the simulator on launch day: "one important thing is that the
+// keyboard does not block the view of the list on ANY phone". The board is
+// fitted to the measured room above the keyboard; this is the arithmetic.
+describe('the board is fitted to the room above the keyboard', () => {
+  const GAP = { l: 8, m: 5, s: 4 };
+  it('whatever room there is, five rows and four gaps never come to more than it (down to the smallest it can fit)', () => {
+    for (let avail = 166; avail <= 700; avail++) {
+      const f = fitTop10Board(avail);
+      expect(f.fits, `avail ${avail}`).toBe(true);
+      expect(5 * f.row + 4 * GAP[f.size], `avail ${avail}`).toBeLessThanOrEqual(avail);
+      expect(f.row).toBeGreaterThanOrEqual(30);
+      expect(f.row).toBeLessThanOrEqual(60);
+    }
+  });
+  it('more room never makes the rows smaller', () => {
+    let last = 0;
+    for (let avail = 100; avail <= 700; avail++) { const r = fitTop10Board(avail).row; expect(r).toBeGreaterThanOrEqual(last); last = r; }
+  });
+  it('with no keyboard the rows are as roomy as they get, and the type size follows the row', () => {
+    expect(fitTop10Board(600)).toMatchObject({ row: 60, size: 'l', tight: false, fits: true });
+    expect(fitTop10Board(290).size).toBe('m');
+    expect(fitTop10Board(200).size).toBe('s');
+  });
+  it('a short phone asks the header to shrink first, and once asked it stays asked', () => {
+    expect(fitTop10Board(230).tight).toBe(true);     // rows would be under 44pt
+    expect(fitTop10Board(300).tight).toBe(false);
+    expect(fitTop10Board(300, true).tight).toBe(true); // already tight: no flipping back while typing
+  });
+  it('says so when even the smallest rows cannot fit, rather than pretending', () => {
+    expect(fitTop10Board(150)).toMatchObject({ row: 30, fits: false, tight: true });
+  });
+  it('the screen measures from the keyboard line the device reports, not from one phone’s numbers', () => {
+    const screen = readFileSync(new URL('../../src/screens/Top10.jsx', import.meta.url), 'utf8');
+    expect(screen).toMatch(/fitTop10Board\(visibleBottom\(kbInset\) - el\.getBoundingClientRect\(\)\.top - 6, fit\.tight\)/);
+    // the three sizes keep one margin above the board, or a size could change its own measurement
+    const css = readFileSync(new URL('../../src/screens/top10.css', import.meta.url), 'utf8');
+    expect(css).not.toMatch(/\.t10-board\.is-[lms] \{[^}]*margin-top/);
   });
 });
 
@@ -391,11 +433,131 @@ describe('what only a phone shows (pinned after the simulator pass of 2026-10-09
     expect(SCREEN.replace(settle[0], '')).not.toMatch(/picks: \[\.\.\.d\.picks/);
   });
 
-  it('a board row is short enough for all ten to clear the keyboard', () => {
-    const m = /\.t10-cell \{[^}]*min-height: (\d+)px/.exec(CSS);
-    expect(m, 'the cell rule sets a min-height').toBeTruthy();
-    // 572pt to the keyboard's top edge on an iPhone 17; five rows must end above it.
-    expect(Number(m[1])).toBeLessThanOrEqual(42);
+  it('a row is a fixed height only while a keyboard is up; otherwise a card grows with its name', () => {
+    // Fixed at 60pt always, a two-line name stood outside its card and
+    // "Manchester United" broke inside a word at 360pt (review, 12 Oct 2026).
+    expect(CSS).toMatch(/\.t10-board\[style\*="--t10-row"\] \.t10-cell \{ min-height: var\(--t10-row\); \}/);
+    expect(CSS).toMatch(/\.t10-board\.is-fit \.t10-cell \{ height: var\(--t10-row\); \}/);
+    expect(CSS).not.toMatch(/\[style\*="--t10-row"\] \.t10-cell \{[^}]*[^-]height: var/);
+    // while fitting, a name is one line: the card cannot grow without pushing rank five under the keyboard
+    expect(CSS).toMatch(/\.t10-board\.is-fit \.t10-name, \.t10-board\.is-fit \.t10-clue \{[^}]*white-space: nowrap;[^}]*text-overflow: ellipsis/);
+    // and only with a keyboard that has reported a height: a focused box with none keeps full names
+    expect(SCREEN).toMatch(/\$\{fitting && kbInset > 0 \? " is-fit" : ""\}/);
+  });
+
+  it('a name with one very long word is set smaller, so it is not broken inside the word', () => {
+    expect(hasLongWord('Borussia Mönchengladbach')).toBe(true);
+    expect(hasLongWord('1. FC Kaiserslautern')).toBe(true);
+    expect(hasLongWord('Czechoslovakia')).toBe(true);
+    // a hyphen is a place to break, and ordinary names are left alone
+    expect(hasLongWord('Pierre-Emerick Aubameyang')).toBe(false);
+    expect(hasLongWord('Manchester United')).toBe(false);
+    expect(hasLongWord('Wayne Rooney')).toBe(false);
+    expect(hasLongWord('')).toBe(false);
+    expect(hasLongWord(undefined)).toBe(false);
+    expect(SCREEN).toMatch(/hasLongWord\(s\.name\) \? " is-long" : ""/);
+    expect(CSS).toMatch(/\.t10-board\.is-l \.t10-name\.is-long \{ font-size: 12\.5px; \}/);
+  });
+
+  it('the fit follows the keyboard, the page scroll and a keyboard that leaves with the box still focused', () => {
+    // a reported keyboard counts whatever the pointer says
+    expect(SCREEN).toMatch(/const fitting = typing && !g\.done && \(touch \|\| kbInset > 0\);/);
+    // the page scrolling back after a pick moves the board, and nothing re-renders for it
+    expect(SCREEN).toMatch(/window\.addEventListener\("scroll", run, \{ passive: true \}\)/);
+    expect(SCREEN).toMatch(/window\.removeEventListener\("scroll", run\)/);
+    // the sticky tight header is let go once, on the edge where the keyboard goes away
+    expect(SCREEN).toMatch(/if \(kbWas\.current > 0 && kbInset === 0\) setFit\(\(f\) => \(f\.tight \? \{ \.\.\.f, tight: false \} : f\)\);/);
+  });
+});
+
+describe('The keyboard line is right on both phones (review, 12 Oct 2026)', () => {
+  it('iOS: the window is never resized, so the line is the full height less the keyboard', () => {
+    expect(keyboardLine(874, 874, 302)).toBe(572);
+    expect(keyboardLine(874, 874, 0)).toBe(874);
+  });
+  it('Android: the window has already lost the keyboard, and it is not taken off twice', () => {
+    // 915 tall, a 330 keyboard: the plugin has shrunk the WebView to 585.
+    // The old formula, inner - kb, gave 255 here.
+    expect(keyboardLine(585, 915, 330)).toBe(585);
+    expect(585 - 330).toBe(255);
+  });
+  it('Android: the same line whichever arrives first, the keyboard height or the smaller window', () => {
+    expect(keyboardLine(915, 915, 330)).toBe(585); // height reported, window not yet shrunk
+    expect(keyboardLine(585, 915, 330)).toBe(585); // window shrunk
+  });
+  it('the remembered height is used on Android only: iOS keeps the plain subtraction', () => {
+    const hook = readFileSync(new URL('../../src/lib/useKeyboardAwareInput.js', import.meta.url), 'utf8');
+    expect(hook).toMatch(/if \(!IS_ANDROID\) return window\.innerHeight - kbInset;/);
+  });
+});
+
+describe('Opening a finished daily to review it pays nothing again (simulator, 12 Oct 2026)', () => {
+  const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
+  it('Transfer Trail: the guard starts from the saved status, which survives a new mount', () => {
+    const trail = read('screens/TransferTrail.jsx');
+    expect(trail).toMatch(/const announced = useRef\(startsAnnounced\(savedAtMount\.current\)\);/);
+    expect(trail).not.toMatch(/const announced = useRef\(false\)/);
+    // the rule itself, run and not read
+    expect(startsAnnounced({ status: 'won' })).toBe(true);
+    expect(startsAnnounced({ status: 'lost' })).toBe(true);
+    expect(startsAnnounced({ status: 'playing' })).toBe(false);
+    expect(startsAnnounced({})).toBe(false);
+    expect(startsAnnounced(null)).toBe(false);
+  });
+  it('Transfer Trail: a finish on the static page, where nothing listens, is owed and credited once in the app', () => {
+    // finished now on the static page: owed
+    expect(owesCredit(true, { status: 'playing' }, true)).toBe(true);
+    expect(owesCredit(true, {}, true)).toBe(true);
+    // the app then opens it: not announced yet, so it announces; and the app never marks a day owed
+    expect(startsAnnounced({ status: 'won', owed: 1 })).toBe(false);
+    expect(owesCredit(false, { status: 'won', owed: 1 }, true)).toBe(false);
+    // finished in the app, then looked at on the static page: not owed again
+    expect(owesCredit(true, { status: 'won' }, true)).toBe(false);
+    // still owed if the static page is opened again before the app
+    expect(owesCredit(true, { status: 'won', owed: 1 }, true)).toBe(true);
+    // not finished: nothing is owed
+    expect(owesCredit(true, { status: 'playing' }, false)).toBe(false);
+  });
+  it('a review says so, so the app does not log it as an abandoned game', () => {
+    const app = read('App.jsx');
+    expect(app).toMatch(/window\.addEventListener\('biq:daily-reviewed', onDone\);/);
+    expect(app).toMatch(/window\.removeEventListener\('biq:daily-reviewed', onDone\);/);
+    for (const f of ['screens/TransferTrail.jsx', 'screens/Top10.jsx']) expect(read(f), f).toMatch(/new CustomEvent\("biq:daily-reviewed"/);
+    // and nothing pays out on it
+    expect(app).not.toMatch(/biq:daily-reviewed', onDaily/);
+  });
+  it('Top 10: the same, and only for the list that was saved', () => {
+    const SCREEN = read('screens/Top10.jsx');
+    expect(SCREEN).toMatch(/const announced = useRef\(\(\(\) => \{ const saved = loadTop10Day\(ymd\); return !!saved && saved\.id === list\.id && saved\.status === "done"; \}\)\(\)\);/);
+    expect(SCREEN).not.toMatch(/const announced = useRef\(false\)/);
+  });
+  it('the games that announce at the tap, not on opening, stay that way', () => {
+    // Mystery Player and Stadiums dispatch inside the action that ends the game.
+    expect(read('screens/MysteryPlayer.jsx')).not.toMatch(/announced\.current/);
+    expect(read('screens/StadiumGame.jsx')).not.toMatch(/announced\.current/);
+  });
+});
+
+describe('A finish screen ends above the home indicator (simulator, 12 Oct 2026)', () => {
+  const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
+  it('one clearance, with a floor for Android, where the WebView reports no inset', () => {
+    expect(read('app.css')).toMatch(/:root\{--foot-clear:calc\(16px \+ max\(env\(safe-area-inset-bottom,34px\),34px\)\);\}/);
+    expect(read('app.css')).toMatch(/\.screen\.foot-clear\{padding-bottom:var\(--foot-clear\);\}/);
+  });
+  it('the results screen, Transfer Trail, Top 10 and the Draft all use it', () => {
+    expect(read('screens/ResultsScreen.jsx')).toMatch(/className="screen foot-clear"/);
+    for (const f of ['screens/TransferTrail.jsx', 'screens/Top10.jsx']) {
+      // with a fallback: the static /transfer-trail/ page does not load app.css, where the variable lives
+      expect(read(f), f).toMatch(/paddingBottom: kbInset \? 20 \+ kbInset : "var\(--foot-clear, 20px\)"/);
+    }
+    expect(read('screens/draft.css')).toMatch(/\.dr\.is-done \{ padding-bottom: var\(--foot-clear\); \}/);
+    expect(read('screens/draft.css')).toMatch(/html\.is-android \.dr-take \{ padding-bottom: var\(--foot-clear\); \}/);
+    for (const f of ['screens/ModeResults.jsx', 'screens/LocalPlay.jsx']) expect(read(f), f).toMatch(/className="screen foot-clear"/);
+    expect(read('screens/Draft.jsx')).toMatch(/className=\{`screen dr\$\{done \? " is-done" : ""\}`\}/);
+  });
+  it('a new question starts at the top, so the header is not left half under the status bar', () => {
+    const quiz = read('screens/QuizEngine.jsx');
+    expect(quiz).toMatch(/window\.scrollTo\(\{ top: 0, left: 0, behavior: 'instant' \}\); \}\s*catch \{[^\n]*\}\s*\}, \[idx\]\);/);
   });
 });
 

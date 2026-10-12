@@ -188,7 +188,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   const rdBestStreak = result.bestStreak != null ? result.bestStreak : 0;
 
   return (
-    <div className="screen" style={{paddingTop:8, position:"relative"}}>
+    <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
       {(isPerfect || showConfetti) && <Confetti />}
       <div className="rd-mobile">
       <ResultsCloseBtn onClose={onHome} />

@@ -569,7 +569,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
 export function LocalResults({ result, onHome, onRetry, onShare }) {
   if (!result || !result.players || result.players.length === 0) {
     return (
-      <div className="screen" style={{paddingTop:8, position:"relative"}}>
+      <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
         <ResultsCloseBtn onClose={onHome} />
         <div className="rc" style={{marginBottom:16}}>
           <div className="rc-title">No results to show</div>
@@ -649,7 +649,7 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
   }
 
   return (
-    <div className="screen" style={{paddingTop:8, position:"relative"}}>
+    <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
       <ResultsCloseBtn onClose={onHome} />
       <div className="rc" style={{marginBottom:16}}>
         <div className="rc-icon">{iconTop}</div>
