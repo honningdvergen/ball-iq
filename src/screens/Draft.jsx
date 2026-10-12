@@ -39,7 +39,18 @@ const KEEP_DAYS = 7;                     // saved boards older than this are cle
 const isCalm = () => {
   try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; }
 };
-const surname = (n) => { const w = n.split(" "); return w.length > 1 ? w.slice(1).join(" ") : n; };
+// The name for a place on the pitch: the surname. A Korean name is written
+// family name first ("Son Heung-min", "Park Ji-sung"), and its given name is
+// the hyphenated, lower-cased-after-the-hyphen part, so there the FIRST word
+// is the one to show (seen in the simulator, 12 Oct 2026: the pitch said
+// "Heung-min"). "Alexander-Arnold" has a capital after its hyphen and is a
+// surname like any other.
+const surname = (n) => {
+  const w = n.split(" ");
+  if (w.length < 2) return n;
+  if (w.length === 2 && /^[A-Z][a-z]+-[a-z]+$/.test(w[1])) return w[0];
+  return w.slice(1).join(" ");
+};
 const games = (p, sq) => (sq.split && p.su ? `${p.st}+${p.su}` : `${p.st}`);
 const PREFIX = "biq_draft_";
 const load = (day) => { try { return JSON.parse(localStorage.getItem(PREFIX + day) || "null"); } catch { return null; } };
@@ -182,7 +193,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   }
 
   return (
-    <div className="screen dr" style={SKIN}>
+    <div className={`screen dr${done ? " is-done" : ""}`} style={SKIN}>
       {played && result.se.pts >= 90 && Confetti ? <Confetti /> : null}
       <Head sub={done ? (isPractice ? "Practice board" : "Today’s board") : `Spin ${at + 1} of ${SPINS}`} onBack={onBack}
         right={!done && (
@@ -346,11 +357,11 @@ function Season({ result, picks, shown, played, hard, isPractice, onSkip, onAnot
               </div>
             ))}
           </div>
-          {hard && <p className="dr-source">You played with the numbers hidden.</p>}
+          {hard && <p className="dr-source dr-hard-note">You played with the numbers hidden.</p>}
 
           <button className="dr-cta" onClick={share}>Share the season</button>
           <button className="dr-quiet" onClick={onAnother}>Play another board{isPractice ? "" : " (practice)"}</button>
-          {onBack && <button className="dr-quiet" onClick={onBack}>Back home</button>}
+          {onBack && <button className="dr-quiet" onClick={onBack}>Back to Home</button>}
           <p className="dr-source">
             Positions are the ones each club’s season page gives. Squads, games and goals:
             English Wikipedia club-season articles, by Wikipedia contributors,{" "}

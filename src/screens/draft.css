@@ -60,6 +60,11 @@
 }
 .dr-source { margin: 12px 4px 0; font-size: 11.5px; line-height: 1.45; color: var(--t3); text-wrap: pretty; }
 .dr-source a { color: inherit; }
+.dr-hard-note { margin-bottom: 12px; text-align: center; }
+/* The finished board ends in "Back to Home" and the credit line, with no bar
+   under them: it needs the clearance the bar gives the spins (app.css,
+   --foot-clear). Only when done, or the bar would sit a second clearance up. */
+.dr.is-done { padding-bottom: var(--foot-clear); }
 
 /* The eleven so far: four lines, attack at the top. */
 .dr-pitch {
@@ -122,6 +127,9 @@
   background: linear-gradient(180deg, rgba(10, 11, 16, 0), var(--bg, #0A0B10) 34%);
   margin-top: -84px;
 }
+/* Android's WebView reports no bottom inset, and the bar would sit under the
+   three-button nav: there it takes the floor every other bottom edge uses. */
+html.is-android .dr-take { padding-bottom: var(--foot-clear); }
 
 /* The season. */
 .dr-season { padding: 14px 4px 20px; animation: drRise 260ms ease-out both; }

@@ -179,6 +179,10 @@ describe('the day’s board', () => {
     }
   });
 
+  it('the first spin is always a side that finished in the top four', () => {
+    for (let day = 20738; day < 20738 + 365; day++) expect(tierOf(board(D, day).spins[0]), `day ${day}`).toBe('top');
+  });
+
   it('the spin order does not depend on how the data file is ordered', () => {
     const Drev = prepare({ ...RAW, squads: [...RAW.squads].reverse() });
     for (const day of [20738, 20800, 21000]) {
@@ -391,13 +395,24 @@ describe('where it lives', () => {
     expect(app).toMatch(/gameSlug === "draft"/);
     expect(app).toMatch(/draft: "Draft"/);
   });
+  it('the pitch shows a surname, and for a Korean name that is the first word', () => {
+    const src = screen.slice(screen.indexOf('const surname = '), screen.indexOf('const games = '));
+    const surname = new Function(`${src}; return surname;`)();
+    expect(['Thierry Henry', 'Son Heung-min', 'Park Ji-sung', 'Ki Sung-yueng', 'Trent Alexander-Arnold', 'Ruud van Nistelrooy', 'Pelé', 'Emile Smith-Rowe'].map(surname))
+      .toEqual(['Henry', 'Son', 'Park', 'Ki', 'Alexander-Arnold', 'van Nistelrooy', 'Pelé', 'Smith-Rowe']);
+  });
   it('a finished game is not logged as one that was walked away from', () => {
     expect(screen).toMatch(/CustomEvent\("biq:draft-completed"/);
     expect(app).toMatch(/addEventListener\('biq:draft-completed', onDone\)/);
   });
-  it('Home does not know it yet: it is not a daily and must not look like one', () => {
+  it('Home lists it under More modes, and nowhere in Today: it is not a daily and must not look like one', () => {
     const home = readFileSync(new URL('../../src/screens/HomeScreen.jsx', import.meta.url), 'utf8');
-    expect(home).not.toMatch(/draft/i);
+    const door = home.indexOf('setScreen("draft")'), more = home.indexOf('More modes</div>');
+    expect(more).toBeGreaterThan(0);
+    expect(door).toBeGreaterThan(more);                       // after the More modes heading
+    expect((home.match(/setScreen\("draft"\)/g) || []).length).toBe(1);
+    expect(home).not.toMatch(/key: "draft"/);                // not one of the Today rows
+    expect(home).not.toMatch(/draftSquads|draftModel/);       // and Home loads none of it
     expect(screen).not.toMatch(/CustomEvent\("biq:daily-completed"/);
     expect(screen).toMatch(/import\("\.\.\/data\/draftSquads\.json"\)/);
   });

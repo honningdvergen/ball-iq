@@ -230,6 +230,13 @@ export function board(D, day) {
   for (const [t, n] of RECIPE) for (let k = 0; k < n; k++) spins.push(next(t));
   const bench = BENCH_TIERS.map(next);
   spins.sort((a, b) => h32(`${day}:spin:${a.k}`) - h32(`${day}:spin:${b.k}`) || (a.k < b.k ? -1 : 1));
+  // The first spin is always one of the five top-four sides. The first thing
+  // a player sees decides whether the game looks worth eleven taps, and a
+  // board that opened on a relegated Fulham did not (seen in the simulator,
+  // 12 Oct 2026). The first top side in the day's order is moved to the front;
+  // the rest keep their order.
+  const lead = spins.findIndex((s) => tierOf(s) === 'top');
+  if (lead > 0) spins.unshift(spins.splice(lead, 1)[0]);
   return { spins, bench };
 }
 

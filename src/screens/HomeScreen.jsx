@@ -1,6 +1,6 @@
 import React from "react";
 import { currentAvatarId } from '../lib/currentAvatar.js';
-import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, LandPlot, Newspaper, Settings, Pencil, Search } from "lucide-react";
+import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, LandPlot, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -745,6 +745,25 @@ function HomeScreenImpl({
           </button>
         );
       })()}
+      {/* The Draft. A row and not a tile for the same reason as Mystery Player
+          above (a seventh tile sits alone on the last line), and because it is
+          the newest thing in the app and should not be one grey square among
+          six. It is NOT in Today: it is not a daily, has no number and feeds
+          no streak (see the note at the top of screens/Draft.jsx). */}
+      <button
+        type="button"
+        className="todays-seven-secondary mp-row"
+        style={{ "--mode": MODE_ACCENT.draft, "--mode-rgb": MODE_RGB.draft, marginBottom: 10 }}
+        onClick={() => { markModeSeen("draft"); setScreen("draft"); }}
+        aria-label="Play the Draft: build an eleven out of real seasons"
+      >
+        <span className="t7s-icon" aria-hidden="true"><Dices size={22} strokeWidth={2} /></span>
+        <span className="t7s-body">
+          <span className="t7s-title">Draft{!seenModes.draft && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.draft},0.18)`, color: MODE_ACCENT.draft, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>NEW</span>}</span>
+          <span className="t7s-sub">Eleven spins · build an XI of real seasons</span>
+        </span>
+        <span className="t7s-cta">Play</span>
+      </button>
       <div className="play-grid">
         {[
           // No Club Quiz tile: the finder above this grid is the club entry
