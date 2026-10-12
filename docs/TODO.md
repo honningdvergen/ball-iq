@@ -1121,8 +1121,14 @@ Pro Max (build 144), reviewed before it went out:
       and "medium" is answered right about 40% of the time. Among 35 signed-in
       regulars a low score does not lower next-day return (66% after 0 to 2,
       65% after 5 to 7); for newcomers nobody knows, results carry no identity.
-      **Ruling: aim for an average of 4, gentle first two, hardest last.** Not
-      by letting everything tagged easy back in: Alex pulled a format in
+      **Ruling: aim for an average of 4, with the difficulty MIXED through
+      the seven, in an order that changes every day.** Alex, the same night,
+      correcting my "gentle first, hardest last": "do not make them gradually
+      harder, make it random which one is harder and which one is easier each
+      day so you do not get 2 right then all wrong". So: a fixed mix of easier
+      and harder questions, shuffled by the date; no ramp. `warmUpFirst` (Q1
+      always medium, since 4 Oct) is a fixed position and goes with this.
+      Not by letting everything tagged easy back in: Alex pulled a format in
       September for being insultingly easy.
       Before building: (1) the draw is frozen in src/data/dailyLog.js so every
       phone gets the same seven; a new picker must keep the site and installed
