@@ -413,7 +413,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Instituto","Palermo","Juventus","Roma"],
     loans: [false,false,false,false] },
   { key: "REUS", display: ["Marco","Reus"], nat: "Germany",
-    clubs: ["Rot Weiss Ahlen","Borussia M.gladbach","Borussia Dortmund","LA Galaxy"],
+    clubs: ["Rot Weiss Ahlen","Borussia Mönchengladbach","Borussia Dortmund","LA Galaxy"],
     loans: [false,false,false,false] },
   // PARK replaced HEUNGMIN 2026-09-28 — HEUNGMIN was a second key for Son
   // Heung-min (see SON below). Only unserved days changed (#85/#161/#285/#339).
@@ -442,7 +442,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Sheffield Utd","Hull City","Wigan Athletic","Leicester City","Man Utd"],
     loans: [false,false,true,false,false] },
   { key: "STEGEN", display: ["Marc-André ter","Stegen"], nat: "Germany",
-    clubs: ["Borussia M.gladbach","Barcelona","Girona","Ajax"],
+    clubs: ["Borussia Mönchengladbach","Barcelona","Girona","Ajax"],
     loans: [false,false,true,true] },
   { key: "ERIKSEN", display: ["Christian","Eriksen"], nat: "Denmark",
     clubs: ["Ajax","Tottenham","Inter Milan","Brentford","Man Utd","VfL Wolfsburg"],
@@ -533,7 +533,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Bayern Munich","Leverkusen","Liverpool","Juventus","Borussia Dortmund"],
     loans: [false,false,false,false,false] },
   { key: "XHAKA", display: ["Granit","Xhaka"], nat: "Switzerland",
-    clubs: ["Basel","Borussia M.gladbach","Arsenal","Leverkusen","Sunderland"],
+    clubs: ["Basel","Borussia Mönchengladbach","Arsenal","Leverkusen","Sunderland"],
     loans: [false,false,false,false,false] },
   { key: "SAKAI_HIR", display: ["Hiroki","Sakai"], nat: "Japan",
     clubs: ["Kashiwa Reysol","Hannover 96","Marseille","Urawa Red Diamonds","Auckland"],

@@ -101,10 +101,10 @@ describe('SEO claims match the bank', () => {
  * Only text a player can see is tested: a string literal or JSX text. Code
  * comments say "by hand" about our own work all the time and are not claims.
  *
- * "Hand-picked" is deliberately NOT caught. Three generated pages call their
- * sets "a hand-picked set of ... questions", which is a claim about choosing
- * the set for the page, not about who wrote the questions. Whether that is
- * also too much is Alex's call (docs/TODO.md), not this test's.
+ * "Hand-picked" is caught too, since 12 Oct 2026. Three generated pages called
+ * their sets "a hand-picked set of ... questions". That is a claim about
+ * choosing, not writing, but no hand chose them either; Alex left the ruling to
+ * the session and it went the strict way. The sets are "curated".
  */
 describe('nothing claims the questions are written by hand', () => {
   const MARKETING = fileURLToPath(new URL('../../src/marketing', import.meta.url));
@@ -129,6 +129,15 @@ describe('nothing claims the questions are written by hand', () => {
     expect(offenders, '\n  Say how they are really made: researched against sources and fact-checked.\n').toEqual([]);
   });
 
+  it('and nothing says a set was picked by hand', () => {
+    const PICKED = /\bhand[- ]?picked\b/i;
+    const offenders = [];
+    for (const { file, text } of pages) for (const line of visible(text).split('\n')) if (PICKED.test(line)) offenders.push(`${file}: ${line.trim().slice(0, 120)}`);
+    expect(offenders, '\n  Say "curated".\n').toEqual([]);
+    expect('a hand-picked set of harder football trivia questions').toMatch(PICKED);
+    expect('a curated set of harder football trivia questions').not.toMatch(PICKED);
+  });
+
   it('the front door says how they are really made', () => {
     const door = pages.find((p) => p.file.endsWith('FrontDoor.jsx')).text;
     expect(door).toMatch(/Where do the questions come from\?<\/dt><dd>Researched against sources and fact-checked, not scraped\./);
@@ -136,7 +145,7 @@ describe('nothing claims the questions are written by hand', () => {
 
   it('the check would have caught the sentence that was live', () => {
     for (const said of ['Written and fact-checked by hand, not scraped.', 'Every question is hand-written.', 'hand-written questions about your club', 'Each one checked by hand.']) expect(said).toMatch(CLAIM);
-    for (const fine of ['Researched against sources and fact-checked, not scraped.', 'a hand-picked set of harder football trivia questions', 'Hand of God']) expect(fine).not.toMatch(CLAIM);
+    for (const fine of ['Researched against sources and fact-checked, not scraped.', 'a curated set of harder football trivia questions', 'Hand of God']) expect(fine).not.toMatch(CLAIM);
     // a comment is not a claim: it is stripped before the match
     expect(visible('// every entry was resolved by hand\nconst a = 1;')).not.toMatch(CLAIM);
   });

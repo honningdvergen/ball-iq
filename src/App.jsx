@@ -2993,7 +2993,7 @@ export function ReviewQuestionCard({ a, index }) {
       <div className="dr-q-head">
         <span className="dr-q-mark">{isCorrect ? '✓' : '✗'}</span>
         <span className="dr-q-num">Q{index + 1}</span>
-        {cat && <span className="dr-q-cat">{cat}</span>}
+        {cat && <span className="dr-q-cat">{CAT_LABELS[cat] || cat}</span>}
         {timedOut && <span className="dr-q-timeout">timed out</span>}
       </div>
       <div className="dr-q-text">{q}</div>

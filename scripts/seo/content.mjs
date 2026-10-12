@@ -276,9 +276,9 @@ export const LISTICLES = [
     description:
       'Hard football trivia questions and answers — World Cup, Premier League, Champions League, Euros, records and legends, most with the story behind them.',
     about: 'Association football trivia',
-    lede: 'A hand-picked set of harder football trivia questions — with answers and the story behind each one.',
+    lede: 'A curated set of harder football trivia questions — with answers and the story behind each one.',
     intro: [
-      `Think you know football? These are the questions that separate the diehards from the casuals — a hand-picked set of harder football trivia questions spanning the World Cup, the Premier League, the Champions League, the Euros and the game's all-time records and legends. Every one comes with the answer and a short explanation, so it works as much for learning as for testing yourself.`,
+      `Think you know football? These are the questions that separate the diehards from the casuals — a curated set of harder football trivia questions spanning the World Cup, the Premier League, the Champions League, the Euros and the game's all-time records and legends. Every one comes with the answer and a short explanation, so it works as much for learning as for testing yourself.`,
       `They're pulled straight from the Ball IQ question bank — the same questions our players face in the app — and kept deliberately tough. You'll find the famous moments (Liverpool's 4-0 comeback against Barcelona, Denmark's 1992 fairytale) next to the deep cuts (who managed Blackburn to the title, which club Ronaldo left to join Barcelona in 1996). Get most of these and you genuinely know your football.`,
       `Read them as a quiz or just for the stories behind the answers. When you want more — thousands of questions, a daily challenge, a Wordle-style football guessing game and live multiplayer — the full Ball IQ game is free.`,
     ],
@@ -309,7 +309,7 @@ export const LISTICLES = [
     about: 'FIFA World Cup trivia',
     lede: 'Big set of World Cup quiz questions with answers — graded easy to hard, with most answers explained.',
     intro: [
-      `The summer of the 2026 World Cup — the first 48-team edition, hosted across the United States, Canada and Mexico, with the final at MetLife Stadium in New Jersey on July 19 — is the perfect excuse to find out how much World Cup history you actually know. This is a big, hand-picked set of World Cup quiz questions and answers pulled from the Ball IQ question bank: nearly a century of tournaments, from Uruguay lifting the first trophy in 1930 to Argentina's shoot-out win over France in Qatar in 2022.`,
+      `The summer of the 2026 World Cup — the first 48-team edition, hosted across the United States, Canada and Mexico, with the final at MetLife Stadium in New Jersey on July 19 — is the perfect excuse to find out how much World Cup history you actually know. This is a big, curated set of World Cup quiz questions and answers pulled from the Ball IQ question bank: nearly a century of tournaments, from Uruguay lifting the first trophy in 1930 to Argentina's shoot-out win over France in Qatar in 2022.`,
       `The set is graded from easy to hard. The warm-ups ask things any fan should get — who won in 2010, which country has lifted the trophy five times. The middle band digs into the famous moments: Maradona's 1986, the headbutt final of 2006, Germany 7-1 Brazil. And the hard end is for the obsessives — controversial penalties in extra time, golden goals, and the scorers everyone forgets. Whether you're building a pub-quiz round, testing your mates during the group stage, or just settling an argument, there's a difficulty band for it.`,
       `Every question comes with the answer and a short explanation of the story behind it, so you learn something even on the ones you miss — that's the Ball IQ way. Play the interactive sample below free in your browser, no sign-up needed. And when you want more than one round, the full Ball IQ game is free: thousands of fact-checked questions, a World Cup category, a daily challenge and Footle, our Wordle-style daily footballer game.`,
     ],

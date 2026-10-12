@@ -3794,7 +3794,7 @@ ${heroSection({
     name: 'football',
     h1: cfg.h1,
     lead: cfg.lede,
-    statLine: `${rows.length} hand-picked football questions · every answer explained`,
+    statLine: `${rows.length} curated football questions · every answer explained`,
     playHref: hasTaster ? '#quiz' : `${SITE.base}/football-quiz/`,
     playLabel: hasTaster ? 'Play five questions now →' : 'Find a quiz →',
   })}

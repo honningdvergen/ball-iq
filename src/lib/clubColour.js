@@ -145,7 +145,7 @@ const EXTRA = {
   "Hannover 96": "#D01317",
   "1. FC Nürnberg": "#AD1732",
   "1860 Munich": "#5FA8DC",
-  "Borussia M.gladbach": "#1C9E5A",
+  "Borussia Mönchengladbach": "#1C9E5A",
   "RB Salzburg": "#DD0741",
   "Chemnitzer FC": "#5FA8DC",
   "Rot Weiss Ahlen": "#D2232A",

@@ -72,7 +72,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
 
   const streakLine = (() => {
     if (!loginStreak || loginStreak < 1) return null;
-    if (loginStreak === 1) return <><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> Day 1 of a new streak</>;
+    if (loginStreak === 1) return <><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> Day 1 of a daily streak</>;
     return <><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> Day {loginStreak} of your daily streak</>;
   })();
 

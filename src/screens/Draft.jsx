@@ -198,7 +198,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
       <Head sub={done ? (isPractice ? "Practice board" : "Today’s board") : `Spin ${at + 1} of ${SPINS}`} onBack={onBack}
         right={!done && (
           <button className="dr-respin" onClick={onRespin} disabled={g.respun} aria-label={g.respun ? "Re-spin used" : "Re-spin this squad"}>
-            <RefreshCw size={15} strokeWidth={2.4} aria-hidden="true" />{g.respun ? "Used" : "Re-spin"}
+            <RefreshCw size={15} strokeWidth={2.4} aria-hidden="true" />{g.respun ? "Re-spin used" : "Re-spin"}
           </button>
         )} />
 
