@@ -158,6 +158,46 @@ export function rankListSuggestions(pool, text, { limit = 6, exclude } = {}) {
     .map((x) => x.e);
 }
 
+// A name with one very long word ("Borussia Mönchengladbach", "1. FC
+// Kaiserslautern") cannot be wrapped between words to fit half a phone, and
+// the board would break it inside the word. Such a name is set a size smaller
+// (top10.css, .t10-name.is-long). Thirteen letters is where a single word
+// stops fitting the large size at 402pt; a hyphen is a place to break.
+export const hasLongWord = (name) => String(name || '').split(/[\s-]+/).some((w) => w.length >= 13);
+
+// ── THE BOARD ABOVE THE KEYBOARD ─────────────────────────────────────────────
+// Alex, in the simulator on launch day: "one important thing is that the
+// keyboard does not block the view of the list on ANY phone". Until then the
+// rows were one fixed height that had been measured to clear the keyboard on
+// one phone (an iPhone 17), which is not a rule, it is a coincidence.
+//
+// So the board is fitted, not fixed. `avail` is the room between the top of
+// the board and the top of the keyboard, measured on the device. Five rows
+// (the board is two columns of five) share it:
+//   - up to 60pt a row: the same as the board with no keyboard up
+//   - never below 30pt: under that a name and its number cannot be read
+//   - if the rows would come out under 44pt, the screen's header is asked to
+//     shrink first (`tight`: the note, the date line and the sub-heading go),
+//     which hands the board about 60pt more. Once tight it stays tight for as
+//     long as the keyboard is up, so the two cannot flip back and forth.
+// `fits` is false only when even 30pt rows under a tight header do not clear
+// the keyboard (under about 316pt between the top of the screen and the
+// keyboard, measured 12 Oct 2026). The screen does nothing with it yet: the
+// page can be scrolled then. No phone we have run reaches it, but nothing in
+// the suite proves that for a small phone in a browser with its bars showing.
+export const T10_ROW_MAX = 60, T10_ROW_MIN = 30, T10_ROW_TIGHT_UNDER = 44;
+// The gap between rows goes with the type size (top10.css: .is-l, base, .is-s),
+// and four gaps come out of the room before the five rows share it. The first
+// version of this used one gap for all three and the large size overflowed the
+// keyboard by a few points on two phones (measured, 12 Oct 2026).
+const T10_GAPS = { l: 8, m: 5, s: 4 };
+const rowsIn = (avail, size) => Math.floor((avail - 4 * T10_GAPS[size]) / 5);
+export function fitTop10Board(avail, tight = false) {
+  const l = rowsIn(avail, 'l'), m = rowsIn(avail, 'm'), s = rowsIn(avail, 's');
+  const [size, each] = l >= 52 ? ['l', l] : m >= 38 ? ['m', Math.min(m, 51)] : ['s', s];
+  return { row: Math.max(T10_ROW_MIN, Math.min(T10_ROW_MAX, each)), tight: tight || m < T10_ROW_TIGHT_UNDER, size, fits: s >= T10_ROW_MIN };
+}
+
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
 const storeKey = (ymd) => `biq_top10_${ymd}`;
 

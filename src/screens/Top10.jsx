@@ -11,7 +11,7 @@
 // The board is two columns of five ON PURPOSE. Ten rows in one column push the
 // guess box under a phone keyboard; this way the question, the box and all ten
 // ranks stay visible while typing, which is the whole game.
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Heart } from "lucide-react";
 import { dateToYMD } from "../lib/date.js";
 import {
@@ -28,12 +28,14 @@ import {
   computeTop10Streak,
   buildTop10ShareText,
   formatAsOf,
+  fitTop10Board, hasLongWord,
+  T10_ROW_MAX,
 } from "../lib/top10.js";
 import { resolveDailyServices } from "../games/dailyServices.js";
 import { DailyDone } from "../components/DailyDone.jsx";
 import { usePlayerPool } from "../lib/usePlayerPool.js";
 import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
-import { useKeyboardAwareInput, useDropdownMaxHeight } from "../lib/useKeyboardAwareInput.js";
+import { useKeyboardAwareInput, useDropdownMaxHeight, visibleBottom } from "../lib/useKeyboardAwareInput.js";
 import ReportButton from "../components/ReportButton.jsx";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import "./top10.css";
@@ -176,6 +178,17 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
   const [fresh, setFresh] = useState(-1);     // the slot that was just filled
   const [armed, setArmed] = useState(false);  // "give up" needs a second tap
   const [judging, setJudging] = useState(null); // the pick being held for its beat: { name }
+  // Is the player typing on a touch screen, i.e. is a keyboard up? Then the
+  // board is fitted to the room above the keyboard (fitTop10Board, which has
+  // the why). Otherwise it takes the room it has: Alex, in the simulator on
+  // launch day, "we can probably use slightly more vertical space ... make the
+  // list less compact". Focus is what starts the fitting; the keyboard's real
+  // height (kbInset, from the native plugin or the visual viewport) is what
+  // sizes it, so before the keyboard has risen the board is still roomy.
+  const [typing, setTyping] = useState(false);
+  const touch = useMemo(() => { try { return window.matchMedia("(pointer: coarse)").matches; } catch { return true; } }, []);
+  const boardRef = useRef(null);
+  const [fit, setFit] = useState({ row: T10_ROW_MAX, tight: false, size: "l" });
   const beat = useRef(0);
   // A pick still in the air when the screen closes is dropped: the player never
   // saw its answer, so it must not be recorded.
@@ -192,8 +205,16 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
   }, [ymd, list.id, day, g.done, g.score, isArchive]);
 
   // The shared daily-completed event, exactly once, and never for an archive
-  // play: see the long notes on the same effect in TransferTrail.jsx.
-  const announced = useRef(false);
+  // play: see the long notes on the same effect in TransferTrail.jsx. A list
+  // already finished when the screen opens was announced then; opening it to
+  // review paid its XP again every time until 12 Oct 2026.
+  const announced = useRef((() => { const saved = loadTop10Day(ymd); return !!saved && saved.id === list.id && saved.status === "done"; })());
+  // Opened to look at, not to play: tell the app so the visit is not logged as
+  // an abandoned game. No XP and no scores row ride on this.
+  useEffect(() => {
+    if (!announced.current) return;
+    try { window.dispatchEvent(new CustomEvent("biq:daily-reviewed", { detail: { game: "top10" } })); } catch { /* best effort */ }
+  }, []);
   useEffect(() => {
     if (!g.done || announced.current) return;
     announced.current = true;
@@ -233,6 +254,47 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
   const wantPool = list.kind === "player" ? ensurePool : undefined;
 
   const { inputRef, keepInputVisible, kbInset } = useKeyboardAwareInput();
+  // Fit the board after every render while typing: the board moves whenever
+  // the line above it changes or the header tightens, and the keyboard's
+  // height arrives a moment after focus. Only a changed answer sets state, so
+  // this settles in one or two passes and cannot loop.
+  // A keyboard that has reported a height counts whatever the pointer says: a
+  // phone whose primary pointer reads "fine" (a stylus, a paired mouse) would
+  // otherwise keep 60pt rows under its keyboard.
+  const fitting = typing && !g.done && (touch || kbInset > 0);
+  const measureFit = useRef(null);
+  measureFit.current = () => {
+    const el = boardRef.current;
+    const next = fitting && el
+      ? fitTop10Board(visibleBottom(kbInset) - el.getBoundingClientRect().top - 6, fit.tight)
+      : { row: T10_ROW_MAX, tight: false, size: "l" };
+    if (next.row !== fit.row || next.tight !== fit.tight || next.size !== fit.size) setFit({ row: next.row, tight: next.tight, size: next.size });
+  };
+  useLayoutEffect(() => { measureFit.current(); });
+  useEffect(() => {
+    const run = () => measureFit.current && measureFit.current();
+    const vv = typeof window !== "undefined" ? window.visualViewport : null;
+    vv?.addEventListener("resize", run); vv?.addEventListener("scroll", run);
+    window.addEventListener("resize", run);
+    // The page's own scroll moves the board too, and nothing re-renders for it:
+    // after a pick keepInputVisible scrolls back up, and without this the last
+    // row sat 30 to 50pt under the keyboard until the next keystroke (review,
+    // 12 Oct 2026, both engines).
+    window.addEventListener("scroll", run, { passive: true });
+    return () => {
+      vv?.removeEventListener("resize", run); vv?.removeEventListener("scroll", run);
+      window.removeEventListener("resize", run); window.removeEventListener("scroll", run);
+    };
+  }, []);
+  // The tightened header is sticky while typing (so it cannot flicker), which
+  // means it must be let go by hand when the keyboard goes away with the box
+  // still focused (Android's back gesture). Once, on that edge only: letting it
+  // go on every pass makes a short window flip it on and off.
+  const kbWas = useRef(0);
+  useEffect(() => {
+    if (kbWas.current > 0 && kbInset === 0) setFit((f) => (f.tight ? { ...f, tight: false } : f));
+    kbWas.current = kbInset;
+  }, [kbInset]);
   const entryRef = useRef(null);
   const dropMax = useDropdownMaxHeight(entryRef, { kbInset });
   useEffect(() => (g.done ? undefined : keepInputVisible()), [g.score, g.wrong.length, g.close.length, g.done, keepInputVisible]);
@@ -323,7 +385,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
   let missedSeen = 0;
 
   return (
-    <div className="screen t10" style={{ ...SKIN, paddingBottom: 20 + kbInset }}>
+    <div className={`screen t10${fit.tight ? " is-tight" : ""}`} style={{ ...SKIN, paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)" }}>
       {g.perfect && Confetti ? <Confetti /> : null}
       <Head number={number} sub={sub} lives={g.done ? null : g.lives} onBack={onBack} embedded={embedded} />
 
@@ -351,7 +413,8 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
               ref={inputRef}
               className="t10-input"
               value={entry}
-              onFocus={wantPool}
+              onFocus={() => { wantPool?.(); setTyping(true); }}
+              onBlur={() => setTyping(false)}
               onChange={(e) => { wantPool?.(); setEntry(e.target.value); }}
               onKeyDown={(e) => { if (e.key === "Enter" && suggestions[0]) pick(suggestions[0]); }}
               placeholder={PLACEHOLDER[list.kind]}
@@ -386,7 +449,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
         </>
       )}
 
-      <div className={`t10-board${judging ? " is-wait" : ""}`} role="list" aria-label="The ten">
+      <div ref={boardRef} className={`t10-board is-${fit.size}${fitting && kbInset > 0 ? " is-fit" : ""}${judging ? " is-wait" : ""}`} style={{ "--t10-row": `${fit.row}px` }} role="list" aria-label="The ten">
         {list.slots.map((s, i) => {
           const found = g.found[i];
           const missed = g.done && !found;
@@ -397,7 +460,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
               style={missed ? { "--t10-d": `${delay}ms` } : { "--t10-i": i }}>
               <span className={`t10-rank${i < 3 ? ` is-p${i + 1}` : ""}`}>{i + 1}</span>
               <span className="t10-body">
-                {(found || missed) && <span className="t10-name">{s.name}</span>}
+                {(found || missed) && <span className={`t10-name${hasLongWord(s.name) ? " is-long" : ""}`}>{s.name}</span>}
                 {s.clue ? <span className="t10-clue">{s.clue}</span> : null}
               </span>
             </div>
@@ -462,7 +525,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
             <button onClick={onBack}
               style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
                        border: "1px solid var(--border)", background: "transparent", color: "var(--t2)",
-                       fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back home</button>
+                       fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back to Home</button>
           )}
         </div>
       )}

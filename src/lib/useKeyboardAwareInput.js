@@ -155,9 +155,40 @@ function startedInsideInnerScroller(target) {
   return false;
 }
 
-function visibleBottom(kbInset) {
+// Where the keyboard's top edge is, in layout coordinates: the line nothing a
+// player needs may sit below. Exported for screens that size themselves to the
+// space above it (the Top 10 board).
+//
+// ⚠️ ON NATIVE THE TWO PLATFORMS DISAGREE ABOUT window.innerHeight. iOS never
+// resizes the WebView (Keyboard.resize "none"), so the line is the full height
+// less the plugin's keyboard height. Android DOES resize it: capacitor.config
+// sets Keyboard.resizeOnFullScreen, and the plugin's Keyboard.java
+// (possiblyResizeChildOfContent) shrinks the WebView's parent to the usable
+// height before it reports the keyboard. There innerHeight has already lost
+// the keyboard, and "innerHeight - kbInset" took it off twice: on a 412x915
+// phone the line came out near 255 when it is near 585 (review, 12 Oct 2026,
+// read from the plugin's source, not yet seen on a device). So the full height
+// is remembered from before the keyboard, and the line is whichever is higher
+// up the screen of "the window as it is now" and "the full window less the
+// keyboard". Android only; see visibleBottom for why iOS is left alone.
+// ⚠️ Known and on the safe side (a smaller board, never a hidden row): on
+// Android 14 and older the reported keyboard height includes the nav bar the
+// remembered height leaves out, and a rotation with the keyboard up forgets
+// the full height until the keyboard closes once.
+const IS_ANDROID = typeof navigator !== 'undefined' && /android/i.test(navigator.userAgent || '');
+let fullHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
+if (typeof window !== 'undefined') window.addEventListener('orientationchange', () => { fullHeight = 0; });
+export const keyboardLine = (inner, full, kb) => (kb > 0 ? Math.min(inner, Math.max(full, inner) - kb) : inner);
+export function visibleBottom(kbInset) {
   if (typeof window === 'undefined') return 0;
-  if (IS_NATIVE) return window.innerHeight - kbInset;
+  if (IS_NATIVE) {
+    // iOS keeps the exact subtraction it always had. A remembered height can
+    // only be wrong there (a status bar that doubles during a call shortens
+    // the window with no orientation event), and it has nothing to correct.
+    if (!IS_ANDROID) return window.innerHeight - kbInset;
+    if (!kbInset) fullHeight = Math.max(fullHeight, window.innerHeight);
+    return keyboardLine(window.innerHeight, fullHeight, kbInset);
+  }
   const vv = window.visualViewport;
   return vv ? vv.offsetTop + vv.height : window.innerHeight;
 }

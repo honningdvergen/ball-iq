@@ -136,6 +136,74 @@
 /* An open rank is quiet, so the found ones are what the eye lands on. */
 .t10-cell.is-open .t10-clue { font-size: 12.5px; font-weight: 600; color: var(--t3); }
 
+/* THE BOARD IS FITTED, NOT FIXED. The screen measures the room between the
+   board and the keyboard and sets --t10-row (lib/top10.js, fitTop10Board):
+   60pt with no keyboard up, whatever fits while typing, never under 30pt.
+   Three type sizes follow the row: l (52pt and up), m (38 to 51) and s (under
+   38). No transition on purpose: the change happens under the keyboard's own
+   slide. The 42pt in .t10-cell above is only what a row is before the first
+   measurement. ⚠️ The three sizes keep the SAME margin above the board: the
+   fit is measured from the board's top, so a size that moved the board would
+   change its own measurement and could flip back and forth.
+
+   ⚠️ THE HEIGHT IS FIXED ONLY WHILE FITTING (.is-fit, a keyboard is up). With
+   no keyboard the row is a MINIMUM and a card grows with its name. Fixed at
+   60pt always, a two-line name plus its clue (69pt) stood outside its card on
+   every phone, and at 360pt wide "Manchester United" broke as "Mancheste / r
+   United" (review, 12 Oct 2026: 8 of 27 lists at 360pt, 0 before). While
+   fitting, a name is one line with an ellipsis: the player has just typed it,
+   and the card cannot grow without pushing rank five under the keyboard.
+
+   The large size's type and spacing were MEASURED, not chosen by eye: every
+   name on every list at eight phone widths (scripts/audit-top10-board.mjs,
+   which fails if a name stands outside its card or is broken inside a word).
+   At 15px with 12pt padding a third of names took two lines at 402pt (iPhone
+   17), "Wayne Rooney" among them. As below it is about one in six from 390pt
+   up, a quarter at 375 and a third at 360, and no name is broken inside a
+   word from 360pt up. Run the audit after touching these numbers. */
+.t10-board[style*="--t10-row"] .t10-cell { min-height: var(--t10-row); }
+.t10-board.is-fit .t10-cell { height: var(--t10-row); }
+.t10-board.is-fit .t10-name, .t10-board.is-fit .t10-clue { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t10-board.is-l { gap: 8px 8px; }
+.t10-board.is-l .t10-cell { padding: 8px 9px; gap: 9px; border-radius: 14px; }
+.t10-board.is-l .t10-rank { width: 28px; height: 28px; border-radius: 9px; font-size: 13.5px; }
+.t10-board.is-l .t10-name { font-size: 14.5px; line-height: 1.2; }
+.t10-board.is-l .t10-clue { font-size: 12.5px; }
+.t10-board.is-l .t10-cell.is-open .t10-clue { font-size: 14.5px; }
+/* One very long word (lib/top10.js, hasLongWord): a size down, so it is not
+   broken inside the word. */
+.t10-board.is-l .t10-name.is-long { font-size: 12.5px; }
+@media (max-width: 400px) {
+  .t10-board.is-l .t10-rank { width: 26px; height: 26px; font-size: 13px; }
+  .t10-board.is-l .t10-name { font-size: 14px; }
+  .t10-board.is-l .t10-name.is-long { font-size: 11.5px; }
+}
+@media (max-width: 370px) {
+  .t10-board.is-l .t10-name.is-long { font-size: 10.5px; }
+}
+@media (max-width: 340px) {
+  .t10-board.is-l .t10-cell { padding: 8px 7px; gap: 7px; }
+  .t10-board.is-l .t10-rank { width: 24px; height: 24px; font-size: 12.5px; }
+  .t10-board.is-l .t10-name { font-size: 13px; }
+  .t10-board.is-l .t10-cell.is-open .t10-clue { font-size: 13.5px; }
+}
+.t10-board.is-s { gap: 4px 6px; }
+.t10-board.is-s .t10-cell { padding: 2px 6px; gap: 6px; border-radius: 9px; }
+.t10-board.is-s .t10-rank { width: 20px; height: 20px; border-radius: 6px; font-size: 11px; }
+.t10-board.is-s .t10-name { font-size: 12px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t10-board.is-s .t10-clue { font-size: 10.5px; line-height: 1.15; }
+.t10-board.is-s .t10-cell.is-open .t10-clue { font-size: 11.5px; }
+
+/* A short phone with the keyboard up: the header gives its room to the board.
+   The question stays; the lines that explain it go until the keyboard does. */
+.t10.is-tight .t10-head { padding-top: 2px; padding-bottom: 2px; }
+.t10.is-tight .t10-head-sub, .t10.is-tight .t10-q-note, .t10.is-tight .t10-q-meta { display: none; }
+.t10.is-tight .t10-q-title { font-size: 17px; }
+.t10.is-tight .t10-meter { margin-top: 5px; }
+.t10.is-tight .t10-entry { margin-top: 6px; }
+.t10.is-tight .t10-input { padding-top: 9px; padding-bottom: 9px; }
+.t10.is-tight .t10-say { margin-top: 3px; min-height: 16px; line-height: 16px; font-size: 12px; }
+
 /* A found rank is a lighter card with the game's colour on its edge and chip.
    Tinting the dark surface with coral instead turns it brown (tried, looked at). */
 .t10-cell.is-found {
