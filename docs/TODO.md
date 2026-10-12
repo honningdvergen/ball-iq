@@ -1004,6 +1004,63 @@ Order, from `market.md` §5: today's audience earns about $10 a month from ads.
 - [ ] Finish moving `social/` to its own repo (agreed 2 Oct).
 - [ ] Capacitor 8.
 
+### 0n. 12 Oct: launch day, played end to end in the simulator (iPhone 17, iOS 27)
+
+All four dailies and the Draft were played to their finish screens in the real
+app with the day's working changes swapped in, every screen read. What that
+found, and what a pair of independent reviews found in the fixes:
+
+- [x] **Opening a finished Transfer Trail or Top 10 paid its XP again, every
+      time.** The guard was a ref, and a new mount gets a new ref. Each review
+      also wrote another `scores` row and replayed the chord. Live on the site
+      for the Trail since July. The guard now starts from the saved day. A
+      finish on the static /transfer-trail/ page, where nothing listens, is
+      saved as owed and credited once in the app. A review tells the app so
+      (`biq:daily-reviewed`), so it is not logged as an abandoned game.
+      ⚠️ `scores` rows for `trail` before this date overcount finishes by the
+      number of reviews; `funnel-analyst` reads of that mode need the caveat.
+- [x] **The way out of a finish screen sat on the home indicator** (Daily 7:
+      11pt from the glass; Trail and Top 10: 22pt). One clearance for all of
+      them, `--foot-clear`, the number `.quiz-wrap` already used.
+- [x] **From question two on, the quiz header was half under the status bar.**
+      A new question now starts at the top.
+- [x] **Top 10 board.** Roomier with no keyboard (Alex), fitted above the
+      keyboard on nine phone sizes, and names measured on every list at eight
+      widths (`npm run audit:top10-board`): a row is a fixed height only while
+      a keyboard is up, so no name stands outside its card or breaks inside a
+      word from 360pt up. First review: 8 of 27 lists broke at 360pt as first
+      written. The lists reach installed apps from the site: seen in the real
+      app's storage.
+- [x] **Keyboard line on Android** no longer takes the keyboard off twice
+      (the plugin shrinks the WebView there). ⚠️ From the plugin's source only.
+      **Not seen on an Android device.** Check before the next AAB.
+- [x] **Draft:** a door on Home under "More modes"; the first spin is always a
+      top-four side; Korean names show the family name; the finish clears the
+      home indicator. Draws were checked after a 21-2-15 season: the model
+      gives 7 to 9 draws a season against a real 9.5, and 2 or fewer on about
+      one day in a hundred at that strength.
+- [ ] **🔴 THE LAUNCH IS BLACK FOR ABOUT SIX SECONDS** (video, loaded Mac: 3s of
+      pure black, 3s of background, then the name). The native launch picture
+      is not drawn. Cure: a launch storyboard with a background colour and a
+      small centred image. Needs an xcodebuild and a new video. Blocks 145.
+- [ ] **Still open from the same pass.** The reminder row and the "Why?" box
+      are fine now; these are not: the clock starts before a question is
+      readable (Classic showed 19 of 20 on first sight); the page still jumps
+      after an answer (the "Correct!" banner is what forces it); Footle solved
+      in one leaves five empty rows above the result; History shows nothing of
+      today; confetti replays on every review of a solved Trail; "WORLDCUP" is
+      one word on the Daily 7 tag; Profile shows 83 overall with every
+      category blank; three finish-screen patterns and three wordings of the
+      report link; onboarding ends in Footle, not Home.
+- [ ] **From the second review, not done:** a drag that dismisses the keyboard
+      regrows the Top 10 board under the finger (needs a device to judge); the
+      loading skeleton has 42pt rows against the board's 60; TransferTrail has
+      no key by day, so it holds yesterday's state across midnight; on Android
+      14 and older the keyboard line is high by the nav bar (safe side).
+- [ ] **Tests that only read the source.** The suite has no DOM. The board
+      audit is the one check that lays anything out, and it is not in CI.
+
+
 ## 2026-09-21 — 🚨 FOUR DAYS OF SILENTLY FAILED DEPLOYS: the cause is fixed, the silence is not
 
 Every production deploy from 5303b4b0 (09-17, the Brasileirão wave) to 09-21
