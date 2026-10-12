@@ -1082,6 +1082,36 @@ Done the same evening:
       "Day 1 of a daily streak" on both finish screens. Transfer Trail says
       "Borussia Mönchengladbach", not "M.gladbach".
 
+Done later the same night, from Alex's own recording of Footle on an iPhone 17
+Pro Max (build 144), reviewed before it went out:
+- [x] **Share was below the screen on a finished Footle** (his "one really big
+      concern"). Share is now the finish panel's second row on every daily, and
+      a finished Footle board drops the rows never used. Measured in WebKit at
+      six phone sizes with all six rows used: on screen on every one.
+- [x] **The keyboard jumped** about 40pt when "Stuck? Take a clue" arrived. The
+      key, the offer and the clue share one slot now, and every height budget
+      was raised by the 19px it costs (the review caught that it was unpaid).
+- [x] **Static /football-wordle/ page:** with a five-letter answer ENTER ended
+      71px below the fold at 375x812 and 390x844, since before today. Fixed.
+- [x] Nonsense guesses in Footle stay allowed, by design (Alex: a strict
+      Footle is too hard and costs returning players). Not a bug. Do not
+      "fix" it.
+- [x] The two old worktrees are removed (the nine uncommitted squad files are
+      kept as a patch in `~/ball-iq-audit/2026-10-12/`).
+- [ ] **Share on Top 10's finish** is on screen on 390pt-wide iPhones and up,
+      and BELOW the fold on an SE (by 113pt), a 13 mini (32) and a 360x800
+      Android (26): the finished board fills the screen. Wants the result and
+      Share above the board: do it with the shared finish screen.
+- [ ] Share on Transfer Trail's and Daily 7's finish: not measured yet.
+- [ ] Footle on the web at SE height: tiles are 29px with 100pt of room spare
+      (the web focused-play budget wins over the short-screen one), and the
+      board creeps up about 2.5px a guess because a filled 29px tile is taller
+      than an empty one. Both older than today.
+- [ ] `--wd-ended-chrome:620px` in footle.css budgets for Share as the last
+      row; it is the second now, so finished tiles could be larger.
+- [ ] A project hook refused a code-review brief as "a social brief" because
+      of its wording. It guards the wrong thing; look at its matcher.
+
 **Blocks build 145**
 - [ ] 🔴 Launch screen. The fix is WRITTEN AND UNCOMMITTED in the working tree
       (`ios/App/App/Base.lproj/LaunchScreen.storyboard`, new
@@ -1136,7 +1166,6 @@ Done the same evening:
       a Vercel outage, with production fine). It should fall back to
       `/version.json` before failing.
 - [ ] `scores` rows for `trail` before 12 Oct count reviews as finishes.
-- [ ] The worktree `nervous-hopper-18a0dc` holds 9 uncommitted files (Alex).
 
 ## 2026-09-21 — 🚨 FOUR DAYS OF SILENTLY FAILED DEPLOYS: the cause is fixed, the silence is not
 
