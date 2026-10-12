@@ -1,6 +1,6 @@
 import { MIN_RATED_ANSWERS } from './scoring.js';
 import { CALIBRATION } from '../data/cardCalibration.js';
-import { tint, lift } from './clubColour.js';
+import { tint, lift, inkOn } from './clubColour.js';
 // Ball IQ player-rating card — six "competition" face stats + a compiled overall
 // + a Bronze / Silver / Gold tier.
 //
@@ -231,7 +231,9 @@ export function qCardStyle(cat) {
 export function qTagStyle(cat) {
   const c = catColour(cat);
   if (!c) return undefined;   // no face: keep the neutral default
-  return { color: lift(c), background: tint(c, 0.10), borderColor: tint(c, 0.25) };
+  // The WORD is set in a text-grade version of the colour (inkOn); the tint and
+  // the border keep lift(), which is right for a wash and too dark for type.
+  return { color: inkOn(c), background: tint(c, 0.10), borderColor: tint(c, 0.25) };
 }
 
 export function faceLabelType(abbr, base) {

@@ -666,7 +666,7 @@ html.native-app ::-webkit-scrollbar{display:none;}
    ⚠️ Chips SHRINK as the count grows so a 20-question run still fits one line
    without wrapping into the streak badge. */
 .prog-pips{flex:1;display:flex;gap:4px;align-items:center;min-width:0;}
-.prog-pips i{flex:1 1 0;min-width:5px;max-width:18px;height:4px;border-radius:2px;
+.prog-pips i{flex:1 1 0;min-width:5px;max-width:34px;height:6px;border-radius:3px;
   background:var(--border);transition:background .22s ease, box-shadow .22s ease;}
 .prog-pips i.ok{background:var(--accent);}
 .prog-pips i.no{background:#FF3B3B;box-shadow:0 0 6px rgba(255,59,59,.55);}
@@ -677,9 +677,28 @@ html.native-app ::-webkit-scrollbar{display:none;}
   .prog-pips i.now{animation:none;opacity:.8}
 }
 .q-top-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.q-ctr{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);white-space:nowrap;font-weight:500;letter-spacing:0.04em;}
+.q-ctr{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;color:var(--t2);white-space:nowrap;font-weight:500;letter-spacing:0.04em;}
 .q-score-live{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}
-.q-score-tick{font-size:11px;font-weight:600;}
+.q-score-tick{font-size:12px;font-weight:600;}
+/* The verdict banner when an answer row already shows it: for a screen reader
+   only. Spelt out here because .feedback's own box (padding, min-height,
+   border) outranks the bare .sr-only and left a 24px ghost. */
+.feedback.sr-only{position:absolute !important;width:1px !important;height:1px !important;min-height:0 !important;padding:0 !important;margin:-1px !important;border:0 !important;overflow:hidden !important;clip:rect(0,0,0,0) !important;white-space:nowrap !important;animation:none !important;}
+/* ── THE TALLEST PHONES GET TALLER ANSWERS, AND ONLY THEY ─────────────────────
+   On an iPhone 17 Pro Max the four answers ended 60% of the way down and the
+   rest was empty (Alex's recording of his own Daily 7, 12 Oct 2026). But that
+   empty room is where the explanation and Next arrive: fill it and the page
+   has to scroll after every answer, which is the jump we are getting rid of.
+   Measured in WebKit: at 874pt tall (iPhone 17) there is no room to spare at
+   all, so nothing changes there; at 956 (Pro Max) rows of 69pt still leave
+   the answered state on one screen with about 30pt over. So one step, from
+   920pt. The real cure for the empty half is a foot that is always there
+   (Next shown before the answer, not after): docs/TODO.md. Phones only. */
+@media (min-height: 920px) and (max-width: 1023px) {
+  .quiz-wrap .opts{gap:11px;}
+  .quiz-wrap .opt{padding-top:18px;padding-bottom:18px;font-size:16px;}
+  .quiz-wrap .q-card{padding:28px 22px;margin-bottom:16px;}
+}
 @keyframes scorePop{from{transform:scale(1.4);}to{transform:scale(1);}}
 .q-card{background:var(--s1);border:none;border-radius:18px;padding:26px 22px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.45),0 1px 4px rgba(0,0,0,0.3);}
 /* ⚠️ THE PER-CATEGORY .q-tag COLOURS WERE DELETED, NOT CORRECTED (2026-09-10).

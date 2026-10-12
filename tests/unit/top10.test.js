@@ -553,6 +553,30 @@ describe('The four Today cards on the front door are one size (Alex, 12 Oct 2026
   });
 });
 
+describe('The question screen can be read (Alex\'s recording, 12 Oct 2026)', () => {
+  it('every category chip is set in a colour with 4.5 to 1 contrast on the card', async () => {
+    const { inkOn, contrast, lift } = await import('../../src/lib/clubColour.js');
+    // the Champions League blue was 1.8 to 1 as lift() left it
+    expect(contrast(lift('#123A8F'), '#13151C')).toBeLessThan(2);
+    for (const c of ['#123A8F', '#3D195B', '#8A6D1B', '#EE8707', '#B03A2E', '#1B7F79', '#111111', '#000000', '#58CC02', '#FFFFFF']) {
+      expect(contrast(inkOn(c), '#13151C'), c).toBeGreaterThanOrEqual(4.5);
+    }
+    // a colour that already reads is left alone, and the hue is kept: the blue stays blue
+    expect(inkOn('#EE8707')).toBe('#EE8707');
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(inkOn('#123A8F').slice(i, i + 2), 16));
+    expect(b).toBeGreaterThan(r); expect(b).toBeGreaterThan(g);
+    // not a colour: handed back untouched, never thrown on
+    expect(inkOn(undefined)).toBe(undefined); expect(inkOn('red')).toBe('red');
+    const card = readFileSync(new URL('../../src/lib/ballIqCard.js', import.meta.url), 'utf8');
+    expect(card).toMatch(/return \{ color: inkOn\(c\),/);
+  });
+  it('the right-or-wrong banner is for the ear when an answer row already shows it', () => {
+    const quiz = readFileSync(new URL('../../src/screens/QuizEngine.jsx', import.meta.url), 'utf8');
+    expect(quiz).toMatch(/\$\{!timedOut && !isTyped \? " sr-only" : ""\}/);
+    expect(quiz).toMatch(/role="status" className=\{`feedback /);
+  });
+});
+
 describe('A finish screen ends above the home indicator (simulator, 12 Oct 2026)', () => {
   const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
   it('one clearance, with a floor for Android, where the WebView reports no inset', () => {

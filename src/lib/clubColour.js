@@ -387,3 +387,40 @@ export function onColour(hex) {
   });
   return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2] > 0.42 ? "#14181F" : "#FFFFFF";
 }
+
+// ── A colour you can READ on the dark card ───────────────────────────────────
+// lift() is for tints and borders: it stops at 45% lightness, which is still
+// dark blue on navy when it is used for TEXT. The question's category chip
+// used it, and "CHAMPIONS LEAGUE" was close to unreadable on Alex's phone
+// (his own recording, 12 Oct 2026). inkOn() keeps the hue and the saturation
+// and raises the lightness only as far as it takes to reach the contrast
+// asked for against the background: 4.5 to 1 is the standard for small text.
+const lum = (hex) => {
+  const n = parseInt(hex.slice(1), 16);
+  const f = (c) => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * f((n >> 16) & 255) + 0.7152 * f((n >> 8) & 255) + 0.0722 * f(n & 255);
+};
+export const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+export function inkOn(hex, bg = '#13151C', min = 4.5) {
+  if (!/^#[0-9a-f]{6}$/i.test(hex || '')) return hex;
+  if (contrast(hex, bg) >= min) return hex;
+  const n = parseInt(hex.slice(1), 16);
+  const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+  const max = Math.max(r, g, b), mn = Math.min(r, g, b), d = max - mn;
+  const l0 = (max + mn) / 2;
+  let h = 0, sat = 0;
+  if (d !== 0) {
+    sat = l0 > 0.5 ? d / (2 - max - mn) : d / (max + mn);
+    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+    else if (max === g) h = ((b - r) / d + 2) / 6;
+    else h = ((r - g) / d + 4) / 6;
+  }
+  const hue = (p, q, t) => { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < 1 / 2 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; };
+  const at = (L) => {
+    const q = L < 0.5 ? L * (1 + sat) : L + sat - L * sat, p = 2 * L - q;
+    const out = sat === 0 ? [L, L, L] : [hue(p, q, h + 1 / 3), hue(p, q, h), hue(p, q, h - 1 / 3)];
+    return `#${out.map((c) => Math.round(Math.max(0, Math.min(1, c)) * 255).toString(16).padStart(2, '0')).join('')}`;
+  };
+  for (let L = Math.max(l0, 0.3); L <= 0.97; L += 0.02) { const c = at(L); if (contrast(c, bg) >= min) return c; }
+  return at(0.97);
+}

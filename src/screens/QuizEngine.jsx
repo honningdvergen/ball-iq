@@ -657,7 +657,9 @@ const CTA_INSET = (() => {
       {hardRightBurst && (
         <div style={{
           position:"fixed",
-          top:"28%",
+          // On the header, not at 28% of the height: there it landed on the
+          // question's own words on a tall phone.
+          top:"calc(env(safe-area-inset-top, 0px) + 46px)",
           left:"50%",
           transform:"translate(-50%, -50%)",
           background:"linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%)",
@@ -892,7 +894,13 @@ const CTA_INSET = (() => {
           ? ((selected === 1) === (q?.a === true || q?.a === 1))
           : (selected === q?.a || typedResult === "correct"));
         return (
-          <div role="status" className={`feedback ${gotIt ? "correct" : "wrong"}`}>
+          // ⚠️ HEARD, NOT SEEN, WHEN A ROW ALREADY SAYS IT. The green or red answer
+          // row is the verdict; this banner under it was the same shape and
+          // size as an answer and read as a fifth one (Alex's recording of
+          // his own Daily 7, 12 Oct 2026), and its 50pt is part of what makes
+          // the page jump. It stays for a screen reader, and it stays visible
+          // when no row can carry the news: time ran out, or a typed answer.
+          <div role="status" className={`feedback ${gotIt ? "correct" : "wrong"}${!timedOut && !isTyped ? " sr-only" : ""}`}>
             <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{
               gotIt ? "✓ Correct!"
                 : timedOut ? "Time's up"
