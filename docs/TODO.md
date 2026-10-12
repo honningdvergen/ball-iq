@@ -1135,15 +1135,25 @@ Pro Max (build 144), reviewed before it went out:
       builds in step (the Top 10 remote-list problem again). (2) Difficulty
       tags are judgement. Measuring it means recording right and wrong per
       question, which is a production data change and needs Alex's word.
-- [ ] Daily 7 on a tall phone (his recording, iPhone 17 Pro Max): the answers
-      end 60% of the way down and the rest is empty; the category chip is
-      near-unreadable (dark blue on navy); the progress pips and "1 ✓ 3/7" are
-      tiny beside a large back button; "Correct!" / "Incorrect" is a banner
-      shaped like a fifth answer; "Report a problem" hangs alone between the
-      explanation and Next; the "Hard, nailed it" badge lands on the question;
-      the results screen closes with an X top right where every other screen
-      goes back top left, says the score twice, and shows "✓ 19:00" with no
-      word saying it is the reminder.
+- [x] **Question screen, from his recording (12 Oct, night):** the category
+      chip is set in a colour with 4.5 to 1 contrast (Champions League blue
+      was 1.8 to 1); the "Correct!" / "Incorrect" banner is for a screen
+      reader only when an answer row already shows the verdict, which also
+      ends the page scroll after an answer on phones from 844pt tall;
+      progress pips and the counter are larger; the "Hard, nailed it" badge
+      sits on the header, off the question; answer rows are taller on phones
+      from 920pt tall.
+- [ ] **The empty lower half is only partly solved.** Measured: at 874pt tall
+      (iPhone 17) the answered state already fills the screen exactly, so
+      taller rows there bring the scroll back. The answers still end about 60%
+      of the way down. The real cure is a foot that is always present (Next
+      shown, disabled, before the answer) so the room is used on purpose.
+- [ ] On an SE-height phone the page still scrolls 165pt after an answer.
+- [ ] Still open from the recording: "Report a problem" hangs alone between
+      the explanation and Next; the results screen closes with an X top right
+      where every other screen goes back top left, says the score twice, and
+      shows "✓ 19:00" with no word saying it is the reminder; "Stump a mate"
+      is a small link under Share.
 
 **Blocks build 145**
 - [ ] 🔴 Launch screen. The fix is WRITTEN AND UNCOMMITTED in the working tree
