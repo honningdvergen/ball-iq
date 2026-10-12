@@ -577,6 +577,22 @@ describe('The question screen can be read (Alex\'s recording, 12 Oct 2026)', () 
   });
 });
 
+describe('Transfer Trail keeps the keyboard up between guesses (Alex\'s recording, 12 Oct 2026)', () => {
+  const trail = readFileSync(new URL('../../src/screens/TransferTrail.jsx', import.meta.url), 'utf8');
+  it('a suggestion, Guess and Skip all refuse the focus change, as Top 10 does', () => {
+    const keep = /onPointerDown=\{\(e\) => e\.preventDefault\(\)\} onMouseDown=\{\(e\) => e\.preventDefault\(\)\}/g;
+    expect((trail.match(keep) || []).length).toBe(3);
+    for (const who of [/submit\(false, p\.name\)\}\s*onPointerDown/, /submit\(true\)\}\s*onPointerDown/]) expect(trail).toMatch(who);
+  });
+  it('confetti is for a solve made now, not for every review of one', () => {
+    expect(trail).toMatch(/won && !finishedBefore\(savedAtMount\.current\.status\) && Confetti/);
+  });
+  it('the guesses left are drawn and named', () => {
+    expect(trail).toMatch(/aria-label=\{`\$\{left\} \$\{left === 1 \? "guess" : "guesses"\} left`\}/);
+    expect(trail).toMatch(/Array\.from\(\{ length: TRAIL_MAX_ATTEMPTS \}/);
+  });
+});
+
 describe('A finish screen ends above the home indicator (simulator, 12 Oct 2026)', () => {
   const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
   it('one clearance, with a floor for Android, where the WebView reports no inset', () => {

@@ -22,6 +22,7 @@ import {
   buildTrailShareText,
   startsAnnounced,
   owesCredit,
+  finishedBefore,
 } from "../lib/trail.js";
 // ⚠️ NO IMPORT FROM App.jsx. This screen also mounts as an island on the static
 // /transfer-trail/ page (src/islands/trail.jsx), and an island that imported
@@ -260,7 +261,9 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
 
   return (
     <div className="screen" style={{ display: "flex", flexDirection: "column", minHeight: "100%", paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)", maxWidth: 640, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
-      {won && Confetti ? <Confetti /> : null}
+      {/* Only for a solve made now. It used to fall again on every review of a
+          solved Trail. */}
+      {won && !finishedBefore(savedAtMount.current.status) && Confetti ? <Confetti /> : null}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "12px 4px" }}>
         {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
@@ -283,9 +286,19 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
           </div>
         )}
         {!done && (
-          <div style={{ textAlign: "center", flexShrink: 0 }}>
-            <div style={{ fontSize: 17, fontWeight: 800, color: left <= 1 ? "var(--red)" : "var(--t1)" }}>{left}</div>
-            <div style={{ fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t3)" }}>left</div>
+          /* Guesses left, drawn: one pip a guess, spent ones dimmed, the last
+             one red. It was a bare number over a 9px "LEFT" (Alex's recording,
+             12 Oct 2026: nothing said what the 5 counted). */
+          <div role="img" aria-label={`${left} ${left === 1 ? "guess" : "guesses"} left`} style={{ flexShrink: 0, textAlign: "right" }}>
+            <div style={{ display: "flex", gap: 5, justifyContent: "flex-end" }}>
+              {Array.from({ length: TRAIL_MAX_ATTEMPTS }, (_, i) => (
+                <i key={i} style={{ width: 9, height: 9, borderRadius: 5,
+                                    background: i < left ? (left <= 1 ? "var(--red)" : "var(--t1)") : "var(--s3)" }} />
+              ))}
+            </div>
+            <div style={{ marginTop: 4, fontSize: 11.5, fontWeight: 700, color: left <= 1 ? "var(--red)" : "var(--t2)", fontVariantNumeric: "tabular-nums" }}>
+              {left} {left === 1 ? "guess" : "guesses"} left
+            </div>
           </div>
         )}
       </div>
@@ -354,8 +367,8 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
       {wrongOnes.length > 0 && !done && (
         <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 6 }}>
           {wrongOnes.map((a, i) => (
-            <span key={i} style={{ fontSize: 12.5, color: "var(--t3)", textDecoration: "line-through",
-                                   background: "var(--s2)", borderRadius: 8, padding: "4px 9px" }}>{a.text}</span>
+            <span key={i} style={{ fontSize: 13, fontWeight: 600, color: "var(--t2)", textDecoration: "line-through",
+                                   textDecorationColor: "var(--red)", background: "var(--s2)", borderRadius: 8, padding: "5px 10px" }}>{a.text}</span>
           ))}
         </div>
       )}
@@ -379,6 +392,12 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                        fontFamily: "inherit", outline: "none" }}
             />
             <button onClick={() => submit(false)} disabled={!entry.trim()}
+              // The keyboard stays up: refusing the focus change on pointer-down
+              // keeps the box focused, and the click still fires. Without it
+              // every guess dropped the keyboard and brought it back about a
+              // second and a half later (Alex's recording, 12 Oct 2026; Top 10
+              // has done this since 9 Oct).
+              onPointerDown={(e) => e.preventDefault()} onMouseDown={(e) => e.preventDefault()}
               style={{ flexShrink: 0, padding: "0 20px", borderRadius: 12, border: "none",
                        background: entry.trim() ? "var(--accent)" : "var(--s2)",
                        color: entry.trim() ? "var(--grn-ink)" : "var(--t3)", fontWeight: 800, fontSize: 14,
@@ -410,6 +429,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                             boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>
                 {suggestions.map((p) => (
                   <button key={p.id} type="button" onClick={() => submit(false, p.name)}
+                    onPointerDown={(e) => e.preventDefault()} onMouseDown={(e) => e.preventDefault()}
                     style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 2,
                              width: "100%", padding: "9px 14px", background: "none", border: "none",
                              borderBottom: "1px solid var(--border)", color: "var(--t1)", cursor: "pointer",
@@ -425,13 +445,14 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
             )}
           </div>
           <button onClick={() => submit(true)}
+            onPointerDown={(e) => e.preventDefault()} onMouseDown={(e) => e.preventDefault()}
             /* minHeight, not padding: this is full-width so nothing shifts
                sideways, and 10px padding around 13px text landed at 38px —
                six short of the 44px floor (experience audit, 2026-08-23). */
             style={{ marginTop: 8, width: "100%", minHeight: 44, background: "transparent", border: "1px solid var(--border)",
                      borderRadius: 11, padding: "10px", color: "var(--t2)", fontSize: 13, fontWeight: 700,
                      fontFamily: "inherit", cursor: "pointer" }}>
-            Skip — show me another club
+            Skip a guess and show the next club
           </button>
         </>
       )}
