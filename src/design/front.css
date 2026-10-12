@@ -109,13 +109,19 @@
 .fd-card-body{display:flex;flex-direction:column;gap:2px;min-width:0}
 .fd-card-n{font-size:15px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .fd-card-no{font-size:12.5px;font-weight:500;color:var(--t3)}
-.fd-card-line{font-size:13.5px;color:var(--t2)}
+.fd-card-line{font-size:13.5px;color:var(--t2);text-wrap:balance}
 .fd-tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border:1px solid var(--bd2);border-radius:999px;padding:2px 7px}
 .fd-play{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;padding:0 14px;border-radius:999px;background:var(--grn);color:var(--grn-ink);font-size:13.5px;font-weight:800}
 /* Today: Footle leads with its live board (Today A/B 2026-09-04, Alex: B);
    the other three are compact rows beside it. Phones stack: lead, the
    practice toggle, then the rows. */
-.fd-today{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-areas:"lead rest" "alt rest";gap:12px;align-items:start}
+/* FOUR EQUAL CARDS. The columns were 1.25fr and 1fr with the cards aligned to
+   the top: what was left of a lead-card layout that was dropped. The narrower
+   right column wrapped Daily 7's line and that one card stood taller than the
+   other three (Alex, 12 Oct 2026, from a screenshot). Equal columns and equal
+   rows: all four share the height of the tallest, on a phone's single column
+   too, where two of the four lines wrap and two do not. */
+.fd-today{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:12px;align-items:stretch}
 .fd-lead{grid-area:lead;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:18px;background:var(--s1);border:1px solid var(--bd);border-radius:14px;transition:border-color .15s,background .15s}
 .fd-lead:hover{border-color:var(--bd2);background:var(--s2)}
 .fd-lead-body{display:flex;flex-direction:column;gap:6px;min-width:0}

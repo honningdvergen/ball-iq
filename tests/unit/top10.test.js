@@ -538,6 +538,21 @@ describe('Opening a finished daily to review it pays nothing again (simulator, 1
   });
 });
 
+describe('The four Today cards on the front door are one size (Alex, 12 Oct 2026)', () => {
+  const door = readFileSync(new URL('../../src/marketing/FrontDoor.jsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../../src/design/front.css', import.meta.url), 'utf8');
+  it('no card line is long enough to wrap on a phone', () => {
+    // the daily cards only: the Games grid below them is a different card with room for more
+    const lines = [...door.matchAll(/k: '(?:footle|daily|trail|top10|mystery)'[^}]*?line: '([^']+)'/g)].map((m) => m[1]);
+    expect(lines.length).toBeGreaterThanOrEqual(10);
+    for (const l of lines) expect(l.length, l).toBeLessThanOrEqual(24);
+  });
+  it('equal columns and equal rows, not the lead-card grid that was left behind', () => {
+    expect(css).toMatch(/\.fd-today\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\);grid-auto-rows:1fr;/);
+    expect(css).not.toMatch(/\.fd-today\{[^}]*1\.25fr/);
+  });
+});
+
 describe('A finish screen ends above the home indicator (simulator, 12 Oct 2026)', () => {
   const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
   it('one clearance, with a floor for Android, where the WebView reports no inset', () => {

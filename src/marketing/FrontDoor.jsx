@@ -85,12 +85,17 @@ const TOP10_HREF = '/top10';
 // The fourth daily is Top 10 on a day it has a list and Mystery Player
 // otherwise (Top 10 took its place, 9 Oct 2026). Mystery keeps its card either
 // way; it only loses the Daily tag.
+// ⚠️ A card's line is 24 characters at most ("Guess the surname in six" is the
+// measure). A longer one wraps on a phone and at tablet widths, and the card
+// that wraps is the odd one out of four: "Seven questions, the same for
+// everyone" was (Alex, 12 Oct 2026). The same strings are used for the Today
+// cards below; a test holds both to the length.
 const gamesFor = (top10Live) => [
   { k: 'footle', n: 'Footle', line: 'Guess the surname in six', href: '/football-wordle/', daily: true },
-  { k: 'daily', n: 'Daily 7', line: 'Seven questions, the same for everyone', href: '/daily-football-quiz/', daily: true },
-  { k: 'trail', n: 'Transfer Trail', line: 'Follow the moves, name the player', href: '/transfer-trail/', daily: true },
+  { k: 'daily', n: 'Daily 7', line: 'Seven questions a day', href: '/daily-football-quiz/', daily: true },
+  { k: 'trail', n: 'Transfer Trail', line: 'Whose career is this?', href: '/transfer-trail/', daily: true },
   ...(top10Live ? [{ k: 'top10', n: 'Top 10', line: 'Name all ten on the list', href: TOP10_HREF, daily: true }] : []),
-  { k: 'mystery', n: 'Mystery Player', line: 'Guess who from career clues', href: '/mystery-player/', daily: !top10Live },
+  { k: 'mystery', n: 'Mystery Player', line: 'Guess who from the clues', href: '/mystery-player/', daily: !top10Live },
   { k: 'clubquiz', n: 'Club Quiz', line: 'Pick your club, ten on them', href: door('clubquiz') },
   { k: 'leaguequiz', n: 'League Quiz', line: 'One competition, its history', href: door('leaguequiz') },
   { k: 'classic', n: 'Classic', line: 'Ten questions, twenty seconds each', href: door('classic') },
@@ -219,11 +224,11 @@ export default function FrontDoor() {
 
   const dailies = [
     { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Played', href: '/football-wordle/' },
-    { k: 'daily', n: 'Daily 7', no: null, line: 'Seven questions, the same for everyone', st: state.daily, done: state.daily === 'done', doneText: state.dailyScore != null ? `${state.dailyScore} of 7` : 'Played', href: '/daily-football-quiz/' },
-    { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Follow the moves, name the player', st: state.trail, done: state.trail === 'done', doneText: 'Played', href: '/transfer-trail/' },
+    { k: 'daily', n: 'Daily 7', no: null, line: 'Seven questions a day', st: state.daily, done: state.daily === 'done', doneText: state.dailyScore != null ? `${state.dailyScore} of 7` : 'Played', href: '/daily-football-quiz/' },
+    { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Whose career is this?', st: state.trail, done: state.trail === 'done', doneText: 'Played', href: '/transfer-trail/' },
     ...(top10Live
       ? [{ k: 'top10', n: 'Top 10', no: getTop10Number(today), line: 'Name all ten on the list', st: state.top10, done: state.top10 === 'done', doneText: state.top10Score != null ? `${state.top10Score} of 10` : 'Played', href: TOP10_HREF }]
-      : MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from career clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: '/mystery-player/' }] : []),
+      : MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from the clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: '/mystery-player/' }] : []),
   ];
   const playedCount = dailies.filter((d) => d.done).length;
 
