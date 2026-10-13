@@ -388,15 +388,9 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             and the hero badge carries the icon, so the well and the title go
             and the number line becomes the masthead — five things in one
             row wrapped to three lines at 375px with them in (2026-09-05). */}
-        {!embedded && (
-          <div style={{
-            width: 36, height: 36, borderRadius: 10, flexShrink: 0, marginRight: 10,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: modeTint('mystery', 0.12), border: `1px solid ${modeTint('mystery', 0.3)}`,
-          }} aria-hidden="true">
-            <UserRoundSearch size={19} strokeWidth={2.1} color={MODE_ACCENT.mystery} />
-          </div>
-        )}
+        {/* No mode chip beside the back button (13 Oct 2026): no other game's
+            header has one, and two boxes before the title read as two
+            buttons. The purple number under the title carries the mode. */}
         {/* ⚠️ THIS ROW HOLDS FIVE THINGS AND THE FIFTH ARRIVES LATE. CLOSEST
             only appears after the first guess, so the header fitted on one
             clean line right up until you played — then it broke to

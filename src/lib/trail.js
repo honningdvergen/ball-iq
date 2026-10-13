@@ -57,7 +57,7 @@ export function getTrailNumber(date = new Date()) {
 // ── Dataset (filled by the verified forge waves — see header) ─────────────────
 // Row shape:
 //   { key:"YOUNG_A", display:["Ashley","Young"], nat:"England",
-//     clubs:["Watford","Aston Villa","Man Utd","Inter","Aston Villa","Everton"],
+//     clubs: ["Watford","Aston Villa","Man Utd","Inter","Aston Villa","Everton"],
 //     loans:[false,false,false,false,false,false],   // parallel to clubs
 //     years:["2003–07", ...] }                        // assist-only, optional
 export const TRAIL_PLAYERS = [
@@ -158,10 +158,10 @@ export const TRAIL_PLAYERS = [
     clubs: ["Talleres","Banfield","Inter Milan"],
     loans: [false,false,false] },
   { key: "JOTA", display: ["Diogo","Jota"], nat: "Portugal",
-    clubs: ["Paços de Ferreira","Atletico Madrid","Porto","Wolves","Liverpool"],
+    clubs: ["Paços de Ferreira","Atlético Madrid","Porto","Wolves","Liverpool"],
     loans: [false,false,true,false,false] },
   { key: "TURAN", display: ["Arda","Turan"], nat: "Turkey",
-    clubs: ["Galatasaray","Manisaspor","Atletico Madrid","Barcelona","Başakşehir","Galatasaray"],
+    clubs: ["Galatasaray","Manisaspor","Atlético Madrid","Barcelona","Başakşehir","Galatasaray"],
     loans: [false,true,false,false,true,false] },
   { key: "ARBELOA", display: ["Álvaro","Arbeloa"], nat: "Spain",
     clubs: ["Real Madrid","Deportivo","Liverpool","Real Madrid","West Ham"],
@@ -200,7 +200,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Hannover 96","Werder Bremen","Arsenal"],
     loans: [false,false,false] },
   { key: "AZPILICUETA", display: ["César","Azpilicueta"], nat: "Spain",
-    clubs: ["Osasuna","Marseille","Chelsea","Atletico Madrid","Sevilla"],
+    clubs: ["Osasuna","Marseille","Chelsea","Atlético Madrid","Sevilla"],
     loans: [false,false,false,false,false] },
   { key: "LEHMANN", display: ["Jens","Lehmann"], nat: "Germany",
     clubs: ["Schalke 04","AC Milan","Borussia Dortmund","Arsenal","VfB Stuttgart","Arsenal"],
@@ -269,7 +269,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Arsenal","Bolton Wanderers","Bournemouth","West Ham","Bournemouth","AGF"],
     loans: [false,true,true,false,false,false] },
   { key: "MOTTA", display: ["Thiago","Motta"], nat: "Italy",
-    clubs: ["Barcelona","Atletico Madrid","Genoa","Inter Milan","PSG"],
+    clubs: ["Barcelona","Atlético Madrid","Genoa","Inter Milan","PSG"],
     loans: [false,false,false,false,false] },
   { key: "FONTAINE", display: ["Just","Fontaine"], nat: "France",
     clubs: ["US Marocaine","Nice","Reims"],
@@ -371,7 +371,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Caen","Marseille","Chelsea","Arsenal","Tottenham","Perth Glory"],
     loans: [false,false,false,false,false,false] },
   { key: "HERNANDEZ", display: ["Lucas","Hernandez"], nat: "France",
-    clubs: ["Atletico Madrid","Bayern Munich","PSG"],
+    clubs: ["Atlético Madrid","Bayern Munich","PSG"],
     loans: [false,false,false] },
   { key: "VLAHOVIC", display: ["Dušan","Vlahović"], nat: "Serbia",
     clubs: ["Partizan","Fiorentina","Juventus","Beşiktaş"],
@@ -407,7 +407,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Nice","Lyon","Tottenham","LAFC"],
     loans: [false,false,false,false] },
   { key: "GEA", display: ["David de","Gea"], nat: "Spain",
-    clubs: ["Atletico Madrid","Man Utd","Fiorentina"],
+    clubs: ["Atlético Madrid","Man Utd","Fiorentina"],
     loans: [false,false,false] },
   { key: "DYBALA", display: ["Paulo","Dybala"], nat: "Argentina",
     clubs: ["Instituto","Palermo","Juventus","Roma"],
@@ -448,7 +448,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Ajax","Tottenham","Inter Milan","Brentford","Man Utd","VfL Wolfsburg"],
     loans: [false,false,false,false,false,false] },
   { key: "DEPAY", display: ["Memphis","Depay"], nat: "Netherlands",
-    clubs: ["PSV Eindhoven","Man Utd","Lyon","Barcelona","Atletico Madrid","Corinthians"],
+    clubs: ["PSV Eindhoven","Man Utd","Lyon","Barcelona","Atlético Madrid","Corinthians"],
     loans: [false,false,false,false,false,false] },
   { key: "NAGATOMO", display: ["Yūto","Nagatomo"], nat: "Japan",
     clubs: ["FC Tokyo","Cesena","Inter Milan","Galatasaray","Marseille","FC Tokyo"],
@@ -518,7 +518,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Albirex Niigata","VfB Stuttgart","Hamburger SV","Vissel Kobe"],
     loans: [false,false,false,false] },
   { key: "ALVAREZ", display: ["Julián","Alvarez"], nat: "Argentina",
-    clubs: ["River Plate","Man City","River Plate","Atletico Madrid"],
+    clubs: ["River Plate","Man City","River Plate","Atlético Madrid"],
     loans: [false,false,true,false] },
   { key: "VZQUEZ", display: ["Lucas","Vázquez"], nat: "Spain",
     clubs: ["Espanyol","Real Madrid","Leverkusen"],
@@ -583,13 +583,13 @@ export const TRAIL_PLAYERS = [
   // rejected: Young(7)/Villa(8)/Pirlo(8) exceed the 6-rung max (not truncated,
   // per the locked rules); Modrić dropped editorially (obscure loan openers).
   { key: "TORRES", display: ["Fernando", "Torres"], nat: "Spain",
-    clubs: ["Atletico Madrid", "Liverpool", "Chelsea", "AC Milan", "Atletico Madrid", "Sagan Tosu"],
+    clubs: ["Atlético Madrid", "Liverpool", "Chelsea", "AC Milan", "Atlético Madrid", "Sagan Tosu"],
     loans: [false, false, false, true, false, false] },
   { key: "BALE", display: ["Gareth", "Bale"], nat: "Wales",
     clubs: ["Southampton", "Tottenham", "Real Madrid", "Tottenham", "Real Madrid", "LAFC"],
     loans: [false, false, false, true, false, false] },
   { key: "VAN_PERSIE", display: ["Robin", "van Persie"], nat: "Netherlands",
-    clubs: ["Feyenoord", "Arsenal", "Man Utd", "Fenerbahce", "Feyenoord"],
+    clubs: ["Feyenoord", "Arsenal", "Man Utd", "Fenerbahçe", "Feyenoord"],
     loans: [false, false, false, false, false] },
   { key: "ALONSO", display: ["Xabi", "Alonso"], nat: "Spain",
     clubs: ["Real Sociedad", "Eibar", "Real Sociedad", "Liverpool", "Real Madrid", "Bayern Munich"],
@@ -601,7 +601,7 @@ export const TRAIL_PLAYERS = [
     clubs: ["Ajax", "Real Madrid", "Inter", "Galatasaray", "Nice", "Al-Gharafa"],
     loans: [false, false, false, false, false, false] },
   { key: "OZIL", display: ["Mesut", "Özil"], nat: "Germany",
-    clubs: ["Schalke 04", "Werder Bremen", "Real Madrid", "Arsenal", "Fenerbahce", "Basaksehir"],
+    clubs: ["Schalke 04", "Werder Bremen", "Real Madrid", "Arsenal", "Fenerbahçe", "Başakşehir"],
     loans: [false, false, false, false, false, false] },
   { key: "OWEN", display: ["Michael", "Owen"], nat: "England",
     clubs: ["Liverpool", "Real Madrid", "Newcastle", "Man Utd", "Stoke City"],
@@ -673,34 +673,34 @@ export const TRAIL_PLAYERS = [
     clubs: ["Santos","Barcelona","PSG","Al-Hilal","Santos"],
     loans: [false, false, false, false, false] },
   { key: "AGUERO", display: ["Sergio","Agüero"], nat: "Argentina",
-    clubs: ["Independiente","Atletico Madrid","Man City","Barcelona"],
+    clubs: ["Independiente","Atlético Madrid","Man City","Barcelona"],
     loans: [false, false, false, false] },
   { key: "ISCO", display: ["Isco","Alarcón"], nat: "Spain",
-    clubs: ["Valencia","Malaga","Real Madrid","Sevilla","Real Betis"],
+    clubs: ["Valencia","Málaga","Real Madrid","Sevilla","Real Betis"],
     loans: [false, false, false, false, false] },
   { key: "VERTONGHEN", display: ["Jan","Vertonghen"], nat: "Belgium",
     clubs: ["Ajax","RKC Waalwijk","Tottenham","Benfica","Anderlecht"],
     loans: [false, true, false, false, false] },
   { key: "KANTE", display: ["N'Golo","Kanté"], nat: "France",
-    clubs: ["Boulogne","Caen","Leicester","Chelsea","Al-Ittihad","Fenerbahce"],
+    clubs: ["Boulogne","Caen","Leicester","Chelsea","Al-Ittihad","Fenerbahçe"],
     loans: [false, false, false, false, false, false] },
   { key: "ALDERWEIRELD", display: ["Toby","Alderweireld"], nat: "Belgium",
-    clubs: ["Ajax","Atletico Madrid","Southampton","Tottenham","Al-Duhail","Antwerp"],
+    clubs: ["Ajax","Atlético Madrid","Southampton","Tottenham","Al-Duhail","Antwerp"],
     loans: [false, false, true, false, false, false] },
   { key: "JOAQUIN", display: ["Joaquín","Sánchez"], nat: "Spain",
-    clubs: ["Real Betis","Valencia","Malaga","Fiorentina","Real Betis"],
+    clubs: ["Real Betis","Valencia","Málaga","Fiorentina","Real Betis"],
     loans: [false, false, false, false, false] },
   { key: "KLOSE", display: ["Miroslav","Klose"], nat: "Germany",
     clubs: ["Homburg","Kaiserslautern","Werder Bremen","Bayern Munich","Lazio"],
     loans: [false, false, false, false, false] },
   { key: "MATUIDI", display: ["Blaise","Matuidi"], nat: "France",
-    clubs: ["Troyes","Saint-Etienne","PSG","Juventus","Inter Miami"],
+    clubs: ["Troyes","Saint-Étienne","PSG","Juventus","Inter Miami"],
     loans: [false, false, false, false, false] },
   { key: "FLAMINI", display: ["Mathieu","Flamini"], nat: "France",
     clubs: ["Marseille","Arsenal","AC Milan","Arsenal","Crystal Palace","Getafe"],
     loans: [false, false, false, false, false, false] },
   { key: "GILBERTO_SILVA", display: ["Gilberto","Silva"], nat: "Brazil",
-    clubs: ["America Mineiro","Atletico Mineiro","Arsenal","Panathinaikos","Gremio","Atletico Mineiro"],
+    clubs: ["América Mineiro","Atlético Mineiro","Arsenal","Panathinaikos","Grêmio","Atlético Mineiro"],
     loans: [false, false, false, false, false, false] },
 
   // ── Wave M, forged 2026-07-30 ────────────────────────────────────
@@ -737,7 +737,7 @@ export const TRAIL_PLAYERS = [
     // parent contract never ended. Both players had one continuous Chelsea
     // deal with a loan inside it; both now list Chelsea once. De Bruyne
     // needed no change, and does not need a 7th rung.
-    clubs: ["Genk","Atletico Madrid","Chelsea","Real Madrid"],
+    clubs: ["Genk","Atlético Madrid","Chelsea","Real Madrid"],
     loans: [false, true, false, false] },
   { key: "GRIEZMANN", display: ["Antoine","Griezmann"], nat: "France",
     // ⚠️ Orlando City added 2026-08-12 by scripts/verify-trail-careers.mjs, which
@@ -745,7 +745,7 @@ export const TRAIL_PLAYERS = [
     // four-club path as today's puzzle. Confirmed against Wikidata P54 (start
     // 2026) as well as the infobox — one source is not enough for a claim about
     // a living player, and Wikipedia vandalism has reached our binaries before.
-    clubs: ["Real Sociedad","Atletico Madrid","Barcelona","Atletico Madrid","Orlando City"],
+    clubs: ["Real Sociedad","Atlético Madrid","Barcelona","Atlético Madrid","Orlando City"],
     loans: [false, false, false, false, false] },
   { key: "DE_BRUYNE", display: ["Kevin","De Bruyne"], nat: "Belgium",
     clubs: ["Genk","Chelsea","Werder Bremen","Wolfsburg","Man City","Napoli"],
@@ -774,7 +774,7 @@ export const TRAIL_PLAYERS = [
     // the two trimmed Polish clubs the full career is seven rungs, over the
     // six-rung cap — this stays at five because the trim is a deliberate
     // editorial subset made in wave M, not a truncation of the recent end.
-    clubs: ["Lech Poznan","Dortmund","Bayern Munich","Barcelona","Chicago Fire"],
+    clubs: ["Lech Poznań","Dortmund","Bayern Munich","Barcelona","Chicago Fire"],
     loans: [false, false, false, false, false] },
 ];
 
