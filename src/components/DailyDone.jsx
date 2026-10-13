@@ -175,7 +175,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
         {remind && remind.state === "on" && (
           <span className="dd-pill is-set" aria-label={`Reminder set for ${reminderHourLabel()}`}>
-            {/* A bell, not a tick: "✓ 19:00" beside the streak said nothing about
+            {/* A bell, not a tick: a tick and "19:00" beside the streak said nothing about
                 what was set for 19:00 (Alex's recording, 12 Oct 2026). */}
             <Bell size={13} strokeWidth={2.4} aria-hidden="true" /> {reminderHourLabel()}
           </span>
