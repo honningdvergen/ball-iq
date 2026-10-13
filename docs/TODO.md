@@ -1193,6 +1193,28 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
+**Ticked off late on 13 Oct**
+- [x] Transfer Trail careers: nine club names given their accents (Atlético
+      Madrid, Fenerbahçe, Málaga, Grêmio and five more; 27 places).
+- [x] Mystery Player's header has one box before the title, like every other
+      game. The reminder pill is a bell and the hour, not a tick and the hour.
+- [x] Android versionCode 54.
+- [x] DECIDED AGAINST, with the numbers: sorting all-number answer options
+      into ascending order. 256 of 736 such sets are out of order, and it
+      looks careless, but sorted, the right answer would sit second or third
+      in 83% of them (third alone 49%), because the wrong options are written
+      either side of the true number. "Pick a middle number" would be right
+      one time in two. The real fault is the distractors, not the order: in
+      a fair set the answer is the lowest or highest half the time; here it
+      is 16%. Rewrite distractors before sorting anything.
+- [x] DECIDED AGAINST: a Next button that is always on the question screen.
+      A dead button before an answer is its own oddity, and the sticky foot
+      would cover the last option on short phones. The empty lower half on
+      tall phones stays; rows are already taller from 920pt.
+- [x] This session runs in Bypass permissions from 13 Oct (Alex approved the
+      switch). The project's ask rules for force pushes, pushes of discarded
+      work and PR merges no longer prompt: hold those by hand.
+
 **The zero that read as an eight (Alex, 13 Oct night)**
 - [x] Small score chips (History, Top 10's count and rank chips, the quiz
       counter) are set in Inter with tabular figures: JetBrains Mono's zero is
