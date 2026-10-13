@@ -8,6 +8,7 @@ import { Star, Trophy } from "lucide-react";
 import { haptic, Confetti } from "../App.jsx";
 import { DailyDone } from "../components/DailyDone.jsx";
 import { CountUp } from "../components/CountUp.jsx";
+import ResultFoot from "../components/ResultFoot.jsx";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { WrongAnswersReview } from "../components/WrongAnswersReview.jsx";
 import { dayIndexForDate } from "../lib/date.js";
@@ -212,8 +213,15 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           }}
         >
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
+          {/* The total rides the number ("3/7"). It used to be said a second
+              time in a line underneath: "3 correct out of 7". */}
+          {!isSurvival && <span style={{ fontSize: 34, fontWeight: 800, color: "var(--t3)", textShadow: "none", letterSpacing: 0 }}>/{result.total}</span>}
         </div>
-        <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>{scoreCaption}{bestRun ? <> · best run <span className="numeric">{bestRun}</span> in a row</> : null}</div>
+        {(isSurvival || bestRun > 0) && (
+          <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>
+            {isSurvival ? scoreCaption : <>Best run <span className="numeric">{bestRun}</span> in a row</>}
+          </div>
+        )}
         {/* Score-tier tagline. Daily uses the daily-specific tier copy so
             the personality from the old DailySocialProof callout is kept
             ("Tomorrow's another chance to climb" etc.) without the
@@ -287,9 +295,8 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           {/* Daily 7: the panel IS the action set — share, remind, stump a mate,
               save. What is left is the review of what got you, then the way out. */}
           <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
-          <div className="results-actions" style={{marginTop:18}}>
-            <button className="results-exit" onClick={onHome}>Back to Home</button>
-          </div>
+          {/* The same way out as Footle, Transfer Trail and Top 10. */}
+          <ResultFoot onHome={onHome} />
         </>
       ) : (
         <>
