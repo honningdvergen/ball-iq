@@ -52,39 +52,41 @@
     <link rel="preconnect" href="https://blcisypmngimqkwxrrdm.supabase.co" crossorigin />
     <link rel="dns-prefetch" href="https://blcisypmngimqkwxrrdm.supabase.co" />
 
-    <!-- Fonts loaded NON-render-blocking: swap to `all` once parsed so first paint
-         isn't gated on the Google Fonts CSS round-trip. Falls back through the
-         system stack (-apple-system, Inter bundled nowhere).
+    <!-- THE TEXT FACES SHIP WITH THE APP (13 Oct 2026). Inter and JetBrains Mono
+         are served from /fonts/, not from Google. Before this the installed app
+         fetched them over the network with display=optional: a first launch,
+         and any launch offline, was drawn in the phone's own font for the whole
+         session, and the store screenshots showed a typeface a new player did
+         not get. Files: public/fonts (SIL OFL, licence beside them); the native
+         prune keeps that folder (scripts/prune-native-web-assets.mjs).
 
-         display=OPTIONAL, not swap (LCP shell work, 2026-08-20): with swap,
-         Inter arriving mid-visit re-rendered every text block a few percent
-         LARGER — measured on the onboarding question: fallback paint 11,676px²
-         at 780ms, Inter repaint 12,384px² at 2,772ms — so the LATE paint stole
-         LCP from the pre-boot shell and pinned it to JS-execution time.
-         `optional` means: Inter if it's ready at first paint (warm cache =
-         every repeat visit), otherwise the system stack for THIS visit and no
-         mid-session reflow — text metrics stay constant, the shell's first
-         paint stays the largest candidate, and the old font-flash is gone. -->
-    <!-- Split by role: Anton is the marketing display face — a late swap is
-         better than losing the hero's identity on a cold visit, so it keeps
-         display=swap. Inter + JetBrains Mono are the app's TEXT faces, where
-         a mid-visit metric change is exactly the LCP theft described above —
-         they get display=optional. -->
+         display=OPTIONAL on the web, not swap (LCP shell work, 2026-08-20): with
+         swap, Inter arriving mid-visit re-rendered every text block a few
+         percent LARGER (measured on the onboarding question: fallback paint
+         11,676px² at 780ms, Inter repaint 12,384px² at 2,772ms), so the LATE
+         paint stole LCP from the pre-boot shell. `optional` means Inter if it
+         is ready at first paint, otherwise the system stack for THIS visit and
+         no mid-session reflow. The preload below is what makes "ready" the
+         usual case now that the file is ours. In the installed app the file is
+         on the phone, so the native script further down turns `optional` into
+         `swap` there: a missed 100ms window must not cost a whole session. -->
+    <link rel="preload" href="/fonts/inter-5.3-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <style id="biq-fonts">
+      @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:optional;src:url(/fonts/inter-5.3-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+      @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:optional;src:url(/fonts/inter-5.3-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+      @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:optional;src:url(/fonts/jetbrains-mono-5.3-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+    </style>
+    <!-- Anton is the marketing display face, still from Google: a late swap is
+         better than losing the hero's identity on a cold visit (display=swap),
+         and the installed app does not draw it at launch. -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
       media="print"
       onload="this.media='all'"
     />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=optional"
-      media="print"
-      onload="this.media='all'"
-    />
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=optional" />
     </noscript>
 
     <!-- Sprint #79 WW1: sizes attribute matches the actual file. The
@@ -144,6 +146,9 @@
       if (location.protocol === 'capacitor:' ||
           (window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform())) {
         document.documentElement.classList.add('native-app');
+        /* The fonts are files on the phone here: let a late one swap in
+           rather than leave the session in the fallback (see #biq-fonts). */
+        try { var bf = document.getElementById('biq-fonts'); if (bf) bf.textContent = bf.textContent.replace(/font-display:optional/g, 'font-display:swap'); } catch (e) {}
 
         /* ── ANDROID NEEDS ITS OWN BOTTOM FLOOR ─────────────────────────────
            Alex, 2026-08-14: "we have to think how the tab will look on an

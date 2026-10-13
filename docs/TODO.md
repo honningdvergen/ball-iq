@@ -1230,6 +1230,28 @@ Pro Max (build 144), reviewed before it went out:
       switch). The project's ask rules for force pushes, pushes of discarded
       work and PR merges no longer prompt: hold those by hand.
 
+**Older open items, closed or ruled on 13 Oct, late**
+- [x] Top 10's finish says the score once (the large figure). The header
+      reads "The list, in full" and the count beside the date is for a game
+      still in play.
+- [x] Onboarding opens under the wordmark, as the launch screen shows it; the
+      emoji football is out of its heading.
+- [x] Inter and JetBrains Mono ship in the app (`public/fonts`, declared in
+      index.html, kept by the native prune). A first launch and an offline
+      launch are drawn in Inter. Web keeps display=optional with a preload;
+      the installed app swaps. Checked in WebKit and Chromium with Google
+      blocked. CHECK IN THE REAL APP in airplane mode (build 146 pass).
+- [x] NOT A FAULT: "a rating request on day one". The ask waits for a Footle
+      solved on an earlier day (App.jsx, the daily-done handler).
+- [x] NOT A FAULT: "8 players, 6 players and 1v1". Online takes eight, pass
+      and play takes six, and 1v1 is the sign-in copy for the usual case.
+- [x] STAYS: "Report a problem" as a quiet row above Next. It was put there
+      on purpose (review A4): under the button it could not be tapped.
+- [x] NOT REPRODUCED: four seconds after Skip on onboarding. 250 ms in
+      WebKit, twice; the emulators were starved on this Mac.
+- [x] STAYS: onboarding's "Start playing" opens Footle. Home marks Footle
+      "Start here" for the same reason.
+
 **One game header (13 Oct, late)**
 - [x] Top 10, Transfer Trail, Draft and Mystery Player share one title
       (`GameTitle`): the name at 20px, then "No. N" small and grey as Home

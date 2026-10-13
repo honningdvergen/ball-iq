@@ -43,6 +43,7 @@ const TARGET_DIRS = [
 // have to make deliberately rather than one you can forget to make.
 const KEEP_EXACT = new Set([
   'assets',            // the app bundle itself
+  'fonts',             // Inter + JetBrains Mono, drawn from the first frame (index.html #biq-fonts)
   'index.html',
   'cordova.js',
   'cordova_plugins.js',
