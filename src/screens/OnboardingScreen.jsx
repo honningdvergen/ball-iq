@@ -186,8 +186,12 @@ export function OnboardingScreen({ onDone }) {
         <div className="onboard-track">
           {/* Taste it — one quick question (the casual hook). */}
           <div className="onboard-step">
+            {/* The name, as the launch screen has just shown it, moved to the
+                top: the first screen opened with its upper third empty and an
+                emoji football closing its heading (13 Oct 2026). */}
+            <div className="onboard-mark" aria-hidden="true">Ball <em>IQ</em></div>
             <div className="onboard-step-top">
-              <div className="onboard-title" style={{ marginTop: 16 }}>Quick one — give it a go ⚽</div>
+              <div className="onboard-title" style={{ marginTop: 16 }}>Quick one. Give it a go.</div>
               <div className="onboard-body" style={{ marginBottom: 14 }}>{ONBOARD_SAMPLE.q}</div>
               <div className="onboard-sample-opts">
                 {ONBOARD_SAMPLE.o.map((opt, i) => {

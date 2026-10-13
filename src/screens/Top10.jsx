@@ -383,7 +383,11 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
     ? (g.lives === TOP10_LIVES ? "All ten, without a single miss." : `All ten, with ${g.lives} ${g.lives === 1 ? "life" : "lives"} to spare.`)
     : g.out ? "Out of lives. The ones that got away are filled in above."
       : "You called it there. The rest are filled in above.";
-  const sub = g.done ? (g.perfect ? "Perfect ten" : `${g.score} of ${total}`) : "Name all ten. Three lives.";
+  // ⚠️ THE FINISH SAID THE SCORE THREE TIMES: here ("1 of 10"), on the count
+  // beside the date ("1/10") and in the large figure under the board (13 Oct
+  // 2026). The large figure is the one; the header names the state and the
+  // count is for a game still being played.
+  const sub = g.done ? (g.perfect ? "Perfect ten" : "The list, in full") : "Name all ten. Three lives.";
   let missedSeen = 0;
 
   return (
@@ -395,7 +399,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
         <h2 className="t10-q-title">{list.title}</h2>
         <div className="t10-q-meta">
           <span>As of {formatAsOf(list.asOf)}{list.clueLabel ? ` · clue: ${list.clueLabel.toLowerCase()}` : ""}</span>
-          <span className="t10-q-count">{g.score}/{total}</span>
+          {!g.done && <span className="t10-q-count">{g.score}/{total}</span>}
         </div>
         {/* What counts, and how level entries are ordered. A ranked list is
             unfair without it: "since when?" and "why is he above him?" are

@@ -1734,6 +1734,8 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .onboard-viewport{flex:1;overflow:hidden;width:100%;}
 .onboard-track{display:flex;height:100%;width:100%;}
 .onboard-step{width:100%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:8px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;text-align:center;}
+.onboard-mark{flex:0 0 auto;margin-top:calc(env(safe-area-inset-top,0px) + 14px);font-size:26px;font-weight:900;letter-spacing:-0.035em;line-height:1;color:var(--t1);}
+.onboard-mark em{color:var(--accent);font-style:normal;}
 .onboard-sample-opts{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;}
 .onboard-sample-opt{width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid var(--border2);color:var(--text);font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;transition:transform 120ms ease,background 150ms ease,border-color 150ms ease;-webkit-appearance:none;appearance:none;}
 .onboard-sample-opt:active{transform:scale(0.99);}
