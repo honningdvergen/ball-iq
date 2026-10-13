@@ -8819,7 +8819,10 @@ function AppInner() {
           if (!p) { setTimeout(goHome, 0); return null; }
           // The Mystery chain a Trail loss used to offer is now a "still open today"
           // row in the shared results panel (dailyDoneServices.nextUp).
-          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail player={p} date={day} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>;
+          // Keyed by the day: the screen holds its attempts in state, so an app
+          // left open past midnight showed the new day's clubs with yesterday's
+          // guesses and guard (review, 12 Oct 2026). A new day is a new screen.
+          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail key={dateToYMD(day)} player={p} date={day} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>;
         })()}
         {screen === "top10" && (
           <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 date={archiveDate || undefined} listId={top10ListId || undefined} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>

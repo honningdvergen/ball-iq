@@ -772,6 +772,13 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   const headKeys = useMemo(() => new Set(cols.map(c => c.key)), [cols]);
 
   const playedCount = todayModes.filter(m => m.done).length;
+  // What the table lists. Past days, as ruled on 6 Sept ("HISTORY, not a second
+  // Today"). One exception, for the player with no past days yet: once they
+  // have played something today, today's row is shown. Four games in and the
+  // tab said "Today counts from tomorrow" over an empty box (simulator, 12 Oct
+  // 2026); with no history, today is all the history there is.
+  const pastDays = matchdays.filter(m => !m.isToday);
+  const historyRows = pastDays.length ? pastDays : (playedCount > 0 ? matchdays.filter(m => m.isToday) : []);
 
   // A3. `todayModes.length > 0` is not paranoia — Trail and Mystery are
   // conditional, so a day with neither live and both fixed modes played is the
@@ -868,16 +875,14 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           <span key={c.key} style={{ width: COL_W, flexShrink: 0, textAlign: "center", fontSize: 8.5, fontWeight: 800, letterSpacing: "0.02em", color: c.theme.head }}>{c.label}</span>
         ))}
       </div>
-      {matchdays.filter(m => !m.isToday).length === 0 ? (
+      {historyRows.length === 0 ? (
         // A day-0 player used to get the "RECENT DAYS" header, four column
         // heads, and exactly one row: today, four dashes. A header naming days
         // that are not there, over the one day it excludes by name. The desktop
         // path has carried this empty state since it was written; mobile never
         // got it, and mobile is where nearly everyone is.
         <div style={{ borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px", marginTop: 9, marginBottom: 14, fontSize: 12.5, color: "var(--t3)" }}>
-          {playedCount > 0
-            ? <>Today counts from tomorrow — come back and this fills up.</>
-            : <>Play today, then your recent days show up here.</>}
+          Play today, then your recent days show up here.
         </div>
       ) : (
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 9, marginBottom: 14 }}>
@@ -885,7 +890,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             day, the header does not claim it, and its state is on the streak
             strip above and on Home's Today block. Alex, 2026-09-06: this tab is
             "HISTORY, not a second Today". */}
-        {foldUnplayed(matchdays.filter(m => !m.isToday)).map(m => {
+        {foldUnplayed(historyRows).map(m => {
           if (m.gap) {
             const newest = m.days[0], oldest = m.days[m.days.length - 1];
             const text = m.days.length === 1

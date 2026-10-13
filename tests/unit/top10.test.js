@@ -609,6 +609,29 @@ describe('Transfer Trail keeps the keyboard up between guesses (Alex\'s recordin
   });
 });
 
+describe('The player-facing faults of 13 Oct', () => {
+  const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
+  it('a finished Top 10 board is shorter on a short phone, so Share is on screen', async () => {
+    const { doneRowFor, T10_SHORT_UNDER } = await import('../../src/lib/top10.js');
+    expect(doneRowFor(956)).toBe(60); expect(doneRowFor(874)).toBe(60); expect(doneRowFor(800)).toBe(60);
+    expect(doneRowFor(799)).toBe(52); expect(doneRowFor(762)).toBe(52); expect(doneRowFor(720)).toBe(52);
+    expect(doneRowFor(719)).toBe(46); expect(doneRowFor(647)).toBe(46);
+    expect(T10_SHORT_UNDER).toBe(720);
+    for (let h = 500; h < 1000; h += 7) expect(doneRowFor(h + 7)).toBeGreaterThanOrEqual(doneRowFor(h)); // never taller on a shorter screen
+  });
+  it('a timed question holds a full clock for a moment before it drains, on one deadline', () => {
+    const quiz = read('screens/QuizEngine.jsx');
+    expect(quiz).toMatch(/export const READ_GRACE_MS = \d+;/);
+    expect(quiz).toMatch(/const deadline = Date\.now\(\) \+ READ_GRACE_MS \+ timerDuration \* 1000;/);
+    expect(quiz).toMatch(/const timeoutMs = READ_GRACE_MS \+ \(timerDuration \* 1000\) \+ 100;/);
+    expect(quiz).toMatch(/Math\.min\(timerDuration, Math\.max\(0, Math\.ceil\(\(deadline - Date\.now\(\)\) \/ 1000\)\)\)/);
+  });
+  it('Transfer Trail is a new screen on a new day, and History shows today to a player with no past days', () => {
+    expect(read('App.jsx')).toMatch(/<TransferTrail key=\{dateToYMD\(day\)\}/);
+    expect(read('screens/DailyScreen.jsx')).toMatch(/const historyRows = pastDays\.length \? pastDays : \(playedCount > 0 \? matchdays\.filter\(m => m\.isToday\) : \[\]\);/);
+  });
+});
+
 describe('A finish screen ends above the home indicator (simulator, 12 Oct 2026)', () => {
   const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
   it('one clearance, with a floor for Android, where the WebView reports no inset', () => {

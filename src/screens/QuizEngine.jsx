@@ -158,6 +158,9 @@ export function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
 }
 
 // ─── QUIZ ENGINE ──────────────────────────────────────────────────────────────
+// How long a timed question sits with a full clock before it starts to drain.
+export const READ_GRACE_MS = 800;
+
 export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel, onHowToPlay }) {
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
@@ -563,10 +566,17 @@ const CTA_INSET = (() => {
     // Deriving the display from the same wall-clock deadline the timeout uses
     // makes drift impossible rather than unlikely: a stall now just skips the
     // display forward, which is honest.
-    const deadline = Date.now() + timerDuration * 1000;
+    // ⚠️ A MOMENT TO READ BEFORE THE CLOCK DRAINS. The question card fades in
+    // and the eye has to find it; the clock used to run from the first frame,
+    // so a 20-second question was 19 by the time it could be read (first seen
+    // in the 30 Aug audit, again on 9 and 12 Oct). Not a start gate: Alex
+    // "absolutely hated" those (6 Sept). The bar simply stays full for
+    // READ_GRACE_MS and then runs its whole length. Same single deadline for
+    // the display and the timeout, as the note above requires.
+    const deadline = Date.now() + READ_GRACE_MS + timerDuration * 1000;
     let warned = false;
     timerRef.current = setInterval(() => {
-      const left = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      const left = Math.min(timerDuration, Math.max(0, Math.ceil((deadline - Date.now()) / 1000)));
       // Fire the 5-second warning on the CROSSING, not on an exact equality —
       // a stall can jump straight past any single value.
       if (!warned && left <= 5 && left > 0) { warned = true; try { haptic("select"); } catch {} }
@@ -574,7 +584,7 @@ const CTA_INSET = (() => {
       setTimeLeft(left);
     }, 250);
     // Separate effect watches for timeout (avoids stale closure entirely)
-    const timeoutMs = (timerDuration * 1000) + 100;
+    const timeoutMs = READ_GRACE_MS + (timerDuration * 1000) + 100;
     answerTimeoutRef.current = setTimeout(() => {
       // Phase 5x: capture timeout into allAnswers so the Daily review
       // screen renders this question with a "timed out" tag instead of

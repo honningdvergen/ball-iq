@@ -158,6 +158,14 @@ export function rankListSuggestions(pool, text, { limit = 6, exclude } = {}) {
     .map((x) => x.e);
 }
 
+// The finished board's row, by the height of the screen: 60pt where there is
+// room, less on a short phone, so that Share under the board is on screen
+// without scrolling. Measured 12 and 13 Oct 2026 with ten-row boards: at 60pt
+// Share ended 108pt below the fold on an iPhone SE, 25 on a 13 mini and 21 on
+// a 360x800 Android. Each 1pt off the row gives 5pt back.
+export const doneRowFor = (h) => (h >= 800 ? 60 : h >= 720 ? 52 : 46);
+export const T10_SHORT_UNDER = 720;
+
 // A name with one very long word ("Borussia Mönchengladbach", "1. FC
 // Kaiserslautern") cannot be wrapped between words to fit half a phone, and
 // the board would break it inside the word. Such a name is set a size smaller

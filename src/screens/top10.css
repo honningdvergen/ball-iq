@@ -257,6 +257,11 @@
 
 /* The result. */
 .t10-result { margin-top: 16px; text-align: center; animation: t10Rise 260ms ease-out both; }
+/* A short phone, game over: the note gives its room to the board and the
+   score sits tighter, so Share is on screen (lib/top10.js, doneRowFor). */
+.t10.is-short .t10-q-note { display: none; }
+.t10.is-short .t10-score { font-size: 30px; }
+.t10.is-short .t10-score small { font-size: 16px; }
 .t10-score { font-size: 40px; line-height: 1; font-weight: 900; color: var(--t1); font-variant-numeric: tabular-nums; }
 .t10-score.is-earned { color: var(--t10); }
 .t10-score small { font-size: 20px; font-weight: 800; color: var(--t3); }

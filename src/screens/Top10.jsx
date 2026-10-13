@@ -28,7 +28,7 @@ import {
   computeTop10Streak,
   buildTop10ShareText,
   formatAsOf,
-  fitTop10Board, hasLongWord,
+  fitTop10Board, hasLongWord, doneRowFor, T10_SHORT_UNDER,
   T10_ROW_MAX,
 } from "../lib/top10.js";
 import { resolveDailyServices } from "../games/dailyServices.js";
@@ -267,6 +267,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
     const el = boardRef.current;
     const next = fitting && el
       ? fitTop10Board(visibleBottom(kbInset) - el.getBoundingClientRect().top - 6, fit.tight)
+      : g.done ? (() => { const r = doneRowFor(window.innerHeight); return { row: r, tight: false, size: r >= 52 ? "l" : "m" }; })()
       : { row: T10_ROW_MAX, tight: false, size: "l" };
     if (next.row !== fit.row || next.tight !== fit.tight || next.size !== fit.size) setFit({ row: next.row, tight: next.tight, size: next.size });
   };
@@ -385,7 +386,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
   let missedSeen = 0;
 
   return (
-    <div className={`screen t10${fit.tight ? " is-tight" : ""}`} style={{ ...SKIN, paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)" }}>
+    <div className={`screen t10${fit.tight ? " is-tight" : ""}${g.done && typeof window !== "undefined" && window.innerHeight < T10_SHORT_UNDER ? " is-short" : ""}`} style={{ ...SKIN, paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)" }}>
       {g.perfect && Confetti ? <Confetti /> : null}
       <Head number={number} sub={sub} lives={g.done ? null : g.lives} onBack={onBack} embedded={embedded} />
 
