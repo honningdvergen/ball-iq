@@ -700,8 +700,8 @@ html.native-app ::-webkit-scrollbar{display:none;}
   .prog-pips i.now{animation:none;opacity:.8}
 }
 .q-top-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.q-ctr{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;color:var(--t2);white-space:nowrap;font-weight:500;letter-spacing:0.04em;}
-.q-score-live{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+.q-ctr{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:13px;color:var(--t2);white-space:nowrap;font-weight:500;letter-spacing:0.04em;}
+.q-score-live{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap;animation:scorePop 0.25s cubic-bezier(0.34,1.56,0.64,1);}
 .q-score-tick{font-size:12px;font-weight:600;}
 /* The verdict banner when an answer row already shows it: for a screen reader
    only. Spelt out here because .feedback's own box (padding, min-height,
@@ -1401,7 +1401,7 @@ html.is-android .tab-bar{ bottom:56px; }
 .fix-head-footle,.fix-head-daily7{text-align:center;font-size:9.5px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;}
 .fix-head-footle{color:var(--green-ink);}
 .fix-head-daily7{color:#fb923c;}
-.fix-cell{text-align:center;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:14px;font-weight:800;letter-spacing:0.01em;color:var(--t3);font-variant-numeric:tabular-nums;}
+.fix-cell{text-align:center;font-family:var(--font);font-size:14px;font-weight:800;letter-spacing:0.01em;color:var(--t3);font-variant-numeric:tabular-nums;}
 .fix-cell.fix-footle.on{color:var(--green-ink);}
 .fix-cell.fix-daily7.on{color:#fb923c;}
 .fix-row.is-today{background:var(--accent-dim);border-color:rgba(88,204,2,0.30);}
@@ -1418,7 +1418,7 @@ html.is-android .tab-bar{ bottom:56px; }
 /* Sprint #71 MM2: .fix-score replaced the .fix-badge W/D/L letter. Same
    28x24 footprint preserves row rhythm. Mono font for numeric clarity.
    is-empty dims the "—/7" placeholder so attempted-T7 days stand out. */
-.fix-score{min-width:28px;height:24px;display:grid;place-items:center;font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:12px;font-weight:700;letter-spacing:0.02em;color:var(--t1);flex-shrink:0;padding:0 4px;}
+.fix-score{min-width:28px;height:24px;display:grid;place-items:center;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:0.02em;color:var(--t1);flex-shrink:0;padding:0 4px;}
 .fix-score.is-empty{color:var(--t3);font-weight:500;}
 
 /* ── DAILY REVIEW MINI-STRIP (last 7 days) ── */

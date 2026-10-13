@@ -14,7 +14,11 @@ import { MODE_ACCENT, MODE_RGB } from '../lib/accents.js';
 // Shared monospace stack for tabular numerals (countdown, scores). Mirrors the
 // inline font used by the mobile markup so the >=1024 desktop layout renders
 // identical figures.
-const MONO = "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace";
+// Scores are set in the app's own face with tabular figures, not the mono
+// one: JetBrains Mono's zero is slashed, and at chip size "0/10" read as
+// "8/10" (Alex, from his phone, 13 Oct 2026). The name is kept; every use
+// already sets tabular-nums or sits in a fixed-width chip.
+const MONO = "var(--font)";
 
 // msToNextLocalMidnight + formatCountdown moved to lib/date.js on 2026-08-23
 // so the Mystery result screen can show the same countdown. One definition;

@@ -41,7 +41,7 @@
   margin-top: 5px; font-size: 12.5px; color: var(--t2);
 }
 .t10-q-count {
-  flex-shrink: 0; font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 700;
+  flex-shrink: 0; font-family: var(--font); font-weight: 700;
   color: var(--t10); font-variant-numeric: tabular-nums;
 }
 .t10-q-note { margin: 4px 0 0; font-size: 12px; line-height: 1.35; color: var(--t3); text-wrap: pretty; }
@@ -123,7 +123,7 @@
 .t10-rank {
   flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 8px;
   background: rgba(255, 255, 255, 0.05);
-  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12.5px; font-weight: 700;
+  font-family: var(--font); font-size: 12.5px; font-weight: 700;
   color: var(--t3); font-variant-numeric: tabular-nums;
 }
 .t10-rank.is-p1 { --t10-medal: #F5C542; --t10-medal-ink: #2B1F00; }
