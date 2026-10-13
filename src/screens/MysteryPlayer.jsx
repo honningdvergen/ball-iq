@@ -520,7 +520,10 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       )}
 
       {!done && (
-        <form onSubmit={onSubmitText} style={{ padding: '0 16px 8px', position: 'relative' }}>
+        <form onSubmit={onSubmitText}
+          // Full width, in line with the text above and the guesses below. It
+          // was inset 16pt on each side, the one narrower block on the screen.
+          style={{ padding: '0 0 8px', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--s1)', border: '1px solid var(--border)', borderRadius: 14, padding: '0 14px' }}>
             <Search size={17} style={{ color: 'var(--t3)', flexShrink: 0 }} />
             <input
@@ -547,7 +550,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
                hook cannot help here, because kbInset pads the PAGE and this is
                not on the page. Bounded to the space the visual viewport actually
                reports, and scrollable inside it. */
-            <div style={{ position: 'absolute', left: 16, right: 16, zIndex: 20, marginTop: 6, background: 'var(--s2)', border: '1px solid var(--border)', borderRadius: 14, maxHeight: dropMax, overflowY: 'auto', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+            <div style={{ position: 'absolute', left: 0, right: 0, zIndex: 20, marginTop: 6, background: 'var(--s2)', border: '1px solid var(--border)', borderRadius: 14, maxHeight: dropMax, overflowY: 'auto', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
               {!ready && text.trim() && (
                 <div style={{ padding: '12px 14px', fontSize: 13, color: 'var(--t3)' }} role="status">Loading players…</div>
               )}

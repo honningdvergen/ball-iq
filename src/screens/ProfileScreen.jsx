@@ -1723,7 +1723,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         // whether the card is worth having. The sample numbers stay fixed;
         // only the faces follow the model.
         const SAMPLE = [88, 91, 84, 83, 80, 84];
-        const rows = CARD_COMPS.map((c, i) => ({ icon: c.icon, abbr: c.abbr, v: SAMPLE[i] }));
+        const rows = CARD_COMPS.map((c, i) => ({ color: c.color, abbr: c.abbr, v: SAMPLE[i] }));
         // ⚠️ PORTALLED TO document.body, and it must stay that way.
         // `.tab-pane { contain: content }` (app.css) is a real perf win — it
         // stopped a tab tap relaying out 406 of 454 nodes — but containment
@@ -1755,7 +1755,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "7px 16px", marginTop: 16, paddingTop: 13, borderTop: `1px solid ${t.accent}22` }}>
                 {rows.map((r) => (
                   <div key={r.abbr} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 14 }}>{r.icon}</span>
+                    {/* A dot in the competition's colour, as on the real card under
+                        this sheet. It was an emoji per row (a flag, a star, a globe),
+                        the only emoji icons on a screen drawn in line icons. */}
+                    <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: 4, background: r.color, flexShrink: 0 }} />
                     <span style={{ fontSize: 12.5, fontWeight: 800, color: t.accent, fontVariantNumeric: "tabular-nums" }}>{r.v}</span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: t.text, opacity: 0.6 }}>{r.abbr}</span>
                   </div>
