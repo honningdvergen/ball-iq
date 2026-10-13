@@ -207,8 +207,11 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
       {!done && sq && (
         <>
           <div className="dr-spin" key={`${at}:${sq.k}`}>
-            <div className="dr-spin-season">{sq.season}</div>
-            <h2 className="dr-spin-club">{sq.club}</h2>
+            {/* The season is half of what is being drafted, so it is set at the
+                club's own size beside it, not as a 13px label above (Alex, on
+                build 145: "the season font is a bit small"). It wraps under a
+                long club name as one piece. */}
+            <h2 className="dr-spin-club">{sq.club} <span className="dr-spin-season">{sq.season}</span></h2>
             <div className="dr-spin-meta">
               Finished {ordinal(sq.pos)} · {sq.pts} points · scored {sq.gf}, conceded {sq.ga}
             </div>
