@@ -1167,11 +1167,13 @@ Pro Max (build 144), reviewed before it went out:
       a 9px "LEFT". Missed names are readable. Skip says what it costs.
       Confetti no longer replays on a review. Share is on screen at the
       finish at all three sizes measured.
-- [ ] A typed name that is no player ("zzz") still costs a guess when sent
-      with the Guess button. Top 10 does not allow that. Decide.
-- [ ] The Guess button is nearly redundant: every real guess goes through a
-      suggestion. Consider dropping it for a wider box.
-- [ ] Mystery Player has the same keyboard drop (no focus guard on its rows).
+- [x] 13 Oct (Alex: "yes refuse zzz, drop the guess button, fix mystery
+      player too"): a Trail guess is a player, never loose text (Enter sends
+      the answer if typed, else the top suggestion, else nothing; raw text
+      only while the player list has not loaded). The Guess button is gone.
+      Mystery Player's rows keep the keyboard up.
+- [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
+      sweep the club names in lib/trail.js for the same.
 
 **Blocks build 145**
 - [ ] 🔴 Launch screen. The fix is WRITTEN AND UNCOMMITTED in the working tree
