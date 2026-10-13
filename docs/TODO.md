@@ -1193,6 +1193,18 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
+**Build 145 (13 Oct)**
+- [x] Cut from 4a40a51a in the clean clone; preflight green (iOS 1.8.0 build
+      145, both bundles match source).
+- [ ] Android is still versionCode 53, already used: bump before any AAB.
+- [ ] Disk: 17.5 GB of iOS 26.2 simulator runtime is still on disk in a
+      folder macOS protects (`/System/Library/AssetsV2/com_apple_MobileAsset_
+      iOSSimulatorRuntime`, two assets). `sudo rm` cannot touch it and
+      `simctl runtime delete` no longer lists it; one image is still mounted
+      by cryptexd. A restart of the Mac should release it; if not, Xcode,
+      Settings, Components.
+- [ ] What's New draft: `~/ball-iq-audit/2026-10-13/whats-new-1.8.0-draft.md`.
+
 **Blocks build 145**
 - [x] **Launch screen: green, and the "six seconds of black" was mostly my
       own simulator build.** 13 Oct, from the simulator's log: the build was
