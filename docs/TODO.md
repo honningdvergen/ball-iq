@@ -1193,6 +1193,32 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
+**The two passes on build 145's code (13 Oct, afternoon)**
+- [x] **iOS simulator, fresh install:** onboarding, Skip to Home, Top 10 with
+      the keyboard (board fits, keyboard stays, finish shows full names and
+      Share), Daily 7 (no banner, no scroll after an answer, header in place
+      on question 3), Transfer Trail (keyboard stays after a pick).
+- [x] **Android 16 emulator** (AVD `biq36`, debug APK): the keyboard line is
+      right. With the keyboard up the WebView is 527pt tall, the Top 10 board
+      ends at 518 with 54pt rows, and the keyboard stays up after a pick. The
+      finish screen's "Back to Home" ends 50pt above the bottom. This was the
+      fix made from the plugin's source on 12 Oct; it is now seen.
+- [x] Found and fixed in the passes: Android's launch was near-white before a
+      dark app (now the app's dark); a faint box round the iOS launch wordmark
+      (native background was #0A0A0A, the app is #0B0C10); Home's daily rows
+      were uneven heights under 440pt; "Manchester Unit…" cut on the Top 10
+      board while typing. ⚠️ All four are AFTER build 145: they need 146.
+- [ ] After tapping Skip on onboarding nothing changes for four seconds or
+      more, on both emulators (loaded Mac). Time it on a real phone.
+- [ ] A Daily 7 question lists years out of order (2008, 2010, 2009, 2007):
+      all-number option sets should ascend. Sweep the bank.
+- [ ] ⚠️ How to test Android here: the emulator's screen capture shows stale
+      tiles with the software GPU (Home looked broken and was not). Trust the
+      WebView's own screenshot and numbers over the debug channel
+      (`adb forward tcp:9333 localabstract:webview_devtools_remote_<pid>`,
+      raw DevTools protocol; Playwright's connectOverCDP does not work on a
+      WebView). Script: `~/ball-iq-audit/2026-10-13/android/cdp.mjs`.
+
 **Build 145 (13 Oct)**
 - [x] Cut from 4a40a51a in the clean clone; preflight green (iOS 1.8.0 build
       145, both bundles match source).
