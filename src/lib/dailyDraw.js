@@ -58,6 +58,9 @@ export function pickDailyFromLog(QB, dayIndex, log = DAILY_LOG) {
   return picked.length === 7 ? picked : null;
 }
 
+/** What a Daily 7 is made of, from 15 Oct 2026. Order is shuffled by the date. */
+export const DAILY_MIX = [["easy", 2], ["medium", 4], ["hard", 1]];
+
 // The live date-seeded draw, with NO log consulted. Exported so the log
 // GENERATOR can compute fresh days — it must never call pickDailyQuestions,
 // which reads the log first and would therefore rebuild the log from itself.
@@ -81,10 +84,37 @@ export function pickDailyFresh(QB, dayIndex) {
   // have, since it is shared, compared and carries the streak. 4,270 medium+
   // hard questions remain eligible = 610 days of unique sets, so the pool is
   // not the constraint.
-  const mcqOnly = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && q.diff !== "easy" && isModernEra(q));
-  const shuffled = seededShuffle(mcqOnly, dayIndex * DAILY_SEED_MULTIPLIER);
-  return warmUpFirst(shuffled.slice(0, 7), shuffled);
+  //
+  // ⚠️ REVERSED IN PART ON 13 OCT 2026, BY THE NUMBERS. With no easy question
+  // the Daily 7 averaged 3.2 of 7 over three weeks (about 500 results; 2.7 on
+  // 12 Oct; guessing gets 1.75) and a third of all results were 2 or less.
+  // Alex, having scored 3 himself: "make it easier ... get the average up to 4
+  // correct", and "mix difficulty level throughout the quiz, do not make them
+  // gradually harder ... so you do not get 2 right then all wrong".
+  //
+  // So a day is a FIXED MIX in a SHUFFLED ORDER: two easy, four medium, one
+  // hard (DAILY_MIX), placed by the date. On Q1's measured rates (medium 57%,
+  // hard 39%) and an assumed 80% for easy, that is about 4 of 7. Two easy a
+  // day is what the daily carried before 19 Aug, when one player called a
+  // Kane question a free point: if that complaint returns, the lever is the
+  // easy POOL (which easy questions qualify), not the count.
+  // The order is not a ramp. One thing is kept from 4 Oct: Q1 is never the
+  // hard one (opening on a likely miss is the worst first impression).
+  const eligible = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && isModernEra(q));
+  const picked = [];
+  DAILY_MIX.forEach(([diff, n], k) => {
+    const pool = eligible.filter((q) => q.diff === diff);
+    picked.push(...seededShuffle(pool, dayIndex * DAILY_SEED_MULTIPLIER + k * 7919).slice(0, n));
+  });
+  if (picked.length !== 7) {            // a bank too thin for the mix: the old draw, never a short day
+    const shuffled = seededShuffle(eligible.filter((q) => q.diff !== "easy"), dayIndex * DAILY_SEED_MULTIPLIER);
+    return warmUpFirst(shuffled.slice(0, 7), shuffled);
+  }
+  const order = seededShuffle(picked, dayIndex * DAILY_SEED_MULTIPLIER + 104729);
+  if (order[0].diff === "hard") { const k = order.findIndex((q) => q.diff !== "hard"); [order[0], order[k]] = [order[k], order[0]]; }
+  return order;
 }
+
 
 // ⚠️ Q1 IS ALWAYS MEDIUM (Alex, 2026-10-04, choosing "Medium warm-up Q1").
 // Measured from 30 days of Daily 7 answers: Q1 is answered right 57% of the
@@ -97,7 +127,9 @@ export function pickDailyFresh(QB, dayIndex) {
 // reorder was rejected because it moves no score: a question is as hard in
 // slot 5 as in slot 1.
 export function warmUpFirst(picked, candidates) {
-  if (!picked.length || picked[0].diff === "medium") return picked;
+  // Only a HARD opener is replaced. (It read `!== "medium"` until 13 Oct 2026,
+  // which would now swap out an easy Q1 that the mix put there on purpose.)
+  if (!picked.length || picked[0].diff !== "hard") return picked;
   const taken = new Set(picked.map((q) => q.id));
   const opener = candidates.find((q) => q.diff === "medium" && !taken.has(q.id));
   return opener ? [opener, ...picked.slice(1)] : picked;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { QB } from "../../src/questions.js";
-import { pickDailyQuestions, warmUpFirst } from '../../src/lib/dailyDraw.js';
+import { pickDailyQuestions, warmUpFirst, DAILY_MIX } from '../../src/lib/dailyDraw.js';
 import DAILY_LOG from "../../src/data/dailyLog.js";
 
 // ⚠️ WHAT THIS PROTECTS, AND WHAT IT COST TO LEARN (player report, 2026-08-19).
@@ -45,30 +45,62 @@ describe("Daily 7 is frozen against bank changes", () => {
     expect(dupes).toEqual([]);
   });
 
-  // Alex, 2026-08-19: "a free point does not belong in the daily." Prompted by a
-  // player calling out a Kane question that was correct, correctly labelled
-  // easy, and free to anyone who follows football. The daily was carrying ~1.8
-  // easy questions EVERY day — a quarter of the set. Same rule club and league
-  // quizzes have always used; the daily is the most invested-fan surface there
-  // is, since it is shared, compared and carries the streak.
+  // ── THE MIX (Alex, 13 Oct 2026) ────────────────────────────────────────────
+  // History, because this test replaced its opposite. 19 Aug: "a free point
+  // does not belong in the daily" (one player called out an easy Kane
+  // question), and easy questions were dropped. The daily then averaged 3.2 of
+  // 7 over three weeks, a third of results were 2 or less, and Alex scored 3
+  // himself: "make it easier ... get the average up to 4 correct", "mix
+  // difficulty level throughout the quiz, do not make them gradually harder".
   //
-  // The first two logged days are exempt: they were already served when the
-  // rule changed, and moving a served day is the bug this whole file prevents.
-  it("no easy question is scheduled on any unserved day", () => {
-    const byId = new Map(QB.map((q) => [q.id, q]));
-    const offenders = [];
-    DAILY_LOG.days.slice(2).forEach((day, i) => {
-      for (const id of day) {
-        if (byId.get(id)?.diff === "easy") offenders.push({ day: i + 2, id });
-      }
+  // Log index 57 is 15 Oct 2026, the first day that could not have been served
+  // when the rule changed (today and tomorrow are always kept).
+  const MIX_FROM = 57;
+  const byId = new Map(QB.map((q) => [q.id, q]));
+  const diffsOf = (day) => day.map((id) => byId.get(id)?.diff);
+  const count = (arr, d) => arr.filter((x) => x === d).length;
+
+  it("every day from 15 Oct is two easy, four medium and one hard", () => {
+    expect(DAILY_MIX).toEqual([["easy", 2], ["medium", 4], ["hard", 1]]);
+    const off = [];
+    DAILY_LOG.days.slice(MIX_FROM).forEach((day, i) => {
+      const d = diffsOf(day);
+      if (count(d, "easy") !== 2 || count(d, "medium") !== 4 || count(d, "hard") !== 1) off.push({ day: i + MIX_FROM, d });
     });
-    expect(offenders.slice(0, 5)).toEqual([]);
+    expect(off.slice(0, 3)).toEqual([]);
   });
 
-  it("a fresh draw never contains an easy question", () => {
-    for (const offset of [500, 750, 1000]) {   // beyond the log: the live path
-      const fresh = pickDailyQuestions(QB, DAILY_LOG.anchor + offset);
-      expect(fresh.map((q) => q.diff), `day +${offset}`).not.toContain("easy");
+  it("days served before the rule changed are untouched: none of them holds an easy question", () => {
+    const off = [];
+    DAILY_LOG.days.slice(2, MIX_FROM).forEach((day, i) => { if (diffsOf(day).includes("easy")) off.push(i + 2); });
+    expect(off).toEqual([]);
+  });
+
+  it("the order is mixed, not a ramp: the hard one and the easy ones land in every slot they may", () => {
+    const hardAt = Array(7).fill(0), easyAt = Array(7).fill(0);
+    let ramps = 0;
+    const rank = { easy: 0, medium: 1, hard: 2 };
+    const days = DAILY_LOG.days.slice(MIX_FROM);
+    for (const day of days) {
+      const d = diffsOf(day);
+      d.forEach((x, k) => { if (x === "hard") hardAt[k]++; if (x === "easy") easyAt[k]++; });
+      if (d.every((x, k) => k === 0 || rank[x] >= rank[d[k - 1]])) ramps++;
+    }
+    expect(hardAt[0], "Q1 is never the hard one").toBe(0);
+    for (let k = 1; k < 7; k++) expect(hardAt[k], `hard in slot ${k + 1}`).toBeGreaterThan(days.length / 14);
+    for (let k = 0; k < 7; k++) expect(easyAt[k], `easy in slot ${k + 1}`).toBeGreaterThan(days.length / 9);
+    // easy, easy, medium x4, hard in that order is one arrangement of 105: rare, never the rule
+    expect(ramps).toBeLessThan(days.length / 20);
+  });
+
+  it("a fresh draw beyond the log follows the same mix and is the same every time it is asked", () => {
+    for (const offset of [500, 750, 1000]) {
+      const a = pickDailyQuestions(QB, DAILY_LOG.anchor + offset), b = pickDailyQuestions(QB, DAILY_LOG.anchor + offset);
+      const d = a.map((q) => q.diff);
+      expect([count(d, "easy"), count(d, "medium"), count(d, "hard")], `day +${offset}`).toEqual([2, 4, 1]);
+      expect(d[0]).not.toBe("hard");
+      expect(a.map((q) => q.id)).toEqual(b.map((q) => q.id));
+      expect(new Set(a.map((q) => q.id)).size).toBe(7);
     }
   });
 
@@ -87,21 +119,22 @@ describe("Daily 7 is frozen against bank changes", () => {
 
 // Alex, 2026-10-04: "Medium warm-up Q1". Q1 was right 57% of the time when
 // medium and 39% when hard (30 days of Daily 7 answers). Days already served
-// when the rule landed (through 2026-10-05, log index 47) are exempt.
-describe("Daily 7 opens on a medium question", () => {
+// when the rule landed (through 2026-10-05, log index 47) are exempt. Since
+// the mix of 13 Oct the rule is "never hard": Q1 may be one of the easy ones.
+describe("Daily 7 never opens on the hard question", () => {
   const WARMUP_FROM = 48;
-  it("every unserved logged day opens on a medium question", () => {
+  it("every unserved logged day opens on a medium or an easy question", () => {
     const byId = new Map(QB.map((q) => [q.id, q]));
     const offenders = DAILY_LOG.days.slice(WARMUP_FROM)
       .map((day, i) => ({ day: i + WARMUP_FROM, diff: byId.get(day[0])?.diff }))
-      .filter((r) => r.diff !== "medium");
+      .filter((r) => r.diff === "hard" || !r.diff);
     expect(offenders.slice(0, 5)).toEqual([]);
   });
 
-  it("a fresh draw opens on a medium question", () => {
-    for (const offset of [500, 750, 1000, 1001, 1002]) {
-      expect(pickDailyQuestions(QB, DAILY_LOG.anchor + offset)[0].diff, `day +${offset}`).toBe("medium");
-    }
+  it("an easy opener is left alone", () => {
+    const q = (id, diff) => ({ id, diff });
+    const day = [q("e1", "easy"), q("h2", "hard")];
+    expect(warmUpFirst(day, [q("m9", "medium")])).toBe(day);
   });
 
   it("only Q1 moves: a hard opener is replaced, Q2 to Q7 keep their slots", () => {

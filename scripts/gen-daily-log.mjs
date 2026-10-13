@@ -94,6 +94,7 @@ if (process.argv.includes('--regen-future') && days.length) {
   for (let i = firstUnserved; i < days.length; i++) {
     const picked = days[i].map((id) => byId.get(id));
     if (picked.some((q) => !q)) continue;              // unresolvable: leave to the top-up path
+    if (picked.some((q) => q.diff === "easy")) continue; // a day built on the 13 Oct mix: its own draw already keeps hard off Q1
     const warmed = warmUpFirst(picked, seededShuffle(
       QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && q.diff !== "easy" && isModernEra(q)),
       (logAnchor + i) * DAILY_SEED_MULTIPLIER));
