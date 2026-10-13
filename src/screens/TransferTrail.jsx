@@ -48,7 +48,7 @@ import { usePlayerPool } from "../lib/usePlayerPool.js";
 const TRAIL_GAP = 12;
 import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight } from "../lib/useKeyboardAwareInput.js";
-import ReportButton from "../components/ReportButton.jsx";
+import ResultFoot from "../components/ResultFoot.jsx";
 
 function loadDay(ymd) {
   try {
@@ -502,28 +502,14 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
               tell a puzzle they misread from data we got wrong, so without this
               they simply lose trust and say nothing. Same trust class as a wrong
               answer key. Sends the full ladder so the row is actionable. */}
-          <ReportButton
-            onReport={onReport}
-            idle="⚑ Career looks wrong? Tell us"
+          <ResultFoot thing="Career" onReport={onReport} onHome={onBack}
             info={{
               id: `trail:${player.key}`,
               q: `Transfer Trail #${number} — ${(player.display || []).join(" ")}: ${career.join(" → ")}`,
               picked: null,
               correct: (player.display || []).join(" "),
               mode: "trail",
-            }}
-            style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
-                     border: "1px solid var(--border)", background: "transparent",
-                     fontWeight: 700, fontSize: 13 }}
-          />
-
-
-          {onBack && (
-            <button onClick={onBack}
-              style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
-                       border: "1px solid var(--border)", background: "transparent", color: "var(--t2)",
-                       fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back to Home</button>
-          )}
+            }} />
         </div>
       )}
     </div>

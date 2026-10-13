@@ -22,7 +22,7 @@ import { safeSetItem } from '../safeStorage.js';
 import { APP_NAME } from '../lib/scoring.js';
 import { FOOTLE_SHORT } from '../lib/modeCopy.js';
 import { getFootleXP } from '../lib/footleXp.js';
-import ReportButton from '../components/ReportButton.jsx';
+import ResultFoot, { ReportLink } from '../components/ResultFoot.jsx';
 import { DailyDone } from '../components/DailyDone.jsx';
 import './footle.css';
 
@@ -91,9 +91,9 @@ const WORDLE_KB_ROWS = [
 function FootleReportButton({ answer, status, onReport }) {
   const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
   return (
-    <ReportButton
+    <ReportLink
+      thing="Answer"
       onReport={onReport}
-      idle="⚑ Bad answer? Tell us"
       info={{
         id: `footle:${answer}`,
         q: `Footle answer "${answer}" (${(prefix ? prefix + " " : "") + surname})`,
@@ -101,13 +101,8 @@ function FootleReportButton({ answer, status, onReport }) {
         correct: answer,
         mode: status === "won" ? "footle" : "footle-lost",
       }}
-      style={{
-        margin: "0 auto", padding: 0, minHeight: 0, display: "block",
-        background: "none", border: 0, color: "var(--t3)",
-        WebkitTextFillColor: "var(--t3)",
-        textDecoration: "underline", textUnderlineOffset: 3,
-        fontSize: 12, fontWeight: 700,
-      }}
+      // Inside the result card it stays as small as it was: no 44pt box here.
+      style={{ padding: 0, minHeight: 0, fontSize: 12 }}
     />
   );
 }
@@ -673,6 +668,9 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           {/* Sprint #64 FF1: post-Footle install nudge (web only; the hook gates
               on installed / standalone / affordance / 30-day cooldown). */}
           {InstallBanner && <InstallBanner />}
+          {/* The same way out every finished daily has. Footle's only exit was
+              the arrow at the top of the screen. */}
+          <ResultFoot onHome={onBack} />
         </div>
       )}
 

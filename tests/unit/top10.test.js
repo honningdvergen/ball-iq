@@ -609,6 +609,28 @@ describe('Transfer Trail keeps the keyboard up between guesses (Alex\'s recordin
   });
 });
 
+describe('One footer for a finished daily (13 Oct 2026)', () => {
+  const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
+  it('one sentence shape for the report link', async () => {
+    const { reportLabel } = await import('../../src/components/ResultFoot.jsx');
+    expect(reportLabel('Career')).toBe('Career looks wrong? Tell us');
+    expect(reportLabel('List')).toBe('List looks wrong? Tell us');
+    expect(reportLabel('Answer')).toBe('Answer looks wrong? Tell us');
+  });
+  it('Footle, Transfer Trail and Top 10 all use it, and none keeps a footer of its own', () => {
+    expect(read('screens/TransferTrail.jsx')).toMatch(/<ResultFoot thing="Career" onReport=\{onReport\} onHome=\{onBack\}/);
+    expect(read('screens/Top10.jsx')).toMatch(/<ResultFoot thing="List" onReport=\{onReport\} onHome=\{onBack\}/);
+    const footle = read('games/FootballWordle.jsx');
+    expect(footle).toMatch(/<ReportLink\s+thing="Answer"/);
+    expect(footle).toMatch(/<ResultFoot onHome=\{onBack\} \/>/);
+    for (const f of ['screens/TransferTrail.jsx', 'screens/Top10.jsx', 'games/FootballWordle.jsx']) {
+      const src = read(f);
+      expect(src, f).not.toMatch(/⚑/);
+      expect(src, f).not.toMatch(/>Back to Home<\/button>/);
+    }
+  });
+});
+
 describe('The player-facing faults of 13 Oct', () => {
   const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
   it('a finished Top 10 board is shorter on a short phone, so Share is on screen', async () => {

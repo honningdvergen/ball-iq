@@ -36,7 +36,7 @@ import { DailyDone } from "../components/DailyDone.jsx";
 import { usePlayerPool } from "../lib/usePlayerPool.js";
 import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight, visibleBottom } from "../lib/useKeyboardAwareInput.js";
-import ReportButton from "../components/ReportButton.jsx";
+import ResultFoot from "../components/ResultFoot.jsx";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import "./top10.css";
 
@@ -506,26 +506,14 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
           </div>
           {/* A wrong list is unfalsifiable from inside the game: the player
               cannot tell a name they forgot from a name we got wrong. */}
-          <ReportButton
-            onReport={onReport}
-            idle="⚑ List looks wrong? Tell us"
+          <ResultFoot thing="List" onReport={onReport} onHome={onBack}
             info={{
               id: `top10:${list.id}`,
               q: `Top 10 #${number} — ${list.title} (as of ${list.asOf}): ${list.slots.map((s, i) => `${i + 1}. ${s.name}`).join(", ")}`,
               picked: null,
               correct: null,
               mode: "top10",
-            }}
-            style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
-                     border: "1px solid var(--border)", background: "transparent",
-                     fontWeight: 700, fontSize: 13 }}
-          />
-          {onBack && (
-            <button onClick={onBack}
-              style={{ marginTop: 8, width: "100%", padding: "12px", borderRadius: 999,
-                       border: "1px solid var(--border)", background: "transparent", color: "var(--t2)",
-                       fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer" }}>Back to Home</button>
-          )}
+            }} />
         </div>
       )}
     </div>
