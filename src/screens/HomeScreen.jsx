@@ -496,7 +496,7 @@ function HomeScreenImpl({
                   done: mysteryDone, open: mysteryGuesses > 0,
                   sub: mysteryDone ? <>Done · guess who</>
                     : mysteryGuesses > 0 ? <>{mysteryGuesses} {mysteryGuesses === 1 ? "guess" : "guesses"} in · keep hunting</>
-                    : <>Guess who from career clues</>,
+                    : <>Guess who from clues</>,
                   onTap: () => setScreen("mystery"),
                   aria: mysteryDone ? "Today's Mystery Player: done — review"
                     : mysteryGuesses > 0 ? `Today's Mystery Player: ${mysteryGuesses} ${mysteryGuesses === 1 ? "guess" : "guesses"} in — continue`
@@ -708,7 +708,7 @@ function HomeScreenImpl({
         <span className="t7s-icon" aria-hidden="true"><Trophy size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
           <span className="t7s-title">League Quiz</span>
-          <span className="t7s-sub">Pick a competition · 10 questions</span>
+          <span className="t7s-sub">Pick a competition</span>
         </span>
         <span className="t7s-cta">Play</span>
       </button>
@@ -742,10 +742,10 @@ function HomeScreenImpl({
           >
             <span className="t7s-icon" aria-hidden="true"><UserRoundSearch size={22} strokeWidth={2} /></span>
             <span className="t7s-body">
-              <span className="t7s-title">Mystery Player <span style={{ fontWeight: 600, color: "var(--t3)", fontSize: "0.82em" }}>No. {mysteryNumber()}</span></span>
+              <span className="t7s-title">Mystery Player<span className="t7s-no">No. {mysteryNumber()}</span></span>
               <span className="t7s-sub">{done ? "Done · guess who"
                 : guesses > 0 ? `${guesses} ${guesses === 1 ? "guess" : "guesses"} in · keep hunting`
-                : "Guess who from career clues"}</span>
+                : "Guess who from clues"}</span>
             </span>
             <span className="t7s-cta">{done ? "Review" : guesses > 0 ? "Continue" : "Play"}</span>
           </button>
@@ -766,7 +766,7 @@ function HomeScreenImpl({
         <span className="t7s-icon" aria-hidden="true"><Dices size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
           <span className="t7s-title">Draft{!seenModes.draft && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.draft},0.18)`, color: MODE_ACCENT.draft, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>NEW</span>}</span>
-          <span className="t7s-sub">Eleven spins · build an XI of real seasons</span>
+          <span className="t7s-sub">Spin and build an XI</span>
         </span>
         <span className="t7s-cta">Play</span>
       </button>
@@ -791,21 +791,21 @@ function HomeScreenImpl({
           // Stadiums (2026-08-20, Alex's design): a completion run, not a
           // quiz — name every ground in the league. No live-gate needed:
           // the dataset is season-pinned and always playable.
-          { key:"stadiums", Icon: LandPlot, name: "Stadiums", desc: "Name every ground", onTap: () => setScreen("stadiums") },
-          { key:"classic",   Icon: Timer,      name:"Classic",       desc:"10 Qs, easy to hard" },
+          { key:"stadiums", Icon: LandPlot, name: "Stadiums", desc: "Every ground", onTap: () => setScreen("stadiums") },
+          { key:"classic",   Icon: Timer,      name:"Classic",       desc:"Easy to hard" },
           // ⚠️ iconColor deliberately REMOVED. Survival was the only tile using the
           // opt-out, so after the grid went neutral it was the single remaining
           // green icon — which is worse than all-green was, because one odd tile
           // reads as a mistake rather than a system. Spotted by Alex immediately.
           // The prop still exists for a tile that genuinely earns its own colour;
           // nothing does today.
-          { key:"survival",  Icon: Heart,      name:"Survival",      desc:"Die on wrong" },
-          { key:"hotstreak", Icon: Flame,      name:"Hot Streak",    desc:"60-second sprint" },
-          { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000 greats" },
+          { key:"survival",  Icon: Heart,      name:"Survival",      desc:"One miss, out" },
+          { key:"hotstreak", Icon: Flame,      name:"Hot Streak",    desc:"60 seconds" },
+          { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000" },
           // Ball IQ Test was killed 2026-08-10 (App.jsx side removed then).
           // This tile outlived the mode and silently started an unbranded
           // generic quiz — the grid entry goes too.
-          { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Quotes & chaos" },
+          { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Wild cards" },
         ].map(({ key, Icon, name, desc, onTap, iconColor, isNew }) => {
           const showNew = isNew && !seenModes[key];
           return (

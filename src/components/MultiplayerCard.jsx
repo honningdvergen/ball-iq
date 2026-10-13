@@ -42,7 +42,7 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onInvit
               and the store listing. NOT a live count: 4 rooms in the last
               7 days and 0 open at the time of writing — "0 rooms open now"
               reads dead, which is worse than quiet. */}
-          <span className="t7s-sub">Up to 8 players · live rooms or one phone</span>
+          <span className="t7s-sub">Play your mates live</span>
         </span>
       </button>
       <button type="button" className="t7s-cta mp-row-invite" onClick={handleInvite} aria-label="Create a room and invite friends">Invite</button>

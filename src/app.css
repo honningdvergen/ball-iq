@@ -493,7 +493,11 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    text-left. Centring also left both edges ragged, since "Club Quiz" and
    "Ball IQ Test" are very different widths, so the eye had nothing to run down.
    Now every tile shares one scan line. */
-.play-card:hover{background:var(--s2);border-color:var(--border2);}
+/* Hover only where there is a pointer that hovers. On a phone a tapped tile
+   KEPT its hover shade after the finger left, so one tile of six sat a shade
+   lighter than its neighbours (Alex's screenshot of Home, 13 Oct 2026: Hot
+   Streak). */
+@media (hover:hover){.play-card:hover{background:var(--s2);border-color:var(--border2);}}
 .play-card:active{transform:scale(0.98);}
 /* The accent ring was Club Quiz-only while it was the feature card. Alex liked
    it enough to want it everywhere, so it is the default: every mode chip gets
@@ -512,6 +516,25 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    because nothing rendered it; the NEW badge on the modes grid does. Dark ink
    on green is the same pairing every other green control already uses. */
 .play-card-badge{position:absolute;top:8px;right:8px;font-size:9.5px;font-weight:800;letter-spacing:0.6px;padding:3px 7px;border-radius:20px;background:var(--accent);color:var(--bg);}
+/* ── ON A PHONE THE MODE TILES ARE COMPACT AND LIE FLAT ───────────────────────
+   Alex, 13 Oct 2026, of this part of Home: "a bit untidy and poorly
+   assembled". Above the grid sit rows (icon chip left, title and one line,
+   a pill); the grid under them was six tall tiles with the icon stacked over
+   the text and half of each tile empty: two layouts for one kind of thing,
+   and a full screen of height for six names. A tile is now the row's own
+   anatomy at half width: the same chip, the name, one line under it. Six
+   tiles take about 200pt where they took 380. The description is one line
+   by rule, so every tile is the same height (lines are kept to 13 letters in
+   HomeScreen for the 360pt phone). Phones only: the desktop grid and the
+   coming-soon tiles keep their own sizes. */
+@media (max-width:1023px){
+  .play-card{flex-direction:row;align-items:center;gap:10px;padding:10px 12px;min-height:62px;}
+  .play-card-icon{width:38px;height:38px;margin-bottom:0;flex-shrink:0;background:var(--s2);}
+  .play-card-body{gap:2px;}
+  .play-card-name{font-size:14.5px;}
+  .play-card-desc{display:block;white-space:nowrap;text-overflow:ellipsis;-webkit-line-clamp:unset;}
+  .play-card-badge{top:6px;right:6px;}
+}
 
 /* FEATURED TILE — spans the full row so one mode reads as the way in.
    Everything else about it is deliberately restrained: same card, same green,
