@@ -1257,9 +1257,12 @@ Pro Max (build 144), reviewed before it went out:
       (`GameTitle`): the name at 20px, then "No. N" small and grey as Home
       writes it. Before, the number was written three ways ("#72" at title
       size, "No. 72" on the line beneath, and Home's form).
-- [ ] Footle's header is still its own (18px title, heavier arrow). Its
-      height is part of the ENTER-on-screen budget (`--wd-chrome`), so moving
-      it means re-measuring every phone size. Do it with the nine-phone check.
+- [x] Footle is on the shared title too ("Footle No. 163"), with the app's
+      back arrow. Its header is still 44pt and ENTER is on screen at nine
+      sizes, app and web (`~/ball-iq-audit/2026-10-13/tour3/enter.mjs`).
+- [x] Footle's letter keys type on the way down, so two thumbs overlapping
+      lose nothing; ENTER still wants a full tap. Top 10's loading board has
+      the real board's rows (it jumped 100pt when the list arrived).
 
 **The zero that read as an eight (Alex, 13 Oct night)**
 - [x] Small score chips (History, Top 10's count and rank chips, the quiz

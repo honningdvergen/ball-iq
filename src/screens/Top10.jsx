@@ -132,7 +132,7 @@ export default function Top10({ date = new Date(), listId, onBack, onReport, ser
     return (
       <div className="screen t10" style={SKIN} aria-busy="true">
         <Head number={number} sub="Name all ten. Three lives." onBack={onBack} embedded={embedded} />
-        <div className="t10-board" aria-hidden="true">
+        <div className="t10-board is-l" style={{ "--t10-row": `${T10_ROW_MAX}px` }} aria-hidden="true">
           {Array.from({ length: 10 }, (_, i) => (
             <div key={i} className="t10-cell is-open is-skeleton"><span className="t10-rank">{i + 1}</span></div>
           ))}

@@ -21,6 +21,7 @@ import { getWordleDateKey } from '../lib/wordleStatus.js';
 import { safeSetItem } from '../safeStorage.js';
 import { APP_NAME } from '../lib/scoring.js';
 import { FOOTLE_SHORT } from '../lib/modeCopy.js';
+import GameTitle from "../components/GameTitle.jsx";
 import { getFootleXP } from '../lib/footleXp.js';
 import ResultFoot, { ReportLink } from '../components/ResultFoot.jsx';
 import { DailyDone } from '../components/DailyDone.jsx';
@@ -367,6 +368,26 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   const handleKeyRef = useRef(handleKey);
   useEffect(() => { handleKeyRef.current = handleKey; });
 
+  // ⚠️ LETTERS AND DELETE TYPE ON THE WAY DOWN, NOT ON CLICK. iOS only makes a
+  // click out of a touch that begins and ends alone: type with two thumbs, the
+  // second landing before the first has lifted, and the clicks are dropped. A
+  // fast burst lost four letters of five (simulator, 12 Oct 2026). pointerdown
+  // fires for every finger. The click handler stays for a physical keyboard
+  // and for assistive tech, which press a button without a pointer, and steps
+  // aside when the same key has just been typed by the pointer.
+  // ENTER stays on click on purpose: it spends a guess, so it wants a full tap.
+  const lastDown = useRef({ k: null, t: 0 });
+  const keyDown = (k) => (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    lastDown.current = { k, t: Date.now() };
+    handleKeyRef.current(k);
+  };
+  const keyClick = (k) => (e) => {
+    const d = lastDown.current;
+    if (e.detail !== 0 && d.k === k && Date.now() - d.t < 800) return;
+    handleKeyRef.current(k);
+  };
+
   // Physical keyboard support. Ignore when modifier keys are held so we don't
   // hijack browser shortcuts (cmd-R, etc.).
   useEffect(() => {
@@ -491,7 +512,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       <div className="wd-header">
         {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
         <div className="wd-header-text">
-          <div className="wd-title">Footle</div>
+          {/* The shared title, with the number beside the name as Home writes
+              it (13 Oct 2026). The header's height is the back button's 44px
+              and is part of the ENTER-on-screen budget (--wd-chrome): the
+              title's own size does not move it. Re-measure if that changes. */}
+          <GameTitle no={getFootleNumber(date)}>Footle</GameTitle>
           {/* Shortened when the "?" joined this row: the button + its gap take
               56px out of the flex:1 text column, which wrapped the old
               "Player or manager — guess the surname" onto a 3rd line and pushed
@@ -511,7 +536,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               lines at 360-390px and three at 320 (measured 2026-10-04, header
               44px -> 54/69px). The puzzle number is what a finished player
               shares and compares, and it fits on one line at every width. */}
-          <div className="wd-sub">{isArchive ? `No. ${getFootleNumber(date)} · archive` : state.status !== "playing" ? `No. ${getFootleNumber(date)}` : FOOTLE_SHORT}</div>
+          <div className="wd-sub">{isArchive ? "From the archive" : state.status !== "playing" ? "Today\u2019s puzzle" : FOOTLE_SHORT}</div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>
@@ -686,7 +711,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
                 // feedback the colors carry (medical accessibility).
                 const stDesc = st === "green" ? ", correct" : st === "yellow" ? ", wrong position" : st === "grey" ? ", not in the name" : "";
                 return (
-                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k === "DEL" ? "Delete last letter" : `${k}${stDesc}`}>
+                  <button key={k} className={cls} onPointerDown={keyDown(k)} onClick={keyClick(k)} aria-label={k === "DEL" ? "Delete last letter" : `${k}${stDesc}`}>
                     {k === "DEL" ? "⌫" : k}
                   </button>
                 );
