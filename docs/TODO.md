@@ -1193,6 +1193,14 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
+**The zero that read as an eight (Alex, 13 Oct night)**
+- [x] Small score chips (History, Top 10's count and rank chips, the quiz
+      counter) are set in Inter with tabular figures: JetBrains Mono's zero is
+      slashed, and "0/10" read as "8/10" at chip size.
+- [ ] JetBrains Mono still draws timers, countdowns, room codes and about
+      thirty other numbers. Codes want the slashed zero; the rest may not.
+      Decide once, with the font shipped in the app.
+
 **Player-facing faults, worked through 13 Oct night**
 - [x] Timed questions hold a full clock for 0.8 s before it drains (no gate).
 - [x] History shows today's row to a player with no past days.
