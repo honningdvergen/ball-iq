@@ -399,11 +399,9 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
             unfair without it: "since when?" and "why is he above him?" are
             the two things a fan will ask of the answer. */}
         {list.note ? <p className="t10-q-note">{list.note}</p> : null}
-        {/* One step per rank, lit where that rank is found: which gaps are
-            left, at a glance, without reading the board. */}
-        <div className="t10-meter" aria-hidden="true">
-          {list.slots.map((s, i) => <i key={s.key} className={g.found[i] ? "is-on" : undefined} />)}
-        </div>
+        {/* No progress strip here (Alex, 13 Oct 2026): the board under it is the
+            progress, rank by rank, and the count sits beside the date. A strip
+            of ten dashes said the same thing a third time. */}
       </div>
 
       {!g.done && (

@@ -45,9 +45,9 @@
   color: var(--t10); font-variant-numeric: tabular-nums;
 }
 .t10-q-note { margin: 4px 0 0; font-size: 12px; line-height: 1.35; color: var(--t3); text-wrap: pretty; }
-.t10-meter { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 8px; }
-.t10-meter i { height: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.09); transition: background 180ms ease-out; }
-.t10-meter i.is-on { background: var(--t10); }
+
+/* A finished board follows the heading directly (the guess box is gone). */
+.t10-q + .t10-board { margin-top: 12px; }
 
 /* The guess box. */
 .t10-entry { position: relative; margin-top: 10px; }
@@ -204,7 +204,6 @@
 .t10.is-tight .t10-head { padding-top: 2px; padding-bottom: 2px; }
 .t10.is-tight .t10-head-sub, .t10.is-tight .t10-q-note, .t10.is-tight .t10-q-meta { display: none; }
 .t10.is-tight .t10-q-title { font-size: 17px; }
-.t10.is-tight .t10-meter { margin-top: 5px; }
 .t10.is-tight .t10-entry { margin-top: 6px; }
 .t10.is-tight .t10-input { padding-top: 9px; padding-bottom: 9px; }
 .t10.is-tight .t10-say { margin-top: 3px; min-height: 16px; line-height: 16px; font-size: 12px; }
