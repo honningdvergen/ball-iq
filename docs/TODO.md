@@ -1456,9 +1456,15 @@ Pro Max (build 144), reviewed before it went out:
       (No. 134 is too short, so No. 133 stays), so no rotation commit.
 - [ ] Alex plays 146 on his phone. Then: screenshots with Top 10 and Draft,
       What's New, submit for review.
-- [ ] Android: debug APK of the same commit on the emulator (all four
-      dailies, the club search with the keyboard, Footle keys), then the AAB
-      (versionCode 54). Upload waits for the Play Console login.
+- [x] Build 146 is VALID on App Store Connect (read 14 Oct, 00:14).
+- [x] Android, same commit, on the emulator (14 Oct, 00:20): bundled fonts
+      load and swap, onboarding under the wordmark, six real taps on Footle
+      type six letters with ENTER on screen, the club search shows both
+      matches above the keyboard, and Trail, Top 10, Mystery Player and the
+      Daily 7 all open; no crash and no script error in the log.
+- [x] Signed AAB built from the same commit: `~/ball-iq-release/
+      BallIQ-1.8.0-54.aab` (versionCode 54, fonts inside).
+- [ ] Upload of that AAB waits for the Play Console login (Alex).
 
 **Sweep of this section, 13 Oct, 22:40.** Every box above this line that was
 still open and has since been fixed, ruled on or found not to be a fault is
