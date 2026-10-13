@@ -164,6 +164,11 @@
 .t10-board[style*="--t10-row"] .t10-cell { min-height: var(--t10-row); }
 .t10-board.is-fit .t10-cell { height: var(--t10-row); }
 .t10-board.is-fit .t10-name, .t10-board.is-fit .t10-clue { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* A long name is set smaller while fitting, so it is read whole and not cut:
+   "Manchester Unit…" was the first thing on the board in the simulator
+   (13 Oct 2026). 15 letters and up. */
+.t10-board.is-fit .t10-name.is-wide { font-size: 12px; letter-spacing: -0.015em; }
+.t10-board.is-fit.is-s .t10-name.is-wide { font-size: 11px; }
 .t10-board.is-l { gap: 8px 8px; }
 .t10-board.is-l .t10-cell { padding: 8px 9px; gap: 9px; border-radius: 14px; }
 .t10-board.is-l .t10-rank { width: 28px; height: 28px; border-radius: 9px; font-size: 13.5px; }

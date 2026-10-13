@@ -460,7 +460,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
               style={missed ? { "--t10-d": `${delay}ms` } : { "--t10-i": i }}>
               <span className={`t10-rank${i < 3 ? ` is-p${i + 1}` : ""}`}>{i + 1}</span>
               <span className="t10-body">
-                {(found || missed) && <span className={`t10-name${hasLongWord(s.name) ? " is-long" : ""}`}>{s.name}</span>}
+                {(found || missed) && <span className={`t10-name${hasLongWord(s.name) ? " is-long" : ""}${s.name.length >= 15 ? " is-wide" : ""}`}>{s.name}</span>}
                 {s.clue ? <span className="t10-clue">{s.clue}</span> : null}
               </span>
             </div>

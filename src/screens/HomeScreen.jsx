@@ -1,4 +1,5 @@
 import React from "react";
+import { FOOTLE_SHORT } from "../lib/modeCopy.js";
 import { currentAvatarId } from '../lib/currentAvatar.js';
 import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, LandPlot, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
@@ -15,7 +16,6 @@ import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
 import { QB_TAG_COUNTS } from "../questions-index-meta.js";
 import { getFootleNumber } from "../lib/footleNumber.js";
-import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
@@ -444,8 +444,14 @@ function HomeScreenImpl({
                   sub: ws.kind === "won" ? <>Solved in <strong>{ws.used}</strong></>
                     : ws.kind === "lost" ? <>Out of guesses</>
                     : ws.kind === "in-progress" ? <>In progress · <strong>{ws.used}</strong> of 6</>
-                    : firstSession ? <>Start here — everyone gets the same player</>
-                    : <>{FOOTLE_TAGLINE}</>,
+                    // ⚠️ ONE LINE EACH, ON EVERY PHONE. These four sub-lines must stay
+                    // short enough not to wrap at 360pt: a row whose line wraps is
+                    // taller than its neighbours, and the stack reads as uneven
+                    // (seen in the simulator at 402pt, 13 Oct 2026: Footle and
+                    // Transfer Trail wrapped, Daily 7 and Top 10 did not; Alex
+                    // had flagged the same thing on the website the day before).
+                    : firstSession ? <>Start here · six guesses</>
+                    : <>{FOOTLE_SHORT}</>,
                   // Done or not, the row opens the Footle screen: a finished board
                   // shows the result panel (DailyDone) — share, streak, the other
                   // open dailies. The separate status screen stays for the Daily
@@ -463,7 +469,7 @@ function HomeScreenImpl({
                 ...(trailLive ? [{
                   key: "trail", name: "Transfer Trail", no: getTrailNumber(), Icon: Route, accent: MODE_ACCENT.trail, rgb: MODE_RGB.trail,
                   done: trailDone,
-                  sub: trailDone ? <>Done · today's player</> : <>Follow the moves · name the player</>,
+                  sub: trailDone ? <>Done · today's player</> : <>Whose career is this?</>,
                   onTap: () => setScreen("trail"),
                   aria: trailDone ? "Today's Transfer Trail: done — review" : "Play today's Transfer Trail",
                 }] : []),
@@ -471,8 +477,8 @@ function HomeScreenImpl({
                   key: "top10", name: "Top 10", no: getTop10Number(), Icon: ListOrdered, accent: MODE_ACCENT.top10, rgb: MODE_RGB.top10,
                   done: top10Done, open: top10Open,
                   sub: top10Done ? <>Done · <strong>{top10Found}/10</strong></>
-                    : top10Open ? <><strong>{top10Found}</strong> of 10 found · keep going</>
-                    : <>Name all ten · three lives</>,
+                    : top10Open ? <><strong>{top10Found}</strong> of 10 found so far</>
+                    : <>Name all ten · 3 lives</>,
                   onTap: () => setScreen("top10"),
                   aria: top10Done ? `Today's Top 10: done, ${top10Found} out of 10 — review`
                     : top10Open ? `Today's Top 10: ${top10Found} of 10 found — continue`
