@@ -1262,17 +1262,20 @@ Pro Max (build 144), reviewed before it went out:
 - [x] Mystery Player's search box and its dropdown are full width, in line
       with the rest of the screen. The example card on a new Profile uses the
       card's own coloured dots, not six emoji.
-- [ ] Mystery Player's header still has two chips (back, then the mode's
-      icon) where every other game has one, and two thirds of the screen is
-      empty before the first guess.
-- [ ] History for a new player is one sentence under four column labels.
-- [ ] Survival's header: "0  Survival Mode" in amber under a "Q1" counter.
-- [ ] Club search on Home: the results sit over the League Quiz row, which
-      shows cut off underneath.
-- [ ] Profile for a new player opens under an example-card sheet, with a
-      trophy emoji and a medal emoji in "Play games to unlock your first
-      badge"; the dark purple EPL dot is hard to see on the gold sheet.
-- [ ] Classic still shows 18 of 20 seconds on first sight.
+- [x] Mystery Player: one back button and the shared title; the empty screen
+      carries a key to the rank colours (in shares, since the pool loads on
+      first focus), where two thirds of it was blank.
+- [x] History for a new player: no table header over no table. A card says
+      what the tab will hold, shows the four games, and has a Play button.
+- [x] Survival's zero state reads "One miss ends the run", not "0 Survival
+      Mode".
+- [x] Club search on a phone opens its matches in the page and brings the
+      field to the top on focus, so nothing shows cut off underneath.
+      CHECK IN THE REAL APP with the keyboard up (build 146 simulator pass).
+- [x] Profile for a new player: line trophy for the emoji, no medal emoji in
+      the badges line, and the Premier League dot lifted so it shows on gold.
+- [x] Classic's first sight of the clock: the 0.8 s reading grace holds it
+      full before it drains (shipped with the timed-question change).
 
 **From Alex's screenshots of build 145 (13 Oct, evening)**
 - [x] Draft: the season is set at the club name's size ("Arsenal 2009–10").

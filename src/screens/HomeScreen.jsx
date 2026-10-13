@@ -67,7 +67,15 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
           className="cf-input"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          onFocus={() => setFocused(true)}
+          onFocus={(e) => {
+            setFocused(true);
+            // On a phone the keyboard takes the lower half, and the matches open
+            // under the field: bring the field to the top so they have the room.
+            const el = e.currentTarget;
+            if (typeof window !== "undefined" && window.matchMedia?.("(max-width:1023px)").matches) {
+              setTimeout(() => { try { el.scrollIntoView({ block: "start", behavior: "smooth" }); } catch { /* old WebView */ } }, 280);
+            }
+          }}
           onBlur={() => setTimeout(() => setFocused(false), 120)}
           onKeyDown={(e) => { if (e.key === "Enter" && matches[0]) pick(matches[0].key); if (e.key === "Escape") setQ(""); }}
           placeholder="Find your club…"

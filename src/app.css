@@ -861,6 +861,7 @@ html.native-app ::-webkit-scrollbar{display:none;}
 .streak-n{display:inline-flex;align-items:center;gap:4px;font-size:18px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0;font-variant-numeric:tabular-nums;}
 .streak-info{font-size:11px;color:var(--t3);display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
 .streak-info strong{color:var(--gold);font-size:12px;font-weight:700;}
+.streak-info strong.is-rule{color:var(--t2);font-weight:600;}
 .pc{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
 .pc.me{border-color:var(--accent-b);background:var(--accent-dim);}
 .pc-score{font-size:24px;font-weight:800;color:var(--text);}
@@ -3741,6 +3742,16 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
 .cf-chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--s1);border:1px solid var(--border);color:var(--t1);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s;}
 .cf-chip:hover,.cf-chip:focus-visible{border-color:var(--bd3, #3E4150);background:var(--s2);outline:none;}
 .cf-chip-all{padding:6px 14px;color:var(--t2);}
+/* On a phone the matches open IN the page, under the field, and push the rest
+   down. As a floating panel they ended half way down the League Quiz row, which
+   showed cut off underneath (13 Oct 2026). The field also moves to the top of
+   the screen on focus (HomeScreen), so the matches are above the keyboard. */
+.cf-icon{top:15px;}
+.cf-input{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 64px);}
+@media (max-width:1023px){
+  .cf-field{flex-wrap:wrap;}
+  .cf-results{position:static;flex:0 0 100%;box-shadow:none;}
+}
 @media (min-width:1024px){
   .club-finder{margin:4px 0 16px;}
   .cf-chips{flex-wrap:wrap;overflow:visible;mask-image:none;}

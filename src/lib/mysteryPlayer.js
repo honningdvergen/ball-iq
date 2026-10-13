@@ -290,10 +290,17 @@ export function withArticle(phrase) {
 }
 
 /** Bands drive the colour of a guess row. Contexto's green/amber/grey. */
+// The last rank that still counts as hot, and as warm. One source for the
+// bands a guess is given and for the key the empty screen shows.
+export const HOT_SHARE = 0.01, WARM_SHARE = 0.08;
+export function bandLimits(poolSize) {
+  return { hot: Math.max(10, Math.round(poolSize * HOT_SHARE)), warm: Math.max(60, Math.round(poolSize * WARM_SHARE)) };
+}
 export function bandFor(rank, poolSize) {
   if (rank === 1) return 'win';
-  if (rank <= Math.max(10, Math.round(poolSize * 0.01))) return 'hot';
-  if (rank <= Math.max(60, Math.round(poolSize * 0.08))) return 'warm';
+  const { hot, warm } = bandLimits(poolSize);
+  if (rank <= hot) return 'hot';
+  if (rank <= warm) return 'warm';
   return 'cold';
 }
 

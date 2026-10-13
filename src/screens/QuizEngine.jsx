@@ -743,7 +743,10 @@ const CTA_INSET = (() => {
         <div className="streak-bar">
           <div className="streak-n"><Flame size={18} strokeWidth={2.4} aria-hidden="true" />{streak}</div>
           <div className="streak-info">
-            <strong>{streak === 0 ? "Survival Mode" : streak === 1 ? "First one!" : streak < 5 ? "Keep going!" : streak < 10 ? "On fire!" : "Unstoppable!"}</strong>
+            {/* At nought this said "Survival Mode" in amber beside a flame and a
+                zero: the mode's name, on the mode's own screen, read as a score
+                of "0 Survival Mode". The rule is what a first run needs. */}
+            <strong className={streak === 0 ? "is-rule" : undefined}>{streak === 0 ? "One miss ends the run" : streak === 1 ? "First one!" : streak < 5 ? "Keep going!" : streak < 10 ? "On fire!" : "Unstoppable!"}</strong>
             {survivalBest > 0 && <span style={{fontSize:11,color:"var(--t3)",marginLeft:6}}>PB: {survivalBest}</span>}
             {streak > 0 && survivalBest > 0 && streak >= survivalBest && <span style={{fontSize:11,color:"var(--gold)",marginLeft:4,fontWeight:700}}>New PB</span>}
           </div>

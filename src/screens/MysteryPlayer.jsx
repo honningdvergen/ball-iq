@@ -10,7 +10,7 @@ import GameTitle from '../components/GameTitle.jsx';
 import { resolveDailyServices } from '../games/dailyServices.js';
 import { DailyDone } from '../components/DailyDone.jsx';
 import {
-  rankPool, bandFor, matchGuess, normaliseName,
+  rankPool, bandFor, HOT_SHARE, WARM_SHARE, matchGuess, normaliseName,
   answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition, withArticle,
 } from '../lib/mysteryPlayer.js';
@@ -631,9 +631,32 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
 
       <div style={{ flex: 1, padding: `10px 16px ${24 + kbInset}px`, display: 'flex', flexDirection: 'column', gap: 7 }}>
         {guesses.length === 0 && !done && (
-          <p style={{ color: 'var(--t3)', fontSize: 13, textAlign: 'center', marginTop: 26 }}>
+          <p style={{ color: 'var(--t3)', fontSize: 13, textAlign: 'center', margin: '22px 0 6px' }}>
             Your guesses appear here, closest first.
           </p>
+        )}
+        {/* The key to the colours, where the guesses will stand. Before the
+            first guess two thirds of this screen was empty, and what a rank of
+            400 is worth was learnt by guessing (13 Oct 2026). Four short rows in
+            the bands' own colours, dashed so they read as a key and not as
+            guesses; not the sixty-word wall that was taken out above. */}
+        {guesses.length === 0 && !done && (
+          // ⚠️ IN SHARES, NOT RANKS: the pool arrives on the first focus of the
+          // guess box, so its size is not known when this is first drawn. The
+          // shares are the ones bandFor() uses.
+          <div role="group" aria-label="What a rank means" style={{ display: 'flex', flexDirection: 'column', gap: 6, opacity: 0.8 }}>
+            {[
+              ['win', 'The player', 'Rank 1'],
+              ['hot', BAND_WORD.hot, `Closest ${Math.round(HOT_SHARE * 100)}%`],
+              ['warm', BAND_WORD.warm, `Closest ${Math.round(WARM_SHARE * 100)}%`],
+              ['cold', BAND_WORD.cold, 'Everyone else'],
+            ].map(([band, word, range]) => (
+              <div key={band} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 14px', borderRadius: 12, background: BAND_STYLE[band].bg, border: `1px dashed ${BAND_STYLE[band].bd}` }}>
+                <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: BAND_STYLE[band].fg }}>{word}</span>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--t2)', fontVariantNumeric: 'tabular-nums' }}>{range}</span>
+              </div>
+            ))}
+          </div>
         )}
         {guesses.map((g) => {
           const st = BAND_STYLE[g.band];

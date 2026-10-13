@@ -783,6 +783,9 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   // 2026); with no history, today is all the history there is.
   const pastDays = matchdays.filter(m => !m.isToday);
   const historyRows = pastDays.length ? pastDays : (playedCount > 0 ? matchdays.filter(m => m.isToday) : []);
+  // Where the empty History sends a new player: the first of today's games
+  // they have not finished (Footle, on a first visit).
+  const nextUp = todayModes.find(m => !m.done) || null;
 
   // A3. `todayModes.length > 0` is not paranoia — Trail and Mystery are
   // conditional, so a day with neither live and both fixed modes played is the
@@ -873,20 +876,35 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       {/* Recent days table — one column per mode. The header carries 14px of
           side padding so its labels sit over the cells inside the row cards,
           which have the same padding (the two-column version was 14px out). */}
+      {historyRows.length > 0 && (
       <div style={{ display: "flex", alignItems: "baseline", marginTop: 18, padding: "0 14px" }}>
         <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)", flex: 1 }}>Recent days</span>
         {cols.map(c => (
           <span key={c.key} style={{ width: COL_W, flexShrink: 0, textAlign: "center", fontSize: 8.5, fontWeight: 800, letterSpacing: "0.02em", color: c.theme.head }}>{c.label}</span>
         ))}
       </div>
+      )}
       {historyRows.length === 0 ? (
-        // A day-0 player used to get the "RECENT DAYS" header, four column
-        // heads, and exactly one row: today, four dashes. A header naming days
-        // that are not there, over the one day it excludes by name. The desktop
-        // path has carried this empty state since it was written; mobile never
-        // got it, and mobile is where nearly everyone is.
-        <div style={{ borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px", marginTop: 9, marginBottom: 14, fontSize: 12.5, color: "var(--t3)" }}>
-          Play today, then your recent days show up here.
+        // ⚠️ THE NEW PLAYER'S HISTORY WAS ONE GREY SENTENCE under a "RECENT
+        // DAYS" heading and four column labels, on an otherwise empty screen
+        // (13 Oct 2026). A table's header over no table. Now the tab says what
+        // it will hold, shows the four games a row is made of, and has the one
+        // thing an empty screen owes its reader: somewhere to go.
+        <div style={{ marginTop: 18, marginBottom: 14, borderRadius: 18, background: "var(--s1)", border: "1px solid var(--border)", padding: "24px 20px 20px", textAlign: "center" }}>
+          <div aria-hidden="true" style={{ display: "flex", justifyContent: "center", gap: 8 }}>
+            {cols.map(c => (
+              <span key={c.key} style={{ minWidth: 62, padding: "7px 8px", borderRadius: 10, border: `1px dashed ${c.theme.head}`, opacity: 0.75, fontSize: 9.5, fontWeight: 800, letterSpacing: "0.04em", color: c.theme.head }}>{c.label}</span>
+            ))}
+          </div>
+          <div style={{ marginTop: 16, fontSize: 17, fontWeight: 800, color: "var(--t1)" }}>No days yet</div>
+          <div style={{ marginTop: 5, fontSize: 13.5, lineHeight: 1.45, color: "var(--t2)" }}>
+            Finish any of today&rsquo;s {cols.length === 4 ? "four" : cols.length === 3 ? "three" : cols.length} and it lands here. One row a day, so you can see your run build.
+          </div>
+          {nextUp && (
+            <button type="button" className="btn btn-p" onClick={nextUp.onTap} style={{ marginTop: 16, minHeight: 48 }}>
+              Play today&rsquo;s {nextUp.name}
+            </button>
+          )}
         </div>
       ) : (
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 9, marginBottom: 14 }}>
@@ -1011,7 +1029,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   <div style={{ marginTop: 6 }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                       <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--t3)" }}>Recent days</span>
-                      <span style={{ display: "flex", paddingRight: 16 }}>
+                      <span style={{ display: recentDays.length ? "flex" : "none", paddingRight: 16 }}>
                         {cols.map(c => (
                           <span key={c.key} style={{ ...colHead, color: c.theme.head }}>{c.label}</span>
                         ))}

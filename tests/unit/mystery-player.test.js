@@ -316,3 +316,19 @@ describe('the club printed under a name', () => {
     expect(leaked.map((p) => `${p.name}: ${p.club}`)).toEqual([]);
   });
 });
+
+// The empty screen prints the bands as shares ("Closest 1%"). They are only
+// true while bandFor() cuts at the same shares.
+describe('the rank key on the empty screen', () => {
+  it('bandFor cuts where bandLimits says, at the shares the key prints', async () => {
+    const { bandFor, bandLimits, HOT_SHARE, WARM_SHARE } = await import('../../src/lib/mysteryPlayer.js');
+    const size = 8000, { hot, warm } = bandLimits(size);
+    expect(hot).toBe(Math.round(size * HOT_SHARE));
+    expect(warm).toBe(Math.round(size * WARM_SHARE));
+    expect(bandFor(1, size)).toBe('win');
+    expect(bandFor(hot, size)).toBe('hot');
+    expect(bandFor(hot + 1, size)).toBe('warm');
+    expect(bandFor(warm, size)).toBe('warm');
+    expect(bandFor(warm + 1, size)).toBe('cold');
+  });
+});

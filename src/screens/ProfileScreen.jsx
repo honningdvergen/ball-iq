@@ -8,6 +8,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, LEAGUE_FACES, pickLeagueFace, rawAnswered } from "../lib/ballIqCard.js";
+import { lift } from "../lib/clubColour.js";
 import { CALIBRATION } from "../data/cardCalibration.js";
 
 // ⚠️ THE RECALIBRATION NOTE MUST DERIVE FROM THE CALIBRATION IT DESCRIBES.
@@ -65,7 +66,7 @@ function accuracyLabel(card, stats) {
   const a = stats?.totalAnswered || 0, c = stats?.totalCorrect || 0;
   return (a > 0 && c <= a) ? `${Math.round(100 * c / a)}%` : "—";
 }
-import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe } from 'lucide-react';
+import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe, Trophy } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
 // lift() exists because a dark brand colour at low alpha on a dark card is
@@ -1750,7 +1751,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
                   <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.accent, marginTop: 7 }}>{t.label}</div>
                 </div>
-                <div style={{ fontSize: 50, opacity: 0.9 }} aria-hidden="true">&#127942;</div>
+                {/* A line icon in the tier's colour, like every other icon on
+                    this screen. It was the trophy emoji, drawn by the phone's
+                    own emoji font in its own colours. */}
+                <Trophy size={52} strokeWidth={1.6} color={t.accent} aria-hidden="true" style={{ opacity: 0.9, flexShrink: 0 }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "7px 16px", marginTop: 16, paddingTop: 13, borderTop: `1px solid ${t.accent}22` }}>
                 {rows.map((r) => (
@@ -1758,7 +1762,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                     {/* A dot in the competition's colour, as on the real card under
                         this sheet. It was an emoji per row (a flag, a star, a globe),
                         the only emoji icons on a screen drawn in line icons. */}
-                    <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: 4, background: r.color, flexShrink: 0 }} />
+                    <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: 4, background: lift(r.color), flexShrink: 0 }} />
                     <span style={{ fontSize: 12.5, fontWeight: 800, color: t.accent, fontVariantNumeric: "tabular-nums" }}>{r.v}</span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: t.text, opacity: 0.6 }}>{r.abbr}</span>
                   </div>
@@ -2124,7 +2128,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         <div className="badges-title">Badges — {earned.size}/{BADGE_DEFS.length} earned</div>
         {earned.size === 0 && (
           <div style={{textAlign:"center",padding:"12px 0",color:"var(--t3)",fontSize:13,marginBottom:8}}>
-            Play games to unlock your first badge 🎖️
+            Play games to unlock your first badge
           </div>
         )}
         <div className="badges-grid">
