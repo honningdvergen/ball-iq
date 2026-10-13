@@ -1193,6 +1193,16 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
+**Player-facing faults, worked through 13 Oct night**
+- [x] Timed questions hold a full clock for 0.8 s before it drains (no gate).
+- [x] History shows today's row to a player with no past days.
+- [x] Transfer Trail is keyed by its day (no carry-over past midnight).
+- [x] Top 10's Share is on screen on every size measured, the three small
+      ones included (the finished board's rows follow the screen's height).
+- [x] NOT A FAULT: "a half-played Daily 7 says Play". Leaving a Daily 7
+      discards it, as its own leave sheet says, so there is nothing to
+      continue. (Whether it should be resumable is a product question.)
+
 **Screen tour at 440pt, 13 Oct evening (twelve screens photographed in WebKit)**
 - [x] Clean as they are: Settings, League Quizzes, Stadiums, Draft intro.
 - [x] Mystery Player's search box and its dropdown are full width, in line
