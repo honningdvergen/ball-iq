@@ -1112,6 +1112,24 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] A project hook refused a code-review brief as "a social brief" because
       of its wording. It guards the wrong thing; look at its matcher.
 
+**Daily 7: the mix is built (13 Oct)**
+- [x] From 15 Oct every Daily 7 is two easy, four medium and one hard, in an
+      order shuffled by the date, never opening on the hard one
+      (`DAILY_MIX`, src/lib/dailyDraw.js; 361 unserved days rebuilt; 13 and
+      14 Oct were already servable and are untouched). Estimate, on Q1's
+      measured rates and an assumed 80% for easy: about 4 of 7.
+      ⚠️ This reverses Alex's own rule of 19 Aug ("a free point does not belong
+      in the daily"), by his instruction of 13 Oct. Two easy a day is what the
+      daily carried before that rule. If the "free point" complaint returns,
+      narrow which easy questions qualify; do not go back to none.
+      ⚠️ Installed apps carry their own copy of the log: build 144 and the
+      store version serve the OLD sets from 15 Oct until they update, so
+      "How everyone did" mixes two quizzes for a while (as it has since 4 Oct).
+      The cure is the Top 10 one: serve the log from the site.
+- [ ] Read the average for the week of 15 to 21 Oct against the 3.2 before.
+- [ ] 2,104 different questions fill the next 363 days (2,541 slots): some
+      repeat within the year, as before. Draw without replacement.
+
 **Daily 7 difficulty (Alex, 12 Oct, late: "make it easier ... get the average up to 4 correct")**
 - [ ] The Daily 7 averages 3.2 of 7 over three weeks (about 500 results; 2.7
       on 12 Oct, n=23; guessing gets 1.75), and a third of results are 2 or
@@ -1176,11 +1194,19 @@ Pro Max (build 144), reviewed before it went out:
       sweep the club names in lib/trail.js for the same.
 
 **Blocks build 145**
-- [ ] 🔴 Launch screen. The fix is WRITTEN AND UNCOMMITTED in the working tree
-      (`ios/App/App/Base.lproj/LaunchScreen.storyboard`, new
-      `Assets.xcassets/SplashMark.imageset`) and it compiles. Not seen: after a
-      fresh install the simulator never brought its screen up. Commit only
-      with a video that shows the wordmark from the first frame.
+- [x] **Launch screen: green, and the "six seconds of black" was mostly my
+      own simulator build.** 13 Oct, from the simulator's log: the build was
+      made with code signing off, and iOS 27 refuses to draw a launch
+      storyboard from a bundle with no resource seal ("Security error -67056
+      reading resource ... LaunchScreen.storyboardc", then "bad launch image",
+      then black until the web layer draws). `sim-web-swap.sh` breaks the seal
+      too, and every launch video since 9 Oct was of such an app. Signed ad
+      hoc, the same build shows the wordmark from the first frame of the zoom
+      (video, frames read). The new storyboard (a plain view in the splash
+      colour and a 146pt wordmark, not one 2732px picture) is committed: it is
+      what was proven. ⚠️ NOT PROVEN EITHER WAY: whether the OLD storyboard was
+      ever black in a properly signed build (TestFlight 144). Only a cold
+      launch on Alex's phone shows that. Both sim scripts now sign.
 - [ ] Android: nothing from 12 Oct seen on a device, the keyboard line least of
       all. No emulator on this Mac (8 GB free).
 - [ ] Footle keys: one fast burst lost four of five letters in the simulator.
