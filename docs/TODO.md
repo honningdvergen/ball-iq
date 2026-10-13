@@ -1193,6 +1193,21 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
+**One footer for a finished daily (13 Oct, late)**
+- [x] Footle, Transfer Trail and Top 10 end the same way: a quiet underlined
+      "<Thing> looks wrong? Tell us" with the app's flag icon, then one
+      "Back to Home" button (`src/components/ResultFoot.jsx`). Footle had no
+      way out but the arrow at the top; Trail and Top 10 drew the report as a
+      full-width pill the size of the exit.
+- [ ] Not yet on it: Mystery Player and the Daily 7 results screen (which
+      closes with an X top right and says the score twice). The shared game
+      HEADER is still five separate implementations.
+- [x] ⚠️ MY MISTAKE, 13 Oct 21:00: a push went out with a failing unit test (a
+      tick character in a comment in DailyDone.jsx trips its no-emoji check).
+      Vercel's build runs the suite and failed; production stayed on the
+      commit before. The commit command chained with `;`, so a red suite did
+      not stop it. Chain test, build, commit and push with `&&`, always.
+
 **Ticked off late on 13 Oct**
 - [x] Transfer Trail careers: nine club names given their accents (Atlético
       Madrid, Fenerbahçe, Málaga, Grêmio and five more; 27 places).
