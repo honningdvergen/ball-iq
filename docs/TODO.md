@@ -1193,6 +1193,19 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
+**From Alex's screenshots of build 145 (13 Oct, evening)**
+- [x] Draft: the season is set at the club name's size ("Arsenal 2009–10").
+- [x] Top 10: the strip of ten dashes above the board is gone (the board is
+      the progress).
+- [x] Home's lower half ("untidy and poorly assembled"): the six mode tiles
+      are compact and flat, in the rows' own anatomy (206pt where they took
+      380); a tapped tile no longer keeps its hover shade; Mystery Player's
+      "No." matches the dailies'; every row on Home is one line and 76pt at
+      360, 375, 402 and 440pt.
+      ⚠️ Lines shortened to do it (Alex may want some back): Multiplayer "Play
+      your mates live", League Quiz "Pick a competition", Mystery "Guess who
+      from clues", Draft "Spin and build an XI", and the six tile lines.
+
 **The two passes on build 145's code (13 Oct, afternoon)**
 - [x] **iOS simulator, fresh install:** onboarding, Skip to Home, Top 10 with
       the keyboard (board fits, keyboard stays, finish shows full names and
