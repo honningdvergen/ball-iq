@@ -1604,3 +1604,19 @@ export const finishedBefore = (status) => status === 'won' || status === 'lost' 
 export const startsAnnounced = (saved) => finishedBefore(saved?.status) && !saved?.owed;
 export const owesCredit = (embedded, savedAtMount, done) =>
   !!embedded && (!!savedAtMount?.owed || (!!done && !finishedBefore(savedAtMount?.status)));
+
+// ── What does Enter send? ────────────────────────────────────────────────────
+// A guess is a PLAYER, never loose text: "zzz" used to cost one of the five
+// (Alex, 13 Oct 2026: "yes refuse zzz"). So Enter sends, in this order: the
+// answer if that is what was typed (it must always be reachable, whether or
+// not the pool lists it); the top suggestion; and the raw text only while the
+// player list has not loaded, so a slow or offline phone can still play.
+// Otherwise nothing is sent and no guess is spent.
+export function enterGuess({ text, isAnswer, top, poolReady }) {
+  const t = String(text || '').trim();
+  if (!t) return null;
+  if (isAnswer) return t;
+  if (top) return top;
+  return poolReady ? null : t;
+}
+

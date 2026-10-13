@@ -23,6 +23,7 @@ import {
   startsAnnounced,
   owesCredit,
   finishedBefore,
+  enterGuess,
 } from "../lib/trail.js";
 // ⚠️ NO IMPORT FROM App.jsx. This screen also mounts as an island on the static
 // /transfer-trail/ page (src/islands/trail.jsx), and an island that imported
@@ -382,7 +383,13 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
               value={entry}
               onFocus={ensurePool}
               onChange={(e) => { ensurePool(); setEntry(e.target.value); }}
-              onKeyDown={(e) => { if (e.key === "Enter") submit(false); }}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                // lib/trail.js, enterGuess: a guess is a player, never loose text.
+                const name = enterGuess({ text: entry, isAnswer: guessMatchesPlayer(entry.trim(), player), top: suggestions[0]?.name, poolReady: pool.length > 0 });
+                if (name) submit(false, name);
+                else if (entry.trim()) { setShake(true); setTimeout(() => setShake(false), 420); }
+              }}
               placeholder="Type a player’s name…"
               aria-label="Your guess"
               autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false}
@@ -391,17 +398,9 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                        borderRadius: 12, padding: "13px 15px", color: "var(--t1)", fontSize: 16,
                        fontFamily: "inherit", outline: "none" }}
             />
-            <button onClick={() => submit(false)} disabled={!entry.trim()}
-              // The keyboard stays up: refusing the focus change on pointer-down
-              // keeps the box focused, and the click still fires. Without it
-              // every guess dropped the keyboard and brought it back about a
-              // second and a half later (Alex's recording, 12 Oct 2026; Top 10
-              // has done this since 9 Oct).
-              onPointerDown={(e) => e.preventDefault()} onMouseDown={(e) => e.preventDefault()}
-              style={{ flexShrink: 0, padding: "0 20px", borderRadius: 12, border: "none",
-                       background: entry.trim() ? "var(--accent)" : "var(--s2)",
-                       color: entry.trim() ? "var(--grn-ink)" : "var(--t3)", fontWeight: 800, fontSize: 14,
-                       fontFamily: "inherit", cursor: entry.trim() ? "pointer" : "default" }}>Guess</button>
+            {/* No Guess button (Alex, 13 Oct 2026). Every real guess goes through a
+                suggestion or Enter, and the button's only other use was sending
+                text that was no player. The box takes the whole row. */}
             {suggestions.length > 0 && (
               // ⚠️ PLAYER-REPORTED ON DEVICE, 2026-08-23: "i still can not scroll
               // down to see more names, the keyboard seems stuck over it".
@@ -444,6 +443,11 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
               </div>
             )}
           </div>
+          {entry.trim().length >= 2 && pool.length > 0 && suggestions.length === 0 && !guessMatchesPlayer(entry.trim(), player) && (
+            <div role="status" style={{ marginTop: 8, padding: "0 4px", fontSize: 13, fontWeight: 600, color: "var(--t2)" }}>
+              No player by that name. Pick from the list.
+            </div>
+          )}
           <button onClick={() => submit(true)}
             onPointerDown={(e) => e.preventDefault()} onMouseDown={(e) => e.preventDefault()}
             /* minHeight, not padding: this is full-width so nothing shifts

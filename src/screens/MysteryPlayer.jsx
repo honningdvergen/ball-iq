@@ -563,6 +563,9 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
                    club (least distinguishing, and by far the longest string:
                    "Real Madrid Club de Fútbol") is what gets eaten first. */
                 <button key={p.id} type="button" onClick={() => submit(p)}
+                  // The keyboard stays up between guesses: refuse the focus change,
+                  // the click still fires (Top 10 since 9 Oct, Trail since 12 Oct).
+                  onPointerDown={(e) => e.preventDefault()} onMouseDown={(e) => e.preventDefault()}
                   style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2, width: '100%', padding: '9px 14px', background: 'none', border: 'none', borderBottom: '1px solid var(--border)', color: 'var(--t1)', cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left' }}>
                   <span style={{ fontSize: 14.5, fontWeight: 700 }}>{p.name}</span>
                   <span style={{ fontSize: 11.5, color: 'var(--t3)', fontWeight: 600, maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

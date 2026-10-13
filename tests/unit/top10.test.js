@@ -13,7 +13,7 @@ import {
 } from '../../src/lib/top10.js';
 import { normaliseName } from '../../src/lib/mysteryPlayer.js';
 import { keyboardLine } from '../../src/lib/useKeyboardAwareInput.js';
-import { startsAnnounced, owesCredit } from '../../src/lib/trail.js';
+import { startsAnnounced, owesCredit, enterGuess } from '../../src/lib/trail.js';
 import { DAILY_GAMES, SCORE_GAMES, summariseDistribution } from '../../src/lib/dailyResults.js';
 import { MODE_ACCENT, MODE_RGB } from '../../src/lib/accents.js';
 
@@ -578,11 +578,27 @@ describe('The question screen can be read (Alex\'s recording, 12 Oct 2026)', () 
 });
 
 describe('Transfer Trail keeps the keyboard up between guesses (Alex\'s recording, 12 Oct 2026)', () => {
-  const trail = readFileSync(new URL('../../src/screens/TransferTrail.jsx', import.meta.url), 'utf8');
-  it('a suggestion, Guess and Skip all refuse the focus change, as Top 10 does', () => {
+  const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
+  const trail = read('screens/TransferTrail.jsx');
+  it('a suggestion and Skip all refuse the focus change, as Top 10 does', () => {
     const keep = /onPointerDown=\{\(e\) => e\.preventDefault\(\)\} onMouseDown=\{\(e\) => e\.preventDefault\(\)\}/g;
-    expect((trail.match(keep) || []).length).toBe(3);
+    expect((trail.match(keep) || []).length).toBe(2); // the Guess button is gone (13 Oct)
     for (const who of [/submit\(false, p\.name\)\}\s*onPointerDown/, /submit\(true\)\}\s*onPointerDown/]) expect(trail).toMatch(who);
+  });
+  it('a guess is a player, never loose text: "zzz" costs nothing', () => {
+    // nonsense, list loaded, nothing suggested: nothing is sent
+    expect(enterGuess({ text: 'zzz', isAnswer: false, top: undefined, poolReady: true })).toBe(null);
+    // Enter takes the top suggestion
+    expect(enterGuess({ text: 'olm', isAnswer: false, top: 'Dani Olmo', poolReady: true })).toBe('Dani Olmo');
+    // the answer is always reachable, listed or not
+    expect(enterGuess({ text: 'ter Stegen', isAnswer: true, top: undefined, poolReady: true })).toBe('ter Stegen');
+    expect(enterGuess({ text: 'ter Stegen', isAnswer: true, top: 'Someone Else', poolReady: true })).toBe('ter Stegen');
+    // the list has not loaded (slow or offline): typed text still plays
+    expect(enterGuess({ text: 'Kane', isAnswer: false, top: undefined, poolReady: false })).toBe('Kane');
+    // nothing typed: nothing sent
+    expect(enterGuess({ text: '  ', isAnswer: false, top: 'X', poolReady: true })).toBe(null);
+    expect(trail).not.toMatch(/>Guess<\/button>/);
+    expect(read('screens/MysteryPlayer.jsx')).toMatch(/onClick=\{\(\) => submit\(p\)\}\s*\/\/[^\n]*\n[^\n]*\n\s*onPointerDown=\{\(e\) => e\.preventDefault\(\)\}/);
   });
   it('confetti is for a solve made now, not for every review of one', () => {
     expect(trail).toMatch(/won && !finishedBefore\(savedAtMount\.current\.status\) && Confetti/);
