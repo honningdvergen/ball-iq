@@ -19,6 +19,7 @@
 // no daily-completed event and feeds no streak. The day's board and the day's
 // luck are already fixed by the date, so turning it on is wiring, not a
 // rewrite.
+import GameTitle from "../components/GameTitle.jsx";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { dayIndexForDate } from "../lib/date.js";
@@ -262,7 +263,7 @@ function Head({ sub, onBack, right }) {
     <div className="dr-head">
       {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div className="dr-head-title">Draft</div>
+        <GameTitle className="dr-head-title">Draft</GameTitle>
         <div className="dr-head-sub">{sub}</div>
       </div>
       {right}

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ArrowLeft, Search, UserRoundSearch } from 'lucide-react';
+import GameTitle from '../components/GameTitle.jsx';
 // Same kit the Trail takes (TransferTrail.jsx) — the scouting panel measured
 // this file at ZERO haptic/sound/confetti: the hardest, longest-effort daily
 // paid off with a mute green panel while Trail and Footle both celebrate.
@@ -369,15 +370,13 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   const tight = !embedded && best !== null && !done;
   return (
     <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: embedded ? '2px 0 8px' : '14px 0 6px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: embedded ? '2px 0 8px' : '8px 4px' }}>
         {/* ⚠️ .back-btn, not a bare glyph. The touch target was already legal
             (hit44 supplies 44pt via ::after) — the defect was that this was
             the only back control in the app WITHOUT the chromed well, so the
             product shipped two different back buttons. */}
         {onExit && (
-          <button onClick={onExit} aria-label="Back" className="back-btn">
-            <ArrowLeft size={22} />
-          </button>
+          <button onClick={onExit} aria-label="Back" className="back-btn">←</button>
         )}
         {/* ⚠️ THE MODE HAD NO COLOUR ON ITS OWN SCREEN. The Daily row sells
             Mystery in violet — tinted well, violet button, violet label — and
@@ -403,10 +402,14 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             nothing. Nothing wraps, nothing truncates, nothing disappears.
             (Simulator, 2026-09-09.) */}
         <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
-          {!embedded && <div style={{ fontSize: tight ? 15 : 17, fontWeight: 900, color: 'var(--t1)', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Mystery Player</div>}
-          <div style={{ fontSize: embedded ? 13.5 : 12, color: embedded ? 'var(--t2)' : 'var(--t3)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            <span style={{ color: MODE_ACCENT.mystery, fontWeight: 800 }}>No. {mysteryNumber(date)}</span>
-            {tight ? '' : ' · unlimited guesses'}{isArchive ? ' · archive' : ''}
+          {/* The same title as Top 10, Transfer Trail and the Draft: the name at
+              20pt with "No. N" quiet beside it (components/GameTitle). While
+              CLOSEST is in the row the title steps down and the number moves
+              to the line beneath, so nothing is cut. */}
+          {!embedded && <GameTitle no={tight ? 0 : mysteryNumber(date)} style={tight ? { fontSize: 16 } : undefined}>Mystery Player</GameTitle>}
+          <div style={{ fontSize: embedded ? 13.5 : 12.5, color: 'var(--t2)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {(embedded || tight) && <span style={{ color: MODE_ACCENT.mystery, fontWeight: 800 }}>No. {mysteryNumber(date)}</span>}
+            {tight ? '' : `${embedded ? ' · ' : ''}${embedded ? 'unlimited guesses' : 'Unlimited guesses'}`}{isArchive ? ' · archive' : ''}
           </div>
         </div>
         {/* ⚠️ AVAILABLE FROM THE FIRST SECOND. This used to appear only after a

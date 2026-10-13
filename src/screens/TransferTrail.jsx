@@ -10,6 +10,7 @@
 // Only revealed clubs are drawn. No "?" placeholders for the rest: the LENGTH of
 // a career is itself a clue — a six-club journeyman reads very differently from
 // a three-club one-club-man — and handing that over free undoes the ladder.
+import GameTitle from "../components/GameTitle.jsx";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dateToYMD } from "../lib/date.js";
 import {
@@ -266,7 +267,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
           solved Trail. */}
       {won && !finishedBefore(savedAtMount.current.status) && Confetti ? <Confetti /> : null}
 
-      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "12px 4px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "8px 4px" }}>
         {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
         {/* embedded: on the static page the H1 above already names the game,
             so the title row becomes one masthead line, like Footle's — the
@@ -278,9 +279,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
           </div>
         ) : (
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>
-              Transfer Trail{number > 0 ? ` #${number}` : ""}
-            </div>
+            <GameTitle no={number}>Transfer Trail</GameTitle>
             <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
               {done ? (won ? "Solved" : "Not this time") : "Name the player from their career"}
             </div>

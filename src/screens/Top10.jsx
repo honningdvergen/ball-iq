@@ -11,6 +11,7 @@
 // The board is two columns of five ON PURPOSE. Ten rows in one column push the
 // guess box under a phone keyboard; this way the question, the box and all ten
 // ranks stay visible while typing, which is the whole game.
+import GameTitle from "../components/GameTitle.jsx";
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Heart } from "lucide-react";
 import { dateToYMD } from "../lib/date.js";
@@ -101,7 +102,7 @@ function Head({ number, sub, lives, onBack, embedded }) {
         </div>
       ) : (
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="t10-head-title">Top 10{number > 0 ? ` #${number}` : ""}</div>
+          <GameTitle no={number} className="t10-head-title">Top 10</GameTitle>
           <div className="t10-head-sub">{sub}</div>
         </div>
       )}
