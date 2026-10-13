@@ -368,23 +368,29 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   const handleKeyRef = useRef(handleKey);
   useEffect(() => { handleKeyRef.current = handleKey; });
 
-  // ⚠️ LETTERS AND DELETE TYPE ON THE WAY DOWN, NOT ON CLICK. iOS only makes a
+  // ⚠️ LETTERS AND DELETE TYPE ON POINTERUP, NOT ON CLICK. iOS only makes a
   // click out of a touch that begins and ends alone: type with two thumbs, the
   // second landing before the first has lifted, and the clicks are dropped. A
-  // fast burst lost four letters of five (simulator, 12 Oct 2026). pointerdown
-  // fires for every finger. The click handler stays for a physical keyboard
-  // and for assistive tech, which press a button without a pointer, and steps
-  // aside when the same key has just been typed by the pointer.
+  // fast burst lost four letters of five (simulator, 12 Oct 2026). pointerup
+  // fires once for every finger.
+  // Not pointerdown (tried the same day, caught in review): a scroll that
+  // begins on a key had already typed its letter before the browser cancelled
+  // the touch, and a press held past the de-duplication window typed twice.
+  // A scroll ends in pointercancel, never pointerup, and the window below is
+  // measured from the lift, so neither can happen.
+  // The click handler stays for a physical keyboard and for assistive tech,
+  // which press a button without a pointer; it steps aside for the click the
+  // browser sends straight after a pointerup on the same key.
   // ENTER stays on click on purpose: it spends a guess, so it wants a full tap.
-  const lastDown = useRef({ k: null, t: 0 });
-  const keyDown = (k) => (e) => {
+  const lastUp = useRef({ k: null, t: 0 });
+  const keyUp = (k) => (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    lastDown.current = { k, t: Date.now() };
+    lastUp.current = { k, t: Date.now() };
     handleKeyRef.current(k);
   };
   const keyClick = (k) => (e) => {
-    const d = lastDown.current;
-    if (e.detail !== 0 && d.k === k && Date.now() - d.t < 800) return;
+    const d = lastUp.current;
+    if (e.detail !== 0 && d.k === k && Date.now() - d.t < 700) { lastUp.current = { k: null, t: 0 }; return; }
     handleKeyRef.current(k);
   };
 
@@ -711,7 +717,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
                 // feedback the colors carry (medical accessibility).
                 const stDesc = st === "green" ? ", correct" : st === "yellow" ? ", wrong position" : st === "grey" ? ", not in the name" : "";
                 return (
-                  <button key={k} className={cls} onPointerDown={keyDown(k)} onClick={keyClick(k)} aria-label={k === "DEL" ? "Delete last letter" : `${k}${stDesc}`}>
+                  <button key={k} className={cls} onPointerUp={keyUp(k)} onClick={keyClick(k)} aria-label={k === "DEL" ? "Delete last letter" : `${k}${stDesc}`}>
                     {k === "DEL" ? "⌫" : k}
                   </button>
                 );

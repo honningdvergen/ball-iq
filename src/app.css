@@ -3750,6 +3750,9 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
    the screen on focus (HomeScreen), so the matches are above the keyboard. */
 .cf-icon{top:15px;}
 .cf-input{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 64px);}
+/* In a browser tab the site header and the app bar are sticky and cover the
+   top 103px (107 on a tablet): at 64 the field came to rest under them. */
+body.biq-web .cf-input{scroll-margin-top:118px;}
 @media (max-width:1023px){
   .cf-field{flex-wrap:wrap;}
   .cf-results{position:static;flex:0 0 100%;box-shadow:none;}

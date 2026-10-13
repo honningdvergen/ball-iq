@@ -1416,6 +1416,23 @@ Pro Max (build 144), reviewed before it went out:
       `/version.json` before failing.
 - [ ] `scores` rows for `trail` before 12 Oct count reviews as finishes.
 
+**The independent review of tonight's changes (13 Oct, 23:00): five found, five fixed**
+- [x] Footle's keys typed on pointerdown: a scroll that began on a key typed
+      it, and a press held past 0.8 s typed twice. They type on pointerup now.
+      Checked: two thumbs overlapping, a scroll, a one-second hold, real taps,
+      delete, a keyboard press.
+- [x] The club search field came to rest under the web's sticky header.
+- [x] The shared title cut the name on a 360pt phone ("Transfer Trail…").
+      The name now stands whole and the number gives way.
+- [x] The end-to-end test for a new player's History still expected the old
+      sentence; CI had been red on main since 360fc1ed.
+- [x] The app's own fonts sat in the service worker's trimmed cache; they are
+      in the fonts cache now (CACHE_VERSION v13).
+- [ ] ⚠️ The deploy of d8860fdb (TODO and build number only) FAILED on Vercel
+      after six minutes; the same tree builds clean here, in UTC too, and I
+      cannot read Vercel's log from this Mac. Production stayed on a5846be,
+      which has every code change. Watch the next deploy.
+
 **Sweep of this section, 13 Oct, 22:40.** Every box above this line that was
 still open and has since been fixed, ruled on or found not to be a fault is
 now ticked; the dated blocks further up say which. What is genuinely open is

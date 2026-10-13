@@ -281,7 +281,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
           <div style={{ flex: 1, minWidth: 0 }}>
             <GameTitle no={number}>Transfer Trail</GameTitle>
             <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
-              {done ? (won ? "Solved" : "Not this time") : "Name the player from their career"}
+              {done ? (won ? "Solved" : "Not this time") : "Whose career is this?"}
             </div>
           </div>
         )}

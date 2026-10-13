@@ -84,7 +84,10 @@ test('Daily tab — History renders (streak + recent days, no rows)', async ({ p
   await expect(page.locator('.daily-screen')).toBeVisible();
   await expect(page.getByText('History', { exact: true }).filter({ visible: true }).first()).toBeVisible();
   await expect(page.getByText(/New puzzles in/i).filter({ visible: true }).first()).toBeVisible();
-  await expect(page.getByText(/Recent days/i).filter({ visible: true }).first()).toBeVisible();
+  // A fresh guest has no rows. On a phone the table's heading goes with them
+  // (13 Oct 2026: a header over no table); the desktop column keeps its own.
+  const wide = (page.viewportSize()?.width || 0) >= 1024;
+  if (wide) await expect(page.getByText(/Recent days/i).filter({ visible: true }).first()).toBeVisible();
 
   // This guest has played nothing, so the streak surfaces are ABSENT — both of
   // them. Until 2026-09-06 a player with no history was shown "0 day streak —
@@ -94,8 +97,13 @@ test('Daily tab — History renders (streak + recent days, no rows)', async ({ p
   // whichever surface is visible, and the recent-days table shows its empty
   // state rather than a header over a single all-dashes row.
   await expect(page.getByText(/day streak/i).filter({ visible: true })).toHaveCount(0);
-  await expect(page.getByText(/Play today, then your recent days show up here/i)
-    .filter({ visible: true }).first()).toBeVisible();
+  if (wide) {
+    await expect(page.getByText(/Play today, then your recent days show up here/i)
+      .filter({ visible: true }).first()).toBeVisible();
+  } else {
+    await expect(page.getByText('No days yet', { exact: true }).filter({ visible: true }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /Play today.s / }).filter({ visible: true }).first()).toBeVisible();
+  }
 
   // The rows are Home's. Their sublines must NOT appear in THIS screen (Home
   // stays mounted but hidden behind the tab switch, so scope to the screen).

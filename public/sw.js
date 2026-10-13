@@ -10,7 +10,7 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v12'; // v12: /ph.js + /ingest/* (PostHog) exempted from cache-first
+const CACHE_VERSION = 'balliq-v13'; // v13: /fonts/* (the app's own Inter + JetBrains Mono) kept in the fonts cache, which is never trimmed
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 const DOC_CACHE = `${CACHE_VERSION}-docs`;
@@ -206,6 +206,14 @@ self.addEventListener('fetch', (event) => {
   // PostHog's own SDK behind our proxy. Pinning either cache-first would
   // freeze an analytics config (or an SDK) on installed PWAs indefinitely.
   if (url.origin === self.location.origin && (url.pathname === '/ph.js' || url.pathname.startsWith('/ingest/'))) {
+    return;
+  }
+
+  // The app's own font files (13 Oct 2026). They are not in the precache
+  // manifest and would be the oldest entries in the static cache, so its
+  // trimming would evict them first; the fonts cache is never trimmed.
+  if (url.origin === self.location.origin && url.pathname.startsWith('/fonts/')) {
+    event.respondWith(cacheFirst(request, FONTS_CACHE));
     return;
   }
 
