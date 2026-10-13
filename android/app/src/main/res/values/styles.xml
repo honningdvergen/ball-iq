@@ -16,7 +16,13 @@
     </style>
 
 
+    <!-- The launch screen is the app's own dark, not the system's default.
+         Without windowSplashScreenBackground, Android 12 and later drew the
+         icon on a near-white screen for a moment before a dark app (seen on
+         an Android 16 emulator, 13 Oct 2026). -->
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="android:background">@drawable/splash</item>
+        <item name="windowSplashScreenBackground">#0B0C10</item>
+        <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
     </style>
 </resources>
