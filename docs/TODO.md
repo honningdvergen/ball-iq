@@ -1448,6 +1448,18 @@ Pro Max (build 144), reviewed before it went out:
       app died (23:27; swap near 10 GB). Boot with sim-probe.sh, wait for the
       load to fall, and run nothing else heavy beside it.
 
+**Build 146 (14 Oct, 00:10)**
+- [x] 1.8.0 build 146 cut from 81202a1b in the clean clone: preflight green
+      (both native bundles match the source, fonts in both), archived,
+      uploaded to App Store Connect (`~/ball-iq-release/upload-146.log`:
+      "Upload succeeded"). The practice puzzle did not rotate at midnight
+      (No. 134 is too short, so No. 133 stays), so no rotation commit.
+- [ ] Alex plays 146 on his phone. Then: screenshots with Top 10 and Draft,
+      What's New, submit for review.
+- [ ] Android: debug APK of the same commit on the emulator (all four
+      dailies, the club search with the keyboard, Footle keys), then the AAB
+      (versionCode 54). Upload waits for the Play Console login.
+
 **Sweep of this section, 13 Oct, 22:40.** Every box above this line that was
 still open and has since been fixed, ruled on or found not to be a fault is
 now ticked; the dated blocks further up say which. What is genuinely open is
