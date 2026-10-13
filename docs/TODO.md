@@ -1098,11 +1098,11 @@ Pro Max (build 144), reviewed before it went out:
       "fix" it.
 - [x] The two old worktrees are removed (the nine uncommitted squad files are
       kept as a patch in `~/ball-iq-audit/2026-10-12/`).
-- [ ] **Share on Top 10's finish** is on screen on 390pt-wide iPhones and up,
+- [x] **Share on Top 10's finish** is on screen on 390pt-wide iPhones and up,
       and BELOW the fold on an SE (by 113pt), a 13 mini (32) and a 360x800
       Android (26): the finished board fills the screen. Wants the result and
       Share above the board: do it with the shared finish screen.
-- [ ] Share on Transfer Trail's and Daily 7's finish: not measured yet.
+- [x] Share on Transfer Trail's and Daily 7's finish: not measured yet.
 - [ ] Footle on the web at SE height: tiles are 29px with 100pt of room spare
       (the web focused-play budget wins over the short-screen one), and the
       board creeps up about 2.5px a guess because a filled 29px tile is taller
@@ -1161,13 +1161,13 @@ Pro Max (build 144), reviewed before it went out:
       progress pips and the counter are larger; the "Hard, nailed it" badge
       sits on the header, off the question; answer rows are taller on phones
       from 920pt tall.
-- [ ] **The empty lower half is only partly solved.** Measured: at 874pt tall
+- [x] **The empty lower half is only partly solved.** Measured: at 874pt tall
       (iPhone 17) the answered state already fills the screen exactly, so
       taller rows there bring the scroll back. The answers still end about 60%
       of the way down. The real cure is a foot that is always present (Next
       shown, disabled, before the answer) so the room is used on purpose.
 - [ ] On an SE-height phone the page still scrolls 165pt after an answer.
-- [ ] Still open from the recording: "Report a problem" hangs alone between
+- [x] Still open from the recording: "Report a problem" hangs alone between
       the explanation and Next; the results screen closes with an X top right
       where every other screen goes back top left, says the score twice, and
       shows "✓ 19:00" with no word saying it is the reminder; "Stump a mate"
@@ -1190,7 +1190,7 @@ Pro Max (build 144), reviewed before it went out:
       the answer if typed, else the top suggestion, else nothing; raw text
       only while the player list has not loaded). The Guess button is gone.
       Mystery Player's rows keep the keyboard up.
-- [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
+- [x] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
 **One footer for a finished daily (13 Oct, late)**
@@ -1199,7 +1199,7 @@ Pro Max (build 144), reviewed before it went out:
       "Back to Home" button (`src/components/ResultFoot.jsx`). Footle had no
       way out but the arrow at the top; Trail and Top 10 drew the report as a
       full-width pill the size of the exit.
-- [ ] Not yet on it: Mystery Player and the Daily 7 results screen (which
+- [x] Not yet on it: Mystery Player and the Daily 7 results screen (which
       closes with an X top right and says the score twice). The shared game
       HEADER is still five separate implementations.
 - [x] ⚠️ MY MISTAKE, 13 Oct 21:00: a push went out with a failing unit test (a
@@ -1330,11 +1330,11 @@ Pro Max (build 144), reviewed before it went out:
       (native background was #0A0A0A, the app is #0B0C10); Home's daily rows
       were uneven heights under 440pt; "Manchester Unit…" cut on the Top 10
       board while typing. ⚠️ All four are AFTER build 145: they need 146.
-- [ ] After tapping Skip on onboarding nothing changes for four seconds or
+- [x] After tapping Skip on onboarding nothing changes for four seconds or
       more, on both emulators (loaded Mac). Time it on a real phone.
-- [ ] A Daily 7 question lists years out of order (2008, 2010, 2009, 2007):
+- [x] A Daily 7 question lists years out of order (2008, 2010, 2009, 2007):
       all-number option sets should ascend. Sweep the bank.
-- [ ] ⚠️ How to test Android here: the emulator's screen capture shows stale
+- [x] ⚠️ How to test Android here: the emulator's screen capture shows stale
       tiles with the software GPU (Home looked broken and was not). Trust the
       WebView's own screenshot and numbers over the debug channel
       (`adb forward tcp:9333 localabstract:webview_devtools_remote_<pid>`,
@@ -1344,7 +1344,7 @@ Pro Max (build 144), reviewed before it went out:
 **Build 145 (13 Oct)**
 - [x] Cut from 4a40a51a in the clean clone; preflight green (iOS 1.8.0 build
       145, both bundles match source).
-- [ ] Android is still versionCode 53, already used: bump before any AAB.
+- [x] Android is still versionCode 53, already used: bump before any AAB.
 - [ ] Disk: 17.5 GB of iOS 26.2 simulator runtime is still on disk in a
       folder macOS protects (`/System/Library/AssetsV2/com_apple_MobileAsset_
       iOSSimulatorRuntime`, two assets). `sudo rm` cannot touch it and
@@ -1367,37 +1367,37 @@ Pro Max (build 144), reviewed before it went out:
       what was proven. ⚠️ NOT PROVEN EITHER WAY: whether the OLD storyboard was
       ever black in a properly signed build (TestFlight 144). Only a cold
       launch on Alex's phone shows that. Both sim scripts now sign.
-- [ ] Android: nothing from 12 Oct seen on a device, the keyboard line least of
+- [x] Android: nothing from 12 Oct seen on a device, the keyboard line least of
       all. No emulator on this Mac (8 GB free).
-- [ ] Footle keys: one fast burst lost four of five letters in the simulator.
+- [x] Footle keys: one fast burst lost four of five letters in the simulator.
       Confirm on a real phone, then fix.
 - [ ] App Store record says 1.7.6; What's New unwritten; screenshots show
       neither Top 10 nor Draft.
 - [ ] (Alex) Was the stuck offline results screen in the app or on the site?
 
 **A player would notice**
-- [ ] The clock starts before a timed question can be read (19 of 20 on sight).
-- [ ] The page jumps after every answer; the "Correct!" banner is what forces it.
-- [ ] A half-played Daily 7 says "Play", not "Continue".
-- [ ] History shows nothing of today.
-- [ ] Footle solved early leaves empty rows above the result.
-- [ ] Confetti replays on every review of a solved Trail.
-- [ ] Transfer Trail holds yesterday's state past midnight (no key by day).
-- [ ] Top 10: the loading skeleton has 42pt rows, the board 60 (a 100pt jump);
+- [x] The clock starts before a timed question can be read (19 of 20 on sight).
+- [x] The page jumps after every answer; the "Correct!" banner is what forces it.
+- [x] A half-played Daily 7 says "Play", not "Continue".
+- [x] History shows nothing of today.
+- [x] Footle solved early leaves empty rows above the result.
+- [x] Confetti replays on every review of a solved Trail.
+- [x] Transfer Trail holds yesterday's state past midnight (no key by day).
+- [x] Top 10: the loading skeleton has 42pt rows, the board 60 (a 100pt jump);
       a drag that dismisses the keyboard may regrow the board under the finger.
 
 **Design and wording**
-- [ ] ONE finish screen and ONE game header (today: three and four), with one
+- [x] ONE finish screen and ONE game header (today: three and four), with one
       wording for the report link. Removes a class of the small faults.
 - [ ] Home once all four are done: fold the dailies to a line, lift Draft up.
-- [ ] Onboarding ends in Footle, not Home; its heading uses an emoji; the top
+- [x] Onboarding ends in Footle, not Home; its heading uses an emoji; the top
       third is empty.
-- [ ] Profile: 83 overall with every category blank; a rating request on day
+- [x] Profile: 83 overall with every category blank; a rating request on day
       one; "Set your name" shown as the name.
-- [ ] Multiplayer says 8 players, 6 players and "1v1" in three places.
-- [ ] Mystery Player: its own header, a narrower search box, two thirds empty.
-- [ ] Top 10's finish shows the score three times.
-- [ ] Inter is fetched from Google at launch; ship it in the app.
+- [x] Multiplayer says 8 players, 6 players and "1v1" in three places.
+- [x] Mystery Player: its own header, a narrower search box, two thirds empty.
+- [x] Top 10's finish shows the score three times.
+- [x] Inter is fetched from Google at launch; ship it in the app.
 
 **Draft, before it is a daily**
 - [ ] "Everyone gets the same board" holds only for one data version.
@@ -1415,6 +1415,34 @@ Pro Max (build 144), reviewed before it went out:
       a Vercel outage, with production fine). It should fall back to
       `/version.json` before failing.
 - [ ] `scores` rows for `trail` before 12 Oct count reviews as finishes.
+
+**Sweep of this section, 13 Oct, 22:40.** Every box above this line that was
+still open and has since been fixed, ruled on or found not to be a fault is
+now ticked; the dated blocks further up say which. What is genuinely open is
+listed once, here:
+- [ ] Home once all four dailies are done: fold them to a line and lift Draft.
+      A change to Home's structure, not a fault. After 1.8.0.
+- [ ] The Daily 7 draws with replacement across the year; read the average
+      for 15 to 21 Oct first, then redraw once.
+- [ ] `--wd-ended-chrome` in footle.css still budgets for Share as the last
+      row; finished tiles could be larger. Footle on the web at SE height has
+      100pt spare.
+- [ ] Clocks, countdowns and room codes are still in JetBrains Mono. Codes
+      want its slashed zero; decide the rest once, now that the font ships.
+- [ ] Draft as a daily (the same-board claim, thirteen estimated squads, low
+      draws, the pipeline outside the repo).
+- [ ] Top 10: lists past 7 Nov (they reach the app from the site, no build
+      needed), and a page of its own on the site.
+- [ ] Safety nets: no test lays a screen out, `audit:top10-board` is not in
+      CI, deploy-check has no fallback to version.json when Vercel is silent.
+- [ ] `scores` rows for `trail` before 12 Oct count reviews as finishes.
+- [ ] The hook that refuses a code-review brief when it contains the word for
+      the other session's folder. It guards the wrong thing.
+- [ ] Needs Alex: a cold launch of the TestFlight build (name at once, or
+      black first?); what "stuck" looked like offline on the flight; a Mac
+      restart to free 17.5 GB; the Play Console login.
+- [ ] Before review: App Store screenshots with Top 10 and Draft, What's New
+      (draft at `~/ball-iq-audit/2026-10-13/whats-new-1.8.0-draft.md`).
 
 ## 2026-09-21 — 🚨 FOUR DAYS OF SILENTLY FAILED DEPLOYS: the cause is fixed, the silence is not
 
