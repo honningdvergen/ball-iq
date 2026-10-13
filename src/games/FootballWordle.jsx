@@ -22,6 +22,7 @@ import { safeSetItem } from '../safeStorage.js';
 import { APP_NAME } from '../lib/scoring.js';
 import { FOOTLE_SHORT } from '../lib/modeCopy.js';
 import GameTitle from "../components/GameTitle.jsx";
+import { createTapLedger } from "../lib/keyTaps.js";
 import { getFootleXP } from '../lib/footleXp.js';
 import ResultFoot, { ReportLink } from '../components/ResultFoot.jsx';
 import { DailyDone } from '../components/DailyDone.jsx';
@@ -382,15 +383,17 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // which press a button without a pointer; it steps aside for the click the
   // browser sends straight after a pointerup on the same key.
   // ENTER stays on click on purpose: it spends a guess, so it wants a full tap.
-  const lastUp = useRef({ k: null, t: 0 });
+  // Which click belongs to which lift is lib/keyTaps.js: one note per key, so
+  // a click that arrives late, after other keys, is still recognised.
+  const taps = useRef(null);
+  if (!taps.current) taps.current = createTapLedger();
   const keyUp = (k) => (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    lastUp.current = { k, t: Date.now() };
+    taps.current.lifted(k);
     handleKeyRef.current(k);
   };
   const keyClick = (k) => (e) => {
-    const d = lastUp.current;
-    if (e.detail !== 0 && d.k === k && Date.now() - d.t < 700) { lastUp.current = { k: null, t: 0 }; return; }
+    if (e.detail !== 0 && taps.current.spent(k)) return;
     handleKeyRef.current(k);
   };
 

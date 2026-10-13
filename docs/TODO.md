@@ -1428,10 +1428,25 @@ Pro Max (build 144), reviewed before it went out:
       sentence; CI had been red on main since 360fc1ed.
 - [x] The app's own fonts sat in the service worker's trimmed cache; they are
       in the fonts cache now (CACHE_VERSION v13).
-- [ ] ⚠️ The deploy of d8860fdb (TODO and build number only) FAILED on Vercel
-      after six minutes; the same tree builds clean here, in UTC too, and I
-      cannot read Vercel's log from this Mac. Production stayed on a5846be,
-      which has every code change. Watch the next deploy.
+- [x] The deploy of d8860fdb (TODO and build number only) failed on Vercel
+      after six minutes; the same tree built clean here, in UTC too, and the
+      next push (44dd35a2) deployed. Not reproduced, log not readable from
+      this Mac.
+
+**Fresh-install pass of build 146's code in the simulator (13 Oct, 23:40)**
+- [x] Launch shows the name from the first frame; onboarding is under the
+      wordmark, in Inter; Skip reaches Home at once.
+- [x] Club search with the real keyboard up: the field goes to the top and
+      both matches sit above the keyboard, nothing cut off beneath.
+- [x] History's empty state and Footle's shared header look as in WebKit.
+- [x] ⚠️ FOUND HERE, NOT IN WEBKIT: five fast taps on Footle typed SIX
+      letters ("SALAHS"). A tap's click arrives late on iOS, after other keys
+      have been lifted, and the first fix only remembered the last key. One
+      note per key now (`src/lib/keyTaps.js`, seven sequences tested); the
+      same five taps, double letter included, type five.
+- [ ] The Mac ran out of memory while the simulator booted and the Claude
+      app died (23:27; swap near 10 GB). Boot with sim-probe.sh, wait for the
+      load to fall, and run nothing else heavy beside it.
 
 **Sweep of this section, 13 Oct, 22:40.** Every box above this line that was
 still open and has since been fixed, ruled on or found not to be a fault is
