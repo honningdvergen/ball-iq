@@ -1193,6 +1193,23 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Trail careers spell "Atletico Madrid" without its accent (seen 13 Oct);
       sweep the club names in lib/trail.js for the same.
 
+**Screen tour at 440pt, 13 Oct evening (twelve screens photographed in WebKit)**
+- [x] Clean as they are: Settings, League Quizzes, Stadiums, Draft intro.
+- [x] Mystery Player's search box and its dropdown are full width, in line
+      with the rest of the screen. The example card on a new Profile uses the
+      card's own coloured dots, not six emoji.
+- [ ] Mystery Player's header still has two chips (back, then the mode's
+      icon) where every other game has one, and two thirds of the screen is
+      empty before the first guess.
+- [ ] History for a new player is one sentence under four column labels.
+- [ ] Survival's header: "0  Survival Mode" in amber under a "Q1" counter.
+- [ ] Club search on Home: the results sit over the League Quiz row, which
+      shows cut off underneath.
+- [ ] Profile for a new player opens under an example-card sheet, with a
+      trophy emoji and a medal emoji in "Play games to unlock your first
+      badge"; the dark purple EPL dot is hard to see on the gold sheet.
+- [ ] Classic still shows 18 of 20 seconds on first sight.
+
 **From Alex's screenshots of build 145 (13 Oct, evening)**
 - [x] Draft: the season is set at the club name's size ("Arsenal 2009–10").
 - [x] Top 10: the strip of ten dashes above the board is gone (the board is
