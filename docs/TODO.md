@@ -1527,8 +1527,9 @@ Pro Max (build 144), reviewed before it went out:
 still open and has since been fixed, ruled on or found not to be a fault is
 now ticked; the dated blocks further up say which. What is genuinely open is
 listed once, here:
-- [ ] Home once all four dailies are done: fold them to a line and lift Draft.
-      A change to Home's structure, not a fault. After 1.8.0.
+- [x] Home once all four dailies are done (14 Oct): they fold into one strip,
+      "Today's four, done · New in 9h 24m", with a chip back into each; the
+      modes below move up a screen. Checked at 393 and 360pt.
 - [ ] The Daily 7 draws with replacement across the year; read the average
       for 15 to 21 Oct first, then redraw once.
 - [ ] `--wd-ended-chrome` in footle.css still budgets for Share as the last

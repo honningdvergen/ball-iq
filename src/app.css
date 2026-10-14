@@ -428,6 +428,15 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    other section title on the page (second look, 2026-09-09: with the title
    inside, the box read as a card about Today and the greeting floated). */
 .daily-well{background:rgba(19,21,28,0.72);border:1px solid var(--border);border-radius:18px;padding:10px;}
+.daily-done-strip{padding:6px 6px 4px;}
+.dds-head{display:flex;align-items:center;gap:9px;}
+.dds-tick{color:var(--accent);flex-shrink:0;}
+.dds-title{font-size:15.5px;font-weight:800;color:var(--t1);}
+.dds-next{margin-left:auto;font-size:12.5px;font-weight:600;color:var(--t3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.dds-chips{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;margin-top:12px;}
+.dds-chip{--mode:var(--t2);--mode-rgb:155,160,184;display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:40px;padding:0 6px;white-space:nowrap;border-radius:999px;border:1px solid rgba(var(--mode-rgb),0.30);background:rgba(var(--mode-rgb),0.08);color:var(--t1);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;}
+.dds-chip-icon{display:inline-flex;color:var(--mode);}
+.dds-f{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:4px;background:var(--mode);color:#0B1A00;font-size:10px;font-weight:900;line-height:1;}
 .daily-zone-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-2px 0 12px;padding:0;}
 /* 19px, up from 15px: with the date demoted to a tracked dateline above it
    (HomeScreen.jsx, 2026-09-07) this is the only heading in the strip, so it

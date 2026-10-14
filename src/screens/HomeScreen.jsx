@@ -1,7 +1,7 @@
 import React from "react";
 import { FOOTLE_SHORT } from "../lib/modeCopy.js";
 import { currentAvatarId } from '../lib/currentAvatar.js';
-import { Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, LandPlot, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
+import { CircleCheck, Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, LandPlot, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -10,7 +10,7 @@ import { getTrailAnswer, loadTrailDay, getTrailNumber } from "../lib/trail.js";
 import { isTop10Live, getTop10Number, loadTop10Day } from "../lib/top10.js";
 import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
-import { dateToYMD } from "../lib/date.js";
+import { dateToYMD, formatCountdown, msToNextLocalMidnight } from "../lib/date.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
@@ -511,6 +511,31 @@ function HomeScreenImpl({
                     : "Play today's Mystery Player",
                 }] : []),
               ];
+              // ⚠️ ONCE ALL OF TODAY'S ARE DONE, THEY FOLD TO ONE STRIP. Four
+              // grey "Review" rows used to hold the top of Home after the day
+              // was finished, and everything still playable sat below the fold
+              // (play-test, 14 Oct 2026). The strip keeps a way back into each
+              // finished puzzle and lets the modes below move up a screen.
+              if (allDone) {
+                const SHORT = { footle: "Footle", daily: "Daily 7", trail: "Trail", top10: "Top 10", mystery: "Mystery" };
+                return (
+                  <div className="daily-done-strip">
+                    <div className="dds-head">
+                      <CircleCheck size={20} strokeWidth={2.2} aria-hidden="true" className="dds-tick" />
+                      <span className="dds-title">Today&rsquo;s {total === 4 ? "four" : total}, done</span>
+                      <span className="dds-next">New in {formatCountdown(msToNextLocalMidnight(new Date()))}</span>
+                    </div>
+                    <div className="dds-chips">
+                      {rows.map((r) => (
+                        <button key={r.key} type="button" className="dds-chip" style={{ "--mode": r.accent, "--mode-rgb": r.rgb }} onClick={r.onTap} aria-label={r.aria}>
+                          <span className="dds-chip-icon" aria-hidden="true">{r.Icon ? <r.Icon size={15} strokeWidth={2} /> : <span className="dds-f">F</span>}</span>
+                          {SHORT[r.key] || r.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
               return rows.map((r) => (
                 <button
                   key={r.key}
