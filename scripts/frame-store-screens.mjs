@@ -303,6 +303,7 @@ const rgb = (hex) => { const n = parseInt(hex.slice(1), 16); return `${n >> 16 &
 const SIM_ASPECT = IS_ANDROID ? 2436 / 1206 : 2622 / 1206; // iPhone 17 at 3x; Android shows the screen without the status bar
 const SIM_H = IS_ANDROID ? Math.round(H * 0.70) : Math.round(H * 0.70);
 const SIM_W = Math.round(SIM_H / SIM_ASPECT);
+const EDGE = IS_ANDROID ? 0 : Math.max(3, Math.round(SIM_W * 0.022));
 const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><style>
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:${W}px;height:${H}px;overflow:hidden}
@@ -325,6 +326,16 @@ const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8
   .shot{flex:0 0 auto;margin-bottom:${f(70)}px;width:${SIM_W}px;height:${SIM_H}px;border-radius:${Math.round(SIM_W * 0.137)}px;overflow:hidden;
     box-shadow:0 0 0 ${Math.max(2, f(3))}px rgba(255,255,255,.16), 0 ${f(40)}px ${f(110)}px rgba(0,0,0,.65), 0 0 ${f(160)}px rgba(${rgb(c.accent)},.22)}
   .shot{position:relative;display:flex;flex-direction:column;background:#0B0C10}
+  /* A real iPhone 17 around the screen (Alex, 14 Oct 2026, after the App
+     Store header: "update our screenshots to this level"): a thin titanium
+     edge in px of the screen width, never a CSS % (a % measures the parent,
+     which drew a case six times too thick on the first header), and the
+     Dynamic Island the simulator capture leaves out. */
+  .device{flex:0 0 auto;margin-bottom:${f(70)}px;padding:${EDGE}px;border-radius:${Math.round(SIM_W * 0.137) + EDGE}px;
+    background:linear-gradient(135deg,#8d9093 0%,#3a3d40 18%,#1b1d1f 50%,#3a3d40 82%,#9a9da0 100%);
+    box-shadow:0 0 0 1px rgba(0,0,0,.9) inset,0 ${f(40)}px ${f(110)}px rgba(0,0,0,.65),0 0 ${f(160)}px rgba(${rgb(c.accent)},.22)}
+  .device .shot{margin-bottom:0;box-shadow:0 0 0 ${Math.max(1, Math.round(SIM_W * 1.5 / 402))}px #000}
+  .shot .island{position:absolute;left:50%;transform:translateX(-50%);top:${Math.round(SIM_W * 11 / 402)}px;width:${Math.round(SIM_W * 125 / 402)}px;height:${Math.round(SIM_W * 37 / 402)}px;border-radius:99px;background:#000}
   .shot .band{display:block;width:100%;height:auto}
   .shot .app{display:block;width:100%;height:auto}
   /* Apple's status bar, from a simulator capture; its "09:41" (a 24-hour
@@ -345,7 +356,7 @@ const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8
   ${c.bare ? `<div class="bare"><img src="${dataUri}"></div>` : (IS_ANDROID
     // No iPhone status bar or home indicator on a Play listing: the screen alone.
     ? `<div class="shot is-android"><img class="app" src="${dataUri}"></div>`
-    : `<div class="shot"><img class="band" src="${c.band}"><span class="time">9:41</span><img class="app" src="${dataUri}"><span class="home"></span></div>`)}
+    : `<div class="device"><div class="shot"><img class="band" src="${c.band}"><span class="time">9:41</span><span class="island"></span><img class="app" src="${dataUri}"><span class="home"></span></div></div>`)}
 </body></html>`;
 
 const ICON = ['public/marketing/ball.png', 'public/icon-192.png']
