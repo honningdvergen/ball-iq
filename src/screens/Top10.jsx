@@ -250,7 +250,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
       return rankPlayerSuggestions(playerPool, entry, { limit: SUGGEST_MAX, exclude: g.picked })
         .map((p) => ({ key: p.id, name: p.name, sub: suggestionSubtitle(p) }));
     }
-    return rankListSuggestions(data.pools?.[list.kind], entry, { limit: 6, exclude: g.picked });
+    return rankListSuggestions(data.pools?.[list.kind], entry, { limit: SUGGEST_MAX, exclude: g.picked });
   }, [g.done, g.picked, list.kind, playerPool, data.pools, entry]);
   const wantPool = list.kind === "player" ? ensurePool : undefined;
 

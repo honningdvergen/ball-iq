@@ -294,11 +294,15 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     return () => clearInterval(id);
   }, [dateKey, isArchive]);
 
-  const hardNow = state.guesses.length === 0 ? hardPref : !!state.hard;
+  // Never on an archive replay: the switch is not offered there.
+  const hardNow = !isArchive && (state.guesses.length === 0 ? hardPref : !!state.hard);
   useEffect(() => {
     if (!hardNow || hardNames) return undefined;
     let live = true;
-    import("../data/footleNames.json").then((m) => { if (live) setHardNames(new Set(m.default)); }).catch(() => {});
+    import("../data/footleNames.json").then((m) => { if (live) setHardNames(new Set(m.default)); })
+      // If the list cannot load (offline after a deploy), hard mode stands aside
+      // rather than refusing every guess but the answer.
+      .catch(() => { if (live) setHardNames("failed"); });
     return () => { live = false; };
   }, [hardNow, hardNames]);
   const toggleHard = () => setHardPref((v) => {
@@ -313,7 +317,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       timeoutsRef.current.push(setTimeout(() => setShake(false), 450));
       return;
     }
-    if (hardNow && current !== answer && !(hardNames && hardNames.has(current))) {
+    if (hardNow && hardNames !== "failed" && current !== answer && !(hardNames && hardNames.has(current))) {
       setShake(true);
       timeoutsRef.current.push(setTimeout(() => setShake(false), 450));
       try { window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: hardNames ? "Hard mode: not a footballer we know" : "Hard mode is still loading its names" })); } catch { /* no toast here */ }
@@ -324,7 +328,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     if (current === answer) newStatus = "won";
     else if (newGuesses.length >= 6) newStatus = "lost";
     // Spread, not a fresh object: `clue` rides in the same record.
-    setState({ ...state, guesses: newGuesses, status: newStatus, ...(state.guesses.length === 0 ? { hard: hardPref } : {}) });
+    setState({ ...state, guesses: newGuesses, status: newStatus, ...(state.guesses.length === 0 && !isArchive ? { hard: hardPref } : {}) });
     setCurrent("");
     // The reveal belongs to this row alone. Cleared after the last tile lands
     // (delay of the final tile + the 500ms flip) plus a little slack, so the
@@ -516,6 +520,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       failed: state.status === "lost",
       num: getFootleNumber(),
       clue: !!state.clue,
+      hard: !!state.hard,
       streak: state.status === "won" ? computeFootleStreak(date) : 0,
     }, {
       onToast: (msg) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(msg) })); } catch {} },
@@ -552,7 +557,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               lines at 360-390px and three at 320 (measured 2026-10-04, header
               44px -> 54/69px). The puzzle number is what a finished player
               shares and compares, and it fits on one line at every width. */}
-          <div className="wd-sub">{isArchive ? "From the archive" : state.status !== "playing" ? "Today\u2019s puzzle" : FOOTLE_SHORT}{hardNow && state.guesses.length > 0 ? " \u00b7 Hard" : ""}</div>
+          <div className="wd-sub">{isArchive ? "From the archive" : state.status !== "playing" ? (state.hard ? "Today\u2019s puzzle \u00b7 Hard" : "Today\u2019s puzzle") : hardNow && state.guesses.length > 0 ? "Hard: real names only" : FOOTLE_SHORT}</div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>

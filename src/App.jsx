@@ -6930,7 +6930,10 @@ function AppInner() {
       if (res.score >= 10 || (stats.bestSurvival || 0) > 0) {
         celebrationTimeoutsRef.current.push(setTimeout(() => showToast(`New Survival best: ${res.score} in a row`), 1400));
       }
-      setStats(p => ({...p, bestSurvival: res.score}));
+      // Written straight to storage, as setCardLeague does: saveStats ran
+      // earlier in this handler from the old stats, so a state update alone
+      // was lost when the app closed (review, 14 Oct 2026).
+      setStats(p => { const next = {...p, bestSurvival: res.score}; safeSetItem("biq_stats", JSON.stringify(next)); return next; });
     }
 
     // Rate prompt — show once after 5+ games with a good score. On native we
@@ -6969,7 +6972,7 @@ function AppInner() {
     try {
       const nudged = localStorage.getItem('biq_save_nudge_shown') === '1';
       const isPB = (mode === "classic" && res.score > (stats.bestScore || 0))
-        || (mode === "survival" && res.score > (stats.bestStreak || 0));
+        || (mode === "survival" && res.score > (stats.bestSurvival || 0));
       const peak = mode === "daily" || isPB;
       const notifWillClaim = IS_NATIVE && mode === "daily"
         && localStorage.getItem('biq_notif_enabled') !== '1'
@@ -7133,7 +7136,9 @@ function AppInner() {
     // Archive replays also recorded into today's edition, since the date was
     // cleared before the results screen read it.
     const dailyDay = mode === "daily" ? dayIndexForDate(activeDailyDate || new Date()) : null;
-    setResult({ ...res, mode, ...(dailyDay != null ? { dailyEdition: dailyDay, dailyArchive: dailyDay !== dayIndexForDate(new Date()) } : {}) });
+    // `prevBest`: the Survival best from BEFORE this run, so the results screen
+    // can say "Personal best, was N" (stats.bestSurvival already holds the new one).
+    setResult({ ...res, mode, ...(mode === "survival" ? { prevBest: stats.bestSurvival || 0 } : {}), ...(dailyDay != null ? { dailyEdition: dailyDay, dailyArchive: dailyDay !== dayIndexForDate(new Date()) } : {}) });
     setWrongAnswers(res.wrongAnswers || []);
     setScreen("results");
   }, [mode, stats, loginStreak, cat, ratePromptShown, todayKey, hotstreakBest, saveStats, showToast, activeDailyDate, questions, pendingChallenge, clearChallenge, awardXp, isGuest, openAuthPrompt, xp, markFirstGameFinished]);
@@ -7943,7 +7948,7 @@ function AppInner() {
     const ymd = dateToYMD(date);
     let guesses = [];
     let status = ws.kind;
-    let clue = false;
+    let clue = false, hard = false;
     try {
       const raw = localStorage.getItem(`biq_wordle_${ymd}`);
       if (raw) {
@@ -7951,9 +7956,10 @@ function AppInner() {
         if (Array.isArray(p?.guesses)) guesses = p.guesses;
         if (typeof p?.status === "string") status = p.status;
         clue = !!p?.clue;
+        hard = !!p?.hard;
       }
     } catch {}
-    setPuzzleReviewState({ date, guesses, status, clue });
+    setPuzzleReviewState({ date, guesses, status, clue, hard });
     setScreen("puzzle-review");
   }, []);
 
@@ -8552,6 +8558,7 @@ function AppInner() {
             guesses={puzzleReviewState.guesses}
             status={puzzleReviewState.status}
             clue={puzzleReviewState.clue}
+            hard={puzzleReviewState.hard}
             onBack={() => setScreen("home")}
           />
         )}
@@ -8983,7 +8990,7 @@ function AppInner() {
             mode={result.mode || mode}
             cardDelta={cardDeltaState}
             onHome={goHome}
-            survivalBest={stats.bestSurvival || 0}
+            survivalBest={result?.prevBest ?? (stats.bestSurvival || 0)}
             wrongAnswers={wrongAnswers}
             onReport={reportQuestion}
             askedQuestions={questions}

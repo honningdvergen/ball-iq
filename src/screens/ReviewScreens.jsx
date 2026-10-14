@@ -157,7 +157,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
 // share path (shareCard + the canonical FootballWordle shareText
 // template). Wordle streak isn't tracked separately yet — no streak
 // line until that's its own state.
-export function PuzzleReviewScreen({ date, guesses, status, clue = false, onBack }) {
+export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard = false, onBack }) {
   // J1/J2 fix: was using `WORDLE_PLAYERS[dayIndex % length]` here, which
   // disagrees with the stride formula used by the active game and the home
   // FootleHero. Result: Review re-graded the user's guesses against the
@@ -209,7 +209,7 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, onBack
     // score is what makes grids comparable between strangers in a feed. The
     // grid right below disambiguates "3/6" (the Sprint #99 concern), so the
     // explicit "guesses" wording lives only on the PNG card headline.
-    const head = footleShareHead(APP_NAME, getFootleNumber(date), won, guesses.length, clue);
+    const head = footleShareHead(APP_NAME, getFootleNumber(date), won, guesses.length, clue, hard);
     const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [guesses, answer, won, lost, hasData, date, clue]);

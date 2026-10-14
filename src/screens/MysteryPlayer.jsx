@@ -148,6 +148,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // `gaveUp` gives it the `done` that Trail and Footle already have.
   const [gaveUp, setGaveUp] = useState(() => !!saved?.gaveUp);
   const [giveUpArmed, setGiveUpArmed] = useState(false);
+  const rootRef = useRef(null);
   // ⚠️ Player-reported 2026-08-22: a friend guessed Cahill, was ranked #5, and
   // then "could not get any lower". Rank alone is a dead end — it tells you
   // that you are close without telling you which direction to move, so a
@@ -277,7 +278,9 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     if (done) return;
     if (!giveUpArmed) { setGiveUpArmed(true); return; }
     setGaveUp(true);
-    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch { /* old WebView */ }
+    // To the top of the game, not the page: on the static /mystery-player/ page
+    // the game sits below the site's own header.
+    try { if (rootRef.current?.scrollIntoView) rootRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' }); else window.scrollTo({ top: 0, behavior: 'smooth' }); } catch { /* old WebView */ }
     saveMysteryResult(date, { won: false, gaveUp: true, guesses, hintsUsed, ...(isArchive ? { arc: 1 } : {}) });
     // Same archive guard as the win path and for the same reason: replaying an
     // old puzzle must never touch today's habit metrics.
@@ -293,6 +296,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   };
 
   const submit = (player) => {
+    setGiveUpArmed(false); // a guess means they are still playing
     if (done || !player) return;
     if (guesses.some((g) => g.id === player.id)) { setError(`You already guessed ${player.name}.`); return; }
     const rank = ranks.get(player.id);
@@ -375,7 +379,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // budgets itself down for it — see the note on the title below.
   const tight = !embedded && best !== null && !done;
   return (
-    <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div ref={rootRef} style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: embedded ? '2px 0 8px' : '8px 4px' }}>
         {/* ⚠️ .back-btn, not a bare glyph. The touch target was already legal
             (hit44 supplies 44pt via ::after) — the defect was that this was

@@ -202,7 +202,7 @@ export async function generateShareCard(type, data) {
     ctx.textAlign = "center";
     ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#9BA0B8";
-    ctx.fillText((data?.dateLabel || "") + (data?.clue ? " · with a clue" : ""), cx, 120);
+    ctx.fillText((data?.dateLabel || "") + (data?.hard ? " · hard mode" : "") + (data?.clue ? " · with a clue" : ""), cx, 120);
 
     // Headline: guesses, not a fraction ("3/6" read like a quiz score).
     ctx.font = '800 32px Inter, "Helvetica Neue", Arial, sans-serif';

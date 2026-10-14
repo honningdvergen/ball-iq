@@ -1488,8 +1488,18 @@ Pro Max (build 144), reviewed before it went out:
       when it is on, `scripts/gen-footle-names.mjs`); a refused guess shakes,
       says "not a footballer we know" and costs nothing; "· Hard" under the
       title and "Hard" on the share. Default unchanged.
-- [ ] The two other Footle share builders (the review screen, FootleHero) do
-      not pass the hard flag yet.
+- [x] Review of everything since 147 (14 Oct): eleven found, eleven fixed.
+      A new Survival best is written to storage at once and the results
+      screen compares with the best from before the run; hard mode never
+      applies to archive replays and stands aside if its list cannot load;
+      "Hard" is on the picture card and on all three share texts; the sub line
+      reads "Hard: real names only"; Mystery's give up disarms on a guess and
+      scrolls to the game, not the page; Top 10's club and nation lists offer
+      thirty; the name list takes Mueller, Oezil, Oedegaard and Lo Celso.
+- [ ] CONTENT RUNWAY (14 Oct): Top 10 has 24 days left (log of 27, lists run
+      out ~7 Nov) and is the only one that needs filling now. Footle 236 days
+      in its frozen log (pool of 427 after that), Transfer Trail ~343, Mystery
+      ~327, Daily 7 to Oct 2027, Draft 392 club-seasons.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen

@@ -97,6 +97,11 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     if (!isDone) return false;
     try { return !!JSON.parse(localStorage.getItem(`biq_wordle_${dateKey}`) || "null")?.clue; } catch { return false; }
   }, [isDone, dateKey]);
+  // And whether it was played in hard mode (real names only): "Hard" on the share.
+  const hard = useMemo(() => {
+    if (!isDone) return false;
+    try { return !!JSON.parse(localStorage.getItem(`biq_wordle_${dateKey}`) || "null")?.hard; } catch { return false; }
+  }, [isDone, dateKey]);
 
   const onShare = useCallback(async () => {
     if (!isDone || !shareCard) return;
@@ -106,7 +111,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     const num = getFootleNumber();
     // One head for all three share builders (lib/wordle.js footleShareHead):
     // the #N token is what makes grids comparable between strangers in a feed.
-    const head = footleShareHead(APP_NAME, num, isWon, guesses.length, clue);
+    const head = footleShareHead(APP_NAME, num, isWon, guesses.length, clue, hard);
     const streakLine = isWon && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     const textFallback = `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
     const dateLabel = today.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });

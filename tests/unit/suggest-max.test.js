@@ -16,7 +16,7 @@ describe('a guess box offers every match a player could want', () => {
   it('the three guess boxes all ask for SUGGEST_MAX, not a short list', () => {
     for (const f of ['Top10.jsx', 'TransferTrail.jsx', 'MysteryPlayer.jsx']) {
       const src = readFileSync(new URL(`../../src/screens/${f}`, import.meta.url), 'utf8');
-      const calls = src.match(/rankPlayerSuggestions\([^)]*\)/g) || [];
+      const calls = src.match(/rank(Player|List)Suggestions\([^)]*\)/g) || [];
       expect(calls.length, f).toBeGreaterThan(0);
       for (const c of calls) expect(c, f).toContain('SUGGEST_MAX');
     }

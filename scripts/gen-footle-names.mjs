@@ -15,10 +15,11 @@
 // worst possible bug in a mode about knowing footballers.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { WORDLE_PLAYERS, WORDLE_MANAGERS } from '../src/lib/wordle.js';
+import { foldDigraphs } from '../src/lib/letterFold.js';
 
 const OUT = 'src/data/footleNames.json';
 const MIN = 4, MAX = 9;
-const PARTICLES = new Set(['van', 'von', 'de', 'der', 'den', 'di', 'da', 'del', 'della', 'dos', 'das', 'do', 'du', 'la', 'le', 'el', 'al', 'ten', 'ter', 'mac', 'mc', 'st']);
+const PARTICLES = new Set(['van', 'von', 'de', 'der', 'den', 'di', 'da', 'del', 'della', 'dos', 'das', 'do', 'du', 'la', 'le', 'el', 'al', 'ten', 'ter', 'mac', 'mc', 'st', 'lo']);
 const clean = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ø/gi, 'o').replace(/æ/gi, 'ae').replace(/ß/g, 'ss').replace(/ł/gi, 'l').replace(/đ/gi, 'd');
 const letters = (s) => clean(s).toUpperCase().replace(/[^A-Z]/g, '');
 
@@ -28,6 +29,8 @@ const names = new Set();
 const add = (w) => { const x = letters(w); if (x.length >= MIN && x.length <= MAX) names.add(x); };
 
 for (const p of pool) {
+  // Both plain spellings of an umlaut: Muller and Mueller, Ozil and Oezil.
+  for (const part of String(p.name || '').split(/\s+/)) if (/[üöäøå]/i.test(part)) add(foldDigraphs(part));
   const parts = clean(String(p.name || '')).split(/\s+/).filter(Boolean);
   parts.forEach((part, i) => {
     add(part);
