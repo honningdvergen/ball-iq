@@ -426,3 +426,21 @@ describe('where it lives', () => {
     expect(screen).toMatch(/if \(!played \|\| !result \|\| g\.seen\) return;/);
   });
 });
+
+// The live "on course for" line (14 Oct 2026): an eleven of stand-ins sits low,
+// a real champion's first eleven lands near its real total, and adding a
+// regular to an empty eleven can only raise it.
+describe('expectedPoints', () => {
+  it('is low for stand-ins, near the real total for a champion, and grows with a pick', async () => {
+    const { readFileSync } = await import('node:fs');
+    const m = await import('../../src/lib/draftModel.js');
+    const D = m.prepare(JSON.parse(readFileSync(new URL('../../src/data/draftSquads.json', import.meta.url), 'utf8')));
+    const empty = m.expectedPoints([], D);
+    expect(empty).toBeGreaterThan(15); expect(empty).toBeLessThan(50);
+    const all = Array.isArray(D.squads) ? D.squads : Object.values(D.squads || {});
+    const champ = all.find((s) => s.pos === 1);
+    const xi = m.firstEleven(champ);
+    expect(Math.abs(m.expectedPoints(xi, D) - champ.pts)).toBeLessThan(15);
+    expect(m.expectedPoints(xi.slice(0, 1), D)).toBeGreaterThanOrEqual(empty);
+  });
+});

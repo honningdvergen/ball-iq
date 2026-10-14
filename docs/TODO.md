@@ -1518,6 +1518,15 @@ Pro Max (build 144), reviewed before it went out:
 - [x] Footle polish: the word over a win follows the guesses ("Top bins!" to
       "Last-gasp winner", not "Brilliant!" for all); ENTER is quiet grey until
       the row is full.
+- [x] Draft, from the research (14 Oct): the spin spins (the season rolls
+      for half a second, then the club and its players land, with a tick; off
+      under Reduce Motion); "On course for 41 points" under the pitch, the
+      expected points over the same 38 fixtures with stand-ins in the open
+      places (34 for an empty eleven, 73 to 81 for real champions' elevens);
+      games as "30 of 38". Hidden-numbers mode shows no readout.
+- [ ] Draft still to do from the research: a result with a story and a par
+      (best man passed on, today's best possible), a numbered daily with a
+      leaderboard, a second kind of re-roll, a one-line intro.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen

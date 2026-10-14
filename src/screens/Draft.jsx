@@ -25,7 +25,7 @@ import { RefreshCw } from "lucide-react";
 import { dayIndexForDate } from "../lib/date.js";
 import {
   POS, FORMATION, SPINS, GAMES,
-  prepare, strength, playSeason, dayLuck, standing, ordinal,
+  prepare, strength, playSeason, dayLuck, standing, ordinal, expectedPoints, seasonLabel,
   freshGame, restoreGame, settleSpin, respin, takePick, picksOf, openIn, squadKeyAt,
 } from "../lib/draftModel.js";
 import { resolveDailyServices } from "../games/dailyServices.js";
@@ -57,6 +57,35 @@ const surname = (n) => {
 // (Alex, playing build 146: "I am a bit confused by the +3"). The split still
 // drives the season: the result line says how many a stand-in had to start.
 const games = (p, sq) => `${p.st + (sq.split && p.su ? p.su : 0)}`;
+
+// ⚠️ THE SPIN SPINS (14 Oct 2026). The button said Spin and the club simply
+// appeared; every game in this family is built on the reveal. The season rolls
+// for about half a second, lands, then the club drops in with a tick. It runs
+// once per spin (the block is keyed by spin), and not at all under Reduce
+// Motion.
+const REEL = Array.from({ length: 30 }, (_, i) => seasonLabel(1995 + i));
+function SpinTitle({ club, season, onLand }) {
+  const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const [shown, setShown] = useState(reduce ? season : REEL[0]);
+  const [landed, setLanded] = useState(!!reduce);
+  useEffect(() => {
+    if (reduce) return undefined;
+    let i = 0;
+    const id = setInterval(() => {
+      i += 1;
+      if (i >= 10) { clearInterval(id); setShown(season); setLanded(true); try { onLand?.(); } catch { /* no haptics here */ } }
+      else setShown(REEL[(i * 7 + season.length) % REEL.length]);
+    }, 55);
+    return () => clearInterval(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return (
+    <h2 className="dr-spin-club">
+      <span className={landed ? "dr-club-in" : "dr-club-wait"}>{club}</span>{" "}
+      <span className={`dr-spin-season${landed ? " is-landed" : " is-rolling"}`}>{shown}</span>
+    </h2>
+  );
+}
 const PREFIX = "biq_draft_";
 const load = (day) => { try { return JSON.parse(localStorage.getItem(PREFIX + day) || "null"); } catch { return null; } };
 const save = (day, g) => { try { localStorage.setItem(PREFIX + day, JSON.stringify(g)); } catch { /* private window: play on unsaved */ } };
@@ -121,9 +150,14 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   const [chosen, setChosen] = useState(null);
 
   const picks = useMemo(() => picksOf(g, D), [g, D]);
+  const onCourse = useMemo(() => (g.hard ? null : expectedPoints(picks, D)), [picks, D, g.hard]);
+  // The squad's names wait for the reel to land, or the spin gives itself away.
+  const [landedAt, setLandedAt] = useState(null);
+  const reduceMotion = typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const at = picks.length;
   const done = at >= SPINS;
   const sq = done ? null : D.byKey.get(squadKeyAt(g, at));
+  const spinLanded = reduceMotion || (sq ? landedAt === `${at}:${sq.k}` : true);
   const open = useMemo(() => openIn(picks), [picks]);
 
   const onRespin = useCallback(() => { haptic("soft"); setChosen(null); update(respin); }, [haptic, update]);
@@ -208,6 +242,9 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
         )} />
 
       <Pitch picks={picks} chosen={chosen} />
+      {!done && onCourse != null && (
+        <div className="dr-course" aria-live="polite">On course for <b>{onCourse}</b> points</div>
+      )}
 
       {!done && sq && (
         <>
@@ -216,8 +253,8 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
                 club's own size beside it, not as a 13px label above (Alex, on
                 build 145: "the season font is a bit small"). It wraps under a
                 long club name as one piece. */}
-            <h2 className="dr-spin-club">{sq.club} <span className="dr-spin-season">{sq.season}</span></h2>
-            <div className="dr-spin-meta">
+            <SpinTitle club={sq.club} season={sq.season} onLand={() => { haptic("soft"); setLandedAt(`${at}:${sq.k}`); }} />
+            <div className={`dr-spin-meta${spinLanded ? " dr-in" : " dr-wait"}`}>
               Finished {ordinal(sq.pos)} · {sq.pts} points · scored {sq.gf}, conceded {sq.ga}
             </div>
           </div>
@@ -227,7 +264,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
             let rows = sq.players.filter((p) => p.p === pos);
             if (g.hard) rows = [...rows].sort((a, b) => a.n.localeCompare(b.n));
             return (
-              <section key={pos} className={`dr-line${free > 0 ? "" : " is-full"}`}>
+              <section key={pos} className={`dr-line${free > 0 ? "" : " is-full"}${spinLanded ? " dr-in" : " dr-wait"}`}>
                 <h3>{PLURAL[pos]}<span>{free > 0 ? `${free} ${free === 1 ? "place" : "places"} open` : "full"}</span></h3>
                 {free > 0 && rows.map((p) => {
                   const ok = open.can(p);
@@ -238,7 +275,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
                       <span className="dr-row-name">{p.n}</span>
                       {!ok ? <span className="dr-row-num">already yours</span>
                         : g.hard ? null
-                          : <span className="dr-row-num"><b>{games(p, sq)}</b> {games(p, sq) === "1" ? "game" : "games"}{pos === "GK" ? "" : <> · <b>{p.g}</b> {p.g === 1 ? "goal" : "goals"}</>}</span>}
+                          : <span className="dr-row-num"><b>{games(p, sq)}</b> of {GAMES}{pos === "GK" ? "" : <> · <b>{p.g}</b> {p.g === 1 ? "goal" : "goals"}</>}</span>}
                     </button>
                   );
                 })}
@@ -361,7 +398,7 @@ function Season({ result, picks, shown, played, hard, isPractice, onSkip, onAnot
               <div key={p.id} className="dr-xi-row">
                 <span className="dr-xi-pos">{p.p}</span>
                 <span className="dr-xi-who"><b>{p.n}</b><i>{sq.season} {sq.club} · finished {ordinal(sq.pos)}</i></span>
-                <span className="dr-xi-num">{games(p, sq)}<small> {games(p, sq) === "1" ? "game" : "games"}</small>{p.p !== "GK" && <> · {p.g}<small> {p.g === 1 ? "goal" : "goals"}</small></>}</span>
+                <span className="dr-xi-num">{games(p, sq)}<small> of {GAMES}</small>{p.p !== "GK" && <> · {p.g}<small> {p.g === 1 ? "goal" : "goals"}</small></>}</span>
               </div>
             ))}
           </div>

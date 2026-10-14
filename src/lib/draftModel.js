@@ -286,6 +286,26 @@ export function picksOf(g, D) {
 
 // Who can still be taken: a man whose position has a free place, and who is
 // not already in the eleven from another season.
+// What an eleven is on course for, before the luck: the expected points over
+// the same 38 fixtures the season plays, with a relegated side's stand-in in
+// every place still open. Shown while drafting so each pick has a visible
+// weight (the genre's live readout; research, 14 Oct 2026). The season itself
+// still plays with the day's luck, so the final total lands around this.
+export function expectedPoints(picks, D) {
+  const filled = [...picks];
+  const left = openIn(picks).left;
+  for (const pos of POS) for (let i = 0; i < left[pos]; i++) filled.push({ p: { p: pos, on: 0, g: 0 }, sq: { gf: 0, ga: 0, played: 1 } });
+  const st = strength(filled, D), L = D.league;
+  let pts = 0;
+  for (let n = 0; n < GAMES; n++) {
+    const home = n < 19, place = 2 + (n % 19);
+    const [ogf, oga] = L.place[place - 1];
+    const c = chances(st.lf * (oga / L.avg) * (home ? HOME : AWAY), st.la * (ogf / L.avg) * (home ? AWAY : HOME));
+    pts += 3 * c.w + c.d;
+  }
+  return Math.round(pts);
+}
+
 export function openIn(picks) {
   const left = { ...FORMATION }, have = new Set();
   for (const { p } of picks) { left[p.p]--; have.add(p.id); }
