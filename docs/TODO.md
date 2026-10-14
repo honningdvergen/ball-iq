@@ -1500,6 +1500,21 @@ Pro Max (build 144), reviewed before it went out:
       out ~7 Nov) and is the only one that needs filling now. Footle 236 days
       in its frozen log (pool of 427 after that), Transfer Trail ~343, Mystery
       ~327, Daily 7 to Oct 2027, Draft 392 club-seasons.
+- [x] Hot Streak: a wrong answer costs three seconds, shown by the clock;
+      the rules say so. Mashing at 29% had been called "Poacher's instinct".
+- [x] Content from the play-test, checked by an independent verifier with
+      sources (14 Oct): Girona's 2023-24 (third, not above Barcelona; and the
+      true/false that said second), Ramos fourth on Real Madrid's appearance
+      list, the 2007 final tagged Champions League, Burnley's record scorer
+      named (George Beel, 179 league goals), two Barcelona 2015 questions
+      given explanations, the Celtic 1997-98 stem no longer gives away its
+      neighbour, the unsourced Zlatan quote removed, Tom Carroll a midfielder
+      in the Draft's Spurs 2016-17. ⚠️ gen-draft.mjs reads Wikipedia's squad
+      table, which has Carroll as DF: a rebuild of draftSquads.json will put
+      it back unless the pipeline is corrected too.
+- [ ] Ruled out of scope: retagging ~139 UEFA Cup and Cup Winners' Cup
+      questions. The bank has no Europa League category and "UCL" works as
+      European club football; a category of its own is a product call.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen
