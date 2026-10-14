@@ -1582,6 +1582,22 @@ Pro Max (build 144), reviewed before it went out:
       Rebuild: `SIMLIKE=1 node scripts/shoot-store-screens.mjs` then
       `SOURCE=sim node scripts/frame-store-screens.mjs`. Uploader:
       ~/ball-iq-release/store/asc-store.mjs.
+- [x] 1.8.0 listing ready for review (14 Oct, evening): build 149 attached,
+      release set to MANUAL (approval does not publish; we press release),
+      new description in all 19 languages and promo line in all 19,
+      keywords with `draft` and `top` in the four English storefronts. A
+      fact-check against the code found the live text wrong (Mystery
+      "nationality and age", "Ball IQ Test", Classic "pick your difficulty",
+      Trail "one club at a time, youth side"): all gone. Age rating 4+,
+      encryption answered. Texts: ~/ball-iq-release/store/listing-1.8.0 and
+      ~/ball-iq-audit/2026-10-14/listing.
+- [ ] Submit 1.8.0 for review: the last step (`node
+      ~/ball-iq-release/store/asc-store.mjs submit`, or Add for Review in
+      App Store Connect) was refused by the session's permission guard; it
+      waits for Alex.
+- [ ] Top 10's bundled schedule ends 30 Nov: publish the longer list to
+      balliq.app/data/top10.json before then, or Top 10 drops out of the
+      dailies and Mystery Player takes the slot back.
 - [x] Android on the emulator for build 149's code: every mode opens, no
       crash; signed AAB rebuilt (versionCode 54). Play frames rendered
       (screenshots/android-sim). Upload waits for the Play Console login.
