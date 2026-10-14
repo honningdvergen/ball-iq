@@ -16,6 +16,7 @@ import roles from '../../src/data/mysteryRoles.json';
 import schedule from '../../src/data/mysterySchedule.json';
 import pool from '../../src/data/mysteryPool.json';
 import answers from '../../src/data/mysteryAnswers.json';
+import careers from '../../src/data/mysteryCareers.json';
 
 const byName = (n) => pool.find((p) => p.name === n);
 
@@ -114,10 +115,13 @@ describe('similarity', () => {
   });
 
   it('ranks a team-mate above a foreign-league player', () => {
+    // With the careers since 14 Oct 2026: the old CURRENT-CLUB and nationality
+    // terms are gone (`club` is the longest spell, `nat` is unreliable), and a
+    // shared club is now read from the careers file with its real years.
     const saka = byName('Bukayo Saka');
     const mate = byName('Declan Rice');
     const far = byName('Vinícius Júnior');
-    expect(similarity(mate, saka)).toBeGreaterThan(similarity(far, saka));
+    expect(similarity(mate, saka, careers)).toBeGreaterThan(similarity(far, saka, careers));
   });
 
   it('separates players who match on every boolean, using age', () => {

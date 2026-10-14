@@ -3,209 +3,108 @@
 // Every guess returns a RANK. The answer is 1; the further down, the less the
 // guess resembles the answer. Unlimited guesses, one puzzle a day.
 //
-// ⚠️ THE DESIGN RISK, and how this handles it.
-// A rank only feels fair if the ordering is explicable. Contexto (the word
-// game) gets that from embeddings with genuinely continuous distance. We have
-// five attributes, and if the score were built from equal-weight boolean
-// matches, hundreds of players would TIE — the game would then break ties
-// arbitrarily and a player would see "Rice 340, Saka 12" with no way to reason
-// about why. That reads as broken, not clever.
-//
-// So AGE is deliberately continuous and is the finest-grained term. Two
-// players who match on club, country, position and nationality are still
-// separated by how close their birth years are, which is a difference a
-// football fan can actually feel. Booleans set the bands; age orders within
-// them.
-//
-// WEIGHTS — chosen so each tier is worth strictly more than everything below
-// it combined, which makes the ordering readable: "same club" always outranks
-// "same country + same position + same nationality".
-/* ── WEIGHTS ADOPTED FROM THE GENRE LEADER, 2026-08-15 ────────────────────────
-   Football Contexto publishes its own model: shared clubs 35%, era overlap 15%,
-   position 15%, nationality 15%, age 10%, career stats 10%. Alex: "can we copy
-   theirs please, they know how to do it". Measured against our old weights on
-   the Oblak puzzle, theirs is plainly better feedback:
+// ⚠️ THE DESIGN RISK. A rank only feels fair if the player can see WHY it is
+// what it is. Contexto gets that from word embeddings; we have a handful of
+// attributes, so every one of them that moves a rank has to be one the guess
+// row can name. That is the rule the 14 Oct 2026 rebuild is built on.
+/* ── THE REBUILD, 14 OCT 2026 ────────────────────────────────────────────────
+   A play-tester's day: the answer was Joachim Löw AS A PLAYER, and Maradona,
+   Careca and Ramón Díaz all came back "boiling" with nothing on screen to say
+   why. Fun was scored 3 out of 10, the worst in the app. Measured, the old
+   weights explained it exactly:
 
-     Alisson    1112 cold -> 107 warm     ter Stegen 1131 cold -> 138 warm
-     Neuer      1374 cold -> 473 warm     Courtois     79 hot  ->  11 hot
-     Casillas    261 warm -> 769 cold     Messi       720 warm -> 3405 cold
+     era 150 · nationality 150 · line 100 · position word 50 · age 100
+     shared club 45 + 72 for years together, current club 100
 
-   Guessing a CONTEMPORARY KEEPER now reads warm, which is exactly the guess a
-   knowledgeable player makes. The drops are correct too: Casillas and Yashin
-   are right-position/wrong-era, and Messi was only warm because he shared a
-   LEAGUE COUNTRY with Oblak — the model was rewarding "plays in Spain" over
-   "is a goalkeeper". That term is gone.
+   A forward born within ten years of the answer collected ~400 points for
+   existing, while ONE shared club was worth at most 117. So every famous
+   1960-born forward outranked nearly everyone who had actually played
+   alongside Löw, and the screen could not say so. Worse, 150 of those points
+   came from `nat`, which is not reliably nationality (Messi reads "Spain"; see
+   MysteryPlayer.jsx) and must never be shown, so it could never be explained.
+   (Those weights were copied on 2026-08-15 from Football Contexto's published
+   model — shared clubs 35%, era 15, position 15, nationality 15, age 10 —
+   which works for a 766-player pool. Ours is nine thousand, all eras.)
 
-   TWO DELIBERATE DEVIATIONS, both forced:
-   · career stats 10% — we hold no goals/appearances data at all. Its share
-     goes to a reduced CURRENT-CLUB term, which they can omit entirely because
-     their pool is 766 players and almost nobody shares a club. Ours is 9,032,
-     so dropping it would mute the strongest real-world tell.
-   · league country — dropped, as above. They do not have it and it was
-     actively misleading.
+   What the ranking now pays for, and nothing else:
+     · SHARED CLUBS, most: 300 for each club both played for, +200 scaled by
+       the years they were there TOGETHER (full at 6), best three clubs.
+       Torres-at-Atlético still counts for something; Koke counts for more.
+     · SAME POSITION: 250, by line (GK / DF / MF / FW). The specific word
+       ("centre-back", "wing half") is a Wikidata ranking token that is wrong
+       often enough to be kept out of the score as it is kept out of print.
+     · ERA, as the tiebreak: 150 while born within four years, then decaying.
+     · AGE: 25, day-precise, so ties stay rare (the reason it was added: a
+       year-only gap once left ranks 400-486 alphabetical).
+   Gone: nationality (unreliable), the current-club term (`club` is the
+   LONGEST spell, not the current one, and shared clubs already pay real
+   teammates by their real years), the position word.
 
-   Percentages of the ~1000 max: shared clubs 35 · era 15 · nationality 15 ·
-   position 15 (slot 10 + specific 5) · age 10 · current club 10. */
+   The consequence that matters: with no shared club, the best a guess can do
+   is same line + same era, 425 — below anyone who played at the answer's club
+   in his time. The reasons line under each guess (explainGuess) says exactly
+   these three things, so the rank and its explanation always agree. */
 import { foldLetters } from './letterFold.js';
+import { clubsOf, sharedClubs, mainClub, initials } from './mysteryCareer.js';
 
 const W = {
-  club: 100, // same CURRENT club — kept, but no longer dominant
-  /* A shared club splits into two parts, and that split is the whole point.
-     Alex, 2026-08-15, relaying a player: "torres did play for atletico once,
-     that should still count for some likeness but less so than players who
-     have been teammates for a long time." Exactly right — so `sharedClub` is
-     paid for having been there AT ALL, and `overlap` is paid on top for the
-     years they were actually there TOGETHER.
-     45 + 72 = 117, unchanged, so the 35% budget below still holds. */
-  sharedClub: 45, //  per club BOTH played for, whenever
-  overlap: 72, //  added per shared club, scaled by years as teammates
-  overlapFull: 8, //  years of overlap that earn the full bonus
-  sharedClubMax: 3, // cap, so a 19-club journeyman cannot dominate
-  era: 150, // were they CONTEMPORARIES — the term we were missing entirely
-  slot: 100, // same broad position (GK/DF/MF/FW)
-  position: 50, // same specific position (centre-back vs full-back)
-  nat: 150, // same nationality
-  age: 100, // continuous — fine-grained closeness, and the tie-breaker
+  sharedClub: 200, // per club both played for, whenever
+  together: 300, //   added per shared club, scaled by years as teammates
+  togetherFull: 5, // years together that earn the whole bonus
+  sharedClubMax: 3, // best three clubs only: a journeyman cannot win on volume
+  slot: 250, // same line
+  era: 150, // born within SAME_ERA_YEARS; decays past it
+  eraDecay: 4,
+  age: 25, // continuous tiebreak
 };
 
-/**
- * Clubs both players have EVER been at. This is the term that makes the genre
- * work, and we nearly shipped without it.
- *
- * The game we are modelling ours on states its own algorithm: "attributes
- * associated with the player such as nationality, TEAMS PLAYED FOR, age and
- * position". Their worked example only holds up because of it — Rivaldo ranks
- * 5 for Ronaldinho since both are Brazilian AND both played for Barcelona.
- * Scoring on current club alone would call that pair strangers, and anyone who
- * knows the genre would feel ours was the worse game.
- *
- * Capped at sharedClubMax: without it a journeyman with 19 clubs would rank
- * absurdly high against half the pool purely for having been everywhere.
- */
-const NOW_YEAR = 2026;
+/** Born within this many years of the answer reads "Same era". */
+export const SAME_ERA_YEARS = 4;
+/** Beyond this the reasons say "Different era"; in between, "Born N years apart". */
+export const NEAR_ERA_YEARS = 9;
 
-/** Years two spells at the same club actually overlapped. Unknown dates -> 0. */
-function overlapYears([, s1, e1], [, s2, e2]) {
-  if (s1 == null || s2 == null) return 0;
-  return Math.max(0, Math.min(e1 ?? NOW_YEAR, e2 ?? NOW_YEAR) - Math.max(s1, s2));
+function eraShare(gap) {
+  return gap <= SAME_ERA_YEARS ? 1 : Math.exp(-(gap - SAME_ERA_YEARS) / W.eraDecay);
+}
+
+// ⚠️ Math.exp is implementation-defined precision (JavaScriptCore and V8 differ
+// by 1 ULP on ~8% of inputs, measured 2026-08-14). Harmless here: it perturbs a
+// magnitude, and the ANSWER is read from the frozen schedule, so no two players
+// can be shown different puzzles. If this score ever feeds an ordering that two
+// devices must agree on exactly, port it to integer maths like seededShuffle.
+function ageShare(p, answer) {
+  const YEAR = 365.25;
+  const ad = p.dob && answer.dob ? Math.abs(Date.parse(p.dob) - Date.parse(answer.dob)) / 86400000 : null;
+  if (ad !== null && Number.isFinite(ad)) return Math.exp(-ad / (6 * YEAR));
+  // A few players have only a birth year upstream: same curve on the year.
+  if (p.born && answer.born) return Math.exp(-Math.abs(p.born - answer.born) / 6);
+  return 0;
 }
 
 /**
- * ⚠️ A PLAYER WITH NO OPEN-ENDED SPELL HAS NO CURRENT CLUB.
- *
- * latestClub() in the pool builder picks the LONGEST spell, not the most
- * recent — deliberately, because picking by recency labelled every active
- * player with an old club (Neuer as Schalke, Courtois as Chelsea). That is
- * right for someone still playing and wrong for someone who has retired: it
- * hands them their most-tenured club and `similarity` then reads it as CURRENT
- * and pays the full W.club.
- *
- * Fernando Torres, whose Atlético spell in our data ended in 2001, was
- * therefore scored as an Atlético player against Jan Oblak — who did not
- * arrive until 2014 — and outranked Saúl Ñíguez, Oblak's teammate of eleven
- * years, by 249 places. That is the bug a player reported.
+ * A scoring function for one answer. The answer's clubs are worked out once,
+ * so ranking nine thousand players does not rebuild them nine thousand times.
  */
-function isActive(p, careers) {
-  const spells = careers?.p?.[p.id];
-  if (!spells || !spells.length) return true; // unknown -> behave as before
-  return spells.some(([, , end]) => end == null);
-}
-
-/**
- * Score for clubs both players have been at, weighted by time TOGETHER.
- * Returns points, not a count. Best `sharedClubMax` clubs only, so a
- * journeyman cannot dominate by having been everywhere.
- */
-function sharedClubScore(a, b, careers) {
-  const ca = careers?.p?.[a.id];
-  const cb = careers?.p?.[b.id];
-  if (!ca || !cb) return 0;
-  const mine = new Map();
-  for (const sp of cb) {
-    // Keep the LONGEST spell per club: a player can have two stints at one club
-    // and we want the one that best represents their time there.
-    const prev = mine.get(sp[0]);
-    if (!prev || ((sp[2] ?? NOW_YEAR) - sp[1]) > ((prev[2] ?? NOW_YEAR) - prev[1])) mine.set(sp[0], sp);
-  }
-  const scores = [];
-  for (const sp of ca) {
-    const theirs = mine.get(sp[0]);
-    if (!theirs) continue;
-    const yrs = overlapYears(sp, theirs);
-    scores.push(W.sharedClub + W.overlap * Math.min(yrs, W.overlapFull) / W.overlapFull);
-  }
-  scores.sort((x, y) => y - x);
-  return scores.slice(0, W.sharedClubMax).reduce((s, v) => s + v, 0);
+export function makeScorer(answer, careers = null) {
+  const answerClubs = careers ? clubsOf(answer, careers) : null;
+  return (p) => {
+    let s = 0;
+    if (answerClubs && answerClubs.size) {
+      const shared = sharedClubs(answer, p, careers, answerClubs);
+      for (const x of shared.slice(0, W.sharedClubMax)) {
+        s += W.sharedClub + W.together * Math.min(x.together, W.togetherFull) / W.togetherFull;
+      }
+    }
+    if (p.slot && p.slot === answer.slot) s += W.slot;
+    if (p.born && answer.born) s += W.era * eraShare(Math.abs(p.born - answer.born));
+    s += W.age * ageShare(p, answer);
+    return s;
+  };
 }
 
 /** Similarity of `p` to the secret `answer`. Higher is closer. */
 export function similarity(p, answer, careers = null) {
-  let s = 0;
-  // Only players who are STILL AT a club can share a current one. For a retired
-  // player `club` is really "last club" and must not be paid as if it were now.
-  if (p.club === answer.club && isActive(p, careers) && isActive(answer, careers)) s += W.club;
-  s += sharedClubScore(p, answer, careers);
-  if (p.slot && p.slot === answer.slot) s += W.slot;
-  if (p.position && p.position === answer.position) s += W.position;
-  if (p.nat && p.nat === answer.nat) s += W.nat;
-  /* ERA is a PLATEAU, not a curve, and that is what separates it from `age`
-     below. Anyone born within ten years of the answer was a contemporary and
-     gets full credit; past that it decays. Age then does the fine-grained
-     work. Modelled on birth year because the shipped careers file carries club
-     NAMES only — the real start/end years exist build-side and were stripped.
-     ⚠️ So this is a PROXY: someone who retired at 28 or played until 41 sits
-     slightly wrong. Shipping career years would fix it properly. */
-  {
-    const gap = Math.abs((p.born || 0) - (answer.born || 0));
-    if (p.born && answer.born) s += W.era * (gap <= 10 ? 1 : Math.exp(-(gap - 10) / 6));
-  }
-  // Age closeness decays over ~12 years, so a 22-year-old is meaningfully
-  // closer to a 24-year-old than to a 34-year-old.
-  //
-  // ⚠️ Uses the full birth DATE, not the year. Measured: a year-only gap gives
-  // about 13 distinct levels, which left 118 distinct scores across 1,539
-  // players and a largest tie group of 86 — ranks 400-486 would have been
-  // alphabetical noise. Day-level precision makes this term effectively
-  // continuous, so the ordering within a band is always explicable.
-  // ⚠️ EXPONENTIAL, NOT LINEAR-CLAMPED. The previous form was
-  //     max(0, W.age * (1 - gap / 12years))
-  // which hits EXACTLY ZERO beyond twelve years — and in a pool spanning
-  // 1910s to 2000s births, 37% of players sit that far from any given answer.
-  // The one term whose whole job is "the tie-breaker that prevents mass ties"
-  // was contributing nothing at all to more than a third of the field, so they
-  // could only differ on the booleans and collapsed into a handful of scores.
-  // Measured: 1.6% distinct with no dob at all, 28.8% once dob landed but still
-  // clamped. Exponential decay never reaches zero, so two distinct birth dates
-  // always produce distinct scores while "closer in age scores higher" still
-  // holds everywhere. Half-life ~4.2 years keeps the near-age feel of the old
-  // curve; the tail merely stops being flat.
-  // ⚠️ BEFORE RE-ENABLING MYSTERY: Math.exp is implementation-defined precision
-  // in ECMAScript, exactly like the Math.sin that once gave iOS and Android
-  // different Daily 7 questions for months. Measured 2026-08-14 across the real
-  // input range: 636 of 8000 values differ between JavaScriptCore (iOS) and V8
-  // (Android/Chrome).
-  //
-  // It is harmless *here* and deliberately left alone: the deltas are 1 ULP
-  // (max relative 2.2e-16), they feed a similarity score that is rounded before
-  // display, and the ANSWER itself is scheduled server-side by
-  // build-mystery-pool.mjs — so no player can be shown a different puzzle. The
-  // Math.sin bug was severe because it fed a sort COMPARATOR and changed
-  // ordering; this only perturbs a magnitude.
-  //
-  // What would make it matter: ranking guesses against each other, or exposing
-  // an exact score that two players on different platforms could compare. If
-  // this scoring ever becomes ordering, port it to integer maths the way
-  // seededShuffle in lib/quiz.js was.
-  const YEAR = 365.25;
-  const ad = p.dob && answer.dob ? Math.abs(Date.parse(p.dob) - Date.parse(answer.dob)) / 86400000 : null;
-  if (ad !== null && Number.isFinite(ad)) {
-    s += W.age * Math.exp(-ad / (6 * YEAR));
-  } else if (p.born && answer.born) {
-    // 11 players still lack a day-precision date upstream. Same curve on the
-    // year, so they degrade smoothly instead of falling into a separate band.
-    s += W.age * Math.exp(-Math.abs(p.born - answer.born) / 6);
-  }
-  return s;
+  return makeScorer(answer, careers)(p);
 }
 
 /**
@@ -217,7 +116,8 @@ export function similarity(p, answer, careers = null) {
  * bitten by exactly this when a sort depended on engine-specific behaviour.
  */
 export function rankPool(pool, answer, careers = null) {
-  const scored = pool.map((p) => ({ id: p.id, name: p.name, s: similarity(p, answer, careers) }));
+  const score = makeScorer(answer, careers);
+  const scored = pool.map((p) => ({ id: p.id, name: p.name, s: p.id === answer.id ? Infinity : score(p) }));
   scored.sort((a, b) => (b.s - a.s) || a.name.localeCompare(b.name));
   const ranks = new Map();
   scored.forEach((p, i) => ranks.set(p.id, i + 1));
@@ -225,6 +125,79 @@ export function rankPool(pool, answer, careers = null) {
   // otherwise a correct guess would not read as a win.
   ranks.set(answer.id, 1);
   return ranks;
+}
+
+/**
+ * WHY a guess sits where it does: the same three things the score pays for,
+ * and nothing it does not. Returns null for the answer itself.
+ *   shared       [{ club, together, years }], best link first
+ *   samePosition same line (GK / DF / MF / FW)
+ *   gap          years between their births, or null when one is unknown
+ *   era          'same' | 'near' | 'far' | null
+ */
+export function explainGuess(p, answer, careers = null) {
+  if (!p || !answer || p.id === answer.id) return null;
+  const shared = careers ? sharedClubs(answer, p, careers) : [];
+  const gap = p.born && answer.born ? Math.abs(p.born - answer.born) : null;
+  const era = gap == null ? null : gap <= SAME_ERA_YEARS ? 'same' : gap <= NEAR_ERA_YEARS ? 'near' : 'far';
+  return { shared, samePosition: !!p.slot && p.slot === answer.slot, gap, era };
+}
+
+const listClubs = (clubs) => (clubs.length <= 2 ? clubs.join(' & ') : `${clubs.slice(0, 2).join(', ')} +${clubs.length - 2}`);
+
+/**
+ * The one line printed under a guess: "Teammates at Juventus · Same position ·
+ * Same era", "Shared Barcelona · Different era", "No shared club, different era".
+ */
+export function reasonLine(x) {
+  if (!x) return '';
+  const parts = [];
+  if (x.shared.length) {
+    const mates = x.shared.filter((c) => c.together >= 1).map((c) => c.club);
+    const only = x.shared.filter((c) => c.together < 1).map((c) => c.club);
+    if (mates.length) parts.push(`Teammates at ${listClubs(mates)}`);
+    else parts.push(`Shared ${listClubs(only)}`);
+  }
+  if (x.samePosition) parts.push('Same position');
+  const eraWord = x.era === 'same' ? 'Same era' : x.era === 'near' ? `Born ${x.gap} years apart` : x.era === 'far' ? 'Different era' : '';
+  if (!x.shared.length && !x.samePosition) {
+    return eraWord ? `No shared club, ${eraWord.charAt(0).toLowerCase()}${eraWord.slice(1)}` : 'No shared club';
+  }
+  if (!x.shared.length) parts.unshift('No shared club');
+  if (eraWord) parts.push(eraWord);
+  return parts.join(' · ');
+}
+
+/**
+ * Does this guess have a VISIBLE reason to be close? A shared club, or the
+ * same position in the same era. The ranking is built so that nobody without
+ * one reaches the boiling band; the unit tests hold it to that.
+ */
+export function hasCloseLink(x) {
+  return !!x && (x.shared.length > 0 || (x.samePosition && (x.era === 'same' || x.era === 'near')));
+}
+
+// ── Clues ───────────────────────────────────────────────────────────────────
+// A ladder, unlocked by guessing: after 3, 6 and 9 guesses. Least to most
+// revealing: what he did, a club he gave the most years to, his initials.
+// ⚠️ NEVER NATIONALITY: `nat` is not reliably nationality.
+// ⚠️ "Born in the 1960s" and "Played for 7 clubs" are gone: the play-tester
+// called them weak, and they were — an era and a count narrow nine thousand
+// players to a few hundred, which is no help to someone already stuck.
+export const CLUE_AFTER = [3, 6, 9];
+
+export function clueLadder(answer, careers = null, roles = null) {
+  if (!answer) return [];
+  const out = [];
+  const pos = hintPosition(answer, roles);
+  if (pos) out.push({ key: 'position', label: 'Position', value: pos.charAt(0).toUpperCase() + pos.slice(1) });
+  const club = careers ? mainClub(answer, careers) : null;
+  if (club) out.push({ key: 'club', label: 'Played for', value: club });
+  const ini = initials(answer.name);
+  // A one-name player (Eusébio, Neymar) gets one letter, and says so: a lone
+  // "E." otherwise reads like a name with its surname missing.
+  if (ini) out.push({ key: 'initials', label: 'Initials', value: ini.includes(' ') ? ini : `${ini} (one name)` });
+  return out.map((c, i) => ({ ...c, after: CLUE_AFTER[i] }));
 }
 
 // ── The position a clue or a reveal may PRINT ───────────────────────────────

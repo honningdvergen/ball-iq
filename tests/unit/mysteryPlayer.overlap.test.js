@@ -26,7 +26,11 @@ const careers = {
   p: {
     oblak: [[0, 2014, null]],                       // still there
     saul: [[0, 2012, 2025], [1, 2025, null]],       // 11 yrs with Oblak, now Flamengo
-    torres: [[0, 1995, 2001], [2, 2007, 2011]],     // retired, never overlapped
+    // Atlético 2001-07, his senior years there. The fixture read 1995-2001
+    // until 14 Oct 2026, which is his youth spell: careerOf() now drops a
+    // spell a player joined as a child and left by nineteen, so the rule
+    // being tested is stated with the senior one. Still no overlap with Oblak.
+    torres: [[0, 2001, 2007], [2, 2007, 2011]],     // retired, never overlapped
     koke: [[0, 2011, null]],                        // still Oblak's teammate
   },
 };
