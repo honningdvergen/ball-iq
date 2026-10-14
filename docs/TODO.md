@@ -1614,6 +1614,19 @@ Pro Max (build 144), reviewed before it went out:
       Asset Library (API: appAssetLibraryImages + placements) or with the
       next version. Specs: header 3840x1646, search 3:2 up to 3840x2560,
       no alpha, centred safe area, 4+ content, no prices or ranking claims.
+- [x] Header and search assets rebuilt with real iPhone 17 frames
+      (scripts/store-header.mjs; the header must be PNG) and uploaded to the
+      Asset Library (state PREPARE_FOR_SUBMISSION, not placed, not
+      submitted). Alex: "way better".
+- [ ] New App Store screenshots in the same iPhone frame are staged in
+      ~/ball-iq-release/store/upload-1.8.0-device (frame-store-screens.mjs
+      now draws the device). Apple refuses screenshot changes while 1.8.0
+      waits for review (STATE_ERROR). Apply with
+      `node ~/ball-iq-release/store/swapshot.mjs upload-1.8.0-device`
+      on the next editable version, or after pulling 1.8.0 from review.
+- [x] Social carousel slides (14 Oct): 4 generic + 7 club versions in
+      ~/shithousery-hq/social/assets/balliq/ (scripts/social-app-slides.mjs,
+      club captures with CLUBS=1). The social session tests them.
 - [ ] Top 10's bundled schedule ends 30 Nov: publish the longer list to
       balliq.app/data/top10.json before then, or Top 10 drops out of the
       dailies and Mystery Player takes the slot back.
