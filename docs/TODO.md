@@ -1595,6 +1595,25 @@ Pro Max (build 144), reviewed before it went out:
       `asc-store.mjs submit` himself; the session's guard refuses it).
       Waiting for review. Release is MANUAL: on approval, press release only
       once Alex's TestFlight run of 149 is clean.
+- [x] Google Play 1.8.0 ready (14 Oct, late): Play refused the bundle at
+      minSdk 22 (automatic Play protection needs 24), so minSdk is 24
+      (8a2ab6b7), the bundle was rebuilt (versionCode 54) and run on the
+      emulator; release 54 (1.8.0) with notes in 10 languages; the
+      listing's description replaced in all 11 languages (the old one
+      claimed questions are "written by football fans", Mystery
+      "nationality and age", Trail "youth side"); eight new phone
+      screenshots in store order. Play warned the change drops about 1,476
+      old phone models (Android 5 and 6).
+- [ ] Send the 13 Play changes for review (Publishing overview): the
+      session's guard refuses the click; Alex. Managed publishing is off,
+      so Play publishes on approval.
+- [ ] Apple: the account holder must accept the updated Program License
+      Agreement before 1.8.0 can be released.
+- [ ] App Store header and search-results assets (iOS 27+ only): cannot
+      go on 1.8.0 while it waits for review; submit standalone from the
+      Asset Library (API: appAssetLibraryImages + placements) or with the
+      next version. Specs: header 3840x1646, search 3:2 up to 3840x2560,
+      no alpha, centred safe area, 4+ content, no prices or ranking claims.
 - [ ] Top 10's bundled schedule ends 30 Nov: publish the longer list to
       balliq.app/data/top10.json before then, or Top 10 drops out of the
       dailies and Mystery Player takes the slot back.
