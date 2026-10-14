@@ -2182,6 +2182,7 @@ function SETTINGS_DEFAULTS() {
 }
 
 // ─── HOT STREAK ENGINE ────────────────────────────────────────────────────────
+const HOT_STREAK_MISS_S = 3;
 function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen }) {
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -2251,6 +2252,11 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
     haptic(correct ? "correct" : "wrong");
     playSound(correct ? "correct" : "wrong");
     if (correct) setScore(s => s + 1);
+    // ⚠️ A WRONG ANSWER COSTS THREE SECONDS (14 Oct 2026). With no cost,
+    // tapping at random won: a play-tester answered 34 at 29% and was called
+    // "Poacher's instinct". Knowing now beats mashing. Best scores set before
+    // this were set under softer rules.
+    else setTimeLeft(t => Math.max(0, t - HOT_STREAK_MISS_S));
     setPicked({ choice: i, correct });
     // Give the player time to read the hint on a wrong answer; otherwise advance
     // quickly. Both are now a CEILING — see advance().
@@ -2293,6 +2299,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
       <div className="q-top">
         <button className="back-btn" onClick={() => { clearInterval(timerRef.current); onBack(); }} aria-label="Go back">←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${pct}%`, background:barColor, transition:'width 1s linear'}} /></div>
+        {picked && !picked.correct && <span className="hs-miss" aria-hidden="true">&minus;{HOT_STREAK_MISS_S}s</span>}
         <span className="q-ctr" style={{color: timeLeft <= 10 ? 'var(--red)' : 'var(--t2)', fontWeight: timeLeft <= 10 ? 800 : 500}}>{timeLeft}s</span>
         {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play" title="How to play">?</button>}
       </div>
@@ -3750,7 +3757,7 @@ const HOW_TO_PLAY = {
   // it would reject most real footballers and infuriate people), the claim
   // goes. Any surname you like is a legal probe; only the answer is fixed.
   wordle: { title:"Footle", steps:["Guess the name today's footballer goes by — usually a surname, sometimes a one-name legend","Green = right letter, right spot","Yellow = right letter, wrong spot","Grey = not in the name at all","6 guesses, new player at midnight"] },
-  hotstreak: { title:"Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","No penalty for wrong answers — just keep going!","Score is how many you get correct","Try to beat your personal best"] },
+  hotstreak: { title:"Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","A wrong answer costs 3 seconds, so think before you tap","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
   survival: { title:"Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
 };

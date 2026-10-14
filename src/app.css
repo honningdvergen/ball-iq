@@ -871,6 +871,7 @@ html.native-app ::-webkit-scrollbar{display:none;}
 .streak-info{font-size:11px;color:var(--t3);display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
 .streak-info strong{color:var(--gold);font-size:12px;font-weight:700;}
 .streak-info strong.is-rule{color:var(--t2);font-weight:600;}
+.hs-miss{margin-right:6px;font-size:13px;font-weight:800;color:var(--red);font-variant-numeric:tabular-nums;animation:fadeIn 0.2s ease-out;}
 .pc{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
 .pc.me{border-color:var(--accent-b);background:var(--accent-dim);}
 .pc-score{font-size:24px;font-weight:800;color:var(--text);}
