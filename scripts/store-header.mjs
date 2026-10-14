@@ -22,17 +22,15 @@ const img = (f) => `data:image/png;base64,${readFileSync(join(SIM, f)).toString(
 const icon = `data:image/png;base64,${readFileSync(join(ROOT, 'ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png')).toString('base64')}`;
 
 const GREEN = '#58CC02', AMBER = '#FFC107', ORANGE = '#FF8A3D';
+const band = img('status-band.png');
 const base = `
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:#070707;font-family:-apple-system,'Inter','Helvetica Neue',sans-serif;overflow:hidden;color:#fff}
   .stage{position:relative;overflow:hidden;background:
-    radial-gradient(60% 90% at 12% 70%, rgba(88,204,2,.30), transparent 70%),
-    radial-gradient(60% 90% at 88% 70%, rgba(255,138,61,.28), transparent 70%),
-    radial-gradient(50% 60% at 50% 110%, rgba(255,193,7,.16), transparent 70%),
-    linear-gradient(180deg,#0c0c0c,#050505)}
-  .phone{position:absolute;border-radius:9%/4.4%;padding:1.1%;background:linear-gradient(150deg,#5a5f5c 0%,#15181a 22%,#0d0f10 62%,#42423f 100%);
-    box-shadow:0 40px 90px rgba(0,0,0,.65),0 0 0 2px rgba(255,255,255,.05)}
-  .phone img{display:block;width:100%;border-radius:8%/3.9%}
+    radial-gradient(55% 85% at 14% 75%, rgba(88,204,2,.26), transparent 70%),
+    radial-gradient(55% 85% at 86% 75%, rgba(255,138,61,.24), transparent 70%),
+    radial-gradient(45% 55% at 50% 0%, rgba(255,193,7,.10), transparent 70%),
+    linear-gradient(180deg,#101114,#060607)}
   .mark{display:flex;align-items:center;justify-content:center;gap:22px}
   .mark img{border-radius:22.5%;box-shadow:0 10px 30px rgba(0,0,0,.5)}
   .mark span{font-weight:800;letter-spacing:-1px}
@@ -40,23 +38,43 @@ const base = `
   .pill{display:inline-block;border-radius:999px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
 `;
 
-// Header, 1920x823 CSS px at 2x. The words sit in the centred safe area;
-// the phones fan out to either side, where a crop costs nothing.
-const phone = (src, { left, top, w, rot }) =>
-  `<div class="phone" style="left:${left}px;top:${top}px;width:${w}px;transform:rotate(${rot}deg)"><img src="${src}"></div>`;
-const header = `<!doctype html><html><head><style>${base}
+// An iPhone 17 drawn to its own proportions, everything in px of the screen
+// width (a CSS % would measure the stage, which is how the first draft got a
+// case six times too thick). Screen 1206x2622 at 3x; corner radius 13.7% of
+// the width; a thin titanium edge; Apple's own status bar from a simulator
+// capture with the time redrawn as 9:41; Dynamic Island; home indicator.
+const ASPECT = 2622 / 1206;
+const device = (src, w, style = '') => {
+  const h = Math.round(w * ASPECT), r = Math.round(w * 0.137), edge = Math.max(3, Math.round(w * 0.022));
+  const u = (n) => Math.round(w * n / 402);
+  return `<div style="position:absolute;${style};width:${w + edge * 2}px;height:${h + edge * 2}px;padding:${edge}px;border-radius:${r + edge}px;
+      background:linear-gradient(135deg,#8d9093 0%,#3a3d40 18%,#1b1d1f 50%,#3a3d40 82%,#9a9da0 100%);
+      box-shadow:0 0 0 1px rgba(0,0,0,.9) inset,0 ${u(30)}px ${u(80)}px rgba(0,0,0,.6),0 ${u(6)}px ${u(18)}px rgba(0,0,0,.5)">
+    <div style="position:relative;width:${w}px;height:${h}px;border-radius:${r}px;overflow:hidden;background:#0B0C10;box-shadow:0 0 0 ${Math.max(1, u(1.5))}px #000">
+      <img src="${band}" style="display:block;width:100%">
+      <span style="position:absolute;left:${Math.round(w * 0.066)}px;top:0;width:${Math.round(w * 0.25)}px;height:${Math.round(w * 186 / 1206)}px;display:flex;align-items:center;justify-content:center;padding-top:${Math.round(w * 0.012)}px;background:#0B0C10;font-weight:600;font-size:${u(17)}px;letter-spacing:-.2px">9:41</span>
+      <span style="position:absolute;left:50%;transform:translateX(-50%);top:${u(11)}px;width:${u(125)}px;height:${u(37)}px;border-radius:99px;background:#000"></span>
+      <img src="${src}" style="display:block;width:100%">
+      <span style="position:absolute;left:50%;transform:translateX(-50%);bottom:${u(8)}px;width:${u(134)}px;height:${Math.max(3, u(5))}px;border-radius:99px;background:rgba(255,255,255,.9)"></span>
+    </div></div>`;
+};
+
+// Header, 1920x823 CSS px at 2x. The words sit in the centred safe area
+// (about the middle 823x330 here); upright phones stand either side and run
+// off the bottom edge, where a crop costs nothing.
+const header = `<!doctype html><html><head><meta charset="utf-8"><style>${base}
   .stage{width:1920px;height:823px}
   .center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;width:900px}
-  .mark img{width:96px;height:96px}
-  .mark span{font-size:92px}
-  h1{margin-top:26px;font-size:50px;font-weight:800;line-height:1.1;letter-spacing:-.5px}
+  .mark img{width:92px;height:92px}
+  .mark span{font-size:88px}
+  h1{margin-top:24px;font-size:48px;font-weight:800;line-height:1.12;letter-spacing:-.5px}
   h1 em{font-style:normal;color:${GREEN}}
-  .modes{margin-top:22px;font-size:25px;color:#a6acb2;font-weight:600;letter-spacing:.02em}
+  .modes{margin-top:22px;font-size:24px;color:#a6acb2;font-weight:600;letter-spacing:.02em}
 </style></head><body><div class="stage">
-  ${phone(img('12-draft.png'), { left: 40, top: 150, w: 330, rot: -9 })}
-  ${phone(img('11-top10.png'), { left: 300, top: 70, w: 350, rot: -3 })}
-  ${phone(img('04-transfer-trail.png'), { left: 1270, top: 70, w: 350, rot: 3 })}
-  ${phone(img('02-footle.png'), { left: 1550, top: 150, w: 330, rot: 9 })}
+  ${device(img('12-draft.png'), 250, 'left:70px;top:250px;opacity:.92')}
+  ${device(img('11-top10.png'), 290, 'left:290px;top:120px')}
+  ${device(img('04-transfer-trail.png'), 290, 'right:290px;top:120px')}
+  ${device(img('02-footle.png'), 250, 'right:70px;top:250px;opacity:.92')}
   <div class="center">
     <div class="mark"><img src="${icon}"><span>Ball <b>IQ</b></span></div>
     <h1>The football quiz for people<br>who <em>actually watch</em> football</h1>
@@ -64,19 +82,18 @@ const header = `<!doctype html><html><head><style>${base}
   </div>
 </div></body></html>`;
 
-// Search results, 1920x1280 CSS px at 2x: show the games themselves
+// Search results, 1920x1280 CSS px at 2x: the games themselves, upright
 // (Apple: "state the obvious", "showcase the firsthand experience").
-const card = (src, label, color, x) => `
-  <div style="position:absolute;left:${x}px;top:150px;width:520px;text-align:center">
-    <span class="pill" style="font-size:26px;padding:12px 26px;color:#0b0b0b;background:${color}">${label}</span>
-    <div class="phone" style="position:relative;margin:34px auto 0;width:460px"><img src="${src}"></div>
-  </div>`;
-const search = `<!doctype html><html><head><style>${base}
+const card = (src, label, color, cx) => `
+  <div style="position:absolute;left:${cx - 300}px;top:120px;width:600px;text-align:center">
+    <span class="pill" style="font-size:28px;padding:13px 30px;color:#0b0b0b;background:${color}">${label}</span>
+  </div>${device(src, 420, `left:${cx - 210 - 9}px;top:220px`)}`;
+const search = `<!doctype html><html><head><meta charset="utf-8"><style>${base}
   .stage{width:1920px;height:1280px}
 </style></head><body><div class="stage">
-  ${card(img('02-footle.png'), 'Footle', GREEN, 130)}
-  ${card(img('11-top10.png'), 'Top 10', ORANGE, 700)}
-  ${card(img('12-draft.png'), 'Draft', AMBER, 1270)}
+  ${card(img('02-footle.png'), 'Footle', GREEN, 390)}
+  ${card(img('11-top10.png'), 'Top 10', ORANGE, 960)}
+  ${card(img('12-draft.png'), 'Draft', AMBER, 1530)}
 </div></body></html>`;
 
 const browser = await chromium.launch();
