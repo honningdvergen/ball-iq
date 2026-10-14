@@ -1448,6 +1448,22 @@ Pro Max (build 144), reviewed before it went out:
       app died (23:27; swap near 10 GB). Boot with sim-probe.sh, wait for the
       load to fall, and run nothing else heavy beside it.
 
+**Build 147 (14 Oct): Footle's keys back on click**
+- [x] ⚠️ Alex, playing 146 on his phone: one tap sometimes typed two
+      letters, the same one twice or a different one. The cause is the
+      pointerup keys of 13 Oct: iOS only turns a touch into a click when it
+      is a real tap (not a resting thumb, a long press or a slide), and
+      pointerup has no such judgement. A drifting tap in the simulator did NOT
+      reproduce it, so the exact touch is not known. The keys are back on
+      click, exactly as in 145, which Alex played for weeks without a doubled
+      or lost letter; `src/lib/keyTaps.js` is gone.
+- [x] The Draft wrote games as "29+1" (starts plus off the bench); Alex read
+      it as a sum to work out. It now shows the total, "30 games".
+- [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
+      taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
+      three quick taps). Do not touch the keys again without a screen
+      recording from a real phone that shows a letter being lost.
+
 **Build 146 (14 Oct, 00:10)**
 - [x] 1.8.0 build 146 cut from 81202a1b in the clean clone: preflight green
       (both native bundles match the source, fonts in both), archived,
