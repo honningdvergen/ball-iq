@@ -1496,8 +1496,13 @@ Pro Max (build 144), reviewed before it went out:
       reads "Hard: real names only"; Mystery's give up disarms on a guess and
       scrolls to the game, not the page; Top 10's club and nation lists offer
       thirty; the name list takes Mueller, Oezil, Oedegaard and Lo Celso.
-- [ ] CONTENT RUNWAY (14 Oct): Top 10 has 24 days left (log of 27, lists run
-      out ~7 Nov) and is the only one that needs filling now. Footle 236 days
+- [x] Top 10 batch 5 (14 Oct): 23 new lists, each researched from two
+      sources and then re-derived by an independent checker (22 PASS, 1 FIX
+      applied). Scheduled 8 to 30 Nov, lists that share answers a week apart.
+      Research and checker verdicts: ~/ball-iq-audit/2026-10-14/top10-batch5.mjs.
+- [ ] CONTENT RUNWAY (14 Oct, after batch 5): Top 10 now runs to 30 Nov; the
+      next batch is due by mid-November (six held lists are in the batch 5
+      report, each failing the bar on one point). Footle 236 days
       in its frozen log (pool of 427 after that), Transfer Trail ~343, Mystery
       ~327, Daily 7 to Oct 2027, Draft 392 club-seasons.
 - [x] Hot Streak: a wrong answer costs three seconds, shown by the clock;
