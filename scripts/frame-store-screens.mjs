@@ -26,7 +26,7 @@
 // ("Real Madrid to Hajduk Split") — it never goes stale.
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
-import { chromium } from '@playwright/test';
+import { chromium } from 'playwright';
 
 // PLATFORM=android → Google Play assets instead of App Store ones.
 //   PLATFORM=android node scripts/frame-store-screens.mjs
@@ -114,9 +114,19 @@ const COPY = {
     sub: 'One club at a time. Fewer clubs, more points.',
   },
   '07-mystery-player': {
-    eyebrow: 'DAILY · MYSTERY PLAYER', accent: AMBER,
-    head: ['Every guess gets you', '{closer}'],
-    sub: 'Rank 1 is the player. Nothing else is.',
+    eyebrow: 'MYSTERY PLAYER', accent: AMBER,
+    head: ['Every guess tells you', '{how close}'],
+    sub: 'Teammates, same position, same era. Find the player.',
+  },
+  '11-top10': {
+    eyebrow: 'DAILY · TOP 10', accent: ORANGE,
+    head: ['Name all ten', 'before your {lives run out}'],
+    sub: 'A new ranked list every day.',
+  },
+  '12-draft': {
+    eyebrow: 'NEW · DRAFT', accent: GREEN,
+    head: ['Draft eleven from', '{real seasons}'],
+    sub: 'Spin a club, take a player, play the season.',
   },
   '05-quiz-explanation': {
     eyebrow: 'EVERY ANSWER EXPLAINED', accent: AMBER,

@@ -24,7 +24,8 @@
 // same name, same face, same rating. A gallery that shows Alex on 82 in the app
 // and a different number on the card he shares tells the viewer they are unrelated
 // screens — when the entire pitch is that they are the same object.
-import { webkit } from '@playwright/test';
+// 'playwright', not '@playwright/test': only its browsers are installed here (14 Oct 2026).
+import { webkit } from 'playwright';
 // ⚠️ DERIVE THE DAILY ANSWER IN NODE, NOT IN THE PAGE.
 // The first version did `import('/src/lib/wordle.js')` inside the browser —
 // that path only exists in dev, so against a BUILT bundle it threw, the answer
@@ -47,6 +48,14 @@ import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 const BASE = process.env.BASE || 'http://localhost:4324';
+// Today's Top 10, from the file the app reads.
+const TOP10 = JSON.parse(readFileSync(resolve('public/data/top10.json'), 'utf8'));
+// Pinned to 14 Oct 2026 (No. 3, England caps: names every buyer knows); the shot
+// fixes the page clock to the same day, so the list typed is the list shown.
+const TOP10_DAY = new Date('2026-10-14T12:00:00');
+const TOP10_LIST = TOP10.lists[TOP10.log[dayIndexForDate(TOP10_DAY) - TOP10.anchor]];
+const TOP10_TODAY = TOP10_LIST.slots.map((x) => x.name);
+const TOP10_WRONG = ['Gary Neville', 'Gareth Bale', 'Kevin De Bruyne'].find((n) => !TOP10_TODAY.includes(n));
 
 // ⚠️ THE APP CLEANS ITS OWN URL, AND PLAYWRIGHT CALLS THAT AN INTERRUPTION.
 // Every ?game= / ?tab= / ?club= deep link is consumed once and then stripped
@@ -333,10 +342,12 @@ const SHOTS = [
         // WRONG SCREEN and only the screen assertion caught it. Marketing
         // capture must not be coupled to user-facing wording — the aria-label
         // is the stable contract, and it is also what a screen reader uses.
+        // No Guess button since 13 Oct: a guess is a name picked from the list.
         await p.getByLabel('Your guess').fill(g);
-        await p.waitForTimeout(250);
-        await p.getByText('Guess', { exact: true }).first().click();
-        await p.waitForTimeout(900);
+        await p.waitForTimeout(700);
+        const opt = p.getByText(g, { exact: true }).last();
+        if (await opt.count()) await opt.click(); else await p.keyboard.press('Enter');
+        await p.waitForTimeout(1100);
       }
       await p.waitForTimeout(1200);
       // ⚠️ "Career looks wrong? Tell us" is a bug-report affordance, and it was
@@ -354,38 +365,69 @@ const SHOTS = [
   // all keepers when the answer is a keeper: guessing the same position returns
   // low ranks, and the ladder of near-misses narrowing toward 1 is exactly the
   // thing a still image has to explain about a Contexto-style game.
+  // ⚠️ THE REBUILT GAME, ON A FAMOUS ANSWER (14 Oct 2026). The shot plays the
+  // 15 Oct puzzle (Mohamed Salah) with the page clock fixed to that day, so
+  // the guesses can be his Liverpool and Chelsea teammates and every row shows
+  // the reason it is close. Mid-game, one clue taken: the screen that explains
+  // the mode, not the reveal.
   { name: '07-mystery-player', expect: 'Mystery Player',
-    verify: async (p) => (await p.evaluate(() => /Got it|Solved|rank 1|#1\b/i.test(document.body.innerText))),
+    verify: async (p) => (await p.evaluate(() => /Teammates|Same position/.test(document.body.innerText))),
     go: async (p) => {
+      await p.clock.setFixedTime(new Date('2026-10-15T12:00:00'));
       await gotoApp(p, '/play?game=mystery');
       await p.waitForTimeout(1400);
-      const id = answerIdForDay(MYSTERY_SCHEDULE, mysteryDayIndex());
-      const ans = MYSTERY_POOL.find((x) => x.id === id);
-      if (!ans) return;
-      /* ⚠️ DECOYS COME FROM THE CURATED ANSWER POOL, NOT THE GUESS POOL.
-         First run drew "same slot, fame >= 55" straight from the guess pool and
-         put NIELS BOHR in an App Store screenshot — he really did keep goal for
-         Akademisk Boldklub, so he is a legitimate GUESS, but a physicist in the
-         shot makes the app look broken. mysteryAnswers.json is the hand-curated
-         set of players a median fan can name, which is exactly the bar a
-         marketing image has to clear. */
-      const answerIds = new Set(Array.isArray(MYSTERY_ANSWERS)
-        ? MYSTERY_ANSWERS
-        : (MYSTERY_ANSWERS.answers || Object.values(MYSTERY_ANSWERS).find(Array.isArray) || []));
-      const sameSlot = MYSTERY_POOL
-        .filter((x) => answerIds.has(x.id) && x.slot === ans.slot && x.id !== ans.id)
-        .sort((a, b) => b.fame - a.fame).slice(0, 5).map((x) => x.name);
-      for (const g of [...sameSlot, ans.name]) {
-        if (!matchGuess(MYSTERY_POOL, g)) continue;
+      for (const g of ['Eden Hazard', 'Jordan Henderson', 'Sadio Mané', 'Roberto Firmino']) {
         await p.getByPlaceholder('Search a player').fill(g);
-        await p.waitForTimeout(400);
-        // Tap the ranked suggestion rather than pressing Enter — it is the real
-        // path a player takes now that the autocomplete exists.
+        await p.waitForTimeout(700);
         const opt = p.getByText(g, { exact: true }).last();
         if (await opt.count()) { await opt.click(); } else { await p.keyboard.press('Enter'); }
         await p.waitForTimeout(800);
       }
+      const tile = p.getByText('Tap to reveal').first();
+      if (await tile.count()) await tile.click();
+      await p.evaluate(() => document.activeElement?.blur());
       await p.waitForTimeout(1200); } },
+
+  // Top 10, a third of the way in: five found with their numbers, one heart
+  // lost. The day's list is read in NODE from the published file, like the
+  // other dailies, so the shot never types a wrong ten.
+  { name: '11-top10', expect: 'Top 10',
+    verify: async (p) => (await p.evaluate(() => /\b5\/10\b/.test(document.body.innerText))),
+    go: async (p) => {
+      await p.clock.setFixedTime(TOP10_DAY);
+      await gotoApp(p, '/play?game=top10');
+      await p.waitForTimeout(2200);
+      const names = [...TOP10_TODAY.slice(0, 2), TOP10_WRONG, ...TOP10_TODAY.slice(2, 5)];
+      for (const g of names) {
+        const box = p.locator('.t10 input').first();
+        await box.click(); await box.fill(g); await p.waitForTimeout(700);
+        const opt = p.locator('.t10-opt', { hasText: g }).first();
+        if (await opt.count()) await opt.click(); else await p.keyboard.press('Enter');
+        await p.waitForTimeout(1600);
+      }
+      await p.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
+      await p.waitForTimeout(800); } },
+
+  // The Draft, six picks in: the pitch filling up, the live points line, and a
+  // fresh spin's squad below it.
+  { name: '12-draft', expect: 'On course for',
+    go: async (p) => {
+      await p.clock.setFixedTime(TOP10_DAY);
+      await gotoApp(p, '/play?game=draft');
+      await p.waitForTimeout(1800);
+      await p.getByRole('button', { name: 'Spin', exact: true }).click();
+      for (let n = 0; n < 6; n++) {
+        await p.waitForTimeout(1500);
+        // The squad's best-known man: most goals, then most games.
+        const rows = p.locator('.dr-row:not([disabled])');
+        const nums = await rows.evaluateAll((els) => els.map((e) => { const t = e.querySelector('.dr-row-num')?.textContent || ''; const g = +(t.match(/(\d+)\s*goal/)?.[1] || 0); const m = +(t.match(/^(\d+)/)?.[1] || 0); return g * 100 + m; }));
+        const best = nums.indexOf(Math.max(...nums));
+        await rows.nth(best < 0 ? 0 : best).click();
+        await p.waitForTimeout(300);
+        await p.locator('.dr-take button, .dr-take').first().click();
+      }
+      await p.waitForTimeout(1800);
+      await p.evaluate(() => window.scrollTo(0, 0)); } },
 
   // ⚠️ A SOLVED BOARD, NOT AN EMPTY ONE. An empty grid shows the format; a
   // solved one shows the payoff. The daily answer is read FROM THE APP rather
@@ -394,14 +436,16 @@ const SHOTS = [
   { name: '02-footle', expect: 'Footle',
     // The screen check is not enough here — assert the BOARD actually filled.
     verify: async (p) => (await p.evaluate(() =>
-      [...document.querySelectorAll('.wd-tile')].filter((t) => (t.textContent || '').trim()).length)) >= 15,
+      [...document.querySelectorAll('.wd-tile')].filter((t) => (t.textContent || '').trim()).length)) >= 9,
     go: async (p) => {
       const answer = getWordleAnswer();
       await gotoApp(p, '/play?game=footle');
       await p.waitForTimeout(1800);
       if (answer) {
         const A = answer.toUpperCase();
-        for (const g of [...footleLadder(A), A]) {
+        // Solved on the third guess: the win word reads "Brilliant" (it follows
+        // the guesses since 14 Oct; a five-guess solve says "Close call").
+        for (const g of [...footleLadder(A).slice(0, 2), A]) {
           await p.keyboard.type(g);
           await p.getByText('ENTER', { exact: true }).first().click();
           await p.waitForTimeout(1150);
