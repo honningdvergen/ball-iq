@@ -5,5 +5,5 @@
 // screen loads. The hash is how a build recognises a longer schedule fetched
 // from the site as a continuation of its own (src/lib/top10Remote.js).
 export const TOP10_ANCHOR_DAY = 20738;
-export const TOP10_DAYS = 27;
-export const TOP10_LOG_HASH = '62c61449';
+export const TOP10_DAYS = 50;
+export const TOP10_LOG_HASH = '83ef702c';
