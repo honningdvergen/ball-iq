@@ -25,7 +25,8 @@ export function usePlayerPool({ careers = false } = {}) {
     if (data) return Promise.resolve(data);
     if (inflight.current) return inflight.current;
     const loads = [import('../data/mysteryPool.json')];
-    if (careers) loads.push(import('../data/mysteryCareers.json'));
+    if (careers) loads.push(Promise.all([import('../data/mysteryCareers.json'), import('../data/mysteryCareerFixes.json'), import('./mysteryCareer.js')])
+      .then(([c, f, m]) => m.withCareerFixes(c.default || c, f.default || f)));
     inflight.current = Promise.all(loads)
       .then(([p, c]) => {
         const d = { pool: p.default || p, careers: c ? (c.default || c) : null };

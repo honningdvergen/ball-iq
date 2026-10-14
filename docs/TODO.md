@@ -1534,6 +1534,23 @@ Pro Max (build 144), reviewed before it went out:
       Next button (QuizEngine.jsx, whyRef effect, after the 1.7.0 review); on
       an SE that costs the header. Showing the explanation was chosen over
       keeping the header, and still is.
+- [x] MYSTERY PLAYER REBUILT (14 Oct, built in a worktree, reviewed on screen,
+      merged): famous answers only from 15 Oct (fame 55+, a known club, a
+      clean career; the 73 played days unchanged and pinned by a test); the
+      ranking pays only for a shared club or teammate years, the same
+      position, and era as a tiebreak (no nationality), and every guess says
+      why ("Teammates at Liverpool · Same position · Same era"); clues after
+      3, 6 and 9 guesses (position, main club, initials); the reveal shows the
+      career with years. Maradona against Löw went from boiling to warm.
+- [x] Careers for 15 to 28 Oct checked by an independent verifier: 7 of 14
+      were wrong or missing spells (Salah's Roma, Zlatan's first Milan,
+      Cruyff's return to Ajax, Kompany's Anderlecht, Beckenbauer's Cosmos
+      return, Giroud's Tours, Eusébio's club names). Fixed in
+      `src/data/mysteryCareerFixes.json`, which overrides the generated
+      careers everywhere; "Los Angeles FC" now reads LAFC, not like LA Galaxy.
+- [ ] ⚠️ CHECK EVERY FUTURE MYSTERY ANSWER'S CAREER BEFORE ITS DAY. Half of the
+      first fortnight was wrong. Next batch: days 88 to 129 (29 Oct to 9 Dec),
+      then the rest in batches of six weeks.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen

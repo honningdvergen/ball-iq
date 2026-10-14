@@ -208,3 +208,25 @@ describe('the career on the reveal', () => {
     expect(spellYears({ from: 2015, to: 2015 })).toBe('2015');
   });
 });
+
+// Checked corrections over the generated careers (14 Oct 2026).
+describe('career fixes', () => {
+  it('replace the generated career and keep fan names', async () => {
+    const { readFileSync } = await import('node:fs');
+    const m = await import('../../src/lib/mysteryCareer.js');
+    const careers = JSON.parse(readFileSync(new URL('../../src/data/mysteryCareers.json', import.meta.url), 'utf8'));
+    const fixes = JSON.parse(readFileSync(new URL('../../src/data/mysteryCareerFixes.json', import.meta.url), 'utf8'));
+    const fixed = m.withCareerFixes(careers, fixes);
+    const zlatan = { id: 'Q46896', born: 1981 };
+    const clubs = m.careerOf(zlatan, fixed).map((s) => `${m.clubName(s.club)} ${m.spellYears(s)}`);
+    expect(clubs).toContain('AC Milan 2010–2012');
+    expect(careers.p.Q46896.length).toBeLessThan(fixed.p.Q46896.length); // the input is not changed
+    expect(m.clubName('Los Angeles FC')).toBe('LAFC');
+    for (const id of Object.keys(fixes).filter((k) => !k.startsWith('_'))) {
+      for (const [label, from, to] of fixes[id]) {
+        expect(typeof label, id).toBe('string');
+        expect(from == null || to == null || from <= to, `${id} ${label}`).toBe(true);
+      }
+    }
+  });
+});

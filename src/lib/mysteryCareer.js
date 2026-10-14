@@ -21,6 +21,12 @@
 
 // Labels whose fan name is not just the label with its letters taken off.
 const NAMES = {
+  // Names a fan says (verifier, 14 Oct 2026). "Los Angeles FC" lost its "FC" to
+  // the tail rule and read like LA Galaxy.
+  'Los Angeles FC': 'LAFC',
+  'Montpellier Hérault Sport Club': 'Montpellier',
+  'Grenoble Foot 38': 'Grenoble',
+  'U.F.C.I. Tomar': 'União de Tomar',
   'Real Madrid Club de Fútbol': 'Real Madrid',
   'FC Barcelona': 'Barcelona',
   'FC Bayern Munich': 'Bayern Munich',
@@ -173,6 +179,28 @@ function clubKeys(careers) {
 }
 
 export const NOW_YEAR = 2026;
+
+/**
+ * The generated careers with the checked corrections laid over them
+ * (src/data/mysteryCareerFixes.json). ⚠️ Wikidata drops or misdates whole
+ * spells: Zlatan without his first AC Milan, Cruyff without his return to
+ * Ajax, Salah's Roma ending a year early (verifier, 14 Oct 2026). A corrected
+ * career replaces the generated one for everything that reads careers, so the
+ * reveal, the clues and the reasons under a guess agree. Returns a new object;
+ * the input is not changed.
+ */
+export function withCareerFixes(careers, fixes) {
+  if (!careers || !fixes) return careers;
+  const c = [...careers.c];
+  const index = new Map(c.map((label, i) => [label, i]));
+  const at = (label) => { if (!index.has(label)) { index.set(label, c.length); c.push(label); } return index.get(label); };
+  const p = { ...careers.p };
+  for (const [id, spells] of Object.entries(fixes)) {
+    if (!Array.isArray(spells)) continue;
+    p[id] = spells.map(([label, from, to]) => [at(label), from, to]);
+  }
+  return { c, p };
+}
 
 /**
  * A player's senior career, oldest first: [{ club, from, to }], `to` null
