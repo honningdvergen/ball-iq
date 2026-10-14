@@ -1459,6 +1459,16 @@ Pro Max (build 144), reviewed before it went out:
       or lost letter; `src/lib/keyTaps.js` is gone.
 - [x] The Draft wrote games as "29+1" (starts plus off the bench); Alex read
       it as a sum to work out. It now shows the total, "30 games".
+- [x] Build 147 uploaded and VALID (14 Oct, 13:09): keys on click, Draft
+      totals.
+- [x] The guess boxes in Top 10, Transfer Trail and Mystery Player offer up
+      to thirty matches in a scrolling list (`SUGGEST_MAX`). Top 10 and the
+      Trail stopped at six: "James" never reached David James, the seventh
+      (Alex, build 146). Ships in 148.
+- [ ] Draft research is in `~/ball-iq-audit/2026-10-14/draft-research/
+      REPORT.md`: our Draft is the 38-0 format; nothing spins, no strength
+      readout while picking, the result has no story or par, not a daily.
+      Ten ranked changes there; decide with Alex.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen

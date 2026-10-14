@@ -15,7 +15,7 @@ import {
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition, withArticle,
 } from '../lib/mysteryPlayer.js';
 import { usePlayerPool } from '../lib/usePlayerPool.js';
-import { rankPlayerSuggestions, suggestionSubtitle } from '../lib/playerSearch.js';
+import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from '../lib/playerSearch.js';
 import { MODE_ACCENT, modeTint } from '../lib/accents.js';
 import { dateToYMD } from '../lib/date.js';
 import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
@@ -220,7 +220,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
      Transfer Trail uses the SAME one — two copies would drift the first time
      either was touched, which is this codebase's most repeated failure. */
   const suggestions = useMemo(
-    () => rankPlayerSuggestions(POOL, text, { exclude: new Set(guesses.map((g) => g.id)) }),
+    () => rankPlayerSuggestions(POOL, text, { limit: SUGGEST_MAX, exclude: new Set(guesses.map((g) => g.id)) }),
     // POOL is a dependency now that it arrives after mount: without it, the
     // first word typed while the pool was loading showed nothing until the
     // next keystroke (measured on the local build, 2026-09-05).

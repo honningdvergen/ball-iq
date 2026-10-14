@@ -35,7 +35,7 @@ import {
 import { resolveDailyServices } from "../games/dailyServices.js";
 import { DailyDone } from "../components/DailyDone.jsx";
 import { usePlayerPool } from "../lib/usePlayerPool.js";
-import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
+import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight, visibleBottom } from "../lib/useKeyboardAwareInput.js";
 import ResultFoot from "../components/ResultFoot.jsx";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
@@ -247,7 +247,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
   const suggestions = useMemo(() => {
     if (g.done) return [];
     if (list.kind === "player") {
-      return rankPlayerSuggestions(playerPool, entry, { limit: 6, exclude: g.picked })
+      return rankPlayerSuggestions(playerPool, entry, { limit: SUGGEST_MAX, exclude: g.picked })
         .map((p) => ({ key: p.id, name: p.name, sub: suggestionSubtitle(p) }));
     }
     return rankListSuggestions(data.pools?.[list.kind], entry, { limit: 6, exclude: g.picked });

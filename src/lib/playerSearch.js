@@ -63,6 +63,14 @@ export function scorePlayerMatch(p, q) {
   return s;
 }
 
+// ⚠️ HOW MANY MATCHES A GUESS BOX OFFERS: every one a player could want, up
+// to thirty, in a list that scrolls. Top 10 and the Trail stopped at six, so
+// "James" offered six Jameses and never David James, the seventh; the list
+// would not scroll because there was nothing more in it (Alex, looking for
+// England's keeper on build 146, 14 Oct 2026). Typing more narrows it, as it
+// always did.
+export const SUGGEST_MAX = 30;
+
 /**
  * @param {Array} pool     player records ({ id, name, fame, born, club })
  * @param {string} text    raw user input

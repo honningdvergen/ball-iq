@@ -47,7 +47,7 @@ import { usePlayerPool } from "../lib/usePlayerPool.js";
 
 // Space between two clubs on the trail, and the length of the link drawn in it.
 const TRAIL_GAP = 12;
-import { rankPlayerSuggestions, suggestionSubtitle } from "../lib/playerSearch.js";
+import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight } from "../lib/useKeyboardAwareInput.js";
 import ResultFoot from "../components/ResultFoot.jsx";
 
@@ -191,7 +191,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
   );
   const { pool, ensure: ensurePool } = usePlayerPool();
   const suggestions = useMemo(
-    () => rankPlayerSuggestions(pool, entry, { limit: 6 })
+    () => rankPlayerSuggestions(pool, entry, { limit: SUGGEST_MAX })
       .filter((p) => !guessedNames.has(p.name.toLowerCase())),
     [pool, entry, guessedNames],
   );
