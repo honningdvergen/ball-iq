@@ -1618,12 +1618,13 @@ Pro Max (build 144), reviewed before it went out:
       (scripts/store-header.mjs; the header must be PNG) and uploaded to the
       Asset Library (state PREPARE_FOR_SUBMISSION, not placed, not
       submitted). Alex: "way better".
-- [ ] New App Store screenshots in the same iPhone frame are staged in
-      ~/ball-iq-release/store/upload-1.8.0-device (frame-store-screens.mjs
-      now draws the device). Apple refuses screenshot changes while 1.8.0
-      waits for review (STATE_ERROR). Apply with
-      `node ~/ball-iq-release/store/swapshot.mjs upload-1.8.0-device`
-      on the next editable version, or after pulling 1.8.0 from review.
+- [x] New App Store screenshots in the iPhone frame are LIVE on 1.8.0
+      (14 Oct, late): Alex pulled 1.8.0 from review
+      (~/ball-iq-release/store/cancelreview.mjs), the set was replaced
+      (asc-store.mjs shots, all ten COMPLETE), the header and search assets
+      were placed on all 19 localisations (placeassets.mjs), and Alex
+      resubmitted: WAITING_FOR_REVIEW since 23:29 Oslo. Build 149, MANUAL
+      release, listing text unchanged.
 - [x] Social carousel slides (14 Oct): 4 generic + 7 club versions in
       ~/shithousery-hq/social/assets/balliq/ (scripts/social-app-slides.mjs,
       club captures with CLUBS=1). The social session tests them.
