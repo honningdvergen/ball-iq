@@ -180,6 +180,9 @@ body.biq-web.in-focused-play .wd-grid{--wd-chrome:474px;}
 .wd-key-yellow{background:var(--gold);color:var(--bg);}
 .wd-key-grey{background:#181A22;color:rgba(255,255,255,0.55);}
 .wd-key-enter{display:flex;align-items:center;justify-content:center;width:100%;height:52px;margin-top:8px;background:var(--accent);color:var(--grn-ink);border:none;border-radius:999px;box-shadow:var(--btn-shine), var(--btn-glow);font-family:inherit;font-size:16px;font-weight:800;letter-spacing:0.08em;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-text-fill-color:var(--grn-ink);transition:opacity 120ms ease,filter 120ms ease;user-select:none;padding:0;}
+/* Quiet until the row is full: a bright green ENTER over an empty row asked
+   for a press that could only shake (play-test, 14 Oct 2026). Still tappable. */
+.wd-key-enter.is-short{background:var(--s3);color:var(--t3);-webkit-text-fill-color:var(--t3);box-shadow:none;}
 .wd-key-enter:hover{filter:brightness(1.06);}
 .wd-key-enter:active{opacity:0.85;}
 @media (max-height: 700px) {

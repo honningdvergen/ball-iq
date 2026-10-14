@@ -76,3 +76,12 @@ describe('footle hard mode', () => {
     expect(footleShareHead('Ball IQ', 164, true, 4, false)).not.toContain('Hard');
   });
 });
+
+describe('footle win word', () => {
+  it('rises and falls with the guesses it took, never "Brilliant!" for a sixth-guess scrape', async () => {
+    const { footleWinWord } = await import('../../src/games/FootballWordle.jsx');
+    expect(footleWinWord(1)).toBe('Top bins!');
+    expect(footleWinWord(6)).toBe('Last-gasp winner');
+    expect(new Set([1, 2, 3, 4, 5, 6].map(footleWinWord)).size).toBe(6);
+  });
+});

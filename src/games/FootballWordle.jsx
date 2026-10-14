@@ -108,6 +108,11 @@ function FootleReportButton({ answer, status, onReport }) {
   );
 }
 
+// The word over a win, by how many guesses it took. It said "Brilliant!" for
+// every win, a sixth-guess scrape included (play-test, 14 Oct 2026).
+const FOOTLE_WIN_WORDS = ["Top bins!", "World class", "Brilliant", "Solid", "Close call", "Last-gasp winner"];
+export function footleWinWord(n) { return FOOTLE_WIN_WORDS[Math.min(Math.max(n, 1), 6) - 1]; }
+
 export const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onReport, date = new Date(), services }) {
   // Everything the screen needs from the app shell arrives here; the island
   // passes its own (src/islands/footle.jsx). Missing keys fall back to inert.
@@ -657,7 +662,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               re-opening today's solved puzzle doesn't re-fire the confetti. */}
           {state.status === "won" && !wasFinishedAtMount.current && Confetti && <Confetti />}
           <div className="wd-result-title">
-            {state.status === "won" ? "Brilliant!" : "Better luck tomorrow"}
+            {state.status === "won" ? footleWinWord(state.guesses.length) : "Better luck tomorrow"}
           </div>
           {/* Sprint #81 YY2: reveal renders proper-cased full name from
               WORDLE_FULL_NAMES (tuple [firstNamePrefix, properSurname]).
@@ -747,7 +752,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               })}
             </div>
           ))}
-          <button className="wd-key-enter" onClick={() => handleKey("ENTER")} aria-label="Enter key — submit guess">ENTER</button>
+          <button className={`wd-key-enter${current.length === answer.length ? "" : " is-short"}`} onClick={() => handleKey("ENTER")} aria-label="Enter key — submit guess">ENTER</button>
         </div>
       )}
     </div>

@@ -1515,6 +1515,9 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Ruled out of scope: retagging ~139 UEFA Cup and Cup Winners' Cup
       questions. The bank has no Europa League category and "UCL" works as
       European club football; a category of its own is a product call.
+- [x] Footle polish: the word over a win follows the guesses ("Top bins!" to
+      "Last-gasp winner", not "Brilliant!" for all); ENTER is quiet grey until
+      the row is full.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen
