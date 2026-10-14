@@ -1476,6 +1476,14 @@ Pro Max (build 144), reviewed before it went out:
       level-up overlay is see-through. Two findings CONFLICT with Alex's
       rulings and are not to be acted on as written: Footle accepting
       non-names (by design) and a ramped Daily 7 (mixed from 15 Oct).
+- [x] From the play-test: Survival's best is its own (it read the Daily 7's
+      best run) and every new best is kept, not only from 10 up; the level-up
+      overlay is solid and its button has no emoji; the Draft says "1 game";
+      Mystery's give up takes two taps and lands on the answer.
+- [x] STAYS: the tab bar's frosted glass. It is a measured design (Threads
+      placement, and a blur cost weighed against tap response, app.css).
+- [ ] Footle hard mode (Alex, 14 Oct): an opt-in switch where only real
+      footballers' surnames count; "Hard" on the share. Default unchanged.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen

@@ -6922,9 +6922,14 @@ function AppInner() {
     }
 
 
-    // 💪 SURVIVAL new best (wrong answers = 0 means they only died on one)
-    if (mode === "survival" && res.score && res.score > (stats.bestSurvival || 0) && res.score >= 10) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(`💪 New Survival record — ${res.score} questions`), 1400));
+    // SURVIVAL new best. ⚠️ Saved for EVERY new best, not only from 10 up: the
+    // screen's "PB" read the Daily 7's best run instead (stats.bestStreak) and
+    // a real Survival best under 10 was never kept (play-test, 14 Oct 2026).
+    // The toast still waits for a run worth announcing.
+    if (mode === "survival" && res.score && res.score > (stats.bestSurvival || 0)) {
+      if (res.score >= 10 || (stats.bestSurvival || 0) > 0) {
+        celebrationTimeoutsRef.current.push(setTimeout(() => showToast(`New Survival best: ${res.score} in a row`), 1400));
+      }
       setStats(p => ({...p, bestSurvival: res.score}));
     }
 
@@ -8345,7 +8350,7 @@ function AppInner() {
             permission prompt. "Yes" routes through the same enable path as the
             Settings toggle. */}
         {levelUpOverlay && (
-          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.85)",zIndex:999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.3s ease"}}>
+          <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(11,12,16,0.97)",zIndex:999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fadeIn 0.3s ease"}}>
             <Confetti />
             <div style={{textAlign:"center",padding:"0 32px"}}>
               <div style={{marginBottom:16,animation:"iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1)",display:"flex",justifyContent:"center"}}>
@@ -8355,7 +8360,7 @@ function AppInner() {
               <div style={{fontSize:32,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",marginBottom:12}}>{levelUpOverlay.name}</div>
               <div style={{fontSize:14,color:"rgba(255,255,255,0.6)"}}>Keep playing to reach the next level</div>
             </div>
-            <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>Let's Go ⚽</button>
+            <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>Let&rsquo;s go</button>
           </div>
         )}
         {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
@@ -8915,7 +8920,7 @@ function AppInner() {
               // medical correctness-state (low): without this the in-game
               // Survival PB / "New PB!" badges could never render — QuizEngine
               // gates them on survivalBest > 0 and the prop was never passed.
-              survivalBest={stats.bestStreak}
+              survivalBest={stats.bestSurvival || 0}
               quizLabel={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
                 : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
                 : undefined}
@@ -8978,7 +8983,7 @@ function AppInner() {
             mode={result.mode || mode}
             cardDelta={cardDeltaState}
             onHome={goHome}
-            survivalBest={stats.bestStreak}
+            survivalBest={stats.bestSurvival || 0}
             wrongAnswers={wrongAnswers}
             onReport={reportQuestion}
             askedQuestions={questions}

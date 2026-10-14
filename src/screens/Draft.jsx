@@ -238,7 +238,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
                       <span className="dr-row-name">{p.n}</span>
                       {!ok ? <span className="dr-row-num">already yours</span>
                         : g.hard ? null
-                          : <span className="dr-row-num"><b>{games(p, sq)}</b> games{pos === "GK" ? "" : <> · <b>{p.g}</b> {p.g === 1 ? "goal" : "goals"}</>}</span>}
+                          : <span className="dr-row-num"><b>{games(p, sq)}</b> {games(p, sq) === "1" ? "game" : "games"}{pos === "GK" ? "" : <> · <b>{p.g}</b> {p.g === 1 ? "goal" : "goals"}</>}</span>}
                     </button>
                   );
                 })}
@@ -361,7 +361,7 @@ function Season({ result, picks, shown, played, hard, isPractice, onSkip, onAnot
               <div key={p.id} className="dr-xi-row">
                 <span className="dr-xi-pos">{p.p}</span>
                 <span className="dr-xi-who"><b>{p.n}</b><i>{sq.season} {sq.club} · finished {ordinal(sq.pos)}</i></span>
-                <span className="dr-xi-num">{games(p, sq)}<small> games</small>{p.p !== "GK" && <> · {p.g}<small> {p.g === 1 ? "goal" : "goals"}</small></>}</span>
+                <span className="dr-xi-num">{games(p, sq)}<small> {games(p, sq) === "1" ? "game" : "games"}</small>{p.p !== "GK" && <> · {p.g}<small> {p.g === 1 ? "goal" : "goals"}</small></>}</span>
               </div>
             ))}
           </div>

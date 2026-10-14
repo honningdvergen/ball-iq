@@ -147,6 +147,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   //     loss. The hardest of the four modes had the harshest rule.
   // `gaveUp` gives it the `done` that Trail and Footle already have.
   const [gaveUp, setGaveUp] = useState(() => !!saved?.gaveUp);
+  const [giveUpArmed, setGiveUpArmed] = useState(false);
   // ⚠️ Player-reported 2026-08-22: a friend guessed Cahill, was ranked #5, and
   // then "could not get any lower". Rank alone is a dead end — it tells you
   // that you are close without telling you which direction to move, so a
@@ -269,9 +270,14 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   const GIVE_UP_AFTER = 5;
   const canGiveUp = !done && guesses.length >= GIVE_UP_AFTER;
 
+  // ⚠️ GIVING UP TAKES TWO TAPS AND LANDS ON THE ANSWER. One tap ended the
+  // day's puzzle, and the reveal was drawn above the screen: the player was
+  // left at the bottom of their guess list (play-test, 14 Oct 2026).
   const giveUp = () => {
     if (done) return;
+    if (!giveUpArmed) { setGiveUpArmed(true); return; }
     setGaveUp(true);
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch { /* old WebView */ }
     saveMysteryResult(date, { won: false, gaveUp: true, guesses, hintsUsed, ...(isArchive ? { arc: 1 } : {}) });
     // Same archive guard as the win path and for the same reason: replaying an
     // old puzzle must never touch today's habit metrics.
@@ -697,7 +703,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             onClick={giveUp}
             style={{ marginTop: 10, alignSelf: 'center', background: 'none', border: 'none', color: 'var(--t3)', fontSize: 13, fontWeight: 700, textDecoration: 'underline', cursor: 'pointer', fontFamily: 'inherit', padding: 8 }}
           >
-            Give up and reveal
+            {giveUpArmed ? 'Tap again to give up and see the answer' : 'Give up and reveal'}
           </button>
         )}
       </div>
