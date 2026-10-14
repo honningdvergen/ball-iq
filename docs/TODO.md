@@ -1527,6 +1527,13 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Draft still to do from the research: a result with a story and a par
       (best man passed on, today's best possible), a numbered daily with a
       leaderboard, a second kind of re-roll, a one-line intro.
+- [x] NOT REPRODUCED: "Footle's eight-letter grid ~3pt from the edges on an
+      SE". Measured 14 Oct at 375pt: 16pt each side, the header's own gutter.
+- [x] STAYS: the question screen scrolling after an answer on short phones.
+      It is already the SHORTEST scroll that shows the explanation above the
+      Next button (QuizEngine.jsx, whyRef effect, after the 1.7.0 review); on
+      an SE that costs the header. Showing the explanation was chosen over
+      keeping the header, and still is.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen
