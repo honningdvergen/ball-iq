@@ -52,7 +52,11 @@ const surname = (n) => {
   if (w.length === 2 && /^[A-Z][a-z]+-[a-z]+$/.test(w[1])) return w[0];
   return w.slice(1).join(" ");
 };
-const games = (p, sq) => (sq.split && p.su ? `${p.st}+${p.su}` : `${p.st}`);
+// The games a player played, as one number. It was "29+1" (starts plus games
+// off the bench), football-stats shorthand that read as a sum to work out
+// (Alex, playing build 146: "I am a bit confused by the +3"). The split still
+// drives the season: the result line says how many a stand-in had to start.
+const games = (p, sq) => `${p.st + (sq.split && p.su ? p.su : 0)}`;
 const PREFIX = "biq_draft_";
 const load = (day) => { try { return JSON.parse(localStorage.getItem(PREFIX + day) || "null"); } catch { return null; } };
 const save = (day, g) => { try { localStorage.setItem(PREFIX + day, JSON.stringify(g)); } catch { /* private window: play on unsaved */ } };
