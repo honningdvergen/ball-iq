@@ -1548,9 +1548,15 @@ Pro Max (build 144), reviewed before it went out:
       return, Giroud's Tours, Eusébio's club names). Fixed in
       `src/data/mysteryCareerFixes.json`, which overrides the generated
       careers everywhere; "Los Angeles FC" now reads LAFC, not like LA Galaxy.
-- [ ] ⚠️ CHECK EVERY FUTURE MYSTERY ANSWER'S CAREER BEFORE ITS DAY. Half of the
-      first fortnight was wrong. Next batch: days 88 to 129 (29 Oct to 9 Dec),
-      then the rest in batches of six weeks.
+- [x] Careers for 29 Oct to 9 Dec checked: 13 of 42 fixed (Drogba's return to
+      Chelsea, Maradona's 1981-82 Boca, Busquets from 2008 not 2000, Ramos's
+      second Sevilla, Cannavaro's second Juventus, Balotelli's first Milan and
+      Adana, and others); five club names shortened (Brest, Eibar, Al Jazira,
+      Genk, Al Ahli Doha).
+- [ ] ⚠️ CHECK EVERY FUTURE MYSTERY ANSWER'S CAREER BEFORE ITS DAY. 20 of the
+      first 56 needed a fix. Next batch: from 10 Dec (schedule index 129), in
+      batches of six weeks. Known risk: "Al Ahli SC" and "Al Ahli FC" both
+      print "Al Ahli" and can make a false "Shared Al Ahli" reason.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen

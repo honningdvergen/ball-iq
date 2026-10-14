@@ -1,10 +1,753 @@
 {
-  "_why": "Corrections to mysteryCareers.json (built from Wikidata, which drops or misdates whole spells). Each career here was checked by an independent verifier against the players' Wikipedia career tables and, for 2026 moves, club and news reports (14 Oct 2026). A career listed here REPLACES the generated one everywhere: the reveal, the clues, the ranking and the reasons under each guess. Labels are the club labels mysteryCareers.json uses; a label not in its list is added.",
-  "Q1354960": [["Al Mokawloon Al Arab SC", 2010, 2012], ["FC Basel", 2012, 2014], ["Chelsea F.C.", 2014, 2016], ["ACF Fiorentina", 2015, 2015], ["AS Roma", 2015, 2017], ["Liverpool F.C.", 2017, 2026], ["Trabzonspor", 2026, null]],
-  "Q46896": [["Malmö FF", 1999, 2001], ["AFC Ajax", 2001, 2004], ["Juventus FC", 2004, 2006], ["Inter Milan", 2006, 2009], ["FC Barcelona", 2009, 2011], ["AC Milan", 2010, 2012], ["Paris Saint-Germain FC", 2012, 2016], ["Manchester United F.C.", 2016, 2018], ["LA Galaxy", 2018, 2019], ["AC Milan", 2020, 2023]],
-  "Q4457": [["FC Bayern Munich", 1964, 1977], ["New York Cosmos", 1977, 1980], ["Hamburger SV", 1980, 1982], ["New York Cosmos", 1983, 1983]],
-  "Q1911": [["Grenoble Foot 38", 2005, 2008], ["FC Istres", 2007, 2008], ["Tours FC.", 2008, 2010], ["Montpellier Hérault Sport Club", 2010, 2012], ["Arsenal F.C.", 2012, 2018], ["Chelsea F.C.", 2018, 2021], ["AC Milan", 2021, 2024], ["Los Angeles FC", 2024, 2025], ["Lille OSC", 2025, null]],
-  "Q162043": [["Sporting Lourenço Marques", 1957, 1960], ["S.L. Benfica", 1961, 1975], ["Boston Minutemen", 1975, 1975], ["Club de Fútbol Monterrey", 1975, 1975], ["Toronto Metros-Croatia", 1975, 1976], ["S.C. Beira-Mar", 1976, 1976], ["Las Vegas Quicksilvers", 1976, 1977], ["U.F.C.I. Tomar", 1977, 1978], ["New Jersey Americans", 1978, 1979]],
-  "Q201381": [["R.S.C. Anderlecht", 2003, 2006], ["Hamburger SV", 2006, 2008], ["Manchester City F.C.", 2008, 2019], ["R.S.C. Anderlecht", 2019, 2020]],
-  "Q17163": [["AFC Ajax", 1964, 1973], ["FC Barcelona", 1973, 1978], ["Los Angeles Aztecs", 1979, 1979], ["Washington Diplomats", 1980, 1981], ["Levante UD", 1981, 1981], ["AFC Ajax", 1981, 1983], ["Feyenoord Rotterdam", 1983, 1984]]
+ "_why": "Corrections to mysteryCareers.json (built from Wikidata, which drops or misdates whole spells). Each career here was checked by an independent verifier against the players' Wikipedia career tables and, for 2026 moves, club and news reports (14 Oct 2026). A career listed here REPLACES the generated one everywhere: the reveal, the clues, the ranking and the reasons under each guess. Labels are the club labels mysteryCareers.json uses; a label not in its list is added.",
+ "Q1354960": [
+  [
+   "Al Mokawloon Al Arab SC",
+   2010,
+   2012
+  ],
+  [
+   "FC Basel",
+   2012,
+   2014
+  ],
+  [
+   "Chelsea F.C.",
+   2014,
+   2016
+  ],
+  [
+   "ACF Fiorentina",
+   2015,
+   2015
+  ],
+  [
+   "AS Roma",
+   2015,
+   2017
+  ],
+  [
+   "Liverpool F.C.",
+   2017,
+   2026
+  ],
+  [
+   "Trabzonspor",
+   2026,
+   null
+  ]
+ ],
+ "Q46896": [
+  [
+   "Malmö FF",
+   1999,
+   2001
+  ],
+  [
+   "AFC Ajax",
+   2001,
+   2004
+  ],
+  [
+   "Juventus FC",
+   2004,
+   2006
+  ],
+  [
+   "Inter Milan",
+   2006,
+   2009
+  ],
+  [
+   "FC Barcelona",
+   2009,
+   2011
+  ],
+  [
+   "AC Milan",
+   2010,
+   2012
+  ],
+  [
+   "Paris Saint-Germain FC",
+   2012,
+   2016
+  ],
+  [
+   "Manchester United F.C.",
+   2016,
+   2018
+  ],
+  [
+   "LA Galaxy",
+   2018,
+   2019
+  ],
+  [
+   "AC Milan",
+   2020,
+   2023
+  ]
+ ],
+ "Q4457": [
+  [
+   "FC Bayern Munich",
+   1964,
+   1977
+  ],
+  [
+   "New York Cosmos",
+   1977,
+   1980
+  ],
+  [
+   "Hamburger SV",
+   1980,
+   1982
+  ],
+  [
+   "New York Cosmos",
+   1983,
+   1983
+  ]
+ ],
+ "Q1911": [
+  [
+   "Grenoble Foot 38",
+   2005,
+   2008
+  ],
+  [
+   "FC Istres",
+   2007,
+   2008
+  ],
+  [
+   "Tours FC.",
+   2008,
+   2010
+  ],
+  [
+   "Montpellier Hérault Sport Club",
+   2010,
+   2012
+  ],
+  [
+   "Arsenal F.C.",
+   2012,
+   2018
+  ],
+  [
+   "Chelsea F.C.",
+   2018,
+   2021
+  ],
+  [
+   "AC Milan",
+   2021,
+   2024
+  ],
+  [
+   "Los Angeles FC",
+   2024,
+   2025
+  ],
+  [
+   "Lille OSC",
+   2025,
+   null
+  ]
+ ],
+ "Q162043": [
+  [
+   "Sporting Lourenço Marques",
+   1957,
+   1960
+  ],
+  [
+   "S.L. Benfica",
+   1961,
+   1975
+  ],
+  [
+   "Boston Minutemen",
+   1975,
+   1975
+  ],
+  [
+   "Club de Fútbol Monterrey",
+   1975,
+   1975
+  ],
+  [
+   "Toronto Metros-Croatia",
+   1975,
+   1976
+  ],
+  [
+   "S.C. Beira-Mar",
+   1976,
+   1976
+  ],
+  [
+   "Las Vegas Quicksilvers",
+   1976,
+   1977
+  ],
+  [
+   "U.F.C.I. Tomar",
+   1977,
+   1978
+  ],
+  [
+   "New Jersey Americans",
+   1978,
+   1979
+  ]
+ ],
+ "Q201381": [
+  [
+   "R.S.C. Anderlecht",
+   2003,
+   2006
+  ],
+  [
+   "Hamburger SV",
+   2006,
+   2008
+  ],
+  [
+   "Manchester City F.C.",
+   2008,
+   2019
+  ],
+  [
+   "R.S.C. Anderlecht",
+   2019,
+   2020
+  ]
+ ],
+ "Q17163": [
+  [
+   "AFC Ajax",
+   1964,
+   1973
+  ],
+  [
+   "FC Barcelona",
+   1973,
+   1978
+  ],
+  [
+   "Los Angeles Aztecs",
+   1979,
+   1979
+  ],
+  [
+   "Washington Diplomats",
+   1980,
+   1981
+  ],
+  [
+   "Levante UD",
+   1981,
+   1981
+  ],
+  [
+   "AFC Ajax",
+   1981,
+   1983
+  ],
+  [
+   "Feyenoord Rotterdam",
+   1983,
+   1984
+  ]
+ ],
+ "Q483309": [
+  [
+   "Sevilla FC",
+   2004,
+   2005
+  ],
+  [
+   "Real Madrid Club de Fútbol",
+   2005,
+   2021
+  ],
+  [
+   "Paris Saint-Germain FC",
+   2021,
+   2023
+  ],
+  [
+   "Sevilla FC",
+   2023,
+   2024
+  ],
+  [
+   "Club de Fútbol Monterrey",
+   2025,
+   2025
+  ]
+ ],
+ "Q83488": [
+  [
+   "Schalke 04",
+   2006,
+   2008
+  ],
+  [
+   "SV Werder Bremen",
+   2008,
+   2010
+  ],
+  [
+   "Real Madrid Club de Fútbol",
+   2010,
+   2013
+  ],
+  [
+   "Arsenal F.C.",
+   2013,
+   2021
+  ],
+  [
+   "Fenerbahçe Istanbul",
+   2021,
+   2022
+  ],
+  [
+   "İstanbul Başakşehir F.K.",
+   2022,
+   2023
+  ]
+ ],
+ "Q48892": [
+  [
+   "Le Mans F.C.",
+   1998,
+   2002
+  ],
+  [
+   "En Avant de Guingamp",
+   2002,
+   2003
+  ],
+  [
+   "Olympique de Marseille",
+   2003,
+   2004
+  ],
+  [
+   "Chelsea F.C.",
+   2004,
+   2012
+  ],
+  [
+   "Shanghai Shenhua F.C.",
+   2012,
+   2013
+  ],
+  [
+   "Galatasaray S.K.",
+   2013,
+   2014
+  ],
+  [
+   "Chelsea F.C.",
+   2014,
+   2015
+  ],
+  [
+   "CF Montréal",
+   2015,
+   2016
+  ],
+  [
+   "Phoenix Rising FC",
+   2017,
+   2018
+  ]
+ ],
+ "Q164038": [
+  [
+   "FC Barcelona",
+   1990,
+   2001
+  ],
+  [
+   "Brescia Calcio",
+   2001,
+   2002
+  ],
+  [
+   "AS Roma",
+   2002,
+   2003
+  ],
+  [
+   "Brescia Calcio",
+   2003,
+   2003
+  ],
+  [
+   "Al Ahli SC (Doha)",
+   2003,
+   2005
+  ],
+  [
+   "Dorados de Sinaloa",
+   2005,
+   2006
+  ]
+ ],
+ "Q17515": [
+  [
+   "Argentinos Juniors",
+   1976,
+   1981
+  ],
+  [
+   "Boca Juniors",
+   1981,
+   1982
+  ],
+  [
+   "FC Barcelona",
+   1982,
+   1984
+  ],
+  [
+   "SSC Napoli",
+   1984,
+   1991
+  ],
+  [
+   "Sevilla FC",
+   1992,
+   1993
+  ],
+  [
+   "Newell's Old Boys",
+   1993,
+   1994
+  ],
+  [
+   "Boca Juniors",
+   1995,
+   1997
+  ]
+ ],
+ "Q102027": [
+  [
+   "SSC Napoli",
+   1992,
+   1995
+  ],
+  [
+   "Parma Calcio 1913",
+   1995,
+   2002
+  ],
+  [
+   "Inter Milan",
+   2002,
+   2004
+  ],
+  [
+   "Juventus FC",
+   2004,
+   2006
+  ],
+  [
+   "Real Madrid Club de Fútbol",
+   2006,
+   2009
+  ],
+  [
+   "Juventus FC",
+   2009,
+   2010
+  ],
+  [
+   "Shabab AlAhli Dubai Club",
+   2010,
+   2011
+  ]
+ ],
+ "Q129700": [
+  [
+   "A.C. Lumezzane",
+   2006,
+   2007
+  ],
+  [
+   "Inter Milan",
+   2007,
+   2010
+  ],
+  [
+   "Manchester City F.C.",
+   2010,
+   2013
+  ],
+  [
+   "AC Milan",
+   2013,
+   2014
+  ],
+  [
+   "Liverpool F.C.",
+   2014,
+   2016
+  ],
+  [
+   "AC Milan",
+   2015,
+   2016
+  ],
+  [
+   "OGC Nice",
+   2016,
+   2019
+  ],
+  [
+   "Olympique de Marseille",
+   2019,
+   2019
+  ],
+  [
+   "Brescia Calcio",
+   2019,
+   2020
+  ],
+  [
+   "AC Monza",
+   2020,
+   2021
+  ],
+  [
+   "Adana Demirspor",
+   2021,
+   2022
+  ],
+  [
+   "FC Sion",
+   2022,
+   2023
+  ],
+  [
+   "Adana Demirspor",
+   2023,
+   2024
+  ],
+  [
+   "Genoa CFC",
+   2024,
+   2025
+  ],
+  [
+   "Al-Ittifaq F. C.",
+   2026,
+   null
+  ]
+ ],
+ "Q209942": [
+  [
+   "FC Metz",
+   2011,
+   2012
+  ],
+  [
+   "FC Red Bull Salzburg",
+   2012,
+   2014
+  ],
+  [
+   "Southampton F.C.",
+   2014,
+   2016
+  ],
+  [
+   "Liverpool F.C.",
+   2016,
+   2022
+  ],
+  [
+   "FC Bayern Munich",
+   2022,
+   2023
+  ],
+  [
+   "Al-Nassr",
+   2023,
+   null
+  ]
+ ],
+ "Q173139": [
+  [
+   "Young Survivors",
+   1981,
+   1984
+  ],
+  [
+   "Bong Range United",
+   1984,
+   1985
+  ],
+  [
+   "Mighty Barrolle",
+   1985,
+   1986
+  ],
+  [
+   "Invincible Eleven",
+   1986,
+   1987
+  ],
+  [
+   "Africa Sports d'Abidjan",
+   1987,
+   1987
+  ],
+  [
+   "Tonnerre Yaoundé",
+   1987,
+   1988
+  ],
+  [
+   "AS Monaco FC",
+   1988,
+   1992
+  ],
+  [
+   "Paris Saint-Germain FC",
+   1992,
+   1995
+  ],
+  [
+   "AC Milan",
+   1995,
+   2000
+  ],
+  [
+   "Chelsea F.C.",
+   2000,
+   2000
+  ],
+  [
+   "Manchester City F.C.",
+   2000,
+   2000
+  ],
+  [
+   "Olympique de Marseille",
+   2000,
+   2001
+  ],
+  [
+   "Al Jazira Club",
+   2001,
+   2003
+  ]
+ ],
+ "Q29491": [
+  [
+   "Maidstone United F.C.",
+   2007,
+   2008
+  ],
+  [
+   "Fulham F.C.",
+   2008,
+   2010
+  ],
+  [
+   "Manchester United F.C.",
+   2010,
+   2020
+  ],
+  [
+   "AS Roma",
+   2019,
+   2024
+  ],
+  [
+   "Al-Feiha FC",
+   2024,
+   2026
+  ],
+  [
+   "FC Porto",
+   2026,
+   null
+  ]
+ ],
+ "Q49704": [
+  [
+   "FC Barcelona",
+   2008,
+   2023
+  ],
+  [
+   "Inter Miami CF",
+   2023,
+   2025
+  ]
+ ],
+ "Q128829": [
+  [
+   "Liverpool F.C.",
+   1996,
+   2004
+  ],
+  [
+   "Real Madrid Club de Fútbol",
+   2004,
+   2005
+  ],
+  [
+   "Newcastle United F.C.",
+   2005,
+   2009
+  ],
+  [
+   "Manchester United F.C.",
+   2009,
+   2012
+  ],
+  [
+   "Stoke City F.C.",
+   2012,
+   2013
+  ]
+ ],
+ "Q8338725": [
+  [
+   "Quimper Kerfeunteun F.C.",
+   2009,
+   2010
+  ],
+  [
+   "Le Havre AC",
+   2011,
+   2014
+  ],
+  [
+   "Leicester City F.C.",
+   2014,
+   2018
+  ],
+  [
+   "Manchester City F.C.",
+   2018,
+   2023
+  ],
+  [
+   "Al Ahli FC",
+   2023,
+   2026
+  ]
+ ]
 }
