@@ -1469,6 +1469,13 @@ Pro Max (build 144), reviewed before it went out:
       REPORT.md`: our Draft is the 38-0 format; nothing spins, no strength
       readout while picking, the result has no story or par, not a daily.
       Ten ranked changes there; decide with Alex.
+- [ ] PLAY-TEST OF EVERY MODE (14 Oct, independent agent, 91 screenshots):
+      `~/ball-iq-audit/2026-10-14/qc/REPORT.md`. Grades: Top 10 and Draft
+      best, Mystery Player worst (3 for fun). Confirmed bugs: Survival's
+      personal best reads the Daily 7 best run (App.jsx 8918, 8981); the
+      level-up overlay is see-through. Two findings CONFLICT with Alex's
+      rulings and are not to be acted on as written: Footle accepting
+      non-names (by design) and a ramped Daily 7 (mixed from 15 Oct).
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen
