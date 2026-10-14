@@ -77,6 +77,17 @@ const SLIDES = [
     ['real-madrid', 'realmadrid', 'Madridista?', '#FEBE10'],
     ['barcelona', 'barcelona', 'Culé?', '#E0457B'],
   ].map(([slug, tag, who, accent]) => ({ name: `balliq_clubquiz_${tag}`, accent, shot: `club-${slug}.png`, line: `${who} <em>Prove it.</em>` })),
+  // Club Top 10s, half filled (Alex, 15 Oct 2026: a United deck ends on
+  // United's top scorers). Only lists that exist in the app; no City list yet,
+  // and Barcelona has appearances, not scorers.
+  ...[
+    ['manchester-united-top-scorers', 'united', 'United fan?', '#E8382B'],
+    ['liverpool-top-scorers', 'liverpool', 'Liverpool fan?', '#E0263F'],
+    ['arsenal-top-scorers', 'arsenal', 'Gooner?', '#F2353A'],
+    ['chelsea-top-scorers', 'chelsea', 'Chelsea fan?', '#4A8BFF'],
+    ['real-madrid-top-scorers', 'realmadrid', 'Madridista?', '#FEBE10'],
+    ['barcelona-appearances', 'barcelona', 'Culé?', '#E0457B'],
+  ].map(([id, tag, who, accent]) => ({ name: `balliq_top10_${tag}`, accent, shot: `top10-${id}.png`, line: `${who} <em>Name all ten.</em>` })),
 ];
 
 const browser = await chromium.launch();

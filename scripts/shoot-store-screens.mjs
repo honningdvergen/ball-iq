@@ -616,6 +616,27 @@ const SHOTS = [
       }
       await p.evaluate(() => { window.scrollTo(0, 0); for (const el of document.querySelectorAll('*')) if (el.scrollTop > 0) el.scrollTop = 0; });
       await p.waitForTimeout(400); } })) : []),
+  // CLUBS=1 also: a club's own Top 10 half filled (Alex, 15 Oct 2026: a United
+  // deck ends on United's top scorers). Opened by name (?game=top10&list=),
+  // which plays as an archive list and never touches the day. Six found across
+  // the board and one miss, as on the store shot.
+  ...(process.env.CLUBS === '1' ? ['manchester-united-top-scorers', 'liverpool-top-scorers', 'arsenal-top-scorers', 'chelsea-top-scorers', 'real-madrid-top-scorers', 'barcelona-appearances'].map((id) => ({
+    name: `top10-${id}`, expect: '6/10', go: async (p) => {
+      const list = TOP10.lists[id];
+      const names = list.slots.map((x) => x.name);
+      const miss = ['Gary Neville', 'Gareth Bale', 'Kevin De Bruyne', 'Thierry Henry'].find((n) => !names.includes(n));
+      const pick = [2, 1, 8, 5, 3, 6].map((i) => names[i]);
+      await gotoApp(p, `/play?game=top10&list=${id}`);
+      await p.waitForTimeout(2200);
+      for (const g of [...pick.slice(0, 3), miss, ...pick.slice(3)]) {
+        const box = p.locator('.t10 input').first();
+        await box.click(); await box.fill(g); await p.waitForTimeout(700);
+        const opt = p.locator('.t10-opt', { hasText: g }).first();
+        if (await opt.count()) await opt.click(); else await p.keyboard.press('Enter');
+        await p.waitForTimeout(1600);
+      }
+      await p.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
+      await p.waitForTimeout(800); } })) : []),
 ];
 
 
