@@ -54,6 +54,25 @@ describe('footle clue', () => {
   it('keeps the clue in the saved record when a guess lands', () => {
     // submitGuess used to write a fresh { guesses, status } object, which
     // would silently drop `clue` on the next guess after taking it.
-    expect(src('games/FootballWordle.jsx')).toMatch(/setState\(\{ \.\.\.state, guesses: newGuesses, status: newStatus \}\)/);
+    expect(src('games/FootballWordle.jsx')).toMatch(/setState\(\{ \.\.\.state, guesses: newGuesses, status: newStatus[ ,]/);
+  });
+});
+
+// Hard mode (14 Oct 2026): opt-in, real names only. The list must hold every
+// answer Footle can ever ask for, or a hard-mode player could be refused the
+// right answer; the generator refuses to write a list that misses one.
+describe('footle hard mode', () => {
+  it('accepts every Footle answer and real names, and refuses made-up letters', async () => {
+    const { WORDLE_PLAYERS } = await import('../../src/lib/wordle.js');
+    const names = new Set((await import('../../src/data/footleNames.json')).default);
+    for (const w of WORDLE_PLAYERS) if (w.length >= 4 && w.length <= 9) expect(names.has(w), w).toBe(true);
+    for (const w of ['VANDIJK', 'DEBRUYNE', 'VINICIUS', 'HAALAND']) expect(names.has(w), w).toBe(true);
+    for (const w of ['AEIOUSTL', 'QWERTY', 'ZZZZZ']) expect(names.has(w), w).toBe(false);
+  });
+
+  it('a hard game says so on the share', async () => {
+    const { footleShareHead } = await import('../../src/lib/wordle.js');
+    expect(footleShareHead('Ball IQ', 164, true, 4, false, true)).toContain('4/6 Hard');
+    expect(footleShareHead('Ball IQ', 164, true, 4, false)).not.toContain('Hard');
   });
 });

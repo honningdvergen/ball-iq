@@ -157,6 +157,14 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   });
   const [current, setCurrent] = useState("");
   const [shake, setShake] = useState(false);
+  // HARD MODE (Alex, 14 Oct 2026): opt-in, only a real footballer's name
+  // counts as a guess. The default stays as it was, any letters accepted, on
+  // purpose: a strict Footle was too hard for most players. The choice is made
+  // before the first guess and kept with the day's record (`state.hard`); the
+  // names (src/data/footleNames.json, scripts/gen-footle-names.mjs) load only
+  // when hard mode is on.
+  const [hardPref, setHardPref] = useState(() => { try { return localStorage.getItem("biq_footle_hard") === "1"; } catch { return false; } });
+  const [hardNames, setHardNames] = useState(null);
   const [countdown, setCountdown] = useState("");
   const [revealed, setRevealed] = useState(() => {
     // If the user already finished today's puzzle, reveal the result card on
@@ -286,6 +294,18 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     return () => clearInterval(id);
   }, [dateKey, isArchive]);
 
+  const hardNow = state.guesses.length === 0 ? hardPref : !!state.hard;
+  useEffect(() => {
+    if (!hardNow || hardNames) return undefined;
+    let live = true;
+    import("../data/footleNames.json").then((m) => { if (live) setHardNames(new Set(m.default)); }).catch(() => {});
+    return () => { live = false; };
+  }, [hardNow, hardNames]);
+  const toggleHard = () => setHardPref((v) => {
+    try { localStorage.setItem("biq_footle_hard", v ? "0" : "1"); } catch { /* private mode */ }
+    return !v;
+  });
+
   const submitGuess = useCallback(() => {
     if (state.status !== "playing") return;
     if (current.length !== answer.length) {
@@ -293,12 +313,18 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       timeoutsRef.current.push(setTimeout(() => setShake(false), 450));
       return;
     }
+    if (hardNow && current !== answer && !(hardNames && hardNames.has(current))) {
+      setShake(true);
+      timeoutsRef.current.push(setTimeout(() => setShake(false), 450));
+      try { window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: hardNames ? "Hard mode: not a footballer we know" : "Hard mode is still loading its names" })); } catch { /* no toast here */ }
+      return;
+    }
     const newGuesses = [...state.guesses, current];
     let newStatus = "playing";
     if (current === answer) newStatus = "won";
     else if (newGuesses.length >= 6) newStatus = "lost";
     // Spread, not a fresh object: `clue` rides in the same record.
-    setState({ ...state, guesses: newGuesses, status: newStatus });
+    setState({ ...state, guesses: newGuesses, status: newStatus, ...(state.guesses.length === 0 ? { hard: hardPref } : {}) });
     setCurrent("");
     // The reveal belongs to this row alone. Cleared after the last tile lands
     // (delay of the final tile + the 500ms flip) plus a little slack, so the
@@ -347,7 +373,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       // It now rides the event above, handled in the app shell, which is the
       // only place that knows whether the notification sheet just opened.
     }
-  }, [state, current, answer]);
+  }, [state, current, answer, hardNow, hardNames, hardPref]);
 
   const handleKey = useCallback((key) => {
     if (state.status !== "playing") return;
@@ -472,7 +498,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     const streak = won ? computeFootleStreak(new Date()) : 0;
     // One head for all three share builders (lib/wordle.js) — one puzzle,
     // one share format, and a clued solve says so.
-    const head = footleShareHead(APP_NAME, getFootleNumber(), won, state.guesses.length, !!state.clue);
+    const head = footleShareHead(APP_NAME, getFootleNumber(), won, state.guesses.length, !!state.clue, !!state.hard);
     const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [state, answer]);
@@ -526,7 +552,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               lines at 360-390px and three at 320 (measured 2026-10-04, header
               44px -> 54/69px). The puzzle number is what a finished player
               shares and compares, and it fits on one line at every width. */}
-          <div className="wd-sub">{isArchive ? "From the archive" : state.status !== "playing" ? "Today\u2019s puzzle" : FOOTLE_SHORT}</div>
+          <div className="wd-sub">{isArchive ? "From the archive" : state.status !== "playing" ? "Today\u2019s puzzle" : FOOTLE_SHORT}{hardNow && state.guesses.length > 0 ? " \u00b7 Hard" : ""}</div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>
@@ -585,9 +611,17 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
                 {footleClue(answer)}
               </div>
             ) : (
-              <div className="wd-legend" aria-hidden="true" style={showLegend ? undefined : { visibility: "hidden" }}>
-                <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
-                <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
+              <div className="wd-slot-row">
+                <div className="wd-legend" aria-hidden="true" style={showLegend ? undefined : { visibility: "hidden" }}>
+                  <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
+                  <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
+                </div>
+                {/* Chosen before the first guess; after it, the sub line says so. */}
+                {state.guesses.length === 0 && !isArchive && (
+                  <button type="button" className={`wd-hard${hardPref ? " is-on" : ""}`} aria-pressed={hardPref} onClick={toggleHard}>
+                    Hard mode{hardPref ? ": on" : ""}
+                  </button>
+                )}
               </div>
             )}
           </div>

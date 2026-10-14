@@ -894,7 +894,8 @@ export function footleClue(answer) {
 // Home hero, the review screen) and they must agree, so it lives here. A solve
 // that used the clue says so with 💡 — the grid is compared between strangers,
 // and a clued 3/6 is not the same result as a clean one.
-export function footleShareHead(appName, num, won, guessCount, clue) {
+// A hard-mode game (real names only, opt-in) says "Hard": it is the badge.
+export function footleShareHead(appName, num, won, guessCount, clue, hard = false) {
   const tag = num > 0 ? ` #${num}` : "";
-  return `⚽ ${appName} Footle${tag} ${won ? guessCount : "X"}/6${clue ? " 💡" : ""}`;
+  return `⚽ ${appName} Footle${tag} ${won ? guessCount : "X"}/6${hard ? " Hard" : ""}${clue ? " 💡" : ""}`;
 }

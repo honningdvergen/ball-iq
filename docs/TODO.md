@@ -1482,8 +1482,14 @@ Pro Max (build 144), reviewed before it went out:
       Mystery's give up takes two taps and lands on the answer.
 - [x] STAYS: the tab bar's frosted glass. It is a measured design (Threads
       placement, and a blur cost weighed against tap response, app.css).
-- [ ] Footle hard mode (Alex, 14 Oct): an opt-in switch where only real
-      footballers' surnames count; "Hard" on the share. Default unchanged.
+- [x] Footle hard mode (Alex, 14 Oct): an opt-in "Hard mode" switch beside
+      the legend before the first guess; then only a real footballer's name
+      counts (9,642 names from the player pool plus every answer, loaded only
+      when it is on, `scripts/gen-footle-names.mjs`); a refused guess shakes,
+      says "not a footballer we know" and costs nothing; "· Hard" under the
+      title and "Hard" on the share. Default unchanged.
+- [ ] The two other Footle share builders (the review screen, FootleHero) do
+      not pass the hard flag yet.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen
