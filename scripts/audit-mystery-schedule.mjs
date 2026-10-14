@@ -39,15 +39,21 @@
  *      is scored a band closer, which a player cannot see through (Alex,
  *      2026-10-08: it should not be confusing to players). A pool rebuild
  *      reverts the fields silently, so this is the check that notices.
+ *   8. From FIRST_FAMOUS_DAY on (15 Oct 2026), every answer clears the fame
+ *      bar in scripts/mystery-answer-bar.mjs (Alex, 14 Oct 2026, after a
+ *      play-test of the Joachim Löw day: famous answers only). The bar also
+ *      needs the careers file, because the reveal prints the career.
  */
 import { readFileSync } from 'node:fs';
 import { hintPosition, roleLine } from '../src/lib/mysteryPlayer.js';
+import { answerBar, FIRST_FAMOUS_DAY } from './mystery-answer-bar.mjs';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const SCHEDULE = read('../src/data/mysterySchedule.json');
 const POOL = read('../src/data/mysteryPool.json');
 const EX = read('../src/data/mysteryExclusions.json');
 const ROLES = read('../src/data/mysteryRoles.json');
+const CAREERS = read('../src/data/mysteryCareers.json');
 
 const RATION_MAX = 0.05;
 const NO_REPEAT_FROM = 66; // Mystery Player No. 67, 8 Oct 2026: the first day the re-key could touch
@@ -66,6 +72,10 @@ SCHEDULE.forEach((id, day) => {
   if (rationed.has(p.name)) rationCount++;
   if (day > 0 && SCHEDULE[day - 1] === id) problems.push(`day ${day}: back-to-back repeat of ${p.name}`);
   if (day >= NO_REPEAT_FROM && SCHEDULE.indexOf(id) < day) problems.push(`day ${day}: ${p.name} repeats day ${SCHEDULE.indexOf(id)}`);
+  if (day >= FIRST_FAMOUS_DAY) {
+    const bar = answerBar(p, { careers: CAREERS, roles: ROLES, exclusions: EX, pool: POOL });
+    if (!bar.ok) problems.push(`day ${day}: ${p.name} is below the fame bar (${bar.why.join('; ')})`);
+  }
   if (!hintPosition(p, ROLES) && ROLES[id] !== null) problems.push(`day ${day}: ${p.name} has no verified position (pool says ${p.slot} / "${p.position}"): add one to src/data/mysteryRoles.json`);
 });
 
@@ -86,7 +96,7 @@ if (all.length) {
   console.error('❌ Mystery schedule violates the editorial ruling:');
   for (const p of all.slice(0, 20)) console.error(`    ${p}`);
   if (all.length > 20) console.error(`    …and ${all.length - 20} more`);
-  console.error('    Fix a repeat with: node scripts/rekey-mystery-repeats.mjs   (never re-run the generator: it rewrites played days)');
+  console.error('    Rebuild the unplayed days with: node scripts/gen-mystery-schedule.mjs --from <first unplayed index>   (it never touches a played day)');
   process.exit(1);
 }
 
