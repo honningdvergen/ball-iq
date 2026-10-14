@@ -47,13 +47,17 @@
 import { readFileSync } from 'node:fs';
 import { hintPosition, roleLine } from '../src/lib/mysteryPlayer.js';
 import { answerBar, FIRST_FAMOUS_DAY } from './mystery-answer-bar.mjs';
+import { withCareerFixes } from '../src/lib/mysteryCareer.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const SCHEDULE = read('../src/data/mysterySchedule.json');
 const POOL = read('../src/data/mysteryPool.json');
 const EX = read('../src/data/mysteryExclusions.json');
 const ROLES = read('../src/data/mysteryRoles.json');
-const CAREERS = read('../src/data/mysteryCareers.json');
+// The careers players see: the generated ones with the checked fixes laid over
+// them (review, 14 Oct 2026: the scripts read the raw file and so judged careers
+// the reveal never prints).
+const CAREERS = withCareerFixes(read('../src/data/mysteryCareers.json'), read('../src/data/mysteryCareerFixes.json'));
 
 const RATION_MAX = 0.05;
 const NO_REPEAT_FROM = 66; // Mystery Player No. 67, 8 Oct 2026: the first day the re-key could touch

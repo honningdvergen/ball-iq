@@ -2256,7 +2256,11 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
     // tapping at random won: a play-tester answered 34 at 29% and was called
     // "Poacher's instinct". Knowing now beats mashing. Best scores set before
     // this were set under softer rules.
-    else setTimeLeft(t => Math.max(0, t - HOT_STREAK_MISS_S));
+    else if (timeLeft <= HOT_STREAK_MISS_S) {
+      // The miss spends the last seconds: end now, not on the next tick, or a
+      // fresh question shows at "0s" and can still be scored.
+      clearInterval(timerRef.current); setTimeLeft(0); setDone(true);
+    } else setTimeLeft(t => Math.max(0, t - HOT_STREAK_MISS_S));
     setPicked({ choice: i, correct });
     // Give the player time to read the hint on a wrong answer; otherwise advance
     // quickly. Both are now a CEILING — see advance().

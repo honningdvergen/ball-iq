@@ -1562,6 +1562,16 @@ Pro Max (build 144), reviewed before it went out:
       first 56 needed a fix. Next batch: from 10 Dec (schedule index 129), in
       batches of six weeks. Known risk: "Al Ahli SC" and "Al Ahli FC" both
       print "Al Ahli" and can make a false "Shared Al Ahli" reason.
+- [x] Review of everything since 148 (14 Oct): no blocker; fixed the done-strip
+      chips on 360-375pt phones (names only), old saved Mystery games keeping
+      at most the position clue (new saves carry `clues: 2`), the schedule
+      scripts now judging the corrected careers, Hot Streak ending at once when
+      a miss spends the last seconds. gen-mystery-schedule.mjs now needs
+      --from and refuses to redraw days with checked careers (to index 128).
+- [ ] From that review, later: NOW_YEAR is 2026 in mysteryCareer.js (2027 days
+      undercount running spells); Grealish (day 289) shows two running spells;
+      the strip's "New in" does not tick; a stale weights comment in
+      mysteryPlayer.js; Zlatan (day 75) and Nesta (day 83) both clue AC Milan.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen

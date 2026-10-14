@@ -133,7 +133,11 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // Clues revealed, in ladder order. Opt-in: a clue that has unlocked waits for
   // a tap, so help is never forced on someone still enjoying the hunt, and the
   // count on the result is the number the player chose to take.
-  const [hintsUsed, setHintsUsed] = useState(() => saved?.hintsUsed || 0);
+  // ⚠️ A SAVE FROM BEFORE THE CLUE LADDER (14 Oct 2026) counted old hints: three
+  // after three guesses. Read as ladder steps that would show position, club
+  // and initials untapped. Position was the first clue in both, so an old save
+  // keeps at most that one. New saves carry `clues: 2`.
+  const [hintsUsed, setHintsUsed] = useState(() => (saved?.clues === 2 ? (saved?.hintsUsed || 0) : Math.min(saved?.hintsUsed || 0, 1)));
   const [streak, setStreak] = useState(() => computeMysteryStreak());
   // ⚠️ Player-reported 2026-08-22: the keyboard sat on top of the board and the
   // page would not scroll. See lib/useKeyboardAwareInput.js.
@@ -170,7 +174,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     // Persist immediately — a clue taken and then the tab closed must not come
     // back unspent, or the count on the result lies.
     saveMysteryResult(date, {
-      won, gaveUp, guesses, hintsUsed: next, ...(isArchive ? { arc: 1 } : {}),
+      won, gaveUp, guesses, hintsUsed: next, clues: 2, ...(isArchive ? { arc: 1 } : {}),
     });
   };
 
@@ -221,7 +225,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     // To the top of the game, not the page: on the static /mystery-player/ page
     // the game sits below the site's own header.
     try { if (rootRef.current?.scrollIntoView) rootRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' }); else window.scrollTo({ top: 0, behavior: 'smooth' }); } catch { /* old WebView */ }
-    saveMysteryResult(date, { won: false, gaveUp: true, guesses, hintsUsed, ...(isArchive ? { arc: 1 } : {}) });
+    saveMysteryResult(date, { won: false, gaveUp: true, guesses, hintsUsed, clues: 2, ...(isArchive ? { arc: 1 } : {}) });
     // Same archive guard as the win path: replaying an old puzzle must never
     // touch today's habit metrics.
     if (!isArchive) {
@@ -254,7 +258,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     else { haptic('select'); playSound('soft'); }
     if (isWin) setWon(true);
     // Persist EVERY guess, not just the win.
-    saveMysteryResult(date, { won: isWin, guesses: next, hintsUsed, ...(isArchive ? { arc: 1 } : {}) });
+    saveMysteryResult(date, { won: isWin, guesses: next, hintsUsed, clues: 2, ...(isArchive ? { arc: 1 } : {}) });
     if (isWin) {
       setStreak(computeMysteryStreak());
       // ⚠️ ARCHIVE PLAYS DO NOT COUNT toward the streak or XP; `attempts` is

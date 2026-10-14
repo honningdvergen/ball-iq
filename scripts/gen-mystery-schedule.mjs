@@ -35,20 +35,35 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { answerBar, FIRST_FAMOUS_DAY } from './mystery-answer-bar.mjs';
 import { mainClub } from '../src/lib/mysteryCareer.js';
 import { mysteryDayIndex, MYSTERY_ANCHOR_DAY } from '../src/lib/mysteryPlayer.js';
+import { withCareerFixes } from '../src/lib/mysteryCareer.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const FILE = new URL('../src/data/mysterySchedule.json', import.meta.url);
 const schedule = read('../src/data/mysterySchedule.json');
 const pool = read('../src/data/mysteryPool.json');
-const careers = read('../src/data/mysteryCareers.json');
+// The careers players see: the generated ones with the checked fixes laid over
+// them (review, 14 Oct 2026: the scripts read the raw file and so judged careers
+// the reveal never prints).
+const careers = withCareerFixes(read('../src/data/mysteryCareers.json'), read('../src/data/mysteryCareerFixes.json'));
 const roles = read('../src/data/mysteryRoles.json');
 const exclusions = read('../src/data/mysteryExclusions.json');
 
+// ⚠️ --from IS REQUIRED, AND CHECKED DAYS ARE NOT RESHUFFLED. Every answer up to
+// CHECKED_THROUGH has had its career checked by hand against sources (the fixes
+// file). A rerun that starts earlier re-draws those days and throws the checks
+// away: on 14 Oct a rerun with the fixes applied would have changed 297 days
+// from day 81. And it starts at least two days ahead: the build machine's date
+// is not the date in UTC+13 (review, 14 Oct 2026).
+const CHECKED_THROUGH = 128; // 9 Dec 2026
 const argFrom = process.argv.indexOf('--from');
-const FROM = argFrom > 0 ? Number(process.argv[argFrom + 1]) : FIRST_FAMOUS_DAY;
+if (argFrom < 0) throw new Error('pass --from <day index>; nothing is redrawn by default');
+const FROM = Number(process.argv[argFrom + 1]);
 const todayIdx = mysteryDayIndex(new Date()) - MYSTERY_ANCHOR_DAY;
-if (!(FROM > todayIdx)) {
-  throw new Error(`day ${FROM} is today's puzzle or already played (today is ${todayIdx}); pass --from ${todayIdx + 1}`);
+if (!(FROM > todayIdx + 1)) {
+  throw new Error(`day ${FROM} is too close (today is ${todayIdx}); pass --from ${todayIdx + 2} or later`);
+}
+if (FROM <= CHECKED_THROUGH && !process.argv.includes('--reshuffle-checked')) {
+  throw new Error(`days up to ${CHECKED_THROUGH} have checked careers; pass --from ${CHECKED_THROUGH + 1} or add --reshuffle-checked and check them again`);
 }
 const DAYS = schedule.length; // the length is kept
 
