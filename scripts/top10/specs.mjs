@@ -158,7 +158,7 @@ export const TOP10_SPECS = [
   // number could change. Re-check before every scheduling of this list.
   { id: 'english-league-titles', checked: '2026-10-09', until: '2026-11-30', kind: 'club',
     title: 'Most English league titles',
-    note: 'Top-flight titles, 1888 to 2026. Clubs level on titles are in the order they got there.',
+    note: 'Top-flight titles, 1888 to 2026. Ties go to whichever club got there first.',
     asOf: '2026-10-09',
     source: 'RSSSF England champions (14 Jun 2026); Premier League, 19 May 2026; counted season by season',
     slots: [
@@ -243,7 +243,7 @@ export const TOP10_SPECS = [
   // which is why he ended the tournament on 121.
   { id: 'england-caps', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
     title: 'Most England caps (men)',
-    note: 'England men’s caps at the end of the 2026 World Cup. Level players in the order they got there.',
+    note: 'England men’s caps at the end of the 2026 World Cup. Ties go to whoever got there first.',
     asOf: '2026-10-09',
     source: 'Englandstats.com, every cap numbered; the FA, 6 Oct 2026; RSSSF',
     slots: [
@@ -269,7 +269,7 @@ export const TOP10_SPECS = [
   // with Spence only because one Charity Shield goal counts (all competitions).
   { id: 'manchester-united-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
     title: 'Manchester United’s top scorers',
-    note: 'All competitions, to the end of 2025-26. Level players in the order they got there.',
+    note: 'All competitions, to the end of 2025-26. Ties go to whoever got there first.',
     asOf: '2026-10-09',
     source: 'MUFCinfo all players, all goals; Wikipedia records page (26 Aug 2026)',
     slots: [
@@ -318,7 +318,7 @@ export const TOP10_SPECS = [
   // the club prints it; a fewer-games rule would put Drake first.
   { id: 'arsenal-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
     title: 'Arsenal’s top scorers',
-    note: 'All competitions, to the end of 2025-26. Level players in the order they got there.',
+    note: 'All competitions, to the end of 2025-26. Ties go to whoever got there first.',
     asOf: '2026-10-09',
     source: 'arsenal.com goalscorers; Wikipedia records page (4 Sep 2026)',
     slots: [
@@ -342,7 +342,7 @@ export const TOP10_SPECS = [
   // Shield goal for him.
   { id: 'chelsea-top-scorers', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
     title: 'Chelsea’s top scorers',
-    note: 'All competitions, to the end of 2025-26. Level players in the order they got there.',
+    note: 'All competitions, to the end of 2025-26. Ties go to whoever got there first.',
     asOf: '2026-10-09',
     source: 'chelseafc.com all-time record goalscorers (11 May 2026); Wikipedia records page',
     slots: [
@@ -643,7 +643,7 @@ export const TOP10_SPECS = [
   // in 2018 (federation pages). Busquets's 143 is on the federation's site.
   { id: 'spain-caps', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
     title: 'Most Spain caps (men)',
-    note: 'Spain men’s caps at the end of the 2026 World Cup. Level players in the order they got there.',
+    note: 'Spain men’s caps at the end of the 2026 World Cup. Ties go to whoever got there first.',
     asOf: '2026-10-09',
     source: 'RFEF player pages; RSSSF, 14 Mar 2026; Transfermarkt (read 9 Oct 2026)',
     slots: [
@@ -678,7 +678,7 @@ export const TOP10_SPECS = [
   // they got there (Blanc 2000, Lizarazu 2004, Benzema 2022).
   { id: 'france-caps', checked: '2026-10-11', until: '2027-06-01', kind: 'player',
     title: 'Most France caps (men)',
-    note: 'France men’s caps at the end of the 2026 World Cup. Level players in the order they got there.',
+    note: 'France men’s caps at the end of the 2026 World Cup. Ties go to whoever got there first.',
     asOf: '2026-10-11',
     source: 'FFF statistics page of 18 Sep 2026; RSSSF; Transfermarkt (read 11 Oct 2026)',
     slots: [
@@ -703,7 +703,7 @@ export const TOP10_SPECS = [
   // the federation prints only its top ten, and twelfth is not settled.
   { id: 'france-top-scorers', checked: '2026-10-11', until: '2027-06-01', kind: 'player',
     title: 'France’s top scorers (men)',
-    note: 'Goals for France at the end of the 2026 World Cup. Level players in the order they got there.',
+    note: 'Goals for France at the end of the 2026 World Cup. Ties go to whoever got there first.',
     asOf: '2026-10-11',
     source: 'FFF statistics page of 18 Sep 2026; RSSSF; Transfermarkt (read 11 Oct 2026)',
     slots: [
@@ -730,7 +730,7 @@ export const TOP10_SPECS = [
   // is close (Gnabry 26, Havertz 25).
   { id: 'germany-top-scorers', checked: '2026-10-11', until: '2027-06-01', kind: 'player',
     title: 'Germany’s top scorers (men)',
-    note: 'Germany and West Germany, not East, to 11 Oct 2026. Level players in the order they got there.',
+    note: 'Germany and West Germany, not East, to 11 Oct 2026. Ties go to whoever got there first.',
     asOf: '2026-10-11',
     source: 'DFB record scorers, stamped 11 Oct 2026; RSSSF; Transfermarkt',
     slots: [
@@ -760,7 +760,7 @@ export const TOP10_SPECS = [
   // September 2027.
   { id: 'italy-caps', checked: '2026-10-11', until: '2027-03-01', kind: 'player',
     title: 'Most Italy caps (men)',
-    note: 'Italy men’s caps as of 11 October 2026. Level players in the order they got there.',
+    note: 'Italy men’s caps as of 11 October 2026. Ties go to whoever got there first.',
     asOf: '2026-10-11',
     source: 'FIGC records and match list; RSSSF; Transfermarkt (read 11 Oct 2026)',
     slots: [
