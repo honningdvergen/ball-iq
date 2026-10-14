@@ -22,7 +22,6 @@ import { safeSetItem } from '../safeStorage.js';
 import { APP_NAME } from '../lib/scoring.js';
 import { FOOTLE_SHORT } from '../lib/modeCopy.js';
 import GameTitle from "../components/GameTitle.jsx";
-import { createTapLedger } from "../lib/keyTaps.js";
 import { getFootleXP } from '../lib/footleXp.js';
 import ResultFoot, { ReportLink } from '../components/ResultFoot.jsx';
 import { DailyDone } from '../components/DailyDone.jsx';
@@ -369,33 +368,15 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   const handleKeyRef = useRef(handleKey);
   useEffect(() => { handleKeyRef.current = handleKey; });
 
-  // ⚠️ LETTERS AND DELETE TYPE ON POINTERUP, NOT ON CLICK. iOS only makes a
-  // click out of a touch that begins and ends alone: type with two thumbs, the
-  // second landing before the first has lifted, and the clicks are dropped. A
-  // fast burst lost four letters of five (simulator, 12 Oct 2026). pointerup
-  // fires once for every finger.
-  // Not pointerdown (tried the same day, caught in review): a scroll that
-  // begins on a key had already typed its letter before the browser cancelled
-  // the touch, and a press held past the de-duplication window typed twice.
-  // A scroll ends in pointercancel, never pointerup, and the window below is
-  // measured from the lift, so neither can happen.
-  // The click handler stays for a physical keyboard and for assistive tech,
-  // which press a button without a pointer; it steps aside for the click the
-  // browser sends straight after a pointerup on the same key.
-  // ENTER stays on click on purpose: it spends a guess, so it wants a full tap.
-  // Which click belongs to which lift is lib/keyTaps.js: one note per key, so
-  // a click that arrives late, after other keys, is still recognised.
-  const taps = useRef(null);
-  if (!taps.current) taps.current = createTapLedger();
-  const keyUp = (k) => (e) => {
-    if (e.pointerType === "mouse" && e.button !== 0) return;
-    taps.current.lifted(k);
-    handleKeyRef.current(k);
-  };
-  const keyClick = (k) => (e) => {
-    if (e.detail !== 0 && taps.current.spent(k)) return;
-    handleKeyRef.current(k);
-  };
+  // ⚠️ THE KEYS TYPE ON CLICK, AS THEY ALWAYS DID. On 13 Oct they were moved
+  // to pointerup to cure letters lost in a fast burst of taps. That loss was
+  // only ever seen in the simulator, whose taps are machine-made; on Alex's
+  // phone the pointerup keys then typed letters he had not pressed, sometimes
+  // twice, sometimes a different letter (build 146, 14 Oct 2026). iOS decides
+  // what counts as a tap before it sends a click (a resting thumb, a long
+  // press or a slide is not one); pointerup has no such judgement. Do not
+  // move the keys off click again without a recording from a real phone that
+  // shows letters being lost.
 
   // Physical keyboard support. Ignore when modifier keys are held so we don't
   // hijack browser shortcuts (cmd-R, etc.).
@@ -720,7 +701,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
                 // feedback the colors carry (medical accessibility).
                 const stDesc = st === "green" ? ", correct" : st === "yellow" ? ", wrong position" : st === "grey" ? ", not in the name" : "";
                 return (
-                  <button key={k} className={cls} onPointerUp={keyUp(k)} onClick={keyClick(k)} aria-label={k === "DEL" ? "Delete last letter" : `${k}${stDesc}`}>
+                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k === "DEL" ? "Delete last letter" : `${k}${stDesc}`}>
                     {k === "DEL" ? "⌫" : k}
                   </button>
                 );
