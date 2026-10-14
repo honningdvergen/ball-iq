@@ -600,6 +600,22 @@ const SHOTS = [
       await p.waitForTimeout(700);
       await p.evaluate(() => window.scrollTo(0, 0));
       await p.waitForTimeout(500); } },
+  // CLUBS=1: an unanswered question from each big club's own quiz, for the
+  // club versions of the social carousel slide (scripts/social-app-slides.mjs).
+  // Not store shots, so they only run when asked for.
+  ...(process.env.CLUBS === '1' ? ['manchester-united', 'manchester-city', 'liverpool', 'arsenal', 'chelsea', 'real-madrid', 'barcelona'].map((slug) => ({
+    name: `club-${slug}`, expect: '', go: async (p) => {
+      // A dare needs question 1 of a clean run: answering past a grim or long
+      // question paints the progress bar red ("1 of 9 right" on the first
+      // try). Each start draws a fresh set, so start again instead.
+      for (let i = 0; i < 10; i++) {
+        await gotoApp(p, `/play?club=${slug}`);
+        await p.waitForTimeout(3200);
+        const stem = await p.evaluate(() => document.querySelector('.qd-q, .q, h2')?.textContent || '');
+        if (stem && !SENSITIVE.test(stem) && stem.length <= 140) break;
+      }
+      await p.evaluate(() => { window.scrollTo(0, 0); for (const el of document.querySelectorAll('*')) if (el.scrollTop > 0) el.scrollTop = 0; });
+      await p.waitForTimeout(400); } })) : []),
 ];
 
 

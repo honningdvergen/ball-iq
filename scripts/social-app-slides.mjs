@@ -64,6 +64,19 @@ const SLIDES = [
   { name: 'balliq_top10_generic', accent: ORANGE, shot: '11-top10.png', line: "England's most capped men. <em>Name all ten.</em>" },
   { name: 'balliq_proveit_generic', accent: GREEN, shot: '01-home.png', line: 'Think you know ball? <em>Prove it.</em>' },
   { name: 'balliq_draft_generic', accent: AMBER, shot: '12-draft.png', line: 'Build an eleven. Win the league. <em>Easy, right?</em>' },
+  // Club versions: question 1 of that club's own quiz, unanswered (captured
+  // with CLUBS=1 SIMLIKE=1 node scripts/shoot-store-screens.mjs). The accent
+  // is a readable tint of the club colour (Chelsea's and Barcelona's own
+  // colours are too dark to read on black). Never a question count.
+  ...[
+    ['manchester-united', 'united', 'United fan?', '#E8382B'],
+    ['manchester-city', 'city', 'City fan?', '#6CABDD'],
+    ['liverpool', 'liverpool', 'Liverpool fan?', '#E0263F'],
+    ['arsenal', 'arsenal', 'Gooner?', '#F2353A'],
+    ['chelsea', 'chelsea', 'Chelsea fan?', '#4A8BFF'],
+    ['real-madrid', 'realmadrid', 'Madridista?', '#FEBE10'],
+    ['barcelona', 'barcelona', 'Culé?', '#E0457B'],
+  ].map(([slug, tag, who, accent]) => ({ name: `balliq_clubquiz_${tag}`, accent, shot: `club-${slug}.png`, line: `${who} <em>Prove it.</em>` })),
 ];
 
 const browser = await chromium.launch();
