@@ -1591,10 +1591,10 @@ Pro Max (build 144), reviewed before it went out:
       Trail "one club at a time, youth side"): all gone. Age rating 4+,
       encryption answered. Texts: ~/ball-iq-release/store/listing-1.8.0 and
       ~/ball-iq-audit/2026-10-14/listing.
-- [ ] Submit 1.8.0 for review: the last step (`node
-      ~/ball-iq-release/store/asc-store.mjs submit`, or Add for Review in
-      App Store Connect) was refused by the session's permission guard; it
-      waits for Alex.
+- [x] 1.8.0 (build 149) SUBMITTED for review 14 Oct 21:20 Oslo (Alex ran
+      `asc-store.mjs submit` himself; the session's guard refuses it).
+      Waiting for review. Release is MANUAL: on approval, press release only
+      once Alex's TestFlight run of 149 is clean.
 - [ ] Top 10's bundled schedule ends 30 Nov: publish the longer list to
       balliq.app/data/top10.json before then, or Top 10 drops out of the
       dailies and Mystery Player takes the slot back.
