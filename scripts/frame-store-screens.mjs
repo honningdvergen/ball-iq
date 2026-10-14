@@ -34,8 +34,16 @@ import { chromium } from 'playwright';
 // frame and canvas differ, so no re-shoot is needed for the second store.
 const IS_ANDROID = (process.env.PLATFORM || 'ios').toLowerCase() === 'android';
 
-const RAW = resolve('screenshots/raw');
-const OUT = resolve(IS_ANDROID ? 'screenshots/android' : 'screenshots/framed');
+// SOURCE=sim: real screenshots from the iPhone simulator (Apple's own status
+// bar, the real safe areas, the tab bar where a phone puts it), shown as the
+// screen itself with the display's rounded corners, on a backdrop in the game's
+// colour. Alex, 14 Oct 2026, on the drawn phone: "it doesn't really look like a
+// real iPhone", "the menu bar that floats on the bottom doesn't sit in the
+// right place". The browser capture has no home-indicator inset, so its tab
+// bar sat low; only a real device capture gets that right.
+const SIM = (process.env.SOURCE || '') === 'sim';
+const RAW = resolve(SIM ? 'screenshots/sim' : 'screenshots/raw');
+const OUT = resolve(SIM ? (IS_ANDROID ? 'screenshots/android-sim' : 'screenshots/framed-sim') : (IS_ANDROID ? 'screenshots/android' : 'screenshots/framed'));
 mkdirSync(OUT, { recursive: true });
 
 // ⚠️ 1284x2778, NOT 1320x2868 — VERIFIED AGAINST THE LIVE LISTING.
@@ -136,7 +144,7 @@ const COPY = {
   '08-daily-chips': {
     eyebrow: 'DAILY 7', accent: GREEN,
     head: ['Seven questions,', '{every single day}'],
-    sub: 'Instant marking. Green right, red wrong.',
+    sub: 'Every answer explained the moment you pick it.',
   },
   '06-profile': {
     eyebrow: 'YOUR PROFILE', accent: AMBER,
@@ -290,10 +298,62 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
 
 // Brand mark, if the app icon is on disk — inlined so the CSP-free file:// page
 // never needs the network.
+const rgb = (hex) => { const n = parseInt(hex.slice(1), 16); return `${n >> 16 & 255},${n >> 8 & 255},${n & 255}`; };
+// The screen at the size that fits under the copy, by the capture's own aspect.
+const SIM_ASPECT = IS_ANDROID ? 2436 / 1206 : 2622 / 1206; // iPhone 17 at 3x; Android shows the screen without the status bar
+const SIM_H = IS_ANDROID ? Math.round(H * 0.70) : Math.round(H * 0.70);
+const SIM_W = Math.round(SIM_H / SIM_ASPECT);
+const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:${W}px;height:${H}px;overflow:hidden}
+  body{
+    background:
+      radial-gradient(ellipse 85% 48% at 50% 4%, rgba(${rgb(c.accent)},.42) 0%, rgba(${rgb(c.accent)},.12) 45%, transparent 75%),
+      radial-gradient(ellipse 70% 40% at 50% 100%, rgba(${rgb(c.accent)},.16) 0%, transparent 70%),
+      linear-gradient(180deg,#11131A 0%,#0A0B10 55%,#07080B 100%);
+    font-family:-apple-system,'Inter','Helvetica Neue',sans-serif;
+    display:flex;flex-direction:column;align-items:center;
+  }
+  .top{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:${f(30)}px ${f(70)}px ${f(10)}px}
+  .mark{display:flex;align-items:center;gap:${f(16)}px}
+  .mark img{width:${f(58)}px;height:${f(58)}px;border-radius:${f(14)}px}
+  .mark span{font-size:${f(48)}px;font-weight:800;color:#fff;letter-spacing:-.5px}
+  .mark b{color:${AMBER};font-weight:800}
+  .eyebrow{margin-top:${f(54)}px;font-size:${f(30)}px;font-weight:800;letter-spacing:.16em;color:${c.accent};text-transform:uppercase;text-align:center}
+  h1{margin-top:${f(22)}px;font-size:${f(88)}px;line-height:1.05;font-weight:800;color:#fff;letter-spacing:${(-2 * F).toFixed(1)}px;text-align:center;text-wrap:balance}
+  .sub{margin-top:${f(26)}px;font-size:${f(38)}px;color:rgba(255,255,255,.66);text-align:center}
+  .shot{flex:0 0 auto;margin-bottom:${f(70)}px;width:${SIM_W}px;height:${SIM_H}px;border-radius:${Math.round(SIM_W * 0.137)}px;overflow:hidden;
+    box-shadow:0 0 0 ${Math.max(2, f(3))}px rgba(255,255,255,.16), 0 ${f(40)}px ${f(110)}px rgba(0,0,0,.65), 0 0 ${f(160)}px rgba(${rgb(c.accent)},.22)}
+  .shot{position:relative;display:flex;flex-direction:column;background:#0B0C10}
+  .shot .band{display:block;width:100%;height:auto}
+  .shot .app{display:block;width:100%;height:auto}
+  /* Apple's status bar, from a simulator capture; its "09:41" (a 24-hour
+     region) is redrawn as the "9:41" Apple's own marketing uses. */
+  .shot .time{position:absolute;left:${Math.round(SIM_W * 0.066)}px;top:0;width:${Math.round(SIM_W * 0.25)}px;height:${Math.round(SIM_W * 186 / 1206)}px;
+    display:flex;align-items:center;justify-content:center;padding-top:${Math.round(SIM_W * 0.012)}px;background:#0B0C10;
+    font-family:-apple-system,'SF Pro Text',system-ui;font-weight:600;font-size:${Math.round(SIM_W * 17 / 402)}px;letter-spacing:-.2px;color:#fff}
+  .shot .home{position:absolute;left:50%;transform:translateX(-50%);bottom:${Math.round(SIM_W * 8 / 402)}px;width:${Math.round(SIM_W * 134 / 402)}px;height:${Math.max(3, Math.round(SIM_W * 5 / 402))}px;border-radius:99px;background:rgba(255,255,255,.9)}
+  .bare{flex:0 0 auto;margin-bottom:${f(120)}px}
+  .bare img{width:${Math.round(SIM_W * 1.12)}px;height:auto;display:block;border-radius:${f(34)}px;box-shadow:0 ${f(44)}px ${f(100)}px rgba(0,0,0,.6), 0 0 ${f(160)}px rgba(${rgb(c.accent)},.25)}
+</style></head><body>
+  <div class="top">
+    <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b></span></div>
+    <div class="eyebrow">${c.eyebrow}</div>
+    <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
+    <div class="sub">${c.sub}</div>
+  </div>
+  ${c.bare ? `<div class="bare"><img src="${dataUri}"></div>` : (IS_ANDROID
+    // No iPhone status bar or home indicator on a Play listing: the screen alone.
+    ? `<div class="shot is-android"><img class="app" src="${dataUri}"></div>`
+    : `<div class="shot"><img class="band" src="${c.band}"><span class="time">9:41</span><img class="app" src="${dataUri}"><span class="home"></span></div>`)}
+</body></html>`;
+
 const ICON = ['public/marketing/ball.png', 'public/icon-192.png']
   .map((p) => resolve(p)).find((p) => existsSync(p));
 const logo = ICON ? 'data:image/png;base64,' + readFileSync(ICON).toString('base64') : null;
 
+const BAND_FILE = resolve('screenshots/sim/status-band.png');
+const BAND_URI = SIM && existsSync(BAND_FILE) ? 'data:image/png;base64,' + readFileSync(BAND_FILE).toString('base64') : '';
 const b = await chromium.launch();
 const ctx = await b.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
 const p = await ctx.newPage();
@@ -306,7 +366,7 @@ for (const [name, copy] of Object.entries(COPY)) {
   if (!existsSync(src)) { console.log(`  – skip ${name} (no raw frame)`); continue; }
   const uri = 'data:image/png;base64,' + readFileSync(src).toString('base64');
   const html = resolve(OUT, `.tmp.html`);
-  writeFileSync(html, page(uri, { ...copy, logo }), 'utf8');
+  writeFileSync(html, (SIM ? simPage : page)(uri, { ...copy, logo, band: BAND_URI }), 'utf8');
   await p.goto('file://' + html, { waitUntil: 'load' });
   await p.waitForTimeout(320);
   await p.screenshot({ path: resolve(OUT, `${name}.png`) });

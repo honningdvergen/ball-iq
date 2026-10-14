@@ -90,3 +90,10 @@ social/.bsky-upload.jpg
 # with `node scripts/audit-instruments.mjs`; the committed source of truth is
 # .audit/instrument-birthdays.tsv.
 .audit/instruments.json
+
+# Phone-size store captures and their frames (14 Oct 2026): rebuilt by
+# scripts/shoot-store-screens.mjs SIMLIKE=1 and frame-store-screens.mjs SOURCE=sim;
+# the uploaded set is kept in ~/ball-iq-release/store/, not in the public repo.
+screenshots/sim/
+screenshots/framed-sim/
+screenshots/android-sim/

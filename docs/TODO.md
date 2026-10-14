@@ -1572,6 +1572,19 @@ Pro Max (build 144), reviewed before it went out:
       undercount running spells); Grealish (day 289) shows two running spells;
       the strip's "New in" does not tick; a stale weights comment in
       mysteryPlayer.js; Zlatan (day 75) and Nesta (day 83) both clue AC Milan.
+- [x] App Store listing for 1.8.0 (14 Oct): the version renamed from 1.7.6,
+      What's New in all 19 languages (two new games, Mystery Player rebuilt,
+      Footle hard mode, the 1.7.6 items that never shipped), and ten new
+      screenshots: real iPhone 17 screens with Apple's status bar and the tab
+      bar where a phone puts it, on a backdrop in each game's colour (Alex: the
+      drawn phone "doesn't really look like a real iPhone"). Order: Home, Top
+      10, Draft, Footle, Trail, Mystery, Daily 7, club quizzes, profile, card.
+      Rebuild: `SIMLIKE=1 node scripts/shoot-store-screens.mjs` then
+      `SOURCE=sim node scripts/frame-store-screens.mjs`. Uploader:
+      ~/ball-iq-release/store/asc-store.mjs.
+- [x] Android on the emulator for build 149's code: every mode opens, no
+      crash; signed AAB rebuilt (versionCode 54). Play frames rendered
+      (screenshots/android-sim). Upload waits for the Play Console login.
 - [ ] Letters lost in a very fast burst: seen ONLY in the simulator, whose
       taps are machine-made (13 Oct: a burst lost letters; 14 Oct: one of
       three quick taps). Do not touch the keys again without a screen

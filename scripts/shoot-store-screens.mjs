@@ -76,7 +76,13 @@ async function gotoApp(p, path) {
   // typing.
   await p.addStyleTag({ content: 'header.fd-head{display:none !important}' }).catch(() => {});
 }
-const RAW = resolve('screenshots/raw');
+// SIMLIKE=1: an iPhone 17's screen below its status bar (402 x 812 pt, the full
+// 874 less the 62pt status area), for frames that put Apple's real status bar
+// above it (frame-store-screens.mjs SOURCE=sim). The tab bar is set where the
+// phone puts it: 34pt home inset less 12 = 22pt up, where the browser, with no
+// inset, draws it at 16 (app.css .tab-bar).
+const SIMLIKE = process.env.SIMLIKE === '1';
+const RAW = resolve(SIMLIKE ? 'screenshots/sim' : 'screenshots/raw');
 
 // ⚠️ THE CARD NEEDS A FACE, AND THE HARNESS RUNS AS A GUEST.
 // ProfileScreen reads the photo from `authProfile.avatar_url`, which only
@@ -478,7 +484,13 @@ const SHOTS = [
         await opts.nth(attempt % 4).click();
         await p.waitForTimeout(1100);
         const t = await p.evaluate(() => document.body.innerText);
-        if (/Correct!/i.test(t) && !/Incorrect/i.test(t)) return;   // got one
+        // On the phone-height capture the answer scrolls the header away (the
+        // app's shortest scroll to the explanation); the shot shows the whole
+        // screen from the top, the explanation still above Next.
+        // Right means no option is marked wrong (the "Correct!" banner is
+        // screen-reader text since 13 Oct, so the words alone prove nothing).
+        const wrong = await p.locator('.opt.wrong').count();
+        if (!wrong && /Why\?/.test(t)) { if (SIMLIKE) { await p.waitForTimeout(400); await p.evaluate(() => { window.scrollTo(0, 0); for (const el of document.querySelectorAll('*')) if (el.scrollTop > 0) el.scrollTop = 0; }); } return; }   // got one
         const next = p.getByText(/^Next/).first();
         if (await next.count()) { await next.click(); await p.waitForTimeout(1500); }
       } } },
@@ -538,6 +550,8 @@ const SHOTS = [
           if (await next.count()) { await next.click(); await p.waitForTimeout(1300); }
         }
       }
+      // The whole screen from the top on the phone-height capture (see 05).
+      if (SIMLIKE) await p.evaluate(() => { window.scrollTo(0, 0); for (const el of document.querySelectorAll('*')) if (el.scrollTop > 0) el.scrollTop = 0; });
       await p.waitForTimeout(900); } },
 
   // Stadiums shipped 2026-08-20 and is badged NEW in the app, listed in the
@@ -623,8 +637,12 @@ const b = await webkit.launch();
 // Capturing at any other height means the framer has to crop, and it crops the
 // BOTTOM — which is exactly where the tab bar lives. The framer PRINTS the
 // number it needs on every run; copy it here if the geometry changes.
-const CAPTURE_H = 874;
-const ctx = await b.newContext({ viewport: { width: 440, height: CAPTURE_H }, deviceScaleFactor: 3 });
+const CAPTURE_H = SIMLIKE ? 812 : 874;
+const ctx = await b.newContext({ viewport: { width: SIMLIKE ? 402 : 440, height: CAPTURE_H }, deviceScaleFactor: 3 });
+if (SIMLIKE) await ctx.addInitScript(() => {
+  const put = () => { const s = document.createElement('style'); s.textContent = '.tab-bar{bottom:22px !important}'; document.head.appendChild(s); };
+  if (document.head) put(); else document.addEventListener('DOMContentLoaded', put);
+});
 
 // ⚠️ PIN THE CLOCK, OR THE SHOT DEPENDS ON WHEN IT WAS TAKEN. The home
 // greeting is time-of-day, so a re-shoot at 00:30 put "Still up" — the
