@@ -398,12 +398,15 @@ const SHOTS = [
   // lost. The day's list is read in NODE from the published file, like the
   // other dailies, so the shot never types a wrong ten.
   { name: '11-top10', expect: 'Top 10',
-    verify: async (p) => (await p.evaluate(() => /\b5\/10\b/.test(document.body.innerText))),
+    verify: async (p) => (await p.evaluate(() => /\b6\/10\b/.test(document.body.innerText))),
     go: async (p) => {
       await p.clock.setFixedTime(TOP10_DAY);
       await gotoApp(p, '/play?game=top10');
       await p.waitForTimeout(2200);
-      const names = [...TOP10_TODAY.slice(0, 2), TOP10_WRONG, ...TOP10_TODAY.slice(2, 5)];
+      // Found across the board, not the top five in order (Alex, 14 Oct 2026:
+      // "fill out the top 10 randomly"): ranks 3, 2, 9, 6, 4 and 7, one miss.
+      const pick = [2, 1, 8, 5, 3, 6].map((i) => TOP10_TODAY[i]);
+      const names = [...pick.slice(0, 3), TOP10_WRONG, ...pick.slice(3)];
       for (const g of names) {
         const box = p.locator('.t10 input').first();
         await box.click(); await box.fill(g); await p.waitForTimeout(700);
