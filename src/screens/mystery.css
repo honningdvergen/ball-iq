@@ -1,0 +1,118 @@
+/* Mystery Player (screens/MysteryPlayer.jsx), rebuilt 14 Oct 2026: the reason
+   line under each guess, the clue ladder and the career reveal.
+   Loaded in the app and, through the island's manifest CSS, on the static
+   /mystery-player/ page, where the app's token names are defined on the host
+   (gen-seo-pages, rootCss). Motion: the house timings, state 180ms. */
+
+.mp {
+  --mp: #B9A5FF;          /* MODE_ACCENT.mystery */
+  --mp-rgb: 139, 108, 240; /* MODE_RGB.mystery */
+}
+
+.mp-intro { margin: 2px 0 14px; color: var(--t2); font-size: 13.5px; line-height: 1.5; text-wrap: pretty; }
+
+/* ── A guess ───────────────────────────────────────────────────────────── */
+.mp-guess {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-radius: 12px;
+}
+.mp-guess-name {
+  font-size: 14.5px; font-weight: 800; color: var(--t1);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* The reason. Two lines at most on a 360pt phone, then it wraps rather than
+   cutting the club name, which is the part that matters. */
+.mp-guess-why {
+  margin-top: 3px; font-size: 12px; line-height: 1.35; font-weight: 600;
+  color: var(--t2); text-wrap: pretty;
+}
+.mp-why-part { display: inline-block; max-width: 100%; }
+.mp-guess-bar {
+  margin-top: 7px; height: 4px; border-radius: 2px; overflow: hidden;
+  background: rgba(255, 255, 255, 0.07);
+}
+.mp-guess-bar > div { height: 100%; border-radius: 2px; }
+
+/* ── The clue ladder ───────────────────────────────────────────────────── */
+.mp-clues {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px;
+  margin: 2px 0 6px;
+}
+.mp-clue {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  min-height: 58px; box-sizing: border-box; padding: 9px 10px;
+  border-radius: 12px; border: 1px solid var(--border); background: var(--s1);
+  font: inherit; text-align: left; color: var(--t1);
+  transition: border-color 180ms ease-out, background-color 180ms ease-out, transform 90ms ease-out;
+}
+.mp-clue-label {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--t3);
+}
+.mp-clue-value {
+  font-size: 13.5px; font-weight: 800; line-height: 1.2; color: var(--t1);
+  overflow-wrap: anywhere;
+}
+.mp-clue.is-locked { border-style: dashed; background: transparent; }
+.mp-clue.is-locked .mp-clue-value { font-size: 12px; font-weight: 600; color: var(--t3); }
+.mp-clue.is-ready {
+  cursor: pointer; border-color: rgba(var(--mp-rgb), 0.6);
+  background: rgba(var(--mp-rgb), 0.12);
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.mp-clue.is-ready .mp-clue-label { color: var(--mp); }
+.mp-clue.is-ready .mp-clue-value { color: var(--mp); font-size: 12.5px; }
+.mp-clue.is-ready:active { transform: scale(0.97); }
+.mp-clue.is-ready:focus-visible { outline: 2px solid var(--mp); outline-offset: 2px; }
+.mp-clue.is-shown { border-color: rgba(var(--mp-rgb), 0.35); background: rgba(var(--mp-rgb), 0.07); }
+.mp-clue.is-shown .mp-clue-label { color: var(--mp); }
+
+/* ── The reveal ────────────────────────────────────────────────────────── */
+.mp-reveal {
+  margin: 4px 0 14px; padding: 16px 16px 14px; border-radius: 16px;
+  background: var(--s1); border: 1px solid var(--border);
+}
+.mp-reveal.is-win { background: rgba(88, 204, 2, 0.10); border-color: rgba(88, 204, 2, 0.40); }
+.mp-reveal-eyebrow {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--t3); font-variant-numeric: tabular-nums;
+}
+.mp-reveal.is-win .mp-reveal-eyebrow { color: var(--grn-soft); }
+.mp-reveal-name {
+  margin: 4px 0 0; font-size: 22px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em;
+  color: var(--t1); text-wrap: balance;
+}
+.mp-reveal-meta { margin-top: 3px; font-size: 13px; color: var(--t2); }
+.mp-reveal-streak {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 8px;
+  font-size: 12.5px; font-weight: 800; color: var(--gold);
+}
+
+/* The career: a thin line runs down the left through one dot per club, the
+   club the second clue named in the mode's violet. */
+.mp-career { list-style: none; margin: 14px 0 0; padding: 0; position: relative; }
+.mp-career::before {
+  content: ""; position: absolute; left: 4px; top: 9px; bottom: 9px; width: 2px; border-radius: 1px;
+  background: var(--border);
+}
+.mp-career > li {
+  position: relative; display: flex; align-items: baseline; gap: 12px;
+  padding: 5px 0 5px 20px;
+}
+.mp-career > li::before {
+  content: ""; position: absolute; left: 1px; top: 50%; width: 8px; height: 8px; margin-top: -4px;
+  border-radius: 50%; background: var(--s3, #232631); box-shadow: 0 0 0 2px var(--t3);
+}
+.mp-career-years {
+  flex: 0 0 76px; font-size: 12px; font-weight: 700; color: var(--t3);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.mp-career-club { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 700; color: var(--t1); }
+.mp-career > li.is-key::before { background: var(--mp); box-shadow: 0 0 0 3px rgba(var(--mp-rgb), 0.3); }
+.mp-career > li.is-key .mp-career-club { color: var(--mp); font-weight: 800; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mp-clue { transition: none; }
+  .mp-clue.is-ready:active { transform: none; }
+}

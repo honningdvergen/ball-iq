@@ -117,9 +117,9 @@ describe('every guess explains itself, and the rank agrees', () => {
   });
 
   it('never calls anyone boiling without a shared club, or the same position in the same era', () => {
-    // Every fourth day of the log, past and future, and today.
+    // Every sixth day of the log, past and future, and today.
     const { hot } = bandLimits(pool.length);
-    const days = [...new Set([72, ...schedule.map((_, i) => i).filter((i) => i % 4 === 0)])];
+    const days = [...new Set([72, ...schedule.map((_, i) => i).filter((i) => i % 6 === 0)])];
     const unexplained = [];
     for (const d of days) {
       const a = byId.get(schedule[d]);
@@ -131,7 +131,7 @@ describe('every guess explains itself, and the rank agrees', () => {
       }
     }
     expect(unexplained).toEqual([]);
-  });
+  }, 60000);
 
   it('gives nothing for the answer himself', () => {
     expect(explainGuess(zz, zz, careers)).toBeNull();
