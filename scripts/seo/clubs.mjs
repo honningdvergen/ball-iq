@@ -3494,4 +3494,36 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Aberdeen",
+    "slug": "aberdeen",
+    "name": "Aberdeen",
+    "h1": "Aberdeen Quiz",
+    "title": "Aberdeen Quiz with Answers | Ball IQ",
+    "description": "Test your Aberdeen knowledge: Pittodrie's first dugout, the Wasps nickname, Alex Ferguson's arrival from St Mirren and the 2025 Scottish Cup win.",
+    "intro": [
+      "Aberdeen FC was formed in 1903 when the original Aberdeen club merged with Victoria United and Orion. Jimmy Philip managed the new club for its first 21 years, until Paddy Travers took over in 1924. The early black-and-gold striped kit earned the side the nickname 'the Wasps', before the club switched to the red it is known for today. Pittodrie is also widely credited with British football's first dugout. The idea is credited to Donald Colman, a former Aberdeen defender turned trainer, who wanted a low vantage point so he could study players' footwork.",
+      "The cup story starts with heartbreak. Aberdeen reached their first Scottish Cup final in 1937 and lost 2-1 to Celtic in front of a Hampden crowd of around 147,000. Ten years later they came from behind to beat Hibernian 2-1 and lift the Scottish Cup for the first time. Dave Halliday then led them to their first Scottish league title in 1954-55, and within months he had left for Leicester City. Eddie Turnbull's side beat Celtic 3-1 in the 1970 Scottish Cup final, with two goals from Derek McKay and a Joe Harper penalty. Ally MacLeod's Aberdeen then beat Celtic 2-1 after extra time to win the 1976-77 League Cup, and MacLeod became Scotland manager the following year.",
+      "Pittodrie has always been a stepping stone, both for managers and for players. Alex Ferguson arrived from St Mirren in 1978, the year after taking them to the First Division title. Martin Buchan, captain in the 1970 final, left for Manchester United in 1972, and Hungarian playmaker Zoltán Varga joined Ajax in 1973 after a single season. More recent sales include Scott McKenna to Nottingham Forest, Calvin Ramsay to Liverpool, Lewis Ferguson to Bologna and Bojan Miovski to Girona, who had just qualified for the Champions League.",
+      "The modern era has its own landmarks. Derek McInnes's side beat Inverness Caledonian Thistle on penalties in the March 2014 League Cup final, Aberdeen's first major trophy since 1995. In Europe they held Bayern Munich 2-2 at Pittodrie in 2008 and won 3-0 away at HNK Rijeka in 2015. There are hard days in here too, like the 9-0 defeat at Celtic Park in 2010 and the 2000 Scottish Cup final, when striker Robbie Winters had to go in goal. Then in May 2025 Jimmy Thelin's team beat Celtic on penalties after a 1-1 draw to win the Scottish Cup for the first time since 1990. There are 35 questions, so see how many you get."
+    ],
+    "faq": [
+      {
+        "q": "When was Aberdeen FC formed?",
+        "a": "Aberdeen FC was formed in 1903, when the original Aberdeen club merged with two other local clubs, Victoria United and Orion. Jimmy Philip was the first manager and stayed in charge until 1924."
+      },
+      {
+        "q": "Why were Aberdeen called 'the Wasps'?",
+        "a": "Aberdeen's early kit had black and gold stripes, which earned the club the nickname 'the Wasps'. The club later switched to the red it is known for today."
+      },
+      {
+        "q": "When did Aberdeen win their first Scottish league title?",
+        "a": "Aberdeen won their first Scottish league title in 1954-55 under Dave Halliday, who managed the club from 1937 to 1955. Shortly after the title he left Pittodrie to take charge of Leicester City."
+      },
+      {
+        "q": "Who did Aberdeen beat in the 2025 Scottish Cup final?",
+        "a": "Aberdeen beat Celtic on penalties after a 1-1 draw at Hampden in May 2025, under manager Jimmy Thelin. It was their first Scottish Cup since 1990, which had also been won against Celtic on penalties."
+      }
+    ]
+  },
 ];
