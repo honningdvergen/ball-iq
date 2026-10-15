@@ -4,7 +4,7 @@
 // every generated page. Wordmark · section links · the club/league finder ·
 // Sign in · a burger below 720px. No marketing button (none of the 13 sites
 // in the 2026-09-03 field study has one). ⚠️ KEEP IN STEP with shell.mjs.
-import React, { useState, useMemo, useRef, useLayoutEffect } from 'react';
+import React, { useState, useMemo, useRef, useLayoutEffect, useEffect } from 'react';
 import '../design/front.css';
 import { CLUB_INDEX } from './clubIndex.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
@@ -60,13 +60,32 @@ export function SiteHeader({ active = '', signedIn = false, onProfile } = {}) {
   const [menu, setMenu] = useState(false);
   const hits = useFinder(q);
   const searchRef = useRef(null);
+  const navRef = useRef(null);
+  const burgerRef = useRef(null);
+  // The open menu closes the way people expect (design critique, 16 Oct 2026):
+  // on a link tap (a same-page "#clubs" jump left it covering the section), on
+  // Escape, on a hash change, and on a tap outside, which is swallowed so it
+  // cannot fall through and start a game underneath.
+  useEffect(() => {
+    if (!menu) return undefined;
+    const close = () => setMenu(false);
+    const key = (e) => { if (e.key === 'Escape') close(); };
+    const outside = (e) => {
+      if (navRef.current?.contains(e.target) || burgerRef.current?.contains(e.target)) return;
+      e.preventDefault(); e.stopPropagation(); close();
+    };
+    document.addEventListener('keydown', key);
+    document.addEventListener('click', outside, true);
+    window.addEventListener('hashchange', close);
+    return () => { document.removeEventListener('keydown', key); document.removeEventListener('click', outside, true); window.removeEventListener('hashchange', close); };
+  }, [menu]);
   const go = (name, href) => { try { marketingEvent(name, { href }); } catch {} };
   const a = (k) => (active === k ? 'is-active' : undefined);
   return (
     <header className="fd-head">
       <div className="fd-w fd-head-in">
         <a className="fd-mark" href="/" aria-label="Ball IQ home"><img src="/marketing/ball.png" alt="" width="26" height="26" /><span>Ball IQ</span></a>
-        <nav className={`fd-nav${menu ? ' is-open' : ''}`} aria-label="Sections">
+        <nav ref={navRef} className={`fd-nav${menu ? ' is-open' : ''}`} aria-label="Sections" onClick={(e) => { if (e.target.closest('a')) setMenu(false); }}>
           <a href="/#today">Today</a><a className={a('games')} href="/football-games/">Games</a><a className={a('clubs')} href="/#clubs">Clubs</a><a className={a('quizzes')} href="/quiz/">Quizzes</a><a className={a('lists')} href="/lists/">Lists</a><a className="fd-nav-app" href="/get?src=header" onClick={() => go('fd-get-header', '/get?src=header')}>Get the app</a>{!signedIn && <a className="fd-nav-signin" href={PLAY}>Sign in</a>}
         </nav>
         <div className="fd-find" role="search">
@@ -90,7 +109,7 @@ export function SiteHeader({ active = '', signedIn = false, onProfile } = {}) {
         {/* A phone has no room for the nav, and the app is the thing a phone
             visitor can actually get: one small pill, /get picks their store. */}
         <a className="fd-head-app" href="/get?src=header-pill" onClick={() => go('fd-get-header-pill', '/get?src=header-pill')}>Get app</a>
-        <button type="button" className="fd-burger" aria-label={menu ? 'Close menu' : 'Menu'} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+        <button ref={burgerRef} type="button" className="fd-burger" aria-label={menu ? 'Close menu' : 'Menu'} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">{menu ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
         </button>
       </div>

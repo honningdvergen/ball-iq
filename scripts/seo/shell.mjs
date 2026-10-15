@@ -85,7 +85,12 @@ function fRecord(){
 function render(){if(fTimer)clearTimeout(fTimer);fTimer=setTimeout(fRecord,1100);var h=hits(i.value);if(!i.value.trim()){r.hidden=true;r.innerHTML='';return;}r.hidden=false;r.innerHTML=h.length?h.map(function(x){return'<a role="option" class="fd-find-row" href="'+esc(x[2])+'"><span class="fd-find-n">'+esc(x[0])+'</span><span class="fd-find-sub">'+esc(x[1])+'</span><span class="fd-find-go">${jsq(t.findPlay)}</span></a>';}).join(''):'<div class="fd-find-empty">${jsq(t.findEmptyPre)} \\u201c'+esc(i.value.trim())+'\\u201d ${jsq(t.findEmptyPost)} <a href="${base}/#clubs">${jsq(t.findSeeAll)}</a></div>';}
 i.addEventListener('input',render);i.addEventListener('focus',render);i.addEventListener('blur',function(){setTimeout(function(){r.hidden=true;},150);});
 i.addEventListener('keydown',function(e){if(e.key==='Enter'){var h=hits(i.value);if(h[0])location.href=h[0][2];}if(e.key==='Escape'){i.value='';r.hidden=true;}});
-if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('is-open');b.setAttribute('aria-expanded',o?'true':'false');});}
+if(b&&n){var bp=b.querySelector('path');function setM(o){n.classList.toggle('is-open',o);b.setAttribute('aria-expanded',o?'true':'false');if(bp)bp.setAttribute('d',o?'M6 6l12 12M18 6L6 18':'M4 7h16M4 12h16M4 17h16');}
+b.addEventListener('click',function(){setM(!n.classList.contains('is-open'));});
+n.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a'))setM(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')setM(false);});
+window.addEventListener('hashchange',function(){setM(false);});
+document.addEventListener('click',function(e){if(n.classList.contains('is-open')&&!n.contains(e.target)&&!b.contains(e.target)){e.preventDefault();e.stopPropagation();setM(false);}},true);}
 })();</script>`;
 };
 
@@ -287,10 +292,20 @@ export const SHELL_CSS = `
     .fd-nav.is-open{display:flex;position:absolute;left:0;right:0;top:56px;flex-direction:column;gap:0;padding:8px;background:var(--card);border-bottom:1px solid var(--bd);z-index:110}
     .fd-nav.is-open a{min-height:44px;display:flex;align-items:center;font-size:16px}
     .fd-nav.is-open .fd-nav-signin{margin-top:6px;padding-top:12px;border-top:1px solid var(--bd);color:var(--tx);font-weight:700}
-    .fd-find{max-width:none;margin-left:0}
+    .fd-find{max-width:none;margin-left:0;position:static;display:flex;align-items:center}
+    .fd-find-ic{position:relative;left:auto;top:auto;transform:none;flex:0 0 auto;margin-left:12px;margin-right:-30px;z-index:1}
+  .fd-find-in{flex:1 1 auto;min-width:0}
+    .fd-head-in{position:relative}
+    .fd-find-res{left:12px;right:12px;top:calc(100% - 4px)}
+    .fd-find-row{grid-template-columns:1fr auto;row-gap:2px}
+    .fd-find-sub{grid-column:1;grid-row:2}
+    .fd-find-go{grid-column:2;grid-row:1 / span 2}
+    .fd-nav.is-open{box-shadow:0 18px 40px rgba(0,0,0,.55)}
     .fd-signin{display:none}
     .fd-head .fd-head-app{display:inline-flex;align-items:center;flex:0 0 auto;min-height:34px;padding:0 12px;border-radius:999px;background:var(--grn);color:var(--grn-ink);font-size:13px;font-weight:800;white-space:nowrap}
     .fd-head-app:hover{text-decoration:none}
+    .fd-head-app{position:relative}
+    .fd-head-app::after{content:"";position:absolute;inset:-5px -2px}
     .fd-burger{display:grid;place-items:center}
     .fd-foot-in{grid-template-columns:repeat(2,minmax(0,1fr))}
   }

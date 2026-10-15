@@ -1754,6 +1754,8 @@ ${SHELL_CSS}
      box around each one shrinks: 3 columns on a 390px phone instead of 2, and
      ~44px tall instead of 76px (still at the 44px touch-target norm). */
   .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+  /* Desktop ran nine 116px columns and cut names to "Manch... United quiz" (critique, 16 Oct). */
+  @media(min-width:721px){.tiles{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
   .tiles-more{margin-top:10px}
   .tiles-more>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:10px 14px;background:var(--card2);border:1px solid var(--bd);border-radius:11px;cursor:pointer;font-size:14.5px;font-weight:700;color:var(--tx2)}
   .tiles-more>summary::-webkit-details-marker{display:none}
