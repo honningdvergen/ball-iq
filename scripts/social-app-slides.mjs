@@ -107,30 +107,37 @@ const FONTS = font('QC', 700, 'BarlowSemiCondensed-Bold.ttf', 'ttf') + font('QC'
 const badge = (glyph, small, big) => `<div class="badge"><svg viewBox="0 0 24 24"><path fill="#fff" d="${glyph}"/></svg><div><small>${small}</small><b>${big}</b></div></div>`;
 // The board alone, all ten slots, from its own element capture
 // (top10board-<id>.png), shown 724px wide.
-const WIN_W = 724;
+const WIN_W = 680;
 const top10v2 = ({ shot, who, title, bg, accent }) => `<!doctype html><html><head><meta charset="utf-8"><style>${FONTS}
   *{box-sizing:border-box;margin:0;padding:0}
   body{width:1080px;height:1350px;overflow:hidden;color:#fff;font-family:-apple-system,'Inter',sans-serif;
     background:radial-gradient(80% 60% at 50% 42%, ${bg[0]} 0%, ${bg[1]} 55%, ${bg[2]} 100%)}
   .stripes{position:absolute;inset:-200px;transform:rotate(-12deg);background:repeating-linear-gradient(90deg, rgba(255,255,255,0) 0 120px, rgba(255,255,255,.05) 120px 200px)}
-  h1{position:absolute;top:72px;left:60px;right:60px;text-align:center;font:700 96px/0.95 QC;text-transform:uppercase;letter-spacing:1px;text-shadow:0 6px 24px rgba(0,0,0,.35)}
+  h1{position:absolute;top:66px;left:60px;right:60px;text-align:center;font:700 90px/0.95 QC;text-transform:uppercase;letter-spacing:1px;text-shadow:0 6px 24px rgba(0,0,0,.35)}
   h1 em{font-style:normal;color:${accent}}
-  .card{position:absolute;left:50%;top:282px;width:776px;transform:translateX(-50%) rotate(-3deg);border-radius:40px;padding:26px 26px 28px;
+  .card{position:absolute;left:50%;top:262px;width:732px;transform:translateX(-50%) rotate(-3deg);border-radius:40px;padding:26px 26px 28px;
     background:#0B0C10;box-shadow:0 0 0 3px rgba(255,255,255,.16),0 40px 90px rgba(0,0,0,.55)}
-  .ttl{display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 16px;font:700 38px/1 QC;text-transform:uppercase;letter-spacing:1px}
+  .ttl{display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 16px;font:700 33px/1 QC;text-transform:uppercase;letter-spacing:1px}
   .ttl span{color:${accent}}
   .win img{display:block;width:${WIN_W}px}
-  .foot{position:absolute;left:60px;right:60px;top:1078px;display:flex;align-items:center;justify-content:center;gap:16px}
+  /* The app named in full (Alex: "it has to be totally obvious"): icon,
+     BALL IQ, FOOTBALL QUIZ, then where to get it. */
+  .foot{position:absolute;left:60px;right:60px;top:1046px;display:flex;align-items:center;justify-content:center;gap:16px}
+  .app{display:flex;align-items:center;gap:12px;margin-right:6px}
+  .app img{width:66px;height:66px;border-radius:15px;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+  .app b{display:block;font:700 40px/0.9 QC;letter-spacing:1px}
+  .app small{display:block;margin-top:5px;font:600 20px/1 QC;letter-spacing:2.4px;color:${accent}}
   .badge{display:flex;align-items:center;gap:10px;height:66px;padding:0 20px 0 16px;background:#000;border:2px solid rgba(255,255,255,.55);border-radius:14px}
   .badge svg{width:34px;height:34px}
   .badge small{display:block;font:600 15px/1 -apple-system,'Inter',sans-serif;letter-spacing:.2px;opacity:.9}
   .badge b{display:block;margin-top:3px;font:700 26px/1 -apple-system,'Inter',sans-serif;letter-spacing:-.3px}
-  .url{font:600 24px/1.1 QC;letter-spacing:1.2px;color:rgba(255,255,255,.75)}
+  .url{position:absolute;left:0;right:0;top:1126px;text-align:center;font:600 21px/1 QC;letter-spacing:2px;color:rgba(255,255,255,.7)}
 </style></head><body>
   <div class="stripes"></div>
   <h1>${who}<br><em>Name all ten.</em></h1>
   <div class="card"><div class="ttl">${title}<span>4/10</span></div><div class="win"><img src="${img(shot)}"></div></div>
-  <div class="foot">${badge(APPLE_GLYPH_PATH, 'Download on the', 'App Store')}${badge(PLAY_GLYPH_PATH, 'GET IT ON', 'Google Play')}<div class="url">OR PLAY AT<br>BALLIQ.APP</div></div>
+  <div class="foot"><div class="app"><img src="${icon}"><div><b>BALL IQ</b><small>FOOTBALL QUIZ</small></div></div>${badge(APPLE_GLYPH_PATH, 'Download on the', 'App Store')}${badge(PLAY_GLYPH_PATH, 'GET IT ON', 'Google Play')}</div>
+  <div class="url">OR PLAY AT BALLIQ.APP</div>
 </body></html>`;
 const V2 = [
   { tag: 'united', id: 'manchester-united-top-scorers', who: 'United fan?', title: 'United · all-time top scorers', bg: ['#C8102E', '#8A0B1C', '#2A0408'], accent: '#FFD23F' },

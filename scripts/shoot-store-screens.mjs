@@ -620,13 +620,14 @@ const SHOTS = [
   // deck ends on United's top scorers). Opened by name (?game=top10&list=),
   // which plays as an archive list and never touches the day.
   ...(process.env.CLUBS === '1' ? ['manchester-united-top-scorers', 'liverpool-top-scorers', 'arsenal-top-scorers', 'chelsea-top-scorers', 'real-madrid-top-scorers', 'barcelona-appearances'].map((id) => ({
-    // Four found at most, never #1 or #4, no miss (Alex, 15 Oct 2026: "fewer
-    // filled is more rewarding"): ranks 2, 3, 6 and 9.
+    // Four found, no miss: ranks 2, 4, 6 and 9, with #1 and #3 left open
+    // (Alex, 15 Oct 2026: "fewer filled is more rewarding", then "show number
+    // two and number four, skip number three").
     name: `top10-${id}`, expect: '4/10', go: async (p) => {
       const names = TOP10.lists[id].slots.map((x) => x.name);
       await gotoApp(p, `/play?game=top10&list=${id}`);
       await p.waitForTimeout(2200);
-      for (const g of [1, 2, 5, 8].map((i) => names[i])) {
+      for (const g of [1, 3, 5, 8].map((i) => names[i])) {
         const box = p.locator('.t10 input').first();
         await box.click(); await box.fill(g); await p.waitForTimeout(700);
         const opt = p.locator('.t10-opt', { hasText: g }).first();
