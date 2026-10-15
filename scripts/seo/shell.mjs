@@ -13,7 +13,6 @@
 import { CLUB_INDEX } from '../../src/marketing/clubIndex.js';
 import { LISTS_INDEX } from '../../src/marketing/listsIndex.js';
 import { GAMES_NAV, DISCOVER, MORE } from '../../src/marketing/siteNav.js';
-import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../../src/lib/storeGlyphs.js';
 
 import { shellStrings } from './shell-i18n.mjs';
 
@@ -193,7 +192,9 @@ export function shellFooter(site, lang = 'en') {
   // at 1440, three at 390). Games · Quizzes (the leagues, the club directory,
   // the football quiz) · Discover (what people search for, plus the top lists)
   // · Ball IQ. The store links are badges, not the words "iOS" and "Android".
-  const badge = (store) => `<a class="fd-foot-badge" href="${store === 'ios' ? site.appStore : site.playStore}" rel="noopener" target="_blank" data-store="${store}" aria-label="${store === 'ios' ? 'Download on the App Store' : 'Get it on Google Play'}"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${store === 'ios' ? APPLE_GLYPH_PATH : PLAY_GLYPH_PATH}"/></svg>${store === 'ios' ? 'App Store' : 'Google Play'}</a>`;
+  const badge = (store) => `<a class="fd-foot-badge" href="${store === 'ios' ? site.appStore : site.playStore}" rel="noopener" target="_blank" data-store="${store}">${store === 'ios'
+    ? '<img src="/badges/app-store.svg" alt="Download on the App Store" width="120" height="40" loading="lazy">'
+    : '<img src="/badges/google-play.png" alt="Get it on Google Play" width="134" height="40" loading="lazy">'}</a>`;
   return `<footer class="fd-foot"><div class="fd-w fd-foot-in">
 ${col(t.colGames, GAMES.map(([n, h]) => [n, b + h]))}
 ${col(t.navQuizzes, [...LEAGUES.map(([slug, name]) => [name, `${b}/quiz/${slug}/`]), ['Clubs by league', `${b}/quiz/clubs/`], ['Football quiz', `${b}/football-quiz/`]])}
@@ -253,8 +254,9 @@ export const SHELL_CSS = `
   .fd-foot-col a{font-size:13.5px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:24px}
   .fd-foot-col a:hover{color:var(--tx);text-decoration:none}
   .fd-foot-app{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-  .fd-foot-badge{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;background:#000;color:#fff;border:1px solid var(--bd2);border-radius:13px;font-weight:700;font-size:13.5px;white-space:nowrap}
-  .fd-foot-badge:hover{border-color:var(--bd3);text-decoration:none}
+  .fd-foot-badge{display:inline-flex;line-height:0;border-radius:9px}
+  .fd-foot-badge img{display:block;height:40px;width:auto}
+  .fd-foot-badge:hover{opacity:.88;text-decoration:none}
   .fd-foot-line{margin-top:26px;font-size:12.5px;line-height:1.6;color:var(--tx4);max-width:90ch}
   @media(max-width:1000px){.fd-foot-in{grid-template-columns:repeat(3,minmax(0,1fr))}}
   /* ⚠️ BETWEEN 721px AND ~970px THE NAV DID NOT FIT, AND ITS LABELS BROKE ONTO TWO

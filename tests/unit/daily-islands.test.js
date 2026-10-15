@@ -74,9 +74,14 @@ describe('daily screens stay island-safe', () => {
     for (const f of ['src/islands/dailyIsland.jsx', 'src/islands/footle.jsx', 'src/App.jsx']) {
       expect(read(f)).not.toContain('📲 Get the free app');
     }
-    // One glyph source for the generated pages and the React badge.
-    expect(read('scripts/gen-seo-pages.mjs')).toContain("from '../src/lib/storeGlyphs.js'");
-    expect(read('scripts/gen-seo-pages.mjs')).not.toMatch(/d="M12\.152 6\.896/);
+    // One artwork source for the generated pages and the React badge: the
+    // official badges in public/badges/ (16 Oct 2026), never a redrawn glyph.
+    for (const f of ['scripts/gen-seo-pages.mjs', 'scripts/seo/shell.mjs', 'src/components/StoreBadge.jsx']) {
+      const src = read(f);
+      expect(src, f).toContain('/badges/app-store.svg');
+      expect(src, f).toContain('/badges/google-play.png');
+      expect(src, f).not.toMatch(/GLYPH_PATH|d="M12\.152 6\.896/);
+    }
     // The islands hand the screens the embedded masthead.
     expect(read('src/islands/trail.jsx')).toMatch(/<TransferTrail[^>]*\sembedded/);
     expect(read('src/islands/mystery.jsx')).toMatch(/<MysteryPlayer[^>]*\sembedded/);

@@ -81,7 +81,6 @@ import { NICKNAMES, NICK_REGIONS } from './seo/nicknames.mjs';
 import { pageNameFor } from './seo/club-alias.mjs';
 import { mysteryBoardHtml, MYSTERY_BOARD_CSS, MYSTERY_BOARD_JS } from './seo/mysteryBoard.mjs';
 // The store glyphs the badges draw — shared with the app's StoreBadge.jsx.
-import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../src/lib/storeGlyphs.js';
 import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -498,8 +497,7 @@ for(var i=0;i<a.length;i++){a[i].href=a[i].href.replace(/^https:\\/\\/apps\\.app
 
 function appStoreBadge() {
   return `<a class="store-badge" href="${SITE.appStore}" rel="noopener" target="_blank">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${APPLE_GLYPH_PATH}"/></svg>
-<span class="store-badge-tx"><small>Download on the</small><strong>App Store</strong></span>
+<img src="/badges/app-store.svg" alt="Download on the App Store" width="120" height="40" loading="lazy">
 </a>`;
 }
 
@@ -507,8 +505,7 @@ function appStoreBadge() {
 // so an Android visitor sees a first-class path, not an iOS-only page.
 function playStoreBadge() {
   return `<a class="store-badge" href="${SITE.playStore}" rel="noopener" target="_blank">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${PLAY_GLYPH_PATH}"/></svg>
-<span class="store-badge-tx"><small>Get it on</small><strong>Google Play</strong></span>
+<img src="/badges/google-play.png" alt="Get it on Google Play" width="134" height="40" loading="lazy">
 </a>`;
 }
 
@@ -577,15 +574,13 @@ function crumbs(items) {
 // Compact App Store button for the two-column quiz hero (single-line "App Store").
 function appStoreBadgeMini() {
   return `<a class="store-badge mini" href="${SITE.appStore}" rel="noopener" target="_blank">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${APPLE_GLYPH_PATH}"/></svg>
-<span class="mini-tx">App Store</span>
+<img src="/badges/app-store.svg" alt="Download on the App Store" width="120" height="40" loading="lazy">
 </a>`;
 }
 
 function playStoreBadgeMini() {
   return `<a class="store-badge mini" href="${SITE.playStore}" rel="noopener" target="_blank">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="${PLAY_GLYPH_PATH}"/></svg>
-<span class="mini-tx">Google Play</span>
+<img src="/badges/google-play.png" alt="Get it on Google Play" width="134" height="40" loading="lazy">
 </a>`;
 }
 
@@ -1724,14 +1719,9 @@ ${SHELL_CSS}
   .btn-green:hover{text-decoration:none;filter:brightness(1.05)}
   .hero-stat{font-size:13px;color:var(--tx4)}
   /* App Store badge */
-  .store-badge{display:inline-flex;align-items:center;min-height:44px;gap:10px;padding:11px 18px;background:#000;border:1px solid var(--bd2);border-radius:13px}
-  .store-badge:hover{text-decoration:none;border-color:var(--bd3)}
-  .store-badge svg{flex:0 0 auto}
-  .store-badge-tx{display:flex;flex-direction:column;line-height:1.1;text-align:left}
-  .store-badge-tx small{font-size:10px;color:var(--tx3);letter-spacing:.02em}
-  .store-badge-tx strong{font-size:16px;color:#fff;font-weight:700}
-  .store-badge.mini{padding:13px 20px}
-  .store-badge.mini .mini-tx{font-size:15px;color:#fff;font-weight:700}
+  .store-badge{display:inline-flex;line-height:0;border-radius:9px}
+  .store-badge img{display:block;height:40px;width:auto}
+  .store-badge:hover{text-decoration:none;opacity:.88}
   /* sections */
   .sec{padding:30px 0}
   .sub{color:var(--tx3);font-size:15px;margin:-6px 0 16px;max-width:60ch}

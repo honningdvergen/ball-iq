@@ -1,5 +1,5 @@
-// The store badge, as the app and homepage render it — the same glyph + store
-// name the generated pages draw (scripts/gen-seo-pages.mjs storeBadgesMini),
+// The store badge, as the app and homepage render it — the same official
+// artwork the generated pages use (scripts/gen-seo-pages.mjs storeBadges),
 // so a visitor sees one badge everywhere instead of "iOS" on the homepage, a
 // 📲 emoji under a result and a real badge on the quiz pages (the mix we
 // shipped on 2026-09-05 and were rightly asked about).
@@ -7,7 +7,6 @@
 // Styled inline on purpose: it renders inside the static-page islands, where
 // the site stylesheet's .store-badge rules are not loaded.
 import React from 'react';
-import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../lib/storeGlyphs.js';
 import { playStoreUrl, appStoreUrl } from '../lib/links.js';
 
 const UA = () => (typeof navigator !== 'undefined' && navigator.userAgent) || '';
@@ -20,15 +19,22 @@ export function detectStore() {
   return null;
 }
 
-const BADGE = {
-  display: 'inline-flex', alignItems: 'center', gap: 10, minHeight: 44, padding: '0 20px',
-  background: '#000', color: '#fff', border: '1px solid var(--bd2, #2F3240)', borderRadius: 13,
-  fontSize: 15, fontWeight: 700, lineHeight: 1, textDecoration: 'none', fontFamily: 'inherit',
-  WebkitTextFillColor: '#fff',
+// The official artwork (Apple Marketing Tools, Google Play badge page; added
+// 16 Oct 2026 on Alex's yes): a visitor trusts the badge they know, and both
+// stores ask for their own art rather than a home-made lookalike. 40px is
+// Apple's minimum on-screen height; the two keep one height side by side.
+export const BADGE_ART = {
+  ios: { src: '/badges/app-store.svg', ratio: 119.664 / 40, alt: 'Download on the App Store' },
+  android: { src: '/badges/google-play.png', ratio: 564 / 168, alt: 'Get it on Google Play' },
 };
 
-export function StoreBadge({ store, href, onClick, style, className }) {
+export function StoreBadge({ store, href, onClick, style, className, height }) {
   const android = store === 'android';
+  const art = BADGE_ART[android ? 'android' : 'ios'];
+  // Callers sized the old drawn badge with minHeight/padding/fontSize; the
+  // height carries over (never under 40), the rest no longer applies.
+  const { minHeight, padding, fontSize, ...rest } = style || {};
+  const h = Math.max(40, height || minHeight || 44);
   return (
     <a
       className={className}
@@ -36,11 +42,9 @@ export function StoreBadge({ store, href, onClick, style, className }) {
       rel="noopener noreferrer"
       target="_blank"
       onClick={onClick}
-      aria-label={android ? 'Get it on Google Play' : 'Download on the App Store'}
-      style={{ ...BADGE, ...(style || {}) }}
+      style={{ display: 'inline-flex', lineHeight: 0, borderRadius: 9, ...rest }}
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d={android ? PLAY_GLYPH_PATH : APPLE_GLYPH_PATH} /></svg>
-      <span>{android ? 'Google Play' : 'App Store'}</span>
+      <img src={art.src} alt={art.alt} width={Math.round(h * art.ratio)} height={h} draggable={false} style={{ display: 'block', height: h, width: 'auto' }} />
     </a>
   );
 }
