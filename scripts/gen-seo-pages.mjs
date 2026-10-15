@@ -3903,8 +3903,11 @@ ${heroSection({
     lead,
     statLine: 'Free · no sign-up · every answer explained',
     playHref: null,
+    // The hub is where "Quizzes" in the menu lands: quizzes first. It opened on
+    // a paragraph and two rows of badges with no quiz on the first screen
+    // (design critique, 16 Oct 2026); the app band now follows the club grid.
+    noStores: true,
   })}
-${appCtaBand('football')}
 <section class="sec">
 <h2>Pick a quiz</h2>
 ${renderTiles(livePages.filter((p) => p.slug !== HUB.slug))}
@@ -3914,6 +3917,7 @@ ${renderTiles(livePages.filter((p) => p.slug !== HUB.slug))}
 <p class="sub">Deep-dive quizzes on Europe's biggest clubs — history, legends and iconic moments.</p>
 ${renderTiles(clubPages)}
 </section>
+${appCtaBand('football')}
 <section class="sec">
 <h2>Player quizzes</h2>
 <p class="sub">One-player deep dives — careers, records and the moments that made them.</p>
