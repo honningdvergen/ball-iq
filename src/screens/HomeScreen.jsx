@@ -768,7 +768,7 @@ function HomeScreenImpl({
       <button
         type="button"
         className="todays-seven-secondary mp-row"
-        style={{ "--mode": MODE_ACCENT.draft, "--mode-rgb": MODE_RGB.draft, marginBottom: 10, boxShadow: `inset 0 0 0 1.5px rgba(${MODE_RGB.draft},0.6)`, background: `linear-gradient(135deg, rgba(${MODE_RGB.draft},0.16), rgba(${MODE_RGB.draft},0.04) 60%)` }}
+        style={{ "--mode": MODE_ACCENT.draft, "--mode-rgb": MODE_RGB.draft, marginBottom: 10, border: `1.5px solid rgba(${MODE_RGB.draft},0.6)`, background: `linear-gradient(135deg, rgba(${MODE_RGB.draft},0.16), rgba(${MODE_RGB.draft},0.04) 60%)` }}
         onClick={() => { markModeSeen("draft"); setScreen("draft"); }}
         aria-label="Play the Draft: build an eleven out of real seasons"
       >
