@@ -151,6 +151,7 @@ const LocalResults = withSuspense(lazyNamed(() => import('./screens/LocalPlay.js
 // spot-checked dataset lands. Wiring inert beats wiring half-done.
 const TransferTrail = React.lazy(() => import('./screens/TransferTrail.jsx'));
 const Top10 = React.lazy(() => import('./screens/Top10.jsx'));
+const Top10Library = React.lazy(() => import('./screens/Top10Library.jsx'));
 // Reachable by address only (?game=draft) until it is a daily: see the note in the screen.
 const Draft = React.lazy(() => import('./screens/Draft.jsx'));
 const StadiumGame = React.lazy(() => import('./screens/StadiumGame.jsx'));
@@ -4068,6 +4069,12 @@ function AppInner() {
   const [screen, setScreen] = useState("home");
   // One Top 10 list opened by name (?game=top10&list=<id>). Null is today's.
   const [top10ListId, setTop10ListId] = useState(null);
+  // "lib" when a list was opened from the Top 10 browser, so Back returns there.
+  const [top10From, setTop10From] = useState(null);
+  // A list opened by name is for that one visit: leaving Top 10 any way at all
+  // (Back, the tab bar, Home) forgets it, or Home's daily Top 10 row would
+  // reopen yesterday's club list instead of today's.
+  useEffect(() => { if (screen !== "top10") { setTop10ListId(null); setTop10From(null); } }, [screen]);
   // An installed app carries the Top 10 schedule it was built with. The site
   // serves the current one, and this fetches it a moment after start and
   // whenever the app comes back to the front (lib/top10Remote.js: checked
@@ -4163,7 +4170,7 @@ function AppInner() {
       // ?game=mystery link must not hold the boot screen for a hidden mode.
       // The front door (2026-09-03) links every mode as ?game=<mode>; all of
       // them bypass onboarding — a visitor who chose a game must not be walled.
-      if (["footle", "trail", "top10", "draft", "daily", "classic", "survival", "hotstreak", "legends", "chaos", "stadiums", "clubquiz", "leaguequiz", "online", ...(MYSTERY_ENABLED ? ["mystery"] : [])].includes(sp.get("game"))) return true;
+      if (["footle", "trail", "top10", "top10lists", "draft", "daily", "classic", "survival", "hotstreak", "legends", "chaos", "stadiums", "clubquiz", "leaguequiz", "online", ...(MYSTERY_ENABLED ? ["mystery"] : [])].includes(sp.get("game"))) return true;
       if (/^q_[a-z0-9]+$/.test((sp.get("eq") || "").trim().toLowerCase())) return true; // email answer link — the verdict must not land behind onboarding
       if (normalizeJoinCode(sp.get("join"))) return true; // legacy query-form invite
       if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
@@ -6079,6 +6086,7 @@ function AppInner() {
       // ?game=top10 opens today's list; &list=<id> opens one list by name, as
       // an archive play that never counts toward the day.
       if (gameSlug === "top10") { setTop10ListId(listSlug || null); setScreen("top10"); return; }
+      if (gameSlug === "top10lists") { setScreen("top10lib"); return; }
       if (gameSlug === "draft") { setScreen("draft"); return; }
       // Front-door doors (2026-09-03): every card on the website homepage is a
       // link, so every mode needs a URL. startMode owns the mode's own rules
@@ -7881,6 +7889,9 @@ function AppInner() {
     hwBackRef.current = () => {
       if (closeTopModal()) return;
       if (screen === "online-stage1-lobby") { handleHomeClick(); return; }
+      // A list opened from the Top 10 browser goes back to the browser, as the
+      // on-screen Back does (review, 15 Oct 2026).
+      if (screen === "top10" && top10From === "lib") { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); return; }
       if (playing) {
         // dispatchEvent returns false when a listener preventDefault()ed —
         // i.e. the mounted engine claimed the press and owns the quit flow.
@@ -8113,7 +8124,7 @@ function AppInner() {
                 "Name the Stadium" header on every phone (player-reported
                 2026-08-21). The list is the contract: if your screen draws its
                 own title, it belongs in it. */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "draft", "mystery", "stadiums", "league-quiz", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "mystery", "stadiums", "league-quiz", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
@@ -8848,7 +8859,14 @@ function AppInner() {
           return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail key={dateToYMD(day)} player={p} date={day} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>;
         })()}
         {screen === "top10" && (
-          <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 date={archiveDate || undefined} listId={top10ListId || undefined} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
+          <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 key={top10ListId || "day"} date={archiveDate || undefined} listId={top10ListId || undefined} onBack={top10From === "lib" ? () => { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); } : goHome} onMoreLists={top10From === "lib" ? undefined : () => setScreen("top10lib")} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
+        )}
+        {screen === "top10lib" && (
+          <TabErrorBoundary name="top10lib" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10 lists" />}><Top10Library
+            onBack={goHome}
+            onPlay={(id) => { setTop10ListId(id); setTop10From("lib"); setScreen("top10"); }}
+            clubInfo={(slug) => { const key = CLUB_SLUG_TO_PACK[slug]; const pack = key && CLUB_PACKS[key]; return pack ? { name: pack.name, color: pack.color, abbr: CLUB_ABBR[key] || pack.name.slice(0, 3).toUpperCase() } : null; }}
+          /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "draft" && (
           <TabErrorBoundary name="draft" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Draft" />}><Draft onBack={goHome} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>

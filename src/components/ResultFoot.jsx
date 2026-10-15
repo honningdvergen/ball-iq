@@ -41,12 +41,15 @@ export function ReportLink({ thing, info, onReport, style }) {
   );
 }
 
-export default function ResultFoot({ thing, info, onReport, onHome }) {
+// `more` ({ label, onClick, accent }): one optional next step drawn above the
+// exit, in the mode's colour (Top 10's "More Top 10 lists", 15 Oct 2026).
+export default function ResultFoot({ thing, info, onReport, onHome, more }) {
   const link = <ReportLink thing={thing} info={info} onReport={onReport} />;
-  if (!onHome && (!onReport || !info)) return null;
+  if (!onHome && !more && (!onReport || !info)) return null;
   return (
     <div style={{ marginTop: 10, display: "flex", flexDirection: "column", alignItems: "stretch", gap: 2 }}>
       {link}
+      {more && <button type="button" onClick={more.onClick} style={{ ...HOME, marginBottom: 8, color: more.accent || "var(--t1)", WebkitTextFillColor: more.accent || "var(--t1)", borderColor: more.accent || "var(--border)" }}>{more.label}</button>}
       {onHome && <button type="button" onClick={onHome} style={HOME}>Back to Home</button>}
     </div>
   );

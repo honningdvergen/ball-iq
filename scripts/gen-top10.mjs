@@ -288,11 +288,15 @@ for (const spec of TOP10_SPECS) {
       else if (v >= nums[9]) fail(`${spec.id}: ${n.name} (${v}) is level with or above tenth place (${nums[9]}): no clean cut`);
     }
   }
+  // A club list names its club by the web slug the quizzes use; a typo would
+  // file the list under a club nobody can open.
+  if (spec.club !== undefined && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(spec.club)) fail(`${spec.id}: club "${spec.club}" is not a slug`);
   lists[spec.id] = {
     id: spec.id, kind: spec.kind, title: spec.title, clueLabel: spec.clueLabel || '',
     asOf: body.asOf, source: body.source, checked: spec.checked || null,
     slots: body.slots, ...(body.near.length ? { near: body.near } : {}),
     ...(spec.note ? { note: spec.note } : {}),
+    ...(spec.club ? { club: spec.club } : {}),
   };
   untilOf[spec.id] = spec.until || null;
 }

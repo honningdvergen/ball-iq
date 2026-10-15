@@ -80,6 +80,8 @@ export function acceptRemote(r) {
       const l = lists[id];
       if (!l || typeof l !== 'object' || l.id !== id || !KINDS.has(l.kind) || !isStr(l.title) || !isStr(l.asOf)) return null;
       if (!strOrAbsent(l.clueLabel) || !strOrAbsent(l.note)) return null;
+      // A club list's club is a web slug (gen-top10 checks it; a fetched file is checked again).
+      if (l.club != null && !(isStr(l.club) && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(l.club))) return null;
       if (!Array.isArray(l.slots) || l.slots.length !== TOP10_SIZE || !Array.isArray(l.near || [])) return null;
       const keys = new Set();
       for (const s of l.slots) {

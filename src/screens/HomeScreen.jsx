@@ -779,6 +779,23 @@ function HomeScreenImpl({
         </span>
         <span className="t7s-cta">Play</span>
       </button>
+      {/* Top 10 lists: the browser of club lists and past dailies (Alex, 15 Oct
+          2026: a fan must be able to find their own club's lists). A row, not a
+          seventh tile, for the reason given at the Draft above. */}
+      <button
+        type="button"
+        className="todays-seven-secondary mp-row"
+        style={{ "--mode": MODE_ACCENT.top10, "--mode-rgb": MODE_RGB.top10, marginBottom: 10 }}
+        onClick={() => { markModeSeen("top10lists"); setScreen("top10lib"); }}
+        aria-label="Top 10 lists: your club's lists and every past daily"
+      >
+        <span className="t7s-icon" aria-hidden="true"><ListOrdered size={22} strokeWidth={2} /></span>
+        <span className="t7s-body">
+          <span className="t7s-title">Top 10 lists{!seenModes.top10lists && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.top10},0.18)`, color: MODE_ACCENT.top10, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>NEW</span>}</span>
+          <span className="t7s-sub">Your club’s lists, and every past daily</span>
+        </span>
+        <span className="t7s-cta">Open</span>
+      </button>
       {/* Mystery Player, once Top 10 has its place in Today. A row and not a
           seventh tile, for two reasons: it is still one puzzle a day with a
           number and a state worth showing (five in six regulars play it), and

@@ -57,7 +57,9 @@ const isCalm = () => {
 // kept (lib/top10Remote.js), whichever is good. An installed app that holds no
 // list for the day asked for goes and fetches before saying there is none: the
 // first open after its bundled schedule has run out.
-function useTop10Data(date, listId) {
+// `library`: the Top 10 browser, which needs every list but not today's, so an
+// installed app past its bundled schedule does not refetch before drawing it.
+export function useTop10Data(date, listId, { library = false } = {}) {
   const [state, setState] = useState({ data: null, failed: false });
   useEffect(() => {
     let live = true;
@@ -75,7 +77,7 @@ function useTop10Data(date, listId) {
         native ? import("../lib/top10Remote.js").catch(() => null) : null,
       ]);
       let data = remote ? remote.pickTop10Data(bundled, remote.cachedTop10()) : bundled;
-      const missing = listId ? !Object.hasOwn(data.lists, listId) : getTop10Number(date) > data.log.length;
+      const missing = library ? false : listId ? !Object.hasOwn(data.lists, listId) : getTop10Number(date) > data.log.length;
       if (remote && missing) {
         const got = await remote.refreshTop10({ force: true });
         data = remote.pickTop10Data(bundled, remote.cachedTop10());
@@ -119,7 +121,7 @@ function Head({ number, sub, lives, onBack, embedded }) {
   );
 }
 
-export default function Top10({ date = new Date(), listId, onBack, onReport, services, embedded = false }) {
+export default function Top10({ date = new Date(), listId, onBack, onReport, onMoreLists, services, embedded = false }) {
   const { data, failed } = useTop10Data(date, listId);
   // `listId` plays one list by name instead of the day's: the door the archive
   // and the club lists will use. It has no number and never counts as a daily.
@@ -158,11 +160,11 @@ export default function Top10({ date = new Date(), listId, onBack, onReport, ser
   // list, starts from that list's own saved state and never another's.
   return (
     <Top10Board key={`${list.id}:${dateToYMD(date)}`} list={list} data={data} date={date} number={number}
-      byName={!!listId} onBack={onBack} onReport={onReport} services={services} embedded={embedded} />
+      byName={!!listId} onBack={onBack} onReport={onReport} onMoreLists={onMoreLists} services={services} embedded={embedded} />
   );
 }
 
-function Top10Board({ list, data, date, number, byName, onBack, onReport, services, embedded }) {
+function Top10Board({ list, data, date, number, byName, onBack, onReport, onMoreLists, services, embedded }) {
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
   // A list opened by name is saved under its own id, so it can never be read
   // back as a day's result (and so never feeds the streak).
@@ -512,9 +514,10 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, servic
           {/* A wrong list is unfalsifiable from inside the game: the player
               cannot tell a name they forgot from a name we got wrong. */}
           <ResultFoot thing="List" onReport={onReport} onHome={onBack}
+            more={onMoreLists ? { label: "More Top 10 lists", onClick: onMoreLists, accent: "var(--t10)" } : null}
             info={{
               id: `top10:${list.id}`,
-              q: `Top 10 #${number} — ${list.title} (as of ${list.asOf}): ${list.slots.map((s, i) => `${i + 1}. ${s.name}`).join(", ")}`,
+              q: `Top 10 ${number ? `#${number}` : `list ${list.id}`} — ${list.title} (as of ${list.asOf}): ${list.slots.map((s, i) => `${i + 1}. ${s.name}`).join(", ")}`,
               picked: null,
               correct: null,
               mode: "top10",
