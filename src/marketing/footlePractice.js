@@ -2,9 +2,9 @@
 // A PAST Footle puzzle (never today's) + the app's own grader, emitted via
 // toString() so duplicate-letter scoring cannot drift from src/lib/wordle.js.
 
-export const FP_ANSWER = 'FABREGAS';
-export const FP_FULL = 'Cesc Fàbregas';
-export const FP_NUMBER = 133;
+export const FP_ANSWER = 'ANTONY';
+export const FP_FULL = 'Antony';
+export const FP_NUMBER = 135;
 
 export const gradeGuess = function gradeWordleGuess(guess, answer) {
   const n = answer.length;
