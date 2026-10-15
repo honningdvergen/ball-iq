@@ -32,6 +32,7 @@ export const CLUB_ALIAS = {
   'Sheffield Utd': 'Sheffield United',
   'Blackburn': 'Blackburn Rovers',
   'Preston': 'Preston North End',
+  'Charlton': 'Charlton Athletic',
   'Bolton': 'Bolton Wanderers',
   'Man City': 'Manchester City',
   'Man United': 'Manchester United',

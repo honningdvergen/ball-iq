@@ -3558,4 +3558,36 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Charlton Athletic",
+    "slug": "charlton-athletic",
+    "name": "Charlton Athletic",
+    "h1": "Charlton Athletic Quiz",
+    "title": "Charlton Athletic Quiz with Answers | Ball IQ",
+    "description": "Charlton Athletic quiz: the 1947 FA Cup win, Sam Bartram in the fog, the fight to return to The Valley and Clive Mendonca's Wembley hat-trick.",
+    "intro": [
+      "Charlton Athletic were formed on 9 June 1905 by a group of 14 and 15-year-olds in East Street, Charlton, and first played at The Valley in 1919. Jimmy Seed managed the club from 1933 to 1956 and took them from the Third Division South to second place in the First Division in 1936-37. Charlton lost the 1946 FA Cup final 4-1 to Derby County after extra time, a game in which Bert Turner scored at both ends. A year later they came back to Wembley and won the cup, beating Burnley 1-0 in extra time with a goal from Chris Duffy. This quiz also asks about goalkeeper Sam Bartram, who stayed in his goalmouth for several minutes at a fog-bound Stamford Bridge on Christmas Day 1937 because nobody told him the game had been called off.",
+      "Charlton's history has some of English football's strangest days. In December 1957, ten-man Charlton were 5-1 down to Bill Shankly's Huddersfield Town at The Valley and won 7-6, with Johnny Summers scoring five. In January 1979, strike partners Derek Hales and Mike Flanagan were both sent off for fighting each other in an FA Cup tie against Maidstone United. Eddie Firmani left for Sampdoria in 1955 and later came back to Charlton as a player and then as manager. In 1982 the club signed Allan Simonsen, the 1977 European Footballer of the Year, from Barcelona.",
+      "Then came the years away from home. In September 1985 Charlton left The Valley to share Crystal Palace's Selhurst Park, which upset many supporters. Under Lennie Lawrence they still won promotion to the First Division as Second Division runners-up in 1985-86, then stayed up in 1987 by beating Leeds United in a play-off final replay after extra time. Supporters stood as The Valley Party in the 1990 Greenwich Council elections and won about 11% of the vote. After a spell at West Ham's Upton Park, Charlton finally came home in December 1992 and beat Portsmouth 1-0. To help pay for the move back, the club had to sell players such as Robert Lee, who joined Kevin Keegan's Newcastle United.",
+      "Alan Curbishley started as joint manager with Steve Gritt in 1991 and took sole charge in 1995. In the 1998 First Division play-off final, Clive Mendonca scored a hat-trick in a 4-4 draw with Sunderland, and Charlton won the shoot-out 7-6 after Sasa Ilic saved Michael Gray's penalty. Their best Premier League finish was 7th in 2003-04, the same season they sold Scott Parker to Chelsea. After Curbishley left for West Ham, Iain Dowie and then Alan Pardew were in charge in a season that ended in relegation, and Darren Bent left for Tottenham. Chris Powell's side won League One with 101 points in 2011-12, and Patrick Bauer's 94th-minute winner against Sunderland at Wembley in 2019 won another promotion. The quiz also covers the young players who left the club, including Jonjo Shelvey and Joe Gomez (both to Liverpool) and Ademola Lookman (to Everton)."
+    ],
+    "faq": [
+      {
+        "q": "When were Charlton Athletic founded?",
+        "a": "Charlton Athletic were formed on 9 June 1905 by a group of 14 and 15-year-olds in East Street, Charlton, in south-east London. They first played at The Valley in 1919."
+      },
+      {
+        "q": "Have Charlton Athletic ever won the FA Cup?",
+        "a": "Yes. Charlton won the FA Cup in 1947, beating Burnley 1-0 after extra time at Wembley with a goal from Chris Duffy. A year earlier they had lost the 1946 final 4-1 to Derby County after extra time."
+      },
+      {
+        "q": "Where did Charlton play when they left The Valley?",
+        "a": "In September 1985 Charlton began sharing Crystal Palace's Selhurst Park, and they stayed there until 1991. They then shared West Ham's Upton Park for the 1991-92 season and the first months of 1992-93. They returned to The Valley in December 1992 and beat Portsmouth 1-0."
+      },
+      {
+        "q": "What is Charlton's best finish in the Premier League?",
+        "a": "Charlton finished 7th in the Premier League in 2003-04 under Alan Curbishley. That is their best finish of the Premier League era."
+      }
+    ]
+  },
 ];
