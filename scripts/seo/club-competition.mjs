@@ -67,6 +67,7 @@ export const CLUB_COMPETITION = {
   "Al Hilal": "Saudi Pro League",
   "Preston North End": "Championship",
   "Millwall": "Championship",
+  "Bolton Wanderers": "Championship",
   "Cruz Azul": "Liga MX",
   "Guadalajara": "Liga MX",
   "Club América": "Liga MX",

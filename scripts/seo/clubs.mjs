@@ -3526,4 +3526,36 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Bolton Wanderers",
+    "slug": "bolton-wanderers",
+    "name": "Bolton Wanderers",
+    "h1": "Bolton Wanderers Quiz",
+    "title": "Bolton Wanderers Quiz with Answers | Ball IQ",
+    "description": "Test your Bolton Wanderers knowledge: Christ Church FC, the White Horse Final, Lofthouse in 1958, Okocha, Anelka and the 2007-08 UEFA Cup run.",
+    "intro": [
+      "Bolton Wanderers began in 1874 as Christ Church FC, a club linked to a local church, and took the name Bolton Wanderers in 1877. In 1888 they were one of the 12 founder members of the Football League, alongside clubs such as Accrington. From 1895 until 1997 their home was Burnden Park, which they left that year for the Reebok Stadium. This quiz covers the whole of that story, from the church side of the 1870s to the club's recent run under Ian Evatt.",
+      "The FA Cup is central to Bolton's history. In 1923 they beat West Ham United 2-0 in the first FA Cup final played at Wembley. It became known as the 'White Horse Final' because a huge crowd spilled onto the pitch before the game. In 1926 a goal from David Jack beat Manchester City, who were relegated that same season. Two years later Bolton sold Jack to Herbert Chapman's Arsenal for more than £10,000, the first five-figure transfer fee. In 1953 Bolton were on the losing side of the 'Matthews Final', when Blackpool came back to win 4-3 and Stan Mortensen scored a hat-trick. In 1958 Nat Lofthouse scored both goals in a 2-0 win over Manchester United.",
+      "Bolton's modern era begins further down the leagues. Phil Neal's side beat Torquay United 4-1 at Wembley in the 1989 Sherpa Van Trophy final. In 1995, while still a second-tier club, Bolton reached the League Cup final and lost 2-1 to Liverpool. The same year they came from 2-0 down to beat Reading 4-3 after extra time in the play-off final and win promotion to the Premier League. Bruce Rioch then left for Arsenal. Under Colin Todd, Bolton won the 1996-97 First Division title with 98 points and 100 league goals. The following season they were relegated on goal difference, finishing level on 40 points with Everton. Sam Allardyce's team went back up in 2001 by beating Preston North End 3-0 in Cardiff.",
+      "Under Allardyce, Bolton signed big international names. Jay-Jay Okocha came from Paris Saint-Germain on a free transfer, France World Cup winner Youri Djorkaeff joined from Kaiserslautern, and former Real Madrid captain Fernando Hierro arrived after a season with Al-Rayyan. Nicolas Anelka came from Fenerbahçe for a club-record fee. Bolton lost the 2004 League Cup final to Middlesbrough. In the 2007-08 UEFA Cup they knocked out Atlético Madrid before Sporting CP ended the run in the last 16. Later questions cover Johan Elmander's club-record move from Toulouse, Kevin Davies' single England cap at the age of 33, and the 4-0 win over Plymouth Argyle in the 2023 EFL Trophy final."
+    ],
+    "faq": [
+      {
+        "q": "When were Bolton Wanderers founded?",
+        "a": "Bolton were founded in 1874 as Christ Church FC, a club linked to a local church. They took the name Bolton Wanderers in 1877, and in 1888 they were one of the 12 founder members of the Football League."
+      },
+      {
+        "q": "Where did Bolton play before the Reebok Stadium?",
+        "a": "Bolton played at Burnden Park from 1895 until 1997, when they moved to the Reebok Stadium. In their last season there, 1996-97, they won the First Division title with 98 points and 100 league goals."
+      },
+      {
+        "q": "What was the White Horse Final?",
+        "a": "The White Horse Final was the 1923 FA Cup final, the first one played at Wembley. A huge crowd spilled onto the pitch before kick-off, and Bolton went on to beat West Ham United 2-0."
+      },
+      {
+        "q": "What happened in Bolton's 2007-08 UEFA Cup run?",
+        "a": "Bolton beat Atlético Madrid 1-0 on aggregate in the round of 32. El-Hadji Diouf scored the only goal at the Reebok, and Bolton then held Atlético to 0-0 in Madrid. Sporting CP knocked them out in the last 16 after a 1-1 draw at the Reebok and a 1-0 win in Lisbon."
+      }
+    ]
+  },
 ];
