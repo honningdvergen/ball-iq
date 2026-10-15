@@ -3366,4 +3366,100 @@ export const CLUBS = [
       { q: "Which players have Cruzeiro sold on to Europe and beyond?", a: "Alex went to Fenerbahçe in 2004 for around €5 million after the treble season. Fred joined Lyon in 2005 for a reported €15 million. Ramires left for Benfica in a €7.5 million deal agreed in May 2009, staying until that year's Libertadores final. Ricardo Goulart, the 2014 Bola de Ouro winner, moved to Guangzhou Evergrande in January 2015 for about €15 million, and Giorgian de Arrascaeta — signed from Defensor Sporting — was sold to Flamengo in 2019." },
     ],
   },
+  {
+    "club": "Villarreal",
+    "slug": "villarreal",
+    "name": "Villarreal",
+    "h1": "Villarreal Quiz",
+    "title": "Villarreal Quiz with Answers | Ball IQ",
+    "description": "Test your Villarreal knowledge: El Madrigal, Riquelme's penalty against Arsenal, Forlán's Golden Shoe and the 11-10 shootout win in Gdańsk.",
+    "intro": [
+      "Fernando Roig took control of Villarreal in 1997. He is the club's owner and president, and he also owns and runs the tile company Pamesa Cerámica. A year after he arrived, Villarreal reached La Liga for the first time. They drew 0-0 at home and 1-1 away against SD Compostela in a promotion play-off and went up on away goals. The first top-flight season ended in relegation after a 1999 play-off, which Sevilla won 3-0 on aggregate. Their ground was called El Madrigal until 2017, when it was renamed Estadio de la Cerámica.",
+      "Europe came quickly once they were back in La Liga. Villarreal won the UEFA Intertoto Cup in 2003 against Heerenveen and again in 2004, beating Atlético Madrid on penalties. Valencia ended their run in the 2003-04 UEFA Cup semi-finals. In their first Champions League season, 2005-06, Villarreal won Group D ahead of Benfica and Lille while Manchester United finished bottom. They knocked out Inter on away goals in the quarter-finals. In the second leg of the semi-final against Arsenal, Jens Lehmann saved a late penalty from Juan Román Riquelme. That game ended 0-0 and Arsenal went through 1-0 on aggregate. Riquelme had first joined on loan from Barcelona in 2003, and Diego Forlán arrived from Manchester United in 2004. Forlán shared the 2004-05 European Golden Shoe with Thierry Henry after both scored 25 league goals.",
+      "Under Manuel Pellegrini, Villarreal finished second in 2007-08, behind champions Real Madrid. Marcos Senna, who was born in Brazil, won Euro 2008 with Spain. Santi Cazorla left for Recreativo de Huelva in 2006, was brought back a year later through a buy-back clause, and then joined Málaga in 2011. Porto ended the 2010-11 Europa League run, winning the first leg of the semi-final 5-1 with four goals from Radamel Falcao. In 2011-12 Villarreal were relegated on the final day after losing 1-0 at home to Atlético Madrid, while Raúl Tamudo's stoppage-time winner kept Rayo Vallecano up. Giuseppe Rossi left for Fiorentina in January 2013. Marcelino was appointed that month and won promotion back to La Liga at the end of the season.",
+      "Unai Emery's Villarreal beat his old club Arsenal in the 2020-21 Europa League semi-finals, winning 2-1 at home and drawing 0-0 at the Emirates. They beat Manchester United 11-10 on penalties in the final in Gdańsk, where Gerónimo Rulli saved David de Gea's kick, the 22nd of the shootout. The following season they knocked Juventus and then Bayern Munich out of the Champions League before losing to Liverpool in the semi-finals. Samuel Chukwueze scored the late goal in Munich. In summer 2023 Nicolas Jackson left for Chelsea, Pau Torres joined Emery at Aston Villa and Chukwueze moved to AC Milan. See how many of these you can get right."
+    ],
+    "faq": [
+      {
+        "q": "What was Villarreal's stadium called before Estadio de la Cerámica?",
+        "a": "Villarreal's home ground was called El Madrigal until it was renamed Estadio de la Cerámica in 2017."
+      },
+      {
+        "q": "When did Villarreal first reach La Liga?",
+        "a": "Villarreal first reached La Liga in 1998. They beat SD Compostela in a promotion play-off on away goals after a 0-0 draw at home and a 1-1 draw away."
+      },
+      {
+        "q": "Have Villarreal won the Europa League?",
+        "a": "Yes. Villarreal beat Manchester United 11-10 on penalties in the 2021 Europa League final in Gdańsk. Gerónimo Rulli saved David de Gea's kick, the 22nd of the shootout. They had already won the UEFA Intertoto Cup in 2003 and 2004."
+      },
+      {
+        "q": "How far have Villarreal gone in the Champions League?",
+        "a": "Villarreal have reached the Champions League semi-finals twice. In 2005-06, their first season in the competition, Arsenal beat them 1-0 on aggregate. In 2021-22 they knocked out Juventus and Bayern Munich, then lost to Liverpool in the semi-finals."
+      }
+    ]
+  },
+  {
+    "club": "Werder Bremen",
+    "slug": "werder-bremen",
+    "name": "Werder Bremen",
+    "h1": "Werder Bremen Quiz",
+    "title": "Werder Bremen Quiz with Answers | Ball IQ",
+    "description": "Test your Werder Bremen knowledge: Bundesliga titles in 1965 and 2004, the 1992 Cup Winners' Cup, the Wunder von der Weser nights, Klose, Özil and more.",
+    "intro": [
+      "Werder Bremen began on 4 February 1899, when a group of school students founded FV Werder. The club's first major trophy came in 1961, a 2-0 win over 1. FC Kaiserslautern in the DFB-Pokal final in Gelsenkirchen. In the Bundesliga's second season, 1964-65, Willi Multhaup's side became champions, a year after 1. FC Köln won the first title. Multhaup then left for Borussia Dortmund and won the 1966 Cup Winners' Cup there.",
+      "Werder finished 17th in 1979-80 and went down, then came straight back up in 1981, the year Otto Rehhagel arrived. He stayed for 14 years. Rudi Völler joined from 1860 Munich and was the Bundesliga's top scorer in 1982-83. In 1985-86 Michael Kutzop hit the post with a late penalty in a 0-0 draw with Bayern Munich, and Bayern took the title on goal difference. The European nights of that era became known as the Wunder von der Weser: 6-2 against Spartak Moscow after a 4-1 first-leg defeat, 5-0 against BFC Dynamo after losing 3-0 in East Berlin, and 5-3 against Anderlecht from 3-0 down. Werder won the 1991 DFB-Pokal on penalties against Köln, beat Monaco 2-0 in Lisbon in the 1992 Cup Winners' Cup final with goals from Klaus Allofs and Wynton Rufer, and beat Rot-Weiss Essen 3-1 in the 1994 cup final.",
+      "Thomas Schaaf replaced Felix Magath in May 1999 with the club in relegation danger. He kept Werder up and won the cup weeks later. His side won the double in 2003-04: they sealed the title 3-1 at Bayern's Olympiastadion on 8 May 2004 and beat second-division Alemannia Aachen 3-2 in the cup final. Ailton scored 28 league goals that season, with Johan Micoud, signed from Parma, running the midfield. Miroslav Klose was top scorer in 2005-06 with 25 goals. Mesut Özil arrived from Schalke 04 in January 2008 and scored the only goal of the 2009 cup final against Bayer Leverkusen. That spring Werder knocked out Hamburger SV in a UEFA Cup semi-final remembered for a paper ball, then lost the final 2-1 after extra time to Shakhtar Donetsk in Istanbul.",
+      "More recent questions follow Per Mertesacker's move to Arsenal in 2011 and Kevin De Bruyne's 2012-13 loan from Chelsea, when he scored 10 Bundesliga goals. In 2020 Werder survived the relegation play-off against 1. FC Heidenheim on away goals. They went down in 2021. Ole Werner arrived from Holstein Kiel that November and won promotion in his first season, and in 2022-23 Niclas Füllkrug's 16 goals earned him a share of the top scorer award with Christopher Nkunku. Every answer in this quiz has been fact-checked, so see how much of the club's history you really know."
+    ],
+    "faq": [
+      {
+        "q": "When was Werder Bremen founded?",
+        "a": "The club was founded on 4 February 1899 as FV Werder by a group of school students."
+      },
+      {
+        "q": "What is the Wunder von der Weser?",
+        "a": "It is the name for Werder's great comebacks at home in Europe. They beat Spartak Moscow 6-2 after extra time in 1987-88 after losing the first leg 4-1, beat BFC Dynamo 5-0 in 1988-89 after losing 3-0 away, and beat Anderlecht 5-3 in the 1993-94 Champions League after going 3-0 down."
+      },
+      {
+        "q": "Which European trophy did Werder Bremen win in 1992?",
+        "a": "The European Cup Winners' Cup. Werder beat Monaco 2-0 in the final at the Estádio da Luz in Lisbon, with goals from Klaus Allofs and Wynton Rufer."
+      },
+      {
+        "q": "When did Werder Bremen win the double?",
+        "a": "In 2003-04 under Thomas Schaaf. They sealed the Bundesliga title with a 3-1 win at Bayern Munich on 8 May 2004 and beat Alemannia Aachen 3-2 in the DFB-Pokal final. Ailton was the league's top scorer that season with 28 goals."
+      }
+    ]
+  },
+  {
+    "club": "VfB Stuttgart",
+    "slug": "vfb-stuttgart",
+    "name": "VfB Stuttgart",
+    "h1": "VfB Stuttgart Quiz",
+    "title": "VfB Stuttgart Quiz with Answers | Ball IQ",
+    "description": "How well do you know VfB Stuttgart? Test yourself on the 1912 merger, the 1992 title, Löw's 1997 cup win, the Junge Wilde and more.",
+    "intro": [
+      "VfB Stuttgart's story starts in 1912. That year FV Stuttgart 1893 merged with Kronen-Club Cannstatt to form the Verein für Bewegungsspiele Stuttgart. This quiz follows the club from that merger to the promotion it won as 2. Bundesliga runner-up under Pellegrino Matarazzo in 2019-20. Along the way it covers championship seasons, cup finals, European nights and relegations.",
+      "Stuttgart reached the German championship final in 1935 but lost 6-4 to Schalke 04 in Cologne. Their first national title came in 1950, with a 2-1 win over Kickers Offenbach at the Olympiastadion in Berlin. Swiss coach Helmut Benthaus won the 1983-84 Bundesliga with the Förster brothers and Asgeir Sigurvinsson. In 1992 Guido Buchwald headed an 86th-minute winner at Leverkusen, and Stuttgart took the title on goal difference. Armin Veh's side then won the 2006-07 title, two points ahead of Schalke.",
+      "The cup and European rounds bring their own questions. In 1997 Joachim Löw won the DFB-Pokal in his first season in charge, beating Energie Cottbus 2-0 in Berlin. Maradona's Napoli beat Stuttgart in the 1989 UEFA Cup final, and Gianfranco Zola came off the bench to win the 1998 Cup Winners' Cup final for Chelsea in Stockholm. In October 2003 Felix Magath's young side beat Manchester United 2-1 at home in the Champions League.",
+      "Then come the players. Jürgen Klinsmann crossed the city from Stuttgarter Kickers in 1984. Krassimir Balakov and Giovane Élber formed the 'magic triangle'. Fredi Bobic was the Bundesliga's top scorer in 1995-96. From the 'Junge Wilde' era, Kevin Kuranyi joined Schalke, Aliaksandr Hleb went to Arsenal and Timo Hildebrand moved to Valencia. Sami Khedira later left for Real Madrid, Timo Werner for RB Leipzig, and Mario Gomez came back to Stuttgart in January 2018. Every question has a hint that explains the answer."
+    ],
+    "faq": [
+      {
+        "q": "When was VfB Stuttgart formed?",
+        "a": "VfB Stuttgart was formed in 1912, when FV Stuttgart 1893 merged with Kronen-Club Cannstatt to create the Verein für Bewegungsspiele Stuttgart."
+      },
+      {
+        "q": "When did VfB Stuttgart win their first German championship?",
+        "a": "In 1950. Stuttgart beat Kickers Offenbach 2-1 in the final at the Olympiastadion in Berlin in June 1950 to win their first national title."
+      },
+      {
+        "q": "Who scored the goal that won Stuttgart the 1991-92 Bundesliga?",
+        "a": "Defender Guido Buchwald scored it. On the final day he headed an 86th-minute winner to beat Bayer Leverkusen 2-1, while Eintracht Frankfurt lost at Hansa Rostock. That gave Stuttgart the title on goal difference."
+      },
+      {
+        "q": "Which European finals did VfB Stuttgart lose in 1989 and 1998?",
+        "a": "In 1989 Stuttgart lost the UEFA Cup final to Napoli over two legs: 2-1 to Napoli in Naples and 3-3 in Stuttgart. In 1998 they lost the Cup Winners' Cup final 1-0 to Chelsea in Stockholm, with Gianfranco Zola scoring the winner."
+      }
+    ]
+  },
 ];

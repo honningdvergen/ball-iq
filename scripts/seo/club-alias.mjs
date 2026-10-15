@@ -26,6 +26,7 @@ export const CLUB_ALIAS = {
   // Germany — leagues.mjs carries the short form 'Frankfurt' (code SGE); the
   // bank and the page both use the full name, and the generator joins on it.
   'Frankfurt': 'Eintracht Frankfurt',
+  'Stuttgart': 'VfB Stuttgart',
   // England — long-form pages
   'Sheffield Utd': 'Sheffield United',
   'Blackburn': 'Blackburn Rovers',
