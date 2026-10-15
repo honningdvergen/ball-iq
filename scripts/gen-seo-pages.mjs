@@ -125,6 +125,7 @@ import { LISTS } from './seo/lists.mjs';
 import { STUDY, studyStats } from './seo/study.mjs';
 import { NATIONS } from './seo/nations.mjs';
 import { LEAGUES } from './seo/leagues.mjs';
+import { competitionFor } from './seo/club-competition.mjs';
 // Footle answer schedule + the real grading function, for the playable practice
 // board on /football-wordle/. Importing the GAME's own module is deliberate:
 // the grader is inlined from `gradeWordleGuess.toString()` rather than rewritten,
@@ -2428,8 +2429,20 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
       (_, i) => nationPages[(Math.max(0, nStart) + i) % nationPages.length])
     : [];
 
+  // ⚠️ SAME LEAGUE FIRST (16 Oct 2026). The tiles ran in CLUBS file order, so
+  // Arsenal's first row of "More quizzes to try" was Fluminense, Botafogo and
+  // Vasco: the reader who just played Arsenal is an Arsenal fan, and the next
+  // quiz they will take is a rival's. Same competition first, in clubs.mjs
+  // order (biggest names lead each league there); everyone else follows, rotated from this club's position so the
+  // long tail still gets links from somewhere (the nation-mesh rule above).
+  const me = clubPages.find((p) => p.slug === cfg.slug);
+  const others = clubPages.filter((p) => p.slug !== cfg.slug);
+  const sameComp = me?.comp ? others.filter((p) => p.comp === me.comp) : [];
+  const elsewhere = others.filter((p) => !sameComp.includes(p));
+  const rot = elsewhere.length ? Math.max(0, nStart) % elsewhere.length : 0;
   const related = [
-    ...clubPages.filter((p) => p.slug !== cfg.slug),
+    ...sameComp,
+    ...elsewhere.slice(rot), ...elsewhere.slice(0, rot),
     ...catPages,
     ...playerPages,
     ...nationSlice,
@@ -6196,7 +6209,7 @@ async function main() {
   ];
 
   // Club pages: /quiz/<club-slug>/ — same URL namespace, own interlink mesh.
-  const clubPages = CLUBS.map((c) => ({ slug: c.slug, name: `${c.name} quiz`, count: clubRows(c.club).length }));
+  const clubPages = CLUBS.map((c) => ({ slug: c.slug, name: `${c.name} quiz`, count: clubRows(c.club).length, comp: competitionFor(c.club, LEAGUES) }));
   // Player pages: /quiz/<player-slug>/ — same namespace; text-matched question sets.
   const playerPages = PLAYERS.map((p) => ({ slug: p.slug, name: `${p.name} quiz`, count: playerHintRows(p.match).length }));
   // Nation pages: /quiz/<nation-slug>/ — same namespace; text-matched question sets.
