@@ -3590,4 +3590,36 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Bristol City",
+    "slug": "bristol-city",
+    "name": "Bristol City",
+    "h1": "Bristol City Quiz",
+    "title": "Bristol City Quiz with Answers | Ball IQ",
+    "description": "Test your Bristol City knowledge: Bristol South End in 1894, the 1909 FA Cup final, the Ashton Gate Eight, John Atyeo and the 2008 play-off final.",
+    "intro": [
+      "Bristol City began life in 1894 as Bristol South End and took the name Bristol City in 1897, when the club turned professional. Promoted as Second Division champions in 1906, they finished runners-up behind Newcastle United in their first First Division season, 1906-07. Two years later they reached the 1909 FA Cup final, where Sandy Turnbull's goal gave Manchester United a 1-0 win. It is still Bristol City's only FA Cup final.",
+      "The club's greatest goalscorer story belongs to John Atyeo, a forward at Bristol City from 1951 to 1966 who scored more than 300 goals for the club and five in his six England games. The Atyeo Stand at Ashton Gate is named after him. Under Alan Dicks, City went up to the First Division in 1976 as runners-up behind Sunderland. On the last day of 1976-77 they drew 2-2 at Coventry City after a delayed kick-off, a result that kept both sides up. By 1982 the club was close to liquidation during its third straight relegation, and the 'Ashton Gate Eight', eight senior players, tore up their contracts so a new company could take over.",
+      "Cup days and near misses run right through this quiz. Terry Cooper's side beat Bolton Wanderers 3-0 in the 1986 Freight Rover Trophy final at Wembley, Danny Wilson's City beat Carlisle United 2-0 in the 2003 LDV Vans Trophy final at the Millennium Stadium, and Steve Cotterill's team beat Walsall 2-0 at Wembley in 2015 on the way to the League One title. There were heartbreaks too: Brighton & Hove Albion won the 2004 play-off final 1-0 with a late Leon Knight penalty, and Dean Windass's volley sent Hull City into the top flight for the first time at City's expense in the 2008 Championship play-off final. In January 1994 Brian Tinnion scored the only goal of an FA Cup replay at Anfield, and Graeme Souness resigned as Liverpool manager days later.",
+      "You will also need to know the players who passed through. Andy Cole joined Kevin Keegan's Newcastle from City in 1993 for £1.75 million, Tammy Abraham spent 2015-16 on loan from Chelsea, Jonathan Kodjia was sold to Aston Villa in 2016 for a reported £11m, and Adam Webster went to Brighton in 2019 for a reported £20m. Matty Taylor crossed the Bristol divide from Bristol Rovers in January 2017, and Korey Smith's 93rd-minute winner beat Manchester United in the 2017 League Cup quarter-final before Pep Guardiola's Manchester City won the semi-final 5-3 on aggregate. Think you know your Bristol City history? Take the quiz and find out."
+    ],
+    "faq": [
+      {
+        "q": "When were Bristol City founded?",
+        "a": "Bristol City were founded in 1894 under the name Bristol South End. The club took the name Bristol City in 1897, when it turned professional."
+      },
+      {
+        "q": "Have Bristol City ever reached an FA Cup final?",
+        "a": "Yes, once. Bristol City lost the 1909 FA Cup final 1-0 to Manchester United, with Sandy Turnbull scoring the only goal. It was Manchester United's first FA Cup win and remains Bristol City's only FA Cup final."
+      },
+      {
+        "q": "Who were the Ashton Gate Eight?",
+        "a": "In 1982, with Bristol City close to liquidation during a third straight relegation, eight senior players agreed to tear up their contracts so that a new company could take over the club. They became known as the Ashton Gate Eight."
+      },
+      {
+        "q": "How many times have Bristol City won the Football League Trophy?",
+        "a": "Bristol City have won it three times: the 1986 Freight Rover Trophy (3-0 against Bolton Wanderers at Wembley), the 2003 LDV Vans Trophy (2-0 against Carlisle United at the Millennium Stadium) and the 2015 Johnstone's Paint Trophy (2-0 against Walsall at Wembley). They also reached the 1987 final but lost to Mansfield Town on penalties."
+      }
+    ]
+  },
 ];
