@@ -3622,4 +3622,36 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Lincoln City",
+    "slug": "lincoln-city",
+    "name": "Lincoln City",
+    "h1": "Lincoln City Quiz",
+    "title": "Lincoln City Quiz with Answers | Ball IQ",
+    "description": "Lincoln City quiz: from John O'Gaunts and Graham Taylor's 74-point title to the Cowley brothers, Sean Raggett at Burnley and the 2018 Wembley win.",
+    "intro": [
+      "Lincoln City were formed in 1884, after Lincoln Rovers disbanded, and turned professional in 1891-92. In 1892 they were among the founder members of the new Second Division. They played at John O'Gaunts, south of the city centre, until 1895, when they moved to Sincil Bank. Their nickname, The Imps, comes from the Lincoln Imp, a small stone carving inside Lincoln Cathedral.",
+      "Sincil Bank's record crowd is 23,196, for a League Cup tie against Derby County on 15 November 1967. Graham Taylor's side won the 1975-76 Fourth Division title with 32 wins, only 4 defeats and 74 points, in the days of two points for a win. Taylor left for Watford in 1977. The ground's Stacey West Stand, completed in 1990, is named after Bill Stacey and Jim West, two Lincoln supporters who died in the Valley Parade fire at Bradford City on 11 May 1985.",
+      "In 1987 Lincoln became the first club relegated automatically from the Football League, and Conference champions Scarborough took their place. Colin Murphy came back for a second spell and led them straight back up as 1987-88 Conference champions. Keith Alexander later took Lincoln to four play-off campaigns in a row, from 2003 to 2006, including a 5-2 final defeat to AFC Bournemouth at the Millennium Stadium in 2003 and a 2-0 extra-time loss to Steve Tilson's Southend United in 2005. Sincil Bank also launched players such as Darren Huckerby, sold to Newcastle United in 1995, and Jack Hobbs, who joined Liverpool in 2005.",
+      "After dropping out of the Football League in 2011, alongside Stockport County, Lincoln were rebuilt by Danny and Nicky Cowley, who arrived from Braintree Town in 2016. In their first season Lincoln won the 2016-17 National League title, and Sean Raggett's 89th-minute goal won an FA Cup fifth-round tie at Burnley. The Imps then beat Shrewsbury Town 1-0 in the EFL Trophy final at Wembley in April 2018 and won the 2018-19 League Two title. Michael Appleton's side, with Brennan Johnson on loan from Nottingham Forest, reached the 2021 League One play-off final, where they lost 2-1 to Blackpool."
+    ],
+    "faq": [
+      {
+        "q": "Why are Lincoln City called The Imps?",
+        "a": "The nickname comes from the Lincoln Imp, a small stone carving inside Lincoln Cathedral."
+      },
+      {
+        "q": "When were Lincoln City founded, and how long have they played at Sincil Bank?",
+        "a": "Lincoln City were formed in 1884, after Lincoln Rovers disbanded. They played at John O'Gaunts until 1895, when they moved to Sincil Bank."
+      },
+      {
+        "q": "What is Sincil Bank's record attendance?",
+        "a": "The record is 23,196, for Lincoln's League Cup tie against Derby County on 15 November 1967."
+      },
+      {
+        "q": "Have Lincoln City won a final at Wembley?",
+        "a": "Yes. Lincoln beat Shrewsbury Town 1-0 in the EFL Trophy final on 8 April 2018, and Elliott Whitehouse scored the only goal in the 16th minute."
+      }
+    ]
+  },
 ];
