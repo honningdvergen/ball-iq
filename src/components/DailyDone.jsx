@@ -209,6 +209,15 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       )}
 
 
+      {/* THE APP, RIGHT UNDER SHARE (15 Oct 2026). It was the last thing in the
+          panel, about two screens below a win on a phone, while a "Never miss a
+          day: Add to Home Screen" banner above it offered the web app instead:
+          3.6% of web visitors ever tapped a store link (website review). On a
+          phone browser the finish is the moment of highest intent, so the
+          visitor's own store badge sits here; inside the app GetAppCTA draws
+          nothing. */}
+      {GetAppCTA && <div className="dd-getapp"><GetAppCTA /></div>}
+
       {/* THE ASK IS A ROW, NOT A PILL (2026-09-09). Reach is the retention
           leak: 44 of 308 accounts hold a token. Since the soft-prompt sheet was
           retired (09-06) this panel has been the only ask in the app, and it
@@ -298,7 +307,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
-      {GetAppCTA && <div className="dd-getapp"><GetAppCTA /></div>}
     </section>
   );
 }

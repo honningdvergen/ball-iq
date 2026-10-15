@@ -2099,7 +2099,7 @@ export function FootleGetAppCTA({ style }) {
   return (
     <PlatformStoreBadge
       style={style}
-      caption="Streaks, daily reminders and every quiz in one app"
+      caption="Keep your streak: daily reminders and every quiz in the Ball IQ app"
     />
   );
 }
@@ -3210,6 +3210,13 @@ function ResetPasswordOverlay() {
 
 export function InstallBanner() {
   const { canPromptNative, platform, showBanner, promptInstall, dismiss } = useInstallBanner();
+  // PHONES GET THE REAL APP, NOT THE WEB ONE (15 Oct 2026). On an iPhone or an
+  // Android phone this banner told a player who had just won to add the
+  // website to the home screen "for daily reminders": the native app's own
+  // selling point, given away at the moment of highest intent. Phones now see
+  // only the store badge in the finish panel (FootleGetAppCTA); the home-screen
+  // install stays for desktop and tablets without a store app.
+  if (IS_IOS_WEB || IS_ANDROID_WEB) return null;
   if (!showBanner) return null;
   return (
     <div className="install-banner" role="region" aria-label="Install Ball IQ">
@@ -3857,8 +3864,11 @@ const FOOTLE_SERVICES = {
 // (src/games/dailyServices.js): the app supplies its haptics, sounds and
 // confetti; the static /transfer-trail/ and /mystery-player/ islands supply
 // stand-ins. Neither screen may import App.jsx — see the note at the top of
-// each. No GetAppCTA here: the app has its own install banner.
-const DAILY_SERVICES = { haptic, playSound, Confetti };
+// each. GetAppCTA too (15 Oct 2026): it read "No GetAppCTA here: the app has
+// its own install banner", which is true inside the app, where the component
+// draws nothing, and wrong on the website's /play, where a phone visitor who
+// finished Transfer Trail, Top 10 or Mystery Player saw no way to the app.
+const DAILY_SERVICES = { haptic, playSound, Confetti, GetAppCTA: FootleGetAppCTA };
 
 // ⚠️ THE REPORT CHANNEL WAS BLIND: 55 reports, 0 reasons, 25 in the last week
 // alone — p_reason was hardcoded null while the column and the RPC parameter
