@@ -1061,6 +1061,58 @@ found, and what a pair of independent reviews found in the fixes:
       audit is the one check that lays anything out, and it is not in CI.
 
 
+### 0p. 15 Oct, night: THE NEXT TEN (five specialist reviews, ranked)
+Reports, outside the repo: ~/ball-iq-audit/2026-10-15/next/ (design.md,
+numbers.md, growth.md, website.md, bank.md). The numbers in one line: the four
+dailies are the whole retained product; web visitors who start on a daily come
+back five times as often as those who start on a club quiz; signups have nearly
+stopped (2 to 4 a week); 3.6% of web visitors ever tap a store link.
+1. [ ] **Bank truth, before anything ships:** the seven contradicted or stale
+       hints and stems (Lineker "only" English Golden Boot v Kane 2018; two
+       British transfer records; Messi's World Cups; Haaland's shared record,
+       q_bc53df, in the Daily on 29 Nov), the Ballon d'Or rows before 26 Oct,
+       the 80 "As of 2026" anchors, the exact duplicate q_688b2c/q_a8b294;
+       explanations for the 248 scheduled Daily questions with none; the Daily
+       drawn without replacement (273 future days repeat a question; keep the
+       site and installed apps in step).
+2. [ ] **Web to app:** the "Add to Home Screen" offer after a Footle win becomes
+       the store button for the visitor's phone; a store button on the
+       homepage's first screen and under every club-quiz score; "Get the app"
+       in the header and menu; a slim app strip inside Instagram, Threads and
+       TikTok browsers; store taps visible in Clarity.
+3. [ ] **The finish moment, one shared sequence:** no layout jump while the last
+       row flips or "How everyone did" loads; the level-up overlay never covers
+       a result (and "Non-League" reads as relegation); Survival does not cut to
+       results in a tenth of a second; a fair percentile ("you tied with 61%").
+4. [ ] **Challenge cards:** a picture share "beat my 67 on Draft No. 12" on the
+       same board, for Draft, Top 10 and Footle; the growth review's loop one.
+5. [ ] **Draft as the flagship:** start and finish events (it has no analytics
+       at all), a numbered daily Draft, the club spinning, one-tap picks, the
+       result leading with the hero, Draft in History.
+6. [ ] **Wrong guesses that teach, and two bugs:** Mystery said De Bruyne had
+       "no shared club" with Salah (both Chelsea); Transfer Trail crosses out a
+       player who played for both clubs on the board without saying so;
+       Mystery's opening is a wall of "cold".
+7. [ ] **Private leagues for group chats** (Alex ruled "build now"): invite
+       link, weekly table.
+8. [ ] **Money, groundwork:** a Ball IQ Supporter pass (archive beyond 7 days,
+       practice Drafts, deep stats, badge; never pay-to-win); needs Alex's ENK
+       registration and a PO box for EU trader status, and a privacy update.
+       A daily-game sponsor (never betting) is the only line that can reach
+       hundreds a month this year.
+9. [ ] **Content:** more club Top 10s (City and Barcelona to four; Bayern,
+       Juventus, PSG, Atlético, Dortmund, Milan, Inter); thin club packs (19
+       under 30 usable questions) and the club waves (Villarreal, Stuttgart,
+       Gladbach, Werder, Bologna, Lille); calendar editions (El Clásico 25 Oct,
+       Ballon d'Or 26 Oct, the derbies).
+10. [ ] **Simplify and give it one feel:** one Quiz entry for Classic, Legends,
+       Chaos and League Quiz; Hot Streak into Survival; no Multiplayer card on
+       Home; one motion system (shared timings and curves, haptics and sound
+       per moment, Reduce Motion as short fades, not hard cuts).
+Decisions for Alex: crests on social slides (advised no); downloading the
+official store badges; the 109 club Q&A pages held back for AdSense v freed
+for installs; ENK and PO box for paid features.
+
 ### 0o. 12 Oct, evening: FIX ALL OF IT (Alex: "nothing is too small", "we will not neglect, we will fix all of it and not stop until we are happy with every single one")
 
 Alex left the open rulings to the session. They went this way:
