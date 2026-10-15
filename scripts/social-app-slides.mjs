@@ -90,7 +90,65 @@ const SLIDES = [
   ].map(([id, tag, who, accent]) => ({ name: `balliq_top10_${tag}`, accent, shot: `top10-${id}.png`, line: `${who} <em>Name all ten.</em>` })),
 ];
 
+// ── Club Top 10, version 2 (Alex, 15 Oct 2026, through the social session):
+// "looks like an App Store screenshot, not something that belongs in a
+// carousel". So: carousel-native. The club's colour fills the frame with kit
+// stripes, the board is cropped big and slightly tilted under our own title
+// strip, the line is set in the quote cards' typeface, and the store badges
+// say where the full game is. ⚠️ No crests: a crest is the club's copyright
+// and trade mark and this slide advertises our app (the 8 Oct ruling,
+// docs/TODO.md "Real club emblems: no"). Badges: the site's own
+// (src/lib/storeGlyphs.js) until Alex clears downloading Apple's and Google's
+// official artwork.
+import { APPLE_GLYPH_PATH, PLAY_GLYPH_PATH } from '../src/lib/storeGlyphs.js';
+const QC = join(process.env.HOME, 'shithousery-hq/social/assets/fonts');
+const font = (fam, w, f, type) => `@font-face{font-family:${fam};font-weight:${w};src:url(data:font/${type};base64,${readFileSync(join(QC, f)).toString('base64')})}`;
+const FONTS = font('QC', 700, 'BarlowSemiCondensed-Bold.ttf', 'ttf') + font('QC', 600, 'BarlowSemiCondensed-SemiBold.ttf', 'ttf');
+const badge = (glyph, small, big) => `<div class="badge"><svg viewBox="0 0 24 24"><path fill="#fff" d="${glyph}"/></svg><div><small>${small}</small><b>${big}</b></div></div>`;
+// The board alone, all ten slots: rows 1 to 5 of the capture (source y 715 to
+// 1770 of 2436 at 3x; the Stuck link left out), shown 724px wide.
+const WIN_W = 724, SCALE = WIN_W / 1206;
+const top10v2 = ({ shot, who, title, bg, accent }) => `<!doctype html><html><head><meta charset="utf-8"><style>${FONTS}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1080px;height:1350px;overflow:hidden;color:#fff;font-family:-apple-system,'Inter',sans-serif;
+    background:radial-gradient(80% 60% at 50% 42%, ${bg[0]} 0%, ${bg[1]} 55%, ${bg[2]} 100%)}
+  .stripes{position:absolute;inset:-200px;transform:rotate(-12deg);background:repeating-linear-gradient(90deg, rgba(255,255,255,0) 0 120px, rgba(255,255,255,.05) 120px 200px)}
+  h1{position:absolute;top:72px;left:60px;right:60px;text-align:center;font:700 96px/0.95 QC;text-transform:uppercase;letter-spacing:1px;text-shadow:0 6px 24px rgba(0,0,0,.35)}
+  h1 em{font-style:normal;color:${accent}}
+  .card{position:absolute;left:50%;top:282px;width:776px;transform:translateX(-50%) rotate(-3deg);border-radius:40px;padding:26px 26px 28px;
+    background:#0B0C10;box-shadow:0 0 0 3px rgba(255,255,255,.16),0 40px 90px rgba(0,0,0,.55)}
+  .ttl{display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 16px;font:700 38px/1 QC;text-transform:uppercase;letter-spacing:1px}
+  .ttl span{color:${accent}}
+  .win{position:relative;width:${WIN_W}px;height:${Math.round(1055 * SCALE)}px;overflow:hidden}
+  .win img{position:absolute;left:-6px;top:-${Math.round(715 * SCALE)}px;width:${WIN_W}px}
+  .foot{position:absolute;left:60px;right:60px;top:1078px;display:flex;align-items:center;justify-content:center;gap:16px}
+  .badge{display:flex;align-items:center;gap:10px;height:66px;padding:0 20px 0 16px;background:#000;border:2px solid rgba(255,255,255,.55);border-radius:14px}
+  .badge svg{width:34px;height:34px}
+  .badge small{display:block;font:600 15px/1 -apple-system,'Inter',sans-serif;letter-spacing:.2px;opacity:.9}
+  .badge b{display:block;margin-top:3px;font:700 26px/1 -apple-system,'Inter',sans-serif;letter-spacing:-.3px}
+  .url{font:600 24px/1.1 QC;letter-spacing:1.2px;color:rgba(255,255,255,.75)}
+</style></head><body>
+  <div class="stripes"></div>
+  <h1>${who}<br><em>Name all ten.</em></h1>
+  <div class="card"><div class="ttl">${title}<span>4/10</span></div><div class="win"><img src="${img(shot)}"></div></div>
+  <div class="foot">${badge(APPLE_GLYPH_PATH, 'Download on the', 'App Store')}${badge(PLAY_GLYPH_PATH, 'GET IT ON', 'Google Play')}<div class="url">OR PLAY AT<br>BALLIQ.APP</div></div>
+</body></html>`;
+const V2 = [
+  { tag: 'united', id: 'manchester-united-top-scorers', who: 'United fan?', title: 'United · all-time top scorers', bg: ['#C8102E', '#8A0B1C', '#2A0408'], accent: '#FFD23F' },
+];
+
 const browser = await chromium.launch();
+if (process.env.V2) {
+  const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1 });
+  for (const c of V2.filter((x) => process.env.V2 === '1' || process.env.V2.split(',').includes(x.tag))) {
+    await page.setContent(top10v2({ ...c, shot: `top10-${c.id}.png` }), { waitUntil: 'load' });
+    const f = join(OUT, `balliq_top10v2_${c.tag}_1080x1350.png`);
+    await page.screenshot({ path: f });
+    console.log(f);
+  }
+  await browser.close();
+  process.exit(0);
+}
 const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1 });
 for (const s of SLIDES) {
   await page.setContent(slide(s), { waitUntil: 'load' });
