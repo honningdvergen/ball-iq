@@ -634,7 +634,11 @@ const SHOTS = [
         await p.waitForTimeout(1600);
       }
       await p.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
-      await p.waitForTimeout(800); } })) : []),
+      await p.waitForTimeout(800);
+      // The board on its own as well, for the carousel slide: its place on
+      // screen moves with the length of the list's note, so a fixed crop cut
+      // Liverpool's first row off.
+      await p.locator('.t10-board[role=list]').screenshot({ path: resolve(RAW, `top10board-${id}.png`) }); } })) : []),
 ];
 
 

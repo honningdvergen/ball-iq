@@ -105,9 +105,9 @@ const QC = join(process.env.HOME, 'shithousery-hq/social/assets/fonts');
 const font = (fam, w, f, type) => `@font-face{font-family:${fam};font-weight:${w};src:url(data:font/${type};base64,${readFileSync(join(QC, f)).toString('base64')})}`;
 const FONTS = font('QC', 700, 'BarlowSemiCondensed-Bold.ttf', 'ttf') + font('QC', 600, 'BarlowSemiCondensed-SemiBold.ttf', 'ttf');
 const badge = (glyph, small, big) => `<div class="badge"><svg viewBox="0 0 24 24"><path fill="#fff" d="${glyph}"/></svg><div><small>${small}</small><b>${big}</b></div></div>`;
-// The board alone, all ten slots: rows 1 to 5 of the capture (source y 715 to
-// 1770 of 2436 at 3x; the Stuck link left out), shown 724px wide.
-const WIN_W = 724, SCALE = WIN_W / 1206;
+// The board alone, all ten slots, from its own element capture
+// (top10board-<id>.png), shown 724px wide.
+const WIN_W = 724;
 const top10v2 = ({ shot, who, title, bg, accent }) => `<!doctype html><html><head><meta charset="utf-8"><style>${FONTS}
   *{box-sizing:border-box;margin:0;padding:0}
   body{width:1080px;height:1350px;overflow:hidden;color:#fff;font-family:-apple-system,'Inter',sans-serif;
@@ -119,8 +119,7 @@ const top10v2 = ({ shot, who, title, bg, accent }) => `<!doctype html><html><hea
     background:#0B0C10;box-shadow:0 0 0 3px rgba(255,255,255,.16),0 40px 90px rgba(0,0,0,.55)}
   .ttl{display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 16px;font:700 38px/1 QC;text-transform:uppercase;letter-spacing:1px}
   .ttl span{color:${accent}}
-  .win{position:relative;width:${WIN_W}px;height:${Math.round(1055 * SCALE)}px;overflow:hidden}
-  .win img{position:absolute;left:-6px;top:-${Math.round(715 * SCALE)}px;width:${WIN_W}px}
+  .win img{display:block;width:${WIN_W}px}
   .foot{position:absolute;left:60px;right:60px;top:1078px;display:flex;align-items:center;justify-content:center;gap:16px}
   .badge{display:flex;align-items:center;gap:10px;height:66px;padding:0 20px 0 16px;background:#000;border:2px solid rgba(255,255,255,.55);border-radius:14px}
   .badge svg{width:34px;height:34px}
@@ -135,13 +134,18 @@ const top10v2 = ({ shot, who, title, bg, accent }) => `<!doctype html><html><hea
 </body></html>`;
 const V2 = [
   { tag: 'united', id: 'manchester-united-top-scorers', who: 'United fan?', title: 'United · all-time top scorers', bg: ['#C8102E', '#8A0B1C', '#2A0408'], accent: '#FFD23F' },
+  { tag: 'liverpool', id: 'liverpool-top-scorers', who: 'Liverpool fan?', title: 'Liverpool · all-time top scorers', bg: ['#C8102E', '#7E0A1D', '#240307'], accent: '#F6EB61' },
+  { tag: 'arsenal', id: 'arsenal-top-scorers', who: 'Gooner?', title: 'Arsenal · all-time top scorers', bg: ['#EF0107', '#9A0005', '#2C0102'], accent: '#F2D47E' },
+  { tag: 'chelsea', id: 'chelsea-top-scorers', who: 'Chelsea fan?', title: 'Chelsea · all-time top scorers', bg: ['#0A56B0', '#033273', '#010C1C'], accent: '#F2C14E' },
+  { tag: 'realmadrid', id: 'real-madrid-top-scorers', who: 'Madridista?', title: 'Madrid · all-time top scorers', bg: ['#3A4192', '#1B1F55', '#06071A'], accent: '#FEBE10' },
+  { tag: 'barcelona', id: 'barcelona-appearances', who: 'Culé?', title: 'Barcelona · most appearances', bg: ['#A50044', '#4A1A6B', '#0A0A2A'], accent: '#EDBB00' },
 ];
 
 const browser = await chromium.launch();
 if (process.env.V2) {
   const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1 });
   for (const c of V2.filter((x) => process.env.V2 === '1' || process.env.V2.split(',').includes(x.tag))) {
-    await page.setContent(top10v2({ ...c, shot: `top10-${c.id}.png` }), { waitUntil: 'load' });
+    await page.setContent(top10v2({ ...c, shot: `top10board-${c.id}.png` }), { waitUntil: 'load' });
     const f = join(OUT, `balliq_top10v2_${c.tag}_1080x1350.png`);
     await page.screenshot({ path: f });
     console.log(f);
