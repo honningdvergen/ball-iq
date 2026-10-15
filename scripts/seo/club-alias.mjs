@@ -27,6 +27,7 @@ export const CLUB_ALIAS = {
   // bank and the page both use the full name, and the generator joins on it.
   'Frankfurt': 'Eintracht Frankfurt',
   'Stuttgart': 'VfB Stuttgart',
+  'Gladbach': 'Borussia Mönchengladbach',
   // England — long-form pages
   'Sheffield Utd': 'Sheffield United',
   'Blackburn': 'Blackburn Rovers',

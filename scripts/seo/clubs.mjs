@@ -3462,4 +3462,36 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Borussia Mönchengladbach",
+    "slug": "borussia-monchengladbach",
+    "name": "Borussia Mönchengladbach",
+    "h1": "Borussia Mönchengladbach Quiz",
+    "title": "Borussia Mönchengladbach Quiz with Answers | Ball IQ",
+    "description": "How well do you know Gladbach? From the Bökelberg and Weisweiler's Fohlenelf to Reus, ter Stegen and the 2020-21 Champions League run. Test yourself.",
+    "intro": [
+      "The club that became Borussia Mönchengladbach was founded on 1 August 1900 as FC Borussia 1900 München-Gladbach. From 1919 Gladbach played at the Bökelberg. In 2004 they moved to the new Borussia-Park. Their first major honour was the 1960 DFB-Pokal, won 3-2 against Karlsruher SC in the final in Düsseldorf.",
+      "Hennes Weisweiler took over in 1964 and built a young side known as the Fohlenelf, or the Foals. They won promotion to the Bundesliga in 1965, and Bayern Munich came up the same year. That team went on to win the club's first league titles in the 1970s. In the 1973 DFB-Pokal final, Günter Netzer came off the bench and scored the extra-time winner in a 2-1 win over 1. FC Köln. It was his last game for the club before he joined Real Madrid. Gladbach also reached two European finals. They lost the 1977 European Cup final 3-1 to Liverpool in Rome, and they lost the 1980 UEFA Cup final to Eintracht Frankfurt on away goals.",
+      "The 1990s and 2000s brought highs and lows. In the 1992 DFB-Pokal final, Gladbach drew 0-0 with Hannover 96, then a 2. Bundesliga side, and lost the shoot-out 4-3. Three years later, Bernd Krauss's team beat VfL Wolfsburg 3-0 in Berlin to win the 1995 DFB-Pokal. Stefan Effenberg, back from Fiorentina, scored in that final along with Martin Dahlin and Heiko Herrlich. In 1998-99 Gladbach were relegated for the first time. Hans Meyer took them back up in 2000-01. A second relegation followed in 2006-07, and Jos Luhukay won the 2. Bundesliga title at the first attempt in 2007-08.",
+      "In February 2011 Lucien Favre replaced Michael Frontzeck with Gladbach bottom of the Bundesliga. His side stayed up by beating VfL Bochum in the relegation play-off. The next season they finished fourth, and Marco Reus then left for Borussia Dortmund. In 2014 Marc-André ter Stegen, who came through the academy, joined Barcelona, and Yann Sommer arrived from Basel to replace him. Favre's team finished third in 2014-15. In 2018 the club signed Alassane Pléa from Nice for a then-record fee reported at around €23m. In November 2020 Pléa scored a hat-trick in a 6-0 Champions League win over Shakhtar Donetsk in Kyiv. That campaign ended in the round of 16 against Manchester City, with both legs played in Budapest."
+    ],
+    "faq": [
+      {
+        "q": "When was Borussia Mönchengladbach founded?",
+        "a": "The club was founded on 1 August 1900 as FC Borussia 1900 München-Gladbach."
+      },
+      {
+        "q": "Where did Gladbach play before Borussia-Park?",
+        "a": "Gladbach played at the Bökelberg from 1919 until 2004. That year they moved to the new Borussia-Park."
+      },
+      {
+        "q": "What was Borussia Mönchengladbach's first major trophy?",
+        "a": "The 1960 DFB-Pokal. Gladbach beat Karlsruher SC 3-2 in the final in Düsseldorf."
+      },
+      {
+        "q": "Have Gladbach ever played in a European Cup final?",
+        "a": "Yes. Gladbach reached the 1977 European Cup final in Rome and lost 3-1 to Liverpool. It was Liverpool's first European Cup."
+      }
+    ]
+  },
 ];

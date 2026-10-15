@@ -127,6 +127,7 @@ export const CLUB_COMPETITION = {
   // full name, so the name match cannot resolve this one and it needs a hand entry.
   'Eintracht Frankfurt': 'Bundesliga', // "Dortmund"
   'VfB Stuttgart': 'Bundesliga', // leagues.mjs: 'Stuttgart'
+  'Borussia Mönchengladbach': 'Bundesliga', // leagues.mjs: 'Gladbach'
   'Bayer Leverkusen': 'Bundesliga', // "Leverkusen" — NOT "Bayern Munich"
   'Schalke 04': 'Bundesliga', // "Schalke"
   'Paris Saint-Germain': 'Ligue 1', // "PSG" — NOT "Paris FC"
