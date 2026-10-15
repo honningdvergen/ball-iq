@@ -3189,12 +3189,14 @@ ${footer()}`;
 //   - print styles, because these get printed for actual pub quizzes
 function buildClubQuestionsPage(cfg, rows) {
   if (rows.length < 20) return null;   // too thin to be worth a page
-  // ⚠️ CANONICAL POINTS AT THE /quiz/ TWIN, not self (AdSense scan 2026-08-11):
-  // 75 of 282 sitemap URLs were /questions/ near-duplicates of /quiz/ pages —
-  // the doorway pattern the "low value content" verdict names. The page stays
-  // live for humans and print; it just stops competing with its twin in the
-  // index. REVERSIBLE after approval if "with answers" rankings need it back.
-  const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
+  // SELF-CANONICAL AND IN THE SITEMAP AGAIN (Alex, 15 Oct 2026: "we absolutely
+  // have to drive installs ... free them"). From 11 Aug to 15 Oct they pointed
+  // their canonical at the /quiz/ twin and sat out of the sitemap, for the
+  // AdSense "low value content" review. Installs are the 2026 goal, and the
+  // text "questions and answers" search family clicks at 10 to 27% (website
+  // review, 15 Oct). The format is not the quiz page's: rounds of ten, answers
+  // apart, made to be read out and printed.
+  const canonical = `${SITE.base}/questions/${cfg.slug}-quiz-questions-and-answers/`;
   const rounds = [];
   for (let i = 0; i < rows.length; i += 10) rounds.push(rows.slice(i, i + 10));
 
@@ -3241,7 +3243,7 @@ ${as}
     // rather than a screenshot of a website.
     // Saying "Printable PDF" would have been the same false promise as the
     // "nothing to install" line Alex caught under the app-store buttons.
-    description: `${rows.length} ${cfg.name} quiz questions with answers, grouped in rounds. Free to read aloud, print, or save as a PDF. Written and checked by Ball IQ.`.slice(0, 155),
+    description: `${rows.length} ${cfg.name} quiz questions with answers, grouped in rounds. Free to read aloud, print, or save as a PDF. Every one checked by Ball IQ.`.slice(0, 155),
     canonical, ld: faqLd,
   })}
 <style>
@@ -3271,8 +3273,8 @@ ${as}
   }
 </style>
 ${/* ⚠️ THESE PAGES HAD NO SITE NAV — the only page type on the domain without
-      one. They are out of the sitemap and canonicalised to their /quiz/ twin,
-      but they are still LIVE and still linked from that twin ("Want them as a
+      one. (Out of the sitemap and canonicalised to their /quiz/ twin from
+      11 Aug to 15 Oct 2026; indexed again since.) They are linked from that twin ("Want them as a
       printable list instead?"), so a real person does land here — and then had
       nowhere to go but back. The print stylesheet above already hides nav,
       header and footer, so adding it costs the printed sheet nothing. */ ''}
@@ -6271,9 +6273,9 @@ async function main() {
   buildSimplePage(CONTACT);
   buildSimplePage(TERMS);
   build404Page();
-  // /questions/ pages are canonicalized to their /quiz/ twins and OUT of the
-  // sitemap while the AdSense doorway remediation stands (scan 2026-08-11).
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);
+  // /questions/ pages are back in the sitemap, self-canonical (15 Oct 2026):
+  // see buildClubQuestionsPage.
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, questionPages, builtHubs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   await pingIndexNow(sitemapUrls);
 
