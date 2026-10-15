@@ -62,8 +62,10 @@ describe('a retired pack reaches nobody', () => {
   it('the approved questions really did come back', () => {
     // A withhold that was "lifted" by deleting the rows instead of untagging
     // them would satisfy the assertion above and quietly bin 55 good questions.
+    // 54 since 15 Oct 2026: q_s26x15 ("Anderson's £116m broke the British
+    // record") was dropped as false: Isak's £125m still stood (bank-fixes.json).
     const returned = QB.filter((q) => /^q_s26/.test(q?.id || '') && !q.tag);
-    expect(returned.length).toBe(55);
+    expect(returned.length).toBe(54);
     // …and they are drawable: real cat, MCQ, four options.
     for (const q of returned) {
       expect(q.type, `${q.id} must be drawable`).toBe('mcq');
