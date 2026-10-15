@@ -67,7 +67,7 @@ export function SiteHeader({ active = '', signedIn = false, onProfile } = {}) {
       <div className="fd-w fd-head-in">
         <a className="fd-mark" href="/" aria-label="Ball IQ home"><img src="/marketing/ball.png" alt="" width="26" height="26" /><span>Ball IQ</span></a>
         <nav className={`fd-nav${menu ? ' is-open' : ''}`} aria-label="Sections">
-          <a href="/#today">Today</a><a className={a('games')} href="/football-games/">Games</a><a className={a('clubs')} href="/#clubs">Clubs</a><a className={a('quizzes')} href="/football-quiz/">Quizzes</a><a className={a('lists')} href="/lists/">Lists</a>{!signedIn && <a className="fd-nav-signin" href={PLAY}>Sign in</a>}
+          <a href="/#today">Today</a><a className={a('games')} href="/football-games/">Games</a><a className={a('clubs')} href="/#clubs">Clubs</a><a className={a('quizzes')} href="/quiz/">Quizzes</a><a className={a('lists')} href="/lists/">Lists</a><a className="fd-nav-app" href="/get?src=header" onClick={() => go('fd-get-header', '/get?src=header')}>Get the app</a>{!signedIn && <a className="fd-nav-signin" href={PLAY}>Sign in</a>}
         </nav>
         <div className="fd-find" role="search">
           <span className="fd-find-ic"><SearchIcon /></span>
@@ -87,6 +87,9 @@ export function SiteHeader({ active = '', signedIn = false, onProfile } = {}) {
           )}
         </div>
         {signedIn ? <button type="button" className="fd-signin" onClick={onProfile}>Profile</button> : <a className="fd-signin" href={PLAY}>Sign in</a>}
+        {/* A phone has no room for the nav, and the app is the thing a phone
+            visitor can actually get: one small pill, /get picks their store. */}
+        <a className="fd-head-app" href="/get?src=header-pill" onClick={() => go('fd-get-header-pill', '/get?src=header-pill')}>Get app</a>
         <button type="button" className="fd-burger" aria-label={menu ? 'Close menu' : 'Menu'} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">{menu ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
         </button>

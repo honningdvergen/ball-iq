@@ -36,7 +36,7 @@
 .fd-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .fd :focus-visible{outline:2px solid var(--grn);outline-offset:2px;border-radius:8px}
 
-/* header: one row, wordmark · nav · search · sign in. No marketing button. */
+/* header: one row, wordmark · nav · search · sign in; on a phone, one small "Get app" pill (15 Oct 2026). */
 .fd-head{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--bd)}
 .fd-head-in{display:flex;align-items:center;gap:22px;height:60px}
 .fd-mark{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.01em;flex:0 0 auto}
@@ -64,10 +64,20 @@
    2026-09-15 by counting visible links, not by reading the rule. Scoped to 0,2,0 so it wins at
    desktop while the phone menu's ".fd-nav.is-open a{display:flex}" (0,2,1) still shows it. */
 .fd-nav .fd-nav-signin{display:none}
+/* "Get the app": a menu entry wherever the nav folds into the burger, and a small pill in
+   the phone bar. Hidden on desktop, where /get would only open the web game. */
+.fd-nav .fd-nav-app,.fd-head-app{display:none}
+.fd-nav.is-open .fd-nav-app{color:var(--grn);font-weight:700}
 .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--t1);cursor:pointer;border-radius:8px}
 
+/* hero: the one visible h1 and the way to the app */
+.fd-hero{padding:30px 0 0}
+.fd-h1{margin:0;font-size:26px;line-height:1.15;font-weight:800;letter-spacing:-.02em;max-width:30ch}
+.fd-hero-sub{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:10px 0 0;font-size:14.5px;color:var(--t2)}
+.fd-hero-badges{display:inline-flex;flex-wrap:wrap;gap:8px}
+
 /* date line */
-.fd-date{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;padding:28px 0 6px;scroll-margin-top:72px}
+.fd-date{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;padding:20px 0 6px;scroll-margin-top:72px}
 .fd-date-d{font-size:15px;font-weight:700;letter-spacing:-.01em}
 .fd-date-eds{font-size:13.5px;color:var(--t3)}
 
@@ -175,11 +185,6 @@
 .fd-btn{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;background:var(--s1);border:1px solid var(--bd2);color:var(--t1);font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
 .fd-btn:hover{background:var(--s2)}
 /* the app row — one, after today's games */
-.fd-app{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:14px 0 2px;padding:12px 16px;border:1px solid var(--bd);border-radius:12px;background:var(--s1)}
-.fd-app-tx{font-size:13.5px;line-height:1.45;color:var(--t2);flex:1 1 260px}
-.fd-app-tx b{color:var(--t1)}
-.fd-app-links{display:flex;gap:8px;flex:none}
-.fd-app-links a:hover{border-color:var(--bd3,#3A3E4E)}
 .fd-btn-q{background:none;color:var(--t2)}
 
 /* lists */
@@ -234,8 +239,12 @@
   .fd-nav.is-open .fd-nav-signin{margin-top:6px;padding-top:12px;border-top:1px solid var(--bd);color:var(--t1);font-weight:700}
   .fd-find{max-width:none;margin-left:0}
   .fd-signin{display:none}
+  .fd-head .fd-head-app{display:inline-flex;align-items:center;flex:0 0 auto;min-height:34px;padding:0 12px;border-radius:999px;background:var(--grn);color:var(--grn-ink);font-size:13px;font-weight:800;white-space:nowrap}
   .fd-burger{display:grid;place-items:center}
-  .fd-date{padding-top:20px}
+  .fd-hero{padding-top:18px}
+  .fd-h1{font-size:21px}
+  .fd-hero-sub{font-size:13.5px;gap:10px}
+  .fd-date{padding-top:14px}
   .fd-today,.fd-games,.fd-lists,.fd-faq{grid-template-columns:1fr}
   .fd-clubs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .fd-daily{grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;row-gap:4px}

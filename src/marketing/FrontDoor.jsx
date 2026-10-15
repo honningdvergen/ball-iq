@@ -43,7 +43,7 @@ import { FP_NUMBER } from './footlePractice.js';
 import { keyForDate, dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
 import FootleBand from './FootleBand.jsx';
-import { StoreBadge } from '../components/StoreBadge.jsx';
+import { StoreBadge, detectStore } from '../components/StoreBadge.jsx';
 
 const PLAY = '/play';
 // ⚠️ NO DAILY USES door() ANY MORE. All four now open their own served page —
@@ -231,6 +231,7 @@ export default function FrontDoor() {
       : MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from the clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: '/mystery-player/' }] : []),
   ];
   const playedCount = dailies.filter((d) => d.done).length;
+  const heroStore = detectStore(); // 'ios' | 'android' | null (a computer)
 
   const clubBySlug = useMemo(() => Object.fromEntries(CLUB_INDEX.map((c) => [c.s, c])), []);
   const featured = MOST_PLAYED.map((s) => clubBySlug[s]).filter(Boolean);
@@ -242,6 +243,23 @@ export default function FrontDoor() {
       <SiteHeader />
 
       <main className="fd-w">
+        {/* 0 · who we are, in one visible line, and the way to the app. The h1
+            used to be screen-reader only, so nothing on the first screen said
+            what Ball IQ is or that there is an app (website review, 15 Oct
+            2026). A phone gets its own store's badge, a computer both. The
+            green "Get app" pill in the phone header is the one loud button. */}
+        <div className="fd-hero">
+          <h1 className="fd-h1">Football quizzes for {CLUB_INDEX.length} clubs, and new puzzles every day</h1>
+          <p className="fd-hero-sub">
+            <span>Free to play here. Streaks, reminders and 1v1 in the app.</span>
+            <span className="fd-hero-badges">
+              {(heroStore ? [heroStore] : ['ios', 'android']).map((s) => (
+                <StoreBadge key={s} store={s} onClick={() => go(`fd-hero-${s}`)} style={{ minHeight: 38, padding: '0 14px', fontSize: 13.5 }} />
+              ))}
+            </span>
+          </p>
+        </div>
+
         {/* 1 · the date line: the page proves it changes every day */}
         <div className="fd-date" id="today">
           <span className="fd-date-d">{fmtDate(today)}</span>
@@ -249,10 +267,6 @@ export default function FrontDoor() {
         </div>
 
         {/* 2 · today's four, as a strip with progress */}
-        {/* The page's one h1. Visually the masthead is the date line and the
-            Today strip; the h1 is for the crawler and the screen reader, and
-            it says what the site is in the words people search for. */}
-        <h1 className="fd-sr">Ball IQ — football quizzes, Footle and today's puzzles</h1>
         <section className="fd-sec" aria-labelledby="fd-today-h">
           <div className="fd-sec-head">
             <h2 id="fd-today-h">Today</h2>
@@ -301,20 +315,6 @@ export default function FrontDoor() {
             {practice ? 'Hide the practice board' : `Or practise on No. ${FP_NUMBER} from the archive — nothing about today's is given away`}
           </button>
         </section>
-
-        {/* 2b · the app, once, after value. The 2026-09-05 critique measured the
-            homepage's entire app funnel as two 17px footer words six screens
-            down (the real badges in index.html's hidden landing render 0×0).
-            A hero badge is still out — none of the 13 sites in the field study
-            has one — so this is one quiet row between today's games and the
-            finder: what the app adds, two links, nothing sold. */}
-        <aside className="fd-app" aria-label="Ball IQ app">
-          <span className="fd-app-tx"><b>Also on your phone.</b> Streaks, reminders and live 1v1 against a mate — the same games, in the app.</span>
-          <span className="fd-app-links">
-            <StoreBadge store="ios" onClick={() => go('fd-app-ios')} />
-            <StoreBadge store="android" onClick={() => go('fd-app-android')} />
-          </span>
-        </aside>
 
         {/* 3 · the practice board, on request from the lead card */}
         {practice && (

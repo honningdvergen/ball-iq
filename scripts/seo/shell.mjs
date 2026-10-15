@@ -101,14 +101,15 @@ export function shellHeader(site, active = '', lang = 'en', opts = {}) {
   // A localised page's "Quizzes" goes to its own language's hub when one
   // exists — sending a Spanish reader from a Spanish page to the English
   // /football-quiz/ was the one nav link that actively left their language.
-  const quizzesHref = opts.quizzesHref || `${b}/football-quiz/`;
+  const quizzesHref = opts.quizzesHref || `${b}/quiz/`;
   const a = (k) => (active === k ? ' class="is-active" aria-current="page"' : '');
   return `<a class="fd-skip" href="#main">${h(t.skipToContent)}</a>
 <header class="fd-head"><div class="fd-w fd-head-in">
 <a class="fd-mark" href="${b}/" aria-label="${h(t.homeLabel)}"><img src="/marketing/ball.png" alt="" width="26" height="26"><span>Ball IQ</span></a>
-<nav class="fd-nav" id="fd-nav" aria-label="${h(t.sectionsLabel)}"><a href="${b}/#today">${h(t.navToday)}</a><a href="${b}/football-games/"${a('games')}>${h(t.navGames)}</a><a href="${b}/#clubs"${a('clubs')}>${h(t.navClubs)}</a><a href="${quizzesHref}"${a('quizzes')}>${h(t.navQuizzes)}</a><a href="${b}/lists/"${a('lists')}>${h(t.navLists)}</a><a class="fd-nav-signin" href="${b}/play?tab=profile">${h(t.signIn)}</a></nav>
+<nav class="fd-nav" id="fd-nav" aria-label="${h(t.sectionsLabel)}"><a href="${b}/#today">${h(t.navToday)}</a><a href="${b}/football-games/"${a('games')}>${h(t.navGames)}</a><a href="${b}/#clubs"${a('clubs')}>${h(t.navClubs)}</a><a href="${quizzesHref}"${a('quizzes')}>${h(t.navQuizzes)}</a><a href="${b}/lists/"${a('lists')}>${h(t.navLists)}</a><a class="fd-nav-app" href="/get?src=header">${h(t.getApp)}</a><a class="fd-nav-signin" href="${b}/play?tab=profile">${h(t.signIn)}</a></nav>
 <div class="fd-find" role="search"><span class="fd-find-ic">${SEARCH_ICON}</span><input type="search" class="fd-find-in" id="fd-find" placeholder="${h(t.findPlaceholder)}" aria-label="${h(t.findPlaceholder)}" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" autocomplete="off"><div class="fd-find-res" id="fd-find-res" role="listbox" aria-label="${h(t.findResultsLabel)}" hidden></div></div>
 <a class="fd-signin" href="${b}/play?tab=profile">${h(t.signIn)}</a>
+<a class="fd-head-app" href="/get?src=header-pill">${h(t.getAppShort)}</a>
 <button type="button" class="fd-burger" aria-expanded="false" aria-controls="fd-nav" aria-label="${h(t.menuLabel)}">${BURGER_ICON}</button>
 </div></header>
 ${finderScript(b, t)}`;
@@ -240,6 +241,10 @@ export const SHELL_CSS = `
    2026-09-15 by counting visible links, not by reading the rule. Scoped to 0,2,0 so it wins at
    desktop while the phone menu's ".fd-nav.is-open a{display:flex}" (0,2,1) still shows it. */
 .fd-nav .fd-nav-signin{display:none}
+  /* "Get the app": a menu entry wherever the nav folds into the burger, and a small
+     pill in the phone bar. Hidden on desktop, where /get would only open the web app. */
+  .fd-nav .fd-nav-app,.fd-head-app{display:none}
+  .fd-nav.is-open .fd-nav-app{color:var(--grn);font-weight:700}
   .fd-burger{display:none;flex:0 0 auto;width:44px;height:44px;border:0;background:none;color:var(--tx);cursor:pointer;border-radius:8px}
   .fd-foot{border-top:1px solid var(--bd);background:var(--bg2);padding:36px 0 28px;margin-top:36px}
   .fd-foot-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}
@@ -282,6 +287,8 @@ export const SHELL_CSS = `
     .fd-nav.is-open .fd-nav-signin{margin-top:6px;padding-top:12px;border-top:1px solid var(--bd);color:var(--tx);font-weight:700}
     .fd-find{max-width:none;margin-left:0}
     .fd-signin{display:none}
+    .fd-head .fd-head-app{display:inline-flex;align-items:center;flex:0 0 auto;min-height:34px;padding:0 12px;border-radius:999px;background:var(--grn);color:var(--grn-ink);font-size:13px;font-weight:800;white-space:nowrap}
+    .fd-head-app:hover{text-decoration:none}
     .fd-burger{display:grid;place-items:center}
     .fd-foot-in{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
