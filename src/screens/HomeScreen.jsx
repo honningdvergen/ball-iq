@@ -117,7 +117,7 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
 
 // HomeScreen — Sprint #17 Stage 3 extract. Owns the Home tab layout:
 // greeting strip, Daily zone (FootleHero + Today's 7 secondary), MP card,
-// More-modes grid, WC2026 event tile, Coming-soon shelf.
+// More-modes grid, Coming-soon shelf.
 //
 // desktop-web-refresh Phase 2b: at >=1024 the content reflows into a two-column
 // grid (main + glanceable right rail) with a full-width row below, all via CSS.
@@ -754,9 +754,12 @@ function HomeScreenImpl({
           the 36px rounded-square chip. Color = var(--accent) for a
           consistent green-on-dark identity across the grid.
 
-          Sprint #12: the standalone WC2026 rail card is gone — World
-          Cup now appears as the 7th tile in this grid with full-row
-          span + EVENT badge + gold "Nd" countdown chip. */}
+          ⚠️ NO WORLD CUP 2026 ENTRY. Its tile left this grid on 22 Jul 2026
+          (359f633b, Apple 5.2.1) and the mode has had 0 plays since 5 Aug;
+          the tournament is over (return research, 16 Oct 2026). The
+          wc2026-tagged questions still serve every other mode and the web
+          /quiz/world-cup/ pages, so old links keep working. Do not bring a
+          tile back for a finished event. */}
       <div className="home-section-title">More modes</div>
       {/* The Draft. A row and not a tile (a seventh tile sits alone on the last
           line), and FIRST in More modes, above Mystery Player, highlighted, with

@@ -72,7 +72,9 @@ for (const [modeName, label] of [
   ['legends', 'Legends'],
   // 'balliq' removed — the Ball IQ Test mode was killed 2026-08-10.
   ['chaos', 'Chaos'],
-  ['wc2026', 'World Cup'],
+  // 'wc2026' removed: the World Cup 2026 tile left Home on 22 Jul 2026
+  // (359f633b) and the mode is retired (0 plays since 5 Aug), so this case
+  // looked for a .play-card that no longer exists.
 ]) {
   test(`${modeName} mid-quiz`, async ({ page }, testInfo) => {
     await shotMode({
