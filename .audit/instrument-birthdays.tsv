@@ -117,4 +117,6 @@
 2026-09-07	source	try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-giveup'
 2026-09-07	source	try{if(!lSyn()&&window.clarity)window.clarity('event','list-play-start')
 2026-08-13	source	try{if(window.clarity)window.clarity('event',n)}catch(e){}
+2026-10-16	source	try{window.clarity('event','store_tap');window.clarity('set','store',st)
 2026-09-05	source	var outs=res.querySelectorAll('a[href]');for(var oi=0;oi<outs.length;oi+
+2026-10-16	source	window.clarity('event', 'store_tap');
