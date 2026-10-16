@@ -52,6 +52,10 @@
 2026-09-02	source	loopEvent("game-abandon"
 2026-08-11	source	loopEvent("join-token-consumed"
 2026-09-06	source	loopEvent("join-token-dead"
+2026-10-16	source	loopEvent("league-claim"
+2026-10-16	source	loopEvent("league-create-open"
+2026-10-16	source	loopEvent("league-make-tap"
+2026-10-16	source	loopEvent("league-offer-shown"
 2026-08-22	source	loopEvent("notif-prompt-dismissed"
 2026-08-23	source	loopEvent("notif-prompt-skipped"
 2026-10-04	source	loopEvent("rate-link-tap"
@@ -112,6 +116,16 @@
 2026-09-06	source	track?.("dd-save"
 2026-09-06	source	track?.("dd-share"
 2026-09-06	source	track?.("dd-stump"
+2026-10-16	source	track?.("league-created"
+2026-10-16	source	track?.("league-final-share"
+2026-10-16	source	track?.("league-invite-share"
+2026-10-16	source	track?.("league-join-fail"
+2026-10-16	source	track?.("league-join-view"
+2026-10-16	source	track?.("league-joined"
+2026-10-16	source	track?.("league-leave"
+2026-10-16	source	track?.("league-make-tap"
+2026-10-16	source	track?.("league-offer-shown"
+2026-10-16	source	track?.("league-table-view"
 2026-09-07	source	try { if (!xiSyn() && window.clarity) window.clarity('event', won ? 'xi-
 2026-09-02	source	try { if (typeof window !== 'undefined' && typeof window.clarity === 'fu
 2026-08-23	source	try{fetch('${BQ_SUPABASE_URL}/rest/v1/rpc/record_funnel_event',{method:'
