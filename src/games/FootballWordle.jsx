@@ -663,9 +663,22 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           {/* 1.1: celebrate a fresh solve. Gated on !wasFinishedAtMount so
               re-opening today's solved puzzle doesn't re-fire the confetti. */}
           {state.status === "won" && !wasFinishedAtMount.current && Confetti && <Confetti />}
-          <div className="wd-result-title">
-            {state.status === "won" ? footleWinWord(state.guesses.length) : "Better luck tomorrow"}
-          </div>
+          {/* A LOSS LEADS WITH THE ANSWER (16 Oct 2026). It read "Better luck
+              tomorrow" in the big type and the name in a 14px line under it:
+              the one thing a beaten player wants to know was the smallest
+              thing in the card. Now the name takes the title's size, on the
+              same two lines the card always had. */}
+          {state.status === "lost" ? (() => {
+            const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
+            return (
+              <>
+                <div className="wd-result-sub">Out of guesses. The answer was</div>
+                <div className="wd-result-title wd-result-answer">{prefix && <>{prefix} </>}{surname}</div>
+              </>
+            );
+          })() : (
+            <div className="wd-result-title">{footleWinWord(state.guesses.length)}</div>
+          )}
           {/* Sprint #81 YY2: reveal renders proper-cased full name from
               WORDLE_FULL_NAMES (tuple [firstNamePrefix, properSurname]).
               First name (if present) inherits the muted .wd-result-sub
@@ -673,7 +686,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               single-name brand (Pelé, Neymar) renders just the surname
               with no leading whitespace. Falls back to raw uppercase
               answer if a pool entry is unmapped (defensive). */}
-          {(() => {
+          {state.status === "won" && (() => {
             const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
             return (
               <div className="wd-result-sub">

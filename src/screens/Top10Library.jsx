@@ -29,7 +29,21 @@ const dateOfDay = (day) => new Date((TOP10_ANCHOR_DAY + day - 1) * 86400000)
   .toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).replace(",", "");
 
 // A club list that is still to come as the daily: shown, not playable.
+// Today's own daily said "locked 16 Oct" on 16 Oct (Alex): it reads "Today".
+// The test is the list's day against today's Top 10 number, the same count
+// groupTop10Lists locks by, so the label and the lock cannot disagree.
 function LockedRow({ list }) {
+  if (list.day === getTop10Number()) {
+    return (
+      <div className="t10lib-list is-locked" aria-label={`${list.title}: today's daily`}>
+        <span className="t10lib-list-body">
+          <span className="t10lib-list-title">{list.title}</span>
+          <span className="t10lib-list-sub">Today’s daily</span>
+        </span>
+        <span className="t10lib-pill is-locked">Today</span>
+      </div>
+    );
+  }
   const when = dateOfDay(list.day);
   return (
     <div className="t10lib-list is-locked" aria-label={`${list.title}: the daily on ${when}`}>

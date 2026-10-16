@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords } from "lucide-react";
+import { Flame, ShieldCheck, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords } from "lucide-react";
 import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
@@ -31,7 +31,8 @@ import "./dailyDone.css";
 //   won         boolean (Daily 7: true)
 //   bucket      guesses / clubs when won, 0 when not; Daily 7: the score
 //   isArchive   an old puzzle — never recorded, never counts toward tomorrow
-//   streak      { count, label } — the app passes its one streak; islands the game's
+//   streak      { count, label, keepsOnLoss? } — the app passes its one streak; islands the game's.
+//               keepsOnLoss: the host's streak ticks on any finish, so a loss keeps it ("Streak safe")
 //   onShare     async () => void   (host builds the text / card)
 //   waText      web-only WhatsApp fallback text (omit on native)
 //   remind      { state: 'off'|'on'|'blocked'|'unsupported', onRemind } | undefined
@@ -40,6 +41,8 @@ import "./dailyDone.css";
 //   stump       () => void | null — "Stump a mate" under Share (the app's k-factor lever)
 //   GetAppCTA   component | null (islands pass the store badges)
 //   track       (name, meta) => void — optional analytics
+//   bucketMax   the most guesses / clubs this puzzle allows (Trail: the career's length), so
+//               "how everyone did" knows its row count before the numbers arrive
 // Default glyph per daily for the "still open today" rows, so a host that passes
 // only names + links (the static islands) still draws a well with something in
 // it — an empty tinted square read as a bug on the first web play-through.
@@ -77,13 +80,17 @@ const modeOf = (k) => (k === "daily" ? "daily7" : k);
 // it exists to measure.
 const shownClaims = new Set();
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, GetAppCTA = null, track }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, GetAppCTA = null, track, bucketMax = null }) {
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
   // Too few results yet today: yesterday's edition stands in, labelled and
   // grey, so the block never vanishes (16 Oct 2026: it was missing on all four
   // finish screens one morning) and nothing is invented.
   const [prev, setPrev] = useState(null);
+  // False until both reads (today, and yesterday when today is thin) settle.
+  // Until then "how everyone did" holds its place as an empty frame of the
+  // same height, so nothing under it moves when the numbers land.
+  const [distReady, setDistReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [shared, setShared] = useState(false);
 
@@ -138,12 +145,14 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         await recordDailyResult({ game, edition, bucket, won });
       }
       const d = await fetchDistribution({ game, edition });
-      if (alive) setDist(d);
+      let y = null;
       if ((!d || d.n < MIN_N) && edition > 1) {
-        const y = await fetchDistribution({ game, edition: edition - 1 });
-        if (alive) setPrev(y && y.n >= MIN_N ? y : null);
+        y = await fetchDistribution({ game, edition: edition - 1 });
       }
-    })();
+      // One render with everything, not two: today's thin numbers and then
+      // yesterday's would otherwise swap the block's content in two steps.
+      if (alive) { setDist(d); setPrev(y && y.n >= MIN_N ? y : null); setDistReady(true); }
+    })().catch(() => { if (alive) setDistReady(true); });
     return () => { alive = false; };
   }, [game, edition, bucket, won, isArchive]);
 
@@ -180,18 +189,26 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const barValue = (r) => (showCounts ? r.c : `${summary.n ? Math.round((r.c / summary.n) * 100) : 0}%`);
   const ko = formatCountdown(msToNextLocalMidnight(now));
   const streakN = streak?.count || 0;
+  // A lost puzzle keeps the streak only where the host says its streak counts
+  // any finish (the app's daily streak ticks on a loss, App.jsx onDailyDone).
+  // The islands' per-game streaks break on a loss, so they never say it.
+  const streakSafe = !isArchive && won === false && !!streak?.keepsOnLoss && streakN >= 2;
 
+  // The rows are known before the numbers are (the frame drawn while they
+  // load has exactly as many as the block will), except where the host gives
+  // no bucketMax for a guess-count game: then the data can add rows.
   const bars = useMemo(() => {
-    if (!summary) return [];
-    const b = shown.buckets;
+    const loading = !distReady;
+    if (!summary && !loading) return [];
+    const b = (summary && shown?.buckets) || {};
     const outOf = SCORE_GAMES[game];
     const keys = outOf != null
       ? Array.from({ length: outOf + 1 }, (_, i) => i)
       : game === "footle" ? [1, 2, 3, 4, 5, 6, 0]
-      : (() => { const ks = Object.keys(b).map(Number).filter((k) => k > 0); const max = Math.max(4, ...ks, won ? bucket : 0); return [...Array.from({ length: Math.min(max, 10) }, (_, i) => i + 1), 0]; })();
+      : (() => { const ks = Object.keys(b).map(Number).filter((k) => k > 0); const max = Number.isInteger(bucketMax) && bucketMax > 0 ? Math.max(bucketMax, ...ks) : Math.max(4, ...ks, won ? bucket : 0); return [...Array.from({ length: Math.min(max, 10) }, (_, i) => i + 1), 0]; })();
     const top = Math.max(1, ...keys.map((k) => b[k] || 0));
-    return keys.map((k) => ({ k, label: k === 0 && outOf == null ? "X" : String(k), c: b[k] || 0, pct: Math.round(((b[k] || 0) / top) * 100), mine: !yesterday && (outOf != null ? k === bucket : (won ? k === bucket : k === 0)) }));
-  }, [summary, shown, yesterday, game, bucket, won]);
+    return keys.map((k) => ({ k, label: k === 0 && outOf == null ? "X" : String(k), c: b[k] || 0, pct: loading ? 0 : Math.round(((b[k] || 0) / top) * 100), mine: !loading && !yesterday && (outOf != null ? k === bucket : (won ? k === bucket : k === 0)) }));
+  }, [distReady, summary, shown, yesterday, game, bucket, won, bucketMax]);
 
   const doShare = async () => {
     if (busy) return;
@@ -215,13 +232,14 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       {/* Streak: the stake tonight names. Flame in the amber well the streak pill
           already uses elsewhere in the app. */}
       <div className="dd-row" style={{ "--dd-rgb": "255,170,0", "--dd-c": "var(--gold)" }}>
-        <span className="dd-well" aria-hidden="true"><Flame size={20} strokeWidth={2.2} /></span>
+        <span className="dd-well" aria-hidden="true">{streakSafe ? <ShieldCheck size={20} strokeWidth={2.2} /> : <Flame size={20} strokeWidth={2.2} />}</span>
         <div className="dd-body">
           <div className="dd-title">
             {streakN >= 2 ? <>{streakN}-day {streak?.label || "streak"}</> : streakN === 1 ? <>Day 1 of a {streak?.label || "streak"}</> : <>Start a {streak?.label || "streak"}</>}
           </div>
           <div className="dd-sub">
             {isArchive ? <>An old puzzle — it doesn’t count toward tomorrow.</>
+              : streakSafe ? <><strong>Streak safe</strong> · new puzzles in <strong className="dd-num">{ko}</strong></>
               : streakN >= 1 ? <>Tomorrow makes it <strong className="dd-num">{streakN + 1}</strong> · new puzzles in <strong className="dd-num">{ko}</strong></>
               : <>New puzzles in <strong className="dd-num">{ko}</strong></>}
           </div>
@@ -391,12 +409,44 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       )}
 
 
+      {save && save.onSave && (streakN >= 2 || save.line) && (
+        <div className="dd-row">
+          <div className="dd-body">
+            {streakN >= 2
+              ? <div className="dd-sub">Your <strong className="dd-num">{streakN}-day</strong> streak{save.line ? <> and <strong className="dd-num">{save.line}</strong></> : null} live{save.line ? "" : "s"} on this phone only.</div>
+              : <div className="dd-sub"><strong className="dd-num">{save.line}</strong> — on this phone only.</div>}
+          </div>
+          <button type="button" className="dd-pill" onClick={() => { track?.("dd-save", { game }); save.onSave(); }}>Save</button>
+        </div>
+      )}
+
+      {/* LAST IN THE PANEL (16 Oct 2026): the crowd's numbers are the one
+          thing here that arrives late, about a second after the rest. Above
+          the save row they pushed it, and Back to Home, 178px down as they
+          landed (measured at 375x812). Now the block holds its height while
+          loading and sits at the bottom, so a late or missing answer can only
+          move what is below the panel. */}
       {/* SHARES, NOT HEADCOUNTS, WHILE THE CROWD IS SMALL (Alex, 2026-10-07).
           "27 played" and a bar reading "13" tell a newcomer how few people are
           here, and a small room is a reason to leave. Below SHOW_COUNTS_FROM
           results the panel speaks only in percentages (which are just as true);
           above it the real numbers come back, because then they are an asset. */}
-      {summary && (
+      {!distReady ? (
+        // The frame: same head, same rows, same one-line sub, no numbers.
+        <div className="dd-dist is-loading" aria-busy="true" aria-label="How everyone did, loading">
+          <div className="dd-dist-head"><div className="dd-title">How everyone did</div></div>
+          <div className="dd-bars" aria-hidden="true">
+            {bars.map((r) => (
+              <React.Fragment key={r.k}>
+                <span className="dd-bar-k">{r.label}</span>
+                <span className="dd-bar"><i style={{ width: 0 }} /></span>
+                <span className="dd-bar-v">{"\u00a0"}</span>
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="dd-sub" aria-hidden="true">{"\u00a0"}</div>
+        </div>
+      ) : summary && (
         <div className={`dd-dist${yesterday ? " is-yesterday" : ""}`} aria-label={yesterday ? yLabel : showCounts ? `How everyone did, ${summary.n} results` : "How everyone did"}>
           <div className="dd-dist-head">
             <div className="dd-title">{yesterday ? yLabel : "How everyone did"}</div>
@@ -414,9 +464,11 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           </div>
           <div className="dd-sub">
             {yesterday
-              ? <>You're one of the first to finish {game === "daily7" ? "today's set" : `No. ${edition}`}. {summary.outOf != null
-                ? <>Yesterday's average was <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong>.</>
-                : <>Yesterday <strong className="dd-num">{summary.solvedPct}%</strong> solved it.</>}</>
+              // One line, like today's (the frame reserves one): two lines here
+              // moved everything under the block by a line when it landed.
+              ? <>You're early today. {summary.outOf != null
+                ? <>Yesterday's average: <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong></>
+                : <><strong className="dd-num">{summary.solvedPct}%</strong> solved yesterday's.</>}</>
               : summary.outOf != null
                 ? <>Average <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong>{summary.line ? <> · <strong>{summary.line}</strong></> : null}</>
                 : <><strong className="dd-num">{summary.solvedPct}%</strong> solved{summary.line ? <> · <strong>{summary.line}</strong></> : null}</>}
@@ -424,17 +476,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
-
-      {save && save.onSave && (streakN >= 2 || save.line) && (
-        <div className="dd-row">
-          <div className="dd-body">
-            {streakN >= 2
-              ? <div className="dd-sub">Your <strong className="dd-num">{streakN}-day</strong> streak{save.line ? <> and <strong className="dd-num">{save.line}</strong></> : null} live{save.line ? "" : "s"} on this phone only.</div>
-              : <div className="dd-sub"><strong className="dd-num">{save.line}</strong> — on this phone only.</div>}
-          </div>
-          <button type="button" className="dd-pill" onClick={() => { track?.("dd-save", { game }); save.onSave(); }}>Save</button>
-        </div>
-      )}
 
       </div>
     </section>

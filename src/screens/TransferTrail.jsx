@@ -498,6 +498,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
               save={dailyDone?.save}
               GetAppCTA={GetAppCTA}
               track={dailyDone?.track}
+              bucketMax={career.length}
             />
           </div>
           {/* A wrong career order is UNFALSIFIABLE to the player — they cannot

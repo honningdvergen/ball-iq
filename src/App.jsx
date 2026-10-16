@@ -6386,7 +6386,9 @@ function AppInner() {
       day: { keys: dayKeys, who: resolveChallengerName },
       remind: { state: resultsRemindState, onRemind: remindFromResults },
       // "daily streak" — the cross-mode one; the islands pass the per-game label.
-      streak: { count: loginStreak || 0, label: "daily streak" },
+      // keepsOnLoss: this streak ticks on ANY finished daily, a loss included
+      // (onDailyDone -> tickLoginStreak), so the panel may say "Streak safe".
+      streak: { count: loginStreak || 0, label: "daily streak", keepsOnLoss: true },
       // The guest save line used to be its own card above this panel (Alex,
       // 2026-09-06: "does this look good?" — no). It is a row of the panel now:
       // what lives on this phone only, and the one tap that makes it follow them.

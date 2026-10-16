@@ -97,3 +97,11 @@
 .dd-g:empty,.dd-hr:has(+ .dd-g:empty){display:none;}
 @keyframes dd-in{from{opacity:0;transform:translateY(6px);}}
 @media (prefers-reduced-motion: reduce){.dd-g{animation:none;}}
+
+/* ── HOW EVERYONE DID, WHILE IT LOADS (16 Oct 2026) ── the same head, rows and
+   one-line sub with no numbers, so the block takes its final height at once
+   and the numbers fill in place instead of pushing the panel down. */
+.dd-dist.is-loading .dd-title{color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.dd-dist.is-loading .dd-bar-k{color:var(--t3);-webkit-text-fill-color:var(--t3);}
+/* Under the save row it needs a little more air than the group's 10px gap. */
+.dd-g > * + .dd-dist{margin-top:6px;}
