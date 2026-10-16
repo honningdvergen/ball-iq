@@ -3654,4 +3654,260 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Heart of Midlothian",
+    "slug": "hearts",
+    "name": "Hearts",
+    "h1": "Hearts Quiz",
+    "title": "Hearts Quiz with Answers | Ball IQ",
+    "description": "Hearts quiz: Tynecastle, McCrae's Battalion, Albert Kidd's day at Dens Park, and the 1998, 2006 and 2012 Scottish Cup wins. How well do you know Hearts?",
+    "intro": [
+      "Heart of Midlothian take their name from a nickname for Edinburgh's Old Tolbooth. Sir Walter Scott also used it as the title of his 1818 novel, The Heart of Midlothian. Hearts have played at Tynecastle, in the Gorgie district of west Edinburgh, since 1886. In 1914 Hearts players enlisted together in McCrae's Battalion, the 16th Battalion of the Royal Scots raised by Sir George McCrae. Under Tommy Walker, who managed the club from 1951 to 1966, Hearts won the Scottish league titles of 1957-58 and 1959-60.",
+      "Few Hearts seasons hurt more than 1985-86. On the final day Hearts lost 2-0 at Dens Park, where Albert Kidd came off the Dundee bench and scored twice late on. Celtic beat St Mirren 5-0 the same afternoon and took the title on goal difference. A week later Alex Ferguson's Aberdeen beat Hearts 3-0 in the Scottish Cup final. Europe brought better nights. In the 1988-89 UEFA Cup quarter-finals Hearts beat Bayern Munich 1-0 at Tynecastle, then lost 2-0 in Munich. In 1990 chairman Wallace Mercer tried to take over Hibernian and merge the two clubs, but the 'Hands off Hibs' campaign stopped the bid.",
+      "Jim Jefferies left Falkirk to become manager in 1995, and in 1998 Hearts won the Scottish Cup 2-1 at Celtic Park. Colin Cameron scored an early penalty and Stéphane Adam added a second before Ally McCoist pulled one back. The Vladimir Romanov era was eventful. George Burley left in October 2005 with Hearts unbeaten at the top of the SPL. Graham Rix replaced him and was sacked in March 2006, and Valdas Ivanauskas then led the team to the 2006 Scottish Cup, won on penalties against Second Division Gretna after a 1-1 draw at Hampden. Romanov also controlled FBK Kaunas, and a steady stream of players moved between Kaunas and Tynecastle. Hearts played European home games at Murrayfield, and AEK Athens ended their 2006-07 Champions League run in the third qualifying round.",
+      "The 2012 Scottish Cup final is the one Hearts fans love most: a 5-1 win over Edinburgh rivals Hibernian at Hampden, with Rudi Skácel scoring twice in Paulo Sérgio's first season. The lows came soon after. Hearts lost the 2013 League Cup final 3-2 to St Mirren. In 2013-14 Gary Locke managed a very young squad through administration and a 15-point deduction, and the season ended in relegation. Robbie Neilson won the Championship at the first attempt in 2014-15. More recently Hearts lost Scottish Cup finals to Celtic in 2019 and 2020 and to Rangers in 2022, and played in the Conference League group stage after FC Zürich knocked them out of the 2022-23 Europa League play-off round. Our questions cover all of it, from Scott to Stendel. How many can you get right?"
+    ],
+    "faq": [
+      {
+        "q": "Why are Hearts called Heart of Midlothian?",
+        "a": "The name comes from 'The Heart of Midlothian', a nickname for Edinburgh's Old Tolbooth. Sir Walter Scott used the same name for his 1818 novel."
+      },
+      {
+        "q": "Where do Hearts play their home games?",
+        "a": "Hearts have played at Tynecastle since 1886. The ground is in Gorgie, in west Edinburgh. For their 2004-05 UEFA Cup group games, Hearts played at Murrayfield, the national rugby stadium."
+      },
+      {
+        "q": "How did Hearts lose the 1985-86 league title?",
+        "a": "On the final day Hearts lost 2-0 to Dundee at Dens Park, where Albert Kidd came off the bench and scored twice. Celtic beat St Mirren 5-0 and won the title on goal difference. A week later Aberdeen beat Hearts 3-0 in the Scottish Cup final."
+      },
+      {
+        "q": "Who managed Hearts to their Scottish Cup wins in 1998, 2006 and 2012?",
+        "a": "Jim Jefferies won the 1998 cup and Valdas Ivanauskas won it in 2006. In 2012 Paulo Sérgio won it in his first season, with a 5-1 win over Hibernian."
+      }
+    ]
+  },
+  {
+    "club": "Hibernian",
+    "slug": "hibernian",
+    "name": "Hibernian",
+    "h1": "Hibernian Quiz",
+    "title": "Hibernian Quiz with Answers | Ball IQ",
+    "description": "Test your Hibs knowledge: Irish roots in 1875, the first British club in the European Cup, the 7–0 at Tynecastle and the 2016 Scottish Cup.",
+    "intro": [
+      "Hibernian take their name from Hibernia, the Latin name for Ireland. Irish immigrants founded the club in Edinburgh's Cowgate in 1875. This quiz runs from those beginnings to the modern day. It covers cup finals, European nights, Edinburgh derbies and the managers and players who came through Easter Road.",
+      "Hibs won their first Scottish Cup in 1887, beating Dumbarton 2–1 at Hampden. They won it again in 1902 with a 1–0 win over Celtic, and then waited 114 years for the next one. That wait ended on 21 May 2016, when Hibs beat Rangers 3–2 at Hampden. Anthony Stokes scored twice and captain David Gray headed the winner from a corner in stoppage time. The questions also cover the League Cup wins over Dunfermline in 1991 and Kilmarnock in 2007, and the finals Hibs lost to Livingston, Hearts, Ross County and St Johnstone.",
+      "In 1955–56, Hibs became the first British club to play in the European Cup, and they reached the semi-finals before Stade de Reims knocked them out. In the 1967–68 Fairs Cup they lost 4–1 in Naples, then beat Napoli 5–0 at Easter Road. Closer to home, Hibs won 7–0 at Tynecastle on New Year's Day 1973. In 1990, the 'Hands off Hibs' campaign fought off a takeover bid led by Hearts chairman Wallace Mercer.",
+      "You'll also need to know where the people went. Famous Five winger Gordon Smith won league titles with Hibs, Hearts and Dundee. Joe Baker left for Torino. Eddie Turnbull came back from Aberdeen as manager. Alex McLeish left for Rangers, Tony Mowbray for West Brom and Alan Stubbs for Rotherham. Several Hibs players were sold on: Garry O'Connor to Lokomotiv Moscow, Kevin Thomson and Steven Whittaker to Rangers, Steven Fletcher to Burnley and John McGinn to Aston Villa. Answer each question, read the hint after it, and see how your Hibs knowledge holds up."
+    ],
+    "faq": [
+      {
+        "q": "Why is the club called Hibernian?",
+        "a": "Hibernia is the Latin name for Ireland. Hibs were founded in 1875 by Irish immigrants in Edinburgh's Cowgate, and the name reflects those roots."
+      },
+      {
+        "q": "When did Hibs end their 114-year wait for the Scottish Cup?",
+        "a": "On 21 May 2016, when they beat Rangers 3–2 at Hampden. Before that, their last Scottish Cup win had been the 1–0 victory over Celtic in 1902. David Gray headed the stoppage-time winner and Anthony Stokes scored the other two goals."
+      },
+      {
+        "q": "Were Hibs the first British club in the European Cup?",
+        "a": "Yes. Hibs played in the European Cup in 1955–56, the first British club to do so. They reached the semi-finals, where Stade de Reims knocked them out. Reims then lost the first European Cup final to Real Madrid."
+      },
+      {
+        "q": "What was Hibs' biggest win over Hearts?",
+        "a": "This quiz features the 7–0 win at Tynecastle on 1 January 1973, a result Hibs fans still celebrate."
+      }
+    ]
+  },
+  {
+    "club": "Bologna",
+    "slug": "bologna",
+    "name": "Bologna",
+    "h1": "Bologna Quiz",
+    "title": "Bologna Quiz with Answers | Ball IQ",
+    "description": "Test your Bologna knowledge: the 1909 founding, the 1964 play-off title, Baggio's 22-goal season and the 2025 Coppa Italia win over AC Milan.",
+    "intro": [
+      "Bologna were founded on 3 October 1909 at a meeting in the Ronzani beer hall (Birreria Ronzani) in the city centre. A Swiss dentist, Louis Rauch, was elected the first president. The club's stadium opened in 1927 as the Stadio Littoriale. In 1983 it was renamed after Renato Dall'Ara, who was president of the club from 1934 until his death in 1964.",
+      "The 1930s side was known as the team that made the world tremble. At its peak it beat Chelsea 4-1 in the final of the 1937 Paris World Exhibition tournament. Angelo Schiavio, a striker who played his whole career at Bologna, scored the extra-time winner when Italy beat Czechoslovakia 2-1 in the 1934 World Cup final in Rome. Under Fulvio Bernardini, Bologna finished level on points with Inter in 1963-64. They won the tie-break play-off 2-0 at the Stadio Olimpico on 7 June 1964 to take their seventh title, days after Dall'Ara died. In 1974 they beat Serie B side Palermo on penalties to win the Coppa Italia.",
+      "After the club went bankrupt in 1993, Renzo Ulivieri won Serie C1 in 1995 and Serie B in 1996, taking Bologna back to Serie A. Roberto Baggio arrived from Milan in 1997 and scored 22 Serie A goals in his only season, which put him back in Italy's 1998 World Cup squad. Giuseppe Signori, who had been capocannoniere three times with Lazio, joined in 1998. That year Bologna won the Intertoto Cup, beating Ruch Chorzów 3-0 on aggregate. In the 1998-99 UEFA Cup they reached the semi-finals and went out to Marseille on away goals. In 2005 they were relegated after losing a play-off to Parma 2-1 on aggregate. Marco Di Vaio scored 24 Serie A goals in 2008-09, one fewer than Zlatan Ibrahimović. In 2015, under Delio Rossi, Bologna returned to Serie A through the Serie B play-off final against Pescara.",
+      "Joey Saputo, the founder of the Montreal Impact, became Bologna's owner in 2014. Sinisa Mihajlovic replaced Filippo Inzaghi in January 2019 and kept the club up. Thiago Motta replaced Mihajlovic in September 2022 and took Bologna to fifth place and the Champions League in 2023-24, before leaving for Juventus. His successor, Vincenzo Italiano, came from Fiorentina. In May 2025 Dan Ndoye scored the only goal against AC Milan at the Stadio Olimpico to win the Coppa Italia, Bologna's first major trophy in 51 years. The questions also cover the players Bologna sold on, including Takehiro Tomiyasu and Riccardo Calafiori to Arsenal, Joshua Zirkzee to Manchester United and Ndoye to Nottingham Forest. Every answer has been fact-checked, so see how many you can get."
+    ],
+    "faq": [
+      {
+        "q": "When and where were Bologna founded?",
+        "a": "Bologna were founded on 3 October 1909 at a meeting in the Ronzani beer hall (Birreria Ronzani) in the city centre. The Swiss dentist Louis Rauch was elected the club's first president."
+      },
+      {
+        "q": "Why is Bologna's stadium called the Renato Dall'Ara?",
+        "a": "Renato Dall'Ara was Bologna's president from 1934 until his death in 1964. The stadium opened in 1927 as the Stadio Littoriale and was renamed after him in 1983."
+      },
+      {
+        "q": "How did Bologna win the 1963-64 Serie A title?",
+        "a": "Bologna and Inter finished level on points, so the title went to a tie-break play-off. Bologna, managed by Fulvio Bernardini, beat Inter 2-0 at the Stadio Olimpico in Rome on 7 June 1964 to win their seventh title."
+      },
+      {
+        "q": "Who did Bologna beat in the 2025 Coppa Italia final?",
+        "a": "Bologna beat AC Milan 1-0 at the Stadio Olimpico in Rome in May 2025, with Dan Ndoye scoring the only goal. Vincenzo Italiano was the coach, and it was the club's first major trophy in 51 years, since the 1974 Coppa Italia."
+      }
+    ]
+  },
+  {
+    "club": "Genoa",
+    "slug": "genoa",
+    "name": "Genoa",
+    "h1": "Genoa Quiz",
+    "title": "Genoa Quiz with Answers | Ball IQ",
+    "description": "Test your Genoa knowledge: Spensley's 1898 title, William Garbutt and 'Mister', Milito's 24-goal season, Piatek, Gasperini and the 777 Partners era.",
+    "intro": [
+      "Genoa's story starts with James Richardson Spensley. He was an English doctor working in the city, and in 1897 he started the club's football section. A year later he led the side to the first Italian Football Championship: the May 1898 final in Turin went to extra time, and Genoa beat Internazionale Torino. Genoa won three titles in a row before Milan stopped them in the 1901 final, winning 3-0 at Ponte Carrega for their own first championship. William Garbutt arrived as coach in 1912. His players called him 'Mister', and Italian football still uses the word for a head coach. Defender Renzo De Vecchi joined from Milan in 1913 and won the 1914-15, 1922-23 and 1923-24 titles. The back-to-back titles of 1922-23 and 1923-24 took Genoa to nine, and the 1923-24 title is still their most recent.",
+      "The club's home is named after Luigi Ferraris. He played for Genoa and trained as an engineer, and he was killed in action in 1915. The ground took his name in 1933. In 1925 Genoa lost the drawn-out northern final series, remembered as the 'Scudetto of the Pistols', to Bologna after a series of replays. Playing as Genova 1893, they won the 1937 Coppa Italia final in Florence, where Luigi Torti scored the only goal against Roma. During Italia 90 the Luigi Ferraris staged the round-of-16 shootout in which the Republic of Ireland beat Romania, with Packie Bonner saving a penalty and David O'Leary scoring the winner. The quiz also covers players who made their names at Genoa: winger Gigi Meroni, who joined Torino in 1964, and Roberto Pruzzo, Serie B top scorer for Genoa in 1975-76, who went on to win three capocannoniere titles with Roma.",
+      "The modern era has had big highs and lows. Franco Scoglio's Genoa won Serie B in 1988-89, finishing level with Bari on 51 points. In June 1995 they went down from Serie A after a 1-1 play-off against Padova in Florence, which Padova won on penalties. Nine months later, in March 1996, Genoa beat Port Vale 5-2 at Wembley in the last Anglo-Italian Cup final. In 2005 the FIGC found that Genoa had fixed their final-day 3-2 Serie B win over Venezia and demoted them to Serie C1. Diego Milito left for Real Zaragoza. Gian Piero Gasperini came from Crotone in 2006 and had Genoa back in Serie A in 2007. By 2008-09 Milito was back and scored 24 league goals, one fewer than Zlatan Ibrahimovic. Genoa finished fifth on 68 points, level with Fiorentina, who took fourth place on head-to-head. That summer Milito and Thiago Motta both joined Jose Mourinho's Inter.",
+      "Genoa have also sold a long line of players to bigger clubs. In 2018 they signed Krzysztof Piatek from Cracovia and Cristian Romero from Belgrano. That same summer academy goalkeeper Mattia Perin left for Juventus. Milan paid about 35 million euros for Piatek in January 2019. Radu Dragusin left for Tottenham Hotspur in January 2024, and Mateo Retegui, who left that summer, won the 2024-25 capocannoniere with Atalanta. Off the pitch, Miami-based 777 Partners bought the club from Enrico Preziosi in September 2021. Ballon d'Or winner Andriy Shevchenko then lasted around two months as coach, and Alexander Blessin came in from KV Oostende in January 2022. Genoa were still relegated, but Alberto Gilardino's side went straight back up in 2022-23 as runners-up to Frosinone. Work through the questions below to see how much of it you know."
+    ],
+    "faq": [
+      {
+        "q": "When did Genoa last win the Italian championship?",
+        "a": "Genoa's ninth and most recent Italian championship came in 1923-24, a year after they also won the 1922-23 title."
+      },
+      {
+        "q": "Who founded Genoa's football section?",
+        "a": "James Richardson Spensley, an English doctor working in Genoa, started the football section in 1897 and led the club to the first Italian championship in 1898."
+      },
+      {
+        "q": "Who is Genoa's stadium named after?",
+        "a": "The Luigi Ferraris is named after a Genoa player and trained engineer who was killed in action in the First World War in 1915. The ground took his name in 1933."
+      },
+      {
+        "q": "Why do Italian players call their coach 'Mister'?",
+        "a": "The habit goes back to William Garbutt, the Englishman who took charge of Genoa in 1912. His players called him 'Mister', and the word stuck in Italian football."
+      }
+    ]
+  },
+  {
+    "club": "Lille",
+    "slug": "lille",
+    "name": "Lille",
+    "h1": "Lille Quiz",
+    "title": "Lille Quiz with Answers | Ball IQ",
+    "description": "Test your Lille OSC knowledge: the 1944 merger, the 2010-11 and 2020-21 titles, Eden Hazard, Osimhen, Pépé and the managers who passed through.",
+    "intro": [
+      "Lille OSC was formed in 1944, when Olympique Lillois merged with SC Fives, a club from the Fives district of the city. Success came quickly. In 1945-46, their second season after the merger, Lille won the league and cup double and beat Red Star in the Coupe de France final. They then won three Coupe de France finals in a row from 1946 to 1948, beating Strasbourg in 1947 and RC Lens in the 1948 northern derby final. A second league title followed in 1953-54.",
+      "Lille were relegated from Division 1 in 1997. In 1998 they appointed Vahid Halilhodžić, who had led Raja Casablanca to the 1997 CAF Champions League. He won the 1999-2000 Division 2 title by 16 points from Guingamp. Back in the top flight, Lille finished third in 2000-01, nine points behind champions Nantes. In their first Champions League campaign they knocked out Parma 2-1 on aggregate, then finished third in a group with Deportivo La Coruña, Manchester United and Olympiacos. In the UEFA Cup they knocked out Fiorentina before Borussia Dortmund eliminated them on away goals. Halilhodžić left for Rennes in 2002.",
+      "Under Claude Puel, Lille won the 2004 Intertoto Cup, beating União de Leiria 2-0 after extra time in the second leg. On 2 November 2005, Milenko Aćimović scored the only goal against Manchester United in front of more than 66,000 at the Stade de France. Rudi Garcia arrived from Le Mans in June 2008, and in 2010-11 Lille won the double. Ludovic Obraniak's late winner beat Paris Saint-Germain in the Coupe de France final, and Moussa Sow finished as Ligue 1's top scorer with 25 league goals.",
+      "Lille have also sold a long line of players to bigger clubs. Pascal Cygan went to Arsenal in 2002. Kader Keïta, Jean II Makoun and Michel Bastos all went to Lyon between 2007 and 2009. Eden Hazard, who joined the academy from Tubize at 14, went to Chelsea in 2012. Nicolas Pépé went to Arsenal for about £72m in 2019, and Rafael Leão and Victor Osimhen went to Italy. Christophe Galtier's team still won the 2020-21 title. Jonathan David, signed from Gent, and Burak Yilmaz, who arrived from Besiktas at 35, scored in the final-day 2-1 win at Angers that finished one point ahead of PSG."
+    ],
+    "faq": [
+      {
+        "q": "When was Lille OSC founded?",
+        "a": "Lille OSC was formed in 1944 when Olympique Lillois merged with SC Fives. In their second season after the merger, 1945-46, they won the league and cup double."
+      },
+      {
+        "q": "In which seasons did Lille win the French league title?",
+        "a": "Lille won the title in 1945-46 and again in 1953-54, then had to wait until 2010-11 for their third. They won the league again in 2020-21."
+      },
+      {
+        "q": "How did Lille win the 2020-21 Ligue 1 title?",
+        "a": "Lille won 2-1 at Angers on the final day, 23 May 2021, with a goal from Jonathan David and a Burak Yilmaz penalty. That put them one point ahead of PSG. Manager Christophe Galtier left for Nice weeks later."
+      },
+      {
+        "q": "Which famous players started out at Lille or made their name there?",
+        "a": "Eden Hazard joined Lille's academy from Tubize and left for Chelsea in 2012 after winning back-to-back Ligue 1 Player of the Year awards. Nicolas Pépé joined Arsenal for about £72m in 2019, Rafael Leão went to AC Milan in 2019, and Victor Osimhen went to Napoli in 2020."
+      }
+    ]
+  },
+  {
+    "club": "RC Lens",
+    "slug": "rc-lens",
+    "name": "RC Lens",
+    "h1": "RC Lens Quiz",
+    "title": "RC Lens Quiz with Answers | Ball IQ",
+    "description": "How well do you know RC Lens? Take on questions about the 1998 title, Stade Bollaert-Delelis, Varane, Šmicer and Lens' second place in 2022-23.",
+    "intro": [
+      "RC Lens dates its foundation to 1906, when the club began as Racing Club lensois. It took the name Racing Club de Lens in 1969. Its ground opened in 1933 and is named after Félix Bollaert, who ran the Compagnie des mines de Lens, the coal mining company behind the stadium. In 2012 a second name was added to honour André Delelis, mayor of Lens from 1966 to 1998, so the ground became Stade Bollaert-Delelis.",
+      "The club's best years came under Daniel Leclercq, nicknamed 'Le Druide'. Lens won their first French league title in 1997-98, finishing level with Metz on 68 points and taking it on goal difference, +25 against +20. Yohan Lachor's goal away at Auxerre on 9 May 1998 settled it on the final day. A double slipped away when Paris Saint-Germain won the Coupe de France final 2-1 at the Stade de France. A year later Daniel Moreira scored the only goal as Lens beat Metz in the 1999 Coupe de la Ligue final. In Europe, Mickaël Debève's goal won a Champions League game against Arsenal at Wembley in 1998-99. The next season Lens beat Atletico Madrid and Celta Vigo on the way to the UEFA Cup semi-finals, where Arsenal knocked them out.",
+      "Lens nearly won a second title in 2001-02. On the final day they lost 3-1 at Lyon, who finished on 66 points to Lens' 64 and won their first league title. In the 2002-03 Champions League, Lens finished third in their group, ahead of Bayern Munich. In 2005 they were one of the three Intertoto Cup winners, beating CFR Cluj 4-2 on aggregate. Two years later Guy Roux came out of retirement to take the job and resigned in August 2007. Jean-Pierre Papin took over, and Lens went down in May 2008. Jean-Guy Wallemme won Ligue 2 at the first attempt to bring them straight back up. While Bollaert was rebuilt for Euro 2016, Lens played home games in 2014-15 at Amiens' Stade de la Licorne and at the Stade de France. Under Franck Haise they finished second in 2022-23 with 84 points, one behind PSG, and returned to the Champions League. Will Still replaced Haise in 2024, and Pierre Sage followed in 2025.",
+      "Lens has also sold a lot of players to big clubs. Vladimir Šmicer joined Liverpool in 1999 and El-Hadji Diouf followed him there in 2002. Seydou Keita left Lens in 2007 and joined Barcelona a year later. Raphaël Varane made his debut in 2010 and moved to Real Madrid in 2011, and Geoffrey Kondogbia went to Sevilla in 2012. More recent sales include Jonathan Clauss to Marseille, Lois Openda to RB Leipzig after 21 Ligue 1 goals, Seko Fofana to Al-Nassr and Abdukodir Khusanov to Manchester City. Play the quiz to find out how much of this you knew."
+    ],
+    "faq": [
+      {
+        "q": "When was RC Lens founded?",
+        "a": "RC Lens dates its foundation to 1906, when it began as Racing Club lensois. The name Racing Club de Lens was adopted in 1969."
+      },
+      {
+        "q": "Who managed Lens to their first French league title?",
+        "a": "Daniel Leclercq, nicknamed 'Le Druide'. Lens won the 1997-98 title on goal difference after finishing level with Metz on 68 points, and Leclercq's side also won the 1999 Coupe de la Ligue."
+      },
+      {
+        "q": "Why is Lens' stadium called Stade Bollaert-Delelis?",
+        "a": "The ground opened in 1933 and is named after Félix Bollaert, who ran the Compagnie des mines de Lens coal company. In 2012 the name of André Delelis was added. He was mayor of Lens from 1966 to 1998."
+      },
+      {
+        "q": "Which famous players has Lens sold?",
+        "a": "Lens sold Vladimir Šmicer and El-Hadji Diouf to Liverpool, Raphaël Varane to Real Madrid, Geoffrey Kondogbia to Sevilla, Lois Openda to RB Leipzig and Abdukodir Khusanov to Manchester City. Seydou Keita left Lens in 2007 and joined Barcelona a year later."
+      }
+    ]
+  },
+  {
+    "club": "1. FC Köln",
+    "slug": "fc-koln",
+    "name": "1. FC Köln",
+    "h1": "1. FC Köln Quiz",
+    "title": "1. FC Köln Quiz with Answers | Ball IQ",
+    "description": "How well do you know 1. FC Köln? Test yourself on the 1978 double, Littbarski, Podolski, Modeste and the 2021 relegation play-off in Kiel.",
+    "intro": [
+      "1. FC Köln was formed on 13 February 1948, when Kölner BallSpiel-Club 01 merged with SpVgg Sülz 07. This quiz follows the club from that merger to the present day. It covers the title races, the European nights, the big transfers in and out, and the managers who came and went.",
+      "Start with the glory years. Hennes Weisweiler came back to Köln in 1976 after a season at Barcelona. On the final day of 1977-78 his side won 5-0 at FC St. Pauli. Borussia Mönchengladbach won 12-0 that afternoon, but Köln still took the title on goal difference and completed the double. In 1979 Köln reached the European Cup semi-finals, drawing 3-3 in Nottingham before losing 1-0 at home to Nottingham Forest. In 1983 they won the DFB-Pokal 1-0 against SC Fortuna Köln with a Pierre Littbarski goal. Three years later they lost the UEFA Cup final to Real Madrid.",
+      "Plenty of famous names moved on. Thomas Häßler joined Juventus in 1990, Littbarski left for JEF United Ichihara in Japan's new J.League in 1993, and Bodo Illgner went to Real Madrid in 1996. After Köln's first Bundesliga relegation in 1998, Toni Polster joined Gladbach. Lukas Podolski left for Bayern Munich in 2006, came back in 2009 and joined Arsenal in 2012. Christoph Daum had two spells. He left in 1990 and won the 1992 Bundesliga with VfB Stuttgart. He then led Köln back to the Bundesliga in 2008 and left for Fenerbahçe in 2009.",
+      "The modern era has plenty of twists too. Peter Stöger arrived from Austria Wien in 2013 and won the 2. Bundesliga title in 2014. Anthony Modeste scored 25 Bundesliga goals in 2016-17 before leaving for Tianjin Quanjian. Jonas Hector scored Germany's winning penalty against Italy at Euro 2016. Köln survived the 2021 relegation play-off against Holstein Kiel under Friedhelm Funkel, and Steffen Baumgart led them to seventh in his first season. Think you know it all? Take the quiz and find out."
+    ],
+    "faq": [
+      {
+        "q": "When was 1. FC Köln founded?",
+        "a": "1. FC Köln was formed on 13 February 1948 through a merger of Kölner BallSpiel-Club 01 and SpVgg Sülz 07."
+      },
+      {
+        "q": "How did Köln win the 1977-78 Bundesliga title?",
+        "a": "On the final day Köln won 5-0 at FC St. Pauli. Borussia Mönchengladbach won 12-0 and finished level on points, but Köln took the title by three goals on goal difference. Hennes Weisweiler's side also completed the double that season."
+      },
+      {
+        "q": "What happened in Köln's 1986 UEFA Cup final?",
+        "a": "Köln lost the two-legged final to Real Madrid. Real won the first leg 5-1 in Madrid. Köln won the home leg 2-0, which was played in Berlin, but it was not enough."
+      },
+      {
+        "q": "Why did 1. FC Köln get a FIFA transfer ban?",
+        "a": "FIFA found that Köln had induced teenager Jaka Čuber Potočnik to break his contract with Olimpija Ljubljana. CAS upheld a ban covering two registration windows, and Köln served it in 2024."
+      }
+    ]
+  },
+  {
+    "club": "Espanyol",
+    "slug": "espanyol",
+    "name": "Espanyol",
+    "h1": "Espanyol Quiz",
+    "title": "Espanyol Quiz with Answers | Ball IQ",
+    "description": "How well do you know Espanyol? From the 1900 founding and Sarrià to the Tamudazo, two UEFA Cup finals and Cornellà-El Prat. Test your Ball IQ.",
+    "intro": [
+      "Espanyol was founded in Barcelona in October 1900 by a group of university students led by Ángel Rodríguez Ruiz. The club began life as Sociedad Española de Football and became Real Club Deportivo Español after royal patronage in 1912. Goalkeeper Ricardo Zamora was one of its early legends before he left for Real Madrid in 1930.",
+      "The club's grounds have their own history. At the old Sarrià ground during the 1982 World Cup, Paolo Rossi scored a hat-trick as Italy beat Brazil 3–2 and knocked them out. Espanyol left Sarrià in 1997 and played at the Estadi Olímpic Lluís Companys on Montjuïc until 2009. They then opened Cornellà-El Prat in August 2009 with a 3–0 friendly win over Liverpool, and Luis García scored the stadium's first goal.",
+      "Europe has brought Espanyol two near misses. Under Javier Clemente they won the first leg of the 1988 UEFA Cup final 3–0, then lost the second leg 3–0 and the shootout to Bayer Leverkusen. In 2007 Ernesto Valverde's side beat Werder Bremen in the semi-finals and drew 2–2 with Sevilla at Hampden Park before losing on penalties. Cup finals at home went better. Paco Flores's team beat Atlético Madrid 2–1 at Mestalla to win the 2000 Copa del Rey, with Raúl Tamudo heading the ball out of the keeper's hands. Miguel Ángel Lotina's side beat Real Zaragoza 4–1 in 2006 to win the club's fourth Copa.",
+      "Then there are the derby nights and the transfer stories. Tamudo's late equaliser at Camp Nou in June 2007, the 'Tamudazo', cost Barcelona the title. In February 2009 Iván de la Peña scored both goals in a 2–1 win there, the 'Delapeñazo'. This quiz also covers Mauricio Pochettino, Philippe Coutinho's loan from Inter, Wu Lei's arrival from Shanghai SIPG and the record fee paid to Benfica for Raúl de Tomás. It ends with the 2019–20 season, when Espanyol were relegated while also playing in the Europa League. See how much you really know."
+    ],
+    "faq": [
+      {
+        "q": "Who founded RCD Espanyol?",
+        "a": "Espanyol was founded in Barcelona in October 1900 by a group of university students led by Ángel Rodríguez Ruiz, a University of Barcelona student. The club was originally called Sociedad Española de Football and became Real Club Deportivo Español after the 1912 royal patronage."
+      },
+      {
+        "q": "What was the Tamudazo?",
+        "a": "The Tamudazo was Raúl Tamudo's late equaliser for Espanyol at Camp Nou in June 2007. His goal made it 2–2 and cost Barcelona the La Liga title, which Real Madrid took on head-to-head record."
+      },
+      {
+        "q": "Have Espanyol ever reached a European final?",
+        "a": "Yes, two UEFA Cup finals, and they lost both on penalties. In 1988 they won the first leg 3–0 against Bayer Leverkusen but lost the second leg 3–0 and then the shootout. In 2007 they drew 2–2 with Sevilla at Hampden Park after extra time and lost the shootout 3–1."
+      },
+      {
+        "q": "Where have Espanyol played their home games?",
+        "a": "Espanyol played at Sarrià until 1997 and then at the Estadi Olímpic Lluís Companys on Montjuïc from 1997 to 2009. They moved to Cornellà-El Prat in 2009 and opened it on 2 August that year with a 3–0 friendly win over Liverpool."
+      }
+    ]
+  },
 ];
