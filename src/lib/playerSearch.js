@@ -98,9 +98,15 @@ export function rankPlayerSuggestions(pool, text, opts = {}) {
  * pool — it collapses toward the CLUB's country, so Messi, Vinícius Júnior and
  * James Rodríguez all read "Spain". Birth year separates the two Ronaldos
  * (1976 / 1985 / 1965) without asserting anything false.
+ *
+ * `club: false` is the Transfer Trail's form, birth year only. There the club
+ * under a name is read against the clubs on the board ("David de Gea, 1990 ·
+ * Fiorentina" while Fiorentina sits on it: design review, 15 Oct 2026), so the
+ * list would play the puzzle for you, and the club is the longest spell, not
+ * the career the board is asking about.
  */
-export function suggestionSubtitle(p) {
-  return [p.born, clubLabel(p)].filter(Boolean).join(' · ');
+export function suggestionSubtitle(p, { club = true } = {}) {
+  return [p.born, club ? clubLabel(p) : ''].filter(Boolean).join(' · ');
 }
 
 /**

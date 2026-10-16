@@ -341,7 +341,8 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         <p className="mp-intro">
           Guess any footballer, from any era. Each guess is ranked by how close he is to the secret player:
           clubs they both played for count most (more for years as team-mates), then the same position, then
-          the same era. The line under each guess says which of those it shares. Clues unlock after 3, 6 and 9
+          the same era. The line under each guess says which of those it shares, and whether he was born
+          earlier or later than the secret player. Clues unlock after 3, 6 and 9
           guesses. <strong style={{ color: 'var(--t1)' }}>Lower is closer: the secret player is rank 1.</strong>
         </p>
       )}

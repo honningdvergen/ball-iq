@@ -1620,3 +1620,145 @@ export function enterGuess({ text, isAnswer, top, poolReady }) {
   return poolReady ? null : t;
 }
 
+
+// ── A wrong guess that fits the board ────────────────────────────────────────
+// Design review, 15 Oct 2026: Radamel Falcao, guessed against Atlético Madrid
+// then Man Utd, was struck through without a word, although he played for
+// both. A smart wrong guess and a random one looked the same. Now a guess
+// whose career holds every club on the board gets one line saying so: the
+// player was reading the trail right and took the wrong path from it.
+//
+// ⚠️ ONLY WHAT A CAREER RECORD SAYS. The guess's clubs come from a Trail
+// career when he has one (checked by hand, house spellings), otherwise from
+// the careers file Mystery Player prints its "Shared Juventus" lines from
+// (Wikidata, with the checked fixes laid over). A hole in that file only
+// costs the line; it never makes one up. A club that cannot be matched by
+// name is a club he did not play for, so a spelling gap also costs silence.
+//
+// Club names: the Trail writes them the way a transfer story does ("Man Utd",
+// "PSG", "Leverkusen"); the careers file the way mysteryCareer.js clubName()
+// leaves them ("Manchester United", "Paris Saint-Germain"). Every Trail club
+// that the careers file spells differently was found by comparing the 204
+// Trail careers whose player is in the pool (16 Oct 2026) and is listed here.
+// Clubs only one obscure career names, where the careers label was itself a
+// guess (US Marocaine, Qatar SC, América Mineiro), were left out on purpose.
+export const TRAIL_CLUB_ALIASES = {
+  "man utd": "manchester united",
+  "man city": "manchester city",
+  "psg": "paris saint germain",
+  "leverkusen": "bayer leverkusen",
+  "west ham": "west ham united",
+  "inter": "inter milan",
+  "zaragoza": "real zaragoza",
+  "deportivo": "deportivo la coruna",
+  "west brom": "west bromwich albion",
+  "dortmund": "borussia dortmund",
+  "qpr": "queens park rangers",
+  "basaksehir": "istanbul basaksehir",
+  "montreal impact": "cf montreal",
+  "1860 munich": "tsv 1860 munchen",
+  "caen": "stade malherbe caen",
+  "newcastle": "newcastle united",
+  "kaiserslautern": "1 fc kaiserslautern",
+  "hamburg": "hamburger sv",
+  "nancy": "nancy lorraine",
+  "padova": "calcio padova",
+  "sydney": "sydney fc",
+  "waterford": "waterford united",
+  "lens": "r c lens",
+  "noordwijk": "vv noordwijk",
+  "messina": "a c r messina",
+  "fc halifax town": "halifax town",
+  "sint truiden": "sint truidense v v",
+  "levante": "levante ud",
+  "auxerre": "aj auxerre",
+  "agf": "aarhus gymnastikforening",
+  "reims": "stade de reims",
+  "al fayha": "al feiha",
+  "hajduk split": "hnk hajduk split",
+  "verona": "hellas verona",
+  "fafe": "ad fafe",
+  "aves": "clube desportivo das aves",
+  "figueirense": "figueirense futebol clube",
+  "widzew lodz": "rts widzew lodz",
+  "kyoto purple sanga": "kyoto sanga",
+  "sheffield utd": "sheffield united",
+  "psv eindhoven": "psv",
+  "rb salzburg": "red bull salzburg",
+  "union berlin": "1 fc union berlin",
+  "mainz 05": "1 fsv mainz 05",
+  "pescara": "delfino pescara",
+  "charleroi": "royal charleroi",
+  "consadole sapporo": "hokkaido consadole sapporo",
+  "aik": "aik fotboll",
+  "dc united": "d c united",
+  "botafogo": "botafogo f r",
+  "chemnitzer fc": "chemnitzer",
+  "blackburn": "blackburn rovers",
+  "leicester": "leicester city",
+  "antwerp": "royal antwerp",
+  "homburg": "fc 08 homburg",
+  "troyes": "es troyes ac",
+  "wolfsburg": "vfl wolfsburg",
+  "1861 nordlingen": "tsv 1861 nordlingen",
+};
+
+/** The form two spellings of one club are compared on. Pure. */
+export function trailClubKey(name) {
+  const k = foldLetters(String(name || ""))
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, " ").trim();
+  return TRAIL_CLUB_ALIASES[k] || k;
+}
+
+/**
+ * The careers a guessed name could mean, as lists of club names. Usually one.
+ * A Trail career wins when the name has one. Otherwise every pool record with
+ * exactly that name, each read through `careerOf` (mysteryCareer.js, passed in
+ * so this module, which Home imports, does not pull in the careers code).
+ * An empty list means nothing is known and nothing will be said.
+ */
+export function guessCareers(text, { players = TRAIL_PLAYERS, pool = [], careers = null, careerOf = null } = {}) {
+  const q = normaliseGuess(text);
+  if (!q) return [];
+  const own = players.find((p) => p && normaliseGuess((p.display || []).join(" ")) === q);
+  if (own) return [own.clubs];
+  if (!careers || !careerOf) return [];
+  return pool
+    .filter((p) => normaliseGuess(p.name) === q)
+    .map((p) => careerOf(p, careers).map((s) => s.club))
+    .filter((clubs) => clubs.length > 0);
+}
+
+/** Did this career take in every club on `board`? */
+export function playedForAll(clubs, board) {
+  const mine = new Set((clubs || []).map(trailClubKey));
+  const want = [...new Set((board || []).map(trailClubKey))];
+  return want.length > 0 && want.every((k) => mine.has(k));
+}
+
+const COUNT_WORD = ["", "one", "two", "three", "four", "five", "six"];
+
+/**
+ * The line under a wrong guess whose career holds every club the board showed.
+ * Judged on the board as it stands now ("played for both", "all three") and,
+ * failing that, on the board he was guessed against ("the first two"), which
+ * is still true after more clubs have appeared. Clubs are counted once, so a
+ * return spell does not turn "both" into "all three". When a name could mean
+ * more than one player, every one of them must fit. Null when nothing fits.
+ */
+export function wrongPathNote(name, careersOfGuess, boardNow, boardAtGuess = boardNow) {
+  const all = careersOfGuess || [];
+  if (!name || !all.length) return null;
+  const fits = (board) => all.every((clubs) => playedForAll(clubs, board));
+  const distinct = (board) => new Set((board || []).map(trailClubKey)).size;
+  if (fits(boardNow)) {
+    const n = distinct(boardNow);
+    return `${name} played for ${n === 2 ? "both" : `all ${COUNT_WORD[n] || n}`}, wrong path`;
+  }
+  if (boardAtGuess !== boardNow && fits(boardAtGuess)) {
+    const n = distinct(boardAtGuess);
+    return `${name} played for the first ${COUNT_WORD[n] || n}, wrong path`;
+  }
+  return null;
+}

@@ -87,32 +87,35 @@ describe('every guess explains itself, and the rank agrees', () => {
     // forwards born near 1960 (plus 150 points of unreliable nationality).
     for (const n of ['Diego Maradona', 'Careca', 'Ramón Díaz']) {
       expect(band(lowRanks, n), n).not.toBe('hot');
-      expect(line(n, low), n).toBe('No shared club · Same position · Same era');
+      expect(line(n, low), n).toMatch(/^No shared club · Same position · Same era/);
     }
+    // Born the same year as Löw: no direction to give. Díaz, a year older: one.
+    expect(line('Diego Maradona', low)).toBe('No shared club · Same position · Same era');
+    expect(line('Ramón Díaz', low)).toBe('No shared club · Same position · Same era, born earlier');
   });
 
   it('ranks a real club link first and names the club', () => {
     // Klinsmann followed Löw at Stuttgart: the one famous name with a link.
     expect(band(lowRanks, 'Jürgen Klinsmann')).toBe('hot');
-    expect(line('Jürgen Klinsmann', low)).toBe('Shared VfB Stuttgart · Same position · Same era');
+    expect(line('Jürgen Klinsmann', low)).toBe('Shared VfB Stuttgart · Same position · Same era, born later');
   });
 
   it('puts Zidane\'s team-mates on top and says where they played together', () => {
     expect(zzRanks.get(byName('Didier Deschamps').id)).toBeLessThanOrEqual(5);
-    expect(line('Didier Deschamps', zz)).toBe('Teammates at Juventus · Same position · Same era');
+    expect(line('Didier Deschamps', zz)).toBe('Teammates at Juventus · Same position · Same era, born earlier');
     expect(band(zzRanks, 'Alessandro Del Piero')).toBe('hot');
-    expect(line('Alessandro Del Piero', zz)).toBe('Teammates at Juventus · Same era');
-    expect(line('Luís Figo', zz)).toBe('Teammates at Real Madrid · Same era');
+    expect(line('Alessandro Del Piero', zz)).toBe('Teammates at Juventus · Same era, born later');
+    expect(line('Luís Figo', zz)).toMatch(/^Teammates at Real Madrid · Same era/);
   });
 
   it('pays a shared club that never overlapped less than team-mates, and says so', () => {
     // Cristiano Ronaldo played for both of Zidane's big clubs, years later.
-    expect(line('Cristiano Ronaldo', zz)).toBe('Shared Juventus & Real Madrid · Different era');
+    expect(line('Cristiano Ronaldo', zz)).toBe('Shared Juventus & Real Madrid · Later era');
     expect(zzRanks.get(byName('Cristiano Ronaldo').id)).toBeGreaterThan(zzRanks.get(byName('Alessandro Del Piero').id));
   });
 
   it('says so plainly when nothing matches', () => {
-    expect(line('Diego Maradona', zz)).toBe('No shared club, different era');
+    expect(line('Diego Maradona', zz)).toBe('No shared club, earlier era');
     expect(band(zzRanks, 'Diego Maradona')).toBe('cold');
   });
 

@@ -134,20 +134,32 @@ export function rankPool(pool, answer, careers = null) {
  *   samePosition same line (GK / DF / MF / FW)
  *   gap          years between their births, or null when one is unknown
  *   era          'same' | 'near' | 'far' | null
+ *   bornWhen     'earlier' | 'later' | null: the GUESS was born before or
+ *                after the answer (null when the years match or one is unknown)
  */
 export function explainGuess(p, answer, careers = null) {
   if (!p || !answer || p.id === answer.id) return null;
   const shared = careers ? sharedClubs(answer, p, careers) : [];
   const gap = p.born && answer.born ? Math.abs(p.born - answer.born) : null;
   const era = gap == null ? null : gap <= SAME_ERA_YEARS ? 'same' : gap <= NEAR_ERA_YEARS ? 'near' : 'far';
-  return { shared, samePosition: !!p.slot && p.slot === answer.slot, gap, era };
+  const bornWhen = !gap ? null : p.born < answer.born ? 'earlier' : 'later';
+  return { shared, samePosition: !!p.slot && p.slot === answer.slot, gap, era, bornWhen };
 }
 
 const listClubs = (clubs) => (clubs.length <= 2 ? clubs.join(' & ') : `${clubs.slice(0, 2).join(', ')} +${clubs.length - 2}`);
 
 /**
  * The one line printed under a guess: "Teammates at Juventus · Same position ·
- * Same era", "Shared Barcelona · Different era", "No shared club, different era".
+ * Same era", "Shared Barcelona · Later era", "No shared club, born 6 years
+ * earlier".
+ *
+ * ⚠️ THE ERA SAYS WHICH WAY (design review, 15 Oct 2026). "Born 6 years apart"
+ * and "Different era" were true and taught nothing: seven megastar openers
+ * came back cold, and not one of them told the player whether to think older
+ * or younger. The direction is the one thing every guess knows about the
+ * answer, it is already in the score (era and age), and it is no more than the
+ * birth years the reveal prints. The subject is the GUESS, as with "Same
+ * position": Rooney under a Salah day reads "born 7 years earlier".
  */
 export function reasonLine(x) {
   if (!x) return '';
@@ -159,8 +171,13 @@ export function reasonLine(x) {
     else parts.push(`Shared ${listClubs(only)}`);
   }
   if (x.samePosition) parts.push('Same position');
-  const eraWord = x.era === 'same' ? 'Same era' : x.era === 'near' ? `Born ${x.gap} years apart` : x.era === 'far' ? 'Different era' : '';
+  // Same era keeps its word (the score treats those four years alike) and adds
+  // the direction after a comma, so the pair holds together on a wrap.
+  const eraWord = x.era === 'same' ? (x.bornWhen ? `Same era, born ${x.bornWhen}` : 'Same era')
+    : x.era === 'near' ? (x.bornWhen ? `Born ${x.gap} years ${x.bornWhen}` : `Born ${x.gap} years apart`)
+      : x.era === 'far' ? (x.bornWhen === 'earlier' ? 'Earlier era' : x.bornWhen === 'later' ? 'Later era' : 'Different era') : '';
   if (!x.shared.length && !x.samePosition) {
+    if (eraWord.includes(',')) return `No shared club · ${eraWord}`;
     return eraWord ? `No shared club, ${eraWord.charAt(0).toLowerCase()}${eraWord.slice(1)}` : 'No shared club';
   }
   if (!x.shared.length) parts.unshift('No shared club');

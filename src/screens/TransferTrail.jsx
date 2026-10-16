@@ -26,6 +26,8 @@ import {
   owesCredit,
   finishedBefore,
   enterGuess,
+  guessCareers,
+  wrongPathNote,
 } from "../lib/trail.js";
 // ⚠️ NO IMPORT FROM App.jsx. This screen also mounts as an island on the static
 // /transfer-trail/ page (src/islands/trail.jsx), and an island that imported
@@ -45,6 +47,7 @@ import { CLUB_PACK_COLOURS, CLUB_PACK_ABBR } from "../data/clubPackColours.js";
    2026-09-05 (see usePlayerPool) so the static page pays for it only when
    someone actually starts typing. */
 import { usePlayerPool } from "../lib/usePlayerPool.js";
+import { careerOf } from "../lib/mysteryCareer.js";
 
 // Space between two clubs on the trail, and the length of the link drawn in it.
 const TRAIL_GAP = 12;
@@ -191,6 +194,37 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
     [attempts],
   );
   const { pool, ensure: ensurePool } = usePlayerPool();
+  // The careers of the players guessed, for the line under a wrong guess that
+  // fits the board (lib/trail.js, wrongPathNote). Same files Mystery Player
+  // ranks against, so a player who has done Mystery already holds them; anyone
+  // else fetches them after a first miss, never before, and the static page
+  // pays nothing for a first-guess solve. (careerOf, the code that reads them,
+  // is small and already shares a chunk with the name search above.)
+  const { careers, ensure: ensureCareers } = usePlayerPool({ careers: true });
+  const missedOnce = attempts.some((a) => !a.skipped && !guessMatchesPlayer(a.text, player));
+  useEffect(() => {
+    if (missedOnce && !done) ensureCareers();
+  }, [missedOnce, done, ensureCareers]);
+  // Each wrong guess with the board it was made against: a guess fits or
+  // misses the clubs that were on screen when it was typed, and the line under
+  // it says which (lib/trail.js, wrongPathNote). Memoised: finding a name in
+  // nine thousand must not run again on every keystroke in the box.
+  const wrongOnes = useMemo(() => {
+    const boardNow = career.slice(0, shown);
+    const out = [];
+    let missesBefore = 0;
+    for (const a of attempts) {
+      const miss = a.skipped || !guessMatchesPlayer(a.text, player);
+      if (miss && !a.skipped) {
+        const n = cluesShown(missesBefore, career.length);
+        const boardThen = n === boardNow.length ? boardNow : career.slice(0, n);
+        out.push({ ...a, note: wrongPathNote(a.text, guessCareers(a.text, { pool, careers, careerOf }), boardNow, boardThen) });
+      }
+      if (miss) missesBefore++;
+    }
+    return out;
+  }, [attempts, player, career, shown, pool, careers]);
+  const notes = wrongOnes.filter((a) => a.note);
   const suggestions = useMemo(
     () => rankPlayerSuggestions(pool, entry, { limit: SUGGEST_MAX })
       .filter((p) => !guessedNames.has(p.name.toLowerCase())),
@@ -251,8 +285,6 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
       </div>
     );
   }
-
-  const wrongOnes = attempts.filter((a) => !a.skipped && !guessMatchesPlayer(a.text, player));
 
   // Club identity on the ladder, mirroring the Club Quiz rows. CLUB_PACKS
   // carries {name, color}; the resolver handles the fact that careers say
@@ -374,6 +406,18 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
           ))}
         </div>
       )}
+      {/* A wrong guess that took in every club on the board (design review,
+          15 Oct 2026: Falcao against Atlético Madrid and Man Utd was struck
+          through without a word). Read the trail right, took the wrong path
+          from it: worth saying, and true by the career record. Polite live
+          region, so a screen reader hears it after the strike-through. */}
+      {notes.length > 0 && !done && (
+        <div role="status" style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 4, padding: "0 4px" }}>
+          {notes.map((a, i) => (
+            <div key={i} style={{ fontSize: 13, fontWeight: 600, color: "var(--t2)", lineHeight: 1.35 }}>{a.note}</div>
+          ))}
+        </div>
+      )}
 
       {!done && (
         <>
@@ -437,7 +481,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
                     <span style={{ fontSize: 14.5, fontWeight: 700 }}>{p.name}</span>
                     <span style={{ fontSize: 11.5, color: "var(--t3)", fontWeight: 600, maxWidth: "100%",
                                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                      {suggestionSubtitle(p)}
+                      {suggestionSubtitle(p, { club: false })}
                     </span>
                   </button>
                 ))}
