@@ -104,6 +104,7 @@
 2026-08-21	source	supabase.rpc("record_funnel_event", {
 2026-09-07	source	track("dd-shown"
 2026-09-06	source	track: (n, m) => loopEvent(n, m),
+2026-10-16	source	track?.("dd-challenge"
 2026-09-06	source	track?.("dd-next"
 2026-09-06	source	track?.("dd-remind"
 2026-09-06	source	track?.("dd-save"
