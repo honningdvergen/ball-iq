@@ -67,6 +67,8 @@ export const CLUB_COMPETITION = {
   "Al Hilal": "Saudi Pro League",
   "Preston North End": "Championship",
   "Millwall": "Championship",
+  "OGC Nice": "Ligue 1",
+  "SC Freiburg": "Bundesliga",
   "Newell's Old Boys": "Primera División",
   "FC Copenhagen": "Superliga",
   "1. FC Köln": "Bundesliga",

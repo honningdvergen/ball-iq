@@ -35,6 +35,7 @@ describe('club alias map', () => {
     // decides which of the two errors it is: a missing alias, or a coincidence.
     const REVIEWED = new Set([
       'Angers', // ≠ Rangers. France vs Scotland. Genuinely uncovered.
+      'Unión', // ≠ Union Berlin. Argentina's Unión de Santa Fe vs 1. FC Union Berlin; surfaced when Union Berlin shipped (16 Oct 2026).
       'Bragantino', // ≠ Braga. Brazil's Red Bull Bragantino vs SC Braga of Portugal; surfaced when Braga shipped (16 Oct 2026).
       'Lillestrøm', // ≠ Lille. Norway's Eliteserien vs Ligue 1; surfaced when Lille shipped (16 Oct 2026).
       // ≠ Internacional. CD Nacional of Madeira, Primeira Liga, against SC

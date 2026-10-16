@@ -32,6 +32,8 @@ export const CLUB_ALIAS = {
   'Sheffield Utd': 'Sheffield United',
   'Blackburn': 'Blackburn Rovers',
   'Preston': 'Preston North End',
+  'Nice': 'OGC Nice',
+  'Freiburg': 'SC Freiburg',
   'Newell\'s': 'Newell\'s Old Boys',
   'Copenhagen': 'FC Copenhagen',
   'Köln': '1. FC Köln',

@@ -4166,4 +4166,132 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Union Berlin",
+    "slug": "union-berlin",
+    "name": "Union Berlin",
+    "h1": "Union Berlin Quiz",
+    "title": "Union Berlin Quiz with Answers | Ball IQ",
+    "description": "Union Berlin quiz: the 2001 cup final, Nina Hagen's anthem, promotion past Stuttgart in 2019 and a Champions League debut in Madrid. How Eisern are you?",
+    "intro": [
+      "Union's story starts long before the Bundesliga. In 1923 their forerunner, SC Union Oberschöneweide, reached the German championship final in Berlin, where Hamburger SV beat them 3-0. In East Germany, Union won the FDGB-Pokal in 1968 by beating FC Carl Zeiss Jena 2-1 in the final. They reached the final again in 1986, but 1. FC Lokomotive Leipzig beat them 5-1. Their bitter East Berlin rivals were BFC Dynamo, the Stasi-backed club patronised by Erich Mielke that won ten DDR-Oberliga titles in a row from 1979 to 1988. Union were the working-class alternative.",
+      "In 2001 Union were a third-tier Regionalliga side, yet they reached the DFB-Pokal final under Bulgarian coach Georgi Vasilev. They drew 2-2 with Borussia Mönchengladbach in the semi-final after extra time and won the shoot-out 4-2, then lost the final 2-0 to Schalke 04 at Berlin's Olympiastadion. That season also brought promotion to the 2. Bundesliga, and the cup run earned a 2001-02 UEFA Cup place. Union beat Finland's Haka in that competition before Litex Lovech knocked them out. Under Uwe Neuhaus, Union won the first-ever 3. Liga title in 2008-09, finishing ahead of runners-up Fortuna Düsseldorf. Cult captain Torsten 'Tusche' Mattuschka played for the club from 2005 to 2014, and the club anthem 'Eisern Union' was recorded in 1998 by punk singer Nina Hagen.",
+      "Urs Fischer arrived in 2018 after winning back-to-back Swiss titles with FC Basel. In May 2019 he took Union into the Bundesliga for the first time. They drew 2-2 in Stuttgart and 0-0 at home in the relegation play-off against VfB Stuttgart, so they went up on away goals. Their first Bundesliga match, on 18 August 2019, was a 4-0 home defeat to RB Leipzig. Their first win came at the Alte Försterei on 31 August, 3-1 against Borussia Dortmund. In November 2019 Sebastian Polter came off the bench and scored a late penalty, and Union won the first Bundesliga Berlin derby against Hertha BSC 1-0.",
+      "Union then played in Europe. In the 2022-23 Europa League they beat Ajax in the knockout play-off round, then went out in the round of 16 to Union Saint-Gilloise. In summer 2023 Robin Gosens joined from Inter Milan and Leonardo Bonucci from Juventus. Union's first Champions League match was a 1-0 defeat at Real Madrid, where Jude Bellingham scored in the fourth minute of stoppage time. Fischer left in November 2023 and Nenad Bjelica replaced him. On the final day of 2023-24, Union beat SC Freiburg 2-1 to finish 15th and avoid the relegation play-off. Bo Svensson took over in summer 2024, and Steffen Baumgart followed him. Questions on players include Christopher Trimmel, Max Kruse, Loris Karius and Taiwo Awoniyi."
+    ],
+    "faq": [
+      {
+        "q": "When did Union Berlin first reach the Bundesliga?",
+        "a": "In May 2019. Union beat VfB Stuttgart in the relegation play-off on away goals after a 2-2 draw in Stuttgart and a 0-0 draw at home."
+      },
+      {
+        "q": "Who recorded Union Berlin's anthem 'Eisern Union'?",
+        "a": "Nina Hagen, the East Berlin-born punk singer known as the 'godmother of punk', recorded it in 1998."
+      },
+      {
+        "q": "How did Union Berlin's first Champions League match go?",
+        "a": "Union lost 1-0 at Real Madrid in September 2023. Jude Bellingham scored the winner in the fourth minute of stoppage time at the Bernabéu."
+      },
+      {
+        "q": "Who were Union Berlin's main rivals in East Germany?",
+        "a": "BFC Dynamo, the Stasi-backed club patronised by Erich Mielke that won ten DDR-Oberliga titles in a row from 1979 to 1988. Union were seen as East Berlin's working-class alternative."
+      }
+    ]
+  },
+  {
+    "club": "SC Freiburg",
+    "slug": "sc-freiburg",
+    "name": "SC Freiburg",
+    "h1": "SC Freiburg Quiz",
+    "title": "SC Freiburg Quiz with Answers | Ball IQ",
+    "description": "SC Freiburg trivia: the 1912 merger, Volker Finke's Breisgau-Brasilianer, Christian Streich, Nils Petersen's bench goals and the 2022 cup final.",
+    "intro": [
+      "SC Freiburg was formed on 3 March 1912 when two clubs founded in 1904 merged: Freiburger FV 04 and FC Schwalbe Freiburg, which had been renamed Union Freiburg by then. Do not mix it up with Freiburger FC. That separate club from the same city won the German championship in 1907, before SC Freiburg existed. For decades the club played at the Dreisamstadion, which opened in 1954 and took its name from the Dreisam, the river that runs past it. In 2021 the club moved into the Europa-Park Stadion, named after the theme park in nearby Rust.",
+      "Volker Finke coached the club for 16 years, from 1991 to 2007. He took Freiburg into the Bundesliga for the first time in 1993, and they stayed up in that first season only on goal difference. In 1994-95 they finished third, three points behind champions Borussia Dortmund, and qualified for Europe for the first time. Their flowing football earned them the nickname Breisgau-Brasilianer, the Breisgau Brazilians. Their first European campaign ended in the first round of the 1995-96 UEFA Cup against Slavia Prague. Before all that, Joachim Löw had three spells at the club as a player and scored 81 goals in 252 games. He later coached Germany to the 2014 World Cup.",
+      "Robin Dutt took Freiburg back to the Bundesliga in 2009 and left for Bayer Leverkusen in 2011. Marcus Sorg replaced him and was sacked that December. Christian Streich, Sorg's assistant and the club's long-time youth coach, then took over and stayed for more than 12 years. Under Streich, Freiburg reached their first DFB-Pokal semi-final in 2013 and lost 2-1 at VfB Stuttgart. They went down on the last day of 2014-15 after a 2-1 defeat at Hannover 96, then won the 2. Bundesliga in 2015-16, with RB Leipzig promoted as runners-up. In 2022 they reached their first DFB-Pokal final and lost to RB Leipzig on penalties. They won their Europa League group in 2022-23 before Juventus knocked them out, and in 2024 West Ham came back from a first-leg defeat to win the second leg 5-0. Julian Schuster, a former Freiburg captain, took over from Streich in summer 2024.",
+      "Freiburg has sold many players on to bigger clubs. Rodolfo Cardoso joined Werder Bremen in 1995. Jörg Heinrich went to Borussia Dortmund in 1996 and played the whole 1997 Champions League final. Levan Kobiashvili moved to Schalke 04, Papiss Cissé to Newcastle United and Oliver Baumann to Hoffenheim. Robin Koch went to Leeds United, Çağlar Söyüncü to Leicester City, Luca Waldschmidt to Benfica and Nico Schlotterbeck to Borussia Dortmund. Some players came back or stayed for years. Matthias Ginter returned on a free transfer from Gladbach in 2022. Nils Petersen joined from Werder Bremen in January 2015 and stayed until he retired in 2023. By then he had scored 34 Bundesliga goals as a substitute, more than any other player."
+    ],
+    "faq": [
+      {
+        "q": "When was SC Freiburg founded?",
+        "a": "SC Freiburg was formed on 3 March 1912 by merging two clubs founded in 1904: Freiburger FV 04 and FC Schwalbe Freiburg, which was later renamed Union Freiburg."
+      },
+      {
+        "q": "Did SC Freiburg win the 1907 German championship?",
+        "a": "No. The 1907 champions were Freiburger FC, a separate club from the same city. SC Freiburg did not exist until the merger in 1912."
+      },
+      {
+        "q": "What is SC Freiburg's stadium called?",
+        "a": "Since 2021 SC Freiburg has played at the Europa-Park Stadion, named after the theme park in nearby Rust. Before that the club's long-time home was the Dreisamstadion, which opened in 1954 and is named after the river Dreisam."
+      },
+      {
+        "q": "Who replaced Christian Streich as SC Freiburg coach?",
+        "a": "Julian Schuster, a former Freiburg captain, took over in summer 2024 when Streich stepped down after more than 12 years in charge. Streich had been head coach since December 2011."
+      }
+    ]
+  },
+  {
+    "club": "OGC Nice",
+    "slug": "ogc-nice",
+    "name": "OGC Nice",
+    "h1": "OGC Nice Quiz",
+    "title": "OGC Nice Quiz with Answers | Ball IQ",
+    "description": "How well do you know OGC Nice? From the 1904 Gymnaste Club to the Allianz Riviera, with Fontaine, Lloris and the 1997 Coupe de France. Take the quiz.",
+    "intro": [
+      "OGC Nice were founded in July 1904 in the Les Baumettes district of the city as the Gymnaste Club, and took the name Olympique Gymnaste Club de Nice in December 1924. Just Fontaine won the 1956 French title with Nice before leaving that summer for Reims. Nice reached the European Cup quarter-finals in 1956–57 and again in 1959–60, and Real Madrid knocked them out both times. In 1960 Nice won the first leg 3–2 at home, then lost 4–0 in Madrid. In 1975–76 they finished second in Division 1 on 54 points, three behind champions Saint-Étienne.",
+      "The 1996–97 season had the best and the worst in it. On 10 May 1997 Silvester Takač's Nice drew 1–1 with Guingamp after extra time at the Parc des Princes and won the Coupe de France 5–4 on penalties. In the league they finished bottom with 23 points and went down, while Côte d'Azur rivals Monaco won the title. Nice came back up by finishing third in Division 2 in 2001–02, behind AC Ajaccio and Strasbourg. Under Frédéric Antonetti they reached the 2006 Coupe de la Ligue final at the Stade de France, where Nancy beat them 2–1. Marama Vahirua scored for Nice.",
+      "After 86 years at the Stade du Ray, Nice opened the Allianz Riviera on 22 September 2013 with a Ligue 1 match against Valenciennes. The stadium hosted one of Euro 2016's biggest shocks when Iceland beat England 2–1 there in the round of 16 on 27 June 2016. Lucien Favre's Nice finished third in 2016–17 behind Monaco and PSG. In August 2017 they knocked Ajax out of the Champions League third qualifying round on away goals before losing the play-off to Napoli. Christophe Galtier arrived in 2021 straight after winning Ligue 1 with Lille, and his side lost the 2022 Coupe de France final 1–0 to Nantes. Nice reached the quarter-finals of the 2022–23 Europa Conference League, where Basel knocked them out.",
+      "Nice has been a stepping stone for many players. Hugo Lloris joined Lyon in 2008. David Ospina kept goal from 2008 to 2014 and then signed for Arsenal. Loïc Rémy left for Marseille in 2010, and Hatem Ben Arfa joined Paris Saint-Germain after a 17-goal Ligue 1 season in 2015–16. Mario Balotelli scored twice on his debut in a 3–2 win over Marseille in September 2016. Later departures include Alassane Pléa to Borussia Mönchengladbach, Jean Michaël Seri to Fulham, Allan Saint-Maximin to Newcastle United and Khéphren Thuram to Juventus in July 2024. Try the quiz to see how much of the Nice story you know."
+    ],
+    "faq": [
+      {
+        "q": "When were OGC Nice founded?",
+        "a": "OGC Nice were founded in July 1904 in the Les Baumettes district of Nice as the Gymnaste Club. The club took the name Olympique Gymnaste Club de Nice in December 1924."
+      },
+      {
+        "q": "Where do OGC Nice play their home games?",
+        "a": "Nice play at the Allianz Riviera, which opened on 22 September 2013 with a Ligue 1 match against Valenciennes. Before that the club spent 86 years at the Stade du Ray. The Allianz Riviera also hosted Iceland's 2–1 win over England at Euro 2016."
+      },
+      {
+        "q": "When did Nice win the Coupe de France?",
+        "a": "Nice won the Coupe de France in 1997 under Silvester Takač. They drew 1–1 with Guingamp after extra time at the Parc des Princes and won 5–4 on penalties. In 2022 they reached the final again, under Christophe Galtier, but lost 1–0 to Nantes."
+      },
+      {
+        "q": "Which famous players have played for OGC Nice?",
+        "a": "Just Fontaine won the 1956 French title with Nice. Hugo Lloris and David Ospina both kept goal for the club. Hatem Ben Arfa, Mario Balotelli, Allan Saint-Maximin and Khéphren Thuram have also played for Nice."
+      }
+    ]
+  },
+  {
+    "club": "Rennes",
+    "slug": "rennes",
+    "name": "Rennes",
+    "h1": "Rennes Quiz",
+    "title": "Rennes Quiz with Answers | Ball IQ",
+    "description": "Test your Rennes knowledge: Coupe de France wins in 1965, 1971 and 2019, Roazhon Park, Čech, Dembélé, Camavinga and Doku. Play the Stade Rennais quiz.",
+    "intro": [
+      "Stade Rennais was founded in March 1901. In 1904 it merged with FC Rennais and became Stade Rennais Université Club. The club plays at Roazhon Park, renamed in 2015. Roazhon is the Breton name for Rennes. François Pinault bought the club in 1998, and his family holding company Artémis has owned it ever since. This quiz tests how much of that story you really know.",
+      "Cup finals are a big part of Rennes history. Their first Coupe de France final came in 1922, a 2-0 defeat to Red Star. The first win came in 1965 against Sedan: the final ended 2-2 and Rennes won the replay 3-1. In 1971 they beat Lyon 1-0, with André Guy scoring the decisive penalty. Then came hard years. Guingamp beat them in the 2009 and 2014 Coupe de France finals, and Saint-Étienne won the 2013 Coupe de la Ligue final 1-0 through a Brandão goal. In 2019 Rennes came from 2-0 down against Paris Saint-Germain at the Stade de France and won the shootout 6-5 under Julien Stéphan. It was their first major trophy since 1971.",
+      "Europe and the dugout get their own questions. In the 2018-19 Europa League round of 16, Rennes won the first leg against Arsenal 3-1 but lost 3-0 at the Emirates and went out 4-3 on aggregate. Their first Champions League group stage came in 2020-21, in Group E with Chelsea, Sevilla and FC Krasnodar, after finishing third in the shortened 2019-20 Ligue 1 season. The coaches include Paul Le Guen, who went on to win three league titles in a row with Lyon, László Bölöni, who had given a teenage Cristiano Ronaldo his first-team debut at Sporting CP, Frédéric Antonetti, Philippe Montanier, Christian Gourcuff, and Julien Stéphan, who returned in November 2023 to replace Bruno Génésio.",
+      "Rennes has also been a launch pad for big names. Petr Čech moved on to Chelsea in 2004, and Alexander Frei was Ligue 1's top scorer in 2004-05 with 20 goals before joining Borussia Dortmund. Mikaël Silvestre went to Inter in 1998, Yoann Gourcuff to AC Milan in 2006, Asamoah Gyan to Sunderland in 2010 and Ousmane Dembélé to Dortmund in 2016. More recently, Raphinha left for Leeds United, academy midfielder Eduardo Camavinga for Real Madrid, Mathys Tel for Bayern Munich at 17, and Jérémy Doku, signed from Anderlecht for a club-record fee at the time, for Manchester City in 2023."
+    ],
+    "faq": [
+      {
+        "q": "When did Rennes win the Coupe de France?",
+        "a": "Rennes won the Coupe de France in 1965, beating Sedan 3-1 in a replay after a 2-2 draw, and in 1971, beating Lyon 1-0. They won it again in 2019, beating Paris Saint-Germain 6-5 on penalties after a 2-2 draw. That was their first major trophy since 1971."
+      },
+      {
+        "q": "What is the Stade Rennais stadium called?",
+        "a": "Rennes play at Roazhon Park. The ground was given that name in 2015, and Roazhon is the Breton name for Rennes."
+      },
+      {
+        "q": "Who owns Stade Rennais?",
+        "a": "French billionaire François Pinault bought Rennes in 1998, and his family holding company Artémis has owned the club ever since."
+      },
+      {
+        "q": "Which famous players have played for Rennes?",
+        "a": "Rennes players who went on to bigger clubs include Petr Čech (Chelsea), Alexander Frei (Borussia Dortmund), Mikaël Silvestre (Inter, then Manchester United), Ousmane Dembélé (Borussia Dortmund, then Barcelona), Raphinha (Leeds United), Eduardo Camavinga (Real Madrid), Mathys Tel (Bayern Munich) and Jérémy Doku (Manchester City)."
+      }
+    ]
+  },
 ];
