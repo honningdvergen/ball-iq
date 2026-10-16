@@ -2,7 +2,7 @@
    One card idiom, the same as the Today rows: --s1 surface, --border hairline,
    14px radius, 40px icon wells at 10px, one green primary. No emoji, no eyebrow
    labels, no nested cards. */
-.dd{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px;text-align:left;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.dd{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:14px;text-align:left;color:var(--t1);-webkit-text-fill-color:var(--t1);}
 .dd-row{display:flex;align-items:center;gap:12px;min-width:0;}
 .dd-well{width:40px;height:40px;border-radius:10px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;background:rgba(var(--dd-rgb,255,170,0),0.14);border:1px solid rgba(var(--dd-rgb,255,170,0),0.3);color:var(--dd-c,var(--gold));}
 .dd-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
@@ -18,7 +18,7 @@
 .dd-pill.is-set{border-color:rgba(88,204,2,0.35);color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);background:rgba(88,204,2,0.08);cursor:default;}
 .dd-share{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:46px;padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .1s;}
 .dd-share:active{transform:scale(0.98);}
-.dd-share-alts{display:flex;justify-content:center;gap:18px;margin-top:-4px;}
+.dd-share-alts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin-top:-2px;}
 .dd-share-alt{display:inline-block;padding:0;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 /* How everyone did: one bar per bucket, yours in green. */
 .dd-dist{display:flex;flex-direction:column;gap:6px;}
@@ -61,7 +61,7 @@
 
 /* ── NEXT UP (16 Oct 2026) ─────────────────────────────────────────────── */
 .dd-up{display:flex;flex-direction:column;gap:8px;width:100%;padding:12px 14px;border-radius:16px;text-align:left;font-family:inherit;cursor:pointer;text-decoration:none;
-  background:linear-gradient(135deg, rgba(var(--dd-rgb),0.20), rgba(var(--dd-rgb),0.07) 70%);border:1.5px solid rgba(var(--dd-rgb),0.55);
+  background:rgba(var(--dd-rgb),0.06);border:1px solid rgba(var(--dd-rgb),0.30);
   color:var(--t1);-webkit-text-fill-color:var(--t1);-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .dd-up:active{transform:scale(0.985);}
 .dd-up-k{font-size:12.5px;font-weight:700;color:var(--dd-c, var(--t2));-webkit-text-fill-color:var(--dd-c, var(--t2));}
@@ -70,8 +70,9 @@
 .dd-up-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
 .dd-up-name{font-size:17px;font-weight:800;line-height:1.2;}
 .dd-up-hook{font-size:12.5px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);}
-.dd-up-go{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:999px;background:var(--dd-c, var(--accent));color:#0b0d12;-webkit-text-fill-color:#0b0d12;font-size:15px;font-weight:800;}
-.dd-up.is-sweep{cursor:default;--dd-c:var(--accent);background:linear-gradient(135deg, rgba(88,204,2,0.18), rgba(88,204,2,0.05) 70%);border-color:rgba(88,204,2,0.5);}
+/* Tinted, not solid: Share is the panel's one solid button (tidy pass). */
+.dd-up-go{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 18px;border-radius:999px;background:rgba(var(--dd-rgb),0.16);border:1px solid rgba(var(--dd-rgb),0.5);color:var(--dd-c, var(--accent));-webkit-text-fill-color:var(--dd-c, var(--accent));font-size:14px;font-weight:800;}
+.dd-up.is-sweep{cursor:default;--dd-c:var(--accent);--dd-rgb:88,204,2;}
 .dd-day{display:flex;align-items:center;gap:10px;}
 .dd-day-bar{display:flex;gap:4px;flex:0 0 112px;}
 .dd-day-bar i{flex:1;height:6px;border-radius:3px;background:var(--s2);}
@@ -79,15 +80,20 @@
 .dd-day-bar i.is-lost{background:var(--t3);}
 .dd-day-tx{font-size:12.5px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;}
 .dd-up-more{display:flex;flex-wrap:wrap;gap:8px;}
-.dd-chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px 0 6px;border-radius:999px;border:1px solid rgba(var(--dd-rgb),0.35);background:rgba(var(--dd-rgb),0.08);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;text-decoration:none;-webkit-appearance:none;appearance:none;}
+.dd-chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px 0 6px;border-radius:999px;border:1px solid var(--border2);background:transparent;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;text-decoration:none;-webkit-appearance:none;appearance:none;}
 .dd-chip-ic{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(var(--dd-rgb),0.16);color:var(--dd-c);}
 @media (prefers-reduced-motion: reduce){.dd-up:active{transform:none;}}
 
 /* ── CHALLENGE A MATE (16 Oct 2026) ─────────────────────────────────────── */
-.dd-challenge{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:46px;border-radius:999px;border:1.5px solid var(--border2);background:transparent;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
-.dd-challenge:active{transform:scale(0.985);}
 .dd-h2h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:12px;background:var(--s2);font-size:13.5px;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .dd-h2h strong{color:var(--t1);-webkit-text-fill-color:var(--t1);font-weight:800;}
 .dd-h2h.is-win{background:rgba(88,204,2,0.12);}
 .dd-h2h.is-win > strong{color:var(--accent);-webkit-text-fill-color:var(--accent);}
-@media (prefers-reduced-motion: reduce){.dd-challenge:active{transform:none;}}
+
+/* ── GROUPS (tidy pass, 16 Oct 2026) ── your result · share · next up · the
+   quiet footer, each arriving a beat after the one above instead of all at
+   once. Opacity and a 6px rise only: no layout moves, nothing to wait for. */
+.dd-g{display:flex;flex-direction:column;gap:10px;animation:dd-in .34s cubic-bezier(0.22,1,0.36,1) both;animation-delay:calc(var(--i, 0) * 90ms + 100ms);}
+.dd-g:empty,.dd-hr:has(+ .dd-g:empty){display:none;}
+@keyframes dd-in{from{opacity:0;transform:translateY(6px);}}
+@media (prefers-reduced-motion: reduce){.dd-g{animation:none;}}

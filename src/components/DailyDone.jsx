@@ -205,8 +205,13 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     try { await remind.onRemind(); } finally { setBusy(false); }
   };
 
+  // Four groups, top to bottom: your result, one share action, what to play
+  // next, a quiet footer. They arrive one after another (--i staggers them).
+  let gi = 0;
+  const g = () => ({ className: "dd-g", style: { "--i": gi++ } });
   return (
     <section className="dd" aria-label="After today's puzzle">
+      <div {...g()}>
       {/* Streak: the stake tonight names. Flame in the amber well the streak pill
           already uses elsewhere in the app. */}
       <div className="dd-row" style={{ "--dd-rgb": "255,170,0", "--dd-c": "var(--gold)" }}>
@@ -230,6 +235,19 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         )}
       </div>
 
+      {rival && (() => {
+        const r = compareScores(game, myScore, rival.score);
+        const name = rival.name || "Your mate";
+        return (
+          <div className={`dd-h2h${r > 0 ? " is-win" : r < 0 ? " is-loss" : ""}`} role="status">
+            <span>You <strong className="dd-num">{scoreLabel(game, myScore)}</strong> · {name} <strong className="dd-num">{scoreLabel(game, rival.score)}</strong></span>
+            <strong>{r > 0 ? `You beat ${name}` : r < 0 ? `${name} wins this one` : `Level with ${name}`}</strong>
+          </div>
+        );
+      })()}
+      </div>
+
+      <div {...g()}>
       {/* SHARE COMES SECOND, RIGHT UNDER THE STREAK (Alex, 12 Oct 2026, from a
           recording of his own Footle: "the share button was placed below the
           screen, so you had to scroll down to see it"). It sat under the
@@ -240,11 +258,27 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           rows; on a loss or a five or six guess solve the list's last row
           goes under the fold on a 375x812 phone. Share on screen was the
           instruction; the list is one short scroll. */}
-      <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label="Share your result">
-        {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
-      </button>
-      {(waText || stump) && (
+      {/* ONE SOLID BUTTON IN THE WHOLE PANEL (tidy pass, 16 Oct 2026). Alex on
+          the first build of this panel: "a lot of competing stuff that all
+          screams at me … all happening at once". Share and Next up's Play were
+          both solid green, Next up glowed in its mode colour, the chips were
+          tinted and "Challenge a mate" was a second full-width button. Now the
+          only solid fill is here; everything else is a hairline, a tint or a
+          link. With a challenge waiting, answering it IS the share. */}
+      {rival ? (
+        <button type="button" className="dd-share" onClick={doChallenge} aria-label="Send a challenge back">
+          <Swords size={18} strokeWidth={2.4} aria-hidden="true" /> {challengeState === "copied" ? "Link copied" : challengeState === "sent" ? "Challenge sent" : rival ? "Send it back" : "Challenge a mate"}
+        </button>
+      ) : (
+        <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label="Share your result">
+          {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
+        </button>
+      )}
+      {(waText || stump || canChallenge) && (
         <div className="dd-share-alts">
+          {rival && (
+            <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{shared ? "Shared" : "Share result"}</button>
+          )}
           {waText && (
             <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>Send on WhatsApp</a>
           )}
@@ -253,35 +287,12 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           {stump && (
             <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stump", { game }); stump(); }}>Stump a mate</button>
           )}
+          {canChallenge && !rival && (
+            <button type="button" className="dd-share-alt" onClick={doChallenge} aria-label="Challenge a mate to this puzzle">{challengeState === "copied" ? "Link copied" : challengeState === "sent" ? "Challenge sent" : rival ? "Send it back" : "Challenge a mate"}</button>
+          )}
         </div>
       )}
-
-
-      {/* THE APP, RIGHT UNDER SHARE (15 Oct 2026). It was the last thing in the
-          panel, about two screens below a win on a phone, while a "Never miss a
-          day: Add to Home Screen" banner above it offered the web app instead:
-          3.6% of web visitors ever tapped a store link (website review). On a
-          phone browser the finish is the moment of highest intent, so the
-          visitor's own store badge sits here; inside the app GetAppCTA draws
-          nothing. */}
-      {canChallenge && (
-        <>
-          {rival && (() => {
-            const r = compareScores(game, myScore, rival.score);
-            const name = rival.name || "Your mate";
-            return (
-              <div className={`dd-h2h${r > 0 ? " is-win" : r < 0 ? " is-loss" : ""}`} role="status">
-                <span>You <strong className="dd-num">{scoreLabel(game, myScore)}</strong> · {name} <strong className="dd-num">{scoreLabel(game, rival.score)}</strong></span>
-                <strong>{r > 0 ? `You beat ${name}` : r < 0 ? `${name} wins this one` : `Level with ${name}`}</strong>
-              </div>
-            );
-          })()}
-          <button type="button" className="dd-challenge" onClick={doChallenge} aria-label={rival ? "Send a challenge back" : "Challenge a mate to this puzzle"}>
-            <Swords size={17} strokeWidth={2.3} aria-hidden="true" />
-            {challengeState === "copied" ? "Link copied" : challengeState === "sent" ? "Challenge sent" : rival ? "Send it back" : "Challenge a mate"}
-          </button>
-        </>
-      )}
+      </div>
 
       {/* NEXT UP (daily design pass, 16 Oct 2026). "Still open today" was a
           title and up to three equal rows, below Share and the app badge.
@@ -306,6 +317,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         };
         return (
           <>
+            <div className="dd-hr" aria-hidden="true" />
+            <div {...g()}>
             {first ? card(first, "dd-up", (
               <>
                 <span className="dd-up-k">Next up</span>
@@ -331,7 +344,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
                     <i key={k} className={isDone(k) ? (modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done") : ""} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
                   ))}
                 </span>
-                <span className="dd-day-tx"><strong className="dd-num">{doneN} of {keys.length}</strong> today · new in <strong className="dd-num">{ko}</strong></span>
+                {/* The countdown lives on the streak line at the top; once is enough. */}
+                <span className="dd-day-tx"><strong className="dd-num">{doneN} of {keys.length}</strong> done today</span>
               </div>
             )}
             {rest.length > 0 && (
@@ -341,10 +355,18 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
                 )))}
               </div>
             )}
+            </div>
           </>
         );
       })()}
 
+
+      <div className="dd-hr" aria-hidden="true" />
+      <div {...g()}>
+      {/* THE QUIET FOOTER: reminder, the crowd, the app and the save, below a
+          hairline. The app badge sat right under Share from 15 Oct (highest
+          intent on a phone browser); it keeps its place above the crowd's
+          numbers but no longer competes with the two things to do now. */}
       {GetAppCTA && <div className="dd-getapp"><GetAppCTA /></div>}
 
       {/* THE ASK IS A ROW, NOT A PILL (2026-09-09). Reach is the retention
@@ -414,6 +436,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
+      </div>
     </section>
   );
 }
