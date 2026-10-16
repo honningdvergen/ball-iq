@@ -1,7 +1,7 @@
 -- v3_0_mates_leagues — mates' leagues, phase 1 (web MVP).
 --
 -- Spec: ball-iq-audit/2026-10-16/leagues/spec.md (sections 3 to 6).
--- NOT APPLIED. Written 2026-10-16; applying it needs Alex's yes. After it is
+-- APPLIED to prod 2026-10-16 (Alex said yes). Checked after apply: anon holds zero table grants, the six league tables have RLS on and no client grants, helpers grant nothing, the nine client functions are authenticated-only. After it is
 -- applied: anon must still hold zero table grants, no new anon function grant,
 -- one version of each function, and supabase/prod-snapshot/ gets refreshed.
 --
