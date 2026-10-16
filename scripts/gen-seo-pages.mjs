@@ -102,6 +102,10 @@ import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
 import { makeGridBuilder, FG_CSS, unusedColourKeys } from './seo/grid-section.mjs';
 import { CLUB_PACK_ABBR, CLUB_PACK_COLOURS, CLUB_NAME_TO_COMP } from '../src/data/clubPackColours.js';
+// Display-only: a digit-hyphen-digit ("6-1") gets U+2011 so it never wraps.
+// Used where a question's stem or option is drawn on a page, never on the
+// bank, JSON-LD or anything that is matched or copied.
+import { noBreakScores } from '../src/lib/noBreakScore.js';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
@@ -886,10 +890,10 @@ function renderQA(rows, { scripts = true } = {}) {
     .map((row) => {
       const r = shuffleOptions(row);
       const opts = r.o
-        .map((o, k) => `<button class="to" type="button" data-i="${k}"><span class="tl">${'ABCD'[k] || ''}</span><span class="tt">${esc(o)}</span></button>`)
+        .map((o, k) => `<button class="to" type="button" data-i="${k}"><span class="tl">${'ABCD'[k] || ''}</span><span class="tt">${esc(noBreakScores(o))}</span></button>`)
         .join('');
       return `<li class="qa" data-a="${r.a}">
-<p class="q">${esc(r.q)}</p>
+<p class="q">${esc(noBreakScores(r.q))}</p>
 <div class="qa-opts">${opts}</div>
 ${r.hint ? `<p class="qa-why">${esc(r.hint)}</p>\n` : ''}</li>`;
     })
@@ -1253,7 +1257,7 @@ function renderAnswerList(name, rows, { spread = 0 } = {}) {
   const sub = picked.length < rows.length
     ? 'A selection from the quiz above, spread from the easiest to the hardest. Play it first; each answer stays folded until you open it.'
     : 'Every question from the quiz above. Play it first; each answer stays folded until you open it.';
-  const items = picked.map((r) => `<li><p class="ans-q">${esc(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></details></li>`);
+  const items = picked.map((r) => `<li><p class="ans-q">${esc(noBreakScores(r.q))}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(noBreakScores(r.o[r.a]))}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></details></li>`);
   return `<section class="sec narrow" id="answers">
 <h2>${esc(name)} quiz answers, explained</h2>
 <p class="sub">${sub}</p>
@@ -3250,8 +3254,8 @@ function buildClubQuestionsPage(cfg, rows) {
 
   const toc = rounds.map((_, i) => `<a href="#round-${i + 1}">Round ${i + 1}</a>`).join('\n');
   const body = rounds.map((round, ri) => {
-    const qs = round.map((q, qi) => `<li id="q-${ri + 1}-${qi + 1}">${esc(q.q)}</li>`).join('\n');
-    const as = round.map((q, qi) => `<li>${esc(q.o[q.a])}${q.hint ? ` <span class="qa-why">— ${esc(q.hint)}</span>` : ''}</li>`).join('\n');
+    const qs = round.map((q, qi) => `<li id="q-${ri + 1}-${qi + 1}">${esc(noBreakScores(q.q))}</li>`).join('\n');
+    const as = round.map((q, qi) => `<li>${esc(noBreakScores(q.o[q.a]))}${q.hint ? ` <span class="qa-why">— ${esc(q.hint)}</span>` : ''}</li>`).join('\n');
     return `<section class="sec qa-round" id="round-${ri + 1}">
 <h2>Round ${ri + 1}</h2>
 <ol class="qa-qs">

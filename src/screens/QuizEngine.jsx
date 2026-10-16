@@ -12,6 +12,7 @@ import ReportButton from "../components/ReportButton.jsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CAT_LABELS, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
+import { noBreakScores } from "../lib/noBreakScore.js";
 
 // ─── HARD RIGHT BURST ────────────────────────────────────────────────────────
 // Lightweight, quick particle burst used when a user gets a HARD question right.
@@ -807,7 +808,8 @@ const CTA_INSET = (() => {
             catColour() resolves the card's own colour; lift() keeps a dark
             brand hue readable on the dark chip. */}
         <div className="q-tag" style={qTagStyle(q.cat)}>{CAT_LABELS[q.cat]||q.cat}</div>
-        <div className="q-text" style={{fontSize:18}}>{q.q}</div>
+        {/* noBreakScores: display only (keeps "6-1" on one line); q.q itself is untouched. */}
+        <div className="q-text" style={{fontSize:18}}>{noBreakScores(q.q)}</div>
       </div>
 
       {isTF ? (
@@ -870,7 +872,7 @@ const CTA_INSET = (() => {
                 onPointerUp={e => { e.currentTarget.style.transform = ""; }}
                 onPointerLeave={e => { e.currentTarget.style.transform = ""; }}
               >
-                <span className="opt-l">{icon}</span>{opt}
+                <span className="opt-l">{icon}</span>{noBreakScores(opt)}
               </button>
             );
           })}
