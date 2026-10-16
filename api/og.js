@@ -16,6 +16,30 @@ if (!Array.isArray(CARD_COMPS) || CARD_COMPS.length !== 6) {
 
 export const config = { runtime: 'edge' };
 
+// Inter, the app's own face, at the four weights the cards use (600 snaps
+// to 700). Without `fonts`, @vercel/og draws everything in its one bundled
+// face, Geist Regular, so every 800/900 heading came out thin. The files are
+// static instances of public/fonts/inter-5.3-*.woff2 (Satori reads neither
+// woff2 nor variable fonts), latin + latin-ext merged, served from this
+// deployment's own /og-fonts/ (web-only: the native prune drops the folder).
+// Fetched once per isolate; reusing the same array also lets Satori keep the
+// parsed fonts between requests. A failed fetch renders in the default face
+// rather than failing the card, and is retried on the next request.
+const OG_FONT_WEIGHTS = [500, 700, 800, 900];
+let fontsPromise = null;
+function loadFonts(origin) {
+  fontsPromise ||= Promise.all(OG_FONT_WEIGHTS.map(async (weight) => {
+    const res = await fetch(`${origin}/og-fonts/inter-${weight}.ttf`);
+    if (!res.ok) throw new Error(`inter-${weight}.ttf: HTTP ${res.status}`);
+    return { name: 'Inter', data: await res.arrayBuffer(), weight, style: 'normal' };
+  })).catch((err) => {
+    console.error('api/og: Inter failed to load, using the default face', err);
+    fontsPromise = null;
+    return null;
+  });
+  return fontsPromise;
+}
+
 const h = (type, props, ...children) => ({
   type,
   props: { ...(props || {}), children: children.length === 0 ? undefined : (children.length === 1 ? children[0] : children) },
@@ -33,7 +57,7 @@ function stumpCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
+      borderTop: '9px solid #58CC02', fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
@@ -50,7 +74,7 @@ function stumpCard(sp) {
       ),
     ),
   );
-  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+  return tree;
 }
 
 // Daily-7 challenge card (opportunity-scan #2): a /c/ link in a group chat
@@ -92,7 +116,7 @@ function challengeCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
+      borderTop: '9px solid #58CC02', fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
@@ -110,7 +134,7 @@ function challengeCard(sp) {
       ),
     ),
   );
-  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+  return tree;
 }
 
 // Footle / Trail / Top 10 challenge card (?t=gch, 16 Oct 2026): the same
@@ -130,7 +154,7 @@ function gameChallengeCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#12141b 0%,#0B0C10 60%)',
-      borderTop: `9px solid ${colour}`, fontFamily: 'sans-serif', position: 'relative', padding: '0 72px',
+      borderTop: `9px solid ${colour}`, fontFamily: 'Inter', position: 'relative', padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
@@ -147,7 +171,7 @@ function gameChallengeCard(sp) {
       ),
     ),
   );
-  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+  return tree;
 }
 
 // Multiplayer invite card (?t=invite): a /join/CODE link previewed as an
@@ -181,7 +205,7 @@ function inviteCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
+      borderTop: '9px solid #58CC02', fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
@@ -204,7 +228,7 @@ function inviteCard(sp) {
       ),
     ),
   );
-  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+  return tree;
 }
 
 // Club / category landing card (?t=club): the SEO pages (/quiz/<slug>/) point
@@ -230,7 +254,7 @@ function clubCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: '9px solid #58CC02', fontFamily: 'sans-serif', position: 'relative',
+      borderTop: '9px solid #58CC02', fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
@@ -247,7 +271,9 @@ function clubCard(sp) {
           background: brand, color: badgeText, border: '2px solid rgba(255,255,255,0.12)',
         },
       }, badge)] : []),
-      h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18 } },
+      // flex: 1 bounds the column to the space left of the badge, so a long
+      // headline wraps instead of running off the canvas.
+      h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', gap: 18 } },
         h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: '#58CC02', display: 'flex' } }, kind.toUpperCase()),
         h('div', { style: { fontSize: 66, fontWeight: 900, lineHeight: 1.05, color: '#FFFFFF', display: 'flex' } }, `How well do you know ${name}?`),
         h('div', { style: { display: 'flex', alignItems: 'center', gap: 16, marginTop: 6 } },
@@ -257,7 +283,7 @@ function clubCard(sp) {
       ),
     ),
   );
-  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+  return tree;
 }
 
 // Club-quiz SCORE card (?t=iq) — paired with api/iq.js.
@@ -290,7 +316,7 @@ function scoreCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: `9px solid ${brand}`, fontFamily: 'sans-serif', position: 'relative',
+      borderTop: `9px solid ${brand}`, fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
@@ -309,7 +335,8 @@ function scoreCard(sp) {
         h('div', { style: { fontSize: 22, fontWeight: 800, letterSpacing: 3, opacity: 0.75, display: 'flex' } }, badge || 'IQ'),
         h('div', { style: { fontSize: 118, fontWeight: 900, lineHeight: 1, display: 'flex' } }, iq),
       ),
-      h('div', { style: { display: 'flex', flexDirection: 'column', gap: 14 } },
+      // flex: 1 bounds the column so a long tier name wraps on the canvas.
+      h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', gap: 14 } },
         h('div', { style: { fontSize: 24, fontWeight: 800, letterSpacing: 3, color: '#9BA0B8', display: 'flex' } }, senderInKicker ? `${sender.toUpperCase()}'S ${name.toUpperCase()} IQ` : `${name.toUpperCase()} IQ`),
         ...(tier ? [h('div', { style: { fontSize: 72, fontWeight: 900, lineHeight: 1.04, color: '#FFFFFF', display: 'flex' } }, tier)] : []),
         h('div', { style: { display: 'flex', alignItems: 'center', gap: 16, marginTop: 8 } },
@@ -319,11 +346,19 @@ function scoreCard(sp) {
       ),
     ),
   );
-  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+  return tree;
 }
 
-export default function handler(req) {
-  const sp = new URL(req.url).searchParams;
+export default async function handler(req) {
+  const url = new URL(req.url);
+  const fonts = await loadFonts(url.origin);
+  return new ImageResponse(cardTree(url.searchParams), {
+    width: 1200, height: 630, emoji: 'twemoji', ...(fonts && { fonts }),
+  });
+}
+
+// Every card is a plain element tree; the handler turns it into the PNG.
+function cardTree(sp) {
   if (sp.get('t') === 'iq') return scoreCard(sp);
   if (sp.get('t') === 'stump') return stumpCard(sp);
   if (sp.get('t') === 'challenge') return challengeCard(sp);
@@ -384,7 +419,7 @@ export default function handler(req) {
   // so the elevated chip doesn't knock the grid out of alignment.
   const cell = (comp, val, isBest) => h('div', {
     style: {
-      display: 'flex', alignItems: 'center', gap: 12, width: 228,
+      display: 'flex', alignItems: 'center', gap: 12, width: 256,
       padding: '6px 12px', borderRadius: 14,
       border: isBest ? `2px solid ${t.accent}` : '2px solid transparent',
       background: isBest ? 'rgba(255,255,255,0.07)' : 'transparent',
@@ -404,7 +439,7 @@ export default function handler(req) {
   const tree = h('div', {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: t.bg, borderTop: `9px solid ${t.accent}`, fontFamily: 'sans-serif', position: 'relative',
+      background: t.bg, borderTop: `9px solid ${t.accent}`, fontFamily: 'Inter', position: 'relative',
       padding: '0 64px',
     },
   },
@@ -421,9 +456,11 @@ export default function handler(req) {
         h('div', { style: { fontSize: 26, fontWeight: 800, letterSpacing: 2, color: t.accent, marginTop: 10, display: 'flex' } }, t.label),
       ),
       // Avatar + name (+ streak chip when the streak is worth bragging about)
-      h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center' } },
+      // maxWidth keeps a long name from shoving the overall and the ratings
+      // off the canvas: it steps down a size and wraps under the avatar.
+      h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: 260 } },
         avatar,
-        h('div', { style: { fontSize: 44, fontWeight: 800, color: t.text, marginTop: 18, display: 'flex' } }, name),
+        h('div', { style: { fontSize: name.length > 16 ? 32 : name.length > 10 ? 38 : 44, lineHeight: 1.1, fontWeight: 800, color: t.text, marginTop: 18, display: 'flex', textAlign: 'center', justifyContent: 'center' } }, name),
         ...(streak >= 2 ? [
           h('div', { style: { display: 'flex', alignItems: 'center', fontSize: 24, fontWeight: 800, color: t.text, background: 'rgba(255,255,255,0.08)', padding: '8px 20px', borderRadius: 999, marginTop: 14 } }, `🔥 ${streak} day streak`),
         ] : []),
@@ -438,5 +475,5 @@ export default function handler(req) {
     ),
   );
 
-  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+  return tree;
 }
