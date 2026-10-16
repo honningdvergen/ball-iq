@@ -3910,4 +3910,260 @@ export const CLUBS = [
       }
     ]
   },
+  {
+    "club": "Rosenborg",
+    "slug": "rosenborg",
+    "name": "Rosenborg",
+    "h1": "Rosenborg Quiz",
+    "title": "Rosenborg Quiz with Answers | Ball IQ",
+    "description": "From a club called Odd in 1917 to 13 league titles in a row and a win at San Siro. How well do you know Rosenborg BK? Play the Ball IQ quiz.",
+    "intro": [
+      "Rosenborg were founded in Trondheim on 19 May 1917 by twelve boys from the Rosenborg neighbourhood. They named the club Odd, after Odd of Skien, then Norway's most successful team. In the 1920s the club joined the Norwegian FA, which would not accept two members with the same name, so it took the name of its founders' neighbourhood and became Rosenborg Ballklub. The first major trophy was the 1960 Norwegian Cup. After a 3–3 draw with Odd, Rosenborg won the replay 3–2, and Eldar Hansen scored five goals across the two matches.",
+      "The first league title came in 1967, although Lyn beat Rosenborg 4–1 in that year's cup final. In 1968 Odd Iversen scored 30 goals in 18 league matches, which was a Norwegian top-flight record at the time. English coach George Curtis won the 1969 league with a strongly defensive system. Nils Arne Eggen then led the club to its first league and cup double in 1971, beating Fredrikstad 4–1 in the cup final. Between 1967 and 1990, Rosenborg spent only one season outside the top flight. They went down in 1977 with a single league win, won the second tier in 1978 and came straight back up. In 1985 they won the title with a 1–0 final-day win over Lillestrøm, in front of a Lerkendal-record crowd of 28,569.",
+      "Eggen came back for the 1988 season after winning the 1987 league with Moss. He signed Mini Jakobsen and Ørjan Berg from Bodø/Glimt, and Rosenborg won the double that year by beating Brann in the cup final. A second double followed in 1990, with a 5–1 cup final win over Fyllingen. From 1992 to 2004 Rosenborg won 13 Norwegian league titles in a row, a run that Vålerenga ended in 2005. In Europe, a 2–1 win at San Siro in December 1996 knocked AC Milan out and took Rosenborg to the Champions League quarter-finals. In September 2007 they drew 1–1 at Stamford Bridge, and that turned out to be José Mourinho's last match in his first spell as Chelsea manager.",
+      "Several players left Trondheim for bigger leagues. Øyvind Leonhardsen joined Wimbledon, Steffen Iversen went to Tottenham Hotspur, Harald Martin Brattbakk to Celtic and Vegard Heggem to Liverpool. John Carew joined Valencia in 2000. Under Erik Hamrén, Rosenborg won the league in 2009 and 2010. Kåre Ingebrigtsen then won doubles in 2015 and 2016, and the 2016 cup final was a 4–0 win over second-tier Kongsvinger. That was part of four straight titles from 2015 to 2018, before Molde won the league in 2019. Test what you know about Rosenborg's history in the quiz below."
+    ],
+    "faq": [
+      {
+        "q": "What was Rosenborg's original name?",
+        "a": "Rosenborg were founded as Odd on 19 May 1917, named after Odd of Skien, which was then Norway's most successful team. When the club joined the Norwegian FA in the 1920s, the association would not accept two members with the same name, so the club became Rosenborg Ballklub."
+      },
+      {
+        "q": "How many Norwegian league titles in a row did Rosenborg win?",
+        "a": "Rosenborg won 13 Norwegian league titles in a row, from 1992 to 2004. The run ended when Vålerenga won the title in 2005. Later, Rosenborg won four in a row from 2015 to 2018."
+      },
+      {
+        "q": "What is the record attendance at Lerkendal?",
+        "a": "Lerkendal's official record attendance is 28,569. That crowd watched Rosenborg beat Lillestrøm 1–0 on the final day of the 1985 season to win the league. It was the club's first league title since 1971."
+      },
+      {
+        "q": "What happened when Rosenborg played AC Milan at San Siro in 1996?",
+        "a": "In December 1996 Rosenborg won 2–1 at San Siro. The result knocked AC Milan out in the Champions League group stage and sent Rosenborg through to the quarter-finals."
+      }
+    ]
+  },
+  {
+    "club": "Bodø/Glimt",
+    "slug": "bodo-glimt",
+    "name": "Bodø/Glimt",
+    "h1": "Bodø/Glimt Quiz",
+    "title": "Bodø/Glimt Quiz with Answers | Ball IQ",
+    "description": "Test your Bodø/Glimt knowledge: the 1975 cup win over Vard, the 6–1 against Roma, Den Gule Horde's yellow toothbrush and the 2020 title.",
+    "intro": [
+      "The club was founded in Bodø in 1916 simply as Glimt. At its 1948 annual meeting it became Bodø-Glimt, because an older club from Orkdal in Trøndelag already used the name Glimt. The supporters' group Den Gule Horde was organised in 1974, and its symbol is a giant yellow toothbrush. Glimt fans have carried them since the 1970s. The first one broke at Brann Stadion in 1976, and its head is now kept at Nordlandsmuseet. The club's history also runs through families like the Bergs. Harald 'Dutte' Berg, father of Ørjan, Runar and Arild, won 43 caps for Norway and played for FC Den Haag in the early 1970s, between his two spells at Glimt.",
+      "Glimt were still in the second tier when they won the Norwegian Cup for the first time. On 26 October 1975 they beat Vard of Haugesund 2–0 at Ullevaal. It was the first cup final ever played by a club from Northern Norway. On the way, 12,041 fans packed Aspmyra to watch them beat Viking 2–1 in the quarter-final. In 1977, their first top-flight season, they finished second in the league and lost the cup final 1–0, both times to Lillestrøm. In the 1978–79 Cup Winners' Cup they beat Union Luxembourg before Inter Milan won the second round 7–1 on aggregate. Under Trond Sollied, who later won two Belgian titles with Club Brugge, the newly promoted side finished second to Rosenborg in 1993 and won the cup with a 2–0 win over Strømsgodset. The next season in Europe they beat Sampdoria 3–2 at home but went out 4–3 on aggregate. Tromsø beat them 2–1 in the 1996 cup final. In 2003 Øystein Gåre took them to second place in both the league and the cup, and he won the Kniksen award as coach of the year.",
+      "The road back to the top had plenty of stops. Glimt finished third in the 2007 First Division and went up by beating Odd Grenland in the play-off. They were fourth in 2008 under Kåre Ingebrigtsen, the year Stabæk won the title. Jan Halvor Halvorsen won the 2013 First Division in his first season in charge. Kjetil Knutsen took over in 2018 and built a high-pressing side. They were runners-up to Molde in 2019, then won the club's first ever league title in 2020, with former Air Force fighter pilot Bjørn Mannsverk working on the squad's mentality. Players were sold all through that rise. Jens Petter Hauge went to AC Milan, Philip Zinckernagel to Watford, Kasper Junker to Urawa Red Diamonds and Victor Boniface to Union Saint-Gilloise. Ola Solbakken left for Roma and Albert Grønbæk for Rennes, and Patrick Berg spent half a season at Lens before coming back.",
+      "Europe then made Aspmyra famous. In October 2021, José Mourinho's Roma lost 6–1 there in the Conference League group stage. In February 2022 Glimt beat Celtic 5–1 on aggregate, winning 3–1 at Celtic Park. A 2022–23 Europa League group with Arsenal, PSV and Zürich followed. In 2024–25, Red Star Belgrade knocked them out of the Champions League play-off 3–2 on aggregate. Glimt dropped into the Europa League, beat Lazio on penalties in the quarter-final and lost the semi-final to Tottenham Hotspur. This quiz covers all of it, from the toothbrush to the shootout in Rome."
+    ],
+    "faq": [
+      {
+        "q": "When did Bodø/Glimt win their first league title?",
+        "a": "In 2020, under head coach Kjetil Knutsen, who took charge in 2018. The year before, they finished second in the Eliteserien behind Molde."
+      },
+      {
+        "q": "When did Bodø/Glimt first win the Norwegian Cup?",
+        "a": "In 1975, while they were still in the second tier. They beat Vard 2–0 in the final at Ullevaal on 26 October 1975. Their second cup came in 1993, a 2–0 final win over Strømsgodset under Trond Sollied."
+      },
+      {
+        "q": "Why do Bodø/Glimt fans carry a giant yellow toothbrush?",
+        "a": "The oversized yellow toothbrush is the symbol of Den Gule Horde, the supporters' group organised in 1974, and fans have carried them since the 1970s. The first one broke at Brann Stadion in 1976, and its head is now kept at Nordlandsmuseet."
+      },
+      {
+        "q": "What are Bodø/Glimt's most famous European results?",
+        "a": "The 6–1 win over José Mourinho's Roma at Aspmyra in October 2021, and the 5–1 aggregate win over Celtic in February 2022. In 2024–25 came a Europa League quarter-final win over Lazio on penalties, followed by a semi-final against Tottenham Hotspur."
+      }
+    ]
+  },
+  {
+    "club": "Celta Vigo",
+    "slug": "celta-vigo",
+    "name": "Celta Vigo",
+    "h1": "Celta Vigo Quiz",
+    "title": "Celta Vigo Quiz with Answers | Ball IQ",
+    "description": "Test your Celta Vigo knowledge: the 1923 merger, Balaídos, the 7-0 over Benfica, Mostovoi, Iago Aspas and the 2016-17 Europa League semi-final.",
+    "intro": [
+      "RC Celta de Vigo were formed on 23 August 1923, when Vigo's two leading clubs, Real Fortuna and Real Vigo Sporting, merged. The first Celta kit was a red shirt with black shorts; the famous sky blue came later. The club played at the Campo de Coia until Balaídos opened on 30 December 1928, and Celta marked the occasion by beating Real Unión of Irún 7-0. Balaídos later had its own World Cup moment: in 1982 it hosted all three of Italy's first-round group games, and Italy went on to win the tournament.",
+      "Celta reached their first Spanish Cup final in 1948, the same season they finished fourth in the league, and lost 4-1 to Sevilla at Chamartín. That summer Pahiño and Miguel Muñoz left Vigo together for Chamartín, where Muñoz later coached his new club to the 1960 and 1966 European Cups. Celta's first European tie came in the 1971-72 UEFA Cup, and Aberdeen won it 3-0 on aggregate. Milorad Pavić brought the club back to La Liga with back-to-back promotions in 1981 and 1982. Under Txetxu Rojo, Celta won the 1991-92 Segunda División title with Vlado Gudelj as the division's top scorer. Santiago Cañizares then shared the 1992-93 Zamora Trophy, and in 1994 Celta reached the Copa del Rey final at the Vicente Calderón, where they lost a shoot-out 5-4 to Real Zaragoza after a 0-0 draw.",
+      "Then came the most glamorous years in the club's history. Javier Irureta led Celta to sixth place and UEFA Cup qualification in 1997-98 before leaving for Deportivo de La Coruña. Víctor Fernández took over and built the attacking side known as EuroCelta. Alexander Mostovoi, 'El Zar' of Balaídos, had arrived from Strasbourg in 1996, Haim Revivo came from Maccabi Haifa the same year, and Jorge Cadete swapped Celtic for Celta in 1997. Valery Karpin and Claude Makélélé also played for that team. In November 1999 Celta beat Benfica 7-0 in the UEFA Cup, one of the most famous nights in the club's history. In 2002-03 Miguel Ángel Lotina's side finished fourth and took Celta into the Champions League for the first time, where Arsenal knocked them out in the round of 16.",
+      "Paco Herrera took Celta back up in 2011-12, ending five seasons in the Segunda. Luis Enrique spent the 2013-14 season in charge before leaving for Camp Nou, and Eduardo Berizzo replaced him. Iago Aspas joined Liverpool in 2013 and came back to Celta in 2015. That September he scored twice as Berizzo's side beat Barcelona, then the reigning European champions, 4-1 at Balaídos. In 2016-17 Celta reached two semi-finals: Manchester United beat them in the Europa League, and Alavés beat them in the Copa del Rey. Celta have kept producing and selling talent, with Nolito going to Manchester City, Stanislav Lobotka to Napoli, Brais Méndez to Real Sociedad and Gabri Veiga to Al-Ahli. Rafa Benítez was sacked in March 2024 and academy coach Claudio Giráldez took charge. See how much of this you know in the quiz below."
+    ],
+    "faq": [
+      {
+        "q": "When and how were Celta Vigo founded?",
+        "a": "Celta were formed on 23 August 1923 by merging Vigo's two leading clubs, Real Fortuna and Real Vigo Sporting. Their first kit was a red shirt with black shorts, and the sky blue came later."
+      },
+      {
+        "q": "Where do Celta Vigo play their home games?",
+        "a": "Celta play at Balaídos, which opened on 30 December 1928 with a 7-0 win over Real Unión. Before that they played at the Campo de Coia. Balaídos also hosted Italy's three first-round group games at the 1982 World Cup."
+      },
+      {
+        "q": "What was EuroCelta?",
+        "a": "EuroCelta was the attacking side Víctor Fernández built after replacing Javier Irureta in 1998. It featured players such as Alexander Mostovoi, Valery Karpin, Haim Revivo and Claude Makélélé, and its most famous night was a 7-0 win over Benfica in the 1999-2000 UEFA Cup."
+      },
+      {
+        "q": "What are Celta Vigo's best runs in Europe?",
+        "a": "Celta reached the Champions League round of 16 in 2003-04 after finishing fourth under Miguel Ángel Lotina, losing to Arsenal. In 2016-17 they reached the Europa League semi-finals, beating Genk in the quarter-finals before Manchester United knocked them out."
+      }
+    ]
+  },
+  {
+    "club": "Al Ittihad",
+    "slug": "al-ittihad",
+    "name": "Al-Ittihad",
+    "h1": "Al-Ittihad Quiz",
+    "title": "Al-Ittihad Quiz with Answers | Ball IQ",
+    "description": "Al-Ittihad trivia from 1927 to Benzema: back-to-back Asian crowns, Club World Cup nights, Nuno and Blanc's league wins and the stars who came to Jeddah.",
+    "intro": [
+      "Al-Ittihad were founded in Jeddah on 26 December 1927, and the club's name means 'union'. Since 2014 they have shared King Abdullah Sports City Stadium with their city neighbours Al-Ahli. Before that move, the big nights were played at the Prince Abdullah Al-Faisal Stadium. This quiz covers the whole story, from the club's early continental wins to the signings that made headlines around the world.",
+      "Al-Ittihad first won in Asia with the 1998-99 Asian Cup Winners' Cup, beating Chunnam Dragons 3-2 after extra time in Tokyo. Ahmed Bahja scored twice that day, including the extra-time winner. Then came back-to-back AFC Champions League titles. In 2004 they lost the first leg 3-1 at home to Seongnam Ilhwa Chunma, then won 5-0 away, and Mohammed Noor scored twice. In 2005, under Romanian coach Anghel Iordanescu, they beat Al Ain 5-3 on aggregate. Mohamed Kallon was the tournament's top scorer with six goals, and centre-back Hamad Al-Montashari was named AFC Player of the Year.",
+      "The 2005 FIFA Club World Championship in Japan put Al-Ittihad on the world stage. They lost 3-2 to eventual champions São Paulo in the semi-final and finished fourth. In 2009, with Argentine coach Gabriel Calderón in charge, they knocked out Nagoya Grampus 8-3 on aggregate to reach another Asian final, which they lost 2-1 to Pohang Steelers in Tokyo. At home, they beat Al-Faisaly 3-1 after extra time to win the 2018 King's Cup final in Jeddah.",
+      "The modern era has brought league titles and famous names. Nuno Espírito Santo won the 2022-23 Saudi Pro League in his first season, the club's first league title since 2009, and Abderrazak Hamdallah won the Golden Boot. Karim Benzema arrived from Real Madrid in June 2023, the same summer Fabinho came from Liverpool and Jota from Celtic. Marcelo Gallardo took over in November 2023, and Laurent Blanc then led the club to the 2024-25 title. Play through every question and see how much of Al-Ittihad's history you really know."
+    ],
+    "faq": [
+      {
+        "q": "When was Al-Ittihad founded?",
+        "a": "Al-Ittihad were founded in Jeddah on 26 December 1927. The club's name means 'union'."
+      },
+      {
+        "q": "Where do Al-Ittihad play their home games?",
+        "a": "Since 2014, Al-Ittihad have played at King Abdullah Sports City Stadium in Jeddah, which they share with their city rivals Al-Ahli. Before that, they played big matches such as the second leg of the 2005 AFC Champions League final at the Prince Abdullah Al-Faisal Stadium."
+      },
+      {
+        "q": "How many times have Al-Ittihad won the AFC Champions League?",
+        "a": "The questions in this quiz cover two titles in a row. In 2004 they beat Seongnam Ilhwa Chunma 6-3 on aggregate, and in 2005 they beat Al Ain 5-3 on aggregate. They also reached the 2009 final, which they lost 2-1 to Pohang Steelers."
+      },
+      {
+        "q": "Who won Al-Ittihad their recent Saudi Pro League titles?",
+        "a": "Nuno Espírito Santo led Al-Ittihad to the 2022-23 title, their first league title since 2009. Laurent Blanc won the 2024-25 title in his first season, with Karim Benzema leading the attack."
+      }
+    ]
+  },
+  {
+    "club": "LA Galaxy",
+    "slug": "la-galaxy",
+    "name": "LA Galaxy",
+    "h1": "LA Galaxy Quiz",
+    "title": "LA Galaxy Quiz with Answers | Ball IQ",
+    "description": "Test your LA Galaxy knowledge: the Rose Bowl years, MLS Cup finals, Cobi Jones, Landon Donovan, Robbie Keane, Zlatan and the 2024 title.",
+    "intro": [
+      "LA Galaxy have been part of MLS since the first season in 1996. They played their home games at the Rose Bowl in Pasadena at first, then moved to the purpose-built Home Depot Center in Carson in 2003. This quiz covers the whole story, from the first squad to the sixth MLS Cup in 2024. Do you know the Galaxy well enough to score full marks?",
+      "The early years brought stars and heartbreak. Mexican goalkeeper Jorge Campos, known for the loud kits he designed himself, Salvadoran midfielder Mauricio Cienfuegos and Cobi Jones, who had played in the Premier League for Coventry City, were all there in 1996 under head coach Lothar Osiander. D.C. United beat the Galaxy in the 1996 and 1999 MLS Cup finals, the first one with an Eddie Pope golden goal after the Galaxy had led 2-0. San Jose beat them again in the 2001 final. In between, the Galaxy won the 2000 CONCACAF Champions' Cup by beating Olimpia 3-2 in the final.",
+      "The trophies came after that. Under Sigi Schmid in 2002, Carlos Ruiz led the league with 24 goals, was named MLS MVP and scored the golden goal that beat New England 1-0 in the MLS Cup final. Steve Sampson's side beat New England again in the 2005 final, where Guillermo 'Pando' Ramírez scored in extra time, and also won the U.S. Open Cup that year. Landon Donovan arrived from Bayer Leverkusen in 2005. Ruud Gullit coached the team for part of 2008, David Beckham's second season, before Bruce Arena replaced him. Real Salt Lake won the 2009 final on penalties.",
+      "The big names kept coming. Robbie Keane joined from Tottenham in 2011 and scored the extra-time winner in the 2014 MLS Cup final, the season he was named MVP. Zlatan Ibrahimovic scored twice off the bench on his debut in the first El Trafico, a 4-3 comeback win over LAFC from 3-0 down, and later scored his 500th career goal against Toronto FC. Ashley Cole, Chicharito and Riqui Puig all followed, and in December 2024 Greg Vanney's team, with Joseph Paintsil on the wing, beat the New York Red Bulls 2-1 at Dignity Health Sports Park to win a sixth MLS Cup."
+    ],
+    "faq": [
+      {
+        "q": "Where did LA Galaxy play before moving to Carson?",
+        "a": "From 1996 the Galaxy played at the Rose Bowl in Pasadena. They moved to the purpose-built Home Depot Center in Carson in 2003."
+      },
+      {
+        "q": "When did LA Galaxy win their first MLS Cup?",
+        "a": "In 2002. They beat the New England Revolution 1-0 at Gillette Stadium, and Carlos Ruiz scored the golden goal in extra time. Sigi Schmid was the head coach, and the Galaxy also won the Supporters' Shield that year."
+      },
+      {
+        "q": "Who did LA Galaxy beat in the 2024 MLS Cup final?",
+        "a": "The New York Red Bulls. The Galaxy won 2-1 at Dignity Health Sports Park in December 2024, their sixth MLS Cup, with Greg Vanney as head coach."
+      },
+      {
+        "q": "What happened on Zlatan Ibrahimovic's LA Galaxy debut?",
+        "a": "He came off the bench in March 2018 and scored twice, the first a long-range volley, as the Galaxy came back from 3-0 down to beat LAFC 4-3 in the first El Trafico."
+      }
+    ]
+  },
+  {
+    "club": "FC Copenhagen",
+    "slug": "fc-copenhagen",
+    "name": "FC Copenhagen",
+    "h1": "FC Copenhagen Quiz",
+    "title": "FC Copenhagen Quiz with Answers | Ball IQ",
+    "description": "Test your FC Copenhagen knowledge: KB and B 1903, Parken, Hodgson, Solbakken, Allbäck's winner against Manchester United and the club's record sale.",
+    "intro": [
+      "FC Copenhagen was formed on 1 July 1992 from two Copenhagen clubs: Kjøbenhavns Boldklub (KB) and Boldklubben 1903. KB was founded in 1876 and is often called the oldest football club in continental Europe. B 1903 had a famous European night of its own just before the merger, beating Bayern Munich 6–2 at Gentofte in the 1991–92 UEFA Cup and knocking them out. The new club won the Danish title in its very first league season, 1992–93, under Benny Johansen.",
+      "FCK play at Parken, built between 1990 and 1992 on the site of Idrætsparken, which had been Denmark's national stadium since 1911. Parken has hosted two European finals. Arsenal beat Parma 1–0 there in the 1994 Cup Winners' Cup final, and Galatasaray beat Arsenal on penalties after a 0–0 draw in the 2000 UEFA Cup final. The dugout has seen some big names too. Roy Hodgson, a future England manager, won the 2000–01 Superliga and left for Udinese a few weeks later. Ståle Solbakken, whose playing career ended after a cardiac arrest in FCK training in March 2001, came back from HamKam to manage the club twice. Ariël Jacobs won the 2012–13 title, and Jacob Neestrup, promoted from assistant in September 2022, won the 2022–23 title.",
+      "Europe has given FC Copenhagen many of its best nights. The club won the first Royal League in 2005 against IFK Göteborg on penalties. In 2006–07 they knocked out Ajax to reach the Champions League group stage, where Marcus Allbäck's 73rd-minute goal beat Manchester United 1–0 at Parken. They reached the Champions League last 16 for the first time in 2010–11, going out to Chelsea. In November 2023, 17-year-old Roony Bardghji scored an 87th-minute winner to beat Manchester United 4–3, and FCK finished second in their group before Manchester City knocked them out.",
+      "Parken has also been a launchpad for players. Brede Hangeland joined Fulham, William Kvist went to VfB Stuttgart, Thomas Delaney to Werder Bremen, Robert Skov to Hoffenheim after 29 Superliga goals, and Rasmus Højlund to Sturm Graz on a path that led to Manchester United. The club-record sale came in August 2024, when Orri Óskarsson joined Real Sociedad for €20m. Think you know the Lions from KB and B 1903 to the Champions League knockout rounds? Take the quiz and find out."
+    ],
+    "faq": [
+      {
+        "q": "When was FC Copenhagen founded?",
+        "a": "FC Copenhagen was founded on 1 July 1992 as a superstructure on two Copenhagen clubs, Kjøbenhavns Boldklub (KB), founded in 1876, and Boldklubben 1903."
+      },
+      {
+        "q": "What stadium do FC Copenhagen play at?",
+        "a": "FC Copenhagen play at Parken, built between 1990 and 1992 on the site of Idrætsparken, Denmark's former national stadium. Parken hosted the 1994 Cup Winners' Cup final and the 2000 UEFA Cup final."
+      },
+      {
+        "q": "Who managed FC Copenhagen to their first Danish title?",
+        "a": "Benny Johansen. He led FC Copenhagen to the title in the club's first league season, 1992–93."
+      },
+      {
+        "q": "What is FC Copenhagen's record transfer sale?",
+        "a": "Icelandic striker Orri Óskarsson, sold to Real Sociedad for a club-record €20m on deadline day, 30 August 2024."
+      }
+    ]
+  },
+  {
+    "club": "Newell's Old Boys",
+    "slug": "newells-old-boys",
+    "name": "Newell's Old Boys",
+    "h1": "Newell's Old Boys Quiz",
+    "title": "Newell's Old Boys Quiz with Answers | Ball IQ",
+    "description": "Test your Newell's Old Boys knowledge: Isaac Newell, the Bielsa years, the 1988 and 1992 Libertadores finals, Batistuta, Pochettino and Messi.",
+    "intro": [
+      "Newell's Old Boys was founded in Rosario in 1903. It is named after Isaac Newell, a teacher born in England in 1853 who emigrated to Argentina as a teenager and founded a school in the city. The former pupils of that school, the 'old boys', founded the club. Newell's fans are known as 'La Lepra' because, early in the club's history, Newell's agreed to play a charity match for a leprosy clinic. The story goes that Rosario Central turned the match down, so their fans became the 'Canallas' (scoundrels). That is where the Rosario derby's two nicknames come from. The club's ground has been in use since 1911. It is nicknamed 'El Coloso del Parque' because it stands in Parque de la Independencia, and on 22 December 2009 it became the Estadio Marcelo Bielsa.",
+      "Newell's played their first Primera División match on 19 March 1939 and beat San Lorenzo 2-1. The club was relegated after the 1960 season and won Primera B in 1961, but a 10-point deduction over an alleged incentive-payment offence cost them promotion. Newell's took the case to court, and a ruling in early 1964 made the AFA put them back in Primera División. Their first AFA league title came in the 1974 Metropolitano under Juan Carlos Montes, who was only 31. They sealed it on 2 June 1974 at Rosario Central's ground in Arroyito, coming back from 2-0 down to draw 2-2 with goals from Armando Capurro and Mario Zanabria.",
+      "The club's best years started under José 'Piojo' Yudica, who won the 1987-88 championship with a side built largely from Newell's own youth system. In 1988 Newell's reached their first Copa Libertadores final and won the first leg 1-0, but Nacional won 3-0 in Montevideo to take the trophy. Marcelo Bielsa won the 1990 Apertura, beat Boca Juniors on penalties in the 1991 play-off for the 1990-91 championship, and then won the 1992 Clausura. That same year Newell's lost the Libertadores final on penalties to Telê Santana's São Paulo, and Bielsa left for Atlas in Mexico. Américo 'Tolo' Gallego won the 2004 Apertura, the club's first league title in 12 years, with Ariel Ortega leading the attack. Gerardo 'Tata' Martino won the 2013 Torneo Final and reached the Libertadores semi-finals. On the way, Newell's knocked out Boca Juniors 10-9 in a 26-kick shootout before losing to Ronaldinho's Atlético Mineiro on penalties.",
+      "Newell's has produced a long list of famous names. Gabriel Batistuta left for River Plate in 1989, Jorge Valdano joined Alavés in 1975, Mauricio Pochettino went to Espanyol in 1994 and Walter Samuel moved to Boca Juniors in 1997. Lionel Messi left the youth ranks for Barcelona's La Masia in 2000 without ever playing a senior game for the club. Diego Maradona had a short spell at Newell's in 1993 after leaving Sevilla. Gabriel Heinze came home from Roma and Maxi Rodríguez from Liverpool, and Lisandro Martínez went on loan to Defensa y Justicia, who sold him to Ajax in 2019. If you know your Lepra history from Isaac Newell to Tata Martino, this quiz will show it."
+    ],
+    "faq": [
+      {
+        "q": "Why are Newell's Old Boys fans called 'La Lepra'?",
+        "a": "Early in the club's history, Newell's agreed to play a charity match for a leprosy clinic. Rosario Central reportedly turned the match down and were branded 'Canallas' (scoundrels), while Newell's became the 'Leprosos'. Those two nicknames are still used in the Rosario derby."
+      },
+      {
+        "q": "Who is Newell's Old Boys named after?",
+        "a": "The club is named after Isaac Newell, a teacher born in England in 1853. He emigrated to Argentina as a teenager and founded a school in Rosario, and the club was founded in 1903 by its former pupils, the 'old boys'."
+      },
+      {
+        "q": "What is the Newell's Old Boys stadium called?",
+        "a": "Since 22 December 2009 it has been the Estadio Marcelo Bielsa, named after the man who led Newell's to the 1990-91 and 1992 Clausura titles. The ground has been in use since 1911 and is nicknamed 'El Coloso del Parque' because it stands in Parque de la Independencia in Rosario."
+      },
+      {
+        "q": "Did Lionel Messi play for Newell's Old Boys?",
+        "a": "Messi was in the Newell's youth ranks, but he moved from Rosario to Barcelona's La Masia academy in 2000. He never played a senior game for Newell's."
+      }
+    ]
+  },
+  {
+    "club": "Braga",
+    "slug": "braga",
+    "name": "Braga",
+    "h1": "Braga Quiz",
+    "title": "Braga Quiz with Answers | Ball IQ",
+    "description": "Test your SC Braga knowledge: the Arsenal-style kit, a stadium carved from a granite quarry, the 2011 Europa League final in Dublin and three Taça wins.",
+    "intro": [
+      "Sporting Clube de Braga was founded on 19 January 1921. The club's red shirts with white sleeves were copied from Arsenal, which is why Braga's fans and players are called the Arsenalistas. Their biggest local fixture is the Dérbi do Minho against Vitória de Guimarães, two cities about 20 km apart.",
+      "Braga played their home games at the Estádio 1.º de Maio until 2003, when they moved into the Estádio Municipal built for Euro 2004. The ground was designed by Eduardo Souto de Moura, who won the Pritzker Prize in 2011. It sits in the Monte Castro granite quarry, has stands on only two sides and has bare rock behind one goal.",
+      "The Taça de Portugal runs all through the club's history. Braga won their first major trophy in the 1965–66 final, beating Vitória de Setúbal 1–0. They lost the 1982 final 4–0 to Malcolm Allison's Sporting and the 1998 final 3–1 to Porto. In 2015 Sérgio Conceição's side led Sporting 2–0 and still lost on penalties. A year later Paulo Fonseca's Braga drew 2–2 with Porto at the Jamor and won the shootout 4–2, and in 2021 Carlos Carvalhal's team beat Benfica 2–0 in Coimbra.",
+      "In 2009–10 Domingos Paciência took Braga to second place behind Jorge Jesus's Benfica. The next season they knocked out Celtic and Sevilla to reach the Champions League group stage, where they lost 6–0 at Arsenal and beat them 2–0 at home. In the Europa League that same season they knocked out Liverpool and then Benfica on away goals, before Falcao's header gave Porto a 1–0 win in the Dublin final. The quiz also covers the coaches who used Braga as a stepping stone, including Jesus, Fonseca, Leonardo Jardim, Abel Ferreira and Rúben Amorim, and the players Braga sold on, such as Trincão to Barcelona and Vitinha to Marseille."
+    ],
+    "faq": [
+      {
+        "q": "When was SC Braga founded?",
+        "a": "Sporting Clube de Braga was founded on 19 January 1921."
+      },
+      {
+        "q": "Why are Braga called the Arsenalistas?",
+        "a": "Braga took their red shirts with white sleeves from Arsenal, so their fans and players became known as the Arsenalistas. The two clubs later met in the 2010–11 Champions League group stage: Arsenal won 6–0 at the Emirates and Braga won 2–0 at home."
+      },
+      {
+        "q": "Where do SC Braga play their home games?",
+        "a": "Braga play at the Estádio Municipal, which was built for Euro 2004 and designed by Eduardo Souto de Moura. It was carved out of the Monte Castro granite quarry and has stands on only two sides. Before it opened in 2003, Braga played at the Estádio 1.º de Maio."
+      },
+      {
+        "q": "Have Braga ever reached a European final?",
+        "a": "Yes. Braga reached the 2011 Europa League final after beating Liverpool in the last 16 and Benfica in the semi-final on away goals. They lost the all-Portuguese final in Dublin 1–0 to André Villas-Boas's Porto, with Radamel Falcao heading the only goal."
+      }
+    ]
+  },
 ];

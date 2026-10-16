@@ -67,6 +67,8 @@ export const CLUB_COMPETITION = {
   "Al Hilal": "Saudi Pro League",
   "Preston North End": "Championship",
   "Millwall": "Championship",
+  "Newell's Old Boys": "Primera División",
+  "FC Copenhagen": "Superliga",
   "1. FC Köln": "Bundesliga",
   "RC Lens": "Ligue 1",
   "Heart of Midlothian": "Premiership",
