@@ -106,6 +106,18 @@ describe('mergeSpells', () => {
     expect(c.p.buffon).toEqual([[1, 1995, 2001], [0, 2019, 2021]]);
   });
 
+  it('skips one-year shards that share only a boundary year (Wikidata cutting one stint up)', () => {
+    const c = base();
+    const stats = mergeSpells(c, { buffon: [
+      { id: 'q1', name: 'Juventus FC', start: 2019, end: 2019 },
+      { id: 'q1', name: 'Juventus FC', start: 2021, end: 2021 },
+      { id: 'q1', name: 'Juventus FC', start: 2023, end: 2023 },
+    ] }, { sameClub });
+    // 2019 and 2021 sit inside the shipped 2019-2021 stint; 2023 is a real return.
+    expect(c.p.buffon).toEqual([[1, 1995, 2001], [0, 2019, 2021], [0, 2023, 2023]]);
+    expect(stats.added).toBe(1);
+  });
+
   it('removes a backwards shipped spell and drops a reversed one that clashes with another club', () => {
     const c = base();
     const stats = mergeSpells(c, { acosta: [{ id: 'q2', name: 'Toulouse FC', start: 1991, end: 2005, reversed: true }] }, { sameClub });

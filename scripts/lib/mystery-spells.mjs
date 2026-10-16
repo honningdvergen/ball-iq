@@ -101,6 +101,19 @@ function overlaps(a, b, now) {
 }
 
 /**
+ * Same club, any shared year (inclusive): the same stint, cut differently.
+ * Wikidata often splits one stint into one-year pieces (Świerczewski's
+ * Cracovia reads 2004, 2004-05 and 2005), and a piece that shares only a
+ * boundary year never "overlaps" by the rule above, so the full merge of 16
+ * Oct 2026 added 38 such shards. A real return has a year elsewhere between.
+ */
+function sharesYear(a, b, now) {
+  const s1 = a.start ?? a.end, s2 = b.start ?? b.end;
+  if (s1 == null || s2 == null) return false;
+  return Math.max(s1, s2) <= Math.min(a.end ?? now, b.end ?? now);
+}
+
+/**
  * Lay fetched spells over the shipped careers file WITHOUT rebuilding it.
  *
  * ⚠️ WHY A MERGE AND NOT A REBUILD. build-mystery-pool-v2.mjs rewrites
@@ -112,8 +125,8 @@ function overlaps(a, b, now) {
  *
  * Per player, per club (matched by `sameClub` on the label):
  *  - a fetched spell already present (same years) is skipped;
- *  - a fetched spell that overlaps a present one is skipped (same stint,
- *    dated differently: the shipped dates stay);
+ *  - a fetched spell that shares any year with a present one is skipped
+ *    (same stint, dated or cut differently: the shipped dates stay);
  *  - a shipped spell that ends before it starts is REMOVED and the fetched
  *    spells at that club take its place;
  *  - a fetched spell marked `reversed` (its dates were written backwards) is
@@ -156,7 +169,7 @@ export function mergeSpells(careers, fetched, { sameClub, okYear = () => true, n
         const present = careers.p[pid].filter(([i]) => i === label || sameClub(careers.c[i], sp.name))
           .map(([, a, b]) => ({ start: a, end: b }));
         if (present.some((p) => p.start === sp.start && p.end === sp.end)) continue;
-        if (present.some((p) => overlaps(p, sp, now))) { stats.overlapsSkipped++; continue; }
+        if (present.some((p) => sharesYear(p, sp, now))) { stats.overlapsSkipped++; continue; }
         if (sp.reversed) {
           const clash = careers.p[pid].some(([i, a, b]) => i !== label && !sameClub(careers.c[i], sp.name)
             && a != null && Math.min(b ?? now, sp.end ?? now) - Math.max(a, sp.start) > 1);

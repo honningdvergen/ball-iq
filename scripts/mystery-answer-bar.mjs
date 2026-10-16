@@ -56,7 +56,10 @@ export const ELITE_YEARS = 3;
 export const MAX_GAP = 2;
 export const FIRST_CLUB_BY = 20;
 export const LAST_SEEN_BY = 28;
-export const PLAYED_UNTIL_MAX = 42;
+// 45, not 42 (16 Oct 2026): restoring second spells gave Rivaldo his Mogi
+// Mirim return (played to 43) and Buffon his Parma one (to 45), both true.
+// Maldini's merged director years still read 51.
+export const PLAYED_UNTIL_MAX = 45;
 
 /* Found by reading the careers of the first answers the bar produced. The
    rules above cannot see a record that is WRONG rather than missing. */
