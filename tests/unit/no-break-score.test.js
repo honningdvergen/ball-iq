@@ -20,7 +20,10 @@ describe('scores never break after the hyphen', () => {
     expect(noBreakScores('a 4-4-2 in 1988-89')).toBe('a 4‑4‑2 in 1988‑89');
     expect(noBreakScores('Saint-Étienne at half-time')).toBe('Saint-Étienne at half-time');
     expect(noBreakScores('a goal difference of -3')).toBe('a goal difference of -3');
-    expect(noBreakScores('won 2–0')).toBe('won 2–0'); // an en dash is not a hyphen
+    // An en dash keeps its look and is held to its digits by word joiners.
+    expect(noBreakScores('won 2–0')).toBe('won 2\u2060–\u20600');
+    expect(noBreakScores('the 2010–11 season')).toBe('the 2010\u2060–\u206011 season');
+    expect(noBreakScores('Lille – Lens')).toBe('Lille – Lens');
     expect(noBreakScores(undefined)).toBe(undefined);
     expect(noBreakScores(7)).toBe(7);
   });
