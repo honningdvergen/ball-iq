@@ -6388,7 +6388,10 @@ function AppInner() {
       // "daily streak" — the cross-mode one; the islands pass the per-game label.
       // keepsOnLoss: this streak ticks on ANY finished daily, a loss included
       // (onDailyDone -> tickLoginStreak), so the panel may say "Streak safe".
-      streak: { count: loginStreak || 0, label: "daily streak", keepsOnLoss: true },
+      // shields: banked freezes (one per 200 XP, max 3, lib/streak.js). Shown by
+      // the streak so a player knows a missed day is covered BEFORE one is spent
+      // (return research, 16 Oct 2026: they were only ever named after use).
+      streak: { count: loginStreak || 0, label: "daily streak", keepsOnLoss: true, shields: Math.min(3, Math.max(0, Math.floor((xp || 0) / 200) - (stats?.shieldsUsed || 0))) },
       // The guest save line used to be its own card above this panel (Alex,
       // 2026-09-06: "does this look good?" — no). It is a row of the panel now:
       // what lives on this phone only, and the one tap that makes it follow them.
@@ -6411,7 +6414,7 @@ function AppInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // top10Tick: the "still open today" rows name Top 10 or Mystery, whichever is today's fourth
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.gamesPlayed, xp, top10Tick, resolveChallengerName]);
+  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.shieldsUsed, stats?.gamesPlayed, xp, top10Tick, resolveChallengerName]);
   const footleServices = useMemo(() => ({ ...FOOTLE_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
   const dailyScreenServices = useMemo(() => ({ ...DAILY_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
 

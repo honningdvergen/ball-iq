@@ -236,6 +236,12 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         <div className="dd-body">
           <div className="dd-title">
             {streakN >= 2 ? <>{streakN}-day {streak?.label || "streak"}</> : streakN === 1 ? <>Day 1 of a {streak?.label || "streak"}</> : <>Start a {streak?.label || "streak"}</>}
+            {/* Banked shields, named BEFORE one is needed (16 Oct 2026). */}
+            {!isArchive && streakN >= 1 && streak?.shields > 0 && (
+              <span className="dd-shields" role="img" aria-label={`${streak.shields} streak shield${streak.shields > 1 ? "s" : ""} banked: each covers one missed day`} title="Each shield covers one missed day">
+                {Array.from({ length: streak.shields }, (_, i) => <ShieldCheck key={i} size={13} strokeWidth={2.4} aria-hidden="true" />)}
+              </span>
+            )}
           </div>
           <div className="dd-sub">
             {isArchive ? <>An old puzzle — it doesn’t count toward tomorrow.</>
@@ -243,6 +249,15 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               : streakN >= 1 ? <>Tomorrow makes it <strong className="dd-num">{streakN + 1}</strong> · new puzzles in <strong className="dd-num">{ko}</strong></>
               : <>New puzzles in <strong className="dd-num">{ko}</strong></>}
           </div>
+          {/* THE REMINDER LIVES ON THE STREAK IT PROTECTS (16 Oct 2026). As a row in
+              the footer it drew 12 taps in 14 days against ~1,774 finish views. Here
+              it is a third line of the streak itself: a pill beside the title
+              wrapped "12-day daily streak" onto three lines at 375px. */}
+          {remind && remind.state === "off" && !isArchive && (
+            <button type="button" className="dd-remind" disabled={busy} onClick={doRemind} aria-label={`Turn on a daily reminder at ${reminderHourLabel()}`} title="One nudge a day, only if you haven't played. Off any time.">
+              <Bell size={13} strokeWidth={2.4} aria-hidden="true" /> Remind me at {reminderHourLabel()}
+            </button>
+          )}
         </div>
         {remind && remind.state === "on" && (
           <span className="dd-pill is-set" aria-label={`Reminder set for ${reminderHourLabel()}`}>
@@ -387,26 +402,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           numbers but no longer competes with the two things to do now. */}
       {GetAppCTA && <div className="dd-getapp"><GetAppCTA /></div>}
 
-      {/* THE ASK IS A ROW, NOT A PILL (2026-09-09). Reach is the retention
-          leak: 44 of 308 accounts hold a token. Since the soft-prompt sheet was
-          retired (09-06) this panel has been the only ask in the app, and it
-          was a 34px pill beside a countdown — offered 12 times in three days,
-          tapped once. A row in the panel's own anatomy says what it does and
-          when, and it sits directly under the stake it protects. It still asks
-          for permission only on the tap (iOS shows its sheet once, ever). */}
-      {remind && remind.state === "off" && !isArchive && (
-        <div className="dd-row" style={{ "--dd-rgb": "88,204,2", "--dd-c": "var(--accent)" }}>
-          <span className="dd-well" aria-hidden="true"><Bell size={20} strokeWidth={2.2} /></span>
-          <div className="dd-body">
-            {/* Short enough for one line beside the button at 402pt: "Remind me
-                tomorrow at 19:00" broke before the hour and the line under it
-                ran to three with "time" alone on the last (simulator, 12 Oct). */}
-            <div className="dd-title">Remind me at {reminderHourLabel()}</div>
-            <div className="dd-sub dd-sub-even">One nudge a day, only if you haven’t played. Off any time.</div>
-          </div>
-          <button type="button" className="dd-pill dd-pill-on" disabled={busy} onClick={doRemind} aria-label={`Turn on a daily reminder at ${reminderHourLabel()}`}>Turn on</button>
-        </div>
-      )}
 
 
       {save && save.onSave && (streakN >= 2 || save.line) && (
