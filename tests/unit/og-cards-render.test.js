@@ -38,6 +38,7 @@ const CARDS = {
   challenge: '?t=challenge&s=6&n=Alexander&d=24%20Aug',
   invite:    '?t=invite&c=ABC123&n=Alexander',
   club:      '?t=club&n=Arsenal&b=ARS&k=Club%20Quiz&c=EF0107',
+  league:    '?t=league&n=The%20Lads&w=Alexander',
 };
 
 async function render(qs) {
@@ -68,12 +69,12 @@ describe('OG share cards', () => {
     }
   }, 60000);
 
-  it('the six cards are actually different from each other', () => {
+  it('the seven cards are actually different from each other', () => {
     // ⚠️ The assertion that catches a mis-parameterised test. If two card types
     // produce identical bytes, at least one fell through to a default and is
     // not really being exercised.
     const shas = Object.entries(rendered).map(([k, v]) => [k, v.sha]);
-    expect(shas.length).toBe(6);
+    expect(shas.length).toBe(7);
     const seen = new Map();
     const collisions = [];
     for (const [name, sha] of shas) {

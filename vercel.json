@@ -290,6 +290,10 @@
       "destination": "/api/c?t=:token"
     },
     {
+      "source": "/l/:token",
+      "destination": "/api/l?t=:token"
+    },
+    {
       "source": "/join/:code",
       "destination": "/api/join?c=:code"
     },

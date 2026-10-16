@@ -174,6 +174,36 @@ function gameChallengeCard(sp) {
   return tree;
 }
 
+// Mates' league invite card (?t=league, phase 1), paired with api/l.js. The
+// league's name, who sent it and the format. NO member count and NO table:
+// nothing about a league's size reaches a stranger. Sentence case throughout.
+function leagueCard(sp) {
+  const name = (sp.get('n') || '').slice(0, 32) || "Mates' league";
+  const who = (sp.get('w') || '').slice(0, 22) || 'A mate';
+  const gold = '#FFC107';
+  return h('div', {
+    style: {
+      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+      background: 'linear-gradient(135deg,#17150d 0%,#0B0C10 60%)',
+      borderTop: `9px solid ${gold}`, fontFamily: 'Inter', position: 'relative', padding: '0 72px',
+    },
+  },
+    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
+    ),
+    h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 22 } },
+      h('div', { style: { fontSize: 32, fontWeight: 700, color: gold, display: 'flex' } }, `${who} invited you`),
+      h('div', { style: { fontSize: name.length > 18 ? 76 : 96, fontWeight: 900, lineHeight: 1.02, letterSpacing: -2, color: '#FFFFFF', display: 'flex' } }, name),
+      h('div', { style: { fontSize: 28, fontWeight: 600, color: '#9BA0B8', display: 'flex' } }, 'Mon to Sun · Footle, Daily 7, Transfer Trail, Top 10 · Free'),
+      h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 10 } },
+        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Join the league'),
+        h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Points start the day you join'),
+      ),
+    ),
+  );
+}
+
 // Multiplayer invite card (?t=invite): a /join/CODE link previewed as an
 // invitation rather than a generic app ad. Before this, every invite unfurled
 // as the static index.html card ("The Ultimate Football Quiz") — the recipient
@@ -364,6 +394,7 @@ function cardTree(sp) {
   if (sp.get('t') === 'challenge') return challengeCard(sp);
   if (sp.get('t') === 'gch') return gameChallengeCard(sp);
   if (sp.get('t') === 'invite') return inviteCard(sp);
+  if (sp.get('t') === 'league') return leagueCard(sp);
   if (sp.get('t') === 'club') return clubCard(sp);
   const name = (sp.get('n') || 'Ball IQ Player').slice(0, 22);
   let img = sp.get('img') || '';
