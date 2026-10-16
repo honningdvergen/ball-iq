@@ -214,6 +214,15 @@ const BRIDGES = [
     proof: ['src/App.jsx', 'track={loopEvent}'],
   },
   {
+    // Stitch-up (web only): the builder, the share view and the receiver's
+    // board report through a `track` prop, bound to loopEvent at the one
+    // render site in App.jsx.
+    alias: 'track',
+    files: ['src/screens/StitchUp.jsx'],
+    emitter: 'loopEvent',
+    proof: ['src/App.jsx', 'track={loopEvent}'],
+  },
+  {
     // The mandatory-username wall reports through an onEvent prop, bound to
     // loopEvent at the single render site.
     alias: 'emit',
