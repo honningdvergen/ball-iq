@@ -235,3 +235,12 @@ only; RLS on with the single insert-own-row policy. The client writer
 (src/lib/firstTouch.js, called from useAuth on a new web signup) ships in the
 same PR as this note. Read it as postgres/service_role over SQL; there is
 deliberately no select policy.
+
+## v3_0_mates_leagues — APPLIED 2026-10-16 (Alex: "yes apply the leagues migration when it's ready")
+Applied verbatim via the Supabase MCP connector (comment header trimmed). Creates leagues,
+league_members, league_results, league_weeks, league_claims, league_join_tries; ten helpers
+with no grants; nine client RPCs granted to authenticated and revoked from public; and a
+create-or-replace of delete_user_account that adds the league sweep (body re-read from prod
+first; identical apart from the new block). Verified after: anon table grants in public = 0;
+client grants on league tables = 0; 6 league tables with RLS on; every helper closed to anon and
+authenticated; every client RPC authenticated-only; delete_user_account unchanged in access.

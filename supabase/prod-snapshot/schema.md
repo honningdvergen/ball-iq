@@ -69,3 +69,92 @@ device_tokens: pkey, token UNIQUE, user_idx · friendships: pkey, (requester,add
 
 ## Edge functions (1)
 - **send-push** v11, ACTIVE, verify_jwt=true (source retrievable via MCP get_edge_function; not embedded here)
+
+
+## Mates' leagues (v3_0, applied 2026-10-16)
+Six tables, RLS on, NO policies, every grant revoked from anon/authenticated/public; clients reach rows only through the nine security-definer RPCs (authenticated-only). Verified after apply: anon table grants 0.
+
+```sql
+create table public.leagues (
+  id          uuid primary key default gen_random_uuid(),
+  code        text not null unique check (code ~ '^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{8}$'),
+  name        text not null check (char_length(name) between 1 and 32),
+  tz          text not null,
+  owner_id    uuid references auth.users (id) on delete set null,
+  seed        text not null default 'manual'
+              check (seed in ('manual','h2h_footle','h2h_trail','h2h_top10','h2h_daily7')),
+  created_at  timestamptz not null default now()
+);
+create index leagues_owner_id_idx on public.leagues (owner_id);
+comment on table public.leagues is
+  'Mates'' leagues. Read and written only through the league RPCs (v3_0). tz is an IANA name from the creator''s device; the week goes final at Monday 00:00 there.';
+
+create table public.league_members (
+  league_id     uuid not null references public.leagues (id) on delete cascade,
+  user_id       uuid not null references auth.users (id) on delete cascade,
+  display_name  text not null check (char_length(display_name) between 1 and 22),
+  joined_at     timestamptz not null default now(),
+  joined_day    integer not null,
+  left_at       timestamptz,
+  seen_week     integer,
+  primary key (league_id, user_id)
+);
+create index league_members_user_id_idx on public.league_members (user_id);
+create index league_members_active_user_idx on public.league_members (user_id) where left_at is null;
+comment on column public.league_members.joined_day is
+  'Day index (days since 1970-01-01) in the league''s zone when the member joined. Points count from this day, in full.';
+
+create table public.league_results (
+  user_id      uuid not null references auth.users (id) on delete cascade,
+  game         text not null check (game in ('footle','daily7','trail','top10')),
+  edition      integer not null check (edition >= 0),
+  day_index    integer not null,
+  bucket       smallint not null check (bucket between 0 and 30),
+  won          boolean not null,
+  points       smallint not null check (points between 1 and 10),
+  recorded_at  timestamptz not null default now(),
+  primary key (user_id, game, edition)
+);
+create index league_results_user_day_idx on public.league_results (user_id, day_index);
+create index league_results_recorded_at_idx on public.league_results (recorded_at);
+comment on table public.league_results is
+  'One result per player per daily puzzle, first write wins. Written only by record_league_result(); points computed in SQL by _league_points(). Counts in every league the player is in.';
+
+create table public.league_weeks (
+  league_id   uuid not null references public.leagues (id) on delete cascade,
+  week_start  integer not null,
+  final_at    timestamptz not null default now(),
+  standings   jsonb not null,
+  primary key (league_id, week_start)
+);
+comment on table public.league_weeks is
+  'Final tables, written on the first read after the whistle (or the early final). Keeps the final card stable if members later leave or rename. Holds user ids: never returned to clients as stored.';
+
+create table public.league_claims (
+  token_hash  text primary key,
+  from_user   uuid not null references auth.users (id) on delete cascade,
+  expires_at  timestamptz not null
+);
+create index league_claims_from_user_idx on public.league_claims (from_user);
+
+create table public.league_join_tries (
+  user_id   uuid not null references auth.users (id) on delete cascade,
+  tried_at  timestamptz not null default now()
+);
+create index league_join_tries_user_idx on public.league_join_tries (user_id, tried_at);
+
+alter table public.leagues           enable row level security;
+alter table public.league_members    enable row level security;
+alter table public.league_results    enable row level security;
+alter table public.league_weeks      enable row level security;
+alter table public.league_claims     enable row level security;
+alter table public.league_join_tries enable row level security;
+-- No policies. Defaults grant client roles privileges on a new public table,
+-- so revoke explicitly (standing rule).
+revoke all on table public.leagues           from anon, authenticated, public;
+revoke all on table public.league_members    from anon, authenticated, public;
+revoke all on table public.league_results    from anon, authenticated, public;
+revoke all on table public.league_weeks      from anon, authenticated, public;
+revoke all on table public.league_claims     from anon, authenticated, public;
+revoke all on table public.league_join_tries from anon, authenticated, public;
+```
