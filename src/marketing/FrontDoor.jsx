@@ -153,7 +153,7 @@ function readToday() {
     const raw = localStorage.getItem(keyForDate(new Date()));
     if (raw) { const p = JSON.parse(raw); if (p && typeof p.score === 'number') { out.daily = 'done'; out.dailyScore = p.score; } }
   } catch {}
-  try { const t = loadTrailDay?.(); if (t && ['won', 'lost'].includes(t.status)) out.trail = 'done'; else if (t && t.status) out.trail = 'open'; } catch {}
+  try { const t = loadTrailDay?.(); if (t && ['won', 'lost'].includes(t.status)) { out.trail = 'done'; out.trailWon = t.status === 'won'; } else if (t && t.status) out.trail = 'open'; } catch {}
   try { if (loadMysteryResult?.(new Date())?.won) out.mystery = 'done'; } catch {}
   try {
     const t = loadTop10Day(dateToYMD(new Date()));
@@ -223,11 +223,11 @@ export default function FrontDoor() {
   useEffect(() => { marketingEvent('fd-view'); }, []);
 
   const dailies = [
-    { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Played', href: '/football-wordle/' },
+    { k: 'footle', n: 'Footle', no: getFootleNumber(today), line: 'Guess the surname in six', st: state.footle, done: state.footle === 'done', doneText: state.footleWon ? 'Solved' : 'Missed it', lost: state.footle === 'done' && !state.footleWon, href: '/football-wordle/' },
     { k: 'daily', n: 'Daily 7', no: null, line: 'Seven questions a day', st: state.daily, done: state.daily === 'done', doneText: state.dailyScore != null ? `${state.dailyScore} of 7` : 'Played', href: '/daily-football-quiz/' },
-    { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Whose career is this?', st: state.trail, done: state.trail === 'done', doneText: 'Played', href: '/transfer-trail/' },
+    { k: 'trail', n: 'Transfer Trail', no: getTrailNumber(today), line: 'Whose career is this?', st: state.trail, done: state.trail === 'done', doneText: state.trailWon ? 'Solved' : 'Missed it', lost: state.trail === 'done' && !state.trailWon, href: '/transfer-trail/' },
     ...(top10Live
-      ? [{ k: 'top10', n: 'Top 10', no: getTop10Number(today), line: 'Name all ten on the list', st: state.top10, done: state.top10 === 'done', doneText: state.top10Score != null ? `${state.top10Score} of 10` : 'Played', href: TOP10_HREF }]
+      ? [{ k: 'top10', n: 'Top 10', no: getTop10Number(today), line: 'Name all ten on the list', st: state.top10, done: state.top10 === 'done', doneText: state.top10Score != null ? `${state.top10Score} of 10` : 'Played', lost: state.top10Score === 0, href: TOP10_HREF }]
       : MYSTERY_ENABLED ? [{ k: 'mystery', n: 'Mystery Player', no: mysteryNumber(today), line: 'Guess who from the clues', st: state.mystery, done: state.mystery === 'done', doneText: 'Solved', href: '/mystery-player/' }] : []),
   ];
   const playedCount = dailies.filter((d) => d.done).length;
@@ -306,7 +306,7 @@ export default function FrontDoor() {
                   <span className="fd-card-n">{d.n}{d.no ? <span className="fd-card-no"> No. {d.no}</span> : null}</span>
                   <span className="fd-card-line">{d.line}</span>
                 </span>
-                <span className={`fd-state${d.done ? ' is-done' : d.st === 'open' ? ' is-open' : ''}`}>{d.done ? d.doneText : d.st === 'open' ? 'In progress' : 'Not played'}</span>
+                <span className={`fd-state${d.done ? (d.lost ? ' is-lost' : ' is-done') : d.st === 'open' ? ' is-open' : ''}`}>{d.done ? d.doneText : d.st === 'open' ? 'In progress' : 'Not played'}</span>
                 <span className="fd-play">{d.done ? 'Review' : d.st === 'open' ? 'Continue' : 'Play'}</span>
               </a>
             ))}

@@ -158,6 +158,8 @@
 .fd-state{font-size:12.5px;font-weight:600;color:var(--t3);white-space:nowrap}
 .fd-state.is-open{color:var(--amber)}
 .fd-state.is-done{color:var(--grn)}
+/* A loss is played, not won: neutral, never the win green (16 Oct 2026). */
+.fd-state.is-lost{color:var(--t2)}
 .fd-daily.is-done .fd-play{background:var(--s2);color:var(--t1);border:1px solid var(--bd2)}
 .fd-games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .fd-game .fd-play{background:transparent;color:var(--t3);min-width:0;padding:0 4px;font-weight:700}
