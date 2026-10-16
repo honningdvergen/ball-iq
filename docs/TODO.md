@@ -1062,6 +1062,16 @@ found, and what a pair of independent reviews found in the fixes:
 
 
 ### 0p. 15 Oct, night: THE NEXT TEN (five specialist reviews, ranked)
+**16 Oct overnight progress:** bank truth largely DONE (30 sourced fixes, 234 Daily
+hints, the 14 flagged Daily questions reworded and re-verified; still open: the 80 "As of 2026"
+anchors and the Daily draw without replacement). Web to app: visible homepage headline + own-store
+badge, 'Get app' pill and menu entry on every page, official badges everywhere, quiz hub quizzes
+first. Design critique (~/ball-iq-audit/2026-10-16/design-critic/report.md): finder width, menu
+closing, desktop tiles, Top 10 chips fixed; open: quiz-end app badge (test it against the measured
+text line), one header everywhere, consent banner, QR on desktop. Clubs: Wave 1 live (9 clubs, 294
+Qs); Wave 2 (8 clubs, 250 Qs) curated and HELD for 19 Oct in ~/ball-iq-audit/2026-10-16/wave2/
+(README has the exact wiring commands). Aberdeen's Gothenburg 1983 was missing from the forge
+output; check every famous-night question survived on future packs.
 Reports, outside the repo: ~/ball-iq-audit/2026-10-15/next/ (design.md,
 numbers.md, growth.md, website.md, bank.md). The numbers in one line: the four
 dailies are the whole retained product; web visitors who start on a daily come
