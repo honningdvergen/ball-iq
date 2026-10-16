@@ -75,6 +75,8 @@
 2026-09-10	source	loopEvent("stump-pass"
 2026-09-10	source	loopEvent("stump-share"
 2026-10-02	source	loopEvent("utm-landing"
+2026-10-16	source	loopEvent('draft-finish'
+2026-10-16	source	loopEvent('draft-start'
 2026-09-04	source	loopEvent('mp-invite-shared'
 2026-09-04	source	loopEvent('mp-join-dead'
 2026-09-04	source	loopEvent('mp-lobby-left'
