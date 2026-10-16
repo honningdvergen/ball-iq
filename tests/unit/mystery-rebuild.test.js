@@ -229,4 +229,22 @@ describe('career fixes', () => {
       }
     }
   });
+
+  // De Bruyne's generated career lost Chelsea and Manchester City to two junk
+  // Wikidata statements (a Romanian village, an Italian pharmacy company), so a
+  // Salah guess read "No shared club" (reported 15 Oct 2026). The fix restores it.
+  it('De Bruyne and Salah share Chelsea; his main club is Manchester City', async () => {
+    const { readFileSync } = await import('node:fs');
+    const c = await import('../../src/lib/mysteryCareer.js');
+    const mp = await import('../../src/lib/mysteryPlayer.js');
+    const careers = JSON.parse(readFileSync(new URL('../../src/data/mysteryCareers.json', import.meta.url), 'utf8'));
+    const fixes = JSON.parse(readFileSync(new URL('../../src/data/mysteryCareerFixes.json', import.meta.url), 'utf8'));
+    const fixed = c.withCareerFixes(careers, fixes);
+    const pool = JSON.parse(readFileSync(new URL('../../src/data/mysteryPool.json', import.meta.url), 'utf8'));
+    const kdb = pool.find((p) => p.id === 'Q357984');
+    const salah = pool.find((p) => p.id === 'Q1354960');
+    expect(mp.reasonLine(mp.explainGuess(kdb, salah, fixed))).toMatch(/^Shared Chelsea/);
+    expect(mp.reasonLine(mp.explainGuess(salah, kdb, fixed))).toMatch(/^Shared Chelsea/);
+    expect(c.mainClub(kdb, fixed)).toBe('Manchester City');
+  });
 });

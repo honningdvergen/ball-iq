@@ -22,9 +22,16 @@
 // thousand requests. Past puzzles are already public in the app's own archive,
 // so there is nothing left to protect.
 import POOL from '../src/data/mysteryPool.json' with { type: 'json' };
-import CAREERS from '../src/data/mysteryCareers.json' with { type: 'json' };
+import RAW_CAREERS from '../src/data/mysteryCareers.json' with { type: 'json' };
+import FIXES from '../src/data/mysteryCareerFixes.json' with { type: 'json' };
 import SCHEDULE from '../src/data/mysterySchedule.json' with { type: 'json' };
 import { rankPool, matchGuess, mysteryNumber } from '../src/lib/mysteryPlayer.js';
+import { withCareerFixes } from '../src/lib/mysteryCareer.js';
+
+// The app ranks with the verified career fixes applied (usePlayerPool), so the
+// server must too, or an archived puzzle ranks differently here than in the
+// game (found 16 Oct 2026 with De Bruyne's corrupted career).
+const CAREERS = withCareerFixes(RAW_CAREERS, FIXES);
 
 // Ranking the whole pool is ~8,500 similarity() calls. Cheap, but not per
 // keystroke — so each puzzle's ranking is computed once and kept for the life
