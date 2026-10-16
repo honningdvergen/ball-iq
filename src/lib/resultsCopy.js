@@ -12,7 +12,8 @@ export function dailyTierCopy(score, total) {
   if (safeScore >= 6)          return { emoji: "🌟", headline: "Excellent!",          sub: "One of those days where it just clicks." };
   if (safeScore >= 4)          return { emoji: "⚽", headline: "Solid challenge.",    sub: "Some tough ones in there today." };
   if (safeScore >= 2)          return { emoji: "📈", headline: "Keep going.",         sub: "Tomorrow's another chance to climb." };
-  return                              { emoji: "💪", headline: "Everyone starts somewhere.", sub: "Come back tomorrow for a fresh seven." };
+  // "Everyone starts somewhere" over a 1/7 read as a pat on the head (16 Oct 2026).
+  return                              { emoji: "💪", headline: "A tough set today.", sub: "Tomorrow's seven are brand new." };
 }
 
 

@@ -384,7 +384,10 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
   const verdict = g.perfect
     ? (g.lives === TOP10_LIVES ? "All ten, without a single miss." : `All ten, with ${g.lives} ${g.lives === 1 ? "life" : "lives"} to spare.`)
     : g.out ? "Out of lives. The ones that got away are filled in above."
-      : "You called it there. The rest are filled in above.";
+      // "You called it there" read oddly over a 0/10 (design pass, 16 Oct 2026):
+      // say something true about the game they had.
+      : g.score === 0 ? "A hard one today. All ten are filled in above."
+        : `You found ${g.score}. The rest are filled in above.`;
   // ⚠️ THE FINISH SAID THE SCORE THREE TIMES: here ("1 of 10"), on the count
   // beside the date ("1/10") and in the large figure under the board (13 Oct
   // 2026). The large figure is the one; the header names the state and the
