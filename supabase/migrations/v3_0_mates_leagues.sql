@@ -467,7 +467,7 @@ end;
 $function$;
 
 -- Join by code. Throttled per user: 30 tries an hour, counted here.
--- Returns {id, code, name} or {error: rate_limited | not_found | bad_display_name | full | too_many}.
+-- Returns {id, code, name, seed} or {error: rate_limited | not_found | bad_display_name | full | too_many}.
 create or replace function public.join_league(p_code text, p_display_name text)
 returns jsonb
 language plpgsql security definer set search_path to 'public'
@@ -497,7 +497,7 @@ begin
   where league_id = v_league.id and user_id = v_uid;
   v_had := found;
   if v_had and v_existing.left_at is null then
-    return jsonb_build_object('id', v_league.id, 'code', v_league.code, 'name', v_league.name);
+    return jsonb_build_object('id', v_league.id, 'code', v_league.code, 'name', v_league.name, 'seed', v_league.seed);
   end if;
   if (select count(*) from public.league_members lm where lm.league_id = v_league.id and lm.left_at is null) >= 20 then
     return jsonb_build_object('error', 'full');
@@ -513,7 +513,7 @@ begin
     insert into public.league_members (league_id, user_id, display_name, joined_day)
     values (v_league.id, v_uid, v_member, public._league_today(v_league.tz));
   end if;
-  return jsonb_build_object('id', v_league.id, 'code', v_league.code, 'name', v_league.name);
+  return jsonb_build_object('id', v_league.id, 'code', v_league.code, 'name', v_league.name, 'seed', v_league.seed);
 end;
 $function$;
 
