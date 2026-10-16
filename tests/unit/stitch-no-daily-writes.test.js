@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 /**
  * A stitch-up never touches the daily: no biq_trail_<day> save, no
@@ -46,6 +46,11 @@ afterEach(() => { vi.unstubAllGlobals(); });
 const h = React.createElement;
 const zidane = () => findStitchPlayer(stitchHash('t:ZIDANE'));
 const DAY = new Date(2026, 9, 16, 12);
+// "Today" must be DAY or the daily reads as an archive play once the real date
+// moves on (it broke at midnight on 17 Oct 2026). Only Date is faked, so React's
+// effects and timers run as normal.
+beforeAll(() => { vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(DAY); });
+afterAll(() => { vi.useRealTimers(); });
 
 describe('the harness runs effects (control: the daily writes)', () => {
   it('a daily Trail in play saves its day', () => {
