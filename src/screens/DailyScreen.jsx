@@ -404,7 +404,7 @@ function StreakRepairBanner({ repair, open, wide }) {
   );
 }
 
-function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive, streakRepair }) {
+function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive, streakRepair, onStartLeague }) {
   const { user, profile: authProfile } = useAuth();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
@@ -1110,6 +1110,12 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                       </div>
                     </div>
                   </div>
+                  {/* Mates' leagues (phase 1, web only: the App passes this on the web). */}
+                  {onStartLeague && (
+                    <button type="button" onClick={onStartLeague} style={{ alignSelf: "center", padding: "6px 0", border: 0, background: "none", fontFamily: "inherit", fontSize: 13, fontWeight: 700, color: "var(--t2)", WebkitTextFillColor: "var(--t2)", textDecoration: "underline", textUnderlineOffset: 3, cursor: "pointer" }}>
+                      Play the dailies against your mates
+                    </button>
+                  )}
                 </div>
               </div>
             </>

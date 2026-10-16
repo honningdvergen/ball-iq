@@ -15,6 +15,9 @@ import { resultVerdict } from './resultVerdict.js';
 //   'wordle'    — Today's Puzzle. Score + emoji-tile grid.
 //   'standard'  — Classic / Survival / Daily / Chaos / Legends / WC2026.
 //   'hotstreak' — Hot Streak. Big streak number with orange accent.
+//   'league'    — a mates' league's final table: name, the week, up to 8 rows
+//                 (rank, name, points, labels as small text) and the invite
+//                 link at the foot instead of the bare address.
 //
 // Returns a Promise<Blob> of a PNG. The card layout is fixed at 390×600
 // portrait so it slots nicely into iOS / Android share sheets.
@@ -164,8 +167,8 @@ export async function generateShareCard(type, data) {
   ctx.fillStyle = "#2F3240";
   ctx.fillRect(padX, 56, W - padX * 2, 1);
 
-  // Centered footer URL (the Footle card draws its own foot, with the path)
-  if (type !== "wordle") {
+  // Centered footer URL (the Footle and league cards draw their own foot)
+  if (type !== "wordle" && type !== "league") {
   ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "center";
@@ -417,6 +420,47 @@ export async function generateShareCard(type, data) {
     ctx.font = `700 ${px(13)}px Inter, "Helvetica Neue", Arial, sans-serif`;
     ctx.fillStyle = _tint(t.text, 0.45);
     ctx.fillText("balliq.app", W / 2, H - px(30));
+  } else if (type === "league") {
+    // ── A MATES' LEAGUE'S FINAL TABLE (phase 1) ── Sentence case, no eyebrow;
+    // labels are words ("Wooden spoon" has no icon in lucide, so none do here).
+    const rows = Array.isArray(data?.rows) ? data.rows.slice(0, 8) : [];
+    ctx.textAlign = "left";
+    ctx.font = '900 26px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    let title = String(data?.name || "Mates' league");
+    while (title.length > 4 && ctx.measureText(title).width > W - padX * 2) title = title.slice(0, -2) + "…";
+    ctx.fillText(title, padX, 98);
+    ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText(String(data?.weekLine || "Final table"), padX, 122);
+    const top = 146, rowH = rows.length > 6 ? 46 : 52;
+    rows.forEach((r, i) => {
+      const y = top + i * rowH;
+      if (r.me) { ctx.fillStyle = "rgba(88,204,2,0.10)"; _roundRectPath(ctx, padX - 8, y, W - padX * 2 + 16, rowH - 6, 10); ctx.fill(); }
+      const mid = y + (r.tags?.length ? 17 : (rowH - 6) / 2 + 5);
+      ctx.textAlign = "left";
+      ctx.font = '800 15px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#9BA0B8";
+      ctx.fillText(String(r.rank ?? i + 1), padX, mid);
+      ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFFFFF";
+      let nm = String(r.name || "");
+      while (nm.length > 3 && ctx.measureText(nm).width > W - padX * 2 - 110) nm = nm.slice(0, -2) + "…";
+      ctx.fillText(nm, padX + 34, mid);
+      if (r.tags?.length) {
+        ctx.font = '700 11.5px Inter, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = r.tags.some((t) => /winner/i.test(t)) ? "#FFC107" : "#9BA0B8";
+        ctx.fillText(r.tags.join(" · "), padX + 34, mid + 17);
+      }
+      ctx.textAlign = "right";
+      ctx.font = '900 20px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillText(String(r.points ?? 0), W - padX, mid + 1);
+    });
+    ctx.textAlign = "center";
+    ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#58CC02";
+    ctx.fillText(`Join: ${data?.link || "balliq.app"}`, cx, H - 24);
   } else {
     // Standard variant — Classic, Survival, Daily, Chaos, Legends, WC2026
     const modeLabel = (data?.modeLabel || "Quiz").toUpperCase();

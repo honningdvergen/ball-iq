@@ -159,6 +159,11 @@ const StadiumGame = React.lazy(() => import('./screens/StadiumGame.jsx'));
 const MysteryPlayer = React.lazy(() => import('./screens/MysteryPlayer.jsx'));
 const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
 const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.MultiplayerLobby })));
+// Mates' leagues (phase 1, web only): the table and both sheets in one lazy
+// chunk, so Home's eager budget (scripts/audit-home-budget.mjs) never carries them.
+const LeagueScreen = React.lazy(() => import('./screens/LeagueScreen.jsx'));
+const LeagueCreateSheet = lazyNamed(() => import('./screens/LeagueScreen.jsx'), 'LeagueCreateSheet');
+const LeagueJoinSheet = lazyNamed(() => import('./screens/LeagueScreen.jsx'), 'LeagueJoinSheet');
 import { HomeScreen } from './screens/HomeScreen.jsx';
 import { currentAvatarId } from './lib/currentAvatar.js';
 import { isIOSUA, isAndroidUA } from './components/StoreBadge.jsx';
@@ -2155,6 +2160,30 @@ export function loopEvent(name, meta) {
 // (hides the desktop rail and the static site header inside the native shell).
 // Covers any case where the bridge wasn't injected before the head script ran.
 if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
+
+// ── MATES' LEAGUES: WEB ONLY IN PHASE 1 ──
+// Installed apps carry the web code they were built with, so phase 1 must not
+// reach them: every league surface is gated on this, detected the way the
+// rest of the app detects a native shell (capacitor: protocol, the
+// html.native-app class, or the bridge itself).
+const LEAGUES_WEB = (() => {
+  try {
+    return !IS_NATIVE && window.location.protocol !== "capacitor:" && !document.documentElement.classList.contains("native-app");
+  } catch { return false; }
+})();
+// The league sheet's step survives AppInner's remount when a guest signs in
+// (AppGate unmounts it while the new session's profile loads). Same key and
+// shape as lib/leagues.js saveLeagueUi, inlined to keep that file out of
+// Home's eager graph.
+const LEAGUE_UI_KEY = "biq_league_ui";
+// While the sheet's chunk loads: its backdrop, so the tap visibly landed.
+const LEAGUE_SHEET_FALLBACK = <div aria-busy="true" aria-label="Loading" style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.72)" }} />;
+function readLeagueUiInline() {
+  try { const v = JSON.parse(localStorage.getItem(LEAGUE_UI_KEY) || "null"); return v && Date.now() - v.at < 15 * 60000 ? v : null; } catch { return null; }
+}
+function writeLeagueUiInline(v) {
+  try { if (v) localStorage.setItem(LEAGUE_UI_KEY, JSON.stringify({ ...v, at: Date.now() })); else localStorage.removeItem(LEAGUE_UI_KEY); } catch {}
+}
 // ⚠️ Attach the push-tap listener at MODULE SCOPE, not in an effect. A cold
 // launch from a notification delivers the tap while the app is still booting;
 // anything waiting on React mount or on auth resolving is too late, and
@@ -4164,6 +4193,73 @@ function AppInner() {
   useEffect(() => { perfMark('AppInner mounted'); removePrebootOnboard(); }, []);
   const { user, profile: authProfile, isGuest, isAnonUser, signInAsGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
+  // Mates' leagues (web only): the open table, and the create / join sheet.
+  const [leagueId, setLeagueId] = useState(null);
+  const [leagueSheet, setLeagueSheetRaw] = useState(() => {
+    if (!LEAGUES_WEB) return null;
+    const v = readLeagueUiInline();
+    return v && (v.kind === "join" || v.kind === "create") ? v : null;
+  });
+  const setLeagueSheet = useCallback((v) => { writeLeagueUiInline(v); setLeagueSheetRaw(v); }, []);
+  const openLeagueTable = useCallback((id) => {
+    if (!id) return;
+    setLeagueSheet(null);
+    setLeagueId(id);
+    setScreen("league");
+  }, [setLeagueSheet]);
+  // A join or a create announces the table (lib/leagues.js announceLeagueOpen),
+  // possibly from a sheet that this remount replaced: honour it either way.
+  useEffect(() => {
+    if (!LEAGUES_WEB) return undefined;
+    const v = readLeagueUiInline();
+    if (v && v.kind === "open" && v.id) openLeagueTable(v.id);
+    const onOpen = (e) => openLeagueTable(e?.detail?.id);
+    const onClaim = (e) => loopEvent("league-claim", { moved: Number(e?.detail?.moved) || 0 });
+    window.addEventListener("biq:league-open", onOpen);
+    window.addEventListener("biq:league-claimed", onClaim);
+    // "Make it a league?" in the results panel (components/DailyDone.jsx).
+    window.__biqOpenLeague = (opts) => {
+      loopEvent("league-create-open", { from: opts?.from || "h2h" });
+      const g = opts?.h2hGame;
+      setLeagueSheet({ kind: "create", seed: ["footle", "trail", "top10", "daily7"].includes(g) ? `h2h_${g}` : "manual", vs: opts?.vs || "", h2h: opts?.h2h || null });
+    };
+    return () => {
+      window.removeEventListener("biq:league-open", onOpen);
+      window.removeEventListener("biq:league-claimed", onClaim);
+      try { delete window.__biqOpenLeague; } catch {}
+    };
+  }, [openLeagueTable, setLeagueSheet]);
+  const openLeagueCreateFromDaily = useCallback(() => {
+    loopEvent("league-create-open", { from: "daily" });
+    setLeagueSheet({ kind: "create", seed: "manual", vs: "", h2h: null });
+  }, [setLeagueSheet]);
+  // Joining or creating needs a session: a guest gets an anonymous one (the
+  // /join/CODE mechanism); if that is switched off, the sign-in sheet opens.
+  const ensureLeagueSession = useCallback(async () => {
+    if (user) return true;
+    const { error } = await signInAsGuest();
+    if (error) { openAuthPrompt?.("league"); return false; }
+    return true;
+  }, [user, signInAsGuest, openAuthPrompt]);
+  // The name a league table shows: the profile's, unless it is a server
+  // default (player_…), else the guest name the app already uses.
+  const leagueDisplayName = useMemo(() => {
+    const u = authProfile?.username;
+    if (user && !isAnonUser && u && !/^player_/i.test(u)) return u;
+    return LEAGUES_WEB ? getGuestDisplayName() : "";
+  }, [user, isAnonUser, authProfile?.username]);
+  // Results that waited for a session go once there is one, sent with the
+  // session's own token (lib/leagueResults.js, reached through lib/leagues.js).
+  const leagueUid = user?.id || null;
+  useEffect(() => {
+    if (!LEAGUES_WEB || !leagueUid) return;
+    import("./lib/leagues.js").then((m) => {
+      m.setLeagueTokenSource(async () => {
+        try { return (await supabase.auth.getSession()).data.session?.access_token || null; } catch { return null; }
+      });
+      return m.flushLeagueOutbox();
+    }).catch(() => {});
+  }, [leagueUid]);
   // One Top 10 list opened by name (?game=top10&list=<id>). Null is today's.
   const [top10ListId, setTop10ListId] = useState(null);
   // "lib" when a list was opened from the Top 10 browser, so Back returns there.
@@ -4263,6 +4359,9 @@ function AppInner() {
     try {
       const path = BOOT_PATH;
       if (path === "/footle" || path === "/footle/" || /^\/c\/./.test(path)) return true;
+      // A league invite (/l/TOKEN, or ?league= from api/l.js) shows its join
+      // screen first: the card promised "free", not a tour.
+      if (LEAGUES_WEB && (/^\/l\/./.test(path) || /[?&](league|leaguenew)=/.test(BOOT_SEARCH))) return true;
       // The code itself survives the deferral: the pendingJoinCode initializer
       // below persists it to localStorage (biq_pending_join) before stripping
       // the path, so the join modal / auto-join still fire. Validated through
@@ -4434,6 +4533,8 @@ function AppInner() {
   // the settle effect) so nothing references it before its const exists; null =
   // closed.
   const [challengeResult, setChallengeResult] = useState(null);
+  // "Make it a league?" was offered under the Daily 7 head-to-head.
+  useEffect(() => { if (LEAGUES_WEB && challengeResult) loopEvent("league-offer-shown", { game: "daily7" }); }, [challengeResult]);
   // Social-webview escape hatch (task #22, Alex steer 2026-07-17: "if people
   // share their result it is okay to push the app"). A /c/ challenge tapped
   // inside Snapchat/IG opens their in-app browser, which swallows the Universal
@@ -6169,6 +6270,36 @@ function AppInner() {
         setScreen("wordle");
         return;
       }
+      // Mates' leagues (web only): /l/TOKEN or ?league=TOKEN (api/l.js) opens
+      // the join screen; ?leaguenew=SEED, from "Make it a league?" on a static
+      // island, opens the create sheet. The /l/ path is NOT in the deep-link
+      // files on purpose (spec section 10): old app builds would catch it.
+      try {
+        if (LEAGUES_WEB) {
+          const lsp = new URLSearchParams(window.location.search);
+          const pathTok = (window.location.pathname.match(/^\/l\/([^/?#]+)/) || [])[1];
+          let lt = lsp.get("league");
+          if (!lt && pathTok) { try { lt = decodeURIComponent(pathTok); } catch { lt = pathTok; } }
+          const ln = lsp.get("leaguenew");
+          if (lt || ln) {
+            const u = new URL(window.location.href);
+            ["league", "leaguenew", "vs", "h2h"].forEach((k) => u.searchParams.delete(k));
+            window.history.replaceState({}, "", (u.pathname.startsWith("/l/") ? "/play" : u.pathname) + u.search + u.hash);
+            if (lt) {
+              try { localStorage.setItem("biq_league_invite", JSON.stringify({ token: lt, at: Date.now() })); } catch {}
+              setLeagueSheet({ kind: "join", token: lt });
+            } else {
+              const h = (lsp.get("h2h") || "").split(".");
+              const h2h = h.length === 4 && ["footle", "trail", "top10", "daily7"].includes(h[0])
+                ? { game: h[0], edition: parseInt(h[1], 10) || 0, mine: parseInt(h[2], 10) || 0, theirs: parseInt(h[3], 10) || 0 } : null;
+              const seed = ["h2h_footle", "h2h_trail", "h2h_top10", "h2h_daily7"].includes(ln) ? ln : "manual";
+              loopEvent("league-create-open", { from: seed === "manual" ? "daily" : "h2h" });
+              setLeagueSheet({ kind: "create", seed, vs: (lsp.get("vs") || "").slice(0, 22), h2h });
+            }
+            return;
+          }
+        }
+      } catch {}
       // A Footle / Trail / Top 10 challenge (16 Oct 2026): ?gc=TOKEN from
       // api/c.js, or /c/TOKEN when a universal link opens the native app.
       // Stored for the game screen and the finish panel (lib/gameChallenge.js).
@@ -8487,6 +8618,30 @@ function AppInner() {
             </div>
           </div>
         )}
+        {/* Mates' leagues (web only): the create and join sheets, lazy. */}
+        {LEAGUES_WEB && leagueSheet?.kind === "join" && (
+          <TabErrorBoundary name="league-join" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={LEAGUE_SHEET_FALLBACK}><LeagueJoinSheet
+            token={leagueSheet.token}
+            displayName={leagueDisplayName}
+            isGuest={!user || !!isAnonUser}
+            ensureSession={ensureLeagueSession}
+            onClose={() => setLeagueSheet(null)}
+            onJoined={(r) => openLeagueTable(r?.id)}
+            track={loopEvent}
+          /></React.Suspense></TabErrorBoundary>
+        )}
+        {LEAGUES_WEB && leagueSheet?.kind === "create" && (
+          <TabErrorBoundary name="league-create" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={LEAGUE_SHEET_FALLBACK}><LeagueCreateSheet
+            seed={leagueSheet.seed}
+            vs={leagueSheet.vs}
+            h2h={leagueSheet.h2h}
+            displayName={leagueDisplayName}
+            ensureSession={ensureLeagueSession}
+            onClose={() => setLeagueSheet(null)}
+            onOpenTable={openLeagueTable}
+            track={loopEvent}
+          /></React.Suspense></TabErrorBoundary>
+        )}
         {challengeResult && (
           <div
             style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.78)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center",animation:"fadeIn 0.2s ease"}}
@@ -8527,6 +8682,22 @@ function AppInner() {
               >
                 Send it back 🔁
               </button>
+              {/* Mates' leagues (web only): the same seed as the results panel's. */}
+              {LEAGUES_WEB && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const c = challengeResult;
+                    loopEvent("league-make-tap", { game: "daily7" });
+                    loopEvent("league-create-open", { from: "h2h" });
+                    setChallengeResult(null);
+                    setLeagueSheet({ kind: "create", seed: "h2h_daily7", vs: c.name || "", h2h: { game: "daily7", edition: dayIndexForDate(new Date()), mine: c.mine, theirs: c.theirs } });
+                  }}
+                  style={{display:"block",margin:"2px auto 12px",background:"none",border:"none",color:"var(--t2)",WebkitTextFillColor:"var(--t2)",fontFamily:"inherit",fontSize:13,fontWeight:700,textDecoration:"underline",textUnderlineOffset:3,cursor:"pointer",padding:"6px 8px"}}
+                >
+                  Make it a league?
+                </button>
+              )}
               <button
                 onClick={() => setChallengeResult(null)}
                 style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
@@ -8640,6 +8811,7 @@ function AppInner() {
               clubAbbr={CLUB_ABBR}
               launchClubQuiz={launchClubQuiz}
               firstSession={showFirstQuizTip}
+              onOpenLeague={LEAGUES_WEB ? openLeagueTable : undefined}
             />
             </TabErrorBoundary>
           </div>
@@ -8669,6 +8841,7 @@ function AppInner() {
               dailyDone={dailyDone}
               dailyScore={dailyScore}
               playDailyForDate={playDailyForDate}
+              onStartLeague={LEAGUES_WEB ? openLeagueCreateFromDaily : undefined}
             />
             </TabErrorBoundary>
           </div>
@@ -9028,6 +9201,18 @@ function AppInner() {
         })()}
         {screen === "top10" && (
           <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 key={top10ListId || "day"} date={archiveDate || undefined} listId={top10ListId || undefined} onBack={top10From === "lib" ? () => { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); } : goHome} onMoreLists={top10From === "lib" ? undefined : () => setScreen("top10lib")} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
+        )}
+        {screen === "league" && LEAGUES_WEB && leagueId && (
+          <TabErrorBoundary name="league" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading the table" />}><LeagueScreen
+            key={leagueId}
+            leagueId={leagueId}
+            onBack={goHome}
+            nextUp={dailyDoneServices.nextUp}
+            isAnon={!!isAnonUser}
+            onSave={() => openAuthPrompt?.("save")}
+            track={loopEvent}
+            inviter={leagueDisplayName}
+          /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "top10lib" && (
           <TabErrorBoundary name="top10lib" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10 lists" />}><Top10Library

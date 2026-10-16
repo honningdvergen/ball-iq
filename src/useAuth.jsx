@@ -233,6 +233,21 @@ export function AuthProvider({ children }) {
         setUser(session?.user ?? null)
         if (event === 'PASSWORD_RECOVERY') setPasswordRecovery(true)
         if (session?.user) {
+          // Mates' leagues: a guest who signed in to an EXISTING account has a
+          // new user id; redeem the claim issued before the sign-in so their
+          // memberships and results follow them (lib/leagues.js). Deferred out
+          // of this callback: supabase-js must not be called from inside it.
+          try {
+            if (localStorage.getItem('biq_league_claim')) {
+              const uid = session.user.id
+              setTimeout(() => {
+                import('./lib/leagues.js')
+                  .then((m) => m.redeemLeagueClaim(uid))
+                  .then((moved) => { if (moved != null) window.dispatchEvent(new CustomEvent('biq:league-claimed', { detail: { moved } })) })
+                  .catch(() => {})
+              }, 0)
+            }
+          } catch {}
           setIsGuest(false)
           setAuthPromptOpen(false)   // close the auth overlay on success
           localStorage.removeItem('ballIQ_guestMode')
@@ -779,9 +794,22 @@ export function AuthProvider({ children }) {
     return { data }
   }
 
+  // Mates' leagues: before an ANONYMOUS player signs in to an account, issue a
+  // single-use claim for their league rows (redeemed in the SIGNED_IN handler
+  // above). Only for a league member; never waits more than 2.5 s; a failure
+  // costs the guest's league history, never the sign-in.
+  async function prepareLeagueClaimIfAnon() {
+    try {
+      if (!user?.is_anonymous || localStorage.getItem('biq_league_member') !== '1') return
+      const m = await import('./lib/leagues.js')
+      await Promise.race([m.prepareLeagueClaim(user.id), new Promise((r) => setTimeout(r, 2500))])
+    } catch {}
+  }
+
   async function signIn(email, password) {
     Sentry.addBreadcrumb({ category: 'auth', message: 'sign-in attempted', level: 'info' })
     try { localStorage.setItem('biq_auth_attempt', String(Date.now())) } catch {}
+    await prepareLeagueClaimIfAnon()
     const result = await supabase.auth.signInWithPassword({ email, password })
     if (!result.error && result.data?.session) {
       // Pre-fill convenience for next visit (post-expiry, re-launch).
@@ -873,6 +901,7 @@ export function AuthProvider({ children }) {
   // OAuth identity from Settings (post-launch task — not blocking V1).
   async function signInWithOAuth(provider) {
     Sentry.addBreadcrumb({ category: 'auth', message: `oauth ${provider} attempted`, level: 'info' })
+    await prepareLeagueClaimIfAnon()
     try { localStorage.setItem('biq_auth_attempt', String(Date.now())) } catch {}
     const isNative = Capacitor.isNativePlatform?.()
     if (isNative) {

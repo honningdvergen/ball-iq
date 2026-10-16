@@ -146,6 +146,7 @@ const SURFACES = [
   ['scripts/seo/', 'a generated static page'],
   ['scripts/gen-seo-pages.mjs', 'generated static pages (playable boards, /lists/, question tasters)'],
   ['api/c.js', 'the /c/ challenge share landing (Vercel edge function, server-side)'],
+  ['api/l.js', 'the /l/ league invite landing (Vercel edge function, server-side)'],
   ['api/p.js', 'the /p/ Ball IQ card share landing (Vercel edge function)'],
   ['api/', 'a Vercel edge function'],
 ];
@@ -203,6 +204,14 @@ const BRIDGES = [
     files: ['scripts/seo/grid-section.mjs'],
     emitter: 'bqev',
     proof: ['scripts/seo/club-quiz-engine.js', 'window.__bqev=bqev;'],
+  },
+  {
+    // Mates' leagues (web only): the table and both sheets report through a
+    // `track` prop, bound to loopEvent at each render site in App.jsx.
+    alias: 'track',
+    files: ['src/screens/LeagueScreen.jsx'],
+    emitter: 'loopEvent',
+    proof: ['src/App.jsx', 'track={loopEvent}'],
   },
   {
     // The mandatory-username wall reports through an onEvent prop, bound to

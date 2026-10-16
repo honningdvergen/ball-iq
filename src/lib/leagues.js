@@ -18,9 +18,12 @@
 // installed apps before build 1.9. Without the migration applied the calls
 // come back empty and the UI shows nothing: no league card, no crash.
 
-import { isNativeShell, leagueWeekStart, flushLeagueOutbox } from './leagueResults.js';
+import { isNativeShell, leagueWeekStart, flushLeagueOutbox, setLeagueTokenSource } from './leagueResults.js';
 
-export { isNativeShell };
+// Re-exported so the app reaches the results lib through this lazy chunk: a
+// dynamic import of leagueResults.js from App.jsx pulled it into Home's eager
+// graph (measured: +4 KB in the shared chunk).
+export { isNativeShell, flushLeagueOutbox, setLeagueTokenSource };
 export const LEAGUE_CODE_RE = /^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{8}$/;
 const MEMBER_KEY = 'biq_league_member';
 const INVITE_KEY = 'biq_league_invite';
@@ -71,6 +74,30 @@ export function readLeagueInvite() {
   } catch { return null; }
 }
 export const clearLeagueInvite = () => set(INVITE_KEY, null);
+
+// ⚠️ THE APP REMOUNTS WHEN A GUEST SIGNS IN. AppGate unmounts AppInner while a
+// new anonymous session's profile loads (App.jsx), so a sheet held in React
+// state would vanish mid-join. The sheet's step lives here instead, the way
+// /join/CODE keeps biq_pending_join: App reads it back on mount (inline, under
+// the same key, to keep this file out of Home's eager graph).
+//   { kind: 'join', token } | { kind: 'create', seed, vs, h2h, made? } | { kind: 'open', id }
+export const LEAGUE_UI_KEY = 'biq_league_ui';
+export function saveLeagueUi(v) {
+  set(LEAGUE_UI_KEY, v ? JSON.stringify({ ...v, at: Date.now() }) : null);
+  // A sheet mounted after a remount follows the step the unmounted one reached.
+  try { window.dispatchEvent(new CustomEvent('biq:league-ui')); } catch { /* old WebView */ }
+}
+export function readLeagueUi() {
+  try {
+    const v = JSON.parse(get(LEAGUE_UI_KEY) || 'null');
+    return v && Date.now() - v.at < 15 * 60000 ? v : null;
+  } catch { return null; }
+}
+/** After a join or a create: tell the app to open the table (now, or on its next mount). */
+export function announceLeagueOpen(id) {
+  saveLeagueUi({ kind: 'open', id });
+  try { window.dispatchEvent(new CustomEvent('biq:league-open', { detail: { id } })); } catch { /* old WebView */ }
+}
 
 // ── words ──
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

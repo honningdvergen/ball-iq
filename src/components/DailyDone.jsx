@@ -4,6 +4,18 @@ import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
 import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel } from "../lib/gameChallenge.js";
+// Mates' leagues (phase 1, web only). The results lib is loaded on demand: a
+// static import here put it in the chunk Home loads eagerly (+4 KB measured
+// against scripts/audit-home-budget.mjs). Same detection as leagueResults.js.
+const isNativeShell = () => {
+  try {
+    if (typeof location !== "undefined" && location.protocol === "capacitor:") return true;
+    if (typeof document !== "undefined" && document.documentElement?.classList?.contains("native-app")) return true;
+    const C = typeof window !== "undefined" ? window.Capacitor : null;
+    return !!(C && typeof C.isNativePlatform === "function" && C.isNativePlatform());
+  } catch { return false; }
+};
+const LEAGUE_GAMES = ["footle", "daily7", "trail", "top10"];
 
 // Results in a day before the panel shows headcounts instead of shares.
 const SHOW_COUNTS_FROM = 300;
@@ -82,6 +94,21 @@ const modeOf = (k) => (k === "daily" ? "daily7" : k);
 // double every denominator it produces and quietly halve the conversion rate
 // it exists to measure.
 const shownClaims = new Set();
+// "Make it a league?" was seen: once per result, the same double-mount guard.
+const leagueOfferClaims = new Set();
+
+// Opens the league create sheet. Inside the app, App.jsx registers the opener;
+// on the static islands there is none, so the link carries the head-to-head
+// into the app's boot (/play?leaguenew=…), which opens the same sheet.
+function openLeagueCreate(opts) {
+  try {
+    if (typeof window !== "undefined" && typeof window.__biqOpenLeague === "function") { window.__biqOpenLeague(opts); return; }
+    const q = new URLSearchParams({ leaguenew: `h2h_${opts.h2hGame}` });
+    if (opts.vs) q.set("vs", opts.vs);
+    if (opts.h2h) q.set("h2h", [opts.h2h.game, opts.h2h.edition, opts.h2h.mine, opts.h2h.theirs].join("."));
+    window.location.assign(`/play?${q.toString()}`);
+  } catch { /* nothing to do */ }
+}
 
 export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
   const [now, setNow] = useState(() => new Date());
@@ -142,6 +169,14 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     let alive = true;
     (async () => {
       if (!isArchive) {
+        // Mates' leagues: the same result, to the league table. NOT awaited.
+        // Both panels' callbacks run one after the other once the module is
+        // in, and the lib takes its claim synchronously, before its first
+        // await, so the second finds it taken (leagueResults.js). Archive
+        // plays never go; native shells never load it.
+        if (LEAGUE_GAMES.includes(game) && !isNativeShell()) {
+          import("../lib/leagueResults.js").then((m) => m.recordLeagueResult({ game, edition, bucket, won })).catch(() => {});
+        }
         // Both the record and the play-hour note live behind one synchronous
         // claim in the lib — two of these panels mount per result (mobile +
         // desktop) and used to fire both, twice.
@@ -165,6 +200,20 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const myScore = game === "top10" ? (bucket || 0) : (won ? bucket || 0 : 0);
   const rival = useMemo(() => (canChallenge ? readChallenge(game, edition) : null), [canChallenge, game, edition]);
   const [challengeState, setChallengeState] = useState("");
+  // "Make it a league?" (mates' leagues, web only): wherever the head-to-head
+  // line shows. Measure whether to limit it to wins (spec section 8).
+  const leagueOffer = !!rival && !isNativeShell();
+  useEffect(() => {
+    if (!leagueOffer) return;
+    const key = `${game}:${edition}`;
+    if (leagueOfferClaims.has(key)) return;
+    leagueOfferClaims.add(key);
+    track?.("league-offer-shown", { game });
+  }, [leagueOffer, game, edition, track]);
+  const makeLeague = () => {
+    track?.("league-make-tap", { game });
+    openLeagueCreate({ h2hGame: game, vs: rival?.name || "", from: "h2h", h2h: { game, edition, mine: myScore, theirs: rival?.score ?? 0 } });
+  };
   const doChallenge = async () => {
     const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
     const token = challengeToken(game, edition, myScore, who);
@@ -320,10 +369,13 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
         </button>
       )}
-      {(waText || stump || canChallenge) && (
+      {(waText || stump || canChallenge || leagueOffer) && (
         <div className="dd-share-alts">
           {rival && (
             <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{shared ? "Shared" : "Share result"}</button>
+          )}
+          {leagueOffer && (
+            <button type="button" className="dd-share-alt" onClick={makeLeague}>Make it a league?</button>
           )}
           {waText && (
             <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>Send on WhatsApp</a>

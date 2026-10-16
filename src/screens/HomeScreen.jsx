@@ -19,6 +19,8 @@ import { getFootleNumber } from "../lib/footleNumber.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
+// Mates' leagues (phase 1, web): loaded only for a player who might be in one.
+const LeagueHomeCard = React.lazy(() => import("../components/LeagueHomeCard.jsx"));
 
 // ── CLUB FINDER (front door, 2026-09-03) ─────────────────────────────────────
 // Club quizzes are the largest single volume on the site — 763 anonymous plays
@@ -167,8 +169,16 @@ function HomeScreenImpl({
   // used to carry the tip is gone (2026-09-06 critique): the Footle row says
   // "Start here" instead, so the tip and its target are the same tap.
   firstSession = false,
+  // Mates' leagues: the App passes this on the web only (never in a native
+  // shell, phase 1), so its absence hides the card everywhere else.
+  onOpenLeague,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
+  // The card fetches for a member on this browser, or once a session for a
+  // signed-in player (a membership made on another device).
+  const leagueCardOn = !!onOpenLeague && (() => {
+    try { return localStorage.getItem("biq_league_member") === "1" || (!!user && sessionStorage.getItem("biq_league_checked") !== "1"); } catch { return false; }
+  })();
 
   // Cold-start race: on native the session restores from Preferences AFTER first
   // paint, so there's a brief guest window before `user` is set during which the
@@ -560,6 +570,11 @@ function HomeScreenImpl({
           </div>
         );
       })()}
+
+      {/* ── MATES' LEAGUE ── directly under the daily zone, members only. */}
+      {leagueCardOn && (
+        <React.Suspense fallback={null}><LeagueHomeCard onOpen={onOpenLeague} /></React.Suspense>
+      )}
 
       {/* ── PLAY WITH FRIENDS — one row, same anatomy as the Today rows
           (2026-09-06 critique: it had the loudest button on the screen and the
