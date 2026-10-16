@@ -15,11 +15,11 @@
 
 /* The table: one hairline card, your row tinted. */
 .lg-table{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--s1);}
-.lg-days{display:grid;grid-template-columns:26px 30px 1fr 44px;column-gap:10px;align-items:end;padding:10px 14px 2px;}
+.lg-days{display:grid;grid-template-columns:24px 30px 1fr 42px;column-gap:9px;align-items:end;padding:10px 12px 2px;}
 .lg-days .lg-cells span{font-size:10.5px;font-weight:700;text-align:center;color:var(--t3);-webkit-text-fill-color:var(--t3);}
 .lg-days .lg-cells span.is-today{color:var(--accent);-webkit-text-fill-color:var(--accent);}
 .lg-days-t{font-size:10.5px;font-weight:700;text-align:right;color:var(--t3);-webkit-text-fill-color:var(--t3);}
-.lg-row{display:grid;grid-template-columns:26px 30px 1fr 44px;column-gap:10px;align-items:center;padding:11px 14px;border-top:1px solid var(--border);}
+.lg-row{display:grid;grid-template-columns:24px 30px 1fr 42px;column-gap:9px;align-items:center;padding:11px 12px;border-top:1px solid var(--border);}
 .lg-days + .lg-row{border-top:0;}
 .lg-row.is-me{background:rgba(88,204,2,0.08);}
 .lg-rank{font-size:14px;font-weight:800;color:var(--t2);-webkit-text-fill-color:var(--t2);font-variant-numeric:tabular-nums;text-align:center;}
@@ -28,7 +28,9 @@
 .lg-name{font-size:15px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .lg-you{font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);}
 .lg-total{font-size:20px;font-weight:900;text-align:right;color:var(--t1);-webkit-text-fill-color:var(--t1);font-variant-numeric:tabular-nums;}
-.lg-cells{display:grid;grid-template-columns:repeat(7, 24px);gap:3px;}
+/* Seven cells of 22px and six 3px gaps = 172px; at 375 wide the middle column
+   is about 194px, so the week never runs under the total. */
+.lg-cells{display:grid;grid-template-columns:repeat(7, 22px);gap:3px;}
 .lg-cell{height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);box-sizing:border-box;}
 .lg-cell.is-miss{color:var(--t3);-webkit-text-fill-color:var(--t3);}
 .lg-cell.is-future,.lg-cell.is-before{background:transparent;border:1px dashed var(--border);}
@@ -81,7 +83,7 @@
 @media (prefers-reduced-motion: reduce){.lg-scrim,.lg-sheet{animation:none;}}
 
 /* The Home card (components/LeagueHomeCard.jsx) lives with the screen it opens. */
-.lg-home{display:flex;align-items:center;gap:12px;width:100%;min-height:72px;padding:12px 14px;border-radius:16px;border:1px solid var(--border);background:var(--s1);color:inherit;font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;box-sizing:border-box;}
+.lg-home{display:flex;align-items:center;gap:12px;width:100%;min-height:72px;margin:0 0 12px;padding:12px 14px;border-radius:16px;border:1px solid var(--border);background:var(--s1);color:inherit;font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;box-sizing:border-box;}
 .lg-home-ic{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,193,7,0.12);color:var(--gold);-webkit-text-fill-color:var(--gold);}
 .lg-home-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
 .lg-home-name{font-size:15px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}

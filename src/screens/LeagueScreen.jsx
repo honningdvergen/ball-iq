@@ -143,6 +143,8 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
     const v = r.per_day?.[i];
     if (!final && day > meta.today) return { cls: "is-future", t: "" };
     if (day < (r.joined_day ?? -Infinity)) return { cls: "is-before", t: "" };
+    // Today is still open: nothing yet is not a miss.
+    if (v == null && !final && day === meta.today) return { cls: "is-future", t: "" };
     if (v == null) return { cls: "is-miss", t: "–" };
     return { cls: v >= 30 ? "is-big" : "", t: String(v) };
   };
@@ -313,7 +315,9 @@ export function LeagueCreateSheet({ seed = "manual", vs = "", h2h = null, displa
         <>
           <h2 className="lg-sheet-title">{made.name} is ready</h2>
           <div className="lg-linkbox">
-            <input className="lg-input" value={url} readOnly aria-label="Invite link" onFocus={(e) => e.target.select()} />
+            {/* Out of the tab order, so the sheet's first focus is the Copy
+                button rather than a field that selects itself on open. */}
+            <input className="lg-input" value={url} readOnly tabIndex={-1} aria-label="Invite link" onFocus={(e) => e.target.select()} />
             <button type="button" className="lg-copy" onClick={copy} aria-label="Copy invite link">{copied ? <Check size={18} strokeWidth={2.6} /> : <Copy size={18} strokeWidth={2.2} />}</button>
           </div>
           <p className="lg-sub">Points from today, Monday to Sunday. Anyone with the link can join.</p>
