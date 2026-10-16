@@ -444,14 +444,15 @@ const CLUB_COLOR = {
 // colours did (Norwich yellow vs green, Derby/Swansea white vs near-black…).
 // gen-club-index.mjs already writes the app's tables to
 // src/data/clubPackColours.js on every build, BEFORE this script runs; the
-// slug->pack and pack->name maps are read from App.jsx the same way it does.
+// slug->pack and pack->name maps are read from the app's club tables
+// (src/data/clubPacks.js since 2026-10-16; App.jsx before) the same way it does.
 // Where the app has an opinion it wins; the hand entries remain only for
 // slugs the app has no pack for. club-badge-parity.test.js holds the line.
 {
-  const appSrc = readFileSync(resolve(ROOT, 'src/App.jsx'), 'utf8');
+  const appSrc = readFileSync(resolve(ROOT, 'src/data/clubPacks.js'), 'utf8');
   const lit = (name) => {
     const m = appSrc.match(new RegExp(`const ${name} = \\{([\\s\\S]*?)\\n\\};`));
-    if (!m) { console.error(`[gen-seo] ${name} literal not found in src/App.jsx — the shape changed`); process.exit(1); }
+    if (!m) { console.error(`[gen-seo] ${name} literal not found in src/data/clubPacks.js — the shape changed`); process.exit(1); }
     const out = {};
     for (const e of m[1].matchAll(/["']?([\w-]+)["']?:\s*"([^"]+)"/g)) out[e[1]] = e[2];
     return out;

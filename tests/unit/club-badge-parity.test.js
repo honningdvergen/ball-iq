@@ -4,7 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { CLUB_PACK_ABBR, CLUB_PACK_COLOURS } from '../../src/data/clubPackColours.js';
 
 const R = (p) => fileURLToPath(new URL('../../' + p, import.meta.url));
-const APP = readFileSync(R('src/App.jsx'), 'utf8');
+// The club tables moved out of App.jsx on 2026-10-16 (src/data/clubPacks.js).
+const APP = readFileSync(R('src/data/clubPacks.js'), 'utf8');
 const lit = (name) => {
   const m = APP.match(new RegExp(`const ${name} = \\{([\\s\\S]*?)\\n\\};`)); const out = {};
   for (const e of m[1].matchAll(/["']?([\w-]+)["']?:\s*"([^"]+)"/g)) out[e[1]] = e[2];

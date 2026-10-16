@@ -91,8 +91,10 @@ describe('daily screens stay island-safe', () => {
   // The generator (scripts/gen-club-index.mjs) runs before vitest in the build,
   // so in the build this always holds; in CI on a branch it catches a CLUB_PACKS
   // edit committed without regenerating.
-  it('src/data/clubPackColours.js matches CLUB_PACKS / CLUB_ABBR in App.jsx', () => {
-    const app = read('src/App.jsx');
+  it('src/data/clubPackColours.js matches CLUB_PACKS / CLUB_ABBR in src/data/clubPacks.js', () => {
+    // Read the way the generator reads it: App.jsx (league-quiz rows) then the
+    // club tables, which moved out of App.jsx on 2026-10-16.
+    const app = read('src/App.jsx') + '\n' + read('src/data/clubPacks.js');
     const packMap = {};
     for (const m of app.matchAll(/name:\s*"([^"]+)"[^\n]*?color:\s*"(#[0-9A-Fa-f]{6})"/g)) packMap[m[1]] = m[2];
     expect(Object.keys(packMap).length).toBeGreaterThan(50);

@@ -1,6 +1,6 @@
 import { tierPalette, faceLabelType } from "../lib/ballIqCard.js";
 import { MIN_RATED_ANSWERS } from "../lib/scoring.js";
-import { tint, lift } from "../lib/clubColour.js";
+import { tint, lift } from "../lib/colourMath.js";
 
 /**
  * THE BALL IQ CARD — one implementation, three surfaces.

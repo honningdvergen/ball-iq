@@ -6,7 +6,7 @@
 // Footle card redraw (#11) added a kilobyte, and every deploy after it was
 // rejected. App.jsx now imports this module on demand from shareCard().
 import { APP_NAME, MIN_RATED_ANSWERS } from './scoring.js';
-import { tint as _tint } from './clubColour.js';
+import { tint as _tint } from './colourMath.js';
 import { tierPalette, faceLabelType } from './ballIqCard.js';
 import { resultVerdict } from './resultVerdict.js';
 

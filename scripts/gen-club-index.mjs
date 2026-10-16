@@ -26,16 +26,21 @@ import { buildClubRoutes } from '../src/lib/clubFaceRoute.js';
 
 const OUT = 'src/marketing/clubIndex.js';
 
-// Club colours live on CLUB_PACKS in src/App.jsx (JSX — not importable here).
-// The packs are plain data literals, so read them as text: every pack carries
+// Club colours live on CLUB_PACKS in src/data/clubPacks.js (moved out of
+// src/App.jsx on 2026-10-16 so Home stops carrying them). The packs are plain
+// data literals, so read them as text: every pack carries
 // `name: "…", icon: "…", color: "#……"` on one line. clubColour() then resolves
 // the index's display names through the same alias table the app uses, so the
 // front door's club cards get the colour the app would show, without the
 // game bundle. A club with no match gets no `h` and renders a neutral dot.
-const appSrc = readFileSync('src/App.jsx', 'utf8');
+// ⚠️ App.jsx IS STILL READ FIRST, ON PURPOSE: the same pattern has always also
+// matched the league-quiz rows there (Premier League #3D195B …), so they sit in
+// CLUB_PACK_COLOURS ahead of the packs. Reading both, in the old order, keeps
+// the generated files byte-for-byte what they were before the move.
+const appSrc = readFileSync('src/App.jsx', 'utf8') + '\n' + readFileSync('src/data/clubPacks.js', 'utf8');
 const packMap = {};
 for (const m of appSrc.matchAll(/name:\s*"([^"]+)"[^\n]*?color:\s*"(#[0-9A-Fa-f]{6})"/g)) packMap[m[1]] = m[2];
-if (Object.keys(packMap).length < 50) { console.error(`[club-index] only ${Object.keys(packMap).length} pack colours parsed from src/App.jsx — the CLUB_PACKS literal shape changed`); process.exit(1); }
+if (Object.keys(packMap).length < 50) { console.error(`[club-index] only ${Object.keys(packMap).length} pack colours parsed from src/data/clubPacks.js — the CLUB_PACKS literal shape changed`); process.exit(1); }
 
 const rows = CLUBS.map((c) => {
   const comp = competitionFor(c.club, LEAGUES);
@@ -83,16 +88,15 @@ if (before !== body) {
 
 // ── src/data/clubPackColours.js — the pack colours and codes as a MODULE ──────
 // TransferTrail.jsx paints its career ladder in club colours. In the app those
-// come from CLUB_PACKS / CLUB_ABBR in App.jsx; the static /transfer-trail/ page
-// mounts the same screen as a Vite island, and an island that imported App.jsx
-// would pull the whole monolith into its bundle. The tables cannot move out of
-// App.jsx cheaply either (CLUB_PACKS still carries legacy inline questions and
-// club-sections.test.js parses it from that file), so this script — already
-// reading the packs as text, above, on every build — writes them out as a small
-// importable module. App.jsx stays the source of truth; drift is impossible
-// because `npm run build` regenerates this before vitest runs.
+// come from CLUB_PACKS / CLUB_ABBR in src/data/clubPacks.js; the static
+// /transfer-trail/ page mounts the same screen as a Vite island, and the
+// island only needs a name -> colour and a code per pack, not every table.
+// So this script — already reading the packs as text, above, on every build —
+// writes those two out as a small importable module. clubPacks.js stays the
+// source of truth; drift is impossible because `npm run build` regenerates
+// this before vitest runs.
 const abbrBlock = appSrc.match(/export const CLUB_ABBR = \{([\s\S]*?)\n\};/);
-if (!abbrBlock) { console.error('[club-index] CLUB_ABBR literal not found in src/App.jsx — the shape changed'); process.exit(1); }
+if (!abbrBlock) { console.error('[club-index] CLUB_ABBR literal not found in src/data/clubPacks.js — the shape changed'); process.exit(1); }
 const abbrMap = {};
 for (const m of abbrBlock[1].matchAll(/(\w+):\s*"([^"]+)"/g)) abbrMap[m[1]] = m[2];
 if (Object.keys(abbrMap).length < 40) { console.error(`[club-index] only ${Object.keys(abbrMap).length} CLUB_ABBR codes parsed — the literal shape changed`); process.exit(1); }
@@ -114,10 +118,11 @@ if (Object.keys(abbrMap).length < 40) { console.error(`[club-index] only ${Objec
 // Countries whose league has no face of its own fall to Clubs, which is where
 // the read-time fold would put them anyway.
 // The route itself lives in src/lib/clubFaceRoute.js, shared with the app so the
-// two can never disagree (App.jsx builds the same map at boot — see that file).
+// two can never disagree (src/lib/clubData.js builds the same map when the
+// club tables load — see that file).
 const p2qBlock = appSrc.match(/export const CLUB_PACK_TO_QB = \{([\s\S]*?)\n\};/);
 const leaguesBlock = appSrc.match(/export const CLUB_LEAGUES = \{([\s\S]*?)\n\};/);
-if (!p2qBlock || !leaguesBlock) { console.error('[club-index] CLUB_PACK_TO_QB / CLUB_LEAGUES literal not found in src/App.jsx — the shape changed'); process.exit(1); }
+if (!p2qBlock || !leaguesBlock) { console.error('[club-index] CLUB_PACK_TO_QB / CLUB_LEAGUES literal not found in src/data/clubPacks.js — the shape changed'); process.exit(1); }
 const stripComments = (t) => t.replace(/\/\/[^\n]*/g, '');
 const packLeague = {};
 for (const m of stripComments(leaguesBlock[1]).matchAll(/(\w+):\s*"([a-z]+)"/g)) packLeague[m[1]] = m[2];
@@ -127,9 +132,9 @@ const nameToComp = buildClubRoutes(packToQb, packLeague);
 if (Object.keys(packLeague).length < 90 || Object.keys(nameToComp).length < 50) { console.error(`[club-index] club→face route parsed ${Object.keys(packLeague).length} leagues / ${Object.keys(nameToComp).length} routes — the literal shape changed`); process.exit(1); }
 const COLOURS_OUT = 'src/data/clubPackColours.js';
 const coloursBody = `// GENERATED by scripts/gen-club-index.mjs — do not edit.
-// Source of truth: CLUB_PACKS and CLUB_ABBR in src/App.jsx. Regenerated on every
-// build so the Trail ladder on /transfer-trail/ paints the same club colours the
-// app does, without the island importing App.jsx.
+// Source of truth: CLUB_PACKS and CLUB_ABBR in src/data/clubPacks.js. Regenerated
+// on every build so the Trail ladder on /transfer-trail/ paints the same club
+// colours the app does, without the island importing the app's tables.
 // CLUB_PACK_COLOURS: pack display name -> hex. CLUB_PACK_ABBR: pack id -> 3-letter code.
 // CLUB_NAME_TO_COMP: bank club name -> card face. Source: CLUB_PACK_TO_QB + CLUB_LEAGUES.
 

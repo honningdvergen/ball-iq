@@ -4,8 +4,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-// The picker left App.jsx on 2026-09-06 (E16, brick 10); the club maps stay in App.
-const src = readFileSync(join(ROOT, 'src/App.jsx'), 'utf8') + '\n' + readFileSync(join(ROOT, 'src/screens/ClubQuizScreen.jsx'), 'utf8');
+// The picker left App.jsx on 2026-09-06 (E16, brick 10); the club maps followed
+// on 2026-10-16 into src/data/clubPacks.js (lazy, off Home's eager chunk).
+const src = readFileSync(join(ROOT, 'src/data/clubPacks.js'), 'utf8') + '\n' + readFileSync(join(ROOT, 'src/screens/ClubQuizScreen.jsx'), 'utf8');
 
 const objectAfter = (marker) => {
   const i = src.indexOf(marker);

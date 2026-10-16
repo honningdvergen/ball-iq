@@ -6,7 +6,10 @@ import { Share as CapShare } from "@capacitor/share";
 import { avatarColour } from "../lib/avatarColour.js";
 import { firstLetter as firstLetterOf } from "../components/ProfilePic.jsx";
 import { resultVerdict } from "../lib/resultVerdict.js";
-import { loopEvent, shareCard, IS_NATIVE, INVITE_BASE_URL, CLUB_PACKS, LEAGUE_QUIZ_BY_CAT, PACK_TO_CLUB_SLUG, CAT_TO_QUIZ_SLUG } from "../App.jsx";
+import { loopEvent, shareCard, IS_NATIVE, INVITE_BASE_URL, LEAGUE_QUIZ_BY_CAT, CAT_TO_QUIZ_SLUG } from "../App.jsx";
+// A club result only exists after launchClubQuiz has awaited the lazy club
+// tables, so a share reads them synchronously (an await could spend the tap).
+import { clubData } from "../lib/clubData.js";
 
 // Extracted from AppInner on 2026-09-06 (review E16). Everything a share needs
 // is an input; the ask-your-name sheet's state is this hook's own.
@@ -111,7 +114,8 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     const beat = "Can you beat me? ⚽";
     // opportunity-scan #1: deep-link recipients into the app — and for
     // club/league results, into the exact quiz they were just beaten at.
-    const clubSlug = extras?.club ? PACK_TO_CLUB_SLUG[extras.club] : null;
+    const clubs = clubData();
+    const clubSlug = extras?.club ? clubs?.PACK_TO_CLUB_SLUG[extras.club] || null : null;
     const quizSlug = extras?.league ? CAT_TO_QUIZ_SLUG[extras.league] : null;
     const deepLink = clubSlug ? `/play?club=${clubSlug}` : quizSlug ? `/play?quiz=${quizSlug}` : "/play";
     const url = `balliq.app${deepLink}`;
@@ -177,7 +181,8 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       // Club/league quizzes run under mode:"classic" — surface the tribal
       // identity ("Arsenal Quiz — 9/10") instead of a generic Classic label;
       // the club/league name is the single most shareable element.
-      const packLabel = extras?.club && CLUB_PACKS[extras.club] ? `${CLUB_PACKS[extras.club].name} Quiz`
+      const pack = extras?.club ? clubs?.CLUB_PACKS[extras.club] : null;
+      const packLabel = pack ? `${pack.name} Quiz`
         : extras?.league && LEAGUE_QUIZ_BY_CAT[extras.league] ? `${LEAGUE_QUIZ_BY_CAT[extras.league].name} Quiz`
         : null;
       cardData = {

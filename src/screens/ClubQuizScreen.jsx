@@ -4,7 +4,8 @@ import { CLUB_COLOUR_ALIASES } from "../lib/clubColour.js";
 import { prefetchQuestions } from "../questions-loader.js";
 import { useModalA11y } from "../useModalA11y.js";
 import React, { useRef } from "react";
-import { CLUB_ABBR, CLUB_LEAGUES, CLUB_LEAGUE_SECTIONS, CLUB_ORDER, CLUB_PACKS, CLUB_SEARCH_NICKNAMES, clubHexToRgba, clubInitials, clubReadableText, haptic, norm } from "../App.jsx";
+import { clubHexToRgba, clubInitials, clubReadableText, haptic, norm } from "../App.jsx";
+import { CLUB_ABBR, CLUB_LEAGUES, CLUB_LEAGUE_SECTIONS, CLUB_ORDER, CLUB_PACKS, CLUB_SEARCH_NICKNAMES } from "../data/clubPacks.js";
 
 export function ClubQuizScreen({ onStart, onBack }) {
   const [showProModal, setShowProModal] = React.useState(false);

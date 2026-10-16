@@ -9,7 +9,8 @@ import { useProfilePhotos } from '../lib/profilePhotos.js';
 import { useAuth } from '../useAuth.jsx';
 import { gameEverStarted } from '../lib/mpRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName, mpSetPlayerReady, mpStartNextRound } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, topicMeta, TopicPickerSheet, setGuestDisplayName, loopEvent} from '../App.jsx';
+import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, setGuestDisplayName, loopEvent} from '../App.jsx';
+import { topicMeta, TopicPickerSheet } from '../components/TopicPickerSheet.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 import { ProfilePic } from '../components/ProfilePic.jsx';
 
@@ -550,7 +551,7 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
   );
 }
 
-// topicMeta + TopicPickerSheet moved to App.jsx (shared with LocalSetup).
+// topicMeta + TopicPickerSheet live in components/TopicPickerSheet.jsx (shared with LocalSetup).
 
 function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, pack, setPack, scoringMode, onSetScoringMode, onPlayDaily }) {
   const photos = useProfilePhotos(useMemo(() => (players || []).map(p => p.user_id), [players]));

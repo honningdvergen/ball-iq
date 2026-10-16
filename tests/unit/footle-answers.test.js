@@ -25,13 +25,18 @@ describe('Footle answer pool', () => {
   // literally unwinnable — anyone who knew the player typed the spelling the
   // app itself shows, and was marked wrong. Both scored 0 wins in prod.
   it('every puzzle key matches the surname the app displays', () => {
-    const src = readFileSync(resolve(__dirname, '../../src/lib/wordle.js'), 'utf8')
+    // The reveal table moved out of wordle.js on 2026-10-16 (Home budget).
+    const src = readFileSync(resolve(__dirname, '../../src/lib/wordleFullNames.js'), 'utf8')
     const pattern = /^ {2}([A-Z]+):\s*\["([^"]*)",\s*"([^"]+)"\]/gm
     const mismatches = []
+    let seen = 0
     for (const [, key, , surname] of src.matchAll(pattern)) {
+      seen++
       if (INTENTIONAL_MISMATCHES.has(key)) continue
       if (norm(surname) !== key) mismatches.push(`${key} displays "${surname}"`)
     }
+    // A moved or reshaped table must fail here, not pass on zero rows.
+    expect(seen).toBeGreaterThan(400)
     expect(mismatches).toEqual([])
   })
 

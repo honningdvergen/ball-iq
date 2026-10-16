@@ -126,7 +126,9 @@ four defect classes that per-question verifiers structurally CANNOT see:
 
 - `node scripts/add-questions.mjs <club>.json` — per-question `cat`/`club` ride
   the JSON; ids are sha1-stable; dedup is automatic.
-- **App.jsx ×6** — not five. CLUB_PACK_TO_QB, CLUB_LEAGUES, **CLUB_ORDER**,
+- **src/data/clubPacks.js ×6** — not five, and NOT App.jsx any more (moved
+  2026-10-16, lazy, off Home's eager budget; never import it from App.jsx).
+  CLUB_PACK_TO_QB, CLUB_LEAGUES, **CLUB_ORDER**,
   CLUB_ABBR, CLUB_SLUG_TO_PACK, CLUB_PACKS (`{name, icon, color, questions: []}`).
   ⚠️ CLUB_ORDER was missing from this list until wave P. It is a flat
   league→array map and an unlisted club falls to `?? 1e6`, sorting silently to

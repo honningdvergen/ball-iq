@@ -8,7 +8,7 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, LEAGUE_FACES, pickLeagueFace, rawAnswered } from "../lib/ballIqCard.js";
-import { lift } from "../lib/clubColour.js";
+import { lift } from "../lib/colourMath.js";
 import { CALIBRATION } from "../data/cardCalibration.js";
 
 // ⚠️ THE RECALIBRATION NOTE MUST DERIVE FROM THE CALIBRATION IT DESCRIBES.

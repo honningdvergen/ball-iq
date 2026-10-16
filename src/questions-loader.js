@@ -41,6 +41,8 @@
 //
 // The index preserves QB's row ORDER, so an index position maps to the same
 // question. Do not sort it: the Daily 7 shuffles by array position.
+import { loadClubData } from './lib/clubData.js';
+
 let idxCache = null;
 let idxInFlight = null;
 
@@ -85,7 +87,13 @@ export function loadQuestions() {
   // accessor that degraded to () => [] until a fetch landed would silently
   // reinstate the 26.9%-of-sessions answer leak this table exists to prevent —
   // no error, no log, just easy points.
-  inFlight = Promise.all([import('./questions.js'), import('./questionConflicts.js')]).then(([mod, conflicts]) => {
+  //
+  // ⚠️ THE CLUB TABLES RIDE WITH IT TOO (2026-10-16), for the same reason.
+  // They left the eager chunk (src/data/clubPacks.js), and loading them is
+  // what registers the Ball IQ card's club routes. Every bank question carries
+  // its `club`, so "I have questions but the card cannot route their club
+  // answers" must be unrepresentable as well: no bank without the routes.
+  inFlight = Promise.all([import('./questions.js'), import('./questionConflicts.js'), loadClubData()]).then(([mod, conflicts]) => {
     const QB = mod.QB;
     const TF_STATEMENTS = mod.TF_STATEMENTS;
     const conflictsWith = conflicts.conflictsWith;

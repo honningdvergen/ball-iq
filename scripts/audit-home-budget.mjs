@@ -62,7 +62,12 @@ const BUDGET_KB = 909; // Target is still 600; the gap is Supabase (211 KB stati
 // import()s it and nothing on Home may.
 // draftSquads joined 2026-10-10, the day it was created: the Draft screen
 // import()s it (335 KB) and nothing on Home may.
-const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours|top10Lists|draftSquads)-[A-Za-z0-9_-]+\.js$/;
+// clubPacks and clubColour joined 2026-10-16, the day they came off: the six
+// per-club maps (CLUB_PACKS and friends, ~25 KB) left App.jsx for
+// src/data/clubPacks.js, reached only by import() through lib/clubData.js, and
+// the club alias/colour tables stayed in lib/clubColour.js while the colour
+// maths Home needs moved to lib/colourMath.js. Both grow with every club wave.
+const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours|top10Lists|draftSquads|clubPacks|clubColour)-[A-Za-z0-9_-]+\.js$/;
 const HOME_CHUNKS = /^(main|GameRoot|HomeScreen)-[A-Za-z0-9_-]+\.js$/;
 
 const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');

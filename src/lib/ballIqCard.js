@@ -1,6 +1,6 @@
 import { MIN_RATED_ANSWERS } from './scoring.js';
 import { CALIBRATION } from '../data/cardCalibration.js';
-import { tint, lift, inkOn } from './clubColour.js';
+import { tint, lift, inkOn } from './colourMath.js';
 // Ball IQ player-rating card — six "competition" face stats + a compiled overall
 // + a Bronze / Silver / Gold tier.
 //

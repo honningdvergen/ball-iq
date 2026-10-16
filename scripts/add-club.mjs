@@ -76,16 +76,17 @@ function edit(file, find, make, label) {
   edits.push(`  ✓ ${label}`);
 }
 
-const A = 'src/App.jsx';
+// The six club maps moved out of src/App.jsx on 2026-10-16 (Home budget).
+const A = 'src/data/clubPacks.js';
 const { pack, qbClub, slug, name, league, abbr, colour, icon } = cfg;
 
-// ── 1-6: the six App.jsx maps ────────────────────────────────────────────────
+// ── 1-6: the six club maps ────────────────────────────────────────────────────
 edit(A, `${pack}: "${qbClub}"`, (s) => s.replace(/(export const CLUB_PACK_TO_QB = \{\n)/, `$1  ${pack}: "${qbClub}",\n`), 'CLUB_PACK_TO_QB');
 edit(A, `${pack}: "${league}"`, (s) => s.replace(/(export const CLUB_LEAGUES = \{\n)/, `$1  ${pack}: "${league}",\n`), 'CLUB_LEAGUES');
 // ⚠️ CLUB_ORDER is a flat league->array map and an unlisted club falls to ?? 1e6,
 // sorting silently to the end of its section — no error, just a club nobody scrolls to.
 // ⚠️ THE CHECK MUST LOOK INSIDE CLUB_ORDER, NOT THE WHOLE FILE. Matching the
-// pack name anywhere in App.jsx meant the entry this script had just written to
+// pack name anywhere in the file meant the entry this script had just written to
 // CLUB_PACK_TO_QB counted as proof, so CLUB_ORDER was reported "already wired"
 // and skipped — and that is the ONE map whose absence is silent: an unlisted
 // club falls to `?? 1e6` and sorts to the end of its section with no error.

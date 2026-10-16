@@ -1,7 +1,6 @@
 import './app.css';
 import React, { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo } from "react";
 import * as Sentry from '@sentry/react';
-import { CLUB_COLOUR_ALIASES, lift as _lift } from './lib/clubColour.js';
 import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
@@ -42,8 +41,10 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds, faceAbbrForCat, setClubRoutes } from './lib/ballIqCard.js';
-import { buildClubRoutes } from './lib/clubFaceRoute.js';
+import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds, faceAbbrForCat } from './lib/ballIqCard.js';
+// The club tables are LAZY (src/data/clubPacks.js); this is the only way in.
+import { loadClubData, useClubData } from './lib/clubData.js';
+import { CLUB_INDEX } from './marketing/clubIndex.js';
 import { liveStreak, localDayNow, shieldsAvailable } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { isTop10Live, loadTop10Day } from './lib/top10.js';
@@ -65,7 +66,6 @@ import { dailyTierCopy, scoreTagline } from './lib/resultsCopy.js';
 import { stumpLink, shareStumpText, shareSenderName } from './lib/stump.js';
 import {
   WORDLE_PLAYERS, WORDLE_ANCHOR_DAY, WORDLE_ANCHOR_IDX, WORDLE_STRIDE,
-  WORDLE_FULL_NAMES,
   getWordleDayIndex, getWordleAnswerForDayIndex, getWordleAnswer,
   gradeWordleGuess, computeFootleStreak, getFootleNumber,
 } from './lib/wordle.js';
@@ -825,239 +825,18 @@ const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA"
 
 
 
-// ─── CLUB QUIZ PACKS (Pro feature — starter content) ────────────────────────
-// Maps each club-pack key to its canonical `club` value in the question bank, so
-// the club quiz serves our fact-checked, hint-bearing QB questions whenever we
-// have >=10 for that club — auto-upgrading each club as content is generated —
-// and falls back to the pack's starter questions otherwise.
-export const CLUB_PACK_TO_QB = {
-  Fluminense: "Fluminense",
-  Botafogo: "Botafogo",
-  Vasco: "Vasco da Gama",
-  AtleticoMineiro: "Atlético Mineiro",
-  Tigres: "Tigres UANL",
-  Monterrey: "Monterrey",
-  Pumas: "Pumas UNAM",
-  Zamalek: "Zamalek",
-  AlAhly: "Al Ahly",
-  AlNassr: "Al Nassr",
-  AlHilal: "Al Hilal",
-  Preston: "Preston North End",
-  Millwall: "Millwall",
-  Bolton: "Bolton Wanderers",
-  Charlton: "Charlton Athletic",
-  BristolCity: "Bristol City",
-  Lincoln: "Lincoln City",
-  Hearts: "Heart of Midlothian",
-  Hibernian: "Hibernian",
-  Bologna: "Bologna",
-  Genoa: "Genoa",
-  Lille: "Lille",
-  Lens: "RC Lens",
-  Koln: "1. FC Köln",
-  Espanyol: "Espanyol",
-  Rosenborg: "Rosenborg",
-  Bodo: "Bodø/Glimt",
-  Celta: "Celta Vigo",
-  AlIttihad: "Al Ittihad",
-  LAGalaxy: "LA Galaxy",
-  Copenhagen: "FC Copenhagen",
-  Newells: "Newell's Old Boys",
-  Braga: "Braga",
-  CruzAzul: "Cruz Azul",
-  Guadalajara: "Guadalajara",
-  ClubAmerica: "Club América",
-  SanLorenzo: "San Lorenzo",
-  Independiente: "Independiente",
-  Racing: "Racing Club",
-  // ── Wave O (2026-08-23): ten clubs that already had a live /quiz/<slug>/
-  // page and 15-20 verified bank rows, but no entry in ANY of these four maps.
-  // The landing pages therefore shipped a "Play the full <club> quiz →" button
-  // that resolved to nothing and dumped the reader on Home with ?club= already
-  // stripped from the URL — 60 dead links across 10 pages, measured against
-  // the built output. They were never missing content, only missing wiring.
-  // Bank names are the canonical long forms (see club-alias.mjs).
-  Birmingham: "Birmingham City", Cardiff: "Cardiff City", Derby: "Derby County",
-  Norwich: "Norwich City", Portsmouth: "Portsmouth", SheffWed: "Sheffield Wednesday",
-  Middlesbrough: "Middlesbrough", WestBrom: "West Brom", SheffUtd: "Sheffield United", Blackburn: "Blackburn Rovers",
-  Watford: "Watford", QPR: "Queens Park Rangers",
-  Southampton: "Southampton", Stoke: "Stoke City", Swansea: "Swansea City",
-  Wrexham: "Wrexham",
-  Leipzig: "RB Leipzig",
-  Atalanta: "Atalanta",
-  Boca: "Boca Juniors",
-  River: "River Plate",
-  Flamengo: "Flamengo",
-  Palmeiras: "Palmeiras",
-  Corinthians: "Corinthians",
-  SaoPaulo: "São Paulo", Gremio: "Grêmio", Internacional: "Internacional", Cruzeiro: "Cruzeiro",
-  Arsenal: "Arsenal", Liverpool: "Liverpool", ManUtd: "Manchester United", ManCity: "Manchester City",
-  Chelsea: "Chelsea", Tottenham: "Tottenham Hotspur", Newcastle: "Newcastle United",
-  Barcelona: "Barcelona", RealMadrid: "Real Madrid", BayernMunich: "Bayern Munich",
-  Juventus: "Juventus", AcMilan: "AC Milan", Atletico: "Atlético Madrid", Dortmund: "Borussia Dortmund",
-  PSG: "Paris Saint-Germain", InterMilan: "Inter Milan", Ajax: "Ajax",
-  Napoli: "Napoli", Galatasaray: "Galatasaray", Benfica: "Benfica",
-  Fenerbahce: "Fenerbahçe", Porto: "Porto", Roma: "Roma",
-  Celtic: "Celtic", Rangers: "Rangers", Marseille: "Marseille",
-  Feyenoord: "Feyenoord", PSV: "PSV", Anderlecht: "Anderlecht",
-  Besiktas: "Besiktas", Trabzonspor: "Trabzonspor", ClubBrugge: "Club Brugge",
-  RedStar: "Red Star Belgrade", DinamoZagreb: "Dinamo Zagreb", Hajduk: "Hajduk Split", Basel: "Basel",
-  Forest: "Nottingham Forest", Villa: "Aston Villa", Everton: "Everton",
-  Leeds: "Leeds United", WestHam: "West Ham", Leicester: "Leicester City", Olympiacos: "Olympiacos", Panathinaikos: "Panathinaikos",
-  Sunderland: "Sunderland", Ipswich: "Ipswich Town", Palace: "Crystal Palace", Fulham: "Fulham", Brighton: "Brighton",
-  Bournemouth: "Bournemouth", Brentford: "Brentford", Burnley: "Burnley", Wolves: "Wolves",
-  Coventry: "Coventry City", HullCity: "Hull City",
-  Athletic: "Athletic Bilbao", Sevilla: "Sevilla", Betis: "Real Betis",
-  // Wave N — two at a time from here on, so the curate step actually gets read.
-  Santos: "Santos", RealSociedad: "Real Sociedad",
-  Schalke: "Schalke 04", Hamburg: "Hamburger SV", Frankfurt: "Eintracht Frankfurt",
-  // Wave 1, 16 Oct 2026 (the 4 Oct wave table).
-  Villarreal: "Villarreal", Werder: "Werder Bremen", Stuttgart: "VfB Stuttgart",
-  Gladbach: "Borussia Mönchengladbach", Aberdeen: "Aberdeen",
-  Fiorentina: "Fiorentina", Lazio: "Lazio", Torino: "Torino",
-  Sporting: "Sporting CP", SaintEtienne: "Saint-Étienne",
-  Valencia: "Valencia", Leverkusen: "Bayer Leverkusen", Lyon: "Olympique Lyonnais",
-  Parma: "Parma", Monaco: "AS Monaco",
-};
-
-// Club -> COUNTRY, and the order they appear inside it.
+// ─── CLUB QUIZ PACKS ─────────────────────────────────────────────────────────
+// The per-club tables (CLUB_PACKS, CLUB_PACK_TO_QB, CLUB_LEAGUES, CLUB_ORDER,
+// CLUB_LEAGUE_SECTIONS, CLUB_ABBR, CLUB_SLUG_TO_PACK, PACK_TO_CLUB_SLUG,
+// CLUB_SEARCH_NICKNAMES) moved to src/data/clubPacks.js on 2026-10-16 and load
+// on demand through lib/clubData.js: ~25 KB that Home blocked on and does not
+// paint. Read them with `await loadClubData()` in async paths, or the `clubs`
+// state in AppInner at render. Never import that file statically here.
 //
-// ⚠️ ORDER IS DELIBERATE AND LOAD-BEARING. The picker previews only the
-// first CLUB_PREVIEW (2) clubs per section, so whatever leads each country is
-// effectively the whole section until someone taps "Show all". It used to be
-// CLUB_PACKS insertion order, which is why adding ten clubs on 2026-08-23 put
-// Birmingham and Cardiff above Arsenal and Liverpool — the newest rows, not
-// the ones anyone came looking for. Ordered by who a fan opening this screen
-// is most likely to want; adding a club appends rather than displaces.
-export const CLUB_LEAGUES = {
-  Fluminense: "brazil",
-  Botafogo: "brazil",
-  Vasco: "brazil",
-  AtleticoMineiro: "brazil",
-  Tigres: "mexico",
-  Monterrey: "mexico",
-  Pumas: "mexico",
-  Zamalek: "other",
-  AlAhly: "other",
-  AlNassr: "other",
-  AlHilal: "other",
-  Preston: "england",
-  Millwall: "england",
-  Bolton: "england",
-  Charlton: "england",
-  BristolCity: "england",
-  Lincoln: "england",
-  Hearts: "scotland",
-  Hibernian: "scotland",
-  Bologna: "italy",
-  Genoa: "italy",
-  Lille: "france",
-  Lens: "france",
-  Koln: "germany",
-  Espanyol: "spain",
-  Rosenborg: "other",
-  Bodo: "other",
-  Celta: "spain",
-  AlIttihad: "other",
-  LAGalaxy: "other",
-  Copenhagen: "other",
-  Newells: "argentina",
-  Braga: "portugal",
-  CruzAzul: "mexico",
-  Guadalajara: "mexico",
-  ClubAmerica: "mexico",
-  SanLorenzo: "argentina",
-  Independiente: "argentina",
-  Racing: "argentina",
-  Arsenal: "england", ManUtd: "england", Liverpool: "england", ManCity: "england",
-  Chelsea: "england", Tottenham: "england", Newcastle: "england", Everton: "england",
-  Villa: "england", WestHam: "england", Forest: "england", Leeds: "england", Leicester: "england",
-  // ⚠️ EXPLICIT, not left to fall through. `CLUB_LEAGUES[key] || "other"`
-  // at the call site made an entry here look optional — it is not:
-  // club-sections.test.js asserts every CLUB_PACKS key has a country, and
-  // Greece has no section of its own, so "other" ("More clubs") is the
-  // deliberate home, same as Red Star and Basel.
-  Olympiacos: "other",
-  Panathinaikos: "other",
-  Palace: "england", Fulham: "england", Brighton: "england", Bournemouth: "england",
-  Brentford: "england", Sunderland: "england", Ipswich: "england", Wolves: "england",
-  Burnley: "england", Southampton: "england", Norwich: "england", Derby: "england",
-  Middlesbrough: "england", WestBrom: "england", SheffUtd: "england", Blackburn: "england",
-  Watford: "england", QPR: "england",
-  Stoke: "england", Birmingham: "england", SheffWed: "england", Coventry: "england",
-  HullCity: "england", Portsmouth: "england", Cardiff: "england", Swansea: "england",
-  Wrexham: "england",
-  RealMadrid: "spain", Barcelona: "spain", Atletico: "spain", Sevilla: "spain",
-  Valencia: "spain", Athletic: "spain", Betis: "spain", RealSociedad: "spain",
-  Juventus: "italy", AcMilan: "italy", InterMilan: "italy", Napoli: "italy",
-  Roma: "italy", Lazio: "italy", Atalanta: "italy", Fiorentina: "italy",
-  Torino: "italy", Parma: "italy",
-  BayernMunich: "germany", Dortmund: "germany", Leverkusen: "germany", Leipzig: "germany",
-  Schalke: "germany", Hamburg: "germany", Frankfurt: "germany",
-  Werder: "germany", Stuttgart: "germany", Villarreal: "spain", Gladbach: "germany",
-  PSG: "france", Marseille: "france", Lyon: "france", Monaco: "france",
-  SaintEtienne: "france",
-  Benfica: "portugal", Porto: "portugal", Sporting: "portugal",
-  Ajax: "netherlands", PSV: "netherlands", Feyenoord: "netherlands",
-  Galatasaray: "turkiye", Fenerbahce: "turkiye", Besiktas: "turkiye", Trabzonspor: "turkiye",
-  Celtic: "scotland", Rangers: "scotland", Aberdeen: "scotland",
-  Anderlecht: "belgium", ClubBrugge: "belgium",
-  DinamoZagreb: "croatia", Hajduk: "croatia",
-  Flamengo: "brazil", Palmeiras: "brazil", Corinthians: "brazil", Santos: "brazil",
-  SaoPaulo: "brazil", Gremio: "brazil", Internacional: "brazil", Cruzeiro: "brazil",
-  Boca: "argentina", River: "argentina",
-  RedStar: "other", Basel: "other",
-};
-// ⚠️ THE CARD'S CLUB ROUTES ARE REGISTERED HERE, AT MODULE LOAD — do not move
-// this into an effect or behind an import(). ballIqCard.js files a club answer
-// under its league's face and must have the map before any answer can exist;
-// building it from the two tables above costs Home nothing, where importing the
-// generated copy cost 12 KB of blocking JS and four days of failed deploys
-// (2026-09-21 — see lib/clubFaceRoute.js). tests/unit/club-routes-registered
-// pins both this line and its parity with the generated table.
-setClubRoutes(buildClubRoutes(CLUB_PACK_TO_QB, CLUB_LEAGUES));
-// Position within a country, from the order above. Unknown keys sort last so a
-// club added to CLUB_PACKS but not here still renders instead of vanishing.
-export const CLUB_ORDER = Object.fromEntries(Object.values({"england": ["Arsenal", "ManUtd", "Liverpool", "ManCity", "Chelsea", "Tottenham", "Newcastle", "Everton", "Villa", "WestHam", "Forest", "Leeds", "Palace", "Fulham", "Brighton", "Bournemouth", "Brentford", "Sunderland", "Ipswich", "Wolves", "Burnley", "Southampton", "Leicester", "Norwich", "Derby", "Stoke", "Birmingham", "SheffWed", "Coventry", "HullCity", "Portsmouth", "Cardiff", "Swansea", "Wrexham", "Middlesbrough", "WestBrom", "SheffUtd", "Blackburn", "Watford", "QPR", "Millwall", "Preston", "Bolton", "Charlton", "BristolCity", "Lincoln"], "spain": ["RealMadrid", "Barcelona", "Atletico", "Sevilla", "Valencia", "Villarreal", "Athletic", "Betis", "RealSociedad", "Espanyol", "Celta"], "italy": ["Juventus", "AcMilan", "InterMilan", "Napoli", "Roma", "Lazio", "Atalanta", "Fiorentina", "Torino", "Parma", "Bologna", "Genoa"], "germany": ["BayernMunich", "Dortmund", "Leverkusen", "Leipzig", "Frankfurt", "Gladbach", "Stuttgart", "Werder", "Schalke", "Hamburg", "Koln"], "france": ["PSG", "Marseille", "Lyon", "Monaco", "SaintEtienne", "Lille", "Lens"], "portugal": ["Benfica", "Porto", "Sporting", "Braga"], "netherlands": ["Ajax", "PSV", "Feyenoord"], "turkiye": ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"], "scotland": ["Celtic", "Rangers", "Aberdeen", "Hearts", "Hibernian"], "belgium": ["Anderlecht", "ClubBrugge"], "croatia": ["DinamoZagreb", "Hajduk"], "brazil": ["Flamengo", "Palmeiras", "Corinthians", "Santos", "SaoPaulo", "Gremio", "Internacional", "Cruzeiro", "AtleticoMineiro", "Vasco", "Botafogo", "Fluminense"], "argentina": ["Boca", "River", "Racing", "Independiente", "SanLorenzo", "Newells"], "mexico": ["ClubAmerica", "Guadalajara", "CruzAzul", "Pumas", "Monterrey", "Tigres"], "other": ["RedStar", "Basel", "Olympiacos", "Panathinaikos", "AlHilal", "AlNassr", "AlIttihad", "AlAhly", "Zamalek", "Rosenborg", "Bodo", "Copenhagen", "LAGalaxy"]}).flat().map((k, i) => [k, i]));
-export const CLUB_LEAGUE_SECTIONS = [
-  // ── SECTIONS ARE COUNTRIES, NOT LEAGUES ────────────────────────────────────
-  // Alex, 2026-08-23, on seeing Birmingham and Cardiff heading the Premier
-  // League list: "they are not even in the premier league? ... maybe we should
-  // categorize by country instead?"
-  //
-  // Right on both counts. League membership changes every May, so a league
-  // label is a fact with an expiry date — which is exactly how this list ended
-  // up asserting that Birmingham and Cardiff are Premier League clubs, and why
-  // Burnley and Wolves sat under "pl" beneath a comment admitting they are in
-  // the Championship. A club's COUNTRY does not change, so these labels cannot
-  // rot and never need re-verifying against a season we cannot see.
-  //
-  // ⚠️ TWO CLUBS DO NOT PLAY IN THEIR OWN COUNTRY'S LEAGUE, and pretending
-  // otherwise would trade one wrong label for another:
-  //   · Cardiff, Swansea and Wrexham are WELSH clubs in the English pyramid —
-  //     hence "England & Wales" rather than "England". Calling Wrexham English
-  //     is exactly the kind of error this change exists to stop.
-  //   · Monaco is Monégasque, not French. It sits under France because it
-  //     plays in Ligue 1 and every fan discusses it as a Ligue 1 club; the
-  //     alternative is a section of one, which serves nobody.
-  { key: "england", label: "England & Wales" },
-  { key: "spain", label: "Spain" },
-  { key: "italy", label: "Italy" },
-  { key: "germany", label: "Germany" },
-  { key: "france", label: "France" },
-  { key: "portugal", label: "Portugal" },
-  { key: "netherlands", label: "Netherlands" },
-  { key: "turkiye", label: "Türkiye" },
-  { key: "scotland", label: "Scotland" },
-  { key: "belgium", label: "Belgium" },
-  { key: "croatia", label: "Croatia" },
-  { key: "brazil", label: "Brazil" },
-  { key: "argentina", label: "Argentina" },
-  { key: "mexico", label: "Mexico" },
-  // Same 2+ rule the old list used: a country gets a section once it has two
-  // clubs. Red Star (Serbia) and Basel (Switzerland) are still singletons.
-  { key: "other", label: "More clubs" },
-];
+// Started now, at module load, so it is in flight while Home paints and has
+// landed (registering the card's club routes) long before anyone can tap a
+// club. Nothing waits on this call; a failure is retried by the next caller.
+loadClubData().catch(() => {});
 
 // Colour-code helpers for the club rows (no crests — the club colour IS the identity).
 export function clubInitials(name) {
@@ -1075,166 +854,9 @@ export function clubReadableText(hex) {
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "var(--bg)" : "#ffffff";
 }
 
-// Broadcast/club-recognised short codes for the row swatches (MUN, FCB, BVB, …),
-// not raw initials. Falls back to clubInitials() for any unmapped key.
-export const CLUB_ABBR = {
-  Fluminense: "FLU",
-  Botafogo: "BOT",
-  Vasco: "VAS",
-  AtleticoMineiro: "CAM",
-  Tigres: "TIG",
-  Monterrey: "MTY",
-  Pumas: "PUM",
-  Zamalek: "ZAM",
-  AlAhly: "AHL",
-  AlNassr: "NAS",
-  AlHilal: "HIL",
-  Preston: "PNE",
-  Millwall: "MIL",
-  Bolton: "BOL",
-  Charlton: "CHA",
-  BristolCity: "BRC",
-  Lincoln: "LIN",
-  Hearts: "HEA",
-  Hibernian: "HIB",
-  Bologna: "BLG",
-  Genoa: "GEN",
-  Lille: "LIL",
-  Lens: "LEN",
-  Koln: "KOE",
-  Espanyol: "ESP",
-  Rosenborg: "ROS",
-  Bodo: "BOD",
-  Celta: "CLV",
-  AlIttihad: "ITT",
-  LAGalaxy: "LAG",
-  Copenhagen: "FCK",
-  Newells: "NOB",
-  Braga: "SCB",
-  CruzAzul: "CAZ",
-  Guadalajara: "GDL",
-  ClubAmerica: "AME",
-  SanLorenzo: "SLO",
-  Independiente: "IND",
-  Racing: "RAC",
-  Leipzig: "RBL",
-  Atalanta: "ATA",
-  Boca: "BOC",
-  River: "RIV",
-  Flamengo: "FLA",
-  Palmeiras: "PAL",
-  Corinthians: "COR",
-  Santos: "SAN", RealSociedad: "RSO",
-  // SCI, not INT — Inter Milan already holds INT, and this map has no duplicates.
-  SaoPaulo: "SAO", Gremio: "GRE", Internacional: "SCI", Cruzeiro: "CRU",
-  Arsenal: "ARS", Liverpool: "LIV", ManUtd: "MUN", ManCity: "MCI", Chelsea: "CHE", Tottenham: "TOT", Newcastle: "NEW",
-  Barcelona: "FCB", RealMadrid: "RMA", Atletico: "ATM",
-  Juventus: "JUV", AcMilan: "ACM", InterMilan: "INT",
-  BayernMunich: "BAY", Dortmund: "BVB", Frankfurt: "SGE",
-  Werder: "SVW", Stuttgart: "VFB", Villarreal: "VIL", Gladbach: "BMG", Aberdeen: "ABE",
-  PSG: "PSG", Ajax: "AJA",
-  Napoli: "NAP", Galatasaray: "GAL", Benfica: "SLB",
-  Fenerbahce: "FEN", Porto: "POR", Roma: "ROM",
-  Celtic: "CEL", Rangers: "RAN", Marseille: "OM",
-  Feyenoord: "FEY", PSV: "PSV", Anderlecht: "RSCA",
-  Besiktas: "BJK", Trabzonspor: "TS", ClubBrugge: "CLU",
-  RedStar: "CZ", DinamoZagreb: "DIN", Hajduk: "HAJ", Basel: "BAS",
-  Forest: "NFO", Villa: "AVL", Everton: "EVE", Leeds: "LEE", WestHam: "WHU", Leicester: "LEI", Olympiacos: "OLY", Panathinaikos: "PAO",
-  Sunderland: "SUN", Ipswich: "IPS", Palace: "CRY", Fulham: "FUL", Brighton: "BHA",
-  Middlesbrough: "MID", WestBrom: "WBA", SheffUtd: "SHU", Blackburn: "BLA",
-  Watford: "WAT", QPR: "QPR",
-  Bournemouth: "BOU", Brentford: "BRE", Burnley: "BUR", Wolves: "WOL",
-  Coventry: "COV", HullCity: "HUL",
-  Athletic: "ATH", Sevilla: "SEV", Betis: "BET", Schalke: "S04", Hamburg: "HSV",
-  Fiorentina: "FIO", Lazio: "LAZ", Torino: "TOR", Sporting: "SCP", SaintEtienne: "ASSE",
-  Valencia: "VAL", Leverkusen: "B04", Lyon: "OL", Parma: "PAR", Monaco: "ASM",
-};
-
-// SEO deep-links: /play?club=<slug> and /play?quiz=<league-slug> land a
-// searcher IN the quiz they Googled (the club/league landing pages' CTAs emit
-// these — see scripts/gen-seo-pages.mjs ctaBlock). Slugs match scripts/seo.
-const CLUB_SLUG_TO_PACK = {
-  "fluminense": "Fluminense",
-  "botafogo": "Botafogo",
-  "vasco-da-gama": "Vasco",
-  "atletico-mineiro": "AtleticoMineiro",
-  "tigres-uanl": "Tigres",
-  "monterrey": "Monterrey",
-  "pumas-unam": "Pumas",
-  "zamalek": "Zamalek",
-  "al-ahly": "AlAhly",
-  "al-nassr": "AlNassr",
-  "al-hilal": "AlHilal",
-  "preston-north-end": "Preston",
-  "millwall": "Millwall",
-  "bolton-wanderers": "Bolton",
-  "charlton-athletic": "Charlton",
-  "bristol-city": "BristolCity",
-  "lincoln-city": "Lincoln",
-  "hearts": "Hearts",
-  "hibernian": "Hibernian",
-  "bologna": "Bologna",
-  "genoa": "Genoa",
-  "lille": "Lille",
-  "rc-lens": "Lens",
-  "fc-koln": "Koln",
-  "espanyol": "Espanyol",
-  "rosenborg": "Rosenborg",
-  "bodo-glimt": "Bodo",
-  "celta-vigo": "Celta",
-  "al-ittihad": "AlIttihad",
-  "la-galaxy": "LAGalaxy",
-  "fc-copenhagen": "Copenhagen",
-  "newells-old-boys": "Newells",
-  "braga": "Braga",
-  "cruz-azul": "CruzAzul",
-  "chivas": "Guadalajara",
-  "club-america": "ClubAmerica",
-  "san-lorenzo": "SanLorenzo",
-  "independiente": "Independiente",
-  "racing-club": "Racing",
-  // Wave O — the ten slugs whose landing pages linked here and found nothing.
-  "birmingham-city": "Birmingham", "cardiff-city": "Cardiff",
-  "derby-county": "Derby", "norwich-city": "Norwich", "portsmouth": "Portsmouth",
-  "middlesbrough": "Middlesbrough", "west-brom": "WestBrom", "sheffield-united": "SheffUtd", "blackburn-rovers": "Blackburn",
-  "watford": "Watford", "queens-park-rangers": "QPR", "eintracht-frankfurt": "Frankfurt",
-  "villarreal": "Villarreal", "werder-bremen": "Werder", "vfb-stuttgart": "Stuttgart",
-  "borussia-monchengladbach": "Gladbach", "aberdeen": "Aberdeen",
-  "sheffield-wednesday": "SheffWed", "southampton": "Southampton",
-  "stoke-city": "Stoke", "swansea-city": "Swansea", "wrexham": "Wrexham",
-  "rb-leipzig": "Leipzig",
-  "atalanta": "Atalanta",
-  "boca-juniors": "Boca",
-  "river-plate": "River",
-  "flamengo": "Flamengo",
-  "palmeiras": "Palmeiras",
-  "corinthians": "Corinthians",
-  "santos": "Santos", "real-sociedad": "RealSociedad",
-  "sao-paulo": "SaoPaulo", "gremio": "Gremio", "internacional": "Internacional", "cruzeiro": "Cruzeiro",
-  "arsenal": "Arsenal", "liverpool": "Liverpool", "manchester-united": "ManUtd",
-  "manchester-city": "ManCity", "chelsea": "Chelsea", "tottenham": "Tottenham",
-  "newcastle": "Newcastle", "barcelona": "Barcelona", "real-madrid": "RealMadrid",
-  "atletico-madrid": "Atletico", "bayern-munich": "BayernMunich",
-  "borussia-dortmund": "Dortmund", "psg": "PSG", "inter-milan": "InterMilan",
-  "juventus": "Juventus", "ac-milan": "AcMilan", "ajax": "Ajax",
-  "napoli": "Napoli", "galatasaray": "Galatasaray", "benfica": "Benfica",
-  "fenerbahce": "Fenerbahce", "porto": "Porto", "roma": "Roma",
-  "celtic": "Celtic", "rangers": "Rangers", "marseille": "Marseille",
-  "feyenoord": "Feyenoord", "psv": "PSV", "anderlecht": "Anderlecht",
-  "besiktas": "Besiktas", "trabzonspor": "Trabzonspor", "club-brugge": "ClubBrugge",
-  "red-star-belgrade": "RedStar", "dinamo-zagreb": "DinamoZagreb", "hajduk-split": "Hajduk", "basel": "Basel",
-  "nottingham-forest": "Forest", "aston-villa": "Villa", "everton": "Everton",
-  "leeds-united": "Leeds", "west-ham": "WestHam", "leicester-city": "Leicester", "olympiacos": "Olympiacos", "panathinaikos": "Panathinaikos",
-  "sunderland": "Sunderland", "ipswich": "Ipswich", "crystal-palace": "Palace", "fulham": "Fulham", "brighton": "Brighton",
-  "bournemouth": "Bournemouth", "brentford": "Brentford", "burnley": "Burnley", "wolves": "Wolves",
-  "coventry": "Coventry", "hull-city": "HullCity",
-  "athletic-bilbao": "Athletic", "sevilla": "Sevilla", "real-betis": "Betis",
-  "schalke-04": "Schalke", "hamburger-sv": "Hamburg",
-  "fiorentina": "Fiorentina", "lazio": "Lazio", "torino": "Torino",
-  "sporting-cp": "Sporting", "saint-etienne": "SaintEtienne",
-  "valencia": "Valencia", "bayer-leverkusen": "Leverkusen", "lyon": "Lyon",
-  "parma": "Parma", "monaco": "Monaco",
-};
+// SEO deep-links: /play?quiz=<league-slug> lands a searcher IN the quiz they
+// Googled (the league landing pages' CTAs emit it — see scripts/gen-seo-pages.mjs
+// ctaBlock). Its club twin, CLUB_SLUG_TO_PACK, lives in src/data/clubPacks.js.
 const QUIZ_SLUG_TO_CAT = {
   "premier-league": "PL", "la-liga": "LaLiga", "serie-a": "SerieA",
   "bundesliga": "Bundesliga", "ligue-1": "Ligue1",
@@ -1243,12 +865,8 @@ const QUIZ_SLUG_TO_CAT = {
   // The three theme pages whose CTA pointed at a slug this map did not carry.
   "legends": "Legends", "managers": "Managers", "football-records": "Records",
 };
-// Reverse maps for share deep-links (opportunity-scan #1): a club/league quiz
-// result should link the recipient back into THAT quiz (/play?club=… /
-// ?quiz=…), not the marketing homepage — the boot routing above already
-// handles these params; shares just never used them.
-export const PACK_TO_CLUB_SLUG = Object.fromEntries(Object.entries(CLUB_SLUG_TO_PACK).map(([s, k]) => [k, s]));
-
+// Reverse map for share deep-links: a league quiz result links the recipient
+// back into THAT quiz (?quiz=…). Its club twin is PACK_TO_CLUB_SLUG.
 export const CAT_TO_QUIZ_SLUG = Object.fromEntries(Object.entries(QUIZ_SLUG_TO_CAT).map(([s, c]) => [c, s]));
 
 // ─── LEAGUE QUIZ (competition picker) ────────────────────────────────────────
@@ -1312,605 +930,8 @@ const LEAGUE_QUIZ_SECTIONS = [
 ];
 export const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMap(s => s.items.map(i => [i.cat, i])));
 
-export const CLUB_PACKS = {
-  Fluminense: {
-    name: "Fluminense", icon: "🟥", color: "#92062A",
-    questions: [],
-  },
-  Botafogo: {
-    name: "Botafogo", icon: "⭐", color: "#000000",
-    questions: [],
-  },
-  Vasco: {
-    name: "Vasco da Gama", icon: "⚓", color: "#000000",
-    questions: [],
-  },
-  AtleticoMineiro: {
-    name: "Atlético Mineiro", icon: "🐓", color: "#000000",
-    questions: [],
-  },
-  Tigres: {
-    name: "Tigres UANL", icon: "🐯", color: "#FBAF35",
-    questions: [],
-  },
-  Monterrey: {
-    name: "Monterrey", icon: "⛰️", color: "#0B2341",
-    questions: [],
-  },
-  Pumas: {
-    name: "Pumas UNAM", icon: "🐾", color: "#132347",
-    questions: [],
-  },
-  Zamalek: {
-    name: "Zamalek", icon: "🏹", color: "#D41D27",
-    questions: [],
-  },
-  AlAhly: {
-    name: "Al Ahly", icon: "🦅", color: "#D5001A",
-    questions: [],
-  },
-  AlNassr: {
-    name: "Al Nassr", icon: "🟡", color: "#FEDC00",
-    questions: [],
-  },
-  AlHilal: {
-    name: "Al Hilal", icon: "🌙", color: "#0028F0",
-    questions: [],
-  },
-  Bolton: { name: "Bolton Wanderers", icon: "⚪", color: "#E6E6E6", questions: [] },
-  Charlton: { name: "Charlton Athletic", icon: "🔴", color: "#E31B23", questions: [] },
-  BristolCity: { name: "Bristol City", icon: "🐦", color: "#E21A23", questions: [] },
-  Lincoln: { name: "Lincoln City", icon: "🔴", color: "#D92C2C", questions: [] },
-  Hearts: { name: "Heart of Midlothian", icon: "🟤", color: "#7A1F35", questions: [] },
-  Hibernian: { name: "Hibernian", icon: "🟢", color: "#007A3D", questions: [] },
-  Bologna: { name: "Bologna", icon: "🔴", color: "#A21C26", questions: [] },
-  Genoa: { name: "Genoa", icon: "🔴", color: "#B5121B", questions: [] },
-  Lille: { name: "Lille", icon: "🔴", color: "#E01E13", questions: [] },
-  Lens: { name: "RC Lens", icon: "🟡", color: "#F2C200", questions: [] },
-  Koln: { name: "1. FC Köln", icon: "🔴", color: "#ED1C24", questions: [] },
-  Espanyol: { name: "Espanyol", icon: "🔵", color: "#007FC8", questions: [] },
-  Rosenborg: { name: "Rosenborg", icon: "⚫", color: "#1A1A1A", questions: [] },
-  Bodo: { name: "Bodø/Glimt", icon: "🟡", color: "#F5C400", questions: [] },
-  Celta: { name: "Celta Vigo", icon: "🔵", color: "#8AC3EE", questions: [] },
-  AlIttihad: { name: "Al Ittihad", icon: "🟡", color: "#E8B500", questions: [] },
-  LAGalaxy: { name: "LA Galaxy", icon: "🔵", color: "#00245D", questions: [] },
-  Copenhagen: { name: "FC Copenhagen", icon: "🔵", color: "#1C3F94", questions: [] },
-  Newells: { name: "Newell's Old Boys", icon: "🔴", color: "#D7141A", questions: [] },
-  Braga: { name: "Braga", icon: "🔴", color: "#E30613", questions: [] },
-  Preston: {
-    name: "Preston North End", icon: "⚪", color: "#E9EEF5",
-    questions: [],
-  },
-  Millwall: {
-    name: "Millwall", icon: "🦁", color: "#003D7C",
-    questions: [],
-  },
-  CruzAzul: {
-    name: "Cruz Azul", icon: "🔵", color: "#212452",
-    questions: [],
-  },
-  Guadalajara: {
-    name: "Chivas", icon: "🔴", color: "#CD1731",
-    questions: [],
-  },
-  ClubAmerica: {
-    name: "Club América", icon: "🟡", color: "#FFEB00",
-    questions: [],
-  },
-  SanLorenzo: {
-    name: "San Lorenzo", icon: "🔵", color: "#3D63C9",
-    questions: [],
-  },
-  Independiente: {
-    name: "Independiente", icon: "🔴", color: "#DA291C",
-    questions: [],
-  },
-  Racing: {
-    name: "Racing Club", icon: "🔵", color: "#6CAFE0",
-    questions: [],
-  },
-  Leipzig: {
-    name: "RB Leipzig", icon: "🐂", color: "#DD0741",
-    questions: [],
-  },
-  Atalanta: {
-    name: "Atalanta", icon: "⚫", color: "#1D71B8",
-    questions: [],
-  },
-  Boca: {
-    name: "Boca Juniors", icon: "🔵", color: "#0A2B72",
-    questions: [],
-  },
-  River: {
-    name: "River Plate", icon: "⚪", color: "#E1122E",
-    questions: [],
-  },
-  Flamengo: {
-    name: "Flamengo", icon: "🔴", color: "#C52613",
-    questions: [],
-  },
-  SaoPaulo: {
-    name: "São Paulo", icon: "🔴", color: "#FE0000",
-    questions: [],
-  },
-  Gremio: {
-    name: "Grêmio", icon: "🔵", color: "#0D80BF",
-    questions: [],
-  },
-  Internacional: {
-    name: "Internacional", icon: "🔴", color: "#E5050F",
-    questions: [],
-  },
-  Cruzeiro: {
-    name: "Cruzeiro", icon: "🔵", color: "#2F529E",
-    questions: [],
-  },
-  Palmeiras: {
-    name: "Palmeiras", icon: "🟢", color: "#006437",
-    questions: [],
-  },
-  Corinthians: {
-    name: "Corinthians", icon: "⬛", color: "#111111",
-    questions: [],
-  },
-  Santos: {
-    name: "Santos", icon: "⚪", color: "#0B0B0B",
-    questions: [],
-  },
-  RealSociedad: {
-    name: "Real Sociedad", icon: "🔵", color: "#0067B1",
-    questions: [],
-  },
-  Arsenal: {
-    name: "Arsenal", icon: "🔴", color: "#EF0107",
-    questions: [],
-  },
-  Liverpool: {
-    name: "Liverpool", icon: "🔴", color: "#C8102E",
-    questions: [],
-  },
-  ManUtd: {
-    name: "Man United", icon: "🔴", color: "#DA291C",
-    questions: [],
-  },
-  Barcelona: {
-    name: "Barcelona", icon: "🔵", color: "#A50044",
-    questions: [],
-  },
-  RealMadrid: {
-    name: "Real Madrid", icon: "⚪", color: "#FFFFFF",
-    questions: [],
-  },
-
-  ManCity: {
-    name: "Man City", icon: "🔵", color: "#6CABDD",
-    questions: [],
-  },
-  Chelsea: {
-    name: "Chelsea", icon: "🔵", color: "#034694",
-    questions: [],
-  },
-  BayernMunich: {
-    name: "Bayern Munich", icon: "🔴", color: "#DC052D",
-    questions: [],
-  },
-  Juventus: {
-    name: "Juventus", icon: "⚫", color: "#000000",
-    questions: [],
-  },
-  AcMilan: {
-    name: "AC Milan", icon: "🔴", color: "#FB090B",
-    questions: [],
-  },
-  Atletico: {
-    name: "Atletico Madrid", icon: "🔴", color: "#CB3524",
-    questions: [],
-  },
-  Frankfurt:   { name: "Eintracht Frankfurt",  icon: "🦅", color: "#E1000F", questions: [] },
-  Villarreal:  { name: "Villarreal",           icon: "🟡", color: "#F2D53C", questions: [] },
-  Werder:      { name: "Werder Bremen",        icon: "💚", color: "#1D9053", questions: [] },
-  Stuttgart:   { name: "VfB Stuttgart",        icon: "🦌", color: "#E32219", questions: [] },
-  Gladbach:    { name: "Borussia Mönchengladbach", icon: "🐴", color: "#18A05A", questions: [] },
-  Aberdeen:    { name: "Aberdeen",             icon: "🔴", color: "#D0021B", questions: [] },
-  Dortmund: {
-    name: "Borussia Dortmund", icon: "🟡", color: "#FDE100",
-    questions: [],
-  },
-  PSG: {
-    name: "Paris Saint-Germain", icon: "🔵", color: "#003170",
-    questions: [],
-  },
-  InterMilan: {
-    name: "Inter Milan", icon: "⚫", color: "#010E80",
-    questions: [],
-  },
-  Ajax: {
-    name: "Ajax", icon: "🔴", color: "#CC0000",
-    questions: [],
-  },
-  Tottenham: {
-    name: "Tottenham", icon: "⚪", color: "#132257",
-    questions: [],
-  },
-  Newcastle: {
-    name: "Newcastle", icon: "⚫", color: "#241F20",
-    questions: [],
-  },
-  Napoli: {
-    name: "Napoli", icon: "🔵", color: "#12A0D7",
-    questions: [],
-  },
-  Galatasaray: {
-    name: "Galatasaray", icon: "🟡", color: "#A90432",
-    questions: [],
-  },
-  Benfica: {
-    name: "Benfica", icon: "🔴", color: "#E32221",
-    questions: [],
-  },
-  Fenerbahce: {
-    name: "Fenerbahçe", icon: "🟡", color: "#163962",
-    questions: [],
-  },
-  Porto: {
-    name: "Porto", icon: "🔵", color: "#00428C",
-    questions: [],
-  },
-  Roma: {
-    name: "Roma", icon: "🔴", color: "#8E1F2F",
-    questions: [],
-  },
-  Celtic: {
-    name: "Celtic", icon: "🍀", color: "#018749",
-    questions: [],
-  },
-  Rangers: {
-    name: "Rangers", icon: "🔵", color: "#1B458F",
-    questions: [],
-  },
-  Marseille: {
-    name: "Marseille", icon: "⚪", color: "#2FAEE0",
-    questions: [],
-  },
-  Feyenoord: {
-    name: "Feyenoord", icon: "🔴", color: "#DA020E",
-    questions: [],
-  },
-  PSV: {
-    name: "PSV", icon: "🔴", color: "#ED1C24",
-    questions: [],
-  },
-  Anderlecht: {
-    name: "Anderlecht", icon: "🟣", color: "#52247F",
-    questions: [],
-  },
-  Besiktas: {
-    name: "Beşiktaş", icon: "🦅", color: "#000000",
-    questions: [],
-  },
-  Trabzonspor: {
-    name: "Trabzonspor", icon: "🌊", color: "#7B1E3C",
-    questions: [],
-  },
-  ClubBrugge: {
-    name: "Club Brugge", icon: "🔵", color: "#0A4595",
-    questions: [],
-  },
-  RedStar: {
-    name: "Red Star Belgrade", icon: "⭐", color: "#E4002B",
-    questions: [],
-  },
-  DinamoZagreb: {
-    name: "Dinamo Zagreb", icon: "🔵", color: "#1B458F",
-    questions: [],
-  },
-  Hajduk: {
-    name: "Hajduk Split", icon: "⚪", color: "#0E4C92",
-    questions: [],
-  },
-  Basel: {
-    name: "Basel", icon: "🔴", color: "#002D62",
-    questions: [],
-  },
-  Forest: {
-    name: "Nottingham Forest", icon: "🌳", color: "#E53233",
-    questions: [],
-  },
-  Villa: {
-    name: "Aston Villa", icon: "🦁", color: "#670E36",
-    questions: [],
-  },
-  Everton: {
-    name: "Everton", icon: "🔵", color: "#003399",
-    questions: [],
-  },
-  Leeds: {
-    name: "Leeds United", icon: "⚪", color: "#1D428A",
-    questions: [],
-  },
-  Leicester: {
-    name: "Leicester City", icon: "🦊", color: "#003090",
-    questions: [],
-  },
-  Olympiacos: {
-    name: "Olympiacos", icon: "🔴", color: "#DA020E",
-    questions: [],
-  },
-  // 🍀 is the trifylli, the three-leaf clover on the badge since 1918 —
-  // the club's own nickname, not a decorative pick.
-  Panathinaikos: {
-    name: "Panathinaikos", icon: "🍀", color: "#00614E",
-    questions: [],
-  },
-  WestHam: {
-    name: "West Ham", icon: "⚒️", color: "#7A263A",
-    questions: [],
-  },
-  Sunderland: {
-    name: "Sunderland", icon: "🔴", color: "#EB172B",
-    questions: [],
-  },
-  Ipswich: {
-    name: "Ipswich Town", icon: "🔵", color: "#3A64A3",
-    questions: [],
-  },
-  Palace: {
-    name: "Crystal Palace", icon: "🦅", color: "#1B458F",
-    questions: [],
-  },
-  Fulham: {
-    name: "Fulham", icon: "⚪", color: "#E6E6E6",
-    questions: [],
-  },
-  Brighton: {
-    name: "Brighton", icon: "🔵", color: "#0057B8",
-    questions: [],
-  },
-  Bournemouth: {
-    name: "Bournemouth", icon: "🍒", color: "#DA291C",
-    questions: [],
-  },
-  Brentford: {
-    name: "Brentford", icon: "🐝", color: "#E30613",
-    questions: [],
-  },
-  Burnley: {
-    name: "Burnley", icon: "🟣", color: "#6C1D45",
-    questions: [],
-  },
-  Wolves: {
-    name: "Wolves", icon: "🐺", color: "#FDB913",
-    questions: [],
-  },
-  Coventry: {
-    name: "Coventry City", icon: "🐘", color: "#059DD9",
-    questions: [],
-  },
-  HullCity: {
-    name: "Hull City", icon: "🐯", color: "#F18A01",
-    questions: [],
-  },
-  Athletic: {
-    name: "Athletic Bilbao", icon: "🦁", color: "#EE2523",
-    questions: [],
-  },
-  Sevilla: {
-    name: "Sevilla", icon: "🔴", color: "#CB0007",
-    questions: [],
-  },
-  Betis: {
-    name: "Real Betis", icon: "🟢", color: "#00954C",
-    questions: [],
-  },
-  Schalke: {
-    name: "Schalke 04", icon: "🔵", color: "#004E9E",
-    questions: [],
-  },
-  Hamburg: {
-    name: "Hamburger SV", icon: "⬦", color: "#0A3A7A",
-    questions: [],
-  },
-  Fiorentina: {
-    name: "Fiorentina", icon: "🟣", color: "#592C82",
-    questions: [],
-  },
-  Lazio: {
-    name: "Lazio", icon: "🦅", color: "#87D8F7",
-    questions: [],
-  },
-  Torino: {
-    name: "Torino", icon: "🐂", color: "#8A1E12",
-    questions: [],
-  },
-  Sporting: {
-    name: "Sporting CP", icon: "🦁", color: "#008056",
-    questions: [],
-  },
-  SaintEtienne: {
-    name: "Saint-Étienne", icon: "🟢", color: "#009E60",
-    questions: [],
-  },
-  Valencia: {
-    name: "Valencia", icon: "🦇", color: "#F18E00",
-    questions: [],
-  },
-  Leverkusen: {
-    name: "Bayer Leverkusen", icon: "🔴", color: "#E32221",
-    questions: [],
-  },
-  Lyon: {
-    name: "Olympique Lyonnais", icon: "🦁", color: "#3D74C4",
-    questions: [],
-  },
-  Parma: {
-    name: "Parma", icon: "🟡", color: "#F5D800",
-    questions: [],
-  },
-  Monaco: {
-    name: "AS Monaco", icon: "🔺", color: "#DA291C",
-    questions: [],
-  },
-  // draw prefers the verified, hint-bearing QB rows via CLUB_PACK_TO_QB and
-  // only falls back to this array. Each of these clears the 10 medium+hard
-  // floor the club draw needs (thinnest is Sheffield Wednesday at 11).
-  Birmingham:  { name: "Birmingham City",     icon: "🔵", color: "#253896", questions: [] },
-  Cardiff:     { name: "Cardiff City",        icon: "🐦", color: "#0070B5", questions: [] },
-  Derby:       { name: "Derby County",        icon: "🐏", color: "#1B1B1B", questions: [] },
-  Norwich:     { name: "Norwich City",        icon: "🐤", color: "#00A650", questions: [] },
-  Middlesbrough: { name: "Middlesbrough",     icon: "🔴", color: "#DC143C", questions: [] },
-  WestBrom:    { name: "West Brom",          icon: "🔵", color: "#122F67", questions: [] },
-  SheffUtd:    { name: "Sheffield United",   icon: "⚔️", color: "#EE2737", questions: [] },
-  Blackburn:   { name: "Blackburn Rovers",   icon: "🔷", color: "#009EE0", questions: [] },
-  Watford:     { name: "Watford",             icon: "🐝", color: "#F2E23A", questions: [] },
-  QPR:         { name: "Queens Park Rangers", icon: "⭕", color: "#1D5BA4", questions: [] },
-  Portsmouth:  { name: "Portsmouth",          icon: "⚓", color: "#001489", questions: [] },
-  SheffWed:    { name: "Sheffield Wednesday", icon: "🦉", color: "#0066B3", questions: [] },
-  Southampton: { name: "Southampton",         icon: "⛵", color: "#D71920", questions: [] },
-  Stoke:       { name: "Stoke City",          icon: "🔴", color: "#E03A3E", questions: [] },
-  Swansea:     { name: "Swansea City",        icon: "🦢", color: "#121212", questions: [] },
-  Wrexham:     { name: "Wrexham",             icon: "🐐", color: "#DA291C", questions: [] },
-};
 
 
-// Multiplayer/local topics — the "what you play" axis. ids are "mixed" |
-// "cat:<QB cat>" | "club:<CLUB_PACK key>"; consumed by TopicPickerSheet (used
-// by the online lobby AND local setup) and by pickMultiplayerQuestions.
-// Tab split (Leagues · Clubs · Tournaments) per the design handoff; clubs
-// carry their real colours (same treatment as the Club Quiz picker).
-export const MP_TOPICS = {
-  mixed: { id: "mixed", label: "Mixed — all topics", icon: "🎲" },
-  leagues: [
-    { id: "cat:PL", label: "Premier League", icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
-    { id: "cat:LaLiga", label: "La Liga", icon: "🇪🇸" },
-    { id: "cat:SerieA", label: "Serie A", icon: "🇮🇹" },
-    { id: "cat:Bundesliga", label: "Bundesliga", icon: "🇩🇪" },
-    { id: "cat:Ligue1", label: "Ligue 1", icon: "🇫🇷" },
-    { id: "cat:SuperLig", label: "Süper Lig", icon: "🇹🇷" },
-    { id: "cat:Primeira", label: "Primeira Liga", icon: "🇵🇹" },
-  ],
-  tournaments: [
-    { id: "cat:UCL", label: "Champions League", icon: "⭐" },
-    { id: "cat:WorldCup", label: "International", icon: "🌍" },
-    { id: "cat:Euros", label: "Euros", icon: "🏆" },
-  ],
-  clubs: Object.entries(CLUB_PACK_TO_QB)
-    .map(([key, name]) => {
-      const color = CLUB_PACKS[key]?.color || null;
-      return {
-        id: `club:${key}`, label: name,
-        abbr: CLUB_ABBR[key] || clubInitials(name),
-        color, fg: color ? clubReadableText(color) : null,
-      };
-    })
-    .sort((a, b) => a.label.localeCompare(b.label)),
-};
-
-// Resolve a pack id to its display treatment (icon or club-coloured monogram
-// + copy) for the topic cards (online lobby + local setup) and the picker's
-// Done bar.
-export function topicMeta(packId) {
-  if (!packId || packId === "mixed") return { label: MP_TOPICS.mixed.label, icon: MP_TOPICS.mixed.icon, sub: "Questions from every topic" };
-  const comp = [...MP_TOPICS.leagues, ...MP_TOPICS.tournaments].find(t => t.id === packId);
-  if (comp) return { label: comp.label, icon: comp.icon, sub: "Competition pack" };
-  const club = MP_TOPICS.clubs.find(t => t.id === packId);
-  if (club) return { label: club.label, abbr: club.abbr, color: club.color, fg: club.fg, sub: "Club deep-dive" };
-  return { label: MP_TOPICS.mixed.label, icon: MP_TOPICS.mixed.icon, sub: "Questions from every topic" };
-}
-
-// Full-screen topic picker (design handoff topics-leagues/clubs.dc.html):
-// Mixed pinned above Leagues · Clubs · Tournaments tabs, single-select radio
-// behaviour, pinned Done bar echoing the current selection. Local draft state
-// — nothing commits until Done. Shared by the online lobby and local setup.
-export function TopicPickerSheet({ value, onDone, onClose }) {
-  const [draft, setDraft] = useState(value || "mixed");
-  const [tab, setTab] = useState(() =>
-    String(value || "").startsWith("club:") ? "clubs"
-    : MP_TOPICS.tournaments.some(t => t.id === value) ? "tournaments"
-    : "leagues");
-  const meta = topicMeta(draft);
-  const doneLabel = draft === "mixed" ? "Done — Mixed, all topics" : `Done — ${meta.label}`;
-  // Clubs is 61 entries in a 2-column grid. The array IS alphabetical, but a
-  // row-major grid means scanning DOWN a column skips every second club
-  // (AC Milan, Anderlecht, Aston Villa, Atletico...), so it reads as random —
-  // exactly the "chaotic and shuffled" report. Sorting differently can't fix a
-  // scan-direction illusion; being able to type "man" can. Matches abbr too,
-  // so MUN/PSG/BVB work.
-  const [q, setQ] = useState("");
-  const allItems = MP_TOPICS[tab] || [];
-  const needle = q.trim().toLowerCase();
-  const items = needle
-    ? allItems.filter(it =>
-        it.label.toLowerCase().includes(needle) ||
-        (it.abbr || "").toLowerCase().includes(needle))
-    : allItems;
-  return (
-    <div style={{position:"fixed",inset:0,zIndex:999,background:"var(--bg)",display:"flex",flexDirection:"column"}}>
-      <div style={{padding:"calc(14px + env(safe-area-inset-top, 0px)) 20px 0",display:"flex",alignItems:"center",gap:12}}>
-        <button onClick={onClose} aria-label="Back" style={{width:38,height:38,borderRadius:12,background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t1)",fontSize:16,cursor:"pointer",fontFamily:"inherit"}}>←</button>
-        <span style={{fontSize:24,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Topics</span>
-      </div>
-      <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch",padding:"0 20px 20px"}}>
-        <button onClick={() => setDraft("mixed")} style={{width:"100%",marginTop:14,borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",textAlign:"left",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",gap:11,padding:"13px 15px",
-          ...(draft === "mixed" ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
-          <span style={{fontSize:19}}>🎲</span>
-          <span style={{fontSize:14.5,fontWeight:draft === "mixed" ? 800 : 700,color:draft === "mixed" ? "var(--grn-soft)" : "var(--t1)"}}>Mixed — all topics</span>
-          <span style={{marginLeft:"auto",width:19,height:19,borderRadius:"50%",...(draft === "mixed"
-            ? {background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"var(--grn-ink)",fontWeight:900}
-            : {border:"1.5px solid #3E4150"})}}>{draft === "mixed" ? "✓" : ""}</span>
-        </button>
-        <div style={{display:"flex",gap:6,marginTop:16,padding:4,borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)"}}>
-          {[{ id: "leagues", label: "Leagues" }, { id: "clubs", label: "Clubs" }, { id: "tournaments", label: "Tournaments" }].map(t => (
-            <button key={t.id} onClick={() => { setTab(t.id); setQ(""); }} style={{flex:1,borderRadius:10,padding:9,textAlign:"center",fontSize:13,cursor:"pointer",fontFamily:"inherit",
-              ...(tab === t.id ? {background:"var(--s2)",border:"1px solid #3E4150",fontWeight:800,color:"var(--t1)"} : {background:"transparent",border:"1px solid transparent",fontWeight:700,color:"var(--t2)"})}}>{t.label}</button>
-          ))}
-        </div>
-        {allItems.length > 12 && (
-          <div style={{position:"relative",marginTop:12}}>
-            <span aria-hidden="true" style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:14,opacity:0.65,pointerEvents:"none"}}>🔍</span>
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder={`Search ${tab}…`}
-              aria-label={`Search ${tab}`}
-              autoComplete="off"
-              spellCheck={false}
-              style={{width:"100%",boxSizing:"border-box",padding:"12px 38px",borderRadius:13,background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t1)",fontSize:16,fontFamily:"inherit",outline:"none"}}
-            />
-            {q && (
-              <button onClick={() => setQ("")} aria-label="Clear search"
-                style={{position:"absolute",right:6,top:"50%",transform:"translateY(-50%)",width:30,height:30,borderRadius:9,background:"transparent",border:"none",color:"var(--t2)",fontSize:15,cursor:"pointer",fontFamily:"inherit"}}>✕</button>
-            )}
-          </div>
-        )}
-        {needle && items.length === 0 && (
-          <div style={{marginTop:18,textAlign:"center",color:"var(--t2)",fontSize:13.5}}>
-            No {tab} matching “{q.trim()}”
-          </div>
-        )}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9,marginTop:14}}>
-          {items.map(it => {
-            const sel = draft === it.id;
-            return (
-              <button key={it.id} onClick={() => setDraft(it.id)} style={{borderRadius:16,padding:14,display:"flex",flexDirection:"column",gap:6,textAlign:"left",cursor:"pointer",fontFamily:"inherit",
-                ...(sel ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}>
-                  {it.abbr
-                    ? <span style={{width:34,height:34,borderRadius:10,background:it.color || (sel ? "rgba(88,204,2,0.14)" : "var(--s2)"),display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,letterSpacing:"0.04em",color:it.fg || (sel ? "var(--grn-soft)" : "var(--t1)"),boxShadow:it.color ? `0 2px 8px ${it.color}55` : undefined}}>{it.abbr}</span>
-                    : <span style={{fontSize:24}}>{it.icon}</span>}
-                  {sel && <span style={{width:19,height:19,borderRadius:"50%",background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"var(--grn-ink)",fontWeight:900}}>✓</span>}
-                </div>
-                <span style={{fontSize:14.5,fontWeight:sel ? 800 : 700,color:sel ? "var(--grn-soft)" : "var(--t1)",marginTop:2}}>{it.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-      <div style={{borderTop:"1px solid var(--s1)",background:"#0C0E14",padding:"12px 20px calc(12px + env(safe-area-inset-bottom, 0px))"}}>
-        <button onClick={() => onDone(draft)} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,fontSize:15.5,fontWeight:800,color:"var(--grn-ink)",cursor:"pointer",fontFamily:"inherit"}}>{doneLabel}</button>
-      </div>
-    </div>
-  );
-}
 
 // ─── SOUND EFFECTS ────────────────────────────────────────────────────────────
 // Pure Web-Audio sound synthesis. Honours biq_settings.sound and no-ops on
@@ -2766,8 +1787,9 @@ export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { e
   if (packId && packId !== "mixed") {
     const sep = String(packId).indexOf(":");
     const kind = String(packId).slice(0, sep), key = String(packId).slice(sep + 1);
+    const packToQb = kind === "club" ? (await loadClubData()).CLUB_PACK_TO_QB : {};
     let filtered = kind === "cat" ? eligible.filter(q => q.cat === key)
-      : kind === "club" ? eligible.filter(q => q.club === CLUB_PACK_TO_QB[key])
+      : kind === "club" ? eligible.filter(q => q.club === packToQb[key])
       : eligible;
     // Club/league packs are for invested fans — never serve "easy". Drop it
     // whenever the no-easy pool can still sustain a game (>=10); the count logic
@@ -3220,22 +2242,6 @@ function StatRow({ label, value, valueColor }) {
   );
 }
 
-
-// ─── CLUB QUIZ SCREEN ────────────────────────────────────────────────────────
-// What a fan actually types. CLUB_COLOUR_ALIASES already covers the transfer
-// shorthand (spurs, bvb, man utd, atletico…) because the Trail needed the same
-// normalisation, so it is reused rather than duplicated — these are only the
-// terrace nicknames it lacks. Search-only: never rendered, so a wrong-ish entry
-// costs nothing but a stray match.
-export const CLUB_SEARCH_NICKNAMES = {
-  gunners: "Arsenal", reds: "Liverpool", toffees: "Everton", citizens: "Man City",
-  "red devils": "Man United", devils: "Man United", blues: "Chelsea",
-  barca: "Barcelona", barça: "Barcelona", madrid: "Real Madrid", juve: "Juventus",
-  nerazzurri: "Inter", rossoneri: "AC Milan", gers: "Rangers", hoops: "Celtic",
-  magpies: "Newcastle", hammers: "West Ham", villans: "Aston Villa",
-  bianconeri: "Juventus", merengues: "Real Madrid", cityzens: "Man City",
-  lilywhites: "Tottenham", potters: "Stoke City", baggies: "West Brom",
-};
 
 function LeagueQuizScreen({ onStart, onBack, catStats, cardLeague }) {
   React.useEffect(() => {
@@ -4433,7 +3439,11 @@ function AppInner() {
       if (/^q_[a-z0-9]+$/.test((sp.get("eq") || "").trim().toLowerCase())) return true; // email answer link — the verdict must not land behind onboarding
       if (normalizeJoinCode(sp.get("join"))) return true; // legacy query-form invite
       if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
-      if (CLUB_SLUG_TO_PACK[(sp.get("club") || "").toLowerCase()]) return true;
+      // Synchronous, so it cannot wait for the lazy CLUB_SLUG_TO_PACK. The club
+      // index Home already carries has the identical slug set, and
+      // club-routes-registered.test.js holds the two equal.
+      const clubSlugQ = (sp.get("club") || "").toLowerCase();
+      if (clubSlugQ && CLUB_INDEX.some((r) => r.s === clubSlugQ)) return true;
       if (QUIZ_SLUG_TO_CAT[(sp.get("quiz") || "").toLowerCase()]) return true;
       if (sp.get("c")) return true; // query-form challenge fallback
     } catch {}
@@ -4729,14 +3739,20 @@ function AppInner() {
   // A club page on this origin queues the answers of a round it finished; they
   // reach the card here, through the SAME writer every in-app round uses. Card
   // only — a website round earns no XP, no streak, no gamesPlayed.
+  // ⚠️ DRAINED ONLY ONCE THE CLUB TABLES HAVE LANDED. These are club-page
+  // answers, and the card files a club answer by the routes loadClubData()
+  // registers; drained before that, they would land on the wrong face for
+  // good. If the tables fail to load the queue simply waits for the next boot.
   useEffect(() => {
-    const pending = drainPendingRounds();
-    if (!pending.length) return;
-    setStats((prev) => {
-      const next = { ...prev, catStats: recordAnswers(prev.catStats || {}, pending, { c: prev.totalCorrect || 0, a: prev.totalAnswered || 0 }) };
-      safeSetItem("biq_stats", JSON.stringify(next));
-      return next;
-    });
+    loadClubData().then(() => {
+      const pending = drainPendingRounds();
+      if (!pending.length) return;
+      setStats((prev) => {
+        const next = { ...prev, catStats: recordAnswers(prev.catStats || {}, pending, { c: prev.totalCorrect || 0, a: prev.totalAnswered || 0 }) };
+        safeSetItem("biq_stats", JSON.stringify(next));
+        return next;
+      });
+    }, () => {});
   }, []);
 
   // ── YOUR LEAGUE ON THE CARD ───────────────────────────────────────────────
@@ -5315,6 +4331,11 @@ function AppInner() {
   const todayKey = useMemo(() => keyForDate(new Date()), []);
   const [activeDailyDate, setActiveDailyDate] = useState(null);
   const [activeClub, setActiveClub] = useState(null);
+  // The lazy club tables (null until they land, normally before Home finishes
+  // painting). activeClub is only ever set by launchClubQuiz, which has
+  // awaited them, so `activePack` is never null for a real club round.
+  const clubs = useClubData();
+  const activePack = (activeClub && clubs?.CLUB_PACKS[activeClub]) || null;
   const [activeLeague, setActiveLeague] = useState(null);
 
 
@@ -6141,6 +5162,9 @@ function AppInner() {
   // remembers the club as the user's favourite so Home shows a "your club" shortcut.
   const launchClubQuiz = useCallback(async (clubKey) => {
     try {
+      // Lazy tables: in hand already unless this is the very first tap of a
+      // cold boot on a slow line (App.jsx starts the load at module eval).
+      const { CLUB_PACKS, CLUB_PACK_TO_QB } = await loadClubData();
       const pack = CLUB_PACKS[clubKey];
       if (!pack) return;
       haptic("soft");
@@ -6433,22 +5457,28 @@ function AppInner() {
         }).catch(() => {});
         return;
       }
-      const packKey = CLUB_SLUG_TO_PACK[clubSlug];
-      const catKey = QUIZ_SLUG_TO_CAT[quizSlug];
-      if (packKey) launchClubQuiz(packKey);
-      else if (catKey) launchLeagueQuiz(catKey);
-      // ⚠️ NO SILENT DEAD END. This if/else had no final branch, so a slug
-      // missing from either map fell through to a bare Home screen — and the
-      // boot code has ALREADY stripped ?club= from the URL by this point, so
-      // the reader's intent is gone and there is no back button to recover it.
-      // Ten club pages shipped that way. Wave O maps all ten, but the class is
-      // structural: the maps live here and the pages are generated elsewhere,
-      // so they can drift apart again the next time a page is added. Start a
-      // general quiz rather than nothing, and say why.
-      else if (clubSlug || quizSlug) {
-        showToast("No dedicated pack for that one yet — here's a general quiz");
-        startMode("classic");
-      }
+      // The slug map is lazy, so a ?club= link waits for it (already in flight
+      // since module load); everything else routes synchronously as before.
+      const routeDeepLink = (slugToPack) => {
+        const packKey = slugToPack[clubSlug];
+        const catKey = QUIZ_SLUG_TO_CAT[quizSlug];
+        if (packKey) launchClubQuiz(packKey);
+        else if (catKey) launchLeagueQuiz(catKey);
+        // ⚠️ NO SILENT DEAD END. This if/else had no final branch, so a slug
+        // missing from either map fell through to a bare Home screen — and the
+        // boot code has ALREADY stripped ?club= from the URL by this point, so
+        // the reader's intent is gone and there is no back button to recover it.
+        // Ten club pages shipped that way. Wave O maps all ten, but the class is
+        // structural: the maps live here and the pages are generated elsewhere,
+        // so they can drift apart again the next time a page is added. Start a
+        // general quiz rather than nothing, and say why.
+        else if (clubSlug || quizSlug) {
+          showToast("No dedicated pack for that one yet — here's a general quiz");
+          startMode("classic");
+        }
+      };
+      if (clubSlug) loadClubData().then((d) => routeDeepLink(d.CLUB_SLUG_TO_PACK), () => routeDeepLink({}));
+      else routeDeepLink({});
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -8877,8 +7907,8 @@ function AppInner() {
               setOnlineAutoCreate={setOnlineAutoCreate}
               notifCount={notifCount}
               onOpenNotifs={user ? openNotifs : undefined}
-              clubPacks={CLUB_PACKS}
-              clubAbbr={CLUB_ABBR}
+              clubPacks={clubs?.CLUB_PACKS}
+              clubAbbr={clubs?.CLUB_ABBR}
               launchClubQuiz={launchClubQuiz}
               firstSession={showFirstQuizTip}
               onOpenLeague={LEAGUES_WEB ? openLeagueTable : undefined}
@@ -9300,7 +8330,7 @@ function AppInner() {
           <TabErrorBoundary name="top10lib" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10 lists" />}><Top10Library
             onBack={goHome}
             onPlay={(id) => { setTop10ListId(id); setTop10From("lib"); setScreen("top10"); }}
-            clubInfo={(slug) => { const key = CLUB_SLUG_TO_PACK[slug]; const pack = key && CLUB_PACKS[key]; return pack ? { name: pack.name, color: pack.color, abbr: CLUB_ABBR[key] || pack.name.slice(0, 3).toUpperCase() } : null; }}
+            clubInfo={(slug) => { const key = clubs?.CLUB_SLUG_TO_PACK[slug]; const pack = key && clubs.CLUB_PACKS[key]; return pack ? { name: pack.name, color: pack.color, abbr: clubs.CLUB_ABBR[key] || pack.name.slice(0, 3).toUpperCase() } : null; }}
           /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "draft" && (
@@ -9356,14 +8386,14 @@ function AppInner() {
                 <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>Quotes, moments &amp; madness — take a beat and think.</div>
               </div>
             )}
-            {activeClub && CLUB_PACKS[activeClub] && (
-              <div style={{marginTop:14,marginBottom:6,display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:clubHexToRgba(CLUB_PACKS[activeClub].color, 0.14),border:`1px solid ${clubHexToRgba(CLUB_PACKS[activeClub].color, 0.4)}`,borderRadius:14}}>
-                <div style={{width:46,height:46,borderRadius:12,flexShrink:0,background:CLUB_PACKS[activeClub].color,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 2px 8px ${clubHexToRgba(CLUB_PACKS[activeClub].color, 0.45)}`}}>
-                  <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(CLUB_PACKS[activeClub].color)}}>{CLUB_ABBR[activeClub] || clubInitials(CLUB_PACKS[activeClub].name)}</span>
+            {activePack && (
+              <div style={{marginTop:14,marginBottom:6,display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:clubHexToRgba(activePack.color, 0.14),border:`1px solid ${clubHexToRgba(activePack.color, 0.4)}`,borderRadius:14}}>
+                <div style={{width:46,height:46,borderRadius:12,flexShrink:0,background:activePack.color,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 2px 8px ${clubHexToRgba(activePack.color, 0.45)}`}}>
+                  <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(activePack.color)}}>{clubs.CLUB_ABBR[activeClub] || clubInitials(activePack.name)}</span>
                 </div>
                 <div style={{flex:1,minWidth:0}}>
                   <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>Club Quiz</div>
-                  <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{CLUB_PACKS[activeClub].name}</div>
+                  <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{activePack.name}</div>
                 </div>
               </div>
             )}
@@ -9392,7 +8422,7 @@ function AppInner() {
               // Survival PB / "New PB!" badges could never render — QuizEngine
               // gates them on survivalBest > 0 and the prop was never passed.
               survivalBest={stats.bestSurvival || 0}
-              quizLabel={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
+              quizLabel={activePack ? activePack.name
                 : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
                 : undefined}
               // Audit #5: a club/league quit stranded the player on Home —
@@ -9485,7 +8515,7 @@ function AppInner() {
               </div>
             ) : null}
             classicBest={stats.bestScore || 0}
-            label={activeClub && CLUB_PACKS[activeClub] ? CLUB_PACKS[activeClub].name
+            label={activePack ? activePack.name
               : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
               : null}
             onShare={() => (mode === "daily"
