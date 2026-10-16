@@ -2101,7 +2101,9 @@ export const TOP10_SPECS = [
   // prints for all ten, in RSSSF's order (Di María above Zanetti, both 145).
   // RSSSF counts two 1995-96 matches others leave out, which is also why
   // Simeone (104 elsewhere) and Ayala (112 on NFT) differ; no place changes.
-  { id: 'argentina-caps', checked: '2026-10-16', until: '2027-12-31', kind: 'player',
+  // ⚠️ NOT CHECKED (16 Oct): three numbers a fan can fairly dispute is below
+  // the zero-error bar, so it does not ship. Northern Ireland took its day.
+  { id: 'argentina-caps', kind: 'player',
     title: 'Most Argentina caps (men)',
     note: 'Argentina men’s caps at the end of the 2026 World Cup, on RSSSF’s count.',
     asOf: '2026-10-16',
@@ -2146,6 +2148,33 @@ export const TOP10_SPECS = [
       { name: 'Sassuolo', note: '49 points, 1 short' },
       { name: 'Torino', note: '45 points, 5 short' },
       { name: 'Parma', note: '45 points, 5 short' },
+    ] },
+  // Live in principle (Magennis and McNair still play; next matches 14 and 17
+  // Nov), hence "to 16 October". Magennis 93 = NFT's 91 to 28 Sep plus two
+  // substitute caps on 2 and 5 Oct (ESPN line-ups), as Wikipedia has it;
+  // RSSSF's 89 is at 7 Jun. NFT has Evans 106; Wikipedia, RSSSF and the Irish
+  // FA say 107. Nobody below can reach 88 by 1 January (McNair 85).
+  { id: 'northern-ireland-caps', checked: '2026-10-16', until: '2027-12-31', kind: 'player',
+    title: 'Most Northern Ireland caps',
+    note: 'Northern Ireland men’s caps to 16 October 2026. Ties go to whoever got there first.',
+    asOf: '2026-10-16',
+    source: 'Wikipedia Northern Ireland national team, most capped (updated 5 Oct 2026); RSSSF Northern Ireland record internationals (to 7 Jun 2026); national-football-teams.com plus ESPN line-ups of 2 and 5 Oct; Irish FA (Evans)',
+    slots: [
+      { name: 'Steven Davis', born: 1985, clue: '140 caps' },
+      { name: 'Pat Jennings', clue: '119 caps' },
+      { name: 'Aaron Hughes', clue: '112 caps' },
+      { name: 'Jonny Evans', clue: '107 caps' },
+      { name: 'David Healy', born: 1979, clue: '95 caps' },
+      { name: 'Josh Magennis', clue: '93 caps' },
+      { name: 'Mal Donaghy', born: 1957, clue: '91 caps' },
+      { name: 'Kyle Lafferty', clue: '89 caps' },
+      { name: 'Sammy McIlroy', clue: '88 caps' },
+      { name: 'Maik Taylor', born: 1971, clue: '88 caps' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Keith Gillespie', note: '86 caps, 2 short' },
+      { name: 'Paddy McNair', note: '85 caps, 3 short' },
     ] },
   // Cannot change before the 2030 World Cup. Very close to two lists already
   // played (matches won, 15 Oct; World Cups played, 19 Nov): a spare, not
@@ -2274,15 +2303,15 @@ export const TOP10_LOG = [
   'arsenal-premier-league-goals',    // Wed 16
   'liverpool-premier-league-appearances', // Thu 17
   'uefa-club-coefficients-2026',     // Fri 18
-  'argentina-caps',                  // Sat 19
+  'premier-league-2025-26-top-scorers', // Sat 19
   'manchester-united-premier-league-goals', // Sun 20
   'newcastle-top-scorers',           // Mon 21
   'tottenham-premier-league-appearances', // Tue 22
   'fifa-ranking-july-2026',          // Wed 23
-  'premier-league-2025-26-top-scorers', // Thu 24
-  'ireland-caps',                    // Fri 25
+  'northern-ireland-caps',           // Thu 24
+  'arsenal-premier-league-appearances', // Fri 25
   'chelsea-premier-league-appearances', // Sat 26
-  'arsenal-premier-league-appearances', // Sun 27
+  'ireland-caps',                    // Sun 27
   'manchester-city-appearances',     // Mon 28
   'newcastle-premier-league-goals',  // Tue 29
   'serie-a-2025-26-table',           // Wed 30

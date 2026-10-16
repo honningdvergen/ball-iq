@@ -6,4 +6,4 @@
 // from the site as a continuation of its own (src/lib/top10Remote.js).
 export const TOP10_ANCHOR_DAY = 20738;
 export const TOP10_DAYS = 81;
-export const TOP10_LOG_HASH = '4fdeb6ee';
+export const TOP10_LOG_HASH = '28efadb9';
