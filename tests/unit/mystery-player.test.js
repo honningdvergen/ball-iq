@@ -321,7 +321,7 @@ describe('the club printed under a name', () => {
   });
 });
 
-// The empty screen prints the bands as shares ("Closest 1%"). They are only
+// The empty screen prints the bands as shares ("Top 1%"). They are only
 // true while bandFor() cuts at the same shares.
 describe('the rank key on the empty screen', () => {
   it('bandFor cuts where bandLimits says, at the shares the key prints', async () => {
@@ -334,5 +334,16 @@ describe('the rank key on the empty screen', () => {
     expect(bandFor(hot + 1, size)).toBe('warm');
     expect(bandFor(warm, size)).toBe('warm');
     expect(bandFor(warm + 1, size)).toBe('cold');
+  });
+
+  it('the "top N%" under each guess agrees with the key at the band edges', async () => {
+    // Since 16 Oct 2026 a guess prints "top 12%" where it printed "of 9,030".
+    // Boiling must read "top 1%" and warm no worse than "top 8%", and the
+    // first cold rank must read worse than the warm line, on the real pool.
+    const { bandLimits, topShare, HOT_SHARE, WARM_SHARE } = await import('../../src/lib/mysteryPlayer.js');
+    const { hot, warm } = bandLimits(pool.length);
+    expect(topShare(hot, pool.length)).toBe(`top ${Math.round(HOT_SHARE * 100)}%`);
+    expect(topShare(warm, pool.length)).toBe(`top ${Math.round(WARM_SHARE * 100)}%`);
+    expect(topShare(warm + 1, pool.length)).not.toBe(`top ${Math.round(WARM_SHARE * 100)}%`);
   });
 });

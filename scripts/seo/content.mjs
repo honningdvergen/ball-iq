@@ -405,7 +405,7 @@ export const MYSTERY_PAGE = {
     ['Name any player', 'Type any footballer, from any era. There is no penalty for a wild first guess — it is information either way.'],
     ['Read the rank', 'Every guess comes back with a number: where your player sits among thousands for closeness to the secret one, with the reason underneath — a shared club, the same position, the same era. The secret player is 1.'],
     ['Use the colours', 'Green means you are hot — inside the top handful. Amber is warm. Grey means nothing in common worth chasing.'],
-    ['Narrow it down', 'Closeness weighs shared clubs most (more for years as team-mates), then position, then era. Stuck? Clues unlock after three, six and nine guesses: his position, a club he played for, his initials.'],
+    ['Narrow it down', 'Closeness weighs shared clubs most (more for years as team-mates), then position, then era. You start with two free clues, his position and the decade he was born in. Stuck? A club he played for unlocks after four guesses and his initials after eight.'],
   ],
   body: [
     `Mystery Player is a daily football guessing game. There is one secret footballer, the same for everyone, and no limit on how many guesses you take to find them. What makes it work is the feedback: instead of a plain right or wrong, every name you try comes back with a rank showing how close that player is to the answer.`,

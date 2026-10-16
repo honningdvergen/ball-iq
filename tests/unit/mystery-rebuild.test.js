@@ -11,6 +11,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   rankPool, bandFor, bandLimits, explainGuess, reasonLine, hasCloseLink, clueLadder, CLUE_AFTER,
+  FREE_CLUES, birthDecade, paidCluesFromSave, topShare,
 } from '../../src/lib/mysteryPlayer.js';
 import { careerOf, clubName, mainClub, spellYears, initials, isSeniorClub } from '../../src/lib/mysteryCareer.js';
 import { answerBar, FIRST_FAMOUS_DAY } from '../../scripts/mystery-answer-bar.mjs';
@@ -142,14 +143,63 @@ describe('every guess explains itself, and the rank agrees', () => {
 });
 
 describe('the clue ladder', () => {
-  it('is position, then his main club, then initials, after 3, 6 and 9 guesses', () => {
+  // The warm start, 16 Oct 2026: position and birth decade free from guess
+  // one, then the club after 4 and the initials after 8.
+  it('starts with his position and birth decade, then his main club after 4 and initials after 8', () => {
     const ladder = clueLadder(byName('Zinedine Zidane'), careers, roles);
-    expect(ladder.map((c) => [c.key, c.value, c.after])).toEqual([
-      ['position', 'Midfielder', 3],
-      ['club', 'Juventus', 6],
-      ['initials', 'Z. Z.', 9],
+    expect(ladder.map((c) => [c.key, c.value, c.after, c.free])).toEqual([
+      ['position', 'Midfielder', 0, true],
+      ['born', '1970s', 0, true],
+      ['club', 'Juventus', 4, false],
+      ['initials', 'Z. Z.', 8, false],
     ]);
-    expect(CLUE_AFTER).toEqual([3, 6, 9]);
+    expect(FREE_CLUES).toEqual(['position', 'born']);
+    expect(CLUE_AFTER).toEqual([4, 8]);
+  });
+
+  it('gives the decade he was born in, and nothing finer', () => {
+    expect(birthDecade(1987)).toBe('1980s');
+    expect(birthDecade(1980)).toBe('1980s');
+    expect(birthDecade(1979)).toBe('1970s');
+    expect(birthDecade(undefined)).toBeNull();
+    expect(birthDecade(0)).toBeNull();
+  });
+
+  it('warms the first guess: the famous names the two free clues point to land warm, not cold', () => {
+    // The point of the free clues. On famous days, the five most famous
+    // players a fan could pick from the clues alone (same line, same decade)
+    // against the five most famous with no clue at all. Measured 16 Oct 2026
+    // over all 327 famous days: cold 85% -> 26%, median rank 4,165 -> 420
+    // (ball-iq-audit/2026-10-16/mystery-warm/firstpick.mjs). A decade is not
+    // the four-year era the score pays in full, so some land just past the
+    // warm line (Modrić on the Xavi day, #778): warm on most, cold on few.
+    const fame = [...pool].sort((a, b) => b.fame - a.fame);
+    const warmOrBetter = { clue: 0, none: 0 };
+    let n = 0;
+    for (const id of schedule.slice(FIRST_FAMOUS_DAY, FIRST_FAMOUS_DAY + 40)) {
+      const a = byId.get(id);
+      const d = Math.floor(a.born / 10);
+      const ranks = rankPool(pool, a, careers);
+      const clue = fame.filter((p) => p.id !== a.id && p.slot === a.slot && Math.floor(p.born / 10) === d).slice(0, 5);
+      const none = fame.filter((p) => p.id !== a.id).slice(0, 5);
+      for (const p of clue) if (bandFor(ranks.get(p.id), pool.length) !== 'cold') warmOrBetter.clue++;
+      for (const p of none) if (bandFor(ranks.get(p.id), pool.length) !== 'cold') warmOrBetter.none++;
+      n += 5;
+    }
+    expect(warmOrBetter.clue / n).toBeGreaterThan(0.6);
+    expect(warmOrBetter.none / n).toBeLessThan(0.3);
+  }, 60000);
+
+  it('reads saves from the older ladders as paid clues under this one', () => {
+    expect(paidCluesFromSave({ clues: 3, hintsUsed: 2 })).toBe(2);
+    expect(paidCluesFromSave({ clues: 3, hintsUsed: 9 })).toBe(2);
+    // 14 Oct ladder: position, club, initials. Position is free now.
+    expect(paidCluesFromSave({ clues: 2, hintsUsed: 1 })).toBe(0);
+    expect(paidCluesFromSave({ clues: 2, hintsUsed: 2 })).toBe(1);
+    expect(paidCluesFromSave({ clues: 2, hintsUsed: 3 })).toBe(2);
+    // Before the ladder: at most the position hint, free now.
+    expect(paidCluesFromSave({ hintsUsed: 3 })).toBe(0);
+    expect(paidCluesFromSave(null)).toBe(0);
   });
 
   it('never prints nationality', () => {
@@ -160,10 +210,10 @@ describe('the clue ladder', () => {
     }
   });
 
-  it('has all three clues for every famous day', () => {
+  it('has all four clues for every famous day', () => {
     const short = schedule.slice(FIRST_FAMOUS_DAY)
       .map((id) => byId.get(id))
-      .filter((p) => clueLadder(p, careers, roles).length !== 3)
+      .filter((p) => clueLadder(p, careers, roles).length !== 4)
       .map((p) => p.name);
     expect(short).toEqual([]);
   });
@@ -177,6 +227,16 @@ describe('the clue ladder', () => {
   it('says when a player goes by one name', () => {
     expect(clueLadder(byName('Eusébio'), careers, roles).find((c) => c.key === 'initials').value).toBe('E. (one name)');
     expect(initials('Robin van Persie')).toBe('R. P.');
+  });
+});
+
+describe('the rank in proportion', () => {
+  it('says "top N%", rounded up and never below 1%', () => {
+    expect(topShare(1065, 9030)).toBe('top 12%');
+    expect(topShare(5726, 9030)).toBe('top 64%');
+    expect(topShare(40, 9030)).toBe('top 1%');
+    expect(topShare(9030, 9030)).toBe('top 100%');
+    expect(topShare(0, 9030)).toBe('');
   });
 });
 

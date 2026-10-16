@@ -195,26 +195,88 @@ export function hasCloseLink(x) {
 }
 
 // ── Clues ───────────────────────────────────────────────────────────────────
-// A ladder, unlocked by guessing: after 3, 6 and 9 guesses. Least to most
-// revealing: what he did, a club he gave the most years to, his initials.
-// ⚠️ NEVER NATIONALITY: `nat` is not reliably nationality.
-// ⚠️ "Born in the 1960s" and "Played for 7 clubs" are gone: the play-tester
-// called them weak, and they were — an era and a count narrow nine thousand
-// players to a few hundred, which is no help to someone already stuck.
-export const CLUE_AFTER = [3, 6, 9];
+// ⚠️ THE WARM START (16 Oct 2026). The opening was a wall of "cold": seven
+// megastar guesses on the Xavi day all came back cold, ranked 1,065 to 5,726
+// of 9,030, and the daily win rate ran 5% to 94% (median 56%). Re-ordering the
+// schedule could not fix that (return research, 16 Oct, "Fewer bad days");
+// the game needed a warmer first guess.
+//
+// So two clues are FREE from guess one: his position and the decade he was
+// born in. Both are things the ranking already pays for (same line 250, era
+// 150), so a guess that follows them lands in the warm band and its reason
+// line agrees ("Same position · Same era"). Then a club he gave most years to
+// after 4 guesses and his initials after 8, each waiting for a tap.
+//
+// Measured with a scripted fan over the 75 served days and the next 60
+// (ball-iq-audit/2026-10-16/mystery-warm/simulate.mjs), same answers:
+//   cold among the first three guesses 72% -> 26%; first guess off cold from
+//   the third to the first; guesses to solve, median 9 -> 6; modelled win
+//   rate 56% -> 71%; days under 50% 11 of 75 -> 1 of 75. The fan's patience
+//   is fitted so that "before" matches the real 56%.
+// Position alone free did nothing for the win rate (56%); the decade is what
+// lifts the first guess, the earlier club what lifts the bad days.
+//
+// ⚠️ "Born in the 1980s" was dropped as a LATE rung on 14 Oct: after three
+// guesses every reason line has already said older or younger, so it added
+// nothing. As a STARTING clue it is the opposite: the one thing that turns a
+// first guess from a shot in the dark into a same-era guess.
+// ⚠️ NEVER NATIONALITY. Rechecked 16 Oct 2026: `nat` is now the national team,
+// mostly right, but it is the LAST one a player turned out for — Puskás and
+// Di Stéfano read "Spain" — no source checks it per answer, and the ranking
+// does not use it, so a nationality clue could not be explained by any rank.
+/** Rungs that are shown from the start, before any guess. */
+export const FREE_CLUES = ['position', 'born'];
+/** Guesses before each paid rung unlocks: the club, then the initials. */
+export const CLUE_AFTER = [4, 8];
+
+/** "1980s" for a player born 1987. */
+export function birthDecade(born) {
+  return Number.isFinite(born) && born > 1800 ? `${Math.floor(born / 10) * 10}s` : null;
+}
 
 export function clueLadder(answer, careers = null, roles = null) {
   if (!answer) return [];
-  const out = [];
+  const free = [];
   const pos = hintPosition(answer, roles);
-  if (pos) out.push({ key: 'position', label: 'Position', value: pos.charAt(0).toUpperCase() + pos.slice(1) });
+  if (pos) free.push({ key: 'position', label: 'Position', value: pos.charAt(0).toUpperCase() + pos.slice(1) });
+  const decade = birthDecade(answer.born);
+  if (decade) free.push({ key: 'born', label: 'Born', value: decade });
+  const paid = [];
   const club = careers ? mainClub(answer, careers) : null;
-  if (club) out.push({ key: 'club', label: 'Played for', value: club });
+  if (club) paid.push({ key: 'club', label: 'Played for', value: club });
   const ini = initials(answer.name);
   // A one-name player (Eusébio, Neymar) gets one letter, and says so: a lone
   // "E." otherwise reads like a name with its surname missing.
-  if (ini) out.push({ key: 'initials', label: 'Initials', value: ini.includes(' ') ? ini : `${ini} (one name)` });
-  return out.map((c, i) => ({ ...c, after: CLUE_AFTER[i] }));
+  if (ini) paid.push({ key: 'initials', label: 'Initials', value: ini.includes(' ') ? ini : `${ini} (one name)` });
+  return [
+    ...free.map((c) => ({ ...c, after: 0, free: true })),
+    ...paid.map((c, i) => ({ ...c, after: CLUE_AFTER[i], free: false })),
+  ];
+}
+
+/**
+ * How many PAID clues a saved game had taken, under today's ladder.
+ *   clues: 3  today's ladder (club, initials): as saved
+ *   clues: 2  the 14 Oct ladder (position, club, initials): position is free
+ *             now, so one fewer
+ *   none      before the ladder: at most the old first hint, which was the
+ *             position, free now
+ */
+export function paidCluesFromSave(saved) {
+  const h = Math.max(0, Number(saved?.hintsUsed) || 0);
+  if (saved?.clues === 3) return Math.min(h, CLUE_AFTER.length);
+  if (saved?.clues === 2) return Math.min(Math.max(0, h - 1), CLUE_AFTER.length);
+  return 0;
+}
+
+/**
+ * The rank put in proportion: "top 12%" reads as a place in the field where
+ * "1,065 of 9,030" read as hopeless. Rounded UP, so nobody is flattered, and
+ * never below 1%.
+ */
+export function topShare(rank, poolSize) {
+  if (!(rank > 0) || !(poolSize > 0)) return '';
+  return `top ${Math.max(1, Math.ceil((rank / poolSize) * 100))}%`;
 }
 
 // ── The position a clue or a reveal may PRINT ───────────────────────────────

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowLeft, Search, Lock, Shirt, Shield, Type, Flame } from 'lucide-react';
+import { ArrowLeft, Search, Lock, Shirt, Shield, Type, Flame, Calendar, TrendingUp, TrendingDown } from 'lucide-react';
 import GameTitle from '../components/GameTitle.jsx';
 // Same kit the Trail takes (TransferTrail.jsx) — the scouting panel measured
 // this file at ZERO haptic/sound/confetti: the hardest, longest-effort daily
@@ -13,7 +13,7 @@ import {
   rankPool, bandFor, HOT_SHARE, WARM_SHARE, matchGuess,
   mysteryDayIndex, mysteryNumber, buildMysteryShareText,
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition,
-  explainGuess, reasonLine, clueLadder, CLUE_AFTER,
+  explainGuess, reasonLine, clueLadder, CLUE_AFTER, paidCluesFromSave, topShare,
 } from '../lib/mysteryPlayer.js';
 import { careerOf, mainClub, spellYears } from '../lib/mysteryCareer.js';
 import { usePlayerPool } from '../lib/usePlayerPool.js';
@@ -79,12 +79,14 @@ const BAND_STYLE = {
   cold: { bg: 'var(--s1)',            bd: 'var(--border)', fg: 'var(--t2)' },
 };
 
-// The clue rungs, before the answer has loaded and once it has.
-const CLUE_ICON = { position: Shirt, club: Shield, initials: Type };
+// The clue rungs, before the answer has loaded and once it has. The first two
+// are free from guess one (the warm start, lib/mysteryPlayer.js).
+const CLUE_ICON = { position: Shirt, born: Calendar, club: Shield, initials: Type };
 const CLUE_PLACEHOLDER = [
-  { key: 'position', label: 'Position', after: CLUE_AFTER[0] },
-  { key: 'club', label: 'Played for', after: CLUE_AFTER[1] },
-  { key: 'initials', label: 'Initials', after: CLUE_AFTER[2] },
+  { key: 'position', label: 'Position', after: 0, free: true },
+  { key: 'born', label: 'Born', after: 0, free: true },
+  { key: 'club', label: 'Played for', after: CLUE_AFTER[0], free: false },
+  { key: 'initials', label: 'Initials', after: CLUE_AFTER[1], free: false },
 ];
 
 export default function MysteryPlayer({ onExit, date = new Date(), services, embedded = false }) {
@@ -125,14 +127,21 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // A returning player — guesses on the board, or a finished puzzle whose
   // reveal needs the answer's name — gets the data straight away rather than
   // on a focus that may never come.
+  // ⚠️ AND IN THE APP, EVERYONE, ON OPEN (16 Oct 2026): the starting clues
+  // (position, birth decade) are read from the answer's pool record, and they
+  // are the first thing a player should see. On the static page (`embedded`)
+  // the data still waits for the guess box, for readers who never play.
   useEffect(() => {
-    if (saved?.guesses?.length || saved?.won || saved?.gaveUp) ensureData();
-  }, [saved, ensureData]);
+    if (!embedded || saved?.guesses?.length || saved?.won || saved?.gaveUp) ensureData();
+  }, [saved, ensureData, embedded]);
   const [text, setText] = useState('');
   const [guesses, setGuesses] = useState(() => saved?.guesses || []); // [{ id, name, club, rank, band }]
   // Rules collapse after the first guess but stay one tap away — the `?`.
   const [showRules, setShowRules] = useState(false);
   const [error, setError] = useState('');
+  // The last guess and the best rank before it: "warmer" or "colder" is said
+  // against the player's OWN closest guess, not against nine thousand.
+  const [last, setLast] = useState(null); // { id, rank, prevBest }
   const [won, setWon] = useState(() => !!saved?.won);
   // ⚠️ THE TERMINAL STATE THIS MODE NEVER HAD (added 2026-08-17): without a
   // give-up, the hardest daily was the one where not solving cost the streak.
@@ -142,11 +151,10 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // Clues revealed, in ladder order. Opt-in: a clue that has unlocked waits for
   // a tap, so help is never forced on someone still enjoying the hunt, and the
   // count on the result is the number the player chose to take.
-  // ⚠️ A SAVE FROM BEFORE THE CLUE LADDER (14 Oct 2026) counted old hints: three
-  // after three guesses. Read as ladder steps that would show position, club
-  // and initials untapped. Position was the first clue in both, so an old save
-  // keeps at most that one. New saves carry `clues: 2`.
-  const [hintsUsed, setHintsUsed] = useState(() => (saved?.clues === 2 ? (saved?.hintsUsed || 0) : Math.min(saved?.hintsUsed || 0, 1)));
+  // Counts PAID clues only (club, initials); position and decade are free.
+  // ⚠️ Saves from the older ladders count differently: paidCluesFromSave reads
+  // them. New saves carry `clues: 3`.
+  const [hintsUsed, setHintsUsed] = useState(() => paidCluesFromSave(saved));
   const [streak, setStreak] = useState(() => computeMysteryStreak());
   // ⚠️ Player-reported 2026-08-22: the keyboard sat on top of the board and the
   // page would not scroll. See lib/useKeyboardAwareInput.js.
@@ -169,11 +177,13 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     return live.sort((a, b) => a.rank - b.rank);
   }, [guesses, ranks, POOL.length]);
 
-  // The clue ladder: position, the club he gave most years to, initials —
-  // unlocked after 3, 6 and 9 guesses. ⚠️ Never nationality (see above), and
-  // never `answer.position` directly: hintPosition prints only a checked role.
-  const CLUES = useMemo(() => (answer ? clueLadder(answer, CAREERS, ROLES) : CLUE_PLACEHOLDER), [answer, CAREERS]);
-  const nextClue = CLUES[hintsUsed];
+  // The clue ladder: position and birth decade free, then the club he gave
+  // most years to after 4 guesses and his initials after 8. ⚠️ Never
+  // nationality (see above), and never `answer.position` directly:
+  // hintPosition prints only a checked role.
+  const CLUES = useMemo(() => (answer && CAREERS ? clueLadder(answer, CAREERS, ROLES) : CLUE_PLACEHOLDER), [answer, CAREERS]);
+  const PAID = CLUES.filter((c) => !c.free);
+  const nextClue = PAID[hintsUsed];
   const clueReady = !done && !!answer && !!nextClue && guesses.length >= nextClue.after;
   const revealHint = () => {
     if (!clueReady) return;
@@ -183,7 +193,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     // Persist immediately — a clue taken and then the tab closed must not come
     // back unspent, or the count on the result lies.
     saveMysteryResult(date, {
-      won, gaveUp, guesses, hintsUsed: next, clues: 2, ...(isArchive ? { arc: 1 } : {}),
+      won, gaveUp, guesses, hintsUsed: next, clues: 3, ...(isArchive ? { arc: 1 } : {}),
     });
   };
 
@@ -234,7 +244,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     // To the top of the game, not the page: on the static /mystery-player/ page
     // the game sits below the site's own header.
     try { if (rootRef.current?.scrollIntoView) rootRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' }); else window.scrollTo({ top: 0, behavior: 'smooth' }); } catch { /* old WebView */ }
-    saveMysteryResult(date, { won: false, gaveUp: true, guesses, hintsUsed, clues: 2, ...(isArchive ? { arc: 1 } : {}) });
+    saveMysteryResult(date, { won: false, gaveUp: true, guesses, hintsUsed, clues: 3, ...(isArchive ? { arc: 1 } : {}) });
     // Same archive guard as the win path: replaying an old puzzle must never
     // touch today's habit metrics.
     if (!isArchive) {
@@ -254,6 +264,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     if (guesses.some((g) => g.id === player.id)) { setError(`You already guessed ${player.name}.`); return; }
     const rank = ranks.get(player.id);
     const band = bandFor(rank, POOL.length);
+    setLast({ id: player.id, rank, prevBest: rows.length ? rows[0].rank : null });
     const next = [{ id: player.id, name: player.name, club: player.club, rank, band }, ...rows]
       .sort((a, b) => a.rank - b.rank);
     setGuesses(next);
@@ -267,7 +278,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     else { haptic('select'); playSound('soft'); }
     if (isWin) setWon(true);
     // Persist EVERY guess, not just the win.
-    saveMysteryResult(date, { won: isWin, guesses: next, hintsUsed, clues: 2, ...(isArchive ? { arc: 1 } : {}) });
+    saveMysteryResult(date, { won: isWin, guesses: next, hintsUsed, clues: 3, ...(isArchive ? { arc: 1 } : {}) });
     if (isWin) {
       setStreak(computeMysteryStreak());
       // ⚠️ ARCHIVE PLAYS DO NOT COUNT toward the streak or XP; `attempts` is
@@ -334,7 +345,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         {best !== null && !done && (
           <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 4 }}>
             <div style={{ fontSize: 11, color: 'var(--t3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Closest</div>
-            <div style={{ fontSize: 17, fontWeight: 900, color: BAND_STYLE[rows[0].band].fg }}>{best}</div>
+            <div style={{ fontSize: 17, fontWeight: 900, color: BAND_STYLE[rows[0].band].fg }}>{best.toLocaleString()}</div>
           </div>
         )}
       </div>
@@ -342,17 +353,18 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       {/* One line of rules is always visible; the full version is behind the ?. */}
       {!done && !showRules && n === 0 && (
         <p className="mp-intro">
-          Guess any footballer. Each guess gets a rank and the reason for it.{' '}
+          Guess any footballer. You start with two free clues, and each guess gets a rank and the reason for it.{' '}
           <strong style={{ color: MODE_ACCENT.mystery }}>Lower is closer: the secret player is rank 1.</strong>
         </p>
       )}
       {!done && showRules && (
         <p className="mp-intro">
-          Guess any footballer, from any era. Each guess is ranked by how close he is to the secret player:
-          clubs they both played for count most (more for years as team-mates), then the same position, then
-          the same era. The line under each guess says which of those it shares, and whether he was born
-          earlier or later than the secret player. Clues unlock after 3, 6 and 9
-          guesses. <strong style={{ color: 'var(--t1)' }}>Lower is closer: the secret player is rank 1.</strong>
+          Guess any footballer, from any era. You start with his position and the decade he was born in.
+          Each guess is ranked by how close he is to the secret player: clubs they both played for count most
+          (more for years as team-mates), then the same position, then the same era. The line under each guess
+          says which of those it shares, and whether he was born earlier or later than the secret player. A
+          club he played for unlocks after {CLUE_AFTER[0]} guesses, his initials after {CLUE_AFTER[1]}.{' '}
+          <strong style={{ color: 'var(--t1)' }}>Lower is closer: the secret player is rank 1.</strong>
         </p>
       )}
 
@@ -452,16 +464,24 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         </form>
       )}
 
-      {/* THE CLUE LADDER (14 Oct 2026). Three rungs, always in view so a
-          stuck player can see help is coming and when: position after 3
-          guesses, a club he played for after 6, his initials after 9. A rung
-          that has unlocked waits for a tap. The old clues ("Born in the
-          1960s", "Played for 7 clubs") narrowed nine thousand players to a few
-          hundred, which helps nobody who is already stuck. */}
+      {/* THE CLUE LADDER (14 Oct 2026; warm start 16 Oct). Four rungs in two
+          rows, always in view so a stuck player can see help is coming and
+          when. The top row is free from guess one: his position and the
+          decade he was born in. The bottom row waits: a club he played for
+          after 4 guesses, his initials after 8, each revealed by a tap. */}
       {!done && (
-        <div className="mp-clues" role="group" aria-label="Clues" style={{ gridTemplateColumns: `repeat(${CLUES.length}, minmax(0, 1fr))` }}>
-          {CLUES.map((c, i) => {
+        <div className="mp-clues" role="group" aria-label="Clues">
+          {CLUES.map((c) => {
             const Icon = CLUE_ICON[c.key] || Type;
+            const i = PAID.indexOf(c);
+            if (c.free) {
+              return (
+                <div key={c.key} className={`mp-clue ${c.value ? 'is-shown' : 'is-pending'}`}>
+                  <span className="mp-clue-label"><Icon size={12} aria-hidden="true" />{c.label}</span>
+                  <span className="mp-clue-value">{c.value || 'When you start'}</span>
+                </div>
+              );
+            }
             const shown = i < hintsUsed;
             const isNext = i === hintsUsed && clueReady;
             const left = Math.max(0, c.after - n);
@@ -493,14 +513,25 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       )}
 
       <div style={{ flex: 1, padding: `10px 0 ${24 + kbInset}px`, display: 'flex', flexDirection: 'column', gap: 7 }}>
+        {/* WARMER OR COLDER THAN YOUR OWN BEST (16 Oct 2026). A rank in the
+            thousands says "hopeless"; measured against the player's closest
+            guess so far it says which way they are going. The row it talks
+            about carries the same outline. */}
+        <div className="mp-trend" role="status" aria-live="polite">
+          {!done && last && last.prevBest != null && last.rank !== 1 && (
+            last.rank < last.prevBest
+              ? <><TrendingUp size={14} aria-hidden="true" /><span>Warmer: your closest guess yet</span></>
+              : <><TrendingDown size={14} aria-hidden="true" /><span>Colder than your closest, rank {last.prevBest.toLocaleString()}</span></>
+          )}
+        </div>
         {/* The key to the colours, where the guesses will stand (13 Oct 2026).
             ⚠️ IN SHARES, NOT RANKS: the pool's size is not known yet. */}
         {n === 0 && !done && (
           <div role="group" aria-label="What a rank means" style={{ display: 'flex', flexDirection: 'column', gap: 6, opacity: 0.8 }}>
             {[
               ['win', 'The player', 'Rank 1'],
-              ['hot', BAND_WORD.hot, `Closest ${Math.round(HOT_SHARE * 100)}%`],
-              ['warm', BAND_WORD.warm, `Closest ${Math.round(WARM_SHARE * 100)}%`],
+              ['hot', BAND_WORD.hot, `Top ${Math.round(HOT_SHARE * 100)}%`],
+              ['warm', BAND_WORD.warm, `Top ${Math.round(WARM_SHARE * 100)}%`],
               ['cold', BAND_WORD.cold, 'Everyone else'],
             ].map(([band, word, range]) => (
               <div key={band} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 14px', borderRadius: 12, background: BAND_STYLE[band].bg, border: `1px dashed ${BAND_STYLE[band].bd}` }}>
@@ -516,7 +547,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           // the rank is computed from (lib/mysteryPlayer.js), so they agree.
           const why = g.rank === 1 ? 'The secret player' : (answer && CAREERS ? reasonLine(explainGuess(byId.get(g.id), answer, CAREERS)) : '');
           return (
-            <div key={g.id} className="mp-guess" style={{ background: st.bg, border: `1px solid ${st.bd}` }}>
+            <div key={g.id} className={`mp-guess${!done && last?.id === g.id && rows.length > 1 ? ' is-latest' : ''}`} style={{ background: st.bg, border: `1px solid ${st.bd}` }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div className="mp-guess-name">{g.name}</div>
                 {/* Each reason holds together, and the dot stays at the end of
@@ -535,9 +566,10 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
                 </div>
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{g.rank}</div>
-                {POOL.length > 0 && (
-                  <div style={{ fontSize: 10, color: 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>of {POOL.length.toLocaleString()}</div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{g.rank.toLocaleString()}</div>
+                {/* In proportion, not "of 9,030": see topShare. */}
+                {POOL.length > 0 && g.rank > 1 && (
+                  <div style={{ fontSize: 10, color: 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>{topShare(g.rank, POOL.length)}</div>
                 )}
                 <div style={{ fontSize: 10, fontWeight: 800, color: st.fg, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 1 }}>{BAND_WORD[g.band]}</div>
               </div>
