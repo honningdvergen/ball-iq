@@ -14,6 +14,26 @@ games for the social promo; grow the bank through club packs.
       tests/unit/daily-log.test.js in the same commit. Dry run: 338 days, 545 repeat slots → 0.
 - [ ] **1.8.2 native build** must carry dailyRemote before the rebuild date. Do not release
       1.8.0 build 149 (manual release, waiting) as is.
+- [ ] **Fewer bad days, Trail and Mystery: PLAN ONLY, nothing reordered (16 Oct).** Both
+      schedules are compiled into every native build (TRAIL_ANSWER_LOG in src/lib/trail.js,
+      src/data/mysterySchedule.json; no fetch door like Daily 7's), so moving a future day
+      splits phones from the website. ⚠️ Mystery is ALREADY split: the 14 Oct famous-only
+      rebuild (720ae2b6) is in 1.8.0 build 149 and 1.8.1, but 1.7.6 and 1.8.0 up to build
+      148 carry the old log, so those installs have served different answers since No. 74
+      (15 Oct); 327 days differ. Trail is identical in every build.
+      Signal, fitted on 35 editions of daily_results (n >= 10 each): Trail win rate follows
+      log Wikipedia fame (leave-one-out r 0.47) plus a Japanese-career flag (with it r 0.77,
+      12 points mean error; the flag rests on 3 days, Shibasaki 6%, Osako 11%, Muto 9%, and
+      Mystery's Nakata 5% and Sakai 13% agree). Mystery follows log fame plus years at an
+      elite club (r 0.61, 16 points error); the answer bar already drops its worst kind.
+      Order of work: (1) a fetch door for both logs like dailyRemote.js, in 1.8.2;
+      (2) Trail: replace or re-open (three clubs) the 14 Japanese days still to come (est.
+      9-13%), then a weekly slope beyond the frozen horizon (No. 95+): Mon 89, Tue 82, Wed 70,
+      Thu 66, Fri 62, weekend 73-77 by the estimate, no two days under 50% in a row;
+      (3) Mystery: reordering cannot fix it. Every future answer estimates 25-86%, median 51%,
+      148 of 323 under 50%, and the two famous-only days so far (Salah, Xavi) both ran 57%.
+      The level needs the game (warm start, an earlier first clue), not the order.
+      Scripts and data: ~/ball-iq-audit/2026-10-16/return-research/difficulty/ (fit.mjs).
 - [ ] Top 10 schedule ends 30 Nov; calendar lists can only be APPENDED (apps refuse a schedule
       that does not start with their own). First calendar slot: North London derby, Sat 5 Dec.
 - [ ] Return research (~/ball-iq-audit/2026-10-16/return-research/report.md): mates' leagues
