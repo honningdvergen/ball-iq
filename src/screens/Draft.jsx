@@ -15,10 +15,12 @@
 // has no DOM test environment, so a rule written in here is a rule no test
 // can hold.
 //
-// ⚠️ NOT A DAILY YET. It is reachable only by address (?game=draft), it sends
-// no daily-completed event and feeds no streak. The day's board and the day's
-// luck are already fixed by the date, so turning it on is wiring, not a
-// rewrite.
+// ⚠️ NUMBERED, BUT NOT ONE OF THE FOUR DAILIES (16 Oct 2026). Each day is
+// Draft No. N with its own par, everyone on the same data gets the same board
+// and the same luck, and a start and a finish reach the funnel (App.jsx,
+// draft-start / draft-finish). It still sends no daily-completed event, so it
+// feeds no streak, no day bar and no "Next up": an optional bonus. See the
+// note on board() in draftModel.js for why it is not a full daily yet.
 import GameTitle from "../components/GameTitle.jsx";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshCw } from "lucide-react";
@@ -27,6 +29,7 @@ import {
   POS, FORMATION, SPINS, GAMES,
   prepare, strength, playSeason, dayLuck, standing, ordinal, expectedPoints, seasonLabel,
   freshGame, restoreGame, settleSpin, respin, takePick, picksOf, openIn, squadKeyAt,
+  draftNumber, parPoints, buildDraftShareText,
 } from "../lib/draftModel.js";
 import { resolveDailyServices } from "../games/dailyServices.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
@@ -142,6 +145,7 @@ export default function Draft({ date, onBack, services }) {
 
 function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   const { haptic, playSound, Confetti } = resolveDailyServices(services);
+  const number = isPractice ? 0 : draftNumber(day);
   // What was saved, if all of it still makes sense; otherwise a fresh deal.
   // Either way the spin on show is one somebody can be taken from.
   const [g, setG] = useState(() => settleSpin((isPractice ? null : restoreGame(load(day), D)) || freshGame(D, day), D));
@@ -184,7 +188,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   const result = useMemo(() => {
     if (!done) return null;
     const se = playSeason(strength(picks, D), D.league, dayLuck(day));
-    return { se, stand: standing(se.pts, D.table) };
+    return { se, stand: standing(se.pts, D.table), par: parPoints(D, day) };
   }, [done, picks, D, day]);
   // How many of the 38 matches have been shown. A season already watched, or a
   // player who asked for less motion, gets all of them at once.
@@ -205,13 +209,13 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
     haptic(result.se.pts >= 80 ? "hardCorrect" : "soft");
     // Tells the app the game was finished, not walked away from. Deliberately
     // its own event: `biq:daily-completed` would count this as a daily.
-    try { window.dispatchEvent(new CustomEvent("biq:draft-completed", { detail: { points: result.se.pts, practice: isPractice } })); } catch { /* best effort */ }
-  }, [played, result, g.seen, haptic, isPractice]);
+    try { window.dispatchEvent(new CustomEvent("biq:draft-completed", { detail: { points: result.se.pts, par: result.par, no: number, practice: isPractice } })); } catch { /* best effort */ }
+  }, [played, result, g.seen, haptic, isPractice, number]);
 
   if (!g.started) {
     return (
       <div className="screen dr" style={SKIN}>
-        <Head sub="Eleven spins. One season." onBack={onBack} />
+        <Head no={number} sub="Eleven spins. One season." onBack={onBack} />
         <div className="dr-intro">
           <h2>Build an eleven out of real seasons.</h2>
           <ol>
@@ -224,7 +228,13 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
             <input type="checkbox" checked={g.hard} onChange={(e) => { const hard = e.target.checked; update((cur) => ({ ...cur, hard })); }} />
             <span><b>Hide the numbers.</b> Names only: you have to know who had the season.</span>
           </label>
-          <button className="dr-cta" onClick={() => { haptic("soft"); update((cur) => ({ ...cur, started: true })); }}>Spin</button>
+          <button className="dr-cta" onClick={() => {
+            haptic("soft");
+            update((cur) => ({ ...cur, started: true }));
+            // The start, once per board: a board restored mid-game opens past
+            // this card and never comes back to it. App.jsx records it.
+            try { window.dispatchEvent(new CustomEvent("biq:draft-started", { detail: { no: number, practice: isPractice } })); } catch { /* best effort */ }
+          }}>Spin</button>
           <p className="dr-source">4-3-3. One re-spin. Squads, games and goals from English Wikipedia’s club-season articles, checked against the league table.</p>
         </div>
       </div>
@@ -234,7 +244,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   return (
     <div className={`screen dr${done ? " is-done" : ""}`} style={SKIN}>
       {played && result.se.pts >= 90 && Confetti ? <Confetti /> : null}
-      <Head sub={done ? (isPractice ? "Practice board" : "Today’s board") : `Spin ${at + 1} of ${SPINS}`} onBack={onBack}
+      <Head no={number} sub={done ? (isPractice ? "Practice board" : "Today’s board") : `Spin ${at + 1} of ${SPINS}`} onBack={onBack}
         right={!done && (
           <button className="dr-respin" onClick={onRespin} disabled={g.respun} aria-label={g.respun ? "Re-spin used" : "Re-spin this squad"}>
             <RefreshCw size={15} strokeWidth={2.4} aria-hidden="true" />{g.respun ? "Re-spin used" : "Re-spin"}
@@ -292,19 +302,19 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
       )}
 
       {done && result && (
-        <Season result={result} picks={picks} shown={shown} played={played} hard={g.hard}
+        <Season result={result} number={number} picks={picks} shown={shown} played={played} hard={g.hard}
           isPractice={isPractice} onSkip={() => setShown(GAMES)} onAnother={onAnother} onBack={onBack} />
       )}
     </div>
   );
 }
 
-function Head({ sub, onBack, right }) {
+function Head({ no, sub, onBack, right }) {
   return (
     <div className="dr-head">
       {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <GameTitle className="dr-head-title">Draft</GameTitle>
+        <GameTitle no={no} className="dr-head-title">Draft</GameTitle>
         <div className="dr-head-sub">{sub}</div>
       </div>
       {right}
@@ -341,8 +351,8 @@ function Pitch({ picks, chosen }) {
 
 const WORD = { w: "Won", d: "Drew", l: "Lost" };
 
-function Season({ result, picks, shown, played, hard, isPractice, onSkip, onAnother, onBack }) {
-  const { se, stand } = result;
+function Season({ result, number, picks, shown, played, hard, isPractice, onSkip, onAnother, onBack }) {
+  const { se, stand, par } = result;
   const sofar = se.matches.slice(0, shown);
   const w = sofar.filter((m) => m.r === "w").length, d = sofar.filter((m) => m.r === "d").length, l = shown - w - d;
   const last = sofar[sofar.length - 1];
@@ -353,15 +363,16 @@ function Season({ result, picks, shown, played, hard, isPractice, onSkip, onAnot
     : stand.titles > 0 ? `${se.pts} points wins the league in ${stand.titles} of the ${stand.seasons} seasons since 1995.`
       : stand.down >= stand.seasons / 2 ? `${se.pts} points goes down in ${stand.down} of the ${stand.seasons} seasons since 1995.`
         : `${se.pts} points has never won the league. It usually finishes ${ordinal(stand.place)}.`;
+  // The same share as Top 10 and the Trail: the text through the sheet, or the
+  // clipboard where there is no sheet. The text is built in draftModel.js.
   const share = useCallback(async () => {
-    const rowsOf = (ms) => ms.map((m) => (m.r === "w" ? "🟩" : m.r === "d" ? "⬜" : "🟥")).join("");
-    const text = `Ball IQ Draft\n${se.w}-${se.d}-${se.l} · ${se.pts} points · goals ${se.gf}-${se.ga}\n${rowsOf(se.matches.slice(0, 19))}\n${rowsOf(se.matches.slice(19))}\n${verdict}\nballiq.app/play?game=draft`;
+    const text = buildDraftShareText({ number, se, par });
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try {
       await navigator.clipboard.writeText(text);
       window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: "📋 Copied — paste it anywhere" }));
     } catch { /* nothing to copy to */ }
-  }, [se, verdict]);
+  }, [se, number, par]);
 
   return (
     <div className="dr-season">
@@ -385,6 +396,9 @@ function Season({ result, picks, shown, played, hard, isPractice, onSkip, onAnot
         <div className="dr-final" aria-live="polite">
           <div className="dr-points">{se.pts}<small> points</small></div>
           <div className="dr-goals">Won {se.w}, drew {se.d}, lost {se.l} · goals {se.gf}–{se.ga}</div>
+          {/* What the regulars-only eleven scores on this board with this luck
+              (parPoints, draftModel.js). One quiet line, never a crowd number. */}
+          {par != null && <div className="dr-par">{isPractice ? "Par for this board" : "Par today"}: {par} points</div>}
           <p className="dr-verdict">{verdict}</p>
           <p className="dr-why">
             {absent.p.on < 0.8

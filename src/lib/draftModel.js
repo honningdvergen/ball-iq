@@ -194,13 +194,14 @@ export function playSeason(st, L, luck) {
 // only if that squad is on it (tested). Drawing by position reshuffled every
 // board of the year whenever one squad was added (measured, 10 Oct 2026).
 //
-// ⚠️ THIS IS NOT ENOUGH TO MAKE IT A DAILY. A new squad lands on about one
-// day's board in thirty, so a batch of thirty new squads changes most days.
-// Two players are on the same board only if they hold the same data, and a
-// native build holds the data it was built with. Before this game is a daily,
-// the squads (or the day's board) must come from the server, as the Top 10
-// lists must. Until then "everyone gets the same board" is true of everyone on
-// the same version of the site, which is everyone on the web.
+// ⚠️ THIS IS NOT ENOUGH TO MAKE IT A FULL DAILY, NUMBER OR NOT. A new squad
+// lands on about one day's board in thirty, so a batch of thirty new squads
+// changes most days. Two players are on the same board only if they hold the
+// same data, and a native build holds the data it was built with. Before this
+// joins the four dailies, the squads (or the day's board) must come from the
+// server, as the Top 10 lists do. Until then "everyone gets the same board" is
+// true of everyone on the same version of the site, which is everyone on the
+// web: Draft No. N (below) names the same board only there.
 const RECIPE = [['top', 5], ['mid', 4], ['low', 2]];
 const BENCH_TIERS = ['mid', 'top', 'mid', 'low', 'mid', 'top', 'mid', 'low'];
 export const tierOf = (s) => (s.pos <= 4 ? 'top' : s.pos <= 12 ? 'mid' : 'low');
@@ -352,4 +353,46 @@ export function standing(pts, table) {
   }
   places.sort((a, b) => a - b);
   return { seasons: years.length, titles, down, place: places[places.length >> 1] };
+}
+
+// ── The day's number, its par, and the share ─────────────────────────────────
+// Draft No. 1 is 16 Oct 2026 (day index 20742), counted the way Footle and the
+// Top 10 count: the local date's day index from an anchor. A practice board has
+// no number, and before the anchor the number is 0 or less and is not shown.
+export const DRAFT_ANCHOR_DAY = 20742;
+export const draftNumber = (day) => day - DRAFT_ANCHOR_DAY + 1;
+
+// PAR is what a player who knows only the regulars scores on the day's board,
+// with the day's luck. It is played, not guessed: from every spin take the man
+// who played the most league games that season (more goals, then the lower id,
+// breaks a tie), never use the re-spin, let the free bench swaps happen as they
+// do for everyone, then play the 38 matches with the day's rolls. The luck is
+// the same for everybody, so beating par means picking better than that, not
+// being luckier. Measured over 120 days from No. 1: par averages 74 (48 to 107
+// as the luck swings), where a man taken at random averages 50 and picking for
+// the model's own expected points averages 83. No crowd number goes into it:
+// there is none yet, and inventing one is what this game promises not to do.
+export function parPick(players) {
+  return [...players].sort((a, b) => b.on - a.on || b.g - a.g || a.id - b.id)[0];
+}
+export function parPoints(D, day) {
+  let g = settleSpin({ ...freshGame(D, day), started: true }, D);
+  while (g.picks.length < SPINS) {
+    const sq = D.byKey.get(squadKeyAt(g, g.picks.length));
+    const p = parPick(sq.players.filter(openIn(picksOf(g, D)).can));
+    if (!p) return null; // cannot happen on real data: every board plays out (tested)
+    g = settleSpin(takePick(g, D, p.id), D);
+  }
+  return playSeason(strength(picksOf(g, D), D), D.league, dayLuck(day)).pts;
+}
+
+// The share: spoiler-free (no club, no season, no man), like the other dailies'.
+// The number is "#N" as in every share text (GameTitle.jsx); the screen says
+// "No. N". One square per match in the day's playing order, the first half of
+// the season on one row and the second half on the next.
+export function buildDraftShareText({ number = 0, se, par = null } = {}) {
+  const row = (ms) => ms.map((m) => (m.r === 'w' ? '🟩' : m.r === 'd' ? '⬜' : '🟥')).join('');
+  const head = `⚽ Ball IQ · Draft${number > 0 ? ` #${number}` : ''}`;
+  const line = `${se.pts} points · ${se.w}-${se.d}-${se.l}${par != null ? ` · par ${par}` : ''}`;
+  return `${head}\n${line}\n${row(se.matches.slice(0, 19))}\n${row(se.matches.slice(19))}\n\nballiq.app/play?game=draft`;
 }

@@ -444,3 +444,59 @@ describe('expectedPoints', () => {
     expect(m.expectedPoints(xi.slice(0, 1), D)).toBeGreaterThanOrEqual(empty);
   });
 });
+
+// The numbered day (16 Oct 2026): Draft No. N, a par played from the board, a
+// spoiler-free share, and a start and a finish in the funnel. Still not one of
+// the four dailies: no daily-completed event (pinned above).
+describe('Draft No. N, par and the share', () => {
+  it('No. 1 is 16 Oct 2026, counted from the local date like Footle and the Top 10', async () => {
+    const m = await import('../../src/lib/draftModel.js');
+    const { dayIndexForDate } = await import('../../src/lib/date.js');
+    expect(m.draftNumber(dayIndexForDate(new Date(2026, 9, 16)))).toBe(1);
+    expect(m.draftNumber(dayIndexForDate(new Date(2026, 9, 17)))).toBe(2);
+    expect(m.draftNumber(dayIndexForDate(new Date(2026, 9, 15)))).toBe(0);
+  });
+  it('par is played from the day’s board with the day’s luck: the same every time, and every board has one', async () => {
+    const m = await import('../../src/lib/draftModel.js');
+    const pars = [];
+    for (let day = m.DRAFT_ANCHOR_DAY; day < m.DRAFT_ANCHOR_DAY + 365; day += 5) {
+      const p = m.parPoints(D, day);
+      expect(Number.isInteger(p)).toBe(true);
+      expect(m.parPoints(D, day)).toBe(p);
+      pars.push(p);
+    }
+    const mean = pars.reduce((a, b) => a + b, 0) / pars.length;
+    expect(mean).toBeGreaterThan(62); expect(mean).toBeLessThan(86);   // "knows the regulars", not perfect play
+    expect(new Set(pars).size).toBeGreaterThan(10);                     // it moves with the board and the luck
+  });
+  it('the par pick is the man who played most, then scored most', async () => {
+    const { parPick } = await import('../../src/lib/draftModel.js');
+    expect(parPick([{ id: 1, on: 0.5, g: 9 }, { id: 2, on: 0.9, g: 0 }, { id: 3, on: 0.9, g: 4 }]).id).toBe(3);
+  });
+  it('the share names the number, the points, the record and par, and no club, season or man', async () => {
+    const m = await import('../../src/lib/draftModel.js');
+    const day = m.DRAFT_ANCHOR_DAY;
+    const g = playOut(freshGame(D, day));
+    const se = playSeason(strength(picksOf(g, D), D), D.league, dayLuck(day));
+    const text = m.buildDraftShareText({ number: 1, se, par: 74 });
+    const lines = text.split('\n');
+    expect(lines[0]).toBe('⚽ Ball IQ · Draft #1');
+    expect(lines[1]).toBe(`${se.pts} points · ${se.w}-${se.d}-${se.l} · par 74`);
+    expect([...lines[2]].length + [...lines[3]].length).toBe(GAMES);
+    expect(lines[lines.length - 1]).toBe('balliq.app/play?game=draft');
+    for (const { p, sq } of picksOf(g, D)) { expect(text).not.toContain(p.n); expect(text).not.toContain(sq.club); }
+    expect(m.buildDraftShareText({ number: 0, se }).split('\n')[0]).toBe('⚽ Ball IQ · Draft');
+  });
+  it('the screen shows the number and par, and its start and finish reach the funnel', () => {
+    const app = readFileSync(new URL('../../src/App.jsx', import.meta.url), 'utf8');
+    const screen = readFileSync(new URL('../../src/screens/Draft.jsx', import.meta.url), 'utf8');
+    expect(screen).toMatch(/<GameTitle no=\{no\}/);
+    expect(screen).toMatch(/const number = isPractice \? 0 : draftNumber\(day\);/);
+    expect(screen).toMatch(/Par today/);
+    expect(screen).toMatch(/CustomEvent\("biq:draft-started"/);
+    expect(app).toMatch(/addEventListener\('biq:draft-started', onDraftStart\)/);
+    expect(app).toMatch(/addEventListener\('biq:draft-completed', onDraftFinish\)/);
+    expect(app).toMatch(/loopEvent\('draft-start'/);
+    expect(app).toMatch(/loopEvent\('draft-finish'/);
+  });
+});

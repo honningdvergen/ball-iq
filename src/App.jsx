@@ -153,7 +153,7 @@ const LocalResults = withSuspense(lazyNamed(() => import('./screens/LocalPlay.js
 const TransferTrail = React.lazy(() => import('./screens/TransferTrail.jsx'));
 const Top10 = React.lazy(() => import('./screens/Top10.jsx'));
 const Top10Library = React.lazy(() => import('./screens/Top10Library.jsx'));
-// Reachable by address only (?game=draft) until it is a daily: see the note in the screen.
+// Numbered (Draft No. N) but not one of the four dailies: see the note in the screen.
 const Draft = React.lazy(() => import('./screens/Draft.jsx'));
 const StadiumGame = React.lazy(() => import('./screens/StadiumGame.jsx'));
 const MysteryPlayer = React.lazy(() => import('./screens/MysteryPlayer.jsx'));
@@ -6848,6 +6848,20 @@ function AppInner() {
       loopEvent('stadiums-abandon', { league: d.league, solved: d.solved, total: d.total, hints: d.hints });
     };
     window.addEventListener('biq:stadiums-exit', onStadiumsExit);
+    // The Draft: a start and a finish, nothing more. It is not one of the four
+    // dailies yet (screens/Draft.jsx), so no XP, no streak and no `scores` row:
+    // its points run to ninety and would sit beside quiz scores out of ten in
+    // that table. The funnel pair answers "how many start it, and finish".
+    const onDraftStart = (e) => {
+      const d = e?.detail || {};
+      loopEvent('draft-start', { no: d.no, practice: !!d.practice });
+    };
+    const onDraftFinish = (e) => {
+      const d = e?.detail || {};
+      loopEvent('draft-finish', { no: d.no, points: d.points, par: d.par, practice: !!d.practice });
+    };
+    window.addEventListener('biq:draft-started', onDraftStart);
+    window.addEventListener('biq:draft-completed', onDraftFinish);
     // Widget repaint rides the same event: a SECOND same-day completion
     // leaves loginStreak untouched (tick no-op), so the state-driven sync
     // effect would not re-fire — the direct call covers that gap.
@@ -6857,6 +6871,8 @@ function AppInner() {
       // (Also fixes a leak: the stadiums listener was never removed.)
       window.removeEventListener('biq:stadiums-completed', onStadiumsDone);
       window.removeEventListener('biq:stadiums-exit', onStadiumsExit);
+      window.removeEventListener('biq:draft-started', onDraftStart);
+      window.removeEventListener('biq:draft-completed', onDraftFinish);
       window.removeEventListener('biq:daily-completed', onDailyDoneAndSync);
     };
   }, [maybePromptNotif, awardXp, user?.id, tickLoginStreak, recordPlay, markFirstGameFinished]);
