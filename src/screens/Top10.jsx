@@ -506,6 +506,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
               onShare={onShare}
               remind={dailyDone?.remind}
               nextUp={dailyDone?.nextUp || []}
+              day={dailyDone?.day}
               save={dailyDone?.save}
               GetAppCTA={GetAppCTA}
               track={dailyDone?.track}

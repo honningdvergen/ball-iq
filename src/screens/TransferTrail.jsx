@@ -492,6 +492,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
               onShare={onShare}
               remind={dailyDone?.remind}
               nextUp={dailyDone?.nextUp || []}
+              day={dailyDone?.day}
               save={dailyDone?.save}
               GetAppCTA={GetAppCTA}
               track={dailyDone?.track}

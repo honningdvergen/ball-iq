@@ -50,6 +50,17 @@ const DEFAULT_ICON = {
   top10: <ListOrdered size={18} strokeWidth={2.2} />,
 };
 
+// What each daily costs, said on the Next up card: "3 min" answers the
+// question that stops a second game (daily design pass, 16 Oct 2026).
+const HOOK = {
+  footle: "Six guesses · 2 min",
+  daily7: "7 questions · 3 min",
+  trail: "Whose career? · 2 min",
+  top10: "Name all ten · 4 min",
+  mystery: "Guess who · 3 min",
+};
+const modeOf = (k) => (k === "daily" ? "daily7" : k);
+
 // One "the panel was seen" event per result, claimed synchronously.
 //
 // Every other event in this file is a TAP, which leaves the denominator
@@ -65,7 +76,7 @@ const DEFAULT_ICON = {
 // it exists to measure.
 const shownClaims = new Set();
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], save, stump, GetAppCTA = null, track }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, GetAppCTA = null, track }) {
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
   // Too few results yet today: yesterday's edition stands in, labelled and
@@ -229,6 +240,68 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           phone browser the finish is the moment of highest intent, so the
           visitor's own store badge sits here; inside the app GetAppCTA draws
           nothing. */}
+      {/* NEXT UP (daily design pass, 16 Oct 2026). "Still open today" was a
+          title and up to three equal rows, below Share and the app badge.
+          Playing a second daily depends on nobody and is the cheapest
+          retention the product has, so it is now ONE large card for the next
+          daily, with its cost in minutes, the day's progress and the countdown;
+          the rest follow as small chips. Web player-days with 2+ dailies were
+          44% over 30 days against 76% signed in: this is that gap. */}
+      {!isArchive && (() => {
+        const others = nextUp.filter((n) => modeOf(n.key) !== modeOf(game));
+        const [first, ...rest] = others;
+        const go = (n) => { track?.("dd-next", { game, to: n.key }); n.onTap?.(); };
+        const lostHere = won === false && SCORE_GAMES[game] == null;
+        const keys = day?.keys || [];
+        const isDone = (k) => modeOf(k) === modeOf(game) || !nextUp.some((n) => modeOf(n.key) === modeOf(k));
+        const doneN = keys.filter(isDone).length;
+        const card = (n, cls, inner) => {
+          const T = n.href ? "a" : "button";
+          const rgb = MODE_RGB[modeOf(n.key)] || "88,204,2";
+          const c = MODE_ACCENT[modeOf(n.key)] || "var(--accent)";
+          return <T key={n.key} className={cls} style={{ "--dd-rgb": rgb, "--dd-c": c }} href={n.href} onClick={() => go(n)} {...(n.href ? {} : { type: "button" })}>{inner}</T>;
+        };
+        return (
+          <>
+            {first ? card(first, "dd-up", (
+              <>
+                <span className="dd-up-k">Next up</span>
+                <span className="dd-up-main">
+                  <span className="dd-well" aria-hidden="true">{first.icon || DEFAULT_ICON[modeOf(first.key)] || null}</span>
+                  <span className="dd-up-body">
+                    <span className="dd-up-name">{first.name}</span>
+                    <span className="dd-up-hook">{lostHere ? "Win the day back · " : ""}{HOOK[modeOf(first.key)] || ""}</span>
+                  </span>
+                  <span className="dd-up-go">Play</span>
+                </span>
+              </>
+            )) : keys.length > 0 && doneN >= keys.length ? (
+              <div className="dd-up is-sweep">
+                <span className="dd-up-k">Clean sweep</span>
+                <span className="dd-up-name">All {keys.length} done today</span>
+              </div>
+            ) : null}
+            {keys.length > 1 && (
+              <div className="dd-day" aria-label={`${doneN} of ${keys.length} today`}>
+                <span className="dd-day-bar" aria-hidden="true">
+                  {keys.map((k) => (
+                    <i key={k} className={isDone(k) ? (modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done") : ""} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
+                  ))}
+                </span>
+                <span className="dd-day-tx"><strong className="dd-num">{doneN} of {keys.length}</strong> today · new in <strong className="dd-num">{ko}</strong></span>
+              </div>
+            )}
+            {rest.length > 0 && (
+              <div className="dd-up-more">
+                {rest.map((n) => card(n, "dd-chip", (
+                  <><span className="dd-chip-ic" aria-hidden="true">{n.icon || DEFAULT_ICON[modeOf(n.key)] || null}</span>{n.name.replace(/^Today's /, "")}</>
+                )))}
+              </div>
+            )}
+          </>
+        );
+      })()}
+
       {GetAppCTA && <div className="dd-getapp"><GetAppCTA /></div>}
 
       {/* THE ASK IS A ROW, NOT A PILL (2026-09-09). Reach is the retention
@@ -252,33 +325,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
       )}
 
-      {/* (No longer above Share: see the note on the Share button, 12 Oct
-          2026. What follows is why this list sits high in the panel at all.)
-          ABOVE SHARE, DELIBERATELY, AS IT WAS THEN (Alex, 2026-09-06, looking at his own
-          finish screen: "we can not really see the modes further down, nobody
-          will scroll down here"). He is right, and the ranking is not close.
-          Sharing depends on another person and k-factor measured 0.23 — the
-          floor. Playing a second daily depends on nobody, is one tap, and is
-          the cheapest retention this product has. The panel's job at this
-          moment is "what next?", and another puzzle is a better answer than a
-          share sheet. So: streak, then what is still open, then share. */}
-      {nextUp.filter((n) => n.key !== game).length > 0 && (
-        <div className="dd-next" aria-label="Still open today">
-          <div className="dd-title">Still open today</div>
-          {nextUp.filter((n) => n.key !== game).map((n) => {
-            const Tag = n.href ? "a" : "button";
-            const rgb = MODE_RGB[n.key === "daily" ? "daily7" : n.key] || "88,204,2";
-            const c = MODE_ACCENT[n.key === "daily" ? "daily7" : n.key] || "var(--accent)";
-            return (
-              <Tag key={n.key} className="dd-next-row is-mode" style={{ "--dd-rgb": rgb, "--dd-c": c }} href={n.href} onClick={() => { track?.("dd-next", { game, to: n.key }); n.onTap?.(); }} {...(n.href ? {} : { type: "button" })}>
-                <span className="dd-well" aria-hidden="true">{n.icon || DEFAULT_ICON[n.key] || null}</span>
-                <span className="dd-title">{n.name}</span>
-                <span className="dd-next-go">Play</span>
-              </Tag>
-            );
-          })}
-        </div>
-      )}
 
       {/* SHARES, NOT HEADCOUNTS, WHILE THE CROWD IS SMALL (Alex, 2026-10-07).
           "27 played" and a bar reading "13" tell a newcomer how few people are

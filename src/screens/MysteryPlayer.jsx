@@ -386,14 +386,14 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         <div style={{ margin: '0 0 14px' }}>
           <DailyDone game="mystery" edition={mysteryNumber(date)} won bucket={n} isArchive={isArchive}
             streak={dailyDone?.streak || { count: streak, label: 'Mystery streak' }} onShare={() => shareResult(true)}
-            remind={dailyDone?.remind} nextUp={dailyDone?.nextUp || []} save={dailyDone?.save} GetAppCTA={GetAppCTA} track={dailyDone?.track} />
+            remind={dailyDone?.remind} nextUp={dailyDone?.nextUp || []} day={dailyDone?.day} save={dailyDone?.save} GetAppCTA={GetAppCTA} track={dailyDone?.track} />
         </div>
       )}
       {gaveUp && answer && (
         <div style={{ margin: '0 0 14px' }}>
           <DailyDone game="mystery" edition={mysteryNumber(date)} won={false} bucket={0} isArchive={isArchive}
             streak={dailyDone?.streak || { count: 0, label: 'Mystery streak' }} onShare={() => shareResult(false)}
-            remind={dailyDone?.remind} nextUp={dailyDone?.nextUp || []} save={dailyDone?.save} GetAppCTA={GetAppCTA} track={dailyDone?.track} />
+            remind={dailyDone?.remind} nextUp={dailyDone?.nextUp || []} day={dailyDone?.day} save={dailyDone?.save} GetAppCTA={GetAppCTA} track={dailyDone?.track} />
         </div>
       )}
 

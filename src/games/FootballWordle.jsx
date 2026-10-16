@@ -720,6 +720,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             waText={!isNative && shareText ? shareText : undefined}
             remind={dailyDone?.remind}
             nextUp={dailyDone?.nextUp || []}
+            day={dailyDone?.day}
             save={dailyDone?.save}
             GetAppCTA={GetAppCTA}
             track={dailyDone?.track}

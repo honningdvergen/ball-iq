@@ -6322,7 +6322,11 @@ function AppInner() {
         if (!(m && (m.won || m.gaveUp))) nextUp.push({ key: "mystery", name: "Today's Mystery Player", icon: <UserRoundSearch size={18} strokeWidth={2.2} />, onTap: () => setScreen("mystery") });
       }
     } catch {}
+    // The day's dailies, for the Next up card's progress bar (16 Oct 2026).
+    let dayKeys = ["footle", "daily7", "trail"];
+    try { dayKeys = [...dayKeys, ...(isTop10Live() ? ["top10"] : MYSTERY_ENABLED ? ["mystery"] : [])]; } catch {}
     return {
+      day: { keys: dayKeys },
       remind: { state: resultsRemindState, onRemind: remindFromResults },
       // "daily streak" — the cross-mode one; the islands pass the per-game label.
       streak: { count: loginStreak || 0, label: "daily streak" },
