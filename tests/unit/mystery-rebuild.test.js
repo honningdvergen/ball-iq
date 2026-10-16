@@ -65,10 +65,10 @@ describe('the schedule: famous answers from 15 Oct, the past untouched', () => {
     const bar = (n) => answerBar(byName(n), { careers, roles, exclusions, pool });
     expect(bar('Joachim Löw').ok).toBe(false);
     expect(bar('Rafa Benítez').ok).toBe(false);
-    // Henry is a household name whose careers record is missing Arsenal
-    // 1999-2007: the reveal would print a career without it.
-    expect(bar('Thierry Henry').why.join()).toMatch(/hole/);
-    for (const n of ['Zinedine Zidane', 'Diego Maradona', 'Johan Cruyff', 'Mohamed Salah', 'Erling Haaland']) {
+    // Henry used to fail here on a hole: the careers record had lost Arsenal
+    // 1999-2007 because the fetch kept one spell per club. Since 16 Oct 2026
+    // every spell is kept (scripts/lib/mystery-spells.mjs), so he clears it.
+    for (const n of ['Thierry Henry', 'Zinedine Zidane', 'Diego Maradona', 'Johan Cruyff', 'Mohamed Salah', 'Erling Haaland']) {
       expect(bar(n).why, n).toEqual([]);
     }
   });

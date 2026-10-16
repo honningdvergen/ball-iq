@@ -15,10 +15,35 @@
 //     discriminator — no name blacklist required, which matters because a
 //     blacklist only ever catches the examples you already thought of.
 //
+// ⚠️ EVERY SPELL, NOT ONE PER CLUB (16 Oct 2026). The sink kept the first
+// statement per club and dropped the rest, so a second stint never reached the
+// game: Buffon without Juventus 2001-18, Henry without Arsenal 1999-2007,
+// Cristiano Ronaldo without Manchester United 2021-22. Statements are now
+// collected by statement id and turned into spells by spellsFromStatements()
+// (scripts/lib/mystery-spells.mjs), which also pairs the two stints some
+// editors put on ONE statement — the cause of spells that ended before they
+// started. The resumable partial file was renamed for the same reason: the old
+// one holds one-spell-per-club careers and must not be resumed.
+//
+//   node scripts/fetch-mystery-careers.mjs --ids=Q68060,Q45901
+//       fetch only these players and write scripts/_mystery-careers.sample.json
+//       (or --out=FILE); the full run's files are not touched.
+//
+// ⚠️ AFTER A FULL RUN, DO NOT REBUILD THE POOL TO SHIP THE NEW SPELLS.
+// build-mystery-pool-v2.mjs also rewrites mysteryPool.json and
+// mysteryAnswers.json, and the careers file has been edited since it was built.
+// Lay the new stints over the shipped careers with
+//   node scripts/merge-mystery-spells.mjs scripts/_mystery-careers.json
+//
 // ⚠️ USES p:P54 / ps:P54, NOT wdt:P54. `wdt:` is the TRUTHY prefix — preferred
 // rank only — which for a career means roughly the current club and nothing
 // else. The qualifiers (start/end) only exist on the statement node anyway.
 import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { statementCollector, spellsFromStatements } from './lib/mystery-spells.mjs';
+
+const arg = (name) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split('=')[1];
+const ONLY = arg('ids') ? arg('ids').split(',').map((x) => x.trim()).filter(Boolean) : null;
+const OUT = arg('out') || (ONLY ? 'scripts/_mystery-careers.sample.json' : 'scripts/_mystery-careers.json');
 
 const EP = 'https://query.wikidata.org/sparql';
 const UA = 'BallIQ/1.0 (https://balliq.app; football quiz pool build)';
@@ -76,7 +101,7 @@ async function fetchBand(lo, hi, q, sink, depth = 0) {
 // the same question into a bounded lookup.
 const CORE = JSON.parse(readFileSync('scripts/_mystery-core.json', 'utf8'));
 const careerQ = (ids) => `
-SELECT ?p ?club ?clubLabel ?start ?end WHERE {
+SELECT ?p ?st ?club ?clubLabel ?start ?end WHERE {
   VALUES ?p { ${ids.map((i) => 'wd:' + i).join(' ')} }
   ?p p:P54 ?st . ?st ps:P54 ?club .
   OPTIONAL { ?st pq:P580 ?start }
@@ -84,18 +109,23 @@ SELECT ?p ?club ?clubLabel ?start ?end WHERE {
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul". }
 }`;
 
+// Rows are collected per STATEMENT and turned into spells once a player's
+// rows are all in (spellsFromStatements). Keying on the club instead is what
+// dropped every second stint.
 const careers = new Map();
 const clubIds = new Set();
+const collector = statementCollector();
 const sink = (b) => {
   const pid = b.p.value.split('/').pop();
   const cid = b.club.value.split('/').pop();
   clubIds.add(cid);
-  const list = careers.get(pid) || [];
-  if (!list.some((c) => c.id === cid)) {
-    list.push({ id: cid, name: b.clubLabel?.value || cid,
-      start: b.start ? +b.start.value.slice(0, 4) : null,
-      end: b.end ? +b.end.value.slice(0, 4) : null });
-    careers.set(pid, list);
+  collector.add(pid, { st: b.st?.value, club: cid, clubLabel: b.clubLabel?.value || cid,
+    start: b.start?.value, end: b.end?.value });
+};
+const settle = (ids) => {
+  for (const pid of ids) {
+    const spells = spellsFromStatements(collector.statements(pid));
+    if (spells.length) careers.set(pid, spells);
   }
 };
 
@@ -116,8 +146,8 @@ async function fetchChunk(ids, depth = 0) {
 // ⚠️ RESUMABLE. The first run died at 8,000 of 9,384 and threw all of it away.
 // A partial file is written every chunk, so a re-run skips what is already
 // fetched — this query costs ~40 minutes and must not be all-or-nothing.
-const PART = 'scripts/_mystery-careers.partial.json';
-if (existsSync(PART)) {
+const PART = 'scripts/_mystery-careers.v2.partial.json';
+if (!ONLY && existsSync(PART)) {
   const prev = JSON.parse(readFileSync(PART, 'utf8'));
   for (const [pid, list] of Object.entries(prev)) {
     careers.set(pid, list);
@@ -126,13 +156,16 @@ if (existsSync(PART)) {
   console.log(`resuming — ${careers.size} players already fetched`);
 }
 
-console.log(`── careers for ${CORE.length} players ──`);
+const WANT = ONLY ? ONLY.map((id) => ({ id })) : CORE;
+console.log(`── careers for ${WANT.length} players ──`);
 const CHUNK = 200;
-const todo = CORE.filter((p) => !careers.has(p.id));
+const todo = WANT.filter((p) => !careers.has(p.id));
 console.log(`   ${todo.length} still to fetch`);
 for (let i = 0; i < todo.length; i += CHUNK) {
-  await fetchChunk(todo.slice(i, i + CHUNK).map((p) => p.id));
-  writeFileSync(PART, JSON.stringify(Object.fromEntries(careers)));
+  const ids = todo.slice(i, i + CHUNK).map((p) => p.id);
+  await fetchChunk(ids);
+  settle(ids);
+  if (!ONLY) writeFileSync(PART, JSON.stringify(Object.fromEntries(careers)));
   process.stdout.write(`  ${Math.min(i + CHUNK, todo.length)}/${todo.length} · ${careers.size} with careers\r`);
 }
 console.log('');
@@ -168,16 +201,19 @@ for (const [pid, list] of careers) {
   const clubs = list.filter((c) => { if (isNational(c.id)) { nationalDropped++; return false; } return true; });
   if (clubs.length) { out[pid] = clubs; clubMemberships += clubs.length; }
 }
-writeFileSync('scripts/_mystery-careers.json', JSON.stringify(out));
+writeFileSync(OUT, JSON.stringify(out));
+console.log(`wrote ${OUT}`);
 
 console.log(`\n\nplayers with a club career: ${Object.keys(out).length}`);
-console.log(`club memberships: ${clubMemberships}  ·  national-team rows dropped: ${nationalDropped}`);
+console.log(`club spells: ${clubMemberships}  ·  national-team rows dropped: ${nationalDropped}`);
 
-// The discriminator, shown rather than asserted.
+// The discriminator, shown rather than asserted (distinct clubs, not spells).
+if (!ONLY) {
 const core = JSON.parse(readFileSync('scripts/_mystery-core.json', 'utf8'));
 const byId = new Map(core.map((p) => [p.id, p]));
-const n = (name) => { const p = core.find((x) => x.name === name); return p ? (out[p.id] || []).length : '—'; };
+const n = (name) => { const p = core.find((x) => x.name === name); return p ? new Set((out[p.id] || []).map((c) => c.id)).size : '—'; };
 console.log('\nclub count — the football/non-football split:');
 for (const name of ['Lionel Messi', 'Cristiano Ronaldo', 'Pelé', 'Luka Modrić', 'Zinedine Zidane',
                     'Albert Camus', 'Niels Bohr', 'Sean Connery'])
   console.log(`  ${String(n(name)).padStart(2)} clubs   ${name}`);
+}

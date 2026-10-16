@@ -18,6 +18,10 @@
 // club counts: Messi 8, Modrić 10, Zidane 8, Pelé 4 — Camus 0, Connery 0,
 // Bohr 1. Requiring a career separates them, and unlike a blacklist it also
 // catches the famous non-footballers nobody thought to list.
+// ⚠️ THIS REWRITES mysteryPool.json AND mysteryAnswers.json. To ship new career
+// spells only (second stints from a fresh fetch-mystery-careers.mjs run), use
+// scripts/merge-mystery-spells.mjs instead: it touches the careers file alone,
+// so the answer list and the schedule built on it cannot move.
 import { writeFileSync, readFileSync, existsSync } from 'fs';
 
 const EP = 'https://query.wikidata.org/sparql';
@@ -297,7 +301,9 @@ const build = (p) => {
     nat: p.nats[0] || null,
     slot: SLOT(p.poss), position: p.poss[0] || null,
     club: clubName, clubId: lc.id, country: country[lc.id] || null,
-    clubCount: career.length,
+    // Distinct CLUBS, not spells: since 16 Oct 2026 the careers keep every
+    // stint, and a one-club man with two spells is still one club.
+    clubCount: new Set(career.map((c) => c.id)).size,
   };
 };
 
