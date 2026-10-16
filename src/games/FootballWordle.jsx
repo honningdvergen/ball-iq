@@ -12,6 +12,7 @@
 // plays on the website and later opens the app on the same phone finds today
 // already played — one puzzle, one record.
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import ChallengeBanner from "../components/ChallengeBanner.jsx";
 import {
   WORDLE_FULL_NAMES, getWordleAnswer, gradeWordleGuess, computeFootleStreak, getFootleNumber,
   footleClue, footleShareHead, FOOTLE_CLUE_AFTER,
@@ -535,6 +536,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
 
   return (
     <div className="wd-screen">
+      {!isArchive && <ChallengeBanner game="footle" edition={getFootleNumber(date)} finished={state.status !== "playing"} />}
       <div className="wd-header">
         {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
         <div className="wd-header-text">

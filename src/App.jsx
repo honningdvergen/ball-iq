@@ -70,6 +70,7 @@ import {
   gradeWordleGuess, computeFootleStreak, getFootleNumber,
 } from './lib/wordle.js';
 import { PlatformStoreBadge } from './components/StoreBadge.jsx';
+import { parseChallengeToken, storeChallenge } from './lib/gameChallenge.js';
 import { getFootleXP } from './lib/footleXp.js';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 import { APP_STORE_ID, APP_STORE_URL, PLAY_STORE_URL, appStoreUrl } from './lib/links.js';
@@ -6101,6 +6102,21 @@ function AppInner() {
         setScreen("wordle");
         return;
       }
+      // A Footle / Trail / Top 10 challenge (16 Oct 2026): ?gc=TOKEN from
+      // api/c.js, or /c/TOKEN when a universal link opens the native app.
+      // Stored for the game screen and the finish panel (lib/gameChallenge.js).
+      try {
+        const gcRaw = new URLSearchParams(window.location.search).get("gc") || (window.location.pathname.match(/^\/c\/([ftx]\.[^/?#]+)/) || [])[1];
+        const gc = parseChallengeToken(gcRaw);
+        if (gc) {
+          storeChallenge(gc);
+          const u = new URL(window.location.href);
+          u.searchParams.delete("gc"); u.searchParams.delete("game");
+          window.history.replaceState({}, "", (u.pathname.startsWith("/c/") ? "/play" : u.pathname) + u.search + u.hash);
+          setScreen(gc.game === "footle" ? "wordle" : gc.game);
+          return;
+        }
+      } catch {}
       const sp = new URLSearchParams(window.location.search);
       const clubSlug = (sp.get("club") || "").toLowerCase();
       const quizSlug = (sp.get("quiz") || "").toLowerCase();
@@ -6326,7 +6342,8 @@ function AppInner() {
     let dayKeys = ["footle", "daily7", "trail"];
     try { dayKeys = [...dayKeys, ...(isTop10Live() ? ["top10"] : MYSTERY_ENABLED ? ["mystery"] : [])]; } catch {}
     return {
-      day: { keys: dayKeys },
+      // `who`: the name a challenge link carries ('Alex solved it in 3').
+      day: { keys: dayKeys, who: resolveChallengerName },
       remind: { state: resultsRemindState, onRemind: remindFromResults },
       // "daily streak" — the cross-mode one; the islands pass the per-game label.
       streak: { count: loginStreak || 0, label: "daily streak" },
@@ -6352,7 +6369,7 @@ function AppInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // top10Tick: the "still open today" rows name Top 10 or Mystery, whichever is today's fourth
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.gamesPlayed, xp, top10Tick]);
+  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.gamesPlayed, xp, top10Tick, resolveChallengerName]);
   const footleServices = useMemo(() => ({ ...FOOTLE_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
   const dailyScreenServices = useMemo(() => ({ ...DAILY_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
 

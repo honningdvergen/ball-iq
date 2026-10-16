@@ -320,7 +320,7 @@ describe('who fetches, and when', () => {
   });
   it('the widget, the next-up rows and the history tab follow Home when the schedule grows', () => {
     expect(app).toMatch(/\[dailyDone, loginStreak, top10Tick\]/);
-    expect(app).toMatch(/stats\?\.gamesPlayed, xp, top10Tick\]/);
+    expect(app).toMatch(/stats\?\.gamesPlayed, xp, top10Tick[\],]/);
     expect(app).toMatch(/key=\{`daily-\$\{top10Tick\}`/);
   });
   it('a fetched list’s answers can all be typed, even one this build’s pool does not hold', () => {

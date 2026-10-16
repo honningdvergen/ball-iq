@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered } from "lucide-react";
+import { Flame, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords } from "lucide-react";
 import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
+import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel } from "../lib/gameChallenge.js";
 
 // Results in a day before the panel shows headcounts instead of shares.
 const SHOW_COUNTS_FROM = 300;
@@ -146,6 +147,29 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     return () => { alive = false; };
   }, [game, edition, bucket, won, isArchive]);
 
+  // ── CHALLENGE A MATE (16 Oct 2026) ── Footle, Trail and Top 10 share a link
+  // to the same puzzle; a friend who arrives on one sees the head-to-head here.
+  const canChallenge = !!GAME_CODES[game] && !isArchive && Number.isInteger(edition);
+  const myScore = game === "top10" ? (bucket || 0) : (won ? bucket || 0 : 0);
+  const rival = useMemo(() => (canChallenge ? readChallenge(game, edition) : null), [canChallenge, game, edition]);
+  const [challengeState, setChallengeState] = useState("");
+  const doChallenge = async () => {
+    const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
+    const token = challengeToken(game, edition, myScore, who);
+    if (!token) return;
+    const url = `https://balliq.app/c/${token}`;
+    const what = { footle: "Footle", trail: "Transfer Trail", top10: "Top 10" }[game];
+    const text = `${what} No. ${edition}: ${scoreLabel(game, myScore)}. Can you beat it?`;
+    track?.("dd-challenge", { game, rival: !!rival });
+    try {
+      if (navigator.share) { await navigator.share({ text, url }); setChallengeState("sent"); return; }
+      await navigator.clipboard.writeText(`${text} ${url}`); setChallengeState("copied");
+    } catch (e) {
+      if (e && (e.name === "AbortError" || /cancel/i.test(e?.message || ""))) return;
+      try { await navigator.clipboard.writeText(`${text} ${url}`); setChallengeState("copied"); } catch { /* nothing to do */ }
+    }
+  };
+
   const today = useMemo(() => summariseDistribution(dist, { game, mine: bucket, won }), [dist, game, bucket, won]);
   const yesterday = useMemo(() => (today ? null : summariseDistribution(prev, { game, mine: bucket, won })), [today, prev, game, bucket, won]);
   const summary = today || yesterday;
@@ -240,6 +264,25 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           phone browser the finish is the moment of highest intent, so the
           visitor's own store badge sits here; inside the app GetAppCTA draws
           nothing. */}
+      {canChallenge && (
+        <>
+          {rival && (() => {
+            const r = compareScores(game, myScore, rival.score);
+            const name = rival.name || "Your mate";
+            return (
+              <div className={`dd-h2h${r > 0 ? " is-win" : r < 0 ? " is-loss" : ""}`} role="status">
+                <span>You <strong className="dd-num">{scoreLabel(game, myScore)}</strong> · {name} <strong className="dd-num">{scoreLabel(game, rival.score)}</strong></span>
+                <strong>{r > 0 ? `You beat ${name}` : r < 0 ? `${name} wins this one` : `Level with ${name}`}</strong>
+              </div>
+            );
+          })()}
+          <button type="button" className="dd-challenge" onClick={doChallenge} aria-label={rival ? "Send a challenge back" : "Challenge a mate to this puzzle"}>
+            <Swords size={17} strokeWidth={2.3} aria-hidden="true" />
+            {challengeState === "copied" ? "Link copied" : challengeState === "sent" ? "Challenge sent" : rival ? "Send it back" : "Challenge a mate"}
+          </button>
+        </>
+      )}
+
       {/* NEXT UP (daily design pass, 16 Oct 2026). "Still open today" was a
           title and up to three equal rows, below Share and the app badge.
           Playing a second daily depends on nobody and is the cheapest

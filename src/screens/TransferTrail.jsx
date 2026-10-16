@@ -12,6 +12,7 @@
 // a three-club one-club-man — and handing that over free undoes the ladder.
 import GameTitle from "../components/GameTitle.jsx";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import ChallengeBanner from "../components/ChallengeBanner.jsx";
 import { dateToYMD } from "../lib/date.js";
 import {
   TRAIL_MAX_ATTEMPTS,
@@ -266,6 +267,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
       {/* Only for a solve made now. It used to fall again on every review of a
           solved Trail. */}
       {won && !finishedBefore(savedAtMount.current.status) && Confetti ? <Confetti /> : null}
+      {!isArchive && <ChallengeBanner game="trail" edition={number} finished={done} />}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "8px 4px" }}>
         {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}

@@ -74,6 +74,56 @@ export default async function handler(req) {
   const origin = url.origin;
   const token = (url.searchParams.get('t') || '').trim();
 
+  // ── FOOTLE / TRAIL / TOP 10 CHALLENGES (16 Oct 2026) ────────────────────
+  // f.166.3.Name, t.75.2.Name, x.5.7.Name. Kept in step with
+  // src/lib/gameChallenge.js by hand: an edge function cannot import from src/.
+  const g = token.match(/^([ftx])\.(\d{1,5})\.(\d{1,2})(?:\.(.+))?$/);
+  if (g) {
+    const game = { f: 'footle', t: 'trail', x: 'top10' }[g[1]];
+    const no = parseInt(g[2], 10), s = parseInt(g[3], 10);
+    let gName = '';
+    try { gName = decodeURIComponent(g[4] || '').replace(/[^\p{L}\p{N} '._-]/gu, '').slice(0, 22); } catch { gName = ''; }
+    const who = gName || 'A mate';
+    const label = { footle: 'Footle', trail: 'Transfer Trail', top10: 'Top 10' }[game];
+    const did = game === 'top10' ? `got ${s}/10 on Top 10 No. ${no}`
+      : s <= 0 ? `missed ${label} No. ${no}`
+      : game === 'footle' ? `solved Footle No. ${no} in ${s}`
+      : `got Transfer Trail No. ${no} with ${s} ${s === 1 ? 'club' : 'clubs'}`;
+    const gTitle = `${who} ${did}. Can you beat it?`;
+    const gDesc = 'Same puzzle, one go. Free, no sign-up.';
+    const ogQ = new URLSearchParams({ t: 'gch', g: g[1], s: String(s), no: String(no) });
+    if (gName) ogQ.set('n', gName);
+    const gImage = `${origin}/api/og?${ogQ.toString()}`;
+    const gUrl = `${origin}/play?game=${game}&gc=${encodeURIComponent(token)}`;
+    const gHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="googlebot" content="noindex">
+<title>${esc(gTitle)}</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ball IQ">
+<meta property="og:title" content="${esc(gTitle)}">
+<meta property="og:description" content="${esc(gDesc)}">
+<meta property="og:image" content="${esc(gImage)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(gTitle)}">
+<meta name="twitter:description" content="${esc(gDesc)}">
+<meta name="twitter:image" content="${esc(gImage)}">
+<meta http-equiv="refresh" content="0; url=${esc(gUrl)}">
+<style>body{margin:0;background:#0B0C10;color:#fff;font-family:-apple-system,system-ui,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}a{color:#58CC02}</style>
+</head>
+<body>
+<p>Opening <a href="${esc(gUrl)}">Ball IQ</a>…</p>
+<script>location.replace(${JSON.stringify(gUrl)});</script>
+</body>
+</html>`;
+    return new Response(gHtml, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=0, s-maxage=300' } });
+  }
+
   // SCORE.YYYYMMDD[.Name] — score 0-7, name optional (URI-encoded by the
   // sharer; literal dots ride as %2E). The DATE range check is part of token
   // VALIDITY (fresh-code audit): an absurd date like 99999999 must degrade to

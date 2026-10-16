@@ -113,6 +113,43 @@ function challengeCard(sp) {
   return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
 }
 
+// Footle / Trail / Top 10 challenge card (?t=gch, 16 Oct 2026): the same
+// taunt as the Daily 7 card, in each game's own colour, with no spoiler (the
+// score only, never a letter or a name from the board).
+function gameChallengeCard(sp) {
+  const code = (sp.get('g') || 'f').slice(0, 1);
+  const game = { f: 'Footle', t: 'Transfer Trail', x: 'Top 10' }[code] || 'Footle';
+  const colour = { f: '#8AE042', t: '#7CC3F0', x: '#FF9B7A' }[code] || '#8AE042'; // src/lib/accents.js MODE_ACCENT
+  const s = Math.max(0, Math.min(12, parseInt(sp.get('s') || '0', 10) || 0));
+  const no = (sp.get('no') || '').replace(/[^0-9]/g, '').slice(0, 5);
+  const name = (sp.get('n') || '').slice(0, 22);
+  const who = name || 'A mate';
+  const big = code === 'x' ? `${s}/10` : code === 'f' ? (s > 0 ? `${s}/6` : 'X/6') : (s > 0 ? `${s} ${s === 1 ? 'club' : 'clubs'}` : 'missed');
+  const line = code === 'x' ? `${who} got ${s}/10` : s <= 0 ? `${who} missed this one` : code === 'f' ? `${who} solved it in ${s}` : `${who} got him with ${s} ${s === 1 ? 'club' : 'clubs'}`;
+  const tree = h('div', {
+    style: {
+      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+      background: 'linear-gradient(135deg,#12141b 0%,#0B0C10 60%)',
+      borderTop: `9px solid ${colour}`, fontFamily: 'sans-serif', position: 'relative', padding: '0 72px',
+    },
+  },
+    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, no ? `${game} No. ${no}` : 'balliq.app'),
+    ),
+    h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 26 } },
+      h('div', { style: { fontSize: 26, fontWeight: 800, letterSpacing: 4, color: colour, display: 'flex' } }, `${game.toUpperCase()} CHALLENGE`),
+      h('div', { style: { fontSize: 60, fontWeight: 900, lineHeight: 1.1, color: '#FFFFFF', display: 'flex' } }, line),
+      h('div', { style: { display: 'flex', fontSize: 120, fontWeight: 900, color: colour, lineHeight: 1 } }, big),
+      h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 6 } },
+        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: colour, padding: '12px 26px', borderRadius: 999 } }, 'Beat it today'),
+        h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Same puzzle · free, no sign-up'),
+      ),
+    ),
+  );
+  return new ImageResponse(tree, { width: 1200, height: 630, emoji: 'twemoji' });
+}
+
 // Multiplayer invite card (?t=invite): a /join/CODE link previewed as an
 // invitation rather than a generic app ad. Before this, every invite unfurled
 // as the static index.html card ("The Ultimate Football Quiz") — the recipient
@@ -290,6 +327,7 @@ export default function handler(req) {
   if (sp.get('t') === 'iq') return scoreCard(sp);
   if (sp.get('t') === 'stump') return stumpCard(sp);
   if (sp.get('t') === 'challenge') return challengeCard(sp);
+  if (sp.get('t') === 'gch') return gameChallengeCard(sp);
   if (sp.get('t') === 'invite') return inviteCard(sp);
   if (sp.get('t') === 'club') return clubCard(sp);
   const name = (sp.get('n') || 'Ball IQ Player').slice(0, 22);

@@ -13,6 +13,7 @@
 // ranks stay visible while typing, which is the whole game.
 import GameTitle from "../components/GameTitle.jsx";
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import ChallengeBanner from "../components/ChallengeBanner.jsx";
 import { Heart } from "lucide-react";
 import { dateToYMD } from "../lib/date.js";
 import {
@@ -399,6 +400,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
     <div className={`screen t10${fit.tight ? " is-tight" : ""}${g.done && typeof window !== "undefined" && window.innerHeight < T10_SHORT_UNDER ? " is-short" : ""}`} style={{ ...SKIN, paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)" }}>
       {g.perfect && Confetti ? <Confetti /> : null}
       <Head number={number} sub={sub} lives={g.done ? null : g.lives} onBack={onBack} embedded={embedded} />
+      {!isArchive && <ChallengeBanner game="top10" edition={number} finished={g.done} />}
 
       <div className="t10-q">
         <h2 className="t10-q-title">{list.title}</h2>
