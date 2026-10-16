@@ -1,0 +1,82 @@
+/* Stitch-up (web only). One solid button per screen (.st-solid); everything
+   else is a hairline, a tint or a link. Sentence case: nothing here turns
+   text into capitals. Trail blue (MODE_ACCENT.trail) is the mode's colour. */
+
+/* The colour vars ride on every root this file styles: the receiver's taunt
+   and head-to-head render inside the Trail's own screen, not .st-screen. */
+.st-screen,.st-taunt-in,.st-h2h,.st-actions{--st:#7CC3F0;--st-rgb:124,195,240;}
+.st-screen{max-width:560px;margin:0 auto;padding:6px 16px calc(32px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;gap:16px;min-height:100%;box-sizing:border-box;}
+.st-top{display:flex;align-items:center;min-height:44px;}
+.st-back{width:44px;height:44px;margin-left:-10px;display:inline-flex;align-items:center;justify-content:center;border:0;background:none;color:var(--t1);-webkit-text-fill-color:var(--t1);cursor:pointer;border-radius:12px;-webkit-tap-highlight-color:transparent;}
+.st-head{display:flex;flex-direction:column;gap:5px;}
+.st-title{margin:0;font-size:26px;line-height:1.15;font-weight:900;letter-spacing:-0.5px;color:var(--t1);-webkit-text-fill-color:var(--t1);overflow-wrap:anywhere;}
+.st-sub{margin:0;font-size:13.5px;line-height:1.45;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+.st-label{margin:0 0 8px;font-size:13px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.st-quiet{color:var(--t3);-webkit-text-fill-color:var(--t3);font-weight:600;}
+
+.st-input{width:100%;box-sizing:border-box;background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px 15px;color:var(--t1);-webkit-text-fill-color:var(--t1);font-size:16px;font-family:inherit;outline:none;}
+.st-input:focus{border-color:rgba(var(--st-rgb),0.6);}
+.st-search{position:relative;}
+.st-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;}
+.st-search .st-input{padding-left:42px;}
+
+/* Player rows in the picker: one hairline list. */
+.st-list{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--s1);}
+.st-pick{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:10px 14px;border:0;border-top:1px solid var(--border);background:none;font-family:inherit;text-align:left;cursor:pointer;color:var(--t1);-webkit-text-fill-color:var(--t1);-webkit-tap-highlight-color:transparent;}
+.st-pick:first-child{border-top:0;}
+.st-pick-name{flex:1;min-width:0;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.st-pick-meta{flex-shrink:0;font-size:12px;font-weight:700;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;}
+.st-pick svg{flex-shrink:0;color:var(--t3);}
+.st-empty{margin:0;padding:14px;font-size:13px;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+
+/* The career, as the Trail draws it: shown clubs bright, the rest held back. */
+.st-career{display:flex;flex-direction:column;gap:8px;}
+.st-club{position:relative;display:flex;align-items:center;gap:11px;border-radius:12px;padding:10px 13px;border:1px solid var(--border);background:var(--s1);transition:opacity .15s;}
+.st-club.is-hidden{opacity:0.42;border-style:dashed;background:transparent;}
+.st-club-n{width:14px;flex-shrink:0;font-size:11px;font-weight:700;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;}
+.st-crest{width:28px;height:28px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;}
+.st-club-name{flex:1;min-width:0;font-size:15px;font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.st-club-tag{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.st-cut{display:flex;align-items:center;gap:8px;margin:2px 0;font-size:11.5px;font-weight:700;color:var(--st);-webkit-text-fill-color:var(--st);}
+.st-cut::before,.st-cut::after{content:"";flex:1;height:1px;background:rgba(var(--st-rgb),0.45);}
+
+/* How many clubs show: a stepper, not a slider (thumb targets at 375px). */
+.st-step{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--border);border-radius:14px;background:var(--s1);}
+.st-step-tx{font-size:14px;font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.st-step-tx strong{font-variant-numeric:tabular-nums;}
+.st-step-btns{display:flex;align-items:center;gap:6px;}
+.st-round{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.st-round:disabled{opacity:0.35;cursor:default;}
+
+/* Twelve taunts as chips; the chosen one tinted, never filled. */
+.st-taunts{display:flex;flex-wrap:wrap;gap:7px;}
+.st-taunt{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:8px 13px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;}
+.st-taunt[aria-checked="true"]{border-color:rgba(var(--st-rgb),0.75);background:rgba(var(--st-rgb),0.12);color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.st-taunt svg{color:var(--st);}
+
+.st-solid{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-family:inherit;font-size:15.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.st-solid:disabled{opacity:0.5;cursor:default;}
+.st-solid:active{transform:scale(0.98);}
+.st-actions{display:flex;flex-direction:column;gap:12px;}
+.st-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;}
+.st-link{display:inline-flex;align-items:center;gap:5px;padding:6px 0;min-height:32px;border:0;background:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.st-note{margin:0;text-align:center;font-size:12.5px;font-weight:700;color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);}
+.st-err{margin:6px 0 0;font-size:12.5px;font-weight:700;color:var(--red);-webkit-text-fill-color:var(--red);}
+
+/* What the mate will see: the card, in words. */
+.st-card{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:16px;border:1px solid rgba(var(--st-rgb),0.45);background:linear-gradient(135deg,rgba(var(--st-rgb),0.12),rgba(var(--st-rgb),0.02) 70%);}
+.st-card-line{margin:0;font-size:18px;line-height:1.25;font-weight:900;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.st-card-taunt{margin:0;font-size:14.5px;font-weight:700;color:var(--st);-webkit-text-fill-color:var(--st);}
+.st-card-meta{margin:0;font-size:12.5px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+.st-url{display:block;padding:11px 13px;border-radius:12px;border:1px solid var(--border);background:var(--s1);font-size:13px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);overflow-wrap:anywhere;user-select:all;-webkit-user-select:all;}
+
+/* The receiver's taunt, above the board; and the head-to-head after it. */
+.st-taunt-in{display:flex;align-items:flex-start;gap:10px;margin:2px 0 8px;padding:11px 13px;border-radius:12px;border:1px solid rgba(var(--st-rgb),0.4);background:rgba(var(--st-rgb),0.08);}
+.st-taunt-in svg{flex-shrink:0;margin-top:2px;color:var(--st);}
+.st-taunt-in b{display:block;font-size:13.5px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.st-taunt-in span{display:block;margin-top:2px;font-size:13.5px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+.st-h2h{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:12px 14px;border-radius:14px;border:1px solid var(--border);background:var(--s1);text-align:center;}
+.st-h2h.is-win{border-color:rgba(88,204,2,0.45);background:rgba(88,204,2,0.08);}
+.st-h2h.is-loss{border-color:rgba(255,82,82,0.4);background:rgba(255,82,82,0.07);}
+.st-h2h-score{font-size:20px;font-weight:900;color:var(--t1);-webkit-text-fill-color:var(--t1);font-variant-numeric:tabular-nums;}
+.st-h2h-line{font-size:13px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);}

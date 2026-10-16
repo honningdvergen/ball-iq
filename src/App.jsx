@@ -162,6 +162,9 @@ const MultiplayerLobby = React.lazy(() => import('./screens/OnlineMultiplayer.js
 // Mates' leagues (phase 1, web only): the table and both sheets in one lazy
 // chunk, so Home's eager budget (scripts/audit-home-budget.mjs) never carries them.
 const LeagueScreen = React.lazy(() => import('./screens/LeagueScreen.jsx'));
+// Stitch-up (web only, 16 Oct 2026): build a Trail for a mate. Lazy, like the
+// leagues: nothing of it is in Home's eager graph but this line and the route.
+const StitchUp = React.lazy(() => import('./screens/StitchUp.jsx'));
 const LeagueCreateSheet = lazyNamed(() => import('./screens/LeagueScreen.jsx'), 'LeagueCreateSheet');
 const LeagueJoinSheet = lazyNamed(() => import('./screens/LeagueScreen.jsx'), 'LeagueJoinSheet');
 import { HomeScreen } from './screens/HomeScreen.jsx';
@@ -4235,6 +4238,8 @@ function AppInner() {
   const [screen, setScreen] = useState("home");
   // Mates' leagues (web only): the open table, and the create / join sheet.
   const [leagueId, setLeagueId] = useState(null);
+  // Stitch-up: the link's token (null = the builder). Web only (LEAGUES_WEB).
+  const [stitchToken, setStitchToken] = useState(null);
   const [leagueSheet, setLeagueSheetRaw] = useState(() => {
     if (!LEAGUES_WEB) return null;
     const v = readLeagueUiInline();
@@ -6350,6 +6355,19 @@ function AppInner() {
           }
         }
       } catch {}
+      // Stitch-up (web only): ?stitch=TOKEN from api/s.js (/s/ never reaches
+      // the SPA: vercel.json sends it to the edge page), and ?stitch=new from
+      // the Trail page's "Stitch up a mate". The screen parses and checks the
+      // token itself. Kept this short on purpose: these bytes are Home's.
+      try {
+        const st = LEAGUES_WEB && new URLSearchParams(window.location.search).get("stitch");
+        if (st) {
+          window.history.replaceState({}, "", "/play");
+          setStitchToken(st === "new" ? null : st.slice(0, 80));
+          setScreen("stitch");
+          return;
+        }
+      } catch {}
       // A Footle / Trail / Top 10 challenge (16 Oct 2026): ?gc=TOKEN from
       // api/c.js, or /c/TOKEN when a universal link opens the native app.
       // Stored for the game screen and the finish panel (lib/gameChallenge.js).
@@ -6624,6 +6642,8 @@ function AppInner() {
       // the game that earned it ({ game, name, Icon } or null).
       promoted: dailyPromotion,
       track: (n, m) => loopEvent(n, m),
+      // "Stitch up a mate" on the Trail's finish panel (web only).
+      stitch: LEAGUES_WEB ? () => { setStitchToken(null); setScreen("stitch"); } : null,
     };
     // `screen` is a deliberate dep: the open/closed set changes when a game ends.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -9251,6 +9271,18 @@ function AppInner() {
         })()}
         {screen === "top10" && (
           <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 key={top10ListId || "day"} date={archiveDate || undefined} listId={top10ListId || undefined} onBack={top10From === "lib" ? () => { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); } : goHome} onMoreLists={top10From === "lib" ? undefined : () => setScreen("top10lib")} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
+        )}
+        {screen === "stitch" && LEAGUES_WEB && (
+          <TabErrorBoundary name="stitch" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stitch-up" />}><StitchUp
+            key={stitchToken || "build"}
+            token={stitchToken}
+            onBack={goHome}
+            onReport={reportQuestion}
+            services={dailyScreenServices}
+            track={loopEvent}
+            defaultName={resolveChallengerName}
+            onPlayTrail={() => { setArchiveDate(null); setScreen("trail"); }}
+          /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "league" && LEAGUES_WEB && leagueId && (
           <TabErrorBoundary name="league" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading the table" />}><LeagueScreen

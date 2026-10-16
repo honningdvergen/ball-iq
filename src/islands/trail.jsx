@@ -8,11 +8,15 @@ import React from 'react';
 import TransferTrail from '../screens/TransferTrail.jsx';
 import { getTrailAnswer } from '../lib/trail.js';
 import { dateToYMD } from '../lib/date.js';
+import { isNativeShell } from '../lib/inAppBrowser.js';
 import { haptic, makeFunnel, makeGetAppCTA, mountDaily, toastHost, makeDailyDoneServices } from './dailyIsland.jsx';
 
 const funnel = makeFunnel('trail-page');
+// "Stitch up a mate" (Stitch-up, 16 Oct 2026): the builder lives in the web
+// app, so the static page hands over to it. Never inside a native shell.
 const SERVICES = {
-  dailyDone: makeDailyDoneServices(funnel), haptic, GetAppCTA: makeGetAppCTA(funnel, 'trail-result') };
+  dailyDone: { ...makeDailyDoneServices(funnel), stitch: isNativeShell() ? null : () => { location.assign('/play?stitch=new'); } },
+  haptic, GetAppCTA: makeGetAppCTA(funnel, 'trail-result') };
 
 // On a loss the app chains into Mystery Player when today's is unplayed; here
 // that is the sibling page. Same gate as App.jsx so a finished Mystery is not

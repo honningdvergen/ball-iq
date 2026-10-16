@@ -1,5 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 import { CARD_TIERS, CARD_COMPS, LEAGUE_FACES, tierPalette } from '../src/lib/ballIqCard.js';
+import { STITCH_TAUNTS, stitchHeadline, cleanStitchName } from '../src/lib/stitchToken.js';
 
 // Dynamic Open Graph image — renders the player's Ball IQ rating card so a
 // shared balliq.app/p?... link previews as their card (overall + tier + six
@@ -172,6 +173,39 @@ function gameChallengeCard(sp) {
     ),
   );
   return tree;
+}
+
+// Stitch-up card (?t=stitch, 16 Oct 2026), paired with api/s.js: who sent it,
+// the taunt and how many clubs show. ⚠️ NEVER THE ANSWER: no player and no
+// club reaches this function (the link carries a hash, not a name). Trail
+// blue, sentence case, no eyebrow.
+function stitchCard(sp) {
+  const name = cleanStitchName(sp.get('n') || '');
+  const k = parseInt(sp.get('k') || '', 10);
+  const taunt = Number.isInteger(k) && k >= 0 && k < STITCH_TAUNTS.length ? STITCH_TAUNTS[k] : '';
+  const c = Math.max(2, Math.min(12, parseInt(sp.get('c') || '2', 10) || 2));
+  const blue = '#7CC3F0'; // src/lib/accents.js MODE_ACCENT.trail
+  const head = stitchHeadline(name);
+  return h('div', {
+    style: {
+      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+      background: 'linear-gradient(135deg,#0f1820 0%,#0B0C10 60%)',
+      borderTop: `9px solid ${blue}`, fontFamily: 'Inter', position: 'relative', padding: '0 72px',
+    },
+  },
+    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'Stitch-up'),
+    ),
+    h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 24 } },
+      h('div', { style: { fontSize: head.length > 46 ? 62 : 70, fontWeight: 900, lineHeight: 1.08, letterSpacing: -1.5, color: '#FFFFFF', display: 'flex' } }, head),
+      ...(taunt ? [h('div', { style: { fontSize: 36, fontWeight: 700, color: blue, display: 'flex' } }, `“${taunt}”`)] : []),
+      h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 8 } },
+        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: blue, padding: '12px 26px', borderRadius: 999 } }, 'Name him'),
+        h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, `${c} clubs to start · five guesses · free`),
+      ),
+    ),
+  );
 }
 
 // Mates' league invite card (?t=league, phase 1), paired with api/l.js. The
@@ -395,6 +429,7 @@ function cardTree(sp) {
   if (sp.get('t') === 'gch') return gameChallengeCard(sp);
   if (sp.get('t') === 'invite') return inviteCard(sp);
   if (sp.get('t') === 'league') return leagueCard(sp);
+  if (sp.get('t') === 'stitch') return stitchCard(sp);
   if (sp.get('t') === 'club') return clubCard(sp);
   const name = (sp.get('n') || 'Ball IQ Player').slice(0, 22);
   let img = sp.get('img') || '';

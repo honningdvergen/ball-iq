@@ -45,8 +45,9 @@ describe("the card's club routes", () => {
   });
 
   it("no module the app boots with imports the generated colours table", () => {
-    // TransferTrail is React.lazy and the islands are separate entries; they may.
-    const ALLOWED = new Set(["screens/TransferTrail.jsx"]);
+    // TransferTrail and StitchUp are React.lazy and the islands are separate
+    // entries; they may.
+    const ALLOWED = new Set(["screens/TransferTrail.jsx", "screens/StitchUp.jsx"]);
     const offenders = [];
     const scan = (dir, rel = "") => {
       for (const e of readdirSync(resolve(SRC, dir), { withFileTypes: true })) {

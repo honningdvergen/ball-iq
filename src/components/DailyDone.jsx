@@ -51,6 +51,7 @@ import "./dailyDone.css";
 //   nextUp      [{ key, name, onTap? , href? }] — today's other unplayed dailies
 //   save        { onSave, line? } | null — guest; shows at a 2+ streak or when `line` names what is on this phone
 //   stump       () => void | null — "Stump a mate" under Share (the app's k-factor lever)
+//   stitch      () => void | null — "Stitch up a mate" under Share (Trail, web only)
 //   GetAppCTA   component | null (islands pass the store badges)
 //   track       (name, meta) => void — optional analytics
 //   bucketMax   the most guesses / clubs this puzzle allows (Trail: the career's length), so
@@ -110,7 +111,7 @@ function openLeagueCreate(opts) {
   } catch { /* nothing to do */ }
 }
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
   // Too few results yet today: yesterday's edition stands in, labelled and
@@ -369,7 +370,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
         </button>
       )}
-      {(waText || stump || canChallenge || leagueOffer) && (
+      {(waText || stump || stitch || canChallenge || leagueOffer) && (
         <div className="dd-share-alts">
           {rival && (
             <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{shared ? "Shared" : "Share result"}</button>
@@ -384,6 +385,11 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               third full-width button below the panel. */}
           {stump && (
             <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stump", { game }); stump(); }}>Stump a mate</button>
+          )}
+          {/* Stitch-up (web only; the host passes it on the Trail alone): build
+              a Trail of your own for a mate. A link, like the others here. */}
+          {stitch && (
+            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stitch", { game }); stitch(); }}>Stitch up a mate</button>
           )}
           {canChallenge && !rival && (
             <button type="button" className="dd-share-alt" onClick={doChallenge} aria-label="Challenge a mate to this puzzle">{challengeState === "copied" ? "Link copied" : challengeState === "sent" ? "Challenge sent" : rival ? "Send it back" : "Challenge a mate"}</button>

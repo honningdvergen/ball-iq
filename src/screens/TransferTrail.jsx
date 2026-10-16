@@ -53,7 +53,7 @@ import { careerOf } from "../lib/mysteryCareer.js";
 const TRAIL_GAP = 12;
 import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight } from "../lib/useKeyboardAwareInput.js";
-import ResultFoot from "../components/ResultFoot.jsx";
+import ResultFoot, { ReportLink } from "../components/ResultFoot.jsx";
 // An installed app plays the day's career from the log the SITE serves when it
 // has kept a good copy (lib/scheduleRemote.js), so it stays on the website's
 // player after the log is re-planned. Nothing is kept on the website, so there
@@ -72,14 +72,23 @@ function saveDay(ymd, state) {
   try { localStorage.setItem(`biq_trail_${ymd}`, JSON.stringify(state)); } catch {}
 }
 
-export default function TransferTrail({ player: bundledPlayer, date = new Date(), onBack, onReport, services, embedded = false }) {
+// `stitch` (Stitch-up, 16 Oct 2026): the same board as a one-off a mate built.
+//   { opening, sub, load(), save(state), onFinish({ won, clubsUsed }), Done }
+// ⚠️ A STITCH-UP IS NOT A DAILY. It never reads or writes biq_trail_<day>,
+// never fires biq:daily-completed (XP, the streak, a scores row) or
+// biq:daily-reviewed, shows no puzzle number, no challenge banner and no
+// return-loop panel. Its own attempts go through stitch.load/save only.
+export default function TransferTrail({ player: bundledPlayer, date = new Date(), onBack, onReport, services, embedded = false, stitch = null }) {
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
+  const daily = !stitch;
+  const opening = stitch?.opening;
   const ymd = dateToYMD(date);
   // Keyed by the day, not the Date object: the island passes none, and the
   // default is a new Date on every render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const player = useMemo(() => trailPlayerForDate(date, bundledPlayer), [ymd, bundledPlayer]);
-  const number = getTrailNumber(date);
+  // A Stitch-up plays the career its sender chose, never the day's log.
+  const player = useMemo(() => (stitch ? bundledPlayer : trailPlayerForDate(date, bundledPlayer)), [ymd, bundledPlayer, stitch]);
+  const number = daily ? getTrailNumber(date) : 0;
   const career = useMemo(() => player?.clubs || [], [player]);
 
   // Attempts are the raw submissions — { text, skipped } — and everything else
@@ -88,7 +97,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   // The day as it was saved when this screen opened, read before anything here
   // has written to it: what tells a finish made now from one made earlier.
   const savedAtMount = useRef(null);
-  if (savedAtMount.current === null) savedAtMount.current = loadDay(ymd) || {};
+  if (savedAtMount.current === null) savedAtMount.current = (daily ? loadDay(ymd) : stitch.load?.()) || {};
   const [attempts, setAttempts] = useState(() => savedAtMount.current.attempts || []);
   const [entry, setEntry] = useState("");
   const [shake, setShake] = useState(false);
@@ -98,8 +107,8 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   const lost = !won && misses >= TRAIL_MAX_ATTEMPTS;
   const done = won || lost;
 
-  const shown = done ? career.length : cluesShown(misses, career.length);
-  const clubsUsed = won ? cluesShown(misses, career.length) : career.length;
+  const shown = done ? career.length : cluesShown(misses, career.length, opening);
+  const clubsUsed = won ? cluesShown(misses, career.length, opening) : career.length;
   // How many clubs were on screen at the last commit. A club beyond that is
   // arriving now, so it rises in, and when several arrive together (the full
   // career at the end) they follow each other 70ms apart instead of landing
@@ -108,9 +117,10 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   useEffect(() => { prevShown.current = shown; }, [shown]);
   const hint = done ? null : hintFor(player, misses);
   const left = Math.max(0, TRAIL_MAX_ATTEMPTS - misses);
-  const isArchive = ymd !== dateToYMD(new Date());
+  const isArchive = daily && ymd !== dateToYMD(new Date());
 
   useEffect(() => {
+    if (!daily) { stitch.save?.({ status: won ? "won" : lost ? "lost" : "playing", attempts }); return; }
     // arc: archive plays are visible history but never streak fuel — the
     // walks in lib/trail.js break on it (same stamp as Footle and Mystery).
     saveDay(ymd, {
@@ -138,7 +148,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   // Opened to look at, not to play: tell the app so the visit is not logged as
   // an abandoned game. No XP and no scores row ride on this.
   useEffect(() => {
-    if (!announced.current || embedded) return;
+    if (!announced.current || embedded || !daily) return;
     try { window.dispatchEvent(new CustomEvent("biq:daily-reviewed", { detail: { game: "trail" } })); } catch { /* best effort */ }
   }, []);
   // ⚠️ ARCHIVE PLAYS DO NOT COUNT. The Trail already accepted a `date`, but it
@@ -150,6 +160,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   useEffect(() => {
     if (!done || announced.current) return;
     announced.current = true;
+    if (!daily) { stitch.onFinish?.({ won, clubsUsed }); return; }
     if (isArchive) {
       // Streak repair hook — see the Footle twin for why this exists.
       try { window.dispatchEvent(new CustomEvent("biq:archive-completed", { detail: { game: "trail", ymd } })); } catch {}
@@ -225,14 +236,14 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
     for (const a of attempts) {
       const miss = a.skipped || !guessMatchesPlayer(a.text, player);
       if (miss && !a.skipped) {
-        const n = cluesShown(missesBefore, career.length);
+        const n = cluesShown(missesBefore, career.length, opening);
         const boardThen = n === boardNow.length ? boardNow : career.slice(0, n);
         out.push({ ...a, note: wrongPathNote(a.text, guessCareers(a.text, { pool, careers, careerOf }), boardNow, boardThen) });
       }
       if (miss) missesBefore++;
     }
     return out;
-  }, [attempts, player, career, shown, pool, careers]);
+  }, [attempts, player, career, shown, pool, careers, opening]);
   const notes = wrongOnes.filter((a) => a.note);
   const suggestions = useMemo(
     () => rankPlayerSuggestions(pool, entry, { limit: SUGGEST_MAX })
@@ -270,7 +281,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
     return keepInputVisible();
   }, [shown, hint, done, keepInputVisible]);
 
-  const streak = useMemo(() => (won ? computeTrailStreak(date) : 0), [won, date]);
+  const streak = useMemo(() => (won && daily ? computeTrailStreak(date) : 0), [won, date, daily]);
   const shareText = useMemo(
     () => (done ? buildTrailShareText({ number, won, clubsUsed, streak }) : ""),
     [done, number, won, clubsUsed, streak]
@@ -308,7 +319,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
       {/* Only for a solve made now. It used to fall again on every review of a
           solved Trail. */}
       {won && !finishedBefore(savedAtMount.current.status) && Confetti ? <Confetti /> : null}
-      {!isArchive && <ChallengeBanner game="trail" edition={number} finished={done} />}
+      {daily && !isArchive && <ChallengeBanner game="trail" edition={number} finished={done} />}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "8px 4px" }}>
         {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
@@ -322,9 +333,9 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           </div>
         ) : (
           <div style={{ flex: 1, minWidth: 0 }}>
-            <GameTitle no={number}>Transfer Trail</GameTitle>
+            <GameTitle no={number}>{daily ? "Transfer Trail" : "Stitch-up"}</GameTitle>
             <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
-              {done ? (won ? "Solved" : "Not this time") : "Whose career is this?"}
+              {done ? (won ? "Solved" : "Not this time") : (stitch?.sub || "Whose career is this?")}
             </div>
           </div>
         )}
@@ -345,6 +356,8 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           </div>
         )}
       </div>
+
+      {stitch?.Banner && !done && <stitch.Banner />}
 
       <div style={{ display: "flex", flexDirection: "column", gap: TRAIL_GAP, padding: "6px 2px" }}>
         {career.slice(0, shown).map((club, i) => {
@@ -521,6 +534,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           <div style={{ fontSize: 26, fontWeight: 900, color: "var(--t1)", marginTop: 2 }}>
             {(player.display || []).join(" ")}
           </div>
+          {stitch ? <stitch.Done won={won} clubsUsed={clubsUsed} /> : <>
           <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 6 }}>
             {won
               // ⚠️ Archive plays deliberately do NOT tick the streak (see the
@@ -553,20 +567,28 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
               GetAppCTA={GetAppCTA}
               track={dailyDone?.track}
               bucketMax={career.length}
+              stitch={dailyDone?.stitch}
             />
           </div>
+          </>}
           {/* A wrong career order is UNFALSIFIABLE to the player — they cannot
               tell a puzzle they misread from data we got wrong, so without this
               they simply lose trust and say nothing. Same trust class as a wrong
               answer key. Sends the full ladder so the row is actionable. */}
-          <ResultFoot thing="Career" onReport={onReport} onHome={onBack}
-            info={{
+          {/* A stitch-up's own panel above carries the way out, so it takes
+              the report link alone. */}
+          {(() => {
+            const info = {
               id: `trail:${player.key}`,
-              q: `Transfer Trail #${number} — ${(player.display || []).join(" ")}: ${career.join(" → ")}`,
+              q: `${daily ? `Transfer Trail #${number}` : "Stitch-up"} — ${(player.display || []).join(" ")}: ${career.join(" → ")}`,
               picked: null,
               correct: (player.display || []).join(" "),
               mode: "trail",
-            }} />
+            };
+            return daily
+              ? <ResultFoot thing="Career" onReport={onReport} onHome={onBack} info={info} />
+              : <ReportLink thing="Career" onReport={onReport} info={info} style={{ marginTop: 10 }} />;
+          })()}
         </div>
       )}
     </div>

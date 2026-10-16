@@ -1533,14 +1533,18 @@ export function guessMatchesPlayer(guess, player) {
  * out of attempts, so there is no tuning constant to drift.
  */
 export const TRAIL_OPENING_CLUBS = 2;
-export function cluesShown(misses, careerLength) {
-  return Math.min(TRAIL_OPENING_CLUBS + Math.max(0, misses), careerLength);
+// `opening`: Stitch-up lets the sender choose how many clubs show at the start
+// (two or more); the daily always opens on two.
+export function cluesShown(misses, careerLength, opening = TRAIL_OPENING_CLUBS) {
+  return Math.min(Math.max(TRAIL_OPENING_CLUBS, opening) + Math.max(0, misses), careerLength);
 }
 
 /** The hint unlocks once three guesses are gone. */
 export function hintFor(player, misses) {
   if (!player || misses < 3) return null;
-  const pos = TRAIL_POSITIONS[player.key];
+  // `pos` on the player: a Stitch-up career from the Mystery answers, which
+  // carries its position from the pool rather than from this table.
+  const pos = TRAIL_POSITIONS[player.key] || player.pos;
   return [player.nat, pos].filter(Boolean).join(" · ") || null;
 }
 
