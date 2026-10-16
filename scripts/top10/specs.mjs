@@ -1826,6 +1826,351 @@ export const TOP10_SPECS = [
       { name: 'Albert Shepherd', note: '92 goals, 5 short' },
       { name: 'Jock Rutherford', note: '92 goals, 5 short' },
     ] },
+
+  // ── December batch, added 16 Oct 2026 ──────────────────────────────────────
+  // Every list is a closed snapshot (a finished season, a past tournament, a
+  // published edition), researched from two independent sources and then
+  // re-derived by a second checker told to break it. Reports and every URL read:
+  // ~/ball-iq-audit/2026-10-16/top10-december/ (research-*.md, verify-*.md,
+  // sources.md). Ties inside a ten are ordered alphabetically unless the note
+  // says otherwise; the game accepts tied names in either slot's order anyway.
+
+  // The 2027 edition is due in late January 2027 (Deloitte's pattern, not an
+  // announced date), so it expires mid-January to be safe.
+  { id: 'money-league-2026', checked: '2026-10-16', until: '2027-01-15', kind: 'club',
+    title: 'Deloitte Money League 2026',
+    note: 'Club revenue in 2024-25, in euros, as Deloitte published it on 22 January 2026.',
+    asOf: '2026-10-16',
+    source: 'Deloitte Football Money League 2026 (22 Jan 2026: order 1-20, rounded figures); GOAL, Borsa e Finanza and Wikipedia print the same one-decimal figures; ESPN the same order',
+    slots: [
+      { name: 'Real Madrid', clue: '1,161m euros' },
+      { name: 'Barcelona', clue: '974.8m euros' },
+      { name: 'Bayern Munich', clue: '860.6m euros' },
+      { name: 'Paris Saint-Germain', clue: '837m euros' },
+      { name: 'Liverpool', clue: '836.1m euros' },
+      { name: 'Manchester City', clue: '829.3m euros' },
+      { name: 'Arsenal', clue: '821.7m euros' },
+      { name: 'Manchester United', clue: '793.1m euros' },
+      { name: 'Tottenham Hotspur', clue: '672.6m euros' },
+      { name: 'Chelsea', clue: '584.1m euros' },
+    ],
+    near: [
+      { name: 'Inter Milan', note: '537.5m euros, 46.6m short' },
+      { name: 'Borussia Dortmund', note: '531.3m euros, 52.8m short' },
+      { name: 'Atlético Madrid', note: '454.5m euros, 129.6m short' },
+    ] },
+  { id: 'premier-league-2025-26-club-goals', checked: '2026-10-16', until: '2027-12-31', kind: 'club',
+    title: 'Premier League goals, 2025-26',
+    note: 'Goals scored by each club in the 2025-26 Premier League. Level clubs alphabetically.',
+    asOf: '2026-10-16',
+    source: 'Wikipedia 2025-26 Premier League final table; ESPN 2025-26 standings; Transfermarkt table: all twenty clubs agree',
+    slots: [
+      { name: 'Manchester City', clue: '77 goals' },
+      { name: 'Arsenal', clue: '71 goals' },
+      { name: 'Manchester United', clue: '69 goals' },
+      { name: 'Liverpool', clue: '63 goals' },
+      { name: 'Bournemouth', clue: '58 goals' },
+      { name: 'Chelsea', clue: '58 goals' },
+      { name: 'Aston Villa', clue: '56 goals' },
+      { name: 'Brentford', clue: '55 goals' },
+      { name: 'Newcastle United', clue: '53 goals' },
+      { name: 'Brighton & Hove Albion', clue: '52 goals' },
+    ],
+    near: [
+      { name: 'Leeds United', note: '49 goals, 3 short' },
+      { name: 'Nottingham Forest', note: '48 goals, 4 short' },
+      { name: 'Tottenham Hotspur', note: '48 goals, 4 short' },
+    ] },
+  // The 2026 ranking is closed (UEFA's feed: last update 3 Jul 2026, no club
+  // still playing in 2025-26). UEFA.com's default view is now the live 2027
+  // ranking, which is not this list.
+  { id: 'uefa-club-coefficients-2026', checked: '2026-10-16', until: '2027-12-31', kind: 'club',
+    title: 'UEFA club coefficients, 2026',
+    note: 'UEFA’s five-year club ranking at the end of 2025-26 (2021-22 to 2025-26), in points.',
+    asOf: '2026-10-16',
+    source: 'UEFA coefficients feed, men’s clubs, season 2026 (comp.uefa.com, final 3 Jul 2026); Bert Kassies, UEFA 5-year club ranking 2026 (kassiesa.net): identical to three decimals',
+    slots: [
+      { name: 'Bayern Munich', clue: '147.500 points' },
+      { name: 'Real Madrid', clue: '144.500 points' },
+      { name: 'Paris Saint-Germain', clue: '132.000 points' },
+      { name: 'Liverpool', clue: '130.000 points' },
+      { name: 'Inter Milan', clue: '127.000 points' },
+      { name: 'Manchester City', clue: '125.500 points' },
+      { name: 'Arsenal', clue: '119.000 points' },
+      { name: 'Barcelona', clue: '113.250 points' },
+      { name: 'Bayer Leverkusen', clue: '105.000 points' },
+      { name: 'Atlético Madrid', clue: '104.750 points' },
+    ],
+    near: [
+      { name: 'Borussia Dortmund', note: '100.750 points, 4 short' },
+      { name: 'Chelsea', note: '99.250 points, 5.5 short' },
+      { name: 'Roma', note: '97.750 points, 7 short' },
+    ] },
+  // UEFA merges West Germany into Germany, the Soviet Union and CIS into
+  // Russia, Czechoslovakia into the Czech Republic. Transfermarkt does not, and
+  // on its split Denmark is tenth instead of Russia: hence the note, and the
+  // old names accepted for this list. No Euro match before June 2028.
+  { id: 'euro-matches-won', checked: '2026-10-16', until: '2028-06-01', kind: 'nation',
+    title: 'Most Euro matches won',
+    note: 'Euros 1960 to 2024, UEFA’s count: Russia includes the USSR, Czech Republic Czechoslovakia.',
+    asOf: '2026-10-16',
+    source: 'UEFA all-time EURO table (14 Jul 2024); Wikipedia EURO records, overall team records; all 388 final-tournament matches tallied from a match-by-match dataset; RSSSF to 2008 plus 2012-2024',
+    also: { 'Russia': ['Soviet Union'], 'Czech Republic': ['Czechoslovakia'] },
+    slots: [
+      { name: 'Germany', clue: '30 wins' },
+      { name: 'Spain', clue: '28 wins' },
+      { name: 'France', clue: '23 wins' },
+      { name: 'Netherlands', clue: '23 wins' },
+      { name: 'Italy', clue: '22 wins' },
+      { name: 'Portugal', clue: '21 wins' },
+      { name: 'England', clue: '18 wins' },
+      { name: 'Czech Republic', clue: '15 wins' },
+      { name: 'Russia', clue: '13 wins' },
+      { name: 'Belgium', clue: '12 wins' },
+    ],
+    near: [
+      { name: 'Denmark', note: '10 wins, 2 short' },
+      { name: 'Croatia', note: '9 wins, 3 short' },
+    ] },
+  // The release of 20 July 2026 (FIFA's dateId FRS_Male_Football_20260611);
+  // the next was 7 October. Wikipedia's data module has Spain 1995.98, a typo:
+  // FIFA and two news copies print 1995.88.
+  { id: 'fifa-ranking-july-2026', checked: '2026-10-16', until: '2027-12-31', kind: 'nation',
+    title: 'FIFA ranking after the World Cup',
+    note: 'The men’s FIFA world ranking of 20 July 2026, the first after the 2026 World Cup.',
+    asOf: '2026-10-16',
+    source: 'FIFA men’s ranking, release of 20 July 2026 (inside.fifa.com); Wikipedia FIFA World Rankings data module (rev 20 Jul 2026); The Gazette and MLSsoccer.com copies',
+    slots: [
+      { name: 'Spain', clue: '1995.88 points' },
+      { name: 'Argentina', clue: '1970.37 points' },
+      { name: 'France', clue: '1948.97 points' },
+      { name: 'England', clue: '1922.83 points' },
+      { name: 'Brazil', clue: '1804.92 points' },
+      { name: 'Morocco', clue: '1803.99 points' },
+      { name: 'Portugal', clue: '1787.85 points' },
+      { name: 'Belgium', clue: '1778.36 points' },
+      { name: 'Netherlands', clue: '1775.54 points' },
+      { name: 'Mexico', clue: '1754.30 points' },
+    ],
+    near: [
+      { name: 'Colombia', note: '1739.89 points, 14.41 short' },
+      { name: 'Germany', note: '1726.22 points, 28.08 short' },
+      { name: 'Croatia', note: '1723.05 points, 31.25 short' },
+    ] },
+  // RSSSF also counts the 1967 qualifying round and two play-offs (Chile 68,
+  // Paraguay 65); Wikipedia has Argentina 132 and Colombia 53. Same ten, same
+  // order, same cut on all three: the numbers shown are CONMEBOL's.
+  { id: 'copa-america-matches-won', checked: '2026-10-16', until: '2028-06-01', kind: 'nation',
+    title: 'Most Copa América matches won',
+    note: 'Copa América 1916 to 2024, on CONMEBOL’s count. Guest nations included.',
+    asOf: '2026-10-16',
+    source: 'CONMEBOL Copa América all-time standings (copaamerica.com, 15 Aug 2024); RSSSF Copa América 1916-2024 all-time rankings; Wikipedia Copa América records',
+    slots: [
+      { name: 'Argentina', clue: '133 wins' },
+      { name: 'Uruguay', clue: '115 wins' },
+      { name: 'Brazil', clue: '109 wins' },
+      { name: 'Chile', clue: '67 wins' },
+      { name: 'Paraguay', clue: '64 wins' },
+      { name: 'Peru', clue: '58 wins' },
+      { name: 'Colombia', clue: '51 wins' },
+      { name: 'Bolivia', clue: '20 wins' },
+      { name: 'Mexico', clue: '20 wins' },
+      { name: 'Ecuador', clue: '17 wins' },
+    ],
+    near: [
+      { name: 'Venezuela', note: '11 wins, 6 short' },
+    ] },
+  // The year list for 31 December. The tournament is over: nothing can change.
+  { id: 'world-cup-2026-top-scorers', checked: '2026-10-16', until: '2030-06-08', kind: 'player',
+    title: 'Top scorers at the 2026 World Cup',
+    note: 'Goals at the 2026 World Cup only. Level players alphabetically.',
+    asOf: '2026-10-16',
+    source: 'Wikipedia 2026 World Cup goalscorer data (all 104 matches, 308 goals); ESPN tournament statistics; Transfermarkt; Al Jazeera, 21 Jul 2026',
+    slots: [
+      { name: 'Kylian Mbappé', clue: '10 goals' },
+      { name: 'Lionel Messi', clue: '8 goals' },
+      { name: 'Jude Bellingham', clue: '7 goals' },
+      { name: 'Erling Haaland', clue: '7 goals' },
+      { name: 'Ousmane Dembélé', clue: '6 goals' },
+      { name: 'Harry Kane', clue: '6 goals' },
+      { name: 'Mikel Oyarzabal', clue: '5 goals' },
+      { name: 'Julián Quiñones', clue: '4 goals' },
+      { name: 'Ismaïla Sarr', clue: '4 goals' },
+      { name: 'Vinícius Júnior', clue: '4 goals' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Cristiano Ronaldo', note: '3 goals, 1 short' },
+      { name: 'Bukayo Saka', note: '3 goals, 1 short' },
+    ] },
+  { id: 'premier-league-2025-26-top-scorers', checked: '2026-10-16', until: '2027-12-31', kind: 'player',
+    title: 'Premier League top scorers 2025-26',
+    note: 'League goals in the 2025-26 Premier League. Level players alphabetically.',
+    asOf: '2026-10-16',
+    source: 'Wikipedia 2025-26 Premier League top scorers (citing premierleague.com); ESPN scoring stats 2025-26; Transfermarkt top scorers 2025/26',
+    slots: [
+      { name: 'Erling Haaland', clue: '27 goals' },
+      { name: 'Igor Thiago', clue: '22 goals' },
+      { name: 'Antoine Semenyo', clue: '17 goals' },
+      { name: 'Ollie Watkins', clue: '16 goals' },
+      { name: 'Morgan Gibbs-White', clue: '15 goals' },
+      { name: 'João Pedro', born: 2001, clue: '15 goals' },
+      { name: 'Dominic Calvert-Lewin', clue: '14 goals' },
+      { name: 'Viktor Gyökeres', clue: '14 goals' },
+      { name: 'Eli Junior Kroupi', clue: '13 goals' },
+      { name: 'Danny Welbeck', clue: '13 goals' },
+    ],
+    nearMax: 1,
+    near: [
+      { name: 'Jean-Philippe Mateta', note: '12 goals, 1 short' },
+    ] },
+  { id: 'la-liga-2025-26-top-scorers', checked: '2026-10-16', until: '2027-12-31', kind: 'player',
+    title: 'La Liga top scorers 2025-26',
+    note: 'League goals in 2025-26 (the Pichichi and LaLiga agree). Level players alphabetically.',
+    asOf: '2026-10-16',
+    source: 'Marca Pichichi table (24 May 2026); LaLiga official scorers 2025/26; ESPN and BeSoccer agree',
+    slots: [
+      { name: 'Kylian Mbappé', clue: '25 goals' },
+      { name: 'Vedat Muriqi', clue: '23 goals' },
+      { name: 'Ante Budimir', clue: '17 goals' },
+      { name: 'Ferran Torres', clue: '16 goals' },
+      { name: 'Lamine Yamal', clue: '16 goals' },
+      { name: 'Vinícius Júnior', clue: '16 goals' },
+      { name: 'Mikel Oyarzabal', clue: '15 goals' },
+      { name: 'Borja Iglesias', clue: '14 goals' },
+      { name: 'Robert Lewandowski', clue: '14 goals' },
+      { name: 'Toni Martínez', born: 1997, clue: '14 goals' },
+    ],
+    near: [
+      { name: 'Georges Mikautadze', note: '13 goals, 1 short' },
+      { name: 'Raphinha', note: '13 goals, 1 short' },
+      { name: 'Alexander Sørloth', note: '13 goals, 1 short' },
+    ] },
+  // RSSSF's record page is frozen at Brazil v Scotland, 24 Jun 2026, the
+  // boundary. On live numbers Christie (74) is in and Boyd out, so the wording
+  // must stay "at the end of the 2026 World Cup". Transfermarkt has Fletcher 81.
+  { id: 'scotland-caps', checked: '2026-10-16', until: '2027-12-31', kind: 'player',
+    title: 'Most Scotland caps (men)',
+    note: 'Scotland men’s caps at the end of the 2026 World Cup.',
+    asOf: '2026-10-16',
+    source: 'RSSSF Scotland record internationals (to 24 Jun 2026); Wikipedia list (SFA profiles) less the autumn 2026 caps, from RSSSF line-ups; Transfermarkt agrees on the ten and the cut',
+    slots: [
+      { name: 'Kenny Dalglish', clue: '102 caps' },
+      { name: 'Andy Robertson', clue: '97 caps' },
+      { name: 'Jim Leighton', clue: '91 caps' },
+      { name: 'John McGinn', clue: '89 caps' },
+      { name: 'Craig Gordon', clue: '84 caps' },
+      { name: 'Darren Fletcher', clue: '80 caps' },
+      { name: 'Alex McLeish', clue: '77 caps' },
+      { name: 'Paul McStay', born: 1964, clue: '76 caps' },
+      { name: 'Scott McTominay', clue: '73 caps' },
+      { name: 'Tom Boyd', born: 1965, clue: '72 caps' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Ryan Christie', note: '71 caps, 1 short' },
+      { name: 'Grant Hanley', note: '70 caps, 2 short' },
+    ] },
+  // All ten are retired; the nearest active player, Séamus Coleman, has 81.
+  // Transfermarkt is one off for Staunton, Quinn, McGeady and Cascarino; RSSSF
+  // and Wikipedia agree on every number shown.
+  { id: 'ireland-caps', checked: '2026-10-16', until: '2027-06-01', kind: 'player',
+    title: 'Most Republic of Ireland caps',
+    note: 'Republic of Ireland men’s caps to 16 October 2026. Ties go to whoever got there first.',
+    asOf: '2026-10-16',
+    source: 'RSSSF Republic of Ireland record internationals; Wikipedia list of Republic of Ireland international footballers (4 Oct 2026); Transfermarkt agrees on the ten and the cut',
+    slots: [
+      { name: 'Robbie Keane', clue: '146 caps' },
+      { name: 'Shay Given', clue: '134 caps' },
+      { name: "John O'Shea", clue: '118 caps' },
+      { name: 'Kevin Kilbane', clue: '110 caps' },
+      { name: 'James McClean', clue: '103 caps' },
+      { name: 'Steve Staunton', clue: '102 caps' },
+      { name: 'Damien Duff', clue: '100 caps' },
+      { name: 'Aiden McGeady', clue: '93 caps' },
+      { name: 'Niall Quinn', clue: '91 caps' },
+      { name: 'Glenn Whelan', clue: '91 caps' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Tony Cascarino', note: '88 caps, 3 short' },
+      { name: 'Shane Long', note: '88 caps, 3 short' },
+    ] },
+  // Zanetti is 142 on the AFA's 2018 count, 143 on Wikipedia's list and 145 on
+  // RSSSF and his own Wikipedia page: the list names RSSSF, whose numbers it
+  // prints for all ten, in RSSSF's order (Di María above Zanetti, both 145).
+  // RSSSF counts two 1995-96 matches others leave out, which is also why
+  // Simeone (104 elsewhere) and Ayala (112 on NFT) differ; no place changes.
+  { id: 'argentina-caps', checked: '2026-10-16', until: '2027-12-31', kind: 'player',
+    title: 'Most Argentina caps (men)',
+    note: 'Argentina men’s caps at the end of the 2026 World Cup, on RSSSF’s count.',
+    asOf: '2026-10-16',
+    source: 'RSSSF Argentina record internationals; national-football-teams.com (both at the 19 Jul 2026 final); Wikipedia list less the 6 Oct 2026 caps',
+    slots: [
+      { name: 'Lionel Messi', clue: '207 caps' },
+      { name: 'Javier Mascherano', clue: '147 caps' },
+      { name: 'Ángel Di María', clue: '145 caps' },
+      { name: 'Javier Zanetti', clue: '145 caps' },
+      { name: 'Nicolás Otamendi', clue: '139 caps' },
+      { name: 'Roberto Ayala', clue: '115 caps' },
+      { name: 'Diego Simeone', born: 1970, clue: '106 caps' },
+      { name: 'Sergio Agüero', clue: '101 caps' },
+      { name: 'Oscar Ruggeri', clue: '97 caps' },
+      { name: 'Sergio Romero', born: 1987, clue: '96 caps' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Rodrigo De Paul', note: '94 caps, 2 short' },
+      { name: 'Diego Maradona', note: '91 caps, 5 short' },
+    ] },
+  // The cut is one point (Udinese 50, Sassuolo 49) but the season is over and
+  // no deduction is pending on any source.
+  { id: 'serie-a-2025-26-table', checked: '2026-10-16', until: '2027-12-31', kind: 'club',
+    title: 'Serie A 2025-26: the top ten',
+    note: 'Points in the 2025-26 Serie A, final table.',
+    asOf: '2026-10-16',
+    source: 'ESPN Serie A 2025-26 standings (all 38 played); Transfermarkt final table; Wikipedia 2025-26 Serie A table: every row agrees',
+    slots: [
+      { name: 'Inter Milan', clue: '87 points' },
+      { name: 'Napoli', clue: '76 points' },
+      { name: 'Roma', clue: '73 points' },
+      { name: 'Como', clue: '71 points' },
+      { name: 'AC Milan', clue: '70 points' },
+      { name: 'Juventus', clue: '69 points' },
+      { name: 'Atalanta', clue: '59 points' },
+      { name: 'Bologna', clue: '56 points' },
+      { name: 'Lazio', clue: '54 points' },
+      { name: 'Udinese', clue: '50 points' },
+    ],
+    near: [
+      { name: 'Sassuolo', note: '49 points, 1 short' },
+      { name: 'Torino', note: '45 points, 5 short' },
+      { name: 'Parma', note: '45 points, 5 short' },
+    ] },
+  // Cannot change before the 2030 World Cup. Very close to two lists already
+  // played (matches won, 15 Oct; World Cups played, 19 Nov): a spare, not
+  // scheduled unless a better nation list fails.
+  { id: 'world-cup-matches-played', checked: '2026-10-16', until: '2030-06-08', kind: 'nation',
+    title: 'Most World Cup matches played',
+    note: 'Men’s World Cup matches, 1930 to 2026. Germany includes West Germany.',
+    asOf: '2026-10-16',
+    source: 'RSSSF World Cup total rankings 1930-2022 plus FIFA’s 2026 Competition Summary; Wikipedia all-time table (2026); Transfermarkt all-time table',
+    slots: [
+      { name: 'Brazil', clue: '119 matches' },
+      { name: 'Germany', clue: '116 matches' },
+      { name: 'Argentina', clue: '96 matches' },
+      { name: 'Italy', clue: '83 matches' },
+      { name: 'England', clue: '82 matches' },
+      { name: 'France', clue: '81 matches' },
+      { name: 'Spain', clue: '75 matches' },
+      { name: 'Mexico', clue: '65 matches' },
+      { name: 'Uruguay', clue: '62 matches' },
+      { name: 'Netherlands', clue: '59 matches' },
+    ],
+    nearMax: 1,
+    near: [
+      { name: 'Belgium', note: '57 matches, 2 short' },
+    ] },
 ];
 
 // Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
@@ -1905,6 +2250,43 @@ export const TOP10_LOG = [
   'bundesliga-seasons',              // Sat 28
   'belgium-caps',                    // Sun 29
   'italy-top-scorers',               // Mon 30
+  // December, added 16 Oct. The eighteen club lists of 15 Oct (already open in
+  // the Top 10 browser; scheduling one locks it there until its day) and
+  // thirteen new closed snapshots. A club, league or nation list every four
+  // days; a club's two or three lists at least a week apart, as are lists that
+  // share a name; the lists with pre-war names in their last places (Barcelona,
+  // Tottenham, Newcastle, City) five or more days apart.
+  'money-league-2026',               // Tue 1 Dec
+  'liverpool-premier-league-goals',  // Wed 2
+  'manchester-united-premier-league-appearances', // Thu 3
+  'euro-matches-won',                // Fri 4
+  'tottenham-premier-league-goals',  // Sat 5  (north London derby at Tottenham)
+  'real-madrid-la-liga-goals',       // Sun 6
+  'scotland-caps',                   // Mon 7
+  'chelsea-premier-league-goals',    // Tue 8
+  'premier-league-2025-26-club-goals', // Wed 9
+  'barcelona-la-liga-goals',         // Thu 10
+  'newcastle-premier-league-appearances', // Fri 11
+  'manchester-city-premier-league-goals', // Sat 12
+  'copa-america-matches-won',        // Sun 13
+  'la-liga-2025-26-top-scorers',     // Mon 14
+  'tottenham-appearances',           // Tue 15
+  'arsenal-premier-league-goals',    // Wed 16
+  'liverpool-premier-league-appearances', // Thu 17
+  'uefa-club-coefficients-2026',     // Fri 18
+  'argentina-caps',                  // Sat 19
+  'manchester-united-premier-league-goals', // Sun 20
+  'newcastle-top-scorers',           // Mon 21
+  'tottenham-premier-league-appearances', // Tue 22
+  'fifa-ranking-july-2026',          // Wed 23
+  'premier-league-2025-26-top-scorers', // Thu 24
+  'ireland-caps',                    // Fri 25
+  'chelsea-premier-league-appearances', // Sat 26
+  'arsenal-premier-league-appearances', // Sun 27
+  'manchester-city-appearances',     // Mon 28
+  'newcastle-premier-league-goals',  // Tue 29
+  'serie-a-2025-26-table',           // Wed 30
+  'world-cup-2026-top-scorers',      // Thu 31  (the year's list)
 ];
 
 // One name per club. Keys are folded spellings found in the tables and in
