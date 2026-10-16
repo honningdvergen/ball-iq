@@ -2,6 +2,12 @@ import { describe, it, expect } from "vitest";
 import { QB } from "../../src/questions.js";
 import { pickDailyQuestions, warmUpFirst, DAILY_MIX, drawDailySchedule, hasHint } from '../../src/lib/dailyDraw.js';
 import { logHash } from '../../src/lib/top10Hash.js';
+import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const ROOT = resolve(fileURLToPath(new URL("../..", import.meta.url)));
 import DAILY_LOG from "../../src/data/dailyLog.js";
 
 // ⚠️ WHAT THIS PROTECTS, AND WHAT IT COST TO LEARN (player report, 2026-08-19).
@@ -163,17 +169,92 @@ describe("Daily 7 log: unchanged until the fetch door is in players' hands", () 
     expect(logHash(DAILY_LOG.days.slice(0, 60).map((d) => d.join(",")))).toBe("c70cc5d6");
   });
 
-  // ⚠️ Pinned on purpose. When the log is rebuilt with --regen-from, this
-  // becomes the hash of the days BEFORE that date, which must not change.
-  it("every day is still the 13 Oct log, byte for byte", () => {
+  // ⚠️ Pinned on purpose. Until the log is rebuilt (`dealtFrom` appears), every
+  // day is the 13 Oct log. After a rebuild, the days before it must still be:
+  // days 0 to 81 (through 8 Nov) are pinned below for the planned
+  // --regen-from 2026-11-09; a rebuild from an EARLIER date must update that
+  // pin deliberately, in the same commit.
+  it("until the rebuild, every day is still the 13 Oct log, byte for byte", () => {
+    if (DAILY_LOG.dealtFrom != null) return;
     expect(DAILY_LOG.days).toHaveLength(420);
     expect(logHash(DAILY_LOG.days.map((d) => d.join(",")))).toBe("60105ee5");
+  });
+
+  it("days 0 to 81 (through 8 Nov 2026) never move", () => {
+    expect(logHash(DAILY_LOG.days.slice(0, 82).map((d) => d.join(",")))).toBe("04adcf05");
+  });
+
+  it("from the first day dealt without replacement: no repeat, and every question explained", () => {
+    const from = DAILY_LOG.dealtFrom;
+    if (from == null) return;                   // not rebuilt yet (see above)
+    const byId = new Map(QB.map((q) => [q.id, q]));
+    const before = new Set(DAILY_LOG.days.slice(0, from).flat());
+    const seen = new Set(), again = [], bare = [];
+    DAILY_LOG.days.slice(from).forEach((day, i) => {
+      for (const id of day) {
+        if (seen.has(id) || before.has(id)) again.push(`${i + from}:${id}`);
+        if (!hasHint(byId.get(id))) bare.push(`${i + from}:${id}`);
+        seen.add(id);
+      }
+    });
+    expect(again.slice(0, 5)).toEqual([]);
+    expect(bare.slice(0, 5)).toEqual([]);
   });
 
   it("the log records how many leading days may have been served", () => {
     expect(DAILY_LOG.served).toBeGreaterThanOrEqual(60);
     expect(DAILY_LOG.served).toBeLessThanOrEqual(DAILY_LOG.days.length);
   });
+});
+
+// The planned rebuild, run here on the real log and the real bank without
+// writing anything: what `--regen-from 2026-11-09` would deal.
+describe("the planned rebuild from 9 Nov 2026, simulated", () => {
+  const FROM = 82;
+  const kept = DAILY_LOG.days.slice(0, FROM);
+  const used = new Set(kept.flat());
+  const dealt = drawDailySchedule(QB, DAILY_LOG.anchor + FROM, DAILY_LOG.days.length - FROM, used);
+
+  it("deals the rest of the horizon with no repeat, nothing already in the kept days, every one explained", () => {
+    const all = dealt.flat();
+    expect(dealt).toHaveLength(DAILY_LOG.days.length - FROM);
+    expect(new Set(all.map((q) => q.id)).size).toBe(all.length);
+    expect(all.filter((q) => used.has(q.id))).toEqual([]);
+    expect(all.filter((q) => !hasHint(q))).toEqual([]);
+    for (const day of dealt) {
+      const d = day.map((q) => q.diff);
+      expect([d.filter((x) => x === "easy").length, d.filter((x) => x === "medium").length, d.filter((x) => x === "hard").length]).toEqual([2, 4, 1]);
+      expect(d[0]).not.toBe("hard");
+    }
+  });
+});
+
+// The generator's --regen-from guard, run for real with --dry-run (nothing is written).
+describe("gen-daily-log --regen-from", () => {
+  const run = (...args) => spawnSync(process.execPath, ["scripts/gen-daily-log.mjs", ...args, "--dry-run"], { cwd: ROOT, encoding: "utf8" });
+  const iso = (offsetDays) => new Date(Date.now() + offsetDays * 86400000).toISOString().slice(0, 10);
+
+  it("refuses today, tomorrow and any day the log records as served", () => {
+    for (const date of [iso(0), iso(1), "2026-10-17", "2026-08-19"]) {
+      const r = run("--regen-from", date);
+      expect(r.status, date).toBe(1);
+      expect(r.stderr, date).toMatch(/served horizon/);
+    }
+  }, 60000);
+
+  it("refuses a date that is not a real day, and refuses being paired with --regen-future", () => {
+    expect(run("--regen-from", "2026-02-30").status).toBe(1);
+    expect(run("--regen-from", iso(30), "--regen-future").status).toBe(1);
+  }, 30000);
+
+  it("a dry run reports what would move and writes nothing", () => {
+    const before = readFileSync(resolve(ROOT, "src/data/dailyLog.js"), "utf8");
+    const r = run("--regen-from", iso(30));
+    expect(r.status).toBe(0);
+    expect(r.stdout).toMatch(/DRY RUN, nothing written/);
+    expect(r.stdout).toMatch(/after: .* 0 repeat slots/);
+    expect(readFileSync(resolve(ROOT, "src/data/dailyLog.js"), "utf8")).toBe(before);
+  }, 30000);
 });
 
 describe("drawDailySchedule", () => {

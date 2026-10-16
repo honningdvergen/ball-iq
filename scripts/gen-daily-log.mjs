@@ -35,7 +35,15 @@ import { drawDailySchedule, warmUpFirst } from '../src/lib/dailyDraw.js';
 import { seededShuffle, DAILY_SEED_MULTIPLIER, isModernEra } from '../src/lib/quiz.js';
 import { dayIndexForDate } from '../src/lib/date.js';
 
-const DAYS = Number(process.argv[2] || 400);
+// Arguments: an optional day count (how far past today to log; default 400),
+// and the flags below. The count is the first bare number, wherever it sits:
+// `Number(process.argv[2])` read a flag as NaN and silently logged nothing.
+const argv = process.argv.slice(2);
+const flagValue = (name) => { const i = argv.indexOf(name); return i >= 0 ? argv[i + 1] : null; };
+const REGEN_FROM = flagValue('--regen-from');
+const DRY_RUN = argv.includes('--dry-run');
+const DAYS_ARG = argv.find((a, i) => /^\d+$/.test(a) && argv[i - 1] !== '--regen-from');
+const DAYS = DAYS_ARG != null ? Number(DAYS_ARG) : 400;
 const OUT = resolve('src/data/dailyLog.js');
 // The same log, served by the site to installed apps (src/lib/dailyRemote.js).
 // Written in the same run from the same object, so the two cannot differ;
@@ -94,6 +102,42 @@ if (process.argv.includes('--regen-future') && days.length) {
   }
 }
 
+// --regen-from YYYY-MM-DD rebuilds the days ON OR AFTER that date with the
+// current draw (drawDailySchedule: without replacement, hint required) and
+// keeps every day before it byte for byte. Unlike --regen-future it names the
+// first day to move, so the rebuild can be scheduled for a date when the
+// installed apps that would otherwise split from the website have updated.
+// The horizon stays where it is unless a day count is given.
+//
+// ⚠️ REFUSES a date on or before the served horizon: today, tomorrow, and
+// anything the log already recorded as `served`. Those days may have been
+// played, shared as /c/ links and compared; they never move.
+//
+// Pair it with --dry-run first: that prints what the rebuild would change
+// (repeats before and after, runway) and writes nothing.
+const horizonIdx = Math.max(existing?.served ?? 0, (anchor - logAnchor) + 2);  // first day that may move
+let targetLen = (anchor - logAnchor) + DAYS;
+const before = days.map((d) => [...d]);
+if (REGEN_FROM != null) {
+  if (process.argv.includes('--regen-future')) { console.error('[daily-log] refusing: --regen-from and --regen-future together'); process.exit(1); }
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(REGEN_FROM || '');
+  const fromDay = m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) / 86400000 : NaN;
+  if (!m || !Number.isInteger(fromDay) || new Date(fromDay * 86400000).toISOString().slice(0, 10) !== REGEN_FROM) {
+    console.error(`[daily-log] refusing: --regen-from wants a real date as YYYY-MM-DD, got ${REGEN_FROM}`); process.exit(1);
+  }
+  const fromIdx = fromDay - logAnchor;
+  const lastServed = new Date((logAnchor + horizonIdx - 1) * 86400000).toISOString().slice(0, 10);
+  if (fromIdx < horizonIdx) {
+    console.error(`[daily-log] refusing: ${REGEN_FROM} is on or before the served horizon (${lastServed}). Days up to then never move.`); process.exit(1);
+  }
+  if (fromIdx > days.length) {
+    console.error(`[daily-log] refusing: ${REGEN_FROM} is beyond the end of the log; a plain run appends`); process.exit(1);
+  }
+  if (DAYS_ARG == null) targetLen = days.length;
+  console.log(`[daily-log] --regen-from ${REGEN_FROM}: keeping ${fromIdx} day(s) (through the day before), rebuilding ${Math.max(0, targetLen - fromIdx)}`);
+  days.length = fromIdx;
+}
+
 // Medium warm-up Q1 (2026-10-04) on every day that cannot have been served
 // yet. Only slot 0 of a day with a hard opener moves; Q2 to Q7 stay byte-for-
 // byte, so a /c/ link or an already-built native log disagrees on one question
@@ -114,13 +158,17 @@ if (process.argv.includes('--regen-future') && days.length) {
   if (moved) console.log(`[daily-log] warm-up: ${moved} unserved day(s) now open on a medium question`);
 }
 
+// The first log index dealt by drawDailySchedule, kept in the log so the
+// tests can hold every day from there to "no repeat, every one explained".
+let dealtFrom = existing?.dealtFrom ?? null;
 // New days are dealt WITHOUT REPLACEMENT (drawDailySchedule, 16 Oct 2026):
 // nothing already in the log is dealt again, nor is anything dealt twice
 // across the new days, for as long as the pool lasts; every new question
 // carries a "Why?". Plain runs and --regen-future both come through here.
 {
-  const want = (anchor - logAnchor) + DAYS - days.length;
+  const want = targetLen - days.length;
   if (want > 0) {
+    dealtFrom = Math.min(dealtFrom ?? Infinity, days.length);
     const used = new Set(days.flat());
     const fresh = drawDailySchedule(QB, logAnchor + days.length, want, used);
     for (const picked of fresh) {
@@ -140,7 +188,41 @@ if (process.argv.includes('--regen-future') && days.length) {
 // moves them is a rollback or a mistake.
 const served = Math.min(days.length, Math.max(existing?.served ?? 0, (anchor - logAnchor) + 2));
 
-const out = { anchor: logAnchor, served, days };
+const out = { anchor: logAnchor, served, ...(dealtFrom != null ? { dealtFrom } : {}), days };
+
+if (DRY_RUN) {
+  // What the run WOULD change, from the first day that moves. Nothing is written.
+  const firstMoved = before.findIndex((d, i) => !days[i] || d.join() !== days[i].join());
+  const from = firstMoved < 0 ? Math.min(before.length, days.length) : firstMoved;
+  const stats = (log) => {
+    const last = new Map(); let daysHit = 0, slots = 0, w30 = 0, w3 = 0;
+    log.forEach((d, i) => {
+      let hit = false;
+      for (const id of d) {
+        if (i >= from && last.has(id)) { hit = true; slots++; const gap = i - last.get(id); if (gap <= 30) w30++; if (gap <= 3) w3++; }
+        last.set(id, i);
+      }
+      if (hit) daysHit++;
+    });
+    const region = log.slice(from);
+    return `${region.length} days, ${new Set(region.flat()).size} different questions in ${region.length * 7} slots; ${daysHit} days hold a question already met, ${slots} repeat slots, ${w30} within 30 days, ${w3} within 3`;
+  };
+  const date = (i) => new Date((logAnchor + i) * 86400000).toISOString().slice(0, 10);
+  const byId = new Map(QB.map((q) => [q.id, q]));
+  const bare = (log) => log.slice(from).flat().filter((id) => { const q = byId.get(id); return !q || !(typeof q.hint === 'string' && q.hint.trim()); }).length;
+  const used = new Set(days.slice(0, from).flat());
+  const pool = { easy: 0, medium: 0, hard: 0 };
+  for (const q of QB) {
+    if (q.type === 'mcq' && q.cat !== 'Legends' && isModernEra(q) && typeof q.hint === 'string' && q.hint.trim() && !used.has(q.id) && pool[q.diff] != null) pool[q.diff]++;
+  }
+  const runway = Math.min(Math.floor(pool.easy / 2), Math.floor(pool.medium / 4), pool.hard);
+  console.log(`[daily-log] DRY RUN, nothing written. Compared from ${date(from)} to ${date(days.length - 1)}:`);
+  console.log(`  before: ${stats(before)}; ${bare(before)} without a "Why?"`);
+  console.log(`  after:  ${stats(days)}; ${bare(days)} without a "Why?"`);
+  console.log(`  runway from ${date(from)}: easy ${pool.easy}, medium ${pool.medium}, hard ${pool.hard} with a "Why?" and not yet used = ${runway} days with no repeat (through ${date(from + runway - 1)})`);
+  process.exit(0);
+}
+
 writeFileSync(OUT,
   '// GENERATED by scripts/gen-daily-log.mjs — do not hand-edit, do not reorder.\n'
   + '// Frozen Daily 7 answers. A logged day must NEVER move: it may already have\n'
