@@ -26,7 +26,7 @@ test.beforeEach(async ({ page }) => {
   })
 })
 
-async function shotMode({ page, testInfo, modeName, openLocator }) {
+async function shotMode({ page, testInfo, modeName, openLocator, chip }) {
   await page.goto('/play?tab=home')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
@@ -39,6 +39,11 @@ async function shotMode({ page, testInfo, modeName, openLocator }) {
     return
   }
   await entry.first().click()
+  // Quiz-screen modes (16 Oct 2026): pick the chip, then the one Start button.
+  if (chip) {
+    await page.locator('.qz-chip').filter({ hasText: chip }).first().click()
+    await page.locator('.qz-start').click()
+  }
   // First question reaches the DOM within ~1500ms in normal conditions.
   // We don't interact — just want the mid-quiz steady-state layout.
   await page.waitForTimeout(2200)
@@ -65,13 +70,14 @@ test("Today's 7 mid-quiz", async ({ page }, testInfo) => {
   })
 })
 
-for (const [modeName, label] of [
-  ['classic', 'Classic'],
+for (const [modeName, label, chip] of [
+  // Classic, Legends and Chaos are chips on the Quiz screen since 16 Oct 2026.
+  ['classic', 'Quiz', 'Everything'],
   ['survival', 'Survival'],
   ['hotstreak', 'Hot Streak'],
-  ['legends', 'Legends'],
+  ['legends', 'Quiz', 'Legends'],
   // 'balliq' removed — the Ball IQ Test mode was killed 2026-08-10.
-  ['chaos', 'Chaos'],
+  ['chaos', 'Quiz', 'Chaos'],
   // 'wc2026' removed: the World Cup 2026 tile left Home on 22 Jul 2026
   // (359f633b) and the mode is retired (0 plays since 5 Aug), so this case
   // looked for a .play-card that no longer exists.
@@ -79,7 +85,8 @@ for (const [modeName, label] of [
   test(`${modeName} mid-quiz`, async ({ page }, testInfo) => {
     await shotMode({
       page, testInfo, modeName,
-      openLocator: (p) => p.locator('.play-card').filter({ hasText: label }),
+      openLocator: (p) => chip ? p.locator('.quiz-entry') : p.locator('.play-card').filter({ hasText: label }),
+      chip,
     })
     // Classic tap opens a difficulty picker rather than the quiz directly.
     if (modeName === 'classic') {

@@ -41,7 +41,7 @@ import { markAcctStep } from './lib/acctFunnel.js';
 import { ProfilePic, firstLetter as firstLetterOf } from './components/ProfilePic.jsx';
 import { avatarColour } from './lib/avatarColour.js';
 import { syncWidget } from './lib/widgetBridge.js';
-import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds, faceAbbrForCat } from './lib/ballIqCard.js';
+import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drainPendingRounds } from './lib/ballIqCard.js';
 // The club tables are LAZY (src/data/clubPacks.js); this is the only way in.
 import { loadClubData, useClubData } from './lib/clubData.js';
 import { CLUB_INDEX } from './marketing/clubIndex.js';
@@ -139,6 +139,10 @@ const SettingsScreen = withSuspense(lazyNamed(() => import('./screens/SettingsSc
 const DailyReviewScreen = withSuspense(lazyNamed(() => import('./screens/ReviewScreens.jsx'), 'DailyReviewScreen'), "Loading review");
 const PuzzleReviewScreen = withSuspense(lazyNamed(() => import('./screens/ReviewScreens.jsx'), 'PuzzleReviewScreen'), "Loading review");
 const ClubQuizScreen = withSuspense(lazyNamed(() => import('./screens/ClubQuizScreen.jsx'), 'ClubQuizScreen'), "Loading clubs");
+// The Quiz screen (16 Oct 2026): one door for Classic, Chaos, Legends, the
+// league/tournament/theme quizzes and Stadiums. Lazy so Home carries only the
+// row that opens it; the chips call the same launchers the old tiles did.
+const QuizScreen = withSuspense(lazyNamed(() => import('./screens/QuizScreen.jsx'), 'QuizScreen'), "Loading quiz");
 const PrivacyScreen = withSuspense(lazyNamed(() => import('./screens/PrivacyScreen.jsx'), 'PrivacyScreen'));
 const StumpScreen = withSuspense(lazyNamed(() => import('./screens/StumpScreen.jsx'), 'StumpScreen'));
 const LocalSetup = withSuspense(lazyNamed(() => import('./screens/LocalPlay.jsx'), 'LocalSetup'));
@@ -893,7 +897,7 @@ const STADIUM_LEAGUE_TO_CAT = {
   "bundesliga": "Bundesliga", "ligue-1": "Ligue1",
 };
 
-const LEAGUE_QUIZ_SECTIONS = [
+export const LEAGUE_QUIZ_SECTIONS = [
   { label: "Leagues", items: [
     { cat: "PL",         name: "Premier League",   abbr: "EPL", color: "#3D195B" },
     { cat: "LaLiga",     name: "La Liga",          abbr: "LAL", color: "#EE8707" },
@@ -2243,71 +2247,6 @@ function StatRow({ label, value, valueColor }) {
 }
 
 
-function LeagueQuizScreen({ onStart, onBack, catStats, cardLeague }) {
-  React.useEffect(() => {
-    // Bank warmed in the background — see the club picker above for why. The
-    // per-league count this used to compute was rendered in the rows (disguise
-    // #9 of the no-counts rule) and is deliberately gone.
-    prefetchQuestions();
-  }, []);
-  return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
-        <div className="page-title">League Quizzes</div>
-      </div>
-      <p style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>
-        Pick a competition — every answer builds your Ball IQ card.
-      </p>
-      {LEAGUE_QUIZ_SECTIONS.map((section) => (
-        <div key={section.label} style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t2)", margin: "0 0 8px 2px" }}>{section.label}</div>
-          <div className="mode-list">
-            {section.items.map((it) => {
-              const lightRow = clubReadableText(it.color) === "#0B0C10";
-              const a1 = lightRow ? 0.20 : 0.32, a2 = lightRow ? 0.05 : 0.06;
-              return (
-                <button key={it.cat} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(it.cat); }}
-                  style={{ background: `linear-gradient(90deg, ${clubHexToRgba(it.color, a1)} 0%, ${clubHexToRgba(it.color, a2)} 100%)`, borderColor: clubHexToRgba(it.color, lightRow ? 0.5 : 0.4) }}>
-                  <div className="mi-icon" style={{ background: it.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(it.color, 0.45)}` }}>
-                    <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(it.color) }}>{it.abbr}</span>
-                  </div>
-                  <div className="mi-body">
-                    <div className="mi-name">{it.name}</div>
-                    {/* ⚠️ NO COUNT — disguise #9 (2026-08-19). This printed
-                        "556 questions" per league: an inventory count in
-                        user-facing copy (binding rule), and the thin leagues
-                        advertised exactly how thin they were — the same reason
-                        the club-page "42 Full set" control was banned. The
-                        rating hook is the picker's actual promise, and it
-                        cannot rot. */}
-                    {/* ⚠️ The face abbr comes from the CARD, not from this
-                        row. Seven of these thirteen rows have no face —
-                        Ligue 1, Süper Lig, Primeira, Legends, Managers,
-                        Records — and Euros feeds INT, not "EUR". Printing
-                        the row's own abbr promised six ratings that do not
-                        exist and named a seventh wrongly. Every answer does
-                        feed the overall (overallScore walks every key), so
-                        that is what the faceless rows honestly say. */}
-                    {/* ⚠️ PASS THE PLAYER'S OWN RECORD. Slot 0 of the card is
-                        THEIR league, so which face a competition builds is a
-                        per-player question — see faceAbbrForCat. */}
-                    <div className="mi-desc">{(() => {
-                      const ab = faceAbbrForCat(it.cat, catStats, cardLeague);
-                      return ab ? `Builds your ${ab} rating` : "Counts toward your overall Ball IQ";
-                    })()}</div>
-                  </div>
-                  <div className="mi-arrow">→</div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // ─── Local head-to-head history (Online tab) ─────────────────────────────────
 // One record per finished MP room on this device — powers the Online tab's
 // W/L record, win streak and recent-opponents rail. Local-only for now; a
@@ -3242,6 +3181,9 @@ function AppInner() {
   useEffect(() => { perfMark('AppInner mounted'); removePrebootOnboard(); }, []);
   const { user, profile: authProfile, isGuest, isAnonUser, signInAsGuest, exitGuestMode, openAuthPrompt } = useAuth();
   const [screen, setScreen] = useState("home");
+  // The chip the Quiz screen opens on: the last topic started this session, or
+  // Everything. Not persisted; a cold start opens on Everything, as the mock.
+  const [quizTopic, setQuizTopic] = useState("classic");
   // Mates' leagues (web only): the open table, and the create / join sheet.
   const [leagueId, setLeagueId] = useState(null);
   // Stitch-up: the link's token (null = the builder). Web only (LEAGUES_WEB).
@@ -3695,7 +3637,7 @@ function AppInner() {
     stadiums: "Stadiums", review: "Question review", "daily-review": "Daily review",
     "puzzle-review": "Puzzle review", "friend-profile": "Friend profile",
     "blocked-users": "Blocked users", "club-quiz": "Club quiz",
-    "league-quiz": "League quiz", stump: "Stump a mate",
+    "quiz-topics": "Quiz", stump: "Stump a mate",
     "online-stage1": "Online multiplayer", "online-stage1-lobby": "Lobby",
     "local-setup": "Pass and play",
   };
@@ -5055,7 +4997,10 @@ function AppInner() {
       if (m === "online") { setScreen("online-stage1"); return; }
       if (m === "local") { setScreen("local-setup"); return; }
       if (m === "clubquiz") { setScreen("club-quiz"); return; }
-      if (m === "leaguequiz") { setScreen("league-quiz"); return; }
+      // The League Quiz picker became the Quiz screen (16 Oct 2026). Old doors
+      // (?game=leaguequiz, the site's League Quiz card) land on it with a
+      // competition already picked, so they still arrive at "pick a league".
+      if (m === "leaguequiz") { setQuizTopic((t) => (LEAGUE_QUIZ_BY_CAT[t] && t !== "Legends" ? t : "PL")); setScreen("quiz-topics"); return; }
       // Reset category for special modes that ignore it
       if (m === "daily" || m === "survival" || m === "legends" || m === "hotstreak" || m === "truefalse" || m === "chaos") setCat("All");
       if (m === "daily" && dailyDone) {
@@ -7523,7 +7468,7 @@ function AppInner() {
                 "Name the Stadium" header on every phone (player-reported
                 2026-08-21). The list is the contract: if your screen draws its
                 own title, it belongs in it. */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "mystery", "stadiums", "league-quiz", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "mystery", "stadiums", "quiz-topics", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
@@ -8176,10 +8121,13 @@ function AppInner() {
           />
         )}
 
-        {/* ── LEAGUE QUIZ ── */}
-        {screen === "league-quiz" && (
-          <LeagueQuizScreen
-            onStart={launchLeagueQuiz}
+        {/* ── QUIZ (topic picker) ── */}
+        {screen === "quiz-topics" && (
+          <QuizScreen
+            initialTopic={quizTopic}
+            onStartMode={(m, t) => { setQuizTopic(t); startMode(m); }}
+            onStartCat={(c, t) => { setQuizTopic(t); launchLeagueQuiz(c); }}
+            onStadiums={() => setScreen("stadiums")}
             onBack={goHome}
             catStats={stats?.catStats}
             cardLeague={stats?.cardLeague}
@@ -8436,7 +8384,7 @@ function AppInner() {
                 // one daily play a second the same day.
                 if (mode === "daily") { setScreen("home"); setTab("home"); }
                 else if (activeClub) { setScreen("club-quiz"); }
-                else if (activeLeague) { setScreen("league-quiz"); }
+                else if (activeLeague) { setQuizTopic(activeLeague); setScreen("quiz-topics"); }
                 else { setScreen("home"); setTab("home"); }
               }}
               // Only modes with a HOW_TO_PLAY entry get the "?" — passing an

@@ -1,7 +1,7 @@
 import React from "react";
 import { FOOTLE_SHORT } from "../lib/modeCopy.js";
 import { currentAvatarId } from '../lib/currentAvatar.js';
-import { CircleCheck, Timer, Flame, Zap, ScrollText, Sparkles, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, LandPlot, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
+import { CircleCheck, CircleHelp, Flame, Zap, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -749,17 +749,23 @@ function HomeScreenImpl({
           quiz" means, and League Quiz is the most-played mode in the grid over
           the last fortnight (44 plays / 9 players). Moving it also leaves the
           grid an even six, so the odd empty cell goes with it.
-          Row anatomy, not a tile: mode colour on the well, one action. */}
+          Row anatomy, not a tile: mode colour on the well, one action.
+          ⚠️ ONE QUIZ ROW, NOT FIVE ENTRIES (Alex, 16 Oct 2026). This row was
+          League Quiz; it now also stands for the Classic, Legends, Chaos and
+          Stadiums tiles that used to sit in the grid below. All five are chips
+          (or, for Stadiums, a row) on the lazy Quiz screen, each still started
+          by its own launcher. Do not put the tiles back next to it: two doors
+          to one room read as a longer app, the rule the grid states itself. */}
       <button
         type="button"
-        className="todays-seven-secondary mp-row"
-        onClick={() => startMode("leaguequiz")}
-        aria-label="League Quiz — pick a competition"
+        className="todays-seven-secondary mp-row quiz-entry"
+        onClick={() => setScreen("quiz-topics")}
+        aria-label="Quiz: ten questions on any league, era or theme"
       >
-        <span className="t7s-icon" aria-hidden="true"><Trophy size={22} strokeWidth={2} /></span>
+        <span className="t7s-icon" aria-hidden="true"><CircleHelp size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title">League Quiz</span>
-          <span className="t7s-sub">Pick a competition</span>
+          <span className="t7s-title">Quiz</span>
+          <span className="t7s-sub">Ten questions · any league, era or theme</span>
         </span>
         <span className="t7s-cta">Play</span>
       </button>
@@ -861,11 +867,11 @@ function HomeScreenImpl({
           // mode that cannot be played. mysteryLive is computed above.
           // Mystery Player is a row in the Today block above (2026-09-06), same rule
           // as the Trail: one puzzle a day, listed once.
-          // Stadiums (2026-08-20, Alex's design): a completion run, not a
-          // quiz — name every ground in the league. No live-gate needed:
-          // the dataset is season-pinned and always playable.
-          { key:"stadiums", Icon: LandPlot, name: "Stadiums", desc: "Every ground", onTap: () => setScreen("stadiums") },
-          { key:"classic",   Icon: Timer,      name:"Classic",       desc:"Easy to hard" },
+          // ⚠️ NO STADIUMS, CLASSIC, LEGENDS OR CHAOS TILES (16 Oct 2026). They
+          // moved behind the Quiz row above: Classic is the "Everything" chip,
+          // Legends and Chaos sit beside it in Mix, Stadiums is the row under
+          // "Not ten questions". What stays here are the two modes with rules
+          // of their own (one miss and out, a 60-second clock), not topics.
           // ⚠️ iconColor deliberately REMOVED. Survival was the only tile using the
           // opt-out, so after the grid went neutral it was the single remaining
           // green icon — which is worse than all-green was, because one odd tile
@@ -874,11 +880,9 @@ function HomeScreenImpl({
           // nothing does today.
           { key:"survival",  Icon: Heart,      name:"Survival",      desc:"One miss, out" },
           { key:"hotstreak", Icon: Flame,      name:"Hot Streak",    desc:"60 seconds" },
-          { key:"legends",   Icon: ScrollText, name:"Legends",       desc:"Pre-2000" },
           // Ball IQ Test was killed 2026-08-10 (App.jsx side removed then).
           // This tile outlived the mode and silently started an unbranded
           // generic quiz — the grid entry goes too.
-          { key:"chaos",     Icon: Sparkles,   name:"Chaos",         desc:"Wild cards" },
         ].map(({ key, Icon, name, desc, onTap, iconColor, isNew }) => {
           const showNew = isNew && !seenModes[key];
           return (

@@ -1,0 +1,80 @@
+/* The Quiz screen (screens/QuizScreen.jsx). Loaded with the lazy chunk, so none
+   of this is on Home's eager path. The chips are the club finder's .cf-chip
+   (app.css) with wrapping turned on; the start button is the app's own
+   .next-btn-primary. The phone, the native shell and an installed PWA read the
+   same rules; only a browser tab at desktop width (the rail) differs, below. */
+
+.qz-screen { display: flex; flex-direction: column; min-height: 100%; }
+.qz-screen .page-hdr { padding-bottom: 14px; }
+.qz-screen .back-btn svg { display: block; }
+.qz-intro { font-size: 13px; color: var(--t2); line-height: 1.6; margin: 0 0 16px; }
+
+.qz-group { margin: 0 0 16px; }
+.qz-h { font-size: 13px; font-weight: 700; color: var(--t2); letter-spacing: 0; margin: 0 0 8px 2px; }
+/* The finder's chip row scrolls sideways under a fade; here every topic must
+   be visible at once, so it wraps and the fade goes. */
+.qz-chips.cf-chips { margin-top: 0; flex-wrap: wrap; overflow: visible; mask-image: none; -webkit-mask-image: none; }
+.qz-chip.cf-chip { min-height: 44px; font-size: 13.5px; }
+.qz-well {
+  flex: 0 0 auto; width: 32px; height: 32px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--s2); color: var(--t2);
+}
+/* Selected: a green tint and a tick, never a second solid fill. The screen has
+   one solid control and it is "Start quiz". */
+.qz-chip.is-on, .qz-chip.is-on:hover, .qz-chip.is-on:focus-visible {
+  border-color: rgba(88,204,2,0.55); background: rgba(88,204,2,0.10);
+}
+.qz-chip.is-on .qz-well { background: rgba(88,204,2,0.16); color: var(--grn-soft); }
+.qz-tick { color: var(--grn-soft); margin-left: -2px; flex: 0 0 auto; }
+.qz-chip:focus-visible { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--grn-soft); }
+
+.qz-run {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px;
+  padding: 12px 14px; border-radius: 14px; border: 1px solid var(--border);
+  background: var(--s1); color: var(--t1); font-family: inherit; text-align: left;
+  cursor: pointer; transition: border-color .15s, background .15s;
+}
+.qz-run:hover, .qz-run:focus-visible { border-color: var(--bd3, #3E4150); background: var(--s2); outline: none; }
+.qz-run .qz-well { width: 40px; height: 40px; border-radius: 10px; }
+.qz-run-body { display: flex; flex-direction: column; min-width: 0; }
+.qz-run-name { font-size: 14px; font-weight: 800; }
+.qz-run-sub { font-size: 12.5px; color: var(--t2); font-weight: 500; margin-top: 2px; }
+.qz-run-go {
+  margin-left: auto; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px;
+  font-size: 13px; font-weight: 800; color: var(--grn-soft);
+}
+
+/* The footer is FIXED to the bottom of the viewport, full width, as in the
+   mock: the one solid button is always in reach, however far the topic list
+   scrolls. .qz-pad at the end of the screen is its height, so the Stadiums row
+   can scroll clear of it. The content sits in .qz-foot-in, capped and
+   centred, so it lines up with the column in the 620px tablet band too.
+   Bottom clearance, --qz-foot-pb:
+     native shell  the --foot-clear the finish screens use (env() plus a floor),
+                   because Android's WebView reports the inset as 0 and a bare
+                   env() would sit the button on the system navigation (see
+                   .quiz-wrap in app.css);
+     browser/PWA   the mock's 18px, or the home-indicator inset if larger.
+   The consent bar, while it is up, publishes its height as --biq-consent-h
+   (public/consent.js); the footer stands on top of it rather than under it. */
+.qz-screen { --qz-foot-pb: max(18px, env(safe-area-inset-bottom, 0px)); }
+html.native-app .qz-screen { --qz-foot-pb: var(--foot-clear, 50px); }
+.qz-foot {
+  position: fixed; left: 0; right: 0; bottom: var(--biq-consent-h, 0px); z-index: 20;
+  padding: 10px 20px var(--qz-foot-pb);
+  background: var(--bg); border-top: 1px solid var(--border);
+}
+.qz-foot-in { max-width: 460px; margin: 0 auto; }
+.qz-pad { flex: 0 0 auto; height: calc(104px + var(--qz-foot-pb)); }
+.qz-sum { font-size: 12.5px; color: var(--t2); font-weight: 600; text-align: center; margin: 0 0 8px; }
+.qz-sum strong { color: var(--t1); font-weight: 800; }
+.qz-start.next-btn-primary { min-height: 50px; padding: 14px 16px; }
+/* A browser tab at desktop width has the BiqNav rail down the left, so a
+   full-width fixed bar would run under it. There the footer is sticky inside
+   the content column instead, and needs no spacer. (The native shell and an
+   installed PWA keep the phone column at every width, so they stay fixed.) */
+@media (min-width: 1024px) {
+  body.biq-web .qz-foot { position: sticky; left: auto; right: auto; bottom: 0; margin-top: auto; padding: 10px 0 18px; }
+  body.biq-web .qz-pad { display: none; }
+}

@@ -37,6 +37,7 @@ const HERO = read('../../src/components/FootleHero.jsx');
 const MYSTERY = read('../../src/screens/MysteryPlayer.jsx');
 const ACCENTS = read('../../src/lib/accents.js');
 const STADIUM = read('../../src/screens/StadiumGame.jsx');
+const QUIZ = read('../../src/screens/QuizScreen.jsx');
 
 /** sRGB relative luminance → WCAG contrast ratio. */
 function ratio(hexA, hexB) {
@@ -98,7 +99,9 @@ describe('design review — tier 1', () => {
   it('mode icons carry the right metaphor', () => {
     expect(HOME).toMatch(/key:"survival",\s*Icon: Heart/);   // lives, not a bolt
     expect(HOME).toMatch(/key:"hotstreak", Icon: Flame/);    // "hot" streak
-    expect(HOME).toMatch(/key:"stadiums", Icon: LandPlot/);  // `landmark` read as a bank
+    // Stadiums left the Home grid for the Quiz screen's "Not ten questions"
+    // row on 16 Oct 2026; the mark travelled with it.
+    expect(QUIZ).toMatch(/<LandPlot size=\{20\}/);  // `landmark` read as a bank
     expect(HOME).toMatch(/key:"mystery", Icon: UserRoundSearch/);
     // Daily must name the mode with the same mark Home does.
     expect(DAILY).toMatch(/<UserRoundSearch size=\{size\}/);

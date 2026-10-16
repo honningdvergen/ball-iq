@@ -67,7 +67,7 @@ test("Today's 7 entry", async ({ page, context }) => {
   await expectNoCrash(page, errs, "Today's 7");
 });
 
-for (const mode of ['Classic', 'Survival', 'Hot Streak', 'Legends', 'Chaos']) {
+for (const mode of ['Survival', 'Hot Streak']) {
   test(`More-modes — ${mode}`, async ({ page, context }) => {
     await seedGuestMode(context);
     const errs = await captureErrors(page);
@@ -77,6 +77,23 @@ for (const mode of ['Classic', 'Survival', 'Hot Streak', 'Legends', 'Chaos']) {
     await page.locator('.play-card').filter({ hasText: mode }).first().click();
     await page.waitForTimeout(1500);
     await expectNoCrash(page, errs, `More-modes ${mode}`);
+  });
+}
+
+// Classic, Legends and Chaos left the grid on 16 Oct 2026: one Quiz row opens
+// the Quiz screen, where each is a chip ("Everything" is the old Classic).
+for (const [mode, chip] of [['Classic', 'Everything'], ['Legends', 'Legends'], ['Chaos', 'Chaos'], ['League', 'Premier League']]) {
+  test(`Quiz screen — ${mode}`, async ({ page, context }) => {
+    await seedGuestMode(context);
+    const errs = await captureErrors(page);
+    await page.goto('/play?tab=home');
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(500);
+    await page.locator('.quiz-entry').first().click();
+    await page.locator('.qz-chip').filter({ hasText: chip }).first().click();
+    await page.locator('.qz-start').click();
+    await page.waitForTimeout(1500);
+    await expectNoCrash(page, errs, `Quiz screen ${mode}`);
   });
 }
 

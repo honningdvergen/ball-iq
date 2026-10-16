@@ -49,7 +49,9 @@ test('Home → Classic → Q1 renders', async ({ page, context }) => {
   await seedGuest(context);
   const errs = captureErrors(page);
   await home(page);
-  await page.locator('.play-card').filter({ hasText: 'Classic' }).first().click();
+  // Classic is the Quiz screen's default "Everything" chip since 16 Oct 2026.
+  await page.locator('.quiz-entry').first().click();
+  await page.locator('.qz-start').click();
   await expectQuestionOnScreen(page, 'Classic');
   expect(errs).toEqual([]);
 });
