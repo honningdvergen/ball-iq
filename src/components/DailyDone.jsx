@@ -68,6 +68,10 @@ const shownClaims = new Set();
 export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], save, stump, GetAppCTA = null, track }) {
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
+  // Too few results yet today: yesterday's edition stands in, labelled and
+  // grey, so the block never vanishes (16 Oct 2026: it was missing on all four
+  // finish screens one morning) and nothing is invented.
+  const [prev, setPrev] = useState(null);
   const [busy, setBusy] = useState(false);
   const [shared, setShared] = useState(false);
 
@@ -123,11 +127,20 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       }
       const d = await fetchDistribution({ game, edition });
       if (alive) setDist(d);
+      if ((!d || d.n < MIN_N) && edition > 1) {
+        const y = await fetchDistribution({ game, edition: edition - 1 });
+        if (alive) setPrev(y && y.n >= MIN_N ? y : null);
+      }
     })();
     return () => { alive = false; };
   }, [game, edition, bucket, won, isArchive]);
 
-  const summary = useMemo(() => summariseDistribution(dist, { game, mine: bucket, won }), [dist, game, bucket, won]);
+  const today = useMemo(() => summariseDistribution(dist, { game, mine: bucket, won }), [dist, game, bucket, won]);
+  const yesterday = useMemo(() => (today ? null : summariseDistribution(prev, { game, mine: bucket, won })), [today, prev, game, bucket, won]);
+  const summary = today || yesterday;
+  const shown = today ? dist : prev;
+  // Daily 7 has no public number (its edition is a day index).
+  const yLabel = game === "daily7" ? "Yesterday" : `Yesterday, No. ${edition - 1}`;
   const showCounts = !!summary && summary.n >= SHOW_COUNTS_FROM;
   const barValue = (r) => (showCounts ? r.c : `${summary.n ? Math.round((r.c / summary.n) * 100) : 0}%`);
   const ko = formatCountdown(msToNextLocalMidnight(now));
@@ -135,15 +148,15 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
 
   const bars = useMemo(() => {
     if (!summary) return [];
-    const b = dist.buckets;
+    const b = shown.buckets;
     const outOf = SCORE_GAMES[game];
     const keys = outOf != null
       ? Array.from({ length: outOf + 1 }, (_, i) => i)
       : game === "footle" ? [1, 2, 3, 4, 5, 6, 0]
       : (() => { const ks = Object.keys(b).map(Number).filter((k) => k > 0); const max = Math.max(4, ...ks, won ? bucket : 0); return [...Array.from({ length: Math.min(max, 10) }, (_, i) => i + 1), 0]; })();
     const top = Math.max(1, ...keys.map((k) => b[k] || 0));
-    return keys.map((k) => ({ k, label: k === 0 && outOf == null ? "X" : String(k), c: b[k] || 0, pct: Math.round(((b[k] || 0) / top) * 100), mine: outOf != null ? k === bucket : (won ? k === bucket : k === 0) }));
-  }, [summary, dist, game, bucket, won]);
+    return keys.map((k) => ({ k, label: k === 0 && outOf == null ? "X" : String(k), c: b[k] || 0, pct: Math.round(((b[k] || 0) / top) * 100), mine: !yesterday && (outOf != null ? k === bucket : (won ? k === bucket : k === 0)) }));
+  }, [summary, shown, yesterday, game, bucket, won]);
 
   const doShare = async () => {
     if (busy) return;
@@ -273,10 +286,11 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           results the panel speaks only in percentages (which are just as true);
           above it the real numbers come back, because then they are an asset. */}
       {summary && (
-        <div className="dd-dist" aria-label={showCounts ? `How everyone did, ${summary.n} results` : "How everyone did"}>
+        <div className={`dd-dist${yesterday ? " is-yesterday" : ""}`} aria-label={yesterday ? yLabel : showCounts ? `How everyone did, ${summary.n} results` : "How everyone did"}>
           <div className="dd-dist-head">
-            <div className="dd-title">How everyone did</div>
-            {showCounts && <div className="dd-dist-cap dd-num">{summary.n.toLocaleString()} played</div>}
+            <div className="dd-title">{yesterday ? yLabel : "How everyone did"}</div>
+            {showCounts && !yesterday ? <div className="dd-dist-cap dd-num">{summary.n.toLocaleString()} played</div>
+              : !yesterday ? <div className="dd-dist-cap">Early numbers</div> : null}
           </div>
           <div className="dd-bars">
             {bars.map((r) => (
@@ -288,9 +302,13 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             ))}
           </div>
           <div className="dd-sub">
-            {summary.outOf != null
-              ? <>Average <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong>{summary.beatPct > 0 ? <> · you beat <strong className="dd-num">{summary.beatPct}%</strong></> : null}</>
-              : <><strong className="dd-num">{summary.solvedPct}%</strong> solved{won && summary.beatPct > 0 ? <> · you beat <strong className="dd-num">{summary.beatPct}%</strong></> : null}</>}
+            {yesterday
+              ? <>You're one of the first to finish {game === "daily7" ? "today's set" : `No. ${edition}`}. {summary.outOf != null
+                ? <>Yesterday's average was <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong>.</>
+                : <>Yesterday <strong className="dd-num">{summary.solvedPct}%</strong> solved it.</>}</>
+              : summary.outOf != null
+                ? <>Average <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong>{summary.line ? <> · <strong>{summary.line}</strong></> : null}</>
+                : <><strong className="dd-num">{summary.solvedPct}%</strong> solved{summary.line ? <> · <strong>{summary.line}</strong></> : null}</>}
           </div>
         </div>
       )}

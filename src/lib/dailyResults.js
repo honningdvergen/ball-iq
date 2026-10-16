@@ -150,5 +150,41 @@ export function summariseDistribution(dist, { game, mine, won }) {
   const avg = outOf != null
     ? (entries.reduce((s, [b, c]) => s + b * c, 0) / total)
     : null;
-  return { n: dist.n, total, solvedPct, beatPct, avg, outOf };
+  return { n: dist.n, total, solvedPct, beatPct, avg, outOf, line: comparisonLine(entries, total, { outOf, mine, won }) };
+}
+
+// ── THE ONE SENTENCE ABOUT EVERYONE ELSE (daily design pass, 16 Oct 2026) ──
+// "You beat 6%" on a Trail solved like 61% of players read as failure for a
+// normal result: TIES WERE COUNTED AS LOSSES. The line now speaks about the
+// player's own place, and a tie is a tie.
+//   nobody better         "Only 9% matched you"   (or "Nobody did better" when alone)
+//   in the biggest bucket "Same as 41% of players" (35%+ share it)
+//   otherwise             "Top 12%"               (the share who did as well or better)
+//   a score game, low     "Better than 18%"       (only when it is true and above 0)
+//   a loss                null: the solved share says it, nothing rubs it in
+export function comparisonLine(entries, total, { outOf, mine, won }) {
+  if (!total) return null;
+  const isScore = outOf != null;
+  if (!isScore && !won) return null;
+  const better = (b) => (isScore ? b > mine : b > 0 && b < mine);
+  let nBetter = 0, nSame = 0, biggest = 0;
+  for (const [b, c] of entries) {
+    if (better(b)) nBetter += c;
+    else if (b === mine) nSame += c;
+    if (!isScore && b === 0) continue;
+    biggest = Math.max(biggest, c);
+  }
+  const pct = (x) => Math.round((x / total) * 100);
+  if (nBetter === 0) {
+    if (isScore && mine === 0) return null;
+    return nSame <= 1 ? 'Nobody did better' : `Only ${Math.max(1, pct(nSame))}% matched you`;
+  }
+  if (nSame === biggest && pct(nSame) >= 35) return `Same as ${pct(nSame)}% of players`;
+  const top = pct(nBetter + nSame);
+  if (top <= 50) return `Top ${Math.max(1, top)}%`;
+  if (isScore) {
+    const worse = total - nBetter - nSame;
+    return worse > 0 ? `Better than ${pct(worse)}%` : null;
+  }
+  return null;
 }

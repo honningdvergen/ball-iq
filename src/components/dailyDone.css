@@ -29,6 +29,9 @@
 .dd-bar{height:12px;border-radius:6px;background:var(--s2);overflow:hidden;position:relative;}
 .dd-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--border2);display:block;min-width:2px;transition:width .5s cubic-bezier(0.22,1,0.36,1);}
 .dd-bar.is-mine i{background:var(--accent);}
+/* Yesterday's numbers stand in while today's crowd is small: grey, no "you" bar. */
+.dd-dist.is-yesterday .dd-bar i{background:var(--s3, var(--border2));}
+.dd-dist.is-yesterday .dd-title{color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .dd-bar-v{font-size:11.5px;font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;}
 .dd-bar-k.is-mine,.dd-bar-v.is-mine{color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);font-weight:800;}
 /* Still open today: the other dailies as mini rows. */
