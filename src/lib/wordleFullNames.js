@@ -408,7 +408,7 @@ export const WORDLE_FULL_NAMES = {
   CHARLTON: ["Bobby", "Charlton"],
   BERGKAMP: ["Dennis", "Bergkamp"],
   CLEMENCE: ["Ray", "Clemence"],
-  REDKNAPP: ["Harry", "Redknapp"],
+  REDKNAPP: ["Jamie", "Redknapp"],  // the England midfielder, not the manager (Alex, 17 Oct 2026)
   MATTHAUS: ["Lothar", "Matthäus"],
   BIERHOFF: ["Oliver", "Bierhoff"],
   PODOLSKI: ["Lukas", "Podolski"],

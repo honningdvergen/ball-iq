@@ -184,7 +184,7 @@ export const WORDLE_ANSWER_LOG = [
   "WALSH","GERRARD","UMTITI","WIRTZ","NEDVED","CAMPBELL","BRADY","TAYLOR",
   "VINICIUS","PIRLO","PEARCE","CHARLTON","PIRES","CAVANI","ZANETTI","BARTHEZ",
   "MILNER","ROSICKY","FELIX","KEMPES","INSIGNE","DZEKO","HODDLE","WALCOTT",
-  "ALBIOL","NEYMAR","HERRERA","SZCZESNY","TUDOR","TOSHACK","GYOKERES","MOYES",
+  "ALBIOL","NEYMAR","HERRERA","SZCZESNY","TUDOR","TOSHACK","GYOKERES","ERIKSEN",
   "LAMPARD","BROOKING","MUSAH","SEAMAN","TROSSARD","KEOWN","PETROV","GREALISH",
   "VIERI","PARKER","BERGKAMP","DIXON","FALCAO","BENATIA","MESSI","DYBALA",
   "KHEDIRA","VAZQUEZ","GULLIT","SHAQIRI","OSIMHEN","WADDLE","INIESTA","PJANIC",
@@ -229,7 +229,15 @@ export const WORDLE_ANSWER_LOG = [
 // They remain valid GUESSES. Typing MOURINHO should never be rejected as "not a
 // name"; it just can't be the thing you're hunting for. Being generous about
 // input while strict about answers costs nothing and avoids a baffling refusal.
-export const WORDLE_MANAGERS = ['MOURINHO', 'WENGER', 'SARRI', 'RANGNICK', 'BIELSA', 'BRADLEY', 'BENITEZ'];
+// KNOWN MAINLY AS MANAGERS (Alex, 2026-10-17, on Footle #167 = FERGUSON: "he's
+// known as a manager more than a footballer, so it's a bit confusing"). The
+// July line was "had a real playing career"; the line now is "is known first
+// as a player". These eight played, but the board says "Surname of a
+// footballer" and the reveal names the manager. They stay valid GUESSES.
+// Already-served days keep their answer (FERGUSON #167 was live when he said
+// it); #280 MOYES became ERIKSEN the same day.
+export const WORDLE_MANAGERS = ['MOURINHO', 'WENGER', 'SARRI', 'RANGNICK', 'BIELSA', 'BRADLEY', 'BENITEZ',
+  'FERGUSON', 'MOYES', 'HOWE', 'WARNOCK', 'POTTER', 'SHANKLY', 'BUSBY', 'TUCHEL'];
 
 // ⚠️ BIELSA is Footle #11 — already published, and api/footle.js serves that
 // archive. WORDLE_ANSWER_LOG is consulted before this pool, so the frozen day

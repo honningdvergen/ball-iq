@@ -28,6 +28,8 @@ const FROZEN_POOL_LENGTH = 406;
 // is public record and must never change; everything above it is ours to
 // curate. Advance it ONLY alongside another deliberate rewrite of the tail.
 const PUBLISHED_THROUGH_IDX = 86;
+// Footle No. on 17 Oct 2026, when the managers list grew; never lower than that.
+const SERVED_THROUGH_NO = 167;
 
 // The pre-freeze algorithm, verbatim: pure stride over a given pool.
 function strideFormula(dayIndex, pool) {
@@ -143,7 +145,9 @@ describe('managers are guessable, never answers', () => {
   it('has no manager scheduled on any unpublished day', () => {
     const future = WORDLE_ANSWER_LOG
       .map((w, i) => ({ day: i + 1, w }))
-      .filter(({ day, w }) => day > PUBLISHED_THROUGH_IDX + 1 && WORDLE_MANAGERS.includes(w));
+      // Days after today: a served day keeps its answer even if its player later
+      // joined the managers list (FERGUSON was #167, live on 17 Oct 2026).
+      .filter(({ day, w }) => day > Math.max(PUBLISHED_THROUGH_IDX + 1, SERVED_THROUGH_NO) && WORDLE_MANAGERS.includes(w));
     expect(future).toEqual([]);
   });
 });
