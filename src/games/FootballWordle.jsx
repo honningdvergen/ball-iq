@@ -13,6 +13,7 @@
 // already played — one puzzle, one record.
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import ChallengeBanner from "../components/ChallengeBanner.jsx";
+import InAppStrip, { useInAppStrip } from "../components/InAppStrip.jsx";
 import {
   WORDLE_FULL_NAMES, getWordleAnswer, gradeWordleGuess, computeFootleStreak, getFootleNumber,
   footleClue, footleShareHead, FOOTLE_CLUE_AFTER,
@@ -118,6 +119,10 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // Everything the screen needs from the app shell arrives here; the island
   // passes its own (src/islands/footle.jsx). Missing keys fall back to inert.
   const { haptic, playSound, markBadReviewMoment, onSync, shareCard, Confetti, InstallBanner, GetAppCTA, isNative, dailyDone } = { ...DEFAULT_SERVICES, ...(services || {}) };
+  // The in-app-browser app strip (components/InAppStrip.jsx). The shell's own
+  // isNative is checked on top of the strip's three native signals.
+  const inAppStrip = useInAppStrip();
+  const inApp = isNative ? { src: null, dismiss: inAppStrip.dismiss } : inAppStrip;
   // One puzzle per day — answer + storage key derive from today's date and
   // automatically resync on the day-rollover reload below.
   // `date` drives the storage key AND the answer together — they must never be
@@ -535,8 +540,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   }, [shareText, state.guesses, state.status, state.clue, answer, dateLabel, date]);
 
   return (
-    <div className="wd-screen">
+    <div className={`wd-screen${inApp.src ? " has-inapp" : ""}`}>
       {!isArchive && <ChallengeBanner game="footle" edition={getFootleNumber(date)} finished={state.status !== "playing"} />}
+      {/* Social in-app browsers only (no Smart App Banner there). A row the
+          height budget pays for: has-inapp -> --wd-inapp-h in footle.css. */}
+      <InAppStrip src={inApp.src} onDismiss={inApp.dismiss} />
       <div className="wd-header">
         {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
         <div className="wd-header-text">

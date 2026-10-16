@@ -178,6 +178,24 @@ headers:{'content-type':'application/json','apikey':'${SB_KEY}','authorization':
 body:JSON.stringify({p_event:n,p_meta:m||{},p_visitor:sVid()})}).catch(function(){})}catch(e){}}
 window.__biqShellEv=biqShellEv;
 var P=location.pathname,T=P==='/quiz/'?'directory':P.indexOf('/quiz/')===0?'club':P.indexOf('/lists/')===0?'list':P.indexOf('/football-wordle/')===0?'footle-answer':P.indexOf('/daily-football-quiz/')===0?'daily-answer':P==='/'?'home':'other';
+/* STORE TAPS IN CLARITY (16 Oct 2026): store_tap plus a store tag, the same
+   listener index.html runs for the app (keep the two in step). A /get link
+   (the header pill, the burger entry) names its store by this phone's user
+   agent, as api/get.js does, and is a Clarity event only: store-out keeps
+   meaning a direct store link, so its rows do not change. __biqStoreTap keeps
+   a page from ever running both copies. */
+var cTap=!window.__biqStoreTap;window.__biqStoreTap=1;
+function cStore(a){var h=a.href||'';
+if(h.indexOf('apps.apple.com')>-1)return 'ios';if(h.indexOf('play.google.com')>-1)return 'android';
+if(a.pathname==='/get'&&(a.host===location.host||/(^|\\.)balliq\\.app$/.test(a.hostname))){var u=navigator.userAgent||'';
+return /iPhone|iPad|iPod/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1)?'ios':/Android/.test(u)?'android':null}
+return null}
+document.addEventListener('click',function(e){
+if(!cTap||sSyn())return;
+var a=e.target&&e.target.closest&&e.target.closest('a[href]');
+var st=a&&cStore(a);if(!st)return;
+try{window.clarity('event','store_tap');window.clarity('set','store',st)}catch(x){}
+},true);
 document.addEventListener('click',function(e){
 var a=e.target&&e.target.closest&&e.target.closest('a[href*="apps.apple.com"],a[href*="play.google.com"]');
 if(!a)return;

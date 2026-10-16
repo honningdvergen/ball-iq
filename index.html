@@ -319,6 +319,49 @@
             window.clarity = window.clarity || function () {
               (window.clarity.q = window.clarity.q || []).push(arguments);
             };
+            /* STORE TAPS IN CLARITY (16 Oct 2026). One delegated listener, so
+               every store link the app renders counts without each call site
+               remembering to: the StoreBadge artwork, the header "Get the
+               app" pill, the burger entry, the in-app-browser strip and any
+               /get link. A /get tap names the store by this phone's user
+               agent (api/get.js decides the same way); on a desktop /get
+               opens the web app, so it is not a store tap and is skipped.
+               Clarity only: the funnel rows (store-out, fd-get-header,
+               rate-store-tap…) keep their own emitters and meanings, so
+               nothing here is counted twice. Static pages get the same
+               listener from scripts/seo/shell.mjs storeClickScript(); the
+               __biqStoreTap flag keeps a page from ever running both.
+               Inside the !isNative branch, so the app never runs it. */
+            (function storeTapClarity() {
+              /* Its own try: a failure here must never take the consent
+                 gate and the Clarity loader below down with it. */
+              try {
+              if (window.__biqStoreTap) return;
+              window.__biqStoreTap = 1;
+              function storeTapSynthetic() {
+                try {
+                  if (navigator.webdriver === true) return true;
+                  var h = location.hostname;
+                  return h === 'localhost' || h === '127.0.0.1' || h === '[::1]';
+                } catch (e) { return false; }
+              }
+              document.addEventListener('click', function (e) {
+                try {
+                  if (storeTapSynthetic()) return;
+                  var a = e.target && e.target.closest && e.target.closest('a[href]');
+                  if (!a) return;
+                  var h = a.href || '', st = h.indexOf('apps.apple.com') > -1 ? 'ios' : h.indexOf('play.google.com') > -1 ? 'android' : null;
+                  if (!st && a.pathname === '/get' && (a.host === location.host || /(^|\.)balliq\.app$/.test(a.hostname))) {
+                    var u = navigator.userAgent || '';
+                    st = /iPhone|iPad|iPod/.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1) ? 'ios' : /Android/.test(u) ? 'android' : null;
+                  }
+                  if (!st) return;
+                  window.clarity('event', 'store_tap');
+                  window.clarity('set', 'store', st);
+                } catch (err) { /* measurement must never break a tap */ }
+              }, true);
+              } catch (e) { /* no listener, no store_tap; nothing else changes */ }
+            })();
             var needsConsent = true;
             try {
               var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '');
