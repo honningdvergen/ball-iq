@@ -7,7 +7,7 @@
 // list opens in the Top 10 screen by name, which saves it under its own key
 // and never touches the day.
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ChevronDown, Lock } from "lucide-react";
+import { ChevronDown, Lock, Star } from "lucide-react";
 import GameTitle from "../components/GameTitle.jsx";
 import { getTop10Number, TOP10_ANCHOR_DAY } from "../lib/top10.js";
 import { groupTop10Lists, listStatus, myTop10Club, setMyTop10Club } from "../lib/top10Library.js";
@@ -61,21 +61,46 @@ function ListRow({ list, prefix, onPlay }) {
   );
 }
 
+// A light club colour (Real Madrid's white) took the white letters with it and
+// the badge read blank (Alex, 16 Oct 2026): dark letters and a hairline there.
+const isLight = (hex) => {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || "");
+  if (!m) return false;
+  const n = parseInt(m[1], 16);
+  return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) > 186;
+};
 function ClubMark({ info }) {
-  return <span className="t10lib-mark" style={{ background: info.color || "var(--s3)" }} aria-hidden="true">{info.abbr}</span>;
+  const light = isLight(info.color);
+  return (
+    <span className={`t10lib-mark${light ? " is-light" : ""}`} style={{ background: info.color || "var(--s3)" }} aria-hidden="true">{info.abbr}</span>
+  );
+}
+
+// The star that makes a club "your club". It sits beside the row, never inside
+// its button, so the row still opens and the star still toggles.
+function StarButton({ on, name, onClick }) {
+  return (
+    <button type="button" className={`t10lib-star${on ? " is-on" : ""}`} aria-pressed={on}
+      aria-label={on ? `${name} is your club. Tap to remove` : `Make ${name} your club`} onClick={onClick}>
+      <Star size={18} strokeWidth={2.2} fill={on ? "currentColor" : "none"} aria-hidden="true" />
+    </button>
+  );
 }
 
 // A folded group: one row that opens to its lists.
-function Group({ mark, name, lists, open, onToggle, onPlay, prefixOf }) {
+function Group({ mark, name, lists, open, onToggle, onPlay, prefixOf, onStar }) {
   const done = lists.filter((l) => listStatus(l.id).state === "done").length;
   return (
     <div className={`t10lib-group${open ? " is-open" : ""}`}>
-      <button type="button" className="t10lib-group-head" onClick={onToggle} aria-expanded={open}>
-        {mark}
-        <span className="t10lib-group-name">{name}</span>
-        <span className="t10lib-group-count">{done ? `${done} of ${lists.length} done` : plural(lists.length)}</span>
-        <ChevronDown size={18} strokeWidth={2.4} className="t10lib-chev" aria-hidden="true" />
-      </button>
+      <div className="t10lib-group-row">
+        <button type="button" className="t10lib-group-head" onClick={onToggle} aria-expanded={open}>
+          {mark}
+          <span className="t10lib-group-name">{name}</span>
+          <span className="t10lib-group-count">{done ? `${done} of ${lists.length} done` : plural(lists.length)}</span>
+          <ChevronDown size={18} strokeWidth={2.4} className="t10lib-chev" aria-hidden="true" />
+        </button>
+        {onStar && <StarButton on={false} name={name} onClick={onStar} />}
+      </div>
       {open && <div className="t10lib-group-lists">{lists.map((l) => <ListRow key={l.id} list={l} prefix={prefixOf?.(l)} onPlay={onPlay} />)}</div>}
     </div>
   );
@@ -86,15 +111,14 @@ export default function Top10Library({ onBack, onPlay, clubInfo }) {
   const [mine, setMine] = useState(myTop10Club);
   const [openKey, setOpenKey] = useState(() => readPlace().open || null);
   const rootRef = useRef(null);
-  const chipsRef = useRef(null);
   const groups = useMemo(() => (data ? groupTop10Lists(data, getTop10Number()) : null), [data]);
   const info = (slug) => clubInfo?.(slug) || { name: slug, abbr: slug.slice(0, 3).toUpperCase() };
   const clubSlugs = groups ? [...groups.clubs.keys()].sort((a, b) => info(a).name.localeCompare(info(b).name)) : [];
   const pick = (slug) => {
     const next = slug === mine ? null : slug;
     setMine(next); setMyTop10Club(next);
-    // The chosen chip moves to the front: bring the row back to show it.
-    try { chipsRef.current?.scrollTo({ left: 0, behavior: "smooth" }); } catch { /* old WebKit */ }
+    // The starred club jumps to the top: take the reader there to see it.
+    if (next) try { rootRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); } catch { /* old WebKit */ }
   };
   const toggle = (key) => setOpenKey((k) => (k === key ? null : key));
   const myLists = mine ? groups?.clubs.get(mine) : null;
@@ -123,33 +147,25 @@ export default function Top10Library({ onBack, onPlay, clubInfo }) {
 
       {groups && (
         <>
+          {/* ONE list of clubs (Alex, 16 Oct 2026: a row of club chips above
+              the same clubs listed again "looks like redundant navigation").
+              The star on a club's row makes it yours; yours then sits here. */}
           <div className="t10lib-h">Your club</div>
-          <div ref={chipsRef} className="t10lib-chips" role="group" aria-label="Pick your club">
-            {/* The chosen club first, so the chip that says whose lists these are is never off screen. */}
-            {[...clubSlugs].sort((a, b) => (b === mine) - (a === mine)).map((slug) => {
-              const i = info(slug);
-              return (
-                <button key={slug} type="button" className={`t10lib-chip${slug === mine ? " is-on" : ""}`}
-                  aria-pressed={slug === mine} onClick={() => pick(slug)}>
-                  <ClubMark info={i} />{i.name}
-                </button>
-              );
-            })}
-          </div>
           {myLists ? (
             <div className="t10lib-card is-mine" style={{ "--club": info(mine).color || "var(--t10)" }}>
-              <div className="t10lib-card-head"><ClubMark info={info(mine)} /><span>{info(mine).name}</span><em>{plural(myLists.length)}</em></div>
+              <div className="t10lib-card-head"><ClubMark info={info(mine)} /><span>{info(mine).name}</span><em>{plural(myLists.length)}</em>
+                <StarButton on name={info(mine).name} onClick={() => pick(mine)} /></div>
               {myLists.map((l) => <ListRow key={l.id} list={l} onPlay={onPlay} />)}
             </div>
           ) : (
-            <p className="t10lib-empty">Tap your club above and its lists sit here, first, every time.</p>
+            <p className="t10lib-empty">Tap the <Star size={14} strokeWidth={2.4} aria-label="star" style={{ verticalAlign: "-2px" }} /> on your club below and its lists sit here, first, every time.</p>
           )}
 
           <div className="t10lib-h">Every club</div>
           <div className="t10lib-card">
             {clubSlugs.filter((s) => s !== mine).map((slug) => (
               <Group key={slug} mark={<ClubMark info={info(slug)} />} name={info(slug).name} lists={groups.clubs.get(slug)}
-                open={openKey === slug} onToggle={() => toggle(slug)} onPlay={onPlay} />
+                open={openKey === slug} onToggle={() => toggle(slug)} onPlay={onPlay} onStar={() => pick(slug)} />
             ))}
           </div>
 
