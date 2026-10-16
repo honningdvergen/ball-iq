@@ -27,6 +27,8 @@
  * Usage: node scripts/rekey-mystery-repeats.mjs [--dry]
  */
 import { readFileSync, writeFileSync } from 'node:fs';
+import { planScheduleRemote } from './lib/schedule-remote.mjs';
+import { MYSTERY_ANCHOR_DAY } from '../src/lib/mysteryPlayer.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const FILE = new URL('../src/data/mysterySchedule.json', import.meta.url);
@@ -72,7 +74,13 @@ for (let day = FROM; day < out.length; day++) {
   seen.add(pick.id);
 }
 
-if (!process.argv.includes('--dry') && swaps.length) writeFileSync(FILE, JSON.stringify(out));
+// The site's copy for installed apps moves with it (scripts/lib/schedule-remote.mjs);
+// planned first, so a swap on a day recorded as served writes nothing at all.
+if (!process.argv.includes('--dry') && swaps.length) {
+  const remote = planScheduleRemote('mystery', { anchor: MYSTERY_ANCHOR_DAY, days: out });
+  writeFileSync(FILE, JSON.stringify(out));
+  remote.write();
+}
 console.log(`${swaps.length} repeat day(s) replaced from #${FROM + 1} on · ${new Set(out).size} distinct answers in ${out.length} days · ${fresh.length} unused answers left`);
 for (const s of swaps.slice(0, 12)) console.log('  ' + s);
 if (swaps.length > 12) console.log(`  … and ${swaps.length - 12} more`);

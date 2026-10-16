@@ -46,6 +46,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { planScheduleRemote } from './lib/schedule-remote.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const TEST = join(ROOT, 'tests/unit/trail-schedule.test.js');
@@ -175,5 +176,9 @@ const updated = src.replace(
   /(const PUBLISHED = \[[\s\S]*?)(\n {2}\];)/,
   (_, body, tail) => `${body}\n${added}${tail}`,
 );
+// The site's copy for installed apps (public/data/trail.json, read by
+// src/lib/scheduleRemote.js) records the new frozen days as served.
+const remote = planScheduleRemote('trail', { anchor: TRAIL_ANCHOR_DAY, days: TRAIL_ANSWER_LOG, minServed: published.length + rows.length });
 writeFileSync(TEST, updated);
+remote.write();
 console.log(`\n✅ appended ${rows.length} day(s) to PUBLISHED.`);

@@ -4318,7 +4318,7 @@ function AppInner() {
   const [top10Tick, setTop10Tick] = useState(0);
   useEffect(() => {
     if (!IS_NATIVE) return undefined;
-    let live = true, told = false, toldDaily = false;
+    let live = true, told = false, toldDaily = false, toldSchedules = false;
     const bump = () => { if (live) setTop10Tick((n) => n + 1); };
     // The Daily 7 log comes through the same door at the same moments
     // (lib/dailyRemote.js). Nothing to redraw when it changes: the daily is
@@ -4336,7 +4336,17 @@ function AppInner() {
         if (r === 'rejected' && !told) { told = true; try { Sentry.captureMessage('top10: the site\'s lists were rejected by this build', 'warning'); } catch {} }
       })
       .catch(() => {});
-    const go = () => { goDaily(); goTop10(); };
+    // The Transfer Trail log and the Mystery schedule come through the same
+    // door at the same moments (lib/scheduleRemote.js). Nothing to redraw:
+    // each screen reads what is kept when it opens.
+    const goSchedules = () => import('./lib/scheduleRemote.js')
+      .then((m) => m.refreshSchedules())
+      .then((r) => {
+        const bad = Object.keys(r).filter((k) => r[k] === 'rejected');
+        if (bad.length && !toldSchedules) { toldSchedules = true; try { Sentry.captureMessage(`schedules: the site's ${bad.join(' and ')} log was rejected by this build`, 'warning'); } catch {} }
+      })
+      .catch(() => {});
+    const go = () => { goDaily(); goTop10(); goSchedules(); };
     const t = setTimeout(go, 2500);
     const onVis = () => { if (document.visibilityState === 'visible') go(); };
     document.addEventListener('visibilitychange', onVis);

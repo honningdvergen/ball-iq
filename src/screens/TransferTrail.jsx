@@ -54,6 +54,11 @@ const TRAIL_GAP = 12;
 import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight } from "../lib/useKeyboardAwareInput.js";
 import ResultFoot from "../components/ResultFoot.jsx";
+// An installed app plays the day's career from the log the SITE serves when it
+// has kept a good copy (lib/scheduleRemote.js), so it stays on the website's
+// player after the log is re-planned. Nothing is kept on the website, so there
+// this always hands back the player the caller resolved from the bundle.
+import { trailPlayerForDate } from "../lib/scheduleRemote.js";
 
 function loadDay(ymd) {
   try {
@@ -67,9 +72,13 @@ function saveDay(ymd, state) {
   try { localStorage.setItem(`biq_trail_${ymd}`, JSON.stringify(state)); } catch {}
 }
 
-export default function TransferTrail({ player, date = new Date(), onBack, onReport, services, embedded = false }) {
+export default function TransferTrail({ player: bundledPlayer, date = new Date(), onBack, onReport, services, embedded = false }) {
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
   const ymd = dateToYMD(date);
+  // Keyed by the day, not the Date object: the island passes none, and the
+  // default is a new Date on every render.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const player = useMemo(() => trailPlayerForDate(date, bundledPlayer), [ymd, bundledPlayer]);
   const number = getTrailNumber(date);
   const career = useMemo(() => player?.clubs || [], [player]);
 

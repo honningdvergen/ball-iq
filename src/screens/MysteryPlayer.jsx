@@ -11,7 +11,7 @@ import { resolveDailyServices } from '../games/dailyServices.js';
 import { DailyDone } from '../components/DailyDone.jsx';
 import {
   rankPool, bandFor, HOT_SHARE, WARM_SHARE, matchGuess,
-  answerIdForDay, mysteryDayIndex, mysteryNumber, buildMysteryShareText,
+  mysteryDayIndex, mysteryNumber, buildMysteryShareText,
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition,
   explainGuess, reasonLine, clueLadder, CLUE_AFTER,
 } from '../lib/mysteryPlayer.js';
@@ -21,7 +21,9 @@ import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from '../lib/p
 import { MODE_ACCENT, modeTint } from '../lib/accents.js';
 import { dateToYMD } from '../lib/date.js';
 import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
-import SCHEDULE from '../data/mysterySchedule.json';
+// The day's answer: from the schedule the SITE serves when an installed app
+// has kept a good copy (lib/scheduleRemote.js), else the bundled schedule.
+import { mysteryAnswerIds } from '../lib/scheduleRemote.js';
 import ROLES from '../data/mysteryRoles.json';
 import './mystery.css';
 
@@ -92,7 +94,9 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // yesterday's slot and cannot overwrite today's board.
   const dayIndex = mysteryDayIndex(date);
   const isArchive = dayIndex !== mysteryDayIndex();
-  const answerId = answerIdForDay(SCHEDULE, dayIndex);
+  // Best first: the kept site copy's id, then the bundled one. Read once per
+  // day, so a fetch landing mid-game never swaps the answer under the board.
+  const answerIds = useMemo(() => mysteryAnswerIds(dayIndex), [dayIndex]);
   // The pool and the careers it is ranked against arrive on the first focus of
   // the guess box (usePlayerPool) — ~700 KB gzipped that a visitor who only
   // reads the static page never needs. Until then `answer` and `ranks` are
@@ -100,7 +104,12 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // "no puzzle today" fallback below waits for `ready` so a loading pool is
   // never mistaken for a missing schedule.
   const { pool: POOL, careers: CAREERS, ready, ensure: ensureData } = usePlayerPool({ careers: true });
-  const answer = useMemo(() => POOL.find((p) => p.id === answerId) || null, [POOL, answerId]);
+  // The first id this build's pool holds: a player added to the pool after
+  // this build cannot be played here, so that one day falls back to the bundle.
+  const answer = useMemo(() => {
+    for (const id of answerIds) { const p = POOL.find((x) => x.id === id); if (p) return p; }
+    return null;
+  }, [POOL, answerIds]);
   const byId = useMemo(() => new Map(POOL.map((p) => [p.id, p])), [POOL]);
 
   // Rank the pool once per puzzle, not per keystroke.

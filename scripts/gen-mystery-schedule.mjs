@@ -36,6 +36,7 @@ import { answerBar, FIRST_FAMOUS_DAY } from './mystery-answer-bar.mjs';
 import { mainClub } from '../src/lib/mysteryCareer.js';
 import { mysteryDayIndex, MYSTERY_ANCHOR_DAY } from '../src/lib/mysteryPlayer.js';
 import { withCareerFixes } from '../src/lib/mysteryCareer.js';
+import { planScheduleRemote } from './lib/schedule-remote.mjs';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const FILE = new URL('../src/data/mysterySchedule.json', import.meta.url);
@@ -61,6 +62,12 @@ const FROM = Number(process.argv[argFrom + 1]);
 const todayIdx = mysteryDayIndex(new Date()) - MYSTERY_ANCHOR_DAY;
 if (!(FROM > todayIdx + 1)) {
   throw new Error(`day ${FROM} is too close (today is ${todayIdx}); pass --from ${todayIdx + 2} or later`);
+}
+// The served horizon the last run recorded (src/data/scheduleServed.json):
+// installed apps refuse a site file that moves any day before it.
+const SERVED = JSON.parse(readFileSync(new URL('../src/data/scheduleServed.json', import.meta.url), 'utf8')).mystery ?? 0;
+if (FROM < SERVED) {
+  throw new Error(`days before ${SERVED} are recorded as served (src/data/scheduleServed.json); pass --from ${SERVED} or later`);
 }
 if (FROM <= CHECKED_THROUGH && !process.argv.includes('--reshuffle-checked')) {
   throw new Error(`days up to ${CHECKED_THROUGH} have checked careers; pass --from ${CHECKED_THROUGH + 1} or add --reshuffle-checked and check them again`);
@@ -109,7 +116,14 @@ for (let i = 0; i < FROM; i++) if (out[i] !== schedule[i]) throw new Error(`day 
 const future = out.slice(FROM);
 if (new Set(future).size !== future.length) throw new Error('a future day repeats');
 
-if (!process.argv.includes('--dry')) writeFileSync(FILE, JSON.stringify(out));
+// The site's copy for installed apps (public/data/mystery.json, read by
+// src/lib/scheduleRemote.js), from the same array in the same run. Planned
+// first: it throws, before anything is written, if a served day moved.
+if (!process.argv.includes('--dry')) {
+  const remote = planScheduleRemote('mystery', { anchor: MYSTERY_ANCHOR_DAY, days: out });
+  writeFileSync(FILE, JSON.stringify(out));
+  remote.write();
+}
 const fame = picks.map((x) => x.p.fame).sort((a, b) => a - b);
 const tally = (k) => Object.entries(picks.reduce((m, x) => ((m[x[k]] = (m[x[k]] || 0) + 1), m), {})).map(([a, n]) => `${a} ${n}`).join(' · ');
 console.log(`kept days 1-${FROM} · wrote days ${FROM + 1}-${DAYS} · ${cands.length} qualifying players left unused`);
