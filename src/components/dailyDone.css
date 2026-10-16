@@ -108,5 +108,10 @@
 
 /* Banked streak shields beside the streak title (16 Oct 2026). */
 .dd-shields{display:inline-flex;gap:2px;margin-left:7px;vertical-align:-1px;color:var(--gold);}
+/* A promotion earned on this finish: a tinted line under the streak, in the
+   streak's own amber, not a modal over the result (16 Oct 2026). */
+.dd-promo{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;padding:6px 11px;border-radius:10px;background:var(--gold-l);border:1px solid rgba(255,193,7,0.28);color:var(--gold);-webkit-text-fill-color:var(--gold);font-size:12.5px;font-weight:600;line-height:1.3;animation:dd-in .34s cubic-bezier(0.22,1,0.36,1) both;}
+.dd-promo strong{font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+@media (prefers-reduced-motion: reduce){.dd-promo{animation:none;}}
 .dd-remind{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;margin-top:3px;padding:3px 0;min-height:28px;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:800;color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 .dd-remind:disabled{opacity:0.6;}

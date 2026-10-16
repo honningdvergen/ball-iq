@@ -286,7 +286,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
         <div style={{marginTop:18}}>
           <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
             streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp} day={dailyDone.day}
-            save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} />
+            save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} promoted={dailyDone.promoted} />
         </div>
       )}
 
@@ -397,7 +397,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             <div style={{margin:"18px 0"}}>
               <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
                 streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp} day={dailyDone.day}
-                save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} />
+                save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} promoted={dailyDone.promoted} />
             </div>
           )}
           <div className="rd-actions">

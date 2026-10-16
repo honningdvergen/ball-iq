@@ -508,6 +508,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
               bucket={g.score}
               isArchive={isArchive}
               streak={dailyDone?.streak || { count: streak, label: "Top 10 streak" }}
+              promoted={dailyDone?.promoted}
               onShare={onShare}
               remind={dailyDone?.remind}
               nextUp={dailyDone?.nextUp || []}

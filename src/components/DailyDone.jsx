@@ -43,6 +43,9 @@ import "./dailyDone.css";
 //   track       (name, meta) => void — optional analytics
 //   bucketMax   the most guesses / clubs this puzzle allows (Trail: the career's length), so
 //               "how everyone did" knows its row count before the numbers arrive
+//   promoted    { game, name, Icon } | null — a level this finish earned. One quiet line
+//               under the streak, shown only when `game` matches: a daily finish never gets
+//               the full-screen level-up overlay (return research, 16 Oct 2026).
 // Default glyph per daily for the "still open today" rows, so a host that passes
 // only names + links (the static islands) still draws a well with something in
 // it — an empty tinted square read as a bug on the first web play-through.
@@ -80,7 +83,7 @@ const modeOf = (k) => (k === "daily" ? "daily7" : k);
 // it exists to measure.
 const shownClaims = new Set();
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, GetAppCTA = null, track, bucketMax = null }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
   // Too few results yet today: yesterday's edition stands in, labelled and
@@ -267,6 +270,16 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           </span>
         )}
       </div>
+
+      {/* "Promoted to", never "Level up to": the ladder reads Sunday League ->
+          Non-League -> Championship, and "Level up! Non-League" read as a
+          relegation (design pass, 15 Oct 2026). */}
+      {promoted && promoted.game === game && !isArchive && (
+        <div className="dd-promo" role="status">
+          {promoted.Icon && <promoted.Icon size={14} strokeWidth={2.4} aria-hidden="true" />}
+          <span>Promoted to <strong>{promoted.name}</strong></span>
+        </div>
+      )}
 
       {rival && (() => {
         const r = compareScores(game, myScore, rival.score);

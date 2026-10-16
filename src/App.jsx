@@ -4674,6 +4674,11 @@ function AppInner() {
   });
   const [levelUpOverlay, setLevelUpOverlay] = useState(null);
   const levelUpTimerRef = useRef(null);
+  // A promotion earned on a DAILY finish: { game, name, Icon }. It is shown as
+  // one quiet line inside that game's DailyDone panel, never as the overlay
+  // above (return research, 16 Oct 2026: the overlay covered the result the
+  // player had just earned). Cleared when the player is back on Home.
+  const [dailyPromotion, setDailyPromotion] = useState(null);
   const [howToPlay, setHowToPlay] = useState(null);
   // ⚠️ A STORED STREAK IS NOT AUTOMATICALLY A LIVE ONE — run it through
   // liveStreak(), which is the single rule for "is this still going today".
@@ -6372,6 +6377,10 @@ function AppInner() {
   // reminder state + handler, the app's one streak, "still open today" with
   // real navigation, the guest save action, and the analytics sink. Memoised so
   // the React.memo'd game screens don't re-render on every App state change.
+  // The promotion line belongs to the finish that earned it. Back on Home the
+  // level pill already says the new name, so the line is not carried into a
+  // later Review of the same puzzle or another day's panel.
+  useEffect(() => { if (screen === "home") setDailyPromotion(null); }, [screen]);
   const dailyDoneServices = useMemo(() => {
     const nextUp = [];
     try {
@@ -6430,13 +6439,16 @@ function AppInner() {
         })() : null,
       } : null,
       nextUp,
+      // A promotion this daily finish earned; DailyDone shows it only under
+      // the game that earned it ({ game, name, Icon } or null).
+      promoted: dailyPromotion,
       track: (n, m) => loopEvent(n, m),
     };
     // `screen` is a deliberate dep: the open/closed set changes when a game ends.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // top10Tick: the "still open today" rows name Top 10 or Mystery, whichever is today's fourth
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.shieldsUsed, stats?.gamesPlayed, xp, top10Tick, resolveChallengerName]);
+  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.shieldsUsed, stats?.gamesPlayed, xp, top10Tick, resolveChallengerName, dailyPromotion]);
   const footleServices = useMemo(() => ({ ...FOOTLE_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
   const dailyScreenServices = useMemo(() => ({ ...DAILY_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
 
@@ -6565,8 +6577,13 @@ function AppInner() {
     } catch { /* never block a results screen in order to measure it */ }
   }, []);
 
-  const awardXp = useCallback((earned) => {
+  // opts.daily: the daily's key ('footle' | 'daily7' | 'trail' | 'top10' |
+  // 'mystery'). A promotion on a daily finish becomes a quiet line inside that
+  // finish (dailyPromotion -> DailyDone `promoted`), never the overlay. Every
+  // other mode keeps the full-screen celebration.
+  const awardXp = useCallback((earned, opts) => {
     if (!earned || earned <= 0) return;
+    const dailyKey = opts?.daily || null;
     setXp(prev => {
       const oldInfo = getLevelInfo(prev);
       const newXp = prev + earned;
@@ -6575,9 +6592,14 @@ function AppInner() {
       const leveledUp = newInfo.level.name !== oldInfo.level.name;
       // XP toast intentionally not fired here — every result screen
       // already shows a static "+N XP earned" footer, so the floating
-      // toast was duplicating the same indicator. Level-ups still get
-      // the full-screen levelUpOverlay below for celebration.
-      if (leveledUp) {
+      // toast was duplicating the same indicator. Level-ups outside the
+      // dailies still get the full-screen levelUpOverlay below.
+      if (leveledUp && dailyKey) {
+        // Out of the updater (a state set inside another state's updater is
+        // render-phase work). No haptic, no sound, no confetti: the result is
+        // the moment, the promotion is a footnote to it.
+        setTimeout(() => setDailyPromotion({ game: dailyKey, name: newInfo.level.name, Icon: newInfo.level.Icon }), 0);
+      } else if (leveledUp) {
         if (levelUpTimerRef.current) clearTimeout(levelUpTimerRef.current);
         levelUpTimerRef.current = setTimeout(() => {
           setLevelUpOverlay({ name: newInfo.level.name, Icon: newInfo.level.Icon }); haptic("levelup"); playSound("levelup");
@@ -6712,7 +6734,7 @@ function AppInner() {
       // it too would double-pay. Footle's dispatch happens exactly once per
       // day (the won/lost transition), so no dedup guard is needed.
       if (e?.detail?.game === 'footle') {
-        awardXp(getFootleXP(e.detail.won === true, e.detail.guesses));
+        awardXp(getFootleXP(e.detail.won === true, e.detail.guesses), { daily: 'footle' });
         recordPlay(e.detail.won === true);
         // Footle wrote NOTHING to `scores` until now — its only trace was the
         // wordle_state jsonb. So the most-played mode, the one that owns every
@@ -6736,7 +6758,7 @@ function AppInner() {
       // A Trail day is one puzzle in <=5 attempts, so score/total mirror
       // Footle's shape: attempts used out of the max, 1 "question" attempted.
       if (e?.detail?.game === 'trail') {
-        awardXp(e.detail.won === true ? 40 : 10);
+        awardXp(e.detail.won === true ? 40 : 10, { daily: 'trail' });
         recordPlay(e.detail.won === true);
         if (user?.id) {
           const used = Math.min(e.detail.attempts || 5, 5);
@@ -6763,7 +6785,7 @@ function AppInner() {
       if (e?.detail?.game === 'mystery') {
         const tries = Math.max(1, e.detail.attempts || 1);
         const mysteryWon = e.detail.won === true;
-        if (mysteryWon) awardXp(tries <= 5 ? 50 : tries <= 15 ? 35 : 20);
+        if (mysteryWon) awardXp(tries <= 5 ? 50 : tries <= 15 ? 35 : 20, { daily: 'mystery' });
         recordPlay(mysteryWon);
         if (user?.id) {
           saveScore(user?.id, {
@@ -6781,7 +6803,7 @@ function AppInner() {
       // case. Wired on the day the mode was built, per the Trail's lesson.
       if (e?.detail?.game === 'top10') {
         const found = Math.max(0, Math.min(10, e.detail.score || 0));
-        awardXp(found * 4 + (e.detail.won === true ? 15 : 0));
+        awardXp(found * 4 + (e.detail.won === true ? 15 : 0), { daily: 'top10' });
         recordPlay(e.detail.positive === true);
         if (user?.id) {
           saveScore(user?.id, {
@@ -7176,7 +7198,7 @@ function AppInner() {
 
     // Award XP
     const earned = getXPForResult(res.score, res.total, mode);
-    awardXp(earned);
+    awardXp(earned, mode === "daily" ? { daily: "daily7" } : undefined);
 
 
     // Save daily completion (today or a past "catch-up" day)
@@ -8530,7 +8552,7 @@ function AppInner() {
               <div style={{marginBottom:16,animation:"iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1)",display:"flex",justifyContent:"center"}}>
                 {levelUpOverlay.Icon && <levelUpOverlay.Icon size={80} strokeWidth={1.6} color="var(--gold)" />}
               </div>
-              <div style={{fontSize:14,color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:8}}>Level Up!</div>
+              <div style={{fontSize:14,color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:8}}>Promoted to</div>
               <div style={{fontSize:32,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",marginBottom:12}}>{levelUpOverlay.name}</div>
               <div style={{fontSize:14,color:"rgba(255,255,255,0.6)"}}>Keep playing to reach the next level</div>
             </div>

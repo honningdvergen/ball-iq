@@ -535,6 +535,7 @@ export default function TransferTrail({ player, date = new Date(), onBack, onRep
               bucket={won ? clubsUsed : 0}
               isArchive={isArchive}
               streak={dailyDone?.streak || { count: streak, label: "Trail streak" }}
+              promoted={dailyDone?.promoted}
               onShare={onShare}
               remind={dailyDone?.remind}
               nextUp={dailyDone?.nextUp || []}
