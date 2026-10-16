@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { QB } from "../../src/questions.js";
-import { pickDailyQuestions, warmUpFirst, DAILY_MIX } from '../../src/lib/dailyDraw.js';
+import { pickDailyQuestions, warmUpFirst, DAILY_MIX, drawDailySchedule, hasHint } from '../../src/lib/dailyDraw.js';
+import { logHash } from '../../src/lib/top10Hash.js';
 import DAILY_LOG from "../../src/data/dailyLog.js";
 
 // ⚠️ WHAT THIS PROTECTS, AND WHAT IT COST TO LEARN (player report, 2026-08-19).
@@ -143,5 +144,72 @@ describe("Daily 7 never opens on the hard question", () => {
     const out = warmUpFirst(day, [...day, q("m8", "medium")]);
     expect(out.map((x) => x.id)).toEqual(["m8", "m2", "h3", "h4", "h5", "h6", "h7"]);
     expect(warmUpFirst(out, [])).toBe(out);
+  });
+});
+
+// ── THE LOG DOES NOT MOVE UNTIL INSTALLED APPS CAN FOLLOW (16 Oct 2026) ──────
+// The log of 13 Oct shuffles each difficulty afresh for every day, so days
+// collide: 2,090 different questions in the 2,520 slots from 18 Oct, 272 of
+// those 360 days holding a question already met, 76 repeats within 30 days
+// and 7 within three (q_5de8ef on 26 and 28 Nov). drawDailySchedule (below)
+// deals without replacement instead, but the log is NOT rebuilt yet: every
+// build up to 1.8.1 (152) plays its own bundled copy, so a rebuilt future
+// would split those phones from the website. The fetch door
+// (lib/dailyRemote.js) ships first; the rebuild follows once a build that
+// carries it is what players have.
+describe("Daily 7 log: unchanged until the fetch door is in players' hands", () => {
+  it("days 0 to 59 (through 17 Oct 2026) are byte-for-byte what they were", () => {
+    expect(DAILY_LOG.anchor).toBe(20684);
+    expect(logHash(DAILY_LOG.days.slice(0, 60).map((d) => d.join(",")))).toBe("c70cc5d6");
+  });
+
+  // ⚠️ Pinned on purpose. When the log is rebuilt with --regen-from, this
+  // becomes the hash of the days BEFORE that date, which must not change.
+  it("every day is still the 13 Oct log, byte for byte", () => {
+    expect(DAILY_LOG.days).toHaveLength(420);
+    expect(logHash(DAILY_LOG.days.map((d) => d.join(",")))).toBe("60105ee5");
+  });
+
+  it("the log records how many leading days may have been served", () => {
+    expect(DAILY_LOG.served).toBeGreaterThanOrEqual(60);
+    expect(DAILY_LOG.served).toBeLessThanOrEqual(DAILY_LOG.days.length);
+  });
+});
+
+describe("drawDailySchedule", () => {
+  const D = DAILY_LOG.anchor + 500;
+  const count = (arr, d) => arr.filter((x) => x === d).length;
+
+  it("is the same every time it is asked", () => {
+    expect(drawDailySchedule(QB, D, 30).map(ids)).toEqual(drawDailySchedule(QB, D, 30).map(ids));
+  });
+
+  it("deals the mix, never opens on the hard one, never repeats and never deals an id in `used`", () => {
+    const used = new Set(drawDailySchedule(QB, D, 10).flat().map((q) => q.id));
+    const days = drawDailySchedule(QB, D, 50, used);
+    for (const day of days) {
+      const d = day.map((q) => q.diff);
+      expect([count(d, "easy"), count(d, "medium"), count(d, "hard")]).toEqual([2, 4, 1]);
+      expect(d[0]).not.toBe("hard");
+      for (const q of day) { expect(used.has(q.id)).toBe(false); expect(hasHint(q)).toBe(true); }
+    }
+    expect(new Set(days.flat().map((q) => q.id)).size).toBe(50 * 7);
+  });
+
+  it("when a pool runs out it deals every question once before any comes back, and never twice in a day", () => {
+    const mk = (diff, n) => Array.from({ length: n }, (_, i) => ({ id: `t_${diff}_${i}`, q: "t", o: ["a", "b", "c", "d"], a: 0, type: "mcq", cat: "PL", diff, hint: "why" }));
+    const tiny = [...mk("easy", 5), ...mk("medium", 9), ...mk("hard", 3)];
+    const days = drawDailySchedule(tiny, D, 12);
+    for (const day of days) expect(new Set(day.map((q) => q.id)).size).toBe(7);
+    const easyIn = (from, to) => days.slice(from, to).flat().filter((q) => q.diff === "easy").map((q) => q.id);
+    expect(new Set(easyIn(0, 2)).size).toBe(4);       // two days, four different
+    expect(new Set(easyIn(0, 3)).size).toBe(5);       // the whole pool before the third day ends
+    const hardIn = days.slice(0, 3).flat().filter((q) => q.diff === "hard").map((q) => q.id);
+    expect(new Set(hardIn).size).toBe(3);
+  });
+
+  it("a bank too thin for the mix falls back to the live draw, never a short day", () => {
+    const days = drawDailySchedule(QB.filter((q) => q.diff !== "easy"), D, 3);
+    for (const day of days) expect(day).toHaveLength(7);
   });
 });

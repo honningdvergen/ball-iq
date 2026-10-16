@@ -1191,6 +1191,16 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] Read the average for the week of 15 to 21 Oct against the 3.2 before.
 - [ ] 2,104 different questions fill the next 363 days (2,541 slots): some
       repeat within the year, as before. Draw without replacement.
+      16 Oct: the draw is built (`drawDailySchedule`: one seeded permutation
+      per difficulty, hint required) and so is the door that lets an
+      installed app follow a rebuilt log (`src/lib/dailyRemote.js`, fetches
+      balliq.app/data/daily7.json, bundled copy as fallback). The log's days
+      are UNCHANGED: builds up to 1.8.1 (152) cannot fetch and would split
+      from the website. Order: ship the door in 1.8.2, then, once 1.8.2 is
+      what players have, run on main
+      `node scripts/gen-daily-log.mjs --regen-from <date>` (dry-run first with
+      `--dry-run`), update the pinned hash in tests/unit/daily-log.test.js,
+      deploy. Check the fetch in the simulator (Network: data/daily7.json, 200).
 
 **Daily 7 difficulty (Alex, 12 Oct, late: "make it easier ... get the average up to 4 correct")**
 - [ ] The Daily 7 averages 3.2 of 7 over three weeks (about 500 results; 2.7

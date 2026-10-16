@@ -510,6 +510,19 @@
           "value": "public, max-age=300"
         }
       ]
+    },
+    {
+      "source": "/data/daily7.json",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300"
+        }
+      ]
     }
   ]
 }

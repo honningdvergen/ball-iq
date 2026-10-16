@@ -666,7 +666,21 @@ async function getDailyQsForDate(date) {
   // via _histKey below — other modes consume it; the daily just never reads it.
   // Cached completions in biq_daily_<ymd> are unaffected. Option order below is
   // deliberately per-player random: it doesn't change WHICH seven you get.
-  return pickDailyQuestions(QB, dayIndexForDate(date)).map(q => {
+  // An installed app plays from the log the SITE serves when it holds a good
+  // copy, so it stays on the website's seven after the log is regenerated
+  // (lib/dailyRemote.js; the bundled copy is the fallback). If this build has
+  // never asked the site, it asks now and waits a moment, so a fresh install
+  // does not open its first daily on a set the website is not playing.
+  // (Capacitor read directly: IS_NATIVE is declared further down the file.)
+  let log;
+  if (Capacitor.isNativePlatform?.()) {
+    try {
+      const remote = await import('./lib/dailyRemote.js');
+      if (!remote.askedSiteForDaily()) await Promise.race([remote.refreshDailyLog(), new Promise((r) => setTimeout(r, 1500))]);
+      log = remote.cachedDailyLog() || undefined;
+    } catch { log = undefined; }
+  }
+  return pickDailyQuestions(QB, dayIndexForDate(date), log).map(q => {
     const histKey = qbHistKey(q);
     const indices = [0,1,2,3].slice(0, q.o.length);
     const sh = shuffle(indices);
@@ -4168,9 +4182,16 @@ function AppInner() {
   const [top10Tick, setTop10Tick] = useState(0);
   useEffect(() => {
     if (!IS_NATIVE) return undefined;
-    let live = true, told = false;
+    let live = true, told = false, toldDaily = false;
     const bump = () => { if (live) setTop10Tick((n) => n + 1); };
-    const go = () => import('./lib/top10Remote.js')
+    // The Daily 7 log comes through the same door at the same moments
+    // (lib/dailyRemote.js). Nothing to redraw when it changes: the daily is
+    // drawn when it is started, from whatever is kept by then.
+    const goDaily = () => import('./lib/dailyRemote.js')
+      .then((m) => m.refreshDailyLog())
+      .then((r) => { if (r === 'rejected' && !toldDaily) { toldDaily = true; try { Sentry.captureMessage('daily7: the site\'s log was rejected by this build', 'warning'); } catch {} } })
+      .catch(() => {});
+    const goTop10 = () => import('./lib/top10Remote.js')
       .then((m) => m.refreshTop10())
       .then((r) => {
         if (r === 'updated') bump();
@@ -4179,6 +4200,7 @@ function AppInner() {
         if (r === 'rejected' && !told) { told = true; try { Sentry.captureMessage('top10: the site\'s lists were rejected by this build', 'warning'); } catch {} }
       })
       .catch(() => {});
+    const go = () => { goDaily(); goTop10(); };
     const t = setTimeout(go, 2500);
     const onVis = () => { if (document.visibilityState === 'visible') go(); };
     document.addEventListener('visibilitychange', onVis);

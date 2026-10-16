@@ -110,9 +110,80 @@ export function pickDailyFresh(QB, dayIndex) {
     const shuffled = seededShuffle(eligible.filter((q) => q.diff !== "easy"), dayIndex * DAILY_SEED_MULTIPLIER);
     return warmUpFirst(shuffled.slice(0, 7), shuffled);
   }
+  return orderDay(picked, dayIndex);
+}
+
+// The order of one day's seven: shuffled by the date, never opening on the
+// hard one. Shared by the live draw and the schedule below, so a day reads the
+// same however it was chosen.
+function orderDay(picked, dayIndex) {
   const order = seededShuffle(picked, dayIndex * DAILY_SEED_MULTIPLIER + 104729);
   if (order[0].diff === "hard") { const k = order.findIndex((q) => q.diff !== "hard"); [order[0], order[k]] = [order[k], order[0]]; }
   return order;
+}
+
+/** A question with a "Why?" to show after it is answered. */
+export const hasHint = (q) => typeof q?.hint === "string" && q.hint.trim().length > 0;
+
+// ── THE SCHEDULE: DRAWN WITHOUT REPLACEMENT (16 Oct 2026) ────────────────────
+//
+// ⚠️ WHY THIS REPLACED pickDailyFresh FOR THE LOG. pickDailyFresh shuffles
+// each difficulty pool afresh for every day, so consecutive days are
+// independent draws from the same pool: they collide (the birthday problem).
+// Measured on the log of 13 Oct: 2,090 different questions filled the 2,520
+// slots from 18 Oct, 272 of those 360 days held a question a daily player
+// had already met, 76 repeats came back within 30 days and 7 within three
+// (q_5de8ef on 26 and 28 Nov). The pool was never the limit: it covers about
+// two years with no repeat at all.
+//
+// So the generator now deals each difficulty from ONE seeded permutation by
+// cursor: day n takes the next two easy, the next four medium and the next
+// hard. Nothing already in `used` (every day kept before the first new one)
+// is dealt, and only questions with a "Why?" qualify: the explanation after
+// each answer is half of what the daily is for. Only when a pool is
+// exhausted does a question come round again, and then in a fresh
+// permutation, so the gap is as long as the pool allows.
+//
+// ⚠️ The committed log is NOT rebuilt with it yet (16 Oct 2026): builds up to
+// 1.8.1 cannot fetch a new log, so a rebuilt future would split them from
+// the website. It deals any day the generator APPENDS, and rebuilds the
+// future with `--regen-from` once a fetching build is adopted.
+//
+// Deterministic: the same bank, the same first day and the same `used` give
+// the same days. It decides only what the GENERATOR writes; a logged day is
+// read from the log and never drawn again (pickDailyFromLog).
+export function drawDailySchedule(QB, firstDayIndex, count, used = new Set()) {
+  const eligible = QB.filter((q) => q.type === "mcq" && q.cat !== "Legends" && isModernEra(q) && hasHint(q));
+  const decks = DAILY_MIX.map(([diff, n], k) => {
+    const pool = eligible.filter((q) => q.diff === diff);
+    const seed = firstDayIndex * DAILY_SEED_MULTIPLIER + k * 7919;
+    return { n, pool, seed, cycle: 0, queue: seededShuffle(pool.filter((q) => !used.has(q.id)), seed) };
+  });
+  // A bank too thin for the mix (tests, a broken load): the live draw, never a short day.
+  if (decks.some((d) => d.pool.length < d.n)) {
+    return Array.from({ length: count }, (_, i) => pickDailyFresh(QB, firstDayIndex + i));
+  }
+  const days = [];
+  for (let i = 0; i < count; i++) {
+    const picked = [];
+    const taken = new Set();
+    for (const deck of decks) {
+      let got = 0, skipped = [];
+      while (got < deck.n) {
+        if (!deck.queue.length) {
+          // Exhausted: everything has been dealt once; start a new round.
+          deck.cycle++;
+          deck.queue = seededShuffle(deck.pool, deck.seed + deck.cycle * 104723);
+        }
+        const q = deck.queue.shift();
+        if (taken.has(q.id)) { skipped.push(q); continue; }   // only at a round's seam
+        picked.push(q); taken.add(q.id); got++;
+      }
+      deck.queue.unshift(...skipped);
+    }
+    days.push(orderDay(picked, firstDayIndex + i));
+  }
+  return days;
 }
 
 
@@ -135,7 +206,11 @@ export function warmUpFirst(picked, candidates) {
   return opener ? [opener, ...picked.slice(1)] : picked;
 }
 
-export function pickDailyQuestions(QB, dayIndex) {
-  const logged = pickDailyFromLog(QB, dayIndex);
+// `log` defaults to the bundled copy, and that default is the guarantee (see
+// the top of this file). An installed app passes the copy it fetched from the
+// site when it holds a good one (lib/dailyRemote.js): that is how a phone
+// stays on the same seven as the website after the log is regenerated.
+export function pickDailyQuestions(QB, dayIndex, log = DAILY_LOG) {
+  const logged = pickDailyFromLog(QB, dayIndex, log);
   return logged || pickDailyFresh(QB, dayIndex);
 }
