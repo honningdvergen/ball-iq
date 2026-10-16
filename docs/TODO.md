@@ -1,3 +1,26 @@
+## 2026-10-16 — THE 17-ITEM PUSH (Alex: "tick off everything on the to do list")
+
+Rulings today (Alex): AdSense no longer sets the pace (no new-page cap, no 26 Oct freeze);
+paid features ON HOLD until the audience is bigger; focus = tidy, logical, funny, compelling
+games for the social promo; grow the bank through club packs.
+
+- [x] Challenge a mate (Footle, Trail, Top 10), the tidy finish panel, loss copy, Wave 1 + Wave 2
+      (17 clubs), Mystery second spells for all players (3,969 spells; bar to 45), How everyone
+      did holds its place, lost Footle leads with the answer, Streak safe, Top 10 "Today",
+      reminder on the streak line + banked shields, wrong guesses that teach (Trail, Mystery),
+      in-app-browser strip on Footle + Clarity store_tap, Daily 7 fetchable by apps (days unchanged).
+- [ ] **Daily 7 no-repeat rebuild:** run `node scripts/gen-daily-log.mjs --regen-from 2026-11-09`
+      (dry-run first) ONLY once 1.8.2 is live and adopted; swap the whole-log pin in
+      tests/unit/daily-log.test.js in the same commit. Dry run: 338 days, 545 repeat slots → 0.
+- [ ] **1.8.2 native build** must carry dailyRemote before the rebuild date. Do not release
+      1.8.0 build 149 (manual release, waiting) as is.
+- [ ] Top 10 schedule ends 30 Nov; calendar lists can only be APPENDED (apps refuse a schedule
+      that does not start with their own). First calendar slot: North London derby, Sat 5 Dec.
+- [ ] Return research (~/ball-iq-audit/2026-10-16/return-research/report.md): mates' leagues
+      (Mon-Sun), Draft as the fifth daily, fewer bad days (win bands, weekly slope), Stitch-up
+      (build a Trail for a mate), Higher or Lower daily ladder; one Quiz entry; Hot Streak →
+      Survival; Multiplayer off Home (Alex to rule).
+
 ## 2026-10-05 — ⭐ BALL IQ 2.0: the audit, graded, and the master list
 
 Alex's mandate (2026-10-04): make Ball IQ 2.0, the best football app and the
