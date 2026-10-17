@@ -3,7 +3,7 @@ import { ClipboardList, Route, UserRoundSearch, ListOrdered, Flame, X } from "lu
 import { useAuth } from "../useAuth.jsx";
 import { Confetti, haptic } from "../App.jsx";
 import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
-import { getWordleAnswer } from "../lib/wordle.js";
+import { footleAnswerFor } from "../lib/wordle.js";
 import { getTrailAnswer } from "../lib/trail.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
@@ -695,7 +695,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     const f = footleHistory.get(todayYMD);
     const tr = trailHistory.get(todayYMD);
     const my = mysteryHistory.get(todayYMD);
-    const footleLen = (() => { try { return getWordleAnswer().length; } catch { return 0; } })();
+    const footleLen = (() => { try { return footleAnswerFor().length; } catch { return 0; } })();
 
     const list = [
       {

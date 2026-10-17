@@ -1,4 +1,4 @@
-// The Transfer Trail log and the Mystery Player schedule as the site serves
+// The Transfer Trail log, the Mystery Player schedule and the Footle answer log as the site serves
 // them to installed apps (src/lib/scheduleRemote.js), and the served horizon
 // each build bundles beside them (src/data/scheduleServed.json).
 //
@@ -22,6 +22,7 @@ export const SERVED_FILE = new URL('src/data/scheduleServed.json', ROOT);
 export const REMOTE_FILES = {
   trail: new URL('public/data/trail.json', ROOT),
   mystery: new URL('public/data/mystery.json', ROOT),
+  footle: new URL('public/data/footle.json', ROOT),
 };
 
 const readJson = (url) => { try { return JSON.parse(readFileSync(url, 'utf8')); } catch { return null; } };
@@ -38,10 +39,15 @@ export function planScheduleRemote(name, { anchor, days, minServed = 0, now = ne
   if (prev) {
     if (prev.anchor !== anchor) throw new Error(`[schedule-remote] ${name}: the anchor moved (${prev.anchor} -> ${anchor}); every installed app would refuse the file`);
     if (days.length < prev.days.length) throw new Error(`[schedule-remote] ${name}: the log got shorter (${prev.days.length} -> ${days.length})`);
-    for (let i = 0; i < Math.min(prevServed, prev.days.length); i++) {
+    // ⚠️ THE CALENDAR GUARDS TOO (review, 17 Oct 2026). prevServed is the count
+    // the last run SAVED; nothing re-saves it daily, so a day after it was
+    // written, today's answer sat outside it and an edit to today was accepted
+    // (and installed apps took it). Today and tomorrow are always served.
+    const guard = Math.min(prev.days.length, Math.max(prevServed, todayIndex(now) - anchor + 2));
+    for (let i = 0; i < guard; i++) {
       if (prev.days[i] !== days[i]) {
         throw new Error(`[schedule-remote] ${name}: refusing. Day index ${i} (No. ${i + 1}) moved (${prev.days[i]} -> ${days[i]}) `
-          + `but the first ${prevServed} days are recorded as served. Installed apps would refuse this file. Find out why the log moved.`);
+          + `but the first ${guard} days are served (recorded, or today and tomorrow by the calendar). Installed apps would refuse this file. Find out why the log moved.`);
       }
     }
   }
@@ -55,6 +61,11 @@ export function planScheduleRemote(name, { anchor, days, minServed = 0, now = ne
       const sorted = Object.fromEntries(Object.keys(next).sort().map((k) => [k, next[k]]));
       writeFileSync(SERVED_FILE, JSON.stringify(sorted, null, 2) + '\n');
       writeFileSync(file, text);
+      // Footle's horizon is ALSO a JS module: lib/wordle.js is imported by plain
+      // Node scripts, which cannot import JSON without an attribute ESLint
+      // cannot parse yet. schedule-remote.test.js holds the two equal.
+      if (name === 'footle') writeFileSync(new URL('src/data/footleServed.js', ROOT),
+        `// Written by scripts/lib/schedule-remote.mjs (gen-schedule-remote.mjs footle). Do not edit.\nexport const FOOTLE_SERVED = ${served};\n`);
       console.log(`[schedule-remote] ${name}: ${days.length} days, the first ${served} recorded as served -> public/data/${name}.json`);
     },
   };

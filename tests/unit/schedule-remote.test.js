@@ -20,6 +20,8 @@ import { MYSTERY_ANCHOR_DAY } from '../../src/lib/mysteryPlayer.js';
 import MYSTERY_SCHEDULE from '../../src/data/mysterySchedule.json';
 import SERVED_HORIZON from '../../src/data/scheduleServed.json';
 import * as R from '../../src/lib/scheduleRemote.js';
+import * as W from '../../src/lib/wordle.js';
+import { FOOTLE_SERVED } from '../../src/data/footleServed.js';
 import { planScheduleRemote, trailPublishedLength } from '../../scripts/lib/schedule-remote.mjs';
 
 const read = (p) => readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8');
@@ -45,6 +47,15 @@ const DOORS = [
     URL: R.MYSTERY_REMOTE_URL, BUILD: R.MYSTERY_BUILD,
     other: (id) => (id === MYSTERY_SCHEDULE[0] ? MYSTERY_SCHEDULE[1] : MYSTERY_SCHEDULE[0]),
     bad: ['', 'Q', 'Q0123', 'q615', '<script>', 615, null],
+  },
+  {
+    // Footle's door lives in lib/wordle.js (Home reads the answer on its eager path).
+    name: 'footle', file: 'public/data/footle.json', url: 'https://balliq.app/data/footle.json',
+    bundled: { anchor: W.WORDLE_ANCHOR_DAY, served: SERVED_HORIZON.footle, days: W.WORDLE_ANSWER_LOG },
+    accept: W.acceptRemoteFootle, cached: W.cachedFootleLog, refresh: W.refreshFootleLog, asked: W.askedSiteForFootle,
+    URL: W.FOOTLE_REMOTE_URL, BUILD: W.FOOTLE_BUILD,
+    other: (w) => W.WORDLE_ANSWER_POOL.find((x) => x !== w),
+    bad: ['', 'ab', 'lower', 'O\'NEIL', '<script>', 'X'.repeat(13), 7, null],
   },
 ];
 
@@ -232,6 +243,44 @@ describe('the screens play from the kept copy, the bundle as fallback', () => {
   });
 });
 
+describe('Footle plays from the kept copy, the bundle as fallback', () => {
+  const SERVED_FOOTLE = JSON.parse(read('public/data/footle.json'));
+  const keep = (file) => memory({ biq_footle_remote: JSON.stringify(file), biq_footle_remote_for: W.FOOTLE_BUILD });
+  const last = SERVED_FOOTLE.days.length - 1;
+  it('a re-planned future day plays the site\'s answer; a served day reads the same', () => {
+    const f = copy(SERVED_FOOTLE); const other = W.WORDLE_ANSWER_POOL.find((x) => x !== f.days[last]);
+    f.days[last] = other;
+    const s = keep(f);
+    expect(W.getWordleAnswerForDayIndex(W.WORDLE_ANCHOR_DAY + last, s)).toBe(other);
+    expect(W.getWordleAnswerForDayIndex(W.WORDLE_ANCHOR_DAY + 3, s)).toBe(W.WORDLE_ANSWER_LOG[3]);
+  });
+  it('an answer this build cannot play (not in its word list) falls back to the bundled one', () => {
+    const f = copy(SERVED_FOOTLE); f.days[last] = 'ZZZZZQX';
+    expect(W.getWordleAnswerForDayIndex(W.WORDLE_ANCHOR_DAY + last, keep(f))).toBe(W.WORDLE_ANSWER_LOG[last]);
+  });
+  it('nothing kept (the website) is the bundled answer, unchanged, and past the log the stride still runs', () => {
+    expect(W.getWordleAnswerForDayIndex(W.WORDLE_ANCHOR_DAY + 5, memory())).toBe(W.WORDLE_ANSWER_LOG[5]);
+    const beyond = W.WORDLE_ANCHOR_DAY + W.WORDLE_ANSWER_LOG.length + 3;
+    expect(W.getWordleAnswerForDayIndex(beyond, memory())).toBe(W.getWordleAnswerForDayIndex(beyond, null));
+  });
+  it('the answer a player already met wins over any schedule (stamped in the day record)', () => {
+    const d = new Date(2026, 11, 28, 12);                     // a future day, beyond the served horizon
+    const key = `biq_wordle_${d.getFullYear()}-${d.getMonth() + 1 < 10 ? '0' : ''}${d.getMonth() + 1}-${d.getDate()}`;
+    const scheduled = W.getWordleAnswer(d, null);
+    const met = W.WORDLE_ANSWER_POOL.find((x) => x !== scheduled);
+    const s = memory({ [key]: JSON.stringify({ guesses: ['ABCDE'], status: 'won', answer: met }) });
+    expect(W.footleAnswerFor(d, undefined, s)).toBe(met);
+    s.setItem(key, JSON.stringify({ guesses: ['ABCDE'], status: 'won' }));        // an old record: no stamp
+    expect(W.footleAnswerFor(d, undefined, s)).toBe(scheduled);
+    s.setItem(key, JSON.stringify({ guesses: [], status: 'playing', answer: 'NOTAPLAYER' }));
+    expect(W.footleAnswerFor(d, undefined, s)).toBe(scheduled);                   // a stamp it cannot play is ignored
+    expect(W.footleAnswerFor(d, 'GIVEN', memory())).toBe('GIVEN');                // no record: the caller's fallback
+  });
+  it('the JS copy of the served horizon equals the JSON one', () => {
+    expect(FOOTLE_SERVED).toBe(SERVED_HORIZON.footle);
+  });
+});
+
 describe('the generator side (scripts/lib/schedule-remote.mjs)', () => {
   // (Not "a plan changes nothing": `served` follows the calendar, so a plan
   // made tomorrow records one more day. The equality above is the drift test.)
@@ -246,10 +295,41 @@ describe('the generator side (scripts/lib/schedule-remote.mjs)', () => {
     expect(() => planScheduleRemote('mystery', { anchor: MYSTERY_ANCHOR_DAY + 1, days: MYSTERY_SCHEDULE })).toThrow(/anchor/);
     expect(() => planScheduleRemote('mystery', { anchor: MYSTERY_ANCHOR_DAY, days: MYSTERY_SCHEDULE.slice(0, -1) })).toThrow(/shorter/);
   });
+  it('refuses to move today or tomorrow even when the saved served count is days old (review, 17 Oct)', () => {
+    const anchor = W.WORDLE_ANCHOR_DAY;
+    const late = new Date((anchor + SERVED_HORIZON.footle + 6) * 86400000);   // a week after the count was saved
+    const today = Math.floor(Date.UTC(late.getFullYear(), late.getMonth(), late.getDate()) / 86400000) - anchor;
+    for (const i of [today, today + 1]) {
+      const days = [...W.WORDLE_ANSWER_LOG]; days[i] = W.WORDLE_ANSWER_POOL.find((x) => x !== days[i]);
+      expect(() => planScheduleRemote('footle', { anchor, days, now: late }), `day ${i}`).toThrow(/refusing/);
+    }
+    const days = [...W.WORDLE_ANSWER_LOG]; days[today + 2] = W.WORDLE_ANSWER_POOL.find((x) => x !== days[today + 2]);
+    expect(() => planScheduleRemote('footle', { anchor, days, now: late })).not.toThrow();
+  });
   it('accepts a re-planned future and never records fewer days as served', () => {
     const days = [...MYSTERY_SCHEDULE]; days[days.length - 1] = 'Q1';
     const plan = planScheduleRemote('mystery', { anchor: MYSTERY_ANCHOR_DAY, days });
     expect(plan.changed).toBe(true);
     expect(plan.served).toBeGreaterThanOrEqual(SERVED_HORIZON.mystery);
+  });
+});
+
+describe('the sign-in merge keeps the stamps a remote record lacks (useAuth.jsx)', async () => {
+  const { mergeWordleRecords } = await import('../../src/lib/wordleStatus.js');
+  it('keeps a local answer and arc the remote copy does not carry; remote wins on everything else', () => {
+    const local = { '2026-12-28': { guesses: ['MOYES'], status: 'won', answer: 'MOYES', arc: 1 }, '2026-12-27': { guesses: [], status: 'playing' } };
+    const remote = { '2026-12-28': { guesses: ['MOYES'], status: 'won' }, '2026-12-26': { guesses: ['KANE'], status: 'lost' } };
+    const m = mergeWordleRecords(local, remote);
+    expect(m['2026-12-28']).toEqual({ guesses: ['MOYES'], status: 'won', answer: 'MOYES', arc: 1 });
+    expect(m['2026-12-26']).toEqual(remote['2026-12-26']);
+    expect(m['2026-12-27']).toEqual(local['2026-12-27']);
+  });
+  it('a local answer is not lent to a remote board with different guesses', () => {
+    const m = mergeWordleRecords({ d: { guesses: ['MOYES'], status: 'won', answer: 'MOYES' } }, { d: { guesses: ['KANE', 'ERIKSEN'], status: 'won' } });
+    expect(m.d.answer).toBeUndefined();
+  });
+  it('a stamp on the remote copy is kept as it is', () => {
+    const m = mergeWordleRecords({ d: { guesses: ['A'], status: 'won', answer: 'OLD' } }, { d: { guesses: ['A'], status: 'won', answer: 'NEW' } });
+    expect(m.d.answer).toBe('NEW');
   });
 });

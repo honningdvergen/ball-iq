@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
-import { getWordleAnswer, getWordleDayIndex, gradeWordleGuess, computeFootleStreak, getFootleNumber, footleShareHead } from "../lib/wordle.js";
+import { footleAnswerFor, getWordleDayIndex, gradeWordleGuess, computeFootleStreak, getFootleNumber, footleShareHead } from "../lib/wordle.js";
 import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
 
 // FootleHero — Home tab daily-zone card. Morning state shows an empty
@@ -70,10 +70,10 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
   const streak = useMemo(() => isWon ? computeFootleStreak(today) : 0, [isWon, today, dateKey]);
 
   // Today's answer length is needed for the morning grid preview's column
-  // count (G1 refinement) — getWordleAnswer is pure/deterministic so calling
+  // count (G1 refinement) — footleAnswerFor is cheap so calling
   // it in both states is cheap. Guesses + grades only computed in terminal
   // states since they require the localStorage read + grading pass.
-  const answer = useMemo(() => getWordleAnswer(), [dateKey]);
+  const answer = useMemo(() => footleAnswerFor(), [dateKey]);
   // ⚠️ Loaded when IN PROGRESS too, not just when finished. The card used to
   // render a rotating sample solve in this state — someone else's board, with
   // an all-green winning row — directly beside a CTA reading

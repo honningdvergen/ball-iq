@@ -59,3 +59,24 @@ export function readWordleTodayStatus() {
     return { kind: "ready" };
   } catch { return { kind: "ready" }; }
 }
+
+/**
+ * The sign-in merge of Footle day records (useAuth.jsx): the remote record
+ * wins, but never drops a local stamp it lacks, the answer the player met
+ * (lib/wordle.js footleAnswerFor) or the archive `arc` mark. Records synced
+ * before 17 Oct 2026 carry neither.
+ */
+export function mergeWordleRecords(local = {}, remote = {}) {
+  const out = { ...local };
+  for (const [ymd, rs] of Object.entries(remote)) {
+    const ls = local[ymd];
+    out[ymd] = (ls && rs && typeof rs === 'object')
+      ? { ...rs,
+        // The local answer only describes the local guesses: borrow it only
+        // when the remote record is the same board.
+        ...(rs.answer == null && ls.answer != null && JSON.stringify(rs.guesses) === JSON.stringify(ls.guesses) ? { answer: ls.answer } : {}),
+        ...(rs.arc == null && ls.arc != null ? { arc: ls.arc } : {}) }
+      : rs;
+  }
+  return out;
+}

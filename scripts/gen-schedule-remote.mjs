@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Writes public/data/trail.json and public/data/mystery.json (and the served
+// Writes public/data/trail.json, mystery.json and footle.json (and the served
 // horizon in src/data/scheduleServed.json) from the logs the build bundles.
 //
 // The generators already do this in their own runs (gen-mystery-schedule.mjs,
@@ -8,7 +8,7 @@
 // log is re-planned: tests/unit/schedule-remote.test.js fails until you do.
 // It refuses, and writes nothing, when a day recorded as served has moved.
 //
-// Usage: node scripts/gen-schedule-remote.mjs [trail|mystery]   (both by default)
+// Usage: node scripts/gen-schedule-remote.mjs [trail|mystery|footle]   (all three by default)
 import { readFileSync } from 'node:fs';
 import { planScheduleRemote, trailPublishedLength } from './lib/schedule-remote.mjs';
 
@@ -23,5 +23,11 @@ if (!only || only === 'mystery') {
   const days = JSON.parse(readFileSync(new URL('../src/data/mysterySchedule.json', import.meta.url), 'utf8'));
   plans.push(planScheduleRemote('mystery', { anchor: MYSTERY_ANCHOR_DAY, days }));
 }
-if (!plans.length) { console.error(`unknown log "${only}" (trail | mystery)`); process.exit(2); }
+if (!only || only === 'footle') {
+  // Hand-edited like the Trail log (WORDLE_ANSWER_LOG in src/lib/wordle.js):
+  // run this after any edit, or schedule-remote.test.js fails.
+  const { WORDLE_ANSWER_LOG, WORDLE_ANCHOR_DAY } = await import('../src/lib/wordle.js');
+  plans.push(planScheduleRemote('footle', { anchor: WORDLE_ANCHOR_DAY, days: WORDLE_ANSWER_LOG }));
+}
+if (!plans.length) { console.error(`unknown log "${only}" (trail | mystery | footle)`); process.exit(2); }
 for (const p of plans) p.write();

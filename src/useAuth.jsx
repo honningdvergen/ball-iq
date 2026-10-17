@@ -10,6 +10,7 @@ import { SignInWithApple } from '@capacitor-community/apple-sign-in'
 import { supabase, readStoredSession } from './supabase.js'
 import { recordSignupAttribution } from './lib/firstTouch.js'
 import { safeSetItem } from './safeStorage.js'
+import { mergeWordleRecords } from './lib/wordleStatus.js'
 import { perfMark } from './lib/perf.js'
 import { isProfaneUsername } from './lib/profanity.js'
 import { unregisterPush } from './lib/push.js'
@@ -687,7 +688,8 @@ export function AuthProvider({ children }) {
     const localWordleState = readLocalMap(/^biq_wordle_(\d{4}-\d{2}-\d{2})$/, p => (
       p && Array.isArray(p.guesses) && typeof p.status === 'string' ? p : null
     ))
-    const mergedWordleState = { ...localWordleState, ...remoteWordleState }
+    // Remote wins, but keeps a local answer / arc stamp it lacks (wordleStatus.js).
+    const mergedWordleState = mergeWordleRecords(localWordleState, remoteWordleState)
     for (const [ymd, st] of Object.entries(mergedWordleState)) {
       safeSetItem(`biq_wordle_${ymd}`, JSON.stringify(st))
     }

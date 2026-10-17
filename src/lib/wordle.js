@@ -12,6 +12,9 @@ import { dateToYMD } from "./date.js";
 // `export {...} from` alone re-exports WITHOUT a local binding — the import
 // line is what makes the names usable below.
 import { DAY_MS, WORDLE_ANCHOR_DAY, getFootleNumber } from "./footleNumber.js";
+import { makeDoor } from "./scheduleDoor.js";
+import { FOOTLE_SERVED } from "../data/footleServed.js";
+import { getWordleDateKey } from "./wordleStatus.js";
 export { getFootleNumber, WORDLE_ANCHOR_DAY };
 
 export const WORDLE_PLAYERS = [
@@ -267,8 +270,39 @@ export const WORDLE_ANSWER_POOL = WORDLE_PLAYERS.filter(
   (w) => w.length >= 5 && w.length <= 8 && !WORDLE_MANAGERS.includes(w) && !WORDLE_NOT_ANSWERS.includes(w)
 );
 
-export function getWordleAnswerForDayIndex(dayIndex) {
+// ── THE FETCH DOOR (17 Oct 2026) ──────────────────────────────────────────────
+// Trail, Mystery and Daily 7 could already follow a re-planned future from the
+// site (lib/scheduleRemote.js); Footle could not, so the #280 MOYES -> ERIKSEN
+// swap (Alex on #167 FERGUSON: answers must be known first as players) reaches
+// only builds cut after it. Same door, same checks: the site serves this log at
+// /data/footle.json (scripts/gen-schedule-remote.mjs footle), an installed app
+// keeps it, and no day the build or the kept copy calls served can move, so
+// today's answer never changes under a player. A fetched answer this build's
+// word list does not hold falls back to the bundled one for that day, since the
+// board could not accept it as a guess.
+export const FOOTLE_REMOTE_URL = "https://balliq.app/data/footle.json";
+const footleDoor = makeDoor({
+  name: "footle", url: FOOTLE_REMOTE_URL,
+  bundled: { anchor: WORDLE_ANCHOR_DAY, served: FOOTLE_SERVED, days: WORDLE_ANSWER_LOG },
+  entry: /^[A-Z]{3,12}$/,
+});
+export const FOOTLE_BUILD = footleDoor.BUILD;
+export const acceptRemoteFootle = footleDoor.accept;
+export const cachedFootleLog = footleDoor.cached;
+export const askedSiteForFootle = footleDoor.asked;
+/** 'updated' | 'same' | 'fresh' (asked recently) | 'rejected' | 'failed'. Never throws. */
+export const refreshFootleLog = footleDoor.refresh;
+const PLAYABLE = new Set(WORDLE_PLAYERS);
+
+export function getWordleAnswerForDayIndex(dayIndex, storage) {
   const n = dayIndex - WORDLE_ANCHOR_DAY;
+  if (n >= 0) {
+    try {
+      const live = cachedFootleLog(storage);
+      const w = live && live.days[n];
+      if (w && PLAYABLE.has(w)) return w;
+    } catch { /* the bundled log below */ }
+  }
   if (n >= 0 && n < WORDLE_ANSWER_LOG.length) return WORDLE_ANSWER_LOG[n];
   const offset = n * WORDLE_STRIDE;
   const len = WORDLE_ANSWER_POOL.length;
@@ -276,8 +310,26 @@ export function getWordleAnswerForDayIndex(dayIndex) {
   return WORDLE_ANSWER_POOL[idx];
 }
 
-export function getWordleAnswer(date = new Date()) {
-  return getWordleAnswerForDayIndex(getWordleDayIndex(date));
+// ── THE ANSWER A PLAYER ALREADY MET (review, 17 Oct 2026) ─────────────────────
+// The served-day guard protects days the build or the kept copy calls served,
+// not days THIS phone played from its own copy: a day played offline, or
+// before the first fetch, could be re-planned on the site and fetched after.
+// The day's record ({guesses, status}) held no answer, so a won board was then
+// re-graded against the new word (seven columns, no green row, a different
+// reveal). So the game stamps the answer it played into the record, and every
+// reader prefers that stamp: the answer a player met never changes under them.
+export function footleAnswerFor(date = new Date(), fallback, storage) {
+  try {
+    const st = storage !== undefined ? storage : (typeof localStorage !== "undefined" ? localStorage : null);
+    const raw = st ? st.getItem(`biq_wordle_${getWordleDateKey(date)}`) : null;
+    const a = raw ? JSON.parse(raw)?.answer : null;
+    if (typeof a === "string" && PLAYABLE.has(a)) return a;
+  } catch { /* the schedule below */ }
+  return fallback !== undefined ? fallback : getWordleAnswer(date, storage);
+}
+
+export function getWordleAnswer(date = new Date(), storage) {
+  return getWordleAnswerForDayIndex(getWordleDayIndex(date), storage);
 }
 
 // Standard Wordle two-pass colouring: greens first (locking those answer

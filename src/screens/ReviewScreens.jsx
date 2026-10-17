@@ -4,7 +4,7 @@ import { dateToYMD } from "../lib/date.js";
 import { Home, Share, Flame } from "lucide-react";
 import { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
-import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, gradeWordleGuess, footleShareHead } from "../lib/wordle.js";
+import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, footleAnswerFor, gradeWordleGuess, footleShareHead } from "../lib/wordle.js";
 import { CB_MODE, DailyHeroCountdown, FootleGetAppCTA, IS_NATIVE, InstallBanner, ReviewQuestionCard, TIMINGS, shareCard } from "../App.jsx";
 
 export function Mini7Strip({ history, today }) {
@@ -166,7 +166,8 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard =
   // grades array. Now shares getWordleAnswerForDayIndex with the active game.
   const answer = useMemo(() => {
     const dayIndex = Math.floor(date.getTime() / TIMINGS.DAY_MS);
-    return getWordleAnswerForDayIndex(dayIndex);
+    // The answer the player met, if their record carries it (footleAnswerFor).
+    return footleAnswerFor(date, getWordleAnswerForDayIndex(dayIndex));
   }, [date]);
 
   const won = status === "won";

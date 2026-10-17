@@ -15,7 +15,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import ChallengeBanner from "../components/ChallengeBanner.jsx";
 import InAppStrip, { useInAppStrip } from "../components/InAppStrip.jsx";
 import {
-  WORDLE_FULL_NAMES, getWordleAnswer, gradeWordleGuess, computeFootleStreak, getFootleNumber,
+  WORDLE_FULL_NAMES, footleAnswerFor, gradeWordleGuess, computeFootleStreak, getFootleNumber,
   footleClue, footleShareHead, FOOTLE_CLUE_AFTER,
 } from '../lib/wordle.js';
 import { Lightbulb } from 'lucide-react';
@@ -115,7 +115,16 @@ function FootleReportButton({ answer, status, onReport }) {
 const FOOTLE_WIN_WORDS = ["Top bins!", "World class", "Brilliant", "Solid", "Close call", "Last-gasp winner"];
 export function footleWinWord(n) { return FOOTLE_WIN_WORDS[Math.min(Math.max(n, 1), 6) - 1]; }
 
-export const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onReport, date = new Date(), services }) {
+export const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onReport, date: dateProp, services }) {
+  // ⚠️ THE DAY IS FIXED WHEN THE BOARD OPENS (review, 17 Oct 2026). `date`
+  // used to default to `new Date()` on EVERY render, and a finished board
+  // re-renders every second for its countdown, so just after midnight the key,
+  // the answer and the save all moved to the new day before the 5 s rollover
+  // reload below: yesterday's win was written into today's record, and a
+  // player reopening at 00:00 met a "won" Footle graded against the new word.
+  // A live board now keeps the day it opened on until that reload.
+  const [openedAt] = useState(() => new Date());
+  const date = dateProp || openedAt;
   // Everything the screen needs from the app shell arrives here; the island
   // passes its own (src/islands/footle.jsx). Missing keys fall back to inert.
   const { haptic, playSound, markBadReviewMoment, onSync, shareCard, Confetti, InstallBanner, GetAppCTA, isNative, dailyDone } = { ...DEFAULT_SERVICES, ...(services || {}) };
@@ -130,9 +139,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // comment in lib/wordle.js describes (key from local date, answer from UTC,
   // so a player got tomorrow's word stored under today's key).
   const dateKey = getWordleDateKey(date);
-  const isArchive = dateKey !== getWordleDateKey();
+  // An archive board is one opened FOR another day, not one that the clock
+  // has walked past: a live board after midnight is still live (and reloads).
+  const isArchive = dateKey !== getWordleDateKey(openedAt);
   const storageKey = `biq_wordle_${dateKey}`;
-  const answer = useMemo(() => getWordleAnswer(date), [dateKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const answer = useMemo(() => footleAnswerFor(date), [dateKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Audit Phase 5 (C2): track shake (450ms) + reveal (~2-3s) setTimeouts
   // so we can clear them on unmount. Without this, setShake(false) and
@@ -255,10 +266,18 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     // marks it. Without the stamp, catching up an old day silently extends
     // the local streak (reproduced 2026-08-20: an archive solve showed as a
     // 2-day streak). Same stamp in Trail and Mystery.
-    safeSetItem(storageKey, JSON.stringify(isArchive ? { ...state, arc: 1 } : state));
+    // The answer rides with the record once a guess is in (footleAnswerFor in
+    // lib/wordle.js): a later fetched schedule can never re-grade this board.
+    const base = state.guesses.length > 0 ? { ...state, answer } : state;
+    const rec = isArchive ? { ...base, arc: 1 } : base;
+    safeSetItem(storageKey, JSON.stringify(rec));
     // Cross-device sync — push to profiles.wordle_state via atomic JSON
     // merge. Skip the empty-grid initial state to avoid a useless write.
-    if (userId && state.guesses.length > 0 && onSync) onSync(dateKey, state);
+    // ⚠️ The WHOLE record (review, 17 Oct 2026): `state` alone carried neither
+    // the answer stamp nor the archive `arc` stamp, and the sign-in merge
+    // (useAuth.jsx) writes the remote copy over the local one, so both were
+    // wiped on the next launch.
+    if (userId && state.guesses.length > 0 && onSync) onSync(dateKey, rec);
   }, [state, storageKey, userId, dateKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Live "new player tomorrow" countdown. Ticks once per second.
