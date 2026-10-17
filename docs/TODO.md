@@ -11,10 +11,12 @@
   BBC and an AI overview above us. The gap is authority (links), not page quality.
 - [x] 1.8.2 submitted (iOS 155, AFTER_APPROVAL, nine screenshots, promo text in 19 locales).
       Android 58 waits for Alex (Play production is behind the permission classifier).
-- [x] Bank, second pass: 83 upcoming Daily 7 fixes (8b6b0d9e: one wrong key, six two-answer
-      questions) and 29 in the twelve biggest club packs (2be4b21c). Swept so far: 1,344
-      nationality/position stems, 1,569 future Daily 7, 318 top-club. NOT swept: ~5,700 other
-      MCQs. Open: q_522cb2 (Red Star, needs replacing), q_917c1e 'Bally', q_0fc2bd 'The Beat'.
+- [x] Bank, second pass, 17 Oct: 499 fixes from 5,608 checked (every answer unchanged
+      except four verified 2025-26 updates): 198 nationality/position (c3f5e670), 83 Daily 7
+      (8b6b0d9e), 29 top-12 clubs (2be4b21c), 36 'as of' refreshed (2cb9db62), Red Star
+      (1d46fde0), 88 + 64 general topics (92b07072, d3feaae3). NOT swept: the other 136 club
+      packs (~3,350 MCQs). Method: scratchpad sweep briefs (workflows/*-sweep.js), every
+      proposed fix read by me before it ships, 'answer moved' check, build gate. Open: q_522cb2 (Red Star, needs replacing), q_917c1e 'Bally', q_0fc2bd 'The Beat'.
       The "As of 2026" wording: 0 rows match that literal phrase; re-search before claiming 80.
 - [x] Footle fetch door (d0e5a6ff), three review rounds: calendar guard in the generator,
       answer stamped in the day record and synced, sign-in merge keeps stamps, the board keeps
