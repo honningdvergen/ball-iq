@@ -49,6 +49,10 @@ async function seedNamelessGuest(context) {
   });
 }
 
+// ⚠️ ANSWER BUTTONS ARE NOT SHARE BUTTONS (17 Oct 2026). Every share locator
+// skips button.opt: the Daily 7 of 17 Oct had an option "A proposed
+// groundshare with Hull Kingston Rovers", has-text matched "share" inside it,
+// and the loop stopped at question 4 for five commits running.
 async function playDailyToEnd(page) {
   await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
@@ -81,20 +85,20 @@ async function playDailyToEnd(page) {
     // ⚠️ The advance button is "Next →" mid-game but "Results →" on Q7. An
     // earlier regex matched only the former and the loop stalled on the last
     // question, which reads exactly like "the share button doesn't exist".
-    const next = page.locator('button').filter({ hasText: /Next|Continue|Results|Finish/i }).filter({ visible: true }).first();
+    const next = page.locator('button:not(.opt)').filter({ hasText: /Next|Continue|Results|Finish/i }).filter({ visible: true }).first();
     await next.waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
     if (await next.count()) {
       await next.click();
       // Settle on whatever comes next — the following question, or the result
       // screen on Q7 — rather than guessing how long that takes.
-      await page.locator('button.opt, button:has-text("Share"), button:has-text("Challenge")')
+      await page.locator('button.opt, button:not(.opt):has-text("Share"), button:not(.opt):has-text("Challenge")')
         .first().waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
     }
     // ⚠️ STOP AS SOON AS THE RESULT SCREEN EXISTS. The loop used to always run
     // seven times; if a question was skipped or the daily was already partly
     // played, the extra iterations clicked into whatever came next and walked
     // off the result screen again.
-    if (await page.locator('button:has-text("Share"), button:has-text("Challenge")')
+    if (await page.locator('button:not(.opt):has-text("Share"), button:not(.opt):has-text("Challenge")')
       .filter({ visible: true }).count()) break;
   }
 
@@ -112,7 +116,7 @@ async function playDailyToEnd(page) {
   // alongside a booted iOS Simulator took load average past 10 and failed 33
   // of 44. The machine, not the app, is what varies.
   await expect(
-    page.locator('button:has-text("Share"), button:has-text("Challenge")').filter({ visible: true }).first(),
+    page.locator('button:not(.opt):has-text("Share"), button:not(.opt):has-text("Challenge")').filter({ visible: true }).first(),
     'never reached the daily result screen — a step in playDailyToEnd stalled, look THERE not at the share button',
   ).toBeVisible({ timeout: 20000 });
 }
@@ -124,7 +128,7 @@ test('nameless sharer is asked, and the name reaches the link', async ({ page, c
   await seedNamelessGuest(context);
   await playDailyToEnd(page);
 
-  const share = page.locator('button', { hasText: /Share|Challenge/i }).filter({ visible: true }).first();
+  const share = page.locator('button:not(.opt)', { hasText: /Share|Challenge/i }).filter({ visible: true }).first();
   await expect(share, 'share button on the daily result').toBeVisible({ timeout: 8000 });
   await share.click();
   await page.waitForTimeout(600);
@@ -145,7 +149,7 @@ test('nameless sharer is asked, and the name reaches the link', async ({ page, c
 
   // 3. answering once is enough
   await expect(sheet).toBeHidden();
-  const share2 = page.locator('button', { hasText: /Share|Challenge/i }).filter({ visible: true }).first();
+  const share2 = page.locator('button:not(.opt)', { hasText: /Share|Challenge/i }).filter({ visible: true }).first();
   await share2.click();
   await page.waitForTimeout(700);
   await expect(sheet, 'second share must NOT re-ask').toBeHidden();
@@ -159,7 +163,7 @@ test('skipping still shares — the prompt must never block the share', async ({
   await seedNamelessGuest(context);
   await playDailyToEnd(page);
 
-  const share = page.locator('button', { hasText: /Share|Challenge/i }).filter({ visible: true }).first();
+  const share = page.locator('button:not(.opt)', { hasText: /Share|Challenge/i }).filter({ visible: true }).first();
   await expect(share).toBeVisible({ timeout: 8000 });
   await share.click();
   await page.waitForTimeout(600);
