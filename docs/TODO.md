@@ -1,3 +1,18 @@
+## 2026-10-17 — QUALITY + THE GOOGLE FUNNEL
+
+- [x] Bank: 198 questions no longer give the answer away (c3f5e670); 1.8.2 is now iOS 155.
+- [x] Club finish card: today's daily is the one green button (8120ea64). **Read on 31 Oct:**
+      share of clubq-finish visitors with clubq-open-next (was 6% over 28 days, 59 of 486
+      in 14), and their later-day return (was 16.7% v 3.6%). Hero taps carry meta.hero=1.
+- Search Console, 17 Sep to 14 Oct: 2,320 clicks, 88.3k impressions, CTR 2.6%, position 9.
+  Big club pages sit at position 6-7 with ~3% CTR (Arsenal 3,944 impressions, 127 clicks;
+  Liverpool, Real Madrid, Barcelona, City alike); /it/ Juventus and Milan sit at ~4 with
+  12-18%. UK mobile "arsenal quiz": arsenal.com, Sporcle, FourFourTwo, JetPunk, FunTrivia,
+  BBC and an AI overview above us. The gap is authority (links), not page quality.
+- [ ] Bank quality, second pass: implausible options in stems with no nationality or
+      position word; nickname-echoes-surname tells; the 80 "As of 2026" anchors.
+- [ ] Calendar editions: El Clásico (Sun 25 Oct) and the Ballon d'Or (Mon 26 Oct).
+
 ## 2026-10-16 — THE 17-ITEM PUSH (Alex: "tick off everything on the to do list")
 
 Rulings today (Alex): AdSense no longer sets the pace (no new-page cap, no 26 Oct freeze);
