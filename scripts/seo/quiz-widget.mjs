@@ -45,7 +45,8 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-len{display:flex;gap:7px;margin-bottom:12px}
   .bq-len button{flex:1;min-height:44px;padding:9px 6px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx3);font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
   .bq-len button:hover{border-color:var(--bd3)}
-  .bq-len button[aria-pressed="true"]{background:var(--grn);border-color:var(--grn);color:var(--grn-ink)}
+  /* Selected = outlined, not filled (2026-10-17): a setting, not an action. */
+  .bq-len button[aria-pressed="true"]{background:rgba(255,255,255,.05);border-color:var(--grn);color:var(--grn)}
   /* overflow:clip, not hidden. position:sticky sticks to the nearest ancestor
      that scrolls, and overflow:hidden MAKES the card that ancestor — the Next
      button would stick to the card instead of the viewport, i.e. not at all.
@@ -214,7 +215,11 @@ export const BQ_CSS = `  .bq{scroll-margin-top:72px}
   .bq-open-n{display:flex;flex-direction:column;min-width:0}
   .bq-open-n b{font-size:14.5px;font-weight:700}
   .bq-open-n i{font-style:normal;font-size:12.5px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .bq-open-r em{flex:0 0 auto;font-style:normal;font-size:13px;font-weight:800;color:var(--grn-ink);background:var(--grn);border-radius:999px;padding:6px 14px}
+  /* Quiet pills since 2026-10-17: the card's one solid green is its main
+     button (Alex, 16 Oct: one loud thing per screen). */
+  .bq-open-r em{flex:0 0 auto;font-style:normal;font-size:13px;font-weight:800;color:var(--grn);background:transparent;border:1px solid currentColor;border-radius:999px;padding:5px 13px}
+  .bq-hero-sub{margin-top:7px;font-size:12.5px;color:var(--tx3)}
+  .bq-link{width:100%;background:none;border:0;font:inherit;font-size:13.5px;cursor:pointer;padding:0 8px;color:var(--tx2)}
   .bq-o:focus-visible,.bq-len button:focus-visible,.bq-next:focus-visible,.bq-row a:focus-visible,.bq-row button:focus-visible{outline:3px solid var(--grn-soft);outline-offset:2px}
   .bq-days{display:inline-block;margin-top:9px;padding:4px 11px;border-radius:999px;
     background:rgba(240,169,59,.14);border:1px solid rgba(240,169,59,.4);

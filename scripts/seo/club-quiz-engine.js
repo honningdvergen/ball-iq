@@ -397,7 +397,7 @@ var nx=q.querySelector('.bq-next');if(nx){nx.hidden=false;nx.textContent=(at+1>=
    translated page (its questions are English; the other three are names).
    max caps the rows: two on a club card, so the app line under it stays
    near the result (that line's position is a measured 4x on store taps). */
-function openToday(skip,max){
+function openList(skip){
 var d=new Date(),k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
 function rd(key){try{var r=localStorage.getItem(key+k);return r?JSON.parse(r):null}catch(e){return null}}
 function fin(p){return !!(p&&(p.status==='won'||p.status==='lost'))}
@@ -406,10 +406,16 @@ var all=[['footle','Footle',T('openFootle','Guess the footballer in six'),'/foot
 ['daily','Daily 7','Today\u2019s seven questions','/daily-football-quiz/',!!rd('biq_daily_')],
 ['trail','Transfer Trail',T('openTrail','Name the player from his clubs'),'/transfer-trail/',fin(rd('biq_trail_'))],
 ['mystery','Mystery Player',T('openMystery','Find the secret footballer'),'/mystery-player/',!!(m&&(m.won||m.gaveUp))]];
-var rows='',n=0;for(var i=0;i<all.length;i++){var g=all[i];if(g[4]||skip.indexOf(g[0])>=0||n>=max)continue;n++;
+return all.filter(function(g){return !g[4]&&skip.indexOf(g[0])<0})}
+/* The first daily still open today, for the finish card's one green button
+   (2026-10-17). Same order and same done-checks as the rows below it. */
+function heroDaily(skip){var r=openList(skip);return r.length?r[0]:null}
+function openToday(skip,max){
+var all=openList(skip);
+var rows='',n=0;for(var i=0;i<all.length;i++){var g=all[i];if(n>=max)continue;n++;
 rows+='<a class="bq-open-r" href="'+g[3]+'" data-open="'+g[0]+'"><span class="bq-open-n"><b>'+g[1]+'</b><i>'+esc(g[2])+'</i></span><em>'+esc(T('openPlay','Play'))+'</em></a>'}
 return rows?'<div class="bq-open"><div class="bq-open-t">'+esc(T('openTitle','Still open today'))+'</div>'+rows+'</div>':''}
-function wireOpen(){var os=res.querySelectorAll('[data-open]');for(var i=0;i<os.length;i++)(function(el){el.addEventListener('click',function(){bqev('clubq-open-next',{to:el.getAttribute('data-open')})})})(os[i])}
+function wireOpen(){var os=res.querySelectorAll('[data-open]');for(var i=0;i<os.length;i++)(function(el){el.addEventListener('click',function(){bqev('clubq-open-next',{to:el.getAttribute('data-open'),hero:el.hasAttribute('data-hero')?1:0})})})(os[i])}
 function dailyLabel(){var p=daily.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}
 /* The Daily 7 result. One primary (share: a score everyone can compare is
    the whole point of the same seven), the explained answers one tap away,
@@ -536,9 +542,22 @@ served=off+run.length;var hasMore=total>served;
    product: this page IS the club quiz. So: Keep going while there is more,
    Play again when there is not, and the app gets one quiet line at the foot
    of the card — a destination, not a competitor. */
-var cont=(hasMore
-?'<a class="bq-go bq-wide" href="#quiz" data-more="1">'+esc(fmt(T('keepGoing','Keep going — {more} more →'),{more:total-served+more}))+'</a>'
-:'<button class="bq-go bq-wide" data-again="1">'+esc(T('playAgain','Play again'))+'</button>');
+/* ── TODAY'S DAILY TAKES THE GREEN (2026-10-17) ─────────────────────────────
+   Club finishers who tapped into a daily came back on a later day 16.7% of
+   the time (8 of 48, finishers 19 Sep to 15 Oct); those who did not, 3.6%
+   (27 of 744). Only 6% took that step while it was one green pill among
+   five. So the first daily still open today is the one solid button, Keep
+   going is the club-coloured outline under it, and Share is a quiet line.
+   With every daily done, Keep going takes the green back. English pages, or
+   a page whose strings carry heroPlay, since the label names the game. */
+var oskip=/^en/.test(root.getAttribute('data-lang')||'en')?[]:['daily'];
+var hero=(/^en/.test(root.getAttribute('data-lang')||'en')||I18N.heroPlay!=null)?heroDaily(oskip):null;
+var moreTx=hasMore?esc(fmt(T('keepGoing','Keep going — {more} more →'),{more:total-served+more})):esc(T('playAgain','Play again'));
+var cont=hero
+?'<a class="bq-go bq-wide" href="'+hero[3]+'" data-open="'+hero[0]+'" data-hero="1">'+esc(fmt(T('heroPlay','Play today\u2019s {game} \u2192'),{game:hero[1]}))+'</a>'
+:(hasMore?'<a class="bq-go bq-wide" href="#quiz" data-more="1">'+moreTx+'</a>':'<button class="bq-go bq-wide" data-again="1">'+moreTx+'</button>');
+var heroSub=hero?'<div class="bq-hero-sub">'+esc(hero[2])+' \u00b7 '+esc(T('heroNew','new every day'))+'</div>':'';
+var stay=hero?(hasMore?'<a class="bq-share" href="#quiz" data-more="1">'+moreTx+'</a>':'<button class="bq-share" data-again="1">'+moreTx+'</button>'):'';
 var bqStore=root.getAttribute('data-store')||'/get';
 /* ── THE APP DOOR (2026-09-11) ─────────────────────────────────────────────
    MEASURED, THEN MOVED. This slot held the daily-Footle offer and took ZERO
@@ -623,14 +642,14 @@ res.innerHTML=(badge?'<div class="bq-crest">'+esc(badge)+'</div>':'')+'<div clas
    app can honour — the app keeps this as the club's league rating. */
 +'<div class="bq-rated">'+esc(T('ratedLine','Medium and hard questions count for more \u2014 the same maths as your Ball IQ card in the app.'))+'</div>'
 +(sday>=2?'<div class="bq-days">'+esc(fmt(T('daysRow','{d} days in a row'),{d:sday}))+'</div>':'')
-+'<div class="bq-row">'+cont+'</div>'
++'<div class="bq-row">'+cont+'</div>'+heroSub+stay
 /* Share sits BELOW the green row, not above it. Keeping the reader on the page
    is still the primary action (that decision came from the 94.6% single-page
    measurement); share is the authority lever and gets full width and the club's
    colour, but it does not outrank staying. */
-+'<button class="bq-share" data-share="1">'+esc(fmt(T('share','Share your {name} IQ'),{name:name}))+'</button>'
++'<button class="'+(hero?'bq-app bq-link':'bq-share')+'" data-share="1">'+esc(fmt(T('share','Share your {name} IQ'),{name:name}))+'</button>'
 +(!hasMore?'<p class="bq-note">'+esc(fmt(T('allDone','That is every {name} question we have here \u2014 a fresh order tomorrow.'),{name:name}))+'</p>':'')
-+openToday(/^en/.test(root.getAttribute('data-lang')||'en')?[]:['daily'],2)
++openToday(hero?oskip.concat([hero[0]]):oskip,hero?1:2)
 +remindLine()+appLine;wireOpen();
 /* Remember today's result so a reload does not erase it. The critique's
    returning player finished, refreshed, and met question 1 with the score
