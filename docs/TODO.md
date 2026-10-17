@@ -9,8 +9,18 @@
   Liverpool, Real Madrid, Barcelona, City alike); /it/ Juventus and Milan sit at ~4 with
   12-18%. UK mobile "arsenal quiz": arsenal.com, Sporcle, FourFourTwo, JetPunk, FunTrivia,
   BBC and an AI overview above us. The gap is authority (links), not page quality.
-- [ ] Bank quality, second pass: implausible options in stems with no nationality or
-      position word; nickname-echoes-surname tells; the 80 "As of 2026" anchors.
+- [x] 1.8.2 submitted (iOS 155, AFTER_APPROVAL, nine screenshots, promo text in 19 locales).
+      Android 58 waits for Alex (Play production is behind the permission classifier).
+- [x] Bank, second pass: 83 upcoming Daily 7 fixes (8b6b0d9e: one wrong key, six two-answer
+      questions) and 29 in the twelve biggest club packs (2be4b21c). Swept so far: 1,344
+      nationality/position stems, 1,569 future Daily 7, 318 top-club. NOT swept: ~5,700 other
+      MCQs. Open: q_522cb2 (Red Star, needs replacing), q_917c1e 'Bally', q_0fc2bd 'The Beat'.
+      The "As of 2026" wording: 0 rows match that literal phrase; re-search before claiming 80.
+- [x] Footle fetch door (d0e5a6ff), three review rounds: calendar guard in the generator,
+      answer stamped in the day record and synced, sign-in merge keeps stamps, the board keeps
+      the day it opened on. Reaches phones from the first build after 1.8.2 (1.8.3).
+- [ ] 1.8.3, once 1.8.2 is approved: the Footle door, the 312 question fixes, fresh store
+      screenshots (club picker "119 clubs", Footle and Trail finish panels) on a quiet Mac.
 - [ ] Calendar editions: El Clásico (Sun 25 Oct) and the Ballon d'Or (Mon 26 Oct).
 
 ## 2026-10-16 — THE 17-ITEM PUSH (Alex: "tick off everything on the to do list")
