@@ -22,11 +22,12 @@ import { Lightbulb } from 'lucide-react';
 import { getWordleDateKey } from '../lib/wordleStatus.js';
 import { safeSetItem } from '../safeStorage.js';
 import { APP_NAME } from '../lib/scoring.js';
-import { FOOTLE_SHORT } from '../lib/modeCopy.js';
 import GameTitle from "../components/GameTitle.jsx";
 import { getFootleXP } from '../lib/footleXp.js';
 import ResultFoot, { ReportLink } from '../components/ResultFoot.jsx';
 import { DailyDone } from '../components/DailyDone.jsx';
+import { t, useT } from '../i18n/index.js';
+import { rich } from '../i18n/rich.jsx';
 import './footle.css';
 
 // Per-tile flip duration; the reveal waits for the whole row to turn.
@@ -49,12 +50,12 @@ export const DEFAULT_SERVICES = {
     try {
       if (navigator.share) { await navigator.share({ text: textFallback }); return; }
       await navigator.clipboard.writeText(textFallback || '');
-      onToast?.('Copied — paste it anywhere');
+      onToast?.(t('game.copied'));
     } catch (e) {
       // AbortError is the user closing the share sheet — nothing to say. Any
       // other failure (no clipboard, unfocused document) must not be silent:
       // a button that does nothing is the one thing a result card cannot have.
-      if (e?.name !== 'AbortError') onToast?.('Could not copy — use Share on WhatsApp below');
+      if (e?.name !== 'AbortError') onToast?.(t('game.copyFailed'));
     }
   },
   Confetti: null,
@@ -112,10 +113,11 @@ function FootleReportButton({ answer, status, onReport }) {
 
 // The word over a win, by how many guesses it took. It said "Brilliant!" for
 // every win, a sixth-guess scrape included (play-test, 14 Oct 2026).
-const FOOTLE_WIN_WORDS = ["Top bins!", "World class", "Brilliant", "Solid", "Close call", "Last-gasp winner"];
-export function footleWinWord(n) { return FOOTLE_WIN_WORDS[Math.min(Math.max(n, 1), 6) - 1]; }
+// The six words are footle.win1..6 in src/i18n/en.js.
+export function footleWinWord(n) { return t(`footle.win${Math.min(Math.max(n, 1), 6)}`); }
 
 export const FootballWordle = React.memo(function FootballWordle({ onBack, userId, onHowToPlay, onReport, date: dateProp, services }) {
+  const t = useT();
   // ⚠️ THE DAY IS FIXED WHEN THE BOARD OPENS (review, 17 Oct 2026). `date`
   // used to default to `new Date()` on EVERY render, and a finished board
   // re-renders every second for its countdown, so just after midnight the key,
@@ -350,7 +352,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     if (hardNow && hardNames !== "failed" && current !== answer && !(hardNames && hardNames.has(current))) {
       setShake(true);
       timeoutsRef.current.push(setTimeout(() => setShake(false), 450));
-      try { window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: hardNames ? "Hard mode: not a footballer we know" : "Hard mode is still loading its names" })); } catch { /* no toast here */ }
+      try { window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: t(hardNames ? "footle.hardUnknown" : "footle.hardLoading") })); } catch { /* no toast here */ }
       return;
     }
     const newGuesses = [...state.guesses, current];
@@ -478,7 +480,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               key={i}
               className={`wd-tile wd-${grades[i]}${r === animRow ? " wd-flip" : ""}`}
               style={r === animRow ? { animationDelay: `${i * WORDLE_FLIP_MS}ms` } : undefined}
-              aria-label={`${g[i]}, ${grades[i] === "green" ? "correct" : grades[i] === "yellow" ? "wrong position" : "not in the name"}`}
+              aria-label={`${g[i]}, ${t(grades[i] === "green" ? "footle.green" : grades[i] === "yellow" ? "footle.yellow" : "footle.grey")}`}
             >{g[i]}</div>
           ))}
         </div>
@@ -565,7 +567,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           height budget pays for: has-inapp -> --wd-inapp-h in footle.css. */}
       <InAppStrip src={inApp.src} onDismiss={inApp.dismiss} />
       <div className="wd-header">
-        {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
+        {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         <div className="wd-header-text">
           {/* The shared title, with the number beside the name as Home writes
               it (13 Oct 2026). The header's height is the back button's 44px
@@ -591,18 +593,18 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               lines at 360-390px and three at 320 (measured 2026-10-04, header
               44px -> 54/69px). The puzzle number is what a finished player
               shares and compares, and it fits on one line at every width. */}
-          <div className="wd-sub">{isArchive ? "From the archive" : state.status !== "playing" ? (state.hard ? "Today\u2019s puzzle \u00b7 Hard" : "Today\u2019s puzzle") : hardNow && state.guesses.length > 0 ? "Hard: real names only" : FOOTLE_SHORT}</div>
+          <div className="wd-sub">{isArchive ? t("footle.archive") : state.status !== "playing" ? t(state.hard ? "footle.todayHard" : "footle.today") : hardNow && state.guesses.length > 0 ? t("footle.hardSub") : t("mode.footle.short")}</div>
         </div>
         {onHowToPlay && (
-          <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play Footle" title="How to play">?</button>
+          <button className="icon-btn" onClick={onHowToPlay} aria-label={t("footle.howTo")} title={t("game.howTo")}>?</button>
         )}
         {/* Only once today's puzzle is over. Before you've played, a countdown
             to TOMORROW is the least useful thing on the screen, and it was
             rendered in the accent colour competing with the board and ENTER.
             Afterwards it's the one thing you want — when can I play again. */}
         {state.status !== "playing" && (
-          <div className="wd-countdown" title="New player tomorrow">
-            <div className="wd-countdown-label">Next</div>
+          <div className="wd-countdown" title={t("footle.nextTitle")}>
+            <div className="wd-countdown-label">{t("footle.next")}</div>
             <div className="wd-countdown-time">{countdown}</div>
           </div>
         )}
@@ -642,7 +644,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             {clueOffer ? (
               <button type="button" className="wd-clue wd-clue--offer" onClick={takeClue}>
                 <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
-                Stuck? Take a clue
+                {t("footle.clueOffer")}
               </button>
             ) : clueShown ? (
               <div className="wd-clue wd-clue--shown" role="status">
@@ -652,13 +654,13 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             ) : (
               <div className="wd-slot-row">
                 <div className="wd-legend" aria-hidden="true" style={showLegend ? undefined : { visibility: "hidden" }}>
-                  <span className="wd-legend-item"><i className="wd-legend-chip is-green" />right spot</span>
-                  <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />wrong spot</span>
+                  <span className="wd-legend-item"><i className="wd-legend-chip is-green" />{t("footle.rightSpot")}</span>
+                  <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />{t("footle.wrongSpot")}</span>
                 </div>
                 {/* Chosen before the first guess; after it, the sub line says so. */}
                 {state.guesses.length === 0 && !isArchive && (
                   <button type="button" className={`wd-hard${hardPref ? " is-on" : ""}`} aria-pressed={hardPref} onClick={toggleHard}>
-                    Hard mode{hardPref ? ": on" : ""}
+                    {t(hardPref ? "footle.hardOn" : "footle.hard")}
                   </button>
                 )}
               </div>
@@ -678,10 +680,10 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           const g = state.guesses[state.guesses.length - 1];
           const grades = gradeWordleGuess(g, answer);
           const parts = [...g].map((ch, i) =>
-            `${ch} ${grades[i] === "green" ? "correct spot" : grades[i] === "yellow" ? "wrong spot" : "not in name"}`);
-          const outcome = state.status === "won" ? ` Solved — the answer is ${answer}.`
-            : state.status === "lost" ? ` Out of guesses — the answer was ${answer}.` : "";
-          return `Guess ${state.guesses.length} of 6: ${parts.join(", ")}.${outcome}`;
+            `${ch} ${t(grades[i] === "green" ? "footle.srGreen" : grades[i] === "yellow" ? "footle.wrongSpot" : "footle.srGrey")}`);
+          const outcome = state.status === "won" ? ` ${t("footle.srSolved", { a: answer })}`
+            : state.status === "lost" ? ` ${t("footle.srLost", { a: answer })}` : "";
+          return `${t("footle.srGuess", { n: state.guesses.length, parts: parts.join(", ") })}${outcome}`;
         })()}
       </div>
 
@@ -699,7 +701,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
             return (
               <>
-                <div className="wd-result-sub">Out of guesses. The answer was</div>
+                <div className="wd-result-sub">{t("footle.lostSub")}</div>
                 <div className="wd-result-title wd-result-answer">{prefix && <>{prefix} </>}{surname}</div>
               </>
             );
@@ -717,7 +719,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
             return (
               <div className="wd-result-sub">
-                The answer was {prefix && <>{prefix} </>}<strong>{surname}</strong>
+                {rich(t("footle.answerWas"), { name: <>{prefix && <>{prefix} </>}<strong>{surname}</strong></> })}
               </div>
             );
           })()}
@@ -726,7 +728,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               the guess count — which the panel never showed at all, and it
               costs one line where the old pair cost two plus a margin. */}
           <div className="wd-result-earn">
-            {state.status === "won" && <span>Solved in {state.guesses.length}/6</span>}
+            {state.status === "won" && <span>{t("footle.solvedIn", { n: state.guesses.length })}</span>}
             <span>+{getFootleXP(state.status === "won", state.guesses.length)} XP</span>
           </div>
           {/* Footle had NO report path. It is the most-played mode in the app and
@@ -787,16 +789,16 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
                 const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${st || "idle"}`;
                 // Append the key's revealed state so SR users get the same
                 // feedback the colors carry (medical accessibility).
-                const stDesc = st === "green" ? ", correct" : st === "yellow" ? ", wrong position" : st === "grey" ? ", not in the name" : "";
+                const stDesc = st ? `, ${t(`footle.${st}`)}` : "";
                 return (
-                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k === "DEL" ? "Delete last letter" : `${k}${stDesc}`}>
+                  <button key={k} className={cls} onClick={() => handleKey(k)} aria-label={k === "DEL" ? t("footle.del") : `${k}${stDesc}`}>
                     {k === "DEL" ? "⌫" : k}
                   </button>
                 );
               })}
             </div>
           ))}
-          <button className={`wd-key-enter${current.length === answer.length ? "" : " is-short"}`} onClick={() => handleKey("ENTER")} aria-label="Enter key — submit guess">ENTER</button>
+          <button className={`wd-key-enter${current.length === answer.length ? "" : " is-short"}`} onClick={() => handleKey("ENTER")} aria-label={t("footle.enterAria")}>{t("footle.enter")}</button>
         </div>
       )}
     </div>

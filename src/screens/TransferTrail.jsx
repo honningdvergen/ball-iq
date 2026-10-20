@@ -59,6 +59,7 @@ import ResultFoot, { ReportLink } from "../components/ResultFoot.jsx";
 // player after the log is re-planned. Nothing is kept on the website, so there
 // this always hands back the player the caller resolved from the bundle.
 import { trailPlayerForDate } from "../lib/scheduleRemote.js";
+import { t as tNow, useT } from "../i18n/index.js";
 
 function loadDay(ymd) {
   try {
@@ -79,6 +80,7 @@ function saveDay(ymd, state) {
 // biq:daily-reviewed, shows no puzzle number, no challenge banner and no
 // return-loop panel. Its own attempts go through stitch.load/save only.
 export default function TransferTrail({ player: bundledPlayer, date = new Date(), onBack, onReport, services, embedded = false, stitch = null }) {
+  const t = useT();
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
   const daily = !stitch;
   const opening = stitch?.opening;
@@ -291,7 +293,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
     try { if (navigator.share) { await navigator.share({ text: shareText }); return; } } catch { return; }
     try {
       await navigator.clipboard.writeText(shareText);
-      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: "📋 Copied — paste it anywhere" }));
+      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: `📋 ${tNow("game.copied")}` }));
     } catch {}
   }, [shareText]);
 
@@ -299,9 +301,9 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   if (!career.length) {
     return (
       <div className="screen" style={{ padding: 24, textAlign: "center" }}>
-        {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
+        {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         <div style={{ marginTop: 60, fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>Transfer Trail</div>
-        <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 8 }}>Coming soon — a new career to name every day.</div>
+        <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 8 }}>{t("trail.soon")}</div>
       </div>
     );
   }
@@ -322,20 +324,20 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
       {daily && !isArchive && <ChallengeBanner game="trail" edition={number} finished={done} />}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "8px 4px" }}>
-        {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
+        {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         {/* embedded: on the static page the H1 above already names the game,
             so the title row becomes one masthead line, like Footle's — the
             number and the state, nothing said twice. */}
         {embedded ? (
           <div style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: "var(--t2)", fontVariantNumeric: "tabular-nums" }}>
             {number > 0 && <><b style={{ color: "var(--t1)", fontWeight: 800 }}>Trail #{number}</b>{" · "}</>}
-            {done ? (won ? "Solved" : "Not this time") : "name the player from their career"}
+            {t(done ? (won ? "trail.solved" : "trail.notThisTime") : "trail.mastSub")}
           </div>
         ) : (
           <div style={{ flex: 1, minWidth: 0 }}>
             <GameTitle no={number}>{daily ? "Transfer Trail" : "Stitch-up"}</GameTitle>
             <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
-              {done ? (won ? "Solved" : "Not this time") : (stitch?.sub || "Whose career is this?")}
+              {done ? t(won ? "trail.solved" : "trail.notThisTime") : (stitch?.sub || t("home.trail.sub"))}
             </div>
           </div>
         )}
@@ -343,7 +345,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           /* Guesses left, drawn: one pip a guess, spent ones dimmed, the last
              one red. It was a bare number over a 9px "LEFT" (Alex's recording,
              12 Oct 2026: nothing said what the 5 counted). */
-          <div role="img" aria-label={`${left} ${left === 1 ? "guess" : "guesses"} left`} style={{ flexShrink: 0, textAlign: "right" }}>
+          <div role="img" aria-label={t("game.left", { count: left })} style={{ flexShrink: 0, textAlign: "right" }}>
             <div style={{ display: "flex", gap: 5, justifyContent: "flex-end" }}>
               {Array.from({ length: TRAIL_MAX_ATTEMPTS }, (_, i) => (
                 <i key={i} style={{ width: 9, height: 9, borderRadius: 5,
@@ -351,7 +353,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
               ))}
             </div>
             <div style={{ marginTop: 4, fontSize: 11.5, fontWeight: 700, color: left <= 1 ? "var(--red)" : "var(--t2)", fontVariantNumeric: "tabular-nums" }}>
-              {left} {left === 1 ? "guess" : "guesses"} left
+              {t("game.left", { count: left })}
             </div>
           </div>
         )}
@@ -402,10 +404,10 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
                   was never the problem, the silence was. One word turns
                   "looks broken" into "learned something". */}
               {career.slice(0, i).includes(club) && (
-                <span style={{ fontSize: 10.5, color: "var(--t3)", fontWeight: 700, flexShrink: 0 }}>↩ return</span>
+                <span style={{ fontSize: 10.5, color: "var(--t3)", fontWeight: 700, flexShrink: 0 }}>{t("trail.return")}</span>
               )}
               {player.loans?.[i] && (
-                <span style={{ fontSize: 10.5, color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>loan</span>
+                <span style={{ fontSize: 10.5, color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>{t("trail.loan")}</span>
               )}
             </div>
           );
@@ -457,8 +459,8 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
                 if (name) submit(false, name);
                 else if (entry.trim()) { setShake(true); setTimeout(() => setShake(false), 420); }
               }}
-              placeholder="Type a player’s name…"
-              aria-label="Your guess"
+              placeholder={t("game.typePlayer")}
+              aria-label={t("game.yourGuess")}
               autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false}
               enterKeyHint="go"
               style={{ flex: 1, minWidth: 0, background: "var(--s1)", border: "1px solid var(--border)",
@@ -512,7 +514,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           </div>
           {entry.trim().length >= 2 && pool.length > 0 && suggestions.length === 0 && !guessMatchesPlayer(entry.trim(), player) && (
             <div role="status" style={{ marginTop: 8, padding: "0 4px", fontSize: 13, fontWeight: 600, color: "var(--t2)" }}>
-              No player by that name. Pick from the list.
+              {t("trail.noPlayer")}
             </div>
           )}
           <button onClick={() => submit(true)}
@@ -523,14 +525,14 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
             style={{ marginTop: 8, width: "100%", minHeight: 44, background: "transparent", border: "1px solid var(--border)",
                      borderRadius: 11, padding: "10px", color: "var(--t2)", fontSize: 13, fontWeight: 700,
                      fontFamily: "inherit", cursor: "pointer" }}>
-            Skip a guess and show the next club
+            {t("trail.skip")}
           </button>
         </>
       )}
 
       {done && (
         <div style={{ marginTop: 18, textAlign: "center" }}>
-          <div style={{ fontSize: 13, color: "var(--t2)" }}>It was</div>
+          <div style={{ fontSize: 13, color: "var(--t2)" }}>{t("trail.itWas")}</div>
           <div style={{ fontSize: 26, fontWeight: 900, color: "var(--t1)", marginTop: 2 }}>
             {(player.display || []).join(" ")}
           </div>
@@ -541,10 +543,8 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
               // effect above, which returns early when isArchive), so claiming
               // one here would credit the player for something that did not
               // happen. Same class as "back tomorrow" on a puzzle from the past.
-              ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"}${!isArchive && streak > 1 ? ` · 🔥 ${streak}-day Trail streak` : ""}`
-              : isArchive
-                ? "Out of guesses — that one's in the books"
-                : "Out of guesses — back tomorrow"}
+              ? `${t("trail.gotIt", { count: clubsUsed })}${!isArchive && streak > 1 ? ` · ${t("trail.streak", { n: streak })}` : ""}`
+              : t(isArchive ? "trail.outPast" : "trail.out")}
           </div>
           {/* The return loop, built once for all four dailies — see
               components/DailyDone.jsx. Carries share, streak, countdown, remind,

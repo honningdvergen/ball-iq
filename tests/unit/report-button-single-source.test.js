@@ -47,13 +47,17 @@ const FILES = walk(SRC).map((path) => ({
 describe('the report button is a single source of truth', () => {
   it('only one file renders the success label', () => {
     // Mutation check: putting "✓ Reported — thanks" back into App.jsx fails this.
+    // Since i18n step 3 the words live in the English table (report.done) and
+    // ReportButton is the one component that prints that key.
     const owners = FILES.filter((f) => f.code.includes('Reported — thanks')).map((f) => f.path);
     expect(
       owners,
       '\n  Exactly one component may claim a report succeeded.\n' +
       '  Found it in: ' + owners.join(', ') + '\n' +
       '  Use <ReportButton>; it waits for the RPC before thanking anyone.\n',
-    ).toEqual(['components/ReportButton.jsx']);
+    ).toEqual(['i18n/en.js']);
+    const readers = FILES.filter((f) => f.code.includes("'report.done'") && !f.path.startsWith('i18n/')).map((f) => f.path);
+    expect(readers, 'only ReportButton may print report.done').toEqual(['components/ReportButton.jsx']);
   });
 
   it('the button only thanks on a settled promise, never on the tap', () => {

@@ -46,6 +46,7 @@
    these three things, so the rank and its explanation always agree. */
 import { foldLetters } from './letterFold.js';
 import { clubsOf, sharedClubs, mainClub, initials } from './mysteryCareer.js';
+import { t } from '../i18n/index.js';
 
 const W = {
   sharedClub: 200, // per club both played for, whenever
@@ -167,20 +168,23 @@ export function reasonLine(x) {
   if (x.shared.length) {
     const mates = x.shared.filter((c) => c.together >= 1).map((c) => c.club);
     const only = x.shared.filter((c) => c.together < 1).map((c) => c.club);
-    if (mates.length) parts.push(`Teammates at ${listClubs(mates)}`);
-    else parts.push(`Shared ${listClubs(only)}`);
+    if (mates.length) parts.push(t('mp.mates', { c: listClubs(mates) }));
+    else parts.push(t('mp.shared', { c: listClubs(only) }));
   }
-  if (x.samePosition) parts.push('Same position');
+  if (x.samePosition) parts.push(t('mp.samePos'));
   // Same era keeps its word (the score treats those four years alike) and adds
   // the direction after a comma, so the pair holds together on a wrap.
-  const eraWord = x.era === 'same' ? (x.bornWhen ? `Same era, born ${x.bornWhen}` : 'Same era')
-    : x.era === 'near' ? (x.bornWhen ? `Born ${x.gap} years ${x.bornWhen}` : `Born ${x.gap} years apart`)
-      : x.era === 'far' ? (x.bornWhen === 'earlier' ? 'Earlier era' : x.bornWhen === 'later' ? 'Later era' : 'Different era') : '';
+  // (The words are mp.* in src/i18n/en.js; `w` is "earlier" or "later".)
+  const w = x.bornWhen ? t(`mp.${x.bornWhen}`) : '';
+  const eraWord = x.era === 'same' ? (x.bornWhen ? t('mp.sameEraBorn', { w }) : t('mp.sameEra'))
+    : x.era === 'near' ? (x.bornWhen ? t('mp.bornYears', { n: x.gap, w }) : t('mp.bornApart', { n: x.gap }))
+      : x.era === 'far' ? t(x.bornWhen === 'earlier' ? 'mp.earlierEra' : x.bornWhen === 'later' ? 'mp.laterEra' : 'mp.otherEra') : '';
+  const none = t('mp.noClub');
   if (!x.shared.length && !x.samePosition) {
-    if (eraWord.includes(',')) return `No shared club · ${eraWord}`;
-    return eraWord ? `No shared club, ${eraWord.charAt(0).toLowerCase()}${eraWord.slice(1)}` : 'No shared club';
+    if (eraWord.includes(',')) return `${none} · ${eraWord}`;
+    return eraWord ? `${none}, ${eraWord.charAt(0).toLowerCase()}${eraWord.slice(1)}` : none;
   }
-  if (!x.shared.length) parts.unshift('No shared club');
+  if (!x.shared.length) parts.unshift(none);
   if (eraWord) parts.push(eraWord);
   return parts.join(' · ');
 }
@@ -247,7 +251,7 @@ export function clueLadder(answer, careers = null, roles = null) {
   const ini = initials(answer.name);
   // A one-name player (Eusébio, Neymar) gets one letter, and says so: a lone
   // "E." otherwise reads like a name with its surname missing.
-  if (ini) paid.push({ key: 'initials', label: 'Initials', value: ini.includes(' ') ? ini : `${ini} (one name)` });
+  if (ini) paid.push({ key: 'initials', label: 'Initials', value: ini.includes(' ') ? ini : t('mp.oneName', { i: ini }) });
   return [
     ...free.map((c) => ({ ...c, after: 0, free: true })),
     ...paid.map((c, i) => ({ ...c, after: CLUE_AFTER[i], free: false })),
@@ -276,7 +280,7 @@ export function paidCluesFromSave(saved) {
  */
 export function topShare(rank, poolSize) {
   if (!(rank > 0) || !(poolSize > 0)) return '';
-  return `top ${Math.max(1, Math.ceil((rank / poolSize) * 100))}%`;
+  return t('mp.topShare', { n: Math.max(1, Math.ceil((rank / poolSize) * 100)) });
 }
 
 // ── The position a clue or a reveal may PRINT ───────────────────────────────

@@ -2874,11 +2874,23 @@ const HOW_TO_PLAY = {
   // validation (our word list is 400-odd puzzle answers, not a dictionary, so
   // it would reject most real footballers and infuriate people), the claim
   // goes. Any surname you like is a legal probe; only the answer is fixed.
-  wordle: { title:"Footle", steps:["Guess the name today's footballer goes by — usually a surname, sometimes a one-name legend","Green = right letter, right spot","Yellow = right letter, wrong spot","Grey = not in the name at all","6 guesses, new player at midnight"] },
+  // i18n step 3: the two sheets of in-scope modes (Footle, Survival) keep their
+  // lines in src/i18n/en.js as `${stepKey}.1`..`.5`; HotStreak and True or
+  // False are other engines and move with them.
+  wordle: { title:"Footle", stepKey:"help.footle" },
   hotstreak: { title:"Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","A wrong answer costs 3 seconds, so think before you tap","Score is how many you get correct","Try to beat your personal best"] },
   truefalse: { title:"True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
-  survival: { title:"Survival", steps:["Answer questions one by one","One wrong answer and the game is over","No timer — accuracy is everything","See how far you can go","Your best streak is saved"] },
+  survival: { titleKey:"home.mode.survival", stepKey:"help.survival" },
 };
+// A sheet's title and lines in the current language.
+function howToPlaySheet(mode, t) {
+  const e = HOW_TO_PLAY[mode];
+  if (!e) return null;
+  return {
+    title: e.titleKey ? t(e.titleKey) : e.title,
+    steps: e.steps || [1, 2, 3, 4, 5].map((i) => t(`${e.stepKey}.${i}`)),
+  };
+}
 
 // Shared hide style so the home-screen tab wrappers reference the same object
 // each render (no new allocation on every tab change).
@@ -7580,15 +7592,15 @@ function AppInner() {
         )}
         {howToPlay && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={() => setHowToPlay(null)}>
-            <div ref={howToPlayRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={HOW_TO_PLAY[howToPlay]?.title || "How to play"} style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
-              <div style={{fontSize:18,fontWeight:800,marginBottom:16,color:"var(--t1)"}}>{HOW_TO_PLAY[howToPlay]?.title}</div>
-              {HOW_TO_PLAY[howToPlay]?.steps.map((step, i) => (
+            <div ref={howToPlayRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={howToPlaySheet(howToPlay, t)?.title || t("game.howTo")} style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"24px 20px calc(40px + env(safe-area-inset-bottom, 34px))",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
+              <div style={{fontSize:18,fontWeight:800,marginBottom:16,color:"var(--t1)"}}>{howToPlaySheet(howToPlay, t)?.title}</div>
+              {howToPlaySheet(howToPlay, t)?.steps.map((step, i) => (
                 <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:12}}>
                   <div style={{width:24,height:24,borderRadius:"50%",background:"var(--accent)",color:"#0a1a00",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,flexShrink:0}}>{i+1}</div>
                   <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5}}>{step}</div>
                 </div>
               ))}
-              <button onClick={() => setHowToPlay(null)} style={{width:"100%",padding:"14px",background:"var(--s2)",border:"none",borderRadius:14,fontSize:15,fontWeight:700,color:"var(--t1)",marginTop:8,cursor:"pointer"}}>Got it ✓</button>
+              <button onClick={() => setHowToPlay(null)} style={{width:"100%",padding:"14px",background:"var(--s2)",border:"none",borderRadius:14,fontSize:15,fontWeight:700,color:"var(--t1)",marginTop:8,cursor:"pointer"}}>{t("help.gotIt")}</button>
             </div>
           </div>
         )}

@@ -50,8 +50,10 @@ const DAILY = read('../../src/screens/DailyScreen.jsx');
 /** The three visible finish cards. The share builders are swept separately. */
 const MODE_SURFACES = [
   { name: 'Footle', src: FOOTLE, compute: 'computeFootleStreak', label: '{streak}-day Footle streak' },
-  { name: 'Mystery', src: MYSTERY, compute: 'computeMysteryStreak', label: '{streak}-day Mystery streak' },
-  { name: 'Trail', src: TRAIL, compute: 'computeTrailStreak', label: '${streak}-day Trail streak' },
+  // Mystery and the Trail print theirs through i18n since step 3: the source
+  // holds the key, en.js the label (`en`, checked below).
+  { name: 'Mystery', src: MYSTERY, compute: 'computeMysteryStreak', label: "t('mp.streak', { n: streak })", en: ['mp.streak', '{n}-day Mystery streak'] },
+  { name: 'Trail', src: TRAIL, compute: 'computeTrailStreak', label: 't("trail.streak", { n: streak })', en: ['trail.streak', '🔥 {n}-day Trail streak'] },
 ];
 
 describe('a streak label names which streak it is', () => {
@@ -71,8 +73,9 @@ describe('a streak label names which streak it is', () => {
   });
 
   it('each mode card names its mode in the label', () => {
-    for (const { name, src, label } of MODE_SURFACES) {
+    for (const { name, src, label, en } of MODE_SURFACES) {
       expect(src, `${name}'s streak label must say "${name}"`).toContain(label);
+      if (en) expect(EN[en[0]], `${name}'s streak label must say "${name}"`).toBe(en[1]);
     }
   });
 

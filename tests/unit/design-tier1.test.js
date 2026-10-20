@@ -134,7 +134,8 @@ describe('design review — tier 1', () => {
   });
 
   it('there is one back button in the app', () => {
-    expect(MYSTERY).toMatch(/aria-label="Back" className="back-btn"/);
+    // The label goes through i18n since step 3 (game.back = "Back").
+    expect(MYSTERY).toMatch(/aria-label=\{t\('game\.back'\)\} className="back-btn"/);
   });
 
   it('picker rows are left-aligned', () => {
