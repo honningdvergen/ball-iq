@@ -52,13 +52,13 @@ export const CLUBS_DE = [
     statLine: 'Kostenlos · Bayern-Fragen mit erklärten Antworten · ohne Anmeldung',
     playLabel: 'Quiz starten',
     intro: [
-      'Der Rekordmeister, und der Verein, an dem sich in Deutschland alles misst. Dieses kostenlose Quiz führt durch alle Epochen: die verpasste Bundesliga-Gründung 1963, Beckenbauer und der Landesmeister-Hattrick der Siebziger, Gerd Müller, die FC-Hollywood-Jahre, das Wembley-Trauma 1999, das Triple 2013 und elf Meisterschaften nacheinander.',
+      'Der Rekordmeister, und der Verein, an dem sich in Deutschland alles misst. Dieses kostenlose Quiz führt durch alle Epochen: die verpasste Bundesliga-Gründung 1963, Beckenbauer und der Landesmeister-Hattrick der Siebziger, Gerd Müller, die FC-Hollywood-Jahre, das Camp-Nou-Trauma 1999, das Triple 2013 und elf Meisterschaften nacheinander.',
       'Die Fragen werden wirklich schwer. Wo die Vereinsgeschichte umstritten ist, veröffentlichen wir die Frage lieber gar nicht, als Partei zu ergreifen. Online geht nur, was sich belegen lässt.',
       'Jede Antwort im Bayern-Set hat eine geschriebene Erklärung: Auch wer falsch tippt, lernt etwas darüber, wie der FC Bayern gewonnen hat, was er gewonnen hat.',
     ],
     faq: [
       { q: 'Ist das Bayern-Quiz kostenlos?', a: 'Ja. Es läuft direkt im Browser, ohne Anmeldung und ohne Download. Alle Fragen auf dieser Seite sind kostenlos.' },
-      { q: 'Welche Themen deckt das Quiz ab?', a: 'Die Gründung und der verpasste Bundesliga-Start, Beckenbauer, Gerd Müller und Sepp Maier, die drei Landesmeisterpokale in Folge, FC Hollywood, das Finale 1999, Kahn und das Triple 2001, Robbery, das Triple 2013 und 2020, Lewandowski, Kane und die elf Meisterschaften in Folge. Es beginnt leicht und wird richtig schwer.' },
+      { q: 'Welche Themen deckt das Quiz ab?', a: 'Die Gründung und der verpasste Bundesliga-Start, Beckenbauer, Gerd Müller und Sepp Maier, die drei Landesmeisterpokale in Folge, FC Hollywood, das Finale 1999, Kahn und der Champions-League-Sieg 2001, Robbery, das Triple 2013 und 2020, Lewandowski, Kane und die elf Meisterschaften in Folge. Es beginnt leicht und wird richtig schwer.' },
       { q: 'Woher kommen die Fragen?', a: 'Sie werden anhand von Quellen recherchiert und Frage für Frage geprüft. Jede Angabe durchläuft vor der Veröffentlichung zwei unabhängige Kontrollen; was sich nicht belegen lässt, erscheint nicht.' },
       { q: 'Gibt es die Ball-IQ-App auf Deutsch?', a: 'Noch nicht: Diese Seite ist auf Deutsch, die App ist auf Englisch. Wir messen erst das Interesse, bevor wir übersetzen — wer bis hierher gelesen hat, hilft uns bei genau dieser Entscheidung.' },
     ],

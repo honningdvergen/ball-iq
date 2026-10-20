@@ -110,7 +110,7 @@ export const CLUBS_FR = [
     playLabel: 'Commencer le quiz',
     statLine: 'Gratuit · Questions sur l’OM avec réponses expliquées · sans inscription',
     intro: [
-      'Le seul club français à avoir gagné la Coupe d’Europe des clubs champions, et sans doute le plus passionné du pays. Ce quiz gratuit couvre toute l’histoire olympienne : la fondation de 1899 et le nom venu des Phocéens, Skoblar et ses 44 buts, l’ère Tapie, la finale perdue de 1991, la tête de Basile Boli à Munich en 1993, Papin, Waddle, Deschamps et Drogba.',
+      'Le premier club français à avoir gagné la Ligue des champions, en 1993, et sans doute le plus passionné du pays. Ce quiz gratuit couvre toute l’histoire olympienne : la fondation de 1899 et le nom venu des Phocéens, Skoblar et ses 44 buts, l’ère Tapie, la finale perdue de 1991, la tête de Basile Boli à Munich en 1993, Papin, Waddle, Deschamps et Drogba.',
       'Les questions deviennent vraiment difficiles. Là où l’histoire du club est contestée, nous préférons ne pas publier la question plutôt que de prendre parti. Ne sort que ce qui se vérifie.',
       'Chaque réponse du set OM est accompagnée d’une explication écrite : même en se trompant, on apprend quelque chose.',
     ],
