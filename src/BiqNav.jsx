@@ -15,6 +15,7 @@
 // The visible display gating + hover/active states live in app.css (.biq-nav
 // *), so this file is pure structure.
 import { playStoreUrl, appStoreUrl } from './lib/links.js';
+import { useT } from './i18n/index.js';
 
 // Shared attrs for the 20px 2px-stroke line icons.
 const ICON = {
@@ -30,6 +31,9 @@ const ICON = {
 };
 
 export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active, notifCount = 0, onOpenNotifs }) {
+  // Tab names are the tab.* keys the mobile tab bar uses (App.jsx), so the
+  // rail and the bar cannot drift apart in any language.
+  const t = useT();
   // Switching tabs from a sub-screen (Settings, Review, a friend profile, …)
   // must also return to the home tab surface — the rail is always visible at
   // desktop, unlike the mobile tab-bar which hides on sub-screens, so without
@@ -40,9 +44,9 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
   const cur = active === undefined ? tab : active;
 
   return (
-    <aside className="biq-nav" aria-label="Primary">
+    <aside className="biq-nav" aria-label={t("nav.primary")}>
       {/* Logo → Home (SPA, same handler the mobile wordmark uses). */}
-      <button className="bn-brand" onClick={onHomeClick} aria-label="Home">
+      <button className="bn-brand" onClick={onHomeClick} aria-label={t("tab.home")}>
         <img src="/marketing/ball.png" alt="" width={32} height={32} />
         <span>Ball&nbsp;<em>IQ</em></span>
       </button>
@@ -53,7 +57,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
             <path d="M3 10.5 12 3l9 7.5" />
             <path d="M5 9.5V21h5v-6h4v6h5V9.5" />
           </svg>
-          <span>Home</span>
+          <span>{t("tab.home")}</span>
         </button>
 
         <button className="bn-item" data-active={cur === 'daily'} onClick={goTab('daily')}>
@@ -61,8 +65,8 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
             <rect x="3" y="5" width="18" height="16" rx="3" />
             <path d="M8 3v4M16 3v4M3 10h18" />
           </svg>
-          <span>History</span>
-          {!dailyDone && <span className="bn-dot" aria-label="new" />}
+          <span>{t("tab.daily")}</span>
+          {!dailyDone && <span className="bn-dot" aria-label={t("nav.newDot")} />}
         </button>
 
         <button className="bn-item" data-active={cur === 'profile'} onClick={goTab('profile')}>
@@ -70,7 +74,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
             <circle cx="12" cy="8" r="4" />
             <path d="M4 21c1.5-3.8 4.5-5.5 8-5.5s6.5 1.7 8 5.5" />
           </svg>
-          <span>Profile</span>
+          <span>{t("tab.profile")}</span>
         </button>
 
         {/* Label + icon must match the mobile tab bar (App.jsx tab-bar array):
@@ -83,7 +87,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
             <circle cx="12" cy="12" r="9" />
             <path d="M3 12h18M12 3c2.5 2.5 3.8 5.6 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.6-3.8-9S9.5 5.5 12 3z" />
           </svg>
-          <span>Multiplayer</span>
+          <span>{t("tab.online")}</span>
         </button>
 
         {/* Notifications — opens the inbox overlay; shown for signed-in users
@@ -94,7 +98,7 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
               <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
               <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
             </svg>
-            <span>Notifications</span>
+            <span>{t("nav.notifications")}</span>
             {notifCount > 0 && <span className="bn-badge">{notifCount > 9 ? '9+' : notifCount}</span>}
           </button>
         )}
@@ -109,12 +113,12 @@ export function BiqNav({ tab, setTab, setScreen, dailyDone, onHomeClick, active,
             <circle cx="12" cy="12" r="3.2" />
             <path d="M19.4 13.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.2a2 2 0 0 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H1a2 2 0 0 1 0-4h.1a1.6 1.6 0 0 0 1.2-2.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H7a1.6 1.6 0 0 0 1-1.5V2a2 2 0 0 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V8a1.6 1.6 0 0 0 1.5 1H22a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z" />
           </svg>
-          <span>Settings</span>
+          <span>{t("nav.settings")}</span>
         </button>
       </nav>
 
       <div className="bn-cta">
-        <div className="bn-cta-eyebrow">Get the app</div>
+        <div className="bn-cta-eyebrow">{t("nav.getTheApp")}</div>
         {/* App Store — live listing, real link (no coming-soon toast). */}
         <a
           className="bn-store"

@@ -1,5 +1,4 @@
 import React from "react";
-import { FOOTLE_SHORT } from "../lib/modeCopy.js";
 import { currentAvatarId } from '../lib/currentAvatar.js';
 import { CircleCheck, CircleHelp, Flame, Zap, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
@@ -20,6 +19,7 @@ import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
 import { HomeGreeting } from "../components/HomeGreeting.jsx";
+import { useT, useLang } from "../i18n/index.js";
 // Mates' leagues (phase 1, web): loaded only for a player who might be in one.
 const LeagueHomeCard = React.lazy(() => import("../components/LeagueHomeCard.jsx"));
 
@@ -47,7 +47,15 @@ const abbrInk = (hex) => {
   const n = parseInt(m[1], 16), r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.62 ? "#14171A" : "#fff";
 };
+// A t() template with its {placeholders} in <strong>: "Solved in {n}" →
+// Solved in <strong>4</strong>. Takes the raw template (t(key) with no vars),
+// so the bold lands on the value wherever the language puts it.
+function withStrong(template, vars) {
+  return template.split(/\{(\w+)\}/).map((part, i) => (i % 2 ? <strong key={i}>{vars[part]}</strong> : part)).filter((p) => p !== "");
+}
+
 function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
+  const t = useT();
   const [q, setQ] = React.useState("");
   const [focused, setFocused] = React.useState(false);
   if (!clubPacks) return null;
@@ -81,24 +89,24 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
           }}
           onBlur={() => setTimeout(() => setFocused(false), 120)}
           onKeyDown={(e) => { if (e.key === "Enter" && matches[0]) pick(matches[0].key); if (e.key === "Escape") setQ(""); }}
-          placeholder="Find your club…"
-          aria-label="Find your club"
+          placeholder={t("home.finder.placeholder")}
+          aria-label={t("home.finder.label")}
           autoCapitalize="none" autoCorrect="off" spellCheck={false} enterKeyHint="search"
         />
       {nq && focused && (
-        <div className="cf-results" role="listbox" aria-label="Clubs">
-          {matches.length === 0 && <div className="cf-empty">No club called “{q.trim()}” on file yet. <button type="button" className="cf-link" onClick={onAllClubs}>See every club</button></div>}
+        <div className="cf-results" role="listbox" aria-label={t("home.finder.results")}>
+          {matches.length === 0 && <div className="cf-empty">{t("home.finder.empty", { q: q.trim() })} <button type="button" className="cf-link" onClick={onAllClubs}>{t("home.finder.seeAll")}</button></div>}
           {matches.map(({ key, pack }) => (
             <button key={key} type="button" role="option" className="cf-row" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(key)}>
               <span className="cf-abbr" style={{ background: pack.color || "var(--s2)", color: abbrInk(pack.color) }}>{clubAbbr?.[key] || pack.name.slice(0, 3).toUpperCase()}</span>
               <span className="cf-name">{pack.name}</span>
-              <span className="cf-go">Play →</span>
+              <span className="cf-go">{t("home.finder.play")}</span>
             </button>
           ))}
         </div>
       )}
       </div>
-      <div className="cf-chips" aria-label="Most played clubs">
+      <div className="cf-chips" aria-label={t("home.finder.chips")}>
         {FEATURED_CLUB_KEYS.filter((k) => clubPacks[k]).map((k) => (
           <button key={k} type="button" className="cf-chip" onClick={() => onPickClub(k)}>
             {/* Club colour on the badge (Alex, 2026-09-06: "should we not add
@@ -108,7 +116,7 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
             <span className="cf-chip-name">{clubPacks[k].name}</span>
           </button>
         ))}
-        <button type="button" className="cf-chip cf-chip-all" onClick={onAllClubs}>All {total} clubs →</button>
+        <button type="button" className="cf-chip cf-chip-all" onClick={onAllClubs}>{t("home.finder.all", { count: total })}</button>
       </div>
     </div>
   );
@@ -175,6 +183,8 @@ function HomeScreenImpl({
   onOpenLeague,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
+  const t = useT();
+  const lang = useLang();
   // The card fetches for a member on this browser, or once a session for a
   // signed-in player (a membership made on another device).
   const leagueCardOn = !!onOpenLeague && (() => {
@@ -188,8 +198,8 @@ function HomeScreenImpl({
   // this covers the session-restore window.
   const [ctaSettled, setCtaSettled] = React.useState(false);
   React.useEffect(() => {
-    const t = setTimeout(() => setCtaSettled(true), 800);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setCtaSettled(true), 800);
+    return () => clearTimeout(timer);
   }, []);
 
   // Which modes this device has already opened, so a NEW badge can retire
@@ -255,7 +265,7 @@ function HomeScreenImpl({
 
   const isPlaceholderName = (n) => !n || n === "Player" || /^player_/i.test(n);
   const railUsername = authProfile?.username && !isPlaceholderName(authProfile.username) ? authProfile.username : null;
-  const railName = railUsername || (profile?.name && !isPlaceholderName(profile.name) ? profile.name : "Ball IQ Player");
+  const railName = railUsername || (profile?.name && !isPlaceholderName(profile.name) ? profile.name : t("home.rail.anonName"));
 
   return (
     <div className="screen tab-content home-screen">
@@ -324,7 +334,7 @@ function HomeScreenImpl({
                 <HomeGreeting />
               </div>
               {loginStreak > 0 && (
-                <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>
+                <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={t("home.streak", { count: loginStreak })}>
                   <span className="hst-flame" aria-hidden="true"><Flame size={14} strokeWidth={2.4} /></span>
                   <span className="hst-num">{loginStreak}</span>
                 </span>
@@ -332,7 +342,7 @@ function HomeScreenImpl({
               {/* Notification bell — the Home tab hides the shared header, so the
                   bell lives here (signed-in only; onOpenNotifs passed then). */}
               {onOpenNotifs && (
-                <button onClick={onOpenNotifs} className="icon-btn hdr-ic" aria-label={notifCount > 0 ? `Notifications, ${notifCount} new` : "Notifications"} style={{flexShrink:0, position:"relative"}}>
+                <button onClick={onOpenNotifs} className="icon-btn hdr-ic" aria-label={notifCount > 0 ? t("nav.notificationsNew", { count: notifCount }) : t("nav.notifications")} style={{flexShrink:0, position:"relative"}}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
                   {notifCount > 0 && <span className="notif-dot" aria-hidden="true" />}
                 </button>
@@ -340,7 +350,7 @@ function HomeScreenImpl({
               {/* 1.1: settings gear inline with the greeting (the shared header
                   row is hidden on Home) — one tidy top row, no dead space. */}
               {showSettings && (
-                <button onClick={() => setScreen("settings")} className="icon-btn hdr-ic" aria-label="Settings" style={{flexShrink:0}}><Settings size={18} strokeWidth={2.25} aria-hidden="true" /></button>
+                <button onClick={() => setScreen("settings")} className="icon-btn hdr-ic" aria-label={t("nav.settings")} style={{flexShrink:0}}><Settings size={18} strokeWidth={2.25} aria-hidden="true" /></button>
               )}
             </div>
           </div>
@@ -357,21 +367,21 @@ function HomeScreenImpl({
           <span style={{display:"inline-flex",color:"var(--accent)"}} aria-hidden="true"><Trophy size={22} strokeWidth={2.2} /></span>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:13.5,fontWeight:800,color:"var(--t1)",lineHeight:1.25}}>
-              {challenge.name ? `${challenge.name} challenged you` : "You've been challenged"}
+              {challenge.name ? t("home.challenge.by", { name: challenge.name }) : t("home.challenge.anon")}
             </div>
             <div style={{fontSize:12,color:"var(--t2)",marginTop:1}}>
-              Beat {challenge.score}/7{challenge.date !== dateToYMD(new Date()).replace(/-/g, "") ? " (yesterday's score)" : ""} on today's Daily 7
+              {t(challenge.date !== dateToYMD(new Date()).replace(/-/g, "") ? "home.challenge.beatYesterday" : "home.challenge.beat", { score: challenge.score })}
             </div>
           </div>
           <button
             onClick={onPlayChallenge}
             style={{flexShrink:0,minHeight:36,padding:"8px 14px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:13.5,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"var(--grn-ink)"}}
           >
-            Play
+            {t("common.play")}
           </button>
           <button
             onClick={onDismissChallenge}
-            aria-label="Dismiss challenge"
+            aria-label={t("home.challenge.dismiss")}
             style={{flexShrink:0,background:"none",border:"none",color:"var(--t3)",fontSize:18,cursor:"pointer",padding:"4px 2px",lineHeight:1}}
           >
             ×
@@ -407,13 +417,13 @@ function HomeScreenImpl({
           + (trailLive && trailDone ? 1 : 0) + (top10Live && top10Done ? 1 : 0) + (mysteryDaily && mysteryDone ? 1 : 0);
         const allDone = doneCount === total;
         return (
-          <div className="daily-zone" role="group" aria-label="Today's puzzles">
+          <div className="daily-zone" role="group" aria-label={t("home.today.label")}>
             <div className="daily-zone-head">
-              <span className="hg-dateline">{new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}</span>
+              <span className="hg-dateline">{new Date().toLocaleDateString(lang === "en" ? undefined : lang, { weekday: "long", day: "numeric", month: "long" })}</span>
               <button type="button" className={`daily-zone-status hit44${allDone ? " is-done" : ""}`}
                 onClick={() => setTab("daily")}
-                aria-label={allDone ? `All ${total} of today's puzzles done — open History` : `${doneCount} of ${total} puzzles played today — open History`}>
-                {allDone ? `${total}/${total} done` : `${doneCount}/${total} today`}
+                aria-label={allDone ? t("home.today.allDoneAria", { total }) : t("home.today.progressAria", { done: doneCount, total })}>
+                {allDone ? t("home.today.allDone", { total }) : t("home.today.progress", { done: doneCount, total })}
                 <span aria-hidden="true" style={{ marginLeft: 5, opacity: 0.7 }}>›</span>
               </button>
             </div>
@@ -436,48 +446,48 @@ function HomeScreenImpl({
                   key: "footle", name: "Footle", no: getFootleNumber(), accent: MODE_ACCENT.footle, rgb: MODE_RGB.footle,
                   icon: <span className="fh-tile fh-tile-green t7s-f" aria-hidden="true">F</span>,
                   done: footleDone, open: ws.kind === "in-progress",
-                  sub: ws.kind === "won" ? <>Solved in <strong>{ws.used}</strong></>
-                    : ws.kind === "lost" ? <>Out of guesses</>
-                    : ws.kind === "in-progress" ? <>In progress · <strong>{ws.used}</strong> of 6</>
+                  sub: ws.kind === "won" ? withStrong(t("home.footle.solved"), { n: ws.used })
+                    : ws.kind === "lost" ? t("home.footle.lost")
+                    : ws.kind === "in-progress" ? withStrong(t("home.footle.inProgress"), { n: ws.used })
                     // ⚠️ ONE LINE EACH, ON EVERY PHONE. These four sub-lines must stay
                     // short enough not to wrap at 360pt: a row whose line wraps is
                     // taller than its neighbours, and the stack reads as uneven
                     // (seen in the simulator at 402pt, 13 Oct 2026: Footle and
                     // Transfer Trail wrapped, Daily 7 and Top 10 did not; Alex
                     // had flagged the same thing on the website the day before).
-                    : firstSession ? <>Start here · six guesses</>
-                    : <>{FOOTLE_SHORT}</>,
+                    : firstSession ? t("home.footle.start")
+                    : t("mode.footle.short"),
                   // Done or not, the row opens the Footle screen: a finished board
                   // shows the result panel (DailyDone) — share, streak, the other
                   // open dailies. The separate status screen stays for the Daily
                   // tab's archive rows (2026-09-06).
                   onTap: () => setScreen("wordle"),
-                  aria: footleDone ? "Today's Footle: done — review" : "Play today's Footle",
+                  aria: t(footleDone ? "home.row.ariaReview" : "home.row.ariaPlay", { mode: "Footle" }),
                 },
                 {
                   key: "daily", name: "Daily 7", Icon: ClipboardList, accent: MODE_ACCENT.daily7, rgb: MODE_RGB.daily7,
                   done: dailyDone,
-                  sub: dailyDone ? <>Done · <strong>{dailyScore}/7</strong></> : <>7 questions · ~3 min</>,
+                  sub: dailyDone ? withStrong(t("home.row.doneScore"), { score: `${dailyScore}/7` }) : t("home.daily7.sub"),
                   onTap: () => (dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")),
-                  aria: dailyDone ? `Daily 7 complete: ${dailyScore} out of 7` : "Play Daily 7",
+                  aria: dailyDone ? t("home.daily7.ariaDone", { score: dailyScore }) : t("home.daily7.ariaPlay"),
                 },
                 ...(trailLive ? [{
                   key: "trail", name: "Transfer Trail", no: getTrailNumber(), Icon: Route, accent: MODE_ACCENT.trail, rgb: MODE_RGB.trail,
                   done: trailDone,
-                  sub: trailDone ? <>Done · today's player</> : <>Whose career is this?</>,
+                  sub: trailDone ? t("home.trail.doneSub") : t("home.trail.sub"),
                   onTap: () => setScreen("trail"),
-                  aria: trailDone ? "Today's Transfer Trail: done — review" : "Play today's Transfer Trail",
+                  aria: t(trailDone ? "home.row.ariaReview" : "home.row.ariaPlay", { mode: "Transfer Trail" }),
                 }] : []),
                 ...(top10Live ? [{
                   key: "top10", name: "Top 10", no: getTop10Number(), Icon: ListOrdered, accent: MODE_ACCENT.top10, rgb: MODE_RGB.top10,
                   done: top10Done, open: top10Open,
-                  sub: top10Done ? <>Done · <strong>{top10Found}/10</strong></>
-                    : top10Open ? <><strong>{top10Found}</strong> of 10 found so far</>
-                    : <>Name all ten · 3 lives</>,
+                  sub: top10Done ? withStrong(t("home.row.doneScore"), { score: `${top10Found}/10` })
+                    : top10Open ? withStrong(t("home.top10.found"), { n: top10Found })
+                    : t("home.top10.sub"),
                   onTap: () => setScreen("top10"),
-                  aria: top10Done ? `Today's Top 10: done, ${top10Found} out of 10 — review`
-                    : top10Open ? `Today's Top 10: ${top10Found} of 10 found — continue`
-                    : "Play today's Top 10",
+                  aria: top10Done ? t("home.top10.ariaDone", { n: top10Found })
+                    : top10Open ? t("home.top10.ariaOpen", { n: top10Found })
+                    : t("home.row.ariaPlay", { mode: "Top 10" }),
                 }] : []),
                 ...(mysteryDaily ? [{
                   key:"mystery", Icon: UserRoundSearch, name: "Mystery Player", no: mysteryNumber(), accent: MODE_ACCENT.mystery, rgb: MODE_RGB.mystery,
@@ -489,13 +499,13 @@ function HomeScreenImpl({
                   // the `open`/"Continue" state since launch; Mystery just
                   // never set it. Same anatomy, same word.
                   done: mysteryDone, open: mysteryGuesses > 0,
-                  sub: mysteryDone ? <>Done · guess who</>
-                    : mysteryGuesses > 0 ? <>{mysteryGuesses} {mysteryGuesses === 1 ? "guess" : "guesses"} in · keep hunting</>
-                    : <>Guess who from clues</>,
+                  sub: mysteryDone ? t("home.mystery.doneSub")
+                    : mysteryGuesses > 0 ? t("home.mystery.guessesIn", { count: mysteryGuesses })
+                    : t("home.mystery.sub"),
                   onTap: () => setScreen("mystery"),
-                  aria: mysteryDone ? "Today's Mystery Player: done — review"
-                    : mysteryGuesses > 0 ? `Today's Mystery Player: ${mysteryGuesses} ${mysteryGuesses === 1 ? "guess" : "guesses"} in — continue`
-                    : "Play today's Mystery Player",
+                  aria: mysteryDone ? t("home.row.ariaReview", { mode: "Mystery Player" })
+                    : mysteryGuesses > 0 ? t("home.mystery.ariaOpen", { count: mysteryGuesses })
+                    : t("home.row.ariaPlay", { mode: "Mystery Player" }),
                 }] : []),
               ];
               // ⚠️ ONCE ALL OF TODAY'S ARE DONE, THEY FOLD TO ONE STRIP. Four
@@ -509,8 +519,8 @@ function HomeScreenImpl({
                   <div className="daily-done-strip">
                     <div className="dds-head">
                       <CircleCheck size={20} strokeWidth={2.2} aria-hidden="true" className="dds-tick" />
-                      <span className="dds-title">Today&rsquo;s {total === 4 ? "four" : total}, done</span>
-                      <span className="dds-next">New in {formatCountdown(msToNextLocalMidnight(new Date()))}</span>
+                      <span className="dds-title">{total === 4 ? t("home.done.titleFour") : t("home.done.title", { n: total })}</span>
+                      <span className="dds-next">{t("home.done.next", { time: formatCountdown(msToNextLocalMidnight(new Date())) })}</span>
                     </div>
                     <div className="dds-chips">
                       {rows.map((r) => (
@@ -533,10 +543,10 @@ function HomeScreenImpl({
                 >
                   <span className="t7s-icon" aria-hidden="true">{r.icon || <r.Icon size={22} strokeWidth={2} />}</span>
                   <span className="t7s-body">
-                    <span className="t7s-title">{r.name}{r.no ? <span className="t7s-no">No. {r.no}</span> : null}</span>
+                    <span className="t7s-title">{r.name}{r.no ? <span className="t7s-no">{t("home.row.no", { n: r.no })}</span> : null}</span>
                     <span className="t7s-sub">{r.sub}</span>
                   </span>
-                  <span className="t7s-cta">{r.done ? "Review" : r.open ? "Continue" : "Play"}</span>
+                  <span className="t7s-cta">{t(r.done ? "home.row.review" : r.open ? "home.row.continue" : "common.play")}</span>
                 </button>
               ));
             })()}
@@ -578,7 +588,7 @@ function HomeScreenImpl({
       </div>
 
       {/* ─────────── RIGHT RAIL (desktop-only, render-always/CSS-reveal) ─────────── */}
-      <div className="home-rail" aria-label="Your stats">
+      <div className="home-rail" aria-label={t("home.rail.label")}>
         {/* Ball IQ rating card */}
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats?.totalCorrect || 0) <= stats.totalAnswered)
@@ -615,7 +625,7 @@ function HomeScreenImpl({
                 <div className="hr-rating-score">
                   <div className="hr-rating-num">{card.overall}</div>
                   <div className="hr-rating-scap">
-                    <div className="hr-rating-overall">OVERALL</div>
+                    <div className="hr-rating-overall">{t("home.rail.overall")}</div>
                     <div className="hr-rating-tier">{tm.label}</div>
                   </div>
                 </div>
@@ -623,13 +633,13 @@ function HomeScreenImpl({
                 <div className="hr-rating-score hr-rating-empty">
                   <div className="hr-rating-num" aria-hidden="true">—</div>
                   <div className="hr-rating-scap">
-                    <div className="hr-rating-overall">OVERALL</div>
-                    <div className="hr-rating-tier" style={{ color: "var(--t2)", textTransform: "none", letterSpacing: 0, fontWeight: 600 }}>Answer 10 questions to get rated</div>
+                    <div className="hr-rating-overall">{t("home.rail.overall")}</div>
+                    <div className="hr-rating-tier" style={{ color: "var(--t2)", textTransform: "none", letterSpacing: 0, fontWeight: 600 }}>{t("home.rail.unrated")}</div>
                   </div>
                 </div>
               )}
               <button type="button" className="hr-rating-view" onClick={() => setTab("profile")}>
-                View full profile →
+                {t("home.rail.viewProfile")}
               </button>
             </div>
           );
@@ -654,16 +664,16 @@ function HomeScreenImpl({
               <div className="hr-streak-head">
                 <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true"><Flame size={18} strokeWidth={2.3} /></span>{loginStreak || 0}</div>
                 <div className="hr-streak-meta">
-                  <div className="hr-streak-label">Day streak</div>
-                  <div className="hr-streak-best">Best · {best}</div>
+                  <div className="hr-streak-label">{t("home.rail.dayStreak")}</div>
+                  <div className="hr-streak-best">{t("home.rail.best", { n: best })}</div>
                 </div>
               </div>
-              <div className="hr-form" aria-label={`Login streak: ${loginStreak || 0} of the last 14 days`}>
+              <div className="hr-form" aria-label={t("home.rail.formAria", { n: loginStreak || 0 })}>
                 {cells.map((c, i) => (
                   <span key={i} className={`hr-form-cell${c.done ? " is-done" : ""}${c.isToday ? " is-today" : ""}`} />
                 ))}
               </div>
-              <div className="hr-form-cap">Last 14 days</div>
+              <div className="hr-form-cap">{t("home.rail.last14")}</div>
             </div>
           );
         })()}
@@ -683,15 +693,15 @@ function HomeScreenImpl({
           const best = stats?.bestScore || 0;
           return (
             <div className="hr-card hr-yf">
-              <div className="hr-yf-title">Your form</div>
+              <div className="hr-yf-title">{t("home.rail.yourForm")}</div>
               {hasPlayed ? (
                 <div className="hr-yf-rows">
-                  <div className="hr-yf-row"><span className="hr-yf-k">Accuracy</span><span className="hr-yf-v">{Math.round(acc * 100)}%</span></div>
-                  {best > 0 && <div className="hr-yf-row"><span className="hr-yf-k">Best score</span><span className="hr-yf-v">{best} / 10</span></div>}
-                  {strongest && <div className="hr-yf-row"><span className="hr-yf-k">Strongest</span><span className="hr-yf-v hr-yf-v-green">{strongest.name}</span></div>}
+                  <div className="hr-yf-row"><span className="hr-yf-k">{t("home.rail.accuracy")}</span><span className="hr-yf-v">{Math.round(acc * 100)}%</span></div>
+                  {best > 0 && <div className="hr-yf-row"><span className="hr-yf-k">{t("home.rail.bestScore")}</span><span className="hr-yf-v">{best} / 10</span></div>}
+                  {strongest && <div className="hr-yf-row"><span className="hr-yf-k">{t("home.rail.strongest")}</span><span className="hr-yf-v hr-yf-v-green">{strongest.name}</span></div>}
                 </div>
               ) : (
-                <div className="hr-yf-empty">Play a game to see your form.</div>
+                <div className="hr-yf-empty">{t("home.rail.formEmpty")}</div>
               )}
             </div>
           );
@@ -705,7 +715,7 @@ function HomeScreenImpl({
           belong where they sit"). On the return trip tap beats type: the four
           Today rows come first, the catalogue follows. The finder IS the club
           entry now — the Club Quiz tile below was the same door twice. */}
-      <div className="home-section-title">Find a quiz</div>
+      <div className="home-section-title">{t("home.findQuiz")}</div>
       {/* FRONT DOOR: the club finder sits above everything but the greeting.
           Today's dailies follow; the modes grid stays below. */}
       <ClubFinder
@@ -734,14 +744,14 @@ function HomeScreenImpl({
         type="button"
         className="todays-seven-secondary mp-row quiz-entry"
         onClick={() => setScreen("quiz-topics")}
-        aria-label="Quiz: ten questions on any league, era or theme"
+        aria-label={t("home.quiz.aria")}
       >
         <span className="t7s-icon" aria-hidden="true"><CircleHelp size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title">Quiz</span>
-          <span className="t7s-sub">Ten questions · any league, era or theme</span>
+          <span className="t7s-title">{t("home.quiz.title")}</span>
+          <span className="t7s-sub">{t("home.quiz.sub")}</span>
         </span>
-        <span className="t7s-cta">Play</span>
+        <span className="t7s-cta">{t("common.play")}</span>
       </button>
       {/* ── MORE MODES ── */}
       {/* Lucide icons replace emoji glyphs (2026-05-03). Stroke 2.25
@@ -755,7 +765,7 @@ function HomeScreenImpl({
           wc2026-tagged questions still serve every other mode and the web
           /quiz/world-cup/ pages, so old links keep working. Do not bring a
           tile back for a finished event. */}
-      <div className="home-section-title">More modes</div>
+      <div className="home-section-title">{t("home.moreModes")}</div>
       {/* The Draft. A row and not a tile (a seventh tile sits alone on the last
           line), and FIRST in More modes, above Mystery Player, highlighted, with
           a NEW label that stays until DRAFT_NEW_UNTIL whether or not it has been
@@ -768,14 +778,14 @@ function HomeScreenImpl({
         className="todays-seven-secondary mp-row"
         style={{ "--mode": MODE_ACCENT.draft, "--mode-rgb": MODE_RGB.draft, marginBottom: 10, border: `1.5px solid rgba(${MODE_RGB.draft},0.6)`, background: `linear-gradient(135deg, rgba(${MODE_RGB.draft},0.16), rgba(${MODE_RGB.draft},0.04) 60%)` }}
         onClick={() => { markModeSeen("draft"); setScreen("draft"); }}
-        aria-label="Play the Draft: build an eleven out of real seasons"
+        aria-label={t("home.draft.aria")}
       >
         <span className="t7s-icon" aria-hidden="true"><Dices size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title">Draft{(Date.now() < DRAFT_NEW_UNTIL || !seenModes.draft) && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.draft},0.18)`, color: MODE_ACCENT.draft, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>NEW</span>}</span>
-          <span className="t7s-sub">Spin real seasons, build an XI, win the league</span>
+          <span className="t7s-title">Draft{(Date.now() < DRAFT_NEW_UNTIL || !seenModes.draft) && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.draft},0.18)`, color: MODE_ACCENT.draft, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("common.new")}</span>}</span>
+          <span className="t7s-sub">{t("home.draft.sub")}</span>
         </span>
-        <span className="t7s-cta">Play</span>
+        <span className="t7s-cta">{t("common.play")}</span>
       </button>
       {/* Top 10 lists: the browser of club lists and past dailies (Alex, 15 Oct
           2026: a fan must be able to find their own club's lists). A row, not a
@@ -785,14 +795,14 @@ function HomeScreenImpl({
         className="todays-seven-secondary mp-row"
         style={{ "--mode": MODE_ACCENT.top10, "--mode-rgb": MODE_RGB.top10, marginBottom: 10 }}
         onClick={() => { markModeSeen("top10lists"); setScreen("top10lib"); }}
-        aria-label="Top 10 lists: your club's lists and every past daily"
+        aria-label={t("home.top10lists.aria")}
       >
         <span className="t7s-icon" aria-hidden="true"><ListOrdered size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title">Top 10 lists{!seenModes.top10lists && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.top10},0.18)`, color: MODE_ACCENT.top10, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>NEW</span>}</span>
-          <span className="t7s-sub">Your club’s lists, and every past daily</span>
+          <span className="t7s-title">{t("home.top10lists.title")}{!seenModes.top10lists && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.top10},0.18)`, color: MODE_ACCENT.top10, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("common.new")}</span>}</span>
+          <span className="t7s-sub">{t("home.top10lists.sub")}</span>
         </span>
-        <span className="t7s-cta">Open</span>
+        <span className="t7s-cta">{t("home.row.open")}</span>
       </button>
       {/* Mystery Player, once Top 10 has its place in Today. A row and not a
           seventh tile, for two reasons: it is still one puzzle a day with a
@@ -808,18 +818,18 @@ function HomeScreenImpl({
             className="todays-seven-secondary mp-row"
             style={{ "--mode": MODE_ACCENT.mystery, "--mode-rgb": MODE_RGB.mystery, marginBottom: 10 }}
             onClick={() => setScreen("mystery")}
-            aria-label={done ? "Today's Mystery Player: done — review"
-              : guesses > 0 ? `Today's Mystery Player: ${guesses} ${guesses === 1 ? "guess" : "guesses"} in — continue`
-              : "Play today's Mystery Player"}
+            aria-label={done ? t("home.row.ariaReview", { mode: "Mystery Player" })
+              : guesses > 0 ? t("home.mystery.ariaOpen", { count: guesses })
+              : t("home.row.ariaPlay", { mode: "Mystery Player" })}
           >
             <span className="t7s-icon" aria-hidden="true"><UserRoundSearch size={22} strokeWidth={2} /></span>
             <span className="t7s-body">
-              <span className="t7s-title">Mystery Player<span className="t7s-no">No. {mysteryNumber()}</span></span>
-              <span className="t7s-sub">{done ? "Done · guess who"
-                : guesses > 0 ? `${guesses} ${guesses === 1 ? "guess" : "guesses"} in · keep hunting`
-                : "Guess who from clues"}</span>
+              <span className="t7s-title">Mystery Player<span className="t7s-no">{t("home.row.no", { n: mysteryNumber() })}</span></span>
+              <span className="t7s-sub">{done ? t("home.mystery.doneSub")
+                : guesses > 0 ? t("home.mystery.guessesIn", { count: guesses })
+                : t("home.mystery.sub")}</span>
             </span>
-            <span className="t7s-cta">{done ? "Review" : guesses > 0 ? "Continue" : "Play"}</span>
+            <span className="t7s-cta">{t(done ? "home.row.review" : guesses > 0 ? "home.row.continue" : "common.play")}</span>
           </button>
         );
       })()}
@@ -852,8 +862,8 @@ function HomeScreenImpl({
           // reads as a mistake rather than a system. Spotted by Alex immediately.
           // The prop still exists for a tile that genuinely earns its own colour;
           // nothing does today.
-          { key:"survival",  Icon: Heart,      name:"Survival",      desc:"One miss, out" },
-          { key:"hotstreak", Icon: Flame,      name:"Hot Streak",    desc:"60 seconds" },
+          { key:"survival",  Icon: Heart,      name:t("home.mode.survival"),  desc:t("home.mode.survivalDesc") },
+          { key:"hotstreak", Icon: Flame,      name:t("home.mode.hotstreak"), desc:t("home.mode.hotstreakDesc") },
           // Ball IQ Test was killed 2026-08-10 (App.jsx side removed then).
           // This tile outlived the mode and silently started an unbranded
           // generic quiz — the grid entry goes too.
@@ -879,7 +889,7 @@ function HomeScreenImpl({
                 <span className="play-card-name">{name}</span>
                 <span className="play-card-desc">{desc}</span>
               </span>
-              {showNew && <span className="play-card-badge">NEW</span>}
+              {showNew && <span className="play-card-badge">{t("common.new")}</span>}
             </button>
           );
         })}
@@ -897,7 +907,7 @@ function HomeScreenImpl({
         if (COMING_SOON.length === 0) return null;
         return (
           <div className="coming-soon-list">
-            Coming soon: {COMING_SOON.map(m => m.name).join(' · ')}
+            {t("home.comingSoon", { list: COMING_SOON.map(m => m.name).join(' · ') })}
           </div>
         );
       })()}
@@ -909,25 +919,25 @@ function HomeScreenImpl({
           former "Android coming soon" text is now a real badge. */}
       <div className="home-app-banner">
         <div className="hab-copy">
-          <div className="hab-title">Take {APP_NAME} everywhere</div>
-          <div className="hab-sub">Your streak, rating and friends follow your account — on your phone or in any browser.</div>
+          <div className="hab-title">{t("home.appBanner.title", { app: APP_NAME })}</div>
+          <div className="hab-sub">{t("home.appBanner.sub")}</div>
         </div>
         <div className="hab-actions">
-          <a className="hab-store" href={appStoreUrl()} target="_blank" rel="noopener" aria-label="Download on the App Store">
+          <a className="hab-store" href={appStoreUrl()} target="_blank" rel="noopener" aria-label={t("store.appStore.aria")}>
             <svg viewBox="0 0 384 512" width="20" height="20" aria-hidden="true">
               <path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" />
             </svg>
             <span className="hab-store-txt">
-              <span className="hab-store-ey">Download on the</span>
+              <span className="hab-store-ey">{t("store.appStore.eyebrow")}</span>
               <span className="hab-store-nm">App Store</span>
             </span>
           </a>
-          <a className="hab-store" href={playStoreUrl()} target="_blank" rel="noopener" aria-label="Get it on Google Play">
+          <a className="hab-store" href={playStoreUrl()} target="_blank" rel="noopener" aria-label={t("store.play.aria")}>
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
               <path fill="currentColor" d="M4 3.5 20 12 4 20.5z" />
             </svg>
             <span className="hab-store-txt">
-              <span className="hab-store-ey">Get it on</span>
+              <span className="hab-store-ey">{t("store.play.eyebrow")}</span>
               <span className="hab-store-nm">Google Play</span>
             </span>
           </a>

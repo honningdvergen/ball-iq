@@ -126,7 +126,10 @@ describe('Footle never promises a surname', () => {
     expect(copy.code).toMatch(/FOOTLE_TAGLINE = 'Surname of a footballer in 6 guesses'/);
     expect(copy.code).toMatch(/FOOTLE_SHORT = 'Surname of a footballer'/);
 
-    const REQUIRED = ['components/FootleHero.jsx', 'screens/HomeScreen.jsx',
+    // HomeScreen prints it through t("mode.footle.short") since i18n step 2;
+    // the English table takes that value from modeCopy, so it is still one
+    // source (asserted below and in i18n-home-nav.test.js).
+    const REQUIRED = ['components/FootleHero.jsx', 'i18n/en.js',
                       'screens/DailyScreen.jsx'];
     const missing = REQUIRED.filter((want) => !FILES.some(
       (f) => f.path.includes(want) && /from ['"]\.\.\/lib\/modeCopy\.js['"]/.test(f.code)));
@@ -136,6 +139,8 @@ describe('Footle never promises a surname', () => {
       '  A split between the mobile hero and the desktop one is the exact bug\n' +
       '  this file exists to catch.\n  missing: ' + missing.join(', ') + '\n',
     ).toEqual([]);
+    expect(FILES.find((f) => f.path.endsWith('i18n/en.js')).code).toContain("'mode.footle.short': FOOTLE_SHORT");
+    expect(FILES.find((f) => f.path.endsWith('screens/HomeScreen.jsx')).code).toContain('t("mode.footle.short")');
   });
 
   it('nobody re-hardcodes the sentence next to a component', () => {

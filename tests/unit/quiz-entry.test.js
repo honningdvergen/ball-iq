@@ -40,7 +40,7 @@ describe("Home: one Quiz row replaces five entries", () => {
   it("the Quiz row opens the Quiz screen", () => {
     expect(HOME_CODE).toMatch(/className="todays-seven-secondary mp-row quiz-entry"/);
     expect(HOME_CODE).toMatch(/onClick=\{\(\) => setScreen\("quiz-topics"\)\}/);
-    expect(HOME_CODE).toMatch(/<span className="t7s-title">Quiz<\/span>/);
+    expect(HOME_CODE).toMatch(/<span className="t7s-title">\{t\("home\.quiz\.title"\)\}<\/span>/); // en: "Quiz" (i18n step 2)
     expect(HOME_CODE).toMatch(/<CircleHelp size=\{22\}/);
   });
 
