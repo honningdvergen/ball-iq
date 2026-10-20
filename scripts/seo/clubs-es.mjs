@@ -2004,7 +2004,7 @@ export const CLUBS_ES = [
         ],
         "a": 3,
         "hint": "Su camiseta a rayas rojiblancas es una de las más reconocibles de España.",
-        "en": "Red-and-white vertical stripes"
+        "en": "Red-and-white stripes"
       },
       {
         "id": "q_a501aa",
@@ -2214,7 +2214,7 @@ export const CLUBS_ES = [
         ],
         "a": 0,
         "hint": "La final se jugó en el estadio neutral de La Cartuja, en Sevilla.",
-        "en": "La Cartuja, Seville"
+        "en": "La Cartuja"
       },
       {
         "id": "q_a601fe",
