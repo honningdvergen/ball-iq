@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { GAMES_PAGE } from '../../scripts/seo/content.mjs';
 import { GAMES_NAV } from '../../src/marketing/siteNav.js';
+import EN from '../../src/i18n/en.js';
 
 const read = (rel) => readFileSync(fileURLToPath(new URL(`../../${rel}`, import.meta.url)), 'utf8');
 
@@ -34,7 +35,9 @@ describe('the /football-games/ hub', () => {
   it('both headers send Games to the hub, and the generator builds + sitemaps it', () => {
     expect(read('scripts/seo/shell.mjs')).toContain('href="${b}/football-games/"');
     expect(read('scripts/seo/shell.mjs')).not.toContain('href="${b}/#games"');
-    expect(read('src/marketing/SiteHeader.jsx')).toContain('href="/football-games/">Games');
+    // The link text is an i18n key since step 2 (en: "Games").
+    expect(read('src/marketing/SiteHeader.jsx')).toContain(`href="/football-games/">{t('site.games')}`);
+    expect(EN['site.games']).toBe('Games');
     const gen = read('scripts/gen-seo-pages.mjs');
     expect(gen).toContain('buildGamesPage();');
     expect(gen).toContain('loc: `${SITE.base}/${GAMES_PAGE.slug}/`');

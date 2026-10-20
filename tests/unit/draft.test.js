@@ -407,7 +407,8 @@ describe('where it lives', () => {
   });
   it('Home lists it under More modes, and nowhere in Today: it is not a daily and must not look like one', () => {
     const home = readFileSync(new URL('../../src/screens/HomeScreen.jsx', import.meta.url), 'utf8');
-    const door = home.indexOf('setScreen("draft")'), more = home.indexOf('More modes</div>');
+    // The heading is an i18n key since step 2 (en: "More modes").
+    const door = home.indexOf('setScreen("draft")'), more = home.indexOf('{t("home.moreModes")}</div>');
     expect(more).toBeGreaterThan(0);
     expect(door).toBeGreaterThan(more);                       // after the More modes heading
     expect((home.match(/setScreen\("draft"\)/g) || []).length).toBe(1);

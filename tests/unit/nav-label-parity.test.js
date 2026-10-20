@@ -46,22 +46,37 @@ describe('the three navs agree on what each tab is called', () => {
     for (const [id, label] of Object.entries(labels)) expect(typeof label === 'string' && label.length > 0, `${id} has a label`).toBe(true);
   });
 
+  // Since i18n step 2 (2026-10-20) AppBar and the rail print t() keys too; a
+  // key resolves through en.js, a bare literal is still understood.
+  const appBarLabel = (id) => {
+    const m = APPBAR.match(new RegExp(`id: '${id}',[^}]*label: '([^']+)'`));
+    return m && (m[1] in EN ? EN[m[1]] : m[1]);
+  };
+  const railLabels = () => [...RAIL.matchAll(/<span>(?:\{t\("([\w.]+)"\)\}|([^<{]+))<\/span>/g)].map((m) => (m[1] ? EN[m[1]] : m[2]));
+
   it('the web app bar matches the mobile bar, except for the one named exception', () => {
     const labels = mobileLabels();
     for (const [id, label] of Object.entries(labels)) {
       if (id === 'home') continue; // "Play" on the web, by design — asserted below
-      expect(APPBAR, `AppBar's "${id}" tab must read "${label}"`)
-        .toMatch(new RegExp(`id: '${id}',[^}]*label: '${label}'`));
+      expect(appBarLabel(id), `AppBar's "${id}" tab must read "${label}"`).toBe(label);
     }
-    expect(APPBAR, "the web bar's first tab is Play, not Home")
-      .toMatch(/id: 'home',[^}]*label: 'Play'/);
+    expect(appBarLabel('home'), "the web bar's first tab is Play, not Home").toBe('Play');
   });
 
   it('the desktop rail matches the mobile bar', () => {
     const labels = mobileLabels();
+    const rail = railLabels();
     for (const label of Object.values(labels)) {
-      expect(RAIL, `the rail must offer "${label}"`).toContain(`<span>${label}</span>`);
+      expect(rail, `the rail must offer "${label}"`).toContain(label);
     }
+  });
+
+  it('the rail and the app bar use the mobile bar\'s own tab.* keys, so no language can split them', () => {
+    for (const id of ['daily', 'online', 'profile']) {
+      expect(APPBAR).toMatch(new RegExp(`id: '${id}',[^}]*label: 'tab\\.${id}'`));
+      expect(RAIL).toContain(`<span>{t("tab.${id}")}</span>`);
+    }
+    expect(RAIL).toContain('<span>{t("tab.home")}</span>');
   });
 
   it('no surface still says "Daily" for the history tab', () => {

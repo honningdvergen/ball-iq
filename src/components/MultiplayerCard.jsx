@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { Users } from "lucide-react";
+import { useT } from "../i18n/index.js";
 
 // MultiplayerCard — Home tab. One row in the Today-row anatomy (2026-09-06).
 //
@@ -16,6 +17,7 @@ import { Users } from "lucide-react";
 // the shareable /join/CODE link. "Same phone" left this card; the Online tab
 // carries it.
 export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onInvite, onOpen }) {
+  const t = useT();
   const handleInvite = useCallback((e) => {
     e?.stopPropagation();
     onInvite?.();
@@ -26,8 +28,8 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onInvit
   }, [onOpen]);
 
   return (
-    <div className="todays-seven-secondary mp-row" role="group" aria-label="Multiplayer">
-      <button type="button" className="mp-row-open" onClick={handleOpen} aria-label="Open the Multiplayer tab">
+    <div className="todays-seven-secondary mp-row" role="group" aria-label={t("tab.online")}>
+      <button type="button" className="mp-row-open" onClick={handleOpen} aria-label={t("home.mp.openAria")}>
         <span className="t7s-icon" aria-hidden="true"><Users size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
           {/* ONE NAME (Alex, 2026-09-09: "should we call it online or
@@ -36,16 +38,16 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onInvit
               the word people search for and it names the thing, not the
               transport; the tab, this row, the hub heading and the FAQ now
               agree. The tab's id stays `online` — it is in every door URL. */}
-          <span className="t7s-title">Multiplayer</span>
+          <span className="t7s-title">{t("tab.online")}</span>
           {/* Capacity, not a question count: Hot Streak and Survival Duel are
               not 10 questions, and "up to 8" is already our claim on the site
               and the store listing. NOT a live count: 4 rooms in the last
               7 days and 0 open at the time of writing — "0 rooms open now"
               reads dead, which is worse than quiet. */}
-          <span className="t7s-sub">Play your mates live</span>
+          <span className="t7s-sub">{t("home.mp.sub")}</span>
         </span>
       </button>
-      <button type="button" className="t7s-cta mp-row-invite" onClick={handleInvite} aria-label="Create a room and invite friends">Invite</button>
+      <button type="button" className="t7s-cta mp-row-invite" onClick={handleInvite} aria-label={t("home.mp.inviteAria")}>{t("home.mp.invite")}</button>
     </div>
   );
 });

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import EN from '../../src/i18n/en.js';
 
 /**
  * Two different streaks may not wear the same label.
@@ -102,7 +103,9 @@ describe('a streak label names which streak it is', () => {
   it('the cross-mode surfaces keep the generic label, and keep loginStreak', () => {
     // The other half: "Day streak" must stay the name of the SHARED number, or
     // renaming the mode cards just moves the ambiguity somewhere else.
-    expect(HOME).toContain('Day streak');
+    // Home's label is an i18n key since step 2; its English is still "Day streak".
+    expect(HOME).toContain('{t("home.rail.dayStreak")}');
+    expect(EN['home.rail.dayStreak']).toBe('Day streak');
     expect(HOME).toMatch(/loginStreak/);
     expect(DAILY).toContain('Day streak');
     // ⚠️ Pin the SOURCE of Daily's streak scalar, not the shape of the memo.
