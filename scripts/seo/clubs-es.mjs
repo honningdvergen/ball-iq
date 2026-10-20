@@ -1260,7 +1260,7 @@ export const CLUBS_ES = [
     "statLine": "Del Metropolitano al Calderón: la historia rojiblanca, pregunta a pregunta.",
     "playLabel": "Jugar el quiz",
     "intro": [
-      "El Atlético de Madrid no se explica solo con títulos. Nació en 1903 como filial de unos estudiantes vascos, sobrevivió a una unión con la aviación militar, bajó a Segunda en 2000 y volvió para ganar la Liga en el Camp Nou. Este quiz recorre esa historia.",
+      "El Atlético de Madrid no se explica solo con títulos. Nació en 1903 como filial del Athletic Club, fundada por estudiantes vascos, sobrevivió a una unión con la aviación militar, bajó a Segunda en 2000 y volvió para ganar la Liga en el Camp Nou. Este quiz recorre esa historia.",
       "Hay preguntas de la era Simeone —el Cholismo, las dos finales perdidas ante el Real Madrid, el título sellado en Valladolid en 2021— y otras del Atlético anterior: la final repetida de 1974, la Recopa de 1962, el Doblete de Radomir Antić.",
       "Cada pregunta trae una pista para los momentos en los que la memoria falla, y cuatro opciones con respuesta inmediata. Se juega en un par de minutos, en el móvil o en el ordenador.",
       "Los datos están verificados y los superlativos van anclados a un año o a una temporada concreta, para que la respuesta correcta siga siéndolo dentro de dos años."
