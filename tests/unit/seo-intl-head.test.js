@@ -13,8 +13,12 @@ import { shellStrings } from '../../scripts/seo/shell-i18n.mjs';
 //   - asked the share image for the Spanish label "Quiz de club" in Italian,
 //     German, French, Dutch, Portuguese, Turkish and Indonesian;
 //   - gave that image the English alt "Ball IQ football quiz".
-// Skips when dist/ is absent (it runs after the build in npm run build).
+// It reads the PREVIOUS build's dist/ (vitest runs before the pages are
+// generated), so it skips unless that build finished: gen-seo-pages writes
+// sitemap.xml last, and a build that crashed half-way leaves a handful of pages
+// and no sitemap (seen 20 Oct: 7 pages, and a false failure).
 const DIST = new URL('../../dist/', import.meta.url).pathname;
+const COMPLETE = existsSync(join(DIST, 'sitemap.xml'));
 const LANGS = ['es', 'pt', 'it', 'de', 'fr', 'nl', 'tr', 'id'];
 
 function clubPages() {
@@ -31,7 +35,7 @@ function clubPages() {
 }
 
 describe('localised club pages: the <head> is in the page language', () => {
-  it.skipIf(!existsSync(DIST))('quiz name, breadcrumb, share-image label and alt', () => {
+  it.skipIf(!COMPLETE)('quiz name, breadcrumb, share-image label and alt', () => {
     const pages = clubPages();
     expect(pages.length).toBeGreaterThan(40);
     const bad = [];
