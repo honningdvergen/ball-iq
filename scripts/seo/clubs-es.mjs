@@ -1774,9 +1774,9 @@ export const CLUBS_ES = [
         "id": "q_28d628",
         "q": "El 'Betis' del nombre del club viene de Baetis, el nombre romano de ¿qué río andaluz?",
         "o": [
-          "Ebro",
+          "Guadalete",
           "Guadiana",
-          "Tajo",
+          "Genil",
           "Guadalquivir"
         ],
         "a": 3,
@@ -1991,7 +1991,7 @@ export const CLUBS_ES = [
         ],
         "a": 1,
         "hint": "Se les conoce como Los Leones.",
-        "en": "The Lions (Los Leones)"
+        "en": "The Lions"
       },
       {
         "id": "q_ec0a38",
