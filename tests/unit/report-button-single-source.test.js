@@ -49,7 +49,9 @@ describe('the report button is a single source of truth', () => {
     // Mutation check: putting "✓ Reported — thanks" back into App.jsx fails this.
     // Since i18n step 3 the words live in the English table (report.done) and
     // ReportButton is the one component that prints that key.
-    const owners = FILES.filter((f) => f.code.includes('Reported — thanks')).map((f) => f.path);
+    // Code only: ReportButton's doc comment quotes the old string on purpose.
+    const code = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
+    const owners = FILES.filter((f) => code(f.code).includes('Reported — thanks')).map((f) => f.path);
     expect(
       owners,
       '\n  Exactly one component may claim a report succeeded.\n' +
