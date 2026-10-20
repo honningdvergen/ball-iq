@@ -92,6 +92,7 @@ import { QB } from '../src/questions.js';
 // moving off. rootCss() emits the same bytes this file used to hardcode.
 import { rootCss } from '../src/design/tokens.js';
 import { shellHeader, shellFooter, SHELL_CSS } from './seo/shell.mjs';
+import { shellStrings } from './seo/shell-i18n.mjs';
 import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE, GAMES_PAGE } from './seo/content.mjs';
 import { GAMES_NAV } from '../src/marketing/siteNav.js';
 import { recentFootleAnswers } from './seo/footle-answer-page.mjs';
@@ -176,9 +177,14 @@ const jsonLd = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
 // Content-parity rule: only ever call this with rows the page VISIBLY renders
 // (renderQA / the taster) — never with unrendered bank rows. Capped to keep
 // <head> lean; a subset of visible content is fine, a superset is not.
-const eduQuizLd = (name, rows) => ({
+// A localised page passes { intl: true }: its h1 already says "quiz" in its own
+// language ("Quiz del Barcelona", "Bayern München Quiz"), so the English suffix
+// produced "Quiz del FC Barcelona quiz", and the "soccer quiz" / "trivia"
+// alternates (written for US English searches) were English text on a Spanish,
+// Italian or Turkish page. Found by the 2026-10-20 localisation review.
+const eduQuizLd = (name, rows, { intl = false } = {}) => ({
   '@type': 'Quiz',
-  name: `${name} quiz`,
+  name: intl ? name : `${name} quiz`,
   // US visitors convert at ~0 (Clarity 2026-07-28: US Mobile 12.7s, US PC 3.6s
   // active, and every Google-referred US session recorded ZERO clicks, against
   // 61.7s for UK Mobile). Part of that is vocabulary: "soccer" appeared 13
@@ -186,7 +192,7 @@ const eduQuizLd = (name, rows) => ({
   // so a search for "arsenal soccer quiz" had nothing to match and the page
   // read entirely British on arrival. alternateName carries the US term without
   // touching the visible British copy the UK majority reads.
-  alternateName: [`${name} soccer quiz`, `${name} trivia`],
+  ...(intl ? {} : { alternateName: [`${name} soccer quiz`, `${name} trivia`] }),
   about: { '@type': 'Thing', name },
   hasPart: rows.slice(0, 20).map((r) => ({
     '@type': 'Question',
@@ -1621,7 +1627,7 @@ ${ADS_ACTIVE ? `<script>
 <meta property="og:image" content="${ogImage}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Ball IQ football quiz" />
+<meta property="og:image:alt" content="${esc(shellStrings(lang).ogImageAlt)}" />
 <meta property="og:site_name" content="${SITE.name}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${esc(title)}" />
@@ -2162,16 +2168,24 @@ function buildClubPageIntl(cfg, siblings = []) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Ball IQ', item: `${SITE.base}/` },
-          { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` },
+          // The same hub the visible breadcrumb links: the language's own quiz
+          // hub where one exists. This said the English 'Quizzes' and /quiz/
+          // while the page's own breadcrumb showed the localised hub.
+          (() => {
+            const hub = HUBS_INTL.find((h) => h.lang === cfg.lang);
+            return hub
+              ? { '@type': 'ListItem', position: 2, name: hub.h1, item: `${SITE.base}/${cfg.lang}/quiz/` }
+              : { '@type': 'ListItem', position: 2, name: 'Quizzes', item: `${SITE.base}/quiz/` };
+          })(),
           { '@type': 'ListItem', position: 3, name: cfg.h1, item: canonical },
         ],
       },
-      eduQuizLd(cfg.h1, cfg.sample),
+      eduQuizLd(cfg.h1, cfg.sample, { intl: true }),
     ],
   });
 
   const clubBadge = CLUB_BADGE[cfg.slug] || deriveBadge(cfg.name);
-  const ogImage = clubOgImage({ name: cfg.name, badge: clubBadge, color: CLUB_COLOR[cfg.slug], kind: 'Quiz de club' });
+  const ogImage = clubOgImage({ name: cfg.name, badge: clubBadge, color: CLUB_COLOR[cfg.slug], kind: shellStrings(cfg.lang).clubQuizKind });
   const introHtml = cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n');
 
   // The site's one question widget, in the page's language — see below.

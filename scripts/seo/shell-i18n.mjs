@@ -46,6 +46,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: 'Nothing on file called',
     findEmptyPost: 'yet.',
     findSeeAll: 'See every club',
+    clubQuizKind: 'Club quiz',
+    ogImageAlt: 'Ball IQ football quiz',
   },
 
   // ── translated 2026-09-15 · one agent per locale, then an adversarial checker
@@ -90,6 +92,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: "Aún no tenemos nada llamado",
     findEmptyPost: ".",
     findSeeAll: "Ver todos los clubes",
+    clubQuizKind: "Quiz de club",
+    ogImageAlt: "Ball IQ, quiz de fútbol",
   },
   pt: {
     skipToContent: "Ir para o conteúdo",
@@ -118,6 +122,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: "Ainda não temos nada chamado",
     findEmptyPost: ".",
     findSeeAll: "Veja todos os clubes",
+    clubQuizKind: "Quiz do clube",
+    ogImageAlt: "Ball IQ, quiz de futebol",
   },
   it: {
     skipToContent: "Vai al contenuto",
@@ -146,6 +152,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: "Non abbiamo ancora nulla su",
     findEmptyPost: ".",
     findSeeAll: "Vedi tutte le squadre",
+    clubQuizKind: "Quiz sul club",
+    ogImageAlt: "Ball IQ, quiz di calcio",
   },
   de: {
     skipToContent: "Zum Inhalt springen",
@@ -174,6 +182,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: "Zu",
     findEmptyPost: "gibt es noch nichts.",
     findSeeAll: "Alle Vereine ansehen",
+    clubQuizKind: "Vereins-Quiz",
+    ogImageAlt: "Ball IQ Fußball-Quiz",
   },
   fr: {
     skipToContent: "Aller au contenu",
@@ -202,6 +212,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: "Rien ne correspond à",
     findEmptyPost: "pour l’instant.",
     findSeeAll: "Voir tous les clubs",
+    clubQuizKind: "Quiz du club",
+    ogImageAlt: "Ball IQ, quiz de football",
   },
   nl: {
     skipToContent: "Ga naar de inhoud",
@@ -230,6 +242,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: "Nog niets met de naam",
     findEmptyPost: "gevonden.",
     findSeeAll: "Bekijk alle clubs",
+    clubQuizKind: "Clubquiz",
+    ogImageAlt: "Ball IQ voetbalquiz",
   },
   tr: {
     skipToContent: "İçeriğe geç",
@@ -258,6 +272,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: "Henüz kayıtlarımızda",
     findEmptyPost: "adında bir şey yok.",
     findSeeAll: "Tüm kulüpleri gör",
+    clubQuizKind: "Kulüp quizi",
+    ogImageAlt: "Ball IQ futbol quizi",
   },
   id: {
     skipToContent: "Langsung ke konten",
@@ -286,6 +302,8 @@ export const SHELL_STRINGS = {
     findEmptyPre: "Belum ada klub atau liga bernama",
     findEmptyPost: ".",
     findSeeAll: "Lihat semua klub",
+    clubQuizKind: "Kuis klub",
+    ogImageAlt: "Ball IQ kuis sepak bola",
   },
 };
 
