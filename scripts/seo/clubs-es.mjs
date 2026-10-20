@@ -4130,7 +4130,7 @@ export const CLUBS_ES = [
         ],
         "a": 0,
         "hint": "El club se fundó el 12 de octubre de 1916, el día que recuerda la llegada de Colón a América y que en México se celebra como Día de la Raza; de ahí viene el nombre «América».",
-        "en": "Columbus Day (Día de la Raza)"
+        "en": "Columbus Day"
       },
       {
         "id": "q_e13fd1",
