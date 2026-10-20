@@ -337,7 +337,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           <div style={{ flex: 1, minWidth: 0 }}>
             <GameTitle no={number}>{daily ? "Transfer Trail" : "Stitch-up"}</GameTitle>
             <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
-              {done ? t(won ? "trail.solved" : "trail.notThisTime") : (stitch?.sub || t("home.trail.sub"))}
+              {done ? t(won ? "trail.solved" : "trail.notThisTime") : (stitch?.sub || t("trail.sub"))}
             </div>
           </div>
         )}

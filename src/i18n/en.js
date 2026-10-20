@@ -306,6 +306,9 @@ export default {
   'qz.start': 'Start quiz',
   // Transfer Trail (screens/TransferTrail.jsx, lib/trail.js).
   'trail.soon': 'Coming soon — a new career to name every day.',
+  // The header's line; Home's row says the same in home.trail.sub, but the
+  // header shares its row with the pips, so Spanish needs it shorter here.
+  'trail.sub': 'Whose career is this?',
   'trail.solved': 'Solved',
   'trail.notThisTime': 'Not this time',
   'trail.mastSub': 'name the player from their career',

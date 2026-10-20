@@ -254,8 +254,8 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('Transfer Trail', () => {
     const fresh = unq(now['trail: fresh']);
-    for (const s of ['>¿De quién es esta carrera?<', '>Quedan 5 intentos<', 'aria-label="Quedan 5 intentos"', '>cedido<', '>Pasar y ver el siguiente club<', 'placeholder="Escribe un jugador…"']) expect(fresh).toContain(s);
-    expect(unq(now['trail: one guess left'])).toContain('>Queda 1 intento<');
+    for (const s of ['>¿Qué jugador es?<', '>5 intentos<', 'aria-label="5 intentos"', '>cedido<', '>Pasar y ver el siguiente club<', 'placeholder="Escribe un jugador…"']) expect(fresh).toContain(s);
+    expect(unq(now['trail: one guess left'])).toContain('>1 intento<');
     expect(unq(now['trail: one wrong guess'])).toContain('>↩ vuelve<');
     const won = unq(now['trail: won on the first two clubs']);
     for (const s of ['>Resuelto<', '>Era<', '>Acertado con 2 clubes<']) expect(won).toContain(s);
@@ -294,7 +294,8 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['top10: could not load'])).toContain('No se pudo cargar la lista de hoy');
   });
   it('plurals and lines built from parts, in Spanish word order', () => {
-    expect(t('game.left', { count: 1 })).toBe('Queda 1 intento');
+    expect(t('game.left', { count: 1 })).toBe('1 intento');
+    expect(t('game.left', { count: 3 })).toBe('3 intentos');
     expect(t('mp.gaveUp', { count: 1 })).toBe('Te rendiste tras 1 intento');
     expect(t('top10.ords').split(' ')[2]).toBe('3.º');
     expect(formatAsOf('2026-09-07')).toBe('7 sept 2026');

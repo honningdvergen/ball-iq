@@ -137,6 +137,7 @@ export const STEP3_EN = {
   'qz.stadiumsSub': "Name every ground in a league",
   'qz.start': "Start quiz",
   'trail.soon': "Coming soon — a new career to name every day.",
+  'trail.sub': "Whose career is this?",
   'trail.solved': "Solved",
   'trail.notThisTime': "Not this time",
   'trail.mastSub': "name the player from their career",
