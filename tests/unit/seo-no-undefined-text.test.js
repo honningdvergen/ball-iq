@@ -27,5 +27,7 @@ describe('no generated page shows the word "undefined"', () => {
       if (BAD.test(html)) hits.push(p.replace(DIST, ''));
     }
     expect(hits).toEqual([]);
-  });
+  // It reads every generated page (thousands): 6.4s under load on 20 Oct, past
+  // vitest's 5s default, and the build failed on a timeout, not a finding.
+  }, 60_000);
 });
