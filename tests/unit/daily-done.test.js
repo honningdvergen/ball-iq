@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import EN from '../../src/i18n/en.js';
 
 /**
  * DailyDone — ONE return-loop panel under every decided daily (2026-09-06).
@@ -194,7 +195,9 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(DAILY).not.toMatch(/todays-seven-secondary/);
     expect(DAILY).not.toMatch(/background: m\.theme\.card|m\.theme\.btnBg/);
     expect(DAILY).toMatch(/>History<\/div>/);
-    expect(APP).toMatch(/id:"daily",\s*Icon: CalendarDays, label:"History", badge: false/);
+    // i18n step 1: the label is the "tab.daily" key, English "History" in src/i18n/en.js.
+    expect(APP).toMatch(/id:"daily",\s*Icon: CalendarDays, label:t\("tab\.daily"\), badge: false/);
+    expect(EN['tab.daily']).toBe('History');
     expect(DAILY, 'result strings carry no glyphs').not.toMatch(/`[✓✗] /);
   });
 

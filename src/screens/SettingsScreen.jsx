@@ -15,6 +15,7 @@ import { Haptics } from "@capacitor/haptics";
 import { ArrowUpRight, Home, Mail, Settings, Share, Star, Timer } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { loopEvent } from "../App.jsx";
+import { LANGS, LANG_NAMES, setLang, useLang, useT } from "../i18n/index.js";
 
 export function SettingsToggle({ val, onChange, label, disabled }) {
   return (
@@ -32,8 +33,37 @@ export function SettingsToggle({ val, onChange, label, disabled }) {
   );
 }
 
+// The language row's two-option switch (i18n step 1). Same family as
+// SettingsToggle: the selected side wears the toggle's "on" colour
+// (--accent), the track is the "off" colour (--s3). Each option is named in
+// its own language (LANG_NAMES) so the way back is readable from either side.
+// Applies at once: setLang() re-renders every useT()/useLang() subscriber.
+export function SettingsLangSwitch({ label }) {
+  const lang = useLang();
+  return (
+    <div role="group" aria-label={label} style={{display:"inline-flex", gap:2, padding:2, borderRadius:999, background:"var(--s3)", flexShrink:0}}>
+      {LANGS.map((l) => {
+        const on = lang === l;
+        return (
+          <button
+            key={l}
+            type="button"
+            lang={l}
+            aria-pressed={on}
+            onClick={() => { if (!on) setLang(l); }}
+            style={{minHeight:32, padding:"6px 12px", border:"none", borderRadius:999, fontFamily:"inherit", fontSize:13, fontWeight:800, cursor:"pointer", background: on ? "var(--accent)" : "transparent", color: on ? "var(--grn-ink)" : "var(--t2)", WebkitTextFillColor: on ? "var(--grn-ink)" : "var(--t2)", transition:"background 0.2s", touchAction:"manipulation", WebkitTapHighlightColor:"transparent"}}
+          >
+            {LANG_NAMES[l]}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked, notifEnabled, onToggleNotif, notifSupported, notifBlocked, webPushOn, onToggleWebPush, webPushAvailable, webPushBlocked }) {
   const { user, profile, isGuest, signOut, exitGuestMode, openAuthPrompt } = useAuth();
+  const t = useT();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmClearStats, setConfirmClearStats] = useState(false);
@@ -235,6 +265,14 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             </div>
             <div className="sr-right">
               <SettingsToggle label="Colour-blind tiles" val={settings.colorBlind === true} onChange={v => onUpdate({colorBlind:v})} />
+            </div>
+          </div>
+          <div className="settings-row" style={{cursor:"default"}}>
+            <div className="sr-left">
+              <div className="sr-label">{t("settings.language")}</div>
+            </div>
+            <div className="sr-right">
+              <SettingsLangSwitch label={t("settings.language")} />
             </div>
           </div>
         </div>

@@ -19,6 +19,7 @@ import { getFootleNumber } from "../lib/footleNumber.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
+import { HomeGreeting } from "../components/HomeGreeting.jsx";
 // Mates' leagues (phase 1, web): loaded only for a player who might be in one.
 const LeagueHomeCard = React.lazy(() => import("../components/LeagueHomeCard.jsx"));
 
@@ -273,34 +274,9 @@ function HomeScreenImpl({
         const isDefaultName = (n) => !n || n === "Player" || /^player_/i.test(n);
         const homeRealUsername = authProfile?.username && !isDefaultName(authProfile.username) ? authProfile.username : null;
         const homeHasUsername = !!homeRealUsername;
-        const homeGreetingBase = (() => {
-          const now = new Date();
-          const h = now.getHours();
-          // Small hours are NOT morning. `h < 12` greeted someone playing at
-          // 00:38 with "Good morning", which reads as a broken clock rather
-          // than a greeting. 00:00-04:59 belongs to the night before.
-          if (h < 5) return "Still up";
-          if (h < 12) return "Good morning";
-          if (h < 18) return "Good afternoon";
-          // ⛔ THE "Good ebening" EGG IS RETIRED (2026-09-09). It ran ~1
-          // evening in 5 and it is the FIRST LINE OF THE APP. It read as a
-          // commentator's pun while the line was "Good ebening, Alex" — the
-          // name gave it the cadence. The greeting lost the name earlier the
-          // same day, and a lone misspelt word is not a joke, it is a typo on
-          // the header of a product with 500+ downloads. This is the same
-          // judgement that already gated it out of the store screenshots
-          // ("reads as a typo, permanently, to everyone deciding whether to
-          // download") — the gate was right and the conclusion generalises.
-          return "Good evening";
-        })();
-        // THE GREETING CARRIES NO NAME (Alex, 2026-09-09). "Good afternoon, Alex"
-        // fit because his name is four letters; the line was nowrap + ellipsis,
-        // so a longer name printed "Good afternoon, Alexander…" — the worst of
-        // both. The time-of-day line is the charm ("Still up" at 01:16) and it
-        // needs no name; the name is the Profile tab's job. Dropping it also
-        // frees the line from homeDisplayName, so a signed-out player gets the
-        // same header instead of a shorter one.
-        const greeting = homeGreetingBase;
+        // The greeting line (time of day, no name) is components/HomeGreeting.jsx
+        // since 2026-10-20: the i18n pilot. Its hour rules and their history
+        // ("Still up", the retired "Good ebening" egg) moved with it.
         const ws = readWordleTodayStatus();
         const footleDone = ws.kind === "won" || ws.kind === "lost";
         // Sprint #12: when both daily rituals are complete, omit the
@@ -328,7 +304,7 @@ function HomeScreenImpl({
                 What earns the space is what changes: the day (this is a daily
                 app — the date says which puzzles these are), then the streak,
                 then the way out to Settings. The greeting is the time of day,
-                no name (2026-09-09 — see `greeting`), with the date above it. */}
+                no name (2026-09-09 — see HomeGreeting.jsx), with the date above it. */}
             <div style={{display:"flex", alignItems:"center", gap:10}}>
               <div style={{display:"flex", flexDirection:"column", alignItems:"flex-start", gap:6, flex:1, minWidth:0}}>
                 {/* THE DATELINE (Alex, 2026-09-07, option D of the five he was
@@ -345,9 +321,7 @@ function HomeScreenImpl({
                     — date, greeting, Today — became two once the well anchored
                     the dailies. The greeting is the heading; the date sits under
                     it as the metadata line, with the 0/4 status on its right. */}
-                <div className="hg-greet" style={{fontSize:20, fontWeight:800, letterSpacing:"-0.02em", color:"var(--t1)", lineHeight:1.1, maxWidth:"100%"}}>
-                  {greeting}
-                </div>
+                <HomeGreeting />
               </div>
               {loginStreak > 0 && (
                 <span className={`hst-streak${streakPulsing ? ' is-pulsing' : ''}`} aria-label={`${loginStreak}-day streak`}>

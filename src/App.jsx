@@ -58,6 +58,7 @@ import { QuizEngine, TypedInput } from './screens/QuizEngine.jsx';
 import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
+import { useT } from './i18n/index.js';
 import { useShare } from './hooks/useShare.js';
 import { useWebPush } from './hooks/useWebPush.js';
 import { useJoinGate } from './hooks/useJoinGate.js';
@@ -7082,6 +7083,9 @@ function AppInner() {
   } = useNotificationCenter({ user, isGuest, showToast, setPendingJoinCode });
   // Scroll-aware tab bar → hooks/useScrollAwareTabBar.js (E16, 2026-09-06).
   const tabBarRef = useScrollAwareTabBar({ screen, inGame });
+  // i18n (step 1 pilot): the tab bar labels go through t(); useT() re-renders
+  // AppInner when the language changes in Settings. See src/i18n/index.js.
+  const t = useT();
   const openPrivacy = useCallback(() => setShowPrivacy(true), []);
   const closePrivacy = useCallback(() => setShowPrivacy(false), []);
   const openHelp = useCallback(() => setShowHelp(true), []);
@@ -8516,10 +8520,10 @@ function AppInner() {
                 where they mark a real moment (starting a game, answering,
                 winning). Pinned by tests/unit/tab-switch-no-haptic.test.js. */}
             {[
-              { id:"home",     Icon: Home,         label:"Home"    },
-              { id:"online",   Icon: Globe,        label:"Multiplayer" },
-              { id:"daily",    Icon: CalendarDays, label:"History", badge: false },
-              { id:"profile",  Icon: User,         label:"Profile" },
+              { id:"home",     Icon: Home,         label:t("tab.home")    },
+              { id:"online",   Icon: Globe,        label:t("tab.online") },
+              { id:"daily",    Icon: CalendarDays, label:t("tab.daily"), badge: false },
+              { id:"profile",  Icon: User,         label:t("tab.profile") },
             ].map(({ id, Icon, label, badge }) => (
               <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => setTab(id)}>
                 <span className="tab-svg"><Icon size={22} strokeWidth={2.25} aria-hidden="true" /></span>

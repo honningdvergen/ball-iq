@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import EN from '../../src/i18n/en.js';
 
 /**
  * Three navigation surfaces point at the same four destinations:
@@ -28,11 +29,13 @@ const APP = read('../../src/App.jsx');
 const RAIL = read('../../src/BiqNav.jsx');
 const APPBAR = read('../../src/components/AppBar.jsx');
 
-// The mobile tab bar is the source of truth: id -> label.
+// The mobile tab bar is the source of truth: id -> label. Since i18n step 1
+// (2026-10-20) its labels are t("tab.*") keys, so the English label is read
+// from src/i18n/en.js; a bare label:"…" literal is still understood.
 const mobileLabels = () => {
   const arr = APP.match(/\{ id:"home",[\s\S]*?\{ id:"profile",[^}]*\}/)?.[0] || '';
   const out = {};
-  for (const m of arr.matchAll(/id:"(\w+)",\s*Icon: \w+,\s*label:"([^"]+)"/g)) out[m[1]] = m[2];
+  for (const m of arr.matchAll(/id:"(\w+)",\s*Icon: \w+,\s*label:(?:"([^"]+)"|t\("([\w.]+)"\))/g)) out[m[1]] = m[2] ?? EN[m[3]];
   return out;
 };
 
@@ -40,6 +43,7 @@ describe('the three navs agree on what each tab is called', () => {
   it('the mobile tab bar names all four tabs', () => {
     const labels = mobileLabels();
     expect(Object.keys(labels).sort()).toEqual(['daily', 'home', 'online', 'profile']);
+    for (const [id, label] of Object.entries(labels)) expect(typeof label === 'string' && label.length > 0, `${id} has a label`).toBe(true);
   });
 
   it('the web app bar matches the mobile bar, except for the one named exception', () => {

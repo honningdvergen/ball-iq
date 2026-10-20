@@ -239,7 +239,9 @@ const FrontDoor = React.lazy(loadFrontDoor)
 // game paths we ALSO kick the import off here at module-eval. Both calls
 // resolve to the same module promise (ESM dedupes by specifier), so this just
 // starts the network fetch a render-cycle earlier, overlapping it with mount.
-const loadGameRoot = () => import('./GameRoot.jsx')
+// The .then waits for GameRoot's i18nReady (instant for English; the lazy
+// Spanish table for a Spanish player, capped at 2 s, never rejects).
+const loadGameRoot = () => import('./GameRoot.jsx').then((m) => (m.i18nReady ? m.i18nReady.then(() => m) : m))
 const GameRoot = React.lazy(loadGameRoot)
 if (!showMarketing && !_barePlay) loadGameRoot()
 // Same render-cycle head start for the front door — React.lazy waits for
