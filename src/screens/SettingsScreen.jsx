@@ -15,7 +15,7 @@ import { Haptics } from "@capacitor/haptics";
 import { ArrowUpRight, Home, Mail, Settings, Share, Star, Timer } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { loopEvent } from "../App.jsx";
-import { LANGS, LANG_NAMES, setLang, useLang, useT } from "../i18n/index.js";
+import { I18N_LIVE, LANGS, LANG_NAMES, setLang, useLang, useT } from "../i18n/index.js";
 
 export function SettingsToggle({ val, onChange, label, disabled }) {
   return (
@@ -267,6 +267,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <SettingsToggle label="Colour-blind tiles" val={settings.colorBlind === true} onChange={v => onUpdate({colorBlind:v})} />
             </div>
           </div>
+          {I18N_LIVE && (
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left">
               <div className="sr-label">{t("settings.language")}</div>
@@ -275,6 +276,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <SettingsLangSwitch label={t("settings.language")} />
             </div>
           </div>
+          )}
         </div>
       </div>
 

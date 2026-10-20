@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { join, relative } from 'node:path';
 import en from '../../src/i18n/en.js';
 import es from '../../src/i18n/es.js';
+import * as i18n from '../../src/i18n/index.js';
 import { t, initI18n, getLang, LANG_STORAGE_KEY, __resetI18nForTests } from '../../src/i18n/index.js';
 import { HomeGreeting, greetingKey } from '../../src/components/HomeGreeting.jsx';
 
@@ -98,11 +99,11 @@ describe('the pilot renders in Spanish when biq_lang=es', () => {
     await boot('es');
     expect(['tab.home', 'tab.online', 'tab.daily', 'tab.profile'].map((k) => t(k))).toEqual(['Inicio', 'Multijugador', 'Historial', 'Perfil']);
   });
-  it('a Spanish phone with no biq_lang gets Spanish too, and <html lang="es">', async () => {
+  it('a Spanish phone with no biq_lang gets Spanish too, and <html lang="es">', async () => { i18n.__setI18nLiveForTests(true); try {
     await boot(null, 'es-MX');
     expect(getLang()).toBe('es');
     expect(document.documentElement.lang).toBe('es');
-    expect(t('tab.profile')).toBe('Perfil');
+    expect(t('tab.profile')).toBe('Perfil'); } finally { i18n.__setI18nLiveForTests(false); }
   });
 });
 

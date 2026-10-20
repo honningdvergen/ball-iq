@@ -23,6 +23,15 @@ import { useSyncExternalStore } from 'react';
 import en from './en.js';
 
 export const LANGS = ['en', 'es'];
+// ⚠️ NOT LIVE YET (review, 20 Oct 2026). Until every screen is translated
+// (steps 2-4), a Spanish phone must see today's English app, not Spanish tabs
+// over English screens. With this false the device language is ignored and the
+// Settings row is hidden; an explicit biq_lang='es' (a tester's own choice) still
+// works. Step 4 flips it to true in the same PR that finishes the strings.
+export const I18N_LIVE = false;
+let live = I18N_LIVE;
+/** Tests only: exercise the behaviour step 4 turns on. */
+export function __setI18nLiveForTests(v) { live = !!v; }
 export const DEFAULT_LANG = 'en';
 export const LANG_STORAGE_KEY = 'biq_lang';
 // Endonyms: each language is named in itself, in every language, so a player
@@ -71,8 +80,8 @@ export function detectDeviceLang(nav = typeof navigator !== 'undefined' ? naviga
 }
 
 /** Explicit choice wins; otherwise the device. */
-export function resolveLang() {
-  return readStoredLang() || detectDeviceLang();
+export function resolveLang(isLive = live) {
+  return readStoredLang() || (isLive ? detectDeviceLang() : DEFAULT_LANG);
 }
 
 export function getLang() { return lang; }
@@ -126,7 +135,7 @@ export function setLang(next) {
     else if (isLang(next)) localStorage.setItem(LANG_STORAGE_KEY, next);
     else return lang;
   } catch { /* storage blocked: still switch for this session */ }
-  const target = next == null ? detectDeviceLang() : next;
+  const target = next == null ? (live ? detectDeviceLang() : DEFAULT_LANG) : next;
   if (target !== lang) {
     lang = target;
     applyHtmlLang(lang);

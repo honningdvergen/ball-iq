@@ -104,6 +104,16 @@ describe('fallback to English', () => {
   });
 });
 
+describe('not live yet (I18N_LIVE = false until step 4)', () => {
+  it('a Spanish device stays English; only an explicit biq_lang switches', () => {
+    expect(i18n.I18N_LIVE).toBe(false);
+    env({ device: 'es-ES' });
+    expect(resolveLang()).toBe('en');
+    env({ stored: 'es', device: 'en-GB' });
+    expect(resolveLang()).toBe('es');
+  });
+});
+
 describe('language choice', () => {
   it('device language: "es…" is Spanish, everything else (or nothing) English', () => {
     for (const l of ['es', 'es-ES', 'es-MX', 'es-419', 'ES-ar']) expect(detectDeviceLang({ language: l }), l).toBe('es');
@@ -113,38 +123,38 @@ describe('language choice', () => {
   it('with no biq_lang, the device decides', () => {
     env({ device: 'es-MX' });
     expect(readStoredLang()).toBe(null);
-    expect(resolveLang()).toBe('es');
+    expect(resolveLang(true)).toBe('es');
     env({ device: 'en-US' });
-    expect(resolveLang()).toBe('en');
+    expect(resolveLang(true)).toBe('en');
   });
   it('an explicit biq_lang wins over the device, both ways', () => {
     env({ stored: 'en', device: 'es-ES' });
-    expect(resolveLang()).toBe('en');
+    expect(resolveLang(true)).toBe('en');
     env({ stored: 'es', device: 'en-GB' });
-    expect(resolveLang()).toBe('es');
+    expect(resolveLang(true)).toBe('es');
   });
   it('a junk biq_lang is ignored and the device decides', () => {
     env({ stored: 'klingon', device: 'es-ES' });
     expect(readStoredLang()).toBe(null);
-    expect(resolveLang()).toBe('es');
+    expect(resolveLang(true)).toBe('es');
   });
   it('storage that throws (private mode) falls back to the device', () => {
     vi.stubGlobal('localStorage', { getItem() { throw new Error('denied'); }, setItem() { throw new Error('denied'); }, removeItem() { throw new Error('denied'); } });
     vi.stubGlobal('navigator', { language: 'es-ES' });
-    expect(resolveLang()).toBe('es');
+    expect(resolveLang(true)).toBe('es');
     expect(() => setLang('en')).not.toThrow();
     expect(getLang()).toBe('en');
   });
 });
 
 describe('initI18n / setLang', () => {
-  it('initI18n sets <html lang> to the chosen language', async () => {
+  it('initI18n sets <html lang> to the chosen language', async () => { i18n.__setI18nLiveForTests(true); try {
     env({ device: 'es-AR' });
     await initI18n();
     expect(doc.documentElement.lang).toBe('es');
     env({ device: 'en-GB' });
     await initI18n();
-    expect(doc.documentElement.lang).toBe('en');
+    expect(doc.documentElement.lang).toBe('en'); } finally { i18n.__setI18nLiveForTests(false); }
   });
   it('setLang stores the choice, updates <html lang> and notifies subscribers at once', async () => {
     await initI18n();
@@ -162,11 +172,11 @@ describe('initI18n / setLang', () => {
     expect(t('tab.home')).toBe('Home');
     off();
   });
-  it('setLang(null) drops the override and follows the device again', () => {
+  it('setLang(null) drops the override and follows the device again', () => { i18n.__setI18nLiveForTests(true); try {
     env({ stored: 'en', device: 'es-ES' });
     setLang(null);
     expect(store.getItem(LANG_STORAGE_KEY)).toBe(null);
-    expect(getLang()).toBe('es');
+    expect(getLang()).toBe('es'); } finally { i18n.__setI18nLiveForTests(false); }
   });
   it('setLang ignores an unknown language', () => {
     setLang('en');
