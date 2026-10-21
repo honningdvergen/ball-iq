@@ -85,7 +85,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   // Android -> Play, desktop -> the web app.
   const shareApp = async () => {
     loopEvent("share-get");
-    const text = `⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get`;
+    const text = t("share.app");
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: t('st.copied') })); } catch {}
   };

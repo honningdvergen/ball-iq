@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { ClipboardList, Route, UserRoundSearch, ListOrdered, Flame, X } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { Confetti, haptic } from "../App.jsx";
-import { dateToYMD, msToNextLocalMidnight, formatCountdown } from '../lib/date.js';
+import { dateToYMD, msToNextLocalMidnight } from '../lib/date.js';
+import { countdownText } from '../i18n/names.js';
 import { footleAnswerFor } from "../lib/wordle.js";
 import { getTrailAnswer } from "../lib/trail.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
@@ -820,7 +821,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       {(() => {
         const authLoading = !!user && !authProfile;
         const name = authProfile?.username || profile?.name || null;
-        const ko = formatCountdown(msToNextLocalMidnight(now));
+        const ko = countdownText(msToNextLocalMidnight(now));
         return (
           <>
             {/* No local gear — AppInner's global header already renders one. */}
@@ -984,7 +985,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           dailyScore, runStats, matchdays, form14) — nothing hardcoded. ═══ */}
       <div className="daily-desktop">
         {(() => {
-          const ko = formatCountdown(msToNextLocalMidnight(now));
+          const ko = countdownText(msToNextLocalMidnight(now));
 
           // 14-day form cells reuse the Home rail streak card's shape (done +
           // today), derived from the SAME form14 the mobile strip renders so

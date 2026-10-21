@@ -1,5 +1,6 @@
 // "Stump a mate": the share link and the share sheet for one question. Moved
 // out of App.jsx on 2026-09-06 (review E16) with the Results screen.
+import { t } from "../i18n/index.js";
 
 // The recipient side of the viral loop: answer a single question with zero
 // login, get the reveal + the hint story, then the chain CTA ("pass it on")
@@ -25,7 +26,7 @@ export async function shareStumpText(text) {
   try {
     if (navigator.clipboard) {
       await navigator.clipboard.writeText(text);
-      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: "Link copied 📋" }));
+      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: t("sm.copied") }));
     }
   } catch {}
 }

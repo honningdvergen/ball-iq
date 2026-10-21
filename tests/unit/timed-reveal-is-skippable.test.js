@@ -80,6 +80,9 @@ describe.each(['HotStreakEngine', 'TrueFalseEngine'])('%s reveal can be skipped'
 describe('the skip is discoverable', () => {
   it('Hot Streak tells the player the hold can be skipped', () => {
     // A skip nobody can see is not a skip — especially while a clock runs.
-    expect(engine('HotStreakEngine').includes('tap to skip')).toBe(true);
+    // The words are hs.skip since i18n step 5 (en.js and en.home.js).
+    expect(engine('HotStreakEngine').includes('t("hs.skip")')).toBe(true);
+    const en = readFileSync(fileURLToPath(new URL('../../src/i18n/en.home.js', import.meta.url)), 'utf8');
+    expect(en).toContain("'hs.skip': 'tap to skip →',");
   });
 });

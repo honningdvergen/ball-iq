@@ -40,6 +40,7 @@ let live = I18N_LIVE;
 export function __setI18nLiveForTests(v) { live = !!v; }
 export const DEFAULT_LANG = 'en';
 export const LANG_STORAGE_KEY = 'biq_lang';
+export const LIVE_HINT_KEY = 'biq_i18n_live';
 // Endonyms: each language is named in itself, in every language, so a player
 // who switched by mistake can still find their way back. Not translated.
 export const LANG_NAMES = { en: 'English', es: 'Español' };
@@ -132,6 +133,10 @@ export function loadLang(l) {
  * BOOT_WAIT_MS, whichever is first. English resolves at once.
  */
 export function initI18n({ waitMs = BOOT_WAIT_MS } = {}) {
+  // index.html's pre-boot onboarding shell paints before any JS module and
+  // cannot read I18N_LIVE: this hint is how it follows the device language
+  // only while Spanish is live (see the shell's script).
+  try { if (live) localStorage.setItem(LIVE_HINT_KEY, '1'); else localStorage.removeItem(LIVE_HINT_KEY); } catch { /* storage blocked */ }
   lang = resolveLang();
   applyHtmlLang(lang);
   emit();

@@ -1592,10 +1592,12 @@ export function computeTrailStreak(today) {
 // which leaked the SHAPE of the career (how many clubs, how scrambled).
 export function buildTrailShareText({ number, won, clubsUsed, streak } = {}) {
   const head = `⚽ Ball IQ · Transfer Trail${number > 0 ? ` #${number}` : ""}`;
+  // The words are share.* in i18n/en.js (en.home.js: this file is on Home's
+  // path), in the sharer's language; the product name stays as it is.
   const line = won
-    ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? "" : "s"} ${"⚽".repeat(Math.min(clubsUsed, 6))}`
-    : `Didn't get it — X/${TRAIL_MAX_ATTEMPTS}`;
-  const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Trail streak` : "";
+    ? `${t("share.trailGot", { count: clubsUsed })} ${"⚽".repeat(Math.min(clubsUsed, 6))}`
+    : t("share.trailMissed", { max: TRAIL_MAX_ATTEMPTS });
+  const streakLine = won && streak > 0 ? `\n${t("share.trailStreak", { n: streak })}` : "";
   return `${head}\n${line}${streakLine}\n\nballiq.app/trail`;
 }
 

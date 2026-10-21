@@ -993,4 +993,53 @@ export default registerEnglish({
   'cc.Legends.s': 'Legends',
   'cc.Records': 'Records & Managers',
   'cc.Records.s': 'Records',
+
+  // ── i18n step 5 (pinned in tests/unit/i18n-leftovers.keys.js) ──
+  // Hot Streak's and True or False's in-game chrome (App.jsx's two engines).
+  'hs.header': '⚡🔥 Hot Streak',
+  'hs.pts': 'pts',
+  'hs.skip': 'tap to skip →',
+  // The install banner and the Footle store badge's caption (App.jsx).
+  'ib.label': 'Install Ball IQ',
+  'ib.title': 'Never miss a day',
+  'ib.native': 'Install for a daily reminder when new puzzles drop.',
+  'ib.ios': 'Tap Share → Add to Home Screen for daily reminders.',
+  'ib.other': 'Add to your home screen for daily reminders.',
+  'ib.install': 'Install',
+  'ib.iosSteps': 'iOS install steps',
+  'ib.share': '⤴ Share',
+  'ib.add': 'Add',
+  'ib.dismiss': 'Dismiss install prompt',
+  'ib.cta': 'Keep your streak: daily reminders and every quiz in the Ball IQ app',
+  // The time to the next puzzles (i18n/names.js countdownText, App.jsx's
+  // DailyHeroCountdown): "12h 0m", "5m".
+  'time.hm': '{h}h {m}m',
+  'time.m': '{m}m',
+  'time.soon': 'soon',
+  // Share texts, in the SHARER's language. Product names stay as they are.
+  'share.footleHard': 'Hard',
+  'share.trailGot_one': 'Got it on {count} club',
+  'share.trailGot_other': 'Got it on {count} clubs',
+  'share.trailMissed': 'Didn\'t get it — X/{max}',
+  'share.trailStreak': '🔥 {n}-day Trail streak',
+  'share.mysterySolved_one': 'Solved in {count} guess',
+  'share.mysterySolved_other': 'Solved in {count} guesses',
+  'share.mysteryGaveUp': 'Gave up',
+  'share.mysteryStreak': '🔥 {n}-day Mystery streak',
+  'share.top10Streak': '🔥 {n}-day Top 10 streak',
+  'share.challenge': '{what} No. {edition}: {score}. Can you beat it?',
+  'share.stumpMissed': 'This one got me 🙈 bet you can\'t get it either ⚽ {link}',
+  'share.stumpGot': 'I got this one — bet you can\'t 😏 ⚽ {link}',
+  'share.stumpPassGot': 'Got it ✅ your turn 😏 ⚽ {link}',
+  'share.stumpPassMissed': 'It got me too 🙈 can YOU get it? ⚽ {link}',
+  'share.app': '⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get',
+  // Stump a mate, the recipient's screen (screens/StumpScreen.jsx, lib/stump.js).
+  'sm.title': '🥜 Stump a mate',
+  'sm.bet': 'A mate bets you can\'t get this{c}:',
+  'sm.got': '⚽ You got it!',
+  'sm.stumped': 'Stumped! 🥜',
+  'sm.pass': '🥜 Pass it on',
+  'sm.full': 'Play the full quiz',
+  'sm.explore': 'Explore Ball IQ',
+  'sm.copied': 'Link copied 📋',
 });

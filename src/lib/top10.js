@@ -251,7 +251,7 @@ export function buildTop10ShareText({ number, title, found = [], lives = 0, stre
   const head = `⚽ Ball IQ · Top 10${number > 0 ? ` #${number}` : ''}`;
   const squares = found.map((f) => (f ? '🟩' : '⬛')).join('');
   const hearts = '❤️'.repeat(lives) + '🤍'.repeat(Math.max(0, TOP10_LIVES - lives));
-  const streakLine = streak > 1 ? `\n🔥 ${streak}-day Top 10 streak` : '';
+  const streakLine = streak > 1 ? `\n${t('share.top10Streak', { n: streak })}` : '';
   return `${head}\n${title}\n${squares} ${score}/${found.length}\n${hearts}${streakLine}\n\nballiq.app/top10`;
 }
 

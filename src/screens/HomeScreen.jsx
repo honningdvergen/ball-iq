@@ -9,7 +9,8 @@ import { getTrailAnswer, loadTrailDay, getTrailNumber } from "../lib/trail.js";
 import { isTop10Live, getTop10Number, loadTop10Day } from "../lib/top10.js";
 import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
-import { dateToYMD, formatCountdown, msToNextLocalMidnight } from "../lib/date.js";
+import { dateToYMD, msToNextLocalMidnight } from "../lib/date.js";
+import { countdownText } from "../i18n/names.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
@@ -520,7 +521,7 @@ function HomeScreenImpl({
                     <div className="dds-head">
                       <CircleCheck size={20} strokeWidth={2.2} aria-hidden="true" className="dds-tick" />
                       <span className="dds-title">{total === 4 ? t("home.done.titleFour") : t("home.done.title", { n: total })}</span>
-                      <span className="dds-next">{t("home.done.next", { time: formatCountdown(msToNextLocalMidnight(new Date())) })}</span>
+                      <span className="dds-next">{t("home.done.next", { time: countdownText(msToNextLocalMidnight(new Date())) })}</span>
                     </div>
                     <div className="dds-chips">
                       {rows.map((r) => (

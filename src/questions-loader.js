@@ -42,6 +42,7 @@
 // The index preserves QB's row ORDER, so an index position maps to the same
 // question. Do not sort it: the Daily 7 shuffles by array position.
 import { loadClubData } from './lib/clubData.js';
+import { loadSpanishQuestions, indexEnglishBank } from './i18n/questions.js';
 
 let idxCache = null;
 let idxInFlight = null;
@@ -93,7 +94,13 @@ export function loadQuestions() {
   // what registers the Ball IQ card's club routes. Every bank question carries
   // its `club`, so "I have questions but the card cannot route their club
   // answers" must be unrepresentable as well: no bank without the routes.
-  inFlight = Promise.all([import('./questions.js'), import('./questionConflicts.js'), loadClubData()]).then(([mod, conflicts]) => {
+  //
+  // The Spanish text (i18n/questions.js) rides along for a Spanish player
+  // ONLY, so a quiz opens in Spanish rather than switching under the player's
+  // eyes; for English loadSpanishQuestions() resolves at once and fetches
+  // nothing. It never rejects: a failed fetch is English questions, not an
+  // error.
+  inFlight = Promise.all([import('./questions.js'), import('./questionConflicts.js'), loadClubData(), loadSpanishQuestions()]).then(([mod, conflicts]) => {
     const QB = mod.QB;
     const TF_STATEMENTS = mod.TF_STATEMENTS;
     const conflictsWith = conflicts.conflictsWith;
@@ -111,6 +118,7 @@ export function loadQuestions() {
     const QB_CHAOS  = QB.filter(q => q && (q.cat === "chaos" || q.tag === "chaos"));
 
     cache = { QB, TF_STATEMENTS, QB_CHAOS, conflictsWith };
+    indexEnglishBank(cache);
     inFlight = null;  // free the promise reference once resolved
     return cache;
   }).catch((err) => {

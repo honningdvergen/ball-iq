@@ -15,6 +15,7 @@ import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { useQuestionText } from "../i18n/questions.js";
 import { rich } from "../i18n/rich.jsx";
 
 // A category's chip label: App.jsx's catLabel (the cat.* keys, else CAT_LABELS).
@@ -171,6 +172,7 @@ export const READ_GRACE_MS = 800;
 
 export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel, onHowToPlay }) {
   const t = useT();
+  const loc = useQuestionText();
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
@@ -320,6 +322,10 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   // deliberately NOT on the useModalA11y stack, so the shell can't close it.
   const total = questions?.length || 0;
   const q = questions?.[idx];
+  // What the player READS: the Spanish q, options and hint when the language
+  // is es (i18n/questions.js), else `q` itself. Everything that scores,
+  // records or reports keeps using `q`.
+  const qv = loc.q(q);
   // Phase 6b Issue A: Daily 7 is a leisurely review experience; the
   // auto-fail-after-20s signal was creating frustration on re-entry
   // (the timer-at-full initial render read as "stale state"). Daily
@@ -818,7 +824,7 @@ const CTA_INSET = (() => {
             brand hue readable on the dark chip. */}
         <div className="q-tag" style={qTagStyle(q.cat)}>{catLabel(t, q.cat)}</div>
         {/* noBreakScores: display only (keeps "6-1" on one line); q.q itself is untouched. */}
-        <div className="q-text" style={{fontSize:18}}>{noBreakScores(q.q)}</div>
+        <div className="q-text" style={{fontSize:18}}>{noBreakScores(qv.q)}</div>
       </div>
 
       {isTF ? (
@@ -853,7 +859,7 @@ const CTA_INSET = (() => {
         </div>
       ) : !isTyped ? (
         <div className="opts">
-          {q.o.map((opt, i) => {
+          {qv.o.map((opt, i) => {
             const answered = selected !== null;
             const isCorrect = i === q.a;
             const isChosen = i === selected;
@@ -954,7 +960,7 @@ const CTA_INSET = (() => {
           the differentiator no measured competitor has. Routing players past
           them by default wastes the one thing that earns a return visit.
           So the panel scrolls itself into view. */}
-      {answered && q?.hint && (
+      {answered && qv?.hint && (
         <div ref={whyRef} style={{
           marginTop:10,
           padding:"10px 14px",
@@ -967,7 +973,7 @@ const CTA_INSET = (() => {
           animation:"fadeIn 0.4s ease-out"
         }}>
           <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4,display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> {t("quiz.why")}</div>
-          <div>{q.hint}</div>
+          <div>{qv.hint}</div>
         </div>
       )}
       {/* THE REPORT LINK LIVES IN THE FOOTER (review A4, 2026-09-07).

@@ -15,6 +15,7 @@ import { DAY_MS, WORDLE_ANCHOR_DAY, getFootleNumber } from "./footleNumber.js";
 import { makeDoor } from "./scheduleDoor.js";
 import { FOOTLE_SERVED } from "../data/footleServed.js";
 import { getWordleDateKey } from "./wordleStatus.js";
+import { t } from "../i18n/index.js";
 export { getFootleNumber, WORDLE_ANCHOR_DAY };
 
 export const WORDLE_PLAYERS = [
@@ -400,5 +401,5 @@ export const FOOTLE_CLUE_AFTER = 3;
 // A hard-mode game (real names only, opt-in) says "Hard": it is the badge.
 export function footleShareHead(appName, num, won, guessCount, clue, hard = false) {
   const tag = num > 0 ? ` #${num}` : "";
-  return `⚽ ${appName} Footle${tag} ${won ? guessCount : "X"}/6${hard ? " Hard" : ""}${clue ? " 💡" : ""}`;
+  return `⚽ ${appName} Footle${tag} ${won ? guessCount : "X"}/6${hard ? ` ${t("share.footleHard")}` : ""}${clue ? " 💡" : ""}`;
 }

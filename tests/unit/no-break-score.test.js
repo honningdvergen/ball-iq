@@ -40,7 +40,8 @@ describe('scores never break after the hyphen', () => {
 
   it('is applied where stems and options are drawn, never written back', () => {
     const qe = read('src/screens/QuizEngine.jsx');
-    expect(qe).toContain('{noBreakScores(q.q)}');
+    // qv: the question as the player reads it (i18n step 5, Spanish text when es).
+    expect(qe).toContain('{noBreakScores(qv.q)}');
     expect(qe).toContain('{noBreakScores(opt)}');
     // The bank itself never carries the display character.
     expect(read('src/questions.js')).not.toContain('‑');

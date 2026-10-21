@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Flame, ShieldCheck, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords } from "lucide-react";
-import { msToNextLocalMidnight, formatCountdown } from "../lib/date.js";
+import { msToNextLocalMidnight } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
 import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel } from "../lib/gameChallenge.js";
@@ -20,7 +20,7 @@ const LEAGUE_GAMES = ["footle", "daily7", "trail", "top10"];
 // Results in a day before the panel shows headcounts instead of shares.
 const SHOW_COUNTS_FROM = 300;
 import { reminderHourLabel } from "../lib/playHour.js";
-import { levelName } from "../i18n/names.js";
+import { levelName, countdownText } from "../i18n/names.js";
 import { useT, useLang, isLangLoaded, fmtLocale, fmtFixed } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
@@ -221,7 +221,9 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     if (!token) return;
     const url = `https://balliq.app/c/${token}`;
     const what = { footle: "Footle", trail: "Transfer Trail", top10: "Top 10" }[game];
-    const text = `${what} No. ${edition}: ${scoreLabel(game, myScore)}. Can you beat it?`;
+    // In the sharer's language (i18n step 5). English is the same line as before:
+    // scoreLabel's English words are the gc.* keys' English.
+    const text = t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) });
     track?.("dd-challenge", { game, rival: !!rival });
     try {
       if (navigator.share) { await navigator.share({ text, url }); setChallengeState("sent"); return; }
@@ -243,7 +245,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const yLabel = game === "daily7" ? t("dd.yday") : t("dd.ydayNo", { n: edition - 1 });
   const showCounts = !!summary && summary.n >= SHOW_COUNTS_FROM;
   const barValue = (r) => (showCounts ? r.c : `${summary.n ? Math.round((r.c / summary.n) * 100) : 0}%`);
-  const ko = formatCountdown(msToNextLocalMidnight(now));
+  const ko = countdownText(msToNextLocalMidnight(now));
   const streakN = streak?.count || 0;
   const label = streak?.label || t("dd.l.none");
   // A lost puzzle keeps the streak only where the host says its streak counts
