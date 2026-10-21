@@ -4,6 +4,7 @@ import * as Sentry from "@sentry/react";
 import { Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { haptic, loopEvent } from "../App.jsx";
+import { useT } from "../i18n/index.js";
 
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────
 // ONE step, shown once per device after auth. Persists:
@@ -58,6 +59,7 @@ export function readPrebootPick() {
 export let prebootActReplayed = false;
 
 export function OnboardingScreen({ onDone }) {
+  const t = useT();
   // ⚠️ ADOPT THE TAP THE SHELL ALREADY TOOK.
   //
   // The pre-boot shell paints this exact screen from static HTML so LCP lands
@@ -191,8 +193,10 @@ export function OnboardingScreen({ onDone }) {
                 emoji football closing its heading (13 Oct 2026). */}
             <div className="onboard-mark" aria-hidden="true">Ball <em>IQ</em></div>
             <div className="onboard-step-top">
-              <div className="onboard-title" style={{ marginTop: 16 }}>Quick one. Give it a go.</div>
-              <div className="onboard-body" style={{ marginBottom: 14 }}>{ONBOARD_SAMPLE.q}</div>
+              <div className="onboard-title" style={{ marginTop: 16 }}>{t("ob.title")}</div>
+              {/* ONBOARD_SAMPLE.q is the same question in English (ob.q); the
+                  pre-boot shell in index.html paints that English one. */}
+              <div className="onboard-body" style={{ marginBottom: 14 }}>{t("ob.q")}</div>
               <div className="onboard-sample-opts">
                 {ONBOARD_SAMPLE.o.map((opt, i) => {
                   const answered = sampleAnswered !== null;
@@ -232,15 +236,15 @@ export function OnboardingScreen({ onDone }) {
                   app.css neutralises the animation without needing a rule here. */}
               <div className={`onboard-sample-fb${sampleAnswered === ONBOARD_SAMPLE.a ? " is-correct" : ""}`}>
                 {sampleAnswered === null ? "" : (sampleAnswered === ONBOARD_SAMPLE.a
-                  ? (<><span className="onboard-fb-tick" aria-hidden="true"><Check size={13} strokeWidth={3.5} /></span>Nice — you’re a natural</>)
-                  : `It's ${ONBOARD_SAMPLE.o[ONBOARD_SAMPLE.a]} — the all-time record holder. You'll pick these up fast!`)}
+                  ? (<><span className="onboard-fb-tick" aria-hidden="true"><Check size={13} strokeWidth={3.5} /></span>{t("ob.right")}</>)
+                  : t("ob.wrong", { a: ONBOARD_SAMPLE.o[ONBOARD_SAMPLE.a] }))}
               </div>
             </div>
             {/* The label is the exit, so it names the destination rather than
                 a step number — there is no next step to go to. */}
             <div className="onboard-actions">
-              <button className="onboard-skip" onClick={skip}>{sampleAnswered !== null && sampleAnswered !== undefined && sampleAnswered !== false ? 'Look around first' : 'Skip'}</button>
-              <button className="onboard-btn onboard-btn-inline" onClick={next}>{sampleAnswered === null ? "Start playing" : "Let’s play"}</button>
+              <button className="onboard-skip" onClick={skip}>{t(sampleAnswered !== null && sampleAnswered !== undefined && sampleAnswered !== false ? "ob.later" : "ob.skip")}</button>
+              <button className="onboard-btn onboard-btn-inline" onClick={next}>{t(sampleAnswered === null ? "ob.start" : "ob.play")}</button>
             </div>
           </div>
         </div>

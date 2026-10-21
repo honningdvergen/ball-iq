@@ -28,6 +28,7 @@ import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { FOOTLE_SHORT } from './lib/modeCopy.js';
 import { APP_NAME, LEVELS, getLevelInfo, computeBadges, getXPForResult } from './lib/scoring.js';
+import { levelName } from './i18n/names.js';
 import { dateToYMD, keyForDate, dayIndexForDate, msToNextLocalMidnight, formatCountdown } from './lib/date.js';
 import { bumpUsage } from './lib/usageCounters.js';
 import { readWordleTodayStatus, getWordleDateKey, countPriorFootleSolves } from './lib/wordleStatus.js';
@@ -58,7 +59,9 @@ import { QuizEngine, TypedInput } from './screens/QuizEngine.jsx';
 import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
-import { useT } from './i18n/index.js';
+import { useT, useLang, isLangLoaded, t as tl } from './i18n/index.js';
+import en from './i18n/en.js';
+import { rich } from './i18n/rich.jsx';
 import { useShare } from './hooks/useShare.js';
 import { useWebPush } from './hooks/useWebPush.js';
 import { useJoinGate } from './hooks/useJoinGate.js';
@@ -822,6 +825,11 @@ export const CAT_LABELS = {
   // accumulated. Fix the label, never the key.
   ClubQuiz:"Club Quiz", LeagueQuiz:"League Quiz"
 };
+// A category's display name. Spanish renames a few (the cat.* keys in
+// i18n/en.js, same English as above); every other category keeps its
+// CAT_LABELS name, the same in both languages (Premier League, La Liga …).
+// LEAGUE_QUIZ_SECTIONS' names are the same words for the same cat.
+export const catLabel = (t, c) => (en[`cat.${c}`] ? t(`cat.${c}`) : CAT_LABELS[c] || c);
 const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Ligue1","Transfers","Managers","Records","Legends"];
 
 
@@ -1370,6 +1378,7 @@ function SETTINGS_DEFAULTS() {
 // ─── HOT STREAK ENGINE ────────────────────────────────────────────────────────
 const HOT_STREAK_MISS_S = 3;
 function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen }) {
+  const t = useT();
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -1498,7 +1507,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
         <div style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,monospace",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>pts</span></div>
       </div>
       <div className="q-card">
-        <div className="q-tag">{CAT_LABELS[q.cat] || q.cat}</div>
+        <div className="q-tag">{catLabel(t, q.cat)}</div>
         <div className="q-text">{q.q}</div>
       </div>
       <div className="opts">
@@ -2185,14 +2194,17 @@ function DailySocialProof({ score, total }) {
 }
 
 export function ReviewQuestionCard({ a, index }) {
+  const t = useT();
   const { q, type, cat, options, userIdx, correctIdx, userText, correctText, isCorrect, timedOut } = a;
+  // A true-or-false question stores its options as TRUE / FALSE.
+  const optLabel = (opt) => (type === 'tf' && (opt === 'TRUE' || opt === 'FALSE') ? t(opt === 'TRUE' ? 'quiz.true' : 'quiz.false') : opt);
   return (
     <div className={`dr-q ${isCorrect ? 'dr-q-right' : 'dr-q-wrong'}`}>
       <div className="dr-q-head">
         <span className="dr-q-mark">{isCorrect ? '✓' : '✗'}</span>
-        <span className="dr-q-num">Q{index + 1}</span>
-        {cat && <span className="dr-q-cat">{CAT_LABELS[cat] || cat}</span>}
-        {timedOut && <span className="dr-q-timeout">timed out</span>}
+        <span className="dr-q-num">{rich(t('quiz.qTight'), { n: index + 1 })}</span>
+        {cat && <span className="dr-q-cat">{catLabel(t, cat)}</span>}
+        {timedOut && <span className="dr-q-timeout">{t('rw.timedOut')}</span>}
       </div>
       <div className="dr-q-text">{q}</div>
       {(type === 'mcq' || type === 'tf') && Array.isArray(options) ? (
@@ -2203,9 +2215,9 @@ export function ReviewQuestionCard({ a, index }) {
             if (idx === userIdx && !isCorrect) cls += ' dr-opt-user-wrong';
             return (
               <div key={idx} className={cls}>
-                <span className="dr-opt-text">{opt}</span>
-                {idx === correctIdx && <span className="dr-opt-tag">correct</span>}
-                {idx === userIdx && !isCorrect && <span className="dr-opt-tag dr-opt-tag-user">your pick</span>}
+                <span className="dr-opt-text">{optLabel(opt)}</span>
+                {idx === correctIdx && <span className="dr-opt-tag">{t('rw.correctTag')}</span>}
+                {idx === userIdx && !isCorrect && <span className="dr-opt-tag dr-opt-tag-user">{t('rw.yourPick')}</span>}
               </div>
             );
           })}
@@ -2215,13 +2227,13 @@ export function ReviewQuestionCard({ a, index }) {
           {userText && (
             <div className={isCorrect ? 'dr-typed-row dr-typed-correct' : 'dr-typed-row dr-typed-user-wrong'}>
               <span className="dr-typed-mark">{isCorrect ? '✓' : '✗'}</span>
-              <span>You typed: <strong>{userText}</strong></span>
+              <span>{rich(t('rw.typed'), { x: <strong>{userText}</strong> })}</span>
             </div>
           )}
           {!isCorrect && correctText && (
             <div className="dr-typed-row dr-typed-correct">
               <span className="dr-typed-mark">✓</span>
-              <span>Correct: <strong>{correctText}</strong></span>
+              <span>{rich(t('rw.correctIs'), { x: <strong>{correctText}</strong> })}</span>
             </div>
           )}
         </div>
@@ -5569,32 +5581,37 @@ function AppInner() {
   // level pill already says the new name, so the line is not carried into a
   // later Review of the same puzzle or another day's panel.
   useEffect(() => { if (screen === "home") setDailyPromotion(null); }, [screen]);
+  // The panel's words follow the language (tl is i18n's t: this memo runs above AppInner's own `t`).
+  const uiLang = useLang();
+  const uiReady = isLangLoaded(uiLang);
   const dailyDoneServices = useMemo(() => {
     const nextUp = [];
+    // `short`: the chip's name, the product's own.
+    const today = (key, g) => ({ key, name: tl("dd.today", { g }), short: g });
     try {
       const ws = readWordleTodayStatus();
       if (ws.kind === "ready" || ws.kind === "in-progress") {
-        nextUp.push({ key: "footle", name: ws.kind === "in-progress" ? "Continue today's Footle" : "Today's Footle",
+        nextUp.push({ ...(ws.kind === "in-progress" ? { key: "footle", name: tl("dd.contToday", { g: "Footle" }) } : today("footle", "Footle")),
           icon: <span className="fh-tile fh-tile-green" style={{ "--fh-tile": "22px", borderRadius: 6 }} aria-hidden="true">F</span>,
           onTap: () => setScreen("wordle") });
       }
     } catch {}
-    if (!dailyDone) nextUp.push({ key: "daily7", name: "Today's Daily 7", icon: <ClipboardList size={18} strokeWidth={2.2} />, onTap: () => startMode("daily") });
+    if (!dailyDone) nextUp.push({ ...today("daily7", "Daily 7"), icon: <ClipboardList size={18} strokeWidth={2.2} />, onTap: () => startMode("daily") });
     try {
       if (getTrailAnswer() && !["won", "lost"].includes(loadTrailDay()?.status)) {
-        nextUp.push({ key: "trail", name: "Today's Transfer Trail", icon: <Route size={18} strokeWidth={2.2} />, onTap: () => setScreen("trail") });
+        nextUp.push({ ...today("trail", "Transfer Trail"), icon: <Route size={18} strokeWidth={2.2} />, onTap: () => setScreen("trail") });
       }
     } catch {}
     try {
       if (isTop10Live() && loadTop10Day(dateToYMD(new Date()))?.status !== "done") {
-        nextUp.push({ key: "top10", name: "Today's Top 10", icon: <ListOrdered size={18} strokeWidth={2.2} />, onTap: () => setScreen("top10") });
+        nextUp.push({ ...today("top10", "Top 10"), icon: <ListOrdered size={18} strokeWidth={2.2} />, onTap: () => setScreen("top10") });
       }
     } catch {}
     try {
       // Not a daily on a day Top 10 has a list, so it is not "still open today".
       if (MYSTERY_ENABLED && !isTop10Live()) {
         const m = JSON.parse(localStorage.getItem(`biq_mystery_${dateToYMD(new Date())}`) || "null");
-        if (!(m && (m.won || m.gaveUp))) nextUp.push({ key: "mystery", name: "Today's Mystery Player", icon: <UserRoundSearch size={18} strokeWidth={2.2} />, onTap: () => setScreen("mystery") });
+        if (!(m && (m.won || m.gaveUp))) nextUp.push({ ...today("mystery", "Mystery Player"), icon: <UserRoundSearch size={18} strokeWidth={2.2} />, onTap: () => setScreen("mystery") });
       }
     } catch {}
     // The day's dailies, for the Next up card's progress bar (16 Oct 2026).
@@ -5610,7 +5627,7 @@ function AppInner() {
       // shields: banked freezes (one per 200 XP, max 3, lib/streak.js). Shown by
       // the streak so a player knows a missed day is covered BEFORE one is spent
       // (return research, 16 Oct 2026: they were only ever named after use).
-      streak: { count: loginStreak || 0, label: "daily streak", keepsOnLoss: true, shields: Math.min(3, Math.max(0, Math.floor((xp || 0) / 200) - (stats?.shieldsUsed || 0))) },
+      streak: { count: loginStreak || 0, label: tl("dd.l.daily"), keepsOnLoss: true, shields: Math.min(3, Math.max(0, Math.floor((xp || 0) / 200) - (stats?.shieldsUsed || 0))) },
       // The guest save line used to be its own card above this panel (Alex,
       // 2026-09-06: "does this look good?" — no). It is a row of the panel now:
       // what lives on this phone only, and the one tap that makes it follow them.
@@ -5623,7 +5640,7 @@ function AppInner() {
         line: ((stats?.gamesPlayed || 0) >= 2 || xp > 0) ? (() => {
           const li = getLevelInfo(xp);
           const toNext = li.nextLevel ? Math.max(0, (li.nextLevel.xpNeeded || 0) - xp) : 0;
-          return `${li.level.name} · ${xp} XP${li.nextLevel && toNext > 0 ? ` · ${toNext} to ${li.nextLevel.name}` : ''}`;
+          return `${levelName(li.level.name)} · ${xp} XP${li.nextLevel && toNext > 0 ? tl("dd.toNext", { n: toNext, name: levelName(li.nextLevel.name) }) : ''}`;
         })() : null,
       } : null,
       nextUp,
@@ -5638,7 +5655,7 @@ function AppInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // top10Tick: the "still open today" rows name Top 10 or Mystery, whichever is today's fourth
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.shieldsUsed, stats?.gamesPlayed, xp, top10Tick, resolveChallengerName, dailyPromotion]);
+  }, [resultsRemindState, remindFromResults, loginStreak, user, isGuest, dailyDone, startMode, screen, stats?.shieldsUsed, stats?.gamesPlayed, xp, top10Tick, resolveChallengerName, dailyPromotion, uiLang, uiReady]);
   const footleServices = useMemo(() => ({ ...FOOTLE_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
   const dailyScreenServices = useMemo(() => ({ ...DAILY_SERVICES, dailyDone: dailyDoneServices }), [dailyDoneServices]);
 
@@ -8368,8 +8385,8 @@ function AppInner() {
                   <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(LEAGUE_QUIZ_BY_CAT[activeLeague].color)}}>{LEAGUE_QUIZ_BY_CAT[activeLeague].abbr}</span>
                 </div>
                 <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>League Quiz</div>
-                  <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{LEAGUE_QUIZ_BY_CAT[activeLeague].name}</div>
+                  <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>{t("cat.LeagueQuiz")}</div>
+                  <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{catLabel(t, activeLeague)}</div>
                 </div>
               </div>
             )}
@@ -8388,7 +8405,7 @@ function AppInner() {
               // gates them on survivalBest > 0 and the prop was never passed.
               survivalBest={stats.bestSurvival || 0}
               quizLabel={activePack ? activePack.name
-                : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
+                : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? catLabel(t, activeLeague)
                 : undefined}
               // Audit #5: a club/league quit stranded the player on Home —
               // send them back to the picker they came from instead.
@@ -8481,7 +8498,7 @@ function AppInner() {
             ) : null}
             classicBest={stats.bestScore || 0}
             label={activePack ? activePack.name
-              : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? LEAGUE_QUIZ_BY_CAT[activeLeague].name
+              : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? catLabel(t, activeLeague)
               : null}
             onShare={() => (mode === "daily"
               // Daily shares route through shareDaily — the (previously

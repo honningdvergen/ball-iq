@@ -1,5 +1,6 @@
 import { Flag } from "lucide-react";
 import ReportButton from "./ReportButton.jsx";
+import { t, useT } from "../i18n/index.js";
 
 /**
  * The foot of a finished daily: the way to tell us it is wrong, then the way out.
@@ -16,7 +17,8 @@ import ReportButton from "./ReportButton.jsx";
  * icon; and one "Back to Home" button under it. Styles are inline on purpose:
  * Transfer Trail also mounts on a static page that does not load app.css.
  */
-export const reportLabel = (thing) => `${thing} looks wrong? Tell us`;
+// The three sentences are the rf.Answer / rf.Career / rf.List keys in i18n/en.js.
+export const reportLabel = (thing) => t(`rf.${thing}`);
 
 const LINK = {
   margin: "0 auto", padding: "10px 12px", minHeight: 44, display: "flex", alignItems: "center", gap: 6,
@@ -29,6 +31,7 @@ const HOME = {
 };
 
 export function ReportLink({ thing, info, onReport, style }) {
+  useT();
   if (!onReport || !info) return null;
   return (
     <ReportButton
@@ -46,6 +49,7 @@ export function ReportLink({ thing, info, onReport, style }) {
 // since the tidy pass of 16 Oct: stacked under the finish panel, a second
 // full-width outlined pill in the mode colour was one more thing shouting.
 export default function ResultFoot({ thing, info, onReport, onHome, more }) {
+  useT();
   const link = <ReportLink thing={thing} info={info} onReport={onReport} />;
   if (!onHome && !more && (!onReport || !info)) return null;
   return (
@@ -53,7 +57,7 @@ export default function ResultFoot({ thing, info, onReport, onHome, more }) {
       {link}
       <div style={{ display: "flex", gap: 8 }}>
         {more && <button type="button" onClick={more.onClick} style={{ ...HOME, flex: 1, minWidth: 0, color: more.accent || "var(--t1)", WebkitTextFillColor: more.accent || "var(--t1)" }}>{more.label}</button>}
-        {onHome && <button type="button" onClick={onHome} style={{ ...HOME, flex: 1, minWidth: 0 }}>Back to Home</button>}
+        {onHome && <button type="button" onClick={onHome} style={{ ...HOME, flex: 1, minWidth: 0 }}>{t("quiz.backHome")}</button>}
       </div>
     </div>
   );

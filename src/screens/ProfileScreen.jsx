@@ -10,6 +10,9 @@ import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS 
 import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, LEAGUE_FACES, pickLeagueFace, rawAnswered } from "../lib/ballIqCard.js";
 import { lift } from "../lib/colourMath.js";
 import { CALIBRATION } from "../data/cardCalibration.js";
+import { t as tl, useT, fmtLocale } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
+import { levelName, tierName, compName } from "../i18n/names.js";
 
 // ⚠️ THE RECALIBRATION NOTE MUST DERIVE FROM THE CALIBRATION IT DESCRIBES.
 // Both the date and the two percentages were hard-coded, in two places each,
@@ -21,6 +24,9 @@ import { CALIBRATION } from "../data/cardCalibration.js";
 // drifts silently the next time someone tunes the scale.
 const RECAL_DATE_LABEL = new Date(CALIBRATION.measured + "T00:00:00Z")
   .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+// The same date in the player's language (English keeps the en-GB label above).
+const recalDate = () => (fmtLocale() ? new Date(CALIBRATION.measured + "T00:00:00Z")
+  .toLocaleDateString(fmtLocale(), { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }) : RECAL_DATE_LABEL);
 // The note explains a one-off change, so it has a shelf life. It was still on
 // Alex's phone on 8 Oct, four weeks after the rescale, to someone who had seen
 // it many times and never pressed the small cross. Three weeks, then it goes
@@ -211,6 +217,7 @@ function ensureCropperLoaded() {
 }
 
 function CropModal({ file, onCancel, onConfirm, onLoadError }) {
+  const t = useT();
   const imgRef = useRef(null);
   const cropperRef = useRef(null);
   const modalRef = useRef(null);
@@ -252,7 +259,7 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
       .catch((e) => {
         if (cancelled) return;
         const isTimeout = /timed out/i.test(e?.message || "");
-        setError(isTimeout ? "Couldn't load image editor" : "Something went wrong — try again");
+        setError(tl(isTimeout ? "pf.cropLoad" : "pf.cropErr"));
         onLoadErrorRef.current?.();
       });
     return () => { cancelled = true; };
@@ -284,14 +291,14 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
           movable: true,
         });
       } catch (e) {
-        setError("Something went wrong — try again");
+        setError(tl("pf.cropErr"));
       }
     };
     if (node.complete && node.naturalWidth > 0) init();
     else {
       const onLoad = () => init();
       node.addEventListener("load", onLoad, { once: true });
-      node.addEventListener("error", () => setError("Image failed to load"), { once: true });
+      node.addEventListener("error", () => setError(tl("pf.imgFail")), { once: true });
       // Cleanup listener if the effect tears down before load
       return () => {
         node.removeEventListener("load", onLoad);
@@ -324,15 +331,15 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
       await onConfirm?.(blob);
     } catch (e) {
       if (mountedRef.current) {
-        setError("Something went wrong — try again");
+        setError(tl("pf.cropErr"));
         setBusy(false);
       }
     }
   };
 
   return (
-    <div ref={modalRef} tabIndex={-1} className="crop-overlay" role="dialog" aria-modal="true" aria-label="Crop your photo">
-      <div className="crop-header">Crop your photo</div>
+    <div ref={modalRef} tabIndex={-1} className="crop-overlay" role="dialog" aria-modal="true" aria-label={t("pf.crop")}>
+      <div className="crop-header">{t("pf.crop")}</div>
       <div className="crop-stage crop-circle-mask">
         {imgUrl && (
           <img
@@ -343,7 +350,7 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
           />
         )}
         {!ready && !error && (
-          <div className="crop-status">Loading cropper…</div>
+          <div className="crop-status">{t("pf.cropLoading")}</div>
         )}
         {error && <div className="crop-status crop-status-err">{error}</div>}
       </div>
@@ -353,14 +360,14 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
           onClick={onCancel}
           disabled={busy}
         >
-          Cancel
+          {t("st.cancel")}
         </button>
         <button
           className="crop-btn primary"
           onClick={handleUse}
           disabled={!ready || busy || !!error}
         >
-          {busy ? "Uploading…" : "Use Photo"}
+          {t(busy ? "pf.uploading" : "pf.usePhoto")}
         </button>
       </div>
     </div>
@@ -372,6 +379,7 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
 // isActive is true the section loads friendships on mount and after any action
 // so counts + lists stay fresh when the user returns to the Profile tab.
 function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, currentUserPhoto, onChallenge, onToast, onOpenFriend, onShareProfile }) {
+  const t = useT();
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -460,14 +468,14 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         { event: "INSERT", schema: "public", table: "friendships", filter: `addressee_id=eq.${userId}` },
         async (payload) => {
           const requesterId = payload?.new?.requester_id;
-          let name = "someone";
+          let name = tl("pf.someone");
           if (requesterId) {
             try {
               const { data } = await supabase.from("profiles").select("username").eq("id", requesterId).maybeSingle();
               if (data?.username) name = data.username;
             } catch {}
           }
-          toast(`📩 New friend request from ${name}`);
+          toast(tl("pf.newReq", { name }));
           loadFriendships();
         }
       )
@@ -502,7 +510,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     if (q.length < 2) { setResults([]); setSearching(false); return; }
     let cancelled = false;
     setSearching(true);
-    const t = setTimeout(async () => {
+    const timer = setTimeout(async () => {
       try {
         const { data, error } = await supabase
           .from("profiles")
@@ -532,7 +540,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         if (!cancelled) setSearching(false);
       }
     }, 250);
-    return () => { cancelled = true; clearTimeout(t); };
+    return () => { cancelled = true; clearTimeout(timer); };
   }, [search, excludedIds]);
 
   const sendRequest = async (target) => {
@@ -545,12 +553,12 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         .from("friendships")
         .insert({ requester_id: userId, addressee_id: target.id });
       if (error) throw error;
-      toast(`Friend request sent to ${target.username} ✉️`);
+      toast(tl("pf.reqSent", { name: target.username }));
       setResults(prev => prev.filter(p => p.id !== target.id));
       loadFriendships();
     } catch (e) {
       console.error("[friends] sendRequest", e?.message || "Unknown error");
-      toast("Couldn't send request — try again");
+      toast(tl("pf.reqFail"));
     } finally {
       inFlightRef.current.delete(key);
     }
@@ -569,7 +577,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       loadFriendships();
     } catch (e) {
       console.error("[friends] setStatus", e?.message || "Unknown error");
-      toast("Couldn't update — try again");
+      toast(tl("pf.updFail"));
     } finally {
       inFlightRef.current.delete(key);
     }
@@ -588,7 +596,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       loadFriendships();
     } catch (e) {
       console.error("[friends] cancel", e?.message || "Unknown error");
-      toast("Couldn't cancel — try again");
+      toast(tl("pf.cancelFail"));
     } finally {
       inFlightRef.current.delete(key);
     }
@@ -607,7 +615,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       .filter(Boolean)
       // Sprint #84 AAA3: blocked users disappear from the leaderboard too.
       .filter(r => !blockMask.has(r.id));
-    rows.push({ id: userId, username: currentUserName || "You", avatar: currentUserAvatar, photo: currentUserPhoto, score: currentUserScore || 0, isMe: true });
+    rows.push({ id: userId, username: currentUserName || tl("pf.you"), avatar: currentUserAvatar, photo: currentUserPhoto, score: currentUserScore || 0, isMe: true });
     rows.sort((a, b) => b.score - a.score);
     return rows;
   }, [friendships, userId, currentUserScore, currentUserName, currentUserAvatar, currentUserPhoto, blockMask]);
@@ -624,14 +632,14 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           inputMode="search"
           autoCorrect="off"
           autoCapitalize="none"
-          placeholder="Find a friend by username…"
+          placeholder={t("pf.find")}
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
       </div>
       {search.trim().length >= 2 && (
         <div className="friends-results">
-          {searching && <div className="friends-muted">Searching…</div>}
+          {searching && <div className="friends-muted">{t("pf.searching")}</div>}
           {/* ⚠️ THE "usernames don't contain spaces" TIP WAS A LIE, and it was
               the five-star sign-up blocker wearing a different hat.
               UsernameSetupModal used to reject its own pre-filled suggestion
@@ -652,8 +660,8 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
               loop whose k-factor is already 0.23. */}
           {!searching && results.length === 0 && (
             <div className="friends-muted" style={{display:"flex",flexDirection:"column",gap:4}}>
-              <div>No players found — try a different username</div>
-              <div style={{fontSize:12,color:"var(--t3)"}}>Make sure you've typed their username exactly — spaces included</div>
+              <div>{t("pf.none")}</div>
+              <div style={{fontSize:12,color:"var(--t3)"}}>{t("pf.noneTip")}</div>
             </div>
           )}
           {results.map(r => (
@@ -661,9 +669,9 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
               <div className="friends-avatar"><ProfilePic value={r.avatar} url={r.photo} name={r.username} /></div>
               <div className="friends-meta">
                 <div className="friends-name">{r.username}</div>
-                <div className="friends-sub numeric-mono">Score {(r.total_score || 0).toLocaleString()}</div>
+                <div className="friends-sub numeric-mono">{rich(t("pf.score"), { n: (r.total_score || 0).toLocaleString(fmtLocale()) })}</div>
               </div>
-              <button className="friends-action" onClick={() => sendRequest(r)}>Add</button>
+              <button className="friends-action" onClick={() => sendRequest(r)}>{t("pf.add")}</button>
             </div>
           ))}
         </div>
@@ -672,7 +680,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       {/* Incoming pending */}
       {incoming.length > 0 && (
         <div className="friends-block">
-          <div className="friends-block-title">Incoming requests</div>
+          <div className="friends-block-title">{t("pf.incoming")}</div>
           {incoming.map(f => {
             const p = otherOf(f);
             if (!p) return null;
@@ -681,11 +689,11 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
                 <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} name={p.username} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
-                  <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
+                  <div className="friends-sub numeric-mono">{rich(t("pf.score"), { n: (p.total_score || 0).toLocaleString(fmtLocale()) })}</div>
                 </div>
                 <div style={{display:"flex", gap:6}}>
-                  <button className="friends-action accept" onClick={() => setStatus(f.id, "accepted")}>Accept</button>
-                  <button className="friends-action decline" onClick={() => setStatus(f.id, "declined")}>Decline</button>
+                  <button className="friends-action accept" onClick={() => setStatus(f.id, "accepted")}>{t("pf.accept")}</button>
+                  <button className="friends-action decline" onClick={() => setStatus(f.id, "declined")}>{t("pf.decline")}</button>
                 </div>
               </div>
             );
@@ -696,7 +704,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       {/* Outgoing pending */}
       {outgoing.length > 0 && (
         <div className="friends-block">
-          <div className="friends-block-title">Pending</div>
+          <div className="friends-block-title">{t("pf.pending")}</div>
           {outgoing.map(f => {
             const p = otherOf(f);
             if (!p) return null;
@@ -705,9 +713,9 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
                 <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} name={p.username} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
-                  <div className="friends-sub">Pending…</div>
+                  <div className="friends-sub">{t("pf.pendingDots")}</div>
                 </div>
-                <button className="friends-action decline" onClick={() => cancelRequest(f.id)} aria-label="Cancel friend request">Cancel</button>
+                <button className="friends-action decline" onClick={() => cancelRequest(f.id)} aria-label={t("pf.cancelReq")}>{t("st.cancel")}</button>
               </div>
             );
           })}
@@ -716,9 +724,9 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
 
       {/* Friends list */}
       <div className="friends-block">
-        <div className="friends-block-title">Your friends{accepted.length > 0 ? ` · ${accepted.length}` : ""}</div>
+        <div className="friends-block-title">{t("pf.friends")}{accepted.length > 0 ? ` · ${accepted.length}` : ""}</div>
         {loading && accepted.length === 0 && (
-          <div style={{display:"flex",flexDirection:"column",gap:8}} aria-busy="true" aria-label="Loading friends">
+          <div style={{display:"flex",flexDirection:"column",gap:8}} aria-busy="true" aria-label={t("pf.loadingFriends")}>
             {[0,1,2].map(i => (
               <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 12px"}}>
                 <div className="skeleton" style={{width:38,height:38,borderRadius:"50%",flexShrink:0}} />
@@ -736,12 +744,12 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             they had none on a flaky connection. */}
         {!loading && loadError && (
           <div className="friends-muted" style={{display:"flex",flexDirection:"column",gap:6}}>
-            <div>Couldn't load your friends — check your connection.</div>
+            <div>{t("pf.loadFail")}</div>
             <button
               onClick={loadFriendships}
               style={{background:"transparent",border:"1px solid var(--accent)",color:"var(--accent)",borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",alignSelf:"flex-start",fontFamily:"inherit"}}
             >
-              Try again
+              {t("pf.retry")}
             </button>
           </div>
         )}
@@ -754,9 +762,9 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
             textAlign:"center",
           }}>
             <div style={{fontSize:32, marginBottom:8}}>👥</div>
-            <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>No friends yet</div>
-            <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5, marginBottom:14}}>Search above to add friends — or share your profile to invite them.</div>
-            <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>Invite a friend</button>
+            <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>{t("pf.noFriends")}</div>
+            <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5, marginBottom:14}}>{t("pf.noFriendsSub")}</div>
+            <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShareProfile}>{t("pf.invite")}</button>
           </div>
         )}
         {accepted.map(f => {
@@ -764,14 +772,14 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
           if (!p) return null;
           return (
             <div key={f.id} className="friends-row">
-              <button className="friends-row-tap" onClick={() => onOpenFriend && onOpenFriend(p)} aria-label={`View ${p.username}'s profile`}>
+              <button className="friends-row-tap" onClick={() => onOpenFriend && onOpenFriend(p)} aria-label={t("pf.view", { name: p.username })}>
                 <div className="friends-avatar"><ProfilePic value={p.avatar} url={p.photo} name={p.username} /></div>
                 <div className="friends-meta">
                   <div className="friends-name">{p.username}</div>
-                  <div className="friends-sub numeric-mono">Score {(p.total_score || 0).toLocaleString()}</div>
+                  <div className="friends-sub numeric-mono">{rich(t("pf.score"), { n: (p.total_score || 0).toLocaleString(fmtLocale()) })}</div>
                 </div>
               </button>
-              <button className="friends-action challenge" onClick={() => onChallenge && onChallenge(p)}>Challenge</button>
+              <button className="friends-action challenge" onClick={() => onChallenge && onChallenge(p)}>{t("pf.challenge")}</button>
             </div>
           );
         })}
@@ -780,15 +788,15 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       {/* Leaderboard */}
       {leaderboard.length > 1 && (
         <div className="friends-block">
-          <div className="friends-block-title">Friends leaderboard</div>
+          <div className="friends-block-title">{t("pf.lb")}</div>
           <div className="friends-lb">
             {leaderboard.map((row, i) => {
               const inner = (
                 <>
                   <div className="friends-lb-rank numeric-mono">#{i + 1}</div>
                   <div className="friends-avatar"><ProfilePic value={row.avatar} url={row.photo} name={row.username} /></div>
-                  <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill" aria-label="You">YOU</span>}</div>
-                  <div className="friends-lb-score numeric-mono">{row.score.toLocaleString()}</div>
+                  <div className="friends-name" style={{flex:1}}>{row.username}{row.isMe && <span className="friends-you-pill" aria-label={t("pf.you")}>{t("pf.YOU")}</span>}</div>
+                  <div className="friends-lb-score numeric-mono">{row.score.toLocaleString(fmtLocale())}</div>
                 </>
               );
               if (row.isMe) {
@@ -813,6 +821,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
 // badges grid (those are personal). Day Streak tile is intentionally omitted
 // because login streak is local-only and never persisted to Supabase.
 function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
+  const t = useT();
   const [data, setData] = useState(null); // null = loading, false = error, object = loaded
   // Sprint #84 AAA3: 3-dot menu + Report + Block surfaces.
   const [menuOpen, setMenuOpen] = useState(false);
@@ -859,12 +868,12 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
     if (error) {
       // Postgres/RLS text is console-only — a reporter gets copy, not a SQLSTATE.
       console.warn('[handleReportSubmit]', error.code || '', error.message);
-      toast("⚠️ Couldn't submit the report — check your connection and try again.");
+      toast(t("pf.reportFail"));
       return;
     }
     setReportOpen(false);
     setReportMessage("");
-    toast("Report received. We review these within 24 hours.");
+    toast(t("pf.reportOk"));
   };
   const handleBlock = async () => {
     if (submitting) return;
@@ -873,12 +882,12 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
     setSubmitting(false);
     if (error) {
       console.warn('[handleBlock]', error.code || '', error.message);
-      toast("⚠️ Couldn't block this player — check your connection and try again.");
+      toast(t("pf.blockFail"));
       return;
     }
     setBlockConfirmOpen(false);
     window.dispatchEvent(new Event('biq:blocks-changed'));
-    toast("Blocked.");
+    toast(t("pf.blockedOk"));
     // Bounce out of this profile — viewer no longer has reason to be here.
     if (typeof onBack === 'function') onBack();
   };
@@ -887,10 +896,10 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
     return (
       <div className="screen">
         <div className="page-hdr">
-          <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-          <div className="page-title">Loading…</div>
+          <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>
+          <div className="page-title">{t("pf.loading")}</div>
         </div>
-        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>Loading profile…</div>
+        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>{t("pf.loadingProfile")}</div>
       </div>
     );
   }
@@ -898,10 +907,10 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
     return (
       <div className="screen">
         <div className="page-hdr">
-          <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-          <div className="page-title">Profile</div>
+          <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>
+          <div className="page-title">{t("tab.profile")}</div>
         </div>
-        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>Couldn't load this profile.</div>
+        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>{t("pf.loadProfileFail")}</div>
       </div>
     );
   }
@@ -929,13 +938,13 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
   const totalAnswered = friendStats.totalAnswered || 0;
   const gamesPlayed = data.games_played || 0;
   const avatar = <ProfilePic value={data.avatar_id} url={data.avatar_url} name={data.username} />;
-  const username = data.username || 'Player';
+  const username = data.username || t("pf.player");
   const hasAnyStats = gamesPlayed > 0 || totalCorrect > 0 || (friendStats.bestScore || 0) > 0;
 
   return (
     <div className="screen">
       <div className="page-hdr" style={{position:"relative"}}>
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
+        <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>
         {/* The name lives on the card, at 20px, right under the rating. Repeating
             it in the header put it on screen twice within 200px — Alex: "it is
             enough to have the username on the card and not above the card".
@@ -948,7 +957,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         <button
           type="button"
           onClick={() => setMenuOpen(true)}
-          aria-label={`More options for ${username}`}
+          aria-label={t("pf.more", { name: username })}
           style={{
             position:"absolute", right:12, top:"50%", transform:"translateY(-50%)",
             width:36, height:36, borderRadius:10,
@@ -976,7 +985,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         // single question was shown to you as "85 · GOLD" at 86px with five of
         // the six league ratings pure prior.
         const played = card.rated;
-        const t = tierPalette(card.tier);
+        const pal = tierPalette(card.tier);
         return (
           // ⚠️ THE OWNER'S CARD, NOT A COPY OF IT. Alex, twice: "why does the
           // card look like this with 2 sections? and not like on my profile?
@@ -991,14 +1000,14 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
             played={played}
             style={{ marginBottom: 16 }}
             avatar={
-              <div style={{ width: 96, height: 96, flexShrink: 0, borderRadius: "50%", border: `2.5px solid ${t.accent}`, overflow: "hidden" }}>{avatar}</div>
+              <div style={{ width: 96, height: 96, flexShrink: 0, borderRadius: "50%", border: `2.5px solid ${pal.accent}`, overflow: "hidden" }}>{avatar}</div>
             }
             name={
-              <div style={{ fontSize: 30, fontWeight: 900, color: t.text, letterSpacing: "-0.02em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{username}</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: pal.text, letterSpacing: "-0.02em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{username}</div>
             }
             subline={
-              <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.2, color: t.text, opacity: 0.55, display: "flex", alignItems: "center", gap: 6 }}>
-                <level.Icon size={13} strokeWidth={2.3} aria-hidden="true" /> {level.name} · {friendXp.toLocaleString()} XP
+              <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.2, color: pal.text, opacity: 0.55, display: "flex", alignItems: "center", gap: 6 }}>
+                <level.Icon size={13} strokeWidth={2.3} aria-hidden="true" /> {levelName(level.name)} · {friendXp.toLocaleString(fmtLocale())} XP
               </div>
             }
           />
@@ -1016,16 +1025,16 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         ? Math.round(fCard.rawCorrect) : totalCorrect;
       return (
         <div className="stat-grid" style={{marginBottom:16}}>
-          <div className="stat-tile"><div className="st-val">{gamesPlayed}</div><div className="ds-eyebrow st-key">Games</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{fCorrect}</div><div className="ds-eyebrow st-key">Correct</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">Best Score</div></div>
-          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestStreak||0}</div><div className="ds-eyebrow st-key">Best Streak</div></div>
+          <div className="stat-tile"><div className="st-val">{gamesPlayed}</div><div className="ds-eyebrow st-key">{t("pf.games")}</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{fCorrect}</div><div className="ds-eyebrow st-key">{t("rs.correct")}</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestScore||0}<span style={{fontSize:12,color:"var(--t3)"}}>/10</span></div><div className="ds-eyebrow st-key">{t("pf.bestScore")}</div></div>
+          <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestStreak||0}</div><div className="ds-eyebrow st-key">{t("pf.bestStreak")}</div></div>
           <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{
             accuracyLabel(fCard, { totalCorrect, totalAnswered })
-          }</div><div className="ds-eyebrow st-key">Accuracy</div></div>
-          {friendStats.bestIQ > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{friendStats.bestIQ}</div><div className="ds-eyebrow st-key">Best IQ</div></div>}
-          {friendStats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{friendStats.bestHotStreak}</div><div className="ds-eyebrow st-key">⚡ Hot Streak</div></div>}
-          {friendStats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">✅ T/F Best</div></div>}
+          }</div><div className="ds-eyebrow st-key">{t("home.rail.accuracy")}</div></div>
+          {friendStats.bestIQ > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{friendStats.bestIQ}</div><div className="ds-eyebrow st-key">{t("pf.bestIq")}</div></div>}
+          {friendStats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{friendStats.bestHotStreak}</div><div className="ds-eyebrow st-key">{"⚡ " + t("home.mode.hotstreak")}</div></div>}
+          {friendStats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">{t("pf.tfBest")}</div></div>}
         </div>
       );
       })()}
@@ -1035,7 +1044,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         const ordered = LEVELS.map((l, i) => ({ ...l, idx: i }));
         return (
           <div className="journey-section">
-            <div className="journey-title"><Milestone size={17} strokeWidth={2.2} /> {username}'s Journey</div>
+            <div className="journey-title"><Milestone size={17} strokeWidth={2.2} /> {rich(t("pf.theirJourney"), { name: username })}</div>
             <div className="journey-list">
               <div className="journey-line" />
               {ordered.map(tier => {
@@ -1049,13 +1058,13 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
                   <div key={tier.name} className={`journey-row ${state}`}>
                     <div className="journey-dot">{isDone ? "✓" : <tier.Icon size={17} strokeWidth={2.1} />}</div>
                     <div className="journey-body">
-                      <div className="journey-name">{tier.name}</div>
-                      <div className="journey-sub">{tier.xpNeeded.toLocaleString()} XP</div>
+                      <div className="journey-name">{levelName(tier.name)}</div>
+                      <div className="journey-sub">{tier.xpNeeded.toLocaleString(fmtLocale())} XP</div>
                     </div>
-                    {isCurrent && <div className="journey-badge current" aria-label="Current level">CURRENT</div>}
-                    {isNext && <div className="journey-badge next">{xpToGo.toLocaleString()} XP to go</div>}
+                    {isCurrent && <div className="journey-badge current" aria-label={t("pf.currentAria")}>{t("pf.CURRENT")}</div>}
+                    {isNext && <div className="journey-badge next">{rich(t("pf.toGo"), { n: xpToGo.toLocaleString(fmtLocale()) })}</div>}
                     {!isCurrent && !isNext && !isDone && isTop && (
-                      <div className="journey-badge goal">Ultimate goal</div>
+                      <div className="journey-badge goal">{t("pf.goal")}</div>
                     )}
                   </div>
                 );
@@ -1074,7 +1083,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
         style={{marginTop:16,marginBottom:"calc(16px + env(safe-area-inset-bottom, 12px))"}}
         onClick={() => onChallenge && onChallenge({ id: data.id, username, avatar: data.avatar_id })}
       >
-        Challenge {username}
+        {rich(t("pf.challengeU"), { name: username })}
       </button>
 
       {/* Sprint #84 AAA3 — 3-dot action sheet */}
@@ -1088,7 +1097,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
             tabIndex={-1}
             role="dialog"
             aria-modal="true"
-            aria-label={`Actions for ${username}`}
+            aria-label={t("pf.actions", { name: username })}
             style={{width:"100%",background:"var(--bg)",borderRadius:"16px 16px 0 0",padding:"12px 12px calc(20px + env(safe-area-inset-bottom, 20px))"}}
             onClick={e => e.stopPropagation()}
           >
@@ -1096,17 +1105,17 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
               type="button"
               onClick={() => { setMenuOpen(false); setReportOpen(true); }}
               style={{display:"block",width:"100%",padding:"16px",background:"transparent",border:"none",color:"var(--t1)",fontSize:16,fontWeight:600,textAlign:"left",cursor:"pointer",borderRadius:10}}
-            >🚩 Report</button>
+            >{t("pf.report")}</button>
             <button
               type="button"
               onClick={() => { setMenuOpen(false); setBlockConfirmOpen(true); }}
               style={{display:"block",width:"100%",padding:"16px",background:"transparent",border:"none",color:"#ff6b6b",fontSize:16,fontWeight:600,textAlign:"left",cursor:"pointer",borderRadius:10}}
-            >⛔ Block</button>
+            >{t("pf.block")}</button>
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
               style={{display:"block",width:"100%",padding:"14px",marginTop:6,background:"var(--s2)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:15,fontWeight:600,cursor:"pointer",borderRadius:12}}
-            >Cancel</button>
+            >{t("st.cancel")}</button>
           </div>
         </div>
       )}
@@ -1122,23 +1131,23 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
             tabIndex={-1}
             role="dialog"
             aria-modal="true"
-            aria-label={`Report ${username}`}
+            aria-label={t("pf.reportU", { name: username })}
             style={{width:"100%",background:"var(--bg)",borderRadius:"16px 16px 0 0",padding:"20px 20px calc(28px + env(safe-area-inset-bottom, 20px))"}}
             onClick={e => e.stopPropagation()}
           >
-            <div style={{fontSize:18,fontWeight:800,marginBottom:6,color:"var(--t1)"}}>Report {username}</div>
-            <div style={{fontSize:13,color:"var(--t3)",marginBottom:16}}>Reports go to the Ball IQ team. We review within 24 hours.</div>
-            <label style={{fontSize:12,fontWeight:700,color:"var(--t3)",textTransform:"uppercase",letterSpacing:"0.06em",display:"block",marginBottom:6}}>Reason</label>
+            <div style={{fontSize:18,fontWeight:800,marginBottom:6,color:"var(--t1)"}}>{rich(t("pf.reportU"), { name: username })}</div>
+            <div style={{fontSize:13,color:"var(--t3)",marginBottom:16}}>{t("pf.reportSub")}</div>
+            <label style={{fontSize:12,fontWeight:700,color:"var(--t3)",textTransform:"uppercase",letterSpacing:"0.06em",display:"block",marginBottom:6}}>{t("pf.reason")}</label>
             <select
               value={reportReason}
               onChange={e => setReportReason(e.target.value)}
               style={{width:"100%",padding:"12px 14px",fontSize:15,borderRadius:10,border:"1px solid var(--border)",background:"var(--s2)",color:"var(--t1)",marginBottom:14,WebkitAppearance:"none"}}
             >
               {REPORT_REASONS.map(r => (
-                <option key={r.value} value={r.value}>{r.label}</option>
+                <option key={r.value} value={r.value}>{t(`pf.rr.${r.value}`)}</option>
               ))}
             </select>
-            <label style={{fontSize:12,fontWeight:700,color:"var(--t3)",textTransform:"uppercase",letterSpacing:"0.06em",display:"block",marginBottom:6}}>Details <span style={{fontWeight:400,textTransform:"none",color:"var(--t3)"}}>(optional, max 500 chars)</span></label>
+            <label style={{fontSize:12,fontWeight:700,color:"var(--t3)",textTransform:"uppercase",letterSpacing:"0.06em",display:"block",marginBottom:6}}>{t("pf.details")}<span style={{fontWeight:400,textTransform:"none",color:"var(--t3)"}}>{t("pf.detailsOpt")}</span></label>
             <textarea
               value={reportMessage}
               onChange={e => setReportMessage(e.target.value.slice(0, 500))}
@@ -1153,13 +1162,13 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
                 onClick={() => setReportOpen(false)}
                 disabled={submitting}
                 style={{flex:1,padding:"14px",background:"var(--s2)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:15,fontWeight:600,cursor:submitting?"not-allowed":"pointer",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",opacity:submitting?0.5:1}}
-              >Cancel</button>
+              >{t("st.cancel")}</button>
               <button
                 type="button"
                 onClick={handleReportSubmit}
                 disabled={submitting}
                 style={{flex:1,padding:"14px",background:"var(--accent)",border:"none",color:"#000",fontSize:15,fontWeight:700,cursor:submitting?"not-allowed":"pointer",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",opacity:submitting?0.6:1}}
-              >{submitting ? "Submitting…" : "Submit report"}</button>
+              >{t(submitting ? "pf.submitting" : "pf.submit")}</button>
             </div>
           </div>
         </div>
@@ -1176,25 +1185,25 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
             tabIndex={-1}
             role="dialog"
             aria-modal="true"
-            aria-label={`Confirm blocking ${username}`}
+            aria-label={t("pf.blockAria", { name: username })}
             style={{width:"100%",background:"var(--bg)",borderRadius:"16px 16px 0 0",padding:"24px 20px calc(28px + env(safe-area-inset-bottom, 20px))"}}
             onClick={e => e.stopPropagation()}
           >
-            <div style={{fontSize:18,fontWeight:800,marginBottom:8,color:"var(--t1)"}}>Block {username}?</div>
-            <div style={{fontSize:14,color:"var(--t3)",marginBottom:20,lineHeight:1.5}}>They won't see you in search or leaderboards. You won't see them either. You can unblock from Settings → Account → Blocked users.</div>
+            <div style={{fontSize:18,fontWeight:800,marginBottom:8,color:"var(--t1)"}}>{rich(t("pf.blockQ"), { name: username })}</div>
+            <div style={{fontSize:14,color:"var(--t3)",marginBottom:20,lineHeight:1.5}}>{t("pf.blockBody")}</div>
             <div style={{display:"flex",gap:8}}>
               <button
                 type="button"
                 onClick={() => setBlockConfirmOpen(false)}
                 disabled={submitting}
                 style={{flex:1,padding:"14px",background:"var(--s2)",border:"1px solid var(--border)",color:"var(--t2)",fontSize:15,fontWeight:600,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.5:1}}
-              >Cancel</button>
+              >{t("st.cancel")}</button>
               <button
                 type="button"
                 onClick={handleBlock}
                 disabled={submitting}
                 style={{flex:1,padding:"14px",background:"#d32f2f",border:"none",color:"#fff",fontSize:15,fontWeight:700,cursor:submitting?"not-allowed":"pointer",borderRadius:12,opacity:submitting?0.6:1}}
-              >{submitting ? "Blocking…" : "Block"}</button>
+              >{t(submitting ? "pf.blocking" : "pf.blockBtn")}</button>
             </div>
           </div>
         </div>
@@ -1210,6 +1219,7 @@ export const FriendProfileScreen = React.memo(FriendProfileScreenImpl);
 // shows "No blocked users." The RLS on user_blocks already restricts the
 // SELECT to blocker_id = auth.uid(), so the raw query is safe.
 function BlockedUsersScreenImpl({ onBack, onToast }) {
+  const t = useT();
   const [rows, setRows] = useState(null); // null = loading, [] = empty, [...] = list
   const toast = onToast || (() => {});
   const load = useCallback(async () => {
@@ -1230,7 +1240,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
     const map = new Map((profiles || []).map(p => [p.id, p]));
     setRows(blocks.map(b => ({
       id: b.blocked_id,
-      username: map.get(b.blocked_id)?.username || 'Unknown',
+      username: map.get(b.blocked_id)?.username || tl("pf.unknown"),
       avatar: map.get(b.blocked_id)?.avatar_id,
     })));
   }, []);
@@ -1238,22 +1248,22 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 
   const handleUnblock = async (id) => {
     const { error } = await unblockUser(id);
-    if (error) { toast("⚠️ Couldn't unblock — try again"); return; }
+    if (error) { toast(t("pf.unblockFail")); return; }
     window.dispatchEvent(new Event('biq:blocks-changed'));
-    toast("Unblocked.");
+    toast(t("pf.unblocked"));
     load();
   };
 
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div className="page-title">Blocked users</div>
+        <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>
+        <div className="page-title">{t("st.blocked")}</div>
       </div>
       {rows === null ? (
         // Same skeleton pattern as the friends list above — this screen is one
         // tap away from it on the same journey, so the loading states match.
-        <div style={{padding:"4px 16px 24px"}} aria-busy="true" aria-label="Loading blocked users">
+        <div style={{padding:"4px 16px 24px"}} aria-busy="true" aria-label={t("pf.loadingBlocked")}>
           {[0,1,2].map(i => (
             <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"14px 0"}}>
               <div className="skeleton" style={{width:28,height:28,borderRadius:"50%",flexShrink:0}} />
@@ -1262,7 +1272,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
           ))}
         </div>
       ) : rows.length === 0 ? (
-        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>No blocked users.</div>
+        <div style={{padding:"40px 20px",color:"var(--t3)",textAlign:"center"}}>{t("pf.noBlocked")}</div>
       ) : (
         <div style={{padding:"4px 16px 24px"}}>
           {rows.map(row => (
@@ -1276,7 +1286,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
                 type="button"
                 onClick={() => handleUnblock(row.id)}
                 style={{padding:"8px 14px",fontSize:13,fontWeight:600,borderRadius:8,border:"1px solid var(--border)",background:"var(--s2)",color:"var(--t1)",cursor:"pointer"}}
-              >Unblock</button>
+              >{t("pf.unblock")}</button>
             </div>
           ))}
         </div>
@@ -1293,6 +1303,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // native window.alert dialog if no onToast prop was provided. In
   // practice every caller passes onToast — this is defensive.
   const toast = onToast || ((m) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(m) })); } catch {} });
+  const t = useT();
   const { user, profile: authProfile, isGuest, isAnonUser, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -1455,7 +1466,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     // (the local profile name update is skipped too so the bad value
     // doesn't appear in the UI for a frame before the toast fires).
     if (v && isProfaneUsername(v)) {
-      reject("⚠️ That username isn't allowed — please choose another");
+      reject(t("pf.badName"));
       return;
     }
     setPendingName(v);
@@ -1465,9 +1476,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     // see the new username. Guests stay local-only.
     if (v && user && !isGuest) {
       supabase.from('profiles').update({ username: v }).eq('id', user.id).then(({ error }) => {
-        if (error) toast("⚠️ Couldn't sync name change — check your connection");
+        if (error) toast(tl("pf.syncFail"));
       }).catch(() => {
-        toast("⚠️ Couldn't sync name change — check your connection");
+        toast(tl("pf.syncFail"));
       });
     }
   };
@@ -1533,14 +1544,14 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     // Reset the input so selecting the same file again still triggers onChange
     if (e.target) e.target.value = "";
     if (!file) return;
-    if (!uploadAvatar) { toast("Photo upload unavailable"); return; }
+    if (!uploadAvatar) { toast(t("pf.noUpload")); return; }
     // Primary gate against tab-crashes on low-RAM devices: reject large
     // files before CropModal opens, since URL.createObjectURL + <img>
     // decode + cropperjs canvas operate at full source resolution and
     // can OOM on a 30-50MB iPhone "Original" photo. uploadAvatar has a
     // matching defensive check for any caller that bypasses cropping.
     if (file.size > 10 * 1024 * 1024) {
-      toast("Photo is too large — please pick one under 10MB");
+      toast(t("pf.tooBig"));
       return;
     }
     // Defer upload — route through the crop modal first
@@ -1558,12 +1569,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     try {
       const result = await uploadAvatar(blob);
       if (result?.error) {
-        toast("Could not upload photo — try again");
+        toast(tl("pf.upFail"));
       } else {
-        toast("Profile photo updated ✓");
+        toast(tl("pf.upOk"));
       }
     } catch {
-      toast("Could not upload photo — try again");
+      toast(tl("pf.upFail"));
     } finally {
       // K2: guard setUploading against post-unmount fires.
       if (mountedRef.current) setUploading(false);
@@ -1586,7 +1597,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           reveal, and the mobile identity block hides only at desktop. The
           PWA-standalone killswitch resets all of it. */}
       {/* Desktop (>=1024) page header — hidden on mobile via the .pd-hdr base rule. */}
-      <div className="pd-hdr">Profile</div>
+      <div className="pd-hdr">{t("tab.profile")}</div>
       {/* MAIN column — display:contents on mobile (children flow exactly as
           before), grid-area "main" (left) at desktop. */}
       <div className="profile-col-main">
@@ -1599,15 +1610,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         {(() => {
           const acc = (stats?.totalAnswered > 0 && (stats.totalCorrect || 0) <= stats.totalAnswered) ? (stats.totalCorrect || 0) / stats.totalAnswered : 0.4;
           const card = computeCard(stats?.catStats || {}, acc, { c: stats?.totalCorrect || 0, a: stats?.totalAnswered || 0 }, pinnedLeague);
-          const tierLabel = tierPalette(card.tier).label;
+          const tierLabel = tierName(card.tier);
           const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS; // a rating needs DATA: ten answered questions (2026-09-06)
           return (
             <div className="pd-rating">
-              <div className="pd-rating-eyebrow">Ball IQ rating</div>
+              <div className="pd-rating-eyebrow">{t("pf.rating")}</div>
               <div className="pd-rating-row">
-                <button type="button" className="pd-avatar" onClick={openAvatarPicker} aria-label="Edit profile photo">
+                <button type="button" className="pd-avatar" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")}>
                   {uploading ? (
-                    <span className="avatar-spinner" aria-label="Uploading…" />
+                    <span className="avatar-spinner" aria-label={t("pf.uploading")} />
                   ) : showPhoto ? (
                     <img crossOrigin="anonymous" src={avatarUrl} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                   ) : (
@@ -1617,31 +1628,31 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 <div className="pd-idcol">
                   <div className="pd-nrow">
                     {(authLoading && !currentName) ? (
-                      <span className="pd-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>Loading…</span>
+                      <span className="pd-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>{t("pf.loading")}</span>
                     ) : editingName ? (
                       <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
-                        <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:"#fff"}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
-                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name" style={{flexShrink:0, width:32, height:32, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"var(--grn-ink)", fontSize:15, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
-                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit" style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:14, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
+                        <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:"#fff"}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder={t("pf.yourName")} autoFocus aria-label={t("pf.displayName")} />
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label={t("pf.saveName")} style={{flexShrink:0, width:32, height:32, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"var(--grn-ink)", fontSize:15, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label={t("pf.cancelName")} style={{flexShrink:0, width:32, height:32, borderRadius:9, border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:14, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
                       </span>
                     ) : (
-                      <button type="button" onClick={startNameEdit} aria-label={showNameCTA ? "Set your name" : "Edit your name"} style={{display:"inline-flex", alignItems:"center", background:"none", border:"none", padding:0, fontFamily:"inherit", cursor:"pointer", maxWidth:"100%"}}>
-                        <span className="pd-name">{showNameCTA ? "Set your name" : (currentName || authProfile?.username || profile?.name || "Player")}</span>
+                      <button type="button" onClick={startNameEdit} aria-label={t(showNameCTA ? "pf.setName" : "pf.editName")} style={{display:"inline-flex", alignItems:"center", background:"none", border:"none", padding:0, fontFamily:"inherit", cursor:"pointer", maxWidth:"100%"}}>
+                        <span className="pd-name">{showNameCTA ? t("pf.setName") : (currentName || authProfile?.username || profile?.name || t("pf.player"))}</span>
                         <svg className="pd-name-pencil" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg>
                       </button>
                     )}
                   </div>
-                  <div className="pd-levelpill"><level.Icon size={13} strokeWidth={2.3} /> {level.name} · {xp.toLocaleString()} XP</div>
+                  <div className="pd-levelpill"><level.Icon size={13} strokeWidth={2.3} /> {levelName(level.name)} · {xp.toLocaleString(fmtLocale())} XP</div>
                 </div>
                 <div className="pd-score">
                   {hasPlayed ? (
                     <>
                       <div className="pd-overall-num">{card.overall}</div>
-                      <div className="pd-overall-cap">OVERALL</div>
+                      <div className="pd-overall-cap">{t("home.rail.overall")}</div>
                       <div className="pd-tier">{tierLabel}</div>
                     </>
                   ) : (
-                    <div className="pd-coldstart">Play a game to get your Ball IQ</div>
+                    <div className="pd-coldstart">{t("pf.cold")}</div>
                   )}
                 </div>
               </div>
@@ -1652,8 +1663,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   to end, so the first sight of the new card says why, once. */}
               {hasPlayed && !recalSeen && (
                 <div className="pd-recal" role="status">
-                  <span>Ratings rescaled {RECAL_DATE_LABEL} — your number has probably moved. Harder questions still count for more.</span>
-                  <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
+                  <span>{rich(t("pf.recal"), { d: recalDate() })}</span>
+                  <button type="button" className="pd-recal-x" aria-label={t("pf.dismiss")} onClick={dismissRecal}>✕</button>
                 </div>
               )}
             </div>
@@ -1669,12 +1680,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const strongestAbbr = [...card.ratings].filter(r => r.answered >= MIN_RATED_ANSWERS).sort((a, b) => b.rating - a.rating)[0]?.abbr || null;
           return (
             <div className="pd-leagues">
-              <div className="pd-leagues-title">League ratings</div>
+              <div className="pd-leagues-title">{t("pf.leagues")}</div>
               <div className="pd-leagues-grid">
                 {card.ratings.map(r => (
                   <div key={r.abbr} className="pd-league">
                     <span className="pd-league-flag">{r.icon}</span>
-                    <span className="pd-league-name">{r.abbr === "UCL" ? "Champions Lg" : r.name}</span>
+                    <span className="pd-league-name">{r.abbr === "UCL" ? t("pf.ucl") : compName(r)}</span>
                     <span className={`pd-league-rating${r.abbr === strongestAbbr ? " is-top" : ""}`}>{hasPlayed ? r.rating : "—"}</span>
                   </div>
                 ))}
@@ -1712,11 +1723,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           what you are playing for"; it waits for the Profile tab. */}
       {isActiveTab && (stats?.gamesPlayed || 0) === 0 && !sampleDismissed && (() => {
         // tierPalette, not a raw key: the bronze/silver/gold rename left
-        // CARD_TIERS.elite undefined, and t.bg then crashed the WHOLE Profile
+        // CARD_TIERS.elite undefined, and pal.bg then crashed the WHOLE Profile
         // tab — but only for gamesPlayed === 0, i.e. precisely the guests and
         // first-timers this popup exists for, which is why no signed-in
         // account could ever see it. Found live by a guest session 2026-08-28.
-        const t = tierPalette("gold");
+        const pal = tierPalette("gold");
         // ⚠️ DERIVED FROM CARD_COMPS, NOT RETYPED. This teaser hardcoded
         // EPL/UCL/INT/LAL/BUN/SEA and would have gone on advertising three
         // faces the card no longer has after the 2026-09-10 re-cut — to
@@ -1736,44 +1747,44 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         // BOTH layout and paint containment establish the fixed containing
         // block — so the modal moves out of the pane instead.
         return createPortal(
-          <div ref={sampleRef} tabIndex={-1} className="modal-overlay" role="dialog" aria-modal="true" aria-label="What an elite card looks like"
+          <div ref={sampleRef} tabIndex={-1} className="modal-overlay" role="dialog" aria-modal="true" aria-label={t("pf.sampleAria")}
                onClick={dismissSample}>
             <div onClick={(e) => e.stopPropagation()}
-                 style={{ position: "relative", background: t.bg, border: `1.5px solid ${t.accent}66`, borderRadius: 22, padding: "20px 22px 18px", width: "100%", maxWidth: 340, boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
+                 style={{ position: "relative", background: pal.bg, border: `1.5px solid ${pal.accent}66`, borderRadius: 22, padding: "20px 22px 18px", width: "100%", maxWidth: 340, boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-                <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2, color: t.accent, border: `1px solid ${t.accent}66`, borderRadius: 999, padding: "3px 9px" }}>EXAMPLE</span>
-                <button type="button" onClick={dismissSample} aria-label="Close"
-                        style={{ width: 44, height: 44, margin: "-6px -8px -6px 0", borderRadius: 999, border: "none", background: "rgba(255,255,255,0.10)", color: t.text, fontSize: 16, fontWeight: 800, cursor: "pointer", lineHeight: 1, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>&#10005;</button>
+                <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2, color: pal.accent, border: `1px solid ${pal.accent}66`, borderRadius: 999, padding: "3px 9px" }}>{t("pf.EXAMPLE")}</span>
+                <button type="button" onClick={dismissSample} aria-label={t("pf.close")}
+                        style={{ width: 44, height: 44, margin: "-6px -8px -6px 0", borderRadius: 999, border: "none", background: "rgba(255,255,255,0.10)", color: pal.text, fontSize: 16, fontWeight: 800, cursor: "pointer", lineHeight: 1, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>&#10005;</button>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 54, fontWeight: 900, color: t.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>85</div>
-                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: t.text, opacity: 0.65, marginTop: 4 }}>OVERALL</div>
-                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: t.accent, marginTop: 7 }}>{t.label}</div>
+                  <div style={{ fontSize: 54, fontWeight: 900, color: pal.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>85</div>
+                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: pal.text, opacity: 0.65, marginTop: 4 }}>{t("home.rail.overall")}</div>
+                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: pal.accent, marginTop: 7 }}>{tierName("gold")}</div>
                 </div>
                 {/* A line icon in the tier's colour, like every other icon on
                     this screen. It was the trophy emoji, drawn by the phone's
                     own emoji font in its own colours. */}
-                <Trophy size={52} strokeWidth={1.6} color={t.accent} aria-hidden="true" style={{ opacity: 0.9, flexShrink: 0 }} />
+                <Trophy size={52} strokeWidth={1.6} color={pal.accent} aria-hidden="true" style={{ opacity: 0.9, flexShrink: 0 }} />
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "7px 16px", marginTop: 16, paddingTop: 13, borderTop: `1px solid ${t.accent}22` }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "7px 16px", marginTop: 16, paddingTop: 13, borderTop: `1px solid ${pal.accent}22` }}>
                 {rows.map((r) => (
                   <div key={r.abbr} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     {/* A dot in the competition's colour, as on the real card under
                         this sheet. It was an emoji per row (a flag, a star, a globe),
                         the only emoji icons on a screen drawn in line icons. */}
                     <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: 4, background: lift(r.color), flexShrink: 0 }} />
-                    <span style={{ fontSize: 12.5, fontWeight: 800, color: t.accent, fontVariantNumeric: "tabular-nums" }}>{r.v}</span>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: t.text, opacity: 0.6 }}>{r.abbr}</span>
+                    <span style={{ fontSize: 12.5, fontWeight: 800, color: pal.accent, fontVariantNumeric: "tabular-nums" }}>{r.v}</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: pal.text, opacity: 0.6 }}>{r.abbr}</span>
                   </div>
                 ))}
               </div>
-              <div style={{ fontSize: 13, color: t.text, opacity: 0.8, marginTop: 16, lineHeight: 1.45 }}>
-                This is an elite card. Yours starts blank &mdash; every answer you get right moves a rating.
+              <div style={{ fontSize: 13, color: pal.text, opacity: 0.8, marginTop: 16, lineHeight: 1.45 }}>
+                {t("pf.sampleBody")}
               </div>
               <button type="button" onClick={startBuildingCard}
-                      style={{ width: "100%", marginTop: 16, padding: 13, borderRadius: 13, border: "none", background: t.accent, color: "#241B00", fontSize: 15, fontWeight: 800, fontFamily: "inherit", cursor: "pointer" }}>
-                Play today&rsquo;s 7 to start mine
+                      style={{ width: "100%", marginTop: 16, padding: 13, borderRadius: 13, border: "none", background: pal.accent, color: "#241B00", fontSize: 15, fontWeight: 800, fontFamily: "inherit", cursor: "pointer" }}>
+                {t("pf.sampleCta")}
               </button>
             </div>
           </div>,
@@ -1791,7 +1802,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         // puzzle and zero questions — the fabricated-rating bug the desktop rail
         // fixed on 2026-08-28, still live here until 2026-09-06.
         const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS;
-        const t = tierPalette(_card.tier);
+        const pal = tierPalette(_card.tier);
         return (
           // ⚠️ ONE CARD, THREE SURFACES. The layout lives in
           // components/BallIqCardFace.jsx — read the header there before
@@ -1807,38 +1818,38 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             style={{ marginBottom: 14 }}
             avatar={
                 <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
-                  <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label="Edit profile photo" style={showPhoto
-                    ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
-                    : {width:96, height:96, fontSize:44, border:`2.5px solid ${t.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
+                  <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={showPhoto
+                    ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${pal.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
+                    : {width:96, height:96, fontSize:44, border:`2.5px solid ${pal.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
                     {uploading ? (
-                      <span className="avatar-spinner" aria-label="Uploading…" />
+                      <span className="avatar-spinner" aria-label={t("pf.uploading")} />
                     ) : showPhoto ? (
-                      <img crossOrigin="anonymous" src={avatarUrl} alt={currentName ? `${currentName}'s avatar` : "Profile avatar"} onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}} />
+                      <img crossOrigin="anonymous" src={avatarUrl} alt={currentName ? t("pf.avatarOf", { name: currentName }) : t("pf.avatar")} onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}} />
                     ) : (
                       displayEmoji
                     )}
                   </button>
-                  <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label="Edit profile photo" style={{appearance:"none", WebkitAppearance:"none", font:"inherit", display:"inline-flex", alignItems:"center", justifyContent:"center"}}><Pencil size={14} strokeWidth={2.5} aria-hidden="true" /></button>
+                  <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={{appearance:"none", WebkitAppearance:"none", font:"inherit", display:"inline-flex", alignItems:"center", justifyContent:"center"}}><Pencil size={14} strokeWidth={2.5} aria-hidden="true" /></button>
                 </div>
             }
             name={
                     (authLoading && !currentName) ? (
-                      <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:t.text}}>Loading…</span>
+                      <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:pal.text}}>{t("pf.loading")}</span>
                     ) : editingName ? (
                       <span style={{display:"inline-flex", alignItems:"center", gap:6, maxWidth:"100%"}}>
-                        <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:t.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder="Your name" autoFocus aria-label="Your display name" />
-                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label="Save name"
+                        <input className="profile-name-input" style={{textAlign:"left", flex:1, minWidth:0, color:pal.text}} value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder={t("pf.yourName")} autoFocus aria-label={t("pf.displayName")} />
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={saveName} aria-label={t("pf.saveName")}
                           style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"none", background:"var(--accent)", color:"var(--bg)", fontSize:16, fontWeight:900, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✓</button>
-                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label="Cancel name edit"
+                        <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label={t("pf.cancelName")}
                           style={{flexShrink:0, width:34, height:34, borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", border:"1px solid var(--border)", background:"var(--s2)", color:"var(--t2)", fontSize:15, fontWeight:800, cursor:"pointer", display:"inline-flex", alignItems:"center", justifyContent:"center", lineHeight:1}}>✕</button>
                       </span>
                     ) : showNameCTA ? (
-                      <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Set your name">
-                        Set your name <Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.7}} />
+                      <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:pal.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label={t("pf.setName")}>
+                        {t("pf.setName") + " "}<Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.7}} />
                       </button>
                     ) : (
-                      <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:t.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label="Edit your name">
-                        {currentName || authProfile?.username || profile?.name || "Player"}
+                      <button className="profile-name" onClick={startNameEdit} style={{background:"none",border:"none",padding:0,fontFamily:"inherit",color:pal.text,cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6}} aria-label={t("pf.editName")}>
+                        {currentName || authProfile?.username || profile?.name || t("pf.player")}
                         <Pencil size={13} strokeWidth={2.5} aria-hidden="true" style={{display:"inline",verticalAlign:"-2px",marginLeft:3,opacity:0.65}} />
                       </button>
                     )
@@ -1850,10 +1861,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                at all. The class is untouched and still used by the desktop
                pane and the journey list; this card just does not wear it. */
             subline={<>
-              <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.2, color: t.text, opacity: 0.55, display: "flex", alignItems: "center", gap: 6 }}>
-                <level.Icon size={13} strokeWidth={2.3} aria-hidden="true" /> {level.name} · {xp.toLocaleString()} XP
+              <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.2, color: pal.text, opacity: 0.55, display: "flex", alignItems: "center", gap: 6 }}>
+                <level.Icon size={13} strokeWidth={2.3} aria-hidden="true" /> {levelName(level.name)} · {xp.toLocaleString(fmtLocale())} XP
               </div>
-              {iq ? <div style={{ marginTop: 3, fontSize: 12.5, fontWeight: 700, color: t.text, opacity: 0.42 }}>{APP_NAME}: {iq} — Top {100 - pctile}%</div> : null}
+              {iq ? <div style={{ marginTop: 3, fontSize: 12.5, fontWeight: 700, color: pal.text, opacity: 0.42 }}>{rich(t("pf.iqLine"), { app: APP_NAME, iq, p: 100 - pctile })}</div> : null}
             </>}
           />
         );
@@ -1864,8 +1875,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           rebuild exists to end, so the first sight of the new card says why. */}
       {(stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (
         <div className="pd-recal" role="status" style={{ marginTop: 0, marginBottom: 14 }}>
-          <span>Ratings rescaled {RECAL_DATE_LABEL} — your number has probably moved. Harder questions still count for more.</span>
-          <button type="button" className="pd-recal-x" aria-label="Dismiss" onClick={dismissRecal}>✕</button>
+          <span>{rich(t("pf.recal"), { d: recalDate() })}</span>
+          <button type="button" className="pd-recal-x" aria-label={t("pf.dismiss")} onClick={dismissRecal}>✕</button>
         </div>
       )}
       {/* GUEST-FIRST (2026-09-06): the account ask comes AFTER the player's own
@@ -1875,21 +1886,17 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           players already HAVE a server account — for them it is "attach an
           email so it can't be lost". */}
       {(isGuest || isAnonUser) && (
-        <div className="todays-seven-secondary mp-row" role="group" aria-label="Save your progress" style={{marginBottom:14}}>
-          <button type="button" className="mp-row-open" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }} aria-label={isAnonUser ? 'Save my account' : 'Sign in or create a free account'}>
+        <div className="todays-seven-secondary mp-row" role="group" aria-label={t("pf.saveAria")} style={{marginBottom:14}}>
+          <button type="button" className="mp-row-open" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }} aria-label={t(isAnonUser ? "pf.saveAcct" : "pf.signInFree")}>
             <span className="t7s-icon" aria-hidden="true"><Sparkles size={20} strokeWidth={2.1} /></span>
             <span className="t7s-body">
-              <span className="t7s-title">{isAnonUser ? 'Save this account' : 'Saved on this phone only'}</span>
+              <span className="t7s-title">{t(isAnonUser ? "pf.saveThis" : "pf.phoneOnly")}</span>
               <span className="t7s-sub">
-                {isAnonUser
-                  ? 'Add an email and password so your stats, games and XP can\'t be lost.'
-                  : (stats?.gamesPlayed || 0) > 0
-                    ? 'A free account keeps your stats, streak and rating — and unlocks online 1v1.'
-                    : 'A free account saves everything across devices and unlocks online 1v1.'}
+                {t(isAnonUser ? "pf.anonSub" : (stats?.gamesPlayed || 0) > 0 ? "pf.guestSub1" : "pf.guestSub0")}
               </span>
             </span>
           </button>
-          <button type="button" className="t7s-cta mp-row-invite" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }}>{isAnonUser ? 'Save' : 'Sign in'}</button>
+          <button type="button" className="t7s-cta mp-row-invite" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }}>{t(isAnonUser ? "dd.save" : "site.signIn")}</button>
         </div>
       )}
       {/* Two peer secondary actions. Both are ghost buttons; the gap-based
@@ -1914,16 +1921,16 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
               the only useful thing in a story or a camera roll. */}
           <div className="card-actions">
             <button className="card-action-primary" onClick={onShareProfile}>
-              <Share2 size={16} strokeWidth={2.6} aria-hidden="true" /> Share card
+              <Share2 size={16} strokeWidth={2.6} aria-hidden="true" />{" " + t("pf.shareCard")}
             </button>
             {onSaveCard && (
               <button className="card-action-secondary" onClick={onSaveCard}>
-                <Download size={16} strokeWidth={2.6} aria-hidden="true" /> Save image
+                <Download size={16} strokeWidth={2.6} aria-hidden="true" />{" " + t("pf.saveImage")}
               </button>
             )}
           </div>
           {onShowWeekly && (
-            <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>Weekly Summary</button>
+            <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>{t("pf.weekly")}</button>
           )}
           {/* ⭐ Rate link (ASO deep-dive, 2026-10-04). The native sheet is
               Apple's ~3-a-year lottery; a link the player taps is outside that
@@ -1937,7 +1944,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
               onClick={() => { const store = openStoreRating(); loopEvent("rate-link-tap", { surface: "profile", store }); }}
             >
               <Star size={15} strokeWidth={2.4} aria-hidden="true" />
-              {ratingStore() === "play" ? "Rate Ball IQ on Google Play" : "Rate Ball IQ on the App Store"}
+              {t(ratingStore() === "play" ? "st.rateGp" : "st.rateAs")}
             </button>
           )}
         </div>
@@ -1952,8 +1959,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           textAlign:"center",
         }}>
           <div style={{fontSize:32, marginBottom:8}}>⚽</div>
-          <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>No stats yet</div>
-          <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5}}>Play your first game to see your stats here</div>
+          <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>{t("pf.noStats")}</div>
+          <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5}}>{t("pf.noStatsSub")}</div>
         </div>
       ) : (
         (() => {
@@ -1972,9 +1979,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const spread = strongest && weakest ? strongest.rating - weakest.rating : 0;
           // `short`, not `name` — see CARD_COMPS. "Legends & History Specialist"
           // and "Clubs worldwide Specialist" are what `name` produces here.
-          const title = strongest && spread >= 5 ? `${strongest.short || strongest.name} Specialist`
-            : played.length >= 3 ? "Versatile All-Rounder"
-            : "Rising Talent";
+          const title = strongest && spread >= 5 ? t("pf.specialist", { c: compName(strongest, true) })
+            : t(played.length >= 3 ? "pf.allRounder" : "pf.rising");
           const accPct = accuracyLabel(card, stats);
           // THE REPORT HANDS YOU A QUIZ (2026-09-09). "Strongest" repeated what the
           // card's accented face already says, and "Best score 10/10" repeated
@@ -1984,23 +1990,23 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const rows = [];
           // The code, not the name: "Premier League · 63" plus a label plus a
           // pill wraps twice at 375. The card above spells the codes out.
-          if (weakest) rows.push({ icon: weakest.icon, label: "Needs work", value: `${weakest.abbr} · ${weakest.rating}`, color: "var(--t1)",
-            action: onPlayLeague ? { label: "Play", color: weakest.color, name: weakest.name, onTap: () => onPlayLeague(weakest.cat) } : null });
-          else if (strongest) rows.push({ icon: strongest.icon, label: "Strongest", value: `${strongest.name} · ${strongest.rating}`, color: "var(--accent)" });
-          else rows.push({ Icon: Compass, label: "Next up", value: "Play more to build your card", color: "var(--t2)" });
+          if (weakest) rows.push({ icon: weakest.icon, label: t("pf.needsWork"), value: `${weakest.abbr} · ${weakest.rating}`, color: "var(--t1)",
+            action: onPlayLeague ? { label: t("common.play"), color: weakest.color, name: compName(weakest), onTap: () => onPlayLeague(weakest.cat) } : null });
+          else if (strongest) rows.push({ icon: strongest.icon, label: t("home.rail.strongest"), value: `${compName(strongest)} · ${strongest.rating}`, color: "var(--accent)" });
+          else rows.push({ Icon: Compass, label: t("dd.nextUp"), value: t("pf.playMore"), color: "var(--t2)" });
           // Only show "Top X%" when it's actually a flex — iqPercentile floors
           // at 15, so a weak player would otherwise read "Top 85%" (sounds great,
           // means bottom-ish). Show it only for genuine top-half players.
-          rows.push({ Icon: Target, label: "Accuracy", value: accPct, sub: (pctile && pctile >= 50) ? `Top ${100 - pctile}%` : null, color: "var(--accent)" });
+          rows.push({ Icon: Target, label: t("home.rail.accuracy"), value: accPct, sub: (pctile && pctile >= 50) ? t("dd.cmp.top", { p: 100 - pctile }) : null, color: "var(--accent)" });
           // Suppress a 0 day-streak (gold flame next to 0 reads as broken, and
           // the rest of the app hides a zero streak).
-          if (loginStreak >= 1) rows.push({ Icon: Flame, label: "Day streak", value: String(loginStreak), color: "var(--gold)" });
-          rows.push({ Icon: Medal, label: "Best run", value: `${stats.bestStreak || 0} in a row`, color: "var(--text)" });
-          if (stats.bestHotStreak > 0) rows.push({ Icon: Zap, label: "Hot Streak", value: String(stats.bestHotStreak), color: "var(--gold)" });
-          if (stats.bestTrueFalse > 0) rows.push({ Icon: CircleCheck, label: "True/False", value: `${stats.bestTrueFalse}/20`, color: "var(--t1)" });
+          if (loginStreak >= 1) rows.push({ Icon: Flame, label: t("home.rail.dayStreak"), value: String(loginStreak), color: "var(--gold)" });
+          rows.push({ Icon: Medal, label: t("pf.bestRun"), value: t("quiz.inARow", { n: stats.bestStreak || 0 }), color: "var(--text)" });
+          if (stats.bestHotStreak > 0) rows.push({ Icon: Zap, label: t("home.mode.hotstreak"), value: String(stats.bestHotStreak), color: "var(--gold)" });
+          if (stats.bestTrueFalse > 0) rows.push({ Icon: CircleCheck, label: t("pf.tf"), value: `${stats.bestTrueFalse}/20`, color: "var(--t1)" });
           return (
             <div className="scouting-report" style={{ marginBottom: 16 }}>
-              <div className="ds-eyebrow" style={{ marginBottom: 8, display: "inline-flex", alignItems: "center", gap: 6 }}><Search size={13} strokeWidth={2.4} /> Scouting Report</div>
+              <div className="ds-eyebrow" style={{ marginBottom: 8, display: "inline-flex", alignItems: "center", gap: 6 }}><Search size={13} strokeWidth={2.4} />{" " + t("pf.scout")}</div>
               <div style={{ background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 14, padding: "2px 16px" }}>
                 {rows.map((r, i) => (
                   <div key={r.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 0", borderTop: i === 0 ? "none" : "1px solid var(--border)" }}>
@@ -2012,7 +2018,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                       {r.sub ? <span style={{ fontSize: 11.5, color: "var(--t3)", fontWeight: 700 }}>{r.sub}</span> : null}
                       <span style={{ fontSize: 15, fontWeight: 800, color: r.color }}>{r.value}</span>
                       {r.action && (
-                        <button type="button" onClick={r.action.onTap} aria-label={`Play a ${r.action.name} quiz`}
+                        <button type="button" onClick={r.action.onTap} aria-label={t("pf.playQuiz", { c: r.action.name })}
                           // Lifted toward white: the PL's #3D195B is invisible on --s1 as-is.
                           style={{ padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 800, fontFamily: "inherit", cursor: "pointer", flexShrink: 0,
                                    background: `color-mix(in srgb, ${r.action.color} 22%, transparent)`, color: `color-mix(in srgb, ${r.action.color} 40%, #F0F1F5)`, border: `1px solid color-mix(in srgb, ${r.action.color} 55%, transparent)` }}>
@@ -2044,15 +2050,15 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           const accPct = accuracyLabel(card, stats);
           const DASH = "—";
           const rows = [
-            { label: "Accuracy", value: accPct, cls: "is-mono" },
-            { label: "Day streak", value: (loginStreak || 0) >= 1 ? `🔥 ${loginStreak}` : DASH, cls: "is-amber" },
-            { label: "Best run", value: (stats?.bestStreak || 0) > 0 ? `${stats.bestStreak} in a row` : DASH, cls: "is-mono" },
+            { label: t("home.rail.accuracy"), value: accPct, cls: "is-mono" },
+            { label: t("home.rail.dayStreak"), value: (loginStreak || 0) >= 1 ? `🔥 ${loginStreak}` : DASH, cls: "is-amber" },
+            { label: t("pf.bestRun"), value: (stats?.bestStreak || 0) > 0 ? t("quiz.inARow", { n: stats.bestStreak }) : DASH, cls: "is-mono" },
           ];
           return (
             <div className="pd-scout">
               <div className="pd-scout-head">
                 <span className="pd-scout-ico" aria-hidden="true">🔍</span>
-                <span className="pd-scout-title">Scouting report</span>
+                <span className="pd-scout-title">{t("pf.scoutD")}</span>
               </div>
               <div className="pd-scout-rows">
                 {rows.map((r, i) => (
@@ -2065,9 +2071,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             </div>
           );
         })()}
-        <button type="button" className="pd-share" onClick={onShareProfile} aria-label="Share profile card">
+        <button type="button" className="pd-share" onClick={onShareProfile} aria-label={t("pf.shareProfile")}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
-          Share profile card
+          {t("pf.shareProfile")}
         </button>
       </div>
       {/* BELOW column — Journey + Friends + Badges. display:contents on mobile,
@@ -2082,7 +2088,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         const ordered = LEVELS.map((l, i) => ({ ...l, idx: i }));
         return (
           <div className="journey-section">
-            <div className="journey-title"><Milestone size={17} strokeWidth={2.2} /> Your Journey</div>
+            <div className="journey-title"><Milestone size={17} strokeWidth={2.2} />{" " + t("pf.journey")}</div>
             <div className="journey-list">
               <div className="journey-line" />
               {ordered.map(tier => {
@@ -2096,13 +2102,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                   <div key={tier.name} className={`journey-row ${state}`}>
                     <div className="journey-dot">{isDone ? "✓" : <tier.Icon size={17} strokeWidth={2.1} />}</div>
                     <div className="journey-body">
-                      <div className="journey-name">{tier.name}</div>
-                      <div className="journey-sub">{tier.xpNeeded.toLocaleString()} XP</div>
+                      <div className="journey-name">{levelName(tier.name)}</div>
+                      <div className="journey-sub">{tier.xpNeeded.toLocaleString(fmtLocale())} XP</div>
                     </div>
-                    {isCurrent && <div className="journey-badge current">YOU ARE HERE</div>}
-                    {isNext && <div className="journey-badge next">{xpToGo.toLocaleString()} XP to go</div>}
+                    {isCurrent && <div className="journey-badge current">{t("pf.HERE")}</div>}
+                    {isNext && <div className="journey-badge next">{rich(t("pf.toGo"), { n: xpToGo.toLocaleString(fmtLocale()) })}</div>}
                     {!isCurrent && !isNext && !isDone && isTop && (
-                      <div className="journey-badge goal">Ultimate goal</div>
+                      <div className="journey-badge goal">{t("pf.goal")}</div>
                     )}
                   </div>
                 );
@@ -2115,7 +2121,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         <FriendsSection
           userId={user.id}
           currentUserScore={authProfile?.total_score || 0}
-          currentUserName={authProfile?.username || profile?.name || "You"}
+          currentUserName={authProfile?.username || profile?.name || t("pf.you")}
           currentUserAvatar={currentAvatarId(authProfile, profile)}
           currentUserPhoto={authProfile?.avatar_url || profile?.photo}
           onChallenge={onChallenge}
@@ -2125,10 +2131,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         />
       )}
       <div className="badges-section">
-        <div className="badges-title">Badges — {earned.size}/{BADGE_DEFS.length} earned</div>
+        <div className="badges-title">{rich(t("pf.badges"), { n: earned.size, total: BADGE_DEFS.length })}</div>
         {earned.size === 0 && (
           <div style={{textAlign:"center",padding:"12px 0",color:"var(--t3)",fontSize:13,marginBottom:8}}>
-            Play games to unlock your first badge
+            {t("pf.badgesEmpty")}
           </div>
         )}
         <div className="badges-grid">
@@ -2140,7 +2146,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             const bE = earned.has(b[0]);
             if (aE === bE) return 0;
             return aE ? -1 : 1;
-          }).map(([id, Icon, name]) => {
+          }).map(([id, Icon]) => {
+            const name = t(`bd.${id}`);
             const isEarned = earned.has(id);
             const isSelected = selectedBadgeId === id;
             const baseStyle = isEarned ? {background:"rgba(88,204,2,0.1)",borderColor:"rgba(88,204,2,0.25)"} : {};
@@ -2152,7 +2159,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 className={`badge-tile ${isEarned?"earned":"locked"}`}
                 style={{...baseStyle, ...selectedStyle, cursor:"pointer", fontFamily:"inherit"}}
                 onClick={() => setSelectedBadgeId(prev => prev === id ? null : id)}
-                aria-label={`${name} — ${isEarned ? "earned" : "locked"}. Tap for details.`}
+                aria-label={t("pf.badgeAria", { name, s: t(isEarned ? "pf.earned" : "pf.locked") })}
                 aria-expanded={isSelected}
               >
                 {/* grayscale() did the dimming when this was emoji; an SVG has
@@ -2170,7 +2177,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         {selectedBadgeId && (() => {
           const def = BADGE_DEFS.find(b => b[0] === selectedBadgeId);
           if (!def) return null;
-          const [id, Icon, name, desc] = def;
+          const [id, Icon] = def;
+          const name = t(`bd.${id}`), desc = t(`bd.${id}.d`);
           const isEarned = earned.has(id);
           return (
             <div className="badge-detail-card" ref={badgeDetailRef}>
@@ -2181,7 +2189,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                 <div className="bd-name">{name}</div>
                 <div className="bd-desc">{desc}</div>
                 <div className={`bd-status ${isEarned?"bd-status-earned":"bd-status-locked"}`}>
-                  {isEarned ? "✓ Earned" : "Locked"}
+                  {t(isEarned ? "pf.earnedTag" : "pf.lockedTag")}
                 </div>
               </div>
             </div>
@@ -2193,13 +2201,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       {showAvatarMenu && (
         <div className="emoji-picker-overlay" onClick={() => setShowAvatarMenu(false)}>
           <div className="emoji-picker-sheet" onClick={e => e.stopPropagation()}>
-            <div className="emoji-picker-title">Profile photo</div>
+            <div className="emoji-picker-title">{t("pf.photo")}</div>
             <div className="avatar-menu">
               <button className="avatar-menu-row" onClick={pickFromLibrary}>
                 <span style={{fontSize:22}}>🖼️</span>
                 <div style={{flex:1, minWidth:0}}>
-                  <div style={{fontSize:14, fontWeight:700, color:"var(--t1)"}}>Choose from library</div>
-                  <div style={{fontSize:12, color:"var(--t3)"}}>Upload a photo from your device</div>
+                  <div style={{fontSize:14, fontWeight:700, color:"var(--t1)"}}>{t("pf.library")}</div>
+                  <div style={{fontSize:12, color:"var(--t3)"}}>{t("pf.librarySub")}</div>
                 </div>
               </button>
               {/* The "Choose emoji avatar" row lived here. Removed 2026-07-29:
@@ -2216,7 +2224,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           onCancel={handleCropCancel}
           onConfirm={handleCropConfirm}
           onLoadError={() => {
-            onToast?.("⚠️ Couldn't load image editor — check your connection");
+            onToast?.(t("pf.editorFail"));
             handleCropCancel();
           }}
         />
@@ -2250,17 +2258,17 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             tabIndex={-1}
             role="dialog"
             aria-modal="true"
-            aria-label="Choose your league"
+            aria-label={t("pf.chooseLeague")}
             style={{width:"100%",maxHeight:"80vh",overflowY:"auto",background:"var(--bg)",borderRadius:"16px 16px 0 0",padding:"14px 12px calc(20px + env(safe-area-inset-bottom, 20px))"}}
             onClick={e => e.stopPropagation()}
           >
-            <div className="ds-eyebrow" style={{padding:"2px 6px 10px",color:"var(--t3)"}}>YOUR LEAGUE ON THE CARD</div>
+            <div className="ds-eyebrow" style={{padding:"2px 6px 10px",color:"var(--t3)"}}>{t("pf.LEAGUE")}</div>
             {(() => {
               const auto = pickLeagueFace(stats?.catStats || {});
-              const rows = [{ cat: null, name: "Automatic", icon: "✨", sub: `Follows what you play · now ${auto.abbr}` },
+              const rows = [{ cat: null, name: t("pf.auto"), icon: "✨", sub: t("pf.autoSub", { c: auto.abbr }) },
                 ...LEAGUE_FACES.map(l => ({ cat: l.cat, name: l.name, icon: l.icon,
                   sub: rawAnswered((stats?.catStats || {})[l.cat]) >= 1
-                    ? `${Math.round(rawAnswered((stats?.catStats || {})[l.cat]))} answered` : "Not played yet" }))];
+                    ? t("pf.answered", { count: Math.round(rawAnswered((stats?.catStats || {})[l.cat])), n: Math.round(rawAnswered((stats?.catStats || {})[l.cat])) }) : t("pf.notPlayed") }))];
               return rows.map(row => {
                 const on = (row.cat || null) === (pinnedLeague || null);
                 return (
@@ -2273,7 +2281,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                       <span style={{display:"block",fontSize:15,fontWeight:700}}>{row.name}</span>
                       <span style={{display:"block",fontSize:12,color:"var(--t3)",marginTop:1}}>{row.sub}</span>
                     </span>
-                    {on ? <CircleCheck size={19} strokeWidth={2.5} aria-label="Selected" style={{color:"var(--accent)",flexShrink:0}} /> : null}
+                    {on ? <CircleCheck size={19} strokeWidth={2.5} aria-label={t("pf.selected")} style={{color:"var(--accent)",flexShrink:0}} /> : null}
                   </button>
                 );
               });

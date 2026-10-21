@@ -5,7 +5,8 @@ import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { Home, Share } from "lucide-react";
 import { useEffect } from "react";
 import { Confetti, haptic } from "../App.jsx";
-import { resultVerdict } from '../lib/resultVerdict.js';
+import { useT } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 
 // Loop instrumentation (opportunity scan 2026-08-10 P0): a named Clarity event
 // at each share invocation and pending-token conversion, so k-factor per loop
@@ -29,8 +30,9 @@ export function HotStreakResults({ result, onRetry, onHome, onShare, prevBest })
   const isNewBest = prevBest === 0 || score > prevBest;
   const isFirstRun = prevBest === 0 && score > 0;
   const pct = answered > 0 ? Math.round((score / answered) * 100) : 0;
+  const t = useT();
   const emoji = score >= 25 ? "🐐" : score >= 15 ? "🔥" : score >= 8 ? "⚡" : "⏱️";
-  const title = score >= 25 ? "Prime Messi numbers" : score >= 15 ? "Golden Boot pace" : score >= 8 ? "Poacher's instinct" : "Pre-season sharpness";
+  const title = t(score >= 25 ? "hs.t25" : score >= 15 ? "hs.t15" : score >= 8 ? "hs.t8" : "hs.t0");
   const xpEarned = score * 8;
   useEffect(() => { if (isNewBest && !isFirstRun && score >= 5) haptic("levelup"); }, [isNewBest, isFirstRun, score]);
   return (
@@ -38,7 +40,7 @@ export function HotStreakResults({ result, onRetry, onHome, onShare, prevBest })
       {score >= 15 && <Confetti />}
       <ResultsCloseBtn onClose={onHome} />
       <div style={{textAlign:"center",padding:"8px 0 4px"}}>
-        <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",letterSpacing:2}}>⚡🔥 Hot Streak</span>
+        <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",letterSpacing:2}}>{"⚡🔥 " + t("home.mode.hotstreak")}</span>
       </div>
       <div className="rc">
         <div className="rc-icon">{emoji}</div>
@@ -48,28 +50,28 @@ export function HotStreakResults({ result, onRetry, onHome, onShare, prevBest })
             celebration green for a score of 1. There is no denominator here
             (it is "N correct in 60 seconds"), so the band is on the count:
             8+ is a real run on a 60-second clock. */}
-        <div className={`score-big${score >= 8 ? " is-strong" : ""}`}><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:22,color:"var(--t2)",fontWeight:500}}> correct</span></div>
-        <div className="score-pct">in 60 seconds · {answered} answered</div>
+        <div className={`score-big${score >= 8 ? " is-strong" : ""}`}><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:22,color:"var(--t2)",fontWeight:500}}>{t("hs.correct")}</span></div>
+        <div className="score-pct">{rich(t("hs.in60"), { n: answered })}</div>
       </div>
 
       {/* 🏆 Personal best callout */}
-      {isNewBest && !isFirstRun && prevBest > 0 && <div className="new-best">🏆 New Hot Streak best — was {prevBest}!</div>}
-      {isFirstRun && <div className="new-best">⚡ First Hot Streak run: {score} correct</div>}
-      {prevBest > 0 && !isNewBest && <div style={{textAlign:"center",fontSize:12,color:"var(--t2)",margin:"4px 0 10px"}}>Personal best: {prevBest}</div>}
+      {isNewBest && !isFirstRun && prevBest > 0 && <div className="new-best">{rich(t("hs.newBest"), { n: prevBest })}</div>}
+      {isFirstRun && <div className="new-best">{rich(t("hs.first", { count: score }), { n: score })}</div>}
+      {prevBest > 0 && !isNewBest && <div style={{textAlign:"center",fontSize:12,color:"var(--t2)",margin:"4px 0 10px"}}>{rich(t("hs.pb"), { n: prevBest })}</div>}
 
       <div className="s-row">
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--accent)"}}><CountUp value={score} duration={700} delay={550} /></div><div className="sbox-k">Correct</div></div>
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--t2)"}}><CountUp value={answered} duration={700} delay={650} /></div><div className="sbox-k">Answered</div></div>
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
+        <div className="sbox"><div className="sbox-v" style={{color:"var(--accent)"}}><CountUp value={score} duration={700} delay={550} /></div><div className="sbox-k">{t("rs.correct")}</div></div>
+        <div className="sbox"><div className="sbox-v" style={{color:"var(--t2)"}}><CountUp value={answered} duration={700} delay={650} /></div><div className="sbox-k">{t("rs.answered")}</div></div>
+        <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">{t("home.rail.accuracy")}</div></div>
       </div>
       <div className="results-actions" style={{marginTop:14}}>
-        <button className="btn-3d" onClick={onRetry}>Run it back</button>
-        <button className="btn-3d ghost" onClick={onShare}>Share score</button>
-        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+        <button className="btn-3d" onClick={onRetry}>{t("hs.again")}</button>
+        <button className="btn-3d ghost" onClick={onShare}>{t("rs.shareScore")}</button>
+        <button className="btn-3d ghost" onClick={onHome}>{t("quiz.backHome")}</button>
       </div>
       {xpEarned > 0 && (
         <div style={{textAlign:"center", marginTop:10, fontSize:12, color:"var(--t3)", fontWeight:500}}>
-          +{xpEarned} XP earned
+          {rich(t("rs.xpEarned"), { n: xpEarned })}
         </div>
       )}
     </div>
@@ -81,16 +83,18 @@ export function TrueFalseResults({ result, onRetry, onHome, onShare }) {
   const { score, total } = result;
   const pct = Math.round((score / total) * 100);
   const isPerfect = score === total;
+  const t = useT();
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
   const emoji = pct === 100 ? "🧠" : pct >= 80 ? "✅" : pct >= 60 ? "⚽" : pct >= 40 ? "🤔" : "❌";
-  const title = resultVerdict(pct);
+  // resultVerdict's bands, in the player's language (the share text keeps resultVerdict's English).
+  const title = t(pct === 100 ? "rv.100" : pct >= 80 ? "rv.80" : pct >= 60 ? "rv.60" : pct >= 40 ? "rv.40" : "rv.0");
   const xpEarned = score * 8;
   return (
     <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
       {pct >= 80 && <Confetti />}
       <ResultsCloseBtn onClose={onHome} />
       <div style={{textAlign:"center",padding:"8px 0 4px"}}>
-        <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",letterSpacing:2}}>✅ True or False</span>
+        <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--accent)",letterSpacing:2}}>{t("tf.label")}</span>
       </div>
       <div className="rc">
         <div className="rc-icon">{emoji}</div>
@@ -101,21 +105,21 @@ export function TrueFalseResults({ result, onRetry, onHome, onShare }) {
         <div className={`score-big${total > 0 && score / total >= 0.7 ? " is-strong" : ""}`}><CountUp value={score} duration={900} delay={250} triggerHaptic /><span style={{fontSize:30,color:"var(--t2)"}}>/{total}</span></div>
       </div>
 
-      {isPerfect && total >= 10 && <div className="new-best">🎯 Perfect round — no lies slipped past!</div>}
+      {isPerfect && total >= 10 && <div className="new-best">{t("tf.perfect")}</div>}
 
       <div className="s-row">
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--green)"}}><CountUp value={score} duration={700} delay={550} /></div><div className="sbox-k">Correct</div></div>
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--red)"}}><CountUp value={total - score} duration={700} delay={650} /></div><div className="sbox-k">Wrong</div></div>
-        <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">Accuracy</div></div>
+        <div className="sbox"><div className="sbox-v" style={{color:"var(--green)"}}><CountUp value={score} duration={700} delay={550} /></div><div className="sbox-k">{t("rs.correct")}</div></div>
+        <div className="sbox"><div className="sbox-v" style={{color:"var(--red)"}}><CountUp value={total - score} duration={700} delay={650} /></div><div className="sbox-k">{t("rs.wrong")}</div></div>
+        <div className="sbox"><div className="sbox-v" style={{color:"var(--gold)"}}><CountUp value={pct} duration={700} delay={750} suffix="%" /></div><div className="sbox-k">{t("home.rail.accuracy")}</div></div>
       </div>
       <div className="results-actions" style={{marginTop:14}}>
-        <button className="btn-3d" onClick={onRetry}>Another round</button>
-        <button className="btn-3d ghost" onClick={onShare}>Share score</button>
-        <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+        <button className="btn-3d" onClick={onRetry}>{t("tf.again")}</button>
+        <button className="btn-3d ghost" onClick={onShare}>{t("rs.shareScore")}</button>
+        <button className="btn-3d ghost" onClick={onHome}>{t("quiz.backHome")}</button>
       </div>
       {xpEarned > 0 && (
         <div style={{textAlign:"center", marginTop:10, fontSize:12, color:"var(--t3)", fontWeight:500}}>
-          +{xpEarned} XP earned
+          {rich(t("rs.xpEarned"), { n: xpEarned })}
         </div>
       )}
     </div>

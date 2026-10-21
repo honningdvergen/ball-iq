@@ -10,6 +10,8 @@ import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { isTop10Live } from "../lib/top10.js";
 import { FOOTLE_SHORT } from "../lib/modeCopy.js";
 import { MODE_ACCENT, MODE_RGB } from '../lib/accents.js';
+import { t, useT, useLang, isLangLoaded, fmtLocale, fmtFixed } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 
 // Shared monospace stack for tabular numerals (countdown, scores). Mirrors the
 // inline font used by the mobile markup so the >=1024 desktop layout renders
@@ -123,7 +125,7 @@ function ScoreCell({ state, text, theme, w = COL_W, glyph = null }) {
       {state === "win"
         ? <span style={{ display: "inline-flex", alignItems: "center", gap: 3, padding: "3px 8px", borderRadius: 999, background: theme.chipBg, fontFamily: MONO, fontSize: 11.5, fontWeight: 800, color: theme.fg, fontVariantNumeric: "tabular-nums" }}>{glyph ? <ModeGlyph mode={glyph} size={11} /> : null}{text}</span>
         : state === "miss"
-        ? <span style={{ display: "inline-flex", color: "#FF6B6B" }} aria-label="missed"><X size={14} strokeWidth={2.6} /></span>
+        ? <span style={{ display: "inline-flex", color: "#FF6B6B" }} aria-label={t("gc.missed")}><X size={14} strokeWidth={2.6} /></span>
         : state === "open"
         ? <span style={{ fontSize: 13, fontWeight: 700, color: "var(--t3)" }}>·</span>
         : <span style={{ fontSize: 13, fontWeight: 700, color: "#3E4150" }}>—</span>}
@@ -158,7 +160,7 @@ function ReplayCell({ w, theme, label, onTap }) {
         style={{ display: "inline-flex", alignItems: "center", justifyContent: "center",
           height: 26, padding: "0 8px", borderRadius: 999, background: theme.btnBg,
           border: theme.btnBd, fontSize: 11.5, fontWeight: 800, color: theme.fg,
-          letterSpacing: 0.1, cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>Play</button>
+          letterSpacing: 0.1, cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>{t("common.play")}</button>
     </span>
   );
 }
@@ -252,27 +254,31 @@ function foldUnplayed(days) {
   return out;
 }
 function rowCells(m) {
+  // The screen readers' sentence per cell; {g} is the game's (product) name.
+  const solved = (g, n) => t("hi.solvedIn", { g, n });
+  const notSolved = (g) => t("hi.notSolved", { g });
+  const notPlayed = (g) => t("hi.notPlayed", { g });
   return [
     { key: "footle", theme: MODE_THEME.footle, text: String(m.fUsed),
       state: m.fWon ? "win" : m.fAttempt ? "miss" : "none",
-      aria: m.fWon ? `Footle solved in ${m.fUsed}` : m.fAttempt ? "Footle not solved" : "Footle not played" },
+      aria: m.fWon ? solved("Footle", m.fUsed) : m.fAttempt ? notSolved("Footle") : notPlayed("Footle") },
     { key: "daily7", theme: MODE_THEME.daily7, text: `${m.t7Score}/7`,
       state: m.t7Done ? "win" : "none",
-      aria: m.t7Done ? `Daily 7 ${m.t7Score} of 7` : "Daily 7 not played" },
+      aria: m.t7Done ? t("hi.d7", { n: m.t7Score }) : notPlayed("Daily 7") },
     { key: "trail", theme: MODE_THEME.trail, text: String(m.trUsed),
       state: !m.trLive ? "off" : m.trWon ? "win" : m.trAttempt ? "miss" : "none",
-      aria: !m.trLive ? "" : m.trWon ? `Transfer Trail solved in ${m.trUsed}` : m.trAttempt ? "Transfer Trail not solved" : "Transfer Trail not played" },
+      aria: !m.trLive ? "" : m.trWon ? solved("Transfer Trail", m.trUsed) : m.trAttempt ? notSolved("Transfer Trail") : notPlayed("Transfer Trail") },
     // The fourth game is the one that was the fourth daily on THIS row's day.
     // A finished Top 10 is a score like Daily 7's, never a miss: running out
     // of lives at six found is still six found.
     m.t10Live
       ? { key: "top10", theme: MODE_THEME.top10, text: `${m.t10Score}/10`,
           state: m.t10Done ? "win" : m.t10Attempt ? "open" : "none",
-          aria: m.t10Done ? `Top 10 ${m.t10Score} of 10` : m.t10Attempt ? "Top 10 still open" : "Top 10 not played" }
+          aria: m.t10Done ? t("hi.t10", { n: m.t10Score }) : m.t10Attempt ? t("hi.open", { g: "Top 10" }) : notPlayed("Top 10") }
       // Mystery cannot be lost, so an unfinished board is "open", never a miss.
       : { key: "mystery", theme: MODE_THEME.mystery, text: String(m.myUsed),
           state: !m.myLive ? "off" : m.myWon ? "win" : m.myAttempt ? "open" : "none",
-          aria: !m.myLive ? "" : m.myWon ? `Mystery Player solved in ${m.myUsed}` : m.myAttempt ? "Mystery Player still open" : "Mystery Player not played" },
+          aria: !m.myLive ? "" : m.myWon ? solved("Mystery Player", m.myUsed) : m.myAttempt ? t("hi.open", { g: "Mystery Player" }) : notPlayed("Mystery Player") },
   ];
 }
 // Which screen a given column replays into. Daily 7 keeps its own launcher
@@ -321,6 +327,7 @@ function yesterdayOpen(matchdays, today, playArchive, playDailyForDate) {
 // already plumbed — yesterday's unplayed puzzles — and falls back to Survival,
 // which needs no difficulty picker, no account, and never runs out.
 function DayComplete({ open, onSurvival, wide, todayYMD }) {
+  useT();
   const hasOpen = open.length > 0;
   // The clean sweep is the single most-earned moment in the product and this
   // card used to whisper it (scouting panel, gameplay 7/B). Confetti + a heavy
@@ -334,8 +341,8 @@ function DayComplete({ open, onSurvival, wide, todayYMD }) {
       localStorage.setItem("biq_sweep_seen", todayYMD);
       setCelebrate(true);
       haptic("heavy");
-      const t = setTimeout(() => setCelebrate(false), 4200);
-      return () => clearTimeout(t);
+      const id = setTimeout(() => setCelebrate(false), 4200);
+      return () => clearTimeout(id);
     } catch { /* storage unavailable: skip the celebration, keep the card */ }
   }, [todayYMD]);
   return (
@@ -344,22 +351,22 @@ function DayComplete({ open, onSurvival, wide, todayYMD }) {
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span style={{ width: 34, height: 34, flexShrink: 0, borderRadius: 10, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.30)", color: "var(--accent)", fontSize: 16, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true">✓</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: wide ? 16 : 15, fontWeight: 800, color: "var(--t1)" }}>Clean sweep — today&apos;s done</div>
+          <div style={{ fontSize: wide ? 16 : 15, fontWeight: 800, color: "var(--t1)" }}>{t("hi.sweep")}</div>
           <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
-            {hasOpen ? "Yesterday is still open" : "Survival never runs out"}
+            {t(hasOpen ? "hi.yOpen" : "hi.survNever")}
           </div>
         </div>
         {!hasOpen && (
           <button onClick={onSurvival}
             style={{ flexShrink: 0, padding: wide ? "10px 22px" : "11px 20px", borderRadius: 12, background: "rgba(88,204,2,0.14)", border: "1.5px solid rgba(88,204,2,0.42)", color: "var(--accent)", fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
-            Survival
+            {t("home.mode.survival")}
           </button>
         )}
       </div>
       {hasOpen && (
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {open.map(o => (
-            <button key={o.key} onClick={o.onTap} aria-label={`Play yesterday's ${o.label}`}
+            <button key={o.key} onClick={o.onTap} aria-label={t("hi.playY", { g: o.label })}
               style={{ padding: "9px 14px", borderRadius: 11, background: o.theme.btnBg, border: o.theme.btnBd, color: o.theme.fg, fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
               ↺ {o.label}
             </button>
@@ -376,24 +383,23 @@ function DayComplete({ open, onSurvival, wide, todayYMD }) {
 // calls repair_login_streak). Same open-list derivation as DayComplete so
 // the buttons can never offer a puzzle the table would call unplayable.
 function StreakRepairBanner({ repair, open, wide }) {
+  useT();
   if (!repair) return null;
   return (
     <div style={{ borderRadius: 16, padding: wide ? "16px 20px" : "14px 16px", background: "rgba(255,107,107,0.07)", border: "1px solid rgba(255,107,107,0.30)", display: "flex", flexDirection: "column", gap: 10 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span style={{ fontSize: 22 }} aria-hidden="true">💔</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: wide ? 15.5 : 14.5, fontWeight: 800, color: "var(--t1)" }}>Your {repair.fell}-day streak broke</div>
+          <div style={{ fontSize: wide ? 15.5 : 14.5, fontWeight: 800, color: "var(--t1)" }}>{rich(t("hi.broke", { count: repair.fell }), { n: repair.fell })}</div>
           <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
-            {open.length > 0
-              ? "Play one of yesterday's puzzles before midnight to repair it"
-              : "Yesterday's puzzles are all done — the repair will land with your next play"}
+            {t(open.length > 0 ? "hi.repairOpen" : "hi.repairDone")}
           </div>
         </div>
       </div>
       {open.length > 0 && (
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {open.map(o => (
-            <button key={o.key} onClick={o.onTap} aria-label={`Repair the streak — play yesterday's ${o.label}`}
+            <button key={o.key} onClick={o.onTap} aria-label={t("hi.repairAria", { g: o.label })}
               style={{ padding: "9px 14px", borderRadius: 11, background: o.theme.btnBg, border: o.theme.btnBd, color: o.theme.fg, fontSize: 13, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
               <Flame size={13} strokeWidth={2.4} aria-hidden="true" style={{ verticalAlign: "-2px", marginRight: 4 }} />{o.label}
             </button>
@@ -406,6 +412,10 @@ function StreakRepairBanner({ repair, open, wide }) {
 
 function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive, streakRepair, onStartLeague }) {
   const { user, profile: authProfile } = useAuth();
+  // The day rows' words and dates are memoised: they follow the language and its table's arrival.
+  const uiLang = useLang();
+  const uiReady = isLangLoaded(uiLang);
+  const lang = fmtLocale();
   // Audit Phase 5 (D2): poll for day rollover so the screen-local `today`
   // refreshes if the user keeps the tab open across midnight. Without
   // this, today + todayYMD stay frozen at mount time and downstream
@@ -556,10 +566,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     const showCount = Math.min(30, totalMatchdays);
     const rows = [];
     for (let i = 0; i < showCount; i++) {
-      const t = todayMid - i * 86400000;
-      const d = new Date(t);
+      const ms = todayMid - i * 86400000;
+      const d = new Date(ms);
       const ymd = dateToYMD(d);
-      const md = Math.floor((t - firstTime) / 86400000) + 1;
+      const md = Math.floor((ms - firstTime) / 86400000) + 1;
       const t7Score = dailyHistory?.[ymd];
       const t7Done = typeof t7Score === "number";
       const fInfo = footleHistory.get(ymd);
@@ -578,7 +588,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       // Availability is per-day, not global: both modes launched after Footle,
       // so cells before their first puzzle stay blank rather than printing a
       // dash the user could read as a missed day.
-      const dNoon = noon(t);
+      const dNoon = noon(ms);
       const trLive = trailLiveOn(dNoon);
       const t10Live = top10LiveOn(dNoon);
       const myLive = !t10Live && mysteryLiveOn(dNoon);
@@ -588,10 +598,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       const t10Score = t10Info?.score || 0;
       const isToday = i === 0;
       let dateLabel;
-      if (isToday) dateLabel = "Today";
-      else if (i === 1) dateLabel = "Yesterday";
-      else dateLabel = d.toLocaleDateString(undefined, { weekday: "short" });
-      const dateSub = d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      if (isToday) dateLabel = t("site.today");
+      else if (i === 1) dateLabel = t("dd.yday");
+      else dateLabel = d.toLocaleDateString(lang, { weekday: "short" });
+      const dateSub = d.toLocaleDateString(lang, { month: "short", day: "numeric" });
       rows.push({
         // isYesterday gates EVERY replay control (2026-09-09 — see ReplayCell):
         // Daily 7's catch-up launcher and the three archive modes alike.
@@ -601,7 +611,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       });
     }
     return rows;
-  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory, top10History]);
+  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory, top10History, lang, uiReady]);
 
   const form14 = useMemo(() => {
     const t7Set = new Set(Object.keys(dailyHistory || {}));
@@ -667,14 +677,14 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       const arcOnly = done.length > 0 && liveDone.length === 0;
       let cls, label;
       if (done.length >= 2) { cls = "W"; label = done.join(" + "); }
-      else if (done.length === 1) { cls = "D"; label = `${done[0]} only`; }
-      else if (!isToday && d.getTime() < firstTime) { cls = "pre"; label = "Before your first puzzle"; }
-      else { cls = "L"; label = isToday ? "Pending" : "Missed"; }
-      if (arcOnly) label += " · caught up later";
+      else if (done.length === 1) { cls = "D"; label = t("hi.only", { g: done[0] }); }
+      else if (!isToday && d.getTime() < firstTime) { cls = "pre"; label = t("hi.pre"); }
+      else { cls = "L"; label = t(isToday ? "hi.pending" : "hi.missedDay"); }
+      if (arcOnly) label += t("hi.later");
       out.push({ ymd, cls, isToday, arcOnly, aria: `${ymd}: ${label}` });
     }
     return out;
-  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory, top10History]);
+  }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory, top10History, uiLang, uiReady]);
 
   // Has the player completed any of those 14 days? Both streak surfaces gate on
   // this ONE value -- the mobile strip and the desktop rail card -- because the
@@ -810,15 +820,14 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         const authLoading = !!user && !authProfile;
         const name = authProfile?.username || profile?.name || null;
         const ko = formatCountdown(msToNextLocalMidnight(now));
-        const todayLabel = today.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
         return (
           <>
             {/* No local gear — AppInner's global header already renders one. */}
             {/* No greeting here (2026-09-06): the tab is History; the header anchor lives on Home. */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 2 }}>
-              <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>History</div>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)" }}>New puzzles in</span>
+              <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>{t("tab.daily")}</div>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={t("dd.newIn", { ko })}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)" }}>{t("hi.newIn")}</span>
                 <span style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
               </span>
             </div>
@@ -848,14 +857,14 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           to play on the one tab that offers nothing to play. 44-49% of accounts
           never play a game, so this was the common case, not the edge. */}
       {hasFormHistory && (
-      <div role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}
+      <div role="status" aria-label={t("hi.streakAria", { count: streak.unbeaten, n: streak.unbeaten, b: streak.bestUnbeaten })}
         style={{ marginTop: 12, borderRadius: 18, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
           <span style={{ display: "inline-flex", color: "var(--gold)" }} aria-hidden="true"><Flame size={18} strokeWidth={2.3} /></span>
-          <span style={{ fontSize: 14, fontWeight: 800, color: "var(--t1)" }}>{streak.unbeaten} day streak</span>
-          <span style={{ fontSize: 12, color: "var(--t2)" }}>{streak.unbeaten > 0 ? "— come back tomorrow to keep it" : "— play one puzzle to light it"}</span>
+          <span style={{ fontSize: 14, fontWeight: 800, color: "var(--t1)" }}>{rich(t("hi.dayStreak", { count: streak.unbeaten }), { n: streak.unbeaten })}</span>
+          <span style={{ fontSize: 12, color: "var(--t2)" }}>{t(streak.unbeaten > 0 ? "hi.keep" : "hi.light")}</span>
         </div>
-        <div style={{ display: "flex", gap: 4, marginTop: 12 }} role="group" aria-label="Form — last 14 days">
+        <div style={{ display: "flex", gap: 4, marginTop: 12 }} role="group" aria-label={t("hi.formAria")}>
           {form14.map((d) => {
             const played = d.cls === "W" || d.cls === "D";
             const s = { flex: 1, height: 18, borderRadius: 4 };
@@ -867,8 +876,8 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           })}
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 7 }}>
-          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t3)" }}>2 WK AGO</span>
-          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--gold)" }}>TODAY</span>
+          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t3)" }}>{t("hi.2wk")}</span>
+          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--gold)" }}>{t("hi.TODAY")}</span>
         </div>
       </div>
       )}
@@ -878,7 +887,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           which have the same padding (the two-column version was 14px out). */}
       {historyRows.length > 0 && (
       <div style={{ display: "flex", alignItems: "baseline", marginTop: 18, padding: "0 14px" }}>
-        <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)", flex: 1 }}>Recent days</span>
+        <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)", flex: 1 }}>{t("hi.recent")}</span>
         {cols.map(c => (
           <span key={c.key} style={{ width: COL_W, flexShrink: 0, textAlign: "center", fontSize: 8.5, fontWeight: 800, letterSpacing: "0.02em", color: c.theme.head }}>{c.label}</span>
         ))}
@@ -896,13 +905,13 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               <span key={c.key} style={{ minWidth: 62, padding: "7px 8px", borderRadius: 10, border: `1px dashed ${c.theme.head}`, opacity: 0.75, fontSize: 9.5, fontWeight: 800, letterSpacing: "0.04em", color: c.theme.head }}>{c.label}</span>
             ))}
           </div>
-          <div style={{ marginTop: 16, fontSize: 17, fontWeight: 800, color: "var(--t1)" }}>No days yet</div>
+          <div style={{ marginTop: 16, fontSize: 17, fontWeight: 800, color: "var(--t1)" }}>{t("hi.noDays")}</div>
           <div style={{ marginTop: 5, fontSize: 13.5, lineHeight: 1.45, color: "var(--t2)" }}>
-            Finish any of today&rsquo;s {cols.length === 4 ? "four" : cols.length === 3 ? "three" : cols.length} and it lands here. One row a day, so you can see your run build.
+            {rich(t("hi.empty"), { n: cols.length === 4 ? t("hi.four") : cols.length === 3 ? t("hi.three") : cols.length })}
           </div>
           {nextUp && (
             <button type="button" className="btn btn-p" onClick={nextUp.onTap} style={{ marginTop: 16, minHeight: 48 }}>
-              Play today&rsquo;s {nextUp.name}
+              {rich(t("hi.playToday"), { g: nextUp.name })}
             </button>
           )}
         </div>
@@ -916,8 +925,8 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           if (m.gap) {
             const newest = m.days[0], oldest = m.days[m.days.length - 1];
             const text = m.days.length === 1
-              ? `${newest.dateLabel} ${newest.dateSub} · not played`
-              : `${oldest.dateSub} to ${newest.dateSub} · ${m.days.length} days not played`;
+              ? t("hi.gap1", { d: `${newest.dateLabel} ${newest.dateSub}` })
+              : t("hi.gapN", { a: oldest.dateSub, b: newest.dateSub, n: m.days.length });
             return (
               <div key={`gap-${newest.ymd}`} aria-label={text}
                 style={{ borderRadius: 11, padding: "8px 14px", border: "1px dashed var(--border)", textAlign: "center", fontSize: 11.5, color: "var(--t3)" }}>
@@ -941,11 +950,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   // Comeback hook (opportunity-scan #8): yesterday's missed
                   // Daily 7 stays playable for one day — the same "Play" pill as
                   // the other three, with its own label for screen readers.
-                  <ReplayCell key={c.key} w={COL_W} theme={c.theme} label="Catch up — play yesterday's Daily 7"
+                  <ReplayCell key={c.key} w={COL_W} theme={c.theme} label={t("hi.catchUp")}
                     onTap={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))} />
                 ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
                   <ReplayCell key={c.key} w={COL_W} theme={c.theme}
-                    label={`Play ${m.dateLabel}'s ${MODE_LABEL[c.key]}`}
+                    label={t("hi.playDay", { d: m.dateLabel, g: MODE_LABEL[c.key] })}
                     onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
                 ) : <ScoreCell key={c.key} state={c.state} text={c.text} theme={c.theme} glyph={headKeys.has(c.key) ? null : c.key} />
               ))}
@@ -959,8 +968,8 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         <div style={{background:"rgba(88,204,2,0.04)",border:"1px solid rgba(88,204,2,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>
           <span style={{fontSize:20}}>🛡️</span>
           <div>
-            <div style={{fontSize:13,fontWeight:700,color:"var(--t1)"}}>{shieldCount} streak shield{shieldCount === 1 ? "" : "s"} ready</div>
-            <div style={{fontSize:11,color:"var(--t2)"}}>Auto-protects your streak if you miss a day — earn one every 200 XP</div>
+            <div style={{fontSize:13,fontWeight:700,color:"var(--t1)"}}>{rich(t("hi.shields", { count: shieldCount }), { n: shieldCount, s: shieldCount === 1 ? "" : "s" })}</div>
+            <div style={{fontSize:11,color:"var(--t2)"}}>{t("hi.shieldSub")}</div>
           </div>
         </div>
       )}
@@ -995,7 +1004,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             const sc = dailyHistory?.[ymd];
             if (typeof sc === "number") { solved++; d7sum += sc; d7count++; }
           }
-          const avgDaily7 = d7count > 0 ? (d7sum / d7count).toFixed(1) : null;
+          const avgDaily7 = d7count > 0 ? fmtFixed(d7sum / d7count, 1) : null;
 
           // Recent-days list = matchdays minus today (today lives in the two
           // hero cards above, matching the handoff).
@@ -1011,9 +1020,9 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             <>
               {/* Header: title + amber countdown pill */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div style={{ fontSize: 27, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>History</div>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={`New puzzles in ${ko}`}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)" }}>New puzzles in</span>
+                <div style={{ fontSize: 27, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>{t("tab.daily")}</div>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 14px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={t("dd.newIn", { ko })}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)" }}>{t("hi.newIn")}</span>
                   <span style={{ fontFamily: MONO, fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
                 </span>
               </div>
@@ -1028,7 +1037,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   {/* Recent days */}
                   <div style={{ marginTop: 6 }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                      <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--t3)" }}>Recent days</span>
+                      <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--t3)" }}>{t("hi.recent")}</span>
                       <span style={{ display: recentDays.length ? "flex" : "none", paddingRight: 16 }}>
                         {cols.map(c => (
                           <span key={c.key} style={{ ...colHead, color: c.theme.head }}>{c.label}</span>
@@ -1037,9 +1046,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                     </div>
                     {recentDays.length === 0 ? (
                       <div style={{ borderRadius: 13, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px", fontSize: 12.5, color: "var(--t3)" }}>
-                        {playedCount > 0
-            ? <>Today counts from tomorrow — come back and this fills up.</>
-            : <>Play today, then your recent days show up here.</>}
+                        {t(playedCount > 0 ? "hi.fromTomorrow" : "hi.playFirst")}
                       </div>
                     ) : (
                       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -1057,11 +1064,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                                 c.key === "daily7" && catchUp ? (
                                   // Same catch-up affordance and the same pill as
                                   // mobile.
-                                  <ReplayCell key={c.key} w={DCOL_W} theme={c.theme} label="Catch up — play yesterday's Daily 7"
+                                  <ReplayCell key={c.key} w={DCOL_W} theme={c.theme} label={t("hi.catchUp")}
                                     onTap={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))} />
                                 ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
                                   <ReplayCell key={c.key} w={DCOL_W} theme={c.theme}
-                                    label={`Play ${m.dateLabel}'s ${MODE_LABEL[c.key]}`}
+                                    label={t("hi.playDay", { d: m.dateLabel, g: MODE_LABEL[c.key] })}
                                     onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
                                 ) : <ScoreCell key={c.key} w={DCOL_W} state={c.state} text={c.text} theme={c.theme} glyph={headKeys.has(c.key) ? null : c.key} />
                               ))}
@@ -1079,12 +1086,12 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                       tokens, fed with Daily's own streak (runStats) + form14 so
                       the mobile strip and this card never disagree. */}
                   {hasFormHistory && (
-                  <div className="hr-card hr-streak" role="status" aria-label={`${streak.unbeaten}-day daily streak, best ${streak.bestUnbeaten}`}>
+                  <div className="hr-card hr-streak" role="status" aria-label={t("hi.streakAria", { count: streak.unbeaten, n: streak.unbeaten, b: streak.bestUnbeaten })}>
                     <div className="hr-streak-head">
                       <div className="hr-streak-num"><span className="hr-flame" aria-hidden="true"><Flame size={18} strokeWidth={2.3} /></span>{streak.unbeaten}</div>
                       <div className="hr-streak-meta">
-                        <div className="hr-streak-label">Day streak</div>
-                        <div className="hr-streak-best">Best · {streak.bestUnbeaten}</div>
+                        <div className="hr-streak-label">{t("home.rail.dayStreak")}</div>
+                        <div className="hr-streak-best">{rich(t("home.rail.best"), { n: streak.bestUnbeaten })}</div>
                       </div>
                     </div>
                     <div className="hr-form" aria-hidden="true">
@@ -1092,20 +1099,20 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                         <span key={i} className={`hr-form-cell${c.done ? " is-done" : ""}${c.isToday ? " is-today" : ""}`} />
                       ))}
                     </div>
-                    <div className="hr-form-cap">Last 14 days</div>
+                    <div className="hr-form-cap">{t("home.rail.last14")}</div>
                   </div>
                   )}
 
                   {/* This week */}
                   <div style={{ borderRadius: 18, border: "1px solid var(--border)", background: "var(--s1)", padding: "18px 20px" }}>
-                    <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t3)", marginBottom: 12 }}>This week</div>
+                    <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t3)", marginBottom: 12 }}>{t("hi.week")}</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <span style={{ fontSize: 14, color: "var(--t2)" }}>Puzzles solved</span>
+                        <span style={{ fontSize: 14, color: "var(--t2)" }}>{t("hi.solved")}</span>
                         <span style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "var(--t1)", fontVariantNumeric: "tabular-nums" }}>{solved}</span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <span style={{ fontSize: 14, color: "var(--t2)" }}>Avg. Daily 7</span>
+                        <span style={{ fontSize: 14, color: "var(--t2)" }}>{t("hi.avg7")}</span>
                         <span style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: avgDaily7 ? "var(--t1)" : "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{avgDaily7 ? `${avgDaily7} / 7` : "—"}</span>
                       </div>
                     </div>
@@ -1113,7 +1120,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                   {/* Mates' leagues (phase 1, web only: the App passes this on the web). */}
                   {onStartLeague && (
                     <button type="button" onClick={onStartLeague} style={{ alignSelf: "center", padding: "6px 0", border: 0, background: "none", fontFamily: "inherit", fontSize: 13, fontWeight: 700, color: "var(--t2)", WebkitTextFillColor: "var(--t2)", textDecoration: "underline", textUnderlineOffset: 3, cursor: "pointer" }}>
-                      Play the dailies against your mates
+                      {t("hi.league")}
                     </button>
                   )}
                 </div>

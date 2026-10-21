@@ -6,8 +6,11 @@ import { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, footleAnswerFor, gradeWordleGuess, footleShareHead } from "../lib/wordle.js";
 import { CB_MODE, DailyHeroCountdown, FootleGetAppCTA, IS_NATIVE, InstallBanner, ReviewQuestionCard, TIMINGS, shareCard } from "../App.jsx";
+import { useT, fmtLocale } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 
 export function Mini7Strip({ history, today }) {
+  const t = useT();
   const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
   const firstDailyTime = (() => {
     const keys = history ? Object.keys(history) : [];
@@ -32,7 +35,7 @@ export function Mini7Strip({ history, today }) {
     cells.push({ d, isCompleted, isToday, isPreJoin });
   }
   return (
-    <div className="m7-strip" aria-label="Last 7 days">
+    <div className="m7-strip" aria-label={t("rw.last7")}>
       {cells.map((c, i) => {
         let cls = "m7-cell";
         if (c.isCompleted) cls += " m7-done";
@@ -42,7 +45,7 @@ export function Mini7Strip({ history, today }) {
         return (
           <div key={i} className="m7-col">
             <div className={cls} />
-            <div className="m7-label">{c.d.toLocaleDateString(undefined, { weekday: "short" })}</div>
+            <div className="m7-label">{c.d.toLocaleDateString(fmtLocale(), { weekday: "short" })}</div>
           </div>
         );
       })}
@@ -61,36 +64,37 @@ export function Mini7Strip({ history, today }) {
 // allAnswers is present; falls back to the wrongAnswers-only block for
 // Phase 5u-5w days, or to score-card-only for pre-Phase-5u days.
 export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, dailyHistory, loginStreak, onBack }) {
+  const t = useT();
   const todayYMD = dateToYMD(new Date());
   const dateYMD = dateToYMD(date);
   const isToday = dateYMD === todayYMD;
-  const dayLabel = date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
-  const dateLabel = isToday ? `Today · ${dayLabel}` : dayLabel;
+  const dayLabel = date.toLocaleDateString(fmtLocale(), { weekday: "long", month: "long", day: "numeric" });
+  const dateLabel = isToday ? t("rw.today", { d: dayLabel }) : dayLabel;
   const hasAll = Array.isArray(allAnswers) && allAnswers.length > 0;
   const hasWrong = Array.isArray(wrongAnswers) && wrongAnswers.length > 0;
   const today = useMemo(() => new Date(), []);
 
   const streakLine = (() => {
     if (!loginStreak || loginStreak < 1) return null;
-    if (loginStreak === 1) return <><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> Day 1 of a daily streak</>;
-    return <><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> Day {loginStreak} of your daily streak</>;
+    if (loginStreak === 1) return <><Flame size={14} strokeWidth={2.4} aria-hidden="true" />{t("rw.streak1")}</>;
+    return <><Flame size={14} strokeWidth={2.4} aria-hidden="true" />{rich(t("rw.streakN"), { n: loginStreak })}</>;
   })();
 
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div className="page-title">Daily review</div>
+        <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>
+        <div className="page-title">{t("rw.title")}</div>
       </div>
       <div className="settings-card" style={{padding:"22px 20px", textAlign:"center", marginBottom:18}}>
         <div style={{fontSize:13, fontWeight:600, color:"var(--t2)", marginBottom:14}}>
           {dateLabel}
         </div>
         <div style={{fontSize:22, fontWeight:700, color:"var(--t1)", letterSpacing:"-0.4px", marginBottom:6}}>
-          You scored <span style={{color:"var(--accent)", fontWeight:800}}>{score}/7</span>
+          {rich(t("rw.scored"), { s: <span style={{color:"var(--accent)", fontWeight:800}}>{score}/7</span> })}
         </div>
         <div style={{fontSize:13, color:"var(--t3)"}}>
-          Next challenge in <DailyHeroCountdown />
+          {rich(t("rw.nextIn"), { c: <DailyHeroCountdown /> })}
         </div>
         {streakLine && (
           <div style={{fontSize:13, color:"var(--t2)", marginTop:12, fontWeight:600}}>
@@ -106,8 +110,8 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
       {hasAll ? (
         <>
           <div className="ds-eyebrow settings-section-title" style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:12}}>
-            <span>Full review</span>
-            <span style={{color:"var(--t3)", fontSize:11, fontWeight:600, letterSpacing:0.4, textTransform:"none"}}>{score}/7 correct</span>
+            <span>{t("rw.full")}</span>
+            <span style={{color:"var(--t3)", fontSize:11, fontWeight:600, letterSpacing:0.4, textTransform:"none"}}>{rich(t("rw.correct7"), { n: score })}</span>
           </div>
           <div className="dr-list">
             {allAnswers.map((a, i) => <ReviewQuestionCard key={i} a={a} index={i} />)}
@@ -117,7 +121,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
         <>
           {/* Legacy Phase 5u–5w fallback: missed-answers-only block. */}
           <div className="ds-eyebrow settings-section-title">
-            Missed {wrongAnswers.length === 1 ? "answer" : "answers"}
+            {rich(t("rw.missed"), { w: t("rs.answers", { count: wrongAnswers.length }) })}
           </div>
           <div className="wrong-review">
             {wrongAnswers.map((w, i) => (
@@ -143,7 +147,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
           padding:"4px 16px",
           lineHeight:1.5,
         }}>
-          Full review wasn't recorded for this day.
+          {t("rw.noRecord")}
         </div>
       )}
     </div>
@@ -158,6 +162,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
 // template). Wordle streak isn't tracked separately yet — no streak
 // line until that's its own state.
 export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard = false, onBack }) {
+  const t = useT();
   // J1/J2 fix: was using `WORDLE_PLAYERS[dayIndex % length]` here, which
   // disagrees with the stride formula used by the active game and the home
   // FootleHero. Result: Review re-graded the user's guesses against the
@@ -176,23 +181,17 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard =
   const cols = answer.length;
 
   const resultLine = won
-    ? `Solved in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}`
-    : lost ? "Better luck tomorrow"
+    ? t("rw.solvedIn", { count: guesses.length })
+    : lost ? t("rw.luck")
     : "";
 
   // Performance tier on won state. Skip on lost (the "Better luck
   // tomorrow" already covers tone). Calmly informative — no emoji.
-  const tierLine = !won ? null
-    : guesses.length === 1 ? "Incredible"
-    : guesses.length === 2 ? "Excellent"
-    : guesses.length === 3 ? "Great"
-    : guesses.length === 4 ? "Good"
-    : guesses.length === 5 ? "Phew"
-    : guesses.length === 6 ? "Just made it"
-    : null;
+  // One to six guesses: the rw.t1 … rw.t6 keys ("Incredible" … "Just made it").
+  const tierLine = won && guesses.length >= 1 && guesses.length <= 6 ? t(`rw.t${guesses.length}`) : null;
 
   const dateLabel = useMemo(
-    () => date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }),
+    () => date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }), // the share card's date: English, like its text
     [date]
   );
 
@@ -276,7 +275,7 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard =
 
           {lost && (
             <div style={{textAlign:"center", marginTop:14, fontSize:14, color:"var(--t2)"}}>
-              Today's word: <strong style={{color:"var(--accent)", fontWeight:800, letterSpacing:"0.5px"}}>{answer}</strong>
+              {rich(t("rw.word"), { a: <strong style={{color:"var(--accent)", fontWeight:800, letterSpacing:"0.5px"}}>{answer}</strong> })}
             </div>
           )}
 
@@ -290,30 +289,30 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard =
                   marginTop:0 overrides .wd-share's baked-in margin:4px
                   auto 0 so Share and Back share an identical 10px gap
                   from the flex parent. */}
-              <button onClick={onShare} className="wd-share" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>Share result</button>
+              <button onClick={onShare} className="wd-share" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>{t("dd.shareResult")}</button>
               {/* Web-only, same rationale as the active-game screen: native's
                   share sheet already offers WhatsApp with the PNG card. */}
               {!IS_NATIVE && shareText && (
-                <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>Share on WhatsApp</a>
+                <a className="wd-share wd-share--wa" href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}}>{t("rw.wa")}</a>
               )}
               {/* Same App Store nudge as the live puzzle's result (archive
                   visitors from the indexed /footle archive are pure web). */}
               <FootleGetAppCTA style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px", marginTop:0}} />
-              <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>Back to Home</button>
+              <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>{t("quiz.backHome")}</button>
             </div>
           )}
 
           <div style={{textAlign:"center", marginTop:14, fontSize:13, color:"var(--t3)"}}>
-            Next puzzle in <DailyHeroCountdown />
+            {rich(t("rw.nextPuzzle"), { c: <DailyHeroCountdown /> })}
           </div>
         </>
       ) : (
         <>
           <div style={{textAlign:"center", padding:"40px 20px", fontSize:14, color:"var(--t3)", fontStyle:"italic"}}>
-            Puzzle wasn't recorded for this day.
+            {t("rw.noPuzzle")}
           </div>
           <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:10, marginTop:8}}>
-            <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>Back to Home</button>
+            <button onClick={onBack} className="wd-back" style={{width:"min(310px, calc(100vw - 80px))", padding:"14px 22px"}}>{t("quiz.backHome")}</button>
           </div>
         </>
       )}

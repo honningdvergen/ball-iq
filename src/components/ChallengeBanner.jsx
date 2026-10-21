@@ -10,17 +10,19 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Swords } from "lucide-react";
 import { readChallenge, challengeLine } from "../lib/gameChallenge.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
+import { useT } from "../i18n/index.js";
 
 export default function ChallengeBanner({ game, edition, finished }) {
+  const t = useT();
   const c = useMemo(() => readChallenge(game, edition), [game, edition]);
   const [open, setOpen] = useState(true);
-  useEffect(() => { const t = setTimeout(() => setOpen(false), 6000); return () => clearTimeout(t); }, []);
+  useEffect(() => { const id = setTimeout(() => setOpen(false), 6000); return () => clearTimeout(id); }, []);
   if (!c || finished || !open) return null;
   const rgb = MODE_RGB[game] || "88,204,2";
   // First name only: the score is the point of the line and must never be the part that trims.
   const line = challengeLine({ ...c, name: String(c.name || "").split(" ")[0] });
   return (
-    <button type="button" onClick={() => setOpen(false)} aria-label={`${line}. Can you beat it? Tap to close`}
+    <button type="button" onClick={() => setOpen(false)} aria-label={t("gc.bannerAria", { line })}
       style={{
         position: "fixed", left: "50%", transform: "translateX(-50%)", zIndex: 60,
         top: "calc(env(safe-area-inset-top, 0px) + 10px)", maxWidth: "min(92vw, 420px)", width: "max-content",
@@ -31,7 +33,7 @@ export default function ChallengeBanner({ game, edition, finished }) {
       <Swords size={17} strokeWidth={2.3} color={MODE_ACCENT[game]} aria-hidden="true" style={{ flexShrink: 0 }} />
       {/* One line, always: a long name trims with an ellipsis, "Beat it?" never does. */}
       <span style={{ minWidth: 0, flex: "0 1 auto", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{line}</span>
-      <strong style={{ flexShrink: 0, whiteSpace: "nowrap", color: MODE_ACCENT[game], WebkitTextFillColor: MODE_ACCENT[game] }}>Beat it?</strong>
+      <strong style={{ flexShrink: 0, whiteSpace: "nowrap", color: MODE_ACCENT[game], WebkitTextFillColor: MODE_ACCENT[game] }}>{t("gc.beatIt")}</strong>
     </button>
   );
 }

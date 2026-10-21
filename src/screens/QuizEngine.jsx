@@ -10,17 +10,14 @@ import * as Sentry from "@sentry/react";
 import { Lightbulb, Flame, Flag } from "lucide-react";
 import ReportButton from "../components/ReportButton.jsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CAT_LABELS, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
+import { catLabel, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
 import { useT } from "../i18n/index.js";
-import en from "../i18n/en.js";
 import { rich } from "../i18n/rich.jsx";
 
-// A category's chip label. Spanish renames a few (the cat.* keys in en.js);
-// every other category keeps App.jsx's CAT_LABELS name, which is the same in
-// both languages (Premier League, La Liga …).
-export const catLabel = (t, c) => (en[`cat.${c}`] ? t(`cat.${c}`) : CAT_LABELS[c] || c);
+// A category's chip label: App.jsx's catLabel (the cat.* keys, else CAT_LABELS).
+export { catLabel };
 
 // ─── HARD RIGHT BURST ────────────────────────────────────────────────────────
 // Lightweight, quick particle burst used when a user gets a HARD question right.

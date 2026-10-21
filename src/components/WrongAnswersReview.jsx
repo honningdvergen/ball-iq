@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Flag } from "lucide-react";
 import ReportButton from "./ReportButton.jsx";
 import { bumpUsage } from "../lib/usageCounters.js";
+import { useT } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 
 // Wrong-answer review list — shared by the mobile results stack and the
 // desktop rd-card so the learn-loop survives at every width (desktop used to
@@ -12,13 +14,14 @@ import { bumpUsage } from "../lib/usageCounters.js";
 // is already re-reading the questions they got wrong, and every MCQ mode — daily,
 // classic, club, league, survival, hot streak — ends up on this one component.
 export function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
+  const t = useT();
   // Usage counter INSIDE the guard: an empty review isn't a stats view.
   useEffect(() => { if (wrongAnswers?.length) bumpUsage('review-viewed'); }, []);
   if (!wrongAnswers || wrongAnswers.length === 0) return null;
   return (
     <div style={{marginTop:24}}>
       <div className="ds-eyebrow" style={{textAlign:"center", marginBottom:10}}>
-        Review {wrongAnswers.length} missed {wrongAnswers.length === 1 ? "answer" : "answers"}
+        {rich(t("rs.reviewMissed"), { n: wrongAnswers.length, w: t("rs.answers", { count: wrongAnswers.length }) })}
       </div>
       <div className="wrong-review">
         {wrongAnswers.map((w, i) => (
@@ -35,7 +38,7 @@ export function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
               <ReportButton
                 key={w.id != null ? String(w.id) : w.q}
                 onReport={onReport}
-                idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" /> This looks wrong</>}
+                idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" />{" " + t("rs.looksWrong")}</>}
                 info={{ id: w.id, q: w.q, picked: w.user ?? null, correct: w.correct ?? null, mode }}
                 style={{
                   marginTop:10, padding:"7px 11px", minHeight:36,

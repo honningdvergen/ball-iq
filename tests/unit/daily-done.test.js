@@ -107,9 +107,11 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(HUB).toMatch(/Challenge your friends/);
     // Profile: the ask comes AFTER the player's own card.
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
-    expect(PROFILE).not.toMatch(/>Save your progress</);
-    expect(PROFILE.lastIndexOf('Saved on this phone only')).toBeGreaterThan(PROFILE.lastIndexOf('<BallIqCardFace'));
-    expect(PROFILE).toMatch(/className="todays-seven-secondary mp-row" role="group" aria-label="Save your progress"/);
+    // The words live in i18n/en.js since step 4: pf.saveAria / pf.phoneOnly.
+    expect(PROFILE).not.toMatch(/>Save your progress<|>\{t\("pf\.saveAria"\)\}</);
+    expect(PROFILE.lastIndexOf('"pf.phoneOnly"')).toBeGreaterThan(PROFILE.lastIndexOf('<BallIqCardFace'));
+    expect(PROFILE).toMatch(/className="todays-seven-secondary mp-row" role="group" aria-label=\{t\("pf\.saveAria"\)\}/);
+    expect([EN['pf.saveAria'], EN['pf.phoneOnly']]).toEqual(['Save your progress', 'Saved on this phone only']);
   });
 
   it('a rating needs answered questions, not just a game (no 64 · Silver after one Footle)', () => {
@@ -194,7 +196,8 @@ describe('DailyDone — one panel, four surfaces', () => {
     const DAILY = read('../../src/screens/DailyScreen.jsx');
     expect(DAILY).not.toMatch(/todays-seven-secondary/);
     expect(DAILY).not.toMatch(/background: m\.theme\.card|m\.theme\.btnBg/);
-    expect(DAILY).toMatch(/>History<\/div>/);
+    // i18n step 4: the tab's own title is the same "tab.daily" key as the tab bar.
+    expect(DAILY).toMatch(/>\{t\("tab\.daily"\)\}<\/div>/);
     // i18n step 1: the label is the "tab.daily" key, English "History" in src/i18n/en.js.
     expect(APP).toMatch(/id:"daily",\s*Icon: CalendarDays, label:t\("tab\.daily"\), badge: false/);
     expect(EN['tab.daily']).toBe('History');

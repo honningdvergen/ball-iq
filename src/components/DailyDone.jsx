@@ -20,6 +20,9 @@ const LEAGUE_GAMES = ["footle", "daily7", "trail", "top10"];
 // Results in a day before the panel shows headcounts instead of shares.
 const SHOW_COUNTS_FROM = 300;
 import { reminderHourLabel } from "../lib/playHour.js";
+import { levelName } from "../i18n/names.js";
+import { useT, useLang, isLangLoaded, fmtLocale, fmtFixed } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 import "./dailyDone.css";
 
 // DailyDone — ONE return-loop panel under every decided daily (Footle, Daily 7,
@@ -72,13 +75,8 @@ const DEFAULT_ICON = {
 
 // What each daily costs, said on the Next up card: "3 min" answers the
 // question that stops a second game (daily design pass, 16 Oct 2026).
-const HOOK = {
-  footle: "Six guesses · 2 min",
-  daily7: "7 questions · 3 min",
-  trail: "Whose career? · 2 min",
-  top10: "Name all ten · 4 min",
-  mystery: "Guess who · 3 min",
-};
+// The lines themselves are the dd.hook.* keys in i18n/en.js.
+const HOOK = { footle: 1, daily7: 1, trail: 1, top10: 1, mystery: 1 };
 const modeOf = (k) => (k === "daily" ? "daily7" : k);
 
 // One "the panel was seen" event per result, claimed synchronously.
@@ -112,6 +110,7 @@ function openLeagueCreate(opts) {
 }
 
 export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
+  const t = useT();
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
   // Too few results yet today: yesterday's edition stands in, labelled and
@@ -232,16 +231,20 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     }
   };
 
-  const today = useMemo(() => summariseDistribution(dist, { game, mine: bucket, won }), [dist, game, bucket, won]);
+  // `lang`: the summary carries a sentence (comparisonLine) in the active language.
+  const lang = useLang();
+  const langReady = isLangLoaded(lang);
+  const today = useMemo(() => summariseDistribution(dist, { game, mine: bucket, won }), [dist, game, bucket, won, lang, langReady]);
   const yesterday = useMemo(() => (today ? null : summariseDistribution(prev, { game, mine: bucket, won })), [today, prev, game, bucket, won]);
   const summary = today || yesterday;
   const shown = today ? dist : prev;
   // Daily 7 has no public number (its edition is a day index).
-  const yLabel = game === "daily7" ? "Yesterday" : `Yesterday, No. ${edition - 1}`;
+  const yLabel = game === "daily7" ? t("dd.yday") : t("dd.ydayNo", { n: edition - 1 });
   const showCounts = !!summary && summary.n >= SHOW_COUNTS_FROM;
   const barValue = (r) => (showCounts ? r.c : `${summary.n ? Math.round((r.c / summary.n) * 100) : 0}%`);
   const ko = formatCountdown(msToNextLocalMidnight(now));
   const streakN = streak?.count || 0;
+  const label = streak?.label || t("dd.l.none");
   // A lost puzzle keeps the streak only where the host says its streak counts
   // any finish (the app's daily streak ticks on a loss, App.jsx onDailyDone).
   // The islands' per-game streaks break on a loss, so they never say it.
@@ -280,7 +283,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   let gi = 0;
   const g = () => ({ className: "dd-g", style: { "--i": gi++ } });
   return (
-    <section className="dd" aria-label="After today's puzzle">
+    <section className="dd" aria-label={t("dd.aria")}>
       <div {...g()}>
       {/* Streak: the stake tonight names. Flame in the amber well the streak pill
           already uses elsewhere in the app. */}
@@ -288,32 +291,32 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         <span className="dd-well" aria-hidden="true">{streakSafe ? <ShieldCheck size={20} strokeWidth={2.2} /> : <Flame size={20} strokeWidth={2.2} />}</span>
         <div className="dd-body">
           <div className="dd-title">
-            {streakN >= 2 ? <>{streakN}-day {streak?.label || "streak"}</> : streakN === 1 ? <>Day 1 of a {streak?.label || "streak"}</> : <>Start a {streak?.label || "streak"}</>}
+            {streakN >= 2 ? rich(t("dd.streakN"), { n: streakN, label }) : rich(t(streakN === 1 ? "dd.streak1" : "dd.streak0"), { label })}
             {/* Banked shields, named BEFORE one is needed (16 Oct 2026). */}
             {!isArchive && streakN >= 1 && streak?.shields > 0 && (
-              <span className="dd-shields" role="img" aria-label={`${streak.shields} streak shield${streak.shields > 1 ? "s" : ""} banked: each covers one missed day`} title="Each shield covers one missed day">
+              <span className="dd-shields" role="img" aria-label={t("dd.shieldsAria", { count: streak.shields })} title={t("dd.shieldTitle")}>
                 {Array.from({ length: streak.shields }, (_, i) => <ShieldCheck key={i} size={13} strokeWidth={2.4} aria-hidden="true" />)}
               </span>
             )}
           </div>
           <div className="dd-sub">
-            {isArchive ? <>An old puzzle — it doesn’t count toward tomorrow.</>
-              : streakSafe ? <><strong>Streak safe</strong> · new puzzles in <strong className="dd-num">{ko}</strong></>
-              : streakN >= 1 ? <>Tomorrow makes it <strong className="dd-num">{streakN + 1}</strong> · new puzzles in <strong className="dd-num">{ko}</strong></>
-              : <>New puzzles in <strong className="dd-num">{ko}</strong></>}
+            {isArchive ? t("dd.archive")
+              : streakSafe ? rich(t("dd.safe"), { safe: <strong>{t("dd.safeWord")}</strong>, ko: <strong className="dd-num">{ko}</strong> })
+              : streakN >= 1 ? rich(t("dd.tomorrow"), { n: <strong className="dd-num">{streakN + 1}</strong>, ko: <strong className="dd-num">{ko}</strong> })
+              : rich(t("dd.newIn"), { ko: <strong className="dd-num">{ko}</strong> })}
           </div>
           {/* THE REMINDER LIVES ON THE STREAK IT PROTECTS (16 Oct 2026). As a row in
               the footer it drew 12 taps in 14 days against ~1,774 finish views. Here
               it is a third line of the streak itself: a pill beside the title
               wrapped "12-day daily streak" onto three lines at 375px. */}
           {remind && remind.state === "off" && !isArchive && (
-            <button type="button" className="dd-remind" disabled={busy} onClick={doRemind} aria-label={`Turn on a daily reminder at ${reminderHourLabel()}`} title="One nudge a day, only if you haven't played. Off any time.">
-              <Bell size={13} strokeWidth={2.4} aria-hidden="true" /> Remind me at {reminderHourLabel()}
+            <button type="button" className="dd-remind" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>
+              <Bell size={13} strokeWidth={2.4} aria-hidden="true" />{rich(t("dd.remind"), { h: reminderHourLabel() })}
             </button>
           )}
         </div>
         {remind && remind.state === "on" && (
-          <span className="dd-pill is-set" aria-label={`Reminder set for ${reminderHourLabel()}`}>
+          <span className="dd-pill is-set" aria-label={t("dd.remindSet", { h: reminderHourLabel() })}>
             {/* A bell, not a tick: a tick and "19:00" beside the streak said nothing about
                 what was set for 19:00 (Alex's recording, 12 Oct 2026). */}
             <Bell size={13} strokeWidth={2.4} aria-hidden="true" /> {reminderHourLabel()}
@@ -327,17 +330,17 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       {promoted && promoted.game === game && !isArchive && (
         <div className="dd-promo" role="status">
           {promoted.Icon && <promoted.Icon size={14} strokeWidth={2.4} aria-hidden="true" />}
-          <span>Promoted to <strong>{promoted.name}</strong></span>
+          <span>{rich(t("dd.promoted"), { name: <strong>{levelName(promoted.name)}</strong> })}</span>
         </div>
       )}
 
       {rival && (() => {
         const r = compareScores(game, myScore, rival.score);
-        const name = rival.name || "Your mate";
+        const name = rival.name || t("dd.yourMate");
         return (
           <div className={`dd-h2h${r > 0 ? " is-win" : r < 0 ? " is-loss" : ""}`} role="status">
-            <span>You <strong className="dd-num">{scoreLabel(game, myScore)}</strong> · {name} <strong className="dd-num">{scoreLabel(game, rival.score)}</strong></span>
-            <strong>{r > 0 ? `You beat ${name}` : r < 0 ? `${name} wins this one` : `Level with ${name}`}</strong>
+            <span>{rich(t("dd.h2h"), { me: <strong className="dd-num">{scoreLabel(game, myScore, t)}</strong>, name, them: <strong className="dd-num">{scoreLabel(game, rival.score, t)}</strong> })}</span>
+            <strong>{t(r > 0 ? "dd.beat" : r < 0 ? "dd.lost" : "dd.level", { name })}</strong>
           </div>
         );
       })()}
@@ -362,37 +365,37 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           only solid fill is here; everything else is a hairline, a tint or a
           link. With a challenge waiting, answering it IS the share. */}
       {rival ? (
-        <button type="button" className="dd-share" onClick={doChallenge} aria-label="Send a challenge back">
-          <Swords size={18} strokeWidth={2.4} aria-hidden="true" /> {challengeState === "copied" ? "Link copied" : challengeState === "sent" ? "Challenge sent" : rival ? "Send it back" : "Challenge a mate"}
+        <button type="button" className="dd-share" onClick={doChallenge} aria-label={t("dd.sendBackAria")}>
+          <Swords size={18} strokeWidth={2.4} aria-hidden="true" /> {t(challengeState === "copied" ? "dd.linkCopied" : challengeState === "sent" ? "dd.sent" : rival ? "dd.sendBack" : "dd.challenge")}
         </button>
       ) : (
-        <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label="Share your result">
-          {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Shared</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share result</>}
+        <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label={t("dd.shareAria")}>
+          {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{" " + t("dd.shared")}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{" " + t("dd.shareResult")}</>}
         </button>
       )}
       {(waText || stump || stitch || canChallenge || leagueOffer) && (
         <div className="dd-share-alts">
           {rival && (
-            <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{shared ? "Shared" : "Share result"}</button>
+            <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{t(shared ? "dd.shared" : "dd.shareResult")}</button>
           )}
           {leagueOffer && (
-            <button type="button" className="dd-share-alt" onClick={makeLeague}>Make it a league?</button>
+            <button type="button" className="dd-share-alt" onClick={makeLeague}>{t("dd.league")}</button>
           )}
           {waText && (
-            <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>Send on WhatsApp</a>
+            <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>{t("dd.wa")}</a>
           )}
           {/* The k-factor lever lives under Share, where sharing is. It was a
               third full-width button below the panel. */}
           {stump && (
-            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stump", { game }); stump(); }}>Stump a mate</button>
+            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stump", { game }); stump(); }}>{t("dd.stump")}</button>
           )}
           {/* Stitch-up (web only; the host passes it on the Trail alone): build
               a Trail of your own for a mate. A link, like the others here. */}
           {stitch && (
-            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stitch", { game }); stitch(); }}>Stitch up a mate</button>
+            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stitch", { game }); stitch(); }}>{t("dd.stitch")}</button>
           )}
           {canChallenge && !rival && (
-            <button type="button" className="dd-share-alt" onClick={doChallenge} aria-label="Challenge a mate to this puzzle">{challengeState === "copied" ? "Link copied" : challengeState === "sent" ? "Challenge sent" : rival ? "Send it back" : "Challenge a mate"}</button>
+            <button type="button" className="dd-share-alt" onClick={doChallenge} aria-label={t("dd.challengeAria")}>{t(challengeState === "copied" ? "dd.linkCopied" : challengeState === "sent" ? "dd.sent" : rival ? "dd.sendBack" : "dd.challenge")}</button>
           )}
         </div>
       )}
@@ -425,37 +428,37 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             <div {...g()}>
             {first ? card(first, "dd-up", (
               <>
-                <span className="dd-up-k">Next up</span>
+                <span className="dd-up-k">{t("dd.nextUp")}</span>
                 <span className="dd-up-main">
                   <span className="dd-well" aria-hidden="true">{first.icon || DEFAULT_ICON[modeOf(first.key)] || null}</span>
                   <span className="dd-up-body">
                     <span className="dd-up-name">{first.name}</span>
-                    <span className="dd-up-hook">{lostHere ? "Win the day back · " : ""}{HOOK[modeOf(first.key)] || ""}</span>
+                    <span className="dd-up-hook">{lostHere ? t("dd.winBack") : ""}{HOOK[modeOf(first.key)] ? t(`dd.hook.${modeOf(first.key)}`) : ""}</span>
                   </span>
-                  <span className="dd-up-go">Play</span>
+                  <span className="dd-up-go">{t("common.play")}</span>
                 </span>
               </>
             )) : keys.length > 0 && doneN >= keys.length ? (
               <div className="dd-up is-sweep">
-                <span className="dd-up-k">Clean sweep</span>
-                <span className="dd-up-name">All {keys.length} done today</span>
+                <span className="dd-up-k">{t("dd.sweep")}</span>
+                <span className="dd-up-name">{rich(t("dd.allDone"), { n: keys.length })}</span>
               </div>
             ) : null}
             {keys.length > 1 && (
-              <div className="dd-day" aria-label={`${doneN} of ${keys.length} today`}>
+              <div className="dd-day" aria-label={t("dd.dayAria", { n: doneN, total: keys.length })}>
                 <span className="dd-day-bar" aria-hidden="true">
                   {keys.map((k) => (
                     <i key={k} className={isDone(k) ? (modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done") : ""} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
                   ))}
                 </span>
                 {/* The countdown lives on the streak line at the top; once is enough. */}
-                <span className="dd-day-tx"><strong className="dd-num">{doneN} of {keys.length}</strong> done today</span>
+                <span className="dd-day-tx">{rich(t("dd.dayDone"), { n: <strong className="dd-num">{rich(t("dd.nOf"), { n: doneN, total: keys.length })}</strong> })}</span>
               </div>
             )}
             {rest.length > 0 && (
               <div className="dd-up-more">
                 {rest.map((n) => card(n, "dd-chip", (
-                  <><span className="dd-chip-ic" aria-hidden="true">{n.icon || DEFAULT_ICON[modeOf(n.key)] || null}</span>{n.name.replace(/^Today's /, "")}</>
+                  <><span className="dd-chip-ic" aria-hidden="true">{n.icon || DEFAULT_ICON[modeOf(n.key)] || null}</span>{n.short ?? n.name.replace(/^Today's /, "")}</>
                 )))}
               </div>
             )}
@@ -479,10 +482,15 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         <div className="dd-row">
           <div className="dd-body">
             {streakN >= 2
-              ? <div className="dd-sub">Your <strong className="dd-num">{streakN}-day</strong> streak{save.line ? <> and <strong className="dd-num">{save.line}</strong></> : null} live{save.line ? "" : "s"} on this phone only.</div>
-              : <div className="dd-sub"><strong className="dd-num">{save.line}</strong> — on this phone only.</div>}
+              ? <div className="dd-sub">{rich(t("dd.saveStreak"), {
+                  days: <strong className="dd-num">{rich(t("dd.saveDays"), { n: streakN })}</strong>,
+                  and: save.line ? <>{t("dd.saveAnd")}<strong className="dd-num">{save.line}</strong></> : null,
+                  // English agrees "live"/"lives" with what is saved; Spanish has no {s}.
+                  s: save.line ? "" : "s",
+                })}</div>
+              : <div className="dd-sub">{rich(t("dd.saveLine"), { line: <strong className="dd-num">{save.line}</strong> })}</div>}
           </div>
-          <button type="button" className="dd-pill" onClick={() => { track?.("dd-save", { game }); save.onSave(); }}>Save</button>
+          <button type="button" className="dd-pill" onClick={() => { track?.("dd-save", { game }); save.onSave(); }}>{t("dd.save")}</button>
         </div>
       )}
 
@@ -499,8 +507,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           above it the real numbers come back, because then they are an asset. */}
       {!distReady ? (
         // The frame: same head, same rows, same one-line sub, no numbers.
-        <div className="dd-dist is-loading" aria-busy="true" aria-label="How everyone did, loading">
-          <div className="dd-dist-head"><div className="dd-title">How everyone did</div></div>
+        <div className="dd-dist is-loading" aria-busy="true" aria-label={t("dd.distLoading")}>
+          <div className="dd-dist-head"><div className="dd-title">{t("dd.dist")}</div></div>
           <div className="dd-bars" aria-hidden="true">
             {bars.map((r) => (
               <React.Fragment key={r.k}>
@@ -513,11 +521,11 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           <div className="dd-sub" aria-hidden="true">{"\u00a0"}</div>
         </div>
       ) : summary && (
-        <div className={`dd-dist${yesterday ? " is-yesterday" : ""}`} aria-label={yesterday ? yLabel : showCounts ? `How everyone did, ${summary.n} results` : "How everyone did"}>
+        <div className={`dd-dist${yesterday ? " is-yesterday" : ""}`} aria-label={yesterday ? yLabel : showCounts ? t("dd.distN", { n: summary.n }) : t("dd.dist")}>
           <div className="dd-dist-head">
-            <div className="dd-title">{yesterday ? yLabel : "How everyone did"}</div>
-            {showCounts && !yesterday ? <div className="dd-dist-cap dd-num">{summary.n.toLocaleString()} played</div>
-              : !yesterday ? <div className="dd-dist-cap">Early numbers</div> : null}
+            <div className="dd-title">{yesterday ? yLabel : t("dd.dist")}</div>
+            {showCounts && !yesterday ? <div className="dd-dist-cap dd-num">{rich(t("dd.played"), { n: summary.n.toLocaleString(fmtLocale()) })}</div>
+              : !yesterday ? <div className="dd-dist-cap">{t("dd.early")}</div> : null}
           </div>
           <div className="dd-bars">
             {bars.map((r) => (
@@ -532,12 +540,12 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             {yesterday
               // One line, like today's (the frame reserves one): two lines here
               // moved everything under the block by a line when it landed.
-              ? <>You're early today. {summary.outOf != null
-                ? <>Yesterday's average: <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong></>
-                : <><strong className="dd-num">{summary.solvedPct}%</strong> solved yesterday's.</>}</>
+              ? rich(t("dd.earlyToday"), { x: summary.outOf != null
+                ? rich(t("dd.ydayAvg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong> })
+                : rich(t("dd.ydaySolved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong> }) })
               : summary.outOf != null
-                ? <>Average <strong className="dd-num">{summary.avg.toFixed(1)}/{summary.outOf}</strong>{summary.line ? <> · <strong>{summary.line}</strong></> : null}</>
-                : <><strong className="dd-num">{summary.solvedPct}%</strong> solved{summary.line ? <> · <strong>{summary.line}</strong></> : null}</>}
+                ? rich(t("dd.avg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })
+                : rich(t("dd.solved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })}
           </div>
         </div>
       )}
