@@ -97,7 +97,8 @@ const CLUE_PLACEHOLDER = [
 export default function MysteryPlayer({ onExit, date = new Date(), services, embedded = false }) {
   const t = useT();
   // Ranks are grouped the language's way (3,571 / 3571); English keeps the
-  // device default it always had.
+  // device default, except on a Spanish device, where it is British English
+  // (fmtLocale).
   const lang = useLang();
   const num = (v) => v.toLocaleString(fmtLocale());
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);

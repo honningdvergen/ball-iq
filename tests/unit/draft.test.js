@@ -493,7 +493,9 @@ describe('Draft No. N, par and the share', () => {
     const screen = readFileSync(new URL('../../src/screens/Draft.jsx', import.meta.url), 'utf8');
     expect(screen).toMatch(/<GameTitle no=\{no\}/);
     expect(screen).toMatch(/const number = isPractice \? 0 : draftNumber\(day\);/);
-    expect(screen).toMatch(/Par today/);
+    // The words are a key since i18n step 7 (en: "Par today: {par} points").
+    expect(screen).toMatch(/"dr\.parToday"/);
+    expect(readFileSync(new URL('../../src/i18n/en.js', import.meta.url), 'utf8')).toMatch(/'dr\.parToday': 'Par today: \{par\} points'/);
     expect(screen).toMatch(/CustomEvent\("biq:draft-started"/);
     expect(app).toMatch(/addEventListener\('biq:draft-started', onDraftStart\)/);
     expect(app).toMatch(/addEventListener\('biq:draft-completed', onDraftFinish\)/);

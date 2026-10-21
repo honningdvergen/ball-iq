@@ -35,10 +35,15 @@ import { resolveDailyServices } from "../games/dailyServices.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import "./draft.css";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
-import { t as tNow } from "../i18n/index.js";
+import { t as tNow, useT } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
+import { ordinalText } from "../i18n/names.js";
 
 const SKIN = { "--dr": MODE_ACCENT.draft, "--dr-rgb": MODE_RGB.draft };
-const PLURAL = { GK: "Goalkeepers", DF: "Defenders", MF: "Midfielders", FW: "Forwards" };
+// The screen's words are t() (i18n step 7): the dr.* keys. A position's line
+// is dr.pos.<GK|DF|MF|FW>, its pitch label dr.ab.<…>; ordinals go through
+// ordinalText ("3rd" / "3.º").
+const ord = (n) => ordinalText(n, ordinal);
 const LINES = ["FW", "MF", "DF", "GK"]; // the pitch, attack at the top
 const TICK_MS = 85;                      // one match of the season
 const KEEP_DAYS = 7;                     // saved boards older than this are cleared
@@ -119,6 +124,7 @@ function useSquads() {
 }
 
 export default function Draft({ date, onBack, services }) {
+  const t = useT();
   const { D, failed } = useSquads();
   // The day is read ONCE, when the screen opens. A game being played as the
   // clock passes midnight is finished on the board it started on, rather than
@@ -130,10 +136,10 @@ export default function Draft({ date, onBack, services }) {
   if (!D) {
     return (
       <div className="screen dr" style={{ ...SKIN, padding: 24, textAlign: "center" }} aria-busy={!failed}>
-        {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
+        {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         <div style={{ marginTop: 60, fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>Draft</div>
         <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 8 }}>
-          {failed ? "Could not load the squads. Check your connection and try again." : "Loading the squads…"}
+          {failed ? t("dr.loadFail") : t("dr.loading")}
         </div>
       </div>
     );
@@ -146,6 +152,7 @@ export default function Draft({ date, onBack, services }) {
 }
 
 function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
+  const t = useT();
   const { haptic, playSound, Confetti } = resolveDailyServices(services);
   const number = isPractice ? 0 : draftNumber(day);
   // What was saved, if all of it still makes sense; otherwise a fresh deal.
@@ -197,8 +204,8 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   const [shown, setShown] = useState(() => (g.seen || isCalm() ? GAMES : 0));
   useEffect(() => {
     if (!done || shown >= GAMES) return undefined;
-    const t = setTimeout(() => setShown((n) => n + 1), shown === 0 ? 500 : TICK_MS);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setShown((n) => n + 1), shown === 0 ? 500 : TICK_MS);
+    return () => clearTimeout(timer);
   }, [done, shown]);
   // ⚠️ `done &&` is load-bearing. Without it a player with Reduce Motion on
   // (shown starts at 38) was "played out" before the first pick, and the effect
@@ -217,18 +224,15 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   if (!g.started) {
     return (
       <div className="screen dr" style={SKIN}>
-        <Head no={number} sub="Eleven spins. One season." onBack={onBack} />
+        <Head no={number} sub={t("dr.introSub")} onBack={onBack} />
         <div className="dr-intro">
-          <h2>Build an eleven out of real seasons.</h2>
+          <h2>{t("dr.introH")}</h2>
           <ol>
-            <li><b>Eleven spins.</b> Each lands on a real club in a real league season since 1995.</li>
-            <li><b>Take one man from each.</b> He brings that season with him: the games he played, the goals he scored, his club’s defence.</li>
-            <li><b>The games he missed</b> are played by a stand-in from a relegated side. A star who was injured half the year is half a star.</li>
-            <li><b>Then your eleven plays 38 matches.</b> Everyone gets the same board and the same luck today.</li>
+            {[1, 2, 3, 4].map((i) => <li key={i}>{rich(t(`dr.i${i}`), { b: <b>{t(`dr.i${i}b`)}</b> })}</li>)}
           </ol>
           <label className="dr-hard">
             <input type="checkbox" checked={g.hard} onChange={(e) => { const hard = e.target.checked; update((cur) => ({ ...cur, hard })); }} />
-            <span><b>Hide the numbers.</b> Names only: you have to know who had the season.</span>
+            <span>{rich(t("dr.hard"), { b: <b>{t("dr.hardB")}</b> })}</span>
           </label>
           <button className="dr-cta" onClick={() => {
             haptic("soft");
@@ -236,8 +240,8 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
             // The start, once per board: a board restored mid-game opens past
             // this card and never comes back to it. App.jsx records it.
             try { window.dispatchEvent(new CustomEvent("biq:draft-started", { detail: { no: number, practice: isPractice } })); } catch { /* best effort */ }
-          }}>Spin</button>
-          <p className="dr-source">4-3-3. One re-spin. Squads, games and goals from English Wikipedia’s club-season articles, checked against the league table.</p>
+          }}>{t("dr.spin")}</button>
+          <p className="dr-source">{t("dr.source")}</p>
         </div>
       </div>
     );
@@ -246,16 +250,16 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   return (
     <div className={`screen dr${done ? " is-done" : ""}`} style={SKIN}>
       {played && result.se.pts >= 90 && Confetti ? <Confetti /> : null}
-      <Head no={number} sub={done ? (isPractice ? "Practice board" : "Today’s board") : `Spin ${at + 1} of ${SPINS}`} onBack={onBack}
+      <Head no={number} sub={done ? (isPractice ? t("dr.practice") : t("dr.today")) : t("dr.spinOf", { n: at + 1, total: SPINS })} onBack={onBack}
         right={!done && (
-          <button className="dr-respin" onClick={onRespin} disabled={g.respun} aria-label={g.respun ? "Re-spin used" : "Re-spin this squad"}>
-            <RefreshCw size={15} strokeWidth={2.4} aria-hidden="true" />{g.respun ? "Re-spin used" : "Re-spin"}
+          <button className="dr-respin" onClick={onRespin} disabled={g.respun} aria-label={g.respun ? t("dr.respun") : t("dr.respinAria")}>
+            <RefreshCw size={15} strokeWidth={2.4} aria-hidden="true" />{g.respun ? t("dr.respun") : t("dr.respin")}
           </button>
         )} />
 
       <Pitch picks={picks} chosen={chosen} />
       {!done && onCourse != null && (
-        <div className="dr-course" aria-live="polite">On course for <b>{onCourse}</b> points</div>
+        <div className="dr-course" aria-live="polite">{rich(t("dr.onCourse"), { n: <b>{onCourse}</b> })}</div>
       )}
 
       {!done && sq && (
@@ -267,7 +271,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
                 long club name as one piece. */}
             <SpinTitle club={sq.club} season={sq.season} onLand={() => { haptic("soft"); setLandedAt(`${at}:${sq.k}`); }} />
             <div className={`dr-spin-meta${spinLanded ? " dr-in" : " dr-wait"}`}>
-              Finished {ordinal(sq.pos)} · {sq.pts} points · scored {sq.gf}, conceded {sq.ga}
+              {t("dr.meta", { pos: ord(sq.pos), pts: sq.pts, gf: sq.gf, ga: sq.ga })}
             </div>
           </div>
 
@@ -277,7 +281,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
             if (g.hard) rows = [...rows].sort((a, b) => a.n.localeCompare(b.n));
             return (
               <section key={pos} className={`dr-line${free > 0 ? "" : " is-full"}${spinLanded ? " dr-in" : " dr-wait"}`}>
-                <h3>{PLURAL[pos]}<span>{free > 0 ? `${free} ${free === 1 ? "place" : "places"} open` : "full"}</span></h3>
+                <h3>{t(`dr.pos.${pos}`)}<span>{free > 0 ? t("dr.open", { count: free, n: free }) : t("dr.full")}</span></h3>
                 {free > 0 && rows.map((p) => {
                   const ok = open.can(p);
                   return (
@@ -285,9 +289,9 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
                       className={`dr-row${chosen?.id === p.id ? " is-chosen" : ""}`}
                       onClick={() => { haptic("soft"); setChosen(chosen?.id === p.id ? null : p); }}>
                       <span className="dr-row-name">{p.n}</span>
-                      {!ok ? <span className="dr-row-num">already yours</span>
+                      {!ok ? <span className="dr-row-num">{t("dr.yours")}</span>
                         : g.hard ? null
-                          : <span className="dr-row-num"><b>{games(p, sq)}</b> of {GAMES}{pos === "GK" ? "" : <> · <b>{p.g}</b> {p.g === 1 ? "goal" : "goals"}</>}</span>}
+                          : <span className="dr-row-num">{rich(t("dr.of", { total: GAMES }), { n: <b>{games(p, sq)}</b> })}{pos === "GK" ? "" : <> · {rich(t("dr.goals", { count: p.g }), { n: <b>{p.g}</b> })}</>}</span>}
                     </button>
                   );
                 })}
@@ -297,7 +301,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
           <div className="dr-pad" />
           <div className={`dr-take${chosen ? " is-on" : ""}`}>
             <button className="dr-cta" disabled={!chosen} onClick={take}>
-              {chosen ? `Take ${chosen.n}` : "Pick a player"}
+              {chosen ? t("dr.take", { name: chosen.n }) : t("dr.pick")}
             </button>
           </div>
         </>
@@ -312,9 +316,10 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
 }
 
 function Head({ no, sub, onBack, right }) {
+  const t = useT();
   return (
     <div className="dr-head">
-      {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
+      {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
       <div style={{ flex: 1, minWidth: 0 }}>
         <GameTitle no={no} className="dr-head-title">Draft</GameTitle>
         <div className="dr-head-sub">{sub}</div>
@@ -327,8 +332,9 @@ function Head({ no, sub, onBack, right }) {
 // The eleven so far, attack at the top. A place lights up when it is filled;
 // the man being considered shows where he would go.
 function Pitch({ picks, chosen }) {
+  const t = useT();
   return (
-    <div className="dr-pitch" role="list" aria-label="Your eleven">
+    <div className="dr-pitch" role="list" aria-label={t("dr.xi")}>
       {LINES.map((pos) => {
         const mine = picks.filter((x) => x.p.p === pos);
         return (
@@ -340,7 +346,7 @@ function Pitch({ picks, chosen }) {
                 <div key={i} role="listitem" className={`dr-slot${x ? " is-on" : ghost ? " is-ghost" : ""}`}>
                   {x ? <><b>{surname(x.p.n)}</b><i>{x.sq.season.slice(2)}</i></>
                     : ghost ? <b>{surname(chosen.n)}</b>
-                      : <span>{pos}</span>}
+                      : <span>{t(`dr.ab.${pos}`)}</span>}
                 </div>
               );
             })}
@@ -351,14 +357,16 @@ function Pitch({ picks, chosen }) {
   );
 }
 
-const WORD = { w: "Won", d: "Drew", l: "Lost" };
 // The share's words in the sharer's language (draftModel.js keeps no imports).
 const DRAFT_SHARE_WORDS = {
+  head: (number) => tNow("share.draftHead", { n: number > 0 ? tNow("share.draftNo", { n: number }) : "" }),
   line: (se) => tNow("share.draftLine", { pts: se.pts, w: se.w, d: se.d, l: se.l }),
   par: (par) => tNow("share.draftPar", { par }),
+  url: () => tNow("share.draftUrl"),
 };
 
 function Season({ result, number, picks, shown, played, hard, isPractice, onSkip, onAnother, onBack }) {
+  const t = useT();
   const { se, stand, par } = result;
   const sofar = se.matches.slice(0, shown);
   const w = sofar.filter((m) => m.r === "w").length, d = sofar.filter((m) => m.r === "d").length, l = shown - w - d;
@@ -366,14 +374,14 @@ function Season({ result, number, picks, shown, played, hard, isPractice, onSkip
   // The one thing that cost most: the man who was on the pitch least.
   const absent = [...picks].sort((a, b) => a.p.on - b.p.on)[0];
   const top = [...picks].sort((a, b) => b.p.g - a.p.g)[0];
-  const verdict = stand.titles >= stand.seasons ? `${se.pts} points wins the league in every season since 1995.`
-    : stand.titles > 0 ? `${se.pts} points wins the league in ${stand.titles} of the ${stand.seasons} seasons since 1995.`
-      : stand.down >= stand.seasons / 2 ? `${se.pts} points goes down in ${stand.down} of the ${stand.seasons} seasons since 1995.`
-        : `${se.pts} points has never won the league. It usually finishes ${ordinal(stand.place)}.`;
+  const verdict = stand.titles >= stand.seasons ? t("dr.vAll", { pts: se.pts })
+    : stand.titles > 0 ? t("dr.vSome", { pts: se.pts, n: stand.titles, total: stand.seasons })
+      : stand.down >= stand.seasons / 2 ? t("dr.vDown", { pts: se.pts, n: stand.down, total: stand.seasons })
+        : t("dr.vNever", { pts: se.pts, pos: ord(stand.place) });
   // The same share as Top 10 and the Trail: the text through the sheet, or the
   // clipboard where there is no sheet. The text is built in draftModel.js.
   const share = useCallback(async () => {
-    // In the sharer's language (i18n step 6); the rest of this screen is still English.
+    // In the sharer's language (i18n step 6; its head and link line, step 7).
     const text = buildDraftShareText({ number, se, par, words: DRAFT_SHARE_WORDS });
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try {
@@ -386,15 +394,15 @@ function Season({ result, number, picks, shown, played, hard, isPractice, onSkip
     <div className="dr-season">
       <div className="dr-record">
         <span className="dr-record-n">{w}<i>–</i>{d}<i>–</i>{l}</span>
-        <span className="dr-record-l">won · drawn · lost</span>
+        <span className="dr-record-l">{t("dr.wdl")}</span>
       </div>
-      <button type="button" className="dr-ticker" onClick={onSkip} aria-label={played ? "The 38 matches, in order" : "Skip to the end of the season"}>
+      <button type="button" className="dr-ticker" onClick={onSkip} aria-label={played ? t("dr.matchesAria") : t("dr.skipAria")}>
         {se.matches.map((m, i) => <i key={i} className={i < shown ? `is-${m.r}` : undefined} />)}
       </button>
       {!played && (
         <div className="dr-tick-note" aria-hidden="true">
-          {last ? <>Matchday {shown}: {WORD[last.r].toLowerCase()} {last.f}–{last.a} {last.home ? "at home to" : "away to"} {ordinal(last.place)} place</> : "Kick-off"}
-          {" · tap to skip"}
+          {last ? t(last.home ? "dr.mdHome" : "dr.mdAway", { n: shown, r: t(`dr.r.${last.r}`), f: last.f, a: last.a, pos: ord(last.place) }) : t("dr.kickoff")}
+          {t("dr.tapSkip")}
         </div>
       )}
 
@@ -402,38 +410,35 @@ function Season({ result, number, picks, shown, played, hard, isPractice, onSkip
         // Announced once, when the season is over: the running record above
         // changes 38 times in three seconds and would be read out each time.
         <div className="dr-final" aria-live="polite">
-          <div className="dr-points">{se.pts}<small> points</small></div>
-          <div className="dr-goals">Won {se.w}, drew {se.d}, lost {se.l} · goals {se.gf}–{se.ga}</div>
+          <div className="dr-points">{se.pts}<small>{t("dr.ptsSmall")}</small></div>
+          <div className="dr-goals">{t("dr.goalsLine", { w: se.w, d: se.d, l: se.l, gf: se.gf, ga: se.ga })}</div>
           {/* What the regulars-only eleven scores on this board with this luck
               (parPoints, draftModel.js). One quiet line, never a crowd number. */}
-          {par != null && <div className="dr-par">{isPractice ? "Par for this board" : "Par today"}: {par} points</div>}
+          {par != null && <div className="dr-par">{t(isPractice ? "dr.parPractice" : "dr.parToday", { par })}</div>}
           <p className="dr-verdict">{verdict}</p>
           <p className="dr-why">
             {absent.p.on < 0.8
-              ? <>{absent.p.n} {absent.sq.split ? "started" : "played"} {absent.p.st} of the 38 league games in {absent.sq.season}. A stand-in from a relegated side filled in for him.</>
-              : <>Nobody in your eleven missed much. {top.p.g > 0 ? `${top.p.n} scored ${top.p.g} in ${top.sq.season}.` : ""}</>}
+              ? t(absent.sq.split ? "dr.whyStarted" : "dr.whyPlayed", { name: absent.p.n, n: absent.p.st, season: absent.sq.season })
+              : <>{t("dr.whyNobody")} {top.p.g > 0 ? t("dr.top", { name: top.p.n, g: top.p.g, season: top.sq.season }) : ""}</>}
           </p>
 
-          <h3 className="dr-xi-h">Your eleven</h3>
+          <h3 className="dr-xi-h">{t("dr.xi")}</h3>
           <div className="dr-xi">
             {[...picks].sort((a, b) => POS.indexOf(b.p.p) - POS.indexOf(a.p.p)).map(({ p, sq }) => (
               <div key={p.id} className="dr-xi-row">
-                <span className="dr-xi-pos">{p.p}</span>
-                <span className="dr-xi-who"><b>{p.n}</b><i>{sq.season} {sq.club} · finished {ordinal(sq.pos)}</i></span>
-                <span className="dr-xi-num">{games(p, sq)}<small> of {GAMES}</small>{p.p !== "GK" && <> · {p.g}<small> {p.g === 1 ? "goal" : "goals"}</small></>}</span>
+                <span className="dr-xi-pos">{t(`dr.ab.${p.p}`)}</span>
+                <span className="dr-xi-who"><b>{p.n}</b><i>{t("dr.xiFinished", { season: sq.season, club: sq.club, pos: ord(sq.pos) })}</i></span>
+                <span className="dr-xi-num">{games(p, sq)}<small>{t("dr.ofSmall", { total: GAMES })}</small>{p.p !== "GK" && <> · {p.g}<small>{t("dr.goalSmall", { count: p.g })}</small></>}</span>
               </div>
             ))}
           </div>
-          {hard && <p className="dr-source dr-hard-note">You played with the numbers hidden.</p>}
+          {hard && <p className="dr-source dr-hard-note">{t("dr.hardNote")}</p>}
 
-          <button className="dr-cta" onClick={share}>Share the season</button>
-          <button className="dr-quiet" onClick={onAnother}>Play another board{isPractice ? "" : " (practice)"}</button>
-          {onBack && <button className="dr-quiet" onClick={onBack}>Back to Home</button>}
+          <button className="dr-cta" onClick={share}>{t("dr.share")}</button>
+          <button className="dr-quiet" onClick={onAnother}>{t("dr.another")}{isPractice ? "" : t("dr.practiceTag")}</button>
+          {onBack && <button className="dr-quiet" onClick={onBack}>{t("quiz.backHome")}</button>}
           <p className="dr-source">
-            Positions are the ones each club’s season page gives. Squads, games and goals:
-            English Wikipedia club-season articles, by Wikipedia contributors,{" "}
-            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>, checked by Ball IQ against the league table.
-            A club’s own first eleven, put through this, lands within about four points of its real season.
+            {rich(t("dr.credit"), { link: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a> })}
           </p>
         </div>
       )}

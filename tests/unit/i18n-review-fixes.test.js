@@ -74,6 +74,7 @@ describe('a. the quiz never waits on a slow Spanish bank', () => {
     expect(await Q.loadSpanishQuestionsCapped(30)).toBe(false);
     expect(Date.now() - t0).toBeLessThan(1000);
     expect(Q.questionText.q(onScreen)).toBe(onScreen); // printed in English while late
+    Q.holdOnScreen(onScreen); // displayed by a live view (step 7: holding is by display, i18n-step7.test.js)
     release(ES_BANK);
     await flush();
     expect(Q.questionText.q(onScreen)).toBe(onScreen); // no mid-question flip

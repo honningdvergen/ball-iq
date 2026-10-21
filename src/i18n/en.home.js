@@ -345,4 +345,6 @@ export default {
   'share.cardUnrated': 'Can you beat me at {app}? ⚽',
   'share.card': '{head}. Can you beat me? ⚽',
   'share.cardMoved': '{head} — {abbr} {before} → {after} today. Can you beat me? ⚽',
+  // i18n step 7 (tests/unit/i18n-step7.keys.js).
+  'ord.n': '{n}',
 };

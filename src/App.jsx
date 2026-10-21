@@ -54,7 +54,7 @@ import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
 import { useT, useLang, isLangLoaded, hasEnglish, t as tl } from './i18n/index.js';
-import { useQuestionText, questionText } from './i18n/questionText.js';
+import { useQuestionText, useLiveQuestion, questionText } from './i18n/questionText.js';
 import { rich } from './i18n/rich.jsx';
 import { useShare } from './hooks/useShare.js';
 import { useWebPush } from './hooks/useWebPush.js';
@@ -1381,7 +1381,6 @@ function SETTINGS_DEFAULTS() {
 const HOT_STREAK_MISS_S = 3;
 function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen }) {
   const t = useT();
-  const loc = useQuestionText();
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -1491,7 +1490,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
   const pct = (timeLeft / 60) * 100;
   const barColor = timeLeft > 20 ? 'var(--accent)' : timeLeft > 10 ? 'var(--gold)' : 'var(--red)';
   // What the player reads (i18n/questionText.js); scoring above keeps `q`.
-  const qv = loc.q(q);
+  const qv = useLiveQuestion(q);
 
   return (
     <div className="quiz-wrap" onClick={onHoldTap}>
@@ -1573,7 +1572,6 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
 // ─── TRUE OR FALSE ENGINE ─────────────────────────────────────────────────────
 function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
   const t = useT();
-  const loc = useQuestionText();
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState(null); // { val, correct } | null
@@ -1643,6 +1641,10 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
     timeoutRef.current = setTimeout(advance, delay);
   };
 
+  // What the player reads (i18n/questionText.js); answer() above keeps `q`.
+  // A hook, so above the early returns; nothing is on screen once done.
+  const qv = useLiveQuestion(done ? null : questions?.[idx]);
+
   // Safety: if questions missing or done, render nothing (onComplete will have fired)
   if (done || !questions || questions.length === 0) return null;
   const q = questions[idx];
@@ -1670,9 +1672,6 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
     }
     return { ...base, background: 'var(--s2)', border: '2px solid var(--border)', color: 'var(--t3)', opacity: 0.55 };
   };
-
-  // What the player reads (i18n/questionText.js); answer() above keeps `q`.
-  const qv = loc.q(q);
 
   return (
     <div className="quiz-wrap" onClick={onHoldTap}>

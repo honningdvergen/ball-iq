@@ -26,6 +26,7 @@ const es = (await import('../../src/i18n/es.js')).default;
 const enHome = (await import('../../src/i18n/en.home.js')).default;
 const { STEP6_EN } = await import('./i18n-last-english.keys.js');
 const { STEP5_EN } = await import('./i18n-leftovers.keys.js');
+const { STEP7_EN } = await import('./i18n-step7.keys.js');
 const { dailyShareLines, scoreShareText, scoreShareLabel } = await import('../../src/hooks/useShare.js');
 const { shareLine, computeCard } = await import('../../src/lib/ballIqCard.js');
 const { buildDraftShareText } = await import('../../src/lib/draftModel.js');
@@ -140,7 +141,7 @@ describe('the step 6 keys', () => {
   it('the pinned list is every key step 6 added (after step 5\'s, to the end of en.js)', () => {
     const keys = Object.keys(en);
     const first = keys.findIndex((k) => Object.hasOwn(STEP6_EN, k));
-    expect(keys.slice(first).sort()).toEqual(Object.keys(STEP6_EN).sort());
+    expect(keys.slice(first).filter((k) => !Object.hasOwn(STEP7_EN, k)).sort()).toEqual(Object.keys(STEP6_EN).sort());
     expect(Object.hasOwn(STEP5_EN, keys[first - 1])).toBe(true);
   });
   it('the taunts are STITCH_TAUNTS, index for index', () => {
@@ -221,7 +222,7 @@ describe('English share texts are byte-identical', () => {
     const mp = read('src/screens/OnlineMultiplayer.jsx');
     expect(mp).toContain('const text = tNow("share.mpInvite", { app: APP_NAME });');
     expect(mp).toContain('const text = tNow(survivalDraw ? "share.mpDraw" : isWinner ? "share.mpWon" : "share.mpLost", { opp: opp1, app: APP_NAME });');
-    for (const f of ['src/games/FootballWordle.jsx', 'src/screens/ReviewScreens.jsx']) expect(read(f), f).toContain('`\\n${t("share.footleStreak", { n: streak })}`');
+    for (const f of ['src/games/FootballWordle.jsx', 'src/screens/ReviewScreens.jsx']) expect(read(f), f).toContain('`\\n${t("share.footleStreak", { count: streak, n: streak })}`'); // count since step 7: Spanish needs the plural
   });
 });
 

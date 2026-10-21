@@ -19,7 +19,7 @@
 // install. `?url` makes Vite emit it as a hashed .json asset instead, which is
 // not precached, and fetch() asks for it only while the language is 'es'.
 // tests/unit/i18n-question-text.test.js pins both.
-import { useEffect, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 import esBankUrl from './questions.es.json?url';
 import { getLang, subscribe as subscribeLang, t } from './index.js';
 
@@ -40,8 +40,13 @@ let es = null;        // id -> { q, o?, hint? }
 let english = null;   // id -> the bank's own row (its `o` in authored order)
 let idByText = null;  // English question/statement text -> id (records that kept no id)
 let inflight = null;
-let pastCap = false;            // a quiz stopped waiting and opened in English (ES_BANK_WAIT_MS)
-const shownEnglish = new Set(); // questions printed in English past the cap, this session
+// Questions ON SCREEN NOW that a live question view printed in English while
+// the Spanish table was missing (late past the cap, failed, or not asked for
+// yet): key -> how many live views show it. Each stays English until it leaves
+// the screen, so neither a late table nor a retry that succeeds can switch the
+// words under the player's eyes; the next question, and this one when it next
+// comes round, is Spanish. See holdOnScreen / useLiveQuestion.
+const pinned = new Map();
 let version = 0;
 const listeners = new Set();
 function bump() {
@@ -62,7 +67,7 @@ export function loadSpanishQuestions() {
   if (es) return Promise.resolve(true);
   if (!inflight) {
     inflight = loader()
-      .then((table) => { es = table && typeof table === 'object' ? table : null; if (es) pastCap = false; bump(); return !!es; })
+      .then((table) => { es = table && typeof table === 'object' ? table : null; bump(); return !!es; })
       .catch(() => false)
       .finally(() => { inflight = null; });
   }
@@ -76,8 +81,9 @@ subscribeLang(() => { if (getLang() === 'es' && !es) loadSpanishQuestions(); bum
 // so a slow or hanging connection held every Spanish quiz on its loading
 // screen with no end. Now the bank waits up to ES_BANK_WAIT_MS; past that the
 // quiz opens in English and the fetch carries on. A question that printed in
-// English while the table was late stays English when it lands (no switching
-// under the player's eyes); the next question is Spanish.
+// English while the table was missing stays English while it is on screen,
+// whether the table is late or its fetch failed and a later retry succeeds
+// (step 7: `pinned` above); the next question is Spanish.
 export const ES_BANK_WAIT_MS = 2500;
 
 /**
@@ -88,7 +94,7 @@ export function loadSpanishQuestionsCapped(ms = ES_BANK_WAIT_MS) {
   const load = loadSpanishQuestions();
   if (es || getLang() !== 'es') return load;
   return new Promise((done) => {
-    const timer = setTimeout(() => { if (!es) pastCap = true; done(false); }, ms);
+    const timer = setTimeout(() => done(false), ms);
     load.then((ok) => { clearTimeout(timer); done(ok); });
   });
 }
@@ -145,15 +151,13 @@ function optionFor(key, row, text) {
   return i >= 0 && str(row.o[i]) ? row.o[i] : text;
 }
 
+const keyOf = (q) => (q && typeof q === 'object' ? q.id ?? (typeof q.q === 'string' ? q.q : q.s) ?? null : null);
+
 /** A bank question as the player sees it. English: the very same object. */
 function locQuestion(q) {
   if (!q || typeof q !== 'object') return q;
   const text = typeof q.q === 'string' ? q.q : q.s;
-  if (getLang() === 'es') {
-    const seen = q.id ?? text;
-    if (!es) { if (pastCap && seen != null) shownEnglish.add(seen); return q; }
-    if (shownEnglish.has(seen)) return q;
-  }
+  if (pinned.size && getLang() === 'es' && pinned.has(keyOf(q))) return q;
   const hit = rowFor(q.id, text);
   if (!hit) return q;
   const { key, row } = hit;
@@ -205,6 +209,26 @@ function locAnswer(a) {
 
 export const questionText = { q: locQuestion, missed: locMissed, answer: locAnswer };
 
+/**
+ * A live question view shows `q` now (it has been displayed, not just
+ * rendered). If it printed in English because the Spanish table is missing,
+ * it is pinned English until the returned release is called, when it leaves
+ * the screen. Otherwise nothing is pinned. English: does nothing.
+ */
+export function holdOnScreen(q) {
+  const key = keyOf(q);
+  if (key == null || getLang() !== 'es' || es !== null) return () => {};
+  pinned.set(key, (pinned.get(key) || 0) + 1);
+  let held = true;
+  return () => {
+    if (!held) return;
+    held = false;
+    const n = (pinned.get(key) || 1) - 1;
+    if (n > 0) pinned.set(key, n); else pinned.delete(key);
+    if (es) bump(); // anything else printing it can be Spanish now
+  };
+}
+
 function subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); }
 const getVersion = () => version;
 
@@ -224,5 +248,30 @@ export function useQuestionText() {
   return questionText;
 }
 
+/**
+ * React, for the views that put ONE question in front of the player to answer
+ * (the quiz engines, Hot Streak, True or False, local play, Stump a mate):
+ * questionText.q(q), held English while it is on screen if it first printed
+ * in English (holdOnScreen). Pass onScreen=false while the view has the
+ * question but is not showing it (local play's hand-off). Lists and reviews
+ * use useQuestionText().q and pin nothing.
+ */
+export function useLiveQuestion(q, onScreen = true) {
+  const loc = useQuestionText();
+  const key = onScreen ? keyOf(q) : null;
+  const release = useRef(null);
+  // After every commit: hold the question once it has really been displayed.
+  useEffect(() => {
+    if (key != null && !release.current) release.current = holdOnScreen(q);
+  });
+  // Let go when it leaves the screen (another question, hidden, unmounted).
+  useEffect(() => () => {
+    if (release.current) { release.current(); release.current = null; }
+  }, [key]);
+  return loc.q(q);
+}
+
 /** Tests only: swap the fetch (resolve to the table) and forget a loaded table. */
-export function __setSpanishQuestionsLoaderForTests(fn) { loader = fn || fetchBank; es = null; inflight = null; pastCap = false; shownEnglish.clear(); bump(); }
+export function __setSpanishQuestionsLoaderForTests(fn) { loader = fn || fetchBank; es = null; inflight = null; pinned.clear(); bump(); }
+/** Tests only: swap the fetch and nothing else (a retry after a failure). */
+export function __swapSpanishQuestionsFetchForTests(fn) { loader = fn || fetchBank; }

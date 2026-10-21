@@ -12,7 +12,7 @@ import { TopicPickerSheet, topicMeta } from "../components/TopicPickerSheet.jsx"
 import { CLUB_PACK_TO_QB } from "../data/clubPacks.js";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { loadQuestions } from "../questions-loader.js";
-import { useQuestionText } from "../i18n/questionText.js";
+import { useQuestionText, useLiveQuestion } from "../i18n/questionText.js";
 import { RETIRED_TAGS } from "../lib/quiz.js";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 
@@ -213,7 +213,10 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     ? survivors[turnIdx]
     : players[chunkIdx % players.length];
   const currentQ = questions ? questions[currentQIdx] : null;
-  const shownQ = loc.q(currentQ);
+  // Computed above the early returns, so it is only held English as displayed
+  // (questionText.js useLiveQuestion) while a phase actually shows it: not
+  // behind the hand-off screen.
+  const shownQ = useLiveQuestion(currentQ, phase === "question" || phase === "locked" || phase === "reveal");
 
   // End-of-game:
   // - Classic/Sprint: ran off the end of the question list → rank by score.

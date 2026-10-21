@@ -448,7 +448,16 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 /* The dateline. Small, tracked, quiet -- a label that says which day's puzzles
    these are without competing with the heading under it. --t3 on --bg is
    ~5.8:1, which clears AA for body text at this size. */
-.hg-dateline{font-size:11.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);line-height:1.2;font-family:var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+/* padding-top + the same negative margin (i18n step 7): overflow:hidden at a
+   1.2 line-height clipped the accent off an upper-case MIÉRCOLES. The 4px is
+   inside the box and taken back outside it, so nothing moves by a pixel. The
+   .daily-zone rule just below does the same for its paint containment. */
+.hg-dateline{font-size:11.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);line-height:1.2;font-family:var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;padding-top:4px;margin-top:-4px;}
+/* contain:paint clips at the zone's own box, and the head sits 2px above it
+   (margin -2px): the dateline's accents were cut there too. 6px of room above,
+   given back by the margin. !important and doubled because three rules (and
+   the installed-desktop mirror, with !important) reset .daily-zone's padding. */
+.daily-zone.daily-zone{padding-top:6px!important;margin-top:-6px!important;}
 /* Now a <button> (it opens the Daily tab), so it has to un-inherit the UA
    button chrome — iOS WebKit in particular paints its own blue text colour on
    <button>, which is how the Online CTA lost its ink. */

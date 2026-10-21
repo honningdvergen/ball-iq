@@ -213,7 +213,7 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard =
     // grid right below disambiguates "3/6" (the Sprint #99 concern), so the
     // explicit "guesses" wording lives only on the PNG card headline.
     const head = footleShareHead(APP_NAME, getFootleNumber(date), won, guesses.length, clue, hard);
-    const streakLine = won && streak > 0 ? `\n${t("share.footleStreak", { n: streak })}` : "";
+    const streakLine = won && streak > 0 ? `\n${t("share.footleStreak", { count: streak, n: streak })}` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [guesses, answer, won, lost, hasData, date, clue]);
 

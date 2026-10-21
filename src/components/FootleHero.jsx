@@ -3,7 +3,8 @@ import { APP_NAME } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
 import { footleAnswerFor, getWordleDayIndex, gradeWordleGuess, computeFootleStreak, getFootleNumber, footleShareHead } from "../lib/wordle.js";
 import { FOOTLE_TAGLINE } from "../lib/modeCopy.js";
-import { fmtLocaleEnglish } from "../i18n/index.js";
+import { fmtLocaleEnglish, t } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 
 // FootleHero — Home tab daily-zone card. Morning state shows an empty
 // grid preview + Play CTA; evening state (won/lost) shows the user's
@@ -113,7 +114,7 @@ export const FootleHero = React.memo(function FootleHeroImpl({ onPlay, onReview,
     // One head for all three share builders (lib/wordle.js footleShareHead):
     // the #N token is what makes grids comparable between strangers in a feed.
     const head = footleShareHead(APP_NAME, num, isWon, guesses.length, clue, hard);
-    const streakLine = isWon && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
+    const streakLine = isWon && streak > 0 ? `\n${t("share.footleStreak", { count: streak, n: streak })}` : "";
     const textFallback = `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
     const dateLabel = today.toLocaleDateString(fmtLocaleEnglish(), { weekday: "long", day: "numeric", month: "long" }); // the share card's date: English, like its text
     await shareCard("wordle", {
