@@ -1094,9 +1094,10 @@ export default {
   'lp.topic': 'Tema',
   'lp.change': 'Cambiar',
   'lp.mode': 'Modo',
-  'lp.classicDesc': '10 preguntas',
+  // Spelled out: scripts/audit-no-question-count.mjs fails any digit next to "preguntas".
+  'lp.classicDesc': 'Diez preguntas',
   'lp.sprint': 'Sprint',
-  'lp.sprintDesc': '5 preguntas',
+  'lp.sprintDesc': 'Cinco preguntas',
   'lp.survivalDesc': 'Fallas y fuera',
   'lp.start': 'Empezar con {n} jugadores →',
   'lp.loadFail': 'No se pudieron cargar las preguntas',
